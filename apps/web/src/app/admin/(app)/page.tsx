@@ -1,11 +1,12 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { formatMoney, toMajor } from '@yaseen/shared';
 import { SalesChart } from '@/components/admin/sales-chart';
-import { adminFetch } from '@/lib/admin-client';
+import { adminFetch, getStoredUser } from '@/lib/admin-client';
 
 interface Dashboard {
   today: { orders: number; revenue: number };
@@ -36,12 +37,22 @@ interface FollowUp {
 const RANGES = [7, 30, 90] as const;
 
 export default function AdminDashboardPage() {
+  const router = useRouter();
   const [days, setDays] = useState<number>(30);
   const [data, setData] = useState<Dashboard | null>(null);
   const [followUps, setFollowUps] = useState<FollowUp[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+  // A tailor has no dashboard — the analytics endpoints are staff-only — so send
+  // them to the queue rather than showing them a screenful of 403s.
+  const isTailor = getStoredUser()?.role === 'TAILOR';
+
   useEffect(() => {
+    if (isTailor) router.replace('/admin/stitching');
+  }, [isTailor, router]);
+
+  useEffect(() => {
+    if (isTailor) return;
     let cancelled = false;
 
     Promise.all([
@@ -62,7 +73,7 @@ export default function AdminDashboardPage() {
     return () => {
       cancelled = true;
     };
-  }, [days]);
+  }, [days, isTailor]);
 
   if (error) {
     return (
@@ -249,7 +260,15 @@ export default function AdminDashboardPage() {
 
           {data.stitchingByStage.length > 0 ? (
             <section className="card p-4">
-              <h2 className="text-sm font-semibold text-ink">Tailoring in progress</h2>
+              <div className="flex items-center justify-between">
+                <h2 className="text-sm font-semibold text-ink">Tailoring in progress</h2>
+                <Link
+                  href="/admin/stitching"
+                  className="text-xs font-medium text-brand-700 hover:underline"
+                >
+                  Tailor queue
+                </Link>
+              </div>
               {/* Six named stages: a labelled list reads better than a chart. */}
               <dl className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2 text-sm sm:grid-cols-3">
                 {data.stitchingByStage.map((row) => (

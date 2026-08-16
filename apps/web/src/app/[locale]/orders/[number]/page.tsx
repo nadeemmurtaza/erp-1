@@ -4,8 +4,9 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { use, useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { formatMoney, ORDER_STATUSES, type Locale } from '@yaseen/shared';
+import { formatMoney, ORDER_STATUSES, type Locale, type StitchingStage } from '@yaseen/shared';
 import { Link } from '@/i18n/navigation';
+import { StitchingTimeline, type TimelineEvent } from '@/components/storefront/stitching-timeline';
 import { API_URL } from '@/lib/api';
 import { getCustomerToken } from '@/lib/cart-client';
 
@@ -23,6 +24,13 @@ interface OrderItem {
   garmentTypeKey: string | null;
   measurementSnapshot: { label: string; values: Record<string, number> } | null;
   optionsSnapshot: Array<{ groupLabelEn: string; groupLabelUr: string; labelEn: string; labelUr: string }> | null;
+  /** Present once the garment is in the workshop. */
+  stitchingJob: {
+    number: string;
+    stage: StitchingStage;
+    dueAt: string | null;
+    events: TimelineEvent[];
+  } | null;
 }
 
 interface Order {
@@ -242,6 +250,19 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
                           {t('measurements')}: {item.measurementSnapshot.label}
                         </p>
                       ) : null}
+                    </div>
+                  ) : null}
+
+                  {item.stitchingJob ? (
+                    <div className="mt-3">
+                      <p className="mb-2 text-xs font-medium text-ink/60">
+                        {item.stitchingJob.number}
+                      </p>
+                      <StitchingTimeline
+                        stage={item.stitchingJob.stage}
+                        events={item.stitchingJob.events}
+                        dueAt={item.stitchingJob.dueAt}
+                      />
                     </div>
                   ) : null}
                 </li>

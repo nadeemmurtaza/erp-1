@@ -19,8 +19,13 @@ export interface MeasurementFieldDef {
   required: boolean;
   /** Display order within the garment's form. */
   order: number;
-  helpEn?: string;
-  helpUr?: string;
+  /**
+   * Nullable rather than merely optional: these are database columns, and the
+   * API hands them back as `null`. Accepting that shape here means callers can
+   * pass a row straight through instead of scrubbing it first.
+   */
+  helpEn?: string | null;
+  helpUr?: string | null;
 }
 
 export interface GarmentTypeDef {

@@ -23,7 +23,7 @@ catalogue, orders, tailor queue and customer relationships from one back office.
 | Cart and the stitching add-on | Done |
 | Checkout, orders, COD and bank transfer, order management | Done |
 | Dashboard metrics + CRM — customers, enquiries, follow-ups | Done |
-| Tailor production tracking | Planned |
+| Stitching operations — own-fabric bookings, tailor queue, progress tracking | Done |
 | Expo mobile app | Planned |
 
 ## Running it

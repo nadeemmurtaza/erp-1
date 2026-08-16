@@ -41,7 +41,26 @@ const ALLOWED_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
 };
 
 const orderInclude = {
-  items: { orderBy: { createdAt: 'asc' } },
+  items: {
+    orderBy: { createdAt: 'asc' },
+    include: {
+      // The tailoring progress for a stitched line, so the customer's order page
+      // shows the same stage rail as a standalone booking. Read-only, and only
+      // the fields the timeline draws — the workshop's notes and photographs
+      // belong to the stitching module's own screens.
+      stitchingJob: {
+        select: {
+          number: true,
+          stage: true,
+          dueAt: true,
+          events: {
+            select: { fromStage: true, toStage: true, createdAt: true },
+            orderBy: { createdAt: 'asc' },
+          },
+        },
+      },
+    },
+  },
   payments: { orderBy: { createdAt: 'desc' } },
   shipments: { orderBy: { createdAt: 'desc' } },
   statusEvents: { orderBy: { createdAt: 'asc' } },

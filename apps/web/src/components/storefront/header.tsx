@@ -10,6 +10,9 @@ const NAV = [
   { key: 'readyToWear', href: '/shop?category=ready-to-wear' },
   { key: 'menswear', href: '/shop?category=menswear' },
   { key: 'stitching', href: '/shop?category=stitching-services&kind=STITCHING_SERVICE' },
+  // Tailoring on the customer's own cloth — no fabric to buy, so it is a page of
+  // its own rather than a catalogue filter.
+  { key: 'ownFabric', href: '/stitching' },
 ] as const;
 
 export function Header() {

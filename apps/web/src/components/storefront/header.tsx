@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { Suspense } from 'react';
 import { Link } from '@/i18n/navigation';
+import { CartBadge } from './cart-badge';
 import { LocaleSwitcher } from './locale-switcher';
 import { SearchBox } from './search-box';
 
@@ -37,6 +38,7 @@ export function Header() {
 
           <div className="ms-auto flex items-center gap-3">
             <SearchBox />
+            <CartBadge />
             {/*
               The switcher reads the query string so filters survive a language
               change, which opts it out of prerendering without this boundary.

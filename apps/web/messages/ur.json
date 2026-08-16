@@ -85,11 +85,31 @@
     "sku": "ایس کے یو",
     "canBeStitchedAs": "ان ملبوسات میں سِیا جا سکتا ہے",
     "noImage": "ابھی تصویر دستیاب نہیں",
-    "backToShop": "خریداری پر واپس"
+    "backToShop": "خریداری پر واپس",
+    "quantity": "تعداد",
+    "adding": "شامل کیا جا رہا ہے…",
+    "addedToCart": "ٹوکری میں شامل کر دیا گیا۔",
+    "viewCart": "ٹوکری دیکھیں"
   },
   "cart": {
     "title": "ٹوکری",
-    "comingSoon": "ٹوکری اگلی ریلیز میں دستیاب ہوگی۔"
+    "loading": "ٹوکری لوڈ ہو رہی ہے…",
+    "empty": "آپ کی ٹوکری خالی ہے۔",
+    "startShopping": "خریداری شروع کریں",
+    "summary": "آرڈر کا خلاصہ",
+    "itemsSubtotal": "اشیاء",
+    "stitchingSubtotal": "سلائی",
+    "shipping": "ترسیل",
+    "shippingAtCheckout": "چیک آؤٹ پر شمار ہوگی",
+    "total": "کل",
+    "checkout": "چیک آؤٹ",
+    "checkoutComingSoon": "چیک آؤٹ اگلی ریلیز میں دستیاب ہوگا۔",
+    "continueShopping": "خریداری جاری رکھیں",
+    "quantity": "تعداد",
+    "remove": "ہٹائیں",
+    "measurements": "ناپ",
+    "measurementsMissing": "ناپ ابھی درکار ہیں",
+    "onlyLeft": "صرف {count} باقی"
   },
   "footer": {
     "help": "مدد",
@@ -108,5 +128,17 @@
     "error": "کچھ غلط ہو گیا۔",
     "retry": "دوبارہ کوشش کریں",
     "currencyNote": "قیمتیں پاکستانی روپے میں"
+  },
+  "stitching": {
+    "getStitched": "اپنے ناپ کے مطابق سلوائیں",
+    "explainer": "ہم یہ کپڑا آپ کے لیے کاٹ کر سیتے ہیں۔ نیچے اسٹائل منتخب کریں؛ قیمت ساتھ ساتھ بدلتی رہے گی۔",
+    "garment": "ملبوس",
+    "service": "سلائی سروس",
+    "measurements": "ناپ",
+    "signInForMeasurements": "محفوظ ناپ استعمال کرنے کے لیے سائن اِن کریں۔ آپ ابھی کپڑا شامل کر کے چیک آؤٹ سے پہلے ناپ دے سکتے ہیں۔",
+    "noProfiles": "{garment} کے لیے کوئی ناپ محفوظ نہیں۔ چیک آؤٹ سے پہلے اپنے اکاؤنٹ سے شامل کریں۔",
+    "notes": "درزی کے لیے ہدایات",
+    "notesPlaceholder": "کوئی بھی بات جو درزی کو معلوم ہونی چاہیے — مثلاً کمر پر ذرا کھلا رکھیں۔",
+    "stitchingTotal": "سلائی"
   }
 }

@@ -34,7 +34,10 @@ export interface LocalisedProduct {
     inStock: boolean;
   }>;
   category: { id: string; slug: string; name: string } | null;
+  /** UNSTITCHED only: the garments this fabric can be made into. */
   garmentTypes: Array<{ id: string; key: string; label: string }>;
+  /** STITCHING_SERVICE only: the garment this service stitches. */
+  serviceGarment: { id: string; key: string; label: string } | null;
   inStock: boolean;
   /** Cheapest variant price, which is what a listing card should show. */
   fromPrice: number;
@@ -46,6 +49,7 @@ const productInclude = {
   variants: { where: { isActive: true }, orderBy: { order: 'asc' } },
   category: { include: { translations: true } },
   garmentTypes: { include: { garmentType: true } },
+  garmentType: true,
 } satisfies Prisma.ProductInclude;
 
 type ProductWithRelations = Prisma.ProductGetPayload<{ include: typeof productInclude }>;
@@ -309,6 +313,14 @@ export function localise(
       key: link.garmentType.key,
       label: locale === 'ur' ? link.garmentType.labelUr : link.garmentType.labelEn,
     })),
+    serviceGarment: product.garmentType
+      ? {
+          id: product.garmentType.id,
+          key: product.garmentType.key,
+          label:
+            locale === 'ur' ? product.garmentType.labelUr : product.garmentType.labelEn,
+        }
+      : null,
     inStock: variants.some((variant) => variant.inStock),
     fromPrice: prices.length > 0 ? Math.min(...prices) : product.basePrice,
   };

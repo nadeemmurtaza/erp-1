@@ -1,29 +1,33 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import clsx from 'clsx';
-import { formatMoney, type Locale } from '@yaseen/shared';
-import { Price } from './price';
+import type { Locale } from '@yaseen/shared';
+import { useRouter } from '@/i18n/navigation';
 import type { StorefrontProduct } from '@/lib/api-types';
+import { Price } from './price';
+import { useCart } from './cart-provider';
+import { StitchingPanel, type StitchingSelection } from './stitching-panel';
 
 interface ProductPurchaseProps {
   product: StorefrontProduct;
   locale: Locale;
-  /** Cheapest stitching service for this fabric, in paisa. */
-  stitchingFrom: number | null;
+  /** Stitching services that apply to this fabric's garments. */
+  services: StorefrontProduct[];
 }
 
 /**
- * Variant selection and the add-to-cart panel.
+ * Variant selection, the stitching panel, and add to cart.
  *
- * The stitching section is shown here for unstitched fabric so the customer
- * sees what it costs before committing; the full "get it stitched" flow
- * (measurements and style options) lands with the cart in M3.
+ * The button posts the whole choice — variant, quantity, service, measurements
+ * and style options — in one request, and the API prices it. Nothing about the
+ * total is computed here and sent along.
  */
-export function ProductPurchase({ product, locale, stitchingFrom }: ProductPurchaseProps) {
+export function ProductPurchase({ product, locale, services }: ProductPurchaseProps) {
   const t = useTranslations('product');
-  const tCart = useTranslations('cart');
+  const router = useRouter();
+  const { add, error, clearError } = useCart();
 
   const sizes = useMemo(
     () => unique(product.variants.map((variant) => variant.size)),
@@ -36,6 +40,10 @@ export function ProductPurchase({ product, locale, stitchingFrom }: ProductPurch
 
   const [size, setSize] = useState<string | null>(sizes[0] ?? null);
   const [colour, setColour] = useState<string | null>(colours[0] ?? null);
+  const [quantity, setQuantity] = useState(1);
+  const [stitching, setStitching] = useState<StitchingSelection | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [added, setAdded] = useState(false);
 
   const selected =
     product.variants.find(
@@ -46,15 +54,36 @@ export function ProductPurchase({ product, locale, stitchingFrom }: ProductPurch
 
   const price = selected?.price ?? product.basePrice;
 
+  // Stable identity so the panel's effect does not re-publish on every render.
+  const onStitchingChange = useCallback((next: StitchingSelection | null) => {
+    setStitching(next);
+  }, []);
+
+  async function onAdd() {
+    if (!selected) return;
+
+    setBusy(true);
+    setAdded(false);
+    clearError();
+
+    try {
+      await add({
+        variantId: selected.id,
+        quantity,
+        stitching: stitching ?? undefined,
+      });
+      setAdded(true);
+    } catch {
+      // The message is surfaced from the cart context below.
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <div>
-        <Price
-          amount={price}
-          compareAt={product.compareAtPrice}
-          locale={locale}
-          size="lg"
-        />
+        <Price amount={price} compareAt={product.compareAtPrice} locale={locale} size="lg" />
         <p className="mt-1 text-sm">
           {selected && selected.stock > 0 ? (
             selected.stock <= 3 ? (
@@ -69,12 +98,7 @@ export function ProductPurchase({ product, locale, stitchingFrom }: ProductPurch
       </div>
 
       {sizes.length > 1 ? (
-        <OptionRow
-          label={t('selectSize')}
-          options={sizes}
-          value={size}
-          onChange={setSize}
-        />
+        <OptionRow label={t('selectSize')} options={sizes} value={size} onChange={setSize} />
       ) : null}
 
       {colours.length > 1 ? (
@@ -86,37 +110,51 @@ export function ProductPurchase({ product, locale, stitchingFrom }: ProductPurch
         />
       ) : null}
 
-      {product.stitchingAvailable ? (
-        <div className="rounded-lg border border-brand-200 bg-brand-50 p-4">
-          <h2 className="text-sm font-semibold text-brand-800">{t('getItStitched')}</h2>
-          <p className="mt-1 text-sm text-ink/70">{t('stitchingAvailable')}</p>
+      <StitchingPanel product={product} services={services} onChange={onStitchingChange} />
 
-          {stitchingFrom !== null ? (
-            <p className="mt-2 text-sm font-medium text-brand-800">
-              {t('stitchingFrom', { price: formatMoney(stitchingFrom, locale) })}
-            </p>
-          ) : null}
+      <div className="flex flex-wrap items-end gap-3">
+        <label className="w-24">
+          <span className="field-label">{t('quantity')}</span>
+          <input
+            type="number"
+            min={1}
+            max={Math.max(1, selected?.stock ?? 1)}
+            value={quantity}
+            onChange={(event) =>
+              setQuantity(Math.max(1, Number.parseInt(event.target.value, 10) || 1))
+            }
+            className="field-input"
+          />
+        </label>
 
-          {product.garmentTypes.length > 0 ? (
-            <p className="mt-3 text-xs text-ink/60">
-              {t('canBeStitchedAs')}:{' '}
-              {product.garmentTypes.map((garment) => garment.label).join('، ')}
-            </p>
-          ) : null}
-        </div>
-      ) : null}
-
-      <div>
         <button
           type="button"
-          disabled
-          title={tCart('comingSoon')}
-          className="btn-primary w-full sm:w-auto"
+          onClick={() => void onAdd()}
+          disabled={busy || !selected || selected.stock === 0}
+          className="btn-primary flex-1 sm:flex-none"
         >
-          {t('addToCart')}
+          {busy ? t('adding') : t('addToCart')}
         </button>
-        <p className="mt-2 text-xs text-ink/50">{tCart('comingSoon')}</p>
       </div>
+
+      {error ? (
+        <p role="alert" className="whitespace-pre-line rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+          {error}
+        </p>
+      ) : null}
+
+      {added && !error ? (
+        <p className="flex flex-wrap items-center gap-3 rounded-md bg-brand-50 px-3 py-2 text-sm text-brand-800">
+          {t('addedToCart')}
+          <button
+            type="button"
+            onClick={() => router.push('/cart')}
+            className="font-medium underline"
+          >
+            {t('viewCart')}
+          </button>
+        </p>
+      ) : null}
 
       {selected ? (
         <p className="text-xs text-ink/40">

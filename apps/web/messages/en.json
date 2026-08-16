@@ -85,11 +85,31 @@
     "sku": "SKU",
     "canBeStitchedAs": "Can be stitched as",
     "noImage": "No photograph yet",
-    "backToShop": "Back to shop"
+    "backToShop": "Back to shop",
+    "quantity": "Quantity",
+    "adding": "Adding…",
+    "addedToCart": "Added to your cart.",
+    "viewCart": "View cart"
   },
   "cart": {
     "title": "Cart",
-    "comingSoon": "The cart opens in the next release."
+    "loading": "Loading your cart…",
+    "empty": "Your cart is empty.",
+    "startShopping": "Start shopping",
+    "summary": "Order summary",
+    "itemsSubtotal": "Items",
+    "stitchingSubtotal": "Stitching",
+    "shipping": "Shipping",
+    "shippingAtCheckout": "Calculated at checkout",
+    "total": "Total",
+    "checkout": "Checkout",
+    "checkoutComingSoon": "Checkout opens in the next release.",
+    "continueShopping": "Continue shopping",
+    "quantity": "Qty",
+    "remove": "Remove",
+    "measurements": "Measurements",
+    "measurementsMissing": "Measurements still needed",
+    "onlyLeft": "Only {count} left"
   },
   "footer": {
     "help": "Help",
@@ -108,5 +128,17 @@
     "error": "Something went wrong.",
     "retry": "Try again",
     "currencyNote": "Prices in Pakistani Rupees"
+  },
+  "stitching": {
+    "getStitched": "Get it stitched to your measurements",
+    "explainer": "We cut and stitch this fabric for you. Choose the style below; the price updates as you pick.",
+    "garment": "Garment",
+    "service": "Stitching service",
+    "measurements": "Measurements",
+    "signInForMeasurements": "Sign in to use your saved measurements. You can still add the fabric now and add measurements before checkout.",
+    "noProfiles": "No saved {garment} measurements yet. Add them from your account before checkout.",
+    "notes": "Notes for the tailor",
+    "notesPlaceholder": "Anything the tailor should know — a little loose at the waist, for instance.",
+    "stitchingTotal": "Stitching"
   }
 }

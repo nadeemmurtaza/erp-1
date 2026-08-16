@@ -52,7 +52,10 @@ export interface StorefrontProduct {
   images: ProductImage[];
   variants: ProductVariant[];
   category: { id: string; slug: string; name: string } | null;
+  /** UNSTITCHED only: the garments this fabric can be made into. */
   garmentTypes: Array<{ id: string; key: string; label: string }>;
+  /** STITCHING_SERVICE only: the garment this service stitches. */
+  serviceGarment: { id: string; key: string; label: string } | null;
   inStock: boolean;
   fromPrice: number;
 }

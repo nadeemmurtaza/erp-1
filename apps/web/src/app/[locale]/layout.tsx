@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { directionFor, type Locale } from '@yaseen/shared';
+import { CartProvider } from '@/components/storefront/cart-provider';
 import { Footer } from '@/components/storefront/footer';
 import { Header } from '@/components/storefront/header';
 import { routing } from '@/i18n/routing';
@@ -57,6 +58,7 @@ export default async function LocaleLayout({
     <html lang={locale} dir={directionFor(locale as Locale)}>
       <body className="flex min-h-screen flex-col">
         <NextIntlClientProvider>
+          <CartProvider>
           <a
             href="#main"
             className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-2 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:shadow"
@@ -68,6 +70,7 @@ export default async function LocaleLayout({
             {children}
           </main>
           <Footer />
+          </CartProvider>
         </NextIntlClientProvider>
       </body>
     </html>

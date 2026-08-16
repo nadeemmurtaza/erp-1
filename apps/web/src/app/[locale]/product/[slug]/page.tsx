@@ -6,6 +6,7 @@ import { ProductGallery } from '@/components/storefront/product-gallery';
 import { ProductPurchase } from '@/components/storefront/product-purchase';
 import { Link } from '@/i18n/navigation';
 import { ApiError, getProduct, getStitchingServices } from '@/lib/api';
+import type { StorefrontProduct } from '@/lib/api-types';
 
 export const revalidate = 120;
 
@@ -49,10 +50,12 @@ export default async function ProductPage({ params }: PageProps) {
   const t = await getTranslations('product');
   const tShop = await getTranslations('shop');
 
-  // Cheapest stitching service among the garments this fabric can become.
-  const stitchingFrom = product.stitchingAvailable
-    ? await cheapestStitchingFee(product.garmentTypes.map((garment) => garment.key), locale)
-    : null;
+  // Stitching services for every garment this fabric can be made into. Loaded
+  // here so the panel renders complete on first paint rather than after a
+  // client fetch.
+  const services = product.stitchingAvailable
+    ? await stitchingServicesFor(product.garmentTypes.map((garment) => garment.key), locale)
+    : [];
 
   const details: Array<[string, string]> = [
     ...(product.fabric ? ([[t('fabric'), product.fabric]] as Array<[string, string]>) : []),
@@ -99,7 +102,7 @@ export default async function ProductPage({ params }: PageProps) {
             <ProductPurchase
               product={product}
               locale={locale as Locale}
-              stitchingFrom={stitchingFrom}
+              services={services}
             />
           </div>
 
@@ -135,16 +138,20 @@ export default async function ProductPage({ params }: PageProps) {
   );
 }
 
-async function cheapestStitchingFee(
+async function stitchingServicesFor(
   garmentKeys: string[],
   locale: string,
-): Promise<number | null> {
-  if (garmentKeys.length === 0) return null;
+): Promise<StorefrontProduct[]> {
+  if (garmentKeys.length === 0) return [];
 
   const results = await Promise.all(
     garmentKeys.map((key) => getStitchingServices(key, locale)),
   );
-  const fees = results.flat().map((service) => service.basePrice);
 
-  return fees.length > 0 ? Math.min(...fees) : null;
+  // One garment's services can appear under several keys; de-duplicate by id.
+  const byId = new Map<string, StorefrontProduct>();
+  for (const service of results.flat()) {
+    byId.set(service.id, service);
+  }
+  return [...byId.values()];
 }

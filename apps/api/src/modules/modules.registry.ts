@@ -1,6 +1,8 @@
 import { DynamicModule, Logger, Module, type Type } from '@nestjs/common';
+import { CartModule } from './cart/cart.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { MeasurementsModule } from './measurements/measurements.module';
+import { StitchingModule } from './stitching/stitching.module';
 
 export interface FeatureModuleEntry {
   /** Matches an entry in the MODULES env allowlist. */
@@ -21,6 +23,8 @@ export interface FeatureModuleEntry {
 export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'catalog', module: CatalogModule },
   { name: 'measurements', module: MeasurementsModule },
+  { name: 'cart', module: CartModule },
+  { name: 'stitching', module: StitchingModule },
 ];
 
 /**

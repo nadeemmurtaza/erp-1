@@ -1,6 +1,8 @@
 import { DynamicModule, Logger, Module, type Type } from '@nestjs/common';
+import { AnalyticsModule } from './analytics/analytics.module';
 import { CartModule } from './cart/cart.module';
 import { CatalogModule } from './catalog/catalog.module';
+import { CrmModule } from './crm/crm.module';
 import { MeasurementsModule } from './measurements/measurements.module';
 import { OrdersModule } from './orders/orders.module';
 import { PaymentsModule } from './payments/payments.module';
@@ -29,6 +31,8 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'stitching', module: StitchingModule },
   { name: 'payments', module: PaymentsModule },
   { name: 'orders', module: OrdersModule },
+  { name: 'crm', module: CrmModule },
+  { name: 'analytics', module: AnalyticsModule },
 ];
 
 /**

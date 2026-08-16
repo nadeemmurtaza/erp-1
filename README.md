@@ -22,7 +22,7 @@ catalogue, orders, tailor queue and customer relationships from one back office.
 | Back office — catalogue overview, product editor, categories, garments, import | Done |
 | Cart and the stitching add-on | Done |
 | Checkout, orders, COD and bank transfer, order management | Done |
-| Dashboard metrics + CRM | Planned |
+| Dashboard metrics + CRM — customers, enquiries, follow-ups | Done |
 | Tailor production tracking | Planned |
 | Expo mobile app | Planned |
 

@@ -21,6 +21,9 @@ export interface AdminNavItem {
 export const ADMIN_NAV: AdminNavItem[] = [
   { key: 'dashboard', label: 'Dashboard', href: '/admin', group: 'overview' },
 
+  { key: 'orders', label: 'Orders', href: '/admin/orders', group: 'sales' },
+  { key: 'payments', label: 'Payment approvals', href: '/admin/payments', group: 'sales' },
+
   { key: 'products', label: 'Products & services', href: '/admin/products', group: 'catalogue' },
   { key: 'categories', label: 'Categories', href: '/admin/categories', group: 'catalogue' },
   { key: 'garments', label: 'Garments & measurements', href: '/admin/garments', group: 'catalogue' },

@@ -85,10 +85,17 @@ export default function CartPage() {
             </span>
           </div>
 
-          <button type="button" disabled className="btn-primary mt-4 w-full">
+          <Link
+            href="/checkout"
+            aria-disabled={cart.issues.length > 0}
+            className={
+              cart.issues.length > 0
+                ? 'btn-primary mt-4 w-full pointer-events-none opacity-50'
+                : 'btn-primary mt-4 w-full'
+            }
+          >
             {t('checkout')}
-          </button>
-          <p className="mt-2 text-center text-xs text-ink/50">{t('checkoutComingSoon')}</p>
+          </Link>
 
           <Link
             href="/shop"

@@ -18,9 +18,11 @@ catalogue, orders, tailor queue and customer relationships from one back office.
 | Catalogue API — products, fabrics, services, variants, images, bilingual content | Done |
 | Measurements — garment types, editable measurement fields, saved profiles | Done |
 | Admin API — product/service CRUD, stock, categories, CSV bulk import | Done |
-| Storefront web app | Next |
-| Cart, stitching add-on, checkout, orders | Planned |
-| Dashboard + CRM | Planned |
+| Bilingual storefront — browsing, filters, product pages | Done |
+| Back office — catalogue overview, product editor, categories, garments, import | Done |
+| Cart and the stitching add-on | Done |
+| Checkout, orders, COD and bank transfer, order management | Done |
+| Dashboard metrics + CRM | Planned |
 | Tailor production tracking | Planned |
 | Expo mobile app | Planned |
 
@@ -37,6 +39,8 @@ pnpm db:seed
 pnpm dev
 ```
 
+- Storefront: <http://localhost:3000/en> (or `/ur`)
+- Back office: <http://localhost:3000/admin>
 - API: <http://localhost:3001/api/v1>
 - API docs: <http://localhost:3001/api/docs>
 - Health: <http://localhost:3001/api/v1/health/ready>

@@ -1,0 +1,9 @@
+{
+  "extends": "@yaseen/config/tsconfig.nest.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": ["prisma/**/*", "src/generated/**/*"]
+}

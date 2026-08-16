@@ -1,0 +1,33 @@
+{
+  "name": "yaseenecom",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint && node scripts/check-module-boundaries.mjs",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier --write \"**/*.{ts,tsx,js,mjs,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,mjs,json,md}\"",
+    "boundaries": "node scripts/check-module-boundaries.mjs",
+    "db:migrate": "pnpm --filter @yaseen/api db:migrate",
+    "db:generate": "pnpm --filter @yaseen/api db:generate",
+    "db:seed": "pnpm --filter @yaseen/api db:seed",
+    "db:reset": "pnpm --filter @yaseen/api db:reset",
+    "services:up": "docker compose up -d",
+    "services:down": "docker compose down"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.1",
+    "eslint": "9.39.5",
+    "prettier": "3.9.6",
+    "turbo": "2.10.10",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.67.0"
+  }
+}

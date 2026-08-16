@@ -1,0 +1,176 @@
+// CRM: one customer record, whatever door the customer came in through.
+//
+// Contact is keyed on the normalised phone number (E.164). A guest COD order,
+// a registered account and a walk-in lead for the same person collapse into a
+// single Contact — that dedup is the whole value of the module, and it is
+// unit-tested in the crm module.
+
+enum ContactStatus {
+  LEAD
+  ACTIVE
+  REPEAT
+  DORMANT
+  BLOCKED
+}
+
+model Contact {
+  id        String        @id @default(cuid())
+  /// Normalised to +92XXXXXXXXXX. The dedup key.
+  phoneE164 String?       @unique
+  email     String?       @unique
+  name      String
+  city      String?
+  /// Where they came from: "storefront", "whatsapp", "instagram", "walk_in".
+  source    String        @default("storefront")
+  status    ContactStatus @default(LEAD)
+  ownerId   String?
+  /// Set once the contact registers an account.
+  userId    String?       @unique
+  notes     String?
+
+  /// Rolled up by the CRM's order.placed subscriber, not computed on read —
+  /// the contact list has to stay fast with tens of thousands of rows.
+  orderCount     Int       @default(0)
+  lifetimeValue  Int       @default(0) // paisa
+  avgOrderValue  Int       @default(0) // paisa
+  lastOrderAt    DateTime?
+  firstOrderAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  owner           User?            @relation("ContactOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  user            User?            @relation("ContactUser", fields: [userId], references: [id], onDelete: SetNull)
+  orders          Order[]
+  stitchingOrders StitchingOrder[]
+  leads           Lead[]
+  interactions    Interaction[]
+  followUps       FollowUpTask[]
+  tags            ContactTag[]
+
+  @@index([status])
+  @@index([ownerId])
+  @@index([lastOrderAt])
+  @@index([lifetimeValue])
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUOTED
+  WON
+  LOST
+}
+
+/// An enquiry that is not yet an order: a stitching quote request, a WhatsApp
+/// message logged by staff, a contact-form submission.
+model Lead {
+  id        String     @id @default(cuid())
+  contactId String?
+  name      String
+  phone     String?
+  email     String?
+  message   String?
+  /// "contact_form", "whatsapp", "instagram", "phone", "walk_in"
+  source    String     @default("contact_form")
+  status    LeadStatus @default(NEW)
+  ownerId   String?
+  /// Estimated value in paisa, filled in when quoting.
+  quotedValue Int?
+  lostReason  String?
+  convertedOrderId String?
+  convertedAt      DateTime?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  contact        Contact?      @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  owner          User?         @relation("LeadOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  convertedOrder Order?        @relation("LeadConvertedOrder", fields: [convertedOrderId], references: [id], onDelete: SetNull)
+  interactions   Interaction[]
+  followUps      FollowUpTask[]
+
+  @@index([status, createdAt])
+  @@index([ownerId])
+  @@index([contactId])
+}
+
+enum InteractionKind {
+  CALL
+  WHATSAPP
+  EMAIL
+  SMS
+  VISIT
+  NOTE
+  COMPLAINT
+}
+
+model Interaction {
+  id         String          @id @default(cuid())
+  contactId  String?
+  leadId     String?
+  kind       InteractionKind
+  body       String
+  actorId    String?
+  occurredAt DateTime        @default(now())
+  createdAt  DateTime        @default(now())
+
+  contact Contact? @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  lead    Lead?    @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  actor   User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([contactId, occurredAt])
+  @@index([leadId, occurredAt])
+}
+
+model FollowUpTask {
+  id         String    @id @default(cuid())
+  contactId  String?
+  leadId     String?
+  assigneeId String?
+  note       String
+  dueAt      DateTime
+  isDone     Boolean   @default(false)
+  doneAt     DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  contact  Contact? @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  lead     Lead?    @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  assignee User?    @relation("FollowUpAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+
+  @@index([isDone, dueAt])
+  @@index([assigneeId, isDone])
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  color     String?
+  createdAt DateTime @default(now())
+
+  contacts ContactTag[]
+}
+
+model ContactTag {
+  contactId String
+  tagId     String
+
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([contactId, tagId])
+}
+
+/// A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" —
+/// stored as a filter definition and exportable to CSV for WhatsApp broadcasts.
+model Segment {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  filter      Json
+  createdById String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  createdBy User? @relation(fields: [createdById], references: [id], onDelete: SetNull)
+}

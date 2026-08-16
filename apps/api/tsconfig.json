@@ -1,0 +1,16 @@
+{
+  "extends": "@yaseen/config/tsconfig.nest.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    // Inside dist so `nest build`'s deleteOutDir clears it too — a stale build
+    // info file makes tsc skip emitting into a freshly deleted dist.
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "prisma/seed.ts"]
+}

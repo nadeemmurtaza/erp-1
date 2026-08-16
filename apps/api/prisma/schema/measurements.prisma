@@ -1,0 +1,77 @@
+// Measurements: garment types, their measurement fields, and saved customer
+// profiles.
+//
+// Measurement fields are ROWS, not code. Staff add "cuff width" from the admin
+// dashboard and every measurement form picks it up without a deploy. The Zod
+// validator is built from these rows by packages/shared, so the API, the
+// website and the mobile app enforce exactly the same rules.
+
+enum MeasurementUnit {
+  INCH
+  CM
+}
+
+model GarmentType {
+  id        String   @id @default(cuid())
+  key       String   @unique // "kameez", "shalwar"
+  labelEn   String
+  labelUr   String
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  fields          MeasurementField[]
+  profiles        MeasurementProfile[]
+  optionGroups    StitchingOptionGroup[]
+  stitchingJobs   StitchingJob[]
+  /// STITCHING_SERVICE products that stitch this garment.
+  serviceProducts Product[]              @relation("ServiceGarment")
+  /// Unstitched fabrics that can be made into this garment.
+  fabrics         ProductGarmentType[]
+
+  @@index([isActive, order])
+}
+
+model MeasurementField {
+  id            String          @id @default(cuid())
+  garmentTypeId String
+  key           String // "chest", "sleeve_length"
+  labelEn       String
+  labelUr       String
+  unit          MeasurementUnit @default(INCH)
+  /// Inclusive bounds in `unit`; they reject fat-fingered entry (38 vs 380).
+  min           Float
+  max           Float
+  required      Boolean         @default(true)
+  order         Int             @default(0)
+  helpEn        String?
+  helpUr        String?
+  isActive      Boolean         @default(true)
+
+  garmentType GarmentType @relation(fields: [garmentTypeId], references: [id], onDelete: Cascade)
+
+  @@unique([garmentTypeId, key])
+  @@index([garmentTypeId, order])
+}
+
+/// A saved set of measurements: "Ammi – kameez", "Self – shalwar".
+model MeasurementProfile {
+  id            String   @id @default(cuid())
+  userId        String
+  garmentTypeId String
+  label         String
+  /// field key -> value, validated against the garment's MeasurementFields.
+  values        Json
+  notes         String?
+  isDefault     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  garmentType GarmentType @relation(fields: [garmentTypeId], references: [id], onDelete: Restrict)
+  cartItems   CartItem[]
+
+  @@unique([userId, garmentTypeId, label])
+  @@index([userId])
+}

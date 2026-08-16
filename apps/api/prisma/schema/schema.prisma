@@ -1,0 +1,15 @@
+// Datasource and generator only. Models live in one file per module —
+// see core.prisma, catalog.prisma, measurements.prisma, and so on.
+//
+// Adding a module means adding a .prisma file in this folder; nothing here
+// needs to change.
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}

@@ -17,7 +17,7 @@
     "boundaries": "node scripts/check-module-boundaries.mjs",
     "db:migrate": "pnpm --filter @yaseen/api db:migrate",
     "db:generate": "pnpm --filter @yaseen/api db:generate",
-    "db:seed": "pnpm --filter @yaseen/api db:seed",
+    "db:seed": "turbo run db:seed",
     "db:reset": "pnpm --filter @yaseen/api db:reset",
     "services:up": "docker compose up -d",
     "services:down": "docker compose down"

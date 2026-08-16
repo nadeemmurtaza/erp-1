@@ -356,6 +356,12 @@ interface SeedProduct {
   slug: string;
   kind: 'STITCHED' | 'UNSTITCHED';
   categorySlug: string;
+  /**
+   * Placeholder swatch in apps/web/public/placeholders, referenced by a
+   * root-relative URL so the web app serves it. Real photography replaces this
+   * through the admin uploader without any code change.
+   */
+  placeholder: string;
   nameEn: string;
   nameUr: string;
   descriptionEn: string;
@@ -376,6 +382,7 @@ interface SeedProduct {
 const PRODUCTS: SeedProduct[] = [
   {
     slug: 'embroidered-lawn-3-piece-ferozi',
+    placeholder: '/placeholders/lawn-ferozi.svg',
     kind: 'UNSTITCHED',
     categorySlug: 'unstitched',
     nameEn: '3-Piece Embroidered Lawn Suit — Ferozi',
@@ -398,6 +405,7 @@ const PRODUCTS: SeedProduct[] = [
   },
   {
     slug: 'printed-lawn-2-piece-rose',
+    placeholder: '/placeholders/lawn-rose.svg',
     kind: 'UNSTITCHED',
     categorySlug: 'unstitched',
     nameEn: '2-Piece Printed Lawn — Rose',
@@ -418,6 +426,7 @@ const PRODUCTS: SeedProduct[] = [
   },
   {
     slug: 'khaddar-3-piece-winter-olive',
+    placeholder: '/placeholders/khaddar-olive.svg',
     kind: 'UNSTITCHED',
     categorySlug: 'unstitched',
     nameEn: '3-Piece Khaddar Winter Suit — Olive',
@@ -438,6 +447,7 @@ const PRODUCTS: SeedProduct[] = [
   },
   {
     slug: 'ready-kurta-white-cotton',
+    placeholder: '/placeholders/cotton-white.svg',
     kind: 'STITCHED',
     categorySlug: 'ready-to-wear',
     nameEn: 'Ready-to-Wear Cotton Kurta — White',
@@ -460,6 +470,7 @@ const PRODUCTS: SeedProduct[] = [
   },
   {
     slug: 'ready-chiffon-formal-maroon',
+    placeholder: '/placeholders/chiffon-maroon.svg',
     kind: 'STITCHED',
     categorySlug: 'ready-to-wear',
     nameEn: 'Stitched Chiffon Formal — Maroon',
@@ -480,6 +491,7 @@ const PRODUCTS: SeedProduct[] = [
   },
   {
     slug: 'mens-wash-n-wear-2-piece-grey',
+    placeholder: '/placeholders/washnwear-grey.svg',
     kind: 'UNSTITCHED',
     categorySlug: 'menswear',
     nameEn: "Men's Wash & Wear 2-Piece — Grey",
@@ -569,7 +581,27 @@ async function seedProducts(categories: Map<string, string>, garments: Map<strin
         create: { productId: product.id, garmentTypeId },
       });
     }
+
+    await upsertPlaceholderImage(product.id, definition.placeholder, definition.nameEn);
   }
+}
+
+/**
+ * Attaches the generated swatch as the product's primary image, unless a real
+ * photograph has already been uploaded — re-running the seed must never undo
+ * the shop's own photography.
+ */
+async function upsertPlaceholderImage(
+  productId: string,
+  url: string,
+  alt: string,
+): Promise<void> {
+  const existing = await prisma.productImage.findFirst({ where: { productId } });
+  if (existing) return;
+
+  await prisma.productImage.create({
+    data: { productId, url, alt, order: 0, isPrimary: true },
+  });
 }
 
 async function seedStitchingServices(
@@ -672,6 +704,12 @@ async function seedStitchingServices(
       update: {},
       create: { productId: product.id, sku, size: null, color: null, stock: 9999 },
     });
+
+    await upsertPlaceholderImage(
+      product.id,
+      '/placeholders/stitching-service.svg',
+      service.nameEn,
+    );
   }
 }
 

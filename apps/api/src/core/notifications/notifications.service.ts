@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { AppConfigService } from '../config/app-config.service';
+import { ExpoPushChannel } from './expo-push.channel';
 import { LogNotificationChannel } from './log.channel';
 import type { NotificationChannel, NotificationMessage } from './notification-channel';
 
@@ -14,8 +15,12 @@ export class NotificationsService {
   private readonly logger = new Logger(NotificationsService.name);
   private readonly channels: NotificationChannel[];
 
-  constructor(config: AppConfigService, log: LogNotificationChannel) {
-    const available: NotificationChannel[] = [log];
+  constructor(
+    config: AppConfigService,
+    log: LogNotificationChannel,
+    expoPush: ExpoPushChannel,
+  ) {
+    const available: NotificationChannel[] = [log, expoPush];
     this.channels = available.filter((channel) =>
       config.isNotificationChannelEnabled(channel.name),
     );

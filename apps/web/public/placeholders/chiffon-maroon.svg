@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200" role="img">
+  <defs>
+
+    <pattern id="motif" width="140" height="140" patternUnits="userSpaceOnUse">
+      <rect width="140" height="140" fill="#7b2233"/>
+      <path d="M70 20 C100 45, 100 95, 70 120 C40 95, 40 45, 70 20 Z"
+            fill="none" stroke="#b08d3f" stroke-width="2.5" opacity="0.45"/>
+      <circle cx="70" cy="70" r="6" fill="#b08d3f" opacity="0.5"/>
+    </pattern>
+    <linearGradient id="shade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.16"/>
+      <stop offset="55%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.22"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1200" fill="url(#motif)"/>
+  <rect width="900" height="1200" fill="url(#shade)"/>
+  <rect x="40" y="40" width="820" height="1120"
+        fill="none" stroke="#b08d3f" stroke-width="3" opacity="0.35"/>
+</svg>

@@ -90,6 +90,17 @@ locale. Every product, category and garment needs both `en` and `ur`.
 **Order lines are snapshots.** Name, price, measurements and stitching options
 are copied onto the order at purchase and never joined back to the live product.
 
+**The rules live in `@yaseen/shared`, and every app calls them.** Pricing,
+measurement validation and phone normalisation are used by the API, the website
+and the mobile app alike — a figure the phone accepts is one the API accepts,
+because it is the same function. Never reimplement one of them in an app.
+
+**The mobile app has its own message catalogue** (`apps/mobile/src/i18n/`),
+because its screens differ from the website's. The domain words a customer sees
+in both places — the stitching stages, the order statuses — must stay worded
+identically; nobody should have to learn two vocabularies for one shop. There is
+a test that keeps the two languages in step.
+
 ## Before you push
 
 ```bash

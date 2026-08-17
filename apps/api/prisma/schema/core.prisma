@@ -39,6 +39,7 @@ model User {
   assignedFollowUps   FollowUpTask[]       @relation("FollowUpAssignee")
   approvedPayments    Payment[]            @relation("PaymentApprover")
   segments            Segment[]
+  devices             DeviceToken[]
 
   @@index([role])
   @@index([createdAt])
@@ -131,4 +132,31 @@ model OutboxEvent {
 
   @@index([status, availableAt])
   @@index([name])
+}
+
+enum DevicePlatform {
+  IOS
+  ANDROID
+  WEB
+}
+
+/// A push notification target: one installation of the mobile app.
+///
+/// Keyed on the token itself, because reinstalling the app or restoring a
+/// backup can hand the same token to a different account — registering simply
+/// moves it, rather than leaving the old owner receiving someone else's
+/// garments.
+model DeviceToken {
+  id         String         @id @default(cuid())
+  userId     String
+  token      String         @unique
+  platform   DevicePlatform @default(ANDROID)
+  appVersion String?
+  locale     String?
+  lastSeenAt DateTime       @default(now())
+  createdAt  DateTime       @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }

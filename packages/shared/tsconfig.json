@@ -6,6 +6,9 @@
     "isolatedModules": false,
     "outDir": "./dist",
     "rootDir": "./src",
+    // Inside dist so deleting dist also clears it. A build-info file that
+    // outlives its output makes tsc believe it is up to date and emit nothing.
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
     "types": ["node", "jest"]
   },
   "include": ["src/**/*"],

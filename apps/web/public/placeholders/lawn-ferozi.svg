@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200" role="img">
+  <defs>
+
+    <pattern id="motif" width="120" height="120" patternUnits="userSpaceOnUse">
+      <rect width="120" height="120" fill="#2e8b9a"/>
+      <g fill="#f5f0e6" opacity="0.32">
+        <circle cx="60" cy="60" r="9"/>
+        <ellipse cx="60" cy="36" rx="7" ry="14"/>
+        <ellipse cx="60" cy="84" rx="7" ry="14"/>
+        <ellipse cx="36" cy="60" rx="14" ry="7"/>
+        <ellipse cx="84" cy="60" rx="14" ry="7"/>
+      </g>
+      <g fill="#f5f0e6" opacity="0.18">
+        <circle cx="0" cy="0" r="6"/><circle cx="120" cy="0" r="6"/>
+        <circle cx="0" cy="120" r="6"/><circle cx="120" cy="120" r="6"/>
+      </g>
+    </pattern>
+    <linearGradient id="shade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.16"/>
+      <stop offset="55%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.22"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1200" fill="url(#motif)"/>
+  <rect width="900" height="1200" fill="url(#shade)"/>
+  <rect x="40" y="40" width="820" height="1120"
+        fill="none" stroke="#f5f0e6" stroke-width="3" opacity="0.35"/>
+</svg>

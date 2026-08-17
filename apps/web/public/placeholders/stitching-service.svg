@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200" role="img">
+  <defs>
+
+    <pattern id="motif" width="60" height="60" patternUnits="userSpaceOnUse">
+      <rect width="60" height="60" fill="#1f4a56"/>
+      <g stroke="#c4ae7f" stroke-width="3" stroke-linecap="round" opacity="0.5">
+        <path d="M6 30 H18"/><path d="M30 30 H42"/>
+        <path d="M30 6 V18"/><path d="M30 42 V54"/>
+      </g>
+    </pattern>
+    <linearGradient id="shade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.16"/>
+      <stop offset="55%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.22"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1200" fill="url(#motif)"/>
+  <rect width="900" height="1200" fill="url(#shade)"/>
+  <rect x="40" y="40" width="820" height="1120"
+        fill="none" stroke="#c4ae7f" stroke-width="3" opacity="0.35"/>
+</svg>

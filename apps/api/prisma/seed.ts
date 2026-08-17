@@ -25,6 +25,7 @@ async function main(): Promise<void> {
   await seedProducts(categories, garments);
   await seedStitchingServices(categories, garments);
   await seedMeasurementProfiles(users.customer.id, garments);
+  await seedWorkshopQueue(users.tailor.id, garments);
 
   console.warn('Seed complete.');
   console.warn(`  Admin:    ${users.admin.email} / ${process.env.SEED_ADMIN_PASSWORD ?? 'admin12345'}`);
@@ -356,6 +357,12 @@ interface SeedProduct {
   slug: string;
   kind: 'STITCHED' | 'UNSTITCHED';
   categorySlug: string;
+  /**
+   * Placeholder swatch in apps/web/public/placeholders, referenced by a
+   * root-relative URL so the web app serves it. Real photography replaces this
+   * through the admin uploader without any code change.
+   */
+  placeholder: string;
   nameEn: string;
   nameUr: string;
   descriptionEn: string;
@@ -376,6 +383,7 @@ interface SeedProduct {
 const PRODUCTS: SeedProduct[] = [
   {
     slug: 'embroidered-lawn-3-piece-ferozi',
+    placeholder: '/placeholders/lawn-ferozi.svg',
     kind: 'UNSTITCHED',
     categorySlug: 'unstitched',
     nameEn: '3-Piece Embroidered Lawn Suit — Ferozi',
@@ -398,6 +406,7 @@ const PRODUCTS: SeedProduct[] = [
   },
   {
     slug: 'printed-lawn-2-piece-rose',
+    placeholder: '/placeholders/lawn-rose.svg',
     kind: 'UNSTITCHED',
     categorySlug: 'unstitched',
     nameEn: '2-Piece Printed Lawn — Rose',
@@ -418,6 +427,7 @@ const PRODUCTS: SeedProduct[] = [
   },
   {
     slug: 'khaddar-3-piece-winter-olive',
+    placeholder: '/placeholders/khaddar-olive.svg',
     kind: 'UNSTITCHED',
     categorySlug: 'unstitched',
     nameEn: '3-Piece Khaddar Winter Suit — Olive',
@@ -438,6 +448,7 @@ const PRODUCTS: SeedProduct[] = [
   },
   {
     slug: 'ready-kurta-white-cotton',
+    placeholder: '/placeholders/cotton-white.svg',
     kind: 'STITCHED',
     categorySlug: 'ready-to-wear',
     nameEn: 'Ready-to-Wear Cotton Kurta — White',
@@ -460,6 +471,7 @@ const PRODUCTS: SeedProduct[] = [
   },
   {
     slug: 'ready-chiffon-formal-maroon',
+    placeholder: '/placeholders/chiffon-maroon.svg',
     kind: 'STITCHED',
     categorySlug: 'ready-to-wear',
     nameEn: 'Stitched Chiffon Formal — Maroon',
@@ -480,6 +492,7 @@ const PRODUCTS: SeedProduct[] = [
   },
   {
     slug: 'mens-wash-n-wear-2-piece-grey',
+    placeholder: '/placeholders/washnwear-grey.svg',
     kind: 'UNSTITCHED',
     categorySlug: 'menswear',
     nameEn: "Men's Wash & Wear 2-Piece — Grey",
@@ -569,7 +582,27 @@ async function seedProducts(categories: Map<string, string>, garments: Map<strin
         create: { productId: product.id, garmentTypeId },
       });
     }
+
+    await upsertPlaceholderImage(product.id, definition.placeholder, definition.nameEn);
   }
+}
+
+/**
+ * Attaches the generated swatch as the product's primary image, unless a real
+ * photograph has already been uploaded — re-running the seed must never undo
+ * the shop's own photography.
+ */
+async function upsertPlaceholderImage(
+  productId: string,
+  url: string,
+  alt: string,
+): Promise<void> {
+  const existing = await prisma.productImage.findFirst({ where: { productId } });
+  if (existing) return;
+
+  await prisma.productImage.create({
+    data: { productId, url, alt, order: 0, isPrimary: true },
+  });
 }
 
 async function seedStitchingServices(
@@ -672,6 +705,12 @@ async function seedStitchingServices(
       update: {},
       create: { productId: product.id, sku, size: null, color: null, stock: 9999 },
     });
+
+    await upsertPlaceholderImage(
+      product.id,
+      '/placeholders/stitching-service.svg',
+      service.nameEn,
+    );
   }
 }
 
@@ -721,6 +760,176 @@ async function seedMeasurementProfiles(userId: string, garments: Map<string, str
     });
   }
 }
+
+/**
+ * A small workshop queue, so the tailor screens and the dashboard's stitching
+ * strip are populated on a fresh clone rather than showing an empty state.
+ *
+ * These are own-fabric bookings (the standalone door into the queue), which
+ * keeps the seed independent of whether any orders have been placed yet. Jobs
+ * bought alongside fabric arrive through the `order.placed` subscriber and need
+ * no seeding.
+ */
+async function seedWorkshopQueue(
+  tailorId: string,
+  garments: Map<string, string>,
+): Promise<void> {
+  const kameezId = garments.get('kameez');
+  const shalwarId = garments.get('shalwar');
+  const kurtaId = garments.get('kurta');
+  if (!kameezId || !shalwarId || !kurtaId) return;
+
+  const bookings: Array<{
+    number: string;
+    name: string;
+    phone: string;
+    status: 'AWAITING_FABRIC' | 'FABRIC_RECEIVED' | 'IN_PRODUCTION' | 'READY';
+    fabricReceived: boolean;
+    fabricNotes: string;
+    jobs: Array<{
+      number: string;
+      garmentTypeId: string;
+      stage: 'RECEIVED' | 'CUTTING' | 'STITCHING' | 'QC' | 'READY';
+      assign: boolean;
+      dueInDays: number;
+      measurements: Prisma.InputJsonValue;
+      instructions?: string;
+    }>;
+  }> = [
+    {
+      number: 'STO-DEMO-0001',
+      name: 'Sana Iqbal',
+      phone: '+923005551001',
+      status: 'AWAITING_FABRIC',
+      fabricReceived: false,
+      fabricNotes: '3 metres lawn, to be collected from Gulberg.',
+      jobs: [
+        {
+          number: 'JOB-DEMO-0001',
+          garmentTypeId: kameezId,
+          stage: 'RECEIVED',
+          assign: false,
+          dueInDays: 9,
+          measurements: { length: 42, chest: 38, waist: 34, hips: 40, shoulder: 15 },
+        },
+      ],
+    },
+    {
+      number: 'STO-DEMO-0002',
+      name: 'Hina Raza',
+      phone: '+923005551002',
+      status: 'IN_PRODUCTION',
+      fabricReceived: true,
+      fabricNotes: 'Khaddar suit, customer dropped it in.',
+      jobs: [
+        {
+          number: 'JOB-DEMO-0002',
+          garmentTypeId: kameezId,
+          stage: 'CUTTING',
+          assign: true,
+          dueInDays: 5,
+          measurements: { length: 44, chest: 40, waist: 36, hips: 42, shoulder: 16 },
+          instructions: 'Slightly loose through the waist.',
+        },
+        {
+          number: 'JOB-DEMO-0003',
+          garmentTypeId: shalwarId,
+          stage: 'STITCHING',
+          assign: true,
+          dueInDays: 5,
+          measurements: { length: 40, waist: 36, hips: 44, bottom: 14 },
+        },
+      ],
+    },
+    {
+      number: 'STO-DEMO-0003',
+      name: 'Bilal Ahmed',
+      phone: '+923005551003',
+      status: 'IN_PRODUCTION',
+      fabricNotes: 'Two kurta pieces, wash-and-wear.',
+      fabricReceived: true,
+      jobs: [
+        {
+          number: 'JOB-DEMO-0004',
+          garmentTypeId: kurtaId,
+          stage: 'QC',
+          assign: true,
+          // Deliberately in the past, so the overdue filter has something to find.
+          dueInDays: -2,
+          measurements: { length: 41, chest: 42, shoulder: 18, sleeve_length: 24 },
+        },
+        {
+          number: 'JOB-DEMO-0005',
+          garmentTypeId: kurtaId,
+          stage: 'READY',
+          assign: true,
+          dueInDays: 1,
+          measurements: { length: 41, chest: 42, shoulder: 18, sleeve_length: 24 },
+        },
+      ],
+    },
+  ];
+
+  const now = Date.now();
+  const dayMs = 24 * 60 * 60 * 1000;
+
+  for (const booking of bookings) {
+    const record = await prisma.stitchingOrder.upsert({
+      where: { number: booking.number },
+      update: { status: booking.status },
+      create: {
+        number: booking.number,
+        status: booking.status,
+        guestName: booking.name,
+        guestPhone: booking.phone,
+        fabricNotes: booking.fabricNotes,
+        fabricReceivedAt: booking.fabricReceived ? new Date(now - 3 * dayMs) : null,
+        promisedAt: new Date(now + 7 * dayMs),
+      },
+    });
+
+    for (const job of booking.jobs) {
+      const created = await prisma.stitchingJob.upsert({
+        where: { number: job.number },
+        update: { stage: job.stage },
+        create: {
+          number: job.number,
+          stitchingOrderId: record.id,
+          garmentTypeId: job.garmentTypeId,
+          measurementSnapshot: job.measurements,
+          instructions: job.instructions ?? null,
+          stage: job.stage,
+          assignedTailorId: job.assign ? tailorId : null,
+          dueAt: new Date(now + job.dueInDays * dayMs),
+          startedAt: job.stage === 'RECEIVED' ? null : new Date(now - 2 * dayMs),
+          completedAt: job.stage === 'READY' ? new Date(now - dayMs) : null,
+        },
+      });
+
+      // Give each job the trail it would have accumulated getting this far, so
+      // the customer timeline and the job detail page have something to show.
+      const reached = STAGE_ORDER.slice(0, STAGE_ORDER.indexOf(job.stage) + 1);
+      for (const [index, stage] of reached.entries()) {
+        const exists = await prisma.stitchingJobEvent.findFirst({
+          where: { jobId: created.id, toStage: stage },
+        });
+        if (exists) continue;
+
+        await prisma.stitchingJobEvent.create({
+          data: {
+            jobId: created.id,
+            fromStage: index === 0 ? null : reached[index - 1],
+            toStage: stage,
+            note: index === 0 ? `Booking ${booking.number}` : null,
+            createdAt: new Date(now - (reached.length - index) * dayMs),
+          },
+        });
+      }
+    }
+  }
+}
+
+const STAGE_ORDER = ['RECEIVED', 'CUTTING', 'STITCHING', 'QC', 'READY'] as const;
 
 function buildSku(slug: string, color: string, size?: string): string {
   const parts = [slug, color, size].filter(Boolean).map((part) => slugify(String(part)));

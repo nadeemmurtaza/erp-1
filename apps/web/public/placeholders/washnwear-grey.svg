@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200" role="img">
+  <defs>
+
+    <pattern id="motif" width="28" height="28" patternUnits="userSpaceOnUse">
+      <rect width="28" height="28" fill="#6d6f74"/>
+      <rect width="4" height="28" fill="#d9cba9" opacity="0.28"/>
+    </pattern>
+    <linearGradient id="shade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.16"/>
+      <stop offset="55%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.22"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1200" fill="url(#motif)"/>
+  <rect width="900" height="1200" fill="url(#shade)"/>
+  <rect x="40" y="40" width="820" height="1120"
+        fill="none" stroke="#d9cba9" stroke-width="3" opacity="0.35"/>
+</svg>

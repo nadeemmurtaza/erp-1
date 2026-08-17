@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-sand-50 text-ink antialiased;
+  }
+
+  /*
+   * Urdu is set in Nastaliq where the reader has the font, which needs more
+   * line height than Latin type or the descenders collide.
+   */
+  [lang='ur'] {
+    @apply font-urdu;
+    line-height: 2.1;
+  }
+
+  /* Visible focus for keyboard users, in the brand colour rather than default blue. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand-500 ring-offset-2 ring-offset-sand-50;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand-600 text-white hover:bg-brand-700;
+  }
+
+  .btn-secondary {
+    @apply btn border border-brand-600 text-brand-700 hover:bg-brand-50;
+  }
+
+  .btn-ghost {
+    @apply btn text-ink hover:bg-sand-100;
+  }
+
+  .card {
+    @apply rounded-lg border border-sand-200 bg-white;
+  }
+
+  .field-label {
+    @apply mb-1 block text-sm font-medium text-ink;
+  }
+
+  .field-input {
+    @apply w-full rounded-md border-sand-300 bg-white text-sm shadow-sm focus:border-brand-500 focus:ring-brand-500;
+  }
+}

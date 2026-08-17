@@ -1,0 +1,19 @@
+name = "yaseenecom"
+type = "javascript"
+
+[env.production]
+name = "yaseenecom-prod"
+routes = [
+  { pattern = "yaseenecom.pages.dev", zone_name = "pages.dev" }
+]
+vars = { ENVIRONMENT = "production" }
+
+[env.preview]
+name = "yaseenecom-preview"
+routes = [
+  { pattern = "yaseenecom-*.pages.dev", zone_name = "pages.dev" }
+]
+vars = { ENVIRONMENT = "preview" }
+
+# Pages-specific settings
+pages_build_output_dir = "apps/web/out"

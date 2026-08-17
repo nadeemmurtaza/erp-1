@@ -11,6 +11,12 @@ export interface NotificationRecipient {
   email?: string | null;
   /** Normalised E.164 phone number. */
   phone?: string | null;
+  /**
+   * Set when the recipient has an account. Channels that reach a person through
+   * something they signed into — push notifications, for one — need this rather
+   * than a phone number.
+   */
+  userId?: string | null;
   locale?: 'en' | 'ur';
 }
 

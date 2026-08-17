@@ -21,6 +21,11 @@ async function bootstrap(): Promise<void> {
   app.enableCors({
     origin: config.get('CORS_ORIGINS'),
     credentials: true,
+    // x-cart-token is how a client without a shared cookie jar — the mobile app,
+    // or anything running in a browser that is not the storefront — carries its
+    // guest cart. Leaving it out fails the preflight, and every write to the
+    // cart looks to the client like the network is down.
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'x-cart-token'],
   });
 
   app.setGlobalPrefix(config.get('API_PREFIX'));

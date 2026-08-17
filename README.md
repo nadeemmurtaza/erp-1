@@ -24,7 +24,7 @@ catalogue, orders, tailor queue and customer relationships from one back office.
 | Checkout, orders, COD and bank transfer, order management | Done |
 | Dashboard metrics + CRM — customers, enquiries, follow-ups | Done |
 | Stitching operations — own-fabric bookings, tailor queue, progress tracking | Done |
-| Expo mobile app | Planned |
+| Expo mobile app — shop, cart, checkout, measurements, tracking, tailor queue | Done |
 
 ## Running it
 
@@ -63,6 +63,39 @@ Customers can sign in with a phone number as well as an email — `0300 1234567`
 
 If a PostgreSQL 16 and Redis are already running locally, skip
 `docker compose up` and point `DATABASE_URL` and `REDIS_URL` at them.
+
+### The mobile app
+
+```bash
+pnpm --filter @yaseen/mobile start        # then scan the QR code with Expo Go
+```
+
+It talks to the same API. Point it at one with `EXPO_PUBLIC_API_URL`; with
+nothing set it uses `http://localhost:3001/api/v1`, except on Android, where the
+emulator reaches the host on `10.0.2.2`. A phone on your wi-fi needs your
+machine's LAN address rather than localhost:
+
+```bash
+EXPO_PUBLIC_API_URL="http://192.168.1.20:3001/api/v1" pnpm --filter @yaseen/mobile start
+```
+
+Sign in with any of the seeded accounts above — a tailor lands on their queue
+rather than the shop.
+
+**Push notifications** tell a customer when their garment moves on. Add
+`expo_push` to `NOTIFICATION_CHANNELS` to switch them on; the app registers the
+handset on sign-in, and no provider credentials are needed. Delivery has not been
+exercised against a real handset — that needs a device and an EAS project id in
+`app.json`.
+
+Store builds go through EAS, with development, preview and production profiles in
+`apps/mobile/eas.json`:
+
+```bash
+cd apps/mobile
+npx eas build --profile preview --platform android
+npx eas build --profile production --platform all
+```
 
 ## Design decisions worth knowing
 
@@ -107,6 +140,7 @@ credentials exist — a config change, not a rewrite.
 ```
 apps/api        NestJS + Prisma + PostgreSQL — all business logic
 apps/web        Next.js storefront + /admin back office
+apps/mobile     Expo (iOS + Android) on the same API
 packages/shared measurement rules, pricing maths, phone normalisation
 packages/config tsconfig and eslint presets
 scripts         module boundary check

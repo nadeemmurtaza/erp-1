@@ -11,7 +11,9 @@
       "default": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsc -p tsconfig.json --watch",
@@ -28,6 +30,7 @@
     "@yaseen/config": "workspace:*",
     "eslint": "9.39.5",
     "jest": "30.4.2",
+    "jest-environment-node": "30.4.1",
     "ts-jest": "29.4.12",
     "typescript": "5.9.3"
   }

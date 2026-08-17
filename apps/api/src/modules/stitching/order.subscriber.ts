@@ -38,8 +38,12 @@ export class StitchingOrderSubscriber {
   }
 
   /**
-   * Tells the customer when the garment is ready. The intermediate stages are
-   * for the workshop; a message per stage would be noise.
+   * Tells the customer their garment has moved on.
+   *
+   * Every stage is announced, because the whole point of the mobile app's push
+   * notifications is watching a garment being made. Channels that cost money to
+   * send — SMS, WhatsApp — can filter on the template and take only
+   * `stitching.ready`; nothing here has to change when they do.
    */
   @OnDomainEvent(DomainEvent.StitchingJobStageChanged)
   async onStageChanged(payload: {
@@ -47,19 +51,31 @@ export class StitchingOrderSubscriber {
     jobNumber: string;
     toStage: string;
   }): Promise<void> {
-    if (payload.toStage !== 'READY') return;
-
     const job = await this.prisma.stitchingJob.findUnique({
       where: { id: payload.jobId },
       include: {
         garmentType: true,
         orderItem: {
           include: {
-            order: { select: { number: true, guestName: true, guestPhone: true, guestEmail: true } },
+            order: {
+              select: {
+                number: true,
+                userId: true,
+                guestName: true,
+                guestPhone: true,
+                guestEmail: true,
+              },
+            },
           },
         },
         stitchingOrder: {
-          select: { number: true, guestName: true, guestPhone: true, guestEmail: true },
+          select: {
+            number: true,
+            userId: true,
+            guestName: true,
+            guestPhone: true,
+            guestEmail: true,
+          },
         },
       },
     });
@@ -67,18 +83,34 @@ export class StitchingOrderSubscriber {
     const customer = job?.orderItem?.order ?? job?.stitchingOrder;
     if (!job || !customer) return;
 
+    const reference = job.orderItem?.order.number ?? job.stitchingOrder?.number;
+    const ready = payload.toStage === 'READY';
+
     await this.notifications.send({
-      template: 'stitching.ready',
+      template: ready ? 'stitching.ready' : 'stitching.stage_changed',
       recipient: {
         name: customer.guestName,
         phone: customer.guestPhone,
         email: customer.guestEmail,
+        userId: customer.userId,
       },
-      subject: `Your ${job.garmentType.labelEn} is ready`,
-      body: `Your ${job.garmentType.labelEn} for ${
-        job.orderItem?.order.number ?? job.stitchingOrder?.number
-      } has been stitched and checked. It will be dispatched shortly.`,
-      data: { jobNumber: job.number },
+      subject: ready
+        ? `Your ${job.garmentType.labelEn} is ready`
+        : `Your ${job.garmentType.labelEn}: ${STAGE_WORDS[payload.toStage] ?? payload.toStage}`,
+      body: ready
+        ? `Your ${job.garmentType.labelEn} for ${reference} has been stitched and checked. It will be dispatched shortly.`
+        : `${reference} — ${STAGE_WORDS[payload.toStage] ?? payload.toStage}.`,
+      data: { jobNumber: job.number, stage: payload.toStage, reference },
     });
   }
 }
+
+/** What each stage means to a customer, rather than to the workshop. */
+const STAGE_WORDS: Record<string, string> = {
+  RECEIVED: 'received by the workshop',
+  CUTTING: 'being cut',
+  STITCHING: 'being stitched',
+  QC: 'being checked',
+  READY: 'ready',
+  DISPATCHED: 'on its way',
+};

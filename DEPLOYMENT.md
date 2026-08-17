@@ -56,12 +56,13 @@ If production deployment fails:
 ## Cloudflare Pages Configuration
 
 ### Build Settings
-- **Framework**: Next.js (for web app)
-- **Build command**: `pnpm build --filter @yaseen/web`
-- **Build output directory**: `apps/web/out` (for static export)
-- **Environment**:
+- **Framework**: Next.js (auto-detected by Cloudflare Pages)
+- **Build command**: Default (pnpm is auto-detected from pnpm-lock.yaml)
+- **Build output directory**: Default (Cloudflare detects `.next` for Next.js)
+- **Root directory**: `apps/web` (if using monorepo setup)
+- **Environment variables**:
   - `NEXT_PUBLIC_API_URL`: Production API endpoint (e.g., `https://api.yaseenecom.com`)
-  - `DATABASE_URL`: Production database (via Cloudflare KV or secret)
+  - Any other public env vars needed for the web app
 
 ### Deployment Triggers
 - **Automatic**: Every push to `deployment/cloudflare`

@@ -101,6 +101,28 @@ export function MobileNav({
               </button>
             </div>
             
+            <div className="border-b border-sand-200 p-4">
+              <div className="flex items-center gap-2 border-b-2 border-sand-300 focus-within:border-brand-600 transition-colors">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  className="text-ink/60 flex-shrink-0"
+                >
+                  <circle cx="8" cy="8" r="7" />
+                  <path d="m13 13 3 3" />
+                </svg>
+                <input
+                  type="search"
+                  placeholder={t('searchPlaceholder')}
+                  className="flex-1 border-0 bg-transparent py-2 text-sm placeholder-ink/40 focus:outline-none"
+                />
+              </div>
+            </div>
+
             <nav className="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
               {items.map((item) => (
                 <Link

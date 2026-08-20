@@ -2,7 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 import type { Locale, ProductKind } from '@yaseen/shared';
 import { FilterPanel } from '@/components/storefront/filter-panel';
-import { ProductCard } from '@/components/storefront/product-card';
+import { ProductsGrid } from '@/components/storefront/products-grid';
 import { SortSelect } from '@/components/storefront/sort-select';
 import { Link } from '@/i18n/navigation';
 import { getFacets, getProducts } from '@/lib/api';
@@ -105,16 +105,7 @@ export default async function ShopPage({
               <p className="mt-1 text-sm text-ink/60">{t('emptyBody')}</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {products.data.map((product, index) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  locale={locale as Locale}
-                  priority={index < 3}
-                />
-              ))}
-            </div>
+            <ProductsGrid products={products.data} locale={locale as Locale} />
           )}
 
           {products.meta.totalPages > 1 ? (

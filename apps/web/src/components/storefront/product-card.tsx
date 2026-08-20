@@ -12,9 +12,11 @@ interface ProductCardProps {
   priority?: boolean;
   /** Larger featured card layout */
   featured?: boolean;
+  /** Callback when quick view is clicked */
+  onQuickView?: () => void;
 }
 
-export function ProductCard({ product, locale, priority = false, featured = false }: ProductCardProps) {
+export function ProductCard({ product, locale, priority = false, featured = false, onQuickView }: ProductCardProps) {
   const t = useTranslations('product');
   const tShop = useTranslations('shop');
 
@@ -38,6 +40,12 @@ export function ProductCard({ product, locale, priority = false, featured = fals
               {t('noImage')}
             </div>
           )}
+
+          {product.compareAtPrice && product.compareAtPrice > product.fromPrice ? (
+            <span className="absolute start-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-orange-500 text-xs font-bold text-white">
+              -{Math.round((1 - product.fromPrice / product.compareAtPrice) * 100)}%
+            </span>
+          ) : null}
 
           {!product.inStock ? (
             <span className="absolute start-2 top-2 rounded bg-ink/80 px-2 py-1 text-xs font-medium text-white">
@@ -74,13 +82,26 @@ export function ProductCard({ product, locale, priority = false, featured = fals
         </div>
       </Link>
 
-      <div className="absolute inset-0 flex items-end gap-2 bg-gradient-to-t from-black/40 to-transparent p-4 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-        <button className="flex-1 rounded bg-brand-600 px-3 py-2 text-xs font-medium text-white transition-colors hover:bg-brand-700">
-          {t('addToCart')}
-        </button>
-        <button className="rounded bg-white/90 px-3 py-2 text-xs font-medium text-ink transition-colors hover:bg-white">
-          ♡
-        </button>
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-gradient-to-t from-black/60 via-black/20 to-transparent p-4 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+        {onQuickView && (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              onQuickView();
+            }}
+            className="w-full rounded bg-white text-ink px-4 py-2.5 text-sm font-medium transition-all hover:bg-brand-50"
+          >
+            Quick view
+          </button>
+        )}
+        <div className="flex gap-2 w-full">
+          <button className="flex-1 rounded bg-brand-600 px-3 py-2 text-xs font-medium text-white transition-colors hover:bg-brand-700">
+            {t('addToCart')}
+          </button>
+          <button className="rounded bg-white/90 px-3 py-2 text-xs font-medium text-ink transition-colors hover:bg-white">
+            ♡
+          </button>
+        </div>
       </div>
     </div>
   );

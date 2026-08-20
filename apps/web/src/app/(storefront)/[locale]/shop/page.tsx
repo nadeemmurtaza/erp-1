@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import type { Locale, ProductKind } from '@yaseen/shared';
 import { FilterPanel } from '@/components/storefront/filter-panel';
 import { ProductsGrid } from '@/components/storefront/products-grid';
@@ -102,7 +103,13 @@ export default async function ShopPage({
         <div>
           <div className="mb-6 flex items-center gap-4">
             <span className="text-sm font-medium text-ink/70">{t('title')}</span>
-            <GridToggleWrapper />
+            <Suspense fallback={<div className="flex gap-1">
+              <div className="w-2 h-2 rounded-full bg-sand-300" />
+              <div className="w-2 h-2 rounded-full bg-sand-300" />
+              <div className="w-2 h-2 rounded-full bg-sand-300" />
+            </div>}>
+              <GridToggleWrapper />
+            </Suspense>
           </div>
           {products.data.length === 0 ? (
             <div className="card p-10 text-center">

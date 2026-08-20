@@ -2,9 +2,9 @@ import type { Config } from 'tailwindcss';
 import forms from '@tailwindcss/forms';
 
 /**
- * Muted Slate + Teal palette. Primary slate-teal (#5B6E74) with secondary
- * muted teal (#819FA7). Light blue-gray background (#F3F5F9) and off-white
- * accents (#F2F2F0) for sophisticated, modern aesthetic. Deep black text (#0D0D0D).
+ * Pacific Cyan + Bone Art Deco palette. Vibrant teal primary (#1B9AAA)
+ * with warm bone accents (#DDDBCB). Cream background (#F5F1E3) and pure white
+ * for clean luxury. Nearly black text (#050505) for maximum contrast.
  * Kept deliberately small so a later rebrand is a few hex values.
  */
 export default {
@@ -13,26 +13,26 @@ export default {
     extend: {
       colors: {
         brand: {
-          50: '#f3f5f9',
-          100: '#e1e7ed',
-          200: '#c9d4dd',
-          300: '#b0c1cc',
-          400: '#98aebb',
-          500: '#5b6e74',
-          600: '#536568',
-          700: '#475a5f',
-          800: '#3d4f55',
-          900: '#0d0d0d',
+          50: '#f5f1e3',
+          100: '#e8e4d5',
+          200: '#ddd9c7',
+          300: '#cfccb3',
+          400: '#c0bb9a',
+          500: '#1b9aaa',
+          600: '#188896',
+          700: '#157782',
+          800: '#12666e',
+          900: '#050505',
         },
         sand: {
-          50: '#f3f5f9',
-          100: '#f2f2f0',
-          200: '#e1e7ed',
-          300: '#c9d4dd',
-          400: '#b0c1cc',
+          50: '#f5f1e3',
+          100: '#ffffff',
+          200: '#e8e4d5',
+          300: '#ddd9c7',
+          400: '#dddbcb',
         },
-        gold: '#819fa7',
-        ink: '#0d0d0d',
+        gold: '#dddbcb',
+        ink: '#050505',
       },
       fontFamily: {
         // Noto Nastaliq renders Urdu properly where it is installed; the rest

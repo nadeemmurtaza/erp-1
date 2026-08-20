@@ -26,7 +26,7 @@ export function Header() {
     <header className="sticky top-0 z-40 border-b border-sand-200 bg-white/95 backdrop-blur">
       <div className="container-page">
         <div className="flex items-center justify-between py-4 md:py-5">
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-8" suppressHydrationWarning>
             <MobileNav items={NAV} />
             <Link href="/" className="shrink-0 text-lg font-medium tracking-tight text-ink">
               {tSite('name')}

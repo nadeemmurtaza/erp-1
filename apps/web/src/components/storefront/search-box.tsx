@@ -28,7 +28,7 @@ export function SearchBox() {
         value={term}
         onChange={(event) => setTerm(event.target.value)}
         placeholder={t('searchPlaceholder')}
-        className="w-44 rounded-md border-sand-300 bg-white py-1.5 text-sm placeholder:text-ink/40 focus:border-brand-500 focus:ring-brand-500 lg:w-64"
+        className="w-48 bg-white py-2 text-sm placeholder:text-ink/50 border-0 border-b-2 border-sand-300 focus:border-ink focus:outline-none focus:ring-0 transition-colors duration-200 lg:w-56"
       />
     </form>
   );

@@ -36,13 +36,13 @@ export function LocaleSwitcher() {
   }
 
   return (
-    <label className="inline-flex items-center gap-2 text-sm">
+    <label className="inline-flex items-center text-sm">
       <span className="sr-only">{t('language')}</span>
       <select
         value={locale}
         onChange={(event) => onChange(event.target.value)}
         disabled={isPending}
-        className="rounded-md border-sand-300 bg-white py-1.5 pe-8 ps-2 text-sm focus:border-brand-500 focus:ring-brand-500 disabled:opacity-60"
+        className="bg-white text-sm text-ink/70 border-0 border-b-2 border-sand-300 focus:border-ink focus:outline-none focus:ring-0 transition-colors duration-200 py-2 disabled:opacity-60 cursor-pointer"
       >
         {LOCALES.map((option) => (
           <option key={option} value={option}>

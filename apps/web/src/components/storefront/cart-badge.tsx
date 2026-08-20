@@ -12,13 +12,13 @@ export function CartBadge() {
   return (
     <Link
       href="/cart"
-      className="relative inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm text-ink/80 hover:bg-sand-100 hover:text-ink"
+      className="relative inline-flex items-center gap-2 text-sm text-ink/70 transition-colors duration-200 hover:text-ink group"
     >
       <span aria-hidden="true">🧺</span>
-      <span className="hidden sm:inline">{t('cart')}</span>
+      <span className="hidden sm:inline group-hover:underline">{t('cart')}</span>
       {/* Hidden while the first load is in flight so it does not flash 0. */}
       {!loading && count > 0 ? (
-        <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-600 px-1.5 text-xs font-medium text-white">
+        <span className="inline-flex absolute -top-2 -end-2 h-4 w-4 items-center justify-center rounded-full bg-brand-600 text-xs font-semibold text-white animate-scaleIn">
           {count}
         </span>
       ) : null}

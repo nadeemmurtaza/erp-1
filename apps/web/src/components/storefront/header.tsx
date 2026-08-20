@@ -23,30 +23,37 @@ export function Header() {
   const tSite = useTranslations('site');
 
   return (
-    <header className="sticky top-0 z-40 border-b border-sand-200 bg-sand-50/95 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-sand-200 bg-white/95 backdrop-blur">
       <div className="container-page">
-        <div className="flex items-center gap-2 md:gap-4 py-3">
-          <MobileNav items={NAV} />
-          <Link href="/" className="shrink-0 text-xl font-semibold tracking-tight text-brand-700">
-            {tSite('name')}
-          </Link>
+        <div className="flex items-center justify-between py-4 md:py-5">
+          <div className="flex items-center gap-8">
+            <MobileNav items={NAV} />
+            <Link href="/" className="shrink-0 text-lg font-medium tracking-tight text-ink">
+              {tSite('name')}
+            </Link>
 
-          <nav aria-label="Main" className="hidden flex-1 items-center gap-1 md:flex ms-4">
-            {NAV.map((item) => (
-              <Link
-                key={item.key}
-                href={item.href}
-                className="rounded-md px-3 py-2 text-sm text-ink/80 hover:bg-sand-100 hover:text-ink"
-              >
-                {t(item.key)}
-              </Link>
-            ))}
-          </nav>
+            <nav aria-label="Main" className="hidden flex-1 md:flex">
+              <div className="flex items-center gap-6">
+                {NAV.map((item) => (
+                  <Link
+                    key={item.key}
+                    href={item.href}
+                    className="text-sm text-ink/70 transition-colors duration-200 hover:text-ink relative group"
+                  >
+                    {t(item.key)}
+                    <span className="absolute bottom-0 start-0 h-0.5 w-0 bg-brand-600 transition-all duration-200 group-hover:w-full" />
+                  </Link>
+                ))}
+              </div>
+            </nav>
+          </div>
 
-          <div className="ms-auto flex items-center gap-1 sm:gap-3">
+          <div className="flex items-center gap-4 sm:gap-6">
             <SearchBox />
+            <div className="h-5 w-px bg-sand-200 hidden sm:block" />
             <CustomerNav />
             <CartBadge />
+            <div className="h-5 w-px bg-sand-200 hidden sm:block" />
             {/*
               The switcher reads the query string so filters survive a language
               change, which opts it out of prerendering without this boundary.

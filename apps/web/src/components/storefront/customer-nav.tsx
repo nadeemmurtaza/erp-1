@@ -17,26 +17,27 @@ export function CustomerNav() {
 
   if (user) {
     return (
-      <div className="group relative flex items-center">
-        <button className="flex h-10 items-center justify-center gap-2 rounded-md px-3 text-sm font-medium text-brand-700 hover:bg-sand-100">
+      <div className="group relative">
+        <button className="flex items-center gap-2 text-sm text-ink/70 transition-colors duration-200 hover:text-ink group-hover:underline">
           <span aria-hidden="true">👤</span>
           <span className="hidden sm:inline">{user.firstName ?? 'Account'}</span>
         </button>
 
         {/* Dropdown menu */}
-        <div className="absolute right-0 top-full mt-1 hidden w-48 rounded-md border border-sand-200 bg-white p-2 shadow-lg group-hover:block">
-          <div className="mb-2 border-b border-sand-100 pb-2 px-3 pt-1 text-sm text-ink/70">
-            {user.email}
+        <div className="absolute end-0 top-full mt-3 hidden w-48 rounded-lg border border-sand-200 bg-white p-4 shadow-md group-hover:block animate-fadeIn z-50">
+          <div className="mb-3 pb-3 border-b border-sand-200">
+            <p className="text-xs font-medium uppercase tracking-widest text-ink/50">{t('account')}</p>
+            <p className="mt-2 text-sm text-ink">{user.email}</p>
           </div>
           <Link
             href="/orders"
-            className="block rounded-md px-3 py-2 text-sm text-ink hover:bg-sand-50"
+            className="block py-2 text-sm text-ink/70 hover:text-ink transition-colors"
           >
             My Orders
           </Link>
           <button
             type="button"
-            className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+            className="block w-full text-start py-2 text-sm text-red-600 hover:text-red-700 transition-colors"
             onClick={async () => {
               await logoutCustomer();
               setUser(null);
@@ -53,7 +54,7 @@ export function CustomerNav() {
   return (
     <Link
       href="/login"
-      className="flex h-10 items-center justify-center gap-2 rounded-md px-3 text-sm font-medium text-brand-700 hover:bg-sand-100"
+      className="flex items-center gap-2 text-sm text-ink/70 transition-colors duration-200 hover:text-ink group hover:underline"
     >
       <span aria-hidden="true">👤</span>
       <span className="hidden sm:inline">Sign in</span>

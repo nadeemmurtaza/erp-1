@@ -90,7 +90,10 @@
     "quantity": "Quantity",
     "adding": "Adding…",
     "addedToCart": "Added to your cart.",
-    "viewCart": "View cart"
+    "viewCart": "View cart",
+    "quickView": "Quick view",
+    "quickShop": "Quick Shop",
+    "addToFavourites": "Add to favourites"
   },
   "cart": {
     "title": "Cart",

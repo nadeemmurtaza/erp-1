@@ -44,7 +44,7 @@ export function SearchBox() {
       />
       <button
         type="submit"
-        className="flex-shrink-0 bg-brand-600 text-white px-4 py-1 rounded-full text-xs font-medium hover:bg-brand-700 transition-colors duration-200 motion-safe:hover:animate-liftUp"
+        className="flex-shrink-0 rounded-full bg-brand-600 px-4 py-1 text-xs font-medium text-white transition-[background-color,transform] duration-200 ease-out hover:bg-brand-700 motion-safe:hover:-translate-y-0.5"
       >
         {t('search')}
       </button>

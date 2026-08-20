@@ -50,7 +50,6 @@ export default {
         slideInRight: 'slideInRight 300ms ease-out',
         scaleIn: 'scaleIn 200ms ease-out',
         shimmer: 'shimmer 2s infinite',
-        liftUp: 'liftUp 300ms ease-out',
       },
       keyframes: {
         fadeIn: {
@@ -76,10 +75,6 @@ export default {
         shimmer: {
           '0%': { backgroundPosition: '200% 0' },
           '100%': { backgroundPosition: '-200% 0' },
-        },
-        liftUp: {
-          from: { transform: 'translateY(4px)', boxShadow: '0 4px 12px rgba(0,0,0,0.08)' },
-          to: { transform: 'translateY(-4px)', boxShadow: '0 12px 24px rgba(0,0,0,0.15)' },
         },
       },
       transitionDuration: {

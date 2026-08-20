@@ -588,21 +588,41 @@ async function seedProducts(categories: Map<string, string>, garments: Map<strin
 }
 
 /**
- * Attaches the generated swatch as the product's primary image, unless a real
- * photograph has already been uploaded — re-running the seed must never undo
- * the shop's own photography.
+ * Attaches the generated swatches to a product: the primary shot plus a
+ * "-detail" companion, which is what the storefront card fades to on hover.
+ *
+ * Bails the moment the product has any image that is not one of ours, so
+ * re-running the seed can never undo the shop's own photography.
  */
 async function upsertPlaceholderImage(
   productId: string,
   url: string,
   alt: string,
 ): Promise<void> {
-  const existing = await prisma.productImage.findFirst({ where: { productId } });
-  if (existing) return;
+  const existing = await prisma.productImage.findMany({ where: { productId } });
+  if (existing.some((image) => !image.url.startsWith('/placeholders/'))) return;
 
-  await prisma.productImage.create({
-    data: { productId, url, alt, order: 0, isPrimary: true },
-  });
+  const detail = url.replace(/\.svg$/, '-detail.svg');
+  const wanted = [
+    { url, isPrimary: true },
+    { url: detail, isPrimary: false },
+  ];
+
+  for (const [order, image] of wanted.entries()) {
+    if (existing.some((candidate) => candidate.url === image.url)) continue;
+
+    await prisma.productImage.create({
+      data: {
+        productId,
+        url: image.url,
+        alt,
+        order,
+        // Only claim primary if nothing already holds it, so a product seeded
+        // by an earlier run keeps the image it already leads with.
+        isPrimary: image.isPrimary && !existing.some((candidate) => candidate.isPrimary),
+      },
+    });
+  }
 }
 
 async function seedStitchingServices(

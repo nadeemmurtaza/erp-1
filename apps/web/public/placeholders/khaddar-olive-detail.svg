@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200" role="img">
+  <defs>
+    <!--
+      The alternate view of khaddar-olive: the same cloth photographed closer, so the
+      hover swap on a product card reads as a second shot of one garment rather
+      than as a different product. Replaced by real photography on upload.
+    -->
+    <pattern id="weave" width="48" height="48" patternUnits="userSpaceOnUse">
+      <rect width="48" height="48" fill="#6b7d4a"/>
+      <path d="M0 24h48M24 0v48" stroke="#e9e0cd" stroke-width="2" opacity="0.20"/>
+      <circle cx="24" cy="24" r="4" fill="#e9e0cd" opacity="0.34"/>
+    </pattern>
+    <linearGradient id="fold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.20"/>
+      <stop offset="48%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.30"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1200" fill="url(#weave)"/>
+  <path d="M0 780 C 240 700, 420 900, 900 800 L900 1200 L0 1200 Z" fill="#e9e0cd" opacity="0.16"/>
+  <rect width="900" height="1200" fill="url(#fold)"/>
+  <circle cx="450" cy="470" r="150" fill="none" stroke="#e9e0cd" stroke-width="4" opacity="0.30"/>
+  <circle cx="450" cy="470" r="92" fill="none" stroke="#e9e0cd" stroke-width="3" opacity="0.22"/>
+</svg>

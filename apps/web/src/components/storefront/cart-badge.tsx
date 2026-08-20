@@ -12,7 +12,7 @@ export function CartBadge() {
   return (
     <Link
       href="/cart"
-      className="relative inline-flex items-center gap-2 text-sm text-ink/70 transition-all duration-200 hover:text-ink group motion-safe:hover:animate-liftUp"
+      className="group relative inline-flex items-center gap-2 text-sm text-ink/70 transition-[color,transform] duration-200 ease-out hover:text-ink motion-safe:hover:-translate-y-0.5"
     >
       <span aria-hidden="true">🧺</span>
       <span className="hidden sm:inline group-hover:underline">{t('cart')}</span>

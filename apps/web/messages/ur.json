@@ -90,7 +90,10 @@
     "quantity": "تعداد",
     "adding": "شامل کیا جا رہا ہے…",
     "addedToCart": "ٹوکری میں شامل کر دیا گیا۔",
-    "viewCart": "ٹوکری دیکھیں"
+    "viewCart": "ٹوکری دیکھیں",
+    "quickView": "فوری دیکھیں",
+    "quickShop": "فوری خریداری",
+    "addToFavourites": "پسندیدہ میں شامل کریں"
   },
   "cart": {
     "title": "ٹوکری",

@@ -38,7 +38,7 @@ export function Header() {
                   <Link
                     key={item.key}
                     href={item.href}
-                    className="text-sm text-ink/70 transition-all duration-200 hover:text-ink relative group motion-safe:hover:animate-liftUp"
+                    className="group relative text-sm text-ink/70 transition-[color,transform] duration-200 ease-out hover:text-ink motion-safe:hover:-translate-y-0.5"
                   >
                     {t(item.key)}
                     <span className="absolute bottom-0 start-0 h-0.5 w-0 bg-brand-600 transition-all duration-200 group-hover:w-full" />

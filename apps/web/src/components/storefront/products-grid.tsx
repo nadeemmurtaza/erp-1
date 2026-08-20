@@ -29,11 +29,12 @@ export function ProductsGrid({ products, locale }: ProductsGridProps) {
       </div>
 
       <div className={`grid gap-6 ${gridClass}`}>
-        {products.map((product) => (
+        {products.map((product, index) => (
           <ProductCard
             key={product.id}
             product={product}
             locale={locale}
+            priority={index < gridCols}
             onQuickView={() => setQuickViewProduct(product)}
           />
         ))}

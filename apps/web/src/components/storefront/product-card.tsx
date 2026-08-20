@@ -109,14 +109,14 @@ export function ProductCard({
         </div>
 
         {/*
-          `pointer-events-none` while hidden, or the invisible overlay would
-          swallow every click meant for the link underneath it. The
-          focus-within pair is not decoration: the buttons stay tabbable even
-          while the overlay is transparent, so without it a keyboard user
-          focuses controls they cannot see.
+          `pointer-events-none` keeps the full-bleed scrim transparent to clicks.
+          Only the buttons and size strip get pointer-events-auto on hover so
+          they're clickable while the dead space falls through to the z-10 link.
+          focus-within ensures the overlay opens when keyboard focus lands in the
+          button group, making the focus ring visible.
         */}
-        <div className="pointer-events-none absolute inset-0 z-30 flex flex-col items-center justify-center gap-3 bg-black/25 opacity-0 transition-opacity duration-300 ease-out group-hover/media:pointer-events-auto group-hover/media:opacity-100 group-focus-within/media:pointer-events-auto group-focus-within/media:opacity-100">
-          <div className="flex items-stretch gap-px overflow-hidden bg-ink">
+        <div className="pointer-events-none absolute inset-0 z-30 flex flex-col items-center justify-center gap-3 bg-black/25 opacity-0 transition-opacity duration-300 ease-out group-hover/media:opacity-100 group-focus-within/media:opacity-100">
+          <div className="pointer-events-none flex items-stretch gap-px overflow-hidden bg-ink group-hover/media:pointer-events-auto group-focus-within/media:pointer-events-auto">
             {onQuickView ? (
               <button
                 type="button"
@@ -174,7 +174,7 @@ export function ProductCard({
 
           <button
             type="button"
-            className="group/btn relative bg-ink px-10 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-ink/80"
+            className="group/btn pointer-events-none relative bg-ink px-10 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-ink/80 group-hover/media:pointer-events-auto group-focus-within/media:pointer-events-auto"
           >
             <span className="absolute inset-0 flex items-center justify-center opacity-100 transition-opacity duration-200 group-hover/btn:opacity-0">
               {t('quickShop')}
@@ -199,7 +199,7 @@ export function ProductCard({
           </button>
 
           {sizes.length > 0 ? (
-            <div className="absolute inset-x-0 bottom-4 text-center text-xs font-medium tracking-wide text-white">
+            <div className="pointer-events-none absolute inset-x-0 bottom-4 text-center text-xs font-medium tracking-wide text-white group-hover/media:pointer-events-auto group-focus-within/media:pointer-events-auto">
               {sizes.join(', ')}
             </div>
           ) : null}

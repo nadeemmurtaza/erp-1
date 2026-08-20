@@ -2,9 +2,10 @@ import type { Config } from 'tailwindcss';
 import forms from '@tailwindcss/forms';
 
 /**
- * Deep Emerald + Cream luxury palette. Primary brand shifted to deep emerald
- * (#1B4D3E) with gold accents (#D4A574). Maintains warm sand ground for elegance.
- * Kept deliberately small so a later rebrand is a few hex values.
+ * Minimalist Grayscale + Taupe palette. Dark blue-gray primary (#0F1B27)
+ * with warm taupe accents (#BFAFAF). Clean light gray background (#F2F2F2)
+ * for contemporary luxury aesthetic. Kept deliberately small so a later rebrand
+ * is a few hex values.
  */
 export default {
   content: ['./src/**/*.{ts,tsx}'],
@@ -12,26 +13,26 @@ export default {
     extend: {
       colors: {
         brand: {
-          50: '#f0f7f6',
-          100: '#d8ebe8',
-          200: '#b3dbd4',
-          300: '#81c3b3',
-          400: '#4ea698',
-          500: '#1b4d3e',
-          600: '#163d33',
-          700: '#122f29',
-          800: '#0f2420',
-          900: '#0a1815',
+          50: '#f2f2f2',
+          100: '#e6e6e6',
+          200: '#d9d9d9',
+          300: '#b3b3b3',
+          400: '#808080',
+          500: '#0f1b27',
+          600: '#0d1621',
+          700: '#0a1019',
+          800: '#080d12',
+          900: '#0d0d0d',
         },
         sand: {
-          50: '#fbf9f5',
-          100: '#f5f0e6',
-          200: '#e9e0cd',
-          300: '#d9cba9',
-          400: '#c4ae7f',
+          50: '#f2f2f2',
+          100: '#e6e6e6',
+          200: '#d9d9d9',
+          300: '#cccccc',
+          400: '#b3b3b3',
         },
-        gold: '#d4a574',
-        ink: '#0f1419',
+        gold: '#bfafaf',
+        ink: '#0d0d0d',
       },
       fontFamily: {
         // Noto Nastaliq renders Urdu properly where it is installed; the rest

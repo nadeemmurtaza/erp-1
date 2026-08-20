@@ -63,7 +63,7 @@ export default async function HomePage({
       </section>
 
       {categories.length > 0 ? (
-        <section className="container-page py-12">
+        <section className="container-page py-16">
           <h2 className="text-xl font-semibold text-ink">{t('categories')}</h2>
           <ul className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
             {categories.map((category, index) => (
@@ -98,8 +98,8 @@ export default async function HomePage({
         </section>
       ) : null}
 
-      <section className="container-page pb-12">
-        <div className="flex items-end justify-between gap-4">
+      <section className="container-page py-16">
+        <div className="flex items-end justify-between gap-4 mb-8">
           <div>
             <h2 className="text-xl font-semibold text-ink">{t('featured')}</h2>
             <p className="mt-1 text-sm text-ink/60">{t('featuredBody')}</p>
@@ -109,13 +109,14 @@ export default async function HomePage({
           </Link>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {featured.data.map((product, index) => (
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {featured.data.slice(0, 4).map((product, index) => (
             <ProductCard
               key={product.id}
               product={product}
               locale={locale as Locale}
-              priority={index < 4}
+              priority={index < 2}
+              featured
             />
           ))}
         </div>

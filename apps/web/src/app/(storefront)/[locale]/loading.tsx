@@ -29,10 +29,10 @@ export default function Loading() {
       {/* Featured products skeleton */}
       <section className="container-page pb-12">
         <div className="skeleton h-6 w-32 rounded-lg mb-6" />
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {[...Array(8)].map((_, i) => (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {[...Array(4)].map((_, i) => (
             <div key={i} className="flex flex-col overflow-hidden rounded-lg border border-sand-200 bg-white">
-              <div className="skeleton aspect-[3/4]" />
+              <div className="skeleton aspect-square" />
               <div className="flex-1 space-y-2 p-4">
                 <div className="skeleton h-4 w-full rounded" />
                 <div className="skeleton h-4 w-5/6 rounded" />

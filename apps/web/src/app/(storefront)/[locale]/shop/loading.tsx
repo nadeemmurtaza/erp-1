@@ -28,8 +28,8 @@ export default function Loading() {
 
         {/* Products grid skeleton */}
         <div>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
-            {[...Array(24)].map((_, i) => (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[...Array(12)].map((_, i) => (
               <div key={i} className="flex flex-col overflow-hidden rounded-lg border border-sand-200 bg-white">
                 <div className="skeleton aspect-[3/4]" />
                 <div className="flex-1 space-y-2 p-4">

@@ -82,8 +82,8 @@ export default async function ShopPage({
   };
 
   return (
-    <div className="container-page py-8">
-      <div className="flex flex-wrap items-end justify-between gap-4">
+    <div className="container-page py-12">
+      <div className="flex flex-wrap items-end justify-between gap-4 mb-12">
         <div>
           <h1 className="text-2xl font-semibold text-ink">{t('title')}</h1>
           <p className="mt-1 text-sm text-ink/60">
@@ -93,7 +93,7 @@ export default async function ShopPage({
         <SortSelect />
       </div>
 
-      <div className="mt-8 grid gap-8 lg:grid-cols-[16rem_1fr]">
+      <div className="grid gap-8 lg:grid-cols-[16rem_1fr]">
         <aside className="lg:sticky lg:top-24 lg:h-fit">
           <FilterPanel facets={facets} locale={locale as Locale} />
         </aside>
@@ -105,13 +105,13 @@ export default async function ShopPage({
               <p className="mt-1 text-sm text-ink/60">{t('emptyBody')}</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {products.data.map((product, index) => (
                 <ProductCard
                   key={product.id}
                   product={product}
                   locale={locale as Locale}
-                  priority={index < 4}
+                  priority={index < 3}
                 />
               ))}
             </div>

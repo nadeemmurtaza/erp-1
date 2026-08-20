@@ -10,9 +10,11 @@ interface ProductCardProps {
   locale: Locale;
   /** True for the first row, so above-the-fold images are not lazy-loaded. */
   priority?: boolean;
+  /** Larger featured card layout */
+  featured?: boolean;
 }
 
-export function ProductCard({ product, locale, priority = false }: ProductCardProps) {
+export function ProductCard({ product, locale, priority = false, featured = false }: ProductCardProps) {
   const t = useTranslations('product');
   const tShop = useTranslations('shop');
 
@@ -21,9 +23,9 @@ export function ProductCard({ product, locale, priority = false }: ProductCardPr
   return (
     <Link
       href={`/product/${product.slug}`}
-      className="group flex flex-col overflow-hidden rounded-lg border border-sand-200 bg-white transition-shadow duration-200 hover:shadow-md focus-visible:shadow-md"
+      className="group flex flex-col overflow-hidden rounded-lg border border-sand-200 bg-white transition-shadow duration-200 hover:shadow-lg focus-visible:shadow-lg"
     >
-      <div className="relative aspect-[3/4] overflow-hidden bg-sand-100">
+      <div className={`relative overflow-hidden bg-sand-100 ${featured ? 'aspect-square' : 'aspect-[3/4]'}`}>
         {image ? (
           <Image
             src={image.url}

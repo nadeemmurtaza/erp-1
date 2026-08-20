@@ -138,18 +138,18 @@ export function ProductPurchase({ product, locale, services }: ProductPurchasePr
       </div>
 
       {error ? (
-        <p role="alert" className="whitespace-pre-line rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+        <p role="alert" className="whitespace-pre-line rounded-md bg-red-50 px-3 py-2 text-sm text-red-700 animate-slideUp">
           {error}
         </p>
       ) : null}
 
       {added && !error ? (
-        <p className="flex flex-wrap items-center gap-3 rounded-md bg-brand-50 px-3 py-2 text-sm text-brand-800">
+        <p className="flex flex-wrap items-center gap-3 rounded-md bg-brand-50 px-3 py-2 text-sm text-brand-800 animate-slideUp">
           {t('addedToCart')}
           <button
             type="button"
             onClick={() => router.push('/cart')}
-            className="font-medium underline"
+            className="font-medium underline hover:text-brand-700 transition-colors"
           >
             {t('viewCart')}
           </button>

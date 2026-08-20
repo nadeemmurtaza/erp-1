@@ -26,20 +26,9 @@ export function ProductGallery({
   }
 
   return (
-    <div>
-      <div className="relative aspect-[3/4] overflow-hidden rounded-lg border border-sand-200 bg-sand-100">
-        <Image
-          src={active!.url}
-          alt={active!.alt ?? alt}
-          fill
-          sizes="(min-width: 1024px) 45vw, 100vw"
-          priority
-          className="object-cover"
-        />
-      </div>
-
+    <div className="flex flex-col-reverse lg:flex-row gap-4">
       {images.length > 1 ? (
-        <ul className="mt-3 flex gap-2 overflow-x-auto pb-1">
+        <ul className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-y-auto lg:overflow-x-hidden pb-1 lg:pb-0 lg:pr-1 lg:h-[calc(100vh-200px)] lg:max-h-[800px] shrink-0">
           {images.map((image, index) => (
             <li key={image.url}>
               <button
@@ -47,8 +36,8 @@ export function ProductGallery({
                 onClick={() => setActiveIndex(index)}
                 aria-current={index === activeIndex}
                 className={clsx(
-                  'relative h-20 w-16 shrink-0 overflow-hidden rounded border-2 transition-colors',
-                  index === activeIndex ? 'border-brand-600' : 'border-sand-200',
+                  'relative h-20 w-16 shrink-0 overflow-hidden rounded border-2 transition-colors duration-200',
+                  index === activeIndex ? 'border-brand-600' : 'border-sand-200 hover:border-brand-400',
                 )}
               >
                 <Image
@@ -63,6 +52,18 @@ export function ProductGallery({
           ))}
         </ul>
       ) : null}
+
+      <div className="relative aspect-[3/4] flex-1 overflow-hidden rounded-lg border border-sand-200 bg-sand-100">
+        <Image
+          key={activeIndex}
+          src={active!.url}
+          alt={active!.alt ?? alt}
+          fill
+          sizes="(min-width: 1024px) 45vw, 100vw"
+          priority
+          className="object-cover animate-fadeIn"
+        />
+      </div>
     </div>
   );
 }

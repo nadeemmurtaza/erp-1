@@ -21,7 +21,7 @@ export function ProductCard({ product, locale, priority = false }: ProductCardPr
   return (
     <Link
       href={`/product/${product.slug}`}
-      className="group flex flex-col overflow-hidden rounded-lg border border-sand-200 bg-white transition-shadow hover:shadow-md focus-visible:shadow-md"
+      className="group flex flex-col overflow-hidden rounded-lg border border-sand-200 bg-white transition-shadow duration-200 hover:shadow-md focus-visible:shadow-md"
     >
       <div className="relative aspect-[3/4] overflow-hidden bg-sand-100">
         {image ? (
@@ -31,7 +31,7 @@ export function ProductCard({ product, locale, priority = false }: ProductCardPr
             fill
             sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
             priority={priority}
-            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-300 motion-safe:group-hover:scale-105"
           />
         ) : (
           <div className="flex h-full items-center justify-center px-4 text-center text-xs text-ink/40">
@@ -53,7 +53,7 @@ export function ProductCard({ product, locale, priority = false }: ProductCardPr
       </div>
 
       <div className="flex flex-1 flex-col gap-2 p-4">
-        <h3 className="line-clamp-2 text-sm font-medium leading-snug text-ink group-hover:text-brand-700">
+        <h3 className="line-clamp-2 text-sm font-medium leading-snug text-ink transition-colors duration-200 group-hover:text-brand-700">
           {product.name}
         </h3>
 

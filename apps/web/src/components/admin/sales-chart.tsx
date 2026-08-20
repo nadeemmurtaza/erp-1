@@ -125,6 +125,7 @@ export function SalesChart({ series }: { series: Point[] }) {
           strokeWidth={2}
           strokeLinejoin="round"
           strokeLinecap="round"
+          className="chart-line"
         />
 
         {/* Direct labels only at the peak and the latest day. */}

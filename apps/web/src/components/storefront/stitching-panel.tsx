@@ -169,7 +169,10 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
         </span>
       </label>
 
-      {enabled ? (
+      <div className={clsx(
+        'overflow-hidden transition-all duration-300',
+        enabled ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
+      )}>
         <div className="mt-4 space-y-4 border-t border-brand-200 pt-4">
           {product.garmentTypes.length > 1 ? (
             <Group label={t('garment')}>
@@ -194,10 +197,10 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
                   <label
                     key={option.id}
                     className={clsx(
-                      'flex cursor-pointer items-start gap-3 rounded-md border p-3',
+                      'flex cursor-pointer items-start gap-3 rounded-md border p-3 transition-colors duration-200',
                       option.id === serviceId
                         ? 'border-brand-500 bg-white'
-                        : 'border-sand-200 bg-white/60',
+                        : 'border-sand-200 bg-white/60 hover:border-brand-300',
                     )}
                   >
                     <input
@@ -301,7 +304,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
             </p>
           ) : null}
         </div>
-      ) : null}
+      </div>
     </section>
   );
 }
@@ -358,7 +361,7 @@ function Chip({
       onClick={onClick}
       aria-pressed={selected}
       className={clsx(
-        'rounded-md border px-3 py-1.5 text-sm transition-colors',
+        'rounded-md border px-3 py-1.5 text-sm transition-colors duration-200',
         selected
           ? 'border-brand-600 bg-brand-600 text-white'
           : 'border-sand-300 bg-white text-ink hover:border-brand-400',

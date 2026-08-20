@@ -60,6 +60,42 @@
   }
 
   .field-input {
-    @apply w-full rounded-md border-sand-300 bg-white text-sm shadow-sm focus:border-brand-500 focus:ring-brand-500;
+    @apply w-full rounded-md border-sand-300 bg-white text-sm shadow-sm transition-colors duration-200 focus:border-brand-500 focus:ring-brand-500;
+  }
+
+  .btn {
+    @apply active:scale-95 transition-transform duration-75;
+  }
+
+  .skeleton {
+    @apply bg-gradient-to-r from-sand-100 via-sand-50 to-sand-100;
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  /* Chart line animation */
+  .chart-line {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawLine 0.8s ease-out forwards;
+  }
+
+  @keyframes drawLine {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* Respect user's motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+
+    html {
+      scroll-behavior: auto;
+    }
   }
 }

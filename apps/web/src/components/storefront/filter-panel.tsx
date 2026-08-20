@@ -1,11 +1,12 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
-import { useTransition } from 'react';
-import { formatMoney, toMajor, toMinor, type Locale } from '@yaseen/shared';
+import { useTransition, useState, useEffect } from 'react';
+import { directionFor, formatMoney, toMajor, toMinor, type Locale } from '@yaseen/shared';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import type { CatalogFacets } from '@/lib/api-types';
+import clsx from 'clsx';
 
 interface FilterPanelProps {
   facets: CatalogFacets;
@@ -19,6 +20,8 @@ interface FilterPanelProps {
  */
 export function FilterPanel({ facets, locale }: FilterPanelProps) {
   const t = useTranslations('shop');
+  const currentLocale = useLocale() as Locale;
+  const isRtl = directionFor(currentLocale) === 'rtl';
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -66,16 +69,26 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
     apply(next);
   }
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   const hasFilters = ['fabric', 'season', 'pieceCount', 'minPrice', 'maxPrice', 'q'].some(
     (key) => searchParams.has(key),
   );
 
-  return (
-    <div
-      className={isPending ? 'pointer-events-none opacity-60' : undefined}
-      aria-busy={isPending}
-    >
-      <div className="flex items-center justify-between">
+  const FilterContent = (
+    <>
+      <div className="flex items-center justify-between pb-4">
         <h2 className="text-sm font-semibold text-ink">{t('filters')}</h2>
         {hasFilters ? (
           <button
@@ -165,7 +178,93 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
           </label>
         </div>
       </FilterGroup>
-    </div>
+    </>
+  );
+
+  return (
+    <>
+      <button
+        type="button"
+        className="mb-4 flex w-full items-center justify-center gap-2 rounded-md border border-sand-300 bg-white py-2 text-sm font-medium text-ink lg:hidden"
+        onClick={() => setIsOpen(true)}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <line x1="4" x2="20" y1="6" y2="6" />
+          <line x1="14" x2="20" y1="12" y2="12" />
+          <line x1="8" x2="20" y1="18" y2="18" />
+        </svg>
+        {t('filters')}
+      </button>
+
+      {/* Mobile Drawer */}
+      {isOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <div
+            className="fixed inset-0 bg-ink/40 backdrop-blur-sm transition-opacity animate-fadeIn"
+            onClick={() => setIsOpen(false)}
+            aria-hidden="true"
+          />
+          <div className={clsx(
+            'fixed inset-y-0 w-80 bg-white shadow-xl flex flex-col',
+            isRtl ? 'start-0 animate-slideInLeft' : 'end-0 animate-slideInRight'
+          )}>
+            <div className="flex items-center justify-between px-4 h-14 border-b border-sand-200">
+              <span className="text-lg font-semibold text-ink">{t('filters')}</span>
+              <button
+                type="button"
+                className="flex h-10 w-10 items-center justify-center rounded-md text-ink/80 hover:bg-sand-100"
+                onClick={() => setIsOpen(false)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M18 6 6 18" />
+                  <path d="m6 6 12 12" />
+                </svg>
+              </button>
+            </div>
+            <div
+              className={`flex-1 overflow-y-auto p-4 ${isPending ? 'pointer-events-none opacity-60' : ''}`}
+            >
+              {FilterContent}
+            </div>
+            <div className="border-t border-sand-200 p-4">
+              <button
+                type="button"
+                className="btn-primary w-full flex justify-center"
+                onClick={() => setIsOpen(false)}
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Desktop Sidebar */}
+      <div
+        className={`hidden lg:block ${isPending ? 'pointer-events-none opacity-60' : ''}`}
+        aria-busy={isPending}
+      >
+        {FilterContent}
+      </div>
+    </>
   );
 }
 

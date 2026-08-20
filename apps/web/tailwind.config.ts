@@ -42,6 +42,43 @@ export default {
       maxWidth: {
         page: '80rem',
       },
+      animation: {
+        fadeIn: 'fadeIn 200ms ease-out',
+        slideUp: 'slideUp 300ms ease-out',
+        slideInLeft: 'slideInLeft 300ms ease-out',
+        slideInRight: 'slideInRight 300ms ease-out',
+        scaleIn: 'scaleIn 200ms ease-out',
+        shimmer: 'shimmer 2s infinite',
+      },
+      keyframes: {
+        fadeIn: {
+          from: { opacity: '0' },
+          to: { opacity: '1' },
+        },
+        slideUp: {
+          from: { transform: 'translateY(8px)', opacity: '0' },
+          to: { transform: 'translateY(0)', opacity: '1' },
+        },
+        slideInLeft: {
+          from: { transform: 'translateX(-8px)', opacity: '0' },
+          to: { transform: 'translateX(0)', opacity: '1' },
+        },
+        slideInRight: {
+          from: { transform: 'translateX(8px)', opacity: '0' },
+          to: { transform: 'translateX(0)', opacity: '1' },
+        },
+        scaleIn: {
+          from: { transform: 'scale(0.95)', opacity: '0' },
+          to: { transform: 'scale(1)', opacity: '1' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '200% 0' },
+          '100%': { backgroundPosition: '-200% 0' },
+        },
+      },
+      transitionDuration: {
+        250: '250ms',
+      },
     },
   },
   plugins: [forms],

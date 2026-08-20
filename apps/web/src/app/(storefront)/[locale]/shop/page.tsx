@@ -85,16 +85,14 @@ export default async function ShopPage({
 
   return (
     <div className="container-page py-12">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-ink">{t('title')}</h1>
-        <p className="mt-1 text-sm text-ink/60">
-          {t('resultsCount', { count: products.meta.total })}
-        </p>
-      </div>
-
-      <div className="flex items-center justify-between gap-4 mb-6 p-4 border border-sand-200 rounded-md bg-sand-50">
+      <div className="flex items-center justify-between gap-4 mb-8 p-4 border border-sand-200 rounded-md bg-sand-50">
+        <div>
+          <h1 className="text-2xl font-semibold text-ink">{t('title')}</h1>
+          <p className="mt-1 text-sm text-ink/60">
+            {t('resultsCount', { count: products.meta.total })}
+          </p>
+        </div>
         <div className="flex items-center gap-4">
-          <span className="text-sm font-medium text-ink">{t('filters')}</span>
           <Suspense fallback={<div className="flex gap-1">
             <div className="w-2 h-2 rounded-full bg-sand-300" />
             <div className="w-2 h-2 rounded-full bg-sand-300" />
@@ -102,8 +100,8 @@ export default async function ShopPage({
           </div>}>
             <GridToggleWrapper />
           </Suspense>
+          <SortSelect />
         </div>
-        <SortSelect />
       </div>
 
       <div className="grid gap-8 lg:grid-cols-[16rem_1fr]">

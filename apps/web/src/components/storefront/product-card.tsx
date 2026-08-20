@@ -121,9 +121,12 @@ export function ProductCard({
               <button
                 type="button"
                 onClick={onQuickView}
-                className="flex h-11 w-20 items-center justify-center text-white transition-colors duration-200 hover:bg-ink/80"
+                className="group/btn relative flex h-11 w-20 items-center justify-center text-white transition-colors duration-200 hover:bg-ink/80"
                 aria-label={t('quickView')}
               >
+                <span className="absolute opacity-100 transition-opacity duration-200 group-hover/btn:opacity-0">
+                  {t('quickView')}
+                </span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -135,6 +138,7 @@ export function ProductCard({
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   aria-hidden="true"
+                  className="absolute opacity-0 transition-opacity duration-200 group-hover/btn:opacity-100"
                 >
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z" />
                   <circle cx="12" cy="12" r="3" />
@@ -144,9 +148,12 @@ export function ProductCard({
 
             <button
               type="button"
-              className="flex h-11 w-20 items-center justify-center text-white transition-colors duration-200 hover:bg-ink/80"
+              className="group/btn relative flex h-11 w-20 items-center justify-center text-white transition-colors duration-200 hover:bg-ink/80"
               aria-label={t('addToFavourites')}
             >
+              <span className="absolute opacity-100 transition-opacity duration-200 group-hover/btn:opacity-0">
+                {t('addToFavourites')}
+              </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -158,6 +165,7 @@ export function ProductCard({
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 aria-hidden="true"
+                className="absolute opacity-0 transition-opacity duration-200 group-hover/btn:opacity-100"
               >
                 <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8Z" />
               </svg>
@@ -166,9 +174,28 @@ export function ProductCard({
 
           <button
             type="button"
-            className="bg-ink px-10 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-ink/80"
+            className="group/btn relative bg-ink px-10 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-ink/80"
           >
-            {t('quickShop')}
+            <span className="absolute inset-0 flex items-center justify-center opacity-100 transition-opacity duration-200 group-hover/btn:opacity-0">
+              {t('quickShop')}
+            </span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              className="absolute opacity-0 transition-opacity duration-200 group-hover/btn:opacity-100"
+            >
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+            </svg>
           </button>
 
           {sizes.length > 0 ? (

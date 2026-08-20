@@ -2,10 +2,10 @@ import type { Config } from 'tailwindcss';
 import forms from '@tailwindcss/forms';
 
 /**
- * Minimalist Grayscale + Taupe palette. Dark blue-gray primary (#0F1B27)
- * with warm taupe accents (#BFAFAF). Clean light gray background (#F2F2F2)
- * for contemporary luxury aesthetic. Kept deliberately small so a later rebrand
- * is a few hex values.
+ * Muted Slate + Teal palette. Primary slate-teal (#5B6E74) with secondary
+ * muted teal (#819FA7). Light blue-gray background (#F3F5F9) and off-white
+ * accents (#F2F2F0) for sophisticated, modern aesthetic. Deep black text (#0D0D0D).
+ * Kept deliberately small so a later rebrand is a few hex values.
  */
 export default {
   content: ['./src/**/*.{ts,tsx}'],
@@ -13,25 +13,25 @@ export default {
     extend: {
       colors: {
         brand: {
-          50: '#f2f2f2',
-          100: '#e6e6e6',
-          200: '#d9d9d9',
-          300: '#b3b3b3',
-          400: '#808080',
-          500: '#0f1b27',
-          600: '#0d1621',
-          700: '#0a1019',
-          800: '#080d12',
+          50: '#f3f5f9',
+          100: '#e1e7ed',
+          200: '#c9d4dd',
+          300: '#b0c1cc',
+          400: '#98aebb',
+          500: '#5b6e74',
+          600: '#536568',
+          700: '#475a5f',
+          800: '#3d4f55',
           900: '#0d0d0d',
         },
         sand: {
-          50: '#f2f2f2',
-          100: '#e6e6e6',
-          200: '#d9d9d9',
-          300: '#cccccc',
-          400: '#b3b3b3',
+          50: '#f3f5f9',
+          100: '#f2f2f0',
+          200: '#e1e7ed',
+          300: '#c9d4dd',
+          400: '#b0c1cc',
         },
-        gold: '#bfafaf',
+        gold: '#819fa7',
         ink: '#0d0d0d',
       },
       fontFamily: {

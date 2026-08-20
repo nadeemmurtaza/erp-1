@@ -1,4 +1,7 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
+import { usePathname } from 'next/navigation';
 import { Suspense } from 'react';
 import { Link } from '@/i18n/navigation';
 import { CartBadge } from './cart-badge';
@@ -21,6 +24,13 @@ const NAV = [
 export function Header() {
   const t = useTranslations('nav');
   const tSite = useTranslations('site');
+  const pathname = usePathname();
+
+  const isActive = (href: string) => {
+    const cleanPath = pathname.replace(/^\/(en|ur)/, '');
+    const cleanHref = href.split('?')[0];
+    return cleanPath === cleanHref || (cleanHref === '/shop' && cleanPath.startsWith('/shop'));
+  };
 
   return (
     <header className="sticky top-0 z-40 border-b border-sand-300 bg-white shadow-sm">
@@ -34,16 +44,25 @@ export function Header() {
 
             <nav aria-label="Main" className="hidden flex-1 md:flex">
               <div className="flex items-center gap-1">
-                {NAV.map((item) => (
-                  <Link
-                    key={item.key}
-                    href={item.href}
-                    className="group relative px-3 py-2 text-sm font-medium text-ink/70 transition-all duration-200 ease-out hover:text-ink hover:bg-sand-50 rounded-md motion-safe:hover:-translate-y-0.5"
-                  >
-                    {t(item.key)}
-                    <span className="absolute bottom-0 start-0 h-0.5 w-0 bg-brand-600 transition-all duration-200 group-hover:w-full" />
-                  </Link>
-                ))}
+                {NAV.map((item) => {
+                  const active = isActive(item.href);
+                  return (
+                    <Link
+                      key={item.key}
+                      href={item.href}
+                      className={`group relative px-3 py-2 text-sm font-medium transition-all duration-200 ease-out rounded-md ${
+                        active
+                          ? 'text-brand-600 bg-brand-50'
+                          : 'text-ink/70 hover:text-ink hover:bg-sand-50 motion-safe:hover:-translate-y-0.5'
+                      }`}
+                    >
+                      {t(item.key)}
+                      <span className={`absolute bottom-0 start-0 h-0.5 transition-all duration-200 ${
+                        active ? 'w-full bg-brand-600' : 'w-0 bg-brand-600 group-hover:w-full'
+                      }`} />
+                    </Link>
+                  );
+                })}
               </div>
             </nav>
           </div>

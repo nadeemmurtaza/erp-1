@@ -91,10 +91,12 @@ export function QuickViewModal({ product, locale, onClose }: QuickViewModalProps
               )}
             </div>
 
-            <div className="flex gap-2 pt-4">
-              <button className="flex-1 btn-primary">Add to cart</button>
-              <button className="btn border border-brand-600 text-brand-700 hover:bg-brand-50">
-                ♡
+            <div className="flex flex-col gap-3 pt-4">
+              <button className="w-full bg-black text-white px-6 py-3 font-medium hover:bg-black/80 transition-colors">
+                Quick Shop
+              </button>
+              <button className="w-full bg-white border border-ink/20 text-ink px-6 py-3 font-medium hover:bg-sand-50 transition-colors">
+                Add to cart
               </button>
             </div>
 

@@ -82,25 +82,40 @@ export function ProductCard({ product, locale, priority = false, featured = fals
         </div>
       </Link>
 
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-gradient-to-t from-black/60 via-black/20 to-transparent p-4 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-        {onQuickView && (
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              onQuickView();
-            }}
-            className="w-full rounded bg-white text-ink px-4 py-2.5 text-sm font-medium transition-all hover:bg-brand-50"
-          >
-            Quick view
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/40 p-4 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+        {/* Icon buttons */}
+        <div className="flex gap-6 bg-black/80 px-6 py-3 rounded">
+          {onQuickView && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                onQuickView();
+              }}
+              className="flex items-center justify-center text-white hover:opacity-70 transition-opacity"
+              aria-label="Quick view"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          )}
+          <button className="flex items-center justify-center text-white hover:opacity-70 transition-opacity" aria-label="Quick shop">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor">
+              <path d="M2 9a1 1 0 011-1h1.05a2 2 0 011.82 1.1l1.07 1.605a1 1 0 00.6.472l1.393.464a1 1 0 11-.606 1.918l-1.393-.464-1.607-2.41A4 4 0 014.05 9H3a1 1 0 01-1-1z" />
+              <path d="M16 7a2 2 0 110-4 2 2 0 010 4zm-3 7a1 1 0 11-2 0 1 1 0 012 0zm8 0a1 1 0 11-2 0 1 1 0 012 0z" />
+            </svg>
           </button>
-        )}
-        <div className="flex gap-2 w-full">
-          <button className="flex-1 rounded bg-brand-600 px-3 py-2 text-xs font-medium text-white transition-colors hover:bg-brand-700">
-            {t('addToCart')}
-          </button>
-          <button className="rounded bg-white/90 px-3 py-2 text-xs font-medium text-ink transition-colors hover:bg-white">
-            ♡
-          </button>
+        </div>
+
+        {/* Quick Shop button */}
+        <button className="bg-black/80 text-white px-8 py-2.5 text-sm font-medium hover:bg-black transition-colors">
+          Quick Shop
+        </button>
+
+        {/* Size selector */}
+        <div className="absolute bottom-4 start-4 text-white text-xs font-medium">
+          S, M, L, XL
         </div>
       </div>
     </div>

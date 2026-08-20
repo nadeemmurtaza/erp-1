@@ -18,12 +18,11 @@ export function CustomerNav() {
   if (user) {
     return (
       <div className="group relative">
-        <button className="flex items-center gap-2 text-sm text-ink/70 transition-colors duration-200 hover:text-ink group-hover:underline">
+        <button className="flex items-center gap-2 text-sm text-ink/70 transition-colors duration-200 hover:text-ink">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
             <circle cx="12" cy="7" r="4" />
           </svg>
-          <span className="hidden sm:inline">{user.firstName ?? 'Account'}</span>
         </button>
 
         {/* Dropdown menu */}
@@ -57,13 +56,12 @@ export function CustomerNav() {
   return (
     <Link
       href="/login"
-      className="flex items-center gap-2 text-sm text-ink/70 transition-colors duration-200 hover:text-ink hover:underline"
+      className="flex items-center gap-2 text-sm text-ink/70 transition-colors duration-200 hover:text-ink"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
         <circle cx="12" cy="7" r="4" />
       </svg>
-      <span className="hidden sm:inline">Sign in</span>
     </Link>
   );
 }

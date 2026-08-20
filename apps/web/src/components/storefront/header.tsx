@@ -28,8 +28,13 @@ export function Header() {
 
   const isActive = (href: string) => {
     const cleanPath = pathname.replace(/^\/(en|ur)/, '');
-    const cleanHref = href.split('?')[0];
-    return cleanPath === cleanHref || (cleanHref === '/shop' && cleanPath.startsWith('/shop'));
+    if (cleanPath.startsWith('/shop')) {
+      const pathParams = new URLSearchParams(href.split('?')[1] || '');
+      const categoryParam = pathParams.get('category') || 'unstitched';
+      const pathCategory = new URLSearchParams(window.location.search).get('category') || 'unstitched';
+      return categoryParam === pathCategory;
+    }
+    return false;
   };
 
   return (

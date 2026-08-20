@@ -4,6 +4,7 @@ import type { Locale, ProductKind } from '@yaseen/shared';
 import { FilterPanel } from '@/components/storefront/filter-panel';
 import { ProductsGrid } from '@/components/storefront/products-grid';
 import { SortSelect } from '@/components/storefront/sort-select';
+import { GridToggleWrapper } from '@/components/storefront/grid-toggle-wrapper';
 import { Link } from '@/i18n/navigation';
 import { getFacets, getProducts } from '@/lib/api';
 import type { ProductListQuery } from '@/lib/api-types';
@@ -83,7 +84,7 @@ export default async function ShopPage({
 
   return (
     <div className="container-page py-12">
-      <div className="flex flex-wrap items-end justify-between gap-4 mb-12">
+      <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
         <div>
           <h1 className="text-2xl font-semibold text-ink">{t('title')}</h1>
           <p className="mt-1 text-sm text-ink/60">
@@ -99,6 +100,10 @@ export default async function ShopPage({
         </aside>
 
         <div>
+          <div className="mb-6 flex items-center gap-4">
+            <span className="text-sm font-medium text-ink/70">{t('title')}</span>
+            <GridToggleWrapper />
+          </div>
           {products.data.length === 0 ? (
             <div className="card p-10 text-center">
               <p className="text-sm font-medium text-ink">{t('empty')}</p>

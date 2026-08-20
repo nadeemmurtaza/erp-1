@@ -36,13 +36,13 @@ export function LocaleSwitcher() {
   }
 
   return (
-    <label className="inline-flex items-center text-sm">
-      <span className="sr-only">{t('language')}</span>
+    <div className="relative">
+      <label className="sr-only">{t('language')}</label>
       <select
         value={locale}
         onChange={(event) => onChange(event.target.value)}
         disabled={isPending}
-        className="bg-white text-sm text-ink/70 border-0 border-b-2 border-sand-300 focus:border-ink focus:outline-none focus:ring-0 transition-colors duration-200 py-2 disabled:opacity-60 cursor-pointer"
+        className="appearance-none bg-transparent text-ink/70 border-0 focus:outline-none focus:ring-0 transition-colors duration-200 py-2 disabled:opacity-60 cursor-pointer w-6 h-6 flex items-center justify-center"
       >
         {LOCALES.map((option) => (
           <option key={option} value={option}>
@@ -50,6 +50,9 @@ export function LocaleSwitcher() {
           </option>
         ))}
       </select>
-    </label>
+      <svg className="absolute start-0 top-1/2 -translate-y-1/2 w-5 h-5 pointer-events-none text-ink/70" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M12 5.253v13m0-13C6.478 5.253 2 8.679 2 12s4.478 6.747 10 6.747m0-13c5.522 0 10 3.679 10 6.747m0 0a10.747 10.747 0 01-21.493 0" />
+      </svg>
+    </div>
   );
 }

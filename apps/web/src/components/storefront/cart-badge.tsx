@@ -19,7 +19,6 @@ export function CartBadge() {
         <circle cx="20" cy="21" r="1" />
         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
       </svg>
-      <span className="hidden sm:inline group-hover:underline text-ink/70 group-hover:text-ink transition-colors">{t('cart')}</span>
       {/* Hidden while the first load is in flight so it does not flash 0. */}
       {!loading && count > 0 ? (
         <span className="inline-flex absolute -top-3 -end-3 min-w-[20px] h-5 items-center justify-center rounded-full bg-brand-600 text-xs font-bold text-white animate-scaleIn shadow-md">

@@ -24,10 +24,6 @@ export function ProductsGrid({ products, locale }: ProductsGridProps) {
 
   return (
     <>
-      <div className="mb-6 flex items-center justify-end">
-        <GridToggle value={gridCols} onChange={setGridCols} />
-      </div>
-
       <div className={`grid gap-6 ${gridClass}`}>
         {products.map((product, index) => (
           <ProductCard

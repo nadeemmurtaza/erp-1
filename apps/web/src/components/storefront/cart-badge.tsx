@@ -14,7 +14,11 @@ export function CartBadge() {
       href="/cart"
       className="group relative inline-flex items-center gap-2 text-sm text-ink/70 transition-[color,transform] duration-200 ease-out hover:text-ink motion-safe:hover:-translate-y-0.5"
     >
-      <span aria-hidden="true">🧺</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="9" cy="21" r="1" />
+        <circle cx="20" cy="21" r="1" />
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+      </svg>
       <span className="hidden sm:inline group-hover:underline">{t('cart')}</span>
       {/* Hidden while the first load is in flight so it does not flash 0. */}
       {!loading && count > 0 ? (

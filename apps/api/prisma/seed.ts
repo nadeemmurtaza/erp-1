@@ -324,7 +324,7 @@ async function seedCategories() {
     { slug: 'unstitched', en: 'Unstitched', ur: 'اَن سلا', order: 1 },
     { slug: 'ready-to-wear', en: 'Ready to Wear', ur: 'سلا ہوا', order: 2 },
     { slug: 'stitching-services', en: 'Stitching Services', ur: 'سلائی سروسز', order: 3 },
-    { slug: 'menswear', en: 'Menswear', ur: 'مردانہ', order: 4 },
+    { slug: 'kids-wear', en: 'Kids Wear', ur: 'بچوں کے کپڑے', order: 4 },
   ];
 
   const byslug = new Map<string, string>();
@@ -491,19 +491,19 @@ const PRODUCTS: SeedProduct[] = [
     ],
   },
   {
-    slug: 'mens-wash-n-wear-2-piece-grey',
+    slug: 'kids-wash-n-wear-2-piece-grey',
     placeholder: '/placeholders/washnwear-grey.svg',
     kind: 'UNSTITCHED',
-    categorySlug: 'menswear',
-    nameEn: "Men's Wash & Wear 2-Piece — Grey",
-    nameUr: 'مردانہ واش اینڈ ویئر ٹو پیس — سرمئی',
+    categorySlug: 'kids-wear',
+    nameEn: "Kids' Wash & Wear 2-Piece — Grey",
+    nameUr: 'بچوں کے کپڑے واش اینڈ ویئر ٹو پیس — سرمئی',
     descriptionEn:
-      'Classic wash & wear shalwar kameez fabric. Needs no ironing after a wash.',
-    descriptionUr: 'کلاسک واش اینڈ ویئر شلوار قمیض کا کپڑا۔',
+      'Classic wash & wear shalwar kameez fabric for kids. Needs no ironing after a wash.',
+    descriptionUr: 'بچوں کے لیے کلاسک واش اینڈ ویئر شلوار قمیض کا کپڑا۔',
     priceRupees: 3200,
     fabric: 'wash-n-wear',
     season: 'all-season',
-    tags: ['menswear', 'formal'],
+    tags: ['kids-wear', 'casual'],
     pieceCount: 2,
     fabricMeters: 7,
     stitchingAvailable: true,

@@ -11,7 +11,7 @@ import { MobileNav } from './mobile-nav';
 const NAV = [
   { key: 'unstitched', href: '/shop?category=unstitched' },
   { key: 'readyToWear', href: '/shop?category=ready-to-wear' },
-  { key: 'menswear', href: '/shop?category=menswear' },
+  { key: 'kidsWear', href: '/shop?category=kids-wear' },
   { key: 'stitching', href: '/shop?category=stitching-services&kind=STITCHING_SERVICE' },
   // Tailoring on the customer's own cloth — no fabric to buy, so it is a page of
   // its own rather than a catalogue filter.

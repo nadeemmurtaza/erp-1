@@ -262,9 +262,9 @@ describe('Cart (e2e)', () => {
     });
 
     it('refuses a garment the fabric cannot be made into', async () => {
-      // The menswear fabric allows kurta and shalwar, not kameez.
-      const menswear = await prisma.product.findFirstOrThrow({
-        where: { slug: 'mens-wash-n-wear-2-piece-grey' },
+      // The kids-wear fabric allows kurta and shalwar, not kameez.
+      const kidsWear = await prisma.product.findFirstOrThrow({
+        where: { slug: 'kids-wash-n-wear-2-piece-grey' },
         include: { variants: true },
       });
 
@@ -272,7 +272,7 @@ describe('Cart (e2e)', () => {
         .post('/api/v1/cart/items')
         .set('Authorization', `Bearer ${customerToken}`)
         .send({
-          variantId: menswear.variants[0]!.id,
+          variantId: kidsWear.variants[0]!.id,
           stitching: {
             stitchingServiceId: kameezServiceId,
             measurementProfileId: kameezProfileId,

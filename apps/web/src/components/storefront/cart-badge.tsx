@@ -12,7 +12,7 @@ export function CartBadge() {
   return (
     <Link
       href="/cart"
-      className="group relative inline-flex items-center gap-2 text-sm text-ink/70 transition-colors duration-200 ease-out hover:text-ink"
+      className="group relative inline-flex items-center text-sm text-ink/70 transition-colors duration-200 ease-out hover:text-ink translate-y-0.5"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="9" cy="21" r="1" />

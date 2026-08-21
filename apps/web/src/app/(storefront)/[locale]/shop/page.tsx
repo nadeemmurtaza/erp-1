@@ -1,11 +1,8 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
 import type { Locale, ProductKind } from '@yaseen/shared';
 import { FilterPanel } from '@/components/storefront/filter-panel';
-import { ProductsGrid } from '@/components/storefront/products-grid';
-import { SortSelect } from '@/components/storefront/sort-select';
-import { GridToggleWrapper } from '@/components/storefront/grid-toggle-wrapper';
+import { ShopControls } from '@/components/storefront/shop-controls';
 import { Link } from '@/i18n/navigation';
 import { getFacets, getProducts } from '@/lib/api';
 import type { ProductListQuery } from '@/lib/api-types';
@@ -85,25 +82,6 @@ export default async function ShopPage({
 
   return (
     <div className="container-page py-12">
-      <div className="flex items-center justify-between gap-4 mb-8 p-4 border border-sand-200 rounded-md bg-sand-50">
-        <div>
-          <h1 className="text-2xl font-semibold text-ink">{t('title')}</h1>
-          <p className="mt-1 text-sm text-ink/60">
-            {t('resultsCount', { count: products.meta.total })}
-          </p>
-        </div>
-        <div className="flex items-center gap-4">
-          <Suspense fallback={<div className="flex gap-1">
-            <div className="w-2 h-2 rounded-full bg-sand-300" />
-            <div className="w-2 h-2 rounded-full bg-sand-300" />
-            <div className="w-2 h-2 rounded-full bg-sand-300" />
-          </div>}>
-            <GridToggleWrapper />
-          </Suspense>
-          <SortSelect />
-        </div>
-      </div>
-
       <div className="grid gap-8 lg:grid-cols-[16rem_1fr]">
         <aside className="lg:sticky lg:top-24 lg:h-fit">
           <FilterPanel facets={facets} locale={locale as Locale} />
@@ -111,12 +89,27 @@ export default async function ShopPage({
 
         <div>
           {products.data.length === 0 ? (
-            <div className="card p-10 text-center">
-              <p className="text-sm font-medium text-ink">{t('empty')}</p>
-              <p className="mt-1 text-sm text-ink/60">{t('emptyBody')}</p>
-            </div>
+            <>
+              <div className="flex items-center justify-between gap-4 mb-8 p-4 border border-sand-200 rounded-md bg-sand-50">
+                <div>
+                  <h1 className="text-2xl font-semibold text-ink">{t('title')}</h1>
+                  <p className="mt-1 text-sm text-ink/60">
+                    {t('resultsCount', { count: products.meta.total })}
+                  </p>
+                </div>
+              </div>
+              <div className="card p-10 text-center">
+                <p className="text-sm font-medium text-ink">{t('empty')}</p>
+                <p className="mt-1 text-sm text-ink/60">{t('emptyBody')}</p>
+              </div>
+            </>
           ) : (
-            <ProductsGrid products={products.data} locale={locale as Locale} />
+            <ShopControls
+              products={products.data}
+              locale={locale as Locale}
+              resultsCount={t('resultsCount', { count: products.meta.total })}
+              title={t('title')}
+            />
           )}
 
           {products.meta.totalPages > 1 ? (

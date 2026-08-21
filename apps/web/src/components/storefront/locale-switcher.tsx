@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useTransition } from 'react';
@@ -20,11 +21,10 @@ export function LocaleSwitcher() {
   const t = useTranslations('nav');
   const locale = useLocale() as Locale;
   const router = useRouter();
-  // next-intl's usePathname returns the path without the locale prefix, with
-  // dynamic segments already resolved.
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
+  const [isOpen, setIsOpen] = useState(false);
 
   function onChange(next: string) {
     const query = searchParams.toString();
@@ -33,26 +33,42 @@ export function LocaleSwitcher() {
         locale: next as Locale,
       });
     });
+    setIsOpen(false);
   }
 
   return (
-    <div className="relative">
+    <div className="group relative">
       <label className="sr-only">{t('language')}</label>
-      <select
-        value={locale}
-        onChange={(event) => onChange(event.target.value)}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center justify-center p-1 text-ink/70 hover:text-ink transition-colors duration-200"
+        aria-label={t('language')}
         disabled={isPending}
-        className="appearance-none bg-transparent text-ink/70 border-0 focus:outline-none focus:ring-0 transition-colors duration-200 py-2 disabled:opacity-60 cursor-pointer w-6 h-6 flex items-center justify-center"
       >
-        {LOCALES.map((option) => (
-          <option key={option} value={option}>
-            {LABELS[option]}
-          </option>
-        ))}
-      </select>
-      <svg className="absolute start-0 top-1/2 -translate-y-1/2 w-5 h-5 pointer-events-none text-ink/70" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M12 5.253v13m0-13C6.478 5.253 2 8.679 2 12s4.478 6.747 10 6.747m0-13c5.522 0 10 3.679 10 6.747m0 0a10.747 10.747 0 01-21.493 0" />
-      </svg>
+        <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+        </svg>
+      </button>
+
+      {isOpen && (
+        <div className="absolute end-0 top-full mt-2 rounded-md shadow-md border border-sand-200 bg-white overflow-hidden z-50 min-w-max">
+          {LOCALES.map((option) => (
+            <button
+              key={option}
+              onClick={() => onChange(option)}
+              className={`block w-full text-start px-4 py-2 text-sm transition-colors duration-200 ${
+                locale === option
+                  ? 'text-brand-600 bg-brand-50'
+                  : 'text-ink/70 hover:text-ink hover:bg-sand-50'
+              }`}
+              disabled={isPending}
+            >
+              {LABELS[option]}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

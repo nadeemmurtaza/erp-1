@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
 import { GridToggle } from './grid-toggle';
 
-export function GridToggleWrapper() {
-  const [gridCols, setGridCols] = useState<1 | 2 | 3>(3);
+interface GridToggleWrapperProps {
+  value: 1 | 2 | 3;
+  onChange: (cols: 1 | 2 | 3) => void;
+}
 
-  return <GridToggle value={gridCols} onChange={setGridCols} />;
+export function GridToggleWrapper({ value, onChange }: GridToggleWrapperProps) {
+  return <GridToggle value={value} onChange={onChange} />;
 }

@@ -10,10 +10,11 @@ import { QuickViewModal } from './quick-view-modal';
 interface ProductsGridProps {
   products: StorefrontProduct[];
   locale: Locale;
+  gridCols: 1 | 2 | 3;
+  onGridColsChange: (cols: 1 | 2 | 3) => void;
 }
 
-export function ProductsGrid({ products, locale }: ProductsGridProps) {
-  const [gridCols, setGridCols] = useState<1 | 2 | 3>(3);
+export function ProductsGrid({ products, locale, gridCols, onGridColsChange }: ProductsGridProps) {
   const [quickViewProduct, setQuickViewProduct] = useState<StorefrontProduct | null>(null);
 
   const gridClass = {

@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { StitchingDesignOptionsService } from './design-options.service';
 import { StitchingJobsService } from './jobs.service';
 import { StitchingOrderSubscriber } from './order.subscriber';
 import { StitchingAdminController, StitchingController } from './stitching.controller';
@@ -11,6 +12,7 @@ import { StitchingService } from './stitching.service';
     StitchingService,
     StitchingJobsService,
     StitchingOrdersService,
+    StitchingDesignOptionsService,
     StitchingOrderSubscriber,
   ],
   exports: [StitchingService, StitchingJobsService],

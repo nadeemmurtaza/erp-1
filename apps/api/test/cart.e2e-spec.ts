@@ -20,6 +20,7 @@ describe('Cart (e2e)', () => {
 
   let unstitchedVariantId: string;
   let readyVariantId: string;
+  let kameezGarmentId: string;
   let kameezServiceId: string;
   let kameezServiceFee: number;
   let shalwarServiceId: string;
@@ -27,7 +28,27 @@ describe('Cart (e2e)', () => {
   let necklineOptions: Array<{ id: string; priceDelta: number }>;
   /** Kameez has TWO required groups — neckline and sleeve style. */
   let sleeveOptionId: string;
+  let finishGroupId: string;
   let liningOptionId: string;
+
+  // Pinned below and put back in afterAll: the seed makes no promise about
+  // either figure, and these tests assert on exact money and exact behaviour.
+  let seededStitchingPrice = 0;
+  let seededFinishAllowsText = false;
+
+  /** The garment's own stitching fee, charged when no service product is picked. */
+  const GARMENT_STITCHING_FEE = toMinor(900);
+
+  /** A complete, in-range kameez set — what a guest types into the panel. */
+  const KAMEEZ_MEASUREMENTS = {
+    length: 42,
+    chest: 38,
+    waist: 34,
+    hips: 40,
+    shoulder: 15,
+    sleeve_length: 22,
+    sleeve_opening: 10,
+  };
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({ imports: [AppModule] }).compile();
@@ -74,6 +95,13 @@ describe('Cart (e2e)', () => {
     shalwarServiceId = shalwarService.id;
 
     const kameez = await prisma.garmentType.findUniqueOrThrow({ where: { key: 'kameez' } });
+    kameezGarmentId = kameez.id;
+    seededStitchingPrice = kameez.stitchingPrice;
+    await prisma.garmentType.update({
+      where: { id: kameez.id },
+      data: { stitchingPrice: GARMENT_STITCHING_FEE, stitchingEnabled: true },
+    });
+
     kameezProfileId = (
       await prisma.measurementProfile.findFirstOrThrow({
         where: { garmentTypeId: kameez.id, user: { email: 'ayesha@example.com' } },
@@ -99,10 +127,27 @@ describe('Cart (e2e)', () => {
       where: { key: 'kameez_finish' },
       include: { options: true },
     });
+    finishGroupId = finishGroup.id;
     liningOptionId = finishGroup.options.find((option) => option.key === 'lining')!.id;
+
+    // Finishing is the design area these tests type free text into; neckline is
+    // left alone so it can stand for a group that takes no text.
+    seededFinishAllowsText = finishGroup.allowCustomText;
+    await prisma.stitchingOptionGroup.update({
+      where: { id: finishGroup.id },
+      data: { allowCustomText: true },
+    });
   });
 
   afterAll(async () => {
+    await prisma.garmentType.update({
+      where: { id: kameezGarmentId },
+      data: { stitchingPrice: seededStitchingPrice },
+    });
+    await prisma.stitchingOptionGroup.update({
+      where: { id: finishGroupId },
+      data: { allowCustomText: seededFinishAllowsText },
+    });
     await app.close();
   });
 
@@ -213,6 +258,8 @@ describe('Cart (e2e)', () => {
         optionDeltas: [boat.priceDelta, 0, lining],
       });
 
+      // The service was picked, so its price replaces the garment's own.
+      expect(line.stitching.baseFee).toBe(kameezServiceFee);
       expect(line.stitching.feePerUnit).toBe(expectedFee);
       expect(line.productTotal).toBe(toMinor(4500));
       expect(line.stitchingTotal).toBe(expectedFee);
@@ -354,7 +401,7 @@ describe('Cart (e2e)', () => {
         .expect(403);
     });
 
-    it('lets a guest add stitching but flags the missing measurements', async () => {
+    it('refuses stitching with no measurements from either source', async () => {
       const response = await guest()
         .post('/api/v1/cart/items')
         .send({
@@ -364,10 +411,283 @@ describe('Cart (e2e)', () => {
             optionIds: [necklineOptions[0]!.id, sleeveOptionId],
           },
         })
+        .expect(400);
+
+      expect(String(response.body.message)).toMatch(/Enter the measurements/i);
+    });
+
+    it('refuses a profile and typed-in measurements at the same time', async () => {
+      const response = await api()
+        .post('/api/v1/cart/items')
+        .set('Authorization', `Bearer ${customerToken}`)
+        .send({
+          variantId: unstitchedVariantId,
+          stitching: {
+            stitchingServiceId: kameezServiceId,
+            measurementProfileId: kameezProfileId,
+            measurementValues: KAMEEZ_MEASUREMENTS,
+            optionIds: [necklineOptions[0]!.id, sleeveOptionId],
+          },
+        })
+        .expect(400);
+
+      expect(String(response.body.message)).toMatch(/not both/i);
+    });
+  });
+
+  /**
+   * Measurements typed straight into the panel — the path a guest takes, since
+   * a saved profile needs an account and demanding one before the basket loses
+   * customers.
+   */
+  describe('inline measurements', () => {
+    // One test here signs in, and the account's single cart carries over from
+    // whatever ran before it.
+    beforeEach(async () => {
+      await api()
+        .delete('/api/v1/cart')
+        .set('Authorization', `Bearer ${customerToken}`)
+        .expect(200);
+    });
+
+    it('lets a guest be measured without signing in', async () => {
+      const response = await guest()
+        .post('/api/v1/cart/items')
+        .send({
+          variantId: unstitchedVariantId,
+          stitching: {
+            garmentTypeId: kameezGarmentId,
+            measurementValues: KAMEEZ_MEASUREMENTS,
+            optionIds: [necklineOptions[0]!.id, sleeveOptionId],
+            sizeToken: 'M',
+          },
+        })
         .expect(201);
 
-      expect(response.body.items[0].stitching.measurementProfileId).toBeNull();
-      expect(response.body.issues.join(' ')).toMatch(/Add measurements/i);
+      const line = response.body.items[0];
+      expect(line.stitching.measurementProfileId).toBeNull();
+      expect(line.stitching.measurementValues.chest).toBe(38);
+      expect(line.stitching.garmentKey).toBe('kameez');
+      // Recorded for traceability only — it played no part in the measurements above.
+      expect(line.stitching.sizeToken).toBe('M');
+      // Nothing is outstanding: this line could be checked out as it stands.
+      expect(response.body.issues).toHaveLength(0);
+    });
+
+    it('rejects a size token outside the RTW matrix', async () => {
+      const response = await guest()
+        .post('/api/v1/cart/items')
+        .send({
+          variantId: unstitchedVariantId,
+          stitching: {
+            garmentTypeId: kameezGarmentId,
+            measurementValues: KAMEEZ_MEASUREMENTS,
+            optionIds: [necklineOptions[0]!.id, sleeveOptionId],
+            sizeToken: 'XXXL',
+          },
+        })
+        .expect(400);
+
+      expect(String(response.body.message)).toMatch(/sizeToken/i);
+    });
+
+    it('rejects a measurement outside the garment field bounds', async () => {
+      const response = await guest()
+        .post('/api/v1/cart/items')
+        .send({
+          variantId: unstitchedVariantId,
+          stitching: {
+            garmentTypeId: kameezGarmentId,
+            // Chest is bounded at 60 inches.
+            measurementValues: { ...KAMEEZ_MEASUREMENTS, chest: 96 },
+            optionIds: [necklineOptions[0]!.id, sleeveOptionId],
+          },
+        })
+        .expect(400);
+
+      expect(String(response.body.message)).toMatch(/chest/i);
+      expect(String(response.body.message)).toMatch(/at most 60/i);
+    });
+
+    it('rejects a required measurement that was left out', async () => {
+      const { chest, ...withoutChest } = KAMEEZ_MEASUREMENTS;
+
+      const response = await guest()
+        .post('/api/v1/cart/items')
+        .send({
+          variantId: unstitchedVariantId,
+          stitching: {
+            garmentTypeId: kameezGarmentId,
+            measurementValues: withoutChest,
+            optionIds: [necklineOptions[0]!.id, sleeveOptionId],
+          },
+        })
+        .expect(400);
+
+      expect(String(response.body.message)).toMatch(/chest.*required/i);
+    });
+
+    it('replaces typed-in measurements when a saved profile is attached later', async () => {
+      const agent = guest();
+      const added = await agent
+        .post('/api/v1/cart/items')
+        .set('Authorization', `Bearer ${customerToken}`)
+        .send({
+          variantId: unstitchedVariantId,
+          stitching: {
+            garmentTypeId: kameezGarmentId,
+            measurementValues: KAMEEZ_MEASUREMENTS,
+            optionIds: [necklineOptions[0]!.id, sleeveOptionId],
+          },
+        })
+        .expect(201);
+
+      const updated = await agent
+        .patch(`/api/v1/cart/items/${added.body.items[0].id}`)
+        .set('Authorization', `Bearer ${customerToken}`)
+        .send({ measurementProfileId: kameezProfileId })
+        .expect(200);
+
+      const line = updated.body.items[0];
+      expect(line.stitching.measurementProfileId).toBe(kameezProfileId);
+      // One source of measurements per line, never two that could disagree.
+      expect(line.stitching.measurementValues).toBeNull();
+    });
+  });
+
+  describe('pricing without a service product', () => {
+    it("charges the garment's own stitching price", async () => {
+      const response = await guest()
+        .post('/api/v1/cart/items')
+        .send({
+          variantId: unstitchedVariantId,
+          stitching: {
+            garmentTypeId: kameezGarmentId,
+            measurementValues: KAMEEZ_MEASUREMENTS,
+            optionIds: [necklineOptions[0]!.id, sleeveOptionId],
+          },
+        })
+        .expect(201);
+
+      const line = response.body.items[0];
+      expect(line.stitching.serviceId).toBeNull();
+      expect(line.stitching.baseFee).toBe(GARMENT_STITCHING_FEE);
+      expect(line.stitching.feePerUnit).toBe(GARMENT_STITCHING_FEE);
+      expect(line.lineTotal).toBe(toMinor(4500) + GARMENT_STITCHING_FEE);
+    });
+
+    it('adds the option deltas on top of the garment price', async () => {
+      const boat = necklineOptions.find((option) => option.priceDelta > 0)!;
+
+      const response = await guest()
+        .post('/api/v1/cart/items')
+        .send({
+          variantId: unstitchedVariantId,
+          stitching: {
+            garmentTypeId: kameezGarmentId,
+            measurementValues: KAMEEZ_MEASUREMENTS,
+            optionIds: [boat.id, sleeveOptionId, liningOptionId],
+          },
+        })
+        .expect(201);
+
+      const expectedFee = computeStitchingFee({
+        baseFee: GARMENT_STITCHING_FEE,
+        optionDeltas: [boat.priceDelta, 0, toMinor(400)],
+      });
+
+      expect(response.body.items[0].stitching.feePerUnit).toBe(expectedFee);
+    });
+
+    it('refuses a garment that is not being stitched at the moment', async () => {
+      await prisma.garmentType.update({
+        where: { id: kameezGarmentId },
+        data: { stitchingEnabled: false },
+      });
+
+      try {
+        const response = await guest()
+          .post('/api/v1/cart/items')
+          .send({
+            variantId: unstitchedVariantId,
+            stitching: {
+              garmentTypeId: kameezGarmentId,
+              measurementValues: KAMEEZ_MEASUREMENTS,
+              optionIds: [necklineOptions[0]!.id, sleeveOptionId],
+            },
+          })
+          .expect(404);
+
+        expect(String(response.body.message)).toMatch(/not being stitched/i);
+      } finally {
+        await prisma.garmentType.update({
+          where: { id: kameezGarmentId },
+          data: { stitchingEnabled: true },
+        });
+      }
+    });
+  });
+
+  describe('custom design text', () => {
+    it('keeps the words typed for a design area that takes them', async () => {
+      const response = await guest()
+        .post('/api/v1/cart/items')
+        .send({
+          variantId: unstitchedVariantId,
+          stitching: {
+            garmentTypeId: kameezGarmentId,
+            measurementValues: KAMEEZ_MEASUREMENTS,
+            optionIds: [necklineOptions[0]!.id, sleeveOptionId],
+            customDesignText: { kameez_finish: '  Contrast piping in maroon  ' },
+          },
+        })
+        .expect(201);
+
+      expect(response.body.items[0].stitching.customDesignText).toEqual({
+        kameez_finish: 'Contrast piping in maroon',
+      });
+    });
+
+    it('drops text aimed at an area with no free-text box, rather than failing', async () => {
+      const response = await guest()
+        .post('/api/v1/cart/items')
+        .send({
+          variantId: unstitchedVariantId,
+          stitching: {
+            garmentTypeId: kameezGarmentId,
+            measurementValues: KAMEEZ_MEASUREMENTS,
+            optionIds: [necklineOptions[0]!.id, sleeveOptionId],
+            customDesignText: {
+              kameez_finish: 'Side slits to the knee',
+              neckline: 'Something the neckline box never asked for',
+            },
+          },
+        })
+        .expect(201);
+
+      // Only finishing survives: the neckline box was never on the form.
+      expect(response.body.items[0].stitching.customDesignText).toEqual({
+        kameez_finish: 'Side slits to the knee',
+      });
+    });
+
+    it('caps a design note at 500 characters', async () => {
+      const response = await guest()
+        .post('/api/v1/cart/items')
+        .send({
+          variantId: unstitchedVariantId,
+          stitching: {
+            garmentTypeId: kameezGarmentId,
+            measurementValues: KAMEEZ_MEASUREMENTS,
+            optionIds: [necklineOptions[0]!.id, sleeveOptionId],
+            customDesignText: { kameez_finish: 'a'.repeat(900) },
+          },
+        })
+        .expect(201);
+
+      expect(
+        response.body.items[0].stitching.customDesignText.kameez_finish,
+      ).toHaveLength(500);
     });
   });
 

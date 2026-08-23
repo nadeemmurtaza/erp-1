@@ -4,6 +4,7 @@ import {
   IsArray,
   IsBoolean,
   IsIn,
+  IsInt,
   IsNotEmpty,
   IsNumber,
   IsObject,
@@ -161,10 +162,74 @@ export class UpsertGarmentTypeDto {
   @IsBoolean()
   isActive?: boolean;
 
+  @ApiPropertyOptional({
+    description: 'What it costs to stitch this garment, in paisa',
+    default: 0,
+  })
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  stitchingPrice?: number;
+
+  @ApiPropertyOptional({
+    description: 'Offer this garment in the stitching flow',
+    default: true,
+  })
+  @IsOptional()
+  @IsBoolean()
+  stitchingEnabled?: boolean;
+
   @ApiPropertyOptional({ type: [MeasurementFieldDto] })
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => MeasurementFieldDto)
   fields?: MeasurementFieldDto[];
+
+  @ApiPropertyOptional({
+    description: 'Base fabric requirement in Gaz (36" width), from the tailoring reference table',
+    example: 2.5,
+  })
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  baseFabricGaz?: number;
+
+  @ApiPropertyOptional({
+    type: [String],
+    description: 'Regional/synonym display names (English), e.g. ["Anarkali", "Panel Dress"]',
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  @MaxLength(60, { each: true })
+  aliasesEn?: string[];
+
+  @ApiPropertyOptional({
+    type: [String],
+    description: 'Regional/synonym display names (Urdu)',
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  @MaxLength(60, { each: true })
+  aliasesUr?: string[];
+}
+
+/** The RTW size tokens the size chart offers, XS through XXL. */
+export const GARMENT_SIZE_TOKENS = ['XS', 'S', 'M', 'L', 'XL', 'XXL'] as const;
+export type GarmentSizeToken = (typeof GARMENT_SIZE_TOKENS)[number];
+
+export class GarmentSizeChartRowDto {
+  @ApiProperty({ enum: GARMENT_SIZE_TOKENS })
+  @IsIn([...GARMENT_SIZE_TOKENS])
+  sizeToken!: GarmentSizeToken;
+
+  @ApiProperty({
+    description:
+      "Measurement key -> value for this size, validated against the garment's active fields. A size row rarely covers every field, so any subset of keys is accepted.",
+    example: { shoulder: 14.5, chest: 40, waist: 34, hips: 43, length: 42 },
+  })
+  @IsObject()
+  values!: Record<string, number>;
 }

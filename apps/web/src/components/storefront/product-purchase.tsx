@@ -10,11 +10,30 @@ import { Price } from './price';
 import { useCart } from './cart-provider';
 import { StitchingPanel, type StitchingSelection } from './stitching-panel';
 
+/**
+ * One garment this fabric can become, with the fabric-need range derived from
+ * its RTW size chart (XS vs XXL) — see fabricNeedRows in the product page.
+ * Computed server-side since it needs the garment's full size chart, which
+ * StorefrontProduct.garmentTypes doesn't carry.
+ */
+export interface FabricNeedRow {
+  key: string;
+  label: string;
+  low: number;
+  high: number;
+  lowMetres: number;
+  highMetres: number;
+  /** False when there was no size-chart spread to derive a range from — low === high. */
+  isRange: boolean;
+}
+
 interface ProductPurchaseProps {
   product: StorefrontProduct;
   locale: Locale;
   /** Stitching services that apply to this fabric's garments. */
   services: StorefrontProduct[];
+  /** Empty unless stitching is available and at least one garment has a fabric benchmark. */
+  fabricNeed: FabricNeedRow[];
 }
 
 /**
@@ -24,7 +43,7 @@ interface ProductPurchaseProps {
  * and style options — in one request, and the API prices it. Nothing about the
  * total is computed here and sent along.
  */
-export function ProductPurchase({ product, locale, services }: ProductPurchaseProps) {
+export function ProductPurchase({ product, locale, services, fabricNeed }: ProductPurchaseProps) {
   const t = useTranslations('product');
   const router = useRouter();
   const { add, error, clearError } = useCart();
@@ -53,6 +72,15 @@ export function ProductPurchase({ product, locale, services }: ProductPurchasePr
     ) ?? product.variants[0];
 
   const price = selected?.price ?? product.basePrice;
+
+  // "Likely" garment = the first one offered, same default the stitching panel
+  // itself starts from. No real measurements exist yet at this point in the
+  // flow, so this is a soft nudge rather than the hard fabricShort warning the
+  // panel shows once the customer's own numbers are in.
+  const fabricMayRunShort =
+    fabricNeed.length > 0 &&
+    product.fabricMeters !== null &&
+    product.fabricMeters < fabricNeed[0].lowMetres;
 
   // Stable identity so the panel's effect does not re-publish on every render.
   const onStitchingChange = useCallback((next: StitchingSelection | null) => {
@@ -108,6 +136,30 @@ export function ProductPurchase({ product, locale, services }: ProductPurchasePr
           value={colour}
           onChange={setColour}
         />
+      ) : null}
+
+      {fabricNeed.length > 0 ? (
+        <div className="rounded-md border border-sand-200 bg-white/60 p-3 text-sm">
+          <p className="font-semibold text-brand-800">{t('fabricNeedEstimate')}</p>
+          <ul className="mt-1.5 space-y-1">
+            {fabricNeed.map((row) => (
+              <li key={row.key} className="text-ink/70">
+                <span className="font-medium text-ink">{row.label}</span>:{' '}
+                {row.isRange
+                  ? t('fabricNeedRange', {
+                      low: row.low,
+                      high: row.high,
+                      lowM: row.lowMetres,
+                      highM: row.highMetres,
+                    })
+                  : t('fabricNeedSingle', { gaz: row.low, metres: row.lowMetres })}
+              </li>
+            ))}
+          </ul>
+          {fabricMayRunShort ? (
+            <p className="mt-1.5 text-xs text-ink/50">{t('fabricNeedCheckNote')}</p>
+          ) : null}
+        </div>
       ) : null}
 
       <StitchingPanel product={product} services={services} onChange={onStitchingChange} />

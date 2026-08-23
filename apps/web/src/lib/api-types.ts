@@ -53,7 +53,7 @@ export interface StorefrontProduct {
   variants: ProductVariant[];
   category: { id: string; slug: string; name: string } | null;
   /** UNSTITCHED only: the garments this fabric can be made into. */
-  garmentTypes: Array<{ id: string; key: string; label: string }>;
+  garmentTypes: Array<{ id: string; key: string; label: string; baseFabricGaz: number | null }>;
   /** STITCHING_SERVICE only: the garment this service stitches. */
   serviceGarment: { id: string; key: string; label: string } | null;
   inStock: boolean;
@@ -176,7 +176,72 @@ export interface GarmentType {
   labelUr: string;
   order: number;
   isActive: boolean;
+  /** Base stitching fee in paisa. Falls back here when no premium service product is picked. */
+  stitchingPrice: number;
+  /** Offered in the stitching flow at all. */
+  stitchingEnabled: boolean;
   fields: MeasurementFieldRow[];
+  /** Flat PDF-benchmark fabric requirement in Gaz, used when the yardage formula can't be applied. */
+  baseFabricGaz: number | null;
+  /** Regional/Urdu synonyms surfaced as search aliases, e.g. "Anarkali" -> "Kalidar Frock". */
+  aliasesEn: string[];
+  aliasesUr: string[];
+}
+
+/** One row of a garment's RTW size chart, keyed by measurement field key. */
+export interface AdminGarmentSizeChartRow {
+  id: string;
+  garmentTypeId: string;
+  sizeToken: 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL';
+  values: Record<string, number>;
+  order: number;
+}
+
+/** The garment region a design option group belongs to. Null groups are ungrouped. */
+export type StitchingDesignArea =
+  | 'neck'
+  | 'sleeves'
+  | 'upper_front'
+  | 'lower_front'
+  | 'back'
+  | 'trouser'
+  | 'finishing'
+  | 'bodice'
+  | 'skirt_panel'
+  | 'outerwear'
+  | null;
+
+export interface AdminStitchingOption {
+  id: string;
+  groupId: string;
+  key: string;
+  labelEn: string;
+  labelUr: string;
+  /** Paisa. Negative deltas discount the garment. */
+  priceDelta: number;
+  imageUrl: string | null;
+  order: number;
+  isActive: boolean;
+}
+
+export interface AdminStitchingOptionGroup {
+  id: string;
+  key: string;
+  labelEn: string;
+  labelUr: string;
+  area: StitchingDesignArea;
+  /** Null scopes the group to every garment. */
+  garmentTypeId: string | null;
+  garmentType?: { id: string; key: string; labelEn: string; labelUr: string } | null;
+  selectionType: 'SINGLE' | 'MULTI';
+  required: boolean;
+  /** Render a free-text box alongside the choices. */
+  allowCustomText: boolean;
+  helpEn: string | null;
+  helpUr: string | null;
+  order: number;
+  isActive: boolean;
+  options: AdminStitchingOption[];
 }
 
 export interface ImportRowResult {
@@ -208,4 +273,76 @@ export interface AuthResult {
   refreshToken: string;
   expiresIn: string;
   user: AuthUser;
+}
+
+// --- Inventory --------------------------------------------------------------
+
+export interface StockAdjustment {
+  id: string;
+  variantId: string;
+  delta: number;
+  resultingStock: number;
+  reason: string;
+  note: string | null;
+  actorId: string | null;
+  actorName?: string;
+  createdAt: string;
+}
+
+export interface InventoryVariantRow {
+  id: string;
+  sku: string;
+  size: string | null;
+  color: string | null;
+  productName: string;
+  stock: number;
+  lowStockThreshold: number;
+  isActive: boolean;
+}
+
+// --- Analytics ---------------------------------------------------------------
+
+export interface StitchingAnalytics {
+  topGarments: Array<{ garmentKey: string; garmentLabel: string; jobCount: number; revenue: number }>;
+  topOptions: Array<{ optionLabel: string; groupLabel: string; pickCount: number }>;
+  revenueByGarment: Array<{ garmentLabel: string; revenue: number }>;
+}
+
+export interface ExtendedAnalytics {
+  cartAbandonment: { cartsStarted: number; ordersPlaced: number; abandonedRate: number };
+  revenueByCategory: Array<{ categoryName: string; revenue: number }>;
+  returnRate: { returned: number; cancelled: number; total: number; ratePercent: number };
+  averageFulfillmentDays: number | null;
+  paymentMethodSplit: Array<{ provider: string; count: number; revenue: number }>;
+  revenueByCity: Array<{ city: string; revenue: number; orders: number }>;
+}
+
+// --- Visitor analytics --------------------------------------------------------
+
+export interface VisitorFunnel {
+  productViews: number;
+  addToCart: number;
+  checkoutStarted: number;
+  purchasesCompleted: number;
+}
+
+export interface TrafficSourceRow {
+  source: string;
+  count: number;
+  percent: number;
+}
+
+export interface VisitorAnalytics {
+  totalVisitors: number;
+  visitorsChangePercent: number | null;
+  funnel: VisitorFunnel;
+  trafficSources: TrafficSourceRow[];
+  abandonedCarts: number;
+}
+
+/** Amounts in paisa. */
+export interface MonthlyTarget {
+  targetAmount: number;
+  achievedAmount: number;
+  percent: number;
 }

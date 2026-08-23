@@ -31,6 +31,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     roles: OFFICE,
     group: 'sales',
   },
+  { key: 'reports', label: 'Reports', href: '/admin/reports', roles: OFFICE, group: 'sales' },
 
   {
     key: 'stitching',
@@ -59,6 +60,13 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'catalogue',
   },
   {
+    key: 'inventory',
+    label: 'Inventory',
+    href: '/admin/inventory',
+    roles: OFFICE,
+    group: 'catalogue',
+  },
+  {
     key: 'categories',
     label: 'Categories',
     href: '/admin/categories',
@@ -69,6 +77,13 @@ export const ADMIN_NAV: AdminNavItem[] = [
     key: 'garments',
     label: 'Garments & measurements',
     href: '/admin/garments',
+    roles: OFFICE,
+    group: 'catalogue',
+  },
+  {
+    key: 'designs',
+    label: 'Stitching designs',
+    href: '/admin/designs',
     roles: OFFICE,
     group: 'catalogue',
   },

@@ -6,8 +6,10 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseArrayPipe,
   Patch,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -15,6 +17,7 @@ import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, Public, Roles } from '../../core/auth/decorators';
 import {
   CreateMeasurementProfileDto,
+  GarmentSizeChartRowDto,
   UpdateMeasurementProfileDto,
   UpsertGarmentTypeDto,
 } from './dto/measurements.dto';
@@ -111,5 +114,18 @@ export class MeasurementsAdminController {
   @ApiOperation({ summary: 'Deactivate a garment type (never hard-deleted)' })
   deactivate(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
     return this.admin.deactivateGarmentType(user.id, id);
+  }
+
+  @Put('garment-types/:id/size-chart')
+  @ApiOperation({
+    summary: 'Replace RTW size rows (XS-XXL) for a garment; omitted sizes are left alone',
+  })
+  replaceSizeChart(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') id: string,
+    @Body(new ParseArrayPipe({ items: GarmentSizeChartRowDto, whitelist: true, forbidNonWhitelisted: true }))
+    rows: GarmentSizeChartRowDto[],
+  ) {
+    return this.admin.replaceSizeChart(user.id, id, rows);
   }
 }

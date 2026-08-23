@@ -10,7 +10,7 @@ import { SortSelect } from './sort-select';
 interface ShopControlsProps {
   products: StorefrontProduct[];
   locale: Locale;
-  resultsCount: number;
+  resultsCount: string;
   title: string;
 }
 

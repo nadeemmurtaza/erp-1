@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { formatMoney, type Locale } from '@yaseen/shared';
 import { useCart } from '@/components/storefront/cart-provider';
 import { useRouter } from '@/i18n/navigation';
+import { trackEvent } from '@/lib/analytics-client';
 import { API_URL, ApiError } from '@/lib/api';
 import { getCustomerToken } from '@/lib/cart-client';
 
@@ -67,6 +68,12 @@ export default function CheckoutPage() {
         setMethod((current) => current || (loaded[0]?.key ?? ''));
       })
       .catch(() => undefined);
+  }, []);
+
+  useEffect(() => {
+    // Once per mount, not once per re-render — this page re-renders on every
+    // form keystroke.
+    trackEvent('checkout_started');
   }, []);
 
   async function submit(event: React.FormEvent) {

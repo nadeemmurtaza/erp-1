@@ -2,8 +2,10 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   UploadedFile,
@@ -14,14 +16,19 @@ import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, Public, Roles } from '../../core/auth/decorators';
 import type { StitchingOrderStatus, StitchingStage } from '../../core/prisma/client';
+import { StitchingDesignOptionsService } from './design-options.service';
 import {
   AssignJobDto,
   BookStitchingDto,
   ChangeStageDto,
   ChangeStitchingOrderStatusDto,
+  CreateStitchingOptionDto,
+  CreateStitchingOptionGroupDto,
   FabricReceivedDto,
   QuoteStitchingDto,
   TrackStitchingDto,
+  UpdateStitchingOptionDto,
+  UpdateStitchingOptionGroupDto,
 } from './dto/stitching.dto';
 import { StitchingJobsService } from './jobs.service';
 import { StitchingOrdersService } from './stitching-orders.service';
@@ -40,6 +47,15 @@ export class StitchingController {
     private readonly stitching: StitchingService,
     private readonly orders: StitchingOrdersService,
   ) {}
+
+  @Public()
+  @Get('garments')
+  @ApiOperation({
+    summary: 'Garments we stitch, with the fee, measurements and style options',
+  })
+  garments() {
+    return this.stitching.listGarments();
+  }
 
   @Public()
   @Get('option-groups')
@@ -70,6 +86,7 @@ export class StitchingAdminController {
   constructor(
     private readonly jobs: StitchingJobsService,
     private readonly orders: StitchingOrdersService,
+    private readonly design: StitchingDesignOptionsService,
   ) {}
 
   // --- The tailor queue ----------------------------------------------------
@@ -184,5 +201,71 @@ export class StitchingAdminController {
     @Body() dto: ChangeStitchingOrderStatusDto,
   ) {
     return this.orders.changeStatus(user.id, id, dto.status);
+  }
+
+  // --- The design catalogue -------------------------------------------------
+
+  @Get('option-groups')
+  @Roles('ADMIN', 'STAFF')
+  @ApiOperation({ summary: 'Every design group and its options, deactivated ones too' })
+  listOptionGroups() {
+    return this.design.listOptionGroups();
+  }
+
+  @Post('option-groups')
+  @Roles('ADMIN', 'STAFF')
+  @ApiOperation({ summary: 'Add a design group; no garment type means every garment' })
+  createOptionGroup(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() dto: CreateStitchingOptionGroupDto,
+  ) {
+    return this.design.createOptionGroup(user.id, dto);
+  }
+
+  @Patch('option-groups/:id')
+  @Roles('ADMIN', 'STAFF')
+  @ApiOperation({ summary: 'Edit a design group' })
+  updateOptionGroup(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') id: string,
+    @Body() dto: UpdateStitchingOptionGroupDto,
+  ) {
+    return this.design.updateOptionGroup(user.id, id, dto);
+  }
+
+  @Delete('option-groups/:id')
+  @Roles('ADMIN', 'STAFF')
+  @ApiOperation({ summary: 'Deactivate a design group (never hard-deleted)' })
+  deactivateOptionGroup(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
+    return this.design.deactivateOptionGroup(user.id, id);
+  }
+
+  @Post('option-groups/:id/options')
+  @Roles('ADMIN', 'STAFF')
+  @ApiOperation({ summary: 'Add a style option to a group' })
+  createOption(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') id: string,
+    @Body() dto: CreateStitchingOptionDto,
+  ) {
+    return this.design.createOption(user.id, id, dto);
+  }
+
+  @Patch('options/:id')
+  @Roles('ADMIN', 'STAFF')
+  @ApiOperation({ summary: 'Edit a style option' })
+  updateOption(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') id: string,
+    @Body() dto: UpdateStitchingOptionDto,
+  ) {
+    return this.design.updateOption(user.id, id, dto);
+  }
+
+  @Delete('options/:id')
+  @Roles('ADMIN', 'STAFF')
+  @ApiOperation({ summary: 'Deactivate a style option (never hard-deleted)' })
+  deactivateOption(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
+    return this.design.deactivateOption(user.id, id);
   }
 }

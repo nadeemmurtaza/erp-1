@@ -6,7 +6,11 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { formatMoney, toMajor } from '@yaseen/shared';
 import { SalesChart } from '@/components/admin/sales-chart';
+import { DonutChart } from '@/components/admin/donut-chart';
+import { GaugeChart } from '@/components/admin/gauge-chart';
+import { FunnelChart } from '@/components/admin/funnel-chart';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import type { MonthlyTarget, VisitorAnalytics } from '@/lib/api-types';
 
 interface Dashboard {
   today: { orders: number; revenue: number };
@@ -24,6 +28,12 @@ interface Dashboard {
   salesSeries: Array<{ date: string; orders: number; revenue: number }>;
   topProducts: Array<{ name: string; quantity: number; revenue: number }>;
   stitchingByStage: Array<{ stage: string; count: number }>;
+  monthlyTarget: MonthlyTarget;
+}
+
+/** Only the slice this page needs — the full shape is consumed by reports/page.tsx. */
+interface ExtendedAnalyticsSlice {
+  revenueByCategory: Array<{ category: string; revenue: number }>;
 }
 
 interface FollowUp {
@@ -40,8 +50,15 @@ export default function AdminDashboardPage() {
   const router = useRouter();
   const [days, setDays] = useState<number>(30);
   const [data, setData] = useState<Dashboard | null>(null);
+  const [extended, setExtended] = useState<ExtendedAnalyticsSlice | null>(null);
+  const [visitors, setVisitors] = useState<VisitorAnalytics | null>(null);
   const [followUps, setFollowUps] = useState<FollowUp[]>([]);
   const [error, setError] = useState<string | null>(null);
+
+  const [editingTarget, setEditingTarget] = useState(false);
+  const [targetDraft, setTargetDraft] = useState('0');
+  const [targetSaving, setTargetSaving] = useState(false);
+  const [targetError, setTargetError] = useState<string | null>(null);
 
   // A tailor has no dashboard — the analytics endpoints are staff-only — so send
   // them to the queue rather than showing them a screenful of 403s.
@@ -57,11 +74,15 @@ export default function AdminDashboardPage() {
 
     Promise.all([
       adminFetch<Dashboard>('/admin/analytics/dashboard', { query: { days } }),
+      adminFetch<ExtendedAnalyticsSlice>('/admin/analytics/extended', { query: { days } }),
+      adminFetch<VisitorAnalytics>('/admin/analytics/visitors', { query: { days } }),
       adminFetch<FollowUp[]>('/admin/crm/follow-ups/due'),
     ])
-      .then(([dashboard, due]) => {
+      .then(([dashboard, extendedData, visitorData, due]) => {
         if (cancelled) return;
         setData(dashboard);
+        setExtended(extendedData);
+        setVisitors(visitorData);
         setFollowUps(due);
       })
       .catch((cause: unknown) => {
@@ -75,6 +96,37 @@ export default function AdminDashboardPage() {
     };
   }, [days, isTailor]);
 
+  function openTargetEditor() {
+    if (!data) return;
+    // Rupees on screen, paisa in the API — same ×100/÷100 boundary as the
+    // garments page's stitching-fee field.
+    setTargetDraft(String(data.monthlyTarget.targetAmount / 100));
+    setTargetError(null);
+    setEditingTarget(true);
+  }
+
+  async function saveTarget(event: React.FormEvent) {
+    event.preventDefault();
+    setTargetSaving(true);
+    setTargetError(null);
+
+    try {
+      const targetAmount = Math.round(Number(targetDraft || 0) * 100);
+      const monthlyTarget = await adminFetch<MonthlyTarget>('/admin/analytics/monthly-target', {
+        method: 'PATCH',
+        body: { targetAmount },
+      });
+      // Splice the recomputed target back into the already-loaded dashboard
+      // rather than refetching the whole thing.
+      setData((current) => (current ? { ...current, monthlyTarget } : current));
+      setEditingTarget(false);
+    } catch (cause) {
+      setTargetError(cause instanceof Error ? cause.message : 'Could not save the target');
+    } finally {
+      setTargetSaving(false);
+    }
+  }
+
   if (error) {
     return (
       <p role="alert" className="card p-4 text-sm text-red-700">
@@ -83,7 +135,7 @@ export default function AdminDashboardPage() {
     );
   }
 
-  if (!data) {
+  if (!data || !extended || !visitors) {
     return <p className="text-sm text-ink/50">Loading…</p>;
   }
 
@@ -113,9 +165,12 @@ export default function AdminDashboardPage() {
       value: data.needsAttention.failedEvents,
       href: '/admin/orders',
     },
+    {
+      label: 'Abandoned carts',
+      value: visitors.abandonedCarts,
+      href: '/admin/reports',
+    },
   ].filter((item) => item.value > 0);
-
-  const topRevenue = Math.max(...data.topProducts.map((product) => product.revenue), 1);
 
   return (
     <>
@@ -143,7 +198,12 @@ export default function AdminDashboardPage() {
           value={formatMoney(data.month.revenue)}
           hint={`${data.month.orders} ${data.month.orders === 1 ? 'order' : 'orders'}`}
         />
-        <Stat index={2} label="Average order" value={formatMoney(data.averageOrderValue)} hint="All time" />
+        <Stat
+          index={2}
+          label="Total visitors"
+          value={visitors.totalVisitors.toLocaleString('en-PK')}
+          hint={visitorsHint(days, visitors.visitorsChangePercent)}
+        />
         <Stat
           index={3}
           label="Customers"
@@ -168,37 +228,155 @@ export default function AdminDashboardPage() {
         </ul>
       ) : null}
 
-      <section className="card mt-6 p-4 sm:p-5">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h2 className="text-sm font-semibold text-ink">Revenue</h2>
-            <p className="text-xs text-ink/50">
-              Daily, excluding cancelled and returned orders.
-            </p>
+      <div className="mt-6 grid gap-4 lg:grid-cols-3">
+        <section className="card p-4 sm:p-5 lg:col-span-2">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 className="text-sm font-semibold text-ink">Revenue</h2>
+              <p className="text-xs text-ink/50">Daily, excluding cancelled and returned orders.</p>
+            </div>
+
+            <div className="flex gap-1" role="group" aria-label="Date range">
+              {RANGES.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => setDays(option)}
+                  aria-pressed={days === option}
+                  className={clsx(
+                    'rounded-md px-3 py-1.5 text-sm transition-colors',
+                    days === option ? 'bg-brand-600 text-white' : 'text-ink/70 hover:bg-sand-100',
+                  )}
+                >
+                  {option} days
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="flex gap-1" role="group" aria-label="Date range">
-            {RANGES.map((option) => (
+          <SalesChart series={data.salesSeries} />
+        </section>
+
+        <section className="card p-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-ink">Monthly target</h2>
+            {!editingTarget ? (
               <button
-                key={option}
                 type="button"
-                onClick={() => setDays(option)}
-                aria-pressed={days === option}
-                className={clsx(
-                  'rounded-md px-3 py-1.5 text-sm transition-colors',
-                  days === option
-                    ? 'bg-brand-600 text-white'
-                    : 'text-ink/70 hover:bg-sand-100',
-                )}
+                onClick={openTargetEditor}
+                className="text-xs font-medium text-brand-700 hover:underline"
               >
-                {option} days
+                Edit target
               </button>
-            ))}
+            ) : null}
           </div>
-        </div>
 
-        <SalesChart series={data.salesSeries} />
-      </section>
+          {editingTarget ? (
+            <form onSubmit={saveTarget} className="mt-4 space-y-3">
+              <div>
+                <label htmlFor="monthly-target-input" className="field-label">
+                  Target this month (Rs)
+                </label>
+                <input
+                  id="monthly-target-input"
+                  type="number"
+                  min="0"
+                  step="1000"
+                  value={targetDraft}
+                  onChange={(event) => setTargetDraft(event.target.value)}
+                  className="field-input"
+                  autoFocus
+                />
+              </div>
+
+              {targetError ? (
+                <p role="alert" className="text-xs text-red-700">
+                  {targetError}
+                </p>
+              ) : null}
+
+              <div className="flex gap-2">
+                <button type="submit" disabled={targetSaving} className="btn-primary">
+                  {targetSaving ? 'Saving…' : 'Save'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingTarget(false);
+                    setTargetError(null);
+                  }}
+                  className="btn-ghost"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          ) : (
+            <>
+              <GaugeChart
+                percent={data.monthlyTarget.percent}
+                caption={
+                  data.monthlyTarget.targetAmount > 0
+                    ? `${formatMoney(data.monthlyTarget.achievedAmount)} of ${formatMoney(data.monthlyTarget.targetAmount)}`
+                    : 'No target set yet'
+                }
+              />
+              <p className="mt-3 border-t border-sand-100 pt-3 text-xs text-ink/50">
+                Average order <span className="font-semibold text-ink">{formatMoney(data.averageOrderValue)}</span>
+              </p>
+            </>
+          )}
+        </section>
+      </div>
+
+      <div className="mt-6 grid gap-4 lg:grid-cols-3">
+        <section className="card p-4">
+          <h2 className="text-sm font-semibold text-ink">
+            Top categories <span className="font-normal text-ink/50">· last {days} days</span>
+          </h2>
+          <div className="mt-4">
+            <DonutChart
+              items={extended.revenueByCategory.map((row) => ({ label: row.category, value: row.revenue }))}
+              valueFormatter={formatMoney}
+            />
+          </div>
+        </section>
+
+        <section className="card p-4">
+          <h2 className="text-sm font-semibold text-ink">
+            Conversion funnel <span className="font-normal text-ink/50">· last {days} days</span>
+          </h2>
+          <div className="mt-4">
+            <FunnelChart
+              stages={[
+                { label: 'Product views', value: visitors.funnel.productViews },
+                { label: 'Added to cart', value: visitors.funnel.addToCart },
+                { label: 'Checkout started', value: visitors.funnel.checkoutStarted },
+                { label: 'Purchases completed', value: visitors.funnel.purchasesCompleted },
+              ]}
+            />
+          </div>
+        </section>
+
+        <section className="card p-4">
+          <h2 className="text-sm font-semibold text-ink">
+            Traffic sources <span className="font-normal text-ink/50">· last {days} days</span>
+          </h2>
+          {visitors.trafficSources.length === 0 ? (
+            <p className="mt-4 text-sm text-ink/50">No page views in this window.</p>
+          ) : (
+            <BarList
+              items={visitors.trafficSources.map((row) => ({
+                key: row.source,
+                label: capitalize(row.source),
+                value: row.percent,
+                sub: `${row.count} ${row.count === 1 ? 'view' : 'views'}`,
+              }))}
+              valueFormatter={(value) => `${value}%`}
+            />
+          )}
+        </section>
+      </div>
 
       <div className="mt-6 grid gap-4 lg:grid-cols-2">
         <section className="card p-4">
@@ -209,29 +387,15 @@ export default function AdminDashboardPage() {
           {data.topProducts.length === 0 ? (
             <p className="mt-4 text-sm text-ink/50">No sales in this window.</p>
           ) : (
-            <ul className="mt-4 space-y-3">
-              {data.topProducts.map((product) => (
-                <li key={product.name}>
-                  <div className="flex justify-between gap-3 text-sm">
-                    <span className="min-w-0 truncate text-ink">{product.name}</span>
-                    <span className="shrink-0 text-ink/70">
-                      {formatMoney(product.revenue)}
-                    </span>
-                  </div>
-                  {/* Sequential single hue: more revenue is a longer bar. */}
-                  <div className="mt-1 h-2 overflow-hidden rounded-full bg-sand-100">
-                    <div
-                      className="h-full rounded-full"
-                      style={{
-                        width: `${Math.max((product.revenue / topRevenue) * 100, 2)}%`,
-                        backgroundColor: '#0f8fa3',
-                      }}
-                    />
-                  </div>
-                  <p className="mt-0.5 text-xs text-ink/40">{product.quantity} sold</p>
-                </li>
-              ))}
-            </ul>
+            <BarList
+              items={data.topProducts.map((product) => ({
+                key: product.name,
+                label: product.name,
+                value: product.revenue,
+                sub: `${product.quantity} sold`,
+              }))}
+              valueFormatter={formatMoney}
+            />
           )}
         </section>
 
@@ -355,4 +519,47 @@ function Mini({ label, value }: { label: string; value: number }) {
       <dd className="text-lg font-semibold text-ink">{value}</dd>
     </div>
   );
+}
+
+/** Ranked list with a proportional bar, matching reports/page.tsx's BarList. */
+function BarList({
+  items,
+  valueFormatter,
+}: {
+  items: Array<{ key: string; label: string; value: number; sub?: string }>;
+  valueFormatter: (value: number) => string;
+}) {
+  const max = Math.max(...items.map((item) => item.value), 1);
+
+  return (
+    <ul className="mt-4 space-y-3">
+      {items.map((item) => (
+        <li key={item.key}>
+          <div className="flex justify-between gap-3 text-sm">
+            <span className="min-w-0 truncate text-ink">{item.label}</span>
+            <span className="shrink-0 text-ink/70">{valueFormatter(item.value)}</span>
+          </div>
+          {/* Sequential single hue: more of the metric is a longer bar. */}
+          <div className="mt-1 h-2 overflow-hidden rounded-full bg-sand-100">
+            <div
+              className="h-full rounded-full"
+              style={{ width: `${Math.max((item.value / max) * 100, 2)}%`, backgroundColor: '#0f8fa3' }}
+            />
+          </div>
+          {item.sub ? <p className="mt-0.5 text-xs text-ink/40">{item.sub}</p> : null}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** vs the immediately preceding window of the same length, matching VisitorAnalytics.visitorsChangePercent. */
+function visitorsHint(days: number, changePercent: number | null): string {
+  if (changePercent === null) return `Last ${days} days`;
+  const sign = changePercent > 0 ? '+' : '';
+  return `${sign}${changePercent}% vs previous ${days} days`;
+}
+
+function capitalize(value: string): string {
+  return value.length === 0 ? value : value.charAt(0).toUpperCase() + value.slice(1);
 }

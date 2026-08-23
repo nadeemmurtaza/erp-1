@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import type { Locale } from '@yaseen/shared';
+import { computeFabricEstimate, type Locale } from '@yaseen/shared';
 import { ProductGallery } from '@/components/storefront/product-gallery';
-import { ProductPurchase } from '@/components/storefront/product-purchase';
+import { ProductPurchase, type FabricNeedRow } from '@/components/storefront/product-purchase';
 import { Link } from '@/i18n/navigation';
-import { ApiError, getProduct, getStitchingServices } from '@/lib/api';
+import { API_URL, ApiError, getProduct, getStitchingServices } from '@/lib/api';
 import type { StorefrontProduct } from '@/lib/api-types';
+import type { StitchingGarment } from '@/lib/cart-types';
 
 export const revalidate = 120;
 
@@ -50,12 +51,25 @@ export default async function ProductPage({ params }: PageProps) {
   const t = await getTranslations('product');
   const tShop = await getTranslations('shop');
 
-  // Stitching services for every garment this fabric can be made into. Loaded
-  // here so the panel renders complete on first paint rather than after a
-  // client fetch.
-  const services = product.stitchingAvailable
-    ? await stitchingServicesFor(product.garmentTypes.map((garment) => garment.key), locale)
-    : [];
+  // A garment with a benchmark worth showing before any measurements exist —
+  // the size-chart spread (below) needs the garments' fields and size chart,
+  // fetched alongside the stitching services since both only matter when
+  // stitching is even offered on this fabric.
+  const hasFabricBenchmark = product.garmentTypes.some(
+    (garment) => garment.baseFabricGaz !== null,
+  );
+
+  const [services, stitchingGarments] = product.stitchingAvailable
+    ? await Promise.all([
+        stitchingServicesFor(product.garmentTypes.map((garment) => garment.key), locale),
+        hasFabricBenchmark ? fetchStitchingGarments() : Promise.resolve([]),
+      ])
+    : ([[], []] as [StorefrontProduct[], StitchingGarment[]]);
+
+  const fabricNeed =
+    product.stitchingAvailable && hasFabricBenchmark
+      ? fabricNeedRows(product, stitchingGarments)
+      : [];
 
   const details: Array<[string, string]> = [
     ...(product.fabric ? ([[t('fabric'), product.fabric]] as Array<[string, string]>) : []),
@@ -103,6 +117,7 @@ export default async function ProductPage({ params }: PageProps) {
               product={product}
               locale={locale as Locale}
               services={services}
+              fabricNeed={fabricNeed}
             />
           </div>
 
@@ -154,4 +169,105 @@ async function stitchingServicesFor(
     byId.set(service.id, service);
   }
   return [...byId.values()];
+}
+
+/**
+ * Same endpoint the stitching panel calls client-side, fetched here too since
+ * only it carries a garment's fields and size chart — StorefrontProduct.garmentTypes
+ * stops at baseFabricGaz. Best-effort: a failure here just means no range, not
+ * a broken product page.
+ */
+async function fetchStitchingGarments(): Promise<StitchingGarment[]> {
+  try {
+    const response = await fetch(`${API_URL}/stitching/garments`, {
+      next: { revalidate: 120 },
+    });
+    return response.ok ? ((await response.json()) as StitchingGarment[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * One row per garment this fabric can become, with a fabric-need range derived
+ * from the RTW size chart's XS and XXL rows — before the customer has typed in
+ * any measurements of their own.
+ *
+ * Reuses computeFabricEstimate itself (the same function the panel runs once
+ * real measurements are entered) so the Gaz-to-metres conversion here can never
+ * drift from the one shown later in the flow.
+ */
+function fabricNeedRows(
+  product: StorefrontProduct,
+  stitchingGarments: StitchingGarment[],
+): FabricNeedRow[] {
+  return product.garmentTypes
+    .filter((garment) => garment.baseFabricGaz !== null)
+    .map((garment) => {
+      const baseFabricGaz = garment.baseFabricGaz as number;
+      const full = stitchingGarments.find((candidate) => candidate.key === garment.key);
+      const xs = full?.sizeChart.find((row) => row.sizeToken === 'XS');
+      const xxl = full?.sizeChart.find((row) => row.sizeToken === 'XXL');
+
+      if (full && xs && xxl) {
+        // Sleeve-length is matched ahead of the garment's own length, same as
+        // the stitching panel, so a key like "sleeve_length" isn't read as
+        // the total-length field.
+        const lengthField = full.fields.find(
+          (field) =>
+            !field.key.toLowerCase().includes('sleeve') &&
+            field.key.toLowerCase().includes('length'),
+        );
+        const sleeveField = full.fields.find(
+          (field) =>
+            field.key.toLowerCase().includes('sleeve') &&
+            field.key.toLowerCase().includes('length'),
+        );
+
+        const small = computeFabricEstimate({
+          garmentBaseGaz: baseFabricGaz,
+          lengthInches: lengthField ? xs.values[lengthField.key] : undefined,
+          sleeveLengthInches: sleeveField ? xs.values[sleeveField.key] : undefined,
+          fabricType: product.fabric,
+        });
+        const large = computeFabricEstimate({
+          garmentBaseGaz: baseFabricGaz,
+          lengthInches: lengthField ? xxl.values[lengthField.key] : undefined,
+          sleeveLengthInches: sleeveField ? xxl.values[sleeveField.key] : undefined,
+          fabricType: product.fabric,
+        });
+
+        const low = Math.min(small.estimatedGaz, large.estimatedGaz);
+        const high = Math.max(small.estimatedGaz, large.estimatedGaz);
+
+        // A real spread — the XS and XXL rows had a length and sleeve length to
+        // run through the shirt formula, and they came out different.
+        if (low !== high) {
+          return {
+            key: garment.key,
+            label: garment.label,
+            low,
+            high,
+            lowMetres: low === small.estimatedGaz ? small.estimatedMetres : large.estimatedMetres,
+            highMetres:
+              high === small.estimatedGaz ? small.estimatedMetres : large.estimatedMetres,
+            isRange: true,
+          };
+        }
+      }
+
+      // No size-chart spread to derive a range from (missing chart, or the
+      // chart has no length/sleeve values for this garment) — the flat
+      // benchmark stands alone.
+      const flat = computeFabricEstimate({ garmentBaseGaz: baseFabricGaz, fabricType: product.fabric });
+      return {
+        key: garment.key,
+        label: garment.label,
+        low: flat.estimatedGaz,
+        high: flat.estimatedGaz,
+        lowMetres: flat.estimatedMetres,
+        highMetres: flat.estimatedMetres,
+        isRange: false,
+      };
+    });
 }

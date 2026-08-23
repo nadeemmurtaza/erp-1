@@ -4,7 +4,6 @@ import { useState } from 'react';
 import type { Locale } from '@yaseen/shared';
 import type { StorefrontProduct } from '@/lib/api-types';
 import { ProductCard } from './product-card';
-import { GridToggle } from './grid-toggle';
 import { QuickViewModal } from './quick-view-modal';
 
 interface ProductsGridProps {
@@ -14,7 +13,7 @@ interface ProductsGridProps {
   onGridColsChange: (cols: 1 | 2 | 3) => void;
 }
 
-export function ProductsGrid({ products, locale, gridCols, onGridColsChange }: ProductsGridProps) {
+export function ProductsGrid({ products, locale, gridCols, onGridColsChange: _onGridColsChange }: ProductsGridProps) {
   const [quickViewProduct, setQuickViewProduct] = useState<StorefrontProduct | null>(null);
 
   const gridClass = {

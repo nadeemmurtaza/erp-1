@@ -19,12 +19,16 @@ describe('Orders (e2e)', () => {
 
   let readyVariantId: string;
   let unstitchedVariantId: string;
+  let kameezGarmentId: string;
   let kameezServiceId: string;
   let kameezProfileId: string;
   let necklineOptionId: string;
   let sleeveOptionId: string;
+  let finishGroupId: string;
   const createdOrderIds: string[] = [];
   let seededStock = 0;
+  let seededStitchingPrice = 0;
+  let seededFinishAllowsText = false;
 
   const KARACHI = {
     fullName: 'Ayesha Khan',
@@ -32,6 +36,20 @@ describe('Orders (e2e)', () => {
     line1: 'House 12, Street 5',
     city: 'Karachi',
     province: 'Sindh',
+  };
+
+  /** The garment's own fee, charged when no service product is picked. */
+  const GARMENT_STITCHING_FEE = toMinor(900);
+
+  /** A complete, in-range kameez set — what a guest types into the panel. */
+  const KAMEEZ_MEASUREMENTS = {
+    length: 41,
+    chest: 37,
+    waist: 33,
+    hips: 39,
+    shoulder: 14.5,
+    sleeve_length: 21,
+    sleeve_opening: 9.5,
   };
 
   beforeAll(async () => {
@@ -74,6 +92,16 @@ describe('Orders (e2e)', () => {
     ).id;
 
     const kameez = await prisma.garmentType.findUniqueOrThrow({ where: { key: 'kameez' } });
+    kameezGarmentId = kameez.id;
+
+    // Pinned rather than read from the seed, which promises no figure — the
+    // fallback assertions below are about exact money. Put back in afterAll.
+    seededStitchingPrice = kameez.stitchingPrice;
+    await prisma.garmentType.update({
+      where: { id: kameez.id },
+      data: { stitchingPrice: GARMENT_STITCHING_FEE, stitchingEnabled: true },
+    });
+
     kameezProfileId = (
       await prisma.measurementProfile.findFirstOrThrow({
         where: {
@@ -89,6 +117,16 @@ describe('Orders (e2e)', () => {
         where: { key: 'round', group: { key: 'neckline' } },
       })
     ).id;
+
+    const finishGroup = await prisma.stitchingOptionGroup.findUniqueOrThrow({
+      where: { key: 'kameez_finish' },
+    });
+    finishGroupId = finishGroup.id;
+    seededFinishAllowsText = finishGroup.allowCustomText;
+    await prisma.stitchingOptionGroup.update({
+      where: { id: finishGroup.id },
+      data: { allowCustomText: true },
+    });
 
     // This suite places a dozen orders. Stock levels are not what it is testing,
     // so give it plenty and restore the seeded figure afterwards.
@@ -127,6 +165,14 @@ describe('Orders (e2e)', () => {
     await prisma.productVariant.update({
       where: { id: readyVariantId },
       data: { stock: seededStock },
+    });
+    await prisma.garmentType.update({
+      where: { id: kameezGarmentId },
+      data: { stitchingPrice: seededStitchingPrice },
+    });
+    await prisma.stitchingOptionGroup.update({
+      where: { id: finishGroupId },
+      data: { allowCustomText: seededFinishAllowsText },
     });
     await app.close();
   });
@@ -379,7 +425,10 @@ describe('Orders (e2e)', () => {
       expect(item.garmentTypeKey).toBe('kameez');
       expect(item.measurementSnapshot.values.chest).toBe(38);
       expect(item.optionsSnapshot).toHaveLength(2);
+      // A premium make-up was chosen, so its price beats the garment's own.
       expect(item.stitchingFeeUnit).toBe(toMinor(1200));
+      // The numbers came from a profile, so there is nothing typed in to keep.
+      expect(item.measurementValues).toBeNull();
 
       // The event names the stitched line, so the tailor queue can pick it up.
       const event = await prisma.outboxEvent.findFirst({
@@ -391,15 +440,18 @@ describe('Orders (e2e)', () => {
       ).toHaveLength(1);
     });
 
-    it('refuses to check out stitching with no measurements', async () => {
+    it('checks out a guest line measured in the panel, priced from the garment', async () => {
       const agent = request.agent(app.getHttpServer());
       await agent
         .post('/api/v1/cart/items')
         .send({
           variantId: unstitchedVariantId,
           stitching: {
-            stitchingServiceId: kameezServiceId,
+            garmentTypeId: kameezGarmentId,
+            measurementValues: KAMEEZ_MEASUREMENTS,
             optionIds: [necklineOptionId, sleeveOptionId],
+            customDesignText: { kameez_finish: 'Contrast piping in maroon' },
+            sizeToken: 'M',
           },
         })
         .expect(201);
@@ -407,9 +459,97 @@ describe('Orders (e2e)', () => {
       const response = await agent
         .post('/api/v1/orders')
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
+        .expect(201);
+
+      createdOrderIds.push(response.body.id);
+
+      const item = response.body.items[0];
+      expect(item.stitchingServiceId).toBeNull();
+      expect(item.garmentTypeKey).toBe('kameez');
+      expect(item.stitchingFeeUnit).toBe(GARMENT_STITCHING_FEE);
+      expect(response.body.stitchingSubtotal).toBe(GARMENT_STITCHING_FEE);
+
+      // Kept as the customer typed it, so a dispute is settled against their
+      // own entry rather than the resolved set.
+      expect(item.measurementValues.chest).toBe(37);
+      // And resolved into the shape the workshop reads, profile or not.
+      expect(item.measurementSnapshot.label).toBeNull();
+      expect(item.measurementSnapshot.garmentTypeKey).toBe('kameez');
+      expect(item.measurementSnapshot.values.chest).toBe(37);
+
+      // A described area rides along with the chosen options, so the tailor's
+      // worksheet shows it without learning a second shape.
+      expect(item.customDesignText).toEqual({
+        kameez_finish: 'Contrast piping in maroon',
+      });
+      // Carried over from the cart line for traceability — it never touched pricing.
+      expect(item.sizeToken).toBe('M');
+      const described = item.optionsSnapshot.find(
+        (option: { custom: boolean }) => option.custom,
+      );
+      expect(described.groupKey).toBe('kameez_finish');
+      expect(described.groupLabelEn).toBe('Finishing');
+      expect(described.labelEn).toBe('Contrast piping in maroon');
+      expect(described.priceDelta).toBe(0);
+
+      // Still a stitched line, so the tailor queue is still told about it.
+      const event = await prisma.outboxEvent.findFirst({
+        where: { name: 'order.placed' },
+        orderBy: { createdAt: 'desc' },
+      });
+      expect(
+        (event!.payload as { stitchingItemIds: string[] }).stitchingItemIds,
+      ).toHaveLength(1);
+    });
+
+    it('refuses to check out a stitched line whose measurements went missing', async () => {
+      // The cart takes measurements when the line is added, so the only way one
+      // reaches checkout unmeasured is a saved profile deleted afterwards —
+      // onDelete: SetNull leaves the line pointing at nothing.
+      const ayesha = await prisma.user.findUniqueOrThrow({
+        where: { email: 'ayesha@example.com' },
+      });
+      const customer = (
+        await api()
+          .post('/api/v1/auth/login')
+          .send({ identifier: 'ayesha@example.com', password: 'customer12345' })
+      ).body.accessToken;
+
+      await api().delete('/api/v1/cart').set('Authorization', `Bearer ${customer}`).expect(200);
+
+      const spare = await prisma.measurementProfile.create({
+        data: {
+          userId: ayesha.id,
+          garmentTypeId: kameezGarmentId,
+          label: `Spare ${Date.now()}`,
+          values: KAMEEZ_MEASUREMENTS,
+        },
+      });
+
+      await api()
+        .post('/api/v1/cart/items')
+        .set('Authorization', `Bearer ${customer}`)
+        .send({
+          variantId: unstitchedVariantId,
+          stitching: {
+            garmentTypeId: kameezGarmentId,
+            measurementProfileId: spare.id,
+            optionIds: [necklineOptionId, sleeveOptionId],
+          },
+        })
+        .expect(201);
+
+      await prisma.measurementProfile.delete({ where: { id: spare.id } });
+
+      const response = await api()
+        .post('/api/v1/orders')
+        .set('Authorization', `Bearer ${customer}`)
+        .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
         .expect(400);
 
       expect(String(response.body.message)).toMatch(/Add measurements/i);
+
+      await api().delete('/api/v1/cart').set('Authorization', `Bearer ${customer}`).expect(200);
     });
   });
 

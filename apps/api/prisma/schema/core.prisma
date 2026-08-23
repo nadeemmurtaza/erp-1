@@ -40,6 +40,7 @@ model User {
   approvedPayments    Payment[]            @relation("PaymentApprover")
   segments            Segment[]
   devices             DeviceToken[]
+  stockAdjustments    StockAdjustment[]
 
   @@index([role])
   @@index([createdAt])
@@ -159,4 +160,22 @@ model DeviceToken {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+}
+
+/// Anonymous, aggregate first-party analytics — page views, add-to-cart,
+/// checkout-started. sessionId is an opaque client-generated id, never a raw
+/// IP or User-Agent, and this table is intentionally NOT related to User or
+/// Contact: do not add a userId column here, it would join anonymous session
+/// activity to a real identity.
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  type      String // "page_view" | "add_to_cart" | "checkout_started"
+  path      String? // for page_view: the route, e.g. "/en/product/lawn-suit-42"
+  source    String   @default("direct") // "direct" | "organic" | "social" | "referral" | "email"
+  sessionId String // opaque, anonymous, client-generated — never joined to a user
+  meta      Json?
+  createdAt DateTime @default(now())
+
+  @@index([type, createdAt])
+  @@index([sessionId, createdAt])
 }

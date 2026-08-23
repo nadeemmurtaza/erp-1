@@ -3,8 +3,10 @@ import { Type } from 'class-transformer';
 import {
   ArrayMaxSize,
   IsArray,
+  IsIn,
   IsInt,
   IsNotEmpty,
+  IsObject,
   IsOptional,
   IsString,
   Max,
@@ -13,19 +15,42 @@ import {
   ValidateNested,
 } from 'class-validator';
 
+/** The RTW size matrix's six tokens. Purely a label the customer picked from — see GarmentSizeChart. */
+const SIZE_TOKENS = ['XS', 'S', 'M', 'L', 'XL', 'XXL'] as const;
+
 export class StitchingRequestDto {
-  @ApiProperty({ description: 'A STITCHING_SERVICE product id' })
+  @ApiPropertyOptional({
+    description:
+      'The garment being made. Required unless a stitching service names one.',
+  })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  stitchingServiceId!: string;
+  garmentTypeId?: string;
 
   @ApiPropertyOptional({
     description:
-      'Saved measurement profile. Can be added later, but checkout requires it.',
+      'A STITCHING_SERVICE product id. Optional: without one the garment is priced from its own stitchingPrice.',
+  })
+  @IsOptional()
+  @IsString()
+  stitchingServiceId?: string;
+
+  @ApiPropertyOptional({
+    description: 'A saved measurement profile. Mutually exclusive with measurementValues.',
   })
   @IsOptional()
   @IsString()
   measurementProfileId?: string;
+
+  @ApiPropertyOptional({
+    type: 'object',
+    additionalProperties: { type: 'number' },
+    description:
+      'Measurements typed into the panel: field key -> value. What guests send, having no profile to pick.',
+  })
+  @IsOptional()
+  @IsObject()
+  measurementValues?: Record<string, number>;
 
   @ApiPropertyOptional({ type: [String], description: 'Chosen style option ids' })
   @IsOptional()
@@ -34,11 +59,30 @@ export class StitchingRequestDto {
   @ArrayMaxSize(20)
   optionIds?: string[];
 
+  @ApiPropertyOptional({
+    type: 'object',
+    additionalProperties: { type: 'string' },
+    description:
+      'Option group key -> the customer describing that design area in their own words.',
+  })
+  @IsOptional()
+  @IsObject()
+  customDesignText?: Record<string, string>;
+
   @ApiPropertyOptional({ description: 'Anything the tailor should know' })
   @IsOptional()
   @IsString()
   @MaxLength(500)
   notes?: string;
+
+  @ApiPropertyOptional({
+    enum: SIZE_TOKENS,
+    description:
+      'Which size-chart column the customer measured against, if any. Informational only — never affects pricing or which measurementValues are used.',
+  })
+  @IsOptional()
+  @IsIn(SIZE_TOKENS)
+  sizeToken?: (typeof SIZE_TOKENS)[number];
 }
 
 export class AddCartItemDto {

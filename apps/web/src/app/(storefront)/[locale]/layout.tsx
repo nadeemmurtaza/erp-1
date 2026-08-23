@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { directionFor, type Locale } from '@yaseen/shared';
 import '@/app/globals.css';
+import { AnalyticsBeacon } from '@/components/storefront/analytics-beacon';
 import { CartProvider } from '@/components/storefront/cart-provider';
 import { CustomerSessionProvider } from '@/components/storefront/customer-session';
 import { Footer } from '@/components/storefront/footer';
@@ -62,6 +63,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider>
           <CustomerSessionProvider>
             <CartProvider>
+            <AnalyticsBeacon />
             <a
               href="#main"
               className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-2 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:shadow"

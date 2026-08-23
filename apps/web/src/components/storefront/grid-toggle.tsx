@@ -1,7 +1,5 @@
 'use client';
 
-import { useCallback } from 'react';
-
 type GridCols = 1 | 2 | 3;
 
 interface GridToggleProps {

@@ -44,7 +44,9 @@ export const envSchema = z.object({
   JWT_ACCESS_TTL: z.string().default('15m'),
   JWT_REFRESH_TTL: z.string().default('30d'),
 
-  MODULES: csv('catalog,measurements,cart,orders,payments,stitching,crm,analytics'),
+  MODULES: csv(
+    'catalog,measurements,cart,orders,payments,stitching,inventory,crm,analytics,reports,tracking',
+  ),
   PAYMENT_PROVIDERS: csv('cod,bank_transfer'),
   NOTIFICATION_CHANNELS: csv('log'),
 

@@ -3,10 +3,13 @@ import { AnalyticsModule } from './analytics/analytics.module';
 import { CartModule } from './cart/cart.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { CrmModule } from './crm/crm.module';
+import { InventoryModule } from './inventory/inventory.module';
 import { MeasurementsModule } from './measurements/measurements.module';
 import { OrdersModule } from './orders/orders.module';
 import { PaymentsModule } from './payments/payments.module';
+import { ReportsModule } from './reports/reports.module';
 import { StitchingModule } from './stitching/stitching.module';
+import { TrackingModule } from './tracking/tracking.module';
 
 export interface FeatureModuleEntry {
   /** Matches an entry in the MODULES env allowlist. */
@@ -29,10 +32,13 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'measurements', module: MeasurementsModule },
   { name: 'cart', module: CartModule },
   { name: 'stitching', module: StitchingModule },
+  { name: 'inventory', module: InventoryModule },
   { name: 'payments', module: PaymentsModule },
   { name: 'orders', module: OrdersModule },
   { name: 'crm', module: CrmModule },
   { name: 'analytics', module: AnalyticsModule },
+  { name: 'reports', module: ReportsModule },
+  { name: 'tracking', module: TrackingModule },
 ];
 
 /**

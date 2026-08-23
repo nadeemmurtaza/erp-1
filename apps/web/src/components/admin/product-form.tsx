@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import clsx from 'clsx';
-import { PRODUCT_KINDS, PRODUCT_STATUSES, toMajor, toMinor } from '@yaseen/shared';
+import { PRODUCT_KINDS, PRODUCT_STATUSES, formatMoney, toMajor, toMinor } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
 import type {
   AdminCategory,
@@ -346,7 +346,11 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
 
       {isService ? (
         <Section title="Service details">
-          <Field label="Garment this service stitches" required>
+          <Field
+            label="Garment this service stitches"
+            hint="The fee above replaces the garment's standard stitching price when a customer picks this service."
+            required
+          >
             <select
               value={serviceGarmentId}
               onChange={(event) => setServiceGarmentId(event.target.value)}
@@ -357,6 +361,9 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
               {garmentTypes.map((garment) => (
                 <option key={garment.id} value={garment.id}>
                   {garment.labelEn}
+                  {garment.stitchingPrice > 0
+                    ? ` · standard ${formatMoney(garment.stitchingPrice)}`
+                    : ''}
                 </option>
               ))}
             </select>
@@ -416,25 +423,69 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           {stitchingAvailable ? (
             <fieldset className="mt-4">
               <legend className="field-label">Can be stitched as</legend>
-              <div className="flex flex-wrap gap-3">
-                {garmentTypes.map((garment) => (
-                  <label key={garment.id} className="flex items-center gap-2 text-sm">
-                    <input
-                      type="checkbox"
-                      checked={garmentTypeIds.includes(garment.id)}
-                      onChange={(event) =>
-                        setGarmentTypeIds((current) =>
-                          event.target.checked
-                            ? [...current, garment.id]
-                            : current.filter((id) => id !== garment.id),
-                        )
-                      }
-                      className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
-                    />
-                    {garment.labelEn}
-                  </label>
-                ))}
+              <p className="mb-2 text-xs text-ink/50">
+                Tick every garment this cloth can be made into. The customer sees these
+                choices with the fee shown here; fees are set per garment on the Garments
+                page.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {garmentTypes.map((garment) => {
+                  // The storefront only lists a garment that is active AND still offered
+                  // for stitching, so the editor greys out anything it would hide — a
+                  // retired garment attached here would look live but never appear.
+                  const offered = garment.isActive && garment.stitchingEnabled;
+                  const selected = garmentTypeIds.includes(garment.id);
+                  // One already attached before the garment was retired stays
+                  // untickable so it can be cleaned up — only new ones are barred.
+                  const locked = !offered && !selected;
+
+                  return (
+                    <label
+                      key={garment.id}
+                      className={clsx(
+                        'flex items-center gap-2 rounded-md border px-3 py-2 text-sm',
+                        selected ? 'border-brand-500 bg-brand-50' : 'border-sand-200',
+                        offered ? 'text-ink' : 'bg-sand-50 text-ink/50',
+                      )}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selected}
+                        disabled={locked}
+                        onChange={(event) =>
+                          setGarmentTypeIds((current) =>
+                            event.target.checked
+                              ? [...current, garment.id]
+                              : current.filter((id) => id !== garment.id),
+                          )
+                        }
+                        className="rounded border-sand-300 text-brand-600 focus:ring-brand-500 disabled:opacity-50"
+                      />
+                      {garment.labelEn}
+                      {offered ? (
+                        <span
+                          className={clsx(
+                            'text-xs',
+                            garment.stitchingPrice > 0 ? 'text-ink/60' : 'text-red-700',
+                          )}
+                        >
+                          {garment.stitchingPrice > 0
+                            ? formatMoney(garment.stitchingPrice)
+                            : 'no fee set'}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-ink/40">not offered</span>
+                      )}
+                    </label>
+                  );
+                })}
               </div>
+              {garmentTypeIds.length === 0 ? (
+                <p className="mt-2 rounded-md bg-red-50 px-3 py-2 text-xs text-red-700">
+                  No garment ticked, so the customer will not see a stitching option on
+                  this fabric.
+                </p>
+              ) : null}
             </fieldset>
           ) : null}
         </Section>

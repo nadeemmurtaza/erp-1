@@ -1,3 +1,5 @@
+import type { MeasurementFieldRow } from './api-types';
+
 /** Shapes returned by the cart endpoints. Mirrors CartView in apps/api. */
 
 export interface CartStitching {
@@ -60,10 +62,42 @@ export interface StitchingOptionGroup {
   key: string;
   labelEn: string;
   labelUr: string;
+  /** Design area the group is rendered under: "neck", "sleeves", ... Null groups sit on their own. */
+  area: string | null;
   selectionType: 'SINGLE' | 'MULTI';
   required: boolean;
+  /** Render a free-text box alongside the choices. */
+  allowCustomText: boolean;
+  helpEn: string | null;
+  helpUr: string | null;
   order: number;
   options: StitchingOptionChoice[];
+}
+
+/** One garment offered by GET /stitching/garments, with everything the panel needs to price it. */
+export interface StitchingGarment {
+  id: string;
+  key: string;
+  labelEn: string;
+  labelUr: string;
+  /** Base stitching fee in paisa. */
+  stitchingPrice: number;
+  fields: MeasurementFieldRow[];
+  optionGroups: StitchingOptionGroup[];
+  /** Flat PDF-benchmark fabric requirement in Gaz, used when the yardage formula can't be applied. */
+  baseFabricGaz: number | null;
+  /** Regional/Urdu synonyms surfaced as search aliases, e.g. "Anarkali" -> "Kalidar Frock". */
+  aliasesEn: string[];
+  aliasesUr: string[];
+  /** RTW standard sizes for this garment, keyed by measurement field key. */
+  sizeChart: Array<{ sizeToken: string; values: Record<string, number> }>;
+}
+
+/** Result of the fabric yardage calculator (packages/shared). */
+export interface FabricEstimate {
+  estimatedGaz: number;
+  estimatedMetres: number;
+  warnings: string[];
 }
 
 export interface MeasurementProfileSummary {

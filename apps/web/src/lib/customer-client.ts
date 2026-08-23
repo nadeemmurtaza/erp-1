@@ -89,7 +89,7 @@ export async function logoutCustomer(): Promise<void> {
   }).catch(() => undefined);
 }
 
-async function refreshCustomerSession(): Promise<boolean> {
+async function _refreshCustomerSession(): Promise<boolean> {
   const refreshToken = localStorage.getItem(REFRESH_KEY);
   if (!refreshToken) return false;
 

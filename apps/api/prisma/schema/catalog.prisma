@@ -137,9 +137,30 @@ model ProductVariant {
   images     ProductImage[]
   cartItems  CartItem[]
   orderItems OrderItem[]
+  stockAdjustments StockAdjustment[]
 
   @@index([productId])
   @@index([stock])
+}
+
+/// One entry per change to ProductVariant.stock, so "why is stock 4" has an
+/// answer without an audit table bolted on after the fact.
+model StockAdjustment {
+  id        String @id @default(cuid())
+  variantId String
+  /// Positive = stock added, negative = stock removed. Never zero.
+  delta     Int
+  /// Stock level AFTER this adjustment, so history reads without replaying deltas.
+  resultingStock Int
+  reason    String // "restock" | "correction" | "damaged" | "sold_offline" | "other"
+  note      String?
+  actorId   String?
+  createdAt DateTime @default(now())
+
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  actor   User?          @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([variantId, createdAt])
 }
 
 model ProductImage {

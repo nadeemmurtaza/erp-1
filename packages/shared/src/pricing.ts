@@ -8,7 +8,11 @@
  */
 
 export interface StitchingPriceInput {
-  /** Base fee of the chosen stitching service, in paisa. */
+  /**
+   * What the make-up costs before options, in paisa: the garment type's own
+   * stitching price, or a chosen STITCHING_SERVICE product's when the customer
+   * upgraded to one. Which of the two applies is the caller's decision.
+   */
   baseFee: number;
   /** Price deltas of the chosen style options, in paisa. May be negative. */
   optionDeltas: number[];

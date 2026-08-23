@@ -11,16 +11,21 @@ import {
   computeStitchingFee,
   DEFAULT_LOCALE,
   type Locale,
+  type MeasurementValues,
 } from '@yaseen/shared';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
-import type { Prisma } from '../../core/prisma/client';
+import { Prisma } from '../../core/prisma/client';
 import { pickTranslation } from '../catalog/catalog.service';
+import { MeasurementsService } from '../measurements/measurements.service';
 import type { AddCartItemDto, UpdateCartItemDto } from './dto/cart.dto';
 
 /** Guest carts live for a month; long enough to come back after payday. */
 const CART_TTL_DAYS = 30;
+
+/** A design note is a sentence for the tailor to read, not an essay. */
+const CUSTOM_DESIGN_TEXT_MAX = 500;
 
 const cartInclude = {
   items: {
@@ -28,6 +33,7 @@ const cartInclude = {
     include: {
       product: { include: { translations: true, images: true, garmentTypes: true } },
       variant: true,
+      garmentType: true,
       stitchingService: {
         include: { translations: true, garmentType: true },
       },
@@ -55,13 +61,23 @@ export interface CartLineView {
   /** True when the line asks for more than is in stock. */
   exceedsStock: boolean;
   stitching: {
-    serviceId: string;
-    serviceName: string;
+    /** Null unless the customer chose a premium make-up. */
+    serviceId: string | null;
+    serviceName: string | null;
+    garmentTypeId: string;
     garmentKey: string;
     garmentLabel: string;
     measurementProfileId: string | null;
     measurementProfileLabel: string | null;
+    /** What the customer typed, when no profile was picked. */
+    measurementValues: Record<string, number> | null;
     options: Array<{ id: string; groupLabel: string; label: string; priceDelta: number }>;
+    /** Option group key -> the customer's own words for that design area. */
+    customDesignText: Record<string, string> | null;
+    /** Which size-chart column the customer measured against, if any. Informational only. */
+    sizeToken: string | null;
+    /** Before option deltas, for ONE unit. */
+    baseFee: number;
     /** Base fee plus option deltas, for ONE unit. */
     feePerUnit: number;
     notes: string | null;
@@ -86,6 +102,31 @@ export interface CartView {
 }
 
 /**
+ * What stitching costs for ONE unit of a line.
+ *
+ * The garment list IS the price list: a stitched line is priced from its
+ * garment's `stitchingPrice`, and a STITCHING_SERVICE product only replaces
+ * that base when the customer picked one. Option deltas apply either way.
+ *
+ * Exported because checkout re-prices the cart from scratch, and a second copy
+ * of this rule is a second price for the same garment.
+ */
+export function stitchingFeeFor(
+  item: {
+    garmentType: { stitchingPrice: number } | null;
+    stitchingService: { basePrice: number } | null;
+  },
+  optionDeltas: number[],
+): number {
+  if (!item.garmentType) return 0;
+
+  return computeStitchingFee({
+    baseFee: item.stitchingService?.basePrice ?? item.garmentType.stitchingPrice,
+    optionDeltas,
+  });
+}
+
+/**
  * The cart, including the stitching add-on.
  *
  * Prices are recomputed from the database on every read — the client's numbers
@@ -98,6 +139,7 @@ export class CartService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly settings: SettingsService,
+    private readonly measurements: MeasurementsService,
   ) {}
 
   /** Finds a cart by token, or creates one. Used on every storefront request. */
@@ -143,7 +185,7 @@ export class CartService {
     const twin = stitching
       ? null
       : await this.prisma.cartItem.findFirst({
-          where: { cartId: cart.id, variantId: dto.variantId, stitchingServiceId: null },
+          where: { cartId: cart.id, variantId: dto.variantId, garmentTypeId: null },
         });
 
     if (twin) {
@@ -162,14 +204,22 @@ export class CartService {
           productId: variant.productId,
           variantId: variant.id,
           quantity: dto.quantity,
-          stitchingServiceId: stitching?.serviceId ?? null,
-          measurementProfileId: stitching?.measurementProfileId ?? null,
-          stitchingNotes: stitching?.notes ?? null,
-          ...(stitching && stitching.optionIds.length > 0
+          ...(stitching
             ? {
-                stitchingOptions: {
-                  create: stitching.optionIds.map((optionId) => ({ optionId })),
-                },
+                garmentTypeId: stitching.garmentTypeId,
+                stitchingServiceId: stitching.serviceId,
+                measurementProfileId: stitching.measurementProfileId,
+                stitchingNotes: stitching.notes,
+                measurementValues: stitching.measurementValues ?? Prisma.DbNull,
+                customDesignText: stitching.customDesignText ?? Prisma.DbNull,
+                sizeToken: stitching.sizeToken,
+                ...(stitching.optionIds.length > 0
+                  ? {
+                      stitchingOptions: {
+                        create: stitching.optionIds.map((optionId) => ({ optionId })),
+                      },
+                    }
+                  : {}),
               }
             : {}),
         },
@@ -209,10 +259,19 @@ export class CartService {
     }
 
     if (dto.measurementProfileId !== undefined) {
-      await this.assertOwnedProfile(dto.measurementProfileId, userId);
+      const profile = await this.assertOwnedProfile(dto.measurementProfileId, userId);
+      if (item.garmentTypeId && profile.garmentTypeId !== item.garmentTypeId) {
+        throw new BadRequestException('Those measurements are for a different garment.');
+      }
+
       await this.prisma.cartItem.update({
         where: { id: item.id },
-        data: { measurementProfileId: dto.measurementProfileId },
+        // The profile replaces anything typed in: a line carries one source of
+        // measurements, never two that could disagree.
+        data: {
+          measurementProfileId: dto.measurementProfileId,
+          measurementValues: Prisma.DbNull,
+        },
       });
     }
 
@@ -338,18 +397,23 @@ export class CartService {
 
   /**
    * Checks that a stitching request is coherent: the fabric offers stitching,
-   * the service stitches a garment the fabric can be made into, the options
-   * belong to that garment, and required option groups were answered.
+   * the garment is one the fabric can be made into, the measurements fit that
+   * garment's fields, the options belong to it, and required option groups
+   * were answered.
    */
   private async validateStitching(
     product: { id: string; kind: string; stitchingAvailable: boolean; garmentTypes: Array<{ garmentTypeId: string }> },
     dto: AddCartItemDto,
     userId: string | undefined,
   ): Promise<{
-    serviceId: string;
+    garmentTypeId: string;
+    serviceId: string | null;
     measurementProfileId: string | null;
+    measurementValues: MeasurementValues | null;
     optionIds: string[];
+    customDesignText: Record<string, string> | null;
     notes: string | null;
+    sizeToken: string | null;
   }> {
     const request = dto.stitching!;
 
@@ -357,35 +421,71 @@ export class CartService {
       throw new BadRequestException('This item cannot be stitched to measure.');
     }
 
-    const service = await this.prisma.product.findUnique({
-      where: { id: request.stitchingServiceId },
-      include: { garmentType: true },
+    // A premium make-up is optional. When one is named it decides the garment,
+    // so a request cannot ask for that service and a different garment at once.
+    const service = request.stitchingServiceId
+      ? await this.prisma.product.findUnique({
+          where: { id: request.stitchingServiceId },
+          include: { garmentType: true },
+        })
+      : null;
+
+    if (request.stitchingServiceId) {
+      if (!service || service.kind !== 'STITCHING_SERVICE' || service.status !== 'ACTIVE') {
+        throw new NotFoundException('That stitching service is not available.');
+      }
+      if (!service.garmentTypeId) {
+        throw new BadRequestException('That stitching service has no garment type set.');
+      }
+      if (request.garmentTypeId && request.garmentTypeId !== service.garmentTypeId) {
+        throw new BadRequestException('That stitching service makes a different garment.');
+      }
+    }
+
+    const garmentTypeId = service?.garmentTypeId ?? request.garmentTypeId;
+    if (!garmentTypeId) {
+      throw new BadRequestException('Choose the garment you would like stitched.');
+    }
+
+    const garment = await this.prisma.garmentType.findUnique({
+      where: { id: garmentTypeId },
+      include: { fields: { where: { isActive: true }, orderBy: { order: 'asc' } } },
     });
 
-    if (!service || service.kind !== 'STITCHING_SERVICE' || service.status !== 'ACTIVE') {
-      throw new NotFoundException('That stitching service is not available.');
-    }
-    if (!service.garmentTypeId || !service.garmentType) {
-      throw new BadRequestException('That stitching service has no garment type set.');
+    if (!garment || !garment.isActive || !garment.stitchingEnabled) {
+      throw new NotFoundException('That garment is not being stitched at the moment.');
     }
 
-    const allowed = product.garmentTypes.some(
-      (link) => link.garmentTypeId === service.garmentTypeId,
-    );
+    const allowed = product.garmentTypes.some((link) => link.garmentTypeId === garment.id);
     if (!allowed) {
+      throw new BadRequestException(`This fabric cannot be stitched as ${garment.labelEn}.`);
+    }
+
+    // Exactly one source of measurements. Two would eventually disagree, and
+    // the tailor has no way to know which set the customer meant.
+    if (request.measurementProfileId && request.measurementValues) {
       throw new BadRequestException(
-        `This fabric cannot be stitched as ${service.garmentType.labelEn}.`,
+        'Use a saved measurement profile or type the measurements in, not both.',
+      );
+    }
+    if (!request.measurementProfileId && !request.measurementValues) {
+      throw new BadRequestException(
+        `Enter the measurements for the ${garment.labelEn}, or pick a saved profile.`,
       );
     }
 
     if (request.measurementProfileId) {
       const profile = await this.assertOwnedProfile(request.measurementProfileId, userId);
-      if (profile.garmentTypeId !== service.garmentTypeId) {
+      if (profile.garmentTypeId !== garment.id) {
         throw new BadRequestException(
-          `Those measurements are for a different garment than ${service.garmentType.labelEn}.`,
+          `Those measurements are for a different garment than ${garment.labelEn}.`,
         );
       }
     }
+
+    const measurementValues = request.measurementValues
+      ? this.measurements.validate(garment.fields, request.measurementValues)
+      : null;
 
     const optionIds = request.optionIds ?? [];
     const options = await this.prisma.stitchingOption.findMany({
@@ -398,9 +498,9 @@ export class CartService {
     }
 
     for (const option of options) {
-      if (option.group.garmentTypeId && option.group.garmentTypeId !== service.garmentTypeId) {
+      if (option.group.garmentTypeId && option.group.garmentTypeId !== garment.id) {
         throw new BadRequestException(
-          `"${option.labelEn}" does not apply to ${service.garmentType.labelEn}.`,
+          `"${option.labelEn}" does not apply to ${garment.labelEn}.`,
         );
       }
     }
@@ -419,7 +519,7 @@ export class CartService {
     }
 
     const requiredGroups = await this.prisma.stitchingOptionGroup.findMany({
-      where: { garmentTypeId: service.garmentTypeId, required: true, isActive: true },
+      where: { garmentTypeId: garment.id, required: true, isActive: true },
     });
     for (const group of requiredGroups) {
       if (!perGroup.has(group.id)) {
@@ -428,11 +528,52 @@ export class CartService {
     }
 
     return {
-      serviceId: service.id,
+      garmentTypeId: garment.id,
+      serviceId: service?.id ?? null,
       measurementProfileId: request.measurementProfileId ?? null,
+      measurementValues,
       optionIds,
+      customDesignText: await this.cleanCustomDesignText(garment.id, request.customDesignText),
       notes: request.notes?.trim() || null,
+      sizeToken: request.sizeToken ?? null,
     };
+  }
+
+  /**
+   * Keeps only the free text that belongs to a design area still taking it.
+   *
+   * Text for a group that has since had its box turned off is dropped rather
+   * than rejected — the customer answered the form they were shown, and losing
+   * a whole cart line over it would be the shop's mistake charged to them.
+   */
+  private async cleanCustomDesignText(
+    garmentTypeId: string,
+    input: Record<string, string> | undefined,
+  ): Promise<Record<string, string> | null> {
+    const entries = Object.entries(input ?? {});
+    if (entries.length === 0) return null;
+
+    const groups = await this.prisma.stitchingOptionGroup.findMany({
+      where: {
+        key: { in: entries.map(([key]) => key) },
+        allowCustomText: true,
+        isActive: true,
+        OR: [{ garmentTypeId }, { garmentTypeId: null }],
+      },
+      select: { key: true },
+    });
+
+    const takesText = new Set(groups.map((group) => group.key));
+    const cleaned: Record<string, string> = {};
+
+    for (const [key, value] of entries) {
+      if (!takesText.has(key) || typeof value !== 'string') continue;
+
+      const text = value.trim().slice(0, CUSTOM_DESIGN_TEXT_MAX);
+      if (text) cleaned[key] = text;
+    }
+
+    return Object.keys(cleaned).length > 0 ? cleaned : null;
   }
 
   private async assertOwnedProfile(profileId: string | null, userId: string | undefined) {
@@ -469,12 +610,10 @@ export class CartService {
         priceDelta: selection.option.priceDelta,
       }));
 
-      const stitchingFeePerUnit = item.stitchingService
-        ? computeStitchingFee({
-            baseFee: item.stitchingService.basePrice,
-            optionDeltas: options.map((option) => option.priceDelta),
-          })
-        : 0;
+      const stitchingFeePerUnit = stitchingFeeFor(
+        item,
+        options.map((option) => option.priceDelta),
+      );
 
       const totals = computeLineItem({
         unitPrice,
@@ -501,25 +640,29 @@ export class CartService {
         unitPrice,
         availableStock: item.variant.stock,
         exceedsStock: item.quantity > item.variant.stock,
-        stitching:
-          item.stitchingService && item.stitchingService.garmentType
-            ? {
-                serviceId: item.stitchingService.id,
-                serviceName:
-                  pickTranslation(item.stitchingService.translations, locale)?.name ??
-                  item.stitchingService.slug,
-                garmentKey: item.stitchingService.garmentType.key,
-                garmentLabel:
-                  locale === 'ur'
-                    ? item.stitchingService.garmentType.labelUr
-                    : item.stitchingService.garmentType.labelEn,
-                measurementProfileId: item.measurementProfileId,
-                measurementProfileLabel: item.measurementProfile?.label ?? null,
-                options,
-                feePerUnit: stitchingFeePerUnit,
-                notes: item.stitchingNotes,
-              }
-            : null,
+        stitching: item.garmentType
+          ? {
+              serviceId: item.stitchingServiceId,
+              serviceName: item.stitchingService
+                ? (pickTranslation(item.stitchingService.translations, locale)?.name ??
+                  item.stitchingService.slug)
+                : null,
+              garmentTypeId: item.garmentType.id,
+              garmentKey: item.garmentType.key,
+              garmentLabel:
+                locale === 'ur' ? item.garmentType.labelUr : item.garmentType.labelEn,
+              measurementProfileId: item.measurementProfileId,
+              measurementProfileLabel: item.measurementProfile?.label ?? null,
+              measurementValues: item.measurementValues as MeasurementValues | null,
+              options,
+              customDesignText: item.customDesignText as Record<string, string> | null,
+              sizeToken: item.sizeToken,
+              baseFee:
+                item.stitchingService?.basePrice ?? item.garmentType.stitchingPrice,
+              feePerUnit: stitchingFeePerUnit,
+              notes: item.stitchingNotes,
+            }
+          : null,
         productTotal: totals.productTotal,
         stitchingTotal: totals.stitchingTotal,
         lineTotal: totals.lineTotal,
@@ -559,7 +702,13 @@ export class CartService {
         issues.push(`Only ${line.availableStock} of ${line.name} left in stock.`);
       }
 
-      if (line.stitching && !line.stitching.measurementProfileId) {
+      // Measurements are taken when the line is added, so this only fires when
+      // the saved profile behind a line was deleted afterwards.
+      if (
+        line.stitching &&
+        !line.stitching.measurementProfileId &&
+        !line.stitching.measurementValues
+      ) {
         issues.push(`Add measurements for the stitched ${line.stitching.garmentLabel}.`);
       }
     }

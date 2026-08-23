@@ -16,17 +16,28 @@ model StitchingOptionGroup {
   labelEn       String
   labelUr       String
   garmentTypeId String?
+  /// Body region the group styles: "neck", "sleeves", "upper_front",
+  /// "lower_front", "back", "trouser", "finishing". The storefront groups the
+  /// picker by this; null lands under "other".
+  area          String?
   selectionType StitchingSelectionType @default(SINGLE)
   required      Boolean               @default(false)
   order         Int                   @default(0)
   isActive      Boolean               @default(true)
-  createdAt     DateTime              @default(now())
-  updatedAt     DateTime              @updatedAt
+
+  /// Some styles cannot be enumerated — let the customer describe theirs.
+  allowCustomText Boolean @default(false)
+  helpEn          String?
+  helpUr          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   garmentType GarmentType?      @relation(fields: [garmentTypeId], references: [id], onDelete: Cascade)
   options     StitchingOption[]
 
   @@index([garmentTypeId, order])
+  @@index([area, order])
 }
 
 model StitchingOption {

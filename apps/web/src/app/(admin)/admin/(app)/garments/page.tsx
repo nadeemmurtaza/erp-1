@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
-import type { GarmentType, MeasurementFieldRow } from '@/lib/api-types';
+import type { AdminGarmentSizeChartRow, GarmentType, MeasurementFieldRow } from '@/lib/api-types';
 
 interface FieldDraft {
   key: string;
@@ -15,6 +15,20 @@ interface FieldDraft {
   isActive: boolean;
 }
 
+const SIZE_TOKENS = ['XS', 'S', 'M', 'L', 'XL', 'XXL'] as const;
+type SizeToken = (typeof SIZE_TOKENS)[number];
+
+/** Every cell as a string, matching how the rest of this form drives number inputs. */
+type SizeChartDraft = Record<SizeToken, Record<string, string>>;
+
+/**
+ * The admin list endpoint (GET /admin/measurements/garment-types) doesn't include
+ * the sizeChart relation — only the public storefront endpoint does. We still
+ * declare it here, optionally, so this page can pick it up for free the day that
+ * changes; until then it's always undefined and every read below is guarded.
+ */
+type GarmentWithSizeChart = GarmentType & { sizeChart?: AdminGarmentSizeChartRow[] };
+
 /**
  * Garment types and the measurements each one asks for.
  *
@@ -24,18 +38,31 @@ interface FieldDraft {
  * because saved profiles and jobs in production still reference it.
  */
 export default function AdminGarmentsPage() {
-  const [garments, setGarments] = useState<GarmentType[]>([]);
+  const [garments, setGarments] = useState<GarmentWithSizeChart[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [fields, setFields] = useState<FieldDraft[]>([]);
   const [labelEn, setLabelEn] = useState('');
   const [labelUr, setLabelUr] = useState('');
+  // Rupees, not paisa: this one input sits on the customer-facing side of the money
+  // boundary. Everything stored and priced elsewhere is integer paisa, so the value is
+  // divided by 100 on load and multiplied back on save.
+  const [stitchingPrice, setStitchingPrice] = useState('0');
+  const [stitchingEnabled, setStitchingEnabled] = useState(true);
+  // Plain Float, not money: a fabric-length benchmark in Gaz (yards). Unlike the Rs
+  // field above, this one is never paisa and never gets a x100/÷100 conversion.
+  const [baseFabricGaz, setBaseFabricGaz] = useState('');
+  // Comma-separated in the UI, string[] on the wire — split/joined at the form edges.
+  const [aliasesEn, setAliasesEn] = useState('');
+  const [aliasesUr, setAliasesUr] = useState('');
+  const [sizeChart, setSizeChart] = useState<SizeChartDraft>(emptySizeChart());
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [sizeBusy, setSizeBusy] = useState(false);
 
   const load = useCallback(async () => {
     try {
-      const loaded = await adminFetch<GarmentType[]>('/admin/measurements/garment-types');
+      const loaded = await adminFetch<GarmentWithSizeChart[]>('/admin/measurements/garment-types');
       setGarments(loaded);
       setSelectedId((current) => current ?? loaded[0]?.id ?? null);
     } catch (cause) {
@@ -53,7 +80,13 @@ export default function AdminGarmentsPage() {
 
     setLabelEn(garment.labelEn);
     setLabelUr(garment.labelUr);
+    setStitchingPrice(String(garment.stitchingPrice / 100));
+    setStitchingEnabled(garment.stitchingEnabled);
+    setBaseFabricGaz(garment.baseFabricGaz === null ? '' : String(garment.baseFabricGaz));
+    setAliasesEn(garment.aliasesEn.join(', '));
+    setAliasesUr(garment.aliasesUr.join(', '));
     setFields(garment.fields.map(toDraft));
+    setSizeChart(toSizeChartDraft(garment.sizeChart));
   }, [selectedId, garments]);
 
   async function save(event: React.FormEvent) {
@@ -71,6 +104,11 @@ export default function AdminGarmentsPage() {
           key: garments.find((g) => g.id === selectedId)!.key,
           labelEn: labelEn.trim(),
           labelUr: labelUr.trim(),
+          stitchingPrice: Math.round(Number(stitchingPrice || 0) * 100),
+          stitchingEnabled,
+          baseFabricGaz: baseFabricGaz.trim() === '' ? undefined : Number(baseFabricGaz),
+          aliasesEn: splitAliases(aliasesEn),
+          aliasesUr: splitAliases(aliasesUr),
           fields: fields.map((field, index) => ({
             key: field.key.trim(),
             labelEn: field.labelEn.trim(),
@@ -95,6 +133,48 @@ export default function AdminGarmentsPage() {
   }
 
   const selected = garments.find((garment) => garment.id === selectedId);
+  const activeFields = selected?.fields.filter((field) => field.isActive) ?? [];
+
+  async function saveSizeChart(event: React.FormEvent) {
+    event.preventDefault();
+    if (!selectedId) return;
+
+    setError(null);
+    setNotice(null);
+    setSizeBusy(true);
+
+    try {
+      // Skip rows where every cell is blank — the endpoint replaces only the sizes
+      // it's sent, so a garment with no XXL wearers yet can just omit that row.
+      const rows = SIZE_TOKENS.map((sizeToken) => ({
+        sizeToken,
+        values: activeFields.reduce<Record<string, number>>((values, field) => {
+          const raw = sizeChart[sizeToken][field.key];
+          if (raw !== undefined && raw.trim() !== '') values[field.key] = Number(raw);
+          return values;
+        }, {}),
+      })).filter((row) => Object.keys(row.values).length > 0);
+
+      const saved = await adminFetch<AdminGarmentSizeChartRow[]>(
+        `/admin/measurements/garment-types/${selectedId}/size-chart`,
+        { method: 'PUT', body: rows },
+      );
+
+      setSizeChart(toSizeChartDraft(saved));
+      setNotice('Standard sizes saved.');
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not save standard sizes');
+    } finally {
+      setSizeBusy(false);
+    }
+  }
+
+  function patchSizeCell(sizeToken: SizeToken, fieldKey: string, value: string): void {
+    setSizeChart((current) => ({
+      ...current,
+      [sizeToken]: { ...current[sizeToken], [fieldKey]: value },
+    }));
+  }
 
   return (
     <>
@@ -128,7 +208,8 @@ export default function AdminGarmentsPage() {
                 >
                   {garment.labelEn}
                   <span className="block text-xs text-ink/40">
-                    {garment.fields.filter((field) => field.isActive).length} measurements
+                    {garment.fields.filter((field) => field.isActive).length} measurements ·{' '}
+                    Rs {(garment.stitchingPrice / 100).toLocaleString()}
                   </span>
                 </button>
               </li>
@@ -137,149 +218,282 @@ export default function AdminGarmentsPage() {
         </nav>
 
         {selected ? (
-          <form onSubmit={save} className="card p-4">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <label className="block">
-                <span className="field-label">Name (English)</span>
-                <input
-                  value={labelEn}
-                  onChange={(event) => setLabelEn(event.target.value)}
-                  className="field-input"
-                  required
-                />
-              </label>
-              <label className="block" dir="rtl">
-                <span className="field-label">نام (اردو)</span>
-                <input
-                  value={labelUr}
-                  onChange={(event) => setLabelUr(event.target.value)}
-                  className="field-input font-urdu"
-                  required
-                />
-              </label>
-            </div>
-
-            <h2 className="mb-2 mt-6 text-sm font-semibold text-ink">Measurements</h2>
-            <div className="space-y-2">
-              {fields.map((field, index) => (
-                <div
-                  key={`${field.key}-${index}`}
-                  className={
-                    field.isActive
-                      ? 'grid items-end gap-2 rounded-md border border-sand-200 p-2 sm:grid-cols-7'
-                      : 'grid items-end gap-2 rounded-md border border-sand-200 bg-sand-50 p-2 opacity-60 sm:grid-cols-7'
-                  }
-                >
-                  <Small label="Key">
+          <div className="space-y-6">
+            <form onSubmit={save} className="card p-4">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <label className="block">
+                  <span className="field-label">Name (English)</span>
+                  <input
+                    value={labelEn}
+                    onChange={(event) => setLabelEn(event.target.value)}
+                    className="field-input"
+                    required
+                  />
+                </label>
+                <label className="block" dir="rtl">
+                  <span className="field-label">نام (اردو)</span>
+                  <input
+                    value={labelUr}
+                    onChange={(event) => setLabelUr(event.target.value)}
+                    className="field-input font-urdu"
+                    required
+                  />
+                </label>
+                <label className="block">
+                  <span className="field-label">Stitching fee (Rs)</span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={stitchingPrice}
+                    onChange={(event) => setStitchingPrice(event.target.value)}
+                    className="field-input"
+                    required
+                  />
+                  <span className="mt-1 block text-xs text-ink/50">
+                    Charged when the customer picks no premium stitching service.
+                  </span>
+                </label>
+                <div className="block">
+                  <span className="field-label">Offered for stitching</span>
+                  <label className="flex items-center gap-2 text-sm text-ink/70">
                     <input
-                      value={field.key}
-                      onChange={(event) => patch(setFields, index, { key: event.target.value })}
-                      className="field-input py-1 text-sm"
+                      type="checkbox"
+                      checked={stitchingEnabled}
+                      onChange={(event) => setStitchingEnabled(event.target.checked)}
+                      className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
                     />
-                  </Small>
-                  <Small label="English">
-                    <input
-                      value={field.labelEn}
-                      onChange={(event) =>
-                        patch(setFields, index, { labelEn: event.target.value })
-                      }
-                      className="field-input py-1 text-sm"
-                    />
-                  </Small>
-                  <Small label="اردو">
-                    <input
-                      value={field.labelUr}
-                      onChange={(event) =>
-                        patch(setFields, index, { labelUr: event.target.value })
-                      }
-                      dir="rtl"
-                      className="field-input py-1 font-urdu text-sm"
-                    />
-                  </Small>
-                  <Small label="Unit">
-                    <select
-                      value={field.unit}
-                      onChange={(event) =>
-                        patch(setFields, index, { unit: event.target.value as 'INCH' | 'CM' })
-                      }
-                      className="field-input py-1 text-sm"
-                    >
-                      <option value="INCH">inch</option>
-                      <option value="CM">cm</option>
-                    </select>
-                  </Small>
-                  <Small label="Min">
-                    <input
-                      type="number"
-                      step="0.25"
-                      value={field.min}
-                      onChange={(event) => patch(setFields, index, { min: event.target.value })}
-                      className="field-input py-1 text-sm"
-                    />
-                  </Small>
-                  <Small label="Max">
-                    <input
-                      type="number"
-                      step="0.25"
-                      value={field.max}
-                      onChange={(event) => patch(setFields, index, { max: event.target.value })}
-                      className="field-input py-1 text-sm"
-                    />
-                  </Small>
-                  <div className="flex items-center gap-3 pb-1">
-                    <label className="flex items-center gap-1 text-xs text-ink/70">
-                      <input
-                        type="checkbox"
-                        checked={field.required}
-                        onChange={(event) =>
-                          patch(setFields, index, { required: event.target.checked })
-                        }
-                        className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
-                      />
-                      Required
-                    </label>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        patch(setFields, index, { isActive: !field.isActive })
-                      }
-                      className="text-xs text-ink/60 hover:text-ink"
-                    >
-                      {field.isActive ? 'Retire' : 'Restore'}
-                    </button>
-                  </div>
+                    Show in the stitching flow
+                  </label>
+                  <span className="mt-1 block text-xs text-ink/50">
+                    Unticking hides this garment from customers without deleting anything.
+                  </span>
                 </div>
-              ))}
-            </div>
+                <label className="block">
+                  <span className="field-label">Base fabric (Gaz)</span>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.25"
+                    value={baseFabricGaz}
+                    onChange={(event) => setBaseFabricGaz(event.target.value)}
+                    className="field-input"
+                  />
+                  <span className="mt-1 block text-xs text-ink/50">
+                    Flat fabric benchmark, used when the yardage formula doesn&apos;t apply.
+                  </span>
+                </label>
+                <label className="block">
+                  <span className="field-label">Also known as (English)</span>
+                  <input
+                    value={aliasesEn}
+                    onChange={(event) => setAliasesEn(event.target.value)}
+                    placeholder="Anarkali, Panel Dress, Gown"
+                    className="field-input"
+                  />
+                  <span className="mt-1 block text-xs text-ink/50">Comma-separated.</span>
+                </label>
+                <label className="block" dir="rtl">
+                  <span className="field-label">بھی کہا جاتا ہے (اردو)</span>
+                  <input
+                    value={aliasesUr}
+                    onChange={(event) => setAliasesUr(event.target.value)}
+                    className="field-input font-urdu"
+                  />
+                  <span className="mt-1 block text-xs text-ink/50" dir="ltr">
+                    Comma-separated.
+                  </span>
+                </label>
+              </div>
 
-            <button
-              type="button"
-              onClick={() =>
-                setFields((current) => [
-                  ...current,
-                  {
-                    key: '',
-                    labelEn: '',
-                    labelUr: '',
-                    unit: 'INCH',
-                    min: '1',
-                    max: '100',
-                    required: true,
-                    isActive: true,
-                  },
-                ])
-              }
-              className="btn-secondary mt-3"
-            >
-              Add measurement
-            </button>
+              <h2 className="mb-2 mt-6 text-sm font-semibold text-ink">Measurements</h2>
+              <div className="space-y-2">
+                {fields.map((field, index) => (
+                  <div
+                    key={`${field.key}-${index}`}
+                    className={
+                      field.isActive
+                        ? 'grid items-end gap-2 rounded-md border border-sand-200 p-2 sm:grid-cols-7'
+                        : 'grid items-end gap-2 rounded-md border border-sand-200 bg-sand-50 p-2 opacity-60 sm:grid-cols-7'
+                    }
+                  >
+                    <Small label="Key">
+                      <input
+                        value={field.key}
+                        onChange={(event) =>
+                          patch(setFields, index, { key: event.target.value })
+                        }
+                        className="field-input py-1 text-sm"
+                      />
+                    </Small>
+                    <Small label="English">
+                      <input
+                        value={field.labelEn}
+                        onChange={(event) =>
+                          patch(setFields, index, { labelEn: event.target.value })
+                        }
+                        className="field-input py-1 text-sm"
+                      />
+                    </Small>
+                    <Small label="اردو">
+                      <input
+                        value={field.labelUr}
+                        onChange={(event) =>
+                          patch(setFields, index, { labelUr: event.target.value })
+                        }
+                        dir="rtl"
+                        className="field-input py-1 font-urdu text-sm"
+                      />
+                    </Small>
+                    <Small label="Unit">
+                      <select
+                        value={field.unit}
+                        onChange={(event) =>
+                          patch(setFields, index, { unit: event.target.value as 'INCH' | 'CM' })
+                        }
+                        className="field-input py-1 text-sm"
+                      >
+                        <option value="INCH">inch</option>
+                        <option value="CM">cm</option>
+                      </select>
+                    </Small>
+                    <Small label="Min">
+                      <input
+                        type="number"
+                        step="0.25"
+                        value={field.min}
+                        onChange={(event) =>
+                          patch(setFields, index, { min: event.target.value })
+                        }
+                        className="field-input py-1 text-sm"
+                      />
+                    </Small>
+                    <Small label="Max">
+                      <input
+                        type="number"
+                        step="0.25"
+                        value={field.max}
+                        onChange={(event) =>
+                          patch(setFields, index, { max: event.target.value })
+                        }
+                        className="field-input py-1 text-sm"
+                      />
+                    </Small>
+                    <div className="flex items-center gap-3 pb-1">
+                      <label className="flex items-center gap-1 text-xs text-ink/70">
+                        <input
+                          type="checkbox"
+                          checked={field.required}
+                          onChange={(event) =>
+                            patch(setFields, index, { required: event.target.checked })
+                          }
+                          className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                        />
+                        Required
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => patch(setFields, index, { isActive: !field.isActive })}
+                        className="text-xs text-ink/60 hover:text-ink"
+                      >
+                        {field.isActive ? 'Retire' : 'Restore'}
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-            <div className="mt-6 border-t border-sand-200 pt-4">
-              <button type="submit" disabled={busy} className="btn-primary">
-                {busy ? 'Saving…' : 'Save garment'}
+              <button
+                type="button"
+                onClick={() =>
+                  setFields((current) => [
+                    ...current,
+                    {
+                      key: '',
+                      labelEn: '',
+                      labelUr: '',
+                      unit: 'INCH',
+                      min: '1',
+                      max: '100',
+                      required: true,
+                      isActive: true,
+                    },
+                  ])
+                }
+                className="btn-secondary mt-3"
+              >
+                Add measurement
               </button>
-            </div>
-          </form>
+
+              <div className="mt-6 border-t border-sand-200 pt-4">
+                <button type="submit" disabled={busy} className="btn-primary">
+                  {busy ? 'Saving…' : 'Save garment'}
+                </button>
+              </div>
+            </form>
+
+            <form onSubmit={saveSizeChart} className="card p-4">
+              <h2 className="text-sm font-semibold text-ink">Standard sizes (RTW)</h2>
+              <p className="mb-4 mt-1 text-xs text-ink/50">
+                For customers who don&apos;t know their measurements. Fill in the sizes you
+                stock — a size left blank isn&apos;t offered as a quick pick for this garment.
+              </p>
+
+              {activeFields.length === 0 ? (
+                <p className="text-sm text-ink/50">
+                  Add at least one measurement above before setting standard sizes.
+                </p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr>
+                        <th className="p-2 text-start text-xs font-medium text-ink/50">Size</th>
+                        {activeFields.map((field) => (
+                          <th
+                            key={field.id}
+                            className="p-2 text-start text-xs font-medium text-ink/50"
+                          >
+                            {field.labelEn} ({field.unit === 'INCH' ? 'in' : 'cm'})
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {SIZE_TOKENS.map((sizeToken) => (
+                        <tr key={sizeToken} className="border-t border-sand-200">
+                          <td className="p-2 text-sm font-medium text-ink/70">{sizeToken}</td>
+                          {activeFields.map((field) => (
+                            <td key={field.id} className="p-2">
+                              <input
+                                type="number"
+                                step="0.25"
+                                value={sizeChart[sizeToken][field.key] ?? ''}
+                                onChange={(event) =>
+                                  patchSizeCell(sizeToken, field.key, event.target.value)
+                                }
+                                className="field-input py-1 text-sm"
+                              />
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              <div className="mt-4 border-t border-sand-200 pt-4">
+                <button
+                  type="submit"
+                  disabled={sizeBusy || activeFields.length === 0}
+                  className="btn-primary"
+                >
+                  {sizeBusy ? 'Saving…' : 'Save sizes'}
+                </button>
+              </div>
+            </form>
+          </div>
         ) : (
           <p className="text-sm text-ink/50">Loading…</p>
         )}
@@ -309,6 +523,28 @@ function patch(
   setFields((current) =>
     current.map((field, position) => (position === index ? { ...field, ...changes } : field)),
   );
+}
+
+function emptySizeChart(): SizeChartDraft {
+  return { XS: {}, S: {}, M: {}, L: {}, XL: {}, XXL: {} };
+}
+
+/** Every value stringified for the number inputs; missing rows stay empty. */
+function toSizeChartDraft(rows: AdminGarmentSizeChartRow[] | undefined): SizeChartDraft {
+  const draft = emptySizeChart();
+  for (const row of rows ?? []) {
+    draft[row.sizeToken] = Object.fromEntries(
+      Object.entries(row.values).map(([key, value]) => [key, String(value)]),
+    );
+  }
+  return draft;
+}
+
+function splitAliases(value: string): string[] {
+  return value
+    .split(',')
+    .map((alias) => alias.trim())
+    .filter((alias) => alias.length > 0);
 }
 
 function Small({ label, children }: { label: string; children: React.ReactNode }) {

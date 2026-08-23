@@ -37,6 +37,7 @@ export const SettingKey = {
   StitchingLeadDays: 'stitching.lead_days',
   BankAccounts: 'payments.bank_accounts',
   LowStockThreshold: 'catalog.low_stock_threshold',
+  MonthlyRevenueTarget: 'analytics.monthly_revenue_target',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -98,4 +99,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   ],
 
   [SettingKey.LowStockThreshold]: 3,
+
+  /** Shown as the dashboard's monthly progress target until an admin sets a real one. */
+  [SettingKey.MonthlyRevenueTarget]: toMinor(1_000_000),
 };

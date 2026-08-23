@@ -8,7 +8,6 @@ import {
 import {
   computeOrderTotals,
   computeShippingFee,
-  computeStitchingFee,
   DEFAULT_LOCALE,
   normalizePkPhone,
   type Locale,
@@ -20,7 +19,8 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { paginated } from '../../core/common/dto/pagination.dto';
-import type { OrderStatus, Prisma } from '../../core/prisma/client';
+import { Prisma, type OrderStatus } from '../../core/prisma/client';
+import { stitchingFeeFor } from '../cart/cart.service';
 import { pickTranslation } from '../catalog/catalog.service';
 import { PaymentsService } from '../payments/payments.service';
 import type { PlaceOrderDto } from './dto/order.dto';
@@ -183,9 +183,12 @@ export class OrdersService {
               stitchingServiceId: line.stitchingServiceId,
               stitchingServiceName: line.stitchingServiceName,
               garmentTypeKey: line.garmentTypeKey,
-              measurementSnapshot: line.measurementSnapshot as Prisma.InputJsonValue,
-              optionsSnapshot: line.optionsSnapshot as Prisma.InputJsonValue,
+              measurementSnapshot: jsonOrNull(line.measurementSnapshot),
+              optionsSnapshot: jsonOrNull(line.optionsSnapshot),
               stitchingNotes: line.stitchingNotes,
+              measurementValues: jsonOrNull(line.measurementValues),
+              customDesignText: jsonOrNull(line.customDesignText),
+              sizeToken: line.sizeToken,
             })),
           },
           statusEvents: {
@@ -218,7 +221,7 @@ export class OrdersService {
           grandTotal: created.grandTotal,
           placedAt: created.placedAt.toISOString(),
           stitchingItemIds: created.items
-            .filter((item) => item.stitchingServiceId)
+            .filter((item) => item.garmentTypeKey)
             .map((item) => item.id),
         },
         tx,
@@ -445,6 +448,8 @@ export class OrdersService {
    * renamed, repriced or archived.
    */
   private async priceCart(cart: CartWithRelations, locale: Locale) {
+    const designAreas = await this.customTextAreas(cart);
+
     const lines = cart.items.map((item) => {
       const unitPrice = item.variant.priceOverride ?? item.product.basePrice;
 
@@ -456,19 +461,37 @@ export class OrdersService {
         labelEn: selection.option.labelEn,
         labelUr: selection.option.labelUr,
         priceDelta: selection.option.priceDelta,
+        custom: false,
       }));
 
-      const stitchingFeeUnit = item.stitchingService
-        ? computeStitchingFee({
-            baseFee: item.stitchingService.basePrice,
-            optionDeltas: options.map((option) => option.priceDelta),
-          })
-        : 0;
+      // A described area is a style choice like any other, so it joins the same
+      // list — the tailor's worksheet and the customer's order page both read
+      // it without either screen learning a second shape.
+      const described = Object.entries(
+        (item.customDesignText as Record<string, string> | null) ?? {},
+      ).map(([groupKey, text]) => {
+        const area = designAreas.get(groupKey);
+        return {
+          groupKey,
+          groupLabelEn: area?.labelEn ?? groupKey,
+          groupLabelUr: area?.labelUr ?? groupKey,
+          key: 'custom',
+          labelEn: text,
+          labelUr: text,
+          priceDelta: 0,
+          custom: true,
+        };
+      });
 
-      if (item.stitchingService && !item.measurementProfile) {
+      const stitchingFeeUnit = stitchingFeeFor(
+        item,
+        options.map((option) => option.priceDelta),
+      );
+
+      if (item.garmentTypeId && !item.measurementProfile && !item.measurementValues) {
         throw new BadRequestException(
           `Add measurements for the stitched ${
-            item.stitchingService.garmentType?.labelEn ?? 'garment'
+            item.garmentType?.labelEn ?? 'garment'
           } before checking out.`,
         );
       }
@@ -498,16 +521,14 @@ export class OrdersService {
           ? (pickTranslation(item.stitchingService.translations, locale)?.name ??
             item.stitchingService.slug)
           : null,
-        garmentTypeKey: item.stitchingService?.garmentType?.key ?? null,
-        measurementSnapshot: item.measurementProfile
-          ? {
-              label: item.measurementProfile.label,
-              garmentTypeKey: item.measurementProfile.garmentType.key,
-              values: item.measurementProfile.values,
-            }
-          : null,
-        optionsSnapshot: options.length > 0 ? options : null,
+        garmentTypeKey: item.garmentType?.key ?? null,
+        measurementSnapshot: measurementSnapshotFor(item),
+        optionsSnapshot:
+          options.length + described.length > 0 ? [...options, ...described] : null,
         stitchingNotes: item.stitchingNotes,
+        measurementValues: item.measurementValues,
+        customDesignText: item.customDesignText,
+        sizeToken: item.sizeToken,
       };
     });
 
@@ -521,6 +542,28 @@ export class OrdersService {
 
     return { lines, totals };
   }
+
+  /**
+   * Labels for the design areas the customer described in their own words.
+   *
+   * Read once for the whole cart, so the snapshot can name the area rather than
+   * leave the workshop holding a bare key.
+   */
+  private async customTextAreas(cart: CartWithRelations) {
+    const keys = cart.items.flatMap((item) =>
+      Object.keys((item.customDesignText as Record<string, string> | null) ?? {}),
+    );
+
+    const groups =
+      keys.length > 0
+        ? await this.prisma.stitchingOptionGroup.findMany({
+            where: { key: { in: keys } },
+            select: { key: true, labelEn: true, labelUr: true },
+          })
+        : [];
+
+    return new Map(groups.map((group) => [group.key, group]));
+  }
 }
 
 const cartInclude = {
@@ -529,6 +572,7 @@ const cartInclude = {
     include: {
       product: { include: { translations: true, images: true } },
       variant: true,
+      garmentType: true,
       stitchingService: { include: { translations: true, garmentType: true } },
       measurementProfile: { include: { garmentType: true } },
       stitchingOptions: { include: { option: { include: { group: true } } } },
@@ -537,6 +581,40 @@ const cartInclude = {
 } satisfies Prisma.CartInclude;
 
 type CartWithRelations = Prisma.CartGetPayload<{ include: typeof cartInclude }>;
+
+/**
+ * The measurements the workshop will cut to.
+ *
+ * A saved profile and an inline entry are the same thing to a tailor, so both
+ * collapse into one shape here and the job sheet never has to know which door
+ * the numbers came in through.
+ */
+function measurementSnapshotFor(item: CartWithRelations['items'][number]) {
+  if (item.measurementProfile) {
+    return {
+      label: item.measurementProfile.label,
+      garmentTypeKey: item.measurementProfile.garmentType.key,
+      values: item.measurementProfile.values,
+    };
+  }
+
+  if (item.measurementValues) {
+    return {
+      label: null,
+      garmentTypeKey: item.garmentType?.key ?? null,
+      values: item.measurementValues,
+    };
+  }
+
+  return null;
+}
+
+/** Prisma wants an explicit marker rather than `null` for an empty Json column. */
+function jsonOrNull(value: unknown): Prisma.InputJsonValue | typeof Prisma.DbNull {
+  return value === null || value === undefined
+    ? Prisma.DbNull
+    : (value as Prisma.InputJsonValue);
+}
 
 /**
  * Sequential order numbers per year: YSN-2026-0001.

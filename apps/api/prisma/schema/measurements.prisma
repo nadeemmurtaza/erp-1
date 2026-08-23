@@ -12,12 +12,26 @@ enum MeasurementUnit {
 }
 
 model GarmentType {
-  id        String   @id @default(cuid())
-  key       String   @unique // "kameez", "shalwar"
-  labelEn   String
-  labelUr   String
-  order     Int      @default(0)
-  isActive  Boolean  @default(true)
+  id       String  @id @default(cuid())
+  key      String  @unique // "kameez", "shalwar"
+  labelEn  String
+  labelUr  String
+  order    Int     @default(0)
+  isActive Boolean @default(true)
+
+  /// The garment list IS the stitching price list, in paisa. A
+  /// STITCHING_SERVICE product only overrides this when the customer picks one.
+  stitchingPrice   Int     @default(0)
+  /// Withdraws the garment from the stitching flow without hiding it from
+  /// measurements or from jobs already in production.
+  stitchingEnabled Boolean @default(true)
+
+  /// Base fabric requirement in Gaz (36" width) from the tailoring reference table; null when unknown.
+  baseFabricGaz Float?
+  /// Regional/synonym display names, e.g. ["Anarkali", "Panel Dress", "Gown"].
+  aliasesEn     String[] @default([])
+  aliasesUr     String[] @default([])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -25,10 +39,13 @@ model GarmentType {
   profiles        MeasurementProfile[]
   optionGroups    StitchingOptionGroup[]
   stitchingJobs   StitchingJob[]
+  /// Cart lines waiting to be made into this garment.
+  cartItems       CartItem[]
   /// STITCHING_SERVICE products that stitch this garment.
   serviceProducts Product[]              @relation("ServiceGarment")
   /// Unstitched fabrics that can be made into this garment.
   fabrics         ProductGarmentType[]
+  sizeChart       GarmentSizeChart[]
 
   @@index([isActive, order])
 }
@@ -74,4 +91,22 @@ model MeasurementProfile {
 
   @@unique([userId, garmentTypeId, label])
   @@index([userId])
+}
+
+/// A standard RTW size row (XS-XXL) for a garment, offered as a shortcut
+/// alongside the "type your own measurements" flow.
+model GarmentSizeChart {
+  id            String   @id @default(cuid())
+  garmentTypeId String
+  sizeToken     String // "XS" | "S" | "M" | "L" | "XL" | "XXL"
+  /// field key -> value, same shape as MeasurementProfile.values, validated against the garment's active MeasurementFields.
+  values        Json
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  garmentType GarmentType @relation(fields: [garmentTypeId], references: [id], onDelete: Cascade)
+
+  @@unique([garmentTypeId, sizeToken])
+  @@index([garmentTypeId, order])
 }

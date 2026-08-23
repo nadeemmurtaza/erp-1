@@ -1,11 +1,9 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useCart } from './cart-provider';
 
 export function CartBadge() {
-  const t = useTranslations('nav');
   const { cart, loading } = useCart();
   const count = cart?.itemCount ?? 0;
 

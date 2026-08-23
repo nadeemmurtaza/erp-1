@@ -1,5 +1,6 @@
 'use client';
 
+import { trackEvent } from './analytics-client';
 import { API_URL, ApiError } from './api';
 import type { Cart } from './cart-types';
 
@@ -62,15 +63,24 @@ export interface AddToCartInput {
   variantId: string;
   quantity?: number;
   stitching?: {
-    stitchingServiceId: string;
+    garmentTypeId: string;
+    stitchingServiceId?: string;
     measurementProfileId?: string;
+    measurementValues?: Record<string, number>;
     optionIds?: string[];
+    customDesignText?: Record<string, string>;
+    /** Which RTW size the measurements were prefilled from, if any. */
+    sizeToken?: string;
     notes?: string;
   };
 }
 
-export function addToCart(input: AddToCartInput, locale: string): Promise<Cart> {
-  return cartFetch('/items', { method: 'POST', body: input, locale });
+export async function addToCart(input: AddToCartInput, locale: string): Promise<Cart> {
+  const cart = await cartFetch('/items', { method: 'POST', body: input, locale });
+  // Fired only once the line has actually been added — not on a failed
+  // request, since cartFetch throws before this point on a non-OK response.
+  trackEvent('add_to_cart', { meta: { variantId: input.variantId, quantity: input.quantity } });
+  return cart;
 }
 
 export function updateCartItem(

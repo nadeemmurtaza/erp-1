@@ -21,8 +21,14 @@ export interface AdminNavItem {
 const OFFICE = ['ADMIN', 'STAFF'] as const;
 
 export const ADMIN_NAV: AdminNavItem[] = [
+  // Group 1: Overview
   { key: 'dashboard', label: 'Dashboard', href: '/admin', roles: OFFICE, group: 'overview' },
 
+  // Group 2: Customer Lifecycle (follows conversion funnel: Enquiries/Leads → Customers)
+  { key: 'leads', label: 'Enquiries', href: '/admin/leads', roles: OFFICE, group: 'people' },
+  { key: 'contacts', label: 'Customers', href: '/admin/contacts', roles: OFFICE, group: 'people' },
+
+  // Group 3: Sales Operations (follows order processing sequence)
   { key: 'orders', label: 'Orders', href: '/admin/orders', roles: OFFICE, group: 'sales' },
   {
     key: 'payments',
@@ -33,6 +39,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
   },
   { key: 'reports', label: 'Reports', href: '/admin/reports', roles: OFFICE, group: 'sales' },
 
+  // Group 4: Production/Workshop (Tailors see ONLY this + Dashboard redirect)
   {
     key: 'stitching',
     label: 'Tailor queue',
@@ -49,9 +56,8 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'production',
   },
 
-  { key: 'contacts', label: 'Customers', href: '/admin/contacts', roles: OFFICE, group: 'people' },
-  { key: 'leads', label: 'Enquiries', href: '/admin/leads', roles: OFFICE, group: 'people' },
-
+  // Group 5: Catalogue & Data (elevated Bulk Import for data entry workflow)
+  { key: 'import', label: 'Bulk import', href: '/admin/import', roles: OFFICE, group: 'catalogue' },
   {
     key: 'products',
     label: 'Products & services',
@@ -87,7 +93,6 @@ export const ADMIN_NAV: AdminNavItem[] = [
     roles: OFFICE,
     group: 'catalogue',
   },
-  { key: 'import', label: 'Bulk import', href: '/admin/import', roles: OFFICE, group: 'catalogue' },
 ];
 
 /** Where a role lands after signing in — a tailor's home is the workshop. */
@@ -97,10 +102,10 @@ export function landingFor(role: UserRole): string {
 
 export const NAV_GROUP_LABELS: Record<AdminNavItem['group'], string> = {
   overview: 'Overview',
-  catalogue: 'Catalogue',
-  sales: 'Sales',
+  people: 'Customer Lifecycle',
+  sales: 'Sales Operations',
   production: 'Workshop',
-  people: 'People',
+  catalogue: 'Catalogue & Data',
   settings: 'Settings',
 };
 

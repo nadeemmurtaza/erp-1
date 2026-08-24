@@ -29,8 +29,8 @@ export default function TailorQueuePage() {
   const [overdue, setOverdue] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const role = useMemo(() => getStoredUser()?.role, []);
-  const isTailor = role === 'TAILOR';
+  const permissions = useMemo(() => getStoredUser()?.permissions ?? [], []);
+  const canManageAssignments = permissions.includes('stitching.jobs.assign');
 
   const load = useCallback(async () => {
     setError(null);
@@ -104,7 +104,7 @@ export default function TailorQueuePage() {
           ))}
         </select>
 
-        {!isTailor ? (
+        {canManageAssignments ? (
           <select
             value={tailorId}
             onChange={(event) => setTailorId(event.target.value)}
@@ -138,7 +138,7 @@ export default function TailorQueuePage() {
           Overdue only
         </label>
 
-        {workload && !isTailor ? (
+        {workload && canManageAssignments ? (
           <span className="ms-auto text-sm text-ink/50">
             {workload.unassigned} unassigned
           </span>
@@ -224,7 +224,7 @@ export default function TailorQueuePage() {
         </div>
       </div>
 
-      {workload && workload.tailors.length > 0 && !isTailor ? (
+      {workload && workload.tailors.length > 0 && canManageAssignments ? (
         <section className="card mt-6 p-4">
           <h2 className="mb-3 text-sm font-semibold text-ink">Tailor load</h2>
           <ul className="space-y-2">

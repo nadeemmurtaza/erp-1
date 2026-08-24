@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
-import { CurrentUser, Public, Roles } from '../../core/auth/decorators';
+import { CurrentUser, Public, RequirePermission } from '../../core/auth/decorators';
 import {
   CreateMeasurementProfileDto,
   GarmentSizeChartRowDto,
@@ -81,7 +81,7 @@ export class MeasurementsController {
 
 @ApiTags('admin/measurements')
 @Controller('admin/measurements')
-@Roles('ADMIN', 'STAFF')
+@RequirePermission('measurements.manage_blueprints')
 export class MeasurementsAdminController {
   constructor(
     private readonly measurements: MeasurementsService,

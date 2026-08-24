@@ -1,7 +1,7 @@
 import { Controller, Get, Query, Res } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
-import { Roles } from '../../core/auth/decorators';
+import { RequirePermission } from '../../core/auth/decorators';
 import { csvRow } from './csv.util';
 import { ReportDateRangeQueryDto, StockReportQueryDto } from './dto/reports.dto';
 import type { CsvExport } from './reports.service';
@@ -9,7 +9,7 @@ import { ReportsService } from './reports.service';
 
 @ApiTags('admin/reports')
 @Controller('admin/reports')
-@Roles('ADMIN', 'STAFF')
+@RequirePermission('reports.view')
 export class ReportsController {
   constructor(private readonly reports: ReportsService) {}
 

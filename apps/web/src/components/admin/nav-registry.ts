@@ -1,12 +1,12 @@
-import type { UserRole } from '@yaseen/shared';
+import type { PermissionKey } from '@yaseen/shared';
 
 export interface AdminNavItem {
   /** Stable key, matching the API module that owns the section. */
   key: string;
   label: string;
   href: string;
-  /** Roles allowed to see the entry. Omit for everyone in the back office. */
-  roles?: readonly UserRole[];
+  /** Permissions that unlock this entry — any one is enough. Omit for everyone signed in. */
+  permissions?: readonly PermissionKey[];
   group: 'overview' | 'catalogue' | 'sales' | 'production' | 'people' | 'settings';
 }
 
@@ -14,85 +14,135 @@ export interface AdminNavItem {
  * The admin navigation, as data.
  *
  * ADDING A SECTION IS ONE ENTRY HERE. The shell renders whatever is registered
- * and filters by the signed-in user's role, so a new module (orders, CRM, the
- * tailor queue) adds its screens without touching the layout — the same
- * one-line rule the API's module registry follows.
+ * and filters by the signed-in user's permissions, so a new module (orders,
+ * CRM, the tailor queue) adds its screens without touching the layout — the
+ * same one-line rule the API's module registry follows.
+ *
+ * What each item requires is a capability, not a role — which roles
+ * currently hold that capability is data (RolePermission), editable from
+ * /admin/settings, not something this file encodes.
  */
-const OFFICE = ['ADMIN', 'STAFF'] as const;
-
 export const ADMIN_NAV: AdminNavItem[] = [
-  { key: 'dashboard', label: 'Dashboard', href: '/admin', roles: OFFICE, group: 'overview' },
+  {
+    key: 'dashboard',
+    label: 'Dashboard',
+    href: '/admin',
+    permissions: ['analytics.view'],
+    group: 'overview',
+  },
 
-  { key: 'orders', label: 'Orders', href: '/admin/orders', roles: OFFICE, group: 'sales' },
+  {
+    key: 'orders',
+    label: 'Orders',
+    href: '/admin/orders',
+    permissions: ['orders.manage'],
+    group: 'sales',
+  },
   {
     key: 'payments',
     label: 'Payment approvals',
     href: '/admin/payments',
-    roles: OFFICE,
+    permissions: ['payments.approve'],
     group: 'sales',
   },
-  { key: 'reports', label: 'Reports', href: '/admin/reports', roles: OFFICE, group: 'sales' },
+  {
+    key: 'reports',
+    label: 'Reports',
+    href: '/admin/reports',
+    permissions: ['reports.view'],
+    group: 'sales',
+  },
 
   {
     key: 'stitching',
     label: 'Tailor queue',
     href: '/admin/stitching',
-    // Tailors sign into the back office for this section and nothing else.
-    roles: ['ADMIN', 'STAFF', 'TAILOR'],
+    permissions: ['stitching.jobs.view_queue'],
     group: 'production',
   },
   {
     key: 'stitching-bookings',
     label: 'Stitching bookings',
     href: '/admin/stitching/bookings',
-    roles: OFFICE,
+    permissions: ['stitching.bookings.manage'],
     group: 'production',
   },
 
-  { key: 'contacts', label: 'Customers', href: '/admin/contacts', roles: OFFICE, group: 'people' },
-  { key: 'leads', label: 'Enquiries', href: '/admin/leads', roles: OFFICE, group: 'people' },
+  {
+    key: 'contacts',
+    label: 'Customers',
+    href: '/admin/contacts',
+    permissions: ['crm.manage'],
+    group: 'people',
+  },
+  {
+    key: 'leads',
+    label: 'Enquiries',
+    href: '/admin/leads',
+    permissions: ['crm.manage'],
+    group: 'people',
+  },
 
   {
     key: 'products',
     label: 'Products & services',
     href: '/admin/products',
-    roles: OFFICE,
+    permissions: ['catalog.manage'],
     group: 'catalogue',
   },
   {
     key: 'inventory',
     label: 'Inventory',
     href: '/admin/inventory',
-    roles: OFFICE,
+    permissions: ['inventory.manage'],
     group: 'catalogue',
   },
   {
     key: 'categories',
     label: 'Categories',
     href: '/admin/categories',
-    roles: OFFICE,
+    permissions: ['catalog.manage'],
     group: 'catalogue',
   },
   {
     key: 'garments',
     label: 'Garments & measurements',
     href: '/admin/garments',
-    roles: OFFICE,
+    permissions: ['measurements.manage_blueprints'],
     group: 'catalogue',
   },
   {
     key: 'designs',
     label: 'Stitching designs',
     href: '/admin/designs',
-    roles: OFFICE,
+    permissions: ['stitching.designs.manage'],
     group: 'catalogue',
   },
-  { key: 'import', label: 'Bulk import', href: '/admin/import', roles: OFFICE, group: 'catalogue' },
+  {
+    key: 'import',
+    label: 'Bulk import',
+    href: '/admin/import',
+    permissions: ['catalog.manage'],
+    group: 'catalogue',
+  },
+
+  {
+    key: 'settings',
+    label: 'Settings',
+    href: '/admin/settings',
+    permissions: ['settings.manage'],
+    group: 'settings',
+  },
 ];
 
-/** Where a role lands after signing in — a tailor's home is the workshop. */
-export function landingFor(role: UserRole): string {
-  return role === 'TAILOR' ? '/admin/stitching' : '/admin';
+/**
+ * Where a signed-in user lands after login. Someone with a dashboard to look
+ * at (analytics.view — staff and admins) lands on it; everyone else (the
+ * tailor whose permissions are scoped to the workshop) lands on the queue
+ * they actually work from.
+ */
+export function landingFor(permissions: readonly string[]): string {
+  return permissions.includes('analytics.view') ? '/admin' : '/admin/stitching';
 }
 
 export const NAV_GROUP_LABELS: Record<AdminNavItem['group'], string> = {
@@ -104,6 +154,8 @@ export const NAV_GROUP_LABELS: Record<AdminNavItem['group'], string> = {
   settings: 'Settings',
 };
 
-export function navFor(role: UserRole): AdminNavItem[] {
-  return ADMIN_NAV.filter((item) => !item.roles || item.roles.includes(role));
+export function navFor(permissions: readonly string[]): AdminNavItem[] {
+  return ADMIN_NAV.filter(
+    (item) => !item.permissions || item.permissions.some((key) => permissions.includes(key)),
+  );
 }

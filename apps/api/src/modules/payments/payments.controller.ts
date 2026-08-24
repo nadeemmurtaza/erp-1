@@ -12,7 +12,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { IsOptional, IsString, MaxLength } from 'class-validator';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
-import { CurrentUser, Public, Roles } from '../../core/auth/decorators';
+import { CurrentUser, Public, RequirePermission } from '../../core/auth/decorators';
 import { PaymentsService } from './payments.service';
 
 class ApprovePaymentDto {
@@ -71,7 +71,7 @@ export class PaymentsController {
 
 @ApiTags('admin/payments')
 @Controller('admin/payments')
-@Roles('ADMIN', 'STAFF')
+@RequirePermission('payments.approve')
 export class PaymentsAdminController {
   constructor(private readonly payments: PaymentsService) {}
 

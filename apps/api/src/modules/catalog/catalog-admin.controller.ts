@@ -18,7 +18,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { IsArray, IsInt, IsOptional, IsString, Min } from 'class-validator';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
-import { CurrentUser, Roles } from '../../core/auth/decorators';
+import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
 import { CategoryAdminService } from './category-admin.service';
 import { AdminProductQueryDto } from './dto/product-query.dto';
 import { UpsertCategoryDto } from './dto/category.dto';
@@ -54,7 +54,7 @@ interface UploadedImage {
 
 @ApiTags('admin/catalog')
 @Controller('admin/catalog')
-@Roles('ADMIN', 'STAFF')
+@RequirePermission('catalog.manage')
 export class CatalogAdminController {
   constructor(
     private readonly products: ProductAdminService,

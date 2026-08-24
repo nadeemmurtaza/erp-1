@@ -15,7 +15,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { stringify } from 'csv-stringify/sync';
 import { toMajor } from '@yaseen/shared';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
-import { CurrentUser, Public, Roles } from '../../core/auth/decorators';
+import { CurrentUser, Public, RequirePermission } from '../../core/auth/decorators';
 import { CrmService } from './crm.service';
 import {
   AddInteractionDto,
@@ -42,7 +42,7 @@ export class CrmPublicController {
 
 @ApiTags('admin/crm')
 @Controller('admin/crm')
-@Roles('ADMIN', 'STAFF')
+@RequirePermission('crm.manage')
 export class CrmAdminController {
   constructor(private readonly crm: CrmService) {}
 

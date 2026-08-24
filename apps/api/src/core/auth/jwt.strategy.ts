@@ -36,7 +36,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       throw new UnauthorizedException('This account is no longer active.');
     }
 
-    const permissions = await this.permissions.resolve(user.role);
+    const permissions = await this.permissions.resolveForUser(user.id, user.role);
 
     return { id: user.id, role: user.role, permissions, email: user.email, phone: user.phone };
   }

@@ -133,6 +133,13 @@ export const ADMIN_NAV: AdminNavItem[] = [
 
   // Group 6: Settings
   {
+    key: 'users',
+    label: 'Team & Access',
+    href: '/admin/users',
+    permissions: ['users.manage'],
+    group: 'settings',
+  },
+  {
     key: 'settings',
     label: 'Settings',
     href: '/admin/settings',

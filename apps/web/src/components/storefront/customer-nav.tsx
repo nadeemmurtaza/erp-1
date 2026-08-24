@@ -32,10 +32,28 @@ export function CustomerNav() {
             <p className="mt-2 text-sm text-ink">{user.email}</p>
           </div>
           <Link
+            href="/account"
+            className="block py-2 text-sm text-ink/70 hover:text-ink transition-colors"
+          >
+            My Account
+          </Link>
+          <Link
             href="/orders"
             className="block py-2 text-sm text-ink/70 hover:text-ink transition-colors"
           >
             My Orders
+          </Link>
+          <Link
+            href="/account/addresses"
+            className="block py-2 text-sm text-ink/70 hover:text-ink transition-colors"
+          >
+            Addresses
+          </Link>
+          <Link
+            href="/account/measurements"
+            className="block py-2 text-sm text-ink/70 hover:text-ink transition-colors"
+          >
+            Measurements
           </Link>
           <button
             type="button"

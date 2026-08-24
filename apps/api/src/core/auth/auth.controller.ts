@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Patch,
   Post,
   Req,
   Res,
@@ -16,7 +17,13 @@ import { AuthService, parseDuration } from './auth.service';
 import { AppConfigService } from '../config/app-config.service';
 import { REFRESH_COOKIE, type AuthenticatedUser } from './auth.constants';
 import { CurrentUser, Public } from './decorators';
-import { ChangePasswordDto, LoginDto, RefreshDto, RegisterDto } from './dto/auth.dto';
+import {
+  ChangePasswordDto,
+  LoginDto,
+  RefreshDto,
+  RegisterDto,
+  UpdateProfileDto,
+} from './dto/auth.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -96,6 +103,12 @@ export class AuthController {
         createdAt: true,
       },
     });
+  }
+
+  @Patch('me')
+  @ApiOperation({ summary: 'Update your own profile fields' })
+  updateProfile(@CurrentUser() user: AuthenticatedUser, @Body() dto: UpdateProfileDto) {
+    return this.auth.updateProfile(user.id, dto);
   }
 
   @Post('change-password')

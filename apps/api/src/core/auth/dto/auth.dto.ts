@@ -60,6 +60,31 @@ export class RefreshDto {
   refreshToken?: string;
 }
 
+export class UpdateProfileDto {
+  @ApiPropertyOptional({ example: 'Ayesha' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(80)
+  firstName?: string;
+
+  @ApiPropertyOptional({ example: 'Khan' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(80)
+  lastName?: string;
+
+  @ApiPropertyOptional({ example: 'ayesha@example.com' })
+  @IsOptional()
+  @IsEmail({}, { message: 'Enter a valid email address.' })
+  email?: string;
+
+  @ApiPropertyOptional({ description: 'Empty string clears the phone number', example: '03001234567' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(20)
+  phone?: string;
+}
+
 export class ChangePasswordDto {
   @ApiProperty()
   @IsString()

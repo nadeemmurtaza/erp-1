@@ -1,4 +1,5 @@
 import { DynamicModule, Logger, Module, type Type } from '@nestjs/common';
+import { AddressesModule } from './addresses/addresses.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { CartModule } from './cart/cart.module';
 import { CatalogModule } from './catalog/catalog.module';
@@ -11,6 +12,7 @@ import { ReportsModule } from './reports/reports.module';
 import { SettingsAdminModule } from './settings/settings-admin.module';
 import { StitchingModule } from './stitching/stitching.module';
 import { TrackingModule } from './tracking/tracking.module';
+import { UsersAdminModule } from './users/users-admin.module';
 
 export interface FeatureModuleEntry {
   /** Matches an entry in the MODULES env allowlist. */
@@ -40,8 +42,10 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'analytics', module: AnalyticsModule },
   { name: 'reports', module: ReportsModule },
   { name: 'tracking', module: TrackingModule },
-  // Access control administration — not a togglable business feature.
+  // Account administration — not togglable business features.
   { name: 'settings', module: SettingsAdminModule, alwaysOn: true },
+  { name: 'users', module: UsersAdminModule, alwaysOn: true },
+  { name: 'addresses', module: AddressesModule, alwaysOn: true },
 ];
 
 /**

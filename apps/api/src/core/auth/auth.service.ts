@@ -6,17 +6,16 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { compare, hash } from 'bcryptjs';
+import { compare } from 'bcryptjs';
 import { normalizeEmail, normalizePkPhone } from '@yaseen/shared';
 import { AppConfigService } from '../config/app-config.service';
 import { EventBusService } from '../events/event-bus.service';
 import { DomainEvent } from '../events/domain-events';
 import { PrismaService } from '../prisma/prisma.service';
-import type { UserRole } from '../prisma/client';
+import type { Prisma, UserRole } from '../prisma/client';
 import type { AuthenticatedUser, JwtPayload } from './auth.constants';
+import { hashPassword } from './password.util';
 import { PermissionsResolverService } from './permissions.service';
-
-const BCRYPT_ROUNDS = 12;
 
 export interface AuthTokens {
   accessToken: string;
@@ -33,6 +32,14 @@ export interface RegisterInput {
   password: string;
   firstName?: string;
   lastName?: string;
+  phone?: string;
+}
+
+export interface UpdateProfileInput {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  /** Empty string clears the phone number. */
   phone?: string;
 }
 
@@ -75,7 +82,7 @@ export class AuthService {
       data: {
         email,
         phone,
-        passwordHash: await hash(input.password, BCRYPT_ROUNDS),
+        passwordHash: await hashPassword(input.password),
         firstName: input.firstName?.trim() || null,
         lastName: input.lastName?.trim() || null,
         role: 'CUSTOMER',
@@ -168,7 +175,7 @@ export class AuthService {
     await this.prisma.$transaction([
       this.prisma.user.update({
         where: { id: userId },
-        data: { passwordHash: await hash(newPassword, BCRYPT_ROUNDS) },
+        data: { passwordHash: await hashPassword(newPassword) },
       }),
       // Changing a password signs out every other device.
       this.prisma.refreshToken.updateMany({
@@ -176,6 +183,61 @@ export class AuthService {
         data: { revokedAt: new Date() },
       }),
     ]);
+  }
+
+  /** Updates the signed-in user's own profile fields. Returns the same shape login/register do, so the client can update its stored session without a re-login. */
+  async updateProfile(userId: string, input: UpdateProfileInput): Promise<AuthResult['user']> {
+    const data: Prisma.UserUpdateInput = {};
+
+    if (input.firstName !== undefined) data.firstName = input.firstName.trim() || null;
+    if (input.lastName !== undefined) data.lastName = input.lastName.trim() || null;
+
+    if (input.email !== undefined) {
+      const email = normalizeEmail(input.email);
+      if (!email) {
+        throw new ConflictException('A valid email address is required.');
+      }
+      const clash = await this.prisma.user.findFirst({
+        where: { email, NOT: { id: userId } },
+        select: { id: true },
+      });
+      if (clash) {
+        throw new ConflictException('An account with this email already exists.');
+      }
+      data.email = email;
+    }
+
+    if (input.phone !== undefined) {
+      if (input.phone === '') {
+        data.phone = null;
+      } else {
+        const phone = normalizePkPhone(input.phone).e164;
+        if (!phone) {
+          throw new ConflictException('That phone number is not a valid Pakistani number.');
+        }
+        const clash = await this.prisma.user.findFirst({
+          where: { phone, NOT: { id: userId } },
+          select: { id: true },
+        });
+        if (clash) {
+          throw new ConflictException('An account with this phone number already exists.');
+        }
+        data.phone = phone;
+      }
+    }
+
+    const user = await this.prisma.user.update({ where: { id: userId }, data });
+    const permissions = await this.permissions.resolveForUser(user.id, user.role);
+
+    return {
+      id: user.id,
+      role: user.role,
+      permissions,
+      email: user.email,
+      phone: user.phone,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    };
   }
 
   private async issue(user: {
@@ -199,7 +261,7 @@ export class AuthService {
       expiresIn: Math.floor(parseDuration(this.config.get('JWT_ACCESS_TTL')) / 1000),
     });
 
-    const permissions = await this.permissions.resolve(user.role);
+    const permissions = await this.permissions.resolveForUser(user.id, user.role);
 
     // Refresh tokens are opaque random strings, stored only as a SHA-256 hash,
     // so a leaked database dump cannot be replayed as a session.

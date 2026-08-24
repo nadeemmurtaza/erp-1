@@ -16,7 +16,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AuthService, parseDuration } from './auth.service';
 import { AppConfigService } from '../config/app-config.service';
 import { REFRESH_COOKIE, type AuthenticatedUser } from './auth.constants';
-import { CurrentUser, Public } from './decorators';
+import { CurrentUser, Public, RequirePermission } from './decorators';
 import {
   ChangePasswordDto,
   LoginDto,
@@ -113,6 +113,7 @@ export class AuthController {
 
   @Post('change-password')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @RequirePermission('account.change_own_password')
   @ApiOperation({ summary: 'Change your password and sign out other devices' })
   async changePassword(
     @CurrentUser() user: AuthenticatedUser,

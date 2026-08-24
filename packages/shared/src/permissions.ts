@@ -76,6 +76,12 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     category: 'Catalogue',
   },
 
+  {
+    key: 'account.change_own_password',
+    label: 'Change their own password',
+    category: 'Account',
+  },
+
   { key: 'settings.manage', label: 'Access the Settings screen', category: 'Administration' },
   {
     key: 'roles.manage_permissions',
@@ -101,13 +107,15 @@ export const PERMISSION_KEYS: readonly PermissionKey[] = PERMISSION_CATALOG.map(
  * share every entry except the two ADMIN-only administration permissions.
  */
 export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly PermissionKey[]>> = {
-  CUSTOMER: [],
+  CUSTOMER: ['account.change_own_password'],
   TAILOR: [
+    'account.change_own_password',
     'stitching.jobs.view_queue',
     'stitching.jobs.change_stage',
     'stitching.jobs.manage_own',
   ],
   STAFF: [
+    'account.change_own_password',
     'analytics.view',
     'reports.view',
     'crm.manage',
@@ -124,6 +132,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'measurements.manage_blueprints',
   ],
   ADMIN: [
+    'account.change_own_password',
     'analytics.view',
     'reports.view',
     'crm.manage',

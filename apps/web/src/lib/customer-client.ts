@@ -1,6 +1,6 @@
 'use client';
 
-import { API_URL, ApiError } from './api';
+import { API_URL, ApiError, toSearchParams } from './api';
 import type { AuthResult, AuthUser } from './api-types';
 
 const ACCESS_KEY = 'yaseen.customer.access';
@@ -89,7 +89,7 @@ export async function logoutCustomer(): Promise<void> {
   }).catch(() => undefined);
 }
 
-async function _refreshCustomerSession(): Promise<boolean> {
+async function refreshCustomerSession(): Promise<boolean> {
   const refreshToken = localStorage.getItem(REFRESH_KEY);
   if (!refreshToken) return false;
 
@@ -104,6 +104,61 @@ async function _refreshCustomerSession(): Promise<boolean> {
 
   storeSession((await response.json()) as AuthResult);
   return true;
+}
+
+interface CustomerRequestOptions {
+  method?: string;
+  body?: unknown;
+  query?: Record<string, unknown>;
+}
+
+/** Authenticated fetch for a signed-in customer's own data — addresses, measurement profiles, order history, profile edits. */
+export async function customerFetch<T>(
+  path: string,
+  options: CustomerRequestOptions = {},
+): Promise<T> {
+  const send = async (): Promise<Response> => {
+    const headers: Record<string, string> = { Accept: 'application/json' };
+
+    const token = getCustomerToken();
+    if (token) headers.Authorization = `Bearer ${token}`;
+
+    let body: BodyInit | undefined;
+    if (options.body !== undefined) {
+      headers['Content-Type'] = 'application/json';
+      body = JSON.stringify(options.body);
+    }
+
+    return fetch(`${API_URL}${path}${toSearchParams(options.query ?? {})}`, {
+      method: options.method ?? 'GET',
+      headers,
+      body,
+      credentials: 'include',
+    });
+  };
+
+  let response = await send();
+
+  if (response.status === 401 && (await refreshCustomerSession())) {
+    response = await send();
+  }
+
+  if (response.status === 401) {
+    clearCustomerSession();
+    throw new ApiError(401, 'Your session has expired. Please sign in again.');
+  }
+
+  if (!response.ok) {
+    const errorBody = await response.json().catch(() => undefined);
+    throw new ApiError(
+      response.status,
+      messageOf(errorBody) ?? `Request failed with ${response.status}`,
+      errorBody,
+    );
+  }
+
+  if (response.status === 204) return undefined as T;
+  return (await response.json()) as T;
 }
 
 function messageOf(body: unknown): string | undefined {

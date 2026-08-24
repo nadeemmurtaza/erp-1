@@ -381,3 +381,81 @@ export interface AuditLogPage {
   perPage: number;
   entries: AuditLogEntry[];
 }
+
+// --- Back-office user management ---------------------------------------------
+
+export type BackOfficeRole = 'STAFF' | 'TAILOR' | 'ADMIN';
+
+export interface AdminUser {
+  id: string;
+  email: string | null;
+  phone: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  role: BackOfficeRole;
+  isActive: boolean;
+  lastLoginAt: string | null;
+  createdAt: string;
+}
+
+export interface PermissionOverride {
+  key: string;
+  effect: 'GRANT' | 'REVOKE';
+}
+
+export interface AdminUserDetail extends AdminUser {
+  roleDefaultPermissions: string[];
+  overrides: PermissionOverride[];
+  effectivePermissions: string[];
+}
+
+// --- Customer account portal --------------------------------------------------
+
+export interface CustomerAddress {
+  id: string;
+  label: string | null;
+  fullName: string;
+  phone: string;
+  line1: string;
+  line2: string | null;
+  city: string;
+  province: string;
+  postalCode: string | null;
+  country: string;
+  isDefault: boolean;
+}
+
+export interface MeasurementProfile {
+  id: string;
+  label: string;
+  garmentTypeId: string;
+  values: Record<string, number>;
+  notes: string | null;
+  isDefault: boolean;
+  createdAt: string;
+  garmentType: { id: string; key: string; labelEn: string; labelUr: string };
+}
+
+export interface MeasurementProfileDetail extends Omit<MeasurementProfile, 'garmentType'> {
+  garmentType: GarmentType;
+}
+
+export interface CustomerOrderSummary {
+  number: string;
+  status: string;
+  placedAt: string;
+  grandTotal: number;
+  items: Array<{ nameEn: string; nameUr: string | null; imageUrl: string | null; quantity: number }>;
+}
+
+export interface PaginatedResult<T> {
+  data: T[];
+  meta: {
+    page: number;
+    pageSize: number;
+    total: number;
+    totalPages: number;
+    hasNext: boolean;
+    hasPrevious: boolean;
+  };
+}

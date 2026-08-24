@@ -155,9 +155,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
               View store
             </Link>
             <span className="text-ink/40">|</span>
-            <span className="text-ink/70">
+            <Link href="/admin/account" className="text-ink/70 hover:text-brand-700">
               {user.firstName ?? user.email} · {user.role.toLowerCase()}
-            </span>
+            </Link>
             <button
               type="button"
               onClick={async () => {

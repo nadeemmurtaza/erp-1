@@ -41,6 +41,7 @@ model User {
   segments            Segment[]
   devices             DeviceToken[]
   stockAdjustments    StockAdjustment[]
+  permissionOverrides UserPermission[]
 
   @@index([role])
   @@index([createdAt])
@@ -121,6 +122,7 @@ model Permission {
   createdAt DateTime @default(now())
 
   rolePermissions RolePermission[]
+  userOverrides   UserPermission[]
 }
 
 /// Which roles currently hold a given permission. This mapping is data, not
@@ -136,6 +138,29 @@ model RolePermission {
 
   @@unique([role, permissionId])
   @@index([role])
+}
+
+enum PermissionEffect {
+  GRANT
+  REVOKE
+}
+
+/// A per-user adjustment layered on top of their role's grants: GRANT adds a
+/// permission their role doesn't have, REVOKE takes one away that it does.
+/// Resolution is role grants first, then these overrides applied on top —
+/// @see PermissionsResolverService.resolveForUser.
+model UserPermission {
+  id           String           @id @default(cuid())
+  userId       String
+  permissionId String
+  effect       PermissionEffect
+  createdAt    DateTime         @default(now())
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, permissionId])
+  @@index([userId])
 }
 
 enum OutboxStatus {

@@ -1,0 +1,92 @@
+'use client';
+
+import { useState } from 'react';
+import { adminFetch, getStoredUser } from '@/lib/admin-client';
+
+export default function AdminAccountPage() {
+  const user = getStoredUser();
+  const canChangePassword = user?.permissions.includes('account.change_own_password') ?? false;
+
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  async function onSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    setError(null);
+    setMessage(null);
+    setBusy(true);
+
+    try {
+      await adminFetch('/auth/change-password', {
+        method: 'POST',
+        body: { currentPassword, newPassword },
+      });
+      setCurrentPassword('');
+      setNewPassword('');
+      setMessage('Password changed. You have been signed out of every other device.');
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not change your password');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <>
+      <h1 className="mb-1 text-xl font-semibold text-ink">My account</h1>
+      <p className="mb-6 text-sm text-ink/60">
+        {user?.firstName ?? user?.email} · {user?.role.toLowerCase()}
+      </p>
+
+      {canChangePassword ? (
+        <form onSubmit={onSubmit} className="card max-w-sm space-y-4 p-4">
+          <h2 className="text-sm font-semibold text-ink">Change password</h2>
+
+          <label className="block">
+            <span className="field-label">Current password</span>
+            <input
+              type="password"
+              value={currentPassword}
+              onChange={(event) => setCurrentPassword(event.target.value)}
+              autoComplete="current-password"
+              required
+              className="field-input"
+            />
+          </label>
+
+          <label className="block">
+            <span className="field-label">New password</span>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(event) => setNewPassword(event.target.value)}
+              autoComplete="new-password"
+              required
+              minLength={8}
+              className="field-input"
+            />
+          </label>
+
+          {error ? (
+            <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+              {error}
+            </p>
+          ) : null}
+          {message ? <p className="text-sm text-green-700">{message}</p> : null}
+
+          <button type="submit" disabled={busy} className="btn-primary">
+            {busy ? 'Changing…' : 'Change password'}
+          </button>
+        </form>
+      ) : (
+        <div className="card max-w-sm p-4 text-sm text-ink/60">
+          An admin has turned off self-service password changes for your account. Ask an admin
+          to reset your password from Team &amp; Access.
+        </div>
+      )}
+    </>
+  );
+}

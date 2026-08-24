@@ -7,6 +7,11 @@
  * table, seeded from ROLE_PERMISSION_SEED below), editable from
  * /admin/settings without a code change.
  *
+ * A user's effective permissions are their role's grants with their own
+ * UserPermission overrides applied on top: a GRANT adds a permission their
+ * role doesn't have, a REVOKE takes away one it does — @see
+ * PermissionsResolverService.resolveForUser in the API.
+ *
  * Any change here must be mirrored in apps/api/prisma/seed.ts's permission
  * seed, which is what actually populates the Permission/RolePermission
  * tables — this file is the compile-time catalog @RequirePermission(...)
@@ -71,6 +76,12 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     category: 'Catalogue',
   },
 
+  {
+    key: 'account.change_own_password',
+    label: 'Change their own password',
+    category: 'Account',
+  },
+
   { key: 'settings.manage', label: 'Access the Settings screen', category: 'Administration' },
   {
     key: 'roles.manage_permissions',
@@ -78,6 +89,11 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     category: 'Administration',
   },
   { key: 'audit.view', label: 'View the audit log', category: 'Administration' },
+  {
+    key: 'users.manage',
+    label: 'Create and manage back-office user accounts',
+    category: 'Administration',
+  },
 ] as const;
 
 export type PermissionKey = (typeof PERMISSION_CATALOG)[number]['key'];
@@ -91,13 +107,15 @@ export const PERMISSION_KEYS: readonly PermissionKey[] = PERMISSION_CATALOG.map(
  * share every entry except the two ADMIN-only administration permissions.
  */
 export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly PermissionKey[]>> = {
-  CUSTOMER: [],
+  CUSTOMER: ['account.change_own_password'],
   TAILOR: [
+    'account.change_own_password',
     'stitching.jobs.view_queue',
     'stitching.jobs.change_stage',
     'stitching.jobs.manage_own',
   ],
   STAFF: [
+    'account.change_own_password',
     'analytics.view',
     'reports.view',
     'crm.manage',
@@ -114,6 +132,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'measurements.manage_blueprints',
   ],
   ADMIN: [
+    'account.change_own_password',
     'analytics.view',
     'reports.view',
     'crm.manage',
@@ -131,14 +150,25 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'settings.manage',
     'roles.manage_permissions',
     'audit.view',
+    'users.manage',
   ],
 };
 
 /**
  * Permissions the update-role-permissions endpoint refuses to remove from
  * ADMIN, so an admin can never edit themselves out of the Settings screen.
+ * The same list gates per-user REVOKE overrides on an ADMIN-role user.
  */
 export const ADMIN_LOCKED_PERMISSIONS: readonly PermissionKey[] = [
   'settings.manage',
   'roles.manage_permissions',
 ];
+
+export const PERMISSION_EFFECTS = ['GRANT', 'REVOKE'] as const;
+export type PermissionEffect = (typeof PERMISSION_EFFECTS)[number];
+
+/** One entry in a user's permission-override set (@see UserPermission). */
+export interface PermissionOverride {
+  key: PermissionKey;
+  effect: PermissionEffect;
+}

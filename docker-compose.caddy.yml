@@ -1,0 +1,30 @@
+# Shared reverse proxy — the one internet-facing container. Owns ports
+# 80/443 and the yaseen-edge network that both the production and staging
+# stacks join, so it can route yaseen.pk / api.yaseen.pk / test.yaseen.pk /
+# api-test.yaseen.pk to the right containers by service name.
+#
+# Bring this up FIRST, once, before docker-compose.prod.yml or
+# docker-compose.staging.yml (they reference yaseen-edge as external):
+#   docker compose -f docker-compose.caddy.yml up -d
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: yaseen-caddy
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks: [yaseen-edge]
+
+networks:
+  yaseen-edge:
+    name: yaseen-edge
+
+volumes:
+  caddy-data:
+  caddy-config:

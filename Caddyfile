@@ -1,0 +1,50 @@
+# Reverse proxy for yaseen.pk. Caddy issues/renews Let's Encrypt certs for
+# each domain automatically — no manual cert setup needed, just DNS A/AAAA
+# records pointing every hostname below at the VPS (see DEPLOYMENT.md).
+#
+# Runs in docker-compose.caddy.yml, on the yaseen-edge network shared by
+# docker-compose.prod.yml and docker-compose.staging.yml — container names
+# below (yaseen-web-prod, etc.) resolve via Docker's embedded DNS on that
+# network.
+
+# --- Production -------------------------------------------------------
+
+www.yaseen.pk {
+	redir https://yaseen.pk{uri} permanent
+}
+
+yaseen.pk {
+	# Admin lives at /admin on this same app (apps/web) — not a separate
+	# container or subdomain, per how the storefront/admin app is built.
+	reverse_proxy yaseen-web-prod:3000
+	encode zstd gzip
+	log {
+		output file /data/access-yaseen.pk.log
+	}
+}
+
+api.yaseen.pk {
+	reverse_proxy yaseen-api-prod:3001
+	encode zstd gzip
+	log {
+		output file /data/access-api.yaseen.pk.log
+	}
+}
+
+# --- Staging (auto-deployed from `main`) ------------------------------
+
+test.yaseen.pk {
+	reverse_proxy yaseen-web-staging:3000
+	encode zstd gzip
+	log {
+		output file /data/access-test.yaseen.pk.log
+	}
+}
+
+api-test.yaseen.pk {
+	reverse_proxy yaseen-api-staging:3001
+	encode zstd gzip
+	log {
+		output file /data/access-api-test.yaseen.pk.log
+	}
+}

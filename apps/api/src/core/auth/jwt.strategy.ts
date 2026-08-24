@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { AppConfigService } from '../config/app-config.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { PermissionsResolverService } from './permissions.service';
 import type { AuthenticatedUser, JwtPayload } from './auth.constants';
 
 @Injectable()
@@ -10,6 +11,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     config: AppConfigService,
     private readonly prisma: PrismaService,
+    private readonly permissions: PermissionsResolverService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -19,9 +21,10 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   /**
-   * Re-reads the user on every request. A token stays valid for 15 minutes, so
-   * without this a deactivated account or a demoted staff member would keep
-   * their access until it expired.
+   * Re-reads the user, and re-resolves their permissions, on every request.
+   * A token stays valid for 15 minutes, so without this a deactivated
+   * account, a demoted staff member, or a permission an admin just revoked
+   * from a role would keep working until the token expired.
    */
   async validate(payload: JwtPayload): Promise<AuthenticatedUser> {
     const user = await this.prisma.user.findUnique({
@@ -33,6 +36,8 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       throw new UnauthorizedException('This account is no longer active.');
     }
 
-    return { id: user.id, role: user.role, email: user.email, phone: user.phone };
+    const permissions = await this.permissions.resolve(user.role);
+
+    return { id: user.id, role: user.role, permissions, email: user.email, phone: user.phone };
   }
 }

@@ -31,8 +31,8 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  const role = useMemo(() => getStoredUser()?.role, []);
-  const canAssign = role === 'ADMIN' || role === 'STAFF';
+  const permissions = useMemo(() => getStoredUser()?.permissions ?? [], []);
+  const canAssign = permissions.includes('stitching.jobs.assign');
 
   const load = useCallback(async () => {
     setError(null);

@@ -14,7 +14,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
-import { CurrentUser, Public, Roles } from '../../core/auth/decorators';
+import { CurrentUser, Public, RequirePermission } from '../../core/auth/decorators';
 import type { StitchingOrderStatus, StitchingStage } from '../../core/prisma/client';
 import { StitchingDesignOptionsService } from './design-options.service';
 import {
@@ -81,7 +81,6 @@ export class StitchingController {
 
 @ApiTags('admin/stitching')
 @Controller('admin/stitching')
-@Roles('ADMIN', 'STAFF', 'TAILOR')
 export class StitchingAdminController {
   constructor(
     private readonly jobs: StitchingJobsService,
@@ -92,6 +91,7 @@ export class StitchingAdminController {
   // --- The tailor queue ----------------------------------------------------
 
   @Get('jobs')
+  @RequirePermission('stitching.jobs.view_queue')
   @ApiOperation({ summary: 'The tailor queue, oldest due first' })
   listJobs(
     @CurrentUser() user: AuthenticatedUser,
@@ -109,18 +109,20 @@ export class StitchingAdminController {
   }
 
   @Get('jobs/workload')
+  @RequirePermission('stitching.jobs.view_queue')
   @ApiOperation({ summary: 'Jobs by stage, and each tailor’s open load' })
   workload() {
     return this.jobs.workload();
   }
 
   @Get('jobs/:id')
+  @RequirePermission('stitching.jobs.view_queue')
   getJob(@Param('id') id: string) {
     return this.jobs.get(id);
   }
 
   @Post('jobs/:id/assign')
-  @Roles('ADMIN', 'STAFF')
+  @RequirePermission('stitching.jobs.assign')
   @ApiOperation({ summary: 'Give a job to a tailor, or take it back' })
   assign(
     @CurrentUser() user: AuthenticatedUser,
@@ -143,6 +145,7 @@ export class StitchingAdminController {
     },
   })
   @UseInterceptors(FileInterceptor('photo'))
+  @RequirePermission('stitching.jobs.change_stage')
   @ApiOperation({
     summary: 'Move a job one stage, optionally with a note and a photograph',
   })
@@ -161,19 +164,19 @@ export class StitchingAdminController {
   // --- Bookings for the customer's own fabric -------------------------------
 
   @Get('bookings')
-  @Roles('ADMIN', 'STAFF')
+  @RequirePermission('stitching.bookings.manage')
   listBookings(@Query('status') status?: StitchingOrderStatus) {
     return this.orders.list(status);
   }
 
   @Get('bookings/:id')
-  @Roles('ADMIN', 'STAFF')
+  @RequirePermission('stitching.bookings.manage')
   getBooking(@Param('id') id: string) {
     return this.orders.get(id);
   }
 
   @Post('bookings/:id/fabric-received')
-  @Roles('ADMIN', 'STAFF')
+  @RequirePermission('stitching.bookings.manage')
   @ApiOperation({ summary: "Log the customer's fabric in; releases it to the workshop" })
   fabricReceived(
     @CurrentUser() user: AuthenticatedUser,
@@ -184,7 +187,7 @@ export class StitchingAdminController {
   }
 
   @Post('bookings/:id/quote')
-  @Roles('ADMIN', 'STAFF')
+  @RequirePermission('stitching.bookings.manage')
   quote(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') id: string,
@@ -194,7 +197,7 @@ export class StitchingAdminController {
   }
 
   @Post('bookings/:id/status')
-  @Roles('ADMIN', 'STAFF')
+  @RequirePermission('stitching.bookings.manage')
   changeBookingStatus(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') id: string,
@@ -206,14 +209,14 @@ export class StitchingAdminController {
   // --- The design catalogue -------------------------------------------------
 
   @Get('option-groups')
-  @Roles('ADMIN', 'STAFF')
+  @RequirePermission('stitching.designs.manage')
   @ApiOperation({ summary: 'Every design group and its options, deactivated ones too' })
   listOptionGroups() {
     return this.design.listOptionGroups();
   }
 
   @Post('option-groups')
-  @Roles('ADMIN', 'STAFF')
+  @RequirePermission('stitching.designs.manage')
   @ApiOperation({ summary: 'Add a design group; no garment type means every garment' })
   createOptionGroup(
     @CurrentUser() user: AuthenticatedUser,
@@ -223,7 +226,7 @@ export class StitchingAdminController {
   }
 
   @Patch('option-groups/:id')
-  @Roles('ADMIN', 'STAFF')
+  @RequirePermission('stitching.designs.manage')
   @ApiOperation({ summary: 'Edit a design group' })
   updateOptionGroup(
     @CurrentUser() user: AuthenticatedUser,
@@ -234,14 +237,14 @@ export class StitchingAdminController {
   }
 
   @Delete('option-groups/:id')
-  @Roles('ADMIN', 'STAFF')
+  @RequirePermission('stitching.designs.manage')
   @ApiOperation({ summary: 'Deactivate a design group (never hard-deleted)' })
   deactivateOptionGroup(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
     return this.design.deactivateOptionGroup(user.id, id);
   }
 
   @Post('option-groups/:id/options')
-  @Roles('ADMIN', 'STAFF')
+  @RequirePermission('stitching.designs.manage')
   @ApiOperation({ summary: 'Add a style option to a group' })
   createOption(
     @CurrentUser() user: AuthenticatedUser,
@@ -252,7 +255,7 @@ export class StitchingAdminController {
   }
 
   @Patch('options/:id')
-  @Roles('ADMIN', 'STAFF')
+  @RequirePermission('stitching.designs.manage')
   @ApiOperation({ summary: 'Edit a style option' })
   updateOption(
     @CurrentUser() user: AuthenticatedUser,
@@ -263,7 +266,7 @@ export class StitchingAdminController {
   }
 
   @Delete('options/:id')
-  @Roles('ADMIN', 'STAFF')
+  @RequirePermission('stitching.designs.manage')
   @ApiOperation({ summary: 'Deactivate a style option (never hard-deleted)' })
   deactivateOption(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
     return this.design.deactivateOption(user.id, id);

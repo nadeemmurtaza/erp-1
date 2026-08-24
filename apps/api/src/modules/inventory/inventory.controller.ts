@@ -1,13 +1,13 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
-import { CurrentUser, Roles } from '../../core/auth/decorators';
+import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
 import { AdjustStockDto } from './dto/inventory.dto';
 import { InventoryService } from './inventory.service';
 
 @ApiTags('admin/inventory')
 @Controller('admin/inventory')
-@Roles('ADMIN', 'STAFF')
+@RequirePermission('inventory.manage')
 export class InventoryAdminController {
   constructor(private readonly inventory: InventoryService) {}
 

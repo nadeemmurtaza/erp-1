@@ -1,6 +1,6 @@
 import { SetMetadata, createParamDecorator, type ExecutionContext } from '@nestjs/common';
-import type { UserRole } from '../prisma/client';
-import { IS_PUBLIC_KEY, ROLES_KEY, type AuthenticatedUser } from './auth.constants';
+import type { PermissionKey } from '@yaseen/shared';
+import { IS_PUBLIC_KEY, PERMISSIONS_KEY, type AuthenticatedUser } from './auth.constants';
 
 /**
  * Marks a route as reachable without a token.
@@ -11,9 +11,14 @@ import { IS_PUBLIC_KEY, ROLES_KEY, type AuthenticatedUser } from './auth.constan
 export const Public = (): MethodDecorator & ClassDecorator =>
   SetMetadata(IS_PUBLIC_KEY, true);
 
-/** Restricts a route to the given roles. Implies authentication. */
-export const Roles = (...roles: UserRole[]): MethodDecorator & ClassDecorator =>
-  SetMetadata(ROLES_KEY, roles);
+/**
+ * Restricts a route to callers holding at least one of the given
+ * permissions. Implies authentication. Which roles currently hold a
+ * permission is data (RolePermission), edited from /admin/settings — this
+ * decorator only ever names the capability, never a role.
+ */
+export const RequirePermission = (...keys: PermissionKey[]): MethodDecorator & ClassDecorator =>
+  SetMetadata(PERMISSIONS_KEY, keys);
 
 /** Injects the authenticated user, or undefined on a @Public route. */
 export const CurrentUser = createParamDecorator(

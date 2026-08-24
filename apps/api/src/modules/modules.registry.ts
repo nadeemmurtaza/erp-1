@@ -8,6 +8,7 @@ import { MeasurementsModule } from './measurements/measurements.module';
 import { OrdersModule } from './orders/orders.module';
 import { PaymentsModule } from './payments/payments.module';
 import { ReportsModule } from './reports/reports.module';
+import { SettingsAdminModule } from './settings/settings-admin.module';
 import { StitchingModule } from './stitching/stitching.module';
 import { TrackingModule } from './tracking/tracking.module';
 
@@ -39,6 +40,8 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'analytics', module: AnalyticsModule },
   { name: 'reports', module: ReportsModule },
   { name: 'tracking', module: TrackingModule },
+  // Access control administration — not a togglable business feature.
+  { name: 'settings', module: SettingsAdminModule, alwaysOn: true },
 ];
 
 /**

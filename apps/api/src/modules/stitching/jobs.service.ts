@@ -13,7 +13,7 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { StorageService } from '../../core/storage/storage.service';
-import type { Prisma, StitchingStage, UserRole } from '../../core/prisma/client';
+import type { Prisma, StitchingStage } from '../../core/prisma/client';
 
 const jobInclude = {
   garmentType: true,
@@ -193,7 +193,7 @@ export class StitchingJobsService {
    * a jumble of whatever staff clicked.
    */
   async changeStage(
-    actor: { id: string; role: UserRole },
+    actor: { id: string; permissions: string[] },
     jobId: string,
     toStage: StitchingStage,
     note?: string,
@@ -205,8 +205,11 @@ export class StitchingJobsService {
     });
     if (!job) throw new NotFoundException('That job no longer exists.');
 
-    // A tailor may only move their own work; staff and admins may move anything.
-    if (actor.role === 'TAILOR' && job.assignedTailorId !== actor.id) {
+    // manage_all (staff/admin) may move anything; everyone else needs
+    // manage_own AND to be the job's own assigned tailor.
+    const canManageAll = actor.permissions.includes('stitching.jobs.manage_all');
+    const canManageOwn = actor.permissions.includes('stitching.jobs.manage_own');
+    if (!canManageAll && (!canManageOwn || job.assignedTailorId !== actor.id)) {
       throw new ForbiddenException('That job is assigned to another tailor.');
     }
 

@@ -1,6 +1,7 @@
 export * from './constants';
 export * from './enums';
 export * from './fabric-estimate';
+export * from './permissions';
 export * from './phone';
 export * from './pricing';
 export * from './slug';

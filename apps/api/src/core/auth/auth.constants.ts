@@ -1,7 +1,7 @@
 import type { UserRole } from '../prisma/client';
 
 export const IS_PUBLIC_KEY = 'auth:isPublic';
-export const ROLES_KEY = 'auth:roles';
+export const PERMISSIONS_KEY = 'auth:permissions';
 
 /** What a verified access token carries. */
 export interface JwtPayload {
@@ -18,6 +18,8 @@ export interface JwtPayload {
 export interface AuthenticatedUser {
   id: string;
   role: UserRole;
+  /** Resolved fresh from RolePermission on every request — @see PermissionsResolverService. */
+  permissions: string[];
   email: string | null;
   phone: string | null;
 }

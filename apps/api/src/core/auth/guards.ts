@@ -6,10 +6,9 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import type { UserRole } from '../prisma/client';
 import {
   IS_PUBLIC_KEY,
-  ROLES_KEY,
+  PERMISSIONS_KEY,
   type AuthenticatedUser,
 } from './auth.constants';
 
@@ -72,13 +71,17 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 }
 
-/** Enforces @Roles(...). Runs after JwtAuthGuard, so request.user is set. */
+/**
+ * Enforces @RequirePermission(...). Runs after JwtAuthGuard, so request.user
+ * is set. A route passes if the caller holds ANY of the required permission
+ * keys, mirroring the old RolesGuard's "role is in this allow-list" check.
+ */
 @Injectable()
-export class RolesGuard implements CanActivate {
+export class PermissionsGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const required = this.reflector.getAllAndOverride<UserRole[]>(ROLES_KEY, [
+    const required = this.reflector.getAllAndOverride<string[]>(PERMISSIONS_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
@@ -89,7 +92,7 @@ export class RolesGuard implements CanActivate {
       .switchToHttp()
       .getRequest<{ user?: AuthenticatedUser }>();
 
-    if (!user || !required.includes(user.role)) {
+    if (!user || !required.some((key) => user.permissions.includes(key))) {
       throw new ForbiddenException('You do not have access to this resource.');
     }
 

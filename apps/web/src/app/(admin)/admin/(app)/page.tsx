@@ -60,16 +60,16 @@ export default function AdminDashboardPage() {
   const [targetSaving, setTargetSaving] = useState(false);
   const [targetError, setTargetError] = useState<string | null>(null);
 
-  // A tailor has no dashboard — the analytics endpoints are staff-only — so send
-  // them to the queue rather than showing them a screenful of 403s.
-  const isTailor = getStoredUser()?.role === 'TAILOR';
+  // No analytics.view permission means no dashboard to read — the analytics
+  // endpoints below would just 403 — so send them to the queue instead.
+  const lacksDashboard = !getStoredUser()?.permissions.includes('analytics.view');
 
   useEffect(() => {
-    if (isTailor) router.replace('/admin/stitching');
-  }, [isTailor, router]);
+    if (lacksDashboard) router.replace('/admin/stitching');
+  }, [lacksDashboard, router]);
 
   useEffect(() => {
-    if (isTailor) return;
+    if (lacksDashboard) return;
     let cancelled = false;
 
     Promise.all([
@@ -94,7 +94,7 @@ export default function AdminDashboardPage() {
     return () => {
       cancelled = true;
     };
-  }, [days, isTailor]);
+  }, [days, lacksDashboard]);
 
   function openTargetEditor() {
     if (!data) return;

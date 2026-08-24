@@ -14,6 +14,7 @@ import { DomainEvent } from '../events/domain-events';
 import { PrismaService } from '../prisma/prisma.service';
 import type { UserRole } from '../prisma/client';
 import type { AuthenticatedUser, JwtPayload } from './auth.constants';
+import { PermissionsResolverService } from './permissions.service';
 
 const BCRYPT_ROUNDS = 12;
 
@@ -44,6 +45,7 @@ export class AuthService {
     private readonly jwt: JwtService,
     private readonly config: AppConfigService,
     private readonly events: EventBusService,
+    private readonly permissions: PermissionsResolverService,
   ) {}
 
   async register(input: RegisterInput): Promise<AuthResult> {
@@ -197,6 +199,8 @@ export class AuthService {
       expiresIn: Math.floor(parseDuration(this.config.get('JWT_ACCESS_TTL')) / 1000),
     });
 
+    const permissions = await this.permissions.resolve(user.role);
+
     // Refresh tokens are opaque random strings, stored only as a SHA-256 hash,
     // so a leaked database dump cannot be replayed as a session.
     const refreshToken = randomBytes(48).toString('base64url');
@@ -215,6 +219,7 @@ export class AuthService {
       user: {
         id: user.id,
         role: user.role,
+        permissions,
         email: user.email,
         phone: user.phone,
         firstName: user.firstName,

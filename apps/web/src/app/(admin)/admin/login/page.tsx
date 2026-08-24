@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import type { UserRole } from '@yaseen/shared';
 import { login } from '@/lib/admin-client';
 import { landingFor } from '@/components/admin/nav-registry';
 
@@ -21,7 +20,7 @@ export default function AdminLoginPage() {
     try {
       const user = await login(identifier, password);
       // A tailor has no dashboard to read; send them straight to their queue.
-      router.replace(landingFor(user.role as UserRole));
+      router.replace(landingFor(user.permissions));
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Sign-in failed');
       setBusy(false);

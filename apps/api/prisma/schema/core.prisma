@@ -109,6 +109,35 @@ model AuditLog {
   @@index([createdAt])
 }
 
+/// A single grantable capability, e.g. "orders.manage". The key is what
+/// guards check and what @RequirePermission(...) call sites reference —
+/// label/category are display-only, for the Settings → Roles &amp; Permissions
+/// screen.
+model Permission {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  label     String
+  category  String
+  createdAt DateTime @default(now())
+
+  rolePermissions RolePermission[]
+}
+
+/// Which roles currently hold a given permission. This mapping is data, not
+/// code — it starts seeded to reproduce the old RBAC role checks exactly, and
+/// is then editable from the admin Settings screen.
+model RolePermission {
+  id           String   @id @default(cuid())
+  role         UserRole
+  permissionId String
+  createdAt    DateTime @default(now())
+
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([role, permissionId])
+  @@index([role])
+}
+
 enum OutboxStatus {
   PENDING
   PROCESSING

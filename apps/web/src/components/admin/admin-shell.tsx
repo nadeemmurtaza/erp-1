@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, type ReactNode } from 'react';
 import clsx from 'clsx';
-import type { UserRole } from '@yaseen/shared';
 import { clearSession, getStoredUser, logout } from '@/lib/admin-client';
 import type { AuthUser } from '@/lib/api-types';
 import { NAV_GROUP_LABELS, navFor, type AdminNavItem } from './nav-registry';
@@ -19,7 +18,8 @@ import { AdminSessionProvider } from './session';
  *
  * The guard runs in the browser because the admin holds its token there. That
  * is a convenience, not the security boundary — every /admin API route is
- * role-checked server-side, so a forged local session gets 403s and nothing else.
+ * permission-checked server-side, so a forged local session gets 403s and
+ * nothing else.
  */
 export function AdminShell({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -57,7 +57,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
     );
   }
 
-  const items = navFor(user.role as UserRole);
+  const items = navFor(user.permissions);
   const groups = [...new Set(items.map((item) => item.group))];
 
   return (

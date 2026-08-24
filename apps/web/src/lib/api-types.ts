@@ -266,6 +266,8 @@ export interface AuthUser {
   firstName: string | null;
   lastName: string | null;
   role: 'CUSTOMER' | 'STAFF' | 'TAILOR' | 'ADMIN';
+  /** Resolved server-side from the role's current grants — @see nav-registry.ts. */
+  permissions: string[];
 }
 
 export interface AuthResult {
@@ -345,4 +347,37 @@ export interface MonthlyTarget {
   targetAmount: number;
   achievedAmount: number;
   percent: number;
+}
+
+// --- Settings: roles & permissions, audit log --------------------------------
+
+export interface PermissionDefinition {
+  id: string;
+  key: string;
+  label: string;
+  category: string;
+}
+
+export interface RolePermissions {
+  role: 'CUSTOMER' | 'STAFF' | 'TAILOR' | 'ADMIN';
+  permissions: string[];
+}
+
+export interface AuditLogEntry {
+  id: string;
+  actorId: string | null;
+  action: string;
+  entity: string;
+  entityId: string | null;
+  data: unknown;
+  ip: string | null;
+  createdAt: string;
+  actor: { id: string; firstName: string | null; lastName: string | null; email: string | null } | null;
+}
+
+export interface AuditLogPage {
+  total: number;
+  page: number;
+  perPage: number;
+  entries: AuditLogEntry[];
 }

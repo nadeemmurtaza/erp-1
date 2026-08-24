@@ -1,7 +1,14 @@
 import { config } from 'dotenv';
 import { hash } from 'bcryptjs';
-import { DEFAULT_GARMENT_TYPES, slugify, toMinor } from '@yaseen/shared';
-import { PrismaClient, type Prisma } from '../src/generated/prisma';
+import {
+  DEFAULT_GARMENT_TYPES,
+  PERMISSION_CATALOG,
+  ROLE_PERMISSION_SEED,
+  slugify,
+  toMinor,
+  type PermissionKey,
+} from '@yaseen/shared';
+import { PrismaClient, type Prisma, type UserRole } from '../src/generated/prisma';
 
 config({ path: ['.env', '../../.env'], quiet: true });
 
@@ -18,6 +25,7 @@ const prisma = new PrismaClient();
 async function main(): Promise<void> {
   console.warn('Seeding…');
 
+  await seedPermissions();
   const users = await seedUsers();
   const garments = await seedGarmentTypes();
   await seedGarmentCatalogExpansion(garments);
@@ -33,6 +41,48 @@ async function main(): Promise<void> {
   console.warn(`  Staff:    ${users.staff.email} / staff12345`);
   console.warn(`  Tailor:   ${users.tailor.email} / tailor12345`);
   console.warn(`  Customer: ${users.customer.email} / customer12345`);
+}
+
+/**
+ * Loads the permission catalog and, for any permission that has never been
+ * granted to anyone, applies its default role grants from
+ * ROLE_PERMISSION_SEED (@yaseen/shared).
+ *
+ * The label/category upsert always runs — that's just display metadata. The
+ * grant step deliberately does not: once a permission has at least one
+ * RolePermission row, an admin may have edited it from /admin/settings, so a
+ * later seed run must never add or remove a grant on top of that. Only a
+ * brand-new permission — one this run's upsert just created for the first
+ * time — has zero existing grants and picks up its defaults here.
+ */
+async function seedPermissions(): Promise<void> {
+  const permissionIds = new Map<string, string>();
+
+  for (const def of PERMISSION_CATALOG) {
+    const record = await prisma.permission.upsert({
+      where: { key: def.key },
+      update: { label: def.label, category: def.category },
+      create: { key: def.key, label: def.label, category: def.category },
+    });
+    permissionIds.set(def.key, record.id);
+  }
+
+  const alreadyManaged = new Set(
+    (await prisma.rolePermission.findMany({ select: { permissionId: true } })).map(
+      (row) => row.permissionId,
+    ),
+  );
+
+  for (const [role, keys] of Object.entries(ROLE_PERMISSION_SEED) as Array<
+    [UserRole, readonly PermissionKey[]]
+  >) {
+    for (const key of keys) {
+      const permissionId = permissionIds.get(key);
+      if (!permissionId || alreadyManaged.has(permissionId)) continue;
+
+      await prisma.rolePermission.create({ data: { role, permissionId } });
+    }
+  }
 }
 
 async function seedUsers() {

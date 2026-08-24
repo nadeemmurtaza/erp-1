@@ -1,8 +1,11 @@
+'use client';
+
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import type { Locale } from '@yaseen/shared';
 import { Link } from '@/i18n/navigation';
 import type { StorefrontProduct } from '@/lib/api-types';
+import { useWishlist } from '@/lib/wishlist';
 import { Price } from './price';
 
 interface ProductCardProps {
@@ -25,6 +28,8 @@ export function ProductCard({
 }: ProductCardProps) {
   const t = useTranslations('product');
   const tShop = useTranslations('shop');
+  const { isSaved, toggle } = useWishlist();
+  const saved = isSaved(product.id);
 
   const primary = product.images.find((candidate) => candidate.isPrimary) ?? product.images[0];
   // The swap-on-hover shot. Only meaningful when it is a different photograph
@@ -40,16 +45,20 @@ export function ProductCard({
 
   const imageSizes = '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw';
 
+  // StorefrontProduct carries no rating/reviewCount field (checked
+  // apps/web/src/lib/api-types.ts) — the reference's star row is omitted
+  // rather than shown with invented numbers.
+
   return (
     // `lift` is a transition, not a keyframe — so it eases back out on mouse-leave
     // instead of snapping, which is what an `animate-` class does.
-    <div className="group card lift flex flex-col overflow-hidden">
+    <div className="group lift flex flex-col">
       {/*
         Its own hover group: the zoom, the image swap and the action overlay all
         belong to the photograph, while the lift belongs to the whole card.
       */}
       <div
-        className={`group/media relative overflow-hidden bg-sand-100 ${
+        className={`group/media relative overflow-hidden rounded-2xl bg-noir-50 ${
           featured ? 'aspect-square' : 'aspect-[3/4]'
         }`}
       >
@@ -78,7 +87,7 @@ export function ProductCard({
             ) : null}
           </>
         ) : (
-          <div className="flex h-full items-center justify-center px-4 text-center text-xs text-ink/40">
+          <div className="flex h-full items-center justify-center px-4 text-center text-xs text-noir-400">
             {t('noImage')}
           </div>
         )}
@@ -90,38 +99,72 @@ export function ProductCard({
           aria-label={product.name}
         />
 
-        <div className="pointer-events-none absolute inset-0 z-20">
+        {/* Status badges stack at the reading-start corner, clear of the heart button opposite. */}
+        <div className="pointer-events-none absolute start-3 top-3 z-20 flex flex-col items-start gap-2">
           {discount !== null ? (
-            <span className="absolute end-3 top-3 flex h-11 w-11 items-center justify-center rounded-full bg-orange-500 text-xs font-bold text-white">
+            <span className="rounded-full bg-noir-900 px-2.5 py-1 text-xs font-semibold text-white">
               -{discount}%
             </span>
           ) : null}
 
           {!product.inStock ? (
-            <span className="absolute start-3 top-3 rounded bg-ink/80 px-2 py-1 text-xs font-medium text-white">
+            <span className="rounded-full bg-noir-900/90 px-2.5 py-1 text-xs font-medium text-white">
               {t('outOfStock')}
             </span>
           ) : product.stitchingAvailable ? (
-            <span className="absolute start-3 top-3 rounded bg-brand-600 px-2 py-1 text-xs font-medium text-white">
+            <span className="rounded-full bg-noir-700 px-2.5 py-1 text-xs font-medium text-white">
               {t('getItStitched')}
             </span>
           ) : null}
         </div>
 
         {/*
+          Always-visible floating wishlist toggle, per the reference — unlike quick
+          view/quick shop below, this is not a hover-only affordance, since it needs
+          to be reachable on touch devices with no hover state. Stopping propagation
+          keeps a tap from also following the full-bleed link behind it.
+        */}
+        <button
+          type="button"
+          onClick={(event) => {
+            event.preventDefault();
+            toggle(product.id);
+          }}
+          className="absolute end-3 top-3 z-30 sf-icon-btn"
+          aria-label={saved ? t('removeFromFavourites') : t('addToFavourites')}
+          aria-pressed={saved}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill={saved ? 'currentColor' : 'none'}
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8Z" />
+          </svg>
+        </button>
+
+        {/*
           `pointer-events-none` keeps the full-bleed scrim transparent to clicks.
           Only the buttons and size strip get pointer-events-auto on hover so
           they're clickable while the dead space falls through to the z-10 link.
           focus-within ensures the overlay opens when keyboard focus lands in the
-          button group, making the focus ring visible.
+          button group, making the focus ring visible. Sits below the wishlist
+          button's z-30 so that toggle stays reachable while the scrim is up.
         */}
-        <div className="pointer-events-none absolute inset-0 z-30 flex flex-col items-center justify-center gap-4 bg-black/25 opacity-0 transition-opacity duration-300 ease-out group-hover/media:opacity-100 group-focus-within/media:opacity-100">
+        <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-noir-900/30 opacity-0 transition-opacity duration-300 ease-out group-hover/media:opacity-100 group-focus-within/media:opacity-100">
           <div className="pointer-events-none flex items-center gap-3 group-hover/media:pointer-events-auto group-focus-within/media:pointer-events-auto">
             {onQuickView ? (
               <button
                 type="button"
                 onClick={onQuickView}
-                className="group/btn relative flex h-12 w-12 items-center justify-center rounded-full bg-white text-ink transition-transform duration-200 hover:scale-110"
+                className="group/btn relative flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-noir-900 backdrop-blur-sm transition-transform duration-200 hover:scale-110"
                 aria-label={t('quickView')}
               >
                 <svg
@@ -141,32 +184,11 @@ export function ProductCard({
                 </svg>
               </button>
             ) : null}
-
-            <button
-              type="button"
-              className="group/btn relative flex h-12 w-12 items-center justify-center rounded-full bg-white text-ink transition-transform duration-200 hover:scale-110"
-              aria-label={t('addToFavourites')}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.75"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 0 0 0-7.8Z" />
-              </svg>
-            </button>
           </div>
 
           <button
             type="button"
-            className="pointer-events-none flex items-center gap-2 rounded-lg bg-ink px-6 py-3 text-sm font-medium text-white transition-all duration-200 hover:bg-ink/90 hover:scale-105 group-hover/media:pointer-events-auto group-focus-within/media:pointer-events-auto"
+            className="pointer-events-none transition-all hover:scale-105 sf-btn-primary group-hover/media:pointer-events-auto group-focus-within/media:pointer-events-auto"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -195,12 +217,12 @@ export function ProductCard({
         </div>
       </div>
 
-      <Link href={`/product/${product.slug}`} className="flex flex-1 flex-col gap-2 p-4">
-        <h3 className="line-clamp-2 text-sm font-medium leading-snug text-ink transition-colors duration-200 group-hover:text-brand-700">
+      <Link href={`/product/${product.slug}`} className="flex flex-1 flex-col gap-1.5 pt-3">
+        <h3 className="line-clamp-2 text-sm font-medium leading-snug text-noir-900 transition-colors duration-200 group-hover:text-noir-600">
           {product.name}
         </h3>
 
-        <p className="flex flex-wrap gap-x-3 text-xs text-ink/60">
+        <p className="flex flex-wrap gap-x-3 text-xs text-noir-500">
           {product.fabric ? <span className="capitalize">{product.fabric}</span> : null}
           {product.pieceCount ? (
             <span>{tShop('pieceCount', { count: product.pieceCount })}</span>

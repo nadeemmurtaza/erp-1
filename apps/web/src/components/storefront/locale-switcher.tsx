@@ -41,7 +41,7 @@ export function LocaleSwitcher() {
       <label className="sr-only">{t('language')}</label>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-center p-1 text-ink/70 hover:text-ink transition-colors duration-200"
+        className="flex h-9 w-9 items-center justify-center rounded-full text-noir-500 hover:bg-noir-50 hover:text-noir-900 transition-colors duration-200"
         aria-label={t('language')}
         disabled={isPending}
       >
@@ -52,15 +52,15 @@ export function LocaleSwitcher() {
       </button>
 
       {isOpen && (
-        <div className="absolute end-0 top-full mt-2 rounded-md shadow-md border border-sand-200 bg-white overflow-hidden z-50 min-w-max">
+        <div className="absolute end-0 top-full mt-2 rounded-md shadow-md border border-noir-200 bg-white overflow-hidden z-50 min-w-max">
           {LOCALES.map((option) => (
             <button
               key={option}
               onClick={() => onChange(option)}
               className={`block w-full text-start px-4 py-2 text-sm transition-colors duration-200 ${
                 locale === option
-                  ? 'text-brand-600 bg-brand-50'
-                  : 'text-ink/70 hover:text-ink hover:bg-sand-50'
+                  ? 'text-noir-900 bg-noir-50'
+                  : 'text-noir-500 hover:text-noir-900 hover:bg-noir-50'
               }`}
               disabled={isPending}
             >

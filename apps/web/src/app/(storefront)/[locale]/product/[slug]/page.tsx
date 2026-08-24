@@ -87,19 +87,30 @@ export default async function ProductPage({ params }: PageProps) {
     ...(product.brand ? ([[t('brand'), product.brand]] as Array<[string, string]>) : []),
   ];
 
+  // Reused for both the breadcrumb link and the gallery's mobile floating
+  // back button, so "back" always lands on the same category the breadcrumb
+  // names rather than the two drifting apart.
+  const backHref = product.category ? `/shop?category=${product.category.slug}` : '/shop';
+
   return (
-    <div className="container-page py-8">
-      <nav className="mb-6 text-sm text-ink/60">
-        <Link href="/shop" className="hover:text-brand-700">
+    // pb-40 clears both the fixed bottom-nav pill (see bottom-nav.tsx) and
+    // ProductPurchase's own sticky "Add to cart" bar, which floats above it —
+    // dropped back to pb-8 at md: where both are hidden.
+    <div className="container-page pb-40 pt-8 md:pb-8">
+      {/*
+        Hidden on mobile: the gallery's floating circular back button covers
+        this there, and the full-bleed hero reads better without a text row
+        above it. From md: up the two-column layout has no such button, so
+        the breadcrumb carries both "back" and the category link.
+      */}
+      <nav className="mb-6 hidden text-sm text-noir-500 md:block">
+        <Link href="/shop" className="transition-colors hover:text-noir-900">
           {t('backToShop')}
         </Link>
         {product.category ? (
           <>
             <span className="mx-2">/</span>
-            <Link
-              href={`/shop?category=${product.category.slug}`}
-              className="hover:text-brand-700"
-            >
+            <Link href={backHref} className="transition-colors hover:text-noir-900">
               {product.category.name}
             </Link>
           </>
@@ -107,10 +118,17 @@ export default async function ProductPage({ params }: PageProps) {
       </nav>
 
       <div className="grid gap-10 lg:grid-cols-2">
-        <ProductGallery images={product.images} alt={product.name} />
+        <ProductGallery
+          images={product.images}
+          alt={product.name}
+          productId={product.id}
+          backHref={backHref}
+        />
 
         <div>
-          <h1 className="text-2xl font-semibold text-ink sm:text-3xl">{product.name}</h1>
+          <h1 className="font-display text-2xl font-semibold text-noir-900 sm:text-3xl">
+            {product.name}
+          </h1>
 
           <div className="mt-6">
             <ProductPurchase
@@ -122,29 +140,29 @@ export default async function ProductPage({ params }: PageProps) {
           </div>
 
           {product.description ? (
-            <section className="mt-8 border-t border-sand-200 pt-6">
-              <h2 className="text-sm font-semibold text-ink">{t('details')}</h2>
-              <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-ink/75">
+            <section className="mt-8 border-t border-noir-200 pt-6">
+              <h2 className="text-sm font-semibold text-noir-900">{t('details')}</h2>
+              <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-noir-600">
                 {product.description}
               </p>
             </section>
           ) : null}
 
           {details.length > 0 ? (
-            <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-sand-200 pt-6 text-sm">
+            <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-noir-200 pt-6 text-sm">
               {details.map(([label, value]) => (
                 <div key={label}>
-                  <dt className="text-ink/50">{label}</dt>
-                  <dd className="mt-0.5 capitalize text-ink">{value}</dd>
+                  <dt className="text-noir-500">{label}</dt>
+                  <dd className="mt-0.5 capitalize text-noir-900">{value}</dd>
                 </div>
               ))}
             </dl>
           ) : null}
 
           {product.careInstructions ? (
-            <section className="mt-6 border-t border-sand-200 pt-6">
-              <h2 className="text-sm font-semibold text-ink">{t('care')}</h2>
-              <p className="mt-2 text-sm text-ink/75">{product.careInstructions}</p>
+            <section className="mt-6 border-t border-noir-200 pt-6">
+              <h2 className="text-sm font-semibold text-noir-900">{t('care')}</h2>
+              <p className="mt-2 text-sm text-noir-600">{product.careInstructions}</p>
             </section>
           ) : null}
         </div>

@@ -129,3 +129,76 @@
     }
   }
 }
+
+/*
+ * Storefront shared component patterns (sf- prefix).
+ *
+ * The admin `@layer components` block above is admin's single source of
+ * truth for what a button/card/input IS, built from the `brand`/`sand`/`ink`
+ * tokens. The storefront reskin (the `noir`/`star`/`font-display` tokens in
+ * tailwind.config.ts) has never had the equivalent — every reskinned file
+ * repeats its own slightly different string of utility classes for "a
+ * primary button" or "a selected chip", so changing one means hunting
+ * through every file that happened to copy it. This block is that missing
+ * layer: the storefront's own shared classes, prefixed `sf-` so they never
+ * collide with admin's unprefixed `.btn-*` / `.card` / `.field-input`
+ * above, which stay exactly as they are. Editing a class here changes every
+ * storefront usage the next time the page renders.
+ */
+@layer components {
+  .sf-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .sf-btn-primary {
+    @apply sf-btn bg-noir-700 text-white hover:bg-noir-800;
+  }
+
+  .sf-btn-secondary {
+    @apply sf-btn border border-noir-300 text-noir-900 hover:bg-noir-50;
+  }
+
+  .sf-card {
+    @apply rounded-2xl border border-noir-200/70 bg-white shadow-sm;
+  }
+
+  /*
+   * Base pill shape only, no colour — a component applies `sf-chip` plus
+   * whichever state class below applies, the same choice the size-selector,
+   * filter, and stitching-option chips already make around one shared shape.
+   */
+  .sf-chip {
+    @apply rounded-full border px-4 py-1.5 text-sm font-medium transition-colors duration-200;
+  }
+
+  .sf-chip-selected {
+    @apply border-noir-700 bg-noir-700 text-white;
+  }
+
+  .sf-chip-unselected {
+    @apply border-noir-300 bg-white text-noir-900 hover:border-noir-500;
+  }
+
+  /*
+   * The floating translucent circular icon button used over product
+   * photography (wishlist heart, gallery back button) — bg-white/80 plus a
+   * blur keeps it legible over any photo, and it scales up on hover rather
+   * than changing colour since it sits on an unpredictable image
+   * background. h-9 w-9 is the common default; a larger hero placement can
+   * override with its own height/width utility, which wins over this class
+   * since Tailwind's utilities layer is ordered after components.
+   */
+  .sf-icon-btn {
+    @apply inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-noir-900 backdrop-blur-sm transition-transform duration-200 hover:scale-110;
+  }
+
+  /*
+   * Matches checkout's former local `inputClass` exactly — rounded-xl with
+   * a noir border and focus ring rather than the site-wide brand-teal ring
+   * — so every storefront text/select/textarea field can share this one
+   * class instead of each file redefining the same override.
+   */
+  .sf-field-input {
+    @apply w-full rounded-xl border-noir-200 bg-white text-sm text-noir-900 shadow-none transition-colors duration-200 placeholder:text-noir-400 focus:border-noir-700 focus:ring-noir-700;
+  }
+}

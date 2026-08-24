@@ -23,6 +23,8 @@
     "searchPlaceholder": "Search fabrics, suits, kurtas…",
     "account": "Account",
     "cart": "Cart",
+    "wishlist": "Wishlist",
+    "bottomNav": "Bottom navigation",
     "language": "Language",
     "openMenu": "Open menu",
     "closeMenu": "Close menu"
@@ -99,12 +101,15 @@
     "noImage": "No photograph yet",
     "backToShop": "Back to shop",
     "quantity": "Quantity",
+    "increaseQuantity": "Increase quantity",
+    "decreaseQuantity": "Decrease quantity",
     "adding": "Adding…",
     "addedToCart": "Added to your cart.",
     "viewCart": "View cart",
     "quickView": "Quick view",
     "quickShop": "Quick Shop",
-    "addToFavourites": "Add to favourites"
+    "addToFavourites": "Add to favourites",
+    "removeFromFavourites": "Remove from favourites"
   },
   "cart": {
     "title": "Cart",
@@ -120,10 +125,20 @@
     "checkout": "Checkout",
     "continueShopping": "Continue shopping",
     "quantity": "Qty",
+    "decreaseQuantity": "Decrease quantity",
+    "increaseQuantity": "Increase quantity",
     "remove": "Remove",
     "measurements": "Measurements",
     "measurementsMissing": "Measurements still needed",
     "onlyLeft": "Only {count} left"
+  },
+  "wishlist": {
+    "title": "Saved items",
+    "itemCount": "{count, plural, =0 {No saved items} one {# saved item} other {# saved items}}",
+    "loading": "Loading your saved items…",
+    "empty": "Nothing saved yet.",
+    "emptyBody": "Tap the heart on anything you like to save it here.",
+    "browseShop": "Start shopping"
   },
   "footer": {
     "help": "Help",

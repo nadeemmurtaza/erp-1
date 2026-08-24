@@ -131,23 +131,25 @@ export default function CheckoutPage() {
   }
 
   if (loading) {
-    return <div className="container-page py-16 text-center text-sm text-ink/50">…</div>;
+    return (
+      <div className="container-page py-16 text-center text-sm text-noir-400">…</div>
+    );
   }
 
   if (!cart || cart.items.length === 0) {
     return (
-      <div className="container-page py-16 text-center">
-        <h1 className="text-2xl font-semibold text-ink">{t('title')}</h1>
-        <p className="mt-2 text-sm text-ink/60">{t('emptyCart')}</p>
+      <div className="container-page py-16 text-center font-display">
+        <h1 className="text-2xl font-semibold text-noir-900">{t('title')}</h1>
+        <p className="mt-2 text-sm text-noir-500">{t('emptyCart')}</p>
       </div>
     );
   }
 
   if (cart.issues.length > 0) {
     return (
-      <div className="container-page py-16">
-        <h1 className="text-2xl font-semibold text-ink">{t('title')}</h1>
-        <ul className="mt-4 space-y-1 rounded-md border border-gold/40 bg-gold/10 px-4 py-3 text-sm">
+      <div className="container-page pb-28 pt-16 font-display md:pb-16">
+        <h1 className="text-2xl font-semibold text-noir-900">{t('title')}</h1>
+        <ul className="mt-4 space-y-1 rounded-2xl border border-noir-200 bg-noir-50 px-4 py-3 text-sm text-noir-800">
           {cart.issues.map((issue) => (
             <li key={issue}>{issue}</li>
           ))}
@@ -155,7 +157,7 @@ export default function CheckoutPage() {
         <button
           type="button"
           onClick={() => router.push('/cart')}
-          className="btn-secondary mt-6"
+          className="sf-btn-secondary mt-6 px-5 py-2.5"
         >
           {t('backToCart')}
         </button>
@@ -166,13 +168,15 @@ export default function CheckoutPage() {
   const selectedMethod = methods.find((candidate) => candidate.key === method);
 
   return (
-    <div className="container-page py-8">
-      <h1 className="text-2xl font-semibold text-ink">{t('title')}</h1>
+    <div className="container-page pb-28 pt-6 font-display sm:pt-8 md:pb-8">
+      <h1 className="text-2xl font-semibold tracking-tight text-noir-900 sm:text-3xl">
+        {t('title')}
+      </h1>
 
-      <form onSubmit={submit} className="mt-8 grid gap-8 lg:grid-cols-[1fr_22rem]">
+      <form onSubmit={submit} className="mt-6 grid gap-6 sm:mt-8 sm:gap-8 lg:grid-cols-[1fr_22rem]">
         <div className="space-y-6">
-          <section className="card p-4 sm:p-5">
-            <h2 className="text-sm font-semibold text-ink">{t('deliveryAddress')}</h2>
+          <section className="sf-card p-4 sm:p-6">
+            <h2 className="text-base font-semibold text-noir-900">{t('deliveryAddress')}</h2>
 
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <Field label={t('fullName')} required>
@@ -181,7 +185,7 @@ export default function CheckoutPage() {
                   onChange={(event) => setForm({ ...form, fullName: event.target.value })}
                   required
                   autoComplete="name"
-                  className="field-input"
+                  className="sf-field-input"
                 />
               </Field>
 
@@ -193,7 +197,7 @@ export default function CheckoutPage() {
                   inputMode="tel"
                   autoComplete="tel"
                   placeholder="03001234567"
-                  className="field-input"
+                  className="sf-field-input"
                 />
               </Field>
 
@@ -204,7 +208,7 @@ export default function CheckoutPage() {
                     onChange={(event) => setForm({ ...form, line1: event.target.value })}
                     required
                     autoComplete="address-line1"
-                    className="field-input"
+                    className="sf-field-input"
                   />
                 </Field>
               </div>
@@ -215,7 +219,7 @@ export default function CheckoutPage() {
                     value={form.line2}
                     onChange={(event) => setForm({ ...form, line2: event.target.value })}
                     autoComplete="address-line2"
-                    className="field-input"
+                    className="sf-field-input"
                   />
                 </Field>
               </div>
@@ -226,7 +230,7 @@ export default function CheckoutPage() {
                   onChange={(event) => setForm({ ...form, city: event.target.value })}
                   required
                   autoComplete="address-level2"
-                  className="field-input"
+                  className="sf-field-input"
                 />
               </Field>
 
@@ -234,7 +238,7 @@ export default function CheckoutPage() {
                 <select
                   value={form.province}
                   onChange={(event) => setForm({ ...form, province: event.target.value })}
-                  className="field-input"
+                  className="sf-field-input"
                 >
                   {PROVINCES.map((province) => (
                     <option key={province} value={province}>
@@ -249,7 +253,7 @@ export default function CheckoutPage() {
                   value={form.postalCode}
                   onChange={(event) => setForm({ ...form, postalCode: event.target.value })}
                   autoComplete="postal-code"
-                  className="field-input"
+                  className="sf-field-input"
                 />
               </Field>
 
@@ -259,22 +263,30 @@ export default function CheckoutPage() {
                   value={form.email}
                   onChange={(event) => setForm({ ...form, email: event.target.value })}
                   autoComplete="email"
-                  className="field-input"
+                  className="sf-field-input"
                 />
               </Field>
             </div>
           </section>
 
-          <section className="card p-4 sm:p-5">
-            <h2 className="text-sm font-semibold text-ink">{t('payment')}</h2>
+          <section className="sf-card p-4 sm:p-6">
+            <h2 className="text-base font-semibold text-noir-900">{t('payment')}</h2>
 
-            <div className="mt-4 space-y-2">
+            {/*
+             * The real payment options are cash-on-delivery and bank
+             * transfer — no card gateway exists — so the native radio input
+             * stays for semantics/keyboard support but is visually replaced
+             * by a rounded card selector, not a fake card-entry field.
+             */}
+            <div className="mt-4 space-y-3">
               {methods.map((option) => (
                 <label
                   key={option.key}
                   className={clsx(
-                    'flex cursor-pointer items-start gap-3 rounded-md border p-3',
-                    option.key === method ? 'border-brand-500 bg-brand-50' : 'border-sand-200',
+                    'flex cursor-pointer items-start gap-3 rounded-2xl border-2 p-4 transition-colors duration-200 focus-within:ring-2 focus-within:ring-noir-900 focus-within:ring-offset-2',
+                    option.key === method
+                      ? 'border-noir-900 bg-noir-900/[0.03]'
+                      : 'border-noir-200 hover:border-noir-300',
                   )}
                 >
                   <input
@@ -282,20 +294,31 @@ export default function CheckoutPage() {
                     name="payment-method"
                     checked={option.key === method}
                     onChange={() => setMethod(option.key)}
-                    className="mt-1 border-sand-300 text-brand-600 focus:ring-brand-500"
+                    className="sr-only"
                   />
+                  <span
+                    aria-hidden
+                    className={clsx(
+                      'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2',
+                      option.key === method ? 'border-noir-900' : 'border-noir-300',
+                    )}
+                  >
+                    {option.key === method ? (
+                      <span className="h-2.5 w-2.5 rounded-full bg-noir-900" />
+                    ) : null}
+                  </span>
                   <span className="flex-1">
                     <span className="flex justify-between gap-3">
-                      <span className="text-sm font-medium text-ink">
+                      <span className="text-sm font-medium text-noir-900">
                         {locale === 'ur' ? option.labelUr : option.labelEn}
                       </span>
                       {option.fee > 0 ? (
-                        <span className="text-sm text-ink/70">
+                        <span className="text-sm text-noir-500">
                           +{formatMoney(option.fee, locale)}
                         </span>
                       ) : null}
                     </span>
-                    <span className="mt-0.5 block text-xs text-ink/60">
+                    <span className="mt-0.5 block text-xs text-noir-500">
                       {locale === 'ur' ? option.descriptionUr : option.descriptionEn}
                     </span>
                   </span>
@@ -304,70 +327,76 @@ export default function CheckoutPage() {
             </div>
           </section>
 
-          <section className="card p-4 sm:p-5">
+          <section className="sf-card p-4 sm:p-6">
             <Field label={t('note')} hint={t('noteHint')}>
               <textarea
                 value={form.note}
                 onChange={(event) => setForm({ ...form, note: event.target.value })}
                 rows={2}
                 maxLength={500}
-                className="field-input"
+                className="sf-field-input"
               />
             </Field>
           </section>
         </div>
 
-        <aside className="card h-fit p-4 lg:sticky lg:top-24">
-          <h2 className="text-sm font-semibold text-ink">{t('summary')}</h2>
+        <aside className="sf-card h-fit p-4 lg:sticky lg:top-24">
+          <h2 className="text-base font-semibold text-noir-900">{t('summary')}</h2>
 
           <ul className="mt-3 space-y-2 text-sm">
             {cart.items.map((line) => (
               <li key={line.id} className="flex justify-between gap-3">
-                <span className="min-w-0 text-ink/70">
+                <span className="min-w-0 text-noir-600">
                   <span className="block truncate">{line.name}</span>
                   {line.stitching ? (
-                    <span className="block text-xs text-brand-700">
+                    <span className="block text-xs text-noir-500">
                       + {line.stitching.serviceName}
                     </span>
                   ) : null}
-                  <span className="text-xs text-ink/40">× {line.quantity}</span>
+                  <span className="text-xs text-noir-400">× {line.quantity}</span>
                 </span>
-                <span className="shrink-0 text-ink">{formatMoney(line.lineTotal, locale)}</span>
+                <span className="shrink-0 text-noir-900">
+                  {formatMoney(line.lineTotal, locale)}
+                </span>
               </li>
             ))}
           </ul>
 
-          <dl className="mt-4 space-y-2 border-t border-sand-200 pt-4 text-sm">
+          <dl className="mt-4 space-y-2 border-t border-noir-200 pt-4 text-sm">
             <div className="flex justify-between">
-              <dt className="text-ink/60">{t('goods')}</dt>
-              <dd className="text-ink">{formatMoney(cart.totals.grandTotal, locale)}</dd>
+              <dt className="text-noir-500">{t('goods')}</dt>
+              <dd className="text-noir-900">{formatMoney(cart.totals.grandTotal, locale)}</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-ink/60">{t('shipping')}</dt>
-              <dd className="text-ink/50">{t('shippingByCity')}</dd>
+              <dt className="text-noir-500">{t('shipping')}</dt>
+              <dd className="text-noir-400">{t('shippingByCity')}</dd>
             </div>
             {selectedMethod && selectedMethod.fee > 0 ? (
               <div className="flex justify-between">
-                <dt className="text-ink/60">
+                <dt className="text-noir-500">
                   {locale === 'ur' ? selectedMethod.labelUr : selectedMethod.labelEn}
                 </dt>
-                <dd className="text-ink">+{formatMoney(selectedMethod.fee, locale)}</dd>
+                <dd className="text-noir-900">+{formatMoney(selectedMethod.fee, locale)}</dd>
               </div>
             ) : null}
           </dl>
 
-          <p className="mt-3 text-xs text-ink/50">{t('finalTotalNote')}</p>
+          <p className="mt-3 text-xs text-noir-400">{t('finalTotalNote')}</p>
 
           {error ? (
             <p
               role="alert"
-              className="mt-4 whitespace-pre-line rounded-md bg-red-50 px-3 py-2 text-sm text-red-700"
+              className="mt-4 whitespace-pre-line rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
             >
               {error}
             </p>
           ) : null}
 
-          <button type="submit" disabled={busy || !method} className="btn-primary mt-4 w-full">
+          <button
+            type="submit"
+            disabled={busy || !method}
+            className="sf-btn-primary mt-4 w-full py-3.5 sm:text-base"
+          >
             {busy ? t('placing') : t('placeOrder')}
           </button>
         </aside>
@@ -389,12 +418,12 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="field-label">
+      <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-noir-500">
         {label}
         {required ? <span className="text-red-600"> *</span> : null}
       </span>
       {children}
-      {hint ? <span className="mt-1 block text-xs text-ink/40">{hint}</span> : null}
+      {hint ? <span className="mt-1 block text-xs text-noir-400">{hint}</span> : null}
     </label>
   );
 }

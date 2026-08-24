@@ -27,9 +27,9 @@ export function Price({ amount, locale, compareAt, className, size = 'md' }: Pri
 
   return (
     <span className={clsx('inline-flex items-baseline gap-2', SIZES[size], className)}>
-      <span className="font-semibold text-orange-600">{formatMoney(amount, locale)}</span>
+      <span className="font-semibold text-noir-900">{formatMoney(amount, locale)}</span>
       {showCompare ? (
-        <span className="text-sm font-normal text-ink/40 line-through">
+        <span className="text-sm font-normal text-noir-400 line-through">
           {formatMoney(compareAt, locale)}
         </span>
       ) : null}

@@ -28,15 +28,15 @@ export function QuickViewModal({ product, locale, onClose }: QuickViewModalProps
   const image = product.images.find((img) => img.isPrimary) ?? product.images[0];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/40 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-noir-900/40 backdrop-blur-sm animate-fadeIn">
       <div
-        className="relative w-full max-w-2xl bg-white rounded-lg shadow-xl animate-scaleIn max-h-[90vh] overflow-y-auto"
+        className="relative w-full max-w-2xl bg-white rounded-2xl shadow-xl animate-scaleIn max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 end-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md hover:bg-sand-50 transition-colors"
+          className="sf-icon-btn absolute end-4 top-4 z-10 h-10 w-10 shadow-md"
           aria-label="Close"
         >
           <svg
@@ -54,7 +54,7 @@ export function QuickViewModal({ product, locale, onClose }: QuickViewModalProps
 
         <div className="grid gap-6 p-6 sm:grid-cols-2">
           {/* Image */}
-          <div className="relative aspect-square overflow-hidden rounded-lg bg-sand-100">
+          <div className="relative aspect-square overflow-hidden rounded-xl bg-noir-50">
             {image && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -68,8 +68,8 @@ export function QuickViewModal({ product, locale, onClose }: QuickViewModalProps
           {/* Details */}
           <div className="flex flex-col gap-4">
             <div>
-              <h2 className="text-2xl font-semibold text-ink">{product.name}</h2>
-              <p className="mt-2 text-sm text-ink/60">{product.description}</p>
+              <h2 className="text-2xl font-semibold text-noir-900">{product.name}</h2>
+              <p className="mt-2 text-sm text-noir-500">{product.description}</p>
             </div>
 
             <div>
@@ -82,27 +82,23 @@ export function QuickViewModal({ product, locale, onClose }: QuickViewModalProps
 
             <div className="space-y-2">
               {!product.inStock && (
-                <p className="text-sm font-medium text-ink/60">Out of stock</p>
+                <p className="text-sm font-medium text-noir-500">Out of stock</p>
               )}
               {product.stitchingAvailable && (
-                <p className="text-sm font-medium text-brand-700">
+                <p className="text-sm font-medium text-noir-700">
                   ✓ Can be stitched to your measurements
                 </p>
               )}
             </div>
 
             <div className="flex flex-col gap-3 pt-4">
-              <button className="w-full bg-black text-white px-6 py-3 font-medium hover:bg-black/80 transition-colors">
-                Quick Shop
-              </button>
-              <button className="w-full bg-white border border-ink/20 text-ink px-6 py-3 font-medium hover:bg-sand-50 transition-colors">
-                Add to cart
-              </button>
+              <button className="w-full sf-btn-primary">Quick Shop</button>
+              <button className="w-full sf-btn-secondary">Add to cart</button>
             </div>
 
             <button
               onClick={onClose}
-              className="text-sm text-ink/60 hover:text-ink transition-colors"
+              className="text-sm text-noir-500 hover:text-noir-900 transition-colors"
             >
               View full details →
             </button>

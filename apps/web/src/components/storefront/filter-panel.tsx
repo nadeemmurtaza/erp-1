@@ -26,6 +26,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
+  const [isOpen, setIsOpen] = useState(false);
 
   const selected = (key: string): string[] => {
     const raw = searchParams.get(key);
@@ -69,8 +70,6 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
     apply(next);
   }
 
-  const [isOpen, setIsOpen] = useState(false);
-
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -82,9 +81,31 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
     };
   }, [isOpen]);
 
+  // The header's mobile filter-icon button can't reach this component's state
+  // directly (it lives on every page, this only mounts on /shop), so it signals
+  // through the URL instead — the same channel every other filter uses. Once
+  // seen, the flag is stripped so it doesn't linger in the address bar.
+  useEffect(() => {
+    if (searchParams.get('openFilters') !== '1') return;
+    setIsOpen(true);
+    const next = new URLSearchParams(searchParams.toString());
+    next.delete('openFilters');
+    startTransition(() => {
+      const query = next.toString();
+      router.replace(query ? `${pathname}?${query}` : pathname);
+    });
+  }, [searchParams, pathname, router]);
+
   const hasFilters = ['fabric', 'season', 'pieceCount', 'minPrice', 'maxPrice', 'q'].some(
     (key) => searchParams.has(key),
   );
+
+  const activeCount =
+    selected('fabric').length +
+    selected('season').length +
+    selected('pieceCount').length +
+    (searchParams.has('minPrice') ? 1 : 0) +
+    (searchParams.has('maxPrice') ? 1 : 0);
 
   const FilterContent = (
     <>
@@ -93,7 +114,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
           <button
             type="button"
             onClick={() => apply(new URLSearchParams())}
-            className="text-xs font-medium text-brand-700 hover:underline"
+            className="text-xs font-medium text-noir-900 hover:underline"
           >
             {t('clearFilters')}
           </button>
@@ -101,44 +122,50 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
       </div>
 
       <FilterGroup title={t('fabric')}>
-        {facets.fabrics.map((fabric) => (
-          <CheckboxRow
-            key={fabric}
-            label={fabric}
-            capitalise
-            checked={selected('fabric').includes(fabric)}
-            onChange={() => toggle('fabric', fabric)}
-          />
-        ))}
+        <ChipRow>
+          {facets.fabrics.map((fabric) => (
+            <Chip
+              key={fabric}
+              label={fabric}
+              capitalise
+              checked={selected('fabric').includes(fabric)}
+              onChange={() => toggle('fabric', fabric)}
+            />
+          ))}
+        </ChipRow>
       </FilterGroup>
 
       <FilterGroup title={t('season')}>
-        {facets.seasons.map((season) => (
-          <CheckboxRow
-            key={season}
-            label={season}
-            capitalise
-            checked={selected('season').includes(season)}
-            onChange={() => toggle('season', season)}
-          />
-        ))}
+        <ChipRow>
+          {facets.seasons.map((season) => (
+            <Chip
+              key={season}
+              label={season}
+              capitalise
+              checked={selected('season').includes(season)}
+              onChange={() => toggle('season', season)}
+            />
+          ))}
+        </ChipRow>
       </FilterGroup>
 
       {facets.pieceCounts.length > 0 ? (
         <FilterGroup title={t('pieces')}>
-          {facets.pieceCounts.map((count) => (
-            <CheckboxRow
-              key={count}
-              label={t('pieceCount', { count })}
-              checked={selected('pieceCount').includes(String(count))}
-              onChange={() => toggle('pieceCount', String(count))}
-            />
-          ))}
+          <ChipRow>
+            {facets.pieceCounts.map((count) => (
+              <Chip
+                key={count}
+                label={t('pieceCount', { count })}
+                checked={selected('pieceCount').includes(String(count))}
+                onChange={() => toggle('pieceCount', String(count))}
+              />
+            ))}
+          </ChipRow>
         </FilterGroup>
       ) : null}
 
       <FilterGroup title={t('price')}>
-        <p className="mb-2 text-xs text-ink/50">
+        <p className="mb-2 text-xs text-noir-500">
           {formatMoney(facets.priceRange.min, locale)} –{' '}
           {formatMoney(facets.priceRange.max, locale)}
         </p>
@@ -156,7 +183,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
                   : ''
               }
               onBlur={(event) => setPrice('minPrice', event.target.value)}
-              className="field-input py-1.5 text-sm"
+              className="sf-field-input px-3 py-1.5"
             />
           </label>
           <label className="flex-1">
@@ -172,7 +199,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
                   : ''
               }
               onBlur={(event) => setPrice('maxPrice', event.target.value)}
-              className="field-input py-1.5 text-sm"
+              className="sf-field-input px-3 py-1.5"
             />
           </label>
         </div>
@@ -184,31 +211,42 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
     <>
       <button
         type="button"
-        className="mb-4 flex w-full items-center justify-center gap-2 rounded-md border border-sand-300 bg-white py-2 text-sm font-medium text-ink lg:hidden"
+        // sf-btn-primary supplies shape/colour so a future colour change still
+        // reaches this button; only the transform-based hover lift is bespoke.
+        className="sf-btn-primary mb-4 w-full transition-[background-color,transform] duration-200 ease-out motion-safe:hover:-translate-y-0.5 lg:hidden"
         onClick={() => setIsOpen(true)}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
+          viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
-          <line x1="4" x2="20" y1="6" y2="6" />
-          <line x1="14" x2="20" y1="12" y2="12" />
-          <line x1="8" x2="20" y1="18" y2="18" />
+          <line x1="4" y1="6" x2="20" y2="6" />
+          <line x1="4" y1="12" x2="20" y2="12" />
+          <line x1="4" y1="18" x2="20" y2="18" />
+          <circle cx="9" cy="6" r="1.6" fill="currentColor" stroke="none" />
+          <circle cx="15" cy="12" r="1.6" fill="currentColor" stroke="none" />
+          <circle cx="11" cy="18" r="1.6" fill="currentColor" stroke="none" />
         </svg>
         {t('filters')}
+        {activeCount > 0 ? (
+          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-xs font-semibold text-noir-900">
+            {activeCount}
+          </span>
+        ) : null}
       </button>
 
       {/* Mobile Drawer */}
       {isOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div
-            className="fixed inset-0 bg-ink/40 backdrop-blur-sm transition-opacity animate-fadeIn"
+            className="fixed inset-0 bg-noir-900/40 backdrop-blur-sm transition-opacity animate-fadeIn"
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
@@ -216,11 +254,11 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
             'fixed inset-y-0 w-80 bg-white shadow-xl flex flex-col',
             isRtl ? 'start-0 animate-slideInLeft' : 'end-0 animate-slideInRight'
           )}>
-            <div className="flex items-center justify-between px-4 h-14 border-b border-sand-200">
-              <span className="text-lg font-semibold text-ink">{t('filters')}</span>
+            <div className="flex items-center justify-between px-4 h-14 border-b border-noir-100">
+              <span className="font-display text-lg font-semibold text-noir-900">{t('filters')}</span>
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-md text-ink/80 hover:bg-sand-100"
+                className="flex h-10 w-10 items-center justify-center rounded-md text-noir-700 hover:bg-noir-50"
                 onClick={() => setIsOpen(false)}
               >
                 <svg
@@ -243,13 +281,13 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
             >
               {FilterContent}
             </div>
-            <div className="border-t border-sand-200 p-4">
+            <div className="border-t border-noir-100 p-4">
               <button
                 type="button"
-                className="btn-primary w-full flex justify-center"
+                className="sf-btn-primary w-full font-semibold"
                 onClick={() => setIsOpen(false)}
               >
-                Done
+                {t('applyFilters')}
               </button>
             </div>
           </div>
@@ -269,16 +307,29 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
 
 function FilterGroup({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="border-t border-sand-200 py-4">
-      <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink/60">
+    <section className="border-t border-noir-100 py-4">
+      <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-noir-500">
         {title}
       </h3>
-      <div className="space-y-1.5">{children}</div>
+      <div>{children}</div>
     </section>
   );
 }
 
-function CheckboxRow({
+/**
+ * A single-line, horizontally-scrolling strip of chips. Uses native overflow
+ * scrolling under the ambient `dir` set on <html> by the locale layout, so it
+ * scrolls start-to-end correctly in RTL without any JS direction handling.
+ */
+function ChipRow({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      {children}
+    </div>
+  );
+}
+
+function Chip({
   label,
   checked,
   onChange,
@@ -290,14 +341,17 @@ function CheckboxRow({
   capitalise?: boolean;
 }) {
   return (
-    <label className="flex cursor-pointer items-center gap-2 text-sm text-ink/80">
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={onChange}
-        className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
-      />
-      <span className={capitalise ? 'capitalize' : undefined}>{label}</span>
-    </label>
+    <button
+      type="button"
+      onClick={onChange}
+      aria-pressed={checked}
+      className={clsx(
+        'sf-chip shrink-0 whitespace-nowrap',
+        capitalise && 'capitalize',
+        checked ? 'sf-chip-selected' : 'sf-chip-unselected',
+      )}
+    >
+      {label}
+    </button>
   );
 }

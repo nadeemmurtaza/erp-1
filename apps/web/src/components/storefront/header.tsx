@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import { Link } from '@/i18n/navigation';
+import { BottomNav } from './bottom-nav';
 import { CartBadge } from './cart-badge';
 import { CustomerNav } from './customer-nav';
 import { LocaleSwitcher } from './locale-switcher';
@@ -58,88 +59,108 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-sand-300 bg-white shadow-sm">
-      <div className="container-page">
-        <div className="flex items-center justify-between py-4 md:py-5">
-          <div className="flex items-center gap-6 md:gap-8" suppressHydrationWarning>
-            <MobileNav items={NAV} />
-            <Link href="/" className="shrink-0 text-xl font-semibold tracking-tight text-ink hover:text-brand-600 transition-colors duration-200">
-              {tSite('name')}
-            </Link>
+    <>
+      <header className="sticky top-0 z-40 border-b border-noir-200 bg-white shadow-sm">
+        <div className="container-page">
+          <div className="flex items-center justify-between py-3 md:py-5">
+            <div className="flex items-center gap-3 md:gap-8" suppressHydrationWarning>
+              <MobileNav items={NAV} />
+              <Link href="/" className="shrink-0 font-display text-xl font-semibold tracking-tight text-noir-900 transition-colors duration-200 hover:text-noir-600">
+                {tSite('name')}
+              </Link>
 
-            <nav aria-label="Main" className="hidden flex-1 md:flex">
-              <div className="flex items-center gap-1">
-                {NAV.map((item) => {
-                  if (item.submenu) {
-                    return (
-                      <div key={item.key} className="group relative">
-                        <button className="px-3 py-2 text-sm font-medium text-ink/70 hover:text-ink hover:bg-sand-50 transition-all duration-200 ease-out rounded-md">
-                          {t(item.key)}
-                        </button>
-                        <div className="absolute start-0 top-full opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200 bg-white rounded-md shadow-md border border-sand-200 overflow-hidden">
-                          {item.submenu.map((subitem) => {
-                            const subActive = isActive(subitem.href);
-                            return (
-                              <Link
-                                key={subitem.key}
-                                href={subitem.href}
-                                className={`block px-4 py-2 text-sm transition-colors duration-200 ${
-                                  subActive
-                                    ? 'text-brand-600 bg-brand-50'
-                                    : 'text-ink/70 hover:text-ink hover:bg-sand-50'
-                                }`}
-                              >
-                                {t(subitem.key)}
-                              </Link>
-                            );
-                          })}
+              <nav aria-label="Main" className="hidden flex-1 md:flex">
+                <div className="flex items-center gap-1">
+                  {NAV.map((item) => {
+                    if (item.submenu) {
+                      return (
+                        <div key={item.key} className="group relative">
+                          <button className="rounded-md px-3 py-2 text-sm font-medium text-noir-500 transition-all duration-200 ease-out hover:bg-noir-50 hover:text-noir-900">
+                            {t(item.key)}
+                          </button>
+                          <div className="invisible absolute start-0 top-full overflow-hidden rounded-md border border-noir-200 bg-white opacity-0 shadow-md transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                            {item.submenu.map((subitem) => {
+                              const subActive = isActive(subitem.href);
+                              return (
+                                <Link
+                                  key={subitem.key}
+                                  href={subitem.href}
+                                  className={`block px-4 py-2 text-sm transition-colors duration-200 ${
+                                    subActive
+                                      ? 'bg-noir-50 text-noir-900'
+                                      : 'text-noir-500 hover:bg-noir-50 hover:text-noir-900'
+                                  }`}
+                                >
+                                  {t(subitem.key)}
+                                </Link>
+                              );
+                            })}
+                          </div>
                         </div>
-                      </div>
+                      );
+                    }
+
+                    const active = item.href ? isActive(item.href) : false;
+                    return (
+                      <Link
+                        key={item.key}
+                        href={item.href || '/'}
+                        className={`group relative rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ease-out ${
+                          active
+                            ? 'bg-noir-50 text-noir-900'
+                            : 'text-noir-500 hover:bg-noir-50 hover:text-noir-900 motion-safe:hover:-translate-y-0.5'
+                        }`}
+                      >
+                        {t(item.key)}
+                        <span className={`absolute bottom-0 start-0 h-0.5 transition-all duration-200 ${
+                          active ? 'w-full bg-noir-900' : 'w-0 bg-noir-900 group-hover:w-full'
+                        }`} />
+                      </Link>
                     );
-                  }
+                  })}
+                </div>
+              </nav>
+            </div>
 
-                  const active = item.href ? isActive(item.href) : false;
-                  return (
-                    <Link
-                      key={item.key}
-                      href={item.href || '/'}
-                      className={`group relative px-3 py-2 text-sm font-medium transition-all duration-200 ease-out rounded-md ${
-                        active
-                          ? 'text-brand-600 bg-brand-50'
-                          : 'text-ink/70 hover:text-ink hover:bg-sand-50 motion-safe:hover:-translate-y-0.5'
-                      }`}
-                    >
-                      {t(item.key)}
-                      <span className={`absolute bottom-0 start-0 h-0.5 transition-all duration-200 ${
-                        active ? 'w-full bg-brand-600' : 'w-0 bg-brand-600 group-hover:w-full'
-                      }`} />
-                    </Link>
-                  );
-                })}
+            <div className="flex items-center gap-2 sm:gap-4">
+              <SearchBox />
+              {/*
+                Below sm:, SearchBox above is hidden — this compact icon
+                stands in for it in the shrunken mobile top bar, since the
+                bottom pill already owns Home/Cart/Account there.
+              */}
+              <Link
+                href="/shop"
+                aria-label={t('search')}
+                className="flex h-9 w-9 items-center justify-center rounded-full text-noir-500 transition-colors duration-200 hover:bg-noir-50 hover:text-noir-900 sm:hidden"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.35-4.35" />
+                </svg>
+              </Link>
+              <div className="hidden h-6 w-px bg-noir-200 md:block" />
+              {/* Cart and account move to the mobile bottom pill; the header keeps them for md: and up. */}
+              <div className="hidden rounded-full transition-colors duration-200 hover:bg-noir-50 md:block">
+                <CustomerNav />
               </div>
-            </nav>
-          </div>
-
-          <div className="flex items-center gap-3 sm:gap-4">
-            <SearchBox />
-            <div className="h-6 w-px bg-sand-300 hidden sm:block" />
-            <div className="rounded-md hover:bg-sand-50 transition-colors duration-200">
-              <CustomerNav />
+              {/* CartBadge sizes and colours its own hit target, so this wrapper only toggles visibility. */}
+              <div className="hidden md:block">
+                <CartBadge />
+              </div>
+              <div className="hidden h-6 w-px bg-noir-200 md:block" />
+              {/*
+                The switcher reads the query string so filters survive a language
+                change, which opts it out of prerendering without this boundary.
+              */}
+              <Suspense fallback={<div className="h-8 w-24" />}>
+                <LocaleSwitcher />
+              </Suspense>
             </div>
-            <div className="rounded-md hover:bg-sand-50 transition-colors duration-200">
-              <CartBadge />
-            </div>
-            <div className="h-6 w-px bg-sand-300 hidden sm:block" />
-            {/*
-              The switcher reads the query string so filters survive a language
-              change, which opts it out of prerendering without this boundary.
-            */}
-            <Suspense fallback={<div className="h-8 w-24" />}>
-              <LocaleSwitcher />
-            </Suspense>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+      <BottomNav />
+    </>
   );
 }

@@ -81,8 +81,11 @@ export default async function ShopPage({
   };
 
   return (
-    <div className="container-page py-12">
-      <div className="grid gap-8 lg:grid-cols-[16rem_1fr]">
+    // Extra bottom padding on mobile only: the floating pill bottom-nav is
+    // `fixed`, so it sits on top of whatever the page renders last (the
+    // pagination row) unless the page reserves room for it below md:.
+    <div className="container-page pt-6 pb-28 md:pt-10 md:pb-12 lg:pt-12">
+      <div className="grid gap-6 lg:gap-8 lg:grid-cols-[16rem_1fr]">
         <aside className="lg:sticky lg:top-24 lg:h-fit">
           <FilterPanel facets={facets} locale={locale as Locale} />
         </aside>
@@ -90,17 +93,17 @@ export default async function ShopPage({
         <div>
           {products.data.length === 0 ? (
             <>
-              <div className="flex items-center justify-between gap-4 mb-8 p-4 border border-sand-200 rounded-md bg-sand-50">
+              <div className="sf-card flex items-center justify-between gap-4 mb-6 p-4">
                 <div>
-                  <h1 className="text-2xl font-semibold text-ink">{t('title')}</h1>
-                  <p className="mt-1 text-sm text-ink/60">
+                  <h1 className="font-display text-2xl font-semibold text-noir-900">{t('title')}</h1>
+                  <p className="mt-1 text-sm text-noir-500">
                     {t('resultsCount', { count: products.meta.total })}
                   </p>
                 </div>
               </div>
-              <div className="card p-10 text-center">
-                <p className="text-sm font-medium text-ink">{t('empty')}</p>
-                <p className="mt-1 text-sm text-ink/60">{t('emptyBody')}</p>
+              <div className="sf-card p-10 text-center">
+                <p className="text-sm font-medium text-noir-900">{t('empty')}</p>
+                <p className="mt-1 text-sm text-noir-500">{t('emptyBody')}</p>
               </div>
             </>
           ) : (
@@ -115,22 +118,22 @@ export default async function ShopPage({
           {products.meta.totalPages > 1 ? (
             <nav
               aria-label="Pagination"
-              className="mt-8 flex items-center justify-between gap-4"
+              className="mt-10 flex items-center justify-between gap-4"
             >
               {products.meta.hasPrevious ? (
-                <Link href={pageHref(page - 1)} className="btn-secondary">
+                <Link href={pageHref(page - 1)} className="sf-btn-secondary">
                   {t('previous')}
                 </Link>
               ) : (
                 <span />
               )}
 
-              <span className="text-sm text-ink/60">
+              <span className="text-sm text-noir-500">
                 {t('pageOf', { page, total: products.meta.totalPages })}
               </span>
 
               {products.meta.hasNext ? (
-                <Link href={pageHref(page + 1)} className="btn-secondary">
+                <Link href={pageHref(page + 1)} className="sf-btn-secondary">
                   {t('next')}
                 </Link>
               ) : (

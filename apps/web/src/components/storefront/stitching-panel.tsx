@@ -469,17 +469,17 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
   }
 
   return (
-    <section className="rounded-lg border border-brand-200 bg-brand-50 p-4">
+    <section className="rounded-lg border border-noir-200 bg-noir-50 p-4">
       <label className="flex cursor-pointer items-start gap-3">
         <input
           type="checkbox"
           checked={enabled}
           onChange={(event) => setEnabled(event.target.checked)}
-          className="mt-0.5 rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+          className="mt-0.5 rounded border-noir-300 text-noir-900 focus:ring-noir-900"
         />
         <span>
-          <span className="block text-sm font-semibold text-brand-800">{t('getStitched')}</span>
-          <span className="block text-sm text-ink/70">{t('explainer')}</span>
+          <span className="block text-sm font-semibold text-noir-900">{t('getStitched')}</span>
+          <span className="block text-sm text-noir-500">{t('explainer')}</span>
         </span>
       </label>
 
@@ -487,7 +487,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
         'overflow-hidden transition-all duration-300',
         enabled ? 'max-h-[4000px] opacity-100' : 'max-h-0 opacity-0'
       )}>
-        <div className="mt-4 space-y-4 border-t border-brand-200 pt-4">
+        <div className="mt-4 space-y-4 border-t border-noir-200 pt-4">
           {offered.length > 1 ? (
             <Group label={t('garment')}>
               <div className="flex flex-wrap gap-2">
@@ -531,7 +531,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
 
           {areaSections.length > 0 ? (
             <div className="space-y-4">
-              <p className="text-sm font-semibold text-brand-800">{t('designAreas')}</p>
+              <p className="text-sm font-semibold text-noir-900">{t('designAreas')}</p>
 
               {areaSections.map((section) => (
                 <Group key={section.area} label={t(section.labelKey)}>
@@ -589,7 +589,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
               {garment.sizeChart.length > 0 ? (
                 <div className="mt-2">
                   <p className="field-label">{t('useStandardSize')}</p>
-                  <p className="mt-0.5 text-xs text-ink/50">{t('standardSizeHint')}</p>
+                  <p className="mt-0.5 text-xs text-noir-500">{t('standardSizeHint')}</p>
                   <div
                     role="group"
                     aria-label={t('useStandardSize')}
@@ -614,7 +614,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
 
                   return (
                     <label key={field.id} className="block text-sm">
-                      <span className="text-ink/70">
+                      <span className="text-noir-500">
                         {locale === 'ur' ? field.labelUr : field.labelEn}
                         {field.required ? <span className="text-red-600"> *</span> : null}
                       </span>
@@ -641,7 +641,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
                       <span
                         className={clsx(
                           'block text-xs',
-                          error ? 'text-red-700' : 'text-ink/40',
+                          error ? 'text-red-700' : 'text-noir-400',
                         )}
                       >
                         {error ??
@@ -658,12 +658,12 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
 
               {signedIn && (
                 <div className="mt-3 space-y-2">
-                  <label className="flex cursor-pointer items-center gap-2 text-sm text-ink/70">
+                  <label className="flex cursor-pointer items-center gap-2 text-sm text-noir-500">
                     <input
                       type="checkbox"
                       checked={saveProfile}
                       onChange={(event) => setSaveProfile(event.target.checked)}
-                      className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                      className="rounded border-noir-300 text-noir-900 focus:ring-noir-900"
                     />
                     {t('saveAsProfile')}
                   </label>
@@ -684,16 +684,16 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
           ) : null}
 
           {fabricEstimate ? (
-            <div className="rounded-md border border-sand-200 bg-white/60 p-3">
-              <p className="text-sm font-semibold text-brand-800">{t('fabricEstimate')}</p>
-              <p className="mt-0.5 text-xs text-ink/60">{t('fabricEstimateBody')}</p>
+            <div className="rounded-md border border-noir-200 bg-white/60 p-3">
+              <p className="text-sm font-semibold text-noir-900">{t('fabricEstimate')}</p>
+              <p className="mt-0.5 text-xs text-noir-500">{t('fabricEstimateBody')}</p>
 
-              <p className="mt-1.5 text-sm font-medium text-ink">
+              <p className="mt-1.5 text-sm font-medium text-noir-900">
                 {t('fabricEstimateValue', { metres: fabricEstimate.estimatedMetres })}
               </p>
 
               {product.fabricMeters !== null ? (
-                <p className="mt-0.5 text-xs text-ink/60">
+                <p className="mt-0.5 text-xs text-noir-500">
                   {t('fabricIncluded', { metres: product.fabricMeters })}
                 </p>
               ) : null}
@@ -704,21 +704,21 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
                 </p>
               ) : null}
 
-              <label className="mt-2 flex cursor-pointer items-center gap-2 text-xs text-ink/70">
+              <label className="mt-2 flex cursor-pointer items-center gap-2 text-xs text-noir-600">
                 <input
                   type="checkbox"
                   checked={wideWidth}
                   onChange={(event) => setWideWidth(event.target.checked)}
-                  className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                  className="rounded border-noir-300 text-noir-900 focus:ring-noir-900"
                 />
                 {t('fabricWideWidth')}
               </label>
 
               {showPlusSizeNote ? (
-                <p className="mt-1 text-xs text-ink/50">{t('fabricPlusSizeNote')}</p>
+                <p className="mt-1 text-xs text-noir-400">{t('fabricPlusSizeNote')}</p>
               ) : null}
               {showShrinkNote ? (
-                <p className="mt-1 text-xs text-ink/50">{t('fabricShrinkNote')}</p>
+                <p className="mt-1 text-xs text-noir-400">{t('fabricShrinkNote')}</p>
               ) : null}
             </div>
           ) : null}
@@ -735,16 +735,16 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
           </Group>
 
           {garment ? (
-            <div className="space-y-1 border-t border-brand-200 pt-3 text-sm">
+            <div className="space-y-1 border-t border-noir-200 pt-3 text-sm">
               <p className="flex items-baseline justify-between gap-3">
-                <span className="text-ink/70">{t('baseStitchingFee')}</span>
-                <span className="text-ink">{formatMoney(baseFee, locale)}</span>
+                <span className="text-noir-500">{t('baseStitchingFee')}</span>
+                <span className="text-noir-900">{formatMoney(baseFee, locale)}</span>
               </p>
 
               {optionsTotal !== 0 ? (
                 <p className="flex items-baseline justify-between gap-3">
-                  <span className="text-ink/70">{t('optionsTotal')}</span>
-                  <span className="text-ink">
+                  <span className="text-noir-500">{t('optionsTotal')}</span>
+                  <span className="text-noir-900">
                     {optionsTotal > 0 ? '+' : '−'}
                     {formatMoney(Math.abs(optionsTotal), locale)}
                   </span>
@@ -752,8 +752,8 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
               ) : null}
 
               <p className="flex items-baseline justify-between gap-3 pt-1">
-                <span className="font-medium text-ink">{t('garmentSubtotal')}</span>
-                <span className="text-base font-semibold text-brand-800">
+                <span className="font-medium text-noir-900">{t('garmentSubtotal')}</span>
+                <span className="text-base font-semibold text-noir-900">
                   {formatMoney(fee, locale)}
                 </span>
               </p>
@@ -836,12 +836,12 @@ function OptionGroupRow({
 
   return (
     <div>
-      <p className="text-sm font-medium text-ink">
+      <p className="text-sm font-medium text-noir-900">
         {label}
         {group.required ? <span className="text-red-600"> *</span> : null}
       </p>
 
-      {help ? <p className="mt-0.5 text-xs text-ink/50">{help}</p> : null}
+      {help ? <p className="mt-0.5 text-xs text-noir-400">{help}</p> : null}
 
       <div role="group" aria-label={label} className="mt-1.5 flex flex-wrap gap-2">
         {group.options.map((option) => (
@@ -863,7 +863,7 @@ function OptionGroupRow({
 
       {group.allowCustomText ? (
         <label className="mt-2 block">
-          <span className="text-xs text-ink/60">{customDesignLabel}</span>
+          <span className="text-xs text-noir-500">{customDesignLabel}</span>
           <textarea
             value={customText}
             onChange={(event) => onCustomText(event.target.value)}
@@ -898,7 +898,7 @@ function ServiceChoice({
     <label
       className={clsx(
         'flex cursor-pointer items-start gap-3 rounded-md border p-3 transition-colors duration-200',
-        selected ? 'border-brand-500 bg-white' : 'border-sand-200 bg-white/60 hover:border-brand-300',
+        selected ? 'border-noir-900 bg-white' : 'border-noir-200 bg-white/60 hover:border-noir-400',
       )}
     >
       <input
@@ -906,15 +906,15 @@ function ServiceChoice({
         name="stitching-service"
         checked={selected}
         onChange={onSelect}
-        className="mt-1 border-sand-300 text-brand-600 focus:ring-brand-500"
+        className="mt-1 border-noir-300 text-noir-900 focus:ring-noir-900"
       />
       <span className="flex-1">
         <span className="flex justify-between gap-3">
-          <span className="text-sm font-medium text-ink">{name}</span>
-          <span className="text-sm font-medium text-ink">{formatMoney(price, locale)}</span>
+          <span className="text-sm font-medium text-noir-900">{name}</span>
+          <span className="text-sm font-medium text-noir-900">{formatMoney(price, locale)}</span>
         </span>
         {description ? (
-          <span className="mt-0.5 block text-xs text-ink/60">{description}</span>
+          <span className="mt-0.5 block text-xs text-noir-500">{description}</span>
         ) : null}
       </span>
     </label>
@@ -932,7 +932,7 @@ function Group({
 }) {
   return (
     <fieldset>
-      <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink/50">
+      <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-noir-400">
         {label}
         {required ? <span className="text-red-600"> *</span> : null}
       </legend>
@@ -955,12 +955,7 @@ function Chip({
       type="button"
       onClick={onClick}
       aria-pressed={selected}
-      className={clsx(
-        'rounded-md border px-3 py-1.5 text-sm transition-colors duration-200',
-        selected
-          ? 'border-brand-600 bg-brand-600 text-white'
-          : 'border-sand-300 bg-white text-ink hover:border-brand-400',
-      )}
+      className={clsx('sf-chip', selected ? 'sf-chip-selected' : 'sf-chip-unselected')}
     >
       {children}
     </button>

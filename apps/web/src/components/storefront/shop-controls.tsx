@@ -19,16 +19,16 @@ export function ShopControls({ products, locale, resultsCount, title }: ShopCont
 
   return (
     <>
-      <div className="flex items-center justify-between gap-4 mb-8 p-4 border border-sand-200 rounded-md bg-sand-50">
+      <div className="sf-card mb-8 flex items-center justify-between gap-4 p-4">
         <div>
-          <h1 className="text-2xl font-semibold text-ink">{title}</h1>
-          <p className="mt-1 text-sm text-ink/60">{resultsCount}</p>
+          <h1 className="font-display text-2xl font-semibold text-noir-900">{title}</h1>
+          <p className="mt-1 text-sm text-noir-500">{resultsCount}</p>
         </div>
         <div className="flex items-center gap-4">
           <Suspense fallback={<div className="flex gap-1">
-            <div className="w-2 h-2 rounded-full bg-sand-300" />
-            <div className="w-2 h-2 rounded-full bg-sand-300" />
-            <div className="w-2 h-2 rounded-full bg-sand-300" />
+            <div className="w-2 h-2 rounded-full bg-noir-200" />
+            <div className="w-2 h-2 rounded-full bg-noir-200" />
+            <div className="w-2 h-2 rounded-full bg-noir-200" />
           </div>}>
             <GridToggleWrapper value={gridCols} onChange={setGridCols} />
           </Suspense>

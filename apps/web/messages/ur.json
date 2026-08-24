@@ -23,6 +23,8 @@
     "searchPlaceholder": "کپڑا، سوٹ، کرتا تلاش کریں…",
     "account": "اکاؤنٹ",
     "cart": "ٹوکری",
+    "wishlist": "پسندیدہ",
+    "bottomNav": "نچلا مینو",
     "language": "زبان",
     "openMenu": "مینو کھولیں",
     "closeMenu": "مینو بند کریں"
@@ -99,12 +101,15 @@
     "noImage": "ابھی تصویر دستیاب نہیں",
     "backToShop": "خریداری پر واپس",
     "quantity": "تعداد",
+    "increaseQuantity": "تعداد بڑھائیں",
+    "decreaseQuantity": "تعداد کم کریں",
     "adding": "شامل کیا جا رہا ہے…",
     "addedToCart": "ٹوکری میں شامل کر دیا گیا۔",
     "viewCart": "ٹوکری دیکھیں",
     "quickView": "فوری دیکھیں",
     "quickShop": "فوری خریداری",
-    "addToFavourites": "پسندیدہ میں شامل کریں"
+    "addToFavourites": "پسندیدہ میں شامل کریں",
+    "removeFromFavourites": "پسندیدہ سے ہٹائیں"
   },
   "cart": {
     "title": "ٹوکری",
@@ -120,10 +125,20 @@
     "checkout": "چیک آؤٹ",
     "continueShopping": "خریداری جاری رکھیں",
     "quantity": "تعداد",
+    "decreaseQuantity": "تعداد کم کریں",
+    "increaseQuantity": "تعداد بڑھائیں",
     "remove": "ہٹائیں",
     "measurements": "ناپ",
     "measurementsMissing": "ناپ ابھی درکار ہیں",
     "onlyLeft": "صرف {count} باقی"
+  },
+  "wishlist": {
+    "title": "محفوظ کردہ اشیاء",
+    "itemCount": "{count, plural, =0 {کوئی محفوظ شدہ شے نہیں} one {# محفوظ شدہ شے} other {# محفوظ شدہ اشیاء}}",
+    "loading": "آپ کی محفوظ کردہ اشیاء لوڈ ہو رہی ہیں…",
+    "empty": "ابھی کچھ بھی محفوظ نہیں ہے۔",
+    "emptyBody": "پسندیدہ چیز کے دل کے نشان پر تھپتھپائیں تاکہ وہ یہاں محفوظ ہو جائے۔",
+    "browseShop": "خریداری شروع کریں"
   },
   "footer": {
     "help": "مدد",

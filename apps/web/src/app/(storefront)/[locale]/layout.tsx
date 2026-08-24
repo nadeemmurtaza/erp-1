@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Encode_Sans } from 'next/font/google';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -11,6 +12,17 @@ import { CustomerSessionProvider } from '@/components/storefront/customer-sessio
 import { Footer } from '@/components/storefront/footer';
 import { Header } from '@/components/storefront/header';
 import { routing } from '@/i18n/routing';
+
+// Storefront reskin typeface. Variable font, so no `weight` list is needed —
+// the full 100-900 range loads under one file. Exposed as --font-encode-sans
+// (consumed by the `display` token in tailwind.config.ts) rather than applied
+// as a className directly, so it composes with the existing `font-urdu`
+// override on [lang='ur'] instead of fighting it.
+const encodeSans = Encode_Sans({
+  subsets: ['latin'],
+  variable: '--font-encode-sans',
+  display: 'swap',
+});
 
 /*
  * Deliberately no generateStaticParams.
@@ -59,7 +71,10 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} dir={directionFor(locale as Locale)}>
-      <body className="flex min-h-screen flex-col" suppressHydrationWarning>
+      <body
+        className={`flex min-h-screen flex-col ${encodeSans.variable}`}
+        suppressHydrationWarning
+      >
         <NextIntlClientProvider>
           <CustomerSessionProvider>
             <CartProvider>

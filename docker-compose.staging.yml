@@ -1,0 +1,96 @@
+# Staging stack — auto-deployed on every push to `main`, served on
+# test.yaseen.pk / api-test.yaseen.pk via the shared Caddy reverse proxy
+# (docker-compose.caddy.yml). Fully isolated Postgres/Redis from production.
+#
+# First-time setup on the VPS (order matters — the edge network is external):
+#   docker compose -f docker-compose.caddy.yml up -d          # creates yaseen-edge, once
+#   cp .env.staging.example .env.staging                       # fill in real secrets
+#   docker compose -f docker-compose.staging.yml --env-file .env.staging up -d --build
+#
+# GitHub Actions CD (deploy-staging.yml) runs the same `up -d --build`
+# after pulling the latest commit on `main`.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: yaseen-postgres-staging
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-yaseen}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-yaseen}
+    volumes:
+      - postgres-staging-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-yaseen} -d ${POSTGRES_DB:-yaseen}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [yaseen-staging]
+
+  redis:
+    image: redis:7-alpine
+    container_name: yaseen-redis-staging
+    restart: unless-stopped
+    volumes:
+      - redis-staging-data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [yaseen-staging]
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: yaseen-api-staging
+    restart: unless-stopped
+    env_file: .env.staging
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-yaseen}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-yaseen}?schema=public
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - api-staging-uploads:/repo/apps/api/uploads
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3001/api/v1/health']
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks: [yaseen-staging, yaseen-edge]
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: https://api-test.yaseen.pk/api/v1
+        NEXT_PUBLIC_SITE_URL: https://test.yaseen.pk
+    container_name: yaseen-web-staging
+    restart: unless-stopped
+    env_file: .env.staging
+    depends_on:
+      api:
+        condition: service_healthy
+    networks: [yaseen-staging, yaseen-edge]
+
+networks:
+  yaseen-staging:
+    name: yaseen-staging
+  # Shared with production — the one network Caddy (docker-compose.caddy.yml)
+  # can reach both stacks' web/api containers through by service name.
+  yaseen-edge:
+    name: yaseen-edge
+    external: true
+
+volumes:
+  postgres-staging-data:
+  redis-staging-data:
+  api-staging-uploads:

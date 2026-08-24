@@ -1,0 +1,40 @@
+# Kept out of the Docker build context (COPY . . in apps/api/Dockerfile and
+# apps/web/Dockerfile) so the context stays small and nothing stale/local
+# leaks into the image. Each Dockerfile re-COPYs its own node_modules from
+# its deps/build stage, so excluding node_modules here is safe.
+
+# Dependencies (reinstalled in the deps stage from the lockfile)
+node_modules
+**/node_modules
+
+# Build output (rebuilt in the build stage)
+.next
+**/.next
+dist
+**/dist
+apps/api/src/generated
+.turbo
+**/.turbo
+
+# Version control / editor / OS
+.git
+.gitignore
+.vscode
+.idea
+*.DS_Store
+
+# Env files — never bake secrets into an image; they're injected at runtime
+.env
+.env.*
+!.env.example
+!.env.production.example
+!.env.staging.example
+
+# Local dev artifacts
+*.log
+npm-debug.log*
+pnpm-debug.log*
+coverage
+**/coverage
+.dockerignore
+**/Dockerfile

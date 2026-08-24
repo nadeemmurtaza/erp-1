@@ -5,8 +5,12 @@
 // needs to change.
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../../src/generated/prisma"
+  provider      = "prisma-client-js"
+  output        = "../../src/generated/prisma"
+  // "native" covers local dev on whatever OS you're on; the musl target is
+  // for the Alpine-based Docker image — listing both means `prisma generate`
+  // produces an engine that runs correctly in both places from one schema.
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {

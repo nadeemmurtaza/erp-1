@@ -23,6 +23,7 @@ export interface AdminNavItem {
  * /admin/settings, not something this file encodes.
  */
 export const ADMIN_NAV: AdminNavItem[] = [
+  // Group 1: Overview
   {
     key: 'dashboard',
     label: 'Dashboard',
@@ -31,6 +32,23 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'overview',
   },
 
+  // Group 2: Customer Lifecycle (follows conversion funnel: Enquiries/Leads → Customers)
+  {
+    key: 'leads',
+    label: 'Enquiries',
+    href: '/admin/leads',
+    permissions: ['crm.manage'],
+    group: 'people',
+  },
+  {
+    key: 'contacts',
+    label: 'Customers',
+    href: '/admin/contacts',
+    permissions: ['crm.manage'],
+    group: 'people',
+  },
+
+  // Group 3: Sales Operations (follows order processing sequence)
   {
     key: 'orders',
     label: 'Orders',
@@ -53,6 +71,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'sales',
   },
 
+  // Group 4: Production/Workshop (Tailors see ONLY this + Dashboard redirect)
   {
     key: 'stitching',
     label: 'Tailor queue',
@@ -68,21 +87,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'production',
   },
 
+  // Group 5: Catalogue & Data (elevated Bulk Import for data entry workflow)
   {
-    key: 'contacts',
-    label: 'Customers',
-    href: '/admin/contacts',
-    permissions: ['crm.manage'],
-    group: 'people',
+    key: 'import',
+    label: 'Bulk import',
+    href: '/admin/import',
+    permissions: ['catalog.manage'],
+    group: 'catalogue',
   },
-  {
-    key: 'leads',
-    label: 'Enquiries',
-    href: '/admin/leads',
-    permissions: ['crm.manage'],
-    group: 'people',
-  },
-
   {
     key: 'products',
     label: 'Products & services',
@@ -118,14 +130,8 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['stitching.designs.manage'],
     group: 'catalogue',
   },
-  {
-    key: 'import',
-    label: 'Bulk import',
-    href: '/admin/import',
-    permissions: ['catalog.manage'],
-    group: 'catalogue',
-  },
 
+  // Group 6: Settings
   {
     key: 'settings',
     label: 'Settings',
@@ -147,10 +153,10 @@ export function landingFor(permissions: readonly string[]): string {
 
 export const NAV_GROUP_LABELS: Record<AdminNavItem['group'], string> = {
   overview: 'Overview',
-  catalogue: 'Catalogue',
-  sales: 'Sales',
+  people: 'Customer Lifecycle',
+  sales: 'Sales Operations',
   production: 'Workshop',
-  people: 'People',
+  catalogue: 'Catalogue & Data',
   settings: 'Settings',
 };
 

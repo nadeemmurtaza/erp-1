@@ -1,0 +1,11 @@
+[Unit]
+Description=Run the Yaseen database backup nightly
+
+[Timer]
+OnCalendar=*-*-* 03:00:00
+# A VPS that was asleep or rebooted at 03:00 still gets its backup.
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

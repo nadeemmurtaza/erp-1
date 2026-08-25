@@ -13,6 +13,10 @@ services:
   postgres:
     image: postgres:16-alpine
     container_name: yaseen-postgres-prod
+    mem_limit: 1G
+    memswap_limit: 1G
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-yaseen}
@@ -30,6 +34,10 @@ services:
   redis:
     image: redis:7-alpine
     container_name: yaseen-redis-prod
+    mem_limit: 192M
+    memswap_limit: 192M
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
     volumes:
       - redis-prod-data:/data
@@ -45,10 +53,14 @@ services:
       context: .
       dockerfile: apps/api/Dockerfile
     container_name: yaseen-api-prod
+    mem_limit: 768M
+    memswap_limit: 768M
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
     env_file: .env.production
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-yaseen}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-yaseen}?schema=public
+      DATABASE_URL: postgresql://${POSTGRES_USER:-yaseen}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-yaseen}?schema=public&connection_limit=10&pool_timeout=20&connect_timeout=10
       REDIS_URL: redis://redis:6379
     depends_on:
       postgres:
@@ -73,6 +85,10 @@ services:
         NEXT_PUBLIC_API_URL: https://api.yaseen.pk/api/v1
         NEXT_PUBLIC_SITE_URL: https://yaseen.pk
     container_name: yaseen-web-prod
+    mem_limit: 640M
+    memswap_limit: 640M
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
     env_file: .env.production
     depends_on:

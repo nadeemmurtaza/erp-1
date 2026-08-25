@@ -62,6 +62,25 @@ async function bootstrap(): Promise<void> {
   const port = config.get('API_PORT');
   await app.listen(port, '0.0.0.0');
 
+  // Keep-alive and timeout eviction, sized against the reverse proxy.
+  //
+  // Caddy holds idle upstream connections open, so whoever closes first
+  // decides what the customer sees. If this server evicts a connection Caddy
+  // still believes is good, Caddy sends a request into a socket closing under
+  // it and the customer gets a 502 — the classic intermittent gateway error
+  // behind a proxy. Staying open LONGER than the proxy's idle window means
+  // Caddy always does the closing, on an idle connection, where nobody is
+  // waiting.
+  //
+  // headersTimeout must exceed keepAliveTimeout, otherwise Node can time out
+  // the headers of a request that arrived on a connection it was about to
+  // evict anyway. requestTimeout caps a single slow request so one stalled
+  // client cannot hold a worker indefinitely.
+  const server = app.getHttpServer();
+  server.keepAliveTimeout = 65_000;
+  server.headersTimeout = 70_000;
+  server.requestTimeout = 120_000;
+
   logger.log(`API listening on http://localhost:${port}/${config.get('API_PREFIX')}/v1`);
   if (!config.isProduction) {
     logger.log(`Docs at http://localhost:${port}/${config.get('API_PREFIX')}/docs`);

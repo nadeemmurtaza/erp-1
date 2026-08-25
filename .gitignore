@@ -7,10 +7,15 @@ coverage/
 .turbo/
 *.tsbuildinfo
 
+# Every .env variant is ignored, then the committed templates are allowed back
+# in by name. DEPLOYMENT.md has you create .env.production and .env.staging on
+# the VPS inside this checkout — real secrets sitting in the working tree — so
+# the default has to be "ignored" rather than a list of known filenames.
 .env
-.env.local
-.env.*.local
+.env.*
 !.env.example
+!.env.production.example
+!.env.staging.example
 
 .DS_Store
 *.log

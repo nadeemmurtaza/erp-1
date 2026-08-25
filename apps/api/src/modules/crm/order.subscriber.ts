@@ -30,7 +30,19 @@ export class CrmOrderSubscriber {
       where: { id: payload.orderId },
       select: { shippingAddress: true },
     });
-    const address = order?.shippingAddress as { city?: string } | null;
+
+    // Delivery is at-least-once and the order may be gone by the time a retry
+    // lands — cancelled and purged, or rolled back. There is nothing to
+    // attribute in that case, so treat it as done rather than letting
+    // linkOrder's update throw and burn the event's remaining attempts.
+    if (!order) {
+      this.logger.warn(
+        `Order ${payload.orderNumber} (${payload.orderId}) no longer exists — skipping CRM attribution.`,
+      );
+      return;
+    }
+
+    const address = order.shippingAddress as { city?: string } | null;
 
     const contact = await this.crm.upsertContact({
       name: payload.customerName,

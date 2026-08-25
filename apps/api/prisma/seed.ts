@@ -30,6 +30,7 @@ async function main(): Promise<void> {
   const garments = await seedGarmentTypes();
   await seedGarmentCatalogExpansion(garments);
   await seedStitchingOptions(garments);
+  await retireOldOptionGroups();
   const categories = await seedCategories();
   await seedProducts(categories, garments);
   await seedStitchingServices(categories, garments);
@@ -2053,6 +2054,34 @@ const STITCHING_OPTION_GROUPS: SeedOptionGroup[] = [
  * one of its options still renders the customer's choice.
  */
 const RETIRED_OPTION_GROUP_KEYS = ['kameez_finish'];
+
+/**
+ * Hides the groups above from the customer's stitching form without deleting
+ * them, so an existing cart or order that already points at one of their
+ * options still renders the choice the customer made.
+ *
+ * stitching.service.ts selects on `isActive`, so flipping the flag is what
+ * takes them off the form; the options are deactivated too, otherwise the
+ * group would be gone while its options stayed selectable.
+ */
+async function retireOldOptionGroups(): Promise<void> {
+  for (const key of RETIRED_OPTION_GROUP_KEYS) {
+    const group = await prisma.stitchingOptionGroup.findUnique({
+      where: { key },
+      select: { id: true },
+    });
+    if (!group) continue;
+
+    await prisma.stitchingOption.updateMany({
+      where: { groupId: group.id },
+      data: { isActive: false },
+    });
+    await prisma.stitchingOptionGroup.update({
+      where: { id: group.id },
+      data: { isActive: false },
+    });
+  }
+}
 
 async function seedStitchingOptions(garments: Map<string, string>) {
   for (const group of STITCHING_OPTION_GROUPS) {

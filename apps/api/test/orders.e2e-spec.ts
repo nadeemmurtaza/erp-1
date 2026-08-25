@@ -41,6 +41,9 @@ describe('Orders (e2e)', () => {
   /** The garment's own fee, charged when no service product is picked. */
   const GARMENT_STITCHING_FEE = toMinor(900);
 
+  /** The design area this suite types a free-text note into. */
+  const FINISH_GROUP_KEY = 'daaman_finish';
+
   /** A complete, in-range kameez set — what a guest types into the panel. */
   const KAMEEZ_MEASUREMENTS = {
     length: 41,
@@ -119,7 +122,7 @@ describe('Orders (e2e)', () => {
     ).id;
 
     const finishGroup = await prisma.stitchingOptionGroup.findUniqueOrThrow({
-      where: { key: 'kameez_finish' },
+      where: { key: FINISH_GROUP_KEY },
     });
     finishGroupId = finishGroup.id;
     seededFinishAllowsText = finishGroup.allowCustomText;
@@ -450,7 +453,7 @@ describe('Orders (e2e)', () => {
             garmentTypeId: kameezGarmentId,
             measurementValues: KAMEEZ_MEASUREMENTS,
             optionIds: [necklineOptionId, sleeveOptionId],
-            customDesignText: { kameez_finish: 'Contrast piping in maroon' },
+            customDesignText: { [FINISH_GROUP_KEY]: 'Contrast piping in maroon' },
             sizeToken: 'M',
           },
         })
@@ -480,15 +483,15 @@ describe('Orders (e2e)', () => {
       // A described area rides along with the chosen options, so the tailor's
       // worksheet shows it without learning a second shape.
       expect(item.customDesignText).toEqual({
-        kameez_finish: 'Contrast piping in maroon',
+        [FINISH_GROUP_KEY]: 'Contrast piping in maroon',
       });
       // Carried over from the cart line for traceability — it never touched pricing.
       expect(item.sizeToken).toBe('M');
       const described = item.optionsSnapshot.find(
         (option: { custom: boolean }) => option.custom,
       );
-      expect(described.groupKey).toBe('kameez_finish');
-      expect(described.groupLabelEn).toBe('Finishing');
+      expect(described.groupKey).toBe(FINISH_GROUP_KEY);
+      expect(described.groupLabelEn).toBe('Daaman finish');
       expect(described.labelEn).toBe('Contrast piping in maroon');
       expect(described.priceDelta).toBe(0);
 

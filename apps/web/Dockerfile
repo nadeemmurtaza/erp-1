@@ -35,9 +35,11 @@ WORKDIR /repo
 ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 
-# outputFileTracingRoot (next.config.mjs) puts the standalone tree at
-# apps/web/ inside .next/standalone, mirroring the workspace layout.
-COPY --from=build --chown=nextjs:nodejs /repo/.next/standalone ./
+# The standalone folder is always written under the app's own .next dir
+# (apps/web/.next/standalone), never the repo root — outputFileTracingRoot
+# only changes the paths *inside* it to mirror the workspace layout, e.g.
+# apps/web/server.js instead of server.js.
+COPY --from=build --chown=nextjs:nodejs /repo/apps/web/.next/standalone/ ./
 COPY --from=build --chown=nextjs:nodejs /repo/apps/web/.next/static ./apps/web/.next/static
 COPY --from=build --chown=nextjs:nodejs /repo/apps/web/public ./apps/web/public
 

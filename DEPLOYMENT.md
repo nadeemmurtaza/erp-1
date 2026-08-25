@@ -151,18 +151,33 @@ git checkout main   # leave the working tree on main for day-to-day pulls
 
 Each `up --build` runs `prisma migrate deploy` automatically as part of the
 api container's startup (`apps/api/Dockerfile`'s `CMD`) — migrations apply
-themselves on every start, including the very first one. Seed the database
-once per environment, if you want the demo/admin seed data:
+themselves on every start, including the very first one.
+
+**Then seed each environment — this is required, not optional.** Migrations
+create the tables but leave them empty, and an empty `Permission` /
+`RolePermission` pair means every admin route 403s and the admin nav renders
+blank, even for a user whose role is ADMIN. The seed creates the permission
+catalog, the role→permission mapping, the `admin@yaseen.pk` login, and the
+garment/measurement reference data the storefront reads. It is idempotent
+(every write is an upsert), so re-running it is safe:
 
 ```bash
 docker compose -f docker-compose.staging.yml exec api pnpm db:seed
 docker compose -f docker-compose.prod.yml exec api pnpm db:seed
 ```
 
-Check everything's up:
+Override the default admin credentials with `SEED_ADMIN_EMAIL` /
+`SEED_ADMIN_PASSWORD` in the env file before seeding, or change the password
+from `/admin/settings` afterwards.
+
+Check everything's up. Each stack is its own Compose project (`name:` at the
+top of each file), so query them one at a time — a single `-f a -f b` command
+merges the files into one project and reports the wrong thing:
 
 ```bash
-docker compose -f docker-compose.caddy.yml -f docker-compose.prod.yml -f docker-compose.staging.yml ps
+docker compose -f docker-compose.caddy.yml ps
+docker compose -f docker-compose.prod.yml ps
+docker compose -f docker-compose.staging.yml ps
 docker compose -f docker-compose.prod.yml logs -f api    # Ctrl-C to stop following
 ```
 
@@ -340,7 +355,6 @@ Set in the compose files, so both stacks inherit them:
 | `api`      | 768M      | 512M    |
 | `web`      | 640M      | 448M    |
 | `postgres` | 1G        | 640M    |
-| `redis`    | 192M      | 128M    |
 
 `memswap_limit` equals `mem_limit` on every service, so a container that
 exceeds its limit is killed rather than quietly swapping and dragging the

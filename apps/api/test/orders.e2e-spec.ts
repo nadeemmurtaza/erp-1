@@ -390,6 +390,49 @@ describe('Orders (e2e)', () => {
       });
       expect(after.stock).toBe(before.stock);
     });
+
+    it('gives simultaneous checkouts distinct order numbers', async () => {
+      // Deliberately DIFFERENT variants per cart. Buying the same one makes
+      // the stock row lock serialise the transactions, which hides a race in
+      // the order-number counter; distinct variants remove that lock and let
+      // the checkouts genuinely overlap.
+      const variants = await prisma.productVariant.findMany({
+        where: { isActive: true, stock: { gt: 0 }, product: { status: 'ACTIVE' } },
+        select: { id: true },
+        take: 6,
+      });
+      expect(variants.length).toBeGreaterThan(1);
+
+      const agents = [];
+      for (const variant of variants) {
+        const agent = request.agent(app.getHttpServer());
+        await agent
+          .post('/api/v1/cart/items')
+          .send({ variantId: variant.id, quantity: 1 })
+          .expect(201);
+        agents.push(agent);
+      }
+
+      const responses = await Promise.all(
+        agents.map((agent) =>
+          agent.post('/api/v1/orders').send({ shippingAddress: KARACHI, paymentMethod: 'cod' }),
+        ),
+      );
+
+      for (const response of responses) {
+        if (response.status === 201) createdOrderIds.push(response.body.id);
+      }
+
+      // Every one of them has to succeed: before the counter took an advisory
+      // lock, all but the first died on Order.number's unique index and the
+      // customer saw a 409 at the moment of payment.
+      expect(responses.map((response) => response.status)).toEqual(
+        variants.map(() => 201),
+      );
+
+      const numbers = responses.map((response) => response.body.number);
+      expect(new Set(numbers).size).toBe(numbers.length);
+    });
   });
 
   describe('stitched orders', () => {

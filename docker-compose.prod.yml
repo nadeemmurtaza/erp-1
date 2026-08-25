@@ -70,7 +70,10 @@ services:
     volumes:
       - api-prod-uploads:/repo/apps/api/uploads
     healthcheck:
-      test: ['CMD', 'wget', '-qO-', 'http://localhost:3001/api/v1/health']
+      # 127.0.0.1, not localhost — Alpine's wget resolves "localhost" to ::1
+      # first, but the API only binds IPv4 (0.0.0.0), so the v6 attempt gets
+      # "connection refused" and the healthcheck never passes.
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1:3001/api/v1/health']
       interval: 15s
       timeout: 5s
       retries: 10

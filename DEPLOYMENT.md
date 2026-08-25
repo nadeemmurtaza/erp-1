@@ -234,23 +234,138 @@ web rebuild.
 
 ---
 
-## 9. Backups
+## 9. Backups, restore tests and off-site copies
 
-The named volumes `postgres-prod-data` / `postgres-staging-data` are the
-only state that isn't reproducible from git. At minimum, cron a nightly
-dump on the VPS:
+The named volumes `postgres-prod-data` / `postgres-staging-data` are the only
+state that is not reproducible from git.
+
+`deploy/backup.sh` runs nightly and does four things, in this order:
+
+1. **Dump and compress**, then check the archive is a valid gzip and is not
+   suspiciously small.
+2. **Restore it into a throwaway database and assert row counts** on
+   `Product`, `Permission` and `User`. This is the step that separates a
+   backup from a file. A schema-only or half-written dump restores *without
+   any error* and is completely useless — only the row assertions catch that.
+   The scratch database is dropped afterwards, on success or failure.
+3. **Ship it off-site** to `S3_TARGET`, then confirm the object is actually
+   listed before the local copy is eligible for pruning. With `S3_TARGET`
+   unset the script still works but warns, loudly, that the only copy of your
+   database is on a VPS you might lose.
+4. **Prune local copies** older than `RETAIN_DAYS` (default 14). Off-site
+   retention belongs in an S3 lifecycle rule instead, where a compromised VPS
+   cannot reach back and delete history.
+
+Any failure aborts with a non-zero exit, so `systemctl status
+yaseen-backup.service` shows a red failed unit rather than quietly leaving you
+with nothing.
+
+Install it:
 
 ```bash
-# /etc/cron.d/yaseen-backup, as the deploy user
-0 3 * * * deploy docker exec yaseen-postgres-prod pg_dump -U yaseen yaseen | gzip > /home/deploy/backups/prod-$(date +\%F).sql.gz
+cd ~/apps/yaseenecom
+mkdir -p ~/backups
+
+# Off-site: create a bucket and an IAM user restricted to PutObject/ListBucket
+# on it, then:
+sudo apt install -y awscli
+aws configure                       # the restricted key, not a root key
+
+sudo cp deploy/systemd/yaseen-backup.{service,timer} /etc/systemd/system/
+sudo systemctl edit yaseen-backup.service   # uncomment/set S3_TARGET
+sudo systemctl daemon-reload
+sudo systemctl enable --now yaseen-backup.timer
+
+# Prove it works now rather than discovering it at 03:00 during an incident:
+sudo systemctl start yaseen-backup.service
+journalctl -u yaseen-backup.service -n 40 --no-pager
 ```
 
-Rotate/off-box these (rsync to another host, or upload to S3/R2) — a copy
-that only lives on the same VPS doesn't protect against VPS loss.
+You should see `restore test PASSED` with the row counts. **Restoring for
+real** is the same dump loaded into the live database:
+
+```bash
+gunzip -c ~/backups/prod-<stamp>.sql.gz \
+  | docker exec -i yaseen-postgres-prod psql -U yaseen -d yaseen
+```
 
 ---
 
-## 10. Troubleshooting
+## 10. Disk threshold alerts
+
+A full disk does not slow this shop down, it stops it: Postgres refuses
+writes and checkout fails. Docker is the usual cause — every deploy leaves
+image layers behind.
+
+`deploy/disk-alert.sh` runs every 30 minutes. It warns at 75%, and at 90%
+reclaims dangling image and build-cache layers before alerting. It never
+touches named volumes, so it cannot delete your database.
+
+```bash
+sudo cp deploy/systemd/yaseen-disk-alert.{service,timer} /etc/systemd/system/
+sudo systemctl edit yaseen-disk-alert.service   # set ALERT_EMAIL or ALERT_WEBHOOK
+sudo systemctl daemon-reload
+sudo systemctl enable --now yaseen-disk-alert.timer
+```
+
+Without `ALERT_EMAIL` or `ALERT_WEBHOOK` the alert only reaches syslog, which
+nobody reads at 3am — set one of them.
+
+---
+
+## 11. Automatic restart at boot
+
+`restart: unless-stopped` in the compose files already restarts a container
+that crashes. It does not bring the stack back after a reboot, or if the
+docker daemon itself is replaced. That is what `yaseen.service` is for — the
+two layers are complementary: compose watches containers, systemd watches the
+stack.
+
+```bash
+sudo cp deploy/systemd/yaseen.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now yaseen.service
+
+sudo reboot          # then confirm the site comes back on its own
+```
+
+---
+
+## 12. Resource limits and connection pooling
+
+Set in the compose files, so both stacks inherit them:
+
+| Service    | Production | Staging |
+|------------|-----------|---------|
+| `api`      | 768M      | 512M    |
+| `web`      | 640M      | 448M    |
+| `postgres` | 1G        | 640M    |
+| `redis`    | 192M      | 128M    |
+
+`memswap_limit` equals `mem_limit` on every service, so a container that
+exceeds its limit is killed rather than quietly swapping and dragging the
+whole box down with it. On your 12 GB VPS both stacks together are capped
+well under the total, leaving headroom for the host and for builds.
+
+Every service also carries `no-new-privileges:true`, and `api`/`web` run as
+non-root users defined in their Dockerfiles.
+
+**Connection pooling** is set on the `DATABASE_URL` the compose files build:
+`connection_limit=10`, `pool_timeout=20`, `connect_timeout=10`. Prisma's
+default pool is sized from the CPU count, which on a 6-core box is larger than
+Postgres's default 100 connections can comfortably serve once both
+environments and a migration are running at once. Ten per stack is
+deliberate headroom.
+
+**Keep-alive** is set in `apps/api/src/main.ts`: the API holds idle
+connections open *longer* than Caddy does (65s vs Caddy's 60s default). This
+ordering matters — if the API evicted a connection Caddy still believed was
+good, Caddy would send a request into a closing socket and the customer would
+get an intermittent 502.
+
+---
+
+## 13. Troubleshooting
 
 ```bash
 # Container status across all three stacks

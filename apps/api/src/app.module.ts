@@ -9,7 +9,13 @@ import { FeatureModulesModule } from './modules/modules.registry';
 @Module({
   imports: [
     CoreModule,
-    ThrottlerModule.forRoot([{ ttl: 60_000, limit: 300 }]),
+    ThrottlerModule.forRoot({
+      throttlers: [{ ttl: 60_000, limit: 300 }],
+      // The e2e suites sign in dozens of times a minute from one address;
+      // rate limiting them would only test the limiter. Never skipped
+      // outside tests — production and staging both enforce it.
+      skipIf: () => process.env.NODE_ENV === 'test',
+    }),
     FeatureModulesModule.register(),
   ],
   providers: [

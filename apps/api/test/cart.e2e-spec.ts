@@ -39,6 +39,16 @@ describe('Cart (e2e)', () => {
   /** The garment's own stitching fee, charged when no service product is picked. */
   const GARMENT_STITCHING_FEE = toMinor(900);
 
+  /**
+   * The stitching menu is grouped by design area. These two stand for the two
+   * shapes the free-text rules care about: one group that takes a note and one
+   * that does not.
+   */
+  const FINISH_GROUP_KEY = 'daaman_finish';
+  const NO_TEXT_GROUP_KEY = 'lining';
+  /** Half lining, the option NO_TEXT_GROUP_KEY's group is exercised through. */
+  const LINING_DELTA = toMinor(350);
+
   /** A complete, in-range kameez set — what a guest types into the panel. */
   const KAMEEZ_MEASUREMENTS = {
     length: 42,
@@ -124,14 +134,20 @@ describe('Cart (e2e)', () => {
     sleeveOptionId = sleeveGroup.options.find((option) => option.priceDelta === 0)!.id;
 
     const finishGroup = await prisma.stitchingOptionGroup.findUniqueOrThrow({
-      where: { key: 'kameez_finish' },
+      where: { key: FINISH_GROUP_KEY },
       include: { options: true },
     });
     finishGroupId = finishGroup.id;
-    liningOptionId = finishGroup.options.find((option) => option.key === 'lining')!.id;
 
-    // Finishing is the design area these tests type free text into; neckline is
-    // left alone so it can stand for a group that takes no text.
+    // Lining is its own group now, not an option inside the finishing group.
+    liningOptionId = (
+      await prisma.stitchingOption.findFirstOrThrow({
+        where: { key: 'half', group: { key: NO_TEXT_GROUP_KEY } },
+      })
+    ).id;
+
+    // Daaman finish is the design area these tests type free text into; the
+    // lining group is left alone so it can stand for one that takes no text.
     seededFinishAllowsText = finishGroup.allowCustomText;
     await prisma.stitchingOptionGroup.update({
       where: { id: finishGroup.id },
@@ -251,7 +267,7 @@ describe('Cart (e2e)', () => {
         .expect(201);
 
       const line = response.body.items[0];
-      const lining = toMinor(400);
+      const lining = LINING_DELTA;
 
       const expectedFee = computeStitchingFee({
         baseFee: kameezServiceFee,
@@ -510,7 +526,8 @@ describe('Cart (e2e)', () => {
     });
 
     it('rejects a required measurement that was left out', async () => {
-      const { chest, ...withoutChest } = KAMEEZ_MEASUREMENTS;
+      // Dropped on purpose — the underscore marks it unused for the linter.
+      const { chest: _chest, ...withoutChest } = KAMEEZ_MEASUREMENTS;
 
       const response = await guest()
         .post('/api/v1/cart/items')
@@ -593,7 +610,7 @@ describe('Cart (e2e)', () => {
 
       const expectedFee = computeStitchingFee({
         baseFee: GARMENT_STITCHING_FEE,
-        optionDeltas: [boat.priceDelta, 0, toMinor(400)],
+        optionDeltas: [boat.priceDelta, 0, LINING_DELTA],
       });
 
       expect(response.body.items[0].stitching.feePerUnit).toBe(expectedFee);
@@ -638,13 +655,13 @@ describe('Cart (e2e)', () => {
             garmentTypeId: kameezGarmentId,
             measurementValues: KAMEEZ_MEASUREMENTS,
             optionIds: [necklineOptions[0]!.id, sleeveOptionId],
-            customDesignText: { kameez_finish: '  Contrast piping in maroon  ' },
+            customDesignText: { [FINISH_GROUP_KEY]: '  Contrast piping in maroon  ' },
           },
         })
         .expect(201);
 
       expect(response.body.items[0].stitching.customDesignText).toEqual({
-        kameez_finish: 'Contrast piping in maroon',
+        [FINISH_GROUP_KEY]: 'Contrast piping in maroon',
       });
     });
 
@@ -658,8 +675,8 @@ describe('Cart (e2e)', () => {
             measurementValues: KAMEEZ_MEASUREMENTS,
             optionIds: [necklineOptions[0]!.id, sleeveOptionId],
             customDesignText: {
-              kameez_finish: 'Side slits to the knee',
-              neckline: 'Something the neckline box never asked for',
+              [FINISH_GROUP_KEY]: 'Side slits to the knee',
+              [NO_TEXT_GROUP_KEY]: 'Something that group never asked for',
             },
           },
         })
@@ -667,7 +684,7 @@ describe('Cart (e2e)', () => {
 
       // Only finishing survives: the neckline box was never on the form.
       expect(response.body.items[0].stitching.customDesignText).toEqual({
-        kameez_finish: 'Side slits to the knee',
+        [FINISH_GROUP_KEY]: 'Side slits to the knee',
       });
     });
 
@@ -680,13 +697,13 @@ describe('Cart (e2e)', () => {
             garmentTypeId: kameezGarmentId,
             measurementValues: KAMEEZ_MEASUREMENTS,
             optionIds: [necklineOptions[0]!.id, sleeveOptionId],
-            customDesignText: { kameez_finish: 'a'.repeat(900) },
+            customDesignText: { [FINISH_GROUP_KEY]: 'a'.repeat(900) },
           },
         })
         .expect(201);
 
       expect(
-        response.body.items[0].stitching.customDesignText.kameez_finish,
+        response.body.items[0].stitching.customDesignText[FINISH_GROUP_KEY],
       ).toHaveLength(500);
     });
   });

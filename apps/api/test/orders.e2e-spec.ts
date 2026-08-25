@@ -41,6 +41,9 @@ describe('Orders (e2e)', () => {
   /** The garment's own fee, charged when no service product is picked. */
   const GARMENT_STITCHING_FEE = toMinor(900);
 
+  /** The design area this suite types a free-text note into. */
+  const FINISH_GROUP_KEY = 'daaman_finish';
+
   /** A complete, in-range kameez set — what a guest types into the panel. */
   const KAMEEZ_MEASUREMENTS = {
     length: 41,
@@ -119,7 +122,7 @@ describe('Orders (e2e)', () => {
     ).id;
 
     const finishGroup = await prisma.stitchingOptionGroup.findUniqueOrThrow({
-      where: { key: 'kameez_finish' },
+      where: { key: FINISH_GROUP_KEY },
     });
     finishGroupId = finishGroup.id;
     seededFinishAllowsText = finishGroup.allowCustomText;
@@ -387,6 +390,49 @@ describe('Orders (e2e)', () => {
       });
       expect(after.stock).toBe(before.stock);
     });
+
+    it('gives simultaneous checkouts distinct order numbers', async () => {
+      // Deliberately DIFFERENT variants per cart. Buying the same one makes
+      // the stock row lock serialise the transactions, which hides a race in
+      // the order-number counter; distinct variants remove that lock and let
+      // the checkouts genuinely overlap.
+      const variants = await prisma.productVariant.findMany({
+        where: { isActive: true, stock: { gt: 0 }, product: { status: 'ACTIVE' } },
+        select: { id: true },
+        take: 6,
+      });
+      expect(variants.length).toBeGreaterThan(1);
+
+      const agents = [];
+      for (const variant of variants) {
+        const agent = request.agent(app.getHttpServer());
+        await agent
+          .post('/api/v1/cart/items')
+          .send({ variantId: variant.id, quantity: 1 })
+          .expect(201);
+        agents.push(agent);
+      }
+
+      const responses = await Promise.all(
+        agents.map((agent) =>
+          agent.post('/api/v1/orders').send({ shippingAddress: KARACHI, paymentMethod: 'cod' }),
+        ),
+      );
+
+      for (const response of responses) {
+        if (response.status === 201) createdOrderIds.push(response.body.id);
+      }
+
+      // Every one of them has to succeed: before the counter took an advisory
+      // lock, all but the first died on Order.number's unique index and the
+      // customer saw a 409 at the moment of payment.
+      expect(responses.map((response) => response.status)).toEqual(
+        variants.map(() => 201),
+      );
+
+      const numbers = responses.map((response) => response.body.number);
+      expect(new Set(numbers).size).toBe(numbers.length);
+    });
   });
 
   describe('stitched orders', () => {
@@ -450,7 +496,7 @@ describe('Orders (e2e)', () => {
             garmentTypeId: kameezGarmentId,
             measurementValues: KAMEEZ_MEASUREMENTS,
             optionIds: [necklineOptionId, sleeveOptionId],
-            customDesignText: { kameez_finish: 'Contrast piping in maroon' },
+            customDesignText: { [FINISH_GROUP_KEY]: 'Contrast piping in maroon' },
             sizeToken: 'M',
           },
         })
@@ -480,15 +526,15 @@ describe('Orders (e2e)', () => {
       // A described area rides along with the chosen options, so the tailor's
       // worksheet shows it without learning a second shape.
       expect(item.customDesignText).toEqual({
-        kameez_finish: 'Contrast piping in maroon',
+        [FINISH_GROUP_KEY]: 'Contrast piping in maroon',
       });
       // Carried over from the cart line for traceability — it never touched pricing.
       expect(item.sizeToken).toBe('M');
       const described = item.optionsSnapshot.find(
         (option: { custom: boolean }) => option.custom,
       );
-      expect(described.groupKey).toBe('kameez_finish');
-      expect(described.groupLabelEn).toBe('Finishing');
+      expect(described.groupKey).toBe(FINISH_GROUP_KEY);
+      expect(described.groupLabelEn).toBe('Daaman finish');
       expect(described.labelEn).toBe('Contrast piping in maroon');
       expect(described.priceDelta).toBe(0);
 

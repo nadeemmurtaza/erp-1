@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   Logger,
   NotFoundException,
@@ -137,8 +138,19 @@ export class PaymentsService {
     }
 
     const result = await provider.handleCallback(payload);
-    const payment = await this.prisma.payment.findUnique({
-      where: { reference: result.reference },
+
+    // A response that could not be proved to come from the gateway changes
+    // nothing at all — not to PAID, and not to FAILED either.
+    if (result.verified === false) {
+      throw new ForbiddenException('That payment response could not be verified.');
+    }
+
+    // Scoped to the provider whose endpoint was called, not just the
+    // reference. References are unique shop-wide, so without this a callback
+    // for one gateway can settle a payment taken through another — a forged
+    // Easypaisa return was able to mark a bank transfer PAID.
+    const payment = await this.prisma.payment.findFirst({
+      where: { reference: result.reference, provider: provider.key },
     });
 
     if (!payment) {

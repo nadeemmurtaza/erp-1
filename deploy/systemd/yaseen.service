@@ -1,0 +1,40 @@
+# Brings the production stack up at boot and keeps it up.
+#
+# Compose's `restart: unless-stopped` already restarts an individual container
+# that crashes. What it does not do is survive the docker daemon being
+# replaced, or a stack that was never started after a reboot — that is this
+# unit's job. The two layers are complementary: compose watches containers,
+# systemd watches the stack.
+#
+# Install: DEPLOYMENT.md §12.
+
+[Unit]
+Description=Yaseen production stack (web, api, postgres, redis)
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User=deploy
+Group=deploy
+WorkingDirectory=/home/deploy/apps/yaseenecom
+
+# Pulling images can be slow on a cold boot; do not call that a failure.
+TimeoutStartSec=900
+
+ExecStart=/usr/bin/docker compose -f docker-compose.caddy.yml up -d
+ExecStart=/usr/bin/docker compose -f docker-compose.prod.yml --env-file .env.production up -d
+ExecStop=/usr/bin/docker compose -f docker-compose.prod.yml --env-file .env.production stop
+
+# If bringing the stack up fails, keep trying rather than leaving the shop
+# down until someone notices. StartLimitBurst above stops this from becoming
+# a hot loop.
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

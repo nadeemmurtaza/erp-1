@@ -1,4 +1,4 @@
-import { createHash } from 'node:crypto';
+import { createHash, timingSafeEqual } from 'node:crypto';
 import { Injectable, Logger } from '@nestjs/common';
 import { AppConfigService } from '../../../core/config/app-config.service';
 import { toMajor } from '@yaseen/shared';
@@ -77,10 +77,44 @@ export class EasypaisaProvider implements PaymentProvider {
     };
   }
 
+  /**
+   * Settles a payment ONLY when the response carries a hash that verifies
+   * against EASYPAISA_HASH_KEY.
+   *
+   * This endpoint is public and unauthenticated — it has to be, the gateway
+   * posts the customer back to it — so `status` in the body is attacker
+   * controlled. It used to be trusted outright, which meant anyone could
+   * POST {orderRefNumber, status: 'PAID'} and confirm an order without
+   * paying for it.
+   *
+   * It fails CLOSED: no hash key configured, no hash in the response, or a
+   * hash that does not match all return FAILED rather than PAID. The cost of
+   * being wrong that way is a payment a staff member has to confirm by hand;
+   * the cost of being wrong the other way is giving the goods away.
+   *
+   * NOTE: Easypaisa's response signing differs between integrations, and this
+   * has not been run against a live merchant account. Confirm the field list
+   * and ordering below against the integration guide, with one sandbox
+   * transaction, before putting `easypaisa` in PAYMENT_PROVIDERS.
+   */
   async handleCallback(payload: Record<string, unknown>): Promise<PaymentCallbackResult> {
     const reference = String(payload.orderRefNumber ?? payload.orderRefNum ?? '');
     const status = String(payload.status ?? '').toUpperCase();
     const code = String(payload.responseCode ?? '');
+
+    const verification = this.verify(payload, reference);
+    if (!verification.ok) {
+      this.logger.error(`Easypaisa callback for ${reference} rejected: ${verification.reason}`);
+      return {
+        reference,
+        status: 'FAILED',
+        failureReason: 'Payment response failed verification.',
+        verified: false,
+        raw: Object.fromEntries(
+          Object.entries(payload).map(([key, value]) => [key, String(value ?? '')]),
+        ),
+      };
+    }
 
     const succeeded = status === 'PAID' || code === '0000';
 
@@ -97,6 +131,50 @@ export class EasypaisaProvider implements PaymentProvider {
         Object.entries(payload).map(([key, value]) => [key, String(value ?? '')]),
       ),
     };
+  }
+  /**
+   * Recomputes the response hash and compares it in constant time.
+   *
+   * Mirrors the request-side scheme in initiate(): sha256 over the store id,
+   * the significant response values and the shared key. Any absent piece is
+   * a rejection, never a pass.
+   */
+  private verify(
+    payload: Record<string, unknown>,
+    reference: string,
+  ): { ok: true } | { ok: false; reason: string } {
+    const hashKey = this.config.get('EASYPAISA_HASH_KEY');
+    if (!hashKey) {
+      return { ok: false, reason: 'EASYPAISA_HASH_KEY is not configured' };
+    }
+
+    const storeId = this.config.get('EASYPAISA_STORE_ID');
+    if (!storeId) {
+      return { ok: false, reason: 'EASYPAISA_STORE_ID is not configured' };
+    }
+
+    const received = String(
+      payload.merchantHashedResp ?? payload.merchantHashedResponse ?? payload.hashResponse ?? '',
+    );
+    if (!received) {
+      return { ok: false, reason: 'response carried no hash' };
+    }
+
+    const expected = createHash('sha256')
+      .update(
+        `${storeId}${String(payload.status ?? '')}${reference}${String(
+          payload.transactionId ?? '',
+        )}${hashKey}`,
+      )
+      .digest('base64');
+
+    const a = Buffer.from(received);
+    const b = Buffer.from(expected);
+    if (a.length !== b.length || !timingSafeEqual(a, b)) {
+      return { ok: false, reason: 'hash mismatch' };
+    }
+
+    return { ok: true };
   }
 }
 

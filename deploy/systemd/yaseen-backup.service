@@ -1,0 +1,15 @@
+[Unit]
+Description=Yaseen nightly database backup (dump, verify by restore, ship off-site)
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+User=deploy
+Group=deploy
+WorkingDirectory=/home/deploy/apps/yaseenecom
+# Set S3_TARGET here to enable off-site copies; without it the script warns
+# that the only copy lives on this VPS.
+# Environment=S3_TARGET=s3://yaseen-backups/postgres
+ExecStart=/home/deploy/apps/yaseenecom/deploy/backup.sh
+TimeoutStartSec=3600

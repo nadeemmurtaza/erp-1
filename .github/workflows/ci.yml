@@ -7,6 +7,10 @@ on:
     branches: [main, production]
   pull_request:
 
+# Least privilege: CI only ever reads the repository.
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true

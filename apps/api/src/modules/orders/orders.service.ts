@@ -617,22 +617,46 @@ function jsonOrNull(value: unknown): Prisma.InputJsonValue | typeof Prisma.DbNul
 }
 
 /**
+ * Namespace for the advisory lock below — an arbitrary constant that only has
+ * to be distinct from any other advisory lock this application takes.
+ */
+const ORDER_NUMBER_LOCK_NAMESPACE = 8_241_119;
+
+/**
  * Sequential order numbers per year: YSN-2026-0001.
  *
- * Counted inside the placement transaction, so two simultaneous checkouts
- * cannot be handed the same number — the unique index on Order.number is the
- * backstop.
+ * Reading the highest number and adding one is a read-then-write, and READ
+ * COMMITTED (Postgres' default, and Prisma's) takes no lock on that read — so
+ * concurrent checkouts used to compute the same next number and all but one
+ * died on Order.number's unique index. That surfaced to the customer as a 409
+ * at the moment of payment; a burst of 8 simultaneous checkouts lost 6.
+ *
+ * A transaction-scoped advisory lock serialises just this counter. It is
+ * released automatically when the placement transaction commits or rolls back,
+ * and it is per-year, so it never blocks anything else. The unique index stays
+ * as the backstop it was always described as.
+ *
+ * MAX() over the numeric suffix rather than `ORDER BY number DESC`: the string
+ * sort silently breaks once the sequence outgrows its four-digit padding,
+ * where 'YSN-2026-9999' sorts above 'YSN-2026-10000' and every subsequent
+ * order would be handed a number that already exists.
  */
 async function nextOrderNumber(tx: Prisma.TransactionClient): Promise<string> {
   const year = new Date().getFullYear();
   const prefix = `YSN-${year}-`;
 
-  const latest = await tx.order.findFirst({
-    where: { number: { startsWith: prefix } },
-    orderBy: { number: 'desc' },
-    select: { number: true },
-  });
+  // $executeRaw, not $queryRaw: pg_advisory_xact_lock returns void, which
+  // Prisma cannot deserialise as a result column.
+  await tx.$executeRaw`SELECT pg_advisory_xact_lock(${ORDER_NUMBER_LOCK_NAMESPACE}::int, ${year}::int)`;
 
-  const sequence = latest ? Number.parseInt(latest.number.slice(prefix.length), 10) + 1 : 1;
-  return `${prefix}${String(sequence).padStart(4, '0')}`;
+  // split_part over SUBSTRING: the offset would be bound as a bigint, and
+  // there is no substring(text, bigint). "YSN-2026-0001" splits to 3 parts,
+  // the last being the sequence.
+  const [{ max }] = await tx.$queryRaw<Array<{ max: number | null }>>`
+    SELECT MAX(CAST(split_part("number", '-', 3) AS INTEGER)) AS max
+    FROM "Order"
+    WHERE "number" LIKE ${`${prefix}%`}
+  `;
+
+  return `${prefix}${String((max ?? 0) + 1).padStart(4, '0')}`;
 }

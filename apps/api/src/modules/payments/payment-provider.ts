@@ -40,6 +40,17 @@ export interface PaymentCallbackResult {
   providerRef?: string;
   failureReason?: string;
   raw: Record<string, unknown>;
+  /**
+   * False when the response did not prove it came from the gateway — a bad
+   * signature, or none at all. Distinct from `status: 'FAILED'`, which is the
+   * gateway genuinely reporting a declined payment.
+   *
+   * The service refuses these outright and writes nothing, so an unsigned
+   * request cannot move a payment's state in EITHER direction: forging a
+   * success is the obvious risk, but being able to force someone else's
+   * pending payment to FAILED is a nuisance worth denying too.
+   */
+  verified?: boolean;
 }
 
 export interface PaymentProvider {

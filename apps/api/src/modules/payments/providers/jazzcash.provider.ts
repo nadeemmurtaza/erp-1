@@ -1,4 +1,4 @@
-import { createHmac } from 'node:crypto';
+import { createHmac, timingSafeEqual } from 'node:crypto';
 import { Injectable, Logger } from '@nestjs/common';
 import { AppConfigService } from '../../../core/config/app-config.service';
 import type {
@@ -87,8 +87,22 @@ export class JazzCashProvider implements PaymentProvider {
   }
 
   async handleCallback(payload: Record<string, unknown>): Promise<PaymentCallbackResult> {
-    const salt = this.config.get('JAZZCASH_INTEGRITY_SALT') ?? '';
+    const salt = this.config.get('JAZZCASH_INTEGRITY_SALT');
     const received = String(payload.pp_SecureHash ?? '');
+
+    // Without the salt every hash below would be keyed on the empty string,
+    // which anyone can reproduce — the verification would wave forgeries
+    // through. initiate() already refuses to run unconfigured; so does this.
+    if (!salt) {
+      this.logger.error('JazzCash callback rejected: JAZZCASH_INTEGRITY_SALT is not configured.');
+      return {
+        reference: String(payload.pp_TxnRefNo ?? ''),
+        status: 'FAILED',
+        failureReason: 'Payment response failed verification.',
+        verified: false,
+        raw: {},
+      };
+    }
 
     const values = Object.fromEntries(
       Object.entries(payload)
@@ -100,12 +114,15 @@ export class JazzCashProvider implements PaymentProvider {
     const reference = String(payload.pp_TxnRefNo ?? '');
 
     // A response whose hash does not match did not come from JazzCash.
-    if (!received || received.toLowerCase() !== expected.toLowerCase()) {
+    // Compared in constant time so the endpoint cannot be used as an oracle
+    // to discover a valid hash byte by byte.
+    if (!received || !hashesMatch(received, expected)) {
       this.logger.error(`JazzCash callback for ${reference} failed hash verification`);
       return {
         reference,
         status: 'FAILED',
         failureReason: 'Payment response failed verification.',
+        verified: false,
         raw: values,
       };
     }
@@ -148,4 +165,14 @@ function stamp(date: Date): string {
     pad(date.getMinutes()),
     pad(date.getSeconds()),
   ].join('');
+}
+
+/**
+ * Constant-time hash comparison. Hex is case-insensitive, so both sides are
+ * lowercased before the byte compare; a length difference is a mismatch.
+ */
+function hashesMatch(received: string, expected: string): boolean {
+  const a = Buffer.from(received.toLowerCase());
+  const b = Buffer.from(expected.toLowerCase());
+  return a.length === b.length && timingSafeEqual(a, b);
 }

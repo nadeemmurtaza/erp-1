@@ -526,7 +526,8 @@ describe('Cart (e2e)', () => {
     });
 
     it('rejects a required measurement that was left out', async () => {
-      const { chest, ...withoutChest } = KAMEEZ_MEASUREMENTS;
+      // Dropped on purpose — the underscore marks it unused for the linter.
+      const { chest: _chest, ...withoutChest } = KAMEEZ_MEASUREMENTS;
 
       const response = await guest()
         .post('/api/v1/cart/items')

@@ -11,6 +11,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 import type { Request, Response } from 'express';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthService, parseDuration } from './auth.service';
@@ -25,6 +26,13 @@ import {
   UpdateProfileDto,
 } from './dto/auth.dto';
 
+/**
+ * Credential endpoints are rate limited far tighter than the global 300/min,
+ * which on a login form is 18,000 password guesses an hour from one address.
+ * These are the only routes where an attacker gets to guess a secret.
+ */
+const CREDENTIAL_THROTTLE = { default: { limit: 10, ttl: 60_000 } };
+
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
@@ -34,6 +42,7 @@ export class AuthController {
     private readonly config: AppConfigService,
   ) {}
 
+  @Throttle(CREDENTIAL_THROTTLE)
   @Public()
   @Post('register')
   @ApiOperation({ summary: 'Create a customer account' })
@@ -46,6 +55,7 @@ export class AuthController {
     return result;
   }
 
+  @Throttle(CREDENTIAL_THROTTLE)
   @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
@@ -111,6 +121,7 @@ export class AuthController {
     return this.auth.updateProfile(user.id, dto);
   }
 
+  @Throttle(CREDENTIAL_THROTTLE)
   @Post('change-password')
   @HttpCode(HttpStatus.NO_CONTENT)
   @RequirePermission('account.change_own_password')

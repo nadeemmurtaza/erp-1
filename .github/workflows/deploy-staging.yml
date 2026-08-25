@@ -9,6 +9,11 @@ on:
     branches: [main]
     types: [completed]
 
+# Least privilege. This workflow holds deploy SSH credentials, so the
+# GITHUB_TOKEN it carries should be able to do as little as possible.
+permissions:
+  contents: read
+
 jobs:
   deploy:
     if: github.event.workflow_run.conclusion == 'success'

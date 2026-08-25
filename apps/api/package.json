@@ -7,7 +7,7 @@
     "dev": "nest start --watch",
     "start": "node dist/main.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "lint": "eslint src",
+    "lint": "eslint src prisma test",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "db:generate": "prisma generate",

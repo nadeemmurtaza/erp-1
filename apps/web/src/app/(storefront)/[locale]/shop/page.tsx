@@ -87,13 +87,13 @@ export default async function ShopPage({
     // pagination row) unless the page reserves room for it below md:.
     <div className="container-page pt-6 pb-28 md:pt-10 md:pb-12 lg:pt-12">
       <div className="grid gap-6 lg:gap-8 lg:grid-cols-[16rem_1fr]">
-        <aside className="lg:sticky lg:top-24 lg:h-fit">
-          <AnimatedSection direction="left">
+        <aside className="min-w-0 lg:sticky lg:top-24 lg:h-fit">
+          <AnimatedSection direction="right">
             <FilterPanel facets={facets} locale={locale as Locale} />
           </AnimatedSection>
         </aside>
 
-        <AnimatedSection direction="up" delay={0.1}>
+        <AnimatedSection direction="up" delay={0.1} className="min-w-0">
           <div>
             {products.data.length === 0 ? (
               <>

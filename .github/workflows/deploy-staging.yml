@@ -37,5 +37,5 @@ jobs:
             git fetch origin main
             git checkout main
             git reset --hard origin/main
-            docker compose -f docker-compose.staging.yml --env-file .env.staging up -d --build
+            docker compose -p yaseen-staging -f docker-compose.staging.yml --env-file .env.staging up -d --build
             docker image prune -f

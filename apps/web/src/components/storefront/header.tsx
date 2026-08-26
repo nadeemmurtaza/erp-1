@@ -43,18 +43,28 @@ export function Header() {
     const cleanPath = pathname.replace(/^\/(en|ur)/, '') || '/';
     const cleanHref = href.split('?')[0];
 
+    // If it's the home link, only match exactly the root path.
     if (cleanHref === '/') {
       return cleanPath === '/';
     }
 
-    if (cleanPath.startsWith('/shop')) {
-      if (cleanHref === '/shop') return true;
+    // If the link points to a shop page and we are on a shop page
+    if (cleanPath.startsWith('/shop') && cleanHref.startsWith('/shop')) {
       const pathParams = new URLSearchParams(href.split('?')[1] || '');
-      const categoryParam = pathParams.get('category') || 'unstitched';
-      const pathCategory = searchParams.get('category') || 'unstitched';
-      return categoryParam === pathCategory;
+      const hrefCategory = pathParams.get('category');
+      const currentCategory = searchParams.get('category');
+
+      if (hrefCategory) {
+        // Link has a specific category (e.g., Kids, Women Stitched)
+        return hrefCategory === currentCategory;
+      } else {
+        // Link is just "/shop" (Collection)
+        // It is only strictly active if no category is explicitly selected
+        return !currentCategory;
+      }
     }
 
+    // For all other links (e.g., /stitching), just do an exact match on the path
     return cleanPath === cleanHref;
   };
 

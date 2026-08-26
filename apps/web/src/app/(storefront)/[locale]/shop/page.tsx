@@ -5,6 +5,7 @@ import { FilterPanel } from '@/components/storefront/filter-panel';
 import { ShopControls } from '@/components/storefront/shop-controls';
 import { Link } from '@/i18n/navigation';
 import { getFacets, getProducts } from '@/lib/api';
+import { AnimatedSection } from '@/components/storefront/animated-section';
 import type { ProductListQuery } from '@/lib/api-types';
 
 export const revalidate = 120;
@@ -87,61 +88,65 @@ export default async function ShopPage({
     <div className="container-page pt-6 pb-28 md:pt-10 md:pb-12 lg:pt-12">
       <div className="grid gap-6 lg:gap-8 lg:grid-cols-[16rem_1fr]">
         <aside className="lg:sticky lg:top-24 lg:h-fit">
-          <FilterPanel facets={facets} locale={locale as Locale} />
+          <AnimatedSection direction="left">
+            <FilterPanel facets={facets} locale={locale as Locale} />
+          </AnimatedSection>
         </aside>
 
-        <div>
-          {products.data.length === 0 ? (
-            <>
-              <div className="sf-card flex items-center justify-between gap-4 mb-6 p-4">
-                <div>
-                  <h1 className="font-display text-2xl font-semibold text-noir-900">{t('title')}</h1>
-                  <p className="mt-1 text-sm text-noir-500">
-                    {t('resultsCount', { count: products.meta.total })}
-                  </p>
+        <AnimatedSection direction="up" delay={0.1}>
+          <div>
+            {products.data.length === 0 ? (
+              <>
+                <div className="sf-card flex items-center justify-between gap-4 mb-6 p-4">
+                  <div>
+                    <h1 className="font-display text-2xl font-semibold text-noir-900">{t('title')}</h1>
+                    <p className="mt-1 text-sm text-noir-500">
+                      {t('resultsCount', { count: products.meta.total })}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="sf-card p-10 text-center">
-                <p className="text-sm font-medium text-noir-900">{t('empty')}</p>
-                <p className="mt-1 text-sm text-noir-500">{t('emptyBody')}</p>
-              </div>
-            </>
-          ) : (
-            <ShopControls
-              products={products.data}
-              locale={locale as Locale}
-              resultsCount={t('resultsCount', { count: products.meta.total })}
-              title={t('title')}
-            />
-          )}
+                <div className="sf-card p-10 text-center">
+                  <p className="text-sm font-medium text-noir-900">{t('empty')}</p>
+                  <p className="mt-1 text-sm text-noir-500">{t('emptyBody')}</p>
+                </div>
+              </>
+            ) : (
+              <ShopControls
+                products={products.data}
+                locale={locale as Locale}
+                resultsCount={t('resultsCount', { count: products.meta.total })}
+                title={t('title')}
+              />
+            )}
 
-          {products.meta.totalPages > 1 ? (
-            <nav
-              aria-label="Pagination"
-              className="mt-10 flex items-center justify-between gap-4"
-            >
-              {products.meta.hasPrevious ? (
-                <Link href={pageHref(page - 1)} className="sf-btn-secondary">
-                  {t('previous')}
-                </Link>
-              ) : (
-                <span />
-              )}
+            {products.meta.totalPages > 1 ? (
+              <nav
+                aria-label="Pagination"
+                className="mt-10 flex items-center justify-between gap-4"
+              >
+                {products.meta.hasPrevious ? (
+                  <Link href={pageHref(page - 1)} className="sf-btn-secondary">
+                    {t('previous')}
+                  </Link>
+                ) : (
+                  <span />
+                )}
 
-              <span className="text-sm text-noir-500">
-                {t('pageOf', { page, total: products.meta.totalPages })}
-              </span>
+                <span className="text-sm text-noir-500">
+                  {t('pageOf', { page, total: products.meta.totalPages })}
+                </span>
 
-              {products.meta.hasNext ? (
-                <Link href={pageHref(page + 1)} className="sf-btn-secondary">
-                  {t('next')}
-                </Link>
-              ) : (
-                <span />
-              )}
-            </nav>
-          ) : null}
-        </div>
+                {products.meta.hasNext ? (
+                  <Link href={pageHref(page + 1)} className="sf-btn-secondary">
+                    {t('next')}
+                  </Link>
+                ) : (
+                  <span />
+                )}
+              </nav>
+            ) : null}
+          </div>
+        </AnimatedSection>
       </div>
     </div>
   );

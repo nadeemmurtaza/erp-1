@@ -11,6 +11,7 @@ import { CartProvider } from '@/components/storefront/cart-provider';
 import { CustomerSessionProvider } from '@/components/storefront/customer-session';
 import { Footer } from '@/components/storefront/footer';
 import { Header } from '@/components/storefront/header';
+import { SmoothScroller } from '@/components/storefront/smooth-scroller';
 import { routing } from '@/i18n/routing';
 
 // Storefront reskin typeface. Variable font, so no `weight` list is needed —
@@ -75,24 +76,26 @@ export default async function LocaleLayout({
         className={`flex min-h-screen flex-col ${encodeSans.variable}`}
         suppressHydrationWarning
       >
-        <NextIntlClientProvider>
-          <CustomerSessionProvider>
-            <CartProvider>
-            <AnalyticsBeacon />
-            <a
-              href="#main"
-              className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-2 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:shadow"
-            >
-              {t('skipToContent')}
-            </a>
-            <Header />
-            <main id="main" className="flex-1">
-              {children}
-            </main>
-            <Footer />
-            </CartProvider>
-          </CustomerSessionProvider>
-        </NextIntlClientProvider>
+        <SmoothScroller>
+          <NextIntlClientProvider>
+            <CustomerSessionProvider>
+              <CartProvider>
+              <AnalyticsBeacon />
+              <a
+                href="#main"
+                className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-2 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:shadow"
+              >
+                {t('skipToContent')}
+              </a>
+              <Header />
+              <main id="main" className="flex-1">
+                {children}
+              </main>
+              <Footer />
+              </CartProvider>
+            </CustomerSessionProvider>
+          </NextIntlClientProvider>
+        </SmoothScroller>
       </body>
     </html>
   );

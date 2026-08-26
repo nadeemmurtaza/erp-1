@@ -5,6 +5,7 @@ import type { Locale } from '@yaseen/shared';
 import type { StorefrontProduct } from '@/lib/api-types';
 import { ProductCard } from './product-card';
 import { QuickViewModal } from './quick-view-modal';
+import { AnimatedSection } from './animated-section';
 
 interface ProductsGridProps {
   products: StorefrontProduct[];
@@ -47,13 +48,14 @@ export function ProductsGrid({ products, locale, gridCols, onGridColsChange: _on
     <>
       <div className={`grid gap-3 sm:gap-4 lg:gap-6 ${GRID_CLASSES[gridCols]}`}>
         {products.map((product, index) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            locale={locale}
-            priority={index < MAX_VISIBLE_COLS[gridCols]}
-            onQuickView={() => setQuickViewProduct(product)}
-          />
+          <AnimatedSection key={product.id} direction="up" delay={index * 0.05}>
+            <ProductCard
+              product={product}
+              locale={locale}
+              priority={index < MAX_VISIBLE_COLS[gridCols]}
+              onQuickView={() => setQuickViewProduct(product)}
+            />
+          </AnimatedSection>
         ))}
       </div>
 

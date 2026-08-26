@@ -1,0 +1,111 @@
+# Staging stack — deployed via Docker Swarm
+#
+# Note: Swarm doesn't support `depends_on` or `build`. Images are pre-built
+# and pushed to GHCR by GitHub Actions, then pulled here. Swarm handles startup
+# order implicitly by restarting failing services until dependencies (DB) are ready.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-yaseen}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-yaseen}
+    volumes:
+      - postgres-staging-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-yaseen} -d ${POSTGRES_DB:-yaseen}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - yaseen-staging
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 640M
+      restart_policy:
+        condition: on-failure
+      update_config:
+        order: start-first
+        failure_action: rollback
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis-staging-data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - yaseen-staging
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 128M
+      restart_policy:
+        condition: on-failure
+      update_config:
+        order: start-first
+        failure_action: rollback
+
+  api:
+    image: ghcr.io/nadeemmurtaza/yaseenecom/api:staging
+    env_file: .env.staging
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-yaseen}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-yaseen}?schema=public&connection_limit=10&pool_timeout=20&connect_timeout=10
+      REDIS_URL: redis://redis:6379
+    volumes:
+      - api-staging-uploads:/repo/apps/api/uploads
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1:3001/api/v1/health']
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - yaseen-staging
+      - yaseen-edge
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 512M
+      restart_policy:
+        condition: any
+      update_config:
+        order: start-first
+        failure_action: rollback
+
+  web:
+    image: ghcr.io/nadeemmurtaza/yaseenecom/web:staging
+    env_file: .env.staging
+    networks:
+      - yaseen-staging
+      - yaseen-edge
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 448M
+      restart_policy:
+        condition: any
+      update_config:
+        order: start-first
+        failure_action: rollback
+
+networks:
+  yaseen-staging:
+    name: yaseen-staging
+  yaseen-edge:
+    name: yaseen-edge
+    external: true
+
+volumes:
+  postgres-staging-data:
+  redis-staging-data:
+  api-staging-uploads:

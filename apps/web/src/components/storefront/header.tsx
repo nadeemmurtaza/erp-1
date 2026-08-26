@@ -85,9 +85,25 @@ export function Header() {
                     if (item.submenu) {
                       return (
                         <div key={item.key} className="group relative">
-                          <button className="rounded-md px-3 py-2 text-sm font-medium text-noir-500 transition-all duration-200 ease-out hover:bg-noir-50 hover:text-noir-900">
-                            {t(item.key)}
-                          </button>
+                          {(() => {
+                            const isParentActive = item.submenu.some(sub => isActive(sub.href));
+                            return (
+                              <button
+                                className={`relative rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ease-out ${
+                                  isParentActive
+                                    ? 'bg-noir-50 text-noir-900'
+                                    : 'text-noir-500 hover:bg-noir-50 hover:text-noir-900 motion-safe:hover:-translate-y-0.5'
+                                }`}
+                              >
+                                {t(item.key)}
+                                <span
+                                  className={`absolute bottom-0 start-0 h-0.5 transition-all duration-200 ${
+                                    isParentActive ? 'w-full bg-noir-900' : 'w-0 bg-noir-900 group-hover:w-full'
+                                  }`}
+                                />
+                              </button>
+                            );
+                          })()}
                           <div className="invisible absolute start-0 top-full overflow-hidden rounded-md border border-noir-200 bg-white opacity-0 shadow-md transition-all duration-200 group-hover:visible group-hover:opacity-100">
                             {item.submenu.map((subitem) => {
                               const subActive = isActive(subitem.href);

@@ -34,8 +34,7 @@ services:
 networks:
   yaseen-edge:
     name: yaseen-edge
-    driver: overlay
-    attachable: true
+    external: true
 
 volumes:
   caddy-data:

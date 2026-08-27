@@ -22,7 +22,7 @@ const prisma = new PrismaClient();
 const prismaService = prisma as unknown as PrismaService;
 const eventBus = new EventBusService(prismaService, new EventEmitter2());
 const audit = new AuditService(prismaService);
-const inventoryService = new InventoryService(prismaService, eventBus, audit);
+const inventoryService = new InventoryService(prismaService, audit, eventBus);
 
 /**
  * Seeds a working store: staff accounts, garment types with their measurement

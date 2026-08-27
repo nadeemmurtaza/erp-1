@@ -66,7 +66,7 @@ const orderInclude = {
   statusEvents: { orderBy: { createdAt: 'asc' } },
 } satisfies Prisma.OrderInclude;
 
-import { InventoryService } from '../inventory/inventory.service';
+import { InventoryService, InsufficientStockError } from '../inventory/inventory.service';
 
 @Injectable()
 export class OrdersService {
@@ -197,8 +197,8 @@ export class OrdersService {
             refId: created.id,
           }, tx);
         } catch (error) {
-          if (error instanceof BadRequestException && error.message.includes('take it negative')) {
-             throw new BadRequestException(`${line.nameEn} sold out while you were checking out. Please adjust your cart.`);
+          if (error instanceof InsufficientStockError) {
+            throw new BadRequestException(`${line.nameEn} sold out while you were checking out. Please adjust your cart.`);
           }
           throw error;
         }

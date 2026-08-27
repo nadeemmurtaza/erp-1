@@ -462,6 +462,9 @@ describe('Orders (e2e)', () => {
       const statuses = responses.map(r => r.status).sort();
       expect(statuses).toEqual([201, 400]);
 
+      const failedResponse = responses.find((r) => r.status === 400);
+      expect(String(failedResponse!.body.message)).toMatch(/sold out while you were checking out/i);
+
       const sales = await prisma.stockMovement.findMany({
         where: { variantId: variant.id, reason: 'SALE' },
       });

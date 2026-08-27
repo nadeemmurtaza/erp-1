@@ -26,6 +26,18 @@ export interface StockMoveInput {
   actorId?: string | null;
 }
 
+export class InsufficientStockError extends BadRequestException {
+  constructor(
+    public readonly variantId: string,
+    public readonly sku: string,
+    public readonly available: number,
+    public readonly requestedDelta: number,
+  ) {
+    super(`${sku} has ${available} in stock; that adjustment would take it negative.`);
+    this.name = 'InsufficientStockError';
+  }
+}
+
 /**
  * Stock levels and their audit trail.
  *
@@ -103,13 +115,15 @@ export class InventoryService {
     });
 
     if (updated.count === 0) {
-      const variant = await tx.productVariant.findUnique({ where: { id: input.variantId } });
+      // Did it not exist, or did it fail the stock condition?
+      const variant = await tx.productVariant.findUnique({
+        where: { id: input.variantId },
+        select: { sku: true, stock: true },
+      });
       if (!variant) {
         throw new NotFoundException('That variant no longer exists.');
       }
-      throw new BadRequestException(
-        `${variant.sku} has ${variant.stock} in stock; that adjustment would take it negative.`,
-      );
+      throw new InsufficientStockError(input.variantId, variant.sku, variant.stock, input.delta);
     }
 
     const variant = await tx.productVariant.findUniqueOrThrow({ where: { id: input.variantId } });

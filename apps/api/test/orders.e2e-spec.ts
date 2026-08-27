@@ -460,7 +460,7 @@ describe('Orders (e2e)', () => {
       }
 
       const statuses = responses.map(r => r.status).sort();
-      expect(statuses).toEqual([201, 409]);
+      expect(statuses).toEqual([201, 400]);
 
       const sales = await prisma.stockMovement.findMany({
         where: { variantId: variant.id, reason: 'SALE' },

@@ -1,0 +1,236 @@
+// Core: identity, addresses, runtime settings, audit trail and the event outbox.
+// Every other module may reference these; they reference no module.
+
+enum UserRole {
+  CUSTOMER
+  STAFF
+  TAILOR
+  ADMIN
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String?   @unique
+  phone        String?   @unique // normalised E.164
+  passwordHash String?
+  firstName    String?
+  lastName     String?
+  role         UserRole  @default(CUSTOMER)
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  addresses           Address[]
+  refreshTokens       RefreshToken[]
+  measurementProfiles MeasurementProfile[]
+  carts               Cart[]
+  orders              Order[]
+  stitchingOrders     StitchingOrder[]
+  tailorProfile       TailorProfile?
+  assignedJobs        StitchingJob[]       @relation("JobTailor")
+  jobEvents           StitchingJobEvent[]
+  orderStatusEvents   OrderStatusEvent[]
+  auditLogs           AuditLog[]
+  contact             Contact?             @relation("ContactUser")
+  ownedContacts       Contact[]            @relation("ContactOwner")
+  ownedLeads          Lead[]               @relation("LeadOwner")
+  interactions        Interaction[]
+  assignedFollowUps   FollowUpTask[]       @relation("FollowUpAssignee")
+  approvedPayments    Payment[]            @relation("PaymentApprover")
+  segments            Segment[]
+  devices             DeviceToken[]
+  stockAdjustments    StockAdjustment[]
+  stockMovements      StockMovement[]      @relation("StockMovementActor")
+  permissionOverrides UserPermission[]
+
+  @@index([role])
+  @@index([createdAt])
+}
+
+model RefreshToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  userAgent String?
+  ip        String?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Address {
+  id         String   @id @default(cuid())
+  userId     String?
+  label      String? // "Home", "Office"
+  fullName   String
+  phone      String
+  line1      String
+  line2      String?
+  city       String
+  province   String
+  postalCode String?
+  country    String   @default("PK")
+  isDefault  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+/// Runtime configuration edited from the admin dashboard: store name, shipping
+/// zones, COD fee, stitching lead times. Business rules are data, not constants.
+model Setting {
+  key         String   @id
+  value       Json
+  description String?
+  updatedAt   DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  action    String // "product.updated", "order.status_changed"
+  entity    String // "Product", "Order"
+  entityId  String?
+  data      Json?
+  ip        String?
+  createdAt DateTime @default(now())
+
+  actor User? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([entity, entityId])
+  @@index([actorId])
+  @@index([createdAt])
+}
+
+/// A single grantable capability, e.g. "orders.manage". The key is what
+/// guards check and what @RequirePermission(...) call sites reference —
+/// label/category are display-only, for the Settings → Roles &amp; Permissions
+/// screen.
+model Permission {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  label     String
+  category  String
+  createdAt DateTime @default(now())
+
+  rolePermissions RolePermission[]
+  userOverrides   UserPermission[]
+}
+
+/// Which roles currently hold a given permission. This mapping is data, not
+/// code — it starts seeded to reproduce the old RBAC role checks exactly, and
+/// is then editable from the admin Settings screen.
+model RolePermission {
+  id           String   @id @default(cuid())
+  role         UserRole
+  permissionId String
+  createdAt    DateTime @default(now())
+
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([role, permissionId])
+  @@index([role])
+}
+
+enum PermissionEffect {
+  GRANT
+  REVOKE
+}
+
+/// A per-user adjustment layered on top of their role's grants: GRANT adds a
+/// permission their role doesn't have, REVOKE takes one away that it does.
+/// Resolution is role grants first, then these overrides applied on top —
+/// @see PermissionsResolverService.resolveForUser.
+model UserPermission {
+  id           String           @id @default(cuid())
+  userId       String
+  permissionId String
+  effect       PermissionEffect
+  createdAt    DateTime         @default(now())
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, permissionId])
+  @@index([userId])
+}
+
+enum OutboxStatus {
+  PENDING
+  PROCESSING
+  DONE
+  FAILED
+}
+
+/// Transactional outbox. Domain events are written in the same transaction as
+/// the state change that produced them, then dispatched to subscribers by a
+/// background worker — so a failing subscriber retries instead of losing the
+/// event, and never blocks checkout.
+model OutboxEvent {
+  id          String       @id @default(cuid())
+  name        String // "order.placed"
+  payload     Json
+  status      OutboxStatus @default(PENDING)
+  attempts    Int          @default(0)
+  lastError   String?
+  availableAt DateTime     @default(now())
+  processedAt DateTime?
+  createdAt   DateTime     @default(now())
+
+  @@index([status, availableAt])
+  @@index([name])
+}
+
+enum DevicePlatform {
+  IOS
+  ANDROID
+  WEB
+}
+
+/// A push notification target: one installation of the mobile app.
+///
+/// Keyed on the token itself, because reinstalling the app or restoring a
+/// backup can hand the same token to a different account — registering simply
+/// moves it, rather than leaving the old owner receiving someone else's
+/// garments.
+model DeviceToken {
+  id         String         @id @default(cuid())
+  userId     String
+  token      String         @unique
+  platform   DevicePlatform @default(ANDROID)
+  appVersion String?
+  locale     String?
+  lastSeenAt DateTime       @default(now())
+  createdAt  DateTime       @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+/// Anonymous, aggregate first-party analytics — page views, add-to-cart,
+/// checkout-started. sessionId is an opaque client-generated id, never a raw
+/// IP or User-Agent, and this table is intentionally NOT related to User or
+/// Contact: do not add a userId column here, it would join anonymous session
+/// activity to a real identity.
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  type      String // "page_view" | "add_to_cart" | "checkout_started"
+  path      String? // for page_view: the route, e.g. "/en/product/lawn-suit-42"
+  source    String   @default("direct") // "direct" | "organic" | "social" | "referral" | "email"
+  sessionId String // opaque, anonymous, client-generated — never joined to a user
+  meta      Json?
+  createdAt DateTime @default(now())
+
+  @@index([type, createdAt])
+  @@index([sessionId, createdAt])
+}

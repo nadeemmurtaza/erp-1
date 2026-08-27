@@ -1,0 +1,162 @@
+// Orders and shipments.
+//
+// Order lines are SNAPSHOTS. Name, price, measurements and stitching options
+// are copied in at purchase time and never joined back to the live product —
+// a price change or a renamed product must not rewrite history.
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  READY_TO_SHIP
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  RETURNED
+}
+
+model Order {
+  id        String      @id @default(cuid())
+  number    String      @unique // "YSN-2026-0001"
+  userId    String?
+  contactId String?
+  status    OrderStatus @default(PENDING)
+  currency  String      @default("PKR")
+
+  /// Guest checkout: no account, so contact details live on the order.
+  guestName  String?
+  guestEmail String?
+  guestPhone String?
+
+  /// Address snapshots, not foreign keys — the address book is editable.
+  shippingAddress Json
+  billingAddress  Json?
+
+  /// All amounts in paisa. Recomputed server-side from the cart at placement;
+  /// the client's numbers are never trusted.
+  itemsSubtotal     Int
+  stitchingSubtotal Int @default(0)
+  itemDiscountTotal Int @default(0)
+  orderDiscount     Int @default(0)
+  shippingFee       Int @default(0)
+  codFee            Int @default(0)
+  grandTotal        Int
+
+  shippingZone   String?
+  customerNote   String?
+  staffNote      String?
+  cancelReason   String?
+  placedAt       DateTime  @default(now())
+  confirmedAt    DateTime?
+  deliveredAt    DateTime?
+  cancelledAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  user         User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+  contact      Contact?           @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  items        OrderItem[]
+  payments     Payment[]
+  shipments    Shipment[]
+  statusEvents OrderStatusEvent[]
+  convertedLeads Lead[]           @relation("LeadConvertedOrder")
+
+  @@index([status, placedAt])
+  @@index([userId])
+  @@index([contactId])
+  @@index([guestPhone])
+}
+
+model OrderItem {
+  id      String @id @default(cuid())
+  orderId String
+
+  /// Kept for reporting; nullable so deleting a product cannot delete history.
+  productId String?
+  variantId String?
+
+  kind      ProductKind
+  nameEn    String
+  nameUr    String?
+  sku       String?
+  imageUrl  String?
+  variantLabel String? // "Medium / Ferozi"
+
+  /// Per-unit amounts in paisa.
+  unitPrice        Int
+  quantity         Int  @default(1)
+  stitchingFeeUnit Int  @default(0)
+  discountUnit     Int  @default(0)
+  /// unitPrice*qty + stitchingFeeUnit*qty - discountUnit*qty
+  lineTotal        Int
+
+  /// Stitching add-on snapshot.
+  stitchingServiceId   String?
+  stitchingServiceName String?
+  garmentTypeKey       String?
+  measurementSnapshot  Json?
+  optionsSnapshot      Json?
+  stitchingNotes       String?
+  /// What the customer actually typed, kept alongside measurementSnapshot so a
+  /// dispute can be settled against their own entry rather than the resolved set.
+  measurementValues    Json?
+  /// Option group key -> the customer's own words for that design area.
+  customDesignText     Json?
+  /// Which standard size (XS-XXL) the customer picked, when they used the RTW size chart instead of typing measurements. Kept for tailor/support reference; measurementValues still carries the actual numbers used.
+  sizeToken            String?
+
+  createdAt DateTime @default(now())
+
+  order            Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product          Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
+  variant          ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  stitchingService Product?        @relation("OrderItemStitchingService", fields: [stitchingServiceId], references: [id], onDelete: SetNull)
+  stitchingJob     StitchingJob?
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model OrderStatusEvent {
+  id        String      @id @default(cuid())
+  orderId   String
+  fromStatus OrderStatus?
+  toStatus  OrderStatus
+  note      String?
+  actorId   String?
+  createdAt DateTime    @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  actor User? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([orderId, createdAt])
+}
+
+enum ShipmentStatus {
+  PENDING
+  DISPATCHED
+  IN_TRANSIT
+  DELIVERED
+  RETURNED
+  LOST
+}
+
+model Shipment {
+  id             String         @id @default(cuid())
+  orderId        String
+  /// Courier provider key: "manual", "tcs", "leopards".
+  courier        String         @default("manual")
+  trackingNumber String?
+  trackingUrl    String?
+  status         ShipmentStatus @default(PENDING)
+  cost           Int? // paisa
+  dispatchedAt   DateTime?
+  deliveredAt    DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([trackingNumber])
+}

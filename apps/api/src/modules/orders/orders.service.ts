@@ -66,6 +66,8 @@ const orderInclude = {
   statusEvents: { orderBy: { createdAt: 'asc' } },
 } satisfies Prisma.OrderInclude;
 
+import { InventoryService } from '../inventory/inventory.service';
+
 @Injectable()
 export class OrdersService {
   private readonly logger = new Logger(OrdersService.name);
@@ -76,6 +78,7 @@ export class OrdersService {
     private readonly events: EventBusService,
     private readonly audit: AuditService,
     private readonly payments: PaymentsService,
+    private readonly inventory: InventoryService,
   ) {}
 
   /**
@@ -133,21 +136,6 @@ export class OrdersService {
     }
 
     const order = await this.prisma.$transaction(async (tx) => {
-      // Re-read stock inside the transaction and decrement conditionally, so
-      // two customers racing for the last piece cannot both win.
-      for (const line of priced.lines) {
-        const updated = await tx.productVariant.updateMany({
-          where: { id: line.variantId, stock: { gte: line.quantity } },
-          data: { stock: { decrement: line.quantity } },
-        });
-
-        if (updated.count === 0) {
-          throw new BadRequestException(
-            `${line.nameEn} sold out while you were checking out. Please adjust your cart.`,
-          );
-        }
-      }
-
       const created = await tx.order.create({
         data: {
           number: await nextOrderNumber(tx),
@@ -197,6 +185,24 @@ export class OrdersService {
         },
         include: orderInclude,
       });
+
+      const sortedLines = [...priced.lines].sort((a, b) => a.variantId.localeCompare(b.variantId));
+      for (const line of sortedLines) {
+        try {
+          await this.inventory.move({
+            variantId: line.variantId,
+            delta: -line.quantity,
+            reason: 'SALE',
+            refType: 'Order',
+            refId: created.id,
+          }, tx);
+        } catch (error) {
+          if (error instanceof BadRequestException && error.message.includes('take it negative')) {
+             throw new BadRequestException(`${line.nameEn} sold out while you were checking out. Please adjust your cart.`);
+          }
+          throw error;
+        }
+      }
 
       const payment = await this.payments.createForOrder(tx, dto.paymentMethod, {
         orderId: created.id,
@@ -361,13 +367,18 @@ export class OrdersService {
 
       // Cancelling or returning releases the stock back to the shelf.
       if (toStatus === 'CANCELLED' || toStatus === 'RETURNED') {
-        for (const item of order.items) {
-          if (!item.variantId) continue;
-          await tx.productVariant.update({
-            where: { id: item.variantId },
-            data: { stock: { increment: item.quantity } },
-          });
-        }
+        const moveReason = toStatus === 'CANCELLED' ? 'CANCELLATION' : 'RETURN';
+        await this.inventory.moveMany(
+          order.items.filter(i => i.variantId).map(item => ({
+            variantId: item.variantId!,
+            delta: item.quantity,
+            reason: moveReason,
+            refType: 'Order',
+            refId: order.id,
+            actorId,
+          })),
+          tx
+        );
       }
 
       await this.events.publish(

@@ -74,8 +74,13 @@ and none of them touch the universal core.
 4. Meet the work order's acceptance criteria. They are the tests the reviewer
    will run — write them as real tests where you can.
 5. `pnpm lint && pnpm typecheck && pnpm test && pnpm build` must all pass.
-6. Merge to `main` → auto-deploys to `test.yaseen.pk`. Promote to production
-   separately, never directly.
+6. Push your branch and open a **draft pull request** targeting `main`. Then
+   **stop.** The owner merges.
+
+**Never push to or merge into `main` or `production`.** Both auto-deploy —
+`main` to `test.yaseen.pk`, `production` to the live shop — so a merge is a
+deployment, and that call belongs to the owner. This holds even when CI is
+green and even when the change is trivial.
 
 ## When a brief is wrong
 

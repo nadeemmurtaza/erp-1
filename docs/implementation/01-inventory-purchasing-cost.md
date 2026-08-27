@@ -904,7 +904,9 @@ Add to the existing `reports` module (`apps/api/src/modules/reports/`), followin
 
 ## Phase 1 exit criteria
 
-Do not start Phase 2 until all of these are true on `test.yaseen.pk`:
+Verify all of these locally first. Staging verification happens **after the
+owner has merged and deployed** — you do not deploy, and you do not merge to get
+a deploy. Do not start Phase 2 until all of these hold:
 
 1. `pnpm lint && pnpm typecheck && pnpm test && pnpm build` all green.
 2. Nothing writes `ProductVariant.stock` except `InventoryService.move()`.

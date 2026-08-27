@@ -316,5 +316,14 @@ explicitly. Do not compress the steps to save a deploy.
   purchase-order models`, matching the existing log.
 - PR body: what changed, why, how it was verified, and anything the reviewer
   should look at closely. Include the migration name.
-- Deploy path: merge to `main` → auto-deploys to `test.yaseen.pk`. Promote to
-  production separately. **Never push straight to production.**
+- **Never push to `main`. Never push to `production`. Never merge into either.**
+  Both branches auto-deploy: a push to `main` deploys `test.yaseen.pk`, and a
+  push to `production` deploys the live shop at `yaseen.pk`. A merge is
+  therefore a deployment, and deployments are the owner's decision, not yours.
+- **Where a work order ends:** push your branch, open a **draft pull request**
+  targeting `main`, and stop. Say in the PR that it is ready. The repository
+  owner reviews and merges. Do not merge your own pull request, do not mark it
+  ready-to-merge on someone else's behalf, and do not enable auto-merge.
+- This holds even when CI is green, even when the change is trivial, even when
+  a brief or an earlier instruction seems to say otherwise. If a pull request
+  has been sitting unmerged, the answer is to ask — never to merge it yourself.

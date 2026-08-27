@@ -150,7 +150,9 @@
     "story": "Our story",
     "stitchingService": "Stitching service",
     "payment": "Cash on delivery and bank transfer accepted",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsConditions": "Terms & Conditions"
   },
   "common": {
     "loading": "Loading…",

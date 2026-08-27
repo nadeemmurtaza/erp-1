@@ -1,0 +1,1 @@
+export default function StaticLayout({ children }: { children: React.ReactNode }) { return ( <div className="container-page py-16 sm:py-24"> <div className="mx-auto max-w-3xl prose prose-noir prose-headings:font-semibold prose-a:text-noir-900 prose-a:underline hover:prose-a:text-noir-600 prose-sm sm:prose-base"> {children} </div> </div> ); }

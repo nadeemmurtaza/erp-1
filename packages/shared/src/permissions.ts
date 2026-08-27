@@ -70,6 +70,7 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
 
   { key: 'catalog.manage', label: 'Manage products, categories and import', category: 'Catalogue' },
   { key: 'inventory.manage', label: 'Adjust and view stock levels', category: 'Catalogue' },
+  { key: 'inventory.view_cost', label: 'See cost prices and margins', category: 'Catalogue' },
   {
     key: 'measurements.manage_blueprints',
     label: 'Manage garment types, measurement fields and size charts',
@@ -146,6 +147,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'stitching.designs.manage',
     'catalog.manage',
     'inventory.manage',
+    'inventory.view_cost',
     'measurements.manage_blueprints',
     'settings.manage',
     'roles.manage_permissions',

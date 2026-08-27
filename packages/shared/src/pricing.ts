@@ -61,6 +61,10 @@ export function computeLineItem(input: LineItemInput): LineItemTotals {
   };
 }
 
+export function lineMargin(lineTotal: number, unitCost: number, quantity: number): number {
+  return lineTotal - (unitCost * quantity);
+}
+
 export interface OrderTotalsInput {
   items: LineItemInput[];
   /** Shipping charge for the delivery zone, in paisa. */

@@ -66,34 +66,69 @@ export class CatalogAdminController {
 
   @Get('products')
   @ApiOperation({ summary: 'All products, including drafts and archived ones' })
-  listProducts(@Query() query: AdminProductQueryDto) {
-    return this.products.list(query);
+  async listProducts(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() query: AdminProductQueryDto,
+  ) {
+    const result = await this.products.list(query);
+    if (!user.permissions.includes('inventory.view_cost')) {
+      for (const product of result.data) {
+        for (const variant of product.variants) {
+          delete (variant as any).costPrice;
+        }
+      }
+    }
+    return result;
   }
 
   @Get('products/:id')
-  getProduct(@Param('id') id: string) {
-    return this.products.get(id);
+  async getProduct(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
+    const product = await this.products.get(id);
+    if (!user.permissions.includes('inventory.view_cost')) {
+      for (const variant of product.variants) {
+        delete (variant as any).costPrice;
+      }
+    }
+    return product;
   }
 
   @Post('products')
   @ApiOperation({ summary: 'Add a product, fabric or stitching service' })
-  createProduct(@CurrentUser() user: AuthenticatedUser, @Body() dto: CreateProductDto) {
-    return this.products.create(user.id, dto);
+  async createProduct(@CurrentUser() user: AuthenticatedUser, @Body() dto: CreateProductDto) {
+    const product = await this.products.create(user.id, dto);
+    if (!user.permissions.includes('inventory.view_cost')) {
+      for (const variant of product.variants) {
+        delete (variant as any).costPrice;
+      }
+    }
+    return product;
   }
 
   @Patch('products/:id')
-  updateProduct(
+  async updateProduct(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') id: string,
     @Body() dto: UpdateProductDto,
   ) {
-    return this.products.update(user.id, id, dto);
+    const product = await this.products.update(user.id, id, dto);
+    if (!user.permissions.includes('inventory.view_cost')) {
+      for (const variant of product.variants) {
+        delete (variant as any).costPrice;
+      }
+    }
+    return product;
   }
 
   @Delete('products/:id')
   @ApiOperation({ summary: 'Archive a product (never hard-deleted — orders cite it)' })
-  archiveProduct(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
-    return this.products.archive(user.id, id);
+  async archiveProduct(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
+    const product = await this.products.archive(user.id, id);
+    if (!user.permissions.includes('inventory.view_cost')) {
+      for (const variant of product.variants) {
+        delete (variant as any).costPrice;
+      }
+    }
+    return product;
   }
 
   // --- Images ---------------------------------------------------------------

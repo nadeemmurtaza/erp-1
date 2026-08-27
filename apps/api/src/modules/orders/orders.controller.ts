@@ -30,25 +30,39 @@ export class OrdersController {
   @Public()
   @Post()
   @ApiOperation({ summary: 'Place the order in the current cart' })
-  place(
+  async place(
     @Req() request: Request,
     @CurrentUser() user: AuthenticatedUser | undefined,
     @Body() dto: PlaceOrderDto,
     @Query('locale') locale?: string,
   ) {
-    return this.orders.place(cartToken(request), user?.id, dto, toLocale(locale));
+    const order = await this.orders.place(cartToken(request), user?.id, dto, toLocale(locale));
+    for (const item of order.items) {
+      delete (item as any).unitCost;
+    }
+    return order;
   }
 
   @Get('mine')
   @ApiOperation({ summary: "The signed-in customer's orders" })
-  mine(@CurrentUser() user: AuthenticatedUser, @Query() query: OrderHistoryQueryDto) {
-    return this.orders.listForUser(user.id, query.page, query.pageSize);
+  async mine(@CurrentUser() user: AuthenticatedUser, @Query() query: OrderHistoryQueryDto) {
+    const result = await this.orders.listForUser(user.id, query.page, query.pageSize);
+    for (const order of result.data) {
+      for (const item of order.items) {
+        delete (item as any).unitCost;
+      }
+    }
+    return result;
   }
 
   @Get(':number')
   @ApiOperation({ summary: 'One order, for its owner' })
-  get(@CurrentUser() user: AuthenticatedUser, @Param('number') number: string) {
-    return this.orders.findByNumber(number, user.id);
+  async get(@CurrentUser() user: AuthenticatedUser, @Param('number') number: string) {
+    const order = await this.orders.findByNumber(number, user.id);
+    for (const item of order.items) {
+      delete (item as any).unitCost;
+    }
+    return order;
   }
 
   @Public()
@@ -56,8 +70,12 @@ export class OrdersController {
   @ApiOperation({
     summary: 'Track a guest order with the phone number it was placed with',
   })
-  track(@Param('number') number: string, @Body() dto: TrackOrderDto) {
-    return this.orders.findByNumber(number, undefined, dto.phone);
+  async track(@Param('number') number: string, @Body() dto: TrackOrderDto) {
+    const order = await this.orders.findByNumber(number, undefined, dto.phone);
+    for (const item of order.items) {
+      delete (item as any).unitCost;
+    }
+    return order;
   }
 }
 
@@ -69,8 +87,8 @@ export class OrdersAdminController {
 
   @Get()
   @ApiOperation({ summary: 'All orders, filterable by status' })
-  list(@Query() query: AdminOrderQueryDto) {
-    return this.orders.adminList({
+  async list(@CurrentUser() user: AuthenticatedUser, @Query() query: AdminOrderQueryDto) {
+    const result = await this.orders.adminList({
       page: query.page,
       pageSize: query.pageSize,
       skip: query.skip,
@@ -78,21 +96,42 @@ export class OrdersAdminController {
       q: query.q,
       status: query.status,
     });
+
+    if (!user.permissions.includes('inventory.view_cost')) {
+      for (const order of result.data) {
+        for (const item of order.items) {
+          delete (item as any).unitCost;
+        }
+      }
+    }
+    return result;
   }
 
   @Get(':id')
-  get(@Param('id') id: string) {
-    return this.orders.adminGet(id);
+  async get(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
+    const order = await this.orders.adminGet(id);
+    if (!user.permissions.includes('inventory.view_cost')) {
+      for (const item of order.items) {
+        delete (item as any).unitCost;
+      }
+    }
+    return order;
   }
 
   @Post(':id/status')
   @ApiOperation({ summary: 'Move the order along; cancelling restores stock' })
-  changeStatus(
+  async changeStatus(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') id: string,
     @Body() dto: ChangeOrderStatusDto,
   ) {
-    return this.orders.changeStatus(user.id, id, dto.status, dto.note);
+    const order = await this.orders.changeStatus(user.id, id, dto.status, dto.note);
+    if (!user.permissions.includes('inventory.view_cost')) {
+      for (const item of order.items) {
+        delete (item as any).unitCost;
+      }
+    }
+    return order;
   }
 
   @Post(':id/shipments')

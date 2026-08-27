@@ -129,7 +129,16 @@ model ProductVariant {
   stock         Int     @default(0)
   lowStockThreshold Int @default(3)
   isActive  Boolean @default(true)
-  order     Int     @default(0)
+
+  /// Weighted average cost in paisa. 0 means "never received against a PO" (UNKNOWN), not free.
+  costPrice           Int       @default(0)
+  reorderPoint        Int?
+  reorderQuantity     Int?
+  preferredSupplierId String?
+  lastReceivedAt      DateTime?
+  barcode             String?   @unique
+
+  order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

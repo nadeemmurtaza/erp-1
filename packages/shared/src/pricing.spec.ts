@@ -3,6 +3,7 @@ import {
   computeOrderTotals,
   computeShippingFee,
   computeStitchingFee,
+  lineMargin,
 } from './pricing';
 import { formatMoney, toMinor } from './constants';
 
@@ -67,6 +68,22 @@ describe('computeLineItem', () => {
   it('treats a fractional quantity as whole units', () => {
     const line = computeLineItem({ unitPrice: toMinor(1000), quantity: 2.7 });
     expect(line.productTotal).toBe(toMinor(2000));
+  });
+});
+
+describe('lineMargin', () => {
+  it('computes margin as lineTotal minus total cost', () => {
+    // 2 units at Rs 4500 each, cost is Rs 3000 each = Rs 3000 margin
+    expect(lineMargin(toMinor(9000), toMinor(3000), 2)).toBe(toMinor(3000));
+  });
+
+  it('supports negative margin if sold below cost', () => {
+    // 1 unit sold for Rs 1000, cost is Rs 1500 = -Rs 500 margin
+    expect(lineMargin(toMinor(1000), toMinor(1500), 1)).toBe(toMinor(-500));
+  });
+
+  it('returns exactly the line total when cost is zero', () => {
+    expect(lineMargin(toMinor(5000), 0, 1)).toBe(toMinor(5000));
   });
 });
 

@@ -136,6 +136,13 @@ export class OrdersService {
     }
 
     const order = await this.prisma.$transaction(async (tx) => {
+      const variantIds = [...new Set(priced.lines.map(l => l.variantId))];
+      const variants = await tx.productVariant.findMany({
+        where: { id: { in: variantIds } },
+        select: { id: true, costPrice: true },
+      });
+      const costMap = new Map(variants.map(v => [v.id, v.costPrice]));
+
       const created = await tx.order.create({
         data: {
           number: await nextOrderNumber(tx),
@@ -165,6 +172,7 @@ export class OrdersService {
               imageUrl: line.imageUrl,
               variantLabel: line.variantLabel,
               unitPrice: line.unitPrice,
+              unitCost: costMap.get(line.variantId) ?? 0,
               quantity: line.quantity,
               stitchingFeeUnit: line.stitchingFeeUnit,
               lineTotal: line.lineTotal,
@@ -195,6 +203,7 @@ export class OrdersService {
             reason: 'SALE',
             refType: 'Order',
             refId: created.id,
+            unitCost: costMap.get(line.variantId) ?? 0,
           }, tx);
         } catch (error) {
           if (error instanceof InsufficientStockError) {

@@ -13,6 +13,10 @@ import { PrismaClient, type Prisma, type UserRole } from '../src/generated/prism
 config({ path: ['.env', '../../.env'], quiet: true });
 
 const prisma = new PrismaClient();
+const prismaService = prisma as unknown as import('../src/core/prisma/prisma.service').PrismaService;
+const eventBus = new (require('../src/core/events/event-bus.service').EventBusService)(prismaService, new (require('@nestjs/event-emitter').EventEmitter2)());
+const audit = new (require('../src/core/audit/audit.service').AuditService)(prismaService);
+const inventoryService = new (require('../src/modules/inventory/inventory.service').InventoryService)(prismaService, eventBus, audit);
 
 /**
  * Seeds a working store: staff accounts, garment types with their measurement
@@ -2365,19 +2369,29 @@ async function seedProducts(categories: Map<string, string>, garments: Map<strin
 
     for (const [index, variant] of definition.variants.entries()) {
       const sku = buildSku(definition.slug, variant.color, variant.size);
-      await prisma.productVariant.upsert({
+      const pv = await prisma.productVariant.upsert({
         where: { sku },
-        update: { stock: variant.stock },
+        update: {},
         create: {
           productId: product.id,
           sku,
           size: variant.size ?? null,
           color: variant.color,
           colorHex: variant.colorHex,
-          stock: variant.stock,
+          stock: 0,
           order: index,
         },
       });
+
+      if (pv.stock !== variant.stock) {
+        const delta = variant.stock - pv.stock;
+        await inventoryService.move({
+          variantId: pv.id,
+          delta,
+          reason: delta > 0 ? 'PURCHASE_RECEIPT' : 'ADJUSTMENT',
+          note: 'seed',
+        });
+      }
     }
 
     for (const garmentKey of definition.garmentKeys ?? []) {
@@ -2527,11 +2541,19 @@ async function seedStitchingServices(
 
     // A service still needs a variant so it can be added to a cart.
     const sku = `SVC-${service.slug.toUpperCase().replace(/[^A-Z0-9]+/g, '-').slice(0, 40)}`;
-    await prisma.productVariant.upsert({
+    const pv = await prisma.productVariant.upsert({
       where: { sku },
       update: {},
-      create: { productId: product.id, sku, size: null, color: null, stock: 9999 },
+      create: { productId: product.id, sku, size: null, color: null, stock: 0 },
     });
+    if (pv.stock !== 9999) {
+      await inventoryService.move({
+        variantId: pv.id,
+        delta: 9999 - pv.stock,
+        reason: 'ADJUSTMENT',
+        note: 'seed',
+      });
+    }
 
     await upsertPlaceholderImage(
       product.id,

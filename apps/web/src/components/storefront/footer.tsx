@@ -64,9 +64,14 @@ export function Footer() {
         </div>
 
         <div className="border-t border-noir-800 pt-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <p className="text-xs text-noir-500 tracking-wide">
-            © {new Date().getFullYear()} {tSite('name')}. {t('rights')}
-          </p>
+          <div className="flex flex-col gap-1.5">
+            <p className="text-xs text-noir-500 tracking-wide">
+              © {new Date().getFullYear()} {tSite('name')}. {t('rights')}
+            </p>
+            <p className="text-xs text-noir-500 tracking-wide">
+              Powered and developed by <a href="https://newax.co" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors underline underline-offset-2">newax.co</a>
+            </p>
+          </div>
           <div className="flex gap-4">
             <Link className="text-xs text-noir-500 hover:text-white transition-colors" href="/privacy">
               {t('privacyPolicy')}

@@ -58,6 +58,15 @@ export function AdminShell({ children }: { children: ReactNode }) {
   }
 
   const items = navFor(user.permissions);
+  const activeItem = items.reduce((best, item) => {
+    const isMatch = item.href === '/admin' 
+      ? pathname === '/admin' 
+      : (pathname === item.href || pathname.startsWith(item.href + '/'));
+    if (isMatch) {
+      if (!best || item.href.length > best.href.length) return item;
+    }
+    return best;
+  }, null as AdminNavItem | null);
 
   return (
     <div className="flex min-h-screen bg-sand-50">
@@ -87,17 +96,19 @@ export function AdminShell({ children }: { children: ReactNode }) {
             </div>
             <nav className="p-3 flex-1 overflow-y-auto">
               {NAV_GROUPS.map((group) => {
-                const groupItems = items.filter((item) => item.group === group.id);
+                const groupItems = items.filter((item) => item.group === group.key);
                 if (groupItems.length === 0) return null;
+                const GroupIcon = ICON_MAP[group.icon];
                 return (
-                  <div key={group.id} className="mb-4">
-                    <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-ink/40">
-                      {group.label}
-                    </p>
+                  <div key={group.key} className="mb-4">
+                    <div className="flex items-center gap-2 px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-ink/40">
+                      {GroupIcon && <GroupIcon className="h-4 w-4" />}
+                      <p>{group.label}</p>
+                    </div>
                     <ul className="space-y-0.5">
                       {groupItems.map((item) => (
                         <li key={item.key}>
-                          <NavLink item={item} pathname={pathname} onClick={() => setIsNavOpen(false)} />
+                          <NavLink item={item} isActive={activeItem?.key === item.key} onClick={() => setIsNavOpen(false)} />
                         </li>
                       ))}
                     </ul>
@@ -118,17 +129,19 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
         <nav className="p-3">
           {NAV_GROUPS.map((group) => {
-            const groupItems = items.filter((item) => item.group === group.id);
+            const groupItems = items.filter((item) => item.group === group.key);
             if (groupItems.length === 0) return null;
+            const GroupIcon = ICON_MAP[group.icon];
             return (
-              <div key={group.id} className="mb-4">
-                <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-ink/40">
-                  {group.label}
-                </p>
+              <div key={group.key} className="mb-4">
+                <div className="flex items-center gap-2 px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-ink/40">
+                  {GroupIcon && <GroupIcon className="h-4 w-4" />}
+                  <p>{group.label}</p>
+                </div>
                 <ul className="space-y-0.5">
                   {groupItems.map((item) => (
                     <li key={item.key}>
-                      <NavLink item={item} pathname={pathname} />
+                      <NavLink item={item} isActive={activeItem?.key === item.key} />
                     </li>
                   ))}
                 </ul>
@@ -185,36 +198,28 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
 function NavLink({
   item,
-  pathname,
+  isActive,
   compact = false,
   onClick,
 }: {
   item: AdminNavItem;
-  pathname: string;
+  isActive: boolean;
   compact?: boolean;
   onClick?: () => void;
 }) {
-  // The dashboard is only active on an exact match; every other section stays
-  // highlighted while you are inside its sub-pages.
-  const isActive =
-    item.href === '/admin' ? pathname === '/admin' : (pathname === item.href || pathname.startsWith(item.href + '/'));
-
-  const Icon = ICON_MAP[item.icon];
-
   return (
     <Link
       href={item.href}
       aria-current={isActive ? 'page' : undefined}
       onClick={onClick}
       className={clsx(
-        'flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors duration-200',
+        'block rounded-md px-3 py-2 text-sm transition-colors duration-200',
         compact && 'whitespace-nowrap',
         isActive
           ? 'bg-brand-50 font-medium text-brand-800'
           : 'text-ink/75 hover:bg-sand-100 hover:text-ink',
       )}
     >
-      {Icon && <Icon className="h-5 w-5 opacity-75" />}
       {item.label}
     </Link>
   );

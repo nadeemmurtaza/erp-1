@@ -135,6 +135,15 @@ credentials exist — a config change, not a rewrite.
 | `pnpm db:seed` | Loads the sample catalogue |
 | `pnpm db:reset` | Drops, re-migrates and re-seeds |
 
+## Where the project is going
+
+[`docs/implementation/`](./docs/implementation/) holds the build instructions for
+the next nine phases — inventory and purchasing, the admin shell, custom variants
+and SEO, profit and loss, promotions and gift cards, shipping and returns, the
+customer portal, content and search, and the AI layer. Start with
+[`00-HOUSE-RULES.md`](./docs/implementation/00-HOUSE-RULES.md), which is the
+contract every contributor works to.
+
 ## Repository layout
 
 ```

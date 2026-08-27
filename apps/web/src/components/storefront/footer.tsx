@@ -68,7 +68,7 @@ export function Footer() {
             <p className="text-xs text-noir-500 tracking-wide">
               © {new Date().getFullYear()} {tSite('name')}. {t('rights')}
             </p>
-            <p className="text-xs text-noir-500 tracking-wide">
+            <p className="text-xs text-noir-500 tracking-wide uppercase">
               Powered and developed by <a href="https://newax.co" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors underline underline-offset-2">newax.co</a>
             </p>
           </div>

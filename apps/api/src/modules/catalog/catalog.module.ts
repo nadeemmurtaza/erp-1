@@ -5,8 +5,10 @@ import { CatalogService } from './catalog.service';
 import { CategoryAdminService } from './category-admin.service';
 import { ProductAdminService } from './product-admin.service';
 import { ProductImportService } from './product-import.service';
+import { InventoryModule } from '../inventory/inventory.module';
 
 @Module({
+  imports: [InventoryModule],
   controllers: [CatalogController, CatalogAdminController],
   providers: [
     CatalogService,

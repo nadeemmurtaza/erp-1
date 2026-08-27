@@ -142,20 +142,15 @@ export class InventoryService {
       );
     }
 
-    // Best-effort general audit log; kept outside the transaction like every
-    // other admin mutation in the codebase, since AuditService never throws.
-    // Ensure we await this so it actually fires, even though we use this.audit.
-    // To match original behavior, wait until transaction commits (we might be in one, but we can't reliably
-    // wait for tx commit here unless we delay. Actually original code did it outside `this.prisma.$transaction`,
-    // but here we are passed `tx` which could be the top-level or part of an ongoing tx.
-    // Using `this.audit` is fine as per instruction: "Keep the best-effort AuditService.record() call outside the transaction, as the current code does." Wait, if we are passed `tx`, we shouldn't execute `audit.record` using `tx`, but using `this.audit` which doesn't use `tx` is correct.
-    this.audit.record({
+    // The audit write is deliberately outside the caller's transaction because
+    // AuditService is best-effort and never throws.
+    await this.audit.record({
       actorId: input.actorId ?? undefined,
       action: 'inventory.stock_adjusted',
       entity: 'ProductVariant',
       entityId: input.variantId,
       data: { delta: input.delta, resultingStock: movement.resultingStock, reason: input.reason },
-    }).catch(() => {});
+    });
 
     return movement;
   }

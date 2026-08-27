@@ -3,6 +3,7 @@ import { DEFAULT_LOCALE, slugifyWithFallback, uniqueSlug } from '@yaseen/shared'
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { StorageService } from '../../core/storage/storage.service';
+import { InventoryService } from '../inventory/inventory.service';
 import type { Prisma, ProductKind } from '../../core/prisma/client';
 import { paginated } from '../../core/common/dto/pagination.dto';
 import type { AdminProductQueryDto } from './dto/product-query.dto';
@@ -30,6 +31,7 @@ export class ProductAdminService {
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
     private readonly storage: StorageService,
+    private readonly inventory: InventoryService,
   ) {}
 
   async list(query: AdminProductQueryDto) {
@@ -84,67 +86,83 @@ export class ProductAdminService {
 
     const slug = await this.resolveSlug(dto.slug, dto.translations);
 
-    const product = await this.prisma.product.create({
-      data: {
-        slug,
-        kind: dto.kind,
-        status: dto.status ?? 'DRAFT',
-        categoryId: dto.categoryId || null,
-        basePrice: dto.basePrice,
-        compareAtPrice: dto.compareAtPrice ?? null,
-        brand: dto.brand?.trim() || null,
-        fabric: normaliseTag(dto.fabric),
-        season: normaliseTag(dto.season),
-        tags: (dto.tags ?? []).map((tag) => tag.trim().toLowerCase()).filter(Boolean),
-        pieceCount: dto.pieceCount ?? null,
-        fabricMeters: dto.fabricMeters ?? null,
-        stitchingAvailable: dto.kind === 'UNSTITCHED' && (dto.stitchingAvailable ?? false),
-        garmentTypeId: dto.kind === 'STITCHING_SERVICE' ? (dto.garmentTypeId ?? null) : null,
-        featuredRank: dto.featuredRank ?? 0,
-        publishedAt: dto.status === 'ACTIVE' ? new Date() : null,
-        translations: {
-          create: dto.translations.map((translation) => ({
-            locale: translation.locale,
-            name: translation.name.trim(),
-            description: translation.description?.trim() || null,
-            careInstructions: translation.careInstructions?.trim() || null,
-            metaTitle: translation.metaTitle?.trim() || null,
-            metaDescription: translation.metaDescription?.trim() || null,
-          })),
+    return this.prisma.$transaction(async (tx) => {
+      const product = await tx.product.create({
+        data: {
+          slug,
+          kind: dto.kind,
+          status: dto.status ?? 'DRAFT',
+          categoryId: dto.categoryId || null,
+          basePrice: dto.basePrice,
+          compareAtPrice: dto.compareAtPrice ?? null,
+          brand: dto.brand?.trim() || null,
+          fabric: normaliseTag(dto.fabric),
+          season: normaliseTag(dto.season),
+          tags: (dto.tags ?? []).map((tag) => tag.trim().toLowerCase()).filter(Boolean),
+          pieceCount: dto.pieceCount ?? null,
+          fabricMeters: dto.fabricMeters ?? null,
+          stitchingAvailable: dto.kind === 'UNSTITCHED' && (dto.stitchingAvailable ?? false),
+          garmentTypeId: dto.kind === 'STITCHING_SERVICE' ? (dto.garmentTypeId ?? null) : null,
+          featuredRank: dto.featuredRank ?? 0,
+          publishedAt: dto.status === 'ACTIVE' ? new Date() : null,
+          translations: {
+            create: dto.translations.map((translation) => ({
+              locale: translation.locale,
+              name: translation.name.trim(),
+              description: translation.description?.trim() || null,
+              careInstructions: translation.careInstructions?.trim() || null,
+              metaTitle: translation.metaTitle?.trim() || null,
+              metaDescription: translation.metaDescription?.trim() || null,
+            })),
+          },
+          variants: {
+            create: (dto.variants ?? []).map((variant, index) => ({
+              sku: variant.sku.trim().toUpperCase(),
+              size: variant.size?.trim() || null,
+              color: variant.color?.trim() || null,
+              colorHex: variant.colorHex?.trim() || null,
+              priceOverride: variant.priceOverride ?? null,
+              stock: 0,
+              lowStockThreshold: variant.lowStockThreshold ?? 3,
+              isActive: variant.isActive ?? true,
+              order: variant.order ?? index,
+            })),
+          },
+          ...(dto.kind === 'UNSTITCHED' && dto.garmentTypeIds?.length
+            ? {
+                garmentTypes: {
+                  create: dto.garmentTypeIds.map((garmentTypeId) => ({ garmentTypeId })),
+                },
+              }
+            : {}),
         },
-        variants: {
-          create: (dto.variants ?? []).map((variant, index) => ({
-            sku: variant.sku.trim().toUpperCase(),
-            size: variant.size?.trim() || null,
-            color: variant.color?.trim() || null,
-            colorHex: variant.colorHex?.trim() || null,
-            priceOverride: variant.priceOverride ?? null,
-            stock: variant.stock ?? 0,
-            lowStockThreshold: variant.lowStockThreshold ?? 3,
-            isActive: variant.isActive ?? true,
-            order: variant.order ?? index,
-          })),
-        },
-        ...(dto.kind === 'UNSTITCHED' && dto.garmentTypeIds?.length
-          ? {
-              garmentTypes: {
-                create: dto.garmentTypeIds.map((garmentTypeId) => ({ garmentTypeId })),
-              },
-            }
-          : {}),
-      },
-      include: adminInclude,
-    });
+        include: adminInclude,
+      });
 
-    await this.audit.record({
-      actorId,
-      action: 'product.created',
-      entity: 'Product',
-      entityId: product.id,
-      data: { slug: product.slug, kind: product.kind },
-    });
+      for (const [index, variant] of (dto.variants ?? []).entries()) {
+        const requestedStock = variant.stock ?? 0;
+        if (requestedStock !== 0) {
+          const createdVariant = product.variants[index];
+          await this.inventory.move({
+            variantId: createdVariant.id,
+            delta: requestedStock,
+            reason: 'ADJUSTMENT',
+            actorId,
+            note: 'Product created',
+          }, tx);
+        }
+      }
 
-    return toAdminView(product);
+      await this.audit.record({
+        actorId,
+        action: 'product.created',
+        entity: 'Product',
+        entityId: product.id,
+        data: { slug },
+      });
+
+      return toAdminView(await tx.product.findUniqueOrThrow({ where: { id: product.id }, include: adminInclude }));
+    });
   }
 
   async update(actorId: string, id: string, dto: UpdateProductDto) {
@@ -222,7 +240,7 @@ export class ProductAdminService {
       }
 
       if (dto.variants) {
-        await this.syncVariants(tx, id, dto.variants, existing.variants);
+        await this.syncVariants(actorId, tx, id, dto.variants, existing.variants);
       }
 
       if (dto.garmentTypeIds && kind === 'UNSTITCHED') {
@@ -362,27 +380,26 @@ export class ProductAdminService {
   }
 
   async updateStock(actorId: string, variantId: string, stock: number) {
-    const variant = await this.prisma.productVariant.update({
-      where: { id: variantId },
-      data: { stock },
-    });
+    const pv = await this.prisma.productVariant.findUniqueOrThrow({ where: { id: variantId } });
+    if (pv.stock !== stock) {
+      await this.inventory.move({
+        variantId,
+        delta: stock - pv.stock,
+        reason: 'ADJUSTMENT',
+        actorId,
+        note: 'Admin manual stock update',
+      });
+    }
 
-    await this.audit.record({
-      actorId,
-      action: 'variant.stock_updated',
-      entity: 'ProductVariant',
-      entityId: variantId,
-      data: { sku: variant.sku, stock },
-    });
-
-    return variant;
+    return this.prisma.productVariant.findUnique({ where: { id: variantId } });
   }
 
   private async syncVariants(
+    actorId: string,
     tx: Prisma.TransactionClient,
     productId: string,
     incoming: NonNullable<UpdateProductDto['variants']>,
-    existing: Array<{ id: string; sku: string }>,
+    existing: Array<{ id: string; sku: string; stock: number }>,
   ): Promise<void> {
     const keptIds = new Set(
       incoming.map((variant) => variant.id).filter((id): id is string => Boolean(id)),
@@ -405,16 +422,33 @@ export class ProductAdminService {
         color: variant.color?.trim() || null,
         colorHex: variant.colorHex?.trim() || null,
         priceOverride: variant.priceOverride ?? null,
-        stock: variant.stock ?? 0,
         lowStockThreshold: variant.lowStockThreshold ?? 3,
         isActive: variant.isActive ?? true,
         order: variant.order ?? index,
       };
 
+      const requestedStock = variant.stock ?? 0;
+      let pvId: string;
+      let currentStock = 0;
+
       if (variant.id) {
-        await tx.productVariant.update({ where: { id: variant.id }, data });
+        pvId = variant.id;
+        const existVariant = existing.find((v) => v.id === variant.id);
+        if (existVariant) currentStock = existVariant.stock;
+        await tx.productVariant.updateMany({ where: { id: pvId }, data });
       } else {
-        await tx.productVariant.create({ data: { ...data, productId } });
+        const created = await tx.productVariant.create({ data: { ...data, stock: 0, productId } });
+        pvId = created.id;
+      }
+
+      if (requestedStock !== currentStock) {
+        await this.inventory.move({
+          variantId: pvId,
+          delta: requestedStock - currentStock,
+          reason: 'ADJUSTMENT',
+          actorId,
+          note: 'Product admin form save',
+        }, tx);
       }
     }
   }

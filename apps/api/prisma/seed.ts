@@ -12,11 +12,17 @@ import { PrismaClient, type Prisma, type UserRole } from '../src/generated/prism
 
 config({ path: ['.env', '../../.env'], quiet: true });
 
+import { EventBusService } from '../src/core/events/event-bus.service';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { AuditService } from '../src/core/audit/audit.service';
+import { InventoryService } from '../src/modules/inventory/inventory.service';
+import { PrismaService } from '../src/core/prisma/prisma.service';
+
 const prisma = new PrismaClient();
-const prismaService = prisma as unknown as import('../src/core/prisma/prisma.service').PrismaService;
-const eventBus = new (require('../src/core/events/event-bus.service').EventBusService)(prismaService, new (require('@nestjs/event-emitter').EventEmitter2)());
-const audit = new (require('../src/core/audit/audit.service').AuditService)(prismaService);
-const inventoryService = new (require('../src/modules/inventory/inventory.service').InventoryService)(prismaService, eventBus, audit);
+const prismaService = prisma as unknown as PrismaService;
+const eventBus = new EventBusService(prismaService, new EventEmitter2());
+const audit = new AuditService(prismaService);
+const inventoryService = new InventoryService(prismaService, eventBus, audit);
 
 /**
  * Seeds a working store: staff accounts, garment types with their measurement

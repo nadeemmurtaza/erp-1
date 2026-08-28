@@ -190,12 +190,20 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['inventory.manage'],
     group: 'inventory',
   },
-  // {
-  //   key: 'purchasing',
-  //   label: 'Purchasing',
-  //   href: '/admin/purchasing',
-  //   group: 'inventory',
-  // },
+  {
+    key: 'purchasing',
+    label: 'Purchase orders',
+    href: '/admin/purchase-orders',
+    permissions: ['purchasing.manage'],
+    group: 'inventory',
+  },
+  {
+    key: 'suppliers',
+    label: 'Suppliers',
+    href: '/admin/suppliers',
+    permissions: ['suppliers.manage'],
+    group: 'inventory',
+  },
 
   // Group: Settings
   {

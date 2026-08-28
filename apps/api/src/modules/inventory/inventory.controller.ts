@@ -13,8 +13,20 @@ export class InventoryAdminController {
 
   @Get()
   @ApiOperation({ summary: 'Every active variant, with its stock and threshold' })
-  list(@Query('lowStockOnly') lowStockOnly?: string, @Query('search') search?: string) {
-    return this.inventory.list({ lowStockOnly: lowStockOnly === 'true', search });
+  list(@Query('filter') filter?: string, @Query('search') search?: string) {
+    return this.inventory.list({ filter, search });
+  }
+
+  @Get('reorder')
+  @ApiOperation({ summary: 'Reorder suggestions based on reorderPoint' })
+  reorder() {
+    return this.inventory.getReorderSuggestions();
+  }
+
+  @Get('slow-movers')
+  @ApiOperation({ summary: 'Variants with zero sales in the slow mover window' })
+  slowMovers() {
+    return this.inventory.getSlowMovers();
   }
 
   @Post(':variantId/adjust')

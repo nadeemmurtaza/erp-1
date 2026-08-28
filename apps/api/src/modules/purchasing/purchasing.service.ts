@@ -55,6 +55,42 @@ export class PurchasingService {
     });
   }
 
+  async findAllPurchaseOrders(status?: string) {
+    return this.prisma.purchaseOrder.findMany({
+      where: status ? { status: status as any } : undefined,
+      include: {
+        supplier: { select: { id: true, name: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async findOnePurchaseOrder(id: string) {
+    const po = await this.prisma.purchaseOrder.findUnique({
+      where: { id },
+      include: {
+        supplier: { select: { id: true, name: true, email: true, phone: true } },
+        items: {
+          include: {
+            variant: {
+              include: {
+                product: { include: { translations: { where: { locale: 'en' }, take: 1 } } },
+              },
+            },
+          },
+        },
+        receipts: {
+          include: {
+            receivedBy: { select: { id: true, firstName: true, lastName: true } },
+          },
+        },
+        bills: true,
+      },
+    });
+    if (!po) throw new NotFoundException(`PurchaseOrder ${id} not found`);
+    return po;
+  }
+
   async findOne(id: string) {
     const supplier = await this.prisma.supplier.findUnique({
       where: { id },

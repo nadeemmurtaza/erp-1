@@ -61,8 +61,8 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
       await adminFetch(`/api/admin/inventory/counts/${id}/start`, { method: 'POST' });
       addToast('Count started successfully', 'success');
       load();
-    } catch (err: any) {
-      addToast(err.message, 'error');
+    } catch (cause) {
+      addToast(cause instanceof Error ? cause.message : 'Could not start this count', 'error');
     }
   };
 
@@ -80,8 +80,8 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
       load(); // Reload lines to show the scanned item incremented
       // Re-focus scanner input
       inputRef.current?.focus();
-    } catch (err: any) {
-      addToast(`Scan failed: ${err.message}`, 'error');
+    } catch (cause) {
+      addToast(`Scan failed: ${cause instanceof Error ? cause.message : 'unknown error'}`, 'error');
     }
   };
 
@@ -91,8 +91,8 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
       await adminFetch(`/api/admin/inventory/counts/${id}/complete`, { method: 'POST' });
       addToast('Count completed successfully', 'success');
       router.push('/admin/inventory/counts');
-    } catch (err: any) {
-      addToast(err.message, 'error');
+    } catch (cause) {
+      addToast(cause instanceof Error ? cause.message : 'Could not complete this count', 'error');
     }
   };
 

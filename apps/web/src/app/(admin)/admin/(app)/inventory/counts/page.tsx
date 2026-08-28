@@ -40,8 +40,8 @@ export default function CountsListPage() {
         body: JSON.stringify({}),
       });
       window.location.href = `/admin/inventory/counts/${res.data.id}`;
-    } catch (err: any) {
-      setError(err.message);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not create a count');
     }
   };
 

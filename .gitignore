@@ -6,6 +6,7 @@ out/
 coverage/
 .turbo/
 *.tsbuildinfo
+next-env.d.ts
 
 # Every .env variant is ignored, then the committed templates are allowed back
 # in by name. DEPLOYMENT.md has you create .env.production and .env.staging on

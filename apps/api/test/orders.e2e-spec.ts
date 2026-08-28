@@ -433,6 +433,71 @@ describe('Orders (e2e)', () => {
       const numbers = responses.map((response) => response.body.number);
       expect(new Set(numbers).size).toBe(numbers.length);
     });
+
+    it('defends the last unit against simultaneous checkouts', async () => {
+      // Find a variant and set its stock to exactly 1
+      const variant = await prisma.productVariant.findFirstOrThrow({
+        where: { isActive: true, stock: { gt: 1 }, product: { status: 'ACTIVE' } },
+      });
+      await prisma.productVariant.updateMany({
+        where: { id: variant.id },
+        data: { stock: 1 },
+      });
+
+      const agent1 = request.agent(app.getHttpServer());
+      await agent1.post('/api/v1/cart/items').send({ variantId: variant.id, quantity: 1 }).expect(201);
+      
+      const agent2 = request.agent(app.getHttpServer());
+      await agent2.post('/api/v1/cart/items').send({ variantId: variant.id, quantity: 1 }).expect(201);
+
+      const responses = await Promise.all([
+        agent1.post('/api/v1/orders').send({ shippingAddress: KARACHI, paymentMethod: 'cod' }),
+        agent2.post('/api/v1/orders').send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
+      ]);
+
+      for (const res of responses) {
+        if (res.status === 201) createdOrderIds.push(res.body.id);
+      }
+
+      const statuses = responses.map(r => r.status).sort();
+      expect(statuses).toEqual([201, 400]);
+
+      const failedResponse = responses.find((r) => r.status === 400);
+      expect(String(failedResponse!.body.message)).toMatch(/sold out while you were checking out/i);
+
+      const sales = await prisma.stockMovement.findMany({
+        where: { variantId: variant.id, reason: 'SALE' },
+      });
+      expect(sales.length).toBe(1);
+    });
+
+    it('survives opposite-order checkouts without deadlocking', async () => {
+      const variants = await prisma.productVariant.findMany({
+        where: { isActive: true, stock: { gte: 2 }, product: { status: 'ACTIVE' } },
+        take: 2,
+      });
+      expect(variants.length).toBe(2);
+
+      const agent1 = request.agent(app.getHttpServer());
+      await agent1.post('/api/v1/cart/items').send({ variantId: variants[0].id, quantity: 1 }).expect(201);
+      await agent1.post('/api/v1/cart/items').send({ variantId: variants[1].id, quantity: 1 }).expect(201);
+
+      const agent2 = request.agent(app.getHttpServer());
+      await agent2.post('/api/v1/cart/items').send({ variantId: variants[1].id, quantity: 1 }).expect(201);
+      await agent2.post('/api/v1/cart/items').send({ variantId: variants[0].id, quantity: 1 }).expect(201);
+
+      const responses = await Promise.all([
+        agent1.post('/api/v1/orders').send({ shippingAddress: KARACHI, paymentMethod: 'cod' }),
+        agent2.post('/api/v1/orders').send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
+      ]);
+
+      for (const res of responses) {
+        if (res.status === 201) createdOrderIds.push(res.body.id);
+      }
+
+      const statuses = responses.map(r => r.status);
+      expect(statuses).toEqual([201, 201]);
+    });
   });
 
   describe('stitched orders', () => {

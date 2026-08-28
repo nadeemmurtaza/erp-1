@@ -40,9 +40,9 @@ export default function SlowMoversPage() {
   const [minAge, setMinAge] = useState<number>(0);
 
   useEffect(() => {
-    adminFetch<any>('/api/admin/inventory/slow-movers')
+    adminFetch<InventoryVariant[]>('/api/admin/inventory/slow-movers')
       .then((res) => {
-        setVariants(Array.isArray(res) ? res : res.data || []);
+        setVariants(res || []);
       })
       .catch((cause) => setError(cause instanceof Error ? cause.message : 'Could not load slow movers'))
       .finally(() => setBusy(false));

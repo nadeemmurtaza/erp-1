@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, use } from 'react';
-import clsx from 'clsx';
+// No clsx import needed
 import { adminFetch } from '@/lib/admin-client';
 
 interface SupplierDetail {

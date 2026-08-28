@@ -189,6 +189,29 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/inventory',
     permissions: ['inventory.manage'],
     group: 'inventory',
+    children: [
+      {
+        key: 'inventory-reorder',
+        label: 'Reorder',
+        href: '/admin/inventory/reorder',
+        permissions: ['inventory.manage'],
+        group: 'inventory',
+      },
+      {
+        key: 'inventory-slow-movers',
+        label: 'Slow Movers',
+        href: '/admin/inventory/slow-movers',
+        permissions: ['inventory.manage'],
+        group: 'inventory',
+      },
+      {
+        key: 'inventory-counts',
+        label: 'Stock Counts',
+        href: '/admin/inventory/counts',
+        permissions: ['inventory.count'],
+        group: 'inventory',
+      },
+    ],
   },
   {
     key: 'purchasing',

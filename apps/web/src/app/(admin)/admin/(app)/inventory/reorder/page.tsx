@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { adminFetch } from '@/lib/admin-client';
 import { formatMoney } from '@yaseen/shared';
@@ -43,12 +43,9 @@ export default function ReorderSuggestionsPage() {
   const [success, setSuccess] = useState<string | null>(null);
 
   useEffect(() => {
-    adminFetch<{ data: ReorderSuggestion[] }>('/api/admin/inventory/reorder')
+    adminFetch<ReorderSuggestion[]>('/api/admin/inventory/reorder')
       .then((res) => {
-        // adminFetch directly returns the JSON response, but sometimes we wrap in { data } 
-        // Wait, the API I wrote in NestJS for getReorderSuggestions returns an array directly!
-        // Let's handle both just in case.
-        setSuggestions(Array.isArray(res) ? res : (res as any).data || []);
+        setSuggestions(res || []);
       })
       .catch((cause) => setError(cause instanceof Error ? cause.message : 'Could not load suggestions'))
       .finally(() => setBusy(false));
@@ -126,8 +123,8 @@ export default function ReorderSuggestionsPage() {
       
       // Reload suggestions
       setBusy(true);
-      const res = await adminFetch<any>('/api/admin/inventory/reorder');
-      setSuggestions(Array.isArray(res) ? res : res.data || []);
+      const res = await adminFetch<ReorderSuggestion[]>('/api/admin/inventory/reorder');
+      setSuggestions(res || []);
       setBusy(false);
       
     } catch (cause) {

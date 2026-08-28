@@ -258,11 +258,13 @@ export const ADMIN_NAV: AdminNavItem[] = [
  * tailor whose permissions are scoped to the workshop) lands on the queue
  * they actually work from.
  */
-export function landingFor(permissions: readonly string[]): string {
+export function landingFor(permissions: readonly string[] = []): string {
+  permissions = permissions || [];
   return permissions.includes('analytics.view') ? '/admin' : '/admin/stitching';
 }
 
-export function navFor(permissions: readonly string[]): AdminNavItem[] {
+export function navFor(permissions: readonly string[] = []): AdminNavItem[] {
+  permissions = permissions || [];
   return ADMIN_NAV.filter(
     (item) => !item.permissions || item.permissions.some((key) => permissions.includes(key)),
   ).map(item => {

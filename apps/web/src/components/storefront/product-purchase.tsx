@@ -9,6 +9,8 @@ import type { StorefrontProduct } from '@/lib/api-types';
 import { Price } from './price';
 import { useCart } from './cart-provider';
 import { StitchingPanel, type StitchingSelection } from './stitching-panel';
+import { SizeChartModal } from './size-chart-modal';
+import type { StitchingGarment } from '@/lib/cart-types';
 
 /**
  * One garment this fabric can become, with the fabric-need range derived from
@@ -34,6 +36,8 @@ interface ProductPurchaseProps {
   services: StorefrontProduct[];
   /** Empty unless stitching is available and at least one garment has a fabric benchmark. */
   fabricNeed: FabricNeedRow[];
+  /** Garments available for this product with size charts. */
+  stitchingGarments: StitchingGarment[];
 }
 
 /**
@@ -48,7 +52,7 @@ interface ProductPurchaseProps {
  * mobile-only sticky-CTA convention. Both share the same handler and disabled
  * state — only one is ever visible/interactive at a given width.
  */
-export function ProductPurchase({ product, locale, services, fabricNeed }: ProductPurchaseProps) {
+export function ProductPurchase({ product, locale, services, fabricNeed, stitchingGarments }: ProductPurchaseProps) {
   const t = useTranslations('product');
   const router = useRouter();
   const { add, error, clearError } = useCart();
@@ -133,6 +137,7 @@ export function ProductPurchase({ product, locale, services, fabricNeed }: Produ
     <div className="space-y-6">
       <div>
         <Price amount={price} compareAt={product.compareAtPrice} locale={locale} size="lg" />
+        <SizeChartModal productName={product.name} garments={stitchingGarments} locale={locale} />
         <p className="mt-1 text-sm">
           {selected && selected.stock > 0 ? (
             selected.stock <= 3 ? (

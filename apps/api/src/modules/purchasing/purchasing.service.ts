@@ -8,6 +8,7 @@ import { SettingsService } from '../../core/settings/settings.service';
 import { Prisma } from '@prisma/client';
 import { allocateLandedCost, weightedAverageCost } from '@yaseen/shared';
 import { DomainEvent } from '../../core/events/domain-events';
+import { EventBusService } from '../../core/events/event-bus.service';
 
 const PO_NUMBER_LOCK_NAMESPACE = 8_241_120;
 const GRN_NUMBER_LOCK_NAMESPACE = 8_241_121;
@@ -45,6 +46,7 @@ export class PurchasingService {
     private readonly catalogService: CatalogService,
     private readonly inventoryService: InventoryService,
     private readonly settingsService: SettingsService,
+    private readonly events: EventBusService,
   ) {}
 
   async findAll() {
@@ -271,6 +273,9 @@ export class PurchasingService {
           reason: 'PURCHASE_RECEIPT',
           refType: 'GoodsReceipt',
           refId: receipt.id,
+          // What we actually paid per unit, freight and duty included. This is
+          // what the stock valuation report reconciles against.
+          unitCost: item.landedUnitCost,
           actorId: userId,
         })),
         tx,
@@ -318,17 +323,16 @@ export class PurchasingService {
         },
       });
 
-      await tx.outboxEvent.create({
-        data: {
-          name: DomainEvent.GoodsReceived,
-          payload: {
-            goodsReceiptId: receipt.id,
-            number: receipt.number,
-            purchaseOrderId: poId,
-            supplierId: po.supplierId,
-          } as any,
-        }
-      });
+      await this.events.publish(
+        DomainEvent.GoodsReceived,
+        {
+          goodsReceiptId: receipt.id,
+          number: receipt.number,
+          purchaseOrderId: poId,
+          supplierId: po.supplierId,
+        },
+        tx,
+      );
 
       return receipt;
     });

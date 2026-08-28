@@ -38,6 +38,8 @@ export const SettingKey = {
   BankAccounts: 'payments.bank_accounts',
   LowStockThreshold: 'catalog.low_stock_threshold',
   MonthlyRevenueTarget: 'analytics.monthly_revenue_target',
+  PurchasingOverReceiptTolerance: 'purchasing.over_receipt_tolerance',
+  PurchasingAutoDraftReorder: 'purchasing.auto_draft_reorder',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -102,4 +104,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
 
   /** Shown as the dashboard's monthly progress target until an admin sets a real one. */
   [SettingKey.MonthlyRevenueTarget]: toMinor(1_000_000),
+
+  [SettingKey.PurchasingOverReceiptTolerance]: 0,
+  [SettingKey.PurchasingAutoDraftReorder]: true,
 };

@@ -143,13 +143,15 @@ model ProductVariant {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  product          Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
-  images           ProductImage[]
-  cartItems        CartItem[]
-  orderItems       OrderItem[]
-  supplierProducts SupplierProduct[]
-  stockAdjustments StockAdjustment[]
-  stockMovements   StockMovement[]
+  product            Product             @relation(fields: [productId], references: [id], onDelete: Cascade)
+  images             ProductImage[]
+  cartItems          CartItem[]
+  orderItems         OrderItem[]
+  supplierProducts   SupplierProduct[]
+  stockAdjustments   StockAdjustment[]
+  stockMovements     StockMovement[]
+  purchaseOrderItems PurchaseOrderItem[]
+  goodsReceiptItems  GoodsReceiptItem[]
 
   @@index([productId])
   @@index([stock])

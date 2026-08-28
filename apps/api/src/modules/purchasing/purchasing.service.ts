@@ -1,11 +1,51 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { CreateSupplierDto, UpdateSupplierDto, AddSupplierProductDto } from './dto/supplier.dto';
+import { CreatePurchaseOrderDto, ReceiveGoodsDto } from './dto/purchase-order.dto';
 import { CatalogService } from '../catalog/catalog.service';
+import { InventoryService } from '../inventory/inventory.service';
+import { SettingsService } from '../../core/settings/settings.service';
+import { Prisma } from '@prisma/client';
+import { allocateLandedCost, weightedAverageCost } from '@yaseen/shared';
+import { DomainEvent } from '../../core/events/domain-events';
+
+const PO_NUMBER_LOCK_NAMESPACE = 8_241_120;
+const GRN_NUMBER_LOCK_NAMESPACE = 8_241_121;
+
+async function nextPONumber(tx: Prisma.TransactionClient): Promise<string> {
+  const year = new Date().getFullYear();
+  const prefix = `PO-${year}-`;
+  await tx.$executeRaw`SELECT pg_advisory_xact_lock(${PO_NUMBER_LOCK_NAMESPACE}::int, ${year}::int)`;
+  const [{ max }] = await tx.$queryRaw<Array<{ max: number | null }>>`
+    SELECT MAX(CAST(split_part("number", '-', 3) AS INTEGER)) AS max
+    FROM "PurchaseOrder"
+    WHERE "number" LIKE ${`${prefix}%`}
+  `;
+  const nextSequence = (max ?? 0) + 1;
+  return `${prefix}${nextSequence.toString().padStart(4, '0')}`;
+}
+
+async function nextGRNNumber(tx: Prisma.TransactionClient): Promise<string> {
+  const year = new Date().getFullYear();
+  const prefix = `GRN-${year}-`;
+  await tx.$executeRaw`SELECT pg_advisory_xact_lock(${GRN_NUMBER_LOCK_NAMESPACE}::int, ${year}::int)`;
+  const [{ max }] = await tx.$queryRaw<Array<{ max: number | null }>>`
+    SELECT MAX(CAST(split_part("number", '-', 3) AS INTEGER)) AS max
+    FROM "GoodsReceipt"
+    WHERE "number" LIKE ${`${prefix}%`}
+  `;
+  const nextSequence = (max ?? 0) + 1;
+  return `${prefix}${nextSequence.toString().padStart(4, '0')}`;
+}
 
 @Injectable()
 export class PurchasingService {
-  constructor(private readonly prisma: PrismaService, private readonly catalogService: CatalogService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly catalogService: CatalogService,
+    private readonly inventoryService: InventoryService,
+    private readonly settingsService: SettingsService,
+  ) {}
 
   async findAll() {
     return this.prisma.supplier.findMany({
@@ -31,14 +71,11 @@ export class PurchasingService {
   }
 
   async update(id: string, dto: UpdateSupplierDto) {
-    // Note: if making isActive=false, it warns (in UI), but allowed here.
     const supplier = await this.prisma.supplier.findUnique({ where: { id } });
     if (!supplier) throw new NotFoundException('Supplier not found');
     return this.prisma.supplier.update({ where: { id }, data: dto });
   }
 
-  // Note: deleting a supplier with purchase history is refused. However, purchaseOrders aren't there yet.
-  // The spec says soft-delete via isActive, never hard-delete if it has history.
   async remove(id: string) {
     const supplier = await this.prisma.supplier.findUnique({ where: { id } });
     if (!supplier) throw new NotFoundException('Supplier not found');
@@ -77,12 +114,10 @@ export class PurchasingService {
     });
 
     if (dto.isPreferred) {
-      // Update the ProductVariant to point to this supplier.
       await this.prisma.productVariant.update({
         where: { id: dto.variantId },
         data: { preferredSupplierId: supplierId },
       });
-      // Also unset isPreferred on other supplierProducts for this variant
       await this.prisma.supplierProduct.updateMany({
         where: { variantId: dto.variantId, supplierId: { not: supplierId } },
         data: { isPreferred: false },
@@ -102,9 +137,6 @@ export class PurchasingService {
       where: { id: supplierProduct.id },
     });
 
-    // Note: If this was the preferred supplier, the relation preferredSupplierId 
-    // won't automatically be nulled if the SupplierProduct is deleted, because the 
-    // preferredSupplierId relation points to Supplier directly. But conceptually it should be cleared.
     if (supplierProduct.isPreferred) {
       await this.prisma.productVariant.update({
         where: { id: variantId },
@@ -113,5 +145,192 @@ export class PurchasingService {
     }
 
     return { deleted: true };
+  }
+
+  async createPurchaseOrder(dto: CreatePurchaseOrderDto, userId: string) {
+    return this.prisma.$transaction(async (tx) => {
+      const number = await nextPONumber(tx);
+      const subtotal = dto.items.reduce((sum, item) => sum + (item.quantityOrdered * item.unitCost), 0);
+      const freightCost = dto.freightCost ?? 0;
+      const dutyCost = dto.dutyCost ?? 0;
+      const otherCost = dto.otherCost ?? 0;
+      const total = subtotal + freightCost + dutyCost + otherCost;
+
+      return tx.purchaseOrder.create({
+        data: {
+          number,
+          supplierId: dto.supplierId,
+          status: 'DRAFT',
+          subtotal,
+          freightCost,
+          dutyCost,
+          otherCost,
+          total,
+          expectedAt: dto.expectedAt ? new Date(dto.expectedAt) : null,
+          notes: dto.notes,
+          createdById: userId,
+          items: {
+            create: dto.items.map(item => ({
+              variantId: item.variantId,
+              quantityOrdered: item.quantityOrdered,
+              unitCost: item.unitCost,
+              lineTotal: item.quantityOrdered * item.unitCost,
+              note: item.note,
+            })),
+          },
+        },
+      });
+    });
+  }
+
+  async markPurchaseOrderSent(id: string) {
+    const po = await this.prisma.purchaseOrder.findUnique({ where: { id } });
+    if (!po) throw new NotFoundException('PO not found');
+    if (po.status !== 'DRAFT') throw new BadRequestException('PO must be in DRAFT status to be marked as sent');
+
+    return this.prisma.purchaseOrder.update({
+      where: { id },
+      data: { status: 'SENT', sentAt: new Date() },
+    });
+  }
+
+  async receiveGoods(poId: string, dto: ReceiveGoodsDto, userId: string) {
+    return this.prisma.$transaction(async (tx) => {
+      const po = await tx.purchaseOrder.findUnique({
+        where: { id: poId },
+        include: { items: true },
+      });
+
+      if (!po) throw new NotFoundException('PO not found');
+      if (po.status !== 'SENT' && po.status !== 'PARTIAL') {
+        throw new BadRequestException(`Cannot receive against PO in ${po.status} status`);
+      }
+
+      const toleranceRaw = await this.settingsService.get('purchasing.over_receipt_tolerance');
+      const tolerance = (toleranceRaw as number) || 0;
+
+      const itemsToReceive = dto.items.map(reqItem => {
+        const poLine = po.items.find(i => i.id === reqItem.purchaseOrderItemId);
+        if (!poLine) throw new BadRequestException(`PO Line ${reqItem.purchaseOrderItemId} not found in this PO`);
+        if (reqItem.quantity <= 0) throw new BadRequestException('Quantity must be greater than 0');
+
+        const newReceived = poLine.quantityReceived + reqItem.quantity;
+        const maxAllowed = poLine.quantityOrdered * (1 + tolerance);
+
+        if (newReceived > maxAllowed) {
+          throw new BadRequestException(`Over-receipt tolerance exceeded for variant ${poLine.variantId}`);
+        }
+        return { reqItem, poLine };
+      });
+
+      const grnNumber = await nextGRNNumber(tx);
+      const freightCost = dto.freightCost ?? 0;
+      const dutyCost = dto.dutyCost ?? 0;
+      const otherCost = dto.otherCost ?? 0;
+      const extraCost = freightCost + dutyCost + otherCost;
+
+      const linesInput = itemsToReceive.map(i => ({
+        quantity: i.reqItem.quantity,
+        unitCost: i.poLine.unitCost,
+      }));
+      const extraShares = allocateLandedCost(linesInput, extraCost);
+
+      const receiptItemsData = itemsToReceive.map((i, index) => {
+        const sharePerUnit = extraShares[index] / i.reqItem.quantity;
+        const landedUnitCost = i.poLine.unitCost + Math.round(sharePerUnit);
+        return {
+          purchaseOrderItemId: i.poLine.id,
+          variantId: i.poLine.variantId,
+          quantity: i.reqItem.quantity,
+          unitCost: i.poLine.unitCost,
+          landedUnitCost,
+        };
+      });
+
+      const receipt = await tx.goodsReceipt.create({
+        data: {
+          number: grnNumber,
+          purchaseOrderId: poId,
+          receivedById: userId,
+          notes: dto.notes,
+          freightCost,
+          dutyCost,
+          otherCost,
+          items: {
+            create: receiptItemsData,
+          },
+        },
+      });
+
+      const sortedItems = [...receiptItemsData].sort((a, b) => a.variantId.localeCompare(b.variantId));
+      
+      const movements = await this.inventoryService.moveMany(
+        sortedItems.map(item => ({
+          variantId: item.variantId,
+          delta: item.quantity,
+          reason: 'PURCHASE_RECEIPT',
+          refType: 'GoodsReceipt',
+          refId: receipt.id,
+          actorId: userId,
+        })),
+        tx,
+      );
+
+      for (const item of receiptItemsData) {
+        const movement = movements.find(m => m.variantId === item.variantId);
+        if (!movement) throw new Error('Missing movement');
+        const stockBefore = movement.resultingStock - item.quantity;
+        
+        const variant = await tx.productVariant.findUnique({ where: { id: item.variantId } });
+        if (!variant) throw new Error('Missing variant');
+
+        const newCost = weightedAverageCost(stockBefore, variant.costPrice, item.quantity, item.landedUnitCost);
+
+        await tx.productVariant.update({
+          where: { id: item.variantId },
+          data: {
+            costPrice: newCost,
+            lastReceivedAt: new Date(),
+          },
+        });
+      }
+
+      for (const item of receiptItemsData) {
+        await tx.purchaseOrderItem.update({
+          where: { id: item.purchaseOrderItemId },
+          data: {
+            quantityReceived: { increment: item.quantity },
+          },
+        });
+      }
+
+      const updatedPoItems = await tx.purchaseOrderItem.findMany({
+        where: { purchaseOrderId: poId },
+      });
+      const allReceived = updatedPoItems.every(i => i.quantityReceived >= i.quantityOrdered);
+      const newStatus = allReceived ? 'RECEIVED' : 'PARTIAL';
+
+      await tx.purchaseOrder.update({
+        where: { id: poId },
+        data: {
+          status: newStatus,
+          ...(newStatus === 'RECEIVED' ? { receivedAt: new Date() } : {}),
+        },
+      });
+
+      await tx.outboxEvent.create({
+        data: {
+          name: DomainEvent.GoodsReceived,
+          payload: {
+            goodsReceiptId: receipt.id,
+            number: receipt.number,
+            purchaseOrderId: poId,
+            supplierId: po.supplierId,
+          } as any,
+        }
+      });
+
+      return receipt;
+    });
   }
 }

@@ -444,6 +444,12 @@ describe('Orders (e2e)', () => {
         data: { stock: 1 },
       });
 
+      // The seed may already have sold this variant, so the invariant is the
+      // DELTA: exactly one SALE row may be written, no matter which request won.
+      const salesBefore = await prisma.stockMovement.count({
+        where: { variantId: variant.id, reason: 'SALE' },
+      });
+
       const agent1 = request.agent(app.getHttpServer());
       await agent1.post('/api/v1/cart/items').send({ variantId: variant.id, quantity: 1 }).expect(201);
       
@@ -465,9 +471,12 @@ describe('Orders (e2e)', () => {
       const failedResponse = responses.find((r) => r.status === 400);
       expect(String(failedResponse!.body.message)).toMatch(/sold out while you were checking out/i);
 
-      // We don't query sales here because it's not strictly needed for this invariant, 
-      // the exact [201, 400] check above is the real invariant check.
-      // but the exact [201, 400] check above is the real invariant check.
+      // The status codes prove one request was rejected. They do NOT prove the
+      // ledger stayed consistent — that is what this asserts.
+      const salesAfter = await prisma.stockMovement.count({
+        where: { variantId: variant.id, reason: 'SALE' },
+      });
+      expect(salesAfter - salesBefore).toBe(1);
 
       await prisma.productVariant.updateMany({
         where: { id: variant.id },

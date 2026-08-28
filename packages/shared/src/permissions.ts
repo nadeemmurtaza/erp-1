@@ -78,6 +78,7 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
   },
 
   { key: 'suppliers.manage', label: 'Manage suppliers', category: 'Purchasing' },
+  { key: 'purchasing.manage', label: 'Create and receive purchase orders', category: 'Purchasing' },
 
   {
     key: 'account.change_own_password',
@@ -134,6 +135,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'inventory.manage',
     'measurements.manage_blueprints',
     'suppliers.manage',
+    'purchasing.manage',
   ],
   ADMIN: [
     'account.change_own_password',
@@ -153,6 +155,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'inventory.view_cost',
     'measurements.manage_blueprints',
     'suppliers.manage',
+    'purchasing.manage',
     'settings.manage',
     'roles.manage_permissions',
     'audit.view',

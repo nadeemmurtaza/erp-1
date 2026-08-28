@@ -465,10 +465,8 @@ describe('Orders (e2e)', () => {
       const failedResponse = responses.find((r) => r.status === 400);
       expect(String(failedResponse!.body.message)).toMatch(/sold out while you were checking out/i);
 
-      const sales = await prisma.stockMovement.findMany({
-        where: { variantId: variant.id, reason: 'SALE' },
-      });
-      // The seed may have already sold this variant, so we just expect it to have increased by 1,
+      // We don't query sales here because it's not strictly needed for this invariant, 
+      // the exact [201, 400] check above is the real invariant check.
       // but the exact [201, 400] check above is the real invariant check.
 
       await prisma.productVariant.updateMany({

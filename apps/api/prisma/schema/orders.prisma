@@ -42,24 +42,24 @@ model Order {
   codFee            Int @default(0)
   grandTotal        Int
 
-  shippingZone   String?
-  customerNote   String?
-  staffNote      String?
-  cancelReason   String?
-  placedAt       DateTime  @default(now())
-  confirmedAt    DateTime?
-  deliveredAt    DateTime?
-  cancelledAt    DateTime?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  shippingZone String?
+  customerNote String?
+  staffNote    String?
+  cancelReason String?
+  placedAt     DateTime  @default(now())
+  confirmedAt  DateTime?
+  deliveredAt  DateTime?
+  cancelledAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 
-  user         User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
-  contact      Contact?           @relation(fields: [contactId], references: [id], onDelete: SetNull)
-  items        OrderItem[]
-  payments     Payment[]
-  shipments    Shipment[]
-  statusEvents OrderStatusEvent[]
-  convertedLeads Lead[]           @relation("LeadConvertedOrder")
+  user           User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+  contact        Contact?           @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  items          OrderItem[]
+  payments       Payment[]
+  shipments      Shipment[]
+  statusEvents   OrderStatusEvent[]
+  convertedLeads Lead[]             @relation("LeadConvertedOrder")
 
   @@index([status, placedAt])
   @@index([userId])
@@ -75,19 +75,19 @@ model OrderItem {
   productId String?
   variantId String?
 
-  kind      ProductKind
-  nameEn    String
-  nameUr    String?
-  sku       String?
-  imageUrl  String?
+  kind         ProductKind
+  nameEn       String
+  nameUr       String?
+  sku          String?
+  imageUrl     String?
   variantLabel String? // "Medium / Ferozi"
 
   /// Per-unit amounts in paisa.
   unitPrice        Int
-  unitCost         Int  @default(0)
-  quantity         Int  @default(1)
-  stitchingFeeUnit Int  @default(0)
-  discountUnit     Int  @default(0)
+  unitCost         Int @default(0)
+  quantity         Int @default(1)
+  stitchingFeeUnit Int @default(0)
+  discountUnit     Int @default(0)
   /// unitPrice*qty + stitchingFeeUnit*qty - discountUnit*qty
   lineTotal        Int
 
@@ -119,13 +119,13 @@ model OrderItem {
 }
 
 model OrderStatusEvent {
-  id        String      @id @default(cuid())
-  orderId   String
+  id         String       @id @default(cuid())
+  orderId    String
   fromStatus OrderStatus?
-  toStatus  OrderStatus
-  note      String?
-  actorId   String?
-  createdAt DateTime    @default(now())
+  toStatus   OrderStatus
+  note       String?
+  actorId    String?
+  createdAt  DateTime     @default(now())
 
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
   actor User? @relation(fields: [actorId], references: [id], onDelete: SetNull)

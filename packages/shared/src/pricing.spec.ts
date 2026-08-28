@@ -4,6 +4,8 @@ import {
   computeShippingFee,
   computeStitchingFee,
   lineMargin,
+  allocateLandedCost,
+  weightedAverageCost,
 } from './pricing';
 import { formatMoney, toMinor } from './constants';
 
@@ -149,7 +151,6 @@ describe('formatMoney', () => {
 
 describe('allocateLandedCost', () => {
   it('allocates freight proportionally and fixes rounding drift', () => {
-    const { allocateLandedCost } = require('./pricing');
     // 1000 across 333, 333, 334
     const lines = [
       { quantity: 1, unitCost: 333 },
@@ -162,7 +163,6 @@ describe('allocateLandedCost', () => {
   });
 
   it('allocates to highest quantity when value is zero', () => {
-    const { allocateLandedCost } = require('./pricing');
     const lines = [
       { quantity: 2, unitCost: 0 },
       { quantity: 5, unitCost: 0 },
@@ -175,18 +175,15 @@ describe('allocateLandedCost', () => {
 
 describe('weightedAverageCost', () => {
   it('returns landed cost on first receipt or when stock < 0', () => {
-    const { weightedAverageCost } = require('./pricing');
     expect(weightedAverageCost(0, 500, 10, 600)).toBe(600);
     expect(weightedAverageCost(-5, 500, 10, 600)).toBe(600);
   });
 
   it('returns landed cost when current cost is 0', () => {
-    const { weightedAverageCost } = require('./pricing');
     expect(weightedAverageCost(5, 0, 10, 600)).toBe(600);
   });
 
   it('averages properly', () => {
-    const { weightedAverageCost } = require('./pricing');
     // 10 @ 500 = 5000
     // 10 @ 700 = 7000
     // total = 12000 / 20 = 600

@@ -1,0 +1,70 @@
+import { Test } from '@nestjs/testing';
+import { PrismaService } from '../../core/prisma/prisma.service';
+import { InventoryService } from './inventory.service';
+import { StockCountService } from './stock-count.service';
+import { EventBusService } from '../../core/events/event-bus.service';
+import { AuditService } from '../../core/audit/audit.service';
+import { Prisma } from '../../core/prisma/client';
+
+describe('StockCountService', () => {
+  let service: StockCountService;
+  let inventory: InventoryService;
+  let prisma: PrismaService;
+  
+  beforeAll(async () => {
+    const module = await Test.createTestingModule({
+      providers: [
+        StockCountService,
+        InventoryService,
+        PrismaService,
+        { provide: EventBusService, useValue: { publish: jest.fn() } },
+        { provide: AuditService, useValue: { record: jest.fn() } },
+      ],
+    }).compile();
+
+    service = module.get(StockCountService);
+    inventory = module.get(InventoryService);
+    prisma = module.get(PrismaService);
+  });
+
+  it('mid-count sale applies variance to current stock, not expected stock', async () => {
+    // 1. Setup variant with 10 stock
+    let variant = await prisma.productVariant.findFirst({ where: { isActive: true } });
+    if (!variant) throw new Error('No variants seeded');
+
+    // Update stock to 10
+    await prisma.productVariant.update({ where: { id: variant.id }, data: { stock: 10 } });
+
+    const user = await prisma.user.findFirst();
+    if (!user) throw new Error('No users seeded');
+    
+    // 2. Start count
+    const count = await service.create({ note: 'Test' }, user.id);
+    await service.start(count.id);
+    
+    // 3. Verify expected is 10
+    const startedCount = await service.findOne(count.id);
+    const line = startedCount.lines.find(l => l.variantId === variant.id);
+    expect(line).toBeDefined();
+    expect(line!.expected).toBe(10);
+    
+    // 4. Mid-count sale reduces stock to 8
+    await inventory.move({ variantId: variant.id, delta: -2, reason: 'SALE' });
+    
+    // 5. Staff counts 10 on the shelf
+    await service.updateLine(count.id, variant.id, 10);
+    
+    // 6. Complete count
+    await service.complete(count.id, user.id);
+    
+    // 7. Verify final stock is 10
+    variant = await prisma.productVariant.findUniqueOrThrow({ where: { id: variant.id } });
+    expect(variant.stock).toBe(10);
+    
+    // 8. Verify the variance posted was +2
+    const movements = await inventory.history(variant.id);
+    const countMovement = movements.find(m => m.reason === 'COUNT' && m.refId === count.id);
+    expect(countMovement).toBeDefined();
+    expect(countMovement!.delta).toBe(2);
+  });
+});

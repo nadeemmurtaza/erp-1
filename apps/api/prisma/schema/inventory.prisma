@@ -42,3 +42,17 @@ model StockMovement {
   @@index([reason, createdAt])
   @@index([refType, refId])
 }
+
+/// CACHE: variantId as primary key. Safe to delete and recompute.
+model VariantSalesStat {
+  variantId   String    @id
+  units30     Int       @default(0)
+  units90     Int       @default(0)
+  lastSoldAt  DateTime?
+  daysOfCover Float?
+  ageDays     Int?
+  computedAt  DateTime  @default(now())
+
+  variant     ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+}
+

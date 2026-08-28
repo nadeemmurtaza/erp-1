@@ -59,3 +59,50 @@ model VariantSalesStat {
   variant     ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
 }
 
+enum StockCountStatus {
+  DRAFT
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model StockCount {
+  id          String           @id @default(cuid())
+  countNumber String           @unique
+  status      StockCountStatus @default(DRAFT)
+  note        String?
+
+  startedAt   DateTime?
+  completedAt DateTime?
+  cancelledAt DateTime?
+
+  createdBy   String?
+  assignedTo  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  lines       StockCountLine[]
+
+  creator     User? @relation("StockCountCreator", fields: [createdBy], references: [id], onDelete: SetNull)
+  assignee    User? @relation("StockCountAssignee", fields: [assignedTo], references: [id], onDelete: SetNull)
+
+  @@index([status])
+}
+
+model StockCountLine {
+  id           String     @id @default(cuid())
+  stockCountId String
+  variantId    String
+
+  expected     Int?
+  counted      Int?
+  note         String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  stockCount   StockCount     @relation(fields: [stockCountId], references: [id], onDelete: Cascade)
+  variant      ProductVariant @relation(fields: [variantId], references: [id], onDelete: Restrict)
+
+  @@unique([stockCountId, variantId])
+}

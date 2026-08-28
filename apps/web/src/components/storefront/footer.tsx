@@ -19,24 +19,24 @@ export function Footer() {
             <h3 className="text-xs font-semibold uppercase tracking-widest text-noir-500">{t('help')}</h3>
             <ul className="mt-6 space-y-3">
               <li>
-                <span className="text-sm text-noir-200 hover:text-white transition-colors cursor-default">
+                <Link className="text-sm text-noir-200 hover:text-white transition-colors block" href="/contact">
                   {t('contact')}
-                </span>
+                </Link>
               </li>
               <li>
-                <span className="text-sm text-noir-200 hover:text-white transition-colors cursor-default">
+                <Link className="text-sm text-noir-200 hover:text-white transition-colors block" href="/shipping">
                   {t('shipping')}
-                </span>
+                </Link>
               </li>
               <li>
-                <span className="text-sm text-noir-200 hover:text-white transition-colors cursor-default">
+                <Link className="text-sm text-noir-200 hover:text-white transition-colors block" href="/returns">
                   {t('returns')}
-                </span>
+                </Link>
               </li>
               <li>
-                <span className="text-sm text-noir-200 hover:text-white transition-colors cursor-default">
+                <Link className="text-sm text-noir-200 hover:text-white transition-colors block" href="/size-guide">
                   {t('sizeGuide')}
-                </span>
+                </Link>
               </li>
             </ul>
           </div>
@@ -45,12 +45,12 @@ export function Footer() {
             <h3 className="text-xs font-semibold uppercase tracking-widest text-noir-500">{t('about')}</h3>
             <ul className="mt-6 space-y-3">
               <li>
-                <span className="text-sm text-noir-200 hover:text-white transition-colors cursor-default">
+                <Link className="text-sm text-noir-200 hover:text-white transition-colors block" href="/story">
                   {t('story')}
-                </span>
+                </Link>
               </li>
               <li>
-                <Link className="text-sm text-noir-200 hover:text-white transition-colors" href="/shop?kind=STITCHING_SERVICE">
+                <Link className="text-sm text-noir-200 hover:text-white transition-colors block" href="/shop?kind=STITCHING_SERVICE">
                   {t('stitchingService')}
                 </Link>
               </li>
@@ -63,10 +63,18 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-noir-800 pt-8">
+        <div className="border-t border-noir-800 pt-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <p className="text-xs text-noir-500 tracking-wide">
             © {new Date().getFullYear()} {tSite('name')}. {t('rights')}
           </p>
+          <div className="flex gap-4">
+            <Link className="text-xs text-noir-500 hover:text-white transition-colors" href="/privacy">
+              {t('privacyPolicy')}
+            </Link>
+            <Link className="text-xs text-noir-500 hover:text-white transition-colors" href="/terms">
+              {t('termsConditions')}
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

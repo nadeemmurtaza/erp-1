@@ -1,0 +1,8 @@
+[Unit]
+Description=Prune old Docker images to prevent disk space exhaustion
+
+[Service]
+Type=oneshot
+# Prune images, containers, and networks not used in the last 168 hours (7 days).
+# This keeps the disk clean while leaving recent fallback images available for instant rollback.
+ExecStart=/usr/bin/docker system prune -af --filter "until=168h"

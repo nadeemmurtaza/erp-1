@@ -4,6 +4,7 @@ import type { Locale } from '@yaseen/shared';
 import { ProductCard } from '@/components/storefront/product-card';
 import { Link } from '@/i18n/navigation';
 import { getCategories, getProducts } from '@/lib/api';
+import { AnimatedSection } from '@/components/storefront/animated-section';
 
 export const revalidate = 300;
 
@@ -46,7 +47,7 @@ export default async function HomePage({
           <div
             className={`grid gap-8 lg:items-center lg:gap-16 ${heroImage ? 'lg:grid-cols-2' : ''}`}
           >
-            <div className="max-w-xl">
+            <AnimatedSection direction="up" className="max-w-xl">
               <h1 className="font-display text-4xl font-bold tracking-tight text-noir-900 sm:text-5xl lg:text-6xl">
                 {t('heroTitle')}
               </h1>
@@ -67,13 +68,13 @@ export default async function HomePage({
                   {t('shopReady')}
                 </Link>
               </div>
-            </div>
+            </AnimatedSection>
 
             {heroImage ? (
               // Landscape and compact on mobile so the banner doesn't push the
               // fold; a tall portrait crop once it sits beside the copy in the
               // two-column desktop layout — a real crop change, not a resize.
-              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl lg:aspect-[4/5] lg:rounded-3xl">
+              <AnimatedSection direction="left" delay={0.2} className="relative aspect-[4/3] overflow-hidden rounded-2xl lg:aspect-[4/5] lg:rounded-3xl">
                 <Image
                   src={heroImage.url}
                   alt={heroImage.alt ?? ''}
@@ -82,7 +83,7 @@ export default async function HomePage({
                   sizes="(min-width: 1024px) 45vw, 100vw"
                   className="object-cover"
                 />
-              </div>
+              </AnimatedSection>
             ) : null}
           </div>
         </div>
@@ -90,55 +91,61 @@ export default async function HomePage({
 
       {categories.length > 0 ? (
         <section className="container-page py-10 sm:py-12 lg:py-16">
-          <h2 className="font-display text-xl font-semibold text-noir-900">{t('categories')}</h2>
+          <AnimatedSection direction="up">
+            <h2 className="font-display text-xl font-semibold text-noir-900">{t('categories')}</h2>
+          </AnimatedSection>
 
           {/*
             Horizontal scroll-snap rail on mobile (one hand, one thumb); the
             same chips wrap into a static row once md: gives them room, so
             desktop never scrolls to see a category.
           */}
-          <ul className="mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] md:flex-wrap md:overflow-visible md:pb-0 [&::-webkit-scrollbar]:hidden">
-            <li className="shrink-0 snap-start">
-              <Link
-                href="/shop"
-                className="inline-flex h-11 items-center gap-2 rounded-full bg-noir-900 ps-3 pe-5 text-sm font-medium text-white transition-colors duration-200 hover:bg-noir-700"
-              >
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/15" aria-hidden="true">
-                  <AllCategoriesIcon />
-                </span>
-                {t('viewAll')}
-              </Link>
-            </li>
-
-            {categories.map((category) => (
-              <li key={category.id} className="shrink-0 snap-start">
+          <AnimatedSection direction="up" delay={0.1}>
+            <ul className="mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] md:flex-wrap md:overflow-visible md:pb-0 [&::-webkit-scrollbar]:hidden">
+              <li className="shrink-0 snap-start">
                 <Link
-                  href={`/shop?category=${category.slug}`}
-                  className="inline-flex h-11 items-center gap-2 rounded-full border border-noir-200 bg-white ps-2 pe-5 text-sm font-medium text-noir-700 transition-colors duration-200 hover:border-noir-900 hover:text-noir-900"
+                  href="/shop"
+                  className="inline-flex h-11 items-center gap-2 rounded-full bg-noir-900 ps-3 pe-5 text-sm font-medium text-white transition-colors duration-200 hover:bg-noir-700"
                 >
-                  <span className="relative flex h-7 w-7 shrink-0 overflow-hidden rounded-full bg-noir-100">
-                    {category.imageUrl ? (
-                      <Image src={category.imageUrl} alt="" fill sizes="28px" className="object-cover" />
-                    ) : null}
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/15" aria-hidden="true">
+                    <AllCategoriesIcon />
                   </span>
-                  {category.name}
+                  {t('viewAll')}
                 </Link>
               </li>
-            ))}
-          </ul>
+
+              {categories.map((category) => (
+                <li key={category.id} className="shrink-0 snap-start">
+                  <Link
+                    href={`/shop?category=${category.slug}`}
+                    className="inline-flex h-11 items-center gap-2 rounded-full border border-noir-200 bg-white ps-2 pe-5 text-sm font-medium text-noir-700 transition-colors duration-200 hover:border-noir-900 hover:text-noir-900"
+                  >
+                    <span className="relative flex h-7 w-7 shrink-0 overflow-hidden rounded-full bg-noir-100">
+                      {category.imageUrl ? (
+                        <Image src={category.imageUrl} alt="" fill sizes="28px" className="object-cover" />
+                      ) : null}
+                    </span>
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </AnimatedSection>
         </section>
       ) : null}
 
       <section className="container-page py-10 sm:py-12 lg:py-16">
-        <div className="mb-6 flex items-end justify-between gap-4 sm:mb-8">
-          <div>
-            <h2 className="font-display text-xl font-semibold text-noir-900">{t('featured')}</h2>
-            <p className="mt-1 text-sm text-noir-500">{t('featuredBody')}</p>
+        <AnimatedSection direction="up">
+          <div className="mb-6 flex items-end justify-between gap-4 sm:mb-8">
+            <div>
+              <h2 className="font-display text-xl font-semibold text-noir-900">{t('featured')}</h2>
+              <p className="mt-1 text-sm text-noir-500">{t('featuredBody')}</p>
+            </div>
+            <Link href="/shop" className="text-sm font-medium text-noir-900 underline-offset-4 hover:underline">
+              {t('viewAll')}
+            </Link>
           </div>
-          <Link href="/shop" className="text-sm font-medium text-noir-900 underline-offset-4 hover:underline">
-            {t('viewAll')}
-          </Link>
-        </div>
+        </AnimatedSection>
 
         {/*
           Same 2/3/4 cascade as the shop grid's default density (products-grid.tsx)
@@ -146,35 +153,40 @@ export default async function HomePage({
           3 from tablet, 4 from desktop — not the flat 2-then-4 jump this used to be.
         */}
         <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
-          {featured.data.slice(0, 4).map((product) => (
+          {featured.data.slice(0, 4).map((product, index) => (
             // All 4 cards can share one row at the widest step of the cascade
             // above (lg:grid-cols-4), so every one of them is a same-row,
             // above-the-fold image rather than just the first two.
-            <ProductCard
-              key={product.id}
-              product={product}
-              locale={locale as Locale}
-              priority
-              featured
-            />
+            <AnimatedSection key={product.id} direction="up" delay={index * 0.1}>
+              <ProductCard
+                product={product}
+                locale={locale as Locale}
+                priority
+                featured
+              />
+            </AnimatedSection>
           ))}
         </div>
       </section>
 
       <section className="border-y border-noir-200 bg-white">
         <div className="container-page py-10 sm:py-14 lg:py-16">
-          <h2 className="font-display text-xl font-semibold text-noir-900">{t('howItWorks')}</h2>
+          <AnimatedSection direction="up">
+            <h2 className="font-display text-xl font-semibold text-noir-900">{t('howItWorks')}</h2>
+          </AnimatedSection>
           <ol className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((step, index) => (
-              <li key={step.title} className="flex gap-4">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-noir-900 text-sm font-semibold text-white">
-                  {index + 1}
-                </span>
-                <div>
-                  <h3 className="text-sm font-medium text-noir-900">{step.title}</h3>
-                  <p className="mt-1 text-sm text-noir-500">{step.body}</p>
-                </div>
-              </li>
+              <AnimatedSection direction="up" delay={index * 0.15} key={step.title}>
+                <li className="flex gap-4">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-noir-900 text-sm font-semibold text-white">
+                    {index + 1}
+                  </span>
+                  <div>
+                    <h3 className="text-sm font-medium text-noir-900">{step.title}</h3>
+                    <p className="mt-1 text-sm text-noir-500">{step.body}</p>
+                  </div>
+                </li>
+              </AnimatedSection>
             ))}
           </ol>
         </div>

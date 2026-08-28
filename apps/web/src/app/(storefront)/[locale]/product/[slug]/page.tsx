@@ -136,6 +136,7 @@ export default async function ProductPage({ params }: PageProps) {
               locale={locale as Locale}
               services={services}
               fabricNeed={fabricNeed}
+              stitchingGarments={stitchingGarments}
             />
           </div>
 

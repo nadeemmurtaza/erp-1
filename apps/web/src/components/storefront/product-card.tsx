@@ -52,7 +52,7 @@ export function ProductCard({
   return (
     // `lift` is a transition, not a keyframe — so it eases back out on mouse-leave
     // instead of snapping, which is what an `animate-` class does.
-    <div className="group lift flex flex-col">
+    <div className="group lift flex flex-col rounded-2xl">
       {/*
         Its own hover group: the zoom, the image swap and the action overlay all
         belong to the photograph, while the lift belongs to the whole card.
@@ -217,7 +217,7 @@ export function ProductCard({
         </div>
       </div>
 
-      <Link href={`/product/${product.slug}`} className="flex flex-1 flex-col gap-1.5 pt-3">
+      <Link href={`/product/${product.slug}`} className="flex flex-1 flex-col gap-1.5 px-2 pb-4 pt-3">
         <h3 className="line-clamp-2 text-sm font-medium leading-snug text-noir-900 transition-colors duration-200 group-hover:text-noir-600">
           {product.name}
         </h3>

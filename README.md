@@ -154,3 +154,4 @@ packages/shared measurement rules, pricing maths, phone normalisation
 packages/config tsconfig and eslint presets
 scripts         module boundary check
 ```
+# Updated Tue Aug 25 18:59:43 CEST 2026

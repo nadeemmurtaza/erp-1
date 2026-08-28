@@ -21,6 +21,7 @@ import {
   TrackOrderDto,
 } from './dto/order.dto';
 import { OrdersService } from './orders.service';
+import { stripOrderCost, stripOrderListCost } from '../../core/common/cost-fields';
 
 @ApiTags('orders')
 @Controller('orders')
@@ -30,25 +31,34 @@ export class OrdersController {
   @Public()
   @Post()
   @ApiOperation({ summary: 'Place the order in the current cart' })
-  place(
+  async place(
     @Req() request: Request,
     @CurrentUser() user: AuthenticatedUser | undefined,
     @Body() dto: PlaceOrderDto,
     @Query('locale') locale?: string,
   ) {
-    return this.orders.place(cartToken(request), user?.id, dto, toLocale(locale));
+    // Cost is never exposed to customers -- strip unconditionally (requirePermission=false).
+    return stripOrderCost(
+      await this.orders.place(cartToken(request), user?.id, dto, toLocale(locale)),
+      user,
+      false,
+    );
   }
 
   @Get('mine')
   @ApiOperation({ summary: "The signed-in customer's orders" })
-  mine(@CurrentUser() user: AuthenticatedUser, @Query() query: OrderHistoryQueryDto) {
-    return this.orders.listForUser(user.id, query.page, query.pageSize);
+  async mine(@CurrentUser() user: AuthenticatedUser, @Query() query: OrderHistoryQueryDto) {
+    return stripOrderListCost(
+      await this.orders.listForUser(user.id, query.page, query.pageSize),
+      user,
+      false,
+    );
   }
 
   @Get(':number')
   @ApiOperation({ summary: 'One order, for its owner' })
-  get(@CurrentUser() user: AuthenticatedUser, @Param('number') number: string) {
-    return this.orders.findByNumber(number, user.id);
+  async get(@CurrentUser() user: AuthenticatedUser, @Param('number') number: string) {
+    return stripOrderCost(await this.orders.findByNumber(number, user.id), user, false);
   }
 
   @Public()
@@ -56,8 +66,12 @@ export class OrdersController {
   @ApiOperation({
     summary: 'Track a guest order with the phone number it was placed with',
   })
-  track(@Param('number') number: string, @Body() dto: TrackOrderDto) {
-    return this.orders.findByNumber(number, undefined, dto.phone);
+  async track(@Param('number') number: string, @Body() dto: TrackOrderDto) {
+    return stripOrderCost(
+      await this.orders.findByNumber(number, undefined, dto.phone),
+      undefined,
+      false,
+    );
   }
 }
 
@@ -69,30 +83,33 @@ export class OrdersAdminController {
 
   @Get()
   @ApiOperation({ summary: 'All orders, filterable by status' })
-  list(@Query() query: AdminOrderQueryDto) {
-    return this.orders.adminList({
-      page: query.page,
-      pageSize: query.pageSize,
-      skip: query.skip,
-      take: query.take,
-      q: query.q,
-      status: query.status,
-    });
+  async list(@CurrentUser() user: AuthenticatedUser, @Query() query: AdminOrderQueryDto) {
+    return stripOrderListCost(
+      await this.orders.adminList({
+        page: query.page,
+        pageSize: query.pageSize,
+        skip: query.skip,
+        take: query.take,
+        q: query.q,
+        status: query.status,
+      }),
+      user,
+    );
   }
 
   @Get(':id')
-  get(@Param('id') id: string) {
-    return this.orders.adminGet(id);
+  async get(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
+    return stripOrderCost(await this.orders.adminGet(id), user);
   }
 
   @Post(':id/status')
   @ApiOperation({ summary: 'Move the order along; cancelling restores stock' })
-  changeStatus(
+  async changeStatus(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') id: string,
     @Body() dto: ChangeOrderStatusDto,
   ) {
-    return this.orders.changeStatus(user.id, id, dto.status, dto.note);
+    return stripOrderCost(await this.orders.changeStatus(user.id, id, dto.status, dto.note), user);
   }
 
   @Post(':id/shipments')

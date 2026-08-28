@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { formatMoney } from '@yaseen/shared';
-import { adminFetch } from '@/lib/admin-client';
+import { adminFetch, getStoredUser } from '@/lib/admin-client';
 
 interface StitchingAnalytics {
   topGarments: Array<{ key: string; label: string; jobs: number; revenue: number }>;
@@ -23,6 +23,7 @@ interface ExtendedAnalytics {
 const RANGES = [7, 30, 90] as const;
 
 export default function AdminReportsPage() {
+  const user = getStoredUser();
   const [days, setDays] = useState<number>(30);
   const [stitching, setStitching] = useState<StitchingAnalytics | null>(null);
   const [extended, setExtended] = useState<ExtendedAnalytics | null>(null);
@@ -338,7 +339,7 @@ export default function AdminReportsPage() {
             {exporting === 'sales' ? 'Exporting…' : 'Export sales CSV'}
           </button>
 
-          <button
+                    <button
             type="button"
             disabled={exporting !== null}
             onClick={() =>
@@ -346,9 +347,56 @@ export default function AdminReportsPage() {
             }
             className="btn-secondary"
           >
-            {exporting === 'stock' ? 'Exporting…' : 'Export stock CSV'}
+            {exporting === 'stock' ? 'Exporting...' : 'Export stock CSV'}
           </button>
+
+          <button
+            type="button"
+            disabled={exporting !== null}
+            onClick={() =>
+              void downloadCsv('purchases-by-supplier', '/admin/reports/export/purchases-by-supplier', { from: isoDateDaysAgo(days), to: isoToday() }, 'yaseen-purchases-by-supplier.csv')
+            }
+            className="btn-secondary"
+          >
+            {exporting === 'purchases-by-supplier' ? 'Exporting...' : 'Export purchases by supplier CSV'}
+          </button>
+
+          <button
+            type="button"
+            disabled={exporting !== null}
+            onClick={() =>
+              void downloadCsv('stock-ledger', '/admin/reports/export/stock-ledger', { from: isoDateDaysAgo(days), to: isoToday() }, 'yaseen-stock-ledger.csv')
+            }
+            className="btn-secondary"
+          >
+            {exporting === 'stock-ledger' ? 'Exporting...' : 'Export stock ledger CSV'}
+          </button>
+
+          <button
+            type="button"
+            disabled={exporting !== null}
+            onClick={() =>
+              void downloadCsv('slow-movers', '/admin/reports/export/slow-movers', undefined, 'yaseen-slow-movers.csv')
+            }
+            className="btn-secondary"
+          >
+            {exporting === 'slow-movers' ? 'Exporting...' : 'Export slow movers CSV'}
+          </button>
+
+          {user?.permissions.includes('inventory.view_cost') && (
+            <button
+              type="button"
+              disabled={exporting !== null}
+              onClick={() =>
+                void downloadCsv('stock-valuation', '/admin/reports/export/stock-valuation', undefined, 'yaseen-stock-valuation.csv')
+              }
+              className="btn-secondary"
+            >
+              {exporting === 'stock-valuation' ? 'Exporting...' : 'Export stock valuation CSV'}
+            </button>
+          )}
         </div>
+
       </section>
     </>
   );
@@ -406,3 +454,7 @@ function isoDateDaysAgo(days: number): string {
 function isoToday(): string {
   return new Date().toISOString().slice(0, 10);
 }
+
+
+
+

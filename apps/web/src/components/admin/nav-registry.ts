@@ -1,5 +1,55 @@
 import type { PermissionKey } from '@yaseen/shared';
 
+import {
+  LayoutDashboard,
+  ShoppingCart,
+  Truck,
+  Package,
+  Boxes,
+  Scissors,
+  Users,
+  Megaphone,
+  Wallet,
+  BarChart3,
+  Settings,
+} from 'lucide-react';
+
+export const ICON_MAP = {
+  LayoutDashboard,
+  ShoppingCart,
+  Truck,
+  Package,
+  Boxes,
+  Scissors,
+  Users,
+  Megaphone,
+  Wallet,
+  BarChart3,
+  Settings,
+} as const;
+
+export interface AdminNavGroup {
+  key: AdminNavItem['group'];
+  label: string;
+  /** lucide-react icon name. */
+  icon: keyof typeof ICON_MAP;
+}
+
+/** Sidebar order is THIS ARRAY's order. Nothing else decides it. */
+export const NAV_GROUPS: readonly AdminNavGroup[] = [
+  { key: 'home',       label: 'Home',               icon: 'LayoutDashboard' },
+  { key: 'sales',      label: 'Sales',              icon: 'ShoppingCart' },
+  { key: 'fulfilment', label: 'Fulfilment',         icon: 'Truck' },
+  { key: 'catalogue',  label: 'Catalogue',          icon: 'Package' },
+  { key: 'inventory',  label: 'Inventory & Supply', icon: 'Boxes' },
+  { key: 'workshop',   label: 'Workshop',           icon: 'Scissors' },
+  { key: 'customers',  label: 'Customers',          icon: 'Users' },
+  { key: 'marketing',  label: 'Marketing',          icon: 'Megaphone' },
+  { key: 'finance',    label: 'Finance',            icon: 'Wallet' },
+  { key: 'insights',   label: 'Insights',           icon: 'BarChart3' },
+  { key: 'settings',   label: 'Settings',           icon: 'Settings' },
+] as const;
+
 export interface AdminNavItem {
   /** Stable key, matching the API module that owns the section. */
   key: string;
@@ -7,7 +57,13 @@ export interface AdminNavItem {
   href: string;
   /** Permissions that unlock this entry — any one is enough. Omit for everyone signed in. */
   permissions?: readonly PermissionKey[];
-  group: 'overview' | 'catalogue' | 'sales' | 'production' | 'people' | 'settings';
+  group: 'home' | 'sales' | 'fulfilment' | 'catalogue' | 'inventory' | 'workshop' | 'customers' | 'marketing' | 'finance' | 'insights' | 'settings';
+  /** lucide-react icon name. */
+  icon?: string;
+  /** One level of nesting. Do not nest deeper. */
+  children?: readonly AdminNavItem[];
+  /** API module that owns this. Hidden when the module is off in MODULES. */
+  module?: string;
 }
 
 /**
@@ -23,32 +79,32 @@ export interface AdminNavItem {
  * /admin/settings, not something this file encodes.
  */
 export const ADMIN_NAV: AdminNavItem[] = [
-  // Group 1: Overview
+  // Group 1: Home
   {
     key: 'dashboard',
     label: 'Dashboard',
     href: '/admin',
     permissions: ['analytics.view'],
-    group: 'overview',
+    group: 'home',
   },
 
-  // Group 2: Customer Lifecycle (follows conversion funnel: Enquiries/Leads → Customers)
+  // Group: Customers
   {
     key: 'leads',
     label: 'Enquiries',
     href: '/admin/leads',
     permissions: ['crm.manage'],
-    group: 'people',
+    group: 'customers',
   },
   {
     key: 'contacts',
     label: 'Customers',
     href: '/admin/contacts',
     permissions: ['crm.manage'],
-    group: 'people',
+    group: 'customers',
   },
 
-  // Group 3: Sales Operations (follows order processing sequence)
+  // Group: Sales
   {
     key: 'orders',
     label: 'Orders',
@@ -63,31 +119,33 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['payments.approve'],
     group: 'sales',
   },
+  
+  // Group: Insights
   {
     key: 'reports',
     label: 'Reports',
     href: '/admin/reports',
     permissions: ['reports.view'],
-    group: 'sales',
+    group: 'insights',
   },
 
-  // Group 4: Production/Workshop (Tailors see ONLY this + Dashboard redirect)
+  // Group: Workshop
   {
     key: 'stitching',
     label: 'Tailor queue',
     href: '/admin/stitching',
     permissions: ['stitching.jobs.view_queue'],
-    group: 'production',
+    group: 'workshop',
   },
   {
     key: 'stitching-bookings',
     label: 'Stitching bookings',
     href: '/admin/stitching/bookings',
     permissions: ['stitching.bookings.manage'],
-    group: 'production',
+    group: 'workshop',
   },
 
-  // Group 5: Catalogue & Data (elevated Bulk Import for data entry workflow)
+  // Group: Catalogue
   {
     key: 'import',
     label: 'Bulk import',
@@ -100,13 +158,6 @@ export const ADMIN_NAV: AdminNavItem[] = [
     label: 'Products & services',
     href: '/admin/products',
     permissions: ['catalog.manage'],
-    group: 'catalogue',
-  },
-  {
-    key: 'inventory',
-    label: 'Inventory',
-    href: '/admin/inventory',
-    permissions: ['inventory.manage'],
     group: 'catalogue',
   },
   {
@@ -131,7 +182,22 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'catalogue',
   },
 
-  // Group 6: Settings
+  // Group: Inventory
+  {
+    key: 'inventory',
+    label: 'Inventory',
+    href: '/admin/inventory',
+    permissions: ['inventory.manage'],
+    group: 'inventory',
+  },
+  // {
+  //   key: 'purchasing',
+  //   label: 'Purchasing',
+  //   href: '/admin/purchasing',
+  //   group: 'inventory',
+  // },
+
+  // Group: Settings
   {
     key: 'users',
     label: 'Team & Access',
@@ -157,15 +223,6 @@ export const ADMIN_NAV: AdminNavItem[] = [
 export function landingFor(permissions: readonly string[]): string {
   return permissions.includes('analytics.view') ? '/admin' : '/admin/stitching';
 }
-
-export const NAV_GROUP_LABELS: Record<AdminNavItem['group'], string> = {
-  overview: 'Overview',
-  people: 'Customer Lifecycle',
-  sales: 'Sales Operations',
-  production: 'Workshop',
-  catalogue: 'Catalogue & Data',
-  settings: 'Settings',
-};
 
 export function navFor(permissions: readonly string[]): AdminNavItem[] {
   return ADMIN_NAV.filter(

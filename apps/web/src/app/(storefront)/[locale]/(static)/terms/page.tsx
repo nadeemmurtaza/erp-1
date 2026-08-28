@@ -24,7 +24,7 @@ export default async function TermsPage({
       <p>All prices are listed in Pakistani Rupees (PKR). While we strive for accuracy, errors in pricing or availability may occasionally occur. We reserve the right to cancel any order if an item is mispriced or out of stock, in which case a full refund will be provided.</p>
 
       <h2>Tailoring and Measurements</h2>
-      <p>For bespoke tailoring, it is the customer's responsibility to provide accurate measurements. We will stitch the garment exactly to the measurements provided. We are not liable for fitting issues arising from incorrect measurements supplied by the customer.</p>
+      <p>For bespoke tailoring, it is the customer&apos;s responsibility to provide accurate measurements. We will stitch the garment exactly to the measurements provided. We are not liable for fitting issues arising from incorrect measurements supplied by the customer.</p>
 
       <h2>Delivery</h2>
       <p>We make every effort to deliver your order within the estimated timeframes (3-5 days for unstitched, 10-14 days for stitched). However, delays caused by courier services or unforeseen circumstances are beyond our control.</p>

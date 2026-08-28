@@ -277,7 +277,12 @@ export class AnalyticsService {
                COALESCE(SUM((elem->>'priceDelta')::int * oi."quantity"), 0) AS revenue
         FROM "OrderItem" oi
         JOIN "Order" o ON o.id = oi."orderId"
-        CROSS JOIN LATERAL jsonb_array_elements(oi."optionsSnapshot") AS elem
+        CROSS JOIN LATERAL jsonb_array_elements(
+            CASE 
+              WHEN jsonb_typeof(oi."optionsSnapshot") = 'array' THEN oi."optionsSnapshot"
+              ELSE '[]'::jsonb
+            END
+          ) AS elem
         WHERE o."placedAt" >= ${start}
           AND o."status" NOT IN ('CANCELLED', 'RETURNED')
           AND COALESCE((elem->>'custom')::boolean, false) = false

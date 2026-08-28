@@ -17,6 +17,8 @@ export class InventoryCron {
   async computeNightlyStats() {
     this.logger.log('Starting nightly inventory computation');
 
+    const slowMoverDays = await this.settings.get<number>(SettingKey.InventorySlowMoverDays);
+    const deadStockDays = await this.settings.get<number>(SettingKey.InventoryDeadStockDays);
     const autoDraft = await this.settings.get<boolean>(SettingKey.PurchasingAutoDraftReorder);
 
     const variants = await this.prisma.productVariant.findMany({
@@ -44,7 +46,6 @@ export class InventoryCron {
         where: {
           variantId: variant.id,
           reason: 'SALE',
-          createdAt: { gte: ninetyDaysAgo }
         },
         select: { delta: true, createdAt: true }
       });
@@ -54,9 +55,10 @@ export class InventoryCron {
       let lastSoldAt: Date | null = null;
 
       for (const sale of sales) {
-        // Delta is negative for sales
         const qty = -sale.delta;
-        units90 += qty;
+        if (sale.createdAt >= ninetyDaysAgo) {
+          units90 += qty;
+        }
         if (sale.createdAt >= thirtyDaysAgo) {
           units30 += qty;
         }
@@ -67,7 +69,30 @@ export class InventoryCron {
 
       const velocityPerDay = units30 / 30;
       const daysOfCover = velocityPerDay > 0 ? variant.stock / velocityPerDay : null;
-      const ageDays = Math.floor((now.getTime() - variant.createdAt.getTime()) / (24 * 60 * 60 * 1000));
+
+      const lastReceipt = await this.prisma.stockMovement.findFirst({
+        where: { variantId: variant.id, reason: 'PURCHASE_RECEIPT' },
+        orderBy: { createdAt: 'desc' }
+      });
+      
+      const ageDays = lastReceipt 
+        ? Math.floor((now.getTime() - lastReceipt.createdAt.getTime()) / (24 * 60 * 60 * 1000))
+        : null;
+
+      const daysSinceLastSale = lastSoldAt 
+        ? Math.floor((now.getTime() - lastSoldAt.getTime()) / (24 * 60 * 60 * 1000))
+        : (ageDays ?? 0);
+
+      let isSlowMover = false;
+      let isDeadStock = false;
+
+      if (variant.stock > 0) {
+        if (daysSinceLastSale >= deadStockDays) {
+          isDeadStock = true;
+        } else if (daysSinceLastSale >= slowMoverDays) {
+          isSlowMover = true;
+        }
+      }
 
       await this.prisma.variantSalesStat.upsert({
         where: { variantId: variant.id },
@@ -78,6 +103,8 @@ export class InventoryCron {
           lastSoldAt,
           daysOfCover,
           ageDays,
+          isSlowMover,
+          isDeadStock,
           computedAt: now
         },
         update: {
@@ -86,6 +113,8 @@ export class InventoryCron {
           lastSoldAt,
           daysOfCover,
           ageDays,
+          isSlowMover,
+          isDeadStock,
           computedAt: now
         }
       });

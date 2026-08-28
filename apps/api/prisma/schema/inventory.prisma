@@ -48,10 +48,13 @@ model VariantSalesStat {
   variantId   String    @id
   units30     Int       @default(0)
   units90     Int       @default(0)
-  lastSoldAt  DateTime?
-  daysOfCover Float?
-  ageDays     Int?
-  computedAt  DateTime  @default(now())
+  lastSoldAt          DateTime?
+  daysOfCover         Float?
+  ageDays             Int?
+  isSlowMover         Boolean   @default(false)
+  isDeadStock         Boolean   @default(false)
+  lastLowStockAlertAt DateTime?
+  computedAt          DateTime  @default(now())
 
   variant     ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
 }

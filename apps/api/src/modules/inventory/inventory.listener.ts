@@ -1,32 +1,50 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { OnEvent } from '@nestjs/event-emitter';
+import { OnDomainEvent } from '../../core/events/on-domain-event.decorator';
 import { DomainEvent, ProductLowStockPayload } from '../../core/events/domain-events';
 import { NotificationsService } from '../../core/notifications/notifications.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey, StoreSettings } from '../../core/settings/settings.defaults';
+import { PrismaService } from '../../core/prisma/prisma.service';
 
 @Injectable()
 export class InventoryListener {
   private readonly logger = new Logger(InventoryListener.name);
-  // Simple in-memory debounce: variantId -> timestamp
-  private lastNotified = new Map<string, number>();
 
   constructor(
     private readonly notifications: NotificationsService,
     private readonly settings: SettingsService,
+    private readonly prisma: PrismaService,
   ) {}
 
-  @OnEvent(DomainEvent.ProductLowStock, { async: true })
+  @OnDomainEvent(DomainEvent.ProductLowStock)
   async handleLowStock(payload: ProductLowStockPayload) {
-    const now = Date.now();
-    const last = this.lastNotified.get(payload.variantId) || 0;
+    const now = new Date();
     const ONE_DAY = 24 * 60 * 60 * 1000;
 
-    if (now - last < ONE_DAY) {
-      return; // Debounced
+    // Check debounce using VariantSalesStat
+    const stat = await this.prisma.variantSalesStat.findUnique({
+      where: { variantId: payload.variantId }
+    });
+
+    if (stat && stat.lastLowStockAlertAt) {
+      const timeSinceLastAlert = now.getTime() - stat.lastLowStockAlertAt.getTime();
+      if (timeSinceLastAlert < ONE_DAY) {
+        return; // Debounced
+      }
     }
 
-    this.lastNotified.set(payload.variantId, now);
+    // Persist new alert time
+    await this.prisma.variantSalesStat.upsert({
+      where: { variantId: payload.variantId },
+      create: {
+        variantId: payload.variantId,
+        lastLowStockAlertAt: now,
+      },
+      update: {
+        lastLowStockAlertAt: now,
+      }
+    });
+
     this.logger.log(`Low stock alert triggered for variant ${payload.variantId}`);
 
     const store = await this.settings.get<StoreSettings>(SettingKey.Store);

@@ -77,6 +77,8 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     category: 'Catalogue',
   },
 
+  { key: 'suppliers.manage', label: 'Manage suppliers', category: 'Purchasing' },
+
   {
     key: 'account.change_own_password',
     label: 'Change their own password',
@@ -131,6 +133,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'catalog.manage',
     'inventory.manage',
     'measurements.manage_blueprints',
+    'suppliers.manage',
   ],
   ADMIN: [
     'account.change_own_password',
@@ -149,6 +152,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'inventory.manage',
     'inventory.view_cost',
     'measurements.manage_blueprints',
+    'suppliers.manage',
     'settings.manage',
     'roles.manage_permissions',
     'audit.view',

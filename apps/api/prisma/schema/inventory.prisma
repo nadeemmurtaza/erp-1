@@ -3,33 +3,33 @@
 // ledger replays to the live number and "why is stock 4" always has an answer.
 
 enum StockMovementReason {
-  PURCHASE_RECEIPT   // goods received against a purchase order
-  SALE               // order placed
-  CANCELLATION       // order cancelled, stock returned to the shelf
-  RETURN             // customer returned goods
-  ADJUSTMENT         // manual correction by staff
-  DAMAGE             // written off as damaged
-  COUNT              // variance posted by a stock count
-  WRITE_OFF          // lost, stolen, expired
+  PURCHASE_RECEIPT // goods received against a purchase order
+  SALE // order placed
+  CANCELLATION // order cancelled, stock returned to the shelf
+  RETURN // customer returned goods
+  ADJUSTMENT // manual correction by staff
+  DAMAGE // written off as damaged
+  COUNT // variance posted by a stock count
+  WRITE_OFF // lost, stolen, expired
 }
 
 model StockMovement {
-  id        String              @id @default(cuid())
-  variantId String
+  id             String              @id @default(cuid())
+  variantId      String
   /// Positive = stock in, negative = stock out. NEVER zero.
-  delta     Int
+  delta          Int
   /// Stock level AFTER this movement, so history reads without replaying deltas.
   resultingStock Int
-  reason    StockMovementReason
+  reason         StockMovementReason
 
   /// What caused it: "Order" | "GoodsReceipt" | "StockCount" | null for manual.
-  refType   String?
-  refId     String?
+  refType String?
+  refId   String?
 
   /// Unit cost in paisa at the moment of the movement. Set on PURCHASE_RECEIPT
   /// (what we paid) and on SALE (what it cost us - the COGS figure). Null for a
   /// movement where cost is not meaningful.
-  unitCost  Int?
+  unitCost Int?
 
   note      String?
   actorId   String?

@@ -66,3 +66,35 @@ export class PurchasingController {
     return this.purchasing.removeProduct(id, variantId);
   }
 }
+
+
+import { CurrentUser } from '../../core/auth/decorators';
+import { CreatePurchaseOrderDto, ReceiveGoodsDto } from './dto/purchase-order.dto';
+
+@ApiTags('Purchase Orders')
+@Controller('admin/purchase-orders')
+export class PurchaseOrderAdminController {
+  constructor(private readonly purchasing: PurchasingService) {}
+
+  @Post()
+  @RequirePermission('purchasing.manage')
+  @ApiOperation({ summary: 'Create a purchase order' })
+  async create(@Body() dto: CreatePurchaseOrderDto, @CurrentUser('id') userId: string) {
+    return this.purchasing.createPurchaseOrder(dto, userId);
+  }
+
+  @Post(':id/send')
+  @RequirePermission('purchasing.manage')
+  @ApiOperation({ summary: 'Mark a purchase order as sent' })
+  async markSent(@Param('id') id: string) {
+    return this.purchasing.markPurchaseOrderSent(id);
+  }
+
+  @Post(':id/receive')
+  @RequirePermission('purchasing.manage')
+  @ApiOperation({ summary: 'Receive goods against a purchase order' })
+  async receiveGoods(@Param('id') id: string, @Body() dto: ReceiveGoodsDto, @CurrentUser('id') userId: string) {
+    return this.purchasing.receiveGoods(id, dto, userId);
+  }
+}
+

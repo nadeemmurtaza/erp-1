@@ -27,6 +27,7 @@ export const DomainEvent = {
   UserRegistered: 'user.registered',
 
   ProductLowStock: 'catalog.product_low_stock',
+  GoodsReceived: 'purchasing.goods_received',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -98,6 +99,13 @@ export interface ProductLowStockPayload {
   threshold: number;
 }
 
+export interface GoodsReceivedPayload {
+  goodsReceiptId: string;
+  number: string;
+  purchaseOrderId: string;
+  supplierId: string;
+}
+
 export interface DomainEventPayloads {
   [DomainEvent.OrderPlaced]: OrderPlacedPayload;
   [DomainEvent.OrderStatusChanged]: OrderStatusChangedPayload;
@@ -112,4 +120,5 @@ export interface DomainEventPayloads {
   [DomainEvent.LeadCreated]: LeadCreatedPayload;
   [DomainEvent.UserRegistered]: UserRegisteredPayload;
   [DomainEvent.ProductLowStock]: ProductLowStockPayload;
+  [DomainEvent.GoodsReceived]: GoodsReceivedPayload;
 }

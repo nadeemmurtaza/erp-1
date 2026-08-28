@@ -21,28 +21,30 @@ model User {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
-  addresses           Address[]
-  refreshTokens       RefreshToken[]
-  measurementProfiles MeasurementProfile[]
-  carts               Cart[]
-  orders              Order[]
-  stitchingOrders     StitchingOrder[]
-  tailorProfile       TailorProfile?
-  assignedJobs        StitchingJob[]       @relation("JobTailor")
-  jobEvents           StitchingJobEvent[]
-  orderStatusEvents   OrderStatusEvent[]
-  auditLogs           AuditLog[]
-  contact             Contact?             @relation("ContactUser")
-  ownedContacts       Contact[]            @relation("ContactOwner")
-  ownedLeads          Lead[]               @relation("LeadOwner")
-  interactions        Interaction[]
-  assignedFollowUps   FollowUpTask[]       @relation("FollowUpAssignee")
-  approvedPayments    Payment[]            @relation("PaymentApprover")
-  segments            Segment[]
-  devices             DeviceToken[]
-  stockAdjustments    StockAdjustment[]
-  stockMovements      StockMovement[]      @relation("StockMovementActor")
-  permissionOverrides UserPermission[]
+  addresses             Address[]
+  refreshTokens         RefreshToken[]
+  measurementProfiles   MeasurementProfile[]
+  carts                 Cart[]
+  orders                Order[]
+  stitchingOrders       StitchingOrder[]
+  tailorProfile         TailorProfile?
+  assignedJobs          StitchingJob[]       @relation("JobTailor")
+  jobEvents             StitchingJobEvent[]
+  orderStatusEvents     OrderStatusEvent[]
+  auditLogs             AuditLog[]
+  contact               Contact?             @relation("ContactUser")
+  ownedContacts         Contact[]            @relation("ContactOwner")
+  ownedLeads            Lead[]               @relation("LeadOwner")
+  interactions          Interaction[]
+  assignedFollowUps     FollowUpTask[]       @relation("FollowUpAssignee")
+  approvedPayments      Payment[]            @relation("PaymentApprover")
+  segments              Segment[]
+  devices               DeviceToken[]
+  stockAdjustments      StockAdjustment[]
+  stockMovements        StockMovement[]      @relation("StockMovementActor")
+  permissionOverrides   UserPermission[]
+  purchaseOrdersCreated PurchaseOrder[]      @relation("PurchaseOrderCreator")
+  goodsReceiptsReceived GoodsReceipt[]       @relation("GoodsReceiptReceiver")
 
   @@index([role])
   @@index([createdAt])

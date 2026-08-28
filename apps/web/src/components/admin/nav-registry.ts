@@ -258,5 +258,11 @@ export function landingFor(permissions: readonly string[]): string {
 export function navFor(permissions: readonly string[]): AdminNavItem[] {
   return ADMIN_NAV.filter(
     (item) => !item.permissions || item.permissions.some((key) => permissions.includes(key)),
-  );
+  ).map(item => {
+    if (!item.children) return item;
+    const filteredChildren = item.children.filter(
+      (child) => !child.permissions || child.permissions.some((key) => permissions.includes(key)),
+    );
+    return { ...item, children: filteredChildren };
+  });
 }

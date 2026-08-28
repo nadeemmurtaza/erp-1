@@ -25,6 +25,7 @@ import { UpsertCategoryDto } from './dto/category.dto';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { ProductAdminService } from './product-admin.service';
 import { ProductImportService } from './product-import.service';
+import { stripProductCost, stripProductListCost } from '../../core/common/cost-fields';
 
 class ReorderImagesDto {
   @IsArray()
@@ -70,38 +71,18 @@ export class CatalogAdminController {
     @CurrentUser() user: AuthenticatedUser,
     @Query() query: AdminProductQueryDto,
   ) {
-    const result = await this.products.list(query);
-    if (!user.permissions.includes('inventory.view_cost')) {
-      for (const product of result.data) {
-        for (const variant of product.variants) {
-          delete (variant as any).costPrice;
-        }
-      }
-    }
-    return result;
+    return stripProductListCost(await this.products.list(query), user);
   }
 
   @Get('products/:id')
   async getProduct(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
-    const product = await this.products.get(id);
-    if (!user.permissions.includes('inventory.view_cost')) {
-      for (const variant of product.variants) {
-        delete (variant as any).costPrice;
-      }
-    }
-    return product;
+    return stripProductCost(await this.products.get(id), user);
   }
 
   @Post('products')
   @ApiOperation({ summary: 'Add a product, fabric or stitching service' })
   async createProduct(@CurrentUser() user: AuthenticatedUser, @Body() dto: CreateProductDto) {
-    const product = await this.products.create(user.id, dto);
-    if (!user.permissions.includes('inventory.view_cost')) {
-      for (const variant of product.variants) {
-        delete (variant as any).costPrice;
-      }
-    }
-    return product;
+    return stripProductCost(await this.products.create(user.id, dto), user);
   }
 
   @Patch('products/:id')
@@ -110,25 +91,13 @@ export class CatalogAdminController {
     @Param('id') id: string,
     @Body() dto: UpdateProductDto,
   ) {
-    const product = await this.products.update(user.id, id, dto);
-    if (!user.permissions.includes('inventory.view_cost')) {
-      for (const variant of product.variants) {
-        delete (variant as any).costPrice;
-      }
-    }
-    return product;
+    return stripProductCost(await this.products.update(user.id, id, dto), user);
   }
 
   @Delete('products/:id')
   @ApiOperation({ summary: 'Archive a product (never hard-deleted — orders cite it)' })
   async archiveProduct(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
-    const product = await this.products.archive(user.id, id);
-    if (!user.permissions.includes('inventory.view_cost')) {
-      for (const variant of product.variants) {
-        delete (variant as any).costPrice;
-      }
-    }
-    return product;
+    return stripProductCost(await this.products.archive(user.id, id), user);
   }
 
   // --- Images ---------------------------------------------------------------

@@ -21,6 +21,7 @@ import {
   TrackOrderDto,
 } from './dto/order.dto';
 import { OrdersService } from './orders.service';
+import { stripOrderCost, stripOrderListCost } from '../../core/common/cost-fields';
 
 @ApiTags('orders')
 @Controller('orders')
@@ -36,33 +37,28 @@ export class OrdersController {
     @Body() dto: PlaceOrderDto,
     @Query('locale') locale?: string,
   ) {
-    const order = await this.orders.place(cartToken(request), user?.id, dto, toLocale(locale));
-    for (const item of order.items) {
-      delete (item as any).unitCost;
-    }
-    return order;
+    // Cost is never exposed to customers -- strip unconditionally (requirePermission=false).
+    return stripOrderCost(
+      await this.orders.place(cartToken(request), user?.id, dto, toLocale(locale)),
+      user,
+      false,
+    );
   }
 
   @Get('mine')
   @ApiOperation({ summary: "The signed-in customer's orders" })
   async mine(@CurrentUser() user: AuthenticatedUser, @Query() query: OrderHistoryQueryDto) {
-    const result = await this.orders.listForUser(user.id, query.page, query.pageSize);
-    for (const order of result.data) {
-      for (const item of order.items) {
-        delete (item as any).unitCost;
-      }
-    }
-    return result;
+    return stripOrderListCost(
+      await this.orders.listForUser(user.id, query.page, query.pageSize),
+      user,
+      false,
+    );
   }
 
   @Get(':number')
   @ApiOperation({ summary: 'One order, for its owner' })
   async get(@CurrentUser() user: AuthenticatedUser, @Param('number') number: string) {
-    const order = await this.orders.findByNumber(number, user.id);
-    for (const item of order.items) {
-      delete (item as any).unitCost;
-    }
-    return order;
+    return stripOrderCost(await this.orders.findByNumber(number, user.id), user, false);
   }
 
   @Public()
@@ -71,11 +67,11 @@ export class OrdersController {
     summary: 'Track a guest order with the phone number it was placed with',
   })
   async track(@Param('number') number: string, @Body() dto: TrackOrderDto) {
-    const order = await this.orders.findByNumber(number, undefined, dto.phone);
-    for (const item of order.items) {
-      delete (item as any).unitCost;
-    }
-    return order;
+    return stripOrderCost(
+      await this.orders.findByNumber(number, undefined, dto.phone),
+      undefined,
+      false,
+    );
   }
 }
 
@@ -88,34 +84,22 @@ export class OrdersAdminController {
   @Get()
   @ApiOperation({ summary: 'All orders, filterable by status' })
   async list(@CurrentUser() user: AuthenticatedUser, @Query() query: AdminOrderQueryDto) {
-    const result = await this.orders.adminList({
-      page: query.page,
-      pageSize: query.pageSize,
-      skip: query.skip,
-      take: query.take,
-      q: query.q,
-      status: query.status,
-    });
-
-    if (!user.permissions.includes('inventory.view_cost')) {
-      for (const order of result.data) {
-        for (const item of order.items) {
-          delete (item as any).unitCost;
-        }
-      }
-    }
-    return result;
+    return stripOrderListCost(
+      await this.orders.adminList({
+        page: query.page,
+        pageSize: query.pageSize,
+        skip: query.skip,
+        take: query.take,
+        q: query.q,
+        status: query.status,
+      }),
+      user,
+    );
   }
 
   @Get(':id')
   async get(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
-    const order = await this.orders.adminGet(id);
-    if (!user.permissions.includes('inventory.view_cost')) {
-      for (const item of order.items) {
-        delete (item as any).unitCost;
-      }
-    }
-    return order;
+    return stripOrderCost(await this.orders.adminGet(id), user);
   }
 
   @Post(':id/status')
@@ -125,13 +109,7 @@ export class OrdersAdminController {
     @Param('id') id: string,
     @Body() dto: ChangeOrderStatusDto,
   ) {
-    const order = await this.orders.changeStatus(user.id, id, dto.status, dto.note);
-    if (!user.permissions.includes('inventory.view_cost')) {
-      for (const item of order.items) {
-        delete (item as any).unitCost;
-      }
-    }
-    return order;
+    return stripOrderCost(await this.orders.changeStatus(user.id, id, dto.status, dto.note), user);
   }
 
   @Post(':id/shipments')

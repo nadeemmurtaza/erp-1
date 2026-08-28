@@ -1,11 +1,12 @@
-import { Controller, Get, Post, Param, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { StockCountService } from './stock-count.service';
-import { JwtAuthGuard } from '../../core/auth/jwt-auth.guard';
-import { RequirePermission } from '../../core/auth/permissions.decorator';
-import { CurrentUser } from '../../core/auth/current-user.decorator';
+// JwtAuthGuard is registered globally (see core/auth/decorators.ts), so a
+// controller only names the capability it needs.
+import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
 
+@ApiTags('admin/inventory/counts')
 @Controller('admin/inventory/counts')
-@UseGuards(JwtAuthGuard)
 export class StockCountController {
   constructor(private readonly service: StockCountService) {}
 
@@ -19,7 +20,7 @@ export class StockCountController {
   @RequirePermission('inventory.count')
   async create(
     @Body() dto: { note?: string; assignedTo?: string },
-    @CurrentUser('userId') userId: string,
+    @CurrentUser('id') userId: string,
   ) {
     return this.service.create(dto, userId);
   }
@@ -54,7 +55,7 @@ export class StockCountController {
 
   @Post(':id/complete')
   @RequirePermission('inventory.count')
-  async complete(@Param('id') id: string, @CurrentUser('userId') userId: string) {
+  async complete(@Param('id') id: string, @CurrentUser('id') userId: string) {
     return this.service.complete(id, userId);
   }
 }

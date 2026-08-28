@@ -4,7 +4,6 @@ import { InventoryService } from './inventory.service';
 import { StockCountService } from './stock-count.service';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { AuditService } from '../../core/audit/audit.service';
-import { Prisma } from '../../core/prisma/client';
 
 describe('StockCountService', () => {
   let service: StockCountService;
@@ -29,8 +28,12 @@ describe('StockCountService', () => {
 
   it('mid-count sale applies variance to current stock, not expected stock', async () => {
     // 1. Setup variant with 10 stock
-    let variant = await prisma.productVariant.findFirst({ where: { isActive: true } });
-    if (!variant) throw new Error('No variants seeded');
+    const seeded = await prisma.productVariant.findFirst({ where: { isActive: true } });
+    if (!seeded) throw new Error('No variants seeded');
+    // Held separately: `variant` is re-read after the count posts, which would
+    // otherwise widen the type back to nullable inside the closure below.
+    const variantId = seeded.id;
+    let variant = seeded;
 
     // Update stock to 10
     await prisma.productVariant.update({ where: { id: variant.id }, data: { stock: 10 } });
@@ -44,8 +47,8 @@ describe('StockCountService', () => {
     
     // 3. Verify expected is 10
     const startedCount = await service.findOne(count.id);
-    const line = startedCount.lines.find(l => l.variantId === variant.id);
-    expect(line).toBeDefined();
+    const line = startedCount.lines.find((l) => l.variantId === variantId);
+    if (!line) throw new Error('expected a count line for the seeded variant');
     expect(line!.expected).toBe(10);
     
     // 4. Mid-count sale reduces stock to 8

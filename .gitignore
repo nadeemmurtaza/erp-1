@@ -41,3 +41,8 @@ apps/mobile/android/
 apps/mobile/ios/
 # Written by `expo export --platform web`; the app ships to the stores, not here.
 apps/mobile/dist/
+
+fix-all.js
+fix-db.js
+fix.js
+yaseen-backup-before-reset.sql

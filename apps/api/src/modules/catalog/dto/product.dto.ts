@@ -192,7 +192,8 @@ export class CreateProductDto {
 
   @ApiPropertyOptional({
     type: [String],
-    description: 'UNSTITCHED only: garment type ids this fabric can be made into',
+    description:
+      'UNSTITCHED: garment type ids this fabric can be made into. STITCHED: garment type ids that drive this ready-to-wear product\'s size chart.',
   })
   @IsOptional()
   @IsArray()

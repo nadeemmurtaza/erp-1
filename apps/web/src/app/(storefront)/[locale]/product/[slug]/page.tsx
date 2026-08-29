@@ -59,12 +59,26 @@ export default async function ProductPage({ params }: PageProps) {
     (garment) => garment.baseFabricGaz !== null,
   );
 
-  const [services, stitchingGarments] = product.stitchingAvailable
-    ? await Promise.all([
-        stitchingServicesFor(product.garmentTypes.map((garment) => garment.key), locale),
-        hasFabricBenchmark ? fetchStitchingGarments() : Promise.resolve([]),
-      ])
-    : ([[], []] as [StorefrontProduct[], StitchingGarment[]]);
+  // Any product with garment types attached wants its size chart — UNSTITCHED
+  // fabric (to show what it can become) and STITCHED ready-to-wear (to show
+  // its own standard sizes) alike. Stitching services themselves never carry
+  // garmentTypes (they use the single serviceGarment field instead).
+  const needsSizeChart = product.garmentTypes.length > 0;
+
+  const [services, allStitchingGarments] = await Promise.all([
+    product.stitchingAvailable
+      ? stitchingServicesFor(product.garmentTypes.map((garment) => garment.key), locale)
+      : Promise.resolve([]),
+    needsSizeChart ? fetchStitchingGarments() : Promise.resolve([]),
+  ]);
+
+  // Narrow the full garment catalogue down to just the ones attached to this
+  // product — otherwise the size-chart modal would show every garment's
+  // measurements, not only the ones this product is actually made of.
+  const productGarmentKeys = new Set(product.garmentTypes.map((garment) => garment.key));
+  const stitchingGarments = allStitchingGarments.filter((garment) =>
+    productGarmentKeys.has(garment.key),
+  );
 
   const fabricNeed =
     product.stitchingAvailable && hasFabricBenchmark

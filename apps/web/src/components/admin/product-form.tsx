@@ -134,7 +134,9 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
         pieceCount: isUnstitched && pieceCount ? Number(pieceCount) : undefined,
         fabricMeters: isUnstitched && fabricMeters ? Number(fabricMeters) : undefined,
         stitchingAvailable: isUnstitched ? stitchingAvailable : undefined,
-        garmentTypeIds: isUnstitched ? garmentTypeIds : undefined,
+        // UNSTITCHED: which garments this fabric can become. STITCHED: which
+        // garments' size charts this ready-to-wear product should show.
+        garmentTypeIds: isUnstitched || kind === 'STITCHED' ? garmentTypeIds : undefined,
         garmentTypeId: isService ? serviceGarmentId : undefined,
         translations: [
           {
@@ -516,6 +518,43 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
               />
             </Field>
           </div>
+
+          <fieldset className="mt-4">
+            <legend className="field-label">Size chart</legend>
+            <p className="mb-2 text-xs text-ink/50">
+              Tick the garment(s) this outfit is made of. The customer sees a &ldquo;Size
+              chart&rdquo; link on the product page showing each garment&apos;s standard
+              measurements — set under Garments.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {garmentTypes.map((garment) => {
+                const selected = garmentTypeIds.includes(garment.id);
+                return (
+                  <label
+                    key={garment.id}
+                    className={clsx(
+                      'flex items-center gap-2 rounded-md border px-3 py-2 text-sm',
+                      selected ? 'border-brand-500 bg-brand-50 text-ink' : 'border-sand-200 text-ink/70',
+                    )}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selected}
+                      onChange={(event) =>
+                        setGarmentTypeIds((current) =>
+                          event.target.checked
+                            ? [...current, garment.id]
+                            : current.filter((id) => id !== garment.id),
+                        )
+                      }
+                      className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                    />
+                    {garment.labelEn}
+                  </label>
+                );
+              })}
+            </div>
+          </fieldset>
         </Section>
       ) : null}
 

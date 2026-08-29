@@ -128,7 +128,7 @@ export class ProductAdminService {
               order: variant.order ?? index,
             })),
           },
-          ...(dto.kind === 'UNSTITCHED' && dto.garmentTypeIds?.length
+          ...((dto.kind === 'UNSTITCHED' || dto.kind === 'STITCHED') && dto.garmentTypeIds?.length
             ? {
                 garmentTypes: {
                   create: dto.garmentTypeIds.map((garmentTypeId) => ({ garmentTypeId })),
@@ -243,7 +243,7 @@ export class ProductAdminService {
         await this.syncVariants(actorId, tx, id, dto.variants, existing.variants);
       }
 
-      if (dto.garmentTypeIds && kind === 'UNSTITCHED') {
+      if (dto.garmentTypeIds && (kind === 'UNSTITCHED' || kind === 'STITCHED')) {
         await tx.productGarmentType.deleteMany({ where: { productId: id } });
         if (dto.garmentTypeIds.length > 0) {
           await tx.productGarmentType.createMany({

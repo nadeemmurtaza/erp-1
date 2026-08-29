@@ -233,6 +233,132 @@ Two shops, two deployments, two databases, two env files — **one commit**. Whe
 you fix a rounding bug in `orders`, both shops get it on their next deploy, and
 you did the work once.
 
+## The database
+
+**One database per shop. It contains the union of every pack's tables.**
+
+### Why one database per shop, not one shared database
+
+Two shops are two businesses. Their orders, customers and stock have nothing to
+do with each other. A shared database with a `tenantId` column would mean every
+query in the codebase needs a tenant filter, and the first one that forgets leaks
+another business's data. Separate databases make that class of bug impossible
+rather than merely unlikely.
+
+Each deployment therefore gets its own `DATABASE_URL`, and
+`prisma migrate deploy` runs on container start as it does today.
+
+### Why the union of tables, and not a database per pack
+
+**Because foreign keys cross pack boundaries and a foreign key cannot span
+databases.** `BomComponent.rawMaterialId` → `RawMaterial.variantId` →
+`ProductVariant`, which is core catalogue. Split those across databases and the
+constraint cannot exist, so the integrity the schema currently guarantees becomes
+application code that gets it wrong eventually.
+
+So: one database, holding every table from every pack.
+
+> **The schema is the union of all packs. The runtime is the subset you enable.**
+
+The consequence, stated plainly because somebody will ask: **a grocery shop's
+database will contain empty `GarmentType`, `MeasurementProfile` and
+`StitchingJob` tables.** `prisma/schema/*.prisma` is read whole, and
+`migrate deploy` applies every migration regardless of `MODULES`. An empty table
+costs a row in the system catalogue and nothing else.
+
+Two things follow that do matter:
+
+- **Every pack's migrations run on every deployment.** An apparel migration that
+  locks a table for a minute costs the grocery shop a minute of downtime too.
+  This is another reason the expand/contract rule in `00-HOUSE-RULES.md` §4 is
+  not negotiable.
+- **If that ever becomes genuinely painful**, the escalation is Prisma's
+  multi-schema support with a migration stream per pack. It is a large change.
+  Do not reach for it before the pain is real.
+
+### Seed data must become pack-aware — this is a real gap today
+
+`apps/api/prisma/seed.ts` seeds garment types, stitching options, stitching
+services, measurement profiles and a tailor queue **unconditionally**. Run it on a
+grocery deployment and you get a workshop queue for a shop with no tailors.
+
+The fix, when a second sector is on the horizon:
+
+```ts
+const packs = enabledPacks();   // derived from MODULES via MODULE_PACKS
+
+await seedPermissions(packs);
+const users = await seedUsers();
+const categories = await seedCategories();
+
+if (packs.has('apparel')) {
+  const garments = await seedGarmentTypes();
+  await seedGarmentCatalogExpansion(garments);
+  await seedStitchingOptions(garments);
+  await seedStitchingServices(categories, garments);
+  await seedMeasurementProfiles(users.customer.id, garments);
+  await seedWorkshopQueue(users.tailor.id, garments);
+}
+```
+
+Every seeder stays idempotent (House Rule 3 discipline), so this changes which
+seeders run, never how they behave.
+
+**Permissions need the same treatment.** `PERMISSION_CATALOG` in
+`packages/shared/src/permissions.ts` is a flat list, so a grocery shop's
+`Permission` table gets `stitching.jobs.assign` and six of its friends. Give
+`PermissionDefinition` an optional `pack` (defaulting to `core`) and have
+`seedPermissions()` skip permissions whose pack is not enabled.
+
+## The API
+
+This half already works. `modules.registry.ts` composes only the modules named in
+`MODULES`, so a disabled module's routes do not exist, its controllers are never
+instantiated, and Swagger shows only what is enabled. The boot log already says
+so:
+
+```
+[FeatureModules] Enabled modules: catalog, measurements, cart, stitching, …
+[FeatureModules] Disabled by MODULES allowlist: purchasing
+```
+
+Cross-pack behaviour degrades correctly by design: core publishes a domain event,
+and if the pack that would have subscribed is switched off, nothing listens and
+nothing breaks. That is the whole point of Rule 3.
+
+### The gap: the web app cannot see which modules are enabled
+
+`AdminNavItem.module` exists in `nav-registry.ts` and is documented as *"Hidden
+when the module is off in MODULES"* — but **nothing reads it**. `navFor()` filters
+on permissions alone, and `AppConfigService.isModuleEnabled()` is server-side
+only and exposed nowhere. So today the admin would render a Stitching nav item
+pointing at routes that 404.
+
+Add a bootstrap endpoint:
+
+```
+GET /meta      @Public (or authenticated — it leaks no data either way)
+  200 -> { modules: string[], packs: string[] }
+```
+
+Then `navFor(permissions, modules)` filters on both, and the Phase 10 dashboard's
+`cardsFor(permissions, enabledModules)` (decision D1) has a source for its second
+argument. **Phase 10's WO-A.4 needs this**, so it should land in or before that
+work order rather than waiting for WO-E.1.
+
+### Per-shop configuration
+
+Anything that varies between shops but is not code — shop name, shipping zones,
+COD fee, stitching lead time, low-stock threshold — is a row in the `Setting`
+table, edited from `/admin/settings` (House Rule 4). Env carries only what must
+exist before the database does: `DATABASE_URL`, `MODULES`, secrets.
+
+| Varies by | Lives in |
+|---|---|
+| Sector | `MODULES` (which packs boot) |
+| Shop | `Setting` rows, plus that deployment's env |
+| Nothing — it is a rule of the platform | Code |
+
 ## Adding a new sector
 
 1. Decide what is genuinely sector-specific. Most of it is not — if the answer is
@@ -280,5 +406,8 @@ them costs more than it looks like it will.
 | How do sectors share code? | The `core` pack. Packs depend on core; core never depends on a pack. |
 | How do packs talk to core? | Domain events, one direction. |
 | What decides what a shop runs? | `MODULES` env + the `Setting` table. |
+| One database or many? | **One per shop**, holding every pack's tables. Cross-pack foreign keys rule out a database per pack. |
+| Does a grocery shop get apparel tables? | Yes, empty. The schema is the union; the runtime is the subset. |
+| How does the API drop a disabled module? | `modules.registry.ts` never composes it — its routes 404 and its controllers never instantiate. |
 | What are branches for? | Work in progress, and releases. Time, not shape. |
 | Branch name? | `<pack>/<type>/<slug>` |

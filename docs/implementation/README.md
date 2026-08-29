@@ -61,12 +61,14 @@ The seam that keeps them honest: **a universal module may never import an
 apparel module, and may never name a garment concept.** Apparel modules
 subscribe to universal events, not the other way round.
 
-`pnpm lint` currently enforces import **depth** — no module may reach into
-another's internals — but **not yet direction**, because
-`scripts/check-module-boundaries.mjs` has no record of which modules are
-universal and which belong to a pack. Closing that gap is the first work order of
-any multi-sector effort; the design is in
-[`MULTI-SECTOR.md`](./MULTI-SECTOR.md). The naming rule is a review convention.
+`pnpm lint` enforces both halves of that seam. **Depth:** no module may reach
+into another's internals. **Direction:** `apps/api/src/modules/module-packs.ts`
+declares each module's pack, and `scripts/check-module-boundaries.mjs` fails on a
+core-imports-pack or pack-imports-pack dependency, or on a module that has not
+been classified at all. One pre-existing violation (`cart` → `measurements`) is
+recorded as a burn-down entry and must be paid off before a second sector ships —
+see [`MULTI-SECTOR.md`](./MULTI-SECTOR.md). The naming rule is a review
+convention.
 
 Universal: `catalog` `variants` `pricing` `inventory` `purchasing` `orders`
 `payments` `shipping` `fulfilment` `returns` `promotions` `giftcards` `loyalty`

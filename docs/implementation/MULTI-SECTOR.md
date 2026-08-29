@@ -76,11 +76,11 @@ Future packs, per the README's extensibility argument: grocery adds `batches` an
 `perishables`; pharmacy adds `prescriptions`; electronics adds `serials` and
 `warranty`; software adds `licences`.
 
-**`bom` is classified `core`, not `apparel`.** `README.md` currently lists it
-under the apparel pack. That is wrong: a bakery, a pharmacy compounding lab and a
-furniture workshop all turn raw materials into finished goods. Raw-material →
-recipe → production run is universal manufacturing, and Phase 10 builds it as a
-general module. Reclassify it when you next touch that README table.
+**`bom` is classified `core`, not `apparel`.** The phase README listed it under
+the apparel pack; that was wrong, and has been corrected. A bakery, a pharmacy
+compounding lab and a furniture workshop all turn raw materials into finished
+goods — raw-material → recipe → production run is universal manufacturing, and
+Phase 10 builds it as a general module.
 
 ## The rule that makes this safe
 
@@ -92,26 +92,48 @@ This is the whole architecture. If `inventory` (core) ever imports
 `stitching.service` (apparel), then a grocery deployment that switches
 `stitching` off has a broken `inventory`, and the pack model is finished.
 
-### This is not currently enforced — fix it first
+### Enforced as of `f7c0ec1` — with one debt recorded
 
-`scripts/check-module-boundaries.mjs` enforces import **depth**: a module may only
-reach another module's `<name>.module` or a top-level `<name>.service`, never a
-deep file. It does **not** enforce **direction**, because it has no idea which
-modules are core and which are apparel.
+`apps/api/src/modules/module-packs.ts` declares each module's pack, and
+`scripts/check-module-boundaries.mjs` fails `pnpm lint` on a core→pack import, a
+pack→pack import, or a module missing from the map.
 
-So today this passes lint:
+Turning it on surfaced **one real violation, which is still outstanding**:
+
+> **`cart` → `measurements`.** `CartItem` carries `measurementProfileId` and
+> `measurementValues`, and `cart.service.ts` calls `MeasurementsService.validate()`
+> when a line is added. Core cart knows what a garment is, so a grocery
+> deployment with `measurements` switched off would not boot.
+>
+> The fix is an extension point rather than a smaller import: a cart line should
+> carry opaque per-line configuration, validated by a validator the pack owning
+> that product kind registers, so `cart` never names a garment concept. That is
+> its own work order and **must land before a second sector ships.**
+
+It is listed in `KNOWN_VIOLATIONS` in the checker — a burn-down list, not a
+configuration knob. An entry that stops firing is reported as stale and fails the
+build, so the list can only shrink. Adding to it needs a reason a reviewer
+accepts; "the check was in my way" is not one.
+
+The rest of this section records the reasoning, and the design the checker
+implements.
+
+### Why it needed enforcing
+
+The checker originally enforced import **depth** only: a module may reach another
+module's `<name>.module` or a top-level `<name>.service`, never a deep file. It
+could not enforce **direction**, because it had no record of which modules were
+core and which were apparel. So this passed lint:
 
 ```ts
 // apps/api/src/modules/inventory/inventory.service.ts   (core)
-import { StitchingService } from '../stitching/stitching.service';   // apparel — WRONG, but green
+import { StitchingService } from '../stitching/stitching.service';   // apparel — wrong, but green
 ```
 
-`README.md` claims `pnpm lint` enforces the import direction. Until the work
-below lands, that claim is aspirational. **Treat closing this gap as the first
-work order of any multi-sector effort** — it is roughly twenty lines, and every
-day it is missing is a day a violation can land unnoticed.
+Before enforcement existed, a violation could land unnoticed at any time — and
+one had. This is the design the checker now implements.
 
-**The fix.** Give the modules a declared pack, next to the registry that already
+**The manifest.** Modules declare a pack, next to the registry that already
 declares everything else about them:
 
 ```ts
@@ -124,15 +146,18 @@ export type PackName = 'core' | 'apparel' | 'grocery' | 'pharmacy' | 'electronic
  * A module missing from this map fails the check — classification is not optional.
  */
 export const MODULE_PACKS: Record<string, PackName> = {
-  catalog: 'core',   cart: 'core',      orders: 'core',     payments: 'core',
-  inventory: 'core', purchasing: 'core', crm: 'core',       analytics: 'core',
-  reports: 'core',   tracking: 'core',  settings: 'core',   users: 'core',
-  addresses: 'core', finance: 'core',   bom: 'core',
+  addresses: 'core', analytics: 'core', cart: 'core',    catalog: 'core',
+  crm: 'core',       inventory: 'core', orders: 'core',  payments: 'core',
+  purchasing: 'core', reports: 'core',  settings: 'core', tracking: 'core',
+  users: 'core',
   measurements: 'apparel', stitching: 'apparel',
 };
 ```
 
-Then extend the checker with one predicate:
+Phase 10's `finance` and `bom` add their own `core` lines when those modules land
+— the missing-from-map check forces it.
+
+The checker's predicate:
 
 - importer pack `core`, target pack not `core` → **violation** (core must not
   know a pack exists)

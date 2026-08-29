@@ -109,7 +109,13 @@
     "quickView": "Quick view",
     "quickShop": "Quick Shop",
     "addToFavourites": "Add to favourites",
-    "removeFromFavourites": "Remove from favourites"
+    "removeFromFavourites": "Remove from favourites",
+    "sizeChart": "Size Chart",
+    "sizeCharts": "Size Charts",
+    "close": "Close",
+    "measurementsIn": "Measurements in {unit}",
+    "inch": "inches",
+    "cm": "cm"
   },
   "cart": {
     "title": "Cart",

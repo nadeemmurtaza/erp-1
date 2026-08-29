@@ -109,7 +109,13 @@
     "quickView": "فوری دیکھیں",
     "quickShop": "فوری خریداری",
     "addToFavourites": "پسندیدہ میں شامل کریں",
-    "removeFromFavourites": "پسندیدہ سے ہٹائیں"
+    "removeFromFavourites": "پسندیدہ سے ہٹائیں",
+    "sizeChart": "سائز چارٹ",
+    "sizeCharts": "سائز چارٹس",
+    "close": "بند کریں",
+    "measurementsIn": "پیمائشیں {unit} میں",
+    "inch": "انچ",
+    "cm": "سینٹی میٹر"
   },
   "cart": {
     "title": "ٹوکری",

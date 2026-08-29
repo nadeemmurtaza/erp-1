@@ -523,6 +523,45 @@ Pre-existing drift; fix it in WO-B.1.
 
 ---
 
+## A live bug the rebuild must not inherit
+
+**Every day in the dashboard revenue chart is labelled one day early.**
+
+`analytics.service.ts:98` anchors the series at **local** midnight:
+
+```ts
+const startOfToday = new Date(now);
+startOfToday.setHours(0, 0, 0, 0);          // 2026-08-29 00:00 PKT
+```
+
+and `fillDays()` then labels each bucket in **UTC**:
+
+```ts
+const date = day.toISOString().slice(0, 10);   // "2026-08-28"
+```
+
+Local midnight in UTC+5 is 19:00 UTC the previous day, so the label is a day
+behind for the whole of Pakistan. A sale made on the 29th appears on the 28th.
+
+It is why `crm.e2e-spec.ts:412` fails: the test compares the last bucket against
+`new Date().toISOString().slice(0, 10)`, so it only passes between 00:00 and
+05:00 PKT, when UTC is still on the previous date and the two errors cancel. A
+test that passes only during a five-hour window overnight is worse than a failing
+one, because it looks green in the morning.
+
+**WO-A.4 and WO-D.1 rebuild exactly this code. Fix it there rather than porting
+it forward:**
+
+- Format bucket labels from the local date parts (`getFullYear` / `getMonth` /
+  `getDate`), never `toISOString()`.
+- Check the raw SQL alongside it — `date_trunc` groups in the database session's
+  timezone, which must agree with whatever the labels use, or the buckets and
+  their labels disagree by a day at the boundary.
+- Put the shop's timezone in a setting (House Rule 4) rather than relying on the
+  server's, so a deployment in another country is not silently wrong.
+- Then assert the boundary: freeze the clock at 23:30 local and confirm the last
+  bucket is today, not yesterday.
+
 ## Track A — Foundations
 
 ### WO-A.1 — Minimal admin UI primitives, with URL-synced filters

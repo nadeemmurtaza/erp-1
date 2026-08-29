@@ -49,7 +49,7 @@ export default function ReturnsPage() {
           <h3 className="mt-4 text-lg font-medium text-gray-800">How to Initiate a Return</h3>
           <ol className="list-decimal pl-5 space-y-2">
             <li>
-              Contact us within 7 days of delivery via WhatsApp at +92 300 000 0000 or email at
+              Contact us within 7 days of delivery via WhatsApp at +92 335 621 2709 or email at
               support@yaseen.pk. Include your order number and a brief description of the reason for
               return.
             </li>
@@ -239,7 +239,7 @@ export default function ReturnsPage() {
           <h2 className="text-xl font-semibold text-gray-900">10. Contact Us</h2>
           <p>For any return, exchange, or refund enquiry, please contact our Customer Care team:</p>
           <ul className="list-none space-y-1 pl-0">
-            <li><strong>WhatsApp:</strong> +92 300 000 0000 (9 AM – 8 PM, Monday to Saturday)</li>
+            <li><strong>WhatsApp:</strong> +92 335 621 2709 (9 AM – 8 PM, Monday to Saturday)</li>
             <li><strong>Email:</strong> support@yaseen.pk</li>
             <li><strong>Website:</strong> yaseen.pk</li>
             <li><strong>Response time:</strong> Within 1–2 business days</li>

@@ -215,8 +215,8 @@ export default function PrivacyPage() {
           </p>
           <ul className="list-none space-y-1 pl-0">
             <li><strong>Email:</strong> support@yaseen.pk</li>
-            <li><strong>WhatsApp:</strong> +92 300 000 0000</li>
-            <li><strong>Address:</strong> [Your full business address], Pakistan</li>
+            <li><strong>WhatsApp:</strong> +92 335 621 2709</li>
+            <li><strong>Address:</strong> K 491, Shah Rukn e Alam Colony, Multan, Pakistan</li>
           </ul>
         </section>
 

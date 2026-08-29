@@ -64,7 +64,7 @@ export default function AdminInventoryPage() {
     setError(null);
     try {
       setVariants(
-        await adminFetch<InventoryVariant[]>('/api/admin/inventory', {
+        await adminFetch<InventoryVariant[]>('/admin/inventory', {
           query: { search: search || undefined, filter: filter !== 'all' ? filter : undefined },
         }),
       );
@@ -91,7 +91,7 @@ export default function AdminInventoryPage() {
     setError(null);
     try {
       setHistoryRows(
-        await adminFetch<StockMovementRow[]>(`/api/admin/inventory/${variantId}/history`),
+        await adminFetch<StockMovementRow[]>(`/admin/inventory/${variantId}/history`),
       );
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not load history');

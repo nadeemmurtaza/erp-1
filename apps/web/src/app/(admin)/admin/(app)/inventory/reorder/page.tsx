@@ -43,7 +43,7 @@ export default function ReorderSuggestionsPage() {
   const [success, setSuccess] = useState<string | null>(null);
 
   useEffect(() => {
-    adminFetch<ReorderSuggestion[]>('/api/admin/inventory/reorder')
+    adminFetch<ReorderSuggestion[]>('/admin/inventory/reorder')
       .then((res) => {
         setSuggestions(res || []);
       })
@@ -98,7 +98,7 @@ export default function ReorderSuggestionsPage() {
     try {
       let createdCount = 0;
       for (const [supplierId, items] of Array.from(bySupplier.entries())) {
-        await adminFetch('/api/admin/purchase-orders', {
+        await adminFetch('/admin/purchase-orders', {
           method: 'POST',
           body: {
             supplierId,
@@ -123,7 +123,7 @@ export default function ReorderSuggestionsPage() {
       
       // Reload suggestions
       setBusy(true);
-      const res = await adminFetch<ReorderSuggestion[]>('/api/admin/inventory/reorder');
+      const res = await adminFetch<ReorderSuggestion[]>('/admin/inventory/reorder');
       setSuggestions(res || []);
       setBusy(false);
       

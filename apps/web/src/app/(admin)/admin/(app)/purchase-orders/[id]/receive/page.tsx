@@ -37,7 +37,7 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    adminFetch<PurchaseOrder>(`/api/admin/purchase-orders/${id}`)
+    adminFetch<PurchaseOrder>(`/admin/purchase-orders/${id}`)
       .then((res) => {
         setPo(res);
         const qtys: Record<string, number> = {};
@@ -67,7 +67,7 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
         throw new Error('No items to receive. Set a quantity > 0.');
       }
 
-      await adminFetch(`/api/admin/purchase-orders/${id}/receive`, {
+      await adminFetch(`/admin/purchase-orders/${id}/receive`, {
         method: 'POST',
         body: { items, notes: notes || undefined },
       });

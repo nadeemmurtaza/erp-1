@@ -26,7 +26,7 @@ export default function SupplierDetailPage({ params }: { params: Promise<{ id: s
   const [busy, setBusy] = useState(true);
 
   useEffect(() => {
-    adminFetch<SupplierDetail>(`/api/admin/suppliers/${id}`)
+    adminFetch<SupplierDetail>(`/admin/suppliers/${id}`)
       .then((res) => setSupplier(res))
       .catch((cause) => setError(cause instanceof Error ? cause.message : 'Could not load supplier'))
       .finally(() => setBusy(false));

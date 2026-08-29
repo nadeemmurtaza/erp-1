@@ -44,7 +44,7 @@ export default function PurchaseOrderDetailPage({ params }: { params: Promise<{ 
   const [busy, setBusy] = useState(true);
 
   useEffect(() => {
-    adminFetch<PurchaseOrder>(`/api/admin/purchase-orders/${id}`)
+    adminFetch<PurchaseOrder>(`/admin/purchase-orders/${id}`)
       .then((res) => setPo(res))
       .catch((cause) => setError(cause instanceof Error ? cause.message : 'Could not load purchase order'))
       .finally(() => setBusy(false));

@@ -49,6 +49,13 @@ purchasing screens), WO-1.9 (reports), the nested nav `children`, and the
 
 ## Work orders
 
+One work order is one branch is one draft PR. Branch names follow
+`<pack>/<type>/<slug>` (`00-HOUSE-RULES.md` §7): `web/feat/wo-a1-admin-ui-primitives`,
+`core/feat/wo-b1-finance-expenses`, `core/feat/wo-c3-production-runs`. Every
+module this phase adds — `finance` and `bom` — belongs to the **`core` pack**, so
+none of it may be imported by a sector pack and none of it may name a garment
+concept. See [`MULTI-SECTOR.md`](./MULTI-SECTOR.md).
+
 | WO | Title | Depends on |
 |---|---|---|
 | A.1 | Admin UI primitives + URL-synced filters | — |

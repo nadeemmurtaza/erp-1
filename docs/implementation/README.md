@@ -9,6 +9,7 @@ who has not seen this codebase before.
 | File | What it is |
 |---|---|
 | **[`00-HOUSE-RULES.md`](./00-HOUSE-RULES.md)** | **The contract. Read it first, every session.** Eleven rules, the definition of done, and how to write a migration that cannot lose data. |
+| [`MULTI-SECTOR.md`](./MULTI-SECTOR.md) | How one repository serves clothing, grocery, pharmacy and the rest: packs, the `MODULES` allowlist, branch naming, and why there is no master branch per sector |
 | [`01-inventory-purchasing-cost.md`](./01-inventory-purchasing-cost.md) | Suppliers, purchase orders, goods receipts, the unified stock ledger, cost price, COGS, reorder points, slow movers, stock counts |
 | [`02-admin-shell.md`](./02-admin-shell.md) | Shared admin primitives — DataTable, PageHeader, Modal, FilterBar — plus the command palette and error states |
 | [`03-variants-sku-seo.md`](./03-variants-sku-seo.md) | Custom variant options, SKU templates, the sectioned product editor, enforced alt text, the SEO publish gate, JSON-LD, sitemap, hreflang, redirects |
@@ -58,15 +59,26 @@ particular shop what it is.
 
 The seam that keeps them honest: **a universal module may never import an
 apparel module, and may never name a garment concept.** Apparel modules
-subscribe to universal events, not the other way round. `pnpm lint` enforces the
-import direction; the naming rule is a review convention.
+subscribe to universal events, not the other way round.
+
+`pnpm lint` currently enforces import **depth** — no module may reach into
+another's internals — but **not yet direction**, because
+`scripts/check-module-boundaries.mjs` has no record of which modules are
+universal and which belong to a pack. Closing that gap is the first work order of
+any multi-sector effort; the design is in
+[`MULTI-SECTOR.md`](./MULTI-SECTOR.md). The naming rule is a review convention.
 
 Universal: `catalog` `variants` `pricing` `inventory` `purchasing` `orders`
 `payments` `shipping` `fulfilment` `returns` `promotions` `giftcards` `loyalty`
 `crm` `finance` `reviews` `content` `seo` `marketing` `search` `analytics`
 `reports` `tax` `ai`
 
-Apparel: `measurements` `stitching` `fabric` `fit` `styling` `alterations` `bom`
+Apparel: `measurements` `stitching` `fabric` `fit` `styling` `alterations`
+
+`bom` was listed here and has been **reclassified as universal**: a bakery, a
+pharmacy compounding lab and a furniture workshop all turn raw materials into
+finished goods, so raw-material → recipe → production run belongs to the core.
+Phase 10 builds it that way.
 
 That seam is also the extensibility proof: a grocery pack would be `batches` and
 `perishables`, pharmacy adds `prescriptions`, electronics adds `serials` and

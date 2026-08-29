@@ -18,6 +18,7 @@ who has not seen this codebase before.
 | [`07-customer-portal.md`](./07-customer-portal.md) | Portal shell, tracking timeline, self-service returns, reviews, wishlist, loyalty, mobile parity |
 | [`08-content-marketing-search.md`](./08-content-marketing-search.md) | CMS, collections and merchandising, full-text search, campaigns, abandoned cart |
 | [`09-ai-layer.md`](./09-ai-layer.md) | Alt text and SEO generation, size recommendation, forecasting, COD risk, semantic search, WhatsApp assistant |
+| [`10-admin-dashboard.md`](./10-admin-dashboard.md) | The admin master dashboard rebuild: registry-driven card grid, the analytics page tree, the `finance` module (expenses, order economics) and the `bom` module (raw materials, recipes, production runs) |
 
 ## Dependency order
 
@@ -37,6 +38,13 @@ understanding what breaks.
 **Phase 1 is first because cost price is the keystone.** Without a cost per unit
 there is no margin, no P&L, and no way to know whether a discount is profitable.
 Phase 4 is impossible without it and Phase 5 is dangerous without Phase 4.
+
+**Phase 10 sits alongside, not after.** It depends on Phase 1 (merged) and
+carries its own minimal subset of the Phase 2 primitives, built to the Phase 2
+spec so that Phase 2 later continues rather than rewrites. It also delivers the
+expense half of Phase 4 ahead of the rest of it — the P&L, cash flow and
+month-end close in `04-finance.md` still stand, and build on the `Expense` and
+`OrderEconomics` models Phase 10 creates.
 
 Phase 2 is pure leverage with no features. It is worth doing before thirty new
 screens arrive rather than after.

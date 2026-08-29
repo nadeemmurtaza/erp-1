@@ -1,9 +1,9 @@
 ﻿import type { Metadata } from 'next';
+import { businessProfile } from '@/config/business-profile';
 
 export const metadata: Metadata = {
-  title: 'Returns & Refund Policy — Yaseen.pk',
-  description:
-    'Understand our returns, exchange, and refund process for readymade garments and custom stitching orders at Yaseen.pk.',
+  title: `Returns & Refund Policy — ${businessProfile.shortName}`,
+  description: `Understand our returns, exchange, and refund process for readymade garments and custom stitching orders at ${businessProfile.shortName}.`,
 };
 
 export default function ReturnsPage() {
@@ -19,7 +19,7 @@ export default function ReturnsPage() {
         <section>
           <h2 className="text-xl font-semibold text-gray-900">1. Overview</h2>
           <p>
-            At Yaseen.pk, we take pride in the quality of our garments and stitching. We want you to be
+            At {businessProfile.shortName}, we take pride in the quality of our garments and stitching. We want you to be
             completely satisfied with every purchase. If something is not right, we are here to help.
             Please read this policy carefully before placing an order, as different rules apply to
             readymade garments and custom-stitched orders.
@@ -49,8 +49,8 @@ export default function ReturnsPage() {
           <h3 className="mt-4 text-lg font-medium text-gray-800">How to Initiate a Return</h3>
           <ol className="list-decimal pl-5 space-y-2">
             <li>
-              Contact us within 7 days of delivery via WhatsApp at +92 335 621 2709 or email at
-              support@yaseen.pk. Include your order number and a brief description of the reason for
+              Contact us within 7 days of delivery via WhatsApp at {businessProfile.whatsapp} or email at{' '}
+              {businessProfile.email}. Include your order number and a brief description of the reason for
               return.
             </li>
             <li>
@@ -223,8 +223,8 @@ export default function ReturnsPage() {
           <p>
             If you are not satisfied with the outcome of a return, exchange, or refund request, please
             escalate the matter to our management team by emailing{' '}
-            <a href="mailto:support@yaseen.pk" className="text-blue-600 underline hover:text-blue-800">
-              support@yaseen.pk
+            <a href={`mailto:${businessProfile.email}`} className="text-blue-600 underline hover:text-blue-800">
+              {businessProfile.email}
             </a>{' '}
             with the subject line &quot;Return Dispute — [Your Order Number].&quot; We will review your case
             independently and respond within 3 business days.
@@ -239,9 +239,9 @@ export default function ReturnsPage() {
           <h2 className="text-xl font-semibold text-gray-900">10. Contact Us</h2>
           <p>For any return, exchange, or refund enquiry, please contact our Customer Care team:</p>
           <ul className="list-none space-y-1 pl-0">
-            <li><strong>WhatsApp:</strong> +92 335 621 2709 (9 AM – 8 PM, Monday to Saturday)</li>
-            <li><strong>Email:</strong> support@yaseen.pk</li>
-            <li><strong>Website:</strong> yaseen.pk</li>
+            <li><strong>WhatsApp:</strong> <a href={`https://wa.me/${businessProfile.whatsapp.replace(/[^0-9]/g, '')}`} className="text-blue-600 underline hover:text-blue-800">{businessProfile.whatsapp}</a> ({businessProfile.workingHours})</li>
+            <li><strong>Email:</strong> <a href={`mailto:${businessProfile.email}`} className="text-blue-600 underline hover:text-blue-800">{businessProfile.email}</a></li>
+            <li><strong>Website:</strong> {businessProfile.domain}</li>
             <li><strong>Response time:</strong> Within 1–2 business days</li>
           </ul>
         </section>

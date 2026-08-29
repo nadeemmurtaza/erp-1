@@ -1,9 +1,9 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
+import { businessProfile } from '@/config/business-profile';
 
 export const metadata: Metadata = {
-  title: 'Terms & Conditions — Yaseen.pk',
-  description:
-    'Read the Terms and Conditions that govern your use of Yaseen.pk, including ordering, payments, stitching services, and your legal rights.',
+  title: `Terms & Conditions � ${businessProfile.shortName}`,
+  description: `Read the Terms and Conditions that govern your use of ${businessProfile.shortName}, including ordering, payments, stitching services, and your legal rights.`,
 };
 
 export default function TermsPage() {
@@ -11,7 +11,7 @@ export default function TermsPage() {
     <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
       <h1 className="mb-2 text-3xl font-bold tracking-tight text-gray-900">Terms &amp; Conditions</h1>
       <p className="mb-8 text-sm text-gray-500">
-        Last updated: 29 August 2026 &nbsp;·&nbsp; Effective immediately
+        Last updated: 29 August 2026 &nbsp;�&nbsp; Effective immediately
       </p>
 
       <div className="prose prose-gray max-w-none space-y-8 text-gray-700">
@@ -20,10 +20,10 @@ export default function TermsPage() {
           <h2 className="text-xl font-semibold text-gray-900">1. About These Terms</h2>
           <p>
             These Terms and Conditions (&quot;Terms&quot;) govern your access to and use of the website at{' '}
-            <strong>yaseen.pk</strong> (&quot;Site&quot;), including any purchase of readymade garments, custom
+            <strong>{businessProfile.domain}</strong> (&quot;Site&quot;), including any purchase of readymade garments, custom
             stitching services, or any other goods and services offered by{' '}
-            <strong>Yaseen Fabrics &amp; Stitching</strong> (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;), a business registered
-            and operating in Pakistan.
+            <strong>{businessProfile.name}</strong> (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;), a business registered
+            and operating in {businessProfile.country}.
           </p>
           <p>
             By browsing the Site, creating an account, placing an order, or using our stitching booking
@@ -46,7 +46,7 @@ export default function TermsPage() {
             method you provide.
           </p>
           <p>
-            We serve customers across Pakistan. Orders outside Pakistan are not currently accepted unless
+            We serve customers across {businessProfile.country}. Orders outside {businessProfile.country} are not currently accepted unless
             explicitly stated at checkout. We reserve the right to refuse service to any person or entity
             at our sole discretion.
           </p>
@@ -80,12 +80,12 @@ export default function TermsPage() {
             Placing an item in your cart does not constitute an order or reservation of stock. An order is
             formally placed only when you complete the checkout process and receive an order confirmation
             number via SMS or email. This confirmation constitutes acceptance of your offer to purchase and
-            forms a binding contract between you and Yaseen.pk.
+            forms a binding contract between you and {businessProfile.shortName}.
           </p>
           <p>
             We reserve the right to cancel or refuse any order at any time before dispatch for reasons
             including: suspected fraud, payment failure, product unavailability, or pricing errors. In such
-            cases, any payment received will be refunded in full within 5–7 working days.
+            cases, any payment received will be refunded in full within 5�7 working days.
           </p>
           <p>
             For stitching orders, the contract is formed upon confirmation of your measurements and style
@@ -122,12 +122,12 @@ export default function TermsPage() {
         <section>
           <h2 className="text-xl font-semibold text-gray-900">6. Stitching Services</h2>
           <p>
-            Yaseen.pk offers custom stitching services for select garments. When you book a stitching
+            {businessProfile.shortName} offers custom stitching services for select garments. When you book a stitching
             service, you agree to provide accurate measurements and style preferences. We accept no
             liability for incorrect measurements submitted by the customer.
           </p>
           <p>
-            <strong>Turnaround Time:</strong> Standard stitching orders are completed within 10–14 working
+            <strong>Turnaround Time:</strong> Standard stitching orders are completed within 10�14 working
             days from the date of confirmed order. Rush orders may be accommodated subject to capacity and
             an additional fee. Turnaround times are estimates and not guaranteed.
           </p>
@@ -137,8 +137,8 @@ export default function TermsPage() {
             all selections before confirming.
           </p>
           <p>
-            <strong>Fitting Adjustments:</strong> Minor fitting adjustments — such as taking in or letting
-            out seams by up to 1 inch — are offered free of charge within 7 days of delivery, provided
+            <strong>Fitting Adjustments:</strong> Minor fitting adjustments � such as taking in or letting
+            out seams by up to 1 inch � are offered free of charge within 7 days of delivery, provided
             the garment has not been worn, washed, or altered externally.
           </p>
           <p>
@@ -151,8 +151,8 @@ export default function TermsPage() {
         <section>
           <h2 className="text-xl font-semibold text-gray-900">7. Shipping &amp; Delivery</h2>
           <p>
-            We deliver across Pakistan via third-party courier services. Delivery timelines are estimates
-            and not guaranteed. Yaseen.pk is not liable for delays caused by the courier, natural
+            We deliver across {businessProfile.country} via third-party courier services. Delivery timelines are estimates
+            and not guaranteed. {businessProfile.shortName} is not liable for delays caused by the courier, natural
             disasters, civil unrest, or any other event beyond our reasonable control.
           </p>
           <p>
@@ -185,9 +185,9 @@ export default function TermsPage() {
         <section>
           <h2 className="text-xl font-semibold text-gray-900">9. Intellectual Property</h2>
           <p>
-            All content on this Site — including photographs, text, product descriptions, logos, design
-            patterns, illustrations, and software — is the property of Yaseen Fabrics &amp; Stitching or
-            its licensors and is protected under applicable Pakistani and international intellectual
+            All content on this Site � including photographs, text, product descriptions, logos, design
+            patterns, illustrations, and software � is the property of {businessProfile.name} or
+            its licensors and is protected under applicable {businessProfile.country} and international intellectual
             property laws.
           </p>
           <p>
@@ -213,7 +213,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-xl font-semibold text-gray-900">11. Limitation of Liability</h2>
           <p>
-            To the fullest extent permitted by Pakistani law, Yaseen.pk&apos;s total liability to you for
+            To the fullest extent permitted by {businessProfile.country} law, {businessProfile.shortName}&apos;s total liability to you for
             any claim arising from your use of this Site or our services shall not exceed the amount you
             paid for the specific order giving rise to the claim.
           </p>
@@ -230,18 +230,18 @@ export default function TermsPage() {
             These Terms are governed by the laws of the Islamic Republic of Pakistan. Any dispute arising
             from or relating to these Terms or our services shall first be attempted to be resolved through
             good-faith negotiation. If a resolution cannot be reached within 30 days, the dispute shall be
-            submitted to the exclusive jurisdiction of the courts of Pakistan.
+            submitted to the exclusive jurisdiction of the courts of {businessProfile.city}, {businessProfile.country}.
           </p>
         </section>
 
         <section>
           <h2 className="text-xl font-semibold text-gray-900">13. Contact Us</h2>
           <ul className="list-none space-y-1 pl-0">
-            <li><strong>Business:</strong> Yaseen Fabrics &amp; Stitching</li>
-            <li><strong>Website:</strong> yaseen.pk</li>
-            <li><strong>Email:</strong> support@yaseen.pk</li>
-            <li><strong>WhatsApp:</strong> +92 335 621 2709</li>
-            <li><strong>Address:</strong> K 491, Shah Rukn e Alam Colony, Multan, Pakistan</li>
+            <li><strong>Business:</strong> {businessProfile.name}</li>
+            <li><strong>Website:</strong> {businessProfile.domain}</li>
+            <li><strong>Email:</strong> {businessProfile.email}</li>
+            <li><strong>WhatsApp:</strong> {businessProfile.whatsapp}</li>
+            <li><strong>Address:</strong> {businessProfile.address}</li>
           </ul>
         </section>
 

@@ -1,9 +1,9 @@
 ﻿import type { Metadata } from 'next';
+import { businessProfile } from '@/config/business-profile';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — Yaseen.pk',
-  description:
-    'Learn how Yaseen.pk collects, uses, stores, and protects your personal information when you shop with us.',
+  title: `Privacy Policy — ${businessProfile.shortName}`,
+  description: `Learn how ${businessProfile.shortName} collects, uses, stores, and protects your personal information when you shop with us.`,
 };
 
 export default function PrivacyPage() {
@@ -19,14 +19,14 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-xl font-semibold text-gray-900">1. Introduction</h2>
           <p>
-            Yaseen Fabrics &amp; Stitching (&quot;Yaseen.pk,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) is committed to protecting
+            {businessProfile.name} (&quot;{businessProfile.shortName},&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) is committed to protecting
             the privacy and personal information of our customers, visitors, and users. This Privacy Policy
             explains what information we collect, how we use it, with whom we share it, and the choices
             you have regarding your personal data.
           </p>
           <p>
             This policy applies to all information collected through our website at{' '}
-            <strong>yaseen.pk</strong>, our mobile-optimised storefront, our admin systems, and any
+            <strong>{businessProfile.domain}</strong>, our mobile-optimised storefront, our admin systems, and any
             related communications (SMS, email, WhatsApp) we send to you.
           </p>
           <p>
@@ -72,7 +72,7 @@ export default function PrivacyPage() {
             <li><strong>Account management:</strong> To create and manage your account, authenticate your login, and enable saved addresses and order history.</li>
             <li><strong>Customer support:</strong> To respond to your enquiries, resolve complaints, and coordinate returns or exchanges.</li>
             <li><strong>Fraud prevention and security:</strong> To detect, investigate, and prevent fraudulent transactions, unauthorised account access, and other illegal activities.</li>
-            <li><strong>Legal compliance:</strong> To comply with applicable Pakistani laws, tax regulations, and court orders.</li>
+            <li><strong>Legal compliance:</strong> To comply with applicable {businessProfile.country} laws, tax regulations, and court orders.</li>
             <li><strong>Marketing (with consent):</strong> To send promotional offers, new arrivals, and seasonal campaigns via SMS or email, only where you have opted in. You may opt out at any time.</li>
             <li><strong>Site improvement:</strong> To analyse aggregated, anonymised usage patterns and improve the performance, design, and content of our Site.</li>
           </ul>
@@ -99,7 +99,7 @@ export default function PrivacyPage() {
             <li><strong>Courier and logistics partners:</strong> Your name, phone number, and delivery address are shared with our courier partners solely for the purpose of delivering your order.</li>
             <li><strong>Payment processors:</strong> Your payment details are transmitted directly to our secure payment gateway. We only receive a confirmation token and transaction status.</li>
             <li><strong>Technology service providers:</strong> Our hosting, cloud storage, and email service providers may process your data on our behalf under strict data processing agreements that prohibit them from using your data for any other purpose.</li>
-            <li><strong>Legal and regulatory authorities:</strong> Where required by Pakistani law, regulation, or a valid court order, we may disclose your information to law enforcement or regulatory bodies.</li>
+            <li><strong>Legal and regulatory authorities:</strong> Where required by {businessProfile.country} law, regulation, or a valid court order, we may disclose your information to law enforcement or regulatory bodies.</li>
             <li><strong>Business transfers:</strong> In the event of a merger, acquisition, or sale of all or part of our business, your personal data may be transferred to the new entity, subject to the same level of protection as described in this policy.</li>
           </ul>
         </section>
@@ -111,7 +111,7 @@ export default function PrivacyPage() {
             which it was collected, as follows:
           </p>
           <ul className="list-disc pl-5 space-y-1">
-            <li><strong>Order data:</strong> Retained for 7 years from the date of the transaction to comply with Pakistani tax and business record-keeping requirements.</li>
+            <li><strong>Order data:</strong> Retained for 7 years from the date of the transaction to comply with {businessProfile.country} tax and business record-keeping requirements.</li>
             <li><strong>Account data:</strong> Retained for as long as your account is active. Upon account deletion, identifiable data is anonymised or deleted within 30 days, except where retention is legally required.</li>
             <li><strong>Measurement profiles:</strong> Retained as part of your account until you delete them or close your account.</li>
             <li><strong>Marketing consent records:</strong> Retained for 3 years from the date of consent or last interaction, whichever is later.</li>
@@ -183,8 +183,8 @@ export default function PrivacyPage() {
           </ul>
           <p>
             To exercise any of these rights, contact us at{' '}
-            <a href="mailto:support@yaseen.pk" className="text-blue-600 underline hover:text-blue-800">
-              support@yaseen.pk
+            <a href={`mailto:${businessProfile.email}`} className="text-blue-600 underline hover:text-blue-800">
+              {businessProfile.email}
             </a>
             . We will respond within 30 days.
           </p>
@@ -214,9 +214,9 @@ export default function PrivacyPage() {
             For any privacy-related questions, requests, or concerns, please contact our Privacy Team:
           </p>
           <ul className="list-none space-y-1 pl-0">
-            <li><strong>Email:</strong> support@yaseen.pk</li>
-            <li><strong>WhatsApp:</strong> +92 335 621 2709</li>
-            <li><strong>Address:</strong> K 491, Shah Rukn e Alam Colony, Multan, Pakistan</li>
+            <li><strong>Email:</strong> <a href={`mailto:${businessProfile.email}`} className="text-blue-600 underline hover:text-blue-800">{businessProfile.email}</a></li>
+            <li><strong>WhatsApp:</strong> <a href={`https://wa.me/${businessProfile.whatsapp.replace(/[^0-9]/g, '')}`} className="text-blue-600 underline hover:text-blue-800">{businessProfile.whatsapp}</a></li>
+            <li><strong>Address:</strong> {businessProfile.address}</li>
           </ul>
         </section>
 

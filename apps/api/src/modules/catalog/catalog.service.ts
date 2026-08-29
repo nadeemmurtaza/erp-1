@@ -34,7 +34,7 @@ export interface LocalisedProduct {
     inStock: boolean;
   }>;
   category: { id: string; slug: string; name: string } | null;
-  /** UNSTITCHED only: the garments this fabric can be made into. */
+  /** UNSTITCHED: the garments this fabric can be made into. STITCHED: the garments backing this product's size chart. */
   garmentTypes: Array<{ id: string; key: string; label: string }>;
   /** STITCHING_SERVICE only: the garment this service stitches. */
   serviceGarment: { id: string; key: string; label: string } | null;

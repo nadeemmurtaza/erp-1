@@ -1,5 +1,15 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { SettingsService } from '../../core/settings/settings.service';
+import { SettingKey } from '../../core/settings/settings.defaults';
+import {
+  endOfShopDayFromKey,
+  shopDayExpr,
+  shopDayKey,
+  shopDayKeys,
+  shopDaysBetween,
+  startOfShopDayFromKey,
+} from '../../core/time/shop-time';
 
 /** A CSV export ready to stream: a filename, a header row, and data rows in column order. */
 export interface CsvExport {
@@ -10,25 +20,34 @@ export interface CsvExport {
 
 const MAX_RANGE_DAYS = 366;
 const DEFAULT_RANGE_DAYS = 30;
-const DAY_MS = 86_400_000;
 
 interface DateRange {
   from: Date;
   to: Date;
+  /** The zone `from`/`to` were resolved in; every label derived from them uses it. */
+  timeZone: string;
   fromLabel: string;
   toLabel: string;
 }
 
 @Injectable()
 export class ReportsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly settings: SettingsService,
+  ) {}
+
+  /** The zone every date in every export is resolved in. */
+  private timeZone(): Promise<string> {
+    return this.settings.get<string>(SettingKey.StoreTimezone);
+  }
 
   /**
    * One row per order placed in the range: identifying, status and money
    * columns a human reads directly rather than feeds back into the system.
    */
   async ordersCsv(fromStr?: string, toStr?: string): Promise<CsvExport> {
-    const range = parseRange(fromStr, toStr);
+    const range = parseRange(fromStr, toStr, await this.timeZone());
 
     const orders = await this.prisma.order.findMany({
       where: { placedAt: { gte: range.from, lte: range.to } },
@@ -91,34 +110,39 @@ export class ReportsService {
 
   /** One row per calendar day in the range, including days with no orders. */
   async salesByDayCsv(fromStr?: string, toStr?: string): Promise<CsvExport> {
-    const range = parseRange(fromStr, toStr);
+    const range = parseRange(fromStr, toStr, await this.timeZone());
 
-    const dayRows = await this.prisma.$queryRaw<
-      Array<{ day: Date; orders: bigint; revenue: bigint }>
-    >`
-      SELECT date_trunc('day', "placedAt") AS day,
-             COUNT(*) AS orders,
-             COALESCE(SUM("grandTotal"), 0) AS revenue
-      FROM "Order"
-      WHERE "placedAt" >= ${range.from}
-        AND "placedAt" <= ${range.to}
-        -- Cancelled/returned orders never count as a sale. Matches the
-        -- dashboard's revenue definition (analytics.service.ts); duplicated
-        -- here rather than imported so reports stays decoupled from its
-        -- sibling module.
-        AND "status" NOT IN ('CANCELLED', 'RETURNED')
-      GROUP BY 1
-      ORDER BY 1 ASC
-    `;
+    const timeZone = range.timeZone;
 
-    const byDate = new Map(dayRows.map((row) => [row.day.toISOString().slice(0, 10), row]));
-    const totalDays = Math.floor((range.to.getTime() - range.from.getTime()) / DAY_MS) + 1;
+    const dayRows = await this.prisma.$queryRawUnsafe<
+      Array<{ day: string; orders: bigint; revenue: bigint }>
+    >(
+      // Grouped AND formatted in the shop's zone, and returned as a string so
+      // the driver cannot reinterpret it into a neighbouring day. This must
+      // stay in step with analytics.service.ts, or the dashboard and this
+      // export will disagree about which day a sale belongs to.
+      `SELECT ${shopDayExpr('"placedAt"', timeZone)} AS day,
+              COUNT(*) AS orders,
+              COALESCE(SUM("grandTotal"), 0) AS revenue
+       FROM "Order"
+       WHERE "placedAt" >= $1
+         AND "placedAt" <= $2
+         -- Cancelled/returned orders never count as a sale. Matches the
+         -- dashboard's revenue definition (analytics.service.ts); duplicated
+         -- here rather than imported so reports stays decoupled from its
+         -- sibling module.
+         AND "status" NOT IN ('CANCELLED', 'RETURNED')
+       GROUP BY 1
+       ORDER BY 1 ASC`,
+      range.from,
+      range.to,
+    );
+
+    const byDate = new Map(dayRows.map((row) => [row.day, row]));
+    const totalDays = shopDaysBetween(range.from, range.to, timeZone);
 
     const rows: CsvExport['rows'] = [];
-    for (let offset = 0; offset < totalDays; offset += 1) {
-      const day = new Date(range.from);
-      day.setUTCDate(day.getUTCDate() + offset);
-      const dateLabel = day.toISOString().slice(0, 10);
+    for (const dateLabel of shopDayKeys(range.from, totalDays, timeZone)) {
       const found = byDate.get(dateLabel);
       rows.push([dateLabel, found ? Number(found.orders) : 0, found ? toRupees(Number(found.revenue)) : 0]);
     }
@@ -178,14 +202,14 @@ export class ReportsService {
       variant.isActive ? 'true' : 'false',
     ]);
 
-    const today = new Date().toISOString().slice(0, 10);
+    const today = shopDayKey(new Date(), await this.timeZone());
     return {
       filename: `stock_${lowStockOnly ? 'low_' : ''}${today}.csv`,
       header,
       rows,
     };
   }
-﻿  async stockValuationCsv(): Promise<CsvExport> {
+  async stockValuationCsv(): Promise<CsvExport> {
     const variants = await this.prisma.productVariant.findMany({
       orderBy: { sku: 'asc' },
       select: {
@@ -232,7 +256,7 @@ export class ReportsService {
 
     rows.push(['', 'TOTAL', '', '', '', '', toRupees(totalValue)]);
 
-    const today = new Date().toISOString().slice(0, 10);
+    const today = shopDayKey(new Date(), await this.timeZone());
     return {
       filename: `stock-valuation_${today}.csv`,
       header,
@@ -241,7 +265,7 @@ export class ReportsService {
   }
 
   async purchasesBySupplierCsv(fromStr?: string, toStr?: string): Promise<CsvExport> {
-    const range = parseRange(fromStr, toStr);
+    const range = parseRange(fromStr, toStr, await this.timeZone());
     
     const rowsRaw = await this.prisma.$queryRaw<
       Array<{ supplier: string; pocount: bigint; valuereceived: bigint }>
@@ -270,7 +294,7 @@ export class ReportsService {
   }
 
   async stockLedgerCsv(fromStr?: string, toStr?: string): Promise<CsvExport> {
-    const range = parseRange(fromStr, toStr);
+    const range = parseRange(fromStr, toStr, await this.timeZone());
 
     const movements = await this.prisma.stockMovement.findMany({
       where: { createdAt: { gte: range.from, lte: range.to } },
@@ -333,7 +357,7 @@ export class ReportsService {
       toRupees(v.stock * v.costPrice)
     ]);
 
-    const today = new Date().toISOString().slice(0, 10);
+    const today = shopDayKey(new Date(), await this.timeZone());
     return { filename: `slow-movers_${today}.csv`, header, rows };
   }
 
@@ -367,18 +391,24 @@ function cityOf(address: unknown): string {
  * range: real dates, `from` not after `to`, and capped at MAX_RANGE_DAYS so a
  * report over unbounded history can't be requested.
  */
-function parseRange(fromStr?: string, toStr?: string): DateRange {
-  const today = new Date().toISOString().slice(0, 10);
-  const toLabel = toStr ?? today;
-  const to = endOfDay(toLabel);
+function parseRange(fromStr: string | undefined, toStr: string | undefined, timeZone: string): DateRange {
+  // "Yesterday" means the shop's yesterday. Resolving these in UTC would give a
+  // Karachi shop the wrong day for the five hours either side of midnight.
+  const toLabel = toStr ?? shopDayKey(new Date(), timeZone);
+  const to = endOfShopDayFromKey(toLabel, timeZone);
 
   let fromLabel = fromStr;
   if (!fromLabel) {
-    const implied = new Date(to);
-    implied.setUTCDate(implied.getUTCDate() - (DEFAULT_RANGE_DAYS - 1));
-    fromLabel = implied.toISOString().slice(0, 10);
+    const impliedKeys = shopDayKeys(
+      startOfShopDayFromKey(toLabel, timeZone),
+      1,
+      timeZone,
+    );
+    const [y, m, d] = impliedKeys[0].split('-').map(Number);
+    const shifted = new Date(Date.UTC(y, m - 1, d - (DEFAULT_RANGE_DAYS - 1)));
+    fromLabel = `${shifted.getUTCFullYear()}-${String(shifted.getUTCMonth() + 1).padStart(2, '0')}-${String(shifted.getUTCDate()).padStart(2, '0')}`;
   }
-  const from = startOfDay(fromLabel);
+  const from = startOfShopDayFromKey(fromLabel, timeZone);
 
   if (Number.isNaN(from.getTime()) || Number.isNaN(to.getTime())) {
     throw new BadRequestException('`from` and `to` must be valid dates (YYYY-MM-DD).');
@@ -387,24 +417,18 @@ function parseRange(fromStr?: string, toStr?: string): DateRange {
     throw new BadRequestException('`from` must not be after `to`.');
   }
 
-  const rangeDays = Math.floor((to.getTime() - from.getTime()) / DAY_MS) + 1;
+  const rangeDays = shopDaysBetween(from, to, timeZone);
   if (rangeDays > MAX_RANGE_DAYS) {
     throw new BadRequestException(
       `Reports cover at most ${MAX_RANGE_DAYS} days; narrow the date range.`,
     );
   }
 
-  return { from, to, fromLabel: from.toISOString().slice(0, 10), toLabel: to.toISOString().slice(0, 10) };
-}
-
-function startOfDay(dateStr: string): Date {
-  const date = new Date(dateStr);
-  date.setUTCHours(0, 0, 0, 0);
-  return date;
-}
-
-function endOfDay(dateStr: string): Date {
-  const date = new Date(dateStr);
-  date.setUTCHours(23, 59, 59, 999);
-  return date;
+  return {
+    from,
+    to,
+    timeZone,
+    fromLabel: shopDayKey(from, timeZone),
+    toLabel: shopDayKey(to, timeZone),
+  };
 }

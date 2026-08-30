@@ -84,6 +84,7 @@ model OrderItem {
 
   /// Per-unit amounts in paisa.
   unitPrice        Int
+  unitCost         Int  @default(0)
   quantity         Int  @default(1)
   stitchingFeeUnit Int  @default(0)
   discountUnit     Int  @default(0)

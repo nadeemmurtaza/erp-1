@@ -91,8 +91,6 @@ model StitchingOrder {
   promisedAt       DateTime?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
-
-  user    User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
   contact Contact?       @relation(fields: [contactId], references: [id], onDelete: SetNull)
   jobs    StitchingJob[]
 
@@ -137,7 +135,6 @@ model StitchingJob {
   orderItem      OrderItem?          @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
   stitchingOrder StitchingOrder?     @relation(fields: [stitchingOrderId], references: [id], onDelete: Cascade)
   garmentType    GarmentType         @relation(fields: [garmentTypeId], references: [id], onDelete: Restrict)
-  assignedTailor User?               @relation("JobTailor", fields: [assignedTailorId], references: [id], onDelete: SetNull)
   events         StitchingJobEvent[]
 
   @@index([stage, dueAt])
@@ -158,7 +155,6 @@ model StitchingJobEvent {
   createdAt DateTime        @default(now())
 
   job   StitchingJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  actor User?        @relation(fields: [actorId], references: [id], onDelete: SetNull)
 
   @@index([jobId, createdAt])
 }
@@ -173,6 +169,4 @@ model TailorProfile {
   isActive        Boolean  @default(true)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

@@ -18,7 +18,7 @@ import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { Prisma } from '../../core/prisma/client';
 import { pickTranslation } from '../catalog/catalog.service';
-import { MeasurementsService } from '../measurements/measurements.service';
+import { CartLineValidatorRegistry } from './cart-line-validator.registry';
 import type { AddCartItemDto, UpdateCartItemDto } from './dto/cart.dto';
 
 /** Guest carts live for a month; long enough to come back after payday. */
@@ -139,7 +139,7 @@ export class CartService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly settings: SettingsService,
-    private readonly measurements: MeasurementsService,
+    private readonly validators: CartLineValidatorRegistry,
   ) {}
 
   /** Finds a cart by token, or creates one. Used on every storefront request. */
@@ -484,7 +484,7 @@ export class CartService {
     }
 
     const measurementValues = request.measurementValues
-      ? this.measurements.validate(garment.fields, request.measurementValues)
+      ? this.validators.validate('measurements', garment.fields, request.measurementValues)
       : null;
 
     const optionIds = request.optionIds ?? [];

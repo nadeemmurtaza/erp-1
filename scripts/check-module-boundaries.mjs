@@ -65,7 +65,7 @@ const CORE_PACK = 'core';
  *     validates through a registered validator, so cart never names a garment
  *     concept. Sizeable, and its own work order.
  */
-const KNOWN_VIOLATIONS = new Set(['cart -> measurements']);
+const KNOWN_VIOLATIONS = new Set([]);
 
 function walk(dir) {
   const entries = [];

@@ -23,13 +23,8 @@ model User {
 
   addresses             Address[]
   refreshTokens         RefreshToken[]
-  measurementProfiles   MeasurementProfile[]
   carts                 Cart[]
   orders                Order[]
-  stitchingOrders       StitchingOrder[]
-  tailorProfile         TailorProfile?
-  assignedJobs          StitchingJob[]       @relation("JobTailor")
-  jobEvents             StitchingJobEvent[]
   orderStatusEvents     OrderStatusEvent[]
   auditLogs             AuditLog[]
   contact               Contact?             @relation("ContactUser")

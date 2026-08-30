@@ -6,9 +6,12 @@
 //      one per locale, so adding a language needs no migration.
 
 enum ProductKind {
-  STITCHED // ready to wear
-  UNSTITCHED // fabric, optionally stitched to measure
-  STITCHING_SERVICE // the tailoring itself, sold as a product
+  GOODS // physical goods (electronics, grocery, etc)
+  SERVICE // non-physical services
+  DIGITAL // software, licenses, digital downloads
+  STITCHED // legacy: ready to wear
+  UNSTITCHED // legacy: fabric, optionally stitched to measure
+  STITCHING_SERVICE // legacy: the tailoring itself, sold as a product
 }
 
 enum ProductStatus {
@@ -83,9 +86,9 @@ model Product {
   updatedAt    DateTime  @updatedAt
 
   category            Category?            @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  garmentType         GarmentType?         @relation("ServiceGarment", fields: [garmentTypeId], references: [id], onDelete: SetNull)
   translations        ProductTranslation[]
   variants            ProductVariant[]
+  options             ProductOption[]
   images              ProductImage[]
   /// UNSTITCHED only: the garments this fabric may be stitched into.
   garmentTypes        ProductGarmentType[]
@@ -148,6 +151,7 @@ model ProductVariant {
   product            Product             @relation(fields: [productId], references: [id], onDelete: Cascade)
   images             ProductImage[]
   cartItems          CartItem[]
+  optionValues       ProductOptionValue[]
   orderItems         OrderItem[]
   supplierProducts   SupplierProduct[]
   stockAdjustments   StockAdjustment[]
@@ -202,7 +206,34 @@ model ProductGarmentType {
   garmentTypeId String
 
   product     Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
-  garmentType GarmentType @relation(fields: [garmentTypeId], references: [id], onDelete: Cascade)
 
   @@id([productId, garmentTypeId])
 }
+
+/// A dynamic option axis for a product (e.g., 'Storage', 'RAM', 'Size').
+model ProductOption {
+  id        String   @id @default(cuid())
+  productId String
+  name      String   // e.g. 'Size'
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  values    ProductOptionValue[]
+
+  @@unique([productId, name])
+}
+
+/// A specific value for a dynamic option (e.g., '128GB' for 'Storage').
+model ProductOptionValue {
+  id              String        @id @default(cuid())
+  productOptionId String
+  value           String        // e.g. '128GB'
+  order           Int           @default(0)
+  
+  option          ProductOption @relation(fields: [productOptionId], references: [id], onDelete: Cascade)
+  variants        ProductVariant[]
+
+  @@unique([productOptionId, value])
+}
+

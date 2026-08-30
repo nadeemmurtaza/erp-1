@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { Injectable, Logger } from '@nestjs/common';
 import { createTransport, type Transporter } from 'nodemailer';
 import { DEFAULT_LOCALE, type Locale } from '@yaseen/shared';
@@ -25,6 +26,8 @@ export class EmailChannel implements NotificationChannel {
   private readonly from: string;
   private readonly replyTo?: string;
   private readonly context: EmailContext;
+  /** Bare address out of MAIL_FROM — the envelope sender and Message-ID domain. */
+  private readonly fromAddress: string;
 
   constructor(private readonly config: AppConfigService) {
     const host = this.config.get('SMTP_HOST');
@@ -33,6 +36,7 @@ export class EmailChannel implements NotificationChannel {
 
     this.from = this.config.get('MAIL_FROM');
     this.replyTo = this.config.get('MAIL_REPLY_TO') || undefined;
+    this.fromAddress = this.from.match(/<([^>]+)>/)?.[1]?.trim() ?? this.from.trim();
     this.context = {
       storeName: this.config.get('STORE_NAME'),
       storefrontUrl: this.config.get('STOREFRONT_URL'),
@@ -62,6 +66,28 @@ export class EmailChannel implements NotificationChannel {
     if (!this.transporter) {
       this.logger.warn('SMTP_HOST is not set — the email channel will not send.');
     }
+
+    this.warnIfSenderWillFailDmarc();
+  }
+
+  /**
+   * The one misconfiguration that guarantees the spam folder.
+   *
+   * DMARC passes on alignment: the domain in From: must be one that SPF or DKIM
+   * authenticated. Sending as a Gmail or Yahoo address from our own server can
+   * never align — those domains publish a reject policy precisely so nobody
+   * else can send as them — so every order confirmation would be refused or
+   * filed as spam. Worth a loud warning at boot rather than a mystery later.
+   */
+  private warnIfSenderWillFailDmarc(): void {
+    const domain = this.fromAddress.split('@')[1]?.toLowerCase();
+    const free = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com'];
+
+    if (domain && free.includes(domain)) {
+      this.logger.error(
+        `MAIL_FROM sends as @${domain}. That domain's DMARC policy rejects mail from our server, so confirmations will be spam-filed or refused. Send as your own domain.`,
+      );
+    }
   }
 
   /**
@@ -70,7 +96,7 @@ export class EmailChannel implements NotificationChannel {
    * returns false rather than throwing.
    */
   supports(message: NotificationMessage): boolean {
-    return Boolean(this.transporter && message.recipient.email?.includes('@'));
+    return Boolean(this.transporter && isDeliverable(message.recipient.email));
   }
 
   async send(message: NotificationMessage): Promise<void> {
@@ -87,14 +113,31 @@ export class EmailChannel implements NotificationChannel {
         ? { name: message.recipient.name, address: message.recipient.email }
         : message.recipient.email,
       replyTo: this.replyTo,
+      // Pins the envelope sender (the Return-Path SPF is checked against) to
+      // the same domain as the visible From. Left to itself nodemailer can use
+      // a different address, and DMARC alignment then rests on DKIM alone.
+      envelope: { from: this.fromAddress, to: message.recipient.email },
+      // Built from our own domain rather than the machine's hostname, which in
+      // a container is a random hex string — a Message-ID like
+      // <...@4f2a9c1b8e77> reads as botnet output to a spam filter.
+      messageId: `<${randomUUID()}@${this.fromAddress.split('@')[1] ?? 'yaseen.pk'}>`,
       subject: rendered.subject,
       text: rendered.text,
       html: rendered.html,
       headers: {
-        // Lets a customer's client thread the mail for one order together,
-        // and gives support something to quote when chasing a delivery.
+        // Says this is machine-generated and transactional (RFC 3834). Stops
+        // out-of-office autoresponders replying to it, which would otherwise
+        // bounce back at us and cost reputation for no reason.
+        'Auto-Submitted': 'auto-generated',
+        'X-Auto-Response-Suppress': 'All',
+        // Lets a customer's client thread one order's mail together, and gives
+        // support something to quote when chasing a delivery.
         'X-Yaseen-Template': message.template,
       },
+      // Nothing in a template should be reaching the filesystem or the network
+      // to build a message; if one ever tries, fail rather than fetch.
+      disableFileAccess: true,
+      disableUrlAccess: true,
     });
 
     this.logger.log(`[${message.template}] emailed ${message.recipient.email}`);
@@ -117,4 +160,19 @@ export class EmailChannel implements NotificationChannel {
 
     return { subject: message.subject, html, text: htmlToText(html) };
   }
+}
+
+/**
+ * Whether an address is worth attempting.
+ *
+ * Deliberately a shape check, not an attempt at RFC 5322 — the point is to
+ * catch the addresses that are obviously going to hard-bounce (no domain, a
+ * bare name, a stray space from a checkout form). Hard bounces are the fastest
+ * way to lose a young server's reputation, so not sending is better than
+ * sending and being rejected.
+ */
+export function isDeliverable(email: string | null | undefined): boolean {
+  if (!email) return false;
+  const trimmed = email.trim();
+  return /^[^\s@,;]+@[^\s@,;.]+(\.[^\s@,;.]+)+$/.test(trimmed) && trimmed.length <= 254;
 }

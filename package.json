@@ -15,6 +15,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,mjs,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,mjs,json,md}\"",
     "boundaries": "node scripts/check-module-boundaries.mjs",
+    "check:email": "node scripts/check-email-dns.mjs",
     "db:migrate": "pnpm --filter @yaseen/api db:migrate",
     "db:generate": "pnpm --filter @yaseen/api db:generate",
     "db:seed": "turbo run db:seed",

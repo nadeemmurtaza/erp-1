@@ -116,7 +116,37 @@ log, which is where you look when a customer says they never got anything.
 The API refuses to boot if `email` is listed without an `SMTP_HOST`, so a
 half-finished deploy fails loudly instead of quietly dropping confirmations.
 
-### 6. Test before you trust it
+### 6. Check it, don't assume it
+
+```bash
+MAIL_FROM="Yaseen <no-reply@yaseen.pk>" pnpm check:email yaseen.pk YOUR_VPS_IP
+```
+
+Checks the A record, PTR, SPF, DKIM, DMARC, From-domain alignment, three
+blocklists and outbound port 25, and prints the fix for anything failing. It
+exits non-zero on failures, so cron can run it and shout.
+
+**Run it from the VPS.** Port 25 and the blocklist lookups only tell the truth
+from the machine that actually sends — from a laptop or a CI runner they report
+that machine's network, not the server's.
+
+State of `yaseen.pk` when this was written:
+
+| Check | Result |
+|---|---|
+| `mail.yaseen.pk` A record | resolves to the Contabo VPS |
+| PTR | **fails** — reverses to `vmi3529119.contaboserver.net` |
+| SPF | **missing** |
+| DKIM | **missing** |
+| DMARC | **missing** |
+| Blocklists | clean on Spamhaus, Barracuda and SpamCop |
+
+A generic provider hostname in the PTR is a strong spam signal on its own, and
+with no SPF, DKIM or DMARC, Gmail has nothing to authenticate against. Steps 2
+to 4 above fix all four; the blocklist result is the good news, since a listed
+IP is much harder to recover from than missing DNS.
+
+### 7. Test before you trust it
 
 Send a real order to <https://www.mail-tester.com>, which scores the message
 out of 10 and names anything missing. Below 8 means something above is wrong.
@@ -128,6 +158,51 @@ SPF:   PASS
 DKIM:  PASS
 DMARC: PASS
 ```
+
+## Staying out of spam
+
+Authentication makes you *eligible* for the inbox. Reputation decides the rest,
+and a brand-new VPS address has none — so the early weeks are the fragile part,
+not the configuration.
+
+What the code already does, so it does not have to be remembered:
+
+- **Every message has a plain-text part** alongside the HTML. HTML-only mail
+  scores worse, and a young sender cannot spare the points.
+- **The envelope sender is pinned** to the same domain as the visible `From`,
+  so SPF is checked against the domain DMARC will compare against. Left alone,
+  alignment would rest on DKIM by itself.
+- **Message-IDs are built from our own domain**, not the machine hostname —
+  which inside a container is a random hex string, and `<…@4f2a9c1b8e77>` reads
+  as botnet output.
+- **`Auto-Submitted: auto-generated`** marks the mail transactional, so
+  out-of-office autoresponders do not reply to it and bounce back at us.
+- **Obviously undeliverable addresses are never attempted.** A hard bounce
+  costs a young domain more than a missed email; receivers read a bounce rate
+  as a sign of a bought list.
+- **A sender that cannot pass DMARC is refused at boot** — setting `MAIL_FROM`
+  to a Gmail or Yahoo address logs an error, because those domains publish a
+  reject policy precisely so nobody else can send as them.
+
+What is on you:
+
+- **Fix the PTR.** A generic `vmi….contaboserver.net` reverse name is one of
+  the clearest "unmanaged VPS" signals there is.
+- **Read the DMARC reports.** `p=none` with a `rua=` address costs nothing and
+  tells you what is failing before customers notice.
+- **Keep the bounce rate down.** Above roughly 2–3% and receivers start
+  throttling. The address check helps; a real suppression list would help more.
+- **Do not import an old list and mail it.** Order volume ramps naturally,
+  which is the warm-up. A cold IP sending hundreds at once looks compromised.
+- **Never put the store's own mail behind a URL shortener**, and keep links
+  pointing at `yaseen.pk`. Link and sender domains that disagree score badly.
+
+There is no `List-Unsubscribe` header on order mail, deliberately: these are
+transactional messages a customer cannot opt out of, and offering to
+unsubscribe from your own order confirmation is both wrong and confusing. If
+marketing mail is ever added it will need that header — and a genuinely
+separate sending domain, so a campaign complaint cannot take order
+confirmations down with it.
 
 ## Warming up
 

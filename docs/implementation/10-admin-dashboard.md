@@ -855,7 +855,7 @@ apps/api/prisma/seed.ts                        + seedExpenseCategories()
 apps/api/src/core/settings/settings.defaults.ts
 apps/api/src/core/config/env.validation.ts     MODULES default: add purchasing,finance
 packages/shared/src/permissions.ts             + finance.view, finance.manage
-.env.example / .env.staging.example / .env.production.example
+.env.example / .env.production.example
 apps/web/src/components/admin/nav-registry.ts  Finance > Expenses (+ Categories child)
 ```
 
@@ -1167,7 +1167,7 @@ apps/api/prisma/seed.ts                               + seedRawMaterialCategory(
 apps/api/src/core/settings/settings.defaults.ts
 packages/shared/src/index.ts                          export * from './units'
 packages/shared/src/permissions.ts                    + bom.view, bom.manage, bom.produce
-.env.example + staging + production, env.validation.ts    MODULES += bom
+.env.example + production, env.validation.ts    MODULES += bom
 apps/web/src/components/admin/nav-registry.ts         new 'manufacturing' group + Factory icon
 apps/web/src/app/(admin)/admin/(app)/products/page.tsx    badge/hide raw-material rows (web-only)
 ```

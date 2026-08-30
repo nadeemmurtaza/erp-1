@@ -225,7 +225,6 @@ That is legitimate. `master_grocery` is not, because it encodes a shape.
 
 | Branch | Deploys to | `MODULES` |
 |---|---|---|
-| `main` | `test.yaseen.pk` | whatever staging is testing |
 | `production` | `yaseen.pk` | core + apparel |
 | `production` | a future grocery shop | core + grocery |
 

@@ -70,8 +70,8 @@ To add a module called `purchasing`:
    ```ts
    { name: 'purchasing', module: PurchasingModule },
    ```
-4. Add `purchasing` to `MODULES` in `.env`, `.env.example`,
-   `.env.staging.example` and `.env.production.example`.
+4. Add `purchasing` to `MODULES` in `.env`, `.env.example`, and
+   `.env.production.example`.
 
 That is the entire wiring step. If you find yourself editing `app.module.ts` or
 `main.ts` to add a feature, stop — you are doing it wrong.

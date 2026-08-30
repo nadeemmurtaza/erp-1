@@ -58,8 +58,24 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-noir-500">{tCommon('currencyNote')}</h3>
-            <p className="mt-6 text-sm text-noir-200 leading-relaxed">{t('payment')}</p>
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-noir-500">Legal</h3>
+            <ul className="mt-6 space-y-3">
+              <li>
+                <Link className="text-sm text-noir-200 hover:text-white transition-colors" href="/terms">
+                  Terms &amp; Conditions
+                </Link>
+              </li>
+              <li>
+                <Link className="text-sm text-noir-200 hover:text-white transition-colors" href="/privacy">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link className="text-sm text-noir-200 hover:text-white transition-colors" href="/returns">
+                  Returns &amp; Refunds
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
 

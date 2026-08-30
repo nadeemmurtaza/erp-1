@@ -42,7 +42,15 @@
 1. Generate a tailored `.env.example` for the client.
 2. **Automatic API Key Generation:** If `managed-services` was requested, the script will use Node's `crypto` module to automatically generate a highly secure, 64-character `AGENCY_API_KEY`. It will inject this real key directly into the `.env` file, and output a log reminding the agency to register this key in their central billing database.
 
-## Phase 6: Delivery & Pull Request
+## Phase 6: CI/CD & Database Cleanup
+*Why: We cannot deliver the Blueprint's internal migrations, staging workflows, or dummy data for unpurchased sectors.*
+
+**Actions:**
+1. **Migration Purge:** Explicitly delete the apps/api/prisma/schema/migrations/ folder. The client must generate their own fresh migration history tailored to their specific subset of schemas.
+2. **Modular Seeding:** The blueprint uses a multiple-seed architecture (apps/api/prisma/seeds/*.seed.ts). The script copies the main runner (seed.ts), but only copies the specific *.seed.ts files that match the requested modules. This guarantees the client's database seeds perfectly without TypeScript errors.
+3. **Pipeline Cleanup:** Delete the Blueprint's .github/workflows/ (since staging and production deployment logic belongs exclusively to the Master Platform).
+
+## Phase 7: Delivery & Pull Request
 **Actions:**
 1. `git add .` inside `.client-build`.
 2. `git commit -m "chore: platform sync (modules: core, books)"`

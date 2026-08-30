@@ -15,9 +15,10 @@
 ## Phase 2: The Engine Extraction (Backend)
 **Actions:**
 1. **Core Transfer:** Copy the foundational engine (`apps/api/src/core/`, `packages/shared/`) from the Blueprint over the client's repo.
-2. **Double-Layer Filter (Copy & Active Delete):** Copy the *entire* `apps/api/src/modules/` directory into a staging area. Then, actively **delete** any module folder that is not in the requested `--modules` list. This guarantees only needed modules are extracted, and actively purges any unpaid modules that were accidentally left behind.
-3. **Database Scaffolding:** Iterate through `apps/api/prisma/schema/`. Copy only `core.prisma` and schemas matching the requested packs. 
-4. **Validation:** Automatically run `npx prisma generate` inside the client build to prove the database schema compiles perfectly and has zero broken cross-pack relations.
+2. **Targeted Copy:** Iterate through the Blueprint's `apps/api/src/modules/` directory. Copy **only** the specific folders that match the requested `--modules` list directly into the client build. (Never copy unpurchased modules).
+3. **Active Pruning:** Scan the client's destination `modules/` directory. If any module folder exists there that is *not* in the requested list (e.g., a cancelled subscription from a previous upgrade), actively **delete** it.
+4. **Database Scaffolding:** Iterate through `apps/api/prisma/schema/`. Copy only `core.prisma` and schemas matching the requested packs. 
+5. **Validation:** Automatically run `npx prisma generate` inside the client build to prove the database schema compiles perfectly and has zero broken cross-pack relations.
 
 ## Phase 3: AST Modification (Bulletproof TypeScript)
 *Why: We cannot use fragile string replacement. We must use `ts-morph` to natively understand the TypeScript code.*

@@ -29,7 +29,7 @@ export default function SuppliersListPage() {
   const [busy, setBusy] = useState(true);
 
   useEffect(() => {
-    adminFetch<{ data: Supplier[] }>('/api/admin/suppliers')
+    adminFetch<{ data: Supplier[] }>('/admin/suppliers')
       .then((res) => setSuppliers(res.data))
       .catch((cause) => setError(cause instanceof Error ? cause.message : 'Could not load suppliers'))
       .finally(() => setBusy(false));

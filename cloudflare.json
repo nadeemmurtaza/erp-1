@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schemas.cloudflare.com/json_schema/Pages/schema.json#",
+  "pages": {
+    "name": "yaseenecom",
+    "description": "Yaseen - Clothing Store & Stitching Services",
+    "environments": [
+      {
+        "name": "production",
+        "branch": "deployment/cloudflare",
+        "routes": ["*"]
+      },
+      {
+        "name": "preview",
+        "routes": ["*"]
+      }
+    ],
+    "buildConfig": {
+      "buildCaching": true
+    }
+  }
+}

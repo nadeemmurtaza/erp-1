@@ -41,7 +41,7 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
   const inputRef = useRef<HTMLInputElement>(null);
 
   const load = () => {
-    adminFetch<{ data: StockCount }>(`/api/admin/inventory/counts/${id}`)
+    adminFetch<{ data: StockCount }>(`/admin/inventory/counts/${id}`)
       .then((res) => setCount(res.data))
       .catch((err) => setError(err.message))
       .finally(() => setBusy(false));
@@ -58,7 +58,7 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
   const handleStart = async () => {
     setError(null);
     try {
-      await adminFetch(`/api/admin/inventory/counts/${id}/start`, { method: 'POST' });
+      await adminFetch(`/admin/inventory/counts/${id}/start`, { method: 'POST' });
       addToast('Count started successfully', 'success');
       load();
     } catch (cause) {
@@ -71,7 +71,7 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
     if (!barcode.trim() || count?.status !== 'IN_PROGRESS') return;
 
     try {
-      await adminFetch(`/api/admin/inventory/counts/${id}/scan`, {
+      await adminFetch(`/admin/inventory/counts/${id}/scan`, {
         method: 'POST',
         body: JSON.stringify({ barcode: barcode.trim() }),
       });
@@ -88,7 +88,7 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
   const handleComplete = async () => {
     if (!confirm('Are you sure you want to complete this count? Any uncounted items will be ignored.')) return;
     try {
-      await adminFetch(`/api/admin/inventory/counts/${id}/complete`, { method: 'POST' });
+      await adminFetch(`/admin/inventory/counts/${id}/complete`, { method: 'POST' });
       addToast('Count completed successfully', 'success');
       router.push('/admin/inventory/counts');
     } catch (cause) {

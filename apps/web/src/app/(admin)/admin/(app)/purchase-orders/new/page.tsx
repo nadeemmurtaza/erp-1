@@ -41,7 +41,7 @@ export default function NewPurchaseOrderPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    adminFetch<{ data: Supplier[] }>('/api/admin/suppliers')
+    adminFetch<{ data: Supplier[] }>('/admin/suppliers')
       .then((res) => setSuppliers(res.data))
       .catch(console.error);
   }, []);
@@ -52,7 +52,7 @@ export default function NewPurchaseOrderPage() {
       return;
     }
     setLoadingProducts(true);
-    adminFetch<{ data: SupplierProduct[] }>(`/api/admin/suppliers/${supplierId}/products`)
+    adminFetch<{ data: SupplierProduct[] }>(`/admin/suppliers/${supplierId}/products`)
       .then((res) => setSupplierProducts(res.data))
       .catch(console.error)
       .finally(() => setLoadingProducts(false));
@@ -86,7 +86,7 @@ export default function NewPurchaseOrderPage() {
     setSaving(true);
     setError(null);
     try {
-      const result = await adminFetch<{ id: string }>('/api/admin/purchase-orders', {
+      const result = await adminFetch<{ id: string }>('/admin/purchase-orders', {
         method: 'POST',
         body: {
           supplierId,
@@ -101,7 +101,7 @@ export default function NewPurchaseOrderPage() {
       });
       
       if (send) {
-        await adminFetch(`/api/admin/purchase-orders/${result.id}/send`, { method: 'POST' });
+        await adminFetch(`/admin/purchase-orders/${result.id}/send`, { method: 'POST' });
       }
       
       router.push(`/admin/purchase-orders/${result.id}`);

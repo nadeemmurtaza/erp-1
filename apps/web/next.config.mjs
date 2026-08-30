@@ -31,7 +31,6 @@ const nextConfig = {
       { protocol: 'http', hostname: '127.0.0.1', port: '3001' },
       // Production API, when STORAGE_DRIVER=local (uploads served from the API itself).
       { protocol: 'https', hostname: 'api.yaseen.pk' },
-      { protocol: 'https', hostname: 'api-test.yaseen.pk' },
       // Production object storage. Set S3_PUBLIC_URL's host here when deploying.
       { protocol: 'https', hostname: '**.r2.dev' },
       { protocol: 'https', hostname: '**.amazonaws.com' },

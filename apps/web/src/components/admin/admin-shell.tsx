@@ -30,7 +30,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const stored = getStoredUser();
-    if (!stored) {
+    if (!stored || !stored.permissions) {
+      if (stored) clearSession();
       router.replace('/admin/login');
       return;
     }

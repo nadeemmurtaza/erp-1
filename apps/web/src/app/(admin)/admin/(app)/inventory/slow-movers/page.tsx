@@ -40,7 +40,7 @@ export default function SlowMoversPage() {
   const [minAge, setMinAge] = useState<number>(0);
 
   useEffect(() => {
-    adminFetch<InventoryVariant[]>('/api/admin/inventory/slow-movers')
+    adminFetch<InventoryVariant[]>('/admin/inventory/slow-movers')
       .then((res) => {
         setVariants(res || []);
       })

@@ -34,7 +34,7 @@ export default function PurchaseOrdersPage() {
   useEffect(() => {
     setBusy(true);
     setError(null);
-    adminFetch<{ data: PurchaseOrderListRow[] }>('/api/admin/purchase-orders', {
+    adminFetch<{ data: PurchaseOrderListRow[] }>('/admin/purchase-orders', {
       query: { status: statusFilter || undefined }
     })
       .then((res) => setPos(res.data))

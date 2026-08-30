@@ -23,7 +23,7 @@ export default function CountsListPage() {
   const [busy, setBusy] = useState(true);
 
   useEffect(() => {
-    adminFetch<{ data: StockCount[] }>('/api/admin/inventory/counts')
+    adminFetch<{ data: StockCount[] }>('/admin/inventory/counts')
       .then((res) => setCounts(res.data))
       .catch((err) => setError(err.message))
       .finally(() => setBusy(false));
@@ -35,7 +35,7 @@ export default function CountsListPage() {
 
   const handleCreate = async () => {
     try {
-      const res = await adminFetch<{ data: StockCount }>('/api/admin/inventory/counts', {
+      const res = await adminFetch<{ data: StockCount }>('/admin/inventory/counts', {
         method: 'POST',
         body: JSON.stringify({}),
       });

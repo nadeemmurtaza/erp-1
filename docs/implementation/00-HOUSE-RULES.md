@@ -312,21 +312,24 @@ explicitly. Do not compress the steps to save a deploy.
 ## 7. Commit and PR conventions
 
 - Branch from `main`. One work order per branch.
-- **Branch name: `<pack>/<type>/<slug>`.**
+- **Branch name: `<pack>/<type>/<module>/[capability]-<slug>`.**
 
   ```
-  core/feat/wo-a1-admin-ui-primitives
-  core/fix/orders-cod-fee-rounding
-  apparel/feat/measurements-size-chart
-  web/feat/wo-a4-dashboard-card-grid
-  infra/chore/bump-prisma-8
+  core/feat/cart/b2b-wholesale-tiers
+  apparel/fix/stitching/queue-validation
+  books/feat/publishing/author-royalties
+  web/feat/storefront/monochrome-reskin
+  infra/chore/mcp/install-api
   ```
 
   `pack` is the module pack the work belongs to — `core`, a sector pack like
   `apparel`, or `web` / `mobile` / `infra` for work that is not an API module.
   `type` is the same vocabulary the commit log uses: `feat` `fix` `refactor`
-  `perf` `test` `docs` `chore`. `slug` is kebab-case and carries the work-order
-  id when the work comes from a brief.
+  `perf` `test` `docs` `chore`. 
+  `module` is the specific API module or frontend domain being edited.
+  `capability` is optional (e.g., `b2b`, `b2c`, `c2c`). `slug` is kebab-case.
+
+  **CRITICAL RULE:** Never name or rename a branch based purely on its old name or a ticket ID. You must **read the actual code, commits, and files changed** to determine what the branch is truly about, and name it accordingly.
 
   Pack first, so `git branch --list 'apparel/*'` is every apparel branch and git
   UIs render the tree. Slashes, not underscores — an underscored name is one

@@ -24,7 +24,28 @@
  * See docs/implementation/MULTI-SECTOR.md.
  */
 
-export type PackName = 'core' | 'apparel' | 'grocery' | 'pharmacy' | 'electronics';
+/**
+ * The sector packs. A pack exists only where a vertical owns genuine domain data
+ * that core cannot express — a drug schedule, a vehicle tree, an ISBN.
+ *
+ * Grocery and electronics are deliberately ABSENT. Everything they appeared to
+ * need turned out to be universal (lots, serials, warranty, agegate,
+ * subscriptions, fitment, dimensions) and belongs in core. See the taxonomy in
+ * docs/implementation/MULTI-SECTOR.md.
+ *
+ * Business models — B2B, C2C, B2B2C, C2B, B2G, D2C, O2O — are NOT packs and
+ * never appear here. They are capability modules in core, because they cut
+ * across every sector: one shop can be B2C and B2B at once.
+ */
+export type PackName =
+  | 'core'
+  | 'apparel'
+  | 'pharmacy'
+  | 'automotive'
+  | 'media'
+  | 'pets'
+  | 'home'
+  | 'digital';
 
 export const MODULE_PACKS: Record<string, PackName> = {
   // The universal commerce core — what clothing, grocery, medicine, hardware

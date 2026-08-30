@@ -411,3 +411,247 @@ them costs more than it looks like it will.
 | How does the API drop a disabled module? | `modules.registry.ts` never composes it — its routes 404 and its controllers never instantiate. |
 | What are branches for? | Work in progress, and releases. Time, not shape. |
 | Branch name? | `<pack>/<type>/<slug>` |
+
+---
+
+# Sectors and business models — the full taxonomy
+
+Designed by fanning out one agent per sector and per business model over the real
+schema, then reconciling. The reconciliation changed the answer substantially, so
+the reasoning is recorded, not just the conclusion.
+
+## The two axes
+
+A **sector** is a product vertical. It changes the *data shape* — what a product
+IS. It is a **pack**.
+
+A **business model** is a transaction framework. It changes *who trades with whom
+on what terms*, and it cuts across every sector: one shop can be B2C and B2B at
+once. Business models are **capability modules in `core`**, never packs.
+
+If business models were packs, ten sectors times eight models is eighty packs,
+and every core fix would land in all of them. As capabilities they compose:
+`apparel + pricing + quotes` is a wholesale clothing operation; swap `apparel`
+for `lots` and it is a food distributor. Same commit.
+
+## The finding that reorganised everything
+
+**Most of what looks sector-specific is a universal capability wearing a
+sector's clothes.**
+
+Three agents independently proposed the same sub-ledger under three names:
+pharmacy's `batches`, grocery's `perishables`, electronics' `serials`. All three
+partition stock by an identity finer than the variant. Two agents proposed
+`subscriptions` with different pack assignments. Three proposed price lists under
+two names.
+
+Once those are pulled into `core` where they belong, the sector packs collapse to
+a fraction of what was proposed — and two of the nine need **no pack at all**.
+
+### Universal capabilities extracted from the sector proposals
+
+| Capability | Pack | Wanted by | Why it is universal |
+|---|---|---|---|
+| `lots` | core | grocery, pharmacy, media | Lot code + expiry + FEFO allocation + recall lookup. A bakery, a chemist and a battery warehouse need the identical sub-ledger. |
+| `serials` | core | electronics, automotive, home | One identity per unit rather than per batch. Appliances, bicycles and power tools need it as much as phones. |
+| `warranty` | core | electronics, automotive, home | A post-sale obligation with a clock. Sofas and gearboxes have warranties. |
+| `agegate` | core | grocery, media, home | Restricted-goods classes and basket verification. Alcohol, 18+ games, solvents, blades — same gate. |
+| `subscriptions` | core | pets, digital, grocery | A saved basket, an interval, a nightly runner producing normal Orders. Coffee, cat food and SaaS seats are one mechanism. |
+| `fitment` | core | automotive, electronics | "This part fits these N things." Vehicle compatibility and printer-cartridge compatibility are the same matrix. |
+| `dimensions` | core | home, electronics, automotive | Weight and volumetric footprint, so shipping prices from size rather than order value. |
+| `tax` | core | **every model, and every shop** | See below — it does not exist at all today. |
+
+**Ruling on `serials` vs `lots`:** they stay **two** modules, not one. A lot is an
+identity over N units allocated by policy (FEFO); a serial is an identity over
+exactly one unit allocated by selection. The allocation semantics differ enough
+that merging them produces a module with two disjoint halves. They share the
+principle, not the code.
+
+## Sector packs, after reconciliation
+
+| Pack | Modules | What core genuinely cannot express | Status |
+|---|---|---|---|
+| `apparel` | `measurements`, `stitching` | Body measurements, garment blueprints, tailor workflow | **exists — needs nothing new** |
+| `grocery` | *(none)* | — | **no pack needed.** Once `lots`, `agegate` and `subscriptions` are core, nothing sector-specific remains. |
+| `electronics` | *(none)* | — | **no pack needed.** `serials`, `warranty`, `fitment`, `dimensions` are all core. Blocked on Phase 3 variant options, not on a pack. |
+| `pharmacy` | `pharmacy` | Drug schedules (GSL/P/POM, controlled), prescription capture, pharmacist verification, the legally-mandated controlled-drugs register | specified |
+| `automotive` | `vehicles` | The vehicle taxonomy tree and the shopper's garage — reference data `fitment` points at | specified |
+| `media` | `media` | Bibliographic identity: series, contributors, editions, ISBN/EAN semantics, extent | specified |
+| `pets` | `pets` | Pet profiles and weight-to-size / weight-to-duration charts | specified |
+| `home` | `cutting` | Selling by continuous measure over an integer ledger, and accounting for the offcut | specified |
+| `digital` | `digital` | Entitlements, licence-key and seat pools, finite digital supply | specified |
+
+Nine sectors, **seven small packs and two that need nothing**. Every pack that
+survived owns genuine domain data — a drug schedule, a vehicle tree, an ISBN — not
+a commerce mechanism.
+
+## Capability modules for business models
+
+All pack `core`. Named for what they do, never for a model.
+
+| Module | Enables | Purpose |
+|---|---|---|
+| `pricing` | B2B, B2G, B2B2C | Resolve "what does THIS buyer pay for THIS variant in THIS context". Price lists and quantity breaks. Today price is `variant.priceOverride ?? product.basePrice`, resolved inline. |
+| `accounts` | B2B, B2G, B2B2C | The buying organisation: several humans ordering on its behalf, with the price list and terms attached to the company. |
+| `quotes` | B2B, B2G | Priced, snapshotted, non-committal document with validity and acceptance. A tender and an RFQ are one pipeline. |
+| `agreements` | B2B, B2G | Negotiated terms governing a set of future orders: ceiling value, contracted rates, retention. |
+| `credentials` | B2G, C2C, B2B2C, pharmacy | A document proving an entity may do something, with an issuer and an expiry. Tender eligibility, seller KYC and a pharmacy licence are one shape. |
+| `approvals` | B2B, B2G, grocery | Generic "someone with authority must say yes before this proceeds", over any subject. |
+| `receivables` | B2B, B2G | What a buyer owes, when due, what is collected and what is withheld. Net-60 against an inspected delivery. |
+| `tax` | **all** | Rates, classes, exemptions, inclusive/exclusive. **Absent from the repository entirely.** |
+| `sellers` | C2C, B2B2C | Who may sell, and which catalogue rows and money belong to them. Attribution, not a storefront. |
+| `payouts` | C2C, C2B, B2B2C | Money owed to a party and how it leaves. Generic over payee so one ledger settles a marketplace seller, a reseller and a freelancer. |
+| `commissions` | C2C, C2B, B2B2C | Who earns from a revenue row and at what rate, snapshotted onto the line at placement. |
+| `submissions` | C2B | Intake and adjudication of what a person offers the business. |
+| `moderation` | C2C, B2C | A queue of things a human approves before they go live, generic over subject. |
+| `storefronts` | B2B2C | Branded front-ends and resolving an inbound request to one. |
+| `locations` | O2O | The physical places a business operates from, plus the store locator. |
+| `fulfilment` | O2O, C2C | Delivery or collection, per-line, with its own lifecycle and a courier provider seam. |
+
+### D2C needs nothing
+
+Not one module, column, setting, permission or event.
+
+The decisive test: take the running boutique — a reseller — and make it a
+manufacturer selling direct. Which line of transaction code changes? **None.**
+`Cart`, `CartItem`, `Order`, `OrderItem`, `Payment` and `Shipment` gain and lose
+nothing. Checkout runs the same `computeOrderTotals()`.
+
+The only difference is the *provenance* of `ProductVariant.costPrice`: a
+`GoodsReceipt` for a reseller, a `BomProductionRun` for a manufacturer. Both post
+through `InventoryService.move()`, both feed `weightedAverageCost()`,
+`OrderItem.unitCost` snapshots the result identically, and the margin report is
+byte-identical between the two businesses.
+
+D2C changes where cost comes from, not what the platform does with it — and the
+module that changes where cost comes from is `bom`, already core, already
+specified in Phase 10.
+
+**Do not create a `d2c` module.** A module named after a transaction framework is
+exactly the error this taxonomy exists to prevent.
+
+## The blockers — read this before planning anything
+
+These are not sector work. They are core gaps that every sector hits on day one,
+and no amount of pack design routes around them.
+
+### B1 — `ProductKind` has three apparel values and no neutral one
+
+```prisma
+enum ProductKind { STITCHED UNSTITCHED STITCHING_SERVICE }
+```
+
+`kind` is required with no default. **Six of nine sector agents flagged this
+independently.** A chemist files paracetamol as `STITCHED`. Until there is a
+neutral value, every non-apparel sector is filing goods under a garment noun.
+
+Cheapest correct fix: add `GOODS`, `SERVICE`, `DIGITAL` and treat the three
+apparel values as legacy. Additive, no data migration.
+
+### B2 — a variant has exactly two option axes
+
+`ProductVariant` has `size` and `color` and nothing else. An electronics variant
+needs storage, RAM and network band; a chemical needs concentration and pack
+size. This is already specified as Phase 3 WO-3.1 (`ProductOption` /
+`ProductOptionValue`). **Electronics is hard-blocked on it.** Ship Phase 3 first
+or the pack produces SKUs no product page can select.
+
+### B3 — there is no checkout veto hook
+
+Age gating, prescription verification, credit limits and approval holds all need
+the same thing: a way to refuse a basket. Four agents independently proposed it.
+Build **one** `CheckoutValidator` seam in `src/core/checkout/` with `@Optional()`
+multi-providers, and every one of them becomes a registration rather than an edit
+to `orders.service.ts`.
+
+### B4 — tax does not exist
+
+No rate, no class, no VAT/GST, no inclusive/exclusive handling, anywhere. It was
+surfaced by B2B ("tax exemption") but it is not a B2B feature — **a Pakistani
+shop charging GST needs it today.** This is arguably the largest single gap the
+exercise found.
+
+### B5 — PBAC has no notion of "my rows"
+
+`RolePermission` is `@@unique([role, permissionId])` and the guard is a pure
+set-membership test. `catalog.manage` grants *every* product. Multi-seller (C2C,
+B2B2C) cannot be built until permissions can be scoped to an owner. This is the
+real price of a marketplace, and it is structural.
+
+### B6 — stock has no location dimension
+
+Per-location inventory cannot be a separate module: it would either not write
+`ProductVariant.stock` (the two drift silently forever) or write it and break
+Rule 12. O2O therefore requires a genuine `inventory` core edit. The one
+unavoidable invasive change in the whole taxonomy.
+
+### B7 — core does not compile without apparel
+
+The honest one. `core.prisma` carries hard back-relations into apparel models —
+`User` alone has five. The `cart` → `measurements` import already recorded in
+`KNOWN_VIOLATIONS` is the visible tip; the schema coupling underneath is deeper.
+**The pack seam is currently a claim, not a fact**, and paying it down is a
+prerequisite for a second sector, not an optional tidy-up.
+
+## What a deployment looks like
+
+Same commit, different `MODULES`.
+
+```bash
+# The shop as it exists today — apparel, B2C
+MODULES=catalog,cart,orders,payments,inventory,purchasing,crm,analytics,reports,tracking,measurements,stitching,finance,bom
+```
+
+```bash
+# A grocery shop doing click-and-collect — no sector pack at all
+MODULES=catalog,cart,orders,payments,inventory,purchasing,crm,analytics,reports,tracking,finance,lots,agegate,subscriptions,locations,fulfilment,tax
+```
+
+```bash
+# An electronics retailer selling to businesses and consumers
+MODULES=catalog,cart,orders,payments,inventory,purchasing,crm,analytics,reports,tracking,finance,serials,warranty,fitment,dimensions,tax,pricing,accounts,quotes,receivables,approvals
+```
+
+```bash
+# A digital-goods maker selling direct — D2C adds nothing
+MODULES=catalog,cart,orders,payments,crm,analytics,reports,tracking,finance,digital,subscriptions,tax
+```
+
+Note the third: B2B and B2C together, no toggle. A shop is not "a B2B shop" — it
+enables the capabilities its trade needs.
+
+## Sequencing
+
+**Nothing here starts before the blockers.** B1 and B3 are small and unblock six
+sectors between them; B4 is owed to the current shop regardless of sectors.
+
+1. **B1 `ProductKind`, B3 checkout hook, B4 `tax`.** Small, and the first two
+   unblock almost everything. `tax` is the exception — real work, and overdue.
+2. **Phase 10** as already specified. Unaffected by any of this.
+3. **B7 — pay down the apparel coupling in core.** Required before a second
+   sector, and the longer it waits the more expensive it becomes.
+4. **`lots` + `agegate` + `subscriptions`.** Three core capabilities that between
+   them deliver the entire grocery vertical with no pack.
+5. **`pricing` + `accounts` + `tax`.** B2B becomes possible. Highest commercial
+   value of any capability group for an existing retailer.
+6. **Everything else, on demand.** `quotes`/`agreements`/`receivables` when a
+   tender is actually in play; `sellers`/`payouts`/`commissions` only if a
+   marketplace is genuinely wanted, since B5 makes it the most expensive item
+   here; `locations`/`fulfilment` when a physical store exists.
+
+**May never be needed:** `submissions`, `storefronts`, `credentials`,
+`moderation`. Real capabilities, but speculative until a stated requirement
+arrives. Do not build them on the strength of this document.
+
+## Open questions for the owner
+
+1. **Is a second sector actually coming?** If not, B7 is not urgent and this
+   taxonomy is a map rather than a plan. If yes, B7 is the first thing to fund.
+2. **Is `tax` wanted now?** It is independently overdue for a Pakistani shop
+   charging GST, regardless of sectors.
+3. **Is a marketplace ever in scope?** B5 (permission scoping) is expensive and
+   is only worth paying for C2C or B2B2C.
+4. **`StitchingOrder` revenue is outside the order ledger.** Found in passing:
+   `StitchingOrder` never creates an `Order`, and `Payment.orderId` is a required
+   FK to `Order`, so `quotedFee` never reaches revenue. Not a taxonomy question —
+   a live reporting gap, and worth its own work order.

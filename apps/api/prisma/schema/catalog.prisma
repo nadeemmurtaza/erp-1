@@ -154,6 +154,7 @@ model ProductVariant {
   stockMovements     StockMovement[]
   purchaseOrderItems PurchaseOrderItem[]
   goodsReceiptItems  GoodsReceiptItem[]
+  stockCountLines    StockCountLine[]
 
   @@index([productId])
   @@index([stock])

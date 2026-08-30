@@ -189,13 +189,44 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/inventory',
     permissions: ['inventory.manage'],
     group: 'inventory',
+    children: [
+      {
+        key: 'inventory-reorder',
+        label: 'Reorder',
+        href: '/admin/inventory/reorder',
+        permissions: ['inventory.manage'],
+        group: 'inventory',
+      },
+      {
+        key: 'inventory-slow-movers',
+        label: 'Slow Movers',
+        href: '/admin/inventory/slow-movers',
+        permissions: ['inventory.manage'],
+        group: 'inventory',
+      },
+      {
+        key: 'inventory-counts',
+        label: 'Stock Counts',
+        href: '/admin/inventory/counts',
+        permissions: ['inventory.count'],
+        group: 'inventory',
+      },
+    ],
   },
-  // {
-  //   key: 'purchasing',
-  //   label: 'Purchasing',
-  //   href: '/admin/purchasing',
-  //   group: 'inventory',
-  // },
+  {
+    key: 'purchasing',
+    label: 'Purchase orders',
+    href: '/admin/purchase-orders',
+    permissions: ['purchasing.manage'],
+    group: 'inventory',
+  },
+  {
+    key: 'suppliers',
+    label: 'Suppliers',
+    href: '/admin/suppliers',
+    permissions: ['suppliers.manage'],
+    group: 'inventory',
+  },
 
   // Group: Settings
   {
@@ -227,5 +258,11 @@ export function landingFor(permissions: readonly string[]): string {
 export function navFor(permissions: readonly string[]): AdminNavItem[] {
   return ADMIN_NAV.filter(
     (item) => !item.permissions || item.permissions.some((key) => permissions.includes(key)),
-  );
+  ).map(item => {
+    if (!item.children) return item;
+    const filteredChildren = item.children.filter(
+      (child) => !child.permissions || child.permissions.some((key) => permissions.includes(key)),
+    );
+    return { ...item, children: filteredChildren };
+  });
 }

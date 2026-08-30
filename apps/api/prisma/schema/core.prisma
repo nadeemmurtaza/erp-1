@@ -45,6 +45,8 @@ model User {
   permissionOverrides   UserPermission[]
   purchaseOrdersCreated PurchaseOrder[]      @relation("PurchaseOrderCreator")
   goodsReceiptsReceived GoodsReceipt[]       @relation("GoodsReceiptReceiver")
+  stockCountsCreated    StockCount[]         @relation("StockCountCreator")
+  stockCountsAssigned   StockCount[]         @relation("StockCountAssignee")
 
   @@index([role])
   @@index([createdAt])

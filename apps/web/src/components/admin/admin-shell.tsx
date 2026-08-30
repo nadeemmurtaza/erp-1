@@ -58,7 +58,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
   }
 
   const items = navFor(user.permissions);
-  const activeItem = items.reduce((best, item) => {
+  const allItems = items.flatMap(item => [item, ...(item.children || [])]);
+  const activeItem = allItems.reduce((best, item) => {
     const isMatch = item.href === '/admin' 
       ? pathname === '/admin' 
       : (pathname === item.href || pathname.startsWith(item.href + '/'));
@@ -108,7 +109,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
                     <ul className="space-y-0.5">
                       {groupItems.map((item) => (
                         <li key={item.key}>
-                          <NavLink item={item} isActive={activeItem?.key === item.key} onClick={() => setIsNavOpen(false)} />
+                          <NavItemNode item={item} activeItem={activeItem} onClick={() => setIsNavOpen(false)} />
                         </li>
                       ))}
                     </ul>
@@ -141,7 +142,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
                 <ul className="space-y-0.5">
                   {groupItems.map((item) => (
                     <li key={item.key}>
-                      <NavLink item={item} isActive={activeItem?.key === item.key} />
+                      <NavItemNode item={item} activeItem={activeItem} />
                     </li>
                   ))}
                 </ul>
@@ -222,5 +223,69 @@ function NavLink({
     >
       {item.label}
     </Link>
+  );
+}
+
+
+function NavItemNode({
+  item,
+  activeItem,
+  onClick,
+}: {
+  item: AdminNavItem;
+  activeItem: AdminNavItem | null;
+  onClick?: () => void;
+}) {
+  const isActive = activeItem?.key === item.key;
+  const hasActiveChild = item.children?.some(c => activeItem?.key === c.key) ?? false;
+  
+  const [isOpen, setIsOpen] = useState(isActive || hasActiveChild);
+
+  useEffect(() => {
+    if (hasActiveChild) setIsOpen(true);
+  }, [hasActiveChild]);
+
+  return (
+    <div className="space-y-0.5">
+      <div className="flex items-center">
+        <div className="flex-1">
+          <NavLink item={item} isActive={isActive} onClick={onClick} />
+        </div>
+        {item.children && item.children.length > 0 && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsOpen(!isOpen);
+            }}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-ink/50 hover:bg-sand-100 hover:text-ink ms-1"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={clsx('transition-transform duration-200', isOpen && 'rotate-180')}
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+        )}
+      </div>
+      {isOpen && item.children && item.children.length > 0 && (
+        <ul className="ms-4 mt-1 space-y-0.5 border-s border-sand-200 ps-2">
+          {item.children.map((child) => (
+            <li key={child.key}>
+              <NavLink item={child} isActive={activeItem?.key === child.key} onClick={onClick} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }

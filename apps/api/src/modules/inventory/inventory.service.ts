@@ -10,6 +10,7 @@ const variantListInclude = {
   product: {
     include: { translations: { where: { locale: DEFAULT_LOCALE }, take: 1 } },
   },
+  salesStat: true,
 } satisfies Prisma.ProductVariantInclude;
 
 type VariantWithProduct = Prisma.ProductVariantGetPayload<{ include: typeof variantListInclude }>;
@@ -54,14 +55,15 @@ export class InventoryService {
     private readonly events: EventBusService,
   ) {}
 
-  async list(query: { lowStockOnly?: boolean; search?: string }) {
+  async list(query: { filter?: string; search?: string }) {
     const where: Prisma.ProductVariantWhereInput = { isActive: true };
 
-    if (query.lowStockOnly) {
-      // Postgres cannot compare two columns through Prisma's filter syntax, so
-      // "at or below the threshold" is expressed as a raw column reference —
-      // the same idiom product-admin.service.ts uses for the catalogue list.
+    if (query.filter === 'low') {
       where.stock = { lte: this.prisma.productVariant.fields.lowStockThreshold };
+    } else if (query.filter === 'out') {
+      where.stock = 0;
+    } else if (query.filter === 'slow') {
+      where.salesStat = { isSlowMover: true };
     }
 
     if (query.search?.trim()) {
@@ -85,6 +87,47 @@ export class InventoryService {
       orderBy: [{ stock: 'asc' }, { sku: 'asc' }],
     });
 
+    return variants.map(toVariantView);
+  }
+
+  async getReorderSuggestions() {
+    const variants = await this.prisma.productVariant.findMany({
+      where: {
+        isActive: true,
+        reorderPoint: { not: null },
+        stock: { lte: this.prisma.productVariant.fields.reorderPoint },
+        preferredSupplierId: { not: null }
+      },
+      include: {
+        ...variantListInclude,
+        preferredSupplier: { select: { id: true, name: true } },
+        supplierProducts: true
+      },
+      orderBy: { stock: 'asc' },
+    });
+    return variants.map((v) => {
+      const sp = v.supplierProducts.find((s) => s.supplierId === v.preferredSupplierId);
+      return {
+        ...toVariantView(v),
+        reorderPoint: v.reorderPoint,
+        reorderQuantity: v.reorderQuantity,
+        preferredSupplier: v.preferredSupplier,
+        lastCost: sp?.lastCost ?? 0,
+        moq: sp?.moq ?? 1,
+      };
+    });
+  }
+
+  async getSlowMovers() {
+    const variants = await this.prisma.productVariant.findMany({
+      where: {
+        isActive: true,
+        stock: { gt: 0 },
+        salesStat: { isSlowMover: true }
+      },
+      include: variantListInclude,
+      orderBy: { salesStat: { ageDays: 'desc' } }
+    });
     return variants.map(toVariantView);
   }
 
@@ -217,11 +260,18 @@ function toVariantView(variant: VariantWithProduct) {
   return {
     id: variant.id,
     sku: variant.sku,
+    barcode: variant.barcode,
     size: variant.size,
     color: variant.color,
     stock: variant.stock,
     lowStockThreshold: variant.lowStockThreshold,
     isActive: variant.isActive,
+    costPrice: variant.costPrice,
+    salesStat: variant.salesStat ? {
+      daysOfCover: variant.salesStat.daysOfCover,
+      lastSoldAt: variant.salesStat.lastSoldAt,
+      ageDays: variant.salesStat.ageDays,
+    } : null,
     product: {
       id: variant.product.id,
       name: variant.product.translations[0]?.name ?? variant.product.id,

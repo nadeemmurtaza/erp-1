@@ -10,6 +10,13 @@
 # GitHub Actions CD (deploy-staging.yml) runs the same `up -d --build`
 # after pulling the latest commit on `main`.
 
+# An explicit project name, because both stacks are deployed from the SAME
+# directory. Without this, Compose derives the project from the directory name
+# ("yaseenecom") for staging AND prod, decides the other stack's containers are
+# stale members of the one project, and tears them down on every `up` — staging
+# deploys were taking production offline.
+name: yaseen-staging
+
 services:
   postgres:
     image: postgres:16-alpine
@@ -32,23 +39,6 @@ services:
       retries: 10
     networks: [yaseen-staging]
 
-  redis:
-    image: redis:7-alpine
-    container_name: yaseen-redis-staging
-    mem_limit: 128M
-    memswap_limit: 128M
-    security_opt:
-      - no-new-privileges:true
-    restart: unless-stopped
-    volumes:
-      - redis-staging-data:/data
-    healthcheck:
-      test: ['CMD', 'redis-cli', 'ping']
-      interval: 5s
-      timeout: 5s
-      retries: 10
-    networks: [yaseen-staging]
-
   api:
     build:
       context: .
@@ -62,11 +52,8 @@ services:
     env_file: .env.staging
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-yaseen}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-yaseen}?schema=public&connection_limit=10&pool_timeout=20&connect_timeout=10
-      REDIS_URL: redis://redis:6379
     depends_on:
       postgres:
-        condition: service_healthy
-      redis:
         condition: service_healthy
     volumes:
       - api-staging-uploads:/repo/apps/api/uploads
@@ -111,5 +98,4 @@ networks:
 
 volumes:
   postgres-staging-data:
-  redis-staging-data:
   api-staging-uploads:

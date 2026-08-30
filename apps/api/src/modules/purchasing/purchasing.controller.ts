@@ -70,11 +70,26 @@ export class PurchasingController {
 
 import { CurrentUser } from '../../core/auth/decorators';
 import { CreatePurchaseOrderDto, ReceiveGoodsDto } from './dto/purchase-order.dto';
+import { Query } from '@nestjs/common';
 
 @ApiTags('Purchase Orders')
 @Controller('admin/purchase-orders')
 export class PurchaseOrderAdminController {
   constructor(private readonly purchasing: PurchasingService) {}
+
+  @Get()
+  @RequirePermission('purchasing.manage')
+  @ApiOperation({ summary: 'List purchase orders' })
+  async findAll(@Query('status') status?: string) {
+    return { data: await this.purchasing.findAllPurchaseOrders(status) };
+  }
+
+  @Get(':id')
+  @RequirePermission('purchasing.manage')
+  @ApiOperation({ summary: 'Get a purchase order' })
+  async findOne(@Param('id') id: string) {
+    return this.purchasing.findOnePurchaseOrder(id);
+  }
 
   @Post()
   @RequirePermission('purchasing.manage')

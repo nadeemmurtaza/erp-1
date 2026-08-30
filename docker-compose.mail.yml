@@ -1,74 +1,82 @@
-# Self-hosted outbound mail for yaseen.pk.
-#
-# Send-only on purpose. The store needs to *send* order confirmations; replies
-# go to MAIL_REPLY_TO, which is an ordinary mailbox somewhere else. Dropping
-# IMAP, mailbox storage and spam filtering removes most of the attack surface
-# and most of the maintenance of running your own mail.
+# Mail server — one container, no new databases.
 #
 #   docker compose -f docker-compose.mail.yml up -d
 #
-# BEFORE THIS WILL DELIVER ANYTHING, three things have to be true. All three are
-# outside this file, and skipping any one of them means Gmail silently bins the
-# mail. docs/email.md has the full walkthrough.
+# Stalwart is an all-in-one SMTP/IMAP/JMAP server in a single Rust binary. It
+# was chosen over mailcow for one reason above the others: mailcow ships its
+# own MariaDB and its own Redis and cannot be pointed at existing ones, so it
+# would have meant a second database engine on this box. Stalwart takes the
+# Postgres and Redis that are already running.
 #
-#   1. Outbound port 25 is open. Most VPS providers block it by default —
-#      DigitalOcean, Vultr, Hetzner, Oracle and AWS all do — and unblocking is
-#      a support ticket. Verify first:  nc -zv gmail-smtp-in.l.google.com 25
-#   2. A PTR (reverse DNS) record on the VPS IP resolving to mail.yaseen.pk.
-#      Set in the provider's control panel, not in DNS hosting. Receivers check
-#      that the forward and reverse records agree, and reject when they do not.
-#   3. SPF, DKIM and DMARC records published for yaseen.pk. Since February 2024
-#      Gmail and Yahoo require all three from bulk senders. The DKIM key is
-#      generated on first start — read it out of the volume, see docs/email.md.
+# What it uses, and what it does not:
 #
-# The API reaches this over the internal network as smtp:25 with no
-# credentials; nothing outside the Docker network can. Port 25 is published
-# only for outbound delivery, and 587 is deliberately NOT published — there is
-# no reason to accept mail submission from the internet.
+#   metadata      -> the existing Postgres, in its OWN database ("stalwart"),
+#                    created by deploy/mail/init-postgres.sql
+#   rate limits,  -> the existing Redis, on database index 1. The API declares
+#   locks, ACME      ioredis but does not import it anywhere yet, so index 0 is
+#                    free; using 1 keeps it that way if that changes.
+#   message bodies-> a local volume, NOT Postgres. Mail bodies in the database
+#                    would grow every nightly dump forever.
+#
+# Ports 80 and 443 stay with Caddy. Caddy fronts the admin UI over yaseen-edge
+# (see the mail.yaseen.pk block in the Caddyfile) and holds the certificate;
+# deploy/mail/sync-certs.sh hands it to Stalwart, which serves SMTP and IMAP
+# itself and needs the cert on disk.
+#
+# Full setup, including the DNS records that decide whether any of this reaches
+# an inbox, is in docs/email.md.
 
 services:
-  smtp:
-    image: boky/postfix:v4.4.0
+  stalwart:
+    image: stalwartlabs/stalwart:v0.13.4
+    container_name: yaseen-stalwart
+    restart: unless-stopped
     hostname: mail.yaseen.pk
-    environment:
-      # Only these networks may relay. The Docker bridge ranges cover the API
-      # container; an open relay is how a server ends up on Spamhaus in a day.
-      ALLOWED_SENDER_DOMAINS: yaseen.pk
-      RELAYHOST: ''
-      POSTFIX_myhostname: mail.yaseen.pk
-      # Opportunistic TLS outbound: encrypt where the receiver supports it,
-      # deliver anyway where it does not. Mandatory TLS bounces mail to the
-      # smaller Pakistani hosts that still do not offer it.
-      POSTFIX_smtp_tls_security_level: may
-      POSTFIX_smtpd_tls_security_level: may
-      # DKIM signing. The key is generated into the volume on first start.
-      DKIM_SELECTOR: mail
-      DKIM_AUTOGENERATE: 'true'
-      # Retry a deferred message for five days before giving up, which is the
-      # normal internet convention and covers a receiver's grey-listing window.
-      POSTFIX_maximal_queue_lifetime: 5d
+    ports:
+      # Inbound mail from the rest of the internet.
+      - '25:25'
+      # Submission — how the store, and any mail client, sends.
+      - '587:587'
+      - '465:465'
+      # IMAP, for reading the support mailbox.
+      - '143:143'
+      - '993:993'
+      # Deliberately NOT 80/443: Caddy owns those and reaches the admin UI
+      # over the shared network instead.
     volumes:
-      - mail-dkim:/etc/opendkim/keys
-      - mail-spool:/var/spool/postfix
+      - stalwart-data:/opt/stalwart
+      - mail-certs:/opt/stalwart/certs:ro
     networks:
-      - yaseen-prod
+      yaseen-prod:
+        aliases:
+          # So the API can reach it as mail.yaseen.pk over the private network.
+          # Connecting to "stalwart" instead would fail TLS hostname
+          # verification, since the certificate is issued for mail.yaseen.pk —
+          # and the fix for that is never to switch verification off.
+          - mail.yaseen.pk
+      yaseen-edge:
     healthcheck:
       test: ['CMD-SHELL', 'printf "" > /dev/tcp/127.0.0.1/587 || exit 1']
       interval: 30s
       timeout: 5s
       retries: 5
+      start_period: 30s
     deploy:
-      replicas: 1
       resources:
         limits:
-          memory: 256M
-      restart_policy:
-        condition: on-failure
+          # It idles near 150 MB. The headroom is for message parsing and the
+          # spam classifier under a burst.
+          memory: 512M
 
 volumes:
-  mail-dkim:
-  mail-spool:
+  stalwart-data:
+  # Written by deploy/mail/sync-certs.sh, read-only here.
+  mail-certs:
 
 networks:
   yaseen-prod:
+    name: yaseen-prod
+    external: true
+  yaseen-edge:
+    name: yaseen-edge
     external: true

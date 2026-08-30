@@ -52,8 +52,10 @@ export class EmailChannel implements NotificationChannel {
           // Implicit TLS on 465; 587 connects in the clear and upgrades with
           // STARTTLS, which nodemailer does on its own when the server offers it.
           secure: this.config.get('SMTP_SECURE'),
-          // Our own server needs no login when the API reaches it over the
-          // private Docker network; a relay will.
+          // The API signs in as an ordinary mailbox (no-reply@), not as an
+          // administrator, so the mail server can rate-limit and account for it
+          // like any other client. Left unset only for a server that accepts
+          // unauthenticated submission from the private network.
           auth: user && password ? { user, pass: password } : undefined,
           // Order bursts arrive together during a sale. Pooling keeps a few
           // connections warm instead of renegotiating TLS per message.

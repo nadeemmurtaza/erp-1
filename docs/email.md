@@ -3,29 +3,53 @@
 Order confirmations, payment receipts, order status changes and stitching
 updates, in English and Urdu, sent from our own mail server on the VPS.
 
+## What runs, and what it reuses
+
+One new container. Nothing is duplicated.
+
+| | |
+|---|---|
+| Mail server | **Stalwart** — SMTP, IMAP and JMAP in a single Rust binary |
+| Metadata | the **existing Postgres**, in its own `stalwart` database |
+| Rate limits, locks, ACME tokens | the **existing Redis**, on database index 1 |
+| Message bodies | a local volume — deliberately *not* Postgres |
+| Admin UI | fronted by the **existing Caddy** at `mail.yaseen.pk` |
+
+Stalwart was chosen over mailcow for exactly this. mailcow ships its own
+MariaDB and its own Redis and cannot be pointed at existing ones, so it would
+have meant a second database engine on the box for no benefit. It also wants
+~6 GB against Stalwart's ~150 MB idle, and nine containers against one.
+
+Two deliberate separations:
+
+- **Its own database, not its own server.** `pnpm db:reset` drops and re-creates
+  the shop's database; sharing one would mean a routine reset destroys every
+  mailbox. Prisma also owns the shop's schema, and mail tables beside it would
+  make every future migration ambiguous.
+- **Its own unprivileged role.** `stalwart` owns only the `stalwart` database,
+  so a compromised mail server cannot read orders or customers.
+
 ## Read this first
 
 Self-hosting outbound mail is free and gives up nothing to a vendor, but it is
 the one part of this stack where doing everything right still is not always
-enough. Gmail — where most of your customers are — decides whether to accept
-mail from a brand-new server IP largely on reputation it has not yet formed.
+enough. Gmail — where most customers are — decides whether to accept mail from
+a brand-new server IP largely on reputation it has not yet formed.
 
 Three things are not optional, and all three live outside this repository:
 
-1. **Outbound port 25 must be open.** Most VPS providers block it by default:
-   DigitalOcean, Vultr, Hetzner, Oracle and AWS all do. Unblocking is a support
-   ticket, and some providers refuse. **Check this before anything else** — if
-   port 25 is blocked, self-hosting cannot deliver mail at all and no amount of
-   configuration will change that.
+1. **Outbound port 25 must be open.** Many VPS providers block it by default.
+   Unblocking is a support ticket. **Check this before anything else** — if
+   port 25 is blocked, self-hosting cannot deliver at all.
 2. **A PTR record** on the VPS IP pointing at `mail.yaseen.pk`, set in the
    provider's control panel rather than in DNS hosting. Receivers check that
    the forward and reverse records agree and reject when they do not.
 3. **SPF, DKIM and DMARC** published for `yaseen.pk`. Since February 2024 Gmail
-   and Yahoo require all three from bulk senders.
+   and Yahoo have required all three from bulk senders.
 
-If your provider will not open port 25, stop here and use a relay instead — see
-[Switching to a relay](#switching-to-a-relay). Nothing in the application code
-changes either way; that is the point of keeping the transport plain SMTP.
+If your provider will not open port 25, use a relay instead — see
+[Switching to a relay](#switching-to-a-relay). No application code changes
+either way; that is why the transport is plain SMTP.
 
 ## Setup
 
@@ -38,64 +62,110 @@ nc -zv gmail-smtp-in.l.google.com 25
 A connection means you are clear. A hang or refusal means the provider is
 blocking it — raise a ticket, and do not continue until it succeeds.
 
-Also check the IP is not already on a blocklist. VPS ranges often are, inherited
-from whoever had the address before you:
-
-```bash
-# Reverse the octets of your IP: 203.0.113.45 -> 45.113.0.203
-dig +short 45.113.0.203.zen.spamhaus.org
-```
-
-Any answer at all is a listing. Most have a self-service delisting form.
-
 ### 2. Point DNS at the server
 
 | Type | Name | Value |
 |---|---|---|
 | A | `mail.yaseen.pk` | your VPS IP |
-| PTR | (VPS IP) | `mail.yaseen.pk` — set in the **provider's panel** |
+| MX | `yaseen.pk` | `mail.yaseen.pk` priority 10 |
+| PTR | (VPS IP) | `mail.yaseen.pk` — in the **provider's panel** |
+| CNAME | `autodiscover.yaseen.pk` | `mail.yaseen.pk` |
+| CNAME | `autoconfig.yaseen.pk` | `mail.yaseen.pk` |
 
-### 3. Start the mail server
+The A and MX records already exist and are correct. The PTR is currently a
+generic Contabo hostname and must be changed.
+
+### 3. Give the mail server its own database
+
+```bash
+openssl rand -base64 32          # put this in .env.production as MAIL_DB_PASSWORD
+
+docker exec -i yaseen-postgres-prod psql -U yaseen -d postgres \
+  -v mail_password="'THE_PASSWORD_YOU_JUST_GENERATED'" \
+  < deploy/mail/init-postgres.sql
+```
+
+Creates the `stalwart` role and database inside the Postgres already running.
+Idempotent, so re-running after a partial setup is safe.
+
+### 4. Start it
 
 ```bash
 docker compose -f docker-compose.mail.yml up -d
 ```
 
-It generates a DKIM key on first start. Read the public half out:
+On first start Stalwart prints a one-time admin password to its log:
 
 ```bash
-docker compose -f docker-compose.mail.yml exec smtp \
-  cat /etc/opendkim/keys/yaseen.pk/mail.txt
+docker compose -f docker-compose.mail.yml logs stalwart | grep -i password
 ```
 
-That prints a TXT record split across quoted strings. Join the quoted parts
-into one value, dropping the quotes and whitespace between them.
+Then apply the storage settings from `deploy/mail/stalwart-config.toml` — either
+by merging them into `/opt/stalwart/etc/config.toml` before first start, or in
+the admin UI under **Settings → Storage**. Those are what point it at the
+existing Postgres and Redis instead of its own embedded store.
 
-### 4. Publish SPF, DKIM and DMARC
+### 5. Certificates
+
+Caddy owns 80 and 443, so Stalwart's ACME client cannot complete an HTTP-01 or
+TLS-ALPN-01 challenge. Caddy obtains the certificate for `mail.yaseen.pk`
+instead, and a timer copies it to Stalwart, which serves SMTP and IMAP itself
+and needs it on disk:
+
+```bash
+sudo cp deploy/systemd/yaseen-mailcert.{service,timer} /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now yaseen-mailcert.timer
+sudo systemctl start yaseen-mailcert.service    # run it once now
+```
+
+> **The cleaner alternative:** DNS-01 needs no ports at all, but it needs a DNS
+> provider with an API. `yaseen.pk` is on Contabo's nameservers, which have
+> none. Moving DNS to Cloudflare is free, takes about ten minutes, and would
+> let Stalwart handle its own certificates — deleting this script and its
+> timer entirely.
+
+### 6. Create the mailboxes
+
+In the admin UI at `https://mail.yaseen.pk`:
+
+| Mailbox | For |
+|---|---|
+| `no-reply@yaseen.pk` | the store's SMTP account — the API signs in as this |
+| `hello@yaseen.pk` | where customer replies land |
+| `dmarc@yaseen.pk` | where the DMARC reports go |
+
+Give `no-reply@` its own password. The API is a client like any other, not an
+administrator.
+
+### 7. Publish SPF, DKIM and DMARC
+
+Generate the DKIM key in the admin UI, then publish:
 
 | Type | Name | Value |
 |---|---|---|
 | TXT | `yaseen.pk` | `v=spf1 mx a ip4:YOUR_VPS_IP -all` |
-| TXT | `mail._domainkey.yaseen.pk` | `v=DKIM1; h=sha256; k=rsa; p=MIIBIjANBg…` (from step 3) |
-| TXT | `_dmarc.yaseen.pk` | `v=DMARC1; p=none; rua=mailto:dmarc@yaseen.pk; pct=100` |
+| TXT | `<selector>._domainkey.yaseen.pk` | the key from the admin UI |
+| TXT | `_dmarc.yaseen.pk` | `v=DMARC1; p=none; rua=mailto:dmarc@yaseen.pk` |
 
 Start DMARC at `p=none`. It reports without rejecting, so a mistake in SPF or
-DKIM shows up in the reports instead of silently binning every order
-confirmation. Move to `p=quarantine` once a week of reports comes back clean.
+DKIM shows up in the reports rather than silently binning every order
+confirmation. Move to `p=quarantine` once a week of reports is clean.
 
-`-all` in SPF means "nothing else may send as us". Use `~all` instead while
-testing if anything else — a CRM, an invoicing tool — also sends as
-`@yaseen.pk`.
+`-all` means "nothing else may send as us". Use `~all` while testing if
+anything else also sends as `@yaseen.pk`.
 
-### 5. Point the API at it
+### 8. Point the API at it
 
 In `.env.production`:
 
 ```ini
 NOTIFICATION_CHANNELS="log,email"
-SMTP_HOST="smtp"
+SMTP_HOST="mail.yaseen.pk"
 SMTP_PORT=587
 SMTP_SECURE=false
+SMTP_USER="no-reply@yaseen.pk"
+SMTP_PASSWORD="the password you set in step 6"
 MAIL_FROM="Yaseen <no-reply@yaseen.pk>"
 MAIL_REPLY_TO="hello@yaseen.pk"
 STORE_NAME="Yaseen"
@@ -106,47 +176,54 @@ IBAN: PK00 MEZN 0000 0000 0000 0000
 Account title: Yaseen"
 ```
 
-`SMTP_HOST` is the service name: the API reaches it over the private Docker
-network, so no username or password is involved and nothing outside the network
-can relay through it.
+`SMTP_HOST` is the hostname, not the container name: the certificate is issued
+for `mail.yaseen.pk`, and connecting as `stalwart` would fail TLS hostname
+verification. The container answers to `mail.yaseen.pk` on the private network
+through a Docker network alias, so this never leaves the box and the
+certificate still matches. The fix for a hostname mismatch is never to turn
+verification off.
 
 Keeping `log` alongside `email` means every message stays visible in the API
-log, which is where you look when a customer says they never got anything.
+log, which is where you look when a customer says nothing arrived.
 
 The API refuses to boot if `email` is listed without an `SMTP_HOST`, so a
 half-finished deploy fails loudly instead of quietly dropping confirmations.
 
-### 6. Check it, don't assume it
+### 9. Check it, don't assume it
 
 ```bash
-MAIL_FROM="Yaseen <no-reply@yaseen.pk>" pnpm check:email yaseen.pk YOUR_VPS_IP
+MAIL_FROM="Yaseen <no-reply@yaseen.pk>" pnpm check:email yaseen.pk YOUR_VPS_IP --selector=YOUR_DKIM_SELECTOR
 ```
 
-Checks the A record, PTR, SPF, DKIM, DMARC, From-domain alignment, three
+Checks the A record, PTR, MX, SPF, DKIM, DMARC, From-domain alignment, three
 blocklists and outbound port 25, and prints the fix for anything failing. It
 exits non-zero on failures, so cron can run it and shout.
 
 **Run it from the VPS.** Port 25 and the blocklist lookups only tell the truth
-from the machine that actually sends — from a laptop or a CI runner they report
-that machine's network, not the server's.
+from the machine that actually sends.
 
 State of `yaseen.pk` when this was written:
 
 | Check | Result |
 |---|---|
 | `mail.yaseen.pk` A record | resolves to the Contabo VPS |
+| MX | present, `mail.yaseen.pk` priority 10 |
 | PTR | **fails** — reverses to `vmi3529119.contaboserver.net` |
 | SPF | **missing** |
 | DKIM | **missing** |
 | DMARC | **missing** |
 | Blocklists | clean on Spamhaus, Barracuda and SpamCop |
 
-A generic provider hostname in the PTR is a strong spam signal on its own, and
-with no SPF, DKIM or DMARC, Gmail has nothing to authenticate against. Steps 2
-to 4 above fix all four; the blocklist result is the good news, since a listed
-IP is much harder to recover from than missing DNS.
+A generic provider hostname in the PTR is a strong spam signal by itself, and
+with no SPF, DKIM or DMARC there is nothing for Gmail to authenticate against.
+The clean blocklist result is the good news — a listed IP is much harder to
+recover from than missing DNS.
 
-### 7. Test before you trust it
+Note the MX already points at `mail.yaseen.pk`, so mail to the domain is
+being directed at a host that is not yet answering. Anyone emailing
+`@yaseen.pk` today gets a bounce or a timeout.
+
+### 10. Test before you trust it
 
 Send a real order to <https://www.mail-tester.com>, which scores the message
 out of 10 and names anything missing. Below 8 means something above is wrong.
@@ -158,6 +235,40 @@ SPF:   PASS
 DKIM:  PASS
 DMARC: PASS
 ```
+
+## Reading the mail
+
+Stalwart is a mail *server*; it has an admin UI but no webmail client. Three
+ways to actually read `hello@yaseen.pk`, cheapest first:
+
+1. **Forward to Gmail.** Set `hello@` to forward to an existing Gmail account
+   and use Gmail's "Send mail as" pointed at `mail.yaseen.pk:587`. Replies then
+   go out *from* `hello@yaseen.pk`. No extra container, nothing to patch.
+   Forwarding can trip SPF at the receiving end; Stalwart can do SRS to fix it.
+2. **Any IMAP client.** Thunderbird, Apple Mail, the Gmail app. The
+   autodiscover records in step 2 mean it configures itself.
+3. **A webmail container.** SnappyMail is lightest and needs no database;
+   Roundcube is the most battle-tested and runs on SQLite. Either is one
+   container behind a `webmail.yaseen.pk` block in the Caddyfile.
+
+## Backups
+
+`deploy/backup.sh` dumps the `stalwart` database alongside the shop's, restores
+each into a scratch database to prove it loads, and ships both off-site. It
+skips the mail dump cleanly when the database does not exist yet.
+
+**Message bodies are not in that dump.** They live on the `stalwart-data`
+volume, deliberately, so every nightly dump does not grow by the size of every
+attachment ever received. A full mail restore therefore needs both:
+
+```bash
+# the volume, alongside the database dump
+docker run --rm -v stalwart-data:/data -v "$PWD":/backup alpine:3 \
+  tar czf /backup/stalwart-blobs-$(date -u +%Y%m%d).tar.gz -C /data .
+```
+
+Add that to the backup routine if mailbox history matters to you. It is not in
+`backup.sh` because the right cadence for it depends on how much mail you keep.
 
 ## Staying out of spam
 
@@ -210,15 +321,17 @@ A new IP that suddenly sends hundreds of messages looks exactly like a
 compromised host. Real order volume ramps naturally, which is usually warm-up
 enough — but do not import an old customer list and mail it on day one.
 
-Watch the queue for the first few weeks:
+Watch the outbound queue for the first few weeks — the admin UI has it under
+**Manage → Queues**, or from the shell:
 
 ```bash
-docker compose -f docker-compose.mail.yml exec smtp mailq
-docker compose -f docker-compose.mail.yml logs --tail=200 smtp
+docker compose -f docker-compose.mail.yml logs --tail=200 stalwart
 ```
 
-A queue that grows rather than drains means mail is being deferred — the logs
-name the receiver and the reason.
+A queue that grows rather than drains means mail is being deferred; the log
+names the receiver and the reason it gave. Deferrals mentioning reputation or
+rate limits are the ones to act on — the rest are usually a receiver being
+briefly unavailable, and Stalwart retries on its own.
 
 ## Switching to a relay
 

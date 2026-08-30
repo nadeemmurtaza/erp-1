@@ -1,0 +1,72 @@
+# Stalwart store wiring — the part that matters for this deployment.
+#
+# NOT a complete config. Stalwart writes a full config.toml on first start
+# (and its admin UI can edit it); this file records only the storage section,
+# which is the piece that has to be right for the mail server to share the
+# store's Postgres and Redis instead of bringing its own.
+#
+# Apply it either by merging these blocks into /opt/stalwart/etc/config.toml
+# before first start, or by setting the same values in the admin UI under
+# Settings > Storage.
+#
+# VERIFY AGAINST YOUR VERSION. These keys are taken from the Stalwart docs for
+# the pinned image, but this file has never been booted — no Docker daemon in
+# the environment it was written in. If the server refuses to start, its log
+# names the offending key, and the admin UI is the authoritative source.
+
+# --- The existing Postgres, in its own database -----------------------------
+# Host "postgres" is the service name on the yaseen-prod network. The password
+# is the one passed to deploy/mail/init-postgres.sql.
+[store."postgres"]
+type = "postgresql"
+host = "postgres"
+port = 5432
+database = "stalwart"
+auth-username = "stalwart"
+auth-secret = "%{env:MAIL_DB_PASSWORD}%"
+timeout = "15s"
+# The store's own API already holds a pool against this server; 10 is plenty
+# for a support mailbox and leaves connections for the shop.
+pool-max-connections = 10
+
+# --- Message bodies on disk, not in the database ----------------------------
+# Keeping blobs out of Postgres is what stops every nightly pg_dump growing by
+# the size of every attachment ever received. `depth` spreads files across
+# nested directories so one directory never holds a million entries.
+[store."blobs"]
+type = "filesystem"
+path = "/opt/stalwart/blobs"
+depth = 2
+
+# --- The existing Redis, on its own database index --------------------------
+# Trailing /1 is the Redis database index. The API declares ioredis but does
+# not import it anywhere yet, so index 0 is unused — this keeps it that way.
+# Redis holds only volatile state here: rate limits, fail2ban counters,
+# distributed locks, ACME tokens, greylisting. Nothing that matters if lost.
+[store."redis"]
+type = "redis"
+urls = "redis://redis:6379/1"
+
+# --- Role assignment --------------------------------------------------------
+[storage]
+data = "postgres"
+fts = "postgres"
+blob = "blobs"
+lookup = "postgres"
+in-memory = "redis"
+directory = "internal"
+
+# Accounts live in the data store rather than an LDAP server we would then
+# have to run.
+[directory."internal"]
+type = "internal"
+store = "postgres"
+
+# --- TLS --------------------------------------------------------------------
+# Caddy owns 80 and 443, so Stalwart's own ACME cannot complete a challenge and
+# is left off. Caddy obtains the certificate for mail.yaseen.pk and
+# deploy/mail/sync-certs.sh copies it here; SMTP and IMAP are served by
+# Stalwart directly and need it on disk.
+[certificate."default"]
+cert = "%{file:/opt/stalwart/certs/cert.pem}%"
+private-key = "%{file:/opt/stalwart/certs/key.pem}%"

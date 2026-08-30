@@ -103,3 +103,18 @@ To provide a premium SaaS experience for Agency-Managed clients, the Blueprint c
 * **For Self-Hosted Clients:** The Extractor Script permanently deletes the managed-services module. The billing dashboard is completely removed from their Admin Panel, as they are responsible for their own infrastructure.
 
 This architecture turns the agency into a Cloud Provider, establishing Monthly Recurring Revenue (MRR) without complicating the core repository.
+
+---
+
+## 6. The API Layer (Dynamic NestJS Separation)
+
+The NestJS backend architecture mirrors the database's modularity perfectly. Because features are strictly isolated into module directories (e.g., pps/api/src/modules/books), the extraction process handles the API seamlessly without leaving dead code behind.
+
+### 1. Route & Controller Isolation
+When the Extractor Script deletes unpurchased module folders and uses AST modification to remove their imports from modules.registry.ts, the NestJS application boots strictly without those modules. The corresponding HTTP routes (e.g., /api/stitching/*) are never registered in the router. The client receives a lightweight, highly secure API containing only their purchased endpoints.
+
+### 2. Auto-Adapting Swagger Documentation
+Because NestJS generates OpenAPI (Swagger) documentation dynamically at runtime by reflecting on the active controllers, the client's API documentation auto-updates. Clients will never see API documentation or endpoint references for sectors they did not purchase, creating the experience of a 100% custom-built backend.
+
+### 3. Modular Background Tasks
+Cron jobs, queues, and background workers are encapsulated entirely within their respective NestJS modules. If a sector is not extracted, its background tasks are automatically pruned, preventing wasted server compute and preventing crashing jobs on the client's infrastructure.

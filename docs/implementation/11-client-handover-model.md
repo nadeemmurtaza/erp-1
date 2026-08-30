@@ -83,3 +83,23 @@ Unlike the storefront, the Admin Panel (pps/web/src/app/(admin)) is usually not
 * **Protection Rule:** To support their theme, the Admin Panel uses a **White-Label Configuration File** (e.g., 	heme.config.ts or CSS variables) for branding. The Extractor Script is explicitly configured to **ignore and never overwrite** this file during an upgrade, guaranteeing they receive new admin features while their custom branding remains perfectly intact.
 
 By adhering to this Engine vs. Glass split, the platform acts as a true enterprise Headless Commerce provider: maintaining a highly scalable, upgradable core while allowing infinite UI flexibility for clients.
+
+---
+
+## 5. Hosting Contracts & Infrastructure as a Service (IaaS)
+
+The Extractor Model naturally supports offering both **Self-Hosted** and **Agency-Managed (Rented)** infrastructure to clients without maintaining separate codebases. This is achieved entirely through the 12-Factor App methodology (Environment Variables) and our modular architecture.
+
+### 1. Database and Email Isolation
+Because the Extractor Script customizes the Prisma schema (deleting unused sector tables), clients cannot share a database table with the Master Blueprint. They require isolated logical databases.
+
+* **Self-Hosted Clients:** The client receives the extracted repository and a blank .env file. They provision their own AWS/Supabase database and SendGrid account, configuring DATABASE_URL and SMTP_URL themselves.
+* **Agency-Managed (Rented) Clients:** The agency provisions a new logical database (e.g., on the agency's Coolify Postgres cluster) and an SMTP credential on the agency's Master Mail Server. The agency delivers the .env file pre-configured with these agency-hosted URLs, charging the client a monthly subscription fee.
+
+### 2. The "Managed Services" Billing Dashboard
+To provide a premium SaaS experience for Agency-Managed clients, the Blueprint contains a specialized managed-services module.
+
+* **For Agency-Managed Clients:** The Extractor Script includes this module. It adds a "Hosting & Billing" dashboard to the client's Admin Panel. This module uses a secure AGENCY_API_KEY (stored in .env) to query the Master Platform's API, fetching the client's real-time database storage size, email delivery usage, and Stripe invoices.
+* **For Self-Hosted Clients:** The Extractor Script permanently deletes the managed-services module. The billing dashboard is completely removed from their Admin Panel, as they are responsible for their own infrastructure.
+
+This architecture turns the agency into a Cloud Provider, establishing Monthly Recurring Revenue (MRR) without complicating the core repository.

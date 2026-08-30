@@ -312,6 +312,31 @@ explicitly. Do not compress the steps to save a deploy.
 ## 7. Commit and PR conventions
 
 - Branch from `main`. One work order per branch.
+- **Branch name: `<pack>/<type>/<slug>`.**
+
+  ```
+  core/feat/wo-a1-admin-ui-primitives
+  core/fix/orders-cod-fee-rounding
+  apparel/feat/measurements-size-chart
+  web/feat/wo-a4-dashboard-card-grid
+  infra/chore/bump-prisma-8
+  ```
+
+  `pack` is the module pack the work belongs to — `core`, a sector pack like
+  `apparel`, or `web` / `mobile` / `infra` for work that is not an API module.
+  `type` is the same vocabulary the commit log uses: `feat` `fix` `refactor`
+  `perf` `test` `docs` `chore`. `slug` is kebab-case and carries the work-order
+  id when the work comes from a brief.
+
+  Pack first, so `git branch --list 'apparel/*'` is every apparel branch and git
+  UIs render the tree. Slashes, not underscores — an underscored name is one
+  opaque token to every tool you own.
+- **There is one `main` and one `production`. There is no master branch per
+  sector.** A sector is a pack of modules plus the `MODULES` allowlist, chosen at
+  deploy time — not a branch. A branch is a point in time; a sector is a
+  configuration; do not encode a configuration in time. See
+  [`MULTI-SECTOR.md`](./MULTI-SECTOR.md) for the reasoning and for how to add a
+  sector.
 - Commit messages: imperative mood, no ticket prefix — `Add supplier and
   purchase-order models`, matching the existing log.
 - PR body: what changed, why, how it was verified, and anything the reviewer

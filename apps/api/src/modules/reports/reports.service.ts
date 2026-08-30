@@ -185,7 +185,7 @@ export class ReportsService {
       rows,
     };
   }
-﻿  async stockValuationCsv(): Promise<CsvExport> {
+  async stockValuationCsv(): Promise<CsvExport> {
     const variants = await this.prisma.productVariant.findMany({
       orderBy: { sku: 'asc' },
       select: {

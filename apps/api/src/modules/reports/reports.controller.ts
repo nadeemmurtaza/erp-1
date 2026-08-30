@@ -40,6 +40,41 @@ export class ReportsController {
     this.stream(response, await this.reports.stockCsv(query.lowStockOnly === 'true'));
   }
 
+  @Get('export/stock-valuation')
+  @ApiOperation({ summary: 'CSV: stock valuation, one row per variant' })
+  @RequirePermission('inventory.view_cost')
+  async exportStockValuation(
+    @Res() response: Response,
+  ): Promise<void> {
+    this.stream(response, await this.reports.stockValuationCsv());
+  }
+
+  @Get('export/purchases-by-supplier')
+  @ApiOperation({ summary: 'CSV: purchases by supplier' })
+  async exportPurchasesBySupplier(
+    @Query() query: ReportDateRangeQueryDto,
+    @Res() response: Response,
+  ): Promise<void> {
+    this.stream(response, await this.reports.purchasesBySupplierCsv(query.from, query.to));
+  }
+
+  @Get('export/stock-ledger')
+  @ApiOperation({ summary: 'CSV: stock movement ledger' })
+  async exportStockLedger(
+    @Query() query: ReportDateRangeQueryDto,
+    @Res() response: Response,
+  ): Promise<void> {
+    this.stream(response, await this.reports.stockLedgerCsv(query.from, query.to));
+  }
+
+  @Get('export/slow-movers')
+  @ApiOperation({ summary: 'CSV: slow movers report' })
+  async exportSlowMovers(
+    @Res() response: Response,
+  ): Promise<void> {
+    this.stream(response, await this.reports.slowMoversCsv());
+  }
+
   /** Writes the CSV a row at a time so a large export streams rather than buffering in memory. */
   private stream(response: Response, csv: CsvExport): void {
     response.setHeader('Content-Type', 'text/csv; charset=utf-8');
@@ -51,3 +86,4 @@ export class ReportsController {
     response.end();
   }
 }
+

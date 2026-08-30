@@ -185,6 +185,158 @@ export class ReportsService {
       rows,
     };
   }
+﻿  async stockValuationCsv(): Promise<CsvExport> {
+    const variants = await this.prisma.productVariant.findMany({
+      orderBy: { sku: 'asc' },
+      select: {
+        sku: true,
+        size: true,
+        color: true,
+        stock: true,
+        costPrice: true,
+        product: {
+          select: {
+            slug: true,
+            translations: { where: { locale: 'en' }, select: { name: true }, take: 1 },
+          },
+        },
+      },
+    });
+
+    const header = [
+      'SKU',
+      'Product Name',
+      'Size',
+      'Color',
+      'Stock',
+      'Cost Price (Rs)',
+      'Stock Value (Rs)',
+    ];
+
+    const rows: Array<(string | number)>[] = [];
+    let totalValue = 0;
+
+    for (const variant of variants) {
+      const val = variant.stock * variant.costPrice;
+      totalValue += val;
+      rows.push([
+        variant.sku,
+        variant.product.translations[0]?.name ?? variant.product.slug,
+        variant.size ?? '',
+        variant.color ?? '',
+        variant.stock,
+        toRupees(variant.costPrice),
+        toRupees(val),
+      ]);
+    }
+
+    rows.push(['', 'TOTAL', '', '', '', '', toRupees(totalValue)]);
+
+    const today = new Date().toISOString().slice(0, 10);
+    return {
+      filename: `stock-valuation_${today}.csv`,
+      header,
+      rows,
+    };
+  }
+
+  async purchasesBySupplierCsv(fromStr?: string, toStr?: string): Promise<CsvExport> {
+    const range = parseRange(fromStr, toStr);
+    
+    const rowsRaw = await this.prisma.$queryRaw<
+      Array<{ supplier: string; pocount: bigint; valuereceived: bigint }>
+    >`
+      SELECT s.name as supplier,
+             COUNT(DISTINCT po.id) as pocount,
+             COALESCE(SUM(gri.quantity * gri."landedUnitCost"), 0) as valuereceived
+      FROM "Supplier" s
+      JOIN "PurchaseOrder" po ON po."supplierId" = s.id
+      LEFT JOIN "GoodsReceipt" gr ON gr."purchaseOrderId" = po.id
+      LEFT JOIN "GoodsReceiptItem" gri ON gri."goodsReceiptId" = gr.id
+      WHERE po."createdAt" >= ${range.from} AND po."createdAt" <= ${range.to}
+      GROUP BY s.id, s.name
+      ORDER BY s.name ASC
+    `;
+
+    const header = ['Period', 'Supplier', 'PO Count', 'Value Received (Rs)'];
+    const rows = rowsRaw.map((r) => [
+      `${range.fromLabel} to ${range.toLabel}`,
+      r.supplier,
+      Number(r.pocount),
+      toRupees(Number(r.valuereceived))
+    ]);
+
+    return { filename: `purchases-by-supplier_${range.fromLabel}_${range.toLabel}.csv`, header, rows };
+  }
+
+  async stockLedgerCsv(fromStr?: string, toStr?: string): Promise<CsvExport> {
+    const range = parseRange(fromStr, toStr);
+
+    const movements = await this.prisma.stockMovement.findMany({
+      where: { createdAt: { gte: range.from, lte: range.to } },
+      orderBy: { createdAt: 'desc' },
+      include: {
+        variant: {
+          select: {
+            sku: true,
+            product: { select: { slug: true, translations: { where: { locale: 'en' }, select: { name: true }, take: 1 } } }
+          }
+        },
+        actor: { select: { firstName: true, lastName: true } }
+      }
+    });
+
+    const header = [
+      'Date', 'Product Name', 'SKU', 'Delta', 'Resulting Stock', 
+      'Reason', 'Ref Type', 'Ref ID', 'Unit Cost (Rs)', 'Actor'
+    ];
+
+    const rows = movements.map(m => [
+      m.createdAt.toISOString(),
+      m.variant.product.translations[0]?.name ?? m.variant.product.slug,
+      m.variant.sku,
+      m.delta,
+      m.resultingStock,
+      m.reason,
+      m.refType ?? '',
+      m.refId ?? '',
+      m.unitCost != null ? toRupees(m.unitCost) : '',
+      customerName('', m.actor)
+    ]);
+
+    return { filename: `stock-ledger_${range.fromLabel}_${range.toLabel}.csv`, header, rows };
+  }
+
+  async slowMoversCsv(): Promise<CsvExport> {
+    const variants = await this.prisma.productVariant.findMany({
+      where: {
+        isActive: true,
+        stock: { gt: 0 },
+        salesStat: { isSlowMover: true }
+      },
+      orderBy: { salesStat: { ageDays: 'desc' } },
+      include: {
+        product: { select: { slug: true, translations: { where: { locale: 'en' }, select: { name: true }, take: 1 } } },
+        salesStat: true
+      }
+    });
+
+    const header = ['SKU', 'Product Name', 'Stock', 'Days of Cover', 'Last Sold At', 'Age Days', 'Stock Value (Rs)'];
+    
+    const rows = variants.map(v => [
+      v.sku,
+      v.product.translations[0]?.name ?? v.product.slug,
+      v.stock,
+      v.salesStat?.daysOfCover ?? '',
+      v.salesStat?.lastSoldAt ? v.salesStat.lastSoldAt.toISOString() : 'Never',
+      v.salesStat?.ageDays ?? 0,
+      toRupees(v.stock * v.costPrice)
+    ]);
+
+    const today = new Date().toISOString().slice(0, 10);
+    return { filename: `slow-movers_${today}.csv`, header, rows };
+  }
+
 }
 
 /** Divides an integer-paisa amount into rupees for a human-facing export. */

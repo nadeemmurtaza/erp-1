@@ -24,11 +24,11 @@ model Payment {
   currency String        @default("PKR")
 
   /// Our reference sent to the gateway, and whatever it sends back.
-  reference   String? @unique
-  providerRef String?
+  reference     String? @unique
+  providerRef   String?
   /// Raw gateway request/response and bank-transfer receipt details.
-  meta        Json?
-  receiptUrl  String?
+  meta          Json?
+  receiptUrl    String?
   failureReason String?
 
   approvedById String?

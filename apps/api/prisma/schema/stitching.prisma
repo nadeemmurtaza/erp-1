@@ -11,8 +11,8 @@ enum StitchingSelectionType {
 }
 
 model StitchingOptionGroup {
-  id            String                @id @default(cuid())
-  key           String                @unique // "neckline", "sleeve_style"
+  id            String                 @id @default(cuid())
+  key           String                 @unique // "neckline", "sleeve_style"
   labelEn       String
   labelUr       String
   garmentTypeId String?
@@ -21,9 +21,9 @@ model StitchingOptionGroup {
   /// picker by this; null lands under "other".
   area          String?
   selectionType StitchingSelectionType @default(SINGLE)
-  required      Boolean               @default(false)
-  order         Int                   @default(0)
-  isActive      Boolean               @default(true)
+  required      Boolean                @default(false)
+  order         Int                    @default(0)
+  isActive      Boolean                @default(true)
 
   /// Some styles cannot be enumerated — let the customer describe theirs.
   allowCustomText Boolean @default(false)
@@ -41,19 +41,19 @@ model StitchingOptionGroup {
 }
 
 model StitchingOption {
-  id        String   @id @default(cuid())
-  groupId   String
-  key       String
-  labelEn   String
-  labelUr   String
+  id         String  @id @default(cuid())
+  groupId    String
+  key        String
+  labelEn    String
+  labelUr    String
   /// Added to the stitching fee, in paisa. May be negative for a cheaper style.
   priceDelta Int     @default(0)
-  imageUrl  String?
-  order     Int      @default(0)
-  isActive  Boolean  @default(true)
+  imageUrl   String?
+  order      Int     @default(0)
+  isActive   Boolean @default(true)
 
-  group           StitchingOptionGroup      @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  cartSelections  CartItemStitchingOption[]
+  group          StitchingOptionGroup      @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  cartSelections CartItemStitchingOption[]
 
   @@unique([groupId, key])
   @@index([groupId, order])
@@ -82,15 +82,15 @@ model StitchingOrder {
   guestEmail String?
 
   /// Snapshot; the customer may edit their address book afterwards.
-  pickupAddress   Json?
-  deliveryAddress Json?
-  fabricNotes     String?
-  staffNotes      String?
-  quotedFee       Int? // paisa
+  pickupAddress    Json?
+  deliveryAddress  Json?
+  fabricNotes      String?
+  staffNotes       String?
+  quotedFee        Int? // paisa
   fabricReceivedAt DateTime?
-  promisedAt      DateTime?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  promisedAt       DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
   user    User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
   contact Contact?       @relation(fields: [contactId], references: [id], onDelete: SetNull)
@@ -117,7 +117,7 @@ model StitchingJob {
   orderItemId      String? @unique
   stitchingOrderId String?
 
-  garmentTypeId String
+  garmentTypeId       String
   /// Measurements as they were when the order was placed. Profiles change;
   /// a job in production must not.
   measurementSnapshot Json

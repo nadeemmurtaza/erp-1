@@ -41,6 +41,7 @@ model User {
   segments            Segment[]
   devices             DeviceToken[]
   stockAdjustments    StockAdjustment[]
+  stockMovements      StockMovement[]      @relation("StockMovementActor")
   permissionOverrides UserPermission[]
 
   @@index([role])

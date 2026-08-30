@@ -2,8 +2,9 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { DEFAULT_LOCALE } from '@yaseen/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
-import type { Prisma } from '../../core/prisma/client';
-import type { AdjustStockDto } from './dto/inventory.dto';
+import { Prisma, StockMovement, StockMovementReason } from '../../core/prisma/client';
+import { EventBusService } from '../../core/events/event-bus.service';
+import { DomainEvent } from '../../core/events/domain-events';
 
 const variantListInclude = {
   product: {
@@ -13,11 +14,35 @@ const variantListInclude = {
 
 type VariantWithProduct = Prisma.ProductVariantGetPayload<{ include: typeof variantListInclude }>;
 
+export interface StockMoveInput {
+  variantId: string;
+  /** Positive in, negative out. Zero is rejected. */
+  delta: number;
+  reason: StockMovementReason;
+  refType?: string;
+  refId?: string;
+  unitCost?: number;
+  note?: string;
+  actorId?: string | null;
+}
+
+export class InsufficientStockError extends BadRequestException {
+  constructor(
+    public readonly variantId: string,
+    public readonly sku: string,
+    public readonly available: number,
+    public readonly requestedDelta: number,
+  ) {
+    super(`${sku} has ${available} in stock; that adjustment would take it negative.`);
+    this.name = 'InsufficientStockError';
+  }
+}
+
 /**
  * Stock levels and their audit trail.
  *
  * ProductVariant.stock is the live number the storefront checks against; every
- * change to it is paired, inside one transaction, with a StockAdjustment row
+ * change to it is paired, inside one transaction, with a StockMovement row
  * recording who moved it, by how much, and why — so "why is stock 4" always has
  * an answer without replaying deltas.
  */
@@ -26,6 +51,7 @@ export class InventoryService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly events: EventBusService,
   ) {}
 
   async list(query: { lowStockOnly?: boolean; search?: string }) {
@@ -63,57 +89,95 @@ export class InventoryService {
   }
 
   /**
-   * Moves stock by `delta` and files the audit row in the same transaction, so
-   * the two can never drift apart — a crash between them rolls both back.
+   * The ONLY way stock changes. Callers inside a transaction pass their tx
+   * client so the movement row and the stock change commit together.
    */
-  async adjust(actorId: string, variantId: string, dto: AdjustStockDto) {
-    const result = await this.prisma.$transaction(async (tx) => {
-      // A read-then-write here would let two concurrent adjustments both pass
-      // the negative-stock check against the same stale read and oversell —
-      // the predicate belongs on the UPDATE itself, the same way
-      // orders.service.ts's checkout decrement guards against overselling.
-      const updated = await tx.productVariant.updateMany({
-        where: { id: variantId, stock: { gte: -dto.delta } },
-        data: { stock: { increment: dto.delta } },
-      });
+  async move(input: StockMoveInput, tx: Prisma.TransactionClient | PrismaService = this.prisma): Promise<StockMovement> {
+    if (input.delta === 0) {
+      throw new BadRequestException('Stock movement delta cannot be zero.');
+    }
 
-      if (updated.count === 0) {
-        const variant = await tx.productVariant.findUnique({ where: { id: variantId } });
-        if (!variant) {
-          throw new NotFoundException('That variant no longer exists.');
-        }
-        throw new BadRequestException(
-          `${variant.sku} has ${variant.stock} in stock; that adjustment would take it negative.`,
-        );
-      }
-
-      const variant = await tx.productVariant.findUniqueOrThrow({ where: { id: variantId } });
-
-      const adjustment = await tx.stockAdjustment.create({
-        data: {
-          variantId,
-          delta: dto.delta,
-          resultingStock: variant.stock,
-          reason: dto.reason,
-          note: dto.note?.trim() || null,
-          actorId,
-        },
-      });
-
-      return { variant, adjustment };
+    // We must read the old stock before update if we want to know if it crossed the threshold.
+    const beforeVariant = await tx.productVariant.findUnique({
+      where: { id: input.variantId },
+      select: { stock: true, lowStockThreshold: true },
     });
 
-    // Best-effort general audit log; kept outside the transaction like every
-    // other admin mutation in the codebase, since AuditService never throws.
+    if (!beforeVariant) {
+      throw new NotFoundException('That variant no longer exists.');
+    }
+
+    const wasAboveThreshold = beforeVariant.stock > beforeVariant.lowStockThreshold;
+
+    const updated = await tx.productVariant.updateMany({
+      where: input.delta < 0 ? { id: input.variantId, stock: { gte: -input.delta } } : { id: input.variantId },
+      data: { stock: { increment: input.delta } },
+    });
+
+    if (updated.count === 0) {
+      // Did it not exist, or did it fail the stock condition?
+      const variant = await tx.productVariant.findUnique({
+        where: { id: input.variantId },
+        select: { sku: true, stock: true },
+      });
+      if (!variant) {
+        throw new NotFoundException('That variant no longer exists.');
+      }
+      throw new InsufficientStockError(input.variantId, variant.sku, variant.stock, input.delta);
+    }
+
+    const variant = await tx.productVariant.findUniqueOrThrow({ where: { id: input.variantId } });
+
+    const movement = await tx.stockMovement.create({
+      data: {
+        variantId: input.variantId,
+        delta: input.delta,
+        resultingStock: variant.stock,
+        reason: input.reason,
+        refType: input.refType ?? null,
+        refId: input.refId ?? null,
+        unitCost: input.unitCost ?? null,
+        note: input.note?.trim() || null,
+        actorId: input.actorId ?? null,
+      },
+    });
+
+    if (wasAboveThreshold && variant.stock <= variant.lowStockThreshold) {
+      await this.events.publish(
+        DomainEvent.ProductLowStock,
+        {
+          productId: variant.productId,
+          variantId: variant.id,
+          sku: variant.sku,
+          stock: variant.stock,
+          threshold: variant.lowStockThreshold,
+        },
+        tx,
+      );
+    }
+
+    // The audit write is deliberately outside the caller's transaction because
+    // AuditService is best-effort and never throws.
     await this.audit.record({
-      actorId,
+      actorId: input.actorId ?? undefined,
       action: 'inventory.stock_adjusted',
       entity: 'ProductVariant',
-      entityId: variantId,
-      data: { delta: dto.delta, resultingStock: result.adjustment.resultingStock, reason: dto.reason },
+      entityId: input.variantId,
+      data: { delta: input.delta, resultingStock: movement.resultingStock, reason: input.reason },
     });
 
-    return result;
+    return movement;
+  }
+
+  async moveMany(inputs: StockMoveInput[], tx: Prisma.TransactionClient | PrismaService = this.prisma): Promise<StockMovement[]> {
+    // Sort inputs by variantId to prevent deadlocks when updating multiple rows.
+    const sortedInputs = [...inputs].sort((a, b) => a.variantId.localeCompare(b.variantId));
+    
+    const movements: StockMovement[] = [];
+    for (const input of sortedInputs) {
+      movements.push(await this.move(input, tx));
+    }
+    return movements;
   }
 
   async history(variantId: string) {
@@ -125,17 +189,20 @@ export class InventoryService {
       throw new NotFoundException('That variant no longer exists.');
     }
 
-    const adjustments = await this.prisma.stockAdjustment.findMany({
+    const movements = await this.prisma.stockMovement.findMany({
       where: { variantId },
       orderBy: { createdAt: 'desc' },
       include: { actor: { select: { id: true, firstName: true, lastName: true } } },
     });
 
-    return adjustments.map((row) => ({
+    return movements.map((row) => ({
       id: row.id,
       delta: row.delta,
       resultingStock: row.resultingStock,
       reason: row.reason,
+      refType: row.refType,
+      refId: row.refId,
+      unitCost: row.unitCost,
       note: row.note,
       createdAt: row.createdAt,
       actorId: row.actorId,

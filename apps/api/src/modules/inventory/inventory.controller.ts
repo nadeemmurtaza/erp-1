@@ -19,12 +19,24 @@ export class InventoryAdminController {
 
   @Post(':variantId/adjust')
   @ApiOperation({ summary: 'Move stock up or down, with a reason on record' })
-  adjust(
+  async adjust(
     @CurrentUser() user: AuthenticatedUser,
     @Param('variantId') variantId: string,
     @Body() dto: AdjustStockDto,
   ) {
-    return this.inventory.adjust(user.id, variantId, dto);
+    const reasonMap: Record<string, any> = {
+      damaged: 'DAMAGE',
+    };
+    const reason = reasonMap[dto.reason] || 'ADJUSTMENT';
+    const note = dto.reason === 'damaged' ? dto.note : (dto.note ? `legacy reason: ${dto.reason} - ${dto.note}` : `legacy reason: ${dto.reason}`);
+
+    return this.inventory.move({
+      variantId,
+      delta: dto.delta,
+      reason,
+      note,
+      actorId: user.id,
+    });
   }
 
   @Get(':variantId/history')

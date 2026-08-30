@@ -4,6 +4,7 @@ import { stringify } from 'csv-stringify/sync';
 import { PRODUCT_KINDS, slugifyWithFallback, toMinor, uniqueSlug } from '@yaseen/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { InventoryService } from '../inventory/inventory.service';
 import type { ProductKind, ProductStatus } from '../../core/prisma/client';
 
 export interface ImportRowResult {
@@ -65,6 +66,7 @@ export class ProductImportService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly inventory: InventoryService,
   ) {}
 
   /** A blank file with the right headers and one example row. */
@@ -119,7 +121,7 @@ export class ProductImportService {
       // +2: one for the header line, one because humans count from 1.
       const lineNumber = index + 2;
       try {
-        const result = await this.importRow(row, lineNumber, categoryBySlug, garmentByKey);
+        const result = await this.importRow(actorId, row, lineNumber, categoryBySlug, garmentByKey);
         summary.results.push(result);
         summary[result.action === 'skipped' ? 'skipped' : result.action] += 1;
       } catch (error) {
@@ -188,6 +190,7 @@ export class ProductImportService {
   }
 
   private async importRow(
+    actorId: string,
     row: Row,
     lineNumber: number,
     categoryBySlug: Map<string, string>,
@@ -218,26 +221,36 @@ export class ProductImportService {
       throw new Error('a STITCHING_SERVICE row needs garment_type_key');
     }
 
+    const requestedStock = parseInteger(row.stock) ?? 0;
+
     // An existing SKU updates its variant in place; that makes the import
     // re-runnable, which matters when a stock file is uploaded weekly.
     const existingVariant = await this.prisma.productVariant.findUnique({
       where: { sku },
-      select: { id: true, productId: true },
+      select: { id: true, productId: true, stock: true },
     });
 
     if (existingVariant) {
-      await this.prisma.productVariant.update({
+      await this.prisma.productVariant.updateMany({
         where: { id: existingVariant.id },
         data: {
           size: (row.size ?? '').trim() || null,
           color: (row.color ?? '').trim() || null,
-          stock: parseInteger(row.stock) ?? 0,
         },
       });
       await this.prisma.product.update({
         where: { id: existingVariant.productId },
         data: { basePrice: price, status },
       });
+      if (requestedStock !== existingVariant.stock) {
+        await this.inventory.move({
+          variantId: existingVariant.id,
+          delta: requestedStock - existingVariant.stock,
+          reason: 'ADJUSTMENT',
+          actorId,
+          note: 'CSV Import update',
+        });
+      }
       return { row: lineNumber, sku, action: 'updated' };
     }
 
@@ -252,22 +265,31 @@ export class ProductImportService {
     });
 
     if (sibling) {
-      await this.prisma.productVariant.create({
+      const created = await this.prisma.productVariant.create({
         data: {
           productId: sibling.id,
           sku,
           size: (row.size ?? '').trim() || null,
           color: (row.color ?? '').trim() || null,
-          stock: parseInteger(row.stock) ?? 0,
+          stock: 0,
         },
       });
+      if (requestedStock !== 0) {
+        await this.inventory.move({
+          variantId: created.id,
+          delta: requestedStock,
+          reason: 'ADJUSTMENT',
+          actorId,
+          note: 'CSV Import sibling added',
+        });
+      }
       return { row: lineNumber, sku, action: 'updated', message: 'variant added' };
     }
 
     const slug = await this.freeSlug(nameEn);
     const nameUr = (row.name_ur ?? '').trim();
 
-    await this.prisma.product.create({
+    const product = await this.prisma.product.create({
       data: {
         slug,
         kind,
@@ -312,14 +334,26 @@ export class ProductImportService {
             sku,
             size: (row.size ?? '').trim() || null,
             color: (row.color ?? '').trim() || null,
-            stock: parseInteger(row.stock) ?? 0,
+            stock: 0,
           },
         },
         ...(kind === 'UNSTITCHED' && garmentTypeId
           ? { garmentTypes: { create: { garmentTypeId } } }
           : {}),
       },
+      include: { variants: true },
     });
+
+    if (requestedStock !== 0) {
+      const createdVariant = product.variants[0];
+      await this.inventory.move({
+        variantId: createdVariant.id,
+        delta: requestedStock,
+        reason: 'ADJUSTMENT',
+        actorId,
+        note: 'CSV Import created',
+      });
+    }
 
     return { row: lineNumber, sku, action: 'created' };
   }

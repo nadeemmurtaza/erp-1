@@ -138,6 +138,7 @@ model ProductVariant {
   cartItems  CartItem[]
   orderItems OrderItem[]
   stockAdjustments StockAdjustment[]
+  stockMovements StockMovement[]
 
   @@index([productId])
   @@index([stock])

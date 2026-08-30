@@ -58,3 +58,28 @@ npm run export-client --name="Client 2" --modules=core,catalog,cart,orders,books
 
 ### Summary
 The client receives a pristine, perfectly tailored repository. Your business protects its intellectual property and proprietary sector code. Your developers work at maximum speed in a single codebase, fixing bugs once and distributing them everywhere.
+
+---
+
+## 4. Customization & Upgradability (Engine vs. Glass)
+
+When operating an agency model, a critical challenge arises: **How do we push bug fixes and core upgrades to a client's extracted repository months later, without destroying their custom themes and bespoke UIs?**
+
+To solve this, the Extractor Script and our deployment model enforce a strict **Headless (Engine vs. Glass)** boundary.
+
+### 1. The Storefront (The Glass) = Bespoke & Unlinked
+Every client requires a totally unique storefront. Therefore, the storefront React code (pps/web/src/app/(storefront)) is treated as a **Starter Template**.
+* **Delivery:** The Extractor Script copies the Starter Template during the initial client handover.
+* **Customization:** From that day forward, the client's developers (or the agency's designers) can freely alter the frontend, change layouts, and build bespoke React components.
+* **Upgrade Rule:** The Extractor Script is programmed to **never** push automated upgrades to the storefront UI files. The storefront belongs entirely to the client's design team, ensuring their custom themes are never overwritten by accident.
+
+### 2. The API (The Engine) = Heavily Upgradable
+The backend (pps/api) and the database schemas contain the heavy, complex business logic. This code has no UI, so clients do not need to customize it.
+* **Upgrade Rule:** The Extractor Script **always** pushes upgrades here. If a new checkout optimization is developed in the Blueprint, running the Extractor's upgrade command will push the updated API code to the client's repository via a Pull Request. Their bespoke storefront instantly benefits from the new API capabilities.
+
+### 3. The Admin Panel = Upgradable + White-Labeled
+Unlike the storefront, the Admin Panel (pps/web/src/app/(admin)) is usually not completely bespoke; clients simply want it to match their brand colors and logo.
+* **Upgrade Rule:** The Extractor Script pushes functional updates to the Admin React components (so clients receive new SaaS features like CSV Reports).
+* **Protection Rule:** To support their theme, the Admin Panel uses a **White-Label Configuration File** (e.g., 	heme.config.ts or CSS variables) for branding. The Extractor Script is explicitly configured to **ignore and never overwrite** this file during an upgrade, guaranteeing they receive new admin features while their custom branding remains perfectly intact.
+
+By adhering to this Engine vs. Glass split, the platform acts as a true enterprise Headless Commerce provider: maintaining a highly scalable, upgradable core while allowing infinite UI flexibility for clients.

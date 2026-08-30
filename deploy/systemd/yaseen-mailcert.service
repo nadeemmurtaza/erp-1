@@ -1,0 +1,16 @@
+[Unit]
+Description=Copy Caddy's mail certificate into mailcow and reload Postfix/Dovecot
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+# Runs as root rather than deploy: it writes into mailcow's ssl directory,
+# which mailcow's own installer creates root-owned.
+User=root
+WorkingDirectory=/home/deploy/apps/yaseenecom
+# Override these if the mail hostname or the mailcow checkout moved.
+# Environment=MAIL_HOST=mail.yaseen.pk
+# Environment=MAILCOW_DIR=/opt/mailcow-dockerized
+ExecStart=/home/deploy/apps/yaseenecom/deploy/mailcow/sync-certs.sh
+TimeoutStartSec=600

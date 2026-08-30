@@ -106,6 +106,44 @@ async function checkPtr(address) {
   }
 }
 
+/**
+ * MX records — how the rest of the internet delivers mail *to* us.
+ *
+ * Only meaningful once we accept mail. A send-only server needs no MX, but
+ * without one there is nowhere for a customer's reply to an order
+ * confirmation to land, and nowhere for DMARC reports to be sent.
+ */
+async function checkMx() {
+  let records = [];
+  try {
+    records = await dns.resolveMx(domain);
+  } catch {
+    /* handled below */
+  }
+
+  if (records.length === 0) {
+    fail(
+      'MX',
+      `no MX record on ${domain}`,
+      `Add MX ${domain} -> ${mailHost} (priority 10). Without it nobody can reply to your order mail, and DMARC reports have nowhere to go.`,
+    );
+    return;
+  }
+
+  const hosts = records
+    .sort((a, b) => a.priority - b.priority)
+    .map((r) => `${r.exchange} (${r.priority})`);
+  pass('MX', hosts.join(', '));
+
+  if (!records.some((r) => r.exchange.replace(/\.$/, '') === mailHost)) {
+    warn(
+      'MX',
+      `none of them is ${mailHost}`,
+      `Mail for ${domain} is being delivered somewhere else. Fine if that is deliberate — otherwise point MX at ${mailHost}.`,
+    );
+  }
+}
+
 async function checkSpf(address) {
   const records = (await txt(domain)).filter((r) => r.toLowerCase().startsWith('v=spf1'));
 
@@ -319,6 +357,7 @@ async function main() {
 
   const address = await checkSendingHost();
   await checkPtr(address);
+  await checkMx();
   await checkSpf(address);
   await checkDkim();
   await checkDmarc();

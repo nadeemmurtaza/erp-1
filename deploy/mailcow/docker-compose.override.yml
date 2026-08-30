@@ -1,0 +1,40 @@
+# mailcow override — joins mailcow's web container to the yaseen-edge network
+# so Caddy can reach it, and trims the stack to fit alongside the store.
+#
+# Copy this into the mailcow checkout as docker-compose.override.yml:
+#
+#   cp deploy/mailcow/docker-compose.override.yml /opt/mailcow-dockerized/
+#
+# mailcow is installed from its own repository, not vendored here — it ships
+# its own compose file and generate_config.sh, and overwriting those is how you
+# lose an upgrade path. This file only adds what our setup needs on top.
+#
+# WHY THE SHARED NETWORK RATHER THAN A HOST PORT: Caddy runs in a container, so
+# 127.0.0.1 there is Caddy itself, not the host — a mailcow bound to the host's
+# loopback is unreachable from it. Putting nginx-mailcow on yaseen-edge lets
+# Caddy resolve it by name over Docker's DNS, with nothing published to the
+# public interface and no dependence on the docker0 bridge address staying put.
+
+services:
+  nginx-mailcow:
+    networks:
+      - mailcow-network
+      - yaseen-edge
+
+  # ClamAV scans inbound attachments and is by far the hungriest container in
+  # the stack — roughly 2-3 GB on its own. Dropping it takes mailcow from about
+  # 6 GB to about 2.5 GB, which is what leaves real headroom next to the store's
+  # production and staging stacks.
+  #
+  # Rspamd still does the spam filtering; what is lost is virus scanning of
+  # attachments. Customers do send payment screenshots, so if you would rather
+  # keep it, delete this block and watch `free -h` under load.
+  clamd-mailcow:
+    deploy:
+      replicas: 0
+    profiles:
+      - disabled-by-yaseen
+
+networks:
+  yaseen-edge:
+    external: true

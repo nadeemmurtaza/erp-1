@@ -31,6 +31,32 @@ api.yaseen.pk {
 	}
 }
 
+# --- Mail (mailcow) ---------------------------------------------------
+#
+# Caddy owns 80/443 on this box, so mailcow's own ACME client is switched off
+# (SKIP_LETS_ENCRYPT=y) and Caddy fronts its web UI instead. nginx-mailcow
+# joins yaseen-edge via deploy/mailcow/docker-compose.override.yml, so it
+# resolves by container name here with nothing published publicly.
+#
+# This covers HTTP only. Postfix and Dovecot serve SMTP and IMAP on 25/465/587/
+# 993 themselves and need the certificate on disk — deploy/mailcow/sync-certs.sh
+# copies it across and reloads them. See docs/email.md.
+
+mail.yaseen.pk {
+	reverse_proxy nginx-mailcow:8080
+	encode zstd gzip
+	log {
+		output file /data/access-mail.yaseen.pk.log
+	}
+}
+
+# Mail clients look these up to configure themselves. Without them, adding the
+# account to a phone means typing in server names by hand.
+autodiscover.yaseen.pk, autoconfig.yaseen.pk {
+	reverse_proxy nginx-mailcow:8080
+	encode zstd gzip
+}
+
 # --- Staging (auto-deployed from `main`) ------------------------------
 
 test.yaseen.pk {

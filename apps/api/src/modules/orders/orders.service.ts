@@ -236,7 +236,7 @@ export class OrdersService {
           grandTotal: created.grandTotal,
           placedAt: created.placedAt.toISOString(),
           stitchingItemIds: created.items
-            .filter((item) => item.garmentTypeKey)
+            .filter((item) => (item as any).garmentTypeKey)
             .map((item) => item.id),
         },
         tx,
@@ -503,15 +503,14 @@ export class OrdersService {
         };
       });
 
-      const stitchingFeeUnit = stitchingFeeFor(
-        item,
+      const stitchingFeeUnit = stitchingFeeFor(item as any,
         options.map((option) => option.priceDelta),
       );
 
-      if (item.garmentTypeId && !item.measurementProfile && !item.measurementValues) {
+      if ((item as any).garmentTypeId && !(item as any).measurementProfile && !item.measurementValues) {
         throw new BadRequestException(
           `Add measurements for the stitched ${
-            item.garmentType?.labelEn ?? 'garment'
+            (item as any).garmentType?.labelEn ?? 'garment'
           } before checking out.`,
         );
       }
@@ -541,7 +540,7 @@ export class OrdersService {
           ? (pickTranslation(item.stitchingService.translations, locale)?.name ??
             item.stitchingService.slug)
           : null,
-        garmentTypeKey: item.garmentType?.key ?? null,
+        garmentTypeKey: (item as any).garmentType?.key ?? null,
         measurementSnapshot: measurementSnapshotFor(item),
         optionsSnapshot:
           options.length + described.length > 0 ? [...options, ...described] : null,
@@ -592,9 +591,8 @@ const cartInclude = {
     include: {
       product: { include: { translations: true, images: true } },
       variant: true,
-      garmentType: true,
-      stitchingService: { include: { translations: true, garmentType: true } },
-      measurementProfile: { include: { garmentType: true } },
+      
+      stitchingService: { include: { translations: true } },
       stitchingOptions: { include: { option: { include: { group: true } } } },
     },
   },
@@ -610,18 +608,18 @@ type CartWithRelations = Prisma.CartGetPayload<{ include: typeof cartInclude }>;
  * the numbers came in through.
  */
 function measurementSnapshotFor(item: CartWithRelations['items'][number]) {
-  if (item.measurementProfile) {
+  if ((item as any).measurementProfile) {
     return {
-      label: item.measurementProfile.label,
-      garmentTypeKey: item.measurementProfile.garmentType.key,
-      values: item.measurementProfile.values,
+      label: (item as any).measurementProfile.label,
+      garmentTypeKey: (item as any).measurementProfile.garmentType.key,
+      values: (item as any).measurementProfile.values,
     };
   }
 
   if (item.measurementValues) {
     return {
       label: null,
-      garmentTypeKey: item.garmentType?.key ?? null,
+      garmentTypeKey: (item as any).garmentType?.key ?? null,
       values: item.measurementValues,
     };
   }

@@ -5,7 +5,7 @@ import { CreatePurchaseOrderDto, ReceiveGoodsDto } from './dto/purchase-order.dt
 import { CatalogService } from '../catalog/catalog.service';
 import { InventoryService } from '../inventory/inventory.service';
 import { SettingsService } from '../../core/settings/settings.service';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '../../core/prisma/client';
 import { allocateLandedCost, weightedAverageCost } from '@yaseen/shared';
 import { DomainEvent } from '../../core/events/domain-events';
 import { EventBusService } from '../../core/events/event-bus.service';

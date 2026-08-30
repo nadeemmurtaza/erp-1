@@ -14,8 +14,7 @@ const adminInclude = {
   images: { orderBy: [{ isPrimary: 'desc' }, { order: 'asc' }] },
   variants: { orderBy: { order: 'asc' } },
   category: { include: { translations: true } },
-  garmentTypes: { include: { garmentType: true } },
-  garmentType: true,
+    garmentTypes: true,
 } satisfies Prisma.ProductInclude;
 
 /**
@@ -201,10 +200,7 @@ export class ProductAdminService {
         : { disconnect: true };
     }
     if (dto.garmentTypeId !== undefined) {
-      data.garmentType =
-        kind === 'STITCHING_SERVICE' && dto.garmentTypeId
-          ? { connect: { id: dto.garmentTypeId } }
-          : { disconnect: true };
+      data.garmentTypeId = kind === 'STITCHING_SERVICE' && dto.garmentTypeId ? dto.garmentTypeId : null;
     }
     if (dto.status !== undefined) {
       data.status = dto.status;

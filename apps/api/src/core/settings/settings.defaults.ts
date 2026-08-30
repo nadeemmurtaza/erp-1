@@ -30,6 +30,8 @@ export interface StoreSettings {
 
 export const SettingKey = {
   Store: 'store',
+  /** IANA zone the shop trades in. Decides where a calendar day begins. */
+  StoreTimezone: 'store.timezone',
   ShippingZones: 'shipping.zones',
   CodFee: 'checkout.cod_fee',
   CodEnabled: 'checkout.cod_enabled',
@@ -54,6 +56,13 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
     supportEmail: 'support@yaseen.pk',
     whatsapp: '+923001234567',
   } satisfies StoreSettings,
+
+  /**
+   * Every "today", every daily revenue bucket and every date on an export is
+   * resolved in this zone — not the server's and not UTC. A shop that moves
+   * country changes this row rather than a deployment.
+   */
+  [SettingKey.StoreTimezone]: 'Asia/Karachi',
 
   [SettingKey.ShippingZones]: [
     {

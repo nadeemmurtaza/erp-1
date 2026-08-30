@@ -60,6 +60,25 @@ describe('validateEnv', () => {
     ).toThrow(/example JWT secrets/);
   });
 
+  it('refuses to start when the email channel has no SMTP server behind it', () => {
+    expect(() =>
+      validateEnv({ ...base, NOTIFICATION_CHANNELS: 'log,email' }),
+    ).toThrow(/SMTP_HOST/);
+  });
+
+  it('accepts the email channel once SMTP_HOST is supplied', () => {
+    const env = validateEnv({
+      ...base,
+      NOTIFICATION_CHANNELS: 'log,email',
+      SMTP_HOST: 'smtp',
+    });
+    expect(env.NOTIFICATION_CHANNELS).toContain('email');
+  });
+
+  it('leaves the email channel off by default', () => {
+    expect(validateEnv(base).NOTIFICATION_CHANNELS).toEqual(['log']);
+  });
+
   it('reports every problem at once rather than one at a time', () => {
     expect(() =>
       validateEnv({ JWT_ACCESS_SECRET: 'short', JWT_REFRESH_SECRET: 'short' }),

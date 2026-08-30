@@ -1,0 +1,74 @@
+# Self-hosted outbound mail for yaseen.pk.
+#
+# Send-only on purpose. The store needs to *send* order confirmations; replies
+# go to MAIL_REPLY_TO, which is an ordinary mailbox somewhere else. Dropping
+# IMAP, mailbox storage and spam filtering removes most of the attack surface
+# and most of the maintenance of running your own mail.
+#
+#   docker compose -f docker-compose.mail.yml up -d
+#
+# BEFORE THIS WILL DELIVER ANYTHING, three things have to be true. All three are
+# outside this file, and skipping any one of them means Gmail silently bins the
+# mail. docs/email.md has the full walkthrough.
+#
+#   1. Outbound port 25 is open. Most VPS providers block it by default —
+#      DigitalOcean, Vultr, Hetzner, Oracle and AWS all do — and unblocking is
+#      a support ticket. Verify first:  nc -zv gmail-smtp-in.l.google.com 25
+#   2. A PTR (reverse DNS) record on the VPS IP resolving to mail.yaseen.pk.
+#      Set in the provider's control panel, not in DNS hosting. Receivers check
+#      that the forward and reverse records agree, and reject when they do not.
+#   3. SPF, DKIM and DMARC records published for yaseen.pk. Since February 2024
+#      Gmail and Yahoo require all three from bulk senders. The DKIM key is
+#      generated on first start — read it out of the volume, see docs/email.md.
+#
+# The API reaches this over the internal network as smtp:25 with no
+# credentials; nothing outside the Docker network can. Port 25 is published
+# only for outbound delivery, and 587 is deliberately NOT published — there is
+# no reason to accept mail submission from the internet.
+
+services:
+  smtp:
+    image: boky/postfix:v4.4.0
+    hostname: mail.yaseen.pk
+    environment:
+      # Only these networks may relay. The Docker bridge ranges cover the API
+      # container; an open relay is how a server ends up on Spamhaus in a day.
+      ALLOWED_SENDER_DOMAINS: yaseen.pk
+      RELAYHOST: ''
+      POSTFIX_myhostname: mail.yaseen.pk
+      # Opportunistic TLS outbound: encrypt where the receiver supports it,
+      # deliver anyway where it does not. Mandatory TLS bounces mail to the
+      # smaller Pakistani hosts that still do not offer it.
+      POSTFIX_smtp_tls_security_level: may
+      POSTFIX_smtpd_tls_security_level: may
+      # DKIM signing. The key is generated into the volume on first start.
+      DKIM_SELECTOR: mail
+      DKIM_AUTOGENERATE: 'true'
+      # Retry a deferred message for five days before giving up, which is the
+      # normal internet convention and covers a receiver's grey-listing window.
+      POSTFIX_maximal_queue_lifetime: 5d
+    volumes:
+      - mail-dkim:/etc/opendkim/keys
+      - mail-spool:/var/spool/postfix
+    networks:
+      - yaseen-prod
+    healthcheck:
+      test: ['CMD-SHELL', 'printf "" > /dev/tcp/127.0.0.1/587 || exit 1']
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 256M
+      restart_policy:
+        condition: on-failure
+
+volumes:
+  mail-dkim:
+  mail-spool:
+
+networks:
+  yaseen-prod:
+    external: true

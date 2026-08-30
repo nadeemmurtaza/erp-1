@@ -72,6 +72,32 @@ export const envSchema = z.object({
   EASYPAISA_RETURN_URL: z.string().optional(),
   EASYPAISA_SANDBOX: bool('true'),
 
+  // Outbound email. Plain SMTP on purpose: the mail server is ours (see
+  // docker-compose.mail.yml), and if its reputation ever disappoints, pointing
+  // these four values at a relay is the whole migration — no code changes.
+  SMTP_HOST: z.string().optional(),
+  SMTP_PORT: port(587),
+  /** True for implicit TLS on 465. Port 587 upgrades with STARTTLS instead. */
+  SMTP_SECURE: bool('false'),
+  SMTP_USER: z.string().optional(),
+  SMTP_PASSWORD: z.string().optional(),
+  /** Envelope sender. Its domain is what SPF, DKIM and DMARC are checked against. */
+  MAIL_FROM: z.string().default('Yaseen <no-reply@yaseen.pk>'),
+  /** Where replies land. Customers do reply to order mail — send it somewhere staffed. */
+  MAIL_REPLY_TO: z.string().optional(),
+
+  STORE_NAME: z.string().default('Yaseen'),
+  /** Public storefront origin. Builds the order links and image URLs in emails. */
+  STOREFRONT_URL: z.string().default('http://localhost:3000'),
+  /** Shown in bank-transfer emails so the customer knows where to send a screenshot. */
+  SUPPORT_WHATSAPP: z.string().optional(),
+  /**
+   * Bank account details for the bank-transfer flow, as free text. Free text
+   * rather than structured fields because what a Pakistani bank needs on a
+   * transfer varies — IBAN, account title, branch, or a JazzCash number.
+   */
+  BANK_TRANSFER_DETAILS: z.string().optional(),
+
   SEED_ADMIN_EMAIL: z.string().email().default('admin@yaseen.pk'),
   SEED_ADMIN_PASSWORD: z.string().min(8).default('admin12345'),
 });
@@ -95,6 +121,13 @@ export function validateEnv(raw: Record<string, unknown>): Env {
     if (missing.length > 0) {
       throw new Error(`STORAGE_DRIVER=s3 requires: ${missing.join(', ')}`);
     }
+  }
+
+  // Same shape as the S3 check above: naming a channel you have not configured
+  // is a deployment mistake worth failing on, not one to discover from an
+  // order confirmation that silently never arrived.
+  if (result.data.NOTIFICATION_CHANNELS.includes('email') && !result.data.SMTP_HOST) {
+    throw new Error('NOTIFICATION_CHANNELS includes "email" but SMTP_HOST is not set.');
   }
 
   if (

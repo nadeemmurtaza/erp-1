@@ -1,8 +1,12 @@
 -- Gives the mail server its own database inside the Postgres that is already
--- running. One engine, one container, two databases.
+-- running as a Coolify resource. One engine, one container, two databases.
 --
---   docker exec -i yaseen-postgres-prod psql -U yaseen -d postgres \
---     -v mail_password="'CHANGE_ME'" < deploy/mail/init-postgres.sql
+-- Coolify names its database containers itself, so find the real name first
+-- (`docker ps | grep postgres` on the host, or the resource page in Coolify),
+-- and use that resource's own superuser credentials:
+--
+--   docker exec -i <coolify-postgres-container> psql -U <coolify-pg-user> \
+--     -d postgres -v mail_password="'CHANGE_ME'" < deploy/mail/init-postgres.sql
 --
 -- A SEPARATE DATABASE, not separate tables in the store's own, for two
 -- reasons that both bite hard:

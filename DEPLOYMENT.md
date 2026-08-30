@@ -1,3 +1,15 @@
+> [!WARNING]
+> **This document describes a deployment that is no longer in use.**
+>
+> Production runs on **Coolify** — projects, environments and resources, with
+> Postgres and Redis as managed database resources and Traefik terminating TLS.
+> Everything below (Docker Swarm, the self-managed Caddy container, the
+> `deploy/` scripts and systemd timers, and the SSH-based deploy workflows)
+> describes the previous setup and will mislead you.
+>
+> `docs/email.md` is current and Coolify-based. The rest of this file needs a
+> rewrite; it is kept for now only because the history is still useful.
+
 # Deploying yaseen.pk
 
 Two environments, both on one VPS:

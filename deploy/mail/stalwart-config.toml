@@ -7,20 +7,23 @@
 #
 # Apply it either by merging these blocks into /opt/stalwart/etc/config.toml
 # before first start, or by setting the same values in the admin UI under
-# Settings > Storage.
+# Settings > Storage. The %{env:...}% values are read from the environment
+# variables set on the Coolify resource.
 #
 # VERIFY AGAINST YOUR VERSION. These keys are taken from the Stalwart docs for
 # the pinned image, but this file has never been booted — no Docker daemon in
 # the environment it was written in. If the server refuses to start, its log
 # names the offending key, and the admin UI is the authoritative source.
 
-# --- The existing Postgres, in its own database -----------------------------
-# Host "postgres" is the service name on the yaseen-prod network. The password
-# is the one passed to deploy/mail/init-postgres.sql.
+# --- The Coolify Postgres, in its own database ------------------------------
+# The host is NOT "postgres" — Coolify generates an internal hostname per
+# database resource. Copy it from that resource's page in Coolify and set it as
+# MAIL_DB_HOST on the mail resource. The password is the one passed to
+# deploy/mail/init-postgres.sql.
 [store."postgres"]
 type = "postgresql"
-host = "postgres"
-port = 5432
+host = "%{env:MAIL_DB_HOST}%"
+port = "%{env:MAIL_DB_PORT}%"
 database = "stalwart"
 auth-username = "stalwart"
 auth-secret = "%{env:MAIL_DB_PASSWORD}%"
@@ -38,14 +41,17 @@ type = "filesystem"
 path = "/opt/stalwart/blobs"
 depth = 2
 
-# --- The existing Redis, on its own database index --------------------------
-# Trailing /1 is the Redis database index. The API declares ioredis but does
-# not import it anywhere yet, so index 0 is unused — this keeps it that way.
+# --- The Coolify Redis, on its own database index ---------------------------
+# Same as above: the hostname comes from the Redis resource in Coolify, set as
+# MAIL_REDIS_URL. End it with /1 — that trailing number is the Redis database
+# index. The API declares ioredis but does not import it anywhere yet, so index
+# 0 is unused, and this keeps it that way if that changes.
+#
 # Redis holds only volatile state here: rate limits, fail2ban counters,
 # distributed locks, ACME tokens, greylisting. Nothing that matters if lost.
 [store."redis"]
 type = "redis"
-urls = "redis://redis:6379/1"
+urls = "%{env:MAIL_REDIS_URL}%"
 
 # --- Role assignment --------------------------------------------------------
 [storage]
@@ -63,10 +69,21 @@ type = "internal"
 store = "postgres"
 
 # --- TLS --------------------------------------------------------------------
-# Caddy owns 80 and 443, so Stalwart's own ACME cannot complete a challenge and
-# is left off. Caddy obtains the certificate for mail.yaseen.pk and
-# deploy/mail/sync-certs.sh copies it here; SMTP and IMAP are served by
-# Stalwart directly and need it on disk.
-[certificate."default"]
-cert = "%{file:/opt/stalwart/certs/cert.pem}%"
-private-key = "%{file:/opt/stalwart/certs/key.pem}%"
+# Stalwart serves SMTP and IMAP itself on 25/465/587/993 and needs a real
+# certificate there — Traefik only terminates TLS for HTTP, so routing the
+# admin UI through Coolify does not cover the mail ports.
+#
+# RECOMMENDED: let Stalwart obtain its own certificate over ACME DNS-01. It
+# needs no ports, so it does not collide with Traefik on 80/443, and nothing
+# has to copy files around. This requires moving yaseen.pk's DNS to a provider
+# with an API — it is on Contabo's nameservers today, which have none.
+# Cloudflare's DNS is free and the move is a nameserver change. Configure the
+# provider credentials in the admin UI under Settings > Certificates.
+#
+# FALLBACK if DNS stays at Contabo: extract the certificate for mail.yaseen.pk
+# from Coolify's Traefik acme.json and mount it here, then uncomment the block
+# below. See docs/email.md — it is strictly worse, and worth avoiding.
+#
+# [certificate."default"]
+# cert = "%{file:/opt/stalwart/certs/cert.pem}%"
+# private-key = "%{file:/opt/stalwart/certs/key.pem}%"

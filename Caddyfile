@@ -31,35 +31,6 @@ api.yaseen.pk {
 	}
 }
 
-# --- Mail (Stalwart) --------------------------------------------------
-#
-# Caddy owns 80/443, so Stalwart's own ACME client cannot complete a challenge
-# and is left off. Caddy fronts its admin UI here and, as a side effect, holds
-# the certificate for mail.yaseen.pk — which deploy/mail/sync-certs.sh then
-# copies to Stalwart, since it serves SMTP and IMAP on 25/465/587/993 itself
-# and needs the certificate on disk.
-#
-# The container joins yaseen-edge (docker-compose.mail.yml), so it resolves by
-# name here with nothing published on 80/443. See docs/email.md.
-#
-# Do not add this block before the mail container exists: mail.yaseen.pk
-# already resolves, so Caddy would take out a certificate and then 502.
-
-mail.yaseen.pk {
-	reverse_proxy yaseen-stalwart:8080
-	encode zstd gzip
-	log {
-		output file /data/access-mail.yaseen.pk.log
-	}
-}
-
-# Mail clients look these up to configure themselves. Without them, adding the
-# account to a phone means typing server names in by hand.
-autodiscover.yaseen.pk, autoconfig.yaseen.pk {
-	reverse_proxy yaseen-stalwart:8080
-	encode zstd gzip
-}
-
 # --- Staging (auto-deployed from `main`) ------------------------------
 
 test.yaseen.pk {

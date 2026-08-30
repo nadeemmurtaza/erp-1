@@ -5,20 +5,23 @@ updates, in English and Urdu, sent from our own mail server on the VPS.
 
 ## What runs, and what it reuses
 
-One new container. Nothing is duplicated.
+One new Coolify resource. Nothing is duplicated.
 
 | | |
 |---|---|
 | Mail server | **Stalwart** — SMTP, IMAP and JMAP in a single Rust binary |
-| Metadata | the **existing Postgres**, in its own `stalwart` database |
-| Rate limits, locks, ACME tokens | the **existing Redis**, on database index 1 |
+| Metadata | the **existing Coolify Postgres**, in its own `stalwart` database |
+| Rate limits, locks, ACME tokens | the **existing Coolify Redis**, on database index 1 |
 | Message bodies | a local volume — deliberately *not* Postgres |
-| Admin UI | fronted by the **existing Caddy** at `mail.yaseen.pk` |
+| Admin UI | routed by **Coolify's Traefik** at `mail.yaseen.pk` |
 
-Stalwart was chosen over mailcow for exactly this. mailcow ships its own
-MariaDB and its own Redis and cannot be pointed at existing ones, so it would
-have meant a second database engine on the box for no benefit. It also wants
-~6 GB against Stalwart's ~150 MB idle, and nine containers against one.
+Stalwart was chosen over the two obvious alternatives for exactly this reason.
+**mailcow** ships its own MariaDB and its own Redis and cannot be pointed at
+existing ones. **DMS** (docker-mailserver) states outright that it uses "only
+configuration files, no SQL database", so it cannot use the Postgres at all,
+and it starts a second Redis of its own for Rspamd unless that is disabled and
+Rspamd reconfigured by hand. Both would have put duplicate databases on the
+box. mailcow also wants ~6 GB and DMS ~1 GB, against Stalwart's ~150 MB idle.
 
 Two deliberate separations:
 
@@ -41,13 +44,13 @@ Three things are not optional, and all three live outside this repository:
 1. **Outbound port 25 must be open.** Many VPS providers block it by default.
    Unblocking is a support ticket. **Check this before anything else** — if
    port 25 is blocked, self-hosting cannot deliver at all.
-2. **A PTR record** on the VPS IP pointing at `mail.yaseen.pk`, set in the
-   provider's control panel rather than in DNS hosting. Receivers check that
-   the forward and reverse records agree and reject when they do not.
+2. **A PTR record** on the VPS IP pointing at `mail.yaseen.pk`, set in Contabo's
+   control panel rather than in DNS hosting. Receivers check that the forward
+   and reverse records agree and reject when they do not.
 3. **SPF, DKIM and DMARC** published for `yaseen.pk`. Since February 2024 Gmail
    and Yahoo have required all three from bulk senders.
 
-If your provider will not open port 25, use a relay instead — see
+If the provider will not open port 25, use a relay instead — see
 [Switching to a relay](#switching-to-a-relay). No application code changes
 either way; that is why the transport is plain SMTP.
 
@@ -55,77 +58,101 @@ either way; that is why the transport is plain SMTP.
 
 ### 1. Check port 25 before you build anything
 
+From the VPS:
+
 ```bash
 nc -zv gmail-smtp-in.l.google.com 25
 ```
 
-A connection means you are clear. A hang or refusal means the provider is
-blocking it — raise a ticket, and do not continue until it succeeds.
+A connection means you are clear. A hang or refusal means Contabo is blocking
+it — raise a ticket, and do not continue until it succeeds.
 
-### 2. Point DNS at the server
+### 2. Collect the Coolify connection details
+
+Coolify generates an internal hostname and credentials per database resource.
+These must be read, not guessed. From the project's resource pages, or on the
+host with `docker ps`:
+
+- the Postgres resource's **internal hostname**, **port** and **superuser**
+- the Postgres resource's **container name**, for running the init SQL
+- the Redis resource's **internal hostname**
+
+Everything below depends on these.
+
+### 3. Point DNS at the server
 
 | Type | Name | Value |
 |---|---|---|
-| A | `mail.yaseen.pk` | your VPS IP |
+| A | `mail.yaseen.pk` | the VPS IP |
 | MX | `yaseen.pk` | `mail.yaseen.pk` priority 10 |
-| PTR | (VPS IP) | `mail.yaseen.pk` — in the **provider's panel** |
+| PTR | (VPS IP) | `mail.yaseen.pk` — in **Contabo's panel**, not DNS |
 | CNAME | `autodiscover.yaseen.pk` | `mail.yaseen.pk` |
 | CNAME | `autoconfig.yaseen.pk` | `mail.yaseen.pk` |
 
 The A and MX records already exist and are correct. The PTR is currently a
 generic Contabo hostname and must be changed.
 
-### 3. Give the mail server its own database
+### 4. Give the mail server its own database
 
 ```bash
-openssl rand -base64 32          # put this in .env.production as MAIL_DB_PASSWORD
+openssl rand -base64 32          # this becomes MAIL_DB_PASSWORD
 
-docker exec -i yaseen-postgres-prod psql -U yaseen -d postgres \
-  -v mail_password="'THE_PASSWORD_YOU_JUST_GENERATED'" \
+docker exec -i <coolify-postgres-container> psql -U <coolify-pg-user> \
+  -d postgres -v mail_password="'THE_PASSWORD_YOU_JUST_GENERATED'" \
   < deploy/mail/init-postgres.sql
 ```
 
 Creates the `stalwart` role and database inside the Postgres already running.
 Idempotent, so re-running after a partial setup is safe.
 
-### 4. Start it
+### 5. Add the mail resource in Coolify
 
-```bash
-docker compose -f docker-compose.mail.yml up -d
-```
+Create a **Docker Compose** resource from `docker-compose.mail.yml`, in the
+**same project and environment** as Postgres and Redis — that is what puts it
+on the same network and lets it resolve them.
 
-On first start Stalwart prints a one-time admin password to its log:
+Set these environment variables on the resource:
 
-```bash
-docker compose -f docker-compose.mail.yml logs stalwart | grep -i password
-```
+| Variable | Value |
+|---|---|
+| `MAIL_DB_HOST` | the Postgres resource's internal hostname |
+| `MAIL_DB_PORT` | usually `5432` |
+| `MAIL_DB_PASSWORD` | the password from step 4 |
+| `MAIL_REDIS_URL` | `redis://<redis-internal-host>:6379/1` |
 
-Then apply the storage settings from `deploy/mail/stalwart-config.toml` — either
-by merging them into `/opt/stalwart/etc/config.toml` before first start, or in
-the admin UI under **Settings → Storage**. Those are what point it at the
-existing Postgres and Redis instead of its own embedded store.
+Set the resource's domain to `mail.yaseen.pk` so Traefik routes and
+certificates the admin UI. The compose file publishes 25, 465, 587, 143 and 993
+on the host directly — SMTP and IMAP are not HTTP, so there is nothing for
+Traefik to route there.
 
-### 5. Certificates
+On first start Stalwart prints a one-time admin password to its log. Then apply
+the storage settings from `deploy/mail/stalwart-config.toml`, either by merging
+them into `/opt/stalwart/etc/config.toml` or in the admin UI under
+**Settings → Storage**. Those are what point it at the existing Postgres and
+Redis instead of its own embedded store.
 
-Caddy owns 80 and 443, so Stalwart's ACME client cannot complete an HTTP-01 or
-TLS-ALPN-01 challenge. Caddy obtains the certificate for `mail.yaseen.pk`
-instead, and a timer copies it to Stalwart, which serves SMTP and IMAP itself
-and needs it on disk:
+### 6. Certificates
 
-```bash
-sudo cp deploy/systemd/yaseen-mailcert.{service,timer} /etc/systemd/system/
-sudo systemctl daemon-reload
-sudo systemctl enable --now yaseen-mailcert.timer
-sudo systemctl start yaseen-mailcert.service    # run it once now
-```
+Stalwart serves SMTP and IMAP itself on 25/465/587/993 and needs a real
+certificate **there**. Traefik only terminates TLS for HTTP, so routing the
+admin UI through Coolify does not cover the mail ports.
 
-> **The cleaner alternative:** DNS-01 needs no ports at all, but it needs a DNS
-> provider with an API. `yaseen.pk` is on Contabo's nameservers, which have
-> none. Moving DNS to Cloudflare is free, takes about ten minutes, and would
-> let Stalwart handle its own certificates — deleting this script and its
-> timer entirely.
+**Move DNS to Cloudflare and let Stalwart use ACME DNS-01.** It needs no ports,
+so it cannot collide with Traefik on 80/443, and nothing has to copy files
+around. `yaseen.pk` is on `ns1/ns2/ns3.contabo.net` today, which expose no API —
+that limitation is the *only* reason any certificate-copying is needed at all.
+Cloudflare's DNS is free and the move is a nameserver change. Configure the
+provider credentials in the admin UI under **Settings → Certificates**.
 
-### 6. Create the mailboxes
+If DNS stays at Contabo, the fallback is to extract the certificate and key for
+`mail.yaseen.pk` from Coolify's Traefik `acme.json` (they are base64 inside the
+JSON; `jq` pulls them out), write them into the Stalwart volume, restart it, and
+schedule that as a Coolify scheduled task. Then uncomment the
+`[certificate."default"]` block in `deploy/mail/stalwart-config.toml`. It is
+strictly worse — another moving part, and an expired certificate on 587 stops
+the store sending mail entirely — so prefer DNS-01.
+
+### 7. Create the mailboxes
 
 In the admin UI at `https://mail.yaseen.pk`:
 
@@ -138,7 +165,7 @@ In the admin UI at `https://mail.yaseen.pk`:
 Give `no-reply@` its own password. The API is a client like any other, not an
 administrator.
 
-### 7. Publish SPF, DKIM and DMARC
+### 8. Publish SPF, DKIM and DMARC
 
 Generate the DKIM key in the admin UI, then publish:
 
@@ -155,33 +182,34 @@ confirmation. Move to `p=quarantine` once a week of reports is clean.
 `-all` means "nothing else may send as us". Use `~all` while testing if
 anything else also sends as `@yaseen.pk`.
 
-### 8. Point the API at it
+### 9. Point the API at it
 
-In `.env.production`:
+Coolify holds environment variables in its UI, not in `.env.production`. On the
+API resource:
 
 ```ini
-NOTIFICATION_CHANNELS="log,email"
-SMTP_HOST="mail.yaseen.pk"
+NOTIFICATION_CHANNELS=log,email
+SMTP_HOST=mail.yaseen.pk
 SMTP_PORT=587
 SMTP_SECURE=false
-SMTP_USER="no-reply@yaseen.pk"
-SMTP_PASSWORD="the password you set in step 6"
-MAIL_FROM="Yaseen <no-reply@yaseen.pk>"
-MAIL_REPLY_TO="hello@yaseen.pk"
-STORE_NAME="Yaseen"
-STOREFRONT_URL="https://yaseen.pk"
-SUPPORT_WHATSAPP="+92 321 1110813"
-BANK_TRANSFER_DETAILS="Meezan Bank — Yaseen
+SMTP_USER=no-reply@yaseen.pk
+SMTP_PASSWORD=<the password from step 7>
+MAIL_FROM=Yaseen <no-reply@yaseen.pk>
+MAIL_REPLY_TO=hello@yaseen.pk
+STORE_NAME=Yaseen
+STOREFRONT_URL=https://yaseen.pk
+SUPPORT_WHATSAPP=+92 321 1110813
+BANK_TRANSFER_DETAILS=Meezan Bank — Yaseen
 IBAN: PK00 MEZN 0000 0000 0000 0000
-Account title: Yaseen"
+Account title: Yaseen
 ```
 
-`SMTP_HOST` is the hostname, not the container name: the certificate is issued
-for `mail.yaseen.pk`, and connecting as `stalwart` would fail TLS hostname
-verification. The container answers to `mail.yaseen.pk` on the private network
-through a Docker network alias, so this never leaves the box and the
-certificate still matches. The fix for a hostname mismatch is never to turn
-verification off.
+`SMTP_HOST` has to match the name on the certificate or TLS verification fails.
+`mail.yaseen.pk` resolves publicly and matches, at the cost of a hairpin out and
+back; if you would rather keep it on the internal network, add `mail.yaseen.pk`
+as a network alias for the mail container so the name resolves internally and
+the certificate still matches. **The fix for a hostname mismatch is never to
+turn verification off.**
 
 Keeping `log` alongside `email` means every message stays visible in the API
 log, which is where you look when a customer says nothing arrived.
@@ -189,7 +217,7 @@ log, which is where you look when a customer says nothing arrived.
 The API refuses to boot if `email` is listed without an `SMTP_HOST`, so a
 half-finished deploy fails loudly instead of quietly dropping confirmations.
 
-### 9. Check it, don't assume it
+### 10. Check it, don't assume it
 
 ```bash
 MAIL_FROM="Yaseen <no-reply@yaseen.pk>" pnpm check:email yaseen.pk YOUR_VPS_IP --selector=YOUR_DKIM_SELECTOR
@@ -197,7 +225,7 @@ MAIL_FROM="Yaseen <no-reply@yaseen.pk>" pnpm check:email yaseen.pk YOUR_VPS_IP -
 
 Checks the A record, PTR, MX, SPF, DKIM, DMARC, From-domain alignment, three
 blocklists and outbound port 25, and prints the fix for anything failing. It
-exits non-zero on failures, so cron can run it and shout.
+exits non-zero on failures, so a Coolify scheduled task can run it and shout.
 
 **Run it from the VPS.** Port 25 and the blocklist lookups only tell the truth
 from the machine that actually sends.
@@ -219,11 +247,11 @@ with no SPF, DKIM or DMARC there is nothing for Gmail to authenticate against.
 The clean blocklist result is the good news — a listed IP is much harder to
 recover from than missing DNS.
 
-Note the MX already points at `mail.yaseen.pk`, so mail to the domain is
-being directed at a host that is not yet answering. Anyone emailing
-`@yaseen.pk` today gets a bounce or a timeout.
+Note the MX already points at `mail.yaseen.pk`, so mail to the domain is being
+directed at a host that is not yet answering. Anyone emailing `@yaseen.pk`
+today gets a bounce or a timeout.
 
-### 10. Test before you trust it
+### 11. Test before you trust it
 
 Send a real order to <https://www.mail-tester.com>, which scores the message
 out of 10 and names anything missing. Below 8 means something above is wrong.
@@ -246,29 +274,31 @@ ways to actually read `hello@yaseen.pk`, cheapest first:
    go out *from* `hello@yaseen.pk`. No extra container, nothing to patch.
    Forwarding can trip SPF at the receiving end; Stalwart can do SRS to fix it.
 2. **Any IMAP client.** Thunderbird, Apple Mail, the Gmail app. The
-   autodiscover records in step 2 mean it configures itself.
+   autodiscover records in step 3 mean it configures itself.
 3. **A webmail container.** SnappyMail is lightest and needs no database;
    Roundcube is the most battle-tested and runs on SQLite. Either is one
-   container behind a `webmail.yaseen.pk` block in the Caddyfile.
+   container added in Coolify with the domain `webmail.yaseen.pk`.
 
 ## Backups
 
-`deploy/backup.sh` dumps the `stalwart` database alongside the shop's, restores
-each into a scratch database to prove it loads, and ships both off-site. It
-skips the mail dump cleanly when the database does not exist yet.
+Coolify backs up its own managed databases on a schedule. Enable it on the
+Postgres resource and the `stalwart` database is covered along with the shop's —
+there is no second backup system to maintain, which is why `deploy/backup.sh`
+deliberately does *not* know about mail.
 
-**Message bodies are not in that dump.** They live on the `stalwart-data`
-volume, deliberately, so every nightly dump does not grow by the size of every
-attachment ever received. A full mail restore therefore needs both:
+**Message bodies are not in any database backup.** They live on the mail
+resource's `stalwart-data` volume, deliberately, so a database dump does not
+grow by the size of every attachment ever received. A full mail restore needs
+the volume as well:
 
 ```bash
-# the volume, alongside the database dump
-docker run --rm -v stalwart-data:/data -v "$PWD":/backup alpine:3 \
+docker run --rm -v <mail-resource>_stalwart-data:/data -v "$PWD":/backup alpine:3 \
   tar czf /backup/stalwart-blobs-$(date -u +%Y%m%d).tar.gz -C /data .
 ```
 
-Add that to the backup routine if mailbox history matters to you. It is not in
-`backup.sh` because the right cadence for it depends on how much mail you keep.
+Coolify prefixes volume names with the resource name — check `docker volume ls`
+for the real one. Schedule it as a Coolify scheduled task if mailbox history
+matters; the right cadence depends on how much mail is kept.
 
 ## Staying out of spam
 

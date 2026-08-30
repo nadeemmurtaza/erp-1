@@ -1,37 +1,49 @@
-# Mail server — one container, no new databases.
+# Mail server — deployed as a Coolify resource.
 #
-#   docker compose -f docker-compose.mail.yml up -d
+# Add this in Coolify as a Docker Compose resource, in the SAME project and
+# environment as the Postgres and Redis resources. Coolify attaches it to the
+# project network, which is how it reaches them; do not declare networks here.
 #
 # Stalwart is an all-in-one SMTP/IMAP/JMAP server in a single Rust binary. It
-# was chosen over mailcow for one reason above the others: mailcow ships its
-# own MariaDB and its own Redis and cannot be pointed at existing ones, so it
-# would have meant a second database engine on this box. Stalwart takes the
-# Postgres and Redis that are already running.
+# was chosen over both mailcow and DMS for one reason above the others: it can
+# use the Postgres and Redis already running as Coolify resources. mailcow
+# ships its own MariaDB and Redis and cannot be pointed elsewhere; DMS states
+# outright that it uses "only configuration files, no SQL database", and starts
+# a second Redis of its own for Rspamd. Either would have meant duplicate
+# databases on the box.
 #
 # What it uses, and what it does not:
 #
-#   metadata      -> the existing Postgres, in its OWN database ("stalwart"),
-#                    created by deploy/mail/init-postgres.sql
-#   rate limits,  -> the existing Redis, on database index 1. The API declares
-#   locks, ACME      ioredis but does not import it anywhere yet, so index 0 is
-#                    free; using 1 keeps it that way if that changes.
-#   message bodies-> a local volume, NOT Postgres. Mail bodies in the database
-#                    would grow every nightly dump forever.
+#   metadata       -> the Coolify Postgres, in its OWN database ("stalwart"),
+#                     created by deploy/mail/init-postgres.sql
+#   volatile state -> the Coolify Redis, on database index 1. Rate limits,
+#                     locks, ACME tokens, greylisting — nothing that matters if
+#                     lost.
+#   message bodies -> a local volume, NOT Postgres. Mail bodies in the database
+#                     would grow every backup forever.
 #
-# Ports 80 and 443 stay with Caddy. Caddy fronts the admin UI over yaseen-edge
-# (see the mail.yaseen.pk block in the Caddyfile) and holds the certificate;
-# deploy/mail/sync-certs.sh hands it to Stalwart, which serves SMTP and IMAP
-# itself and needs the cert on disk.
+# Ports 80 and 443 belong to Coolify's Traefik. Set the domain mail.yaseen.pk on
+# this resource in Coolify's UI and Traefik will route and certificate the admin
+# UI on 8080. The mail ports below are published on the host directly, because
+# SMTP and IMAP are not HTTP and there is nothing for Traefik to route.
 #
-# Full setup, including the DNS records that decide whether any of this reaches
-# an inbox, is in docs/email.md.
+# BEFORE THIS DELIVERS ANYTHING, the DNS and reverse-DNS work in docs/email.md
+# has to be done. As of writing, yaseen.pk has no SPF, DKIM or DMARC and its
+# PTR still points at a generic Contabo hostname.
 
 services:
   stalwart:
     image: stalwartlabs/stalwart:v0.13.4
-    container_name: yaseen-stalwart
     restart: unless-stopped
     hostname: mail.yaseen.pk
+    environment:
+      # Coolify substitutes these from the resource's environment variables.
+      # Take the host values from the Postgres and Redis resources in Coolify —
+      # they are generated per resource and must not be guessed.
+      MAIL_DB_HOST: ${MAIL_DB_HOST:?set to the Coolify Postgres internal hostname}
+      MAIL_DB_PORT: ${MAIL_DB_PORT:-5432}
+      MAIL_DB_PASSWORD: ${MAIL_DB_PASSWORD:?set to the password given to init-postgres.sql}
+      MAIL_REDIS_URL: ${MAIL_REDIS_URL:?set to redis://<coolify-redis-host>:6379/1}
     ports:
       # Inbound mail from the rest of the internet.
       - '25:25'
@@ -41,20 +53,10 @@ services:
       # IMAP, for reading the support mailbox.
       - '143:143'
       - '993:993'
-      # Deliberately NOT 80/443: Caddy owns those and reaches the admin UI
-      # over the shared network instead.
+      # Deliberately NOT 80/443: Traefik owns those, and routes the admin UI
+      # on 8080 via the domain set on this resource in Coolify.
     volumes:
       - stalwart-data:/opt/stalwart
-      - mail-certs:/opt/stalwart/certs:ro
-    networks:
-      yaseen-prod:
-        aliases:
-          # So the API can reach it as mail.yaseen.pk over the private network.
-          # Connecting to "stalwart" instead would fail TLS hostname
-          # verification, since the certificate is issued for mail.yaseen.pk —
-          # and the fix for that is never to switch verification off.
-          - mail.yaseen.pk
-      yaseen-edge:
     healthcheck:
       test: ['CMD-SHELL', 'printf "" > /dev/tcp/127.0.0.1/587 || exit 1']
       interval: 30s
@@ -70,13 +72,3 @@ services:
 
 volumes:
   stalwart-data:
-  # Written by deploy/mail/sync-certs.sh, read-only here.
-  mail-certs:
-
-networks:
-  yaseen-prod:
-    name: yaseen-prod
-    external: true
-  yaseen-edge:
-    name: yaseen-edge
-    external: true

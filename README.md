@@ -25,6 +25,7 @@ catalogue, orders, tailor queue and customer relationships from one back office.
 | Dashboard metrics + CRM — customers, enquiries, follow-ups | Done |
 | Stitching operations — own-fabric bookings, tailor queue, progress tracking | Done |
 | Expo mobile app — shop, cart, checkout, measurements, tracking, tailor queue | Done |
+| Email — self-hosted Stalwart mail server, multi-domain, webmail (SnappyMail) | Done |
 
 ## Running it
 

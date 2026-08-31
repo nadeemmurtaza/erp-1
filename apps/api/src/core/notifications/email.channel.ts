@@ -27,13 +27,18 @@ export class EmailNotificationChannel implements NotificationChannel {
     const from = this.config.get('MAIL_FROM');
     const replyTo = this.config.get('MAIL_REPLY_TO');
 
-    await transporter.sendMail({
+    const mailOptions: nodemailer.SendMailOptions = {
       from,
-      replyTo: replyTo || undefined,
       to: message.recipient.email!,
       subject: message.subject,
       text: message.body,
-    });
+    };
+
+    if (replyTo) {
+      mailOptions.replyTo = replyTo;
+    }
+
+    await transporter.sendMail(mailOptions);
 
     this.logger.log(`Email sent to ${message.recipient.email}: ${message.subject}`);
   }

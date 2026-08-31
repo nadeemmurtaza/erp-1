@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { PaymentNotificationSubscriber } from './notification.subscriber';
 import { PaymentsAdminController, PaymentsController } from './payments.controller';
 import { PaymentsService } from './payments.service';
 import { BankTransferProvider } from './providers/bank-transfer.provider';
@@ -14,6 +15,7 @@ import { JazzCashProvider } from './providers/jazzcash.provider';
     BankTransferProvider,
     JazzCashProvider,
     EasypaisaProvider,
+    PaymentNotificationSubscriber,
   ],
   // Exported for the orders module, which creates the payment with the order.
   exports: [PaymentsService],

@@ -1,0 +1,16 @@
+# Cloudflare Pages configuration for Yaseen
+# Cloudflare will auto-detect Next.js and build accordingly
+
+name = "yaseenecom"
+
+# For Cloudflare Pages with Next.js
+# The build happens automatically via Cloudflare's build system
+# No need to specify build command here - Pages detects Next.js
+
+[env.production]
+name = "yaseenecom-prod"
+vars = { ENVIRONMENT = "production" }
+
+[env.preview]
+name = "yaseenecom-preview"
+vars = { ENVIRONMENT = "preview" }

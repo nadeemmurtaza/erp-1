@@ -78,6 +78,12 @@
     "outOfStock": "Out of stock",
     "inStock": "In stock",
     "lowStock": "Only {count} left",
+    "sizeChart": "Size Chart",
+    "sizeCharts": "Size Charts",
+    "close": "Close",
+    "measurementsIn": "Measurements in {unit}",
+    "inch": "inches",
+    "cm": "cm",
     "selectSize": "Size",
     "selectColour": "Colour",
     "addToCart": "Add to cart",
@@ -109,7 +115,13 @@
     "quickView": "Quick view",
     "quickShop": "Quick Shop",
     "addToFavourites": "Add to favourites",
-    "removeFromFavourites": "Remove from favourites"
+    "removeFromFavourites": "Remove from favourites",
+    "sizeChart": "Size Chart",
+    "sizeCharts": "Size Charts",
+    "close": "Close",
+    "measurementsIn": "Measurements in {unit}",
+    "inch": "inches",
+    "cm": "cm"
   },
   "cart": {
     "title": "Cart",
@@ -150,7 +162,9 @@
     "story": "Our story",
     "stitchingService": "Stitching service",
     "payment": "Cash on delivery and bank transfer accepted",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsConditions": "Terms & Conditions"
   },
   "common": {
     "loading": "Loading…",

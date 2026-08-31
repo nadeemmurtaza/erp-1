@@ -18,8 +18,7 @@ const stitchingOrderInclude = {
   jobs: {
     include: {
       garmentType: true,
-      assignedTailor: { select: { id: true, firstName: true } },
-      events: { orderBy: { createdAt: 'asc' } },
+            events: { orderBy: { createdAt: 'asc' } },
     },
   },
 } satisfies Prisma.StitchingOrderInclude;

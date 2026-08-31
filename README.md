@@ -118,6 +118,13 @@ notification modules subscribe. Adding a module is a folder plus one line in the
 registry — enforced by `pnpm boundaries` in CI. See
 [CONTRIBUTING.md](./CONTRIBUTING.md).
 
+**Customer email is a channel, not a feature.** Order confirmations, payment
+receipts, status changes and stitching updates all go out through the same
+`NotificationChannel` interface as the log and push channels, in English and
+Urdu, driven by the events the outbox already publishes — so adding an email is
+a `notifications.send()` call, and moving from our own mail server to a relay is
+four environment variables. See [docs/email.md](./docs/email.md).
+
 **Payments are pluggable.** Cash on Delivery and bank transfer are live.
 JazzCash and Easypaisa sit behind the same `PaymentProvider` interface and are
 switched on through the `PAYMENT_PROVIDERS` env allowlist once merchant
@@ -135,6 +142,15 @@ credentials exist — a config change, not a rewrite.
 | `pnpm db:migrate` | Creates and applies a migration |
 | `pnpm db:seed` | Loads the sample catalogue |
 | `pnpm db:reset` | Drops, re-migrates and re-seeds |
+
+## Where the project is going
+
+[`docs/implementation/`](./docs/implementation/) holds the build instructions for
+the next nine phases — inventory and purchasing, the admin shell, custom variants
+and SEO, profit and loss, promotions and gift cards, shipping and returns, the
+customer portal, content and search, and the AI layer. Start with
+[`00-HOUSE-RULES.md`](./docs/implementation/00-HOUSE-RULES.md), which is the
+contract every contributor works to.
 
 ## Repository layout
 

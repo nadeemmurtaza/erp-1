@@ -3,6 +3,13 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import type { OrderStatus, Prisma } from '../../core/prisma/client';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
+import {
+  shopDayExpr,
+  shopDayKeys,
+  startOfShopDay,
+  startOfShopDaysAgo,
+  startOfShopMonth,
+} from '../../core/time/shop-time';
 
 /** Orders in these states never count toward revenue. */
 const VOID_STATUSES: OrderStatus[] = ['CANCELLED', 'RETURNED'];
@@ -95,13 +102,14 @@ export class AnalyticsService {
   async summary(days = 30): Promise<DashboardSummary> {
     const now = new Date();
 
-    const startOfToday = new Date(now);
-    startOfToday.setHours(0, 0, 0, 0);
+    // Every boundary below is the SHOP's, not the server's and not UTC. Local
+    // midnight in UTC+5 is 19:00 UTC the previous day, so mixing the two puts a
+    // sale made on the 29th into the 28th. See core/time/shop-time.ts.
+    const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
 
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-
-    const seriesStart = new Date(startOfToday);
-    seriesStart.setDate(seriesStart.getDate() - (days - 1));
+    const startOfToday = startOfShopDay(now, timeZone);
+    const startOfMonth = startOfShopMonth(now, timeZone);
+    const seriesStart = startOfShopDaysAgo(now, days, timeZone);
 
     const countsAsSale: Prisma.OrderWhereInput = { status: { notIn: VOID_STATUSES } };
 
@@ -153,16 +161,19 @@ export class AnalyticsService {
 
       // One row per day with orders; gaps are filled in below so the chart has
       // a continuous axis rather than jumping over quiet days.
-      this.prisma.$queryRaw<Array<{ day: Date; orders: bigint; revenue: bigint }>>`
-        SELECT date_trunc('day', "placedAt") AS day,
-               COUNT(*) AS orders,
-               COALESCE(SUM("grandTotal"), 0) AS revenue
-        FROM "Order"
-        WHERE "placedAt" >= ${seriesStart}
-          AND "status" NOT IN ('CANCELLED', 'RETURNED')
-        GROUP BY 1
-        ORDER BY 1 ASC
-      `,
+      this.prisma.$queryRawUnsafe<Array<{ day: string; orders: bigint; revenue: bigint }>>(
+        // The day is grouped AND formatted in the shop's zone, and comes back as
+        // a string so no driver can re-interpret it into a different day.
+        `SELECT ${shopDayExpr('"placedAt"', timeZone)} AS day,
+                COUNT(*) AS orders,
+                COALESCE(SUM("grandTotal"), 0) AS revenue
+         FROM "Order"
+         WHERE "placedAt" >= $1
+           AND "status" NOT IN ('CANCELLED', 'RETURNED')
+         GROUP BY 1
+         ORDER BY 1 ASC`,
+        seriesStart,
+      ),
 
       this.prisma.$queryRaw<Array<{ name: string; quantity: bigint; revenue: bigint }>>`
         SELECT oi."nameEn" AS name,
@@ -214,7 +225,7 @@ export class AnalyticsService {
         repeat: repeatCustomers,
         newThisMonth: newCustomers,
       },
-      salesSeries: fillDays(seriesStart, days, seriesRows),
+      salesSeries: fillDays(seriesStart, days, timeZone, seriesRows),
       topProducts: topProductRows.map((row) => ({
         name: row.name,
         quantity: Number(row.quantity),
@@ -277,7 +288,12 @@ export class AnalyticsService {
                COALESCE(SUM((elem->>'priceDelta')::int * oi."quantity"), 0) AS revenue
         FROM "OrderItem" oi
         JOIN "Order" o ON o.id = oi."orderId"
-        CROSS JOIN LATERAL jsonb_array_elements(oi."optionsSnapshot") AS elem
+        CROSS JOIN LATERAL jsonb_array_elements(
+            CASE 
+              WHEN jsonb_typeof(oi."optionsSnapshot") = 'array' THEN oi."optionsSnapshot"
+              ELSE '[]'::jsonb
+            END
+          ) AS elem
         WHERE o."placedAt" >= ${start}
           AND o."status" NOT IN ('CANCELLED', 'RETURNED')
           AND COALESCE((elem->>'custom')::boolean, false) = false
@@ -543,27 +559,24 @@ function round1(value: number): number {
  * A chart drawn straight from the query would silently skip days with no
  * orders, which makes a quiet week look like a busy one.
  */
+/**
+ * Widens the grouped rows into one point per day so the chart has a continuous
+ * axis. The axis is generated in `timeZone` and the rows were grouped in the
+ * same zone, so the keys line up by construction — which is the property the
+ * old version lacked, having built the axis locally and the keys in UTC.
+ */
 function fillDays(
   start: Date,
   days: number,
-  rows: Array<{ day: Date; orders: bigint; revenue: bigint }>,
+  timeZone: string,
+  rows: Array<{ day: string; orders: bigint; revenue: bigint }>,
 ): Array<{ date: string; orders: number; revenue: number }> {
   const byDate = new Map(
-    rows.map((row) => [
-      row.day.toISOString().slice(0, 10),
-      { orders: Number(row.orders), revenue: Number(row.revenue) },
-    ]),
+    rows.map((row) => [row.day, { orders: Number(row.orders), revenue: Number(row.revenue) }]),
   );
 
-  const series: Array<{ date: string; orders: number; revenue: number }> = [];
-
-  for (let offset = 0; offset < days; offset += 1) {
-    const day = new Date(start);
-    day.setDate(day.getDate() + offset);
-    const date = day.toISOString().slice(0, 10);
-
-    series.push({ date, ...(byDate.get(date) ?? { orders: 0, revenue: 0 }) });
-  }
-
-  return series;
+  return shopDayKeys(start, days, timeZone).map((date) => ({
+    date,
+    ...(byDate.get(date) ?? { orders: 0, revenue: 0 }),
+  }));
 }

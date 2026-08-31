@@ -25,6 +25,7 @@ import { UpsertCategoryDto } from './dto/category.dto';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { ProductAdminService } from './product-admin.service';
 import { ProductImportService } from './product-import.service';
+import { stripProductCost, stripProductListCost } from '../../core/common/cost-fields';
 
 class ReorderImagesDto {
   @IsArray()
@@ -66,34 +67,37 @@ export class CatalogAdminController {
 
   @Get('products')
   @ApiOperation({ summary: 'All products, including drafts and archived ones' })
-  listProducts(@Query() query: AdminProductQueryDto) {
-    return this.products.list(query);
+  async listProducts(
+    @CurrentUser() user: AuthenticatedUser,
+    @Query() query: AdminProductQueryDto,
+  ) {
+    return stripProductListCost(await this.products.list(query), user);
   }
 
   @Get('products/:id')
-  getProduct(@Param('id') id: string) {
-    return this.products.get(id);
+  async getProduct(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
+    return stripProductCost(await this.products.get(id), user);
   }
 
   @Post('products')
   @ApiOperation({ summary: 'Add a product, fabric or stitching service' })
-  createProduct(@CurrentUser() user: AuthenticatedUser, @Body() dto: CreateProductDto) {
-    return this.products.create(user.id, dto);
+  async createProduct(@CurrentUser() user: AuthenticatedUser, @Body() dto: CreateProductDto) {
+    return stripProductCost(await this.products.create(user.id, dto), user);
   }
 
   @Patch('products/:id')
-  updateProduct(
+  async updateProduct(
     @CurrentUser() user: AuthenticatedUser,
     @Param('id') id: string,
     @Body() dto: UpdateProductDto,
   ) {
-    return this.products.update(user.id, id, dto);
+    return stripProductCost(await this.products.update(user.id, id, dto), user);
   }
 
   @Delete('products/:id')
   @ApiOperation({ summary: 'Archive a product (never hard-deleted — orders cite it)' })
-  archiveProduct(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
-    return this.products.archive(user.id, id);
+  async archiveProduct(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
+    return stripProductCost(await this.products.archive(user.id, id), user);
   }
 
   // --- Images ---------------------------------------------------------------

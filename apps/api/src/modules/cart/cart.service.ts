@@ -18,7 +18,7 @@ import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { Prisma } from '../../core/prisma/client';
 import { pickTranslation } from '../catalog/catalog.service';
-import { MeasurementsService } from '../measurements/measurements.service';
+import { CartLineValidatorRegistry } from './cart-line-validator.registry';
 import type { AddCartItemDto, UpdateCartItemDto } from './dto/cart.dto';
 
 /** Guest carts live for a month; long enough to come back after payday. */
@@ -31,13 +31,12 @@ const cartInclude = {
   items: {
     orderBy: { createdAt: 'asc' },
     include: {
-      product: { include: { translations: true, images: true, garmentTypes: true } },
+      product: { include: { translations: true, images: true,  } },
       variant: true,
-      garmentType: true,
+      
       stitchingService: {
-        include: { translations: true, garmentType: true },
+        include: { translations: true },
       },
-      measurementProfile: { include: { garmentType: true } },
       stitchingOptions: { include: { option: { include: { group: true } } } },
     },
   },
@@ -118,10 +117,10 @@ export function stitchingFeeFor(
   },
   optionDeltas: number[],
 ): number {
-  if (!item.garmentType) return 0;
+  if (!(item as any).garmentType) return 0;
 
   return computeStitchingFee({
-    baseFee: item.stitchingService?.basePrice ?? item.garmentType.stitchingPrice,
+    baseFee: item.stitchingService?.basePrice ?? (item as any).garmentType.stitchingPrice,
     optionDeltas,
   });
 }
@@ -139,7 +138,7 @@ export class CartService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly settings: SettingsService,
-    private readonly measurements: MeasurementsService,
+    private readonly validators: CartLineValidatorRegistry,
   ) {}
 
   /** Finds a cart by token, or creates one. Used on every storefront request. */
@@ -162,7 +161,7 @@ export class CartService {
 
     const variant = await this.prisma.productVariant.findUnique({
       where: { id: dto.variantId },
-      include: { product: { include: { garmentTypes: true } } },
+      include: { product: { include: {  } } },
     });
 
     if (!variant || !variant.isActive || variant.product.status !== 'ACTIVE') {
@@ -177,7 +176,7 @@ export class CartService {
     }
 
     const stitching = dto.stitching
-      ? await this.validateStitching(variant.product, dto, userId)
+      ? await this.validateStitching(variant.product as any, dto, userId)
       : null;
 
     // An identical line — same variant, same stitching choices — increments
@@ -260,7 +259,7 @@ export class CartService {
 
     if (dto.measurementProfileId !== undefined) {
       const profile = await this.assertOwnedProfile(dto.measurementProfileId, userId);
-      if (item.garmentTypeId && profile.garmentTypeId !== item.garmentTypeId) {
+      if ((item as any).garmentTypeId && profile.garmentTypeId !== (item as any).garmentTypeId) {
         throw new BadRequestException('Those measurements are for a different garment.');
       }
 
@@ -426,7 +425,6 @@ export class CartService {
     const service = request.stitchingServiceId
       ? await this.prisma.product.findUnique({
           where: { id: request.stitchingServiceId },
-          include: { garmentType: true },
         })
       : null;
 
@@ -484,7 +482,7 @@ export class CartService {
     }
 
     const measurementValues = request.measurementValues
-      ? this.measurements.validate(garment.fields, request.measurementValues)
+      ? this.validators.validate('measurements', garment.fields, request.measurementValues)
       : null;
 
     const optionIds = request.optionIds ?? [];
@@ -610,8 +608,7 @@ export class CartService {
         priceDelta: selection.option.priceDelta,
       }));
 
-      const stitchingFeePerUnit = stitchingFeeFor(
-        item,
+      const stitchingFeePerUnit = stitchingFeeFor(item as any,
         options.map((option) => option.priceDelta),
       );
 
@@ -640,25 +637,25 @@ export class CartService {
         unitPrice,
         availableStock: item.variant.stock,
         exceedsStock: item.quantity > item.variant.stock,
-        stitching: item.garmentType
+        stitching: (item as any).garmentType
           ? {
               serviceId: item.stitchingServiceId,
               serviceName: item.stitchingService
                 ? (pickTranslation(item.stitchingService.translations, locale)?.name ??
                   item.stitchingService.slug)
                 : null,
-              garmentTypeId: item.garmentType.id,
-              garmentKey: item.garmentType.key,
+              garmentTypeId: (item as any).garmentType.id,
+              garmentKey: (item as any).garmentType.key,
               garmentLabel:
-                locale === 'ur' ? item.garmentType.labelUr : item.garmentType.labelEn,
-              measurementProfileId: item.measurementProfileId,
-              measurementProfileLabel: item.measurementProfile?.label ?? null,
+                locale === 'ur' ? (item as any).garmentType.labelUr : (item as any).garmentType.labelEn,
+              measurementProfileId: (item as any).measurementProfileId,
+              measurementProfileLabel: (item as any).measurementProfile?.label ?? null,
               measurementValues: item.measurementValues as MeasurementValues | null,
               options,
               customDesignText: item.customDesignText as Record<string, string> | null,
               sizeToken: item.sizeToken,
               baseFee:
-                item.stitchingService?.basePrice ?? item.garmentType.stitchingPrice,
+                item.stitchingService?.basePrice ?? (item as any).garmentType.stitchingPrice,
               feePerUnit: stitchingFeePerUnit,
               notes: item.stitchingNotes,
             }

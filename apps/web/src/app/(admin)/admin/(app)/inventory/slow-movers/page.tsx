@@ -1,0 +1,147 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import clsx from 'clsx';
+import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { formatMoney } from '@yaseen/shared';
+
+interface InventoryVariant {
+  id: string;
+  sku: string;
+  size: string | null;
+  color: string | null;
+  stock: number;
+  costPrice: number;
+  salesStat: {
+    daysOfCover: number | null;
+    lastSoldAt: string | null;
+    ageDays: number | null;
+  } | null;
+  product: { id: string; name: string };
+}
+
+function Th({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <th className={clsx('px-3 py-3 text-start font-medium text-ink/70', className)}>
+      {children}
+    </th>
+  );
+}
+
+export default function SlowMoversPage() {
+  const user = getStoredUser();
+  const canViewCost = user?.permissions.includes('inventory.view_cost');
+
+  const [variants, setVariants] = useState<InventoryVariant[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(true);
+
+  // Ageing bucket filter
+  const [minAge, setMinAge] = useState<number>(0);
+
+  useEffect(() => {
+    adminFetch<InventoryVariant[]>('/admin/inventory/slow-movers')
+      .then((res) => {
+        setVariants(res || []);
+      })
+      .catch((cause) => setError(cause instanceof Error ? cause.message : 'Could not load slow movers'))
+      .finally(() => setBusy(false));
+  }, []);
+
+  const filtered = variants?.filter(v => (v.salesStat?.ageDays || 0) >= minAge) || [];
+
+  return (
+    <>
+      <h1 className="mb-1 text-xl font-semibold text-ink">Slow Movers</h1>
+      <p className="mb-6 text-sm text-ink/60">
+        Variants with zero sales in the slow mover window.
+      </p>
+
+      <div className="card mb-4 flex flex-wrap items-center gap-3 p-3">
+        <label className="text-sm font-medium text-ink/70">Ageing bucket:</label>
+        <div className="flex gap-2">
+          {[0, 60, 90, 180, 365].map((age) => (
+            <button
+              key={age}
+              onClick={() => setMinAge(age)}
+              className={clsx(
+                'px-3 py-1 rounded text-sm',
+                minAge === age ? 'bg-brand-100 text-brand-800 font-medium' : 'bg-sand-100 text-ink/70 hover:bg-sand-200'
+              )}
+            >
+              {age === 0 ? 'All' : `> ${age} days`}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {error ? (
+        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+          {error}
+        </p>
+      ) : null}
+
+      <div className="card overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="border-b border-sand-200 bg-sand-50 whitespace-nowrap">
+              <tr>
+                <Th>Product</Th>
+                <Th>SKU</Th>
+                <Th className="text-end">Stock</Th>
+                <Th className="text-end">Days of Cover</Th>
+                <Th className="text-end">Age (Days)</Th>
+                {canViewCost && (
+                  <Th className="text-end">Value at Risk</Th>
+                )}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-sand-100">
+              {busy && !variants ? (
+                <tr>
+                  <td colSpan={canViewCost ? 6 : 5} className="p-8 text-center text-ink/50">
+                    Loading...
+                  </td>
+                </tr>
+              ) : filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={canViewCost ? 6 : 5} className="p-8 text-center text-ink/50">
+                    No slow movers found for this bucket.
+                  </td>
+                </tr>
+              ) : (
+                filtered.map((variant) => (
+                  <tr key={variant.id} className="hover:bg-sand-50/50">
+                    <td className="px-3 py-3">
+                      <div className="font-medium text-ink">{variant.product.name}</div>
+                      <div className="text-xs text-ink/60">
+                        {[variant.size, variant.color].filter(Boolean).join(' / ')}
+                      </div>
+                    </td>
+                    <td className="px-3 py-3 text-ink/80">{variant.sku}</td>
+                    <td className="px-3 py-3 text-end font-medium">
+                      {variant.stock}
+                    </td>
+                    <td className="px-3 py-3 text-end text-ink/60">
+                      {variant.salesStat?.daysOfCover !== undefined && variant.salesStat?.daysOfCover !== null 
+                        ? Math.round(variant.salesStat.daysOfCover)
+                        : '—'}
+                    </td>
+                    <td className="px-3 py-3 text-end text-amber-600 font-medium">
+                      {variant.salesStat?.ageDays ?? '—'}
+                    </td>
+                    {canViewCost && (
+                      <td className="px-3 py-3 text-end font-medium text-red-600">
+                        {formatMoney(variant.stock * variant.costPrice)}
+                      </td>
+                    )}
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
+  );
+}

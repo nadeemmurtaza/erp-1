@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { AppConfigService } from '../config/app-config.service';
-import { EmailNotificationChannel } from './email.channel';
+import { EmailChannel } from './email.channel';
 import { ExpoPushChannel } from './expo-push.channel';
 import { LogNotificationChannel } from './log.channel';
 import type { NotificationChannel, NotificationMessage } from './notification-channel';
@@ -20,7 +20,7 @@ export class NotificationsService {
     config: AppConfigService,
     log: LogNotificationChannel,
     expoPush: ExpoPushChannel,
-    email: EmailNotificationChannel,
+    email: EmailChannel,
   ) {
     const available: NotificationChannel[] = [log, expoPush, email];
     this.channels = available.filter((channel) =>

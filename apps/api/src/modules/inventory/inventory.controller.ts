@@ -13,18 +13,42 @@ export class InventoryAdminController {
 
   @Get()
   @ApiOperation({ summary: 'Every active variant, with its stock and threshold' })
-  list(@Query('lowStockOnly') lowStockOnly?: string, @Query('search') search?: string) {
-    return this.inventory.list({ lowStockOnly: lowStockOnly === 'true', search });
+  list(@Query('filter') filter?: string, @Query('search') search?: string) {
+    return this.inventory.list({ filter, search });
+  }
+
+  @Get('reorder')
+  @ApiOperation({ summary: 'Reorder suggestions based on reorderPoint' })
+  reorder() {
+    return this.inventory.getReorderSuggestions();
+  }
+
+  @Get('slow-movers')
+  @ApiOperation({ summary: 'Variants with zero sales in the slow mover window' })
+  slowMovers() {
+    return this.inventory.getSlowMovers();
   }
 
   @Post(':variantId/adjust')
   @ApiOperation({ summary: 'Move stock up or down, with a reason on record' })
-  adjust(
+  async adjust(
     @CurrentUser() user: AuthenticatedUser,
     @Param('variantId') variantId: string,
     @Body() dto: AdjustStockDto,
   ) {
-    return this.inventory.adjust(user.id, variantId, dto);
+    const reasonMap: Record<string, any> = {
+      damaged: 'DAMAGE',
+    };
+    const reason = reasonMap[dto.reason] || 'ADJUSTMENT';
+    const note = dto.reason === 'damaged' ? dto.note : (dto.note ? `legacy reason: ${dto.reason} - ${dto.note}` : `legacy reason: ${dto.reason}`);
+
+    return this.inventory.move({
+      variantId,
+      delta: dto.delta,
+      reason,
+      note,
+      actorId: user.id,
+    });
   }
 
   @Get(':variantId/history')

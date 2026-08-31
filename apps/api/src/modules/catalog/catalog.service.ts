@@ -34,7 +34,7 @@ export interface LocalisedProduct {
     inStock: boolean;
   }>;
   category: { id: string; slug: string; name: string } | null;
-  /** UNSTITCHED only: the garments this fabric can be made into. */
+  /** UNSTITCHED: the garments this fabric can be made into. STITCHED: the garments backing this product's size chart. */
   garmentTypes: Array<{ id: string; key: string; label: string }>;
   /** STITCHING_SERVICE only: the garment this service stitches. */
   serviceGarment: { id: string; key: string; label: string } | null;
@@ -48,8 +48,7 @@ const productInclude = {
   images: { orderBy: [{ isPrimary: 'desc' }, { order: 'asc' }] },
   variants: { where: { isActive: true }, orderBy: { order: 'asc' } },
   category: { include: { translations: true } },
-  garmentTypes: { include: { garmentType: true } },
-  garmentType: true,
+    garmentTypes: true,
 } satisfies Prisma.ProductInclude;
 
 type ProductWithRelations = Prisma.ProductGetPayload<{ include: typeof productInclude }>;
@@ -77,7 +76,7 @@ export class CatalogService {
     ]);
 
     return paginated(
-      rows.map((row) => localise(row, query.locale)),
+      await Promise.all(rows.map((row) => localise(this.prisma, row, query.locale))),
       total,
       query,
     );
@@ -92,7 +91,7 @@ export class CatalogService {
     if (!product) {
       throw new NotFoundException(`No product at "${slug}".`);
     }
-    return localise(product, locale);
+    return await localise(this.prisma, product, locale);
   }
 
   /**
@@ -105,14 +104,14 @@ export class CatalogService {
         kind: 'STITCHING_SERVICE',
         status: 'ACTIVE',
         ...(garmentTypeId
-          ? { OR: [{ garmentTypeId }, { garmentType: { key: garmentTypeId } }] }
+          ? { OR: [{ garmentTypeId }, { garmentTypeId: garmentTypeId }] }
           : {}),
       },
       include: productInclude,
       orderBy: { basePrice: 'asc' },
     });
 
-    return services.map((service) => localise(service, locale));
+    return Promise.all(services.map(service => localise(this.prisma, service, locale)));
   }
 
   /** Category tree in one locale, for the storefront navigation. */
@@ -257,10 +256,11 @@ export function pickTranslation<T extends { locale: string }>(
   );
 }
 
-export function localise(
+export async function localise(
+  prisma: PrismaService,
   product: ProductWithRelations,
   locale: Locale,
-): LocalisedProduct {
+): Promise<LocalisedProduct> {
   const translation = pickTranslation(product.translations, locale);
   const categoryTranslation = product.category
     ? pickTranslation(product.category.translations, locale)
@@ -278,6 +278,29 @@ export function localise(
   }));
 
   const prices = variants.map((variant) => variant.price);
+
+  const garmentTypeIds = product.garmentTypes.map(link => link.garmentTypeId);
+  const fetchedGarments = garmentTypeIds.length > 0 
+    ? await prisma.garmentType.findMany({ where: { id: { in: garmentTypeIds } } })
+    : [];
+  
+  const serviceGarmentDb = product.garmentTypeId 
+    ? await prisma.garmentType.findUnique({ where: { id: product.garmentTypeId } })
+    : null;
+
+  const garmentTypes = fetchedGarments.map((g) => ({
+    id: g.id,
+    key: g.key,
+    label: locale === 'ur' ? g.labelUr : g.labelEn,
+  }));
+
+  const serviceGarment = serviceGarmentDb
+    ? {
+        id: serviceGarmentDb.id,
+        key: serviceGarmentDb.key,
+        label: locale === 'ur' ? serviceGarmentDb.labelUr : serviceGarmentDb.labelEn,
+      }
+    : null;
 
   return {
     id: product.id,
@@ -308,19 +331,8 @@ export function localise(
           name: categoryTranslation?.name ?? product.category.slug,
         }
       : null,
-    garmentTypes: product.garmentTypes.map((link) => ({
-      id: link.garmentType.id,
-      key: link.garmentType.key,
-      label: locale === 'ur' ? link.garmentType.labelUr : link.garmentType.labelEn,
-    })),
-    serviceGarment: product.garmentType
-      ? {
-          id: product.garmentType.id,
-          key: product.garmentType.key,
-          label:
-            locale === 'ur' ? product.garmentType.labelUr : product.garmentType.labelEn,
-        }
-      : null,
+    garmentTypes,
+    serviceGarment,
     inStock: variants.some((variant) => variant.inStock),
     fromPrice: prices.length > 0 ? Math.min(...prices) : product.basePrice,
   };

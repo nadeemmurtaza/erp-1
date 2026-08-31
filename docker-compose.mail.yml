@@ -1,57 +1,74 @@
-# Mail stack — Stalwart mail server + SnappyMail webmail.
+# Mail server — deployed as a Coolify resource.
 #
-# Deployed on the same VPS as the store, in a separate Coolify project ("mail").
-# Stalwart uses host networking for correct IP in outbound mail headers.
+# Add this in Coolify as a Docker Compose resource, in the SAME project and
+# environment as the Postgres and Redis resources. Coolify attaches it to the
+# project network, which is how it reaches them; do not declare networks here.
 #
-# Usage:
-#   docker compose -f docker-compose.mail.yml --env-file .env.production up -d
+# Stalwart is an all-in-one SMTP/IMAP/JMAP server in a single Rust binary. It
+# was chosen over both mailcow and DMS for one reason above the others: it can
+# use the Postgres and Redis already running as Coolify resources. mailcow
+# ships its own MariaDB and Redis and cannot be pointed elsewhere; DMS states
+# outright that it uses "only configuration files, no SQL database", and starts
+# a second Redis of its own for Rspamd. Either would have meant duplicate
+# databases on the box.
 #
-# Ports (host network, bound by Stalwart):
-#   25   - SMTP (inbound mail from other servers)
-#   465  - SMTPS (submission, implicit TLS)
-#   587  - Submission (STARTTLS)
-#   993  - IMAPS (IMAP with TLS)
-#   8080 - Admin panel (restrict in firewall to your IP)
+# What it uses, and what it does not:
+#
+#   metadata       -> the Coolify Postgres, in its OWN database ("stalwart"),
+#                     created by deploy/mail/init-postgres.sql
+#   volatile state -> the Coolify Redis, on database index 1. Rate limits,
+#                     locks, ACME tokens, greylisting — nothing that matters if
+#                     lost.
+#   message bodies -> a local volume, NOT Postgres. Mail bodies in the database
+#                     would grow every backup forever.
+#
+# Ports 80 and 443 belong to Coolify's Traefik. Set the domain mail.yaseen.pk on
+# this resource in Coolify's UI and Traefik will route and certificate the admin
+# UI on 8080. The mail ports below are published on the host directly, because
+# SMTP and IMAP are not HTTP and there is nothing for Traefik to route.
+#
+# BEFORE THIS DELIVERS ANYTHING, the DNS and reverse-DNS work in docs/email.md
+# has to be done. As of writing, yaseen.pk has no SPF, DKIM or DMARC and its
+# PTR still points at a generic Contabo hostname.
 
 services:
   stalwart:
-    image: stalwartlabs/stalwart:v0.16
-    container_name: mail-stalwart
+    image: stalwartlabs/stalwart:v0.13.4
     restart: unless-stopped
-    network_mode: host
+    hostname: mail.yaseen.pk
+    environment:
+      # Coolify substitutes these from the resource's environment variables.
+      # Take the host values from the Postgres and Redis resources in Coolify —
+      # they are generated per resource and must not be guessed.
+      MAIL_DB_HOST: ${MAIL_DB_HOST:?set to the Coolify Postgres internal hostname}
+      MAIL_DB_PORT: ${MAIL_DB_PORT:-5432}
+      MAIL_DB_PASSWORD: ${MAIL_DB_PASSWORD:?set to the password given to init-postgres.sql}
+      MAIL_REDIS_URL: ${MAIL_REDIS_URL:?set to redis://<coolify-redis-host>:6379/1}
+    ports:
+      # Inbound mail from the rest of the internet.
+      - '25:25'
+      # Submission — how the store, and any mail client, sends.
+      - '587:587'
+      - '465:465'
+      # IMAP, for reading the support mailbox.
+      - '143:143'
+      - '993:993'
+      # Deliberately NOT 80/443: Traefik owns those, and routes the admin UI
+      # on 8080 via the domain set on this resource in Coolify.
     volumes:
-      - stalwart-etc:/etc/stalwart
-      - stalwart-data:/var/lib/stalwart
-    security_opt:
-      - no-new-privileges:true
+      - stalwart-data:/opt/stalwart
     healthcheck:
-      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1:8080/health']
+      test: ['CMD-SHELL', 'printf "" > /dev/tcp/127.0.0.1/587 || exit 1']
       interval: 30s
       timeout: 5s
       retries: 5
       start_period: 30s
-
-  snappymail:
-    image: djmaze/snappymail:latest
-    container_name: mail-snappymail
-    restart: unless-stopped
-    ports:
-      - "8888:8888"
-    volumes:
-      - snappymail-data:/var/lib/snappymail
-    security_opt:
-      - no-new-privileges:true
-    depends_on:
-      stalwart:
-        condition: service_healthy
-    healthcheck:
-      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1:8888/']
-      interval: 30s
-      timeout: 5s
-      retries: 5
-      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          # It idles near 150 MB. The headroom is for message parsing and the
+          # spam classifier under a burst.
+          memory: 512M
 
 volumes:
-  stalwart-etc:
   stalwart-data:
-  snappymail-data:

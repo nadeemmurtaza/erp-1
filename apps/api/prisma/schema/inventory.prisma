@@ -1,0 +1,108 @@
+// Inventory: the stock ledger. Every change to ProductVariant.stock has
+// exactly one StockMovement row, written in the same transaction, so the
+// ledger replays to the live number and "why is stock 4" always has an answer.
+
+enum StockMovementReason {
+  PURCHASE_RECEIPT // goods received against a purchase order
+  SALE // order placed
+  CANCELLATION // order cancelled, stock returned to the shelf
+  RETURN // customer returned goods
+  ADJUSTMENT // manual correction by staff
+  DAMAGE // written off as damaged
+  COUNT // variance posted by a stock count
+  WRITE_OFF // lost, stolen, expired
+}
+
+model StockMovement {
+  id             String              @id @default(cuid())
+  variantId      String
+  /// Positive = stock in, negative = stock out. NEVER zero.
+  delta          Int
+  /// Stock level AFTER this movement, so history reads without replaying deltas.
+  resultingStock Int
+  reason         StockMovementReason
+
+  /// What caused it: "Order" | "GoodsReceipt" | "StockCount" | null for manual.
+  refType String?
+  refId   String?
+
+  /// Unit cost in paisa at the moment of the movement. Set on PURCHASE_RECEIPT
+  /// (what we paid) and on SALE (what it cost us - the COGS figure). Null for a
+  /// movement where cost is not meaningful.
+  unitCost Int?
+
+  note      String?
+  actorId   String?
+  createdAt DateTime @default(now())
+
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  actor   User?          @relation("StockMovementActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([variantId, createdAt])
+  @@index([reason, createdAt])
+  @@index([refType, refId])
+}
+
+/// CACHE: variantId as primary key. Safe to delete and recompute.
+model VariantSalesStat {
+  variantId   String    @id
+  units30     Int       @default(0)
+  units90     Int       @default(0)
+  lastSoldAt          DateTime?
+  daysOfCover         Float?
+  ageDays             Int?
+  isSlowMover         Boolean   @default(false)
+  isDeadStock         Boolean   @default(false)
+  lastLowStockAlertAt DateTime?
+  computedAt          DateTime  @default(now())
+
+  variant     ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+}
+
+enum StockCountStatus {
+  DRAFT
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model StockCount {
+  id          String           @id @default(cuid())
+  countNumber String           @unique
+  status      StockCountStatus @default(DRAFT)
+  note        String?
+
+  startedAt   DateTime?
+  completedAt DateTime?
+  cancelledAt DateTime?
+
+  createdBy   String?
+  assignedTo  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  lines       StockCountLine[]
+
+  creator     User? @relation("StockCountCreator", fields: [createdBy], references: [id], onDelete: SetNull)
+  assignee    User? @relation("StockCountAssignee", fields: [assignedTo], references: [id], onDelete: SetNull)
+
+  @@index([status])
+}
+
+model StockCountLine {
+  id           String     @id @default(cuid())
+  stockCountId String
+  variantId    String
+
+  expected     Int?
+  counted      Int?
+  note         String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  stockCount   StockCount     @relation(fields: [stockCountId], references: [id], onDelete: Cascade)
+  variant      ProductVariant @relation(fields: [variantId], references: [id], onDelete: Restrict)
+
+  @@unique([stockCountId, variantId])
+}

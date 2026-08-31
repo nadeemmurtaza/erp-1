@@ -6,7 +6,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import clsx from 'clsx';
 import { clearSession, getStoredUser, logout } from '@/lib/admin-client';
 import type { AuthUser } from '@/lib/api-types';
-import { NAV_GROUP_LABELS, navFor, type AdminNavItem } from './nav-registry';
+import { NAV_GROUPS, ICON_MAP, navFor, type AdminNavItem } from './nav-registry';
 import { AdminSessionProvider } from './session';
 
 /**
@@ -30,7 +30,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const stored = getStoredUser();
-    if (!stored) {
+    if (!stored || !stored.permissions) {
+      if (stored) clearSession();
       router.replace('/admin/login');
       return;
     }
@@ -58,7 +59,16 @@ export function AdminShell({ children }: { children: ReactNode }) {
   }
 
   const items = navFor(user.permissions);
-  const groups = [...new Set(items.map((item) => item.group))];
+  const allItems = items.flatMap(item => [item, ...(item.children || [])]);
+  const activeItem = allItems.reduce((best, item) => {
+    const isMatch = item.href === '/admin' 
+      ? pathname === '/admin' 
+      : (pathname === item.href || pathname.startsWith(item.href + '/'));
+    if (isMatch) {
+      if (!best || item.href.length > best.href.length) return item;
+    }
+    return best;
+  }, null as AdminNavItem | null);
 
   return (
     <div className="flex min-h-screen bg-sand-50">
@@ -87,22 +97,26 @@ export function AdminShell({ children }: { children: ReactNode }) {
               </button>
             </div>
             <nav className="p-3 flex-1 overflow-y-auto">
-              {groups.map((group) => (
-                <div key={group} className="mb-4">
-                  <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-ink/40">
-                    {NAV_GROUP_LABELS[group]}
-                  </p>
-                  <ul className="space-y-0.5">
-                    {items
-                      .filter((item) => item.group === group)
-                      .map((item) => (
+              {NAV_GROUPS.map((group) => {
+                const groupItems = items.filter((item) => item.group === group.key);
+                if (groupItems.length === 0) return null;
+                const GroupIcon = ICON_MAP[group.icon];
+                return (
+                  <div key={group.key} className="mb-4">
+                    <div className="flex items-center gap-2 px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-ink/40">
+                      {GroupIcon && <GroupIcon className="h-4 w-4" />}
+                      <p>{group.label}</p>
+                    </div>
+                    <ul className="space-y-0.5">
+                      {groupItems.map((item) => (
                         <li key={item.key}>
-                          <NavLink item={item} pathname={pathname} onClick={() => setIsNavOpen(false)} />
+                          <NavItemNode item={item} activeItem={activeItem} onClick={() => setIsNavOpen(false)} />
                         </li>
                       ))}
-                  </ul>
-                </div>
-              ))}
+                    </ul>
+                  </div>
+                );
+              })}
             </nav>
           </div>
         </div>
@@ -116,22 +130,26 @@ export function AdminShell({ children }: { children: ReactNode }) {
         </div>
 
         <nav className="p-3">
-          {groups.map((group) => (
-            <div key={group} className="mb-4">
-              <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-ink/40">
-                {NAV_GROUP_LABELS[group]}
-              </p>
-              <ul className="space-y-0.5">
-                {items
-                  .filter((item) => item.group === group)
-                  .map((item) => (
+          {NAV_GROUPS.map((group) => {
+            const groupItems = items.filter((item) => item.group === group.key);
+            if (groupItems.length === 0) return null;
+            const GroupIcon = ICON_MAP[group.icon];
+            return (
+              <div key={group.key} className="mb-4">
+                <div className="flex items-center gap-2 px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-ink/40">
+                  {GroupIcon && <GroupIcon className="h-4 w-4" />}
+                  <p>{group.label}</p>
+                </div>
+                <ul className="space-y-0.5">
+                  {groupItems.map((item) => (
                     <li key={item.key}>
-                      <NavLink item={item} pathname={pathname} />
+                      <NavItemNode item={item} activeItem={activeItem} />
                     </li>
                   ))}
-              </ul>
-            </div>
-          ))}
+                </ul>
+              </div>
+            );
+          })}
         </nav>
       </aside>
 
@@ -182,20 +200,15 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
 function NavLink({
   item,
-  pathname,
+  isActive,
   compact = false,
   onClick,
 }: {
   item: AdminNavItem;
-  pathname: string;
+  isActive: boolean;
   compact?: boolean;
   onClick?: () => void;
 }) {
-  // The dashboard is only active on an exact match; every other section stays
-  // highlighted while you are inside its sub-pages.
-  const isActive =
-    item.href === '/admin' ? pathname === '/admin' : pathname.startsWith(item.href);
-
   return (
     <Link
       href={item.href}
@@ -211,5 +224,69 @@ function NavLink({
     >
       {item.label}
     </Link>
+  );
+}
+
+
+function NavItemNode({
+  item,
+  activeItem,
+  onClick,
+}: {
+  item: AdminNavItem;
+  activeItem: AdminNavItem | null;
+  onClick?: () => void;
+}) {
+  const isActive = activeItem?.key === item.key;
+  const hasActiveChild = item.children?.some(c => activeItem?.key === c.key) ?? false;
+  
+  const [isOpen, setIsOpen] = useState(isActive || hasActiveChild);
+
+  useEffect(() => {
+    if (hasActiveChild) setIsOpen(true);
+  }, [hasActiveChild]);
+
+  return (
+    <div className="space-y-0.5">
+      <div className="flex items-center">
+        <div className="flex-1">
+          <NavLink item={item} isActive={isActive} onClick={onClick} />
+        </div>
+        {item.children && item.children.length > 0 && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsOpen(!isOpen);
+            }}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-ink/50 hover:bg-sand-100 hover:text-ink ms-1"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={clsx('transition-transform duration-200', isOpen && 'rotate-180')}
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+        )}
+      </div>
+      {isOpen && item.children && item.children.length > 0 && (
+        <ul className="ms-4 mt-1 space-y-0.5 border-s border-sand-200 ps-2">
+          {item.children.map((child) => (
+            <li key={child.key}>
+              <NavLink item={child} isActive={activeItem?.key === child.key} onClick={onClick} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }

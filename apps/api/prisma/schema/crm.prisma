@@ -30,11 +30,11 @@ model Contact {
 
   /// Rolled up by the CRM's order.placed subscriber, not computed on read —
   /// the contact list has to stay fast with tens of thousands of rows.
-  orderCount     Int       @default(0)
-  lifetimeValue  Int       @default(0) // paisa
-  avgOrderValue  Int       @default(0) // paisa
-  lastOrderAt    DateTime?
-  firstOrderAt   DateTime?
+  orderCount    Int       @default(0)
+  lifetimeValue Int       @default(0) // paisa
+  avgOrderValue Int       @default(0) // paisa
+  lastOrderAt   DateTime?
+  firstOrderAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -65,27 +65,27 @@ enum LeadStatus {
 /// An enquiry that is not yet an order: a stitching quote request, a WhatsApp
 /// message logged by staff, a contact-form submission.
 model Lead {
-  id        String     @id @default(cuid())
-  contactId String?
-  name      String
-  phone     String?
-  email     String?
-  message   String?
+  id               String     @id @default(cuid())
+  contactId        String?
+  name             String
+  phone            String?
+  email            String?
+  message          String?
   /// "contact_form", "whatsapp", "instagram", "phone", "walk_in"
-  source    String     @default("contact_form")
-  status    LeadStatus @default(NEW)
-  ownerId   String?
+  source           String     @default("contact_form")
+  status           LeadStatus @default(NEW)
+  ownerId          String?
   /// Estimated value in paisa, filled in when quoting.
-  quotedValue Int?
-  lostReason  String?
+  quotedValue      Int?
+  lostReason       String?
   convertedOrderId String?
   convertedAt      DateTime?
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
 
-  contact        Contact?      @relation(fields: [contactId], references: [id], onDelete: SetNull)
-  owner          User?         @relation("LeadOwner", fields: [ownerId], references: [id], onDelete: SetNull)
-  convertedOrder Order?        @relation("LeadConvertedOrder", fields: [convertedOrderId], references: [id], onDelete: SetNull)
+  contact        Contact?       @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  owner          User?          @relation("LeadOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  convertedOrder Order?         @relation("LeadConvertedOrder", fields: [convertedOrderId], references: [id], onDelete: SetNull)
   interactions   Interaction[]
   followUps      FollowUpTask[]
 

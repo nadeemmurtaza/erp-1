@@ -58,7 +58,6 @@ WORKDIR /repo/apps/api
 USER nestjs
 EXPOSE 3001
 
-# Applies any migrations not yet on the database, then starts the API — safe
-# to run on every container start (a no-op when nothing's pending), so a
-# restart after a deploy always leaves the schema current before serving.
-CMD ["sh", "-c", "node_modules/.bin/prisma migrate deploy --schema prisma/schema && node dist/main.js"]
+# Starts the API. Migrations are run as a pre-deploy step in GitHub Actions
+# to ensure zero-downtime rolling updates.
+CMD ["node", "dist/main.js"]

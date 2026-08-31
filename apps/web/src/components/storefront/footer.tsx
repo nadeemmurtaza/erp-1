@@ -19,24 +19,24 @@ export function Footer() {
             <h3 className="text-xs font-semibold uppercase tracking-widest text-noir-500">{t('help')}</h3>
             <ul className="mt-6 space-y-3">
               <li>
-                <span className="text-sm text-noir-200 hover:text-white transition-colors cursor-default">
+                <Link className="text-sm text-noir-200 hover:text-white transition-colors block" href="/contact">
                   {t('contact')}
-                </span>
+                </Link>
               </li>
               <li>
-                <span className="text-sm text-noir-200 hover:text-white transition-colors cursor-default">
+                <Link className="text-sm text-noir-200 hover:text-white transition-colors block" href="/shipping">
                   {t('shipping')}
-                </span>
+                </Link>
               </li>
               <li>
-                <Link className="text-sm text-noir-200 hover:text-white transition-colors" href="/returns">
+                <Link className="text-sm text-noir-200 hover:text-white transition-colors block" href="/returns">
                   {t('returns')}
                 </Link>
               </li>
               <li>
-                <span className="text-sm text-noir-200 hover:text-white transition-colors cursor-default">
+                <Link className="text-sm text-noir-200 hover:text-white transition-colors block" href="/size-guide">
                   {t('sizeGuide')}
-                </span>
+                </Link>
               </li>
             </ul>
           </div>
@@ -45,12 +45,12 @@ export function Footer() {
             <h3 className="text-xs font-semibold uppercase tracking-widest text-noir-500">{t('about')}</h3>
             <ul className="mt-6 space-y-3">
               <li>
-                <span className="text-sm text-noir-200 hover:text-white transition-colors cursor-default">
+                <Link className="text-sm text-noir-200 hover:text-white transition-colors block" href="/story">
                   {t('story')}
-                </span>
+                </Link>
               </li>
               <li>
-                <Link className="text-sm text-noir-200 hover:text-white transition-colors" href="/shop?kind=STITCHING_SERVICE">
+                <Link className="text-sm text-noir-200 hover:text-white transition-colors block" href="/shop?kind=STITCHING_SERVICE">
                   {t('stitchingService')}
                 </Link>
               </li>
@@ -79,10 +79,23 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-noir-800 pt-8">
-          <p className="text-xs text-noir-500 tracking-wide">
-            &copy; {new Date().getFullYear()} {tSite('name')}. {t('rights')}
-          </p>
+        <div className="border-t border-noir-800 pt-8 flex flex-col items-center justify-center gap-6">
+          <div className="flex gap-6">
+            <Link className="text-xs text-noir-500 hover:text-white transition-colors" href="/privacy">
+              {t('privacyPolicy')}
+            </Link>
+            <Link className="text-xs text-noir-500 hover:text-white transition-colors" href="/terms">
+              {t('termsConditions')}
+            </Link>
+          </div>
+          <div className="flex flex-col items-center gap-2 text-center">
+            <p className="text-xs text-noir-500 tracking-wide">
+              © {new Date().getFullYear()} {tSite('name')}. {t('rights')}
+            </p>
+            <p className="text-xs text-noir-500 tracking-wide uppercase">
+              Powered and developed by <a href="https://newax.co" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors underline underline-offset-2">newax.co</a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>

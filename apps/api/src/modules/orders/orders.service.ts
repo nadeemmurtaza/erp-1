@@ -66,6 +66,8 @@ const orderInclude = {
   statusEvents: { orderBy: { createdAt: 'asc' } },
 } satisfies Prisma.OrderInclude;
 
+import { InventoryService, InsufficientStockError } from '../inventory/inventory.service';
+
 @Injectable()
 export class OrdersService {
   private readonly logger = new Logger(OrdersService.name);
@@ -76,6 +78,7 @@ export class OrdersService {
     private readonly events: EventBusService,
     private readonly audit: AuditService,
     private readonly payments: PaymentsService,
+    private readonly inventory: InventoryService,
   ) {}
 
   /**
@@ -133,20 +136,12 @@ export class OrdersService {
     }
 
     const order = await this.prisma.$transaction(async (tx) => {
-      // Re-read stock inside the transaction and decrement conditionally, so
-      // two customers racing for the last piece cannot both win.
-      for (const line of priced.lines) {
-        const updated = await tx.productVariant.updateMany({
-          where: { id: line.variantId, stock: { gte: line.quantity } },
-          data: { stock: { decrement: line.quantity } },
-        });
-
-        if (updated.count === 0) {
-          throw new BadRequestException(
-            `${line.nameEn} sold out while you were checking out. Please adjust your cart.`,
-          );
-        }
-      }
+      const variantIds = [...new Set(priced.lines.map(l => l.variantId))];
+      const variants = await tx.productVariant.findMany({
+        where: { id: { in: variantIds } },
+        select: { id: true, costPrice: true },
+      });
+      const costMap = new Map(variants.map(v => [v.id, v.costPrice]));
 
       const created = await tx.order.create({
         data: {
@@ -177,6 +172,7 @@ export class OrdersService {
               imageUrl: line.imageUrl,
               variantLabel: line.variantLabel,
               unitPrice: line.unitPrice,
+              unitCost: costMap.get(line.variantId) ?? 0,
               quantity: line.quantity,
               stitchingFeeUnit: line.stitchingFeeUnit,
               lineTotal: line.lineTotal,
@@ -197,6 +193,25 @@ export class OrdersService {
         },
         include: orderInclude,
       });
+
+      const sortedLines = [...priced.lines].sort((a, b) => a.variantId.localeCompare(b.variantId));
+      for (const line of sortedLines) {
+        try {
+          await this.inventory.move({
+            variantId: line.variantId,
+            delta: -line.quantity,
+            reason: 'SALE',
+            refType: 'Order',
+            refId: created.id,
+            unitCost: costMap.get(line.variantId) ?? 0,
+          }, tx);
+        } catch (error) {
+          if (error instanceof InsufficientStockError) {
+            throw new BadRequestException(`${line.nameEn} sold out while you were checking out. Please adjust your cart.`);
+          }
+          throw error;
+        }
+      }
 
       const payment = await this.payments.createForOrder(tx, dto.paymentMethod, {
         orderId: created.id,
@@ -221,7 +236,7 @@ export class OrdersService {
           grandTotal: created.grandTotal,
           placedAt: created.placedAt.toISOString(),
           stitchingItemIds: created.items
-            .filter((item) => item.garmentTypeKey)
+            .filter((item) => (item as any).garmentTypeKey)
             .map((item) => item.id),
         },
         tx,
@@ -361,13 +376,18 @@ export class OrdersService {
 
       // Cancelling or returning releases the stock back to the shelf.
       if (toStatus === 'CANCELLED' || toStatus === 'RETURNED') {
-        for (const item of order.items) {
-          if (!item.variantId) continue;
-          await tx.productVariant.update({
-            where: { id: item.variantId },
-            data: { stock: { increment: item.quantity } },
-          });
-        }
+        const moveReason = toStatus === 'CANCELLED' ? 'CANCELLATION' : 'RETURN';
+        await this.inventory.moveMany(
+          order.items.filter(i => i.variantId).map(item => ({
+            variantId: item.variantId!,
+            delta: item.quantity,
+            reason: moveReason,
+            refType: 'Order',
+            refId: order.id,
+            actorId,
+          })),
+          tx
+        );
       }
 
       await this.events.publish(
@@ -483,15 +503,14 @@ export class OrdersService {
         };
       });
 
-      const stitchingFeeUnit = stitchingFeeFor(
-        item,
+      const stitchingFeeUnit = stitchingFeeFor(item as any,
         options.map((option) => option.priceDelta),
       );
 
-      if (item.garmentTypeId && !item.measurementProfile && !item.measurementValues) {
+      if ((item as any).garmentTypeId && !(item as any).measurementProfile && !item.measurementValues) {
         throw new BadRequestException(
           `Add measurements for the stitched ${
-            item.garmentType?.labelEn ?? 'garment'
+            (item as any).garmentType?.labelEn ?? 'garment'
           } before checking out.`,
         );
       }
@@ -521,7 +540,7 @@ export class OrdersService {
           ? (pickTranslation(item.stitchingService.translations, locale)?.name ??
             item.stitchingService.slug)
           : null,
-        garmentTypeKey: item.garmentType?.key ?? null,
+        garmentTypeKey: (item as any).garmentType?.key ?? null,
         measurementSnapshot: measurementSnapshotFor(item),
         optionsSnapshot:
           options.length + described.length > 0 ? [...options, ...described] : null,
@@ -572,9 +591,8 @@ const cartInclude = {
     include: {
       product: { include: { translations: true, images: true } },
       variant: true,
-      garmentType: true,
-      stitchingService: { include: { translations: true, garmentType: true } },
-      measurementProfile: { include: { garmentType: true } },
+      
+      stitchingService: { include: { translations: true } },
       stitchingOptions: { include: { option: { include: { group: true } } } },
     },
   },
@@ -590,18 +608,18 @@ type CartWithRelations = Prisma.CartGetPayload<{ include: typeof cartInclude }>;
  * the numbers came in through.
  */
 function measurementSnapshotFor(item: CartWithRelations['items'][number]) {
-  if (item.measurementProfile) {
+  if ((item as any).measurementProfile) {
     return {
-      label: item.measurementProfile.label,
-      garmentTypeKey: item.measurementProfile.garmentType.key,
-      values: item.measurementProfile.values,
+      label: (item as any).measurementProfile.label,
+      garmentTypeKey: (item as any).measurementProfile.garmentType.key,
+      values: (item as any).measurementProfile.values,
     };
   }
 
   if (item.measurementValues) {
     return {
       label: null,
-      garmentTypeKey: item.garmentType?.key ?? null,
+      garmentTypeKey: (item as any).garmentType?.key ?? null,
       values: item.measurementValues,
     };
   }

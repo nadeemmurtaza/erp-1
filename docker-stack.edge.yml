@@ -1,0 +1,41 @@
+# Shared reverse proxy — the one internet-facing container. Owns ports
+# 80/443 and the yaseen-edge network that both the production and staging
+# stacks join, so it can route requests to the right containers by service name.
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      # Mode: host bypasses the Swarm ingress mesh, ensuring Caddy sees the real 
+      # client IP address (required for accurate rate-limiting).
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+      - target: 443
+        published: 443
+        protocol: tcp
+        mode: host
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks:
+      - yaseen-edge
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          # Host mode ports require locking to a single manager node in Swarm
+          - node.role == manager
+      restart_policy:
+        condition: any
+
+networks:
+  yaseen-edge:
+    name: yaseen-edge
+    external: true
+
+volumes:
+  caddy-data:
+  caddy-config:

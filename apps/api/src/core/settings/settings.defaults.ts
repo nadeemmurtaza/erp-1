@@ -30,6 +30,8 @@ export interface StoreSettings {
 
 export const SettingKey = {
   Store: 'store',
+  /** IANA zone the shop trades in. Decides where a calendar day begins. */
+  StoreTimezone: 'store.timezone',
   ShippingZones: 'shipping.zones',
   CodFee: 'checkout.cod_fee',
   CodEnabled: 'checkout.cod_enabled',
@@ -38,6 +40,10 @@ export const SettingKey = {
   BankAccounts: 'payments.bank_accounts',
   LowStockThreshold: 'catalog.low_stock_threshold',
   MonthlyRevenueTarget: 'analytics.monthly_revenue_target',
+  PurchasingOverReceiptTolerance: 'purchasing.over_receipt_tolerance',
+  PurchasingAutoDraftReorder: 'purchasing.auto_draft_reorder',
+  InventorySlowMoverDays: 'inventory.slow_mover_days',
+  InventoryDeadStockDays: 'inventory.dead_stock_days',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -50,6 +56,13 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
     supportEmail: 'support@yaseen.pk',
     whatsapp: '+923001234567',
   } satisfies StoreSettings,
+
+  /**
+   * Every "today", every daily revenue bucket and every date on an export is
+   * resolved in this zone — not the server's and not UTC. A shop that moves
+   * country changes this row rather than a deployment.
+   */
+  [SettingKey.StoreTimezone]: 'Asia/Karachi',
 
   [SettingKey.ShippingZones]: [
     {
@@ -102,4 +115,10 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
 
   /** Shown as the dashboard's monthly progress target until an admin sets a real one. */
   [SettingKey.MonthlyRevenueTarget]: toMinor(1_000_000),
+
+  [SettingKey.PurchasingOverReceiptTolerance]: 0,
+  [SettingKey.PurchasingAutoDraftReorder]: true,
+
+  [SettingKey.InventorySlowMoverDays]: 60,
+  [SettingKey.InventoryDeadStockDays]: 180,
 };

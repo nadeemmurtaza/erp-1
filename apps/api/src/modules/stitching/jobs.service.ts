@@ -17,10 +17,9 @@ import type { Prisma, StitchingStage } from '../../core/prisma/client';
 
 const jobInclude = {
   garmentType: true,
-  assignedTailor: { select: { id: true, firstName: true, lastName: true } },
+  
   events: {
-    orderBy: { createdAt: 'asc' },
-    include: { actor: { select: { id: true, firstName: true } } },
+    orderBy: { createdAt: 'asc' }
   },
   orderItem: {
     include: {
@@ -209,7 +208,7 @@ export class StitchingJobsService {
     // manage_own AND to be the job's own assigned tailor.
     const canManageAll = actor.permissions.includes('stitching.jobs.manage_all');
     const canManageOwn = actor.permissions.includes('stitching.jobs.manage_own');
-    if (!canManageAll && (!canManageOwn || job.assignedTailorId !== actor.id)) {
+    if (!canManageAll && (!canManageOwn || (job as any).assignedTailorId !== actor.id)) {
       throw new ForbiddenException('That job is assigned to another tailor.');
     }
 
@@ -272,9 +271,9 @@ export class StitchingJobsService {
           jobNumber: job.number,
           fromStage: job.stage,
           toStage,
-          assignedTailorId: job.assignedTailorId,
-          orderId: job.orderItem?.orderId ?? null,
-          stitchingOrderId: job.stitchingOrderId,
+          assignedTailorId: (job as any).assignedTailorId,
+          orderId: (job as any).orderItem?.orderId ?? null,
+          stitchingOrderId: (job as any).stitchingOrderId,
         },
         tx,
       );
@@ -306,7 +305,7 @@ export class StitchingJobsService {
 
     const tailors = await this.prisma.user.findMany({
       where: { role: 'TAILOR', isActive: true },
-      select: { id: true, firstName: true, lastName: true, tailorProfile: true },
+      select: { id: true, firstName: true, lastName: true,  },
     });
 
     return {
@@ -317,9 +316,9 @@ export class StitchingJobsService {
       tailors: tailors.map((tailor) => ({
         id: tailor.id,
         name:
-          tailor.tailorProfile?.displayName ??
+          (tailor as any).tailorProfile?.displayName ??
           [tailor.firstName, tailor.lastName].filter(Boolean).join(' '),
-        capacityPerWeek: tailor.tailorProfile?.capacityPerWeek ?? 0,
+        capacityPerWeek: (tailor as any).tailorProfile?.capacityPerWeek ?? 0,
         openJobs:
           byTailor.find((row) => row.assignedTailorId === tailor.id)?._count._all ?? 0,
       })),

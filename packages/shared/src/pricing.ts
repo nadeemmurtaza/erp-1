@@ -61,6 +61,10 @@ export function computeLineItem(input: LineItemInput): LineItemTotals {
   };
 }
 
+export function lineMargin(lineTotal: number, unitCost: number, quantity: number): number {
+  return lineTotal - (unitCost * quantity);
+}
+
 export interface OrderTotalsInput {
   items: LineItemInput[];
   /** Shipping charge for the delivery zone, in paisa. */
@@ -121,3 +125,67 @@ export function computeShippingFee(goodsSubtotal: number, zone: ShippingZoneRate
   }
   return Math.max(0, zone.fee);
 }
+
+
+export interface ReceiptLineInput {
+  quantity: number;
+  unitCost: number;
+}
+
+export function allocateLandedCost(lines: ReceiptLineInput[], extra: number): number[] {
+  if (lines.length === 0) return [];
+  if (extra === 0) return lines.map(() => 0);
+
+  const lineValues = lines.map(l => l.quantity * l.unitCost);
+  const totalValue = lineValues.reduce((sum, v) => sum + v, 0);
+
+  const shares = new Array(lines.length).fill(0);
+
+  if (totalValue === 0) {
+    // all free samples, allocate entirely to line with largest quantity
+    let maxQty = -1;
+    let maxIdx = -1;
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].quantity > maxQty) {
+        maxQty = lines[i].quantity;
+        maxIdx = i;
+      }
+    }
+    shares[maxIdx] = extra;
+    return shares;
+  }
+
+  let sumShares = 0;
+  let maxLineValue = -1;
+  let maxIdx = -1;
+
+  for (let i = 0; i < lines.length; i++) {
+    const share = Math.round(extra * lineValues[i] / totalValue);
+    shares[i] = share;
+    sumShares += share;
+    if (lineValues[i] > maxLineValue) {
+      maxLineValue = lineValues[i];
+      maxIdx = i;
+    }
+  }
+
+  // fix rounding drift
+  const drift = extra - sumShares;
+  if (drift !== 0) {
+    shares[maxIdx] += drift;
+  }
+
+  return shares;
+}
+
+export function weightedAverageCost(stockBefore: number, currentCostPrice: number, receivedQty: number, landedUnitCost: number): number {
+  const clampedStockBefore = Math.max(0, stockBefore);
+  if (clampedStockBefore === 0 || currentCostPrice === 0) {
+    return landedUnitCost;
+  }
+
+  const oldValue = clampedStockBefore * currentCostPrice;
+  const newValue = receivedQty * landedUnitCost;
+  return Math.round((oldValue + newValue) / (clampedStockBefore + receivedQty));
+}
+

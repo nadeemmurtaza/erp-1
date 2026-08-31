@@ -6,9 +6,12 @@
 //      one per locale, so adding a language needs no migration.
 
 enum ProductKind {
-  STITCHED // ready to wear
-  UNSTITCHED // fabric, optionally stitched to measure
-  STITCHING_SERVICE // the tailoring itself, sold as a product
+  GOODS // physical goods (electronics, grocery, etc)
+  SERVICE // non-physical services
+  DIGITAL // software, licenses, digital downloads
+  STITCHED // legacy: ready to wear
+  UNSTITCHED // legacy: fabric, optionally stitched to measure
+  STITCHING_SERVICE // legacy: the tailoring itself, sold as a product
 }
 
 enum ProductStatus {
@@ -56,7 +59,7 @@ model Product {
   categoryId String?
 
   /// Price in paisa. For a STITCHING_SERVICE this is the base stitching fee.
-  basePrice     Int
+  basePrice      Int
   /// Optional "was" price for showing a discount, in paisa.
   compareAtPrice Int?
 
@@ -77,23 +80,23 @@ model Product {
   garmentTypeId String?
 
   /// Sort weight for merchandising; higher floats to the top of listings.
-  featuredRank Int      @default(0)
+  featuredRank Int       @default(0)
   publishedAt  DateTime?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 
-  category     Category?            @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  garmentType  GarmentType?         @relation("ServiceGarment", fields: [garmentTypeId], references: [id], onDelete: SetNull)
-  translations ProductTranslation[]
-  variants     ProductVariant[]
-  images       ProductImage[]
+  category            Category?            @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  translations        ProductTranslation[]
+  variants            ProductVariant[]
+  options             ProductOption[]
+  images              ProductImage[]
   /// UNSTITCHED only: the garments this fabric may be stitched into.
-  garmentTypes ProductGarmentType[]
-  cartItems    CartItem[]
-  orderItems   OrderItem[]
+  garmentTypes        ProductGarmentType[]
+  cartItems           CartItem[]
+  orderItems          OrderItem[]
   /// Carts/orders where this product was chosen as the stitching service.
-  cartItemsAsService  CartItem[]  @relation("CartItemStitchingService")
-  orderItemsAsService OrderItem[] @relation("OrderItemStitchingService")
+  cartItemsAsService  CartItem[]           @relation("CartItemStitchingService")
+  orderItemsAsService OrderItem[]          @relation("OrderItemStitchingService")
 
   @@index([status, kind])
   @@index([categoryId])
@@ -118,26 +121,44 @@ model ProductTranslation {
 }
 
 model ProductVariant {
-  id        String  @id @default(cuid())
-  productId String
-  sku       String  @unique
-  size      String? // S/M/L or "Free size"
-  color     String?
-  colorHex  String?
+  id                String  @id @default(cuid())
+  productId         String
+  sku               String  @unique
+  size              String? // S/M/L or "Free size"
+  color             String?
+  colorHex          String?
   /// Overrides Product.basePrice when set, in paisa.
-  priceOverride Int?
-  stock         Int     @default(0)
-  lowStockThreshold Int @default(3)
-  isActive  Boolean @default(true)
-  order     Int     @default(0)
+  priceOverride     Int?
+  stock             Int     @default(0)
+  lowStockThreshold Int     @default(3)
+  isActive          Boolean @default(true)
+
+  /// Weighted average cost in paisa. 0 means "never received against a PO" (UNKNOWN), not free.
+  costPrice           Int       @default(0)
+  reorderPoint        Int?
+  reorderQuantity     Int?
+  preferredSupplierId String?
+  preferredSupplier   Supplier? @relation("PreferredSupplier", fields: [preferredSupplierId], references: [id], onDelete: SetNull)
+  lastReceivedAt      DateTime?
+  barcode             String?   @unique
+
+  salesStat           VariantSalesStat?
+
+  order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  product    Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
-  images     ProductImage[]
-  cartItems  CartItem[]
-  orderItems OrderItem[]
-  stockAdjustments StockAdjustment[]
+  product            Product             @relation(fields: [productId], references: [id], onDelete: Cascade)
+  images             ProductImage[]
+  cartItems          CartItem[]
+  optionValues       ProductOptionValue[]
+  orderItems         OrderItem[]
+  supplierProducts   SupplierProduct[]
+  stockAdjustments   StockAdjustment[]
+  stockMovements     StockMovement[]
+  purchaseOrderItems PurchaseOrderItem[]
+  goodsReceiptItems  GoodsReceiptItem[]
+  stockCountLines    StockCountLine[]
 
   @@index([productId])
   @@index([stock])
@@ -146,16 +167,16 @@ model ProductVariant {
 /// One entry per change to ProductVariant.stock, so "why is stock 4" has an
 /// answer without an audit table bolted on after the fact.
 model StockAdjustment {
-  id        String @id @default(cuid())
-  variantId String
+  id             String   @id @default(cuid())
+  variantId      String
   /// Positive = stock added, negative = stock removed. Never zero.
-  delta     Int
+  delta          Int
   /// Stock level AFTER this adjustment, so history reads without replaying deltas.
   resultingStock Int
-  reason    String // "restock" | "correction" | "damaged" | "sold_offline" | "other"
-  note      String?
-  actorId   String?
-  createdAt DateTime @default(now())
+  reason         String // "restock" | "correction" | "damaged" | "sold_offline" | "other"
+  note           String?
+  actorId        String?
+  createdAt      DateTime @default(now())
 
   variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
   actor   User?          @relation(fields: [actorId], references: [id], onDelete: SetNull)
@@ -164,13 +185,13 @@ model StockAdjustment {
 }
 
 model ProductImage {
-  id        String  @id @default(cuid())
+  id        String   @id @default(cuid())
   productId String
   variantId String?
   url       String
   alt       String?
-  order     Int     @default(0)
-  isPrimary Boolean @default(false)
+  order     Int      @default(0)
+  isPrimary Boolean  @default(false)
   createdAt DateTime @default(now())
 
   product Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
@@ -185,7 +206,34 @@ model ProductGarmentType {
   garmentTypeId String
 
   product     Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
-  garmentType GarmentType @relation(fields: [garmentTypeId], references: [id], onDelete: Cascade)
 
   @@id([productId, garmentTypeId])
 }
+
+/// A dynamic option axis for a product (e.g., 'Storage', 'RAM', 'Size').
+model ProductOption {
+  id        String   @id @default(cuid())
+  productId String
+  name      String   // e.g. 'Size'
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  values    ProductOptionValue[]
+
+  @@unique([productId, name])
+}
+
+/// A specific value for a dynamic option (e.g., '128GB' for 'Storage').
+model ProductOptionValue {
+  id              String        @id @default(cuid())
+  productOptionId String
+  value           String        // e.g. '128GB'
+  order           Int           @default(0)
+  
+  option          ProductOption @relation(fields: [productOptionId], references: [id], onDelete: Cascade)
+  variants        ProductVariant[]
+
+  @@unique([productOptionId, value])
+}
+

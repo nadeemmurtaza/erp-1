@@ -118,20 +118,25 @@ HTTPS_BIND=0.0.0.0
 The A and MX records already exist and are correct. The PTR is currently a
 generic Contabo hostname and must be changed.
 
-### 4. Deploy via Coolify
+### 4. Deploy Mailcow
 
-Create a **new Coolify project** called `mail` (separate from the store project).
+```bash
+cd /opt/mailcow-dockerized
+docker compose pull
+docker compose up -d
+```
 
-Add a **Docker Compose** resource using `docker-compose.mail.yml`. Mount
-`mailcow.conf` from the VPS (`/opt/mailcow-dockerized/mailcow.conf`).
+First start takes 5-10 minutes (ClamAV downloads virus definitions, DKIM
+keys are generated). On first start, Mailcow prints the admin password to
+the log.
 
-On first start, Mailcow generates DKIM keys and prints an admin password.
-Access the admin UI at `https://mail.yaseen.pk` to manage domains, mailboxes,
-and DKIM.
+Access the admin UI at `https://mail.yaseen.pk/admin/` to manage domains,
+mailboxes, and DKIM. Default credentials: `admin` / `moohoo` — change the
+password immediately on first login.
 
 ### 5. Create the mailboxes
 
-In the admin UI at `https://mail.yaseen.pk`:
+In the admin UI at `https://mail.yaseen.pk/admin/`:
 
 | Mailbox | For |
 |---|---|
@@ -222,9 +227,14 @@ DMARC: PASS
 
 ## Reading the mail
 
-Mailcow includes **SOGo** — a full webmail client with calendar and contacts,
-at `https://mail.yaseen.pk`. Every mailbox created in the admin UI is
-automatically available in SOGo.
+Mailcow includes **SOGo** — a full webmail client with calendar and contacts.
+Every mailbox created in the admin UI is automatically available in SOGo.
+
+| URL | What it shows |
+|---|---|
+| `https://mail.yaseen.pk/` | SOGo webmail login |
+| `https://mail.yaseen.pk/SOGo` | Same SOGo webmail (alias) |
+| `https://mail.yaseen.pk/admin/` | Mailcow admin panel |
 
 For team mailboxes (e.g., `support@yaseen.pk`, `sales@yaseen.pk`), each
 employee logs in with their own credentials at the same URL. No extra

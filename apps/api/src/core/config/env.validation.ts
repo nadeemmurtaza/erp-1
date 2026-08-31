@@ -50,6 +50,17 @@ export const envSchema = z.object({
   PAYMENT_PROVIDERS: csv('cod,bank_transfer'),
   NOTIFICATION_CHANNELS: csv('log'),
 
+  // SMTP — works with any relay: Stalwart, Cloudflare, SES, Resend, etc.
+  // Cloudflare: host=smtp.mx.cloudflare.net, port=465, secure=true, user=api_token
+  // Stalwart:   host=<vps-ip>, port=587, secure=false, user=<stalwart-email>
+  SMTP_HOST: z.string().optional(),
+  SMTP_PORT: port(587),
+  SMTP_SECURE: bool('false'),
+  SMTP_USER: z.string().optional(),
+  SMTP_PASSWORD: z.string().optional(),
+  MAIL_FROM: z.string().default('Yaseen <no-reply@example.com>'),
+  MAIL_REPLY_TO: z.string().optional(),
+
   STORAGE_DRIVER: z.enum(['local', 's3']).default('local'),
   S3_ENDPOINT: z.string().optional(),
   S3_REGION: z.string().default('us-east-1'),
@@ -97,11 +108,21 @@ export function validateEnv(raw: Record<string, unknown>): Env {
     }
   }
 
-  if (
-    result.data.NODE_ENV === 'production' &&
+  if (result.data.NODE_ENV === 'production' &&
     result.data.JWT_ACCESS_SECRET.includes('change-me')
   ) {
     throw new Error('Refusing to start in production with the example JWT secrets.');
+  }
+
+  if (result.data.NOTIFICATION_CHANNELS.includes('email')) {
+    const missing = (['SMTP_HOST', 'SMTP_PASSWORD'] as const).filter(
+      (key) => !result.data[key],
+    );
+    if (missing.length > 0) {
+      throw new Error(
+        `NOTIFICATION_CHANNELS includes "email" but missing: ${missing.join(', ')}`,
+      );
+    }
   }
 
   return result.data;

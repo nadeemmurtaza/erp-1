@@ -50,17 +50,6 @@ export const envSchema = z.object({
   PAYMENT_PROVIDERS: csv('cod,bank_transfer'),
   NOTIFICATION_CHANNELS: csv('log'),
 
-  // SMTP — works with any relay: Stalwart, Cloudflare, SES, Resend, etc.
-  // Cloudflare: host=smtp.mx.cloudflare.net, port=465, secure=true, user=api_token
-  // Stalwart:   host=<vps-ip>, port=587, secure=false, user=<stalwart-email>
-  SMTP_HOST: z.string().optional(),
-  SMTP_PORT: port(587),
-  SMTP_SECURE: bool('false'),
-  SMTP_USER: z.string().optional(),
-  SMTP_PASSWORD: z.string().optional(),
-  MAIL_FROM: z.string().default('Yaseen <no-reply@example.com>'),
-  MAIL_REPLY_TO: z.string().optional(),
-
   STORAGE_DRIVER: z.enum(['local', 's3']).default('local'),
   S3_ENDPOINT: z.string().optional(),
   S3_REGION: z.string().default('us-east-1'),
@@ -83,9 +72,9 @@ export const envSchema = z.object({
   EASYPAISA_RETURN_URL: z.string().optional(),
   EASYPAISA_SANDBOX: bool('true'),
 
-  // Outbound email. Plain SMTP on purpose: the mail server is ours (see
-  // docker-compose.mail.yml), and if its reputation ever disappoints, pointing
-  // these four values at a relay is the whole migration — no code changes.
+  // Outbound email. Plain SMTP on purpose: the mail server is ours (Mailcow,
+  // see docker-compose.mail.yml), and if its reputation ever disappoints,
+  // pointing these four values at a relay is the whole migration — no code changes.
   SMTP_HOST: z.string().optional(),
   SMTP_PORT: port(587),
   /** True for implicit TLS on 465. Port 587 upgrades with STARTTLS instead. */

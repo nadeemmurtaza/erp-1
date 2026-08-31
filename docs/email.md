@@ -5,32 +5,37 @@ updates, in English and Urdu, sent from our own mail server on the VPS.
 
 ## What runs, and what it reuses
 
-One new Coolify resource. Nothing is duplicated.
+One new Coolify project. Self-contained — no shared databases.
 
 | | |
 |---|---|
-| Mail server | **Stalwart** — SMTP, IMAP and JMAP in a single Rust binary |
-| Metadata | the **existing Coolify Postgres**, in its own `stalwart` database |
-| Rate limits, locks, ACME tokens | the **existing Coolify Redis**, on database index 1 |
-| Message bodies | a local volume — deliberately *not* Postgres |
-| Admin UI | routed by **Coolify's Traefik** at `mail.yaseen.pk` |
+| Mail server | **Mailcow** — Postfix + Dovecot + Rspamd + ClamAV + SOGo |
+| Database | **MariaDB** — ships inside Mailcow, not the store's Postgres |
+| Cache | **Redis** — ships inside Mailcow, not the store's Redis |
+| Antispam | **Rspamd** — Bayesian filtering, fuzzy hashing, community rulesets |
+| Antivirus | **ClamAV** — scans all inbound mail for malware |
+| Webmail | **SOGo** — webmail + calendar + contacts at `mail.yaseen.pk` |
+| Admin UI | **Mailcow** — at `https://mail.yaseen.pk` |
+| Message bodies | local Docker volumes |
 
-Stalwart was chosen over the two obvious alternatives for exactly this reason.
-**mailcow** ships its own MariaDB and its own Redis and cannot be pointed at
-existing ones. **DMS** (docker-mailserver) states outright that it uses "only
-configuration files, no SQL database", so it cannot use the Postgres at all,
-and it starts a second Redis of its own for Rspamd unless that is disabled and
-Rspamd reconfigured by hand. Both would have put duplicate databases on the
-box. mailcow also wants ~6 GB and DMS ~1 GB, against Stalwart's ~150 MB idle.
+Mailcow was chosen for three reasons:
+
+1. **Complete out of the box.** Rspamd antispam, ClamAV antivirus, SOGo
+   webmail, admin UI — everything included. No separate SnappyMail or
+   Roundcube container needed.
+2. **Battle-tested.** Postfix (1998) and Dovecot (2002) have 20+ years of
+   production history. Mailcow wraps them in a well-maintained Docker stack
+   with 15k+ GitHub stars and a large community.
+3. **Resource-appropriate.** Uses ~4-6 GB RAM on a 12 GB VPS. Leaves 6-8 GB
+   for the store — more than enough.
 
 Two deliberate separations:
 
-- **Its own database, not its own server.** `pnpm db:reset` drops and re-creates
-  the shop's database; sharing one would mean a routine reset destroys every
-  mailbox. Prisma also owns the shop's schema, and mail tables beside it would
-  make every future migration ambiguous.
-- **Its own unprivileged role.** `stalwart` owns only the `stalwart` database,
-  so a compromised mail server cannot read orders or customers.
+- **Its own stack, not sharing the store's.** Mailcow ships MariaDB and Redis.
+  Sharing databases would create coupling — a Mailcow update could break the
+  store, and vice versa.
+- **Its own Coolify project.** Deployed separately so resource limits,
+  backups, and updates are independent.
 
 ## Read this first
 
@@ -67,17 +72,38 @@ nc -zv gmail-smtp-in.l.google.com 25
 A connection means you are clear. A hang or refusal means Contabo is blocking
 it — raise a ticket, and do not continue until it succeeds.
 
-### 2. Collect the Coolify connection details
+### 2. Clone and configure Mailcow
 
-Coolify generates an internal hostname and credentials per database resource.
-These must be read, not guessed. From the project's resource pages, or on the
-host with `docker ps`:
+```bash
+cd /opt
+git clone https://github.com/mailcow/mailcow-dockerized.git
+cd mailcow-dockerized
+./generate_config.sh
+```
 
-- the Postgres resource's **internal hostname**, **port** and **superuser**
-- the Postgres resource's **container name**, for running the init SQL
-- the Redis resource's **internal hostname**
+The script asks two questions:
 
-Everything below depends on these.
+- **Mail server hostname:** `mail.yaseen.pk`
+- **Timezone:** `Asia/Karachi`
+
+This creates `mailcow.conf`. Edit it before deploying:
+
+```bash
+nano mailcow.conf
+```
+
+Key settings to verify:
+
+```bash
+MAILCOW_HOSTNAME=mail.yaseen.pk
+TZ=Asia/Karachi
+SKIP_CLAMD=n            # set to y if you want to save ~1 GB RAM
+SKIP_SOLR=y             # set to y unless you need full-text search
+HTTP_PORT=80
+HTTPS_PORT=443
+HTTP_BIND=0.0.0.0
+HTTPS_BIND=0.0.0.0
+```
 
 ### 3. Point DNS at the server
 
@@ -92,67 +118,18 @@ Everything below depends on these.
 The A and MX records already exist and are correct. The PTR is currently a
 generic Contabo hostname and must be changed.
 
-### 4. Give the mail server its own database
+### 4. Deploy via Coolify
 
-```bash
-openssl rand -base64 32          # this becomes MAIL_DB_PASSWORD
+Create a **new Coolify project** called `mail` (separate from the store project).
 
-docker exec -i <coolify-postgres-container> psql -U <coolify-pg-user> \
-  -d postgres -v mail_password="'THE_PASSWORD_YOU_JUST_GENERATED'" \
-  < deploy/mail/init-postgres.sql
-```
+Add a **Docker Compose** resource using `docker-compose.mail.yml`. Mount
+`mailcow.conf` from the VPS (`/opt/mailcow-dockerized/mailcow.conf`).
 
-Creates the `stalwart` role and database inside the Postgres already running.
-Idempotent, so re-running after a partial setup is safe.
+On first start, Mailcow generates DKIM keys and prints an admin password.
+Access the admin UI at `https://mail.yaseen.pk` to manage domains, mailboxes,
+and DKIM.
 
-### 5. Add the mail resource in Coolify
-
-Create a **Docker Compose** resource from `docker-compose.mail.yml`, in the
-**same project and environment** as Postgres and Redis — that is what puts it
-on the same network and lets it resolve them.
-
-Set these environment variables on the resource:
-
-| Variable | Value |
-|---|---|
-| `MAIL_DB_HOST` | the Postgres resource's internal hostname |
-| `MAIL_DB_PORT` | usually `5432` |
-| `MAIL_DB_PASSWORD` | the password from step 4 |
-| `MAIL_REDIS_URL` | `redis://<redis-internal-host>:6379/1` |
-
-Set the resource's domain to `mail.yaseen.pk` so Traefik routes and
-certificates the admin UI. The compose file publishes 25, 465, 587, 143 and 993
-on the host directly — SMTP and IMAP are not HTTP, so there is nothing for
-Traefik to route there.
-
-On first start Stalwart prints a one-time admin password to its log. Then apply
-the storage settings from `deploy/mail/stalwart-config.toml`, either by merging
-them into `/opt/stalwart/etc/config.toml` or in the admin UI under
-**Settings → Storage**. Those are what point it at the existing Postgres and
-Redis instead of its own embedded store.
-
-### 6. Certificates
-
-Stalwart serves SMTP and IMAP itself on 25/465/587/993 and needs a real
-certificate **there**. Traefik only terminates TLS for HTTP, so routing the
-admin UI through Coolify does not cover the mail ports.
-
-**Move DNS to Cloudflare and let Stalwart use ACME DNS-01.** It needs no ports,
-so it cannot collide with Traefik on 80/443, and nothing has to copy files
-around. `yaseen.pk` is on `ns1/ns2/ns3.contabo.net` today, which expose no API —
-that limitation is the *only* reason any certificate-copying is needed at all.
-Cloudflare's DNS is free and the move is a nameserver change. Configure the
-provider credentials in the admin UI under **Settings → Certificates**.
-
-If DNS stays at Contabo, the fallback is to extract the certificate and key for
-`mail.yaseen.pk` from Coolify's Traefik `acme.json` (they are base64 inside the
-JSON; `jq` pulls them out), write them into the Stalwart volume, restart it, and
-schedule that as a Coolify scheduled task. Then uncomment the
-`[certificate."default"]` block in `deploy/mail/stalwart-config.toml`. It is
-strictly worse — another moving part, and an expired certificate on 587 stops
-the store sending mail entirely — so prefer DNS-01.
-
-### 7. Create the mailboxes
+### 5. Create the mailboxes
 
 In the admin UI at `https://mail.yaseen.pk`:
 
@@ -165,9 +142,9 @@ In the admin UI at `https://mail.yaseen.pk`:
 Give `no-reply@` its own password. The API is a client like any other, not an
 administrator.
 
-### 8. Publish SPF, DKIM and DMARC
+### 6. Publish SPF, DKIM and DMARC
 
-Generate the DKIM key in the admin UI, then publish:
+Generate the DKIM key in the Mailcow admin UI under **ARC → Keys**, then publish:
 
 | Type | Name | Value |
 |---|---|---|
@@ -182,7 +159,7 @@ confirmation. Move to `p=quarantine` once a week of reports is clean.
 `-all` means "nothing else may send as us". Use `~all` while testing if
 anything else also sends as `@yaseen.pk`.
 
-### 9. Point the API at it
+### 7. Point the API at it
 
 Coolify holds environment variables in its UI, not in `.env.production`. On the
 API resource:
@@ -193,7 +170,7 @@ SMTP_HOST=mail.yaseen.pk
 SMTP_PORT=587
 SMTP_SECURE=false
 SMTP_USER=no-reply@yaseen.pk
-SMTP_PASSWORD=<the password from step 7>
+SMTP_PASSWORD=<the password from step 5>
 MAIL_FROM=Yaseen <no-reply@yaseen.pk>
 MAIL_REPLY_TO=hello@yaseen.pk
 STORE_NAME=Yaseen
@@ -217,7 +194,7 @@ log, which is where you look when a customer says nothing arrived.
 The API refuses to boot if `email` is listed without an `SMTP_HOST`, so a
 half-finished deploy fails loudly instead of quietly dropping confirmations.
 
-### 10. Check it, don't assume it
+### 8. Check it, don't assume it
 
 ```bash
 MAIL_FROM="Yaseen <no-reply@yaseen.pk>" pnpm check:email yaseen.pk YOUR_VPS_IP --selector=YOUR_DKIM_SELECTOR
@@ -230,28 +207,7 @@ exits non-zero on failures, so a Coolify scheduled task can run it and shout.
 **Run it from the VPS.** Port 25 and the blocklist lookups only tell the truth
 from the machine that actually sends.
 
-State of `yaseen.pk` when this was written:
-
-| Check | Result |
-|---|---|
-| `mail.yaseen.pk` A record | resolves to the Contabo VPS |
-| MX | present, `mail.yaseen.pk` priority 10 |
-| PTR | **fails** — reverses to `vmi3529119.contaboserver.net` |
-| SPF | **missing** |
-| DKIM | **missing** |
-| DMARC | **missing** |
-| Blocklists | clean on Spamhaus, Barracuda and SpamCop |
-
-A generic provider hostname in the PTR is a strong spam signal by itself, and
-with no SPF, DKIM or DMARC there is nothing for Gmail to authenticate against.
-The clean blocklist result is the good news — a listed IP is much harder to
-recover from than missing DNS.
-
-Note the MX already points at `mail.yaseen.pk`, so mail to the domain is being
-directed at a host that is not yet answering. Anyone emailing `@yaseen.pk`
-today gets a bounce or a timeout.
-
-### 11. Test before you trust it
+### 9. Test before you trust it
 
 Send a real order to <https://www.mail-tester.com>, which scores the message
 out of 10 and names anything missing. Below 8 means something above is wrong.
@@ -266,39 +222,47 @@ DMARC: PASS
 
 ## Reading the mail
 
-Stalwart is a mail *server*; it has an admin UI but no webmail client. Three
-ways to actually read `hello@yaseen.pk`, cheapest first:
+Mailcow includes **SOGo** — a full webmail client with calendar and contacts,
+at `https://mail.yaseen.pk`. Every mailbox created in the admin UI is
+automatically available in SOGo.
 
-1. **Forward to Gmail.** Set `hello@` to forward to an existing Gmail account
-   and use Gmail's "Send mail as" pointed at `mail.yaseen.pk:587`. Replies then
-   go out *from* `hello@yaseen.pk`. No extra container, nothing to patch.
-   Forwarding can trip SPF at the receiving end; Stalwart can do SRS to fix it.
-2. **Any IMAP client.** Thunderbird, Apple Mail, the Gmail app. The
+For team mailboxes (e.g., `support@yaseen.pk`, `sales@yaseen.pk`), each
+employee logs in with their own credentials at the same URL. No extra
+containers needed.
+
+Additional access methods:
+
+1. **Any IMAP client.** Thunderbird, Apple Mail, the Gmail app. The
    autodiscover records in step 3 mean it configures itself.
-3. **A webmail container.** SnappyMail is lightest and needs no database;
-   Roundcube is the most battle-tested and runs on SQLite. Either is one
-   container added in Coolify with the domain `webmail.yaseen.pk`.
+2. **CalDAV/CardDAV.** SOGo supports calendar and contacts sync with
+   Apple Calendar, Thunderbird, and DAVx⁵ (Android).
 
 ## Backups
 
-Coolify backs up its own managed databases on a schedule. Enable it on the
-Postgres resource and the `stalwart` database is covered along with the shop's —
-there is no second backup system to maintain, which is why `deploy/backup.sh`
-deliberately does *not* know about mail.
-
-**Message bodies are not in any database backup.** They live on the mail
-resource's `stalwart-data` volume, deliberately, so a database dump does not
-grow by the size of every attachment ever received. A full mail restore needs
-the volume as well:
+Mailcow stores everything in Docker volumes. Back up these volumes:
 
 ```bash
-docker run --rm -v <mail-resource>_stalwart-data:/data -v "$PWD":/backup alpine:3 \
-  tar czf /backup/stalwart-blobs-$(date -u +%Y%m%d).tar.gz -C /data .
+docker run --rm \
+  -v mailcow-vol-redis:/redis \
+  -v mailcow-vol-vmail:/vmail \
+  -v mailcow-vol-clamd:/clamd \
+  -v mailcow-vol-sogo:/sogo \
+  -v mailcow-vol-rspamd:/rspamd \
+  -v "$PWD":/backup \
+  alpine:3 \
+  tar czf /backup/mailcow-$(date -u +%Y%m%d).tar.gz \
+    -C /redis . -C / vmail -C / clamd -C / sogo -C / rspamd
 ```
 
-Coolify prefixes volume names with the resource name — check `docker volume ls`
-for the real one. Schedule it as a Coolify scheduled task if mailbox history
-matters; the right cadence depends on how much mail is kept.
+Check `docker volume ls` for the real volume names — Coolify prefixes them
+with the resource name. Schedule as a Coolify scheduled task.
+
+For MariaDB (mailboxes, aliases, domains):
+
+```bash
+docker exec -i <mailcow-mariadb-container> \
+  mysqldump -u mailcow -p"$MAILCOW_DB_PASS" mailcow > /backup/mailcow-db.sql
+```
 
 ## Staying out of spam
 
@@ -311,8 +275,7 @@ What the code already does, so it does not have to be remembered:
 - **Every message has a plain-text part** alongside the HTML. HTML-only mail
   scores worse, and a young sender cannot spare the points.
 - **The envelope sender is pinned** to the same domain as the visible `From`,
-  so SPF is checked against the domain DMARC will compare against. Left alone,
-  alignment would rest on DKIM by itself.
+  so SPF is checked against the domain DMARC will compare against.
 - **Message-IDs are built from our own domain**, not the machine hostname —
   which inside a container is a random hex string, and `<…@4f2a9c1b8e77>` reads
   as botnet output.
@@ -351,17 +314,17 @@ A new IP that suddenly sends hundreds of messages looks exactly like a
 compromised host. Real order volume ramps naturally, which is usually warm-up
 enough — but do not import an old customer list and mail it on day one.
 
-Watch the outbound queue for the first few weeks — the admin UI has it under
-**Manage → Queues**, or from the shell:
+Watch the outbound queue for the first few weeks — in the Mailcow admin UI
+under **Queue**, or from the shell:
 
 ```bash
-docker compose -f docker-compose.mail.yml logs --tail=200 stalwart
+docker compose -f docker-compose.mail.yml logs --tail=200 postfix-mailcow
 ```
 
 A queue that grows rather than drains means mail is being deferred; the log
 names the receiver and the reason it gave. Deferrals mentioning reputation or
 rate limits are the ones to act on — the rest are usually a receiver being
-briefly unavailable, and Stalwart retries on its own.
+briefly unavailable, and Postfix retries on its own.
 
 ## Switching to a relay
 
@@ -428,3 +391,37 @@ retry sends a second copy. That is a deliberate trade for now — a duplicate
 confirmation is a better failure than a missing one — and it matches how the
 existing stitching notifications already behave. Making it exactly-once needs a
 sent-notification table to check against.
+
+## Multi-client agency architecture
+
+One Mailcow instance serves unlimited client domains. Each client domain is
+added in the admin UI — no new containers, no new ports.
+
+| Resource | Per-client cost |
+|---|---|
+| Domain setup in admin UI | 2 minutes of your time |
+| Mailboxes | Unlimited, zero cost |
+| SOGo webmail | Shared, zero cost |
+| Antispam/antivirus | Shared, zero cost |
+
+### Adding a new client domain
+
+1. Get the client's DNS access (or guide them through it)
+2. Add the domain in Mailcow admin UI
+3. Publish SPF, DKIM, DMARC records at their DNS provider
+4. Set PTR at your VPS provider (one PTR covers all domains on the IP)
+5. Create mailboxes (`support@client.com`, `hello@client.com`, etc.)
+6. Point their app's SMTP env vars at `mail.yaseen.pk`
+
+### Per-domain outbound routing
+
+Mailcow supports per-domain transport maps. If a client wants their mail
+sent through their own relay (e.g., their own SendGrid), configure it in
+**Configuration → Mailbox → Domain → Transport** without affecting other
+domains.
+
+### White-label webmail
+
+Each client accesses `mail.clientdomain.com` → SOGo. The SOGo interface
+shows the client's domain, not yours. From the client's perspective, they
+have their own mail system.

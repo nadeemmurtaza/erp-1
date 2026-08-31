@@ -1,74 +1,128 @@
 # Mail server — deployed as a Coolify resource.
 #
-# Add this in Coolify as a Docker Compose resource, in the SAME project and
-# environment as the Postgres and Redis resources. Coolify attaches it to the
-# project network, which is how it reaches them; do not declare networks here.
+# Mailcow is a complete, self-contained mail server with antispam (Rspamd),
+# antivirus (ClamAV), webmail (SOGo), and a web admin UI. It manages its own
+# MariaDB and Redis — it does not share Coolify's Postgres or Redis.
 #
-# Stalwart is an all-in-one SMTP/IMAP/JMAP server in a single Rust binary. It
-# was chosen over both mailcow and DMS for one reason above the others: it can
-# use the Postgres and Redis already running as Coolify resources. mailcow
-# ships its own MariaDB and Redis and cannot be pointed elsewhere; DMS states
-# outright that it uses "only configuration files, no SQL database", and starts
-# a second Redis of its own for Rspamd. Either would have meant duplicate
-# databases on the box.
+# BEFORE YOU START:
+#   1. Clone mailcow: https://github.com/mailcow/mailcow-dockerized
+#   2. Run ./generate_config.sh to create mailcow.conf
+#   3. Edit mailcow.conf: set MAILCOW_HOSTNAME=mail.yaseen.pk
+#   4. Copy mailcow.conf to this directory (or mount it — see below)
+#   5. Deploy this resource in Coolify in a SEPARATE project from the store
 #
-# What it uses, and what it does not:
+# Ports 25, 465, 587, 143, 993 are published on the host directly — SMTP and
+# IMAP are not HTTP and there is nothing for Traefik to route.
 #
-#   metadata       -> the Coolify Postgres, in its OWN database ("stalwart"),
-#                     created by deploy/mail/init-postgres.sql
-#   volatile state -> the Coolify Redis, on database index 1. Rate limits,
-#                     locks, ACME tokens, greylisting — nothing that matters if
-#                     lost.
-#   message bodies -> a local volume, NOT Postgres. Mail bodies in the database
-#                     would grow every backup forever.
-#
-# Ports 80 and 443 belong to Coolify's Traefik. Set the domain mail.yaseen.pk on
-# this resource in Coolify's UI and Traefik will route and certificate the admin
-# UI on 8080. The mail ports below are published on the host directly, because
-# SMTP and IMAP are not HTTP and there is nothing for Traefik to route.
+# Ports 80 and 443 belong to Coolify's Traefik. Set the domain mail.yaseen.pk
+# on this resource in Coolify's UI and Traefik will route and certificate the
+# admin UI on 8080.
 #
 # BEFORE THIS DELIVERS ANYTHING, the DNS and reverse-DNS work in docs/email.md
 # has to be done. As of writing, yaseen.pk has no SPF, DKIM or DMARC and its
 # PTR still points at a generic Contabo hostname.
+#
+# Resource usage: ~4-6 GB RAM at idle (Rspamd + ClamAV + SOGo + MariaDB).
+# Your Contabo VPS has 12 GB — this leaves 6-8 GB for the store.
 
 services:
-  stalwart:
-    image: stalwartlabs/stalwart:v0.13.4
+  # --- Core mail ---
+  postfix-mailcow:
+    image: ghcr.io/mailcow/mailcow:postfix
     restart: unless-stopped
     hostname: mail.yaseen.pk
     environment:
-      # Coolify substitutes these from the resource's environment variables.
-      # Take the host values from the Postgres and Redis resources in Coolify —
-      # they are generated per resource and must not be guessed.
-      MAIL_DB_HOST: ${MAIL_DB_HOST:?set to the Coolify Postgres internal hostname}
-      MAIL_DB_PORT: ${MAIL_DB_PORT:-5432}
-      MAIL_DB_PASSWORD: ${MAIL_DB_PASSWORD:?set to the password given to init-postgres.sql}
-      MAIL_REDIS_URL: ${MAIL_REDIS_URL:?set to redis://<coolify-redis-host>:6379/1}
-    ports:
-      # Inbound mail from the rest of the internet.
-      - '25:25'
-      # Submission — how the store, and any mail client, sends.
-      - '587:587'
-      - '465:465'
-      # IMAP, for reading the support mailbox.
-      - '143:143'
-      - '993:993'
-      # Deliberately NOT 80/443: Traefik owns those, and routes the admin UI
-      # on 8080 via the domain set on this resource in Coolify.
+      TZ: Asia/Karachi
     volumes:
-      - stalwart-data:/opt/stalwart
-    healthcheck:
-      test: ['CMD-SHELL', 'printf "" > /dev/tcp/127.0.0.1/587 || exit 1']
-      interval: 30s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
+      - mailcow-data:/var/vmail
+      - ./mailcow.conf:/etc/mailcow.conf:ro
+    networks:
+      - mail-network
+
+  dovecot-mailcow:
+    image: ghcr.io/mailcow/mailcow:dovecot
+    restart: unless-stopped
+    hostname: mail.yaseen.pk
+    environment:
+      TZ: Asia/Karachi
+    volumes:
+      - mailcow-data:/var/vmail
+      - ./mailcow.conf:/etc/mailcow.conf:ro
+    networks:
+      - mail-network
+
+  # --- Antispam ---
+  rspamd-mailcow:
+    image: ghcr.io/mailcow/mailcow:rspamd
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Karachi
+    volumes:
+      - rspamd-data:/var/lib/rspamd
+      - ./mailcow.conf:/etc/mailcow.conf:ro
+    networks:
+      - mail-network
+
+  # --- Antivirus ---
+  clamd-mailcow:
+    image: ghcr.io/mailcow/mailcow:clamd
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Karachi
+    volumes:
+      - clamd-data:/var/lib/clamav
+      - ./mailcow.conf:/etc/mailcow.conf:ro
     deploy:
       resources:
         limits:
-          # It idles near 150 MB. The headroom is for message parsing and the
-          # spam classifier under a burst.
-          memory: 512M
+          memory: 1G
+    networks:
+      - mail-network
+
+  # --- Webmail + Admin UI ---
+  sogo-mailcow:
+    image: ghcr.io/mailcow/mailcow:sogo
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Karachi
+    volumes:
+      - sogo-data:/srv
+      - ./mailcow.conf:/etc/mailcow.conf:ro
+    networks:
+      - mail-network
+
+  nginx-mailcow:
+    image: ghcr.io/mailcow/mailcow:nginx
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Karachi
+    volumes:
+      - ./mailcow.conf:/etc/mailcow.conf:ro
+    networks:
+      - mail-network
+
+  # --- DNS resolver (internal) ---
+  unbound-mailcow:
+    image: ghcr.io/mailcow/mailcow:unbound
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Karachi
+    networks:
+      - mail-network
+
+  # --- Cache ---
+  redis-mailcow:
+    image: redis:7-alpine
+    restart: unless-stopped
+    networks:
+      - mail-network
 
 volumes:
-  stalwart-data:
+  mailcow-data:
+  rspamd-data:
+  clamd-data:
+  sogo-data:
+
+networks:
+  mail-network:
+    driver: bridge

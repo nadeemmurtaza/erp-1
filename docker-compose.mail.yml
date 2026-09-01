@@ -1,23 +1,16 @@
-# Mail server — deployed as a Coolify resource.
+# Mail server — reference compose file.
 #
-# Mailcow is a complete, self-contained mail server with antispam (Rspamd),
-# antivirus (ClamAV), webmail (SOGo), and a web admin UI. It manages its own
-# MariaDB and Redis — it does not share Coolify's Postgres or Redis.
+# Mailcow is deployed at /opt/mailcow-dockerized/ using the official
+# mailcow-dockerized setup. This file is kept for reference only.
 #
-# BEFORE YOU START:
-#   1. Clone mailcow: https://github.com/mailcow/mailcow-dockerized
-#   2. Run ./generate_config.sh to create mailcow.conf
-#   3. Edit mailcow.conf: set MAILCOW_HOSTNAME=mail.yaseen.pk
-#   4. Copy mailcow.conf to this directory (or mount it — see below)
-#   5. Deploy this resource in Coolify in a SEPARATE project from the store
+# Architecture: Traefik (Coolify) handles TLS and routes mail.yaseen.pk
+# to Mailcow nginx on an internal Docker network. Ports 80/443 are NOT
+# published on the host — Traefik owns them.
 #
-# Ports 25, 465, 587, 143, 993 are published on the host directly — SMTP and
-# IMAP are not HTTP and there is nothing for Traefik to route.
+# See docs/email.md for the full setup guide.
 #
-# Ports 80 and 443 belong to Coolify's Traefik. Set the domain mail.yaseen.pk
-# on this resource in Coolify's UI and Traefik will route and certificate the
-# admin UI on 8080.
-#
+# Resource usage: ~4-6 GB RAM (Rspamd + ClamAV + SOGo + MariaDB).
+# Your Contabo VPS has 12 GB — leaves 6-8 GB for the store.
 # BEFORE THIS DELIVERS ANYTHING, the DNS and reverse-DNS work in docs/email.md
 # has to be done. As of writing, yaseen.pk has no SPF, DKIM or DMARC and its
 # PTR still points at a generic Contabo hostname.

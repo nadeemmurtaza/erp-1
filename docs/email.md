@@ -99,13 +99,89 @@ MAILCOW_HOSTNAME=mail.yaseen.pk
 TZ=Asia/Karachi
 SKIP_CLAMD=n            # set to y if you want to save ~1 GB RAM
 SKIP_SOLR=y             # set to y unless you need full-text search
-HTTP_PORT=80
-HTTPS_PORT=443
-HTTP_BIND=0.0.0.0
-HTTPS_BIND=0.0.0.0
+HTTP_PORT=8080
+HTTPS_PORT=8443
+HTTP_BIND=127.0.0.1
+HTTPS_BIND=127.0.0.1            # Traefik handles external 80/443
 ```
 
-### 3. Point DNS at the server
+> **Note:** Ports 8080/8443 are internal only — Mailcow binds to `127.0.0.1` so
+> it does not conflict with Coolify's Traefik on ports 80/443. Traefik handles
+> TLS termination and routes `mail.yaseen.pk` to Mailcow's nginx on port 8080.
+
+### 3. Connect Mailcow to Traefik's network
+
+Coolify's Traefik already owns ports 80/443. Instead of fighting over them, we
+connect Mailcow's nginx to Traefik's Docker network and let Traefik route
+`mail.yaseen.pk` to it. Both services run simultaneously with zero downtime.
+
+```bash
+# Find Coolify's Traefik container
+docker ps --format '{{.Names}}' | grep -i traefik
+
+# Create a shared network
+docker network create mailcow-shared
+
+# Connect Traefik to it (replace <traefik-container> with the name from above)
+docker network connect mailcow-shared <traefik-container>
+
+# Connect Mailcow's nginx to it
+docker network connect mailcow-shared nginx-mailcow
+```
+
+Then add Traefik labels to Mailcow's nginx. Edit Mailcow's compose file:
+
+```bash
+cd /opt/mailcow-dockerized
+nano docker-compose.yml
+```
+
+Find the `nginx-mailcow` service and add labels + the shared network:
+
+```yaml
+  nginx-mailcow:
+    image: ghcr.io/mailcow/nginx:1.30.4-1
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ}
+    volumes:
+      - ./data/conf/nginx/:/etc/nginx/conf.d/:ro
+      - ./data/assets/:/assets/:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mailcow.rule=Host(`mail.yaseen.pk`)"
+      - "traefik.http.routers.mailcow.entrypoints=websecure"
+      - "traefik.http.routers.mailcow.tls.certresolver=letsencrypt"
+      - "traefik.http.services.mailcow.loadbalancer.server.port=80"
+    networks:
+      - mailcow-network
+      - mailcow-shared
+```
+
+Stop Mailcow's ACME container (Traefik handles Let's Encrypt now):
+
+```bash
+docker compose stop acme-mailcow
+```
+
+Restart Mailcow:
+
+```bash
+docker compose down
+docker compose up -d
+```
+
+Verify it works:
+
+```bash
+# Test via Traefik from outside
+curl -I https://mail.yaseen.pk/admin/
+```
+
+You should get HTTP 200. The URL goes: browser → Traefik (port 443) → Mailcow
+nginx (internal port 80) → admin UI.
+
+### 4. Point DNS at the server
 
 | Type | Name | Value |
 |---|---|---|
@@ -118,7 +194,7 @@ HTTPS_BIND=0.0.0.0
 The A and MX records already exist and are correct. The PTR is currently a
 generic Contabo hostname and must be changed.
 
-### 4. Deploy Mailcow
+### 5. Deploy Mailcow
 
 ```bash
 cd /opt/mailcow-dockerized
@@ -134,7 +210,7 @@ Access the admin UI at `https://mail.yaseen.pk/admin/` to manage domains,
 mailboxes, and DKIM. Default credentials: `admin` / `moohoo` — change the
 password immediately on first login.
 
-### 5. Create the mailboxes
+### 6. Create the mailboxes
 
 In the admin UI at `https://mail.yaseen.pk/admin/`:
 
@@ -147,7 +223,7 @@ In the admin UI at `https://mail.yaseen.pk/admin/`:
 Give `no-reply@` its own password. The API is a client like any other, not an
 administrator.
 
-### 6. Publish SPF, DKIM and DMARC
+### 7. Publish SPF, DKIM and DMARC
 
 Generate the DKIM key in the Mailcow admin UI under **ARC → Keys**, then publish:
 
@@ -164,7 +240,7 @@ confirmation. Move to `p=quarantine` once a week of reports is clean.
 `-all` means "nothing else may send as us". Use `~all` while testing if
 anything else also sends as `@yaseen.pk`.
 
-### 7. Point the API at it
+### 8. Point the API at it
 
 Coolify holds environment variables in its UI, not in `.env.production`. On the
 API resource:
@@ -199,7 +275,7 @@ log, which is where you look when a customer says nothing arrived.
 The API refuses to boot if `email` is listed without an `SMTP_HOST`, so a
 half-finished deploy fails loudly instead of quietly dropping confirmations.
 
-### 8. Check it, don't assume it
+### 9. Check it, don't assume it
 
 ```bash
 MAIL_FROM="Yaseen <no-reply@yaseen.pk>" pnpm check:email yaseen.pk YOUR_VPS_IP --selector=YOUR_DKIM_SELECTOR
@@ -212,7 +288,7 @@ exits non-zero on failures, so a Coolify scheduled task can run it and shout.
 **Run it from the VPS.** Port 25 and the blocklist lookups only tell the truth
 from the machine that actually sends.
 
-### 9. Test before you trust it
+### 10. Test before you trust it
 
 Send a real order to <https://www.mail-tester.com>, which scores the message
 out of 10 and names anything missing. Below 8 means something above is wrong.

@@ -66,11 +66,12 @@ describe('validateEnv', () => {
     ).toThrow(/SMTP_HOST/);
   });
 
-  it('accepts the email channel once SMTP_HOST is supplied', () => {
+  it('accepts the email channel once SMTP_HOST and SMTP_PASSWORD are supplied', () => {
     const env = validateEnv({
       ...base,
       NOTIFICATION_CHANNELS: 'log,email',
       SMTP_HOST: 'smtp',
+      SMTP_PASSWORD: 'secret',
     });
     expect(env.NOTIFICATION_CHANNELS).toContain('email');
   });

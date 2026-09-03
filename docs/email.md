@@ -395,9 +395,16 @@ email, and the other channels still fire.
 | Event | Template | Sent when |
 |---|---|---|
 | `order.placed` | `order.confirmed` | Every order. Carries bank details while a transfer is outstanding. |
+| `order.status_changed` | `order.status_changed` | Shipped or delivered. |
+| `order.cancelled` | `order.status_changed` | An order is cancelled — its own event, not a status_changed transition; see the subscriber. |
 | `payment.succeeded` | `payment.received` | A transfer or gateway payment clears. Skipped for cash on delivery. |
-| `order.status_changed` | `order.status_changed` | Shipped, delivered, cancelled or refunded only. |
+| `payment.failed` | `payment.failed` | A JazzCash/Easypaisa attempt is declined. Skipped for cash on delivery, which has no online attempt to fail. |
+| `user.registered` | `user.welcome` | A new account is created. |
 | `stitching.job_stage_changed` | `stitching.*` | The garment moves through the workshop. |
+
+A returned order (`OrderStatusChanged` with `toStatus: RETURNED`) also emails
+through `order.status_changed` — it just isn't its own row above because it
+takes the same path as shipped/delivered.
 
 Adding another email is a `notifications.send()` call. A template with no
 layout registered still goes out, wrapped in the standard shell using its own

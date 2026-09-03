@@ -23,8 +23,13 @@ import { PrismaService } from '../../core/prisma/prisma.service';
  * Statuses worth an email are listed rather than inferred. Every transition is
  * interesting to the shop; only some are interesting to the customer, and
  * mailing on all of them is how a store teaches people to ignore its mail.
+ *
+ * CANCELLED never actually reaches this set through OrderStatusChanged —
+ * orders.service.ts fires the separate order.cancelled event for that
+ * transition (see onCancelled below) — but it stays listed so the intent is
+ * visible in one place and the set matches the copy in email/copy.ts.
  */
-const STATUSES_WORTH_AN_EMAIL = new Set(['SHIPPED', 'DELIVERED', 'CANCELLED', 'REFUNDED']);
+const STATUSES_WORTH_AN_EMAIL = new Set(['SHIPPED', 'DELIVERED', 'CANCELLED', 'RETURNED']);
 
 @Injectable()
 export class OrderNotificationSubscriber {
@@ -127,6 +132,17 @@ export class OrderNotificationSubscriber {
     });
 
     this.logger.log(`Sent order confirmation for ${order.number}`);
+  }
+
+  /**
+   * OrdersService.changeStatus fires this as its own event rather than
+   * through order.status_changed when toStatus is CANCELLED, so this needs
+   * its own subscription — onStatusChanged never actually sees
+   * toStatus: 'CANCELLED' on its own. Same payload shape, same handling.
+   */
+  @OnDomainEvent(DomainEvent.OrderCancelled)
+  async onCancelled(payload: OrderStatusChangedPayload): Promise<void> {
+    await this.onStatusChanged(payload);
   }
 
   @OnDomainEvent(DomainEvent.OrderStatusChanged)

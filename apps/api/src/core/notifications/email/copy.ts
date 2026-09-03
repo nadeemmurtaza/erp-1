@@ -31,6 +31,18 @@ export interface EmailCopy {
     heading: string;
     intro: (amount: string) => string;
   };
+  paymentFailed: {
+    subject: (orderNumber: string) => string;
+    heading: string;
+    intro: (orderNumber: string) => string;
+    cta: string;
+  };
+  welcome: {
+    subject: string;
+    heading: string;
+    intro: (name: string) => string;
+    cta: string;
+  };
   status: {
     subject: (orderNumber: string, status: string) => string;
     heading: (status: string) => string;
@@ -91,6 +103,20 @@ const en: EmailCopy = {
     intro: (amount) =>
       `We have received your payment of ${amount}. Your order is confirmed and we are preparing it now.`,
   },
+  paymentFailed: {
+    subject: (orderNumber) => `Payment did not go through — ${orderNumber}`,
+    heading: 'Payment did not go through',
+    intro: (orderNumber) =>
+      `Your payment for order ${orderNumber} could not be completed. Please try again, or reply to this email and we will help sort it out.`,
+    cta: 'Try again',
+  },
+  welcome: {
+    subject: 'Welcome to Yaseen',
+    heading: 'Your account is ready',
+    intro: (name) =>
+      `Hi ${name}, your account is ready. You can now save your measurements, track orders and check out faster next time.`,
+    cta: 'Start shopping',
+  },
   status: {
     subject: (orderNumber, status) => `${orderNumber} — ${status}`,
     heading: (status) => `Your order is ${status}`,
@@ -102,7 +128,7 @@ const en: EmailCopy = {
       SHIPPED: 'on its way',
       DELIVERED: 'delivered',
       CANCELLED: 'cancelled',
-      REFUNDED: 'refunded',
+      RETURNED: 'returned',
     },
   },
   stitching: {
@@ -171,6 +197,20 @@ const ur: EmailCopy = {
     intro: (amount) =>
       `ہمیں آپ کی ${amount} کی ادائیگی موصول ہو گئی ہے۔ آپ کا آرڈر پکا ہو گیا ہے اور ہم اسے تیار کر رہے ہیں۔`,
   },
+  paymentFailed: {
+    subject: (orderNumber) => `ادائیگی مکمل نہیں ہوئی — ${orderNumber}`,
+    heading: 'ادائیگی مکمل نہیں ہوئی',
+    intro: (orderNumber) =>
+      `آپ کے آرڈر ${orderNumber} کی ادائیگی مکمل نہیں ہو سکی۔ براہِ کرم دوبارہ کوشش کریں، یا اس ای میل کا جواب دیں اور ہم مدد کریں گے۔`,
+    cta: 'دوبارہ کوشش کریں',
+  },
+  welcome: {
+    subject: 'یاسین میں خوش آمدید',
+    heading: 'آپ کا اکاؤنٹ تیار ہے',
+    intro: (name) =>
+      `السلام علیکم ${name}، آپ کا اکاؤنٹ تیار ہے۔ اب آپ اپنی پیمائشیں محفوظ کر سکتے ہیں، آرڈرز ٹریک کر سکتے ہیں اور اگلی بار تیزی سے چیک آؤٹ کر سکتے ہیں۔`,
+    cta: 'خریداری شروع کریں',
+  },
   status: {
     subject: (orderNumber, status) => `${orderNumber} — ${status}`,
     heading: (status) => `آپ کا آرڈر ${status}`,
@@ -182,7 +222,7 @@ const ur: EmailCopy = {
       SHIPPED: 'روانہ ہو چکا ہے',
       DELIVERED: 'پہنچا دیا گیا ہے',
       CANCELLED: 'منسوخ ہو گیا ہے',
-      REFUNDED: 'رقم واپس کر دی گئی ہے',
+      RETURNED: 'واپس کر دیا گیا ہے',
     },
   },
   stitching: {

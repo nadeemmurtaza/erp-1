@@ -65,6 +65,51 @@ export class PaymentNotificationSubscriber {
     this.logger.log(`Sent payment receipt for ${order.number}`);
   }
 
+  /**
+   * Tells the customer their online payment did not go through, so they know
+   * to retry rather than assume the order is quietly stuck. Cash on delivery
+   * never reaches this path (see onPaymentSucceeded) and bank transfer has no
+   * automatic callback, so in practice this only fires for a declined
+   * JazzCash/Easypaisa attempt.
+   */
+  @OnDomainEvent(DomainEvent.PaymentFailed)
+  async onPaymentFailed(payload: PaymentPayload): Promise<void> {
+    if (payload.provider === 'cod') return;
+
+    const order = await this.prisma.order.findUnique({
+      where: { id: payload.orderId },
+      select: {
+        number: true,
+        userId: true,
+        guestName: true,
+        guestEmail: true,
+        guestPhone: true,
+        user: { select: { email: true } },
+      },
+    });
+
+    const email = order?.guestEmail ?? order?.user?.email ?? null;
+    if (!order || !email) return;
+
+    const locale = await this.localeFor(order.userId);
+
+    await this.notifications.send({
+      template: 'payment.failed',
+      recipient: {
+        name: order.guestName,
+        email,
+        phone: order.guestPhone,
+        userId: order.userId,
+        locale,
+      },
+      subject: `Payment did not go through — ${order.number}`,
+      body: `Your payment for order ${order.number} could not be completed. Please try again.`,
+      data: { orderNumber: order.number, amount: payload.amount },
+    });
+
+    this.logger.log(`Sent payment-failed notice for ${order.number}`);
+  }
+
   /** Same resolution as the orders subscriber; see the note there. */
   private async localeFor(userId: string | null): Promise<Locale> {
     if (!userId) return DEFAULT_LOCALE;

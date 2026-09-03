@@ -1,8 +1,8 @@
 /**
  * Behavior tests for the email notification channel.
  *
- * Exercises the actual logic — interface contract, env validation, and
- * the send path with a mocked nodemailer transport.
+ * Exercises the actual logic — interface contract, env validation, and the
+ * send path with a mocked nodemailer transport.
  */
 
 // Mock nodemailer BEFORE any imports that use it
@@ -13,8 +13,10 @@ jest.mock('nodemailer', () => ({
   createTransport: (...args: unknown[]) => mockCreateTransport(...args),
 }));
 
+import { Logger } from '@nestjs/common';
 import { validateEnv } from '../src/core/config/env.validation';
-import { EmailNotificationChannel } from '../src/core/notifications/email.channel';
+import { EmailChannel, isDeliverable } from '../src/core/notifications/email.channel';
+import type { AppConfigService } from '../src/core/config/app-config.service';
 
 // ── 1. Env validation: cross-field check ─────────────────────────────────────
 
@@ -104,9 +106,24 @@ describe('env.validation — email cross-field check', () => {
   });
 });
 
-// ── 2. EmailNotificationChannel interface contract ────────────────────────────
+// ── 2. isDeliverable — the shape check that guards supports() ────────────────
 
-function mockConfig(overrides: Record<string, unknown> = {}) {
+describe('isDeliverable', () => {
+  it('accepts an ordinary address', () => {
+    expect(isDeliverable('customer@example.com')).toBe(true);
+  });
+
+  it.each([null, undefined, '', 'no-at-sign', '@example.com', 'name@', 'has space@example.com'])(
+    'rejects %p',
+    (value) => {
+      expect(isDeliverable(value)).toBe(false);
+    },
+  );
+});
+
+// ── 3. EmailChannel — interface contract ─────────────────────────────────────
+
+function fakeConfig(overrides: Record<string, unknown> = {}): AppConfigService {
   const defaults: Record<string, unknown> = {
     SMTP_HOST: '127.0.0.1',
     SMTP_PORT: 587,
@@ -115,14 +132,17 @@ function mockConfig(overrides: Record<string, unknown> = {}) {
     SMTP_PASSWORD: 'pass',
     MAIL_FROM: 'Store <no-reply@test.com>',
     MAIL_REPLY_TO: 'hello@test.com',
+    STORE_NAME: 'Store',
+    STOREFRONT_URL: 'https://test.com',
+    SEED_ADMIN_EMAIL: 'admin@test.com',
+    SUPPORT_WHATSAPP: undefined,
+    BANK_TRANSFER_DETAILS: undefined,
   };
-  // Use hasOwnProperty to allow explicit undefined overrides
   return {
     get(key: string) {
-      if (key in overrides) return overrides[key];
-      return defaults[key];
+      return key in overrides ? overrides[key] : defaults[key];
     },
-  } as any;
+  } as unknown as AppConfigService;
 }
 
 beforeEach(() => {
@@ -131,14 +151,56 @@ beforeEach(() => {
   mockCreateTransport.mockReturnValue({ sendMail: mockSendMail });
 });
 
-describe('EmailNotificationChannel — interface contract', () => {
+describe('EmailChannel — interface contract', () => {
   it('name is "email"', () => {
-    const ch = new EmailNotificationChannel(mockConfig());
+    const ch = new EmailChannel(fakeConfig());
     expect(ch.name).toBe('email');
   });
 
-  it('supports() returns true when recipient has an email', () => {
-    const ch = new EmailNotificationChannel(mockConfig());
+  it('builds the transporter once, at construction, from the SMTP config', () => {
+    new EmailChannel(fakeConfig());
+
+    expect(mockCreateTransport).toHaveBeenCalledWith(
+      expect.objectContaining({
+        host: '127.0.0.1',
+        port: 587,
+        secure: false,
+        auth: { user: 'admin@test.com', pass: 'pass' },
+        pool: true,
+      }),
+    );
+  });
+
+  it('leaves auth undefined when SMTP_USER or SMTP_PASSWORD is missing', () => {
+    new EmailChannel(fakeConfig({ SMTP_USER: undefined }));
+
+    expect(mockCreateTransport).toHaveBeenCalledWith(
+      expect.objectContaining({ auth: undefined }),
+    );
+  });
+
+  it('never builds a transporter when SMTP_HOST is unset, and warns instead', () => {
+    const warnSpy = jest.spyOn(Logger.prototype, 'warn').mockImplementation();
+    mockCreateTransport.mockClear();
+
+    new EmailChannel(fakeConfig({ SMTP_HOST: undefined }));
+
+    expect(mockCreateTransport).not.toHaveBeenCalled();
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('SMTP_HOST is not set'));
+    warnSpy.mockRestore();
+  });
+
+  it('warns at construction when MAIL_FROM sends as a free-mail domain', () => {
+    const errorSpy = jest.spyOn(Logger.prototype, 'error').mockImplementation();
+
+    new EmailChannel(fakeConfig({ MAIL_FROM: 'Store <no-reply@gmail.com>' }));
+
+    expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('@gmail.com'));
+    errorSpy.mockRestore();
+  });
+
+  it('supports() returns true when there is a transporter and a deliverable email', () => {
+    const ch = new EmailChannel(fakeConfig());
     expect(
       ch.supports({
         template: 'order.placed',
@@ -150,7 +212,7 @@ describe('EmailNotificationChannel — interface contract', () => {
   });
 
   it('supports() returns false when recipient has no email', () => {
-    const ch = new EmailNotificationChannel(mockConfig());
+    const ch = new EmailChannel(fakeConfig());
     expect(
       ch.supports({
         template: 'order.placed',
@@ -161,91 +223,136 @@ describe('EmailNotificationChannel — interface contract', () => {
     ).toBe(false);
   });
 
-  it('supports() returns false for empty email', () => {
-    const ch = new EmailNotificationChannel(mockConfig());
+  it('supports() returns false when the recipient email is not shaped like one', () => {
+    const ch = new EmailChannel(fakeConfig());
     expect(
       ch.supports({
         template: 'order.placed',
-        recipient: { email: '' },
+        recipient: { email: 'not-an-email' },
         subject: 'Order confirmed',
         body: 'Thanks!',
       }),
     ).toBe(false);
   });
 
-  it('send() creates transporter with correct SMTP config', async () => {
-    const ch = new EmailNotificationChannel(mockConfig());
+  it('supports() returns false when there is no transporter at all', () => {
+    const ch = new EmailChannel(fakeConfig({ SMTP_HOST: undefined }));
+    expect(
+      ch.supports({
+        template: 'order.placed',
+        recipient: { email: 'customer@gmail.com' },
+        subject: 'Order confirmed',
+        body: 'Thanks!',
+      }),
+    ).toBe(false);
+  });
+
+  it('send() does nothing when there is no transporter', async () => {
+    const ch = new EmailChannel(fakeConfig({ SMTP_HOST: undefined }));
 
     await ch.send({
-      template: 'order.confirmed',
+      template: 'order.placed',
+      recipient: { email: 'customer@gmail.com' },
+      subject: 'Order confirmed',
+      body: 'Thanks!',
+    });
+
+    expect(mockSendMail).not.toHaveBeenCalled();
+  });
+
+  it('send() builds a hardened message: envelope, Message-ID domain, and anti-autoresponder headers', async () => {
+    const ch = new EmailChannel(fakeConfig());
+
+    await ch.send({
+      template: 'user.welcome',
       recipient: { email: 'customer@gmail.com', name: 'Ahmed' },
-      subject: 'Your order is confirmed',
-      body: 'Thank you for your order!',
+      subject: 'Fallback subject',
+      body: 'Fallback body',
     });
 
-    expect(mockCreateTransport).toHaveBeenCalledWith({
-      host: '127.0.0.1',
-      port: 587,
-      secure: false,
-      auth: {
-        user: 'admin@test.com',
-        pass: 'pass',
-      },
-    });
+    expect(mockSendMail).toHaveBeenCalledTimes(1);
+    const call = mockSendMail.mock.calls[0][0];
+
+    expect(call.from).toBe('Store <no-reply@test.com>');
+    expect(call.to).toEqual({ name: 'Ahmed', address: 'customer@gmail.com' });
+    expect(call.replyTo).toBe('hello@test.com');
+    expect(call.envelope).toEqual({ from: 'no-reply@test.com', to: 'customer@gmail.com' });
+    expect(call.messageId).toMatch(/^<[^@]+@test\.com>$/);
+    expect(call.headers).toEqual(
+      expect.objectContaining({
+        'Auto-Submitted': 'auto-generated',
+        'X-Auto-Response-Suppress': 'All',
+        'X-Yaseen-Template': 'user.welcome',
+      }),
+    );
+    expect(call.disableFileAccess).toBe(true);
+    expect(call.disableUrlAccess).toBe(true);
   });
 
-  it('send() calls sendMail with correct message params', async () => {
-    const ch = new EmailNotificationChannel(mockConfig());
+  it('send() sends to a plain address when the recipient has no name', async () => {
+    const ch = new EmailChannel(fakeConfig());
 
     await ch.send({
-      template: 'order.confirmed',
+      template: 'user.welcome',
       recipient: { email: 'customer@gmail.com' },
-      subject: 'Your order is confirmed',
-      body: 'Thank you for your order!',
+      subject: 'Subject',
+      body: 'Body',
     });
 
-    expect(mockSendMail).toHaveBeenCalledWith({
-      from: 'Store <no-reply@test.com>',
-      replyTo: 'hello@test.com',
-      to: 'customer@gmail.com',
-      subject: 'Your order is confirmed',
-      text: 'Thank you for your order!',
-    });
+    expect(mockSendMail.mock.calls[0][0].to).toBe('customer@gmail.com');
   });
 
-  it('send() omits replyTo when MAIL_REPLY_TO is not set', async () => {
-    const ch = new EmailNotificationChannel(mockConfig({ MAIL_REPLY_TO: undefined }));
+  it('send() renders a registered template rather than the raw subject/body', async () => {
+    const ch = new EmailChannel(fakeConfig());
 
     await ch.send({
-      template: 'order.confirmed',
+      template: 'user.welcome',
       recipient: { email: 'customer@gmail.com' },
-      subject: 'Test',
-      body: 'Test body',
+      subject: 'Fallback subject — should not appear',
+      body: 'Fallback body — should not appear',
+      data: { name: 'Sania' },
     });
 
     const call = mockSendMail.mock.calls[0][0];
-    expect(call).not.toHaveProperty('replyTo');
+    expect(call.subject).toBe('Welcome to Yaseen');
+    expect(call.html).toContain('Sania');
+    expect(call.subject).not.toBe('Fallback subject — should not appear');
+  });
+
+  it('send() falls back to a plain wrapped message for an unregistered template', async () => {
+    const ch = new EmailChannel(fakeConfig());
+
+    await ch.send({
+      template: 'nope.not_a_template',
+      recipient: { email: 'customer@gmail.com' },
+      subject: 'Custom subject',
+      body: 'Custom body',
+    });
+
+    const call = mockSendMail.mock.calls[0][0];
+    expect(call.subject).toBe('Custom subject');
+    expect(call.html).toContain('Custom body');
+    expect(call.text).toContain('Custom body');
   });
 
   it('reuses the transporter across multiple sends', async () => {
-    const ch = new EmailNotificationChannel(mockConfig());
+    const ch = new EmailChannel(fakeConfig());
+    mockCreateTransport.mockClear();
 
     await ch.send({
-      template: 'order.confirmed',
+      template: 'user.welcome',
       recipient: { email: 'a@test.com' },
       subject: 'First',
       body: 'First email',
     });
     await ch.send({
-      template: 'order.confirmed',
+      template: 'user.welcome',
       recipient: { email: 'b@test.com' },
       subject: 'Second',
       body: 'Second email',
     });
 
-    // createTransport called only ONCE (lazy, reused)
-    expect(mockCreateTransport).toHaveBeenCalledTimes(1);
-    // sendMail called twice
+    expect(mockCreateTransport).not.toHaveBeenCalled();
     expect(mockSendMail).toHaveBeenCalledTimes(2);
   });
 
@@ -254,11 +361,11 @@ describe('EmailNotificationChannel — interface contract', () => {
       sendMail: jest.fn().mockRejectedValue(new Error('Connection refused')),
     });
 
-    const ch = new EmailNotificationChannel(mockConfig());
+    const ch = new EmailChannel(fakeConfig());
 
     await expect(
       ch.send({
-        template: 'order.confirmed',
+        template: 'user.welcome',
         recipient: { email: 'fail@test.com' },
         subject: 'Will fail',
         body: 'Body',
@@ -266,26 +373,9 @@ describe('EmailNotificationChannel — interface contract', () => {
     ).rejects.toThrow('Connection refused');
   });
 
-  it('uses SMTP_USER as auth user, falling back to "api_token"', async () => {
-    const ch = new EmailNotificationChannel(mockConfig({ SMTP_USER: undefined }));
-
-    await ch.send({
-      template: 'test',
-      recipient: { email: 'x@test.com' },
-      subject: 'T',
-      body: 'B',
-    });
-
-    expect(mockCreateTransport).toHaveBeenCalledWith(
-      expect.objectContaining({
-        auth: expect.objectContaining({ user: 'api_token' }),
-      }),
-    );
-  });
-
-  it('configures Cloudflare SMTP (port 465, secure=true)', async () => {
-    const ch = new EmailNotificationChannel(
-      mockConfig({
+  it('configures Cloudflare SMTP (port 465, secure=true)', () => {
+    new EmailChannel(
+      fakeConfig({
         SMTP_HOST: 'smtp.mx.cloudflare.net',
         SMTP_PORT: 465,
         SMTP_SECURE: true,
@@ -293,26 +383,18 @@ describe('EmailNotificationChannel — interface contract', () => {
       }),
     );
 
-    await ch.send({
-      template: 'test',
-      recipient: { email: 'x@test.com' },
-      subject: 'T',
-      body: 'B',
-    });
-
-    expect(mockCreateTransport).toHaveBeenCalledWith({
-      host: 'smtp.mx.cloudflare.net',
-      port: 465,
-      secure: true,
-      auth: {
-        user: 'api_token',
-        pass: 'pass',
-      },
-    });
+    expect(mockCreateTransport).toHaveBeenCalledWith(
+      expect.objectContaining({
+        host: 'smtp.mx.cloudflare.net',
+        port: 465,
+        secure: true,
+        auth: { user: 'api_token', pass: 'pass' },
+      }),
+    );
   });
 });
 
-// ── 3. NotificationsService fan-out behavior ──────────────────────────────────
+// ── 4. NotificationsService fan-out behavior ──────────────────────────────────
 
 describe('NotificationsService — email channel integration', () => {
   it('email channel is included when NOTIFICATION_CHANNELS contains "email"', () => {

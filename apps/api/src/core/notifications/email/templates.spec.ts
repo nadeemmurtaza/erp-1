@@ -149,3 +149,45 @@ describe('order confirmation email', () => {
     expect(renderEmail('nope.not_a_template', {}, 'en', ctx)).toBeNull();
   });
 });
+
+describe('payment failed email', () => {
+  const render = (locale: 'en' | 'ur' = 'en') =>
+    renderEmail('payment.failed', { orderNumber: 'YSN-2026-0184' }, locale, ctx)!;
+
+  it('names the order and offers a way to try again', () => {
+    const mail = render();
+
+    expect(mail.subject).toBe('Payment did not go through — YSN-2026-0184');
+    expect(mail.html).toContain('YSN-2026-0184');
+    expect(mail.html).toContain('Try again');
+    expect(mail.html).toContain('https://yaseen.pk/en/orders/YSN-2026-0184');
+  });
+
+  it('renders in Urdu', () => {
+    const mail = render('ur');
+
+    expect(mail.html).toContain('dir="rtl"');
+    expect(mail.html).toContain('ادائیگی مکمل نہیں ہوئی');
+  });
+});
+
+describe('welcome email', () => {
+  const render = (locale: 'en' | 'ur' = 'en') =>
+    renderEmail('user.welcome', { name: 'Sania' }, locale, ctx)!;
+
+  it('greets the customer by name and links to the storefront', () => {
+    const mail = render();
+
+    expect(mail.subject).toBe('Welcome to Yaseen');
+    expect(mail.html).toContain('Sania');
+    expect(mail.html).toContain('https://yaseen.pk');
+  });
+
+  it('renders in Urdu', () => {
+    const mail = render('ur');
+
+    expect(mail.subject).toBe('یاسین میں خوش آمدید');
+    expect(mail.html).toContain('dir="rtl"');
+    expect(mail.html).toContain('آپ کا اکاؤنٹ تیار ہے');
+  });
+});

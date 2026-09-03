@@ -75,6 +75,10 @@ export interface PaymentEmailData {
   amount: number;
 }
 
+export interface WelcomeEmailData {
+  name: string;
+}
+
 export interface StatusEmailData {
   orderNumber: string;
   status: string;
@@ -235,6 +239,55 @@ function renderPaymentReceived(
   };
 }
 
+function renderPaymentFailed(
+  data: PaymentEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    heading(t.paymentFailed.heading, locale),
+    paragraph(t.paymentFailed.intro(data.orderNumber), locale),
+    button(t.paymentFailed.cta, orderUrl(ctx, locale, data.orderNumber), locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    eyebrow: `${t.details.orderNumber} ${data.orderNumber}`,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return {
+    subject: t.paymentFailed.subject(data.orderNumber),
+    html,
+    text: htmlToText(html),
+  };
+}
+
+function renderWelcome(data: WelcomeEmailData, locale: Locale, ctx: EmailContext): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    heading(t.welcome.heading, locale),
+    paragraph(t.welcome.intro(data.name), locale),
+    button(t.welcome.cta, ctx.storefrontUrl, locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return {
+    subject: t.welcome.subject,
+    html,
+    text: htmlToText(html),
+  };
+}
+
 function renderOrderStatus(
   data: StatusEmailData,
   locale: Locale,
@@ -328,6 +381,16 @@ export const EMAIL_TEMPLATES: Record<
     ctx: EmailContext,
   ) => RenderedEmail,
   'payment.received': renderPaymentReceived as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'payment.failed': renderPaymentFailed as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'user.welcome': renderWelcome as (
     data: never,
     locale: Locale,
     ctx: EmailContext,

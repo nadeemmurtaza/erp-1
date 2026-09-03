@@ -35,14 +35,14 @@ model GarmentType {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  fields          MeasurementField[]
-  profiles        MeasurementProfile[]
-  optionGroups    StitchingOptionGroup[]
-  stitchingJobs   StitchingJob[]
+  fields        MeasurementField[]
+  profiles      MeasurementProfile[]
+  optionGroups  StitchingOptionGroup[]
+  stitchingJobs StitchingJob[]
   /// Cart lines waiting to be made into this garment.
   /// STITCHING_SERVICE products that stitch this garment.
   /// Unstitched fabrics that can be made into this garment.
-  sizeChart       GarmentSizeChart[]
+  sizeChart     GarmentSizeChart[]
 
   @@index([isActive, order])
 }
@@ -71,17 +71,17 @@ model MeasurementField {
 
 /// A saved set of measurements: "Ammi – kameez", "Self – shalwar".
 model MeasurementProfile {
-  id            String   @id @default(cuid())
+  id            String      @id @default(cuid())
   userId        String
   garmentTypeId String
   label         String
   /// field key -> value, validated against the garment's MeasurementFields.
   values        Json
   notes         String?
-  isDefault     Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  garmentType GarmentType @relation(fields: [garmentTypeId], references: [id], onDelete: Restrict)
+  isDefault     Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  garmentType   GarmentType @relation(fields: [garmentTypeId], references: [id], onDelete: Restrict)
 
   @@unique([userId, garmentTypeId, label])
   @@index([userId])

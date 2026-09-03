@@ -183,6 +183,7 @@ export class StockCountService {
       });
       const stockMap = new Map(variants.map(v => [v.id, v.stock]));
 
+      const locationId = await this.inventoryService.defaultLocationId(tx);
       const moveInputs = [];
       for (const line of linesToMove) {
         const currentStock = stockMap.get(line.variantId) ?? 0;
@@ -190,6 +191,7 @@ export class StockCountService {
         if (delta !== 0) {
           moveInputs.push({
             variantId: line.variantId,
+            locationId,
             delta,
             reason: 'COUNT' as const,
             refType: 'StockCount',

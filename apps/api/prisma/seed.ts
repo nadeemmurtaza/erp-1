@@ -42,8 +42,9 @@ async function main(): Promise<void> {
   await seedStitchingOptions(garments);
   await retireOldOptionGroups();
   const categories = await seedCategories();
-  await seedProducts(categories, garments);
-  await seedStitchingServices(categories, garments);
+  const locationId = await inventoryService.defaultLocationId();
+  await seedProducts(categories, garments, locationId);
+  await seedStitchingServices(categories, garments, locationId);
   await seedMeasurementProfiles(users.customer.id, garments);
   await seedWorkshopQueue(users.tailor.id, garments);
 
@@ -2330,7 +2331,11 @@ const PRODUCTS: SeedProduct[] = [
   },
 ];
 
-async function seedProducts(categories: Map<string, string>, garments: Map<string, string>) {
+async function seedProducts(
+  categories: Map<string, string>,
+  garments: Map<string, string>,
+  locationId: string,
+) {
   for (const definition of PRODUCTS) {
     const categoryId = categories.get(definition.categorySlug);
 
@@ -2393,6 +2398,7 @@ async function seedProducts(categories: Map<string, string>, garments: Map<strin
         const delta = variant.stock - pv.stock;
         await inventoryService.move({
           variantId: pv.id,
+          locationId,
           delta,
           reason: delta > 0 ? 'PURCHASE_RECEIPT' : 'ADJUSTMENT',
           note: 'seed',
@@ -2455,6 +2461,7 @@ async function upsertPlaceholderImage(
 async function seedStitchingServices(
   categories: Map<string, string>,
   garments: Map<string, string>,
+  locationId: string,
 ) {
   const services: Array<{
     slug: string;
@@ -2555,6 +2562,7 @@ async function seedStitchingServices(
     if (pv.stock !== 9999) {
       await inventoryService.move({
         variantId: pv.id,
+        locationId,
         delta: 9999 - pv.stock,
         reason: 'ADJUSTMENT',
         note: 'seed',

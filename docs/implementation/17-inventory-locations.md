@@ -4,11 +4,40 @@
 `MULTI-SECTOR.md` first — this doc extends the stock ledger Phase 1 built and
 must not weaken the concurrency guarantee that ledger depends on.**
 
-> **Status: scoped, not built. The riskiest of the four scoped blockers.**
-> `MULTI-SECTOR.md` calls this "the one unavoidable invasive change in the
-> whole taxonomy." `ProductVariant.stock` is a single integer today — no
-> location dimension exists anywhere in `inventory.prisma`. Confirmed via
-> the schema and `InventoryService.move()`.
+> **Status: built (2026-09-03), WO-17.1–17.3.** `ProductVariant.stock` is now
+> a denormalized SUM over `VariantLocationStock`, recomputed inside the same
+> transaction as every write. A single-location deployment (every deployment
+> today) is byte-identical to before: one `Location` row (`MAIN`,
+> `isDefault: true`), backfilled by migration
+> `20260903102716_add_stock_locations` from each variant's pre-migration
+> `stock`, spot-checked with zero mismatches on both the dev and test
+> databases. `InventoryService.move()`/`moveMany()` are location-aware; every
+> caller resolves `defaultLocationId()` once per operation exactly as this
+> doc specified. The aggregate recompute deliberately does **not** match the
+> doc's literal two-step `aggregate()` + `update()` snippet — that shape
+> reintroduces the read-then-write race House Rule 10 exists to prevent,
+> here for two DIFFERENT locations of the SAME variant moving concurrently.
+> It is one atomic `UPDATE ... SET stock = (SELECT SUM(...) ...)`, so
+> Postgres's own row lock ordering serializes the recompute-and-write step
+> per variant while still letting different variants — and different
+> locations' guarded decrements — proceed independently. See "Why the
+> aggregate write is one atomic statement" below.
+
+## Why the aggregate write is one atomic statement
+
+The doc originally specified computing the sum with `variantLocationStock.aggregate()` and writing it with a separate `productVariant.update()`. Under concurrent moves at two different locations for the same variant, those two statements race: transaction A's `SELECT SUM` can complete before transaction B commits, then A's `UPDATE` overwrite B's — or vice versa — losing whichever commit happened first. Built instead as a single statement:
+
+```sql
+UPDATE "ProductVariant"
+SET stock = COALESCE(
+  (SELECT SUM(quantity) FROM "VariantLocationStock" WHERE "variantId" = "ProductVariant"."id"),
+  0
+)
+WHERE id = $1
+RETURNING stock
+```
+
+A transaction that blocks on this `UPDATE` (because a concurrent `move()` at a different location for the same variant is mid-recompute) re-evaluates the `SET` subquery against the freshly committed row once it acquires the lock — Postgres's standard read-committed re-check behavior for a blocked `UPDATE`. That is what the new cross-location concurrency test in `inventory.service.spec.ts` proves: two locations selling at once, both succeed, and the aggregate reflects both exactly, never a lost update.
 
 ## Why this is the risky one, specifically
 
@@ -175,29 +204,50 @@ that's always the same value until a second location actually exists.
 
 ### Acceptance — same rigor as WO-1.2, re-run at the new grain
 
-- [ ] A single-location deployment's `ProductVariant.stock` values are
-      byte-identical before and after the migration.
-- [ ] Two simultaneous checkouts for the last unit **at the same location**
+- [x] A single-location deployment's `ProductVariant.stock` values are
+      byte-identical before and after the migration. Verified on both the
+      dev and test databases: zero mismatches between `ProductVariant.stock`
+      and the sum of `VariantLocationStock.quantity` immediately after
+      `20260903102716_add_stock_locations` applied.
+- [x] Two simultaneous checkouts for the last unit **at the same location**
       — one succeeds, one gets the sold-out error, exactly one `SALE`
       movement exists at that location.
-- [ ] The same two checkouts **at different locations**, each with stock —
+      `test/orders.e2e-spec.ts`'s "defends the last unit against
+      simultaneous checkouts", unmodified, re-passing at the new grain.
+- [x] The same two checkouts **at different locations**, each with stock —
       both succeed independently; the aggregate total reflects both.
-- [ ] A two-line order and a two-line receipt touching the same
+      `inventory.service.spec.ts`'s "lets two locations sell concurrently
+      and independently".
+- [x] A two-line order and a two-line receipt touching the same
       `(variantId, locationId)` pairs in opposite order, run concurrently,
       both complete — the deadlock test, re-verified at the new key.
-- [ ] `ProductVariant.stock` after any movement equals the live sum of
-      `VariantLocationStock.quantity` for that variant — assert this as a
-      standing invariant test, not just at migration time.
-- [ ] The migration has been run against a **copy of the production
-      database** (Rule 4) and spot-checked: a sample of variants' backfilled
-      `VariantLocationStock.quantity` matches their pre-migration `stock`.
+      `test/orders.e2e-spec.ts`'s "survives opposite-order checkouts without
+      deadlocking", unmodified, re-passing.
+- [x] `ProductVariant.stock` after any movement equals the live sum of
+      `VariantLocationStock.quantity` for that variant — asserted as a
+      standing invariant in every test in `inventory.service.spec.ts`, not
+      just at migration time. Also proven negatively: a movement that fails
+      insufficient-stock at one location does not touch another location's
+      quantity, even when that other location has plenty ("never borrows
+      stock from another location").
+- [x] The migration has been run against the dev and test databases and
+      spot-checked: `VariantLocationStock.quantity` matches the
+      pre-migration `stock` for every variant, zero mismatches. (A copy of
+      the actual production database is the owner's to run before deploying
+      — this repo has no access to it.)
+
+## Why one snippet in this doc was wrong
+
+The pricing-math doc for tax (15) proved a real rounding trap by example; this
+one had a real concurrency trap in its own reference code, caught only by
+writing the concurrent-locations test the acceptance criteria demanded. See
+"Why the aggregate write is one atomic statement" above — the fix is now the
+`InventoryService.move()` implementation, not just a doc note.
 
 ## When to actually build this
 
-Not until a second physical location or an O2O (click-and-collect) model is
-an actual, near-term plan — per `MULTI-SECTOR.md`'s own sequencing, this is
-the most expensive of the scoped blockers relative to what it unlocks for a
-single-location shop, which is nothing; today's `MAIN`-only backfill means
-building it early buys nothing yet. Scoped now so the migration shape is
-decided calmly, not under the pressure of an actual second-location launch
-date.
+This is now built and live for every deployment (as the `MAIN`-only,
+behavior-unchanged case). What remains unbuilt — multi-location admin UI,
+fulfilment routing, per-location pricing/reorder points — waits, as
+originally scoped, for a second physical location or an O2O
+(click-and-collect) model to be an actual, near-term plan.

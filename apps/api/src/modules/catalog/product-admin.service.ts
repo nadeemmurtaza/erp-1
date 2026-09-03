@@ -138,12 +138,14 @@ export class ProductAdminService {
         include: adminInclude,
       });
 
+      const locationId = await this.inventory.defaultLocationId(tx);
       for (const [index, variant] of (dto.variants ?? []).entries()) {
         const requestedStock = variant.stock ?? 0;
         if (requestedStock !== 0) {
           const createdVariant = product.variants[index];
           await this.inventory.move({
             variantId: createdVariant.id,
+            locationId,
             delta: requestedStock,
             reason: 'ADJUSTMENT',
             actorId,
@@ -378,8 +380,10 @@ export class ProductAdminService {
   async updateStock(actorId: string, variantId: string, stock: number) {
     const pv = await this.prisma.productVariant.findUniqueOrThrow({ where: { id: variantId } });
     if (pv.stock !== stock) {
+      const locationId = await this.inventory.defaultLocationId();
       await this.inventory.move({
         variantId,
+        locationId,
         delta: stock - pv.stock,
         reason: 'ADJUSTMENT',
         actorId,
@@ -411,6 +415,7 @@ export class ProductAdminService {
       });
     }
 
+    const locationId = await this.inventory.defaultLocationId(tx);
     for (const [index, variant] of incoming.entries()) {
       const data = {
         sku: variant.sku.trim().toUpperCase(),
@@ -440,6 +445,7 @@ export class ProductAdminService {
       if (requestedStock !== currentStock) {
         await this.inventory.move({
           variantId: pvId,
+          locationId,
           delta: requestedStock - currentStock,
           reason: 'ADJUSTMENT',
           actorId,

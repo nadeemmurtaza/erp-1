@@ -5,10 +5,10 @@
 // reasoning behind the inclusive/exclusive split.
 
 model TaxClass {
-  id        String  @id @default(cuid())
-  key       String  @unique // "standard", "zero_rated", "exempt"
+  id        String   @id @default(cuid())
+  key       String   @unique // "standard", "zero_rated", "exempt"
   name      String
-  isDefault Boolean @default(false)
+  isDefault Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

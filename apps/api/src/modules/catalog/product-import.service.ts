@@ -116,12 +116,13 @@ export class ProductImportService {
     const categoryBySlug = new Map(categories.map((row) => [row.slug, row.id]));
     const garments = await this.prisma.garmentType.findMany({ select: { id: true, key: true } });
     const garmentByKey = new Map(garments.map((row) => [row.key, row.id]));
+    const locationId = await this.inventory.defaultLocationId();
 
     for (const [index, row] of rows.entries()) {
       // +2: one for the header line, one because humans count from 1.
       const lineNumber = index + 2;
       try {
-        const result = await this.importRow(actorId, row, lineNumber, categoryBySlug, garmentByKey);
+        const result = await this.importRow(actorId, row, lineNumber, categoryBySlug, garmentByKey, locationId);
         summary.results.push(result);
         summary[result.action === 'skipped' ? 'skipped' : result.action] += 1;
       } catch (error) {
@@ -195,6 +196,7 @@ export class ProductImportService {
     lineNumber: number,
     categoryBySlug: Map<string, string>,
     garmentByKey: Map<string, string>,
+    locationId: string,
   ): Promise<ImportRowResult> {
     const sku = (row.sku ?? '').trim().toUpperCase();
     if (!sku) throw new Error('sku is empty');
@@ -245,6 +247,7 @@ export class ProductImportService {
       if (requestedStock !== existingVariant.stock) {
         await this.inventory.move({
           variantId: existingVariant.id,
+          locationId,
           delta: requestedStock - existingVariant.stock,
           reason: 'ADJUSTMENT',
           actorId,
@@ -277,6 +280,7 @@ export class ProductImportService {
       if (requestedStock !== 0) {
         await this.inventory.move({
           variantId: created.id,
+          locationId,
           delta: requestedStock,
           reason: 'ADJUSTMENT',
           actorId,
@@ -348,6 +352,7 @@ export class ProductImportService {
       const createdVariant = product.variants[0];
       await this.inventory.move({
         variantId: createdVariant.id,
+        locationId,
         delta: requestedStock,
         reason: 'ADJUSTMENT',
         actorId,

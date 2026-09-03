@@ -89,15 +89,15 @@ model StitchingOrder {
   quotedFee        Int? // paisa
   fabricReceivedAt DateTime?
   promisedAt       DateTime?
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
   // `contactId` is a plain scalar, not a Prisma relation to Contact (core) —
   // B7, MULTI-SECTOR.md. A pack referencing core is allowed, but Prisma
   // requires a typed relation to be declared on BOTH models, which would put
   // a `StitchingOrder` field back on core's Contact. Losing the relation
   // means losing onDelete: SetNull here; nothing in this codebase deletes a
   // Contact today. Look it up with `prisma.contact.findUnique()` if needed.
-  jobs    StitchingJob[]
+  jobs             StitchingJob[]
 
   @@index([status])
   @@index([userId])
@@ -165,7 +165,7 @@ model StitchingJobEvent {
   actorId   String?
   createdAt DateTime        @default(now())
 
-  job   StitchingJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  job StitchingJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
 
   @@index([jobId, createdAt])
 }

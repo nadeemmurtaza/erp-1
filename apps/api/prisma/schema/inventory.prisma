@@ -22,6 +22,13 @@ model StockMovement {
   resultingStock Int
   reason         StockMovementReason
 
+  /// Which location this movement happened at. Every deployment gets a
+  /// default Location row in the backfill migration (B6, MULTI-SECTOR.md), so
+  /// this is never actually optional at the application layer even though it
+  /// is nullable here for one release, per the expand/contract rule
+  /// (00-HOUSE-RULES.md §4).
+  locationId String?
+
   /// What caused it: "Order" | "GoodsReceipt" | "StockCount" | null for manual.
   refType String?
   refId   String?
@@ -35,19 +42,54 @@ model StockMovement {
   actorId   String?
   createdAt DateTime @default(now())
 
-  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  actor   User?          @relation("StockMovementActor", fields: [actorId], references: [id], onDelete: SetNull)
+  variant  ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  actor    User?          @relation("StockMovementActor", fields: [actorId], references: [id], onDelete: SetNull)
+  location Location?      @relation(fields: [locationId], references: [id], onDelete: SetNull)
 
   @@index([variantId, createdAt])
   @@index([reason, createdAt])
   @@index([refType, refId])
+  @@index([locationId])
+}
+
+/// A place stock physically lives. Single-location shops get exactly one row
+/// (isDefault: true) and never see it in any UI — B6, MULTI-SECTOR.md.
+model Location {
+  id        String   @id @default(cuid())
+  name      String
+  code      String   @unique // "MAIN", "LHR-01" — short, used in ledger refs
+  isDefault Boolean  @default(false)
+  isActive  Boolean  @default(true)
+  address   Json?
+  createdAt DateTime @default(now())
+
+  stocks    VariantLocationStock[]
+  movements StockMovement[]
+
+  @@index([isActive])
+}
+
+/// Stock, per variant, per location. The thing InventoryService.move() writes
+/// to. ProductVariant.stock is a denormalized SUM across this table for that
+/// variant, recomputed inside the same transaction as every write — see
+/// InventoryService.move() and 17-inventory-locations.md.
+model VariantLocationStock {
+  variantId  String
+  locationId String
+  quantity   Int      @default(0)
+  updatedAt  DateTime @updatedAt
+
+  variant  ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  location Location       @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@id([variantId, locationId])
 }
 
 /// CACHE: variantId as primary key. Safe to delete and recompute.
 model VariantSalesStat {
-  variantId   String    @id
-  units30     Int       @default(0)
-  units90     Int       @default(0)
+  variantId           String    @id
+  units30             Int       @default(0)
+  units90             Int       @default(0)
   lastSoldAt          DateTime?
   daysOfCover         Float?
   ageDays             Int?
@@ -56,7 +98,7 @@ model VariantSalesStat {
   lastLowStockAlertAt DateTime?
   computedAt          DateTime  @default(now())
 
-  variant     ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
 }
 
 enum StockCountStatus {
@@ -76,33 +118,33 @@ model StockCount {
   completedAt DateTime?
   cancelledAt DateTime?
 
-  createdBy   String?
-  assignedTo  String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdBy  String?
+  assignedTo String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  lines       StockCountLine[]
+  lines StockCountLine[]
 
-  creator     User? @relation("StockCountCreator", fields: [createdBy], references: [id], onDelete: SetNull)
-  assignee    User? @relation("StockCountAssignee", fields: [assignedTo], references: [id], onDelete: SetNull)
+  creator  User? @relation("StockCountCreator", fields: [createdBy], references: [id], onDelete: SetNull)
+  assignee User? @relation("StockCountAssignee", fields: [assignedTo], references: [id], onDelete: SetNull)
 
   @@index([status])
 }
 
 model StockCountLine {
-  id           String     @id @default(cuid())
+  id           String @id @default(cuid())
   stockCountId String
   variantId    String
 
-  expected     Int?
-  counted      Int?
-  note         String?
+  expected Int?
+  counted  Int?
+  note     String?
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  stockCount   StockCount     @relation(fields: [stockCountId], references: [id], onDelete: Cascade)
-  variant      ProductVariant @relation(fields: [variantId], references: [id], onDelete: Restrict)
+  stockCount StockCount     @relation(fields: [stockCountId], references: [id], onDelete: Cascade)
+  variant    ProductVariant @relation(fields: [variantId], references: [id], onDelete: Restrict)
 
   @@unique([stockCountId, variantId])
 }

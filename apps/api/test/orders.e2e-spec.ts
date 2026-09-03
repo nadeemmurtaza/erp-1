@@ -6,6 +6,7 @@ import { toMinor } from '@yaseen/shared';
 import { AppModule } from '../src/app.module';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
 import { PrismaService } from '../src/core/prisma/prisma.service';
+import { setVariantStock, incrementVariantStock } from './support/stock';
 
 /**
  * Checkout: the transaction that takes stock, takes money and creates a
@@ -139,10 +140,7 @@ describe('Orders (e2e)', () => {
     seededStock = (
       await prisma.productVariant.findUniqueOrThrow({ where: { id: readyVariantId } })
     ).stock;
-    await prisma.productVariant.update({
-      where: { id: readyVariantId },
-      data: { stock: 500 },
-    });
+    await setVariantStock(prisma, readyVariantId, 500);
     sleeveOptionId = (
       await prisma.stitchingOption.findFirstOrThrow({
         where: { key: 'plain', group: { key: 'sleeve_style' } },
@@ -159,19 +157,13 @@ describe('Orders (e2e)', () => {
       // wholesale below.
       for (const item of order.items) {
         if (item.variantId && item.variantId !== readyVariantId) {
-          await prisma.productVariant.update({
-            where: { id: item.variantId },
-            data: { stock: { increment: item.quantity } },
-          });
+          await incrementVariantStock(prisma, item.variantId, item.quantity);
         }
       }
       await prisma.order.delete({ where: { id } });
     }
 
-    await prisma.productVariant.update({
-      where: { id: readyVariantId },
-      data: { stock: seededStock },
-    });
+    await setVariantStock(prisma, readyVariantId, seededStock);
     await prisma.garmentType.update({
       where: { id: kameezGarmentId },
       data: { stitchingPrice: seededStitchingPrice },
@@ -442,10 +434,7 @@ describe('Orders (e2e)', () => {
       const variant = await prisma.productVariant.findFirstOrThrow({
         where: { isActive: true, stock: { gt: 1 }, product: { status: 'ACTIVE' } },
       });
-      await prisma.productVariant.updateMany({
-        where: { id: variant.id },
-        data: { stock: 1 },
-      });
+      await setVariantStock(prisma, variant.id, 1);
 
       // The seed may already have sold this variant, so the invariant is the
       // DELTA: exactly one SALE row may be written, no matter which request won.
@@ -481,10 +470,7 @@ describe('Orders (e2e)', () => {
       });
       expect(salesAfter - salesBefore).toBe(1);
 
-      await prisma.productVariant.updateMany({
-        where: { id: variant.id },
-        data: { stock: 100 },
-      });
+      await setVariantStock(prisma, variant.id, 100);
     });
 
     it('survives opposite-order checkouts without deadlocking', async () => {

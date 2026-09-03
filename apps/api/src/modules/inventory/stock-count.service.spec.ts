@@ -35,7 +35,16 @@ describe('StockCountService', () => {
     const variantId = seeded.id;
     let variant = seeded;
 
-    // Update stock to 10
+    // Update stock to 10. B6 (17-inventory-locations.md): ProductVariant.stock
+    // is a denormalized SUM over VariantLocationStock, so both must be set
+    // together or the standing invariant (stock === sum of location rows)
+    // breaks immediately, before the test even starts.
+    const locationId = await inventory.defaultLocationId();
+    await prisma.variantLocationStock.upsert({
+      where: { variantId_locationId: { variantId: variant.id, locationId } },
+      create: { variantId: variant.id, locationId, quantity: 10 },
+      update: { quantity: 10 },
+    });
     await prisma.productVariant.update({ where: { id: variant.id }, data: { stock: 10 } });
 
     const user = await prisma.user.findFirst();
@@ -52,7 +61,7 @@ describe('StockCountService', () => {
     expect(line!.expected).toBe(10);
     
     // 4. Mid-count sale reduces stock to 8
-    await inventory.move({ variantId: variant.id, delta: -2, reason: 'SALE' });
+    await inventory.move({ variantId: variant.id, locationId, delta: -2, reason: 'SALE' });
     
     // 5. Staff counts 10 on the shelf
     await service.updateLine(count.id, variant.id, 10);

@@ -41,9 +41,11 @@ export class InventoryAdminController {
     };
     const reason = reasonMap[dto.reason] || 'ADJUSTMENT';
     const note = dto.reason === 'damaged' ? dto.note : (dto.note ? `legacy reason: ${dto.reason} - ${dto.note}` : `legacy reason: ${dto.reason}`);
+    const locationId = await this.inventory.defaultLocationId();
 
     return this.inventory.move({
       variantId,
+      locationId,
       delta: dto.delta,
       reason,
       note,

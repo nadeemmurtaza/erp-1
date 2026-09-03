@@ -8,6 +8,7 @@ import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.f
 import { OutboxDispatcher } from '../src/core/events/outbox.dispatcher';
 import { PrismaService } from '../src/core/prisma/prisma.service';
 import { CrmService } from '../src/modules/crm/crm.service';
+import { setVariantStock } from './support/stock';
 
 /**
  * The CRM.
@@ -70,10 +71,7 @@ describe('CRM (e2e)', () => {
     readyVariantId = variant.id;
     seededStock = variant.stock;
 
-    await prisma.productVariant.update({
-      where: { id: readyVariantId },
-      data: { stock: 200 },
-    });
+    await setVariantStock(prisma, readyVariantId, 200);
   });
 
   afterAll(async () => {
@@ -85,10 +83,7 @@ describe('CRM (e2e)', () => {
     }
     await prisma.contact.deleteMany({ where: { id: { in: createdContactIds } } });
     await prisma.contact.deleteMany({ where: { phoneE164: '+923331234567' } });
-    await prisma.productVariant.update({
-      where: { id: readyVariantId },
-      data: { stock: seededStock },
-    });
+    await setVariantStock(prisma, readyVariantId, seededStock);
     await app.close();
   });
 

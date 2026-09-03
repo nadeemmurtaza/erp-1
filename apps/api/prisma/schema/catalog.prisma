@@ -148,13 +148,13 @@ model ProductVariant {
   taxClassId String?
   taxClass   TaxClass? @relation(fields: [taxClassId], references: [id], onDelete: SetNull)
 
-  salesStat           VariantSalesStat?
+  salesStat VariantSalesStat?
 
   order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  product            Product             @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product            Product                @relation(fields: [productId], references: [id], onDelete: Cascade)
   images             ProductImage[]
   cartItems          CartItem[]
   optionValues       ProductOptionValue[]
@@ -162,6 +162,7 @@ model ProductVariant {
   supplierProducts   SupplierProduct[]
   stockAdjustments   StockAdjustment[]
   stockMovements     StockMovement[]
+  locationStocks     VariantLocationStock[]
   purchaseOrderItems PurchaseOrderItem[]
   goodsReceiptItems  GoodsReceiptItem[]
   stockCountLines    StockCountLine[]
@@ -211,7 +212,7 @@ model ProductGarmentType {
   productId     String
   garmentTypeId String
 
-  product     Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@id([productId, garmentTypeId])
 }
@@ -220,26 +221,25 @@ model ProductGarmentType {
 model ProductOption {
   id        String   @id @default(cuid())
   productId String
-  name      String   // e.g. 'Size'
+  name      String // e.g. 'Size'
   order     Int      @default(0)
   createdAt DateTime @default(now())
 
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  values    ProductOptionValue[]
+  product Product              @relation(fields: [productId], references: [id], onDelete: Cascade)
+  values  ProductOptionValue[]
 
   @@unique([productId, name])
 }
 
 /// A specific value for a dynamic option (e.g., '128GB' for 'Storage').
 model ProductOptionValue {
-  id              String        @id @default(cuid())
+  id              String @id @default(cuid())
   productOptionId String
-  value           String        // e.g. '128GB'
-  order           Int           @default(0)
-  
-  option          ProductOption @relation(fields: [productOptionId], references: [id], onDelete: Cascade)
-  variants        ProductVariant[]
+  value           String // e.g. '128GB'
+  order           Int    @default(0)
+
+  option   ProductOption    @relation(fields: [productOptionId], references: [id], onDelete: Cascade)
+  variants ProductVariant[]
 
   @@unique([productOptionId, value])
 }
-

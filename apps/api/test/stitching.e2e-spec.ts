@@ -7,6 +7,7 @@ import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.f
 import { OutboxDispatcher } from '../src/core/events/outbox.dispatcher';
 import { PrismaService } from '../src/core/prisma/prisma.service';
 import { addWorkingDays } from '../src/modules/stitching/jobs.service';
+import { setVariantStock } from './support/stock';
 
 /**
  * Tailoring operations.
@@ -111,10 +112,7 @@ describe('Stitching operations (e2e)', () => {
       })
     ).id;
 
-    await prisma.productVariant.update({
-      where: { id: unstitchedVariantId },
-      data: { stock: 200 },
-    });
+    await setVariantStock(prisma, unstitchedVariantId, 200);
   });
 
   afterAll(async () => {

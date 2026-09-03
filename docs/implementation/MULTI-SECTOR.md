@@ -591,13 +591,19 @@ price of a marketplace. See [`16-pbac-row-scoping.md`](./16-pbac-row-scoping.md)
 
 ### B6 — stock has no location dimension
 
-Per-location inventory cannot be a separate module: it would either not write
-`ProductVariant.stock` (the two drift silently forever) or write it and break
-Rule 12. O2O therefore requires a genuine `inventory` core edit. The one
-unavoidable invasive change in the whole taxonomy. Scoped in
-[`17-inventory-locations.md`](./17-inventory-locations.md) — additive and
-concurrency-safe, deliberately the least-built of the four scoped blockers
-given the blast radius of getting it wrong on a live store.
+**Done as of 2026-09-03 (WO-17.1–17.3).** `ProductVariant.stock` is now a
+denormalized SUM over a new `VariantLocationStock` table, recomputed inside
+the same transaction as every write — additive and concurrency-safe exactly
+as scoped, with the one unavoidable invasive change (redefining what
+`ProductVariant.stock` means) done as a byte-identical no-op for every
+deployment today, which has exactly one `MAIN` location. Multi-location admin
+UI, fulfilment routing and per-location pricing/reorder points remain
+unbuilt, waiting on an actual second location or O2O plan. See
+[`17-inventory-locations.md`](./17-inventory-locations.md), including a note
+on a real concurrency bug the doc's own reference snippet had (a two-step
+aggregate-then-write race across two locations of one variant), caught only
+by writing the concurrent-locations test the doc's acceptance criteria
+demanded, and fixed as one atomic `UPDATE`.
 
 ### B7 — core does not compile without apparel
 
@@ -661,10 +667,10 @@ enables the capabilities its trade needs.
 
 ## Sequencing
 
-**Status as of 2026-09-03: B1, B3, B4 and B7 are done** (B7 mostly — one debt
-entry remains, see above). B5's WO-16.1/16.2 (the shared `assertCanManage()`
-guard) are done; the rest of B5 (an actual marketplace) and all of B6 are
-scoped in docs 16–17 but not built. Updated sequencing:
+**Status as of 2026-09-03: B1, B3, B4, B6 and B7 are done** (B7 mostly — one
+debt entry remains, see above). B5's WO-16.1/16.2 (the shared
+`assertCanManage()` guard) are done; the rest of B5 (an actual marketplace)
+is scoped in doc 16 but not built. Updated sequencing:
 
 1. ~~B1 `ProductKind`, B3 checkout hook.~~ **Done.**
 2. ~~B4 `tax`~~ ([`15-tax-module.md`](./15-tax-module.md)). **Done** —
@@ -684,9 +690,10 @@ scoped in docs 16–17 but not built. Updated sequencing:
    marketplace is genuinely wanted — the `assertCanManage()` guard is ready
    ([`16-pbac-row-scoping.md`](./16-pbac-row-scoping.md)), but `Product.sellerId`
    and row-filtered list endpoints remain the most expensive item here;
-   `locations`/`fulfilment` — and B6
-   ([`17-inventory-locations.md`](./17-inventory-locations.md)) — when a
-   physical second location or O2O is real.
+   `fulfilment` (routing an order to the nearest location with stock) when a
+   physical second location or O2O is real — the location dimension itself
+   ([`17-inventory-locations.md`](./17-inventory-locations.md)) no longer
+   blocks that, it's built and dormant behind the single `MAIN` location.
 
 **May never be needed:** `submissions`, `storefronts`, `credentials`,
 `moderation`. Real capabilities, but speculative until a stated requirement

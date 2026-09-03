@@ -301,10 +301,12 @@ export class PurchasingService {
       });
 
       const sortedItems = [...receiptItemsData].sort((a, b) => a.variantId.localeCompare(b.variantId));
-      
+      const locationId = await this.inventoryService.defaultLocationId(tx);
+
       const movements = await this.inventoryService.moveMany(
         sortedItems.map(item => ({
           variantId: item.variantId,
+          locationId,
           delta: item.quantity,
           reason: 'PURCHASE_RECEIPT',
           refType: 'GoodsReceipt',

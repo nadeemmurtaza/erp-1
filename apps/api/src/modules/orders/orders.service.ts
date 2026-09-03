@@ -235,11 +235,13 @@ export class OrdersService {
         include: orderInclude,
       });
 
+      const locationId = await this.inventory.defaultLocationId(tx);
       const sortedLines = [...priced.lines].sort((a, b) => a.variantId.localeCompare(b.variantId));
       for (const line of sortedLines) {
         try {
           await this.inventory.move({
             variantId: line.variantId,
+            locationId,
             delta: -line.quantity,
             reason: 'SALE',
             refType: 'Order',
@@ -423,9 +425,11 @@ export class OrdersService {
       // Cancelling or returning releases the stock back to the shelf.
       if (toStatus === 'CANCELLED' || toStatus === 'RETURNED') {
         const moveReason = toStatus === 'CANCELLED' ? 'CANCELLATION' : 'RETURN';
+        const locationId = await this.inventory.defaultLocationId(tx);
         await this.inventory.moveMany(
           order.items.filter(i => i.variantId).map(item => ({
             variantId: item.variantId!,
+            locationId,
             delta: item.quantity,
             reason: moveReason,
             refType: 'Order',

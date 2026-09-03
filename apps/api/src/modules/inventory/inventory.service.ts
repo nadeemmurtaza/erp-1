@@ -17,6 +17,11 @@ type VariantWithProduct = Prisma.ProductVariantGetPayload<{ include: typeof vari
 
 export interface StockMoveInput {
   variantId: string;
+  /** Which physical location this movement happened at — B6, MULTI-SECTOR.md.
+   * Resolve via defaultLocationId() for a single-location shop; this is
+   * never optional at the call site even though the column itself is
+   * nullable for one release (expand/contract, 00-HOUSE-RULES.md §4). */
+  locationId: string;
   /** Positive in, negative out. Zero is rejected. */
   delta: number;
   reason: StockMovementReason;
@@ -132,18 +137,37 @@ export class InventoryService {
   }
 
   /**
+   * The MAIN location's id — a single-location shop resolves this once per
+   * transaction and passes it to every move()/moveMany() call. Every
+   * deployment has exactly one Location with isDefault: true, guaranteed by
+   * the backfill migration (B6, 17-inventory-locations.md).
+   */
+  async defaultLocationId(tx: Prisma.TransactionClient | PrismaService = this.prisma): Promise<string> {
+    const location = await tx.location.findFirstOrThrow({ where: { isDefault: true } });
+    return location.id;
+  }
+
+  /**
    * The ONLY way stock changes. Callers inside a transaction pass their tx
    * client so the movement row and the stock change commit together.
+   *
+   * Stock is tracked per (variantId, locationId) in VariantLocationStock —
+   * that composite key is what the predicate-on-write guard (House Rule 10)
+   * actually locks. ProductVariant.stock stays a denormalized SUM across
+   * every location for that variant, recomputed in this same transaction, so
+   * every existing reader (storefront stock check, admin list, reorder job)
+   * keeps working unmodified — B6, 17-inventory-locations.md.
    */
   async move(input: StockMoveInput, tx: Prisma.TransactionClient | PrismaService = this.prisma): Promise<StockMovement> {
     if (input.delta === 0) {
       throw new BadRequestException('Stock movement delta cannot be zero.');
     }
 
-    // We must read the old stock before update if we want to know if it crossed the threshold.
+    // We must read the old (aggregate) stock before the update if we want to
+    // know whether this movement crosses the low-stock threshold.
     const beforeVariant = await tx.productVariant.findUnique({
       where: { id: input.variantId },
-      select: { stock: true, lowStockThreshold: true },
+      select: { stock: true, lowStockThreshold: true, productId: true, sku: true },
     });
 
     if (!beforeVariant) {
@@ -152,30 +176,63 @@ export class InventoryService {
 
     const wasAboveThreshold = beforeVariant.stock > beforeVariant.lowStockThreshold;
 
-    const updated = await tx.productVariant.updateMany({
-      where: input.delta < 0 ? { id: input.variantId, stock: { gte: -input.delta } } : { id: input.variantId },
-      data: { stock: { increment: input.delta } },
+    // A variant may not yet have touched this location — lazily ensure the
+    // row exists before the guarded update below. Idempotent: a concurrent
+    // upsert on the same (variantId, locationId) either inserts or becomes a
+    // no-op update after waiting on the row lock, never a duplicate row.
+    await tx.variantLocationStock.upsert({
+      where: { variantId_locationId: { variantId: input.variantId, locationId: input.locationId } },
+      create: { variantId: input.variantId, locationId: input.locationId, quantity: 0 },
+      update: {},
+    });
+
+    // The predicate-on-write idiom (House Rule 10), now keyed on the
+    // composite (variantId, locationId) — the database arbitrates whether
+    // THIS location has enough stock, not a read-then-write guess.
+    const updated = await tx.variantLocationStock.updateMany({
+      where:
+        input.delta < 0
+          ? {
+              variantId: input.variantId,
+              locationId: input.locationId,
+              quantity: { gte: -input.delta },
+            }
+          : { variantId: input.variantId, locationId: input.locationId },
+      data: { quantity: { increment: input.delta } },
     });
 
     if (updated.count === 0) {
-      // Did it not exist, or did it fail the stock condition?
-      const variant = await tx.productVariant.findUnique({
-        where: { id: input.variantId },
-        select: { sku: true, stock: true },
+      const row = await tx.variantLocationStock.findUnique({
+        where: { variantId_locationId: { variantId: input.variantId, locationId: input.locationId } },
       });
-      if (!variant) {
-        throw new NotFoundException('That variant no longer exists.');
-      }
-      throw new InsufficientStockError(input.variantId, variant.sku, variant.stock, input.delta);
+      throw new InsufficientStockError(input.variantId, beforeVariant.sku, row?.quantity ?? 0, input.delta);
     }
 
-    const variant = await tx.productVariant.findUniqueOrThrow({ where: { id: input.variantId } });
+    // Recompute the aggregate and write it in ONE atomic UPDATE, not a
+    // separate SELECT-then-write — the exact race House Rule 10 exists to
+    // prevent, here at the variant level: two locations of the SAME variant
+    // moving concurrently must not let one recompute clobber the other's.
+    // Postgres re-evaluates this subquery against the fresh committed row
+    // once it acquires the lock, so a transaction that was blocked here
+    // (because a concurrent move() at a different location for this same
+    // variant held the row) sees that commit's result before computing its
+    // own sum, not a stale snapshot from before it blocked.
+    const [{ stock: resultingStock }] = await tx.$queryRaw<[{ stock: number }]>`
+      UPDATE "ProductVariant"
+      SET stock = COALESCE(
+        (SELECT SUM(quantity) FROM "VariantLocationStock" WHERE "variantId" = "ProductVariant"."id"),
+        0
+      )
+      WHERE id = ${input.variantId}
+      RETURNING stock
+    `;
 
     const movement = await tx.stockMovement.create({
       data: {
         variantId: input.variantId,
+        locationId: input.locationId,
         delta: input.delta,
-        resultingStock: variant.stock,
+        resultingStock,
         reason: input.reason,
         refType: input.refType ?? null,
         refId: input.refId ?? null,
@@ -185,15 +242,15 @@ export class InventoryService {
       },
     });
 
-    if (wasAboveThreshold && variant.stock <= variant.lowStockThreshold) {
+    if (wasAboveThreshold && resultingStock <= beforeVariant.lowStockThreshold) {
       await this.events.publish(
         DomainEvent.ProductLowStock,
         {
-          productId: variant.productId,
-          variantId: variant.id,
-          sku: variant.sku,
-          stock: variant.stock,
-          threshold: variant.lowStockThreshold,
+          productId: beforeVariant.productId,
+          variantId: input.variantId,
+          sku: beforeVariant.sku,
+          stock: resultingStock,
+          threshold: beforeVariant.lowStockThreshold,
         },
         tx,
       );
@@ -206,16 +263,20 @@ export class InventoryService {
       action: 'inventory.stock_adjusted',
       entity: 'ProductVariant',
       entityId: input.variantId,
-      data: { delta: input.delta, resultingStock: movement.resultingStock, reason: input.reason },
+      data: { delta: input.delta, resultingStock: movement.resultingStock, reason: input.reason, locationId: input.locationId },
     });
 
     return movement;
   }
 
   async moveMany(inputs: StockMoveInput[], tx: Prisma.TransactionClient | PrismaService = this.prisma): Promise<StockMovement[]> {
-    // Sort inputs by variantId to prevent deadlocks when updating multiple rows.
-    const sortedInputs = [...inputs].sort((a, b) => a.variantId.localeCompare(b.variantId));
-    
+    // Sort by the composite (variantId, locationId) — the actual key every
+    // upsert/updateMany in move() locks — to prevent deadlocks when two
+    // concurrent multi-line operations touch the same rows in opposite order.
+    const sortedInputs = [...inputs].sort((a, b) =>
+      `${a.variantId}:${a.locationId}`.localeCompare(`${b.variantId}:${b.locationId}`),
+    );
+
     const movements: StockMovement[] = [];
     for (const input of sortedInputs) {
       movements.push(await this.move(input, tx));

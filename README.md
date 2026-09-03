@@ -124,6 +124,9 @@ has a concurrency test. Full checklist in
 | [`docs/implementation/12-extractor-script-spec.md`](./docs/implementation/12-extractor-script-spec.md) | Planning doc — spec for `scripts/sync-client.mjs` (not yet built), which would generate/upgrade a client's stripped-down repo from this one. |
 | [`docs/implementation/13-email-service-plan.md`](./docs/implementation/13-email-service-plan.md) | Planning doc — the *business* case for reselling white-labelled, self-hosted email (Stalwart + SnappyMail) to agency clients. For how *this* shop's email actually works, see `docs/email.md` instead. |
 | [`docs/implementation/14-managed-services-module.md`](./docs/implementation/14-managed-services-module.md) | Planning doc — scope for the `agency` (Master Platform) and `managed-services` (client-side) modules that back the agency-managed billing/hosting dashboard named in doc 11. Not built yet — see "When to actually build this" in the doc. |
+| [`docs/implementation/15-tax-module.md`](./docs/implementation/15-tax-module.md) | Planning doc — scope for Blocker B4 (`MULTI-SECTOR.md`): a `tax` module with a selectable inclusive/exclusive pricing mode. Not built yet; `tax.enabled=false` is the intended ship-safe default when it is. |
+| [`docs/implementation/16-pbac-row-scoping.md`](./docs/implementation/16-pbac-row-scoping.md) | Planning doc — scope for Blocker B5: generalizing the existing `manage_own`/`manage_all` pattern (stitching jobs) into a shared ownership guard. Only worth building once a marketplace model is real. |
+| [`docs/implementation/17-inventory-locations.md`](./docs/implementation/17-inventory-locations.md) | Planning doc — scope for Blocker B6: a `Location` dimension on stock, additive and concurrency-safe. The riskiest of the scoped blockers — deliberately not built until a second location or O2O is an actual plan. |
 
 ## What is here today
 
@@ -269,8 +272,9 @@ ten phases — inventory and purchasing, the admin shell, custom variants and SE
 profit and loss, promotions and gift cards, shipping and returns, the customer
 portal, content and search, the AI layer, and the admin dashboard rebuild —
 plus [`MULTI-SECTOR.md`](./docs/implementation/MULTI-SECTOR.md) on running more
-than one sector from this one repository, and four planning docs (11–14) on a
-possible future master-platform-plus-client-handover model. See the
+than one sector from this one repository, and seven planning docs (11–17) —
+four on a possible future master-platform-plus-client-handover model, three
+scoping the multi-sector blockers B4–B6. See the
 [documentation map](#documentation-map) above for what each one covers, and
 start with [`00-HOUSE-RULES.md`](./docs/implementation/00-HOUSE-RULES.md) — the
 contract every contributor, human or agent, works to.

@@ -571,21 +571,29 @@ to `orders.service.ts`.
 No rate, no class, no VAT/GST, no inclusive/exclusive handling, anywhere. It was
 surfaced by B2B ("tax exemption") but it is not a B2B feature — **a Pakistani
 shop charging GST needs it today.** This is arguably the largest single gap the
-exercise found.
+exercise found. Scoped in
+[`15-tax-module.md`](./15-tax-module.md) — a `tax` module with a selectable
+inclusive/exclusive pricing mode, `tax.enabled=false` the ship-safe default.
 
 ### B5 — PBAC has no notion of "my rows"
 
 `RolePermission` is `@@unique([role, permissionId])` and the guard is a pure
 set-membership test. `catalog.manage` grants *every* product. Multi-seller (C2C,
 B2B2C) cannot be built until permissions can be scoped to an owner. This is the
-real price of a marketplace, and it is structural.
+real price of a marketplace, and it is structural. Scoped in
+[`16-pbac-row-scoping.md`](./16-pbac-row-scoping.md) — the good news is the
+`manage_own`/`manage_all` convention already exists once, for stitching
+jobs; it needs generalizing, not inventing.
 
 ### B6 — stock has no location dimension
 
 Per-location inventory cannot be a separate module: it would either not write
 `ProductVariant.stock` (the two drift silently forever) or write it and break
 Rule 12. O2O therefore requires a genuine `inventory` core edit. The one
-unavoidable invasive change in the whole taxonomy.
+unavoidable invasive change in the whole taxonomy. Scoped in
+[`17-inventory-locations.md`](./17-inventory-locations.md) — additive and
+concurrency-safe, deliberately the least-built of the four scoped blockers
+given the blast radius of getting it wrong on a live store.
 
 ### B7 — core does not compile without apparel
 
@@ -649,22 +657,30 @@ enables the capabilities its trade needs.
 
 ## Sequencing
 
-**Nothing here starts before the blockers.** B1 and B3 are small and unblock six
-sectors between them; B4 is owed to the current shop regardless of sectors.
+**Status as of 2026-09-03: B1, B3 and B7 are done** (B7 mostly — one debt
+entry remains, see above). B4, B5, B6 are scoped in docs 15–17 but not
+built. Updated sequencing:
 
-1. **B1 `ProductKind`, B3 checkout hook, B4 `tax`.** Small, and the first two
-   unblock almost everything. `tax` is the exception — real work, and overdue.
-2. **Phase 10** as already specified. Unaffected by any of this.
-3. **B7 — pay down the apparel coupling in core.** Required before a second
-   sector, and the longer it waits the more expensive it becomes.
-4. **`lots` + `agegate` + `subscriptions`.** Three core capabilities that between
+1. ~~B1 `ProductKind`, B3 checkout hook.~~ **Done.**
+2. **B4 `tax`** ([`15-tax-module.md`](./15-tax-module.md)). Still the
+   exception worth doing soon — real work, and overdue regardless of
+   sectors. `tax.enabled=false` means it ships with zero risk to current
+   checkout behaviour.
+3. **Phase 10** as already specified. Unaffected by any of this.
+4. ~~B7 — pay down the apparel coupling in core.~~ **Mostly done;** the
+   `CartItemStitchingOption` entry in `KNOWN_SCHEMA_VIOLATIONS` is what's
+   left, bundled with the `cart` → `measurements` extension-point work.
+5. **`lots` + `agegate` + `subscriptions`.** Three core capabilities that between
    them deliver the entire grocery vertical with no pack.
-5. **`pricing` + `accounts` + `tax`.** B2B becomes possible. Highest commercial
+6. **`pricing` + `accounts` + `tax`.** B2B becomes possible. Highest commercial
    value of any capability group for an existing retailer.
-6. **Everything else, on demand.** `quotes`/`agreements`/`receivables` when a
+7. **Everything else, on demand.** `quotes`/`agreements`/`receivables` when a
    tender is actually in play; `sellers`/`payouts`/`commissions` only if a
-   marketplace is genuinely wanted, since B5 makes it the most expensive item
-   here; `locations`/`fulfilment` when a physical store exists.
+   marketplace is genuinely wanted, since B5
+   ([`16-pbac-row-scoping.md`](./16-pbac-row-scoping.md)) makes it the most
+   expensive item here; `locations`/`fulfilment` — and B6
+   ([`17-inventory-locations.md`](./17-inventory-locations.md)) — when a
+   physical second location or O2O is real.
 
 **May never be needed:** `submissions`, `storefronts`, `credentials`,
 `moderation`. Real capabilities, but speculative until a stated requirement

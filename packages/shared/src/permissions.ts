@@ -89,6 +89,11 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
 
   { key: 'settings.manage', label: 'Access the Settings screen', category: 'Administration' },
   {
+    key: 'tax.manage',
+    label: 'Manage tax classes, rates and the pricing mode',
+    category: 'Administration',
+  },
+  {
     key: 'roles.manage_permissions',
     label: "Edit each role's granted permissions",
     category: 'Administration',
@@ -163,6 +168,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'roles.manage_permissions',
     'audit.view',
     'users.manage',
+    'tax.manage',
   ],
 };
 

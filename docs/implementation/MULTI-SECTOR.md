@@ -568,12 +568,12 @@ to `orders.service.ts`.
 
 ### B4 — tax does not exist
 
-No rate, no class, no VAT/GST, no inclusive/exclusive handling, anywhere. It was
-surfaced by B2B ("tax exemption") but it is not a B2B feature — **a Pakistani
-shop charging GST needs it today.** This is arguably the largest single gap the
-exercise found. Scoped in
-[`15-tax-module.md`](./15-tax-module.md) — a `tax` module with a selectable
-inclusive/exclusive pricing mode, `tax.enabled=false` the ship-safe default.
+**Done as of 2026-09-03.** Was surfaced by B2B ("tax exemption") but was not
+a B2B-only feature — a Pakistani shop charging GST needed it regardless of
+sectors, and this was arguably the largest single gap the exercise found.
+See [`15-tax-module.md`](./15-tax-module.md) — a `tax` module with a
+selectable inclusive/exclusive pricing mode, `tax.enabled=false` the
+ship-safe default, `/admin/tax` for classes and rates.
 
 ### B5 — PBAC has no notion of "my rows"
 
@@ -657,15 +657,15 @@ enables the capabilities its trade needs.
 
 ## Sequencing
 
-**Status as of 2026-09-03: B1, B3 and B7 are done** (B7 mostly — one debt
-entry remains, see above). B4, B5, B6 are scoped in docs 15–17 but not
+**Status as of 2026-09-03: B1, B3, B4 and B7 are done** (B7 mostly — one debt
+entry remains, see above). B5 and B6 are scoped in docs 16–17 but not
 built. Updated sequencing:
 
 1. ~~B1 `ProductKind`, B3 checkout hook.~~ **Done.**
-2. **B4 `tax`** ([`15-tax-module.md`](./15-tax-module.md)). Still the
-   exception worth doing soon — real work, and overdue regardless of
-   sectors. `tax.enabled=false` means it ships with zero risk to current
-   checkout behaviour.
+2. ~~B4 `tax`~~ ([`15-tax-module.md`](./15-tax-module.md)). **Done** —
+   `tax.enabled=false` by default, `/admin/tax` for classes/rates and the
+   inclusive/exclusive toggle. WO-15.5 (FBR-specific invoice fields) still
+   waits on real compliance requirements.
 3. **Phase 10** as already specified. Unaffected by any of this.
 4. ~~B7 — pay down the apparel coupling in core.~~ **Mostly done;** the
    `CartItemStitchingOption` entry in `KNOWN_SCHEMA_VIOLATIONS` is what's

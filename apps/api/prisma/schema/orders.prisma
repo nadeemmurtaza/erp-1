@@ -40,6 +40,10 @@ model Order {
   orderDiscount     Int @default(0)
   shippingFee       Int @default(0)
   codFee            Int @default(0)
+  /// EXCLUSIVE-mode tax across the whole order, mirroring OrderItem.taxAmount
+  /// summed -- kept here too so order lists/reports don't need to sum lines.
+  /// 0 when tax is off or the shop uses INCLUSIVE mode (see 15-tax-module.md).
+  taxAmount         Int @default(0)
   grandTotal        Int
 
   shippingZone String?
@@ -90,6 +94,17 @@ model OrderItem {
   discountUnit     Int @default(0)
   /// unitPrice*qty + stitchingFeeUnit*qty - discountUnit*qty
   lineTotal        Int
+
+  /// Tax on this line, in paisa, AT THE MOMENT OF PURCHASE -- a snapshot
+  /// like unitCost and unitPrice (House Rule 7). Zero for every order placed
+  /// before this module existed or while tax.enabled is off; never
+  /// backfilled. In EXCLUSIVE mode this is added on top of lineTotal; in
+  /// INCLUSIVE mode it is extracted from a lineTotal that already contains
+  /// it, for the invoice, and changes nothing the customer paid.
+  taxAmount  Int @default(0)
+  /// The rate actually applied, basis points, snapshotted for the same
+  /// reason as taxAmount -- a later rate change must not rewrite history.
+  taxRateBps Int @default(0)
 
   /// Stitching add-on snapshot.
   stitchingServiceId   String?

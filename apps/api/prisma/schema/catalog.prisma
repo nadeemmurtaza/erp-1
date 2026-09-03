@@ -142,6 +142,12 @@ model ProductVariant {
   lastReceivedAt      DateTime?
   barcode             String?   @unique
 
+  /// Null = the store's default tax class (Setting `tax.default_class`).
+  /// Most products never set this. Tax is core (MULTI-SECTOR.md), so this
+  /// relation is a normal core-to-core reference, not a pack boundary.
+  taxClassId String?
+  taxClass   TaxClass? @relation(fields: [taxClassId], references: [id], onDelete: SetNull)
+
   salesStat           VariantSalesStat?
 
   order     Int      @default(0)

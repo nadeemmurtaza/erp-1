@@ -2,12 +2,16 @@
 
 **Read `00-HOUSE-RULES.md` and `MULTI-SECTOR.md` first.**
 
-> **Status: scoped, not built.** `MULTI-SECTOR.md` calls B4 "arguably the
-> largest single gap" the sector/business-model exercise found — it isn't
-> sector-specific, it's owed to the current apparel shop today. Confirmed
-> absent: no `Tax` model anywhere in `apps/api/prisma/schema/`, no rate, no
-> class, no inclusive/exclusive handling. `basePrice` is just the sale price;
-> nothing in the codebase has an opinion about GST.
+> **Status: built (2026-09-03), WO-15.1–15.4.** `tax.enabled=false` is the
+> live default — verified end to end (a real checkout with tax on charges
+> exactly the expected amount; with tax off, `grandTotal` is byte-identical
+> to before this module existed). WO-15.5 (FBR-specific invoice fields)
+> remains unbuilt, blocked on real compliance requirements as described
+> below. Admin UI lives at `/admin/tax` rather than folded into
+> `/admin/settings` — there was no generic Setting-editing endpoint to fold
+> it into (settings-admin only covers permissions/roles/audit-log), so a
+> small tax-scoped settings endpoint was added instead of building that
+> generic mechanism as a side effect.
 
 ## The design decision this doc locks in
 

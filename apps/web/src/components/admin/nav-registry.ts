@@ -243,6 +243,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['settings.manage'],
     group: 'settings',
   },
+  {
+    key: 'tax',
+    label: 'Tax',
+    href: '/admin/tax',
+    permissions: ['tax.manage'],
+    group: 'settings',
+    module: 'tax',
+  },
 ];
 
 /**

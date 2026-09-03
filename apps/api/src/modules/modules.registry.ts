@@ -12,6 +12,7 @@ import { PurchasingModule } from './purchasing/purchasing.module';
 import { ReportsModule } from './reports/reports.module';
 import { SettingsAdminModule } from './settings/settings-admin.module';
 import { StitchingModule } from './stitching/stitching.module';
+import { TaxModule } from './tax/tax.module';
 import { TrackingModule } from './tracking/tracking.module';
 import { UsersAdminModule } from './users/users-admin.module';
 
@@ -43,6 +44,7 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'crm', module: CrmModule },
   { name: 'analytics', module: AnalyticsModule },
   { name: 'reports', module: ReportsModule },
+  { name: 'tax', module: TaxModule },
   { name: 'tracking', module: TrackingModule },
   // Account administration — not togglable business features.
   { name: 'settings', module: SettingsAdminModule, alwaysOn: true },

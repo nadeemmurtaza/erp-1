@@ -65,6 +65,42 @@ export function lineMargin(lineTotal: number, unitCost: number, quantity: number
   return lineTotal - (unitCost * quantity);
 }
 
+export interface TaxResult {
+  /** Tax on this line, in paisa. */
+  taxAmount: number;
+  /** What the line costs the customer, including tax. */
+  total: number;
+}
+
+/**
+ * EXCLUSIVE mode: `lineAmount` is the pre-tax price; tax is added on top.
+ * `total` is what the customer ends up paying for this line.
+ */
+export function taxExclusive(lineAmount: number, rateBps: number): TaxResult {
+  const taxAmount = Math.round((lineAmount * rateBps) / 10_000);
+  return { taxAmount, total: lineAmount + taxAmount };
+}
+
+/**
+ * INCLUSIVE mode: `lineAmount` already contains the tax — extracted here for
+ * the invoice/report only. `total` is unchanged from `lineAmount`; inclusive
+ * mode never changes what a customer pays, only how it is broken down.
+ */
+export function taxInclusive(lineAmount: number, rateBps: number): TaxResult {
+  const taxAmount = lineAmount - Math.round((lineAmount * 10_000) / (10_000 + rateBps));
+  return { taxAmount, total: lineAmount };
+}
+
+/**
+ * The rounding trap (same shape as `allocateLandedCost`'s): summing each
+ * line's independently-rounded `taxAmount` and re-deriving an order-level
+ * tax figure from the pre-tax grand total will disagree by a paisa or two on
+ * some carts, because integer rounding does not distribute across a sum.
+ * There is exactly one correct source of truth — call `taxExclusive`/
+ * `taxInclusive` per line, in `orders.service.ts`, and SUM those results.
+ * Never compute tax a second way at the order level; `computeOrderTotals()`
+ * below only ever adds a `taxAmount` its caller already summed line by line.
+ */
 export interface OrderTotalsInput {
   items: LineItemInput[];
   /** Shipping charge for the delivery zone, in paisa. */
@@ -73,6 +109,13 @@ export interface OrderTotalsInput {
   codFee?: number;
   /** Order-level discount (coupon), in paisa. */
   orderDiscount?: number;
+  /**
+   * EXCLUSIVE-mode tax only, pre-summed by the caller from each line's
+   * `taxExclusive()` result — added on top of the goods total. Omit (or 0)
+   * when tax is disabled or the shop uses INCLUSIVE mode, where tax is
+   * already inside `items[].unitPrice` and changes nothing here.
+   */
+  taxAmount?: number;
 }
 
 export interface OrderTotals {
@@ -82,6 +125,8 @@ export interface OrderTotals {
   orderDiscount: number;
   shippingFee: number;
   codFee: number;
+  /** EXCLUSIVE-mode tax added on top; 0 when tax is off or mode is INCLUSIVE. */
+  taxAmount: number;
   /** What the customer pays. Never negative. */
   grandTotal: number;
 }
@@ -95,6 +140,9 @@ export function computeOrderTotals(input: OrderTotalsInput): OrderTotals {
 
   const shippingFee = Math.max(0, input.shippingFee ?? 0);
   const codFee = Math.max(0, input.codFee ?? 0);
+  // Pre-summed by the caller from taxExclusive() per line — see the note on
+  // OrderTotalsInput.taxAmount. Never recomputed here from a rate.
+  const taxAmount = Math.max(0, input.taxAmount ?? 0);
 
   const afterItemDiscounts = itemsSubtotal + stitchingSubtotal - itemDiscountTotal;
   // An oversized coupon reduces the goods to zero but never eats the shipping
@@ -108,7 +156,8 @@ export function computeOrderTotals(input: OrderTotalsInput): OrderTotals {
     orderDiscount,
     shippingFee,
     codFee,
-    grandTotal: afterItemDiscounts - orderDiscount + shippingFee + codFee,
+    taxAmount,
+    grandTotal: afterItemDiscounts - orderDiscount + shippingFee + codFee + taxAmount,
   };
 }
 

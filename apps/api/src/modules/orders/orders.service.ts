@@ -10,6 +10,8 @@ import {
   computeShippingFee,
   DEFAULT_LOCALE,
   normalizePkPhone,
+  taxExclusive,
+  taxInclusive,
   type Locale,
 } from '@yaseen/shared';
 import { AuditService } from '../../core/audit/audit.service';
@@ -25,6 +27,7 @@ import { Prisma, type OrderStatus } from '../../core/prisma/client';
 import { stitchingFeeFor } from '../cart/cart.service';
 import { pickTranslation } from '../catalog/catalog.service';
 import { PaymentsService } from '../payments/payments.service';
+import { TaxService } from '../tax/tax.service';
 import type { PlaceOrderDto } from './dto/order.dto';
 
 /**
@@ -73,6 +76,7 @@ export class OrdersService {
     private readonly inventory: InventoryService,
     private readonly enrichment: EntityEnrichmentRegistry,
     private readonly checkoutValidators: CheckoutValidatorRegistry,
+    private readonly tax: TaxService,
   ) {}
 
   /**
@@ -139,6 +143,10 @@ export class OrdersService {
       })),
       shippingFee,
       codFee: paymentFee,
+      // Already correctly gated to EXCLUSIVE-mode-only inside priceCart()'s
+      // own computeOrderTotals call -- reused here rather than re-derived,
+      // per the rounding-trap discipline (one source of truth, never two).
+      taxAmount: priced.totals.taxAmount,
     });
 
     const minimum = await this.settings.get<number>(SettingKey.MinOrderValue);
@@ -188,6 +196,7 @@ export class OrdersService {
           orderDiscount: totals.orderDiscount,
           shippingFee: totals.shippingFee,
           codFee: totals.codFee,
+          taxAmount: totals.taxAmount,
           grandTotal: totals.grandTotal,
           shippingZone: zone.key,
           customerNote: dto.note ?? null,
@@ -206,6 +215,8 @@ export class OrdersService {
               quantity: line.quantity,
               stitchingFeeUnit: line.stitchingFeeUnit,
               lineTotal: line.lineTotal,
+              taxAmount: line.taxAmount,
+              taxRateBps: line.taxRateBps,
               stitchingServiceId: line.stitchingServiceId,
               stitchingServiceName: line.stitchingServiceName,
               garmentTypeKey: line.garmentTypeKey,
@@ -544,6 +555,17 @@ export class OrdersService {
           });
     const garmentTypeById = new Map(garmentTypes.map((garmentType) => [garmentType.id, garmentType]));
 
+    // Tax (15-tax-module.md). tax.enabled defaults false, in which case every
+    // line's taxAmount stays 0 and grandTotal is byte-identical to a build
+    // with no tax module at all -- resolving rates only when it is actually on.
+    const taxEnabled = await this.settings.get<boolean>(SettingKey.TaxEnabled);
+    const taxPricingMode = taxEnabled
+      ? await this.settings.get<'INCLUSIVE' | 'EXCLUSIVE'>(SettingKey.TaxPricingMode)
+      : 'EXCLUSIVE';
+    const [taxRatesByClassId, defaultTaxClassId] = taxEnabled
+      ? await Promise.all([this.tax.activeRatesByClassId(), this.tax.defaultClassId()])
+      : [new Map<string, number>(), null];
+
     const lines = cart.items.map((item) => {
       const unitPrice = item.variant.priceOverride ?? item.product.basePrice;
 
@@ -607,6 +629,26 @@ export class OrdersService {
         item.product.images.find((candidate) => candidate.isPrimary) ??
         item.product.images[0];
 
+      const lineTotal = (unitPrice + stitchingFeeUnit) * item.quantity;
+
+      // Tax on this line, snapshotted below onto the OrderItem. taxRateBps
+      // stays 0 (not looked up) when tax is off, per the tax.enabled=false
+      // ship-safe default in 15-tax-module.md.
+      let taxAmount = 0;
+      let taxRateBps = 0;
+      if (taxEnabled) {
+        const effectiveClassId = item.variant.taxClassId ?? defaultTaxClassId;
+        const rateBps = effectiveClassId ? taxRatesByClassId.get(effectiveClassId) : undefined;
+        if (rateBps !== undefined) {
+          const result =
+            taxPricingMode === 'INCLUSIVE'
+              ? taxInclusive(lineTotal, rateBps)
+              : taxExclusive(lineTotal, rateBps);
+          taxAmount = result.taxAmount;
+          taxRateBps = rateBps;
+        }
+      }
+
       return {
         productId: item.productId,
         variantId: item.variantId,
@@ -620,7 +662,9 @@ export class OrdersService {
         unitPrice,
         quantity: item.quantity,
         stitchingFeeUnit,
-        lineTotal: (unitPrice + stitchingFeeUnit) * item.quantity,
+        lineTotal,
+        taxAmount,
+        taxRateBps,
         stitchingServiceId: item.stitchingServiceId,
         stitchingServiceName: item.stitchingService
           ? (pickTranslation(item.stitchingService.translations, locale)?.name ??
@@ -637,7 +681,19 @@ export class OrdersService {
       };
     });
 
+    // EXCLUSIVE mode adds tax on top of grandTotal; INCLUSIVE mode's tax is
+    // already inside unitPrice/lineTotal above, so it must NOT be added again
+    // here (that would double-count it) -- it is only ever extracted for
+    // display. See the rounding-trap note on OrderTotalsInput.taxAmount:
+    // this sum of already-rounded per-line amounts is the only correct
+    // source, never a separate order-level recomputation.
+    const taxAmountForTotals =
+      taxEnabled && taxPricingMode === 'EXCLUSIVE'
+        ? lines.reduce((sum, line) => sum + line.taxAmount, 0)
+        : 0;
+
     const totals = computeOrderTotals({
+      taxAmount: taxAmountForTotals,
       items: lines.map((line) => ({
         unitPrice: line.unitPrice,
         quantity: line.quantity,

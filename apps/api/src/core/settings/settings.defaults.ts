@@ -44,6 +44,12 @@ export const SettingKey = {
   PurchasingAutoDraftReorder: 'purchasing.auto_draft_reorder',
   InventorySlowMoverDays: 'inventory.slow_mover_days',
   InventoryDeadStockDays: 'inventory.dead_stock_days',
+  /** Off until an owner turns it on — every order's tax is zero either way. */
+  TaxEnabled: 'tax.enabled',
+  /** 'INCLUSIVE' (unitPrice already contains tax) or 'EXCLUSIVE' (tax is added at checkout). */
+  TaxPricingMode: 'tax.pricing_mode',
+  /** TaxClass.key used for a variant with no taxClassId of its own. */
+  TaxDefaultClass: 'tax.default_class',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -121,4 +127,8 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
 
   [SettingKey.InventorySlowMoverDays]: 60,
   [SettingKey.InventoryDeadStockDays]: 180,
+
+  [SettingKey.TaxEnabled]: false,
+  [SettingKey.TaxPricingMode]: 'EXCLUSIVE',
+  [SettingKey.TaxDefaultClass]: 'standard',
 };

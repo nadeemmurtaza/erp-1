@@ -6,6 +6,8 @@ import {
   lineMargin,
   allocateLandedCost,
   weightedAverageCost,
+  taxExclusive,
+  taxInclusive,
 } from './pricing';
 import { formatMoney, toMinor } from './constants';
 
@@ -120,6 +122,96 @@ describe('computeOrderTotals', () => {
 
   it('is zero for an empty cart', () => {
     expect(computeOrderTotals({ items: [] }).grandTotal).toBe(0);
+  });
+
+  it('leaves grandTotal untouched when taxAmount is omitted — tax.enabled=false ships risk-free', () => {
+    const withoutTax = computeOrderTotals({
+      items: [{ unitPrice: toMinor(4500), quantity: 1, stitchingFeePerUnit: toMinor(1600) }],
+      shippingFee: toMinor(250),
+      codFee: toMinor(100),
+    });
+    const explicitZero = computeOrderTotals({
+      items: [{ unitPrice: toMinor(4500), quantity: 1, stitchingFeePerUnit: toMinor(1600) }],
+      shippingFee: toMinor(250),
+      codFee: toMinor(100),
+      taxAmount: 0,
+    });
+
+    expect(withoutTax.taxAmount).toBe(0);
+    expect(withoutTax.grandTotal).toBe(explicitZero.grandTotal);
+  });
+
+  it('adds a pre-summed EXCLUSIVE-mode taxAmount on top of the goods total', () => {
+    const totals = computeOrderTotals({
+      items: [{ unitPrice: toMinor(1000), quantity: 1 }],
+      taxAmount: toMinor(170), // 17% of Rs 1,000, computed by the caller via taxExclusive()
+    });
+
+    expect(totals.taxAmount).toBe(toMinor(170));
+    expect(totals.grandTotal).toBe(toMinor(1170));
+  });
+});
+
+describe('taxExclusive', () => {
+  it('adds 17% GST on top of the pre-tax price', () => {
+    const result = taxExclusive(toMinor(1000), 1700);
+    expect(result.taxAmount).toBe(toMinor(170));
+    expect(result.total).toBe(toMinor(1170));
+  });
+
+  it('is zero at a zero rate', () => {
+    expect(taxExclusive(toMinor(1000), 0)).toEqual({ taxAmount: 0, total: toMinor(1000) });
+  });
+});
+
+describe('taxInclusive', () => {
+  it('extracts 17% GST from a price that already contains it, changing nothing the customer pays', () => {
+    const result = taxInclusive(toMinor(1170), 1700);
+    expect(result.taxAmount).toBe(toMinor(170));
+    expect(result.total).toBe(toMinor(1170)); // unchanged — the point of the mode
+  });
+
+  it('is zero at a zero rate', () => {
+    expect(taxInclusive(toMinor(1000), 0)).toEqual({ taxAmount: 0, total: toMinor(1000) });
+  });
+
+  it('round-trips with taxExclusive at the same rate', () => {
+    const exclusive = taxExclusive(toMinor(1000), 1700);
+    const inclusive = taxInclusive(exclusive.total, 1700);
+    expect(inclusive.taxAmount).toBe(exclusive.taxAmount);
+  });
+});
+
+describe('tax rounding trap', () => {
+  it('proves summed per-line tax disagrees with a single order-level recomputation, and computeOrderTotals must use the sum', () => {
+    // Three lines of Rs 1 (100 paisa) at 33.33% — chosen so each line's
+    // rounded tax (33) triples to 99, but rounding the pre-tax total (300)
+    // once gives 100. A one-paisa disagreement, exactly the trap WO-1.5's
+    // landed-cost allocation hit.
+    const lineAmounts = [100, 100, 100];
+    const rateBps = 3333;
+
+    const perLine = lineAmounts.map((amount) => taxExclusive(amount, rateBps));
+    const summedTax = perLine.reduce((sum, line) => sum + line.taxAmount, 0);
+    expect(summedTax).toBe(99);
+
+    const orderLevelRecompute = Math.round(
+      (lineAmounts.reduce((sum, amount) => sum + amount, 0) * rateBps) / 10_000,
+    );
+    expect(orderLevelRecompute).toBe(100);
+
+    // Confirms the trap is real: the two approaches disagree by a paisa.
+    expect(summedTax).not.toBe(orderLevelRecompute);
+
+    // The invoice must show what the lines actually summed to (99), which is
+    // exactly what computeOrderTotals's taxAmount is defined to carry — never
+    // a separately-rounded order-level figure.
+    expect(
+      computeOrderTotals({
+        items: lineAmounts.map((unitPrice) => ({ unitPrice, quantity: 1 })),
+        taxAmount: summedTax,
+      }).taxAmount,
+    ).toBe(99);
   });
 });
 

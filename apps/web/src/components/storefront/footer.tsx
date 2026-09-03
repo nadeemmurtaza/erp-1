@@ -4,7 +4,6 @@ import { Link } from '@/i18n/navigation';
 export function Footer() {
   const t = useTranslations('footer');
   const tSite = useTranslations('site');
-  const tCommon = useTranslations('common');
 
   return (
     <footer className="mt-20 border-t border-noir-800 bg-noir-900">

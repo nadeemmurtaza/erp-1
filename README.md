@@ -123,6 +123,7 @@ has a concurrency test. Full checklist in
 | [`docs/implementation/11-client-handover-model.md`](./docs/implementation/11-client-handover-model.md) | Planning doc — the master-platform-plus-client-handover model: one blueprint repo, stripped-down private repos per client, and why per-client branches/submodules/npm packages were rejected. |
 | [`docs/implementation/12-extractor-script-spec.md`](./docs/implementation/12-extractor-script-spec.md) | Planning doc — spec for `scripts/sync-client.mjs` (not yet built), which would generate/upgrade a client's stripped-down repo from this one. |
 | [`docs/implementation/13-email-service-plan.md`](./docs/implementation/13-email-service-plan.md) | Planning doc — the *business* case for reselling white-labelled, self-hosted email (Stalwart + SnappyMail) to agency clients. For how *this* shop's email actually works, see `docs/email.md` instead. |
+| [`docs/implementation/14-managed-services-module.md`](./docs/implementation/14-managed-services-module.md) | Planning doc — scope for the `agency` (Master Platform) and `managed-services` (client-side) modules that back the agency-managed billing/hosting dashboard named in doc 11. Not built yet — see "When to actually build this" in the doc. |
 
 ## What is here today
 
@@ -268,7 +269,7 @@ ten phases — inventory and purchasing, the admin shell, custom variants and SE
 profit and loss, promotions and gift cards, shipping and returns, the customer
 portal, content and search, the AI layer, and the admin dashboard rebuild —
 plus [`MULTI-SECTOR.md`](./docs/implementation/MULTI-SECTOR.md) on running more
-than one sector from this one repository, and three planning docs (11–13) on a
+than one sector from this one repository, and four planning docs (11–14) on a
 possible future master-platform-plus-client-handover model. See the
 [documentation map](#documentation-map) above for what each one covers, and
 start with [`00-HOUSE-RULES.md`](./docs/implementation/00-HOUSE-RULES.md) — the

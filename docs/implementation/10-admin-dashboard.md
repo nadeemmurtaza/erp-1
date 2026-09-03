@@ -49,7 +49,8 @@ purchasing screens), WO-1.9 (reports), the nested nav `children`, and the
 
 ## Work orders
 
-One work order is one branch is one draft PR. Branch names follow
+One work order is one branch, pushed straight to `main` — no PR needed there;
+`production` is the one that stays off-limits. Branch names follow
 `<pack>/<type>/<slug>` (`00-HOUSE-RULES.md` §7): `web/feat/wo-a1-admin-ui-primitives`,
 `core/feat/wo-b1-finance-expenses`, `core/feat/wo-c3-production-runs`. Every
 module this phase adds — `finance` and `bom` — belongs to the **`core` pack**, so
@@ -1812,8 +1813,8 @@ On top of the house rules' checklist, every PR:
       some-but-not-all-permissions case is where these screens break.
 - [ ] `check-module-boundaries.mjs` and `check-chart-imports.mjs` pass.
 - [ ] `pnpm db:seed` run twice, still idempotent.
-- [ ] Branch pushed, **draft** PR opened against `main`, then stop. **Never push
-      to or merge into `main` or `production`.**
+- [ ] Branch pushed straight to `main` — no PR needed for `main`. **Never push
+      to or merge into `production`**; that stays the owner's call.
 
 ### Phase exit criteria — the end-to-end proof
 

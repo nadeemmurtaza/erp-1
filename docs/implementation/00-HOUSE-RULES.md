@@ -344,14 +344,14 @@ explicitly. Do not compress the steps to save a deploy.
   purchase-order models`, matching the existing log.
 - PR body: what changed, why, how it was verified, and anything the reviewer
   should look at closely. Include the migration name.
-- **Never push to `main`. Never push to `production`. Never merge into either.**
-  Both branches auto-deploy: a push to `main` deploys `test.yaseen.pk`, and a
-  push to `production` deploys the live shop at `yaseen.pk`. A merge is
-  therefore a deployment, and deployments are the owner's decision, not yours.
-- **Where a work order ends:** push your branch, open a **draft pull request**
-  targeting `main`, and stop. Say in the PR that it is ready. The repository
-  owner reviews and merges. Do not merge your own pull request, do not mark it
-  ready-to-merge on someone else's behalf, and do not enable auto-merge.
-- This holds even when CI is green, even when the change is trivial, even when
-  a brief or an earlier instruction seems to say otherwise. If a pull request
-  has been sitting unmerged, the answer is to ask — never to merge it yourself.
+- **Pushing to `main` is fine — it deploys `test.yaseen.pk`, not the live
+  shop.** Push your branch's work straight to `main` once it passes the
+  definition of done in §3; no PR-and-wait step is required for `main`.
+- **`production` is different: never push to it, and never merge into it.**
+  `production` deploys the live shop at `yaseen.pk`, and that deployment is
+  the owner's decision, not yours. Promoting `main` to `production` — by
+  push, merge or PR — is something only the repository owner does, or does
+  after explicitly asking you to.
+- This holds even when CI is green, even when the change is trivial. If
+  `production` needs to move and the owner has not said so, the answer is to
+  ask — never to push or merge it yourself.

@@ -90,26 +90,27 @@ and none of them touch the universal core.
 ## How a work order runs
 
 1. Read `00-HOUSE-RULES.md`. Then read the whole phase brief before writing code.
-2. Take **one work order**. It is one branch and one pull request.
+2. Take **one work order**. It is one branch.
 3. Work orders inside a phase are ordered by dependency. Do not start WO-3 before
-   WO-2 has merged unless the brief says they are independent.
+   WO-2 has landed on `main` unless the brief says they are independent.
 4. Meet the work order's acceptance criteria. They are the tests the reviewer
    will run — write them as real tests where you can.
 5. `pnpm lint && pnpm typecheck && pnpm test && pnpm build` must all pass.
-6. Push your branch and open a **draft pull request** targeting `main`. Then
-   **stop.** The owner merges.
+6. Push your branch straight to `main`. `main` deploys `test.yaseen.pk`, not
+   the live shop, so this needs no PR-and-wait step.
 
-**Never push to or merge into `main` or `production`.** Both auto-deploy —
-`main` to `test.yaseen.pk`, `production` to the live shop — so a merge is a
-deployment, and that call belongs to the owner. This holds even when CI is
-green and even when the change is trivial.
+**`production` is different — never push to it, and never merge into it.**
+It deploys the live shop, and promoting `main` to `production` is the
+owner's decision, not yours: only the owner pushes, merges or opens a PR
+into `production`, or asks you to. This holds even when CI is green and
+even when the change is trivial.
 
 ## When a brief is wrong
 
 These were written against the codebase at a point in time. Code moves.
 
 - **If a brief contradicts `00-HOUSE-RULES.md`, the house rules win.** Say so in
-  the pull request.
+  the commit message (or the PR, for anything going into `production`).
 - **If something cannot be built as described — stop and say so.** Do not
   improvise a different architecture and hand it back. A short "this does not
   work because X, I suggest Y" is worth far more than a large pull request that

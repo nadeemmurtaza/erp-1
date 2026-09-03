@@ -209,7 +209,8 @@ catalogue, not in a branch name. If a sub-sector ever needs its own modules, it
 has earned its own pack and gets one.
 
 Rules that still hold from the house rules: branch from `main`; one work order per
-branch; **never push to or merge into `main` or `production`.**
+branch; pushing to `main` is fine, but **never push to or merge into
+`production`** — that stays the owner's call.
 
 ### Branches that ARE about time, and are fine
 

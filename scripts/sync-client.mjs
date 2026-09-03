@@ -195,9 +195,19 @@ fs.writeFileSync(path.join(BUILD_DIR, '.env.example'), envContent);
 
 // Phase 6: CI/CD & Database Cleanup
 console.log('--- Phase 6: CI/CD & Database Cleanup ---');
-const migrationsDir = path.join(BUILD_DIR, 'apps/api/prisma/schema/migrations');
-if (fs.existsSync(migrationsDir)) {
-  fs.rmSync(migrationsDir, { recursive: true, force: true });
+// Only a fresh delivery has no live database behind it. Purging migrations on
+// an UPGRADE would strip an existing client's migration history against a
+// database that already has data in it — the next `prisma migrate deploy`
+// would have nothing to reconcile against. Upgrades keep whatever migration
+// history the client repo already has; new schema changes need a real
+// incremental migration, not a wipe-and-regenerate.
+if (repoArg === 'new') {
+  const migrationsDir = path.join(BUILD_DIR, 'apps/api/prisma/schema/migrations');
+  if (fs.existsSync(migrationsDir)) {
+    fs.rmSync(migrationsDir, { recursive: true, force: true });
+  }
+} else {
+  console.log('Upgrade sync — leaving the client\'s existing migration history untouched.');
 }
 // Seed runner — copied as-is; the Blueprint does not yet split seeds per module.
 const seedFileSrc = path.join(BLUEPRINT_DIR, 'apps/api/prisma/seed.ts');

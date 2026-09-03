@@ -10,12 +10,36 @@
 # resolve via Docker's embedded DNS on that network.
 
 # --- Production -------------------------------------------------------
+#
+# House Rule 12 (docs/implementation/00-HOUSE-RULES.md): every byte between a
+# client and this stack is encrypted, not just relied on by default. Caddy
+# already forces HTTPS and TLS 1.2+ automatically for any bare-domain site
+# block below (no `http://` prefix) — this section makes both guarantees
+# explicit rather than leaning on that default silently:
+#   - `tls { protocols tls1.2 tls1.3 }` is an assertion, not new behavior —
+#     it fails loudly if a future Caddy upgrade or config change ever
+#     widens this, instead of quietly allowing an old TLS version back in.
+#   - `Strict-Transport-Security` (HSTS) closes the small window on a
+#     client's very first request, before Caddy's automatic redirect has
+#     had a chance to run, and stops that request from ever being sent in
+#     plaintext again for the given max-age.
+(security_headers) {
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+	}
+}
 
 www.yaseen.pk {
 	redir https://yaseen.pk{uri} permanent
 }
 
 yaseen.pk {
+	tls {
+		protocols tls1.2 tls1.3
+	}
+	import security_headers
 	# Admin lives at /admin on this same app (apps/web) — not a separate
 	# container or subdomain, per how the storefront/admin app is built.
 	reverse_proxy yaseen-web-prod:3000
@@ -26,6 +50,10 @@ yaseen.pk {
 }
 
 api.yaseen.pk {
+	tls {
+		protocols tls1.2 tls1.3
+	}
+	import security_headers
 	reverse_proxy yaseen-api-prod:3001
 	encode zstd gzip
 	log {

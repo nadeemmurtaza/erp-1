@@ -112,9 +112,12 @@ describe('Cart (e2e)', () => {
       data: { stitchingPrice: GARMENT_STITCHING_FEE, stitchingEnabled: true },
     });
 
+    const customer = await prisma.user.findUniqueOrThrow({
+      where: { email: 'ayesha@example.com' },
+    });
     kameezProfileId = (
       await prisma.measurementProfile.findFirstOrThrow({
-        where: { garmentTypeId: kameez.id, user: { email: 'ayesha@example.com' } },
+        where: { garmentTypeId: kameez.id, userId: customer.id },
       })
     ).id;
 

@@ -4,41 +4,38 @@ import {
   Injectable,
   Logger,
   NotFoundException,
+  OnModuleInit,
 } from '@nestjs/common';
 import { nextStage, previousStage, STITCHING_STAGES } from '@yaseen/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { DomainEvent } from '../../core/events/domain-events';
 import { EventBusService } from '../../core/events/event-bus.service';
+import { EntityEnrichmentRegistry } from '../../core/extension-points/entity-enrichment.registry';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { StorageService } from '../../core/storage/storage.service';
 import type { Prisma, StitchingStage } from '../../core/prisma/client';
 
+/**
+ * `orderItem` used to be a Prisma relation include here. StitchingJob (an
+ * apparel-pack model) is allowed to reference OrderItem (core) — the
+ * violation ran the other way, requiring OrderItem to declare a typed
+ * `stitchingJob` field, which made core.prisma unable to compile without
+ * the apparel schema present (B7, MULTI-SECTOR.md). `orderItemId` is now a
+ * plain scalar column with no Prisma relation; attachOrderContext() below
+ * does the join in application code instead.
+ */
 const jobInclude = {
   garmentType: true,
-  
   events: {
     orderBy: { createdAt: 'asc' }
-  },
-  orderItem: {
-    include: {
-      order: {
-        select: {
-          id: true,
-          number: true,
-          guestName: true,
-          guestPhone: true,
-          status: true,
-          placedAt: true,
-        },
-      },
-    },
   },
   stitchingOrder: {
     select: { id: true, number: true, guestName: true, guestPhone: true, status: true },
   },
 } satisfies Prisma.StitchingJobInclude;
+
 
 /**
  * The tailor queue.
@@ -49,7 +46,7 @@ const jobInclude = {
  * came in through.
  */
 @Injectable()
-export class StitchingJobsService {
+export class StitchingJobsService implements OnModuleInit {
   private readonly logger = new Logger(StitchingJobsService.name);
 
   constructor(
@@ -58,7 +55,113 @@ export class StitchingJobsService {
     private readonly audit: AuditService,
     private readonly storage: StorageService,
     private readonly settings: SettingsService,
+    private readonly enrichment: EntityEnrichmentRegistry,
   ) {}
+
+  /**
+   * Registers this pack's contribution to the order-detail response — see
+   * EntityEnrichmentRegistry. Legal because stitching (a pack) is depending
+   * on core's registry, not the other way round.
+   */
+  onModuleInit(): void {
+    this.enrichment.register('orderItem.stitchingJob', {
+      enrich: async (orderItemIds) => {
+        const jobs = await this.prisma.stitchingJob.findMany({
+          where: { orderItemId: { in: orderItemIds } },
+          select: {
+            orderItemId: true,
+            number: true,
+            stage: true,
+            dueAt: true,
+            events: {
+              select: { fromStage: true, toStage: true, createdAt: true },
+              orderBy: { createdAt: 'asc' },
+            },
+          },
+        });
+        return new Map(
+          jobs
+            .filter((job): job is typeof job & { orderItemId: string } => job.orderItemId !== null)
+            .map(({ orderItemId, ...rest }) => [orderItemId, rest] as const),
+        );
+      },
+    });
+  }
+
+  /**
+   * Batches everything `jobInclude` used to get for free via Prisma
+   * relations, before StitchingJob's User relations (assignedTailor, and
+   * each event's actor) were dropped in the same pass that removed its
+   * OrderItem relation. Unlike orderItemId (core), assignedTailorId/actorId
+   * point at User, which is also core — stitching (a pack) depending on it
+   * is the legal direction, so this is a plain manual join, not an
+   * extension-point registration. One query per lookup regardless of how
+   * many jobs.
+   */
+  private async attachOrderContext<
+    T extends {
+      orderItemId: string | null;
+      assignedTailorId?: string | null;
+      events?: ReadonlyArray<{ actorId: string | null }>;
+    },
+  >(jobOrJobs: T | T[]): Promise<T | T[]> {
+    const jobs = Array.isArray(jobOrJobs) ? jobOrJobs : [jobOrJobs];
+    const orderItemIds = jobs
+      .map((job) => job.orderItemId)
+      .filter((id): id is string => id !== null);
+
+    const items =
+      orderItemIds.length === 0
+        ? []
+        : await this.prisma.orderItem.findMany({
+            where: { id: { in: orderItemIds } },
+            select: {
+              id: true,
+              orderId: true,
+              order: {
+                select: {
+                  id: true,
+                  number: true,
+                  guestName: true,
+                  guestPhone: true,
+                  status: true,
+                  placedAt: true,
+                },
+              },
+            },
+          });
+    const byItemId = new Map(items.map((item) => [item.id, item]));
+
+    const userIds = new Set<string>();
+    for (const job of jobs) {
+      if (job.assignedTailorId) userIds.add(job.assignedTailorId);
+      for (const event of job.events ?? []) {
+        if (event.actorId) userIds.add(event.actorId);
+      }
+    }
+    const users =
+      userIds.size === 0
+        ? []
+        : await this.prisma.user.findMany({
+            where: { id: { in: [...userIds] } },
+            select: { id: true, firstName: true, lastName: true },
+          });
+    const userById = new Map(users.map((user) => [user.id, user]));
+
+    for (const job of jobs) {
+      (job as unknown as { orderItem: unknown }).orderItem =
+        job.orderItemId !== null ? (byItemId.get(job.orderItemId) ?? null) : null;
+      (job as unknown as { assignedTailor: unknown }).assignedTailor = job.assignedTailorId
+        ? (userById.get(job.assignedTailorId) ?? null)
+        : null;
+      for (const event of job.events ?? []) {
+        (event as unknown as { actor: unknown }).actor = event.actorId
+          ? (userById.get(event.actorId) ?? null)
+          : null;
+      }
+    }
+    return jobOrJobs;
+  }
 
   /**
    * Creates the job for a stitched order line.
@@ -72,7 +175,7 @@ export class StitchingJobsService {
       where: { orderItemId },
       include: jobInclude,
     });
-    if (existing) return existing;
+    if (existing) return this.attachOrderContext(existing);
 
     const item = await this.prisma.orderItem.findUnique({
       where: { id: orderItemId },
@@ -124,7 +227,7 @@ export class StitchingJobsService {
     });
 
     this.logger.log(`Job ${job.number} queued for ${garmentType.labelEn}`);
-    return job;
+    return this.attachOrderContext(job);
   }
 
   async list(query: {
@@ -141,13 +244,14 @@ export class StitchingJobsService {
       where.stage = { notIn: ['READY', 'DISPATCHED'] };
     }
 
-    return this.prisma.stitchingJob.findMany({
+    const jobs = await this.prisma.stitchingJob.findMany({
       where,
       include: jobInclude,
       // Oldest due date first: the queue is a to-do list, not a log.
       orderBy: [{ priority: 'desc' }, { dueAt: 'asc' }, { createdAt: 'asc' }],
       take: 200,
     });
+    return this.attachOrderContext(jobs);
   }
 
   async get(id: string) {
@@ -156,7 +260,7 @@ export class StitchingJobsService {
       include: jobInclude,
     });
     if (!job) throw new NotFoundException('That job no longer exists.');
-    return job;
+    return this.attachOrderContext(job);
   }
 
   async assign(actorId: string, jobId: string, tailorId: string | null) {
@@ -181,7 +285,7 @@ export class StitchingJobsService {
       data: { tailorId },
     });
 
-    return job;
+    return this.attachOrderContext(job);
   }
 
   /**
@@ -200,9 +304,14 @@ export class StitchingJobsService {
   ) {
     const job = await this.prisma.stitchingJob.findUnique({
       where: { id: jobId },
-      include: { orderItem: { select: { orderId: true } } },
     });
     if (!job) throw new NotFoundException('That job no longer exists.');
+    const orderItemForEvent = job.orderItemId
+      ? await this.prisma.orderItem.findUnique({
+          where: { id: job.orderItemId },
+          select: { orderId: true },
+        })
+      : null;
 
     // manage_all (staff/admin) may move anything; everyone else needs
     // manage_own AND to be the job's own assigned tailor.
@@ -272,7 +381,7 @@ export class StitchingJobsService {
           fromStage: job.stage,
           toStage,
           assignedTailorId: (job as any).assignedTailorId,
-          orderId: (job as any).orderItem?.orderId ?? null,
+          orderId: orderItemForEvent?.orderId ?? null,
           stitchingOrderId: (job as any).stitchingOrderId,
         },
         tx,
@@ -289,7 +398,7 @@ export class StitchingJobsService {
       data: { from: job.stage, to: toStage, note },
     });
 
-    return updated;
+    return this.attachOrderContext(updated);
   }
 
   /** How the queue looks at a glance, for the dashboard and the tailor view. */

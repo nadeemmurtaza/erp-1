@@ -98,22 +98,24 @@ This is the whole architecture. If `inventory` (core) ever imports
 `scripts/check-module-boundaries.mjs` fails `pnpm lint` on a core→pack import, a
 pack→pack import, or a module missing from the map.
 
-Turning it on surfaced **one real violation, which is still outstanding**:
+Turning it on originally surfaced one real violation:
 
-> **`cart` → `measurements`.** `CartItem` carries `measurementProfileId` and
-> `measurementValues`, and `cart.service.ts` calls `MeasurementsService.validate()`
-> when a line is added. Core cart knows what a garment is, so a grocery
+> **`cart` → `measurements`.** `CartItem` carried `measurementProfileId` and
+> `measurementValues`, and `cart.service.ts` called `MeasurementsService.validate()`
+> when a line was added. Core cart knew what a garment is, so a grocery
 > deployment with `measurements` switched off would not boot.
->
-> The fix is an extension point rather than a smaller import: a cart line should
-> carry opaque per-line configuration, validated by a validator the pack owning
-> that product kind registers, so `cart` never names a garment concept. That is
-> its own work order and **must land before a second sector ships.**
 
-It is listed in `KNOWN_VIOLATIONS` in the checker — a burn-down list, not a
-configuration knob. An entry that stops firing is reported as stale and fails the
-build, so the list can only shrink. Adding to it needs a reason a reviewer
-accepts; "the check was in my way" is not one.
+**Fixed.** `cart.service.ts` no longer imports `MeasurementsService` — it calls
+`CartLineValidatorRegistry.validate('measurements', ...)` instead, a core
+extension point (`apps/api/src/core/extension-points/`) that `measurements`
+registers against from its own `onModuleInit()`. `KNOWN_VIOLATIONS` is empty;
+an entry that stops firing is reported as stale and fails the build, so it was
+removed rather than left to rot. The checker later grew a `.prisma`-schema
+equivalent (`checkPrismaBoundaries()`, `KNOWN_SCHEMA_VIOLATIONS`) — see B7 in
+the taxonomy section below for the one entry currently on that list
+(`cart` → `stitching` via `CartItemStitchingOption`, the same underlying
+"cart bakes in apparel concepts" problem, just for style options instead of
+measurements, and still open).
 
 The rest of this section records the reasoning, and the design the checker
 implements.
@@ -587,11 +589,36 @@ unavoidable invasive change in the whole taxonomy.
 
 ### B7 — core does not compile without apparel
 
-The honest one. `core.prisma` carries hard back-relations into apparel models —
-`User` alone has five. The `cart` → `measurements` import already recorded in
-`KNOWN_VIOLATIONS` is the visible tip; the schema coupling underneath is deeper.
-**The pack seam is currently a claim, not a fact**, and paying it down is a
-prerequisite for a second sector, not an optional tidy-up.
+**Mostly paid down as of 2026-09-03.** `core.prisma`'s `User` model no longer
+carries any apparel back-relations, the `cart` → `measurements` TypeScript
+import is gone (`KNOWN_VIOLATIONS` in `check-module-boundaries.mjs` is
+empty), and `OrderItem`/`Contact` (core) no longer type-reference
+`StitchingJob`/`StitchingOrder` (apparel) — `StitchingJob.orderItemId` and
+`StitchingOrder.contactId` are now plain scalar columns, joined in
+application code (`StitchingJobsService.attachOrderContext()`) or via the new
+`EntityEnrichmentRegistry` extension point
+(`apps/api/src/core/extension-points/`) rather than a Prisma relation.
+
+The checker that enforces this now scans `.prisma` files as well as `.ts`
+imports — `checkPrismaBoundaries()` in `check-module-boundaries.mjs` — because
+a relation *field* typed as another pack's model is exactly the same coupling
+as a TypeScript import, and was invisible to the import-only checker (that is
+how this class of violation went unnoticed the first time).
+
+**One piece of the same debt remains, tracked in `KNOWN_SCHEMA_VIOLATIONS`:**
+`cart.prisma`'s `CartItemStitchingOption.option` still types a field as
+`StitchingOption` (apparel), and `cart.service.ts` reads it directly in price
+computation — money-critical, not display-only, so it needs the same
+extension-point treatment as the old `cart` → `measurements` coupling
+(opaque per-line configuration, priced by the pack that owns it) rather than
+a quick scalar-column swap. Do it together with that same cart-line
+redesign — they are one work order.
+
+**The pack seam is close to a fact, not fully one.** The remaining
+`CartItemStitchingOption` coupling is the last confirmed gap; nothing
+guarantees a subtler one isn't still hiding somewhere the checker doesn't
+look (e.g. non-`@relation` business logic elsewhere that assumes apparel is
+present). Treat this as substantially de-risked, not closed.
 
 ## What a deployment looks like
 

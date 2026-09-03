@@ -4,6 +4,7 @@ import { AuditModule } from './audit/audit.module';
 import { AuthModule } from './auth/auth.module';
 import { AppConfigModule } from './config/config.module';
 import { EventsModule } from './events/events.module';
+import { ExtensionPointsModule } from './extension-points/extension-points.module';
 import { HealthModule } from './health/health.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { PrismaModule } from './prisma/prisma.module';
@@ -23,6 +24,7 @@ import { StorageModule } from './storage/storage.module';
     PrismaModule,
     ScheduleModule.forRoot(),
     EventsModule,
+    ExtensionPointsModule,
     SettingsModule,
     StorageModule,
     NotificationsModule,

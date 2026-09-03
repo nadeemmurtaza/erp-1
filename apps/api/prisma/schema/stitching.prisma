@@ -91,7 +91,12 @@ model StitchingOrder {
   promisedAt       DateTime?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
-  contact Contact?       @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  // `contactId` is a plain scalar, not a Prisma relation to Contact (core) —
+  // B7, MULTI-SECTOR.md. A pack referencing core is allowed, but Prisma
+  // requires a typed relation to be declared on BOTH models, which would put
+  // a `StitchingOrder` field back on core's Contact. Losing the relation
+  // means losing onDelete: SetNull here; nothing in this codebase deletes a
+  // Contact today. Look it up with `prisma.contact.findUnique()` if needed.
   jobs    StitchingJob[]
 
   @@index([status])
@@ -132,7 +137,13 @@ model StitchingJob {
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
 
-  orderItem      OrderItem?          @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
+  // `orderItemId` is a plain scalar, not a Prisma relation to OrderItem
+  // (core) — see the note on StitchingOrder.contactId above; same reason,
+  // same trade-off (no onDelete: Cascade at the DB level any more). Order
+  // items are snapshots that are never hard-deleted (House Rule 7), so this
+  // costs nothing in practice. Joined manually where needed — see
+  // StitchingJobsService.attachOrderContext() and
+  // EntityEnrichmentRegistry's "orderItem.stitchingJob" point.
   stitchingOrder StitchingOrder?     @relation(fields: [stitchingOrderId], references: [id], onDelete: Cascade)
   garmentType    GarmentType         @relation(fields: [garmentTypeId], references: [id], onDelete: Restrict)
   events         StitchingJobEvent[]

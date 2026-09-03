@@ -13,8 +13,10 @@ import {
   type Locale,
 } from '@yaseen/shared';
 import { AuditService } from '../../core/audit/audit.service';
+import { CheckoutValidatorRegistry } from '../../core/checkout/checkout-validator.registry';
 import { DomainEvent } from '../../core/events/domain-events';
 import { EventBusService } from '../../core/events/event-bus.service';
+import { EntityEnrichmentRegistry } from '../../core/extension-points/entity-enrichment.registry';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
@@ -41,25 +43,15 @@ const ALLOWED_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
 };
 
 const orderInclude = {
+  // The tailoring progress for a stitched line (the customer order page shows
+  // the same stage rail as a standalone booking) used to be a Prisma relation
+  // include here. It is attached after the query now, via
+  // EntityEnrichmentRegistry — core no longer types a `stitchingJob` field at
+  // all, so this file compiles and this query runs identically whether or
+  // not the `stitching` module (or any pack) is enabled. See
+  // attachStitchingJobs() below.
   items: {
     orderBy: { createdAt: 'asc' },
-    include: {
-      // The tailoring progress for a stitched line, so the customer's order page
-      // shows the same stage rail as a standalone booking. Read-only, and only
-      // the fields the timeline draws — the workshop's notes and photographs
-      // belong to the stitching module's own screens.
-      stitchingJob: {
-        select: {
-          number: true,
-          stage: true,
-          dueAt: true,
-          events: {
-            select: { fromStage: true, toStage: true, createdAt: true },
-            orderBy: { createdAt: 'asc' },
-          },
-        },
-      },
-    },
   },
   payments: { orderBy: { createdAt: 'desc' } },
   shipments: { orderBy: { createdAt: 'desc' } },
@@ -79,7 +71,28 @@ export class OrdersService {
     private readonly audit: AuditService,
     private readonly payments: PaymentsService,
     private readonly inventory: InventoryService,
+    private readonly enrichment: EntityEnrichmentRegistry,
+    private readonly checkoutValidators: CheckoutValidatorRegistry,
   ) {}
+
+  /**
+   * Attaches each order item's `stitchingJob` (null when there isn't one),
+   * exactly the shape the old Prisma include produced, so every caller below
+   * — and the web/mobile clients reading their response — sees no difference.
+   */
+  private async attachStitchingJobs<
+    T extends { items: ReadonlyArray<{ id: string }> },
+  >(orderOrOrders: T | T[]): Promise<T | T[]> {
+    const orders = Array.isArray(orderOrOrders) ? orderOrOrders : [orderOrOrders];
+    const itemIds = orders.flatMap((order) => order.items.map((item) => item.id));
+    const jobs = await this.enrichment.enrich('orderItem.stitchingJob', itemIds);
+    for (const order of orders) {
+      for (const item of order.items) {
+        (item as unknown as { stitchingJob: unknown }).stitchingJob = jobs.get(item.id) ?? null;
+      }
+    }
+    return orderOrOrders;
+  }
 
   /**
    * Turns a cart into an order.
@@ -133,6 +146,23 @@ export class OrdersService {
       throw new BadRequestException(
         `Orders start at Rs ${Math.round(minimum / 100)}. Add a little more to your cart.`,
       );
+    }
+
+    // B3 (MULTI-SECTOR.md): the one hook age gating, prescription
+    // verification, credit limits and approval holds each need. No pack
+    // registers a validator today, so this is always an empty check.
+    const vetoes = await this.checkoutValidators.validateAll({
+      userId: userId ?? null,
+      contactId: null,
+      items: priced.lines.map((line) => ({
+        productId: line.productId,
+        variantId: line.variantId,
+        quantity: line.quantity,
+      })),
+      totalAmount: totals.grandTotal,
+    });
+    if (vetoes.length > 0) {
+      throw new BadRequestException(vetoes.map((veto) => veto.message).join(' '));
     }
 
     const order = await this.prisma.$transaction(async (tx) => {
@@ -246,6 +276,7 @@ export class OrdersService {
     });
 
     this.logger.log(`Order ${order.number} placed for ${order.grandTotal} paisa`);
+    await this.attachStitchingJobs(order);
     return order;
   }
 
@@ -256,6 +287,7 @@ export class OrdersService {
     });
 
     if (!order) throw new NotFoundException('No order with that number.');
+    await this.attachStitchingJobs(order);
 
     // A signed-in customer sees their own orders; a guest must know the phone
     // number the order was placed with. Staff use the admin endpoints.
@@ -286,6 +318,7 @@ export class OrdersService {
       this.prisma.order.count({ where }),
     ]);
 
+    await this.attachStitchingJobs(rows);
     return paginated(rows, total, { page, pageSize });
   }
 
@@ -323,6 +356,7 @@ export class OrdersService {
       this.prisma.order.count({ where }),
     ]);
 
+    await this.attachStitchingJobs(rows);
     return paginated(rows, total, query);
   }
 
@@ -332,6 +366,7 @@ export class OrdersService {
       include: orderInclude,
     });
     if (!order) throw new NotFoundException('That order no longer exists.');
+    await this.attachStitchingJobs(order);
     return order;
   }
 
@@ -470,6 +505,45 @@ export class OrdersService {
   private async priceCart(cart: CartWithRelations, locale: Locale) {
     const designAreas = await this.customTextAreas(cart);
 
+    // MeasurementProfile is apparel-owned; CartItem (core) keeps only the
+    // scalar measurementProfileId, no Prisma relation (B7, MULTI-SECTOR.md).
+    // Batch-fetch the profiles referenced by this cart up front rather than
+    // per line.
+    const profileIds = [
+      ...new Set(
+        cart.items
+          .map((item) => item.measurementProfileId)
+          .filter((id): id is string => id !== null),
+      ),
+    ];
+    const profiles =
+      profileIds.length === 0
+        ? []
+        : await this.prisma.measurementProfile.findMany({
+            where: { id: { in: profileIds } },
+            include: { garmentType: { select: { key: true } } },
+          });
+    const profileById = new Map(profiles.map((profile) => [profile.id, profile]));
+
+    // Same story for GarmentType — CartItem.garmentTypeId is a scalar, no
+    // relation. Needed to resolve OrderItem.garmentTypeKey even when the
+    // customer typed measurements in rather than picking a saved profile.
+    const garmentTypeIds = [
+      ...new Set(
+        cart.items
+          .map((item) => item.garmentTypeId)
+          .filter((id): id is string => id !== null),
+      ),
+    ];
+    const garmentTypes =
+      garmentTypeIds.length === 0
+        ? []
+        : await this.prisma.garmentType.findMany({
+            where: { id: { in: garmentTypeIds } },
+            select: { id: true, key: true, labelEn: true, stitchingPrice: true },
+          });
+    const garmentTypeById = new Map(garmentTypes.map((garmentType) => [garmentType.id, garmentType]));
+
     const lines = cart.items.map((item) => {
       const unitPrice = item.variant.priceOverride ?? item.product.basePrice;
 
@@ -503,15 +577,27 @@ export class OrdersService {
         };
       });
 
-      const stitchingFeeUnit = stitchingFeeFor(item as any,
+      const garmentType = item.garmentTypeId ? garmentTypeById.get(item.garmentTypeId) : undefined;
+
+      const stitchingFeeUnit = stitchingFeeFor(
+        {
+          garmentType: garmentType ? { stitchingPrice: garmentType.stitchingPrice } : null,
+          stitchingService: item.stitchingService,
+        },
         options.map((option) => option.priceDelta),
       );
 
-      if ((item as any).garmentTypeId && !(item as any).measurementProfile && !item.measurementValues) {
+      // measurementProfileId has no DB-level onDelete: SetNull any more — it
+      // is a bare scalar (B7, MULTI-SECTOR.md), not a Prisma relation to
+      // MeasurementProfile — so a profile deleted after the line was added
+      // leaves a dangling id rather than nulling it out. Check the id
+      // actually still resolves, not just that it is set.
+      const hasProfile = item.measurementProfileId
+        ? profileById.has(item.measurementProfileId)
+        : false;
+      if (item.garmentTypeId && !hasProfile && !item.measurementValues) {
         throw new BadRequestException(
-          `Add measurements for the stitched ${
-            (item as any).garmentType?.labelEn ?? 'garment'
-          } before checking out.`,
+          `Add measurements for the stitched ${garmentType?.labelEn ?? 'garment'} before checking out.`,
         );
       }
 
@@ -540,8 +626,8 @@ export class OrdersService {
           ? (pickTranslation(item.stitchingService.translations, locale)?.name ??
             item.stitchingService.slug)
           : null,
-        garmentTypeKey: (item as any).garmentType?.key ?? null,
-        measurementSnapshot: measurementSnapshotFor(item),
+        garmentTypeKey: garmentType?.key ?? null,
+        measurementSnapshot: measurementSnapshotFor(item, profileById, garmentType?.key ?? null),
         optionsSnapshot:
           options.length + described.length > 0 ? [...options, ...described] : null,
         stitchingNotes: item.stitchingNotes,
@@ -600,26 +686,37 @@ const cartInclude = {
 
 type CartWithRelations = Prisma.CartGetPayload<{ include: typeof cartInclude }>;
 
+type MeasurementProfileForSnapshot = Prisma.MeasurementProfileGetPayload<{
+  include: { garmentType: { select: { key: true } } };
+}>;
+
 /**
  * The measurements the workshop will cut to.
  *
  * A saved profile and an inline entry are the same thing to a tailor, so both
  * collapse into one shape here and the job sheet never has to know which door
- * the numbers came in through.
+ * the numbers came in through. MeasurementProfile is apparel-owned, so the
+ * caller batch-fetches it and passes the lookup map in — CartItem itself
+ * only ever carries the scalar measurementProfileId (B7, MULTI-SECTOR.md).
  */
-function measurementSnapshotFor(item: CartWithRelations['items'][number]) {
-  if ((item as any).measurementProfile) {
+function measurementSnapshotFor(
+  item: CartWithRelations['items'][number],
+  profileById: Map<string, MeasurementProfileForSnapshot>,
+  garmentTypeKey: string | null,
+) {
+  const profile = item.measurementProfileId ? profileById.get(item.measurementProfileId) : undefined;
+  if (profile) {
     return {
-      label: (item as any).measurementProfile.label,
-      garmentTypeKey: (item as any).measurementProfile.garmentType.key,
-      values: (item as any).measurementProfile.values,
+      label: profile.label,
+      garmentTypeKey: profile.garmentType.key,
+      values: profile.values,
     };
   }
 
   if (item.measurementValues) {
     return {
       label: null,
-      garmentTypeKey: (item as any).garmentType?.key ?? null,
+      garmentTypeKey,
       values: item.measurementValues,
     };
   }

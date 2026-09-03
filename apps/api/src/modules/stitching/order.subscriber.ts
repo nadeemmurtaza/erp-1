@@ -55,19 +55,6 @@ export class StitchingOrderSubscriber {
       where: { id: payload.jobId },
       include: {
         garmentType: true,
-        orderItem: {
-          include: {
-            order: {
-              select: {
-                number: true,
-                userId: true,
-                guestName: true,
-                guestPhone: true,
-                guestEmail: true,
-              },
-            },
-          },
-        },
         stitchingOrder: {
           select: {
             number: true,
@@ -79,11 +66,33 @@ export class StitchingOrderSubscriber {
         },
       },
     });
+    if (!job) return;
 
-    const customer = job?.orderItem?.order ?? job?.stitchingOrder;
-    if (!job || !customer) return;
+    // orderItemId is a plain scalar (B7, MULTI-SECTOR.md) — StitchingJob no
+    // longer has a Prisma relation to OrderItem, so the join is manual.
+    const order = job.orderItemId
+      ? (
+          await this.prisma.orderItem.findUnique({
+            where: { id: job.orderItemId },
+            select: {
+              order: {
+                select: {
+                  number: true,
+                  userId: true,
+                  guestName: true,
+                  guestPhone: true,
+                  guestEmail: true,
+                },
+              },
+            },
+          })
+        )?.order
+      : null;
 
-    const reference = job.orderItem?.order.number ?? job.stitchingOrder?.number;
+    const customer = order ?? job.stitchingOrder;
+    if (!customer) return;
+
+    const reference = order?.number ?? job.stitchingOrder?.number;
     const ready = payload.toStage === 'READY';
 
     await this.notifications.send({

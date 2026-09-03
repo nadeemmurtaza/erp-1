@@ -18,7 +18,7 @@ import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { Prisma } from '../../core/prisma/client';
 import { pickTranslation } from '../catalog/catalog.service';
-import { CartLineValidatorRegistry } from './cart-line-validator.registry';
+import { CartLineValidatorRegistry } from '../../core/extension-points/cart-line-validator.registry';
 import type { AddCartItemDto, UpdateCartItemDto } from './dto/cart.dto';
 
 /** Guest carts live for a month; long enough to come back after payday. */
@@ -117,10 +117,10 @@ export function stitchingFeeFor(
   },
   optionDeltas: number[],
 ): number {
-  if (!(item as any).garmentType) return 0;
+  if (!item.garmentType) return 0;
 
   return computeStitchingFee({
-    baseFee: item.stitchingService?.basePrice ?? (item as any).garmentType.stitchingPrice,
+    baseFee: item.stitchingService?.basePrice ?? item.garmentType.stitchingPrice,
     optionDeltas,
   });
 }
@@ -161,7 +161,7 @@ export class CartService {
 
     const variant = await this.prisma.productVariant.findUnique({
       where: { id: dto.variantId },
-      include: { product: { include: {  } } },
+      include: { product: { include: { garmentTypes: true } } },
     });
 
     if (!variant || !variant.isActive || variant.product.status !== 'ACTIVE') {
@@ -597,6 +597,41 @@ export class CartService {
   }
 
   private async toView(cart: CartWithItems, locale: Locale): Promise<CartView> {
+    // GarmentType is apparel-owned; CartItem (core) keeps only the scalar
+    // garmentTypeId, no Prisma relation (B7, MULTI-SECTOR.md) — so the
+    // stitching fee needs it batch-fetched rather than joined.
+    const garmentTypeIds = [
+      ...new Set(
+        cart.items.map((item) => item.garmentTypeId).filter((id): id is string => id !== null),
+      ),
+    ];
+    const garmentTypes =
+      garmentTypeIds.length === 0
+        ? []
+        : await this.prisma.garmentType.findMany({
+            where: { id: { in: garmentTypeIds } },
+            select: { id: true, key: true, labelEn: true, labelUr: true, stitchingPrice: true },
+          });
+    const garmentTypeById = new Map(garmentTypes.map((garmentType) => [garmentType.id, garmentType]));
+
+    // Same story for MeasurementProfile — needed for the label the cart page
+    // shows next to "using your saved profile."
+    const profileIds = [
+      ...new Set(
+        cart.items
+          .map((item) => item.measurementProfileId)
+          .filter((id): id is string => id !== null),
+      ),
+    ];
+    const profiles =
+      profileIds.length === 0
+        ? []
+        : await this.prisma.measurementProfile.findMany({
+            where: { id: { in: profileIds } },
+            select: { id: true, label: true },
+          });
+    const profileById = new Map(profiles.map((profile) => [profile.id, profile]));
+
     const lines: CartLineView[] = cart.items.map((item) => {
       const unitPrice = item.variant.priceOverride ?? item.product.basePrice;
 
@@ -608,7 +643,12 @@ export class CartService {
         priceDelta: selection.option.priceDelta,
       }));
 
-      const stitchingFeePerUnit = stitchingFeeFor(item as any,
+      const garmentType = item.garmentTypeId ? garmentTypeById.get(item.garmentTypeId) : undefined;
+      const stitchingFeePerUnit = stitchingFeeFor(
+        {
+          garmentType: garmentType ? { stitchingPrice: garmentType.stitchingPrice } : null,
+          stitchingService: item.stitchingService,
+        },
         options.map((option) => option.priceDelta),
       );
 
@@ -637,25 +677,25 @@ export class CartService {
         unitPrice,
         availableStock: item.variant.stock,
         exceedsStock: item.quantity > item.variant.stock,
-        stitching: (item as any).garmentType
+        stitching: garmentType
           ? {
               serviceId: item.stitchingServiceId,
               serviceName: item.stitchingService
                 ? (pickTranslation(item.stitchingService.translations, locale)?.name ??
                   item.stitchingService.slug)
                 : null,
-              garmentTypeId: (item as any).garmentType.id,
-              garmentKey: (item as any).garmentType.key,
-              garmentLabel:
-                locale === 'ur' ? (item as any).garmentType.labelUr : (item as any).garmentType.labelEn,
-              measurementProfileId: (item as any).measurementProfileId,
-              measurementProfileLabel: (item as any).measurementProfile?.label ?? null,
+              garmentTypeId: garmentType.id,
+              garmentKey: garmentType.key,
+              garmentLabel: locale === 'ur' ? garmentType.labelUr : garmentType.labelEn,
+              measurementProfileId: item.measurementProfileId,
+              measurementProfileLabel:
+                (item.measurementProfileId ? profileById.get(item.measurementProfileId)?.label : null) ??
+                null,
               measurementValues: item.measurementValues as MeasurementValues | null,
               options,
               customDesignText: item.customDesignText as Record<string, string> | null,
               sizeToken: item.sizeToken,
-              baseFee:
-                item.stitchingService?.basePrice ?? (item as any).garmentType.stitchingPrice,
+              baseFee: item.stitchingService?.basePrice ?? garmentType.stitchingPrice,
               feePerUnit: stitchingFeePerUnit,
               notes: item.stitchingNotes,
             }

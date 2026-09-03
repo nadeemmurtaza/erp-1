@@ -98,14 +98,18 @@ export class CatalogService {
    * Stitching services offered for a garment type — what the "get it stitched"
    * panel lists once the customer has picked kameez, shalwar or trouser.
    */
-  async listStitchingServices(garmentTypeId?: string, locale: Locale = DEFAULT_LOCALE) {
+  async listStitchingServices(garmentTypeKey?: string, locale: Locale = DEFAULT_LOCALE) {
+    // The query param is the garment's key ("kameez"), not its id — resolve
+    // it first. Product.garmentTypeId is a real id column.
+    const garmentType = garmentTypeKey
+      ? await this.prisma.garmentType.findUnique({ where: { key: garmentTypeKey } })
+      : null;
+
     const services = await this.prisma.product.findMany({
       where: {
         kind: 'STITCHING_SERVICE',
         status: 'ACTIVE',
-        ...(garmentTypeId
-          ? { OR: [{ garmentTypeId }, { garmentTypeId: garmentTypeId }] }
-          : {}),
+        ...(garmentTypeKey ? { garmentTypeId: garmentType?.id ?? '__no_match__' } : {}),
       },
       include: productInclude,
       orderBy: { basePrice: 'asc' },

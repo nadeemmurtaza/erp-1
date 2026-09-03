@@ -34,7 +34,16 @@ import { join, relative, resolve } from 'node:path';
 
 const MODULES_ROOT = resolve('apps/api/src/modules');
 const PACKS_FILE = resolve('apps/api/src/modules/module-packs.ts');
+const PRISMA_SCHEMA_ROOT = resolve('apps/api/prisma/schema');
 const IMPORT_PATTERN = /(?:from\s+|import\s*\(\s*)['"]([^'"]+)['"]/g;
+
+/**
+ * .prisma files that are not a feature module's schema, but foundational —
+ * `core.prisma` holds User/Address/etc, `schema.prisma` is the
+ * generator/datasource block. Both are core by convention rather than by
+ * matching a MODULE_PACKS entry, since neither is a module.
+ */
+const CORE_SCHEMA_FILES = new Set(['core', 'schema']);
 
 /** A module's public surface: its NestJS module and its top-level services. */
 const PUBLIC_SUFFIXES = ['.module', '.service'];
@@ -42,7 +51,8 @@ const PUBLIC_SUFFIXES = ['.module', '.service'];
 const CORE_PACK = 'core';
 
 /**
- * Direction violations that already existed when the rule was first enforced.
+ * TypeScript-import direction violations that already existed when the rule
+ * was first enforced.
  *
  * This is a BURN-DOWN LIST, not a configuration knob. Each entry is a place the
  * platform is not yet as portable as it claims, and every one has to be paid off
@@ -54,18 +64,37 @@ const CORE_PACK = 'core';
  * An entry that no longer fires is reported as stale and fails the build, so the
  * list can only ever shrink.
  *
- *   cart -> measurements
- *     Cart holds garment measurements directly: CartItem carries
- *     measurementProfileId and measurementValues, and cart.service.ts calls
- *     MeasurementsService.validate() at add-to-cart time. A grocery deployment
- *     with `measurements` switched off would fail to boot.
- *
- *     The fix is an extension point, not a smaller import: a cart line should
- *     carry opaque per-line configuration that the pack owning the product kind
- *     validates through a registered validator, so cart never names a garment
- *     concept. Sizeable, and its own work order.
+ * Empty today: cart.service.ts no longer imports MeasurementsService (the
+ * `cart -> measurements` violation this list used to carry is fixed on the
+ * TypeScript side). See KNOWN_SCHEMA_VIOLATIONS below — the same underlying
+ * "cart bakes in apparel concepts" problem is still live at the Prisma-schema
+ * level, just for a different pack (stitching, not measurements).
  */
 const KNOWN_VIOLATIONS = new Set([]);
+
+/**
+ * The .prisma-level equivalent of KNOWN_VIOLATIONS, keyed the same way
+ * checkPrismaBoundaries() reports them: "pack:model.field -> targetPack".
+ * Same burn-down discipline: shrink-only, a stale entry fails the build.
+ *
+ *   core:CartItemStitchingOption.option -> apparel
+ *     cart.prisma's CartItemStitchingOption has a real Prisma relation to
+ *     StitchingOption (apparel), and cart.service.ts:601-605 reads
+ *     item.stitchingOptions[].option directly in PRICE computation — this is
+ *     the same "cart bakes in apparel concepts" debt as the (now-fixed)
+ *     cart -> measurements TypeScript violation, just for stitching style
+ *     options instead of measurements, and money-critical rather than
+ *     display-only. Converting `option` to a bare `optionId` scalar (the
+ *     pattern used for StitchingJob.orderItemId / StitchingOrder.contactId)
+ *     is not enough on its own here — cart's pricing code needs the option's
+ *     priceDelta, so the fix is the same extension point the
+ *     cart -> measurements entry already called for: an opaque per-line
+ *     configuration cart snapshots at add-to-cart time, validated and priced
+ *     by the pack that owns the product kind, so cart never resolves a
+ *     StitchingOption itself. Do this together with cart -> measurements —
+ *     they are one work order, not two.
+ */
+const KNOWN_SCHEMA_VIOLATIONS = new Set(['core:CartItemStitchingOption.option -> apparel']);
 
 function walk(dir) {
   const entries = [];
@@ -199,6 +228,7 @@ function checkFile(file, ownModule, modules, packs) {
 
 /** Which burn-down entries actually fired this run, so stale ones can be caught. */
 const seenKnownViolations = new Set();
+const seenKnownSchemaViolations = new Set();
 
 /**
  * A listed violation that no longer occurs means someone fixed it — the entry
@@ -212,7 +242,17 @@ function checkStaleAllowlist() {
       message:
         `"${pair}" is listed in KNOWN_VIOLATIONS but no longer happens. ` +
         `Delete the entry from scripts/check-module-boundaries.mjs — the list must only shrink.`,
-    }));
+    }))
+    .concat(
+      [...KNOWN_SCHEMA_VIOLATIONS]
+        .filter((pair) => !seenKnownSchemaViolations.has(pair))
+        .map((pair) => ({
+          kind: 'stale',
+          message:
+            `"${pair}" is listed in KNOWN_SCHEMA_VIOLATIONS but no longer happens. ` +
+            `Delete the entry from scripts/check-module-boundaries.mjs — the list must only shrink.`,
+        })),
+    );
 }
 
 /** Every module directory must declare its pack. */
@@ -227,6 +267,102 @@ function checkClassification(modules, packs) {
         `Add it to apps/api/src/modules/module-packs.ts as 'core' if every shop needs it ` +
         `— clothing, grocery, pharmacy, electronics alike — or as its sector's pack if not.`,
     }));
+}
+
+/**
+ * The .prisma equivalent of directionViolation()'s TypeScript check. A
+ * relation FIELD (its type is another model, not a scalar) crossing a pack
+ * boundary is exactly as much a coupling as a TypeScript import — B7
+ * (MULTI-SECTOR.md) was invisible to the import-only checker above because
+ * `OrderItem.stitchingJob StitchingJob?` is a schema-only reference: no
+ * `.ts` file ever imports anything named StitchingJob. A pack referencing a
+ * core model is fine (packs depend on core); a bare scalar column (its type
+ * is String/Int/etc, never a model name) is always fine, relation or not —
+ * that is the documented way to keep a soft cross-pack reference (see
+ * StitchingOrder.contactId, StitchingJob.orderItemId).
+ */
+function prismaSchemaFiles() {
+  let entries;
+  try {
+    entries = readdirSync(PRISMA_SCHEMA_ROOT);
+  } catch {
+    return [];
+  }
+  return entries.filter((name) => name.endsWith('.prisma')).map((name) => join(PRISMA_SCHEMA_ROOT, name));
+}
+
+/** Pulls out every `model Name { ... }` block's raw body, by model name. */
+function parseModels(source) {
+  const models = new Map();
+  for (const match of source.matchAll(/^model\s+(\w+)\s*\{([\s\S]*?)^\}/gm)) {
+    models.set(match[1], match[2]);
+  }
+  return models;
+}
+
+/**
+ * One field's declared type, for lines shaped like `name Type`, `name
+ * Type?`, `name Type[]`, ignoring block/line comments, `@@`-attribute lines
+ * (@@index, @@id, @@unique, @@map — not fields), and blank lines.
+ */
+function parseField(line) {
+  const trimmed = line.trim();
+  if (!trimmed || trimmed.startsWith('//') || trimmed.startsWith('@@')) return null;
+  const match = trimmed.match(/^(\w+)\s+(\w+)(?:\[\])?\??/);
+  return match ? { name: match[1], type: match[2] } : null;
+}
+
+function checkPrismaBoundaries(packs) {
+  const files = prismaSchemaFiles();
+  if (files.length === 0) return [];
+
+  // Pass 1: which pack owns each model, and each file's own pack.
+  const modelPack = new Map();
+  const fileInfo = [];
+  for (const file of files) {
+    const base = relative(PRISMA_SCHEMA_ROOT, file).replace(/\.prisma$/, '');
+    const pack = CORE_SCHEMA_FILES.has(base) ? CORE_PACK : packs[base];
+    const source = readFileSync(file, 'utf8');
+    const models = parseModels(source);
+    fileInfo.push({ file, base, pack, models });
+    if (!pack) continue; // unclassified — checkClassification() already reports the .ts side
+    for (const modelName of models.keys()) modelPack.set(modelName, pack);
+  }
+
+  // Pass 2: every field in every model, checked against that map.
+  const violations = [];
+  for (const { file, base, pack, models } of fileInfo) {
+    if (!pack) continue;
+    for (const [modelName, body] of models) {
+      for (const line of body.split('\n')) {
+        const field = parseField(line);
+        if (!field) continue;
+        const targetPack = modelPack.get(field.type);
+        if (!targetPack || targetPack === CORE_PACK || targetPack === pack) continue;
+
+        const pair = `${pack}:${modelName}.${field.name} -> ${targetPack}`;
+        if (KNOWN_SCHEMA_VIOLATIONS.has(pair)) {
+          seenKnownSchemaViolations.add(pair);
+          continue;
+        }
+
+        const message =
+          pack === CORE_PACK
+            ? `the core schema file "${base}.prisma" must not type a field as "${field.type}", owned by the ${targetPack} pack. ` +
+              `A deployment with ${targetPack} switched off could not even compile its schema. ` +
+              `Keep the foreign key as a plain scalar column (no @relation) and join in application code — see StitchingJob.orderItemId for the pattern.`
+            : `the ${pack} schema file "${base}.prisma" must not type a field as "${field.type}", owned by the ${targetPack} pack. ` +
+              `Packs are siblings and cannot assume each other is installed.`;
+
+        violations.push({
+          kind: 'schema-direction',
+          file: relative(process.cwd(), file),
+          message: `model ${modelName}: ${message}`,
+        });
+      }
+    }
+  }
+  return violations;
 }
 
 function main() {
@@ -251,6 +387,7 @@ function main() {
     ...modules.flatMap((name) =>
       walk(join(MODULES_ROOT, name)).flatMap((file) => checkFile(file, name, modules, packs)),
     ),
+    ...checkPrismaBoundaries(packs),
     // After the walk, so it knows which entries fired.
     ...checkStaleAllowlist(),
   ];
@@ -261,9 +398,8 @@ function main() {
     const summary = Object.entries(byPack)
       .map(([pack, names]) => `${pack}: ${names.length}`)
       .join(', ');
-    const debt = KNOWN_VIOLATIONS.size
-      ? `, ${KNOWN_VIOLATIONS.size} known violation(s) still to pay off`
-      : '';
+    const debtCount = KNOWN_VIOLATIONS.size + KNOWN_SCHEMA_VIOLATIONS.size;
+    const debt = debtCount ? `, ${debtCount} known violation(s) still to pay off` : '';
     console.log(`Module boundaries OK (${modules.length} module(s) — ${summary}${debt})`);
     return;
   }
@@ -274,6 +410,8 @@ function main() {
       console.error(`  apps/api/src/modules/${violation.module}/\n    ${violation.message}\n`);
     } else if (violation.kind === 'stale') {
       console.error(`  ${violation.message}\n`);
+    } else if (violation.kind === 'schema-direction') {
+      console.error(`  ${violation.file}\n    ${violation.message}\n`);
     } else {
       console.error(
         `  ${violation.file}\n    imports "${violation.specifier}" — ${violation.message}\n`,

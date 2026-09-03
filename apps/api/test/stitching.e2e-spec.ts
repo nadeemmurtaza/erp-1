@@ -87,12 +87,15 @@ describe('Stitching operations (e2e)', () => {
     const kameez = await prisma.garmentType.findUniqueOrThrow({ where: { key: 'kameez' } });
     kameezGarmentId = kameez.id;
 
+    const customer = await prisma.user.findUniqueOrThrow({
+      where: { email: 'ayesha@example.com' },
+    });
     kameezProfileId = (
       await prisma.measurementProfile.findFirstOrThrow({
         where: {
           garmentTypeId: kameez.id,
           label: 'Self',
-          user: { email: 'ayesha@example.com' },
+          userId: customer.id,
         },
       })
     ).id;
@@ -159,8 +162,11 @@ describe('Stitching operations (e2e)', () => {
     it('queues a job for the stitched line, carrying the measurements', async () => {
       const order = await orderWithStitching();
 
+      const orderItem = await prisma.orderItem.findFirstOrThrow({
+        where: { orderId: order.id },
+      });
       const job = await prisma.stitchingJob.findFirstOrThrow({
-        where: { orderItem: { orderId: order.id } },
+        where: { orderItemId: orderItem.id },
         include: { garmentType: true },
       });
 
@@ -180,10 +186,19 @@ describe('Stitching operations (e2e)', () => {
 
     it("carries the garment's progress onto the customer's order", async () => {
       // The order page draws the same stage rail as a standalone booking, so
-      // the order response has to carry the job it produced.
-      const order = await prisma.order.findFirstOrThrow({
-        where: { items: { some: { stitchingJob: { isNot: null } } } },
-        orderBy: { placedAt: 'desc' },
+      // the order response has to carry the job it produced. StitchingJob
+      // keeps a plain orderItemId scalar rather than a Prisma relation (B7,
+      // MULTI-SECTOR.md), so "the order with a stitched line" is found via
+      // the job, not via an OrderItem -> StitchingJob include.
+      const mostRecentJob = await prisma.stitchingJob.findFirstOrThrow({
+        where: { orderItemId: { not: null } },
+        orderBy: { createdAt: 'desc' },
+      });
+      const jobOrderItem = await prisma.orderItem.findUniqueOrThrow({
+        where: { id: mostRecentJob.orderItemId! },
+      });
+      const order = await prisma.order.findUniqueOrThrow({
+        where: { id: jobOrderItem.orderId },
       });
 
       const response = await api()
@@ -236,8 +251,12 @@ describe('Stitching operations (e2e)', () => {
       createdOrderIds.push(order.body.id);
       await outbox.processBatch();
 
+      const readyOrderItems = await prisma.orderItem.findMany({
+        where: { orderId: order.body.id },
+        select: { id: true },
+      });
       const jobs = await prisma.stitchingJob.count({
-        where: { orderItem: { orderId: order.body.id } },
+        where: { orderItemId: { in: readyOrderItems.map((item) => item.id) } },
       });
       expect(jobs).toBe(0);
     });

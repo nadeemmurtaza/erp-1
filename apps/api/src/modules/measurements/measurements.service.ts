@@ -3,12 +3,14 @@ import {
   ForbiddenException,
   Injectable,
   NotFoundException,
+  OnModuleInit,
 } from '@nestjs/common';
 import {
   validateMeasurements,
   type MeasurementFieldDef,
   type MeasurementValues,
 } from '@yaseen/shared';
+import { CartLineValidatorRegistry } from '../../core/extension-points/cart-line-validator.registry';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { MeasurementField, Prisma } from '../../core/prisma/client';
 
@@ -20,8 +22,28 @@ import type { MeasurementField, Prisma } from '../../core/prisma/client';
  * so a measurement added in the dashboard is enforced everywhere immediately.
  */
 @Injectable()
-export class MeasurementsService {
-  constructor(private readonly prisma: PrismaService) {}
+export class MeasurementsService implements OnModuleInit {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly cartValidators: CartLineValidatorRegistry,
+  ) {}
+
+  /**
+   * Registers this pack's measurement validation for cart.service.ts's
+   * `validate('measurements', ...)` call (B7, MULTI-SECTOR.md's
+   * `cart -> measurements` entry) — legal because measurements (a pack)
+   * depends on core's registry, not the other way round. Without this
+   * registration, cart.service.ts:485 silently returned typed-in
+   * measurements unvalidated (CartLineValidatorRegistry.validate() passes
+   * values through unchanged when nothing is registered for the kind) —
+   * confirmed by re-running the stitching e2e suite, which is what
+   * surfaced this while verifying an unrelated schema change.
+   */
+  onModuleInit(): void {
+    this.cartValidators.register('measurements', (fields: MeasurementField[], values: unknown) =>
+      this.validate(fields, values),
+    );
+  }
 
   // --- Garment types --------------------------------------------------------
 

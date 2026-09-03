@@ -1,6 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { DEFAULT_LOCALE, isLocale, type Locale } from '@yaseen/shared';
-import { DomainEvent, type PaymentPayload } from '../../core/events/domain-events';
+import {
+  DomainEvent,
+  type PaymentPayload,
+  type PaymentRefundedPayload,
+} from '../../core/events/domain-events';
 import { OnDomainEvent } from '../../core/events/on-domain-event.decorator';
 import { NotificationsService } from '../../core/notifications/notifications.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
@@ -108,6 +112,43 @@ export class PaymentNotificationSubscriber {
     });
 
     this.logger.log(`Sent payment-failed notice for ${order.number}`);
+  }
+
+  /** Tells the customer their refund has been recorded and is on its way back. */
+  @OnDomainEvent(DomainEvent.PaymentRefunded)
+  async onPaymentRefunded(payload: PaymentRefundedPayload): Promise<void> {
+    const order = await this.prisma.order.findUnique({
+      where: { id: payload.orderId },
+      select: {
+        number: true,
+        userId: true,
+        guestName: true,
+        guestEmail: true,
+        guestPhone: true,
+        user: { select: { email: true } },
+      },
+    });
+
+    const email = order?.guestEmail ?? order?.user?.email ?? null;
+    if (!order || !email) return;
+
+    const locale = await this.localeFor(order.userId);
+
+    await this.notifications.send({
+      template: 'payment.refunded',
+      recipient: {
+        name: order.guestName,
+        email,
+        phone: order.guestPhone,
+        userId: order.userId,
+        locale,
+      },
+      subject: `Refund processed for ${order.number}`,
+      body: `We have processed a refund of ${payload.amount} for order ${order.number}.`,
+      data: { orderNumber: order.number, amount: payload.amount, provider: payload.provider },
+    });
+
+    this.logger.log(`Sent refund confirmation for ${order.number}`);
   }
 
   /** Same resolution as the orders subscriber; see the note there. */

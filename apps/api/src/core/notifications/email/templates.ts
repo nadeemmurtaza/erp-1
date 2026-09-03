@@ -82,6 +82,77 @@ export interface WelcomeEmailData {
 export interface StatusEmailData {
   orderNumber: string;
   status: string;
+  /** CANCELLED only: a paid order that still owes the customer a refund. */
+  awaitingRefund?: boolean;
+}
+
+export interface RefundEmailData {
+  orderNumber: string;
+  /** Paisa. */
+  amount: number;
+  provider?: string | null;
+}
+
+export interface PasswordResetEmailData {
+  /** Raw token — never logged or persisted, only ever put in the reset link. */
+  token: string;
+}
+
+export interface EmailVerificationEmailData {
+  /** Raw token — never logged or persisted, only ever put in the verify link. */
+  token: string;
+}
+
+/** A product line for a marketing email — lighter than OrderEmailItem, since these are drawn from the catalogue, not an order snapshot. */
+export interface MarketingProduct {
+  name: string;
+  imageUrl?: string | null;
+  /** Preformatted money string, e.g. "Rs 3,499". */
+  price?: string | null;
+  url?: string | null;
+}
+
+export interface AbandonedCartEmailData {
+  items: OrderEmailItem[];
+  cartUrl: string;
+  /** Email 2 only — the incentive that email 1 doesn't offer. */
+  discountCode?: string | null;
+  discountLabel?: string | null;
+}
+
+export interface AbandonedBrowseEmailData {
+  products: MarketingProduct[];
+}
+
+export interface ReviewRequestEmailData {
+  orderNumber: string;
+  items: MarketingProduct[];
+}
+
+export interface CrossSellEmailData {
+  /** The product that anchors the recommendation, e.g. "because you bought…". */
+  basedOn?: string | null;
+  products: MarketingProduct[];
+}
+
+export interface ReplenishmentEmailData {
+  product: MarketingProduct;
+}
+
+/**
+ * A one-off campaign send — holiday sale, product launch, flash sale.
+ * Unlike the transactional templates above, the content itself (not just the
+ * data plugged into fixed copy) comes from whoever sends the campaign, since
+ * there is no automation that knows what this quarter's sale is.
+ */
+export interface CampaignEmailData {
+  headline: string;
+  message: string;
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  imageUrl?: string | null;
+  /** Rendered as a countdown line for a flash sale; omitted otherwise. */
+  expiresAt?: string | null;
 }
 
 export interface StitchingEmailData {
@@ -110,6 +181,18 @@ function orderUrl(ctx: EmailContext, locale: Locale, orderNumber: string): strin
   // in apps/web. Dropping the prefix lands on a redirect at best.
   return `${ctx.storefrontUrl.replace(/\/+$/, '')}/${locale}/orders/${encodeURIComponent(
     orderNumber,
+  )}`;
+}
+
+function passwordResetUrl(ctx: EmailContext, locale: Locale, token: string): string {
+  return `${ctx.storefrontUrl.replace(/\/+$/, '')}/${locale}/reset-password?token=${encodeURIComponent(
+    token,
+  )}`;
+}
+
+function emailVerificationUrl(ctx: EmailContext, locale: Locale, token: string): string {
+  return `${ctx.storefrontUrl.replace(/\/+$/, '')}/${locale}/verify-email?token=${encodeURIComponent(
+    token,
   )}`;
 }
 
@@ -317,6 +400,411 @@ function renderOrderStatus(
   };
 }
 
+function renderOrderShipped(
+  data: StatusEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    heading(t.orderShipped.heading, locale),
+    paragraph(t.orderShipped.intro(data.orderNumber), locale),
+    button(t.viewOrder, orderUrl(ctx, locale, data.orderNumber), locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    eyebrow: `${t.details.orderNumber} ${data.orderNumber}`,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return { subject: t.orderShipped.subject(data.orderNumber), html, text: htmlToText(html) };
+}
+
+function renderOrderDelivered(
+  data: StatusEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    heading(t.orderDelivered.heading, locale),
+    paragraph(t.orderDelivered.intro(data.orderNumber), locale),
+    paragraph(t.orderDelivered.note, locale),
+    button(t.viewOrder, orderUrl(ctx, locale, data.orderNumber), locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    eyebrow: `${t.details.orderNumber} ${data.orderNumber}`,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return { subject: t.orderDelivered.subject(data.orderNumber), html, text: htmlToText(html) };
+}
+
+function renderOrderCancelled(
+  data: StatusEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    heading(t.orderCancelled.heading, locale),
+    paragraph(t.orderCancelled.intro(data.orderNumber), locale),
+    data.awaitingRefund ? paragraph(t.orderCancelled.refundNote, locale) : '',
+    button(t.viewOrder, orderUrl(ctx, locale, data.orderNumber), locale),
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    eyebrow: `${t.details.orderNumber} ${data.orderNumber}`,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return { subject: t.orderCancelled.subject(data.orderNumber), html, text: htmlToText(html) };
+}
+
+function renderPaymentRefunded(
+  data: RefundEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const money = ltr(formatMoney(data.amount, locale));
+  const body = [
+    heading(t.paymentRefunded.heading, locale),
+    paragraph(t.paymentRefunded.intro(data.orderNumber, money), locale),
+    button(t.viewOrder, orderUrl(ctx, locale, data.orderNumber), locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    eyebrow: `${t.details.orderNumber} ${data.orderNumber}`,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return { subject: t.paymentRefunded.subject(data.orderNumber), html, text: htmlToText(html) };
+}
+
+function renderPasswordChanged(
+  _data: Record<string, never>,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    heading(t.passwordChanged.heading, locale),
+    paragraph(t.passwordChanged.intro, locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return { subject: t.passwordChanged.subject, html, text: htmlToText(html) };
+}
+
+function renderPasswordReset(
+  data: PasswordResetEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    heading(t.passwordReset.heading, locale),
+    paragraph(t.passwordReset.intro, locale),
+    button(t.passwordReset.cta, passwordResetUrl(ctx, locale, data.token), locale),
+    paragraph(t.passwordReset.expiry, locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return { subject: t.passwordReset.subject, html, text: htmlToText(html) };
+}
+
+function renderEmailVerification(
+  data: EmailVerificationEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    heading(t.emailVerification.heading, locale),
+    paragraph(t.emailVerification.intro, locale),
+    button(t.emailVerification.cta, emailVerificationUrl(ctx, locale, data.token), locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return { subject: t.emailVerification.subject, html, text: htmlToText(html) };
+}
+
+/** Shared body builder for the product-grid marketing mails (browse/review/cross-sell/replenishment). */
+function productGrid(products: MarketingProduct[]): LineItem[] {
+  return products.map((product) => ({
+    name: product.name,
+    imageUrl: product.imageUrl,
+    quantity: 1,
+    amount: product.price ?? '',
+  }));
+}
+
+function renderAbandonedCartReminder(
+  data: AbandonedCartEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    heading(t.marketing.abandonedCartReminder.heading, locale),
+    paragraph(t.marketing.abandonedCartReminder.intro, locale),
+    button(t.marketing.abandonedCartReminder.cta, data.cartUrl, locale),
+    itemsTable(productGrid(data.items), locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return {
+    subject: t.marketing.abandonedCartReminder.subject,
+    html,
+    text: htmlToText(html),
+  };
+}
+
+function renderAbandonedCartIncentive(
+  data: AbandonedCartEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const discountPanel = data.discountCode
+    ? panel(
+        t.marketing.abandonedCartIncentive.discountTitle,
+        [
+          t.marketing.abandonedCartIncentive.discountBody(
+            data.discountLabel ?? data.discountCode,
+          ),
+          ltr(data.discountCode),
+        ],
+        locale,
+      )
+    : '';
+
+  const body = [
+    heading(t.marketing.abandonedCartIncentive.heading, locale),
+    paragraph(t.marketing.abandonedCartIncentive.intro, locale),
+    discountPanel,
+    button(t.marketing.abandonedCartIncentive.cta, data.cartUrl, locale),
+    itemsTable(productGrid(data.items), locale),
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return {
+    subject: t.marketing.abandonedCartIncentive.subject,
+    html,
+    text: htmlToText(html),
+  };
+}
+
+function renderAbandonedBrowse(
+  data: AbandonedBrowseEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    heading(t.marketing.abandonedBrowse.heading, locale),
+    paragraph(t.marketing.abandonedBrowse.intro, locale),
+    button(t.marketing.abandonedBrowse.cta, ctx.storefrontUrl, locale),
+    itemsTable(productGrid(data.products), locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return { subject: t.marketing.abandonedBrowse.subject, html, text: htmlToText(html) };
+}
+
+function renderReviewRequest(
+  data: ReviewRequestEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    heading(t.marketing.reviewRequest.heading, locale),
+    paragraph(t.marketing.reviewRequest.intro(data.orderNumber), locale),
+    button(t.marketing.reviewRequest.cta, orderUrl(ctx, locale, data.orderNumber), locale),
+    itemsTable(productGrid(data.items), locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    eyebrow: `${t.details.orderNumber} ${data.orderNumber}`,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return { subject: t.marketing.reviewRequest.subject, html, text: htmlToText(html) };
+}
+
+function renderCrossSell(
+  data: CrossSellEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    heading(t.marketing.crossSell.heading, locale),
+    paragraph(
+      data.basedOn
+        ? t.marketing.crossSell.introBasedOn(data.basedOn)
+        : t.marketing.crossSell.intro,
+      locale,
+    ),
+    button(t.marketing.crossSell.cta, ctx.storefrontUrl, locale),
+    itemsTable(productGrid(data.products), locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return { subject: t.marketing.crossSell.subject, html, text: htmlToText(html) };
+}
+
+function renderReplenishmentReminder(
+  data: ReplenishmentEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    heading(t.marketing.replenishment.heading, locale),
+    paragraph(t.marketing.replenishment.intro(data.product.name), locale),
+    button(
+      t.marketing.replenishment.cta,
+      data.product.url ?? ctx.storefrontUrl,
+      locale,
+    ),
+    itemsTable(productGrid([data.product]), locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return {
+    subject: t.marketing.replenishment.subject(data.product.name),
+    html,
+    text: htmlToText(html),
+  };
+}
+
+/** Shared shape for the three one-off campaign sends — see CampaignEmailData. */
+function renderCampaign(
+  badge: string,
+  defaultCta: string,
+  data: CampaignEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    sectionTitle(badge, locale),
+    heading(data.headline, locale),
+    paragraph(data.message, locale),
+    data.expiresAt ? paragraph(t.marketing.campaign.expiresNote(data.expiresAt), locale) : '',
+    button(data.ctaLabel ?? defaultCta, data.ctaUrl ?? ctx.storefrontUrl, locale),
+  ]
+    .filter(Boolean)
+    .join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return { subject: data.headline, html, text: htmlToText(html) };
+}
+
+function renderHolidaySale(
+  data: CampaignEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  return renderCampaign(t.marketing.campaign.holidayBadge, t.shopNow, data, locale, ctx);
+}
+
+function renderNewProductLaunch(
+  data: CampaignEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  return renderCampaign(t.marketing.campaign.launchBadge, t.shopNow, data, locale, ctx);
+}
+
+function renderFlashSale(
+  data: CampaignEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  return renderCampaign(t.marketing.campaign.flashSaleBadge, t.shopNow, data, locale, ctx);
+}
+
 function renderStitching(
   data: StitchingEmailData,
   locale: Locale,
@@ -396,6 +884,86 @@ export const EMAIL_TEMPLATES: Record<
     ctx: EmailContext,
   ) => RenderedEmail,
   'order.status_changed': renderOrderStatus as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'order.shipped': renderOrderShipped as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'order.delivered': renderOrderDelivered as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'order.cancelled': renderOrderCancelled as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'payment.refunded': renderPaymentRefunded as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'user.password_changed': renderPasswordChanged as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'user.password_reset': renderPasswordReset as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'user.email_verification': renderEmailVerification as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'marketing.abandoned_cart_reminder': renderAbandonedCartReminder as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'marketing.abandoned_cart_incentive': renderAbandonedCartIncentive as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'marketing.abandoned_browse': renderAbandonedBrowse as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'marketing.review_request': renderReviewRequest as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'marketing.cross_sell': renderCrossSell as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'marketing.replenishment_reminder': renderReplenishmentReminder as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'marketing.holiday_sale': renderHolidaySale as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'marketing.new_product_launch': renderNewProductLaunch as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'marketing.flash_sale': renderFlashSale as (
     data: never,
     locale: Locale,
     ctx: EmailContext,

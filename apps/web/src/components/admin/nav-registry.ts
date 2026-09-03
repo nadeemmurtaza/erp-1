@@ -251,6 +251,13 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'settings',
     module: 'tax',
   },
+  {
+    key: 'email-templates',
+    label: 'Email Templates',
+    href: '/admin/email-templates',
+    permissions: ['settings.manage'],
+    group: 'settings',
+  },
 ];
 
 /**

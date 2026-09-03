@@ -97,3 +97,29 @@ export class ChangePasswordDto {
   @MaxLength(128)
   newPassword!: string;
 }
+
+export class ForgotPasswordDto {
+  @ApiProperty({ example: 'ayesha@example.com' })
+  @IsEmail({}, { message: 'Enter a valid email address.' })
+  email!: string;
+}
+
+export class ResetPasswordDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  token!: string;
+
+  @ApiProperty({ minLength: 8 })
+  @IsString()
+  @MinLength(8, { message: 'Password must be at least 8 characters.' })
+  @MaxLength(128)
+  newPassword!: string;
+}
+
+export class VerifyEmailDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  token!: string;
+}

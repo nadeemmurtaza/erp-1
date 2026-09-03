@@ -351,6 +351,20 @@ export interface MonthlyTarget {
 
 // --- Settings: roles & permissions, audit log --------------------------------
 
+export interface EmailTemplateCatalogEntry {
+  key: string;
+  label: string;
+  category: 'Orders' | 'Payments' | 'Account' | 'Stitching' | 'Marketing';
+  trigger: 'automatic' | 'manual';
+  triggerDescription: string;
+}
+
+export interface RenderedEmailPreview {
+  subject: string;
+  html: string;
+  text: string;
+}
+
 export interface PermissionDefinition {
   id: string;
   key: string;

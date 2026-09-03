@@ -16,6 +16,7 @@ export const DomainEvent = {
   PaymentSucceeded: 'payment.succeeded',
   PaymentFailed: 'payment.failed',
   PaymentAwaitingApproval: 'payment.awaiting_approval',
+  PaymentRefunded: 'payment.refunded',
 
   StitchingJobCreated: 'stitching.job_created',
   StitchingJobStageChanged: 'stitching.job_stage_changed',
@@ -25,6 +26,9 @@ export const DomainEvent = {
   LeadCreated: 'crm.lead_created',
 
   UserRegistered: 'user.registered',
+  PasswordChanged: 'user.password_changed',
+  PasswordResetRequested: 'user.password_reset_requested',
+  EmailVerificationRequested: 'user.email_verification_requested',
 
   ProductLowStock: 'catalog.product_low_stock',
   GoodsReceived: 'purchasing.goods_received',
@@ -91,6 +95,29 @@ export interface UserRegisteredPayload {
   name: string;
 }
 
+export interface PasswordChangedPayload {
+  userId: string;
+}
+
+export interface PasswordResetRequestedPayload {
+  userId: string;
+  /** Raw token — mailed once, never persisted anywhere but its hash. */
+  token: string;
+}
+
+export interface EmailVerificationRequestedPayload {
+  userId: string;
+  /** Raw token — mailed once, never persisted anywhere but its hash. */
+  token: string;
+}
+
+export interface PaymentRefundedPayload {
+  paymentId: string;
+  orderId: string;
+  provider: string;
+  amount: number;
+}
+
 export interface ProductLowStockPayload {
   productId: string;
   variantId: string;
@@ -113,12 +140,16 @@ export interface DomainEventPayloads {
   [DomainEvent.PaymentSucceeded]: PaymentPayload;
   [DomainEvent.PaymentFailed]: PaymentPayload;
   [DomainEvent.PaymentAwaitingApproval]: PaymentPayload;
+  [DomainEvent.PaymentRefunded]: PaymentRefundedPayload;
   [DomainEvent.StitchingJobCreated]: StitchingJobPayload;
   [DomainEvent.StitchingJobStageChanged]: StitchingJobPayload;
   [DomainEvent.StitchingOrderCreated]: { stitchingOrderId: string; number: string };
   [DomainEvent.ContactUpserted]: ContactUpsertedPayload;
   [DomainEvent.LeadCreated]: LeadCreatedPayload;
   [DomainEvent.UserRegistered]: UserRegisteredPayload;
+  [DomainEvent.PasswordChanged]: PasswordChangedPayload;
+  [DomainEvent.PasswordResetRequested]: PasswordResetRequestedPayload;
+  [DomainEvent.EmailVerificationRequested]: EmailVerificationRequestedPayload;
   [DomainEvent.ProductLowStock]: ProductLowStockPayload;
   [DomainEvent.GoodsReceived]: GoodsReceivedPayload;
 }

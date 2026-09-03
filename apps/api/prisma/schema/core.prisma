@@ -9,43 +9,46 @@ enum UserRole {
 }
 
 model User {
-  id           String    @id @default(cuid())
-  email        String?   @unique
-  phone        String?   @unique // normalised E.164
-  passwordHash String?
-  firstName    String?
-  lastName     String?
+  id              String    @id @default(cuid())
+  email           String?   @unique
+  phone           String?   @unique // normalised E.164
+  passwordHash    String?
+  firstName       String?
+  lastName        String?
   /// Free text, not an enum — never a fixed set a person has to fit into.
-  gender       String?
-  dateOfBirth  DateTime?
-  avatarUrl    String?
-  role         UserRole  @default(CUSTOMER)
-  isActive     Boolean   @default(true)
-  lastLoginAt  DateTime?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  gender          String?
+  dateOfBirth     DateTime?
+  avatarUrl       String?
+  role            UserRole  @default(CUSTOMER)
+  isActive        Boolean   @default(true)
+  emailVerifiedAt DateTime?
+  lastLoginAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
-  addresses             Address[]
-  refreshTokens         RefreshToken[]
-  carts                 Cart[]
-  orders                Order[]
-  orderStatusEvents     OrderStatusEvent[]
-  auditLogs             AuditLog[]
-  contact               Contact?           @relation("ContactUser")
-  ownedContacts         Contact[]          @relation("ContactOwner")
-  ownedLeads            Lead[]             @relation("LeadOwner")
-  interactions          Interaction[]
-  assignedFollowUps     FollowUpTask[]     @relation("FollowUpAssignee")
-  approvedPayments      Payment[]          @relation("PaymentApprover")
-  segments              Segment[]
-  devices               DeviceToken[]
-  stockAdjustments      StockAdjustment[]
-  stockMovements        StockMovement[]    @relation("StockMovementActor")
-  permissionOverrides   UserPermission[]
-  purchaseOrdersCreated PurchaseOrder[]    @relation("PurchaseOrderCreator")
-  goodsReceiptsReceived GoodsReceipt[]     @relation("GoodsReceiptReceiver")
-  stockCountsCreated    StockCount[]       @relation("StockCountCreator")
-  stockCountsAssigned   StockCount[]       @relation("StockCountAssignee")
+  addresses               Address[]
+  refreshTokens           RefreshToken[]
+  passwordResetTokens     PasswordResetToken[]
+  emailVerificationTokens EmailVerificationToken[]
+  carts                   Cart[]
+  orders                  Order[]
+  orderStatusEvents       OrderStatusEvent[]
+  auditLogs               AuditLog[]
+  contact                 Contact?                 @relation("ContactUser")
+  ownedContacts           Contact[]                @relation("ContactOwner")
+  ownedLeads              Lead[]                   @relation("LeadOwner")
+  interactions            Interaction[]
+  assignedFollowUps       FollowUpTask[]           @relation("FollowUpAssignee")
+  approvedPayments        Payment[]                @relation("PaymentApprover")
+  segments                Segment[]
+  devices                 DeviceToken[]
+  stockAdjustments        StockAdjustment[]
+  stockMovements          StockMovement[]          @relation("StockMovementActor")
+  permissionOverrides     UserPermission[]
+  purchaseOrdersCreated   PurchaseOrder[]          @relation("PurchaseOrderCreator")
+  goodsReceiptsReceived   GoodsReceipt[]           @relation("GoodsReceiptReceiver")
+  stockCountsCreated      StockCount[]             @relation("StockCountCreator")
+  stockCountsAssigned     StockCount[]             @relation("StockCountAssignee")
 
   @@index([role])
   @@index([createdAt])
@@ -59,6 +62,42 @@ model RefreshToken {
   revokedAt DateTime?
   userAgent String?
   ip        String?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+/**
+ * A one-time token mailed to reset a forgotten password.
+ * Mirrors RefreshToken: only a SHA-256 hash is stored, so a leaked database
+ * dump cannot be replayed as a reset link.
+ */
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+/**
+ * A one-time token mailed to confirm an email address. Same shape and reasoning as PasswordResetToken.
+ */
+model EmailVerificationToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
   createdAt DateTime  @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  ForbiddenException,
   Injectable,
   Logger,
   NotFoundException,
@@ -8,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { nextStage, previousStage, STITCHING_STAGES } from '@yaseen/shared';
 import { AuditService } from '../../core/audit/audit.service';
+import { assertCanManage } from '../../core/auth/ownership.guard';
 import { DomainEvent } from '../../core/events/domain-events';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { EntityEnrichmentRegistry } from '../../core/extension-points/entity-enrichment.registry';
@@ -315,11 +315,7 @@ export class StitchingJobsService implements OnModuleInit {
 
     // manage_all (staff/admin) may move anything; everyone else needs
     // manage_own AND to be the job's own assigned tailor.
-    const canManageAll = actor.permissions.includes('stitching.jobs.manage_all');
-    const canManageOwn = actor.permissions.includes('stitching.jobs.manage_own');
-    if (!canManageAll && (!canManageOwn || (job as any).assignedTailorId !== actor.id)) {
-      throw new ForbiddenException('That job is assigned to another tailor.');
-    }
+    assertCanManage(actor, 'stitching.jobs', { ownerId: job.assignedTailorId });
 
     if (job.stage === toStage) return this.get(jobId);
 

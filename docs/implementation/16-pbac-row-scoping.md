@@ -2,12 +2,17 @@
 
 **Read `00-HOUSE-RULES.md` and `MULTI-SECTOR.md` first.**
 
-> **Status: scoped, not built.** `RolePermission` is `@@unique([role,
-> permissionId])` and the guard is a pure set-membership test —
-> `catalog.manage` grants *every* product, `crm.manage` grants *every*
-> contact. There is no notion of "my rows only" anywhere in the permission
-> system. Confirmed still true (`packages/shared/src/permissions.ts`,
-> `apps/api/prisma/schema/core.prisma`'s `RolePermission` model).
+> **Status: WO-16.1/16.2 built (2026-09-03).** `assertCanManage()`
+> (`apps/api/src/core/auth/ownership.guard.ts`) is the shared reference
+> implementation, and `jobs.service.ts`'s `changeStage()` is migrated onto
+> it — behavior unchanged (a `manage_own` tailor still gets a 403 on a job
+> assigned to someone else, `manage_all` still bypasses ownership), now
+> routed through one function with its own unit tests instead of an inline
+> check. The `_own`/`_all` naming convention is documented in
+> `00-HOUSE-RULES.md` §9. Everything past that — an actual marketplace,
+> `Product.sellerId`, list-endpoint row filtering — remains unbuilt, per
+> "Explicitly out of scope" below; there is still only one call site, so
+> the decorator-based follow-up stays undone until a second one arrives.
 
 ## The good news: the convention already exists, once
 
@@ -140,14 +145,15 @@ revised here, not after a second, more expensive call site depends on it.
 
 ### Acceptance
 
-- [ ] A user with only `stitching.jobs.manage_own` can change the stage of
+- [x] A user with only `stitching.jobs.manage_own` can change the stage of
       a job assigned to them, and gets a 403 on one assigned to someone
       else — identical behavior to today, now routed through the shared
-      guard.
-- [ ] A user with `stitching.jobs.manage_all` can change any job's stage
+      guard. Verified by `test/stitching.e2e-spec.ts`.
+- [x] A user with `stitching.jobs.manage_all` can change any job's stage
       regardless of assignment.
-- [ ] `assertCanManage()` has unit tests covering: all-grant, own-grant with
+- [x] `assertCanManage()` has unit tests covering: all-grant, own-grant with
       matching owner, own-grant with mismatched owner, neither grant.
+      `apps/api/src/core/auth/ownership.guard.spec.ts`.
 
 ## When to actually build this
 

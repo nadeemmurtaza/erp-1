@@ -195,6 +195,28 @@ so a typo in `nav-registry.ts` is a build error. Use `useAdminSession()` from
 `components/admin/session.tsx` for in-page checks — **not**
 `getStoredUser()?.permissions.includes('literal')`, which is unchecked.
 
+**Ownership-sensitive capabilities get two keys, never one.** When "can edit
+this row" depends on who owns it — a tailor's own jobs, a seller's own
+catalogue rows in a future marketplace — the capability is split into
+`<capability>.manage_own` and `<capability>.manage_all`, e.g.
+`stitching.jobs.manage_own` / `stitching.jobs.manage_all`. `manage_all`
+implies `manage_own` in practice but is granted separately in
+`ROLE_PERMISSION_SEED`, so a reviewer can see exactly who touches everyone
+else's data without inferring it. Enforce the pair with the shared guard,
+never a hand-rolled check:
+
+```ts
+import { assertCanManage } from '../../core/auth/ownership.guard';
+
+assertCanManage(actor, 'stitching.jobs', { ownerId: job.assignedTailorId });
+```
+
+`assertCanManage()` (`apps/api/src/core/auth/ownership.guard.ts`) throws
+unless the actor holds `<capability>.manage_all`, or holds
+`<capability>.manage_own` and `entity.ownerId === actor.id`. See
+`docs/implementation/16-pbac-row-scoping.md` for the full design and where
+`ownerId` lives on each entity.
+
 ### Rule 10 — Concurrency belongs in the UPDATE, not in a read-then-write
 
 This is the single most common way to introduce a real bug here. Never do:

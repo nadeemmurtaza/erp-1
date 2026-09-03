@@ -577,13 +577,17 @@ ship-safe default, `/admin/tax` for classes and rates.
 
 ### B5 — PBAC has no notion of "my rows"
 
-`RolePermission` is `@@unique([role, permissionId])` and the guard is a pure
-set-membership test. `catalog.manage` grants *every* product. Multi-seller (C2C,
-B2B2C) cannot be built until permissions can be scoped to an owner. This is the
-real price of a marketplace, and it is structural. Scoped in
-[`16-pbac-row-scoping.md`](./16-pbac-row-scoping.md) — the good news is the
-`manage_own`/`manage_all` convention already exists once, for stitching
-jobs; it needs generalizing, not inventing.
+**WO-16.1/16.2 done as of 2026-09-03.** `RolePermission` is still
+`@@unique([role, permissionId])` and the guard is still a pure
+set-membership test — `catalog.manage` still grants *every* product, and no
+actual marketplace feature exists. What's done is the generalization: the
+`manage_own`/`manage_all` pattern that used to be hand-rolled once, inline,
+for stitching jobs is now `assertCanManage()`
+(`apps/api/src/core/auth/ownership.guard.ts`), a shared, unit-tested guard,
+with `jobs.service.ts` migrated onto it as the reference call site. Multi-seller
+(C2C, B2B2C) still cannot be built until a second call site (`Product.sellerId`,
+list-endpoint row filtering) actually exists — that remains the real, structural
+price of a marketplace. See [`16-pbac-row-scoping.md`](./16-pbac-row-scoping.md).
 
 ### B6 — stock has no location dimension
 
@@ -658,8 +662,9 @@ enables the capabilities its trade needs.
 ## Sequencing
 
 **Status as of 2026-09-03: B1, B3, B4 and B7 are done** (B7 mostly — one debt
-entry remains, see above). B5 and B6 are scoped in docs 16–17 but not
-built. Updated sequencing:
+entry remains, see above). B5's WO-16.1/16.2 (the shared `assertCanManage()`
+guard) are done; the rest of B5 (an actual marketplace) and all of B6 are
+scoped in docs 16–17 but not built. Updated sequencing:
 
 1. ~~B1 `ProductKind`, B3 checkout hook.~~ **Done.**
 2. ~~B4 `tax`~~ ([`15-tax-module.md`](./15-tax-module.md)). **Done** —
@@ -676,9 +681,10 @@ built. Updated sequencing:
    value of any capability group for an existing retailer.
 7. **Everything else, on demand.** `quotes`/`agreements`/`receivables` when a
    tender is actually in play; `sellers`/`payouts`/`commissions` only if a
-   marketplace is genuinely wanted, since B5
-   ([`16-pbac-row-scoping.md`](./16-pbac-row-scoping.md)) makes it the most
-   expensive item here; `locations`/`fulfilment` — and B6
+   marketplace is genuinely wanted — the `assertCanManage()` guard is ready
+   ([`16-pbac-row-scoping.md`](./16-pbac-row-scoping.md)), but `Product.sellerId`
+   and row-filtered list endpoints remain the most expensive item here;
+   `locations`/`fulfilment` — and B6
    ([`17-inventory-locations.md`](./17-inventory-locations.md)) — when a
    physical second location or O2O is real.
 

@@ -110,7 +110,7 @@ has a concurrency test. Full checklist in
 | [`docs/implementation/README.md`](./docs/implementation/README.md) | Index and reading order for the phase briefs below; the dependency graph between phases. |
 | [`docs/implementation/00-HOUSE-RULES.md`](./docs/implementation/00-HOUSE-RULES.md) | **The contract.** Read first, every session. The eleven rules, definition of done, the no-data-loss migration procedure, branch/PR/push conventions. |
 | [`docs/implementation/MULTI-SECTOR.md`](./docs/implementation/MULTI-SECTOR.md) | How one repo serves clothing, grocery, pharmacy, etc. — packs vs. branches, why there's one `main`/one `production`, the full sector/business-model taxonomy and the core blockers (B1–B7) any second sector hits. |
-| [`docs/implementation/01-inventory-purchasing-cost.md`](./docs/implementation/01-inventory-purchasing-cost.md) | Phase 1 — suppliers, purchase orders, goods receipts, the unified stock ledger, cost price, COGS, reorder points, slow movers, stock counts. |
+| [`docs/implementation/01-inventory-purchasing-cost.md`](./docs/implementation/01-inventory-purchasing-cost.md) | Phase 1 (**shipped**) — suppliers, purchase orders, goods receipts, the unified stock ledger, cost price, COGS, reorder points, slow movers, stock counts. |
 | [`docs/implementation/02-admin-shell.md`](./docs/implementation/02-admin-shell.md) | Phase 2 — shared admin primitives (DataTable, PageHeader, Modal, FilterBar), command palette, error states. |
 | [`docs/implementation/03-variants-sku-seo.md`](./docs/implementation/03-variants-sku-seo.md) | Phase 3 — custom variant options, SKU templates, the sectioned product editor, enforced alt text, the SEO publish gate, JSON-LD, sitemap, hreflang, redirects. |
 | [`docs/implementation/04-finance.md`](./docs/implementation/04-finance.md) | Phase 4 — expenses, order economics, profit and loss, cash flow, month-end close. |
@@ -141,6 +141,9 @@ has a concurrency test. Full checklist in
 | Stitching operations — own-fabric bookings, tailor queue, progress tracking | Done |
 | Expo mobile app — shop, cart, checkout, measurements, tracking, tailor queue | Done |
 | Email — self-hosted Stalwart mail server, multi-domain, webmail (SnappyMail) | Done |
+| Inventory & purchasing (Phase 1) — stock ledger, weighted-average cost, COGS snapshot, suppliers, purchase orders, goods receipts, reorder/slow-mover job, stock counts | Done |
+| Admin nav — declared 11-group order, icons, one level of nesting, module-gated items | Done |
+| Reports — order, sales-by-day, stock, stock valuation, purchases-by-supplier, stock ledger, slow-movers exports | Done |
 
 ## Running it
 

@@ -105,6 +105,40 @@ owner's decision, not yours: only the owner pushes, merges or opens a PR
 into `production`, or asks you to. This holds even when CI is green and
 even when the change is trivial.
 
+## Known gaps not yet owned by a phase
+
+Found reading the code, not called out as a work order anywhere above. Pick
+these up under the phase they land closest to rather than inventing a new one:
+
+- **No `/admin/orders/[id]` order detail page** — `/admin/orders` is a list
+  with expandable rows only. Every other entity gets one; this should exist
+  before Phase 6/7 add more per-order surface (shipments, returns, refunds).
+  Natural home: Phase 2 (admin shell) or Phase 6 (returns/RMA needs it first).
+- **`ioredis` and `Setting`-based cost/config aside, `redis` is still a
+  dependency and a `docker-compose.yml`/CI service with no code importing
+  it** (`grep -rn "ioredis" apps/api/src` outside generated/spec files
+  returns nothing). Dead weight kept alive by an unremoved lockfile entry —
+  cheap cleanup, no phase owns it.
+- **`STORAGE_DRIVER=local` in every env file, including production** —
+  uploads live on the VPS disk. The `s3`/R2 driver already exists
+  (`s3-storage.driver.ts`, validated in `env.validation.ts`), so this is a
+  config-plus-bucket change, not a rewrite — worth doing before Phase 3's
+  media library raises the volume of uploads.
+- **A generic automations rules engine** (`when <event> and <conditions>
+  then <actions>`, edited under Settings) — Part D of the original roadmap
+  proposed this as the long-term home for the inventory/purchasing/finance
+  automations that Phases 1, 4 and 6 each build one-off. Not a work order
+  anywhere yet; worth deciding on explicitly once two or three of those
+  one-off automations exist, rather than building the engine speculatively
+  first.
+- **Two AI ideas with no work order**: churn/RFM segmentation (feeds `crm`
+  segments) and virtual try-on — both lowest priority in the original
+  roadmap's payoff ordering, absent from `09-ai-layer.md`'s WO-9.1–9.10.
+- **`deploy/backup.sh`** is wired up via `deploy/systemd/yaseen-backup.service`
+  (not orphaned, contrary to an earlier read of it) — worth confirming the
+  unit is actually enabled on the production host and that its restore-test
+  step still passes, since that's the part that makes a backup trustworthy.
+
 ## When a brief is wrong
 
 These were written against the codebase at a point in time. Code moves.

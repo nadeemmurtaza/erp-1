@@ -2,6 +2,19 @@
 
 **Read `00-HOUSE-RULES.md` first.** Everything there applies.
 
+> **Status: shipped.** Verified against the running code on 2026-09-03 — the
+> ledger, cost/COGS, `purchasing` module, the nightly job, stock counts and
+> every screen and report below exist (`apps/api/src/modules/purchasing/`,
+> `apps/api/src/modules/inventory/{inventory.service,inventory.cron,
+> inventory.listener,stock-count.service}.ts`, `packages/shared/src/pricing.ts`
+> has `lineMargin`/`allocateLandedCost`/`weightedAverageCost`, all nine
+> `/admin/{inventory,suppliers,purchase-orders}/**` routes exist). This brief
+> is kept as the design record and the acceptance criteria to re-verify
+> against, not as a to-do list — treat every `[ ]` below as "confirm this
+> still holds," not "build this." `StockAdjustment` is still present
+> alongside `StockMovement`, per WO-1.2's own note, awaiting its drop
+> migration.
+
 ## Why this phase is first
 
 Because **cost price is the keystone.** Without a cost per unit there is no
@@ -9,12 +22,12 @@ margin, no profit-and-loss, no stock valuation, and no way to tell whether a
 discount is profitable. Phase 4 (Finance) is impossible until this lands, and
 Phase 5 (Promotions) is dangerous without it — you would be discounting blind.
 
-There is also a hole to close. Today `apps/api/src/modules/orders/orders.service.ts`
-changes `ProductVariant.stock` directly at lines 139-142 (sale) and 366-370
-(cancel/return restock) and **writes no `StockAdjustment` row at all**. The only
-writer of `StockAdjustment` is `inventory.service.ts:92`. So the inventory
-history screen shows manual corrections but not the actual selling — the thing
-stock mostly does. Any stock report built on today's data is wrong.
+There was also a hole to close: `orders.service.ts` used to change
+`ProductVariant.stock` directly and write no ledger row at all, so the
+inventory history showed manual corrections but not the actual selling. **This
+is fixed** — `orders.service.ts` now calls `InventoryService.move()`/
+`moveMany()` with `reason: 'SALE' | 'CANCELLATION' | 'RETURN'` on order
+placement and status changes, so every write goes through the one door.
 
 ## What Phase 1 delivers
 
@@ -28,17 +41,17 @@ stock mostly does. Any stock report built on today's data is wrong.
 
 ## Work orders
 
-| WO | Title | Depends on |
-|---|---|---|
-| 1.1 | Nav foundation: declared group order + Inventory & Supply group | — |
-| 1.2 | The unified stock ledger (`StockMovement`) | — |
-| 1.3 | Cost price on variants + COGS snapshot on order lines | 1.2 |
-| 1.4 | Suppliers | — |
-| 1.5 | Purchase orders, goods receipts, weighted-average and landed cost | 1.2, 1.3, 1.4 |
-| 1.6 | Reorder points, low stock, slow movers | 1.2, 1.5 |
-| 1.7 | Stock counts | 1.2 |
-| 1.8 | Admin screens | 1.1, 1.5, 1.6, 1.7 |
-| 1.9 | Reports: valuation, purchases, ledger export | 1.5 |
+| WO | Title | Depends on | Status |
+|---|---|---|---|
+| 1.1 | Nav foundation: declared group order + Inventory & Supply group | — | Done |
+| 1.2 | The unified stock ledger (`StockMovement`) | — | Done |
+| 1.3 | Cost price on variants + COGS snapshot on order lines | 1.2 | Done |
+| 1.4 | Suppliers | — | Done |
+| 1.5 | Purchase orders, goods receipts, weighted-average and landed cost | 1.2, 1.3, 1.4 | Done |
+| 1.6 | Reorder points, low stock, slow movers | 1.2, 1.5 | Done (`inventory.cron.ts`, `inventory.listener.ts`) |
+| 1.7 | Stock counts | 1.2 | Done (`stock-count.service.ts`) |
+| 1.8 | Admin screens | 1.1, 1.5, 1.6, 1.7 | Done |
+| 1.9 | Reports: valuation, purchases, ledger export | 1.5 | Done (7 exports in `reports.controller.ts`) |
 
 1.1 and 1.4 are independent of everything and can be done in parallel with 1.2.
 
@@ -46,17 +59,21 @@ stock mostly does. Any stock report built on today's data is wrong.
 
 ## WO-1.1 — Nav foundation
 
-**Problem.** `apps/web/src/components/admin/admin-shell.tsx:61` computes the
-sidebar's group order like this:
+**Done.** `nav-registry.ts` now exports the ordered `NAV_GROUPS` array
+described below and `admin-shell.tsx` renders from it — the `[...new
+Set(items.map(i => i.group))]` first-appearance bug this WO was written
+against no longer exists in the file. Left below as the design record.
+
+**Problem it fixed.** `admin-shell.tsx` used to compute the sidebar's group
+order like this:
 
 ```ts
 const groups = [...new Set(items.map((i) => i.group))];
 ```
 
-That is **first-appearance order in the filtered `ADMIN_NAV` array**, not the
-order declared in `NAV_GROUP_LABELS`. So moving one nav item silently reorders
-whole groups. This must be fixed before we add ~9 more sections, or the sidebar
-will scramble itself every time someone touches the registry.
+That was **first-appearance order in the filtered `ADMIN_NAV` array**, not the
+order declared in `NAV_GROUP_LABELS`. So moving one nav item silently reordered
+whole groups.
 
 **Files**
 - `apps/web/src/components/admin/nav-registry.ts`

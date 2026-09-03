@@ -50,7 +50,7 @@ scripts         check-module-boundaries.mjs
 
 ---
 
-## 2. The eleven rules
+## 2. The twelve rules
 
 ### Rule 1 — A module is a folder, a schema file, and one registry line
 
@@ -264,6 +264,44 @@ takes only the fields it actually reads (`{ status: string }`, not a bloated
 `select` never has to over-select just to satisfy a type. Add a new getter
 here, not as a one-off `.filter(Boolean).join(' ')` in a service file, the
 moment the same derivation shows up in a second place.
+
+### Rule 12 — Secrets live on the server, never in the client, and the server never trusts a client's money
+
+Three legs, and all three are already enforced in code, not just written down:
+
+1. **The browser and the Expo app hold zero secrets.** No DB credentials, no
+   payment-gateway password/salt, no SMTP password, no S3 key, no JWT
+   secret — ever, committed or not. The only environment values a frontend
+   build may embed are ones already public by definition, and they're named
+   as such: `NEXT_PUBLIC_API_URL`, `EXPO_PUBLIC_API_URL`. The frontend calls
+   its own backend over authenticated HTTPS; it never talks to a database or
+   a third party directly.
+2. **Sensitive operations happen only on the backend**, which is the sole
+   source of truth for them: authentication, computing a final
+   price/total/tax/stock figure, permission checks
+   (`assertCanManage`/`@RequirePermission`), every database write. A
+   client-submitted total, discount or stock count is never trusted as an
+   input to money math — `orders.service.ts` recomputes every figure
+   server-side inside the transaction that decrements stock and discards
+   whatever the client sent.
+3. **Third-party calls that need a secret run only from the API**, reading
+   the secret from an environment variable through
+   `core/config/env.validation.ts` — never hardcoded, never committed.
+   Inbound callbacks from those same third parties (a payment gateway
+   webhook) are verified with a constant-time comparison
+   (`timingSafeEqual`, `payments/providers/*.ts`), not `===` — a
+   variable-time comparison leaks the secret one byte at a time to anyone
+   timing the response.
+
+Four things that carry the same principle further, already built and not to
+be quietly dropped in a refactor: the API refuses to boot on a missing, too
+short, or still-placeholder-in-production secret (`env.validation.ts`); a
+secret is scoped behind the one interface that needs it (`PaymentProvider`,
+`StorageDriver`, `NotificationChannel`) rather than read from `process.env`
+in unrelated code; `AllExceptionsFilter` returns a fixed generic message on
+the wire and logs the real stack trace server-side only; and CORS is an
+explicit allowlist, auth endpoints are rate-limited, and `.env*` is
+gitignored with only placeholder-valued `.example` templates committed.
 
 ---
 

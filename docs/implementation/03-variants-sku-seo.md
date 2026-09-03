@@ -3,6 +3,32 @@
 **Read `00-HOUSE-RULES.md` first.** Depends on Phase 2 (shared primitives) and
 WO-1.3 (cost price, barcode).
 
+> **Status: WO-3.1 built (2026-09-03) — the actual B2 blocker, no further.**
+> The option data model (`ProductOption`/`ProductOptionValue`/
+> `ProductVariantOptionValue`, bilingual, `OptionDisplay`, swatch fields) and
+> a backfill script (`prisma/backfill-product-options.ts`, `pnpm
+> db:backfill-options`) exist and are verified — every product with a
+> `size`/`color` value now has the matching join rows and a
+> `ProductVariant.label` identical to what `orders.service.ts` already
+> produces for `OrderItem.variantLabel`. `size`/`color`/`colorHex` are
+> untouched, per expand/contract (00-HOUSE-RULES.md §4) — nothing reads the
+> new model yet. WO-3.2 (switch every reader, then drop the old columns)
+> stays undone on purpose: it requires the dual-write step to soak in real
+> production traffic for at least a week before the read-switch, which a
+> single session cannot manufacture. WO-3.3–3.9 (SKU templates, the
+> sectioned editor, enforced alt text, the SEO publish gate, storefront
+> JSON-LD/sitemap/hreflang, redirects) remain fully unbuilt — this is by far
+> the largest of the "not yet built" items in `MULTI-SECTOR.md` and should
+> not be read as done because WO-3.1 is.
+>
+> One correction to this doc while building WO-3.1: `catalog.prisma` already
+> had a `ProductOption`/`ProductOptionValue` pair from an earlier, unrelated,
+> completely unused attempt (single-locale `name`/`value` strings, no swatch
+> fields, an implicit many-to-many with no per-axis uniqueness — a variant
+> could have carried two "Colour" values with nothing stopping it). Verified
+> zero rows and zero application-code references before replacing it
+> wholesale with this doc's actual schema.
+
 ## Why
 
 Two separate problems, both in the product editor, which is why they ship together.
@@ -176,6 +202,14 @@ Backfill script (a migration step or a one-shot script the migration calls):
 **Verify before moving on:** every variant that had a `size` or `color` has the
 matching number of join rows, and every `label` matches what the old columns
 would have produced. Write that as a test that runs against the backfilled data.
+
+**Done.** `apps/api/test/backfill-product-options.spec.ts` runs the backfill
+against real throwaway fixtures and asserts exactly this — join-row counts,
+label format, colour deduplication (two variants sharing "Blue" produce one
+`ProductOptionValue`, not two), `swatchHex` from `colorHex`, and idempotency
+(a second run creates zero new rows). Also spot-checked directly against the
+real dev catalog: 0 mismatches across every seeded variant with a size or
+color.
 
 ---
 

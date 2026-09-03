@@ -552,11 +552,16 @@ apparel values as legacy. Additive, no data migration.
 
 ### B2 — a variant has exactly two option axes
 
-`ProductVariant` has `size` and `color` and nothing else. An electronics variant
-needs storage, RAM and network band; a chemical needs concentration and pack
-size. This is already specified as Phase 3 WO-3.1 (`ProductOption` /
-`ProductOptionValue`). **Electronics is hard-blocked on it.** Ship Phase 3 first
-or the pack produces SKUs no product page can select.
+**WO-3.1 done as of 2026-09-03** — the actual data-layer blocker, no more.
+`ProductOption`/`ProductOptionValue`/`ProductVariantOptionValue` exist,
+bilingual, with a verified backfill from `size`/`color`; an electronics
+product can now have arbitrary axes (storage, RAM, band) at the schema
+level. `size`/`color`/`colorHex` are untouched and still what every reader
+uses — the rest of Phase 3 (WO-3.2's reader switch, which needs a real
+production soak first; SKU templates; the sectioned editor; the SEO publish
+gate; storefront JSON-LD/sitemap/hreflang; redirects) is unbuilt. See
+[`03-variants-sku-seo.md`](./03-variants-sku-seo.md) — do not read "B2 done"
+as "Phase 3 done."
 
 ### B3 — there is no checkout veto hook
 
@@ -668,15 +673,21 @@ enables the capabilities its trade needs.
 ## Sequencing
 
 **Status as of 2026-09-03: B1, B3, B4, B6 and B7 are done** (B7 mostly — one
-debt entry remains, see above). B5's WO-16.1/16.2 (the shared
-`assertCanManage()` guard) are done; the rest of B5 (an actual marketplace)
-is scoped in doc 16 but not built. Updated sequencing:
+debt entry remains, see above). B2's WO-3.1 (the option data model) is done;
+the rest of Phase 3 is not. B5's WO-16.1/16.2 (the shared `assertCanManage()`
+guard) are done; the rest of B5 (an actual marketplace) is scoped in doc 16
+but not built. Updated sequencing:
 
 1. ~~B1 `ProductKind`, B3 checkout hook.~~ **Done.**
 2. ~~B4 `tax`~~ ([`15-tax-module.md`](./15-tax-module.md)). **Done** —
    `tax.enabled=false` by default, `/admin/tax` for classes/rates and the
    inclusive/exclusive toggle. WO-15.5 (FBR-specific invoice fields) still
    waits on real compliance requirements.
+2b. ~~B2 `ProductOption`/`ProductOptionValue`~~
+   ([`03-variants-sku-seo.md`](./03-variants-sku-seo.md) WO-3.1). **Done** —
+   the actual hard-block on electronics is gone at the schema level.
+   WO-3.2's reader switch (and everything after it in Phase 3) still needs
+   a real production dual-write soak before it can move, per that doc.
 3. **Phase 10** as already specified. Unaffected by any of this.
 4. ~~B7 — pay down the apparel coupling in core.~~ **Mostly done;** the
    `CartItemStitchingOption` entry in `KNOWN_SCHEMA_VIOLATIONS` is what's

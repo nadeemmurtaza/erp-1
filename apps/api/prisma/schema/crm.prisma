@@ -14,19 +14,23 @@ enum ContactStatus {
 }
 
 model Contact {
-  id        String        @id @default(cuid())
+  id          String        @id @default(cuid())
   /// Normalised to +92XXXXXXXXXX. The dedup key.
-  phoneE164 String?       @unique
-  email     String?       @unique
-  name      String
-  city      String?
+  phoneE164   String?       @unique
+  email       String?       @unique
+  name        String
+  city        String?
+  /// Free text, not an enum — never a fixed set a person has to fit into.
+  gender      String?
+  dateOfBirth DateTime?
+  avatarUrl   String?
   /// Where they came from: "storefront", "whatsapp", "instagram", "walk_in".
-  source    String        @default("storefront")
-  status    ContactStatus @default(LEAD)
-  ownerId   String?
+  source      String        @default("storefront")
+  status      ContactStatus @default(LEAD)
+  ownerId     String?
   /// Set once the contact registers an account.
-  userId    String?       @unique
-  notes     String?
+  userId      String?       @unique
+  notes       String?
 
   /// Rolled up by the CRM's order.placed subscriber, not computed on read —
   /// the contact list has to stay fast with tens of thousands of rows.

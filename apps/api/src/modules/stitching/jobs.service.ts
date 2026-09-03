@@ -5,7 +5,7 @@ import {
   NotFoundException,
   OnModuleInit,
 } from '@nestjs/common';
-import { nextStage, previousStage, STITCHING_STAGES } from '@yaseen/shared';
+import { getPersonFullName, nextStage, previousStage, STITCHING_STAGES } from '@yaseen/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { assertCanManage } from '../../core/auth/ownership.guard';
 import { DomainEvent } from '../../core/events/domain-events';
@@ -420,9 +420,7 @@ export class StitchingJobsService implements OnModuleInit {
       })),
       tailors: tailors.map((tailor) => ({
         id: tailor.id,
-        name:
-          (tailor as any).tailorProfile?.displayName ??
-          [tailor.firstName, tailor.lastName].filter(Boolean).join(' '),
+        name: (tailor as any).tailorProfile?.displayName ?? getPersonFullName(tailor),
         capacityPerWeek: (tailor as any).tailorProfile?.capacityPerWeek ?? 0,
         openJobs:
           byTailor.find((row) => row.assignedTailorId === tailor.id)?._count._all ?? 0,

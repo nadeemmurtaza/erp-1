@@ -250,6 +250,21 @@ API, the website and the mobile app alike. A figure the phone accepts is one the
 API accepts, **because it is the same function.** Never reimplement one in an
 app. If a rule needs to be enforced in two places, it moves to `packages/shared`.
 
+**Reading a shared entity's fields works the same way.** `packages/shared/src/entities/`
+holds one file per entity (`person.ts`, `product.ts`, `order.ts`, `address.ts`,
+`organization.ts`) — pure getters like `getPersonFullName()`,
+`getVariantDisplayLabel()`, `getOrderCustomerName()` that every surface
+(API, web, admin, mobile, emails) imports instead of re-deriving "first name
++ last name" or "size / colour" inline, each slightly differently. These
+functions never do I/O — `packages/shared` runs in the browser and in React
+Native, neither of which can open a database connection — they take an
+already-fetched object and derive a display value from it. Each function
+takes only the fields it actually reads (`{ status: string }`, not a bloated
+"OrderLike" with every Order column), so a caller with a narrow Prisma
+`select` never has to over-select just to satisfy a type. Add a new getter
+here, not as a one-off `.filter(Boolean).join(' ')` in a service file, the
+moment the same derivation shows up in a second place.
+
 ---
 
 ## 3. Definition of done

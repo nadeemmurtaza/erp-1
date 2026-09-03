@@ -15,6 +15,10 @@ model User {
   passwordHash String?
   firstName    String?
   lastName     String?
+  /// Free text, not an enum — never a fixed set a person has to fit into.
+  gender       String?
+  dateOfBirth  DateTime?
+  avatarUrl    String?
   role         UserRole  @default(CUSTOMER)
   isActive     Boolean   @default(true)
   lastLoginAt  DateTime?

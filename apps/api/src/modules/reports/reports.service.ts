@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { getOrderCustomerName, getPersonFullName } from '@yaseen/shared';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
@@ -91,7 +92,7 @@ export class ReportsService {
       order.number,
       order.placedAt.toISOString(),
       order.status,
-      customerName(order.guestName, order.user),
+      getOrderCustomerName(order) ?? '',
       cityOf(order.shippingAddress),
       // Paisa -> rupees, unlike every other money value this API returns.
       // This CSV is read by a person in a spreadsheet, never fed back into
@@ -325,7 +326,7 @@ export class ReportsService {
       m.refType ?? '',
       m.refId ?? '',
       m.unitCost != null ? toRupees(m.unitCost) : '',
-      customerName('', m.actor)
+      m.actor ? getPersonFullName(m.actor) ?? '' : ''
     ]);
 
     return { filename: `stock-ledger_${range.fromLabel}_${range.toLabel}.csv`, header, rows };
@@ -368,14 +369,6 @@ function toRupees(paisa: number): number {
   return paisa / 100;
 }
 
-function customerName(
-  guestName: string | null,
-  user: { firstName: string | null; lastName: string | null } | null,
-): string {
-  if (guestName) return guestName;
-  if (!user) return '';
-  return [user.firstName, user.lastName].filter(Boolean).join(' ');
-}
 
 /** shippingAddress is a Json snapshot (see orders.prisma); city is read defensively. */
 function cityOf(address: unknown): string {

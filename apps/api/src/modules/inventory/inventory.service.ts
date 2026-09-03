@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { DEFAULT_LOCALE } from '@yaseen/shared';
+import { DEFAULT_LOCALE, getPersonFullName } from '@yaseen/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { Prisma, StockMovement, StockMovementReason } from '../../core/prisma/client';
@@ -310,9 +310,7 @@ export class InventoryService {
       note: row.note,
       createdAt: row.createdAt,
       actorId: row.actorId,
-      actorName: row.actor
-        ? [row.actor.firstName, row.actor.lastName].filter(Boolean).join(' ')
-        : null,
+      actorName: row.actor ? getPersonFullName(row.actor) : null,
     }));
   }
 }

@@ -6,6 +6,7 @@ import { computeStitchingFee, toMinor } from '@yaseen/shared';
 import { AppModule } from '../src/app.module';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
 import { PrismaService } from '../src/core/prisma/prisma.service';
+import { setVariantStock } from './support/stock';
 
 /**
  * The cart and the stitching add-on — the flow that makes this a tailoring
@@ -35,6 +36,7 @@ describe('Cart (e2e)', () => {
   // either figure, and these tests assert on exact money and exact behaviour.
   let seededStitchingPrice = 0;
   let seededFinishAllowsText = false;
+  let seededReadyStock = 0;
 
   /** The garment's own stitching fee, charged when no service product is picked. */
   const GARMENT_STITCHING_FEE = toMinor(900);
@@ -89,9 +91,16 @@ describe('Cart (e2e)', () => {
 
     const ready = await prisma.product.findFirstOrThrow({
       where: { slug: 'ready-kurta-white-cotton' },
-      include: { variants: true },
+      include: { variants: { orderBy: { order: 'asc' } } },
     });
     readyVariantId = ready.variants[0]!.id;
+    // This suite adds to cart across many `it()` blocks without resetting
+    // stock between them; the seed makes no promise it's enough for that.
+    // 20 comfortably survives every small add in this file while staying
+    // well under the 50 the "refuses more than is in stock" test sends —
+    // restore the seeded figure in afterAll.
+    seededReadyStock = ready.variants[0]!.stock;
+    await setVariantStock(prisma, readyVariantId, 20);
 
     const kameezService = await prisma.product.findFirstOrThrow({
       where: { slug: 'stitching-kameez-standard' },
@@ -167,6 +176,7 @@ describe('Cart (e2e)', () => {
       where: { id: finishGroupId },
       data: { allowCustomText: seededFinishAllowsText },
     });
+    await setVariantStock(prisma, readyVariantId, seededReadyStock);
     await app.close();
   });
 

@@ -9,6 +9,7 @@ import {
   computeOrderTotals,
   computeShippingFee,
   DEFAULT_LOCALE,
+  getVariantDisplayLabel,
   normalizePkPhone,
   taxExclusive,
   taxInclusive,
@@ -661,8 +662,7 @@ export class OrdersService {
         nameUr: urdu?.name ?? null,
         sku: item.variant.sku,
         imageUrl: image?.url ?? null,
-        variantLabel:
-          [item.variant.size, item.variant.color].filter(Boolean).join(' / ') || null,
+        variantLabel: getVariantDisplayLabel(item.variant),
         unitPrice,
         quantity: item.quantity,
         stitchingFeeUnit,

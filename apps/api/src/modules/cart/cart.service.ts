@@ -10,6 +10,7 @@ import {
   computeOrderTotals,
   computeStitchingFee,
   DEFAULT_LOCALE,
+  getVariantDisplayLabel,
   type Locale,
   type MeasurementValues,
 } from '@yaseen/shared';
@@ -670,8 +671,7 @@ export class CartService {
         name: translation?.name ?? item.product.slug,
         imageUrl: image?.url ?? null,
         variantId: item.variantId,
-        variantLabel:
-          [item.variant.size, item.variant.color].filter(Boolean).join(' / ') || null,
+        variantLabel: getVariantDisplayLabel(item.variant),
         sku: item.variant.sku,
         quantity: item.quantity,
         unitPrice,

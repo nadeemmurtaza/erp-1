@@ -76,6 +76,10 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
   const locale = useLocale() as Locale;
   const searchParams = useSearchParams();
   const justPlaced = searchParams.get('placed') === '1';
+  // Set by checkout/callback/[provider]/route.ts after a JazzCash/Easypaisa
+  // return — 'success' | 'failed'. Not the source of truth (order.status and
+  // order.payments already are); this is only which banner to show once.
+  const paymentResult = searchParams.get('payment');
 
   const [order, setOrder] = useState<Order | null>(null);
   const [phone, setPhone] = useState('');
@@ -203,6 +207,20 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
         <div className="mb-6 rounded-md border border-brand-200 bg-brand-50 px-4 py-3">
           <p className="text-sm font-medium text-brand-800">{t('thanks')}</p>
           <p className="mt-1 text-sm text-ink/70">{t('thanksBody')}</p>
+        </div>
+      ) : null}
+
+      {paymentResult === 'success' ? (
+        <div className="mb-6 rounded-md border border-brand-200 bg-brand-50 px-4 py-3">
+          <p className="text-sm font-medium text-brand-800">{t('paymentSuccess')}</p>
+          <p className="mt-1 text-sm text-ink/70">{t('paymentSuccessBody')}</p>
+        </div>
+      ) : null}
+
+      {paymentResult === 'failed' ? (
+        <div className="mb-6 rounded-md border border-red-200 bg-red-50 px-4 py-3">
+          <p className="text-sm font-medium text-red-800">{t('paymentFailed')}</p>
+          <p className="mt-1 text-sm text-ink/70">{t('paymentFailedBody')}</p>
         </div>
       ) : null}
 

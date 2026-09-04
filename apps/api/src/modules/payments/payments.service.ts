@@ -151,6 +151,10 @@ export class PaymentsService {
     // Easypaisa return was able to mark a bank transfer PAID.
     const payment = await this.prisma.payment.findFirst({
       where: { reference: result.reference, provider: provider.key },
+      // The web app's callback route redirects the customer to their order
+      // page and needs its human-facing number for that URL — it only has
+      // this gateway's raw return payload to work from, not the order's id.
+      include: { order: { select: { number: true } } },
     });
 
     if (!payment) {
@@ -158,7 +162,7 @@ export class PaymentsService {
     }
     // Callbacks can arrive twice; the first one wins.
     if (payment.status === 'PAID') {
-      return { orderId: payment.orderId, status: payment.status };
+      return { orderId: payment.orderId, orderNumber: payment.order.number, status: payment.status };
     }
 
     await this.prisma.$transaction(async (tx) => {
@@ -193,7 +197,7 @@ export class PaymentsService {
       );
     });
 
-    return { orderId: payment.orderId, status: result.status };
+    return { orderId: payment.orderId, orderNumber: payment.order.number, status: result.status };
   }
 
   /** Attaches a bank-transfer receipt to a payment awaiting approval. */

@@ -312,6 +312,43 @@ export class EmailAccountsService {
     return { account, password: decryptSecret(account.smtpPasswordEncrypted, this.encryptionKey()) };
   }
 
+  /** Every active account with IMAP configured — what the mailbox poller polls. */
+  async listImapEnabled(): Promise<EmailAccount[]> {
+    return this.prisma.emailAccount.findMany({
+      where: {
+        isActive: true,
+        imapHost: { not: null },
+        imapUser: { not: null },
+        imapPasswordEncrypted: { not: null },
+      },
+    });
+  }
+
+  /** Decrypts a saved account's IMAP password. Same path testSavedImap() already proved works. */
+  decryptImapCredentials(account: EmailAccount): ImapFields {
+    if (!account.imapHost || !account.imapUser || !account.imapPasswordEncrypted) {
+      throw new BadRequestException('This account has no IMAP connection configured.');
+    }
+    return {
+      host: account.imapHost,
+      port: account.imapPort ?? 993,
+      secure: account.imapSecure,
+      user: account.imapUser,
+      password: decryptSecret(account.imapPasswordEncrypted, this.encryptionKey()),
+    };
+  }
+
+  /** Records that the poller checked this mailbox, and how far it got. */
+  async recordImapPoll(id: string, lastUid: number | null): Promise<void> {
+    await this.prisma.emailAccount.update({
+      where: { id },
+      data: {
+        imapLastPolledAt: new Date(),
+        ...(lastUid !== null ? { imapLastUid: lastUid } : {}),
+      },
+    });
+  }
+
   private async pickActive(purpose: EmailAccountPurpose): Promise<EmailAccount | null> {
     return this.prisma.emailAccount.findFirst({
       where: { purpose, isActive: true },

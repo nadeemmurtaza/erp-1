@@ -103,6 +103,13 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['crm.manage'],
     group: 'customers',
   },
+  {
+    key: 'inbox',
+    label: 'Support Inbox',
+    href: '/admin/inbox',
+    permissions: ['crm.manage'],
+    group: 'customers',
+  },
 
   // Group: Sales
   {

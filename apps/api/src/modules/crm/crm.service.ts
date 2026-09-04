@@ -3,7 +3,7 @@ import { normalizeEmail, normalizePkPhone } from '@yaseen/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { paginated, type PaginatedResult } from '../../core/common/dto/pagination.dto';
-import type { ContactStatus, Prisma } from '../../core/prisma/client';
+import type { Contact, ContactStatus, Prisma } from '../../core/prisma/client';
 
 export interface UpsertContactInput {
   name: string;
@@ -80,6 +80,18 @@ export class CrmService {
         userId: input.userId ?? null,
       },
     });
+  }
+
+  /**
+   * The contact an inbound email's From: address belongs to, if any — used by
+   * the mailbox poller to auto-link a reply. Deliberately read-only: unlike
+   * upsertContact(), this never creates a contact from an address it doesn't
+   * recognise, since a shared inbox also collects spam and bounces.
+   */
+  async findContactByEmail(email: string): Promise<Contact | null> {
+    const normalized = normalizeEmail(email);
+    if (!normalized) return null;
+    return this.prisma.contact.findFirst({ where: { email: normalized } });
   }
 
   /**

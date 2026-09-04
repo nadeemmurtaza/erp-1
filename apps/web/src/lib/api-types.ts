@@ -392,6 +392,22 @@ export interface RenderedEmailPreview {
   text: string;
 }
 
+// --- Support inbox (IMAP replies) --------------------------------------------
+
+export interface InboundEmail {
+  id: string;
+  fromAddress: string;
+  fromName: string | null;
+  subject: string | null;
+  bodyText: string | null;
+  receivedAt: string;
+  contactId: string | null;
+  contact: { id: string; name: string; phoneE164: string | null; email: string | null } | null;
+  emailAccount: { id: string; label: string; purpose: EmailAccountPurpose };
+  interactionId: string | null;
+  createdAt: string;
+}
+
 export interface PermissionDefinition {
   id: string;
   key: string;

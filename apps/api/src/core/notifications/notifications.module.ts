@@ -18,6 +18,6 @@ import { NotificationsService } from './notifications.service';
     NotificationsService,
     EmailAccountsService,
   ],
-  exports: [NotificationsService],
+  exports: [NotificationsService, EmailAccountsService],
 })
 export class NotificationsModule {}

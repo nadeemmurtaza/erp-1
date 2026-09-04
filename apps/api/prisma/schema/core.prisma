@@ -171,10 +171,9 @@ model EmailAccount {
   smtpPasswordEncrypted String
   smtpVerifiedAt        DateTime?
 
-  /// IMAP is optional per account and, today, only ever connection-tested —
-  /// nothing in this codebase reads a mailbox yet. Fields are proven correct
-  /// (a saved account did pass "Test IMAP connection") without pretending a
-  /// reply-import feature exists.
+  /// IMAP is optional per account. When configured, the mailbox poller
+  /// (modules/crm/email-inbox) logs in on a schedule and pulls new mail —
+  /// see imapLastPolledAt/imapLastUid below for its resume cursor.
   imapHost              String?
   imapPort              Int?
   imapSecure            Boolean   @default(true)
@@ -182,8 +181,17 @@ model EmailAccount {
   imapPasswordEncrypted String?
   imapVerifiedAt        DateTime?
 
+  /// Set after each poll, purely for the admin UI ("last checked 3 min ago").
+  imapLastPolledAt DateTime?
+  /// Highest UID the poller has seen for this mailbox, so a run does not
+  /// rescan everything — not the idempotency guard itself (InboundEmail's
+  /// unique constraint is), just a resume point.
+  imapLastUid      Int?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  inboundEmails InboundEmail[]
 
   @@index([purpose, isActive])
 }

@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
+import { Logo } from './logo';
 
 export function Footer() {
   const t = useTranslations('footer');
@@ -10,7 +11,7 @@ export function Footer() {
       <div className="container-page py-16 sm:py-20">
         <div className="grid gap-12 sm:gap-16 sm:grid-cols-2 lg:grid-cols-4 mb-12">
           <div className="lg:col-span-1">
-            <p className="text-base font-semibold tracking-tight text-white">{tSite('name')}</p>
+            <Logo aria-label={tSite('name')} className="h-6 w-auto text-white" />
             <p className="mt-4 text-sm text-noir-300 leading-relaxed">{tSite('tagline')}</p>
           </div>
 

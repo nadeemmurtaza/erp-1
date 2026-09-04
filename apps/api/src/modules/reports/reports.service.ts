@@ -115,42 +115,123 @@ export class ReportsService {
 
     const timeZone = range.timeZone;
 
-    const dayRows = await this.prisma.$queryRawUnsafe<
-      Array<{ day: string; orders: bigint; revenue: bigint }>
-    >(
-      // Grouped AND formatted in the shop's zone, and returned as a string so
-      // the driver cannot reinterpret it into a neighbouring day. This must
-      // stay in step with analytics.service.ts, or the dashboard and this
-      // export will disagree about which day a sale belongs to.
-      `SELECT ${shopDayExpr('"placedAt"', timeZone)} AS day,
-              COUNT(*) AS orders,
-              COALESCE(SUM("grandTotal"), 0) AS revenue
-       FROM "Order"
-       WHERE "placedAt" >= $1
-         AND "placedAt" <= $2
-         -- Cancelled/returned orders never count as a sale. Matches the
-         -- dashboard's revenue definition (analytics.service.ts); duplicated
-         -- here rather than imported so reports stays decoupled from its
-         -- sibling module.
-         AND "status" NOT IN ('CANCELLED', 'RETURNED')
-       GROUP BY 1
-       ORDER BY 1 ASC`,
-      range.from,
-      range.to,
-    );
+    const [dayRows, stitchingDayRows] = await Promise.all([
+      this.prisma.$queryRawUnsafe<Array<{ day: string; orders: bigint; revenue: bigint }>>(
+        // Grouped AND formatted in the shop's zone, and returned as a string so
+        // the driver cannot reinterpret it into a neighbouring day. This must
+        // stay in step with analytics.service.ts, or the dashboard and this
+        // export will disagree about which day a sale belongs to.
+        `SELECT ${shopDayExpr('"placedAt"', timeZone)} AS day,
+                COUNT(*) AS orders,
+                COALESCE(SUM("grandTotal"), 0) AS revenue
+         FROM "Order"
+         WHERE "placedAt" >= $1
+           AND "placedAt" <= $2
+           -- Cancelled/returned orders never count as a sale. Matches the
+           -- dashboard's revenue definition (analytics.service.ts); duplicated
+           -- here rather than imported so reports stays decoupled from its
+           -- sibling module.
+           AND "status" NOT IN ('CANCELLED', 'RETURNED')
+         GROUP BY 1
+         ORDER BY 1 ASC`,
+        range.from,
+        range.to,
+      ),
+      // "Bring your own fabric" bookings (StitchingOrder) never become an
+      // Order, so their revenue lived nowhere in this report until now —
+      // broken out in its own column rather than folded silently into
+      // "Revenue" so a reader can still tell the two sale types apart.
+      this.prisma.$queryRawUnsafe<Array<{ day: string; revenue: bigint }>>(
+        `SELECT ${shopDayExpr('"createdAt"', timeZone)} AS day,
+                COALESCE(SUM("quotedFee"), 0) AS revenue
+         FROM "StitchingOrder"
+         WHERE "createdAt" >= $1
+           AND "createdAt" <= $2
+           AND "status" != 'CANCELLED'
+           AND "quotedFee" IS NOT NULL
+         GROUP BY 1
+         ORDER BY 1 ASC`,
+        range.from,
+        range.to,
+      ),
+    ]);
 
     const byDate = new Map(dayRows.map((row) => [row.day, row]));
+    const stitchingByDate = new Map(stitchingDayRows.map((row) => [row.day, Number(row.revenue)]));
     const totalDays = shopDaysBetween(range.from, range.to, timeZone);
 
     const rows: CsvExport['rows'] = [];
     for (const dateLabel of shopDayKeys(range.from, totalDays, timeZone)) {
       const found = byDate.get(dateLabel);
-      rows.push([dateLabel, found ? Number(found.orders) : 0, found ? toRupees(Number(found.revenue)) : 0]);
+      const orderRevenue = found ? Number(found.revenue) : 0;
+      const stitchingRevenue = stitchingByDate.get(dateLabel) ?? 0;
+      rows.push([
+        dateLabel,
+        found ? Number(found.orders) : 0,
+        toRupees(orderRevenue),
+        toRupees(stitchingRevenue),
+        toRupees(orderRevenue + stitchingRevenue),
+      ]);
     }
 
     return {
       filename: `sales-by-day_${range.fromLabel}_${range.toLabel}.csv`,
-      header: ['Date', 'Order Count', 'Revenue (Rs)'],
+      header: [
+        'Date',
+        'Order Count',
+        'Order Revenue (Rs)',
+        'Stitching Booking Revenue (Rs)',
+        'Total Revenue (Rs)',
+      ],
+      rows,
+    };
+  }
+
+  /**
+   * One row per "bring your own fabric" booking quoted or completed in the
+   * range — the counterpart to ordersCsv for revenue that never becomes an
+   * Order (see the note on StitchingOrder in stitching.prisma).
+   */
+  async stitchingBookingsCsv(fromStr?: string, toStr?: string): Promise<CsvExport> {
+    const range = parseRange(fromStr, toStr, await this.timeZone());
+
+    const bookings = await this.prisma.stitchingOrder.findMany({
+      where: { createdAt: { gte: range.from, lte: range.to } },
+      orderBy: { createdAt: 'asc' },
+      select: {
+        number: true,
+        createdAt: true,
+        status: true,
+        guestName: true,
+        guestPhone: true,
+        quotedFee: true,
+        jobs: { select: { id: true } },
+      },
+    });
+
+    const header = [
+      'Number',
+      'Created At',
+      'Status',
+      'Customer Name',
+      'Phone',
+      'Garment Count',
+      'Quoted Fee (Rs)',
+    ];
+
+    const rows = bookings.map((booking) => [
+      booking.number,
+      booking.createdAt.toISOString(),
+      booking.status,
+      booking.guestName ?? '',
+      booking.guestPhone ?? '',
+      booking.jobs.length,
+      booking.quotedFee != null ? toRupees(booking.quotedFee) : '',
+    ]);
+
+    return {
+      filename: `stitching-bookings_${range.fromLabel}_${range.toLabel}.csv`,
+      header,
       rows,
     };
   }

@@ -21,7 +21,7 @@ env:
   JWT_ACCESS_SECRET: ci-access-secret-at-least-32-characters-long-000
   JWT_REFRESH_SECRET: ci-refresh-secret-at-least-32-characters-long-00
   APP_ENCRYPTION_KEY: ci-app-encryption-key-32-bytes00
-  MODULES: catalog,measurements,cart,orders,payments,stitching,crm,analytics
+  MODULES: catalog,measurements,cart,orders,payments,stitching,crm,analytics,reports
   PAYMENT_PROVIDERS: cod,bank_transfer
   NOTIFICATION_CHANNELS: log
 

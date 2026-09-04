@@ -339,6 +339,22 @@ export default function AdminReportsPage() {
             {exporting === 'sales' ? 'Exporting…' : 'Export sales CSV'}
           </button>
 
+          <button
+            type="button"
+            disabled={exporting !== null}
+            onClick={() =>
+              void downloadCsv(
+                'stitching-bookings',
+                '/admin/reports/export/stitching-bookings',
+                { from: isoDateDaysAgo(days), to: isoToday() },
+                'yaseen-stitching-bookings.csv',
+              )
+            }
+            className="btn-secondary"
+          >
+            {exporting === 'stitching-bookings' ? 'Exporting…' : 'Export stitching bookings CSV'}
+          </button>
+
                     <button
             type="button"
             disabled={exporting !== null}

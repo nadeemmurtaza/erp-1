@@ -113,10 +113,22 @@ export class AnalyticsService {
 
     const countsAsSale: Prisma.OrderWhereInput = { status: { notIn: VOID_STATUSES } };
 
+    // A "bring your own fabric" booking (StitchingOrder) never becomes an
+    // Order — it has its own quoted fee instead of a grandTotal — so it was
+    // invisible to every figure below that only ever queried Order. Counted
+    // once quoted (an unquoted booking has no revenue figure yet) and not
+    // cancelled, dated by createdAt since it has no placedAt of its own.
+    const stitchingBookingCountsAsSale: Prisma.StitchingOrderWhereInput = {
+      status: { not: 'CANCELLED' },
+      quotedFee: { not: null },
+    };
+
     const [
       today,
       month,
       allTime,
+      stitchingToday,
+      stitchingMonth,
       pendingOrders,
       paymentsAwaitingApproval,
       followUpsDue,
@@ -128,6 +140,7 @@ export class AnalyticsService {
       repeatCustomers,
       newCustomers,
       seriesRows,
+      stitchingSeriesRows,
       topProductRows,
       stitchingRows,
       lowStockVariants,
@@ -147,6 +160,14 @@ export class AnalyticsService {
         where: countsAsSale,
         _count: { _all: true },
         _sum: { grandTotal: true },
+      }),
+      this.prisma.stitchingOrder.aggregate({
+        where: { createdAt: { gte: startOfToday }, ...stitchingBookingCountsAsSale },
+        _sum: { quotedFee: true },
+      }),
+      this.prisma.stitchingOrder.aggregate({
+        where: { createdAt: { gte: startOfMonth }, ...stitchingBookingCountsAsSale },
+        _sum: { quotedFee: true },
       }),
       this.prisma.order.count({ where: { status: 'PENDING' } }),
       this.prisma.payment.count({ where: { status: 'AWAITING_APPROVAL' } }),
@@ -170,6 +191,20 @@ export class AnalyticsService {
          FROM "Order"
          WHERE "placedAt" >= $1
            AND "status" NOT IN ('CANCELLED', 'RETURNED')
+         GROUP BY 1
+         ORDER BY 1 ASC`,
+        seriesStart,
+      ),
+
+      // Bring-your-own-fabric booking revenue, same day grouping — merged into
+      // seriesRows below so the sales chart doesn't undercount either stream.
+      this.prisma.$queryRawUnsafe<Array<{ day: string; revenue: bigint }>>(
+        `SELECT ${shopDayExpr('"createdAt"', timeZone)} AS day,
+                COALESCE(SUM("quotedFee"), 0) AS revenue
+         FROM "StitchingOrder"
+         WHERE "createdAt" >= $1
+           AND "status" != 'CANCELLED'
+           AND "quotedFee" IS NOT NULL
          GROUP BY 1
          ORDER BY 1 ASC`,
         seriesStart,
@@ -203,15 +238,22 @@ export class AnalyticsService {
     ]);
 
     const orderCount = allTime._count._all;
-    const allTimeRevenue = allTime._sum.grandTotal ?? 0;
+    // Order-only: "average ORDER value" means a checkout, not a stitching
+    // booking, so this stays a narrower figure than the revenue totals below.
+    const allTimeOrderRevenue = allTime._sum.grandTotal ?? 0;
+
+    const monthRevenue = (month._sum.grandTotal ?? 0) + (stitchingMonth._sum.quotedFee ?? 0);
 
     return {
-      today: { orders: today._count._all, revenue: today._sum.grandTotal ?? 0 },
-      month: { orders: month._count._all, revenue: month._sum.grandTotal ?? 0 },
+      today: {
+        orders: today._count._all,
+        revenue: (today._sum.grandTotal ?? 0) + (stitchingToday._sum.quotedFee ?? 0),
+      },
+      month: { orders: month._count._all, revenue: monthRevenue },
       // Rounded to whole rupees: an average quoted to the paisa is false
       // precision and reads as noise on a stat tile.
       averageOrderValue:
-        orderCount > 0 ? Math.round(allTimeRevenue / orderCount / 100) * 100 : 0,
+        orderCount > 0 ? Math.round(allTimeOrderRevenue / orderCount / 100) * 100 : 0,
       needsAttention: {
         pendingOrders,
         paymentsAwaitingApproval,
@@ -225,7 +267,7 @@ export class AnalyticsService {
         repeat: repeatCustomers,
         newThisMonth: newCustomers,
       },
-      salesSeries: fillDays(seriesStart, days, timeZone, seriesRows),
+      salesSeries: fillDays(seriesStart, days, timeZone, seriesRows, stitchingSeriesRows),
       topProducts: topProductRows.map((row) => ({
         name: row.name,
         quantity: Number(row.quantity),
@@ -235,7 +277,7 @@ export class AnalyticsService {
         stage: row.stage,
         count: row._count._all,
       })),
-      monthlyTarget: this.buildMonthlyTarget(monthlyTargetAmount, month._sum.grandTotal ?? 0),
+      monthlyTarget: this.buildMonthlyTarget(monthlyTargetAmount, monthRevenue),
     };
   }
 
@@ -500,12 +542,19 @@ export class AnalyticsService {
 
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const month = await this.prisma.order.aggregate({
-      where: { placedAt: { gte: startOfMonth }, status: { notIn: VOID_STATUSES } },
-      _sum: { grandTotal: true },
-    });
+    const [month, stitchingMonth] = await Promise.all([
+      this.prisma.order.aggregate({
+        where: { placedAt: { gte: startOfMonth }, status: { notIn: VOID_STATUSES } },
+        _sum: { grandTotal: true },
+      }),
+      this.prisma.stitchingOrder.aggregate({
+        where: { createdAt: { gte: startOfMonth }, status: { not: 'CANCELLED' }, quotedFee: { not: null } },
+        _sum: { quotedFee: true },
+      }),
+    ]);
 
-    return this.buildMonthlyTarget(targetAmount, month._sum.grandTotal ?? 0);
+    const achieved = (month._sum.grandTotal ?? 0) + (stitchingMonth._sum.quotedFee ?? 0);
+    return this.buildMonthlyTarget(targetAmount, achieved);
   }
 
   /** Midnight `days` ago, matching summary()'s seriesStart convention. */
@@ -570,13 +619,16 @@ function fillDays(
   days: number,
   timeZone: string,
   rows: Array<{ day: string; orders: bigint; revenue: bigint }>,
+  /** Same-shaped revenue from a second source (stitching bookings) to add in per day. */
+  extraRevenueRows: Array<{ day: string; revenue: bigint }> = [],
 ): Array<{ date: string; orders: number; revenue: number }> {
   const byDate = new Map(
     rows.map((row) => [row.day, { orders: Number(row.orders), revenue: Number(row.revenue) }]),
   );
+  const extraByDate = new Map(extraRevenueRows.map((row) => [row.day, Number(row.revenue)]));
 
-  return shopDayKeys(start, days, timeZone).map((date) => ({
-    date,
-    ...(byDate.get(date) ?? { orders: 0, revenue: 0 }),
-  }));
+  return shopDayKeys(start, days, timeZone).map((date) => {
+    const base = byDate.get(date) ?? { orders: 0, revenue: 0 };
+    return { date, orders: base.orders, revenue: base.revenue + (extraByDate.get(date) ?? 0) };
+  });
 }

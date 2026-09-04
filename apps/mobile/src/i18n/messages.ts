@@ -24,6 +24,7 @@ export const MESSAGES = {
     'common.required': 'Required',
     'common.optional': 'Optional',
     'common.back': 'Back',
+    'common.next': 'Next',
 
     'shop.title': 'Shop',
     'shop.search': 'Search fabrics, suits, kurtas',
@@ -67,6 +68,7 @@ export const MESSAGES = {
     'checkout.payment': 'How would you like to pay?',
     'checkout.cod': 'Cash on delivery',
     'checkout.bank': 'Bank transfer',
+    'checkout.review': 'Review your order',
     'checkout.shipping': 'Delivery',
     'checkout.codFee': 'Cash on delivery fee',
     'checkout.free': 'Free',
@@ -187,6 +189,7 @@ export const MESSAGES = {
     'common.required': 'ضروری',
     'common.optional': 'اختیاری',
     'common.back': 'واپس',
+    'common.next': 'اگلا',
 
     'shop.title': 'خریداری',
     'shop.search': 'کپڑا، سوٹ، کرتا تلاش کریں',
@@ -230,6 +233,7 @@ export const MESSAGES = {
     'checkout.payment': 'ادائیگی کیسے کریں گے؟',
     'checkout.cod': 'کیش آن ڈیلیوری',
     'checkout.bank': 'بینک ٹرانسفر',
+    'checkout.review': 'اپنے آرڈر کا جائزہ لیں',
     'checkout.shipping': 'ترسیل',
     'checkout.codFee': 'کیش آن ڈیلیوری فیس',
     'checkout.free': 'مفت',

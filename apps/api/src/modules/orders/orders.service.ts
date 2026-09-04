@@ -174,6 +174,11 @@ export class OrdersService {
       throw new BadRequestException(vetoes.map((veto) => veto.message).join(' '));
     }
 
+    // Reserved before checkout's own transaction opens — see
+    // nextOrderNumber() for why this has to be a separate atomic step
+    // rather than something computed inside that transaction.
+    const orderNumber = await nextOrderNumber(this.prisma);
+
     const order = await this.prisma.$transaction(async (tx) => {
       const variantIds = [...new Set(priced.lines.map(l => l.variantId))];
       const variants = await tx.productVariant.findMany({
@@ -184,7 +189,7 @@ export class OrdersService {
 
       const created = await tx.order.create({
         data: {
-          number: await nextOrderNumber(tx),
+          number: orderNumber,
           userId: userId ?? null,
           status: 'PENDING',
           guestName: dto.shippingAddress.fullName,
@@ -288,16 +293,11 @@ export class OrdersService {
 
       return { ...created, payment };
     }, {
-      // nextOrderNumber() holds a pg_advisory_xact_lock for this transaction's
-      // full duration, so concurrent checkouts queue behind one another —
-      // Prisma's 5000ms default budget is tight enough that a handful of
-      // simultaneous checkouts can blow it under real contention (a loaded CI
-      // runner, a traffic spike). This raises the budget without touching the
-      // locking/serialization design. maxWait covers a transaction queueing
-      // behind others still holding the lock, not just its own execution —
-      // worth more headroom than timeout for the same batch size.
-      timeout: 15_000,
-      maxWait: 20_000,
+      // A little headroom over Prisma's 5s default for a slow/loaded
+      // runner — this transaction no longer contends with other checkouts
+      // over anything (order numbering is reserved beforehand, see
+      // nextOrderNumber() above), so it should rarely need it.
+      timeout: 10_000,
     });
 
     this.logger.log(`Order ${order.number} placed for ${order.grandTotal} paisa`);
@@ -803,46 +803,40 @@ function jsonOrNull(value: unknown): Prisma.InputJsonValue | typeof Prisma.DbNul
 }
 
 /**
- * Namespace for the advisory lock below — an arbitrary constant that only has
- * to be distinct from any other advisory lock this application takes.
- */
-const ORDER_NUMBER_LOCK_NAMESPACE = 8_241_119;
-
-/**
  * Sequential order numbers per year: YSN-2026-0001.
  *
- * Reading the highest number and adding one is a read-then-write, and READ
- * COMMITTED (Postgres' default, and Prisma's) takes no lock on that read — so
- * concurrent checkouts used to compute the same next number and all but one
- * died on Order.number's unique index. That surfaced to the customer as a 409
- * at the moment of payment; a burst of 8 simultaneous checkouts lost 6.
+ * Two earlier designs both got this wrong. Reading MAX(Order.number) and
+ * adding one is a read-then-write, and READ COMMITTED (Postgres' default,
+ * and Prisma's) takes no lock on that read — concurrent checkouts could
+ * compute the same next number and all but one died on Order.number's
+ * unique index, surfacing to the customer as a 409 at the moment of
+ * payment. Wrapping that read in a transaction-scoped advisory lock fixed
+ * the race only if the lock also covered the eventual Order insert — taking
+ * it around the whole checkout transaction serialised every concurrent
+ * checkout behind whichever one held it (slow, and only correct because it
+ * was slow); taking it in its own short transaction, separate from the
+ * insert, was faster but wrong: every short transaction reads MAX() before
+ * any checkout has inserted its Order row, so they all still compute the
+ * same number — the lock protected a read that had nothing left to race
+ * against once the insert moved elsewhere.
  *
- * A transaction-scoped advisory lock serialises just this counter. It is
- * released automatically when the placement transaction commits or rolls back,
- * and it is per-year, so it never blocks anything else. The unique index stays
- * as the backstop it was always described as.
- *
- * MAX() over the numeric suffix rather than `ORDER BY number DESC`: the string
- * sort silently breaks once the sequence outgrows its four-digit padding,
- * where 'YSN-2026-9999' sorts above 'YSN-2026-10000' and every subsequent
- * order would be handed a number that already exists.
+ * A counter row sidesteps the problem instead of re-serialising it: this
+ * single `INSERT ... ON CONFLICT DO UPDATE ... RETURNING` both reads and
+ * reserves the next number in one atomic step, which Postgres already
+ * serialises at the row level — no application lock or transaction of our
+ * own required. If place()'s transaction later fails, the number it
+ * reserved is simply skipped, the same way a gap appears after any failed
+ * insert on an auto-increment key.
  */
-async function nextOrderNumber(tx: Prisma.TransactionClient): Promise<string> {
+async function nextOrderNumber(prisma: PrismaService): Promise<string> {
   const year = new Date().getFullYear();
   const prefix = `YSN-${year}-`;
 
-  // $executeRaw, not $queryRaw: pg_advisory_xact_lock returns void, which
-  // Prisma cannot deserialise as a result column.
-  await tx.$executeRaw`SELECT pg_advisory_xact_lock(${ORDER_NUMBER_LOCK_NAMESPACE}::int, ${year}::int)`;
-
-  // split_part over SUBSTRING: the offset would be bound as a bigint, and
-  // there is no substring(text, bigint). "YSN-2026-0001" splits to 3 parts,
-  // the last being the sequence.
-  const [{ max }] = await tx.$queryRaw<Array<{ max: number | null }>>`
-    SELECT MAX(CAST(split_part("number", '-', 3) AS INTEGER)) AS max
-    FROM "Order"
-    WHERE "number" LIKE ${`${prefix}%`}
+  const [{ counter }] = await prisma.$queryRaw<Array<{ counter: number }>>`
+    INSERT INTO "OrderNumberCounter" ("year", "counter") VALUES (${year}, 1)
+    ON CONFLICT ("year") DO UPDATE SET "counter" = "OrderNumberCounter"."counter" + 1
+    RETURNING "counter"
   `;
 
-  return `${prefix}${String((max ?? 0) + 1).padStart(4, '0')}`;
+  return `${prefix}${String(counter).padStart(4, '0')}`;
 }

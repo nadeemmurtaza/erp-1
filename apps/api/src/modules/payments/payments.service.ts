@@ -275,6 +275,64 @@ export class PaymentsService {
     return updated;
   }
 
+  /**
+   * Staff marking a payment refunded — a full refund unless `amount` gives a
+   * partial one. This only records that the money went back and notifies the
+   * customer; moving the money itself (a bank transfer, a gateway refund
+   * call, cash handed back) is a manual step staff take outside this system,
+   * same as bank-transfer approval already is.
+   */
+  async refund(actorId: string, paymentId: string, amount?: number, note?: string) {
+    const payment = await this.prisma.payment.findUnique({ where: { id: paymentId } });
+    if (!payment) throw new NotFoundException('That payment no longer exists.');
+
+    if (payment.status !== 'PAID') {
+      throw new BadRequestException('Only a paid payment can be refunded.');
+    }
+
+    const refundAmount = amount ?? payment.amount;
+    if (refundAmount <= 0 || refundAmount > payment.amount) {
+      throw new BadRequestException(
+        `Refund amount must be between 1 and ${payment.amount} (the amount paid).`,
+      );
+    }
+
+    const updated = await this.prisma.$transaction(async (tx) => {
+      const result = await tx.payment.update({
+        where: { id: paymentId },
+        data: {
+          status: 'REFUNDED',
+          refundedAt: new Date(),
+          refundAmount,
+          meta: { ...(payment.meta as object | null), refundNote: note ?? null } as Prisma.InputJsonValue,
+        },
+      });
+
+      await this.events.publish(
+        DomainEvent.PaymentRefunded,
+        {
+          paymentId,
+          orderId: payment.orderId,
+          provider: payment.provider,
+          amount: refundAmount,
+        },
+        tx,
+      );
+
+      return result;
+    });
+
+    await this.audit.record({
+      actorId,
+      action: 'payment.refunded',
+      entity: 'Payment',
+      entityId: paymentId,
+      data: { provider: payment.provider, amount: refundAmount },
+    });
+
+    return updated;
+  }
+
   /** Payments needing a human decision — the dashboard's approval queue. */
   async listAwaitingApproval() {
     return this.prisma.payment.findMany({

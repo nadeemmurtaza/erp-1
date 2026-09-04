@@ -277,6 +277,12 @@ export interface AuthResult {
   user: AuthUser;
 }
 
+/** GET /meta — which optional modules and sector packs this deployment has enabled. */
+export interface DeploymentMeta {
+  modules: string[];
+  packs: string[];
+}
+
 // --- Inventory --------------------------------------------------------------
 
 export interface StockAdjustment {
@@ -350,6 +356,63 @@ export interface MonthlyTarget {
 }
 
 // --- Settings: roles & permissions, audit log --------------------------------
+
+export type EmailAccountPurpose = 'TRANSACTIONAL' | 'MARKETING' | 'SUPPORT';
+
+export interface EmailAccount {
+  id: string;
+  label: string;
+  purpose: EmailAccountPurpose;
+  isActive: boolean;
+  isDefault: boolean;
+  fromName: string;
+  fromEmail: string;
+  replyTo: string | null;
+  smtpHost: string;
+  smtpPort: number;
+  smtpSecure: boolean;
+  smtpUser: string;
+  smtpVerifiedAt: string | null;
+  hasSmtpPassword: boolean;
+  imapHost: string | null;
+  imapPort: number | null;
+  imapSecure: boolean;
+  imapUser: string | null;
+  imapVerifiedAt: string | null;
+  hasImapPassword: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EmailTemplateCatalogEntry {
+  key: string;
+  label: string;
+  category: 'Orders' | 'Payments' | 'Account' | 'Stitching' | 'Marketing';
+  trigger: 'automatic' | 'manual';
+  triggerDescription: string;
+}
+
+export interface RenderedEmailPreview {
+  subject: string;
+  html: string;
+  text: string;
+}
+
+// --- Support inbox (IMAP replies) --------------------------------------------
+
+export interface InboundEmail {
+  id: string;
+  fromAddress: string;
+  fromName: string | null;
+  subject: string | null;
+  bodyText: string | null;
+  receivedAt: string;
+  contactId: string | null;
+  contact: { id: string; name: string; phoneE164: string | null; email: string | null } | null;
+  emailAccount: { id: string; label: string; purpose: EmailAccountPurpose };
+  interactionId: string | null;
+  createdAt: string;
+}
 
 export interface PermissionDefinition {
   id: string;

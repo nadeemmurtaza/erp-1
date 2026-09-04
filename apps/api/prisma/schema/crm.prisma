@@ -54,6 +54,7 @@ model Contact {
   interactions Interaction[]
   followUps    FollowUpTask[]
   tags         ContactTag[]
+  inboundEmails InboundEmail[]
 
   @@index([status])
   @@index([ownerId])
@@ -95,6 +96,7 @@ model Lead {
   convertedOrder Order?         @relation("LeadConvertedOrder", fields: [convertedOrderId], references: [id], onDelete: SetNull)
   interactions   Interaction[]
   followUps      FollowUpTask[]
+  inboundEmails  InboundEmail[]
 
   @@index([status, createdAt])
   @@index([ownerId])
@@ -127,6 +129,40 @@ model Interaction {
 
   @@index([contactId, occurredAt])
   @@index([leadId, occurredAt])
+}
+
+/// A message pulled from a connected mailbox's IMAP inbox by the poller
+/// (modules/crm/email-inbox) — a customer's reply to an order or support
+/// email. `messageId` is unique per account, so re-polling the same message
+/// (the poller re-checks unseen mail every run, not a durable cursor) is a
+/// no-op rather than a duplicate row. Auto-linked to a Contact only when the
+/// From: address matches one that already exists — never auto-created, so a
+/// bounce or an out-of-office reply cannot spawn a fake customer. Unlinked
+/// rows sit in the admin Support Inbox for staff to link by hand.
+model InboundEmail {
+  id             String   @id @default(cuid())
+  emailAccountId String
+  messageId      String
+  inReplyTo      String?
+  fromAddress    String
+  fromName       String?
+  subject        String?
+  /// Plain-text body only — attachments are not ingested.
+  bodyText       String?
+  receivedAt     DateTime
+  contactId      String?
+  leadId         String?
+  /// Set once linked (auto or manual), so linking twice is a no-op.
+  interactionId  String?  @unique
+  createdAt      DateTime @default(now())
+
+  emailAccount EmailAccount @relation(fields: [emailAccountId], references: [id], onDelete: Cascade)
+  contact      Contact?     @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  lead         Lead?        @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  @@unique([emailAccountId, messageId])
+  @@index([contactId])
+  @@index([receivedAt])
 }
 
 model FollowUpTask {

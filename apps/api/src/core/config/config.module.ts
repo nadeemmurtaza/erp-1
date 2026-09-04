@@ -1,6 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule as NestConfigModule } from '@nestjs/config';
 import { AppConfigService } from './app-config.service';
+import { MetaController } from './meta.controller';
 import { validateEnv } from './env.validation';
 
 @Global()
@@ -14,6 +15,7 @@ import { validateEnv } from './env.validation';
       cache: true,
     }),
   ],
+  controllers: [MetaController],
   providers: [AppConfigService],
   exports: [AppConfigService],
 })

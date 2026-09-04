@@ -8,6 +8,7 @@ import { BottomNav } from './bottom-nav';
 import { CartBadge } from './cart-badge';
 import { CustomerNav } from './customer-nav';
 import { LocaleSwitcher } from './locale-switcher';
+import { Logo } from './logo';
 import { SearchBox } from './search-box';
 
 import { MobileNav } from './mobile-nav';
@@ -75,8 +76,12 @@ export function Header() {
           <div className="flex items-center justify-between py-3 md:py-5">
             <div className="flex items-center gap-3 md:gap-8" suppressHydrationWarning>
               <MobileNav items={NAV} />
-              <Link href="/" className="shrink-0 font-display text-xl font-semibold tracking-tight text-noir-900 transition-colors duration-200 hover:text-noir-600">
-                {tSite('name')}
+              <Link
+                href="/"
+                aria-label={tSite('name')}
+                className="shrink-0 text-noir-900 transition-colors duration-200 hover:text-noir-600"
+              >
+                <Logo aria-hidden className="h-6 w-auto md:h-7" />
               </Link>
 
               <nav aria-label="Main" className="hidden flex-1 md:flex">

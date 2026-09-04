@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
 import type { Locale } from '@yaseen/shared';
@@ -5,8 +6,27 @@ import { ProductCard } from '@/components/storefront/product-card';
 import { Link } from '@/i18n/navigation';
 import { getCategories, getProducts } from '@/lib/api';
 import { AnimatedSection } from '@/components/storefront/animated-section';
+import { alternateLanguages, canonicalUrl } from '@/lib/seo';
 
 export const revalidate = 300;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'home' });
+
+  return {
+    title: t('heroTitle'),
+    description: t('heroBody'),
+    alternates: {
+      canonical: canonicalUrl('', locale),
+      languages: alternateLanguages(''),
+    },
+  };
+}
 
 export default async function HomePage({
   params,

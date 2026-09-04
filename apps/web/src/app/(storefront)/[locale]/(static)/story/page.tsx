@@ -1,4 +1,24 @@
+import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import { alternateLanguages, canonicalUrl } from '@/lib/seo';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'footer' });
+
+  return {
+    title: t('story'),
+    description: 'Premium unstitched fabrics and bespoke, in-house tailoring — measured, cut and delivered without the usual trips to the shop.',
+    alternates: {
+      canonical: canonicalUrl('/story', locale),
+      languages: alternateLanguages('/story'),
+    },
+  };
+}
 
 export default async function StoryPage({
   params,

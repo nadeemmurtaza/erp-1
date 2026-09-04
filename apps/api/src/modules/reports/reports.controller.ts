@@ -31,6 +31,15 @@ export class ReportsController {
     this.stream(response, await this.reports.salesByDayCsv(query.from, query.to));
   }
 
+  @Get('export/stitching-bookings')
+  @ApiOperation({ summary: 'CSV: one row per bring-your-own-fabric booking in the date range' })
+  async exportStitchingBookings(
+    @Query() query: ReportDateRangeQueryDto,
+    @Res() response: Response,
+  ): Promise<void> {
+    this.stream(response, await this.reports.stitchingBookingsCsv(query.from, query.to));
+  }
+
   @Get('export/stock')
   @ApiOperation({ summary: 'CSV: current stock, one row per product variant' })
   async exportStock(

@@ -97,6 +97,8 @@ export class AuthService {
       name: [user.firstName, user.lastName].filter(Boolean).join(' ') || email,
     });
 
+    await this.requestEmailVerification(user.id);
+
     return this.issue(user);
   }
 
@@ -181,6 +183,112 @@ export class AuthService {
       this.prisma.refreshToken.updateMany({
         where: { userId, revokedAt: null },
         data: { revokedAt: new Date() },
+      }),
+    ]);
+
+    // The confirmation mail: the one signal a customer has if this change
+    // was not theirs, and their password was already checked above, so a
+    // stolen session cannot silently lock them out of noticing.
+    await this.events.publish(DomainEvent.PasswordChanged, { userId });
+  }
+
+  /**
+   * Starts a password-reset flow. Always resolves the same way whether or
+   * not the address belongs to an account — the caller gets no signal
+   * either way, which is what stops this endpoint enumerating registered
+   * emails.
+   */
+  async requestPasswordReset(email: string): Promise<void> {
+    const normalized = normalizeEmail(email);
+    if (!normalized) return;
+
+    const user = await this.prisma.user.findUnique({ where: { email: normalized } });
+    if (!user || !user.isActive) return;
+
+    const token = randomBytes(32).toString('base64url');
+    await this.prisma.passwordResetToken.create({
+      data: {
+        userId: user.id,
+        tokenHash: hashToken(token),
+        expiresAt: new Date(Date.now() + parseDuration('1h')),
+      },
+    });
+
+    await this.events.publish(DomainEvent.PasswordResetRequested, { userId: user.id, token });
+  }
+
+  /** Consumes a password-reset token minted by requestPasswordReset. */
+  async resetPassword(token: string, newPassword: string): Promise<void> {
+    const stored = await this.prisma.passwordResetToken.findUnique({
+      where: { tokenHash: hashToken(token) },
+    });
+
+    if (!stored || stored.usedAt || stored.expiresAt < new Date()) {
+      throw new UnauthorizedException('This password reset link is invalid or has expired.');
+    }
+
+    await this.prisma.$transaction([
+      this.prisma.user.update({
+        where: { id: stored.userId },
+        data: { passwordHash: await hashPassword(newPassword) },
+      }),
+      this.prisma.passwordResetToken.update({
+        where: { id: stored.id },
+        data: { usedAt: new Date() },
+      }),
+      // A password reset is proof of mailbox access, not proof every existing
+      // session was theirs — sign out everywhere, same as changePassword.
+      this.prisma.refreshToken.updateMany({
+        where: { userId: stored.userId, revokedAt: null },
+        data: { revokedAt: new Date() },
+      }),
+    ]);
+
+    await this.events.publish(DomainEvent.PasswordChanged, { userId: stored.userId });
+  }
+
+  /**
+   * Mints and mails a fresh email-verification link. Called once from
+   * register(), and again whenever the customer asks to resend it — a
+   * verified address or one with no mailbox on file is left alone.
+   */
+  async requestEmailVerification(userId: string): Promise<void> {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user?.email || user.emailVerifiedAt) return;
+
+    const token = randomBytes(32).toString('base64url');
+    await this.prisma.emailVerificationToken.create({
+      data: {
+        userId: user.id,
+        tokenHash: hashToken(token),
+        expiresAt: new Date(Date.now() + parseDuration('24h')),
+      },
+    });
+
+    await this.events.publish(DomainEvent.EmailVerificationRequested, {
+      userId: user.id,
+      token,
+    });
+  }
+
+  /** Consumes an email-verification token minted by requestEmailVerification. */
+  async verifyEmail(token: string): Promise<void> {
+    const stored = await this.prisma.emailVerificationToken.findUnique({
+      where: { tokenHash: hashToken(token) },
+    });
+
+    if (!stored || stored.usedAt || stored.expiresAt < new Date()) {
+      throw new UnauthorizedException('This verification link is invalid or has expired.');
+    }
+
+    await this.prisma.$transaction([
+      this.prisma.user.update({
+        where: { id: stored.userId },
+        data: { emailVerifiedAt: new Date() },
+      }),
+      this.prisma.emailVerificationToken.update({
+        where: { id: stored.id },
+        data: { usedAt: new Date() },
       }),
     ]);
   }

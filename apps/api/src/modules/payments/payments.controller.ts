@@ -10,12 +10,25 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsInt, IsOptional, IsString, MaxLength, Min } from 'class-validator';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, Public, RequirePermission } from '../../core/auth/decorators';
 import { PaymentsService } from './payments.service';
 
 class ApprovePaymentDto {
+  @IsOptional()
+  @IsString()
+  @MaxLength(300)
+  note?: string;
+}
+
+class RefundPaymentDto {
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  /** Paisa. Omit for a full refund of the amount paid. */
+  amount?: number;
+
   @IsOptional()
   @IsString()
   @MaxLength(300)
@@ -89,5 +102,15 @@ export class PaymentsAdminController {
     @Body() dto: ApprovePaymentDto,
   ) {
     return this.payments.approve(user.id, paymentId, dto.note);
+  }
+
+  @Post(':paymentId/refund')
+  @ApiOperation({ summary: 'Mark a paid payment refunded (full or partial)' })
+  refund(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('paymentId') paymentId: string,
+    @Body() dto: RefundPaymentDto,
+  ) {
+    return this.payments.refund(user.id, paymentId, dto.amount, dto.note);
   }
 }

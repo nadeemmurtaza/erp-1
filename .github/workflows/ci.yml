@@ -16,11 +16,19 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  DATABASE_URL: postgresql://postgres:postgres@localhost:5432/yaseen_test?schema=public
+  # connection_limit/pool_timeout matter here: Prisma's default pool size is
+  # derived from the runner's CPU count and GitHub-hosted runners can land on
+  # as few as 3 connections, which the e2e concurrency tests (several
+  # simultaneous checkouts/bookings, each holding a connection for its whole
+  # transaction) exhaust — every request past the pool size then queues and
+  # times out waiting for one, surfacing as a 500 with nothing wrong in the
+  # code under test. Matches docker-compose.prod.yml's DATABASE_URL.
+  DATABASE_URL: postgresql://postgres:postgres@localhost:5432/yaseen_test?schema=public&connection_limit=10&pool_timeout=20&connect_timeout=10
   REDIS_URL: redis://localhost:6379
   JWT_ACCESS_SECRET: ci-access-secret-at-least-32-characters-long-000
   JWT_REFRESH_SECRET: ci-refresh-secret-at-least-32-characters-long-00
-  MODULES: catalog,measurements,cart,orders,payments,stitching,crm,analytics
+  APP_ENCRYPTION_KEY: ci-app-encryption-key-32-bytes00
+  MODULES: catalog,measurements,cart,orders,payments,stitching,crm,analytics,reports
   PAYMENT_PROVIDERS: cod,bank_transfer
   NOTIFICATION_CHANNELS: log
 

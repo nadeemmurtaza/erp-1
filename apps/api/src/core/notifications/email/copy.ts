@@ -49,6 +49,85 @@ export interface EmailCopy {
     intro: (orderNumber: string, status: string) => string;
     words: Record<string, string>;
   };
+  orderShipped: {
+    subject: (orderNumber: string) => string;
+    heading: string;
+    intro: (orderNumber: string) => string;
+  };
+  orderDelivered: {
+    subject: (orderNumber: string) => string;
+    heading: string;
+    intro: (orderNumber: string) => string;
+    note: string;
+  };
+  orderCancelled: {
+    subject: (orderNumber: string) => string;
+    heading: string;
+    intro: (orderNumber: string) => string;
+    refundNote: string;
+  };
+  paymentRefunded: {
+    subject: (orderNumber: string) => string;
+    heading: string;
+    intro: (orderNumber: string, amount: string) => string;
+  };
+  passwordChanged: {
+    subject: string;
+    heading: string;
+    intro: string;
+  };
+  passwordReset: {
+    subject: string;
+    heading: string;
+    intro: string;
+    cta: string;
+    expiry: string;
+  };
+  emailVerification: {
+    subject: string;
+    heading: string;
+    intro: string;
+    cta: string;
+  };
+  /** Default call-to-action for marketing mail with no order or reset link to point at. */
+  shopNow: string;
+  marketing: {
+    abandonedCartReminder: { subject: string; heading: string; intro: string; cta: string };
+    abandonedCartIncentive: {
+      subject: string;
+      heading: string;
+      intro: string;
+      cta: string;
+      discountTitle: string;
+      discountBody: (label: string) => string;
+    };
+    abandonedBrowse: { subject: string; heading: string; intro: string; cta: string };
+    reviewRequest: {
+      subject: string;
+      heading: string;
+      intro: (orderNumber: string) => string;
+      cta: string;
+    };
+    crossSell: {
+      subject: string;
+      heading: string;
+      intro: string;
+      introBasedOn: (basedOn: string) => string;
+      cta: string;
+    };
+    replenishment: {
+      subject: (productName: string) => string;
+      heading: string;
+      intro: (productName: string) => string;
+      cta: string;
+    };
+    campaign: {
+      holidayBadge: string;
+      launchBadge: string;
+      flashSaleBadge: string;
+      expiresNote: (expiresAt: string) => string;
+    };
+  };
   stitching: {
     readySubject: (garment: string) => string;
     stageSubject: (garment: string, stage: string) => string;
@@ -144,6 +223,102 @@ const en: EmailCopy = {
       DISPATCHED: 'on its way',
     },
   },
+  orderShipped: {
+    subject: (orderNumber) => `${orderNumber} is on its way`,
+    heading: 'Your order is on its way',
+    intro: (orderNumber) =>
+      `Order ${orderNumber} has left our workshop and is with the courier. It may take a day or two to reach you, and the courier may call to confirm delivery before it arrives.`,
+  },
+  orderDelivered: {
+    subject: (orderNumber) => `${orderNumber} has been delivered`,
+    heading: 'Delivered!',
+    intro: (orderNumber) => `Order ${orderNumber} has been delivered.`,
+    note: 'We hope you love it. If anything is not right, just reply to this email and we will sort it out.',
+  },
+  orderCancelled: {
+    subject: (orderNumber) => `${orderNumber} has been cancelled`,
+    heading: 'Your order was cancelled',
+    intro: (orderNumber) => `Order ${orderNumber} has been cancelled.`,
+    refundNote:
+      'Your payment for this order will be refunded. Our team will process it manually to your original payment method — you will get a separate email once it is done.',
+  },
+  paymentRefunded: {
+    subject: (orderNumber) => `Refund processed for ${orderNumber}`,
+    heading: 'Your refund has been processed',
+    intro: (orderNumber, amount) =>
+      `We have processed a refund of ${amount} for order ${orderNumber}. Depending on your bank, it can take a few business days to appear.`,
+  },
+  passwordChanged: {
+    subject: 'Your password was changed',
+    heading: 'Your password was changed',
+    intro:
+      'Your password was just changed. If this was you, no action is needed. If it was not, contact us right away — reply to this email.',
+  },
+  passwordReset: {
+    subject: 'Reset your password',
+    heading: 'Reset your password',
+    intro:
+      'We received a request to reset your password. Click the button below to choose a new one. If you did not request this, you can ignore this email.',
+    cta: 'Reset password',
+    expiry: 'This link expires in one hour.',
+  },
+  emailVerification: {
+    subject: 'Confirm your email address',
+    heading: 'Confirm your email address',
+    intro: 'Click the button below to confirm this is your email address.',
+    cta: 'Confirm email',
+  },
+  shopNow: 'Shop now',
+  marketing: {
+    abandonedCartReminder: {
+      subject: 'You left something in your cart',
+      heading: 'Still thinking it over?',
+      intro: 'You left these items in your cart. They are still here whenever you are ready.',
+      cta: 'Return to your cart',
+    },
+    abandonedCartIncentive: {
+      subject: 'A little something to complete your order',
+      heading: 'Your cart, with a discount',
+      intro:
+        'Your items are still waiting. Here is a discount to help you complete your order.',
+      cta: 'Complete your order',
+      discountTitle: 'Your discount',
+      discountBody: (label) => `Use this code at checkout: ${label}`,
+    },
+    abandonedBrowse: {
+      subject: 'Still interested in these?',
+      heading: 'Pick up where you left off',
+      intro: 'You looked at these recently. They are still available.',
+      cta: 'Continue browsing',
+    },
+    reviewRequest: {
+      subject: 'How was your order?',
+      heading: "We'd love your feedback",
+      intro: (orderNumber) =>
+        `Your order ${orderNumber} was delivered a little while ago. Would you take a minute to review what you bought?`,
+      cta: 'Write a review',
+    },
+    crossSell: {
+      subject: 'You might also like these',
+      heading: 'Picked for you',
+      intro: 'Based on what you have shopped for, these might be worth a look.',
+      introBasedOn: (basedOn) => `Since you bought ${basedOn}, these might be worth a look.`,
+      cta: 'Shop the picks',
+    },
+    replenishment: {
+      subject: (productName) => `Running low on ${productName}?`,
+      heading: 'Time for a restock?',
+      intro: (productName) =>
+        `It has been a while since you ordered ${productName}. If you are running low, it is one click away.`,
+      cta: 'Order again',
+    },
+    campaign: {
+      holidayBadge: 'Sale',
+      launchBadge: 'New arrival',
+      flashSaleBadge: 'Limited time',
+      expiresNote: (expiresAt) => `Offer ends ${expiresAt}.`,
+    },
+  },
   totals: {
     subtotal: 'Subtotal',
     stitching: 'Stitching',
@@ -236,6 +411,102 @@ const ur: EmailCopy = {
       QC: 'جانچ ہو رہی ہے',
       READY: 'تیار ہے',
       DISPATCHED: 'روانہ ہو چکا ہے',
+    },
+  },
+  orderShipped: {
+    subject: (orderNumber) => `${orderNumber} روانہ ہو چکا ہے`,
+    heading: 'آپ کا آرڈر روانہ ہو چکا ہے',
+    intro: (orderNumber) =>
+      `آرڈر ${orderNumber} ہماری ورکشاپ سے نکل کر کورئیر کے پاس پہنچ چکا ہے۔ آپ تک پہنچنے میں ایک یا دو دن لگ سکتے ہیں، اور کورئیر ڈیلیوری سے پہلے تصدیق کے لیے کال کر سکتا ہے۔`,
+  },
+  orderDelivered: {
+    subject: (orderNumber) => `${orderNumber} پہنچا دیا گیا`,
+    heading: 'ڈیلیور ہو گیا!',
+    intro: (orderNumber) => `آرڈر ${orderNumber} آپ تک پہنچا دیا گیا ہے۔`,
+    note: 'امید ہے آپ کو پسند آئے گا۔ اگر کچھ ٹھیک نہیں تو اس ای میل کا جواب دیں، ہم درست کر دیں گے۔',
+  },
+  orderCancelled: {
+    subject: (orderNumber) => `${orderNumber} منسوخ کر دیا گیا`,
+    heading: 'آپ کا آرڈر منسوخ ہو گیا',
+    intro: (orderNumber) => `آرڈر ${orderNumber} منسوخ کر دیا گیا ہے۔`,
+    refundNote:
+      'اس آرڈر کی ادائیگی آپ کو واپس کر دی جائے گی۔ ہماری ٹیم اسے آپ کے اصل ادائیگی کے طریقے پر دستی طور پر واپس کرے گی — مکمل ہونے پر آپ کو الگ ای میل موصول ہو گی۔',
+  },
+  paymentRefunded: {
+    subject: (orderNumber) => `${orderNumber} کی رقم واپس کر دی گئی`,
+    heading: 'آپ کی رقم واپس کر دی گئی ہے',
+    intro: (orderNumber, amount) =>
+      `ہم نے آرڈر ${orderNumber} کے لیے ${amount} کی رقم واپس کر دی ہے۔ آپ کے بینک کے مطابق اسے ظاہر ہونے میں چند کاروباری دن لگ سکتے ہیں۔`,
+  },
+  passwordChanged: {
+    subject: 'آپ کا پاس ورڈ تبدیل کر دیا گیا',
+    heading: 'آپ کا پاس ورڈ تبدیل کر دیا گیا',
+    intro:
+      'ابھی آپ کا پاس ورڈ تبدیل کیا گیا ہے۔ اگر یہ آپ نے کیا تو کوئی کارروائی درکار نہیں۔ اگر نہیں تو فوراً ہم سے رابطہ کریں — اس ای میل کا جواب دیں۔',
+  },
+  passwordReset: {
+    subject: 'اپنا پاس ورڈ ری سیٹ کریں',
+    heading: 'اپنا پاس ورڈ ری سیٹ کریں',
+    intro:
+      'ہمیں آپ کے پاس ورڈ کو ری سیٹ کرنے کی درخواست موصول ہوئی ہے۔ نیا پاس ورڈ منتخب کرنے کے لیے نیچے دیے گئے بٹن پر کلک کریں۔ اگر یہ درخواست آپ نے نہیں کی تو اس ای میل کو نظر انداز کریں۔',
+    cta: 'پاس ورڈ ری سیٹ کریں',
+    expiry: 'یہ لنک ایک گھنٹے میں ختم ہو جائے گا۔',
+  },
+  emailVerification: {
+    subject: 'اپنا ای میل ایڈریس تصدیق کریں',
+    heading: 'اپنا ای میل ایڈریس تصدیق کریں',
+    intro: 'یہ تصدیق کرنے کے لیے کہ یہ آپ کا ای میل ایڈریس ہے، نیچے دیے گئے بٹن پر کلک کریں۔',
+    cta: 'ای میل تصدیق کریں',
+  },
+  shopNow: 'ابھی خریداری کریں',
+  marketing: {
+    abandonedCartReminder: {
+      subject: 'آپ نے اپنے کارٹ میں کچھ چھوڑ دیا',
+      heading: 'ابھی تک سوچ رہے ہیں؟',
+      intro: 'آپ نے یہ اشیاء اپنے کارٹ میں چھوڑی ہیں۔ جب آپ تیار ہوں یہ یہیں موجود ہیں۔',
+      cta: 'اپنے کارٹ پر واپس جائیں',
+    },
+    abandonedCartIncentive: {
+      subject: 'آپ کا آرڈر مکمل کرنے کے لیے ایک تحفہ',
+      heading: 'آپ کا کارٹ، رعایت کے ساتھ',
+      intro: 'آپ کی اشیاء ابھی تک موجود ہیں۔ آرڈر مکمل کرنے میں مدد کے لیے یہ رعایت حاضر ہے۔',
+      cta: 'اپنا آرڈر مکمل کریں',
+      discountTitle: 'آپ کی رعایت',
+      discountBody: (label) => `چیک آؤٹ پر یہ کوڈ استعمال کریں: ${label}`,
+    },
+    abandonedBrowse: {
+      subject: 'کیا آپ اب بھی ان میں دلچسپی رکھتے ہیں؟',
+      heading: 'جہاں سے چھوڑا تھا وہیں سے شروع کریں',
+      intro: 'آپ نے حال ہی میں یہ دیکھی تھیں۔ یہ اب بھی دستیاب ہیں۔',
+      cta: 'خریداری جاری رکھیں',
+    },
+    reviewRequest: {
+      subject: 'آپ کا آرڈر کیسا رہا؟',
+      heading: 'ہمیں آپ کی رائے چاہیے',
+      intro: (orderNumber) =>
+        `آپ کا آرڈر ${orderNumber} کچھ عرصہ پہلے پہنچایا گیا تھا۔ کیا آپ اپنی خریداری پر رائے دینے کے لیے ایک منٹ نکالیں گے؟`,
+      cta: 'رائے لکھیں',
+    },
+    crossSell: {
+      subject: 'آپ کو یہ بھی پسند آ سکتی ہیں',
+      heading: 'آپ کے لیے منتخب',
+      intro: 'آپ کی خریداری کی بنیاد پر، یہ اشیاء دیکھنے کے قابل ہو سکتی ہیں۔',
+      introBasedOn: (basedOn) =>
+        `چونکہ آپ نے ${basedOn} خریدا، یہ اشیاء دیکھنے کے قابل ہو سکتی ہیں۔`,
+      cta: 'منتخب اشیاء دیکھیں',
+    },
+    replenishment: {
+      subject: (productName) => `${productName} ختم ہونے والا ہے؟`,
+      heading: 'دوبارہ اسٹاک کرنے کا وقت؟',
+      intro: (productName) =>
+        `آپ کو ${productName} خریدے کچھ عرصہ ہو گیا ہے۔ اگر ختم ہو رہا ہے تو ایک کلک پر دوبارہ منگوائیں۔`,
+      cta: 'دوبارہ آرڈر کریں',
+    },
+    campaign: {
+      holidayBadge: 'سیل',
+      launchBadge: 'نیا',
+      flashSaleBadge: 'محدود وقت',
+      expiresNote: (expiresAt) => `پیشکش ${expiresAt} کو ختم ہو رہی ہے۔`,
     },
   },
   totals: {

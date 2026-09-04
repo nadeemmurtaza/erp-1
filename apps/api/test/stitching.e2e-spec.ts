@@ -473,6 +473,37 @@ describe('Stitching operations (e2e)', () => {
       expect(new Set(numbers).size).toBe(2);
     });
 
+    it('gives simultaneous bookings distinct booking and job numbers', async () => {
+      // Bookings share nothing lockable (no stock, no shared row), so — unlike
+      // the checkout concurrency test — these genuinely race against each
+      // other with no help needed to make that happen.
+      const responses = await Promise.all(
+        Array.from({ length: 6 }, (_, i) =>
+          api()
+            .post('/api/v1/stitching/bookings')
+            .send({
+              name: `Concurrent Booking ${i}`,
+              phone: `0300${String(1000000 + i)}`,
+              garments: [
+                { garmentTypeId: kameezGarmentId, measurements: { length: 40, chest: 36 } },
+              ],
+            }),
+        ),
+      );
+
+      for (const response of responses) {
+        if (response.status === 201) createdBookingIds.push(response.body.id);
+      }
+
+      expect(responses.map((response) => response.status)).toEqual(responses.map(() => 201));
+
+      const bookingNumbers = responses.map((response) => response.body.number);
+      expect(new Set(bookingNumbers).size).toBe(bookingNumbers.length);
+
+      const jobNumbers = responses.map((response) => response.body.jobs[0].number);
+      expect(new Set(jobNumbers).size).toBe(jobNumbers.length);
+    });
+
     it('refuses a booking with no measurements', async () => {
       const response = await api()
         .post('/api/v1/stitching/bookings')

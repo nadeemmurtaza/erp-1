@@ -86,6 +86,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin',
     permissions: ['analytics.view'],
     group: 'home',
+    module: 'analytics',
   },
 
   // Group: Customers
@@ -95,6 +96,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/leads',
     permissions: ['crm.manage'],
     group: 'customers',
+    module: 'crm',
   },
   {
     key: 'contacts',
@@ -102,6 +104,15 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/contacts',
     permissions: ['crm.manage'],
     group: 'customers',
+    module: 'crm',
+  },
+  {
+    key: 'inbox',
+    label: 'Support Inbox',
+    href: '/admin/inbox',
+    permissions: ['crm.manage'],
+    group: 'customers',
+    module: 'crm',
   },
 
   // Group: Sales
@@ -111,6 +122,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/orders',
     permissions: ['orders.manage'],
     group: 'sales',
+    module: 'orders',
   },
   {
     key: 'payments',
@@ -118,8 +130,9 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/payments',
     permissions: ['payments.approve'],
     group: 'sales',
+    module: 'payments',
   },
-  
+
   // Group: Insights
   {
     key: 'reports',
@@ -127,6 +140,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/reports',
     permissions: ['reports.view'],
     group: 'insights',
+    module: 'reports',
   },
 
   // Group: Workshop
@@ -136,6 +150,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/stitching',
     permissions: ['stitching.jobs.view_queue'],
     group: 'workshop',
+    module: 'stitching',
   },
   {
     key: 'stitching-bookings',
@@ -143,6 +158,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/stitching/bookings',
     permissions: ['stitching.bookings.manage'],
     group: 'workshop',
+    module: 'stitching',
   },
 
   // Group: Catalogue
@@ -152,6 +168,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/import',
     permissions: ['catalog.manage'],
     group: 'catalogue',
+    module: 'catalog',
   },
   {
     key: 'products',
@@ -159,6 +176,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/products',
     permissions: ['catalog.manage'],
     group: 'catalogue',
+    module: 'catalog',
   },
   {
     key: 'categories',
@@ -166,6 +184,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/categories',
     permissions: ['catalog.manage'],
     group: 'catalogue',
+    module: 'catalog',
   },
   {
     key: 'garments',
@@ -173,6 +192,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/garments',
     permissions: ['measurements.manage_blueprints'],
     group: 'catalogue',
+    module: 'measurements',
   },
   {
     key: 'designs',
@@ -180,6 +200,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/designs',
     permissions: ['stitching.designs.manage'],
     group: 'catalogue',
+    module: 'stitching',
   },
 
   // Group: Inventory
@@ -189,6 +210,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/inventory',
     permissions: ['inventory.manage'],
     group: 'inventory',
+    module: 'inventory',
     children: [
       {
         key: 'inventory-reorder',
@@ -219,6 +241,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/purchase-orders',
     permissions: ['purchasing.manage'],
     group: 'inventory',
+    module: 'purchasing',
   },
   {
     key: 'suppliers',
@@ -226,6 +249,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/suppliers',
     permissions: ['suppliers.manage'],
     group: 'inventory',
+    module: 'purchasing',
   },
 
   // Group: Settings
@@ -251,6 +275,20 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'settings',
     module: 'tax',
   },
+  {
+    key: 'email-templates',
+    label: 'Email Templates',
+    href: '/admin/email-templates',
+    permissions: ['settings.manage'],
+    group: 'settings',
+  },
+  {
+    key: 'email-accounts',
+    label: 'Email Accounts',
+    href: '/admin/email-accounts',
+    permissions: ['settings.manage'],
+    group: 'settings',
+  },
 ];
 
 /**
@@ -264,15 +302,29 @@ export function landingFor(permissions: readonly string[] = []): string {
   return permissions.includes('analytics.view') ? '/admin' : '/admin/stitching';
 }
 
-export function navFor(permissions: readonly string[] = []): AdminNavItem[] {
+/**
+ * Filters the registry down to what a signed-in user actually sees:
+ * permission-gated (any listed permission is enough) AND, when an item
+ * names the API module that owns it, only shown if that module is on for
+ * this deployment — otherwise the entry points at a route that 404s. Pass
+ * `enabledModules` from `GET /meta` (see admin-client.ts's session bootstrap);
+ * omitting it (or passing `null`) treats every module as enabled, so callers
+ * that haven't fetched it yet fail open to permissions-only filtering rather
+ * than hiding everything.
+ */
+export function navFor(
+  permissions: readonly string[] = [],
+  enabledModules?: readonly string[] | null,
+): AdminNavItem[] {
   permissions = permissions || [];
-  return ADMIN_NAV.filter(
-    (item) => !item.permissions || item.permissions.some((key) => permissions.includes(key)),
-  ).map(item => {
+  const hasPermission = (item: AdminNavItem) =>
+    !item.permissions || item.permissions.some((key) => permissions.includes(key));
+  const moduleOn = (item: AdminNavItem) =>
+    !item.module || !enabledModules || enabledModules.includes(item.module);
+
+  return ADMIN_NAV.filter((item) => hasPermission(item) && moduleOn(item)).map((item) => {
     if (!item.children) return item;
-    const filteredChildren = item.children.filter(
-      (child) => !child.permissions || child.permissions.some((key) => permissions.includes(key)),
-    );
+    const filteredChildren = item.children.filter((child) => hasPermission(child) && moduleOn(child));
     return { ...item, children: filteredChildren };
   });
 }

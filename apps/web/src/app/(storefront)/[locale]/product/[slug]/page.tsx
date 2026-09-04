@@ -2,12 +2,16 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { computeFabricEstimate, type Locale } from '@yaseen/shared';
+import { JsonLd } from '@/components/storefront/json-ld';
 import { ProductGallery } from '@/components/storefront/product-gallery';
 import { ProductPurchase, type FabricNeedRow } from '@/components/storefront/product-purchase';
+import { businessProfile } from '@/config/business-profile';
 import { Link } from '@/i18n/navigation';
 import { API_URL, ApiError, getProduct, getStitchingServices } from '@/lib/api';
 import type { StorefrontProduct } from '@/lib/api-types';
 import type { StitchingGarment } from '@/lib/cart-types';
+import { absoluteUrl, alternateLanguages, canonicalUrl } from '@/lib/seo';
+import { SITE_URL } from '@/lib/site';
 
 export const revalidate = 120;
 
@@ -30,14 +34,75 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!product) return {};
 
+  const path = `/product/${slug}`;
+
   return {
     title: product.name,
     description: product.description ?? undefined,
+    alternates: {
+      canonical: canonicalUrl(path, locale),
+      languages: alternateLanguages(path),
+    },
     openGraph: {
       title: product.name,
       description: product.description ?? undefined,
       images: product.images[0] ? [{ url: product.images[0].url }] : undefined,
     },
+  };
+}
+
+/** schema.org Product + an Offer per variant, so price/stock per size-color shows in search results. */
+function productJsonLd(product: StorefrontProduct, locale: string) {
+  const variantOffers = product.variants.length > 0 ? product.variants : null;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.description ?? undefined,
+    image: product.images.map((image) => absoluteUrl(image.url)),
+    sku: variantOffers?.[0]?.sku,
+    brand: product.brand ? { '@type': 'Brand', name: product.brand } : undefined,
+    offers: variantOffers
+      ? variantOffers.map((variant) => ({
+          '@type': 'Offer',
+          sku: variant.sku,
+          url: canonicalUrl(`/product/${product.slug}`, locale),
+          priceCurrency: businessProfile.currency.code,
+          price: (variant.price / 100).toFixed(2),
+          availability: variant.inStock
+            ? 'https://schema.org/InStock'
+            : 'https://schema.org/OutOfStock',
+        }))
+      : {
+          '@type': 'Offer',
+          url: canonicalUrl(`/product/${product.slug}`, locale),
+          priceCurrency: businessProfile.currency.code,
+          price: (product.basePrice / 100).toFixed(2),
+          availability: product.inStock
+            ? 'https://schema.org/InStock'
+            : 'https://schema.org/OutOfStock',
+        },
+  };
+}
+
+/** BreadcrumbList mirroring the on-page breadcrumb (shop → category → product). */
+function breadcrumbJsonLd(product: StorefrontProduct, locale: string) {
+  const items = [
+    { name: 'Shop', path: '/shop' },
+    ...(product.category ? [{ name: product.category.name, path: `/shop?category=${product.category.slug}` }] : []),
+    { name: product.name, path: `/product/${product.slug}` },
+  ];
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: `${SITE_URL}/${locale}${item.path}`,
+    })),
   };
 }
 
@@ -111,6 +176,8 @@ export default async function ProductPage({ params }: PageProps) {
     // ProductPurchase's own sticky "Add to cart" bar, which floats above it —
     // dropped back to pb-8 at md: where both are hidden.
     <div className="container-page pb-40 pt-8 md:pb-8">
+      <JsonLd data={productJsonLd(product, locale)} />
+      <JsonLd data={breadcrumbJsonLd(product, locale)} />
       {/*
         Hidden on mobile: the gallery's floating circular back button covers
         this there, and the full-bleed hero reads better without a text row

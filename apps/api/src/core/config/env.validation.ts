@@ -44,6 +44,19 @@ export const envSchema = z.object({
   JWT_ACCESS_TTL: z.string().default('15m'),
   JWT_REFRESH_TTL: z.string().default('30d'),
 
+  /**
+   * AES-256-GCM key for secrets stored in the database — today, an
+   * EmailAccount's SMTP/IMAP passwords (core/security/secret-crypto.ts).
+   * Exactly 32 bytes, distinct from the JWT secrets: rotating one must never
+   * silently break the other. Generate with:
+   *   openssl rand -base64 24 | head -c 32
+   */
+  APP_ENCRYPTION_KEY: z
+    .string()
+    .refine((value) => Buffer.from(value, 'utf8').length === 32, {
+      message: 'APP_ENCRYPTION_KEY must be exactly 32 bytes',
+    }),
+
   MODULES: csv(
     'catalog,measurements,cart,orders,payments,stitching,inventory,crm,analytics,reports,tracking',
   ),
@@ -130,6 +143,12 @@ export function validateEnv(raw: Record<string, unknown>): Env {
     result.data.JWT_ACCESS_SECRET.includes('change-me')
   ) {
     throw new Error('Refusing to start in production with the example JWT secrets.');
+  }
+
+  if (result.data.NODE_ENV === 'production' &&
+    result.data.APP_ENCRYPTION_KEY.toLowerCase().includes('change-me')
+  ) {
+    throw new Error('Refusing to start in production with the example APP_ENCRYPTION_KEY.');
   }
 
   if (result.data.NOTIFICATION_CHANNELS.includes('email')) {

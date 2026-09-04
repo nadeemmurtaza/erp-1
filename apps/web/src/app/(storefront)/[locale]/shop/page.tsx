@@ -7,6 +7,7 @@ import { Link } from '@/i18n/navigation';
 import { getFacets, getProducts } from '@/lib/api';
 import { AnimatedSection } from '@/components/storefront/animated-section';
 import type { ProductListQuery } from '@/lib/api-types';
+import { alternateLanguages, canonicalUrl } from '@/lib/seo';
 
 export const revalidate = 120;
 
@@ -18,8 +19,21 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'shop' });
-  return { title: t('title') };
+  const [t, tSite] = await Promise.all([
+    getTranslations({ locale, namespace: 'shop' }),
+    getTranslations({ locale, namespace: 'site' }),
+  ]);
+
+  return {
+    title: t('title'),
+    description: tSite('tagline'),
+    // Canonicalizes to the bare listing regardless of ?category=/?sort=/etc
+    // query params, so filtered views never compete with it as duplicates.
+    alternates: {
+      canonical: canonicalUrl('/shop', locale),
+      languages: alternateLanguages('/shop'),
+    },
+  };
 }
 
 /** Reads one query parameter, taking the first value if it repeats. */

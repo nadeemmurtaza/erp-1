@@ -1,4 +1,5 @@
 import { formatMoney } from '@yaseen/shared';
+import { EMAIL_TEMPLATE_CATALOG } from './catalog';
 import { renderEmail, type EmailContext, type OrderEmailData } from './templates';
 
 const ctx: EmailContext = {
@@ -168,6 +169,175 @@ describe('payment failed email', () => {
 
     expect(mail.html).toContain('dir="rtl"');
     expect(mail.html).toContain('ادائیگی مکمل نہیں ہوئی');
+  });
+});
+
+describe('dedicated order-status emails', () => {
+  it('renders a shipping confirmation that also covers "on the way"', () => {
+    const mail = renderEmail('order.shipped', { orderNumber: 'YSN-2026-0184', status: 'SHIPPED' }, 'en', ctx)!;
+    expect(mail.subject).toBe('YSN-2026-0184 is on its way');
+    expect(mail.html).toContain('on its way');
+    expect(mail.html).toContain('YSN-2026-0184');
+  });
+
+  it('renders a delivered confirmation', () => {
+    const mail = renderEmail(
+      'order.delivered',
+      { orderNumber: 'YSN-2026-0184', status: 'DELIVERED' },
+      'en',
+      ctx,
+    )!;
+    expect(mail.subject).toBe('YSN-2026-0184 has been delivered');
+    expect(mail.html).toContain('Delivered!');
+  });
+
+  it('renders a cancellation notice, adding a refund note only when one is owed', () => {
+    const withoutRefund = renderEmail(
+      'order.cancelled',
+      { orderNumber: 'YSN-2026-0184', status: 'CANCELLED', awaitingRefund: false },
+      'en',
+      ctx,
+    )!;
+    expect(withoutRefund.html).not.toContain('refunded');
+
+    const withRefund = renderEmail(
+      'order.cancelled',
+      { orderNumber: 'YSN-2026-0184', status: 'CANCELLED', awaitingRefund: true },
+      'en',
+      ctx,
+    )!;
+    expect(withRefund.html).toContain('refunded');
+  });
+
+  it('renders in Urdu', () => {
+    const mail = renderEmail(
+      'order.shipped',
+      { orderNumber: 'YSN-2026-0184', status: 'SHIPPED' },
+      'ur',
+      ctx,
+    )!;
+    expect(mail.html).toContain('dir="rtl"');
+  });
+});
+
+describe('payment refunded email', () => {
+  it('names the order and the refunded amount', () => {
+    const mail = renderEmail(
+      'payment.refunded',
+      { orderNumber: 'YSN-2026-0184', amount: 349900 },
+      'en',
+      ctx,
+    )!;
+    expect(mail.subject).toBe('Refund processed for YSN-2026-0184');
+    expect(mail.html).toContain(formatMoney(349900, 'en'));
+  });
+});
+
+describe('account security emails', () => {
+  it('renders a password-changed confirmation with no data required', () => {
+    const mail = renderEmail('user.password_changed', {}, 'en', ctx)!;
+    expect(mail.subject).toBe('Your password was changed');
+  });
+
+  it('renders a password-reset email with a working link', () => {
+    const mail = renderEmail('user.password_reset', { token: 'abc123' }, 'en', ctx)!;
+    expect(mail.subject).toBe('Reset your password');
+    expect(mail.html).toContain('https://yaseen.pk/en/reset-password?token=abc123');
+  });
+
+  it('renders an email-verification email with a working link', () => {
+    const mail = renderEmail('user.email_verification', { token: 'xyz789' }, 'en', ctx)!;
+    expect(mail.subject).toBe('Confirm your email address');
+    expect(mail.html).toContain('https://yaseen.pk/en/verify-email?token=xyz789');
+  });
+});
+
+describe('marketing templates', () => {
+  const items = [{ name: 'Lawn 3-Piece', quantity: 1, lineTotal: 449900 }];
+  const products = [{ name: 'Chiffon Dupatta', price: 'Rs 1,299' }];
+
+  it('renders both abandoned-cart emails, the incentive one adding the discount code', () => {
+    const reminder = renderEmail(
+      'marketing.abandoned_cart_reminder',
+      { items, cartUrl: 'https://yaseen.pk/en/cart' },
+      'en',
+      ctx,
+    )!;
+    expect(reminder.html).toContain('Lawn 3-Piece');
+    expect(reminder.html).not.toContain('discount');
+
+    const incentive = renderEmail(
+      'marketing.abandoned_cart_incentive',
+      { items, cartUrl: 'https://yaseen.pk/en/cart', discountCode: 'COMEBACK10', discountLabel: '10% off' },
+      'en',
+      ctx,
+    )!;
+    expect(incentive.html).toContain('COMEBACK10');
+    expect(incentive.html).toContain('10% off');
+  });
+
+  it('renders abandoned browse, review request and cross-sell from a product list', () => {
+    expect(renderEmail('marketing.abandoned_browse', { products }, 'en', ctx)!.html).toContain(
+      'Chiffon Dupatta',
+    );
+    expect(
+      renderEmail('marketing.review_request', { orderNumber: 'YSN-2026-0184', items: products }, 'en', ctx)!
+        .html,
+    ).toContain('YSN-2026-0184');
+    expect(
+      renderEmail('marketing.cross_sell', { basedOn: 'a Lawn Suit', products }, 'en', ctx)!.html,
+    ).toContain('a Lawn Suit');
+  });
+
+  it('renders a replenishment reminder naming the product', () => {
+    const mail = renderEmail(
+      'marketing.replenishment_reminder',
+      { product: { name: 'Cotton Dupatta' } },
+      'en',
+      ctx,
+    )!;
+    expect(mail.subject).toContain('Cotton Dupatta');
+  });
+
+  it('renders the three campaign templates from admin-authored content', () => {
+    const data = {
+      headline: 'Eid Sale — up to 40% off',
+      message: 'Shop the sale before it ends.',
+      ctaLabel: 'Shop now',
+      ctaUrl: 'https://yaseen.pk/en/sale',
+    };
+
+    for (const key of ['marketing.holiday_sale', 'marketing.new_product_launch', 'marketing.flash_sale']) {
+      const mail = renderEmail(key, data, 'en', ctx)!;
+      expect(mail.subject).toBe(data.headline);
+      expect(mail.html).toContain('Shop the sale before it ends.');
+      expect(mail.html).toContain('https://yaseen.pk/en/sale');
+    }
+  });
+
+  it('renders a flash sale expiry note only when one is given', () => {
+    const withExpiry = renderEmail(
+      'marketing.flash_sale',
+      { headline: 'Flash sale', message: 'Hurry.', expiresAt: 'tonight' },
+      'en',
+      ctx,
+    )!;
+    expect(withExpiry.html).toContain('tonight');
+
+    const without = renderEmail('marketing.flash_sale', { headline: 'Flash sale', message: 'Hurry.' }, 'en', ctx)!;
+    expect(without.html).not.toContain('Offer ends');
+  });
+});
+
+describe('email template catalog', () => {
+  it('has a working renderer for every catalog entry, in both languages', () => {
+    for (const entry of EMAIL_TEMPLATE_CATALOG) {
+      for (const locale of ['en', 'ur'] as const) {
+        const mail = renderEmail(entry.key, entry.sampleData, locale, ctx);
+        expect(mail).not.toBeNull();
+        expect(mail!.subject.length).toBeGreaterThan(0);
+      }
+    }
   });
 });
 

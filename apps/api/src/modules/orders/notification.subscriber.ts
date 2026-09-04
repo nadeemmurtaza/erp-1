@@ -31,6 +31,24 @@ import { PrismaService } from '../../core/prisma/prisma.service';
  */
 const STATUSES_WORTH_AN_EMAIL = new Set(['SHIPPED', 'DELIVERED', 'CANCELLED', 'RETURNED']);
 
+/**
+ * Some statuses get their own dedicated template rather than the generic
+ * "your order is now X" one — a real shipping-confirmation layout, not a
+ * sentence with the status word swapped in. Anything not listed here (today:
+ * RETURNED) falls back to the generic 'order.status_changed' template.
+ *
+ * SHIPPED's copy also covers "out for delivery": the schema has no distinct
+ * status between SHIPPED and DELIVERED (adding one would mean a new courier
+ * hand-off signal nothing currently produces), so the shipped mail is worded
+ * to cover the whole "on its way" window rather than promising a second mail
+ * that nothing would ever trigger.
+ */
+const STATUS_TEMPLATE: Record<string, string> = {
+  SHIPPED: 'order.shipped',
+  DELIVERED: 'order.delivered',
+  CANCELLED: 'order.cancelled',
+};
+
 @Injectable()
 export class OrderNotificationSubscriber {
   private readonly logger = new Logger(OrderNotificationSubscriber.name);
@@ -158,6 +176,11 @@ export class OrderNotificationSubscriber {
         guestEmail: true,
         guestPhone: true,
         user: { select: { email: true } },
+        payments: {
+          select: { provider: true, status: true },
+          orderBy: { createdAt: 'desc' },
+          take: 1,
+        },
       },
     });
 
@@ -165,9 +188,14 @@ export class OrderNotificationSubscriber {
     if (!order || !email) return;
 
     const locale = await this.localeFor(order.userId);
+    const template = STATUS_TEMPLATE[payload.toStatus] ?? 'order.status_changed';
+    const payment = order.payments[0];
+    // A COD order was never paid, so there is nothing to refund; anything
+    // else that reached PAID owes the customer their money back.
+    const awaitingRefund = payload.toStatus === 'CANCELLED' && payment?.status === 'PAID';
 
     await this.notifications.send({
-      template: 'order.status_changed',
+      template,
       recipient: {
         name: order.guestName,
         email,
@@ -177,7 +205,7 @@ export class OrderNotificationSubscriber {
       },
       subject: `${order.number} — ${payload.toStatus.toLowerCase()}`,
       body: `Order ${order.number} is now ${payload.toStatus.toLowerCase()}.`,
-      data: { orderNumber: order.number, status: payload.toStatus },
+      data: { orderNumber: order.number, status: payload.toStatus, awaitingRefund },
     });
   }
 

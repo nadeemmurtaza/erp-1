@@ -182,3 +182,23 @@ model Shipment {
   @@index([orderId])
   @@index([trackingNumber])
 }
+
+/// Backing store for sequential per-year order numbers (YSN-2026-0001). One
+/// row per year; `counter` is incremented via a single atomic
+/// `INSERT ... ON CONFLICT DO UPDATE ... RETURNING`, which Postgres
+/// serialises at the row level — no application-side lock or transaction
+/// needed. See nextOrderNumber() in orders.service.ts for why: an earlier
+/// version derived the next number by reading MAX(Order.number), which is a
+/// read-then-write race (two concurrent checkouts could read the same max),
+/// and a later version tried to fix that with an advisory lock — but the
+/// lock has to span both the read AND the eventual Order insert to mean
+/// anything, and by the time that insert happens the checkout has moved on
+/// to unrelated work (inventory, payment, cart) that has nothing to do with
+/// numbering. A counter reserves the number as its own atomic step, so it is
+/// correct regardless of what the rest of checkout does afterwards — the
+/// same way a gap appears after any failed insert on an auto-increment key
+/// if the reserving checkout never completes.
+model OrderNumberCounter {
+  year    Int @id
+  counter Int @default(0)
+}

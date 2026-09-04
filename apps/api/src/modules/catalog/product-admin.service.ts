@@ -356,6 +356,31 @@ export class ProductAdminService {
     });
   }
 
+  /**
+   * Alt text is the one thing addImage() cannot get right on its own — a
+   * filename is not a description of what's in the photo. Editable after
+   * the fact, so staff can fix it without re-uploading.
+   */
+  async updateImageAlt(actorId: string, imageId: string, alt: string) {
+    const image = await this.prisma.productImage.findUnique({ where: { id: imageId } });
+    if (!image) throw new NotFoundException('That image no longer exists.');
+
+    const updated = await this.prisma.productImage.update({
+      where: { id: imageId },
+      data: { alt: alt.trim() || null },
+    });
+
+    await this.audit.record({
+      actorId,
+      action: 'product.image_alt_updated',
+      entity: 'Product',
+      entityId: image.productId,
+      data: { imageId },
+    });
+
+    return updated;
+  }
+
   async deleteImage(imageId: string): Promise<void> {
     const image = await this.prisma.productImage.findUnique({ where: { id: imageId } });
     if (!image) throw new NotFoundException('That image no longer exists.');

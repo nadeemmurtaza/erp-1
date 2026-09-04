@@ -7,7 +7,8 @@
 
 // Mock nodemailer BEFORE any imports that use it
 const mockSendMail = jest.fn().mockResolvedValue({ messageId: 'test-msg-id' });
-const mockCreateTransport = jest.fn().mockReturnValue({ sendMail: mockSendMail });
+const mockClose = jest.fn();
+const mockCreateTransport = jest.fn().mockReturnValue({ sendMail: mockSendMail, close: mockClose });
 
 jest.mock('nodemailer', () => ({
   createTransport: (...args: unknown[]) => mockCreateTransport(...args),
@@ -16,7 +17,9 @@ jest.mock('nodemailer', () => ({
 import { Logger } from '@nestjs/common';
 import { validateEnv } from '../src/core/config/env.validation';
 import { EmailChannel, isDeliverable } from '../src/core/notifications/email.channel';
+import type { EmailAccountsService } from '../src/core/notifications/email-accounts/email-accounts.service';
 import type { AppConfigService } from '../src/core/config/app-config.service';
+import type { EmailAccount } from '../src/core/prisma/client';
 
 // ── 1. Env validation: cross-field check ─────────────────────────────────────
 
@@ -24,6 +27,7 @@ const base = {
   DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/yaseen',
   JWT_ACCESS_SECRET: 'a'.repeat(40),
   JWT_REFRESH_SECRET: 'b'.repeat(40),
+  APP_ENCRYPTION_KEY: 'c'.repeat(32),
 };
 
 describe('env.validation — email cross-field check', () => {
@@ -145,20 +149,58 @@ function fakeConfig(overrides: Record<string, unknown> = {}): AppConfigService {
   } as unknown as AppConfigService;
 }
 
+/** No connected mailbox configured by default — exercises the SMTP_* fallback path most tests rely on. */
+function fakeAccounts(
+  resolveResult: { account: EmailAccount; password: string } | null = null,
+): EmailAccountsService {
+  return {
+    resolveFor: jest.fn().mockResolvedValue(resolveResult),
+  } as unknown as EmailAccountsService;
+}
+
+function fakeEmailAccount(overrides: Partial<EmailAccount> = {}): EmailAccount {
+  return {
+    id: 'acct_1',
+    label: 'Marketing PK',
+    purpose: 'MARKETING',
+    isActive: true,
+    isDefault: true,
+    fromName: 'Yaseen Deals',
+    fromEmail: 'deals@yaseen.pk',
+    replyTo: null,
+    smtpHost: 'smtp.marketing.example',
+    smtpPort: 587,
+    smtpSecure: false,
+    smtpUser: 'deals-user',
+    smtpPasswordEncrypted: 'irrelevant-already-decrypted-by-the-service',
+    smtpVerifiedAt: null,
+    imapHost: null,
+    imapPort: null,
+    imapSecure: true,
+    imapUser: null,
+    imapPasswordEncrypted: null,
+    imapVerifiedAt: null,
+    createdAt: new Date('2026-01-01'),
+    updatedAt: new Date('2026-01-01'),
+    ...overrides,
+  } as EmailAccount;
+}
+
 beforeEach(() => {
   mockSendMail.mockClear();
+  mockClose.mockClear();
   mockCreateTransport.mockClear();
-  mockCreateTransport.mockReturnValue({ sendMail: mockSendMail });
+  mockCreateTransport.mockReturnValue({ sendMail: mockSendMail, close: mockClose });
 });
 
 describe('EmailChannel — interface contract', () => {
   it('name is "email"', () => {
-    const ch = new EmailChannel(fakeConfig());
+    const ch = new EmailChannel(fakeConfig(), fakeAccounts());
     expect(ch.name).toBe('email');
   });
 
   it('builds the transporter once, at construction, from the SMTP config', () => {
-    new EmailChannel(fakeConfig());
+    new EmailChannel(fakeConfig(), fakeAccounts());
 
     expect(mockCreateTransport).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -172,7 +214,7 @@ describe('EmailChannel — interface contract', () => {
   });
 
   it('leaves auth undefined when SMTP_USER or SMTP_PASSWORD is missing', () => {
-    new EmailChannel(fakeConfig({ SMTP_USER: undefined }));
+    new EmailChannel(fakeConfig({ SMTP_USER: undefined }), fakeAccounts());
 
     expect(mockCreateTransport).toHaveBeenCalledWith(
       expect.objectContaining({ auth: undefined }),
@@ -183,7 +225,7 @@ describe('EmailChannel — interface contract', () => {
     const warnSpy = jest.spyOn(Logger.prototype, 'warn').mockImplementation();
     mockCreateTransport.mockClear();
 
-    new EmailChannel(fakeConfig({ SMTP_HOST: undefined }));
+    new EmailChannel(fakeConfig({ SMTP_HOST: undefined }), fakeAccounts());
 
     expect(mockCreateTransport).not.toHaveBeenCalled();
     expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('SMTP_HOST is not set'));
@@ -193,14 +235,14 @@ describe('EmailChannel — interface contract', () => {
   it('warns at construction when MAIL_FROM sends as a free-mail domain', () => {
     const errorSpy = jest.spyOn(Logger.prototype, 'error').mockImplementation();
 
-    new EmailChannel(fakeConfig({ MAIL_FROM: 'Store <no-reply@gmail.com>' }));
+    new EmailChannel(fakeConfig({ MAIL_FROM: 'Store <no-reply@gmail.com>' }), fakeAccounts());
 
     expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('@gmail.com'));
     errorSpy.mockRestore();
   });
 
   it('supports() returns true when there is a transporter and a deliverable email', () => {
-    const ch = new EmailChannel(fakeConfig());
+    const ch = new EmailChannel(fakeConfig(), fakeAccounts());
     expect(
       ch.supports({
         template: 'order.placed',
@@ -212,7 +254,7 @@ describe('EmailChannel — interface contract', () => {
   });
 
   it('supports() returns false when recipient has no email', () => {
-    const ch = new EmailChannel(fakeConfig());
+    const ch = new EmailChannel(fakeConfig(), fakeAccounts());
     expect(
       ch.supports({
         template: 'order.placed',
@@ -224,7 +266,7 @@ describe('EmailChannel — interface contract', () => {
   });
 
   it('supports() returns false when the recipient email is not shaped like one', () => {
-    const ch = new EmailChannel(fakeConfig());
+    const ch = new EmailChannel(fakeConfig(), fakeAccounts());
     expect(
       ch.supports({
         template: 'order.placed',
@@ -235,8 +277,8 @@ describe('EmailChannel — interface contract', () => {
     ).toBe(false);
   });
 
-  it('supports() returns false when there is no transporter at all', () => {
-    const ch = new EmailChannel(fakeConfig({ SMTP_HOST: undefined }));
+  it('supports() is unaffected by SMTP configuration — availability is resolved per-send, not at construction', () => {
+    const ch = new EmailChannel(fakeConfig({ SMTP_HOST: undefined }), fakeAccounts());
     expect(
       ch.supports({
         template: 'order.placed',
@@ -244,11 +286,11 @@ describe('EmailChannel — interface contract', () => {
         subject: 'Order confirmed',
         body: 'Thanks!',
       }),
-    ).toBe(false);
+    ).toBe(true);
   });
 
-  it('send() does nothing when there is no transporter', async () => {
-    const ch = new EmailChannel(fakeConfig({ SMTP_HOST: undefined }));
+  it('send() does nothing when there is neither a connected mailbox nor an SMTP_* fallback', async () => {
+    const ch = new EmailChannel(fakeConfig({ SMTP_HOST: undefined }), fakeAccounts());
 
     await ch.send({
       template: 'order.placed',
@@ -261,7 +303,7 @@ describe('EmailChannel — interface contract', () => {
   });
 
   it('send() builds a hardened message: envelope, Message-ID domain, and anti-autoresponder headers', async () => {
-    const ch = new EmailChannel(fakeConfig());
+    const ch = new EmailChannel(fakeConfig(), fakeAccounts());
 
     await ch.send({
       template: 'user.welcome',
@@ -290,7 +332,7 @@ describe('EmailChannel — interface contract', () => {
   });
 
   it('send() sends to a plain address when the recipient has no name', async () => {
-    const ch = new EmailChannel(fakeConfig());
+    const ch = new EmailChannel(fakeConfig(), fakeAccounts());
 
     await ch.send({
       template: 'user.welcome',
@@ -303,7 +345,7 @@ describe('EmailChannel — interface contract', () => {
   });
 
   it('send() renders a registered template rather than the raw subject/body', async () => {
-    const ch = new EmailChannel(fakeConfig());
+    const ch = new EmailChannel(fakeConfig(), fakeAccounts());
 
     await ch.send({
       template: 'user.welcome',
@@ -320,7 +362,7 @@ describe('EmailChannel — interface contract', () => {
   });
 
   it('send() falls back to a plain wrapped message for an unregistered template', async () => {
-    const ch = new EmailChannel(fakeConfig());
+    const ch = new EmailChannel(fakeConfig(), fakeAccounts());
 
     await ch.send({
       template: 'nope.not_a_template',
@@ -336,7 +378,7 @@ describe('EmailChannel — interface contract', () => {
   });
 
   it('reuses the transporter across multiple sends', async () => {
-    const ch = new EmailChannel(fakeConfig());
+    const ch = new EmailChannel(fakeConfig(), fakeAccounts());
     mockCreateTransport.mockClear();
 
     await ch.send({
@@ -361,7 +403,7 @@ describe('EmailChannel — interface contract', () => {
       sendMail: jest.fn().mockRejectedValue(new Error('Connection refused')),
     });
 
-    const ch = new EmailChannel(fakeConfig());
+    const ch = new EmailChannel(fakeConfig(), fakeAccounts());
 
     await expect(
       ch.send({
@@ -381,6 +423,7 @@ describe('EmailChannel — interface contract', () => {
         SMTP_SECURE: true,
         SMTP_USER: 'api_token',
       }),
+      fakeAccounts(),
     );
 
     expect(mockCreateTransport).toHaveBeenCalledWith(
@@ -391,6 +434,124 @@ describe('EmailChannel — interface contract', () => {
         auth: { user: 'api_token', pass: 'pass' },
       }),
     );
+  });
+});
+
+// ── 5. Connected-mailbox routing (EmailAccountsService) ───────────────────────
+
+describe('EmailChannel — routes through a connected mailbox when one is configured', () => {
+  it('asks EmailAccountsService for the template’s purpose, and sends from that account rather than SMTP_*', async () => {
+    const account = fakeEmailAccount();
+    const accounts = fakeAccounts({ account, password: 'decrypted-pass' });
+    const ch = new EmailChannel(fakeConfig(), accounts);
+    mockCreateTransport.mockClear();
+
+    await ch.send({
+      template: 'marketing.flash_sale',
+      recipient: { email: 'customer@gmail.com' },
+      subject: 'Fallback',
+      body: 'Fallback',
+    });
+
+    expect(accounts.resolveFor).toHaveBeenCalledWith('MARKETING');
+    expect(mockCreateTransport).toHaveBeenCalledWith(
+      expect.objectContaining({
+        host: 'smtp.marketing.example',
+        port: 587,
+        secure: false,
+        auth: { user: 'deals-user', pass: 'decrypted-pass' },
+      }),
+    );
+
+    const call = mockSendMail.mock.calls[0][0];
+    expect(call.from).toBe('Yaseen Deals <deals@yaseen.pk>');
+    expect(call.envelope).toEqual({ from: 'deals@yaseen.pk', to: 'customer@gmail.com' });
+  });
+
+  it('resolves a transactional template to the TRANSACTIONAL purpose', async () => {
+    const accounts = fakeAccounts(null);
+    const ch = new EmailChannel(fakeConfig(), accounts);
+
+    await ch.send({
+      template: 'user.welcome',
+      recipient: { email: 'customer@gmail.com' },
+      subject: 'Fallback',
+      body: 'Fallback',
+    });
+
+    expect(accounts.resolveFor).toHaveBeenCalledWith('TRANSACTIONAL');
+  });
+
+  it('falls back to SMTP_* when EmailAccountsService has nothing configured for the purpose', async () => {
+    const ch = new EmailChannel(fakeConfig(), fakeAccounts(null));
+
+    await ch.send({
+      template: 'marketing.flash_sale',
+      recipient: { email: 'customer@gmail.com' },
+      subject: 'Fallback',
+      body: 'Fallback',
+    });
+
+    expect(mockSendMail.mock.calls[0][0].from).toBe('Store <no-reply@test.com>');
+  });
+
+  it('reuses the cached transporter for the same account across sends, and rebuilds it once the account changes', async () => {
+    const account = fakeEmailAccount();
+    const accounts = fakeAccounts({ account, password: 'decrypted-pass' });
+    const ch = new EmailChannel(fakeConfig(), accounts);
+    mockCreateTransport.mockClear();
+
+    await ch.send({
+      template: 'marketing.flash_sale',
+      recipient: { email: 'a@gmail.com' },
+      subject: 'First',
+      body: 'First',
+    });
+    await ch.send({
+      template: 'marketing.flash_sale',
+      recipient: { email: 'b@gmail.com' },
+      subject: 'Second',
+      body: 'Second',
+    });
+    expect(mockCreateTransport).toHaveBeenCalledTimes(1);
+
+    // A password rotation bumps updatedAt — must not send on stale creds.
+    const rotated = fakeEmailAccount({ updatedAt: new Date('2026-02-01') });
+    (accounts.resolveFor as jest.Mock).mockResolvedValue({
+      account: rotated,
+      password: 'new-password',
+    });
+
+    await ch.send({
+      template: 'marketing.flash_sale',
+      recipient: { email: 'c@gmail.com' },
+      subject: 'Third',
+      body: 'Third',
+    });
+
+    expect(mockCreateTransport).toHaveBeenCalledTimes(2);
+    expect(mockCreateTransport).toHaveBeenLastCalledWith(
+      expect.objectContaining({ auth: { user: 'deals-user', pass: 'new-password' } }),
+    );
+  });
+
+  it('falls back to SMTP_* and logs a warning when EmailAccountsService itself throws', async () => {
+    const accounts: EmailAccountsService = {
+      resolveFor: jest.fn().mockRejectedValue(new Error('DB unreachable')),
+    } as unknown as EmailAccountsService;
+    const errorSpy = jest.spyOn(Logger.prototype, 'error').mockImplementation();
+    const ch = new EmailChannel(fakeConfig(), accounts);
+
+    await ch.send({
+      template: 'user.welcome',
+      recipient: { email: 'customer@gmail.com' },
+      subject: 'Fallback',
+      body: 'Fallback',
+    });
+
+    expect(mockSendMail.mock.calls[0][0].from).toBe('Store <no-reply@test.com>');
+    expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('DB unreachable'));
+    errorSpy.mockRestore();
   });
 });
 

@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, type ReactNode } from 'react';
 import clsx from 'clsx';
-import { clearSession, getStoredUser, logout } from '@/lib/admin-client';
-import type { AuthUser } from '@/lib/api-types';
+import { adminFetch, clearSession, getStoredUser, logout } from '@/lib/admin-client';
+import type { AuthUser, DeploymentMeta } from '@/lib/api-types';
 import { NAV_GROUPS, ICON_MAP, navFor, type AdminNavItem } from './nav-registry';
 import { AdminSessionProvider } from './session';
 
@@ -27,6 +27,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [checked, setChecked] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
+  // Undefined = not fetched yet, so navFor() fails open (permissions-only)
+  // rather than hiding every module-tagged nav item until this resolves.
+  const [enabledModules, setEnabledModules] = useState<string[] | undefined>(undefined);
 
   useEffect(() => {
     const stored = getStoredUser();
@@ -38,6 +41,12 @@ export function AdminShell({ children }: { children: ReactNode }) {
     setUser(stored);
     setChecked(true);
   }, [router]);
+
+  useEffect(() => {
+    adminFetch<DeploymentMeta>('/meta')
+      .then((meta) => setEnabledModules(meta.modules))
+      .catch(() => undefined);
+  }, []);
 
   useEffect(() => {
     if (isNavOpen) {
@@ -58,7 +67,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
     );
   }
 
-  const items = navFor(user.permissions);
+  const items = navFor(user.permissions, enabledModules);
   const allItems = items.flatMap(item => [item, ...(item.children || [])]);
   const activeItem = allItems.reduce((best, item) => {
     const isMatch = item.href === '/admin' 

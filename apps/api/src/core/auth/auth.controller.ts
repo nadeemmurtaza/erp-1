@@ -20,10 +20,13 @@ import { REFRESH_COOKIE, type AuthenticatedUser } from './auth.constants';
 import { CurrentUser, Public, RequirePermission } from './decorators';
 import {
   ChangePasswordDto,
+  ForgotPasswordDto,
   LoginDto,
   RefreshDto,
   RegisterDto,
+  ResetPasswordDto,
   UpdateProfileDto,
+  VerifyEmailDto,
 } from './dto/auth.dto';
 
 /**
@@ -131,6 +134,40 @@ export class AuthController {
     @Body() dto: ChangePasswordDto,
   ): Promise<void> {
     await this.auth.changePassword(user.id, dto.currentPassword, dto.newPassword);
+  }
+
+  @Throttle(CREDENTIAL_THROTTLE)
+  @Public()
+  @Post('forgot-password')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Request a password reset link by email' })
+  async forgotPassword(@Body() dto: ForgotPasswordDto): Promise<void> {
+    await this.auth.requestPasswordReset(dto.email);
+  }
+
+  @Throttle(CREDENTIAL_THROTTLE)
+  @Public()
+  @Post('reset-password')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Set a new password using a reset link token' })
+  async resetPassword(@Body() dto: ResetPasswordDto): Promise<void> {
+    await this.auth.resetPassword(dto.token, dto.newPassword);
+  }
+
+  @Public()
+  @Post('verify-email')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Confirm an email address using a verification link token' })
+  async verifyEmail(@Body() dto: VerifyEmailDto): Promise<void> {
+    await this.auth.verifyEmail(dto.token);
+  }
+
+  @Throttle(CREDENTIAL_THROTTLE)
+  @Post('resend-verification')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Resend the email verification link' })
+  async resendVerification(@CurrentUser() user: AuthenticatedUser): Promise<void> {
+    await this.auth.requestEmailVerification(user.id);
   }
 
   private setRefreshCookie(response: Response, token: string): void {

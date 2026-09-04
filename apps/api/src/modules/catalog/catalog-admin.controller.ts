@@ -45,6 +45,11 @@ class AddImageDto {
   alt?: string;
 }
 
+class UpdateImageDto {
+  @IsString()
+  alt!: string;
+}
+
 /** Uploaded file as Multer hands it over. */
 interface UploadedImage {
   buffer: Buffer;
@@ -131,6 +136,16 @@ export class CatalogAdminController {
   @ApiOperation({ summary: 'Reorder images; the first becomes the thumbnail' })
   reorderImages(@Param('id') id: string, @Body() dto: ReorderImagesDto) {
     return this.products.reorderImages(id, dto.imageIds);
+  }
+
+  @Patch('images/:imageId')
+  @ApiOperation({ summary: 'Edit an image\'s alt text' })
+  updateImage(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('imageId') imageId: string,
+    @Body() dto: UpdateImageDto,
+  ) {
+    return this.products.updateImageAlt(user.id, imageId, dto.alt);
   }
 
   @Delete('images/:imageId')

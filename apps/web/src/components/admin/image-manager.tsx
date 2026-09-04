@@ -42,7 +42,9 @@ export function ImageManager({
       for (const file of Array.from(files)) {
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('alt', file.name.replace(/\.[^.]+$/, ''));
+        // No alt text here — a filename ("IMG_2024_0193") is not a
+        // description of the photo. Staff write the real one below,
+        // per image, right after it lands in the grid.
 
         const created = await adminFetch<ProductImageRow>(
           `/admin/catalog/products/${productId}/images`,
@@ -54,6 +56,18 @@ export function ImageManager({
       setError(cause instanceof Error ? cause.message : 'Upload failed');
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function saveAlt(id: string, alt: string) {
+    const previous = images;
+    setImages((current) => current.map((image) => (image.id === id ? { ...image, alt } : image)));
+
+    try {
+      await adminFetch(`/admin/catalog/images/${id}`, { method: 'PATCH', body: { alt } });
+    } catch (cause) {
+      setImages(previous);
+      setError(cause instanceof Error ? cause.message : 'Could not save the alt text');
     }
   }
 
@@ -149,6 +163,14 @@ export function ImageManager({
                   Delete
                 </button>
               </div>
+
+              <div className="px-1.5 pb-1.5">
+                <AltTextField
+                  key={image.id}
+                  value={image.alt ?? ''}
+                  onSave={(alt) => void saveAlt(image.id, alt)}
+                />
+              </div>
             </li>
           ))}
         </ul>
@@ -172,6 +194,29 @@ export function ImageManager({
       </label>
       <p className="mt-2 text-xs text-ink/40">JPEG, PNG, WebP or AVIF, up to 8MB each.</p>
     </div>
+  );
+}
+
+/**
+ * Saves on blur, not on every keystroke — an admin field, not a live search.
+ * Uncontrolled-ish: keeps its own draft so retyping doesn't fight a parent
+ * re-render mid-edit, but resets if the image's saved value changes under it
+ * (e.g. a rollback after a failed save elsewhere).
+ */
+function AltTextField({ value, onSave }: { value: string; onSave: (value: string) => void }) {
+  const [draft, setDraft] = useState(value);
+
+  return (
+    <input
+      type="text"
+      value={draft}
+      placeholder="Describe this photo…"
+      onChange={(event) => setDraft(event.target.value)}
+      onBlur={() => {
+        if (draft !== value) onSave(draft);
+      }}
+      className="w-full rounded border border-sand-200 px-1.5 py-1 text-[11px] text-ink placeholder:text-ink/30 focus:border-brand-500 focus:outline-none"
+    />
   );
 }
 

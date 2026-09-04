@@ -293,9 +293,11 @@ export class OrdersService {
       // Prisma's 5000ms default budget is tight enough that a handful of
       // simultaneous checkouts can blow it under real contention (a loaded CI
       // runner, a traffic spike). This raises the budget without touching the
-      // locking/serialization design.
+      // locking/serialization design. maxWait covers a transaction queueing
+      // behind others still holding the lock, not just its own execution —
+      // worth more headroom than timeout for the same batch size.
       timeout: 15_000,
-      maxWait: 10_000,
+      maxWait: 20_000,
     });
 
     this.logger.log(`Order ${order.number} placed for ${order.grandTotal} paisa`);

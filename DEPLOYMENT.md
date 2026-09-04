@@ -263,23 +263,33 @@ web rebuild.
 
 ## 9. Backups, restore tests and off-site copies
 
-The named volumes `postgres-prod-data` / `postgres-staging-data` are the only
-state that is not reproducible from git.
+The named volumes `postgres-prod-data` and `api-prod-uploads` (payment
+receipts, product images, stitching job photos — everything `STORAGE_DRIVER=
+local` writes to disk) are the only state that is not reproducible from git.
 
-`deploy/backup.sh` runs nightly and does four things, in this order:
+`deploy/backup.sh` runs nightly and does five things, in this order:
 
-1. **Dump and compress**, then check the archive is a valid gzip and is not
+1. **Find the running postgres container.** Docker Swarm names task
+   containers `<stack>_<service>.<slot>.<id>`, not a fixed name, so this is
+   auto-detected from `STACK_NAME` (default `yaseen-prod`, matching the
+   `docker stack deploy ... yaseen-prod` in the CD workflow) rather than
+   hardcoded. Set `CONTAINER=<name>` to skip detection.
+2. **Dump and compress**, then check the archive is a valid gzip and is not
    suspiciously small.
-2. **Restore it into a throwaway database and assert row counts** on
+3. **Restore it into a throwaway database and assert row counts** on
    `Product`, `Permission` and `User`. This is the step that separates a
    backup from a file. A schema-only or half-written dump restores *without
    any error* and is completely useless — only the row assertions catch that.
    The scratch database is dropped afterwards, on success or failure.
-3. **Ship it off-site** to `S3_TARGET`, then confirm the object is actually
-   listed before the local copy is eligible for pruning. With `S3_TARGET`
-   unset the script still works but warns, loudly, that the only copy of your
-   database is on a VPS you might lose.
-4. **Prune local copies** older than `RETAIN_DAYS` (default 14). Off-site
+4. **Archive the uploads volume** (`${STACK_NAME}_api-prod-uploads`) to a
+   `.tar.gz` alongside the database dump. Skipped (not failed) if the volume
+   does not exist — e.g. `STORAGE_DRIVER=s3`, where uploads never touch local
+   disk in the first place.
+5. **Ship both archives off-site** to `S3_TARGET`, then confirm each object is
+   actually listed before its local copy is eligible for pruning. With
+   `S3_TARGET` unset the script still works but warns, loudly, that the only
+   copy of your data is on a VPS you might lose.
+6. **Prune local copies** older than `RETAIN_DAYS` (default 14). Off-site
    retention belongs in an S3 lifecycle rule instead, where a compromised VPS
    cannot reach back and delete history.
 
@@ -309,11 +319,21 @@ journalctl -u yaseen-backup.service -n 40 --no-pager
 ```
 
 You should see `restore test PASSED` with the row counts. **Restoring for
-real** is the same dump loaded into the live database:
+real** is the same dump loaded into the live database — find the running
+container name first (Swarm's task-container names carry a random suffix):
 
 ```bash
+CONTAINER=$(docker ps --filter name=yaseen-prod_postgres --format '{{.Names}}')
 gunzip -c ~/backups/prod-<stamp>.sql.gz \
-  | docker exec -i yaseen-postgres-prod psql -U yaseen -d yaseen
+  | docker exec -i "$CONTAINER" psql -U yaseen -d yaseen
+```
+
+**Restoring the uploads volume** (payment receipts, product/job images) is
+the same idea, into the named volume the `api` service mounts:
+
+```bash
+docker run --rm -v yaseen-prod_api-prod-uploads:/data -v ~/backups:/backup \
+  alpine:3 sh -c "rm -rf /data/* && tar xzf /backup/uploads-<stamp>.tar.gz -C /data"
 ```
 
 ---

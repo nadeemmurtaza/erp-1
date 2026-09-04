@@ -540,15 +540,37 @@ function assertTranslations(translations: CreateProductDto['translations']): voi
   }
 }
 
-function assertUniqueSkus(variants: CreateProductDto['variants']): void {
+/**
+ * Catches the two ways a hand-typed variant list contradicts itself before
+ * either reaches the database: the same SKU twice (Prisma's unique
+ * constraint would catch this too, but only after the transaction has
+ * already done other work, and with a generic P2002 message), and the same
+ * size/colour combination twice (nothing else checks this at all — the
+ * schema has no constraint on it, since two variants can legitimately share
+ * a size or a colour, just never both at once).
+ */
+export function assertUniqueSkus(variants: CreateProductDto['variants']): void {
   if (!variants?.length) return;
 
   const skus = variants.map((variant) => variant.sku.trim().toUpperCase());
-  const duplicates = skus.filter((sku, index) => skus.indexOf(sku) !== index);
+  const duplicateSkus = skus.filter((sku, index) => skus.indexOf(sku) !== index);
 
-  if (duplicates.length > 0) {
+  if (duplicateSkus.length > 0) {
     throw new BadRequestException(
-      `Duplicate SKU(s) in this product: ${[...new Set(duplicates)].join(', ')}`,
+      `Duplicate SKU(s) in this product: ${[...new Set(duplicateSkus)].join(', ')}`,
+    );
+  }
+
+  const combos = variants.map(
+    (variant) => `${variant.size?.trim().toUpperCase() ?? ''} ${variant.color?.trim().toUpperCase() ?? ''}`,
+  );
+  const duplicateComboIndex = combos.findIndex((combo, index) => combos.indexOf(combo) !== index);
+
+  if (duplicateComboIndex !== -1) {
+    const variant = variants[duplicateComboIndex]!;
+    const label = [variant.size, variant.color].filter(Boolean).join(' / ') || '(no size or colour)';
+    throw new BadRequestException(
+      `Two variants share the same size and colour: ${label}. Each combination may only appear once.`,
     );
   }
 }

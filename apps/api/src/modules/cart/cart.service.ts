@@ -25,9 +25,6 @@ import type { AddCartItemDto, UpdateCartItemDto } from './dto/cart.dto';
 /** Guest carts live for a month; long enough to come back after payday. */
 const CART_TTL_DAYS = 30;
 
-/** A design note is a sentence for the tailor to read, not an essay. */
-const CUSTOM_DESIGN_TEXT_MAX = 500;
-
 const cartInclude = {
   items: {
     orderBy: { createdAt: 'asc' },
@@ -483,96 +480,30 @@ export class CartService {
     }
 
     const measurementValues = request.measurementValues
-      ? this.validators.validate('measurements', garment.fields, request.measurementValues)
+      ? await this.validators.validate('measurements', garment.fields, request.measurementValues)
       : null;
 
-    const optionIds = request.optionIds ?? [];
-    const options = await this.prisma.stitchingOption.findMany({
-      where: { id: { in: optionIds }, isActive: true },
-      include: { group: true },
-    });
-
-    if (options.length !== optionIds.length) {
-      throw new BadRequestException('One of the chosen style options is unavailable.');
-    }
-
-    for (const option of options) {
-      if (option.group.garmentTypeId && option.group.garmentTypeId !== garment.id) {
-        throw new BadRequestException(
-          `"${option.labelEn}" does not apply to ${garment.labelEn}.`,
-        );
-      }
-    }
-
-    // A SINGLE-select group may only be answered once.
-    const perGroup = new Map<string, number>();
-    for (const option of options) {
-      perGroup.set(option.groupId, (perGroup.get(option.groupId) ?? 0) + 1);
-    }
-    for (const option of options) {
-      if (option.group.selectionType === 'SINGLE' && perGroup.get(option.groupId)! > 1) {
-        throw new BadRequestException(
-          `Choose only one ${option.group.labelEn.toLowerCase()}.`,
-        );
-      }
-    }
-
-    const requiredGroups = await this.prisma.stitchingOptionGroup.findMany({
-      where: { garmentTypeId: garment.id, required: true, isActive: true },
-    });
-    for (const group of requiredGroups) {
-      if (!perGroup.has(group.id)) {
-        throw new BadRequestException(`Choose a ${group.labelEn.toLowerCase()}.`);
-      }
-    }
+    // Which options are valid for this garment, whether a SINGLE-select group
+    // was answered more than once, and every REQUIRED group answered — all
+    // apparel-owned rules `stitching` validates (StitchingService.
+    // validateOptionSelection, registered via onModuleInit()) so cart never
+    // queries StitchingOption/StitchingOptionGroup itself (P1-8,
+    // MULTI-SECTOR.md's `cart -> stitching` entry).
+    const selection = (await this.validators.validate('stitchingOptions', garment.id, {
+      optionIds: request.optionIds ?? [],
+      customDesignText: request.customDesignText,
+    })) as { optionIds: string[]; customDesignText: Record<string, string> | null };
 
     return {
       garmentTypeId: garment.id,
       serviceId: service?.id ?? null,
       measurementProfileId: request.measurementProfileId ?? null,
       measurementValues,
-      optionIds,
-      customDesignText: await this.cleanCustomDesignText(garment.id, request.customDesignText),
+      optionIds: selection.optionIds,
+      customDesignText: selection.customDesignText,
       notes: request.notes?.trim() || null,
       sizeToken: request.sizeToken ?? null,
     };
-  }
-
-  /**
-   * Keeps only the free text that belongs to a design area still taking it.
-   *
-   * Text for a group that has since had its box turned off is dropped rather
-   * than rejected — the customer answered the form they were shown, and losing
-   * a whole cart line over it would be the shop's mistake charged to them.
-   */
-  private async cleanCustomDesignText(
-    garmentTypeId: string,
-    input: Record<string, string> | undefined,
-  ): Promise<Record<string, string> | null> {
-    const entries = Object.entries(input ?? {});
-    if (entries.length === 0) return null;
-
-    const groups = await this.prisma.stitchingOptionGroup.findMany({
-      where: {
-        key: { in: entries.map(([key]) => key) },
-        allowCustomText: true,
-        isActive: true,
-        OR: [{ garmentTypeId }, { garmentTypeId: null }],
-      },
-      select: { key: true },
-    });
-
-    const takesText = new Set(groups.map((group) => group.key));
-    const cleaned: Record<string, string> = {};
-
-    for (const [key, value] of entries) {
-      if (!takesText.has(key) || typeof value !== 'string') continue;
-
-      const text = value.trim().slice(0, CUSTOM_DESIGN_TEXT_MAX);
-      if (text) cleaned[key] = text;
-    }
-
-    return Object.keys(cleaned).length > 0 ? cleaned : null;
   }
 
   private async assertOwnedProfile(profileId: string | null, userId: string | undefined) {

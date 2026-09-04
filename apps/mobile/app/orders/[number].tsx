@@ -24,7 +24,7 @@ import { theme } from '../../src/theme';
  * along the garment is. The rail is the same one a standalone booking shows.
  */
 export default function OrderScreen() {
-  const { number } = useLocalSearchParams<{ number: string }>();
+  const { number, payment } = useLocalSearchParams<{ number: string; payment?: string }>();
   const { t, locale, date } = useI18n();
 
   const [order, setOrder] = useState<Order | null>(null);
@@ -67,6 +67,19 @@ export default function OrderScreen() {
         <Title>{order.number}</Title>
         <Small muted>{t('orders.placedOn', { date: date(order.placedAt) })}</Small>
         <Body>{t(`status.${order.status}` as never)}</Body>
+
+        {payment === 'success' ? (
+          <Card style={styles.paymentOk}>
+            <Heading>{t('order.paymentSuccess')}</Heading>
+            <Body muted>{t('order.paymentSuccessBody')}</Body>
+          </Card>
+        ) : null}
+        {payment === 'failed' ? (
+          <Card style={styles.paymentFailed}>
+            <Heading>{t('order.paymentFailed')}</Heading>
+            <Body muted>{t('order.paymentFailedBody')}</Body>
+          </Card>
+        ) : null}
 
         <Card>
           <Heading>{t('order.items')}</Heading>
@@ -147,6 +160,8 @@ export default function OrderScreen() {
 
 const styles = StyleSheet.create({
   content: { padding: theme.space(4), gap: theme.space(4), paddingBottom: theme.space(10) },
+  paymentOk: { backgroundColor: theme.color.brandSoft, borderColor: theme.color.brand },
+  paymentFailed: { backgroundColor: theme.color.dangerSoft, borderColor: theme.color.danger },
   item: {
     paddingVertical: theme.space(3),
     borderBottomWidth: StyleSheet.hairlineWidth,

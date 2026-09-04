@@ -31,34 +31,11 @@ services:
         order: start-first
         failure_action: rollback
 
-  redis:
-    image: redis:7-alpine
-    volumes:
-      - redis-staging-data:/data
-    healthcheck:
-      test: ['CMD', 'redis-cli', 'ping']
-      interval: 5s
-      timeout: 5s
-      retries: 10
-    networks:
-      - yaseen-staging
-    deploy:
-      replicas: 1
-      resources:
-        limits:
-          memory: 128M
-      restart_policy:
-        condition: on-failure
-      update_config:
-        order: start-first
-        failure_action: rollback
-
   api:
     image: ghcr.io/nadeemmurtaza/yaseenecom/api:staging
     env_file: .env.staging
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-yaseen}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-yaseen}?schema=public&connection_limit=10&pool_timeout=20&connect_timeout=10
-      REDIS_URL: redis://redis:6379
     volumes:
       - api-staging-uploads:/repo/apps/api/uploads
     healthcheck:
@@ -107,5 +84,4 @@ networks:
 
 volumes:
   postgres-staging-data:
-  redis-staging-data:
   api-staging-uploads:

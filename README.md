@@ -155,7 +155,7 @@ Requires Node 22 and pnpm 10.
 
 ```bash
 cp .env.example .env
-docker compose up -d          # postgres, redis, minio
+docker compose up -d          # postgres, minio
 pnpm install
 pnpm db:migrate
 pnpm db:seed
@@ -184,8 +184,8 @@ Customers can sign in with a phone number as well as an email — `0300 1234567`
 
 ### Without Docker
 
-If a PostgreSQL 16 and Redis are already running locally, skip
-`docker compose up` and point `DATABASE_URL` and `REDIS_URL` at them.
+If a PostgreSQL 16 is already running locally, skip `docker compose up` and
+point `DATABASE_URL` at it.
 
 ### The mobile app
 

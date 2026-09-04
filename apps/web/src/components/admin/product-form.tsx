@@ -14,6 +14,9 @@ import type {
 import { ImageManager } from './image-manager';
 
 const KIND_LABELS: Record<string, string> = {
+  GOODS: 'Goods',
+  SERVICE: 'Service',
+  DIGITAL: 'Digital product',
   STITCHED: 'Ready to wear',
   UNSTITCHED: 'Unstitched fabric',
   STITCHING_SERVICE: 'Stitching service',
@@ -97,6 +100,12 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
+  // Duplicate SKUs and duplicate size/colour combinations both reach the API
+  // fine syntactically but collide there — one against a global unique
+  // constraint, one silently overwriting stock. Flagging them here, live, is
+  // cheaper for staff than a round trip to find out.
+  const variantIssues = useMemo(() => findVariantIssues(variants), [variants]);
+
   const isUnstitched = kind === 'UNSTITCHED';
   const isService = kind === 'STITCHING_SERVICE';
 
@@ -112,6 +121,12 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
     setError(null);
+
+    if (variantIssues.duplicateSkus.size > 0 || variantIssues.duplicateCombos.size > 0) {
+      setError('Fix the duplicate variants highlighted below before saving.');
+      return;
+    }
+
     setSaving(true);
 
     try {
@@ -503,58 +518,66 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
                 className="field-input"
               />
             </Field>
-            <Field label="Fabric">
-              <input
-                value={fabric}
-                onChange={(event) => setFabric(event.target.value)}
-                className="field-input"
-              />
-            </Field>
-            <Field label="Season">
-              <input
-                value={season}
-                onChange={(event) => setSeason(event.target.value)}
-                className="field-input"
-              />
-            </Field>
+            {/* Fabric/season/size chart are apparel-specific (GOODS/SERVICE/DIGITAL
+                have no garment to size). */}
+            {kind === 'STITCHED' ? (
+              <>
+                <Field label="Fabric">
+                  <input
+                    value={fabric}
+                    onChange={(event) => setFabric(event.target.value)}
+                    className="field-input"
+                  />
+                </Field>
+                <Field label="Season">
+                  <input
+                    value={season}
+                    onChange={(event) => setSeason(event.target.value)}
+                    className="field-input"
+                  />
+                </Field>
+              </>
+            ) : null}
           </div>
 
-          <fieldset className="mt-4">
-            <legend className="field-label">Size chart</legend>
-            <p className="mb-2 text-xs text-ink/50">
-              Tick the garment(s) this outfit is made of. The customer sees a &ldquo;Size
-              chart&rdquo; link on the product page showing each garment&apos;s standard
-              measurements — set under Garments.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {garmentTypes.map((garment) => {
-                const selected = garmentTypeIds.includes(garment.id);
-                return (
-                  <label
-                    key={garment.id}
-                    className={clsx(
-                      'flex items-center gap-2 rounded-md border px-3 py-2 text-sm',
-                      selected ? 'border-brand-500 bg-brand-50 text-ink' : 'border-sand-200 text-ink/70',
-                    )}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selected}
-                      onChange={(event) =>
-                        setGarmentTypeIds((current) =>
-                          event.target.checked
-                            ? [...current, garment.id]
-                            : current.filter((id) => id !== garment.id),
-                        )
-                      }
-                      className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
-                    />
-                    {garment.labelEn}
-                  </label>
-                );
-              })}
-            </div>
-          </fieldset>
+          {kind === 'STITCHED' ? (
+            <fieldset className="mt-4">
+              <legend className="field-label">Size chart</legend>
+              <p className="mb-2 text-xs text-ink/50">
+                Tick the garment(s) this outfit is made of. The customer sees a &ldquo;Size
+                chart&rdquo; link on the product page showing each garment&apos;s standard
+                measurements — set under Garments.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {garmentTypes.map((garment) => {
+                  const selected = garmentTypeIds.includes(garment.id);
+                  return (
+                    <label
+                      key={garment.id}
+                      className={clsx(
+                        'flex items-center gap-2 rounded-md border px-3 py-2 text-sm',
+                        selected ? 'border-brand-500 bg-brand-50 text-ink' : 'border-sand-200 text-ink/70',
+                      )}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selected}
+                        onChange={(event) =>
+                          setGarmentTypeIds((current) =>
+                            event.target.checked
+                              ? [...current, garment.id]
+                              : current.filter((id) => id !== garment.id),
+                          )
+                        }
+                        className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                      />
+                      {garment.labelEn}
+                    </label>
+                  );
+                })}
+              </div>
+            </fieldset>
+          ) : null}
         </Section>
       ) : null}
 
@@ -572,7 +595,11 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
         hint="One row per size/colour. Every row needs a unique SKU; a removed row is deactivated, not deleted, so past orders stay intact."
       >
         <div className="space-y-3">
-          {variants.map((variant, index) => (
+          {variants.map((variant, index) => {
+            const duplicateSku = variantIssues.duplicateSkus.has(index);
+            const duplicateCombo = variantIssues.duplicateCombos.has(index);
+
+            return (
             <div
               key={variant.id ?? index}
               className={clsx(
@@ -580,24 +607,39 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
                 variant.isActive ? 'border-sand-200' : 'border-sand-200 bg-sand-50 opacity-60',
               )}
             >
-              <LabelledInput
-                label="SKU"
-                value={variant.sku}
-                onChange={(value) => updateVariant(setVariants, index, { sku: value })}
-                placeholder="LWN-3PC-BLU-M"
-              />
-              <LabelledInput
-                label="Size"
-                value={variant.size}
-                onChange={(value) => updateVariant(setVariants, index, { size: value })}
-                placeholder="M"
-              />
-              <LabelledInput
-                label="Colour"
-                value={variant.color}
-                onChange={(value) => updateVariant(setVariants, index, { color: value })}
-                placeholder="Ferozi"
-              />
+              <div>
+                <LabelledInput
+                  label="SKU"
+                  value={variant.sku}
+                  onChange={(value) => updateVariant(setVariants, index, { sku: value })}
+                  placeholder="LWN-3PC-BLU-M"
+                  invalid={duplicateSku}
+                />
+                {duplicateSku ? (
+                  <p className="mt-1 text-xs text-red-700">Used by another variant below.</p>
+                ) : null}
+              </div>
+              <div>
+                <LabelledInput
+                  label="Size"
+                  value={variant.size}
+                  onChange={(value) => updateVariant(setVariants, index, { size: value })}
+                  placeholder="M"
+                  invalid={duplicateCombo}
+                />
+              </div>
+              <div>
+                <LabelledInput
+                  label="Colour"
+                  value={variant.color}
+                  onChange={(value) => updateVariant(setVariants, index, { color: value })}
+                  placeholder="Ferozi"
+                  invalid={duplicateCombo}
+                />
+                {duplicateCombo ? (
+                  <p className="mt-1 text-xs text-red-700">Same size/colour used below.</p>
+                ) : null}
+              </div>
               <LabelledInput
                 label="Hex"
                 value={variant.colorHex}
@@ -636,7 +678,8 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
                 </button>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         <button
@@ -702,6 +745,38 @@ function updateVariant(
   );
 }
 
+interface VariantIssues {
+  duplicateSkus: Set<number>;
+  duplicateCombos: Set<number>;
+}
+
+/** Mirrors the checks apps/api's assertUniqueSkus runs server-side, so the editor can flag them before submitting. Blank-SKU rows are ignored — they're dropped on submit, same as there. */
+function findVariantIssues(variants: VariantDraft[]): VariantIssues {
+  const relevant = variants
+    .map((variant, index) => ({ variant, index }))
+    .filter(({ variant }) => variant.sku.trim());
+
+  const skuKey = (variant: VariantDraft) => variant.sku.trim().toUpperCase();
+  const comboKey = (variant: VariantDraft) =>
+    `${variant.size.trim().toUpperCase()} ${variant.color.trim().toUpperCase()}`;
+
+  const skuCounts = new Map<string, number>();
+  const comboCounts = new Map<string, number>();
+  for (const { variant } of relevant) {
+    skuCounts.set(skuKey(variant), (skuCounts.get(skuKey(variant)) ?? 0) + 1);
+    comboCounts.set(comboKey(variant), (comboCounts.get(comboKey(variant)) ?? 0) + 1);
+  }
+
+  const duplicateSkus = new Set<number>();
+  const duplicateCombos = new Set<number>();
+  for (const { variant, index } of relevant) {
+    if ((skuCounts.get(skuKey(variant)) ?? 0) > 1) duplicateSkus.add(index);
+    if ((comboCounts.get(comboKey(variant)) ?? 0) > 1) duplicateCombos.add(index);
+  }
+
+  return { duplicateSkus, duplicateCombos };
+}
+
 function Section({
   title,
   hint,
@@ -751,12 +826,14 @@ function LabelledInput({
   onChange,
   type = 'text',
   placeholder,
+  invalid,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   type?: string;
   placeholder?: string;
+  invalid?: boolean;
 }) {
   return (
     <label className="block">
@@ -766,7 +843,11 @@ function LabelledInput({
         value={value}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
-        className="field-input py-1.5 text-sm"
+        aria-invalid={invalid || undefined}
+        className={clsx(
+          'field-input py-1.5 text-sm',
+          invalid && 'border-red-400 focus:border-red-500',
+        )}
       />
     </label>
   );

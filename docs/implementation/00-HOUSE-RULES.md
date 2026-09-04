@@ -354,9 +354,6 @@ explicitly. Do not compress the steps to save a deploy.
 
 ## 5. Things that are already true — do not "fix" them
 
-- `docker-compose.yml` still starts Redis and `ioredis` is still a dependency.
-  Nothing uses either. Removing them needs a lockfile change; it is tracked
-  separately. **Do not remove Redis as a side effect of another change.**
 - The admin is client-rendered with the session in `localStorage`. This is
   deliberate and documented at `admin-shell.tsx:20-22` — it is a convenience
   guard, not a security boundary. The API permission-checks every route. Do not

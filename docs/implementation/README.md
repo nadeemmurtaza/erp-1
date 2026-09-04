@@ -110,20 +110,13 @@ even when the change is trivial.
 Found reading the code, not called out as a work order anywhere above. Pick
 these up under the phase they land closest to rather than inventing a new one:
 
-- **No `/admin/orders/[id]` order detail page** — `/admin/orders` is a list
-  with expandable rows only. Every other entity gets one; this should exist
-  before Phase 6/7 add more per-order surface (shipments, returns, refunds).
-  Natural home: Phase 2 (admin shell) or Phase 6 (returns/RMA needs it first).
-- **`ioredis` and `Setting`-based cost/config aside, `redis` is still a
-  dependency and a `docker-compose.yml`/CI service with no code importing
-  it** (`grep -rn "ioredis" apps/api/src` outside generated/spec files
-  returns nothing). Dead weight kept alive by an unremoved lockfile entry —
-  cheap cleanup, no phase owns it.
 - **`STORAGE_DRIVER=local` in every env file, including production** —
   uploads live on the VPS disk. The `s3`/R2 driver already exists
   (`s3-storage.driver.ts`, validated in `env.validation.ts`), so this is a
   config-plus-bucket change, not a rewrite — worth doing before Phase 3's
-  media library raises the volume of uploads.
+  media library raises the volume of uploads. (`deploy/backup.sh` now ships
+  the uploads volume off-site alongside the database, so this is no longer
+  an unbacked-up single point of failure — just still a single VPS disk.)
 - **A generic automations rules engine** (`when <event> and <conditions>
   then <actions>`, edited under Settings) — Part D of the original roadmap
   proposed this as the long-term home for the inventory/purchasing/finance

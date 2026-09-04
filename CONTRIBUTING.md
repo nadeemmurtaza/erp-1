@@ -115,7 +115,7 @@ All three run in CI against a real Postgres, so a green local run is a green PR.
 
 ```bash
 cp .env.example .env
-docker compose up -d              # postgres, redis, minio
+docker compose up -d              # postgres, minio
 pnpm install
 pnpm db:migrate
 pnpm db:seed

@@ -75,6 +75,7 @@ export const MESSAGES = {
     'checkout.receipt': 'Upload your transfer receipt',
     'checkout.receiptChoose': 'Choose a photo',
     'checkout.receiptSent': 'Receipt uploaded',
+    'checkout.payTitle': 'Complete payment',
 
     'orders.title': 'Your orders',
     'orders.empty': 'No orders yet.',
@@ -85,6 +86,11 @@ export const MESSAGES = {
     'order.total': 'Total',
     'order.deliveringTo': 'Delivering to',
     'order.thanks': 'Thank you — your order is in.',
+    'order.paymentSuccess': 'Payment received.',
+    'order.paymentSuccessBody': 'Your order is confirmed. We will call to arrange delivery.',
+    'order.paymentFailed': 'Payment did not go through.',
+    'order.paymentFailedBody':
+      'Your order is saved but unpaid. Try again, or choose cash on delivery instead.',
 
     'stitching.title': 'Stitching',
     'stitching.bookTitle': 'Send us your own fabric',
@@ -232,6 +238,7 @@ export const MESSAGES = {
     'checkout.receipt': 'ٹرانسفر کی رسید اپلوڈ کریں',
     'checkout.receiptChoose': 'تصویر منتخب کریں',
     'checkout.receiptSent': 'رسید اپلوڈ ہو گئی',
+    'checkout.payTitle': 'ادائیگی مکمل کریں',
 
     'orders.title': 'آپ کے آرڈر',
     'orders.empty': 'ابھی کوئی آرڈر نہیں۔',
@@ -242,6 +249,11 @@ export const MESSAGES = {
     'order.total': 'کل',
     'order.deliveringTo': 'ترسیل کا پتہ',
     'order.thanks': 'شکریہ — آپ کا آرڈر موصول ہو گیا۔',
+    'order.paymentSuccess': 'ادائیگی موصول ہو گئی۔',
+    'order.paymentSuccessBody': 'آپ کا آرڈر کنفرم ہو گیا ہے۔ ہم ترسیل کے لیے رابطہ کریں گے۔',
+    'order.paymentFailed': 'ادائیگی مکمل نہیں ہوئی۔',
+    'order.paymentFailedBody':
+      'آپ کا آرڈر محفوظ ہے مگر ادائیگی باقی ہے۔ دوبارہ کوشش کریں یا کیش آن ڈیلیوری منتخب کریں۔',
 
     'stitching.title': 'سلائی',
     'stitching.bookTitle': 'اپنا کپڑا ہمیں بھیجیں',

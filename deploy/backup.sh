@@ -8,13 +8,18 @@
 # allowed to count, and the local copy is only pruned after the off-site copy
 # is confirmed present.
 #
-# Install: see DEPLOYMENT.md §11. Runs as the deploy user from a systemd timer.
+# Install: see DEPLOYMENT.md §9. Runs as the deploy user from a systemd timer.
 
 set -Eeuo pipefail
 
 STACK_DIR="${STACK_DIR:-$HOME/apps/yaseenecom}"
 BACKUP_DIR="${BACKUP_DIR:-$HOME/backups}"
-CONTAINER="${CONTAINER:-yaseen-postgres-prod}"
+# Swarm names task containers "<stack>_<service>.<slot>.<id>", not a fixed
+# name, so it is auto-detected below from the stack rather than hardcoded.
+# Set CONTAINER explicitly to skip detection (e.g. a plain docker-compose
+# deployment, where the service's container_name applies literally).
+STACK_NAME="${STACK_NAME:-yaseen-prod}"
+CONTAINER="${CONTAINER:-}"
 RETAIN_DAYS="${RETAIN_DAYS:-14}"
 # Off-site target, e.g. s3://yaseen-backups/postgres. Empty disables shipping,
 # and the script then says so loudly rather than pretending it is safe.
@@ -36,6 +41,12 @@ PGUSER_="${POSTGRES_USER:-yaseen}"
 PGDB_="${POSTGRES_DB:-yaseen}"
 
 mkdir -p "$BACKUP_DIR"
+
+if [ -z "$CONTAINER" ]; then
+  CONTAINER="$(docker ps --filter "name=${STACK_NAME}_postgres" --format '{{.Names}}' | head -n1)"
+fi
+[ -n "$CONTAINER" ] || fail "no running postgres container found for stack '${STACK_NAME}' — is it deployed? (override with CONTAINER=<name>)"
+log "using postgres container: ${CONTAINER}"
 
 # --- 1. Dump ---------------------------------------------------------------
 log "dumping ${PGDB_} from ${CONTAINER}"
@@ -78,25 +89,52 @@ cleanup_scratch
 trap 'fail "aborted on line $LINENO"' ERR
 log "restore test PASSED"
 
-# --- 3. Off-site ------------------------------------------------------------
-if [ -n "$S3_TARGET" ]; then
-  command -v aws >/dev/null || fail "S3_TARGET set but the aws CLI is not installed"
-  log "uploading to ${S3_TARGET}"
-  aws s3 cp "$ARCHIVE" "${S3_TARGET%/}/$(basename "$ARCHIVE")" --only-show-errors \
-    || fail "off-site upload failed"
-  # Confirm it is actually there before the local copy is eligible for pruning.
-  aws s3 ls "${S3_TARGET%/}/$(basename "$ARCHIVE")" >/dev/null \
-    || fail "upload reported success but the object is not listed"
-  log "off-site copy confirmed"
+# --- 3. Uploads volume -------------------------------------------------------
+# STORAGE_DRIVER=local (the production default — see .env.production.example)
+# keeps every uploaded file (payment receipts, product images, stitching job
+# photos) on this one VPS disk with no other copy anywhere. Archive the named
+# volume the same way the database gets dumped, so it rides along off-site.
+UPLOADS_VOLUME="${UPLOADS_VOLUME:-${STACK_NAME}_api-prod-uploads}"
+UPLOADS_ARCHIVE="${BACKUP_DIR}/uploads-${STAMP}.tar.gz"
+if docker volume inspect "$UPLOADS_VOLUME" >/dev/null 2>&1; then
+  log "archiving uploads volume ${UPLOADS_VOLUME}"
+  docker run --rm \
+    -v "${UPLOADS_VOLUME}:/data:ro" \
+    -v "${BACKUP_DIR}:/backup" \
+    alpine:3 sh -c "tar czf /backup/$(basename "$UPLOADS_ARCHIVE") -C /data ." \
+    || fail "uploads archive failed"
+  UPLOADS_SIZE=$(stat -c%s "$UPLOADS_ARCHIVE")
+  log "uploads archive ok: $(basename "$UPLOADS_ARCHIVE") ($(numfmt --to=iec "$UPLOADS_SIZE"))"
 else
-  log "WARNING: S3_TARGET is unset — this backup exists only on this VPS, which"
-  log "WARNING: does not survive losing this VPS. See DEPLOYMENT.md §11."
+  # Nothing to back up: either the volume genuinely has no files yet, or
+  # STORAGE_DRIVER=s3 and uploads never touch local disk at all.
+  log "uploads volume ${UPLOADS_VOLUME} not found — skipping"
+  UPLOADS_ARCHIVE=""
 fi
 
-# --- 4. Prune ---------------------------------------------------------------
+# --- 4. Off-site ------------------------------------------------------------
+if [ -n "$S3_TARGET" ]; then
+  command -v aws >/dev/null || fail "S3_TARGET set but the aws CLI is not installed"
+  for FILE in "$ARCHIVE" "$UPLOADS_ARCHIVE"; do
+    [ -n "$FILE" ] || continue
+    log "uploading $(basename "$FILE") to ${S3_TARGET}"
+    aws s3 cp "$FILE" "${S3_TARGET%/}/$(basename "$FILE")" --only-show-errors \
+      || fail "off-site upload failed for $(basename "$FILE")"
+    # Confirm it is actually there before the local copy is eligible for pruning.
+    aws s3 ls "${S3_TARGET%/}/$(basename "$FILE")" >/dev/null \
+      || fail "upload reported success but $(basename "$FILE") is not listed"
+  done
+  log "off-site copies confirmed"
+else
+  log "WARNING: S3_TARGET is unset — these backups exist only on this VPS, which"
+  log "WARNING: does not survive losing this VPS. See DEPLOYMENT.md §9."
+fi
+
+# --- 5. Prune ---------------------------------------------------------------
 # Local only. Off-site retention belongs in an S3 lifecycle rule, where a
 # compromised VPS cannot reach it.
-find "$BACKUP_DIR" -name 'prod-*.sql.gz' -mtime "+${RETAIN_DAYS}" -print -delete \
+find "$BACKUP_DIR" \( -name 'prod-*.sql.gz' -o -name 'uploads-*.tar.gz' \) \
+  -mtime "+${RETAIN_DAYS}" -print -delete \
   | while read -r old; do log "pruned $(basename "$old")"; done
 
 log "backup complete"

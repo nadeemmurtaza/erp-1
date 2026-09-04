@@ -287,6 +287,15 @@ export class OrdersService {
       );
 
       return { ...created, payment };
+    }, {
+      // nextOrderNumber() holds a pg_advisory_xact_lock for this transaction's
+      // full duration, so concurrent checkouts queue behind one another —
+      // Prisma's 5000ms default budget is tight enough that a handful of
+      // simultaneous checkouts can blow it under real contention (a loaded CI
+      // runner, a traffic spike). This raises the budget without touching the
+      // locking/serialization design.
+      timeout: 15_000,
+      maxWait: 10_000,
     });
 
     this.logger.log(`Order ${order.number} placed for ${order.grandTotal} paisa`);

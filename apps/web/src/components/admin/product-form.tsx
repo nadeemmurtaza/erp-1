@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { PRODUCT_KINDS, PRODUCT_STATUSES, formatMoney, toMajor, toMinor } from '@yaseen/shared';
+import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { adminFetch } from '@/lib/admin-client';
 import type {
   AdminCategory,
@@ -118,8 +119,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
     [categories],
   );
 
-  async function onSubmit(event: React.FormEvent) {
-    event.preventDefault();
+  async function onSubmit() {
     setError(null);
 
     if (variantIssues.duplicateSkus.size > 0 || variantIssues.duplicateCombos.size > 0) {
@@ -206,14 +206,11 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
     }
   }
 
-  return (
-    <form onSubmit={onSubmit} className="space-y-6 pb-16">
-      {error ? (
-        <p role="alert" className="card whitespace-pre-line p-4 text-sm text-red-700">
-          {error}
-        </p>
-      ) : null}
-
+  const basicsStep: WizardStep = {
+    id: 'basics',
+    label: 'What is this?',
+    isValid: true,
+    content: (
       <Section title="What is this?">
         <div className="grid gap-4 sm:grid-cols-3">
           <Field label="Kind" hint="Decides which fields below apply">
@@ -260,7 +257,14 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           </Field>
         </div>
       </Section>
+    ),
+  };
 
+  const nameStep: WizardStep = {
+    id: 'name',
+    label: 'Name',
+    isValid: Boolean(nameEn.trim()),
+    content: (
       <Section
         title="Name and description"
         hint="Urdu is optional but the storefront falls back to English without it."
@@ -326,7 +330,14 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           </div>
         </div>
       </Section>
+    ),
+  };
 
+  const pricingStep: WizardStep = {
+    id: 'pricing',
+    label: 'Pricing',
+    isValid: Boolean(basePrice.trim()),
+    content: (
       <Section title="Pricing" hint="Enter rupees; the system stores exact paisa.">
         <div className="grid gap-4 sm:grid-cols-3">
           <Field label={isService ? 'Stitching fee (Rs)' : 'Price (Rs)'} required>
@@ -360,9 +371,16 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           </Field>
         </div>
       </Section>
+    ),
+  };
 
-      {isService ? (
-        <Section title="Service details">
+  const kindDetailsStep: WizardStep = isService
+    ? {
+        id: 'kind-details',
+        label: 'Service details',
+        isValid: Boolean(serviceGarmentId),
+        content: (
+          <Section title="Service details">
           <Field
             label="Garment this service stitches"
             hint="The fee above replaces the garment's standard stitching price when a customer picks this service."
@@ -386,9 +404,14 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
             </select>
           </Field>
         </Section>
-      ) : null}
-
-      {isUnstitched ? (
+        ),
+      }
+    : isUnstitched
+      ? {
+          id: 'kind-details',
+          label: 'Fabric details',
+          isValid: true,
+          content: (
         <Section title="Fabric details">
           <div className="grid gap-4 sm:grid-cols-4">
             <Field label="Fabric" hint="lawn, chiffon, khaddar…">
@@ -506,9 +529,13 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
             </fieldset>
           ) : null}
         </Section>
-      ) : null}
-
-      {!isUnstitched && !isService ? (
+          ),
+        }
+      : {
+          id: 'kind-details',
+          label: 'Attributes',
+          isValid: true,
+          content: (
         <Section title="Attributes">
           <div className="grid gap-4 sm:grid-cols-3">
             <Field label="Brand">
@@ -579,8 +606,14 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
             </fieldset>
           ) : null}
         </Section>
-      ) : null}
+          ),
+        };
 
+  const tagsStep: WizardStep = {
+    id: 'tags',
+    label: 'Tags',
+    isValid: true,
+    content: (
       <Section title="Tags" hint="Comma separated; used by search and merchandising.">
         <input
           value={tags}
@@ -589,7 +622,14 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           placeholder="embroidered, summer, festive"
         />
       </Section>
+    ),
+  };
 
+  const variantsStep: WizardStep = {
+    id: 'variants',
+    label: 'Variants',
+    isValid: variantIssues.duplicateSkus.size === 0 && variantIssues.duplicateCombos.size === 0,
+    content: (
       <Section
         title="Variants"
         hint="One row per size/colour. Every row needs a unique SKU; a removed row is deactivated, not deleted, so past orders stay intact."
@@ -695,28 +735,59 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           Add variant
         </button>
       </Section>
+    ),
+  };
 
-      {product ? (
-        <Section title="Images" hint="The first image is the listing thumbnail.">
-          <ImageManager productId={product.id} initialImages={product.images} />
-        </Section>
-      ) : (
-        <Section title="Images">
-          <p className="text-sm text-ink/60">
-            Save the product first, then upload photographs here.
-          </p>
-        </Section>
-      )}
+  const imagesStep: WizardStep = {
+    id: 'images',
+    label: 'Images',
+    isValid: true,
+    content: product ? (
+      <Section title="Images" hint="The first image is the listing thumbnail.">
+        <ImageManager productId={product.id} initialImages={product.images} />
+      </Section>
+    ) : (
+      <Section title="Images">
+        <p className="text-sm text-ink/60">
+          Save the product first, then upload photographs here.
+        </p>
+      </Section>
+    ),
+  };
 
-      <div className="sticky bottom-0 -mx-4 flex gap-3 border-t border-sand-200 bg-white px-4 py-3 sm:-mx-6 sm:px-6">
-        <button type="submit" disabled={saving} className="btn-primary">
-          {saving ? 'Saving…' : isEdit ? 'Save changes' : 'Create product'}
-        </button>
-        <button type="button" onClick={() => router.back()} className="btn-ghost">
-          Cancel
-        </button>
+  const steps: WizardStep[] = [
+    basicsStep,
+    nameStep,
+    pricingStep,
+    kindDetailsStep,
+    tagsStep,
+    variantsStep,
+    imagesStep,
+  ];
+
+  return (
+    <div className="space-y-4 pb-16">
+      {error ? (
+        <p role="alert" className="card whitespace-pre-line p-4 text-sm text-red-700">
+          {error}
+        </p>
+      ) : null}
+
+      <div className="card p-4 sm:p-5">
+        <Wizard
+          steps={steps}
+          onSubmit={onSubmit}
+          submitLabel={saving ? 'Saving…' : isEdit ? 'Save changes' : 'Create product'}
+          submitBusy={saving}
+          submitDisabled={saving}
+          accentClassName="bg-brand-600 text-white"
+        />
       </div>
-    </form>
+
+      <button type="button" onClick={() => router.back()} className="btn-ghost">
+        Cancel
+      </button>
+    </div>
   );
 }
 

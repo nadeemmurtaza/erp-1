@@ -122,7 +122,19 @@ export default function CheckoutPage() {
       // straight away; a returning visitor still gets the tracking form.
       sessionStorage.setItem(`yaseen.order.${payload.number}`, form.phone);
 
-      // A full navigation, so the cart provider reloads and shows it emptied.
+      const gatewayFields = payload.payment?.meta?.fields as Record<string, string> | undefined;
+
+      if (payload.payment?.redirectUrl && gatewayFields) {
+        // JazzCash/Easypaisa: the order exists but isn't paid for yet — send
+        // the customer to the gateway's hosted page instead of the order
+        // page. They land back on the order page via checkout/callback/
+        // [provider] once the gateway returns them.
+        redirectToGateway(payload.payment.redirectUrl, gatewayFields);
+        return;
+      }
+
+      // Cash on delivery / bank transfer: nothing more to collect now. A
+      // full navigation, so the cart provider reloads and shows it emptied.
       window.location.href = `/${locale}/orders/${payload.number}?placed=1`;
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : t('failed'));
@@ -403,6 +415,30 @@ export default function CheckoutPage() {
       </form>
     </div>
   );
+}
+
+/**
+ * Sends the browser to a payment gateway's hosted checkout. JazzCash and
+ * Easypaisa both take the customer via an HTML form POST, not a plain
+ * redirect — a GET with the same fields on the query string would expose the
+ * signed hash and other fields in server logs and browser history for no
+ * reason a real integration would accept.
+ */
+function redirectToGateway(url: string, fields: Record<string, string>): void {
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = url;
+
+  for (const [name, value] of Object.entries(fields)) {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = name;
+    input.value = value;
+    form.appendChild(input);
+  }
+
+  document.body.appendChild(form);
+  form.submit();
 }
 
 function Field({

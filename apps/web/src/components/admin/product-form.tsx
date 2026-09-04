@@ -97,6 +97,12 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
+  // Duplicate SKUs and duplicate size/colour combinations both reach the API
+  // fine syntactically but collide there — one against a global unique
+  // constraint, one silently overwriting stock. Flagging them here, live, is
+  // cheaper for staff than a round trip to find out.
+  const variantIssues = useMemo(() => findVariantIssues(variants), [variants]);
+
   const isUnstitched = kind === 'UNSTITCHED';
   const isService = kind === 'STITCHING_SERVICE';
 
@@ -112,6 +118,12 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
     setError(null);
+
+    if (variantIssues.duplicateSkus.size > 0 || variantIssues.duplicateCombos.size > 0) {
+      setError('Fix the duplicate variants highlighted below before saving.');
+      return;
+    }
+
     setSaving(true);
 
     try {
@@ -572,7 +584,11 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
         hint="One row per size/colour. Every row needs a unique SKU; a removed row is deactivated, not deleted, so past orders stay intact."
       >
         <div className="space-y-3">
-          {variants.map((variant, index) => (
+          {variants.map((variant, index) => {
+            const duplicateSku = variantIssues.duplicateSkus.has(index);
+            const duplicateCombo = variantIssues.duplicateCombos.has(index);
+
+            return (
             <div
               key={variant.id ?? index}
               className={clsx(
@@ -580,24 +596,39 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
                 variant.isActive ? 'border-sand-200' : 'border-sand-200 bg-sand-50 opacity-60',
               )}
             >
-              <LabelledInput
-                label="SKU"
-                value={variant.sku}
-                onChange={(value) => updateVariant(setVariants, index, { sku: value })}
-                placeholder="LWN-3PC-BLU-M"
-              />
-              <LabelledInput
-                label="Size"
-                value={variant.size}
-                onChange={(value) => updateVariant(setVariants, index, { size: value })}
-                placeholder="M"
-              />
-              <LabelledInput
-                label="Colour"
-                value={variant.color}
-                onChange={(value) => updateVariant(setVariants, index, { color: value })}
-                placeholder="Ferozi"
-              />
+              <div>
+                <LabelledInput
+                  label="SKU"
+                  value={variant.sku}
+                  onChange={(value) => updateVariant(setVariants, index, { sku: value })}
+                  placeholder="LWN-3PC-BLU-M"
+                  invalid={duplicateSku}
+                />
+                {duplicateSku ? (
+                  <p className="mt-1 text-xs text-red-700">Used by another variant below.</p>
+                ) : null}
+              </div>
+              <div>
+                <LabelledInput
+                  label="Size"
+                  value={variant.size}
+                  onChange={(value) => updateVariant(setVariants, index, { size: value })}
+                  placeholder="M"
+                  invalid={duplicateCombo}
+                />
+              </div>
+              <div>
+                <LabelledInput
+                  label="Colour"
+                  value={variant.color}
+                  onChange={(value) => updateVariant(setVariants, index, { color: value })}
+                  placeholder="Ferozi"
+                  invalid={duplicateCombo}
+                />
+                {duplicateCombo ? (
+                  <p className="mt-1 text-xs text-red-700">Same size/colour used below.</p>
+                ) : null}
+              </div>
               <LabelledInput
                 label="Hex"
                 value={variant.colorHex}
@@ -636,7 +667,8 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
                 </button>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         <button
@@ -702,6 +734,38 @@ function updateVariant(
   );
 }
 
+interface VariantIssues {
+  duplicateSkus: Set<number>;
+  duplicateCombos: Set<number>;
+}
+
+/** Mirrors the checks apps/api's assertUniqueSkus runs server-side, so the editor can flag them before submitting. Blank-SKU rows are ignored — they're dropped on submit, same as there. */
+function findVariantIssues(variants: VariantDraft[]): VariantIssues {
+  const relevant = variants
+    .map((variant, index) => ({ variant, index }))
+    .filter(({ variant }) => variant.sku.trim());
+
+  const skuKey = (variant: VariantDraft) => variant.sku.trim().toUpperCase();
+  const comboKey = (variant: VariantDraft) =>
+    `${variant.size.trim().toUpperCase()} ${variant.color.trim().toUpperCase()}`;
+
+  const skuCounts = new Map<string, number>();
+  const comboCounts = new Map<string, number>();
+  for (const { variant } of relevant) {
+    skuCounts.set(skuKey(variant), (skuCounts.get(skuKey(variant)) ?? 0) + 1);
+    comboCounts.set(comboKey(variant), (comboCounts.get(comboKey(variant)) ?? 0) + 1);
+  }
+
+  const duplicateSkus = new Set<number>();
+  const duplicateCombos = new Set<number>();
+  for (const { variant, index } of relevant) {
+    if ((skuCounts.get(skuKey(variant)) ?? 0) > 1) duplicateSkus.add(index);
+    if ((comboCounts.get(comboKey(variant)) ?? 0) > 1) duplicateCombos.add(index);
+  }
+
+  return { duplicateSkus, duplicateCombos };
+}
+
 function Section({
   title,
   hint,
@@ -751,12 +815,14 @@ function LabelledInput({
   onChange,
   type = 'text',
   placeholder,
+  invalid,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   type?: string;
   placeholder?: string;
+  invalid?: boolean;
 }) {
   return (
     <label className="block">
@@ -766,7 +832,11 @@ function LabelledInput({
         value={value}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
-        className="field-input py-1.5 text-sm"
+        aria-invalid={invalid || undefined}
+        className={clsx(
+          'field-input py-1.5 text-sm',
+          invalid && 'border-red-400 focus:border-red-500',
+        )}
       />
     </label>
   );

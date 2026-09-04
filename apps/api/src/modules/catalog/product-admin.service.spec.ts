@@ -1,5 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
-import { assertKindRules } from './product-admin.service';
+import { assertKindRules, assertUniqueSkus } from './product-admin.service';
+import type { ProductVariantDto } from './dto/product.dto';
 
 /**
  * The rules that separate ready-made clothes, unstitched fabric and stitching
@@ -46,5 +47,62 @@ describe('assertKindRules', () => {
 
   it('allows a ready-made piece with none of the unstitched fields', () => {
     expect(() => assertKindRules('STITCHED', {})).not.toThrow();
+  });
+});
+
+function variant(overrides: Partial<ProductVariantDto>): ProductVariantDto {
+  return { sku: 'SKU-1', ...overrides } as ProductVariantDto;
+}
+
+/**
+ * The two ways a hand-typed variant list can contradict itself: the same
+ * SKU twice, or the same size/colour combination twice. Neither reaches a
+ * database constraint that would catch it before this runs.
+ */
+describe('assertUniqueSkus', () => {
+  it('allows distinct SKUs with distinct size/colour combinations', () => {
+    expect(() =>
+      assertUniqueSkus([
+        variant({ sku: 'A', size: 'S', color: 'Blue' }),
+        variant({ sku: 'B', size: 'M', color: 'Blue' }),
+        variant({ sku: 'C', size: 'S', color: 'Red' }),
+      ]),
+    ).not.toThrow();
+  });
+
+  it('rejects the same SKU twice, case- and whitespace-insensitively', () => {
+    expect(() =>
+      assertUniqueSkus([variant({ sku: 'abc-1' }), variant({ sku: ' ABC-1 ' })]),
+    ).toThrow(/Duplicate SKU/);
+  });
+
+  it('rejects the same size/colour combination twice even with different SKUs', () => {
+    expect(() =>
+      assertUniqueSkus([
+        variant({ sku: 'A', size: 'M', color: 'Blue' }),
+        variant({ sku: 'B', size: 'm', color: ' blue ' }),
+      ]),
+    ).toThrow(/share the same size and colour/);
+  });
+
+  it('treats two variants with no size or colour at all as a duplicate combination', () => {
+    expect(() =>
+      assertUniqueSkus([variant({ sku: 'A' }), variant({ sku: 'B' })]),
+    ).toThrow(/share the same size and colour/);
+  });
+
+  it('allows two variants that share only a size, or only a colour', () => {
+    expect(() =>
+      assertUniqueSkus([
+        variant({ sku: 'A', size: 'M', color: 'Blue' }),
+        variant({ sku: 'B', size: 'M', color: 'Red' }),
+        variant({ sku: 'C', size: 'S', color: 'Blue' }),
+      ]),
+    ).not.toThrow();
+  });
+
+  it('does nothing for an empty or missing variant list', () => {
+    expect(() => assertUniqueSkus([])).not.toThrow();
+    expect(() => assertUniqueSkus(undefined)).not.toThrow();
   });
 });

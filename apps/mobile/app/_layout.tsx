@@ -65,6 +65,10 @@ function Navigation() {
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="product/[slug]" options={{ title: '' }} />
       <Stack.Screen name="checkout" options={{ title: t('checkout.title') }} />
+      <Stack.Screen
+        name="payment"
+        options={{ title: t('checkout.payTitle'), presentation: 'modal', gestureEnabled: false }}
+      />
       <Stack.Screen name="login" options={{ title: t('account.signIn'), presentation: 'modal' }} />
       <Stack.Screen name="orders/index" options={{ title: t('orders.title') }} />
       <Stack.Screen name="orders/[number]" options={{ title: '' }} />

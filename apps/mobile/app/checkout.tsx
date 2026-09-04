@@ -83,8 +83,22 @@ export default function CheckoutScreen() {
         paymentMethod: method,
       });
 
-      setPlaced(order);
       await refresh();
+
+      const payment = order.payments[0];
+      if (payment?.redirectUrl && payment.meta?.fields) {
+        router.push({
+          pathname: '/payment',
+          params: {
+            redirectUrl: payment.redirectUrl,
+            fields: JSON.stringify(payment.meta.fields),
+            orderNumber: order.number,
+          },
+        });
+        return;
+      }
+
+      setPlaced(order);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : t('common.somethingWrong'));
     } finally {

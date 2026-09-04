@@ -196,8 +196,11 @@ export interface Order {
     id: string;
     provider: string;
     status: string;
+    /** Set once initiate() hands back a JazzCash/Easypaisa hosted-checkout form. */
+    redirectUrl?: string | null;
     meta: {
       accounts?: Array<{ bank: string; title: string; accountNumber: string; iban: string }>;
+      fields?: Record<string, string>;
     } | null;
   }>;
   statusEvents: Array<{ toStatus: string; createdAt: string; note: string | null }>;

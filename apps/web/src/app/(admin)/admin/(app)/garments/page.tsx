@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { adminFetch } from '@/lib/admin-client';
 import type { AdminGarmentSizeChartRow, GarmentType, MeasurementFieldRow } from '@/lib/api-types';
 
@@ -89,8 +90,7 @@ export default function AdminGarmentsPage() {
     setSizeChart(toSizeChartDraft(garment.sizeChart));
   }, [selectedId, garments]);
 
-  async function save(event: React.FormEvent) {
-    event.preventDefault();
+  async function save() {
     if (!selectedId) return;
 
     setError(null);
@@ -219,218 +219,29 @@ export default function AdminGarmentsPage() {
 
         {selected ? (
           <div className="space-y-6">
-            <form onSubmit={save} className="card p-4">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="block">
-                  <span className="field-label">Name (English)</span>
-                  <input
-                    value={labelEn}
-                    onChange={(event) => setLabelEn(event.target.value)}
-                    className="field-input"
-                    required
-                  />
-                </label>
-                <label className="block" dir="rtl">
-                  <span className="field-label">نام (اردو)</span>
-                  <input
-                    value={labelUr}
-                    onChange={(event) => setLabelUr(event.target.value)}
-                    className="field-input font-urdu"
-                    required
-                  />
-                </label>
-                <label className="block">
-                  <span className="field-label">Stitching fee (Rs)</span>
-                  <input
-                    type="number"
-                    min="0"
-                    step="1"
-                    value={stitchingPrice}
-                    onChange={(event) => setStitchingPrice(event.target.value)}
-                    className="field-input"
-                    required
-                  />
-                  <span className="mt-1 block text-xs text-ink/50">
-                    Charged when the customer picks no premium stitching service.
-                  </span>
-                </label>
-                <div className="block">
-                  <span className="field-label">Offered for stitching</span>
-                  <label className="flex items-center gap-2 text-sm text-ink/70">
-                    <input
-                      type="checkbox"
-                      checked={stitchingEnabled}
-                      onChange={(event) => setStitchingEnabled(event.target.checked)}
-                      className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
-                    />
-                    Show in the stitching flow
-                  </label>
-                  <span className="mt-1 block text-xs text-ink/50">
-                    Unticking hides this garment from customers without deleting anything.
-                  </span>
-                </div>
-                <label className="block">
-                  <span className="field-label">Base fabric (Gaz)</span>
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.25"
-                    value={baseFabricGaz}
-                    onChange={(event) => setBaseFabricGaz(event.target.value)}
-                    className="field-input"
-                  />
-                  <span className="mt-1 block text-xs text-ink/50">
-                    Flat fabric benchmark, used when the yardage formula doesn&apos;t apply.
-                  </span>
-                </label>
-                <label className="block">
-                  <span className="field-label">Also known as (English)</span>
-                  <input
-                    value={aliasesEn}
-                    onChange={(event) => setAliasesEn(event.target.value)}
-                    placeholder="Anarkali, Panel Dress, Gown"
-                    className="field-input"
-                  />
-                  <span className="mt-1 block text-xs text-ink/50">Comma-separated.</span>
-                </label>
-                <label className="block" dir="rtl">
-                  <span className="field-label">بھی کہا جاتا ہے (اردو)</span>
-                  <input
-                    value={aliasesUr}
-                    onChange={(event) => setAliasesUr(event.target.value)}
-                    className="field-input font-urdu"
-                  />
-                  <span className="mt-1 block text-xs text-ink/50" dir="ltr">
-                    Comma-separated.
-                  </span>
-                </label>
-              </div>
-
-              <h2 className="mb-2 mt-6 text-sm font-semibold text-ink">Measurements</h2>
-              <div className="space-y-2">
-                {fields.map((field, index) => (
-                  <div
-                    key={`${field.key}-${index}`}
-                    className={
-                      field.isActive
-                        ? 'grid items-end gap-2 rounded-md border border-sand-200 p-2 sm:grid-cols-7'
-                        : 'grid items-end gap-2 rounded-md border border-sand-200 bg-sand-50 p-2 opacity-60 sm:grid-cols-7'
-                    }
-                  >
-                    <Small label="Key">
-                      <input
-                        value={field.key}
-                        onChange={(event) =>
-                          patch(setFields, index, { key: event.target.value })
-                        }
-                        className="field-input py-1 text-sm"
-                      />
-                    </Small>
-                    <Small label="English">
-                      <input
-                        value={field.labelEn}
-                        onChange={(event) =>
-                          patch(setFields, index, { labelEn: event.target.value })
-                        }
-                        className="field-input py-1 text-sm"
-                      />
-                    </Small>
-                    <Small label="اردو">
-                      <input
-                        value={field.labelUr}
-                        onChange={(event) =>
-                          patch(setFields, index, { labelUr: event.target.value })
-                        }
-                        dir="rtl"
-                        className="field-input py-1 font-urdu text-sm"
-                      />
-                    </Small>
-                    <Small label="Unit">
-                      <select
-                        value={field.unit}
-                        onChange={(event) =>
-                          patch(setFields, index, { unit: event.target.value as 'INCH' | 'CM' })
-                        }
-                        className="field-input py-1 text-sm"
-                      >
-                        <option value="INCH">inch</option>
-                        <option value="CM">cm</option>
-                      </select>
-                    </Small>
-                    <Small label="Min">
-                      <input
-                        type="number"
-                        step="0.25"
-                        value={field.min}
-                        onChange={(event) =>
-                          patch(setFields, index, { min: event.target.value })
-                        }
-                        className="field-input py-1 text-sm"
-                      />
-                    </Small>
-                    <Small label="Max">
-                      <input
-                        type="number"
-                        step="0.25"
-                        value={field.max}
-                        onChange={(event) =>
-                          patch(setFields, index, { max: event.target.value })
-                        }
-                        className="field-input py-1 text-sm"
-                      />
-                    </Small>
-                    <div className="flex items-center gap-3 pb-1">
-                      <label className="flex items-center gap-1 text-xs text-ink/70">
-                        <input
-                          type="checkbox"
-                          checked={field.required}
-                          onChange={(event) =>
-                            patch(setFields, index, { required: event.target.checked })
-                          }
-                          className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
-                        />
-                        Required
-                      </label>
-                      <button
-                        type="button"
-                        onClick={() => patch(setFields, index, { isActive: !field.isActive })}
-                        className="text-xs text-ink/60 hover:text-ink"
-                      >
-                        {field.isActive ? 'Retire' : 'Restore'}
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                type="button"
-                onClick={() =>
-                  setFields((current) => [
-                    ...current,
-                    {
-                      key: '',
-                      labelEn: '',
-                      labelUr: '',
-                      unit: 'INCH',
-                      min: '1',
-                      max: '100',
-                      required: true,
-                      isActive: true,
-                    },
-                  ])
-                }
-                className="btn-secondary mt-3"
-              >
-                Add measurement
-              </button>
-
-              <div className="mt-6 border-t border-sand-200 pt-4">
-                <button type="submit" disabled={busy} className="btn-primary">
-                  {busy ? 'Saving…' : 'Save garment'}
-                </button>
-              </div>
-            </form>
+            <div className="card p-4">
+              <GarmentWizard
+                key={selectedId}
+                labelEn={labelEn}
+                setLabelEn={setLabelEn}
+                labelUr={labelUr}
+                setLabelUr={setLabelUr}
+                stitchingPrice={stitchingPrice}
+                setStitchingPrice={setStitchingPrice}
+                stitchingEnabled={stitchingEnabled}
+                setStitchingEnabled={setStitchingEnabled}
+                baseFabricGaz={baseFabricGaz}
+                setBaseFabricGaz={setBaseFabricGaz}
+                aliasesEn={aliasesEn}
+                setAliasesEn={setAliasesEn}
+                aliasesUr={aliasesUr}
+                setAliasesUr={setAliasesUr}
+                fields={fields}
+                setFields={setFields}
+                busy={busy}
+                onSave={save}
+              />
+            </div>
 
             <form onSubmit={saveSizeChart} className="card p-4">
               <h2 className="text-sm font-semibold text-ink">Standard sizes (RTW)</h2>
@@ -499,6 +310,273 @@ export default function AdminGarmentsPage() {
         )}
       </div>
     </>
+  );
+}
+
+/** The garment editor's own two-step wizard: basics, then its measurement fields. */
+function GarmentWizard({
+  labelEn,
+  setLabelEn,
+  labelUr,
+  setLabelUr,
+  stitchingPrice,
+  setStitchingPrice,
+  stitchingEnabled,
+  setStitchingEnabled,
+  baseFabricGaz,
+  setBaseFabricGaz,
+  aliasesEn,
+  setAliasesEn,
+  aliasesUr,
+  setAliasesUr,
+  fields,
+  setFields,
+  busy,
+  onSave,
+}: {
+  labelEn: string;
+  setLabelEn: (value: string) => void;
+  labelUr: string;
+  setLabelUr: (value: string) => void;
+  stitchingPrice: string;
+  setStitchingPrice: (value: string) => void;
+  stitchingEnabled: boolean;
+  setStitchingEnabled: (value: boolean) => void;
+  baseFabricGaz: string;
+  setBaseFabricGaz: (value: string) => void;
+  aliasesEn: string;
+  setAliasesEn: (value: string) => void;
+  aliasesUr: string;
+  setAliasesUr: (value: string) => void;
+  fields: FieldDraft[];
+  setFields: React.Dispatch<React.SetStateAction<FieldDraft[]>>;
+  busy: boolean;
+  onSave: () => void;
+}) {
+  const steps: WizardStep[] = [
+    {
+      id: 'basics',
+      label: 'Basics',
+      isValid: Boolean(labelEn.trim() && labelUr.trim() && stitchingPrice.trim()),
+      content: (
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="block">
+            <span className="field-label">Name (English)</span>
+            <input
+              value={labelEn}
+              onChange={(event) => setLabelEn(event.target.value)}
+              className="field-input"
+              required
+            />
+          </label>
+          <label className="block" dir="rtl">
+            <span className="field-label">نام (اردو)</span>
+            <input
+              value={labelUr}
+              onChange={(event) => setLabelUr(event.target.value)}
+              className="field-input font-urdu"
+              required
+            />
+          </label>
+          <label className="block">
+            <span className="field-label">Stitching fee (Rs)</span>
+            <input
+              type="number"
+              min="0"
+              step="1"
+              value={stitchingPrice}
+              onChange={(event) => setStitchingPrice(event.target.value)}
+              className="field-input"
+              required
+            />
+            <span className="mt-1 block text-xs text-ink/50">
+              Charged when the customer picks no premium stitching service.
+            </span>
+          </label>
+          <div className="block">
+            <span className="field-label">Offered for stitching</span>
+            <label className="flex items-center gap-2 text-sm text-ink/70">
+              <input
+                type="checkbox"
+                checked={stitchingEnabled}
+                onChange={(event) => setStitchingEnabled(event.target.checked)}
+                className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+              />
+              Show in the stitching flow
+            </label>
+            <span className="mt-1 block text-xs text-ink/50">
+              Unticking hides this garment from customers without deleting anything.
+            </span>
+          </div>
+          <label className="block">
+            <span className="field-label">Base fabric (Gaz)</span>
+            <input
+              type="number"
+              min="0"
+              step="0.25"
+              value={baseFabricGaz}
+              onChange={(event) => setBaseFabricGaz(event.target.value)}
+              className="field-input"
+            />
+            <span className="mt-1 block text-xs text-ink/50">
+              Flat fabric benchmark, used when the yardage formula doesn&apos;t apply.
+            </span>
+          </label>
+          <label className="block">
+            <span className="field-label">Also known as (English)</span>
+            <input
+              value={aliasesEn}
+              onChange={(event) => setAliasesEn(event.target.value)}
+              placeholder="Anarkali, Panel Dress, Gown"
+              className="field-input"
+            />
+            <span className="mt-1 block text-xs text-ink/50">Comma-separated.</span>
+          </label>
+          <label className="block" dir="rtl">
+            <span className="field-label">بھی کہا جاتا ہے (اردو)</span>
+            <input
+              value={aliasesUr}
+              onChange={(event) => setAliasesUr(event.target.value)}
+              className="field-input font-urdu"
+            />
+            <span className="mt-1 block text-xs text-ink/50" dir="ltr">
+              Comma-separated.
+            </span>
+          </label>
+        </div>
+      ),
+    },
+    {
+      id: 'measurements',
+      label: 'Measurements',
+      isValid: true,
+      content: (
+        <div>
+          <div className="space-y-2">
+            {fields.map((field, index) => (
+              <div
+                key={`${field.key}-${index}`}
+                className={
+                  field.isActive
+                    ? 'grid items-end gap-2 rounded-md border border-sand-200 p-2 sm:grid-cols-7'
+                    : 'grid items-end gap-2 rounded-md border border-sand-200 bg-sand-50 p-2 opacity-60 sm:grid-cols-7'
+                }
+              >
+                <Small label="Key">
+                  <input
+                    value={field.key}
+                    onChange={(event) => patch(setFields, index, { key: event.target.value })}
+                    className="field-input py-1 text-sm"
+                  />
+                </Small>
+                <Small label="English">
+                  <input
+                    value={field.labelEn}
+                    onChange={(event) =>
+                      patch(setFields, index, { labelEn: event.target.value })
+                    }
+                    className="field-input py-1 text-sm"
+                  />
+                </Small>
+                <Small label="اردو">
+                  <input
+                    value={field.labelUr}
+                    onChange={(event) =>
+                      patch(setFields, index, { labelUr: event.target.value })
+                    }
+                    dir="rtl"
+                    className="field-input py-1 font-urdu text-sm"
+                  />
+                </Small>
+                <Small label="Unit">
+                  <select
+                    value={field.unit}
+                    onChange={(event) =>
+                      patch(setFields, index, { unit: event.target.value as 'INCH' | 'CM' })
+                    }
+                    className="field-input py-1 text-sm"
+                  >
+                    <option value="INCH">inch</option>
+                    <option value="CM">cm</option>
+                  </select>
+                </Small>
+                <Small label="Min">
+                  <input
+                    type="number"
+                    step="0.25"
+                    value={field.min}
+                    onChange={(event) => patch(setFields, index, { min: event.target.value })}
+                    className="field-input py-1 text-sm"
+                  />
+                </Small>
+                <Small label="Max">
+                  <input
+                    type="number"
+                    step="0.25"
+                    value={field.max}
+                    onChange={(event) => patch(setFields, index, { max: event.target.value })}
+                    className="field-input py-1 text-sm"
+                  />
+                </Small>
+                <div className="flex items-center gap-3 pb-1">
+                  <label className="flex items-center gap-1 text-xs text-ink/70">
+                    <input
+                      type="checkbox"
+                      checked={field.required}
+                      onChange={(event) =>
+                        patch(setFields, index, { required: event.target.checked })
+                      }
+                      className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                    />
+                    Required
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => patch(setFields, index, { isActive: !field.isActive })}
+                    className="text-xs text-ink/60 hover:text-ink"
+                  >
+                    {field.isActive ? 'Retire' : 'Restore'}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={() =>
+              setFields((current) => [
+                ...current,
+                {
+                  key: '',
+                  labelEn: '',
+                  labelUr: '',
+                  unit: 'INCH',
+                  min: '1',
+                  max: '100',
+                  required: true,
+                  isActive: true,
+                },
+              ])
+            }
+            className="btn-secondary mt-3"
+          >
+            Add measurement
+          </button>
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <Wizard
+      steps={steps}
+      onSubmit={onSave}
+      submitLabel={busy ? 'Saving…' : 'Save garment'}
+      submitBusy={busy}
+      submitDisabled={busy}
+      accentClassName="bg-brand-600 text-white"
+    />
   );
 }
 

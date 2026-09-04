@@ -431,18 +431,31 @@ export class StitchingJobsService implements OnModuleInit {
   }
 }
 
-/** JOB-2026-0001, sequential within the year. */
-async function nextJobNumber(tx: Prisma.TransactionClient): Promise<string> {
-  const prefix = `JOB-${new Date().getFullYear()}-`;
+/**
+ * JOB-2026-0001, sequential within the year. Shared by both places a job is
+ * born — a checkout stitching item (here) and a bring-your-own-fabric
+ * booking (stitching-orders.service.ts) — so it lives here, exported, rather
+ * than as two copies that could drift.
+ *
+ * Backed by StitchingJobNumberCounter's atomic INSERT ... ON CONFLICT DO
+ * UPDATE ... RETURNING, not a MAX(StitchingJob.number) read: the latter is a
+ * read-then-write race between two concurrent jobs (same story as
+ * nextOrderNumber() in orders/orders.service.ts, which had exactly this bug).
+ * A booking that creates several jobs at once just calls this once per job —
+ * each call is its own atomic step, so sequential calls on the same
+ * transaction still hand out distinct, gapless-under-success numbers.
+ */
+export async function nextJobNumber(tx: Prisma.TransactionClient): Promise<string> {
+  const year = new Date().getFullYear();
+  const prefix = `JOB-${year}-`;
 
-  const latest = await tx.stitchingJob.findFirst({
-    where: { number: { startsWith: prefix } },
-    orderBy: { number: 'desc' },
-    select: { number: true },
-  });
+  const [{ counter }] = await tx.$queryRaw<Array<{ counter: number }>>`
+    INSERT INTO "StitchingJobNumberCounter" ("year", "counter") VALUES (${year}, 1)
+    ON CONFLICT ("year") DO UPDATE SET "counter" = "StitchingJobNumberCounter"."counter" + 1
+    RETURNING "counter"
+  `;
 
-  const sequence = latest ? Number.parseInt(latest.number.slice(prefix.length), 10) + 1 : 1;
-  return `${prefix}${String(sequence).padStart(4, '0')}`;
+  return `${prefix}${String(counter).padStart(4, '0')}`;
 }
 
 /** Promised dates skip Sundays, the one day the workshop is shut. */

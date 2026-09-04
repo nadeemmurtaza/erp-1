@@ -181,3 +181,21 @@ model TailorProfile {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
+
+/// Backing store for sequential per-year STO-2026-0001 numbers. Same shape
+/// and same reason as OrderNumberCounter (orders.prisma): one row per year,
+/// incremented via a single atomic INSERT ... ON CONFLICT DO UPDATE ...
+/// RETURNING rather than a MAX(StitchingOrder.number) read, which is a
+/// read-then-write race between two concurrent bookings.
+model StitchingOrderNumberCounter {
+  year    Int @id
+  counter Int @default(0)
+}
+
+/// Same as StitchingOrderNumberCounter, for JOB-2026-0001 numbers. Shared by
+/// both places a job is born — see nextJobNumber() in
+/// stitching/jobs.service.ts.
+model StitchingJobNumberCounter {
+  year    Int @id
+  counter Int @default(0)
+}

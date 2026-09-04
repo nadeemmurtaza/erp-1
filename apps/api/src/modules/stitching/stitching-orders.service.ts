@@ -12,7 +12,7 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import type { Prisma, StitchingOrderStatus } from '../../core/prisma/client';
-import { addWorkingDays } from './jobs.service';
+import { addWorkingDays, nextJobNumber } from './jobs.service';
 
 const stitchingOrderInclude = {
   jobs: {
@@ -126,8 +126,8 @@ export class StitchingOrdersService {
           promisedAt: addWorkingDays(new Date(), leadDays),
           jobs: {
             create: await Promise.all(
-              garments.map(async (garment, index) => ({
-                number: await nextJobNumberInTx(tx, index),
+              garments.map(async (garment) => ({
+                number: await nextJobNumber(tx),
                 garmentTypeId: garment.garmentType.id,
                 measurementSnapshot: garment.measurements as Prisma.InputJsonValue,
                 instructions: garment.instructions,
@@ -251,37 +251,22 @@ export class StitchingOrdersService {
   }
 }
 
-async function nextStitchingOrderNumber(tx: Prisma.TransactionClient): Promise<string> {
-  const prefix = `STO-${new Date().getFullYear()}-`;
-
-  const latest = await tx.stitchingOrder.findFirst({
-    where: { number: { startsWith: prefix } },
-    orderBy: { number: 'desc' },
-    select: { number: true },
-  });
-
-  const sequence = latest ? Number.parseInt(latest.number.slice(prefix.length), 10) + 1 : 1;
-  return `${prefix}${String(sequence).padStart(4, '0')}`;
-}
-
 /**
- * Job numbers for a booking's garments.
- *
- * `offset` steps past the jobs created earlier in this same transaction, which
- * are not yet visible to a query inside it.
+ * STO-2026-0001, sequential within the year. Backed by
+ * StitchingOrderNumberCounter's atomic INSERT ... ON CONFLICT DO UPDATE ...
+ * RETURNING rather than a MAX(StitchingOrder.number) read — see
+ * nextJobNumber() in jobs.service.ts (same fix, same underlying race) and
+ * nextOrderNumber() in orders/orders.service.ts (the original bug).
  */
-async function nextJobNumberInTx(
-  tx: Prisma.TransactionClient,
-  offset: number,
-): Promise<string> {
-  const prefix = `JOB-${new Date().getFullYear()}-`;
+async function nextStitchingOrderNumber(tx: Prisma.TransactionClient): Promise<string> {
+  const year = new Date().getFullYear();
+  const prefix = `STO-${year}-`;
 
-  const latest = await tx.stitchingJob.findFirst({
-    where: { number: { startsWith: prefix } },
-    orderBy: { number: 'desc' },
-    select: { number: true },
-  });
+  const [{ counter }] = await tx.$queryRaw<Array<{ counter: number }>>`
+    INSERT INTO "StitchingOrderNumberCounter" ("year", "counter") VALUES (${year}, 1)
+    ON CONFLICT ("year") DO UPDATE SET "counter" = "StitchingOrderNumberCounter"."counter" + 1
+    RETURNING "counter"
+  `;
 
-  const base = latest ? Number.parseInt(latest.number.slice(prefix.length), 10) : 0;
-  return `${prefix}${String(base + offset + 1).padStart(4, '0')}`;
+  return `${prefix}${String(counter).padStart(4, '0')}`;
 }

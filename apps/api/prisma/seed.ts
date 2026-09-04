@@ -316,7 +316,7 @@ const GARMENT_EXTENSIONS: Array<{
         key: 'slit_height',
         labelEn: 'Slit height',
         labelUr: 'چاک کی اونچائی',
-        min: 0,
+        min: 0.25,
         max: 20,
         required: false,
         order: 11,

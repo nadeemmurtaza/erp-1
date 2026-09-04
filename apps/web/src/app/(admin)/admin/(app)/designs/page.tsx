@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { adminFetch } from '@/lib/admin-client';
 import type {
   AdminStitchingOption,
@@ -161,8 +162,7 @@ export default function AdminDesignsPage() {
     }
   }
 
-  async function save(event: React.FormEvent) {
-    event.preventDefault();
+  async function save() {
     if (!selectedId || !draft) return;
 
     setError(null);
@@ -340,7 +340,13 @@ export default function AdminDesignsPage() {
             </div>
           </form>
         ) : selected && draft ? (
-          <form onSubmit={save} className="card p-4">
+          (() => {
+            const basicsStep: WizardStep = {
+              id: 'basics',
+              label: 'Basics',
+              isValid: Boolean(draft.labelEn.trim() && draft.labelUr.trim()),
+              content: (
+            <div>
             <label className="mb-4 block sm:max-w-xs">
               <span className="field-label">Key</span>
               <input value={selected.key} readOnly className="field-input bg-sand-50 text-ink/60" />
@@ -462,8 +468,16 @@ export default function AdminDesignsPage() {
                 />
               </label>
             </div>
+            </div>
+              ),
+            };
 
-            <h3 className="mb-2 mt-6 text-sm font-semibold text-ink">Choices</h3>
+            const choicesStep: WizardStep = {
+              id: 'choices',
+              label: 'Choices',
+              isValid: true,
+              content: (
+            <div>
             <div className="space-y-2">
               {options.map((option, index) => (
                 <div
@@ -558,27 +572,42 @@ export default function AdminDesignsPage() {
             >
               Add option
             </button>
-
-            <div className="mt-6 flex items-center gap-4 border-t border-sand-200 pt-4">
-              <button type="submit" disabled={busy} className="btn-primary">
-                {busy ? 'Saving…' : 'Save design group'}
-              </button>
-              {/*
-                Retiring hides the group from the storefront but leaves its options
-                arranged, so restoring brings the whole question back as it was.
-              */}
-              <button
-                type="button"
-                onClick={() => setDraft({ ...draft, isActive: !draft.isActive })}
-                className="text-sm text-ink/60 hover:text-ink"
-              >
-                {draft.isActive ? 'Retire this group' : 'Restore this group'}
-              </button>
-              {draft.isActive === selected.isActive ? null : (
-                <span className="text-xs text-ink/50">Save to apply.</span>
-              )}
             </div>
-          </form>
+              ),
+            };
+
+            const steps: WizardStep[] = [basicsStep, choicesStep];
+
+            return (
+              <div className="card space-y-4 p-4">
+                <Wizard
+                  key={selectedId}
+                  steps={steps}
+                  onSubmit={save}
+                  submitLabel={busy ? 'Saving…' : 'Save design group'}
+                  submitBusy={busy}
+                  submitDisabled={busy}
+                  accentClassName="bg-brand-600 text-white"
+                />
+                <div className="flex items-center gap-4 border-t border-sand-200 pt-4">
+                  {/*
+                    Retiring hides the group from the storefront but leaves its options
+                    arranged, so restoring brings the whole question back as it was.
+                  */}
+                  <button
+                    type="button"
+                    onClick={() => setDraft({ ...draft, isActive: !draft.isActive })}
+                    className="text-sm text-ink/60 hover:text-ink"
+                  >
+                    {draft.isActive ? 'Retire this group' : 'Restore this group'}
+                  </button>
+                  {draft.isActive === selected.isActive ? null : (
+                    <span className="text-xs text-ink/50">Save to apply.</span>
+                  )}
+                </div>
+              </div>
+            );
+          })()
         ) : (
           <p className="text-sm text-ink/50">Loading…</p>
         )}

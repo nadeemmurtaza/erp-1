@@ -356,4 +356,51 @@ describe('Catalog (e2e)', () => {
         .expect(204);
     });
   });
+
+  describe('image alt text', () => {
+    let imageId: string;
+
+    beforeAll(async () => {
+      const product = await prisma.product.findFirstOrThrow({
+        where: { slug: 'ready-kurta-white-cotton' },
+      });
+      const image = await prisma.productImage.create({
+        data: { productId: product.id, url: 'https://example.test/kurta.jpg', alt: null },
+      });
+      imageId = image.id;
+    });
+
+    afterAll(async () => {
+      await prisma.productImage.deleteMany({ where: { id: imageId } });
+    });
+
+    it('lets staff write a real description, replacing the filename fallback this UI used to send', async () => {
+      const response = await api()
+        .patch(`/api/v1/admin/catalog/images/${imageId}`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ alt: 'White cotton kurta, front view, on a hanger' })
+        .expect(200);
+
+      expect(response.body.alt).toBe('White cotton kurta, front view, on a hanger');
+
+      const stored = await prisma.productImage.findUniqueOrThrow({ where: { id: imageId } });
+      expect(stored.alt).toBe('White cotton kurta, front view, on a hanger');
+    });
+
+    it('refuses a customer', async () => {
+      await api()
+        .patch(`/api/v1/admin/catalog/images/${imageId}`)
+        .set('Authorization', `Bearer ${customerToken}`)
+        .send({ alt: 'Should not be allowed' })
+        .expect(403);
+    });
+
+    it('404s on an image that does not exist', async () => {
+      await api()
+        .patch('/api/v1/admin/catalog/images/does-not-exist')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ alt: 'Anything' })
+        .expect(404);
+    });
+  });
 });

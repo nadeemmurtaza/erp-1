@@ -1,10 +1,11 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { DEFAULT_LOCALE, getPersonFullName } from '@yaseen/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { Prisma, StockMovement, StockMovementReason } from '../../core/prisma/client';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { DomainEvent } from '../../core/events/domain-events';
+import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
 
 const variantListInclude = {
   product: {
@@ -53,12 +54,30 @@ export class InsufficientStockError extends BadRequestException {
  * an answer without replaying deltas.
  */
 @Injectable()
-export class InventoryService {
+export class InventoryService implements OnModuleInit {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
     private readonly events: EventBusService,
+    private readonly stockIntake: StockIntakeRegistry,
   ) {}
+
+  /**
+   * Registers this module's stock-write surface for StockIntakeRegistry, so
+   * `catalog`'s CSV import can set an opening stock without importing
+   * InventoryService directly — the core-internal counterpart to how
+   * `stitching`/`measurements` register against CartLineValidatorRegistry
+   * from a pack. `move()` itself stays the direct call for anything that
+   * must commit in the same transaction as its caller (order placement, a
+   * purchase-order receipt); this registration only ever backs a
+   * best-effort write outside such a transaction.
+   */
+  onModuleInit(): void {
+    this.stockIntake.register({
+      defaultLocationId: () => this.defaultLocationId(),
+      move: (input) => this.move(input).then(() => undefined),
+    });
+  }
 
   async list(query: { filter?: string; search?: string }) {
     const where: Prisma.ProductVariantWhereInput = { isActive: true };

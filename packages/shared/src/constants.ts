@@ -16,6 +16,23 @@ export function directionFor(locale: Locale): 'ltr' | 'rtl' {
 }
 
 /**
+ * Picks the row for a locale out of a bilingual translations array, falling
+ * back to the default locale and then to whatever row exists — used
+ * everywhere a record (product, category, garment type…) carries a
+ * `translations: { locale }[]` shape and needs flattening to one language.
+ */
+export function pickTranslation<T extends { locale: string }>(
+  translations: T[],
+  locale: string,
+): T | undefined {
+  return (
+    translations.find((row) => row.locale === locale) ??
+    translations.find((row) => row.locale === DEFAULT_LOCALE) ??
+    translations[0]
+  );
+}
+
+/**
  * Money is stored and transported as integer paisa (1 PKR = 100 paisa) so that
  * no rounding error can ever creep into an order total.
  */

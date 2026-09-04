@@ -24,6 +24,27 @@ export function computeStitchingFee(input: StitchingPriceInput): number {
   return Math.max(0, Math.round(total));
 }
 
+/**
+ * Same computation, from a cart/order line's own shape: a stitched line's base
+ * fee is the garment type's standard price, unless the customer upgraded to a
+ * specific STITCHING_SERVICE product, whose price replaces it rather than
+ * adding to it.
+ */
+export function stitchingFeeFor(
+  item: {
+    garmentType: { stitchingPrice: number } | null;
+    stitchingService: { basePrice: number } | null;
+  },
+  optionDeltas: number[],
+): number {
+  if (!item.garmentType) return 0;
+
+  return computeStitchingFee({
+    baseFee: item.stitchingService?.basePrice ?? item.garmentType.stitchingPrice,
+    optionDeltas,
+  });
+}
+
 export interface LineItemInput {
   /** Unit price of the product variant, in paisa. */
   unitPrice: number;

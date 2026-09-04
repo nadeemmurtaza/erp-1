@@ -172,6 +172,86 @@ The checker's predicate:
 The error message should name the packs, not just the modules, and point at
 domain events as the fix — the same shape the existing message uses.
 
+### Independence — zero coupling between modules, not just across packs
+
+DIRECTION, above, stops core from depending on a pack and stops packs from
+depending on each other. It never restricted a module importing another
+module of the *same* pack — nothing stopped one core module reaching into
+another core module's `.service`, because both sides being `core` made
+`directionViolation()` return null. That gap meant "independent module"
+was only half enforced: a deployment could drop a pack, but it could not
+drop, replace, or ship any single `core` module on its own, because the
+other thirteen were free to import it directly.
+
+**The rule now:** every module is independent of every other module, full
+stop. A module may depend on `core` platform code
+(`apps/api/src/core/`, which is not a module and sits outside this whole
+check) and on its own files, and nothing else — cross-module communication
+goes through a domain event or an extension point
+(`apps/api/src/core/extension-points/`), the same seam DIRECTION already
+established for crossing a pack boundary.
+
+`scripts/check-module-boundaries.mjs` enforces it as a third check,
+alongside DEPTH and DIRECTION: any public-surface import between two
+different modules that DIRECTION already permits (same pack, or anything
+importing `core` pack — the cases DIRECTION leaves open) is checked
+against `KNOWN_MODULE_COUPLINGS`, a short, explicitly-NOT-a-burn-down
+allowlist:
+
+```
+orders -> payments
+orders -> inventory
+orders -> tax
+purchasing -> inventory
+catalog -> inventory
+```
+
+Every entry is a write that must commit in the **same database
+transaction** as the write that caused it — an order's payment record, an
+order's stock deduction, an order's tax line, a purchase order's stock
+receipt, and a product admin form's opening-stock write
+(`product-admin.service.ts`'s `create()`/`syncVariants()`, both inside a
+Prisma `$transaction`). Routing any of these through an event or a
+registry would trade a correctness guarantee for architectural purity: an
+eventually-consistent stock deduction can race a concurrent sale the exact
+way B6 (`17-inventory-locations.md`) was built to prevent. Unlike
+`KNOWN_VIOLATIONS` and `KNOWN_SCHEMA_VIOLATIONS`, this list is not meant
+to shrink to zero — it is meant to stay exactly these five, permanently.
+It still fails the build on a stale entry, so a removed import can't leave
+a silent gap in what the checker actually enforces, and a sixth entry
+needs the same same-transaction justification in the pull request that
+added it.
+
+**What actually moved, decoupling the safe edges:**
+
+- `pickTranslation()` (was `catalog.service.ts`) and `stitchingFeeFor()`
+  (was `cart.service.ts`) are pure functions with no DI/DB dependency —
+  moved to `packages/shared` (`constants.ts`, `pricing.ts`), which fixed
+  `cart -> catalog`, `orders -> cart` and `orders -> catalog` in one move:
+  a pure-function import living in a feature module's file was never a
+  real coupling, just a wrong home for the function.
+- `purchasing.service.ts` injected `CatalogService` but never called it —
+  dead code, deleted (`purchasing -> catalog`).
+- `product-import.service.ts`'s CSV-driven stock write is NOT
+  transactional (one row at a time, per-row `try/catch`, so a failure on
+  row 40 must not roll back rows 1–39) — the textbook case for an
+  extension point rather than a direct import. `StockIntakeRegistry`
+  (`apps/api/src/core/extension-points/stock-intake.registry.ts`) is the
+  new seam: `inventory` registers a handler from its own
+  `onModuleInit()`, and any module that only needs a best-effort stock
+  write outside a money-critical transaction calls the registry instead
+  of injecting `InventoryService`. `product-import.service.ts` is its
+  first caller, alongside the existing `CartLineValidatorRegistry`,
+  `EntityEnrichmentRegistry` and `CheckoutValidatorRegistry` — the same
+  pattern, used for the first time to decouple two `core` modules from
+  each other rather than core from a pack.
+
+`catalog` still keeps a direct `InventoryService` import for the
+transactional case (`product-admin.service.ts`), which is why
+`catalog -> inventory` is in `KNOWN_MODULE_COUPLINGS` rather than fully
+decoupled — one file in the module needs the correctness guarantee, the
+other does not, and NestJS module wiring is per-module, not per-call-site.
+
 ## Branch naming
 
 ```
@@ -407,6 +487,7 @@ them costs more than it looks like it will.
 | How is a sector isolated? | A pack of modules, plus the `MODULES` allowlist. |
 | How do sectors share code? | The `core` pack. Packs depend on core; core never depends on a pack. |
 | How do packs talk to core? | Domain events, one direction. |
+| Do modules within `core` (or within a pack) couple to each other? | **No** — every module is independent of every other, five same-transaction exceptions aside. See "Independence" above. |
 | What decides what a shop runs? | `MODULES` env + the `Setting` table. |
 | One database or many? | **One per shop**, holding every pack's tables. Cross-pack foreign keys rule out a database per pack. |
 | Does a grocery shop get apparel tables? | Yes, empty. The schema is the union; the runtime is the subset. |

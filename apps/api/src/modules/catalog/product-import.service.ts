@@ -4,7 +4,7 @@ import { stringify } from 'csv-stringify/sync';
 import { PRODUCT_KINDS, slugifyWithFallback, toMinor, uniqueSlug } from '@yaseen/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
-import { InventoryService } from '../inventory/inventory.service';
+import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
 import type { ProductKind, ProductStatus } from '../../core/prisma/client';
 
 export interface ImportRowResult {
@@ -66,7 +66,7 @@ export class ProductImportService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
-    private readonly inventory: InventoryService,
+    private readonly stockIntake: StockIntakeRegistry,
   ) {}
 
   /** A blank file with the right headers and one example row. */
@@ -116,7 +116,7 @@ export class ProductImportService {
     const categoryBySlug = new Map(categories.map((row) => [row.slug, row.id]));
     const garments = await this.prisma.garmentType.findMany({ select: { id: true, key: true } });
     const garmentByKey = new Map(garments.map((row) => [row.key, row.id]));
-    const locationId = await this.inventory.defaultLocationId();
+    const locationId = await this.stockIntake.defaultLocationId();
 
     for (const [index, row] of rows.entries()) {
       // +2: one for the header line, one because humans count from 1.
@@ -196,7 +196,7 @@ export class ProductImportService {
     lineNumber: number,
     categoryBySlug: Map<string, string>,
     garmentByKey: Map<string, string>,
-    locationId: string,
+    locationId: string | null,
   ): Promise<ImportRowResult> {
     const sku = (row.sku ?? '').trim().toUpperCase();
     if (!sku) throw new Error('sku is empty');
@@ -244,8 +244,8 @@ export class ProductImportService {
         where: { id: existingVariant.productId },
         data: { basePrice: price, status },
       });
-      if (requestedStock !== existingVariant.stock) {
-        await this.inventory.move({
+      if (requestedStock !== existingVariant.stock && locationId) {
+        await this.stockIntake.recordIntake({
           variantId: existingVariant.id,
           locationId,
           delta: requestedStock - existingVariant.stock,
@@ -277,8 +277,8 @@ export class ProductImportService {
           stock: 0,
         },
       });
-      if (requestedStock !== 0) {
-        await this.inventory.move({
+      if (requestedStock !== 0 && locationId) {
+        await this.stockIntake.recordIntake({
           variantId: created.id,
           locationId,
           delta: requestedStock,
@@ -348,9 +348,9 @@ export class ProductImportService {
       include: { variants: true },
     });
 
-    if (requestedStock !== 0) {
+    if (requestedStock !== 0 && locationId) {
       const createdVariant = product.variants[0];
-      await this.inventory.move({
+      await this.stockIntake.recordIntake({
         variantId: createdVariant.id,
         locationId,
         delta: requestedStock,

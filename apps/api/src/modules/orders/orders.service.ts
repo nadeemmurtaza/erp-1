@@ -11,6 +11,8 @@ import {
   DEFAULT_LOCALE,
   getVariantDisplayLabel,
   normalizePkPhone,
+  pickTranslation,
+  stitchingFeeFor,
   taxExclusive,
   taxInclusive,
   type Locale,
@@ -25,8 +27,6 @@ import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { paginated } from '../../core/common/dto/pagination.dto';
 import { Prisma, type OrderStatus } from '../../core/prisma/client';
-import { stitchingFeeFor } from '../cart/cart.service';
-import { pickTranslation } from '../catalog/catalog.service';
 import { PaymentsService } from '../payments/payments.service';
 import { TaxService } from '../tax/tax.service';
 import type { PlaceOrderDto } from './dto/order.dto';

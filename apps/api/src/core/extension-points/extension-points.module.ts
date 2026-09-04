@@ -1,18 +1,31 @@
 import { Global, Module } from '@nestjs/common';
 import { CartLineValidatorRegistry } from './cart-line-validator.registry';
 import { EntityEnrichmentRegistry } from './entity-enrichment.registry';
+import { StockIntakeRegistry } from './stock-intake.registry';
 import { CheckoutValidatorRegistry } from '../checkout/checkout-validator.registry';
 
 /**
- * The seams packs use to extend core without core ever importing them — see
- * EntityEnrichmentRegistry, CheckoutValidatorRegistry and
- * CartLineValidatorRegistry for what each is for. Global, like every other
- * core module, so a pack injects any of them directly rather than importing
- * this module.
+ * The seams a module uses to reach another module without importing it
+ * directly — see EntityEnrichmentRegistry, CheckoutValidatorRegistry,
+ * CartLineValidatorRegistry and StockIntakeRegistry for what each is for.
+ * Most of these decouple core from a sector pack; StockIntakeRegistry
+ * decouples two core modules from each other, but the mechanism and the
+ * reason are the same. Global, like every other core module, so any module
+ * injects any of them directly rather than importing this module.
  */
 @Global()
 @Module({
-  providers: [EntityEnrichmentRegistry, CheckoutValidatorRegistry, CartLineValidatorRegistry],
-  exports: [EntityEnrichmentRegistry, CheckoutValidatorRegistry, CartLineValidatorRegistry],
+  providers: [
+    EntityEnrichmentRegistry,
+    CheckoutValidatorRegistry,
+    CartLineValidatorRegistry,
+    StockIntakeRegistry,
+  ],
+  exports: [
+    EntityEnrichmentRegistry,
+    CheckoutValidatorRegistry,
+    CartLineValidatorRegistry,
+    StockIntakeRegistry,
+  ],
 })
 export class ExtensionPointsModule {}

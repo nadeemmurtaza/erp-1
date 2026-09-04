@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
 import clsx from 'clsx';
 import { formatMoney, ORDER_STATUSES } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
@@ -16,18 +17,7 @@ interface AdminOrder {
   grandTotal: number;
   shippingZone: string | null;
   shippingAddress: { city: string; province: string };
-  items: Array<{
-    id: string;
-    nameEn: string;
-    quantity: number;
-    variantLabel: string | null;
-    stitchingServiceName: string | null;
-    measurementSnapshot: { label: string; values: Record<string, number> } | null;
-    optionsSnapshot: Array<{ groupLabelEn: string; labelEn: string }> | null;
-  }>;
   payments: Array<{ id: string; provider: string; status: string; receiptUrl: string | null }>;
-  shipments: Array<{ courier: string; trackingNumber: string | null }>;
-  statusEvents: Array<{ toStatus: string; createdAt: string; note: string | null }>;
 }
 
 /** Which status a staff member may move an order to next. Mirrors the API. */
@@ -47,7 +37,6 @@ export default function AdminOrdersPage() {
   const [status, setStatus] = useState('');
   const [q, setQ] = useState('');
   const [page, setPage] = useState(1);
-  const [expanded, setExpanded] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -181,16 +170,15 @@ export default function AdminOrdersPage() {
                   </td>
                 </tr>
               ) : (
-                orders.data.flatMap((order) => [
+                orders.data.map((order) => (
                   <tr key={order.id} className="hover:bg-sand-50">
                     <td className="px-4 py-3">
-                      <button
-                        type="button"
-                        onClick={() => setExpanded(expanded === order.id ? null : order.id)}
+                      <Link
+                        href={`/admin/orders/${order.id}`}
                         className="font-medium text-ink hover:text-brand-700"
                       >
                         {order.number}
-                      </button>
+                      </Link>
                       <p className="text-xs text-ink/40">
                         {new Date(order.placedAt).toLocaleDateString('en-PK')}
                       </p>
@@ -252,88 +240,8 @@ export default function AdminOrdersPage() {
                         ) : null}
                       </div>
                     </td>
-                  </tr>,
-                  expanded === order.id ? (
-                    <tr key={`${order.id}-detail`} className="bg-sand-50">
-                      <td colSpan={6} className="px-4 py-4">
-                        <div className="grid gap-6 lg:grid-cols-2">
-                          <div>
-                            <h3 className="text-xs font-semibold uppercase tracking-wide text-ink/50">
-                              Items
-                            </h3>
-                            <ul className="mt-2 space-y-2">
-                              {order.items.map((item) => (
-                                <li key={item.id} className="text-sm">
-                                  <p className="text-ink">
-                                    {item.nameEn} × {item.quantity}
-                                    {item.variantLabel ? (
-                                      <span className="text-ink/50"> · {item.variantLabel}</span>
-                                    ) : null}
-                                  </p>
-                                  {item.stitchingServiceName ? (
-                                    <div className="mt-1 rounded bg-white p-2 text-xs">
-                                      <p className="font-medium text-brand-800">
-                                        {item.stitchingServiceName}
-                                      </p>
-                                      {item.optionsSnapshot?.length ? (
-                                        <p className="text-ink/70">
-                                          {item.optionsSnapshot
-                                            .map(
-                                              (option) =>
-                                                `${option.groupLabelEn}: ${option.labelEn}`,
-                                            )
-                                            .join(' · ')}
-                                        </p>
-                                      ) : null}
-                                      {item.measurementSnapshot ? (
-                                        <p className="mt-1 text-ink/70">
-                                          {item.measurementSnapshot.label}:{' '}
-                                          {Object.entries(item.measurementSnapshot.values)
-                                            .map(([key, value]) => `${key} ${value}"`)
-                                            .join(', ')}
-                                        </p>
-                                      ) : null}
-                                    </div>
-                                  ) : null}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-
-                          <div>
-                            <h3 className="text-xs font-semibold uppercase tracking-wide text-ink/50">
-                              History
-                            </h3>
-                            <ol className="mt-2 space-y-1 text-sm">
-                              {order.statusEvents.map((event, index) => (
-                                <li key={index} className="text-ink/70">
-                                  {label(event.toStatus)}
-                                  <span className="ms-2 text-xs text-ink/40">
-                                    {new Date(event.createdAt).toLocaleString('en-PK')}
-                                  </span>
-                                  {event.note ? (
-                                    <span className="block text-xs text-ink/50">{event.note}</span>
-                                  ) : null}
-                                </li>
-                              ))}
-                            </ol>
-
-                            {order.shipments.length > 0 ? (
-                              <p className="mt-3 text-sm text-ink/70">
-                                {order.shipments
-                                  .map(
-                                    (shipment) =>
-                                      `${shipment.courier.toUpperCase()} ${shipment.trackingNumber ?? ''}`,
-                                  )
-                                  .join(', ')}
-                              </p>
-                            ) : null}
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  ) : null,
-                ])
+                  </tr>
+                ))
               )}
             </tbody>
           </table>

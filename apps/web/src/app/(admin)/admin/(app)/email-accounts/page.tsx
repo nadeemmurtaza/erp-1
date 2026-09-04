@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { adminFetch } from '@/lib/admin-client';
 import type { EmailAccount, EmailAccountPurpose } from '@/lib/api-types';
 
@@ -189,8 +190,7 @@ export default function EmailAccountsPage() {
     }
   }
 
-  async function save(event: React.FormEvent) {
-    event.preventDefault();
+  async function save() {
     setSaving(true);
     setSaveError(null);
 
@@ -334,7 +334,12 @@ export default function EmailAccountsPage() {
               Select a mailbox, or connect a new one.
             </p>
           ) : (
-            <form onSubmit={save} className="card space-y-6 p-5">
+            (() => {
+              const basicsStep: WizardStep = {
+                id: 'basics',
+                label: 'Basics',
+                isValid: Boolean(form.label.trim() && form.fromName.trim() && form.fromEmail.trim()),
+                content: (
               <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label className="field-label" htmlFor="label">
@@ -427,8 +432,19 @@ export default function EmailAccountsPage() {
                   </label>
                 </div>
               </section>
+                ),
+              };
 
-              <section className="border-t border-sand-200 pt-4">
+              const smtpStep: WizardStep = {
+                id: 'smtp',
+                label: 'SMTP',
+                isValid: Boolean(
+                  form.smtpHost.trim() &&
+                    form.smtpUser.trim() &&
+                    (form.smtpPassword.trim() || selectedId !== 'new'),
+                ),
+                content: (
+              <section>
                 <div className="mb-3 flex items-center justify-between">
                   <h2 className="text-sm font-semibold text-ink">SMTP (sending)</h2>
                   {selectedId !== 'new' ? (
@@ -537,8 +553,20 @@ export default function EmailAccountsPage() {
                   ) : null}
                 </div>
               </section>
+                ),
+              };
 
-              <section className="border-t border-sand-200 pt-4">
+              const imapStep: WizardStep = {
+                id: 'imap',
+                label: 'IMAP',
+                isValid: Boolean(
+                  !form.includeImap ||
+                    (form.imapHost.trim() &&
+                      form.imapUser.trim() &&
+                      (form.imapPassword.trim() || selectedId !== 'new')),
+                ),
+                content: (
+              <section>
                 <label className="mb-3 flex items-center gap-2 text-sm font-semibold text-ink">
                   <input
                     type="checkbox"
@@ -656,29 +684,44 @@ export default function EmailAccountsPage() {
                   </>
                 ) : null}
               </section>
+                ),
+              };
 
-              {saveError ? (
-                <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
-                  {saveError}
-                </p>
-              ) : null}
+              const steps: WizardStep[] = [basicsStep, smtpStep, imapStep];
 
-              <div className="flex items-center justify-between border-t border-sand-200 pt-4">
-                <button type="submit" disabled={saving} className="btn-primary disabled:opacity-40">
-                  {saving ? 'Saving…' : selectedId === 'new' ? 'Connect mailbox' : 'Save changes'}
-                </button>
-                {selectedId !== 'new' ? (
-                  <button
-                    type="button"
-                    onClick={() => void remove()}
-                    disabled={deleting}
-                    className="text-sm text-red-700 hover:underline disabled:opacity-40"
-                  >
-                    {deleting ? 'Disconnecting…' : 'Disconnect this mailbox'}
-                  </button>
-                ) : null}
-              </div>
-            </form>
+              return (
+                <div className="card space-y-6 p-5">
+                  <Wizard
+                    key={selectedId}
+                    steps={steps}
+                    onSubmit={save}
+                    submitLabel={
+                      saving ? 'Saving…' : selectedId === 'new' ? 'Connect mailbox' : 'Save changes'
+                    }
+                    submitBusy={saving}
+                    submitDisabled={saving}
+                    accentClassName="bg-brand-600 text-white"
+                    error={
+                      saveError ? (
+                        <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+                          {saveError}
+                        </p>
+                      ) : null
+                    }
+                  />
+                  {selectedId !== 'new' ? (
+                    <button
+                      type="button"
+                      onClick={() => void remove()}
+                      disabled={deleting}
+                      className="text-sm text-red-700 hover:underline disabled:opacity-40"
+                    >
+                      {deleting ? 'Disconnecting…' : 'Disconnect this mailbox'}
+                    </button>
+                  ) : null}
+                </div>
+              );
+            })()
           )}
         </div>
       </div>

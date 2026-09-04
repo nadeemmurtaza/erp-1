@@ -277,6 +277,12 @@ export interface AuthResult {
   user: AuthUser;
 }
 
+/** GET /meta — which optional modules and sector packs this deployment has enabled. */
+export interface DeploymentMeta {
+  modules: string[];
+  packs: string[];
+}
+
 // --- Inventory --------------------------------------------------------------
 
 export interface StockAdjustment {

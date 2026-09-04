@@ -14,7 +14,11 @@ import { Injectable } from '@nestjs/common';
  * This is the extension point B7 (MULTI-SECTOR.md)'s `cart -> measurements`
  * entry called for. `measurements` registers 'measurements' from its own
  * `onModuleInit()`; `cart.service.ts` calls `validate('measurements', ...)`
- * and never imports MeasurementsService directly.
+ * and never imports MeasurementsService directly. `stitching` registers
+ * 'stitchingOptions' the same way (P1-8) — that one genuinely needs the
+ * database (an option's group, its required-ness), so `validate()` is
+ * `async` and every caller must `await` it, even a synchronous validator
+ * like 'measurements' — awaiting a non-Promise value is a no-op.
  */
 @Injectable()
 export class CartLineValidatorRegistry {
@@ -24,8 +28,8 @@ export class CartLineValidatorRegistry {
     this.validators.set(kind, validator);
   }
 
-  validate(kind: string, garmentFields: any, values: any) {
+  async validate(kind: string, garmentFields: any, values: any) {
     const validator = this.validators.get(kind);
-    return validator ? validator(garmentFields, values) : values;
+    return validator ? await validator(garmentFields, values) : values;
   }
 }

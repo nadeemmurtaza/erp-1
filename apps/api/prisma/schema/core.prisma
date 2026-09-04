@@ -136,6 +136,58 @@ model Setting {
   updatedAt   DateTime @updatedAt
 }
 
+/// What an EmailAccount is for, so EmailChannel can route an outgoing message
+/// to the right mailbox instead of every email leaving from one address.
+/// TRANSACTIONAL is the fallback purpose — order, payment and account mail
+/// always has somewhere to send from even if only one account exists.
+enum EmailAccountPurpose {
+  TRANSACTIONAL
+  MARKETING
+  SUPPORT
+}
+
+/// A connected mailbox: SMTP to send, optionally IMAP to receive. Multiple
+/// accounts may share a purpose (e.g. two marketing senders); the one with
+/// isDefault wins, then the most recently updated. Secrets are stored as
+/// AES-256-GCM ciphertext (core/security/secret-crypto.ts) — never plaintext,
+/// never returned by the API once saved.
+model EmailAccount {
+  id        String              @id @default(cuid())
+  label     String // "Orders", "Support Inbox", "Marketing PK"
+  purpose   EmailAccountPurpose @default(TRANSACTIONAL)
+  isActive  Boolean             @default(true)
+  /// The account EmailChannel prefers for its purpose when more than one is active.
+  isDefault Boolean             @default(false)
+
+  fromName  String
+  fromEmail String
+  replyTo   String?
+
+  smtpHost              String
+  smtpPort              Int       @default(587)
+  /// True for implicit TLS (port 465). Port 587 upgrades with STARTTLS instead.
+  smtpSecure            Boolean   @default(false)
+  smtpUser              String
+  smtpPasswordEncrypted String
+  smtpVerifiedAt        DateTime?
+
+  /// IMAP is optional per account and, today, only ever connection-tested —
+  /// nothing in this codebase reads a mailbox yet. Fields are proven correct
+  /// (a saved account did pass "Test IMAP connection") without pretending a
+  /// reply-import feature exists.
+  imapHost              String?
+  imapPort              Int?
+  imapSecure            Boolean   @default(true)
+  imapUser              String?
+  imapPasswordEncrypted String?
+  imapVerifiedAt        DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([purpose, isActive])
+}
+
 model AuditLog {
   id        String   @id @default(cuid())
   actorId   String?

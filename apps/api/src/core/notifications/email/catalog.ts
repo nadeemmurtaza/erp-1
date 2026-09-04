@@ -12,6 +12,8 @@
  * templates.spec.ts checks that in both directions.
  */
 
+import type { EmailAccountPurpose } from '../../prisma/client';
+
 export type EmailTemplateCategory = 'Orders' | 'Payments' | 'Account' | 'Stitching' | 'Marketing';
 
 export interface EmailTemplateCatalogEntry {
@@ -304,3 +306,15 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     sampleData: { garment: 'Kurta', stage: 'CUTTING', reference: 'YSN-2026-0142' },
   },
 ];
+
+/**
+ * Which connected mailbox (see EmailAccountsService) a template should send
+ * from. Only Marketing templates route to a MARKETING account — everything
+ * else, including a template with no catalog entry at all, is transactional.
+ * Nothing maps to SUPPORT yet: no template here is customer-service
+ * correspondence, so a SUPPORT-purpose account is only ever reached by name.
+ */
+export function purposeForTemplate(template: string): EmailAccountPurpose {
+  const entry = EMAIL_TEMPLATE_CATALOG.find((candidate) => candidate.key === template);
+  return entry?.category === 'Marketing' ? 'MARKETING' : 'TRANSACTIONAL';
+}

@@ -258,6 +258,13 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['settings.manage'],
     group: 'settings',
   },
+  {
+    key: 'email-accounts',
+    label: 'Email Accounts',
+    href: '/admin/email-accounts',
+    permissions: ['settings.manage'],
+    group: 'settings',
+  },
 ];
 
 /**

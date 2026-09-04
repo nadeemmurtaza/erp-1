@@ -11,8 +11,11 @@ import { CartProvider } from '@/components/storefront/cart-provider';
 import { CustomerSessionProvider } from '@/components/storefront/customer-session';
 import { Footer } from '@/components/storefront/footer';
 import { Header } from '@/components/storefront/header';
+import { JsonLd } from '@/components/storefront/json-ld';
 import { SmoothScroller } from '@/components/storefront/smooth-scroller';
+import { businessProfile } from '@/config/business-profile';
 import { routing } from '@/i18n/routing';
+import { SITE_URL } from '@/lib/site';
 
 // Storefront reskin typeface. Variable font, so no `weight` list is needed —
 // the full 100-900 range loads under one file. Exposed as --font-encode-sans
@@ -47,8 +50,38 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: 'site' });
 
   return {
+    metadataBase: new URL(SITE_URL),
     title: { default: t('name'), template: `%s · ${t('name')}` },
     description: t('tagline'),
+    openGraph: {
+      type: 'website',
+      siteName: t('name'),
+      locale: locale === 'ur' ? 'ur_PK' : 'en_PK',
+    },
+    twitter: { card: 'summary_large_image' },
+  };
+}
+
+/** Sitewide Organization schema — one identity, referenced (not repeated) by every page's own JSON-LD. */
+function organizationJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: businessProfile.name,
+    alternateName: businessProfile.shortName,
+    url: SITE_URL,
+    // A raster export, not icon.svg — Google's structured-data guidelines
+    // require the Organization logo to be jpg/png/gif, SVG isn't supported.
+    logo: `${SITE_URL}/logo-512.png`,
+    email: businessProfile.email,
+    telephone: businessProfile.phone,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: businessProfile.address,
+      addressLocality: businessProfile.city,
+      addressCountry: 'PK',
+    },
+    sameAs: Object.values(businessProfile.socials),
   };
 }
 
@@ -76,6 +109,7 @@ export default async function LocaleLayout({
         className={`flex min-h-screen flex-col ${encodeSans.variable}`}
         suppressHydrationWarning
       >
+        <JsonLd data={organizationJsonLd()} />
         <SmoothScroller>
           <NextIntlClientProvider>
             <CustomerSessionProvider>

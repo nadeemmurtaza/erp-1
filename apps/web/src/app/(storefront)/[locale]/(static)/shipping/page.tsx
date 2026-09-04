@@ -1,4 +1,24 @@
+import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import { alternateLanguages, canonicalUrl } from '@/lib/seo';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'footer' });
+
+  return {
+    title: t('shipping'),
+    description: 'Delivery times, charges and payment methods for unstitched fabric and custom-stitched orders.',
+    alternates: {
+      canonical: canonicalUrl('/shipping', locale),
+      languages: alternateLanguages('/shipping'),
+    },
+  };
+}
 
 export default async function ShippingPage({
   params,

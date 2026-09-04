@@ -293,11 +293,13 @@ export class OrdersService {
 
       return { ...created, payment };
     }, {
-      // A little headroom over Prisma's 5s default for a slow/loaded
-      // runner — this transaction no longer contends with other checkouts
-      // over anything (order numbering is reserved beforehand, see
-      // nextOrderNumber() above), so it should rarely need it.
-      timeout: 10_000,
+      // Headroom over Prisma's 5s default for a slow/loaded runner. This
+      // transaction no longer contends with other checkouts over anything
+      // lock-shaped (order numbering is reserved beforehand, see
+      // nextOrderNumber() above) — 6 concurrent checkouts hitting a shared
+      // CI Postgres container still occasionally lean on plain CPU/IO
+      // contention, not a design flaw, so the budget stays generous.
+      timeout: 20_000,
     });
 
     this.logger.log(`Order ${order.number} placed for ${order.grandTotal} paisa`);

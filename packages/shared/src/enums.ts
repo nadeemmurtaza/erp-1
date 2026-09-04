@@ -13,7 +13,21 @@ export type UserRole = (typeof USER_ROLES)[number];
 /** Roles allowed into /admin. */
 export const BACK_OFFICE_ROLES: readonly UserRole[] = ['STAFF', 'TAILOR', 'ADMIN'];
 
-export const PRODUCT_KINDS = ['STITCHED', 'UNSTITCHED', 'STITCHING_SERVICE'] as const;
+/**
+ * GOODS/SERVICE/DIGITAL are the sector-neutral kinds (B1, MULTI-SECTOR.md) —
+ * a grocery or electronics deployment has no reason to touch STITCHED/
+ * UNSTITCHED/STITCHING_SERVICE, which stay only for the existing apparel
+ * catalogue. Order matches the Prisma enum in
+ * apps/api/prisma/schema/catalog.prisma.
+ */
+export const PRODUCT_KINDS = [
+  'GOODS',
+  'SERVICE',
+  'DIGITAL',
+  'STITCHED',
+  'UNSTITCHED',
+  'STITCHING_SERVICE',
+] as const;
 export type ProductKind = (typeof PRODUCT_KINDS)[number];
 
 export const PRODUCT_STATUSES = ['DRAFT', 'ACTIVE', 'ARCHIVED'] as const;

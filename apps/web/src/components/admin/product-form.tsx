@@ -14,6 +14,9 @@ import type {
 import { ImageManager } from './image-manager';
 
 const KIND_LABELS: Record<string, string> = {
+  GOODS: 'Goods',
+  SERVICE: 'Service',
+  DIGITAL: 'Digital product',
   STITCHED: 'Ready to wear',
   UNSTITCHED: 'Unstitched fabric',
   STITCHING_SERVICE: 'Stitching service',
@@ -515,58 +518,66 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
                 className="field-input"
               />
             </Field>
-            <Field label="Fabric">
-              <input
-                value={fabric}
-                onChange={(event) => setFabric(event.target.value)}
-                className="field-input"
-              />
-            </Field>
-            <Field label="Season">
-              <input
-                value={season}
-                onChange={(event) => setSeason(event.target.value)}
-                className="field-input"
-              />
-            </Field>
+            {/* Fabric/season/size chart are apparel-specific (GOODS/SERVICE/DIGITAL
+                have no garment to size). */}
+            {kind === 'STITCHED' ? (
+              <>
+                <Field label="Fabric">
+                  <input
+                    value={fabric}
+                    onChange={(event) => setFabric(event.target.value)}
+                    className="field-input"
+                  />
+                </Field>
+                <Field label="Season">
+                  <input
+                    value={season}
+                    onChange={(event) => setSeason(event.target.value)}
+                    className="field-input"
+                  />
+                </Field>
+              </>
+            ) : null}
           </div>
 
-          <fieldset className="mt-4">
-            <legend className="field-label">Size chart</legend>
-            <p className="mb-2 text-xs text-ink/50">
-              Tick the garment(s) this outfit is made of. The customer sees a &ldquo;Size
-              chart&rdquo; link on the product page showing each garment&apos;s standard
-              measurements — set under Garments.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {garmentTypes.map((garment) => {
-                const selected = garmentTypeIds.includes(garment.id);
-                return (
-                  <label
-                    key={garment.id}
-                    className={clsx(
-                      'flex items-center gap-2 rounded-md border px-3 py-2 text-sm',
-                      selected ? 'border-brand-500 bg-brand-50 text-ink' : 'border-sand-200 text-ink/70',
-                    )}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selected}
-                      onChange={(event) =>
-                        setGarmentTypeIds((current) =>
-                          event.target.checked
-                            ? [...current, garment.id]
-                            : current.filter((id) => id !== garment.id),
-                        )
-                      }
-                      className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
-                    />
-                    {garment.labelEn}
-                  </label>
-                );
-              })}
-            </div>
-          </fieldset>
+          {kind === 'STITCHED' ? (
+            <fieldset className="mt-4">
+              <legend className="field-label">Size chart</legend>
+              <p className="mb-2 text-xs text-ink/50">
+                Tick the garment(s) this outfit is made of. The customer sees a &ldquo;Size
+                chart&rdquo; link on the product page showing each garment&apos;s standard
+                measurements — set under Garments.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {garmentTypes.map((garment) => {
+                  const selected = garmentTypeIds.includes(garment.id);
+                  return (
+                    <label
+                      key={garment.id}
+                      className={clsx(
+                        'flex items-center gap-2 rounded-md border px-3 py-2 text-sm',
+                        selected ? 'border-brand-500 bg-brand-50 text-ink' : 'border-sand-200 text-ink/70',
+                      )}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selected}
+                        onChange={(event) =>
+                          setGarmentTypeIds((current) =>
+                            event.target.checked
+                              ? [...current, garment.id]
+                              : current.filter((id) => id !== garment.id),
+                          )
+                        }
+                        className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                      />
+                      {garment.labelEn}
+                    </label>
+                  );
+                })}
+              </div>
+            </fieldset>
+          ) : null}
         </Section>
       ) : null}
 

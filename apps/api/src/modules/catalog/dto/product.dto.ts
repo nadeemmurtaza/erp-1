@@ -15,7 +15,7 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
-import { LOCALES, PRODUCT_KINDS, PRODUCT_STATUSES } from '@yaseen/shared';
+import { LOCALES, PRODUCT_KINDS, PRODUCT_STATUSES, type ProductKind } from '@yaseen/shared';
 
 export class ProductTranslationDto {
   @ApiProperty({ enum: LOCALES, example: 'en' })
@@ -121,7 +121,7 @@ export class CreateProductDto {
 
   @ApiProperty({ enum: PRODUCT_KINDS })
   @IsIn([...PRODUCT_KINDS])
-  kind!: 'STITCHED' | 'UNSTITCHED' | 'STITCHING_SERVICE';
+  kind!: ProductKind;
 
   @ApiPropertyOptional({ enum: PRODUCT_STATUSES, default: 'DRAFT' })
   @IsOptional()
@@ -228,7 +228,7 @@ export class UpdateProductDto extends CreateProductDto {
   @ApiPropertyOptional({ enum: PRODUCT_KINDS })
   @IsOptional()
   @IsIn([...PRODUCT_KINDS])
-  declare kind: 'STITCHED' | 'UNSTITCHED' | 'STITCHING_SERVICE';
+  declare kind: ProductKind;
 
   @ApiPropertyOptional()
   @IsOptional()

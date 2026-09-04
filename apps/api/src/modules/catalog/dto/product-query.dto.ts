@@ -1,7 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import { IsIn, IsInt, IsOptional, IsString, Min } from 'class-validator';
-import { LOCALES, PRODUCT_KINDS, PRODUCT_STATUSES } from '@yaseen/shared';
+import { LOCALES, PRODUCT_KINDS, PRODUCT_STATUSES, type ProductKind } from '@yaseen/shared';
 import { PaginationQueryDto } from '../../../core/common/dto/pagination.dto';
 
 const csvToArray = ({ value }: { value: unknown }): string[] | undefined => {
@@ -36,7 +36,7 @@ export class ProductQueryDto extends PaginationQueryDto {
   @ApiPropertyOptional({ enum: PRODUCT_KINDS })
   @IsOptional()
   @IsIn([...PRODUCT_KINDS])
-  kind?: 'STITCHED' | 'UNSTITCHED' | 'STITCHING_SERVICE';
+  kind?: ProductKind;
 
   @ApiPropertyOptional({ description: 'Comma-separated, e.g. lawn,chiffon' })
   @IsOptional()

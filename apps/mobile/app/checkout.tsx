@@ -17,6 +17,7 @@ import {
   Screen,
   Small,
 } from '../src/components/ui';
+import { Wizard, type WizardStep } from '../src/components/wizard';
 import { useI18n } from '../src/i18n';
 import { useAuth } from '../src/state/auth';
 import { useCart } from '../src/state/cart';
@@ -186,9 +187,16 @@ export default function CheckoutScreen() {
     );
   }
 
-  return (
-    <Screen>
-      <ScrollView contentContainerStyle={styles.content}>
+  const addressValid = Boolean(
+    address.fullName.trim() && address.phone.trim() && address.line1.trim() && address.city.trim(),
+  );
+
+  const steps: WizardStep[] = [
+    {
+      id: 'address',
+      label: t('order.deliveringTo'),
+      isValid: addressValid,
+      content: (
         <Card>
           <Heading>{t('order.deliveringTo')}</Heading>
           <Field
@@ -233,7 +241,13 @@ export default function CheckoutScreen() {
             ))}
           </View>
         </Card>
-
+      ),
+    },
+    {
+      id: 'payment',
+      label: t('checkout.payment'),
+      isValid: Boolean(method),
+      content: (
         <Card>
           <Heading>{t('checkout.payment')}</Heading>
           <View style={styles.chips}>
@@ -254,33 +268,51 @@ export default function CheckoutScreen() {
               </Small>
             ))}
         </Card>
-
-        {cart ? (
-          <Card>
-            <Row label={t('cart.goods')} value={formatMoney(cart.totals.itemsSubtotal, locale)} />
-            {cart.totals.stitchingSubtotal > 0 ? (
+      ),
+    },
+    {
+      id: 'review',
+      label: t('checkout.review'),
+      isValid: true,
+      content: (
+        <View style={styles.content}>
+          {cart ? (
+            <Card>
+              <Heading>{t('checkout.review')}</Heading>
+              <Row label={t('cart.goods')} value={formatMoney(cart.totals.itemsSubtotal, locale)} />
+              {cart.totals.stitchingSubtotal > 0 ? (
+                <Row
+                  label={t('cart.stitching')}
+                  value={formatMoney(cart.totals.stitchingSubtotal, locale)}
+                />
+              ) : null}
+              <Row label={t('checkout.shipping')} value="—" />
+              <View style={styles.divider} />
               <Row
-                label={t('cart.stitching')}
-                value={formatMoney(cart.totals.stitchingSubtotal, locale)}
+                label={t('cart.total')}
+                value={formatMoney(cart.totals.grandTotal, locale)}
+                strong
               />
-            ) : null}
-            <Row label={t('checkout.shipping')} value="—" />
-            <View style={styles.divider} />
-            <Row
-              label={t('cart.total')}
-              value={formatMoney(cart.totals.grandTotal, locale)}
-              strong
-            />
-          </Card>
-        ) : null}
+            </Card>
+          ) : null}
 
-        <ErrorNote message={error} />
+          <ErrorNote message={error} />
+        </View>
+      ),
+    },
+  ];
 
-        <Button
-          label={busy ? t('checkout.placing') : t('checkout.place')}
-          busy={busy}
-          onPress={() => void place()}
-          disabled={!address.fullName || !address.phone || !address.line1 || !address.city}
+  return (
+    <Screen>
+      <ScrollView contentContainerStyle={styles.content}>
+        <Wizard
+          steps={steps}
+          onSubmit={() => void place()}
+          submitLabel={busy ? t('checkout.placing') : t('checkout.place')}
+          submitBusy={busy}
+          submitDisabled={!addressValid}
+          backLabel={t('common.back')}
+          nextLabel={t('common.next')}
         />
       </ScrollView>
     </Screen>

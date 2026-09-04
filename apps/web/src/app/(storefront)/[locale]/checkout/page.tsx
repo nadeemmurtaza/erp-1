@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { formatMoney, type Locale } from '@yaseen/shared';
+import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { useCart } from '@/components/storefront/cart-provider';
 import { useRouter } from '@/i18n/navigation';
 import { trackEvent } from '@/lib/analytics-client';
@@ -76,8 +77,7 @@ export default function CheckoutPage() {
     trackEvent('checkout_started');
   }, []);
 
-  async function submit(event: React.FormEvent) {
-    event.preventDefault();
+  async function submit() {
     setError(null);
     setBusy(true);
 
@@ -179,166 +179,181 @@ export default function CheckoutPage() {
 
   const selectedMethod = methods.find((candidate) => candidate.key === method);
 
-  return (
-    <div className="container-page pb-28 pt-6 font-display sm:pt-8 md:pb-8">
-      <h1 className="text-2xl font-semibold tracking-tight text-noir-900 sm:text-3xl">
-        {t('title')}
-      </h1>
+  const addressValid = Boolean(
+    form.fullName.trim() && form.phone.trim() && form.line1.trim() && form.city.trim() && form.province,
+  );
 
-      <form onSubmit={submit} className="mt-6 grid gap-6 sm:mt-8 sm:gap-8 lg:grid-cols-[1fr_22rem]">
-        <div className="space-y-6">
-          <section className="sf-card p-4 sm:p-6">
-            <h2 className="text-base font-semibold text-noir-900">{t('deliveryAddress')}</h2>
+  const steps: WizardStep[] = [
+    {
+      id: 'address',
+      label: t('deliveryAddress'),
+      isValid: addressValid,
+      content: (
+        <section className="sf-card p-4 sm:p-6">
+          <h2 className="text-base font-semibold text-noir-900">{t('deliveryAddress')}</h2>
 
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
-              <Field label={t('fullName')} required>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <Field label={t('fullName')} required>
+              <input
+                value={form.fullName}
+                onChange={(event) => setForm({ ...form, fullName: event.target.value })}
+                required
+                autoComplete="name"
+                className="sf-field-input"
+              />
+            </Field>
+
+            <Field label={t('phone')} required hint={t('phoneHint')}>
+              <input
+                value={form.phone}
+                onChange={(event) => setForm({ ...form, phone: event.target.value })}
+                required
+                inputMode="tel"
+                autoComplete="tel"
+                placeholder="03001234567"
+                className="sf-field-input"
+              />
+            </Field>
+
+            <div className="sm:col-span-2">
+              <Field label={t('address')} required>
                 <input
-                  value={form.fullName}
-                  onChange={(event) => setForm({ ...form, fullName: event.target.value })}
+                  value={form.line1}
+                  onChange={(event) => setForm({ ...form, line1: event.target.value })}
                   required
-                  autoComplete="name"
-                  className="sf-field-input"
-                />
-              </Field>
-
-              <Field label={t('phone')} required hint={t('phoneHint')}>
-                <input
-                  value={form.phone}
-                  onChange={(event) => setForm({ ...form, phone: event.target.value })}
-                  required
-                  inputMode="tel"
-                  autoComplete="tel"
-                  placeholder="03001234567"
-                  className="sf-field-input"
-                />
-              </Field>
-
-              <div className="sm:col-span-2">
-                <Field label={t('address')} required>
-                  <input
-                    value={form.line1}
-                    onChange={(event) => setForm({ ...form, line1: event.target.value })}
-                    required
-                    autoComplete="address-line1"
-                    className="sf-field-input"
-                  />
-                </Field>
-              </div>
-
-              <div className="sm:col-span-2">
-                <Field label={t('address2')}>
-                  <input
-                    value={form.line2}
-                    onChange={(event) => setForm({ ...form, line2: event.target.value })}
-                    autoComplete="address-line2"
-                    className="sf-field-input"
-                  />
-                </Field>
-              </div>
-
-              <Field label={t('city')} required hint={t('cityHint')}>
-                <input
-                  value={form.city}
-                  onChange={(event) => setForm({ ...form, city: event.target.value })}
-                  required
-                  autoComplete="address-level2"
-                  className="sf-field-input"
-                />
-              </Field>
-
-              <Field label={t('province')} required>
-                <select
-                  value={form.province}
-                  onChange={(event) => setForm({ ...form, province: event.target.value })}
-                  className="sf-field-input"
-                >
-                  {PROVINCES.map((province) => (
-                    <option key={province} value={province}>
-                      {province}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-
-              <Field label={t('postalCode')}>
-                <input
-                  value={form.postalCode}
-                  onChange={(event) => setForm({ ...form, postalCode: event.target.value })}
-                  autoComplete="postal-code"
-                  className="sf-field-input"
-                />
-              </Field>
-
-              <Field label={t('email')} hint={t('emailHint')}>
-                <input
-                  type="email"
-                  value={form.email}
-                  onChange={(event) => setForm({ ...form, email: event.target.value })}
-                  autoComplete="email"
+                  autoComplete="address-line1"
                   className="sf-field-input"
                 />
               </Field>
             </div>
-          </section>
 
-          <section className="sf-card p-4 sm:p-6">
-            <h2 className="text-base font-semibold text-noir-900">{t('payment')}</h2>
+            <div className="sm:col-span-2">
+              <Field label={t('address2')}>
+                <input
+                  value={form.line2}
+                  onChange={(event) => setForm({ ...form, line2: event.target.value })}
+                  autoComplete="address-line2"
+                  className="sf-field-input"
+                />
+              </Field>
+            </div>
 
-            {/*
-             * The real payment options are cash-on-delivery and bank
-             * transfer — no card gateway exists — so the native radio input
-             * stays for semantics/keyboard support but is visually replaced
-             * by a rounded card selector, not a fake card-entry field.
-             */}
-            <div className="mt-4 space-y-3">
-              {methods.map((option) => (
-                <label
-                  key={option.key}
+            <Field label={t('city')} required hint={t('cityHint')}>
+              <input
+                value={form.city}
+                onChange={(event) => setForm({ ...form, city: event.target.value })}
+                required
+                autoComplete="address-level2"
+                className="sf-field-input"
+              />
+            </Field>
+
+            <Field label={t('province')} required>
+              <select
+                value={form.province}
+                onChange={(event) => setForm({ ...form, province: event.target.value })}
+                className="sf-field-input"
+              >
+                {PROVINCES.map((province) => (
+                  <option key={province} value={province}>
+                    {province}
+                  </option>
+                ))}
+              </select>
+            </Field>
+
+            <Field label={t('postalCode')}>
+              <input
+                value={form.postalCode}
+                onChange={(event) => setForm({ ...form, postalCode: event.target.value })}
+                autoComplete="postal-code"
+                className="sf-field-input"
+              />
+            </Field>
+
+            <Field label={t('email')} hint={t('emailHint')}>
+              <input
+                type="email"
+                value={form.email}
+                onChange={(event) => setForm({ ...form, email: event.target.value })}
+                autoComplete="email"
+                className="sf-field-input"
+              />
+            </Field>
+          </div>
+        </section>
+      ),
+    },
+    {
+      id: 'payment',
+      label: t('payment'),
+      isValid: Boolean(method),
+      content: (
+        <section className="sf-card p-4 sm:p-6">
+          <h2 className="text-base font-semibold text-noir-900">{t('payment')}</h2>
+
+          {/*
+           * The real payment options are cash-on-delivery and bank
+           * transfer — no card gateway exists — so the native radio input
+           * stays for semantics/keyboard support but is visually replaced
+           * by a rounded card selector, not a fake card-entry field.
+           */}
+          <div className="mt-4 space-y-3">
+            {methods.map((option) => (
+              <label
+                key={option.key}
+                className={clsx(
+                  'flex cursor-pointer items-start gap-3 rounded-2xl border-2 p-4 transition-colors duration-200 focus-within:ring-2 focus-within:ring-noir-900 focus-within:ring-offset-2',
+                  option.key === method
+                    ? 'border-noir-900 bg-noir-900/[0.03]'
+                    : 'border-noir-200 hover:border-noir-300',
+                )}
+              >
+                <input
+                  type="radio"
+                  name="payment-method"
+                  checked={option.key === method}
+                  onChange={() => setMethod(option.key)}
+                  className="sr-only"
+                />
+                <span
+                  aria-hidden
                   className={clsx(
-                    'flex cursor-pointer items-start gap-3 rounded-2xl border-2 p-4 transition-colors duration-200 focus-within:ring-2 focus-within:ring-noir-900 focus-within:ring-offset-2',
-                    option.key === method
-                      ? 'border-noir-900 bg-noir-900/[0.03]'
-                      : 'border-noir-200 hover:border-noir-300',
+                    'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2',
+                    option.key === method ? 'border-noir-900' : 'border-noir-300',
                   )}
                 >
-                  <input
-                    type="radio"
-                    name="payment-method"
-                    checked={option.key === method}
-                    onChange={() => setMethod(option.key)}
-                    className="sr-only"
-                  />
-                  <span
-                    aria-hidden
-                    className={clsx(
-                      'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2',
-                      option.key === method ? 'border-noir-900' : 'border-noir-300',
-                    )}
-                  >
-                    {option.key === method ? (
-                      <span className="h-2.5 w-2.5 rounded-full bg-noir-900" />
+                  {option.key === method ? (
+                    <span className="h-2.5 w-2.5 rounded-full bg-noir-900" />
+                  ) : null}
+                </span>
+                <span className="flex-1">
+                  <span className="flex justify-between gap-3">
+                    <span className="text-sm font-medium text-noir-900">
+                      {locale === 'ur' ? option.labelUr : option.labelEn}
+                    </span>
+                    {option.fee > 0 ? (
+                      <span className="text-sm text-noir-500">
+                        +{formatMoney(option.fee, locale)}
+                      </span>
                     ) : null}
                   </span>
-                  <span className="flex-1">
-                    <span className="flex justify-between gap-3">
-                      <span className="text-sm font-medium text-noir-900">
-                        {locale === 'ur' ? option.labelUr : option.labelEn}
-                      </span>
-                      {option.fee > 0 ? (
-                        <span className="text-sm text-noir-500">
-                          +{formatMoney(option.fee, locale)}
-                        </span>
-                      ) : null}
-                    </span>
-                    <span className="mt-0.5 block text-xs text-noir-500">
-                      {locale === 'ur' ? option.descriptionUr : option.descriptionEn}
-                    </span>
+                  <span className="mt-0.5 block text-xs text-noir-500">
+                    {locale === 'ur' ? option.descriptionUr : option.descriptionEn}
                   </span>
-                </label>
-              ))}
-            </div>
-          </section>
-
+                </span>
+              </label>
+            ))}
+          </div>
+        </section>
+      ),
+    },
+    {
+      id: 'review',
+      label: t('reviewStep'),
+      isValid: true,
+      content: (
+        <div className="space-y-6">
           <section className="sf-card p-4 sm:p-6">
             <Field label={t('note')} hint={t('noteHint')}>
               <textarea
@@ -350,69 +365,83 @@ export default function CheckoutPage() {
               />
             </Field>
           </section>
-        </div>
 
-        <aside className="sf-card h-fit p-4 lg:sticky lg:top-24">
-          <h2 className="text-base font-semibold text-noir-900">{t('summary')}</h2>
+          <section className="sf-card p-4 sm:p-6">
+            <h2 className="text-base font-semibold text-noir-900">{t('summary')}</h2>
 
-          <ul className="mt-3 space-y-2 text-sm">
-            {cart.items.map((line) => (
-              <li key={line.id} className="flex justify-between gap-3">
-                <span className="min-w-0 text-noir-600">
-                  <span className="block truncate">{line.name}</span>
-                  {line.stitching ? (
-                    <span className="block text-xs text-noir-500">
-                      + {line.stitching.serviceName}
-                    </span>
-                  ) : null}
-                  <span className="text-xs text-noir-400">× {line.quantity}</span>
-                </span>
-                <span className="shrink-0 text-noir-900">
-                  {formatMoney(line.lineTotal, locale)}
-                </span>
-              </li>
-            ))}
-          </ul>
+            <ul className="mt-3 space-y-2 text-sm">
+              {cart.items.map((line) => (
+                <li key={line.id} className="flex justify-between gap-3">
+                  <span className="min-w-0 text-noir-600">
+                    <span className="block truncate">{line.name}</span>
+                    {line.stitching ? (
+                      <span className="block text-xs text-noir-500">
+                        + {line.stitching.serviceName}
+                      </span>
+                    ) : null}
+                    <span className="text-xs text-noir-400">× {line.quantity}</span>
+                  </span>
+                  <span className="shrink-0 text-noir-900">
+                    {formatMoney(line.lineTotal, locale)}
+                  </span>
+                </li>
+              ))}
+            </ul>
 
-          <dl className="mt-4 space-y-2 border-t border-noir-200 pt-4 text-sm">
-            <div className="flex justify-between">
-              <dt className="text-noir-500">{t('goods')}</dt>
-              <dd className="text-noir-900">{formatMoney(cart.totals.grandTotal, locale)}</dd>
-            </div>
-            <div className="flex justify-between">
-              <dt className="text-noir-500">{t('shipping')}</dt>
-              <dd className="text-noir-400">{t('shippingByCity')}</dd>
-            </div>
-            {selectedMethod && selectedMethod.fee > 0 ? (
+            <dl className="mt-4 space-y-2 border-t border-noir-200 pt-4 text-sm">
               <div className="flex justify-between">
-                <dt className="text-noir-500">
-                  {locale === 'ur' ? selectedMethod.labelUr : selectedMethod.labelEn}
-                </dt>
-                <dd className="text-noir-900">+{formatMoney(selectedMethod.fee, locale)}</dd>
+                <dt className="text-noir-500">{t('goods')}</dt>
+                <dd className="text-noir-900">{formatMoney(cart.totals.grandTotal, locale)}</dd>
               </div>
-            ) : null}
-          </dl>
+              <div className="flex justify-between">
+                <dt className="text-noir-500">{t('shipping')}</dt>
+                <dd className="text-noir-400">{t('shippingByCity')}</dd>
+              </div>
+              {selectedMethod && selectedMethod.fee > 0 ? (
+                <div className="flex justify-between">
+                  <dt className="text-noir-500">
+                    {locale === 'ur' ? selectedMethod.labelUr : selectedMethod.labelEn}
+                  </dt>
+                  <dd className="text-noir-900">+{formatMoney(selectedMethod.fee, locale)}</dd>
+                </div>
+              ) : null}
+            </dl>
 
-          <p className="mt-3 text-xs text-noir-400">{t('finalTotalNote')}</p>
+            <p className="mt-3 text-xs text-noir-400">{t('finalTotalNote')}</p>
+          </section>
+        </div>
+      ),
+    },
+  ];
 
-          {error ? (
-            <p
-              role="alert"
-              className="mt-4 whitespace-pre-line rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
-            >
-              {error}
-            </p>
-          ) : null}
+  return (
+    <div className="container-page pb-28 pt-6 font-display sm:pt-8 md:pb-8">
+      <h1 className="text-2xl font-semibold tracking-tight text-noir-900 sm:text-3xl">
+        {t('title')}
+      </h1>
 
-          <button
-            type="submit"
-            disabled={busy || !method}
-            className="sf-btn-primary mt-4 w-full py-3.5 sm:text-base"
-          >
-            {busy ? t('placing') : t('placeOrder')}
-          </button>
-        </aside>
-      </form>
+      <div className="mt-6 sm:mt-8">
+        <Wizard
+          steps={steps}
+          onSubmit={submit}
+          submitLabel={busy ? t('placing') : t('placeOrder')}
+          submitBusy={busy}
+          submitDisabled={busy || !method}
+          accentClassName="bg-noir-900 text-white"
+          backLabel={t('back')}
+          nextLabel={t('next')}
+          error={
+            error ? (
+              <p
+                role="alert"
+                className="whitespace-pre-line rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+              >
+                {error}
+              </p>
+            ) : null
+          }
+        />
+      </div>
     </div>
   );
 }

@@ -19,8 +19,10 @@ import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { IsArray, IsInt, IsOptional, IsString, Min } from 'class-validator';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
+import { BrandAdminService } from './brand-admin.service';
 import { CategoryAdminService } from './category-admin.service';
 import { AdminProductQueryDto } from './dto/product-query.dto';
+import { UpsertBrandDto } from './dto/brand.dto';
 import { UpsertCategoryDto } from './dto/category.dto';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { ProductAdminService } from './product-admin.service';
@@ -65,6 +67,7 @@ export class CatalogAdminController {
   constructor(
     private readonly products: ProductAdminService,
     private readonly categories: CategoryAdminService,
+    private readonly brands: BrandAdminService,
     private readonly importer: ProductImportService,
   ) {}
 
@@ -191,6 +194,33 @@ export class CatalogAdminController {
   @HttpCode(HttpStatus.NO_CONTENT)
   deleteCategory(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
     return this.categories.remove(user.id, id);
+  }
+
+  // --- Brands ---------------------------------------------------------------
+
+  @Get('brands')
+  listBrands() {
+    return this.brands.list();
+  }
+
+  @Post('brands')
+  createBrand(@CurrentUser() user: AuthenticatedUser, @Body() dto: UpsertBrandDto) {
+    return this.brands.create(user.id, dto);
+  }
+
+  @Patch('brands/:id')
+  updateBrand(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') id: string,
+    @Body() dto: UpsertBrandDto,
+  ) {
+    return this.brands.update(user.id, id, dto);
+  }
+
+  @Delete('brands/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteBrand(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
+    return this.brands.remove(user.id, id);
   }
 
   // --- Bulk import ----------------------------------------------------------

@@ -39,6 +39,41 @@ model Category {
   @@index([isActive])
 }
 
+/// A label a product is sold under. Managed from /admin/brands rather than
+/// typed per product: `Product.brand` used to be free text, so "Gul Ahmed",
+/// "gul ahmed" and "Gul  Ahmed" were three different brands as far as any
+/// filter or report was concerned.
+model Brand {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  /// Brand mark, shown on the storefront's brand listing.
+  logoUrl   String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  translations BrandTranslation[]
+  products     Product[]
+
+  @@index([isActive])
+}
+
+/// House Rule 6: a customer-facing name is a translation row, not a column.
+/// Most brand names are proper nouns that read the same in both languages,
+/// but a shop writing them in Urdu script has somewhere to put that.
+model BrandTranslation {
+  id          String  @id @default(cuid())
+  brandId     String
+  locale      String // "en" | "ur"
+  name        String
+  description String?
+
+  brand Brand @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  @@unique([brandId, locale])
+}
+
 model CategoryTranslation {
   id          String  @id @default(cuid())
   categoryId  String
@@ -63,8 +98,8 @@ model Product {
   /// Optional "was" price for showing a discount, in paisa.
   compareAtPrice Int?
 
-  brand  String?
-  fabric String? // lawn, chiffon, khaddar, linen…
+  brandId String?
+  fabric  String? // lawn, chiffon, khaddar, linen…
   season String? // summer, winter, festive
   tags   String[] @default([])
 
@@ -92,6 +127,7 @@ model Product {
   updatedAt    DateTime  @updatedAt
 
   category            Category?            @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  brand    Brand?    @relation(fields: [brandId], references: [id], onDelete: SetNull)
   translations        ProductTranslation[]
   variants            ProductVariant[]
   options             ProductOption[]

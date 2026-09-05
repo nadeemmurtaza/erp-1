@@ -1,5 +1,6 @@
 ﻿import type { Metadata } from 'next';
 import { businessProfile } from '@/config/business-profile';
+import { Link } from '@/i18n/navigation';
 
 export const metadata: Metadata = {
   title: `Returns & Refund Policy — ${businessProfile.shortName}`,
@@ -26,9 +27,9 @@ export default function ReturnsPage() {
           </p>
           <p>
             This Returns &amp; Refund Policy forms part of our{' '}
-            <a href="/terms" className="text-blue-600 underline hover:text-blue-800">
+            <Link href="/terms" className="text-blue-600 underline hover:text-blue-800">
               Terms &amp; Conditions
-            </a>
+            </Link>
             . By placing an order, you agree to the terms set out in this policy.
           </p>
         </section>

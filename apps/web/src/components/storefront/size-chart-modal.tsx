@@ -63,6 +63,13 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
 
   // Determine the primary unit to show. If all fields have the same unit, show it once.
   // Otherwise, we'll display it per row.
+  // Only the fields somebody has actually filled in. A row that reads "—" for
+  // every size is noise, and it made the chart twice as tall as its content:
+  // the seeded kameez carries twelve fields and figures for seven.
+  const chartedFields = activeGarment.fields.filter((field) =>
+    activeGarment.sizeChart.some((row) => typeof row.values[field.key] === 'number'),
+  );
+
   const units = new Set(activeGarment.fields.map(f => f.unit));
   const sameUnit = units.size === 1 ? Array.from(units)[0] : null;
 
@@ -157,36 +164,43 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
               )}
 
               {sameUnit && (
-                <p className="mb-2 text-sm text-neutral-500">
+                <p className="mb-2 text-xs text-neutral-500">
                   {t('measurementsIn', { unit: t(sameUnit.toLowerCase()) })}
                 </p>
               )}
 
               <div className="overflow-x-auto">
-                <table className="w-full min-w-full text-left text-sm whitespace-nowrap">
+                <table className="w-full min-w-full whitespace-nowrap text-left text-xs">
                   <thead>
                     <tr className="border-b border-neutral-200">
-                      <th scope="col" className="py-3 px-4 font-semibold text-neutral-900">
+                      <th
+                        scope="col"
+                        // Sticky to match the row labels below it. Without this the
+                        // corner cell scrolls away while they stay put, and every
+                        // size header ends up over the wrong column — the chart then
+                        // reads as if XS and S have no measurements at all.
+                        className="sticky start-0 bg-white px-2.5 py-1.5 font-semibold text-neutral-900"
+                      >
                         {/* Empty top-left cell */}
                       </th>
                       {activeGarment.sizeChart.map((col) => (
-                        <th key={col.sizeToken} scope="col" className="py-3 px-4 font-semibold text-neutral-900 text-center">
+                        <th key={col.sizeToken} scope="col" className="px-2.5 py-1.5 text-center font-semibold text-neutral-900">
                           {t(`size${col.sizeToken}`)}
                         </th>
                       ))}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-neutral-100">
-                    {activeGarment.fields.map((field) => (
+                    {chartedFields.map((field) => (
                       <tr key={field.key} className="hover:bg-neutral-50 transition-colors">
-                        <th scope="row" className="py-3 px-4 font-medium text-neutral-900 bg-white sticky start-0 shadow-[1px_0_0_0_rgba(0,0,0,0.1)] rtl:shadow-[-1px_0_0_0_rgba(0,0,0,0.1)]">
+                        <th scope="row" className="sticky start-0 bg-white px-2.5 py-1.5 font-medium text-neutral-900 shadow-[1px_0_0_0_rgba(0,0,0,0.1)] rtl:shadow-[-1px_0_0_0_rgba(0,0,0,0.1)]">
                           {locale === 'ur' ? field.labelUr : field.labelEn}
                           {!sameUnit && <span className="ms-1 text-neutral-400 font-normal">({t(field.unit.toLowerCase())})</span>}
                         </th>
                         {activeGarment.sizeChart.map((col) => {
                           const val = col.values[field.key];
                           return (
-                            <td key={col.sizeToken} className="py-3 px-4 text-neutral-700 text-center tabular-nums">
+                            <td key={col.sizeToken} className="px-2.5 py-1.5 text-center tabular-nums text-neutral-700">
                               {typeof val === 'number' ? val : '—'}
                             </td>
                           );

@@ -56,6 +56,7 @@ export const MODULE_PACKS: Record<string, PackName> = {
   catalog: 'core',
   crm: 'core',
   inventory: 'core',
+  marketing: 'core',
   orders: 'core',
   payments: 'core',
   purchasing: 'core',

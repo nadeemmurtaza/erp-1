@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 import { PaginationQueryDto } from '../../../core/common/dto/pagination.dto';
 
 export class EmailInboxQueryDto extends PaginationQueryDto {
@@ -18,4 +18,12 @@ export class LinkInboundEmailDto {
   @IsString()
   @IsNotEmpty({ message: 'Pick a contact to link this message to.' })
   contactId!: string;
+}
+
+export class ReplyToInboundEmailDto {
+  @ApiProperty({ description: 'Plain text — wrapped in the standard branded shell before sending.' })
+  @IsString()
+  @IsNotEmpty({ message: 'Write a reply before sending.' })
+  @MaxLength(20_000)
+  text!: string;
 }

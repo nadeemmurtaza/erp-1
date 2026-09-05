@@ -127,6 +127,15 @@ export interface EmailCopy {
       flashSaleBadge: string;
       expiresNote: (expiresAt: string) => string;
     };
+    /**
+     * Footer line every automated marketing send carries — the
+     * CAN-SPAM/consent-law minimum. Two plain strings, not a template with
+     * an embedded link: the link itself is built by html.ts's footerLink(),
+     * which escapes the URL and label separately rather than through
+     * paragraph()'s esc(), which would turn a raw <a> into visible markup.
+     */
+    unsubscribeLine: string;
+    unsubscribeCta: string;
   };
   stitching: {
     readySubject: (garment: string) => string;
@@ -295,8 +304,8 @@ const en: EmailCopy = {
       subject: 'How was your order?',
       heading: "We'd love your feedback",
       intro: (orderNumber) =>
-        `Your order ${orderNumber} was delivered a little while ago. Would you take a minute to review what you bought?`,
-      cta: 'Write a review',
+        `Your order ${orderNumber} was delivered a little while ago. We'd love to hear how it went — just reply to this email and let us know.`,
+      cta: 'View your order',
     },
     crossSell: {
       subject: 'You might also like these',
@@ -318,6 +327,8 @@ const en: EmailCopy = {
       flashSaleBadge: 'Limited time',
       expiresNote: (expiresAt) => `Offer ends ${expiresAt}.`,
     },
+    unsubscribeLine: "Don't want emails like this?",
+    unsubscribeCta: 'Unsubscribe',
   },
   totals: {
     subtotal: 'Subtotal',
@@ -484,8 +495,8 @@ const ur: EmailCopy = {
       subject: 'آپ کا آرڈر کیسا رہا؟',
       heading: 'ہمیں آپ کی رائے چاہیے',
       intro: (orderNumber) =>
-        `آپ کا آرڈر ${orderNumber} کچھ عرصہ پہلے پہنچایا گیا تھا۔ کیا آپ اپنی خریداری پر رائے دینے کے لیے ایک منٹ نکالیں گے؟`,
-      cta: 'رائے لکھیں',
+        `آپ کا آرڈر ${orderNumber} کچھ عرصہ پہلے پہنچایا گیا تھا۔ ہمیں بتانے کے لیے بس اس ای میل کا جواب دیں۔`,
+      cta: 'اپنا آرڈر دیکھیں',
     },
     crossSell: {
       subject: 'آپ کو یہ بھی پسند آ سکتی ہیں',
@@ -508,6 +519,8 @@ const ur: EmailCopy = {
       flashSaleBadge: 'محدود وقت',
       expiresNote: (expiresAt) => `پیشکش ${expiresAt} کو ختم ہو رہی ہے۔`,
     },
+    unsubscribeLine: 'اس طرح کی ای میلز نہیں چاہیے؟',
+    unsubscribeCta: 'سبسکرپشن ختم کریں',
   },
   totals: {
     subtotal: 'ذیلی میزان',

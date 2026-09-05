@@ -7,10 +7,16 @@ import { EmailTemplatesAdminController } from './email/email-templates.admin.con
 import { ExpoPushChannel } from './expo-push.channel';
 import { LogNotificationChannel } from './log.channel';
 import { NotificationsService } from './notifications.service';
+import { UnsubscribeController } from './unsubscribe.controller';
 
 @Global()
 @Module({
-  controllers: [DevicesController, EmailTemplatesAdminController, EmailAccountsAdminController],
+  controllers: [
+    DevicesController,
+    EmailTemplatesAdminController,
+    EmailAccountsAdminController,
+    UnsubscribeController,
+  ],
   providers: [
     LogNotificationChannel,
     ExpoPushChannel,
@@ -18,6 +24,6 @@ import { NotificationsService } from './notifications.service';
     NotificationsService,
     EmailAccountsService,
   ],
-  exports: [NotificationsService, EmailAccountsService],
+  exports: [NotificationsService, EmailAccountsService, EmailChannel],
 })
 export class NotificationsModule {}

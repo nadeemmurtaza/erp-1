@@ -70,6 +70,15 @@ export default function AdminInboxPage() {
     }
   }
 
+  async function reply(id: string, text: string) {
+    const updated = await adminFetch<InboundEmail>(`/admin/crm/inbox/${id}/reply`, {
+      method: 'POST',
+      body: { text },
+    });
+    setSelected(updated);
+    await load();
+  }
+
   return (
     <>
       <div className="mb-6">
@@ -144,7 +153,14 @@ export default function AdminInboxPage() {
                         <p className="font-medium text-ink">{message.fromName || message.fromAddress}</p>
                         <p className="text-xs text-ink/40">{message.fromAddress}</p>
                       </td>
-                      <td className="px-4 py-3 text-ink/80">{message.subject || '(no subject)'}</td>
+                      <td className="px-4 py-3 text-ink/80">
+                        {message.subject || '(no subject)'}
+                        {message._count.replies > 0 ? (
+                          <span className="ms-2 rounded-full bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">
+                            Replied
+                          </span>
+                        ) : null}
+                      </td>
                       <td className="px-4 py-3 text-ink/60">{message.emailAccount.label}</td>
                       <td className="px-4 py-3 text-ink/60">
                         {new Date(message.receivedAt).toLocaleString('en-PK')}
@@ -185,7 +201,7 @@ export default function AdminInboxPage() {
           {!selected ? (
             <p className="py-8 text-center text-sm text-ink/50">Choose a message to read it.</p>
           ) : (
-            <MessageDetailPanel message={selected} onLink={link} />
+            <MessageDetailPanel message={selected} onLink={link} onReply={reply} />
           )}
         </aside>
       </div>
@@ -196,18 +212,40 @@ export default function AdminInboxPage() {
 function MessageDetailPanel({
   message,
   onLink,
+  onReply,
 }: {
   message: InboundEmail;
   onLink: (id: string, contactId: string) => Promise<void>;
+  onReply: (id: string, text: string) => Promise<void>;
 }) {
   const [q, setQ] = useState('');
   const [options, setOptions] = useState<ContactOption[]>([]);
   const [searching, setSearching] = useState(false);
+  const [draft, setDraft] = useState('');
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState<string | null>(null);
 
   useEffect(() => {
     setQ('');
     setOptions([]);
+    setDraft('');
+    setSendError(null);
   }, [message.id]);
+
+  async function submitReply() {
+    const text = draft.trim();
+    if (!text) return;
+    setSending(true);
+    setSendError(null);
+    try {
+      await onReply(message.id, text);
+      setDraft('');
+    } catch (cause) {
+      setSendError(cause instanceof Error ? cause.message : 'Could not send that reply');
+    } finally {
+      setSending(false);
+    }
+  }
 
   useEffect(() => {
     if (message.contact || !q.trim()) {
@@ -241,6 +279,41 @@ function MessageDetailPanel({
 
       <div className="mt-4 whitespace-pre-wrap rounded-md bg-sand-50 p-3 text-sm text-ink/80">
         {message.bodyText || '(no text body)'}
+      </div>
+
+      {message.replies && message.replies.length > 0 ? (
+        <ul className="mt-4 space-y-3">
+          {message.replies.map((reply) => (
+            <li key={reply.id} className="rounded-md border border-brand-100 bg-brand-50/50 p-3">
+              <p className="text-xs font-medium text-ink/60">
+                {reply.actor ? `${reply.actor.firstName ?? ''} ${reply.actor.lastName ?? ''}`.trim() || 'Staff' : 'Staff'}
+                {' · '}
+                {new Date(reply.sentAt).toLocaleString('en-PK')}
+              </p>
+              <p className="mt-1 whitespace-pre-wrap text-sm text-ink/80">{reply.body}</p>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+
+      <div className="mt-4 border-t border-sand-200 pt-4">
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-ink/50">Reply</h3>
+        <textarea
+          rows={4}
+          value={draft}
+          onChange={(event) => setDraft(event.target.value)}
+          placeholder={`Reply to ${message.fromName || message.fromAddress}…`}
+          className="field-input mt-2 text-sm"
+        />
+        {sendError ? <p className="mt-1 text-xs text-red-700">{sendError}</p> : null}
+        <button
+          type="button"
+          onClick={() => void submitReply()}
+          disabled={sending || !draft.trim()}
+          className="btn-primary mt-2 disabled:opacity-50"
+        >
+          {sending ? 'Sending…' : 'Send reply'}
+        </button>
       </div>
 
       <div className="mt-4 border-t border-sand-200 pt-4">

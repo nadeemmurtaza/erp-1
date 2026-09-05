@@ -94,6 +94,11 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     category: 'Administration',
   },
   {
+    key: 'marketing.manage',
+    label: 'Turn on automated marketing email and set its timing',
+    category: 'Administration',
+  },
+  {
     key: 'roles.manage_permissions',
     label: "Edit each role's granted permissions",
     category: 'Administration',
@@ -169,6 +174,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'audit.view',
     'users.manage',
     'tax.manage',
+    'marketing.manage',
   ],
 };
 

@@ -57,6 +57,11 @@ model Order {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
+  /// Set once MarketingAutomationCron sends the post-delivery review-request
+  /// email (marketing.review_request) — the dedup flag, since the cron scans
+  /// every DELIVERED order past the threshold on every run.
+  reviewRequestSentAt DateTime?
+
   user           User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
   contact        Contact?           @relation(fields: [contactId], references: [id], onDelete: SetNull)
   items          OrderItem[]
@@ -120,6 +125,11 @@ model OrderItem {
   customDesignText     Json?
   /// Which standard size (XS-XXL) the customer picked, when they used the RTW size chart instead of typing measurements. Kept for tailor/support reference; measurementValues still carries the actual numbers used.
   sizeToken            String?
+
+  /// Set once MarketingAutomationCron sends a replenishment nudge
+  /// (marketing.replenishment_reminder) for this line's Product.isConsumable
+  /// item — per item, not per order, since one order can hold several.
+  replenishmentReminderSentAt DateTime?
 
   createdAt DateTime @default(now())
 

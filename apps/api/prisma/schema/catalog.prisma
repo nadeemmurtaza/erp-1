@@ -76,6 +76,12 @@ model Product {
   /// UNSTITCHED only: whether "get it stitched" is offered on this product.
   stitchingAvailable Boolean @default(false)
 
+  /// A repeat-buy item worth nudging customers to reorder — set by staff.
+  /// Read by MarketingAutomationCron (marketing.replenishment_reminder) on a
+  /// single global cadence (Setting marketing.replenishment_reminder_days),
+  /// not a per-product one.
+  isConsumable Boolean @default(false)
+
   /// STITCHING_SERVICE only: which garment this service stitches.
   garmentTypeId String?
 

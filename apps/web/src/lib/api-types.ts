@@ -131,6 +131,7 @@ export interface AdminProduct {
   pieceCount: number | null;
   fabricMeters: number | null;
   stitchingAvailable: boolean;
+  isConsumable: boolean;
   garmentTypeId: string | null;
   garmentTypeIds: string[];
   featuredRank: number;
@@ -400,6 +401,13 @@ export interface RenderedEmailPreview {
 
 // --- Support inbox (IMAP replies) --------------------------------------------
 
+export interface InboundEmailReply {
+  id: string;
+  body: string;
+  sentAt: string;
+  actor: { id: string; firstName: string | null; lastName: string | null } | null;
+}
+
 export interface InboundEmail {
   id: string;
   fromAddress: string;
@@ -412,6 +420,9 @@ export interface InboundEmail {
   emailAccount: { id: string; label: string; purpose: EmailAccountPurpose };
   interactionId: string | null;
   createdAt: string;
+  _count: { replies: number };
+  /** Only present on the single-message GET, not the list. */
+  replies?: InboundEmailReply[];
 }
 
 export interface PermissionDefinition {

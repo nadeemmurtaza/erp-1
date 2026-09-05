@@ -243,16 +243,79 @@ export class EmailChannel implements NotificationChannel {
    * This is what keeps adding a notification cheap: a new `send()` call reaches
    * the customer as properly branded mail immediately, and designing a layout
    * for it later is an entry in EMAIL_TEMPLATES rather than a prerequisite.
+   *
+   * Also what a Support Inbox reply's free-typed text goes through
+   * (sendReply(), below) — a staff reply has no template of its own either,
+   * just the same branded shell every other untemplated message gets. Split
+   * on blank lines so a multi-paragraph reply doesn't collapse into one
+   * run-on <p>, the way HTML whitespace collapsing would otherwise render it.
    */
-  private fallback(message: NotificationMessage, locale: Locale, context: EmailContext) {
+  private fallback(
+    message: Pick<NotificationMessage, 'subject' | 'body'>,
+    locale: Locale,
+    context: EmailContext,
+  ) {
+    const paragraphs = message.body
+      .split(/\n{2,}/)
+      .map((part) => part.trim())
+      .filter(Boolean);
+
     const html = layout({
       locale,
       storeName: context.storeName,
       footer: `${context.storeName} — ${context.contactEmail}`,
-      body: [heading(message.subject, locale), paragraph(message.body, locale)].join('\n'),
+      body: [
+        heading(message.subject, locale),
+        ...(paragraphs.length > 0 ? paragraphs : [message.body]).map((part) =>
+          paragraph(part, locale),
+        ),
+      ].join('\n'),
     });
 
     return { subject: message.subject, html, text: htmlToText(html) };
+  }
+
+  /**
+   * Sends a staff-typed reply from the Support Inbox, over the SAME account
+   * the original message arrived at — never resolved by purpose, since a
+   * reply has to leave from the mailbox the customer is already talking to.
+   * Threaded via In-Reply-To/References so it lands in the customer's
+   * existing thread rather than starting a new one.
+   */
+  async sendReply(
+    accountId: string,
+    message: {
+      to: string;
+      toName?: string | null;
+      subject: string;
+      body: string;
+      inReplyTo?: string;
+      references?: string[];
+    },
+  ): Promise<void> {
+    const { account, password } = await this.accounts.getSmtpCredentials(accountId);
+    const sender = this.senderForAccount(account, password);
+    const rendered = this.fallback(message, DEFAULT_LOCALE, sender.context);
+
+    await sender.transporter.sendMail({
+      from: sender.from,
+      to: message.toName ? { name: message.toName, address: message.to } : message.to,
+      replyTo: sender.context.contactEmail,
+      envelope: { from: sender.fromAddress, to: message.to },
+      messageId: `<${randomUUID()}@${sender.fromAddress.split('@')[1] ?? 'yaseen.pk'}>`,
+      subject: rendered.subject,
+      text: rendered.text,
+      html: rendered.html,
+      inReplyTo: message.inReplyTo,
+      references: message.references,
+      // A human wrote this, unlike every other send() path — no
+      // Auto-Submitted header, so a reply-scanning filter treats it normally.
+      headers: { 'X-Yaseen-Template': 'support.reply' },
+      disableFileAccess: true,
+      disableUrlAccess: true,
+    });
+
+    this.logger.log(`[support.reply] emailed ${message.to}`);
   }
 }
 

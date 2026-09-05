@@ -190,6 +190,29 @@ export function divider(): string {
   return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="border-top:1px solid ${palette.border};font-size:0;line-height:0;height:1px;">&nbsp;</td></tr></table>`;
 }
 
+/**
+ * The unsubscribe line every automated marketing send carries.
+ *
+ * Not built with paragraph(), which escapes its whole argument through
+ * esc() — a raw `<a>` passed to it would render as visible `&lt;a&gt;`
+ * markup instead of a link. Here the label and href are escaped
+ * individually (escUrl on the href, esc() on the visible text) and the
+ * anchor itself is real markup.
+ */
+export function footerLink(text: string, linkLabel: string, url: string, locale: Locale): string {
+  const dir = directionFor(locale);
+  const font = locale === 'ur' ? URDU_FONT : FONT;
+  const href = escUrl(url);
+  const link = href
+    ? ` <a href="${href}" style="color:${palette.muted};text-decoration:underline;">${esc(
+        linkLabel,
+      )}</a>`
+    : '';
+  return `<p dir="${dir}" style="margin:16px 0 0 0;font-family:${font};font-size:12px;line-height:1.6;color:${palette.muted};">${esc(
+    text,
+  )}${link}</p>`;
+}
+
 export function sectionTitle(text: string, locale: Locale): string {
   const font = locale === 'ur' ? URDU_FONT : FONT;
   return `<p style="margin:24px 0 12px 0;font-family:${font};font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:${palette.muted};">${esc(

@@ -192,25 +192,28 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     key: 'marketing.abandoned_cart_reminder',
     label: 'Abandoned Cart (Email 1 — The Reminder)',
     category: 'Marketing',
-    trigger: 'manual',
+    trigger: 'automatic',
     triggerDescription:
-      'No cart-abandonment detection exists in this codebase yet (no idle-cart job, no send timing). The template is ready; sending it needs that automation built first.',
+      'Sent by MarketingAutomationCron (modules/marketing) when a logged-in customer\'s cart sits idle past marketing.abandoned_cart_reminder_hours (Settings). Guest carts have no email captured yet, so this covers logged-in customers only. Off by default (marketing.automation_enabled).',
     sampleData: {
       items: sampleOrderItems,
       cartUrl: 'https://yaseen.pk/en/cart',
+      unsubscribeUrl: 'https://yaseen.pk/en/unsubscribe?u=sample&t=sample',
     },
   },
   {
     key: 'marketing.abandoned_cart_incentive',
     label: 'Abandoned Cart (Email 2 — The Incentive)',
     category: 'Marketing',
-    trigger: 'manual',
-    triggerDescription: 'Same gap as Email 1, plus a discount-code system to generate the code.',
+    trigger: 'automatic',
+    triggerDescription:
+      'Sent by the same cron, marketing.abandoned_cart_incentive_hours after the reminder, if the cart is still not converted. No discount-code system exists, so this goes out without one — discountCode/discountLabel stay unset rather than showing a fake code.',
     sampleData: {
       items: sampleOrderItems,
       cartUrl: 'https://yaseen.pk/en/cart',
       discountCode: 'COMEBACK10',
       discountLabel: '10% off',
+      unsubscribeUrl: 'https://yaseen.pk/en/unsubscribe?u=sample&t=sample',
     },
   },
   {
@@ -226,9 +229,14 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     key: 'marketing.review_request',
     label: 'Product Review / Feedback Request',
     category: 'Marketing',
-    trigger: 'manual',
-    triggerDescription: 'No reviews module exists yet — there is nowhere for the link to send them.',
-    sampleData: { orderNumber: 'YSN-2026-0142', items: sampleProducts },
+    trigger: 'automatic',
+    triggerDescription:
+      "Sent by MarketingAutomationCron marketing.review_request_days (Settings) after an order is marked DELIVERED. The CTA links to the order's own page — there is no separate reviews module, so it points customers at what they can already see rather than a review form that doesn't exist. Off by default (marketing.automation_enabled).",
+    sampleData: {
+      orderNumber: 'YSN-2026-0142',
+      items: sampleProducts,
+      unsubscribeUrl: 'https://yaseen.pk/en/unsubscribe?u=sample&t=sample',
+    },
   },
   {
     key: 'marketing.cross_sell',
@@ -242,9 +250,13 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     key: 'marketing.replenishment_reminder',
     label: 'Replenishment Reminder',
     category: 'Marketing',
-    trigger: 'manual',
-    triggerDescription: 'No purchase-cadence tracking exists yet to know when to send this.',
-    sampleData: { product: sampleProducts[0] },
+    trigger: 'automatic',
+    triggerDescription:
+      "Sent by MarketingAutomationCron marketing.replenishment_reminder_days (Settings) after a delivered order for a product flagged Product.isConsumable, one per order item. Not per-product cadence-tuned — a single global day count, admin-configurable in Settings. Off by default (marketing.automation_enabled).",
+    sampleData: {
+      product: sampleProducts[0],
+      unsubscribeUrl: 'https://yaseen.pk/en/unsubscribe?u=sample&t=sample',
+    },
   },
   {
     key: 'marketing.holiday_sale',

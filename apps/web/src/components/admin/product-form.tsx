@@ -79,6 +79,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
   const [stitchingAvailable, setStitchingAvailable] = useState(
     product?.stitchingAvailable ?? false,
   );
+  const [isConsumable, setIsConsumable] = useState(product?.isConsumable ?? false);
   const [garmentTypeIds, setGarmentTypeIds] = useState<string[]>(
     product?.garmentTypeIds ?? [],
   );
@@ -144,6 +145,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           .map((tag) => tag.trim())
           .filter(Boolean),
         featuredRank: Number(featuredRank) || 0,
+        isConsumable,
         // These only apply to unstitched fabric; sending them for another kind
         // is rejected by the API on purpose.
         pieceCount: isUnstitched && pieceCount ? Number(pieceCount) : undefined,
@@ -256,6 +258,16 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
             </select>
           </Field>
         </div>
+
+        <label className="mt-4 flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={isConsumable}
+            onChange={(event) => setIsConsumable(event.target.checked)}
+            className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+          />
+          Consumable / repeat-buy — worth an automated reorder nudge (Marketing settings)
+        </label>
       </Section>
     ),
   };

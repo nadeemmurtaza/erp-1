@@ -312,6 +312,17 @@ export class EmailAccountsService {
     return { account, password: decryptSecret(account.smtpPasswordEncrypted, this.encryptionKey()) };
   }
 
+  /**
+   * A specific account's decrypted SMTP credentials, by id rather than
+   * purpose — for replying to a Support Inbox message, which must leave from
+   * the exact mailbox it arrived at, not whichever account resolveFor()
+   * would otherwise pick for that purpose.
+   */
+  async getSmtpCredentials(id: string): Promise<{ account: EmailAccount; password: string }> {
+    const account = await this.findOrThrow(id);
+    return { account, password: decryptSecret(account.smtpPasswordEncrypted, this.encryptionKey()) };
+  }
+
   /** Every active account with IMAP configured — what the mailbox poller polls. */
   async listImapEnabled(): Promise<EmailAccount[]> {
     return this.prisma.emailAccount.findMany({

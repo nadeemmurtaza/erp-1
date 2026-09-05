@@ -80,9 +80,14 @@ export function Header() {
               <Link
                 href="/"
                 aria-label={tSite('name')}
-                className="shrink-0 translate-y-0.5 text-neutral-900 transition-colors duration-200 hover:text-neutral-600"
+                className="shrink-0 text-neutral-900 transition-colors duration-200 hover:text-neutral-600"
               >
-                <Logo aria-hidden className="block h-7 w-auto md:h-8" />
+                {/* The descender is the bottom third of the logo's box, so
+                    centring the box leaves the word riding high — it measured
+                    3.2px above the search field it sits beside. Half the
+                    descender puts the word back on the row's centre line, and
+                    as a percentage it stays right at both h-7 and h-8. */}
+                <Logo aria-hidden className="block h-7 w-auto translate-y-[16%] md:h-8" />
               </Link>
 
               {/* lg:, not md:. At 768-1023px the logo, five nav labels, the search

@@ -12,7 +12,12 @@ export function Footer() {
       <div className="container-page py-16 sm:py-20">
         <div className="grid gap-12 sm:gap-16 sm:grid-cols-2 lg:grid-cols-4 mb-12">
           <div className="lg:col-span-1">
-            <Logo aria-label={tSite('name')} className="h-6 w-auto text-white" />
+            {/* Matches the header. Reversed out of neutral-900 the strokes
+                bloom, and at the old h-6 that closed the counters in `a` and
+                both `e`s into blots — the word only reads properly from about
+                h-8 up. No translate here: this logo is top-aligned in a column,
+                not centred in a row. */}
+            <Logo aria-label={tSite('name')} className="h-8 w-auto text-white" />
             <p className="mt-4 text-sm text-neutral-300 leading-relaxed">{tSite('tagline')}</p>
           </div>
 

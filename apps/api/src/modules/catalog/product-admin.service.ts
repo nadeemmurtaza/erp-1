@@ -94,7 +94,7 @@ export class ProductAdminService {
           categoryId: dto.categoryId || null,
           basePrice: dto.basePrice,
           compareAtPrice: dto.compareAtPrice ?? null,
-          brand: dto.brand?.trim() || null,
+          brandId: dto.brandId || null,
           fabric: normaliseTag(dto.fabric),
           season: normaliseTag(dto.season),
           tags: (dto.tags ?? []).map((tag) => tag.trim().toLowerCase()).filter(Boolean),
@@ -183,7 +183,11 @@ export class ProductAdminService {
     if (dto.kind !== undefined) data.kind = dto.kind;
     if (dto.basePrice !== undefined) data.basePrice = dto.basePrice;
     if (dto.compareAtPrice !== undefined) data.compareAtPrice = dto.compareAtPrice;
-    if (dto.brand !== undefined) data.brand = dto.brand.trim() || null;
+    if (dto.brandId !== undefined) {
+      // ProductUpdateInput takes the relation, not the scalar key: connect to
+      // the brand, or disconnect when the field is cleared.
+      data.brand = dto.brandId ? { connect: { id: dto.brandId } } : { disconnect: true };
+    }
     if (dto.fabric !== undefined) data.fabric = normaliseTag(dto.fabric);
     if (dto.season !== undefined) data.season = normaliseTag(dto.season);
     if (dto.tags !== undefined) {

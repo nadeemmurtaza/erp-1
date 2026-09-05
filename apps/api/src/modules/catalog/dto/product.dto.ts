@@ -151,7 +151,7 @@ export class CreateProductDto {
   @IsOptional()
   @IsString()
   @MaxLength(80)
-  brand?: string;
+  brandId?: string;
 
   @ApiPropertyOptional({ example: 'lawn' })
   @IsOptional()

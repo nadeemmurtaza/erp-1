@@ -71,7 +71,9 @@ function organizationJsonLd() {
     url: SITE_URL,
     // A raster export, not icon.svg — Google's structured-data guidelines
     // require the Organization logo to be jpg/png/gif, SVG isn't supported.
-    logo: `${SITE_URL}/logo-512.png`,
+    // Rendered from that same icon.svg by scripts/build-logo-raster.mjs, so it
+    // stays sharp wherever it is scaled; re-run that script if the icon changes.
+    logo: `${SITE_URL}/logo-1024.png`,
     email: businessProfile.email,
     telephone: businessProfile.phone,
     address: {

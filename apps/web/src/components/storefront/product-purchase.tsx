@@ -311,21 +311,12 @@ function SizeRow({
   options: string[];
   value: string | null;
   onChange: (next: string) => void;
-  /** Optional control shown opposite the label — the size-chart link. */
+  /** Optional control shown under the chips — the size-chart link. */
   action?: React.ReactNode;
 }) {
   return (
     <fieldset className="w-full">
-      {/* The legend and the action share a row. `legend` inside a flex parent
-          does not lay out reliably across browsers, so the fieldset gets a
-          plain div header and the legend is visually hidden for a11y. */}
-      <legend className="sr-only">{label}</legend>
-      <div className="mb-1.5 flex items-center justify-between gap-3">
-        <span aria-hidden className="text-sm font-medium text-neutral-900">
-          {label}
-        </span>
-        {action}
-      </div>
+      <legend className="mb-1.5 text-sm font-medium text-neutral-900">{label}</legend>
       <div className="flex flex-wrap gap-2">
         {options.map((option) => (
           <button
@@ -339,6 +330,10 @@ function SizeRow({
           </button>
         ))}
       </div>
+      {/* Under the chips, not beside the label: the question "which of these
+          is me?" only arises once the sizes are in front of you, so the chart
+          sits where the eye already is. */}
+      {action ? <div className="mt-2">{action}</div> : null}
     </fieldset>
   );
 }

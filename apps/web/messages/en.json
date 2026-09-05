@@ -116,12 +116,12 @@
     "quickShop": "Quick Shop",
     "addToFavourites": "Add to favourites",
     "removeFromFavourites": "Remove from favourites",
-    "sizeChart": "Size Chart",
-    "sizeCharts": "Size Charts",
-    "close": "Close",
-    "measurementsIn": "Measurements in {unit}",
-    "inch": "inches",
-    "cm": "cm"
+    "sizeXS": "XS",
+    "sizeS": "S",
+    "sizeM": "M",
+    "sizeL": "L",
+    "sizeXL": "XL",
+    "sizeXXL": "XXL"
   },
   "cart": {
     "title": "Cart",

@@ -36,12 +36,12 @@ export default function UnsubscribePage() {
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm text-center">
-        <h1 className="text-2xl font-semibold text-brand-700">Email preferences</h1>
+        <h1 className="text-2xl font-semibold text-accent-hover">Email preferences</h1>
 
         {status === 'checking' ? (
-          <p className="mt-6 text-sm text-ink/60">Updating your preferences…</p>
+          <p className="mt-6 text-sm text-neutral-900/60">Updating your preferences…</p>
         ) : status === 'success' ? (
-          <p className="mt-6 rounded-md bg-brand-50 px-4 py-3 text-sm text-brand-800">
+          <p className="mt-6 rounded-md bg-neutral-50 px-4 py-3 text-sm text-accent-hover">
             You&rsquo;re unsubscribed from marketing email. Order and account emails still reach
             you — those aren&rsquo;t marketing.
           </p>
@@ -51,8 +51,8 @@ export default function UnsubscribePage() {
           </p>
         )}
 
-        <div className="mt-6 text-sm text-ink/60">
-          <Link href="/" className="font-medium text-brand-700 hover:underline">
+        <div className="mt-6 text-sm text-neutral-900/60">
+          <Link href="/" className="font-medium text-accent-hover hover:underline">
             Back to the store
           </Link>
         </div>

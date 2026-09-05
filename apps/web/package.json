@@ -20,7 +20,8 @@
     "next": "15.5.23",
     "next-intl": "4.13.6",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.3.6",

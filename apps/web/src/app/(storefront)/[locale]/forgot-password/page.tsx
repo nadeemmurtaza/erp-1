@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Link } from '@/i18n/navigation';
 import { forgotPassword } from '@/lib/customer-client';
+import { ROUTES } from '@/constants/routes';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -31,16 +32,16 @@ export default function ForgotPasswordPage() {
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm">
-        <h1 className="text-center text-2xl font-semibold text-brand-700">Reset your password</h1>
+        <h1 className="text-center text-2xl font-semibold text-accent-hover">Reset your password</h1>
 
         {sent ? (
-          <p className="mt-6 rounded-md bg-brand-50 px-4 py-3 text-center text-sm text-brand-800">
+          <p className="mt-6 rounded-md bg-neutral-50 px-4 py-3 text-center text-sm text-accent-hover">
             If an account exists for {email}, we&apos;ve sent a link to reset your password. It
             expires in one hour.
           </p>
         ) : (
           <form onSubmit={onSubmit} className="mt-8 space-y-4">
-            <p className="text-center text-sm text-ink/60">
+            <p className="text-center text-sm text-neutral-900/60">
               Enter your email and we&apos;ll send you a link to reset your password.
             </p>
             <div>
@@ -70,8 +71,8 @@ export default function ForgotPasswordPage() {
           </form>
         )}
 
-        <div className="mt-6 text-center text-sm text-ink/60">
-          <Link href="/login" className="font-medium text-brand-700 hover:underline">
+        <div className="mt-6 text-center text-sm text-neutral-900/60">
+          <Link href={ROUTES.storefront.login} className="font-medium text-accent-hover hover:underline">
             Back to sign in
           </Link>
         </div>

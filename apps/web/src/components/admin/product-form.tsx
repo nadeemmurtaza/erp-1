@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { PRODUCT_KINDS, PRODUCT_STATUSES, formatMoney, toMajor, toMinor } from '@yaseen/shared';
 import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { adminFetch } from '@/lib/admin-client';
@@ -11,8 +11,8 @@ import type {
   AdminProduct,
   AdminVariant,
   GarmentType,
-} from '@/lib/api-types';
-import { ImageManager } from './image-manager';
+} from '@/types/api';
+import { ImageManager, ImageStager, uploadStagedImages, type StagedImage } from './image-manager';
 
 const KIND_LABELS: Record<string, string> = {
   GOODS: 'Goods',
@@ -52,7 +52,15 @@ interface ProductFormProps {
  */
 export function ProductForm({ product, categories, garmentTypes }: ProductFormProps) {
   const router = useRouter();
-  const isEdit = Boolean(product);
+
+  // Set once a create request succeeds. Distinct from `product` (the prop,
+  // fixed for this component's lifetime) so the form can flip from "creating"
+  // to "editing" in place after the product exists — without a navigation —
+  // if a staged photo failed to upload and the user needs ImageManager's
+  // retry button rather than being sent away from the error.
+  const [createdProduct, setCreatedProduct] = useState<AdminProduct | null>(null);
+  const effectiveProduct = product ?? createdProduct;
+  const isEdit = Boolean(effectiveProduct);
 
   const englishTranslation = product?.translations.find((t) => t.locale === 'en');
   const urduTranslation = product?.translations.find((t) => t.locale === 'ur');
@@ -101,6 +109,11 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
 
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+
+  // Only used when creating: photos picked before the product has an id.
+  // Uploaded in onSubmit, right after the create request returns one — see
+  // ImageStager's doc comment for why this exists instead of a second trip.
+  const [pendingImages, setPendingImages] = useState<StagedImage[]>([]);
 
   // Duplicate SKUs and duplicate size/colour combinations both reach the API
   // fine syntactically but collide there — one against a global unique
@@ -190,8 +203,9 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           })),
       };
 
+      const wasCreate = !isEdit;
       const saved = isEdit
-        ? await adminFetch<AdminProduct>(`/admin/catalog/products/${product!.id}`, {
+        ? await adminFetch<AdminProduct>(`/admin/catalog/products/${effectiveProduct!.id}`, {
             method: 'PATCH',
             body: payload,
           })
@@ -199,6 +213,30 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
             method: 'POST',
             body: payload,
           });
+
+      // The product now has an id, so any photos picked during the Images
+      // step can finally be sent. Failures here are reported but never undo
+      // the product that was just created — see uploadStagedImages's comment.
+      if (wasCreate && pendingImages.length > 0) {
+        const result = await uploadStagedImages(saved.id, pendingImages);
+        setPendingImages([]);
+        if (result.failed > 0) {
+          // Flip to edit mode in place, on this same page, rather than
+          // navigating away: the Images step now renders the real
+          // ImageManager against `saved.id`, so the retry button for the
+          // failed upload is right there instead of on a page the user has
+          // to be told to go find.
+          setCreatedProduct(saved);
+          setError(
+            `Product created, but ${result.failed} of ${result.uploaded + result.failed} photo(s) ` +
+              `failed to upload` +
+              (result.firstError ? ` (${result.firstError})` : '') +
+              '. Retry from the Images step below.',
+          );
+          setSaving(false);
+          return;
+        }
+      }
 
       router.push(`/admin/products/${saved.id}`);
       router.refresh();
@@ -264,7 +302,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
             type="checkbox"
             checked={isConsumable}
             onChange={(event) => setIsConsumable(event.target.checked)}
-            className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+            className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
           />
           Consumable / repeat-buy — worth an automated reorder nudge (Marketing settings)
         </label>
@@ -283,7 +321,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
       >
         <div className="grid gap-4 lg:grid-cols-2">
           <div className="space-y-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-ink/40">English</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-900/40">English</p>
             <Field label="Name" required>
               <input
                 value={nameEn}
@@ -312,7 +350,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           </div>
 
           <div className="space-y-4" dir="rtl">
-            <p className="text-xs font-semibold uppercase tracking-wide text-ink/40" dir="ltr">
+            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-900/40" dir="ltr">
               Urdu
             </p>
             <Field label="نام" dir="rtl">
@@ -467,7 +505,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
               type="checkbox"
               checked={stitchingAvailable}
               onChange={(event) => setStitchingAvailable(event.target.checked)}
-              className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+              className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
             />
             Offer &ldquo;get it stitched&rdquo; on this fabric
           </label>
@@ -475,7 +513,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           {stitchingAvailable ? (
             <fieldset className="mt-4">
               <legend className="field-label">Can be stitched as</legend>
-              <p className="mb-2 text-xs text-ink/50">
+              <p className="mb-2 text-xs text-neutral-900/50">
                 Tick every garment this cloth can be made into. The customer sees these
                 choices with the fee shown here; fees are set per garment on the Garments
                 page.
@@ -494,10 +532,10 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
                   return (
                     <label
                       key={garment.id}
-                      className={clsx(
+                      className={cn(
                         'flex items-center gap-2 rounded-md border px-3 py-2 text-sm',
-                        selected ? 'border-brand-500 bg-brand-50' : 'border-sand-200',
-                        offered ? 'text-ink' : 'bg-sand-50 text-ink/50',
+                        selected ? 'border-accent bg-neutral-50' : 'border-neutral-100',
+                        offered ? 'text-neutral-900' : 'bg-neutral-50 text-neutral-900/50',
                       )}
                     >
                       <input
@@ -511,14 +549,14 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
                               : current.filter((id) => id !== garment.id),
                           )
                         }
-                        className="rounded border-sand-300 text-brand-600 focus:ring-brand-500 disabled:opacity-50"
+                        className="rounded border-neutral-200 text-accent-hover focus:ring-accent disabled:opacity-50"
                       />
                       {garment.labelEn}
                       {offered ? (
                         <span
-                          className={clsx(
+                          className={cn(
                             'text-xs',
-                            garment.stitchingPrice > 0 ? 'text-ink/60' : 'text-red-700',
+                            garment.stitchingPrice > 0 ? 'text-neutral-900/60' : 'text-red-700',
                           )}
                         >
                           {garment.stitchingPrice > 0
@@ -526,7 +564,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
                             : 'no fee set'}
                         </span>
                       ) : (
-                        <span className="text-xs text-ink/40">not offered</span>
+                        <span className="text-xs text-neutral-900/40">not offered</span>
                       )}
                     </label>
                   );
@@ -582,7 +620,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           {kind === 'STITCHED' ? (
             <fieldset className="mt-4">
               <legend className="field-label">Size chart</legend>
-              <p className="mb-2 text-xs text-ink/50">
+              <p className="mb-2 text-xs text-neutral-900/50">
                 Tick the garment(s) this outfit is made of. The customer sees a &ldquo;Size
                 chart&rdquo; link on the product page showing each garment&apos;s standard
                 measurements — set under Garments.
@@ -593,9 +631,9 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
                   return (
                     <label
                       key={garment.id}
-                      className={clsx(
+                      className={cn(
                         'flex items-center gap-2 rounded-md border px-3 py-2 text-sm',
-                        selected ? 'border-brand-500 bg-brand-50 text-ink' : 'border-sand-200 text-ink/70',
+                        selected ? 'border-accent bg-neutral-50 text-neutral-900' : 'border-neutral-100 text-neutral-900/70',
                       )}
                     >
                       <input
@@ -608,7 +646,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
                               : current.filter((id) => id !== garment.id),
                           )
                         }
-                        className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                        className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
                       />
                       {garment.labelEn}
                     </label>
@@ -654,9 +692,9 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
             return (
             <div
               key={variant.id ?? index}
-              className={clsx(
+              className={cn(
                 'grid gap-3 rounded-md border p-3 sm:grid-cols-6',
-                variant.isActive ? 'border-sand-200' : 'border-sand-200 bg-sand-50 opacity-60',
+                variant.isActive ? 'border-neutral-100' : 'border-neutral-100 bg-neutral-50 opacity-60',
               )}
             >
               <div>
@@ -754,15 +792,16 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
     id: 'images',
     label: 'Images',
     isValid: true,
-    content: product ? (
+    content: effectiveProduct ? (
       <Section title="Images" hint="The first image is the listing thumbnail.">
-        <ImageManager productId={product.id} initialImages={product.images} />
+        <ImageManager productId={effectiveProduct.id} initialImages={effectiveProduct.images} />
       </Section>
     ) : (
-      <Section title="Images">
-        <p className="text-sm text-ink/60">
-          Save the product first, then upload photographs here.
-        </p>
+      <Section
+        title="Images"
+        hint="Uploaded together with the rest of this product when you hit Create product below."
+      >
+        <ImageStager images={pendingImages} onChange={setPendingImages} />
       </Section>
     ),
   };
@@ -792,7 +831,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           submitLabel={saving ? 'Saving…' : isEdit ? 'Save changes' : 'Create product'}
           submitBusy={saving}
           submitDisabled={saving}
-          accentClassName="bg-brand-600 text-white"
+          accentClassName="bg-accent-hover text-white"
         />
       </div>
 
@@ -871,8 +910,8 @@ function Section({
 }) {
   return (
     <section className="card p-4 sm:p-5">
-      <h2 className="text-sm font-semibold text-ink">{title}</h2>
-      {hint ? <p className="mt-1 text-xs text-ink/50">{hint}</p> : null}
+      <h2 className="text-sm font-semibold text-neutral-900">{title}</h2>
+      {hint ? <p className="mt-1 text-xs text-neutral-900/50">{hint}</p> : null}
       <div className="mt-4">{children}</div>
     </section>
   );
@@ -898,7 +937,7 @@ function Field({
         {required ? <span className="text-red-600"> *</span> : null}
       </span>
       {children}
-      {hint ? <span className="mt-1 block text-xs text-ink/40">{hint}</span> : null}
+      {hint ? <span className="mt-1 block text-xs text-neutral-900/40">{hint}</span> : null}
     </label>
   );
 }
@@ -920,14 +959,14 @@ function LabelledInput({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs text-ink/50">{label}</span>
+      <span className="mb-1 block text-xs text-neutral-900/50">{label}</span>
       <input
         type={type}
         value={value}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
         aria-invalid={invalid || undefined}
-        className={clsx(
+        className={cn(
           'field-input py-1.5 text-sm',
           invalid && 'border-red-400 focus:border-red-500',
         )}

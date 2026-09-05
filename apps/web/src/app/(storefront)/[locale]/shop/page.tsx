@@ -6,8 +6,8 @@ import { ShopControls } from '@/components/storefront/shop-controls';
 import { Link } from '@/i18n/navigation';
 import { getFacets, getProducts } from '@/lib/api';
 import { AnimatedSection } from '@/components/storefront/animated-section';
-import type { ProductListQuery } from '@/lib/api-types';
-import { alternateLanguages, canonicalUrl } from '@/lib/seo';
+import type { ProductListQuery } from '@/types/api';
+import { alternateLanguages, canonicalUrl } from '@/config/seo';
 
 export const revalidate = 120;
 
@@ -111,17 +111,17 @@ export default async function ShopPage({
           <div>
             {products.data.length === 0 ? (
               <>
-                <div className="sf-card flex items-center justify-between gap-4 mb-6 p-4">
+                <div className="sf-card mb-6 flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                   <div>
-                    <h1 className="font-display text-2xl font-semibold text-noir-900">{t('title')}</h1>
-                    <p className="mt-1 text-sm text-noir-500">
+                    <h1 className="font-display text-2xl font-semibold text-neutral-900">{t('title')}</h1>
+                    <p className="mt-1 text-sm text-neutral-500">
                       {t('resultsCount', { count: products.meta.total })}
                     </p>
                   </div>
                 </div>
                 <div className="sf-card p-10 text-center">
-                  <p className="text-sm font-medium text-noir-900">{t('empty')}</p>
-                  <p className="mt-1 text-sm text-noir-500">{t('emptyBody')}</p>
+                  <p className="text-sm font-medium text-neutral-900">{t('empty')}</p>
+                  <p className="mt-1 text-sm text-neutral-500">{t('emptyBody')}</p>
                 </div>
               </>
             ) : (
@@ -146,7 +146,7 @@ export default async function ShopPage({
                   <span />
                 )}
 
-                <span className="text-sm text-noir-500">
+                <span className="text-sm text-neutral-500">
                   {t('pageOf', { page, total: products.meta.totalPages })}
                 </span>
 

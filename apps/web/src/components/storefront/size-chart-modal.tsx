@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import clsx from 'clsx';
-import type { StitchingGarment } from '@/lib/cart-types';
+import { cn } from '@/utils/cn';
+import type { StitchingGarment } from '@/types/cart';
 import type { Locale } from '@yaseen/shared';
 
 interface SizeChartModalProps {
@@ -72,7 +72,7 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
         ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-1.5 text-sm text-noir-500 hover:text-noir-900 transition-colors mt-2"
+        className="inline-flex items-center gap-1.5 text-sm text-neutral-500 hover:text-neutral-900 transition-colors mt-2"
         aria-haspopup="dialog"
         aria-expanded={open}
       >
@@ -112,17 +112,17 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
             style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}
           >
             {/* Header */}
-            <div className="flex items-start justify-between border-b border-noir-200 p-4 sm:p-6">
+            <div className="flex items-start justify-between border-b border-neutral-200 p-4 sm:p-6">
               <div>
-                <h2 id="size-chart-title" className="font-display text-lg font-medium text-noir-900">
+                <h2 id="size-chart-title" className="font-display text-lg font-medium text-neutral-900">
                   {productName}
                 </h2>
-                <p className="text-sm text-noir-500">{t('sizeCharts')}</p>
+                <p className="text-sm text-neutral-500">{t('sizeCharts')}</p>
               </div>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="text-noir-400 hover:text-noir-900 transition-colors"
+                className="text-neutral-400 hover:text-neutral-900 transition-colors"
                 aria-label={t('close')}
               >
                 <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -142,7 +142,7 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
                         key={g.id}
                         type="button"
                         onClick={() => setActiveGarmentIndex(idx)}
-                        className={clsx(
+                        className={cn(
                           'sf-chip',
                           activeGarmentIndex === idx
                             ? 'sf-chip-selected'
@@ -157,7 +157,7 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
               )}
 
               {sameUnit && (
-                <p className="mb-2 text-sm text-noir-500">
+                <p className="mb-2 text-sm text-neutral-500">
                   {t('measurementsIn', { unit: t(sameUnit.toLowerCase()) })}
                 </p>
               )}
@@ -165,28 +165,28 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
               <div className="overflow-x-auto">
                 <table className="w-full min-w-full text-left text-sm whitespace-nowrap">
                   <thead>
-                    <tr className="border-b border-noir-200">
-                      <th scope="col" className="py-3 px-4 font-semibold text-noir-900">
+                    <tr className="border-b border-neutral-200">
+                      <th scope="col" className="py-3 px-4 font-semibold text-neutral-900">
                         {/* Empty top-left cell */}
                       </th>
                       {activeGarment.sizeChart.map((col) => (
-                        <th key={col.sizeToken} scope="col" className="py-3 px-4 font-semibold text-noir-900 text-center">
+                        <th key={col.sizeToken} scope="col" className="py-3 px-4 font-semibold text-neutral-900 text-center">
                           {t(`size${col.sizeToken}`)}
                         </th>
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-noir-100">
+                  <tbody className="divide-y divide-neutral-100">
                     {activeGarment.fields.map((field) => (
-                      <tr key={field.key} className="hover:bg-noir-50 transition-colors">
-                        <th scope="row" className="py-3 px-4 font-medium text-noir-900 bg-white sticky start-0 shadow-[1px_0_0_0_rgba(0,0,0,0.1)] rtl:shadow-[-1px_0_0_0_rgba(0,0,0,0.1)]">
+                      <tr key={field.key} className="hover:bg-neutral-50 transition-colors">
+                        <th scope="row" className="py-3 px-4 font-medium text-neutral-900 bg-white sticky start-0 shadow-[1px_0_0_0_rgba(0,0,0,0.1)] rtl:shadow-[-1px_0_0_0_rgba(0,0,0,0.1)]">
                           {locale === 'ur' ? field.labelUr : field.labelEn}
-                          {!sameUnit && <span className="ms-1 text-noir-400 font-normal">({t(field.unit.toLowerCase())})</span>}
+                          {!sameUnit && <span className="ms-1 text-neutral-400 font-normal">({t(field.unit.toLowerCase())})</span>}
                         </th>
                         {activeGarment.sizeChart.map((col) => {
                           const val = col.values[field.key];
                           return (
-                            <td key={col.sizeToken} className="py-3 px-4 text-noir-700 text-center tabular-nums">
+                            <td key={col.sizeToken} className="py-3 px-4 text-neutral-700 text-center tabular-nums">
                               {typeof val === 'number' ? val : '—'}
                             </td>
                           );

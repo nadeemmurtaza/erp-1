@@ -2,7 +2,7 @@
 
 import { trackEvent } from './analytics-client';
 import { API_URL, ApiError } from './api';
-import type { Cart } from './cart-types';
+import type { Cart } from '@/types/cart';
 
 /**
  * Browser-side cart client.

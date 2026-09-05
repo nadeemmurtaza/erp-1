@@ -6,8 +6,9 @@ import type { Locale } from '@yaseen/shared';
 import { ProductCard } from '@/components/storefront/product-card';
 import { Link } from '@/i18n/navigation';
 import { getProducts } from '@/lib/api';
-import type { StorefrontProduct } from '@/lib/api-types';
+import type { StorefrontProduct } from '@/types/api';
 import { useWishlist } from '@/lib/wishlist';
+import { ROUTES } from '@/constants/routes';
 
 /**
  * The wishlist is a client-only, per-browser list of product ids (see
@@ -74,7 +75,7 @@ export default function WishlistPage() {
 
   if (products === null) {
     return (
-      <div className="container-page pt-6 pb-28 text-center text-sm text-noir-500 md:pt-10 md:pb-12 lg:pt-12">
+      <div className="container-page pt-6 pb-28 text-center text-sm text-neutral-500 md:pt-10 md:pb-12 lg:pt-12">
         {t('loading')}
       </div>
     );
@@ -86,14 +87,14 @@ export default function WishlistPage() {
 
   return (
     <div className="container-page pt-6 pb-28 md:pt-10 md:pb-12 lg:pt-12">
-      <h1 className="font-display text-2xl font-semibold text-noir-900">{t('title')}</h1>
-      <p className="mt-1 text-sm text-noir-500">{t('itemCount', { count: saved.length })}</p>
+      <h1 className="font-display text-2xl font-semibold text-neutral-900">{t('title')}</h1>
+      <p className="mt-1 text-sm text-neutral-500">{t('itemCount', { count: saved.length })}</p>
 
       {saved.length === 0 ? (
         <div className="sf-card mt-6 p-10 text-center">
-          <p className="text-sm font-medium text-noir-900">{t('empty')}</p>
-          <p className="mt-1 text-sm text-noir-500">{t('emptyBody')}</p>
-          <Link href="/shop" className="mt-6 sf-btn-primary">
+          <p className="text-sm font-medium text-neutral-900">{t('empty')}</p>
+          <p className="mt-1 text-sm text-neutral-500">{t('emptyBody')}</p>
+          <Link href={ROUTES.storefront.shop} className="mt-6 sf-btn-primary">
             {t('browseShop')}
           </Link>
         </div>

@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { directionFor, type Locale } from '@yaseen/shared';
 import { Link } from '@/i18n/navigation';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 
 type NavItem = {
   key: string;
@@ -48,7 +48,7 @@ export function MobileNav({
     <>
       <button
         type="button"
-        className="flex h-10 w-10 items-center justify-center rounded-full text-noir-700 hover:bg-noir-100 md:hidden"
+        className="flex h-10 w-10 items-center justify-center rounded-full text-neutral-700 hover:bg-neutral-100 lg:hidden"
         onClick={() => setIsOpen(true)}
         aria-label="Open menu"
       >
@@ -69,26 +69,26 @@ export function MobileNav({
       </button>
 
       {isOpen && typeof document !== 'undefined' ? createPortal(
-        <div className="fixed inset-0 z-50 md:hidden">
+        <div className="fixed inset-0 z-50 lg:hidden">
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-noir-900/40 backdrop-blur-sm transition-opacity animate-fadeIn"
+            className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm transition-opacity animate-fadeIn"
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
 
           {/* Panel */}
-          <div className={clsx(
+          <div className={cn(
             'fixed inset-y-0 w-4/5 max-w-sm bg-white shadow-xl flex flex-col',
             isRtl ? 'end-0 animate-slideInRight' : 'start-0 animate-slideInLeft'
           )}>
-            <div className="flex items-center justify-between px-4 h-14 border-b border-noir-200">
-              <span className="font-display text-xl font-semibold tracking-tight text-noir-900">
+            <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-200">
+              <span className="font-display text-xl font-semibold tracking-tight text-neutral-900">
                 {tSite('name')}
               </span>
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-full text-noir-700 hover:bg-noir-100"
+                className="flex h-10 w-10 items-center justify-center rounded-full text-neutral-700 hover:bg-neutral-100"
                 onClick={() => setIsOpen(false)}
                 aria-label="Close menu"
               >
@@ -108,8 +108,8 @@ export function MobileNav({
               </button>
             </div>
             
-            <div className="border-b border-noir-200 p-4">
-              <div className="flex items-center gap-2 border-b-2 border-noir-300 focus-within:border-noir-900 transition-colors">
+            <div className="border-b border-neutral-200 p-4">
+              <div className="flex items-center gap-2 border-b-2 border-neutral-300 focus-within:border-neutral-900 transition-colors">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -117,7 +117,7 @@ export function MobileNav({
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
-                  className="text-noir-500 flex-shrink-0"
+                  className="text-neutral-500 flex-shrink-0"
                 >
                   <circle cx="8" cy="8" r="7" />
                   <path d="m13 13 3 3" />
@@ -125,7 +125,7 @@ export function MobileNav({
                 <input
                   type="search"
                   placeholder={t('searchPlaceholder')}
-                  className="flex-1 border-0 bg-transparent py-2 text-sm placeholder-noir-400 focus:outline-none"
+                  className="flex-1 border-0 bg-transparent py-2 text-sm placeholder-neutral-400 focus:outline-none"
                 />
               </div>
             </div>
@@ -138,7 +138,7 @@ export function MobileNav({
                     <div key={item.key}>
                       <button
                         onClick={() => setExpandedSubmenu(isExpanded ? null : item.key)}
-                        className="w-full flex items-center justify-between rounded-md px-3 py-2 text-base font-medium text-noir-900 hover:bg-noir-100"
+                        className="w-full flex items-center justify-between rounded-md px-3 py-2 text-base font-medium text-neutral-900 hover:bg-neutral-100"
                       >
                         {t(item.key)}
                         <svg
@@ -157,7 +157,7 @@ export function MobileNav({
                               key={subitem.key}
                               href={subitem.href}
                               onClick={() => setIsOpen(false)}
-                              className="rounded-md px-3 py-2 text-sm font-medium text-noir-500 hover:text-noir-900 hover:bg-noir-100"
+                              className="rounded-md px-3 py-2 text-sm font-medium text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100"
                             >
                               {t(subitem.key)}
                             </Link>
@@ -173,7 +173,7 @@ export function MobileNav({
                     key={item.key}
                     href={item.href || '/'}
                     onClick={() => setIsOpen(false)}
-                    className="rounded-md px-3 py-2 text-base font-medium text-noir-900 hover:bg-noir-100"
+                    className="rounded-md px-3 py-2 text-base font-medium text-neutral-900 hover:bg-neutral-100"
                   >
                     {t(item.key)}
                   </Link>

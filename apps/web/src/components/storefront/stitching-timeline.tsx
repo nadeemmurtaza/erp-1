@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { STITCHING_STAGES, type Locale, type StitchingStage } from '@yaseen/shared';
 
 export interface TimelineEvent {
@@ -55,21 +55,21 @@ export function StitchingTimeline({
           return (
             <li key={entry} className="flex min-w-[5.5rem] flex-1 flex-col gap-1.5">
               <span
-                className={clsx(
+                className={cn(
                   'h-1.5 rounded-full',
-                  done ? 'bg-brand-600' : 'bg-sand-200',
+                  done ? 'bg-accent-hover' : 'bg-neutral-100',
                 )}
               />
               <span
-                className={clsx(
+                className={cn(
                   'text-xs',
-                  current ? 'font-semibold text-brand-800' : done ? 'text-ink/70' : 'text-ink/40',
+                  current ? 'font-semibold text-accent-hover' : done ? 'text-neutral-900/70' : 'text-neutral-900/40',
                 )}
               >
                 {t(`stage.${entry}`)}
               </span>
               {at ? (
-                <span className="text-[0.7rem] text-ink/40">
+                <span className="text-[0.7rem] text-neutral-900/40">
                   {new Date(at).toLocaleDateString(dateLocale)}
                 </span>
               ) : null}
@@ -79,7 +79,7 @@ export function StitchingTimeline({
       </ol>
 
       {dueAt ? (
-        <p className="mt-3 text-xs text-ink/50">
+        <p className="mt-3 text-xs text-neutral-900/50">
           {t('promisedFor', { date: new Date(dueAt).toLocaleDateString(dateLocale) })}
         </p>
       ) : null}
@@ -89,15 +89,15 @@ export function StitchingTimeline({
           {events
             .filter((event) => event.note || event.photoUrl)
             .map((event, index) => (
-              <li key={index} className="text-xs text-ink/60">
-                <span className="font-medium text-ink/80">{t(`stage.${event.toStage}`)}</span>
+              <li key={index} className="text-xs text-neutral-900/60">
+                <span className="font-medium text-neutral-900/80">{t(`stage.${event.toStage}`)}</span>
                 {event.note ? <span className="ms-2">{event.note}</span> : null}
                 {event.photoUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={event.photoUrl}
                     alt={t(`stage.${event.toStage}`)}
-                    className="mt-1 max-h-40 rounded-md border border-sand-200"
+                    className="mt-1 max-h-40 rounded-md border border-neutral-100"
                   />
                 ) : null}
               </li>

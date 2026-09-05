@@ -1,18 +1,18 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import type { StitchingStage } from '@yaseen/shared';
-import { STAGE_LABELS } from '@/lib/stitching-types';
+import { STAGE_LABELS } from '@/types/stitching';
 
 /** The stage a job is at. Always carries its name — never colour alone. */
 export function StageBadge({ stage }: { stage: StitchingStage }) {
   return (
     <span
-      className={clsx(
+      className={cn(
         'rounded px-2 py-0.5 text-xs font-medium',
         stage === 'READY' || stage === 'DISPATCHED'
-          ? 'bg-brand-100 text-brand-800'
+          ? 'bg-neutral-100 text-accent-hover'
           : stage === 'RECEIVED'
-            ? 'bg-sand-100 text-ink/60'
-            : 'bg-brand-50 text-brand-700',
+            ? 'bg-white text-neutral-900/60'
+            : 'bg-neutral-50 text-accent-hover',
       )}
     >
       {STAGE_LABELS[stage]}

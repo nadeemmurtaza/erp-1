@@ -1,5 +1,5 @@
 import { DEFAULT_LOCALE, LOCALES } from '@yaseen/shared';
-import { SITE_URL } from './site';
+import { SITE_URL } from '@/config/site';
 
 /**
  * Every locale variant of a storefront path (no locale prefix, e.g. `/shop`

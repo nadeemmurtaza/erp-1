@@ -3,9 +3,9 @@
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Link } from '@/i18n/navigation';
-import type { ProductImage } from '@/lib/api-types';
+import type { ProductImage } from '@/types/api';
 import { useWishlist } from '@/lib/wishlist';
 
 interface ProductGalleryProps {
@@ -27,7 +27,7 @@ export function ProductGallery({ images, alt, productId, backHref }: ProductGall
 
   if (images.length === 0) {
     return (
-      <div className="flex aspect-[3/4] items-center justify-center rounded-2xl bg-noir-50 text-sm text-noir-400">
+      <div className="flex aspect-[3/4] items-center justify-center rounded-2xl bg-neutral-50 text-sm text-neutral-400">
         {t('noImage')}
       </div>
     );
@@ -43,11 +43,11 @@ export function ProductGallery({ images, alt, productId, backHref }: ProductGall
                 type="button"
                 onClick={() => setActiveIndex(index)}
                 aria-current={index === activeIndex}
-                className={clsx(
+                className={cn(
                   'relative h-20 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition-colors duration-200',
                   index === activeIndex
-                    ? 'border-noir-900'
-                    : 'border-noir-200 hover:border-noir-400',
+                    ? 'border-neutral-900'
+                    : 'border-neutral-200 hover:border-neutral-400',
                 )}
               >
                 <Image
@@ -71,7 +71,7 @@ export function ProductGallery({ images, alt, productId, backHref }: ProductGall
         image sits inside its own rounded card instead — no bleed needed once
         it is no longer the full screen width.
       */}
-      <div className="relative -mx-4 aspect-[3/4] flex-1 overflow-hidden bg-noir-50 sm:-mx-6 lg:mx-0 lg:rounded-2xl">
+      <div className="relative -mx-4 aspect-[3/4] flex-1 overflow-hidden bg-neutral-50 sm:-mx-6 lg:mx-0 lg:rounded-2xl">
         <Image
           key={activeIndex}
           src={active!.url}

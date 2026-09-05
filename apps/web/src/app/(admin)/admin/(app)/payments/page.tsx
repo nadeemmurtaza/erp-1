@@ -68,8 +68,8 @@ export default function AdminPaymentsPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-ink">Payment approvals</h1>
-      <p className="mb-6 text-sm text-ink/60">
+      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Payment approvals</h1>
+      <p className="mb-6 text-sm text-neutral-900/60">
         Bank transfers waiting on a human. Approving one confirms its order.
       </p>
 
@@ -80,9 +80,9 @@ export default function AdminPaymentsPage() {
       ) : null}
 
       {!payments ? (
-        <p className="text-sm text-ink/50">Loading…</p>
+        <p className="text-sm text-neutral-900/50">Loading…</p>
       ) : payments.length === 0 ? (
-        <p className="card p-8 text-center text-sm text-ink/50">
+        <p className="card p-8 text-center text-sm text-neutral-900/50">
           Nothing waiting. Every payment is settled.
         </p>
       ) : (
@@ -94,7 +94,7 @@ export default function AdminPaymentsPage() {
                   href={payment.receiptUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="relative h-32 w-24 shrink-0 overflow-hidden rounded border border-sand-200"
+                  className="relative h-32 w-24 shrink-0 overflow-hidden rounded border border-neutral-100"
                 >
                   <Image
                     src={payment.receiptUrl}
@@ -105,18 +105,18 @@ export default function AdminPaymentsPage() {
                   />
                 </a>
               ) : (
-                <div className="flex h-32 w-24 shrink-0 items-center justify-center rounded border border-dashed border-sand-300 p-2 text-center text-xs text-ink/40">
+                <div className="flex h-32 w-24 shrink-0 items-center justify-center rounded border border-dashed border-neutral-200 p-2 text-center text-xs text-neutral-900/40">
                   No receipt uploaded
                 </div>
               )}
 
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-ink">{payment.order.number}</p>
-                <p className="text-sm text-ink/70">{payment.order.guestName}</p>
-                <dl className="mt-2 space-y-0.5 text-xs text-ink/60">
+                <p className="text-sm font-medium text-neutral-900">{payment.order.number}</p>
+                <p className="text-sm text-neutral-900/70">{payment.order.guestName}</p>
+                <dl className="mt-2 space-y-0.5 text-xs text-neutral-900/60">
                   <div className="flex gap-2">
                     <dt>Amount</dt>
-                    <dd className="font-medium text-ink">{formatMoney(payment.amount)}</dd>
+                    <dd className="font-medium text-neutral-900">{formatMoney(payment.amount)}</dd>
                   </div>
                   <div className="flex gap-2">
                     <dt>Method</dt>

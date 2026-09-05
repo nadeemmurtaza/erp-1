@@ -1,7 +1,7 @@
 'use client';
 
 import { API_URL, ApiError, toSearchParams } from './api';
-import type { AuthResult, AuthUser } from './api-types';
+import type { AuthResult, AuthUser } from '@/types/api';
 
 const ACCESS_KEY = 'yaseen.admin.access';
 const REFRESH_KEY = 'yaseen.admin.refresh';

@@ -1,10 +1,13 @@
 'use client';
 
+import { THEME_COLORS } from '@yaseen/shared';
+
 /**
  * Semicircular progress gauge for a single percent-of-target metric.
  *
- * Matches sales-chart.tsx's idiom: inline SVG, brand teal fill against a
- * muted track, one direct label (the percent, centered) rather than a
+ * Matches sales-chart.tsx's idiom: inline SVG, accent-teal fill against a
+ * muted neutral track (both from THEME_COLORS, since SVG can't take a
+ * Tailwind class), one direct label (the percent, centered) rather than a
  * cluttered dial. Supporting figures are passed in as `caption` and rendered
  * below the arc, the same figure/figcaption split sales-chart.tsx uses for
  * its hover readout.
@@ -14,8 +17,8 @@
  * the true figure (DashboardSummary.monthlyTarget.percent is pre-clamped to
  * 0-999 by the API, so it can legitimately read above 100).
  */
-const FILL = '#0f8fa3';
-const TRACK = '#e9e0cd';
+const FILL = THEME_COLORS.accent.DEFAULT;
+const TRACK = THEME_COLORS.neutral[100];
 
 const WIDTH = 200;
 const HEIGHT = 118;
@@ -54,12 +57,12 @@ export function GaugeChart({ percent, caption }: { percent: number; caption?: st
           pathLength={100}
           strokeDasharray={`${fraction * 100} 100`}
         />
-        <text x={CX} y={CY - 16} textAnchor="middle" className="fill-ink" fontSize={28} fontWeight={600}>
+        <text x={CX} y={CY - 16} textAnchor="middle" className="fill-neutral-900" fontSize={28} fontWeight={600}>
           {percent}%
         </text>
       </svg>
 
-      {caption ? <figcaption className="mt-1 text-center text-xs text-ink/60">{caption}</figcaption> : null}
+      {caption ? <figcaption className="mt-1 text-center text-xs text-neutral-900/60">{caption}</figcaption> : null}
     </figure>
   );
 }

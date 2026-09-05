@@ -9,10 +9,17 @@
 
   html {
     scroll-behavior: smooth;
+    /*
+     * `clip`, not `hidden`: both stop a stray transform or an over-wide child
+     * from putting the page into a sideways scroll on a narrow screen, but
+     * `hidden` makes this element a scroll container, which silently kills
+     * `position: sticky` on the header. `clip` does not.
+     */
+    overflow-x: clip;
   }
 
   body {
-    @apply bg-sand-50 text-ink antialiased;
+    @apply bg-neutral-50 text-neutral-900 antialiased;
   }
 
   /*
@@ -26,7 +33,7 @@
 
   /* Visible focus for keyboard users, in the brand colour rather than default blue. */
   :focus-visible {
-    @apply outline-none ring-2 ring-brand-500 ring-offset-2 ring-offset-sand-50;
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-neutral-50;
   }
 }
 
@@ -74,31 +81,31 @@
   }
 
   .btn-primary {
-    @apply btn bg-brand-600 text-white hover:bg-brand-700;
+    @apply btn bg-accent text-white hover:bg-accent-hover;
   }
 
   .btn-secondary {
-    @apply btn border border-brand-600 text-brand-700 hover:bg-brand-50;
+    @apply btn border border-accent text-accent-hover hover:bg-neutral-50;
   }
 
   .btn-ghost {
-    @apply btn text-ink hover:bg-sand-100;
+    @apply btn text-neutral-900 hover:bg-white;
   }
 
   .card {
-    @apply rounded-lg border border-sand-200 bg-white;
+    @apply rounded-lg border border-neutral-100 bg-white;
   }
 
   .field-label {
-    @apply mb-1 block text-sm font-medium text-ink;
+    @apply mb-1 block text-sm font-medium text-neutral-900;
   }
 
   .field-input {
-    @apply w-full rounded-md border-sand-300 bg-white text-sm shadow-sm transition-colors duration-200 focus:border-brand-500 focus:ring-brand-500;
+    @apply w-full rounded-md border-neutral-200 bg-white text-sm shadow-sm transition-colors duration-200 focus:border-accent focus:ring-accent;
   }
 
   .skeleton {
-    @apply bg-gradient-to-r from-sand-100 via-sand-50 to-sand-100;
+    @apply bg-gradient-to-r from-white via-neutral-50 to-white;
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
   }
@@ -133,17 +140,18 @@
 /*
  * Storefront shared component patterns (sf- prefix).
  *
- * The admin `@layer components` block above is admin's single source of
- * truth for what a button/card/input IS, built from the `brand`/`sand`/`ink`
- * tokens. The storefront reskin (the `noir`/`star`/`font-display` tokens in
- * tailwind.config.ts) has never had the equivalent — every reskinned file
- * repeats its own slightly different string of utility classes for "a
- * primary button" or "a selected chip", so changing one means hunting
- * through every file that happened to copy it. This block is that missing
- * layer: the storefront's own shared classes, prefixed `sf-` so they never
- * collide with admin's unprefixed `.btn-*` / `.card` / `.field-input`
- * above, which stay exactly as they are. Editing a class here changes every
- * storefront usage the next time the page renders.
+ * Both this block and the admin `@layer components` block above draw from
+ * the same `neutral`/`accent`/`star` palette now (see tailwind.config.ts and
+ * packages/shared/src/theme-colors.ts) — the `sf-` prefix survives not to
+ * keep two colour systems apart, but because storefront's SHAPE language is
+ * genuinely different (pill buttons, rounded-2xl cards) from admin's
+ * (rectangular buttons, rounded-lg cards), and prefixing avoids one shared
+ * class name meaning two different border-radii depending on which app you
+ * are reading. Before this block existed, every reskinned storefront file
+ * repeated its own slightly different string of utility classes for "a
+ * primary button" or "a selected chip"; this is the shared layer instead.
+ * Editing a class here changes every storefront usage the next time the page
+ * renders.
  */
 @layer components {
   .sf-btn {
@@ -151,15 +159,15 @@
   }
 
   .sf-btn-primary {
-    @apply sf-btn bg-noir-700 text-white hover:bg-noir-800;
+    @apply sf-btn bg-neutral-700 text-white hover:bg-neutral-800;
   }
 
   .sf-btn-secondary {
-    @apply sf-btn border border-noir-300 text-noir-900 hover:bg-noir-50;
+    @apply sf-btn border border-neutral-300 text-neutral-900 hover:bg-neutral-50;
   }
 
   .sf-card {
-    @apply rounded-2xl border border-noir-200/70 bg-white shadow-sm;
+    @apply rounded-2xl border border-neutral-200/70 bg-white shadow-sm;
   }
 
   /*
@@ -172,11 +180,11 @@
   }
 
   .sf-chip-selected {
-    @apply border-noir-700 bg-noir-700 text-white;
+    @apply border-neutral-700 bg-neutral-700 text-white;
   }
 
   .sf-chip-unselected {
-    @apply border-noir-300 bg-white text-noir-900 hover:border-noir-500;
+    @apply border-neutral-300 bg-white text-neutral-900 hover:border-neutral-500;
   }
 
   /*
@@ -189,16 +197,16 @@
    * since Tailwind's utilities layer is ordered after components.
    */
   .sf-icon-btn {
-    @apply inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-noir-900 backdrop-blur-sm transition-transform duration-200 hover:scale-110;
+    @apply inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-neutral-900 backdrop-blur-sm transition-transform duration-200 hover:scale-110;
   }
 
   /*
    * Matches checkout's former local `inputClass` exactly — rounded-xl with
-   * a noir border and focus ring rather than the site-wide brand-teal ring
-   * — so every storefront text/select/textarea field can share this one
+   * a neutral border and focus ring rather than the site-wide accent-teal
+   * ring — so every storefront text/select/textarea field can share this one
    * class instead of each file redefining the same override.
    */
   .sf-field-input {
-    @apply w-full rounded-xl border-noir-200 bg-white text-sm text-noir-900 shadow-none transition-colors duration-200 placeholder:text-noir-400 focus:border-noir-700 focus:ring-noir-700;
+    @apply w-full rounded-xl border-neutral-200 bg-white text-sm text-neutral-900 shadow-none transition-colors duration-200 placeholder:text-neutral-400 focus:border-neutral-700 focus:ring-neutral-700;
   }
 }

@@ -2,7 +2,7 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { clsx } from 'clsx';
+import { cn } from '@/utils/cn';
 
 export function AnimatedSection({
   children,
@@ -24,10 +24,13 @@ export function AnimatedSection({
         return { hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0 } };
       case 'down':
         return { hidden: { opacity: 0, y: -50 }, visible: { opacity: 1, y: 0 } };
+      // Horizontal offsets stay small: a full-width element shifted 50px
+      // sideways overflows a 375px viewport and puts the whole page into a
+      // horizontal scroll for the duration of the animation.
       case 'left':
-        return { hidden: { opacity: 0, x: 50 }, visible: { opacity: 1, x: 0 } };
+        return { hidden: { opacity: 0, x: 24 }, visible: { opacity: 1, x: 0 } };
       case 'right':
-        return { hidden: { opacity: 0, x: -50 }, visible: { opacity: 1, x: 0 } };
+        return { hidden: { opacity: 0, x: -24 }, visible: { opacity: 1, x: 0 } };
       case 'none':
         return { hidden: { opacity: 0 }, visible: { opacity: 1 } };
     }
@@ -42,7 +45,7 @@ export function AnimatedSection({
       initial="hidden"
       animate={isInView ? 'visible' : 'hidden'}
       transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
-      className={clsx(className)}
+      className={cn(className)}
     >
       {children}
     </motion.div>

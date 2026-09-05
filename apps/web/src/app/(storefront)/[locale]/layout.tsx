@@ -1,21 +1,20 @@
 import type { Metadata } from 'next';
 import { Encode_Sans } from 'next/font/google';
-import { NextIntlClientProvider, hasLocale } from 'next-intl';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { hasLocale } from 'next-intl';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { directionFor, type Locale } from '@yaseen/shared';
 import '@/app/globals.css';
 import { AnalyticsBeacon } from '@/components/storefront/analytics-beacon';
-import { CartProvider } from '@/components/storefront/cart-provider';
-import { CustomerSessionProvider } from '@/components/storefront/customer-session';
 import { Footer } from '@/components/storefront/footer';
 import { Header } from '@/components/storefront/header';
 import { JsonLd } from '@/components/storefront/json-ld';
 import { SmoothScroller } from '@/components/storefront/smooth-scroller';
+import { StorefrontProviders } from '@/providers/storefront-providers';
 import { businessProfile } from '@/config/business-profile';
 import { routing } from '@/i18n/routing';
-import { SITE_URL } from '@/lib/site';
+import { SITE_URL } from '@/config/site';
 
 // Storefront reskin typeface. Variable font, so no `weight` list is needed —
 // the full 100-900 range loads under one file. Exposed as --font-encode-sans
@@ -101,6 +100,10 @@ export default async function LocaleLayout({
   // rendering the moment they read a translation.
   setRequestLocale(locale);
 
+  // Read on the server and handed to the client provider below, which
+  // cannot fetch them itself — see StorefrontProviders.
+  const messages = await getMessages();
+
   const t = await getTranslations({ locale, namespace: 'site' });
 
   return (
@@ -111,24 +114,20 @@ export default async function LocaleLayout({
       >
         <JsonLd data={organizationJsonLd()} />
         <SmoothScroller>
-          <NextIntlClientProvider>
-            <CustomerSessionProvider>
-              <CartProvider>
-              <AnalyticsBeacon />
-              <a
-                href="#main"
-                className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-2 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:shadow"
-              >
-                {t('skipToContent')}
-              </a>
-              <Header />
-              <main id="main" className="flex-1">
-                {children}
-              </main>
-              <Footer />
-              </CartProvider>
-            </CustomerSessionProvider>
-          </NextIntlClientProvider>
+          <StorefrontProviders locale={locale} messages={messages}>
+            <AnalyticsBeacon />
+            <a
+              href="#main"
+              className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-2 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:shadow"
+            >
+              {t('skipToContent')}
+            </a>
+            <Header />
+            <main id="main" className="flex-1">
+              {children}
+            </main>
+            <Footer />
+          </StorefrontProviders>
         </SmoothScroller>
       </body>
     </html>

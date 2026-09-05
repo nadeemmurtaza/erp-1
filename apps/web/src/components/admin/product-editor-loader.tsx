@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
-import type { AdminCategory, AdminProduct, GarmentType } from '@/lib/api-types';
+import type { AdminCategory, AdminProduct, GarmentType } from '@/types/api';
 import { ProductForm } from './product-form';
 
 /**
@@ -54,7 +54,7 @@ export function ProductEditorLoader({ productId }: { productId?: string }) {
   }
 
   if (!categories || !garmentTypes || (productId && !product)) {
-    return <p className="text-sm text-ink/50">Loading…</p>;
+    return <p className="text-sm text-neutral-900/50">Loading…</p>;
   }
 
   return (

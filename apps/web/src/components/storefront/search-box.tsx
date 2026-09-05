@@ -42,12 +42,12 @@ export function SearchBox() {
         // focus colour tokens without losing the working interaction. Shape
         // stays the pill this compound search field has always been,
         // overriding sf-field-input's rounded-xl.
-        className="sf-field-input flex h-11 flex-1 items-center gap-2 rounded-full px-4 focus-within:border-noir-700"
+        className="sf-field-input flex h-11 flex-1 items-center gap-2 rounded-full px-4 focus-within:border-neutral-700"
       >
         <label className="sr-only" htmlFor="site-search">
           {t('search')}
         </label>
-        <button type="submit" aria-label={t('search')} className="shrink-0 text-noir-500">
+        <button type="submit" aria-label={t('search')} className="shrink-0 text-neutral-500">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="18"
@@ -69,7 +69,7 @@ export function SearchBox() {
           value={term}
           onChange={(event) => setTerm(event.target.value)}
           placeholder={t('searchPlaceholder')}
-          className="min-w-0 flex-1 border-0 bg-transparent text-sm text-noir-900 placeholder:text-noir-400 focus:outline-none focus:ring-0"
+          className="min-w-0 flex-1 border-0 bg-transparent text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-0"
         />
       </form>
 
@@ -77,7 +77,7 @@ export function SearchBox() {
         type="button"
         onClick={openFilters}
         aria-label={tShop('filters')}
-        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-noir-900 text-white transition-[background-color,transform] duration-200 ease-out hover:bg-noir-800 motion-safe:hover:-translate-y-0.5 lg:hidden"
+        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-neutral-900 text-white transition-[background-color,transform] duration-200 ease-out hover:bg-neutral-800 motion-safe:hover:-translate-y-0.5 lg:hidden"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

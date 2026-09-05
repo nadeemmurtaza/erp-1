@@ -1,64 +1,29 @@
 import type { Config } from 'tailwindcss';
 import forms from '@tailwindcss/forms';
+import { THEME_COLORS } from '@yaseen/shared';
 
 /**
- * Pacific Cyan + Bone Art Deco palette. Vibrant teal primary (#1B9AAA)
- * with warm bone accents (#DDDBCB). Cream background (#F5F1E3) and pure white
- * for clean luxury. Nearly black text (#050505) for maximum contrast.
- * Kept deliberately small so a later rebrand is a few hex values.
+ * One palette for admin and storefront both, imported from
+ * packages/shared/src/theme-colors.ts rather than declared here — that file
+ * is also what apps/mobile and the web chart components import, so every
+ * surface renders the same hex values by construction instead of by three
+ * people independently eyeballing "close enough".
+ *
+ * `neutral` (monochrome ramp) is the whole background/text/border system for
+ * both admin and storefront. `accent` (`#0f8fa3`) is the one brand colour,
+ * used sparingly for calls to action, links and focus rings. `star` stays
+ * reserved for rating stars — never repurpose it. Error/success/warning use
+ * Tailwind's stock `red`/`green`/`amber` scales, already used consistently
+ * throughout the app; there is no custom token for those.
  */
 export default {
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        brand: {
-          50: '#f5f1e3',
-          100: '#e8e4d5',
-          200: '#ddd9c7',
-          300: '#cfccb3',
-          400: '#c0bb9a',
-          500: '#1b9aaa',
-          600: '#188896',
-          700: '#157782',
-          800: '#12666e',
-          900: '#050505',
-        },
-        sand: {
-          50: '#f8f8f8',
-          100: '#ffffff',
-          200: '#f0f0f0',
-          300: '#e8e8e8',
-          400: '#e0e0e0',
-        },
-        gold: '#dddbcb',
-        ink: '#050505',
-        /*
-         * Storefront reskin palette (monochrome, per the Figma mobile
-         * e-commerce reference). Kept separate from `brand`/`sand`/`gold`/
-         * `ink` above, which the admin panel's own freshly-rebuilt dashboard
-         * depends on by exact name — this scale is for storefront use only.
-         * Ramp anchored at 50/900 (page background / near-black text) and
-         * 700 (the warm charcoal CTA/bottom-nav fill), with the reference's
-         * two named grays (secondary text, muted/border) landing at 500 and
-         * 300; the remaining stops are interpolated between those anchors so
-         * hover/border/muted-text variants have somewhere sensible to land.
-         */
-        noir: {
-          50: '#F2F2F2',
-          100: '#E8E8E8',
-          200: '#C6C5C5',
-          300: '#A3A1A2',
-          400: '#8E8C8C',
-          500: '#787676',
-          600: '#514E4E',
-          700: '#292526',
-          800: '#1E1B1C',
-          900: '#121111',
-        },
-        // Star-rating accent — the ONLY spot of color in the storefront
-        // reskin. Never use this for anything other than rating stars.
-        star: '#F5B841',
+        neutral: THEME_COLORS.neutral,
+        accent: THEME_COLORS.accent,
+        star: THEME_COLORS.star,
       },
       fontFamily: {
         // Noto Nastaliq renders Urdu properly where it is installed; the rest

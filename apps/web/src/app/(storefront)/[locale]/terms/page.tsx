@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { businessProfile } from '@/config/business-profile';
 import { Link } from '@/i18n/navigation';
+import { ROUTES } from '@/constants/routes';
 
 export const metadata: Metadata = {
   title: `Terms & Conditions � ${businessProfile.shortName}`,
@@ -171,7 +172,7 @@ export default function TermsPage() {
           <h2 className="text-xl font-semibold text-gray-900">8. Returns, Exchanges &amp; Refunds</h2>
           <p>
             Our detailed returns and refunds policy is set out in our separate{' '}
-            <Link href="/returns" className="text-blue-600 underline hover:text-blue-800">
+            <Link href={ROUTES.storefront.returns} className="text-blue-600 underline hover:text-blue-800">
               Returns &amp; Refund Policy
             </Link>
             , which forms part of these Terms.

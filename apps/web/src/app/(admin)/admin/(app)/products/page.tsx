@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { formatMoney, PRODUCT_KINDS, PRODUCT_STATUSES } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
-import type { AdminProduct, PaginatedResponse } from '@/lib/api-types';
+import type { AdminProduct, PaginatedResponse } from '@/types/api';
+import { ROUTES } from '@/constants/routes';
 
 const KIND_LABELS: Record<string, string> = {
   STITCHED: 'Ready to wear',
@@ -49,16 +50,16 @@ export default function AdminProductsPage() {
     <>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-ink">Products &amp; services</h1>
-          <p className="mt-1 text-sm text-ink/60">
+          <h1 className="text-xl font-semibold text-neutral-900">Products &amp; services</h1>
+          <p className="mt-1 text-sm text-neutral-900/60">
             Ready-to-wear, unstitched fabric and the stitching services you sell.
           </p>
         </div>
         <div className="flex gap-2">
-          <Link href="/admin/import" className="btn-secondary">
+          <Link href={ROUTES.admin.import} className="btn-secondary">
             Bulk import
           </Link>
-          <Link href="/admin/products/new" className="btn-primary">
+          <Link href={ROUTES.admin.productNew} className="btn-primary">
             Add product
           </Link>
         </div>
@@ -116,7 +117,7 @@ export default function AdminProductsPage() {
       <div className="card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="border-b border-sand-200 bg-sand-50 text-start">
+            <thead className="border-b border-neutral-100 bg-neutral-50 text-start">
               <tr>
                 <Th>Product</Th>
                 <Th>Kind</Th>
@@ -125,49 +126,49 @@ export default function AdminProductsPage() {
                 <Th className="text-end">Stock</Th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-sand-100">
+            <tbody className="divide-y divide-white">
               {busy && !products ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-ink/50">
+                  <td colSpan={5} className="px-4 py-8 text-center text-neutral-900/50">
                     Loading…
                   </td>
                 </tr>
               ) : products && products.data.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-ink/50">
+                  <td colSpan={5} className="px-4 py-8 text-center text-neutral-900/50">
                     No products match those filters.
                   </td>
                 </tr>
               ) : (
                 products?.data.map((product) => (
-                  <tr key={product.id} className="hover:bg-sand-50">
+                  <tr key={product.id} className="hover:bg-neutral-50">
                     <td className="px-4 py-3">
                       <Link
                         href={`/admin/products/${product.id}`}
-                        className="font-medium text-ink hover:text-brand-700"
+                        className="font-medium text-neutral-900 hover:text-accent-hover"
                       >
                         {product.translations.find((t) => t.locale === 'en')?.name ??
                           product.slug}
                       </Link>
-                      <p className="text-xs text-ink/40">{product.slug}</p>
+                      <p className="text-xs text-neutral-900/40">{product.slug}</p>
                     </td>
-                    <td className="px-4 py-3 text-ink/70">{KIND_LABELS[product.kind]}</td>
+                    <td className="px-4 py-3 text-neutral-900/70">{KIND_LABELS[product.kind]}</td>
                     <td className="px-4 py-3">
                       <StatusBadge status={product.status} />
                     </td>
-                    <td className="px-4 py-3 text-end tabular-nums text-ink">
+                    <td className="px-4 py-3 text-end tabular-nums text-neutral-900">
                       {formatMoney(product.basePrice)}
                     </td>
                     <td
-                      className={clsx(
+                      className={cn(
                         'px-4 py-3 text-end tabular-nums',
                         product.kind === 'STITCHING_SERVICE'
-                          ? 'text-ink/30'
+                          ? 'text-neutral-900/30'
                           : product.totalStock === 0
                             ? 'font-medium text-red-700'
                             : product.lowStockVariants > 0
-                              ? 'font-medium text-gold'
-                              : 'text-ink/70',
+                              ? 'font-medium text-amber-600'
+                              : 'text-neutral-900/70',
                       )}
                     >
                       {product.kind === 'STITCHING_SERVICE' ? '—' : product.totalStock}
@@ -180,7 +181,7 @@ export default function AdminProductsPage() {
         </div>
 
         {products && products.meta.totalPages > 1 ? (
-          <div className="flex items-center justify-between border-t border-sand-200 px-4 py-3 text-sm">
+          <div className="flex items-center justify-between border-t border-neutral-100 px-4 py-3 text-sm">
             <button
               type="button"
               className="btn-ghost"
@@ -189,7 +190,7 @@ export default function AdminProductsPage() {
             >
               Previous
             </button>
-            <span className="text-ink/60">
+            <span className="text-neutral-900/60">
               Page {products.meta.page} of {products.meta.totalPages} · {products.meta.total}{' '}
               products
             </span>
@@ -212,7 +213,7 @@ function Th({ children, className }: { children: React.ReactNode; className?: st
   return (
     <th
       scope="col"
-      className={clsx('px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-ink/50', className)}
+      className={cn('px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50', className)}
     >
       {children}
     </th>
@@ -222,10 +223,10 @@ function Th({ children, className }: { children: React.ReactNode; className?: st
 function StatusBadge({ status }: { status: string }) {
   return (
     <span
-      className={clsx(
+      className={cn(
         'rounded px-2 py-0.5 text-xs font-medium',
-        status === 'ACTIVE' && 'bg-brand-50 text-brand-800',
-        status === 'DRAFT' && 'bg-sand-100 text-ink/60',
+        status === 'ACTIVE' && 'bg-neutral-50 text-accent-hover',
+        status === 'DRAFT' && 'bg-white text-neutral-900/60',
         status === 'ARCHIVED' && 'bg-red-50 text-red-700',
       )}
     >

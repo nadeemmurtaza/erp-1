@@ -3,7 +3,7 @@
 import { Fragment, use, useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
-import type { AdminUserDetail, BackOfficeRole, PermissionDefinition, PermissionOverride } from '@/lib/api-types';
+import type { AdminUserDetail, BackOfficeRole, PermissionDefinition, PermissionOverride } from '@/types/api';
 
 const ADMIN_LOCKED = new Set(['settings.manage', 'roles.manage_permissions']);
 
@@ -161,7 +161,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
         {error}
       </p>
     ) : (
-      <p className="text-sm text-ink/50">Loading…</p>
+      <p className="text-sm text-neutral-900/50">Loading…</p>
     );
   }
 
@@ -170,15 +170,15 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
       <button
         type="button"
         onClick={() => router.push('/admin/users')}
-        className="mb-4 text-sm text-ink/60 hover:text-ink"
+        className="mb-4 text-sm text-neutral-900/60 hover:text-neutral-900"
       >
         ← Team & Access
       </button>
 
-      <h1 className="mb-1 text-xl font-semibold text-ink">
+      <h1 className="mb-1 text-xl font-semibold text-neutral-900">
         {[user.firstName, user.lastName].filter(Boolean).join(' ') || user.email || user.phone}
       </h1>
-      <p className="mb-6 text-sm text-ink/60">
+      <p className="mb-6 text-sm text-neutral-900/60">
         {user.role} · {user.isActive ? 'Active' : 'Deactivated'}
       </p>
 
@@ -190,7 +190,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
 
       <div className="grid gap-6 lg:grid-cols-2">
         <form onSubmit={saveProfile} className="card h-fit space-y-4 p-4">
-          <h2 className="text-sm font-semibold text-ink">Profile</h2>
+          <h2 className="text-sm font-semibold text-neutral-900">Profile</h2>
 
           <label className="block">
             <span className="field-label">First name</span>
@@ -251,13 +251,13 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
               checked={profileDraft.isActive}
               disabled={isSelf}
               onChange={(event) => setProfileDraft({ ...profileDraft, isActive: event.target.checked })}
-              className="rounded border-sand-300 text-brand-600 focus:ring-brand-500 disabled:opacity-50"
+              className="rounded border-neutral-200 text-accent-hover focus:ring-accent disabled:opacity-50"
             />
             Active
           </label>
 
           {isSelf ? (
-            <p className="text-xs text-ink/50">
+            <p className="text-xs text-neutral-900/50">
               You can&rsquo;t change your own role or active status here — ask another admin.
             </p>
           ) : null}
@@ -268,8 +268,8 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
         </form>
 
         <form onSubmit={resetPassword} className="card h-fit space-y-4 p-4">
-          <h2 className="text-sm font-semibold text-ink">Reset password</h2>
-          <p className="text-xs text-ink/50">
+          <h2 className="text-sm font-semibold text-neutral-900">Reset password</h2>
+          <p className="text-xs text-neutral-900/50">
             Sets their password directly and signs them out of every device.
           </p>
 
@@ -294,10 +294,10 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
       </div>
 
       <div className="mt-6 card overflow-hidden">
-        <div className="flex items-center justify-between border-b border-sand-200 px-4 py-3">
+        <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
           <div>
-            <h2 className="text-sm font-semibold text-ink">Permissions</h2>
-            <p className="text-xs text-ink/50">
+            <h2 className="text-sm font-semibold text-neutral-900">Permissions</h2>
+            <p className="text-xs text-neutral-900/50">
               Checked by default from the {user.role} role. Toggle a row to override it just for
               this person.
             </p>
@@ -309,11 +309,11 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <tbody className="divide-y divide-sand-100">
+            <tbody className="divide-y divide-white">
               {categories.map(([category, items]) => (
                 <Fragment key={category}>
-                  <tr className="bg-sand-50/60">
-                    <td colSpan={3} className="px-4 py-1.5 text-xs font-semibold text-ink/60">
+                  <tr className="bg-neutral-50/60">
+                    <td colSpan={3} className="px-4 py-1.5 text-xs font-semibold text-neutral-900/60">
                       {category}
                     </td>
                   </tr>
@@ -329,12 +329,12 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
                             disabled={locked}
                             title={locked ? 'ADMIN must always keep this permission' : undefined}
                             onChange={() => toggle(permission.key)}
-                            className="rounded border-sand-300 text-brand-600 focus:ring-brand-500 disabled:opacity-40"
+                            className="rounded border-neutral-200 text-accent-hover focus:ring-accent disabled:opacity-40"
                           />
                         </td>
                         <td className="px-4 py-2.5">
-                          <span className="text-ink">{permission.label}</span>
-                          <p className="text-xs text-ink/40">{permission.key}</p>
+                          <span className="text-neutral-900">{permission.label}</span>
+                          <p className="text-xs text-neutral-900/40">{permission.key}</p>
                         </td>
                         <td className="px-4 py-2.5 text-end text-xs">
                           {overrideEffect === 'GRANT' ? (
@@ -342,7 +342,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
                           ) : overrideEffect === 'REVOKE' ? (
                             <span className="font-medium text-red-700">revoked (override)</span>
                           ) : (
-                            <span className="text-ink/40">role default</span>
+                            <span className="text-neutral-900/40">role default</span>
                           )}
                         </td>
                       </tr>

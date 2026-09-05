@@ -3,14 +3,15 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import clsx from 'clsx';
-import { formatMoney, toMajor } from '@yaseen/shared';
+import { cn } from '@/utils/cn';
+import { formatMoney, toMajor, THEME_COLORS } from '@yaseen/shared';
 import { SalesChart } from '@/components/admin/sales-chart';
 import { DonutChart } from '@/components/admin/donut-chart';
 import { GaugeChart } from '@/components/admin/gauge-chart';
 import { FunnelChart } from '@/components/admin/funnel-chart';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
-import type { MonthlyTarget, VisitorAnalytics } from '@/lib/api-types';
+import type { MonthlyTarget, VisitorAnalytics } from '@/types/api';
+import { ROUTES } from '@/constants/routes';
 
 interface Dashboard {
   today: { orders: number; revenue: number };
@@ -136,7 +137,7 @@ export default function AdminDashboardPage() {
   }
 
   if (!data || !extended || !visitors) {
-    return <p className="text-sm text-ink/50">Loading…</p>;
+    return <p className="text-sm text-neutral-900/50">Loading…</p>;
   }
 
   const attention = [
@@ -176,10 +177,10 @@ export default function AdminDashboardPage() {
     <>
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-ink">Dashboard</h1>
-          <p className="mt-1 text-sm text-ink/60">How the shop is doing right now.</p>
+          <h1 className="text-xl font-semibold text-neutral-900">Dashboard</h1>
+          <p className="mt-1 text-sm text-neutral-900/60">How the shop is doing right now.</p>
         </div>
-        <Link href="/admin/products/new" className="btn-primary">
+        <Link href={ROUTES.admin.productNew} className="btn-primary">
           Add product
         </Link>
       </div>
@@ -218,9 +219,9 @@ export default function AdminDashboardPage() {
             <li key={item.label} className="animate-slideUp" style={{ animationDelay: `${(idx + 5) * 75}ms` }}>
               <Link
                 href={item.href}
-                className="inline-flex items-center gap-2 rounded-md border border-gold/40 bg-gold/10 px-3 py-1.5 text-sm text-ink/80 transition-colors hover:bg-gold/20"
+                className="inline-flex items-center gap-2 rounded-md border border-amber-600/40 bg-amber-600/10 px-3 py-1.5 text-sm text-neutral-900/80 transition-colors hover:bg-amber-600/20"
               >
-                <span className="font-semibold text-ink">{item.value}</span>
+                <span className="font-semibold text-neutral-900">{item.value}</span>
                 {item.label}
               </Link>
             </li>
@@ -232,8 +233,8 @@ export default function AdminDashboardPage() {
         <section className="card p-4 sm:p-5 lg:col-span-2">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="text-sm font-semibold text-ink">Revenue</h2>
-              <p className="text-xs text-ink/50">Daily, excluding cancelled and returned orders.</p>
+              <h2 className="text-sm font-semibold text-neutral-900">Revenue</h2>
+              <p className="text-xs text-neutral-900/50">Daily, excluding cancelled and returned orders.</p>
             </div>
 
             <div className="flex gap-1" role="group" aria-label="Date range">
@@ -243,9 +244,9 @@ export default function AdminDashboardPage() {
                   type="button"
                   onClick={() => setDays(option)}
                   aria-pressed={days === option}
-                  className={clsx(
+                  className={cn(
                     'rounded-md px-3 py-1.5 text-sm transition-colors',
-                    days === option ? 'bg-brand-600 text-white' : 'text-ink/70 hover:bg-sand-100',
+                    days === option ? 'bg-accent-hover text-white' : 'text-neutral-900/70 hover:bg-white',
                   )}
                 >
                   {option} days
@@ -259,12 +260,12 @@ export default function AdminDashboardPage() {
 
         <section className="card p-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-ink">Monthly target</h2>
+            <h2 className="text-sm font-semibold text-neutral-900">Monthly target</h2>
             {!editingTarget ? (
               <button
                 type="button"
                 onClick={openTargetEditor}
-                className="text-xs font-medium text-brand-700 hover:underline"
+                className="text-xs font-medium text-accent-hover hover:underline"
               >
                 Edit target
               </button>
@@ -321,8 +322,8 @@ export default function AdminDashboardPage() {
                     : 'No target set yet'
                 }
               />
-              <p className="mt-3 border-t border-sand-100 pt-3 text-xs text-ink/50">
-                Average order <span className="font-semibold text-ink">{formatMoney(data.averageOrderValue)}</span>
+              <p className="mt-3 border-t border-white pt-3 text-xs text-neutral-900/50">
+                Average order <span className="font-semibold text-neutral-900">{formatMoney(data.averageOrderValue)}</span>
               </p>
             </>
           )}
@@ -331,8 +332,8 @@ export default function AdminDashboardPage() {
 
       <div className="mt-6 grid gap-4 lg:grid-cols-3">
         <section className="card p-4">
-          <h2 className="text-sm font-semibold text-ink">
-            Top categories <span className="font-normal text-ink/50">· last {days} days</span>
+          <h2 className="text-sm font-semibold text-neutral-900">
+            Top categories <span className="font-normal text-neutral-900/50">· last {days} days</span>
           </h2>
           <div className="mt-4">
             <DonutChart
@@ -343,8 +344,8 @@ export default function AdminDashboardPage() {
         </section>
 
         <section className="card p-4">
-          <h2 className="text-sm font-semibold text-ink">
-            Conversion funnel <span className="font-normal text-ink/50">· last {days} days</span>
+          <h2 className="text-sm font-semibold text-neutral-900">
+            Conversion funnel <span className="font-normal text-neutral-900/50">· last {days} days</span>
           </h2>
           <div className="mt-4">
             <FunnelChart
@@ -359,11 +360,11 @@ export default function AdminDashboardPage() {
         </section>
 
         <section className="card p-4">
-          <h2 className="text-sm font-semibold text-ink">
-            Traffic sources <span className="font-normal text-ink/50">· last {days} days</span>
+          <h2 className="text-sm font-semibold text-neutral-900">
+            Traffic sources <span className="font-normal text-neutral-900/50">· last {days} days</span>
           </h2>
           {visitors.trafficSources.length === 0 ? (
-            <p className="mt-4 text-sm text-ink/50">No page views in this window.</p>
+            <p className="mt-4 text-sm text-neutral-900/50">No page views in this window.</p>
           ) : (
             <BarList
               items={visitors.trafficSources.map((row) => ({
@@ -380,12 +381,12 @@ export default function AdminDashboardPage() {
 
       <div className="mt-6 grid gap-4 lg:grid-cols-2">
         <section className="card p-4">
-          <h2 className="text-sm font-semibold text-ink">
-            Best sellers <span className="font-normal text-ink/50">· last {days} days</span>
+          <h2 className="text-sm font-semibold text-neutral-900">
+            Best sellers <span className="font-normal text-neutral-900/50">· last {days} days</span>
           </h2>
 
           {data.topProducts.length === 0 ? (
-            <p className="mt-4 text-sm text-ink/50">No sales in this window.</p>
+            <p className="mt-4 text-sm text-neutral-900/50">No sales in this window.</p>
           ) : (
             <BarList
               items={data.topProducts.map((product) => ({
@@ -401,21 +402,21 @@ export default function AdminDashboardPage() {
 
         <div className="space-y-4">
           <section className="card">
-            <div className="flex items-center justify-between border-b border-sand-200 px-4 py-3">
-              <h2 className="text-sm font-semibold text-ink">Follow-ups due</h2>
-              <Link href="/admin/contacts" className="text-xs font-medium text-brand-700 hover:underline">
+            <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
+              <h2 className="text-sm font-semibold text-neutral-900">Follow-ups due</h2>
+              <Link href={ROUTES.admin.contacts} className="text-xs font-medium text-accent-hover hover:underline">
                 Customers
               </Link>
             </div>
 
             {followUps.length === 0 ? (
-              <p className="px-4 py-6 text-sm text-ink/50">Nothing due. Nobody forgotten.</p>
+              <p className="px-4 py-6 text-sm text-neutral-900/50">Nothing due. Nobody forgotten.</p>
             ) : (
-              <ul className="divide-y divide-sand-100">
+              <ul className="divide-y divide-white">
                 {followUps.slice(0, 6).map((task) => (
                   <li key={task.id} className="px-4 py-3">
-                    <p className="text-sm text-ink">{task.note}</p>
-                    <p className="text-xs text-ink/50">
+                    <p className="text-sm text-neutral-900">{task.note}</p>
+                    <p className="text-xs text-neutral-900/50">
                       {task.contact?.name ?? task.lead?.name ?? 'Unassigned'} · due{' '}
                       {new Date(task.dueAt).toLocaleDateString('en-PK')}
                     </p>
@@ -428,10 +429,10 @@ export default function AdminDashboardPage() {
           {data.stitchingByStage.length > 0 ? (
             <section className="card p-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-sm font-semibold text-ink">Tailoring in progress</h2>
+                <h2 className="text-sm font-semibold text-neutral-900">Tailoring in progress</h2>
                 <Link
-                  href="/admin/stitching"
-                  className="text-xs font-medium text-brand-700 hover:underline"
+                  href={ROUTES.admin.stitching}
+                  className="text-xs font-medium text-accent-hover hover:underline"
                 >
                   Tailor queue
                 </Link>
@@ -440,10 +441,10 @@ export default function AdminDashboardPage() {
               <dl className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2 text-sm sm:grid-cols-3">
                 {data.stitchingByStage.map((row) => (
                   <div key={row.stage} className="flex justify-between gap-2">
-                    <dt className="text-ink/60">
+                    <dt className="text-neutral-900/60">
                       {row.stage.charAt(0) + row.stage.slice(1).toLowerCase()}
                     </dt>
-                    <dd className="font-medium text-ink">{row.count}</dd>
+                    <dd className="font-medium text-neutral-900">{row.count}</dd>
                   </div>
                 ))}
               </dl>
@@ -451,7 +452,7 @@ export default function AdminDashboardPage() {
           ) : null}
 
           <section className="card p-4">
-            <h2 className="text-sm font-semibold text-ink">Catalogue</h2>
+            <h2 className="text-sm font-semibold text-neutral-900">Catalogue</h2>
             <dl className="mt-3 grid grid-cols-3 gap-3 text-sm">
               <Mini label="Live" value={data.catalogue.live} />
               <Mini label="Drafts" value={data.catalogue.drafts} />
@@ -463,30 +464,30 @@ export default function AdminDashboardPage() {
 
       {/* Everything the chart plots, also available as numbers. */}
       <details className="card mt-6 p-4">
-        <summary className="cursor-pointer text-sm font-semibold text-ink">
+        <summary className="cursor-pointer text-sm font-semibold text-neutral-900">
           Revenue as a table
         </summary>
         <div className="mt-3 max-h-64 overflow-auto">
           <table className="w-full text-sm">
             <thead className="sticky top-0 bg-white">
               <tr>
-                <th scope="col" className="py-1 text-start text-xs font-semibold uppercase tracking-wide text-ink/50">
+                <th scope="col" className="py-1 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
                   Date
                 </th>
-                <th scope="col" className="py-1 text-end text-xs font-semibold uppercase tracking-wide text-ink/50">
+                <th scope="col" className="py-1 text-end text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
                   Orders
                 </th>
-                <th scope="col" className="py-1 text-end text-xs font-semibold uppercase tracking-wide text-ink/50">
+                <th scope="col" className="py-1 text-end text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
                   Revenue
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-sand-100">
+            <tbody className="divide-y divide-white">
               {[...data.salesSeries].reverse().map((point) => (
                 <tr key={point.date}>
-                  <td className="py-1 text-ink/70">{point.date}</td>
-                  <td className="py-1 text-end tabular-nums text-ink/70">{point.orders}</td>
-                  <td className="py-1 text-end tabular-nums text-ink">
+                  <td className="py-1 text-neutral-900/70">{point.date}</td>
+                  <td className="py-1 text-end tabular-nums text-neutral-900/70">{point.orders}</td>
+                  <td className="py-1 text-end tabular-nums text-neutral-900">
                     {toMajor(point.revenue).toLocaleString('en-PK')}
                   </td>
                 </tr>
@@ -505,9 +506,9 @@ function Stat({ index, label, value, hint }: { index?: number; label: string; va
       className="card p-4 animate-fadeIn"
       style={index !== undefined ? { animationDelay: `${(index + 1) * 75}ms` } : undefined}
     >
-      <p className="text-sm text-ink/60">{label}</p>
-      <p className="mt-1 text-2xl font-semibold text-ink">{value}</p>
-      {hint ? <p className="mt-1 text-xs text-ink/40">{hint}</p> : null}
+      <p className="text-sm text-neutral-900/60">{label}</p>
+      <p className="mt-1 text-2xl font-semibold text-neutral-900">{value}</p>
+      {hint ? <p className="mt-1 text-xs text-neutral-900/40">{hint}</p> : null}
     </div>
   );
 }
@@ -515,8 +516,8 @@ function Stat({ index, label, value, hint }: { index?: number; label: string; va
 function Mini({ label, value }: { label: string; value: number }) {
   return (
     <div>
-      <dt className="text-xs text-ink/50">{label}</dt>
-      <dd className="text-lg font-semibold text-ink">{value}</dd>
+      <dt className="text-xs text-neutral-900/50">{label}</dt>
+      <dd className="text-lg font-semibold text-neutral-900">{value}</dd>
     </div>
   );
 }
@@ -536,17 +537,20 @@ function BarList({
       {items.map((item) => (
         <li key={item.key}>
           <div className="flex justify-between gap-3 text-sm">
-            <span className="min-w-0 truncate text-ink">{item.label}</span>
-            <span className="shrink-0 text-ink/70">{valueFormatter(item.value)}</span>
+            <span className="min-w-0 truncate text-neutral-900">{item.label}</span>
+            <span className="shrink-0 text-neutral-900/70">{valueFormatter(item.value)}</span>
           </div>
           {/* Sequential single hue: more of the metric is a longer bar. */}
-          <div className="mt-1 h-2 overflow-hidden rounded-full bg-sand-100">
+          <div className="mt-1 h-2 overflow-hidden rounded-full bg-white">
             <div
               className="h-full rounded-full"
-              style={{ width: `${Math.max((item.value / max) * 100, 2)}%`, backgroundColor: '#0f8fa3' }}
+              style={{
+                width: `${Math.max((item.value / max) * 100, 2)}%`,
+                backgroundColor: THEME_COLORS.accent.DEFAULT,
+              }}
             />
           </div>
-          {item.sub ? <p className="mt-0.5 text-xs text-ink/40">{item.sub}</p> : null}
+          {item.sub ? <p className="mt-0.5 text-xs text-neutral-900/40">{item.sub}</p> : null}
         </li>
       ))}
     </ul>

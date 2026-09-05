@@ -3,11 +3,12 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, type ReactNode } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { adminFetch, clearSession, getStoredUser, logout } from '@/lib/admin-client';
-import type { AuthUser, DeploymentMeta } from '@/lib/api-types';
+import type { AuthUser, DeploymentMeta } from '@/types/api';
 import { NAV_GROUPS, ICON_MAP, navFor, type AdminNavItem } from './nav-registry';
 import { AdminSessionProvider } from './session';
+import { ROUTES } from '@/constants/routes';
 
 /**
  * The back office frame: role guard, sidebar and header.
@@ -61,7 +62,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
   if (!checked || !user) {
     return (
-      <div className="flex min-h-screen items-center justify-center text-sm text-ink/50">
+      <div className="flex min-h-screen items-center justify-center text-sm text-neutral-900/50">
         Checking your session…
       </div>
     );
@@ -80,23 +81,23 @@ export function AdminShell({ children }: { children: ReactNode }) {
   }, null as AdminNavItem | null);
 
   return (
-    <div className="flex min-h-screen bg-sand-50">
+    <div className="flex min-h-screen bg-neutral-50">
       {/* Mobile Drawer */}
       {isNavOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div
-            className="fixed inset-0 bg-ink/40 backdrop-blur-sm transition-opacity animate-fadeIn"
+            className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm transition-opacity animate-fadeIn"
             onClick={() => setIsNavOpen(false)}
             aria-hidden="true"
           />
           <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-xl flex flex-col animate-slideInLeft">
-            <div className="flex items-center justify-between px-4 h-14 border-b border-sand-200">
-              <Link href="/admin" className="font-semibold text-brand-700" onClick={() => setIsNavOpen(false)}>
+            <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-100">
+              <Link href={ROUTES.admin.dashboard} className="font-semibold text-accent-hover" onClick={() => setIsNavOpen(false)}>
                 Yaseen Admin
               </Link>
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-md text-ink/80 hover:bg-sand-100"
+                className="flex h-10 w-10 items-center justify-center rounded-md text-neutral-900/80 hover:bg-white"
                 onClick={() => setIsNavOpen(false)}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -112,7 +113,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
                 const GroupIcon = ICON_MAP[group.icon];
                 return (
                   <div key={group.key} className="mb-4">
-                    <div className="flex items-center gap-2 px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-ink/40">
+                    <div className="flex items-center gap-2 px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-neutral-900/40">
                       {GroupIcon && <GroupIcon className="h-4 w-4" />}
                       <p>{group.label}</p>
                     </div>
@@ -131,9 +132,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
         </div>
       )}
 
-      <aside className="hidden w-60 shrink-0 border-e border-sand-200 bg-white lg:block">
-        <div className="flex h-14 items-center border-b border-sand-200 px-4">
-          <Link href="/admin" className="font-semibold text-brand-700">
+      <aside className="hidden w-60 shrink-0 border-e border-neutral-100 bg-white lg:block">
+        <div className="flex h-14 items-center border-b border-neutral-100 px-4">
+          <Link href={ROUTES.admin.dashboard} className="font-semibold text-accent-hover">
             Yaseen Admin
           </Link>
         </div>
@@ -145,7 +146,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
             const GroupIcon = ICON_MAP[group.icon];
             return (
               <div key={group.key} className="mb-4">
-                <div className="flex items-center gap-2 px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-ink/40">
+                <div className="flex items-center gap-2 px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-neutral-900/40">
                   {GroupIcon && <GroupIcon className="h-4 w-4" />}
                   <p>{group.label}</p>
                 </div>
@@ -163,10 +164,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-14 items-center gap-4 border-b border-sand-200 bg-white px-4">
+        <header className="flex h-14 items-center gap-4 border-b border-neutral-100 bg-white px-4">
           <button
             type="button"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-ink/80 hover:bg-sand-100 lg:hidden"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-neutral-900/80 hover:bg-white lg:hidden"
             onClick={() => setIsNavOpen(true)}
             aria-label="Open menu"
           >
@@ -178,11 +179,11 @@ export function AdminShell({ children }: { children: ReactNode }) {
           </button>
 
           <div className="ms-auto flex items-center gap-3 text-sm">
-            <Link href="/en" className="text-ink/60 hover:text-brand-700">
+            <Link href="/en" className="text-neutral-900/60 hover:text-accent-hover">
               View store
             </Link>
-            <span className="text-ink/40">|</span>
-            <Link href="/admin/account" className="text-ink/70 hover:text-brand-700">
+            <span className="text-neutral-900/40">|</span>
+            <Link href={ROUTES.admin.account} className="text-neutral-900/70 hover:text-accent-hover">
               {user.firstName ?? user.email} · {user.role.toLowerCase()}
             </Link>
             <button
@@ -192,7 +193,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
                 clearSession();
                 router.replace('/admin/login');
               }}
-              className="rounded-md px-2 py-1 text-ink/60 hover:bg-sand-100 hover:text-ink"
+              className="rounded-md px-2 py-1 text-neutral-900/60 hover:bg-white hover:text-neutral-900"
             >
               Sign out
             </button>
@@ -223,12 +224,12 @@ function NavLink({
       href={item.href}
       aria-current={isActive ? 'page' : undefined}
       onClick={onClick}
-      className={clsx(
+      className={cn(
         'block rounded-md px-3 py-2 text-sm transition-colors duration-200',
         compact && 'whitespace-nowrap',
         isActive
-          ? 'bg-brand-50 font-medium text-brand-800'
-          : 'text-ink/75 hover:bg-sand-100 hover:text-ink',
+          ? 'bg-neutral-50 font-medium text-accent-hover'
+          : 'text-neutral-900/75 hover:bg-white hover:text-neutral-900',
       )}
     >
       {item.label}
@@ -268,7 +269,7 @@ function NavItemNode({
               e.preventDefault();
               setIsOpen(!isOpen);
             }}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-ink/50 hover:bg-sand-100 hover:text-ink ms-1"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-neutral-900/50 hover:bg-white hover:text-neutral-900 ms-1"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -280,7 +281,7 @@ function NavItemNode({
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className={clsx('transition-transform duration-200', isOpen && 'rotate-180')}
+              className={cn('transition-transform duration-200', isOpen && 'rotate-180')}
             >
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
@@ -288,7 +289,7 @@ function NavItemNode({
         )}
       </div>
       {isOpen && item.children && item.children.length > 0 && (
-        <ul className="ms-4 mt-1 space-y-0.5 border-s border-sand-200 ps-2">
+        <ul className="ms-4 mt-1 space-y-0.5 border-s border-neutral-100 ps-2">
           {item.children.map((child) => (
             <li key={child.key}>
               <NavLink item={child} isActive={activeItem?.key === child.key} onClick={onClick} />

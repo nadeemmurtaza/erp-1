@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { AuthUser } from '@/lib/api-types';
+import type { AuthUser } from '@/types/api';
 import { customerFetch } from '@/lib/customer-client';
 import { useCustomerSession } from '@/components/storefront/customer-session';
 
@@ -73,7 +73,7 @@ export default function AccountProfilePage() {
   return (
     <div className="grid gap-6 lg:grid-cols-2">
       <form onSubmit={saveProfile} className="card space-y-4 p-6">
-        <h2 className="text-lg font-semibold text-ink">Profile details</h2>
+        <h2 className="text-lg font-semibold text-neutral-900">Profile details</h2>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -138,7 +138,7 @@ export default function AccountProfilePage() {
       </form>
 
       <form onSubmit={changePassword} className="card space-y-4 p-6">
-        <h2 className="text-lg font-semibold text-ink">Change password</h2>
+        <h2 className="text-lg font-semibold text-neutral-900">Change password</h2>
 
         <div>
           <label className="field-label" htmlFor="currentPassword">

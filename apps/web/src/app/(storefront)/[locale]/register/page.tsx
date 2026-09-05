@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { registerCustomer } from '@/lib/customer-client';
 import { useCustomerSession } from '@/components/storefront/customer-session';
+import { ROUTES } from '@/constants/routes';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -48,8 +49,8 @@ export default function RegisterPage() {
     <div className="flex min-h-[calc(100vh-4rem)] flex-col lg:flex-row">
       <div className="flex flex-1 items-center justify-center px-4 py-12 lg:px-8">
         <div className="w-full max-w-sm">
-          <h1 className="text-center text-2xl font-semibold text-brand-700">Create Account</h1>
-          <p className="mt-1 text-center text-sm text-ink/60">
+          <h1 className="text-center text-2xl font-semibold text-accent-hover">Create Account</h1>
+          <p className="mt-1 text-center text-sm text-neutral-900/60">
             Join {tSite('name')} today
           </p>
 
@@ -137,20 +138,20 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-ink/60">
+          <div className="mt-6 text-center text-sm text-neutral-900/60">
             Already have an account?{' '}
-            <Link href="/login" className="font-medium text-brand-700 hover:underline">
+            <Link href={ROUTES.storefront.login} className="font-medium text-accent-hover hover:underline">
               Sign in here
             </Link>
           </div>
         </div>
       </div>
-      <div className="hidden lg:flex lg:flex-1 relative bg-brand-50 items-center justify-center p-12">
+      <div className="hidden lg:flex lg:flex-1 relative bg-neutral-50 items-center justify-center p-12">
         <div className="max-w-lg text-center">
-          <h2 className="text-4xl font-bold tracking-tight text-brand-800">
+          <h2 className="text-4xl font-bold tracking-tight text-accent-hover">
             Start your journey
           </h2>
-          <p className="mt-4 text-lg text-brand-700/80">
+          <p className="mt-4 text-lg text-accent-hover/80">
             Create an account to save your favorite pieces, manage your measurements, and get exclusive access to our latest collections.
           </p>
         </div>

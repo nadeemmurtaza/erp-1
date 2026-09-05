@@ -1,7 +1,7 @@
 'use client';
 
 import { type ReactNode, useState } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 
 export interface WizardStep {
   id: string;
@@ -40,7 +40,7 @@ export function Wizard({
   submitBusy,
   submitDisabled,
   error,
-  accentClassName = 'bg-ink text-white',
+  accentClassName = 'bg-neutral-900 text-white',
   backLabel = 'Back',
   nextLabel = 'Next',
 }: WizardProps) {
@@ -83,7 +83,7 @@ export function Wizard({
                 aria-selected={active}
                 disabled={!reachable}
                 onClick={() => goTo(i)}
-                className={clsx(
+                className={cn(
                   'flex items-center gap-2 rounded-full px-3 py-1.5 transition-colors',
                   active
                     ? accentClassName
@@ -93,7 +93,7 @@ export function Wizard({
                 )}
               >
                 <span
-                  className={clsx(
+                  className={cn(
                     'flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-semibold',
                     active ? 'bg-white/25' : 'border border-current',
                   )}
@@ -125,7 +125,7 @@ export function Wizard({
             type="button"
             onClick={() => void onSubmit()}
             disabled={submitDisabled || submitBusy || !step.isValid}
-            className={clsx('rounded-full px-6 py-2.5 text-sm font-semibold disabled:opacity-50', accentClassName)}
+            className={cn('rounded-full px-6 py-2.5 text-sm font-semibold disabled:opacity-50', accentClassName)}
           >
             {submitBusy ? '…' : submitLabel}
           </button>
@@ -134,7 +134,7 @@ export function Wizard({
             type="button"
             onClick={goNext}
             disabled={!step.isValid}
-            className={clsx('rounded-full px-6 py-2.5 text-sm font-semibold disabled:opacity-50', accentClassName)}
+            className={cn('rounded-full px-6 py-2.5 text-sm font-semibold disabled:opacity-50', accentClassName)}
           >
             {nextLabel}
           </button>

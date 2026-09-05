@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Link, usePathname } from '@/i18n/navigation';
 import { useCustomerSession } from '@/components/storefront/customer-session';
 
@@ -30,7 +30,7 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
 
   if (isLoading || !user) {
     return (
-      <div className="container-page flex min-h-[50vh] items-center justify-center text-sm text-ink/50">
+      <div className="container-page flex min-h-[50vh] items-center justify-center text-sm text-neutral-900/50">
         Loading…
       </div>
     );
@@ -38,21 +38,21 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
 
   return (
     <div className="container-page py-8">
-      <h1 className="mb-1 text-2xl font-semibold text-brand-700">My Account</h1>
-      <p className="mb-6 text-sm text-ink/60">{user.email ?? user.phone}</p>
+      <h1 className="mb-1 text-2xl font-semibold text-accent-hover">My Account</h1>
+      <p className="mb-6 text-sm text-neutral-900/60">{user.email ?? user.phone}</p>
 
-      <nav className="mb-6 flex gap-1 border-b border-sand-200">
+      <nav className="mb-6 flex gap-1 border-b border-neutral-100">
         {TABS.map((tab) => {
           const isActive = tab.href === '/account' ? pathname === '/account' : pathname.startsWith(tab.href);
           return (
             <Link
               key={tab.href}
               href={tab.href}
-              className={clsx(
+              className={cn(
                 'border-b-2 px-3 py-2 text-sm font-medium transition-colors',
                 isActive
-                  ? 'border-brand-700 text-brand-700'
-                  : 'border-transparent text-ink/60 hover:text-ink',
+                  ? 'border-accent-hover text-accent-hover'
+                  : 'border-transparent text-neutral-900/60 hover:text-neutral-900',
               )}
             >
               {tab.label}

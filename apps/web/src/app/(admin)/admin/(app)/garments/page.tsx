@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { adminFetch } from '@/lib/admin-client';
-import type { AdminGarmentSizeChartRow, GarmentType, MeasurementFieldRow } from '@/lib/api-types';
+import type { AdminGarmentSizeChartRow, GarmentType, MeasurementFieldRow } from '@/types/api';
 
 interface FieldDraft {
   key: string;
@@ -178,8 +178,8 @@ export default function AdminGarmentsPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-ink">Garments &amp; measurements</h1>
-      <p className="mb-6 text-sm text-ink/60">
+      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Garments &amp; measurements</h1>
+      <p className="mb-6 text-sm text-neutral-900/60">
         What the tailor needs for each garment. Changes apply everywhere immediately.
       </p>
 
@@ -189,7 +189,7 @@ export default function AdminGarmentsPage() {
         </p>
       ) : null}
       {notice ? (
-        <p className="card mb-4 p-4 text-sm text-brand-800">{notice}</p>
+        <p className="card mb-4 p-4 text-sm text-accent-hover">{notice}</p>
       ) : null}
 
       <div className="grid gap-6 lg:grid-cols-[14rem_1fr]">
@@ -202,12 +202,12 @@ export default function AdminGarmentsPage() {
                   onClick={() => setSelectedId(garment.id)}
                   className={
                     garment.id === selectedId
-                      ? 'w-full rounded-md bg-brand-50 px-3 py-2 text-start text-sm font-medium text-brand-800'
-                      : 'w-full rounded-md px-3 py-2 text-start text-sm text-ink/75 hover:bg-sand-100'
+                      ? 'w-full rounded-md bg-neutral-50 px-3 py-2 text-start text-sm font-medium text-accent-hover'
+                      : 'w-full rounded-md px-3 py-2 text-start text-sm text-neutral-900/75 hover:bg-white'
                   }
                 >
                   {garment.labelEn}
-                  <span className="block text-xs text-ink/40">
+                  <span className="block text-xs text-neutral-900/40">
                     {garment.fields.filter((field) => field.isActive).length} measurements ·{' '}
                     Rs {(garment.stitchingPrice / 100).toLocaleString()}
                   </span>
@@ -244,14 +244,14 @@ export default function AdminGarmentsPage() {
             </div>
 
             <form onSubmit={saveSizeChart} className="card p-4">
-              <h2 className="text-sm font-semibold text-ink">Standard sizes (RTW)</h2>
-              <p className="mb-4 mt-1 text-xs text-ink/50">
+              <h2 className="text-sm font-semibold text-neutral-900">Standard sizes (RTW)</h2>
+              <p className="mb-4 mt-1 text-xs text-neutral-900/50">
                 For customers who don&apos;t know their measurements. Fill in the sizes you
                 stock — a size left blank isn&apos;t offered as a quick pick for this garment.
               </p>
 
               {activeFields.length === 0 ? (
-                <p className="text-sm text-ink/50">
+                <p className="text-sm text-neutral-900/50">
                   Add at least one measurement above before setting standard sizes.
                 </p>
               ) : (
@@ -259,11 +259,11 @@ export default function AdminGarmentsPage() {
                   <table className="w-full text-sm">
                     <thead>
                       <tr>
-                        <th className="p-2 text-start text-xs font-medium text-ink/50">Size</th>
+                        <th className="p-2 text-start text-xs font-medium text-neutral-900/50">Size</th>
                         {activeFields.map((field) => (
                           <th
                             key={field.id}
-                            className="p-2 text-start text-xs font-medium text-ink/50"
+                            className="p-2 text-start text-xs font-medium text-neutral-900/50"
                           >
                             {field.labelEn} ({field.unit === 'INCH' ? 'in' : 'cm'})
                           </th>
@@ -272,8 +272,8 @@ export default function AdminGarmentsPage() {
                     </thead>
                     <tbody>
                       {SIZE_TOKENS.map((sizeToken) => (
-                        <tr key={sizeToken} className="border-t border-sand-200">
-                          <td className="p-2 text-sm font-medium text-ink/70">{sizeToken}</td>
+                        <tr key={sizeToken} className="border-t border-neutral-100">
+                          <td className="p-2 text-sm font-medium text-neutral-900/70">{sizeToken}</td>
                           {activeFields.map((field) => (
                             <td key={field.id} className="p-2">
                               <input
@@ -294,7 +294,7 @@ export default function AdminGarmentsPage() {
                 </div>
               )}
 
-              <div className="mt-4 border-t border-sand-200 pt-4">
+              <div className="mt-4 border-t border-neutral-100 pt-4">
                 <button
                   type="submit"
                   disabled={sizeBusy || activeFields.length === 0}
@@ -306,7 +306,7 @@ export default function AdminGarmentsPage() {
             </form>
           </div>
         ) : (
-          <p className="text-sm text-ink/50">Loading…</p>
+          <p className="text-sm text-neutral-900/50">Loading…</p>
         )}
       </div>
     </>
@@ -389,22 +389,22 @@ function GarmentWizard({
               className="field-input"
               required
             />
-            <span className="mt-1 block text-xs text-ink/50">
+            <span className="mt-1 block text-xs text-neutral-900/50">
               Charged when the customer picks no premium stitching service.
             </span>
           </label>
           <div className="block">
             <span className="field-label">Offered for stitching</span>
-            <label className="flex items-center gap-2 text-sm text-ink/70">
+            <label className="flex items-center gap-2 text-sm text-neutral-900/70">
               <input
                 type="checkbox"
                 checked={stitchingEnabled}
                 onChange={(event) => setStitchingEnabled(event.target.checked)}
-                className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
               />
               Show in the stitching flow
             </label>
-            <span className="mt-1 block text-xs text-ink/50">
+            <span className="mt-1 block text-xs text-neutral-900/50">
               Unticking hides this garment from customers without deleting anything.
             </span>
           </div>
@@ -418,7 +418,7 @@ function GarmentWizard({
               onChange={(event) => setBaseFabricGaz(event.target.value)}
               className="field-input"
             />
-            <span className="mt-1 block text-xs text-ink/50">
+            <span className="mt-1 block text-xs text-neutral-900/50">
               Flat fabric benchmark, used when the yardage formula doesn&apos;t apply.
             </span>
           </label>
@@ -430,7 +430,7 @@ function GarmentWizard({
               placeholder="Anarkali, Panel Dress, Gown"
               className="field-input"
             />
-            <span className="mt-1 block text-xs text-ink/50">Comma-separated.</span>
+            <span className="mt-1 block text-xs text-neutral-900/50">Comma-separated.</span>
           </label>
           <label className="block" dir="rtl">
             <span className="field-label">بھی کہا جاتا ہے (اردو)</span>
@@ -439,7 +439,7 @@ function GarmentWizard({
               onChange={(event) => setAliasesUr(event.target.value)}
               className="field-input font-urdu"
             />
-            <span className="mt-1 block text-xs text-ink/50" dir="ltr">
+            <span className="mt-1 block text-xs text-neutral-900/50" dir="ltr">
               Comma-separated.
             </span>
           </label>
@@ -458,8 +458,8 @@ function GarmentWizard({
                 key={`${field.key}-${index}`}
                 className={
                   field.isActive
-                    ? 'grid items-end gap-2 rounded-md border border-sand-200 p-2 sm:grid-cols-7'
-                    : 'grid items-end gap-2 rounded-md border border-sand-200 bg-sand-50 p-2 opacity-60 sm:grid-cols-7'
+                    ? 'grid items-end gap-2 rounded-md border border-neutral-100 p-2 sm:grid-cols-7'
+                    : 'grid items-end gap-2 rounded-md border border-neutral-100 bg-neutral-50 p-2 opacity-60 sm:grid-cols-7'
                 }
               >
                 <Small label="Key">
@@ -519,21 +519,21 @@ function GarmentWizard({
                   />
                 </Small>
                 <div className="flex items-center gap-3 pb-1">
-                  <label className="flex items-center gap-1 text-xs text-ink/70">
+                  <label className="flex items-center gap-1 text-xs text-neutral-900/70">
                     <input
                       type="checkbox"
                       checked={field.required}
                       onChange={(event) =>
                         patch(setFields, index, { required: event.target.checked })
                       }
-                      className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                      className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
                     />
                     Required
                   </label>
                   <button
                     type="button"
                     onClick={() => patch(setFields, index, { isActive: !field.isActive })}
-                    className="text-xs text-ink/60 hover:text-ink"
+                    className="text-xs text-neutral-900/60 hover:text-neutral-900"
                   >
                     {field.isActive ? 'Retire' : 'Restore'}
                   </button>
@@ -575,7 +575,7 @@ function GarmentWizard({
       submitLabel={busy ? 'Saving…' : 'Save garment'}
       submitBusy={busy}
       submitDisabled={busy}
-      accentClassName="bg-brand-600 text-white"
+      accentClassName="bg-accent-hover text-white"
     />
   );
 }
@@ -628,7 +628,7 @@ function splitAliases(value: string): string[] {
 function Small({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs text-ink/50">{label}</span>
+      <span className="mb-1 block text-xs text-neutral-900/50">{label}</span>
       {children}
     </label>
   );

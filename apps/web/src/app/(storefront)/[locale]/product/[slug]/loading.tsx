@@ -1,7 +1,7 @@
 export default function Loading() {
   return (
     <div className="container-page py-8 animate-fadeIn">
-      <div className="mb-6 text-sm text-ink/60">
+      <div className="mb-6 text-sm text-neutral-900/60">
         <div className="skeleton h-4 w-32 rounded inline-block" />
       </div>
 
@@ -50,7 +50,7 @@ export default function Loading() {
               </div>
 
               {/* Stitching panel skeleton */}
-              <div className="rounded-lg border border-brand-200 bg-brand-50 p-4">
+              <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-4">
                 <div className="skeleton h-4 w-32 rounded mb-4" />
               </div>
 
@@ -63,7 +63,7 @@ export default function Loading() {
           </div>
 
           {/* Description skeleton */}
-          <div className="mt-8 border-t border-sand-200 pt-6">
+          <div className="mt-8 border-t border-neutral-100 pt-6">
             <div className="skeleton h-4 w-20 rounded mb-3" />
             <div className="space-y-2">
               {[...Array(3)].map((_, i) => (

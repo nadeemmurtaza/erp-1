@@ -2,7 +2,7 @@
  * The "yaseen" wordmark, traced from the brand's source artwork into a single
  * vector path. Inline (not a static `<img src>`) so `fill="currentColor"`
  * picks up whatever text color the caller sets — dark on the header's white
- * background, white on the footer's noir-900 — instead of needing two
+ * background, white on the footer's neutral-900 — instead of needing two
  * separate exported files for the two color contexts.
  */
 export function Logo(props: React.SVGProps<SVGSVGElement>) {

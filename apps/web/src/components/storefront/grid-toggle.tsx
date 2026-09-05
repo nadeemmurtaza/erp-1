@@ -15,15 +15,15 @@ const GRID_OPTIONS: { cols: GridCols; label: string }[] = [
 
 export function GridToggle({ value, onChange }: GridToggleProps) {
   return (
-    <div className="flex items-center gap-1 rounded-full border border-noir-200 p-1">
+    <div className="flex items-center gap-1 rounded-full border border-neutral-200 p-1">
       {GRID_OPTIONS.map((option) => (
         <button
           key={option.cols}
           onClick={() => onChange(option.cols)}
           className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-200 ${
             value === option.cols
-              ? 'bg-noir-900 text-white'
-              : 'text-noir-500 hover:bg-noir-50 hover:text-noir-900'
+              ? 'bg-neutral-900 text-white'
+              : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900'
           }`}
           aria-label={`Show ${option.cols} columns`}
           title={`${option.cols} column${option.cols > 1 ? 's' : ''}`}

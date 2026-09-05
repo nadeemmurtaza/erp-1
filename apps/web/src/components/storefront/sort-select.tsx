@@ -21,7 +21,7 @@ export function SortSelect() {
 
   return (
     <label className="flex items-center gap-2 text-sm">
-      <span className="text-noir-500">{t('sort')}</span>
+      <span className="text-neutral-500">{t('sort')}</span>
       <span className="relative inline-flex items-center">
         <select
           value={searchParams.get('sort') ?? 'featured'}
@@ -34,8 +34,8 @@ export function SortSelect() {
           }}
           // Custom chevron overlay + pill shape don't match sf-field-input's
           // rounded-xl, so this stays bespoke — but the border/focus colours
-          // are the same canonical noir-200/noir-700 tokens sf-field-input uses.
-          className="appearance-none rounded-full border border-noir-200 bg-none bg-white py-1.5 pe-8 ps-3 text-sm text-noir-900 transition-colors duration-200 focus:border-noir-700 focus:outline-none focus:ring-1 focus:ring-noir-700 disabled:opacity-50"
+          // are the same canonical neutral-200/neutral-700 tokens sf-field-input uses.
+          className="appearance-none rounded-full border border-neutral-200 bg-none bg-white py-1.5 pe-8 ps-3 text-sm text-neutral-900 transition-colors duration-200 focus:border-neutral-700 focus:outline-none focus:ring-1 focus:ring-neutral-700 disabled:opacity-50"
         >
           {OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>
@@ -45,7 +45,7 @@ export function SortSelect() {
         </select>
         <svg
           aria-hidden="true"
-          className="pointer-events-none absolute end-2.5 top-1/2 -translate-y-1/2 text-noir-500"
+          className="pointer-events-none absolute end-2.5 top-1/2 -translate-y-1/2 text-neutral-500"
           width="12"
           height="12"
           viewBox="0 0 12 12"

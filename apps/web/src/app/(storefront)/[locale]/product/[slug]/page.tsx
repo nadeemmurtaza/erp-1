@@ -8,10 +8,11 @@ import { ProductPurchase, type FabricNeedRow } from '@/components/storefront/pro
 import { businessProfile } from '@/config/business-profile';
 import { Link } from '@/i18n/navigation';
 import { API_URL, ApiError, getProduct, getStitchingServices } from '@/lib/api';
-import type { StorefrontProduct } from '@/lib/api-types';
-import type { StitchingGarment } from '@/lib/cart-types';
-import { absoluteUrl, alternateLanguages, canonicalUrl } from '@/lib/seo';
-import { SITE_URL } from '@/lib/site';
+import type { StorefrontProduct } from '@/types/api';
+import type { StitchingGarment } from '@/types/cart';
+import { absoluteUrl, alternateLanguages, canonicalUrl } from '@/config/seo';
+import { SITE_URL } from '@/config/site';
+import { ROUTES } from '@/constants/routes';
 
 export const revalidate = 120;
 
@@ -184,14 +185,14 @@ export default async function ProductPage({ params }: PageProps) {
         above it. From md: up the two-column layout has no such button, so
         the breadcrumb carries both "back" and the category link.
       */}
-      <nav className="mb-6 hidden text-sm text-noir-500 md:block">
-        <Link href="/shop" className="transition-colors hover:text-noir-900">
+      <nav className="mb-6 hidden text-sm text-neutral-500 md:block">
+        <Link href={ROUTES.storefront.shop} className="transition-colors hover:text-neutral-900">
           {t('backToShop')}
         </Link>
         {product.category ? (
           <>
             <span className="mx-2">/</span>
-            <Link href={backHref} className="transition-colors hover:text-noir-900">
+            <Link href={backHref} className="transition-colors hover:text-neutral-900">
               {product.category.name}
             </Link>
           </>
@@ -207,7 +208,7 @@ export default async function ProductPage({ params }: PageProps) {
         />
 
         <div>
-          <h1 className="font-display text-2xl font-semibold text-noir-900 sm:text-3xl">
+          <h1 className="font-display text-2xl font-semibold text-neutral-900 sm:text-3xl">
             {product.name}
           </h1>
 
@@ -222,29 +223,29 @@ export default async function ProductPage({ params }: PageProps) {
           </div>
 
           {product.description ? (
-            <section className="mt-8 border-t border-noir-200 pt-6">
-              <h2 className="text-sm font-semibold text-noir-900">{t('details')}</h2>
-              <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-noir-600">
+            <section className="mt-8 border-t border-neutral-200 pt-6">
+              <h2 className="text-sm font-semibold text-neutral-900">{t('details')}</h2>
+              <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-neutral-600">
                 {product.description}
               </p>
             </section>
           ) : null}
 
           {details.length > 0 ? (
-            <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-noir-200 pt-6 text-sm">
+            <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-neutral-200 pt-6 text-sm">
               {details.map(([label, value]) => (
                 <div key={label}>
-                  <dt className="text-noir-500">{label}</dt>
-                  <dd className="mt-0.5 capitalize text-noir-900">{value}</dd>
+                  <dt className="text-neutral-500">{label}</dt>
+                  <dd className="mt-0.5 capitalize text-neutral-900">{value}</dd>
                 </div>
               ))}
             </dl>
           ) : null}
 
           {product.careInstructions ? (
-            <section className="mt-6 border-t border-noir-200 pt-6">
-              <h2 className="text-sm font-semibold text-noir-900">{t('care')}</h2>
-              <p className="mt-2 text-sm text-noir-600">{product.careInstructions}</p>
+            <section className="mt-6 border-t border-neutral-200 pt-6">
+              <h2 className="text-sm font-semibold text-neutral-900">{t('care')}</h2>
+              <p className="mt-2 text-sm text-neutral-600">{product.careInstructions}</p>
             </section>
           ) : null}
         </div>

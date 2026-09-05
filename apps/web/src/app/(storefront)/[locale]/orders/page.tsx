@@ -7,7 +7,8 @@ import { formatMoney, type Locale } from '@yaseen/shared';
 import { Link, usePathname } from '@/i18n/navigation';
 import { useCustomerSession } from '@/components/storefront/customer-session';
 import { customerFetch } from '@/lib/customer-client';
-import type { CustomerOrderSummary, PaginatedResult } from '@/lib/api-types';
+import type { CustomerOrderSummary, PaginatedResult } from '@/types/api';
+import { ROUTES } from '@/constants/routes';
 
 export default function OrderHistoryPage() {
   const { user, isLoading } = useCustomerSession();
@@ -43,7 +44,7 @@ export default function OrderHistoryPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="container-page flex min-h-[50vh] items-center justify-center text-sm text-ink/50">
+      <div className="container-page flex min-h-[50vh] items-center justify-center text-sm text-neutral-900/50">
         Loading…
       </div>
     );
@@ -51,8 +52,8 @@ export default function OrderHistoryPage() {
 
   return (
     <div className="container-page py-8">
-      <h1 className="mb-1 text-2xl font-semibold text-brand-700">My Orders</h1>
-      <p className="mb-6 text-sm text-ink/60">Every order placed with this account.</p>
+      <h1 className="mb-1 text-2xl font-semibold text-accent-hover">My Orders</h1>
+      <p className="mb-6 text-sm text-neutral-900/60">Every order placed with this account.</p>
 
       {error ? (
         <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
@@ -61,11 +62,11 @@ export default function OrderHistoryPage() {
       ) : null}
 
       {!orders ? (
-        <p className="text-sm text-ink/50">Loading…</p>
+        <p className="text-sm text-neutral-900/50">Loading…</p>
       ) : orders.data.length === 0 ? (
-        <div className="card p-8 text-center text-sm text-ink/50">
+        <div className="card p-8 text-center text-sm text-neutral-900/50">
           No orders yet.{' '}
-          <Link href="/shop" className="font-medium text-brand-700 hover:underline">
+          <Link href={ROUTES.storefront.shop} className="font-medium text-accent-hover hover:underline">
             Start shopping
           </Link>
         </div>
@@ -75,12 +76,12 @@ export default function OrderHistoryPage() {
             <Link
               key={order.number}
               href={`/orders/${order.number}`}
-              className="card block p-4 transition hover:bg-sand-50"
+              className="card block p-4 transition hover:bg-neutral-50"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium text-ink">{order.number}</p>
-                  <p className="text-xs text-ink/50">
+                  <p className="font-medium text-neutral-900">{order.number}</p>
+                  <p className="text-xs text-neutral-900/50">
                     {new Date(order.placedAt).toLocaleDateString('en-PK', {
                       year: 'numeric',
                       month: 'long',
@@ -89,11 +90,11 @@ export default function OrderHistoryPage() {
                   </p>
                 </div>
                 <div className="text-end">
-                  <p className="text-sm font-medium text-ink">{formatMoney(order.grandTotal, locale)}</p>
-                  <p className="text-xs uppercase tracking-wide text-ink/50">{order.status}</p>
+                  <p className="text-sm font-medium text-neutral-900">{formatMoney(order.grandTotal, locale)}</p>
+                  <p className="text-xs uppercase tracking-wide text-neutral-900/50">{order.status}</p>
                 </div>
               </div>
-              <p className="mt-2 text-sm text-ink/60">
+              <p className="mt-2 text-sm text-neutral-900/60">
                 {order.items.map((item) => item.nameEn).join(', ')}
               </p>
             </Link>
@@ -102,7 +103,7 @@ export default function OrderHistoryPage() {
       )}
 
       {orders && orders.meta.totalPages > 1 ? (
-        <div className="mt-6 flex items-center justify-between text-sm text-ink/60">
+        <div className="mt-6 flex items-center justify-between text-sm text-neutral-900/60">
           <span>
             Page {orders.meta.page} of {orders.meta.totalPages}
           </span>

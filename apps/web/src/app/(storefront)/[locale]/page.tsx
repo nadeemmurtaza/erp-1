@@ -6,7 +6,8 @@ import { ProductCard } from '@/components/storefront/product-card';
 import { Link } from '@/i18n/navigation';
 import { getCategories, getProducts } from '@/lib/api';
 import { AnimatedSection } from '@/components/storefront/animated-section';
-import { alternateLanguages, canonicalUrl } from '@/lib/seo';
+import { alternateLanguages, canonicalUrl } from '@/config/seo';
+import { ROUTES } from '@/constants/routes';
 
 export const revalidate = 300;
 
@@ -62,27 +63,27 @@ export default async function HomePage({
     // page's own root absorbs the clearance until that lands at the layout
     // level. md:pb-0 drops it the moment the pill itself is hidden.
     <div className="pb-24 md:pb-0">
-      <section className="border-b border-noir-200 bg-noir-50">
+      <section className="border-b border-neutral-200 bg-neutral-50">
         <div className="container-page py-10 sm:py-14 lg:py-24">
           <div
             className={`grid gap-8 lg:items-center lg:gap-16 ${heroImage ? 'lg:grid-cols-2' : ''}`}
           >
             <AnimatedSection direction="up" className="max-w-xl">
-              <h1 className="font-display text-4xl font-bold tracking-tight text-noir-900 sm:text-5xl lg:text-6xl">
+              <h1 className="font-display text-4xl font-bold tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
                 {t('heroTitle')}
               </h1>
-              <p className="mt-4 text-base text-noir-500 sm:mt-6 sm:text-lg lg:text-xl">
+              <p className="mt-4 text-base text-neutral-500 sm:mt-6 sm:text-lg lg:text-xl">
                 {t('heroBody')}
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-10">
                 <Link
-                  href="/shop?category=unstitched"
+                  href={ROUTES.storefront.shopUnstitched}
                   className="sf-btn-primary flex w-full px-8 py-3.5 text-sm font-semibold sm:w-auto sm:text-base"
                 >
                   {t('shopUnstitched')}
                 </Link>
                 <Link
-                  href="/shop?category=ready-to-wear"
+                  href={ROUTES.storefront.shopReadyToWear}
                   className="sf-btn-secondary flex w-full px-8 py-3.5 text-sm font-semibold sm:w-auto sm:text-base"
                 >
                   {t('shopReady')}
@@ -112,7 +113,7 @@ export default async function HomePage({
       {categories.length > 0 ? (
         <section className="container-page py-10 sm:py-12 lg:py-16">
           <AnimatedSection direction="up">
-            <h2 className="font-display text-xl font-semibold text-noir-900">{t('categories')}</h2>
+            <h2 className="font-display text-xl font-semibold text-neutral-900">{t('categories')}</h2>
           </AnimatedSection>
 
           {/*
@@ -124,8 +125,8 @@ export default async function HomePage({
             <ul className="mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] md:flex-wrap md:overflow-visible md:pb-0 [&::-webkit-scrollbar]:hidden">
               <li className="shrink-0 snap-start">
                 <Link
-                  href="/shop"
-                  className="inline-flex h-11 items-center gap-2 rounded-full bg-noir-900 ps-3 pe-5 text-sm font-medium text-white transition-colors duration-200 hover:bg-noir-700"
+                  href={ROUTES.storefront.shop}
+                  className="inline-flex h-11 items-center gap-2 rounded-full bg-neutral-900 ps-3 pe-5 text-sm font-medium text-white transition-colors duration-200 hover:bg-neutral-700"
                 >
                   <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/15" aria-hidden="true">
                     <AllCategoriesIcon />
@@ -138,9 +139,9 @@ export default async function HomePage({
                 <li key={category.id} className="shrink-0 snap-start">
                   <Link
                     href={`/shop?category=${category.slug}`}
-                    className="inline-flex h-11 items-center gap-2 rounded-full border border-noir-200 bg-white ps-2 pe-5 text-sm font-medium text-noir-700 transition-colors duration-200 hover:border-noir-900 hover:text-noir-900"
+                    className="inline-flex h-11 items-center gap-2 rounded-full border border-neutral-200 bg-white ps-2 pe-5 text-sm font-medium text-neutral-700 transition-colors duration-200 hover:border-neutral-900 hover:text-neutral-900"
                   >
-                    <span className="relative flex h-7 w-7 shrink-0 overflow-hidden rounded-full bg-noir-100">
+                    <span className="relative flex h-7 w-7 shrink-0 overflow-hidden rounded-full bg-neutral-100">
                       {category.imageUrl ? (
                         <Image src={category.imageUrl} alt="" fill sizes="28px" className="object-cover" />
                       ) : null}
@@ -158,10 +159,10 @@ export default async function HomePage({
         <AnimatedSection direction="up">
           <div className="mb-6 flex items-end justify-between gap-4 sm:mb-8">
             <div>
-              <h2 className="font-display text-xl font-semibold text-noir-900">{t('featured')}</h2>
-              <p className="mt-1 text-sm text-noir-500">{t('featuredBody')}</p>
+              <h2 className="font-display text-xl font-semibold text-neutral-900">{t('featured')}</h2>
+              <p className="mt-1 text-sm text-neutral-500">{t('featuredBody')}</p>
             </div>
-            <Link href="/shop" className="text-sm font-medium text-noir-900 underline-offset-4 hover:underline">
+            <Link href={ROUTES.storefront.shop} className="text-sm font-medium text-neutral-900 underline-offset-4 hover:underline">
               {t('viewAll')}
             </Link>
           </div>
@@ -189,21 +190,21 @@ export default async function HomePage({
         </div>
       </section>
 
-      <section className="border-y border-noir-200 bg-white">
+      <section className="border-y border-neutral-200 bg-white">
         <div className="container-page py-10 sm:py-14 lg:py-16">
           <AnimatedSection direction="up">
-            <h2 className="font-display text-xl font-semibold text-noir-900">{t('howItWorks')}</h2>
+            <h2 className="font-display text-xl font-semibold text-neutral-900">{t('howItWorks')}</h2>
           </AnimatedSection>
           <ol className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((step, index) => (
               <AnimatedSection direction="up" delay={index * 0.15} key={step.title}>
                 <li className="flex gap-4">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-noir-900 text-sm font-semibold text-white">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-sm font-semibold text-white">
                     {index + 1}
                   </span>
                   <div>
-                    <h3 className="text-sm font-medium text-noir-900">{step.title}</h3>
-                    <p className="mt-1 text-sm text-noir-500">{step.body}</p>
+                    <h3 className="text-sm font-medium text-neutral-900">{step.title}</h3>
+                    <p className="mt-1 text-sm text-neutral-500">{step.body}</p>
                   </div>
                 </li>
               </AnimatedSection>

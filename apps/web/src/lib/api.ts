@@ -4,7 +4,7 @@ import type {
   PaginatedResponse,
   ProductListQuery,
   StorefrontProduct,
-} from './api-types';
+} from '@/types/api';
 
 export const API_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';

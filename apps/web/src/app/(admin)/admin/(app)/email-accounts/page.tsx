@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { adminFetch } from '@/lib/admin-client';
-import type { EmailAccount, EmailAccountPurpose } from '@/lib/api-types';
+import type { EmailAccount, EmailAccountPurpose } from '@/types/api';
 
 const PURPOSES: { value: EmailAccountPurpose; label: string; hint: string }[] = [
   { value: 'TRANSACTIONAL', label: 'Transactional', hint: 'Orders, payments, password resets — the fallback every other purpose can use.' },
@@ -272,8 +272,8 @@ export default function EmailAccountsPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-ink">Email Accounts</h1>
-      <p className="mb-6 text-sm text-ink/60">
+      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Email Accounts</h1>
+      <p className="mb-6 text-sm text-neutral-900/60">
         Connect mailboxes for outgoing mail — one for transactional order mail, another for
         marketing, and so on. Each purpose falls back to the transactional account when nothing
         is connected for it, and to the server&apos;s SMTP_* config when nothing is connected at all.
@@ -290,17 +290,17 @@ export default function EmailAccountsPage() {
           <button
             type="button"
             onClick={selectNew}
-            className={`mb-2 flex w-full items-center justify-center rounded-md border border-dashed border-sand-300 px-2 py-2 text-sm font-medium ${
-              selectedId === 'new' ? 'bg-brand-50 text-brand-800' : 'text-ink/70 hover:bg-sand-50'
+            className={`mb-2 flex w-full items-center justify-center rounded-md border border-dashed border-neutral-200 px-2 py-2 text-sm font-medium ${
+              selectedId === 'new' ? 'bg-neutral-50 text-accent-hover' : 'text-neutral-900/70 hover:bg-neutral-50'
             }`}
           >
             + Connect a mailbox
           </button>
 
           {!accounts ? (
-            <p className="p-3 text-sm text-ink/50">Loading…</p>
+            <p className="p-3 text-sm text-neutral-900/50">Loading…</p>
           ) : accounts.length === 0 ? (
-            <p className="p-3 text-sm text-ink/50">No mailboxes connected yet.</p>
+            <p className="p-3 text-sm text-neutral-900/50">No mailboxes connected yet.</p>
           ) : (
             accounts.map((account) => (
               <button
@@ -308,18 +308,18 @@ export default function EmailAccountsPage() {
                 type="button"
                 onClick={() => selectAccount(account)}
                 className={`flex w-full flex-col gap-0.5 rounded-md px-2 py-2 text-start text-sm ${
-                  account.id === selectedId ? 'bg-brand-50 text-brand-800' : 'text-ink hover:bg-sand-50'
+                  account.id === selectedId ? 'bg-neutral-50 text-accent-hover' : 'text-neutral-900 hover:bg-neutral-50'
                 }`}
               >
                 <span className="flex items-center justify-between gap-2">
                   <span className="font-medium">{account.label}</span>
                   {!account.isActive ? (
-                    <span className="shrink-0 rounded-full bg-sand-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-ink/50">
+                    <span className="shrink-0 rounded-full bg-white px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-neutral-900/50">
                       Off
                     </span>
                   ) : null}
                 </span>
-                <span className="text-xs text-ink/50">
+                <span className="text-xs text-neutral-900/50">
                   {account.purpose}
                   {account.isDefault ? ' · default' : ''} · {account.fromEmail}
                 </span>
@@ -330,7 +330,7 @@ export default function EmailAccountsPage() {
 
         <div className="min-w-0">
           {selectedId === null ? (
-            <p className="card p-8 text-center text-sm text-ink/50">
+            <p className="card p-8 text-center text-sm text-neutral-900/50">
               Select a mailbox, or connect a new one.
             </p>
           ) : (
@@ -370,7 +370,7 @@ export default function EmailAccountsPage() {
                       </option>
                     ))}
                   </select>
-                  <p className="mt-1 text-xs text-ink/50">
+                  <p className="mt-1 text-xs text-neutral-900/50">
                     {PURPOSES.find((purpose) => purpose.value === form.purpose)?.hint}
                   </p>
                 </div>
@@ -412,21 +412,21 @@ export default function EmailAccountsPage() {
                   />
                 </div>
                 <div className="flex items-center gap-4 pt-6">
-                  <label className="flex items-center gap-2 text-sm text-ink">
+                  <label className="flex items-center gap-2 text-sm text-neutral-900">
                     <input
                       type="checkbox"
                       checked={form.isActive}
                       onChange={(event) => update('isActive', event.target.checked)}
-                      className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                      className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
                     />
                     Active
                   </label>
-                  <label className="flex items-center gap-2 text-sm text-ink">
+                  <label className="flex items-center gap-2 text-sm text-neutral-900">
                     <input
                       type="checkbox"
                       checked={form.isDefault}
                       onChange={(event) => update('isDefault', event.target.checked)}
-                      className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                      className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
                     />
                     Default for this purpose
                   </label>
@@ -446,9 +446,9 @@ export default function EmailAccountsPage() {
                 content: (
               <section>
                 <div className="mb-3 flex items-center justify-between">
-                  <h2 className="text-sm font-semibold text-ink">SMTP (sending)</h2>
+                  <h2 className="text-sm font-semibold text-neutral-900">SMTP (sending)</h2>
                   {selectedId !== 'new' ? (
-                    <span className="text-xs text-ink/50">
+                    <span className="text-xs text-neutral-900/50">
                       {accounts?.find((a) => a.id === selectedId)?.smtpVerifiedAt
                         ? `Last verified ${new Date(
                             accounts.find((a) => a.id === selectedId)!.smtpVerifiedAt!,
@@ -485,12 +485,12 @@ export default function EmailAccountsPage() {
                         required
                       />
                     </div>
-                    <label className="flex items-center gap-2 pt-6 text-sm text-ink">
+                    <label className="flex items-center gap-2 pt-6 text-sm text-neutral-900">
                       <input
                         type="checkbox"
                         checked={form.smtpSecure}
                         onChange={(event) => update('smtpSecure', event.target.checked)}
-                        className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                        className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
                       />
                       TLS (465)
                     </label>
@@ -567,16 +567,16 @@ export default function EmailAccountsPage() {
                 ),
                 content: (
               <section>
-                <label className="mb-3 flex items-center gap-2 text-sm font-semibold text-ink">
+                <label className="mb-3 flex items-center gap-2 text-sm font-semibold text-neutral-900">
                   <input
                     type="checkbox"
                     checked={form.includeImap}
                     onChange={(event) => update('includeImap', event.target.checked)}
-                    className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                    className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
                   />
                   IMAP (receiving) — optional
                 </label>
-                <p className="mb-3 text-xs text-ink/50">
+                <p className="mb-3 text-xs text-neutral-900/50">
                   Connection-tested only. Nothing in this store reads a mailbox yet, so IMAP does
                   not do anything beyond proving the mailbox is reachable.
                 </p>
@@ -611,12 +611,12 @@ export default function EmailAccountsPage() {
                             required={form.includeImap}
                           />
                         </div>
-                        <label className="flex items-center gap-2 pt-6 text-sm text-ink">
+                        <label className="flex items-center gap-2 pt-6 text-sm text-neutral-900">
                           <input
                             type="checkbox"
                             checked={form.imapSecure}
                             onChange={(event) => update('imapSecure', event.target.checked)}
-                            className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                            className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
                           />
                           TLS (993)
                         </label>
@@ -700,7 +700,7 @@ export default function EmailAccountsPage() {
                     }
                     submitBusy={saving}
                     submitDisabled={saving}
-                    accentClassName="bg-brand-600 text-white"
+                    accentClassName="bg-accent-hover text-white"
                     error={
                       saveError ? (
                         <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">

@@ -1,24 +1,33 @@
 'use client';
 
 import { useMemo } from 'react';
+import { THEME_COLORS } from '@yaseen/shared';
 
 /**
  * Small donut chart for a categorical breakdown, with a legend beside it.
  *
  * Matches sales-chart.tsx's idiom: inline SVG, minimal direct labelling (just
- * the grand total, centered in the ring), muted ink-toned legend text. The
- * slice colours are a small qualitative palette derived from the brand teal
- * steps plus gold, rather than a generic rainbow — "Other" always gets the
- * same muted sand tone so the eye reads it as a catch-all, not a category.
+ * the grand total, centered in the ring), muted neutral-toned legend text.
+ * SVG `stroke`/`fill` can't take a Tailwind class, so the slice colours are
+ * built from THEME_COLORS — the same accent teal and neutral ramp every other
+ * chart and both apps use — rather than each chart hardcoding its own
+ * approximation of the palette. "Other" always gets the same muted neutral
+ * tone so the eye reads it as a catch-all, not a category.
  *
  * Only the top `maxSlices` categories are drawn individually; the rest are
  * folded into one "Other" slice so a long tail of tiny categories can't
  * crowd the ring or the legend.
  */
-const PALETTE = ['#0f8fa3', '#157782', '#12666e', '#c0bb9a', '#dddbcb'];
-const OTHER_COLOR = '#e0e0e0';
+const PALETTE = [
+  THEME_COLORS.accent.DEFAULT,
+  THEME_COLORS.accent.hover,
+  THEME_COLORS.neutral[600],
+  THEME_COLORS.neutral[400],
+  THEME_COLORS.neutral[300],
+];
+const OTHER_COLOR = THEME_COLORS.neutral[300];
 const OTHER_LABEL = 'Other';
-const TRACK = '#e9e0cd';
+const TRACK = THEME_COLORS.neutral[100];
 
 const SIZE = 116;
 const CENTER = SIZE / 2;
@@ -68,7 +77,7 @@ export function DonutChart({
   const total = slices.reduce((sum, item) => sum + item.value, 0);
 
   if (slices.length === 0) {
-    return <p className="p-8 text-center text-sm text-ink/50">No revenue in this window.</p>;
+    return <p className="p-8 text-center text-sm text-neutral-900/50">No revenue in this window.</p>;
   }
 
   return (
@@ -99,7 +108,7 @@ export function DonutChart({
             />
           ))}
         </g>
-        <text x={CENTER} y={CENTER + 4} textAnchor="middle" className="fill-ink" fontSize={11} fontWeight={600}>
+        <text x={CENTER} y={CENTER + 4} textAnchor="middle" className="fill-neutral-900" fontSize={11} fontWeight={600}>
           {valueFormatter(total)}
         </text>
       </svg>
@@ -113,10 +122,10 @@ export function DonutChart({
                 style={{ backgroundColor: slice.color }}
                 aria-hidden="true"
               />
-              <span className="truncate text-ink/80">{slice.label}</span>
+              <span className="truncate text-neutral-900/80">{slice.label}</span>
             </span>
-            <span className="shrink-0 text-ink/60">
-              {valueFormatter(slice.value)} <span className="text-ink/40">· {slice.percent}%</span>
+            <span className="shrink-0 text-neutral-900/60">
+              {valueFormatter(slice.value)} <span className="text-neutral-900/40">· {slice.percent}%</span>
             </span>
           </li>
         ))}

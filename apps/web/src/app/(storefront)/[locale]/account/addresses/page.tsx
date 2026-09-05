@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import type { CustomerAddress } from '@/lib/api-types';
+import type { CustomerAddress } from '@/types/api';
 import { customerFetch } from '@/lib/customer-client';
 
 interface Draft {
@@ -114,25 +114,25 @@ export default function AccountAddressesPage() {
         ) : null}
 
         {addresses.length === 0 ? (
-          <div className="card p-6 text-center text-sm text-ink/50">
+          <div className="card p-6 text-center text-sm text-neutral-900/50">
             No saved addresses yet — add one to speed up checkout.
           </div>
         ) : (
           addresses.map((address) => (
             <div key={address.id} className="card flex items-start justify-between p-4">
               <div>
-                <p className="font-medium text-ink">
+                <p className="font-medium text-neutral-900">
                   {address.label || address.fullName}
                   {address.isDefault ? (
-                    <span className="ms-2 rounded bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">
+                    <span className="ms-2 rounded bg-neutral-50 px-2 py-0.5 text-xs font-medium text-accent-hover">
                       Default
                     </span>
                   ) : null}
                 </p>
-                <p className="mt-1 text-sm text-ink/70">
+                <p className="mt-1 text-sm text-neutral-900/70">
                   {address.fullName} · {address.phone}
                 </p>
-                <p className="text-sm text-ink/60">
+                <p className="text-sm text-neutral-900/60">
                   {address.line1}
                   {address.line2 ? `, ${address.line2}` : ''}, {address.city}, {address.province}
                   {address.postalCode ? ` ${address.postalCode}` : ''}
@@ -142,7 +142,7 @@ export default function AccountAddressesPage() {
                 <button
                   type="button"
                   onClick={() => edit(address)}
-                  className="rounded px-2 py-1 text-xs text-brand-700 hover:bg-brand-50"
+                  className="rounded px-2 py-1 text-xs text-accent-hover hover:bg-neutral-50"
                 >
                   Edit
                 </button>
@@ -160,7 +160,7 @@ export default function AccountAddressesPage() {
       </div>
 
       <form onSubmit={save} className="card h-fit space-y-4 p-4">
-        <h2 className="text-sm font-semibold text-ink">
+        <h2 className="text-sm font-semibold text-neutral-900">
           {draft.id ? 'Edit address' : 'Add an address'}
         </h2>
 
@@ -248,7 +248,7 @@ export default function AccountAddressesPage() {
             type="checkbox"
             checked={draft.isDefault}
             onChange={(event) => setDraft({ ...draft, isDefault: event.target.checked })}
-            className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+            className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
           />
           Make this my default address
         </label>

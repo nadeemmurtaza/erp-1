@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { formatMoney, type Locale } from '@yaseen/shared';
 import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { useCart } from '@/components/storefront/cart-provider';
@@ -144,15 +144,15 @@ export default function CheckoutPage() {
 
   if (loading) {
     return (
-      <div className="container-page py-16 text-center text-sm text-noir-400">…</div>
+      <div className="container-page py-16 text-center text-sm text-neutral-400">…</div>
     );
   }
 
   if (!cart || cart.items.length === 0) {
     return (
       <div className="container-page py-16 text-center font-display">
-        <h1 className="text-2xl font-semibold text-noir-900">{t('title')}</h1>
-        <p className="mt-2 text-sm text-noir-500">{t('emptyCart')}</p>
+        <h1 className="text-2xl font-semibold text-neutral-900">{t('title')}</h1>
+        <p className="mt-2 text-sm text-neutral-500">{t('emptyCart')}</p>
       </div>
     );
   }
@@ -160,8 +160,8 @@ export default function CheckoutPage() {
   if (cart.issues.length > 0) {
     return (
       <div className="container-page pb-28 pt-16 font-display md:pb-16">
-        <h1 className="text-2xl font-semibold text-noir-900">{t('title')}</h1>
-        <ul className="mt-4 space-y-1 rounded-2xl border border-noir-200 bg-noir-50 px-4 py-3 text-sm text-noir-800">
+        <h1 className="text-2xl font-semibold text-neutral-900">{t('title')}</h1>
+        <ul className="mt-4 space-y-1 rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-800">
           {cart.issues.map((issue) => (
             <li key={issue}>{issue}</li>
           ))}
@@ -190,7 +190,7 @@ export default function CheckoutPage() {
       isValid: addressValid,
       content: (
         <section className="sf-card p-4 sm:p-6">
-          <h2 className="text-base font-semibold text-noir-900">{t('deliveryAddress')}</h2>
+          <h2 className="text-base font-semibold text-neutral-900">{t('deliveryAddress')}</h2>
 
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <Field label={t('fullName')} required>
@@ -290,7 +290,7 @@ export default function CheckoutPage() {
       isValid: Boolean(method),
       content: (
         <section className="sf-card p-4 sm:p-6">
-          <h2 className="text-base font-semibold text-noir-900">{t('payment')}</h2>
+          <h2 className="text-base font-semibold text-neutral-900">{t('payment')}</h2>
 
           {/*
            * The real payment options are cash-on-delivery and bank
@@ -302,11 +302,11 @@ export default function CheckoutPage() {
             {methods.map((option) => (
               <label
                 key={option.key}
-                className={clsx(
-                  'flex cursor-pointer items-start gap-3 rounded-2xl border-2 p-4 transition-colors duration-200 focus-within:ring-2 focus-within:ring-noir-900 focus-within:ring-offset-2',
+                className={cn(
+                  'flex cursor-pointer items-start gap-3 rounded-2xl border-2 p-4 transition-colors duration-200 focus-within:ring-2 focus-within:ring-neutral-900 focus-within:ring-offset-2',
                   option.key === method
-                    ? 'border-noir-900 bg-noir-900/[0.03]'
-                    : 'border-noir-200 hover:border-noir-300',
+                    ? 'border-neutral-900 bg-neutral-900/[0.03]'
+                    : 'border-neutral-200 hover:border-neutral-300',
                 )}
               >
                 <input
@@ -318,27 +318,27 @@ export default function CheckoutPage() {
                 />
                 <span
                   aria-hidden
-                  className={clsx(
+                  className={cn(
                     'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2',
-                    option.key === method ? 'border-noir-900' : 'border-noir-300',
+                    option.key === method ? 'border-neutral-900' : 'border-neutral-300',
                   )}
                 >
                   {option.key === method ? (
-                    <span className="h-2.5 w-2.5 rounded-full bg-noir-900" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-neutral-900" />
                   ) : null}
                 </span>
                 <span className="flex-1">
                   <span className="flex justify-between gap-3">
-                    <span className="text-sm font-medium text-noir-900">
+                    <span className="text-sm font-medium text-neutral-900">
                       {locale === 'ur' ? option.labelUr : option.labelEn}
                     </span>
                     {option.fee > 0 ? (
-                      <span className="text-sm text-noir-500">
+                      <span className="text-sm text-neutral-500">
                         +{formatMoney(option.fee, locale)}
                       </span>
                     ) : null}
                   </span>
-                  <span className="mt-0.5 block text-xs text-noir-500">
+                  <span className="mt-0.5 block text-xs text-neutral-500">
                     {locale === 'ur' ? option.descriptionUr : option.descriptionEn}
                   </span>
                 </span>
@@ -367,47 +367,47 @@ export default function CheckoutPage() {
           </section>
 
           <section className="sf-card p-4 sm:p-6">
-            <h2 className="text-base font-semibold text-noir-900">{t('summary')}</h2>
+            <h2 className="text-base font-semibold text-neutral-900">{t('summary')}</h2>
 
             <ul className="mt-3 space-y-2 text-sm">
               {cart.items.map((line) => (
                 <li key={line.id} className="flex justify-between gap-3">
-                  <span className="min-w-0 text-noir-600">
+                  <span className="min-w-0 text-neutral-600">
                     <span className="block truncate">{line.name}</span>
                     {line.stitching ? (
-                      <span className="block text-xs text-noir-500">
+                      <span className="block text-xs text-neutral-500">
                         + {line.stitching.serviceName}
                       </span>
                     ) : null}
-                    <span className="text-xs text-noir-400">× {line.quantity}</span>
+                    <span className="text-xs text-neutral-400">× {line.quantity}</span>
                   </span>
-                  <span className="shrink-0 text-noir-900">
+                  <span className="shrink-0 text-neutral-900">
                     {formatMoney(line.lineTotal, locale)}
                   </span>
                 </li>
               ))}
             </ul>
 
-            <dl className="mt-4 space-y-2 border-t border-noir-200 pt-4 text-sm">
+            <dl className="mt-4 space-y-2 border-t border-neutral-200 pt-4 text-sm">
               <div className="flex justify-between">
-                <dt className="text-noir-500">{t('goods')}</dt>
-                <dd className="text-noir-900">{formatMoney(cart.totals.grandTotal, locale)}</dd>
+                <dt className="text-neutral-500">{t('goods')}</dt>
+                <dd className="text-neutral-900">{formatMoney(cart.totals.grandTotal, locale)}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-noir-500">{t('shipping')}</dt>
-                <dd className="text-noir-400">{t('shippingByCity')}</dd>
+                <dt className="text-neutral-500">{t('shipping')}</dt>
+                <dd className="text-neutral-400">{t('shippingByCity')}</dd>
               </div>
               {selectedMethod && selectedMethod.fee > 0 ? (
                 <div className="flex justify-between">
-                  <dt className="text-noir-500">
+                  <dt className="text-neutral-500">
                     {locale === 'ur' ? selectedMethod.labelUr : selectedMethod.labelEn}
                   </dt>
-                  <dd className="text-noir-900">+{formatMoney(selectedMethod.fee, locale)}</dd>
+                  <dd className="text-neutral-900">+{formatMoney(selectedMethod.fee, locale)}</dd>
                 </div>
               ) : null}
             </dl>
 
-            <p className="mt-3 text-xs text-noir-400">{t('finalTotalNote')}</p>
+            <p className="mt-3 text-xs text-neutral-400">{t('finalTotalNote')}</p>
           </section>
         </div>
       ),
@@ -416,7 +416,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="container-page pb-28 pt-6 font-display sm:pt-8 md:pb-8">
-      <h1 className="text-2xl font-semibold tracking-tight text-noir-900 sm:text-3xl">
+      <h1 className="text-2xl font-semibold tracking-tight text-neutral-900 sm:text-3xl">
         {t('title')}
       </h1>
 
@@ -427,7 +427,7 @@ export default function CheckoutPage() {
           submitLabel={busy ? t('placing') : t('placeOrder')}
           submitBusy={busy}
           submitDisabled={busy || !method}
-          accentClassName="bg-noir-900 text-white"
+          accentClassName="bg-neutral-900 text-white"
           backLabel={t('back')}
           nextLabel={t('next')}
           error={
@@ -483,12 +483,12 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-noir-500">
+      <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-neutral-500">
         {label}
         {required ? <span className="text-red-600"> *</span> : null}
       </span>
       {children}
-      {hint ? <span className="mt-1 block text-xs text-noir-400">{hint}</span> : null}
+      {hint ? <span className="mt-1 block text-xs text-neutral-400">{hint}</span> : null}
     </label>
   );
 }

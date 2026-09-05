@@ -3,11 +3,12 @@
 import type { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { Link } from '@/i18n/navigation';
 import { useCart } from './cart-provider';
 import { useCustomerSession } from './customer-session';
 import { useWishlist } from '@/lib/wishlist';
+import { ROUTES } from '@/constants/routes';
 
 /**
  * Floating pill bottom-tab-bar, mobile-only (hidden at md: and above, where
@@ -45,14 +46,14 @@ export function BottomNav() {
     >
       <div
         dir="ltr"
-        className="inline-flex items-center gap-1 rounded-full bg-noir-700 px-2 py-2 shadow-lg shadow-noir-900/30"
+        className="inline-flex items-center gap-1 rounded-full bg-neutral-700 px-2 py-2 shadow-lg shadow-neutral-900/30"
       >
         <TabLink href="/" label={t('home')} active={cleanPath === '/'}>
           <HomeIcon />
         </TabLink>
 
         <TabLink
-          href="/cart"
+          href={ROUTES.storefront.cart}
           label={t('cart')}
           active={cleanPath === '/cart'}
           badge={!cartLoading && cartCount > 0 ? (cartCount > 99 ? '99+' : cartCount) : null}
@@ -61,7 +62,7 @@ export function BottomNav() {
         </TabLink>
 
         <TabLink
-          href="/wishlist"
+          href={ROUTES.storefront.wishlist}
           label={t('wishlist')}
           active={cleanPath === '/wishlist'}
           badge={wishlistCount > 0 ? (wishlistCount > 99 ? '99+' : wishlistCount) : null}
@@ -95,14 +96,14 @@ function TabLink({
       href={href}
       aria-label={label}
       aria-current={active ? 'page' : undefined}
-      className={clsx(
+      className={cn(
         'relative flex h-12 w-12 items-center justify-center rounded-full transition-colors duration-200',
         active ? 'text-white' : 'text-white/55 hover:text-white/85'
       )}
     >
       {children}
       {badge ? (
-        <span className="absolute -top-1 end-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-white px-1 text-[10px] font-bold leading-none text-noir-900 shadow-sm">
+        <span className="absolute -top-1 end-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-white px-1 text-[10px] font-bold leading-none text-neutral-900 shadow-sm">
           {badge}
         </span>
       ) : null}

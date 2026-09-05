@@ -2,10 +2,10 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { formatMoney, ORDER_STATUSES } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
-import type { PaginatedResponse } from '@/lib/api-types';
+import type { PaginatedResponse } from '@/types/api';
 
 interface AdminOrder {
   id: string;
@@ -104,8 +104,8 @@ export default function AdminOrdersPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-ink">Orders</h1>
-      <p className="mb-6 text-sm text-ink/60">
+      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Orders</h1>
+      <p className="mb-6 text-sm text-neutral-900/60">
         Confirm, prepare and dispatch. Cancelling an order puts its stock back.
       </p>
 
@@ -146,7 +146,7 @@ export default function AdminOrdersPage() {
       <div className="card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="border-b border-sand-200 bg-sand-50">
+            <thead className="border-b border-neutral-100 bg-neutral-50">
               <tr>
                 <Th>Order</Th>
                 <Th>Customer</Th>
@@ -156,47 +156,47 @@ export default function AdminOrdersPage() {
                 <Th />
               </tr>
             </thead>
-            <tbody className="divide-y divide-sand-100">
+            <tbody className="divide-y divide-white">
               {!orders ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-ink/50">
+                  <td colSpan={6} className="px-4 py-8 text-center text-neutral-900/50">
                     Loading…
                   </td>
                 </tr>
               ) : orders.data.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-ink/50">
+                  <td colSpan={6} className="px-4 py-8 text-center text-neutral-900/50">
                     No orders match those filters.
                   </td>
                 </tr>
               ) : (
                 orders.data.map((order) => (
-                  <tr key={order.id} className="hover:bg-sand-50">
+                  <tr key={order.id} className="hover:bg-neutral-50">
                     <td className="px-4 py-3">
                       <Link
                         href={`/admin/orders/${order.id}`}
-                        className="font-medium text-ink hover:text-brand-700"
+                        className="font-medium text-neutral-900 hover:text-accent-hover"
                       >
                         {order.number}
                       </Link>
-                      <p className="text-xs text-ink/40">
+                      <p className="text-xs text-neutral-900/40">
                         {new Date(order.placedAt).toLocaleDateString('en-PK')}
                       </p>
                     </td>
                     <td className="px-4 py-3">
-                      <p className="text-ink">{order.guestName ?? '—'}</p>
-                      <p className="text-xs text-ink/40">
+                      <p className="text-neutral-900">{order.guestName ?? '—'}</p>
+                      <p className="text-xs text-neutral-900/40">
                         {order.guestPhone} · {order.shippingAddress.city}
                       </p>
                     </td>
                     <td className="px-4 py-3">
                       {order.payments.map((payment) => (
                         <p key={payment.id} className="text-xs">
-                          <span className="text-ink/70">{payment.provider}</span>
+                          <span className="text-neutral-900/70">{payment.provider}</span>
                           <span
-                            className={clsx(
+                            className={cn(
                               'ms-1 font-medium',
-                              payment.status === 'PAID' ? 'text-brand-700' : 'text-gold',
+                              payment.status === 'PAID' ? 'text-accent-hover' : 'text-amber-600',
                             )}
                           >
                             {payment.status.toLowerCase().replace(/_/g, ' ')}
@@ -207,7 +207,7 @@ export default function AdminOrdersPage() {
                     <td className="px-4 py-3">
                       <StatusBadge status={order.status} />
                     </td>
-                    <td className="px-4 py-3 text-end tabular-nums text-ink">
+                    <td className="px-4 py-3 text-end tabular-nums text-neutral-900">
                       {formatMoney(order.grandTotal)}
                     </td>
                     <td className="px-4 py-3 text-end">
@@ -218,11 +218,11 @@ export default function AdminOrdersPage() {
                             type="button"
                             disabled={busy}
                             onClick={() => void advance(order, next)}
-                            className={clsx(
+                            className={cn(
                               'rounded px-2 py-1 text-xs',
                               next === 'CANCELLED' || next === 'RETURNED'
                                 ? 'text-red-700 hover:bg-red-50'
-                                : 'text-brand-700 hover:bg-brand-50',
+                                : 'text-accent-hover hover:bg-neutral-50',
                             )}
                           >
                             {label(next)}
@@ -233,7 +233,7 @@ export default function AdminOrdersPage() {
                             type="button"
                             disabled={busy}
                             onClick={() => void addTracking(order)}
-                            className="rounded px-2 py-1 text-xs text-ink/60 hover:bg-sand-100"
+                            className="rounded px-2 py-1 text-xs text-neutral-900/60 hover:bg-white"
                           >
                             Tracking
                           </button>
@@ -248,7 +248,7 @@ export default function AdminOrdersPage() {
         </div>
 
         {orders && orders.meta.totalPages > 1 ? (
-          <div className="flex items-center justify-between border-t border-sand-200 px-4 py-3 text-sm">
+          <div className="flex items-center justify-between border-t border-neutral-100 px-4 py-3 text-sm">
             <button
               type="button"
               className="btn-ghost"
@@ -257,7 +257,7 @@ export default function AdminOrdersPage() {
             >
               Previous
             </button>
-            <span className="text-ink/60">
+            <span className="text-neutral-900/60">
               Page {orders.meta.page} of {orders.meta.totalPages} · {orders.meta.total} orders
             </span>
             <button
@@ -283,8 +283,8 @@ function Th({ children, className }: { children?: React.ReactNode; className?: s
   return (
     <th
       scope="col"
-      className={clsx(
-        'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-ink/50',
+      className={cn(
+        'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50',
         className,
       )}
     >
@@ -296,14 +296,14 @@ function Th({ children, className }: { children?: React.ReactNode; className?: s
 function StatusBadge({ status }: { status: string }) {
   return (
     <span
-      className={clsx(
+      className={cn(
         'rounded px-2 py-0.5 text-xs font-medium',
-        status === 'DELIVERED' && 'bg-brand-100 text-brand-800',
+        status === 'DELIVERED' && 'bg-neutral-100 text-accent-hover',
         status === 'CANCELLED' && 'bg-red-50 text-red-700',
         status === 'RETURNED' && 'bg-red-50 text-red-700',
-        status === 'PENDING' && 'bg-sand-100 text-ink/60',
+        status === 'PENDING' && 'bg-white text-neutral-900/60',
         !['DELIVERED', 'CANCELLED', 'RETURNED', 'PENDING'].includes(status) &&
-          'bg-brand-50 text-brand-700',
+          'bg-neutral-50 text-accent-hover',
       )}
     >
       {label(status)}

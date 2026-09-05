@@ -1,15 +1,18 @@
 'use client';
 
+import { THEME_COLORS } from '@yaseen/shared';
+
 /**
  * Stepped conversion funnel: each stage's bar narrower than the last, width
  * encoding its count against the largest stage. Matches sales-chart.tsx's
- * idiom — inline SVG, a single brand-teal accent, minimal direct labels.
+ * idiom — inline SVG, a single accent-teal fill (from THEME_COLORS, since SVG
+ * can't take a Tailwind class), minimal direct labels.
  *
  * The count and conversion percentage are drawn above the bar rather than
  * inside it, so a near-zero final stage never has to carry its own
  * (illegibly cramped) label.
  */
-const FILL = '#0f8fa3';
+const FILL = THEME_COLORS.accent.DEFAULT;
 
 const WIDTH = 320;
 const ROW_HEIGHT = 52;
@@ -25,7 +28,7 @@ export interface FunnelStage {
 export function FunnelChart({ stages }: { stages: FunnelStage[] }) {
   const allZero = stages.every((stage) => stage.value === 0);
   if (allZero) {
-    return <p className="p-8 text-center text-sm text-ink/50">No visitor activity yet.</p>;
+    return <p className="p-8 text-center text-sm text-neutral-900/50">No visitor activity yet.</p>;
   }
 
   const max = Math.max(...stages.map((stage) => stage.value), 1);
@@ -42,7 +45,7 @@ export function FunnelChart({ stages }: { stages: FunnelStage[] }) {
 
         return (
           <g key={stage.label}>
-            <text x={0} y={rowTop + LABEL_Y_OFFSET} textAnchor="start" fontSize={12} className="fill-ink">
+            <text x={0} y={rowTop + LABEL_Y_OFFSET} textAnchor="start" fontSize={12} className="fill-neutral-900">
               {stage.label}
             </text>
             <text
@@ -51,11 +54,11 @@ export function FunnelChart({ stages }: { stages: FunnelStage[] }) {
               textAnchor="end"
               fontSize={12}
               fontWeight={600}
-              className="fill-ink"
+              className="fill-neutral-900"
             >
               {stage.value.toLocaleString('en-PK')}
               {conversion !== null ? (
-                <tspan className="fill-ink/50" fontWeight={400}>
+                <tspan className="fill-neutral-900/50" fontWeight={400}>
                   {' '}
                   · {conversion}%
                 </tspan>

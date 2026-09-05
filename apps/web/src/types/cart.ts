@@ -1,4 +1,4 @@
-import type { MeasurementFieldRow } from './api-types';
+import type { MeasurementFieldRow } from '@/types/api';
 
 /** Shapes returned by the cart endpoints. Mirrors CartView in apps/api. */
 

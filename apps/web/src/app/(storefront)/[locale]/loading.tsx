@@ -2,7 +2,7 @@ export default function Loading() {
   return (
     <div className="animate-fadeIn">
       {/* Hero section skeleton */}
-      <section className="border-b border-sand-200 bg-gradient-to-b from-brand-50 to-sand-50">
+      <section className="border-b border-neutral-100 bg-gradient-to-b from-neutral-50 to-neutral-50">
         <div className="container-page py-12 sm:py-20 lg:py-32">
           <div className="max-w-2xl">
             <div className="skeleton h-12 w-3/4 rounded-lg mb-4" />
@@ -31,7 +31,7 @@ export default function Loading() {
         <div className="skeleton h-6 w-32 rounded-lg mb-6" />
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="flex flex-col overflow-hidden rounded-lg border border-sand-200 bg-white">
+            <div key={i} className="flex flex-col overflow-hidden rounded-lg border border-neutral-100 bg-white">
               <div className="skeleton aspect-square" />
               <div className="flex-1 space-y-2 p-4">
                 <div className="skeleton h-4 w-full rounded" />
@@ -44,7 +44,7 @@ export default function Loading() {
       </section>
 
       {/* How it works skeleton */}
-      <section className="border-y border-sand-200 bg-white">
+      <section className="border-y border-neutral-100 bg-white">
         <div className="container-page py-12">
           <div className="skeleton h-6 w-32 rounded-lg mb-6" />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

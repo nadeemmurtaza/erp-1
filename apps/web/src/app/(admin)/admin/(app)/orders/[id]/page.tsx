@@ -2,9 +2,10 @@
 
 import { use, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { formatMoney } from '@yaseen/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { ROUTES } from '@/constants/routes';
 
 interface OrderItem {
   id: string;
@@ -193,7 +194,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
   }
 
   if (busy && !order) {
-    return <p className="p-4 text-sm text-ink/50">Loading order…</p>;
+    return <p className="p-4 text-sm text-neutral-900/50">Loading order…</p>;
   }
 
   if (error && !order) {
@@ -214,17 +215,17 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
 
   return (
     <>
-      <Link href="/admin/orders" className="mb-4 inline-block text-sm text-ink/60 hover:text-ink">
+      <Link href={ROUTES.admin.orders} className="mb-4 inline-block text-sm text-neutral-900/60 hover:text-neutral-900">
         ← Orders
       </Link>
 
       <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
         <div>
           <div className="mb-1 flex items-center gap-3">
-            <h1 className="text-xl font-semibold text-ink">{order.number}</h1>
+            <h1 className="text-xl font-semibold text-neutral-900">{order.number}</h1>
             <StatusBadge status={order.status} />
           </div>
-          <p className="text-sm text-ink/60">
+          <p className="text-sm text-neutral-900/60">
             {order.guestName ?? '—'} · {order.guestPhone ?? '—'} · Placed{' '}
             {new Date(order.placedAt).toLocaleString('en-PK')}
           </p>
@@ -237,7 +238,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
               type="button"
               disabled={busy}
               onClick={() => void advance(next)}
-              className={clsx(
+              className={cn(
                 'rounded px-3 py-1.5 text-sm font-medium',
                 next === 'CANCELLED' || next === 'RETURNED'
                   ? 'text-red-700 hover:bg-red-50'
@@ -264,36 +265,36 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
           <section className="card overflow-hidden">
-            <h2 className="border-b border-sand-200 bg-sand-50 px-4 py-3 text-sm font-semibold text-ink">
+            <h2 className="border-b border-neutral-100 bg-neutral-50 px-4 py-3 text-sm font-semibold text-neutral-900">
               Items
             </h2>
-            <ul className="divide-y divide-sand-100">
+            <ul className="divide-y divide-white">
               {order.items.map((item) => (
                 <li key={item.id} className="p-4">
                   <div className="flex justify-between gap-4">
                     <div className="min-w-0">
-                      <p className="text-sm font-medium text-ink">{item.nameEn}</p>
-                      <p className="text-xs text-ink/50">
+                      <p className="text-sm font-medium text-neutral-900">{item.nameEn}</p>
+                      <p className="text-xs text-neutral-900/50">
                         {[item.variantLabel, item.sku].filter(Boolean).join(' · ')} × {item.quantity}
                       </p>
                     </div>
-                    <p className="shrink-0 text-sm font-medium text-ink">{formatMoney(item.lineTotal)}</p>
+                    <p className="shrink-0 text-sm font-medium text-neutral-900">{formatMoney(item.lineTotal)}</p>
                   </div>
 
                   {item.stitchingServiceName ? (
-                    <div className="mt-2 rounded-md bg-brand-50 p-2.5 text-xs">
-                      <p className="font-medium text-brand-800">
+                    <div className="mt-2 rounded-md bg-neutral-50 p-2.5 text-xs">
+                      <p className="font-medium text-accent-hover">
                         {item.stitchingServiceName} · {formatMoney(item.stitchingFeeUnit)}
                       </p>
                       {item.optionsSnapshot?.length ? (
-                        <p className="mt-1 text-ink/70">
+                        <p className="mt-1 text-neutral-900/70">
                           {item.optionsSnapshot
                             .map((option) => `${option.groupLabelEn}: ${option.labelEn}`)
                             .join(' · ')}
                         </p>
                       ) : null}
                       {item.measurementSnapshot ? (
-                        <p className="mt-1 text-ink/70">
+                        <p className="mt-1 text-neutral-900/70">
                           Measurements: {item.measurementSnapshot.label} —{' '}
                           {Object.entries(item.measurementSnapshot.values)
                             .map(([key, value]) => `${key} ${value}"`)
@@ -301,7 +302,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                         </p>
                       ) : null}
                       {item.stitchingJob ? (
-                        <p className="mt-1 text-ink/70">
+                        <p className="mt-1 text-neutral-900/70">
                           {item.stitchingJob.number} · {label(item.stitchingJob.stage)}
                           {item.stitchingJob.dueAt
                             ? ` · due ${new Date(item.stitchingJob.dueAt).toLocaleDateString('en-PK')}`
@@ -316,17 +317,17 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
           </section>
 
           <section className="card p-4">
-            <h2 className="text-sm font-semibold text-ink">History</h2>
+            <h2 className="text-sm font-semibold text-neutral-900">History</h2>
             <ol className="mt-3 space-y-3">
               {order.statusEvents.map((event, index) => (
                 <li key={index} className="flex gap-3 text-sm">
-                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-brand-600" />
+                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-accent-hover" />
                   <span>
-                    <span className="font-medium text-ink">{label(event.toStatus)}</span>
-                    <span className="ms-2 text-xs text-ink/40">
+                    <span className="font-medium text-neutral-900">{label(event.toStatus)}</span>
+                    <span className="ms-2 text-xs text-neutral-900/40">
                       {new Date(event.createdAt).toLocaleString('en-PK')}
                     </span>
-                    {event.note ? <span className="block text-xs text-ink/60">{event.note}</span> : null}
+                    {event.note ? <span className="block text-xs text-neutral-900/60">{event.note}</span> : null}
                   </span>
                 </li>
               ))}
@@ -335,13 +336,13 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
 
           {order.shipments.length > 0 ? (
             <section className="card p-4">
-              <h2 className="text-sm font-semibold text-ink">Shipments</h2>
-              <ul className="mt-2 space-y-1 text-sm text-ink/70">
+              <h2 className="text-sm font-semibold text-neutral-900">Shipments</h2>
+              <ul className="mt-2 space-y-1 text-sm text-neutral-900/70">
                 {order.shipments.map((shipment) => (
                   <li key={shipment.id}>
                     {shipment.courier.toUpperCase()}
                     {shipment.trackingNumber ? ` · ${shipment.trackingNumber}` : ''}
-                    <span className="ms-2 text-xs text-ink/40">
+                    <span className="ms-2 text-xs text-neutral-900/40">
                       {new Date(shipment.createdAt).toLocaleString('en-PK')}
                     </span>
                   </li>
@@ -354,20 +355,20 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
             <section className="card space-y-2 p-4 text-sm">
               {order.customerNote ? (
                 <p>
-                  <span className="font-medium text-ink">Customer note: </span>
-                  <span className="text-ink/70">{order.customerNote}</span>
+                  <span className="font-medium text-neutral-900">Customer note: </span>
+                  <span className="text-neutral-900/70">{order.customerNote}</span>
                 </p>
               ) : null}
               {order.staffNote ? (
                 <p>
-                  <span className="font-medium text-ink">Staff note: </span>
-                  <span className="text-ink/70">{order.staffNote}</span>
+                  <span className="font-medium text-neutral-900">Staff note: </span>
+                  <span className="text-neutral-900/70">{order.staffNote}</span>
                 </p>
               ) : null}
               {order.cancelReason ? (
                 <p>
                   <span className="font-medium text-red-700">Cancellation reason: </span>
-                  <span className="text-ink/70">{order.cancelReason}</span>
+                  <span className="text-neutral-900/70">{order.cancelReason}</span>
                 </p>
               ) : null}
             </section>
@@ -376,7 +377,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
 
         <div className="space-y-6">
           <section className="card p-6">
-            <h2 className="mb-4 font-medium text-ink">Summary</h2>
+            <h2 className="mb-4 font-medium text-neutral-900">Summary</h2>
             <dl className="space-y-2 text-sm">
               <Row label="Items" value={formatMoney(order.itemsSubtotal)} />
               {order.stitchingSubtotal > 0 ? (
@@ -395,45 +396,45 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
               {order.codFee > 0 ? <Row label="COD fee" value={formatMoney(order.codFee)} /> : null}
               {order.taxAmount > 0 ? <Row label="Tax" value={formatMoney(order.taxAmount)} /> : null}
             </dl>
-            <div className="mt-3 flex justify-between border-t border-sand-200 pt-3">
-              <span className="text-sm font-medium text-ink">Total</span>
-              <span className="text-lg font-semibold text-ink">{formatMoney(order.grandTotal)}</span>
+            <div className="mt-3 flex justify-between border-t border-neutral-100 pt-3">
+              <span className="text-sm font-medium text-neutral-900">Total</span>
+              <span className="text-lg font-semibold text-neutral-900">{formatMoney(order.grandTotal)}</span>
             </div>
           </section>
 
           <section className="card p-6">
-            <h2 className="mb-4 font-medium text-ink">Payments</h2>
+            <h2 className="mb-4 font-medium text-neutral-900">Payments</h2>
             <ul className="space-y-4">
               {order.payments.map((payment) => (
-                <li key={payment.id} className="border-b border-sand-100 pb-4 last:border-0 last:pb-0">
+                <li key={payment.id} className="border-b border-white pb-4 last:border-0 last:pb-0">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="font-medium text-ink">{payment.provider}</span>
+                    <span className="font-medium text-neutral-900">{payment.provider}</span>
                     <span
-                      className={clsx(
+                      className={cn(
                         'rounded px-2 py-0.5 text-xs font-medium',
-                        payment.status === 'PAID' && 'bg-brand-100 text-brand-800',
-                        payment.status === 'REFUNDED' && 'bg-sand-100 text-ink/60',
+                        payment.status === 'PAID' && 'bg-neutral-100 text-accent-hover',
+                        payment.status === 'REFUNDED' && 'bg-white text-neutral-900/60',
                         payment.status === 'FAILED' && 'bg-red-50 text-red-700',
                         !['PAID', 'REFUNDED', 'FAILED'].includes(payment.status) &&
-                          'bg-gold/20 text-gold',
+                          'bg-amber-600/20 text-amber-600',
                       )}
                     >
                       {payment.status.toLowerCase().replace(/_/g, ' ')}
                     </span>
                   </div>
-                  <p className="mt-1 text-xs text-ink/60">{formatMoney(payment.amount)}</p>
+                  <p className="mt-1 text-xs text-neutral-900/60">{formatMoney(payment.amount)}</p>
                   {payment.reference ? (
-                    <p className="text-xs text-ink/40">Ref {payment.reference}</p>
+                    <p className="text-xs text-neutral-900/40">Ref {payment.reference}</p>
                   ) : null}
                   {payment.providerRef ? (
-                    <p className="text-xs text-ink/40">Gateway ref {payment.providerRef}</p>
+                    <p className="text-xs text-neutral-900/40">Gateway ref {payment.providerRef}</p>
                   ) : null}
                   {payment.receiptUrl ? (
                     <a
                       href={payment.receiptUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-xs text-brand-700 hover:underline"
+                      className="text-xs text-accent-hover hover:underline"
                     >
                       View receipt
                     </a>
@@ -442,7 +443,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                     <p className="text-xs text-red-700">{payment.failureReason}</p>
                   ) : null}
                   {payment.refundAmount ? (
-                    <p className="text-xs text-ink/60">
+                    <p className="text-xs text-neutral-900/60">
                       Refunded {formatMoney(payment.refundAmount)}
                       {payment.refundedAt
                         ? ` on ${new Date(payment.refundedAt).toLocaleDateString('en-PK')}`
@@ -457,7 +458,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                           type="button"
                           disabled={busy}
                           onClick={() => void approvePayment(payment)}
-                          className="rounded px-2 py-1 text-xs font-medium text-brand-700 hover:bg-brand-50"
+                          className="rounded px-2 py-1 text-xs font-medium text-accent-hover hover:bg-neutral-50"
                         >
                           Approve
                         </button>
@@ -480,8 +481,8 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
           </section>
 
           <section className="card p-6">
-            <h2 className="mb-2 font-medium text-ink">Delivering to</h2>
-            <address className="text-sm not-italic text-ink/70">
+            <h2 className="mb-2 font-medium text-neutral-900">Delivering to</h2>
+            <address className="text-sm not-italic text-neutral-900/70">
               {order.shippingAddress.fullName}
               <br />
               {order.shippingAddress.line1}
@@ -510,14 +511,14 @@ function label(status: string): string {
 function StatusBadge({ status }: { status: string }) {
   return (
     <span
-      className={clsx(
+      className={cn(
         'rounded px-2 py-0.5 text-xs font-medium',
-        status === 'DELIVERED' && 'bg-brand-100 text-brand-800',
+        status === 'DELIVERED' && 'bg-neutral-100 text-accent-hover',
         status === 'CANCELLED' && 'bg-red-50 text-red-700',
         status === 'RETURNED' && 'bg-red-50 text-red-700',
-        status === 'PENDING' && 'bg-sand-100 text-ink/60',
+        status === 'PENDING' && 'bg-white text-neutral-900/60',
         !['DELIVERED', 'CANCELLED', 'RETURNED', 'PENDING'].includes(status) &&
-          'bg-brand-50 text-brand-700',
+          'bg-neutral-50 text-accent-hover',
       )}
     >
       {label(status)}
@@ -528,8 +529,8 @@ function StatusBadge({ status }: { status: string }) {
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-3">
-      <dt className="text-ink/60">{label}</dt>
-      <dd className="text-end text-ink">{value}</dd>
+      <dt className="text-neutral-900/60">{label}</dt>
+      <dd className="text-end text-neutral-900">{value}</dd>
     </div>
   );
 }

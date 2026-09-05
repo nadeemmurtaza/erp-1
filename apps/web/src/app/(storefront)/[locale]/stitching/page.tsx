@@ -5,9 +5,9 @@ import { useEffect, useState } from 'react';
 import { validateMeasurements, type Locale } from '@yaseen/shared';
 import { useRouter } from '@/i18n/navigation';
 import { API_URL } from '@/lib/api';
-import type { GarmentType } from '@/lib/api-types';
+import type { GarmentType } from '@/types/api';
 import { getCustomerToken } from '@/lib/cart-client';
-import type { MeasurementProfileSummary } from '@/lib/cart-types';
+import type { MeasurementProfileSummary } from '@/types/cart';
 
 interface GarmentDraft {
   /** Local key so React can track rows the customer adds and removes. */
@@ -171,8 +171,8 @@ export default function BookStitchingPage() {
 
   return (
     <div className="container-page py-8">
-      <h1 className="text-2xl font-semibold text-ink">{t('bookTitle')}</h1>
-      <p className="mt-2 max-w-2xl text-sm text-ink/60">{t('bookIntro')}</p>
+      <h1 className="text-2xl font-semibold text-neutral-900">{t('bookTitle')}</h1>
+      <p className="mt-2 max-w-2xl text-sm text-neutral-900/60">{t('bookIntro')}</p>
 
       <form onSubmit={submit} className="mt-8 grid gap-8 lg:grid-cols-[1fr_22rem]">
         <div className="space-y-4">
@@ -185,7 +185,7 @@ export default function BookStitchingPage() {
             return (
               <section key={garment.uid} className="card p-4">
                 <div className="flex items-center justify-between gap-3">
-                  <h2 className="text-sm font-semibold text-ink">
+                  <h2 className="text-sm font-semibold text-neutral-900">
                     {t('garmentNumber', { number: index + 1 })}
                   </h2>
                   {garments.length > 1 ? (
@@ -250,7 +250,7 @@ export default function BookStitchingPage() {
                     <div className="mt-1 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                       {type.fields.map((field) => (
                         <label key={field.id} className="block text-sm">
-                          <span className="text-ink/70">
+                          <span className="text-neutral-900/70">
                             {locale === 'ur' ? field.labelUr : field.labelEn}
                             {field.required ? ' *' : ''}
                           </span>
@@ -269,7 +269,7 @@ export default function BookStitchingPage() {
                             }
                             className="field-input"
                           />
-                          <span className="text-xs text-ink/40">
+                          <span className="text-xs text-neutral-900/40">
                             {field.unit === 'CM' ? 'cm' : 'in'} · {field.min}–{field.max}
                           </span>
                         </label>
@@ -310,7 +310,7 @@ export default function BookStitchingPage() {
 
         <aside className="space-y-4">
           <section className="card space-y-3 p-4">
-            <h2 className="text-sm font-semibold text-ink">{t('yourDetails')}</h2>
+            <h2 className="text-sm font-semibold text-neutral-900">{t('yourDetails')}</h2>
 
             <label className="block">
               <span className="field-label">{t('name')}</span>
@@ -391,7 +391,7 @@ export default function BookStitchingPage() {
               {busy ? t('booking') : t('book')}
             </button>
 
-            <p className="text-xs text-ink/50">{t('quoteLater')}</p>
+            <p className="text-xs text-neutral-900/50">{t('quoteLater')}</p>
           </section>
         </aside>
       </form>

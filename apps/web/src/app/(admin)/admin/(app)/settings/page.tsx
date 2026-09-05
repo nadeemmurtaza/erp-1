@@ -3,7 +3,7 @@
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { ADMIN_LOCKED_PERMISSIONS, BACK_OFFICE_ROLES, type UserRole } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
-import type { AuditLogEntry, AuditLogPage, PermissionDefinition, RolePermissions } from '@/lib/api-types';
+import type { AuditLogEntry, AuditLogPage, PermissionDefinition, RolePermissions } from '@/types/api';
 
 type Draft = Record<UserRole, Set<string>>;
 
@@ -117,13 +117,13 @@ export default function AdminSettingsPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-ink">Settings</h1>
-      <p className="mb-6 text-sm text-ink/60">
+      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Settings</h1>
+      <p className="mb-6 text-sm text-neutral-900/60">
         What each role can do, and a record of every change made in the back office.
       </p>
 
       <section className="mb-8">
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink/50">
+        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-neutral-900/50">
           Roles &amp; Permissions
         </h2>
 
@@ -134,39 +134,39 @@ export default function AdminSettingsPage() {
         ) : null}
 
         {!draft ? (
-          <p className="text-sm text-ink/50">Loading…</p>
+          <p className="text-sm text-neutral-900/50">Loading…</p>
         ) : (
           <div className="card overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="border-b border-sand-200 bg-sand-50">
+                <thead className="border-b border-neutral-100 bg-neutral-50">
                   <tr>
-                    <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-ink/50">
+                    <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
                       Permission
                     </th>
                     {BACK_OFFICE_ROLES.map((role) => (
                       <th
                         key={role}
-                        className="px-4 py-2 text-center text-xs font-semibold uppercase tracking-wide text-ink/50"
+                        className="px-4 py-2 text-center text-xs font-semibold uppercase tracking-wide text-neutral-900/50"
                       >
                         {role}
                       </th>
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-sand-100">
+                <tbody className="divide-y divide-white">
                   {categories.map(([category, items]) => (
                     <Fragment key={category}>
-                      <tr className="bg-sand-50/60">
-                        <td colSpan={BACK_OFFICE_ROLES.length + 1} className="px-4 py-1.5 text-xs font-semibold text-ink/60">
+                      <tr className="bg-neutral-50/60">
+                        <td colSpan={BACK_OFFICE_ROLES.length + 1} className="px-4 py-1.5 text-xs font-semibold text-neutral-900/60">
                           {category}
                         </td>
                       </tr>
                       {items.map((permission) => (
                         <tr key={permission.id}>
                           <td className="px-4 py-2.5">
-                            <span className="text-ink">{permission.label}</span>
-                            <p className="text-xs text-ink/40">{permission.key}</p>
+                            <span className="text-neutral-900">{permission.label}</span>
+                            <p className="text-xs text-neutral-900/40">{permission.key}</p>
                           </td>
                           {BACK_OFFICE_ROLES.map((role) => {
                             const locked =
@@ -180,7 +180,7 @@ export default function AdminSettingsPage() {
                                   disabled={locked}
                                   title={locked ? 'ADMIN must always keep this permission' : undefined}
                                   onChange={() => toggle(role, permission.key)}
-                                  className="rounded border-sand-300 text-brand-600 focus:ring-brand-500 disabled:opacity-40"
+                                  className="rounded border-neutral-200 text-accent-hover focus:ring-accent disabled:opacity-40"
                                 />
                               </td>
                             );
@@ -193,7 +193,7 @@ export default function AdminSettingsPage() {
               </table>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 border-t border-sand-200 px-4 py-3">
+            <div className="flex flex-wrap items-center gap-3 border-t border-neutral-100 px-4 py-3">
               {BACK_OFFICE_ROLES.map((role) => (
                 <button
                   key={role}
@@ -211,7 +211,7 @@ export default function AdminSettingsPage() {
       </section>
 
       <section>
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink/50">Audit Log</h2>
+        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-neutral-900/50">Audit Log</h2>
 
         <div className="card mb-4 flex flex-wrap items-end gap-3 p-3">
           <label className="block">
@@ -270,7 +270,7 @@ export default function AdminSettingsPage() {
         <div className="card overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="border-b border-sand-200 bg-sand-50">
+              <thead className="border-b border-neutral-100 bg-neutral-50">
                 <tr>
                   <Th>When</Th>
                   <Th>Actor</Th>
@@ -278,16 +278,16 @@ export default function AdminSettingsPage() {
                   <Th>Entity</Th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-sand-100">
+              <tbody className="divide-y divide-white">
                 {!audit ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-ink/50">
+                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/50">
                       Loading…
                     </td>
                   </tr>
                 ) : audit.entries.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-ink/50">
+                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/50">
                       No matching entries.
                     </td>
                   </tr>
@@ -299,7 +299,7 @@ export default function AdminSettingsPage() {
           </div>
 
           {audit && audit.total > audit.perPage ? (
-            <div className="flex items-center justify-between border-t border-sand-200 px-4 py-3 text-sm text-ink/60">
+            <div className="flex items-center justify-between border-t border-neutral-100 px-4 py-3 text-sm text-neutral-900/60">
               <span>
                 {(audit.page - 1) * audit.perPage + 1}–
                 {Math.min(audit.page * audit.perPage, audit.total)} of {audit.total}
@@ -332,7 +332,7 @@ export default function AdminSettingsPage() {
 
 function Th({ children }: { children: React.ReactNode }) {
   return (
-    <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-ink/50">
+    <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
       {children}
     </th>
   );
@@ -344,13 +344,13 @@ function AuditRow({ entry }: { entry: AuditLogEntry }) {
     : '—';
 
   return (
-    <tr className="hover:bg-sand-50">
-      <td className="px-4 py-3 text-ink/70">{new Date(entry.createdAt).toLocaleString('en-PK')}</td>
-      <td className="px-4 py-3 text-ink">{actorName}</td>
-      <td className="px-4 py-3 font-mono text-xs text-ink/80">{entry.action}</td>
-      <td className="px-4 py-3 text-ink/70">
+    <tr className="hover:bg-neutral-50">
+      <td className="px-4 py-3 text-neutral-900/70">{new Date(entry.createdAt).toLocaleString('en-PK')}</td>
+      <td className="px-4 py-3 text-neutral-900">{actorName}</td>
+      <td className="px-4 py-3 font-mono text-xs text-neutral-900/80">{entry.action}</td>
+      <td className="px-4 py-3 text-neutral-900/70">
         {entry.entity}
-        {entry.entityId ? <span className="text-xs text-ink/40"> · {entry.entityId}</span> : null}
+        {entry.entityId ? <span className="text-xs text-neutral-900/40"> · {entry.entityId}</span> : null}
       </td>
     </tr>
   );

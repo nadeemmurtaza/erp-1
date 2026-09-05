@@ -24,6 +24,28 @@
  * Cross-pack work goes through domain events (House Rule 3), one direction:
  * packs subscribe to core.
  *
+ * INDEPENDENCE — every module is independent of every other module, full
+ * stop, not just across packs. DEPTH and DIRECTION above still name the two
+ * ways an import can go wrong; this rule closes the gap they leave open:
+ * neither one restricts a public-surface import between two modules of the
+ * SAME pack (two core modules, or two modules of one sector pack), so
+ * before this rule any core module could freely import any other core
+ * module's .module/.service. A module reaching for another module directly
+ * is exactly the coupling this whole system exists to prevent — it means a
+ * deployment cannot drop, replace, or ship that module on its own anymore.
+ *
+ * KNOWN_MODULE_COUPLINGS is the one exception, and it stays tiny on
+ * purpose: a write that must commit in the SAME database transaction as
+ * the write that caused it (an order's payment record, an order's stock
+ * deduction, an order's tax line, a purchase order's stock receipt).
+ * Decoupling those through an event or an extension point would trade a
+ * correctness guarantee for architectural purity — an eventually-consistent
+ * stock deduction can race a concurrent sale the same way the bug B6
+ * (17-inventory-locations.md) was built to eliminate. Everything else goes
+ * through a domain event or an extension point
+ * (apps/api/src/core/extension-points/) instead of a direct import — see
+ * StockIntakeRegistry for the shape that decoupling takes.
+ *
  * Run by `pnpm lint` at the repo root and by CI. An ESLint plugin could do
  * this, but a short script has no version to keep in step with the linter.
  *
@@ -95,6 +117,32 @@ const KNOWN_VIOLATIONS = new Set([]);
  *     they are one work order, not two.
  */
 const KNOWN_SCHEMA_VIOLATIONS = new Set(['core:CartItemStitchingOption.option -> apparel']);
+
+/**
+ * The four approved exceptions to INDEPENDENCE, above. Each is a write that
+ * must commit in the same database transaction as the write that caused it
+ * — see orders.module.ts and purchasing.service.ts for the transactional
+ * reasoning at each call site. This is NOT a burn-down list the way
+ * KNOWN_VIOLATIONS and KNOWN_SCHEMA_VIOLATIONS are: these four are meant to
+ * stay direct imports permanently, not to be paid off. It still fails the
+ * build on a stale entry, the same as the other two lists, so a removed
+ * import doesn't leave a silent gap in what's enforced.
+ *
+ * Adding a fifth entry needs the same same-transaction justification in the
+ * pull request — "the check was in my way" is not one.
+ */
+const KNOWN_MODULE_COUPLINGS = new Set([
+  'orders -> payments',
+  'orders -> inventory',
+  'orders -> tax',
+  'purchasing -> inventory',
+  // product-admin.service.ts writes stock inside the same tx as creating or
+  // updating a product's variants (create(), syncVariants()) — the
+  // CSV-import path (product-import.service.ts) is NOT transactional and
+  // goes through StockIntakeRegistry instead, so this entry covers only the
+  // transactional call sites.
+  'catalog -> inventory',
+]);
 
 function walk(dir) {
   const entries = [];
@@ -220,6 +268,24 @@ function checkFile(file, ownModule, modules, packs) {
       } else {
         violations.push({ ...where, kind: 'direction', message: direction });
       }
+    } else if (isPublicSurface) {
+      // DIRECTION already forbids core -> pack and pack -> other-pack; this
+      // covers what it leaves open — two modules of the SAME pack.
+      const pair = `${ownModule} -> ${targetModule}`;
+      if (KNOWN_MODULE_COUPLINGS.has(pair)) {
+        seenKnownModuleCouplings.add(pair);
+      } else {
+        violations.push({
+          ...where,
+          kind: 'coupling',
+          message:
+            `the "${ownModule}" module must not import "${targetModule}" directly — every module ` +
+            `must be independent of every other. Publish a domain event, or add an extension point ` +
+            `(see apps/api/src/core/extension-points/, e.g. StockIntakeRegistry). If this write must ` +
+            `commit in the same database transaction as the write that caused it, add ` +
+            `"${pair}" to KNOWN_MODULE_COUPLINGS with that justification.`,
+        });
+      }
     }
   }
 
@@ -229,6 +295,7 @@ function checkFile(file, ownModule, modules, packs) {
 /** Which burn-down entries actually fired this run, so stale ones can be caught. */
 const seenKnownViolations = new Set();
 const seenKnownSchemaViolations = new Set();
+const seenKnownModuleCouplings = new Set();
 
 /**
  * A listed violation that no longer occurs means someone fixed it — the entry
@@ -250,6 +317,16 @@ function checkStaleAllowlist() {
           kind: 'stale',
           message:
             `"${pair}" is listed in KNOWN_SCHEMA_VIOLATIONS but no longer happens. ` +
+            `Delete the entry from scripts/check-module-boundaries.mjs — the list must only shrink.`,
+        })),
+    )
+    .concat(
+      [...KNOWN_MODULE_COUPLINGS]
+        .filter((pair) => !seenKnownModuleCouplings.has(pair))
+        .map((pair) => ({
+          kind: 'stale',
+          message:
+            `"${pair}" is listed in KNOWN_MODULE_COUPLINGS but no longer happens. ` +
             `Delete the entry from scripts/check-module-boundaries.mjs — the list must only shrink.`,
         })),
     );
@@ -400,7 +477,11 @@ function main() {
       .join(', ');
     const debtCount = KNOWN_VIOLATIONS.size + KNOWN_SCHEMA_VIOLATIONS.size;
     const debt = debtCount ? `, ${debtCount} known violation(s) still to pay off` : '';
-    console.log(`Module boundaries OK (${modules.length} module(s) — ${summary}${debt})`);
+    const couplingCount = KNOWN_MODULE_COUPLINGS.size;
+    const coupling = couplingCount
+      ? `, ${couplingCount} approved same-transaction coupling(s)`
+      : '';
+    console.log(`Module boundaries OK (${modules.length} module(s) — ${summary}${debt}${coupling})`);
     return;
   }
 

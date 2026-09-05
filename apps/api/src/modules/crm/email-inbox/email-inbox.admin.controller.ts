@@ -3,7 +3,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { AuthenticatedUser } from '../../../core/auth/auth.constants';
 import { CurrentUser, RequirePermission } from '../../../core/auth/decorators';
 import { EmailInboxService } from './email-inbox.service';
-import { EmailInboxQueryDto, LinkInboundEmailDto } from './email-inbox.dto';
+import { EmailInboxQueryDto, LinkInboundEmailDto, ReplyToInboundEmailDto } from './email-inbox.dto';
 
 /**
  * Support Inbox — replies to order/support mail that the mailbox poller
@@ -42,5 +42,15 @@ export class EmailInboxAdminController {
     @Body() dto: LinkInboundEmailDto,
   ) {
     return this.inbox.link(user.id, id, dto.contactId);
+  }
+
+  @Post(':id/reply')
+  @ApiOperation({ summary: 'Reply from the same mailbox the message arrived at' })
+  reply(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') id: string,
+    @Body() dto: ReplyToInboundEmailDto,
+  ) {
+    return this.inbox.reply(user.id, id, dto.text);
   }
 }

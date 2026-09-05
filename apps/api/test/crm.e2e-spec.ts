@@ -7,6 +7,9 @@ import { AppModule } from '../src/app.module';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
 import { OutboxDispatcher } from '../src/core/events/outbox.dispatcher';
 import { PrismaService } from '../src/core/prisma/prisma.service';
+import { SettingKey } from '../src/core/settings/settings.defaults';
+import { SettingsService } from '../src/core/settings/settings.service';
+import { shopDayKey } from '../src/core/time/shop-time';
 import { CrmService } from '../src/modules/crm/crm.service';
 import { setVariantStock } from './support/stock';
 
@@ -26,6 +29,7 @@ describe('CRM (e2e)', () => {
   let adminToken: string;
   let readyVariantId: string;
   let seededStock = 0;
+  let todayLabel: string;
 
   const PHONE = '03331234567';
   const createdOrderIds: string[] = [];
@@ -72,6 +76,13 @@ describe('CRM (e2e)', () => {
     seededStock = variant.stock;
 
     await setVariantStock(prisma, readyVariantId, 200);
+
+    // The dashboard labels "today" in the shop's timezone (analytics.service.ts),
+    // never UTC — see core/time/shop-time.ts. Matching that here, rather than
+    // `new Date().toISOString()`, is what keeps this assertion correct
+    // regardless of what UTC hour the suite happens to run at.
+    const timeZone = await app.get(SettingsService).get<string>(SettingKey.StoreTimezone);
+    todayLabel = shopDayKey(new Date(), timeZone);
   });
 
   afterAll(async () => {
@@ -404,7 +415,7 @@ describe('CRM (e2e)', () => {
       // One point per day, even on days with no orders.
       expect(body.salesSeries).toHaveLength(30);
       expect(body.salesSeries[0].date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-      expect(body.salesSeries.at(-1).date).toBe(new Date().toISOString().slice(0, 10));
+      expect(body.salesSeries.at(-1).date).toBe(todayLabel);
 
       expect(body.topProducts.length).toBeGreaterThan(0);
       expect(typeof body.needsAttention.pendingOrders).toBe('number');

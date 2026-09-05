@@ -1,0 +1,62 @@
+'use client';
+
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { Link } from '@/i18n/navigation';
+import { unsubscribeFromMarketing } from '@/lib/customer-client';
+
+type Status = 'checking' | 'success' | 'error';
+
+export default function UnsubscribePage() {
+  const params = useSearchParams();
+  const userId = params.get('u') ?? '';
+  const token = params.get('t') ?? '';
+  const [status, setStatus] = useState<Status>(userId && token ? 'checking' : 'error');
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!userId || !token) return;
+
+    let cancelled = false;
+    unsubscribeFromMarketing(userId, token)
+      .then(() => {
+        if (!cancelled) setStatus('success');
+      })
+      .catch((cause) => {
+        if (cancelled) return;
+        setError(cause instanceof Error ? cause.message : 'Could not process this request');
+        setStatus('error');
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [userId, token]);
+
+  return (
+    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12">
+      <div className="w-full max-w-sm text-center">
+        <h1 className="text-2xl font-semibold text-brand-700">Email preferences</h1>
+
+        {status === 'checking' ? (
+          <p className="mt-6 text-sm text-ink/60">Updating your preferences…</p>
+        ) : status === 'success' ? (
+          <p className="mt-6 rounded-md bg-brand-50 px-4 py-3 text-sm text-brand-800">
+            You&rsquo;re unsubscribed from marketing email. Order and account emails still reach
+            you — those aren&rsquo;t marketing.
+          </p>
+        ) : (
+          <p className="mt-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">
+            {error ?? 'This unsubscribe link is missing its details.'}
+          </p>
+        )}
+
+        <div className="mt-6 text-sm text-ink/60">
+          <Link href="/" className="font-medium text-brand-700 hover:underline">
+            Back to the store
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}

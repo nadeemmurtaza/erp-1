@@ -2,6 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../../core/prisma/prisma.service';
 import { EventBusService } from '../../../core/events/event-bus.service';
 import { DomainEvent } from '../../../core/events/domain-events';
+import { EmailChannel } from '../../../core/notifications/email.channel';
 import { paginated, type PaginatedResult } from '../../../core/common/dto/pagination.dto';
 import { CrmService } from '../crm.service';
 import type { InboundEmail, Prisma } from '../../../core/prisma/client';
@@ -19,6 +20,16 @@ export interface IngestedMessage {
 const inboundEmailInclude = {
   contact: { select: { id: true, name: true, phoneE164: true, email: true } },
   emailAccount: { select: { id: true, label: true, purpose: true } },
+  _count: { select: { replies: true } },
+} satisfies Prisma.InboundEmailInclude;
+
+/** get() only — a list row has no reason to carry every reply's full body. */
+const inboundEmailDetailInclude = {
+  ...inboundEmailInclude,
+  replies: {
+    orderBy: { sentAt: 'asc' },
+    include: { actor: { select: { id: true, firstName: true, lastName: true } } },
+  },
 } satisfies Prisma.InboundEmailInclude;
 
 /**
@@ -39,6 +50,7 @@ export class EmailInboxService {
     private readonly prisma: PrismaService,
     private readonly crm: CrmService,
     private readonly eventBus: EventBusService,
+    private readonly emailChannel: EmailChannel,
   ) {}
 
   async ingestMessage(
@@ -131,7 +143,7 @@ export class EmailInboxService {
   async get(id: string) {
     const row = await this.prisma.inboundEmail.findUnique({
       where: { id },
-      include: inboundEmailInclude,
+      include: inboundEmailDetailInclude,
     });
     if (!row) throw new NotFoundException('That message no longer exists.');
     return row;
@@ -158,6 +170,51 @@ export class EmailInboxService {
       });
     });
 
+    return this.get(id);
+  }
+
+  /**
+   * Sends a staff reply over the same mailbox the message arrived at,
+   * threaded back into the customer's existing conversation, and records it
+   * — both as its own InboundEmailReply row (the inbox thread view) and, when
+   * the sender is a known contact, as an Interaction on their timeline
+   * (actorId set = staff-authored, matching how a customer's own inbound
+   * message logs one with actorId null).
+   */
+  async reply(actorId: string, id: string, body: string) {
+    const row = await this.findOrThrow(id);
+
+    const subject = row.subject?.trim()
+      ? /^re:/i.test(row.subject.trim())
+        ? row.subject.trim()
+        : `Re: ${row.subject.trim()}`
+      : 'Re: your message';
+
+    await this.emailChannel.sendReply(row.emailAccountId, {
+      to: row.fromAddress,
+      toName: row.fromName,
+      subject,
+      body,
+      inReplyTo: row.messageId,
+      references: [row.messageId],
+    });
+
+    await this.prisma.$transaction(async (tx) => {
+      await tx.inboundEmailReply.create({ data: { inboundEmailId: id, actorId, body } });
+      if (row.contactId) {
+        await tx.interaction.create({
+          data: {
+            contactId: row.contactId,
+            kind: 'EMAIL',
+            body: `Reply sent:\n\n${body}`,
+            actorId,
+            occurredAt: new Date(),
+          },
+        });
+      }
+    });
+
+    this.logger.log(`Reply sent for inbound email ${id}`);
     return this.get(id);
   }
 

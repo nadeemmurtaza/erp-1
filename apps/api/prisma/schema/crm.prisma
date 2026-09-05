@@ -156,13 +156,32 @@ model InboundEmail {
   interactionId  String?  @unique
   createdAt      DateTime @default(now())
 
-  emailAccount EmailAccount @relation(fields: [emailAccountId], references: [id], onDelete: Cascade)
-  contact      Contact?     @relation(fields: [contactId], references: [id], onDelete: SetNull)
-  lead         Lead?        @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  emailAccount EmailAccount        @relation(fields: [emailAccountId], references: [id], onDelete: Cascade)
+  contact      Contact?            @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  lead         Lead?               @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  replies      InboundEmailReply[]
 
   @@unique([emailAccountId, messageId])
   @@index([contactId])
   @@index([receivedAt])
+}
+
+/// A staff reply sent from the Support Inbox, over the SAME connected
+/// mailbox the original message arrived at (not resolved by purpose — a
+/// reply has to leave from the mailbox the customer is already talking to).
+/// One InboundEmail can have several: the thread continues as long as the
+/// customer keeps replying, ingested as further InboundEmail rows.
+model InboundEmailReply {
+  id             String   @id @default(cuid())
+  inboundEmailId String
+  actorId        String?
+  body           String
+  sentAt         DateTime @default(now())
+
+  inboundEmail InboundEmail @relation(fields: [inboundEmailId], references: [id], onDelete: Cascade)
+  actor        User?        @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([inboundEmailId, sentAt])
 }
 
 model FollowUpTask {

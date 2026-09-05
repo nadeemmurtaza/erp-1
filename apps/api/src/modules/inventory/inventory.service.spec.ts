@@ -3,6 +3,7 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { InventoryService, InsufficientStockError } from './inventory.service';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { AuditService } from '../../core/audit/audit.service';
+import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
 
 /**
  * B6 (17-inventory-locations.md) — the riskiest of the scoped blockers,
@@ -26,6 +27,7 @@ describe('InventoryService — locations (B6)', () => {
       providers: [
         InventoryService,
         PrismaService,
+        StockIntakeRegistry,
         { provide: EventBusService, useValue: { publish: jest.fn() } },
         { provide: AuditService, useValue: { record: jest.fn() } },
       ],

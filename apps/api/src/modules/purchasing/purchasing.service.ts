@@ -2,7 +2,6 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { CreateSupplierDto, UpdateSupplierDto, AddSupplierProductDto } from './dto/supplier.dto';
 import { CreatePurchaseOrderDto, ReceiveGoodsDto } from './dto/purchase-order.dto';
-import { CatalogService } from '../catalog/catalog.service';
 import { InventoryService } from '../inventory/inventory.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { Prisma } from '../../core/prisma/client';
@@ -43,7 +42,6 @@ async function nextGRNNumber(tx: Prisma.TransactionClient): Promise<string> {
 export class PurchasingService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly catalogService: CatalogService,
     private readonly inventoryService: InventoryService,
     private readonly settingsService: SettingsService,
     private readonly events: EventBusService,

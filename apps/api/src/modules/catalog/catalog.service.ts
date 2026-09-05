@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { DEFAULT_LOCALE, type Locale } from '@yaseen/shared';
+import { DEFAULT_LOCALE, pickTranslation, type Locale } from '@yaseen/shared';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { Prisma } from '../../core/prisma/client';
 import { paginated, type PaginatedResult } from '../../core/common/dto/pagination.dto';
@@ -246,18 +246,6 @@ function sortOrder(
     default:
       return [{ featuredRank: 'desc' }, { createdAt: 'desc' }];
   }
-}
-
-/** Falls back to English, then to whatever translation exists. */
-export function pickTranslation<T extends { locale: string }>(
-  translations: T[],
-  locale: string,
-): T | undefined {
-  return (
-    translations.find((row) => row.locale === locale) ??
-    translations.find((row) => row.locale === DEFAULT_LOCALE) ??
-    translations[0]
-  );
 }
 
 export async function localise(

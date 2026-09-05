@@ -8,9 +8,10 @@ import {
 import {
   computeLineItem,
   computeOrderTotals,
-  computeStitchingFee,
   DEFAULT_LOCALE,
   getVariantDisplayLabel,
+  pickTranslation,
+  stitchingFeeFor,
   type Locale,
   type MeasurementValues,
 } from '@yaseen/shared';
@@ -18,7 +19,6 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { Prisma } from '../../core/prisma/client';
-import { pickTranslation } from '../catalog/catalog.service';
 import { CartLineValidatorRegistry } from '../../core/extension-points/cart-line-validator.registry';
 import type { AddCartItemDto, UpdateCartItemDto } from './dto/cart.dto';
 
@@ -96,31 +96,6 @@ export interface CartView {
   };
   /** Lines that cannot be checked out as they stand. */
   issues: string[];
-}
-
-/**
- * What stitching costs for ONE unit of a line.
- *
- * The garment list IS the price list: a stitched line is priced from its
- * garment's `stitchingPrice`, and a STITCHING_SERVICE product only replaces
- * that base when the customer picked one. Option deltas apply either way.
- *
- * Exported because checkout re-prices the cart from scratch, and a second copy
- * of this rule is a second price for the same garment.
- */
-export function stitchingFeeFor(
-  item: {
-    garmentType: { stitchingPrice: number } | null;
-    stitchingService: { basePrice: number } | null;
-  },
-  optionDeltas: number[],
-): number {
-  if (!item.garmentType) return 0;
-
-  return computeStitchingFee({
-    baseFee: item.stitchingService?.basePrice ?? item.garmentType.stitchingPrice,
-    optionDeltas,
-  });
 }
 
 /**

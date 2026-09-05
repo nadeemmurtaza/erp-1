@@ -289,6 +289,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['settings.manage'],
     group: 'settings',
   },
+  {
+    key: 'marketing',
+    label: 'Marketing',
+    href: '/admin/marketing',
+    permissions: ['marketing.manage'],
+    group: 'settings',
+    module: 'marketing',
+  },
 ];
 
 /**

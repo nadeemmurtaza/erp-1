@@ -22,6 +22,11 @@ model User {
   role            UserRole  @default(CUSTOMER)
   isActive        Boolean   @default(true)
   emailVerifiedAt DateTime?
+  /// Set by GET /email/unsubscribe (a one-click, no-login link every
+  /// automated marketing send carries). Checked before any marketing-purpose
+  /// automation (MarketingAutomationCron) sends; never checked for
+  /// transactional mail (order/payment/account), which isn't marketing.
+  marketingEmailOptOut Boolean   @default(false)
   lastLoginAt     DateTime?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
@@ -38,6 +43,7 @@ model User {
   ownedContacts           Contact[]                @relation("ContactOwner")
   ownedLeads              Lead[]                   @relation("LeadOwner")
   interactions            Interaction[]
+  inboundEmailReplies     InboundEmailReply[]
   assignedFollowUps       FollowUpTask[]           @relation("FollowUpAssignee")
   approvedPayments        Payment[]                @relation("PaymentApprover")
   segments                Segment[]

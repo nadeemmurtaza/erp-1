@@ -103,6 +103,7 @@ export class ProductAdminService {
           stitchingAvailable: dto.kind === 'UNSTITCHED' && (dto.stitchingAvailable ?? false),
           garmentTypeId: dto.kind === 'STITCHING_SERVICE' ? (dto.garmentTypeId ?? null) : null,
           featuredRank: dto.featuredRank ?? 0,
+          isConsumable: dto.isConsumable ?? false,
           publishedAt: dto.status === 'ACTIVE' ? new Date() : null,
           translations: {
             create: dto.translations.map((translation) => ({
@@ -191,6 +192,7 @@ export class ProductAdminService {
     if (dto.pieceCount !== undefined) data.pieceCount = dto.pieceCount;
     if (dto.fabricMeters !== undefined) data.fabricMeters = dto.fabricMeters;
     if (dto.featuredRank !== undefined) data.featuredRank = dto.featuredRank;
+    if (dto.isConsumable !== undefined) data.isConsumable = dto.isConsumable;
     if (dto.stitchingAvailable !== undefined) {
       data.stitchingAvailable = kind === 'UNSTITCHED' && dto.stitchingAvailable;
     }

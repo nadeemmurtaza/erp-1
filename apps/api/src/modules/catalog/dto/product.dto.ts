@@ -191,6 +191,13 @@ export class CreateProductDto {
   stitchingAvailable?: boolean;
 
   @ApiPropertyOptional({
+    description: 'A repeat-buy item worth an automated reorder nudge (MarketingAutomationCron).',
+  })
+  @IsOptional()
+  @IsBoolean()
+  isConsumable?: boolean;
+
+  @ApiPropertyOptional({
     type: [String],
     description:
       'UNSTITCHED: garment type ids this fabric can be made into. STITCHED: garment type ids that drive this ready-to-wear product\'s size chart.',

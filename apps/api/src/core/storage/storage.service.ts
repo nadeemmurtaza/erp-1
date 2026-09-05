@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import sharp from 'sharp';
 import { AppConfigService } from '../config/app-config.service';
 import { LocalStorageDriver } from './local-storage.driver';
 import { S3StorageDriver } from './s3-storage.driver';
@@ -11,6 +12,9 @@ const ALLOWED_IMAGE_TYPES = new Set([
   'image/webp',
   'image/avif',
 ]);
+
+/** Matches Next.js's own default WebP quality — a well-tested size/quality balance. */
+const WEBP_QUALITY = 75;
 
 /**
  * Front door for file storage. Callers never touch a driver directly, so
@@ -34,7 +38,12 @@ export class StorageService {
     return this.driver.put(input);
   }
 
-  /** Stores an image after checking its type and size. */
+  /**
+   * Stores an image after checking its type and size, converting it to WebP
+   * first — every image this app serves ends up in one format, smaller than
+   * JPEG/PNG at equal visual quality, which is exactly what Lighthouse's
+   * "serve images in next-gen formats" check (and so, page-speed SEO) rewards.
+   */
   async putImage(input: PutFileInput): Promise<StoredFile> {
     if (!ALLOWED_IMAGE_TYPES.has(input.contentType)) {
       throw new BadRequestException(
@@ -46,7 +55,20 @@ export class StorageService {
         `Image is larger than ${Math.round(MAX_IMAGE_BYTES / 1024 / 1024)}MB.`,
       );
     }
-    return this.driver.put(input);
+
+    let body: Buffer;
+    try {
+      body = await sharp(input.body).rotate().webp({ quality: WEBP_QUALITY }).toBuffer();
+    } catch {
+      throw new BadRequestException('That file is not a valid image.');
+    }
+
+    return this.driver.put({
+      ...input,
+      body,
+      filename: `${input.filename.replace(/\.[^./]+$/, '')}.webp`,
+      contentType: 'image/webp',
+    });
   }
 
   delete(key: string): Promise<void> {

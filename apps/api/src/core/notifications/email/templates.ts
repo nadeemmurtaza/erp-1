@@ -4,6 +4,7 @@ import {
   button,
   detailBlocks,
   divider,
+  footerLink,
   heading,
   itemsTable,
   layout,
@@ -118,6 +119,8 @@ export interface AbandonedCartEmailData {
   /** Email 2 only — the incentive that email 1 doesn't offer. */
   discountCode?: string | null;
   discountLabel?: string | null;
+  /** Per-recipient — built by the sender, not resolved here. Automated marketing mail always carries one. */
+  unsubscribeUrl: string;
 }
 
 export interface AbandonedBrowseEmailData {
@@ -127,6 +130,7 @@ export interface AbandonedBrowseEmailData {
 export interface ReviewRequestEmailData {
   orderNumber: string;
   items: MarketingProduct[];
+  unsubscribeUrl: string;
 }
 
 export interface CrossSellEmailData {
@@ -137,6 +141,7 @@ export interface CrossSellEmailData {
 
 export interface ReplenishmentEmailData {
   product: MarketingProduct;
+  unsubscribeUrl: string;
 }
 
 /**
@@ -584,6 +589,7 @@ function renderAbandonedCartReminder(
     paragraph(t.marketing.abandonedCartReminder.intro, locale),
     button(t.marketing.abandonedCartReminder.cta, data.cartUrl, locale),
     itemsTable(productGrid(data.items), locale),
+    footerLink(t.marketing.unsubscribeLine, t.marketing.unsubscribeCta, data.unsubscribeUrl, locale),
   ].join('\n');
 
   const html = layout({
@@ -625,6 +631,7 @@ function renderAbandonedCartIncentive(
     discountPanel,
     button(t.marketing.abandonedCartIncentive.cta, data.cartUrl, locale),
     itemsTable(productGrid(data.items), locale),
+    footerLink(t.marketing.unsubscribeLine, t.marketing.unsubscribeCta, data.unsubscribeUrl, locale),
   ]
     .filter(Boolean)
     .join('\n');
@@ -677,6 +684,7 @@ function renderReviewRequest(
     paragraph(t.marketing.reviewRequest.intro(data.orderNumber), locale),
     button(t.marketing.reviewRequest.cta, orderUrl(ctx, locale, data.orderNumber), locale),
     itemsTable(productGrid(data.items), locale),
+    footerLink(t.marketing.unsubscribeLine, t.marketing.unsubscribeCta, data.unsubscribeUrl, locale),
   ].join('\n');
 
   const html = layout({
@@ -733,6 +741,7 @@ function renderReplenishmentReminder(
       locale,
     ),
     itemsTable(productGrid([data.product]), locale),
+    footerLink(t.marketing.unsubscribeLine, t.marketing.unsubscribeCta, data.unsubscribeUrl, locale),
   ].join('\n');
 
   const html = layout({

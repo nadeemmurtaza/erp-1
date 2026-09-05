@@ -50,6 +50,20 @@ export const SettingKey = {
   TaxPricingMode: 'tax.pricing_mode',
   /** TaxClass.key used for a variant with no taxClassId of its own. */
   TaxDefaultClass: 'tax.default_class',
+  /**
+   * Off until an owner turns it on — MarketingAutomationCron no-ops entirely
+   * while this is false, the ship-safe default for anything that emails a
+   * customer without them clicking a button first.
+   */
+  MarketingAutomationEnabled: 'marketing.automation_enabled',
+  /** Cart idle time before the first abandoned-cart email. Logged-in users only — see MarketingAutomationCron. */
+  MarketingAbandonedCartReminderHours: 'marketing.abandoned_cart_reminder_hours',
+  /** Idle time AFTER the reminder before the incentive follow-up, if the cart is still not converted. */
+  MarketingAbandonedCartIncentiveHours: 'marketing.abandoned_cart_incentive_hours',
+  /** Days after DELIVERED before the review-request email. */
+  MarketingReviewRequestDays: 'marketing.review_request_days',
+  /** Days after DELIVERED before a Product.isConsumable purchase gets a reorder nudge. One global cadence, not per-product. */
+  MarketingReplenishmentReminderDays: 'marketing.replenishment_reminder_days',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -131,4 +145,10 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.TaxEnabled]: false,
   [SettingKey.TaxPricingMode]: 'EXCLUSIVE',
   [SettingKey.TaxDefaultClass]: 'standard',
+
+  [SettingKey.MarketingAutomationEnabled]: false,
+  [SettingKey.MarketingAbandonedCartReminderHours]: 24,
+  [SettingKey.MarketingAbandonedCartIncentiveHours]: 72,
+  [SettingKey.MarketingReviewRequestDays]: 7,
+  [SettingKey.MarketingReplenishmentReminderDays]: 30,
 };

@@ -17,12 +17,13 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { AuditService } from '../src/core/audit/audit.service';
 import { InventoryService } from '../src/modules/inventory/inventory.service';
 import { PrismaService } from '../src/core/prisma/prisma.service';
+import { StockIntakeRegistry } from '../src/core/extension-points/stock-intake.registry';
 
 const prisma = new PrismaClient();
 const prismaService = prisma as unknown as PrismaService;
 const eventBus = new EventBusService(prismaService, new EventEmitter2());
 const audit = new AuditService(prismaService);
-const inventoryService = new InventoryService(prismaService, audit, eventBus);
+const inventoryService = new InventoryService(prismaService, audit, eventBus, new StockIntakeRegistry());
 
 /**
  * Seeds a working store: staff accounts, garment types with their measurement
@@ -316,7 +317,7 @@ const GARMENT_EXTENSIONS: Array<{
         key: 'slit_height',
         labelEn: 'Slit height',
         labelUr: 'چاک کی اونچائی',
-        min: 0,
+        min: 0.25,
         max: 20,
         required: false,
         order: 11,

@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PurchasingService } from './purchasing.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
-import { CatalogService } from '../catalog/catalog.service';
 import { InventoryService } from '../inventory/inventory.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { EventBusService } from '../../core/events/event-bus.service';
@@ -17,7 +16,6 @@ describe('PurchasingService', () => {
       providers: [
         PurchasingService,
         { provide: PrismaService, useValue: {} },
-        { provide: CatalogService, useValue: {} },
         { provide: InventoryService, useValue: {} },
         { provide: SettingsService, useValue: {} },
         { provide: EventBusService, useValue: {} },

@@ -4,6 +4,7 @@ import { InventoryService } from './inventory.service';
 import { StockCountService } from './stock-count.service';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { AuditService } from '../../core/audit/audit.service';
+import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
 
 describe('StockCountService', () => {
   let service: StockCountService;
@@ -16,6 +17,7 @@ describe('StockCountService', () => {
         StockCountService,
         InventoryService,
         PrismaService,
+        StockIntakeRegistry,
         { provide: EventBusService, useValue: { publish: jest.fn() } },
         { provide: AuditService, useValue: { record: jest.fn() } },
       ],

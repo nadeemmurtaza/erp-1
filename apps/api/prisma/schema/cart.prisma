@@ -10,6 +10,15 @@ model Cart {
   updatedAt DateTime @updatedAt
   expiresAt DateTime
 
+  /// MarketingAutomationCron's dedup flags (marketing.abandoned_cart_reminder,
+  /// then marketing.abandoned_cart_incentive) — logged-in carts only, since a
+  /// guest cart has no email captured until checkout to send either to.
+  /// Placing an order empties CartItem but leaves this row, so these persist
+  /// past a converted cart; the cron's own `items: { some: {} }` filter is
+  /// what actually excludes a converted cart, not these fields.
+  reminderSentAt  DateTime?
+  incentiveSentAt DateTime?
+
   user  User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
   items CartItem[]
 

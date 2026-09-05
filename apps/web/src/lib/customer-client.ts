@@ -120,6 +120,19 @@ export async function verifyEmail(token: string): Promise<void> {
   }
 }
 
+export async function unsubscribeFromMarketing(userId: string, token: string): Promise<void> {
+  const response = await fetch(`${API_URL}/email/unsubscribe`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId, token }),
+  });
+
+  if (!response.ok) {
+    const body = await response.json().catch(() => ({}));
+    throw new ApiError(response.status, messageOf(body) ?? 'Could not process this request', body);
+  }
+}
+
 export async function logoutCustomer(): Promise<void> {
   const refreshToken = localStorage.getItem(REFRESH_KEY);
   clearCustomerSession();

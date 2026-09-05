@@ -2,6 +2,7 @@ import { config } from 'dotenv';
 import { hash } from 'bcryptjs';
 import {
   DEFAULT_GARMENT_TYPES,
+  DEFAULT_LOCALE,
   PERMISSION_CATALOG,
   ROLE_PERMISSION_SEED,
   slugify,
@@ -2399,7 +2400,7 @@ async function seedProducts(
         compareAtPrice: definition.compareAtRupees
           ? toMinor(definition.compareAtRupees)
           : null,
-        brand: 'Yaseen',
+        brandId: await houseBrandId(),
         fabric: definition.fabric,
         season: definition.season,
         tags: definition.tags,
@@ -2849,3 +2850,30 @@ main()
     process.exitCode = 1;
   })
   .finally(() => prisma.$disconnect());
+
+/**
+ * The shop's own label, as a Brand row.
+ *
+ * Products used to carry `brand: 'Yaseen'` as free text. Seeded products now
+ * point at a real brand, so the seeded catalogue exercises the same path the
+ * admin does. Memoised because seedProducts calls it once per product.
+ */
+let houseBrandIdCache: string | null = null;
+async function houseBrandId(): Promise<string> {
+  if (houseBrandIdCache) return houseBrandIdCache;
+
+  const existing = await prisma.brand.findUnique({ where: { slug: 'yaseen' } });
+  if (existing) {
+    houseBrandIdCache = existing.id;
+    return existing.id;
+  }
+
+  const brand = await prisma.brand.create({
+    data: {
+      slug: 'yaseen',
+      translations: { create: [{ locale: DEFAULT_LOCALE, name: 'Yaseen' }] },
+    },
+  });
+  houseBrandIdCache = brand.id;
+  return brand.id;
+}

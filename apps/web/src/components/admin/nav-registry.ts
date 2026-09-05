@@ -187,6 +187,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     module: 'catalog',
   },
   {
+    key: 'brands',
+    label: 'Brands',
+    href: '/admin/brands',
+    permissions: ['catalog.manage'],
+    group: 'catalogue',
+    module: 'catalog',
+  },
+  {
     key: 'garments',
     label: 'Garments & measurements',
     href: '/admin/garments',

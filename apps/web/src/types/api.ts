@@ -124,7 +124,7 @@ export interface AdminProduct {
   categoryId: string | null;
   basePrice: number;
   compareAtPrice: number | null;
-  brand: string | null;
+  brandId: string | null;
   fabric: string | null;
   season: string | null;
   tags: string[];
@@ -153,6 +153,16 @@ export interface AdminCategory {
   isActive: boolean;
   translations: Array<{ locale: Locale; name: string; description: string | null }>;
   _count: { products: number; children: number };
+}
+
+export interface AdminBrand {
+  id: string;
+  slug: string;
+  logoUrl: string | null;
+  order: number;
+  isActive: boolean;
+  translations: Array<{ locale: Locale; name: string; description: string | null }>;
+  _count?: { products: number };
 }
 
 export interface MeasurementFieldRow {

@@ -98,47 +98,92 @@ async function seedPermissions(): Promise<void> {
   }
 }
 
+/**
+ * Upserts a seeded user by EITHER its email or its phone.
+ *
+ * Both columns are unique, and the seed hard-codes a phone per role. Keying
+ * only on email meant that renaming a seeded account — `staff@yaseen.pk` to a
+ * real person's address, say — made the seed look for an email that no longer
+ * exists, try to CREATE the user, and collide on a phone the renamed row
+ * still holds:
+ *
+ *   Unique constraint failed on the fields: (`phone`)
+ *
+ * That is not recoverable by re-running, and it aborts the whole seed, so
+ * every later step (reference data, and on a fresh database the permission
+ * catalog) never runs.
+ *
+ * Matching on either identifier makes it idempotent against a database whose
+ * accounts have since been edited. An existing row keeps its email, phone,
+ * name and password — only `role` is asserted, which is the one thing the
+ * seed is responsible for. Nothing here ever resets a live user's password.
+ */
+async function upsertSeedUser(input: {
+  email: string;
+  phone: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  role: 'ADMIN' | 'STAFF' | 'TAILOR' | 'CUSTOMER';
+  /** CUSTOMER is left alone if it already exists; staff roles are asserted. */
+  assertRole?: boolean;
+}) {
+  const existing = await prisma.user.findFirst({
+    where: { OR: [{ email: input.email }, { phone: input.phone }] },
+  });
+
+  if (existing) {
+    if (!input.assertRole || existing.role === input.role) return existing;
+    return prisma.user.update({
+      where: { id: existing.id },
+      data: { role: input.role },
+    });
+  }
+
+  return prisma.user.create({
+    data: {
+      email: input.email,
+      passwordHash: await hash(input.password, 12),
+      firstName: input.firstName,
+      lastName: input.lastName,
+      role: input.role,
+      phone: input.phone,
+    },
+  });
+}
+
 async function seedUsers() {
   const adminEmail = process.env.SEED_ADMIN_EMAIL ?? 'admin@yaseen.pk';
   const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? 'admin12345';
 
-  const admin = await prisma.user.upsert({
-    where: { email: adminEmail },
-    update: { role: 'ADMIN' },
-    create: {
-      email: adminEmail,
-      passwordHash: await hash(adminPassword, 12),
-      firstName: 'Store',
-      lastName: 'Admin',
-      role: 'ADMIN',
-      phone: '+923001110001',
-    },
+  const admin = await upsertSeedUser({
+    email: adminEmail,
+    phone: '+923001110001',
+    password: adminPassword,
+    firstName: 'Store',
+    lastName: 'Admin',
+    role: 'ADMIN',
+    assertRole: true,
   });
 
-  const staff = await prisma.user.upsert({
-    where: { email: 'staff@yaseen.pk' },
-    update: { role: 'STAFF' },
-    create: {
-      email: 'staff@yaseen.pk',
-      passwordHash: await hash('staff12345', 12),
-      firstName: 'Sana',
-      lastName: 'Iqbal',
-      role: 'STAFF',
-      phone: '+923001110002',
-    },
+  const staff = await upsertSeedUser({
+    email: 'staff@yaseen.pk',
+    phone: '+923001110002',
+    password: 'staff12345',
+    firstName: 'Sana',
+    lastName: 'Iqbal',
+    role: 'STAFF',
+    assertRole: true,
   });
 
-  const tailor = await prisma.user.upsert({
-    where: { email: 'tailor@yaseen.pk' },
-    update: { role: 'TAILOR' },
-    create: {
-      email: 'tailor@yaseen.pk',
-      passwordHash: await hash('tailor12345', 12),
-      firstName: 'Rashid',
-      lastName: 'Master',
-      role: 'TAILOR',
-      phone: '+923001110003',
-    },
+  const tailor = await upsertSeedUser({
+    email: 'tailor@yaseen.pk',
+    phone: '+923001110003',
+    password: 'tailor12345',
+    firstName: 'Rashid',
+    lastName: 'Master',
+    role: 'TAILOR',
+    assertRole: true,
   });
 
   await prisma.tailorProfile.upsert({
@@ -153,17 +198,15 @@ async function seedUsers() {
     },
   });
 
-  const customer = await prisma.user.upsert({
-    where: { email: 'ayesha@example.com' },
-    update: {},
-    create: {
-      email: 'ayesha@example.com',
-      passwordHash: await hash('customer12345', 12),
-      firstName: 'Ayesha',
-      lastName: 'Khan',
-      role: 'CUSTOMER',
-      phone: '+923001234567',
-    },
+  const customer = await upsertSeedUser({
+    email: 'ayesha@example.com',
+    phone: '+923001234567',
+    password: 'customer12345',
+    firstName: 'Ayesha',
+    lastName: 'Khan',
+    role: 'CUSTOMER',
+    // Demo customer: if a real account already holds this address or number,
+    // leave its role alone rather than demoting somebody to CUSTOMER.
   });
 
   await prisma.address.createMany({

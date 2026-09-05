@@ -148,18 +148,30 @@ docker compose -f docker-compose.caddy.yml up -d
 
 # 2. Env files — copy the templates and fill in every CHANGE-ME
 cp .env.production.example .env.production
-cp .env.staging.example .env.staging
-nano .env.production   # generate secrets: openssl rand -base64 48 / -base64 32
-nano .env.staging       # use DIFFERENT secrets from production
+nano .env.production   # fill in EVERY value marked CHANGE-ME (see the table below)
 
-# 3. Bring up staging (this is what `main` deploys to)
-docker compose -f docker-compose.staging.yml --env-file .env.staging up -d --build
-
-# 4. Switch to the production branch and bring up production
+# 3. Switch to the production branch and bring up production
 git checkout production
 docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build
 git checkout main   # leave the working tree on main for day-to-day pulls
 ```
+
+There is no staging stack on this VPS any more — preview deployments are
+handled by Coolify (`chore: remove staging stack`). `docker-compose.staging.yml`
+and `.env.staging.example` were removed with it; earlier revisions of this
+guide told you to copy them, which now fails.
+
+### Secrets you must generate, and what breaks if you get them wrong
+
+| Variable | Generate with | If it is missing / changed |
+|---|---|---|
+| `APP_ENCRYPTION_KEY` | `openssl rand -hex 16` (**exactly 32 bytes**) | **The API refuses to boot.** It encrypts stored email-account passwords and signs unsubscribe links, so it must also stay the SAME forever — rotating it makes every already-encrypted value unreadable. |
+| `JWT_ACCESS_SECRET` | `openssl rand -base64 48` | API refuses to boot. Changing it signs everyone out. |
+| `JWT_REFRESH_SECRET` | `openssl rand -base64 48` | Same, and must differ from the access secret. |
+
+The API validates these at startup and exits with the exact command to run,
+so a container that will not come up is worth reading the logs for before
+anything else.
 
 Each `up --build` runs `prisma migrate deploy` automatically as part of the
 api container's startup (`apps/api/Dockerfile`'s `CMD`) — migrations apply
@@ -243,6 +255,28 @@ click in the Actions tab, on top of already requiring CI to pass.
 ---
 
 ## 8. Day-to-day deploys
+
+### Before a deploy that adds an env var — check this first
+
+A release can introduce a variable the API validates at startup. If it is not
+on the server before you merge, the api container starts, fails validation and
+exits, and the deploy looks like it "hung" or rolled back for no reason.
+
+Before promoting, diff the templates against what the server actually has:
+
+```bash
+# on the VPS, in ~/apps/yaseenecom
+git fetch origin
+diff <(grep -oE '^[A-Z_]+' .env.production | sort -u)      <(git show origin/main:.env.production.example | grep -oE '^[A-Z_]+' | sort -u)
+```
+
+Anything listed as only in the template is a variable you need to add to
+`.env.production` **before** the merge. Then restart to pick it up.
+
+**Known for the release currently in flight:** `APP_ENCRYPTION_KEY` is new and
+required (`openssl rand -hex 16`, exactly 32 bytes), and `MODULES` gains
+`marketing` and `tax`.
+
 
 - **Push/merge to `main`** → CI runs → on success, `deploy-staging.yml`
   SSHes in and redeploys `test.yaseen.pk`/`api-test.yaseen.pk` automatically.

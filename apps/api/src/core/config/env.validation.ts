@@ -116,12 +116,41 @@ export const envSchema = z.object({
 
 export type Env = z.infer<typeof envSchema>;
 
+/** A newline, kept as a constant so the hint below stays readable. */
+const NEWLINE = String.fromCharCode(10);
+
+/**
+ * What to actually DO about a missing variable, printed under the failure.
+ *
+ * A container that exits with "APP_ENCRYPTION_KEY: Required" mid-deploy tells
+ * whoever is reading the logs nothing about how to fix it, and the answer is
+ * not guessable: the key must be a specific length and, once data has been
+ * written with it, must never change. One line here is the difference between
+ * a two-minute fix and an outage of unknown length.
+ */
+const SETUP_HINTS: Record<string, string> = {
+  APP_ENCRYPTION_KEY:
+    'Generate with: openssl rand -hex 16   (exactly 32 bytes). Encrypts stored ' +
+    'email-account passwords and signs unsubscribe links, so keep it secret and ' +
+    'NEVER change it once the app has written data - rotating it makes existing ' +
+    'encrypted values unreadable.',
+  JWT_ACCESS_SECRET: 'Generate with: openssl rand -base64 48',
+  JWT_REFRESH_SECRET:
+    'Generate with: openssl rand -base64 48 (must differ from the access secret)',
+  DATABASE_URL: 'Shape: postgresql://USER:PASSWORD@HOST:5432/DBNAME?schema=public',
+};
+
 export function validateEnv(raw: Record<string, unknown>): Env {
   const result = envSchema.safeParse(raw);
 
   if (!result.success) {
     const details = result.error.issues
-      .map((issue) => `  - ${issue.path.join('.')}: ${issue.message}`)
+      .map((issue) => {
+        const name = issue.path.join('.');
+        const hint = SETUP_HINTS[name];
+        const suffix = hint ? NEWLINE + '      ' + hint : '';
+        return `  - ${name}: ${issue.message}${suffix}`;
+      })
       .join('\n');
     throw new Error(`Invalid environment configuration:\n${details}`);
   }

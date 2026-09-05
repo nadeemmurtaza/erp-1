@@ -72,7 +72,7 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
         ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-1.5 text-sm text-neutral-500 hover:text-neutral-900 transition-colors mt-2"
+        className="inline-flex shrink-0 items-center gap-1.5 text-sm text-neutral-500 underline underline-offset-2 transition-colors hover:text-neutral-900"
         aria-haspopup="dialog"
         aria-expanded={open}
       >

@@ -119,15 +119,23 @@ export default function AdminCategoriesPage() {
         <div className="card overflow-hidden">
           <div className="overflow-x-auto">
             <DataTable
-              rows={categories}
-              rowKey={(category) => category.id}
+              rows={asTree(categories)}
+              rowKey={({ category }) => category.id}
               emptyLabel="No categories yet."
               columns={[
                 {
                   header: 'Name',
-                  cell: (category) => (
-                    <>
+                  cell: ({ category, depth }) => (
+                    // Indent by depth, with a leader on nested rows so the
+                    // hierarchy reads at a glance instead of having to be
+                    // inferred from the parent picker.
+                    <div style={{ paddingInlineStart: `${depth * 1.25}rem` }}>
                       <span className="font-medium text-neutral-900">
+                        {depth > 0 ? (
+                          <span aria-hidden className="me-1 text-neutral-900/30">
+                            └
+                          </span>
+                        ) : null}
                         {category.translations.find((t) => t.locale === 'en')?.name ??
                           category.slug}
                       </span>
@@ -135,14 +143,14 @@ export default function AdminCategoriesPage() {
                         {category.slug}
                         {category.isActive ? '' : ' · hidden'}
                       </p>
-                    </>
+                    </div>
                   ),
                 },
                 {
                   header: 'Urdu',
                   muted: true,
                   className: 'font-urdu',
-                  cell: (category) => (
+                  cell: ({ category }) => (
                     <span dir="rtl">
                       {category.translations.find((t) => t.locale === 'ur')?.name ?? '—'}
                     </span>
@@ -153,12 +161,12 @@ export default function AdminCategoriesPage() {
                   align: 'end',
                   numeric: true,
                   muted: true,
-                  cell: (category) => category._count.products,
+                  cell: ({ category }) => category._count.products,
                 },
                 {
                   header: '',
                   align: 'end',
-                  cell: (category) => (
+                  cell: ({ category }) => (
                     <>
                       <button
                         type="button"
@@ -259,4 +267,42 @@ export default function AdminCategoriesPage() {
       </div>
     </>
   );
+}
+
+/**
+ * Flattens the category list into parent-then-children order, carrying a
+ * depth so the table can indent.
+ *
+ * The API returns a flat array ordered by parentId, which renders as one
+ * undifferentiated list — a sub-category looks exactly like a top-level one,
+ * so the tree you built is invisible on the screen where you build it.
+ *
+ * Anything whose parent is missing from the list (deactivated, or filtered
+ * out) is treated as top level rather than dropped, so a category can never
+ * disappear from this table because of its parent.
+ */
+function asTree(categories: AdminCategory[]): Array<{ category: AdminCategory; depth: number }> {
+  const byParent = new Map<string | null, AdminCategory[]>();
+  const ids = new Set(categories.map((category) => category.id));
+
+  for (const category of categories) {
+    const parent = category.parentId && ids.has(category.parentId) ? category.parentId : null;
+    const siblings = byParent.get(parent) ?? [];
+    siblings.push(category);
+    byParent.set(parent, siblings);
+  }
+
+  const rows: Array<{ category: AdminCategory; depth: number }> = [];
+  const walk = (parentId: string | null, depth: number) => {
+    const children = [...(byParent.get(parentId) ?? [])].sort(
+      (a, b) => a.order - b.order || a.slug.localeCompare(b.slug),
+    );
+    for (const category of children) {
+      rows.push({ category, depth });
+      walk(category.id, depth + 1);
+    }
+  };
+  walk(null, 0);
+
+  return rows;
 }

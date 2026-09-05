@@ -7,6 +7,7 @@ import { PRODUCT_KINDS, PRODUCT_STATUSES, formatMoney, toMajor, toMinor } from '
 import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { adminFetch } from '@/lib/admin-client';
 import type {
+  AdminBrand,
   AdminCategory,
   AdminProduct,
   AdminVariant,
@@ -38,6 +39,7 @@ interface ProductFormProps {
   product?: AdminProduct;
   categories: AdminCategory[];
   garmentTypes: GarmentType[];
+  brands: AdminBrand[];
 }
 
 /**
@@ -50,7 +52,7 @@ interface ProductFormProps {
  * Prices are typed in RUPEES here and converted to paisa on submit — the API
  * and database are integer paisa throughout, and this is the boundary.
  */
-export function ProductForm({ product, categories, garmentTypes }: ProductFormProps) {
+export function ProductForm({ product, categories, garmentTypes, brands }: ProductFormProps) {
   const router = useRouter();
 
   // Set once a create request succeeds. Distinct from `product` (the prop,
@@ -74,7 +76,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
   const [compareAtPrice, setCompareAtPrice] = useState(
     product?.compareAtPrice ? String(toMajor(product.compareAtPrice)) : '',
   );
-  const [brand, setBrand] = useState(product?.brand ?? '');
+  const [brandId, setBrandId] = useState(product?.brandId ?? '');
   const [fabric, setFabric] = useState(product?.fabric ?? '');
   const [season, setSeason] = useState(product?.season ?? '');
   const [tags, setTags] = useState((product?.tags ?? []).join(', '));
@@ -150,7 +152,7 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
         categoryId: categoryId || undefined,
         basePrice: toMinor(Number(basePrice)),
         compareAtPrice: compareAtPrice ? toMinor(Number(compareAtPrice)) : undefined,
-        brand: brand || undefined,
+        brandId: brandId || undefined,
         fabric: fabric || undefined,
         season: season || undefined,
         tags: tags
@@ -588,12 +590,28 @@ export function ProductForm({ product, categories, garmentTypes }: ProductFormPr
           content: (
         <Section title="Attributes">
           <div className="grid gap-4 sm:grid-cols-3">
-            <Field label="Brand">
-              <input
-                value={brand}
-                onChange={(event) => setBrand(event.target.value)}
+            <Field
+              label="Brand"
+              hint="Managed under Brands — pick one rather than typing, so the same label is not stored three different ways"
+            >
+              <select
+                value={brandId}
+                onChange={(event) => setBrandId(event.target.value)}
                 className="field-input"
-              />
+              >
+                <option value="">No brand</option>
+                {brands.map((option) => (
+                  <option key={option.id} value={option.id}>
+                    {option.translations.find((t) => t.locale === 'en')?.name ?? option.slug}
+                  </option>
+                ))}
+                {/* A brand that has since been deactivated stays selectable on
+                    a product already using it, so opening and saving an old
+                    product does not silently clear its brand. */}
+                {brandId && !brands.some((option) => option.id === brandId) ? (
+                  <option value={brandId}>(brand no longer listed)</option>
+                ) : null}
+              </select>
             </Field>
             {/* Fabric/season/size chart are apparel-specific (GOODS/SERVICE/DIGITAL
                 have no garment to size). */}

@@ -137,7 +137,6 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
     <div className="space-y-6">
       <div>
         <Price amount={price} compareAt={product.compareAtPrice} locale={locale} size="lg" />
-        <SizeChartModal productName={product.name} garments={stitchingGarments} locale={locale} />
         <p className="mt-1 text-sm">
           {selected && selected.stock > 0 ? (
             selected.stock <= 3 ? (
@@ -181,7 +180,23 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
       </div>
 
       {sizes.length > 1 ? (
-        <SizeRow label={t('selectSize')} options={sizes} value={size} onChange={setSize} />
+        <SizeRow
+          label={t('selectSize')}
+          options={sizes}
+          value={size}
+          onChange={setSize}
+          // Sits on the Size row itself rather than up beside the price: a
+          // shopper wants the chart at the moment they are choosing between
+          // S/M/L, not before they have got there. Renders nothing when the
+          // product has no garment carrying a size chart.
+          action={
+            <SizeChartModal
+              productName={product.name}
+              garments={stitchingGarments}
+              locale={locale}
+            />
+          }
+        />
       ) : null}
 
       {colours.length > 1 ? (
@@ -290,15 +305,27 @@ function SizeRow({
   options,
   value,
   onChange,
+  action,
 }: {
   label: string;
   options: string[];
   value: string | null;
   onChange: (next: string) => void;
+  /** Optional control shown opposite the label — the size-chart link. */
+  action?: React.ReactNode;
 }) {
   return (
-    <fieldset>
-      <legend className="mb-1.5 text-sm font-medium text-neutral-900">{label}</legend>
+    <fieldset className="w-full">
+      {/* The legend and the action share a row. `legend` inside a flex parent
+          does not lay out reliably across browsers, so the fieldset gets a
+          plain div header and the legend is visually hidden for a11y. */}
+      <legend className="sr-only">{label}</legend>
+      <div className="mb-1.5 flex items-center justify-between gap-3">
+        <span aria-hidden className="text-sm font-medium text-neutral-900">
+          {label}
+        </span>
+        {action}
+      </div>
       <div className="flex flex-wrap gap-2">
         {options.map((option) => (
           <button

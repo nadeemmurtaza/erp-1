@@ -11,17 +11,24 @@
  * hides at 28px but anything printed or blown up does not. Letter joins are
  * corners the smoothing deliberately keeps, so the shapes are unchanged — the
  * silhouette moves by well under a percent.
+ *
+ * The viewBox is the ink's own bounding box, so an `h-8` really is eight units
+ * of logo. Note what that means for centring: the `y` descender is the bottom
+ * 32.7% of the box (baseline at 67.3%), so a box centred in a row leaves the
+ * *word* sitting high by half the descender. Callers that centre the logo
+ * against other content owe it a `translate-y-[16%]` — a percentage, so it
+ * holds at every size the logo is set in.
  */
 export function Logo(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
-      viewBox="0 0 1094.096697 281.142306"
+      viewBox="0 0 1094.778894 281.363259"
       fill="currentColor"
       role="img"
       aria-label="Yaseen"
       {...props}
     >
-      <g transform="translate(-44.903303,324.766067) scale(0.100000,-0.100000)">
+      <g transform="translate(-44.702123,324.757668) scale(0.100000,-0.100000)">
         <path
           d="M2032.5 2146.7C2020.1 2186.4 2030.8 2266.7 2030.7 2310.8
 C2030.4 2436.1 2030 2561.4 2030 2686.8C2030 2778.1 2044.9 3108.3 2010.2 3173.1

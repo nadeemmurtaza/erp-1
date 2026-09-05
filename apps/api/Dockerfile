@@ -43,9 +43,22 @@ COPY --from=build --chown=nestjs:nestjs /repo/packages/shared/node_modules ./pac
 COPY --from=build --chown=nestjs:nestjs /repo/packages/shared/dist ./packages/shared/dist
 COPY --from=build --chown=nestjs:nestjs /repo/packages/shared/package.json ./packages/shared/package.json
 COPY --from=build --chown=nestjs:nestjs /repo/apps/api/dist ./apps/api/dist
-COPY --from=build --chown=nestjs:nestjs /repo/apps/api/src/generated ./apps/api/src/generated
+# The whole src tree, not just src/generated: prisma/seed.ts imports six
+# services from ../src (PrismaService, InventoryService, EventBusService,
+# AuditService, StockIntakeRegistry) and runs through ts-node, so it compiles
+# them from SOURCE at run time — `dist` is no use to it. Without this the seed
+# cannot run in a deployed container at all, which is exactly where it is
+# needed: every release that adds a @RequirePermission key needs a re-seed, or
+# the new admin screen 403s for everyone.
+COPY --from=build --chown=nestjs:nestjs /repo/apps/api/src ./apps/api/src
 COPY --from=build --chown=nestjs:nestjs /repo/apps/api/prisma ./apps/api/prisma
 COPY --from=build --chown=nestjs:nestjs /repo/apps/api/package.json ./apps/api/package.json
+# prisma.config.ts is what points the CLI at the prisma/schema FOLDER (this
+# repo has one .prisma per module, not a single schema.prisma). Without it in
+# the image, `prisma migrate deploy` inside a running container fails with
+# "Could not find Prisma Schema" — which is exactly when you need it most,
+# because migrations are not run on start.
+COPY --from=build --chown=nestjs:nestjs /repo/apps/api/prisma.config.ts ./apps/api/prisma.config.ts
 # tsconfig.seed.json (extends @yaseen/config/tsconfig.nest.json, which
 # extends tsconfig.base.json) is needed at runtime, not just build time —
 # `pnpm db:seed` runs via ts-node inside this image, not during `docker build`.

@@ -173,9 +173,26 @@ The API validates these at startup and exits with the exact command to run,
 so a container that will not come up is worth reading the logs for before
 anything else.
 
-Each `up --build` runs `prisma migrate deploy` automatically as part of the
-api container's startup (`apps/api/Dockerfile`'s `CMD`) — migrations apply
-themselves on every start, including the very first one.
+> **Migrations do NOT run on container start.** This paragraph used to claim
+> they did; they do not. `apps/api/Dockerfile`'s `CMD` is `node dist/main.js`
+> and nothing else, deliberately — migrating from every replica at once races
+> when more than one is running. They were instead run as a pre-deploy step in
+> `deploy-production.yml`, which stopped reaching the server when the VPS was
+> retired in favour of Coolify, so nothing has run them since.
+>
+> **Run them yourself as part of every release**, from a shell in the api
+> container:
+>
+> ```bash
+> cd /repo/apps/api && npx prisma migrate deploy --schema=prisma/schema
+> ```
+>
+> `--schema` is needed because the schema is a folder (one `.prisma` per
+> module). Check first with `prisma migrate status --schema=prisma/schema`.
+>
+> Symptom when this is skipped: the app deploys fine and then every page that
+> touches the database fails, because new code is querying columns the old
+> schema does not have.
 
 **Then seed each environment — this is required, not optional.** Migrations
 create the tables but leave them empty, and an empty `Permission` /
@@ -186,9 +203,18 @@ garment/measurement reference data the storefront reads. It is idempotent
 (every write is an upsert), so re-running it is safe:
 
 ```bash
-docker compose -f docker-compose.staging.yml exec api pnpm db:seed
-docker compose -f docker-compose.prod.yml exec api pnpm db:seed
+# In a shell inside the api container (Coolify: Terminal on the api app).
+# NOT `pnpm db:seed`: the runtime image ships only @yaseen/api, so pnpm's
+# workspace check fails before the script ever runs, with
+# ERR_PNPM_WORKSPACE_PKG_NOT_FOUND for @yaseen/config. Call ts-node directly,
+# which is exactly what the db:seed script does.
+cd /repo/apps/api && ./node_modules/.bin/ts-node --project tsconfig.seed.json prisma/seed.ts
 ```
+
+**Re-run this after every release that adds permissions.** New
+`@RequirePermission` keys only reach the database through the seed, so an
+admin screen shipped with a new permission 403s for everyone — including
+you — until it has run.
 
 Override the default admin credentials with `SEED_ADMIN_EMAIL` /
 `SEED_ADMIN_PASSWORD` in the env file before seeding, or change the password
@@ -461,5 +487,5 @@ docker compose -f docker-compose.caddy.yml logs -f caddy
 
 # Re-run migrations/seed manually
 docker compose -f docker-compose.prod.yml exec api pnpm --filter @yaseen/api db:deploy
-docker compose -f docker-compose.prod.yml exec api pnpm db:seed
+cd /repo/apps/api && ./node_modules/.bin/ts-node --project tsconfig.seed.json prisma/seed.ts
 ```

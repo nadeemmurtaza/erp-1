@@ -1,6 +1,6 @@
 'use client';
 
-import { API_URL, ApiError, toSearchParams } from './api';
+import { API_URL, ApiError } from './api';
 import { messageOf, request, requestWithRefresh } from './api-client';
 import type { AuthResult, AuthUser } from '@/types/api';
 

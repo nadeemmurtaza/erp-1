@@ -1,7 +1,7 @@
 'use client';
 
 import { ApiError, API_URL } from './api';
-import { messageOf, request, requestWithRefresh } from './api-client';
+import { request, requestWithRefresh } from './api-client';
 import type { AuthResult, AuthUser } from '@/types/api';
 
 const ACCESS_KEY = 'yaseen.admin.access';

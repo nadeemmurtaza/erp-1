@@ -6,7 +6,7 @@ import { cn } from '@/utils/cn';
 import { ORDER_STATUSES, formatDate, formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import type { PaginatedResponse } from '@/types/api';
-import { Loading } from '@/components/ui';
+import { EmptyState, Loading, PageHeader } from '@/components/ui';
 import { StatusBadge, statusLabel } from '@/components/admin/status-badge';
 import { paymentProviderLabel } from '@/constants/payment-methods';
 
@@ -107,10 +107,10 @@ export default function AdminOrdersPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Orders</h1>
-      <p className="mb-6 text-sm text-neutral-900/60">
-        Confirm, prepare and dispatch. Cancelling an order puts its stock back.
-      </p>
+      <PageHeader
+        title="Orders"
+        description="Confirm, prepare and dispatch. Cancelling an order puts its stock back."
+      />
 
       <div className="card mb-4 flex flex-wrap gap-3 p-3">
         <input
@@ -168,8 +168,11 @@ export default function AdminOrdersPage() {
                 </tr>
               ) : orders.data.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-neutral-900/50">
-                    No orders match those filters.
+                  <td colSpan={6}>
+                    <EmptyState
+                      title="No orders match those filters"
+                      description="Clear the search or choose a different status to see more."
+                    />
                   </td>
                 </tr>
               ) : (

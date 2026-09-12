@@ -19,7 +19,7 @@ import { formatMoney, toMajor, THEME_COLORS } from '@yaseen/shared';
  */
 const SERIES = THEME_COLORS.accent.DEFAULT;
 const GRID = THEME_COLORS.neutral[100];
-const SURFACE = '#ffffff';
+const SURFACE = THEME_COLORS.white;
 
 const WIDTH = 720;
 const HEIGHT = 220;

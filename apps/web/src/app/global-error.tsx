@@ -60,7 +60,7 @@ export default function GlobalError({
               borderRadius: '2px',
               border: 'none',
               backgroundColor: ACCENT,
-              color: '#ffffff',
+              color: THEME_COLORS.white,
               padding: '0.75rem 1.5rem',
               fontSize: '0.875rem',
               fontWeight: 500,

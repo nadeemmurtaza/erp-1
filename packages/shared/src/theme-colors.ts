@@ -41,6 +41,14 @@ export const THEME_COLORS = {
     DEFAULT: '#0f8fa3',
     hover: '#0b6d7d',
   },
+  /**
+   * The surface every card, header and sidebar sits on, and the text colour on
+   * top of a filled accent button. Named rather than left as a `#ffffff`
+   * literal because the places that need it as a *value* — the two error
+   * routes that render before any stylesheet loads, and the chart that draws
+   * gaps between slices — were each spelling it out for themselves.
+   */
+  white: '#ffffff',
   /** Rating stars only. */
   star: '#F5B841',
 } as const;

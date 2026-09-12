@@ -290,10 +290,9 @@ function NavGroup({
         aria-expanded={open}
         aria-controls={listId}
         className={cn(
-          'flex w-full items-center gap-2 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-900/40 transition-colors duration-200',
+          'flex w-full items-center gap-2 rounded px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-900/40 transition-colors duration-200',
           holdsActivePage ? 'cursor-default' : 'hover:text-neutral-900/70',
         )}
-        style={{ borderRadius: 'var(--radius)' }}
       >
         {GroupIcon && <GroupIcon className="h-4 w-4 shrink-0" />}
         <span className="flex-1 text-start">{group.label}</span>

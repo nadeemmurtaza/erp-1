@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatMoney, THEME_COLORS } from '@yaseen/shared';
+import { formatMoney } from '@yaseen/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { Loading } from '@/components/ui';
 
@@ -450,11 +450,8 @@ function BarList({
           {/* Sequential single hue: more of the metric is a longer bar. */}
           <div className="mt-1 h-2 overflow-hidden rounded bg-white">
             <div
-              className="h-full rounded"
-              style={{
-                width: `${Math.max((item.value / max) * 100, 2)}%`,
-                backgroundColor: THEME_COLORS.accent.DEFAULT,
-              }}
+              className="h-full rounded bg-accent"
+              style={{ width: `${Math.max((item.value / max) * 100, 2)}%` }}
             />
           </div>
           {item.sub ? <p className="mt-0.5 text-xs text-neutral-900/40">{item.sub}</p> : null}

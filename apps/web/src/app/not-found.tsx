@@ -62,7 +62,7 @@ export default function RootNotFound() {
               marginTop: '1.5rem',
               borderRadius: '2px',
               backgroundColor: ACCENT,
-              color: '#ffffff',
+              color: THEME_COLORS.white,
               padding: '0.75rem 1.5rem',
               fontSize: '0.875rem',
               fontWeight: 500,

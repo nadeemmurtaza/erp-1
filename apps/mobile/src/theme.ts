@@ -25,7 +25,7 @@ export const theme = {
     sand: THEME_COLORS.neutral[50],
     sandDeep: THEME_COLORS.neutral[100],
     line: THEME_COLORS.neutral[200],
-    surface: '#ffffff',
+    surface: THEME_COLORS.white,
     danger: '#b91c1c', // Tailwind red-700
     dangerSoft: '#fef2f2', // Tailwind red-50
   },

@@ -70,7 +70,7 @@ export class UsersAdminService {
 
     const phone = dto.phone ? normalizePkPhone(dto.phone).e164 : null;
     if (dto.phone && !phone) {
-      throw new ConflictException('That phone number is not a valid Pakistani number.');
+      throw new ConflictException('That phone number is not a valid number.');
     }
 
     const clash = await this.prisma.user.findFirst({
@@ -156,7 +156,7 @@ export class UsersAdminService {
     if (dto.phone !== undefined) {
       const phone = dto.phone === '' ? null : normalizePkPhone(dto.phone).e164;
       if (dto.phone !== '' && !phone) {
-        throw new ConflictException('That phone number is not a valid Pakistani number.');
+        throw new ConflictException('That phone number is not a valid number.');
       }
       if (phone) {
         const clash = await this.prisma.user.findFirst({

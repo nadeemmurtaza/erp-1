@@ -59,7 +59,7 @@ export class StitchingOrdersService {
     const phone = normalizePkPhone(input.phone).e164;
     if (!phone) {
       throw new BadRequestException(
-        'Enter a valid Pakistani phone number so we can arrange collection.',
+        'Enter a valid phone number so we can arrange collection.',
       );
     }
     if (input.garments.length === 0) {

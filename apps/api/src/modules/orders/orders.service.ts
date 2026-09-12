@@ -124,7 +124,7 @@ export class OrdersService {
     const phone = normalizePkPhone(dto.shippingAddress.phone).e164;
     if (!phone) {
       throw new BadRequestException(
-        'Enter a valid Pakistani phone number — the courier needs it.',
+        'Enter a valid phone number — the courier needs it.',
       );
     }
 

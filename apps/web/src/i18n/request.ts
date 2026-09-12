@@ -1,6 +1,7 @@
 import { getRequestConfig } from 'next-intl/server';
 import { hasLocale } from 'next-intl';
 import { routing } from './routing';
+import { BRAND } from '@newax/shared';
 
 export default getRequestConfig(async ({ requestLocale }) => {
   const requested = await requestLocale;
@@ -17,6 +18,6 @@ export default getRequestConfig(async ({ requestLocale }) => {
     // same date rendered in the browser — a hydration mismatch that only shows
     // up once deployed. Matches the API's `store.timezone` default, so an order
     // placed at 11pm reads as the same day on both sides.
-    timeZone: 'Asia/Karachi',
+    timeZone: BRAND.locale.timeZone,
   };
 });

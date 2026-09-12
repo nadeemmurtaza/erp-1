@@ -1,4 +1,4 @@
-import { type Locale, formatMoney } from '@newax/shared';
+import { BRAND, formatMoney, type Locale } from '@newax/shared';
 import { copyFor } from './copy';
 import {
   button,
@@ -174,7 +174,9 @@ function addressLines(address: OrderEmailAddress | null | undefined): string[] {
     address.line2 ?? '',
     [address.city, address.province].filter(Boolean).join(', '),
     address.postalCode ?? '',
-    address.country === 'PK' ? 'Pakistan' : (address.country ?? ''),
+    address.country === BRAND.locale.countryCode
+      ? BRAND.contact.country
+      : (address.country ?? ''),
     // Pinned: a phone number is two digit runs around a space, which is
     // exactly what RTL reordering flips.
     address.phone ? ltr(address.phone) : '',

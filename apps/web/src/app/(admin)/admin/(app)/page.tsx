@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatDate, formatMoney, toMajor } from '@newax/shared';
+import { formatDate, formatMoney, intlTag, toMajor } from '@newax/shared';
 import { SalesChart } from '@/components/admin/sales-chart';
 import { DonutChart } from '@/components/admin/donut-chart';
 import { GaugeChart } from '@/components/admin/gauge-chart';
@@ -203,7 +203,7 @@ export default function AdminDashboardPage() {
         <Stat
           index={2}
           label="Total visitors"
-          value={visitors.totalVisitors.toLocaleString('en-PK')}
+          value={visitors.totalVisitors.toLocaleString(intlTag('en'))}
           hint={visitorsHint(days, visitors.visitorsChangePercent)}
         />
         <Stat
@@ -489,7 +489,7 @@ export default function AdminDashboardPage() {
                   <td className="py-1 text-neutral-900/70">{point.date}</td>
                   <td className="py-1 text-end tabular-nums text-neutral-900/70">{point.orders}</td>
                   <td className="py-1 text-end tabular-nums text-neutral-900">
-                    {toMajor(point.revenue).toLocaleString('en-PK')}
+                    {toMajor(point.revenue).toLocaleString(intlTag('en'))}
                   </td>
                 </tr>
               ))}

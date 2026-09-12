@@ -5,6 +5,7 @@ import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { adminFetch } from '@/lib/admin-client';
 import type { EmailAccount, EmailAccountPurpose } from '@/types/api';
 import { Loading } from '@/components/ui';
+import { intlTag } from '@newax/shared';
 
 const PURPOSES: { value: EmailAccountPurpose; label: string; hint: string }[] = [
   { value: 'TRANSACTIONAL', label: 'Transactional', hint: 'Orders, payments, password resets — the fallback every other purpose can use.' },
@@ -453,7 +454,7 @@ export default function EmailAccountsPage() {
                       {accounts?.find((a) => a.id === selectedId)?.smtpVerifiedAt
                         ? `Last verified ${new Date(
                             accounts.find((a) => a.id === selectedId)!.smtpVerifiedAt!,
-                          ).toLocaleString('en-PK')}`
+                          ).toLocaleString(intlTag('en'))}`
                         : 'Never verified'}
                     </span>
                   ) : null}

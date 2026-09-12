@@ -13,6 +13,7 @@
  */
 
 import type { EmailAccountPurpose } from '../../prisma/client';
+import { BRAND } from '@newax/shared';
 
 export type EmailTemplateCategory = 'Orders' | 'Payments' | 'Account' | 'Stitching' | 'Marketing';
 
@@ -62,7 +63,7 @@ const sampleAddress = {
   city: 'Islamabad',
   province: 'Islamabad',
   postalCode: '44000',
-  country: 'PK',
+  country: BRAND.locale.countryCode,
 };
 
 const sampleProducts = [

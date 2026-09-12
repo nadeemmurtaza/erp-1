@@ -1,6 +1,6 @@
 'use client';
 
-import { THEME_COLORS } from '@newax/shared';
+import { THEME_COLORS, intlTag } from '@newax/shared';
 
 /**
  * Stepped conversion funnel: each stage's bar narrower than the last, width
@@ -56,7 +56,7 @@ export function FunnelChart({ stages }: { stages: FunnelStage[] }) {
               fontWeight={600}
               className="fill-neutral-900"
             >
-              {stage.value.toLocaleString('en-PK')}
+              {stage.value.toLocaleString(intlTag('en'))}
               {conversion !== null ? (
                 <tspan className="fill-neutral-900/50" fontWeight={400}>
                   {' '}

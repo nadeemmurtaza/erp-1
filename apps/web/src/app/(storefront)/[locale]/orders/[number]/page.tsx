@@ -4,7 +4,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { use, useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatMoney, ORDER_STATUSES, type Locale, type StitchingStage } from '@newax/shared';
+import { ORDER_STATUSES, formatMoney, intlTag, type Locale, type StitchingStage } from '@newax/shared';
 import { Link } from '@/i18n/navigation';
 import { StitchingTimeline, type TimelineEvent } from '@/components/storefront/stitching-timeline';
 import { API_URL } from '@/lib/api';
@@ -233,7 +233,7 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
       </div>
 
       <p className="mt-1 text-sm text-neutral-900/50">
-        {t('placedOn', { date: new Date(order.placedAt).toLocaleDateString(locale === 'ur' ? 'ur-PK' : 'en-PK') })}
+        {t('placedOn', { date: new Date(order.placedAt).toLocaleDateString(intlTag(locale)) })}
       </p>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_22rem]">
@@ -313,7 +313,7 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
                     <span className="font-medium text-neutral-900">{t(`status.${event.toStatus}`)}</span>
                     <span className="ms-2 text-xs text-neutral-900/40">
                       {new Date(event.createdAt).toLocaleString(
-                        locale === 'ur' ? 'ur-PK' : 'en-PK',
+                        intlTag(locale),
                       )}
                     </span>
                     {event.note ? (

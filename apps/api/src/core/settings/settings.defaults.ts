@@ -1,4 +1,4 @@
-import { toMinor } from '@newax/shared';
+import { BRAND, toMinor } from '@newax/shared';
 
 /**
  * Business rules that staff must be able to change without a deploy: shipping
@@ -82,7 +82,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
    * resolved in this zone — not the server's and not UTC. A shop that moves
    * country changes this row rather than a deployment.
    */
-  [SettingKey.StoreTimezone]: 'Asia/Karachi',
+  [SettingKey.StoreTimezone]: BRAND.locale.timeZone,
 
   [SettingKey.ShippingZones]: [
     {

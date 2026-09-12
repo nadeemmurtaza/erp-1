@@ -65,6 +65,10 @@ export class JazzCashProvider implements PaymentProvider {
       pp_TxnRefNo: reference,
       // JazzCash expects the amount in paisa, which is how it is stored here.
       pp_Amount: String(context.amount),
+      // Not BRAND.locale.currency, deliberately. JazzCash is a Pakistani
+      // gateway that settles in rupees; a shop billing in dirhams would not
+      // enable this provider at all, so reading the brand here would produce
+      // a request the gateway rejects rather than a working one.
       pp_TxnCurrency: 'PKR',
       pp_TxnDateTime: stamp(now),
       // One hour to complete the payment.

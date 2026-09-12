@@ -63,7 +63,7 @@ export class AuthService {
 
     const phone = input.phone ? normalizePkPhone(input.phone).e164 : null;
     if (input.phone && !phone) {
-      throw new ConflictException('That phone number is not a valid Pakistani number.');
+      throw new ConflictException('That phone number is not a valid number.');
     }
 
     const clash = await this.prisma.user.findFirst({
@@ -321,7 +321,7 @@ export class AuthService {
       } else {
         const phone = normalizePkPhone(input.phone).e164;
         if (!phone) {
-          throw new ConflictException('That phone number is not a valid Pakistani number.');
+          throw new ConflictException('That phone number is not a valid number.');
         }
         const clash = await this.prisma.user.findFirst({
           where: { phone, NOT: { id: userId } },

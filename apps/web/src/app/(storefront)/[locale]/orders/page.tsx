@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useLocale } from 'next-intl';
-import { formatMoney, type Locale } from '@newax/shared';
+import { formatMoney, intlTag, type Locale } from '@newax/shared';
 import { Link, usePathname } from '@/i18n/navigation';
 import { useCustomerSession } from '@/components/storefront/customer-session';
 import { customerFetch } from '@/lib/customer-client';
@@ -83,7 +83,7 @@ export default function OrderHistoryPage() {
                 <div>
                   <p className="font-medium text-neutral-900">{order.number}</p>
                   <p className="text-xs text-neutral-900/50">
-                    {new Date(order.placedAt).toLocaleDateString('en-PK', {
+                    {new Date(order.placedAt).toLocaleDateString(intlTag('en'), {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric',

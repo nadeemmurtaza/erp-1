@@ -11,6 +11,7 @@ import {
 import { I18nManager } from 'react-native';
 import type { Locale } from '@newax/shared';
 import { MESSAGES, type MessageKey } from './messages';
+import { intlTag } from '@newax/shared';
 
 const STORAGE_KEY = 'yaseen.locale';
 
@@ -56,7 +57,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
         );
       },
       date: (input) =>
-        new Date(input).toLocaleDateString(locale === 'ur' ? 'ur-PK' : 'en-PK', {
+        new Date(input).toLocaleDateString(intlTag(locale), {
           day: 'numeric',
           month: 'short',
           year: 'numeric',

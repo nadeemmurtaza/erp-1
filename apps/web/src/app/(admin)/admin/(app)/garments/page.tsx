@@ -6,6 +6,7 @@ import { adminFetch } from '@/lib/admin-client';
 import type { AdminGarmentSizeChartRow, GarmentType, MeasurementFieldRow } from '@/types/api';
 import { formatMoney } from '@yaseen/shared';
 
+import { Loading } from '@/components/ui';
 interface FieldDraft {
   key: string;
   labelEn: string;
@@ -307,7 +308,7 @@ export default function AdminGarmentsPage() {
             </form>
           </div>
         ) : (
-          <p className="text-sm text-neutral-900/50">Loading…</p>
+          <Loading />
         )}
       </div>
     </>

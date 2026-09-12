@@ -9,6 +9,7 @@ import { useCustomerSession } from '@/components/storefront/customer-session';
 import { customerFetch } from '@/lib/customer-client';
 import type { CustomerOrderSummary, PaginatedResult } from '@/types/api';
 import { ROUTES } from '@/constants/routes';
+import { Loading } from '@/components/ui';
 
 export default function OrderHistoryPage() {
   const { user, isLoading } = useCustomerSession();
@@ -44,8 +45,8 @@ export default function OrderHistoryPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="container-page flex min-h-[50vh] items-center justify-center text-sm text-neutral-900/50">
-        Loading…
+      <div className="container-page flex min-h-[50vh] items-center justify-center">
+        <Loading />
       </div>
     );
   }
@@ -62,7 +63,7 @@ export default function OrderHistoryPage() {
       ) : null}
 
       {!orders ? (
-        <p className="text-sm text-neutral-900/50">Loading…</p>
+        <Loading />
       ) : orders.data.length === 0 ? (
         <div className="card p-8 text-center text-sm text-neutral-900/50">
           No orders yet.{' '}

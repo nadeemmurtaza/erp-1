@@ -6,6 +6,7 @@ import { adminFetch } from '@/lib/admin-client';
 import type { InboundEmail, PaginatedResponse } from '@/types/api';
 import { formatDateTime } from '@yaseen/shared';
 
+import { Loading } from '@/components/ui';
 type LinkFilter = 'all' | 'unlinked' | 'linked';
 
 interface ContactOption {
@@ -130,9 +131,9 @@ export default function AdminInboxPage() {
               <tbody className="divide-y divide-white">
                 {!messages ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/50">
-                      Loading…
-                    </td>
+                    <td colSpan={4} className="px-4 py-8 text-center">
+                    <Loading className="p-0" />
+                  </td>
                   </tr>
                 ) : messages.data.length === 0 ? (
                   <tr>

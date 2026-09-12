@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { cn } from '@/utils/cn';
 import { Link, usePathname } from '@/i18n/navigation';
 import { useCustomerSession } from '@/components/storefront/customer-session';
+import { Loading } from '@/components/ui';
 
 const TABS = [
   { href: '/account', label: 'Profile' },
@@ -30,8 +31,8 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
 
   if (isLoading || !user) {
     return (
-      <div className="container-page flex min-h-[50vh] items-center justify-center text-sm text-neutral-900/50">
-        Loading…
+      <div className="container-page flex min-h-[50vh] items-center justify-center">
+        <Loading />
       </div>
     );
   }

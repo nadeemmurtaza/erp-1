@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { formatMoney, THEME_COLORS } from '@yaseen/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { Loading } from '@/components/ui';
 
 interface StitchingAnalytics {
   topGarments: Array<{ key: string; label: string; jobs: number; revenue: number }>;
@@ -90,7 +91,7 @@ export default function AdminReportsPage() {
   }
 
   if (!stitching || !extended) {
-    return <p className="text-sm text-neutral-900/50">Loading…</p>;
+    return <Loading />;
   }
 
   const { cartAbandonment, returnRate } = extended;

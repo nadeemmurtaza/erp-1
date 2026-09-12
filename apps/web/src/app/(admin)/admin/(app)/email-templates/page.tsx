@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import type { EmailTemplateCatalogEntry, RenderedEmailPreview } from '@/types/api';
+import { Loading } from '@/components/ui';
 
 const CATEGORIES: EmailTemplateCatalogEntry['category'][] = [
   'Orders',
@@ -83,7 +84,7 @@ export default function EmailTemplatesPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[280px_1fr]">
         <div className="card max-h-[calc(100vh-14rem)] overflow-y-auto p-2">
           {!templates ? (
-            <p className="p-3 text-sm text-neutral-900/50">Loading…</p>
+            <Loading className="p-3" />
           ) : (
             CATEGORIES.map((category) => {
               const items = byCategory.get(category);

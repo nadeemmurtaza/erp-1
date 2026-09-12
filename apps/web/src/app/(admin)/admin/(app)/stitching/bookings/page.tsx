@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { formatDate, formatMoney } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
+import { Loading } from '@/components/ui';
 import {
   BOOKING_STATUS_LABELS,
   type StitchingBooking,
@@ -87,8 +88,8 @@ export default function BookingsPage() {
             <tbody className="divide-y divide-white">
               {!bookings ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-neutral-900/50">
-                    Loading…
+                  <td colSpan={6} className="px-4 py-8 text-center">
+                    <Loading className="p-0" />
                   </td>
                 </tr>
               ) : bookings.length === 0 ? (

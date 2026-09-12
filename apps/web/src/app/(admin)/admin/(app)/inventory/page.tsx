@@ -4,6 +4,7 @@ import { Fragment, useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { formatDate, formatDateTime, formatMoney } from '@yaseen/shared';
+import { Loading } from '@/components/ui';
 
 interface InventoryVariant {
   id: string;
@@ -161,8 +162,8 @@ export default function AdminInventoryPage() {
             <tbody className="divide-y divide-white">
               {busy && !variants ? (
                 <tr>
-                  <td colSpan={canViewCost ? 10 : 8} className="p-8 text-center text-neutral-900/50">
-                    Loading...
+                  <td colSpan={canViewCost ? 10 : 8} className="p-8 text-center">
+                    <Loading className="p-0" />
                   </td>
                 </tr>
               ) : variants?.length === 0 ? (
@@ -231,7 +232,7 @@ export default function AdminInventoryPage() {
                         <tr className="bg-neutral-50">
                           <td colSpan={canViewCost ? 10 : 8} className="px-4 py-4">
                             {historyBusy ? (
-                              <p className="text-sm text-neutral-900/50">Loading ledger...</p>
+                              <Loading label="Loading ledger" />
                             ) : !historyRows || historyRows.length === 0 ? (
                               <p className="text-sm text-neutral-900/50">No movements recorded yet.</p>
                             ) : (

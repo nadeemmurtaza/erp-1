@@ -6,7 +6,13 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch, clearSession, getStoredUser, logout } from '@/lib/admin-client';
 import type { AuthUser, DeploymentMeta } from '@/types/api';
-import { NAV_GROUPS, ICON_MAP, navFor, type AdminNavItem } from './nav-registry';
+import {
+  NAV_GROUPS,
+  ICON_MAP,
+  navFor,
+  type AdminNavGroup,
+  type AdminNavItem,
+} from './nav-registry';
 import { AdminSessionProvider } from './session';
 import { ROUTES } from '@/constants/routes';
 
@@ -107,26 +113,15 @@ export function AdminShell({ children }: { children: ReactNode }) {
               </button>
             </div>
             <nav className="p-3 flex-1 overflow-y-auto">
-              {NAV_GROUPS.map((group) => {
-                const groupItems = items.filter((item) => item.group === group.key);
-                if (groupItems.length === 0) return null;
-                const GroupIcon = ICON_MAP[group.icon];
-                return (
-                  <div key={group.key} className="mb-4">
-                    <div className="flex items-center gap-2 px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-neutral-900/40">
-                      {GroupIcon && <GroupIcon className="h-4 w-4" />}
-                      <p>{group.label}</p>
-                    </div>
-                    <ul className="space-y-0.5">
-                      {groupItems.map((item) => (
-                        <li key={item.key}>
-                          <NavItemNode item={item} activeItem={activeItem} onClick={() => setIsNavOpen(false)} />
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                );
-              })}
+              {NAV_GROUPS.map((group) => (
+                <NavGroup
+                  key={group.key}
+                  group={group}
+                  items={items}
+                  activeItem={activeItem}
+                  onNavigate={() => setIsNavOpen(false)}
+                />
+              ))}
             </nav>
           </div>
         </div>
@@ -140,26 +135,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
         </div>
 
         <nav className="p-3">
-          {NAV_GROUPS.map((group) => {
-            const groupItems = items.filter((item) => item.group === group.key);
-            if (groupItems.length === 0) return null;
-            const GroupIcon = ICON_MAP[group.icon];
-            return (
-              <div key={group.key} className="mb-4">
-                <div className="flex items-center gap-2 px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-neutral-900/40">
-                  {GroupIcon && <GroupIcon className="h-4 w-4" />}
-                  <p>{group.label}</p>
-                </div>
-                <ul className="space-y-0.5">
-                  {groupItems.map((item) => (
-                    <li key={item.key}>
-                      <NavItemNode item={item} activeItem={activeItem} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
+          {NAV_GROUPS.map((group) => (
+            <NavGroup key={group.key} group={group} items={items} activeItem={activeItem} />
+          ))}
         </nav>
       </aside>
 
@@ -204,6 +182,130 @@ export function AdminShell({ children }: { children: ReactNode }) {
           <AdminSessionProvider value={user}>{children}</AdminSessionProvider>
         </main>
       </div>
+    </div>
+  );
+}
+
+/** Where the collapsed/expanded state of each nav group is remembered. */
+const NAV_GROUPS_STORAGE_KEY = 'yaseen.admin.navGroups';
+
+function readCollapsedGroups(): Record<string, boolean> {
+  // Private windows and "block site data" make this throw rather than return
+  // null, and a sidebar that cannot remember a preference should still open.
+  try {
+    const raw = window.localStorage.getItem(NAV_GROUPS_STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as Record<string, boolean>) : {};
+  } catch {
+    return {};
+  }
+}
+
+/** A chevron that points down when open. Shared so the group and item toggles agree. */
+function Chevron({ open }: { open: boolean }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      className={cn('shrink-0 transition-transform duration-200', open && 'rotate-180')}
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  );
+}
+
+/**
+ * One collapsible section of the sidebar — Sales, Catalogue, Workshop and the
+ * rest.
+ *
+ * The sidebar lists forty-odd destinations across nine groups, which is more
+ * than fits on a laptop without scrolling, so the groups close. Two rules keep
+ * closing them from ever hiding where you are: the group holding the current
+ * page is forced open and its toggle is disabled, and the choice is remembered
+ * per group rather than as one global "collapse all", because the groups a
+ * given person never touches are not the same as anyone else's.
+ *
+ * Rendered by both the desktop aside and the mobile drawer. It used to be the
+ * same twenty lines of markup written out twice, which is how the two came to
+ * disagree in the first place.
+ */
+function NavGroup({
+  group,
+  items,
+  activeItem,
+  onNavigate,
+}: {
+  group: AdminNavGroup;
+  items: AdminNavItem[];
+  activeItem: AdminNavItem | null;
+  onNavigate?: () => void;
+}) {
+  const groupItems = items.filter((item) => item.group === group.key);
+
+  const holdsActivePage = groupItems.some(
+    (item) =>
+      activeItem?.key === item.key || item.children?.some((c) => activeItem?.key === c.key),
+  );
+
+  const [collapsed, setCollapsed] = useState(false);
+
+  // Read after mount, not in the initialiser: the value is per-browser, and
+  // rendering it on the first pass would differ from what the server produced.
+  useEffect(() => {
+    setCollapsed(readCollapsedGroups()[group.key] ?? false);
+  }, [group.key]);
+
+  function toggle() {
+    const next = !collapsed;
+    setCollapsed(next);
+    try {
+      window.localStorage.setItem(
+        NAV_GROUPS_STORAGE_KEY,
+        JSON.stringify({ ...readCollapsedGroups(), [group.key]: next }),
+      );
+    } catch {
+      // Preference not persisted; the session still works.
+    }
+  }
+
+  if (groupItems.length === 0) return null;
+
+  const GroupIcon = ICON_MAP[group.icon];
+  const open = holdsActivePage || !collapsed;
+  const listId = `nav-group-${group.key}`;
+
+  return (
+    <div className="mb-4">
+      <button
+        type="button"
+        onClick={toggle}
+        disabled={holdsActivePage}
+        aria-expanded={open}
+        aria-controls={listId}
+        className={cn(
+          'flex w-full items-center gap-2 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-900/40 transition-colors duration-200',
+          holdsActivePage ? 'cursor-default' : 'hover:text-neutral-900/70',
+        )}
+        style={{ borderRadius: 'var(--radius)' }}
+      >
+        {GroupIcon && <GroupIcon className="h-4 w-4 shrink-0" />}
+        <span className="flex-1 text-start">{group.label}</span>
+        {!holdsActivePage && <Chevron open={open} />}
+      </button>
+      <ul id={listId} hidden={!open} className="space-y-0.5 pt-1">
+        {groupItems.map((item) => (
+          <li key={item.key}>
+            <NavItemNode item={item} activeItem={activeItem} onClick={onNavigate} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -269,27 +371,21 @@ function NavItemNode({
               e.preventDefault();
               setIsOpen(!isOpen);
             }}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-neutral-900/50 hover:bg-neutral-50 hover:text-neutral-900 ms-1"
+            aria-expanded={isOpen}
+            aria-controls={`nav-children-${item.key}`}
+            aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${item.label}`}
+            className="ms-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-neutral-900/50 hover:bg-neutral-50 hover:text-neutral-900"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className={cn('transition-transform duration-200', isOpen && 'rotate-180')}
-            >
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+            <Chevron open={isOpen} />
           </button>
         )}
       </div>
-      {isOpen && item.children && item.children.length > 0 && (
-        <ul className="ms-4 mt-1 space-y-0.5 border-s border-neutral-100 ps-2">
+      {item.children && item.children.length > 0 && (
+        <ul
+          id={`nav-children-${item.key}`}
+          hidden={!isOpen}
+          className="ms-4 mt-1 space-y-0.5 border-s border-neutral-100 ps-2"
+        >
           {item.children.map((child) => (
             <li key={child.key}>
               <NavLink item={child} isActive={activeItem?.key === child.key} onClick={onClick} />

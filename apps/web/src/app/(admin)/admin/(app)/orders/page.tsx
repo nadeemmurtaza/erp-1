@@ -6,6 +6,7 @@ import { cn } from '@/utils/cn';
 import { ORDER_STATUSES, formatDate, formatMoney } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
 import type { PaginatedResponse } from '@/types/api';
+import { Loading } from '@/components/ui';
 
 interface AdminOrder {
   id: string;
@@ -159,8 +160,8 @@ export default function AdminOrdersPage() {
             <tbody className="divide-y divide-white">
               {!orders ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-neutral-900/50">
-                    Loading…
+                  <td colSpan={6} className="px-4 py-8 text-center">
+                    <Loading className="p-0" />
                   </td>
                 </tr>
               ) : orders.data.length === 0 ? (

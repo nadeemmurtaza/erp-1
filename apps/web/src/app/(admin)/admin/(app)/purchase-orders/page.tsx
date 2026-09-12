@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-client';
 import { formatDate, formatMoney } from '@yaseen/shared';
 import { ROUTES } from '@/constants/routes';
+import { Loading } from '@/components/ui';
 
 interface PurchaseOrderListRow {
   id: string;
@@ -97,8 +98,8 @@ export default function PurchaseOrdersPage() {
             <tbody className="divide-y divide-white">
               {busy && !pos ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-neutral-900/50">
-                    Loading...
+                  <td colSpan={6} className="p-8 text-center">
+                    <Loading className="p-0" />
                   </td>
                 </tr>
               ) : pos?.length === 0 ? (

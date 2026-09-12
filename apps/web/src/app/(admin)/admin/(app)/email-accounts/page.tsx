@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { adminFetch } from '@/lib/admin-client';
 import type { EmailAccount, EmailAccountPurpose } from '@/types/api';
+import { Loading } from '@/components/ui';
 
 const PURPOSES: { value: EmailAccountPurpose; label: string; hint: string }[] = [
   { value: 'TRANSACTIONAL', label: 'Transactional', hint: 'Orders, payments, password resets — the fallback every other purpose can use.' },
@@ -298,7 +299,7 @@ export default function EmailAccountsPage() {
           </button>
 
           {!accounts ? (
-            <p className="p-3 text-sm text-neutral-900/50">Loading…</p>
+            <Loading className="p-3" />
           ) : accounts.length === 0 ? (
             <p className="p-3 text-sm text-neutral-900/50">No mailboxes connected yet.</p>
           ) : (

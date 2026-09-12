@@ -6,6 +6,7 @@ import { cn } from '@/utils/cn';
 import { formatDate, formatDateTime, formatMoney } from '@yaseen/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { ROUTES } from '@/constants/routes';
+import { Loading } from '@/components/ui';
 
 interface OrderItem {
   id: string;
@@ -194,7 +195,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
   }
 
   if (busy && !order) {
-    return <p className="p-4 text-sm text-neutral-900/50">Loading order…</p>;
+    return <Loading label="Loading order" />;
   }
 
   if (error && !order) {

@@ -6,6 +6,7 @@ import { formatDate, formatMoney } from '@yaseen/shared';
 import { adminFetch, getAccessToken } from '@/lib/admin-client';
 import { API_URL, toSearchParams } from '@/lib/api';
 import type { PaginatedResponse } from '@/types/api';
+import { Loading } from '@/components/ui';
 
 const STATUSES = ['LEAD', 'ACTIVE', 'REPEAT', 'DORMANT', 'BLOCKED'] as const;
 
@@ -239,9 +240,9 @@ export default function AdminContactsPage() {
               <tbody className="divide-y divide-white">
                 {!contacts ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/50">
-                      Loading…
-                    </td>
+                    <td colSpan={4} className="px-4 py-8 text-center">
+                    <Loading className="p-0" />
+                  </td>
                   </tr>
                 ) : contacts.data.length === 0 ? (
                   <tr>

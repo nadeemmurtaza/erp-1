@@ -14,6 +14,7 @@ import {
 } from '@/types/stitching';
 import { StageBadge } from '@/components/admin/stage-badge';
 import { ROUTES } from '@/constants/routes';
+import { Loading } from '@/components/ui';
 
 /**
  * One job: the tailor's worksheet.
@@ -110,7 +111,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
             {error}
           </p>
         ) : (
-          <p className="text-sm text-neutral-900/50">Loading…</p>
+          <Loading />
         )}
       </>
     );

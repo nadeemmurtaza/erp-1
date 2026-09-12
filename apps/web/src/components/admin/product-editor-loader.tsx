@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import type { AdminBrand, AdminCategory, AdminProduct, GarmentType } from '@/types/api';
 import { ProductForm } from './product-form';
+import { Loading } from '@/components/ui';
 
 /**
  * Loads the reference data the editor needs (categories, garment types) and,
@@ -57,7 +58,7 @@ export function ProductEditorLoader({ productId }: { productId?: string }) {
   }
 
   if (!categories || !garmentTypes || !brands || (productId && !product)) {
-    return <p className="text-sm text-neutral-900/50">Loading…</p>;
+    return <Loading />;
   }
 
   return (

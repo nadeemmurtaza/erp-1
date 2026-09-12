@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { formatMoney } from '@yaseen/shared';
+import { Loading } from '@/components/ui';
 
 interface InventoryVariant {
   id: string;
@@ -99,8 +100,8 @@ export default function SlowMoversPage() {
             <tbody className="divide-y divide-white">
               {busy && !variants ? (
                 <tr>
-                  <td colSpan={canViewCost ? 6 : 5} className="p-8 text-center text-neutral-900/50">
-                    Loading...
+                  <td colSpan={canViewCost ? 6 : 5} className="p-8 text-center">
+                    <Loading className="p-0" />
                   </td>
                 </tr>
               ) : filtered.length === 0 ? (

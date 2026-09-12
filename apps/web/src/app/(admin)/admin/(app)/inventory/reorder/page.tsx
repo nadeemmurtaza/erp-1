@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
 import { formatMoney } from '@yaseen/shared';
+import { Loading } from '@/components/ui';
 
 interface Supplier {
   id: string;
@@ -183,7 +184,9 @@ export default function ReorderSuggestionsPage() {
             <tbody className="divide-y divide-white">
               {busy && !suggestions ? (
                 <tr>
-                  <td colSpan={9} className="p-8 text-center text-neutral-900/50">Loading...</td>
+                  <td colSpan={9} className="p-8 text-center">
+                    <Loading className="p-0" />
+                  </td>
                 </tr>
               ) : suggestions?.length === 0 ? (
                 <tr>

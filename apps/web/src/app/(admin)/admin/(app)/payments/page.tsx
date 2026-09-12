@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import { formatDateTime, formatMoney } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
+import { Loading } from '@/components/ui';
 
 interface PendingPayment {
   id: string;
@@ -80,7 +81,7 @@ export default function AdminPaymentsPage() {
       ) : null}
 
       {!payments ? (
-        <p className="text-sm text-neutral-900/50">Loading…</p>
+        <Loading />
       ) : payments.length === 0 ? (
         <p className="card p-8 text-center text-sm text-neutral-900/50">
           Nothing waiting. Every payment is settled.

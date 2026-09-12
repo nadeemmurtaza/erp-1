@@ -7,6 +7,7 @@ import { formatMoney, PRODUCT_KINDS, PRODUCT_STATUSES } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
 import type { AdminProduct, PaginatedResponse } from '@/types/api';
 import { ROUTES } from '@/constants/routes';
+import { Loading } from '@/components/ui';
 
 const KIND_LABELS: Record<string, string> = {
   STITCHED: 'Ready to wear',
@@ -129,8 +130,8 @@ export default function AdminProductsPage() {
             <tbody className="divide-y divide-white">
               {busy && !products ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-neutral-900/50">
-                    Loading…
+                  <td colSpan={5} className="px-4 py-8 text-center">
+                    <Loading className="p-0" />
                   </td>
                 </tr>
               ) : products && products.data.length === 0 ? (

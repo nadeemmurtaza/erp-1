@@ -4,6 +4,7 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { ADMIN_LOCKED_PERMISSIONS, BACK_OFFICE_ROLES, formatDateTime, type UserRole } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
 import type { AuditLogEntry, AuditLogPage, PermissionDefinition, RolePermissions } from '@/types/api';
+import { Loading } from '@/components/ui';
 
 type Draft = Record<UserRole, Set<string>>;
 
@@ -134,7 +135,7 @@ export default function AdminSettingsPage() {
         ) : null}
 
         {!draft ? (
-          <p className="text-sm text-neutral-900/50">Loading…</p>
+          <Loading />
         ) : (
           <div className="card overflow-hidden">
             <div className="overflow-x-auto">
@@ -255,7 +256,7 @@ export default function AdminSettingsPage() {
               setAuditPage(1);
               void loadAuditLog();
             }}
-            className="btn-ghost"
+            className="btn-secondary"
           >
             Filter
           </button>
@@ -281,9 +282,9 @@ export default function AdminSettingsPage() {
               <tbody className="divide-y divide-white">
                 {!audit ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/50">
-                      Loading…
-                    </td>
+                    <td colSpan={4} className="px-4 py-8 text-center">
+                    <Loading className="p-0" />
+                  </td>
                   </tr>
                 ) : audit.entries.length === 0 ? (
                   <tr>

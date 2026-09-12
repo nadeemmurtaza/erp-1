@@ -12,6 +12,7 @@ import { FunnelChart } from '@/components/admin/funnel-chart';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import type { MonthlyTarget, VisitorAnalytics } from '@/types/api';
 import { ROUTES } from '@/constants/routes';
+import { Loading } from '@/components/ui';
 
 interface Dashboard {
   today: { orders: number; revenue: number };
@@ -137,7 +138,7 @@ export default function AdminDashboardPage() {
   }
 
   if (!data || !extended || !visitors) {
-    return <p className="text-sm text-neutral-900/50">Loading…</p>;
+    return <Loading />;
   }
 
   const attention = [

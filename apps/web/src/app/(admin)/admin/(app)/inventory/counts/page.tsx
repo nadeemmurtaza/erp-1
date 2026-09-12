@@ -6,6 +6,7 @@ import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import Link from 'next/link';
 import { formatDateTime } from '@yaseen/shared';
 
+import { Loading } from '@/components/ui';
 interface StockCount {
   id: string;
   countNumber: string;
@@ -75,9 +76,9 @@ export default function CountsListPage() {
           <tbody className="divide-y divide-neutral-100">
             {busy && (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/50">
-                  Loading counts...
-                </td>
+                <td colSpan={4} className="px-4 py-8 text-center">
+                    <Loading className="p-0" />
+                  </td>
               </tr>
             )}
             {!busy && counts?.length === 0 && (

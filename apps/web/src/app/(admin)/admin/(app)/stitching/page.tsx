@@ -6,6 +6,7 @@ import { cn } from '@/utils/cn';
 import { STITCHING_STAGES, formatDate, type StitchingStage } from '@yaseen/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { StageBadge } from '@/components/admin/stage-badge';
+import { Loading } from '@/components/ui';
 import {
   jobCustomer,
   STAGE_LABELS,
@@ -167,8 +168,8 @@ export default function TailorQueuePage() {
             <tbody className="divide-y divide-white">
               {!jobs ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-neutral-900/50">
-                    Loading…
+                  <td colSpan={6} className="px-4 py-8 text-center">
+                    <Loading className="p-0" />
                   </td>
                 </tr>
               ) : jobs.length === 0 ? (

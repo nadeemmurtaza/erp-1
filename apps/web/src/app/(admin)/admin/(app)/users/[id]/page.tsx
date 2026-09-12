@@ -4,6 +4,7 @@ import { Fragment, use, useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import type { AdminUserDetail, BackOfficeRole, PermissionDefinition, PermissionOverride } from '@/types/api';
+import { Loading } from '@/components/ui';
 
 const ADMIN_LOCKED = new Set(['settings.manage', 'roles.manage_permissions']);
 
@@ -161,7 +162,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
         {error}
       </p>
     ) : (
-      <p className="text-sm text-neutral-900/50">Loading…</p>
+      <Loading />
     );
   }
 

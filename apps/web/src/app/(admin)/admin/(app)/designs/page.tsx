@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { adminFetch } from '@/lib/admin-client';
+import { Loading } from '@/components/ui';
 import type {
   AdminStitchingOption,
   AdminStitchingOptionGroup,
@@ -609,7 +610,7 @@ export default function AdminDesignsPage() {
             );
           })()
         ) : (
-          <p className="text-sm text-neutral-900/50">Loading…</p>
+          <Loading />
         )}
       </div>
     </>

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
+import { Loading } from '@/components/ui';
 
 interface TaxRate {
   id: string;
@@ -178,7 +179,7 @@ export default function TaxAdminPage() {
       </p>
 
       {busy && !settings ? (
-        <p className="text-neutral-900/50">Loading…</p>
+        <Loading />
       ) : (
         <>
           <section className="card mb-6 p-5">

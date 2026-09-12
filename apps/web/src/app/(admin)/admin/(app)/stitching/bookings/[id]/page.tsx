@@ -6,6 +6,7 @@ import { formatDate, formatMoney, toMinor } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { StageBadge } from '@/components/admin/stage-badge';
 import { ROUTES } from '@/constants/routes';
+import { Loading } from '@/components/ui';
 import {
   BOOKING_STATUS_LABELS,
   fieldLabel,
@@ -62,7 +63,7 @@ export default function BookingDetailPage({
         {error}
       </p>
     ) : (
-      <p className="text-sm text-neutral-900/50">Loading…</p>
+      <Loading />
     );
   }
 

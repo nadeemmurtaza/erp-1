@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { adminFetch } from '@/lib/admin-client';
 import { formatMoney } from '@yaseen/shared';
+import { Loading } from '@/components/ui';
 
 interface Supplier {
   id: string;
@@ -255,7 +256,7 @@ export default function NewPurchaseOrderPage() {
             <div className="card p-4">
               <h2 className="font-medium text-neutral-900 mb-4">Supplier Catalogue</h2>
               {loadingProducts ? (
-                <p className="text-sm text-neutral-900/50">Loading catalogue...</p>
+                <Loading label="Loading catalogue" />
               ) : supplierProducts.length === 0 ? (
                 <p className="text-sm text-neutral-900/50">This supplier has no products linked.</p>
               ) : (

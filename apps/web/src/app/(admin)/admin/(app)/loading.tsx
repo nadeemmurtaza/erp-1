@@ -44,7 +44,7 @@ export default function Loading() {
       </div>
 
       {/* Grid sections skeleton */}
-      <div className="mt-6 grid gap-4 lg:grid-cols-2">
+      <div className="mt-6 grid gap-4 fold:grid-cols-2">
         {[...Array(2)].map((_, section) => (
           <div key={section} className="card p-4">
             <div className="skeleton h-4 w-32 rounded mb-4" />

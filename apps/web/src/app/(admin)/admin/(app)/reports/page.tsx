@@ -130,7 +130,7 @@ export default function AdminReportsPage() {
           Stitching & garments <span className="font-normal text-neutral-900/50">· last {days} days</span>
         </h2>
 
-        <div className="mt-3 grid gap-4 lg:grid-cols-3">
+        <div className="mt-3 grid gap-4 fold:grid-cols-2 lg:grid-cols-3">
           <div className="card p-4">
             <h3 className="text-sm font-semibold text-neutral-900">Top garments by jobs</h3>
             {stitching.topGarments.length === 0 ? (
@@ -214,7 +214,7 @@ export default function AdminReportsPage() {
           Revenue breakdown <span className="font-normal text-neutral-900/50">· last {days} days</span>
         </h2>
 
-        <div className="mt-3 grid gap-4 lg:grid-cols-3">
+        <div className="mt-3 grid gap-4 fold:grid-cols-2 lg:grid-cols-3">
           <div className="card p-4">
             <h3 className="text-sm font-semibold text-neutral-900">By category</h3>
             {extended.revenueByCategory.length === 0 ? (

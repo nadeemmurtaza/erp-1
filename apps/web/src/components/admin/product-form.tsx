@@ -321,7 +321,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
         title="Name and description"
         hint="Urdu is optional but the storefront falls back to English without it."
       >
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="grid gap-4 fold:grid-cols-2">
           <div className="space-y-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-neutral-900/40">English</p>
             <Field label="Name" required>

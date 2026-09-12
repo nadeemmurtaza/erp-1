@@ -20,6 +20,37 @@ export default {
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
     extend: {
+      /*
+       * Seven tiers, not Tailwind's five, and the two extra ones are the two
+       * the stock scale has no answer for.
+       *
+       * `xs` (380px) is the floor that actually exists in Pakistan: a Galaxy
+       * Z Fold's cover screen is 280px, an iPhone SE is 320px, and plenty of
+       * budget Androids are 360px. Everything below `xs` has to work on the
+       * base styles alone, so the base layout is the narrow one and each tier
+       * adds, never subtracts.
+       *
+       * `fold` (672px) is the gap that matters most. A Z Fold opened into
+       * tablet mode is ~673-717px wide, a Surface Duo spanned across both
+       * panels is 720px — all of which land above `sm` (640) and below `md`
+       * (768), so with the stock scale an unfolded tablet-sized screen gets
+       * the one-column phone layout. Measured: at 717px the home page's hero
+       * grid still computed to a single 669px column.
+       *
+       * The rest are Tailwind's own values, restated here because `screens`
+       * inside `extend` merges rather than replaces and listing all seven in
+       * order is how the scale stays readable. Tailwind sorts by min-width, so
+       * `xs` and `fold` slot in correctly wherever they are written.
+       */
+      screens: {
+        xs: '380px',
+        sm: '640px',
+        fold: '672px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        '2xl': '1536px',
+      },
       colors: {
         neutral: THEME_COLORS.neutral,
         accent: THEME_COLORS.accent,

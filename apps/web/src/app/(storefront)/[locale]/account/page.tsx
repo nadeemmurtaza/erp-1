@@ -71,7 +71,7 @@ export default function AccountProfilePage() {
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-2">
+    <div className="grid gap-6 fold:grid-cols-2">
       <form onSubmit={saveProfile} className="card space-y-4 p-6">
         <h2 className="text-lg font-semibold text-neutral-900">Profile details</h2>
 

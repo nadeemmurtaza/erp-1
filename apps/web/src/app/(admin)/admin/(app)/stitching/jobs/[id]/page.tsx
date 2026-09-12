@@ -142,7 +142,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
         </p>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-6 fold:grid-cols-2 lg:grid-cols-3">
         <section className="card p-4 lg:col-span-1">
           <h2 className="mb-3 text-sm font-semibold text-neutral-900">Measurements</h2>
           {measurements.length === 0 ? (

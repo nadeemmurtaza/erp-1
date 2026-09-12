@@ -89,7 +89,7 @@ export default function BookingDetailPage({
         </p>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-6 fold:grid-cols-2 lg:grid-cols-3">
         <section className="card p-4">
           <h2 className="mb-3 text-sm font-semibold text-neutral-900">The fabric</h2>
           <p className="text-sm text-neutral-900/70">{booking.fabricNotes ?? 'No notes.'}</p>

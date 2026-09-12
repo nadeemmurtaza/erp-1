@@ -189,7 +189,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
         </p>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-6 fold:grid-cols-2">
         <form onSubmit={saveProfile} className="card h-fit space-y-4 p-4">
           <h2 className="text-sm font-semibold text-neutral-900">Profile</h2>
 

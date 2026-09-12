@@ -230,7 +230,7 @@ export default function AdminDashboardPage() {
         </ul>
       ) : null}
 
-      <div className="mt-6 grid gap-4 lg:grid-cols-3">
+      <div className="mt-6 grid gap-4 fold:grid-cols-2 lg:grid-cols-3">
         <section className="card p-4 sm:p-5 lg:col-span-2">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <div>
@@ -331,7 +331,7 @@ export default function AdminDashboardPage() {
         </section>
       </div>
 
-      <div className="mt-6 grid gap-4 lg:grid-cols-3">
+      <div className="mt-6 grid gap-4 fold:grid-cols-2 lg:grid-cols-3">
         <section className="card p-4">
           <h2 className="text-sm font-semibold text-neutral-900">
             Top categories <span className="font-normal text-neutral-900/50">· last {days} days</span>
@@ -380,7 +380,7 @@ export default function AdminDashboardPage() {
         </section>
       </div>
 
-      <div className="mt-6 grid gap-4 lg:grid-cols-2">
+      <div className="mt-6 grid gap-4 fold:grid-cols-2">
         <section className="card p-4">
           <h2 className="text-sm font-semibold text-neutral-900">
             Best sellers <span className="font-normal text-neutral-900/50">· last {days} days</span>

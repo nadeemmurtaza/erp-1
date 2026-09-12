@@ -65,7 +65,7 @@ export default function AdminImportPage() {
         the rows it already created, so a weekly stock file is safe to run repeatedly.
       </p>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-6 fold:grid-cols-2">
         <div className="card p-4">
           <h2 className="text-sm font-semibold text-neutral-900">1. Start from the template</h2>
           <p className="mt-1 text-sm text-neutral-900/60">

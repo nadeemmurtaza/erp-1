@@ -81,8 +81,14 @@
  *   forty-odd static panels wrapping admin forms should sit still.
  */
 @layer components {
+  /*
+   * The page gutter, stepped across the whole range rather than the middle of
+   * it. 12px at the bottom end because a Galaxy Z Fold's cover screen is
+   * 280px wide and 16px a side spends a ninth of it on margin; 48px at the top
+   * end so a 1536px monitor does not run text to within 32px of the glass.
+   */
   .container-page {
-    @apply mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-page px-3 xs:px-4 sm:px-6 lg:px-8 2xl:px-12;
   }
 
   /*

@@ -13,8 +13,9 @@ import {
   type AdminNavGroup,
   type AdminNavItem,
 } from './nav-registry';
-import { AdminSessionProvider } from './session';
+import { AdminProviders } from '@/providers/admin-providers';
 import { ROUTES } from '@/constants/routes';
+import { BRAND } from '@newax/shared';
 
 /**
  * The back office frame: role guard, sidebar and header.
@@ -99,7 +100,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
           <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-xl flex flex-col animate-slideInLeft">
             <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-200">
               <Link href={ROUTES.admin.dashboard} className="font-semibold text-accent-hover" onClick={() => setIsNavOpen(false)}>
-                Yaseen Admin
+                {BRAND.identity.adminName}
               </Link>
               <button
                 type="button"
@@ -130,7 +131,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
       <aside className="hidden w-60 shrink-0 border-e border-neutral-200 bg-white lg:block">
         <div className="flex h-14 items-center border-b border-neutral-200 px-4">
           <Link href={ROUTES.admin.dashboard} className="font-semibold text-accent-hover">
-            Yaseen Admin
+            {BRAND.identity.adminName}
           </Link>
         </div>
 
@@ -179,7 +180,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
         </header>
 
         <main className="min-w-0 flex-1 p-4 sm:p-6">
-          <AdminSessionProvider value={user}>{children}</AdminSessionProvider>
+          <AdminProviders user={user}>{children}</AdminProviders>
         </main>
       </div>
     </div>

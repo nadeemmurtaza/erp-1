@@ -135,6 +135,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
 
   // Group: Insights
   {
+    key: 'insights',
+    label: 'Insights',
+    href: '/admin/insights',
+    permissions: ['reports.view'],
+    group: 'insights',
+    module: 'reports',
+  },
+  {
     key: 'reports',
     label: 'Reports',
     href: '/admin/reports',

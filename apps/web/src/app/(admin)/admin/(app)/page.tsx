@@ -6,13 +6,10 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { formatDate, formatMoney, intlTag, toMajor } from '@newax/shared';
 import { SalesChart } from '@/components/admin/sales-chart';
-import { DonutChart } from '@/components/admin/donut-chart';
-import { GaugeChart } from '@/components/admin/gauge-chart';
-import { FunnelChart } from '@/components/admin/funnel-chart';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
-import type { MonthlyTarget, VisitorAnalytics } from '@/types/api';
+import type { VisitorAnalytics } from '@/types/api';
 import { ROUTES } from '@/constants/routes';
-import { Loading } from '@/components/ui';
+import { Loading, PageHeader, Section } from '@/components/ui';
 
 interface Dashboard {
   today: { orders: number; revenue: number };
@@ -30,7 +27,6 @@ interface Dashboard {
   salesSeries: Array<{ date: string; orders: number; revenue: number }>;
   topProducts: Array<{ name: string; quantity: number; revenue: number }>;
   stitchingByStage: Array<{ stage: string; count: number }>;
-  monthlyTarget: MonthlyTarget;
 }
 
 /** Only the slice this page needs — the full shape is consumed by reports/page.tsx. */
@@ -57,10 +53,6 @@ export default function AdminDashboardPage() {
   const [followUps, setFollowUps] = useState<FollowUp[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  const [editingTarget, setEditingTarget] = useState(false);
-  const [targetDraft, setTargetDraft] = useState('0');
-  const [targetSaving, setTargetSaving] = useState(false);
-  const [targetError, setTargetError] = useState<string | null>(null);
 
   // No analytics.view permission means no dashboard to read — the analytics
   // endpoints below would just 403 — so send them to the queue instead.
@@ -98,36 +90,7 @@ export default function AdminDashboardPage() {
     };
   }, [days, lacksDashboard]);
 
-  function openTargetEditor() {
-    if (!data) return;
-    // Rupees on screen, paisa in the API — same ×100/÷100 boundary as the
-    // garments page's stitching-fee field.
-    setTargetDraft(String(data.monthlyTarget.targetAmount / 100));
-    setTargetError(null);
-    setEditingTarget(true);
-  }
 
-  async function saveTarget(event: React.FormEvent) {
-    event.preventDefault();
-    setTargetSaving(true);
-    setTargetError(null);
-
-    try {
-      const targetAmount = Math.round(Number(targetDraft || 0) * 100);
-      const monthlyTarget = await adminFetch<MonthlyTarget>('/admin/analytics/monthly-target', {
-        method: 'PATCH',
-        body: { targetAmount },
-      });
-      // Splice the recomputed target back into the already-loaded dashboard
-      // rather than refetching the whole thing.
-      setData((current) => (current ? { ...current, monthlyTarget } : current));
-      setEditingTarget(false);
-    } catch (cause) {
-      setTargetError(cause instanceof Error ? cause.message : 'Could not save the target');
-    } finally {
-      setTargetSaving(false);
-    }
-  }
 
   if (error) {
     return (
@@ -176,15 +139,41 @@ export default function AdminDashboardPage() {
 
   return (
     <>
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-semibold text-neutral-900">Dashboard</h1>
-          <p className="mt-1 text-sm text-neutral-900/60">How the shop is doing right now.</p>
-        </div>
-        <Link href={ROUTES.admin.productNew} className="btn-primary">
-          Add product
-        </Link>
-      </div>
+      <PageHeader
+        title="Dashboard"
+        description="What needs doing right now. For how the shop is performing, see Insights."
+        action={
+          <Link href={ROUTES.admin.productNew} className="btn-primary">
+            Add product
+          </Link>
+        }
+      />
+
+      {/*
+        First, and prominent. This is the question the page exists to answer,
+        and it used to sit under four KPI tiles as a row of small chips — the
+        one actionable thing on the page, rendered smaller than the things
+        that are only informative.
+      */}
+      <Section title="Needs attention">
+        {attention.length === 0 ? (
+          <p className="text-sm text-neutral-900/50">Nothing waiting. Everything is up to date.</p>
+        ) : (
+          <ul className="grid gap-2 xs:grid-cols-2 lg:grid-cols-3">
+            {attention.map((item) => (
+              <li key={item.label}>
+                <Link
+                  href={item.href}
+                  className="flex items-baseline gap-2 rounded border border-amber-600/40 bg-amber-600/10 px-3 py-2.5 text-sm transition-colors hover:bg-amber-600/20"
+                >
+                  <span className="text-base font-semibold text-neutral-900">{item.value}</span>
+                  <span className="text-neutral-900/80">{item.label}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Section>
 
       {/* The headline numbers are stat tiles, not a chart. */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -214,21 +203,7 @@ export default function AdminDashboardPage() {
         />
       </div>
 
-      {attention.length > 0 ? (
-        <ul className="mt-4 flex flex-wrap gap-2">
-          {attention.map((item, idx) => (
-            <li key={item.label} className="animate-slideUp" style={{ animationDelay: `${(idx + 5) * 75}ms` }}>
-              <Link
-                href={item.href}
-                className="inline-flex items-center gap-2 rounded-md border border-amber-600/40 bg-amber-600/10 px-3 py-1.5 text-sm text-neutral-900/80 transition-colors hover:bg-amber-600/20"
-              >
-                <span className="font-semibold text-neutral-900">{item.value}</span>
-                {item.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      ) : null}
+
 
       <div className="mt-6 grid gap-4 fold:grid-cols-2 lg:grid-cols-3">
         <section className="card p-4 sm:p-5 lg:col-span-2">
@@ -259,147 +234,14 @@ export default function AdminDashboardPage() {
           <SalesChart series={data.salesSeries} />
         </section>
 
-        <section className="card p-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-neutral-900">Monthly target</h2>
-            {!editingTarget ? (
-              <button
-                type="button"
-                onClick={openTargetEditor}
-                className="text-xs font-medium text-accent-hover hover:underline"
-              >
-                Edit target
-              </button>
-            ) : null}
-          </div>
-
-          {editingTarget ? (
-            <form onSubmit={saveTarget} className="mt-4 space-y-3">
-              <div>
-                <label htmlFor="monthly-target-input" className="field-label">
-                  Target this month (Rs)
-                </label>
-                <input
-                  id="monthly-target-input"
-                  type="number"
-                  min="0"
-                  step="1000"
-                  value={targetDraft}
-                  onChange={(event) => setTargetDraft(event.target.value)}
-                  className="field-input"
-                  autoFocus
-                />
-              </div>
-
-              {targetError ? (
-                <p role="alert" className="text-xs text-red-700">
-                  {targetError}
-                </p>
-              ) : null}
-
-              <div className="flex gap-2">
-                <button type="submit" disabled={targetSaving} className="btn-primary">
-                  {targetSaving ? 'Saving…' : 'Save'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setEditingTarget(false);
-                    setTargetError(null);
-                  }}
-                  className="btn-ghost"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          ) : (
-            <>
-              <GaugeChart
-                percent={data.monthlyTarget.percent}
-                caption={
-                  data.monthlyTarget.targetAmount > 0
-                    ? `${formatMoney(data.monthlyTarget.achievedAmount)} of ${formatMoney(data.monthlyTarget.targetAmount)}`
-                    : 'No target set yet'
-                }
-              />
-              <p className="mt-3 border-t border-white pt-3 text-xs text-neutral-900/50">
-                Average order <span className="font-semibold text-neutral-900">{formatMoney(data.averageOrderValue)}</span>
-              </p>
-            </>
-          )}
-        </section>
       </div>
 
       <div className="mt-6 grid gap-4 fold:grid-cols-2 lg:grid-cols-3">
-        <section className="card p-4">
-          <h2 className="text-sm font-semibold text-neutral-900">
-            Top categories <span className="font-normal text-neutral-900/50">· last {days} days</span>
-          </h2>
-          <div className="mt-4">
-            <DonutChart
-              items={extended.revenueByCategory.map((row) => ({ label: row.category, value: row.revenue }))}
-              valueFormatter={formatMoney}
-            />
-          </div>
-        </section>
 
-        <section className="card p-4">
-          <h2 className="text-sm font-semibold text-neutral-900">
-            Conversion funnel <span className="font-normal text-neutral-900/50">· last {days} days</span>
-          </h2>
-          <div className="mt-4">
-            <FunnelChart
-              stages={[
-                { label: 'Product views', value: visitors.funnel.productViews },
-                { label: 'Added to cart', value: visitors.funnel.addToCart },
-                { label: 'Checkout started', value: visitors.funnel.checkoutStarted },
-                { label: 'Purchases completed', value: visitors.funnel.purchasesCompleted },
-              ]}
-            />
-          </div>
-        </section>
 
-        <section className="card p-4">
-          <h2 className="text-sm font-semibold text-neutral-900">
-            Traffic sources <span className="font-normal text-neutral-900/50">· last {days} days</span>
-          </h2>
-          {visitors.trafficSources.length === 0 ? (
-            <p className="mt-4 text-sm text-neutral-900/50">No page views in this window.</p>
-          ) : (
-            <BarList
-              items={visitors.trafficSources.map((row) => ({
-                key: row.source,
-                label: capitalize(row.source),
-                value: row.percent,
-                sub: `${row.count} ${row.count === 1 ? 'view' : 'views'}`,
-              }))}
-              valueFormatter={(value) => `${value}%`}
-            />
-          )}
-        </section>
       </div>
 
       <div className="mt-6 grid gap-4 fold:grid-cols-2">
-        <section className="card p-4">
-          <h2 className="text-sm font-semibold text-neutral-900">
-            Best sellers <span className="font-normal text-neutral-900/50">· last {days} days</span>
-          </h2>
-
-          {data.topProducts.length === 0 ? (
-            <p className="mt-4 text-sm text-neutral-900/50">No sales in this window.</p>
-          ) : (
-            <BarList
-              items={data.topProducts.map((product) => ({
-                key: product.name,
-                label: product.name,
-                value: product.revenue,
-                sub: `${product.quantity} sold`,
-              }))}
-              valueFormatter={formatMoney}
-            />
-          )}
-        </section>
 
         <div className="space-y-4">
           <section className="card">
@@ -523,37 +365,6 @@ function Mini({ label, value }: { label: string; value: number }) {
   );
 }
 
-/** Ranked list with a proportional bar, matching reports/page.tsx's BarList. */
-function BarList({
-  items,
-  valueFormatter,
-}: {
-  items: Array<{ key: string; label: string; value: number; sub?: string }>;
-  valueFormatter: (value: number) => string;
-}) {
-  const max = Math.max(...items.map((item) => item.value), 1);
-
-  return (
-    <ul className="mt-4 space-y-3">
-      {items.map((item) => (
-        <li key={item.key}>
-          <div className="flex justify-between gap-3 text-sm">
-            <span className="min-w-0 truncate text-neutral-900">{item.label}</span>
-            <span className="shrink-0 text-neutral-900/70">{valueFormatter(item.value)}</span>
-          </div>
-          {/* Sequential single hue: more of the metric is a longer bar. */}
-          <div className="mt-1 h-2 overflow-hidden rounded bg-white">
-            <div
-              className="h-full rounded bg-accent"
-              style={{ width: `${Math.max((item.value / max) * 100, 2)}%` }}
-            />
-          </div>
-          {item.sub ? <p className="mt-0.5 text-xs text-neutral-900/40">{item.sub}</p> : null}
-        </li>
-      ))}
-    </ul>
-  );
-}
 
 /** vs the immediately preceding window of the same length, matching VisitorAnalytics.visitorsChangePercent. */
 function visitorsHint(days: number, changePercent: number | null): string {
@@ -562,6 +373,3 @@ function visitorsHint(days: number, changePercent: number | null): string {
   return `${sign}${changePercent}% vs previous ${days} days`;
 }
 
-function capitalize(value: string): string {
-  return value.length === 0 ? value : value.charAt(0).toUpperCase() + value.slice(1);
-}

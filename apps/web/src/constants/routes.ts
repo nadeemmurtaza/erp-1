@@ -90,6 +90,7 @@ export const ROUTES = {
     leads: '/admin/leads',
     inbox: '/admin/inbox',
     marketing: '/admin/marketing',
+    insights: '/admin/insights',
     reports: '/admin/reports',
     tax: '/admin/tax',
     settings: '/admin/settings',

@@ -4,13 +4,13 @@
     {
       "name": "web-dev-server",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "@yaseen/web", "dev"],
+      "runtimeArgs": ["--filter", "@newax/web", "dev"],
       "port": 3000
     },
     {
       "name": "api-dev-server",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--filter", "@yaseen/api", "dev"],
+      "runtimeArgs": ["--filter", "@newax/api", "dev"],
       "port": 3001
     }
   ]

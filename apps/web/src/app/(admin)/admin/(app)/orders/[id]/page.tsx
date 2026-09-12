@@ -3,7 +3,7 @@
 import { use, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { cn } from '@/utils/cn';
-import { formatDate, formatDateTime, formatMoney } from '@yaseen/shared';
+import { formatDate, formatDateTime, formatMoney } from '@newax/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { ROUTES } from '@/constants/routes';
 import { Loading } from '@/components/ui';

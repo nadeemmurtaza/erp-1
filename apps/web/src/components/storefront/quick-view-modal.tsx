@@ -1,6 +1,6 @@
 'use client';
 
-import type { Locale } from '@yaseen/shared';
+import type { Locale } from '@newax/shared';
 import { Dialog } from '@/components/ui';
 import type { StorefrontProduct } from '@/types/api';
 import { Price } from './price';

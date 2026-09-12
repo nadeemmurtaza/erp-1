@@ -1,4 +1,4 @@
-import { type Locale, directionFor } from '@yaseen/shared';
+import { type Locale, directionFor } from '@newax/shared';
 
 /**
  * Email HTML primitives.

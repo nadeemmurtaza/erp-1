@@ -1,6 +1,6 @@
 import { BadRequestException, Body, Controller, Get, Param, Put, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { USER_ROLES, type UserRole } from '@yaseen/shared';
+import { USER_ROLES, type UserRole } from '@newax/shared';
 import { RequirePermission } from '../../core/auth/decorators';
 import { AuditLogQueryDto, UpdateRolePermissionsDto } from './dto/settings.dto';
 import { SettingsAdminService } from './settings-admin.service';

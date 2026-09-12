@@ -38,7 +38,7 @@
       "outputs": ["coverage/**"]
     },
     "db:seed": {
-      // The seed imports @yaseen/shared (garment definitions, price helpers),
+      // The seed imports @newax/shared (garment definitions, price helpers),
       // which resolves to its build output — so the package has to be built
       // first. Without this, `pnpm db:seed` fails on a fresh clone.
       "dependsOn": ["^build"],

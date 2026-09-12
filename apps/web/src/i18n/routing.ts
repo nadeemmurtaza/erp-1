@@ -1,5 +1,5 @@
 import { defineRouting } from 'next-intl/routing';
-import { DEFAULT_LOCALE, LOCALES } from '@yaseen/shared';
+import { DEFAULT_LOCALE, LOCALES } from '@newax/shared';
 
 /**
  * Locale routing for the storefront: /en/... and /ur/....

@@ -1,4 +1,4 @@
-import type { StitchingStage } from '@yaseen/shared';
+import type { StitchingStage } from '@newax/shared';
 import { STAGE_LABELS } from '@/types/stitching';
 import { StatusBadge } from './status-badge';
 

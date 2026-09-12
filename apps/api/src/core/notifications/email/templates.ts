@@ -1,4 +1,4 @@
-import { type Locale, formatMoney } from '@yaseen/shared';
+import { type Locale, formatMoney } from '@newax/shared';
 import { copyFor } from './copy';
 import {
   button,

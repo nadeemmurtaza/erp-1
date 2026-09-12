@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatMoney, PRODUCT_KINDS, PRODUCT_STATUSES } from '@yaseen/shared';
+import { formatMoney, PRODUCT_KINDS, PRODUCT_STATUSES } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import type { AdminProduct, PaginatedResponse } from '@/types/api';
 import { ROUTES } from '@/constants/routes';

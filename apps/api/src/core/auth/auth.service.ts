@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcryptjs';
-import { normalizeEmail, normalizePkPhone } from '@yaseen/shared';
+import { normalizeEmail, normalizePkPhone } from '@newax/shared';
 import { AppConfigService } from '../config/app-config.service';
 import { EventBusService } from '../events/event-bus.service';
 import { DomainEvent } from '../events/domain-events';

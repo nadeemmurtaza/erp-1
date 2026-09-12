@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { STITCHING_STAGES, formatDate, type StitchingStage } from '@yaseen/shared';
+import { STITCHING_STAGES, formatDate, type StitchingStage } from '@newax/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { StageBadge } from '@/components/admin/stage-badge';
 import { Loading } from '@/components/ui';

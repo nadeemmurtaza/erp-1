@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/utils/cn';
 import type { StitchingGarment } from '@/types/cart';
-import type { Locale } from '@yaseen/shared';
+import type { Locale } from '@newax/shared';
 
 interface SizeChartModalProps {
   productName: string;

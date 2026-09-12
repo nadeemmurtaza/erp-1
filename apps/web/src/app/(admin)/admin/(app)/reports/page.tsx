@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatMoney } from '@yaseen/shared';
+import { formatMoney } from '@newax/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { Loading } from '@/components/ui';
 import { paymentProviderLabel } from '@/constants/payment-methods';

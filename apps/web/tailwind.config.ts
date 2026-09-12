@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss';
 import forms from '@tailwindcss/forms';
 import plugin from 'tailwindcss/plugin';
-import { THEME_COLORS, THEME_RADII, TAILWIND_FONT_SIZE, radiusPx } from '@yaseen/shared';
+import { THEME_COLORS, THEME_RADII, TAILWIND_FONT_SIZE, radiusPx } from '@newax/shared';
 
 /**
  * One palette for admin and storefront both, imported from

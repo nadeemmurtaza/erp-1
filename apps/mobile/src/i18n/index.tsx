@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 import { I18nManager } from 'react-native';
-import type { Locale } from '@yaseen/shared';
+import type { Locale } from '@newax/shared';
 import { MESSAGES, type MessageKey } from './messages';
 
 const STORAGE_KEY = 'yaseen.locale';

@@ -6,7 +6,7 @@
  * internals. Allowed from inside apps/api/src/modules/<name>/:
  *   - anything under its own folder
  *   - anything under src/core/          (the shared platform)
- *   - packages (@yaseen/shared, node_modules)
+ *   - packages (@newax/shared, node_modules)
  *   - another module's public surface:  ../<other>/<other>.module  |  .service
  *
  * Forbidden: ../<other>/dto/…, ../<other>/internal/…, deep files. Reaching for

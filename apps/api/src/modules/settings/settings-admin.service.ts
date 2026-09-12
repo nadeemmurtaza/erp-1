@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { ADMIN_LOCKED_PERMISSIONS, USER_ROLES, type PermissionKey, type UserRole } from '@yaseen/shared';
+import { ADMIN_LOCKED_PERMISSIONS, USER_ROLES, type PermissionKey, type UserRole } from '@newax/shared';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { Prisma } from '../../core/prisma/client';
 

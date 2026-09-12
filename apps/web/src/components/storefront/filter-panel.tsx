@@ -3,7 +3,7 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useTransition, useState, useEffect } from 'react';
-import { directionFor, formatMoney, toMajor, toMinor, type Locale } from '@yaseen/shared';
+import { directionFor, formatMoney, toMajor, toMinor, type Locale } from '@newax/shared';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import type { CatalogFacets } from '@/types/api';
 import { cn } from '@/utils/cn';

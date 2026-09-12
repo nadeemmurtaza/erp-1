@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { DEFAULT_LOCALE } from '@yaseen/shared';
+import { DEFAULT_LOCALE } from '@newax/shared';
 import { API_URL } from '@/lib/api';
 
 /**

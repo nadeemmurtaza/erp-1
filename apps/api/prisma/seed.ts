@@ -8,7 +8,7 @@ import {
   slugify,
   toMinor,
   type PermissionKey,
-} from '@yaseen/shared';
+} from '@newax/shared';
 import { PrismaClient, type Prisma, type UserRole } from '../src/generated/prisma';
 
 config({ path: ['.env', '../../.env'], quiet: true });
@@ -60,7 +60,7 @@ async function main(): Promise<void> {
 /**
  * Loads the permission catalog and, for any permission that has never been
  * granted to anyone, applies its default role grants from
- * ROLE_PERMISSION_SEED (@yaseen/shared).
+ * ROLE_PERMISSION_SEED (@newax/shared).
  *
  * The label/category upsert always runs — that's just display metadata. The
  * grant step deliberately does not: once a permission has at least one

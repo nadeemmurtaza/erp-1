@@ -14,7 +14,7 @@ import {
   stitchingFeeFor,
   type Locale,
   type MeasurementValues,
-} from '@yaseen/shared';
+} from '@newax/shared';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
@@ -103,7 +103,7 @@ export interface CartView {
  *
  * Prices are recomputed from the database on every read — the client's numbers
  * are never trusted and never stored on the cart. The same helpers in
- * @yaseen/shared price the cart here and the order at checkout, so the total a
+ * @newax/shared price the cart here and the order at checkout, so the total a
  * customer is shown is the total they are charged.
  */
 @Injectable()

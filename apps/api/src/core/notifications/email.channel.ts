@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { Injectable, Logger } from '@nestjs/common';
 import { createTransport, type Transporter } from 'nodemailer';
-import { DEFAULT_LOCALE, type Locale } from '@yaseen/shared';
+import { DEFAULT_LOCALE, type Locale } from '@newax/shared';
 import { AppConfigService } from '../config/app-config.service';
 import type { EmailAccount } from '../prisma/client';
 import { EmailAccountsService } from './email-accounts/email-accounts.service';

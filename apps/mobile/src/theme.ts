@@ -1,4 +1,4 @@
-import { THEME_COLORS, THEME_RADII, THEME_TYPE } from '@yaseen/shared';
+import { THEME_COLORS, THEME_RADII, THEME_TYPE } from '@newax/shared';
 
 /**
  * The app's colours and spacing, matching the website.

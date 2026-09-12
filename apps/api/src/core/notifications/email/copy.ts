@@ -1,4 +1,4 @@
-import type { Locale } from '@yaseen/shared';
+import type { Locale } from '@newax/shared';
 
 /**
  * Email wording, in both languages the storefront ships.

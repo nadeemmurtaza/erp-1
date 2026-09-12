@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { computeFabricEstimate, type Locale } from '@yaseen/shared';
+import { computeFabricEstimate, type Locale } from '@newax/shared';
 import { JsonLd } from '@/components/storefront/json-ld';
 import { ProductGallery } from '@/components/storefront/product-gallery';
 import { ProductPurchase, type FabricNeedRow } from '@/components/storefront/product-purchase';

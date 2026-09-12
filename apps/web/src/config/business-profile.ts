@@ -1,4 +1,4 @@
-import { BRAND } from '@yaseen/shared';
+import { BRAND } from '@newax/shared';
 
 /**
  * The shop's own details, flattened for the ~60 call sites that read them.

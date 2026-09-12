@@ -8,11 +8,14 @@
  *
  * What is NOT here, and cannot be:
  *
- *   - The `@yaseen/*` package scope. `import … from '@yaseen/shared'` is a
- *     static string the bundler resolves at build time; it cannot read a
- *     value from this file. `pnpm rebrand` renames it.
- *   - Artwork. The paths are listed under `assets`, but the pixels live in
- *     files. `pnpm rebrand` swaps them.
+ *   - The `@newax/*` package scope. `import … from '@newax/shared'` is a
+ *     static string the bundler resolves before any code runs, so it can
+ *     never read a value from here. That is exactly why the scope is the
+ *     builder's name and not the client's: Newax is the constant across
+ *     every deployment, so the scope never has to change and a rebrand
+ *     never touches an import.
+ *   - Artwork. The paths are listed under `assets`; the pixels are files, so
+ *     a rebrand replaces the files those paths point at.
  *   - Copy. Customer-facing words are translation rows (House Rule 6), not
  *     constants — a rebrand should not be able to change what a page says.
  *
@@ -193,10 +196,10 @@ const type = {
 /**
  * Font families.
  *
- * `googleFont` is the next/font import name in the storefront layout — it is
- * the one font value that is not purely data, because next/font resolves the
- * import statically for self-hosting. Changing it means editing that import
- * too; `pnpm rebrand` does it.
+ * `googleFont` names the next/font import in the storefront layout. It is the
+ * one font value that is not purely data: next/font resolves that import
+ * statically so it can self-host the file, so changing the typeface means
+ * editing the import there as well as this value.
  */
 const fonts = {
   googleFont: 'Encode_Sans',

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, Suspense } from 'react';
-import type { Locale } from '@yaseen/shared';
+import type { Locale } from '@newax/shared';
 import type { StorefrontProduct } from '@/types/api';
 import { ProductsGrid } from './products-grid';
 import { GridToggleWrapper } from './grid-toggle-wrapper';

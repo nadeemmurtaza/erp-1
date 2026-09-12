@@ -1,4 +1,4 @@
-import { formatMoney } from '@yaseen/shared';
+import { formatMoney } from '@newax/shared';
 import { EMAIL_TEMPLATE_CATALOG } from './catalog';
 import { renderEmail, type EmailContext, type OrderEmailData } from './templates';
 

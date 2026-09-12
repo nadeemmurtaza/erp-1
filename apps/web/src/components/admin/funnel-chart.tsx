@@ -1,6 +1,6 @@
 'use client';
 
-import { THEME_COLORS } from '@yaseen/shared';
+import { THEME_COLORS } from '@newax/shared';
 
 /**
  * Stepped conversion funnel: each stage's bar narrower than the last, width

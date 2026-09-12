@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
-import type { Locale, ProductKind } from '@yaseen/shared';
+import type { Locale, ProductKind } from '@newax/shared';
 import { FilterPanel } from '@/components/storefront/filter-panel';
 import { ShopControls } from '@/components/storefront/shop-controls';
 import { Link } from '@/i18n/navigation';

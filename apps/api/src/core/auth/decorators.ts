@@ -1,5 +1,5 @@
 import { SetMetadata, createParamDecorator, type ExecutionContext } from '@nestjs/common';
-import type { PermissionKey } from '@yaseen/shared';
+import type { PermissionKey } from '@newax/shared';
 import { IS_PUBLIC_KEY, PERMISSIONS_KEY, type AuthenticatedUser } from './auth.constants';
 
 /**

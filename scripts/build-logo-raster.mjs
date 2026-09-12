@@ -36,7 +36,7 @@ try {
   sharp = require('sharp');
 } catch {
   console.error(
-    'sharp is not installed. Run `pnpm install` first — it comes in with @yaseen/api.',
+    'sharp is not installed. Run `pnpm install` first — it comes in with @newax/api.',
   );
   process.exit(1);
 }

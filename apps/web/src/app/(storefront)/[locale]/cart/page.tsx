@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { formatMoney, type Locale } from '@yaseen/shared';
+import { formatMoney, type Locale } from '@newax/shared';
 import { Link } from '@/i18n/navigation';
 import { useCart } from '@/components/storefront/cart-provider';
 import type { CartLine } from '@/types/cart';

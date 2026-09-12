@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
-import { formatMoney } from '@yaseen/shared';
+import { formatMoney } from '@newax/shared';
 import { Loading } from '@/components/ui';
 
 interface Supplier {

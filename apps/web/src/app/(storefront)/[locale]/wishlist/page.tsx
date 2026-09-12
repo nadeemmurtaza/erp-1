@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import type { Locale } from '@yaseen/shared';
+import type { Locale } from '@newax/shared';
 import { ProductCard } from '@/components/storefront/product-card';
 import { Link } from '@/i18n/navigation';
 import { getProducts } from '@/lib/api';

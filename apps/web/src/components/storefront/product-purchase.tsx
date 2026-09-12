@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatMoney, type Locale } from '@yaseen/shared';
+import { formatMoney, type Locale } from '@newax/shared';
 import { useRouter } from '@/i18n/navigation';
 import type { StorefrontProduct } from '@/types/api';
 import { Price } from './price';

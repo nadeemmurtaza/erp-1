@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { slugify } from '@yaseen/shared';
+import { slugify } from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import type { MeasurementField, Prisma } from '../../core/prisma/client';
 import { PrismaService } from '../../core/prisma/prisma.service';
@@ -184,7 +184,7 @@ export class MeasurementsAdminService {
 
     // A size-chart row is a reference table, not a customer's own order — the
     // RTW matrix only gives Shoulder/Chest/Waist/Hips/Length for a garment
-    // that may have twice that many fields, so unlike @yaseen/shared's
+    // that may have twice that many fields, so unlike @newax/shared's
     // validateMeasurements (which demands every required field), a size row
     // only needs the keys it actually supplies to be real, active fields
     // within their bounds.

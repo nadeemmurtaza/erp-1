@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatDate, formatMoney } from '@yaseen/shared';
+import { formatDate, formatMoney } from '@newax/shared';
 import { adminFetch, getAccessToken } from '@/lib/admin-client';
 import { API_URL, toSearchParams } from '@/lib/api';
 import type { PaginatedResponse } from '@/types/api';

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatDate, formatMoney, toMajor } from '@yaseen/shared';
+import { formatDate, formatMoney, toMajor } from '@newax/shared';
 import { SalesChart } from '@/components/admin/sales-chart';
 import { DonutChart } from '@/components/admin/donut-chart';
 import { GaugeChart } from '@/components/admin/gauge-chart';

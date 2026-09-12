@@ -83,7 +83,7 @@ That is the entire wiring step. If you find yourself editing `app.module.ts` or
 
 - anything in your own folder
 - anything under `src/core/`
-- `@yaseen/shared` and real npm packages
+- `@newax/shared` and real npm packages
 - **another module's `<other>.module` or a top-level `<other>.service` — nothing else**
 
 Forbidden: `../orders/dto/place-order.dto`, `../catalog/internal/anything`, any
@@ -142,7 +142,7 @@ boot and editable afterwards.
 
 Rs 3,499 is stored, passed and compared as `349900`. **No float, no string, no
 `Decimal`, ever touches a price.** Use `toMinor()` and `formatMoney()` from
-`@yaseen/shared`. A column holding money is `Int`.
+`@newax/shared`. A column holding money is `Int`.
 
 This rule has no exceptions. Percentages in discount rules are stored as basis
 points (`1000` = 10%) for the same reason.
@@ -243,7 +243,7 @@ if (updated.count === 0) throw new BadRequestException('Sold out while you were 
 `apps/api/src/modules/orders/orders.service.ts:139` both use this idiom. Copy it.
 Preserve it in any refactor.
 
-### Rule 11 — Shared rules live in `@yaseen/shared` and every app calls them
+### Rule 11 — Shared rules live in `@newax/shared` and every app calls them
 
 Pricing maths, measurement validation and phone normalisation are used by the
 API, the website and the mobile app alike. A figure the phone accepts is one the
@@ -319,7 +319,7 @@ pnpm build       # catches Next.js build-time failures the dev server hides
 Plus, every time:
 
 - [ ] Migration runs cleanly **forwards on a copy of production data**, not just
-      on a fresh database. `pnpm --filter @yaseen/api db:migrate -- --name <name>`
+      on a fresh database. `pnpm --filter @newax/api db:migrate -- --name <name>`
 - [ ] `pnpm db:seed` still succeeds and is still idempotent (run it twice).
 - [ ] New API routes have `@ApiOperation` and appear in Swagger.
 - [ ] New API routes have `@RequirePermission`. A route with no decorator is

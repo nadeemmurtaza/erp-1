@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
-import { formatDateTime, formatMoney } from '@yaseen/shared';
+import { formatDateTime, formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { Loading } from '@/components/ui';
 import { paymentProviderLabel } from '@/constants/payment-methods';

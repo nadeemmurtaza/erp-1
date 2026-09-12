@@ -3,7 +3,7 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatMoney, type Locale } from '@yaseen/shared';
+import { formatMoney, type Locale } from '@newax/shared';
 import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { useCart } from '@/components/storefront/cart-provider';
 import { useRouter } from '@/i18n/navigation';

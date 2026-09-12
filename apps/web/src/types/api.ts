@@ -1,4 +1,4 @@
-import type { Locale, PermissionKey, ProductKind, ProductStatus } from '@yaseen/shared';
+import type { Locale, PermissionKey, ProductKind, ProductStatus } from '@newax/shared';
 
 /** Shapes returned by the API. Mirrors apps/api's response objects. */
 

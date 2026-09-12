@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { stringify } from 'csv-stringify/sync';
-import { toMajor } from '@yaseen/shared';
+import { toMajor } from '@newax/shared';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, Public, RequirePermission } from '../../core/auth/decorators';
 import { CrmService } from './crm.service';

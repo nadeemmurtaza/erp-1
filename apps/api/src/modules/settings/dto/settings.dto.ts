@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { PERMISSION_KEYS, type PermissionKey } from '@yaseen/shared';
+import { PERMISSION_KEYS, type PermissionKey } from '@newax/shared';
 import { Type } from 'class-transformer';
 import { IsArray, IsDateString, IsIn, IsInt, IsOptional, IsString, Min } from 'class-validator';
 

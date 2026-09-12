@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { cn } from '@/utils/cn';
-import { STITCHING_STAGES, formatDate, type Locale, type StitchingStage } from '@yaseen/shared';
+import { STITCHING_STAGES, formatDate, type Locale, type StitchingStage } from '@newax/shared';
 
 export interface TimelineEvent {
   fromStage?: StitchingStage | null;

@@ -1,5 +1,5 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { ADMIN_LOCKED_PERMISSIONS, normalizeEmail, normalizePkPhone } from '@yaseen/shared';
+import { ADMIN_LOCKED_PERMISSIONS, normalizeEmail, normalizePkPhone } from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { hashPassword } from '../../core/auth/password.util';
 import { PermissionsResolverService } from '../../core/auth/permissions.service';

@@ -16,7 +16,7 @@
 // The palette, imported rather than retyped: these pages render with no
 // stylesheet, but that is a reason to inline the *values*, not to keep a
 // second hand-copy of them that drifts the next time the ramp changes.
-import { THEME_COLORS } from '@yaseen/shared';
+import { THEME_COLORS } from '@newax/shared';
 
 const N = THEME_COLORS.neutral;
 // Square, accent-filled: the same primary button the rest of the product has,

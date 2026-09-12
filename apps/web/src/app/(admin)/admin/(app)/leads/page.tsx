@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { LEAD_STATUSES, formatDate, formatMoney, toMinor } from '@yaseen/shared';
+import { LEAD_STATUSES, formatDate, formatMoney, toMinor } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 
 interface Lead {

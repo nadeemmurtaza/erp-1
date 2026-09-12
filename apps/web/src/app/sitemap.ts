@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { LOCALES } from '@yaseen/shared';
+import { LOCALES } from '@newax/shared';
 import { getProducts } from '@/lib/api';
 import { alternateLanguages } from '@/config/seo';
 

@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useLocale } from 'next-intl';
-import { formatMoney, type Locale } from '@yaseen/shared';
+import { formatMoney, type Locale } from '@newax/shared';
 import { Link, usePathname } from '@/i18n/navigation';
 import { useCustomerSession } from '@/components/storefront/customer-session';
 import { customerFetch } from '@/lib/customer-client';

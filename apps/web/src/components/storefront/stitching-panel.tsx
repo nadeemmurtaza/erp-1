@@ -9,7 +9,7 @@ import {
   formatMoney,
   validateMeasurements,
   type Locale,
-} from '@yaseen/shared';
+} from '@newax/shared';
 import { API_URL } from '@/lib/api';
 import type { StorefrontProduct } from '@/types/api';
 import { getCustomerToken } from '@/lib/cart-client';

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-client';
-import { formatDate, formatMoney } from '@yaseen/shared';
+import { formatDate, formatMoney } from '@newax/shared';
 import { ROUTES } from '@/constants/routes';
 import { Loading } from '@/components/ui';
 

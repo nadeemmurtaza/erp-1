@@ -1,4 +1,4 @@
-import base from '@yaseen/config/eslint';
+import base from '@newax/config/eslint';
 
 export default [
   ...base,

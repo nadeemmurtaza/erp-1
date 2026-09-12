@@ -5,7 +5,7 @@ import {
   NotFoundException,
   OnModuleInit,
 } from '@nestjs/common';
-import { getPersonFullName, nextStage, previousStage, STITCHING_STAGES } from '@yaseen/shared';
+import { getPersonFullName, nextStage, previousStage, STITCHING_STAGES } from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { assertCanManage } from '../../core/auth/ownership.guard';
 import { DomainEvent } from '../../core/events/domain-events';

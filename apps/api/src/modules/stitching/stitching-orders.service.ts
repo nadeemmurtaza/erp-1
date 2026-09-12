@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { normalizePkPhone } from '@yaseen/shared';
+import { normalizePkPhone } from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { DomainEvent } from '../../core/events/domain-events';
 import { EventBusService } from '../../core/events/event-bus.service';

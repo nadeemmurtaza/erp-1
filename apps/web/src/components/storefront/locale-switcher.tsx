@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useTransition } from 'react';
-import { LOCALES, type Locale } from '@yaseen/shared';
+import { LOCALES, type Locale } from '@newax/shared';
 import { usePathname, useRouter } from '@/i18n/navigation';
 
 const LABELS: Record<Locale, string> = {

@@ -74,7 +74,7 @@ importers:
       '@prisma/client':
         specifier: 6.19.3
         version: 6.19.3(prisma@6.19.3(typescript@5.9.3))(typescript@5.9.3)
-      '@yaseen/shared':
+      '@newax/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       bcryptjs:
@@ -156,7 +156,7 @@ importers:
       '@types/supertest':
         specifier: 7.2.1
         version: 7.2.1
-      '@yaseen/config':
+      '@newax/config':
         specifier: workspace:*
         version: link:../../packages/config
       eslint:
@@ -195,7 +195,7 @@ importers:
       '@react-native-async-storage/async-storage':
         specifier: 2.2.0
         version: 2.2.0(react-native@0.86.2(@babel/core@7.29.7)(@react-native/jest-preset@0.86.2(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.87.0(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))
-      '@yaseen/shared':
+      '@newax/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       expo:
@@ -277,7 +277,7 @@ importers:
 
   apps/web:
     dependencies:
-      '@yaseen/shared':
+      '@newax/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       clsx:
@@ -323,7 +323,7 @@ importers:
       '@types/react-dom':
         specifier: 19.2.4
         version: 19.2.4(@types/react@19.2.18)
-      '@yaseen/config':
+      '@newax/config':
         specifier: workspace:*
         version: link:../../packages/config
       autoprefixer:
@@ -369,7 +369,7 @@ importers:
       '@types/node':
         specifier: 22.20.1
         version: 22.20.1
-      '@yaseen/config':
+      '@newax/config':
         specifier: workspace:*
         version: link:../config
       eslint:

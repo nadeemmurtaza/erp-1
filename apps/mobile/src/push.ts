@@ -3,7 +3,7 @@ import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
-import { THEME_COLORS } from '@yaseen/shared';
+import { THEME_COLORS } from '@newax/shared';
 import * as resources from './api/resources';
 
 const TOKEN_KEY = 'yaseen.pushToken';

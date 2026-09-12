@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { Request } from 'express';
-import { DEFAULT_LOCALE, isLocale, type Locale } from '@yaseen/shared';
+import { DEFAULT_LOCALE, isLocale, type Locale } from '@newax/shared';
 import { CART_COOKIE, type AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, Public, RequirePermission } from '../../core/auth/decorators';
 import {

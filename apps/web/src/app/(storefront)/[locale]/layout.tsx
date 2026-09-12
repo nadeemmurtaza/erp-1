@@ -4,7 +4,7 @@ import { hasLocale } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { directionFor, type Locale } from '@yaseen/shared';
+import { directionFor, type Locale } from '@newax/shared';
 import '@/app/globals.css';
 import { AnalyticsBeacon } from '@/components/storefront/analytics-beacon';
 import { Footer } from '@/components/storefront/footer';

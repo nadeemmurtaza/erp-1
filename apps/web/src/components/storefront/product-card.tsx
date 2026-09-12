@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import type { Locale } from '@yaseen/shared';
+import type { Locale } from '@newax/shared';
 import { Link } from '@/i18n/navigation';
 import type { StorefrontProduct } from '@/types/api';
 import { useWishlist } from '@/lib/wishlist';

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import Link from 'next/link';
-import { formatDateTime } from '@yaseen/shared';
+import { formatDateTime } from '@newax/shared';
 
 import { Loading } from '@/components/ui';
 interface StockCount {

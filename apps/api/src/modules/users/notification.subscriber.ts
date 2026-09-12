@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DEFAULT_LOCALE } from '@yaseen/shared';
+import { DEFAULT_LOCALE } from '@newax/shared';
 import { DomainEvent, type UserRegisteredPayload } from '../../core/events/domain-events';
 import { OnDomainEvent } from '../../core/events/on-domain-event.decorator';
 import { NotificationsService } from '../../core/notifications/notifications.service';

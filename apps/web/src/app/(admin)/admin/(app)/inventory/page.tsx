@@ -3,7 +3,7 @@
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
-import { formatDate, formatDateTime, formatMoney } from '@yaseen/shared';
+import { formatDate, formatDateTime, formatMoney } from '@newax/shared';
 import { Loading } from '@/components/ui';
 
 interface InventoryVariant {

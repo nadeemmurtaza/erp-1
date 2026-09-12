@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { formatMoney, toMajor, THEME_COLORS } from '@yaseen/shared';
+import { formatMoney, toMajor, THEME_COLORS } from '@newax/shared';
 
 /**
  * Daily revenue over the selected window.

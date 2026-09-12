@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { usePathname } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
-import { directionFor, type Locale } from '@yaseen/shared';
+import { directionFor, type Locale } from '@newax/shared';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/utils/cn';
 

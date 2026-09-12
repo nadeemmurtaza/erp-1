@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
 import type { InboundEmail, PaginatedResponse } from '@/types/api';
-import { formatDateTime } from '@yaseen/shared';
+import { formatDateTime } from '@newax/shared';
 
 import { Loading } from '@/components/ui';
 type LinkFilter = 'all' | 'unlinked' | 'linked';

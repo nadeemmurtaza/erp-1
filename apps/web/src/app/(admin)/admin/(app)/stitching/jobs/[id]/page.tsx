@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { use, useCallback, useEffect, useMemo, useState } from 'react';
-import { formatDate, formatDateTime, nextStage, previousStage } from '@yaseen/shared';
+import { formatDate, formatDateTime, nextStage, previousStage } from '@newax/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import {
   fieldLabel,

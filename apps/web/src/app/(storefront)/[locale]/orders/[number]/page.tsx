@@ -4,7 +4,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { use, useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatMoney, ORDER_STATUSES, type Locale, type StitchingStage } from '@yaseen/shared';
+import { formatMoney, ORDER_STATUSES, type Locale, type StitchingStage } from '@newax/shared';
 import { Link } from '@/i18n/navigation';
 import { StitchingTimeline, type TimelineEvent } from '@/components/storefront/stitching-timeline';
 import { API_URL } from '@/lib/api';

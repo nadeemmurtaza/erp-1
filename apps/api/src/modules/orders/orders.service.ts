@@ -16,7 +16,7 @@ import {
   taxExclusive,
   taxInclusive,
   type Locale,
-} from '@yaseen/shared';
+} from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { CheckoutValidatorRegistry } from '../../core/checkout/checkout-validator.registry';
 import { DomainEvent } from '../../core/events/domain-events';

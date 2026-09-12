@@ -1,4 +1,4 @@
-import { DEFAULT_LOCALE, LOCALES } from '@yaseen/shared';
+import { DEFAULT_LOCALE, LOCALES } from '@newax/shared';
 import { SITE_URL } from '@/config/site';
 
 /**

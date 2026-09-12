@@ -1,4 +1,4 @@
-import { toMinor } from '@yaseen/shared';
+import { toMinor } from '@newax/shared';
 
 /**
  * Business rules that staff must be able to change without a deploy: shipping

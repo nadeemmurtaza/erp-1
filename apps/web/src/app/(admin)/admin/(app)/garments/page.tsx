@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { adminFetch } from '@/lib/admin-client';
 import type { AdminGarmentSizeChartRow, GarmentType, MeasurementFieldRow } from '@/types/api';
-import { formatMoney } from '@yaseen/shared';
+import { formatMoney } from '@newax/shared';
 
 import { Loading } from '@/components/ui';
 interface FieldDraft {

@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { validateMeasurements, type Locale } from '@yaseen/shared';
+import { validateMeasurements, type Locale } from '@newax/shared';
 import { useRouter } from '@/i18n/navigation';
 import { API_URL } from '@/lib/api';
 import type { GarmentType } from '@/types/api';

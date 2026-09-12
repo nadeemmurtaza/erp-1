@@ -7,7 +7,7 @@ import {
   slugifyWithFallback,
   toMinor,
   uniqueSlug,
-} from '@yaseen/shared';
+} from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';

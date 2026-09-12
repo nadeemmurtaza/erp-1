@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { PERMISSION_EFFECTS, PERMISSION_KEYS, type PermissionEffect, type PermissionKey } from '@yaseen/shared';
+import { PERMISSION_EFFECTS, PERMISSION_KEYS, type PermissionEffect, type PermissionKey } from '@newax/shared';
 import {
   IsArray,
   IsBoolean,

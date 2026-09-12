@@ -1,7 +1,7 @@
 import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet } from 'react-native';
-import { formatMoney } from '@yaseen/shared';
+import { formatMoney } from '@newax/shared';
 import * as resources from '../../src/api/resources';
 import type { Order } from '../../src/api/types';
 import { Body, Card, Empty, ErrorNote, Loading, Screen, Small } from '../../src/components/ui';

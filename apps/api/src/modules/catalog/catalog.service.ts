@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { DEFAULT_LOCALE, pickTranslation, type Locale } from '@yaseen/shared';
+import { DEFAULT_LOCALE, pickTranslation, type Locale } from '@newax/shared';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { Prisma } from '../../core/prisma/client';
 import { paginated, type PaginatedResult } from '../../core/common/dto/pagination.dto';

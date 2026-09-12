@@ -304,7 +304,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
             type="checkbox"
             checked={isConsumable}
             onChange={(event) => setIsConsumable(event.target.checked)}
-            className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+            className="field-check"
           />
           Consumable / repeat-buy — worth an automated reorder nudge (Marketing settings)
         </label>
@@ -507,7 +507,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
               type="checkbox"
               checked={stitchingAvailable}
               onChange={(event) => setStitchingAvailable(event.target.checked)}
-              className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+              className="field-check"
             />
             Offer &ldquo;get it stitched&rdquo; on this fabric
           </label>
@@ -551,7 +551,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
                               : current.filter((id) => id !== garment.id),
                           )
                         }
-                        className="rounded border-neutral-200 text-accent-hover focus:ring-accent disabled:opacity-50"
+                        className="field-check"
                       />
                       {garment.labelEn}
                       {offered ? (
@@ -664,7 +664,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
                               : current.filter((id) => id !== garment.id),
                           )
                         }
-                        className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+                        className="field-check"
                       />
                       {garment.labelEn}
                     </label>

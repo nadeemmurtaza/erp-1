@@ -218,6 +218,19 @@
     border-radius: var(--radius);
   }
 
+  /*
+   * Checkboxes and radios. This string was repeated at eighteen call sites
+   * in two drifting variants — fifteen used accent-hover on a neutral-200
+   * border, three used accent on neutral-300 — so half the tick boxes in
+   * the product were a slightly darker teal than the other half. Checked is
+   * the base accent, the same colour a primary button and a selected chip
+   * use; accent-hover is the pressed shade and does not belong here.
+   */
+  .field-check {
+    @apply border-neutral-300 text-accent focus:ring-accent disabled:opacity-50;
+    border-radius: var(--radius);
+  }
+
   .skeleton {
     @apply bg-gradient-to-r from-white via-neutral-50 to-white;
     background-size: 200% 100%;

@@ -249,7 +249,7 @@ export default function AdminBrandsPage() {
                 type="checkbox"
                 checked={draft.isActive}
                 onChange={(event) => setDraft({ ...draft, isActive: event.target.checked })}
-                className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+                className="field-check"
               />
               Active
             </label>

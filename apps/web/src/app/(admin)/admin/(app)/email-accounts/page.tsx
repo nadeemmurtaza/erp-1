@@ -417,7 +417,7 @@ export default function EmailAccountsPage() {
                       type="checkbox"
                       checked={form.isActive}
                       onChange={(event) => update('isActive', event.target.checked)}
-                      className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+                      className="field-check"
                     />
                     Active
                   </label>
@@ -426,7 +426,7 @@ export default function EmailAccountsPage() {
                       type="checkbox"
                       checked={form.isDefault}
                       onChange={(event) => update('isDefault', event.target.checked)}
-                      className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+                      className="field-check"
                     />
                     Default for this purpose
                   </label>
@@ -490,7 +490,7 @@ export default function EmailAccountsPage() {
                         type="checkbox"
                         checked={form.smtpSecure}
                         onChange={(event) => update('smtpSecure', event.target.checked)}
-                        className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+                        className="field-check"
                       />
                       TLS (465)
                     </label>
@@ -572,7 +572,7 @@ export default function EmailAccountsPage() {
                     type="checkbox"
                     checked={form.includeImap}
                     onChange={(event) => update('includeImap', event.target.checked)}
-                    className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+                    className="field-check"
                   />
                   IMAP (receiving) — optional
                 </label>
@@ -616,7 +616,7 @@ export default function EmailAccountsPage() {
                             type="checkbox"
                             checked={form.imapSecure}
                             onChange={(event) => update('imapSecure', event.target.checked)}
-                            className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+                            className="field-check"
                           />
                           TLS (993)
                         </label>

@@ -180,7 +180,7 @@ export default function AdminSettingsPage() {
                                   disabled={locked}
                                   title={locked ? 'ADMIN must always keep this permission' : undefined}
                                   onChange={() => toggle(role, permission.key)}
-                                  className="rounded border-neutral-200 text-accent-hover focus:ring-accent disabled:opacity-40"
+                                  className="field-check disabled:opacity-40"
                                 />
                               </td>
                             );

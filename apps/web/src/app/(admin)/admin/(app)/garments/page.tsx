@@ -401,7 +401,7 @@ function GarmentWizard({
                 type="checkbox"
                 checked={stitchingEnabled}
                 onChange={(event) => setStitchingEnabled(event.target.checked)}
-                className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+                className="field-check"
               />
               Show in the stitching flow
             </label>
@@ -527,7 +527,7 @@ function GarmentWizard({
                       onChange={(event) =>
                         patch(setFields, index, { required: event.target.checked })
                       }
-                      className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+                      className="field-check"
                     />
                     Required
                   </label>

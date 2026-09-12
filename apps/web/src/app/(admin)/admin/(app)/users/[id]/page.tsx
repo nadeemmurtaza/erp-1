@@ -251,7 +251,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
               checked={profileDraft.isActive}
               disabled={isSelf}
               onChange={(event) => setProfileDraft({ ...profileDraft, isActive: event.target.checked })}
-              className="rounded border-neutral-200 text-accent-hover focus:ring-accent disabled:opacity-50"
+              className="field-check"
             />
             Active
           </label>
@@ -329,7 +329,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
                             disabled={locked}
                             title={locked ? 'ADMIN must always keep this permission' : undefined}
                             onChange={() => toggle(permission.key)}
-                            className="rounded border-neutral-200 text-accent-hover focus:ring-accent disabled:opacity-40"
+                            className="field-check disabled:opacity-40"
                           />
                         </td>
                         <td className="px-4 py-2.5">

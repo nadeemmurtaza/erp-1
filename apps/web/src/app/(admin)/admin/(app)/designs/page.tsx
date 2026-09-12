@@ -432,7 +432,7 @@ export default function AdminDesignsPage() {
                     type="checkbox"
                     checked={draft.required}
                     onChange={(event) => setDraft({ ...draft, required: event.target.checked })}
-                    className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+                    className="field-check"
                   />
                   Required
                 </label>
@@ -443,7 +443,7 @@ export default function AdminDesignsPage() {
                     onChange={(event) =>
                       setDraft({ ...draft, allowCustomText: event.target.checked })
                     }
-                    className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+                    className="field-check"
                   />
                   Allow a custom description
                 </label>

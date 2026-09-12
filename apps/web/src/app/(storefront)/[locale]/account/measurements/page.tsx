@@ -229,7 +229,7 @@ export default function AccountMeasurementsPage() {
             type="checkbox"
             checked={draft.isDefault}
             onChange={(event) => setDraft({ ...draft, isDefault: event.target.checked })}
-            className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+            className="field-check"
           />
           Preselect for this garment
         </label>

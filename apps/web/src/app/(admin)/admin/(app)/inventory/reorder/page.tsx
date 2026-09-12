@@ -165,7 +165,7 @@ export default function ReorderSuggestionsPage() {
                 <th className="px-3 py-3 w-10 text-center">
                   <input 
                     type="checkbox" 
-                    className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+                    className="field-check"
                     checked={suggestions?.length !== 0 && selectedIds.size === suggestions?.length}
                     onChange={toggleAll}
                   />
@@ -199,7 +199,7 @@ export default function ReorderSuggestionsPage() {
                       <td className="px-3 py-3 text-center">
                         <input 
                           type="checkbox" 
-                          className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+                          className="field-check"
                           checked={selectedIds.has(variant.id)}
                           onChange={() => toggleOne(variant.id)}
                         />

@@ -1,3 +1,4 @@
+import { BRAND } from './brand';
 /** Locales the storefront ships in. Admin is English-only by design. */
 export const LOCALES = ['en', 'ur'] as const;
 export type Locale = (typeof LOCALES)[number];
@@ -36,8 +37,19 @@ export function pickTranslation<T extends { locale: string }>(
  * Money is stored and transported as integer paisa (1 PKR = 100 paisa) so that
  * no rounding error can ever creep into an order total.
  */
-export const CURRENCY = 'PKR';
-export const MINOR_UNITS_PER_MAJOR = 100;
+/**
+ * The BCP 47 tag Intl should use for a locale.
+ *
+ * This was written out as `locale === 'ur' ? 'ur-PK' : 'en-PK'` at three call
+ * sites — two date formatters and the money one — so a client outside
+ * Pakistan meant finding all three. The tags come from BRAND.locale now.
+ */
+export function intlTag(locale: Locale): string {
+  return BRAND.locale.intlTags[locale] ?? BRAND.locale.intlTags[DEFAULT_LOCALE];
+}
+
+export const CURRENCY = BRAND.locale.currency;
+export const MINOR_UNITS_PER_MAJOR = BRAND.locale.minorUnitsPerMajor;
 
 export function toMinor(majorAmount: number): number {
   return Math.round(majorAmount * MINOR_UNITS_PER_MAJOR);
@@ -61,7 +73,7 @@ export function toMajor(minorAmount: number): number {
  * must stay in step with it; pass `timeZone` explicitly anywhere the Setting
  * has actually been read.
  */
-export const SHOP_TIME_ZONE = 'Asia/Karachi';
+export const SHOP_TIME_ZONE = BRAND.locale.timeZone;
 
 /** e.g. 2026-09-06T19:23Z -> "7 Sept 2026" in the shop's zone. */
 export function formatDate(
@@ -69,7 +81,7 @@ export function formatDate(
   locale: Locale = 'en',
   timeZone: string = SHOP_TIME_ZONE,
 ): string {
-  return new Intl.DateTimeFormat(locale === 'ur' ? 'ur-PK' : 'en-PK', {
+  return new Intl.DateTimeFormat(intlTag(locale), {
     dateStyle: 'medium',
     timeZone,
   }).format(new Date(value));
@@ -81,7 +93,7 @@ export function formatDateTime(
   locale: Locale = 'en',
   timeZone: string = SHOP_TIME_ZONE,
 ): string {
-  return new Intl.DateTimeFormat(locale === 'ur' ? 'ur-PK' : 'en-PK', {
+  return new Intl.DateTimeFormat(intlTag(locale), {
     dateStyle: 'medium',
     timeStyle: 'short',
     timeZone,
@@ -90,7 +102,7 @@ export function formatDateTime(
 
 /** Formats integer paisa as a display string, e.g. 349900 -> "Rs 3,499". */
 export function formatMoney(minorAmount: number, locale: Locale = 'en'): string {
-  const formatter = new Intl.NumberFormat(locale === 'ur' ? 'ur-PK' : 'en-PK', {
+  const formatter = new Intl.NumberFormat(intlTag(locale), {
     style: 'currency',
     currency: CURRENCY,
     minimumFractionDigits: 0,

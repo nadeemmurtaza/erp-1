@@ -1,55 +1,60 @@
-﻿export const businessProfile = {
-  // Brand Identity
-  name: 'Yaseen Fabrics & Stitching',
-  shortName: 'Yaseen.pk',
-  tagline: 'Premium Fabrics & Custom Stitching',
-  domain: 'yaseen.pk',
-  url: 'https://yaseen.pk',
-  
-  // Contact Information
-  email: 'support@yaseen.pk',
-  phone: '+92 335 621 2709',
-  whatsapp: '+92 335 621 2709',
-  
-  // Physical Location
-  address: 'K 491, Shah Rukn e Alam Colony, Multan, Pakistan',
-  city: 'Multan',
-  country: 'Pakistan',
-  
-  // Operations & Support
-  workingHours: '9 AM – 8 PM, Monday to Saturday',
-  supportResponseTime: 'Within 1–2 business days',
-  
-  // Social Media Links (Update with real URLs)
-  socials: {
-    facebook: 'https://facebook.com/yaseen.pk',
-    instagram: 'https://instagram.com/yaseen.pk',
-    tiktok: 'https://tiktok.com/@yaseen.pk',
-    youtube: 'https://youtube.com/@yaseen_pk',
-  },
-  
-  // Legal & Tax (Useful for invoices / footer)
-  taxNumber: 'NTN-XXXXXXX-X', // Replace with your real NTN
-  registrationNumber: 'SECP-XXXXXXX', // Replace with your real registration if applicable
-  
-  // Banking (For wire transfers / COD refunds)
-  banking: {
-    bankName: 'Meezan Bank', // Replace with your bank
-    accountTitle: 'Yaseen Fabrics',
-    accountNumber: '00000000000000',
-    iban: 'PK00 MEEZ 0000 0000 0000 0000',
+import { BRAND } from '@yaseen/shared';
+
+/**
+ * The shop's own details, flattened for the ~60 call sites that read them.
+ *
+ * These values used to be typed out here, which meant the API and the mobile
+ * app — neither of which can import from apps/web — kept their own copies of
+ * the same facts. Same fork as the palette and the radius, one level up: the
+ * support email appeared in three files, and changing it in one was not
+ * changing it.
+ *
+ * They live in packages/shared/src/brand.ts now, the single file a rebrand
+ * edits. This stays as a flat view because `businessProfile.email` reads
+ * better at a call site than `BRAND.contact.email`, and because renaming 60
+ * usages to prove a point would be churn.
+ */
+export const businessProfile = {
+  // Identity
+  name: BRAND.identity.name,
+  shortName: BRAND.identity.shortName,
+  tagline: BRAND.identity.tagline,
+  domain: BRAND.identity.domain,
+  url: BRAND.identity.url,
+
+  // Contact
+  email: BRAND.contact.email,
+  phone: BRAND.contact.phone,
+  whatsapp: BRAND.contact.whatsapp,
+
+  // Location
+  address: BRAND.contact.address,
+  city: BRAND.contact.city,
+  country: BRAND.contact.country,
+
+  // Operations
+  workingHours: BRAND.contact.workingHours,
+  supportResponseTime: BRAND.contact.supportResponseTime,
+
+  socials: BRAND.socials,
+
+  // Legal — the label travels with the number because a Pakistani invoice
+  // says NTN where a UAE one says TRN.
+  taxLabel: BRAND.legal.taxLabel,
+  taxNumber: BRAND.legal.taxNumber,
+  registrationLabel: BRAND.legal.registrationLabel,
+  registrationNumber: BRAND.legal.registrationNumber,
+
+  banking: BRAND.banking,
+
+  currency: {
+    code: BRAND.locale.currency,
+    symbol: BRAND.locale.currencySymbol,
   },
 
-  // E-commerce Defaults
-  currency: {
-    code: 'PKR',
-    symbol: 'Rs.',
-  },
-  
-  // Delivery & Service Policies
   shipping: {
-    standardDeliveryTime: '3-5 Working Days',
-    stitchingTurnaroundTime: '10-14 Working Days',
-    freeShippingThreshold: 5000, // PKR amount to trigger free shipping
-  }
+    standardDeliveryTime: BRAND.commerce.standardDeliveryTime,
+    stitchingTurnaroundTime: BRAND.commerce.stitchingTurnaroundTime,
+    freeShippingThreshold: BRAND.commerce.freeShippingThreshold,
+  },
 } as const;

@@ -8,6 +8,7 @@ export * from './pricing';
 export * from './slug';
 export * from './theme-colors';
 export * from './theme-radii';
+export * from './theme-type';
 export * from './measurements/types';
 export * from './measurements/schema';
 export * from './measurements/defaults';

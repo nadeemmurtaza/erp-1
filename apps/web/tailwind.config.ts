@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss';
 import forms from '@tailwindcss/forms';
 import plugin from 'tailwindcss/plugin';
-import { THEME_COLORS, THEME_RADII, radiusPx } from '@yaseen/shared';
+import { THEME_COLORS, THEME_RADII, TAILWIND_FONT_SIZE, radiusPx } from '@yaseen/shared';
 
 /**
  * One palette for admin and storefront both, imported from
@@ -79,6 +79,18 @@ export default {
       maxWidth: {
         page: '80rem',
       },
+      /*
+       * Built from packages/shared/src/theme-type.ts rather than left to
+       * Tailwind's defaults, so `text-sm` here and `theme.text.small` in
+       * apps/mobile resolve to the same number.
+       *
+       * The values ARE Tailwind's defaults — web already uses these
+       * utilities at 817 call sites, so nothing moves on screen. What
+       * changes is that mobile can no longer drift away unnoticed, which
+       * is exactly what had happened: every step disagreed, 11/13/15/17/22
+       * against 12/14/16/20/24.
+       */
+      fontSize: TAILWIND_FONT_SIZE,
       /*
        * The house shape is square, and this is where that is enforced.
        *

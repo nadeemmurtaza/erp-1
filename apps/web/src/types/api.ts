@@ -1,4 +1,4 @@
-import type { Locale, ProductKind, ProductStatus } from '@yaseen/shared';
+import type { Locale, PermissionKey, ProductKind, ProductStatus } from '@yaseen/shared';
 
 /** Shapes returned by the API. Mirrors apps/api's response objects. */
 
@@ -277,8 +277,13 @@ export interface AuthUser {
   firstName: string | null;
   lastName: string | null;
   role: 'CUSTOMER' | 'STAFF' | 'TAILOR' | 'ADMIN';
-  /** Resolved server-side from the role's current grants — @see nav-registry.ts. */
-  permissions: string[];
+  /**
+   * Resolved server-side from the role's current grants — @see nav-registry.ts.
+   * Typed against the shared catalogue, not `string[]`: a mistyped key in a
+   * `permissions.includes(...)` check does not throw, it silently hides the
+   * control it was guarding, which is the kind of bug nobody reports.
+   */
+  permissions: PermissionKey[];
 }
 
 export interface AuthResult {
@@ -444,7 +449,7 @@ export interface PermissionDefinition {
 
 export interface RolePermissions {
   role: 'CUSTOMER' | 'STAFF' | 'TAILOR' | 'ADMIN';
-  permissions: string[];
+  permissions: PermissionKey[];
 }
 
 export interface AuditLogEntry {

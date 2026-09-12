@@ -1,6 +1,7 @@
 'use client';
 
 import { API_URL, ApiError, toSearchParams } from './api';
+import { messageOf, request, requestWithRefresh } from './api-client';
 import type { AuthResult, AuthUser } from '@/types/api';
 
 const ACCESS_KEY = 'yaseen.customer.access';
@@ -36,17 +37,12 @@ export function clearCustomerSession(): void {
 }
 
 export async function loginCustomer(identifier: string, password: string): Promise<AuthUser> {
-  const response = await fetch(`${API_URL}/auth/login`, {
+  const body = await request<unknown>('/auth/login', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ identifier, password }),
+    body: { identifier, password },
     credentials: 'include',
+    fallbackMessage: 'Sign-in failed',
   });
-
-  const body = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new ApiError(response.status, messageOf(body) ?? 'Sign-in failed', body);
-  }
 
   const result = body as AuthResult;
   storeSession(result);
@@ -60,17 +56,12 @@ export async function registerCustomer(input: {
   lastName?: string;
   phone?: string;
 }): Promise<AuthUser> {
-  const response = await fetch(`${API_URL}/auth/register`, {
+  const body = await request<unknown>('/auth/register', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(input),
+    body: input,
     credentials: 'include',
+    fallbackMessage: 'Registration failed',
   });
-
-  const body = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new ApiError(response.status, messageOf(body) ?? 'Registration failed', body);
-  }
 
   const result = body as AuthResult;
   storeSession(result);
@@ -173,52 +164,22 @@ export async function customerFetch<T>(
   path: string,
   options: CustomerRequestOptions = {},
 ): Promise<T> {
-  const send = async (): Promise<Response> => {
-    const headers: Record<string, string> = { Accept: 'application/json' };
-
-    const token = getCustomerToken();
-    if (token) headers.Authorization = `Bearer ${token}`;
-
-    let body: BodyInit | undefined;
-    if (options.body !== undefined) {
-      headers['Content-Type'] = 'application/json';
-      body = JSON.stringify(options.body);
-    }
-
-    return fetch(`${API_URL}${path}${toSearchParams(options.query ?? {})}`, {
+  return requestWithRefresh<T>(
+    path,
+    {
       method: options.method ?? 'GET',
-      headers,
-      body,
+      body: options.body,
+      query: options.query,
       credentials: 'include',
-    });
-  };
-
-  let response = await send();
-
-  if (response.status === 401 && (await refreshCustomerSession())) {
-    response = await send();
-  }
-
-  if (response.status === 401) {
-    clearCustomerSession();
-    throw new ApiError(401, 'Your session has expired. Please sign in again.');
-  }
-
-  if (!response.ok) {
-    const errorBody = await response.json().catch(() => undefined);
-    throw new ApiError(
-      response.status,
-      messageOf(errorBody) ?? `Request failed with ${response.status}`,
-      errorBody,
-    );
-  }
-
-  if (response.status === 204) return undefined as T;
-  return (await response.json()) as T;
-}
-
-function messageOf(body: unknown): string | undefined {
-  const message = (body as { message?: string | string[] } | undefined)?.message;
-  if (!message) return undefined;
-  return Array.isArray(message) ? message.join('\n') : String(message);
+    },
+    {
+      token: getCustomerToken,
+      refresh: refreshCustomerSession,
+      // No redirect here, unlike admin: a customer hitting an expired session
+      // mid-browse should land back where they were once they sign in, and the
+      // page that called this decides where that is.
+      onExpired: clearCustomerSession,
+      expiredMessage: 'Your session has expired. Please sign in again.',
+    },
+  );
 }

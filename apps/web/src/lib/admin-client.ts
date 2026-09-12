@@ -1,6 +1,7 @@
 'use client';
 
-import { API_URL, ApiError, toSearchParams } from './api';
+import { ApiError, API_URL } from './api';
+import { messageOf, request, requestWithRefresh } from './api-client';
 import type { AuthResult, AuthUser } from '@/types/api';
 
 const ACCESS_KEY = 'yaseen.admin.access';
@@ -47,17 +48,12 @@ export function clearSession(): void {
 export const BACK_OFFICE_ROLES = ['ADMIN', 'STAFF', 'TAILOR'] as const;
 
 export async function login(identifier: string, password: string): Promise<AuthUser> {
-  const response = await fetch(`${API_URL}/auth/login`, {
+  const body = await request<unknown>('/auth/login', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ identifier, password }),
+    body: { identifier, password },
     credentials: 'include',
+    fallbackMessage: 'Sign-in failed',
   });
-
-  const body = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new ApiError(response.status, messageOf(body) ?? 'Sign-in failed', body);
-  }
 
   const result = body as AuthResult;
   if (!BACK_OFFICE_ROLES.includes(result.user.role as (typeof BACK_OFFICE_ROLES)[number])) {
@@ -111,62 +107,25 @@ export async function adminFetch<T>(
   path: string,
   options: AdminRequestOptions = {},
 ): Promise<T> {
-  const send = async (): Promise<Response> => {
-    const headers: Record<string, string> = {
-      Accept: options.expect === 'text' ? 'text/csv' : 'application/json',
-    };
-
-    const token = getAccessToken();
-    if (token) headers.Authorization = `Bearer ${token}`;
-
-    let body: BodyInit | undefined;
-    if (options.formData) {
-      // Let the browser set the multipart boundary itself.
-      body = options.formData;
-    } else if (options.body !== undefined) {
-      headers['Content-Type'] = 'application/json';
-      body = JSON.stringify(options.body);
-    }
-
-    return fetch(`${API_URL}${path}${toSearchParams(options.query ?? {})}`, {
+  return requestWithRefresh<T>(
+    path,
+    {
       method: options.method ?? 'GET',
-      headers,
-      body,
+      body: options.formData ? undefined : options.body,
+      formData: options.formData,
+      query: options.query,
+      expect: options.expect ?? 'json',
       credentials: 'include',
-    });
-  };
-
-  let response = await send();
-
-  if (response.status === 401 && (await refreshSession())) {
-    response = await send();
-  }
-
-  if (response.status === 401) {
-    clearSession();
-    if (typeof window !== 'undefined') {
-      window.location.href = '/admin/login';
-    }
-    throw new ApiError(401, 'Your session has expired. Please sign in again.');
-  }
-
-  if (!response.ok) {
-    const errorBody = await response.json().catch(() => undefined);
-    throw new ApiError(
-      response.status,
-      messageOf(errorBody) ?? `Request failed with ${response.status}`,
-      errorBody,
-    );
-  }
-
-  if (response.status === 204) return undefined as T;
-  if (options.expect === 'text') return (await response.text()) as T;
-
-  return (await response.json()) as T;
-}
-
-function messageOf(body: unknown): string | undefined {
-  const message = (body as { message?: string | string[] } | undefined)?.message;
-  if (!message) return undefined;
-  return Array.isArray(message) ? message.join('\n') : String(message);
+      headers: { Accept: options.expect === 'text' ? 'text/csv' : 'application/json' },
+    },
+    {
+      token: getAccessToken,
+      refresh: refreshSession,
+      onExpired: () => {
+        clearSession();
+        if (typeof window !== 'undefined') window.location.href = '/admin/login';
+      },
+      expiredMessage: 'Your session has expired. Please sign in again.',
+    },
+  );
 }

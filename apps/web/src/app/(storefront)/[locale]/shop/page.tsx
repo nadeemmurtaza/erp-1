@@ -111,7 +111,7 @@ export default async function ShopPage({
           <div>
             {products.data.length === 0 ? (
               <>
-                <div className="sf-card mb-6 flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                <div className="card mb-6 flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                   <div>
                     <h1 className="font-display text-2xl font-semibold text-neutral-900">{t('title')}</h1>
                     <p className="mt-1 text-sm text-neutral-500">
@@ -119,7 +119,7 @@ export default async function ShopPage({
                     </p>
                   </div>
                 </div>
-                <div className="sf-card p-10 text-center">
+                <div className="card p-10 text-center">
                   <p className="text-sm font-medium text-neutral-900">{t('empty')}</p>
                   <p className="mt-1 text-sm text-neutral-500">{t('emptyBody')}</p>
                 </div>
@@ -139,7 +139,7 @@ export default async function ShopPage({
                 className="mt-10 flex items-center justify-between gap-4"
               >
                 {products.meta.hasPrevious ? (
-                  <Link href={pageHref(page - 1)} className="sf-btn-secondary">
+                  <Link href={pageHref(page - 1)} className="btn-secondary">
                     {t('previous')}
                   </Link>
                 ) : (
@@ -151,7 +151,7 @@ export default async function ShopPage({
                 </span>
 
                 {products.meta.hasNext ? (
-                  <Link href={pageHref(page + 1)} className="sf-btn-secondary">
+                  <Link href={pageHref(page + 1)} className="btn-secondary">
                     {t('next')}
                   </Link>
                 ) : (

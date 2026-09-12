@@ -475,7 +475,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
           type="checkbox"
           checked={enabled}
           onChange={(event) => setEnabled(event.target.checked)}
-          className="mt-0.5 rounded border-neutral-300 text-neutral-900 focus:ring-neutral-900"
+          className="mt-0.5 rounded border-neutral-300 text-accent focus:ring-accent"
         />
         <span>
           <span className="block text-sm font-semibold text-neutral-900">{t('getStitched')}</span>
@@ -663,7 +663,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
                       type="checkbox"
                       checked={saveProfile}
                       onChange={(event) => setSaveProfile(event.target.checked)}
-                      className="rounded border-neutral-300 text-neutral-900 focus:ring-neutral-900"
+                      className="rounded border-neutral-300 text-accent focus:ring-accent"
                     />
                     {t('saveAsProfile')}
                   </label>
@@ -709,7 +709,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
                   type="checkbox"
                   checked={wideWidth}
                   onChange={(event) => setWideWidth(event.target.checked)}
-                  className="rounded border-neutral-300 text-neutral-900 focus:ring-neutral-900"
+                  className="rounded border-neutral-300 text-accent focus:ring-accent"
                 />
                 {t('fabricWideWidth')}
               </label>
@@ -906,7 +906,7 @@ function ServiceChoice({
         name="stitching-service"
         checked={selected}
         onChange={onSelect}
-        className="mt-1 border-neutral-300 text-neutral-900 focus:ring-neutral-900"
+        className="mt-1 border-neutral-300 text-accent focus:ring-accent"
       />
       <span className="flex-1">
         <span className="flex justify-between gap-3">
@@ -955,7 +955,7 @@ function Chip({
       type="button"
       onClick={onClick}
       aria-pressed={selected}
-      className={cn('sf-chip', selected ? 'sf-chip-selected' : 'sf-chip-unselected')}
+      className={cn('chip', selected ? 'chip-selected' : 'chip-unselected')}
     >
       {children}
     </button>

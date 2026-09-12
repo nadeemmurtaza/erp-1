@@ -183,7 +183,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
                   : ''
               }
               onBlur={(event) => setPrice('minPrice', event.target.value)}
-              className="sf-field-input px-3 py-1.5"
+              className="field-input px-3 py-1.5"
             />
           </label>
           <label className="flex-1">
@@ -199,7 +199,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
                   : ''
               }
               onBlur={(event) => setPrice('maxPrice', event.target.value)}
-              className="sf-field-input px-3 py-1.5"
+              className="field-input px-3 py-1.5"
             />
           </label>
         </div>
@@ -211,9 +211,9 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
     <>
       <button
         type="button"
-        // sf-btn-primary supplies shape/colour so a future colour change still
+        // btn-primary supplies shape/colour so a future colour change still
         // reaches this button; only the transform-based hover lift is bespoke.
-        className="sf-btn-primary mb-4 w-full transition-[background-color,transform] duration-200 ease-out motion-safe:hover:-translate-y-0.5 lg:hidden"
+        className="btn-primary mb-4 w-full transition-[background-color,transform] duration-200 ease-out motion-safe:hover:-translate-y-0.5 lg:hidden"
         onClick={() => setIsOpen(true)}
       >
         <svg
@@ -284,7 +284,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
             <div className="border-t border-neutral-100 p-4">
               <button
                 type="button"
-                className="sf-btn-primary w-full font-semibold"
+                className="btn-primary w-full font-semibold"
                 onClick={() => setIsOpen(false)}
               >
                 {t('applyFilters')}
@@ -346,9 +346,9 @@ function Chip({
       onClick={onChange}
       aria-pressed={checked}
       className={cn(
-        'sf-chip shrink-0 whitespace-nowrap',
+        'chip shrink-0 whitespace-nowrap',
         capitalise && 'capitalize',
-        checked ? 'sf-chip-selected' : 'sf-chip-unselected',
+        checked ? 'chip-selected' : 'chip-unselected',
       )}
     >
       {label}

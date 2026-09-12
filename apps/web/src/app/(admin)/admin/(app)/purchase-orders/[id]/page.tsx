@@ -4,7 +4,7 @@ import { useEffect, useState, use } from 'react';
 import Link from 'next/link';
 import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
-import { formatMoney } from '@yaseen/shared';
+import { formatDate, formatDateTime, formatMoney } from '@yaseen/shared';
 
 interface PurchaseOrder {
   id: string;
@@ -80,7 +80,7 @@ export default function PurchaseOrderDetailPage({ params }: { params: Promise<{ 
             </span>
           </div>
           <p className="text-sm text-neutral-900/60">
-            {po.supplier.name} &bull; Created {new Date(po.createdAt).toLocaleDateString()}
+            {po.supplier.name} &bull; Created {formatDate(po.createdAt)}
           </p>
         </div>
         {(po.status === 'SENT' || po.status === 'PARTIAL') && (
@@ -144,7 +144,7 @@ export default function PurchaseOrderDetailPage({ params }: { params: Promise<{ 
                 {po.receipts.map(r => (
                   <li key={r.id} className="p-4">
                     <div className="font-medium text-neutral-900 mb-1">
-                      Received {new Date(r.receivedAt).toLocaleString()}
+                      Received {formatDateTime(r.receivedAt)}
                     </div>
                     {r.notes && <div className="text-sm text-neutral-900/70">{r.notes}</div>}
                   </li>

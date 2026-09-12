@@ -447,9 +447,9 @@ function BarList({
             <span className="shrink-0 text-neutral-900/70">{valueFormatter(item.value)}</span>
           </div>
           {/* Sequential single hue: more of the metric is a longer bar. */}
-          <div className="mt-1 h-2 overflow-hidden rounded-full bg-white">
+          <div className="mt-1 h-2 overflow-hidden rounded bg-white">
             <div
-              className="h-full rounded-full"
+              className="h-full rounded"
               style={{
                 width: `${Math.max((item.value / max) * 100, 2)}%`,
                 backgroundColor: THEME_COLORS.accent.DEFAULT,

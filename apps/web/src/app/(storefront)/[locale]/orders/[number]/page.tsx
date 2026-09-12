@@ -416,7 +416,7 @@ function StatusPill({ status }: { status: string }) {
   return (
     <span
       className={cn(
-        'rounded-full px-3 py-1 text-xs font-medium',
+        'rounded px-3 py-1 text-xs font-medium',
         status === 'DELIVERED' && 'bg-neutral-100 text-accent-hover',
         status === 'CANCELLED' && 'bg-red-50 text-red-700',
         status === 'PENDING' && 'bg-neutral-100 text-neutral-900/70',

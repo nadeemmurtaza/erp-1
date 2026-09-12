@@ -27,7 +27,7 @@ export default function CartPage() {
       <div className="container-page pb-28 pt-16 text-center font-display md:pb-16">
         <h1 className="text-2xl font-semibold tracking-tight text-neutral-900">{t('title')}</h1>
         <p className="mt-2 text-sm text-neutral-500">{t('empty')}</p>
-        <Link href={ROUTES.storefront.shop} className="mt-6 sf-btn-primary">
+        <Link href={ROUTES.storefront.shop} className="mt-6 btn-primary">
           {t('startShopping')}
         </Link>
       </div>
@@ -68,7 +68,7 @@ export default function CartPage() {
           ))}
         </ul>
 
-        <aside className="sf-card h-fit p-4 sm:p-6 lg:sticky lg:top-24">
+        <aside className="card h-fit p-4 sm:p-6 lg:sticky lg:top-24">
           <h2 className="text-base font-semibold text-neutral-900">{t('summary')}</h2>
 
           <dl className="mt-4 space-y-2 text-sm">
@@ -94,8 +94,8 @@ export default function CartPage() {
             aria-disabled={cart.issues.length > 0}
             className={
               cart.issues.length > 0
-                ? 'sf-btn-primary pointer-events-none mt-4 block w-full py-3.5 opacity-50 sm:text-base'
-                : 'sf-btn-primary mt-4 block w-full py-3.5 sm:text-base'
+                ? 'btn-primary pointer-events-none mt-4 block w-full py-3.5 opacity-50 sm:text-base'
+                : 'btn-primary mt-4 block w-full py-3.5 sm:text-base'
             }
           >
             {t('checkout')}
@@ -142,7 +142,7 @@ function CartRow({
   }
 
   return (
-    <li className="sf-card flex gap-3 p-3 sm:gap-4 sm:p-4">
+    <li className="card flex gap-3 p-3 sm:gap-4 sm:p-4">
       <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-neutral-50 sm:h-24 sm:w-24">
         {line.imageUrl ? (
           <Image src={line.imageUrl} alt={line.name} fill sizes="96px" className="object-cover" />
@@ -253,7 +253,7 @@ function QuantityStepper({
   // convention like a tab bar's icon order, so it should reverse under
   // `dir="rtl"` the way any other flex row does.
   return (
-    <div className="inline-flex items-center gap-1 rounded-full border border-neutral-200 p-1">
+    <div className="inline-flex items-center gap-1 rounded border border-neutral-200 p-1">
       <button
         type="button"
         onClick={() => onChange(quantity - 1)}

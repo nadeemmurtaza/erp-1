@@ -78,13 +78,13 @@ export default async function HomePage({
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-10">
                 <Link
                   href={ROUTES.storefront.shopUnstitched}
-                  className="sf-btn-primary flex w-full px-8 py-3.5 text-sm font-semibold sm:w-auto sm:text-base"
+                  className="btn-primary flex w-full px-8 py-3.5 text-sm font-semibold sm:w-auto sm:text-base"
                 >
                   {t('shopUnstitched')}
                 </Link>
                 <Link
                   href={ROUTES.storefront.shopReadyToWear}
-                  className="sf-btn-secondary flex w-full px-8 py-3.5 text-sm font-semibold sm:w-auto sm:text-base"
+                  className="btn-secondary flex w-full px-8 py-3.5 text-sm font-semibold sm:w-auto sm:text-base"
                 >
                   {t('shopReady')}
                 </Link>
@@ -126,7 +126,7 @@ export default async function HomePage({
               <li className="shrink-0 snap-start">
                 <Link
                   href={ROUTES.storefront.shop}
-                  className="inline-flex h-11 items-center gap-2 rounded-full bg-neutral-900 ps-3 pe-5 text-sm font-medium text-white transition-colors duration-200 hover:bg-neutral-700"
+                  className="inline-flex h-11 items-center gap-2 rounded bg-neutral-900 ps-3 pe-5 text-sm font-medium text-white transition-colors duration-200 hover:bg-neutral-700"
                 >
                   <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/15" aria-hidden="true">
                     <AllCategoriesIcon />
@@ -139,7 +139,7 @@ export default async function HomePage({
                 <li key={category.id} className="shrink-0 snap-start">
                   <Link
                     href={`/shop?category=${category.slug}`}
-                    className="inline-flex h-11 items-center gap-2 rounded-full border border-neutral-200 bg-white ps-2 pe-5 text-sm font-medium text-neutral-700 transition-colors duration-200 hover:border-neutral-900 hover:text-neutral-900"
+                    className="inline-flex h-11 items-center gap-2 rounded border border-neutral-200 bg-white ps-2 pe-5 text-sm font-medium text-neutral-700 transition-colors duration-200 hover:border-neutral-900 hover:text-neutral-900"
                   >
                     <span className="relative flex h-7 w-7 shrink-0 overflow-hidden rounded-full bg-neutral-100">
                       {category.imageUrl ? (

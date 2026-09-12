@@ -3,7 +3,7 @@
 import { use, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { cn } from '@/utils/cn';
-import { formatMoney } from '@yaseen/shared';
+import { formatDate, formatDateTime, formatMoney } from '@yaseen/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { ROUTES } from '@/constants/routes';
 
@@ -227,7 +227,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
           </div>
           <p className="text-sm text-neutral-900/60">
             {order.guestName ?? '—'} · {order.guestPhone ?? '—'} · Placed{' '}
-            {new Date(order.placedAt).toLocaleString('en-PK')}
+            {formatDateTime(order.placedAt)}
           </p>
         </div>
 
@@ -305,7 +305,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                         <p className="mt-1 text-neutral-900/70">
                           {item.stitchingJob.number} · {label(item.stitchingJob.stage)}
                           {item.stitchingJob.dueAt
-                            ? ` · due ${new Date(item.stitchingJob.dueAt).toLocaleDateString('en-PK')}`
+                            ? ` · due ${formatDate(item.stitchingJob.dueAt)}`
                             : ''}
                         </p>
                       ) : null}
@@ -325,7 +325,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                   <span>
                     <span className="font-medium text-neutral-900">{label(event.toStatus)}</span>
                     <span className="ms-2 text-xs text-neutral-900/40">
-                      {new Date(event.createdAt).toLocaleString('en-PK')}
+                      {formatDateTime(event.createdAt)}
                     </span>
                     {event.note ? <span className="block text-xs text-neutral-900/60">{event.note}</span> : null}
                   </span>
@@ -343,7 +343,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                     {shipment.courier.toUpperCase()}
                     {shipment.trackingNumber ? ` · ${shipment.trackingNumber}` : ''}
                     <span className="ms-2 text-xs text-neutral-900/40">
-                      {new Date(shipment.createdAt).toLocaleString('en-PK')}
+                      {formatDateTime(shipment.createdAt)}
                     </span>
                   </li>
                 ))}
@@ -446,7 +446,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                     <p className="text-xs text-neutral-900/60">
                       Refunded {formatMoney(payment.refundAmount)}
                       {payment.refundedAt
-                        ? ` on ${new Date(payment.refundedAt).toLocaleDateString('en-PK')}`
+                        ? ` on ${formatDate(payment.refundedAt)}`
                         : ''}
                     </p>
                   ) : null}

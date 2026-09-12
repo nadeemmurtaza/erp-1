@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { use, useCallback, useEffect, useMemo, useState } from 'react';
-import { nextStage, previousStage } from '@yaseen/shared';
+import { formatDate, formatDateTime, nextStage, previousStage } from '@yaseen/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import {
   fieldLabel,
@@ -188,7 +188,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
             <div className="flex justify-between">
               <dt className="text-neutral-900/50">Due</dt>
               <dd className="text-neutral-900/80">
-                {job.dueAt ? new Date(job.dueAt).toLocaleDateString('en-PK') : '—'}
+                {job.dueAt ? formatDate(job.dueAt) : '—'}
               </dd>
             </div>
             <div className="flex justify-between">
@@ -279,7 +279,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                   {event.fromStage ? `${STAGE_LABELS[event.fromStage]} → ` : ''}
                   {STAGE_LABELS[event.toStage]}
                   <span className="ms-2 text-xs text-neutral-900/40">
-                    {new Date(event.createdAt).toLocaleString('en-PK')}
+                    {formatDateTime(event.createdAt)}
                   </span>
                 </p>
                 {event.note ? <p className="text-neutral-900/60">{event.note}</p> : null}

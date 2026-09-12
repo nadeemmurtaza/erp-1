@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { cn } from '@/utils/cn';
-import { formatMoney, ORDER_STATUSES } from '@yaseen/shared';
+import { ORDER_STATUSES, formatDate, formatMoney } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
 import type { PaginatedResponse } from '@/types/api';
 
@@ -180,7 +180,7 @@ export default function AdminOrdersPage() {
                         {order.number}
                       </Link>
                       <p className="text-xs text-neutral-900/40">
-                        {new Date(order.placedAt).toLocaleDateString('en-PK')}
+                        {formatDate(order.placedAt)}
                       </p>
                     </td>
                     <td className="px-4 py-3">

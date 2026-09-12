@@ -109,7 +109,7 @@ export function MobileNav({
             </div>
             
             <div className="border-b border-neutral-200 p-4">
-              <div className="flex items-center gap-2 border-b-2 border-neutral-300 focus-within:border-neutral-900 transition-colors">
+              <div className="flex items-center gap-2 border-b-2 border-neutral-300 focus-within:border-accent transition-colors">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"

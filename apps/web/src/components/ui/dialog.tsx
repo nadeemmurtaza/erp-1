@@ -115,7 +115,7 @@ export function Dialog({
         aria-label={title}
         tabIndex={-1}
         className={cn(
-          'sf-card relative z-10 flex max-h-[85vh] w-full max-w-lg flex-col outline-none animate-scaleIn',
+          'card relative z-10 flex max-h-[85vh] w-full max-w-lg flex-col outline-none animate-scaleIn',
           className,
         )}
       >

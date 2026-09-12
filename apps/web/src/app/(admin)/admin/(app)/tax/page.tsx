@@ -265,7 +265,7 @@ export default function TaxAdminPage() {
                           <td className="px-3 py-3 font-medium">
                             {taxClass.name}
                             {taxClass.isDefault && (
-                              <span className="ms-2 rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-accent-hover">
+                              <span className="ms-2 rounded bg-neutral-100 px-2 py-0.5 text-xs text-accent-hover">
                                 default
                               </span>
                             )}

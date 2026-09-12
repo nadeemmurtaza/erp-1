@@ -55,7 +55,7 @@ export default function Loading() {
                     <div className="skeleton h-3 w-3/5 rounded" />
                     <div className="skeleton h-3 w-20 rounded" />
                   </div>
-                  <div className="skeleton h-2 w-full rounded-full" />
+                  <div className="skeleton h-2 w-full rounded" />
                 </div>
               ))}
             </div>

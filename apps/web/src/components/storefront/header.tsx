@@ -182,7 +182,7 @@ export function Header() {
               </Link>
               <div className="hidden h-6 w-px bg-neutral-200 lg:block" />
               {/* Cart and account move to the mobile bottom pill; the header keeps them for md: and up. */}
-              <div className="hidden rounded-full transition-colors duration-200 hover:bg-neutral-50 lg:block">
+              <div className="hidden rounded transition-colors duration-200 hover:bg-neutral-50 lg:block">
                 <CustomerNav />
               </div>
               {/* CartBadge sizes and colours its own hit target, so this wrapper only toggles visibility. */}

@@ -314,7 +314,7 @@ export default function EmailAccountsPage() {
                 <span className="flex items-center justify-between gap-2">
                   <span className="font-medium">{account.label}</span>
                   {!account.isActive ? (
-                    <span className="shrink-0 rounded-full bg-white px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-neutral-900/50">
+                    <span className="shrink-0 rounded bg-white px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-neutral-900/50">
                       Off
                     </span>
                   ) : null}

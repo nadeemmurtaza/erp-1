@@ -236,7 +236,7 @@ export default function NewPurchaseOrderPage() {
                 <button 
                   onClick={() => submit(false)}
                   disabled={saving || lines.length === 0}
-                  className="px-4 py-2 bg-neutral-100 text-neutral-900 rounded font-medium hover:bg-neutral-200 disabled:opacity-50"
+                  className="btn-secondary"
                 >
                   Save Draft
                 </button>

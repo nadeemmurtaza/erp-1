@@ -91,10 +91,10 @@ export default function WishlistPage() {
       <p className="mt-1 text-sm text-neutral-500">{t('itemCount', { count: saved.length })}</p>
 
       {saved.length === 0 ? (
-        <div className="sf-card mt-6 p-10 text-center">
+        <div className="card mt-6 p-10 text-center">
           <p className="text-sm font-medium text-neutral-900">{t('empty')}</p>
           <p className="mt-1 text-sm text-neutral-500">{t('emptyBody')}</p>
-          <Link href={ROUTES.storefront.shop} className="mt-6 sf-btn-primary">
+          <Link href={ROUTES.storefront.shop} className="mt-6 btn-primary">
             {t('browseShop')}
           </Link>
         </div>

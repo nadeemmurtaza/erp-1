@@ -3,7 +3,7 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { use, useCallback, useEffect, useState } from 'react';
-import { formatMoney, type Locale, type StitchingStage } from '@yaseen/shared';
+import { formatDate, formatMoney, type Locale, type StitchingStage } from '@yaseen/shared';
 import { Link } from '@/i18n/navigation';
 import { StitchingTimeline, type TimelineEvent } from '@/components/storefront/stitching-timeline';
 import { API_URL } from '@/lib/api';
@@ -45,7 +45,6 @@ export default function StitchingBookingPage({
   const { number } = use(params);
   const t = useTranslations('stitching');
   const locale = useLocale() as Locale;
-  const dateLocale = locale === 'ur' ? 'ur-PK' : 'en-PK';
   const searchParams = useSearchParams();
   const justBooked = searchParams.get('booked') === '1';
 
@@ -149,7 +148,7 @@ export default function StitchingBookingPage({
           <dd className="text-neutral-900">
             {booking.fabricReceivedAt
               ? t('fabricReceivedOn', {
-                  date: new Date(booking.fabricReceivedAt).toLocaleDateString(dateLocale),
+                  date: formatDate(booking.fabricReceivedAt, locale as Locale),
                 })
               : t('fabricAwaited')}
           </dd>
@@ -158,7 +157,7 @@ export default function StitchingBookingPage({
           <div>
             <dt className="text-neutral-900/50">{t('promised')}</dt>
             <dd className="text-neutral-900">
-              {new Date(booking.promisedAt).toLocaleDateString(dateLocale)}
+              {formatDate(booking.promisedAt, locale as Locale)}
             </dd>
           </div>
         ) : null}

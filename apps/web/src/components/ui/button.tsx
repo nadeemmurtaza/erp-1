@@ -2,40 +2,29 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import { cn } from '@/utils/cn';
 
 /**
- * The button, in the two shapes this app actually has.
+ * The button.
  *
- * `surface` is not decoration — admin and storefront genuinely differ in
- * shape language (admin: rectangular, `rounded-md`; storefront: pill,
- * `rounded-full`), and that difference is deliberate. What was NOT deliberate
- * was every call site re-deciding padding and disabled styling, so this maps
- * onto the existing `.btn-*` / `.sf-btn-*` classes in globals.css rather than
- * introducing a third set of styles that would drift from both.
+ * There used to be a `surface` prop here, because admin buttons were
+ * rectangular and teal while storefront buttons were pills and grey. That
+ * split is gone — globals.css has one `.btn-*` family now — so the prop went
+ * with it. If you find yourself wanting it back, the answer is a new variant,
+ * not a second shape language.
  *
  * A plain `<button className="btn-primary">` still works and is not wrong.
- * Reach for this when you want `loading`, or when a component must render the
- * same button on both surfaces.
+ * Reach for this when you want `loading`, which disables the button and swaps
+ * the label so a double-submit is impossible.
  */
-type Variant = 'primary' | 'secondary' | 'ghost';
-type Surface = 'admin' | 'storefront';
+type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
 
-const CLASSES: Record<Surface, Record<Variant, string>> = {
-  admin: {
-    primary: 'btn-primary',
-    secondary: 'btn-secondary',
-    ghost: 'btn-ghost',
-  },
-  storefront: {
-    primary: 'sf-btn-primary',
-    secondary: 'sf-btn-secondary',
-    // The storefront has no ghost in globals.css; this is the nearest thing
-    // and stays here rather than becoming a fourth global class.
-    ghost: 'sf-btn text-neutral-900 hover:bg-neutral-50',
-  },
+const CLASSES: Record<Variant, string> = {
+  primary: 'btn-primary',
+  secondary: 'btn-secondary',
+  ghost: 'btn-ghost',
+  danger: 'btn-danger',
 };
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
-  surface?: Surface;
   /** Disables the button and swaps the label, so a double-submit is impossible. */
   loading?: boolean;
   loadingLabel?: string;
@@ -44,7 +33,6 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export function Button({
   variant = 'primary',
-  surface = 'admin',
   loading = false,
   loadingLabel,
   disabled,
@@ -58,7 +46,7 @@ export function Button({
       type={type}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
-      className={cn(CLASSES[surface][variant], className)}
+      className={cn(CLASSES[variant], className)}
       {...rest}
     >
       {loading ? (loadingLabel ?? 'Working…') : children}

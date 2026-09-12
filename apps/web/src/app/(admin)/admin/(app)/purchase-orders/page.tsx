@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-client';
-import { formatMoney } from '@yaseen/shared';
+import { formatDate, formatMoney } from '@yaseen/shared';
 import { ROUTES } from '@/constants/routes';
 
 interface PurchaseOrderListRow {
@@ -129,10 +129,10 @@ export default function PurchaseOrdersPage() {
                       </span>
                     </td>
                     <td className="px-3 py-3 text-neutral-900/60">
-                      {new Date(po.createdAt).toLocaleDateString()}
+                      {formatDate(po.createdAt)}
                     </td>
                     <td className="px-3 py-3 text-neutral-900/60">
-                      {po.expectedAt ? new Date(po.expectedAt).toLocaleDateString() : '—'}
+                      {po.expectedAt ? formatDate(po.expectedAt) : '—'}
                     </td>
                     <td className="px-3 py-3 text-end font-medium text-neutral-900/80">
                       {formatMoney(po.total)}

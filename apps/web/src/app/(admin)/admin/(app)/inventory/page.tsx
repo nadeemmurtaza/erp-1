@@ -3,7 +3,7 @@
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
-import { formatMoney } from '@yaseen/shared';
+import { formatDate, formatDateTime, formatMoney } from '@yaseen/shared';
 
 interface InventoryVariant {
   id: string;
@@ -213,7 +213,7 @@ export default function AdminInventoryPage() {
                         </td>
                         <td className="px-3 py-3 text-neutral-900/60">
                           {variant.salesStat?.lastSoldAt 
-                            ? new Date(variant.salesStat.lastSoldAt).toLocaleDateString()
+                            ? formatDate(variant.salesStat.lastSoldAt)
                             : '—'}
                         </td>
                         <td className="px-3 py-3 text-end">
@@ -252,7 +252,7 @@ export default function AdminInventoryPage() {
                                     {historyRows.map((row) => (
                                       <tr key={row.id}>
                                         <td className="py-2 text-neutral-900/70">
-                                          {new Date(row.createdAt).toLocaleString()}
+                                          {formatDateTime(row.createdAt)}
                                         </td>
                                         <td className="py-2 text-neutral-900/70">{row.actorName || 'System'}</td>
                                         <td className="py-2 text-neutral-900/70">{row.reason}</td>

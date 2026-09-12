@@ -35,14 +35,14 @@ export function SearchBox() {
           const trimmed = term.trim();
           router.push(trimmed ? `/shop?q=${encodeURIComponent(trimmed)}` : '/shop');
         }}
-        // sf-field-input is written for a bare <input>/<select>, so its
+        // field-input is written for a bare <input>/<select>, so its
         // `focus:` rule never fires here — the border/background live on
         // this <form> while the real focus target is the child <input>.
         // focus-within: substitutes for that, keeping the shared border and
         // focus colour tokens without losing the working interaction. Shape
         // stays the pill this compound search field has always been,
-        // overriding sf-field-input's rounded-xl.
-        className="sf-field-input flex h-11 flex-1 items-center gap-2 rounded-full px-4 focus-within:border-neutral-700"
+        // overriding field-input's rounded-xl.
+        className="field-input flex h-11 flex-1 items-center gap-2 rounded px-4 focus-within:border-accent"
       >
         <label className="sr-only" htmlFor="site-search">
           {t('search')}

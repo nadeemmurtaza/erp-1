@@ -38,7 +38,7 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
 
   return (
     <div className="container-page py-8">
-      <h1 className="mb-1 text-2xl font-semibold text-accent-hover">My Account</h1>
+      <h1 className="mb-1 text-2xl font-semibold text-neutral-900">My Account</h1>
       <p className="mb-6 text-sm text-neutral-900/60">{user.email ?? user.phone}</p>
 
       <nav className="mb-6 flex gap-1 border-b border-neutral-100">

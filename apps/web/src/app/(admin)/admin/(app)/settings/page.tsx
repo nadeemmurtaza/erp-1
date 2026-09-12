@@ -1,7 +1,7 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
-import { ADMIN_LOCKED_PERMISSIONS, BACK_OFFICE_ROLES, type UserRole } from '@yaseen/shared';
+import { ADMIN_LOCKED_PERMISSIONS, BACK_OFFICE_ROLES, formatDateTime, type UserRole } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
 import type { AuditLogEntry, AuditLogPage, PermissionDefinition, RolePermissions } from '@/types/api';
 
@@ -345,7 +345,7 @@ function AuditRow({ entry }: { entry: AuditLogEntry }) {
 
   return (
     <tr className="hover:bg-neutral-50">
-      <td className="px-4 py-3 text-neutral-900/70">{new Date(entry.createdAt).toLocaleString('en-PK')}</td>
+      <td className="px-4 py-3 text-neutral-900/70">{formatDateTime(entry.createdAt)}</td>
       <td className="px-4 py-3 text-neutral-900">{actorName}</td>
       <td className="px-4 py-3 font-mono text-xs text-neutral-900/80">{entry.action}</td>
       <td className="px-4 py-3 text-neutral-900/70">

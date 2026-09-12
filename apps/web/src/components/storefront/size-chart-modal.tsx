@@ -115,7 +115,7 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
           <div
             ref={modalRef}
             tabIndex={-1}
-            className="relative w-full max-w-2xl sf-card shadow-xl outline-none overflow-hidden"
+            className="relative w-full max-w-2xl card shadow-xl outline-none overflow-hidden"
             style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}
           >
             {/* Header */}
@@ -150,10 +150,10 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
                         type="button"
                         onClick={() => setActiveGarmentIndex(idx)}
                         className={cn(
-                          'sf-chip',
+                          'chip',
                           activeGarmentIndex === idx
-                            ? 'sf-chip-selected'
-                            : 'sf-chip-unselected'
+                            ? 'chip-selected'
+                            : 'chip-unselected'
                         )}
                       >
                         {label}

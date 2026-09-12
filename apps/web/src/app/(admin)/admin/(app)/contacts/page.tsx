@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatMoney } from '@yaseen/shared';
+import { formatDate, formatMoney } from '@yaseen/shared';
 import { adminFetch, getAccessToken } from '@/lib/admin-client';
 import { API_URL, toSearchParams } from '@/lib/api';
 import type { PaginatedResponse } from '@/types/api';
@@ -286,7 +286,7 @@ export default function AdminContactsPage() {
                       </td>
                       <td className="px-4 py-3 text-neutral-900/60">
                         {contact.lastOrderAt
-                          ? new Date(contact.lastOrderAt).toLocaleDateString('en-PK')
+                          ? formatDate(contact.lastOrderAt)
                           : '—'}
                       </td>
                     </tr>
@@ -437,7 +437,7 @@ function ContactDetailPanel({
                 <li key={task.id} className="text-neutral-900/70">
                   {task.note}
                   <span className="ms-2 text-xs text-neutral-900/40">
-                    {new Date(task.dueAt).toLocaleDateString('en-PK')}
+                    {formatDate(task.dueAt)}
                   </span>
                 </li>
               ))}
@@ -472,7 +472,7 @@ function ContactDetailPanel({
                 <p className="text-neutral-900/80">{interaction.body}</p>
                 <p className="text-xs text-neutral-900/40">
                   {interaction.kind.toLowerCase()} ·{' '}
-                  {new Date(interaction.occurredAt).toLocaleDateString('en-PK')}
+                  {formatDate(interaction.occurredAt)}
                   {interaction.actor?.firstName ? ` · ${interaction.actor.firstName}` : ''}
                 </p>
               </li>

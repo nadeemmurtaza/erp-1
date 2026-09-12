@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { adminFetch } from '@/lib/admin-client';
 import type { AdminGarmentSizeChartRow, GarmentType, MeasurementFieldRow } from '@/types/api';
+import { formatMoney } from '@yaseen/shared';
 
 interface FieldDraft {
   key: string;
@@ -209,7 +210,7 @@ export default function AdminGarmentsPage() {
                   {garment.labelEn}
                   <span className="block text-xs text-neutral-900/40">
                     {garment.fields.filter((field) => field.isActive).length} measurements ·{' '}
-                    Rs {(garment.stitchingPrice / 100).toLocaleString()}
+                    {formatMoney(garment.stitchingPrice)}
                   </span>
                 </button>
               </li>

@@ -102,17 +102,17 @@ export function ProductCard({
         {/* Status badges stack at the reading-start corner, clear of the heart button opposite. */}
         <div className="pointer-events-none absolute start-3 top-3 z-20 flex flex-col items-start gap-2">
           {discount !== null ? (
-            <span className="rounded-full bg-neutral-900 px-2.5 py-1 text-xs font-semibold text-white">
+            <span className="rounded bg-neutral-900 px-2.5 py-1 text-xs font-semibold text-white">
               -{discount}%
             </span>
           ) : null}
 
           {!product.inStock ? (
-            <span className="rounded-full bg-neutral-900/90 px-2.5 py-1 text-xs font-medium text-white">
+            <span className="rounded bg-neutral-900/90 px-2.5 py-1 text-xs font-medium text-white">
               {t('outOfStock')}
             </span>
           ) : product.stitchingAvailable ? (
-            <span className="rounded-full bg-neutral-700 px-2.5 py-1 text-xs font-medium text-white">
+            <span className="rounded bg-neutral-700 px-2.5 py-1 text-xs font-medium text-white">
               {t('getItStitched')}
             </span>
           ) : null}
@@ -130,7 +130,7 @@ export function ProductCard({
             event.preventDefault();
             toggle(product.id);
           }}
-          className="absolute end-3 top-3 z-30 sf-icon-btn"
+          className="absolute end-3 top-3 z-30 icon-btn"
           aria-label={saved ? t('removeFromFavourites') : t('addToFavourites')}
           aria-pressed={saved}
         >
@@ -188,7 +188,7 @@ export function ProductCard({
 
           <button
             type="button"
-            className="pointer-events-none transition-all hover:scale-105 sf-btn-primary group-hover/media:pointer-events-auto group-focus-within/media:pointer-events-auto"
+            className="pointer-events-none transition-all hover:scale-105 btn-primary group-hover/media:pointer-events-auto group-focus-within/media:pointer-events-auto"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

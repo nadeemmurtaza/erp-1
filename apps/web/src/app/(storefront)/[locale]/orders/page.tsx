@@ -52,7 +52,7 @@ export default function OrderHistoryPage() {
 
   return (
     <div className="container-page py-8">
-      <h1 className="mb-1 text-2xl font-semibold text-accent-hover">My Orders</h1>
+      <h1 className="mb-1 text-2xl font-semibold text-neutral-900">My Orders</h1>
       <p className="mb-6 text-sm text-neutral-900/60">Every order placed with this account.</p>
 
       {error ? (
@@ -76,7 +76,7 @@ export default function OrderHistoryPage() {
             <Link
               key={order.number}
               href={`/orders/${order.number}`}
-              className="card block p-4 transition hover:bg-neutral-50"
+              className="card lift block p-4"
             >
               <div className="flex items-center justify-between">
                 <div>

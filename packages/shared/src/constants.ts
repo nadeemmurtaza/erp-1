@@ -47,6 +47,47 @@ export function toMajor(minorAmount: number): number {
   return minorAmount / MINOR_UNITS_PER_MAJOR;
 }
 
+/**
+ * The shop's wall clock.
+ *
+ * Every date the customer or the shop reads is a date in Karachi: an order
+ * placed at 00:30 on the 6th belongs to the 6th, whatever timezone the browser
+ * happens to sit in. Formatting without pinning this means a customer abroad
+ * reads a different date than the shop does for the same order, and a report
+ * row stops matching the order detail page it came from.
+ *
+ * The API resolves calendar days from the `store.timezone` Setting, which is
+ * the authority (House Rule 4). This constant is the display-side default and
+ * must stay in step with it; pass `timeZone` explicitly anywhere the Setting
+ * has actually been read.
+ */
+export const SHOP_TIME_ZONE = 'Asia/Karachi';
+
+/** e.g. 2026-09-06T19:23Z -> "7 Sept 2026" in the shop's zone. */
+export function formatDate(
+  value: Date | string | number,
+  locale: Locale = 'en',
+  timeZone: string = SHOP_TIME_ZONE,
+): string {
+  return new Intl.DateTimeFormat(locale === 'ur' ? 'ur-PK' : 'en-PK', {
+    dateStyle: 'medium',
+    timeZone,
+  }).format(new Date(value));
+}
+
+/** e.g. 2026-09-06T19:23Z -> "7 Sept 2026, 12:23 am" in the shop's zone. */
+export function formatDateTime(
+  value: Date | string | number,
+  locale: Locale = 'en',
+  timeZone: string = SHOP_TIME_ZONE,
+): string {
+  return new Intl.DateTimeFormat(locale === 'ur' ? 'ur-PK' : 'en-PK', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+    timeZone,
+  }).format(new Date(value));
+}
+
 /** Formats integer paisa as a display string, e.g. 349900 -> "Rs 3,499". */
 export function formatMoney(minorAmount: number, locale: Locale = 'en'): string {
   const formatter = new Intl.NumberFormat(locale === 'ur' ? 'ur-PK' : 'en-PK', {

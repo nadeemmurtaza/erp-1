@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatMoney } from '@yaseen/shared';
+import { formatDate, formatMoney } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
 import {
   BOOKING_STATUS_LABELS,
@@ -108,7 +108,7 @@ export default function BookingsPage() {
                         {booking.number}
                       </Link>
                       <p className="text-xs text-neutral-900/40">
-                        {new Date(booking.createdAt).toLocaleDateString('en-PK')}
+                        {formatDate(booking.createdAt)}
                       </p>
                     </td>
                     <td className="px-4 py-3">
@@ -134,7 +134,7 @@ export default function BookingsPage() {
                     </td>
                     <td className="px-4 py-3 text-neutral-900/70">
                       {booking.fabricReceivedAt
-                        ? new Date(booking.fabricReceivedAt).toLocaleDateString('en-PK')
+                        ? formatDate(booking.fabricReceivedAt)
                         : 'Not yet in'}
                     </td>
                     <td className="px-4 py-3 text-end tabular-nums text-neutral-900">

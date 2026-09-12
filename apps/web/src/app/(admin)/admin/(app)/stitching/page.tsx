@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { STITCHING_STAGES, type StitchingStage } from '@yaseen/shared';
+import { STITCHING_STAGES, formatDate, type StitchingStage } from '@yaseen/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { StageBadge } from '@/components/admin/stage-badge';
 import {
@@ -201,7 +201,7 @@ export default function TailorQueuePage() {
                         <StageBadge stage={job.stage} />
                       </td>
                       <td className="px-4 py-3 text-neutral-900/70">
-                        {job.dueAt ? new Date(job.dueAt).toLocaleDateString('en-PK') : '—'}
+                        {job.dueAt ? formatDate(job.dueAt) : '—'}
                         {late ? (
                           // Marked with a word as well as a colour: colour alone
                           // is not a label.
@@ -231,9 +231,9 @@ export default function TailorQueuePage() {
             {workload.tailors.map((tailor) => (
               <li key={tailor.id} className="flex items-center gap-3 text-sm">
                 <span className="w-40 shrink-0 text-neutral-900/80">{tailor.name}</span>
-                <span className="h-2 flex-1 overflow-hidden rounded-full bg-white">
+                <span className="h-2 flex-1 overflow-hidden rounded bg-white">
                   <span
-                    className="block h-full rounded-full bg-accent"
+                    className="block h-full rounded bg-accent"
                     style={{
                       width: `${Math.min(
                         100,

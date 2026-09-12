@@ -169,7 +169,7 @@ export default function CheckoutPage() {
         <button
           type="button"
           onClick={() => router.push('/cart')}
-          className="sf-btn-secondary mt-6 px-5 py-2.5"
+          className="btn-secondary mt-6 px-5 py-2.5"
         >
           {t('backToCart')}
         </button>
@@ -189,7 +189,7 @@ export default function CheckoutPage() {
       label: t('deliveryAddress'),
       isValid: addressValid,
       content: (
-        <section className="sf-card p-4 sm:p-6">
+        <section className="card p-4 sm:p-6">
           <h2 className="text-base font-semibold text-neutral-900">{t('deliveryAddress')}</h2>
 
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -199,7 +199,7 @@ export default function CheckoutPage() {
                 onChange={(event) => setForm({ ...form, fullName: event.target.value })}
                 required
                 autoComplete="name"
-                className="sf-field-input"
+                className="field-input"
               />
             </Field>
 
@@ -211,7 +211,7 @@ export default function CheckoutPage() {
                 inputMode="tel"
                 autoComplete="tel"
                 placeholder="03001234567"
-                className="sf-field-input"
+                className="field-input"
               />
             </Field>
 
@@ -222,7 +222,7 @@ export default function CheckoutPage() {
                   onChange={(event) => setForm({ ...form, line1: event.target.value })}
                   required
                   autoComplete="address-line1"
-                  className="sf-field-input"
+                  className="field-input"
                 />
               </Field>
             </div>
@@ -233,7 +233,7 @@ export default function CheckoutPage() {
                   value={form.line2}
                   onChange={(event) => setForm({ ...form, line2: event.target.value })}
                   autoComplete="address-line2"
-                  className="sf-field-input"
+                  className="field-input"
                 />
               </Field>
             </div>
@@ -244,7 +244,7 @@ export default function CheckoutPage() {
                 onChange={(event) => setForm({ ...form, city: event.target.value })}
                 required
                 autoComplete="address-level2"
-                className="sf-field-input"
+                className="field-input"
               />
             </Field>
 
@@ -252,7 +252,7 @@ export default function CheckoutPage() {
               <select
                 value={form.province}
                 onChange={(event) => setForm({ ...form, province: event.target.value })}
-                className="sf-field-input"
+                className="field-input"
               >
                 {PROVINCES.map((province) => (
                   <option key={province} value={province}>
@@ -267,7 +267,7 @@ export default function CheckoutPage() {
                 value={form.postalCode}
                 onChange={(event) => setForm({ ...form, postalCode: event.target.value })}
                 autoComplete="postal-code"
-                className="sf-field-input"
+                className="field-input"
               />
             </Field>
 
@@ -277,7 +277,7 @@ export default function CheckoutPage() {
                 value={form.email}
                 onChange={(event) => setForm({ ...form, email: event.target.value })}
                 autoComplete="email"
-                className="sf-field-input"
+                className="field-input"
               />
             </Field>
           </div>
@@ -289,7 +289,7 @@ export default function CheckoutPage() {
       label: t('payment'),
       isValid: Boolean(method),
       content: (
-        <section className="sf-card p-4 sm:p-6">
+        <section className="card p-4 sm:p-6">
           <h2 className="text-base font-semibold text-neutral-900">{t('payment')}</h2>
 
           {/*
@@ -303,7 +303,7 @@ export default function CheckoutPage() {
               <label
                 key={option.key}
                 className={cn(
-                  'flex cursor-pointer items-start gap-3 rounded-2xl border-2 p-4 transition-colors duration-200 focus-within:ring-2 focus-within:ring-neutral-900 focus-within:ring-offset-2',
+                  'flex cursor-pointer items-start gap-3 rounded-2xl border-2 p-4 transition-colors duration-200 focus-within:ring-2 focus-within:ring-accent focus-within:ring-offset-2',
                   option.key === method
                     ? 'border-neutral-900 bg-neutral-900/[0.03]'
                     : 'border-neutral-200 hover:border-neutral-300',
@@ -354,19 +354,19 @@ export default function CheckoutPage() {
       isValid: true,
       content: (
         <div className="space-y-6">
-          <section className="sf-card p-4 sm:p-6">
+          <section className="card p-4 sm:p-6">
             <Field label={t('note')} hint={t('noteHint')}>
               <textarea
                 value={form.note}
                 onChange={(event) => setForm({ ...form, note: event.target.value })}
                 rows={2}
                 maxLength={500}
-                className="sf-field-input"
+                className="field-input"
               />
             </Field>
           </section>
 
-          <section className="sf-card p-4 sm:p-6">
+          <section className="card p-4 sm:p-6">
             <h2 className="text-base font-semibold text-neutral-900">{t('summary')}</h2>
 
             <ul className="mt-3 space-y-2 text-sm">

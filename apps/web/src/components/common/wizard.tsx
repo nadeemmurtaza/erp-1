@@ -84,7 +84,7 @@ export function Wizard({
                 disabled={!reachable}
                 onClick={() => goTo(i)}
                 className={cn(
-                  'flex items-center gap-2 rounded-full px-3 py-1.5 transition-colors',
+                  'flex items-center gap-2 rounded px-3 py-1.5 transition-colors',
                   active
                     ? accentClassName
                     : reachable
@@ -125,7 +125,7 @@ export function Wizard({
             type="button"
             onClick={() => void onSubmit()}
             disabled={submitDisabled || submitBusy || !step.isValid}
-            className={cn('rounded-full px-6 py-2.5 text-sm font-semibold disabled:opacity-50', accentClassName)}
+            className={cn('rounded px-6 py-2.5 text-sm font-semibold disabled:opacity-50', accentClassName)}
           >
             {submitBusy ? '…' : submitLabel}
           </button>
@@ -134,7 +134,7 @@ export function Wizard({
             type="button"
             onClick={goNext}
             disabled={!step.isValid}
-            className={cn('rounded-full px-6 py-2.5 text-sm font-semibold disabled:opacity-50', accentClassName)}
+            className={cn('rounded px-6 py-2.5 text-sm font-semibold disabled:opacity-50', accentClassName)}
           >
             {nextLabel}
           </button>

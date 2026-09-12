@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { use, useCallback, useEffect, useState } from 'react';
-import { formatMoney, toMinor } from '@yaseen/shared';
+import { formatDate, formatMoney, toMinor } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { StageBadge } from '@/components/admin/stage-badge';
 import { ROUTES } from '@/constants/routes';
@@ -95,7 +95,7 @@ export default function BookingDetailPage({
 
           {booking.fabricReceivedAt ? (
             <p className="mt-3 text-sm text-accent-hover">
-              Logged in on {new Date(booking.fabricReceivedAt).toLocaleDateString('en-PK')}
+              Logged in on {formatDate(booking.fabricReceivedAt)}
             </p>
           ) : (
             <div className="mt-3">
@@ -164,7 +164,7 @@ export default function BookingDetailPage({
 
           {booking.promisedAt ? (
             <p className="mt-4 text-sm text-neutral-900/60">
-              Promised for {new Date(booking.promisedAt).toLocaleDateString('en-PK')}
+              Promised for {formatDate(booking.promisedAt)}
             </p>
           ) : null}
         </section>

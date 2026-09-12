@@ -63,10 +63,10 @@ export function QuickViewModal({ product, locale, onClose }: QuickViewModalProps
             </div>
 
             <div className="flex flex-col gap-3 pt-2">
-              <button type="button" className="sf-btn-primary w-full">
+              <button type="button" className="btn-primary w-full">
                 Quick Shop
               </button>
-              <button type="button" className="sf-btn-secondary w-full">
+              <button type="button" className="btn-secondary w-full">
                 Add to cart
               </button>
             </div>

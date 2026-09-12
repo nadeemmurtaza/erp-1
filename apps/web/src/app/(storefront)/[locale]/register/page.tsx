@@ -49,7 +49,7 @@ export default function RegisterPage() {
     <div className="flex min-h-[calc(100vh-4rem)] flex-col lg:flex-row">
       <div className="flex flex-1 items-center justify-center px-4 py-12 lg:px-8">
         <div className="w-full max-w-sm">
-          <h1 className="text-center text-2xl font-semibold text-accent-hover">Create Account</h1>
+          <h1 className="text-center text-2xl font-semibold text-neutral-900">Create Account</h1>
           <p className="mt-1 text-center text-sm text-neutral-900/60">
             Join {tSite('name')} today
           </p>
@@ -148,7 +148,7 @@ export default function RegisterPage() {
       </div>
       <div className="hidden lg:flex lg:flex-1 relative bg-neutral-50 items-center justify-center p-12">
         <div className="max-w-lg text-center">
-          <h2 className="text-4xl font-bold tracking-tight text-accent-hover">
+          <h2 className="text-4xl font-bold tracking-tight text-neutral-900">
             Start your journey
           </h2>
           <p className="mt-4 text-lg text-accent-hover/80">

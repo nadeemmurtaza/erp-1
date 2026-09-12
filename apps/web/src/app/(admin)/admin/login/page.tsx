@@ -30,7 +30,7 @@ export default function AdminLoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-neutral-50 px-4">
       <div className="w-full max-w-sm">
-        <h1 className="text-center text-2xl font-semibold text-accent-hover">Yaseen Admin</h1>
+        <h1 className="text-center text-2xl font-semibold text-neutral-900">Yaseen Admin</h1>
         <p className="mt-1 text-center text-sm text-neutral-900/60">
           Sign in to manage the catalogue and orders.
         </p>

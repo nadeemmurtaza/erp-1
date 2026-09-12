@@ -32,7 +32,7 @@ export default function ForgotPasswordPage() {
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm">
-        <h1 className="text-center text-2xl font-semibold text-accent-hover">Reset your password</h1>
+        <h1 className="text-center text-2xl font-semibold text-neutral-900">Reset your password</h1>
 
         {sent ? (
           <p className="mt-6 rounded-md bg-neutral-50 px-4 py-3 text-center text-sm text-accent-hover">

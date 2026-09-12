@@ -47,6 +47,33 @@ export default {
       maxWidth: {
         page: '80rem',
       },
+      /*
+       * The house shape is square, and this is where that is enforced.
+       *
+       * `borderRadius` is overridden rather than extended, so every step of
+       * the scale — `rounded`, `rounded-md`, `rounded-lg`, `rounded-2xl` —
+       * resolves to the same 2px. Three hundred-odd radius utilities were
+       * already written across sixty-odd files in four different sizes; this
+       * collapses them all without a codemod touching a single call site, and
+       * without leaving a `rounded-2xl` somewhere that quietly disagrees with
+       * the system next time someone pastes markup in.
+       *
+       * `full` survives because circles are not a radius choice — avatars,
+       * spinners, status dots and the icon buttons over product photography
+       * are round by nature, and squaring them would be a bug, not a restyle.
+       * `none` survives for deliberate square-off (a cell inside a table).
+       */
+      borderRadius: {
+        none: '0',
+        DEFAULT: 'var(--radius)',
+        sm: 'var(--radius)',
+        md: 'var(--radius)',
+        lg: 'var(--radius-lg)',
+        xl: 'var(--radius-lg)',
+        '2xl': 'var(--radius-lg)',
+        '3xl': 'var(--radius-lg)',
+        full: '9999px',
+      },
       animation: {
         fadeIn: 'fadeIn 200ms ease-out',
         slideUp: 'slideUp 300ms ease-out',

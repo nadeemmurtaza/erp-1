@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import Link from 'next/link';
+import { formatDateTime } from '@yaseen/shared';
 
 interface StockCount {
   id: string;
@@ -104,7 +105,7 @@ export default function CountsListPage() {
                   </span>
                 </td>
                 <td className="px-4 py-3 text-neutral-900/70">
-                  {c.startedAt ? new Date(c.startedAt).toLocaleString() : '-'}
+                  {c.startedAt ? formatDateTime(c.startedAt) : '-'}
                 </td>
                 <td className="px-4 py-3 text-neutral-900/70">
                   {c.creator ? `${c.creator.firstName || ''} ${c.creator.lastName || ''}`.trim() : '-'}

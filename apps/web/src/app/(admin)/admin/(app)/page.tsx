@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatMoney, toMajor, THEME_COLORS } from '@yaseen/shared';
+import { THEME_COLORS, formatDate, formatMoney, toMajor } from '@yaseen/shared';
 import { SalesChart } from '@/components/admin/sales-chart';
 import { DonutChart } from '@/components/admin/donut-chart';
 import { GaugeChart } from '@/components/admin/gauge-chart';
@@ -418,7 +418,7 @@ export default function AdminDashboardPage() {
                     <p className="text-sm text-neutral-900">{task.note}</p>
                     <p className="text-xs text-neutral-900/50">
                       {task.contact?.name ?? task.lead?.name ?? 'Unassigned'} · due{' '}
-                      {new Date(task.dueAt).toLocaleDateString('en-PK')}
+                      {formatDate(task.dueAt)}
                     </p>
                   </li>
                 ))}
@@ -541,9 +541,9 @@ function BarList({
             <span className="shrink-0 text-neutral-900/70">{valueFormatter(item.value)}</span>
           </div>
           {/* Sequential single hue: more of the metric is a longer bar. */}
-          <div className="mt-1 h-2 overflow-hidden rounded-full bg-white">
+          <div className="mt-1 h-2 overflow-hidden rounded bg-white">
             <div
-              className="h-full rounded-full"
+              className="h-full rounded"
               style={{
                 width: `${Math.max((item.value / max) * 100, 2)}%`,
                 backgroundColor: THEME_COLORS.accent.DEFAULT,

@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
-import { formatMoney } from '@yaseen/shared';
+import { formatDateTime, formatMoney } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
 
 interface PendingPayment {
@@ -128,7 +128,7 @@ export default function AdminPaymentsPage() {
                   </div>
                   <div className="flex gap-2">
                     <dt>Placed</dt>
-                    <dd>{new Date(payment.order.placedAt).toLocaleString('en-PK')}</dd>
+                    <dd>{formatDateTime(payment.order.placedAt)}</dd>
                   </div>
                 </dl>
               </div>

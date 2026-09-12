@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatMoney, LEAD_STATUSES, toMinor } from '@yaseen/shared';
+import { LEAD_STATUSES, formatDate, formatMoney, toMinor } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
 
 interface Lead {
@@ -135,7 +135,7 @@ export default function AdminLeadsPage() {
 
                       <p className="mt-1 text-[10px] uppercase tracking-wide text-neutral-900/30">
                         {lead.source.replace(/_/g, ' ')} ·{' '}
-                        {new Date(lead.createdAt).toLocaleDateString('en-PK')}
+                        {formatDate(lead.createdAt)}
                       </p>
 
                       {(NEXT[lead.status] ?? []).length > 0 ? (

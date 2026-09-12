@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
 import type { InboundEmail, PaginatedResponse } from '@/types/api';
+import { formatDateTime } from '@yaseen/shared';
 
 type LinkFilter = 'all' | 'unlinked' | 'linked';
 
@@ -156,14 +157,14 @@ export default function AdminInboxPage() {
                       <td className="px-4 py-3 text-neutral-900/80">
                         {message.subject || '(no subject)'}
                         {message._count.replies > 0 ? (
-                          <span className="ms-2 rounded-full bg-neutral-50 px-2 py-0.5 text-xs font-medium text-accent-hover">
+                          <span className="ms-2 rounded bg-neutral-50 px-2 py-0.5 text-xs font-medium text-accent-hover">
                             Replied
                           </span>
                         ) : null}
                       </td>
                       <td className="px-4 py-3 text-neutral-900/60">{message.emailAccount.label}</td>
                       <td className="px-4 py-3 text-neutral-900/60">
-                        {new Date(message.receivedAt).toLocaleString('en-PK')}
+                        {formatDateTime(message.receivedAt)}
                       </td>
                     </tr>
                   ))
@@ -274,7 +275,7 @@ function MessageDetailPanel({
         {message.fromAddress}
       </p>
       <p className="text-xs text-neutral-900/40">
-        {new Date(message.receivedAt).toLocaleString('en-PK')} · via {message.emailAccount.label}
+        {formatDateTime(message.receivedAt)} · via {message.emailAccount.label}
       </p>
 
       <div className="mt-4 whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-sm text-neutral-900/80">
@@ -288,7 +289,7 @@ function MessageDetailPanel({
               <p className="text-xs font-medium text-neutral-900/60">
                 {reply.actor ? `${reply.actor.firstName ?? ''} ${reply.actor.lastName ?? ''}`.trim() || 'Staff' : 'Staff'}
                 {' · '}
-                {new Date(reply.sentAt).toLocaleString('en-PK')}
+                {formatDateTime(reply.sentAt)}
               </p>
               <p className="mt-1 whitespace-pre-wrap text-sm text-neutral-900/80">{reply.body}</p>
             </li>

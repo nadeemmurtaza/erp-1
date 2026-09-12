@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { cn } from '@/utils/cn';
-import { STITCHING_STAGES, type Locale, type StitchingStage } from '@yaseen/shared';
+import { STITCHING_STAGES, formatDate, type Locale, type StitchingStage } from '@yaseen/shared';
 
 export interface TimelineEvent {
   fromStage?: StitchingStage | null;
@@ -33,7 +33,6 @@ export function StitchingTimeline({
 }) {
   const t = useTranslations('stitching');
   const locale = useLocale() as Locale;
-  const dateLocale = locale === 'ur' ? 'ur-PK' : 'en-PK';
 
   const reachedIndex = VISIBLE_STAGES.indexOf(stage as (typeof VISIBLE_STAGES)[number]);
   // A dispatched garment is finished, so every stage on the rail is behind it.
@@ -56,7 +55,7 @@ export function StitchingTimeline({
             <li key={entry} className="flex min-w-[5.5rem] flex-1 flex-col gap-1.5">
               <span
                 className={cn(
-                  'h-1.5 rounded-full',
+                  'h-1.5 rounded',
                   done ? 'bg-accent-hover' : 'bg-neutral-100',
                 )}
               />
@@ -70,7 +69,7 @@ export function StitchingTimeline({
               </span>
               {at ? (
                 <span className="text-[0.7rem] text-neutral-900/40">
-                  {new Date(at).toLocaleDateString(dateLocale)}
+                  {formatDate(at, locale as Locale)}
                 </span>
               ) : null}
             </li>
@@ -80,7 +79,7 @@ export function StitchingTimeline({
 
       {dueAt ? (
         <p className="mt-3 text-xs text-neutral-900/50">
-          {t('promisedFor', { date: new Date(dueAt).toLocaleDateString(dateLocale) })}
+          {t('promisedFor', { date: formatDate(dueAt, locale as Locale) })}
         </p>
       ) : null}
 

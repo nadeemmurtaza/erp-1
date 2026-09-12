@@ -240,7 +240,7 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
         type="button"
         onClick={() => void onAdd()}
         disabled={addDisabled}
-        className="sf-btn-primary hidden md:inline-flex"
+        className="btn-primary hidden md:inline-flex"
       >
         {busy ? t('adding') : t('addToCart')}
       </button>
@@ -283,7 +283,7 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
           type="button"
           onClick={() => void onAdd()}
           disabled={addDisabled}
-          className="sf-btn-primary w-full justify-between gap-3 py-4 shadow-lg shadow-neutral-900/30"
+          className="btn-primary w-full justify-between gap-3 py-4 shadow-lg shadow-neutral-900/30"
         >
           <span className="text-sm font-semibold">{busy ? t('adding') : t('addToCart')}</span>
           <span className="flex items-baseline gap-2">
@@ -324,7 +324,7 @@ function SizeRow({
             type="button"
             onClick={() => onChange(option)}
             aria-pressed={value === option}
-            className={cn('sf-chip', value === option ? 'sf-chip-selected' : 'sf-chip-unselected')}
+            className={cn('chip', value === option ? 'chip-selected' : 'chip-unselected')}
           >
             {option}
           </button>

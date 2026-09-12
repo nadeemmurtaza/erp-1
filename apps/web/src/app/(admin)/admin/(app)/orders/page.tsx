@@ -7,6 +7,8 @@ import { ORDER_STATUSES, formatDate, formatMoney } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
 import type { PaginatedResponse } from '@/types/api';
 import { Loading } from '@/components/ui';
+import { StatusBadge, statusLabel } from '@/components/admin/status-badge';
+import { paymentProviderLabel } from '@/constants/payment-methods';
 
 interface AdminOrder {
   id: string;
@@ -132,7 +134,7 @@ export default function AdminOrdersPage() {
           <option value="">All statuses</option>
           {ORDER_STATUSES.map((option) => (
             <option key={option} value={option}>
-              {label(option)}
+              {statusLabel(option)}
             </option>
           ))}
         </select>
@@ -193,14 +195,14 @@ export default function AdminOrdersPage() {
                     <td className="px-4 py-3">
                       {order.payments.map((payment) => (
                         <p key={payment.id} className="text-xs">
-                          <span className="text-neutral-900/70">{payment.provider}</span>
+                          <span className="text-neutral-900/70">{paymentProviderLabel(payment.provider)}</span>
                           <span
                             className={cn(
                               'ms-1 font-medium',
                               payment.status === 'PAID' ? 'text-accent-hover' : 'text-amber-600',
                             )}
                           >
-                            {payment.status.toLowerCase().replace(/_/g, ' ')}
+                            {statusLabel(payment.status)}
                           </span>
                         </p>
                       ))}
@@ -226,7 +228,7 @@ export default function AdminOrdersPage() {
                                 : 'text-accent-hover hover:bg-neutral-50',
                             )}
                           >
-                            {label(next)}
+                            {statusLabel(next)}
                           </button>
                         ))}
                         {order.status === 'READY_TO_SHIP' || order.status === 'SHIPPED' ? (
@@ -276,9 +278,6 @@ export default function AdminOrdersPage() {
   );
 }
 
-function label(status: string): string {
-  return status.charAt(0) + status.slice(1).toLowerCase().replace(/_/g, ' ');
-}
 
 function Th({ children, className }: { children?: React.ReactNode; className?: string }) {
   return (
@@ -294,20 +293,3 @@ function Th({ children, className }: { children?: React.ReactNode; className?: s
   );
 }
 
-function StatusBadge({ status }: { status: string }) {
-  return (
-    <span
-      className={cn(
-        'rounded px-2 py-0.5 text-xs font-medium',
-        status === 'DELIVERED' && 'bg-neutral-100 text-accent-hover',
-        status === 'CANCELLED' && 'bg-red-50 text-red-700',
-        status === 'RETURNED' && 'bg-red-50 text-red-700',
-        status === 'PENDING' && 'bg-white text-neutral-900/60',
-        !['DELIVERED', 'CANCELLED', 'RETURNED', 'PENDING'].includes(status) &&
-          'bg-neutral-50 text-accent-hover',
-      )}
-    >
-      {label(status)}
-    </span>
-  );
-}

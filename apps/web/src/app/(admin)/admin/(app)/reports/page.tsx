@@ -5,6 +5,7 @@ import { cn } from '@/utils/cn';
 import { formatMoney } from '@yaseen/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { Loading } from '@/components/ui';
+import { paymentProviderLabel } from '@/constants/payment-methods';
 
 interface StitchingAnalytics {
   topGarments: Array<{ key: string; label: string; jobs: number; revenue: number }>;
@@ -280,8 +281,8 @@ export default function AdminReportsPage() {
                   </thead>
                   <tbody className="divide-y divide-white">
                     {extended.paymentMethodSplit.map((row) => (
-                      <tr key={row.provider}>
-                        <td className="py-1 text-neutral-900/70">{row.provider}</td>
+                      <tr key={paymentProviderLabel(row.provider)}>
+                        <td className="py-1 text-neutral-900/70">{paymentProviderLabel(row.provider)}</td>
                         <td className="py-1 text-end tabular-nums text-neutral-900/70">{row.count}</td>
                         <td className="py-1 text-end tabular-nums text-neutral-900">{formatMoney(row.amount)}</td>
                       </tr>

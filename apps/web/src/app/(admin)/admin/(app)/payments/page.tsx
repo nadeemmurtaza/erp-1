@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { formatDateTime, formatMoney } from '@yaseen/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { Loading } from '@/components/ui';
+import { paymentProviderLabel } from '@/constants/payment-methods';
 
 interface PendingPayment {
   id: string;
@@ -121,7 +122,7 @@ export default function AdminPaymentsPage() {
                   </div>
                   <div className="flex gap-2">
                     <dt>Method</dt>
-                    <dd>{payment.provider.replace(/_/g, ' ')}</dd>
+                    <dd>{paymentProviderLabel(payment.provider)}</dd>
                   </div>
                   <div className="flex gap-2">
                     <dt>Reference</dt>

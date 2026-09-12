@@ -7,6 +7,8 @@ import { formatDate, formatDateTime, formatMoney } from '@yaseen/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { ROUTES } from '@/constants/routes';
 import { Loading } from '@/components/ui';
+import { StatusBadge, statusLabel } from '@/components/admin/status-badge';
+import { paymentProviderLabel } from '@/constants/payment-methods';
 
 interface OrderItem {
   id: string;
@@ -246,7 +248,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                   : 'btn-primary',
               )}
             >
-              {label(next)}
+              {statusLabel(next)}
             </button>
           ))}
           {order.status === 'READY_TO_SHIP' || order.status === 'SHIPPED' ? (
@@ -304,7 +306,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                       ) : null}
                       {item.stitchingJob ? (
                         <p className="mt-1 text-neutral-900/70">
-                          {item.stitchingJob.number} · {label(item.stitchingJob.stage)}
+                          {item.stitchingJob.number} · {statusLabel(item.stitchingJob.stage)}
                           {item.stitchingJob.dueAt
                             ? ` · due ${formatDate(item.stitchingJob.dueAt)}`
                             : ''}
@@ -324,7 +326,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                 <li key={index} className="flex gap-3 text-sm">
                   <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-accent-hover" />
                   <span>
-                    <span className="font-medium text-neutral-900">{label(event.toStatus)}</span>
+                    <span className="font-medium text-neutral-900">{statusLabel(event.toStatus)}</span>
                     <span className="ms-2 text-xs text-neutral-900/40">
                       {formatDateTime(event.createdAt)}
                     </span>
@@ -409,19 +411,8 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
               {order.payments.map((payment) => (
                 <li key={payment.id} className="border-b border-white pb-4 last:border-0 last:pb-0">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="font-medium text-neutral-900">{payment.provider}</span>
-                    <span
-                      className={cn(
-                        'rounded px-2 py-0.5 text-xs font-medium',
-                        payment.status === 'PAID' && 'bg-neutral-100 text-accent-hover',
-                        payment.status === 'REFUNDED' && 'bg-white text-neutral-900/60',
-                        payment.status === 'FAILED' && 'bg-red-50 text-red-700',
-                        !['PAID', 'REFUNDED', 'FAILED'].includes(payment.status) &&
-                          'bg-amber-600/20 text-amber-600',
-                      )}
-                    >
-                      {payment.status.toLowerCase().replace(/_/g, ' ')}
-                    </span>
+                    <span className="font-medium text-neutral-900">{paymentProviderLabel(payment.provider)}</span>
+                    <StatusBadge status={payment.status} />
                   </div>
                   <p className="mt-1 text-xs text-neutral-900/60">{formatMoney(payment.amount)}</p>
                   {payment.reference ? (
@@ -505,27 +496,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
   );
 }
 
-function label(status: string): string {
-  return status.charAt(0) + status.slice(1).toLowerCase().replace(/_/g, ' ');
-}
 
-function StatusBadge({ status }: { status: string }) {
-  return (
-    <span
-      className={cn(
-        'rounded px-2 py-0.5 text-xs font-medium',
-        status === 'DELIVERED' && 'bg-neutral-100 text-accent-hover',
-        status === 'CANCELLED' && 'bg-red-50 text-red-700',
-        status === 'RETURNED' && 'bg-red-50 text-red-700',
-        status === 'PENDING' && 'bg-white text-neutral-900/60',
-        !['DELIVERED', 'CANCELLED', 'RETURNED', 'PENDING'].includes(status) &&
-          'bg-neutral-50 text-accent-hover',
-      )}
-    >
-      {label(status)}
-    </span>
-  );
-}
 
 function Row({ label, value }: { label: string; value: string }) {
   return (

@@ -8,6 +8,7 @@ import { adminFetch } from '@/lib/admin-client';
 import type { AdminProduct, PaginatedResponse } from '@/types/api';
 import { ROUTES } from '@/constants/routes';
 import { Loading } from '@/components/ui';
+import { StatusBadge } from '@/components/admin/status-badge';
 
 const KIND_LABELS: Record<string, string> = {
   STITCHED: 'Ready to wear',
@@ -221,17 +222,3 @@ function Th({ children, className }: { children: React.ReactNode; className?: st
   );
 }
 
-function StatusBadge({ status }: { status: string }) {
-  return (
-    <span
-      className={cn(
-        'rounded px-2 py-0.5 text-xs font-medium',
-        status === 'ACTIVE' && 'bg-neutral-50 text-accent-hover',
-        status === 'DRAFT' && 'bg-white text-neutral-900/60',
-        status === 'ARCHIVED' && 'bg-red-50 text-red-700',
-      )}
-    >
-      {status.charAt(0) + status.slice(1).toLowerCase()}
-    </span>
-  );
-}

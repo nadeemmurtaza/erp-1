@@ -1,4 +1,10 @@
-import type { Locale, PermissionKey, ProductKind, ProductStatus } from '@newax/shared';
+import type {
+  Locale,
+  PermissionKey,
+  ProductKind,
+  ProductStatus,
+  StitchingStage,
+} from '@newax/shared';
 
 /** Shapes returned by the API. Mirrors apps/api's response objects. */
 
@@ -535,6 +541,76 @@ export interface CustomerOrderSummary {
   placedAt: string;
   grandTotal: number;
   items: Array<{ nameEn: string; nameUr: string | null; imageUrl: string | null; quantity: number }>;
+}
+
+/** One move along a garment's workshop timeline. */
+export interface StitchingTimelineEvent {
+  fromStage?: StitchingStage | null;
+  toStage: StitchingStage;
+  createdAt: string;
+  note?: string | null;
+  photoUrl?: string | null;
+}
+
+export interface CustomerOrderItem {
+  id: string;
+  nameEn: string;
+  nameUr: string | null;
+  variantLabel: string | null;
+  imageUrl: string | null;
+  quantity: number;
+  unitPrice: number;
+  stitchingFeeUnit: number;
+  lineTotal: number;
+  stitchingServiceName: string | null;
+  garmentTypeKey: string | null;
+  measurementSnapshot: { label: string; values: Record<string, number> } | null;
+  optionsSnapshot: Array<{
+    groupLabelEn: string;
+    groupLabelUr: string;
+    labelEn: string;
+    labelUr: string;
+  }> | null;
+  /** Present once the garment is in the workshop. */
+  stitchingJob: {
+    number: string;
+    stage: StitchingStage;
+    dueAt: string | null;
+    events: StitchingTimelineEvent[];
+  } | null;
+}
+
+/** One order as its buyer sees it — signed in, or tracked with a phone number. */
+export interface CustomerOrder {
+  number: string;
+  status: string;
+  placedAt: string;
+  itemsSubtotal: number;
+  stitchingSubtotal: number;
+  shippingFee: number;
+  codFee: number;
+  grandTotal: number;
+  guestName: string | null;
+  shippingAddress: {
+    fullName: string;
+    phone: string;
+    line1: string;
+    line2?: string;
+    city: string;
+    province: string;
+  };
+  items: CustomerOrderItem[];
+  payments: Array<{
+    id: string;
+    provider: string;
+    status: string;
+    reference: string | null;
+    meta: {
+      accounts?: Array<{ bank: string; title: string; accountNumber: string; iban: string }>;
+    } | null;
+  }>;
+  shipments: Array<{ courier: string; trackingNumber: string | null; trackingUrl: string | null }>;
+  statusEvents: Array<{ toStatus: string; createdAt: string; note: string | null }>;
 }
 
 export interface PaginatedResult<T> {

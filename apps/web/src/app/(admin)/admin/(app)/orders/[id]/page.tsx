@@ -6,7 +6,7 @@ import { formatDate, formatDateTime, formatMoney } from '@newax/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { ROUTES } from '@/constants/routes';
 import { Disclosure, Loading, PageHeader } from '@/components/ui';
-import { StatusBadge, statusLabel } from '@/components/admin/status-badge';
+import { StatusBadge, statusLabel } from '@/components/common/status-badge';
 import { paymentProviderLabel } from '@/constants/payment-methods';
 
 interface OrderItem {

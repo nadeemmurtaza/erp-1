@@ -112,7 +112,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} dir={directionFor(locale as Locale)}>
       <body
-        className={`flex min-h-screen flex-col ${encodeSans.variable}`}
+        className={`flex min-h-screen flex-col pb-24 md:pb-0 ${encodeSans.variable}`}
         suppressHydrationWarning
       >
         <JsonLd data={organizationJsonLd()} />

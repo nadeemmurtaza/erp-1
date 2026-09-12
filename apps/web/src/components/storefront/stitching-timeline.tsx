@@ -3,14 +3,10 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { cn } from '@/utils/cn';
 import { STITCHING_STAGES, formatDate, type Locale, type StitchingStage } from '@newax/shared';
+import type { StitchingTimelineEvent } from '@/types/api';
 
-export interface TimelineEvent {
-  fromStage?: StitchingStage | null;
-  toStage: StitchingStage;
-  createdAt: string;
-  note?: string | null;
-  photoUrl?: string | null;
-}
+/** Declared in types/api.ts with the other wire shapes; kept here as a name. */
+export type TimelineEvent = StitchingTimelineEvent;
 
 /** The stages a customer is shown. Dispatch is an order status, not a garment one. */
 const VISIBLE_STAGES = STITCHING_STAGES.filter((stage) => stage !== 'DISPATCHED');

@@ -62,7 +62,7 @@ export default async function HomePage({
     // nothing in the shared locale layout reserves space for it yet, so this
     // page's own root absorbs the clearance until that lands at the layout
     // level. md:pb-0 drops it the moment the pill itself is hidden.
-    <div className="pb-24 md:pb-0">
+    <div>
       <section className="border-b border-neutral-200 bg-neutral-50">
         <div className="container-page py-10 sm:py-14 lg:py-24">
           <div

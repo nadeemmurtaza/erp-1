@@ -1,8 +1,8 @@
 'use client';
 
-import { API_URL, ApiError } from './api';
-import { messageOf, request, requestWithRefresh } from './api-client';
-import type { AuthResult, AuthUser } from '@/types/api';
+import { API_URL } from './api';
+import { request, requestWithRefresh } from './api-client';
+import type { AuthResult, AuthUser, CustomerOrder } from '@/types/api';
 import { STORAGE_KEYS } from '@/constants/storage';
 
 const ACCESS_KEY = STORAGE_KEYS.customer.access;
@@ -70,59 +70,39 @@ export async function registerCustomer(input: {
 }
 
 export async function forgotPassword(email: string): Promise<void> {
-  const response = await fetch(`${API_URL}/auth/forgot-password`, {
+  await request('/auth/forgot-password', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email }),
+    body: { email },
+    expect: 'none',
+    fallbackMessage: 'Could not send the reset email',
   });
-
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new ApiError(response.status, messageOf(body) ?? 'Could not send the reset email', body);
-  }
 }
 
 export async function resetPassword(token: string, newPassword: string): Promise<void> {
-  const response = await fetch(`${API_URL}/auth/reset-password`, {
+  await request('/auth/reset-password', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ token, newPassword }),
+    body: { token, newPassword },
+    expect: 'none',
+    fallbackMessage: 'Could not reset your password',
   });
-
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new ApiError(response.status, messageOf(body) ?? 'Could not reset your password', body);
-  }
 }
 
 export async function verifyEmail(token: string): Promise<void> {
-  const response = await fetch(`${API_URL}/auth/verify-email`, {
+  await request('/auth/verify-email', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ token }),
+    body: { token },
+    expect: 'none',
+    fallbackMessage: 'Could not confirm your email address',
   });
-
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new ApiError(
-      response.status,
-      messageOf(body) ?? 'Could not confirm your email address',
-      body,
-    );
-  }
 }
 
 export async function unsubscribeFromMarketing(userId: string, token: string): Promise<void> {
-  const response = await fetch(`${API_URL}/email/unsubscribe`, {
+  await request('/email/unsubscribe', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ userId, token }),
+    body: { userId, token },
+    expect: 'none',
+    fallbackMessage: 'Could not process this request',
   });
-
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new ApiError(response.status, messageOf(body) ?? 'Could not process this request', body);
-  }
 }
 
 export async function logoutCustomer(): Promise<void> {
@@ -137,6 +117,35 @@ export async function logoutCustomer(): Promise<void> {
   }).catch(() => undefined);
 }
 
+/**
+ * One order, for whoever is allowed to see it.
+ *
+ * Two ways in, because an order has two kinds of reader. A signed-in customer
+ * is authenticated; a guest proves it with the phone number the order was
+ * placed with. Which check applies is the API's decision, not the page's —
+ * order numbers on their own reveal nothing.
+ */
+export async function getMyOrder(number: string): Promise<CustomerOrder> {
+  return customerFetch<CustomerOrder>(`/orders/${number}`);
+}
+
+export async function trackOrder(number: string, phone: string): Promise<CustomerOrder> {
+  return request<CustomerOrder>(`/orders/${number}/track`, {
+    method: 'POST',
+    body: { phone },
+    credentials: 'include',
+    fallbackMessage: 'That number does not match this order',
+  });
+}
+
+/**
+ * The two calls below stay on raw `fetch` deliberately.
+ *
+ * Logout is fire-and-forget — the local session is already gone, and a failed
+ * request must not surface as an error. Refresh cannot go through the client
+ * that calls it without recursing, and it answers a boolean rather than
+ * throwing, which is the opposite of what `request` is for.
+ */
 async function refreshCustomerSession(): Promise<boolean> {
   const refreshToken = localStorage.getItem(REFRESH_KEY);
   if (!refreshToken) return false;

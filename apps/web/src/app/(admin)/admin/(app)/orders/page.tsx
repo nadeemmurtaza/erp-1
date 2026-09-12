@@ -7,7 +7,7 @@ import { ORDER_STATUSES, formatDate, formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import type { PaginatedResponse } from '@/types/api';
 import { EmptyState, Loading, PageHeader } from '@/components/ui';
-import { StatusBadge, statusLabel } from '@/components/admin/status-badge';
+import { StatusBadge, statusLabel } from '@/components/common/status-badge';
 import { paymentProviderLabel } from '@/constants/payment-methods';
 
 interface AdminOrder {

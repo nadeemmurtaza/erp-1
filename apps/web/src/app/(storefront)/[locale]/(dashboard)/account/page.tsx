@@ -1,12 +1,24 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import type { AuthUser } from '@/types/api';
 import { customerFetch } from '@/lib/customer-client';
 import { useCustomerSession } from '@/components/storefront/customer-session';
+import { Disclosure, PageHeader, Section } from '@/components/ui';
 
+/**
+ * The shopper's own details.
+ *
+ * Two forms sat side by side here as equal peers, which read as two jobs of
+ * equal weight. They are not: a customer opens this page to correct a phone
+ * number, and changes a password rarely and deliberately. So the profile is
+ * the page and the password is behind a disclosure — the rare, consequential
+ * thing is one click away rather than sharing the fold with the common one.
+ */
 export default function AccountProfilePage() {
   const { user, setUser } = useCustomerSession();
+  const t = useTranslations('account');
 
   const [profileDraft, setProfileDraft] = useState({
     firstName: user?.firstName ?? '',
@@ -41,9 +53,9 @@ export default function AccountProfilePage() {
         },
       });
       setUser(updated);
-      setProfileMessage('Profile updated.');
+      setProfileMessage(t('profile.saved'));
     } catch (cause) {
-      setProfileError(cause instanceof Error ? cause.message : 'Could not update your profile');
+      setProfileError(cause instanceof Error ? cause.message : t('profile.failed'));
     } finally {
       setProfileSaving(false);
     }
@@ -62,126 +74,145 @@ export default function AccountProfilePage() {
       });
       setCurrentPassword('');
       setNewPassword('');
-      setPasswordMessage('Password changed. You have been signed out of every other device.');
+      setPasswordMessage(t('password.changed'));
     } catch (cause) {
-      setPasswordError(cause instanceof Error ? cause.message : 'Could not change your password');
+      setPasswordError(cause instanceof Error ? cause.message : t('password.failed'));
     } finally {
       setPasswordSaving(false);
     }
   }
 
   return (
-    <div className="grid gap-6 fold:grid-cols-2">
-      <form onSubmit={saveProfile} className="card space-y-4 p-6">
-        <h2 className="text-lg font-semibold text-neutral-900">Profile details</h2>
+    <>
+      <PageHeader title={t('profile.title')} description={t('profile.body')} />
 
-        <div className="grid grid-cols-2 gap-4">
+      <Section>
+        <form onSubmit={saveProfile} className="max-w-xl space-y-4">
+          <div className="grid gap-4 xs:grid-cols-2">
+            <div>
+              <label className="field-label" htmlFor="firstName">
+                {t('profile.firstName')}
+              </label>
+              <input
+                id="firstName"
+                className="field-input"
+                autoComplete="given-name"
+                value={profileDraft.firstName}
+                onChange={(event) =>
+                  setProfileDraft({
+                    ...profileDraft,
+                    firstName: event.target.value,
+                  })
+                }
+              />
+            </div>
+            <div>
+              <label className="field-label" htmlFor="lastName">
+                {t('profile.lastName')}
+              </label>
+              <input
+                id="lastName"
+                className="field-input"
+                autoComplete="family-name"
+                value={profileDraft.lastName}
+                onChange={(event) =>
+                  setProfileDraft({
+                    ...profileDraft,
+                    lastName: event.target.value,
+                  })
+                }
+              />
+            </div>
+          </div>
+
           <div>
-            <label className="field-label" htmlFor="firstName">
-              First name
+            <label className="field-label" htmlFor="email">
+              {t('profile.email')}
             </label>
             <input
-              id="firstName"
+              id="email"
+              type="email"
               className="field-input"
-              value={profileDraft.firstName}
-              onChange={(event) => setProfileDraft({ ...profileDraft, firstName: event.target.value })}
+              autoComplete="email"
+              value={profileDraft.email}
+              onChange={(event) => setProfileDraft({ ...profileDraft, email: event.target.value })}
             />
           </div>
+
           <div>
-            <label className="field-label" htmlFor="lastName">
-              Last name
+            <label className="field-label" htmlFor="phone">
+              {t('profile.phone')}
             </label>
             <input
-              id="lastName"
+              id="phone"
               className="field-input"
-              value={profileDraft.lastName}
-              onChange={(event) => setProfileDraft({ ...profileDraft, lastName: event.target.value })}
+              inputMode="tel"
+              autoComplete="tel"
+              value={profileDraft.phone}
+              onChange={(event) => setProfileDraft({ ...profileDraft, phone: event.target.value })}
             />
           </div>
-        </div>
 
-        <div>
-          <label className="field-label" htmlFor="email">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            className="field-input"
-            value={profileDraft.email}
-            onChange={(event) => setProfileDraft({ ...profileDraft, email: event.target.value })}
-          />
-        </div>
+          {profileError ? (
+            <p role="alert" className="text-sm text-red-700">
+              {profileError}
+            </p>
+          ) : null}
+          {profileMessage ? <p className="text-sm text-green-700">{profileMessage}</p> : null}
 
-        <div>
-          <label className="field-label" htmlFor="phone">
-            Phone
-          </label>
-          <input
-            id="phone"
-            className="field-input"
-            value={profileDraft.phone}
-            onChange={(event) => setProfileDraft({ ...profileDraft, phone: event.target.value })}
-          />
-        </div>
+          <button type="submit" disabled={profileSaving} className="btn-primary">
+            {profileSaving ? t('profile.saving') : t('profile.save')}
+          </button>
+        </form>
+      </Section>
 
-        {profileError ? (
-          <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
-            {profileError}
-          </p>
-        ) : null}
-        {profileMessage ? <p className="text-sm text-green-700">{profileMessage}</p> : null}
+      <Disclosure label={t('password.title')}>
+        <form onSubmit={changePassword} className="max-w-sm space-y-4">
+          <p className="text-sm text-neutral-900/60">{t('password.body')}</p>
 
-        <button type="submit" disabled={profileSaving} className="btn-primary">
-          {profileSaving ? 'Saving…' : 'Save profile'}
-        </button>
-      </form>
+          <div>
+            <label className="field-label" htmlFor="currentPassword">
+              {t('password.current')}
+            </label>
+            <input
+              id="currentPassword"
+              type="password"
+              className="field-input"
+              autoComplete="current-password"
+              value={currentPassword}
+              onChange={(event) => setCurrentPassword(event.target.value)}
+              required
+            />
+          </div>
 
-      <form onSubmit={changePassword} className="card space-y-4 p-6">
-        <h2 className="text-lg font-semibold text-neutral-900">Change password</h2>
+          <div>
+            <label className="field-label" htmlFor="newPassword">
+              {t('password.new')}
+            </label>
+            <input
+              id="newPassword"
+              type="password"
+              className="field-input"
+              autoComplete="new-password"
+              value={newPassword}
+              onChange={(event) => setNewPassword(event.target.value)}
+              required
+              minLength={8}
+            />
+          </div>
 
-        <div>
-          <label className="field-label" htmlFor="currentPassword">
-            Current password
-          </label>
-          <input
-            id="currentPassword"
-            type="password"
-            className="field-input"
-            autoComplete="current-password"
-            value={currentPassword}
-            onChange={(event) => setCurrentPassword(event.target.value)}
-            required
-          />
-        </div>
+          {passwordError ? (
+            <p role="alert" className="text-sm text-red-700">
+              {passwordError}
+            </p>
+          ) : null}
+          {passwordMessage ? <p className="text-sm text-green-700">{passwordMessage}</p> : null}
 
-        <div>
-          <label className="field-label" htmlFor="newPassword">
-            New password
-          </label>
-          <input
-            id="newPassword"
-            type="password"
-            className="field-input"
-            autoComplete="new-password"
-            value={newPassword}
-            onChange={(event) => setNewPassword(event.target.value)}
-            required
-            minLength={8}
-          />
-        </div>
-
-        {passwordError ? (
-          <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
-            {passwordError}
-          </p>
-        ) : null}
-        {passwordMessage ? <p className="text-sm text-green-700">{passwordMessage}</p> : null}
-
-        <button type="submit" disabled={passwordSaving} className="btn-primary">
-          {passwordSaving ? 'Changing…' : 'Change password'}
-        </button>
-      </form>
-    </div>
+          <button type="submit" disabled={passwordSaving} className="btn-primary">
+            {passwordSaving ? t('password.submitting') : t('password.submit')}
+          </button>
+        </form>
+      </Disclosure>
+    </>
   );
 }

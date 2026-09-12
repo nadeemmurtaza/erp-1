@@ -9,6 +9,7 @@ import { getProducts } from '@/lib/api';
 import type { StorefrontProduct } from '@/types/api';
 import { useWishlist } from '@/lib/wishlist';
 import { ROUTES } from '@/constants/routes';
+import { EmptyState, Loading, PageHeader } from '@/components/ui';
 
 /**
  * The wishlist is a client-only, per-browser list of product ids (see
@@ -75,9 +76,10 @@ export default function WishlistPage() {
 
   if (products === null) {
     return (
-      <div className="container-page pt-6 pb-28 text-center text-sm text-neutral-500 md:pt-10 md:pb-12 lg:pt-12">
-        {t('loading')}
-      </div>
+      <>
+        <PageHeader title={t('title')} />
+        <Loading />
+      </>
     );
   }
 
@@ -86,28 +88,29 @@ export default function WishlistPage() {
   const saved = products.filter((product) => ids.includes(product.id));
 
   return (
-    <div className="container-page pt-6 pb-28 md:pt-10 md:pb-12 lg:pt-12">
-      <h1 className="font-display text-2xl font-semibold text-neutral-900">{t('title')}</h1>
-      <p className="mt-1 text-sm text-neutral-500">{t('itemCount', { count: saved.length })}</p>
+    <>
+      <PageHeader title={t('title')} description={t('itemCount', { count: saved.length })} />
 
       {saved.length === 0 ? (
-        <div className="card mt-6 p-10 text-center">
-          <p className="text-sm font-medium text-neutral-900">{t('empty')}</p>
-          <p className="mt-1 text-sm text-neutral-500">{t('emptyBody')}</p>
-          <Link href={ROUTES.storefront.shop} className="mt-6 btn-primary">
-            {t('browseShop')}
-          </Link>
-        </div>
+        <EmptyState
+          title={t('empty')}
+          description={t('emptyBody')}
+          action={
+            <Link href={ROUTES.storefront.shop} className="btn-primary">
+              {t('browseShop')}
+            </Link>
+          }
+        />
       ) : (
         // Same 2/3/4 responsive cascade as the shop grid's default density
         // (products-grid.tsx) and the home page's featured rail, so this
         // page doesn't drift from the site-wide column rhythm.
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
           {saved.map((product, index) => (
             <ProductCard key={product.id} product={product} locale={locale} priority={index < 4} />
           ))}
         </div>
       )}
-    </div>
+    </>
   );
 }

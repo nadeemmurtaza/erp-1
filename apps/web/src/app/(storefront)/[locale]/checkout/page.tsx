@@ -10,6 +10,7 @@ import { useRouter } from '@/i18n/navigation';
 import { trackEvent } from '@/lib/analytics-client';
 import { API_URL, ApiError } from '@/lib/api';
 import { getCustomerToken } from '@/lib/cart-client';
+import { ROUTES } from '@/constants/routes';
 import { STORAGE_KEYS } from '@/constants/storage';
 
 interface PaymentMethod {
@@ -136,7 +137,7 @@ export default function CheckoutPage() {
 
       // Cash on delivery / bank transfer: nothing more to collect now. A
       // full navigation, so the cart provider reloads and shows it emptied.
-      window.location.href = `/${locale}/orders/${payload.number}?placed=1`;
+      window.location.href = `/${locale}${ROUTES.storefront.order(payload.number)}?placed=1`;
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : t('failed'));
       setBusy(false);
@@ -160,7 +161,7 @@ export default function CheckoutPage() {
 
   if (cart.issues.length > 0) {
     return (
-      <div className="container-page pb-28 pt-16 font-display md:pb-16">
+      <div className="container-page pt-16 font-display md:pb-16">
         <h1 className="text-2xl font-semibold text-neutral-900">{t('title')}</h1>
         <ul className="mt-4 space-y-1 rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-800">
           {cart.issues.map((issue) => (
@@ -416,7 +417,7 @@ export default function CheckoutPage() {
   ];
 
   return (
-    <div className="container-page pb-28 pt-6 font-display sm:pt-8 md:pb-8">
+    <div className="container-page pt-6 font-display sm:pt-8 md:pb-8">
       <h1 className="text-2xl font-semibold tracking-tight text-neutral-900 sm:text-3xl">
         {t('title')}
       </h1>

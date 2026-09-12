@@ -16,7 +16,7 @@ export default function CartPage() {
 
   if (loading) {
     return (
-      <div className="container-page pb-28 pt-16 text-center font-display text-sm text-neutral-400 md:pb-16">
+      <div className="container-page pt-16 text-center font-display text-sm text-neutral-400 md:pb-16">
         {t('loading')}
       </div>
     );
@@ -24,7 +24,7 @@ export default function CartPage() {
 
   if (!cart || cart.items.length === 0) {
     return (
-      <div className="container-page pb-28 pt-16 text-center font-display md:pb-16">
+      <div className="container-page pt-16 text-center font-display md:pb-16">
         <h1 className="text-2xl font-semibold tracking-tight text-neutral-900">{t('title')}</h1>
         <p className="mt-2 text-sm text-neutral-500">{t('empty')}</p>
         <Link href={ROUTES.storefront.shop} className="mt-6 btn-primary">
@@ -35,7 +35,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="container-page pb-28 pt-6 font-display sm:pt-8 md:pb-12">
+    <div className="container-page pt-6 font-display sm:pt-8 md:pb-12">
       <h1 className="text-2xl font-semibold tracking-tight text-neutral-900 sm:text-3xl">{t('title')}</h1>
 
       {error ? (

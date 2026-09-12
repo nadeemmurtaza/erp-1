@@ -99,7 +99,7 @@ export default async function ShopPage({
     // Extra bottom padding on mobile only: the floating pill bottom-nav is
     // `fixed`, so it sits on top of whatever the page renders last (the
     // pagination row) unless the page reserves room for it below md:.
-    <div className="container-page pt-6 pb-28 md:pt-10 md:pb-12 lg:pt-12">
+    <div className="container-page pt-6 md:pt-10 md:pb-12 lg:pt-12">
       <div className="grid gap-6 lg:gap-8 lg:grid-cols-[16rem_1fr]">
         <aside className="min-w-0 lg:sticky lg:top-24 lg:h-fit">
           <AnimatedSection direction="right">

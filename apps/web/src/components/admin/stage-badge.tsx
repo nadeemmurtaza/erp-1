@@ -1,6 +1,6 @@
 import type { StitchingStage } from '@newax/shared';
 import { STAGE_LABELS } from '@/types/stitching';
-import { StatusBadge } from './status-badge';
+import { StatusBadge } from '@/components/common/status-badge';
 
 /**
  * The stage a job is at. Always carries its name — never colour alone.

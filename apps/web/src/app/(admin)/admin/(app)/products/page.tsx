@@ -8,7 +8,7 @@ import { adminFetch } from '@/lib/admin-client';
 import type { AdminProduct, PaginatedResponse } from '@/types/api';
 import { ROUTES } from '@/constants/routes';
 import { Loading } from '@/components/ui';
-import { StatusBadge } from '@/components/admin/status-badge';
+import { StatusBadge } from '@/components/common/status-badge';
 
 const KIND_LABELS: Record<string, string> = {
   STITCHED: 'Ready to wear',

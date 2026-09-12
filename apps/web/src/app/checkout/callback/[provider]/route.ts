@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { DEFAULT_LOCALE } from '@newax/shared';
 import { API_URL } from '@/lib/api';
+import { ROUTES } from '@/constants/routes';
 
 /**
  * Where JazzCash/Easypaisa post (or redirect) the customer back to after
@@ -51,7 +52,7 @@ async function handle(request: NextRequest, provider: string): Promise<NextRespo
 
     if (result?.orderNumber) {
       const outcome = result.status === 'PAID' ? 'success' : 'failed';
-      destination = `/${DEFAULT_LOCALE}/orders/${result.orderNumber}?payment=${outcome}`;
+      destination = `/${DEFAULT_LOCALE}${ROUTES.storefront.order(result.orderNumber)}?payment=${outcome}`;
     }
   } catch {
     // destination stays the generic fallback above

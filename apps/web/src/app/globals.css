@@ -7,13 +7,13 @@
     color-scheme: light;
 
     /*
-     * One radius scale for the whole product. Admin used to be rounded-md/lg
-     * and the storefront rounded-full/2xl, which is most of why the two halves
-     * read as different software. Square is the house shape now; these stay
-     * variables so the sharpness is one edit rather than fifty.
+     * --radius and --radius-lg are NOT declared here. They are injected into
+     * :root by tailwind.config.ts from packages/shared/src/theme-radii.ts,
+     * which apps/mobile imports too — a CSS custom property is invisible to
+     * React Native, so declaring the numbers here is exactly how the website
+     * went square while the app stayed rounded. Change the sharpness there
+     * and both surfaces follow.
      */
-    --radius: 2px;
-    --radius-lg: 3px;
 
     /*
      * The hover sweep. `--fill-duration` is long enough to read as a fill
@@ -88,7 +88,8 @@
    * end so a 1536px monitor does not run text to within 32px of the glass.
    */
   .container-page {
-    @apply mx-auto w-full max-w-page px-3 xs:px-4 sm:px-6 lg:px-8 2xl:px-12;
+    @apply mx-auto w-full max-w-page;
+    @apply px-3 xs:px-4 sm:px-5 fold:px-6 md:px-6 lg:px-8 xl:px-10 2xl:px-12;
   }
 
   /*
@@ -123,7 +124,15 @@
    * between the background and the label.
    */
   .btn {
-    @apply relative inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50;
+    @apply relative inline-flex items-center justify-center gap-2 font-medium disabled:cursor-not-allowed disabled:opacity-50;
+    /*
+     * Sized per tier rather than once. min-h-11 is 44px, the smallest target
+     * a thumb hits reliably, and it is the floor everywhere a touch screen is
+     * plausible — that is most of the range here, not a mobile special case.
+     * Text steps up only at lg, where a pointer is the likely input and 14px
+     * stops looking generous and starts looking small.
+     */
+    @apply min-h-11 px-4 py-2 text-sm xs:px-5 fold:min-h-10 lg:px-5 lg:py-2.5 lg:text-[0.9375rem];
     border-radius: var(--radius);
     isolation: isolate;
     overflow: hidden;
@@ -190,7 +199,13 @@
    * options already make around one shared shape.
    */
   .chip {
-    @apply border px-4 py-1.5 text-sm font-medium transition-colors duration-200;
+    @apply inline-flex items-center justify-center border text-sm font-medium transition-colors duration-200;
+    /*
+     * inline-flex, not the default inline-block: the 44px touch floor below
+     * `fold` would otherwise leave the label sitting at the top of a tall
+     * pill instead of centred in it.
+     */
+    @apply min-h-11 px-3 py-1.5 xs:px-4 fold:min-h-0 fold:py-1.5;
     border-radius: var(--radius);
   }
 
@@ -211,7 +226,9 @@
    * Tailwind orders utilities after components.
    */
   .icon-btn {
-    @apply inline-flex h-9 w-9 items-center justify-center bg-white/80 text-neutral-900 backdrop-blur-sm transition-transform duration-200 hover:scale-110;
+    @apply inline-flex items-center justify-center bg-white/80 text-neutral-900 backdrop-blur-sm transition-transform duration-200 hover:scale-110;
+    /* 44px on touch, back to the tighter 36px once a pointer is likely. */
+    @apply h-11 w-11 fold:h-9 fold:w-9;
     border-radius: var(--radius);
   }
 
@@ -220,7 +237,15 @@
   }
 
   .field-input {
-    @apply w-full border-neutral-300 bg-white text-sm text-neutral-900 shadow-none transition-colors duration-200 placeholder:text-neutral-400 focus:border-accent focus:ring-accent;
+    @apply w-full border-neutral-300 bg-white text-neutral-900 shadow-none transition-colors duration-200 placeholder:text-neutral-400 focus:border-accent focus:ring-accent;
+    /*
+     * 16px up to `sm`, and this is not a taste choice: iOS Safari zooms the
+     * whole page when a focused input's text is under 16px, and then leaves
+     * it zoomed. Every form in the product was `text-sm` (14px), so tapping
+     * any field on an iPhone threw the layout. Above `sm` a phone keyboard is
+     * no longer the likely input and 14px reads correctly again.
+     */
+    @apply min-h-11 text-base sm:min-h-0 sm:text-sm;
     border-radius: var(--radius);
   }
 

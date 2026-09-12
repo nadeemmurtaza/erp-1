@@ -16,6 +16,7 @@ import {
 import { AdminProviders } from '@/providers/admin-providers';
 import { ROUTES } from '@/constants/routes';
 import { BRAND } from '@newax/shared';
+import { STORAGE_KEYS } from '@/constants/storage';
 
 /**
  * The back office frame: role guard, sidebar and header.
@@ -188,7 +189,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
 }
 
 /** Where the collapsed/expanded state of each nav group is remembered. */
-const NAV_GROUPS_STORAGE_KEY = 'yaseen.admin.navGroups';
+const NAV_GROUPS_STORAGE_KEY = STORAGE_KEYS.admin.navGroups;
 
 function readCollapsedGroups(): Record<string, boolean> {
   // Private windows and "block site data" make this throw rather than return

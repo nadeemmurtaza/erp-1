@@ -3,6 +3,7 @@
 import { trackEvent } from './analytics-client';
 import { request } from './api-client';
 import type { Cart } from '@/types/cart';
+import { STORAGE_KEYS } from '@/constants/storage';
 
 /**
  * Browser-side cart client.
@@ -13,7 +14,7 @@ import type { Cart } from '@/types/cart';
  * the account's cart instead — one cart, whichever device they are on.
  */
 
-const ACCESS_KEY = 'yaseen.customer.access';
+const ACCESS_KEY = STORAGE_KEYS.customer.access;
 
 export function getCustomerToken(): string | null {
   return typeof window === 'undefined' ? null : localStorage.getItem(ACCESS_KEY);

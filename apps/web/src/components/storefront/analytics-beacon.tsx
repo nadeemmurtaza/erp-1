@@ -3,8 +3,9 @@
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { trackEvent } from '@/lib/analytics-client';
+import { STORAGE_KEYS } from '@/constants/storage';
 
-const UTM_KEY = 'yaseen_utm_source';
+const UTM_KEY = STORAGE_KEYS.analytics.utmSource;
 
 /**
  * Fires one page_view per storefront route change. Mounted once in the

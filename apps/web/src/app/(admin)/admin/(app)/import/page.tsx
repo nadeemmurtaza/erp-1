@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import type { ImportSummary } from '@/types/api';
+import { exportFilename } from '@/constants/downloads';
 
 /**
  * Bulk catalogue upload.
@@ -30,7 +31,7 @@ export default function AdminImportPage() {
       const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
       const anchor = document.createElement('a');
       anchor.href = url;
-      anchor.download = 'yaseen-products-template.csv';
+      anchor.download = exportFilename('products-template');
       anchor.click();
       URL.revokeObjectURL(url);
     } catch (cause) {

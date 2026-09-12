@@ -6,6 +6,7 @@ import { formatMoney } from '@newax/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { Loading } from '@/components/ui';
 import { paymentProviderLabel } from '@/constants/payment-methods';
+import { exportFilename } from '@/constants/downloads';
 
 interface StitchingAnalytics {
   topGarments: Array<{ key: string; label: string; jobs: number; revenue: number }>;
@@ -317,7 +318,7 @@ export default function AdminReportsPage() {
                 'orders',
                 '/admin/reports/export/orders',
                 { from: isoDateDaysAgo(days), to: isoToday() },
-                'yaseen-orders.csv',
+                exportFilename('orders'),
               )
             }
             className="btn-secondary"
@@ -333,7 +334,7 @@ export default function AdminReportsPage() {
                 'sales',
                 '/admin/reports/export/sales-by-day',
                 { from: isoDateDaysAgo(days), to: isoToday() },
-                'yaseen-sales-by-day.csv',
+                exportFilename('sales-by-day'),
               )
             }
             className="btn-secondary"
@@ -349,7 +350,7 @@ export default function AdminReportsPage() {
                 'stitching-bookings',
                 '/admin/reports/export/stitching-bookings',
                 { from: isoDateDaysAgo(days), to: isoToday() },
-                'yaseen-stitching-bookings.csv',
+                exportFilename('stitching-bookings'),
               )
             }
             className="btn-secondary"
@@ -361,7 +362,7 @@ export default function AdminReportsPage() {
             type="button"
             disabled={exporting !== null}
             onClick={() =>
-              void downloadCsv('stock', '/admin/reports/export/stock', undefined, 'yaseen-stock.csv')
+              void downloadCsv('stock', '/admin/reports/export/stock', undefined, exportFilename('stock'))
             }
             className="btn-secondary"
           >
@@ -372,7 +373,7 @@ export default function AdminReportsPage() {
             type="button"
             disabled={exporting !== null}
             onClick={() =>
-              void downloadCsv('purchases-by-supplier', '/admin/reports/export/purchases-by-supplier', { from: isoDateDaysAgo(days), to: isoToday() }, 'yaseen-purchases-by-supplier.csv')
+              void downloadCsv('purchases-by-supplier', '/admin/reports/export/purchases-by-supplier', { from: isoDateDaysAgo(days), to: isoToday() }, exportFilename('purchases-by-supplier'))
             }
             className="btn-secondary"
           >
@@ -383,7 +384,7 @@ export default function AdminReportsPage() {
             type="button"
             disabled={exporting !== null}
             onClick={() =>
-              void downloadCsv('stock-ledger', '/admin/reports/export/stock-ledger', { from: isoDateDaysAgo(days), to: isoToday() }, 'yaseen-stock-ledger.csv')
+              void downloadCsv('stock-ledger', '/admin/reports/export/stock-ledger', { from: isoDateDaysAgo(days), to: isoToday() }, exportFilename('stock-ledger'))
             }
             className="btn-secondary"
           >
@@ -394,7 +395,7 @@ export default function AdminReportsPage() {
             type="button"
             disabled={exporting !== null}
             onClick={() =>
-              void downloadCsv('slow-movers', '/admin/reports/export/slow-movers', undefined, 'yaseen-slow-movers.csv')
+              void downloadCsv('slow-movers', '/admin/reports/export/slow-movers', undefined, exportFilename('slow-movers'))
             }
             className="btn-secondary"
           >
@@ -406,7 +407,7 @@ export default function AdminReportsPage() {
               type="button"
               disabled={exporting !== null}
               onClick={() =>
-                void downloadCsv('stock-valuation', '/admin/reports/export/stock-valuation', undefined, 'yaseen-stock-valuation.csv')
+                void downloadCsv('stock-valuation', '/admin/reports/export/stock-valuation', undefined, exportFilename('stock-valuation'))
               }
               className="btn-secondary"
             >

@@ -10,6 +10,7 @@ import { StitchingTimeline, type TimelineEvent } from '@/components/storefront/s
 import { API_URL } from '@/lib/api';
 import { getCustomerToken } from '@/lib/cart-client';
 import { ROUTES } from '@/constants/routes';
+import { STORAGE_KEYS } from '@/constants/storage';
 
 interface OrderItem {
   id: string;
@@ -110,7 +111,7 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
     // A guest who just checked out has the phone number they typed remembered
     // for this tab, so their confirmation appears without being asked to prove
     // who they are. Anyone else falls through to the tracking form.
-    const remembered = sessionStorage.getItem(`yaseen.order.${number}`);
+    const remembered = sessionStorage.getItem(STORAGE_KEYS.guestOrder(number));
     if (remembered) {
       try {
         const response = await fetch(`${API_URL}/orders/${number}/track`, {
@@ -149,7 +150,7 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
       if (response.ok) {
         setOrder(await response.json());
         // Remember it for this tab so a refresh does not ask again.
-        sessionStorage.setItem(`yaseen.order.${number}`, phone);
+        sessionStorage.setItem(STORAGE_KEYS.guestOrder(number), phone);
       } else {
         const payload = await response.json().catch(() => undefined);
         setError((payload as { message?: string })?.message ?? t('trackFailed'));

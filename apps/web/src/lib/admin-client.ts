@@ -3,10 +3,11 @@
 import { ApiError, API_URL } from './api';
 import { request, requestWithRefresh } from './api-client';
 import type { AuthResult, AuthUser } from '@/types/api';
+import { STORAGE_KEYS } from '@/constants/storage';
 
-const ACCESS_KEY = 'yaseen.admin.access';
-const REFRESH_KEY = 'yaseen.admin.refresh';
-const USER_KEY = 'yaseen.admin.user';
+const ACCESS_KEY = STORAGE_KEYS.admin.access;
+const REFRESH_KEY = STORAGE_KEYS.admin.refresh;
+const USER_KEY = STORAGE_KEYS.admin.user;
 
 /**
  * Browser-side API client for the back office.

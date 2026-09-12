@@ -8,6 +8,7 @@ import { API_URL } from '@/lib/api';
 import type { GarmentType } from '@/types/api';
 import { getCustomerToken } from '@/lib/cart-client';
 import type { MeasurementProfileSummary } from '@/types/cart';
+import { STORAGE_KEYS } from '@/constants/storage';
 
 interface GarmentDraft {
   /** Local key so React can track rows the customer adds and removes. */
@@ -160,7 +161,7 @@ export default function BookStitchingPage() {
       const booking = (await response.json()) as { number: string };
       // Remember the phone for this tab so the customer's own booking opens
       // straight away instead of asking them to prove who they are.
-      sessionStorage.setItem(`yaseen.stitching.${booking.number}`, phone);
+      sessionStorage.setItem(STORAGE_KEYS.guestBooking(booking.number), phone);
       router.push(`/stitching/${booking.number}?booked=1`);
     } catch {
       setError(t('bookingFailed'));

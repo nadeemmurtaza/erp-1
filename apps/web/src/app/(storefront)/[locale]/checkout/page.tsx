@@ -10,6 +10,7 @@ import { useRouter } from '@/i18n/navigation';
 import { trackEvent } from '@/lib/analytics-client';
 import { API_URL, ApiError } from '@/lib/api';
 import { getCustomerToken } from '@/lib/cart-client';
+import { STORAGE_KEYS } from '@/constants/storage';
 
 interface PaymentMethod {
   key: string;
@@ -120,7 +121,7 @@ export default function CheckoutPage() {
       // them to prove who they are seconds after they ordered. Remember the
       // number they gave, for this tab only, so it can show their order
       // straight away; a returning visitor still gets the tracking form.
-      sessionStorage.setItem(`yaseen.order.${payload.number}`, form.phone);
+      sessionStorage.setItem(STORAGE_KEYS.guestOrder(payload.number), form.phone);
 
       const gatewayFields = payload.payment?.meta?.fields as Record<string, string> | undefined;
 

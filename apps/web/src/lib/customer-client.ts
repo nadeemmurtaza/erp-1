@@ -3,10 +3,11 @@
 import { API_URL, ApiError } from './api';
 import { messageOf, request, requestWithRefresh } from './api-client';
 import type { AuthResult, AuthUser } from '@/types/api';
+import { STORAGE_KEYS } from '@/constants/storage';
 
-const ACCESS_KEY = 'yaseen.customer.access';
-const REFRESH_KEY = 'yaseen.customer.refresh';
-const USER_KEY = 'yaseen.customer.user';
+const ACCESS_KEY = STORAGE_KEYS.customer.access;
+const REFRESH_KEY = STORAGE_KEYS.customer.refresh;
+const USER_KEY = STORAGE_KEYS.customer.user;
 
 export function getCustomerToken(): string | null {
   return typeof window === 'undefined' ? null : localStorage.getItem(ACCESS_KEY);

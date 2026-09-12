@@ -8,6 +8,7 @@ import { Link } from '@/i18n/navigation';
 import { StitchingTimeline, type TimelineEvent } from '@/components/storefront/stitching-timeline';
 import { API_URL } from '@/lib/api';
 import { ROUTES } from '@/constants/routes';
+import { STORAGE_KEYS } from '@/constants/storage';
 
 interface BookingJob {
   id: string;
@@ -70,7 +71,7 @@ export default function StitchingBookingPage({
   );
 
   useEffect(() => {
-    const remembered = sessionStorage.getItem(`yaseen.stitching.${number}`);
+    const remembered = sessionStorage.getItem(STORAGE_KEYS.guestBooking(number));
     if (!remembered) {
       setLoading(false);
       return;
@@ -84,7 +85,7 @@ export default function StitchingBookingPage({
     setError(null);
 
     if (await track(phone)) {
-      sessionStorage.setItem(`yaseen.stitching.${number}`, phone);
+      sessionStorage.setItem(STORAGE_KEYS.guestBooking(number), phone);
     } else {
       setError(t('trackFailed'));
     }

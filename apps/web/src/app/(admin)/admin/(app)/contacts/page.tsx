@@ -7,6 +7,7 @@ import { adminFetch, getAccessToken } from '@/lib/admin-client';
 import { API_URL, toSearchParams } from '@/lib/api';
 import type { PaginatedResponse } from '@/types/api';
 import { Loading } from '@/components/ui';
+import { exportFilename } from '@/constants/downloads';
 
 const STATUSES = ['LEAD', 'ACTIVE', 'REPEAT', 'DORMANT', 'BLOCKED'] as const;
 
@@ -154,7 +155,7 @@ export default function AdminContactsPage() {
       const url = URL.createObjectURL(await response.blob());
       const anchor = document.createElement('a');
       anchor.href = url;
-      anchor.download = 'yaseen-contacts.csv';
+      anchor.download = exportFilename('contacts');
       anchor.click();
       URL.revokeObjectURL(url);
     } catch (cause) {

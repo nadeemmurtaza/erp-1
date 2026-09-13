@@ -1,3 +1,4 @@
+import { BRAND } from '@newax/shared';
 import {
   BadRequestException,
   ForbiddenException,
@@ -805,7 +806,7 @@ function jsonOrNull(value: unknown): Prisma.InputJsonValue | typeof Prisma.DbNul
 }
 
 /**
- * Sequential order numbers per year: YSN-2026-0001.
+ * Sequential order numbers per year: YSN-2026-0001, the prefix from BRAND.
  *
  * Two earlier designs both got this wrong. Reading MAX(Order.number) and
  * adding one is a read-then-write, and READ COMMITTED (Postgres' default,
@@ -832,7 +833,7 @@ function jsonOrNull(value: unknown): Prisma.InputJsonValue | typeof Prisma.DbNul
  */
 async function nextOrderNumber(prisma: PrismaService): Promise<string> {
   const year = new Date().getFullYear();
-  const prefix = `YSN-${year}-`;
+  const prefix = `${BRAND.commerce.orderNumberPrefix}-${year}-`;
 
   const [{ counter }] = await prisma.$queryRaw<Array<{ counter: number }>>`
     INSERT INTO "OrderNumberCounter" ("year", "counter") VALUES (${year}, 1)

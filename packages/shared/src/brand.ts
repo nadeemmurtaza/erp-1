@@ -288,6 +288,18 @@ const assets = {
 // ---------------------------------------------------------------------------
 
 const commerce = {
+  /**
+   * Stamped on every order number: YSN-2026-0001.
+   *
+   * The client's initials, so it belongs here — it was written into the
+   * generator, where a case-insensitive search for the client's name would
+   * never find it. Changing it changes new numbers only; orders already
+   * placed keep the number they were given, which is the whole point of a
+   * number. Document types that are not brand — PO, GRN, JOB, STO, SC —
+   * stay literal in their own services.
+   */
+  orderNumberPrefix: 'YSN',
+
   standardDeliveryTime: '3-5 Working Days',
   stitchingTurnaroundTime: '10-14 Working Days',
   /** In major units, not minor — this is a figure a human types. */

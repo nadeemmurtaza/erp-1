@@ -86,7 +86,18 @@ export default function AdminGarmentsPage() {
                       >
                         {garment.labelEn}
                       </Link>
-                      <span className="mt-0.5 block font-urdu text-xs text-neutral-900/45" dir="rtl">
+                      {/*
+                       * inline-block, not block. `dir="rtl"` is right for the
+                       * text — it shapes the parentheses in "کرتا (مردانہ)"
+                       * correctly — but on a block it also drags the name to
+                       * the far edge of the cell, stranding it half a column
+                       * away from the English one it belongs to. Shrunk to its
+                       * content, it sits where the eye expects.
+                       */}
+                      <span
+                        className="mt-0.5 block w-fit font-urdu text-xs text-neutral-900/45"
+                        dir="rtl"
+                      >
                         {garment.labelUr}
                       </span>
                     </td>

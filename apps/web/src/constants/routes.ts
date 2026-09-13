@@ -86,6 +86,7 @@ export const ROUTES = {
     garments: '/admin/garments',
     garment: (id: string) => `/admin/garments/${id}`,
     designs: '/admin/designs',
+    design: (id: string) => `/admin/designs/${id}`,
 
     contacts: '/admin/contacts',
     leads: '/admin/leads',
@@ -99,5 +100,7 @@ export const ROUTES = {
     user: (id: string) => `/admin/users/${id}`,
     emailTemplates: '/admin/email-templates',
     emailAccounts: '/admin/email-accounts',
+    /** `new` is a real id here: the editor route handles creating and editing. */
+    emailAccount: (id: string) => `/admin/email-accounts/${id}`,
   },
 } as const;

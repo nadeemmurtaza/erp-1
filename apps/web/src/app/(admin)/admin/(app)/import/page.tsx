@@ -138,7 +138,7 @@ export default function AdminImportPage() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white">
+              <tbody className="divide-y divide-neutral-100">
                 {summary.results.map((result) => (
                   <tr key={`${result.row}-${result.sku}`}>
                     <td className="px-4 py-2 tabular-nums text-neutral-900/50">{result.row}</td>

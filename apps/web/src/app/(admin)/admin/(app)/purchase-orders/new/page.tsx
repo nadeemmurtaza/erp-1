@@ -165,7 +165,7 @@ export default function NewPurchaseOrderPage() {
                       <th></th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white">
+                  <tbody className="divide-y divide-neutral-100">
                     {lines.map((line, i) => (
                       <tr key={line.variantId}>
                         <td>

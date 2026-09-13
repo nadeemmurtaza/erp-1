@@ -48,7 +48,7 @@ export default function CartPage() {
       ) : null}
 
       {cart.issues.length > 0 ? (
-        <ul className="mt-4 space-y-1 rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-800">
+        <ul className="mt-4 space-y-1 rounded-2xl border border-neutral-100 bg-neutral-50 px-4 py-3 text-sm text-neutral-800">
           {cart.issues.map((issue) => (
             <li key={issue}>{issue}</li>
           ))}
@@ -82,7 +82,7 @@ export default function CartPage() {
             <Row label={t('shipping')} value={t('shippingAtCheckout')} muted />
           </dl>
 
-          <div className="mt-4 flex items-baseline justify-between border-t border-neutral-200 pt-4">
+          <div className="mt-4 flex items-baseline justify-between border-t border-neutral-100 pt-4">
             <span className="text-sm font-medium text-neutral-900">{t('total')}</span>
             <span className="text-xl font-semibold text-neutral-900">
               {formatMoney(cart.totals.grandTotal, locale)}
@@ -253,7 +253,7 @@ function QuantityStepper({
   // convention like a tab bar's icon order, so it should reverse under
   // `dir="rtl"` the way any other flex row does.
   return (
-    <div className="inline-flex items-center gap-1 rounded border border-neutral-200 p-1">
+    <div className="inline-flex items-center gap-1 rounded border border-neutral-100 p-1">
       <button
         type="button"
         onClick={() => onChange(quantity - 1)}

@@ -150,7 +150,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <tbody className="divide-y divide-white">
+                <tbody className="divide-y divide-neutral-100">
                   {measurements.map(([key, value]) => (
                     <tr key={key}>
                       <th scope="row" className="py-1.5 text-start font-normal text-neutral-900/60">

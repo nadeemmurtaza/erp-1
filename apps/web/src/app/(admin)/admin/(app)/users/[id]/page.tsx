@@ -310,7 +310,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
 
         <div className="overflow-x-auto">
           <table className="table-flat">
-            <tbody className="divide-y divide-white">
+            <tbody className="divide-y divide-neutral-100">
               {categories.map(([category, items]) => (
                 <Fragment key={category}>
                   <tr className="bg-neutral-50/60">

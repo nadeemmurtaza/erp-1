@@ -181,7 +181,7 @@ export default function ReorderSuggestionsPage() {
                 <Th className="text-end">Suggested Qty</Th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white">
+            <tbody className="divide-y divide-neutral-100">
               {busy && !suggestions ? (
                 <tr>
                   <td colSpan={9} className="p-8 text-center">

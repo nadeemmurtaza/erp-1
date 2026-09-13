@@ -100,7 +100,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
             aria-hidden="true"
           />
           <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-xl flex flex-col animate-slideInLeft">
-            <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-200">
+            <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-100">
               <Link href={ROUTES.admin.dashboard} className="font-semibold text-accent-hover" onClick={() => setIsNavOpen(false)}>
                 {BRAND.identity.adminName}
               </Link>
@@ -130,8 +130,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
         </div>
       )}
 
-      <aside className="hidden w-60 shrink-0 border-e border-neutral-200 bg-white lg:block">
-        <div className="flex h-14 items-center border-b border-neutral-200 px-4">
+      <aside className="hidden w-60 shrink-0 border-e border-neutral-100 bg-white lg:block">
+        <div className="flex h-14 items-center border-b border-neutral-100 px-4">
           <Link href={ROUTES.admin.dashboard} className="font-semibold text-accent-hover">
             {BRAND.identity.adminName}
           </Link>
@@ -145,7 +145,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-14 items-center gap-4 border-b border-neutral-200 bg-white px-4">
+        <header className="flex h-14 items-center gap-4 border-b border-neutral-100 bg-white px-4">
           <button
             type="button"
             className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-neutral-900/80 hover:bg-neutral-50 lg:hidden"

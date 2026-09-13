@@ -137,7 +137,7 @@ export default function StitchingBookingPage({
   return (
     <div className="container-page py-8">
       {justBooked ? (
-        <div className="mb-6 rounded-md border border-neutral-200 bg-neutral-50 px-4 py-3">
+        <div className="mb-6 rounded-md border border-neutral-100 bg-neutral-50 px-4 py-3">
           <p className="text-sm font-medium text-accent-hover">{t('booked')}</p>
           <p className="mt-1 text-sm text-neutral-900/70">{t('bookedBody')}</p>
         </div>

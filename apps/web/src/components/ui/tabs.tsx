@@ -69,7 +69,7 @@ export function Tabs({
         role="tablist"
         aria-label={label}
         onKeyDown={onKeyDown}
-        className="mb-6 flex flex-wrap gap-1 border-b border-neutral-200"
+        className="mb-6 flex flex-wrap gap-1 border-b border-neutral-100"
       >
         {items.map((item) => {
           const selected = item.key === items[index].key;

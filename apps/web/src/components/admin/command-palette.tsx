@@ -197,11 +197,11 @@ export function CommandPalette({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="hidden items-center gap-2 border border-neutral-200 px-3 py-1.5 text-sm text-neutral-900/45 transition-colors hover:border-neutral-300 hover:text-neutral-900/70 md:flex"
+        className="hidden items-center gap-2 border border-neutral-100 px-3 py-1.5 text-sm text-neutral-900/45 transition-colors hover:border-neutral-300 hover:text-neutral-900/70 md:flex"
       >
         <SearchIcon />
         <span>Search</span>
-        <kbd className="ms-2 rounded border border-neutral-200 px-1.5 py-0.5 font-sans text-2xs text-neutral-900/45">
+        <kbd className="ms-2 rounded border border-neutral-100 px-1.5 py-0.5 font-sans text-2xs text-neutral-900/45">
           ⌘K
         </kbd>
       </button>

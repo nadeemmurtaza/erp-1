@@ -99,7 +99,7 @@ export default function AdminUsersPage() {
                   <th />
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white">
+              <tbody className="divide-y divide-neutral-100">
                 {users.length === 0 ? (
                   <tr>
                     <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/50">

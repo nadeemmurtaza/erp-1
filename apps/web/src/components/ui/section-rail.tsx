@@ -97,11 +97,11 @@ export function SectionRail({
         aria-label={label}
         className={cn(
           // Horizontal scroller on small screens, sticky column from lg.
-          'mb-6 flex gap-1 overflow-x-auto border-b border-neutral-200 lg:mb-0 lg:block',
+          'mb-6 flex gap-1 overflow-x-auto border-b border-neutral-100 lg:mb-0 lg:block',
           // The scroller is a nav, not a pane; a visible bar under it reads as
           // a second, broken rule beneath the real one.
           'no-scrollbar',
-          'lg:self-start lg:border-b-0 lg:border-s lg:border-neutral-200 lg:ps-4',
+          'lg:self-start lg:border-b-0 lg:border-s lg:border-neutral-100 lg:ps-4',
           'lg:sticky lg:top-8',
         )}
       >

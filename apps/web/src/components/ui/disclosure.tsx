@@ -60,7 +60,7 @@ export function Disclosure({
         {label}
       </button>
 
-      <div id={id} hidden={!open} className="mt-3 border-s border-neutral-200 ps-4">
+      <div id={id} hidden={!open} className="mt-3 border-s border-neutral-100 ps-4">
         {children}
       </div>
     </div>

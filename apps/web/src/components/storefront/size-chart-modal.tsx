@@ -118,7 +118,7 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
             className="card relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden shadow-xl outline-none"
           >
             {/* Header */}
-            <div className="flex items-start justify-between border-b border-neutral-200 p-4 sm:p-6">
+            <div className="flex items-start justify-between border-b border-neutral-100 p-4 sm:p-6">
               <div>
                 <h2 id="size-chart-title" className="font-display text-lg font-medium text-neutral-900">
                   {productName}
@@ -171,7 +171,7 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
               <div className="overflow-x-auto">
                 <table className="w-full min-w-full whitespace-nowrap text-left text-xs">
                   <thead>
-                    <tr className="border-b border-neutral-200">
+                    <tr className="border-b border-neutral-100">
                       <th scope="col"
                         // Sticky to match the row labels below it. Without this the
                         // corner cell scrolls away while they stay put, and every

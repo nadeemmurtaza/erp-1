@@ -107,7 +107,7 @@
 
   .lift:hover,
   .lift:focus-within {
-    @apply border-neutral-300 shadow-lg;
+    @apply border-neutral-200 shadow-lg;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -174,7 +174,7 @@
 
   /* The white button the fill was designed for. */
   .btn-secondary {
-    @apply btn border border-neutral-300 bg-white text-neutral-900 hover:text-white;
+    @apply btn border border-neutral-200 bg-white text-neutral-900 hover:text-white;
     --btn-fill: theme('colors.accent.DEFAULT');
   }
 
@@ -189,7 +189,7 @@
   }
 
   .card {
-    @apply border border-neutral-200 bg-white shadow-sm;
+    @apply border border-neutral-100 bg-white;
     border-radius: var(--radius-lg);
   }
 
@@ -214,7 +214,7 @@
   }
 
   .chip-unselected {
-    @apply border-neutral-300 bg-white text-neutral-900 hover:border-accent;
+    @apply border-neutral-200 bg-white text-neutral-900 hover:border-accent;
   }
 
   /*
@@ -237,7 +237,7 @@
   }
 
   .field-input {
-    @apply w-full border-neutral-300 bg-white text-neutral-900 shadow-none transition-colors duration-200 placeholder:text-neutral-400 focus:border-accent focus:ring-accent;
+    @apply w-full border-neutral-200 bg-white text-neutral-900 shadow-none transition-colors duration-200 placeholder:text-neutral-400 focus:border-accent focus:ring-accent;
     /*
      * 16px up to `sm`, and this is not a taste choice: iOS Safari zooms the
      * whole page when a focused input's text is under 16px, and then leaves
@@ -258,7 +258,7 @@
    * use; accent-hover is the pressed shade and does not belong here.
    */
   .field-check {
-    @apply border-neutral-300 text-accent focus:ring-accent disabled:opacity-50;
+    @apply border-neutral-200 text-accent focus:ring-accent disabled:opacity-50;
     border-radius: var(--radius);
   }
 
@@ -377,7 +377,7 @@
    * genuinely means something, because content appeared where there was none.
    */
   .metric-panel {
-    @apply border-t border-neutral-200 bg-white p-4 lg:p-5;
+    @apply border-t border-neutral-100 bg-white p-4 lg:p-5;
   }
 
   .metric-value {
@@ -413,7 +413,7 @@
    * reader is expected to fill in rather than a filter they may ignore.
    */
   .field-inline {
-    @apply w-full border-0 border-b border-neutral-200 bg-transparent px-0 text-neutral-900 shadow-none transition-colors;
+    @apply w-full border-0 border-b border-neutral-100 bg-transparent px-0 text-neutral-900 shadow-none transition-colors;
     @apply placeholder:text-neutral-900/35 focus:border-accent focus:ring-0;
     @apply min-h-11 text-base sm:min-h-0 sm:text-sm;
     border-radius: 0;

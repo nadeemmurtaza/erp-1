@@ -223,7 +223,7 @@ export default function AdminContactsPage() {
                   <Th>Last order</Th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white">
+              <tbody className="divide-y divide-neutral-100">
                 {!contacts ? (
                   <tr>
                     <td colSpan={4} className="px-4 py-8 text-center">

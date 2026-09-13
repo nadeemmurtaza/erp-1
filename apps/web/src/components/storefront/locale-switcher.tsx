@@ -52,7 +52,7 @@ export function LocaleSwitcher() {
       </button>
 
       {isOpen && (
-        <div className="absolute end-0 top-full mt-2 rounded-md shadow-md border border-neutral-200 bg-white overflow-hidden z-50 min-w-max">
+        <div className="absolute end-0 top-full mt-2 rounded-md shadow-md border border-neutral-100 bg-white overflow-hidden z-50 min-w-max">
           {LOCALES.map((option) => (
             <button
               key={option}

@@ -224,7 +224,7 @@ export default async function ProductPage({ params }: PageProps) {
           </div>
 
           {product.description ? (
-            <section className="mt-8 border-t border-neutral-200 pt-6">
+            <section className="mt-8 border-t border-neutral-100 pt-6">
               <h2 className="text-sm font-semibold text-neutral-900">{t('details')}</h2>
               <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-neutral-600">
                 {product.description}
@@ -233,7 +233,7 @@ export default async function ProductPage({ params }: PageProps) {
           ) : null}
 
           {details.length > 0 ? (
-            <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-neutral-200 pt-6 text-sm">
+            <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-neutral-100 pt-6 text-sm">
               {details.map(([label, value]) => (
                 <div key={label}>
                   <dt className="text-neutral-500">{label}</dt>
@@ -244,7 +244,7 @@ export default async function ProductPage({ params }: PageProps) {
           ) : null}
 
           {product.careInstructions ? (
-            <section className="mt-6 border-t border-neutral-200 pt-6">
+            <section className="mt-6 border-t border-neutral-100 pt-6">
               <h2 className="text-sm font-semibold text-neutral-900">{t('care')}</h2>
               <p className="mt-2 text-sm text-neutral-600">{product.careInstructions}</p>
             </section>

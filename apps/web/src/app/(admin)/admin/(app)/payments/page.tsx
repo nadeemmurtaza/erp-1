@@ -107,7 +107,7 @@ export default function AdminPaymentsPage() {
                   />
                 </a>
               ) : (
-                <div className="flex h-32 w-24 shrink-0 items-center justify-center rounded border border-dashed border-neutral-200 p-2 text-center text-xs text-neutral-900/40">
+                <div className="flex h-32 w-24 shrink-0 items-center justify-center rounded border border-dashed border-neutral-100 p-2 text-center text-xs text-neutral-900/40">
                   No receipt uploaded
                 </div>
               )}

@@ -165,7 +165,7 @@ export default function TailorQueuePage() {
                 <Th>Tailor</Th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white">
+            <tbody className="divide-y divide-neutral-100">
               {!jobs ? (
                 <tr>
                   <td colSpan={6} className="px-4 py-8 text-center">

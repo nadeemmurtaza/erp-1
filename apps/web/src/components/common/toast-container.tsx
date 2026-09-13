@@ -14,7 +14,7 @@ export function ToastContainer({ toasts, onRemove }: ToastContainerProps) {
   const typeStyles = {
     success: 'bg-green-50 text-green-800 border-green-200',
     error: 'bg-red-50 text-red-700 border-red-200',
-    info: 'bg-neutral-50 text-accent-hover border-neutral-200',
+    info: 'bg-neutral-50 text-accent-hover border-neutral-100',
   };
 
   return (

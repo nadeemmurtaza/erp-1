@@ -103,7 +103,7 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
                 <th className="text-end">Receiving Now</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white">
+            <tbody className="divide-y divide-neutral-100">
               {po.items.map(item => {
                 const remaining = Math.max(0, item.quantityOrdered - item.quantityReceived);
                 return (

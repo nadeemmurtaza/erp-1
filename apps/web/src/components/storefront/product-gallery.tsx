@@ -47,7 +47,7 @@ export function ProductGallery({ images, alt, productId, backHref }: ProductGall
                   'relative h-20 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition-colors duration-200',
                   index === activeIndex
                     ? 'border-neutral-900'
-                    : 'border-neutral-200 hover:border-neutral-400',
+                    : 'border-neutral-100 hover:border-neutral-400',
                 )}
               >
                 <Image

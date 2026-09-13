@@ -159,7 +159,7 @@ export default function AdminInventoryPage() {
                 <Th className="text-end">Actions</Th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white">
+            <tbody className="divide-y divide-neutral-100">
               {busy && !variants ? (
                 <tr>
                   <td colSpan={canViewCost ? 10 : 8} className="p-8 text-center">

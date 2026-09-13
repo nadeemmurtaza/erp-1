@@ -276,7 +276,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
             <h2 className="border-b border-neutral-100 bg-neutral-50 px-4 py-3 text-sm font-semibold uppercase tracking-wide text-neutral-900/50">
               Items
             </h2>
-            <ul className="divide-y divide-white">
+            <ul className="divide-y divide-neutral-100">
               {order.items.map((item) => (
                 <li key={item.id} className="p-4">
                   <div className="flex justify-between gap-4">

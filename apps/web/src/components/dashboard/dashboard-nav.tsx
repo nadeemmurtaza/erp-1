@@ -42,7 +42,7 @@ export function DashboardNav() {
   const t = useTranslations('account.nav');
 
   return (
-    <nav aria-label={t('label')} className="mb-6 flex flex-wrap gap-1 border-b border-neutral-200">
+    <nav aria-label={t('label')} className="mb-6 flex flex-wrap gap-1 border-b border-neutral-100">
       {TABS.map((tab) => {
         const isActive = tab.exact ? pathname === tab.href : pathname.startsWith(tab.href);
         return (

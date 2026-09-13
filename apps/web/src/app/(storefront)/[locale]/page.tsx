@@ -63,7 +63,7 @@ export default async function HomePage({
     // page's own root absorbs the clearance until that lands at the layout
     // level. md:pb-0 drops it the moment the pill itself is hidden.
     <div>
-      <section className="border-b border-neutral-200 bg-neutral-50">
+      <section className="border-b border-neutral-100 bg-neutral-50">
         <div className="container-page py-10 sm:py-14 lg:py-24">
           <div
             className={`grid gap-8 lg:items-center lg:gap-16 ${heroImage ? 'lg:grid-cols-2' : ''}`}
@@ -139,7 +139,7 @@ export default async function HomePage({
                 <li key={category.id} className="shrink-0 snap-start">
                   <Link
                     href={`/shop?category=${category.slug}`}
-                    className="inline-flex h-11 items-center gap-2 rounded border border-neutral-200 bg-white ps-2 pe-5 text-sm font-medium text-neutral-700 transition-colors duration-200 hover:border-neutral-900 hover:text-neutral-900"
+                    className="inline-flex h-11 items-center gap-2 rounded border border-neutral-100 bg-white ps-2 pe-5 text-sm font-medium text-neutral-700 transition-colors duration-200 hover:border-neutral-900 hover:text-neutral-900"
                   >
                     <span className="relative flex h-7 w-7 shrink-0 overflow-hidden rounded-full bg-neutral-100">
                       {category.imageUrl ? (
@@ -190,7 +190,7 @@ export default async function HomePage({
         </div>
       </section>
 
-      <section className="border-y border-neutral-200 bg-white">
+      <section className="border-y border-neutral-100 bg-white">
         <div className="container-page py-10 sm:py-14 lg:py-16">
           <AnimatedSection direction="up">
             <h2 className="font-display text-xl font-semibold text-neutral-900">{t('howItWorks')}</h2>

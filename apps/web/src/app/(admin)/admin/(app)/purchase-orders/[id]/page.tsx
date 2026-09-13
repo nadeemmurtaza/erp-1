@@ -108,7 +108,7 @@ export default function PurchaseOrderDetailPage({ params }: { params: Promise<{ 
                     <th className="text-end">Total</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white">
+                <tbody className="divide-y divide-neutral-100">
                   {po.items.map((item) => (
                     <tr key={item.id} className="hover:bg-neutral-50/50">
                       <td>
@@ -140,7 +140,7 @@ export default function PurchaseOrderDetailPage({ params }: { params: Promise<{ 
               <div className="p-4 border-b border-neutral-100 bg-neutral-50">
                 <h2 className="font-medium text-neutral-900">Goods Receipts</h2>
               </div>
-              <ul className="divide-y divide-white">
+              <ul className="divide-y divide-neutral-100">
                 {po.receipts.map(r => (
                   <li key={r.id} className="p-4">
                     <div className="font-medium text-neutral-900 mb-1">

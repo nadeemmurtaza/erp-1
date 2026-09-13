@@ -328,7 +328,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
     content: (
       <Section
         title="Name and description"
-        hint="Urdu is optional but the storefront falls back to English without it."
+        description="Urdu is optional but the storefront falls back to English without it."
       >
         <div className="grid gap-4 fold:grid-cols-2">
           <div className="space-y-4">
@@ -399,7 +399,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
     label: 'Pricing',
     isValid: Boolean(basePrice.trim()),
     content: (
-      <Section title="Pricing" hint="Enter rupees; the system stores exact paisa.">
+      <Section title="Pricing" description="Enter rupees; the system stores exact paisa.">
         <div className="grid gap-4 sm:grid-cols-3">
           <Field label={isService ? 'Stitching fee (Rs)' : 'Price (Rs)'} required>
             <input
@@ -691,7 +691,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
     label: 'Tags',
     isValid: true,
     content: (
-      <Section title="Tags" hint="Comma separated; used by search and merchandising.">
+      <Section title="Tags" description="Comma separated; used by search and merchandising.">
         <input
           value={tags}
           onChange={(event) => setTags(event.target.value)}
@@ -709,7 +709,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
     content: (
       <Section
         title="Variants"
-        hint="One row per size/colour. Every row needs a unique SKU; a removed row is deactivated, not deleted, so past orders stay intact."
+        description="One row per size/colour. Every row needs a unique SKU; a removed row is deactivated, not deleted, so past orders stay intact."
       >
         <div className="space-y-3">
           {variants.map((variant, index) => {
@@ -820,7 +820,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
     label: 'Images',
     isValid: true,
     content: effectiveProduct ? (
-      <Section title="Images" hint="The first image is the listing thumbnail.">
+      <Section title="Images" description="The first image is the listing thumbnail.">
         <ImageManager
           productId={effectiveProduct.id}
           initialImages={effectiveProduct.images}
@@ -830,7 +830,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
     ) : (
       <Section
         title="Images"
-        hint="Uploaded together with the rest of this product when you hit Create product below."
+        description="Uploaded together with the rest of this product when you hit Create product below."
       >
         <ImageStager images={pendingImages} onChange={setPendingImages} />
       </Section>
@@ -943,19 +943,32 @@ function findVariantIssues(variants: VariantDraft[]): VariantIssues {
   return { duplicateSkus, duplicateCombos };
 }
 
+/**
+ * A step's heading and its content.
+ *
+ * This used to be a local `Section` that drew `card p-4 sm:p-5` — inside a
+ * wizard that is itself a card. Every step of adding a product showed a box
+ * drawn immediately inside another box, two borders a few pixels apart with
+ * nothing between them. It also shadowed the shared `Section` in
+ * components/ui by name, which is the parallel-system failure: two
+ * components, one name, one of them boxed and one not, and which you got
+ * depended on which file you were in.
+ */
 function Section({
   title,
-  hint,
+  description,
   children,
 }: {
   title: string;
-  hint?: string;
+  description?: string;
   children: React.ReactNode;
 }) {
   return (
-    <section className="card p-4 sm:p-5">
+    <section>
       <h2 className="text-sm font-semibold text-neutral-900">{title}</h2>
-      {hint ? <p className="mt-1 text-xs text-neutral-900/50">{hint}</p> : null}
+      {description ? (
+        <p className="mt-1 text-xs text-neutral-900/50">{description}</p>
+      ) : null}
       <div className="mt-4">{children}</div>
     </section>
   );

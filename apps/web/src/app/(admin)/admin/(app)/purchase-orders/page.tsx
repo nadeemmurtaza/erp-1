@@ -95,7 +95,7 @@ export default function PurchaseOrdersPage() {
                 <Th className="text-end">Total</Th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white">
+            <tbody className="divide-y divide-neutral-100">
               {busy && !pos ? (
                 <tr>
                   <td colSpan={6} className="p-8 text-center">

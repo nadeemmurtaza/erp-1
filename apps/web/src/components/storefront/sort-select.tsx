@@ -35,7 +35,7 @@ export function SortSelect() {
           // Custom chevron overlay + pill shape don't match field-input's
           // rounded-xl, so this stays bespoke — but the border/focus colours
           // are the same canonical neutral-200/neutral-700 tokens field-input uses.
-          className="appearance-none rounded border border-neutral-200 bg-none bg-white py-1.5 pe-8 ps-3 text-sm text-neutral-900 transition-colors duration-200 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent disabled:opacity-50"
+          className="appearance-none rounded border border-neutral-100 bg-none bg-white py-1.5 pe-8 ps-3 text-sm text-neutral-900 transition-colors duration-200 focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent disabled:opacity-50"
         >
           {OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>

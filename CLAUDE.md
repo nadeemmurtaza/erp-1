@@ -86,12 +86,39 @@ status pill, table or modal.
 
 A border must mean something. Prefer whitespace and alignment.
 
+**One border, soft, and never two.**
+
+- **Never a box inside a box.** A bordered container directly inside another
+  bordered container draws two lines a few pixels apart with nothing between
+  them; the reader sees a seam, not a boundary. The inner one goes — a tint
+  (`bg-neutral-50`) or plain spacing separates it just as well. This is the
+  single most common way these screens get noisy: the wizard was a card, and
+  every step inside it drew another.
+- **Soft.** Container edges are `border-neutral-100` (#E8E8E8). Controls that
+  have to be findable — inputs, checkboxes, the secondary button — get
+  `border-neutral-200`, and nothing goes darker. A border is an edge, not a
+  drawn line.
+- **Never a border and a shadow on the same edge.** That is also two
+  boundaries. `.card` has no shadow; `.lift` adds one on hover, when it means
+  "this rose".
 - A **card** must be a summary, object, status, action, warning or result.
   No decorative cards. A form that is the only thing on its page gets no box.
 - A **table** is already a grid — `.table-flat` draws row rules and nothing
-  else. No outer frame, no vertical lines, no zebra.
+  else. No outer frame, no vertical lines, no zebra, and no `divide-*` on top
+  of it.
 - A **message** gets a tint, not a border — `.notice`.
 - A **filter row** is controls, not an object. No box.
+
+The one exception is a **control**, not a container: a segmented toggle whose
+outline groups its buttons into one thing, or a dashed placeholder marking an
+empty slot. Those may sit inside a card, because they are not claiming to be
+a second container.
+
+```bash
+# Two bordered containers, one inside the other. Should print 0 beyond the
+# two known controls.
+python scripts/nested-borders.py
+```
 
 ---
 

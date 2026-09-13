@@ -258,7 +258,7 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
                 <Row label={t('codFee')} value={formatMoney(order.codFee, locale)} />
               ) : null}
             </dl>
-            <div className="mt-3 flex justify-between border-t border-neutral-200 pt-3">
+            <div className="mt-3 flex justify-between border-t border-neutral-100 pt-3">
               <span className="text-sm font-medium text-neutral-900">{t('total')}</span>
               <span className="text-lg font-semibold text-neutral-900">
                 {formatMoney(order.grandTotal, locale)}
@@ -334,7 +334,7 @@ function Notice({ title, body, tone }: { title: string; body: string; tone?: 'da
       className={
         danger
           ? 'mb-6 border border-red-200 bg-red-50 px-4 py-3'
-          : 'mb-6 border border-neutral-200 bg-neutral-50 px-4 py-3'
+          : 'mb-6 border border-neutral-100 bg-neutral-50 px-4 py-3'
       }
     >
       <p

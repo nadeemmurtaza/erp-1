@@ -165,7 +165,7 @@ export default function AdminSettingsPage() {
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white">
+                <tbody className="divide-y divide-neutral-100">
                   {categories.map(([category, items]) => (
                     <Fragment key={category}>
                       <tr className="bg-neutral-50/60">
@@ -298,7 +298,7 @@ export default function AdminSettingsPage() {
                   <Th>Entity</Th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white">
+              <tbody className="divide-y divide-neutral-100">
                 {!audit ? (
                   <tr>
                     <td colSpan={4} className="px-4 py-8 text-center">

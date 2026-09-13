@@ -128,7 +128,7 @@ export default function AdminInboxPage() {
                   <Th>Received</Th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white">
+              <tbody className="divide-y divide-neutral-100">
                 {!messages ? (
                   <tr>
                     <td colSpan={4} className="px-4 py-8 text-center">
@@ -338,7 +338,7 @@ function MessageDetailPanel({
             />
             {searching ? <p className="mt-2 text-xs text-neutral-900/40">Searching…</p> : null}
             {options.length > 0 ? (
-              <ul className="mt-2 divide-y divide-white rounded-md border border-neutral-100">
+              <ul className="mt-2 divide-y divide-neutral-100 rounded-md border border-neutral-100">
                 {options.map((option) => (
                   <li key={option.id}>
                     <button

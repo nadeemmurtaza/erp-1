@@ -470,7 +470,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
   }
 
   return (
-    <section className="rounded-lg border border-neutral-200 bg-neutral-50 p-4">
+    <section className="rounded-lg border border-neutral-100 bg-neutral-50 p-4">
       <label className="flex cursor-pointer items-start gap-3">
         <input
           type="checkbox"
@@ -488,7 +488,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
         'overflow-hidden transition-all duration-300',
         enabled ? 'max-h-[4000px] opacity-100' : 'max-h-0 opacity-0'
       )}>
-        <div className="mt-4 space-y-4 border-t border-neutral-200 pt-4">
+        <div className="mt-4 space-y-4 border-t border-neutral-100 pt-4">
           {offered.length > 1 ? (
             <Group label={t('garment')}>
               <div className="flex flex-wrap gap-2">
@@ -685,7 +685,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
           ) : null}
 
           {fabricEstimate ? (
-            <div className="rounded-md border border-neutral-200 bg-white/60 p-3">
+            <div className="rounded-md bg-white/70 p-3">
               <p className="text-sm font-semibold text-neutral-900">{t('fabricEstimate')}</p>
               <p className="mt-0.5 text-xs text-neutral-500">{t('fabricEstimateBody')}</p>
 
@@ -736,7 +736,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
           </Group>
 
           {garment ? (
-            <div className="space-y-1 border-t border-neutral-200 pt-3 text-sm">
+            <div className="space-y-1 border-t border-neutral-100 pt-3 text-sm">
               <p className="flex items-baseline justify-between gap-3">
                 <span className="text-neutral-500">{t('baseStitchingFee')}</span>
                 <span className="text-neutral-900">{formatMoney(baseFee, locale)}</span>
@@ -903,7 +903,7 @@ function ServiceChoice({
     <label
       className={cn(
         'flex cursor-pointer items-start gap-3 rounded-md border p-3 transition-colors duration-200',
-        selected ? 'border-neutral-900 bg-white' : 'border-neutral-200 bg-white/60 hover:border-neutral-400',
+        selected ? 'border-neutral-900 bg-white' : 'border-neutral-100 bg-white/60 hover:border-neutral-400',
       )}
     >
       <input

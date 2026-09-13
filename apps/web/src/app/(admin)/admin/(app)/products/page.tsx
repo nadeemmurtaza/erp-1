@@ -128,7 +128,7 @@ export default function AdminProductsPage() {
                 <Th className="text-end">Stock</Th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white">
+            <tbody className="divide-y divide-neutral-100">
               {busy && !products ? (
                 <tr>
                   <td colSpan={5} className="px-4 py-8 text-center">

@@ -85,7 +85,7 @@ export default function BookingsPage() {
                 <Th className="text-end">Quote</Th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white">
+            <tbody className="divide-y divide-neutral-100">
               {!bookings ? (
                 <tr>
                   <td colSpan={6} className="px-4 py-8 text-center">

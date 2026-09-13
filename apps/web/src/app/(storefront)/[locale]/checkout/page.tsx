@@ -159,7 +159,7 @@ export default function CheckoutPage() {
     return (
       <div className="container-page pt-16 font-display md:pb-16">
         <h1 className="text-2xl font-semibold text-neutral-900">{t('title')}</h1>
-        <ul className="mt-4 space-y-1 rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-800">
+        <ul className="mt-4 space-y-1 rounded-2xl border border-neutral-100 bg-neutral-50 px-4 py-3 text-sm text-neutral-800">
           {cart.issues.map((issue) => (
             <li key={issue}>{issue}</li>
           ))}
@@ -304,7 +304,7 @@ export default function CheckoutPage() {
                   'flex cursor-pointer items-start gap-3 rounded-2xl border-2 p-4 transition-colors duration-200 focus-within:ring-2 focus-within:ring-accent focus-within:ring-offset-2',
                   option.key === method
                     ? 'border-neutral-900 bg-neutral-900/[0.03]'
-                    : 'border-neutral-200 hover:border-neutral-300',
+                    : 'border-neutral-100 hover:border-neutral-300',
                 )}
               >
                 <input
@@ -386,7 +386,7 @@ export default function CheckoutPage() {
               ))}
             </ul>
 
-            <dl className="mt-4 space-y-2 border-t border-neutral-200 pt-4 text-sm">
+            <dl className="mt-4 space-y-2 border-t border-neutral-100 pt-4 text-sm">
               <div className="flex justify-between">
                 <dt className="text-neutral-500">{t('goods')}</dt>
                 <dd className="text-neutral-900">{formatMoney(cart.totals.grandTotal, locale)}</dd>

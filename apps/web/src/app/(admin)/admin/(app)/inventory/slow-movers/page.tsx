@@ -97,7 +97,7 @@ export default function SlowMoversPage() {
                 )}
               </tr>
             </thead>
-            <tbody className="divide-y divide-white">
+            <tbody className="divide-y divide-neutral-100">
               {busy && !variants ? (
                 <tr>
                   <td colSpan={canViewCost ? 6 : 5} className="p-8 text-center">

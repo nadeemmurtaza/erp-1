@@ -210,7 +210,7 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
       ) : null}
 
       {fabricNeed.length > 0 ? (
-        <div className="rounded-2xl border border-neutral-200 bg-white p-3 text-sm">
+        <div className="rounded-2xl border border-neutral-100 bg-white p-3 text-sm">
           <p className="font-semibold text-neutral-900">{t('fabricNeedEstimate')}</p>
           <ul className="mt-1.5 space-y-1">
             {fabricNeed.map((row) => (
@@ -252,7 +252,7 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
       ) : null}
 
       {added && !error ? (
-        <p className="flex flex-wrap items-center gap-3 rounded-2xl border border-neutral-200 bg-neutral-50 px-3 py-2 text-sm text-neutral-900 animate-slideUp">
+        <p className="flex flex-wrap items-center gap-3 rounded-2xl border border-neutral-100 bg-neutral-50 px-3 py-2 text-sm text-neutral-900 animate-slideUp">
           {t('addedToCart')}
           <button
             type="button"
@@ -379,7 +379,7 @@ function ColourRow({
               style={hex ? { backgroundColor: hex } : undefined}
               className={cn(
                 'h-9 w-9 rounded-full border transition-[box-shadow,border-color] duration-200',
-                hex ? 'border-neutral-200' : 'border-neutral-300 bg-neutral-100',
+                hex ? 'border-neutral-100' : 'border-neutral-300 bg-neutral-100',
                 active ? 'ring-2 ring-neutral-900 ring-offset-2' : 'hover:border-neutral-500',
               )}
             />

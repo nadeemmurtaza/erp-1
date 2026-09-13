@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { AuthPage } from '@/components/storefront/auth-page';
 import { Link } from '@/i18n/navigation';
 import { forgotPassword } from '@/lib/customer-client';
 import { ROUTES } from '@/constants/routes';
@@ -30,12 +31,17 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12">
-      <div className="w-full max-w-sm">
-        <h1 className="text-center text-2xl font-semibold text-neutral-900">Reset your password</h1>
+    <AuthPage
+      title="Reset your password"
+      footer={
+        <Link href={ROUTES.storefront.login} className="font-medium text-accent-hover hover:underline">
+          Back to sign in
+        </Link>
+      }
+    >
 
         {sent ? (
-          <p className="mt-6 rounded-md bg-neutral-50 px-4 py-3 text-center text-sm text-accent-hover">
+          <p className="notice notice-info text-center">
             If an account exists for {email}, we&apos;ve sent a link to reset your password. It
             expires in one hour.
           </p>
@@ -71,12 +77,6 @@ export default function ForgotPasswordPage() {
           </form>
         )}
 
-        <div className="mt-6 text-center text-sm text-neutral-900/60">
-          <Link href={ROUTES.storefront.login} className="font-medium text-accent-hover hover:underline">
-            Back to sign in
-          </Link>
-        </div>
-      </div>
-    </div>
+    </AuthPage>
   );
 }

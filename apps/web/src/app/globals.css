@@ -448,6 +448,11 @@
     @apply bg-feedback-positive/10 text-feedback-positive;
   }
 
+  /* Neither good nor bad — "we sent you a link", "nothing happens yet". */
+  .notice-info {
+    @apply bg-neutral-50 text-neutral-900/70;
+  }
+
   /*
    * A status pill. Fully round on purpose, and the one place roundness
    * survives: it separates "this is a state" from "this is a control", now

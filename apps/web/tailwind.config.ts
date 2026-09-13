@@ -52,6 +52,14 @@ export default {
         xl: '1280px',
         '2xl': '1536px',
       },
+      /*
+       * The viewport minus the storefront header. Four auth pages each wrote
+       * `min-h-[calc(100vh-4rem)]`, which states a header height nothing else
+       * knows about — change the header and all four are silently wrong.
+       */
+      minHeight: {
+        auth: 'calc(100vh - theme(spacing.16))',
+      },
       colors: {
         neutral: THEME_COLORS.neutral,
         accent: THEME_COLORS.accent,

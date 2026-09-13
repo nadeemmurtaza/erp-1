@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
+import { AuthPage } from '@/components/storefront/auth-page';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
@@ -46,13 +47,27 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] flex-col lg:flex-row">
-      <div className="flex flex-1 items-center justify-center px-4 py-12 lg:px-8">
-        <div className="w-full max-w-sm">
-          <h1 className="text-center text-2xl font-semibold text-neutral-900">Create Account</h1>
-          <p className="mt-1 text-center text-sm text-neutral-900/60">
-            Join {tSite('name')} today
+    <AuthPage
+      title="Create Account"
+      description={`Join ${tSite('name')} today`}
+      footer={
+        <>
+          Already have an account?{' '}
+          <Link href={ROUTES.storefront.login} className="font-medium text-accent-hover hover:underline">
+            Sign in here
+          </Link>
+        </>
+      }
+      aside={
+        <>
+          <h2 className="text-4xl font-bold tracking-tight text-neutral-900">Start your journey</h2>
+          <p className="mt-4 text-lg text-accent-hover/80">
+            Create an account to save your favorite pieces, manage your measurements, and get
+            exclusive access to our latest collections.
           </p>
+        </>
+      }
+    >
 
           <form onSubmit={onSubmit} className="mt-8 space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -138,24 +153,6 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-neutral-900/60">
-            Already have an account?{' '}
-            <Link href={ROUTES.storefront.login} className="font-medium text-accent-hover hover:underline">
-              Sign in here
-            </Link>
-          </div>
-        </div>
-      </div>
-      <div className="hidden lg:flex lg:flex-1 relative bg-neutral-50 items-center justify-center p-12">
-        <div className="max-w-lg text-center">
-          <h2 className="text-4xl font-bold tracking-tight text-neutral-900">
-            Start your journey
-          </h2>
-          <p className="mt-4 text-lg text-accent-hover/80">
-            Create an account to save your favorite pieces, manage your measurements, and get exclusive access to our latest collections.
-          </p>
-        </div>
-      </div>
-    </div>
+    </AuthPage>
   );
 }

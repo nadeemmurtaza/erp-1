@@ -116,6 +116,15 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
   // Uploaded in onSubmit, right after the create request returns one — see
   // ImageStager's doc comment for why this exists instead of a second trip.
   const [pendingImages, setPendingImages] = useState<StagedImage[]>([]);
+  /*
+   * Whether the photo grid is mid-upload or holding a failure.
+   *
+   * Saving is blocked while either is true. Choosing a photo and hitting save
+   * a second later used to store the product without it — the upload was
+   * still in flight, nothing waited for it, and the only sign was a photo
+   * that quietly never appeared.
+   */
+  const [imageUpload, setImageUpload] = useState({ busy: false, failed: false });
 
   // Duplicate SKUs and duplicate size/colour combinations both reach the API
   // fine syntactically but collide there — one against a global unique
@@ -812,7 +821,11 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
     isValid: true,
     content: effectiveProduct ? (
       <Section title="Images" hint="The first image is the listing thumbnail.">
-        <ImageManager productId={effectiveProduct.id} initialImages={effectiveProduct.images} />
+        <ImageManager
+          productId={effectiveProduct.id}
+          initialImages={effectiveProduct.images}
+          onUploadState={setImageUpload}
+        />
       </Section>
     ) : (
       <Section
@@ -846,9 +859,22 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
         <Wizard
           steps={steps}
           onSubmit={onSubmit}
-          submitLabel={saving ? 'Saving…' : isEdit ? 'Save changes' : 'Create product'}
-          submitBusy={saving}
-          submitDisabled={saving}
+          submitLabel={
+            saving
+              ? 'Saving…'
+              : imageUpload.busy
+                ? 'Uploading photos…'
+                : imageUpload.failed
+                  ? 'Fix the photo upload first'
+                  : isEdit
+                    ? 'Save changes'
+                    : 'Create product'
+          }
+          submitBusy={saving || imageUpload.busy}
+          // A photo still uploading, or one that failed, blocks the save —
+          // the button says which, because a disabled control with no reason
+          // is indistinguishable from a broken one.
+          submitDisabled={saving || imageUpload.busy || imageUpload.failed}
           accentClassName="bg-accent-hover text-white"
         />
       </div>

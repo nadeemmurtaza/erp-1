@@ -1,3 +1,5 @@
+import { SettingsService } from '../../core/settings/settings.service';
+import { SettingKey } from '../../core/settings/settings.defaults';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ADMIN_LOCKED_PERMISSIONS, USER_ROLES, type PermissionKey, type UserRole } from '@newax/shared';
 import { PrismaService } from '../../core/prisma/prisma.service';
@@ -20,7 +22,29 @@ export interface AuditLogQuery {
  */
 @Injectable()
 export class SettingsAdminService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly settings: SettingsService,
+  ) {}
+
+  /**
+   * How uploaded images are stored.
+   *
+   * A Setting rather than an env var, because it is a shop's decision and has
+   * to be reversible from the back office without a deploy (House Rule 4).
+   * It governs new uploads only — images already stored keep the format they
+   * were written in.
+   */
+  async getMedia(): Promise<{ webpEnabled: boolean }> {
+    return {
+      webpEnabled: (await this.settings.get<boolean>(SettingKey.MediaWebpEnabled)) !== false,
+    };
+  }
+
+  async updateMedia(webpEnabled: boolean): Promise<{ webpEnabled: boolean }> {
+    await this.settings.set(SettingKey.MediaWebpEnabled, webpEnabled);
+    return { webpEnabled };
+  }
 
   listPermissions() {
     return this.prisma.permission.findMany({

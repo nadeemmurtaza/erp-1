@@ -33,15 +33,28 @@ const ALT_TEXT_PLACEHOLDER = 'e.g. "Maroon chiffon 3-piece suit, front view"';
 export function ImageManager({
   productId,
   initialImages,
+  onUploadState,
 }: {
   productId: string;
   initialImages: ProductImageRow[];
+  /**
+   * Reports whether an upload is in flight or has failed, so the form around
+   * this can refuse to save. Choosing a photo and saving a second later used
+   * to leave the product stored without it.
+   */
+  onUploadState?: (state: { busy: boolean; failed: boolean }) => void;
 }) {
   const [images, setImages] = useState<ProductImageRow[]>(
     [...initialImages].sort((a, b) => a.order - b.order),
   );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Mirrored up to the form on every change, so "saving" and "still
+  // uploading" can never be true at the same time.
+  useEffect(() => {
+    onUploadState?.({ busy, failed: error !== null });
+  }, [busy, error, onUploadState]);
 
   async function upload(files: FileList | null) {
     if (!files?.length) return;

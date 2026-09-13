@@ -39,6 +39,16 @@ export const SettingKey = {
   StitchingLeadDays: 'stitching.lead_days',
   BankAccounts: 'payments.bank_accounts',
   LowStockThreshold: 'catalog.low_stock_threshold',
+  /**
+   * Convert every uploaded image to WebP before storing it.
+   *
+   * On by default: WebP is smaller than JPEG or PNG at the same visual
+   * quality, and "serve images in next-gen formats" is a Lighthouse check
+   * that feeds page-speed SEO. Turn it off only when an original must be
+   * kept byte-for-byte — a print supplier who needs the source file, say.
+   * Images already stored stay as they were; this decides new uploads.
+   */
+  MediaWebpEnabled: 'media.webp_enabled',
   MonthlyRevenueTarget: 'analytics.monthly_revenue_target',
   PurchasingOverReceiptTolerance: 'purchasing.over_receipt_tolerance',
   PurchasingAutoDraftReorder: 'purchasing.auto_draft_reorder',
@@ -140,6 +150,8 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   ],
 
   [SettingKey.LowStockThreshold]: 3,
+
+  [SettingKey.MediaWebpEnabled]: true,
 
   /** Shown as the dashboard's monthly progress target until an admin sets a real one. */
   [SettingKey.MonthlyRevenueTarget]: toMinor(1_000_000),

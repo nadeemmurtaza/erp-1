@@ -2,13 +2,31 @@ import { BadRequestException, Body, Controller, Get, Param, Put, Query } from '@
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { USER_ROLES, type UserRole } from '@newax/shared';
 import { RequirePermission } from '../../core/auth/decorators';
-import { AuditLogQueryDto, UpdateRolePermissionsDto } from './dto/settings.dto';
+import {
+  AuditLogQueryDto,
+  UpdateMediaSettingsDto,
+  UpdateRolePermissionsDto,
+} from './dto/settings.dto';
 import { SettingsAdminService } from './settings-admin.service';
 
 @ApiTags('admin/settings')
 @Controller('admin/settings')
 export class SettingsAdminController {
   constructor(private readonly settings: SettingsAdminService) {}
+
+  @Get('media')
+  @RequirePermission('settings.manage')
+  @ApiOperation({ summary: 'How uploaded images are stored' })
+  async getMedia() {
+    return this.settings.getMedia();
+  }
+
+  @Put('media')
+  @RequirePermission('settings.manage')
+  @ApiOperation({ summary: 'Turn WebP conversion on or off for new uploads' })
+  async updateMedia(@Body() dto: UpdateMediaSettingsDto) {
+    return this.settings.updateMedia(dto.webpEnabled);
+  }
 
   @Get('permissions')
   @RequirePermission('settings.manage')

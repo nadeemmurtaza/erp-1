@@ -1,7 +1,16 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { PERMISSION_KEYS, type PermissionKey } from '@newax/shared';
 import { Type } from 'class-transformer';
-import { IsArray, IsDateString, IsIn, IsInt, IsOptional, IsString, Min } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsDateString,
+  IsIn,
+  IsInt,
+  IsOptional,
+  IsString,
+  Min,
+} from 'class-validator';
 
 export class UpdateRolePermissionsDto {
   @ApiProperty({ enum: PERMISSION_KEYS, isArray: true })
@@ -44,4 +53,14 @@ export class AuditLogQueryDto {
   @IsInt()
   @Min(1)
   perPage?: number;
+}
+
+export class UpdateMediaSettingsDto {
+  @ApiProperty({
+    description:
+      'Convert new image uploads to WebP. Off keeps the original bytes; images already stored are unaffected either way.',
+    example: true,
+  })
+  @IsBoolean()
+  webpEnabled!: boolean;
 }

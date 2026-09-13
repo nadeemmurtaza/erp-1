@@ -4,7 +4,7 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { ADMIN_LOCKED_PERMISSIONS, BACK_OFFICE_ROLES, formatDateTime, type UserRole } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import type { AuditLogEntry, AuditLogPage, PermissionDefinition, RolePermissions } from '@/types/api';
-import { Loading } from '@/components/ui';
+import { Loading, PageHeader, Tabs } from '@/components/ui';
 
 type Draft = Record<UserRole, Set<string>>;
 
@@ -118,15 +118,25 @@ export default function AdminSettingsPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Settings</h1>
-      <p className="mb-6 text-sm text-neutral-900/60">
-        What each role can do, and a record of every change made in the back office.
-      </p>
+      <PageHeader
+        title="Settings"
+        description="What each role can do, how media is stored, and a record of every change."
+      />
 
-      <section className="mb-8">
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-neutral-900/50">
-          Roles &amp; Permissions
-        </h2>
+      {/*
+        Three unrelated jobs — who can do what, how uploads are stored, what
+        happened. Tabs rather than one scroll: they are separate tasks on one
+        object, and stacking them is how a settings page becomes the longest
+        page in an admin.
+      */}
+      <Tabs
+        label="Settings areas"
+        items={[
+          {
+            key: 'permissions',
+            label: 'Roles & permissions',
+            content: (
+      <section>
 
         {error ? (
           <p role="alert" className="notice notice-error mb-4">
@@ -210,9 +220,18 @@ export default function AdminSettingsPage() {
           </div>
         )}
       </section>
-
+            ),
+          },
+          {
+            key: 'media',
+            label: 'Media',
+            content: <MediaSettings />,
+          },
+          {
+            key: 'audit',
+            label: 'Audit log',
+            content: (
       <section>
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-neutral-900/50">Audit Log</h2>
 
         <div className="mb-6 flex flex-wrap items-end gap-3 border-b border-neutral-100 pb-4">
           <label className="block">
@@ -327,7 +346,103 @@ export default function AdminSettingsPage() {
           ) : null}
         </div>
       </section>
+            ),
+          },
+        ]}
+      />
     </>
+  );
+}
+
+/**
+ * How uploaded images are stored.
+ *
+ * One switch, and a plain statement of what it does — an owner turning this
+ * off should know it costs page speed, and that it changes nothing about the
+ * images already on the shelf.
+ */
+function MediaSettings() {
+  const [webpEnabled, setWebpEnabled] = useState<boolean | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+
+  useEffect(() => {
+    adminFetch<{ webpEnabled: boolean }>('/admin/settings/media')
+      .then((media) => setWebpEnabled(media.webpEnabled))
+      .catch((cause: unknown) =>
+        setError(cause instanceof Error ? cause.message : 'Could not load media settings'),
+      );
+  }, []);
+
+  async function save(next: boolean) {
+    setSaving(true);
+    setError(null);
+    setNotice(null);
+    // Optimistic, then corrected by what the server returns — a switch that
+    // waits a round trip before moving feels broken.
+    setWebpEnabled(next);
+    try {
+      const media = await adminFetch<{ webpEnabled: boolean }>('/admin/settings/media', {
+        method: 'PUT',
+        body: { webpEnabled: next },
+      });
+      setWebpEnabled(media.webpEnabled);
+      setNotice(
+        media.webpEnabled
+          ? 'New uploads will be converted to WebP.'
+          : 'New uploads will be stored in their original format.',
+      );
+    } catch (cause) {
+      setWebpEnabled(!next);
+      setError(cause instanceof Error ? cause.message : 'Could not save media settings');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (webpEnabled === null) {
+    return error ? (
+      <p role="alert" className="notice notice-error">
+        {error}
+      </p>
+    ) : (
+      <Loading />
+    );
+  }
+
+  return (
+    <section className="max-w-prose">
+      {error ? (
+        <p role="alert" className="notice notice-error mb-4">
+          {error}
+        </p>
+      ) : null}
+      {notice ? <p className="notice notice-success mb-4">{notice}</p> : null}
+
+      <label className="flex items-start gap-3">
+        <input
+          type="checkbox"
+          checked={webpEnabled}
+          disabled={saving}
+          onChange={(event) => void save(event.target.checked)}
+          className="field-check mt-1"
+        />
+        <span>
+          <span className="block text-sm font-medium text-neutral-900">
+            Convert uploads to WebP
+          </span>
+          <span className="mt-1 block text-sm text-neutral-900/60">
+            WebP is smaller than JPEG or PNG at the same visual quality, so pages load faster and
+            Lighthouse stops flagging &ldquo;next-gen formats&rdquo;. Turn it off only if an
+            original has to be kept byte-for-byte.
+          </span>
+          <span className="mt-2 block text-xs text-neutral-900/45">
+            Applies to new uploads. Images already stored keep the format they were saved in.
+          </span>
+        </span>
+      </label>
+    </section>
   );
 }
 

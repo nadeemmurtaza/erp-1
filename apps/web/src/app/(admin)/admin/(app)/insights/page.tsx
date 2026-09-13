@@ -1,12 +1,12 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { cn } from '@/utils/cn';
 import { formatMoney, intlTag } from '@newax/shared';
 import { DonutChart } from '@/components/admin/donut-chart';
 import { GaugeChart } from '@/components/admin/gauge-chart';
 import { FunnelChart } from '@/components/admin/funnel-chart';
 import { adminFetch } from '@/lib/admin-client';
+import { RangePicker, type RangeDays } from '@/components/admin/range-picker';
 import type { MonthlyTarget, VisitorAnalytics } from '@/types/api';
 import { EmptyState, Loading, PageHeader, Section, Tabs } from '@/components/ui';
 
@@ -31,10 +31,8 @@ interface ExtendedSlice {
   revenueByCategory: Array<{ category: string; revenue: number }>;
 }
 
-const RANGES = [7, 30, 90] as const;
-
 export default function InsightsPage() {
-  const [days, setDays] = useState<number>(30);
+  const [days, setDays] = useState<RangeDays>(30);
   const [data, setData] = useState<DashboardSlice | null>(null);
   const [extended, setExtended] = useState<ExtendedSlice | null>(null);
   const [visitors, setVisitors] = useState<VisitorAnalytics | null>(null);
@@ -87,24 +85,7 @@ export default function InsightsPage() {
     }
   }
 
-  const rangePicker = (
-    <div className="flex gap-1" role="group" aria-label="Date range">
-      {RANGES.map((option) => (
-        <button
-          key={option}
-          type="button"
-          onClick={() => setDays(option)}
-          aria-pressed={days === option}
-          className={cn(
-            'rounded px-3 py-1.5 text-sm transition-colors',
-            days === option ? 'bg-accent text-white' : 'text-neutral-900/70 hover:bg-white',
-          )}
-        >
-          {option} days
-        </button>
-      ))}
-    </div>
-  );
+  const rangePicker = <RangePicker value={days} onChange={setDays} />;
 
   if (error) {
     return (

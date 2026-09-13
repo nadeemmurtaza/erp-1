@@ -38,11 +38,13 @@ const TONES: Record<string, BadgeTone> = {
   PAID: 'success',
   READY: 'success',
   DISPATCHED: 'success',
+  COMPLETED: 'success',
   WON: 'success',
   // Waiting on someone
   PENDING: 'warning',
   AWAITING_APPROVAL: 'warning',
   QUOTED: 'warning',
+  IN_PROGRESS: 'info',
   // Not live, but not wrong either
   DRAFT: 'neutral',
   RECEIVED: 'neutral',

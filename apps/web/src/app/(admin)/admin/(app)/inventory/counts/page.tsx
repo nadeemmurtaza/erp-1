@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { cn } from '@/utils/cn';
+import { StatusBadge } from '@/components/common/status-badge';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import Link from 'next/link';
 import { formatDateTime } from '@newax/shared';
@@ -96,14 +96,13 @@ export default function CountsListPage() {
                   </Link>
                 </td>
                 <td className="px-4 py-3">
-                  <span className={cn(
-                    'px-2 py-0.5 rounded text-xs font-medium',
-                    c.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
-                    c.status === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-800' :
-                    'bg-gray-100 text-gray-800'
-                  )}>
-                    {c.status.replace('_', ' ')}
-                  </span>
+                  {/*
+                    The seventh hand-rolled status pill, and the last place in
+                    the app still on Tailwind's stock `gray` rather than the
+                    neutral ramp. Tone belongs to the badge, which decides it
+                    by meaning rather than by each page picking a colour.
+                  */}
+                  <StatusBadge status={c.status} />
                 </td>
                 <td className="px-4 py-3 text-neutral-900/70">
                   {c.startedAt ? formatDateTime(c.startedAt) : '-'}

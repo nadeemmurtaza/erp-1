@@ -376,9 +376,9 @@ export class StitchingJobsService implements OnModuleInit {
           jobNumber: job.number,
           fromStage: job.stage,
           toStage,
-          assignedTailorId: (job as any).assignedTailorId,
+          assignedTailorId: job.assignedTailorId,
           orderId: orderItemForEvent?.orderId ?? null,
-          stitchingOrderId: (job as any).stitchingOrderId,
+          stitchingOrderId: job.stitchingOrderId,
         },
         tx,
       );

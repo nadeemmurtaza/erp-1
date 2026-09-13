@@ -149,7 +149,7 @@ export class CartService {
     }
 
     const stitching = dto.stitching
-      ? await this.validateStitching(variant.product as any, dto, userId)
+      ? await this.validateStitching(variant.product, dto, userId)
       : null;
 
     // An identical line — same variant, same stitching choices — increments
@@ -232,7 +232,7 @@ export class CartService {
 
     if (dto.measurementProfileId !== undefined) {
       const profile = await this.assertOwnedProfile(dto.measurementProfileId, userId);
-      if ((item as any).garmentTypeId && profile.garmentTypeId !== (item as any).garmentTypeId) {
+      if (item.garmentTypeId && profile.garmentTypeId !== item.garmentTypeId) {
         throw new BadRequestException('Those measurements are for a different garment.');
       }
 

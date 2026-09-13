@@ -285,7 +285,7 @@ export class OrdersService {
           grandTotal: created.grandTotal,
           placedAt: created.placedAt.toISOString(),
           stitchingItemIds: created.items
-            .filter((item) => (item as any).garmentTypeKey)
+            .filter((item) => item.garmentTypeKey)
             .map((item) => item.id),
         },
         tx,

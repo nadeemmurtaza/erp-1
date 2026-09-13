@@ -1,3 +1,4 @@
+import { SettingsService } from '../../core/settings/settings.service';
 import { Test } from '@nestjs/testing';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { InventoryService } from './inventory.service';
@@ -20,6 +21,9 @@ describe('StockCountService', () => {
         StockIntakeRegistry,
         { provide: EventBusService, useValue: { publish: jest.fn() } },
         { provide: AuditService, useValue: { record: jest.fn() } },
+        // The count number's prefix is a Setting now; this test is about the
+        // variance maths, so it takes the shipped default.
+        { provide: SettingsService, useValue: { get: jest.fn().mockResolvedValue(undefined) } },
       ],
     }).compile();
 

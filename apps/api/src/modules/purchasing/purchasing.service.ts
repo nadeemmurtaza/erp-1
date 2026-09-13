@@ -1,3 +1,4 @@
+import { documentPrefix } from '../../core/settings/document-prefix';
 import type { PurchaseOrderStatus } from '../../core/prisma/client';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
@@ -13,9 +14,11 @@ import { EventBusService } from '../../core/events/event-bus.service';
 const PO_NUMBER_LOCK_NAMESPACE = 8_241_120;
 const GRN_NUMBER_LOCK_NAMESPACE = 8_241_121;
 
-async function nextPONumber(tx: Prisma.TransactionClient): Promise<string> {
+async function nextPONumber(tx: Prisma.TransactionClient, settings: SettingsService): Promise<string> {
   const year = new Date().getFullYear();
-  const prefix = `PO-${year}-`;
+  // The prefix is a Setting, so a shop can match paperwork it already
+  // numbers its own way. See core/settings/document-prefix.ts.
+  const prefix = `${await documentPrefix(settings, 'purchaseOrder')}-${year}-`;
   await tx.$executeRaw`SELECT pg_advisory_xact_lock(${PO_NUMBER_LOCK_NAMESPACE}::int, ${year}::int)`;
   const [{ max }] = await tx.$queryRaw<Array<{ max: number | null }>>`
     SELECT MAX(CAST(split_part("number", '-', 3) AS INTEGER)) AS max
@@ -26,9 +29,11 @@ async function nextPONumber(tx: Prisma.TransactionClient): Promise<string> {
   return `${prefix}${nextSequence.toString().padStart(4, '0')}`;
 }
 
-async function nextGRNNumber(tx: Prisma.TransactionClient): Promise<string> {
+async function nextGRNNumber(tx: Prisma.TransactionClient, settings: SettingsService): Promise<string> {
   const year = new Date().getFullYear();
-  const prefix = `GRN-${year}-`;
+  // The prefix is a Setting, so a shop can match paperwork it already
+  // numbers its own way. See core/settings/document-prefix.ts.
+  const prefix = `${await documentPrefix(settings, 'goodsReceipt')}-${year}-`;
   await tx.$executeRaw`SELECT pg_advisory_xact_lock(${GRN_NUMBER_LOCK_NAMESPACE}::int, ${year}::int)`;
   const [{ max }] = await tx.$queryRaw<Array<{ max: number | null }>>`
     SELECT MAX(CAST(split_part("number", '-', 3) AS INTEGER)) AS max
@@ -186,7 +191,7 @@ export class PurchasingService {
 
   async createPurchaseOrder(dto: CreatePurchaseOrderDto, userId: string) {
     return this.prisma.$transaction(async (tx) => {
-      const number = await nextPONumber(tx);
+      const number = await nextPONumber(tx, this.settingsService);
       const subtotal = dto.items.reduce((sum, item) => sum + (item.quantityOrdered * item.unitCost), 0);
       const freightCost = dto.freightCost ?? 0;
       const dutyCost = dto.dutyCost ?? 0;
@@ -260,7 +265,7 @@ export class PurchasingService {
         return { reqItem, poLine };
       });
 
-      const grnNumber = await nextGRNNumber(tx);
+      const grnNumber = await nextGRNNumber(tx, this.settingsService);
       const freightCost = dto.freightCost ?? 0;
       const dutyCost = dto.dutyCost ?? 0;
       const otherCost = dto.otherCost ?? 0;

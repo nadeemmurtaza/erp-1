@@ -28,6 +28,26 @@ export interface StoreSettings {
   whatsapp: string;
 }
 
+/** Which artwork a receipt, invoice or email shows at the top. */
+export type DocumentLogoSource = 'text' | 'site' | 'custom';
+
+/** What each kind of document's numbers start with. */
+export interface DocumentPrefixes {
+  order: string;
+  purchaseOrder: string;
+  goodsReceipt: string;
+  stitchingOrder: string;
+  stitchingJob: string;
+  stockCount: string;
+}
+
+export interface DocumentSettings {
+  logoSource: DocumentLogoSource;
+  /** Only read when logoSource is 'custom'. */
+  logoUrl: string | null;
+  prefixes: DocumentPrefixes;
+}
+
 export const SettingKey = {
   Store: 'store',
   /** IANA zone the shop trades in. Decides where a calendar day begins. */
@@ -49,6 +69,17 @@ export const SettingKey = {
    * Images already stored stay as they were; this decides new uploads.
    */
   MediaWebpEnabled: 'media.webp_enabled',
+  /**
+   * What a customer-facing document shows at the top, and what the numbers on
+   * it start with.
+   *
+   * Prefixes are a Setting rather than a constant because a shop that already
+   * numbers its paperwork a particular way should not have to match ours —
+   * and because the brand file's default is the client's initials, which the
+   * next client will want changed. Changing a prefix affects new documents
+   * only; anything already issued keeps the number it was given.
+   */
+  Documents: 'documents',
   MonthlyRevenueTarget: 'analytics.monthly_revenue_target',
   PurchasingOverReceiptTolerance: 'purchasing.over_receipt_tolerance',
   PurchasingAutoDraftReorder: 'purchasing.auto_draft_reorder',
@@ -152,6 +183,27 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.LowStockThreshold]: 3,
 
   [SettingKey.MediaWebpEnabled]: true,
+
+  [SettingKey.Documents]: {
+    /*
+     * 'text' sets the shop's name as styled type, which is what most people
+     * actually see: Gmail and Outlook block hosted images until the reader
+     * clicks "show images", so a logo file is the version that frequently
+     * does not arrive. 'site' uses the storefront's own artwork; 'custom'
+     * uses one uploaded for documents alone — a shop whose web logo is
+     * knocked out white needs a dark one on a white invoice.
+     */
+    logoSource: 'text',
+    logoUrl: null,
+    prefixes: {
+      order: BRAND.commerce.orderNumberPrefix,
+      purchaseOrder: 'PO',
+      goodsReceipt: 'GRN',
+      stitchingOrder: 'STO',
+      stitchingJob: 'JOB',
+      stockCount: 'SC',
+    },
+  } satisfies DocumentSettings,
 
   /** Shown as the dashboard's monthly progress target until an admin sets a real one. */
   [SettingKey.MonthlyRevenueTarget]: toMinor(1_000_000),

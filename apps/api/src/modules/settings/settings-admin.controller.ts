@@ -4,6 +4,7 @@ import { USER_ROLES, type UserRole } from '@newax/shared';
 import { RequirePermission } from '../../core/auth/decorators';
 import {
   AuditLogQueryDto,
+  UpdateDocumentSettingsDto,
   UpdateMediaSettingsDto,
   UpdateRolePermissionsDto,
 } from './dto/settings.dto';
@@ -26,6 +27,20 @@ export class SettingsAdminController {
   @ApiOperation({ summary: 'Turn WebP conversion on or off for new uploads' })
   async updateMedia(@Body() dto: UpdateMediaSettingsDto) {
     return this.settings.updateMedia(dto.webpEnabled);
+  }
+
+  @Get('documents')
+  @RequirePermission('settings.manage')
+  @ApiOperation({ summary: 'Document branding and number prefixes' })
+  async getDocuments() {
+    return this.settings.getDocuments();
+  }
+
+  @Put('documents')
+  @RequirePermission('settings.manage')
+  @ApiOperation({ summary: 'Set the document logo and number prefixes' })
+  async updateDocuments(@Body() dto: UpdateDocumentSettingsDto) {
+    return this.settings.updateDocuments(dto);
   }
 
   @Get('permissions')

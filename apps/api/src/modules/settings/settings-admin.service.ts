@@ -1,5 +1,9 @@
 import { SettingsService } from '../../core/settings/settings.service';
-import { SettingKey } from '../../core/settings/settings.defaults';
+import {
+  DEFAULT_SETTINGS,
+  SettingKey,
+  type DocumentSettings,
+} from '../../core/settings/settings.defaults';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ADMIN_LOCKED_PERMISSIONS, USER_ROLES, type PermissionKey, type UserRole } from '@newax/shared';
 import { PrismaService } from '../../core/prisma/prisma.service';
@@ -44,6 +48,35 @@ export class SettingsAdminService {
   async updateMedia(webpEnabled: boolean): Promise<{ webpEnabled: boolean }> {
     await this.settings.set(SettingKey.MediaWebpEnabled, webpEnabled);
     return { webpEnabled };
+  }
+
+  /** What receipts, invoices and emails show, and how documents are numbered. */
+  async getDocuments(): Promise<DocumentSettings> {
+    const stored = await this.settings.get<DocumentSettings>(SettingKey.Documents);
+    const shipped = DEFAULT_SETTINGS[SettingKey.Documents] as DocumentSettings;
+    // Merged rather than returned raw: a row written before a prefix existed
+    // would otherwise hand the form `undefined` for it.
+    return {
+      logoSource: stored?.logoSource ?? shipped.logoSource,
+      logoUrl: stored?.logoUrl ?? null,
+      prefixes: { ...shipped.prefixes, ...(stored?.prefixes ?? {}) },
+    };
+  }
+
+  async updateDocuments(patch: {
+    logoSource?: DocumentSettings['logoSource'];
+    logoUrl?: string | null;
+    // Partial on purpose: the form sends only the prefixes it changed.
+    prefixes?: Partial<DocumentSettings['prefixes']>;
+  }): Promise<DocumentSettings> {
+    const current = await this.getDocuments();
+    const next: DocumentSettings = {
+      logoSource: patch.logoSource ?? current.logoSource,
+      logoUrl: patch.logoUrl === undefined ? current.logoUrl : patch.logoUrl,
+      prefixes: { ...current.prefixes, ...(patch.prefixes ?? {}) },
+    };
+    await this.settings.set(SettingKey.Documents, next);
+    return next;
   }
 
   listPermissions() {

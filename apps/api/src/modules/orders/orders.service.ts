@@ -1,4 +1,4 @@
-import { BRAND } from '@newax/shared';
+import { documentPrefix } from '../../core/settings/document-prefix';
 import {
   BadRequestException,
   ForbiddenException,
@@ -178,7 +178,7 @@ export class OrdersService {
     // Reserved before checkout's own transaction opens — see
     // nextOrderNumber() for why this has to be a separate atomic step
     // rather than something computed inside that transaction.
-    const orderNumber = await nextOrderNumber(this.prisma);
+    const orderNumber = await nextOrderNumber(this.prisma, this.settings);
 
     const order = await this.prisma.$transaction(async (tx) => {
       const variantIds = [...new Set(priced.lines.map(l => l.variantId))];
@@ -831,9 +831,15 @@ function jsonOrNull(value: unknown): Prisma.InputJsonValue | typeof Prisma.DbNul
  * reserved is simply skipped, the same way a gap appears after any failed
  * insert on an auto-increment key.
  */
-async function nextOrderNumber(prisma: PrismaService): Promise<string> {
+async function nextOrderNumber(
+  prisma: PrismaService,
+  settings: SettingsService,
+): Promise<string> {
   const year = new Date().getFullYear();
-  const prefix = `${BRAND.commerce.orderNumberPrefix}-${year}-`;
+  // A Setting, defaulting to the brand's own initials. The number a
+  // customer quotes back to you is the one place a shop is most likely to
+  // already have a convention.
+  const prefix = `${await documentPrefix(settings, 'order')}-${year}-`;
 
   const [{ counter }] = await prisma.$queryRaw<Array<{ counter: number }>>`
     INSERT INTO "OrderNumberCounter" ("year", "counter") VALUES (${year}, 1)

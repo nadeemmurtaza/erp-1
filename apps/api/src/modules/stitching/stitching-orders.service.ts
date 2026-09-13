@@ -1,3 +1,4 @@
+import { documentPrefix } from '../../core/settings/document-prefix';
 import {
   BadRequestException,
   ForbiddenException,
@@ -114,7 +115,7 @@ export class StitchingOrdersService {
     return this.prisma.$transaction(async (tx) => {
       const created = await tx.stitchingOrder.create({
         data: {
-          number: await nextStitchingOrderNumber(tx),
+          number: await nextStitchingOrderNumber(tx, this.settings),
           userId: userId ?? null,
           status: 'AWAITING_FABRIC',
           guestName: input.name.trim(),
@@ -127,7 +128,7 @@ export class StitchingOrdersService {
           jobs: {
             create: await Promise.all(
               garments.map(async (garment) => ({
-                number: await nextJobNumber(tx),
+                number: await nextJobNumber(tx, this.settings),
                 garmentTypeId: garment.garmentType.id,
                 measurementSnapshot: garment.measurements as Prisma.InputJsonValue,
                 instructions: garment.instructions,
@@ -258,9 +259,11 @@ export class StitchingOrdersService {
  * nextJobNumber() in jobs.service.ts (same fix, same underlying race) and
  * nextOrderNumber() in orders/orders.service.ts (the original bug).
  */
-async function nextStitchingOrderNumber(tx: Prisma.TransactionClient): Promise<string> {
+async function nextStitchingOrderNumber(tx: Prisma.TransactionClient, settings: SettingsService): Promise<string> {
   const year = new Date().getFullYear();
-  const prefix = `STO-${year}-`;
+  // The prefix is a Setting, so a shop can match paperwork it already
+  // numbers its own way. See core/settings/document-prefix.ts.
+  const prefix = `${await documentPrefix(settings, 'stitchingOrder')}-${year}-`;
 
   const [{ counter }] = await tx.$queryRaw<Array<{ counter: number }>>`
     INSERT INTO "StitchingOrderNumberCounter" ("year", "counter") VALUES (${year}, 1)

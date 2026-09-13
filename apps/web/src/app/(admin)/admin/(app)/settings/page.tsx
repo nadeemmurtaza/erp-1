@@ -223,9 +223,14 @@ export default function AdminSettingsPage() {
             ),
           },
           {
-            key: 'media',
-            label: 'Media',
-            content: <MediaSettings />,
+            key: 'documents',
+            label: 'Documents & media',
+            content: (
+              <>
+                <DocumentSettingsPanel />
+                <MediaSettings />
+              </>
+            ),
           },
           {
             key: 'audit',
@@ -351,6 +356,164 @@ export default function AdminSettingsPage() {
         ]}
       />
     </>
+  );
+}
+
+interface DocumentSettings {
+  logoSource: 'text' | 'site' | 'custom';
+  logoUrl: string | null;
+  prefixes: Record<string, string>;
+}
+
+const PREFIX_FIELDS: Array<{ key: string; label: string }> = [
+  { key: 'order', label: 'Orders' },
+  { key: 'purchaseOrder', label: 'Purchase orders' },
+  { key: 'goodsReceipt', label: 'Goods receipts' },
+  { key: 'stitchingOrder', label: 'Stitching orders' },
+  { key: 'stitchingJob', label: 'Workshop jobs' },
+  { key: 'stockCount', label: 'Stock counts' },
+];
+
+const LOGO_CHOICES: Array<{ value: DocumentSettings['logoSource']; label: string; hint: string }> = [
+  {
+    value: 'text',
+    label: 'The shop name, as text',
+    hint: 'What most people see. Mail clients block hosted images until the reader asks for them.',
+  },
+  {
+    value: 'site',
+    label: "The storefront's logo",
+    hint: 'The same artwork the website header uses.',
+  },
+  {
+    value: 'custom',
+    label: 'A logo just for documents',
+    hint: 'For when the web logo is knocked out white and an invoice needs a dark one.',
+  },
+];
+
+/**
+ * What customer-facing paperwork shows, and how it is numbered.
+ *
+ * Prefixes are here rather than in code because a shop that already numbers
+ * its paperwork a particular way should not have to match ours — and because
+ * the shipped default for orders is the client's initials, which the next
+ * client will want changed. Changing one affects new documents only.
+ */
+function DocumentSettingsPanel() {
+  const [settings, setSettings] = useState<DocumentSettings | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+
+  useEffect(() => {
+    adminFetch<DocumentSettings>('/admin/settings/documents')
+      .then(setSettings)
+      .catch((cause: unknown) =>
+        setError(cause instanceof Error ? cause.message : 'Could not load document settings'),
+      );
+  }, []);
+
+  async function save(patch: Partial<DocumentSettings>) {
+    setSaving(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const next = await adminFetch<DocumentSettings>('/admin/settings/documents', {
+        method: 'PUT',
+        body: patch,
+      });
+      setSettings(next);
+      setNotice('Saved. New documents use these; anything already issued keeps its number.');
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not save document settings');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (!settings) {
+    return error ? (
+      <p role="alert" className="notice notice-error">
+        {error}
+      </p>
+    ) : (
+      <Loading />
+    );
+  }
+
+  return (
+    <section className="mb-10 max-w-prose">
+      {error ? (
+        <p role="alert" className="notice notice-error mb-4">
+          {error}
+        </p>
+      ) : null}
+      {notice ? <p className="notice notice-success mb-4">{notice}</p> : null}
+
+      <h3 className="eyebrow mb-3">On receipts, invoices and emails</h3>
+      <div className="space-y-3">
+        {LOGO_CHOICES.map((choice) => (
+          <label key={choice.value} className="flex items-start gap-3">
+            <input
+              type="radio"
+              name="logoSource"
+              checked={settings.logoSource === choice.value}
+              disabled={saving}
+              onChange={() => void save({ logoSource: choice.value })}
+              className="field-check mt-1 rounded-full"
+            />
+            <span>
+              <span className="block text-sm text-neutral-900">{choice.label}</span>
+              <span className="mt-0.5 block text-xs text-neutral-900/50">{choice.hint}</span>
+            </span>
+          </label>
+        ))}
+      </div>
+
+      {settings.logoSource === 'custom' ? (
+        <label className="mt-4 block">
+          <span className="field-label">Logo URL</span>
+          <input
+            defaultValue={settings.logoUrl ?? ''}
+            onBlur={(event) => {
+              const next = event.target.value.trim() || null;
+              if (next !== settings.logoUrl) void save({ logoUrl: next });
+            }}
+            placeholder="https://…"
+            className="field-input"
+          />
+          <span className="mt-1 block text-xs text-neutral-900/50">
+            Upload it under Products &rsaquo; Images, then paste the address here. A wide,
+            short mark reads best — it is shown 36px tall.
+          </span>
+        </label>
+      ) : null}
+
+      <h3 className="eyebrow mb-3 mt-8">Number prefixes</h3>
+      <p className="mb-3 text-sm text-neutral-900/60">
+        What each kind of document&rsquo;s number starts with, before the year and the
+        sequence — <code className="text-neutral-900">{settings.prefixes.order}-2026-0001</code>.
+      </p>
+      <div className="grid gap-3 fold:grid-cols-2">
+        {PREFIX_FIELDS.map((field) => (
+          <label key={field.key} className="block">
+            <span className="field-label">{field.label}</span>
+            <input
+              defaultValue={settings.prefixes[field.key] ?? ''}
+              maxLength={8}
+              onBlur={(event) => {
+                const next = event.target.value.trim().toUpperCase();
+                if (next && next !== settings.prefixes[field.key]) {
+                  void save({ prefixes: { [field.key]: next } as Record<string, string> });
+                }
+              }}
+              className="field-input"
+            />
+          </label>
+        ))}
+      </div>
+    </section>
   );
 }
 

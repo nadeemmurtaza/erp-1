@@ -73,6 +73,15 @@ const URDU_FONT = `'Noto Nastaliq Urdu', ${FONT}`;
 export interface LayoutOptions {
   locale: Locale;
   storeName: string;
+  /**
+   * A logo to show instead of the wordmark, when the shop has chosen one.
+   *
+   * Absent means styled text, which stays the default for a good reason: a
+   * hosted image is blocked until the reader clicks "show images" in Gmail and
+   * Outlook, so text is the version most people actually see. A shop that
+   * would rather have its mark, and accepts that trade, can say so.
+   */
+  logoUrl?: string | null;
   /** Small line beside the wordmark, e.g. the order number. */
   eyebrow?: string;
   /** Plain-text footer note — contact details, reply-to guidance. */
@@ -92,6 +101,7 @@ export interface LayoutOptions {
 export function layout({
   locale,
   storeName,
+  logoUrl,
   eyebrow,
   footer,
   body,
@@ -102,6 +112,17 @@ export function layout({
   // Nastaliq descenders collide at normal leading, the same reason
   // globals.css sets 2.1 for [lang='ur'] on the storefront.
   const leading = locale === 'ur' ? '2.0' : '1.55';
+
+  /*
+   * The shop's mark. Text by default and for a real reason: Gmail and Outlook
+   * block hosted images until the reader clicks "show images", so the wordmark
+   * is the version most people actually see. A shop that would rather show its
+   * logo, and accepts that trade, sets one — and `alt` carries the name, so a
+   * blocked image still reads as the shop rather than as a broken box.
+   */
+  const mark = logoUrl
+    ? `<img src="${esc(logoUrl)}" alt="${esc(storeName)}" height="36" style="display:block;height:36px;max-width:220px;border:0;">`
+    : `<span style="font-family:${font};font-size:26px;font-weight:600;letter-spacing:-0.01em;color:${palette.ink};">${esc(storeName)}</span>`;
 
   return `<!doctype html>
 <html lang="${esc(locale)}" dir="${dir}">
@@ -121,9 +142,7 @@ export function layout({
   <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:100%;background:${palette.panel};border:1px solid ${palette.border};">
     <tr>
       <td dir="${dir}" align="${align}" style="padding:28px 28px 20px 28px;border-bottom:1px solid ${palette.border};">
-        <span style="font-family:${font};font-size:26px;font-weight:600;letter-spacing:-0.01em;color:${palette.ink};">${esc(
-          storeName,
-        )}</span>${
+        ${mark}${
           eyebrow
             ? // The leading space is load-bearing: padding separates these
               // visually, but the plain-text part is extracted from this

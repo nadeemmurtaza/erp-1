@@ -9,7 +9,9 @@ import {
   IsInt,
   IsOptional,
   IsString,
+  MaxLength,
   Min,
+  ValidateNested,
 } from 'class-validator';
 
 export class UpdateRolePermissionsDto {
@@ -63,4 +65,35 @@ export class UpdateMediaSettingsDto {
   })
   @IsBoolean()
   webpEnabled!: boolean;
+}
+
+class DocumentPrefixesDto {
+  @ApiPropertyOptional({ example: 'YSN' }) @IsOptional() @IsString() @MaxLength(8) order?: string;
+  @ApiPropertyOptional({ example: 'PO' }) @IsOptional() @IsString() @MaxLength(8) purchaseOrder?: string;
+  @ApiPropertyOptional({ example: 'GRN' }) @IsOptional() @IsString() @MaxLength(8) goodsReceipt?: string;
+  @ApiPropertyOptional({ example: 'STO' }) @IsOptional() @IsString() @MaxLength(8) stitchingOrder?: string;
+  @ApiPropertyOptional({ example: 'JOB' }) @IsOptional() @IsString() @MaxLength(8) stitchingJob?: string;
+  @ApiPropertyOptional({ example: 'SC' }) @IsOptional() @IsString() @MaxLength(8) stockCount?: string;
+}
+
+export class UpdateDocumentSettingsDto {
+  @ApiPropertyOptional({
+    enum: ['text', 'site', 'custom'],
+    description:
+      "What a receipt, invoice or email shows at the top. 'text' sets the shop name as type, which is what most readers see — mail clients block hosted images by default.",
+  })
+  @IsOptional()
+  @IsIn(['text', 'site', 'custom'])
+  logoSource?: 'text' | 'site' | 'custom';
+
+  @ApiPropertyOptional({ description: "Used only when logoSource is 'custom'." })
+  @IsOptional()
+  @IsString()
+  logoUrl?: string | null;
+
+  @ApiPropertyOptional({ type: DocumentPrefixesDto })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DocumentPrefixesDto)
+  prefixes?: DocumentPrefixesDto;
 }

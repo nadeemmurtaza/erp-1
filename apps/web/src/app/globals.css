@@ -357,8 +357,16 @@
     @apply hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent;
   }
 
-  /* The one whose drawer is open, tied to the panel by a shared edge. */
-  .metric-open {
+  /*
+   * The one whose drawer is open, tied to the panel by a shared edge.
+   *
+   * Doubled selector on purpose. These cells are `<button>`, and preflight
+   * resets a button's background to transparent at the same specificity a
+   * single class has — so `.metric-open` alone lost the tie and the open cell
+   * stayed grey, leaving only the accent rule to mark it. `.metric.metric-open`
+   * outranks the reset without reaching for `!important`.
+   */
+  .metric.metric-open {
     @apply bg-white;
     box-shadow: inset 0 -2px 0 0 theme('colors.accent.DEFAULT');
   }

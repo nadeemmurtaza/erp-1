@@ -1,6 +1,11 @@
 import { SetMetadata, createParamDecorator, type ExecutionContext } from '@nestjs/common';
 import type { PermissionKey } from '@newax/shared';
-import { IS_PUBLIC_KEY, PERMISSIONS_KEY, type AuthenticatedUser } from './auth.constants';
+import {
+  AUTHENTICATED_ONLY_KEY,
+  IS_PUBLIC_KEY,
+  PERMISSIONS_KEY,
+  type AuthenticatedUser,
+} from './auth.constants';
 
 /**
  * Marks a route as reachable without a token.
@@ -19,6 +24,22 @@ export const Public = (): MethodDecorator & ClassDecorator =>
  */
 export const RequirePermission = (...keys: PermissionKey[]): MethodDecorator & ClassDecorator =>
   SetMetadata(PERMISSIONS_KEY, keys);
+
+/**
+ * Marks a route as deliberately open to any signed-in user.
+ *
+ * It changes nothing at runtime — JwtAuthGuard already requires a token, and
+ * these routes scope their own reads by `user.id`. It exists so the decision
+ * is *stated*. Without it, "any signed-in user may call this" and "somebody
+ * forgot the permission" look identical in the source, and
+ * scripts/check-route-permissions.mjs cannot tell them apart either.
+ *
+ * Use it only where the handler scopes to the caller's own rows. Anything
+ * that reads another user's data, or any shop-wide record, needs a real
+ * capability instead.
+ */
+export const AuthenticatedOnly = (): MethodDecorator & ClassDecorator =>
+  SetMetadata(AUTHENTICATED_ONLY_KEY, true);
 
 /** Injects the authenticated user, or undefined on a @Public route. */
 export const CurrentUser = createParamDecorator(

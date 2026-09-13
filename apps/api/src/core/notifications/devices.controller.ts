@@ -2,7 +2,7 @@ import { Body, Controller, Delete, HttpCode, HttpStatus, Param, Post } from '@ne
 import { ApiOperation, ApiPropertyOptional, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { IsIn, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 import type { AuthenticatedUser } from '../auth/auth.constants';
-import { CurrentUser } from '../auth/decorators';
+import { AuthenticatedOnly, CurrentUser } from '../auth/decorators';
 import { PrismaService } from '../prisma/prisma.service';
 
 const PLATFORMS = ['IOS', 'ANDROID', 'WEB'] as const;
@@ -44,6 +44,7 @@ export class RegisterDeviceDto {
 export class DevicesController {
   constructor(private readonly prisma: PrismaService) {}
 
+  @AuthenticatedOnly()
   @Post()
   @ApiOperation({ summary: 'Register this installation for push notifications' })
   async register(@CurrentUser() user: AuthenticatedUser, @Body() dto: RegisterDeviceDto) {
@@ -69,6 +70,7 @@ export class DevicesController {
     return device;
   }
 
+  @AuthenticatedOnly()
   @Delete(':token')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Stop sending push notifications to this installation' })

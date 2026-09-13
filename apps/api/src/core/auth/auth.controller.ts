@@ -22,7 +22,7 @@ import {
   readCookie,
   type AuthenticatedUser,
 } from './auth.constants';
-import { CurrentUser, Public, RequirePermission } from './decorators';
+import { AuthenticatedOnly, CurrentUser, Public, RequirePermission } from './decorators';
 import {
   ChangePasswordDto,
   ForgotPasswordDto,
@@ -112,6 +112,7 @@ export class AuthController {
     response.clearCookie(LEGACY_REFRESH_COOKIE, { path: '/' });
   }
 
+  @AuthenticatedOnly()
   @Get('me')
   @ApiOperation({ summary: 'The signed-in user' })
   async me(@CurrentUser() user: AuthenticatedUser) {
@@ -129,6 +130,7 @@ export class AuthController {
     });
   }
 
+  @AuthenticatedOnly()
   @Patch('me')
   @ApiOperation({ summary: 'Update your own profile fields' })
   updateProfile(@CurrentUser() user: AuthenticatedUser, @Body() dto: UpdateProfileDto) {
@@ -174,6 +176,7 @@ export class AuthController {
   }
 
   @Throttle(CREDENTIAL_THROTTLE)
+  @AuthenticatedOnly()
   @Post('resend-verification')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Resend the email verification link' })

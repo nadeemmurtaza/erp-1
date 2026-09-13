@@ -32,6 +32,50 @@ If a detail elsewhere disagrees with a law, the law wins.
 
 ---
 
+## Scale: the three axes
+
+This repository serves several sectors, several clients, and clients with
+several branches. Almost every "can it also do X?" is one of three questions,
+answered in three different places. Confusing them is how a codebase ends up
+with a branch per client.
+
+| Axis | Question | Lives in | Never |
+|---|---|---|---|
+| **Sector** | what kind of business | a module pack + the `MODULES` allowlist | a git branch, a fork, `if (sector === …)` |
+| **Brand** | which business | `packages/shared/src/brand.ts` | a literal in application code |
+| **Branch** | where it happened | a `Location` row on the movement | a second database |
+
+> A branch is a point in time. A sector is a configuration. A brand is a value.
+> A location is a row. Keep each in its own kind of place.
+
+Hard rules, in full with reasoning in
+[`docs/implementation/ENTERPRISE-SCALE.md`](docs/implementation/ENTERPRISE-SCALE.md)
+and [`MULTI-SECTOR.md`](docs/implementation/MULTI-SECTOR.md):
+
+- **One `main`, one `production`.** No per-sector, per-client branch. A
+  configuration is never encoded in time.
+- **Adding a sector adds a folder.** It never edits a core module. Core never
+  imports a pack; a pack never imports another pack — `pnpm lint` fails on it.
+- **Every pack must be survivably absent.** Booting without it has to work.
+- **Extension points, not conditionals.** There is no `if (sector === …)`
+  anywhere and there must never be.
+- **One deployment serves one brand**, resolved at build time. That is a
+  deliberate boundary; do not build toward multi-brand speculatively.
+- **Every movement of value names its location**, and any query that can span
+  branches says which — there is no implicit "all branches" read.
+- **A branch is not a tenant.** Branches share a catalogue and a customer list
+  by design. If two must not see each other's customers, they are two
+  businesses.
+- **One writer per invariant.** Stock moves through `InventoryService.move()`
+  and nothing else.
+- **Permissions are capabilities, not roles.** A route with no
+  `@RequirePermission` is authenticated-but-unrestricted, which is almost
+  never intended.
+
+Three of these are **not machine-enforced yet** — branch-scoped reads,
+pack-absence boot, and undecorated routes. ENTERPRISE-SCALE.md names them, in
+the order they bite. Do not assume a green build proves them.
+
 ## Use what exists
 
 Most drift here came from someone building a thing that already existed. Before

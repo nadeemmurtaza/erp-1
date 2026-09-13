@@ -37,6 +37,9 @@ export interface AuthenticatedUser {
  * we keep accepting it, while every new response writes the new one. They
  * can be deleted once the longest max-age below has passed.
  */
+/** Marks a route as deliberately open to any signed-in user. @see AuthenticatedOnly */
+export const AUTHENTICATED_ONLY_KEY = 'auth:authenticatedOnly';
+
 export const REFRESH_COOKIE = 'newax_refresh';
 export const CART_COOKIE = 'newax_cart';
 

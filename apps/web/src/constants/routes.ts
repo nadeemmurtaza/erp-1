@@ -84,6 +84,7 @@ export const ROUTES = {
     stitchingBooking: (id: string) => `/admin/stitching/bookings/${id}`,
     stitchingJob: (id: string) => `/admin/stitching/jobs/${id}`,
     garments: '/admin/garments',
+    garment: (id: string) => `/admin/garments/${id}`,
     designs: '/admin/designs',
 
     contacts: '/admin/contacts',

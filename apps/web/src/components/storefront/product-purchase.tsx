@@ -246,7 +246,7 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
       </button>
 
       {error ? (
-        <p role="alert" className="whitespace-pre-line rounded-2xl bg-red-50 px-3 py-2 text-sm text-red-700 animate-slideUp">
+        <p role="alert" className="notice notice-error whitespace-pre-line animate-slideUp">
           {error}
         </p>
       ) : null}

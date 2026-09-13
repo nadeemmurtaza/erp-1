@@ -56,7 +56,7 @@ export default function PurchaseOrderDetailPage({ params }: { params: Promise<{ 
 
   if (error || !po) {
     return (
-      <p role="alert" className="card p-4 text-sm text-red-700">
+      <p role="alert" className="notice notice-error">
         {error || 'Purchase order not found'}
       </p>
     );

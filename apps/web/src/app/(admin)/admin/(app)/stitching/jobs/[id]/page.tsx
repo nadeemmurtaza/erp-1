@@ -107,7 +107,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
     return (
       <>
         {error ? (
-          <p role="alert" className="card p-4 text-sm text-red-700">
+          <p role="alert" className="notice notice-error">
             {error}
           </p>
         ) : (
@@ -137,7 +137,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 whitespace-pre-line p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4 whitespace-pre-line">
           {error}
         </p>
       ) : null}

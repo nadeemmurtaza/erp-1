@@ -58,7 +58,7 @@ export default function SlowMoversPage() {
         Variants with zero sales in the slow mover window.
       </p>
 
-      <div className="card mb-4 flex flex-wrap items-center gap-3 p-3">
+      <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-neutral-100 pb-4">
         <label className="text-sm font-medium text-neutral-900/70">Ageing bucket:</label>
         <div className="flex gap-2">
           {[0, 60, 90, 180, 365].map((age) => (
@@ -77,7 +77,7 @@ export default function SlowMoversPage() {
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}

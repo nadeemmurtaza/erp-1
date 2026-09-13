@@ -410,8 +410,23 @@ export class StitchingJobsService implements OnModuleInit {
 
     const tailors = await this.prisma.user.findMany({
       where: { role: 'TAILOR', isActive: true },
-      select: { id: true, firstName: true, lastName: true,  },
+      select: { id: true, firstName: true, lastName: true },
     });
+
+    /*
+     * Fetched separately and joined here, because TailorProfile has a unique
+     * userId but no Prisma `@relation` to User — so it cannot be `include`d,
+     * and the `(tailor as any).tailorProfile` this replaces was reading a
+     * property that never existed on the row. It was always undefined, which
+     * the `?? 0` then turned into a capacity of zero for every tailor, and
+     * the workload bars on the stitching page divide by that figure. Every
+     * bar has been rendering empty regardless of the real workload.
+     */
+    const profiles = await this.prisma.tailorProfile.findMany({
+      where: { userId: { in: tailors.map((tailor) => tailor.id) } },
+      select: { userId: true, displayName: true, capacityPerWeek: true },
+    });
+    const profileByUser = new Map(profiles.map((profile) => [profile.userId, profile]));
 
     return {
       byStage: STITCHING_STAGES.map((stage) => ({
@@ -420,8 +435,8 @@ export class StitchingJobsService implements OnModuleInit {
       })),
       tailors: tailors.map((tailor) => ({
         id: tailor.id,
-        name: (tailor as any).tailorProfile?.displayName ?? getPersonFullName(tailor),
-        capacityPerWeek: (tailor as any).tailorProfile?.capacityPerWeek ?? 0,
+        name: profileByUser.get(tailor.id)?.displayName ?? getPersonFullName(tailor),
+        capacityPerWeek: profileByUser.get(tailor.id)?.capacityPerWeek ?? 0,
         openJobs:
           byTailor.find((row) => row.assignedTailorId === tailor.id)?._count._all ?? 0,
       })),

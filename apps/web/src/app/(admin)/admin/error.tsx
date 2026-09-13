@@ -31,7 +31,7 @@ export default function AdminError({
           The action did not complete. Retrying is safe — nothing was saved.
         </p>
 
-        <pre className="mt-4 overflow-x-auto whitespace-pre-wrap rounded-md bg-red-50 p-3 text-xs text-red-700">
+        <pre className="notice notice-error mt-4">
           {error.message}
           {error.digest ? `\n\nReference: ${error.digest}` : ''}
         </pre>

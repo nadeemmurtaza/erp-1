@@ -116,13 +116,13 @@ export default function AccountMeasurementsPage() {
       <div className="grid gap-6 lg:grid-cols-[1fr_22rem]">
         <div className="space-y-3">
           {error ? (
-            <p role="alert" className="card p-4 text-sm text-red-700">
+            <p role="alert" className="notice notice-error">
               {error}
             </p>
           ) : null}
 
           {profiles.length === 0 ? (
-            <div className="card p-6 text-center text-sm text-neutral-900/50">
+            <div className="p-6 text-center text-sm text-neutral-900/45">
               No saved measurement profiles yet.
             </div>
           ) : (

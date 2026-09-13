@@ -39,7 +39,7 @@ export default function SupplierDetailPage({ params }: { params: Promise<{ id: s
 
   if (error || !supplier) {
     return (
-      <p role="alert" className="card p-4 text-sm text-red-700">
+      <p role="alert" className="notice notice-error">
         {error || 'Supplier not found'}
       </p>
     );

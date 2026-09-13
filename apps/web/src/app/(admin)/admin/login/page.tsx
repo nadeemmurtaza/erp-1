@@ -36,7 +36,13 @@ export default function AdminLoginPage() {
           Sign in to manage the catalogue and orders.
         </p>
 
-        <form onSubmit={onSubmit} className="card mt-6 space-y-4 p-6">
+        {/*
+         * No box. A border separates one thing from another, and this form is
+         * the only thing on the page — there is nothing on the other side of
+         * that line. The centred column and the space around it already say
+         * where the form begins.
+         */}
+        <form onSubmit={onSubmit} className="mt-6 space-y-4">
           <div>
             <label className="field-label" htmlFor="identifier">
               Email or phone
@@ -67,7 +73,7 @@ export default function AdminLoginPage() {
           </div>
 
           {error ? (
-            <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p role="alert" className="notice notice-error">
               {error}
             </p>
           ) : null}

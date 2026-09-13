@@ -1,3 +1,4 @@
+import type { PurchaseOrderStatus } from '../../core/prisma/client';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { CreateSupplierDto, UpdateSupplierDto, AddSupplierProductDto } from './dto/supplier.dto';
@@ -55,7 +56,7 @@ export class PurchasingService {
 
   async findAllPurchaseOrders(status?: string) {
     return this.prisma.purchaseOrder.findMany({
-      where: status ? { status: status as any } : undefined,
+      where: status ? { status: status as PurchaseOrderStatus } : undefined,
       include: {
         supplier: { select: { id: true, name: true } },
       },

@@ -201,7 +201,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
 
   if (error && !order) {
     return (
-      <p role="alert" className="card p-4 text-sm text-red-700">
+      <p role="alert" className="notice notice-error">
         {error}
       </p>
     );
@@ -209,7 +209,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
 
   if (!order) {
     return (
-      <p role="alert" className="card p-4 text-sm text-red-700">
+      <p role="alert" className="notice notice-error">
         Order not found.
       </p>
     );
@@ -265,7 +265,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
       />
 
       {error ? (
-        <p role="alert" className="card mb-4 whitespace-pre-line p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4 whitespace-pre-line">
           {error}
         </p>
       ) : null}

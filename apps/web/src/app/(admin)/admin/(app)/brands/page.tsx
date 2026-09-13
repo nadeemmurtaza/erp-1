@@ -116,7 +116,7 @@ export default function AdminBrandsPage() {
       </p>
 
       {error ? (
-        <p role="alert" className="card mb-4 whitespace-pre-line p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4 whitespace-pre-line">
           {error}
         </p>
       ) : null}

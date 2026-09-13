@@ -80,7 +80,7 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
   };
 
   if (busy) return <p className="text-sm text-neutral-900/50 p-4">Loading receiving sheet...</p>;
-  if (error || !po) return <p className="card p-4 text-sm text-red-700">{error || 'Not found'}</p>;
+  if (error || !po) return <p className="notice notice-error">{error || 'Not found'}</p>;
 
   return (
     <>
@@ -89,7 +89,7 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
         Record stock entering the warehouse from {po.supplier.name}.
       </p>
 
-      {error ? <p role="alert" className="card mb-4 p-4 text-sm text-red-700">{error}</p> : null}
+      {error ? <p role="alert" className="notice notice-error mb-4">{error}</p> : null}
 
       <div className="card overflow-hidden mb-6">
         <div className="overflow-x-auto">

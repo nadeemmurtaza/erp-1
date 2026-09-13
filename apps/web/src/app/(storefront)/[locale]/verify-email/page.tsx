@@ -44,7 +44,7 @@ export default function VerifyEmailPage() {
             Your email address is confirmed.
           </p>
         ) : (
-          <p className="mt-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">
+          <p className="notice notice-error mt-6">
             {error ?? 'This verification link is missing its token.'}
           </p>
         )}

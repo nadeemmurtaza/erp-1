@@ -112,7 +112,7 @@ export default function AdminOrdersPage() {
         description="Confirm, prepare and dispatch. Cancelling an order puts its stock back."
       />
 
-      <div className="card mb-4 flex flex-wrap gap-3 p-3">
+      <div className="mb-6 flex flex-wrap gap-3 border-b border-neutral-100 pb-4">
         <input
           type="search"
           placeholder="Order number, name or phone"
@@ -141,7 +141,7 @@ export default function AdminOrdersPage() {
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 whitespace-pre-line p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4 whitespace-pre-line">
           {error}
         </p>
       ) : null}

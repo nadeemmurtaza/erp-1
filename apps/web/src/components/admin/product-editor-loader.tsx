@@ -51,7 +51,7 @@ export function ProductEditorLoader({ productId }: { productId?: string }) {
 
   if (error) {
     return (
-      <p role="alert" className="card p-4 text-sm text-red-700">
+      <p role="alert" className="notice notice-error">
         {error}
       </p>
     );

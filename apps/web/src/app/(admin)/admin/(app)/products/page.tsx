@@ -67,7 +67,7 @@ export default function AdminProductsPage() {
         </div>
       </div>
 
-      <div className="card mb-4 flex flex-wrap gap-3 p-3">
+      <div className="mb-6 flex flex-wrap gap-3 border-b border-neutral-100 pb-4">
         <input
           type="search"
           placeholder="Search name, slug or SKU"
@@ -111,7 +111,7 @@ export default function AdminProductsPage() {
       </div>
 
       {error ? (
-        <p role="alert" className="card p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error">
           {error}
         </p>
       ) : null}

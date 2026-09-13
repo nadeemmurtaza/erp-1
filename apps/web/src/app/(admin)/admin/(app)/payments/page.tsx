@@ -76,7 +76,7 @@ export default function AdminPaymentsPage() {
       </p>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}
@@ -84,7 +84,7 @@ export default function AdminPaymentsPage() {
       {!payments ? (
         <Loading />
       ) : payments.length === 0 ? (
-        <p className="card p-8 text-center text-sm text-neutral-900/50">
+        <p className="p-8 text-center text-sm text-neutral-900/45">
           Nothing waiting. Every payment is settled.
         </p>
       ) : (

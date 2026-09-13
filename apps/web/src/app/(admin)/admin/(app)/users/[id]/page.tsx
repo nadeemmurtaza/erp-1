@@ -158,7 +158,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
 
   if (!user) {
     return error ? (
-      <p role="alert" className="card p-4 text-sm text-red-700">
+      <p role="alert" className="notice notice-error">
         {error}
       </p>
     ) : (
@@ -184,7 +184,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
       </p>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}

@@ -455,7 +455,11 @@ export class CartService {
     }
 
     const measurementValues = request.measurementValues
-      ? await this.validators.validate('measurements', garment.fields, request.measurementValues)
+      ? await this.validators.validate<MeasurementValues>(
+          'measurements',
+          garment.fields,
+          request.measurementValues,
+        )
       : null;
 
     // Which options are valid for this garment, whether a SINGLE-select group

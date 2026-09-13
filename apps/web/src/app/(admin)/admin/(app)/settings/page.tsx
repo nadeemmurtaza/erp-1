@@ -129,7 +129,7 @@ export default function AdminSettingsPage() {
         </h2>
 
         {error ? (
-          <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+          <p role="alert" className="notice notice-error mb-4">
             {error}
           </p>
         ) : null}
@@ -214,7 +214,7 @@ export default function AdminSettingsPage() {
       <section>
         <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-neutral-900/50">Audit Log</h2>
 
-        <div className="card mb-4 flex flex-wrap items-end gap-3 p-3">
+        <div className="mb-6 flex flex-wrap items-end gap-3 border-b border-neutral-100 pb-4">
           <label className="block">
             <span className="field-label">Entity</span>
             <input
@@ -263,7 +263,7 @@ export default function AdminSettingsPage() {
         </div>
 
         {auditError ? (
-          <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+          <p role="alert" className="notice notice-error mb-4">
             {auditError}
           </p>
         ) : null}

@@ -424,6 +424,31 @@
   }
 
   /*
+   * A message about what just happened — a failed save, a confirmed one.
+   *
+   * This was written out at thirty-seven call sites as `card mb-4 p-4 text-sm
+   * text-red-700`, which is two mistakes at once. It put a border around a
+   * message, when a tint already says "this is not the page, this is a thing
+   * that happened"; and it pinned Tailwind's stock red rather than the
+   * feedback token, so a red that means "failed" and a red that means
+   * "destructive" were different colours by accident.
+   *
+   * No border. The tint is the boundary.
+   */
+  .notice {
+    @apply block px-3 py-2.5 text-sm;
+    border-radius: var(--radius);
+  }
+
+  .notice-error {
+    @apply bg-feedback-negative/10 text-feedback-negative;
+  }
+
+  .notice-success {
+    @apply bg-feedback-positive/10 text-feedback-positive;
+  }
+
+  /*
    * A status pill. Fully round on purpose, and the one place roundness
    * survives: it separates "this is a state" from "this is a control", now
    * that controls are square.

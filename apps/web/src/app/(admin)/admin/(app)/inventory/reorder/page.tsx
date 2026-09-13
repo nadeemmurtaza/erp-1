@@ -142,8 +142,8 @@ export default function ReorderSuggestionsPage() {
         Variants below their reorder point. Select items to draft purchase orders automatically.
       </p>
 
-      {error ? <p role="alert" className="card mb-4 p-4 text-sm text-red-700">{error}</p> : null}
-      {success ? <p role="alert" className="card mb-4 p-4 text-sm text-green-700">{success}</p> : null}
+      {error ? <p role="alert" className="notice notice-error mb-4">{error}</p> : null}
+      {success ? <p role="alert" className="notice notice-success mb-4">{success}</p> : null}
 
       <div className="mb-4 flex items-center justify-between">
         <p className="text-sm text-neutral-900/70">

@@ -46,7 +46,7 @@ export default function UnsubscribePage() {
             you — those aren&rsquo;t marketing.
           </p>
         ) : (
-          <p className="mt-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">
+          <p className="notice notice-error mt-6">
             {error ?? 'This unsubscribe link is missing its details.'}
           </p>
         )}

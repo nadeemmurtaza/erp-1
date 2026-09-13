@@ -837,7 +837,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
   return (
     <div className="space-y-4 pb-16">
       {error ? (
-        <p role="alert" className="card whitespace-pre-line p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error whitespace-pre-line">
           {error}
         </p>
       ) : null}

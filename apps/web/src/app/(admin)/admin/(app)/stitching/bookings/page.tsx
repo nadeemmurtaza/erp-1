@@ -50,7 +50,7 @@ export default function BookingsPage() {
         that is what releases the garments to the workshop.
       </p>
 
-      <div className="card mb-4 flex flex-wrap gap-3 p-3">
+      <div className="mb-6 flex flex-wrap gap-3 border-b border-neutral-100 pb-4">
         <select
           value={status}
           onChange={(event) => setStatus(event.target.value as StitchingOrderStatus | '')}
@@ -67,7 +67,7 @@ export default function BookingsPage() {
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}

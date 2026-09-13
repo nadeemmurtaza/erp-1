@@ -108,7 +108,7 @@ export default function AdminInventoryPage() {
         Stock on hand and movement ledger.
       </p>
 
-      <div className="card mb-4 flex flex-wrap items-center gap-3 p-3">
+      <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-neutral-100 pb-4">
         <input
           type="search"
           placeholder="Search SKU or product"
@@ -133,7 +133,7 @@ export default function AdminInventoryPage() {
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}

@@ -13,6 +13,7 @@ import {
   type AdminNavGroup,
   type AdminNavItem,
 } from './nav-registry';
+import { CommandPalette } from './command-palette';
 import { AdminProviders } from '@/providers/admin-providers';
 import { ROUTES } from '@/constants/routes';
 import { BRAND } from '@newax/shared';
@@ -157,6 +158,13 @@ export function AdminShell({ children }: { children: ReactNode }) {
               <line x1="4" x2="20" y1="18" y2="18" />
             </svg>
           </button>
+
+          {/*
+            Next to the menu button rather than in the corner: it is the one
+            control on this bar somebody reaches for on purpose, and the
+            shortcut printed on it is how that gets learned.
+          */}
+          <CommandPalette permissions={user.permissions} enabledModules={enabledModules} />
 
           <div className="ms-auto flex items-center gap-3 text-sm">
             <Link href="/en" className="text-neutral-900/60 hover:text-accent-hover">

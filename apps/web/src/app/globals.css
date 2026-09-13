@@ -262,6 +262,168 @@
     border-radius: var(--radius);
   }
 
+  /*
+   * ---------------------------------------------------------------------
+   * Quiet chrome
+   *
+   * Everything below shares one idea: a boundary is expensive, so most
+   * grouping is done with a background shift, a single rule, or nothing at
+   * all but space. The audit kept finding pages where a dozen borders were
+   * each announcing "this is a group" until none of them meant anything.
+   * ---------------------------------------------------------------------
+   */
+
+  /*
+   * The eyebrow. Column headers, metric labels, the group headings down a
+   * nav. Always uppercase, always the quietest grey, always 11px — small
+   * enough that nobody mistakes it for content, which is its whole job.
+   */
+  .eyebrow {
+    @apply text-2xs font-medium uppercase tracking-wider text-neutral-900/45;
+  }
+
+  /*
+   * Navigation that marks the current page with a rule, not a filled pill.
+   * A pill is a button's shape; using it for "you are here" makes every nav
+   * look like a row of controls. The rule is drawn transparent when
+   * inactive so the text never shifts by a pixel on selection.
+   */
+  .nav-link {
+    @apply block border-s-2 border-transparent py-1.5 text-sm text-neutral-900/60 transition-colors;
+    @apply hover:text-neutral-900;
+  }
+
+  .nav-link-active {
+    @apply border-accent font-medium text-neutral-900;
+  }
+
+  /* The horizontal variant — tabs, section nav across the top. */
+  .nav-tab {
+    @apply border-b-2 border-transparent px-3 py-2 text-sm text-neutral-900/60 transition-colors;
+    @apply hover:text-neutral-900;
+  }
+
+  .nav-tab-active {
+    @apply border-accent font-medium text-neutral-900;
+  }
+
+  /*
+   * The metric row.
+   *
+   * No card per figure, no border between them: the cells butt against each
+   * other and the leading one is simply lighter than the rest. That reads as
+   * one instrument rather than four, and it is why `type.metric` is 40px —
+   * the size difference does the separating that borders would otherwise do.
+   *
+   * Scrolls sideways below `sm` instead of wrapping, so four metrics stay a
+   * row of four on a phone rather than becoming a 2x2 grid that looks like
+   * a different component.
+   */
+  .metric-strip {
+    @apply flex snap-x snap-mandatory overflow-x-auto bg-neutral-50 sm:overflow-visible;
+    scrollbar-width: none;
+  }
+
+  .metric-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .metric {
+    @apply min-w-[9.5rem] flex-1 shrink-0 snap-start px-4 py-4 lg:px-5 lg:py-5;
+  }
+
+  /* The one being read. Lifted out of the strip by background alone. */
+  .metric-lead {
+    @apply bg-white;
+  }
+
+  .metric-value {
+    @apply mt-1 block text-2xl font-medium tabular-nums text-neutral-900 lg:text-metric;
+  }
+
+  .metric-delta {
+    @apply mt-0.5 block text-xs tabular-nums;
+  }
+
+  .metric-up {
+    @apply text-feedback-positive;
+  }
+
+  .metric-down {
+    @apply text-feedback-negative;
+  }
+
+  /*
+   * A text button — the uppercase, boxless secondary action. Reserved for
+   * the ones that sit beside a page title (Import, Export, Cancel): giving
+   * them a box would make them compete with the one primary button, and
+   * that competition is what the single-primary-action rule exists to stop.
+   */
+  .btn-text {
+    @apply inline-flex min-h-11 items-center gap-2 text-2xs font-semibold uppercase tracking-wider transition-colors fold:min-h-0;
+    @apply text-neutral-900/70 hover:text-neutral-900 disabled:cursor-not-allowed disabled:opacity-40;
+  }
+
+  /*
+   * An input with only a baseline. For controls that live in a page header —
+   * a search field, a date range — where a full box would read as a form the
+   * reader is expected to fill in rather than a filter they may ignore.
+   */
+  .field-inline {
+    @apply w-full border-0 border-b border-neutral-200 bg-transparent px-0 text-neutral-900 shadow-none transition-colors;
+    @apply placeholder:text-neutral-900/35 focus:border-accent focus:ring-0;
+    @apply min-h-11 text-base sm:min-h-0 sm:text-sm;
+    border-radius: 0;
+  }
+
+  /*
+   * A borderless, filled field. The form counterpart to `field-inline`: the
+   * fill marks where to type without drawing a rectangle around every
+   * question, which on an 18-field page is eighteen rectangles.
+   */
+  .field-flat {
+    @apply w-full border-0 bg-neutral-50 text-neutral-900 shadow-none transition-colors;
+    @apply placeholder:text-neutral-900/35 focus:bg-white focus:ring-1 focus:ring-accent;
+    @apply min-h-11 px-3 py-2.5 text-base sm:min-h-0 sm:text-sm;
+    border-radius: var(--radius);
+  }
+
+  /*
+   * A status pill. Fully round on purpose, and the one place roundness
+   * survives: it separates "this is a state" from "this is a control", now
+   * that controls are square.
+   */
+  .pill {
+    @apply inline-flex items-center whitespace-nowrap px-2.5 py-0.5 text-xs font-medium;
+    border-radius: theme('borderRadius.full');
+  }
+
+  /*
+   * Rows separated by a rule and nothing else — no outer frame, no vertical
+   * lines, no zebra. A table is already a grid; drawing the grid again is
+   * the most common way these pages became noisy.
+   */
+  .table-flat {
+    @apply w-full border-collapse text-sm;
+  }
+
+  .table-flat thead th {
+    @apply border-b border-neutral-200 px-3 py-2.5 text-start;
+    @apply text-2xs font-medium uppercase tracking-wider text-neutral-900/45;
+  }
+
+  .table-flat tbody td {
+    @apply border-b border-neutral-100 px-3 py-3 align-middle;
+  }
+
+  .table-flat tbody tr:last-child td {
+    @apply border-b-0;
+  }
+
+  .table-flat tbody tr {
+    @apply transition-colors;
+  }
+
   .skeleton {
     @apply bg-gradient-to-r from-white via-neutral-50 to-white;
     background-size: 200% 100%;

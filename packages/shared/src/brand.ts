@@ -163,6 +163,18 @@ const colors = {
   white: '#ffffff',
   /** Rating stars only. Never repurpose it. */
   star: '#F5B841',
+  /**
+   * Direction, not decoration.
+   *
+   * A metric's delta, a confirmation, a destructive action. Deliberately not
+   * the accent: the accent moves with the client, while "this went up" has to
+   * stay green whatever the brand is. Red is reserved hard - a delete or a
+   * failure, never an emphasis.
+   */
+  feedback: {
+    positive: '#0F7A4D',
+    negative: '#B42318',
+  },
 } as const;
 
 /**
@@ -184,6 +196,12 @@ const radii = {
  * call sites.
  */
 const type = {
+  /**
+   * The eyebrow. Column headers, metric labels, the group headings down the
+   * side of a nav - always uppercase, always the quietest grey. Deliberately
+   * below `tiny`: at 11px nobody mistakes it for content, which is the job.
+   */
+  micro: { size: 11, line: 16 },
   tiny: { size: 12, line: 16 },
   small: { size: 14, line: 20 },
   body: { size: 16, line: 24 },
@@ -191,6 +209,12 @@ const type = {
   heading: { size: 20, line: 28 },
   title: { size: 24, line: 32 },
   display: { size: 30, line: 36 },
+  /**
+   * The number in a metric cell, and nothing else. A figure read at a glance
+   * has to outrank its own label by a wide margin - that size difference is
+   * exactly why a row of metrics needs no boxes around each one.
+   */
+  metric: { size: 40, line: 44 },
 } as const;
 
 /**

@@ -13,10 +13,12 @@ export { Section } from './section';
 // Progressive disclosure — the mechanism layers 3 and 4 depend on.
 export { Disclosure } from './disclosure';
 export { Tabs, type TabItem } from './tabs';
+export { SectionRail, type RailSection } from './section-rail';
 
 // Data display
 export { DataTable, type DataTableColumn } from './data-table';
 export { EmptyState } from './empty-state';
+export { MetricStrip, type MetricItem } from './metric-strip';
 export { Badge, type BadgeTone } from './badge';
 
 // Controls and feedback

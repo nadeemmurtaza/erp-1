@@ -9,7 +9,7 @@ import { SalesChart } from '@/components/admin/sales-chart';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import type { VisitorAnalytics } from '@/types/api';
 import { ROUTES } from '@/constants/routes';
-import { Loading, PageHeader, Section } from '@/components/ui';
+import { Loading, MetricStrip, PageHeader, Section } from '@/components/ui';
 
 interface Dashboard {
   today: { orders: number; revenue: number };
@@ -175,33 +175,52 @@ export default function AdminDashboardPage() {
         )}
       </Section>
 
-      {/* The headline numbers are stat tiles, not a chart. */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat
-          index={0}
-          label="Today"
-          value={formatMoney(data.today.revenue)}
-          hint={`${data.today.orders} ${data.today.orders === 1 ? 'order' : 'orders'}`}
-        />
-        <Stat
-          index={1}
-          label="This month"
-          value={formatMoney(data.month.revenue)}
-          hint={`${data.month.orders} ${data.month.orders === 1 ? 'order' : 'orders'}`}
-        />
-        <Stat
-          index={2}
-          label="Total visitors"
-          value={visitors.totalVisitors.toLocaleString(intlTag('en'))}
-          hint={visitorsHint(days, visitors.visitorsChangePercent)}
-        />
-        <Stat
-          index={3}
-          label="Customers"
-          value={String(data.customers.total)}
-          hint={`${data.customers.repeat} repeat · ${data.customers.newThisMonth} new this month`}
-        />
-      </div>
+      {/*
+       * One strip, not four cards. Today's takings are what the shop opens
+       * this page to see, so that cell leads and the rest sit back a shade.
+       */}
+      <MetricStrip
+        label="Shop summary"
+        lead="today"
+        items={[
+          {
+            key: 'today',
+            label: 'Today',
+            value: formatMoney(data.today.revenue),
+            delta: {
+              label: `${data.today.orders} ${data.today.orders === 1 ? 'order' : 'orders'}`,
+              direction: 'flat',
+            },
+          },
+          {
+            key: 'month',
+            label: 'This month',
+            value: formatMoney(data.month.revenue),
+            delta: {
+              label: `${data.month.orders} ${data.month.orders === 1 ? 'order' : 'orders'}`,
+              direction: 'flat',
+            },
+          },
+          {
+            key: 'visitors',
+            label: 'Visitors',
+            value: visitors.totalVisitors.toLocaleString(intlTag('en')),
+            delta: {
+              label: visitorsHint(days, visitors.visitorsChangePercent),
+              direction: visitorDirection(visitors.visitorsChangePercent),
+            },
+          },
+          {
+            key: 'customers',
+            label: 'Customers',
+            value: String(data.customers.total),
+            delta: {
+              label: `${data.customers.repeat} repeat · ${data.customers.newThisMonth} new`,
+              direction: 'flat',
+            },
+          },
+        ]}
+      />
 
 
 
@@ -343,19 +362,6 @@ export default function AdminDashboardPage() {
   );
 }
 
-function Stat({ index, label, value, hint }: { index?: number; label: string; value: string; hint?: string }) {
-  return (
-    <div
-      className="card p-4 animate-fadeIn"
-      style={index !== undefined ? { animationDelay: `${(index + 1) * 75}ms` } : undefined}
-    >
-      <p className="text-sm text-neutral-900/60">{label}</p>
-      <p className="mt-1 text-2xl font-semibold text-neutral-900">{value}</p>
-      {hint ? <p className="mt-1 text-xs text-neutral-900/40">{hint}</p> : null}
-    </div>
-  );
-}
-
 function Mini({ label, value }: { label: string; value: number }) {
   return (
     <div>
@@ -365,6 +371,12 @@ function Mini({ label, value }: { label: string; value: number }) {
   );
 }
 
+
+/** More visitors is good news; fewer is not. Null reads as neither. */
+function visitorDirection(changePercent: number | null): 'up' | 'down' | 'flat' {
+  if (changePercent === null || changePercent === 0) return 'flat';
+  return changePercent > 0 ? 'up' : 'down';
+}
 
 /** vs the immediately preceding window of the same length, matching VisitorAnalytics.visitorsChangePercent. */
 function visitorsHint(days: number, changePercent: number | null): string {

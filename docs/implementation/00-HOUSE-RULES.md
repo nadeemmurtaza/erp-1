@@ -329,6 +329,9 @@ Plus, every time:
 - [ ] New behaviour has a test. Concurrency-sensitive code has a concurrency test.
 - [ ] The admin screen renders correctly for a user who holds *some* but not all
       of the relevant permissions.
+- [ ] Anything that renders passes the interface gate in §8 — one job, opens on
+      an overview, no literals, checked at all seven tiers, and the page makes
+      the product look smaller than it is.
 
 ---
 
@@ -427,3 +430,63 @@ explicitly. Do not compress the steps to save a deploy.
 - This holds even when CI is green, even when the change is trivial. If
   `production` needs to move and the owner has not said so, the answer is to
   ask — never to push or merge it yourself.
+
+
+---
+
+## 8. Interface rules
+
+These are the owner's, stated directly, and they bind every surface — admin,
+storefront, customer account, mobile. A feature that works but violates one of
+these is not done. They are repeated in the global agent instructions; this is
+the copy a human reads.
+
+### The seven laws
+
+1. **No hardcoding.** No brand, locale or design literal in application code.
+   Colour, radius, type step, currency, dial code, timezone, company name,
+   support address — every one resolves through an import from
+   `packages/shared/src/brand.ts`. The only exception is Newax's own
+   attribution and the `@newax/*` package scope.
+2. **Hide complexity in depth.** Power is never removed, only moved. Nothing
+   is deleted to make a page calm; it goes one level down, where the person
+   who wants it will look.
+3. **It should feel like there are only a few features.** This is the test the
+   other laws serve. A first-time user should perceive a small, obvious
+   product. The depth is real, complete and reachable — it simply is not on
+   screen until asked for. If a page makes the product look big, the page is
+   wrong, not the product.
+4. **Seven screens, no dead space.** Every layout is decided at all seven
+   tiers (`xs` 280, `sm` 380, `fold` 640, `md` 768, `lg` 1024, `xl` 1280,
+   `2xl` 1536), and none may waste the space it has. A phone layout centred in
+   a field of white at 1536px reads as broken, not calm.
+5. **One main job per page.** If a page has two jobs it is two pages. A second
+   job never earns its place by being "related".
+6. **No clutter at all.** Not "little clutter". A page ships when nothing
+   visible could be removed without harming the job.
+7. **Overview first, detail on click.** Every surface opens on the summary.
+   Detail arrives when asked for, never on load.
+
+### Which mechanism hides what
+
+| The detail is | Use |
+|---|---|
+| parts of one object | `SectionRail` — all present, sparse, jump to any |
+| separate tasks on one object | `Tabs` — one at a time |
+| rare, advanced or destructive | `Disclosure`, closed by default |
+| a different object | its own page |
+| history, audit, raw payloads | its own view, never inline |
+
+Everything comes from `apps/web/src/components/ui`. A page that invents its own
+visual language is the thing these rules exist to prevent.
+
+### Before you open a PR touching UI
+
+- purpose identifiable in two seconds, primary action obvious
+- it opens on an overview; no detail shown that was not asked for
+- checked at all seven tiers; none of them wastes its space
+- no brand, locale or design literal in the file
+- built from the shared primitives, not page-local utility strings
+- **the page makes the product look small**
+
+That last one is what to actually judge by. The rest is how it is achieved.

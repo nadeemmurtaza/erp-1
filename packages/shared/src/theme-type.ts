@@ -29,6 +29,7 @@ function rem(step: TypeStep): [string, { lineHeight: string }] {
 
 /** The scale keyed by Tailwind's utility names, ready for `theme.fontSize`. */
 export const TAILWIND_FONT_SIZE = {
+  '2xs': rem(THEME_TYPE.micro),
   xs: rem(THEME_TYPE.tiny),
   sm: rem(THEME_TYPE.small),
   base: rem(THEME_TYPE.body),
@@ -36,4 +37,5 @@ export const TAILWIND_FONT_SIZE = {
   xl: rem(THEME_TYPE.heading),
   '2xl': rem(THEME_TYPE.title),
   '3xl': rem(THEME_TYPE.display),
+  metric: rem(THEME_TYPE.metric),
 } as const;

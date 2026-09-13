@@ -320,11 +320,20 @@
    * a different component.
    */
   .metric-strip {
-    @apply flex snap-x snap-mandatory overflow-x-auto bg-neutral-50 sm:overflow-visible;
-    scrollbar-width: none;
+    @apply no-scrollbar flex snap-x snap-mandatory overflow-x-auto bg-neutral-50 sm:overflow-visible;
   }
 
-  .metric-strip::-webkit-scrollbar {
+  /*
+   * A scroller that does not announce itself. Used where the overflow is a
+   * navigation rather than a pane — a bar under those reads as a second,
+   * broken rule beneath the real one.
+   */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
 
@@ -422,6 +431,51 @@
 
   .table-flat tbody tr {
     @apply transition-colors;
+  }
+
+  /*
+   * Long-form prose — the legal pages, and anything else that is mostly
+   * paragraphs.
+   *
+   * These pages carried `prose prose-gray`, which did nothing at all: the
+   * typography plugin is not installed, so the classes were inert and the
+   * spacing was coming from a `space-y-8` on the wrapper plus whatever the
+   * browser does by default. This is the real thing, and it is scoped rather
+   * than global so it cannot leak into application screens.
+   */
+  /*
+   * The measure is capped at 72ch, and that is the one place the no-dead-space
+   * rule gives way: running legal prose to a 970px line is not "using the
+   * space", it is making the space unreadable, because the eye loses the start
+   * of the next line somewhere around 80 characters. The room that frees goes
+   * to the rail beside it, which is working space rather than nothing.
+   */
+  .prose-legal {
+    @apply max-w-[72ch] text-sm leading-relaxed text-neutral-900/75 lg:text-base;
+  }
+
+  .prose-legal p {
+    @apply mb-4 last:mb-0;
+  }
+
+  .prose-legal ul {
+    @apply mb-4 list-disc space-y-1.5 ps-5 last:mb-0;
+  }
+
+  .prose-legal ol {
+    @apply mb-4 list-decimal space-y-1.5 ps-5 last:mb-0;
+  }
+
+  .prose-legal h3 {
+    @apply mb-2 mt-6 font-semibold text-neutral-900;
+  }
+
+  .prose-legal strong {
+    @apply font-medium text-neutral-900;
+  }
+
+  .prose-legal a {
+    @apply text-accent underline underline-offset-2 transition-colors hover:text-accent-hover;
   }
 
   .skeleton {

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatDate, formatMoney, intlTag } from '@newax/shared';
+import { formatDate, formatMoney } from '@newax/shared';
 import { adminFetch, getAccessToken } from '@/lib/admin-client';
 import { API_URL, toSearchParams } from '@/lib/api';
 import type { PaginatedResponse } from '@/types/api';
@@ -374,10 +374,7 @@ function ContactDetailPanel({
           label="Last"
           value={
             contact.lastOrderAt
-              ? new Date(contact.lastOrderAt).toLocaleDateString(intlTag('en'), {
-                  day: 'numeric',
-                  month: 'short',
-                })
+              ? formatDate(contact.lastOrderAt)
               : '—'
           }
         />

@@ -3,13 +3,13 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { cn } from '@/utils/cn';
-import { formatDate, formatMoney, intlTag, toMajor } from '@newax/shared';
+import { formatDate, formatMoney, formatNumber, toMajor } from '@newax/shared';
 import { SalesChart } from '@/components/admin/sales-chart';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import type { VisitorAnalytics } from '@/types/api';
 import { ROUTES } from '@/constants/routes';
-import { Loading, MetricStrip, PageHeader, Section } from '@/components/ui';
+import { Disclosure, Loading, MetricStrip, PageHeader, Section } from '@/components/ui';
+import { RangePicker, type RangeDays } from '@/components/admin/range-picker';
 
 interface Dashboard {
   today: { orders: number; revenue: number };
@@ -42,11 +42,9 @@ interface FollowUp {
   lead: { id: string; name: string; phone: string | null } | null;
 }
 
-const RANGES = [7, 30, 90] as const;
-
 export default function AdminDashboardPage() {
   const router = useRouter();
-  const [days, setDays] = useState<number>(30);
+  const [days, setDays] = useState<RangeDays>(30);
   const [data, setData] = useState<Dashboard | null>(null);
   const [extended, setExtended] = useState<ExtendedAnalyticsSlice | null>(null);
   const [visitors, setVisitors] = useState<VisitorAnalytics | null>(null);
@@ -94,7 +92,7 @@ export default function AdminDashboardPage() {
 
   if (error) {
     return (
-      <p role="alert" className="card p-4 text-sm text-red-700">
+      <p role="alert" className="text-sm text-feedback-negative">
         {error}
       </p>
     );
@@ -154,17 +152,21 @@ export default function AdminDashboardPage() {
         and it used to sit under four KPI tiles as a row of small chips — the
         one actionable thing on the page, rendered smaller than the things
         that are only informative.
+
+        Flex, not a grid. A three-column grid holding four chips leaves two
+        empty cells on the second row, and an empty cell in a bordered grid
+        reads as something that failed to load.
       */}
       <Section title="Needs attention">
         {attention.length === 0 ? (
           <p className="text-sm text-neutral-900/50">Nothing waiting. Everything is up to date.</p>
         ) : (
-          <ul className="grid gap-2 xs:grid-cols-2 lg:grid-cols-3">
+          <ul className="flex flex-wrap gap-2">
             {attention.map((item) => (
-              <li key={item.label}>
+              <li key={item.label} className="min-w-0 flex-1 basis-64">
                 <Link
                   href={item.href}
-                  className="flex items-baseline gap-2 rounded border border-amber-600/40 bg-amber-600/10 px-3 py-2.5 text-sm transition-colors hover:bg-amber-600/20"
+                  className="flex h-full items-baseline gap-2 rounded border border-amber-600/40 bg-amber-600/10 px-3 py-2.5 text-sm transition-colors hover:bg-amber-600/20"
                 >
                   <span className="text-base font-semibold text-neutral-900">{item.value}</span>
                   <span className="text-neutral-900/80">{item.label}</span>
@@ -176,12 +178,16 @@ export default function AdminDashboardPage() {
       </Section>
 
       {/*
-       * One strip, not four cards. Today's takings are what the shop opens
-       * this page to see, so that cell leads and the rest sit back a shade.
+       * The strip is the overview and every cell is a way into its own
+       * detail. Four screens' worth of breakdown live here, one click apart
+       * and none of it on screen until asked for — which is also what closed
+       * the hole this page used to carry, where a chart sat in two columns of
+       * a three-column grid and the third column was simply empty.
        */}
       <MetricStrip
         label="Shop summary"
         lead="today"
+        className="mb-10"
         items={[
           {
             key: 'today',
@@ -191,6 +197,52 @@ export default function AdminDashboardPage() {
               label: `${data.today.orders} ${data.today.orders === 1 ? 'order' : 'orders'}`,
               direction: 'flat',
             },
+            detail: (
+              <>
+                <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <h3 className="text-sm font-medium text-neutral-900">Revenue</h3>
+                    <p className="text-xs text-neutral-900/50">
+                      Daily, excluding cancelled and returned orders.
+                    </p>
+                  </div>
+                  <RangePicker value={days} onChange={setDays} />
+                </div>
+
+                <SalesChart series={data.salesSeries} />
+
+                <Disclosure label="Revenue as a table" className="mt-4">
+                  <div className="max-h-64 overflow-auto">
+                    <table className="table-flat">
+                      <thead>
+                        <tr>
+                          <th scope="col">Date</th>
+                          <th scope="col" className="text-end">
+                            Orders
+                          </th>
+                          <th scope="col" className="text-end">
+                            Revenue
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[...data.salesSeries].reverse().map((point) => (
+                          <tr key={point.date}>
+                            <td className="text-neutral-900/70">{point.date}</td>
+                            <td className="text-end tabular-nums text-neutral-900/70">
+                              {point.orders}
+                            </td>
+                            <td className="text-end tabular-nums text-neutral-900">
+                              {formatNumber(toMajor(point.revenue))}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </Disclosure>
+              </>
+            ),
           },
           {
             key: 'month',
@@ -200,164 +252,206 @@ export default function AdminDashboardPage() {
               label: `${data.month.orders} ${data.month.orders === 1 ? 'order' : 'orders'}`,
               direction: 'flat',
             },
+            detail: (
+              <div className="grid gap-6 fold:grid-cols-2">
+                <div>
+                  <h3 className="eyebrow mb-3">Average order value</h3>
+                  <p className="text-2xl font-medium tabular-nums text-neutral-900">
+                    {formatMoney(data.averageOrderValue)}
+                  </p>
+                  <p className="mt-1 text-xs text-neutral-900/50">
+                    Across {data.month.orders} {data.month.orders === 1 ? 'order' : 'orders'} this
+                    month.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="eyebrow mb-3">Revenue by category</h3>
+                  {extended.revenueByCategory.length === 0 ? (
+                    <p className="text-sm text-neutral-900/45">No sales in this window.</p>
+                  ) : (
+                    <ul className="divide-y divide-neutral-100">
+                      {extended.revenueByCategory.slice(0, 6).map((row) => (
+                        <li
+                          key={row.category}
+                          className="flex items-baseline justify-between gap-3 py-2 text-sm"
+                        >
+                          <span className="min-w-0 truncate text-neutral-900">{row.category}</span>
+                          <span className="shrink-0 tabular-nums text-neutral-900/60">
+                            {formatMoney(row.revenue)}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            ),
           },
           {
             key: 'visitors',
             label: 'Visitors',
-            value: visitors.totalVisitors.toLocaleString(intlTag('en')),
+            value: formatNumber(visitors.totalVisitors),
             delta: {
               label: visitorsHint(days, visitors.visitorsChangePercent),
               direction: visitorDirection(visitors.visitorsChangePercent),
             },
+            detail: (
+              <div className="grid gap-6 fold:grid-cols-2">
+                <div>
+                  <h3 className="eyebrow mb-3">Where they stop</h3>
+                  <ul className="divide-y divide-neutral-100">
+                    {[
+                      { label: 'Product views', value: visitors.funnel.productViews },
+                      { label: 'Added to cart', value: visitors.funnel.addToCart },
+                      { label: 'Checkout started', value: visitors.funnel.checkoutStarted },
+                      { label: 'Purchases completed', value: visitors.funnel.purchasesCompleted },
+                    ].map((stage) => (
+                      <li
+                        key={stage.label}
+                        className="flex items-baseline justify-between gap-3 py-2 text-sm"
+                      >
+                        <span className="text-neutral-900">{stage.label}</span>
+                        <span className="tabular-nums text-neutral-900/60">
+                          {formatNumber(stage.value)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="eyebrow mb-3">Where they came from</h3>
+                  {visitors.trafficSources.length === 0 ? (
+                    <p className="text-sm text-neutral-900/45">No page views in this window.</p>
+                  ) : (
+                    <ul className="divide-y divide-neutral-100">
+                      {visitors.trafficSources.slice(0, 6).map((row) => (
+                        <li
+                          key={row.source}
+                          className="flex items-baseline justify-between gap-3 py-2 text-sm"
+                        >
+                          <span className="min-w-0 truncate text-neutral-900">{row.source}</span>
+                          <span className="shrink-0 tabular-nums text-neutral-900/60">
+                            {formatNumber(row.count)} · {row.percent}%
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <Link
+                    href={ROUTES.admin.insights}
+                    className="btn-text mt-3"
+                  >
+                    Full traffic report
+                  </Link>
+                </div>
+              </div>
+            ),
           },
           {
             key: 'customers',
             label: 'Customers',
-            value: String(data.customers.total),
+            value: formatNumber(data.customers.total),
             delta: {
               label: `${data.customers.repeat} repeat · ${data.customers.newThisMonth} new`,
               direction: 'flat',
             },
+            detail: (
+              <div className="grid gap-6 fold:grid-cols-2">
+                <div>
+                  <h3 className="eyebrow mb-3">Follow-ups due</h3>
+                  {followUps.length === 0 ? (
+                    <p className="text-sm text-neutral-900/45">Nothing due. Nobody forgotten.</p>
+                  ) : (
+                    <ul className="divide-y divide-neutral-100">
+                      {followUps.slice(0, 6).map((task) => (
+                        <li key={task.id} className="py-2">
+                          <p className="text-sm text-neutral-900">{task.note}</p>
+                          <p className="text-xs text-neutral-900/50">
+                            {task.contact?.name ?? task.lead?.name ?? 'Unassigned'} · due{' '}
+                            {formatDate(task.dueAt)}
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <Link href={ROUTES.admin.contacts} className="btn-text mt-3">
+                    All customers
+                  </Link>
+                </div>
+
+                <div>
+                  <h3 className="eyebrow mb-3">Best sellers</h3>
+                  {data.topProducts.length === 0 ? (
+                    <p className="text-sm text-neutral-900/45">No sales in this window.</p>
+                  ) : (
+                    <ul className="divide-y divide-neutral-100">
+                      {data.topProducts.slice(0, 6).map((product) => (
+                        <li
+                          key={product.name}
+                          className="flex items-baseline justify-between gap-3 py-2 text-sm"
+                        >
+                          <span className="min-w-0 truncate text-neutral-900">{product.name}</span>
+                          <span className="shrink-0 tabular-nums text-neutral-900/60">
+                            {product.quantity} sold
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            ),
           },
         ]}
       />
 
-
-
-      <div className="mt-6 grid gap-4 fold:grid-cols-2 lg:grid-cols-3">
-        <section className="card p-4 sm:p-5 lg:col-span-2">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h2 className="text-sm font-semibold text-neutral-900">Revenue</h2>
-              <p className="text-xs text-neutral-900/50">Daily, excluding cancelled and returned orders.</p>
-            </div>
-
-            <div className="flex gap-1" role="group" aria-label="Date range">
-              {RANGES.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => setDays(option)}
-                  aria-pressed={days === option}
-                  className={cn(
-                    'rounded-md px-3 py-1.5 text-sm transition-colors',
-                    days === option ? 'bg-accent-hover text-white' : 'text-neutral-900/70 hover:bg-white',
-                  )}
-                >
-                  {option} days
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <SalesChart series={data.salesSeries} />
-        </section>
-
-      </div>
-
-      <div className="mt-6 grid gap-4 fold:grid-cols-2 lg:grid-cols-3">
-
-
-      </div>
-
-      <div className="mt-6 grid gap-4 fold:grid-cols-2">
-
-        <div className="space-y-4">
-          <section className="card">
-            <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
-              <h2 className="text-sm font-semibold text-neutral-900">Follow-ups due</h2>
-              <Link href={ROUTES.admin.contacts} className="text-xs font-medium text-accent-hover hover:underline">
-                Customers
+      {/*
+       * What is happening in the workshop and the catalogue right now. These
+       * are states rather than figures, so they stay on the page rather than
+       * behind a metric — and they sit in a grid sized to what it holds, not
+       * a three-column one with a permanent gap in it.
+       */}
+      <div className="grid gap-8 fold:grid-cols-2">
+        {data.stitchingByStage.length > 0 ? (
+          <Section
+            title="Tailoring in progress"
+            action={
+              <Link href={ROUTES.admin.stitching} className="btn-text">
+                Tailor queue
               </Link>
-            </div>
-
-            {followUps.length === 0 ? (
-              <p className="px-4 py-6 text-sm text-neutral-900/50">Nothing due. Nobody forgotten.</p>
-            ) : (
-              <ul className="divide-y divide-white">
-                {followUps.slice(0, 6).map((task) => (
-                  <li key={task.id} className="px-4 py-3">
-                    <p className="text-sm text-neutral-900">{task.note}</p>
-                    <p className="text-xs text-neutral-900/50">
-                      {task.contact?.name ?? task.lead?.name ?? 'Unassigned'} · due{' '}
-                      {formatDate(task.dueAt)}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-
-          {data.stitchingByStage.length > 0 ? (
-            <section className="card p-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-sm font-semibold text-neutral-900">Tailoring in progress</h2>
-                <Link
-                  href={ROUTES.admin.stitching}
-                  className="text-xs font-medium text-accent-hover hover:underline"
-                >
-                  Tailor queue
-                </Link>
-              </div>
-              {/* Six named stages: a labelled list reads better than a chart. */}
-              <dl className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2 text-sm sm:grid-cols-3">
-                {data.stitchingByStage.map((row) => (
-                  <div key={row.stage} className="flex justify-between gap-2">
-                    <dt className="text-neutral-900/60">
-                      {row.stage.charAt(0) + row.stage.slice(1).toLowerCase()}
-                    </dt>
-                    <dd className="font-medium text-neutral-900">{row.count}</dd>
-                  </div>
-                ))}
-              </dl>
-            </section>
-          ) : null}
-
-          <section className="card p-4">
-            <h2 className="text-sm font-semibold text-neutral-900">Catalogue</h2>
-            <dl className="mt-3 grid grid-cols-3 gap-3 text-sm">
-              <Mini label="Live" value={data.catalogue.live} />
-              <Mini label="Drafts" value={data.catalogue.drafts} />
-              <Mini label="Services" value={data.catalogue.services} />
-            </dl>
-          </section>
-        </div>
-      </div>
-
-      {/* Everything the chart plots, also available as numbers. */}
-      <details className="card mt-6 p-4">
-        <summary className="cursor-pointer text-sm font-semibold text-neutral-900">
-          Revenue as a table
-        </summary>
-        <div className="mt-3 max-h-64 overflow-auto">
-          <table className="w-full text-sm">
-            <thead className="sticky top-0 bg-white">
-              <tr>
-                <th scope="col" className="py-1 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
-                  Date
-                </th>
-                <th scope="col" className="py-1 text-end text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
-                  Orders
-                </th>
-                <th scope="col" className="py-1 text-end text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
-                  Revenue
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white">
-              {[...data.salesSeries].reverse().map((point) => (
-                <tr key={point.date}>
-                  <td className="py-1 text-neutral-900/70">{point.date}</td>
-                  <td className="py-1 text-end tabular-nums text-neutral-900/70">{point.orders}</td>
-                  <td className="py-1 text-end tabular-nums text-neutral-900">
-                    {toMajor(point.revenue).toLocaleString(intlTag('en'))}
-                  </td>
-                </tr>
+            }
+          >
+            {/* Six named stages: a labelled list reads better than a chart. */}
+            <dl className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm sm:grid-cols-3">
+              {data.stitchingByStage.map((row) => (
+                <div key={row.stage} className="flex justify-between gap-2">
+                  <dt className="text-neutral-900/60">
+                    {row.stage.charAt(0) + row.stage.slice(1).toLowerCase()}
+                  </dt>
+                  <dd className="font-medium tabular-nums text-neutral-900">{row.count}</dd>
+                </div>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </details>
+            </dl>
+          </Section>
+        ) : null}
+
+        <Section
+          title="Catalogue"
+          action={
+            <Link href={ROUTES.admin.products} className="btn-text">
+              Products
+            </Link>
+          }
+        >
+          <dl className="grid grid-cols-3 gap-3 text-sm">
+            <Mini label="Live" value={data.catalogue.live} />
+            <Mini label="Drafts" value={data.catalogue.drafts} />
+            <Mini label="Services" value={data.catalogue.services} />
+          </dl>
+        </Section>
+      </div>
     </>
   );
 }

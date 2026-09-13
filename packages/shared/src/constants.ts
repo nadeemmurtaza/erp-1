@@ -100,6 +100,39 @@ export function formatDateTime(
   }).format(new Date(value));
 }
 
+/**
+ * A chart axis tick — "7 Sept". No year, because an axis has one.
+ *
+ * `withWeekday` adds it for a tooltip, where the reader is looking at one
+ * point rather than scanning a row of them.
+ */
+export function formatDateShort(
+  value: Date | string | number,
+  locale: Locale = 'en',
+  { withWeekday = false }: { withWeekday?: boolean } = {},
+  timeZone: string = SHOP_TIME_ZONE,
+): string {
+  return new Intl.DateTimeFormat(intlTag(locale), {
+    day: 'numeric',
+    month: 'short',
+    ...(withWeekday ? { weekday: 'short' as const } : {}),
+    timeZone,
+  }).format(new Date(value));
+}
+
+/**
+ * A plain count, grouped for the locale — 6017 -> "6,017".
+ *
+ * Not money and not a date, which is exactly why it kept being written by
+ * hand: there was a formatter for the other two, so seven call sites reached
+ * for `toLocaleString(intlTag('en'))` instead, each pinning English rather
+ * than the reader's locale. Visitor counts, funnel stages and traffic rows
+ * all rendered with Latin digits for an Urdu reader because of it.
+ */
+export function formatNumber(value: number, locale: Locale = 'en'): string {
+  return new Intl.NumberFormat(intlTag(locale)).format(value);
+}
+
 /** Formats integer paisa as a display string, e.g. 349900 -> "Rs 3,499". */
 export function formatMoney(minorAmount: number, locale: Locale = 'en'): string {
   const formatter = new Intl.NumberFormat(intlTag(locale), {

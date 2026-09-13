@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { THEME_COLORS, formatMoney, intlTag, toMajor } from '@newax/shared';
+import { THEME_COLORS, formatDateShort, formatMoney, toMajor } from '@newax/shared';
 
 /**
  * Daily revenue over the selected window.
@@ -231,13 +231,9 @@ function compactRupees(rupees: number): string {
 }
 
 function shortDate(iso: string): string {
-  return new Date(iso).toLocaleDateString(intlTag('en'), { day: 'numeric', month: 'short' });
+  return formatDateShort(iso);
 }
 
 function longDate(iso: string): string {
-  return new Date(iso).toLocaleDateString(intlTag('en'), {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-  });
+  return formatDateShort(iso, 'en', { withWeekday: true });
 }

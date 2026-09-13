@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { formatMoney, intlTag } from '@newax/shared';
+import { formatMoney, formatNumber } from '@newax/shared';
 import { DonutChart } from '@/components/admin/donut-chart';
 import { GaugeChart } from '@/components/admin/gauge-chart';
 import { FunnelChart } from '@/components/admin/funnel-chart';
@@ -91,7 +91,7 @@ export default function InsightsPage() {
     return (
       <>
         <PageHeader title="Insights" description="How the shop is performing." />
-        <p role="alert" className="card p-4 text-sm text-red-700">
+        <p role="alert" className="text-sm text-feedback-negative">
           {error}
         </p>
       </>
@@ -257,7 +257,7 @@ export default function InsightsPage() {
                         >
                           <span className="text-neutral-900">{row.source}</span>
                           <span className="text-neutral-900/60">
-                            {row.count.toLocaleString(intlTag('en'))} · {row.percent}%
+                            {formatNumber(row.count)} · {row.percent}%
                           </span>
                         </li>
                       ))}

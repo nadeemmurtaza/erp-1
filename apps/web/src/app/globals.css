@@ -346,6 +346,32 @@
     @apply bg-white;
   }
 
+  /*
+   * A metric that opens something. It has to read as pressable without
+   * becoming a button-looking box — the strip's whole argument is that these
+   * are figures, not controls — so the affordance is the chevron beside the
+   * label plus the background lifting on hover.
+   */
+  .metric-button {
+    @apply cursor-pointer text-start transition-colors;
+    @apply hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent;
+  }
+
+  /* The one whose drawer is open, tied to the panel by a shared edge. */
+  .metric-open {
+    @apply bg-white;
+    box-shadow: inset 0 -2px 0 0 theme('colors.accent.DEFAULT');
+  }
+
+  /*
+   * The drawer. It shares the open cell's white so the two read as one
+   * surface, and carries the only border in the component — here a boundary
+   * genuinely means something, because content appeared where there was none.
+   */
+  .metric-panel {
+    @apply border-t border-neutral-200 bg-white p-4 lg:p-5;
+  }
+
   .metric-value {
     @apply mt-1 block text-2xl font-medium tabular-nums text-neutral-900 lg:text-metric;
   }
@@ -476,6 +502,34 @@
 
   .prose-legal a {
     @apply text-accent underline underline-offset-2 transition-colors hover:text-accent-hover;
+  }
+
+  /*
+   * A staggered entrance for a list of peers — skeleton rows, mostly.
+   *
+   * The delay was written inline as `style={{ animationDelay: i * 100 }}`,
+   * which is a static ramp computed in JavaScript on every render and the one
+   * kind of inline style that has no excuse: nothing here depends on data.
+   * A width driven by a measured value still does; this did not.
+   */
+  .stagger > * {
+    animation: fadeIn 400ms var(--fill-ease) both;
+  }
+
+  .stagger > *:nth-child(2) {
+    animation-delay: 80ms;
+  }
+
+  .stagger > *:nth-child(3) {
+    animation-delay: 160ms;
+  }
+
+  .stagger > *:nth-child(4) {
+    animation-delay: 240ms;
+  }
+
+  .stagger > *:nth-child(n + 5) {
+    animation-delay: 320ms;
   }
 
   .skeleton {

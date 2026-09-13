@@ -116,6 +116,26 @@ const locale = {
   /** IANA zone. The shop's day boundary — never a user-supplied value. */
   timeZone: 'Asia/Karachi',
 
+  /**
+   * The top-level administrative regions a delivery address picks from.
+   *
+   * These were typed into the checkout page, which made them the most
+   * expensive kind of literal: not a colour somebody notices, but a list that
+   * is silently, confidently wrong the first time this ships anywhere else.
+   * A UAE client needs emirates; a UK one needs counties and a different
+   * label for the field entirely.
+   */
+  regionLabel: 'Province',
+  regions: [
+    'Sindh',
+    'Punjab',
+    'Khyber Pakhtunkhwa',
+    'Balochistan',
+    'Islamabad Capital Territory',
+    'Gilgit-Baltistan',
+    'Azad Jammu & Kashmir',
+  ] as const,
+
   /** The locales the product ships. First is the default. */
   locales: ['en', 'ur'] as const,
   /** BCP 47 tags for Intl, per locale. */

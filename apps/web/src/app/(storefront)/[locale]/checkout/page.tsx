@@ -3,12 +3,12 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatMoney, type Locale } from '@newax/shared';
+import { BRAND, formatMoney, type Locale } from '@newax/shared';
 import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { useCart } from '@/components/storefront/cart-provider';
 import { useRouter } from '@/i18n/navigation';
 import { trackEvent } from '@/lib/analytics-client';
-import { API_URL, ApiError } from '@/lib/api';
+import { request } from '@/lib/api-client';
 import { getCustomerToken } from '@/lib/cart-client';
 import { ROUTES } from '@/constants/routes';
 import { STORAGE_KEYS } from '@/constants/storage';
@@ -22,15 +22,14 @@ interface PaymentMethod {
   fee: number;
 }
 
-const PROVINCES = [
-  'Sindh',
-  'Punjab',
-  'Khyber Pakhtunkhwa',
-  'Balochistan',
-  'Islamabad Capital Territory',
-  'Gilgit-Baltistan',
-  'Azad Jammu & Kashmir',
-];
+/** What POST /orders hands back. Only the parts this page acts on. */
+interface CheckoutResponse {
+  number: string;
+  payment?: {
+    redirectUrl?: string;
+    meta?: { fields?: Record<string, string> };
+  };
+}
 
 /**
  * Checkout.
@@ -56,7 +55,10 @@ export default function CheckoutPage() {
     line1: '',
     line2: '',
     city: '',
-    province: 'Sindh',
+    // Widened: the brand list is `as const`, so the first entry would
+    // otherwise type this field as that one literal and reject every other
+    // region the select offers.
+    province: BRAND.locale.regions[0] as string,
     postalCode: '',
     note: '',
   });
@@ -64,12 +66,13 @@ export default function CheckoutPage() {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    void fetch(`${API_URL}/payments/methods`)
-      .then((response) => (response.ok ? response.json() : []))
-      .then((loaded: PaymentMethod[]) => {
+    void request<PaymentMethod[]>('/payments/methods')
+      .then((loaded) => {
         setMethods(loaded);
         setMethod((current) => current || (loaded[0]?.key ?? ''));
       })
+      // A checkout with no payment methods listed is broken anyway; failing
+      // quietly here keeps the page usable for the cash-on-delivery default.
       .catch(() => undefined);
   }, []);
 
@@ -85,14 +88,17 @@ export default function CheckoutPage() {
 
     try {
       const token = getCustomerToken();
-      const response = await fetch(`${API_URL}/orders?locale=${locale}`, {
+      // Through the shared client: it raises ApiError carrying a message that
+      // is already fit to show, so this no longer joins a string[] by hand —
+      // which is how the same validation failure came to read differently
+      // here than everywhere else in the app.
+      const payload = await request<CheckoutResponse>('/orders', {
         method: 'POST',
         credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-        body: JSON.stringify({
+        query: { locale },
+        ...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
+        fallbackMessage: t('failed'),
+        body: {
           shippingAddress: {
             fullName: form.fullName,
             phone: form.phone,
@@ -105,18 +111,8 @@ export default function CheckoutPage() {
           paymentMethod: method,
           email: form.email || undefined,
           note: form.note || undefined,
-        }),
+        },
       });
-
-      const payload = await response.json().catch(() => undefined);
-
-      if (!response.ok) {
-        const message = (payload as { message?: string | string[] } | undefined)?.message;
-        throw new ApiError(
-          response.status,
-          Array.isArray(message) ? message.join('\n') : (message ?? t('failed')),
-        );
-      }
 
       // A guest has no session, so the confirmation page would otherwise ask
       // them to prove who they are seconds after they ordered. Remember the
@@ -256,7 +252,7 @@ export default function CheckoutPage() {
                 onChange={(event) => setForm({ ...form, province: event.target.value })}
                 className="field-input"
               >
-                {PROVINCES.map((province) => (
+                {BRAND.locale.regions.map((province) => (
                   <option key={province} value={province}>
                     {province}
                   </option>

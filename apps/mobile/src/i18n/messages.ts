@@ -1,3 +1,4 @@
+import { BRAND } from '@newax/shared';
 /**
  * The app's copy, in both languages.
  *
@@ -8,7 +9,7 @@
  */
 export const MESSAGES = {
   en: {
-    'app.name': 'Yaseen',
+    'app.name': BRAND.identity.shortName,
     'tab.shop': 'Shop',
     'tab.cart': 'Cart',
     'tab.stitching': 'Stitching',
@@ -173,7 +174,7 @@ export const MESSAGES = {
   },
 
   ur: {
-    'app.name': 'یاسین',
+    'app.name': BRAND.identity.nameUr,
     'tab.shop': 'خریداری',
     'tab.cart': 'ٹوکری',
     'tab.stitching': 'سلائی',

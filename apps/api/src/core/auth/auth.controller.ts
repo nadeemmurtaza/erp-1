@@ -16,7 +16,12 @@ import type { Request, Response } from 'express';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthService, parseDuration } from './auth.service';
 import { AppConfigService } from '../config/app-config.service';
-import { REFRESH_COOKIE, type AuthenticatedUser } from './auth.constants';
+import {
+  LEGACY_REFRESH_COOKIE,
+  REFRESH_COOKIE,
+  readCookie,
+  type AuthenticatedUser,
+} from './auth.constants';
 import { CurrentUser, Public, RequirePermission } from './decorators';
 import {
   ChangePasswordDto,
@@ -78,7 +83,8 @@ export class AuthController {
     @Req() request: Request,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const token = dto.refreshToken ?? request.cookies?.[REFRESH_COOKIE];
+    const token =
+      dto.refreshToken ?? readCookie(request.cookies, REFRESH_COOKIE, LEGACY_REFRESH_COOKIE);
     if (!token) {
       throw new UnauthorizedException('No refresh token was supplied.');
     }
@@ -97,8 +103,13 @@ export class AuthController {
     @Req() request: Request,
     @Res({ passthrough: true }) response: Response,
   ): Promise<void> {
-    await this.auth.logout(dto.refreshToken ?? request.cookies?.[REFRESH_COOKIE]);
+    await this.auth.logout(
+      dto.refreshToken ?? readCookie(request.cookies, REFRESH_COOKIE, LEGACY_REFRESH_COOKIE),
+    );
     response.clearCookie(REFRESH_COOKIE, { path: '/' });
+    // Signing out has to clear the pre-rename cookie too, or the next refresh
+    // would revive the session from it.
+    response.clearCookie(LEGACY_REFRESH_COOKIE, { path: '/' });
   }
 
   @Get('me')

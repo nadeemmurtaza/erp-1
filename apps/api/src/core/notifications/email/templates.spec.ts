@@ -1,3 +1,4 @@
+import { BRAND } from '@newax/shared';
 import { formatMoney } from '@newax/shared';
 import { EMAIL_TEMPLATE_CATALOG } from './catalog';
 import { renderEmail, type EmailContext, type OrderEmailData } from './templates';
@@ -348,9 +349,9 @@ describe('welcome email', () => {
   it('greets the customer by name and links to the storefront', () => {
     const mail = render();
 
-    expect(mail.subject).toBe('Welcome to Yaseen');
+    expect(mail.subject).toBe(`Welcome to ${BRAND.identity.shortName}`);
     expect(mail.html).toContain('Sania');
-    expect(mail.html).toContain('https://yaseen.pk');
+    expect(mail.html).toContain(BRAND.identity.url);
   });
 
   it('renders in Urdu', () => {

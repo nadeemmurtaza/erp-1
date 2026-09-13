@@ -10,7 +10,12 @@ import {
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { Request } from 'express';
 import { DEFAULT_LOCALE, isLocale, type Locale } from '@newax/shared';
-import { CART_COOKIE, type AuthenticatedUser } from '../../core/auth/auth.constants';
+import {
+  CART_COOKIE,
+  LEGACY_CART_COOKIE,
+  readCookie,
+  type AuthenticatedUser,
+} from '../../core/auth/auth.constants';
 import { CurrentUser, Public, RequirePermission } from '../../core/auth/decorators';
 import {
   AddShipmentDto,
@@ -131,7 +136,7 @@ function cartToken(request: Request): string | undefined {
   const header = request.header('x-cart-token');
   if (header) return header;
 
-  const cookie = request.cookies?.[CART_COOKIE];
+  const cookie = readCookie(request.cookies, CART_COOKIE, LEGACY_CART_COOKIE);
   return typeof cookie === 'string' ? cookie : undefined;
 }
 

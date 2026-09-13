@@ -69,12 +69,18 @@ export const SettingKey = {
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
 
 export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
+  /*
+   * Seeded from the brand file, not typed out again. These were a second
+   * copy of facts BRAND already held, and the two had drifted: the support
+   * phone here was +923001234567 while the brand file said +92 335 621 2709,
+   * and nothing reconciled them because nobody reads both files at once.
+   */
   [SettingKey.Store]: {
-    nameEn: 'Yaseen',
-    nameUr: 'یٰسین',
-    supportPhone: '+923001234567',
-    supportEmail: 'support@yaseen.pk',
-    whatsapp: '+923001234567',
+    nameEn: BRAND.identity.name,
+    nameUr: BRAND.identity.nameUr,
+    supportPhone: BRAND.contact.phone,
+    supportEmail: BRAND.contact.email,
+    whatsapp: BRAND.contact.whatsapp,
   } satisfies StoreSettings,
 
   /**
@@ -122,12 +128,14 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   /** Working days from order to a stitched garment being ready. */
   [SettingKey.StitchingLeadDays]: 7,
 
+  /* Same fork as the store block: the account title here said "Yaseen
+   * Clothing" where the brand file said "Yaseen Fabrics". */
   [SettingKey.BankAccounts]: [
     {
-      bank: 'Meezan Bank',
-      title: 'Yaseen Clothing',
-      accountNumber: '00000000000000',
-      iban: 'PK00MEZN0000000000000000',
+      bank: BRAND.banking.bankName,
+      title: BRAND.banking.accountTitle,
+      accountNumber: BRAND.banking.accountNumber,
+      iban: BRAND.banking.iban,
     },
   ],
 

@@ -1,3 +1,4 @@
+import { BRAND } from '@newax/shared';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { PERMISSION_EFFECTS, PERMISSION_KEYS, type PermissionEffect, type PermissionKey } from '@newax/shared';
 import {
@@ -18,7 +19,7 @@ export const BACK_OFFICE_ROLES = ['STAFF', 'TAILOR', 'ADMIN'] as const;
 export type BackOfficeRole = (typeof BACK_OFFICE_ROLES)[number];
 
 export class CreateUserDto {
-  @ApiProperty({ example: 'sana@yaseen.pk' })
+  @ApiProperty({ example: `sana@${BRAND.identity.domain}` })
   @IsEmail({}, { message: 'Enter a valid email address.' })
   email!: string;
 
@@ -64,7 +65,7 @@ export class UpdateUserDto {
   @MaxLength(80)
   lastName?: string;
 
-  @ApiPropertyOptional({ example: 'sana@yaseen.pk' })
+  @ApiPropertyOptional({ example: `sana@${BRAND.identity.domain}` })
   @IsOptional()
   @IsEmail({}, { message: 'Enter a valid email address.' })
   email?: string;

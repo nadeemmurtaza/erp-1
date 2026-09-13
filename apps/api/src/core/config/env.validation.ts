@@ -1,3 +1,4 @@
+import { BRAND } from '@newax/shared';
 import { z } from 'zod';
 
 /**
@@ -94,11 +95,11 @@ export const envSchema = z.object({
   SMTP_USER: z.string().optional(),
   SMTP_PASSWORD: z.string().optional(),
   /** Envelope sender. Its domain is what SPF, DKIM and DMARC are checked against. */
-  MAIL_FROM: z.string().default('Yaseen <no-reply@yaseen.pk>'),
+  MAIL_FROM: z.string().default(`${BRAND.identity.name} <no-reply@${BRAND.identity.domain}>`),
   /** Where replies land. Customers do reply to order mail — send it somewhere staffed. */
   MAIL_REPLY_TO: z.string().optional(),
 
-  STORE_NAME: z.string().default('Yaseen'),
+  STORE_NAME: z.string().default(BRAND.identity.name),
   /** Public storefront origin. Builds the order links and image URLs in emails. */
   STOREFRONT_URL: z.string().default('http://localhost:3000'),
   /** Shown in bank-transfer emails so the customer knows where to send a screenshot. */
@@ -110,7 +111,7 @@ export const envSchema = z.object({
    */
   BANK_TRANSFER_DETAILS: z.string().optional(),
 
-  SEED_ADMIN_EMAIL: z.string().email().default('admin@yaseen.pk'),
+  SEED_ADMIN_EMAIL: z.string().email().default(`admin@${BRAND.identity.domain}`),
   SEED_ADMIN_PASSWORD: z.string().min(8).default('admin12345'),
 });
 

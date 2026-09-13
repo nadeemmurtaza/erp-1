@@ -1,3 +1,4 @@
+import { BRAND } from '@newax/shared';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { Injectable, Logger } from '@nestjs/common';
 import { AppConfigService } from '../../../core/config/app-config.service';
@@ -69,7 +70,7 @@ export class JazzCashProvider implements PaymentProvider {
       // gateway that settles in rupees; a shop billing in dirhams would not
       // enable this provider at all, so reading the brand here would produce
       // a request the gateway rejects rather than a working one.
-      pp_TxnCurrency: 'PKR',
+      pp_TxnCurrency: BRAND.locale.currency,
       pp_TxnDateTime: stamp(now),
       // One hour to complete the payment.
       pp_TxnExpiryDateTime: stamp(new Date(now.getTime() + 3_600_000)),

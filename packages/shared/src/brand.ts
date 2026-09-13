@@ -33,6 +33,13 @@ const identity = {
   name: 'Yaseen Fabrics & Stitching',
   /** Short form for tight spaces — the header, the app switcher. */
   shortName: 'Yaseen.pk',
+  /**
+   * The name in the shop's second language, for the places that print both.
+   *
+   * Not a translation row: a business name is brand, not copy, and a rebrand
+   * must be able to change it. Copy is what a page *says* about the business.
+   */
+  nameUr: 'یٰسین',
   /** One line, under the name. Shown on the storefront and in metadata. */
   tagline: 'Premium Fabrics & Custom Stitching',
   /** Bare host, no protocol. */

@@ -1,3 +1,4 @@
+import { BRAND } from '@newax/shared';
 import {
   Body,
   Controller,
@@ -66,7 +67,10 @@ export class CrmAdminController {
 
   @Get('contacts/export')
   @Header('Content-Type', 'text/csv; charset=utf-8')
-  @Header('Content-Disposition', 'attachment; filename="yaseen-contacts.csv"')
+  @Header(
+    'Content-Disposition',
+    `attachment; filename="${BRAND.identity.domain.split('.')[0]}-contacts.csv"`,
+  )
   @ApiOperation({
     summary: 'Export the filtered list as CSV — for a WhatsApp broadcast list',
   })

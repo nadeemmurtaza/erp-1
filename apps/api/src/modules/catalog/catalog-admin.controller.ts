@@ -1,3 +1,4 @@
+import { BRAND } from '@newax/shared';
 import {
   BadRequestException,
   Body,
@@ -227,7 +228,10 @@ export class CatalogAdminController {
 
   @Get('import/template')
   @Header('Content-Type', 'text/csv; charset=utf-8')
-  @Header('Content-Disposition', 'attachment; filename="yaseen-products-template.csv"')
+  @Header(
+    'Content-Disposition',
+    `attachment; filename="${BRAND.identity.domain.split('.')[0]}-products-template.csv"`,
+  )
   @ApiOperation({ summary: 'Download the CSV template for bulk product upload' })
   importTemplate(): string {
     return this.importer.template();

@@ -13,7 +13,7 @@ import type { Locale } from '@newax/shared';
 import { MESSAGES, type MessageKey } from './messages';
 import { intlTag } from '@newax/shared';
 
-const STORAGE_KEY = 'yaseen.locale';
+const STORAGE_KEY = 'newax.locale';
 
 interface I18n {
   locale: Locale;

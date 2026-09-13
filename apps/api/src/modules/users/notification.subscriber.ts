@@ -1,3 +1,4 @@
+import { copyFor } from '../../core/notifications/email/copy';
 import { Injectable } from '@nestjs/common';
 import { DEFAULT_LOCALE } from '@newax/shared';
 import { DomainEvent, type UserRegisteredPayload } from '../../core/events/domain-events';
@@ -30,8 +31,11 @@ export class WelcomeNotificationSubscriber {
         userId: payload.userId,
         locale: DEFAULT_LOCALE,
       },
-      subject: 'Welcome to Yaseen',
-      body: `Hi ${payload.name}, your account is ready. You can now save your measurements, track orders and check out faster next time.`,
+      // From the copy catalogue, not typed out again: these exact words also
+      // live in email/copy.ts, and two copies of one sentence is two
+      // sentences the day somebody edits one of them.
+      subject: copyFor(DEFAULT_LOCALE).welcome.subject,
+      body: copyFor(DEFAULT_LOCALE).welcome.intro(payload.name),
       data: data as unknown as Record<string, unknown>,
     });
   }

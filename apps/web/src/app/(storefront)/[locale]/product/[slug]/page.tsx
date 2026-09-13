@@ -7,7 +7,8 @@ import { ProductGallery } from '@/components/storefront/product-gallery';
 import { ProductPurchase, type FabricNeedRow } from '@/components/storefront/product-purchase';
 import { businessProfile } from '@/config/business-profile';
 import { Link } from '@/i18n/navigation';
-import { API_URL, ApiError, getProduct, getStitchingServices } from '@/lib/api';
+import { ApiError, getProduct, getStitchingServices } from '@/lib/api';
+import { request } from '@/lib/api-client';
 import type { StorefrontProduct } from '@/types/api';
 import type { StitchingGarment } from '@/types/cart';
 import { absoluteUrl, alternateLanguages, canonicalUrl } from '@/config/seo';
@@ -280,10 +281,7 @@ async function stitchingServicesFor(
  */
 async function fetchStitchingGarments(): Promise<StitchingGarment[]> {
   try {
-    const response = await fetch(`${API_URL}/stitching/garments`, {
-      next: { revalidate: 120 },
-    });
-    return response.ok ? ((await response.json()) as StitchingGarment[]) : [];
+    return await request<StitchingGarment[]>('/stitching/garments', { revalidate: 120 });
   } catch {
     return [];
   }

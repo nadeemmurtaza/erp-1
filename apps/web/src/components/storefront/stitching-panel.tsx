@@ -10,7 +10,7 @@ import {
   validateMeasurements,
   type Locale,
 } from '@newax/shared';
-import { API_URL } from '@/lib/api';
+import { request as apiRequest } from '@/lib/api-client';
 import type { StorefrontProduct } from '@/types/api';
 import { getCustomerToken } from '@/lib/cart-client';
 import type {
@@ -138,20 +138,21 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
 
     const token = getCustomerToken();
 
-    void fetch(`${API_URL}/stitching/garments`)
-      .then((response) => (response.ok ? response.json() : []))
-      .then((loaded: StitchingGarment[]) => {
+    void apiRequest<StitchingGarment[]>('/stitching/garments')
+      .then((loaded) => {
         if (!cancelled) setGarments(loaded);
       })
+      // The panel still works with an empty list — it just cannot offer
+      // stitching — so a failure here stays quiet rather than blocking a
+      // product page.
       .catch(() => undefined);
 
     if (token) {
-      void fetch(`${API_URL}/measurements/profiles`, {
+      void apiRequest<MeasurementProfileSummary[]>('/measurements/profiles', {
         headers: { Authorization: `Bearer ${token}` },
         credentials: 'include',
       })
-        .then((response) => (response.ok ? response.json() : []))
-        .then((loaded: MeasurementProfileSummary[]) => {
+        .then((loaded) => {
           if (!cancelled) setProfiles(loaded);
         })
         .catch(() => undefined);
@@ -780,15 +781,19 @@ export async function prepareStitching(
   const token = getCustomerToken();
 
   if (saveProfileAs && token && selection.measurementValues) {
-    await fetch(`${API_URL}/measurements/profiles`, {
+    // Saving the profile is a convenience on top of adding to cart; if it
+    // fails the customer still gets their item, so this swallows rather than
+    // surfacing.
+    await apiRequest('/measurements/profiles', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}` },
       credentials: 'include',
-      body: JSON.stringify({
+      expect: 'none',
+      body: {
         label: saveProfileAs,
         garmentTypeId: selection.garmentTypeId,
         values: selection.measurementValues,
-      }),
+      },
     }).catch(() => undefined);
   }
 

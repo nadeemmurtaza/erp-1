@@ -72,10 +72,10 @@ export default function BookingsPage() {
         </p>
       ) : null}
 
-      <div className="card overflow-hidden">
+      <div className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-neutral-100 bg-neutral-50">
+          <table className="table-flat">
+            <thead>
               <tr>
                 <Th>Booking</Th>
                 <Th>Customer</Th>
@@ -101,7 +101,7 @@ export default function BookingsPage() {
               ) : (
                 bookings.map((booking) => (
                   <tr key={booking.id} className="hover:bg-neutral-50">
-                    <td className="px-4 py-3">
+                    <td>
                       <Link
                         href={`/admin/stitching/bookings/${booking.id}`}
                         className="font-medium text-neutral-900 hover:text-accent-hover"
@@ -112,14 +112,14 @@ export default function BookingsPage() {
                         {formatDate(booking.createdAt)}
                       </p>
                     </td>
-                    <td className="px-4 py-3">
+                    <td>
                       <p className="text-neutral-900">{booking.guestName ?? '—'}</p>
                       <p className="text-xs text-neutral-900/40">{booking.guestPhone}</p>
                     </td>
-                    <td className="px-4 py-3 text-neutral-900/70">
+                    <td className="text-neutral-900/70">
                       {booking.jobs.map((job) => job.garmentType.labelEn).join(', ')}
                     </td>
-                    <td className="px-4 py-3">
+                    <td>
                       <span
                         className={cn(
                           'rounded px-2 py-0.5 text-xs font-medium',
@@ -133,12 +133,12 @@ export default function BookingsPage() {
                         {BOOKING_STATUS_LABELS[booking.status]}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-neutral-900/70">
+                    <td className="text-neutral-900/70">
                       {booking.fabricReceivedAt
                         ? formatDate(booking.fabricReceivedAt)
                         : 'Not yet in'}
                     </td>
-                    <td className="px-4 py-3 text-end tabular-nums text-neutral-900">
+                    <td className="text-end tabular-nums text-neutral-900">
                       {booking.quotedFee === null ? '—' : formatMoney(booking.quotedFee)}
                     </td>
                   </tr>
@@ -154,8 +154,7 @@ export default function BookingsPage() {
 
 function Th({ children, className }: { children?: React.ReactNode; className?: string }) {
   return (
-    <th
-      scope="col"
+    <th scope="col"
       className={cn(
         'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50',
         className,

@@ -137,12 +137,12 @@ export default function AdminSettingsPage() {
         {!draft ? (
           <Loading />
         ) : (
-          <div className="card overflow-hidden">
+          <div className="overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="border-b border-neutral-100 bg-neutral-50">
+              <table className="table-flat">
+                <thead>
                   <tr>
-                    <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
+                    <th>
                       Permission
                     </th>
                     {BACK_OFFICE_ROLES.map((role) => (
@@ -165,7 +165,7 @@ export default function AdminSettingsPage() {
                       </tr>
                       {items.map((permission) => (
                         <tr key={permission.id}>
-                          <td className="px-4 py-2.5">
+                          <td className="py-2.5">
                             <span className="text-neutral-900">{permission.label}</span>
                             <p className="text-xs text-neutral-900/40">{permission.key}</p>
                           </td>
@@ -268,10 +268,10 @@ export default function AdminSettingsPage() {
           </p>
         ) : null}
 
-        <div className="card overflow-hidden">
+        <div className="overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="border-b border-neutral-100 bg-neutral-50">
+            <table className="table-flat">
+              <thead>
                 <tr>
                   <Th>When</Th>
                   <Th>Actor</Th>
@@ -333,7 +333,7 @@ export default function AdminSettingsPage() {
 
 function Th({ children }: { children: React.ReactNode }) {
   return (
-    <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
+    <th>
       {children}
     </th>
   );
@@ -346,10 +346,10 @@ function AuditRow({ entry }: { entry: AuditLogEntry }) {
 
   return (
     <tr className="hover:bg-neutral-50">
-      <td className="px-4 py-3 text-neutral-900/70">{formatDateTime(entry.createdAt)}</td>
-      <td className="px-4 py-3 text-neutral-900">{actorName}</td>
-      <td className="px-4 py-3 font-mono text-xs text-neutral-900/80">{entry.action}</td>
-      <td className="px-4 py-3 text-neutral-900/70">
+      <td className="text-neutral-900/70">{formatDateTime(entry.createdAt)}</td>
+      <td className="text-neutral-900">{actorName}</td>
+      <td className="font-mono text-neutral-900/80">{entry.action}</td>
+      <td className="text-neutral-900/70">
         {entry.entity}
         {entry.entityId ? <span className="text-xs text-neutral-900/40"> · {entry.entityId}</span> : null}
       </td>

@@ -117,10 +117,10 @@ export default function AdminInboxPage() {
       ) : null}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_28rem]">
-        <div className="card overflow-hidden">
+        <div className="overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="border-b border-neutral-100 bg-neutral-50">
+            <table className="table-flat">
+              <thead>
                 <tr>
                   <Th>From</Th>
                   <Th>Subject</Th>
@@ -151,11 +151,11 @@ export default function AdminInboxPage() {
                         selected?.id === message.id && 'bg-neutral-50',
                       )}
                     >
-                      <td className="px-4 py-3">
+                      <td>
                         <p className="font-medium text-neutral-900">{message.fromName || message.fromAddress}</p>
                         <p className="text-xs text-neutral-900/40">{message.fromAddress}</p>
                       </td>
-                      <td className="px-4 py-3 text-neutral-900/80">
+                      <td className="text-neutral-900/80">
                         {message.subject || '(no subject)'}
                         {message._count.replies > 0 ? (
                           <span className="ms-2 rounded bg-neutral-50 px-2 py-0.5 text-xs font-medium text-accent-hover">
@@ -163,8 +163,8 @@ export default function AdminInboxPage() {
                           </span>
                         ) : null}
                       </td>
-                      <td className="px-4 py-3 text-neutral-900/60">{message.emailAccount.label}</td>
-                      <td className="px-4 py-3 text-neutral-900/60">
+                      <td className="text-neutral-900/60">{message.emailAccount.label}</td>
+                      <td className="text-neutral-900/60">
                         {formatDateTime(message.receivedAt)}
                       </td>
                     </tr>
@@ -364,8 +364,7 @@ function MessageDetailPanel({
 
 function Th({ children }: { children: React.ReactNode }) {
   return (
-    <th
-      scope="col"
+    <th scope="col"
       className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50"
     >
       {children}

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { formatMoney } from '@newax/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { downloadCsv } from '@/lib/download-csv';
 import { Loading, MetricStrip, PageHeader, SectionRail } from '@/components/ui';
 import { RangePicker, type RangeDays } from '@/components/admin/range-picker';
 import { paymentProviderLabel } from '@/constants/payment-methods';
@@ -102,11 +103,7 @@ export default function AdminReportsPage() {
     };
   }, [days]);
 
-  // The API fetches with a bearer token rather than a cookie, so a plain
-  // <a href> to the export route can't carry auth — the CSV is fetched as
-  // text and handed to the browser as an object-URL download instead, same
-  // as the catalogue import page's template download.
-  async function downloadCsv(
+  async function runExport(
     name: string,
     path: string,
     query: Record<string, unknown> | undefined,
@@ -115,13 +112,7 @@ export default function AdminReportsPage() {
     setExportError(null);
     setExporting(name);
     try {
-      const csv = await adminFetch<string>(path, { query, expect: 'text' });
-      const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
-      const anchor = document.createElement('a');
-      anchor.href = url;
-      anchor.download = filename;
-      anchor.click();
-      URL.revokeObjectURL(url);
+      await downloadCsv(path, filename, query);
     } catch (cause) {
       setExportError(cause instanceof Error ? cause.message : `Could not export ${filename}`);
     } finally {
@@ -336,7 +327,7 @@ export default function AdminReportsPage() {
                         type="button"
                         disabled={exporting !== null}
                         onClick={() =>
-                          void downloadCsv(
+                          void runExport(
                             row.key,
                             row.path,
                             row.ranged ? { from: isoDateDaysAgo(days), to: isoToday() } : undefined,

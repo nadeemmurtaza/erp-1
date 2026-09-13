@@ -232,7 +232,7 @@ export default function TaxAdminPage() {
             </div>
           </section>
 
-          <section className="card overflow-hidden">
+          <section className="overflow-hidden">
             <div className="border-b border-neutral-100 bg-neutral-50 p-4">
               <h2 className="text-sm font-semibold text-neutral-900">Tax classes</h2>
               <p className="text-xs text-neutral-900/60">
@@ -241,14 +241,14 @@ export default function TaxAdminPage() {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="border-b border-neutral-100 bg-neutral-50 whitespace-nowrap">
+              <table className="table-flat">
+                <thead className="whitespace-nowrap">
                   <tr>
-                    <th className="px-3 py-3 text-start font-medium text-neutral-900/70">Name</th>
-                    <th className="px-3 py-3 text-start font-medium text-neutral-900/70">Key</th>
-                    <th className="px-3 py-3 text-start font-medium text-neutral-900/70">Current rate</th>
-                    <th className="px-3 py-3 text-start font-medium text-neutral-900/70">New rate</th>
-                    <th className="px-3 py-3" />
+                    <th>Name</th>
+                    <th>Key</th>
+                    <th>Current rate</th>
+                    <th>New rate</th>
+                    <th />
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white">
@@ -263,7 +263,7 @@ export default function TaxAdminPage() {
                       const activeRate = taxClass.rates[0] ?? null;
                       return (
                         <tr key={taxClass.id} className="hover:bg-neutral-50/50">
-                          <td className="px-3 py-3 font-medium">
+                          <td className="font-medium">
                             {taxClass.name}
                             {taxClass.isDefault && (
                               <span className="ms-2 rounded bg-neutral-100 px-2 py-0.5 text-xs text-accent-hover">
@@ -271,11 +271,11 @@ export default function TaxAdminPage() {
                               </span>
                             )}
                           </td>
-                          <td className="px-3 py-3 text-neutral-900/60">{taxClass.key}</td>
-                          <td className="px-3 py-3 text-neutral-900/80">
+                          <td className="text-neutral-900/60">{taxClass.key}</td>
+                          <td className="text-neutral-900/80">
                             {activeRate ? formatRateBps(activeRate.rateBps) : '—'}
                           </td>
-                          <td className="px-3 py-3">
+                          <td>
                             <div className="flex items-center gap-2">
                               <input
                                 type="number"
@@ -301,7 +301,7 @@ export default function TaxAdminPage() {
                               </button>
                             </div>
                           </td>
-                          <td className="px-3 py-3 text-end">
+                          <td className="text-end">
                             <button
                               type="button"
                               className="text-xs text-red-600 hover:underline"

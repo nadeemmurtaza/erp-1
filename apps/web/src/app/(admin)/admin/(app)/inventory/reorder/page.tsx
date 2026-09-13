@@ -158,12 +158,12 @@ export default function ReorderSuggestionsPage() {
         </button>
       </div>
 
-      <div className="card overflow-hidden">
+      <div className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-neutral-100 bg-neutral-50 whitespace-nowrap">
+          <table className="table-flat">
+            <thead className="whitespace-nowrap">
               <tr>
-                <th className="px-3 py-3 w-10 text-center">
+                <th className="w-10 text-center">
                   <input 
                     type="checkbox" 
                     className="field-check"
@@ -199,7 +199,7 @@ export default function ReorderSuggestionsPage() {
 
                   return (
                     <tr key={variant.id} className={cn("hover:bg-neutral-50/50", selectedIds.has(variant.id) && "bg-neutral-50/30")}>
-                      <td className="px-3 py-3 text-center">
+                      <td className="text-center">
                         <input 
                           type="checkbox" 
                           className="field-check"
@@ -207,23 +207,23 @@ export default function ReorderSuggestionsPage() {
                           onChange={() => toggleOne(variant.id)}
                         />
                       </td>
-                      <td className="px-3 py-3">
+                      <td>
                         <div className="font-medium text-neutral-900">{variant.product.name}</div>
                         <div className="text-xs text-neutral-900/60">
                           {[variant.size, variant.color].filter(Boolean).join(' / ')}
                         </div>
                       </td>
-                      <td className="px-3 py-3 text-neutral-900/80">{variant.sku}</td>
-                      <td className="px-3 py-3 text-neutral-900/80">
+                      <td className="text-neutral-900/80">{variant.sku}</td>
+                      <td className="text-neutral-900/80">
                         {variant.preferredSupplier ? variant.preferredSupplier.name : <span className="text-red-500">No Supplier</span>}
                       </td>
-                      <td className="px-3 py-3 text-end font-medium text-red-600">
+                      <td className="text-end font-medium text-red-600">
                         {variant.stock}
                       </td>
-                      <td className="px-3 py-3 text-end text-neutral-900/60">{variant.reorderPoint}</td>
-                      <td className="px-3 py-3 text-end text-neutral-900/80">{formatMoney(variant.lastCost)}</td>
-                      <td className="px-3 py-3 text-end text-neutral-900/60">{variant.moq}</td>
-                      <td className="px-3 py-3 text-end font-medium text-accent-hover">
+                      <td className="text-end text-neutral-900/60">{variant.reorderPoint}</td>
+                      <td className="text-end text-neutral-900/80">{formatMoney(variant.lastCost)}</td>
+                      <td className="text-end text-neutral-900/60">{variant.moq}</td>
+                      <td className="text-end font-medium text-accent-hover">
                         {suggestedQty}
                       </td>
                     </tr>

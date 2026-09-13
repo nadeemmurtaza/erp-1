@@ -272,7 +272,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
 
       <div className="grid gap-6 fold:grid-cols-2 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
-          <section className="card overflow-hidden">
+          <section className="overflow-hidden">
             <h2 className="border-b border-neutral-100 bg-neutral-50 px-4 py-3 text-sm font-semibold uppercase tracking-wide text-neutral-900/50">
               Items
             </h2>

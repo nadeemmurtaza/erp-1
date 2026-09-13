@@ -41,7 +41,7 @@ export default function SuppliersListPage() {
         </p>
       ) : null}
 
-      <div className="card overflow-hidden">
+      <div className="overflow-hidden">
         <DataTable
           rows={suppliers}
           loading={busy && !suppliers}

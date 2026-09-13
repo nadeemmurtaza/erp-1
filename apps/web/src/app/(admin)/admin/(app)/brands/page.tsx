@@ -122,7 +122,7 @@ export default function AdminBrandsPage() {
       ) : null}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_20rem]">
-        <div className="card overflow-hidden">
+        <div className="overflow-hidden">
           <DataTable
             rows={brands}
             loading={brands === null}

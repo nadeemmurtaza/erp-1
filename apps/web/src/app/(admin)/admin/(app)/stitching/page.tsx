@@ -152,10 +152,10 @@ export default function TailorQueuePage() {
         </p>
       ) : null}
 
-      <div className="card overflow-hidden">
+      <div className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-neutral-100 bg-neutral-50">
+          <table className="table-flat">
+            <thead>
               <tr>
                 <Th>Job</Th>
                 <Th>Garment</Th>
@@ -185,7 +185,7 @@ export default function TailorQueuePage() {
 
                   return (
                     <tr key={job.id} className="hover:bg-neutral-50">
-                      <td className="px-4 py-3">
+                      <td>
                         <Link
                           href={`/admin/stitching/jobs/${job.id}`}
                           className="font-medium text-neutral-900 hover:text-accent-hover"
@@ -193,15 +193,15 @@ export default function TailorQueuePage() {
                           {job.number}
                         </Link>
                       </td>
-                      <td className="px-4 py-3 text-neutral-900/80">{job.garmentType.labelEn}</td>
-                      <td className="px-4 py-3">
+                      <td className="text-neutral-900/80">{job.garmentType.labelEn}</td>
+                      <td>
                         <p className="text-neutral-900">{customer.name}</p>
                         <p className="text-xs text-neutral-900/40">{customer.reference}</p>
                       </td>
-                      <td className="px-4 py-3">
+                      <td>
                         <StageBadge stage={job.stage} />
                       </td>
-                      <td className="px-4 py-3 text-neutral-900/70">
+                      <td className="text-neutral-900/70">
                         {job.dueAt ? formatDate(job.dueAt) : '—'}
                         {late ? (
                           // Marked with a word as well as a colour: colour alone
@@ -211,7 +211,7 @@ export default function TailorQueuePage() {
                           </span>
                         ) : null}
                       </td>
-                      <td className="px-4 py-3 text-neutral-900/70">
+                      <td className="text-neutral-900/70">
                         {job.assignedTailor
                           ? (job.assignedTailor.firstName ?? 'Assigned')
                           : '—'}
@@ -265,8 +265,7 @@ function isOverdue(job: StitchingJob): boolean {
 
 function Th({ children }: { children?: React.ReactNode }) {
   return (
-    <th
-      scope="col"
+    <th scope="col"
       className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50"
     >
       {children}

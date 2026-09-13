@@ -116,7 +116,7 @@ export default function AdminCategoriesPage() {
       ) : null}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_22rem]">
-        <div className="card overflow-hidden">
+        <div className="overflow-hidden">
           <div className="overflow-x-auto">
             <DataTable
               rows={asTree(categories)}

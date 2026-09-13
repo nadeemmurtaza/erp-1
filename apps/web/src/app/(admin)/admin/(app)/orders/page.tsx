@@ -146,10 +146,10 @@ export default function AdminOrdersPage() {
         </p>
       ) : null}
 
-      <div className="card overflow-hidden">
+      <div className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-neutral-100 bg-neutral-50">
+          <table className="table-flat">
+            <thead>
               <tr>
                 <Th>Order</Th>
                 <Th>Customer</Th>
@@ -178,7 +178,7 @@ export default function AdminOrdersPage() {
               ) : (
                 orders.data.map((order) => (
                   <tr key={order.id} className="hover:bg-neutral-50">
-                    <td className="px-4 py-3">
+                    <td>
                       <Link
                         href={`/admin/orders/${order.id}`}
                         className="font-medium text-neutral-900 hover:text-accent-hover"
@@ -189,13 +189,13 @@ export default function AdminOrdersPage() {
                         {formatDate(order.placedAt)}
                       </p>
                     </td>
-                    <td className="px-4 py-3">
+                    <td>
                       <p className="text-neutral-900">{order.guestName ?? '—'}</p>
                       <p className="text-xs text-neutral-900/40">
                         {order.guestPhone} · {order.shippingAddress.city}
                       </p>
                     </td>
-                    <td className="px-4 py-3">
+                    <td>
                       {order.payments.map((payment) => (
                         <p key={payment.id} className="text-xs">
                           <span className="text-neutral-900/70">{paymentProviderLabel(payment.provider)}</span>
@@ -210,13 +210,13 @@ export default function AdminOrdersPage() {
                         </p>
                       ))}
                     </td>
-                    <td className="px-4 py-3">
+                    <td>
                       <StatusBadge status={order.status} />
                     </td>
-                    <td className="px-4 py-3 text-end tabular-nums text-neutral-900">
+                    <td className="text-end tabular-nums text-neutral-900">
                       {formatMoney(order.grandTotal)}
                     </td>
-                    <td className="px-4 py-3 text-end">
+                    <td className="text-end">
                       <div className="flex flex-wrap justify-end gap-1">
                         {(NEXT_STATUS[order.status] ?? []).map((next) => (
                           <button
@@ -284,8 +284,7 @@ export default function AdminOrdersPage() {
 
 function Th({ children, className }: { children?: React.ReactNode; className?: string }) {
   return (
-    <th
-      scope="col"
+    <th scope="col"
       className={cn(
         'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50',
         className,

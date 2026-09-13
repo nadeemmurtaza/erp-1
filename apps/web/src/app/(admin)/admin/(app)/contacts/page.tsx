@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { formatDate, formatMoney } from '@newax/shared';
-import { adminFetch, getAccessToken } from '@/lib/admin-client';
-import { API_URL, toSearchParams } from '@/lib/api';
+import { adminFetch } from '@/lib/admin-client';
+import { downloadCsv } from '@/lib/download-csv';
 import type { PaginatedResponse } from '@/types/api';
 import { Loading } from '@/components/ui';
 import { exportFilename } from '@/constants/downloads';
@@ -139,25 +139,10 @@ export default function AdminContactsPage() {
     await load();
   }
 
-  /**
-   * The export needs a bearer token, so it cannot be a plain link — fetch it and
-   * hand the browser a blob.
-   */
   async function exportCsv() {
     setBusy(true);
     try {
-      const response = await fetch(
-        `${API_URL}/admin/crm/contacts/export${toSearchParams(filters)}`,
-        { headers: { Authorization: `Bearer ${getAccessToken() ?? ''}` } },
-      );
-      if (!response.ok) throw new Error('Export failed');
-
-      const url = URL.createObjectURL(await response.blob());
-      const anchor = document.createElement('a');
-      anchor.href = url;
-      anchor.download = exportFilename('contacts');
-      anchor.click();
-      URL.revokeObjectURL(url);
+      await downloadCsv('/admin/crm/contacts/export', exportFilename('contacts'), filters);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not export');
     } finally {
@@ -227,10 +212,10 @@ export default function AdminContactsPage() {
       ) : null}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_24rem]">
-        <div className="card overflow-hidden">
+        <div className="overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="border-b border-neutral-100 bg-neutral-50">
+            <table className="table-flat">
+              <thead>
                 <tr>
                   <Th>Customer</Th>
                   <Th className="text-end">Orders</Th>
@@ -261,7 +246,7 @@ export default function AdminContactsPage() {
                         selected?.id === contact.id && 'bg-neutral-50',
                       )}
                     >
-                      <td className="px-4 py-3">
+                      <td>
                         <p className="font-medium text-neutral-900">{contact.name}</p>
                         <p className="text-xs text-neutral-900/40">
                           {contact.phoneE164 ?? contact.email ?? '—'}
@@ -280,13 +265,13 @@ export default function AdminContactsPage() {
                           </p>
                         ) : null}
                       </td>
-                      <td className="px-4 py-3 text-end tabular-nums text-neutral-900/70">
+                      <td className="text-end tabular-nums text-neutral-900/70">
                         {contact.orderCount}
                       </td>
-                      <td className="px-4 py-3 text-end tabular-nums text-neutral-900">
+                      <td className="text-end tabular-nums text-neutral-900">
                         {formatMoney(contact.lifetimeValue)}
                       </td>
-                      <td className="px-4 py-3 text-neutral-900/60">
+                      <td className="text-neutral-900/60">
                         {contact.lastOrderAt
                           ? formatDate(contact.lastOrderAt)
                           : '—'}
@@ -494,8 +479,7 @@ function Metric({ label, value }: { label: string; value: string }) {
 
 function Th({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <th
-      scope="col"
+    <th scope="col"
       className={cn(
         'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50',
         className,

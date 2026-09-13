@@ -151,7 +151,7 @@ export default function EmailTemplatesPage() {
                 <p className="mt-3 text-sm text-neutral-900/70">{selected.triggerDescription}</p>
               </div>
 
-              <div className="card overflow-hidden">
+              <div className="overflow-hidden">
                 {previewLoading ? (
                   <p className="p-8 text-center text-sm text-neutral-900/50">Rendering…</p>
                 ) : previewError ? (

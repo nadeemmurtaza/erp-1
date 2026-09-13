@@ -309,7 +309,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="table-flat">
             <tbody className="divide-y divide-white">
               {categories.map(([category, items]) => (
                 <Fragment key={category}>
@@ -323,7 +323,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
                     const overrideEffect = overrideByKey.get(permission.key);
                     return (
                       <tr key={permission.id}>
-                        <td className="w-10 px-4 py-2.5 text-center">
+                        <td className="w-10 py-2.5 text-center">
                           <input
                             type="checkbox"
                             checked={effective.has(permission.key)}
@@ -333,11 +333,11 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
                             className="field-check disabled:opacity-40"
                           />
                         </td>
-                        <td className="px-4 py-2.5">
+                        <td className="py-2.5">
                           <span className="text-neutral-900">{permission.label}</span>
                           <p className="text-xs text-neutral-900/40">{permission.key}</p>
                         </td>
-                        <td className="px-4 py-2.5 text-end text-xs">
+                        <td className="py-2.5 text-end">
                           {overrideEffect === 'GRANT' ? (
                             <span className="font-medium text-green-700">granted (override)</span>
                           ) : overrideEffect === 'REVOKE' ? (

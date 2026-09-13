@@ -6,7 +6,7 @@ import { use, useCallback, useEffect, useState } from 'react';
 import { formatDate, formatMoney, type Locale, type StitchingStage } from '@newax/shared';
 import { Link } from '@/i18n/navigation';
 import { StitchingTimeline, type TimelineEvent } from '@/components/storefront/stitching-timeline';
-import { API_URL } from '@/lib/api';
+import { request } from '@/lib/api-client';
 import { ROUTES } from '@/constants/routes';
 import { STORAGE_KEYS } from '@/constants/storage';
 
@@ -56,16 +56,20 @@ export default function StitchingBookingPage({
 
   const track = useCallback(
     async (withPhone: string): Promise<boolean> => {
-      const response = await fetch(`${API_URL}/stitching/bookings/${number}/track`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: withPhone }),
-        credentials: 'include',
-      });
-
-      if (!response.ok) return false;
-      setBooking(await response.json());
-      return true;
+      try {
+        // A wrong phone is the expected case here, not an exception — this
+        // returns false so the caller can show the tracking form again.
+        setBooking(
+          await request<Booking>(`/stitching/bookings/${number}/track`, {
+            method: 'POST',
+            body: { phone: withPhone },
+            credentials: 'include',
+          }),
+        );
+        return true;
+      } catch {
+        return false;
+      }
     },
     [number],
   );

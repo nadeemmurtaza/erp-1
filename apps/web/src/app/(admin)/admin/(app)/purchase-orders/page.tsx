@@ -82,10 +82,10 @@ export default function PurchaseOrdersPage() {
         </p>
       ) : null}
 
-      <div className="card overflow-hidden">
+      <div className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-neutral-100 bg-neutral-50 whitespace-nowrap">
+          <table className="table-flat">
+            <thead className="whitespace-nowrap">
               <tr>
                 <Th>PO Number</Th>
                 <Th>Supplier</Th>
@@ -111,13 +111,13 @@ export default function PurchaseOrdersPage() {
               ) : (
                 pos?.map((po) => (
                   <tr key={po.id} className="hover:bg-neutral-50/50">
-                    <td className="px-3 py-3 font-medium">
+                    <td className="font-medium">
                       <Link href={`/admin/purchase-orders/${po.id}`} className="text-accent-hover hover:underline">
                         {po.number}
                       </Link>
                     </td>
-                    <td className="px-3 py-3 text-neutral-900/80">{po.supplier.name}</td>
-                    <td className="px-3 py-3">
+                    <td className="text-neutral-900/80">{po.supplier.name}</td>
+                    <td>
                       <span className={cn(
                         'px-2 py-0.5 rounded text-xs font-medium',
                         po.status === 'DRAFT' ? 'bg-neutral-100 text-neutral-900/80' :
@@ -129,13 +129,13 @@ export default function PurchaseOrdersPage() {
                         {po.status}
                       </span>
                     </td>
-                    <td className="px-3 py-3 text-neutral-900/60">
+                    <td className="text-neutral-900/60">
                       {formatDate(po.createdAt)}
                     </td>
-                    <td className="px-3 py-3 text-neutral-900/60">
+                    <td className="text-neutral-900/60">
                       {po.expectedAt ? formatDate(po.expectedAt) : '—'}
                     </td>
-                    <td className="px-3 py-3 text-end font-medium text-neutral-900/80">
+                    <td className="text-end font-medium text-neutral-900/80">
                       {formatMoney(po.total)}
                     </td>
                   </tr>

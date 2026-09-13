@@ -82,21 +82,21 @@ export default function AdminUsersPage() {
       ) : null}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_22rem]">
-        <div className="card overflow-hidden">
+        <div className="overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="border-b border-neutral-100 bg-neutral-50">
+            <table className="table-flat">
+              <thead>
                 <tr>
-                  <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
+                  <th>
                     Name
                   </th>
-                  <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
+                  <th>
                     Role
                   </th>
-                  <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
+                  <th>
                     Status
                   </th>
-                  <th className="px-4 py-2" />
+                  <th />
                 </tr>
               </thead>
               <tbody className="divide-y divide-white">
@@ -109,7 +109,7 @@ export default function AdminUsersPage() {
                 ) : (
                   users.map((user) => (
                     <tr key={user.id} className="hover:bg-neutral-50">
-                      <td className="px-4 py-3">
+                      <td>
                         <span className="font-medium text-neutral-900">
                           {[user.firstName, user.lastName].filter(Boolean).join(' ') ||
                             user.email ||
@@ -117,15 +117,15 @@ export default function AdminUsersPage() {
                         </span>
                         <p className="text-xs text-neutral-900/40">{user.email ?? user.phone}</p>
                       </td>
-                      <td className="px-4 py-3 text-neutral-900/70">{user.role}</td>
-                      <td className="px-4 py-3">
+                      <td className="text-neutral-900/70">{user.role}</td>
+                      <td>
                         {user.isActive ? (
                           <span className="text-xs font-medium text-green-700">Active</span>
                         ) : (
                           <span className="text-xs font-medium text-red-700">Deactivated</span>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-end">
+                      <td className="text-end">
                         <Link
                           href={`/admin/users/${user.id}`}
                           className="rounded px-2 py-1 text-xs text-accent-hover hover:bg-neutral-50"

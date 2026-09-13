@@ -138,10 +138,10 @@ export default function AdminInventoryPage() {
         </p>
       ) : null}
 
-      <div className="card overflow-hidden">
+      <div className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-neutral-100 bg-neutral-50 whitespace-nowrap">
+          <table className="table-flat">
+            <thead className="whitespace-nowrap">
               <tr>
                 <Th>Product</Th>
                 <Th>SKU</Th>
@@ -179,15 +179,15 @@ export default function AdminInventoryPage() {
                   return (
                     <Fragment key={variant.id}>
                       <tr className="hover:bg-neutral-50/50">
-                        <td className="px-3 py-3">
+                        <td>
                           <div className="font-medium text-neutral-900">{variant.product.name}</div>
                           <div className="text-xs text-neutral-900/60">
                             {[variant.size, variant.color].filter(Boolean).join(' / ')}
                           </div>
                         </td>
-                        <td className="px-3 py-3 text-neutral-900/80">{variant.sku}</td>
-                        <td className="px-3 py-3 text-neutral-900/60">{variant.barcode || '—'}</td>
-                        <td className="px-3 py-3 text-end font-medium">
+                        <td className="text-neutral-900/80">{variant.sku}</td>
+                        <td className="text-neutral-900/60">{variant.barcode || '—'}</td>
+                        <td className="text-end font-medium">
                           <span className={cn(
                             variant.stock <= 0 ? 'text-red-600' :
                             variant.stock <= variant.lowStockThreshold ? 'text-amber-600' :
@@ -196,28 +196,28 @@ export default function AdminInventoryPage() {
                             {variant.stock}
                           </span>
                         </td>
-                        <td className="px-3 py-3 text-end text-neutral-900/60">{variant.lowStockThreshold}</td>
+                        <td className="text-end text-neutral-900/60">{variant.lowStockThreshold}</td>
                         
                         {canViewCost && (
                           <>
-                            <td className="px-3 py-3 text-end text-neutral-900/80">{formatMoney(variant.costPrice)}</td>
-                            <td className="px-3 py-3 text-end font-medium text-neutral-900/90">
+                            <td className="text-end text-neutral-900/80">{formatMoney(variant.costPrice)}</td>
+                            <td className="text-end font-medium text-neutral-900/90">
                               {formatMoney(variant.stock * variant.costPrice)}
                             </td>
                           </>
                         )}
                         
-                        <td className="px-3 py-3 text-end text-neutral-900/60">
+                        <td className="text-end text-neutral-900/60">
                           {variant.salesStat?.daysOfCover !== undefined && variant.salesStat?.daysOfCover !== null 
                             ? Math.round(variant.salesStat.daysOfCover)
                             : '—'}
                         </td>
-                        <td className="px-3 py-3 text-neutral-900/60">
+                        <td className="text-neutral-900/60">
                           {variant.salesStat?.lastSoldAt 
                             ? formatDate(variant.salesStat.lastSoldAt)
                             : '—'}
                         </td>
-                        <td className="px-3 py-3 text-end">
+                        <td className="text-end">
                           <button
                             type="button"
                             onClick={() => toggleHistory(variant.id)}
@@ -237,38 +237,38 @@ export default function AdminInventoryPage() {
                               <p className="text-sm text-neutral-900/50">No movements recorded yet.</p>
                             ) : (
                               <div className="overflow-x-auto">
-                                <table className="w-full text-xs">
+                                <table className="table-flat">
                                   <thead>
                                     <tr>
-                                      <th className="py-1 text-start font-medium text-neutral-900/50">Date</th>
-                                      <th className="py-1 text-start font-medium text-neutral-900/50">Actor</th>
-                                      <th className="py-1 text-start font-medium text-neutral-900/50">Reason</th>
-                                      <th className="py-1 text-start font-medium text-neutral-900/50">Ref</th>
-                                      <th className="py-1 text-start font-medium text-neutral-900/50">Note</th>
-                                      <th className="py-1 text-end font-medium text-neutral-900/50">Delta</th>
-                                      <th className="py-1 text-end font-medium text-neutral-900/50">Balance</th>
+                                      <th>Date</th>
+                                      <th>Actor</th>
+                                      <th>Reason</th>
+                                      <th>Ref</th>
+                                      <th>Note</th>
+                                      <th className="text-end">Delta</th>
+                                      <th className="text-end">Balance</th>
                                     </tr>
                                   </thead>
                                   <tbody className="divide-y divide-neutral-100">
                                     {historyRows.map((row) => (
                                       <tr key={row.id}>
-                                        <td className="py-2 text-neutral-900/70">
+                                        <td className="text-neutral-900/70">
                                           {formatDateTime(row.createdAt)}
                                         </td>
-                                        <td className="py-2 text-neutral-900/70">{row.actorName || 'System'}</td>
-                                        <td className="py-2 text-neutral-900/70">{row.reason}</td>
-                                        <td className="py-2 text-neutral-900/70">
+                                        <td className="text-neutral-900/70">{row.actorName || 'System'}</td>
+                                        <td className="text-neutral-900/70">{row.reason}</td>
+                                        <td className="text-neutral-900/70">
                                           {row.refType ? `${row.refType} ${row.refId || ''}` : '—'}
                                         </td>
-                                        <td className="py-2 text-neutral-900/70 max-w-xs truncate" title={row.note || undefined}>
+                                        <td className="text-neutral-900/70 max-w-xs truncate" title={row.note || undefined}>
                                           {row.note || '—'}
                                         </td>
-                                        <td className="py-2 text-end font-medium">
+                                        <td className="text-end font-medium">
                                           <span className={row.delta > 0 ? 'text-green-600' : 'text-red-600'}>
                                             {row.delta > 0 ? '+' : ''}{row.delta}
                                           </span>
                                         </td>
-                                        <td className="py-2 text-end text-neutral-900/80">{row.resultingStock}</td>
+                                        <td className="text-end text-neutral-900/80">{row.resultingStock}</td>
                                       </tr>
                                     ))}
                                   </tbody>

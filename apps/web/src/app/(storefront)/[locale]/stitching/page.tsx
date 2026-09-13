@@ -4,7 +4,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { validateMeasurements, type Locale } from '@newax/shared';
 import { useRouter } from '@/i18n/navigation';
-import { API_URL } from '@/lib/api';
+import { request } from '@/lib/api-client';
 import type { GarmentType } from '@/types/api';
 import { getCustomerToken } from '@/lib/cart-client';
 import type { MeasurementProfileSummary } from '@/types/cart';
@@ -62,19 +62,19 @@ export default function BookStitchingPage() {
     const token = getCustomerToken();
     setSignedIn(Boolean(token));
 
-    void fetch(`${API_URL}/measurements/garment-types`)
-      .then((response) => (response.ok ? response.json() : []))
-      .then((loaded: GarmentType[]) => {
+    void request<GarmentType[]>('/measurements/garment-types')
+      .then((loaded) => {
         setGarmentTypes(loaded);
         if (loaded[0]) setGarments([emptyGarment(loaded[0].id)]);
-      });
+      })
+      .catch(() => undefined);
 
     if (token) {
-      void fetch(`${API_URL}/measurements/profiles`, {
+      void request<MeasurementProfileSummary[]>('/measurements/profiles', {
         headers: { Authorization: `Bearer ${token}` },
       })
-        .then((response) => (response.ok ? response.json() : []))
-        .then((loaded: MeasurementProfileSummary[]) => setProfiles(loaded));
+        .then(setProfiles)
+        .catch(() => undefined);
     }
   }, []);
 
@@ -132,39 +132,29 @@ export default function BookStitchingPage() {
     setBusy(true);
     try {
       const token = getCustomerToken();
-      const response = await fetch(`${API_URL}/stitching/bookings`, {
+      // The shared client already turns a validation array into one readable
+      // message, so the hand-rolled join that used to live here is gone.
+      const booking = await request<{ number: string }>('/stitching/bookings', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
+        ...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
         credentials: 'include',
-        body: JSON.stringify({
+        fallbackMessage: t('bookingFailed'),
+        body: {
           name,
           phone,
           email: email || undefined,
           garments: payload,
           fabricNotes: fabricNotes || undefined,
           pickupAddress: address.line1 ? address : undefined,
-        }),
+        },
       });
 
-      if (!response.ok) {
-        const body = (await response.json().catch(() => undefined)) as
-          | { message?: string | string[] }
-          | undefined;
-        const message = Array.isArray(body?.message) ? body?.message.join('\n') : body?.message;
-        setError(message ?? t('bookingFailed'));
-        return;
-      }
-
-      const booking = (await response.json()) as { number: string };
       // Remember the phone for this tab so the customer's own booking opens
       // straight away instead of asking them to prove who they are.
       sessionStorage.setItem(STORAGE_KEYS.guestBooking(booking.number), phone);
       router.push(`/stitching/${booking.number}?booked=1`);
-    } catch {
-      setError(t('bookingFailed'));
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : t('bookingFailed'));
     } finally {
       setBusy(false);
     }

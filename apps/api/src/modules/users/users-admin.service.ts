@@ -157,15 +157,19 @@ export class UsersAdminService {
       },
     });
 
+    for (const roleId of dto.roleIds ?? []) {
+      await this.roles.assign(user.id, roleId);
+    }
+
     await this.audit.record({
       actorId,
       action: 'user.created',
       entity: 'User',
       entityId: user.id,
-      data: { role: user.role },
+      data: { role: user.role, roleIds: dto.roleIds ?? [] },
     });
 
-    return user;
+    return dto.roleIds?.length ? this.get(user.id) : user;
   }
 
   async update(actorId: string, targetId: string, dto: UpdateUserDto) {

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-client';
-import type { AdminUser, BackOfficeRole } from '@/types/api';
+import type { AdminUser, BackOfficeRole, RoleSummary } from '@/types/api';
 
 interface Draft {
   email: string;
@@ -12,6 +12,7 @@ interface Draft {
   lastName: string;
   password: string;
   role: BackOfficeRole;
+  roleIds: Set<string>;
 }
 
 const BLANK: Draft = {
@@ -21,17 +22,24 @@ const BLANK: Draft = {
   lastName: '',
   password: '',
   role: 'STAFF',
+  roleIds: new Set(),
 };
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<AdminUser[]>([]);
+  const [allRoles, setAllRoles] = useState<RoleSummary[]>([]);
   const [draft, setDraft] = useState<Draft>(BLANK);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
     try {
-      setUsers(await adminFetch<AdminUser[]>('/admin/users'));
+      const [fetchedUsers, fetchedRoles] = await Promise.all([
+        adminFetch<AdminUser[]>('/admin/users'),
+        adminFetch<RoleSummary[]>('/admin/roles'),
+      ]);
+      setUsers(fetchedUsers);
+      setAllRoles(fetchedRoles);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not load users');
     }
@@ -40,6 +48,15 @@ export default function AdminUsersPage() {
   useEffect(() => {
     void load();
   }, [load]);
+
+  function toggleDraftRole(roleId: string) {
+    setDraft((prev) => {
+      const roleIds = new Set(prev.roleIds);
+      if (roleIds.has(roleId)) roleIds.delete(roleId);
+      else roleIds.add(roleId);
+      return { ...prev, roleIds };
+    });
+  }
 
   async function create(event: React.FormEvent) {
     event.preventDefault();
@@ -56,6 +73,7 @@ export default function AdminUsersPage() {
           lastName: draft.lastName || undefined,
           password: draft.password,
           role: draft.role,
+          roleIds: draft.roleIds.size > 0 ? [...draft.roleIds] : undefined,
         },
       });
       setDraft(BLANK);
@@ -206,6 +224,31 @@ export default function AdminUsersPage() {
               className="field-input"
             />
           </label>
+
+          {allRoles.length > 0 ? (
+            <div>
+              <span className="field-label">Custom roles</span>
+              <p className="mb-1 text-xs text-neutral-900/50">
+                Separate from the account kind above — a person may hold several; permissions are
+                the union of every one checked.
+              </p>
+              <ul className="max-h-40 overflow-y-auto rounded bg-neutral-50/60">
+                {allRoles.map((role) => (
+                  <li key={role.id} className="px-3 py-1.5">
+                    <label className="flex items-center gap-2 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={draft.roleIds.has(role.id)}
+                        onChange={() => toggleDraftRole(role.id)}
+                        className="field-check"
+                      />
+                      <span className="min-w-0 truncate">{role.name}</span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
           <button type="submit" disabled={busy} className="btn-primary">
             {busy ? 'Creating…' : 'Add user'}

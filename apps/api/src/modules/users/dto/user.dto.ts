@@ -50,6 +50,13 @@ export class CreateUserDto {
   @ApiProperty({ enum: BACK_OFFICE_ROLES })
   @IsIn(BACK_OFFICE_ROLES)
   role!: BackOfficeRole;
+
+  /** Custom Role ids to assign on creation — separate from `role` above, which is the coarse account kind, not a permission set. A user may hold several. */
+  @ApiPropertyOptional({ type: [String] })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  roleIds?: string[];
 }
 
 export class UpdateUserDto {

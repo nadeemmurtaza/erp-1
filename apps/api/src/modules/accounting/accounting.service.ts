@@ -57,15 +57,22 @@ export class AccountingService {
    * the *currently open* period rather than the period `date` falls into,
    * so a three-day-late offline sale still posts (R15) instead of failing
    * because its own period has since closed.
+   *
+   * Takes an optional external transaction so a caller that must commit its
+   * own write in the same transaction as the posting — `FiscalPeriodsService
+   * .closeFiscalYear()` (WO-19.5) marking `FiscalYear.closedAt` alongside the
+   * closing entry — can do so atomically, the same `tx?` shape
+   * `EventBusService.publish()` already uses. Wraps its own transaction when
+   * none is given, exactly as before.
    */
-  async postEntry(input: PostEntryInput): Promise<JournalEntryWithLines> {
+  async postEntry(input: PostEntryInput, tx?: Prisma.TransactionClient): Promise<JournalEntryWithLines> {
     this.assertBalanced(input.lines);
     const period = await this.resolveOpenPeriod(input.date);
 
-    return this.prisma.$transaction(async (tx) => {
-      const number = await this.nextJournalNumber(tx, period.fiscalYearId, await this.fiscalYearName(tx, period.fiscalYearId));
+    const run = async (client: Prisma.TransactionClient) => {
+      const number = await this.nextJournalNumber(client, period.fiscalYearId, await this.fiscalYearName(client, period.fiscalYearId));
 
-      return tx.journalEntry.create({
+      return client.journalEntry.create({
         data: {
           number,
           date: input.date,
@@ -78,7 +85,9 @@ export class AccountingService {
         },
         include: { lines: true },
       });
-    });
+    };
+
+    return tx ? run(tx) : this.prisma.$transaction(run);
   }
 
   /**

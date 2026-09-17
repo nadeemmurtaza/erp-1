@@ -61,6 +61,14 @@ which is the document of record where it and `ENTERPRISE-SCALE.md` overlap:
 - **Adding a sector adds a folder.** It never edits a core module. Core never
   imports a pack; a pack never imports another pack — `pnpm lint` fails on it.
 - **Every pack must be survivably absent.** Booting without it has to work.
+- **Every module is independent of every other module — full stop, not just
+  across packs.** No direct import between two modules, core or pack alike,
+  except a named, narrow `KNOWN_MODULE_COUPLINGS` entry for a same-transaction
+  write. Everything else crosses through a domain event or an extension point.
+  `pnpm lint` fails a violation. The payoff is not tidiness: any module can be
+  dropped, replaced, or shipped alone for a given client without breaking the
+  rest — that is what makes the `MODULES` allowlist actually safe to vary per
+  deployment.
 - **Extension points, not conditionals.** There is no `if (sector === …)`
   anywhere and there must never be.
 - **One deployment serves one brand**, resolved at build time. That is a

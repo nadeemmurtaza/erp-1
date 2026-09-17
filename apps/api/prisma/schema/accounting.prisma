@@ -12,9 +12,10 @@
 // (checked by a deferred constraint trigger — see the migration), a posted
 // entry is immutable (checked by a trigger that permits exactly one
 // transition, POSTED -> REVERSED, and nothing else), and nothing posts into
-// a LOCKED period (WO-19.5 — period status exists here; the lock isn't
-// enforced yet, since nothing can close a period until reports (19.4) give
-// someone a reason to).
+// a LOCKED (or CLOSED) period — AccountingService.resolveOpenPeriod() only
+// ever considers `status: 'OPEN'` periods, so a late fact reroutes to
+// whatever period is open today instead (R15) rather than failing or
+// reaching a closed one (WO-19.5).
 
 enum AccountType {
   ASSET
@@ -60,6 +61,15 @@ model FiscalYear {
   name     String   @unique
   startsOn DateTime
   endsOn   DateTime
+
+  /// Set once by `FiscalPeriodsService.closeFiscalYear()` (WO-19.5) — the
+  /// year-end closing entry that zeros INCOME/EXPENSE into Retained Earnings
+  /// has posted, and the year can never be closed a second time. Every
+  /// period within it must already be CLOSED or LOCKED before this is set;
+  /// this field itself is never cleared — a mistaken close is fixed with a
+  /// reversing entry, the same as any other POSTED journal entry (R2), not
+  /// by un-closing the year.
+  closedAt DateTime?
 
   periods FiscalPeriod[]
   numberCounter JournalEntryNumberCounter?

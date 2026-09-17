@@ -2,6 +2,9 @@ import { BadRequestException, ConflictException, Injectable, NotFoundException }
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { FiscalPeriod, FiscalYear } from '../../core/prisma/client';
 import { CreateFiscalPeriodDto, CreateFiscalYearDto } from './dto/fiscal-period.dto';
+import { AccountingService, type PostLineInput } from './accounting.service';
+import { GlReportsService } from './gl-reports.service';
+import { ACCOUNT_CODE } from './chart-of-accounts';
 
 /**
  * Opens, closes and locks fiscal periods (RETAIL-ERP.md R15, WO-19.5).
@@ -24,7 +27,11 @@ import { CreateFiscalPeriodDto, CreateFiscalYearDto } from './dto/fiscal-period.
  */
 @Injectable()
 export class FiscalPeriodsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly accounting: AccountingService,
+    private readonly glReports: GlReportsService,
+  ) {}
 
   async listFiscalYears(): Promise<FiscalYear[]> {
     return this.prisma.fiscalYear.findMany({ orderBy: { startsOn: 'desc' } });
@@ -105,6 +112,79 @@ export class FiscalPeriodsService {
       throw new BadRequestException(`Period ${period.name} must be CLOSED before it can be locked — lock is permanent.`);
     }
     return this.prisma.fiscalPeriod.update({ where: { id }, data: { status: 'LOCKED' } });
+  }
+
+  /**
+   * The year-end close: zeros every INCOME/EXPENSE account's activity for
+   * the fiscal year into `Retained Earnings` (3000) with one balancing
+   * journal entry, then marks `FiscalYear.closedAt` — both in the same
+   * transaction, via `AccountingService.postEntry()`'s `tx` param, so a
+   * failure never leaves a posted closing entry with the year still reading
+   * open (which would let a retry post a second one and double-zero the
+   * year's P&L). Requires every period in the year to already be CLOSED or
+   * LOCKED — closing the year while one still takes postings would let a
+   * fact land after its own year has already been swept into equity.
+   */
+  async closeFiscalYear(id: string): Promise<FiscalYear> {
+    const fiscalYear = await this.prisma.fiscalYear.findUnique({ where: { id } });
+    if (!fiscalYear) throw new NotFoundException('Fiscal year not found.');
+    if (fiscalYear.closedAt) {
+      throw new BadRequestException(`${fiscalYear.name} is already closed.`);
+    }
+
+    const periods = await this.prisma.fiscalPeriod.findMany({ where: { fiscalYearId: id } });
+    const stillOpen = periods.filter((p) => p.status === 'OPEN');
+    if (stillOpen.length > 0) {
+      throw new BadRequestException(
+        `Close every period in ${fiscalYear.name} first — still OPEN: ${stillOpen.map((p) => p.name).join(', ')}.`,
+      );
+    }
+
+    const { income, expense, netIncomeMinor } = await this.glReports.profitAndLoss(
+      fiscalYear.startsOn,
+      fiscalYear.endsOn,
+    );
+
+    const lines: PostLineInput[] = [];
+    for (const row of income) {
+      if (row.amountMinor === 0) continue;
+      lines.push({ accountId: row.accountId, debitMinor: row.amountMinor });
+    }
+    for (const row of expense) {
+      if (row.amountMinor === 0) continue;
+      lines.push({ accountId: row.accountId, creditMinor: row.amountMinor });
+    }
+
+    if (lines.length > 0 && netIncomeMinor !== 0) {
+      const retainedEarnings = await this.prisma.account.findUnique({
+        where: { code: ACCOUNT_CODE.RETAINED_EARNINGS },
+      });
+      if (!retainedEarnings) {
+        throw new BadRequestException('The Retained Earnings (3000) account is missing — has the chart of accounts been seeded?');
+      }
+      if (netIncomeMinor > 0) {
+        lines.push({ accountId: retainedEarnings.id, creditMinor: netIncomeMinor });
+      } else {
+        lines.push({ accountId: retainedEarnings.id, debitMinor: -netIncomeMinor });
+      }
+    }
+
+    return this.prisma.$transaction(async (tx) => {
+      if (lines.length > 0) {
+        await this.accounting.postEntry(
+          {
+            date: fiscalYear.endsOn,
+            source: 'accounting.year_end_close',
+            sourceRef: fiscalYear.id,
+            memo: `Year-end close: ${fiscalYear.name}`,
+            lines,
+          },
+          tx,
+        );
+      }
+
+      return tx.fiscalYear.update({ where: { id }, data: { closedAt: new Date() } });
+    });
   }
 
   private async findPeriodOrThrow(id: string): Promise<FiscalPeriod> {

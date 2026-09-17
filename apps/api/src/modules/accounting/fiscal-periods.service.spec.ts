@@ -2,19 +2,34 @@ import { BadRequestException, ConflictException, NotFoundException } from '@nest
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { FiscalPeriodsService } from './fiscal-periods.service';
+import { AccountingService } from './accounting.service';
+import { GlReportsService } from './gl-reports.service';
 
 describe('FiscalPeriodsService — WO-19.5', () => {
   let service: FiscalPeriodsService;
   let prisma: any;
+  let accounting: any;
+  let glReports: any;
+  let tx: any;
 
   beforeEach(async () => {
+    tx = { fiscalYear: { update: jest.fn() } };
     prisma = {
       fiscalYear: { findUnique: jest.fn(), create: jest.fn(), findMany: jest.fn() },
       fiscalPeriod: { findUnique: jest.fn(), create: jest.fn(), update: jest.fn(), findMany: jest.fn() },
+      account: { findUnique: jest.fn() },
+      $transaction: jest.fn((fn: any) => fn(tx)),
     };
+    accounting = { postEntry: jest.fn().mockResolvedValue({}) };
+    glReports = { profitAndLoss: jest.fn() };
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [FiscalPeriodsService, { provide: PrismaService, useValue: prisma }],
+      providers: [
+        FiscalPeriodsService,
+        { provide: PrismaService, useValue: prisma },
+        { provide: AccountingService, useValue: accounting },
+        { provide: GlReportsService, useValue: glReports },
+      ],
     }).compile();
 
     service = module.get(FiscalPeriodsService);
@@ -165,6 +180,132 @@ describe('FiscalPeriodsService — WO-19.5', () => {
       prisma.fiscalPeriod.findUnique.mockResolvedValue({ id: 'p1', name: 'P1', status: 'LOCKED' });
 
       await expect(service.lockPeriod('p1')).rejects.toBeInstanceOf(BadRequestException);
+    });
+  });
+
+  describe('closeFiscalYear', () => {
+    const FY = { id: 'fy1', name: 'FY2026', startsOn: new Date('2026-01-01'), endsOn: new Date('2027-01-01'), closedAt: null };
+
+    it('404s for an unknown fiscal year', async () => {
+      prisma.fiscalYear.findUnique.mockResolvedValue(null);
+
+      await expect(service.closeFiscalYear('missing')).rejects.toBeInstanceOf(NotFoundException);
+    });
+
+    it('refuses a fiscal year that is already closed', async () => {
+      prisma.fiscalYear.findUnique.mockResolvedValue({ ...FY, closedAt: new Date() });
+
+      await expect(service.closeFiscalYear('fy1')).rejects.toBeInstanceOf(BadRequestException);
+      expect(prisma.$transaction).not.toHaveBeenCalled();
+    });
+
+    it('refuses while any period in the year is still OPEN', async () => {
+      prisma.fiscalYear.findUnique.mockResolvedValue(FY);
+      prisma.fiscalPeriod.findMany.mockResolvedValue([
+        { id: 'p1', name: 'Jan', status: 'CLOSED' },
+        { id: 'p2', name: 'Feb', status: 'OPEN' },
+      ]);
+
+      await expect(service.closeFiscalYear('fy1')).rejects.toThrow(/still OPEN: Feb/);
+      expect(prisma.$transaction).not.toHaveBeenCalled();
+    });
+
+    it('posts a closing entry that debits income, credits expense, and balances to Retained Earnings on a profit', async () => {
+      prisma.fiscalYear.findUnique.mockResolvedValue(FY);
+      prisma.fiscalPeriod.findMany.mockResolvedValue([{ id: 'p1', name: 'Jan', status: 'LOCKED' }]);
+      glReports.profitAndLoss.mockResolvedValue({
+        income: [{ accountId: 'a-rev', code: '4000', name: 'Sales Revenue', amountMinor: 5000 }],
+        expense: [{ accountId: 'a-cogs', code: '5000', name: 'COGS', amountMinor: 2000 }],
+        totalIncomeMinor: 5000,
+        totalExpenseMinor: 2000,
+        netIncomeMinor: 3000,
+      });
+      prisma.account.findUnique.mockResolvedValue({ id: 'a-re', code: '3000', name: 'Retained Earnings' });
+      tx.fiscalYear.update.mockResolvedValue({ ...FY, closedAt: new Date() });
+
+      await service.closeFiscalYear('fy1');
+
+      const [input, passedTx] = accounting.postEntry.mock.calls[0];
+      expect(passedTx).toBe(tx);
+      expect(input.date).toEqual(FY.endsOn);
+      expect(input.source).toBe('accounting.year_end_close');
+      expect(input.lines).toEqual(
+        expect.arrayContaining([
+          { accountId: 'a-rev', debitMinor: 5000 },
+          { accountId: 'a-cogs', creditMinor: 2000 },
+          { accountId: 'a-re', creditMinor: 3000 },
+        ]),
+      );
+      const totalDebit = input.lines.reduce((s: number, l: any) => s + (l.debitMinor ?? 0), 0);
+      const totalCredit = input.lines.reduce((s: number, l: any) => s + (l.creditMinor ?? 0), 0);
+      expect(totalDebit).toBe(totalCredit);
+
+      expect(tx.fiscalYear.update).toHaveBeenCalledWith({ where: { id: 'fy1' }, data: { closedAt: expect.any(Date) } });
+    });
+
+    it('debits Retained Earnings on a loss', async () => {
+      prisma.fiscalYear.findUnique.mockResolvedValue(FY);
+      prisma.fiscalPeriod.findMany.mockResolvedValue([]);
+      glReports.profitAndLoss.mockResolvedValue({
+        income: [{ accountId: 'a-rev', code: '4000', name: 'Sales Revenue', amountMinor: 1000 }],
+        expense: [{ accountId: 'a-cogs', code: '5000', name: 'COGS', amountMinor: 4000 }],
+        totalIncomeMinor: 1000,
+        totalExpenseMinor: 4000,
+        netIncomeMinor: -3000,
+      });
+      prisma.account.findUnique.mockResolvedValue({ id: 'a-re', code: '3000', name: 'Retained Earnings' });
+
+      await service.closeFiscalYear('fy1');
+
+      const [input] = accounting.postEntry.mock.calls[0];
+      expect(input.lines).toEqual(
+        expect.arrayContaining([{ accountId: 'a-re', debitMinor: 3000 }]),
+      );
+    });
+
+    it('skips posting entirely when there was no income/expense activity, but still marks the year closed', async () => {
+      prisma.fiscalYear.findUnique.mockResolvedValue(FY);
+      prisma.fiscalPeriod.findMany.mockResolvedValue([]);
+      glReports.profitAndLoss.mockResolvedValue({ income: [], expense: [], totalIncomeMinor: 0, totalExpenseMinor: 0, netIncomeMinor: 0 });
+
+      await service.closeFiscalYear('fy1');
+
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+      expect(tx.fiscalYear.update).toHaveBeenCalledWith({ where: { id: 'fy1' }, data: { closedAt: expect.any(Date) } });
+    });
+
+    it('does not add a Retained Earnings line when income exactly offsets expense', async () => {
+      prisma.fiscalYear.findUnique.mockResolvedValue(FY);
+      prisma.fiscalPeriod.findMany.mockResolvedValue([]);
+      glReports.profitAndLoss.mockResolvedValue({
+        income: [{ accountId: 'a-rev', code: '4000', name: 'Sales Revenue', amountMinor: 2000 }],
+        expense: [{ accountId: 'a-cogs', code: '5000', name: 'COGS', amountMinor: 2000 }],
+        totalIncomeMinor: 2000,
+        totalExpenseMinor: 2000,
+        netIncomeMinor: 0,
+      });
+
+      await service.closeFiscalYear('fy1');
+
+      expect(prisma.account.findUnique).not.toHaveBeenCalled();
+      const [input] = accounting.postEntry.mock.calls[0];
+      expect(input.lines).toHaveLength(2);
+    });
+
+    it('throws if the Retained Earnings account is missing from the chart of accounts', async () => {
+      prisma.fiscalYear.findUnique.mockResolvedValue(FY);
+      prisma.fiscalPeriod.findMany.mockResolvedValue([]);
+      glReports.profitAndLoss.mockResolvedValue({
+        income: [{ accountId: 'a-rev', code: '4000', name: 'Sales Revenue', amountMinor: 5000 }],
+        expense: [],
+        totalIncomeMinor: 5000,
+        totalExpenseMinor: 0,
+        netIncomeMinor: 5000,
+      });
+      prisma.account.findUnique.mockResolvedValue(null);
+
+      await expect(service.closeFiscalYear('fy1')).rejects.toBeInstanceOf(BadRequestException);
+      expect(accounting.postEntry).not.toHaveBeenCalled();
     });
   });
 });

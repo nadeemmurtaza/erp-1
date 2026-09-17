@@ -11,6 +11,8 @@ import { PrismaService } from '../src/core/prisma/prisma.service';
 import { SettingsService } from '../src/core/settings/settings.service';
 import { AccountingService } from '../src/modules/accounting/accounting.service';
 import { FiscalPeriodsService } from '../src/modules/accounting/fiscal-periods.service';
+import { GlReportsService } from '../src/modules/accounting/gl-reports.service';
+import { ACCOUNT_CODE } from '../src/modules/accounting/chart-of-accounts';
 
 describe('Accounting ledger invariants (integration)', () => {
   let prisma: PrismaService;
@@ -282,7 +284,7 @@ describe('Accounting ledger invariants (integration)', () => {
     let openPeriodId: string;
 
     beforeAll(async () => {
-      fiscalPeriods = new FiscalPeriodsService(prisma);
+      fiscalPeriods = new FiscalPeriodsService(prisma, accounting, new GlReportsService(prisma));
       // A separate, future fiscal year — never overlaps the suite's own
       // current-year P1, so resolveOpenPeriod's global "most recently
       // opened OPEN period" fallback cannot ambiguously pick between them.
@@ -356,6 +358,104 @@ describe('Accounting ledger invariants (integration)', () => {
 
       const period = await prisma.fiscalPeriod.findUniqueOrThrow({ where: { id: closedPeriodId } });
       expect(period.status).toBe('LOCKED');
+    });
+  });
+
+  describe('WO-19.5 — closeFiscalYear posts a real, database-balanced closing entry', () => {
+    let fiscalPeriods: FiscalPeriodsService;
+    let glReports: GlReportsService;
+    let closeFyId: string;
+    let closePeriodId: string;
+    let expenseAccountId: string;
+    let retainedEarningsId: string;
+
+    beforeAll(async () => {
+      glReports = new GlReportsService(prisma);
+      fiscalPeriods = new FiscalPeriodsService(prisma, accounting, glReports);
+
+      const retainedEarnings = await prisma.account.findUniqueOrThrow({
+        where: { code: ACCOUNT_CODE.RETAINED_EARNINGS },
+      });
+      retainedEarningsId = retainedEarnings.id;
+
+      const expenseSuffix = Date.now().toString(36);
+      const expenseAccount = await prisma.account.create({
+        data: { code: `EXP-${expenseSuffix}`, name: 'Expense (test)', type: 'EXPENSE' },
+      });
+      expenseAccountId = expenseAccount.id;
+
+      const closeYear = new Date().getFullYear() + 6;
+      const fiscalYear = await fiscalPeriods.createFiscalYear({
+        name: `FYTEST-CLOSE-${Date.now().toString(36)}`,
+        startsOn: new Date(closeYear, 0, 1).toISOString(),
+        endsOn: new Date(closeYear + 1, 0, 1).toISOString(),
+      });
+      closeFyId = fiscalYear.id;
+
+      const period = await fiscalPeriods.createFiscalPeriod({
+        fiscalYearId: fiscalYear.id,
+        name: 'Q1',
+        startsOn: new Date(closeYear, 0, 1).toISOString(),
+        endsOn: new Date(closeYear, 3, 1).toISOString(),
+      });
+      closePeriodId = period.id;
+
+      // Rs 50 revenue, Rs 20 expense — Rs 30 net income to close to equity.
+      const income = await accounting.postEntry({
+        date: new Date(closeYear, 1, 1),
+        source: 'test.wo195-close-income',
+        lines: [
+          { accountId: cashAccountId, debitMinor: 5000 },
+          { accountId: revenueAccountId, creditMinor: 5000 },
+        ],
+      });
+      createdEntryIds.push(income.id);
+      const expense = await accounting.postEntry({
+        date: new Date(closeYear, 1, 2),
+        source: 'test.wo195-close-expense',
+        lines: [
+          { accountId: expenseAccountId, debitMinor: 2000 },
+          { accountId: cashAccountId, creditMinor: 2000 },
+        ],
+      });
+      createdEntryIds.push(expense.id);
+
+      await fiscalPeriods.closePeriod(closePeriodId);
+    });
+
+    it('zeros the year\'s income/expense into Retained Earnings and marks the year closed', async () => {
+      const before = await prisma.journalLine.aggregate({
+        where: { accountId: retainedEarningsId },
+        _sum: { creditMinor: true, debitMinor: true },
+      });
+      const beforeNet = (before._sum.creditMinor ?? 0) - (before._sum.debitMinor ?? 0);
+
+      const closed = await fiscalPeriods.closeFiscalYear(closeFyId);
+      expect(closed.closedAt).toBeInstanceOf(Date);
+
+      const closingEntry = await prisma.journalEntry.findFirstOrThrow({
+        where: { source: 'accounting.year_end_close', sourceRef: closeFyId },
+        include: { lines: true },
+      });
+      createdEntryIds.push(closingEntry.id);
+
+      const totalDebit = closingEntry.lines.reduce((sum, l) => sum + l.debitMinor, 0);
+      const totalCredit = closingEntry.lines.reduce((sum, l) => sum + l.creditMinor, 0);
+      expect(totalDebit).toBe(totalCredit); // the database trigger already proved this on insert.
+
+      const retainedEarningsLine = closingEntry.lines.find((l) => l.accountId === retainedEarningsId);
+      expect(retainedEarningsLine?.creditMinor).toBe(3000);
+
+      const after = await prisma.journalLine.aggregate({
+        where: { accountId: retainedEarningsId },
+        _sum: { creditMinor: true, debitMinor: true },
+      });
+      const afterNet = (after._sum.creditMinor ?? 0) - (after._sum.debitMinor ?? 0);
+      expect(afterNet - beforeNet).toBe(3000);
+    });
+
+    it('refuses to close the same fiscal year twice', async () => {
+      await expect(fiscalPeriods.closeFiscalYear(closeFyId)).rejects.toBeInstanceOf(BadRequestException);
     });
   });
 });

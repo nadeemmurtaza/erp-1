@@ -85,7 +85,12 @@ export class GlReportsService {
     };
   }
 
-  /** Income and expense accounts only, for the date range — net income is the difference. */
+  /**
+   * Income and expense accounts only, for the date range — net income is the
+   * difference. `accountId` rides along on each row so `FiscalPeriodsService
+   * .closeFiscalYear()` (WO-19.5) can post a closing line straight back to
+   * the account it came from, without a second lookup by code.
+   */
   async profitAndLoss(from: Date, to: Date) {
     const sums = await this.prisma.journalLine.groupBy({
       by: ['accountId'],
@@ -97,8 +102,8 @@ export class GlReportsService {
     });
     const byId = new Map(accounts.map((a) => [a.id, a]));
 
-    const income: Array<{ code: string; name: string; amountMinor: number }> = [];
-    const expense: Array<{ code: string; name: string; amountMinor: number }> = [];
+    const income: Array<{ accountId: string; code: string; name: string; amountMinor: number }> = [];
+    const expense: Array<{ accountId: string; code: string; name: string; amountMinor: number }> = [];
 
     for (const s of sums) {
       const account = byId.get(s.accountId);
@@ -106,9 +111,9 @@ export class GlReportsService {
       const debit = s._sum.debitMinor ?? 0;
       const credit = s._sum.creditMinor ?? 0;
       if (account.type === 'INCOME') {
-        income.push({ code: account.code, name: account.name, amountMinor: credit - debit });
+        income.push({ accountId: account.id, code: account.code, name: account.name, amountMinor: credit - debit });
       } else {
-        expense.push({ code: account.code, name: account.name, amountMinor: debit - credit });
+        expense.push({ accountId: account.id, code: account.code, name: account.name, amountMinor: debit - credit });
       }
     }
     income.sort((a, b) => a.code.localeCompare(b.code));
@@ -129,11 +134,14 @@ export class GlReportsService {
   }
 
   /**
-   * Asset/liability/equity balances as of a date, plus "Retained earnings
-   * (unclosed)" — the cumulative income-minus-expense nobody has closed to
-   * equity yet, since fiscal period close (WO-19.5) doesn't exist. This is
-   * the standard, honest way to show a balance sheet from a ledger that has
-   * never run a year-end close, not an approximation of one that has.
+   * Asset/liability/equity balances as of a date, plus `retainedEarningsMinor`
+   * — the income-minus-expense accumulated *since the last WO-19.5 year-end
+   * close*, not yet folded into the `Retained Earnings` (3000) equity
+   * account. `equity` already carries every prior year's closed profit,
+   * since `FiscalPeriodsService.closeFiscalYear()` posts straight to that
+   * account like any other entry; this field is only ever the open tail a
+   * close hasn't swept up yet, which is why the two are shown, and summed,
+   * separately rather than one replacing the other.
    */
   async balanceSheet(asOf: Date) {
     const rows = await this.balancesAsOf(asOf);

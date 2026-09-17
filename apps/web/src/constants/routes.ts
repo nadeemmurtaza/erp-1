@@ -114,5 +114,7 @@ export const ROUTES = {
     organizationOrg: (orgId: string) => `/admin/o/${orgId}`,
     organizationBrand: (brandId: string) => `/admin/b/${brandId}`,
     organizationBranch: (branchId: string) => `/admin/br/${branchId}`,
+    /** Grant/revoke who is a brand or branch admin (WO-18.6) — ORG-scoped only. */
+    organizationAccess: (orgId: string) => `/admin/o/${orgId}/access`,
   },
 } as const;

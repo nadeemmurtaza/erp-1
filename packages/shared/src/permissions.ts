@@ -35,6 +35,11 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     label: 'View the organization/brand/branch dashboard',
     category: 'Dashboard',
   },
+  {
+    key: 'organization.manage',
+    label: 'Grant and revoke who is a brand or branch admin',
+    category: 'Dashboard',
+  },
 
   { key: 'crm.manage', label: 'Manage leads, contacts and CRM', category: 'Customers' },
 
@@ -160,6 +165,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'analytics.view',
     'reports.view',
     'organization.view',
+    'organization.manage',
     'crm.manage',
     'orders.manage',
     'payments.approve',

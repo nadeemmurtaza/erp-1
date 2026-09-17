@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { adminFetch } from '@/lib/admin-client';
 import type { MyScope } from '@/types/api';
@@ -54,7 +55,16 @@ export default function OrganizationDashboardPage() {
 
   return (
     <>
-      <PageHeader title={scope.organization?.name ?? 'Organization'} />
+      <PageHeader
+        title={scope.organization?.name ?? 'Organization'}
+        action={
+          scope.isOrgWide ? (
+            <Link href={ROUTES.admin.organizationAccess(params.orgId)} className="btn-secondary">
+              Admin access
+            </Link>
+          ) : undefined
+        }
+      />
 
       <ScopeChips
         chips={scope.brands.map((brand) => ({

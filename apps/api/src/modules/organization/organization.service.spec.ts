@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { OrganizationService } from './organization.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { AdminScopeGrant, ScopedActor } from '../../core/auth/scope.guard';
@@ -24,7 +25,11 @@ describe('OrganizationService', () => {
     prisma = {
       retailBrand: { findMany: jest.fn().mockResolvedValue([]) },
       node: { findMany: jest.fn().mockResolvedValue([]) },
-      adminScope: { findMany: jest.fn().mockResolvedValue([]) },
+      adminScope: {
+        findMany: jest.fn().mockResolvedValue([]),
+        create: jest.fn().mockResolvedValue({}),
+        delete: jest.fn().mockResolvedValue({}),
+      },
       organization: { findFirst: jest.fn().mockResolvedValue(null) },
     };
 
@@ -130,6 +135,102 @@ describe('OrganizationService', () => {
         where: { userId: 'user-1' },
         select: { level: true, retailBrandId: true, branchNodeId: true },
       });
+    });
+  });
+
+  describe('listScopes', () => {
+    it('lists every grant, with the holder, for an ORG-scope actor', async () => {
+      await service.listScopes(actor([org()]));
+
+      expect(prisma.adminScope.findMany).toHaveBeenCalledWith({
+        include: { user: { select: { id: true, email: true, firstName: true, lastName: true } } },
+        orderBy: { createdAt: 'desc' },
+      });
+    });
+
+    it('refuses a BRAND-scope actor', async () => {
+      await expect(service.listScopes(actor([brand('b1')]))).rejects.toBeInstanceOf(ForbiddenException);
+    });
+
+    it('refuses an actor with no grants at all', async () => {
+      await expect(service.listScopes(actor([]))).rejects.toBeInstanceOf(ForbiddenException);
+    });
+  });
+
+  describe('grantScope', () => {
+    it('only an ORG-scope actor may grant — a BRAND-scope actor is refused even for their own brand', async () => {
+      await expect(
+        service.grantScope(actor([brand('b1')]), { userId: 'u2', level: 'BRANCH', retailBrandId: 'b1', branchNodeId: 'n1' }),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+      expect(prisma.adminScope.create).not.toHaveBeenCalled();
+    });
+
+    it('grants ORG with no brand or branch', async () => {
+      await service.grantScope(actor([org()]), { userId: 'u2', level: 'ORG' });
+
+      expect(prisma.adminScope.create).toHaveBeenCalledWith({
+        data: { userId: 'u2', level: 'ORG', retailBrandId: null, branchNodeId: null },
+      });
+    });
+
+    it('grants BRAND with a retailBrandId and no branchNodeId', async () => {
+      await service.grantScope(actor([org()]), { userId: 'u2', level: 'BRAND', retailBrandId: 'b1' });
+
+      expect(prisma.adminScope.create).toHaveBeenCalledWith({
+        data: { userId: 'u2', level: 'BRAND', retailBrandId: 'b1', branchNodeId: null },
+      });
+    });
+
+    it('grants BRANCH with both a retailBrandId and a branchNodeId', async () => {
+      await service.grantScope(actor([org()]), {
+        userId: 'u2',
+        level: 'BRANCH',
+        retailBrandId: 'b1',
+        branchNodeId: 'n1',
+      });
+
+      expect(prisma.adminScope.create).toHaveBeenCalledWith({
+        data: { userId: 'u2', level: 'BRANCH', retailBrandId: 'b1', branchNodeId: 'n1' },
+      });
+    });
+
+    it('refuses ORG with a brand or branch attached', async () => {
+      await expect(
+        service.grantScope(actor([org()]), { userId: 'u2', level: 'ORG', retailBrandId: 'b1' }),
+      ).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it('refuses BRAND with no retailBrandId', async () => {
+      await expect(service.grantScope(actor([org()]), { userId: 'u2', level: 'BRAND' })).rejects.toBeInstanceOf(
+        BadRequestException,
+      );
+    });
+
+    it('refuses BRAND with a branchNodeId attached', async () => {
+      await expect(
+        service.grantScope(actor([org()]), { userId: 'u2', level: 'BRAND', retailBrandId: 'b1', branchNodeId: 'n1' }),
+      ).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it('refuses BRANCH missing either id', async () => {
+      await expect(
+        service.grantScope(actor([org()]), { userId: 'u2', level: 'BRANCH', retailBrandId: 'b1' }),
+      ).rejects.toBeInstanceOf(BadRequestException);
+      await expect(
+        service.grantScope(actor([org()]), { userId: 'u2', level: 'BRANCH', branchNodeId: 'n1' }),
+      ).rejects.toBeInstanceOf(BadRequestException);
+    });
+  });
+
+  describe('revokeScope', () => {
+    it('deletes the grant for an ORG-scope actor', async () => {
+      await service.revokeScope(actor([org()]), 'scope-1');
+      expect(prisma.adminScope.delete).toHaveBeenCalledWith({ where: { id: 'scope-1' } });
+    });
+
+    it('refuses a non-ORG-scope actor', async () => {
+      await expect(service.revokeScope(actor([brand('b1')]), 'scope-1')).rejects.toBeInstanceOf(ForbiddenException);
+      expect(prisma.adminScope.delete).not.toHaveBeenCalled();
     });
   });
 });

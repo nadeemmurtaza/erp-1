@@ -342,6 +342,23 @@ export interface MyScope {
   nodes: OrgNodeSummary[];
 }
 
+/** GET/POST /organization/admin-scopes (WO-18.6) — who is a super admin, a brand admin, or a branch admin. Only reachable by an ORG-scoped holder of organization.manage. */
+export interface AdminScopeWithHolder {
+  id: string;
+  level: 'ORG' | 'BRAND' | 'BRANCH';
+  retailBrandId: string | null;
+  branchNodeId: string | null;
+  createdAt: string;
+  user: { id: string; email: string | null; firstName: string | null; lastName: string | null };
+}
+
+export interface GrantScopeInput {
+  userId: string;
+  level: 'ORG' | 'BRAND' | 'BRANCH';
+  retailBrandId?: string;
+  branchNodeId?: string;
+}
+
 // --- Inventory --------------------------------------------------------------
 
 export interface StockAdjustment {

@@ -40,6 +40,7 @@ model User {
   orderStatusEvents       OrderStatusEvent[]
   auditLogs               AuditLog[]
   contact                 Contact?                 @relation("ContactUser")
+  identityVerification    IdentityVerification?
   ownedContacts           Contact[]                @relation("ContactOwner")
   ownedLeads              Lead[]                   @relation("LeadOwner")
   interactions            Interaction[]

@@ -4,6 +4,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
 import { CartModule } from './cart/cart.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { CrmModule } from './crm/crm.module';
+import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { MarketingModule } from './marketing/marketing.module';
 import { MeasurementsModule } from './measurements/measurements.module';
@@ -48,6 +49,10 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'reports', module: ReportsModule },
   { name: 'tax', module: TaxModule },
   { name: 'tracking', module: TrackingModule },
+  // Off by default — see docs/implementation/18-identity-verification.md.
+  // Add 'identity-verification' to MODULES once NID_API_URL/NID_API_KEY/
+  // NID_WEBHOOK_SECRET are set.
+  { name: 'identity-verification', module: IdentityVerificationModule },
   // Account administration — not togglable business features.
   { name: 'settings', module: SettingsAdminModule, alwaysOn: true },
   { name: 'users', module: UsersAdminModule, alwaysOn: true },

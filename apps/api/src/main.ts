@@ -4,6 +4,7 @@ import 'reflect-metadata';
 import './core/config/load-env';
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
@@ -11,7 +12,15 @@ import { AppModule } from './app.module';
 import { AppConfigService } from './core/config/app-config.service';
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule, { bufferLogs: false });
+  // rawBody: true makes `req.rawBody` available alongside the parsed JSON
+  // body — needed by identity-verification's webhook handler, which
+  // verifies nID's signature over the exact bytes nID signed. Every other
+  // route is unaffected; this only adds a Buffer capture, it doesn't change
+  // how the body parses.
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    bufferLogs: false,
+    rawBody: true,
+  });
   const config = app.get(AppConfigService);
   const logger = new Logger('Bootstrap');
 

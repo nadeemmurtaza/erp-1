@@ -39,6 +39,7 @@ async function main(): Promise<void> {
 
   await seedPermissions();
   const users = await seedUsers();
+  await seedRoles();
   const garments = await seedGarmentTypes();
   await seedGarmentCatalogExpansion(garments);
   await seedStitchingOptions(garments);
@@ -97,6 +98,62 @@ async function seedPermissions(): Promise<void> {
       await prisma.rolePermission.create({ data: { role, permissionId } });
     }
   }
+}
+
+/**
+ * One-time bootstrap of the custom-roles system onto the old fixed-enum
+ * one: creates a real `Role` row for each of the four `UserRole` enum
+ * values, copies each one's *current* `RolePermission` grants (not the
+ * static `ROLE_PERMISSION_SEED` constant — a deployment may have hand-edited
+ * these from /admin/settings already, and the backfill must carry that
+ * forward, not reset it), and assigns every existing user the `Role`
+ * matching their current `role` column.
+ *
+ * Strictly one-time: if any `Role` row already exists — from this having
+ * run before, or from a super admin having created a custom role since —
+ * this returns immediately and touches nothing. There is no "re-sync"
+ * step, on purpose: once roles are real, editable rows, a later seed run
+ * asserting anything about them would fight whatever an admin has since
+ * done, the same reasoning `seedPermissions()` already applies to grants.
+ */
+async function seedRoles(): Promise<void> {
+  const alreadySeeded = await prisma.role.count();
+  if (alreadySeeded > 0) return;
+
+  console.warn('Seeding roles (one-time: migrating the fixed role enum into real Role rows)…');
+
+  const ROLE_DISPLAY: Record<UserRole, { name: string; description: string }> = {
+    CUSTOMER: { name: 'Customer', description: 'A storefront shopper — the default for every signup.' },
+    TAILOR: { name: 'Tailor', description: 'Works the stitching queue.' },
+    STAFF: { name: 'Staff', description: 'Day-to-day back-office operations.' },
+    ADMIN: { name: 'Admin', description: 'Full back-office access, including settings and permissions.' },
+  };
+
+  const roleIdByEnum = new Map<UserRole, string>();
+
+  for (const enumRole of Object.keys(ROLE_DISPLAY) as UserRole[]) {
+    const { name, description } = ROLE_DISPLAY[enumRole];
+    const role = await prisma.role.create({ data: { name, description } });
+    roleIdByEnum.set(enumRole, role.id);
+
+    const currentGrants = await prisma.rolePermission.findMany({ where: { role: enumRole } });
+    if (currentGrants.length > 0) {
+      await prisma.roleGrant.createMany({
+        data: currentGrants.map((grant) => ({ roleId: role.id, permissionId: grant.permissionId })),
+        skipDuplicates: true,
+      });
+    }
+  }
+
+  const users = await prisma.user.findMany({ select: { id: true, role: true } });
+  if (users.length > 0) {
+    await prisma.userRoleAssignment.createMany({
+      data: users.map((user) => ({ userId: user.id, roleId: roleIdByEnum.get(user.role)! })),
+      skipDuplicates: true,
+    });
+  }
+
+  console.warn(`  Migrated ${users.length} user(s) onto the new Role system.`);
 }
 
 /**

@@ -19,6 +19,12 @@ model User {
   gender          String?
   dateOfBirth     DateTime?
   avatarUrl       String?
+  /// The old fixed-enum role. Superseded by `roleAssignments` (Role/
+  /// UserRoleAssignment, below) — a user's *effective* permissions come
+  /// from the roles they are assigned there, unioned, never from this
+  /// column. Kept, unremoved, only as the seed's one-time migration source
+  /// and as the default new signups get assigned into (`Customer`) — see
+  /// role.service.ts. Nothing in PermissionsResolverService reads it.
   role            UserRole  @default(CUSTOMER)
   isActive        Boolean   @default(true)
   emailVerifiedAt DateTime?
@@ -56,6 +62,8 @@ model User {
   /// (a togglable module), not here: this back-relation is the only mention
   /// of it core.prisma needs.
   adminScopes             AdminScope[]
+  /// Which named `Role` rows this user holds — plural, unioned (roles.ts).
+  roleAssignments         UserRoleAssignment[]
   purchaseOrdersCreated   PurchaseOrder[]          @relation("PurchaseOrderCreator")
   goodsReceiptsReceived   GoodsReceipt[]           @relation("GoodsReceiptReceiver")
   stockCountsCreated      StockCount[]             @relation("StockCountCreator")
@@ -237,6 +245,8 @@ model Permission {
 
   rolePermissions RolePermission[]
   userOverrides   UserPermission[]
+  /// The new, dynamic-role successor to `rolePermissions` above.
+  roleGrants      RoleGrant[]
 }
 
 /// Which roles currently hold a given permission. This mapping is data, not
@@ -275,6 +285,64 @@ model UserPermission {
 
   @@unique([userId, permissionId])
   @@index([userId])
+}
+
+/// A named, reusable bundle of permissions a super admin defines — "roles
+/// are data, not code" (House Rule 9) taken to its actual conclusion. Until
+/// now only which permissions a role holds was data (RolePermission,
+/// keyed by the fixed UserRole enum); the roles themselves were still a
+/// hardcoded enum. This table is the role itself: seeded once with four
+/// rows matching today's enum (Customer, Tailor, Staff, Admin) so a fresh
+/// deployment behaves identically, and freely renameable, deletable, or
+/// joined by new custom roles from there — nothing in application code
+/// depends on any particular row existing, the same guarantee House Rule 9
+/// already gives every permission check.
+///
+/// A user may hold several roles at once (`UserRoleAssignment`, below);
+/// their effective permissions are every held role's grants, unioned, with
+/// their own `UserPermission` overrides applied on top — same order as
+/// always, just merging more than one role's grants first.
+model Role {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  grants      RoleGrant[]
+  assignments UserRoleAssignment[]
+}
+
+/// Which permissions a `Role` holds — the direct successor to the old
+/// enum-keyed `RolePermission`, just pointing at a real `Role` row instead
+/// of a fixed enum value.
+model RoleGrant {
+  id           String   @id @default(cuid())
+  roleId       String
+  permissionId String
+  createdAt    DateTime @default(now())
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@index([roleId])
+}
+
+/// Which `Role` rows a user holds. Plural on purpose — see `Role`'s own
+/// comment: permissions from every assigned role union together.
+model UserRoleAssignment {
+  id        String   @id @default(cuid())
+  userId    String
+  roleId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
 }
 
 enum OutboxStatus {

@@ -39,8 +39,8 @@ export type JournalEntryWithLines = JournalEntry & { lines: JournalLine[] };
  * operations only: `postEntry()` and `reverseEntry()` — nothing here ever
  * updates or deletes a line, matching the database triggers that would
  * refuse it anyway (see the migration). Posting *rules* — which event
- * produces which journal — are WO-19.2; nothing calls `postEntry()` in
- * production yet.
+ * produces which journal — live in `posting-rules.subscriber.ts` (WO-19.2),
+ * the only caller of `postEntry()` today.
  */
 @Injectable()
 export class AccountingService {
@@ -141,6 +141,28 @@ export class AccountingService {
 
       return reversal;
     });
+  }
+
+  /**
+   * Resolves seeded chart-of-accounts codes to ids in one round trip — what
+   * a posting rule (WO-19.2) uses instead of hand-typing an `accountId`.
+   */
+  async accountIdsByCode(codes: readonly string[]): Promise<Map<string, string>> {
+    const accounts = await this.prisma.account.findMany({
+      where: { code: { in: [...codes] } },
+      select: { id: true, code: true },
+    });
+    return new Map(accounts.map((account) => [account.code, account.id]));
+  }
+
+  /**
+   * A posting rule's idempotency guard: outbox delivery is at-least-once
+   * (`OnDomainEvent`'s own doc), so a handler checks for an entry already
+   * POSTED at this exact (source, sourceRef) before posting a duplicate —
+   * and, for a refund, this is also how it finds the entry to reverse.
+   */
+  async findPostedEntry(source: string, sourceRef: string): Promise<JournalEntry | null> {
+    return this.prisma.journalEntry.findFirst({ where: { source, sourceRef, status: 'POSTED' } });
   }
 
   /**

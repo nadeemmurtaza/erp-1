@@ -26,7 +26,9 @@ enum AccountType {
 
 /// The chart of accounts. Policy — replicates down (R2), never posted to
 /// directly by a branch. `isControl` marks an account a human never posts
-/// to by hand (AR, AP) — only posting rules (WO-19.2) write it.
+/// to by hand (AR, AP) — only posting rules (posting-rules.subscriber.ts,
+/// WO-19.2) write it. The six accounts posting rules actually use today are
+/// seeded in prisma/seed.ts from chart-of-accounts.ts's ACCOUNT_CODE map.
 model Account {
   id             String      @id @default(cuid())
   /// "1000", "4000" — the chart-of-accounts code a bookkeeper already knows.
@@ -116,8 +118,10 @@ model JournalEntry {
   /// in a later period than the date itself would suggest (R15).
   date         DateTime
   periodId     String
-  /// The domain event name that caused this posting — "order.placed" — once
-  /// WO-19.2 exists to post one. Free text for now: nothing populates it yet.
+  /// The domain event name that caused this posting — "order.placed",
+  /// "payment.succeeded" — set by the posting rules in
+  /// posting-rules.subscriber.ts (WO-19.2). Free text, not an enum: a new
+  /// posting rule is a new subscriber method, never a migration here.
   source       String
   sourceRef    String?
   status       JournalEntryStatus @default(POSTED)

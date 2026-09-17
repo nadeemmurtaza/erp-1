@@ -55,10 +55,11 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // register (RETAIL-ERP.md R14: "every tier concept must be invisible in
   // Solo").
   { name: 'organization', module: OrganizationModule },
-  // Off by default (WO-19.1) — subscribes to no other module's events yet
-  // (WO-19.2 is what wires posting rules up), so switching it on today
-  // would run a ledger nothing ever posts to. Couples to nothing either way
-  // (R15): no module imports AccountingModule, and it imports none back.
+  // Off by default — a deployment turns it on once it wants a real GL
+  // instead of the sum-of-tables reports in `finance`/`reports`. Couples to
+  // nothing either way (R15): no module imports AccountingModule, and its
+  // posting rules (WO-19.2) reach `orders`/`payments` only through domain
+  // events, never a service import.
   { name: 'accounting', module: AccountingModule },
   // Account administration — not togglable business features.
   { name: 'settings', module: SettingsAdminModule, alwaysOn: true },

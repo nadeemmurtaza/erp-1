@@ -19,6 +19,7 @@ import { AuditService } from '../src/core/audit/audit.service';
 import { InventoryService } from '../src/modules/inventory/inventory.service';
 import { PrismaService } from '../src/core/prisma/prisma.service';
 import { StockIntakeRegistry } from '../src/core/extension-points/stock-intake.registry';
+import { CHART_OF_ACCOUNTS } from '../src/modules/accounting/chart-of-accounts';
 
 const prisma = new PrismaClient();
 const prismaService = prisma as unknown as PrismaService;
@@ -40,6 +41,7 @@ async function main(): Promise<void> {
   await seedPermissions();
   const users = await seedUsers();
   await seedRoles();
+  await seedChartOfAccounts();
   const garments = await seedGarmentTypes();
   await seedGarmentCatalogExpansion(garments);
   await seedStitchingOptions(garments);
@@ -154,6 +156,29 @@ async function seedRoles(): Promise<void> {
   }
 
   console.warn(`  Migrated ${users.length} user(s) onto the new Role system.`);
+}
+
+/**
+ * Seeds the six accounts the posting rules (WO-19.2) resolve by code —
+ * `chart-of-accounts.ts`'s `CHART_OF_ACCOUNTS`. Runs unconditionally, the
+ * same as every other reference-data seed here, even when `accounting` is
+ * off in MODULES: the rows are inert until a posting rule looks one up, and
+ * seeding them only on toggle-on would mean the first sale after turning
+ * accounting on has nothing to post to.
+ *
+ * Only `name` is re-asserted on a re-run — never `type`/`isBank`/`isControl`,
+ * which are structural and, once an accounts-admin screen exists, editable —
+ * the same "label always upserts, structure never gets reset" split
+ * `seedPermissions()` already uses for grants.
+ */
+async function seedChartOfAccounts(): Promise<void> {
+  for (const account of CHART_OF_ACCOUNTS) {
+    await prisma.account.upsert({
+      where: { code: account.code },
+      update: { name: account.name },
+      create: account,
+    });
+  }
 }
 
 /**

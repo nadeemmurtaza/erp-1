@@ -3,10 +3,14 @@
 import { Fragment, use, useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
-import type { AdminUserDetail, BackOfficeRole, PermissionDefinition, PermissionOverride } from '@/types/api';
+import type {
+  AdminUserDetail,
+  BackOfficeRole,
+  PermissionDefinition,
+  PermissionOverride,
+  RoleSummary,
+} from '@/types/api';
 import { Loading } from '@/components/ui';
-
-const ADMIN_LOCKED = new Set(['settings.manage', 'roles.manage_permissions']);
 
 export default function UserDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -17,8 +21,10 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
   const [user, setUser] = useState<AdminUserDetail | null>(null);
   const [permissions, setPermissions] = useState<PermissionDefinition[]>([]);
   const [overrides, setOverrides] = useState<PermissionOverride[]>([]);
+  const [allRoles, setAllRoles] = useState<RoleSummary[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [roleBusy, setRoleBusy] = useState<string | null>(null);
 
   const [profileDraft, setProfileDraft] = useState({
     firstName: '',
@@ -37,13 +43,15 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
   const load = useCallback(async () => {
     setError(null);
     try {
-      const [detail, catalog] = await Promise.all([
+      const [detail, catalog, roles] = await Promise.all([
         adminFetch<AdminUserDetail>(`/admin/users/${id}`),
         adminFetch<PermissionDefinition[]>('/admin/settings/permissions'),
+        adminFetch<RoleSummary[]>('/admin/roles'),
       ]);
       setUser(detail);
       setPermissions(catalog);
       setOverrides(detail.overrides);
+      setAllRoles(roles);
       setProfileDraft({
         firstName: detail.firstName ?? '',
         lastName: detail.lastName ?? '',
@@ -61,7 +69,11 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
     void load();
   }, [load]);
 
-  const roleDefaults = useMemo(() => new Set(user?.roleDefaultPermissions ?? []), [user]);
+  // Union of every held Role's own grants — a user may hold several.
+  const roleDefaults = useMemo(
+    () => new Set(user?.roles.flatMap((role) => role.permissions) ?? []),
+    [user],
+  );
 
   const effective = useMemo(() => {
     const set = new Set(roleDefaults);
@@ -111,6 +123,38 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
       setError(cause instanceof Error ? cause.message : 'Could not save permissions');
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function assignRole(roleId: string) {
+    setRoleBusy(roleId);
+    setError(null);
+    try {
+      const updated = await adminFetch<AdminUserDetail>(`/admin/users/${id}/roles/${roleId}`, {
+        method: 'POST',
+      });
+      setUser(updated);
+      setOverrides(updated.overrides);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not assign that role');
+    } finally {
+      setRoleBusy(null);
+    }
+  }
+
+  async function unassignRole(roleId: string) {
+    setRoleBusy(roleId);
+    setError(null);
+    try {
+      const updated = await adminFetch<AdminUserDetail>(`/admin/users/${id}/roles/${roleId}`, {
+        method: 'DELETE',
+      });
+      setUser(updated);
+      setOverrides(updated.overrides);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not remove that role');
+    } finally {
+      setRoleBusy(null);
     }
   }
 
@@ -295,12 +339,64 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
       </div>
 
       <div className="mt-6 card overflow-hidden">
+        <div className="border-b border-neutral-100 px-4 py-3">
+          <h2 className="text-sm font-semibold text-neutral-900">Custom roles</h2>
+          <p className="text-xs text-neutral-900/50">
+            A person may hold several — their permissions are the union of every one checked below.
+          </p>
+        </div>
+
+        <ul className="divide-y divide-neutral-100">
+          {allRoles.map((role) => {
+            const held = user.roles.some((r) => r.id === role.id);
+            return (
+              <li key={role.id} className="flex items-center justify-between gap-3 px-4 py-2.5">
+                <label className="flex min-w-0 items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    checked={held}
+                    disabled={roleBusy === role.id}
+                    onChange={() => void (held ? unassignRole(role.id) : assignRole(role.id))}
+                    className="field-check disabled:opacity-40"
+                  />
+                  <span className="min-w-0">
+                    <span className="text-neutral-900">{role.name}</span>
+                    <span className="ms-2 text-xs text-neutral-900/40">
+                      {role.permissions.length} permission{role.permissions.length === 1 ? '' : 's'} · {role.userCount}{' '}
+                      holder{role.userCount === 1 ? '' : 's'}
+                    </span>
+                  </span>
+                </label>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      {user.conflicts.redundantGrants.length > 0 || user.conflicts.overriddenRevokes.length > 0 ? (
+        <div className="notice notice-info mt-6">
+          {user.conflicts.redundantGrants.length > 0 ? (
+            <p>
+              Already granted by a held role, so this personal grant does nothing:{' '}
+              {user.conflicts.redundantGrants.join(', ')}. Safe to remove below.
+            </p>
+          ) : null}
+          {user.conflicts.overriddenRevokes.length > 0 ? (
+            <p>
+              A held role grants this, so the revoke below has no effect while that role stays
+              assigned: {user.conflicts.overriddenRevokes.join(', ')}.
+            </p>
+          ) : null}
+        </div>
+      ) : null}
+
+      <div className="mt-6 card overflow-hidden">
         <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
           <div>
             <h2 className="text-sm font-semibold text-neutral-900">Permissions</h2>
             <p className="text-xs text-neutral-900/50">
-              Checked by default from the {user.role} role. Toggle a row to override it just for
-              this person.
+              Checked by default from their held role(s). Toggle a row to override it just for this
+              person.
             </p>
           </div>
           <button type="button" disabled={saving} onClick={() => void savePermissions()} className="btn-primary">
@@ -319,7 +415,6 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
                     </td>
                   </tr>
                   {items.map((permission) => {
-                    const locked = user.role === 'ADMIN' && ADMIN_LOCKED.has(permission.key);
                     const overrideEffect = overrideByKey.get(permission.key);
                     return (
                       <tr key={permission.id}>
@@ -327,10 +422,8 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
                           <input
                             type="checkbox"
                             checked={effective.has(permission.key)}
-                            disabled={locked}
-                            title={locked ? 'ADMIN must always keep this permission' : undefined}
                             onChange={() => toggle(permission.key)}
-                            className="field-check disabled:opacity-40"
+                            className="field-check"
                           />
                         </td>
                         <td className="py-2.5">

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
@@ -47,6 +47,26 @@ export class UsersAdminController {
     @Body() dto: UpdateUserPermissionsDto,
   ) {
     return this.users.updatePermissions(actor.id, id, dto.overrides);
+  }
+
+  @Post(':id/roles/:roleId')
+  @ApiOperation({ summary: 'Assign a custom Role to this user (owner\'s request — a user may hold several)' })
+  assignRole(
+    @CurrentUser() actor: AuthenticatedUser,
+    @Param('id') id: string,
+    @Param('roleId') roleId: string,
+  ) {
+    return this.users.assignRole(actor.id, id, roleId);
+  }
+
+  @Delete(':id/roles/:roleId')
+  @ApiOperation({ summary: 'Remove a Role from this user' })
+  unassignRole(
+    @CurrentUser() actor: AuthenticatedUser,
+    @Param('id') id: string,
+    @Param('roleId') roleId: string,
+  ) {
+    return this.users.unassignRole(actor.id, id, roleId);
   }
 
   @Post(':id/reset-password')

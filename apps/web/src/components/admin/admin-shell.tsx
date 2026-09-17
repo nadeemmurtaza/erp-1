@@ -172,7 +172,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
             </Link>
             <span className="text-neutral-900/40">|</span>
             <Link href={ROUTES.admin.account} className="text-neutral-900/70 hover:text-accent-hover">
-              {user.firstName ?? user.email} · {user.role.toLowerCase()}
+              {user.firstName ?? user.email} · {user.roles.join(', ') || 'No role assigned'}
             </Link>
             <button
               type="button"

@@ -1,13 +1,7 @@
-import { BadRequestException, Body, Controller, Get, Param, Put, Query } from '@nestjs/common';
+import { Body, Controller, Get, Put, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { USER_ROLES, type UserRole } from '@newax/shared';
 import { RequirePermission } from '../../core/auth/decorators';
-import {
-  AuditLogQueryDto,
-  UpdateDocumentSettingsDto,
-  UpdateMediaSettingsDto,
-  UpdateRolePermissionsDto,
-} from './dto/settings.dto';
+import { AuditLogQueryDto, UpdateDocumentSettingsDto, UpdateMediaSettingsDto } from './dto/settings.dto';
 import { SettingsAdminService } from './settings-admin.service';
 
 @ApiTags('admin/settings')
@@ -48,23 +42,6 @@ export class SettingsAdminController {
   @ApiOperation({ summary: 'The full permission catalog, grouped by category' })
   listPermissions() {
     return this.settings.listPermissions();
-  }
-
-  @Get('roles')
-  @RequirePermission('settings.manage')
-  @ApiOperation({ summary: "Every role and its currently granted permissions" })
-  listRoles() {
-    return this.settings.listRoles();
-  }
-
-  @Put('roles/:role/permissions')
-  @RequirePermission('roles.manage_permissions')
-  @ApiOperation({ summary: "Replace a role's granted permissions" })
-  updateRolePermissions(@Param('role') role: string, @Body() dto: UpdateRolePermissionsDto) {
-    if (!USER_ROLES.includes(role as UserRole)) {
-      throw new BadRequestException(`"${role}" is not a role.`);
-    }
-    return this.settings.updateRolePermissions(role as UserRole, dto.permissionKeys);
   }
 
   @Get('audit-log')

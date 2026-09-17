@@ -1,12 +1,16 @@
-import type { UserRole } from '../prisma/client';
-
 export const IS_PUBLIC_KEY = 'auth:isPublic';
 export const PERMISSIONS_KEY = 'auth:permissions';
 
-/** What a verified access token carries. */
+/**
+ * What a verified access token carries. No `role`/`roles` here on purpose —
+ * JwtStrategy.validate() never reads it, only `sub`, re-resolving roles and
+ * permissions fresh from the database on every request (so a role edited
+ * mid-session takes effect immediately rather than at the next login). A
+ * signed claim that is never checked is a stale-data trap waiting to
+ * happen, not a convenience.
+ */
 export interface JwtPayload {
   sub: string;
-  role: UserRole;
   email: string | null;
   phone: string | null;
   /** Issued-at and expiry, added by @nestjs/jwt. */
@@ -17,8 +21,9 @@ export interface JwtPayload {
 /** The authenticated principal attached to the request. */
 export interface AuthenticatedUser {
   id: string;
-  role: UserRole;
-  /** Resolved fresh from RolePermission on every request — @see PermissionsResolverService. */
+  /** Every `Role` name this user currently holds — plural (custom roles); resolved fresh on every request. */
+  roles: string[];
+  /** Resolved fresh from every held role's grants, plus overrides, on every request — @see PermissionsResolverService. */
   permissions: string[];
   email: string | null;
   phone: string | null;

@@ -282,10 +282,12 @@ export interface AuthUser {
   phone: string | null;
   firstName: string | null;
   lastName: string | null;
-  role: 'CUSTOMER' | 'STAFF' | 'TAILOR' | 'ADMIN';
+  /** Every custom Role name this user holds — plural, resolved fresh server-side on every request. Empty for a brand-new signup whose default role has since been renamed or removed. */
+  roles: string[];
   /**
-   * Resolved server-side from the role's current grants — @see nav-registry.ts.
-   * Typed against the shared catalogue, not `string[]`: a mistyped key in a
+   * Resolved server-side from every held role's current grants, plus this
+   * user's own overrides — @see nav-registry.ts. Typed against the shared
+   * catalogue, not `string[]`: a mistyped key in a
    * `permissions.includes(...)` check does not throw, it silently hides the
    * control it was guarding, which is the kind of bug nobody reports.
    */
@@ -507,11 +509,6 @@ export interface PermissionDefinition {
   category: string;
 }
 
-export interface RolePermissions {
-  role: 'CUSTOMER' | 'STAFF' | 'TAILOR' | 'ADMIN';
-  permissions: PermissionKey[];
-}
-
 export interface AuditLogEntry {
   id: string;
   actorId: string | null;
@@ -552,10 +549,43 @@ export interface PermissionOverride {
   effect: 'GRANT' | 'REVOKE';
 }
 
+/** A custom Role (owner's request) this user holds, with its own permission set inline. */
+export interface HeldRole {
+  id: string;
+  name: string;
+  permissions: string[];
+}
+
+/** Non-blocking advisories — see RolesService.conflictsForUser() on the API. */
+export interface UserRoleConflicts {
+  redundantGrants: string[];
+  overriddenRevokes: string[];
+}
+
 export interface AdminUserDetail extends AdminUser {
-  roleDefaultPermissions: string[];
+  /** Every custom Role this user holds — plural. */
+  roles: HeldRole[];
   overrides: PermissionOverride[];
   effectivePermissions: string[];
+  conflicts: UserRoleConflicts;
+}
+
+// --- Custom roles (owner's request) -----------------------------------------
+// GET/POST/PATCH/DELETE /admin/roles — replaces the old fixed-role editor at
+// /admin/settings/roles.
+
+export interface RoleSummary {
+  id: string;
+  name: string;
+  description: string | null;
+  permissions: string[];
+  userCount: number;
+}
+
+/** POST/PATCH /admin/roles response — `duplicateOfRoleName` is a suggestion, never a block. */
+export interface RoleWriteResult {
+  role: RoleSummary;
+  duplicateOfRoleName: string | null;
 }
 
 // --- Customer account portal --------------------------------------------------

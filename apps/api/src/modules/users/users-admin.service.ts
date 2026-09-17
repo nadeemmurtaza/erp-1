@@ -1,8 +1,9 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { ADMIN_LOCKED_PERMISSIONS, normalizeEmail, normalizePkPhone } from '@newax/shared';
+import { normalizeEmail, normalizePkPhone } from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { hashPassword } from '../../core/auth/password.util';
 import { PermissionsResolverService } from '../../core/auth/permissions.service';
+import { RolesService } from '../../core/auth/roles.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { UserRole } from '../../core/prisma/client';
 import type {
@@ -12,6 +13,11 @@ import type {
   UpdateUserDto,
 } from './dto/user.dto';
 
+// The coarse *account kind* — still the fixed enum, and deliberately so:
+// which users are staff at all vs a customer, and what a fresh signup
+// defaults into, is a structural distinction, not a permission bundle.
+// It answers "is this a back-office account", never "what can they do" —
+// that question is 100% UserRoleAssignment/RoleGrant now (roles.service.ts).
 const BACK_OFFICE_ROLES: UserRole[] = ['STAFF', 'TAILOR', 'ADMIN'];
 
 @Injectable()
@@ -19,6 +25,7 @@ export class UsersAdminService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly permissions: PermissionsResolverService,
+    private readonly roles: RolesService,
     private readonly audit: AuditService,
   ) {}
 
@@ -43,23 +50,67 @@ export class UsersAdminService {
   async get(id: string) {
     const user = await this.findBackOfficeUser(id);
 
-    const [roleGrants, overrides] = await Promise.all([
-      this.prisma.rolePermission.findMany({
-        where: { role: user.role },
-        select: { permission: { select: { key: true } } },
+    const [assignments, overrides, resolved, conflicts] = await Promise.all([
+      this.prisma.userRoleAssignment.findMany({
+        where: { userId: id },
+        select: {
+          role: {
+            select: { id: true, name: true, grants: { select: { permission: { select: { key: true } } } } },
+          },
+        },
       }),
       this.prisma.userPermission.findMany({
         where: { userId: id },
         select: { effect: true, permission: { select: { key: true } } },
       }),
+      this.permissions.resolveForUser(id),
+      this.roles.conflictsForUser(id),
     ]);
 
     return {
       ...user,
-      roleDefaultPermissions: roleGrants.map((g) => g.permission.key),
+      // Every custom Role this user holds, each with its own permission
+      // set inline — plural, so the edit screen can show more than one.
+      roles: assignments.map((assignment) => ({
+        id: assignment.role.id,
+        name: assignment.role.name,
+        permissions: assignment.role.grants.map((grant) => grant.permission.key),
+      })),
       overrides: overrides.map((o) => ({ key: o.permission.key, effect: o.effect })),
-      effectivePermissions: await this.permissions.resolveForUser(id, user.role),
+      effectivePermissions: resolved.permissions,
+      // Non-blocking advisories — see RolesService.conflictsForUser().
+      conflicts,
     };
+  }
+
+  async assignRole(actorId: string, targetId: string, roleId: string) {
+    await this.findBackOfficeUser(targetId);
+    await this.roles.assign(targetId, roleId);
+
+    await this.audit.record({
+      actorId,
+      action: 'user.role_assigned',
+      entity: 'User',
+      entityId: targetId,
+      data: { roleId },
+    });
+
+    return this.get(targetId);
+  }
+
+  async unassignRole(actorId: string, targetId: string, roleId: string) {
+    await this.findBackOfficeUser(targetId);
+    await this.roles.unassign(targetId, roleId);
+
+    await this.audit.record({
+      actorId,
+      action: 'user.role_unassigned',
+      entity: 'User',
+      entityId: targetId,
+      data: { roleId },
+    });
+
+    return this.get(targetId);
   }
 
   async create(actorId: string, dto: CreateUserDto) {
@@ -236,18 +287,10 @@ export class UsersAdminService {
   }
 
   async updatePermissions(actorId: string, targetId: string, overrides: PermissionOverrideDto[]) {
-    const user = await this.findBackOfficeUser(targetId);
+    await this.findBackOfficeUser(targetId);
 
-    if (user.role === 'ADMIN') {
-      const revokedLocked = overrides.filter(
-        (o) => o.effect === 'REVOKE' && (ADMIN_LOCKED_PERMISSIONS as string[]).includes(o.key),
-      );
-      if (revokedLocked.length > 0) {
-        throw new BadRequestException(
-          `Cannot revoke from an ADMIN: ${revokedLocked.map((o) => o.key).join(', ')}.`,
-        );
-      }
-    }
+    const revokedKeys = overrides.filter((o) => o.effect === 'REVOKE').map((o) => o.key);
+    await this.roles.assertLockedKeysStillHeldAfterRevoke(targetId, revokedKeys);
 
     const keys = overrides.map((o) => o.key);
     const permissions = await this.prisma.permission.findMany({

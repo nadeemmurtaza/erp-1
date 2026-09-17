@@ -46,7 +46,17 @@ export function clearSession(): void {
   localStorage.removeItem(USER_KEY);
 }
 
-export const BACK_OFFICE_ROLES = ['ADMIN', 'STAFF', 'TAILOR'] as const;
+/**
+ * A back-office account is simply one holding any capability beyond the
+ * bare self-service permission every account gets — `account.change_own_password`,
+ * held even by a Customer role. Custom roles (owner's request) made a
+ * fixed role-name check ("is this ADMIN/STAFF/TAILOR") meaningless: a
+ * brand-new "Bookkeeper" role a super admin creates tomorrow must reach
+ * /admin exactly as readily as the seeded ones, with no special-casing here.
+ */
+function hasBackOfficeAccess(permissions: readonly string[]): boolean {
+  return permissions.some((key) => key !== 'account.change_own_password');
+}
 
 export async function login(identifier: string, password: string): Promise<AuthUser> {
   const body = await request<unknown>('/auth/login', {
@@ -57,7 +67,7 @@ export async function login(identifier: string, password: string): Promise<AuthU
   });
 
   const result = body as AuthResult;
-  if (!BACK_OFFICE_ROLES.includes(result.user.role as (typeof BACK_OFFICE_ROLES)[number])) {
+  if (!hasBackOfficeAccess(result.user.permissions)) {
     throw new ApiError(403, 'This account does not have access to the back office.');
   }
 

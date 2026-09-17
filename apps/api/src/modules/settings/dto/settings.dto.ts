@@ -1,8 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { PERMISSION_KEYS, type PermissionKey } from '@newax/shared';
 import { Type } from 'class-transformer';
 import {
-  IsArray,
   IsBoolean,
   IsDateString,
   IsIn,
@@ -13,13 +11,6 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
-
-export class UpdateRolePermissionsDto {
-  @ApiProperty({ enum: PERMISSION_KEYS, isArray: true })
-  @IsArray()
-  @IsIn(PERMISSION_KEYS, { each: true })
-  permissionKeys!: PermissionKey[];
-}
 
 export class AuditLogQueryDto {
   @ApiPropertyOptional({ description: 'Filter to one entity type, e.g. "Order".' })

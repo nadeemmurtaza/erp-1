@@ -1,30 +1,19 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
-import { ADMIN_LOCKED_PERMISSIONS, BACK_OFFICE_ROLES, formatDateTime, type UserRole } from '@newax/shared';
+import { formatDateTime } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
-import type { AuditLogEntry, AuditLogPage, PermissionDefinition, RolePermissions } from '@/types/api';
+import type { AuditLogEntry, AuditLogPage, PermissionDefinition, RoleSummary, RoleWriteResult } from '@/types/api';
 import { Loading, PageHeader, Tabs } from '@/components/ui';
 
-type Draft = Record<UserRole, Set<string>>;
-
-function draftFrom(roles: RolePermissions[]): Draft {
-  const draft = {} as Draft;
-  for (const role of BACK_OFFICE_ROLES) {
-    draft[role] = new Set(roles.find((r) => r.role === role)?.permissions ?? []);
-  }
-  return draft;
-}
-
-function sameSet(a: Set<string>, b: Set<string>): boolean {
-  return a.size === b.size && [...a].every((key) => b.has(key));
-}
+const BLANK_DRAFT = { id: null as string | null, name: '', description: '', permissions: new Set<string>() };
 
 export default function AdminSettingsPage() {
   const [permissions, setPermissions] = useState<PermissionDefinition[]>([]);
-  const [roles, setRoles] = useState<RolePermissions[]>([]);
-  const [draft, setDraft] = useState<Draft | null>(null);
-  const [savingRole, setSavingRole] = useState<UserRole | null>(null);
+  const [roles, setRoles] = useState<RoleSummary[]>([]);
+  const [draft, setDraft] = useState(BLANK_DRAFT);
+  const [saving, setSaving] = useState(false);
+  const [duplicateNotice, setDuplicateNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const [audit, setAudit] = useState<AuditLogPage | null>(null);
@@ -35,15 +24,14 @@ export default function AdminSettingsPage() {
   const loadPermissions = useCallback(async () => {
     setError(null);
     try {
-      const [perms, roleGrants] = await Promise.all([
+      const [perms, roleList] = await Promise.all([
         adminFetch<PermissionDefinition[]>('/admin/settings/permissions'),
-        adminFetch<RolePermissions[]>('/admin/settings/roles'),
+        adminFetch<RoleSummary[]>('/admin/roles'),
       ]);
       setPermissions(perms);
-      setRoles(roleGrants);
-      setDraft(draftFrom(roleGrants));
+      setRoles(roleList);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Could not load permissions');
+      setError(cause instanceof Error ? cause.message : 'Could not load roles');
     }
   }, []);
 
@@ -85,34 +73,65 @@ export default function AdminSettingsPage() {
     return [...seen.entries()];
   }, [permissions]);
 
-  function toggle(role: UserRole, key: string) {
-    if (!draft) return;
-    const next = { ...draft, [role]: new Set(draft[role]) };
-    if (next[role].has(key)) next[role].delete(key);
-    else next[role].add(key);
-    setDraft(next);
+  function toggle(key: string) {
+    const next = new Set(draft.permissions);
+    if (next.has(key)) next.delete(key);
+    else next.add(key);
+    setDraft({ ...draft, permissions: next });
   }
 
-  function isDirty(role: UserRole): boolean {
-    if (!draft) return false;
-    const saved = roles.find((r) => r.role === role);
-    return !sameSet(draft[role], new Set(saved?.permissions ?? []));
+  function editRole(role: RoleSummary) {
+    setDuplicateNotice(null);
+    setDraft({ id: role.id, name: role.name, description: role.description ?? '', permissions: new Set(role.permissions) });
   }
 
-  async function saveRole(role: UserRole) {
-    if (!draft) return;
-    setSavingRole(role);
+  function newRole() {
+    setDuplicateNotice(null);
+    setDraft(BLANK_DRAFT);
+  }
+
+  async function saveRole(event: React.FormEvent) {
+    event.preventDefault();
+    setSaving(true);
+    setError(null);
+    setDuplicateNotice(null);
+    try {
+      const body = {
+        name: draft.name,
+        description: draft.description || undefined,
+        permissions: [...draft.permissions],
+      };
+      const result = draft.id
+        ? await adminFetch<RoleWriteResult>(`/admin/roles/${draft.id}`, { method: 'PATCH', body })
+        : await adminFetch<RoleWriteResult>('/admin/roles', { method: 'POST', body });
+
+      setRoles((prev) => {
+        const exists = prev.some((r) => r.id === result.role.id);
+        return exists ? prev.map((r) => (r.id === result.role.id ? result.role : r)) : [...prev, result.role];
+      });
+      setDraft({ id: result.role.id, name: result.role.name, description: result.role.description ?? '', permissions: new Set(result.role.permissions) });
+
+      if (result.duplicateOfRoleName) {
+        setDuplicateNotice(
+          `"${result.duplicateOfRoleName}" already grants exactly this set of permissions — ` +
+            'consider assigning that role instead of keeping two that do the same thing.',
+        );
+      }
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not save this role');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function deleteRole(role: RoleSummary) {
     setError(null);
     try {
-      const result = await adminFetch<RolePermissions>(`/admin/settings/roles/${role}/permissions`, {
-        method: 'PUT',
-        body: { permissionKeys: [...draft[role]] },
-      });
-      setRoles((prev) => prev.map((r) => (r.role === role ? result : r)));
+      await adminFetch(`/admin/roles/${role.id}`, { method: 'DELETE' });
+      setRoles((prev) => prev.filter((r) => r.id !== role.id));
+      if (draft.id === role.id) newRole();
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : `Could not save ${role}'s permissions`);
-    } finally {
-      setSavingRole(null);
+      setError(cause instanceof Error ? cause.message : `Could not delete "${role.name}"`);
     }
   }
 
@@ -137,86 +156,121 @@ export default function AdminSettingsPage() {
             label: 'Roles & permissions',
             content: (
       <section>
-
         {error ? (
           <p role="alert" className="notice notice-error mb-4">
             {error}
           </p>
         ) : null}
 
-        {!draft ? (
+        {permissions.length === 0 ? (
           <Loading />
         ) : (
-          <div className="overflow-hidden">
+          <div className="grid gap-6 lg:grid-cols-[1fr_26rem]">
             <div className="overflow-x-auto">
               <table className="table-flat">
                 <thead>
                   <tr>
-                    <th>
-                      Permission
-                    </th>
-                    {BACK_OFFICE_ROLES.map((role) => (
-                      <th
-                        key={role}
-                        className="px-4 py-2 text-center text-xs font-semibold uppercase tracking-wide text-neutral-900/50"
-                      >
-                        {role}
-                      </th>
-                    ))}
+                    <th>Role</th>
+                    <th className="text-end">Permissions</th>
+                    <th className="text-end">Holders</th>
+                    <th />
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-neutral-100">
-                  {categories.map(([category, items]) => (
-                    <Fragment key={category}>
-                      <tr className="bg-neutral-50/60">
-                        <td colSpan={BACK_OFFICE_ROLES.length + 1} className="px-4 py-1.5 text-xs font-semibold text-neutral-900/60">
-                          {category}
+                  {roles.length === 0 ? (
+                    <tr>
+                      <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/50">
+                        No roles yet.
+                      </td>
+                    </tr>
+                  ) : (
+                    roles.map((role) => (
+                      <tr key={role.id} className="hover:bg-neutral-50">
+                        <td>
+                          <button type="button" onClick={() => editRole(role)} className="font-medium text-accent-hover">
+                            {role.name}
+                          </button>
+                          {role.description ? (
+                            <p className="text-xs text-neutral-900/40">{role.description}</p>
+                          ) : null}
+                        </td>
+                        <td className="text-end tabular-nums text-neutral-900/70">{role.permissions.length}</td>
+                        <td className="text-end tabular-nums text-neutral-900/70">{role.userCount}</td>
+                        <td className="text-end">
+                          <button
+                            type="button"
+                            onClick={() => void deleteRole(role)}
+                            className="btn-text text-feedback-negative"
+                          >
+                            Delete
+                          </button>
                         </td>
                       </tr>
-                      {items.map((permission) => (
-                        <tr key={permission.id}>
-                          <td className="py-2.5">
-                            <span className="text-neutral-900">{permission.label}</span>
-                            <p className="text-xs text-neutral-900/40">{permission.key}</p>
-                          </td>
-                          {BACK_OFFICE_ROLES.map((role) => {
-                            const locked =
-                              role === 'ADMIN' &&
-                              (ADMIN_LOCKED_PERMISSIONS as readonly string[]).includes(permission.key);
-                            return (
-                              <td key={role} className="px-4 py-2.5 text-center">
-                                <input
-                                  type="checkbox"
-                                  checked={draft[role].has(permission.key)}
-                                  disabled={locked}
-                                  title={locked ? 'ADMIN must always keep this permission' : undefined}
-                                  onChange={() => toggle(role, permission.key)}
-                                  className="field-check disabled:opacity-40"
-                                />
-                              </td>
-                            );
-                          })}
-                        </tr>
-                      ))}
-                    </Fragment>
-                  ))}
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 border-t border-neutral-100 px-4 py-3">
-              {BACK_OFFICE_ROLES.map((role) => (
-                <button
-                  key={role}
-                  type="button"
-                  disabled={!isDirty(role) || savingRole === role}
-                  onClick={() => void saveRole(role)}
-                  className="btn-primary disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  {savingRole === role ? `Saving ${role}…` : `Save ${role}`}
-                </button>
-              ))}
-            </div>
+            <form onSubmit={saveRole} className="space-y-4">
+              <div className="flex items-baseline justify-between">
+                <h2 className="eyebrow">{draft.id ? 'Edit role' : 'New role'}</h2>
+                {draft.id ? (
+                  <button type="button" onClick={newRole} className="btn-text">
+                    New role instead
+                  </button>
+                ) : null}
+              </div>
+
+              {duplicateNotice ? <p className="notice notice-info">{duplicateNotice}</p> : null}
+
+              <label className="block">
+                <span className="field-label">Name</span>
+                <input
+                  value={draft.name}
+                  onChange={(event) => setDraft({ ...draft, name: event.target.value })}
+                  required
+                  className="field-input"
+                />
+              </label>
+
+              <label className="block">
+                <span className="field-label">Description</span>
+                <input
+                  value={draft.description}
+                  onChange={(event) => setDraft({ ...draft, description: event.target.value })}
+                  className="field-input"
+                />
+              </label>
+
+              <div>
+                <span className="field-label">Permissions</span>
+                <div className="max-h-96 overflow-y-auto rounded border border-neutral-100">
+                  {categories.map(([category, items]) => (
+                    <Fragment key={category}>
+                      <p className="bg-neutral-50/60 px-3 py-1.5 text-xs font-semibold text-neutral-900/60">
+                        {category}
+                      </p>
+                      {items.map((permission) => (
+                        <label key={permission.id} className="flex items-center gap-2 px-3 py-1.5 text-sm">
+                          <input
+                            type="checkbox"
+                            checked={draft.permissions.has(permission.key)}
+                            onChange={() => toggle(permission.key)}
+                            className="field-check"
+                          />
+                          {permission.label}
+                        </label>
+                      ))}
+                    </Fragment>
+                  ))}
+                </div>
+              </div>
+
+              <button type="submit" disabled={saving} className="btn-primary w-full">
+                {saving ? 'Saving…' : draft.id ? 'Save role' : 'Create role'}
+              </button>
+            </form>
           </div>
         )}
       </section>
@@ -372,6 +426,7 @@ const PREFIX_FIELDS: Array<{ key: string; label: string }> = [
   { key: 'stitchingOrder', label: 'Stitching orders' },
   { key: 'stitchingJob', label: 'Workshop jobs' },
   { key: 'stockCount', label: 'Stock counts' },
+  { key: 'journalEntry', label: 'Journal entries' },
 ];
 
 const LOGO_CHOICES: Array<{ value: DocumentSettings['logoSource']; label: string; hint: string }> = [

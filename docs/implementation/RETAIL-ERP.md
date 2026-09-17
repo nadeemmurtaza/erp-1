@@ -708,6 +708,28 @@ The same shape gives supplier scorecards: OTIF (on-time-in-full), price variance
 defect rate — all computed from `PurchaseOrder` vs `GoodsReceipt` vs
 `SupplierBill`, none requiring anyone to type anything new.
 
+### R26. The website sells the sum, and fulfilment names the branch.
+
+Brief 25 names omnichannel fulfilment but does not yet say where the website's
+stock number comes from, and that is decided, not open: online stock is the
+**sum of branch allotments**, shown as one figure at the brand tier. An order
+assigns a fulfilling branch and decrements that branch's allotment through
+`InventoryService.move()` like any other sale — no separate online reservation
+ledger.
+
+This is what makes R7's ownership rule ("branch in system inventory = branch
+physical inventory") hold online as well as in a till: allotment is a
+distribution of stock to a branch, not a reservation against a shared pool, so
+oversell stays the structurally rare case it already is at the till rather than
+becoming the normal case at checkout.
+
+The corollary is the read chain ops asked for directly: showing which branch is
+short. Per `(variant, branch)`, compare allotment against that branch's
+assortment target and its own sell-through rate — no new table, a query over
+`VariantLocationStock` and `StockMovement`, both already shipped, in the same
+shape as R20's dependency graph. It belongs to
+`22-inter-branch-transfers-replenishment.md`, not a new brief.
+
 ### The safety property that makes all of this affordable
 
 **The entire intelligence layer is read-only over the operational schema.**
@@ -960,6 +982,8 @@ These must be amended as the briefs land, so no two files disagree:
 | `README.md`, `docs/implementation/README.md` | Doc map and index |
 | `module-packs.ts` | Classification reasoning for the new modules |
 | `packages/shared/src/entities/organization.ts` | Rename to supplier-named exports so `Organization` means one thing |
+| `docs/implementation/ENTERPRISE-SCALE.md` | L2 restated for structural (per-database) isolation; L4 replaced — a branch is a node, not a tenant; L6 added (facts up, policy down, ledgers as deltas); enforcement table gains the planned tier gates |
+| `CLAUDE.md` | The Branch row of the three-axes table and its hard-rule bullets — both said "never a second database," which this document supersedes |
 
 ---
 

@@ -19,7 +19,7 @@ with a branch per client.
 |---|---|---|---|---|
 | **Sector** | *What kind of business is this?* | clothing, grocery, pharmacy | a module pack + the `MODULES` allowlist | a git branch, a fork, an `if (sector === …)` |
 | **Brand** | *Which business is this?* | name, colours, currency, contact | `packages/shared/src/brand.ts` | a literal in application code |
-| **Branch** | *Where did this happen?* | a shop, a warehouse, an outlet | a `Location` row on the movement | a second database, a second deployment |
+| **Branch** | *Where did this happen?* | a shop, a warehouse, an outlet | a `Location` row on the movement; at chain scale, a node with its own database | an unscoped read, or stock replicated as a total |
 
 > A branch is a point in time. A sector is a configuration. A brand is a value.
 > A location is a row. Keep each one in its own kind of place.
@@ -105,6 +105,11 @@ of those signals is real, the static brand is the cheaper correct design.
 `VariantLocationStock` and `StockMovement`. What does not exist is any
 guarantee that a reader is confined to their own branch.
 
+**The architecture of record for multi-branch is [`RETAIL-ERP.md`](./RETAIL-ERP.md)**
+— Organization ▸ Brand ▸ Branch ▸ Box ▸ Till, with the reasoning behind every
+rule below and the roadmap that builds them. This section states the rules; that
+document explains why they are the ones that converge.
+
 **L1. Every movement of value names its location.** Stock movements, counts,
 receipts and transfers carry a `locationId`. A movement without one is a bug,
 not a default.
@@ -113,19 +118,54 @@ not a default.
 named location, or it is explicitly cross-branch and its caller holds a
 capability that permits that. There is no implicit "all branches" read.
 
+At chain scale the mechanism changes and the rule does not. A branch runs its
+own database, so isolation *inside* a branch becomes structural rather than
+defensive — a branch query cannot read another branch's rows because they are
+not there. The scope guard's job moves up rather than away: it now governs the
+brand and organization panels, where every branch's rows genuinely do sit in one
+database and an unscoped read is once again a hole. See `RETAIL-ERP.md` R10 —
+three admin levels, one permission catalogue, and a scope.
+
 **L3. Location is never inferred from the user's last action.** It comes from
 the request, the record, or an explicit selection — never from session state
 that a second tab can desynchronise.
 
-**L4. A branch is not a tenant.** Branches share a database, a catalogue and a
-customer list by design. If two "branches" must not see each other's
-customers, they are two businesses, and that is Br1, not L.
+**L4. A branch is a node, not a tenant.** A branch has its own database and its
+own admin panel, and it is authoritative for its own facts — its sales, its
+stock, its cash, its local purchases. What it holds of the brand's catalogue,
+prices, promotions and staff is a read-only cache it may not edit. That is not
+tenancy; a branch is part of one brand and reports into it.
+
+The tenancy boundary is the **brand**, and it is Br1. Two businesses that must
+not see each other's customers are two brands, each its own deployment — never
+two branches with a filter between them.
+
+> This rule previously said the opposite: that branches share a database, a
+> catalogue and a customer list by design. That was written for one shop with a
+> back room, before the chain topology existed, and `RETAIL-ERP.md` Part 1
+> supersedes it. It is recorded here rather than deleted because a rule that
+> quietly reverses is worse than one that says it changed.
 
 **L5. Aggregates state their scope in their name.** `totalStock` is a lie when
 there are four warehouses. `stockAtLocation`, `stockAcrossBranches` — the
 signature should make the wrong reading hard to write.
 
----
+**L6. Facts up, policy down, ledgers merge, nothing sideways.** Every table is
+exactly one of those three classes, and its class decides which way it
+replicates and who wins a conflict:
+
+- a **fact** — a sale, a return, a payment, a goods receipt, a journal line —
+  flows up only, and the node that recorded it always wins. Append-only, never
+  rejected, never edited from above.
+- a **policy** — a product, a price, a tax rate, a user, the chart of accounts —
+  flows down only, and the owning tier overwrites.
+- a **ledger** — stock on hand, an account balance, cash in drawer — never
+  replicates as a total. Only its deltas move; every tier recomputes its own sum.
+
+A brand admin cannot edit a branch's sale; they post a correcting fact. A branch
+cannot edit a brand's price; it can request one. Shipping a total instead of its
+deltas is how every naive sync corrupts stock, and shipping a balance is how it
+corrupts accounts. `RETAIL-ERP.md` R2.
 
 ## D — Data rules
 
@@ -179,9 +219,11 @@ human noticing.
 | L1 movements carry a location | schema requires it on `StockMovement` | machine, partially |
 | L2 branch-scoped reads | **nothing** | **not enforced — gap** |
 | L3 location never from session | nothing | review |
+| L6 facts up / policy down, ledgers as deltas | `RETAIL-ERP.md` R2; no node exists to enforce it yet | **not built — planned** |
+| `NODE_ROLE` boot validation | `RETAIL-ERP.md` R1; planned for `core/config/env.validation.ts` | **not built — planned** |
 | D1 migration tested on prod copy | checklist in §3 of the house rules | review |
 
-### The three gaps worth closing first
+### The gaps worth closing first
 
 1. **L2 — branch-scoped reads.** Today any signed-in user with an inventory
    capability can read every location's stock. For one shop with a back room
@@ -214,3 +256,10 @@ human noticing.
 Neither of the remaining two is urgent for a single-shop, single-sector deployment. All three
 become urgent on the first multi-branch client, and the order above is the
 order they bite.
+
+4. **`NODE_ROLE` and the replication direction check — not started.** These
+   are `RETAIL-ERP.md` Tranche 1 work, not yet begun: `NODE_ROLE`/`NODE_ID`
+   boot validation (R1) and a check that a fact-class table never accepts a
+   write claiming to be policy, or vice versa (R2). Listed here so this table
+   stays honest once Tranche 1 lands — until then, L6 is a rule with no
+   machine behind it, same as L2.

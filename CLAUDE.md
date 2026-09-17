@@ -43,14 +43,18 @@ with a branch per client.
 |---|---|---|---|
 | **Sector** | what kind of business | a module pack + the `MODULES` allowlist | a git branch, a fork, `if (sector === …)` |
 | **Brand** | which business | `packages/shared/src/brand.ts` | a literal in application code |
-| **Branch** | where it happened | a `Location` row on the movement | a second database |
+| **Branch** | where it happened | a `Location` row on the movement; at chain scale, a node with its own database | an unscoped read, or stock replicated as a total |
 
 > A branch is a point in time. A sector is a configuration. A brand is a value.
 > A location is a row. Keep each in its own kind of place.
 
 Hard rules, in full with reasoning in
 [`docs/implementation/ENTERPRISE-SCALE.md`](docs/implementation/ENTERPRISE-SCALE.md)
-and [`MULTI-SECTOR.md`](docs/implementation/MULTI-SECTOR.md):
+and [`MULTI-SECTOR.md`](docs/implementation/MULTI-SECTOR.md). Multi-branch
+chains — a brand with several locations plus a website, offline POS, and
+inter-branch transfers — are architected in full in
+[`docs/implementation/RETAIL-ERP.md`](docs/implementation/RETAIL-ERP.md),
+which is the document of record where it and `ENTERPRISE-SCALE.md` overlap:
 
 - **One `main`, one `production`.** No per-sector, per-client branch. A
   configuration is never encoded in time.
@@ -63,9 +67,10 @@ and [`MULTI-SECTOR.md`](docs/implementation/MULTI-SECTOR.md):
   deliberate boundary; do not build toward multi-brand speculatively.
 - **Every movement of value names its location**, and any query that can span
   branches says which — there is no implicit "all branches" read.
-- **A branch is not a tenant.** Branches share a catalogue and a customer list
-  by design. If two must not see each other's customers, they are two
-  businesses.
+- **A branch is a node, not a tenant.** At chain scale it has its own database
+  and is authoritative for its own facts, holding a read-only cache of the
+  brand's policy. If two "branches" must not see each other's customers, they
+  are two **brands** — that is Br1, not this axis.
 - **One writer per invariant.** Stock moves through `InventoryService.move()`
   and nothing else.
 - **Permissions are capabilities, not roles.** A route with no

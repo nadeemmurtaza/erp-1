@@ -1,8 +1,9 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { generateApiKey, hashApiKey } from '../../core/security/api-token';
 import { encryptSecret } from '../../core/security/secret-crypto';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import type { TradingPartner } from '../../core/prisma/client';
 import { CreateTradingPartnerDto, UpdateTradingPartnerDto } from './dto/trading-partner.dto';
 
 const INBOUND_KEY_PREFIX = 'tp';
@@ -104,6 +105,61 @@ export class TradingPartnersService {
     await this.prisma.tradingPartner.update({
       where: { id },
       data: { outboundApiKeyEncrypted: encryptSecret(apiKey, this.encryptionKey()) },
+    });
+  }
+
+  /**
+   * Authenticates an inbound call from a partner's own system (WO-18.2): the
+   * raw key they present, hashed and looked up. A SUSPENDED partner's key
+   * stops working immediately even though it still hashes correctly — that
+   * check happens here, not left to whichever endpoint calls this, so no
+   * inbound route can forget it.
+   */
+  async verifyInboundKey(rawKey: string): Promise<TradingPartner> {
+    if (!rawKey.trim()) throw new UnauthorizedException('Missing API key.');
+
+    const partner = await this.prisma.tradingPartner.findUnique({
+      where: { inboundApiKeyHash: hashApiKey(rawKey) },
+    });
+    if (!partner) throw new UnauthorizedException('Invalid API key.');
+    if (partner.status !== 'ACTIVE') {
+      throw new UnauthorizedException('This trading partner is not active.');
+    }
+    return partner;
+  }
+
+  /**
+   * Live stock for the SKUs a connected partner asks about — the read side
+   * of "them buying from us" (kind CUSTOMER or BOTH). Scoped to the SKUs
+   * they name rather than the whole catalogue: nothing here shares more of
+   * the catalogue than a partner already knows to ask for.
+   */
+  async getLiveStock(partner: TradingPartner, skus: string[]) {
+    if (partner.kind === 'SUPPLIER') {
+      throw new ForbiddenException('A SUPPLIER-kind trading partner cannot query stock.');
+    }
+    if (skus.length === 0) return [];
+
+    const variants = await this.prisma.productVariant.findMany({
+      where: { sku: { in: skus }, isActive: true },
+      select: {
+        sku: true,
+        stock: true,
+        priceOverride: true,
+        product: { select: { basePrice: true } },
+      },
+    });
+
+    const bySku = new Map(variants.map((v) => [v.sku, v]));
+    return skus.map((sku) => {
+      const variant = bySku.get(sku);
+      if (!variant) return { sku, found: false as const };
+      return {
+        sku,
+        found: true as const,
+        stock: variant.stock,
+        priceMinor: variant.priceOverride ?? variant.product.basePrice,
+      };
     });
   }
 

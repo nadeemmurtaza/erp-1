@@ -100,15 +100,29 @@ describe('validateEnv', () => {
     );
   });
 
-  it('accepts NODE_ROLE=BRANCH once PARENT_URL is supplied', () => {
+  it('accepts NODE_ROLE=BRANCH once PARENT_URL and PARENT_API_KEY are supplied', () => {
     const env = validateEnv({
       ...base,
       NODE_ROLE: 'BRANCH',
       NODE_ID: 'lhr-01',
       PARENT_URL: 'https://brand1.example',
+      PARENT_API_KEY: 'node_rawkey',
     });
     expect(env.NODE_ROLE).toBe('BRANCH');
     expect(env.PARENT_URL).toBe('https://brand1.example');
+    expect(env.PARENT_API_KEY).toBe('node_rawkey');
+  });
+
+  it('refuses a PARENT_URL with no PARENT_API_KEY — nothing to authenticate with', () => {
+    expect(() =>
+      validateEnv({ ...base, NODE_ROLE: 'BRANCH', NODE_ID: 'lhr-01', PARENT_URL: 'https://brand1.example' }),
+    ).toThrow(/PARENT_URL is set but PARENT_API_KEY is not/);
+  });
+
+  it('refuses a PARENT_API_KEY with no PARENT_URL — nothing to call', () => {
+    expect(() => validateEnv({ ...base, PARENT_API_KEY: 'node_rawkey' })).toThrow(
+      /PARENT_API_KEY is set but PARENT_URL is not/,
+    );
   });
 
   it('accepts NODE_ROLE=BRAND with no PARENT_URL — a Chain-edition brand has no organization above it', () => {

@@ -35,6 +35,10 @@ export class AppConfigService {
     return this.get('PARENT_URL');
   }
 
+  get parentApiKey(): string | undefined {
+    return this.get('PARENT_API_KEY');
+  }
+
   /**
    * False for every deployment today. Once true, chain-topology UI (a brand
    * picker, a scope selector, a sync screen) is allowed to render — RETAIL-ERP.md

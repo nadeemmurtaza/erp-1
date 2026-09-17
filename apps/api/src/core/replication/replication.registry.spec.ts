@@ -25,4 +25,16 @@ describe('ReplicationRegistry — WO-20.1', () => {
       /already registered/,
     );
   });
+
+  it('refuses a FACT registered to flow DOWN — R2 pairs FACT with UP only', () => {
+    expect(() => registry.register('Order', { dataClass: 'FACT', direction: 'DOWN', apply: jest.fn() })).toThrow(
+      /must flow UP/,
+    );
+  });
+
+  it('refuses a POLICY registered to flow UP — R2 pairs POLICY with DOWN only', () => {
+    expect(() => registry.register('Product', { dataClass: 'POLICY', direction: 'UP', apply: jest.fn() })).toThrow(
+      /must flow DOWN/,
+    );
+  });
 });

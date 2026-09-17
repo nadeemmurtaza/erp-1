@@ -1,13 +1,17 @@
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { NodesService } from './nodes.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { AppConfigService } from '../../core/config/app-config.service';
+import { hashApiKey } from '../../core/security/api-token';
 
 describe('NodesService', () => {
   let prisma: any;
 
   const build = async (nodeRole: string) => {
-    prisma = { node: { upsert: jest.fn(), findMany: jest.fn(), update: jest.fn() } };
+    prisma = {
+      node: { upsert: jest.fn(), findMany: jest.fn(), update: jest.fn(), findUnique: jest.fn() },
+    };
     const config = { nodeRole };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -79,6 +83,30 @@ describe('NodesService', () => {
     expect(prisma.node.update).toHaveBeenCalledWith({
       where: { nodeId: 'lhr-01' },
       data: { status: 'SUSPENDED' },
+    });
+  });
+
+  describe('rotateInboundKey', () => {
+    it('404s for a node that does not exist', async () => {
+      const service = await build('BRAND');
+      prisma.node.findUnique.mockResolvedValue(null);
+
+      await expect(service.rotateInboundKey('missing')).rejects.toBeInstanceOf(NotFoundException);
+      expect(prisma.node.update).not.toHaveBeenCalled();
+    });
+
+    it('issues a fresh key and stores only its hash', async () => {
+      const service = await build('BRAND');
+      prisma.node.findUnique.mockResolvedValue({ id: '1' });
+      prisma.node.update.mockResolvedValue({});
+
+      const { apiKey } = await service.rotateInboundKey('lhr-01');
+
+      expect(apiKey).toEqual(expect.stringMatching(/^node_/));
+      expect(prisma.node.update).toHaveBeenCalledWith({
+        where: { nodeId: 'lhr-01' },
+        data: { inboundApiKeyHash: hashApiKey(apiKey) },
+      });
     });
   });
 });

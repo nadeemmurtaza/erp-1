@@ -74,6 +74,8 @@ export const envSchema = z.object({
   NODE_ID: z.string().min(1).default('main'),
   /** Where this node pulls policy from and pushes facts to. Required for BRANCH — a branch always reports to a brand. Optional for BRAND (a Chain-edition brand has no organization above it); refused for ORG and STANDALONE, which are the top of whatever topology they have. */
   PARENT_URL: z.string().url().optional(),
+  /** The credential PARENT_URL issued this node (WO-20.2) — same shape as PARENT_URL: required wherever PARENT_URL is, refused wherever it is refused, since one never makes sense without the other. */
+  PARENT_API_KEY: z.string().optional(),
 
   PAYMENT_PROVIDERS: csv('cod,bank_transfer'),
   NOTIFICATION_CHANNELS: csv('log'),
@@ -232,6 +234,15 @@ export function validateEnv(raw: Record<string, unknown>): Env {
     throw new Error(
       `NODE_ROLE=${result.data.NODE_ROLE} does not take a PARENT_URL — it is the top of its topology.`,
     );
+  }
+  // PARENT_API_KEY follows PARENT_URL exactly (WO-20.2) — a URL with no
+  // credential can never authenticate, and a credential with no URL has
+  // nothing to call.
+  if (result.data.PARENT_URL && !result.data.PARENT_API_KEY) {
+    throw new Error('PARENT_URL is set but PARENT_API_KEY is not — this node cannot authenticate to its parent.');
+  }
+  if (result.data.PARENT_API_KEY && !result.data.PARENT_URL) {
+    throw new Error('PARENT_API_KEY is set but PARENT_URL is not — there is nothing to call with it.');
   }
 
   return result.data;

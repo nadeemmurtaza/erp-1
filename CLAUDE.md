@@ -207,3 +207,387 @@ Legitimate remaining exceptions, so you do not "fix" them:
 **Never push to `main`. Never push to `production`. Never merge into either.**
 Both auto-deploy, so a merge is a deployment, and deployments are the owner's
 decision. See §7 of the house rules.
+
+
+---
+
+## NEWAX Engineering Operating Protocol
+
+Binding on every agent, developer, automated process, cloud coding
+environment, CI workflow, and future contributor here. The goal is not code
+that runs — it's systems that are correct, understandable, maintainable,
+secure, performant, observable, documented, verifiable and operationally
+reliable. The system does the work; the client should not have to manage
+unnecessary technical complexity.
+
+### Operating sequence
+
+```
+Understand → Inspect → Plan → Document → Implement → Verify → Review → Report
+```
+
+Never jump straight from a request to implementation. First classify the
+task — bug fix / feature / refactor / performance / security / docs /
+architecture / infra / content / config — the category sets what
+verification is required.
+
+### Before writing or modifying code
+
+```bash
+pwd
+git status --short
+git branch --show-current
+find . -maxdepth 2 -type f | sort | head -200
+```
+
+Then search before creating:
+
+```bash
+grep -R "existing-component-name" apps packages
+grep -R "existing-function-name" apps packages
+grep -R "existing-route" apps packages
+```
+
+— before introducing any component, function, service, hook, utility, API
+endpoint, database table, database column, permission, validation rule,
+dependency, or configuration value. A duplicate implementation is a defect
+unless a documented boundary requires the separation.
+
+Record scope before starting: affected applications, packages, database
+tables, APIs, routes, permissions, external systems. If scope is unclear,
+inspect further — don't invent it.
+
+### Plan before build
+
+Every non-trivial task gets a written plan first, proportional to the task
+(a typo needs no plan; a database redesign does):
+
+```markdown
+## Implementation Plan
+
+### Objective
+### Existing State
+### Required Change
+### Files Likely Affected
+### Dependencies (existing capabilities reused)
+### Risks
+### Acceptance Criteria
+### Out of Scope
+```
+
+Every meaningful implementation traces back to a requirement — product
+docs, an issue, a spec, an existing business rule, an acceptance criterion,
+a user request, a security or performance requirement:
+
+```
+Requirement: / Reason: / Expected Outcome: / Verification Method:
+```
+
+Code with no documented reason is speculative functionality — don't build a
+feature merely because it looks useful.
+
+### Documentation-first
+
+Update documentation **before** implementing when a change touches:
+architecture, database structure, API contracts, authentication,
+authorization, permissions, deployment, infrastructure, external
+integrations, major workflows, business rules, performance characteristics,
+or security boundaries. Search first — `docs/implementation/`,
+`docs/architecture/`, `docs/api/`, `docs/operations/`, `docs/security/` —
+and update the document of record. Never fork a duplicate doc.
+
+### Preserve existing systems
+
+Before changing existing behavior, know: why it exists, who uses it, what
+depends on it, whether it's documented, whether tests cover it, what else
+it touches. Don't rewrite a working system because a different
+implementation looks cleaner — a refactor needs a measurable or documented
+reason.
+
+### Change minimization
+
+Smallest complete change that satisfies the requirement wins. Do not:
+rewrite unrelated modules, rename unrelated files, reformat unrelated code,
+upgrade dependencies without justification, change architecture
+unnecessarily, introduce speculative abstractions, or modify a shared
+component without checking every consumer. Every unrelated change adds
+review complexity and regression risk for nothing.
+
+### Performance engineering
+
+Every technique below must be *considered* where it applies to the change
+at hand — never applied blindly, and never treated as mandatory everywhere.
+The correct optimization depends on the actual system, and every claim
+needs a measurement (Lighthouse, Core Web Vitals, bundle size, API/DB
+response time, image transfer size, JS execution cost, layout shift — not
+a guess).
+
+| Area | What to check |
+|---|---|
+| **Cache API responses** | HTTP / server-side / application / Redis / CDN caching where safe. Every cache states: owner, key, expiration, invalidation strategy, data-freshness requirement, auth isolation. Never cache sensitive or user-specific data incorrectly. |
+| **Database indexing** | Justify by real WHERE, JOIN, ORDER BY, foreign-key and frequently-combined-column patterns; verify with `EXPLAIN ANALYZE`. No index added just because it seems generally useful. |
+| **Images** | Appropriate dimensions, compression, modern formats where supported, responsive delivery, lazy loading, correct aspect ratios, prevented layout shift. Never ship oversized images unnecessarily. |
+| **Loading skeletons** | Match the real content structure; avoid excessive animation; never replace a meaningful empty state; never hide an error; respect reduced-motion preferences. |
+| **Expensive query caching** | Redis, materialized views, precomputed aggregates, background jobs, or request-level memoization — always with a stated freshness requirement. |
+| **N+1 queries** | Fetching N records then querying related data separately per record is a performance *defect*. Fix with batch queries, joins, aggregation, eager loading, or data loaders. |
+| **Debounce expensive inputs** | API requests, search, filtering, validation, autosave, suggestions. Never debounce an action that needs immediate feedback. |
+| **Code splitting** | Route-level splitting, dynamic imports, lazy-loaded heavy components, deferred secondary features. Must improve loading behavior, not just multiply files. |
+| **CDN evaluation** | Static assets, public images, video, large downloads, public API responses where appropriate — weighed against traffic volume, geographic distribution, cacheability, cost, security, invalidation needs. Don't add CDN infra without a reason. |
+| **Server-side caching** | Public content, configuration, expensive computations, frequently-requested aggregates — every one needs invalidation logic. |
+| **Pagination** | Never assume a dataset stays small. Offset, cursor, or keyset pagination on every potentially large collection — no unbounded queries. |
+| **API payload compression** | Compression, field selection, DTO optimization, pagination, trimming unnecessary nested data — without sacrificing API clarity. |
+| **Prevent unnecessary re-renders** | Fix via state placement, stable references, correct reactive dependencies — not excessive watchers or expensive computed values or unnecessary global state. Don't reach for memoization without understanding the actual rendering problem. |
+| **Minify production assets** | Through the framework's own build pipeline only, never by hand. Watch JS/CSS bundle size, dead code, duplicate packages, unused polyfills. |
+| **Lazy loading** | Below-the-fold images, secondary dashboards, heavy charts, optional integrations, large editor components. Never delay critical content. |
+| **Defer non-critical scripts** | Analytics, chat widgets, tracking, ads, optional integrations must not block critical rendering. Every third-party script needs a documented purpose. |
+| **Remove unused dependencies** | Before adding one: check the language stdlib, then framework capability, then existing NEWAX utilities, then whether it's actually necessary, then its security/maintenance/bundle impact. Remove what's unused. |
+| **Database connection pooling** | Connections reused appropriately, pool size justified, connections released safely, serverless limits understood, exhaustion prevented. |
+
+### Architectural decision records
+
+Record significant technical decisions in `docs/implementation/DECISIONS.md`:
+
+```markdown
+## Decision
+### Context — what problem required a decision?
+### Options Considered
+### Decision — what was selected?
+### Reasoning — why?
+### Consequences — benefits and trade-offs
+### Status — Accepted / Superseded / Rejected
+```
+
+Don't repeatedly revisit a settled decision without new evidence.
+
+### Security engineering
+
+Review: authentication, authorization, permission enforcement, tenant
+isolation, branch isolation, input validation, output encoding, SQL
+injection, XSS, CSRF, file uploads, secrets, environment variables, rate
+limiting, error exposure, logging privacy, dependency vulnerabilities.
+Security is enforced **server-side** — client-side restrictions are not
+authorization.
+
+### Error handling
+
+Every external operation (database, API, network) needs a failure path
+covering: validation failure, auth failure, timeout, partial failure,
+duplicate request, concurrent request. Errors are understandable to users
+where appropriate, useful to operators, safe to expose, and logged without
+leaking sensitive information. Never silently swallow an error; never
+expose a stack trace or a secret to a user.
+
+### Observability
+
+Where applicable: structured logging, error tracking, health checks,
+request tracing, performance metrics, database monitoring, queue
+monitoring, external-integration monitoring. A log should answer: what
+happened, when, which operation, which organization/context, what was the
+result, what failed. Never log passwords, tokens, secrets, or unnecessary
+personal data.
+
+### Database change protocol
+
+Before modifying a database: inspect the current schema, identify
+relationships, review existing migrations, check constraints and indexes,
+determine data ownership, consider backward compatibility and rollback,
+update documentation, add or update tests. Never casual — every migration
+states a clear reason (this repo's own D1/D2 above go further: forward-only,
+tested against a copy of production data, never `migrate dev` against
+production).
+
+### Testing standard
+
+Match the category (unit / integration / API / e2e / permission / security
+/ regression / performance) to the risk. Minimum scenarios to consider:
+normal case, invalid input, boundary values, unauthorized access, wrong
+organization, wrong branch, duplicate request, concurrent request, external
+service failure, partial failure, empty state, loading state, error state.
+Tests verify business behavior, not implementation details.
+
+### Verification after every change
+
+```bash
+pnpm lint
+pnpm typecheck
+pnpm test
+```
+
+Plus `pnpm build` and `pnpm format:check` where applicable. Never reuse an
+old successful run as evidence for a new change.
+
+**Automated verification is the authority.** Human review is valuable but
+insufficient — never claim success from visual inspection or reasoning
+alone. Evidence means: tests passing, typecheck passing, build passing,
+lint passing, a migration applying cleanly, an endpoint responding
+correctly, a preview deployment functioning, logs showing no unresolved
+failure.
+
+### Definition of done
+
+```
+[ ] Requirement understood
+[ ] Existing implementation inspected
+[ ] Plan created
+[ ] Documentation updated where required
+[ ] Implementation completed
+[ ] No unnecessary code added
+[ ] No duplicate implementation introduced
+[ ] Security reviewed
+[ ] Performance reviewed
+[ ] Tests added or updated
+[ ] Lint passed
+[ ] Typecheck passed
+[ ] Tests passed
+[ ] Build passed where applicable
+[ ] Acceptance criteria verified
+[ ] Documentation synchronized
+[ ] Git diff reviewed
+[ ] No unresolved known blocker
+```
+
+Any item incomplete means the task is not complete.
+
+### Status vocabulary
+
+**Investigated** — repository inspected, problem understood.
+**Planned** — implementation approach documented.
+**Changed** — code or configuration modified.
+**Verified Locally** — verification commands passed after the latest change.
+**Blocked** — progress can't continue: a dependency, access, decision, or
+information is unavailable.
+**Complete** — every applicable requirement and acceptance criterion
+satisfied *and verified*. Never call something complete when only code has
+been written.
+
+### No speculative functionality
+
+Don't implement anything not requested or required — no future-proofing for
+imagined requirements, extra configuration, unused abstractions, unused API
+endpoints, placeholder infrastructure, unnecessary tables, unnecessary
+dependencies, unused permissions, unused env vars. Every addition needs a
+documented reason.
+
+### Refactoring
+
+Preserve behavior unless a behavior change is explicitly intended. Before:
+understand current behavior, identify consumers, check tests, name the
+risks, define the expected outcome. After: run relevant tests, compare
+behavior, review performance and affected boundaries. Never refactor
+unrelated code while implementing a feature.
+
+### Dependency standard
+
+Before installing one:
+
+```
+Dependency: / Purpose: / Existing Alternative: /
+Why Existing Alternative Is Insufficient: / Security Considerations: /
+Maintenance Considerations: / Bundle / Runtime Impact: / Approval Required:
+```
+
+Prefer fewer dependencies — each one is a long-term maintenance obligation,
+not a temporary convenience.
+
+### Environment and configuration
+
+Never hardcode an environment-specific value — URLs, API keys, database
+credentials, feature flags, deployment settings, external service ids,
+timezones, locale configuration all resolve through config. Never commit a
+secret or a production credential.
+
+### Git discipline
+
+```bash
+git status
+git branch --show-current
+```
+
+before starting; never overwrite unrelated changes or reset/delete someone
+else's work without explicit authorization.
+
+```bash
+git diff --stat
+git diff
+```
+
+before committing or opening a PR — review the complete diff. The final
+diff contains only intentional changes.
+
+### No direct production modification
+
+Never: push directly to production, modify a production database casually,
+change production env vars without authorization, deploy unverified code,
+bypass CI, or disable a security control to make a deployment pass. Verify
+in development/preview first. (See this file's own Deployment section
+above — the same rule, restated here for the full protocol.)
+
+### Release safety
+
+Before release: requirements verified, acceptance criteria passed, tests
+passed, build passed, security reviewed, performance reviewed,
+documentation updated, migration reviewed, rollback considered, monitoring
+available. A successful deployment is not automatically a successful
+release — verify production behavior *after* deployment too.
+
+### Continuous improvement
+
+After significant work, ask: what was difficult, what was duplicated, what
+documentation was missing, what verification was missing, what should
+become reusable, what should be automated, what should be removed. Don't
+let a temporary workaround calcify into permanent architecture.
+
+### The final questions
+
+Before writing code — *does this make the system simpler, more reliable,
+more understandable, or more capable of serving its actual purpose?* If
+not, don't add it.
+
+Before declaring completion — *what evidence proves this works?* No
+evidence, not verified.
+
+Before introducing complexity — *can the existing system already solve
+this?* If yes, reuse it.
+
+Before creating a new abstraction — *what real boundary justifies its
+existence?* No clear answer, don't create it.
+
+The goal is not maximum code. The goal is dependable business
+infrastructure.
+
+### Response format for non-trivial work
+
+Before implementing:
+
+```
+TASK UNDERSTANDING
+Objective: / Affected Area: / Task Type:
+
+CURRENT STATE
+Relevant Existing Files: / Existing Capabilities: / Potential Risks:
+
+PLAN
+1. 2. 3. …
+
+ACCEPTANCE CRITERIA
+1. 2. 3. …
+
+IMPLEMENTATION STATUS
+Not Started / In Progress / Blocked / Verified
+```
+
+Don't claim completion before implementing. After implementing:
+
+```
+CHANGES MADE
+- File: / File: …
+
+VERIFICATION
+- Lint: / Typecheck: / Tests: / Build:
+
+REMAINING RISKS
+- None / Listed
+
+FINAL STATUS
+Verified Locally / Blocked / Complete
+```

@@ -32,6 +32,8 @@ export const DomainEvent = {
 
   ProductLowStock: 'catalog.product_low_stock',
   GoodsReceived: 'purchasing.goods_received',
+  SupplierBillRaised: 'purchasing.supplier_bill_raised',
+  SupplierBillPaid: 'purchasing.supplier_bill_paid',
 
   EmailReplyReceived: 'email.reply_received',
 } as const;
@@ -135,6 +137,33 @@ export interface GoodsReceivedPayload {
   supplierId: string;
 }
 
+export interface SupplierBillRaisedPayload {
+  billId: string;
+  supplierId: string;
+  purchaseOrderId: string | null;
+  /** In `currency` below — the supplier's own invoiced amount. */
+  amountMinor: number;
+  currency: string;
+  /** rate * 1_000_000 at the moment this bill was raised (R16) — the "booked" rate a later payment's settlement rate is compared against. */
+  fxRateScaled: number;
+  /** `amountMinor` converted to the base currency, computed once (`convertToBase`, @newax/shared). */
+  baseAmountMinor: number;
+  issuedAt: string;
+}
+
+export interface SupplierBillPaidPayload {
+  billId: string;
+  supplierId: string;
+  /** The portion of the bill settled by this payment, in `currency` below. */
+  amountMinor: number;
+  currency: string;
+  /** The bill's own booked rate (SupplierBillRaisedPayload.fxRateScaled) — what AP was booked at. */
+  billFxRateScaled: number;
+  /** The rate actually used to convert this payment to the base currency — the difference from `billFxRateScaled` is the realised FX gain/loss (R16). */
+  settlementFxRateScaled: number;
+  paidAt: string;
+}
+
 export interface EmailReplyReceivedPayload {
   inboundEmailId: string;
   emailAccountId: string;
@@ -161,5 +190,7 @@ export interface DomainEventPayloads {
   [DomainEvent.EmailVerificationRequested]: EmailVerificationRequestedPayload;
   [DomainEvent.ProductLowStock]: ProductLowStockPayload;
   [DomainEvent.GoodsReceived]: GoodsReceivedPayload;
+  [DomainEvent.SupplierBillRaised]: SupplierBillRaisedPayload;
+  [DomainEvent.SupplierBillPaid]: SupplierBillPaidPayload;
   [DomainEvent.EmailReplyReceived]: EmailReplyReceivedPayload;
 }

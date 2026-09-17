@@ -1,6 +1,14 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { convertToBase } from '@newax/shared';
 import { OnDomainEvent } from '../../core/events/on-domain-event.decorator';
-import { DomainEvent, type OrderPlacedPayload, type PaymentPayload, type PaymentRefundedPayload } from '../../core/events/domain-events';
+import {
+  DomainEvent,
+  type OrderPlacedPayload,
+  type PaymentPayload,
+  type PaymentRefundedPayload,
+  type SupplierBillRaisedPayload,
+  type SupplierBillPaidPayload,
+} from '../../core/events/domain-events';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { AccountingService } from './accounting.service';
 import { ACCOUNT_CODE } from './chart-of-accounts';
@@ -146,5 +154,105 @@ export class PostingRulesSubscriber {
           'entry is POSTED — nothing to reverse (already reversed, or the ledger was off when it posted).',
       );
     }
+  }
+
+  /**
+   * Dr Inventory · Cr Accounts Payable, at the bill's own `baseAmountMinor`
+   * (already converted by `PurchasingService.createSupplierBill` — this
+   * handler never re-derives the conversion, House Rule 11's "written
+   * once"). No Goods-Received-Not-Invoiced clearing account yet: nothing
+   * posts a matching GRNI entry for `GoodsReceived` today, so introducing
+   * one here would leave a balance nothing ever nets to zero.
+   */
+  @OnDomainEvent(DomainEvent.SupplierBillRaised)
+  async onSupplierBillRaised(payload: SupplierBillRaisedPayload): Promise<void> {
+    const source = DomainEvent.SupplierBillRaised;
+    if (await this.accounting.findPostedEntry(source, payload.billId)) return;
+    if (payload.baseAmountMinor <= 0) return;
+
+    const accountId = await this.accounting.accountIdsByCode([ACCOUNT_CODE.INVENTORY, ACCOUNT_CODE.ACCOUNTS_PAYABLE]);
+    const inventory = accountId.get(ACCOUNT_CODE.INVENTORY);
+    const ap = accountId.get(ACCOUNT_CODE.ACCOUNTS_PAYABLE);
+    if (!inventory || !ap) {
+      this.logger.error(`Chart of accounts is missing Inventory or Accounts Payable — cannot post the bill ${payload.billId}.`);
+      return;
+    }
+
+    await this.accounting.postEntry({
+      date: new Date(payload.issuedAt),
+      source,
+      sourceRef: payload.billId,
+      memo: `Supplier bill — ${payload.currency} ${payload.amountMinor}`,
+      lines: [
+        { accountId: inventory, debitMinor: payload.baseAmountMinor },
+        {
+          accountId: ap,
+          creditMinor: payload.baseAmountMinor,
+          currency: payload.currency,
+          fxRateScaled: payload.fxRateScaled,
+          baseAmountMinor: payload.baseAmountMinor,
+        },
+      ],
+    });
+  }
+
+  /**
+   * Dr Accounts Payable (at the bill's own booked rate) · Cr Cash & Bank (at
+   * the settlement rate actually paid) — the difference, if any, is the
+   * realised FX gain/loss (R16): paying more base currency than was booked
+   * is a loss, paying less is a gain. Both amounts are computed here with
+   * the same `convertToBase` every other conversion in this codebase uses
+   * (House Rule 11), never a bespoke calculation.
+   *
+   * Idempotency keys on `${billId}:${paidAt}` rather than a payment id —
+   * `SupplierBill` has no per-payment row yet (only a running `amountPaid`),
+   * so this is the stable, redelivery-safe key available today; a
+   * `SupplierBillPayment` ledger is a natural follow-up once AP aging needs
+   * one, not a prerequisite for posting this correctly.
+   */
+  @OnDomainEvent(DomainEvent.SupplierBillPaid)
+  async onSupplierBillPaid(payload: SupplierBillPaidPayload): Promise<void> {
+    const source = DomainEvent.SupplierBillPaid;
+    const sourceRef = `${payload.billId}:${payload.paidAt}`;
+    if (payload.amountMinor <= 0) return;
+    if (await this.accounting.findPostedEntry(source, sourceRef)) return;
+
+    const accountId = await this.accounting.accountIdsByCode([
+      ACCOUNT_CODE.ACCOUNTS_PAYABLE,
+      ACCOUNT_CODE.CASH_AND_BANK,
+      ACCOUNT_CODE.FX_GAIN,
+      ACCOUNT_CODE.FX_LOSS,
+    ]);
+    const ap = accountId.get(ACCOUNT_CODE.ACCOUNTS_PAYABLE);
+    const bank = accountId.get(ACCOUNT_CODE.CASH_AND_BANK);
+    if (!ap || !bank) {
+      this.logger.error(`Chart of accounts is missing Accounts Payable or Cash & Bank — cannot post the payment for bill ${payload.billId}.`);
+      return;
+    }
+
+    const bookedBase = convertToBase(payload.amountMinor, payload.billFxRateScaled);
+    const paidBase = convertToBase(payload.amountMinor, payload.settlementFxRateScaled);
+    const diff = paidBase - bookedBase;
+
+    const lines = [
+      { accountId: ap, debitMinor: bookedBase },
+      { accountId: bank, creditMinor: paidBase },
+    ];
+
+    if (diff > 0) {
+      const fxLoss = accountId.get(ACCOUNT_CODE.FX_LOSS);
+      if (fxLoss) lines.push({ accountId: fxLoss, debitMinor: diff });
+    } else if (diff < 0) {
+      const fxGain = accountId.get(ACCOUNT_CODE.FX_GAIN);
+      if (fxGain) lines.push({ accountId: fxGain, creditMinor: -diff });
+    }
+
+    await this.accounting.postEntry({
+      date: new Date(payload.paidAt),
+      source,
+      sourceRef,
+      memo: `Payment on supplier bill ${payload.billId}`,
+      lines,
+    });
   }
 }

@@ -156,17 +156,20 @@ model JournalLine {
   debitMinor  Int    @default(0)
   creditMinor Int    @default(0)
 
-  /// ISO 4217. Defaults to the deployment's own base currency (`BRAND.locale.currency`) —
-  /// multi-currency conversion itself is WO-19.3, unbuilt; these three
-  /// columns exist now so that work is additive, not a later ALTER on a
-  /// live ledger.
+  /// ISO 4217. `debitMinor`/`creditMinor` themselves are ALWAYS posted in
+  /// the deployment's own base currency (`BRAND.locale.currency`) — that is
+  /// what the balance trigger sums, raw, per entry. `currency` here is the
+  /// ORIGINATING document's currency when one exists (a foreign-currency
+  /// supplier bill, say); informational/audit, never something a reader
+  /// re-derives the base amount from. See posting-rules.subscriber.ts (R16,
+  /// WO-19.3) and `convertToBase` (@newax/shared).
   currency        String
   /// rate * 1_000_000, an integer (House Rule 5 / R16) — 1_000_000 is "no
-  /// conversion", the default for every line until WO-19.3 exists.
+  /// conversion", the rate used to produce this line's base-currency amount
+  /// from the originating document's own currency.
   fxRateScaled    Int    @default(1000000)
-  /// debitMinor or creditMinor converted to the base currency. Equal to
-  /// whichever of the two is non-zero until fxRateScaled is ever anything
-  /// but 1_000_000.
+  /// Always equal to whichever of debitMinor/creditMinor is non-zero — kept
+  /// as its own column so a report never needs a CASE WHEN to pick one.
   baseAmountMinor Int
 
   organizationId String?

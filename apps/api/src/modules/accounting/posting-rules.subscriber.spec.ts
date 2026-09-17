@@ -12,6 +12,9 @@ const ACCOUNT_ID: Record<string, string> = {
   [ACCOUNT_CODE.INVENTORY]: 'acc-inventory',
   [ACCOUNT_CODE.COGS]: 'acc-cogs',
   [ACCOUNT_CODE.CASH_AND_BANK]: 'acc-bank',
+  [ACCOUNT_CODE.ACCOUNTS_PAYABLE]: 'acc-ap',
+  [ACCOUNT_CODE.FX_GAIN]: 'acc-fx-gain',
+  [ACCOUNT_CODE.FX_LOSS]: 'acc-fx-loss',
 };
 
 describe('PostingRulesSubscriber — WO-19.2', () => {
@@ -180,6 +183,142 @@ describe('PostingRulesSubscriber — WO-19.2', () => {
 
       await expect(subscriber.onPaymentRefunded(payload)).resolves.toBeUndefined();
       expect(accounting.reverseEntry).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('onSupplierBillRaised — WO-19.3', () => {
+    const payload = {
+      billId: 'bill1',
+      supplierId: 'sup1',
+      purchaseOrderId: null,
+      amountMinor: 100_000,
+      currency: 'USD',
+      fxRateScaled: 280_500_000,
+      baseAmountMinor: 28_050_000,
+      issuedAt: '2026-01-01T00:00:00.000Z',
+    };
+
+    it('posts Dr Inventory / Cr Accounts Payable at baseAmountMinor, tagging the AP line with the bill currency', async () => {
+      await subscriber.onSupplierBillRaised(payload);
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          source: DomainEvent.SupplierBillRaised,
+          sourceRef: 'bill1',
+          lines: [
+            { accountId: 'acc-inventory', debitMinor: 28_050_000 },
+            {
+              accountId: 'acc-ap',
+              creditMinor: 28_050_000,
+              currency: 'USD',
+              fxRateScaled: 280_500_000,
+              baseAmountMinor: 28_050_000,
+            },
+          ],
+        }),
+      );
+    });
+
+    it('does nothing when this bill already posted (redelivery)', async () => {
+      accounting.findPostedEntry.mockResolvedValue({ id: 'already-there' });
+
+      await subscriber.onSupplierBillRaised(payload);
+
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+
+    it('does nothing for a zero base amount', async () => {
+      await subscriber.onSupplierBillRaised({ ...payload, baseAmountMinor: 0 });
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('onSupplierBillPaid — WO-19.3 realised FX gain/loss', () => {
+    const basePayload = {
+      billId: 'bill1',
+      supplierId: 'sup1',
+      amountMinor: 100_000,
+      currency: 'USD',
+      paidAt: '2026-01-15T00:00:00.000Z',
+    };
+
+    it('posts a realised FX LOSS when the settlement rate is higher than the booked rate (paying more base currency than booked)', async () => {
+      await subscriber.onSupplierBillPaid({
+        ...basePayload,
+        billFxRateScaled: 280_000_000,
+        settlementFxRateScaled: 282_000_000,
+      });
+
+      // booked: 100_000 * 280 / 1e6 = 28,000,000 ; paid: 100_000 * 282 / 1e6 = 28,200,000 ; diff = +200,000 (loss)
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          source: DomainEvent.SupplierBillPaid,
+          lines: [
+            { accountId: 'acc-ap', debitMinor: 28_000_000 },
+            { accountId: 'acc-bank', creditMinor: 28_200_000 },
+            { accountId: 'acc-fx-loss', debitMinor: 200_000 },
+          ],
+        }),
+      );
+    });
+
+    it('posts a realised FX GAIN when the settlement rate is lower than the booked rate', async () => {
+      await subscriber.onSupplierBillPaid({
+        ...basePayload,
+        billFxRateScaled: 280_000_000,
+        settlementFxRateScaled: 278_000_000,
+      });
+
+      // booked: 28,000,000 ; paid: 27,800,000 ; diff = -200,000 (gain)
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          lines: [
+            { accountId: 'acc-ap', debitMinor: 28_000_000 },
+            { accountId: 'acc-bank', creditMinor: 27_800_000 },
+            { accountId: 'acc-fx-gain', creditMinor: 200_000 },
+          ],
+        }),
+      );
+    });
+
+    it('posts no FX line at all when the settlement rate matches the booked rate exactly', async () => {
+      await subscriber.onSupplierBillPaid({
+        ...basePayload,
+        billFxRateScaled: 280_000_000,
+        settlementFxRateScaled: 280_000_000,
+      });
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          lines: [
+            { accountId: 'acc-ap', debitMinor: 28_000_000 },
+            { accountId: 'acc-bank', creditMinor: 28_000_000 },
+          ],
+        }),
+      );
+    });
+
+    it('is idempotent per (billId, paidAt) against outbox redelivery', async () => {
+      accounting.findPostedEntry.mockResolvedValue({ id: 'already-there' });
+
+      await subscriber.onSupplierBillPaid({
+        ...basePayload,
+        billFxRateScaled: 280_000_000,
+        settlementFxRateScaled: 282_000_000,
+      });
+
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+
+    it('does nothing for a zero or negative amount', async () => {
+      await subscriber.onSupplierBillPaid({
+        ...basePayload,
+        amountMinor: 0,
+        billFxRateScaled: 280_000_000,
+        settlementFxRateScaled: 282_000_000,
+      });
+
+      expect(accounting.postEntry).not.toHaveBeenCalled();
     });
   });
 });

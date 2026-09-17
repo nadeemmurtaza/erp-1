@@ -13,8 +13,11 @@
 export {
   PERMISSION_CATALOG,
   PERMISSION_KEYS,
+  PERMISSION_GROUPS,
   ADMIN_LOCKED_PERMISSIONS,
   ROLE_PERMISSION_SEED,
   type PermissionKey,
   type PermissionDefinition,
+  type PermissionGroup,
+  type PermissionSensitivity,
 } from '@newax/shared';

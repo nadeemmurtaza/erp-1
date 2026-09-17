@@ -1,19 +1,18 @@
 'use client';
 
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { formatDateTime } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
-import type { AuditLogEntry, AuditLogPage, PermissionDefinition, RoleSummary, RoleWriteResult } from '@/types/api';
+import type { AuditLogEntry, AuditLogPage, RoleSummary } from '@/types/api';
 import { Loading, PageHeader, Tabs } from '@/components/ui';
+import { RoleWizard } from '@/components/admin/role-wizard';
 
-const BLANK_DRAFT = { id: null as string | null, name: '', description: '', permissions: new Set<string>() };
+/** Undefined = wizard closed. `null` = creating a new role. A `RoleSummary` = editing that one. */
+type WizardTarget = RoleSummary | null | undefined;
 
 export default function AdminSettingsPage() {
-  const [permissions, setPermissions] = useState<PermissionDefinition[]>([]);
   const [roles, setRoles] = useState<RoleSummary[]>([]);
-  const [draft, setDraft] = useState(BLANK_DRAFT);
-  const [saving, setSaving] = useState(false);
-  const [duplicateNotice, setDuplicateNotice] = useState<string | null>(null);
+  const [wizardTarget, setWizardTarget] = useState<WizardTarget>(undefined);
   const [error, setError] = useState<string | null>(null);
 
   const [audit, setAudit] = useState<AuditLogPage | null>(null);
@@ -21,23 +20,18 @@ export default function AdminSettingsPage() {
   const [auditPage, setAuditPage] = useState(1);
   const [auditError, setAuditError] = useState<string | null>(null);
 
-  const loadPermissions = useCallback(async () => {
+  const loadRoles = useCallback(async () => {
     setError(null);
     try {
-      const [perms, roleList] = await Promise.all([
-        adminFetch<PermissionDefinition[]>('/admin/settings/permissions'),
-        adminFetch<RoleSummary[]>('/admin/roles'),
-      ]);
-      setPermissions(perms);
-      setRoles(roleList);
+      setRoles(await adminFetch<RoleSummary[]>('/admin/roles'));
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not load roles');
     }
   }, []);
 
   useEffect(() => {
-    void loadPermissions();
-  }, [loadPermissions]);
+    void loadRoles();
+  }, [loadRoles]);
 
   const loadAuditLog = useCallback(async () => {
     setAuditError(null);
@@ -63,65 +57,12 @@ export default function AdminSettingsPage() {
     void loadAuditLog();
   }, [loadAuditLog]);
 
-  const categories = useMemo(() => {
-    const seen = new Map<string, PermissionDefinition[]>();
-    for (const permission of permissions) {
-      const list = seen.get(permission.category) ?? [];
-      list.push(permission);
-      seen.set(permission.category, list);
-    }
-    return [...seen.entries()];
-  }, [permissions]);
-
-  function toggle(key: string) {
-    const next = new Set(draft.permissions);
-    if (next.has(key)) next.delete(key);
-    else next.add(key);
-    setDraft({ ...draft, permissions: next });
-  }
-
-  function editRole(role: RoleSummary) {
-    setDuplicateNotice(null);
-    setDraft({ id: role.id, name: role.name, description: role.description ?? '', permissions: new Set(role.permissions) });
-  }
-
-  function newRole() {
-    setDuplicateNotice(null);
-    setDraft(BLANK_DRAFT);
-  }
-
-  async function saveRole(event: React.FormEvent) {
-    event.preventDefault();
-    setSaving(true);
-    setError(null);
-    setDuplicateNotice(null);
-    try {
-      const body = {
-        name: draft.name,
-        description: draft.description || undefined,
-        permissions: [...draft.permissions],
-      };
-      const result = draft.id
-        ? await adminFetch<RoleWriteResult>(`/admin/roles/${draft.id}`, { method: 'PATCH', body })
-        : await adminFetch<RoleWriteResult>('/admin/roles', { method: 'POST', body });
-
-      setRoles((prev) => {
-        const exists = prev.some((r) => r.id === result.role.id);
-        return exists ? prev.map((r) => (r.id === result.role.id ? result.role : r)) : [...prev, result.role];
-      });
-      setDraft({ id: result.role.id, name: result.role.name, description: result.role.description ?? '', permissions: new Set(result.role.permissions) });
-
-      if (result.duplicateOfRoleName) {
-        setDuplicateNotice(
-          `"${result.duplicateOfRoleName}" already grants exactly this set of permissions — ` +
-            'consider assigning that role instead of keeping two that do the same thing.',
-        );
-      }
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Could not save this role');
-    } finally {
-      setSaving(false);
-    }
+  function handleWizardDone(saved: RoleSummary) {
+    setRoles((prev) => {
+      const exists = prev.some((r) => r.id === saved.id);
+      return exists ? prev.map((r) => (r.id === saved.id ? saved : r)) : [...prev, saved];
+    });
+    setWizardTarget(undefined);
   }
 
   async function deleteRole(role: RoleSummary) {
@@ -129,7 +70,6 @@ export default function AdminSettingsPage() {
     try {
       await adminFetch(`/admin/roles/${role.id}`, { method: 'DELETE' });
       setRoles((prev) => prev.filter((r) => r.id !== role.id));
-      if (draft.id === role.id) newRole();
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : `Could not delete "${role.name}"`);
     }
@@ -162,10 +102,26 @@ export default function AdminSettingsPage() {
           </p>
         ) : null}
 
-        {permissions.length === 0 ? (
+        {wizardTarget !== undefined ? (
+          <RoleWizard
+            role={wizardTarget ?? undefined}
+            onDone={handleWizardDone}
+            onCancel={() => setWizardTarget(undefined)}
+          />
+        ) : roles.length === 0 && !error ? (
           <Loading />
         ) : (
-          <div className="grid gap-6 lg:grid-cols-[1fr_26rem]">
+          <div>
+            <div className="mb-4 flex items-center justify-between">
+              <p className="text-sm text-neutral-900/60">
+                {roles.length} role{roles.length === 1 ? '' : 's'} — each can hold any mix of the
+                permission groups.
+              </p>
+              <button type="button" onClick={() => setWizardTarget(null)} className="btn-primary">
+                New role
+              </button>
+            </div>
+
             <div className="overflow-x-auto">
               <table className="table-flat">
                 <thead>
@@ -176,7 +132,7 @@ export default function AdminSettingsPage() {
                     <th />
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-neutral-100">
+                <tbody>
                   {roles.length === 0 ? (
                     <tr>
                       <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/50">
@@ -185,9 +141,13 @@ export default function AdminSettingsPage() {
                     </tr>
                   ) : (
                     roles.map((role) => (
-                      <tr key={role.id} className="hover:bg-neutral-50">
+                      <tr key={role.id}>
                         <td>
-                          <button type="button" onClick={() => editRole(role)} className="font-medium text-accent-hover">
+                          <button
+                            type="button"
+                            onClick={() => setWizardTarget(role)}
+                            className="font-medium text-accent-hover"
+                          >
                             {role.name}
                           </button>
                           {role.description ? (
@@ -211,66 +171,6 @@ export default function AdminSettingsPage() {
                 </tbody>
               </table>
             </div>
-
-            <form onSubmit={saveRole} className="space-y-4">
-              <div className="flex items-baseline justify-between">
-                <h2 className="eyebrow">{draft.id ? 'Edit role' : 'New role'}</h2>
-                {draft.id ? (
-                  <button type="button" onClick={newRole} className="btn-text">
-                    New role instead
-                  </button>
-                ) : null}
-              </div>
-
-              {duplicateNotice ? <p className="notice notice-info">{duplicateNotice}</p> : null}
-
-              <label className="block">
-                <span className="field-label">Name</span>
-                <input
-                  value={draft.name}
-                  onChange={(event) => setDraft({ ...draft, name: event.target.value })}
-                  required
-                  className="field-input"
-                />
-              </label>
-
-              <label className="block">
-                <span className="field-label">Description</span>
-                <input
-                  value={draft.description}
-                  onChange={(event) => setDraft({ ...draft, description: event.target.value })}
-                  className="field-input"
-                />
-              </label>
-
-              <div>
-                <span className="field-label">Permissions</span>
-                <div className="max-h-96 overflow-y-auto rounded border border-neutral-100">
-                  {categories.map(([category, items]) => (
-                    <Fragment key={category}>
-                      <p className="bg-neutral-50/60 px-3 py-1.5 text-xs font-semibold text-neutral-900/60">
-                        {category}
-                      </p>
-                      {items.map((permission) => (
-                        <label key={permission.id} className="flex items-center gap-2 px-3 py-1.5 text-sm">
-                          <input
-                            type="checkbox"
-                            checked={draft.permissions.has(permission.key)}
-                            onChange={() => toggle(permission.key)}
-                            className="field-check"
-                          />
-                          {permission.label}
-                        </label>
-                      ))}
-                    </Fragment>
-                  ))}
-                </div>
-              </div>
-
-              <button type="submit" disabled={saving} className="btn-primary w-full">
-                {saving ? 'Saving…' : draft.id ? 'Save role' : 'Create role'}
-              </button>
-            </form>
           </div>
         )}
       </section>

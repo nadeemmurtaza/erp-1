@@ -4,7 +4,9 @@ import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import type { ScopedActor } from '../../core/auth/scope.guard';
 import { OrganizationService } from './organization.service';
+import { NodesService } from './nodes.service';
 import { GrantScopeDto } from './dto/admin-scope.dto';
+import { RegisterNodeDto } from './dto/node.dto';
 
 /**
  * The three-level admin shell (R19, WO-18.5) plus who holds a seat in it
@@ -19,7 +21,10 @@ import { GrantScopeDto } from './dto/admin-scope.dto';
 @Controller('organization')
 @RequirePermission('organization.view')
 export class OrganizationController {
-  constructor(private readonly organization: OrganizationService) {}
+  constructor(
+    private readonly organization: OrganizationService,
+    private readonly nodesService: NodesService,
+  ) {}
 
   private async actorFor(user: AuthenticatedUser): Promise<ScopedActor> {
     const adminScopes = await this.organization.grantsFor(user.id);
@@ -42,6 +47,20 @@ export class OrganizationController {
   @ApiOperation({ summary: "This deployment's registered child nodes, visible to the caller" })
   async nodes(@CurrentUser() user: AuthenticatedUser) {
     return this.organization.listNodes(await this.actorFor(user));
+  }
+
+  @Post('nodes')
+  @RequirePermission('organization.manage')
+  @ApiOperation({ summary: 'Register a child node — or re-activate and update one that already exists' })
+  async registerNode(@Body() dto: RegisterNodeDto) {
+    return this.nodesService.register(dto);
+  }
+
+  @Post('nodes/:nodeId/rotate-inbound-key')
+  @RequirePermission('organization.manage')
+  @ApiOperation({ summary: 'Issue a fresh replication credential for a child node — shown once, never retrievable again' })
+  async rotateNodeInboundKey(@Param('nodeId') nodeId: string) {
+    return this.nodesService.rotateInboundKey(nodeId);
   }
 
   @Get('admin-scopes')

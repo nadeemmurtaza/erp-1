@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Headers, Post, Query, UnauthorizedException } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Public } from '../../core/auth/decorators';
+import { bearerToken } from '../../core/auth/bearer-token';
 import { TradingPartnersService } from './trading-partners.service';
 import { AcceptConnectionDto } from './dto/trading-partner.dto';
 
@@ -41,11 +42,4 @@ export class TradingPartnerPortalController {
     const partner = await this.tradingPartners.acceptConnection(dto.token, dto.role);
     return { id: partner.id, name: partner.name, kind: partner.kind, status: partner.status };
   }
-}
-
-function bearerToken(authorization: string | undefined): string {
-  if (!authorization?.startsWith('Bearer ')) {
-    throw new UnauthorizedException('Missing or malformed Authorization header — expected "Bearer <api key>".');
-  }
-  return authorization.slice('Bearer '.length);
 }

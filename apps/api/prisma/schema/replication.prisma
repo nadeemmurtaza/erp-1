@@ -83,13 +83,24 @@ model ReplicationSequenceCounter {
   value  BigInt @default(0)
 }
 
-/// "The highest sequence I've already applied from this peer" — read and
-/// advanced by the pull/push agent (WO-20.2), which does not exist yet.
-/// Unexercised under `STANDALONE`, which has no peers to hold a cursor for.
+/// "The highest sequence I've already synced with this peer, in this
+/// direction" — read and advanced by `ReplicationSyncAgent` (WO-20.2).
+/// Keyed by `(peerNodeId, direction)`, not `peerNodeId` alone: a BRANCH or
+/// BRAND has exactly one parent but two independent progress counters
+/// against it — how far it has PUSHed its own facts UP, and how far it has
+/// PULLed policy DOWN — and a single row per peer cannot hold both without
+/// conflating them. On this node's own side (pushing/pulling against its
+/// one parent) `peerNodeId` is the literal `'parent'`, since there is only
+/// ever one; on the parent's side (tracking many children) it is each
+/// child's real `nodeId`. Unexercised under `STANDALONE`, which has no
+/// peers to hold a cursor for.
 model ReplicationCursor {
-  peerNodeId   String   @id
+  peerNodeId   String
+  direction    ReplicationDirection
   lastSequence BigInt
   lastSyncAt   DateTime
+
+  @@id([peerNodeId, direction])
 }
 
 enum ReplicationQuarantineStatus {

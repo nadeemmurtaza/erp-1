@@ -1,7 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { AppConfigService } from '../../core/config/app-config.service';
+import { generateApiKey, hashApiKey } from '../../core/security/api-token';
 import type { Node, NodeRole } from '../../core/prisma/client';
+
+const INBOUND_KEY_PREFIX = 'node';
 
 /**
  * The registry of child nodes this deployment is authoritative for — a
@@ -67,5 +70,25 @@ export class NodesService {
   /** Marks a child inactive without deleting it — its history (and its own database) stays put. */
   async suspend(nodeId: string): Promise<Node> {
     return this.prisma.node.update({ where: { nodeId }, data: { status: 'SUSPENDED' } });
+  }
+
+  /**
+   * Issues a fresh replication credential for a child node and returns it
+   * once, raw — only its SHA-256 is kept, the same shape as
+   * `TradingPartnersService.rotateInboundKey()`. The child is configured
+   * with the raw value as its own `PARENT_API_KEY` (WO-20.2). Rotating
+   * invalidates whatever key was issued before, since the hash column is
+   * overwritten, not appended to.
+   */
+  async rotateInboundKey(nodeId: string): Promise<{ apiKey: string }> {
+    const exists = await this.prisma.node.findUnique({ where: { nodeId }, select: { id: true } });
+    if (!exists) throw new NotFoundException('Node not found');
+
+    const apiKey = generateApiKey(INBOUND_KEY_PREFIX);
+    await this.prisma.node.update({
+      where: { nodeId },
+      data: { inboundApiKeyHash: hashApiKey(apiKey) },
+    });
+    return { apiKey };
   }
 }

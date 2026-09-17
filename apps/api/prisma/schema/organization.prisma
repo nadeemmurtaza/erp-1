@@ -144,6 +144,12 @@ model Node {
   label      String
   /// Where the parent reaches this child to pull facts and push policy.
   url        String
+  /// SHA-256 of the credential this child presents on every replication
+  /// call (WO-20.2) — same shape as `TradingPartner.inboundApiKeyHash`
+  /// (trading-partners.prisma): issued once via `rotateInboundKey()`, shown
+  /// to the operator raw exactly that once, never persisted or echoed back.
+  /// The child is configured with the raw value as its own `PARENT_API_KEY`.
+  inboundApiKeyHash String?    @unique
   status     NodeStatus @default(ACTIVE)
   lastSeenAt DateTime?
   createdAt  DateTime   @default(now())

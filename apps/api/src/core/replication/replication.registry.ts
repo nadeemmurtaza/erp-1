@@ -22,6 +22,17 @@ export class ReplicationRegistry {
     if (this.entities.has(entity)) {
       throw new Error(`"${entity}" is already registered with ReplicationRegistry.`);
     }
+    // R2 pairs these strictly — a FACT that flows DOWN, or a POLICY that
+    // flows UP, is not a variant, it is the mistake the whole
+    // conflict-resolution model depends on nobody making.
+    const valid =
+      (descriptor.dataClass === 'FACT' && descriptor.direction === 'UP') ||
+      (descriptor.dataClass === 'POLICY' && descriptor.direction === 'DOWN');
+    if (!valid) {
+      throw new Error(
+        `"${entity}": ${descriptor.dataClass} must flow ${descriptor.dataClass === 'FACT' ? 'UP' : 'DOWN'} (R2), not ${descriptor.direction}.`,
+      );
+    }
     this.entities.set(entity, descriptor);
   }
 

@@ -5,6 +5,24 @@
 @layer base {
   :root {
     color-scheme: light;
+
+    /*
+     * --radius and --radius-lg are NOT declared here. They are injected into
+     * :root by tailwind.config.ts from packages/shared/src/theme-radii.ts,
+     * which apps/mobile imports too — a CSS custom property is invisible to
+     * React Native, so declaring the numbers here is exactly how the website
+     * went square while the app stayed rounded. Change the sharpness there
+     * and both surfaces follow.
+     */
+
+    /*
+     * The hover sweep. `--fill-duration` is long enough to read as a fill
+     * rather than a flick, and the easing decelerates so it settles instead of
+     * slamming — the difference between this feeling like a progress bar and
+     * feeling like a flash.
+     */
+    --fill-duration: 420ms;
+    --fill-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   }
 
   html {
@@ -37,63 +55,181 @@
   }
 }
 
+/*
+ * ONE component layer for the whole product.
+ *
+ * There used to be two: an admin family (.btn, .card, .field-input) and a
+ * storefront family (.sf-*). They shared a palette but nothing else — admin
+ * buttons were rounded-md and teal, storefront buttons were rounded-full and
+ * grey, the inputs focused to different colours — which is why the two halves
+ * read as separate products however carefully the colours were matched.
+ *
+ * This is the single family. Anything that needs a button, a card, a chip or a
+ * field uses these names on either surface, and there is no prefixed variant to
+ * pick between.
+ *
+ * Two motions carry the whole system:
+ *
+ *   Buttons fill. A button sits outlined and on hover the primary colour
+ *   sweeps across it left to right, like a bar loading, and the label turns
+ *   white as it passes. It is a transform on a pseudo-element, so it is
+ *   composited rather than repainted and stays smooth on a long form.
+ *
+ *   Containers lift. A card that does something rises a little and takes a
+ *   deeper shadow. This one is opt-in (`.lift`) rather than automatic: a
+ *   dashboard tile or a product card should answer the pointer, but the
+ *   forty-odd static panels wrapping admin forms should sit still.
+ */
 @layer components {
+  /*
+   * The page gutter, stepped across the whole range rather than the middle of
+   * it. 12px at the bottom end because a Galaxy Z Fold's cover screen is
+   * 280px wide and 16px a side spends a ninth of it on margin; 48px at the top
+   * end so a 1536px monitor does not run text to within 32px of the glass.
+   */
   .container-page {
-    @apply mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-page;
+    @apply px-3 xs:px-4 sm:px-5 fold:px-6 md:px-6 lg:px-8 xl:px-10 2xl:px-12;
   }
 
   /*
-   * A hover lift built from a transition rather than a keyframe. An
-   * `animation:` only plays forwards, so the element snaps back the instant the
-   * pointer leaves; a transition eases in *and* out, which is the difference
-   * between this feeling smooth and feeling broken.
+   * Built from a transition, not a keyframe. An `animation:` only plays
+   * forwards, so the element snaps back the instant the pointer leaves; a
+   * transition eases in *and* out, which is the difference between this
+   * feeling smooth and feeling broken.
    */
   .lift {
-    @apply transition-[transform,box-shadow,border-color] duration-300 ease-out;
+    transition:
+      transform 300ms var(--fill-ease),
+      box-shadow 300ms var(--fill-ease),
+      border-color 300ms var(--fill-ease);
   }
 
   .lift:hover,
   .lift:focus-within {
-    @apply shadow-xl;
+    @apply border-neutral-200 shadow-lg;
   }
 
   @media (prefers-reduced-motion: no-preference) {
     .lift:hover,
     .lift:focus-within {
-      transform: translateY(-6px);
+      transform: translateY(-4px);
     }
   }
 
+  /*
+   * `isolation: isolate` matters here. The fill is a `z-index: -1`
+   * pseudo-element, which without a stacking context of its own would paint
+   * behind the button's own background — i.e. invisibly. Isolating traps it
+   * between the background and the label.
+   */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium transition-[transform,box-shadow,background-color,border-color,color] duration-200 ease-out disabled:cursor-not-allowed disabled:opacity-50;
+    @apply relative inline-flex items-center justify-center gap-2 font-medium disabled:cursor-not-allowed disabled:opacity-50;
+    /*
+     * Sized per tier rather than once. min-h-11 is 44px, the smallest target
+     * a thumb hits reliably, and it is the floor everywhere a touch screen is
+     * plausible — that is most of the range here, not a mobile special case.
+     * Text steps up only at lg, where a pointer is the likely input and 14px
+     * stops looking generous and starts looking small.
+     */
+    @apply min-h-11 px-4 py-2 text-sm xs:px-5 fold:min-h-10 lg:px-5 lg:py-2.5 lg:text-[0.9375rem];
+    border-radius: var(--radius);
+    isolation: isolate;
+    overflow: hidden;
+    transition:
+      color 240ms var(--fill-ease),
+      background-color 240ms var(--fill-ease),
+      border-color 240ms var(--fill-ease);
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .btn:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 18px rgb(0 0 0 / 0.14);
-    }
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: var(--btn-fill);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--fill-duration) var(--fill-ease);
+  }
 
-    .btn:active:not(:disabled) {
-      transform: translateY(0);
-      box-shadow: 0 2px 6px rgb(0 0 0 / 0.12);
-    }
+  /*
+   * Keyboard users get the same fill. Without the focus-visible arm the effect
+   * would be mouse-only, which makes the button look inert to anyone tabbing.
+   */
+  .btn:hover:not(:disabled)::before,
+  .btn:focus-visible:not(:disabled)::before {
+    transform: scaleX(1);
+  }
+
+  /* A disabled button must not look like it is about to do something. */
+  .btn:disabled::before {
+    display: none;
   }
 
   .btn-primary {
-    @apply btn bg-accent text-white hover:bg-accent-hover;
+    @apply btn bg-accent text-white;
+    --btn-fill: theme('colors.accent.hover');
   }
 
+  /* The white button the fill was designed for. */
   .btn-secondary {
-    @apply btn border border-accent text-accent-hover hover:bg-neutral-50;
+    @apply btn border border-neutral-200 bg-white text-neutral-900 hover:text-white;
+    --btn-fill: theme('colors.accent.DEFAULT');
   }
 
   .btn-ghost {
-    @apply btn text-neutral-900 hover:bg-white;
+    @apply btn bg-transparent text-neutral-900;
+    --btn-fill: theme('colors.neutral.100');
+  }
+
+  .btn-danger {
+    @apply btn border border-red-600 bg-white text-red-700 hover:text-white;
+    --btn-fill: theme('colors.red.600');
   }
 
   .card {
-    @apply rounded-lg border border-neutral-100 bg-white;
+    @apply border border-neutral-100 bg-white;
+    border-radius: var(--radius-lg);
+  }
+
+  /*
+   * Shape only, no colour — a caller applies `chip` plus whichever state class
+   * applies, the same choice the size selector, the filters and the stitching
+   * options already make around one shared shape.
+   */
+  .chip {
+    @apply inline-flex items-center justify-center border text-sm font-medium transition-colors duration-200;
+    /*
+     * inline-flex, not the default inline-block: the 44px touch floor below
+     * `fold` would otherwise leave the label sitting at the top of a tall
+     * pill instead of centred in it.
+     */
+    @apply min-h-11 px-3 py-1.5 xs:px-4 fold:min-h-0 fold:py-1.5;
+    border-radius: var(--radius);
+  }
+
+  .chip-selected {
+    @apply border-accent bg-accent text-white;
+  }
+
+  .chip-unselected {
+    @apply border-neutral-200 bg-white text-neutral-900 hover:border-accent;
+  }
+
+  /*
+   * The floating icon button used over product photography (wishlist heart,
+   * gallery back button). The translucent white plus a blur keeps it legible
+   * over any photo, and it scales rather than changing colour because it sits
+   * on an unpredictable background. h-9 w-9 is the default; a larger hero
+   * placement overrides with its own size utility, which wins because
+   * Tailwind orders utilities after components.
+   */
+  .icon-btn {
+    @apply inline-flex items-center justify-center bg-white/80 text-neutral-900 backdrop-blur-sm transition-transform duration-200 hover:scale-110;
+    /* 44px on touch, back to the tighter 36px once a pointer is likely. */
+    @apply h-11 w-11 fold:h-9 fold:w-9;
+    border-radius: var(--radius);
   }
 
   .field-label {
@@ -101,7 +237,337 @@
   }
 
   .field-input {
-    @apply w-full rounded-md border-neutral-200 bg-white text-sm shadow-sm transition-colors duration-200 focus:border-accent focus:ring-accent;
+    @apply w-full border-neutral-200 bg-white text-neutral-900 shadow-none transition-colors duration-200 placeholder:text-neutral-400 focus:border-accent focus:ring-accent;
+    /*
+     * 16px up to `sm`, and this is not a taste choice: iOS Safari zooms the
+     * whole page when a focused input's text is under 16px, and then leaves
+     * it zoomed. Every form in the product was `text-sm` (14px), so tapping
+     * any field on an iPhone threw the layout. Above `sm` a phone keyboard is
+     * no longer the likely input and 14px reads correctly again.
+     */
+    @apply min-h-11 text-base sm:min-h-0 sm:text-sm;
+    border-radius: var(--radius);
+  }
+
+  /*
+   * Checkboxes and radios. This string was repeated at eighteen call sites
+   * in two drifting variants — fifteen used accent-hover on a neutral-200
+   * border, three used accent on neutral-300 — so half the tick boxes in
+   * the product were a slightly darker teal than the other half. Checked is
+   * the base accent, the same colour a primary button and a selected chip
+   * use; accent-hover is the pressed shade and does not belong here.
+   */
+  .field-check {
+    @apply border-neutral-200 text-accent focus:ring-accent disabled:opacity-50;
+    border-radius: var(--radius);
+  }
+
+  /*
+   * ---------------------------------------------------------------------
+   * Quiet chrome
+   *
+   * Everything below shares one idea: a boundary is expensive, so most
+   * grouping is done with a background shift, a single rule, or nothing at
+   * all but space. The audit kept finding pages where a dozen borders were
+   * each announcing "this is a group" until none of them meant anything.
+   * ---------------------------------------------------------------------
+   */
+
+  /*
+   * The eyebrow. Column headers, metric labels, the group headings down a
+   * nav. Always uppercase, always the quietest grey, always 11px — small
+   * enough that nobody mistakes it for content, which is its whole job.
+   */
+  .eyebrow {
+    @apply text-2xs font-medium uppercase tracking-wider text-neutral-900/45;
+  }
+
+  /*
+   * Navigation that marks the current page with a rule, not a filled pill.
+   * A pill is a button's shape; using it for "you are here" makes every nav
+   * look like a row of controls. The rule is drawn transparent when
+   * inactive so the text never shifts by a pixel on selection.
+   */
+  .nav-link {
+    @apply block border-s-2 border-transparent py-1.5 text-sm text-neutral-900/60 transition-colors;
+    @apply hover:text-neutral-900;
+  }
+
+  .nav-link-active {
+    @apply border-accent font-medium text-neutral-900;
+  }
+
+  /* The horizontal variant — tabs, section nav across the top. */
+  .nav-tab {
+    @apply border-b-2 border-transparent px-3 py-2 text-sm text-neutral-900/60 transition-colors;
+    @apply hover:text-neutral-900;
+  }
+
+  .nav-tab-active {
+    @apply border-accent font-medium text-neutral-900;
+  }
+
+  /*
+   * The metric row.
+   *
+   * No card per figure, no border between them: the cells butt against each
+   * other and the leading one is simply lighter than the rest. That reads as
+   * one instrument rather than four, and it is why `type.metric` is 40px —
+   * the size difference does the separating that borders would otherwise do.
+   *
+   * Scrolls sideways below `sm` instead of wrapping, so four metrics stay a
+   * row of four on a phone rather than becoming a 2x2 grid that looks like
+   * a different component.
+   */
+  .metric-strip {
+    @apply no-scrollbar flex snap-x snap-mandatory overflow-x-auto bg-neutral-50 sm:overflow-visible;
+  }
+
+  /*
+   * A scroller that does not announce itself. Used where the overflow is a
+   * navigation rather than a pane — a bar under those reads as a second,
+   * broken rule beneath the real one.
+   */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .metric {
+    @apply min-w-[9.5rem] flex-1 shrink-0 snap-start px-4 py-4 lg:px-5 lg:py-5;
+  }
+
+  /* The one being read. Lifted out of the strip by background alone. */
+  .metric-lead {
+    @apply bg-white;
+  }
+
+  /*
+   * A metric that opens something. It has to read as pressable without
+   * becoming a button-looking box — the strip's whole argument is that these
+   * are figures, not controls — so the affordance is the chevron beside the
+   * label plus the background lifting on hover.
+   */
+  .metric-button {
+    @apply cursor-pointer text-start transition-colors;
+    @apply hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent;
+  }
+
+  /*
+   * The one whose drawer is open, tied to the panel by a shared edge.
+   *
+   * Doubled selector on purpose. These cells are `<button>`, and preflight
+   * resets a button's background to transparent at the same specificity a
+   * single class has — so `.metric-open` alone lost the tie and the open cell
+   * stayed grey, leaving only the accent rule to mark it. `.metric.metric-open`
+   * outranks the reset without reaching for `!important`.
+   */
+  .metric.metric-open {
+    @apply bg-white;
+    box-shadow: inset 0 -2px 0 0 theme('colors.accent.DEFAULT');
+  }
+
+  /*
+   * The drawer. It shares the open cell's white so the two read as one
+   * surface, and carries the only border in the component — here a boundary
+   * genuinely means something, because content appeared where there was none.
+   */
+  .metric-panel {
+    @apply border-t border-neutral-100 bg-white p-4 lg:p-5;
+  }
+
+  .metric-value {
+    @apply mt-1 block text-2xl font-medium tabular-nums text-neutral-900 lg:text-metric;
+  }
+
+  .metric-delta {
+    @apply mt-0.5 block text-xs tabular-nums;
+  }
+
+  .metric-up {
+    @apply text-feedback-positive;
+  }
+
+  .metric-down {
+    @apply text-feedback-negative;
+  }
+
+  /*
+   * A text button — the uppercase, boxless secondary action. Reserved for
+   * the ones that sit beside a page title (Import, Export, Cancel): giving
+   * them a box would make them compete with the one primary button, and
+   * that competition is what the single-primary-action rule exists to stop.
+   */
+  .btn-text {
+    @apply inline-flex min-h-11 items-center gap-2 text-2xs font-semibold uppercase tracking-wider transition-colors fold:min-h-0;
+    @apply text-neutral-900/70 hover:text-neutral-900 disabled:cursor-not-allowed disabled:opacity-40;
+  }
+
+  /*
+   * An input with only a baseline. For controls that live in a page header —
+   * a search field, a date range — where a full box would read as a form the
+   * reader is expected to fill in rather than a filter they may ignore.
+   */
+  .field-inline {
+    @apply w-full border-0 border-b border-neutral-100 bg-transparent px-0 text-neutral-900 shadow-none transition-colors;
+    @apply placeholder:text-neutral-900/35 focus:border-accent focus:ring-0;
+    @apply min-h-11 text-base sm:min-h-0 sm:text-sm;
+    border-radius: 0;
+  }
+
+  /*
+   * A borderless, filled field. The form counterpart to `field-inline`: the
+   * fill marks where to type without drawing a rectangle around every
+   * question, which on an 18-field page is eighteen rectangles.
+   */
+  .field-flat {
+    @apply w-full border-0 bg-neutral-50 text-neutral-900 shadow-none transition-colors;
+    @apply placeholder:text-neutral-900/35 focus:bg-white focus:ring-1 focus:ring-accent;
+    @apply min-h-11 px-3 py-2.5 text-base sm:min-h-0 sm:text-sm;
+    border-radius: var(--radius);
+  }
+
+  /*
+   * A message about what just happened — a failed save, a confirmed one.
+   *
+   * This was written out at thirty-seven call sites as `card mb-4 p-4 text-sm
+   * text-red-700`, which is two mistakes at once. It put a border around a
+   * message, when a tint already says "this is not the page, this is a thing
+   * that happened"; and it pinned Tailwind's stock red rather than the
+   * feedback token, so a red that means "failed" and a red that means
+   * "destructive" were different colours by accident.
+   *
+   * No border. The tint is the boundary.
+   */
+  .notice {
+    @apply block px-3 py-2.5 text-sm;
+    border-radius: var(--radius);
+  }
+
+  .notice-error {
+    @apply bg-feedback-negative/10 text-feedback-negative;
+  }
+
+  .notice-success {
+    @apply bg-feedback-positive/10 text-feedback-positive;
+  }
+
+  /* Neither good nor bad — "we sent you a link", "nothing happens yet". */
+  .notice-info {
+    @apply bg-neutral-50 text-neutral-900/70;
+  }
+
+  /*
+   * A status pill. Fully round on purpose, and the one place roundness
+   * survives: it separates "this is a state" from "this is a control", now
+   * that controls are square.
+   */
+  .pill {
+    @apply inline-flex items-center whitespace-nowrap px-2.5 py-0.5 text-xs font-medium;
+    border-radius: theme('borderRadius.full');
+  }
+
+  /*
+   * Rows separated by a rule and nothing else — no outer frame, no vertical
+   * lines, no zebra. A table is already a grid; drawing the grid again is
+   * the most common way these pages became noisy.
+   */
+  .table-flat {
+    @apply w-full border-collapse text-sm;
+  }
+
+  .table-flat thead th {
+    @apply border-b border-neutral-200 px-3 py-2.5 text-start;
+    @apply text-2xs font-medium uppercase tracking-wider text-neutral-900/45;
+  }
+
+  .table-flat tbody td {
+    @apply border-b border-neutral-100 px-3 py-3 align-middle;
+  }
+
+  .table-flat tbody tr:last-child td {
+    @apply border-b-0;
+  }
+
+  .table-flat tbody tr {
+    @apply transition-colors;
+  }
+
+  /*
+   * Long-form prose — the legal pages, and anything else that is mostly
+   * paragraphs.
+   *
+   * These pages carried `prose prose-gray`, which did nothing at all: the
+   * typography plugin is not installed, so the classes were inert and the
+   * spacing was coming from a `space-y-8` on the wrapper plus whatever the
+   * browser does by default. This is the real thing, and it is scoped rather
+   * than global so it cannot leak into application screens.
+   */
+  /*
+   * The measure is capped at 72ch, and that is the one place the no-dead-space
+   * rule gives way: running legal prose to a 970px line is not "using the
+   * space", it is making the space unreadable, because the eye loses the start
+   * of the next line somewhere around 80 characters. The room that frees goes
+   * to the rail beside it, which is working space rather than nothing.
+   */
+  .prose-legal {
+    @apply max-w-[72ch] text-sm leading-relaxed text-neutral-900/75 lg:text-base;
+  }
+
+  .prose-legal p {
+    @apply mb-4 last:mb-0;
+  }
+
+  .prose-legal ul {
+    @apply mb-4 list-disc space-y-1.5 ps-5 last:mb-0;
+  }
+
+  .prose-legal ol {
+    @apply mb-4 list-decimal space-y-1.5 ps-5 last:mb-0;
+  }
+
+  .prose-legal h3 {
+    @apply mb-2 mt-6 font-semibold text-neutral-900;
+  }
+
+  .prose-legal strong {
+    @apply font-medium text-neutral-900;
+  }
+
+  .prose-legal a {
+    @apply text-accent underline underline-offset-2 transition-colors hover:text-accent-hover;
+  }
+
+  /*
+   * A staggered entrance for a list of peers — skeleton rows, mostly.
+   *
+   * The delay was written inline as `style={{ animationDelay: i * 100 }}`,
+   * which is a static ramp computed in JavaScript on every render and the one
+   * kind of inline style that has no excuse: nothing here depends on data.
+   * A width driven by a measured value still does; this did not.
+   */
+  .stagger > * {
+    animation: fadeIn 400ms var(--fill-ease) both;
+  }
+
+  .stagger > *:nth-child(2) {
+    animation-delay: 80ms;
+  }
+
+  .stagger > *:nth-child(3) {
+    animation-delay: 160ms;
+  }
+
+  .stagger > *:nth-child(4) {
+    animation-delay: 240ms;
+  }
+
+  .stagger > *:nth-child(n + 5) {
+    animation-delay: 320ms;
   }
 
   .skeleton {
@@ -110,7 +576,6 @@
     animation: shimmer 2s infinite;
   }
 
-  /* Chart line animation */
   .chart-line {
     stroke-dasharray: 1000;
     stroke-dashoffset: 1000;
@@ -123,7 +588,6 @@
     }
   }
 
-  /* Respect user's motion preferences */
   @media (prefers-reduced-motion: reduce) {
     * {
       animation-duration: 0.01ms !important;
@@ -134,79 +598,5 @@
     html {
       scroll-behavior: auto;
     }
-  }
-}
-
-/*
- * Storefront shared component patterns (sf- prefix).
- *
- * Both this block and the admin `@layer components` block above draw from
- * the same `neutral`/`accent`/`star` palette now (see tailwind.config.ts and
- * packages/shared/src/theme-colors.ts) — the `sf-` prefix survives not to
- * keep two colour systems apart, but because storefront's SHAPE language is
- * genuinely different (pill buttons, rounded-2xl cards) from admin's
- * (rectangular buttons, rounded-lg cards), and prefixing avoids one shared
- * class name meaning two different border-radii depending on which app you
- * are reading. Before this block existed, every reskinned storefront file
- * repeated its own slightly different string of utility classes for "a
- * primary button" or "a selected chip"; this is the shared layer instead.
- * Editing a class here changes every storefront usage the next time the page
- * renders.
- */
-@layer components {
-  .sf-btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50;
-  }
-
-  .sf-btn-primary {
-    @apply sf-btn bg-neutral-700 text-white hover:bg-neutral-800;
-  }
-
-  .sf-btn-secondary {
-    @apply sf-btn border border-neutral-300 text-neutral-900 hover:bg-neutral-50;
-  }
-
-  .sf-card {
-    @apply rounded-2xl border border-neutral-200/70 bg-white shadow-sm;
-  }
-
-  /*
-   * Base pill shape only, no colour — a component applies `sf-chip` plus
-   * whichever state class below applies, the same choice the size-selector,
-   * filter, and stitching-option chips already make around one shared shape.
-   */
-  .sf-chip {
-    @apply rounded-full border px-4 py-1.5 text-sm font-medium transition-colors duration-200;
-  }
-
-  .sf-chip-selected {
-    @apply border-neutral-700 bg-neutral-700 text-white;
-  }
-
-  .sf-chip-unselected {
-    @apply border-neutral-300 bg-white text-neutral-900 hover:border-neutral-500;
-  }
-
-  /*
-   * The floating translucent circular icon button used over product
-   * photography (wishlist heart, gallery back button) — bg-white/80 plus a
-   * blur keeps it legible over any photo, and it scales up on hover rather
-   * than changing colour since it sits on an unpredictable image
-   * background. h-9 w-9 is the common default; a larger hero placement can
-   * override with its own height/width utility, which wins over this class
-   * since Tailwind's utilities layer is ordered after components.
-   */
-  .sf-icon-btn {
-    @apply inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-neutral-900 backdrop-blur-sm transition-transform duration-200 hover:scale-110;
-  }
-
-  /*
-   * Matches checkout's former local `inputClass` exactly — rounded-xl with
-   * a neutral border and focus ring rather than the site-wide accent-teal
-   * ring — so every storefront text/select/textarea field can share this one
-   * class instead of each file redefining the same override.
-   */
-  .sf-field-input {
-    @apply w-full rounded-xl border-neutral-200 bg-white text-sm text-neutral-900 shadow-none transition-colors duration-200 placeholder:text-neutral-400 focus:border-neutral-700 focus:ring-neutral-700;
   }
 }

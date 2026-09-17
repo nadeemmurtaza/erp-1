@@ -8,6 +8,7 @@ import {
   weightedAverageCost,
   taxExclusive,
   taxInclusive,
+  convertToBase,
 } from './pricing';
 import { formatMoney, toMinor } from './constants';
 
@@ -280,6 +281,26 @@ describe('weightedAverageCost', () => {
     // 10 @ 700 = 7000
     // total = 12000 / 20 = 600
     expect(weightedAverageCost(10, 500, 10, 700)).toBe(600);
+  });
+});
+
+describe('convertToBase', () => {
+  it('is a no-op at 1_000_000 (no conversion)', () => {
+    expect(convertToBase(150_000, 1_000_000)).toBe(150_000);
+  });
+
+  it('converts using the scaled rate', () => {
+    // $1,000.00 (100000 cents) at 280.5 PKR/USD -> Rs 280,500.00 (28050000 paisa)
+    expect(convertToBase(100_000, 280_500_000)).toBe(28_050_000);
+  });
+
+  it('rounds to the nearest minor unit rather than truncating', () => {
+    expect(convertToBase(1, 1_500_001)).toBe(2); // 1.500001 rounds up
+    expect(convertToBase(1, 1_499_999)).toBe(1); // 1.499999 rounds down
+  });
+
+  it('handles zero cleanly', () => {
+    expect(convertToBase(0, 280_500_000)).toBe(0);
   });
 });
 

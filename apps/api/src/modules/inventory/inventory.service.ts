@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
-import { DEFAULT_LOCALE, getPersonFullName } from '@yaseen/shared';
+import { DEFAULT_LOCALE, getPersonFullName } from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { Prisma, StockMovement, StockMovementReason } from '../../core/prisma/client';

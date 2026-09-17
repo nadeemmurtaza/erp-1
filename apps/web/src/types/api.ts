@@ -1,4 +1,10 @@
-import type { Locale, ProductKind, ProductStatus } from '@yaseen/shared';
+import type {
+  Locale,
+  PermissionKey,
+  ProductKind,
+  ProductStatus,
+  StitchingStage,
+} from '@newax/shared';
 
 /** Shapes returned by the API. Mirrors apps/api's response objects. */
 
@@ -276,9 +282,16 @@ export interface AuthUser {
   phone: string | null;
   firstName: string | null;
   lastName: string | null;
-  role: 'CUSTOMER' | 'STAFF' | 'TAILOR' | 'ADMIN';
-  /** Resolved server-side from the role's current grants — @see nav-registry.ts. */
-  permissions: string[];
+  /** Every custom Role name this user holds — plural, resolved fresh server-side on every request. Empty for a brand-new signup whose default role has since been renamed or removed. */
+  roles: string[];
+  /**
+   * Resolved server-side from every held role's current grants, plus this
+   * user's own overrides — @see nav-registry.ts. Typed against the shared
+   * catalogue, not `string[]`: a mistyped key in a
+   * `permissions.includes(...)` check does not throw, it silently hides the
+   * control it was guarding, which is the kind of bug nobody reports.
+   */
+  permissions: PermissionKey[];
 }
 
 export interface AuthResult {
@@ -292,6 +305,60 @@ export interface AuthResult {
 export interface DeploymentMeta {
   modules: string[];
   packs: string[];
+  /** 'STANDALONE' for every deployment today. Chain-topology UI must stay hidden until this is something else — see docs/implementation/RETAIL-ERP.md R14. */
+  nodeRole: 'STANDALONE' | 'BRANCH' | 'BRAND' | 'ORG';
+}
+
+// --- Organization (RETAIL-ERP.md R19, WO-18.5) -------------------------------
+// Empty for every deployment today — `organization` module off by default.
+
+export interface RetailBrandSummary {
+  id: string;
+  name: string;
+  slug: string;
+  isActive: boolean;
+  organizationId: string | null;
+  parentId: string | null;
+}
+
+export interface OrgNodeSummary {
+  id: string;
+  nodeId: string;
+  role: 'BRANCH' | 'BRAND';
+  label: string;
+  status: 'ACTIVE' | 'SUSPENDED';
+}
+
+/** GET /organization/me/scope — where the caller lands, and what chips they see. */
+export interface MyScope {
+  isOrgWide: boolean;
+  /**
+   * The authoritative landing signal — check this, never `brands.length`.
+   * `brands` is deliberately widened to include a BRANCH grant's own
+   * parent brand for breadcrumb visibility, so it is non-empty even for a
+   * BRANCH-level actor.
+   */
+  level: 'ORG' | 'BRAND' | 'BRANCH' | 'NONE';
+  organization: { id: string; name: string } | null;
+  brands: RetailBrandSummary[];
+  nodes: OrgNodeSummary[];
+}
+
+/** GET/POST /organization/admin-scopes (WO-18.6) — who is a super admin, a brand admin, or a branch admin. Only reachable by an ORG-scoped holder of organization.manage. */
+export interface AdminScopeWithHolder {
+  id: string;
+  level: 'ORG' | 'BRAND' | 'BRANCH';
+  retailBrandId: string | null;
+  branchNodeId: string | null;
+  createdAt: string;
+  user: { id: string; email: string | null; firstName: string | null; lastName: string | null };
+}
+
+export interface GrantScopeInput {
+  userId: string;
+  level: 'ORG' | 'BRAND' | 'BRANCH';
+  retailBrandId?: string;
+  branchNodeId?: string;
 }
 
 // --- Inventory --------------------------------------------------------------
@@ -442,11 +509,6 @@ export interface PermissionDefinition {
   category: string;
 }
 
-export interface RolePermissions {
-  role: 'CUSTOMER' | 'STAFF' | 'TAILOR' | 'ADMIN';
-  permissions: string[];
-}
-
 export interface AuditLogEntry {
   id: string;
   actorId: string | null;
@@ -487,10 +549,43 @@ export interface PermissionOverride {
   effect: 'GRANT' | 'REVOKE';
 }
 
+/** A custom Role (owner's request) this user holds, with its own permission set inline. */
+export interface HeldRole {
+  id: string;
+  name: string;
+  permissions: string[];
+}
+
+/** Non-blocking advisories — see RolesService.conflictsForUser() on the API. */
+export interface UserRoleConflicts {
+  redundantGrants: string[];
+  overriddenRevokes: string[];
+}
+
 export interface AdminUserDetail extends AdminUser {
-  roleDefaultPermissions: string[];
+  /** Every custom Role this user holds — plural. */
+  roles: HeldRole[];
   overrides: PermissionOverride[];
   effectivePermissions: string[];
+  conflicts: UserRoleConflicts;
+}
+
+// --- Custom roles (owner's request) -----------------------------------------
+// GET/POST/PATCH/DELETE /admin/roles — replaces the old fixed-role editor at
+// /admin/settings/roles.
+
+export interface RoleSummary {
+  id: string;
+  name: string;
+  description: string | null;
+  permissions: string[];
+  userCount: number;
+}
+
+/** POST/PATCH /admin/roles response — `duplicateOfRoleName` is a suggestion, never a block. */
+export interface RoleWriteResult {
+  role: RoleSummary;
+  duplicateOfRoleName: string | null;
 }
 
 // --- Customer account portal --------------------------------------------------
@@ -530,6 +625,76 @@ export interface CustomerOrderSummary {
   placedAt: string;
   grandTotal: number;
   items: Array<{ nameEn: string; nameUr: string | null; imageUrl: string | null; quantity: number }>;
+}
+
+/** One move along a garment's workshop timeline. */
+export interface StitchingTimelineEvent {
+  fromStage?: StitchingStage | null;
+  toStage: StitchingStage;
+  createdAt: string;
+  note?: string | null;
+  photoUrl?: string | null;
+}
+
+export interface CustomerOrderItem {
+  id: string;
+  nameEn: string;
+  nameUr: string | null;
+  variantLabel: string | null;
+  imageUrl: string | null;
+  quantity: number;
+  unitPrice: number;
+  stitchingFeeUnit: number;
+  lineTotal: number;
+  stitchingServiceName: string | null;
+  garmentTypeKey: string | null;
+  measurementSnapshot: { label: string; values: Record<string, number> } | null;
+  optionsSnapshot: Array<{
+    groupLabelEn: string;
+    groupLabelUr: string;
+    labelEn: string;
+    labelUr: string;
+  }> | null;
+  /** Present once the garment is in the workshop. */
+  stitchingJob: {
+    number: string;
+    stage: StitchingStage;
+    dueAt: string | null;
+    events: StitchingTimelineEvent[];
+  } | null;
+}
+
+/** One order as its buyer sees it — signed in, or tracked with a phone number. */
+export interface CustomerOrder {
+  number: string;
+  status: string;
+  placedAt: string;
+  itemsSubtotal: number;
+  stitchingSubtotal: number;
+  shippingFee: number;
+  codFee: number;
+  grandTotal: number;
+  guestName: string | null;
+  shippingAddress: {
+    fullName: string;
+    phone: string;
+    line1: string;
+    line2?: string;
+    city: string;
+    province: string;
+  };
+  items: CustomerOrderItem[];
+  payments: Array<{
+    id: string;
+    provider: string;
+    status: string;
+    reference: string | null;
+    meta: {
+      accounts?: Array<{ bank: string; title: string; accountNumber: string; iban: string }>;
+    } | null;
+  }>;
+  shipments: Array<{ courier: string; trackingNumber: string | null; trackingUrl: string | null }>;
+  statusEvents: Array<{ toStatus: string; createdAt: string; note: string | null }>;
 }
 
 export interface PaginatedResult<T> {

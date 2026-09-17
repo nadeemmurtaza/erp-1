@@ -83,7 +83,7 @@ That is the entire wiring step. If you find yourself editing `app.module.ts` or
 
 - anything in your own folder
 - anything under `src/core/`
-- `@yaseen/shared` and real npm packages
+- `@newax/shared` and real npm packages
 - **another module's `<other>.module` or a top-level `<other>.service` — nothing else**
 
 Forbidden: `../orders/dto/place-order.dto`, `../catalog/internal/anything`, any
@@ -142,7 +142,7 @@ boot and editable afterwards.
 
 Rs 3,499 is stored, passed and compared as `349900`. **No float, no string, no
 `Decimal`, ever touches a price.** Use `toMinor()` and `formatMoney()` from
-`@yaseen/shared`. A column holding money is `Int`.
+`@newax/shared`. A column holding money is `Int`.
 
 This rule has no exceptions. Percentages in discount rules are stored as basis
 points (`1000` = 10%) for the same reason.
@@ -243,7 +243,7 @@ if (updated.count === 0) throw new BadRequestException('Sold out while you were 
 `apps/api/src/modules/orders/orders.service.ts:139` both use this idiom. Copy it.
 Preserve it in any refactor.
 
-### Rule 11 — Shared rules live in `@yaseen/shared` and every app calls them
+### Rule 11 — Shared rules live in `@newax/shared` and every app calls them
 
 Pricing maths, measurement validation and phone normalisation are used by the
 API, the website and the mobile app alike. A figure the phone accepts is one the
@@ -319,7 +319,7 @@ pnpm build       # catches Next.js build-time failures the dev server hides
 Plus, every time:
 
 - [ ] Migration runs cleanly **forwards on a copy of production data**, not just
-      on a fresh database. `pnpm --filter @yaseen/api db:migrate -- --name <name>`
+      on a fresh database. `pnpm --filter @newax/api db:migrate -- --name <name>`
 - [ ] `pnpm db:seed` still succeeds and is still idempotent (run it twice).
 - [ ] New API routes have `@ApiOperation` and appear in Swagger.
 - [ ] New API routes have `@RequirePermission`. A route with no decorator is
@@ -329,6 +329,9 @@ Plus, every time:
 - [ ] New behaviour has a test. Concurrency-sensitive code has a concurrency test.
 - [ ] The admin screen renders correctly for a user who holds *some* but not all
       of the relevant permissions.
+- [ ] Anything that renders passes the interface gate in §8 — one job, opens on
+      an overview, no literals, checked at all seven tiers, and the page makes
+      the product look smaller than it is.
 
 ---
 
@@ -419,11 +422,74 @@ explicitly. Do not compress the steps to save a deploy.
 - **Pushing to `main` is fine — it deploys `test.yaseen.pk`, not the live
   shop.** Push your branch's work straight to `main` once it passes the
   definition of done in §3; no PR-and-wait step is required for `main`.
-- **`production` is different: never push to it, and never merge into it.**
-  `production` deploys the live shop at `yaseen.pk`, and that deployment is
-  the owner's decision, not yours. Promoting `main` to `production` — by
-  push, merge or PR — is something only the repository owner does, or does
-  after explicitly asking you to.
-- This holds even when CI is green, even when the change is trivial. If
-  `production` needs to move and the owner has not said so, the answer is to
-  ask — never to push or merge it yourself.
+- **`production` is different in the original `yaseenecom` repo: never push
+  to it, and never merge into it.** There, `production` deploys the live
+  shop at `yaseen.pk`, and that deployment is the owner's decision, not
+  yours. Promoting `main` to `production` — by push, merge or PR — is
+  something only the repository owner does, or does after explicitly asking
+  you to.
+- **This working copy (`nadeemmurtaza/erp-1`) is a disconnected clone — its
+  `main` and `production` branches are wired to no deployment at all.** The
+  caution above still binds in the original `yaseenecom` repo; here, pushing
+  or merging into either branch is an ordinary git operation with no live
+  consequence, and needs no extra confirmation beyond the definition of done.
+
+
+---
+
+## 8. Interface rules
+
+These are the owner's, stated directly, and they bind every surface — admin,
+storefront, customer account, mobile. A feature that works but violates one of
+these is not done. They are repeated in the global agent instructions; this is
+the copy a human reads.
+
+### The seven laws
+
+1. **No hardcoding.** No brand, locale or design literal in application code.
+   Colour, radius, type step, currency, dial code, timezone, company name,
+   support address — every one resolves through an import from
+   `packages/shared/src/brand.ts`. The only exception is Newax's own
+   attribution and the `@newax/*` package scope.
+2. **Hide complexity in depth.** Power is never removed, only moved. Nothing
+   is deleted to make a page calm; it goes one level down, where the person
+   who wants it will look.
+3. **It should feel like there are only a few features.** This is the test the
+   other laws serve. A first-time user should perceive a small, obvious
+   product. The depth is real, complete and reachable — it simply is not on
+   screen until asked for. If a page makes the product look big, the page is
+   wrong, not the product.
+4. **Seven screens, no dead space.** Every layout is decided at all seven
+   tiers (`xs` 280, `sm` 380, `fold` 640, `md` 768, `lg` 1024, `xl` 1280,
+   `2xl` 1536), and none may waste the space it has. A phone layout centred in
+   a field of white at 1536px reads as broken, not calm.
+5. **One main job per page.** If a page has two jobs it is two pages. A second
+   job never earns its place by being "related".
+6. **No clutter at all.** Not "little clutter". A page ships when nothing
+   visible could be removed without harming the job.
+7. **Overview first, detail on click.** Every surface opens on the summary.
+   Detail arrives when asked for, never on load.
+
+### Which mechanism hides what
+
+| The detail is | Use |
+|---|---|
+| parts of one object | `SectionRail` — all present, sparse, jump to any |
+| separate tasks on one object | `Tabs` — one at a time |
+| rare, advanced or destructive | `Disclosure`, closed by default |
+| a different object | its own page |
+| history, audit, raw payloads | its own view, never inline |
+
+Everything comes from `apps/web/src/components/ui`. A page that invents its own
+visual language is the thing these rules exist to prevent.
+
+### Before you open a PR touching UI
+
+- purpose identifiable in two seconds, primary action obvious
+- it opens on an overview; no detail shown that was not asked for
+- checked at all seven tiers; none of them wastes its space
+- no brand, locale or design literal in the file
+- built from the shared primitives, not page-local utility strings
+- **the page makes the product look small**
+
+That last one is what to actually judge by. The rest is how it is achieved.

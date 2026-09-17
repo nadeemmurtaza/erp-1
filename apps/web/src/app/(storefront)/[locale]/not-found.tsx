@@ -24,10 +24,10 @@ export default function StorefrontNotFound() {
       </p>
 
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <Link href={ROUTES.storefront.shop} className="sf-btn-primary">
+        <Link href={ROUTES.storefront.shop} className="btn-primary">
           Browse the shop
         </Link>
-        <Link href="/" className="sf-btn-secondary">
+        <Link href="/" className="btn-secondary">
           Go home
         </Link>
       </div>

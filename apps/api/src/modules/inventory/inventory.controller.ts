@@ -1,3 +1,4 @@
+import type { StockMovementReason } from '../../core/prisma/client';
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
@@ -36,7 +37,7 @@ export class InventoryAdminController {
     @Param('variantId') variantId: string,
     @Body() dto: AdjustStockDto,
   ) {
-    const reasonMap: Record<string, any> = {
+    const reasonMap: Record<string, StockMovementReason> = {
       damaged: 'DAMAGE',
     };
     const reason = reasonMap[dto.reason] || 'ADJUSTMENT';

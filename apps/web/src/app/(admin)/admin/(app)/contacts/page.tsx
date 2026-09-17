@@ -2,10 +2,12 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatMoney } from '@yaseen/shared';
-import { adminFetch, getAccessToken } from '@/lib/admin-client';
-import { API_URL, toSearchParams } from '@/lib/api';
+import { formatDate, formatMoney } from '@newax/shared';
+import { adminFetch } from '@/lib/admin-client';
+import { downloadCsv } from '@/lib/download-csv';
 import type { PaginatedResponse } from '@/types/api';
+import { Loading } from '@/components/ui';
+import { exportFilename } from '@/constants/downloads';
 
 const STATUSES = ['LEAD', 'ACTIVE', 'REPEAT', 'DORMANT', 'BLOCKED'] as const;
 
@@ -137,25 +139,10 @@ export default function AdminContactsPage() {
     await load();
   }
 
-  /**
-   * The export needs a bearer token, so it cannot be a plain link — fetch it and
-   * hand the browser a blob.
-   */
   async function exportCsv() {
     setBusy(true);
     try {
-      const response = await fetch(
-        `${API_URL}/admin/crm/contacts/export${toSearchParams(filters)}`,
-        { headers: { Authorization: `Bearer ${getAccessToken() ?? ''}` } },
-      );
-      if (!response.ok) throw new Error('Export failed');
-
-      const url = URL.createObjectURL(await response.blob());
-      const anchor = document.createElement('a');
-      anchor.href = url;
-      anchor.download = 'yaseen-contacts.csv';
-      anchor.click();
-      URL.revokeObjectURL(url);
+      await downloadCsv('/admin/crm/contacts/export', exportFilename('contacts'), filters);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not export');
     } finally {
@@ -177,7 +164,7 @@ export default function AdminContactsPage() {
         </button>
       </div>
 
-      <div className="card mb-4 flex flex-wrap gap-3 p-3">
+      <div className="mb-6 flex flex-wrap gap-3 border-b border-neutral-100 pb-4">
         <input
           type="search"
           placeholder="Name, phone or email"
@@ -219,16 +206,16 @@ export default function AdminContactsPage() {
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_24rem]">
-        <div className="card overflow-hidden">
+        <div className="overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="border-b border-neutral-100 bg-neutral-50">
+            <table className="table-flat">
+              <thead>
                 <tr>
                   <Th>Customer</Th>
                   <Th className="text-end">Orders</Th>
@@ -236,12 +223,12 @@ export default function AdminContactsPage() {
                   <Th>Last order</Th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white">
+              <tbody className="divide-y divide-neutral-100">
                 {!contacts ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/50">
-                      Loading…
-                    </td>
+                    <td colSpan={4} className="px-4 py-8 text-center">
+                    <Loading className="p-0" />
+                  </td>
                   </tr>
                 ) : contacts.data.length === 0 ? (
                   <tr>
@@ -259,7 +246,7 @@ export default function AdminContactsPage() {
                         selected?.id === contact.id && 'bg-neutral-50',
                       )}
                     >
-                      <td className="px-4 py-3">
+                      <td>
                         <p className="font-medium text-neutral-900">{contact.name}</p>
                         <p className="text-xs text-neutral-900/40">
                           {contact.phoneE164 ?? contact.email ?? '—'}
@@ -278,15 +265,15 @@ export default function AdminContactsPage() {
                           </p>
                         ) : null}
                       </td>
-                      <td className="px-4 py-3 text-end tabular-nums text-neutral-900/70">
+                      <td className="text-end tabular-nums text-neutral-900/70">
                         {contact.orderCount}
                       </td>
-                      <td className="px-4 py-3 text-end tabular-nums text-neutral-900">
+                      <td className="text-end tabular-nums text-neutral-900">
                         {formatMoney(contact.lifetimeValue)}
                       </td>
-                      <td className="px-4 py-3 text-neutral-900/60">
+                      <td className="text-neutral-900/60">
                         {contact.lastOrderAt
-                          ? new Date(contact.lastOrderAt).toLocaleDateString('en-PK')
+                          ? formatDate(contact.lastOrderAt)
                           : '—'}
                       </td>
                     </tr>
@@ -372,10 +359,7 @@ function ContactDetailPanel({
           label="Last"
           value={
             contact.lastOrderAt
-              ? new Date(contact.lastOrderAt).toLocaleDateString('en-PK', {
-                  day: 'numeric',
-                  month: 'short',
-                })
+              ? formatDate(contact.lastOrderAt)
               : '—'
           }
         />
@@ -437,7 +421,7 @@ function ContactDetailPanel({
                 <li key={task.id} className="text-neutral-900/70">
                   {task.note}
                   <span className="ms-2 text-xs text-neutral-900/40">
-                    {new Date(task.dueAt).toLocaleDateString('en-PK')}
+                    {formatDate(task.dueAt)}
                   </span>
                 </li>
               ))}
@@ -472,7 +456,7 @@ function ContactDetailPanel({
                 <p className="text-neutral-900/80">{interaction.body}</p>
                 <p className="text-xs text-neutral-900/40">
                   {interaction.kind.toLowerCase()} ·{' '}
-                  {new Date(interaction.occurredAt).toLocaleDateString('en-PK')}
+                  {formatDate(interaction.occurredAt)}
                   {interaction.actor?.firstName ? ` · ${interaction.actor.firstName}` : ''}
                 </p>
               </li>
@@ -495,8 +479,7 @@ function Metric({ label, value }: { label: string; value: string }) {
 
 function Th({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <th
-      scope="col"
+    <th scope="col"
       className={cn(
         'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50',
         className,

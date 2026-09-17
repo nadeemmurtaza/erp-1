@@ -31,6 +31,8 @@ export function Dialog({
   children,
   footer,
   className,
+  header,
+  align = 'center',
 }: {
   open: boolean;
   onClose: () => void;
@@ -39,6 +41,14 @@ export function Dialog({
   children: ReactNode;
   footer?: ReactNode;
   className?: string;
+  /**
+   * Replaces the default title bar. `title` still names the dialog for a
+   * screen reader — the command palette's header is its search field, and a
+   * heading above that would be a second thing to read past.
+   */
+  header?: ReactNode;
+  /** Top for a palette, which should not jump as its result count changes. */
+  align?: 'center' | 'top';
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
@@ -48,7 +58,13 @@ export function Dialog({
   useEffect(() => {
     if (!open) return;
     previouslyFocused.current = document.activeElement as HTMLElement | null;
-    panelRef.current?.focus();
+
+    // Only take focus if nothing inside has already claimed it. The command
+    // palette's search field autofocuses itself, and a panel that grabs focus
+    // back a tick later sends the first keystroke nowhere.
+    if (!panelRef.current?.contains(document.activeElement)) {
+      panelRef.current?.focus();
+    }
 
     return () => {
       previouslyFocused.current?.focus?.();
@@ -101,7 +117,13 @@ export function Dialog({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onKeyDown={onKeyDown}>
+    <div
+      className={cn(
+        'fixed inset-0 z-50 flex justify-center p-4',
+        align === 'top' ? 'items-start pt-[10vh]' : 'items-center',
+      )}
+      onKeyDown={onKeyDown}
+    >
       <div
         className="absolute inset-0 bg-neutral-900/40 backdrop-blur-sm animate-fadeIn"
         onClick={onClose}
@@ -115,10 +137,13 @@ export function Dialog({
         aria-label={title}
         tabIndex={-1}
         className={cn(
-          'sf-card relative z-10 flex max-h-[85vh] w-full max-w-lg flex-col outline-none animate-scaleIn',
+          'card relative z-10 flex max-h-[85vh] w-full max-w-lg flex-col outline-none animate-scaleIn',
           className,
         )}
       >
+        {header ? (
+          header
+        ) : (
         <div className="flex items-center justify-between gap-4 border-b border-neutral-100 px-5 py-4">
           <h2 className="font-display text-base font-semibold text-neutral-900">{title}</h2>
           <button
@@ -143,6 +168,8 @@ export function Dialog({
             </svg>
           </button>
         </div>
+
+        )}
 
         <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">{children}</div>
 

@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
-import { formatMoney } from '@yaseen/shared';
+import { formatMoney } from '@newax/shared';
+import { Loading } from '@/components/ui';
 
 interface Supplier {
   id: string;
@@ -141,8 +142,8 @@ export default function ReorderSuggestionsPage() {
         Variants below their reorder point. Select items to draft purchase orders automatically.
       </p>
 
-      {error ? <p role="alert" className="card mb-4 p-4 text-sm text-red-700">{error}</p> : null}
-      {success ? <p role="alert" className="card mb-4 p-4 text-sm text-green-700">{success}</p> : null}
+      {error ? <p role="alert" className="notice notice-error mb-4">{error}</p> : null}
+      {success ? <p role="alert" className="notice notice-success mb-4">{success}</p> : null}
 
       <div className="mb-4 flex items-center justify-between">
         <p className="text-sm text-neutral-900/70">
@@ -157,15 +158,15 @@ export default function ReorderSuggestionsPage() {
         </button>
       </div>
 
-      <div className="card overflow-hidden">
+      <div className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-neutral-100 bg-neutral-50 whitespace-nowrap">
+          <table className="table-flat">
+            <thead className="whitespace-nowrap">
               <tr>
-                <th className="px-3 py-3 w-10 text-center">
+                <th className="w-10 text-center">
                   <input 
                     type="checkbox" 
-                    className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+                    className="field-check"
                     checked={suggestions?.length !== 0 && selectedIds.size === suggestions?.length}
                     onChange={toggleAll}
                   />
@@ -180,10 +181,12 @@ export default function ReorderSuggestionsPage() {
                 <Th className="text-end">Suggested Qty</Th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white">
+            <tbody className="divide-y divide-neutral-100">
               {busy && !suggestions ? (
                 <tr>
-                  <td colSpan={9} className="p-8 text-center text-neutral-900/50">Loading...</td>
+                  <td colSpan={9} className="p-8 text-center">
+                    <Loading className="p-0" />
+                  </td>
                 </tr>
               ) : suggestions?.length === 0 ? (
                 <tr>
@@ -196,31 +199,31 @@ export default function ReorderSuggestionsPage() {
 
                   return (
                     <tr key={variant.id} className={cn("hover:bg-neutral-50/50", selectedIds.has(variant.id) && "bg-neutral-50/30")}>
-                      <td className="px-3 py-3 text-center">
+                      <td className="text-center">
                         <input 
                           type="checkbox" 
-                          className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+                          className="field-check"
                           checked={selectedIds.has(variant.id)}
                           onChange={() => toggleOne(variant.id)}
                         />
                       </td>
-                      <td className="px-3 py-3">
+                      <td>
                         <div className="font-medium text-neutral-900">{variant.product.name}</div>
                         <div className="text-xs text-neutral-900/60">
                           {[variant.size, variant.color].filter(Boolean).join(' / ')}
                         </div>
                       </td>
-                      <td className="px-3 py-3 text-neutral-900/80">{variant.sku}</td>
-                      <td className="px-3 py-3 text-neutral-900/80">
+                      <td className="text-neutral-900/80">{variant.sku}</td>
+                      <td className="text-neutral-900/80">
                         {variant.preferredSupplier ? variant.preferredSupplier.name : <span className="text-red-500">No Supplier</span>}
                       </td>
-                      <td className="px-3 py-3 text-end font-medium text-red-600">
+                      <td className="text-end font-medium text-red-600">
                         {variant.stock}
                       </td>
-                      <td className="px-3 py-3 text-end text-neutral-900/60">{variant.reorderPoint}</td>
-                      <td className="px-3 py-3 text-end text-neutral-900/80">{formatMoney(variant.lastCost)}</td>
-                      <td className="px-3 py-3 text-end text-neutral-900/60">{variant.moq}</td>
-                      <td className="px-3 py-3 text-end font-medium text-accent-hover">
+                      <td className="text-end text-neutral-900/60">{variant.reorderPoint}</td>
+                      <td className="text-end text-neutral-900/80">{formatMoney(variant.lastCost)}</td>
+                      <td className="text-end text-neutral-900/60">{variant.moq}</td>
+                      <td className="text-end font-medium text-accent-hover">
                         {suggestedQty}
                       </td>
                     </tr>

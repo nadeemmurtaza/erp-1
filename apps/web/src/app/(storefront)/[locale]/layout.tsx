@@ -4,7 +4,7 @@ import { hasLocale } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { directionFor, type Locale } from '@yaseen/shared';
+import { directionFor, type Locale } from '@newax/shared';
 import '@/app/globals.css';
 import { AnalyticsBeacon } from '@/components/storefront/analytics-beacon';
 import { Footer } from '@/components/storefront/footer';
@@ -15,6 +15,7 @@ import { StorefrontProviders } from '@/providers/storefront-providers';
 import { businessProfile } from '@/config/business-profile';
 import { routing } from '@/i18n/routing';
 import { SITE_URL } from '@/config/site';
+import { BRAND, intlTag } from '@newax/shared';
 
 // Storefront reskin typeface. Variable font, so no `weight` list is needed —
 // the full 100-900 range loads under one file. Exposed as --font-encode-sans
@@ -55,7 +56,7 @@ export async function generateMetadata({
     openGraph: {
       type: 'website',
       siteName: t('name'),
-      locale: locale === 'ur' ? 'ur_PK' : 'en_PK',
+      locale: intlTag(locale as Locale).replace('-', '_'),
     },
     twitter: { card: 'summary_large_image' },
   };
@@ -80,7 +81,7 @@ function organizationJsonLd() {
       '@type': 'PostalAddress',
       streetAddress: businessProfile.address,
       addressLocality: businessProfile.city,
-      addressCountry: 'PK',
+      addressCountry: BRAND.locale.countryCode,
     },
     sameAs: Object.values(businessProfile.socials),
   };
@@ -111,7 +112,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} dir={directionFor(locale as Locale)}>
       <body
-        className={`flex min-h-screen flex-col ${encodeSans.variable}`}
+        className={`flex min-h-screen flex-col pb-24 md:pb-0 ${encodeSans.variable}`}
         suppressHydrationWarning
       >
         <JsonLd data={organizationJsonLd()} />

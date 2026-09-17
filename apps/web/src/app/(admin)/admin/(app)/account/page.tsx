@@ -38,7 +38,7 @@ export default function AdminAccountPage() {
     <>
       <h1 className="mb-1 text-xl font-semibold text-neutral-900">My account</h1>
       <p className="mb-6 text-sm text-neutral-900/60">
-        {user?.firstName ?? user?.email} · {user?.role.toLowerCase()}
+        {user?.firstName ?? user?.email} · {user?.roles.join(', ') || 'No role assigned'}
       </p>
 
       {canChangePassword ? (
@@ -71,7 +71,7 @@ export default function AdminAccountPage() {
           </label>
 
           {error ? (
-            <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p role="alert" className="notice notice-error">
               {error}
             </p>
           ) : null}

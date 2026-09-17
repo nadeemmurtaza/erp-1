@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss';
 import forms from '@tailwindcss/forms';
-import { THEME_COLORS } from '@yaseen/shared';
+import plugin from 'tailwindcss/plugin';
+import { THEME_COLORS, THEME_RADII, TAILWIND_FONT_SIZE, radiusPx } from '@newax/shared';
 
 /**
  * One palette for admin and storefront both, imported from
@@ -20,10 +21,50 @@ export default {
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
     extend: {
+      /*
+       * Seven tiers, not Tailwind's five, and the two extra ones are the two
+       * the stock scale has no answer for.
+       *
+       * `xs` (380px) is the floor that actually exists in Pakistan: a Galaxy
+       * Z Fold's cover screen is 280px, an iPhone SE is 320px, and plenty of
+       * budget Androids are 360px. Everything below `xs` has to work on the
+       * base styles alone, so the base layout is the narrow one and each tier
+       * adds, never subtracts.
+       *
+       * `fold` (672px) is the gap that matters most. A Z Fold opened into
+       * tablet mode is ~673-717px wide, a Surface Duo spanned across both
+       * panels is 720px — all of which land above `sm` (640) and below `md`
+       * (768), so with the stock scale an unfolded tablet-sized screen gets
+       * the one-column phone layout. Measured: at 717px the home page's hero
+       * grid still computed to a single 669px column.
+       *
+       * The rest are Tailwind's own values, restated here because `screens`
+       * inside `extend` merges rather than replaces and listing all seven in
+       * order is how the scale stays readable. Tailwind sorts by min-width, so
+       * `xs` and `fold` slot in correctly wherever they are written.
+       */
+      screens: {
+        xs: '380px',
+        sm: '640px',
+        fold: '672px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        '2xl': '1536px',
+      },
+      /*
+       * The viewport minus the storefront header. Four auth pages each wrote
+       * `min-h-[calc(100vh-4rem)]`, which states a header height nothing else
+       * knows about — change the header and all four are silently wrong.
+       */
+      minHeight: {
+        auth: 'calc(100vh - theme(spacing.16))',
+      },
       colors: {
         neutral: THEME_COLORS.neutral,
         accent: THEME_COLORS.accent,
         star: THEME_COLORS.star,
+        feedback: THEME_COLORS.feedback,
       },
       fontFamily: {
         // Noto Nastaliq renders Urdu properly where it is installed; the rest
@@ -46,6 +87,45 @@ export default {
       },
       maxWidth: {
         page: '80rem',
+      },
+      /*
+       * Built from packages/shared/src/theme-type.ts rather than left to
+       * Tailwind's defaults, so `text-sm` here and `theme.text.small` in
+       * apps/mobile resolve to the same number.
+       *
+       * The values ARE Tailwind's defaults — web already uses these
+       * utilities at 817 call sites, so nothing moves on screen. What
+       * changes is that mobile can no longer drift away unnoticed, which
+       * is exactly what had happened: every step disagreed, 11/13/15/17/22
+       * against 12/14/16/20/24.
+       */
+      fontSize: TAILWIND_FONT_SIZE,
+      /*
+       * The house shape is square, and this is where that is enforced.
+       *
+       * `borderRadius` is overridden rather than extended, so every step of
+       * the scale — `rounded`, `rounded-md`, `rounded-lg`, `rounded-2xl` —
+       * resolves to the same 2px. Three hundred-odd radius utilities were
+       * already written across sixty-odd files in four different sizes; this
+       * collapses them all without a codemod touching a single call site, and
+       * without leaving a `rounded-2xl` somewhere that quietly disagrees with
+       * the system next time someone pastes markup in.
+       *
+       * `full` survives because circles are not a radius choice — avatars,
+       * spinners, status dots and the icon buttons over product photography
+       * are round by nature, and squaring them would be a bug, not a restyle.
+       * `none` survives for deliberate square-off (a cell inside a table).
+       */
+      borderRadius: {
+        none: '0',
+        DEFAULT: 'var(--radius)',
+        sm: 'var(--radius)',
+        md: 'var(--radius)',
+        lg: 'var(--radius-lg)',
+        xl: 'var(--radius-lg)',
+        '2xl': 'var(--radius-lg)',
+        '3xl': 'var(--radius-lg)',
+        full: '9999px',
       },
       animation: {
         fadeIn: 'fadeIn 200ms ease-out',
@@ -86,5 +166,22 @@ export default {
       },
     },
   },
-  plugins: [forms],
+  plugins: [
+    forms,
+    /*
+     * Publishes the radius scale as the custom properties globals.css reads.
+     * The numbers come from packages/shared so apps/mobile can import the
+     * same ones — a CSS variable is invisible to React Native, which is how
+     * the web and the app came to disagree about the house shape in the
+     * first place.
+     */
+    plugin(({ addBase }) => {
+      addBase({
+        ':root': {
+          '--radius': radiusPx(THEME_RADII.sharp),
+          '--radius-lg': radiusPx(THEME_RADII.lg),
+        },
+      });
+    }),
+  ],
 } satisfies Config;

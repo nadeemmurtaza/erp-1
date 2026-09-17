@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { Locale } from '@yaseen/shared';
+import type { Locale } from '@newax/shared';
 import type { StorefrontProduct } from '@/types/api';
 import { ProductCard } from './product-card';
 import { QuickViewModal } from './quick-view-modal';

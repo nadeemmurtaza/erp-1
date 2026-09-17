@@ -24,13 +24,17 @@ export class MetaController {
   @Public()
   @Get()
   @ApiOperation({ summary: 'Which optional modules and sector packs this deployment has enabled' })
-  get(): { modules: string[]; packs: string[] } {
+  get(): { modules: string[]; packs: string[]; nodeRole: string } {
     const modules = FEATURE_MODULES.filter(
       (entry) => entry.alwaysOn || this.config.isModuleEnabled(entry.name),
     ).map((entry) => entry.name);
 
     const packs = [...new Set(modules.map((name) => MODULE_PACKS[name]).filter(Boolean))];
 
-    return { modules, packs };
+    // Same reasoning as `modules`: the frontend cannot decide whether to show
+    // a brand picker or sync screen without knowing its own tier, and a
+    // Solo deployment (nodeRole === 'STANDALONE') must never render one
+    // (RETAIL-ERP.md R14).
+    return { modules, packs, nodeRole: this.config.nodeRole };
   }
 }

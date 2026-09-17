@@ -84,12 +84,15 @@ export const ROUTES = {
     stitchingBooking: (id: string) => `/admin/stitching/bookings/${id}`,
     stitchingJob: (id: string) => `/admin/stitching/jobs/${id}`,
     garments: '/admin/garments',
+    garment: (id: string) => `/admin/garments/${id}`,
     designs: '/admin/designs',
+    design: (id: string) => `/admin/designs/${id}`,
 
     contacts: '/admin/contacts',
     leads: '/admin/leads',
     inbox: '/admin/inbox',
     marketing: '/admin/marketing',
+    insights: '/admin/insights',
     reports: '/admin/reports',
     tax: '/admin/tax',
     settings: '/admin/settings',
@@ -97,5 +100,21 @@ export const ROUTES = {
     user: (id: string) => `/admin/users/${id}`,
     emailTemplates: '/admin/email-templates',
     emailAccounts: '/admin/email-accounts',
+    /** `new` is a real id here: the editor route handles creating and editing. */
+    emailAccount: (id: string) => `/admin/email-accounts/${id}`,
+
+    /**
+     * The three-level admin shell (RETAIL-ERP.md R19, WO-18.5) — invisible
+     * for every deployment today (`organization` module off by default,
+     * gated in nav-registry.ts). `organization` has no id: it resolves the
+     * caller's own scope and redirects to whichever of the three below is
+     * theirs.
+     */
+    organization: '/admin/o',
+    organizationOrg: (orgId: string) => `/admin/o/${orgId}`,
+    organizationBrand: (brandId: string) => `/admin/b/${brandId}`,
+    organizationBranch: (branchId: string) => `/admin/br/${branchId}`,
+    /** Grant/revoke who is a brand or branch admin (WO-18.6) — ORG-scoped only. */
+    organizationAccess: (orgId: string) => `/admin/o/${orgId}/access`,
   },
 } as const;

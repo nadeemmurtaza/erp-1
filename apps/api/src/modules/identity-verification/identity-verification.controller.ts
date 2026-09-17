@@ -3,7 +3,7 @@ import type { RawBodyRequest } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { Request } from 'express';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
-import { CurrentUser, Public } from '../../core/auth/decorators';
+import { AuthenticatedOnly, CurrentUser, Public } from '../../core/auth/decorators';
 import { SubmitOtpDto } from './dto/submit-otp.dto';
 import { IdentityVerificationService } from './identity-verification.service';
 
@@ -13,18 +13,21 @@ export class IdentityVerificationController {
   constructor(private readonly service: IdentityVerificationService) {}
 
   @Post('start')
+  @AuthenticatedOnly()
   @ApiOperation({ summary: 'Start (or restart, after a rejection/expiry) identity verification' })
   start(@CurrentUser() user: AuthenticatedUser) {
     return this.service.start(user.id);
   }
 
   @Post('otp/submit')
+  @AuthenticatedOnly()
   @ApiOperation({ summary: 'Submit the one-time code received during verification' })
   submitOtp(@CurrentUser() user: AuthenticatedUser, @Body() dto: SubmitOtpDto) {
     return this.service.submitOtp(user.id, dto.code);
   }
 
   @Get('me')
+  @AuthenticatedOnly()
   @ApiOperation({ summary: "The current account's identity-verification status" })
   me(@CurrentUser() user: AuthenticatedUser) {
     return this.service.status(user.id);

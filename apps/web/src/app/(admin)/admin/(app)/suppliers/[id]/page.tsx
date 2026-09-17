@@ -3,6 +3,7 @@
 import { useEffect, useState, use } from 'react';
 // No clsx import needed
 import { adminFetch } from '@/lib/admin-client';
+import { Loading } from '@/components/ui';
 
 interface SupplierDetail {
   id: string;
@@ -72,12 +73,12 @@ export default function SupplierDetailPage({ params }: { params: Promise<{ id: s
   }
 
   if (busy) {
-    return <p className="text-sm text-neutral-900/50 p-4">Loading supplier...</p>;
+    return <Loading label="Loading supplier" />;
   }
 
   if (error || !supplier) {
     return (
-      <p role="alert" className="card p-4 text-sm text-red-700">
+      <p role="alert" className="notice notice-error">
         {error || 'Supplier not found'}
       </p>
     );

@@ -1,6 +1,6 @@
 'use client';
 
-import { THEME_COLORS } from '@yaseen/shared';
+import { THEME_COLORS } from '@newax/shared';
 
 /**
  * Semicircular progress gauge for a single percent-of-target metric.

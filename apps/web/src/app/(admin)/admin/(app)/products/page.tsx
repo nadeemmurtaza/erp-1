@@ -3,10 +3,12 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatMoney, PRODUCT_KINDS, PRODUCT_STATUSES } from '@yaseen/shared';
+import { formatMoney, PRODUCT_KINDS, PRODUCT_STATUSES } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import type { AdminProduct, PaginatedResponse } from '@/types/api';
 import { ROUTES } from '@/constants/routes';
+import { Loading } from '@/components/ui';
+import { StatusBadge } from '@/components/common/status-badge';
 
 const KIND_LABELS: Record<string, string> = {
   STITCHED: 'Ready to wear',
@@ -65,7 +67,7 @@ export default function AdminProductsPage() {
         </div>
       </div>
 
-      <div className="card mb-4 flex flex-wrap gap-3 p-3">
+      <div className="mb-6 flex flex-wrap gap-3 border-b border-neutral-100 pb-4">
         <input
           type="search"
           placeholder="Search name, slug or SKU"
@@ -109,15 +111,15 @@ export default function AdminProductsPage() {
       </div>
 
       {error ? (
-        <p role="alert" className="card p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error">
           {error}
         </p>
       ) : null}
 
-      <div className="card overflow-hidden">
+      <div className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-neutral-100 bg-neutral-50 text-start">
+          <table className="table-flat">
+            <thead>
               <tr>
                 <Th>Product</Th>
                 <Th>Kind</Th>
@@ -126,11 +128,11 @@ export default function AdminProductsPage() {
                 <Th className="text-end">Stock</Th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white">
+            <tbody className="divide-y divide-neutral-100">
               {busy && !products ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-neutral-900/50">
-                    Loading…
+                  <td colSpan={5} className="px-4 py-8 text-center">
+                    <Loading className="p-0" />
                   </td>
                 </tr>
               ) : products && products.data.length === 0 ? (
@@ -142,7 +144,7 @@ export default function AdminProductsPage() {
               ) : (
                 products?.data.map((product) => (
                   <tr key={product.id} className="hover:bg-neutral-50">
-                    <td className="px-4 py-3">
+                    <td>
                       <Link
                         href={`/admin/products/${product.id}`}
                         className="font-medium text-neutral-900 hover:text-accent-hover"
@@ -152,11 +154,11 @@ export default function AdminProductsPage() {
                       </Link>
                       <p className="text-xs text-neutral-900/40">{product.slug}</p>
                     </td>
-                    <td className="px-4 py-3 text-neutral-900/70">{KIND_LABELS[product.kind]}</td>
-                    <td className="px-4 py-3">
+                    <td className="text-neutral-900/70">{KIND_LABELS[product.kind]}</td>
+                    <td>
                       <StatusBadge status={product.status} />
                     </td>
-                    <td className="px-4 py-3 text-end tabular-nums text-neutral-900">
+                    <td className="text-end tabular-nums text-neutral-900">
                       {formatMoney(product.basePrice)}
                     </td>
                     <td
@@ -211,8 +213,7 @@ export default function AdminProductsPage() {
 
 function Th({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <th
-      scope="col"
+    <th scope="col"
       className={cn('px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50', className)}
     >
       {children}
@@ -220,17 +221,3 @@ function Th({ children, className }: { children: React.ReactNode; className?: st
   );
 }
 
-function StatusBadge({ status }: { status: string }) {
-  return (
-    <span
-      className={cn(
-        'rounded px-2 py-0.5 text-xs font-medium',
-        status === 'ACTIVE' && 'bg-neutral-50 text-accent-hover',
-        status === 'DRAFT' && 'bg-white text-neutral-900/60',
-        status === 'ARCHIVED' && 'bg-red-50 text-red-700',
-      )}
-    >
-      {status.charAt(0) + status.slice(1).toLowerCase()}
-    </span>
-  );
-}

@@ -15,7 +15,7 @@ const GRID_OPTIONS: { cols: GridCols; label: string }[] = [
 
 export function GridToggle({ value, onChange }: GridToggleProps) {
   return (
-    <div className="flex items-center gap-1 rounded-full border border-neutral-200 p-1">
+    <div className="flex items-center gap-1 rounded border border-neutral-100 p-1">
       {GRID_OPTIONS.map((option) => (
         <button
           key={option.cols}

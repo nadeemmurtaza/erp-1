@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatMoney, LEAD_STATUSES, toMinor } from '@yaseen/shared';
+import { LEAD_STATUSES, formatDate, formatMoney, toMinor } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 
 interface Lead {
@@ -90,7 +90,7 @@ export default function AdminLeadsPage() {
       </p>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}
@@ -100,7 +100,7 @@ export default function AdminLeadsPage() {
           const inColumn = leads.filter((lead) => lead.status === column);
 
           return (
-            <section key={column} className="card p-3">
+            <section key={column} className="rounded-lg bg-neutral-50 p-3">
               <h2 className="flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
                 {column.charAt(0) + column.slice(1).toLowerCase()}
                 <span className="rounded bg-white px-1.5 py-0.5 text-neutral-900/60">
@@ -135,7 +135,7 @@ export default function AdminLeadsPage() {
 
                       <p className="mt-1 text-[10px] uppercase tracking-wide text-neutral-900/30">
                         {lead.source.replace(/_/g, ' ')} ·{' '}
-                        {new Date(lead.createdAt).toLocaleDateString('en-PK')}
+                        {formatDate(lead.createdAt)}
                       </p>
 
                       {(NEXT[lead.status] ?? []).length > 0 ? (

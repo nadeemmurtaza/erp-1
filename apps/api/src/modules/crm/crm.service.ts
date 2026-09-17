@@ -1,5 +1,5 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { normalizeEmail, normalizePkPhone } from '@yaseen/shared';
+import { normalizeEmail, normalizePkPhone } from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { paginated, type PaginatedResult } from '../../core/common/dto/pagination.dto';

@@ -1,9 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { cn } from '@/utils/cn';
-import { formatMoney, THEME_COLORS } from '@yaseen/shared';
+import { formatMoney } from '@newax/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { downloadCsv } from '@/lib/download-csv';
+import { Loading, MetricStrip, PageHeader, SectionRail } from '@/components/ui';
+import { RangePicker, type RangeDays } from '@/components/admin/range-picker';
+import { paymentProviderLabel } from '@/constants/payment-methods';
+import { exportFilename } from '@/constants/downloads';
+import type { PermissionKey } from '@/constants/permissions';
 
 interface StitchingAnalytics {
   topGarments: Array<{ key: string; label: string; jobs: number; revenue: number }>;
@@ -20,11 +25,55 @@ interface ExtendedAnalytics {
   revenueByCity: Array<{ city: string; revenue: number }>;
 }
 
-const RANGES = [7, 30, 90] as const;
+/**
+ * Every CSV this page can produce.
+ *
+ * These were eight near-identical twenty-line buttons, which is why three of
+ * them said "Exporting..." with an ASCII ellipsis while the others said
+ * "Exporting…" with a real one, and why the permission check on stock
+ * valuation was easy to miss in the middle of them. A row of buttons is a
+ * list; lists are data.
+ *
+ * `ranged` marks the exports that cover the selected window. Stock and slow
+ * movers are a snapshot of right now and take no dates — a distinction the
+ * old markup buried in whether `undefined` was passed as the third argument.
+ */
+const EXPORTS: Array<{
+  key: string;
+  label: string;
+  path: string;
+  ranged: boolean;
+  permission?: PermissionKey;
+}> = [
+  { key: 'orders', label: 'Orders', path: '/admin/reports/export/orders', ranged: true },
+  { key: 'sales', label: 'Sales by day', path: '/admin/reports/export/sales-by-day', ranged: true },
+  {
+    key: 'stitching-bookings',
+    label: 'Stitching bookings',
+    path: '/admin/reports/export/stitching-bookings',
+    ranged: true,
+  },
+  {
+    key: 'purchases-by-supplier',
+    label: 'Purchases by supplier',
+    path: '/admin/reports/export/purchases-by-supplier',
+    ranged: true,
+  },
+  { key: 'stock-ledger', label: 'Stock ledger', path: '/admin/reports/export/stock-ledger', ranged: true },
+  { key: 'stock', label: 'Stock', path: '/admin/reports/export/stock', ranged: false },
+  { key: 'slow-movers', label: 'Slow movers', path: '/admin/reports/export/slow-movers', ranged: false },
+  {
+    key: 'stock-valuation',
+    label: 'Stock valuation',
+    path: '/admin/reports/export/stock-valuation',
+    ranged: false,
+    permission: 'inventory.view_cost',
+  },
+];
 
 export default function AdminReportsPage() {
   const user = getStoredUser();
-  const [days, setDays] = useState<number>(30);
+  const [days, setDays] = useState<RangeDays>(30);
   const [stitching, setStitching] = useState<StitchingAnalytics | null>(null);
   const [extended, setExtended] = useState<ExtendedAnalytics | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -54,11 +103,7 @@ export default function AdminReportsPage() {
     };
   }, [days]);
 
-  // The API fetches with a bearer token rather than a cookie, so a plain
-  // <a href> to the export route can't carry auth — the CSV is fetched as
-  // text and handed to the browser as an object-URL download instead, same
-  // as the catalogue import page's template download.
-  async function downloadCsv(
+  async function runExport(
     name: string,
     path: string,
     query: Record<string, unknown> | undefined,
@@ -67,13 +112,7 @@ export default function AdminReportsPage() {
     setExportError(null);
     setExporting(name);
     try {
-      const csv = await adminFetch<string>(path, { query, expect: 'text' });
-      const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
-      const anchor = document.createElement('a');
-      anchor.href = url;
-      anchor.download = filename;
-      anchor.click();
-      URL.revokeObjectURL(url);
+      await downloadCsv(path, filename, query);
     } catch (cause) {
       setExportError(cause instanceof Error ? cause.message : `Could not export ${filename}`);
     } finally {
@@ -83,347 +122,256 @@ export default function AdminReportsPage() {
 
   if (error) {
     return (
-      <p role="alert" className="card p-4 text-sm text-red-700">
-        {error}
-      </p>
+      <>
+        <PageHeader title="Reports" />
+        <p role="alert" className="text-sm text-feedback-negative">
+          {error}
+        </p>
+      </>
     );
   }
 
   if (!stitching || !extended) {
-    return <p className="text-sm text-neutral-900/50">Loading…</p>;
+    return (
+      <>
+        <PageHeader title="Reports" />
+        <Loading />
+      </>
+    );
   }
 
   const { cartAbandonment, returnRate } = extended;
+  const exports = EXPORTS.filter(
+    (row) => !row.permission || user?.permissions.includes(row.permission),
+  );
 
   return (
     <>
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-semibold text-neutral-900">Reports</h1>
-          <p className="mt-1 text-sm text-neutral-900/60">
-            Everything the dashboard leaves out — stitching demand, funnel health and exports.
-          </p>
-        </div>
+      <PageHeader
+        title="Reports"
+        description="Everything the dashboard leaves out — stitching demand, funnel health and exports."
+        action={<RangePicker value={days} onChange={setDays} />}
+      />
 
-        <div className="flex gap-1" role="group" aria-label="Date range">
-          {RANGES.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => setDays(option)}
-              aria-pressed={days === option}
-              className={cn(
-                'rounded-md px-3 py-1.5 text-sm transition-colors',
-                days === option ? 'bg-accent-hover text-white' : 'text-neutral-900/70 hover:bg-white',
-              )}
-            >
-              {option} days
-            </button>
-          ))}
-        </div>
-      </div>
+      {/*
+       * Store health leads as the strip, because these three numbers are the
+       * ones that say whether anything below is worth opening. Everything else
+       * is the detail behind them, and waits to be chosen.
+       */}
+      <MetricStrip
+        label="Store health"
+        lead="abandonment"
+        className="mb-10"
+        items={[
+          {
+            key: 'abandonment',
+            label: 'Cart abandonment',
+            value: `${cartAbandonment.rate}%`,
+            delta: {
+              label: `${cartAbandonment.ordersPlaced} of ${cartAbandonment.cartsCreated} carts became orders`,
+              direction: 'flat',
+            },
+          },
+          {
+            key: 'returns',
+            label: 'Returns & cancellations',
+            value: `${returnRate.rate}%`,
+            delta: {
+              label: `${returnRate.returned + returnRate.cancelled} of ${returnRate.totalOrders} orders`,
+              direction: 'flat',
+            },
+          },
+          {
+            key: 'fulfilment',
+            label: 'Average fulfilment',
+            value: `${extended.averageFulfillmentDays} days`,
+            delta: { label: 'Placed to delivered', direction: 'flat' },
+          },
+        ]}
+      />
 
-      {/* Stitching & garments */}
-      <section className="mt-2">
-        <h2 className="text-sm font-semibold text-neutral-900">
-          Stitching & garments <span className="font-normal text-neutral-900/50">· last {days} days</span>
-        </h2>
+      <SectionRail
+        label="Report sections"
+        sections={[
+          {
+            id: 'stitching',
+            label: 'Stitching & garments',
+            content: (
+              <div className="grid gap-8 fold:grid-cols-2 lg:grid-cols-3">
+                <Panel title="Top garments by jobs" empty={stitching.topGarments.length === 0}>
+                  <BarList
+                    items={stitching.topGarments.map((row) => ({
+                      key: row.key,
+                      label: row.label,
+                      value: row.jobs,
+                      sub: formatMoney(row.revenue),
+                    }))}
+                    valueFormatter={(value) => `${value} ${value === 1 ? 'job' : 'jobs'}`}
+                  />
+                </Panel>
 
-        <div className="mt-3 grid gap-4 lg:grid-cols-3">
-          <div className="card p-4">
-            <h3 className="text-sm font-semibold text-neutral-900">Top garments by jobs</h3>
-            {stitching.topGarments.length === 0 ? (
-              <p className="mt-4 text-sm text-neutral-900/50">No stitching jobs in this window.</p>
-            ) : (
-              <BarList
-                items={stitching.topGarments.map((row) => ({
-                  key: row.key,
-                  label: row.label,
-                  value: row.jobs,
-                  sub: formatMoney(row.revenue),
-                }))}
-                valueFormatter={(value) => `${value} ${value === 1 ? 'job' : 'jobs'}`}
-              />
-            )}
-          </div>
+                <Panel title="Top design options picked" empty={stitching.topOptions.length === 0}>
+                  <BarList
+                    items={stitching.topOptions.map((row, index) => ({
+                      key: `${row.groupKey}-${index}`,
+                      label: row.label,
+                      value: row.count,
+                      sub: formatMoney(row.revenue),
+                    }))}
+                    valueFormatter={(value) => `${value}×`}
+                  />
+                </Panel>
 
-          <div className="card p-4">
-            <h3 className="text-sm font-semibold text-neutral-900">Top design options picked</h3>
-            {stitching.topOptions.length === 0 ? (
-              <p className="mt-4 text-sm text-neutral-900/50">No style options booked in this window.</p>
-            ) : (
-              <BarList
-                items={stitching.topOptions.map((row, index) => ({
-                  key: `${row.groupKey}-${index}`,
-                  label: row.label,
-                  value: row.count,
-                  sub: formatMoney(row.revenue),
-                }))}
-                valueFormatter={(value) => `${value}×`}
-              />
-            )}
-          </div>
-
-          <div className="card p-4">
-            <h3 className="text-sm font-semibold text-neutral-900">Revenue by garment</h3>
-            {stitching.revenueByGarment.length === 0 ? (
-              <p className="mt-4 text-sm text-neutral-900/50">No stitching revenue in this window.</p>
-            ) : (
-              <BarList
-                items={stitching.revenueByGarment.map((row, index) => ({
-                  key: `${row.label}-${index}`,
-                  label: row.label,
-                  value: row.revenue,
-                }))}
-                valueFormatter={formatMoney}
-              />
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Store health */}
-      <section className="mt-6">
-        <h2 className="text-sm font-semibold text-neutral-900">
-          Store health <span className="font-normal text-neutral-900/50">· last {days} days</span>
-        </h2>
-
-        <div className="mt-3 grid gap-4 sm:grid-cols-3">
-          <Stat
-            label="Cart abandonment"
-            value={`${cartAbandonment.rate}%`}
-            hint={`${cartAbandonment.ordersPlaced} of ${cartAbandonment.cartsCreated} carts became orders`}
-          />
-          <Stat
-            label="Returns & cancellations"
-            value={`${returnRate.rate}%`}
-            hint={`${returnRate.returned + returnRate.cancelled} of ${returnRate.totalOrders} orders`}
-          />
-          <Stat
-            label="Average fulfilment"
-            value={`${extended.averageFulfillmentDays} days`}
-            hint="Placed to delivered"
-          />
-        </div>
-      </section>
-
-      {/* Revenue breakdown */}
-      <section className="mt-6">
-        <h2 className="text-sm font-semibold text-neutral-900">
-          Revenue breakdown <span className="font-normal text-neutral-900/50">· last {days} days</span>
-        </h2>
-
-        <div className="mt-3 grid gap-4 lg:grid-cols-3">
-          <div className="card p-4">
-            <h3 className="text-sm font-semibold text-neutral-900">By category</h3>
-            {extended.revenueByCategory.length === 0 ? (
-              <p className="mt-4 text-sm text-neutral-900/50">No sales in this window.</p>
-            ) : (
-              <BarList
-                items={extended.revenueByCategory.map((row) => ({
-                  key: row.category,
-                  label: row.category,
-                  value: row.revenue,
-                }))}
-                valueFormatter={formatMoney}
-              />
-            )}
-          </div>
-
-          <div className="card p-4">
-            <h3 className="text-sm font-semibold text-neutral-900">By city</h3>
-            {extended.revenueByCity.length === 0 ? (
-              <p className="mt-4 text-sm text-neutral-900/50">No sales in this window.</p>
-            ) : (
-              <BarList
-                items={extended.revenueByCity.map((row) => ({
-                  key: row.city,
-                  label: row.city,
-                  value: row.revenue,
-                }))}
-                valueFormatter={formatMoney}
-              />
-            )}
-          </div>
-
-          <div className="card">
-            <div className="border-b border-neutral-100 px-4 py-3">
-              <h3 className="text-sm font-semibold text-neutral-900">Payment method split</h3>
-            </div>
-            {extended.paymentMethodSplit.length === 0 ? (
-              <p className="px-4 py-6 text-sm text-neutral-900/50">No payments recorded in this window.</p>
-            ) : (
-              <div className="max-h-64 overflow-auto px-4 pb-4">
-                <table className="w-full text-sm">
-                  <thead className="sticky top-0 bg-white">
-                    <tr>
-                      <th
-                        scope="col"
-                        className="py-1 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50"
-                      >
-                        Provider
-                      </th>
-                      <th
-                        scope="col"
-                        className="py-1 text-end text-xs font-semibold uppercase tracking-wide text-neutral-900/50"
-                      >
-                        Count
-                      </th>
-                      <th
-                        scope="col"
-                        className="py-1 text-end text-xs font-semibold uppercase tracking-wide text-neutral-900/50"
-                      >
-                        Amount
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-white">
-                    {extended.paymentMethodSplit.map((row) => (
-                      <tr key={row.provider}>
-                        <td className="py-1 text-neutral-900/70">{row.provider}</td>
-                        <td className="py-1 text-end tabular-nums text-neutral-900/70">{row.count}</td>
-                        <td className="py-1 text-end tabular-nums text-neutral-900">{formatMoney(row.amount)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <Panel title="Revenue by garment" empty={stitching.revenueByGarment.length === 0}>
+                  <BarList
+                    items={stitching.revenueByGarment.map((row, index) => ({
+                      key: `${row.label}-${index}`,
+                      label: row.label,
+                      value: row.revenue,
+                    }))}
+                    valueFormatter={formatMoney}
+                  />
+                </Panel>
               </div>
-            )}
-          </div>
-        </div>
-      </section>
+            ),
+          },
+          {
+            id: 'revenue',
+            label: 'Revenue breakdown',
+            content: (
+              <div className="grid gap-8 fold:grid-cols-2 lg:grid-cols-3">
+                <Panel title="By category" empty={extended.revenueByCategory.length === 0}>
+                  <BarList
+                    items={extended.revenueByCategory.map((row) => ({
+                      key: row.category,
+                      label: row.category,
+                      value: row.revenue,
+                    }))}
+                    valueFormatter={formatMoney}
+                  />
+                </Panel>
 
-      {/* Export */}
-      <section className="mt-6 card p-4">
-        <h2 className="text-sm font-semibold text-neutral-900">Export</h2>
-        <p className="mt-1 text-xs text-neutral-900/50">
-          Orders and sales cover the last {days} days; stock is always current.
-        </p>
+                <Panel title="By city" empty={extended.revenueByCity.length === 0}>
+                  <BarList
+                    items={extended.revenueByCity.map((row) => ({
+                      key: row.city,
+                      label: row.city,
+                      value: row.revenue,
+                    }))}
+                    valueFormatter={formatMoney}
+                  />
+                </Panel>
 
-        {exportError ? (
-          <p role="alert" className="mt-3 text-sm text-red-700">
-            {exportError}
-          </p>
-        ) : null}
+                <Panel
+                  title="Payment method split"
+                  empty={extended.paymentMethodSplit.length === 0}
+                  emptyLabel="No payments recorded in this window."
+                >
+                  <div className="max-h-64 overflow-auto">
+                    <table className="table-flat">
+                      <thead>
+                        <tr>
+                          <th scope="col">Provider</th>
+                          <th scope="col" className="text-end">
+                            Count
+                          </th>
+                          <th scope="col" className="text-end">
+                            Amount
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {extended.paymentMethodSplit.map((row) => (
+                          <tr key={paymentProviderLabel(row.provider)}>
+                            <td className="text-neutral-900/70">{paymentProviderLabel(row.provider)}</td>
+                            <td className="text-end tabular-nums text-neutral-900/70">{row.count}</td>
+                            <td className="text-end tabular-nums text-neutral-900">
+                              {formatMoney(row.amount)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </Panel>
+              </div>
+            ),
+          },
+          {
+            id: 'export',
+            label: 'Export',
+            badge: exports.length,
+            content: (
+              <>
+                <p className="mb-4 max-w-prose text-sm text-neutral-900/60">
+                  Dated exports cover the last {days} days. Stock, slow movers and valuation are a
+                  snapshot of right now.
+                </p>
 
-        <div className="mt-3 flex flex-wrap gap-2">
-          <button
-            type="button"
-            disabled={exporting !== null}
-            onClick={() =>
-              void downloadCsv(
-                'orders',
-                '/admin/reports/export/orders',
-                { from: isoDateDaysAgo(days), to: isoToday() },
-                'yaseen-orders.csv',
-              )
-            }
-            className="btn-secondary"
-          >
-            {exporting === 'orders' ? 'Exporting…' : 'Export orders CSV'}
-          </button>
+                {exportError ? (
+                  <p role="alert" className="mb-4 text-sm text-feedback-negative">
+                    {exportError}
+                  </p>
+                ) : null}
 
-          <button
-            type="button"
-            disabled={exporting !== null}
-            onClick={() =>
-              void downloadCsv(
-                'sales',
-                '/admin/reports/export/sales-by-day',
-                { from: isoDateDaysAgo(days), to: isoToday() },
-                'yaseen-sales-by-day.csv',
-              )
-            }
-            className="btn-secondary"
-          >
-            {exporting === 'sales' ? 'Exporting…' : 'Export sales CSV'}
-          </button>
-
-          <button
-            type="button"
-            disabled={exporting !== null}
-            onClick={() =>
-              void downloadCsv(
-                'stitching-bookings',
-                '/admin/reports/export/stitching-bookings',
-                { from: isoDateDaysAgo(days), to: isoToday() },
-                'yaseen-stitching-bookings.csv',
-              )
-            }
-            className="btn-secondary"
-          >
-            {exporting === 'stitching-bookings' ? 'Exporting…' : 'Export stitching bookings CSV'}
-          </button>
-
-                    <button
-            type="button"
-            disabled={exporting !== null}
-            onClick={() =>
-              void downloadCsv('stock', '/admin/reports/export/stock', undefined, 'yaseen-stock.csv')
-            }
-            className="btn-secondary"
-          >
-            {exporting === 'stock' ? 'Exporting...' : 'Export stock CSV'}
-          </button>
-
-          <button
-            type="button"
-            disabled={exporting !== null}
-            onClick={() =>
-              void downloadCsv('purchases-by-supplier', '/admin/reports/export/purchases-by-supplier', { from: isoDateDaysAgo(days), to: isoToday() }, 'yaseen-purchases-by-supplier.csv')
-            }
-            className="btn-secondary"
-          >
-            {exporting === 'purchases-by-supplier' ? 'Exporting...' : 'Export purchases by supplier CSV'}
-          </button>
-
-          <button
-            type="button"
-            disabled={exporting !== null}
-            onClick={() =>
-              void downloadCsv('stock-ledger', '/admin/reports/export/stock-ledger', { from: isoDateDaysAgo(days), to: isoToday() }, 'yaseen-stock-ledger.csv')
-            }
-            className="btn-secondary"
-          >
-            {exporting === 'stock-ledger' ? 'Exporting...' : 'Export stock ledger CSV'}
-          </button>
-
-          <button
-            type="button"
-            disabled={exporting !== null}
-            onClick={() =>
-              void downloadCsv('slow-movers', '/admin/reports/export/slow-movers', undefined, 'yaseen-slow-movers.csv')
-            }
-            className="btn-secondary"
-          >
-            {exporting === 'slow-movers' ? 'Exporting...' : 'Export slow movers CSV'}
-          </button>
-
-          {user?.permissions.includes('inventory.view_cost') && (
-            <button
-              type="button"
-              disabled={exporting !== null}
-              onClick={() =>
-                void downloadCsv('stock-valuation', '/admin/reports/export/stock-valuation', undefined, 'yaseen-stock-valuation.csv')
-              }
-              className="btn-secondary"
-            >
-              {exporting === 'stock-valuation' ? 'Exporting...' : 'Export stock valuation CSV'}
-            </button>
-          )}
-        </div>
-
-      </section>
+                <ul className="max-w-xl divide-y divide-neutral-100 border-y border-neutral-100">
+                  {exports.map((row) => (
+                    <li key={row.key} className="flex items-center justify-between gap-4 py-2.5">
+                      <span className="min-w-0">
+                        <span className="block truncate text-sm text-neutral-900">{row.label}</span>
+                        <span className="block text-xs text-neutral-900/45">
+                          {row.ranged ? `Last ${days} days` : 'Current snapshot'}
+                        </span>
+                      </span>
+                      <button
+                        type="button"
+                        disabled={exporting !== null}
+                        onClick={() =>
+                          void runExport(
+                            row.key,
+                            row.path,
+                            row.ranged ? { from: isoDateDaysAgo(days), to: isoToday() } : undefined,
+                            exportFilename(row.key),
+                          )
+                        }
+                        className="btn-text shrink-0"
+                      >
+                        {exporting === row.key ? 'Exporting…' : 'Download CSV'}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ),
+          },
+        ]}
+      />
     </>
   );
 }
 
-function Stat({ label, value, hint }: { label: string; value: string; hint?: string }) {
+/**
+ * One figure's worth of a report, with no box around it.
+ *
+ * These were `card p-4` — nine of them on this page, which is how a reports
+ * screen ends up looking like a filing cabinet. A heading and its content
+ * grouped by space says the same thing more quietly.
+ */
+function Panel({
+  title,
+  empty,
+  emptyLabel = 'Nothing in this window.',
+  children,
+}: {
+  title: string;
+  empty: boolean;
+  emptyLabel?: string;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="card p-4">
-      <p className="text-sm text-neutral-900/60">{label}</p>
-      <p className="mt-1 text-2xl font-semibold text-neutral-900">{value}</p>
-      {hint ? <p className="mt-1 text-xs text-neutral-900/40">{hint}</p> : null}
+    <div className="min-w-0">
+      <h3 className="eyebrow mb-3">{title}</h3>
+      {empty ? <p className="text-sm text-neutral-900/45">{emptyLabel}</p> : children}
     </div>
   );
 }
@@ -439,21 +387,20 @@ function BarList({
   const max = Math.max(...items.map((item) => item.value), 1);
 
   return (
-    <ul className="mt-4 space-y-3">
+    <ul className="space-y-3">
       {items.map((item) => (
         <li key={item.key}>
           <div className="flex justify-between gap-3 text-sm">
             <span className="min-w-0 truncate text-neutral-900">{item.label}</span>
-            <span className="shrink-0 text-neutral-900/70">{valueFormatter(item.value)}</span>
+            <span className="shrink-0 tabular-nums text-neutral-900/70">
+              {valueFormatter(item.value)}
+            </span>
           </div>
           {/* Sequential single hue: more of the metric is a longer bar. */}
-          <div className="mt-1 h-2 overflow-hidden rounded-full bg-white">
+          <div className="mt-1 h-1.5 overflow-hidden rounded bg-neutral-50">
             <div
-              className="h-full rounded-full"
-              style={{
-                width: `${Math.max((item.value / max) * 100, 2)}%`,
-                backgroundColor: THEME_COLORS.accent.DEFAULT,
-              }}
+              className="h-full rounded bg-accent"
+              style={{ width: `${Math.max((item.value / max) * 100, 2)}%` }}
             />
           </div>
           {item.sub ? <p className="mt-0.5 text-xs text-neutral-900/40">{item.sub}</p> : null}
@@ -473,7 +420,3 @@ function isoDateDaysAgo(days: number): string {
 function isoToday(): string {
   return new Date().toISOString().slice(0, 10);
 }
-
-
-
-

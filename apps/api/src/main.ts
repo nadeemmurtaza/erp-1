@@ -1,3 +1,4 @@
+import { BRAND } from '@newax/shared';
 import 'reflect-metadata';
 // Must come before AppModule: the module registry reads MODULES from the
 // environment while the module graph is being composed.
@@ -55,7 +56,7 @@ async function bootstrap(): Promise<void> {
     const document = SwaggerModule.createDocument(
       app,
       new DocumentBuilder()
-        .setTitle('Yaseen API')
+        .setTitle(`${BRAND.identity.name} API`)
         .setDescription(
           'Clothing store and stitching services. Money is integer paisa; customer-facing text is bilingual (en/ur).',
         )

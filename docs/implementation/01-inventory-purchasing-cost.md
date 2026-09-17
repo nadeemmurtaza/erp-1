@@ -135,7 +135,7 @@ whole groups.
 6. Add the empty **Inventory & Supply** group with its future children commented
    out, so WO-1.8 only has to uncomment.
 
-7. `pnpm add lucide-react --filter @yaseen/web`. Render icons from the string
+7. `pnpm add lucide-react --filter @newax/web`. Render icons from the string
    name via a small lookup map — do **not** import all of lucide.
 
 **Acceptance**
@@ -889,7 +889,7 @@ exist until Phase 2: the `.card` / `.btn-primary` / `.field-input` classes from
 `use-toast.ts` for feedback. Do **not** invent a component library here —
 Phase 2 replaces all of it and duplicated effort will be thrown away.
 
-Money renders through `formatMoney()` from `@yaseen/shared`. Never divide by 100
+Money renders through `formatMoney()` from `@newax/shared`. Never divide by 100
 in a component.
 
 ### Acceptance

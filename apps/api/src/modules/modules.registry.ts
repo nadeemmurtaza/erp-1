@@ -1,4 +1,5 @@
 import { DynamicModule, Logger, Module, type Type } from '@nestjs/common';
+import { AccountingModule } from './accounting/accounting.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { CartModule } from './cart/cart.module';
@@ -9,6 +10,7 @@ import { InventoryModule } from './inventory/inventory.module';
 import { MarketingModule } from './marketing/marketing.module';
 import { MeasurementsModule } from './measurements/measurements.module';
 import { OrdersModule } from './orders/orders.module';
+import { OrganizationModule } from './organization/organization.module';
 import { PaymentsModule } from './payments/payments.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
 import { ReportsModule } from './reports/reports.module';
@@ -51,6 +53,17 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'reports', module: ReportsModule },
   { name: 'tax', module: TaxModule },
   { name: 'tracking', module: TrackingModule },
+  // Off by default for every deployment today (WO-18.3) — a chain
+  // deployment switches it on when it actually has branches or brands to
+  // register (RETAIL-ERP.md R14: "every tier concept must be invisible in
+  // Solo").
+  { name: 'organization', module: OrganizationModule },
+  // Off by default — a deployment turns it on once it wants a real GL
+  // instead of the sum-of-tables reports in `finance`/`reports`. Couples to
+  // nothing either way (R15): no module imports AccountingModule, and its
+  // posting rules (WO-19.2/19.3) reach `orders`/`payments`/`purchasing` only
+  // through domain events, never a service import.
+  { name: 'accounting', module: AccountingModule },
   // Off by default — see docs/implementation/18-identity-verification.md.
   // Add 'identity-verification' to MODULES once NID_API_URL/NID_API_KEY/
   // NID_WEBHOOK_SECRET are set.

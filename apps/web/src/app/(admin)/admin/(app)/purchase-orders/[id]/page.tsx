@@ -4,7 +4,7 @@ import { useEffect, useState, use } from 'react';
 import Link from 'next/link';
 import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
-import { formatMoney } from '@yaseen/shared';
+import { formatDate, formatDateTime, formatMoney } from '@newax/shared';
 
 interface PurchaseOrder {
   id: string;
@@ -56,7 +56,7 @@ export default function PurchaseOrderDetailPage({ params }: { params: Promise<{ 
 
   if (error || !po) {
     return (
-      <p role="alert" className="card p-4 text-sm text-red-700">
+      <p role="alert" className="notice notice-error">
         {error || 'Purchase order not found'}
       </p>
     );
@@ -80,7 +80,7 @@ export default function PurchaseOrderDetailPage({ params }: { params: Promise<{ 
             </span>
           </div>
           <p className="text-sm text-neutral-900/60">
-            {po.supplier.name} &bull; Created {new Date(po.createdAt).toLocaleDateString()}
+            {po.supplier.name} &bull; Created {formatDate(po.createdAt)}
           </p>
         </div>
         {(po.status === 'SENT' || po.status === 'PARTIAL') && (
@@ -92,26 +92,26 @@ export default function PurchaseOrderDetailPage({ params }: { params: Promise<{ 
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <div className="card overflow-hidden">
+          <div className="overflow-hidden">
             <div className="p-4 border-b border-neutral-100 bg-neutral-50">
               <h2 className="font-medium text-neutral-900">Order Lines</h2>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="border-b border-white bg-neutral-50/50">
+              <table className="table-flat">
+                <thead>
                   <tr>
-                    <th className="px-3 py-2 text-start font-medium text-neutral-900/70">Item</th>
-                    <th className="px-3 py-2 text-start font-medium text-neutral-900/70">SKU</th>
-                    <th className="px-3 py-2 text-end font-medium text-neutral-900/70">Cost</th>
-                    <th className="px-3 py-2 text-end font-medium text-neutral-900/70">Ordered</th>
-                    <th className="px-3 py-2 text-end font-medium text-neutral-900/70">Received</th>
-                    <th className="px-3 py-2 text-end font-medium text-neutral-900/70">Total</th>
+                    <th>Item</th>
+                    <th>SKU</th>
+                    <th className="text-end">Cost</th>
+                    <th className="text-end">Ordered</th>
+                    <th className="text-end">Received</th>
+                    <th className="text-end">Total</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white">
+                <tbody className="divide-y divide-neutral-100">
                   {po.items.map((item) => (
                     <tr key={item.id} className="hover:bg-neutral-50/50">
-                      <td className="px-3 py-3">
+                      <td>
                         <div className="font-medium text-neutral-900">
                           {item.variant.product.translations[0]?.name || 'Unknown'}
                         </div>
@@ -119,13 +119,13 @@ export default function PurchaseOrderDetailPage({ params }: { params: Promise<{ 
                           {[item.variant.size, item.variant.color].filter(Boolean).join(' / ')}
                         </div>
                       </td>
-                      <td className="px-3 py-3 text-neutral-900/80">{item.variant.sku}</td>
-                      <td className="px-3 py-3 text-end text-neutral-900/80">{formatMoney(item.unitCost)}</td>
-                      <td className="px-3 py-3 text-end font-medium">{item.quantityOrdered}</td>
-                      <td className="px-3 py-3 text-end text-accent-hover font-medium">
+                      <td className="text-neutral-900/80">{item.variant.sku}</td>
+                      <td className="text-end text-neutral-900/80">{formatMoney(item.unitCost)}</td>
+                      <td className="text-end font-medium">{item.quantityOrdered}</td>
+                      <td className="text-end text-accent-hover font-medium">
                         {item.quantityReceived}
                       </td>
-                      <td className="px-3 py-3 text-end font-medium">
+                      <td className="text-end font-medium">
                         {formatMoney(item.quantityOrdered * item.unitCost)}
                       </td>
                     </tr>
@@ -136,15 +136,15 @@ export default function PurchaseOrderDetailPage({ params }: { params: Promise<{ 
           </div>
           
           {po.receipts.length > 0 && (
-            <div className="card overflow-hidden">
+            <div className="overflow-hidden">
               <div className="p-4 border-b border-neutral-100 bg-neutral-50">
                 <h2 className="font-medium text-neutral-900">Goods Receipts</h2>
               </div>
-              <ul className="divide-y divide-white">
+              <ul className="divide-y divide-neutral-100">
                 {po.receipts.map(r => (
                   <li key={r.id} className="p-4">
                     <div className="font-medium text-neutral-900 mb-1">
-                      Received {new Date(r.receivedAt).toLocaleString()}
+                      Received {formatDateTime(r.receivedAt)}
                     </div>
                     {r.notes && <div className="text-sm text-neutral-900/70">{r.notes}</div>}
                   </li>

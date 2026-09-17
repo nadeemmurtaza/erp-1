@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
+import { Loading } from '@/components/ui';
 
 interface MarketingSettings {
   automationEnabled: boolean;
@@ -85,7 +86,7 @@ export default function MarketingAdminPage() {
       </p>
 
       {busy && !settings ? (
-        <p className="text-neutral-900/50">Loading…</p>
+        <Loading />
       ) : (
         <section className="card p-5">
           <label className="flex items-center gap-2 text-sm font-medium text-neutral-900">

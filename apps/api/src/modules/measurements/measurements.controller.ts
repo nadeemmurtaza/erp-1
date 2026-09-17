@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
-import { CurrentUser, Public, RequirePermission } from '../../core/auth/decorators';
+import { AuthenticatedOnly, CurrentUser, Public, RequirePermission } from '../../core/auth/decorators';
 import {
   CreateMeasurementProfileDto,
   GarmentSizeChartRowDto,
@@ -43,17 +43,20 @@ export class MeasurementsController {
     return this.measurements.getGarmentType(idOrKey);
   }
 
+  @AuthenticatedOnly()
   @Get('profiles')
   @ApiOperation({ summary: "The signed-in customer's saved measurement profiles" })
   listProfiles(@CurrentUser() user: AuthenticatedUser) {
     return this.measurements.listProfiles(user.id);
   }
 
+  @AuthenticatedOnly()
   @Get('profiles/:id')
   getProfile(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
     return this.measurements.getProfile(user.id, id);
   }
 
+  @AuthenticatedOnly()
   @Post('profiles')
   @ApiOperation({ summary: 'Save a measurement profile' })
   createProfile(
@@ -63,6 +66,7 @@ export class MeasurementsController {
     return this.measurements.createProfile(user.id, dto);
   }
 
+  @AuthenticatedOnly()
   @Patch('profiles/:id')
   updateProfile(
     @CurrentUser() user: AuthenticatedUser,
@@ -72,6 +76,7 @@ export class MeasurementsController {
     return this.measurements.updateProfile(user.id, id, dto);
   }
 
+  @AuthenticatedOnly()
   @Delete('profiles/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   deleteProfile(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {

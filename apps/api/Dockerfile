@@ -17,16 +17,16 @@ COPY packages/shared/package.json packages/shared/package.json
 COPY packages/config/package.json packages/config/package.json
 RUN pnpm install --frozen-lockfile
 
-# --- build: @yaseen/shared first (api imports its build output), then api ---
+# --- build: @newax/shared first (api imports its build output), then api ---
 FROM base AS build
 WORKDIR /repo
 COPY --from=deps /repo/node_modules ./node_modules
 COPY --from=deps /repo/apps/api/node_modules ./apps/api/node_modules
 COPY --from=deps /repo/packages/shared/node_modules ./packages/shared/node_modules
 COPY . .
-RUN pnpm --filter @yaseen/shared build
-RUN pnpm --filter @yaseen/api db:generate
-RUN pnpm --filter @yaseen/api build
+RUN pnpm --filter @newax/shared build
+RUN pnpm --filter @newax/api db:generate
+RUN pnpm --filter @newax/api build
 
 # --- runtime: the whole workspace's node_modules travel along (pnpm's
 # symlinked node_modules make a "prod-only" prune harder to get right than
@@ -59,7 +59,7 @@ COPY --from=build --chown=nestjs:nestjs /repo/apps/api/package.json ./apps/api/p
 # "Could not find Prisma Schema" — which is exactly when you need it most,
 # because migrations are not run on start.
 COPY --from=build --chown=nestjs:nestjs /repo/apps/api/prisma.config.ts ./apps/api/prisma.config.ts
-# tsconfig.seed.json (extends @yaseen/config/tsconfig.nest.json, which
+# tsconfig.seed.json (extends @newax/config/tsconfig.nest.json, which
 # extends tsconfig.base.json) is needed at runtime, not just build time —
 # `pnpm db:seed` runs via ts-node inside this image, not during `docker build`.
 COPY --from=build --chown=nestjs:nestjs /repo/apps/api/tsconfig.seed.json ./apps/api/tsconfig.seed.json

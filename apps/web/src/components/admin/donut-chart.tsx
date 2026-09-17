@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { THEME_COLORS } from '@yaseen/shared';
+import { THEME_COLORS } from '@newax/shared';
 
 /**
  * Small donut chart for a categorical breakdown, with a legend beside it.

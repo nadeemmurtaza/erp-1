@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-client';
-import { formatMoney } from '@yaseen/shared';
+import { formatDate, formatMoney } from '@newax/shared';
 import { ROUTES } from '@/constants/routes';
+import { Loading } from '@/components/ui';
 
 interface PurchaseOrderListRow {
   id: string;
@@ -57,7 +58,7 @@ export default function PurchaseOrdersPage() {
         </Link>
       </div>
 
-      <div className="card mb-4 flex flex-wrap items-center gap-3 p-3">
+      <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-neutral-100 pb-4">
         <label className="text-sm font-medium text-neutral-900/70">Filter by status:</label>
         <div className="flex gap-2">
           {['', 'DRAFT', 'SENT', 'PARTIAL', 'RECEIVED', 'CANCELLED'].map((s) => (
@@ -76,15 +77,15 @@ export default function PurchaseOrdersPage() {
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}
 
-      <div className="card overflow-hidden">
+      <div className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-neutral-100 bg-neutral-50 whitespace-nowrap">
+          <table className="table-flat">
+            <thead className="whitespace-nowrap">
               <tr>
                 <Th>PO Number</Th>
                 <Th>Supplier</Th>
@@ -94,11 +95,11 @@ export default function PurchaseOrdersPage() {
                 <Th className="text-end">Total</Th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white">
+            <tbody className="divide-y divide-neutral-100">
               {busy && !pos ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-neutral-900/50">
-                    Loading...
+                  <td colSpan={6} className="p-8 text-center">
+                    <Loading className="p-0" />
                   </td>
                 </tr>
               ) : pos?.length === 0 ? (
@@ -110,13 +111,13 @@ export default function PurchaseOrdersPage() {
               ) : (
                 pos?.map((po) => (
                   <tr key={po.id} className="hover:bg-neutral-50/50">
-                    <td className="px-3 py-3 font-medium">
+                    <td className="font-medium">
                       <Link href={`/admin/purchase-orders/${po.id}`} className="text-accent-hover hover:underline">
                         {po.number}
                       </Link>
                     </td>
-                    <td className="px-3 py-3 text-neutral-900/80">{po.supplier.name}</td>
-                    <td className="px-3 py-3">
+                    <td className="text-neutral-900/80">{po.supplier.name}</td>
+                    <td>
                       <span className={cn(
                         'px-2 py-0.5 rounded text-xs font-medium',
                         po.status === 'DRAFT' ? 'bg-neutral-100 text-neutral-900/80' :
@@ -128,13 +129,13 @@ export default function PurchaseOrdersPage() {
                         {po.status}
                       </span>
                     </td>
-                    <td className="px-3 py-3 text-neutral-900/60">
-                      {new Date(po.createdAt).toLocaleDateString()}
+                    <td className="text-neutral-900/60">
+                      {formatDate(po.createdAt)}
                     </td>
-                    <td className="px-3 py-3 text-neutral-900/60">
-                      {po.expectedAt ? new Date(po.expectedAt).toLocaleDateString() : '—'}
+                    <td className="text-neutral-900/60">
+                      {po.expectedAt ? formatDate(po.expectedAt) : '—'}
                     </td>
-                    <td className="px-3 py-3 text-end font-medium text-neutral-900/80">
+                    <td className="text-end font-medium text-neutral-900/80">
                       {formatMoney(po.total)}
                     </td>
                   </tr>

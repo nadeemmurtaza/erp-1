@@ -3,6 +3,7 @@ import { Cron } from '@nestjs/schedule';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
+import { BRAND } from '@newax/shared';
 
 @Injectable()
 export class InventoryCron {
@@ -153,7 +154,7 @@ export class InventoryCron {
             supplierId,
             number,
             status: 'DRAFT',
-            currency: 'PKR',
+            currency: BRAND.locale.currency,
           },
           include: { items: true }
         });

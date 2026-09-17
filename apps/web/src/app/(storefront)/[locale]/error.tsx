@@ -45,10 +45,10 @@ export default function StorefrontError({
       </p>
 
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <button type="button" onClick={reset} className="sf-btn-primary">
+        <button type="button" onClick={reset} className="btn-primary">
           Try again
         </button>
-        <Link href={ROUTES.storefront.shop} className="sf-btn-secondary">
+        <Link href={ROUTES.storefront.shop} className="btn-secondary">
           Back to shop
         </Link>
       </div>

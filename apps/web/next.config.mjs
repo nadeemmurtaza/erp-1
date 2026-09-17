@@ -14,12 +14,12 @@ const nextConfig = {
   // the full workspace node_modules.
   output: 'standalone',
   // Trace file dependencies from the pnpm workspace root, not just this app —
-  // without this, standalone output can miss @yaseen/shared's real files in
+  // without this, standalone output can miss @newax/shared's real files in
   // a monorepo and misdetect the root, which prints a build warning and can
   // leave the trace incomplete.
   outputFileTracingRoot: workspaceRoot,
   // The shared package is TypeScript source in the workspace, not prebuilt.
-  transpilePackages: ['@yaseen/shared'],
+  transpilePackages: ['@newax/shared'],
   images: {
     // Placeholder swatches are SVGs we generate ourselves; the CSP below keeps
     // them inert even so.

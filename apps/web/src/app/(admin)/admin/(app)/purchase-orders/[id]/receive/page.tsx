@@ -80,7 +80,7 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
   };
 
   if (busy) return <p className="text-sm text-neutral-900/50 p-4">Loading receiving sheet...</p>;
-  if (error || !po) return <p className="card p-4 text-sm text-red-700">{error || 'Not found'}</p>;
+  if (error || !po) return <p className="notice notice-error">{error || 'Not found'}</p>;
 
   return (
     <>
@@ -89,26 +89,26 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
         Record stock entering the warehouse from {po.supplier.name}.
       </p>
 
-      {error ? <p role="alert" className="card mb-4 p-4 text-sm text-red-700">{error}</p> : null}
+      {error ? <p role="alert" className="notice notice-error mb-4">{error}</p> : null}
 
       <div className="card overflow-hidden mb-6">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-white bg-neutral-50/50">
+          <table className="table-flat">
+            <thead>
               <tr>
-                <th className="px-3 py-2 text-start font-medium text-neutral-900/70">Item</th>
-                <th className="px-3 py-2 text-start font-medium text-neutral-900/70">SKU</th>
-                <th className="px-3 py-2 text-end font-medium text-neutral-900/70">Ordered</th>
-                <th className="px-3 py-2 text-end font-medium text-neutral-900/70">Previously Received</th>
-                <th className="px-3 py-2 text-end font-medium text-neutral-900/90">Receiving Now</th>
+                <th>Item</th>
+                <th>SKU</th>
+                <th className="text-end">Ordered</th>
+                <th className="text-end">Previously Received</th>
+                <th className="text-end">Receiving Now</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white">
+            <tbody className="divide-y divide-neutral-100">
               {po.items.map(item => {
                 const remaining = Math.max(0, item.quantityOrdered - item.quantityReceived);
                 return (
                   <tr key={item.id} className="hover:bg-neutral-50/50">
-                    <td className="px-3 py-3">
+                    <td>
                       <div className="font-medium text-neutral-900">
                         {item.variant.product.translations[0]?.name || 'Unknown'}
                       </div>
@@ -116,10 +116,10 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
                         {[item.variant.size, item.variant.color].filter(Boolean).join(' / ')}
                       </div>
                     </td>
-                    <td className="px-3 py-3 text-neutral-900/80">{item.variant.sku}</td>
-                    <td className="px-3 py-3 text-end font-medium">{item.quantityOrdered}</td>
-                    <td className="px-3 py-3 text-end text-neutral-900/60">{item.quantityReceived}</td>
-                    <td className="px-3 py-3 text-end">
+                    <td className="text-neutral-900/80">{item.variant.sku}</td>
+                    <td className="text-end font-medium">{item.quantityOrdered}</td>
+                    <td className="text-end text-neutral-900/60">{item.quantityReceived}</td>
+                    <td className="text-end">
                       <input 
                         type="number" 
                         min="0"

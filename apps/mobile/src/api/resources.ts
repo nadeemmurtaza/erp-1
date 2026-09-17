@@ -12,7 +12,7 @@ import type {
   StitchingOptionGroup,
   WorkshopJob,
 } from './types';
-import type { Locale, StitchingStage } from '@yaseen/shared';
+import type { Locale, StitchingStage } from '@newax/shared';
 
 /**
  * Every call the app makes, named.

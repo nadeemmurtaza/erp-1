@@ -2,10 +2,12 @@
 
 import { use, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { cn } from '@/utils/cn';
-import { formatMoney } from '@yaseen/shared';
+import { formatDate, formatDateTime, formatMoney } from '@newax/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { ROUTES } from '@/constants/routes';
+import { Disclosure, Loading, PageHeader } from '@/components/ui';
+import { StatusBadge, statusLabel } from '@/components/common/status-badge';
+import { paymentProviderLabel } from '@/constants/payment-methods';
 
 interface OrderItem {
   id: string;
@@ -194,12 +196,12 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
   }
 
   if (busy && !order) {
-    return <p className="p-4 text-sm text-neutral-900/50">Loading order…</p>;
+    return <Loading label="Loading order" />;
   }
 
   if (error && !order) {
     return (
-      <p role="alert" className="card p-4 text-sm text-red-700">
+      <p role="alert" className="notice notice-error">
         {error}
       </p>
     );
@@ -207,68 +209,74 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
 
   if (!order) {
     return (
-      <p role="alert" className="card p-4 text-sm text-red-700">
+      <p role="alert" className="notice notice-error">
         Order not found.
       </p>
     );
   }
 
+  // Cancelling and returning are not "next steps" — they undo the order, and
+  // one of them puts stock back. They belong at the bottom with the rest of
+  // the destructive actions, not beside the button that moves it forward.
+  const transitions = NEXT_STATUS[order.status] ?? [];
+  const forward = transitions.filter((next) => next !== 'CANCELLED' && next !== 'RETURNED');
+  const undoing = transitions.filter((next) => next === 'CANCELLED' || next === 'RETURNED');
+
   return (
     <>
-      <Link href={ROUTES.admin.orders} className="mb-4 inline-block text-sm text-neutral-900/60 hover:text-neutral-900">
-        ← Orders
-      </Link>
-
-      <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <div className="mb-1 flex items-center gap-3">
-            <h1 className="text-xl font-semibold text-neutral-900">{order.number}</h1>
+      <PageHeader
+        context={
+          <Link href={ROUTES.admin.orders} className="hover:text-neutral-900">
+            ← Orders
+          </Link>
+        }
+        title={
+          <span className="flex items-center gap-3">
+            {order.number}
             <StatusBadge status={order.status} />
+          </span>
+        }
+        description={`${order.guestName ?? '—'} · ${order.guestPhone ?? '—'} · Placed ${formatDateTime(order.placedAt)}`}
+        action={
+          <div className="flex flex-wrap justify-end gap-2">
+            {forward.map((next) => (
+              <button
+                key={next}
+                type="button"
+                disabled={busy}
+                onClick={() => void advance(next)}
+                className="btn-primary"
+              >
+                {statusLabel(next)}
+              </button>
+            ))}
+            {order.status === 'READY_TO_SHIP' || order.status === 'SHIPPED' ? (
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => void addTracking()}
+                className="btn-secondary"
+              >
+                Record shipment
+              </button>
+            ) : null}
           </div>
-          <p className="text-sm text-neutral-900/60">
-            {order.guestName ?? '—'} · {order.guestPhone ?? '—'} · Placed{' '}
-            {new Date(order.placedAt).toLocaleString('en-PK')}
-          </p>
-        </div>
-
-        <div className="flex flex-wrap justify-end gap-2">
-          {(NEXT_STATUS[order.status] ?? []).map((next) => (
-            <button
-              key={next}
-              type="button"
-              disabled={busy}
-              onClick={() => void advance(next)}
-              className={cn(
-                'rounded px-3 py-1.5 text-sm font-medium',
-                next === 'CANCELLED' || next === 'RETURNED'
-                  ? 'text-red-700 hover:bg-red-50'
-                  : 'btn-primary',
-              )}
-            >
-              {label(next)}
-            </button>
-          ))}
-          {order.status === 'READY_TO_SHIP' || order.status === 'SHIPPED' ? (
-            <button type="button" disabled={busy} onClick={() => void addTracking()} className="btn-secondary">
-              Record shipment
-            </button>
-          ) : null}
-        </div>
-      </div>
+        }
+      />
 
       {error ? (
-        <p role="alert" className="card mb-4 whitespace-pre-line p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4 whitespace-pre-line">
           {error}
         </p>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-6 fold:grid-cols-2 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
-          <section className="card overflow-hidden">
-            <h2 className="border-b border-neutral-100 bg-neutral-50 px-4 py-3 text-sm font-semibold text-neutral-900">
+          <section className="overflow-hidden">
+            <h2 className="border-b border-neutral-100 bg-neutral-50 px-4 py-3 text-sm font-semibold uppercase tracking-wide text-neutral-900/50">
               Items
             </h2>
-            <ul className="divide-y divide-white">
+            <ul className="divide-y divide-neutral-100">
               {order.items.map((item) => (
                 <li key={item.id} className="p-4">
                   <div className="flex justify-between gap-4">
@@ -303,9 +311,9 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                       ) : null}
                       {item.stitchingJob ? (
                         <p className="mt-1 text-neutral-900/70">
-                          {item.stitchingJob.number} · {label(item.stitchingJob.stage)}
+                          {item.stitchingJob.number} · {statusLabel(item.stitchingJob.stage)}
                           {item.stitchingJob.dueAt
-                            ? ` · due ${new Date(item.stitchingJob.dueAt).toLocaleDateString('en-PK')}`
+                            ? ` · due ${formatDate(item.stitchingJob.dueAt)}`
                             : ''}
                         </p>
                       ) : null}
@@ -316,34 +324,16 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
             </ul>
           </section>
 
-          <section className="card p-4">
-            <h2 className="text-sm font-semibold text-neutral-900">History</h2>
-            <ol className="mt-3 space-y-3">
-              {order.statusEvents.map((event, index) => (
-                <li key={index} className="flex gap-3 text-sm">
-                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-accent-hover" />
-                  <span>
-                    <span className="font-medium text-neutral-900">{label(event.toStatus)}</span>
-                    <span className="ms-2 text-xs text-neutral-900/40">
-                      {new Date(event.createdAt).toLocaleString('en-PK')}
-                    </span>
-                    {event.note ? <span className="block text-xs text-neutral-900/60">{event.note}</span> : null}
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </section>
-
           {order.shipments.length > 0 ? (
             <section className="card p-4">
-              <h2 className="text-sm font-semibold text-neutral-900">Shipments</h2>
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-900/50">Shipments</h2>
               <ul className="mt-2 space-y-1 text-sm text-neutral-900/70">
                 {order.shipments.map((shipment) => (
                   <li key={shipment.id}>
                     {shipment.courier.toUpperCase()}
                     {shipment.trackingNumber ? ` · ${shipment.trackingNumber}` : ''}
                     <span className="ms-2 text-xs text-neutral-900/40">
-                      {new Date(shipment.createdAt).toLocaleString('en-PK')}
+                      {formatDateTime(shipment.createdAt)}
                     </span>
                   </li>
                 ))}
@@ -352,7 +342,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
           ) : null}
 
           {order.customerNote || order.staffNote || order.cancelReason ? (
-            <section className="card space-y-2 p-4 text-sm">
+            <section className="space-y-2 text-sm">
               {order.customerNote ? (
                 <p>
                   <span className="font-medium text-neutral-900">Customer note: </span>
@@ -377,7 +367,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
 
         <div className="space-y-6">
           <section className="card p-6">
-            <h2 className="mb-4 font-medium text-neutral-900">Summary</h2>
+            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-neutral-900/50">Summary</h2>
             <dl className="space-y-2 text-sm">
               <Row label="Items" value={formatMoney(order.itemsSubtotal)} />
               {order.stitchingSubtotal > 0 ? (
@@ -403,24 +393,13 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
           </section>
 
           <section className="card p-6">
-            <h2 className="mb-4 font-medium text-neutral-900">Payments</h2>
+            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-neutral-900/50">Payments</h2>
             <ul className="space-y-4">
               {order.payments.map((payment) => (
                 <li key={payment.id} className="border-b border-white pb-4 last:border-0 last:pb-0">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="font-medium text-neutral-900">{payment.provider}</span>
-                    <span
-                      className={cn(
-                        'rounded px-2 py-0.5 text-xs font-medium',
-                        payment.status === 'PAID' && 'bg-neutral-100 text-accent-hover',
-                        payment.status === 'REFUNDED' && 'bg-white text-neutral-900/60',
-                        payment.status === 'FAILED' && 'bg-red-50 text-red-700',
-                        !['PAID', 'REFUNDED', 'FAILED'].includes(payment.status) &&
-                          'bg-amber-600/20 text-amber-600',
-                      )}
-                    >
-                      {payment.status.toLowerCase().replace(/_/g, ' ')}
-                    </span>
+                    <span className="font-medium text-neutral-900">{paymentProviderLabel(payment.provider)}</span>
+                    <StatusBadge status={payment.status} />
                   </div>
                   <p className="mt-1 text-xs text-neutral-900/60">{formatMoney(payment.amount)}</p>
                   {payment.reference ? (
@@ -446,7 +425,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                     <p className="text-xs text-neutral-900/60">
                       Refunded {formatMoney(payment.refundAmount)}
                       {payment.refundedAt
-                        ? ` on ${new Date(payment.refundedAt).toLocaleDateString('en-PK')}`
+                        ? ` on ${formatDate(payment.refundedAt)}`
                         : ''}
                     </p>
                   ) : null}
@@ -480,8 +459,10 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
             </ul>
           </section>
 
-          <section className="card p-6">
-            <h2 className="mb-2 font-medium text-neutral-900">Delivering to</h2>
+          <section>
+            <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-neutral-900/50">
+              Delivering to
+            </h2>
             <address className="text-sm not-italic text-neutral-900/70">
               {order.shippingAddress.fullName}
               <br />
@@ -500,31 +481,52 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
           </section>
         </div>
       </div>
+
+      <Disclosure label={`History · ${order.statusEvents.length} ${order.statusEvents.length === 1 ? 'event' : 'events'}`}>
+        <ol className="space-y-3">
+          {order.statusEvents.map((event, index) => (
+            <li key={index} className="flex gap-3 text-sm">
+              <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-accent" />
+              <span>
+                <span className="font-medium text-neutral-900">{statusLabel(event.toStatus)}</span>
+                <span className="ms-2 text-xs text-neutral-900/40">
+                  {formatDateTime(event.createdAt)}
+                </span>
+                {event.note ? (
+                  <span className="block text-xs text-neutral-900/60">{event.note}</span>
+                ) : null}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </Disclosure>
+
+      {undoing.length > 0 ? (
+        <Disclosure label="Cancel or return this order">
+          <p className="mb-3 max-w-prose text-sm text-neutral-900/60">
+            Cancelling or returning puts the order&apos;s stock back. Neither can be undone
+            from here.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {undoing.map((next) => (
+              <button
+                key={next}
+                type="button"
+                disabled={busy}
+                onClick={() => void advance(next)}
+                className="btn-danger"
+              >
+                {statusLabel(next)}
+              </button>
+            ))}
+          </div>
+        </Disclosure>
+      ) : null}
     </>
   );
 }
 
-function label(status: string): string {
-  return status.charAt(0) + status.slice(1).toLowerCase().replace(/_/g, ' ');
-}
 
-function StatusBadge({ status }: { status: string }) {
-  return (
-    <span
-      className={cn(
-        'rounded px-2 py-0.5 text-xs font-medium',
-        status === 'DELIVERED' && 'bg-neutral-100 text-accent-hover',
-        status === 'CANCELLED' && 'bg-red-50 text-red-700',
-        status === 'RETURNED' && 'bg-red-50 text-red-700',
-        status === 'PENDING' && 'bg-white text-neutral-900/60',
-        !['DELIVERED', 'CANCELLED', 'RETURNED', 'PENDING'].includes(status) &&
-          'bg-neutral-50 text-accent-hover',
-      )}
-    >
-      {label(status)}
-    </span>
-  );
-}
 
 function Row({ label, value }: { label: string; value: string }) {
   return (

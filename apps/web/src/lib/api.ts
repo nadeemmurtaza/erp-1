@@ -6,36 +6,11 @@ import type {
   StorefrontProduct,
 } from '@/types/api';
 
-export const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
+import { ApiError, API_URL, request, toSearchParams } from './api-client';
 
-export class ApiError extends Error {
-  constructor(
-    readonly status: number,
-    message: string,
-    readonly body?: unknown,
-  ) {
-    super(message);
-    this.name = 'ApiError';
-  }
-}
-
-/** Turns a query object into a search string, dropping empties and flattening arrays. */
-export function toSearchParams(query: Record<string, unknown>): string {
-  const params = new URLSearchParams();
-
-  for (const [key, value] of Object.entries(query)) {
-    if (value === undefined || value === null || value === '') continue;
-    if (Array.isArray(value)) {
-      if (value.length > 0) params.set(key, value.join(','));
-    } else {
-      params.set(key, String(value));
-    }
-  }
-
-  const search = params.toString();
-  return search ? `?${search}` : '';
-}
+// Re-exported so the twelve modules importing these from '@/lib/api' keep
+// working; api-client.ts is where they are defined.
+export { ApiError, API_URL, toSearchParams };
 
 interface FetchOptions extends RequestInit {
   /** Seconds to cache the response for. 0 disables caching. */
@@ -47,36 +22,16 @@ interface FetchOptions extends RequestInit {
  * cached by Next and no token is ever involved — every endpoint it touches is
  * public.
  */
+/**
+ * Storefront fetch. Server components only, so responses can be cached by Next
+ * and no token is ever involved — every endpoint it touches is public.
+ *
+ * The only client that caches: 60s by default, which is why `revalidate` lives
+ * on the options rather than being a shared concern.
+ */
 export async function apiFetch<T>(path: string, options: FetchOptions = {}): Promise<T> {
   const { revalidate = 60, ...init } = options;
-
-  const response = await fetch(`${API_URL}${path}`, {
-    ...init,
-    headers: { Accept: 'application/json', ...init.headers },
-    next: revalidate > 0 ? { revalidate } : undefined,
-    cache: revalidate > 0 ? undefined : 'no-store',
-  });
-
-  if (!response.ok) {
-    let body: unknown;
-    try {
-      body = await response.json();
-    } catch {
-      body = await response.text().catch(() => undefined);
-    }
-
-    const message =
-      (body as { message?: string | string[] } | undefined)?.message ??
-      `Request failed with ${response.status}`;
-
-    throw new ApiError(
-      response.status,
-      Array.isArray(message) ? message.join(', ') : String(message),
-      body,
-    );
-  }
-
-  return (await response.json()) as T;
+  return request<T>(path, { ...init, revalidate });
 }
 
 // --- Storefront endpoints ---------------------------------------------------

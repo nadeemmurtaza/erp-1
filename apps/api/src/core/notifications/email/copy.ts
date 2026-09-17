@@ -1,4 +1,5 @@
-import type { Locale } from '@yaseen/shared';
+import { BRAND } from '@newax/shared';
+import type { Locale } from '@newax/shared';
 
 /**
  * Email wording, in both languages the storefront ships.
@@ -199,7 +200,7 @@ const en: EmailCopy = {
     cta: 'Try again',
   },
   welcome: {
-    subject: 'Welcome to Yaseen',
+    subject: `Welcome to ${BRAND.identity.shortName}`,
     heading: 'Your account is ready',
     intro: (name) =>
       `Hi ${name}, your account is ready. You can now save your measurements, track orders and check out faster next time.`,

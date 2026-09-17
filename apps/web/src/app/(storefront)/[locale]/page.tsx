@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
-import type { Locale } from '@yaseen/shared';
+import type { Locale } from '@newax/shared';
 import { ProductCard } from '@/components/storefront/product-card';
 import { Link } from '@/i18n/navigation';
 import { getCategories, getProducts } from '@/lib/api';
@@ -62,8 +62,8 @@ export default async function HomePage({
     // nothing in the shared locale layout reserves space for it yet, so this
     // page's own root absorbs the clearance until that lands at the layout
     // level. md:pb-0 drops it the moment the pill itself is hidden.
-    <div className="pb-24 md:pb-0">
-      <section className="border-b border-neutral-200 bg-neutral-50">
+    <div>
+      <section className="border-b border-neutral-100 bg-neutral-50">
         <div className="container-page py-10 sm:py-14 lg:py-24">
           <div
             className={`grid gap-8 lg:items-center lg:gap-16 ${heroImage ? 'lg:grid-cols-2' : ''}`}
@@ -78,13 +78,13 @@ export default async function HomePage({
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-10">
                 <Link
                   href={ROUTES.storefront.shopUnstitched}
-                  className="sf-btn-primary flex w-full px-8 py-3.5 text-sm font-semibold sm:w-auto sm:text-base"
+                  className="btn-primary flex w-full px-8 py-3.5 text-sm font-semibold sm:w-auto sm:text-base"
                 >
                   {t('shopUnstitched')}
                 </Link>
                 <Link
                   href={ROUTES.storefront.shopReadyToWear}
-                  className="sf-btn-secondary flex w-full px-8 py-3.5 text-sm font-semibold sm:w-auto sm:text-base"
+                  className="btn-secondary flex w-full px-8 py-3.5 text-sm font-semibold sm:w-auto sm:text-base"
                 >
                   {t('shopReady')}
                 </Link>
@@ -126,7 +126,7 @@ export default async function HomePage({
               <li className="shrink-0 snap-start">
                 <Link
                   href={ROUTES.storefront.shop}
-                  className="inline-flex h-11 items-center gap-2 rounded-full bg-neutral-900 ps-3 pe-5 text-sm font-medium text-white transition-colors duration-200 hover:bg-neutral-700"
+                  className="inline-flex h-11 items-center gap-2 rounded bg-neutral-900 ps-3 pe-5 text-sm font-medium text-white transition-colors duration-200 hover:bg-neutral-700"
                 >
                   <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/15" aria-hidden="true">
                     <AllCategoriesIcon />
@@ -139,7 +139,7 @@ export default async function HomePage({
                 <li key={category.id} className="shrink-0 snap-start">
                   <Link
                     href={`/shop?category=${category.slug}`}
-                    className="inline-flex h-11 items-center gap-2 rounded-full border border-neutral-200 bg-white ps-2 pe-5 text-sm font-medium text-neutral-700 transition-colors duration-200 hover:border-neutral-900 hover:text-neutral-900"
+                    className="inline-flex h-11 items-center gap-2 rounded border border-neutral-100 bg-white ps-2 pe-5 text-sm font-medium text-neutral-700 transition-colors duration-200 hover:border-neutral-900 hover:text-neutral-900"
                   >
                     <span className="relative flex h-7 w-7 shrink-0 overflow-hidden rounded-full bg-neutral-100">
                       {category.imageUrl ? (
@@ -190,7 +190,7 @@ export default async function HomePage({
         </div>
       </section>
 
-      <section className="border-y border-neutral-200 bg-white">
+      <section className="border-y border-neutral-100 bg-white">
         <div className="container-page py-10 sm:py-14 lg:py-16">
           <AnimatedSection direction="up">
             <h2 className="font-display text-xl font-semibold text-neutral-900">{t('howItWorks')}</h2>

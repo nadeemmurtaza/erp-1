@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import type { ImportSummary } from '@/types/api';
+import { exportFilename } from '@/constants/downloads';
 
 /**
  * Bulk catalogue upload.
@@ -30,7 +31,7 @@ export default function AdminImportPage() {
       const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
       const anchor = document.createElement('a');
       anchor.href = url;
-      anchor.download = 'yaseen-products-template.csv';
+      anchor.download = exportFilename('products-template');
       anchor.click();
       URL.revokeObjectURL(url);
     } catch (cause) {
@@ -65,7 +66,7 @@ export default function AdminImportPage() {
         the rows it already created, so a weekly stock file is safe to run repeatedly.
       </p>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-6 fold:grid-cols-2">
         <div className="card p-4">
           <h2 className="text-sm font-semibold text-neutral-900">1. Start from the template</h2>
           <p className="mt-1 text-sm text-neutral-900/60">
@@ -106,7 +107,7 @@ export default function AdminImportPage() {
           </button>
 
           {error ? (
-            <p role="alert" className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p role="alert" className="notice notice-error mt-4">
               {error}
             </p>
           ) : null}
@@ -137,7 +138,7 @@ export default function AdminImportPage() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white">
+              <tbody className="divide-y divide-neutral-100">
                 {summary.results.map((result) => (
                   <tr key={`${result.row}-${result.sku}`}>
                     <td className="px-4 py-2 tabular-nums text-neutral-900/50">{result.row}</td>

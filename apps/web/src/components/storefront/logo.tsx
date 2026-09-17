@@ -19,13 +19,15 @@
  * against other content owe it a `translate-y-[16%]` — a percentage, so it
  * holds at every size the logo is set in.
  */
+import { BRAND } from '@newax/shared';
+
 export function Logo(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       viewBox="0 0 1094.778894 281.363259"
       fill="currentColor"
       role="img"
-      aria-label="Yaseen"
+      aria-label={BRAND.identity.shortName}
       {...props}
     >
       <g transform="translate(-44.702123,324.757668) scale(0.100000,-0.100000)">

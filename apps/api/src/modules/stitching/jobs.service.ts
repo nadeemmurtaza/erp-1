@@ -1,3 +1,6 @@
+import { documentPrefix } from '../../core/settings/document-prefix';
+import { documentNumber } from '../../core/settings/document-number';
+import { AppConfigService } from '../../core/config/app-config.service';
 import {
   BadRequestException,
   Injectable,
@@ -5,7 +8,7 @@ import {
   NotFoundException,
   OnModuleInit,
 } from '@nestjs/common';
-import { getPersonFullName, nextStage, previousStage, STITCHING_STAGES } from '@yaseen/shared';
+import { getPersonFullName, nextStage, previousStage, STITCHING_STAGES } from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { assertCanManage } from '../../core/auth/ownership.guard';
 import { DomainEvent } from '../../core/events/domain-events';
@@ -55,6 +58,7 @@ export class StitchingJobsService implements OnModuleInit {
     private readonly audit: AuditService,
     private readonly storage: StorageService,
     private readonly settings: SettingsService,
+    private readonly config: AppConfigService,
     private readonly enrichment: EntityEnrichmentRegistry,
   ) {}
 
@@ -196,7 +200,7 @@ export class StitchingJobsService implements OnModuleInit {
     const job = await this.prisma.$transaction(async (tx) => {
       const created = await tx.stitchingJob.create({
         data: {
-          number: await nextJobNumber(tx),
+          number: await nextJobNumber(tx, this.settings, this.config),
           orderItemId,
           garmentTypeId: garmentType.id,
           measurementSnapshot: item.measurementSnapshot as Prisma.InputJsonValue,
@@ -376,9 +380,9 @@ export class StitchingJobsService implements OnModuleInit {
           jobNumber: job.number,
           fromStage: job.stage,
           toStage,
-          assignedTailorId: (job as any).assignedTailorId,
+          assignedTailorId: job.assignedTailorId,
           orderId: orderItemForEvent?.orderId ?? null,
-          stitchingOrderId: (job as any).stitchingOrderId,
+          stitchingOrderId: job.stitchingOrderId,
         },
         tx,
       );
@@ -410,8 +414,23 @@ export class StitchingJobsService implements OnModuleInit {
 
     const tailors = await this.prisma.user.findMany({
       where: { role: 'TAILOR', isActive: true },
-      select: { id: true, firstName: true, lastName: true,  },
+      select: { id: true, firstName: true, lastName: true },
     });
+
+    /*
+     * Fetched separately and joined here, because TailorProfile has a unique
+     * userId but no Prisma `@relation` to User — so it cannot be `include`d,
+     * and the `(tailor as any).tailorProfile` this replaces was reading a
+     * property that never existed on the row. It was always undefined, which
+     * the `?? 0` then turned into a capacity of zero for every tailor, and
+     * the workload bars on the stitching page divide by that figure. Every
+     * bar has been rendering empty regardless of the real workload.
+     */
+    const profiles = await this.prisma.tailorProfile.findMany({
+      where: { userId: { in: tailors.map((tailor) => tailor.id) } },
+      select: { userId: true, displayName: true, capacityPerWeek: true },
+    });
+    const profileByUser = new Map(profiles.map((profile) => [profile.userId, profile]));
 
     return {
       byStage: STITCHING_STAGES.map((stage) => ({
@@ -420,8 +439,8 @@ export class StitchingJobsService implements OnModuleInit {
       })),
       tailors: tailors.map((tailor) => ({
         id: tailor.id,
-        name: (tailor as any).tailorProfile?.displayName ?? getPersonFullName(tailor),
-        capacityPerWeek: (tailor as any).tailorProfile?.capacityPerWeek ?? 0,
+        name: profileByUser.get(tailor.id)?.displayName ?? getPersonFullName(tailor),
+        capacityPerWeek: profileByUser.get(tailor.id)?.capacityPerWeek ?? 0,
         openJobs:
           byTailor.find((row) => row.assignedTailorId === tailor.id)?._count._all ?? 0,
       })),
@@ -445,9 +464,15 @@ export class StitchingJobsService implements OnModuleInit {
  * each call is its own atomic step, so sequential calls on the same
  * transaction still hand out distinct, gapless-under-success numbers.
  */
-export async function nextJobNumber(tx: Prisma.TransactionClient): Promise<string> {
+export async function nextJobNumber(
+  tx: Prisma.TransactionClient,
+  settings: SettingsService,
+  config: AppConfigService,
+): Promise<string> {
   const year = new Date().getFullYear();
-  const prefix = `JOB-${year}-`;
+  // The prefix is a Setting, so a shop can match paperwork it already
+  // numbers its own way. See core/settings/document-prefix.ts.
+  const prefix = await documentPrefix(settings, 'stitchingJob');
 
   const [{ counter }] = await tx.$queryRaw<Array<{ counter: number }>>`
     INSERT INTO "StitchingJobNumberCounter" ("year", "counter") VALUES (${year}, 1)
@@ -455,7 +480,7 @@ export async function nextJobNumber(tx: Prisma.TransactionClient): Promise<strin
     RETURNING "counter"
   `;
 
-  return `${prefix}${String(counter).padStart(4, '0')}`;
+  return documentNumber(config, prefix, year, counter);
 }
 
 /** Promised dates skip Sundays, the one day the workshop is shut. */

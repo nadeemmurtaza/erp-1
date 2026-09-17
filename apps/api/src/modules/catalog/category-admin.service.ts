@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { DEFAULT_LOCALE, slugifyWithFallback, uniqueSlug } from '@yaseen/shared';
+import { DEFAULT_LOCALE, slugifyWithFallback, uniqueSlug } from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { UpsertCategoryDto } from './dto/category.dto';

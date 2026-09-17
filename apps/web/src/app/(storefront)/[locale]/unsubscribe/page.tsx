@@ -36,7 +36,7 @@ export default function UnsubscribePage() {
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm text-center">
-        <h1 className="text-2xl font-semibold text-accent-hover">Email preferences</h1>
+        <h1 className="text-2xl font-semibold text-neutral-900">Email preferences</h1>
 
         {status === 'checking' ? (
           <p className="mt-6 text-sm text-neutral-900/60">Updating your preferences…</p>
@@ -46,7 +46,7 @@ export default function UnsubscribePage() {
             you — those aren&rsquo;t marketing.
           </p>
         ) : (
-          <p className="mt-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">
+          <p className="notice notice-error mt-6">
             {error ?? 'This unsubscribe link is missing its details.'}
           </p>
         )}

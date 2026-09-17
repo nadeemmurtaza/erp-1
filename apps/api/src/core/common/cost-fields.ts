@@ -1,4 +1,4 @@
-import type { PermissionKey } from '@yaseen/shared';
+import type { PermissionKey } from '@newax/shared';
 import type { AuthenticatedUser } from '../auth/auth.constants';
 
 /**

@@ -3,9 +3,10 @@ import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
+import { THEME_COLORS } from '@newax/shared';
 import * as resources from './api/resources';
 
-const TOKEN_KEY = 'yaseen.pushToken';
+const TOKEN_KEY = 'newax.pushToken';
 
 /**
  * Push notifications, for watching a garment being made.
@@ -32,7 +33,7 @@ export async function registerForPush(): Promise<string | null> {
     await Notifications.setNotificationChannelAsync('stitching', {
       name: 'Your garments',
       importance: Notifications.AndroidImportance.DEFAULT,
-      lightColor: '#0f8fa3',
+      lightColor: THEME_COLORS.accent.DEFAULT,
     });
   }
 
@@ -48,7 +49,7 @@ export async function registerForPush(): Promise<string | null> {
     token,
     platform: Platform.OS === 'ios' ? 'IOS' : 'ANDROID',
     appVersion: Constants.expoConfig?.version ?? undefined,
-    locale: (await AsyncStorage.getItem('yaseen.locale')) ?? undefined,
+    locale: (await AsyncStorage.getItem('newax.locale')) ?? undefined,
   });
 
   return token;

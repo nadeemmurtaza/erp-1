@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { use, useCallback, useEffect, useState } from 'react';
-import { formatMoney, toMinor } from '@yaseen/shared';
+import { formatDate, formatMoney, toMinor } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { StageBadge } from '@/components/admin/stage-badge';
 import { ROUTES } from '@/constants/routes';
+import { Loading } from '@/components/ui';
 import {
   BOOKING_STATUS_LABELS,
   fieldLabel,
@@ -58,11 +59,11 @@ export default function BookingDetailPage({
 
   if (!booking) {
     return error ? (
-      <p role="alert" className="card p-4 text-sm text-red-700">
+      <p role="alert" className="notice notice-error">
         {error}
       </p>
     ) : (
-      <p className="text-sm text-neutral-900/50">Loading…</p>
+      <Loading />
     );
   }
 
@@ -83,19 +84,19 @@ export default function BookingDetailPage({
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 whitespace-pre-line p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4 whitespace-pre-line">
           {error}
         </p>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-6 fold:grid-cols-2 lg:grid-cols-3">
         <section className="card p-4">
           <h2 className="mb-3 text-sm font-semibold text-neutral-900">The fabric</h2>
           <p className="text-sm text-neutral-900/70">{booking.fabricNotes ?? 'No notes.'}</p>
 
           {booking.fabricReceivedAt ? (
             <p className="mt-3 text-sm text-accent-hover">
-              Logged in on {new Date(booking.fabricReceivedAt).toLocaleDateString('en-PK')}
+              Logged in on {formatDate(booking.fabricReceivedAt)}
             </p>
           ) : (
             <div className="mt-3">
@@ -164,7 +165,7 @@ export default function BookingDetailPage({
 
           {booking.promisedAt ? (
             <p className="mt-4 text-sm text-neutral-900/60">
-              Promised for {new Date(booking.promisedAt).toLocaleDateString('en-PK')}
+              Promised for {formatDate(booking.promisedAt)}
             </p>
           ) : null}
         </section>

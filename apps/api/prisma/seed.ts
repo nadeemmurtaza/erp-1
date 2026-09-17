@@ -8,7 +8,7 @@ import {
   slugify,
   toMinor,
   type PermissionKey,
-} from '@yaseen/shared';
+} from '@newax/shared';
 import { PrismaClient, type Prisma, type UserRole } from '../src/generated/prisma';
 
 config({ path: ['.env', '../../.env'], quiet: true });
@@ -19,6 +19,7 @@ import { AuditService } from '../src/core/audit/audit.service';
 import { InventoryService } from '../src/modules/inventory/inventory.service';
 import { PrismaService } from '../src/core/prisma/prisma.service';
 import { StockIntakeRegistry } from '../src/core/extension-points/stock-intake.registry';
+import { CHART_OF_ACCOUNTS } from '../src/modules/accounting/chart-of-accounts';
 
 const prisma = new PrismaClient();
 const prismaService = prisma as unknown as PrismaService;
@@ -39,6 +40,8 @@ async function main(): Promise<void> {
 
   await seedPermissions();
   const users = await seedUsers();
+  await seedRoles();
+  await seedChartOfAccounts();
   const garments = await seedGarmentTypes();
   await seedGarmentCatalogExpansion(garments);
   await seedStitchingOptions(garments);
@@ -60,7 +63,7 @@ async function main(): Promise<void> {
 /**
  * Loads the permission catalog and, for any permission that has never been
  * granted to anyone, applies its default role grants from
- * ROLE_PERMISSION_SEED (@yaseen/shared).
+ * ROLE_PERMISSION_SEED (@newax/shared).
  *
  * The label/category upsert always runs — that's just display metadata. The
  * grant step deliberately does not: once a permission has at least one
@@ -96,6 +99,85 @@ async function seedPermissions(): Promise<void> {
 
       await prisma.rolePermission.create({ data: { role, permissionId } });
     }
+  }
+}
+
+/**
+ * One-time bootstrap of the custom-roles system onto the old fixed-enum
+ * one: creates a real `Role` row for each of the four `UserRole` enum
+ * values, copies each one's *current* `RolePermission` grants (not the
+ * static `ROLE_PERMISSION_SEED` constant — a deployment may have hand-edited
+ * these from /admin/settings already, and the backfill must carry that
+ * forward, not reset it), and assigns every existing user the `Role`
+ * matching their current `role` column.
+ *
+ * Strictly one-time: if any `Role` row already exists — from this having
+ * run before, or from a super admin having created a custom role since —
+ * this returns immediately and touches nothing. There is no "re-sync"
+ * step, on purpose: once roles are real, editable rows, a later seed run
+ * asserting anything about them would fight whatever an admin has since
+ * done, the same reasoning `seedPermissions()` already applies to grants.
+ */
+async function seedRoles(): Promise<void> {
+  const alreadySeeded = await prisma.role.count();
+  if (alreadySeeded > 0) return;
+
+  console.warn('Seeding roles (one-time: migrating the fixed role enum into real Role rows)…');
+
+  const ROLE_DISPLAY: Record<UserRole, { name: string; description: string }> = {
+    CUSTOMER: { name: 'Customer', description: 'A storefront shopper — the default for every signup.' },
+    TAILOR: { name: 'Tailor', description: 'Works the stitching queue.' },
+    STAFF: { name: 'Staff', description: 'Day-to-day back-office operations.' },
+    ADMIN: { name: 'Admin', description: 'Full back-office access, including settings and permissions.' },
+  };
+
+  const roleIdByEnum = new Map<UserRole, string>();
+
+  for (const enumRole of Object.keys(ROLE_DISPLAY) as UserRole[]) {
+    const { name, description } = ROLE_DISPLAY[enumRole];
+    const role = await prisma.role.create({ data: { name, description } });
+    roleIdByEnum.set(enumRole, role.id);
+
+    const currentGrants = await prisma.rolePermission.findMany({ where: { role: enumRole } });
+    if (currentGrants.length > 0) {
+      await prisma.roleGrant.createMany({
+        data: currentGrants.map((grant) => ({ roleId: role.id, permissionId: grant.permissionId })),
+        skipDuplicates: true,
+      });
+    }
+  }
+
+  const users = await prisma.user.findMany({ select: { id: true, role: true } });
+  if (users.length > 0) {
+    await prisma.userRoleAssignment.createMany({
+      data: users.map((user) => ({ userId: user.id, roleId: roleIdByEnum.get(user.role)! })),
+      skipDuplicates: true,
+    });
+  }
+
+  console.warn(`  Migrated ${users.length} user(s) onto the new Role system.`);
+}
+
+/**
+ * Seeds the six accounts the posting rules (WO-19.2) resolve by code —
+ * `chart-of-accounts.ts`'s `CHART_OF_ACCOUNTS`. Runs unconditionally, the
+ * same as every other reference-data seed here, even when `accounting` is
+ * off in MODULES: the rows are inert until a posting rule looks one up, and
+ * seeding them only on toggle-on would mean the first sale after turning
+ * accounting on has nothing to post to.
+ *
+ * Only `name` is re-asserted on a re-run — never `type`/`isBank`/`isControl`,
+ * which are structural and, once an accounts-admin screen exists, editable —
+ * the same "label always upserts, structure never gets reset" split
+ * `seedPermissions()` already uses for grants.
+ */
+async function seedChartOfAccounts(): Promise<void> {
+  for (const account of CHART_OF_ACCOUNTS) {
+    await prisma.account.upsert({
+      where: { code: account.code },
+      update: { name: account.name },
+      create: account,
+    });
   }
 }
 

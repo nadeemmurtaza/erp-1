@@ -6,6 +6,25 @@ model Supplier {
   email        String?
   address      String?
   city         String?
+  /// ISO 3166-1 alpha-2, e.g. "PK", "CN". Null for a domestic supplier whose
+  /// country was never recorded before this field existed (RETAIL-ERP.md R16).
+  country      String?
+  /// ISO 4217 — the currency their bills are raised in. Defaults to the
+  /// deployment's own base currency; only an international supplier's bills
+  /// actually carry FX (see SupplierBill.fxRateScaled).
+  currency     String   @default("PKR")
+  /// Their tax registration number — NTN, TRN, VAT id, whatever the
+  /// jurisdiction calls it. Free text: the label is locale policy, not a
+  /// column (see brand.ts), and a supplier's own paperwork is what the
+  /// bookkeeper reads regardless of what we'd call it.
+  taxId        String?
+  /// Free text: "FOB Shanghai", "DDP", "EXW" — customs/shipping terms for an
+  /// international supplier. Display-only today, no INCOTERMS enum.
+  incoterms    String?
+  /// True marks a supplier whose bills need the FX posting rules (WO-19.3) —
+  /// distinct from `currency !== base`, since a shop may quote a domestic
+  /// supplier in USD without customs/duty being involved at all.
+  isInternational Boolean @default(false)
   /// Free text: "30 days net", "advance", "on delivery".
   paymentTerms String?
   /// Typical days from order to delivery. Feeds reorder suggestions.
@@ -161,8 +180,25 @@ model SupplierBill {
   supplierId      String
   purchaseOrderId String?
   reference       String?
+  /// In `currency` below — the supplier's own invoiced amount, not
+  /// necessarily the base currency (RETAIL-ERP.md R16).
   amount          Int
+  /// Cumulative, in `currency` below — the same unit as `amount`, so
+  /// "amount - amountPaid" is always the outstanding balance in the bill's
+  /// own currency without a conversion.
   amountPaid      Int                @default(0)
+  /// ISO 4217. Defaults to the deployment's own base currency; set from the
+  /// supplier's own `currency` when raised.
+  currency        String             @default("PKR")
+  /// rate * 1_000_000 (House Rule 5 / R16) at the moment this bill was
+  /// raised — the "booked" rate a later payment's settlement rate is
+  /// compared against to post a realised FX gain/loss. 1_000_000 for a
+  /// base-currency bill; never re-derived once set (House Rule 7).
+  fxRateScaled    Int                @default(1000000)
+  /// `amount` converted to the base currency at `fxRateScaled`, computed
+  /// once at creation (`convertToBase`, @newax/shared) — what actually
+  /// posts to Accounts Payable (posting-rules.subscriber.ts).
+  baseAmountMinor Int
   status          SupplierBillStatus @default(UNPAID)
   issuedAt        DateTime           @default(now())
   dueAt           DateTime?

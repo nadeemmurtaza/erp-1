@@ -1,4 +1,4 @@
-import { THEME_COLORS } from '@yaseen/shared';
+import { THEME_COLORS, THEME_RADII, THEME_TYPE } from '@newax/shared';
 
 /**
  * The app's colours and spacing, matching the website.
@@ -25,18 +25,40 @@ export const theme = {
     sand: THEME_COLORS.neutral[50],
     sandDeep: THEME_COLORS.neutral[100],
     line: THEME_COLORS.neutral[200],
-    surface: '#ffffff',
+    surface: THEME_COLORS.white,
     danger: '#b91c1c', // Tailwind red-700
     dangerSoft: '#fef2f2', // Tailwind red-50
   },
   space: (units: number) => units * 4,
-  radius: { sm: 6, md: 10, lg: 16, pill: 999 },
+  /*
+   * Same scale the website uses, imported rather than restated. These were
+   * 6/10/16 while web had gone to 2/3, so the app read as visibly rounder
+   * than the site it belongs to — one product, two shapes. `pill` is not a
+   * radius choice: it is how a circle is spelled, and it does not move when
+   * the sharpness does.
+   */
+  radius: {
+    sm: THEME_RADII.sharp,
+    md: THEME_RADII.sharp,
+    lg: THEME_RADII.lg,
+    pill: THEME_RADII.pill,
+  },
+  /*
+   * Same scale the website uses, imported rather than picked again. These
+   * were 11/13/15/17/22 against web's 12/14/16/20/24 — every step
+   * disagreed, and nobody had decided that. Moving up to meet web is the
+   * safe direction: a 16px body is what both iOS and Android recommend,
+   * and it is what the site already serves a phone.
+   *
+   * lineHeight is set explicitly because React Native does not derive one,
+   * and Nastaliq descenders collide without it.
+   */
   text: {
-    title: { fontSize: 22, fontWeight: '600' as const },
-    heading: { fontSize: 17, fontWeight: '600' as const },
-    body: { fontSize: 15 },
-    small: { fontSize: 13 },
-    tiny: { fontSize: 11 },
+    title: { fontSize: THEME_TYPE.title.size, lineHeight: THEME_TYPE.title.line, fontWeight: '600' as const },
+    heading: { fontSize: THEME_TYPE.heading.size, lineHeight: THEME_TYPE.heading.line, fontWeight: '600' as const },
+    body: { fontSize: THEME_TYPE.body.size, lineHeight: THEME_TYPE.body.line },
+    small: { fontSize: THEME_TYPE.small.size, lineHeight: THEME_TYPE.small.line },
+    tiny: { fontSize: THEME_TYPE.tiny.size, lineHeight: THEME_TYPE.tiny.line },
   },
 };
 

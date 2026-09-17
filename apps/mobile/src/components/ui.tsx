@@ -9,7 +9,7 @@ import {
   type TextInputProps,
   type ViewStyle,
 } from 'react-native';
-import { formatMoney, type Locale } from '@yaseen/shared';
+import { formatMoney, type Locale } from '@newax/shared';
 import { useI18n } from '../i18n';
 import { theme } from '../theme';
 
@@ -93,7 +93,7 @@ export function Button({
       ]}
     >
       {busy ? (
-        <ActivityIndicator color={variant === 'primary' ? '#fff' : theme.color.brand} />
+        <ActivityIndicator color={variant === 'primary' ? theme.color.surface : theme.color.brand} />
       ) : (
         <Text
           style={[
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
   buttonPressed: { opacity: 0.85 },
   buttonDisabled: { opacity: 0.45 },
   buttonLabel: { ...theme.text.body, fontWeight: '600', color: theme.color.brand },
-  buttonLabelPrimary: { color: '#ffffff' },
+  buttonLabelPrimary: { color: theme.color.surface },
   buttonLabelDanger: { color: theme.color.danger },
 
   field: { marginBottom: theme.space(3) },
@@ -296,5 +296,5 @@ const styles = StyleSheet.create({
   },
   chipSelected: { backgroundColor: theme.color.brand },
   chipLabel: { ...theme.text.small, color: theme.color.ink },
-  chipLabelSelected: { color: '#ffffff', fontWeight: '600' },
+  chipLabelSelected: { color: theme.color.surface, fontWeight: '600' },
 });

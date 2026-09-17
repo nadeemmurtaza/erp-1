@@ -7,7 +7,7 @@
  * worth reviewing. Generated locally rather than fetched, so a fresh clone
  * builds offline and reproducibly.
  *
- * Run: pnpm --filter @yaseen/web placeholders
+ * Run: pnpm --filter @newax/web placeholders
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';

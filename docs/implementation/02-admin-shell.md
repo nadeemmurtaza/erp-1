@@ -67,7 +67,7 @@ Renders the exact markup pages use today so nothing shifts visually.
 Every list currently renders a bare "No results" or nothing at all.
 
 **`money.tsx`** — `<Money value={349900} />` → `Rs 3,499`. Wraps `formatMoney()`
-from `@yaseen/shared`. **After this exists, `/100` must never appear in a
+from `@newax/shared`. **After this exists, `/100` must never appear in a
 component again.** Add an ESLint rule or a grep check in CI if you can.
 
 **`status-badge.tsx`** — replaces the local `StatusBadge` helpers in
@@ -225,7 +225,7 @@ Do this:
    build error.
 2. Convert all four call sites.
 3. Delete the local `ADMIN_LOCKED` array at `users/[id]/page.tsx:8` and import
-   `ADMIN_LOCKED_PERMISSIONS` from `@yaseen/shared`.
+   `ADMIN_LOCKED_PERMISSIONS` from `@newax/shared`.
 4. Add a lint rule or CI grep banning `permissions.includes(` in `apps/web`.
 
 ---

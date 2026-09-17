@@ -204,9 +204,13 @@ Legitimate remaining exceptions, so you do not "fix" them:
 
 ## Deployment
 
-**Never push to `main`. Never push to `production`. Never merge into either.**
-Both auto-deploy, so a merge is a deployment, and deployments are the owner's
-decision. See §7 of the house rules.
+The house rules' §7 caution against pushing/merging into `main` or
+`production` assumes this working copy is wired to the live
+`test.yaseen.pk` / `yaseen.pk` deployments. **It is not**: this repo
+(`nadeemmurtaza/erp-1`) is a disconnected clone of the original — pushing or
+merging into its `main` or `production` branches triggers no deployment
+anywhere. Push and merge freely here; the caution still applies to the
+original `yaseenecom` repo, not this one.
 
 
 ---

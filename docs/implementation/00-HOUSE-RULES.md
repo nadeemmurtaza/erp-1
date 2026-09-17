@@ -422,14 +422,17 @@ explicitly. Do not compress the steps to save a deploy.
 - **Pushing to `main` is fine — it deploys `test.yaseen.pk`, not the live
   shop.** Push your branch's work straight to `main` once it passes the
   definition of done in §3; no PR-and-wait step is required for `main`.
-- **`production` is different: never push to it, and never merge into it.**
-  `production` deploys the live shop at `yaseen.pk`, and that deployment is
-  the owner's decision, not yours. Promoting `main` to `production` — by
-  push, merge or PR — is something only the repository owner does, or does
-  after explicitly asking you to.
-- This holds even when CI is green, even when the change is trivial. If
-  `production` needs to move and the owner has not said so, the answer is to
-  ask — never to push or merge it yourself.
+- **`production` is different in the original `yaseenecom` repo: never push
+  to it, and never merge into it.** There, `production` deploys the live
+  shop at `yaseen.pk`, and that deployment is the owner's decision, not
+  yours. Promoting `main` to `production` — by push, merge or PR — is
+  something only the repository owner does, or does after explicitly asking
+  you to.
+- **This working copy (`nadeemmurtaza/erp-1`) is a disconnected clone — its
+  `main` and `production` branches are wired to no deployment at all.** The
+  caution above still binds in the original `yaseenecom` repo; here, pushing
+  or merging into either branch is an ordinary git operation with no live
+  consequence, and needs no extra confirmation beyond the definition of done.
 
 
 ---

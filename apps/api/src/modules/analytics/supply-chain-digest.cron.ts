@@ -4,6 +4,8 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { NotificationsService } from '../../core/notifications/notifications.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey, StoreSettings } from '../../core/settings/settings.defaults';
+import { DomainEvent, type SupplierDigestReadyPayload } from '../../core/events/domain-events';
+import { EventBusService } from '../../core/events/event-bus.service';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -26,6 +28,7 @@ export class SupplyChainDigestCron {
     private readonly prisma: PrismaService,
     private readonly notifications: NotificationsService,
     private readonly settings: SettingsService,
+    private readonly events: EventBusService,
   ) {}
 
   // --- 1. Supplier stock & sales velocity digest (nightly, external) -------
@@ -46,9 +49,9 @@ export class SupplyChainDigestCron {
     let sent = 0;
     for (const supplier of suppliers) {
       const email = supplier.party?.email ?? supplier.email;
-      if (!email) continue;
 
       const lines: string[] = [];
+      const items: SupplierDigestReadyPayload['items'] = [];
       for (const variant of supplier.preferredVariants) {
         const velocity = await this.salesVelocity(variant.id, now);
         const projectedDaysToReorderPoint =
@@ -63,6 +66,8 @@ export class SupplyChainDigestCron {
 
         if (!actionNeeded) continue;
 
+        items.push({ sku: variant.sku, stock: variant.stock, soldToday: velocity.today, soldThisWeek: velocity.week, actionNeeded });
+
         const days = projectedDaysToReorderPoint !== null ? Math.max(0, Math.round(projectedDaysToReorderPoint)) : 0;
         lines.push(
           `${variant.sku} — Stock: ${variant.stock}. Sold today: ${velocity.today}. Sold this week: ${velocity.week}. ` +
@@ -70,7 +75,13 @@ export class SupplyChainDigestCron {
         );
       }
 
-      if (lines.length === 0) continue;
+      if (items.length === 0) continue;
+
+      // A connected TradingPartner gets this structured, whether or not the
+      // supplier also has an email on file — the two channels are independent.
+      await this.events.publish(DomainEvent.SupplierDigestReady, { supplierId: supplier.id, items });
+
+      if (!email) continue;
 
       await this.notifications.send({
         template: 'purchasing.supplier_digest',

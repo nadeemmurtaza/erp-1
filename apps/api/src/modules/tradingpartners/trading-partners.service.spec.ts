@@ -1,9 +1,12 @@
 import { BadRequestException, ForbiddenException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { hashApiKey } from '../../core/security/api-token';
+import { encryptSecret } from '../../core/security/secret-crypto';
 import { TradingPartnersService } from './trading-partners.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { AppConfigService } from '../../core/config/app-config.service';
+
+const ENCRYPTION_KEY = 'dev-app-encryption-key-32-bytes0';
 
 describe('TradingPartnersService', () => {
   let service: TradingPartnersService;
@@ -206,6 +209,101 @@ describe('TradingPartnersService', () => {
 
       expect(result).toEqual([]);
       expect(prisma.productVariant.findMany).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('pushOutbound — WO-18.3', () => {
+    const encryptedKey = encryptSecret('their-real-outbound-key', ENCRYPTION_KEY);
+    let fetchSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+      fetchSpy = jest.spyOn(global, 'fetch').mockResolvedValue({ ok: true, status: 200 } as Response);
+    });
+
+    afterEach(() => {
+      fetchSpy.mockRestore();
+    });
+
+    it('POSTs the payload to outboundBaseUrl with the decrypted key as a Bearer token', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue({
+        id: 'tp1',
+        name: 'Acme Distribution',
+        status: 'ACTIVE',
+        outboundBaseUrl: 'https://acme.example/webhook',
+        outboundApiKeyEncrypted: encryptedKey,
+      });
+
+      await service.pushOutbound('tp1', 'product.new', { sku: 'SKU-1' });
+
+      expect(fetchSpy).toHaveBeenCalledWith(
+        'https://acme.example/webhook',
+        expect.objectContaining({
+          method: 'POST',
+          headers: expect.objectContaining({ Authorization: 'Bearer their-real-outbound-key' }),
+        }),
+      );
+      const body = JSON.parse((fetchSpy.mock.calls[0][1] as RequestInit).body as string);
+      expect(body).toMatchObject({ eventType: 'product.new', payload: { sku: 'SKU-1' } });
+    });
+
+    it('does nothing when the partner does not exist', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue(null);
+
+      await service.pushOutbound('missing', 'product.new', {});
+
+      expect(fetchSpy).not.toHaveBeenCalled();
+    });
+
+    it('does nothing when the partner is not ACTIVE', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue({
+        id: 'tp1',
+        status: 'PENDING',
+        outboundBaseUrl: 'https://acme.example/webhook',
+        outboundApiKeyEncrypted: encryptedKey,
+      });
+
+      await service.pushOutbound('tp1', 'product.new', {});
+
+      expect(fetchSpy).not.toHaveBeenCalled();
+    });
+
+    it('does nothing when no outboundBaseUrl or key is on file', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue({
+        id: 'tp1',
+        status: 'ACTIVE',
+        outboundBaseUrl: null,
+        outboundApiKeyEncrypted: null,
+      });
+
+      await service.pushOutbound('tp1', 'product.new', {});
+
+      expect(fetchSpy).not.toHaveBeenCalled();
+    });
+
+    it('never throws when the partner endpoint is unreachable — logs and swallows the failure', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue({
+        id: 'tp1',
+        name: 'Acme',
+        status: 'ACTIVE',
+        outboundBaseUrl: 'https://acme.example/webhook',
+        outboundApiKeyEncrypted: encryptedKey,
+      });
+      fetchSpy.mockRejectedValue(new Error('ECONNREFUSED'));
+
+      await expect(service.pushOutbound('tp1', 'product.new', {})).resolves.toBeUndefined();
+    });
+
+    it('never throws on a non-2xx response — logs and swallows it', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue({
+        id: 'tp1',
+        name: 'Acme',
+        status: 'ACTIVE',
+        outboundBaseUrl: 'https://acme.example/webhook',
+        outboundApiKeyEncrypted: encryptedKey,
+      });
+      fetchSpy.mockResolvedValue({ ok: false, status: 500 } as Response);
+
+      await expect(service.pushOutbound('tp1', 'product.new', {})).resolves.toBeUndefined();
     });
   });
 });

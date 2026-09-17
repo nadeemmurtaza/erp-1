@@ -33,11 +33,17 @@ export const DomainEvent = {
   ProductLowStock: 'catalog.product_low_stock',
   /** Distinct from ProductLowStock: fires against reorderPoint, drives auto-replenishment (PO or WorkOrder). ProductLowStock fires against lowStockThreshold and only ever notifies. */
   ProductReorderPointReached: 'catalog.product_reorder_point_reached',
+  /** Fires once, the moment a product's status first becomes ACTIVE — never again on a later re-save. */
+  ProductPublished: 'catalog.product_published',
+  /** Fires only when basePrice actually changes value, never on an unrelated field edit. */
+  ProductPriceChanged: 'catalog.product_price_changed',
   /** Any positive-delta stock movement — the one signal that can unblock a waiting order line, whatever replenished the stock. */
   StockReplenished: 'inventory.stock_replenished',
   GoodsReceived: 'purchasing.goods_received',
   SupplierBillRaised: 'purchasing.supplier_bill_raised',
   SupplierBillPaid: 'purchasing.supplier_bill_paid',
+  /** SupplyChainDigestCron's own nightly per-supplier stock/velocity computation, republished as an event so a connected TradingPartner can receive it structured, not only as the email it already sends. */
+  SupplierDigestReady: 'analytics.supplier_digest_ready',
 
   WorkOrderCreated: 'production.work_order_created',
   WorkOrderReleased: 'production.work_order_released',
@@ -170,6 +176,28 @@ export interface StockReplenishedPayload {
   resultingStock: number;
 }
 
+/** Never a cost price or margin — this leaves the platform to whoever is listening. */
+export interface ProductPublishedPayload {
+  productId: string;
+  slug: string;
+  nameEn: string;
+  basePriceMinor: number;
+}
+
+/** Never a cost price or margin — this leaves the platform to whoever is listening. */
+export interface ProductPriceChangedPayload {
+  productId: string;
+  slug: string;
+  nameEn: string;
+  oldPriceMinor: number;
+  newPriceMinor: number;
+}
+
+export interface SupplierDigestReadyPayload {
+  supplierId: string;
+  items: Array<{ sku: string; stock: number; soldToday: number; soldThisWeek: number; actionNeeded: boolean }>;
+}
+
 export interface GoodsReceivedPayload {
   goodsReceiptId: string;
   number: string;
@@ -244,6 +272,8 @@ export interface DomainEventPayloads {
   [DomainEvent.EmailVerificationRequested]: EmailVerificationRequestedPayload;
   [DomainEvent.ProductLowStock]: ProductLowStockPayload;
   [DomainEvent.ProductReorderPointReached]: ProductReorderPointReachedPayload;
+  [DomainEvent.ProductPublished]: ProductPublishedPayload;
+  [DomainEvent.ProductPriceChanged]: ProductPriceChangedPayload;
   [DomainEvent.StockReplenished]: StockReplenishedPayload;
   [DomainEvent.GoodsReceived]: GoodsReceivedPayload;
   [DomainEvent.WorkOrderCreated]: WorkOrderPayload;
@@ -251,6 +281,7 @@ export interface DomainEventPayloads {
   [DomainEvent.WorkOrderCompleted]: WorkOrderPayload;
   [DomainEvent.SupplierBillRaised]: SupplierBillRaisedPayload;
   [DomainEvent.SupplierBillPaid]: SupplierBillPaidPayload;
+  [DomainEvent.SupplierDigestReady]: SupplierDigestReadyPayload;
   [DomainEvent.EmailReplyReceived]: EmailReplyReceivedPayload;
   [DomainEvent.IdentityVerificationApproved]: IdentityVerificationPayload;
   [DomainEvent.IdentityVerificationRejected]: IdentityVerificationPayload;

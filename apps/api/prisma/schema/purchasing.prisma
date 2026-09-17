@@ -15,14 +15,24 @@ model Supplier {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  /// Null (the default) means manual entry, exactly as before this field
+  /// existed. Set it to feed this supplier's bills in automatically once
+  /// they're a connected TradingPartner (18-trading-partner-network.md,
+  /// WO-18.2) — trading-partners is a togglable pack and purchasing must
+  /// never import it, so this is a bare scalar FK, not a cross-module
+  /// service call.
+  tradingPartnerId String?
+
   products SupplierProduct[]
   // Note: purchaseOrders and bills are for WO-1.5, not included yet.
 
+  tradingPartner    TradingPartner?  @relation(fields: [tradingPartnerId], references: [id], onDelete: SetNull)
   preferredVariants ProductVariant[] @relation("PreferredSupplier")
   purchaseOrders    PurchaseOrder[]
   supplierBills     SupplierBill[]
 
   @@index([isActive, name])
+  @@index([tradingPartnerId])
 }
 
 /// What a given supplier charges for a given variant, and under what terms.

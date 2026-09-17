@@ -1,4 +1,5 @@
 import { DynamicModule, Logger, Module, type Type } from '@nestjs/common';
+import { AccountingModule } from './accounting/accounting.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { CartModule } from './cart/cart.module';
@@ -54,6 +55,11 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // register (RETAIL-ERP.md R14: "every tier concept must be invisible in
   // Solo").
   { name: 'organization', module: OrganizationModule },
+  // Off by default (WO-19.1) — subscribes to no other module's events yet
+  // (WO-19.2 is what wires posting rules up), so switching it on today
+  // would run a ledger nothing ever posts to. Couples to nothing either way
+  // (R15): no module imports AccountingModule, and it imports none back.
+  { name: 'accounting', module: AccountingModule },
   // Account administration — not togglable business features.
   { name: 'settings', module: SettingsAdminModule, alwaysOn: true },
   { name: 'users', module: UsersAdminModule, alwaysOn: true },

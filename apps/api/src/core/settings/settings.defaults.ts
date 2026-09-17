@@ -39,6 +39,8 @@ export interface DocumentPrefixes {
   stitchingOrder: string;
   stitchingJob: string;
   stockCount: string;
+  /** A legal sequence, not node-prefixed the way the rest are (R18/R6) — see accounting.service.ts. */
+  journalEntry: string;
 }
 
 export interface DocumentSettings {
@@ -202,6 +204,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
       stitchingOrder: 'STO',
       stitchingJob: 'JOB',
       stockCount: 'SC',
+      journalEntry: 'JE',
     },
   } satisfies DocumentSettings,
 

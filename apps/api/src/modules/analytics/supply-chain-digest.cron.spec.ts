@@ -5,12 +5,15 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { NotificationsService } from '../../core/notifications/notifications.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
+import { EventBusService } from '../../core/events/event-bus.service';
+import { DomainEvent } from '../../core/events/domain-events';
 
 describe('SupplyChainDigestCron', () => {
   let cron: SupplyChainDigestCron;
   let prisma: any;
   let notifications: any;
   let settings: any;
+  let events: any;
 
   beforeEach(async () => {
     prisma = {
@@ -21,6 +24,7 @@ describe('SupplyChainDigestCron', () => {
       workOrder: { findMany: jest.fn().mockResolvedValue([]) },
     };
     notifications = { send: jest.fn() };
+    events = { publish: jest.fn().mockResolvedValue(undefined) };
     settings = {
       get: jest.fn().mockImplementation(async (key: string) => {
         if (key === SettingKey.PurchasingSupplierDigestLeadDays) return 3;
@@ -37,6 +41,7 @@ describe('SupplyChainDigestCron', () => {
         { provide: PrismaService, useValue: prisma },
         { provide: NotificationsService, useValue: notifications },
         { provide: SettingsService, useValue: settings },
+        { provide: EventBusService, useValue: events },
       ],
     }).compile();
 
@@ -89,13 +94,18 @@ describe('SupplyChainDigestCron', () => {
       );
     });
 
-    it('skips a supplier with no email at all', async () => {
+    it('publishes SupplierDigestReady even for a supplier with no email at all — the two channels are independent', async () => {
       prisma.supplier.findMany.mockResolvedValue([
         { id: 'sup1', name: 'Acme', email: null, party: null, preferredVariants: [{ id: 'v1', sku: 'SKU1', stock: 0, reorderPoint: 5 }] },
       ]);
 
       await cron.sendSupplierDigests();
+
       expect(notifications.send).not.toHaveBeenCalled();
+      expect(events.publish).toHaveBeenCalledWith(
+        DomainEvent.SupplierDigestReady,
+        expect.objectContaining({ supplierId: 'sup1', items: [expect.objectContaining({ sku: 'SKU1' })] }),
+      );
     });
 
     it('does not flag a variant with healthy stock and no reorderPoint set', async () => {
@@ -111,6 +121,7 @@ describe('SupplyChainDigestCron', () => {
 
       await cron.sendSupplierDigests();
       expect(notifications.send).not.toHaveBeenCalled();
+      expect(events.publish).not.toHaveBeenCalled();
     });
   });
 

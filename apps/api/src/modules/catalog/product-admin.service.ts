@@ -1,6 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { DEFAULT_LOCALE, slugifyWithFallback, uniqueSlug } from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
+import { DomainEvent } from '../../core/events/domain-events';
+import { EventBusService } from '../../core/events/event-bus.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { StorageService } from '../../core/storage/storage.service';
 import { InventoryService } from '../inventory/inventory.service';
@@ -31,6 +33,7 @@ export class ProductAdminService {
     private readonly audit: AuditService,
     private readonly storage: StorageService,
     private readonly inventory: InventoryService,
+    private readonly events: EventBusService,
   ) {}
 
   async list(query: AdminProductQueryDto) {
@@ -163,6 +166,19 @@ export class ProductAdminService {
         data: { slug },
       });
 
+      if (product.status === 'ACTIVE') {
+        await this.events.publish(
+          DomainEvent.ProductPublished,
+          {
+            productId: product.id,
+            slug: product.slug,
+            nameEn: product.translations.find((t) => t.locale === DEFAULT_LOCALE)?.name ?? product.slug,
+            basePriceMinor: product.basePrice,
+          },
+          tx,
+        );
+      }
+
       return toAdminView(await tx.product.findUniqueOrThrow({ where: { id: product.id }, include: adminInclude }));
     });
   }
@@ -270,6 +286,16 @@ export class ProductAdminService {
       entityId: id,
       data: { changed: Object.keys(dto) },
     });
+
+    if (dto.basePrice !== undefined && dto.basePrice !== existing.basePrice) {
+      await this.events.publish(DomainEvent.ProductPriceChanged, {
+        productId: product.id,
+        slug: product.slug,
+        nameEn: product.translations.find((t) => t.locale === DEFAULT_LOCALE)?.name ?? product.slug,
+        oldPriceMinor: existing.basePrice,
+        newPriceMinor: dto.basePrice,
+      });
+    }
 
     return toAdminView(product);
   }

@@ -1,7 +1,7 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { generateApiKey, hashApiKey } from '../../core/security/api-token';
-import { encryptSecret } from '../../core/security/secret-crypto';
+import { decryptSecret, encryptSecret } from '../../core/security/secret-crypto';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { TradingPartner } from '../../core/prisma/client';
 import { CreateTradingPartnerDto, UpdateTradingPartnerDto } from './dto/trading-partner.dto';
@@ -9,14 +9,14 @@ import { CreateTradingPartnerDto, UpdateTradingPartnerDto } from './dto/trading-
 const INBOUND_KEY_PREFIX = 'tp';
 
 /**
- * `TradingPartner` CRUD and credential issuance
- * (18-trading-partner-network.md, WO-18.1). Authenticating an inbound
- * document (WO-18.2) and delivering an outbound one (WO-18.3) are separate,
- * later work orders — this is only what it takes to register a partner and
- * hand out the two keys the rest of the feature needs.
+ * `TradingPartner` CRUD, credential issuance (WO-18.1), inbound
+ * authentication (WO-18.2) and outbound delivery (WO-18.3) —
+ * 18-trading-partner-network.md.
  */
 @Injectable()
 export class TradingPartnersService {
+  private readonly logger = new Logger(TradingPartnersService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly config: AppConfigService,
@@ -161,6 +161,36 @@ export class TradingPartnersService {
         priceMinor: variant.priceOverride ?? variant.product.basePrice,
       };
     });
+  }
+
+  /**
+   * Delivers one document to a partner's own API (WO-18.3) — "us calling
+   * them", the mirror of `verifyInboundKey()`. Never throws: a failed push
+   * is logged and swallowed, the same discipline `NotificationsService`
+   * uses for a failed email — a partner's endpoint being down must not fail
+   * whatever triggered this (a cron run, an admin save), and there is no
+   * retry queue for this yet, unlike the in-process domain-event outbox.
+   */
+  async pushOutbound(partnerId: string, eventType: string, payload: Record<string, unknown>): Promise<void> {
+    const partner = await this.prisma.tradingPartner.findUnique({ where: { id: partnerId } });
+    if (!partner || partner.status !== 'ACTIVE') return;
+    if (!partner.outboundBaseUrl || !partner.outboundApiKeyEncrypted) return;
+
+    try {
+      const apiKey = decryptSecret(partner.outboundApiKeyEncrypted, this.encryptionKey());
+      const response = await fetch(partner.outboundBaseUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
+        body: JSON.stringify({ eventType, payload, sentAt: new Date().toISOString() }),
+      });
+      if (!response.ok) {
+        this.logger.warn(`Outbound push to "${partner.name}" (${eventType}) failed: HTTP ${response.status}`);
+      }
+    } catch (error) {
+      this.logger.warn(
+        `Outbound push to "${partner.name}" (${eventType}) failed: ${error instanceof Error ? error.message : String(error)}`,
+      );
+    }
   }
 
   private async assertExists(id: string): Promise<void> {

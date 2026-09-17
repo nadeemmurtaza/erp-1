@@ -50,7 +50,7 @@ export default function Loading() {
               </div>
 
               {/* Stitching panel skeleton */}
-              <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-4">
+              <div className="rounded-lg border border-neutral-100 bg-neutral-50 p-4">
                 <div className="skeleton h-4 w-32 rounded mb-4" />
               </div>
 

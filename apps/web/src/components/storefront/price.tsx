@@ -1,4 +1,4 @@
-import { formatMoney, type Locale } from '@yaseen/shared';
+import { formatMoney, type Locale } from '@newax/shared';
 import { cn } from '@/utils/cn';
 
 interface PriceProps {

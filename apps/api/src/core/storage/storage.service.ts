@@ -1,6 +1,8 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import sharp from 'sharp';
 import { AppConfigService } from '../config/app-config.service';
+import { SettingsService } from '../settings/settings.service';
+import { SettingKey } from '../settings/settings.defaults';
 import { LocalStorageDriver } from './local-storage.driver';
 import { S3StorageDriver } from './s3-storage.driver';
 import type { PutFileInput, StorageDriver, StoredFile } from './storage.driver';
@@ -29,6 +31,7 @@ export class StorageService {
     config: AppConfigService,
     local: LocalStorageDriver,
     s3: S3StorageDriver,
+    private readonly settings: SettingsService,
   ) {
     this.driver = config.get('STORAGE_DRIVER') === 's3' ? s3 : local;
     this.logger.log(`Storage driver: ${this.driver.name}`);
@@ -54,6 +57,28 @@ export class StorageService {
       throw new BadRequestException(
         `Image is larger than ${Math.round(MAX_IMAGE_BYTES / 1024 / 1024)}MB.`,
       );
+    }
+
+    // A Setting, not an env var: turning conversion off is a shop's decision
+    // and has to be reversible from the back office without a deploy
+    // (House Rule 4). Failing open to `true` keeps the default behaviour if
+    // the row is missing.
+    const toWebp = (await this.settings.get<boolean>(SettingKey.MediaWebpEnabled)) !== false;
+
+    if (!toWebp) {
+      /*
+       * Still decoded before storing, even when the original is kept. The
+       * type check above reads the browser's declared content type, which a
+       * caller can simply lie about; sharp reading the header is what
+       * actually establishes the bytes are an image. Skipping that here
+       * would have made switching this setting off a way to upload anything.
+       */
+      try {
+        await sharp(input.body).metadata();
+      } catch {
+        throw new BadRequestException('That file is not a valid image.');
+      }
+      return this.driver.put(input);
     }
 
     let body: Buffer;

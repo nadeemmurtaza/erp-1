@@ -1,7 +1,8 @@
+import { BRAND } from '@newax/shared';
 import { randomUUID } from 'node:crypto';
 import { Injectable, Logger } from '@nestjs/common';
 import { createTransport, type Transporter } from 'nodemailer';
-import { DEFAULT_LOCALE, type Locale } from '@yaseen/shared';
+import { DEFAULT_LOCALE, type Locale } from '@newax/shared';
 import { AppConfigService } from '../config/app-config.service';
 import type { EmailAccount } from '../prisma/client';
 import { EmailAccountsService } from './email-accounts/email-accounts.service';
@@ -214,7 +215,7 @@ export class EmailChannel implements NotificationChannel {
       // Built from our own domain rather than the machine's hostname, which in
       // a container is a random hex string — a Message-ID like
       // <...@4f2a9c1b8e77> reads as botnet output to a spam filter.
-      messageId: `<${randomUUID()}@${sender.fromAddress.split('@')[1] ?? 'yaseen.pk'}>`,
+      messageId: `<${randomUUID()}@${sender.fromAddress.split('@')[1] ?? BRAND.identity.domain}>`,
       subject: rendered.subject,
       text: rendered.text,
       html: rendered.html,
@@ -226,7 +227,7 @@ export class EmailChannel implements NotificationChannel {
         'X-Auto-Response-Suppress': 'All',
         // Lets a customer's client thread one order's mail together, and gives
         // support something to quote when chasing a delivery.
-        'X-Yaseen-Template': message.template,
+        'X-Newax-Template': message.template,
       },
       // Nothing in a template should be reaching the filesystem or the network
       // to build a message; if one ever tries, fail rather than fetch.
@@ -302,7 +303,7 @@ export class EmailChannel implements NotificationChannel {
       to: message.toName ? { name: message.toName, address: message.to } : message.to,
       replyTo: sender.context.contactEmail,
       envelope: { from: sender.fromAddress, to: message.to },
-      messageId: `<${randomUUID()}@${sender.fromAddress.split('@')[1] ?? 'yaseen.pk'}>`,
+      messageId: `<${randomUUID()}@${sender.fromAddress.split('@')[1] ?? BRAND.identity.domain}>`,
       subject: rendered.subject,
       text: rendered.text,
       html: rendered.html,
@@ -310,7 +311,7 @@ export class EmailChannel implements NotificationChannel {
       references: message.references,
       // A human wrote this, unlike every other send() path — no
       // Auto-Submitted header, so a reply-scanning filter treats it normally.
-      headers: { 'X-Yaseen-Template': 'support.reply' },
+      headers: { 'X-Newax-Template': 'support.reply' },
       disableFileAccess: true,
       disableUrlAccess: true,
     });

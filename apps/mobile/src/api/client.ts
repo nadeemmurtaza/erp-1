@@ -19,9 +19,16 @@ export const API_URL =
   // The Android emulator reaches the host machine on 10.0.2.2, not localhost.
   (Platform.OS === 'android' ? 'http://10.0.2.2:3001/api/v1' : 'http://localhost:3001/api/v1');
 
-const ACCESS_KEY = 'yaseen.access';
-const REFRESH_KEY = 'yaseen.refresh';
-const CART_TOKEN_KEY = 'yaseen.cartToken';
+/*
+ * Namespaced to the builder, not the client — the same move the web app made
+ * in its storage constants. A key carrying the client's name is a key that
+ * has to be migrated at rebrand, and migrating a key silently signs everyone
+ * out; `newax` never changes, so it never has to be.
+ */
+const NS = 'newax';
+const ACCESS_KEY = `${NS}.access`;
+const REFRESH_KEY = `${NS}.refresh`;
+const CART_TOKEN_KEY = `${NS}.cartToken`;
 
 export class ApiError extends Error {
   constructor(

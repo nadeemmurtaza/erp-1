@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useEffect, useState, useRef } from 'react';
+import { use, useCallback, useEffect, useRef, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { useRouter } from 'next/navigation';
@@ -40,19 +40,25 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
   // For focusing the scanner input
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const load = () => {
+  // useCallback, so the effect can depend on it honestly. It was a plain
+  // function rebuilt every render, which meant listing it in the dependency
+  // array would have looped — so it was left out, and the lint warning that
+  // flagged that stood for months.
+  const load = useCallback(() => {
     adminFetch<{ data: StockCount }>(`/admin/inventory/counts/${id}`)
       .then((res) => setCount(res.data))
-      .catch((err) => setError(err.message))
+      .catch((err) => setError(err instanceof Error ? err.message : 'Could not load the count'))
       .finally(() => setBusy(false));
-  };
+  }, [id]);
 
   useEffect(() => {
     load();
-  }, [id]);
+  }, [load]);
 
   if (!user?.permissions.includes('inventory.count')) {
-    return <p className="p-4 text-red-600">Permission denied: requires inventory.count</p>;
+    return <p role="alert" className="notice notice-error">
+        Permission denied: requires inventory.count
+      </p>;
   }
 
   const handleStart = async () => {

@@ -1,4 +1,4 @@
-import type { StitchingStage } from '@yaseen/shared';
+import type { StitchingStage } from '@newax/shared';
 
 /**
  * The shapes the stitching endpoints return.

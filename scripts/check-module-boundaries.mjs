@@ -6,7 +6,7 @@
  * internals. Allowed from inside apps/api/src/modules/<name>/:
  *   - anything under its own folder
  *   - anything under src/core/          (the shared platform)
- *   - packages (@yaseen/shared, node_modules)
+ *   - packages (@newax/shared, node_modules)
  *   - another module's public surface:  ../<other>/<other>.module  |  .service
  *
  * Forbidden: ../<other>/dto/…, ../<other>/internal/…, deep files. Reaching for
@@ -200,9 +200,11 @@ function modulePacks() {
     );
   }
 
+  // A key is either a bareword identifier (accounting:) or a quoted string
+  // (needed for a hyphenated module name, e.g. 'identity-verification':).
   const packs = {};
-  for (const entry of block[1].matchAll(/^\s*(\w+)\s*:\s*'([^']+)'/gm)) {
-    packs[entry[1]] = entry[2];
+  for (const entry of block[1].matchAll(/^\s*(?:(\w+)|'([^']+)')\s*:\s*'([^']+)'/gm)) {
+    packs[entry[1] ?? entry[2]] = entry[3];
   }
 
   if (Object.keys(packs).length === 0) {

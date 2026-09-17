@@ -3,11 +3,12 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { use, useCallback, useEffect, useState } from 'react';
-import { formatMoney, type Locale, type StitchingStage } from '@yaseen/shared';
+import { formatDate, formatMoney, type Locale, type StitchingStage } from '@newax/shared';
 import { Link } from '@/i18n/navigation';
 import { StitchingTimeline, type TimelineEvent } from '@/components/storefront/stitching-timeline';
-import { API_URL } from '@/lib/api';
+import { request } from '@/lib/api-client';
 import { ROUTES } from '@/constants/routes';
+import { STORAGE_KEYS } from '@/constants/storage';
 
 interface BookingJob {
   id: string;
@@ -45,7 +46,6 @@ export default function StitchingBookingPage({
   const { number } = use(params);
   const t = useTranslations('stitching');
   const locale = useLocale() as Locale;
-  const dateLocale = locale === 'ur' ? 'ur-PK' : 'en-PK';
   const searchParams = useSearchParams();
   const justBooked = searchParams.get('booked') === '1';
 
@@ -56,22 +56,26 @@ export default function StitchingBookingPage({
 
   const track = useCallback(
     async (withPhone: string): Promise<boolean> => {
-      const response = await fetch(`${API_URL}/stitching/bookings/${number}/track`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: withPhone }),
-        credentials: 'include',
-      });
-
-      if (!response.ok) return false;
-      setBooking(await response.json());
-      return true;
+      try {
+        // A wrong phone is the expected case here, not an exception — this
+        // returns false so the caller can show the tracking form again.
+        setBooking(
+          await request<Booking>(`/stitching/bookings/${number}/track`, {
+            method: 'POST',
+            body: { phone: withPhone },
+            credentials: 'include',
+          }),
+        );
+        return true;
+      } catch {
+        return false;
+      }
     },
     [number],
   );
 
   useEffect(() => {
-    const remembered = sessionStorage.getItem(`yaseen.stitching.${number}`);
+    const remembered = sessionStorage.getItem(STORAGE_KEYS.guestBooking(number));
     if (!remembered) {
       setLoading(false);
       return;
@@ -85,7 +89,7 @@ export default function StitchingBookingPage({
     setError(null);
 
     if (await track(phone)) {
-      sessionStorage.setItem(`yaseen.stitching.${number}`, phone);
+      sessionStorage.setItem(STORAGE_KEYS.guestBooking(number), phone);
     } else {
       setError(t('trackFailed'));
     }
@@ -116,7 +120,7 @@ export default function StitchingBookingPage({
             </label>
 
             {error ? (
-              <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+              <p role="alert" className="notice notice-error">
                 {error}
               </p>
             ) : null}
@@ -133,7 +137,7 @@ export default function StitchingBookingPage({
   return (
     <div className="container-page py-8">
       {justBooked ? (
-        <div className="mb-6 rounded-md border border-neutral-200 bg-neutral-50 px-4 py-3">
+        <div className="mb-6 rounded-md border border-neutral-100 bg-neutral-50 px-4 py-3">
           <p className="text-sm font-medium text-accent-hover">{t('booked')}</p>
           <p className="mt-1 text-sm text-neutral-900/70">{t('bookedBody')}</p>
         </div>
@@ -149,7 +153,7 @@ export default function StitchingBookingPage({
           <dd className="text-neutral-900">
             {booking.fabricReceivedAt
               ? t('fabricReceivedOn', {
-                  date: new Date(booking.fabricReceivedAt).toLocaleDateString(dateLocale),
+                  date: formatDate(booking.fabricReceivedAt, locale as Locale),
                 })
               : t('fabricAwaited')}
           </dd>
@@ -158,7 +162,7 @@ export default function StitchingBookingPage({
           <div>
             <dt className="text-neutral-900/50">{t('promised')}</dt>
             <dd className="text-neutral-900">
-              {new Date(booking.promisedAt).toLocaleDateString(dateLocale)}
+              {formatDate(booking.promisedAt, locale as Locale)}
             </dd>
           </div>
         ) : null}

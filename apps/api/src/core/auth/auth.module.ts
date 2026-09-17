@@ -5,12 +5,14 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { PermissionsResolverService } from './permissions.service';
+import { RolesService } from './roles.service';
+import { RolesController } from './roles.controller';
 
 @Global()
 @Module({
   imports: [PassportModule.register({ defaultStrategy: 'jwt' }), JwtModule.register({})],
-  controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, PermissionsResolverService],
-  exports: [AuthService, PermissionsResolverService],
+  controllers: [AuthController, RolesController],
+  providers: [AuthService, JwtStrategy, PermissionsResolverService, RolesService],
+  exports: [AuthService, PermissionsResolverService, RolesService],
 })
 export class AuthModule {}

@@ -1,4 +1,5 @@
 import { API_URL } from './api';
+import { STORAGE_KEYS } from '@/constants/storage';
 
 /**
  * First-party, anonymous analytics beacon.
@@ -11,7 +12,7 @@ import { API_URL } from './api';
  * the shopping experience it is watching.
  */
 
-const SESSION_KEY = 'yaseen_session_id';
+const SESSION_KEY = STORAGE_KEYS.analytics.session;
 
 function randomId(): string {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {

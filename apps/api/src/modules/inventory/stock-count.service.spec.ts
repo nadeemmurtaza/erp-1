@@ -1,3 +1,4 @@
+import { SettingsService } from '../../core/settings/settings.service';
 import { Test } from '@nestjs/testing';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { InventoryService } from './inventory.service';
@@ -6,6 +7,7 @@ import { EventBusService } from '../../core/events/event-bus.service';
 import { AuditService } from '../../core/audit/audit.service';
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
 import { EntityEnrichmentRegistry } from '../../core/extension-points/entity-enrichment.registry';
+import { AppConfigService } from '../../core/config/app-config.service';
 
 describe('StockCountService', () => {
   let service: StockCountService;
@@ -22,6 +24,12 @@ describe('StockCountService', () => {
         EntityEnrichmentRegistry,
         { provide: EventBusService, useValue: { publish: jest.fn() } },
         { provide: AuditService, useValue: { record: jest.fn() } },
+        // The count number's prefix is a Setting now; this test is about the
+        // variance maths, so it takes the shipped default.
+        { provide: SettingsService, useValue: { get: jest.fn().mockResolvedValue(undefined) } },
+        // Node-prefixing is document-number.ts's own concern (see its spec);
+        // this test takes the STANDALONE shape, same as every deployment today.
+        { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'main' } },
       ],
     }).compile();
 

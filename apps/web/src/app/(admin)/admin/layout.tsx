@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { BRAND } from '@newax/shared';
 import '@/app/globals.css';
 
 export const metadata: Metadata = {
-  title: { default: 'Yaseen Admin', template: '%s · Yaseen Admin' },
+  title: { default: BRAND.identity.adminName, template: `%s · ${BRAND.identity.adminName}` },
   // The back office must never be indexed.
   robots: { index: false, follow: false },
 };

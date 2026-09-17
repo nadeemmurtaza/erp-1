@@ -1,4 +1,4 @@
-import type { Locale, ProductKind, StitchingStage, UserRole } from '@yaseen/shared';
+import type { Locale, ProductKind, StitchingStage, UserRole } from '@newax/shared';
 
 /** Shapes the API returns. Mirrors the same objects the website consumes. */
 

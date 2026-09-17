@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { formatMoney, toMajor, THEME_COLORS } from '@yaseen/shared';
+import { THEME_COLORS, formatDateShort, formatMoney, toMajor } from '@newax/shared';
 
 /**
  * Daily revenue over the selected window.
@@ -19,7 +19,7 @@ import { formatMoney, toMajor, THEME_COLORS } from '@yaseen/shared';
  */
 const SERIES = THEME_COLORS.accent.DEFAULT;
 const GRID = THEME_COLORS.neutral[100];
-const SURFACE = '#ffffff';
+const SURFACE = THEME_COLORS.white;
 
 const WIDTH = 720;
 const HEIGHT = 220;
@@ -231,13 +231,9 @@ function compactRupees(rupees: number): string {
 }
 
 function shortDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('en-PK', { day: 'numeric', month: 'short' });
+  return formatDateShort(iso);
 }
 
 function longDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('en-PK', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-  });
+  return formatDateShort(iso, 'en', { withWeekday: true });
 }

@@ -47,7 +47,7 @@ Full detail, code samples and the reasoning for each are in
 4. **Business rules are data, not constants** — shipping fees, COD fee, lead
    times live in the `Setting` table, edited from `/admin/settings`.
 5. **Money is integer paisa, always** — `toMinor()` / `formatMoney()` from
-   `@yaseen/shared`. No float, no string, no `Decimal` ever touches a price.
+   `@newax/shared`. No float, no string, no `Decimal` ever touches a price.
 6. **Customer-facing text is never a column** — `*Translation` rows, `en` and
    `ur`, always both.
 7. **Order lines are snapshots** — name, price, measurements, unit cost are
@@ -58,7 +58,7 @@ Full detail, code samples and the reasoning for each are in
    never `if (user.role === 'ADMIN')`.
 10. **Concurrency belongs in the UPDATE, not in a read-then-write** — put the
     predicate on the write and check the row count; never read-check-write.
-11. **Shared rules live in `@yaseen/shared` and every app calls them** — pricing,
+11. **Shared rules live in `@newax/shared` and every app calls them** — pricing,
     measurement validation, phone normalisation. Never reimplemented per app.
 
 ### The module-pack seam
@@ -190,7 +190,7 @@ point `DATABASE_URL` at it.
 ### The mobile app
 
 ```bash
-pnpm --filter @yaseen/mobile start        # then scan the QR code with Expo Go
+pnpm --filter @newax/mobile start        # then scan the QR code with Expo Go
 ```
 
 It talks to the same API. Point it at one with `EXPO_PUBLIC_API_URL`; with
@@ -199,7 +199,7 @@ emulator reaches the host on `10.0.2.2`. A phone on your wi-fi needs your
 machine's LAN address rather than localhost:
 
 ```bash
-EXPO_PUBLIC_API_URL="http://192.168.1.20:3001/api/v1" pnpm --filter @yaseen/mobile start
+EXPO_PUBLIC_API_URL="http://192.168.1.20:3001/api/v1" pnpm --filter @newax/mobile start
 ```
 
 Sign in with any of the seeded accounts above — a tailor lands on their queue
@@ -231,7 +231,7 @@ no migration. Urdu renders right-to-left.
 
 **Measurement fields are database rows, not code.** Staff add "cuff width" from
 the dashboard and every measurement form — website, admin, and later the mobile
-app — picks it up immediately. One validator in `@yaseen/shared` enforces the
+app — picks it up immediately. One validator in `@newax/shared` enforces the
 rules everywhere.
 
 **Modules talk through events, not imports.** Placing an order publishes

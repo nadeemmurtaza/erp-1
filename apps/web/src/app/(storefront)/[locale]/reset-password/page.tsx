@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
+import { AuthPage } from '@/components/storefront/auth-page';
 import { useState } from 'react';
 import { Link } from '@/i18n/navigation';
 import { resetPassword } from '@/lib/customer-client';
@@ -32,12 +33,10 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12">
-      <div className="w-full max-w-sm">
-        <h1 className="text-center text-2xl font-semibold text-accent-hover">Choose a new password</h1>
+    <AuthPage title="Choose a new password">
 
         {!token ? (
-          <p className="mt-6 rounded-md bg-red-50 px-4 py-3 text-center text-sm text-red-700">
+          <p role="alert" className="notice notice-error text-center">
             This link is missing its reset token. Request a new one from the{' '}
             <Link href={ROUTES.storefront.forgotPassword} className="font-medium underline">
               password reset page
@@ -67,7 +66,7 @@ export default function ResetPasswordPage() {
             </div>
 
             {error ? (
-              <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+              <p role="alert" className="notice notice-error">
                 {error}
               </p>
             ) : null}
@@ -77,7 +76,6 @@ export default function ResetPasswordPage() {
             </button>
           </form>
         )}
-      </div>
-    </div>
+    </AuthPage>
   );
 }

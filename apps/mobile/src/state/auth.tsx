@@ -13,7 +13,7 @@ import * as resources from '../api/resources';
 import type { AuthUser } from '../api/types';
 import { registerForPush, unregisterPush } from '../push';
 
-const USER_KEY = 'yaseen.user';
+const USER_KEY = 'newax.user';
 
 interface Auth {
   user: AuthUser | null;

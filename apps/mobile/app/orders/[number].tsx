@@ -1,7 +1,7 @@
 import { useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
-import { formatMoney } from '@yaseen/shared';
+import { formatMoney } from '@newax/shared';
 import * as resources from '../../src/api/resources';
 import type { Order } from '../../src/api/types';
 import { StageRail } from '../../src/components/stage-rail';

@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { DEFAULT_LOCALE, isLocale, type Locale } from '@yaseen/shared';
+import { DEFAULT_LOCALE, isLocale, type Locale } from '@newax/shared';
 import { Public } from '../../core/auth/decorators';
 import { CatalogService } from './catalog.service';
 import { ProductQueryDto } from './dto/product-query.dto';

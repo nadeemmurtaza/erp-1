@@ -2,7 +2,7 @@ import { INestApplication, ValidationPipe, VersioningType } from '@nestjs/common
 import { Test } from '@nestjs/testing';
 import cookieParser from 'cookie-parser';
 import request from 'supertest';
-import { toMinor } from '@yaseen/shared';
+import { toMinor } from '@newax/shared';
 import { AppModule } from '../src/app.module';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
 import { PrismaService } from '../src/core/prisma/prisma.service';
@@ -352,7 +352,7 @@ describe('Orders (e2e)', () => {
         .send({ shippingAddress: { ...KARACHI, phone: '12345' }, paymentMethod: 'cod' })
         .expect(400);
 
-      expect(String(response.body.message)).toMatch(/valid Pakistani phone/i);
+      expect(String(response.body.message)).toMatch(/valid phone number/i);
     });
 
     it('rejects an empty cart', async () => {

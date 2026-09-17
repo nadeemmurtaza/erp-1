@@ -1,3 +1,4 @@
+import { BRAND } from '@newax/shared';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { parse } from 'csv-parse/sync';
 import { stringify } from 'csv-stringify/sync';
@@ -7,7 +8,7 @@ import {
   slugifyWithFallback,
   toMinor,
   uniqueSlug,
-} from '@yaseen/shared';
+} from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
@@ -90,7 +91,7 @@ export class ProductImportService {
           price_pkr: '4500',
           compare_at_pkr: '5500',
           category_slug: 'unstitched',
-          brand: 'Yaseen',
+          brand: BRAND.identity.name,
           fabric: 'lawn',
           season: 'summer',
           piece_count: '3',

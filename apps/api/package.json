@@ -1,5 +1,5 @@
 {
-  "name": "@yaseen/api",
+  "name": "@newax/api",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,7 @@
     "dev": "nest start --watch",
     "start": "node dist/main.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "lint": "eslint src prisma test",
+    "lint": "node ../../scripts/check-route-permissions.mjs && eslint src prisma test",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "db:generate": "prisma generate",
@@ -32,7 +32,7 @@
     "@nestjs/swagger": "11.4.6",
     "@nestjs/throttler": "6.5.0",
     "@prisma/client": "6.19.3",
-    "@yaseen/shared": "workspace:*",
+    "@newax/shared": "workspace:*",
     "bcryptjs": "3.0.3",
     "class-transformer": "0.5.1",
     "class-validator": "0.15.1",
@@ -61,7 +61,7 @@
     "@types/nodemailer": "7.0.4",
     "@types/passport-jwt": "4.0.1",
     "@types/supertest": "7.2.1",
-    "@yaseen/config": "workspace:*",
+    "@newax/config": "workspace:*",
     "eslint": "9.39.5",
     "jest": "30.4.2",
     "jest-environment-node": "30.4.1",

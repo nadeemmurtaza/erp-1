@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { usePathname } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
-import { directionFor, type Locale } from '@yaseen/shared';
+import { directionFor, type Locale } from '@newax/shared';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/utils/cn';
 
@@ -82,7 +82,7 @@ export function MobileNav({
             'fixed inset-y-0 w-4/5 max-w-sm bg-white shadow-xl flex flex-col',
             isRtl ? 'end-0 animate-slideInRight' : 'start-0 animate-slideInLeft'
           )}>
-            <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-200">
+            <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-100">
               <span className="font-display text-xl font-semibold tracking-tight text-neutral-900">
                 {tSite('name')}
               </span>
@@ -108,8 +108,8 @@ export function MobileNav({
               </button>
             </div>
             
-            <div className="border-b border-neutral-200 p-4">
-              <div className="flex items-center gap-2 border-b-2 border-neutral-300 focus-within:border-neutral-900 transition-colors">
+            <div className="border-b border-neutral-100 p-4">
+              <div className="flex items-center gap-2 border-b-2 border-neutral-300 focus-within:border-accent transition-colors">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"

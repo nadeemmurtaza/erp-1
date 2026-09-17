@@ -1,3 +1,6 @@
+import { documentPrefix } from '../../core/settings/document-prefix';
+import { documentNumber } from '../../core/settings/document-number';
+import { AppConfigService } from '../../core/config/app-config.service';
 import {
   BadRequestException,
   ForbiddenException,
@@ -16,7 +19,7 @@ import {
   taxExclusive,
   taxInclusive,
   type Locale,
-} from '@yaseen/shared';
+} from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { CheckoutValidatorRegistry } from '../../core/checkout/checkout-validator.registry';
 import { DomainEvent } from '../../core/events/domain-events';
@@ -71,6 +74,7 @@ export class OrdersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly settings: SettingsService,
+    private readonly config: AppConfigService,
     private readonly events: EventBusService,
     private readonly audit: AuditService,
     private readonly payments: PaymentsService,
@@ -124,7 +128,7 @@ export class OrdersService {
     const phone = normalizePkPhone(dto.shippingAddress.phone).e164;
     if (!phone) {
       throw new BadRequestException(
-        'Enter a valid Pakistani phone number — the courier needs it.',
+        'Enter a valid phone number — the courier needs it.',
       );
     }
 
@@ -179,7 +183,7 @@ export class OrdersService {
     // Reserved before checkout's own transaction opens — see
     // nextOrderNumber() for why this has to be a separate atomic step
     // rather than something computed inside that transaction.
-    const orderNumber = await nextOrderNumber(this.prisma);
+    const orderNumber = await nextOrderNumber(this.prisma, this.settings, this.config);
 
     const order = await this.prisma.$transaction(async (tx) => {
       const variantIds = [...new Set(priced.lines.map(l => l.variantId))];
@@ -326,7 +330,7 @@ export class OrdersService {
           grandTotal: created.grandTotal,
           placedAt: created.placedAt.toISOString(),
           stitchingItemIds: created.items
-            .filter((item) => (item as any).garmentTypeKey)
+            .filter((item) => item.garmentTypeKey)
             .map((item) => item.id),
         },
         tx,
@@ -846,7 +850,11 @@ function jsonOrNull(value: unknown): Prisma.InputJsonValue | typeof Prisma.DbNul
 }
 
 /**
- * Sequential order numbers per year: YSN-2026-0001.
+ * Sequential order numbers per year: YSN-2026-0001, the prefix from BRAND —
+ * or, once this deployment is part of a chain (WO-18.1's NODE_ROLE),
+ * YSN-lhr-01-2026-0001, so two branches' locally-allocated numbers can
+ * never collide once their facts merge upward (RETAIL-ERP.md R2, R6). See
+ * core/settings/document-number.ts.
  *
  * Two earlier designs both got this wrong. Reading MAX(Order.number) and
  * adding one is a read-then-write, and READ COMMITTED (Postgres' default,
@@ -871,9 +879,16 @@ function jsonOrNull(value: unknown): Prisma.InputJsonValue | typeof Prisma.DbNul
  * reserved is simply skipped, the same way a gap appears after any failed
  * insert on an auto-increment key.
  */
-async function nextOrderNumber(prisma: PrismaService): Promise<string> {
+async function nextOrderNumber(
+  prisma: PrismaService,
+  settings: SettingsService,
+  config: AppConfigService,
+): Promise<string> {
   const year = new Date().getFullYear();
-  const prefix = `YSN-${year}-`;
+  // A Setting, defaulting to the brand's own initials. The number a
+  // customer quotes back to you is the one place a shop is most likely to
+  // already have a convention.
+  const prefix = await documentPrefix(settings, 'order');
 
   const [{ counter }] = await prisma.$queryRaw<Array<{ counter: number }>>`
     INSERT INTO "OrderNumberCounter" ("year", "counter") VALUES (${year}, 1)
@@ -881,5 +896,5 @@ async function nextOrderNumber(prisma: PrismaService): Promise<string> {
     RETURNING "counter"
   `;
 
-  return `${prefix}${String(counter).padStart(4, '0')}`;
+  return documentNumber(config, prefix, year, counter);
 }

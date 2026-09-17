@@ -1,5 +1,5 @@
 {
-  "name": "@yaseen/mobile",
+  "name": "@newax/mobile",
   "version": "0.1.0",
   "private": true,
   "main": "expo-router/entry",
@@ -20,7 +20,7 @@
   "dependencies": {
     "@expo/metro-runtime": "~57.0.10",
     "@react-native-async-storage/async-storage": "2.2.0",
-    "@yaseen/shared": "workspace:*",
+    "@newax/shared": "workspace:*",
     "expo": "~57.0.13",
     "expo-constants": "~57.0.11",
     "expo-device": "~57.0.1",

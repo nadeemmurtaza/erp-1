@@ -46,7 +46,7 @@ export function BottomNav() {
     >
       <div
         dir="ltr"
-        className="inline-flex items-center gap-1 rounded-full bg-neutral-700 px-2 py-2 shadow-lg shadow-neutral-900/30"
+        className="inline-flex items-center gap-1 rounded bg-neutral-700 px-2 py-2 shadow-lg shadow-neutral-900/30"
       >
         <TabLink href="/" label={t('home')} active={cleanPath === '/'}>
           <HomeIcon />

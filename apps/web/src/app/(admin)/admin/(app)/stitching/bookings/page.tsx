@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { formatMoney } from '@yaseen/shared';
+import { formatDate, formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
+import { Loading } from '@/components/ui';
 import {
   BOOKING_STATUS_LABELS,
   type StitchingBooking,
@@ -49,7 +50,7 @@ export default function BookingsPage() {
         that is what releases the garments to the workshop.
       </p>
 
-      <div className="card mb-4 flex flex-wrap gap-3 p-3">
+      <div className="mb-6 flex flex-wrap gap-3 border-b border-neutral-100 pb-4">
         <select
           value={status}
           onChange={(event) => setStatus(event.target.value as StitchingOrderStatus | '')}
@@ -66,15 +67,15 @@ export default function BookingsPage() {
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}
 
-      <div className="card overflow-hidden">
+      <div className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-neutral-100 bg-neutral-50">
+          <table className="table-flat">
+            <thead>
               <tr>
                 <Th>Booking</Th>
                 <Th>Customer</Th>
@@ -84,11 +85,11 @@ export default function BookingsPage() {
                 <Th className="text-end">Quote</Th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white">
+            <tbody className="divide-y divide-neutral-100">
               {!bookings ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-neutral-900/50">
-                    Loading…
+                  <td colSpan={6} className="px-4 py-8 text-center">
+                    <Loading className="p-0" />
                   </td>
                 </tr>
               ) : bookings.length === 0 ? (
@@ -100,7 +101,7 @@ export default function BookingsPage() {
               ) : (
                 bookings.map((booking) => (
                   <tr key={booking.id} className="hover:bg-neutral-50">
-                    <td className="px-4 py-3">
+                    <td>
                       <Link
                         href={`/admin/stitching/bookings/${booking.id}`}
                         className="font-medium text-neutral-900 hover:text-accent-hover"
@@ -108,17 +109,17 @@ export default function BookingsPage() {
                         {booking.number}
                       </Link>
                       <p className="text-xs text-neutral-900/40">
-                        {new Date(booking.createdAt).toLocaleDateString('en-PK')}
+                        {formatDate(booking.createdAt)}
                       </p>
                     </td>
-                    <td className="px-4 py-3">
+                    <td>
                       <p className="text-neutral-900">{booking.guestName ?? '—'}</p>
                       <p className="text-xs text-neutral-900/40">{booking.guestPhone}</p>
                     </td>
-                    <td className="px-4 py-3 text-neutral-900/70">
+                    <td className="text-neutral-900/70">
                       {booking.jobs.map((job) => job.garmentType.labelEn).join(', ')}
                     </td>
-                    <td className="px-4 py-3">
+                    <td>
                       <span
                         className={cn(
                           'rounded px-2 py-0.5 text-xs font-medium',
@@ -132,12 +133,12 @@ export default function BookingsPage() {
                         {BOOKING_STATUS_LABELS[booking.status]}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-neutral-900/70">
+                    <td className="text-neutral-900/70">
                       {booking.fabricReceivedAt
-                        ? new Date(booking.fabricReceivedAt).toLocaleDateString('en-PK')
+                        ? formatDate(booking.fabricReceivedAt)
                         : 'Not yet in'}
                     </td>
-                    <td className="px-4 py-3 text-end tabular-nums text-neutral-900">
+                    <td className="text-end tabular-nums text-neutral-900">
                       {booking.quotedFee === null ? '—' : formatMoney(booking.quotedFee)}
                     </td>
                   </tr>
@@ -153,8 +154,7 @@ export default function BookingsPage() {
 
 function Th({ children, className }: { children?: React.ReactNode; className?: string }) {
   return (
-    <th
-      scope="col"
+    <th scope="col"
       className={cn(
         'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50',
         className,

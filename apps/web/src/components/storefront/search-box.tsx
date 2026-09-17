@@ -4,6 +4,21 @@ import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { usePathname, useRouter } from '@/i18n/navigation';
+import { BRAND } from '@newax/shared';
+import { ROUTES } from '@/constants/routes';
+
+/**
+ * An order number, as this shop stamps them: YSN-2026-0001.
+ *
+ * Built from the brand's own prefix rather than a fixed pattern, so it keeps
+ * working for the next client whose orders start with something else. The
+ * year and sequence are loose on purpose — somebody reading a number off an
+ * SMS types what they see, not a validated format.
+ */
+const ORDER_NUMBER = new RegExp(
+  `^${BRAND.commerce.orderNumberPrefix}-\d{4}-\d+$`,
+  'i',
+);
 
 export function SearchBox() {
   const t = useTranslations('nav');
@@ -33,16 +48,28 @@ export function SearchBox() {
         onSubmit={(event) => {
           event.preventDefault();
           const trimmed = term.trim();
+
+          // An order number is the other thing people put in a search box,
+          // and it was the one thing this could not answer: typing the number
+          // off an order confirmation searched the catalogue for it and
+          // returned an empty shop. The order page asks a guest for the
+          // phone it was placed with, so this is safe to route to signed in
+          // or not.
+          if (ORDER_NUMBER.test(trimmed)) {
+            router.push(ROUTES.storefront.order(trimmed.toUpperCase()));
+            return;
+          }
+
           router.push(trimmed ? `/shop?q=${encodeURIComponent(trimmed)}` : '/shop');
         }}
-        // sf-field-input is written for a bare <input>/<select>, so its
+        // field-input is written for a bare <input>/<select>, so its
         // `focus:` rule never fires here — the border/background live on
         // this <form> while the real focus target is the child <input>.
         // focus-within: substitutes for that, keeping the shared border and
         // focus colour tokens without losing the working interaction. Shape
         // stays the pill this compound search field has always been,
-        // overriding sf-field-input's rounded-xl.
-        className="sf-field-input flex h-11 flex-1 items-center gap-2 rounded-full px-4 focus-within:border-neutral-700"
+        // overriding field-input's rounded-xl.
+        className="field-input flex h-11 flex-1 items-center gap-2 rounded px-4 focus-within:border-accent"
       >
         <label className="sr-only" htmlFor="site-search">
           {t('search')}

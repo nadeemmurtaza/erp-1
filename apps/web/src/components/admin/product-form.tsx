@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { PRODUCT_KINDS, PRODUCT_STATUSES, formatMoney, toMajor, toMinor } from '@yaseen/shared';
+import { PRODUCT_KINDS, PRODUCT_STATUSES, formatMoney, toMajor, toMinor } from '@newax/shared';
 import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { adminFetch } from '@/lib/admin-client';
 import type {
@@ -116,6 +116,15 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
   // Uploaded in onSubmit, right after the create request returns one — see
   // ImageStager's doc comment for why this exists instead of a second trip.
   const [pendingImages, setPendingImages] = useState<StagedImage[]>([]);
+  /*
+   * Whether the photo grid is mid-upload or holding a failure.
+   *
+   * Saving is blocked while either is true. Choosing a photo and hitting save
+   * a second later used to store the product without it — the upload was
+   * still in flight, nothing waited for it, and the only sign was a photo
+   * that quietly never appeared.
+   */
+  const [imageUpload, setImageUpload] = useState({ busy: false, failed: false });
 
   // Duplicate SKUs and duplicate size/colour combinations both reach the API
   // fine syntactically but collide there — one against a global unique
@@ -304,7 +313,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
             type="checkbox"
             checked={isConsumable}
             onChange={(event) => setIsConsumable(event.target.checked)}
-            className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+            className="field-check"
           />
           Consumable / repeat-buy — worth an automated reorder nudge (Marketing settings)
         </label>
@@ -319,9 +328,9 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
     content: (
       <Section
         title="Name and description"
-        hint="Urdu is optional but the storefront falls back to English without it."
+        description="Urdu is optional but the storefront falls back to English without it."
       >
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="grid gap-4 fold:grid-cols-2">
           <div className="space-y-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-neutral-900/40">English</p>
             <Field label="Name" required>
@@ -390,7 +399,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
     label: 'Pricing',
     isValid: Boolean(basePrice.trim()),
     content: (
-      <Section title="Pricing" hint="Enter rupees; the system stores exact paisa.">
+      <Section title="Pricing" description="Enter rupees; the system stores exact paisa.">
         <div className="grid gap-4 sm:grid-cols-3">
           <Field label={isService ? 'Stitching fee (Rs)' : 'Price (Rs)'} required>
             <input
@@ -507,7 +516,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
               type="checkbox"
               checked={stitchingAvailable}
               onChange={(event) => setStitchingAvailable(event.target.checked)}
-              className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+              className="field-check"
             />
             Offer &ldquo;get it stitched&rdquo; on this fabric
           </label>
@@ -551,7 +560,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
                               : current.filter((id) => id !== garment.id),
                           )
                         }
-                        className="rounded border-neutral-200 text-accent-hover focus:ring-accent disabled:opacity-50"
+                        className="field-check"
                       />
                       {garment.labelEn}
                       {offered ? (
@@ -664,7 +673,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
                               : current.filter((id) => id !== garment.id),
                           )
                         }
-                        className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+                        className="field-check"
                       />
                       {garment.labelEn}
                     </label>
@@ -682,7 +691,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
     label: 'Tags',
     isValid: true,
     content: (
-      <Section title="Tags" hint="Comma separated; used by search and merchandising.">
+      <Section title="Tags" description="Comma separated; used by search and merchandising.">
         <input
           value={tags}
           onChange={(event) => setTags(event.target.value)}
@@ -700,7 +709,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
     content: (
       <Section
         title="Variants"
-        hint="One row per size/colour. Every row needs a unique SKU; a removed row is deactivated, not deleted, so past orders stay intact."
+        description="One row per size/colour. Every row needs a unique SKU; a removed row is deactivated, not deleted, so past orders stay intact."
       >
         <div className="space-y-3">
           {variants.map((variant, index) => {
@@ -811,13 +820,17 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
     label: 'Images',
     isValid: true,
     content: effectiveProduct ? (
-      <Section title="Images" hint="The first image is the listing thumbnail.">
-        <ImageManager productId={effectiveProduct.id} initialImages={effectiveProduct.images} />
+      <Section title="Images" description="The first image is the listing thumbnail.">
+        <ImageManager
+          productId={effectiveProduct.id}
+          initialImages={effectiveProduct.images}
+          onUploadState={setImageUpload}
+        />
       </Section>
     ) : (
       <Section
         title="Images"
-        hint="Uploaded together with the rest of this product when you hit Create product below."
+        description="Uploaded together with the rest of this product when you hit Create product below."
       >
         <ImageStager images={pendingImages} onChange={setPendingImages} />
       </Section>
@@ -837,7 +850,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
   return (
     <div className="space-y-4 pb-16">
       {error ? (
-        <p role="alert" className="card whitespace-pre-line p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error whitespace-pre-line">
           {error}
         </p>
       ) : null}
@@ -846,9 +859,22 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
         <Wizard
           steps={steps}
           onSubmit={onSubmit}
-          submitLabel={saving ? 'Saving…' : isEdit ? 'Save changes' : 'Create product'}
-          submitBusy={saving}
-          submitDisabled={saving}
+          submitLabel={
+            saving
+              ? 'Saving…'
+              : imageUpload.busy
+                ? 'Uploading photos…'
+                : imageUpload.failed
+                  ? 'Fix the photo upload first'
+                  : isEdit
+                    ? 'Save changes'
+                    : 'Create product'
+          }
+          submitBusy={saving || imageUpload.busy}
+          // A photo still uploading, or one that failed, blocks the save —
+          // the button says which, because a disabled control with no reason
+          // is indistinguishable from a broken one.
+          submitDisabled={saving || imageUpload.busy || imageUpload.failed}
           accentClassName="bg-accent-hover text-white"
         />
       </div>
@@ -917,19 +943,32 @@ function findVariantIssues(variants: VariantDraft[]): VariantIssues {
   return { duplicateSkus, duplicateCombos };
 }
 
+/**
+ * A step's heading and its content.
+ *
+ * This used to be a local `Section` that drew `card p-4 sm:p-5` — inside a
+ * wizard that is itself a card. Every step of adding a product showed a box
+ * drawn immediately inside another box, two borders a few pixels apart with
+ * nothing between them. It also shadowed the shared `Section` in
+ * components/ui by name, which is the parallel-system failure: two
+ * components, one name, one of them boxed and one not, and which you got
+ * depended on which file you were in.
+ */
 function Section({
   title,
-  hint,
+  description,
   children,
 }: {
   title: string;
-  hint?: string;
+  description?: string;
   children: React.ReactNode;
 }) {
   return (
-    <section className="card p-4 sm:p-5">
+    <section>
       <h2 className="text-sm font-semibold text-neutral-900">{title}</h2>
-      {hint ? <p className="mt-1 text-xs text-neutral-900/50">{hint}</p> : null}
+      {description ? (
+        <p className="mt-1 text-xs text-neutral-900/50">{description}</p>
+      ) : null}
       <div className="mt-4">{children}</div>
     </section>
   );

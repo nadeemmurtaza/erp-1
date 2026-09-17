@@ -7,15 +7,16 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcryptjs';
-import { normalizeEmail, normalizePkPhone } from '@yaseen/shared';
+import { normalizeEmail, normalizePkPhone } from '@newax/shared';
 import { AppConfigService } from '../config/app-config.service';
 import { EventBusService } from '../events/event-bus.service';
 import { DomainEvent } from '../events/domain-events';
 import { PrismaService } from '../prisma/prisma.service';
-import type { Prisma, UserRole } from '../prisma/client';
+import type { Prisma } from '../prisma/client';
 import type { AuthenticatedUser, JwtPayload } from './auth.constants';
 import { hashPassword } from './password.util';
 import { PermissionsResolverService } from './permissions.service';
+import { RolesService } from './roles.service';
 
 export interface AuthTokens {
   accessToken: string;
@@ -53,6 +54,7 @@ export class AuthService {
     private readonly config: AppConfigService,
     private readonly events: EventBusService,
     private readonly permissions: PermissionsResolverService,
+    private readonly roles: RolesService,
   ) {}
 
   async register(input: RegisterInput): Promise<AuthResult> {
@@ -63,7 +65,7 @@ export class AuthService {
 
     const phone = input.phone ? normalizePkPhone(input.phone).e164 : null;
     if (input.phone && !phone) {
-      throw new ConflictException('That phone number is not a valid Pakistani number.');
+      throw new ConflictException('That phone number is not a valid number.');
     }
 
     const clash = await this.prisma.user.findFirst({
@@ -85,9 +87,18 @@ export class AuthService {
         passwordHash: await hashPassword(input.password),
         firstName: input.firstName?.trim() || null,
         lastName: input.lastName?.trim() || null,
+        // The enum column stays, for display and as the seed's migration
+        // source (core.prisma) — but what actually grants this account any
+        // permission is the Role assignment below, not this value.
         role: 'CUSTOMER',
       },
     });
+
+    // Best-effort: if a super admin has since renamed or removed the
+    // "Customer" role, a new signup simply gets none — a storefront account
+    // needs no admin capability to place an order, so this degrades safely
+    // rather than blocking registration on a role that may not exist.
+    await this.roles.assignByNameIfExists(user.id, 'Customer');
 
     // The CRM subscribes to this and creates (or merges into) a Contact.
     await this.events.publish(DomainEvent.UserRegistered, {
@@ -321,7 +332,7 @@ export class AuthService {
       } else {
         const phone = normalizePkPhone(input.phone).e164;
         if (!phone) {
-          throw new ConflictException('That phone number is not a valid Pakistani number.');
+          throw new ConflictException('That phone number is not a valid number.');
         }
         const clash = await this.prisma.user.findFirst({
           where: { phone, NOT: { id: userId } },
@@ -335,11 +346,11 @@ export class AuthService {
     }
 
     const user = await this.prisma.user.update({ where: { id: userId }, data });
-    const permissions = await this.permissions.resolveForUser(user.id, user.role);
+    const { roles, permissions } = await this.permissions.resolveForUser(user.id);
 
     return {
       id: user.id,
-      role: user.role,
+      roles,
       permissions,
       email: user.email,
       phone: user.phone,
@@ -350,7 +361,6 @@ export class AuthService {
 
   private async issue(user: {
     id: string;
-    role: UserRole;
     email: string | null;
     phone: string | null;
     firstName: string | null;
@@ -358,7 +368,6 @@ export class AuthService {
   }): Promise<AuthResult> {
     const payload: JwtPayload = {
       sub: user.id,
-      role: user.role,
       email: user.email,
       phone: user.phone,
     };
@@ -369,7 +378,7 @@ export class AuthService {
       expiresIn: Math.floor(parseDuration(this.config.get('JWT_ACCESS_TTL')) / 1000),
     });
 
-    const permissions = await this.permissions.resolveForUser(user.id, user.role);
+    const { roles, permissions } = await this.permissions.resolveForUser(user.id);
 
     // Refresh tokens are opaque random strings, stored only as a SHA-256 hash,
     // so a leaked database dump cannot be replayed as a session.
@@ -388,7 +397,7 @@ export class AuthService {
       expiresIn: this.config.get('JWT_ACCESS_TTL'),
       user: {
         id: user.id,
-        role: user.role,
+        roles,
         permissions,
         email: user.email,
         phone: user.phone,

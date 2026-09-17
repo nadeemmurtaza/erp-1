@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
-import { DEFAULT_LOCALE, formatMoney, isLocale, pickTranslation, type Locale } from '@yaseen/shared';
+import { DEFAULT_LOCALE, formatMoney, isLocale, pickTranslation, type Locale } from '@newax/shared';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { NotificationsService } from '../../core/notifications/notifications.service';
 import type {

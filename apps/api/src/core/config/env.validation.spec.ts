@@ -86,4 +86,54 @@ describe('validateEnv', () => {
       validateEnv({ JWT_ACCESS_SECRET: 'short', JWT_REFRESH_SECRET: 'short' }),
     ).toThrow(/DATABASE_URL[\s\S]*JWT_ACCESS_SECRET[\s\S]*JWT_REFRESH_SECRET/);
   });
+
+  it('defaults NODE_ROLE to STANDALONE — every deployment today, with no topology', () => {
+    const env = validateEnv({ ...base });
+    expect(env.NODE_ROLE).toBe('STANDALONE');
+    expect(env.NODE_ID).toBe('main');
+    expect(env.PARENT_URL).toBeUndefined();
+  });
+
+  it('refuses NODE_ROLE=BRANCH without PARENT_URL', () => {
+    expect(() => validateEnv({ ...base, NODE_ROLE: 'BRANCH' })).toThrow(
+      /NODE_ROLE=BRANCH requires PARENT_URL/,
+    );
+  });
+
+  it('accepts NODE_ROLE=BRANCH once PARENT_URL is supplied', () => {
+    const env = validateEnv({
+      ...base,
+      NODE_ROLE: 'BRANCH',
+      NODE_ID: 'lhr-01',
+      PARENT_URL: 'https://brand1.example',
+    });
+    expect(env.NODE_ROLE).toBe('BRANCH');
+    expect(env.PARENT_URL).toBe('https://brand1.example');
+  });
+
+  it('accepts NODE_ROLE=BRAND with no PARENT_URL — a Chain-edition brand has no organization above it', () => {
+    const env = validateEnv({ ...base, NODE_ROLE: 'BRAND', NODE_ID: 'brand1' });
+    expect(env.PARENT_URL).toBeUndefined();
+  });
+
+  it('refuses a PARENT_URL on NODE_ROLE=ORG — it is the top of its topology', () => {
+    expect(() =>
+      validateEnv({
+        ...base,
+        NODE_ROLE: 'ORG',
+        NODE_ID: 'org',
+        PARENT_URL: 'https://somewhere.example',
+      }),
+    ).toThrow(/NODE_ROLE=ORG does not take a PARENT_URL/);
+  });
+
+  it('refuses a PARENT_URL on the default NODE_ROLE=STANDALONE', () => {
+    expect(() => validateEnv({ ...base, PARENT_URL: 'https://somewhere.example' })).toThrow(
+      /NODE_ROLE=STANDALONE does not take a PARENT_URL/,
+    );
+  });
+
+  it('refuses an unknown NODE_ROLE', () => {
+    expect(() => validateEnv({ ...base, NODE_ROLE: 'REGIONAL_HUB' })).toThrow();
+  });
 });

@@ -11,7 +11,7 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
-import { ORDER_STATUSES } from '@yaseen/shared';
+import { ORDER_STATUSES } from '@newax/shared';
 import { PaginationQueryDto } from '../../../core/common/dto/pagination.dto';
 
 export class ShippingAddressDto {

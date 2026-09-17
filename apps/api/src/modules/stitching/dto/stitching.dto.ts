@@ -14,7 +14,7 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
-import { STITCHING_STAGES } from '@yaseen/shared';
+import { STITCHING_STAGES } from '@newax/shared';
 
 const STITCHING_ORDER_STATUSES = [
   'DRAFT',

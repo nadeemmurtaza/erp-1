@@ -12,6 +12,7 @@
  * templates.spec.ts checks that in both directions.
  */
 
+import { BRAND } from '@newax/shared';
 import type { EmailAccountPurpose } from '../../prisma/client';
 
 export type EmailTemplateCategory = 'Orders' | 'Payments' | 'Account' | 'Stitching' | 'Marketing';
@@ -56,13 +57,13 @@ const sampleOrderItems = [
 
 const sampleAddress = {
   fullName: 'Ayesha Khan',
-  phone: '+923001234567',
+  phone: BRAND.contact.phone,
   line1: 'House 12, Street 4, F-8/3',
   line2: null,
   city: 'Islamabad',
   province: 'Islamabad',
   postalCode: '44000',
-  country: 'PK',
+  country: BRAND.locale.countryCode,
 };
 
 const sampleProducts = [
@@ -197,8 +198,8 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
       'Sent by MarketingAutomationCron (modules/marketing) when a logged-in customer\'s cart sits idle past marketing.abandoned_cart_reminder_hours (Settings). Guest carts have no email captured yet, so this covers logged-in customers only. Off by default (marketing.automation_enabled).',
     sampleData: {
       items: sampleOrderItems,
-      cartUrl: 'https://yaseen.pk/en/cart',
-      unsubscribeUrl: 'https://yaseen.pk/en/unsubscribe?u=sample&t=sample',
+      cartUrl: `${BRAND.identity.url}/en/cart`,
+      unsubscribeUrl: `${BRAND.identity.url}/en/unsubscribe?u=sample&t=sample`,
     },
   },
   {
@@ -210,10 +211,10 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
       'Sent by the same cron, marketing.abandoned_cart_incentive_hours after the reminder, if the cart is still not converted. No discount-code system exists, so this goes out without one — discountCode/discountLabel stay unset rather than showing a fake code.',
     sampleData: {
       items: sampleOrderItems,
-      cartUrl: 'https://yaseen.pk/en/cart',
+      cartUrl: `${BRAND.identity.url}/en/cart`,
       discountCode: 'COMEBACK10',
       discountLabel: '10% off',
-      unsubscribeUrl: 'https://yaseen.pk/en/unsubscribe?u=sample&t=sample',
+      unsubscribeUrl: `${BRAND.identity.url}/en/unsubscribe?u=sample&t=sample`,
     },
   },
   {
@@ -235,7 +236,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     sampleData: {
       orderNumber: 'YSN-2026-0142',
       items: sampleProducts,
-      unsubscribeUrl: 'https://yaseen.pk/en/unsubscribe?u=sample&t=sample',
+      unsubscribeUrl: `${BRAND.identity.url}/en/unsubscribe?u=sample&t=sample`,
     },
   },
   {
@@ -255,7 +256,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
       "Sent by MarketingAutomationCron marketing.replenishment_reminder_days (Settings) after a delivered order for a product flagged Product.isConsumable, one per order item. Not per-product cadence-tuned — a single global day count, admin-configurable in Settings. Off by default (marketing.automation_enabled).",
     sampleData: {
       product: sampleProducts[0],
-      unsubscribeUrl: 'https://yaseen.pk/en/unsubscribe?u=sample&t=sample',
+      unsubscribeUrl: `${BRAND.identity.url}/en/unsubscribe?u=sample&t=sample`,
     },
   },
   {
@@ -269,7 +270,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
       headline: 'Eid Sale — up to 40% off',
       message: 'Our biggest sale of the season is live. Shop new arrivals and bestsellers before they sell out.',
       ctaLabel: 'Shop the sale',
-      ctaUrl: 'https://yaseen.pk/en',
+      ctaUrl: `${BRAND.identity.url}/en`,
       expiresAt: null,
     },
   },
@@ -283,7 +284,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
       headline: 'Just dropped: the Winter Collection',
       message: 'New fabrics, new colours. Be the first to shop the new collection.',
       ctaLabel: 'Shop new arrivals',
-      ctaUrl: 'https://yaseen.pk/en',
+      ctaUrl: `${BRAND.identity.url}/en`,
       expiresAt: null,
     },
   },
@@ -297,7 +298,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
       headline: '24 hours only: 25% off everything',
       message: 'One day only. Use the code at checkout before it is gone.',
       ctaLabel: 'Shop now',
-      ctaUrl: 'https://yaseen.pk/en',
+      ctaUrl: `${BRAND.identity.url}/en`,
       expiresAt: 'tonight at midnight',
     },
   },

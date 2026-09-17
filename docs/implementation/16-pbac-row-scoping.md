@@ -9,10 +9,28 @@
 > assigned to someone else, `manage_all` still bypasses ownership), now
 > routed through one function with its own unit tests instead of an inline
 > check. The `_own`/`_all` naming convention is documented in
-> `00-HOUSE-RULES.md` §9. Everything past that — an actual marketplace,
-> `Product.sellerId`, list-endpoint row filtering — remains unbuilt, per
-> "Explicitly out of scope" below; there is still only one call site, so
-> the decorator-based follow-up stays undone until a second one arrives.
+> `00-HOUSE-RULES.md` §9.
+>
+> **The second call site has arrived (WO-18.4).** `RETAIL-ERP.md` R10 names
+> `AdminScope` exactly what this doc said B5 needed before the general
+> framework was worth building — "not a role check," a row a user holds
+> that says which brand or branch their admin access reaches.
+> `assertCanManageAtScope()` and `scopeFilterFor()`
+> (`apps/api/src/core/auth/scope.guard.ts`) extend `assertCanManage()`'s
+> exact shape — same `_own`/`_all` bypass, same "throw unless the actor's
+> grant covers the row" pattern — from a single `ownerId` comparison to an
+> `AdminScope` grant search. Twenty unit tests, `scope.guard.spec.ts`.
+>
+> **Still not wired into a live route.** `organization` (WO-18.3) has no
+> controller yet — nothing today calls either function outside its own
+> tests. That is deliberate, the same discipline this doc names below for
+> list-endpoint filtering: prove the shape before a real consumer depends on
+> it, not after. WO-18.5's dashboards are that consumer.
+>
+> The originally-deferred items — an actual marketplace, `Product.sellerId`,
+> ownership-style (not scope-style) list filtering for a `manage_own` case
+> beyond `stitching.jobs` — remain unbuilt, per "Explicitly out of scope"
+> below; nothing here changes that.
 
 ## The good news: the convention already exists, once
 

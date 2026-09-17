@@ -14,7 +14,7 @@ import {
   stitchingFeeFor,
   type Locale,
   type MeasurementValues,
-} from '@yaseen/shared';
+} from '@newax/shared';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
@@ -103,7 +103,7 @@ export interface CartView {
  *
  * Prices are recomputed from the database on every read — the client's numbers
  * are never trusted and never stored on the cart. The same helpers in
- * @yaseen/shared price the cart here and the order at checkout, so the total a
+ * @newax/shared price the cart here and the order at checkout, so the total a
  * customer is shown is the total they are charged.
  */
 @Injectable()
@@ -150,7 +150,7 @@ export class CartService {
     }
 
     const stitching = dto.stitching
-      ? await this.validateStitching(variant.product as any, dto, userId)
+      ? await this.validateStitching(variant.product, dto, userId)
       : null;
 
     // An identical line — same variant, same stitching choices — increments
@@ -234,7 +234,7 @@ export class CartService {
 
     if (dto.measurementProfileId !== undefined) {
       const profile = await this.assertOwnedProfile(dto.measurementProfileId, userId);
-      if ((item as any).garmentTypeId && profile.garmentTypeId !== (item as any).garmentTypeId) {
+      if (item.garmentTypeId && profile.garmentTypeId !== item.garmentTypeId) {
         throw new BadRequestException('Those measurements are for a different garment.');
       }
 
@@ -457,7 +457,11 @@ export class CartService {
     }
 
     const measurementValues = request.measurementValues
-      ? await this.validators.validate('measurements', garment.fields, request.measurementValues)
+      ? await this.validators.validate<MeasurementValues>(
+          'measurements',
+          garment.fields,
+          request.measurementValues,
+        )
       : null;
 
     // Which options are valid for this garment, whether a SINGLE-select group

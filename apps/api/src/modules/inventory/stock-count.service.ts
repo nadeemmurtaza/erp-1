@@ -1,3 +1,7 @@
+import { SettingsService } from '../../core/settings/settings.service';
+import { documentPrefix } from '../../core/settings/document-prefix';
+import { documentNumber, documentNumberPrefix } from '../../core/settings/document-number';
+import { AppConfigService } from '../../core/config/app-config.service';
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { InventoryService } from './inventory.service';
@@ -5,17 +9,24 @@ import { Prisma } from '../../core/prisma/client';
 
 const SC_NUMBER_LOCK_NAMESPACE = 8_241_122;
 
-async function nextSCNumber(tx: Prisma.TransactionClient): Promise<string> {
+async function nextSCNumber(
+  tx: Prisma.TransactionClient,
+  settings: SettingsService,
+  config: AppConfigService,
+): Promise<string> {
   const year = new Date().getFullYear();
-  const prefix = `SC-${year}-`;
+  // The prefix is a Setting, so a shop can match paperwork it already
+  // numbers its own way. See core/settings/document-prefix.ts.
+  const prefix = await documentPrefix(settings, 'stockCount');
+  const like = documentNumberPrefix(config, prefix, year);
   await tx.$executeRaw`SELECT pg_advisory_xact_lock(${SC_NUMBER_LOCK_NAMESPACE}::int, ${year}::int)`;
   const [{ max }] = await tx.$queryRaw<Array<{ max: number | null }>>`
-    SELECT MAX(CAST(split_part("countNumber", '-', 3) AS INTEGER)) AS max
+    SELECT MAX(CAST(split_part("countNumber", '-', -1) AS INTEGER)) AS max
     FROM "StockCount"
-    WHERE "countNumber" LIKE ${`${prefix}%`}
+    WHERE "countNumber" LIKE ${`${like}%`}
   `;
   const nextSequence = (max ?? 0) + 1;
-  return `${prefix}${nextSequence.toString().padStart(4, '0')}`;
+  return documentNumber(config, prefix, year, nextSequence);
 }
 
 @Injectable()
@@ -23,6 +34,10 @@ export class StockCountService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly inventoryService: InventoryService,
+    // Reads the document prefixes; SettingsModule is @Global so this needs
+    // no module import.
+    private readonly settings: SettingsService,
+    private readonly config: AppConfigService,
   ) {}
 
   async findAll() {
@@ -61,7 +76,7 @@ export class StockCountService {
 
   async create(data: { note?: string; assignedTo?: string }, userId: string) {
     return this.prisma.$transaction(async (tx) => {
-      const number = await nextSCNumber(tx);
+      const number = await nextSCNumber(tx, this.settings, this.config);
       return tx.stockCount.create({
         data: {
           countNumber: number,

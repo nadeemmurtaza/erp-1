@@ -1,7 +1,7 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { Injectable, Logger } from '@nestjs/common';
 import { AppConfigService } from '../../../core/config/app-config.service';
-import { toMajor } from '@yaseen/shared';
+import { toMajor } from '@newax/shared';
 import type {
   PaymentCallbackResult,
   PaymentContext,

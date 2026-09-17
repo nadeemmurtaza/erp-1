@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { use, useCallback, useEffect, useMemo, useState } from 'react';
-import { nextStage, previousStage } from '@yaseen/shared';
+import { formatDate, formatDateTime, nextStage, previousStage } from '@newax/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import {
   fieldLabel,
@@ -14,6 +14,7 @@ import {
 } from '@/types/stitching';
 import { StageBadge } from '@/components/admin/stage-badge';
 import { ROUTES } from '@/constants/routes';
+import { Loading } from '@/components/ui';
 
 /**
  * One job: the tailor's worksheet.
@@ -106,11 +107,11 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
     return (
       <>
         {error ? (
-          <p role="alert" className="card p-4 text-sm text-red-700">
+          <p role="alert" className="notice notice-error">
             {error}
           </p>
         ) : (
-          <p className="text-sm text-neutral-900/50">Loading…</p>
+          <Loading />
         )}
       </>
     );
@@ -136,12 +137,12 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 whitespace-pre-line p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4 whitespace-pre-line">
           {error}
         </p>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-6 fold:grid-cols-2 lg:grid-cols-3">
         <section className="card p-4 lg:col-span-1">
           <h2 className="mb-3 text-sm font-semibold text-neutral-900">Measurements</h2>
           {measurements.length === 0 ? (
@@ -149,7 +150,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <tbody className="divide-y divide-white">
+                <tbody className="divide-y divide-neutral-100">
                   {measurements.map(([key, value]) => (
                     <tr key={key}>
                       <th scope="row" className="py-1.5 text-start font-normal text-neutral-900/60">
@@ -188,7 +189,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
             <div className="flex justify-between">
               <dt className="text-neutral-900/50">Due</dt>
               <dd className="text-neutral-900/80">
-                {job.dueAt ? new Date(job.dueAt).toLocaleDateString('en-PK') : '—'}
+                {job.dueAt ? formatDate(job.dueAt) : '—'}
               </dd>
             </div>
             <div className="flex justify-between">
@@ -279,7 +280,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                   {event.fromStage ? `${STAGE_LABELS[event.fromStage]} → ` : ''}
                   {STAGE_LABELS[event.toStage]}
                   <span className="ms-2 text-xs text-neutral-900/40">
-                    {new Date(event.createdAt).toLocaleString('en-PK')}
+                    {formatDateTime(event.createdAt)}
                   </span>
                 </p>
                 {event.note ? <p className="text-neutral-900/60">{event.note}</p> : null}

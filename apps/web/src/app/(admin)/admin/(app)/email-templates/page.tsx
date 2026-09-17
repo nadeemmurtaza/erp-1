@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import type { EmailTemplateCatalogEntry, RenderedEmailPreview } from '@/types/api';
+import { Loading } from '@/components/ui';
 
 const CATEGORIES: EmailTemplateCatalogEntry['category'][] = [
   'Orders',
@@ -75,7 +76,7 @@ export default function EmailTemplatesPage() {
       </p>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}
@@ -83,7 +84,7 @@ export default function EmailTemplatesPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[280px_1fr]">
         <div className="card max-h-[calc(100vh-14rem)] overflow-y-auto p-2">
           {!templates ? (
-            <p className="p-3 text-sm text-neutral-900/50">Loading…</p>
+            <Loading className="p-3" />
           ) : (
             CATEGORIES.map((category) => {
               const items = byCategory.get(category);
@@ -150,7 +151,7 @@ export default function EmailTemplatesPage() {
                 <p className="mt-3 text-sm text-neutral-900/70">{selected.triggerDescription}</p>
               </div>
 
-              <div className="card overflow-hidden">
+              <div className="overflow-hidden">
                 {previewLoading ? (
                   <p className="p-8 text-center text-sm text-neutral-900/50">Rendering…</p>
                 ) : previewError ? (
@@ -185,7 +186,7 @@ export default function EmailTemplatesPage() {
 function TriggerBadge({ trigger }: { trigger: EmailTemplateCatalogEntry['trigger'] }) {
   return (
     <span
-      className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
+      className={`shrink-0 rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
         trigger === 'automatic' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'
       }`}
     >

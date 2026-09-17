@@ -10,6 +10,16 @@ import Link from 'next/link';
  * `<html>`/`<body>`: this app has no `app/layout.tsx`, each route group owns
  * its own root layout, and an unmatched URL belongs to none of them.
  */
+// The palette, imported rather than retyped: these pages render with no
+// stylesheet, but that is a reason to inline the *values*, not to keep a
+// second hand-copy of them that drifts the next time the ramp changes.
+import { THEME_COLORS } from '@newax/shared';
+
+const N = THEME_COLORS.neutral;
+// Square, accent-filled: the same primary button the rest of the product has,
+// hand-built because no stylesheet is guaranteed here. 2px is --radius.
+const ACCENT = THEME_COLORS.accent.DEFAULT;
+
 export default function RootNotFound() {
   return (
     <html lang="en">
@@ -20,8 +30,8 @@ export default function RootNotFound() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#F2F2F2',
-          color: '#121111',
+          backgroundColor: N[50],
+          color: N[900],
           fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, sans-serif',
           padding: '1.5rem',
         }}
@@ -34,7 +44,7 @@ export default function RootNotFound() {
               fontWeight: 600,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
-              color: '#787676',
+              color: N[500],
             }}
           >
             404
@@ -42,7 +52,7 @@ export default function RootNotFound() {
           <h1 style={{ marginTop: '0.75rem', fontSize: '1.5rem', fontWeight: 600 }}>
             We couldn&apos;t find that page
           </h1>
-          <p style={{ marginTop: '0.75rem', fontSize: '0.875rem', color: '#514E4E' }}>
+          <p style={{ marginTop: '0.75rem', fontSize: '0.875rem', color: N[600] }}>
             The address may be mistyped, or the page may have moved.
           </p>
           <Link
@@ -50,9 +60,9 @@ export default function RootNotFound() {
             style={{
               display: 'inline-block',
               marginTop: '1.5rem',
-              borderRadius: '9999px',
-              backgroundColor: '#292526',
-              color: '#ffffff',
+              borderRadius: '2px',
+              backgroundColor: ACCENT,
+              color: THEME_COLORS.white,
               padding: '0.75rem 1.5rem',
               fontSize: '0.875rem',
               fontWeight: 500,

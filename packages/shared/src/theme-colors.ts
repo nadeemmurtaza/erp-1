@@ -1,46 +1,17 @@
+import { BRAND } from './brand';
+
 /**
- * The one set of colour values every surface draws from — web (Tailwind
- * config, admin, storefront) and mobile (React Native inline styles) alike.
+ * The palette — a view onto BRAND.theme.colors.
  *
- * Before this file, three surfaces each carried their own approximation of
- * the same identity: web admin's `brand`/`sand`/`gold`/`ink` Tailwind scale
- * (teal `#1b9aaa`), web's chart components hardcoding a *different* teal
- * (`#0f8fa3`) inline in five separate files, and the mobile app's
- * `src/theme.ts` hardcoding a third set of near-identical hex values under
- * its own names. None of the three agreed, because none of them imported
- * from the others — each was someone eyeballing "close enough" rather than
- * reusing a value. Import from here instead of writing a hex literal.
+ * The values moved to brand.ts so a rebrand is one file. This name stays
+ * because 119 files import it, and because `THEME_COLORS.accent.DEFAULT`
+ * reads better at a call site than reaching through the whole brand object.
  *
- * `neutral` is the monochrome ramp (backgrounds, text, borders, chart
- * tracks) used everywhere — there is no separate palette for admin vs
- * storefront. `accent` is the one brand colour, used sparingly for calls to
- * action, links and focus rings. `star` stays reserved for rating stars only
- * (see its use sites) — never repurpose it for anything else, the same way
- * you would not repurpose a semantic error colour for a decorative accent.
- *
- * Semantic status colours (error, success, warning) are NOT here: the app
- * already uses Tailwind's stock `red`/`green`/`amber` scales for those
- * consistently, and inventing custom ones would just be a second red to keep
- * in sync with the first. Mobile's `danger` in `apps/mobile/src/theme.ts`
- * is pinned to Tailwind's actual `red-700`/`red-50` hex for the same reason.
+ * `neutral` is the entire background/text/border system for admin and
+ * storefront both. `accent` is the one brand colour, used sparingly.
+ * Error/success/warning use Tailwind's stock red/green/amber — there is no
+ * custom token for those, deliberately: they mean the same thing in every
+ * brand and should not be something a client can get wrong.
  */
-export const THEME_COLORS = {
-  neutral: {
-    50: '#F2F2F2',
-    100: '#E8E8E8',
-    200: '#C6C5C5',
-    300: '#A3A1A2',
-    400: '#8E8C8C',
-    500: '#787676',
-    600: '#514E4E',
-    700: '#292526',
-    800: '#1E1B1C',
-    900: '#121111',
-  },
-  accent: {
-    DEFAULT: '#0f8fa3',
-    hover: '#0b6d7d',
-  },
-  /** Rating stars only. */
-  star: '#F5B841',
-} as const;
+export const THEME_COLORS = BRAND.theme.colors;
+export type ThemeColors = typeof THEME_COLORS;

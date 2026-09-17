@@ -204,9 +204,9 @@ garment/measurement reference data the storefront reads. It is idempotent
 
 ```bash
 # In a shell inside the api container (Coolify: Terminal on the api app).
-# NOT `pnpm db:seed`: the runtime image ships only @yaseen/api, so pnpm's
+# NOT `pnpm db:seed`: the runtime image ships only @newax/api, so pnpm's
 # workspace check fails before the script ever runs, with
-# ERR_PNPM_WORKSPACE_PKG_NOT_FOUND for @yaseen/config. Call ts-node directly,
+# ERR_PNPM_WORKSPACE_PKG_NOT_FOUND for @newax/config. Call ts-node directly,
 # which is exactly what the db:seed script does.
 cd /repo/apps/api && ./node_modules/.bin/ts-node --project tsconfig.seed.json prisma/seed.ts
 ```
@@ -486,6 +486,6 @@ docker compose -f docker-compose.caddy.yml logs -f caddy
 # is blocked — recheck `dig yaseen.pk` and `ufw status`.
 
 # Re-run migrations/seed manually
-docker compose -f docker-compose.prod.yml exec api pnpm --filter @yaseen/api db:deploy
+docker compose -f docker-compose.prod.yml exec api pnpm --filter @newax/api db:deploy
 cd /repo/apps/api && ./node_modules/.bin/ts-node --project tsconfig.seed.json prisma/seed.ts
 ```

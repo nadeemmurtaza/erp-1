@@ -11,7 +11,7 @@ import {
   MaxLength,
   ValidateNested,
 } from 'class-validator';
-import { LOCALES } from '@yaseen/shared';
+import { LOCALES } from '@newax/shared';
 
 export class CategoryTranslationDto {
   @ApiProperty({ enum: LOCALES })

@@ -9,8 +9,8 @@ import {
   formatMoney,
   validateMeasurements,
   type Locale,
-} from '@yaseen/shared';
-import { API_URL } from '@/lib/api';
+} from '@newax/shared';
+import { request as apiRequest } from '@/lib/api-client';
 import type { StorefrontProduct } from '@/types/api';
 import { getCustomerToken } from '@/lib/cart-client';
 import type {
@@ -138,20 +138,21 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
 
     const token = getCustomerToken();
 
-    void fetch(`${API_URL}/stitching/garments`)
-      .then((response) => (response.ok ? response.json() : []))
-      .then((loaded: StitchingGarment[]) => {
+    void apiRequest<StitchingGarment[]>('/stitching/garments')
+      .then((loaded) => {
         if (!cancelled) setGarments(loaded);
       })
+      // The panel still works with an empty list — it just cannot offer
+      // stitching — so a failure here stays quiet rather than blocking a
+      // product page.
       .catch(() => undefined);
 
     if (token) {
-      void fetch(`${API_URL}/measurements/profiles`, {
+      void apiRequest<MeasurementProfileSummary[]>('/measurements/profiles', {
         headers: { Authorization: `Bearer ${token}` },
         credentials: 'include',
       })
-        .then((response) => (response.ok ? response.json() : []))
-        .then((loaded: MeasurementProfileSummary[]) => {
+        .then((loaded) => {
           if (!cancelled) setProfiles(loaded);
         })
         .catch(() => undefined);
@@ -469,13 +470,13 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
   }
 
   return (
-    <section className="rounded-lg border border-neutral-200 bg-neutral-50 p-4">
+    <section className="rounded-lg border border-neutral-100 bg-neutral-50 p-4">
       <label className="flex cursor-pointer items-start gap-3">
         <input
           type="checkbox"
           checked={enabled}
           onChange={(event) => setEnabled(event.target.checked)}
-          className="mt-0.5 rounded border-neutral-300 text-neutral-900 focus:ring-neutral-900"
+          className="mt-0.5 field-check"
         />
         <span>
           <span className="block text-sm font-semibold text-neutral-900">{t('getStitched')}</span>
@@ -487,7 +488,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
         'overflow-hidden transition-all duration-300',
         enabled ? 'max-h-[4000px] opacity-100' : 'max-h-0 opacity-0'
       )}>
-        <div className="mt-4 space-y-4 border-t border-neutral-200 pt-4">
+        <div className="mt-4 space-y-4 border-t border-neutral-100 pt-4">
           {offered.length > 1 ? (
             <Group label={t('garment')}>
               <div className="flex flex-wrap gap-2">
@@ -663,7 +664,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
                       type="checkbox"
                       checked={saveProfile}
                       onChange={(event) => setSaveProfile(event.target.checked)}
-                      className="rounded border-neutral-300 text-neutral-900 focus:ring-neutral-900"
+                      className="field-check"
                     />
                     {t('saveAsProfile')}
                   </label>
@@ -684,7 +685,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
           ) : null}
 
           {fabricEstimate ? (
-            <div className="rounded-md border border-neutral-200 bg-white/60 p-3">
+            <div className="rounded-md bg-white/70 p-3">
               <p className="text-sm font-semibold text-neutral-900">{t('fabricEstimate')}</p>
               <p className="mt-0.5 text-xs text-neutral-500">{t('fabricEstimateBody')}</p>
 
@@ -709,7 +710,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
                   type="checkbox"
                   checked={wideWidth}
                   onChange={(event) => setWideWidth(event.target.checked)}
-                  className="rounded border-neutral-300 text-neutral-900 focus:ring-neutral-900"
+                  className="field-check"
                 />
                 {t('fabricWideWidth')}
               </label>
@@ -735,7 +736,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
           </Group>
 
           {garment ? (
-            <div className="space-y-1 border-t border-neutral-200 pt-3 text-sm">
+            <div className="space-y-1 border-t border-neutral-100 pt-3 text-sm">
               <p className="flex items-baseline justify-between gap-3">
                 <span className="text-neutral-500">{t('baseStitchingFee')}</span>
                 <span className="text-neutral-900">{formatMoney(baseFee, locale)}</span>
@@ -780,15 +781,19 @@ export async function prepareStitching(
   const token = getCustomerToken();
 
   if (saveProfileAs && token && selection.measurementValues) {
-    await fetch(`${API_URL}/measurements/profiles`, {
+    // Saving the profile is a convenience on top of adding to cart; if it
+    // fails the customer still gets their item, so this swallows rather than
+    // surfacing.
+    await apiRequest('/measurements/profiles', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}` },
       credentials: 'include',
-      body: JSON.stringify({
+      expect: 'none',
+      body: {
         label: saveProfileAs,
         garmentTypeId: selection.garmentTypeId,
         values: selection.measurementValues,
-      }),
+      },
     }).catch(() => undefined);
   }
 
@@ -898,7 +903,7 @@ function ServiceChoice({
     <label
       className={cn(
         'flex cursor-pointer items-start gap-3 rounded-md border p-3 transition-colors duration-200',
-        selected ? 'border-neutral-900 bg-white' : 'border-neutral-200 bg-white/60 hover:border-neutral-400',
+        selected ? 'border-neutral-900 bg-white' : 'border-neutral-100 bg-white/60 hover:border-neutral-400',
       )}
     >
       <input
@@ -906,7 +911,7 @@ function ServiceChoice({
         name="stitching-service"
         checked={selected}
         onChange={onSelect}
-        className="mt-1 border-neutral-300 text-neutral-900 focus:ring-neutral-900"
+        className="mt-1 field-check"
       />
       <span className="flex-1">
         <span className="flex justify-between gap-3">
@@ -955,7 +960,7 @@ function Chip({
       type="button"
       onClick={onClick}
       aria-pressed={selected}
-      className={cn('sf-chip', selected ? 'sf-chip-selected' : 'sf-chip-unselected')}
+      className={cn('chip', selected ? 'chip-selected' : 'chip-unselected')}
     >
       {children}
     </button>

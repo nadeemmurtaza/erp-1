@@ -110,13 +110,13 @@ export default function AdminCategoriesPage() {
       </p>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_22rem]">
-        <div className="card overflow-hidden">
+        <div className="overflow-hidden">
           <div className="overflow-x-auto">
             <DataTable
               rows={asTree(categories)}
@@ -248,7 +248,7 @@ export default function AdminCategoriesPage() {
               type="checkbox"
               checked={draft.isActive}
               onChange={(event) => setDraft({ ...draft, isActive: event.target.checked })}
-              className="rounded border-neutral-200 text-accent-hover focus:ring-accent"
+              className="field-check"
             />
             Visible on the storefront
           </label>

@@ -4,7 +4,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
 import type { InboundEmail, PaginatedResponse } from '@/types/api';
+import { formatDateTime } from '@newax/shared';
 
+import { Loading } from '@/components/ui';
 type LinkFilter = 'all' | 'unlinked' | 'linked';
 
 interface ContactOption {
@@ -109,16 +111,16 @@ export default function AdminInboxPage() {
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_28rem]">
-        <div className="card overflow-hidden">
+        <div className="overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="border-b border-neutral-100 bg-neutral-50">
+            <table className="table-flat">
+              <thead>
                 <tr>
                   <Th>From</Th>
                   <Th>Subject</Th>
@@ -126,12 +128,12 @@ export default function AdminInboxPage() {
                   <Th>Received</Th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white">
+              <tbody className="divide-y divide-neutral-100">
                 {!messages ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/50">
-                      Loading…
-                    </td>
+                    <td colSpan={4} className="px-4 py-8 text-center">
+                    <Loading className="p-0" />
+                  </td>
                   </tr>
                 ) : messages.data.length === 0 ? (
                   <tr>
@@ -149,21 +151,21 @@ export default function AdminInboxPage() {
                         selected?.id === message.id && 'bg-neutral-50',
                       )}
                     >
-                      <td className="px-4 py-3">
+                      <td>
                         <p className="font-medium text-neutral-900">{message.fromName || message.fromAddress}</p>
                         <p className="text-xs text-neutral-900/40">{message.fromAddress}</p>
                       </td>
-                      <td className="px-4 py-3 text-neutral-900/80">
+                      <td className="text-neutral-900/80">
                         {message.subject || '(no subject)'}
                         {message._count.replies > 0 ? (
-                          <span className="ms-2 rounded-full bg-neutral-50 px-2 py-0.5 text-xs font-medium text-accent-hover">
+                          <span className="ms-2 rounded bg-neutral-50 px-2 py-0.5 text-xs font-medium text-accent-hover">
                             Replied
                           </span>
                         ) : null}
                       </td>
-                      <td className="px-4 py-3 text-neutral-900/60">{message.emailAccount.label}</td>
-                      <td className="px-4 py-3 text-neutral-900/60">
-                        {new Date(message.receivedAt).toLocaleString('en-PK')}
+                      <td className="text-neutral-900/60">{message.emailAccount.label}</td>
+                      <td className="text-neutral-900/60">
+                        {formatDateTime(message.receivedAt)}
                       </td>
                     </tr>
                   ))
@@ -274,7 +276,7 @@ function MessageDetailPanel({
         {message.fromAddress}
       </p>
       <p className="text-xs text-neutral-900/40">
-        {new Date(message.receivedAt).toLocaleString('en-PK')} · via {message.emailAccount.label}
+        {formatDateTime(message.receivedAt)} · via {message.emailAccount.label}
       </p>
 
       <div className="mt-4 whitespace-pre-wrap rounded-md bg-neutral-50 p-3 text-sm text-neutral-900/80">
@@ -288,7 +290,7 @@ function MessageDetailPanel({
               <p className="text-xs font-medium text-neutral-900/60">
                 {reply.actor ? `${reply.actor.firstName ?? ''} ${reply.actor.lastName ?? ''}`.trim() || 'Staff' : 'Staff'}
                 {' · '}
-                {new Date(reply.sentAt).toLocaleString('en-PK')}
+                {formatDateTime(reply.sentAt)}
               </p>
               <p className="mt-1 whitespace-pre-wrap text-sm text-neutral-900/80">{reply.body}</p>
             </li>
@@ -336,7 +338,7 @@ function MessageDetailPanel({
             />
             {searching ? <p className="mt-2 text-xs text-neutral-900/40">Searching…</p> : null}
             {options.length > 0 ? (
-              <ul className="mt-2 divide-y divide-white rounded-md border border-neutral-100">
+              <ul className="mt-2 divide-y divide-neutral-100 rounded-md border border-neutral-100">
                 {options.map((option) => (
                   <li key={option.id}>
                     <button
@@ -362,8 +364,7 @@ function MessageDetailPanel({
 
 function Th({ children }: { children: React.ReactNode }) {
   return (
-    <th
-      scope="col"
+    <th scope="col"
       className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50"
     >
       {children}

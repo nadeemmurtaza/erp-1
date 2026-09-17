@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
-import { formatMoney } from '@yaseen/shared';
+import { formatMoney } from '@newax/shared';
+import { Loading } from '@/components/ui';
 
 interface InventoryVariant {
   id: string;
@@ -57,7 +58,7 @@ export default function SlowMoversPage() {
         Variants with zero sales in the slow mover window.
       </p>
 
-      <div className="card mb-4 flex flex-wrap items-center gap-3 p-3">
+      <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-neutral-100 pb-4">
         <label className="text-sm font-medium text-neutral-900/70">Ageing bucket:</label>
         <div className="flex gap-2">
           {[0, 60, 90, 180, 365].map((age) => (
@@ -76,15 +77,15 @@ export default function SlowMoversPage() {
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}
 
-      <div className="card overflow-hidden">
+      <div className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-neutral-100 bg-neutral-50 whitespace-nowrap">
+          <table className="table-flat">
+            <thead className="whitespace-nowrap">
               <tr>
                 <Th>Product</Th>
                 <Th>SKU</Th>
@@ -96,11 +97,11 @@ export default function SlowMoversPage() {
                 )}
               </tr>
             </thead>
-            <tbody className="divide-y divide-white">
+            <tbody className="divide-y divide-neutral-100">
               {busy && !variants ? (
                 <tr>
-                  <td colSpan={canViewCost ? 6 : 5} className="p-8 text-center text-neutral-900/50">
-                    Loading...
+                  <td colSpan={canViewCost ? 6 : 5} className="p-8 text-center">
+                    <Loading className="p-0" />
                   </td>
                 </tr>
               ) : filtered.length === 0 ? (
@@ -112,26 +113,26 @@ export default function SlowMoversPage() {
               ) : (
                 filtered.map((variant) => (
                   <tr key={variant.id} className="hover:bg-neutral-50/50">
-                    <td className="px-3 py-3">
+                    <td>
                       <div className="font-medium text-neutral-900">{variant.product.name}</div>
                       <div className="text-xs text-neutral-900/60">
                         {[variant.size, variant.color].filter(Boolean).join(' / ')}
                       </div>
                     </td>
-                    <td className="px-3 py-3 text-neutral-900/80">{variant.sku}</td>
-                    <td className="px-3 py-3 text-end font-medium">
+                    <td className="text-neutral-900/80">{variant.sku}</td>
+                    <td className="text-end font-medium">
                       {variant.stock}
                     </td>
-                    <td className="px-3 py-3 text-end text-neutral-900/60">
+                    <td className="text-end text-neutral-900/60">
                       {variant.salesStat?.daysOfCover !== undefined && variant.salesStat?.daysOfCover !== null 
                         ? Math.round(variant.salesStat.daysOfCover)
                         : '—'}
                     </td>
-                    <td className="px-3 py-3 text-end text-amber-600 font-medium">
+                    <td className="text-end text-amber-600 font-medium">
                       {variant.salesStat?.ageDays ?? '—'}
                     </td>
                     {canViewCost && (
-                      <td className="px-3 py-3 text-end font-medium text-red-600">
+                      <td className="text-end font-medium text-red-600">
                         {formatMoney(variant.stock * variant.costPrice)}
                       </td>
                     )}

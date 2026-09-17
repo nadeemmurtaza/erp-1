@@ -18,10 +18,10 @@
     "check:secrets": "node scripts/check-frontend-secrets.mjs",
     "check:env": "node scripts/check-env-templates.mjs",
     "check:email": "node scripts/check-email-dns.mjs",
-    "db:migrate": "pnpm --filter @yaseen/api db:migrate",
-    "db:generate": "pnpm --filter @yaseen/api db:generate",
+    "db:migrate": "pnpm --filter @newax/api db:migrate",
+    "db:generate": "pnpm --filter @newax/api db:generate",
     "db:seed": "turbo run db:seed",
-    "db:reset": "pnpm --filter @yaseen/api db:reset",
+    "db:reset": "pnpm --filter @newax/api db:reset",
     "services:up": "docker compose up -d",
     "services:down": "docker compose down"
   },

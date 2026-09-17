@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, Suspense } from 'react';
-import type { Locale } from '@yaseen/shared';
+import type { Locale } from '@newax/shared';
 import type { StorefrontProduct } from '@/types/api';
 import { ProductsGrid } from './products-grid';
 import { GridToggleWrapper } from './grid-toggle-wrapper';
@@ -22,7 +22,7 @@ export function ShopControls({ products, locale, resultsCount, title }: ShopCont
       {/* Stacks on mobile: the heading, the column toggle and the sort select
           cannot share one row at 375px — they overflowed the viewport by ~44px
           and pushed the whole page into a horizontal scroll. */}
-      <div className="sf-card mb-8 flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+      <div className="card mb-8 flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <div>
           <h1 className="font-display text-2xl font-semibold text-neutral-900">{title}</h1>
           <p className="mt-1 text-sm text-neutral-500">{resultsCount}</p>

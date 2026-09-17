@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/utils/cn';
 import type { StitchingGarment } from '@/types/cart';
-import type { Locale } from '@yaseen/shared';
+import type { Locale } from '@newax/shared';
 
 interface SizeChartModalProps {
   productName: string;
@@ -115,11 +115,10 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
           <div
             ref={modalRef}
             tabIndex={-1}
-            className="relative w-full max-w-2xl sf-card shadow-xl outline-none overflow-hidden"
-            style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}
+            className="card relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden shadow-xl outline-none"
           >
             {/* Header */}
-            <div className="flex items-start justify-between border-b border-neutral-200 p-4 sm:p-6">
+            <div className="flex items-start justify-between border-b border-neutral-100 p-4 sm:p-6">
               <div>
                 <h2 id="size-chart-title" className="font-display text-lg font-medium text-neutral-900">
                   {productName}
@@ -150,10 +149,10 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
                         type="button"
                         onClick={() => setActiveGarmentIndex(idx)}
                         className={cn(
-                          'sf-chip',
+                          'chip',
                           activeGarmentIndex === idx
-                            ? 'sf-chip-selected'
-                            : 'sf-chip-unselected'
+                            ? 'chip-selected'
+                            : 'chip-unselected'
                         )}
                       >
                         {label}
@@ -172,7 +171,7 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
               <div className="overflow-x-auto">
                 <table className="w-full min-w-full whitespace-nowrap text-left text-xs">
                   <thead>
-                    <tr className="border-b border-neutral-200">
+                    <tr className="border-b border-neutral-100">
                       <th
                         scope="col"
                         // Sticky to match the row labels below it. Without this the

@@ -1,7 +1,7 @@
 import { Link } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { FlatList, Image, Pressable, RefreshControl, StyleSheet, Text, View } from 'react-native';
-import { formatMoney } from '@yaseen/shared';
+import { formatMoney } from '@newax/shared';
 import * as resources from '../../src/api/resources';
 import type { Product } from '../../src/api/types';
 import { Empty, ErrorNote, Field, Loading, Screen } from '../../src/components/ui';

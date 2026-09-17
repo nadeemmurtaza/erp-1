@@ -6,6 +6,9 @@ import { toMinor } from '@yaseen/shared';
 import { AppModule } from '../src/app.module';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
 import { PrismaService } from '../src/core/prisma/prisma.service';
+import { SettingsService } from '../src/core/settings/settings.service';
+import { SettingKey } from '../src/core/settings/settings.defaults';
+import { OutboxDispatcher } from '../src/core/events/outbox.dispatcher';
 import { setVariantStock, incrementVariantStock } from './support/stock';
 
 /**
@@ -842,6 +845,85 @@ describe('Orders (e2e)', () => {
 
       expect(response.body.data.length).toBeGreaterThan(0);
       expect(response.body.meta.total).toBeGreaterThan(0);
+    });
+  });
+
+  describe('backorder (checkout.allow_backorder)', () => {
+    let settings: SettingsService;
+    let outbox: OutboxDispatcher;
+
+    beforeAll(() => {
+      settings = app.get(SettingsService);
+      outbox = app.get(OutboxDispatcher);
+    });
+
+    afterEach(async () => {
+      await settings.set(SettingKey.OrdersAllowBackorder, false);
+    });
+
+    it('still refuses an out-of-stock item at cart-add while the setting is off (default)', async () => {
+      const variant = await prisma.productVariant.findFirstOrThrow({
+        where: { isActive: true, product: { status: 'ACTIVE' } },
+      });
+      await setVariantStock(prisma, variant.id, 0);
+
+      const agent = request.agent(app.getHttpServer());
+      const response = await agent.post('/api/v1/cart/items').send({ variantId: variant.id, quantity: 1 });
+
+      expect(response.status).toBe(400);
+      expect(String(response.body.message)).toMatch(/out of stock/i);
+
+      await setVariantStock(prisma, variant.id, 100);
+    });
+
+    it('parks a backordered line as AWAITING_STOCK, then auto-fulfills it once stock is replenished', async () => {
+      await settings.set(SettingKey.OrdersAllowBackorder, true);
+
+      const variant = await prisma.productVariant.findFirstOrThrow({
+        where: { isActive: true, product: { status: 'ACTIVE' }, producedInHouse: false },
+      });
+      await setVariantStock(prisma, variant.id, 0);
+
+      const agent = request.agent(app.getHttpServer());
+      await agent.post('/api/v1/cart/items').send({ variantId: variant.id, quantity: 1 }).expect(201);
+
+      const response = await agent
+        .post('/api/v1/orders')
+        .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
+        .expect(201);
+      createdOrderIds.push(response.body.id);
+
+      const orderItem = await prisma.orderItem.findFirstOrThrow({
+        where: { orderId: response.body.id, variantId: variant.id },
+      });
+      expect(orderItem.fulfillmentStatus).toBe('AWAITING_STOCK');
+      expect(orderItem.awaitingSince).not.toBeNull();
+
+      // The backordered line never took stock — still zero.
+      const stockRow = await prisma.variantLocationStock.findFirstOrThrow({ where: { variantId: variant.id } });
+      expect(stockRow.quantity).toBe(0);
+
+      // Stock arrives through a real move() call (the admin adjust endpoint),
+      // which is what actually fires StockReplenished — incrementVariantStock
+      // (used elsewhere in this file) writes the row directly and bypasses it.
+      await api()
+        .post(`/api/v1/admin/inventory/${variant.id}/adjust`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ delta: 5, reason: 'restock' })
+        .expect(201);
+
+      // Drive the outbox directly rather than waiting on its 2s poll.
+      await outbox.processBatch();
+
+      const updatedItem = await prisma.orderItem.findUniqueOrThrow({ where: { id: orderItem.id } });
+      expect(updatedItem.fulfillmentStatus).toBe('READY');
+      expect(updatedItem.awaitingSince).toBeNull();
+
+      // 5 arrived, 1 allocated to the backordered line.
+      const finalStock = await prisma.variantLocationStock.findFirstOrThrow({ where: { variantId: variant.id } });
+      expect(finalStock.quantity).toBe(4);
+
+      await setVariantStock(prisma, variant.id, 100);
     });
   });
 });

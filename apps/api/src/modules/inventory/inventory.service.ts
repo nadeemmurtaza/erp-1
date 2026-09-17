@@ -384,7 +384,13 @@ export class InventoryService implements OnModuleInit {
       }),
       this.prisma.orderItem.findMany({
         where: { variantId, order: { status: { notIn: ['SHIPPED', 'DELIVERED', 'CANCELLED', 'RETURNED'] } } },
-        select: { id: true, quantity: true, order: { select: { id: true, number: true, status: true, placedAt: true } } },
+        select: {
+          id: true,
+          quantity: true,
+          fulfillmentStatus: true,
+          awaitingSince: true,
+          order: { select: { id: true, number: true, status: true, placedAt: true } },
+        },
       }),
     ]);
 
@@ -425,6 +431,8 @@ export class InventoryService implements OnModuleInit {
         orderStatus: item.order.status,
         placedAt: item.order.placedAt,
         quantity: item.quantity,
+        fulfillmentStatus: item.fulfillmentStatus,
+        awaitingSince: item.awaitingSince,
         stitchingJob: stitchingByOrderItem.get(item.id) ?? null,
       })),
     };

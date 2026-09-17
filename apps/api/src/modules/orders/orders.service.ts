@@ -150,6 +150,8 @@ export class OrdersService {
       taxAmount: priced.totals.taxAmount,
     });
 
+    const allowBackorder = await this.settings.get<boolean>(SettingKey.OrdersAllowBackorder);
+
     const minimum = await this.settings.get<number>(SettingKey.MinOrderValue);
     if (goodsSubtotal < minimum) {
       throw new BadRequestException(
@@ -183,9 +185,10 @@ export class OrdersService {
       const variantIds = [...new Set(priced.lines.map(l => l.variantId))];
       const variants = await tx.productVariant.findMany({
         where: { id: { in: variantIds } },
-        select: { id: true, costPrice: true },
+        select: { id: true, costPrice: true, producedInHouse: true },
       });
       const costMap = new Map(variants.map(v => [v.id, v.costPrice]));
+      const producedInHouseMap = new Map(variants.map(v => [v.id, v.producedInHouse]));
 
       const created = await tx.order.create({
         data: {
@@ -242,24 +245,62 @@ export class OrdersService {
       });
 
       const locationId = await this.inventory.defaultLocationId(tx);
-      const sortedLines = [...priced.lines].sort((a, b) => a.variantId.localeCompare(b.variantId));
-      for (const line of sortedLines) {
+      // Sorted by variantId, same as moveMany()'s own internal ordering —
+      // this is the actual lock order two concurrent checkouts touching the
+      // same variants must agree on to avoid a deadlock (see "survives
+      // opposite-order checkouts" in orders.e2e-spec.ts). item.id as the
+      // tiebreaker only matters when two lines share a variantId (same
+      // product, different stitching options) and doesn't affect lock order.
+      const sortedItems = [...created.items].sort((a, b) => {
+        const byVariant = (a.variantId ?? '').localeCompare(b.variantId ?? '');
+        return byVariant !== 0 ? byVariant : a.id.localeCompare(b.id);
+      });
+      const backorderedStockIds: string[] = [];
+      const backorderedProductionIds: string[] = [];
+      for (const item of sortedItems) {
+        if (!item.variantId) continue; // a stitching-service line has no stock to move
         try {
           await this.inventory.move({
-            variantId: line.variantId,
+            variantId: item.variantId,
             locationId,
-            delta: -line.quantity,
+            delta: -item.quantity,
             reason: 'SALE',
             refType: 'Order',
             refId: created.id,
-            unitCost: costMap.get(line.variantId) ?? 0,
+            unitCost: costMap.get(item.variantId) ?? 0,
           }, tx);
         } catch (error) {
           if (error instanceof InsufficientStockError) {
-            throw new BadRequestException(`${line.nameEn} sold out while you were checking out. Please adjust your cart.`);
+            if (!allowBackorder) {
+              throw new BadRequestException(`${item.nameEn} sold out while you were checking out. Please adjust your cart.`);
+            }
+            // Ship-safe default keeps today's behavior (the throw above);
+            // only with checkout.allow_backorder on does a line get parked
+            // instead of failing the whole order. backorder.listener.ts
+            // (@OnDomainEvent(StockReplenished)) allocates the stock and
+            // flips it to READY automatically once it exists.
+            if (producedInHouseMap.get(item.variantId)) {
+              backorderedProductionIds.push(item.id);
+            } else {
+              backorderedStockIds.push(item.id);
+            }
+            continue;
           }
           throw error;
         }
+      }
+
+      if (backorderedStockIds.length > 0) {
+        await tx.orderItem.updateMany({
+          where: { id: { in: backorderedStockIds } },
+          data: { fulfillmentStatus: 'AWAITING_STOCK', awaitingSince: new Date() },
+        });
+      }
+      if (backorderedProductionIds.length > 0) {
+        await tx.orderItem.updateMany({
+          where: { id: { in: backorderedProductionIds } },
+          data: { fulfillmentStatus: 'AWAITING_PRODUCTION', awaitingSince: new Date() },
+        });
       }
 
       const payment = await this.payments.createForOrder(tx, dto.paymentMethod, {

@@ -42,6 +42,8 @@ export const SettingKey = {
   MonthlyRevenueTarget: 'analytics.monthly_revenue_target',
   PurchasingOverReceiptTolerance: 'purchasing.over_receipt_tolerance',
   PurchasingAutoDraftReorder: 'purchasing.auto_draft_reorder',
+  /** Off until an owner turns it on — checkout keeps its "stock lands or none of it does" behavior by default. */
+  OrdersAllowBackorder: 'checkout.allow_backorder',
   InventorySlowMoverDays: 'inventory.slow_mover_days',
   InventoryDeadStockDays: 'inventory.dead_stock_days',
   /** Off until an owner turns it on — every order's tax is zero either way. */
@@ -138,6 +140,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
 
   [SettingKey.PurchasingOverReceiptTolerance]: 0,
   [SettingKey.PurchasingAutoDraftReorder]: true,
+  [SettingKey.OrdersAllowBackorder]: false,
 
   [SettingKey.InventorySlowMoverDays]: 60,
   [SettingKey.InventoryDeadStockDays]: 180,

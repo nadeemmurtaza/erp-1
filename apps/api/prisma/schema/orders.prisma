@@ -76,6 +76,17 @@ model Order {
   @@index([guestPhone])
 }
 
+enum OrderItemFulfillmentStatus {
+  READY
+  /// Backordered against an externally sourced variant — waiting on a
+  /// PurchaseOrder receipt (StockReplenished).
+  AWAITING_STOCK
+  /// Backordered against a producedInHouse variant — waiting on a WorkOrder
+  /// completion (also StockReplenished; the two are indistinguishable to
+  /// the customer, both just "stock isn't here yet").
+  AWAITING_PRODUCTION
+}
+
 model OrderItem {
   id      String @id @default(cuid())
   orderId String
@@ -130,6 +141,14 @@ model OrderItem {
   /// (marketing.replenishment_reminder) for this line's Product.isConsumable
   /// item — per item, not per order, since one order can hold several.
   replenishmentReminderSentAt DateTime?
+
+  /// Scoped to the LINE, not Order.status — a backordered item does not
+  /// change what CONFIRMED/PROCESSING/etc. mean for the order as a whole
+  /// (that state machine already tracks payment/fulfillment separately).
+  /// Only set away from READY when checkout.allow_backorder is on; stays
+  /// READY (the default) for every order placed with it off.
+  fulfillmentStatus OrderItemFulfillmentStatus @default(READY)
+  awaitingSince     DateTime?
 
   createdAt DateTime @default(now())
 

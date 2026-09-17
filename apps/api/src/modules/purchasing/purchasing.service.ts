@@ -11,6 +11,7 @@ import { EventBusService } from '../../core/events/event-bus.service';
 
 const PO_NUMBER_LOCK_NAMESPACE = 8_241_120;
 const GRN_NUMBER_LOCK_NAMESPACE = 8_241_121;
+const DRAFT_PO_LOCK_NAMESPACE = 8_241_122;
 
 async function nextPONumber(tx: Prisma.TransactionClient): Promise<string> {
   const year = new Date().getFullYear();
@@ -371,6 +372,65 @@ export class PurchasingService {
       );
 
       return receipt;
+    });
+  }
+
+  /**
+   * Adds (or tops up) one reorder line on a supplier's open DRAFT PO,
+   * creating that PO if none exists. Called from two places that must stay
+   * behaviourally identical: the real-time reorder.listener.ts (fires the
+   * moment a variant crosses reorderPoint) and purchasing.cron.ts (the
+   * nightly safety-net sweep for anything the real-time path missed, e.g. a
+   * bulk stock import that bypasses InventoryService.move()).
+   */
+  async upsertReorderDraftLine(input: {
+    supplierId: string;
+    variantId: string;
+    quantity: number;
+    unitCost: number;
+  }): Promise<void> {
+    await this.prisma.$transaction(async (tx) => {
+      // Serializes concurrent callers for the SAME supplier — otherwise two
+      // near-simultaneous low-stock events (or a real-time event racing the
+      // nightly sweep) could each see "no DRAFT PO yet" and create two.
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(${DRAFT_PO_LOCK_NAMESPACE}::int, hashtext(${input.supplierId})::int)`;
+
+      let po = await tx.purchaseOrder.findFirst({
+        where: { supplierId: input.supplierId, status: 'DRAFT' },
+        include: { items: true },
+      });
+
+      if (!po) {
+        const number = await nextPONumber(tx);
+        po = await tx.purchaseOrder.create({
+          data: { supplierId: input.supplierId, number, status: 'DRAFT', currency: 'PKR' },
+          include: { items: true },
+        });
+      }
+
+      const existingLine = po.items.find((i) => i.variantId === input.variantId);
+      if (existingLine) {
+        if (existingLine.quantityOrdered < input.quantity) {
+          await tx.purchaseOrderItem.update({
+            where: { id: existingLine.id },
+            data: { quantityOrdered: input.quantity, lineTotal: input.quantity * existingLine.unitCost },
+          });
+        }
+      } else {
+        await tx.purchaseOrderItem.create({
+          data: {
+            purchaseOrderId: po.id,
+            variantId: input.variantId,
+            quantityOrdered: input.quantity,
+            unitCost: input.unitCost,
+            lineTotal: input.quantity * input.unitCost,
+          },
+        });
+      }
+
+      const updatedItems = await tx.purchaseOrderItem.findMany({ where: { purchaseOrderId: po.id } });
+      const subtotal = updatedItems.reduce((acc, i) => acc + i.lineTotal, 0);
+      await tx.purchaseOrder.update({ where: { id: po.id }, data: { subtotal, total: subtotal } });
     });
   }
 }

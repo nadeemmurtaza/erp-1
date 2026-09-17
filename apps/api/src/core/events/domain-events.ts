@@ -31,7 +31,15 @@ export const DomainEvent = {
   EmailVerificationRequested: 'user.email_verification_requested',
 
   ProductLowStock: 'catalog.product_low_stock',
+  /** Distinct from ProductLowStock: fires against reorderPoint, drives auto-replenishment (PO or WorkOrder). ProductLowStock fires against lowStockThreshold and only ever notifies. */
+  ProductReorderPointReached: 'catalog.product_reorder_point_reached',
+  /** Any positive-delta stock movement — the one signal that can unblock a waiting order line, whatever replenished the stock. */
+  StockReplenished: 'inventory.stock_replenished',
   GoodsReceived: 'purchasing.goods_received',
+
+  WorkOrderCreated: 'production.work_order_created',
+  WorkOrderReleased: 'production.work_order_released',
+  WorkOrderCompleted: 'production.work_order_completed',
 
   EmailReplyReceived: 'email.reply_received',
 } as const;
@@ -75,6 +83,16 @@ export interface StitchingJobPayload {
   assignedTailorId: string | null;
   orderId: string | null;
   stitchingOrderId: string | null;
+  /**
+   * The purchased variant this job is stitching, and how many — set only by
+   * StitchingJobCreated (from the order line), left undefined by
+   * StitchingJobStageChanged. production's stitching-cascade.listener.ts
+   * reads these to open a WorkOrder without production ever importing or
+   * querying StitchingJob directly (core must not know the apparel pack
+   * exists — MULTI-SECTOR.md).
+   */
+  variantId?: string | null;
+  quantity?: number;
 }
 
 export interface ContactUpsertedPayload {
@@ -128,11 +146,37 @@ export interface ProductLowStockPayload {
   threshold: number;
 }
 
+export interface ProductReorderPointReachedPayload {
+  productId: string;
+  variantId: string;
+  sku: string;
+  stock: number;
+  reorderPoint: number;
+  reorderQuantity: number | null;
+  producedInHouse: boolean;
+  preferredSupplierId: string | null;
+}
+
+export interface StockReplenishedPayload {
+  variantId: string;
+  locationId: string;
+  delta: number;
+  resultingStock: number;
+}
+
 export interface GoodsReceivedPayload {
   goodsReceiptId: string;
   number: string;
   purchaseOrderId: string;
   supplierId: string;
+}
+
+export interface WorkOrderPayload {
+  workOrderId: string;
+  number: string;
+  variantId: string;
+  status: string;
+  source: string;
 }
 
 export interface EmailReplyReceivedPayload {
@@ -160,6 +204,11 @@ export interface DomainEventPayloads {
   [DomainEvent.PasswordResetRequested]: PasswordResetRequestedPayload;
   [DomainEvent.EmailVerificationRequested]: EmailVerificationRequestedPayload;
   [DomainEvent.ProductLowStock]: ProductLowStockPayload;
+  [DomainEvent.ProductReorderPointReached]: ProductReorderPointReachedPayload;
+  [DomainEvent.StockReplenished]: StockReplenishedPayload;
   [DomainEvent.GoodsReceived]: GoodsReceivedPayload;
+  [DomainEvent.WorkOrderCreated]: WorkOrderPayload;
+  [DomainEvent.WorkOrderReleased]: WorkOrderPayload;
+  [DomainEvent.WorkOrderCompleted]: WorkOrderPayload;
   [DomainEvent.EmailReplyReceived]: EmailReplyReceivedPayload;
 }

@@ -9,6 +9,7 @@ import { MarketingModule } from './marketing/marketing.module';
 import { MeasurementsModule } from './measurements/measurements.module';
 import { OrdersModule } from './orders/orders.module';
 import { PaymentsModule } from './payments/payments.module';
+import { ProductionModule } from './production/production.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
 import { ReportsModule } from './reports/reports.module';
 import { SettingsAdminModule } from './settings/settings-admin.module';
@@ -40,6 +41,7 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'stitching', module: StitchingModule },
   { name: 'inventory', module: InventoryModule },
   { name: 'purchasing', module: PurchasingModule },
+  { name: 'production', module: ProductionModule },
   { name: 'payments', module: PaymentsModule },
   { name: 'orders', module: OrdersModule },
   { name: 'crm', module: CrmModule },

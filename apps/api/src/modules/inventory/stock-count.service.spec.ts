@@ -5,12 +5,13 @@ import { StockCountService } from './stock-count.service';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { AuditService } from '../../core/audit/audit.service';
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
+import { EntityEnrichmentRegistry } from '../../core/extension-points/entity-enrichment.registry';
 
 describe('StockCountService', () => {
   let service: StockCountService;
   let inventory: InventoryService;
   let prisma: PrismaService;
-  
+
   beforeAll(async () => {
     const module = await Test.createTestingModule({
       providers: [
@@ -18,6 +19,7 @@ describe('StockCountService', () => {
         InventoryService,
         PrismaService,
         StockIntakeRegistry,
+        EntityEnrichmentRegistry,
         { provide: EventBusService, useValue: { publish: jest.fn() } },
         { provide: AuditService, useValue: { record: jest.fn() } },
       ],

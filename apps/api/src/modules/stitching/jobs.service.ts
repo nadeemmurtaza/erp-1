@@ -219,6 +219,8 @@ export class StitchingJobsService implements OnModuleInit {
           assignedTailorId: null,
           orderId: item.orderId,
           stitchingOrderId: null,
+          variantId: item.variantId,
+          quantity: item.quantity,
         },
         tx,
       );

@@ -67,6 +67,16 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     label: 'Manage the stitching style/design catalogue',
     category: 'Production',
   },
+  {
+    key: 'production.manage',
+    label: 'Manage bills of materials and work orders',
+    category: 'Production',
+  },
+  {
+    key: 'production.view_chain',
+    label: "View a SKU's full supply-chain status (stock, POs, work orders, pending orders)",
+    category: 'Production',
+  },
 
   { key: 'catalog.manage', label: 'Manage products, categories and import', category: 'Catalogue' },
   { key: 'inventory.manage', label: 'Adjust and view stock levels', category: 'Catalogue' },
@@ -80,6 +90,7 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
 
   { key: 'suppliers.manage', label: 'Manage suppliers', category: 'Purchasing' },
   { key: 'purchasing.manage', label: 'Create and receive purchase orders', category: 'Purchasing' },
+  { key: 'parties.manage', label: 'Manage the shared counterparty (supplier/retailer/distributor/manufacturer) profile directory', category: 'Purchasing' },
 
   {
     key: 'account.change_own_password',
@@ -148,6 +159,9 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'measurements.manage_blueprints',
     'suppliers.manage',
     'purchasing.manage',
+    'production.manage',
+    'production.view_chain',
+    'parties.manage',
   ],
   ADMIN: [
     'account.change_own_password',
@@ -169,6 +183,9 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'measurements.manage_blueprints',
     'suppliers.manage',
     'purchasing.manage',
+    'production.manage',
+    'production.view_chain',
+    'parties.manage',
     'settings.manage',
     'roles.manage_permissions',
     'audit.view',

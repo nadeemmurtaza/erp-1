@@ -9,27 +9,27 @@ enum UserRole {
 }
 
 model User {
-  id              String    @id @default(cuid())
-  email           String?   @unique
-  phone           String?   @unique // normalised E.164
-  passwordHash    String?
-  firstName       String?
-  lastName        String?
+  id                   String    @id @default(cuid())
+  email                String?   @unique
+  phone                String?   @unique // normalised E.164
+  passwordHash         String?
+  firstName            String?
+  lastName             String?
   /// Free text, not an enum — never a fixed set a person has to fit into.
-  gender          String?
-  dateOfBirth     DateTime?
-  avatarUrl       String?
-  role            UserRole  @default(CUSTOMER)
-  isActive        Boolean   @default(true)
-  emailVerifiedAt DateTime?
+  gender               String?
+  dateOfBirth          DateTime?
+  avatarUrl            String?
+  role                 UserRole  @default(CUSTOMER)
+  isActive             Boolean   @default(true)
+  emailVerifiedAt      DateTime?
   /// Set by GET /email/unsubscribe (a one-click, no-login link every
   /// automated marketing send carries). Checked before any marketing-purpose
   /// automation (MarketingAutomationCron) sends; never checked for
   /// transactional mail (order/payment/account), which isn't marketing.
   marketingEmailOptOut Boolean   @default(false)
-  lastLoginAt     DateTime?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  lastLoginAt          DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
 
   addresses               Address[]
   refreshTokens           RefreshToken[]
@@ -55,6 +55,7 @@ model User {
   goodsReceiptsReceived   GoodsReceipt[]           @relation("GoodsReceiptReceiver")
   stockCountsCreated      StockCount[]             @relation("StockCountCreator")
   stockCountsAssigned     StockCount[]             @relation("StockCountAssignee")
+  workOrdersCreated       WorkOrder[]              @relation("WorkOrderCreator")
 
   @@index([role])
   @@index([createdAt])

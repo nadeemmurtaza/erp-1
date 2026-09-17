@@ -100,8 +100,8 @@ model Product {
 
   brandId String?
   fabric  String? // lawn, chiffon, khaddar, linen…
-  season String? // summer, winter, festive
-  tags   String[] @default([])
+  season  String? // summer, winter, festive
+  tags    String[] @default([])
 
   /// UNSTITCHED only: how many pieces the fabric contains (1/2/3-piece) and
   /// how many metres, both shown on the product page.
@@ -127,7 +127,7 @@ model Product {
   updatedAt    DateTime  @updatedAt
 
   category            Category?            @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  brand    Brand?    @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  brand               Brand?               @relation(fields: [brandId], references: [id], onDelete: SetNull)
   translations        ProductTranslation[]
   variants            ProductVariant[]
   options             ProductOption[]
@@ -188,6 +188,13 @@ model ProductVariant {
   lastReceivedAt      DateTime?
   barcode             String?   @unique
 
+  /// True when this variant is made in-house from a BillOfMaterial (production
+  /// module) rather than bought in from preferredSupplier. A variant is one or
+  /// the other, never both — enforced in service code, not the schema, since
+  /// the BillOfMaterial relation itself lives in the production module's own
+  /// schema file (production.prisma) and must not be typed here.
+  producedInHouse Boolean @default(false)
+
   /// Null = the store's default tax class (Setting `tax.default_class`).
   /// Most products never set this. Tax is core (MULTI-SECTOR.md), so this
   /// relation is a normal core-to-core reference, not a pack boundary.
@@ -212,6 +219,9 @@ model ProductVariant {
   purchaseOrderItems PurchaseOrderItem[]
   goodsReceiptItems  GoodsReceiptItem[]
   stockCountLines    StockCountLine[]
+  billOfMaterial     BillOfMaterial?
+  bomComponentOf     BillOfMaterialLine[]        @relation("BomComponent")
+  workOrders         WorkOrder[]
 
   @@index([productId])
   @@index([stock])

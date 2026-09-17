@@ -142,6 +142,11 @@ const KNOWN_MODULE_COUPLINGS = new Set([
   // goes through StockIntakeRegistry instead, so this entry covers only the
   // transactional call sites.
   'catalog -> inventory',
+  // work-orders.service.ts consumes BOM component stock (RELEASED) and
+  // credits the produced variant's stock (COMPLETED) inside the same
+  // transaction as the WorkOrder's own status change — same reasoning as
+  // purchasing -> inventory above.
+  'production -> inventory',
 ]);
 
 function walk(dir) {

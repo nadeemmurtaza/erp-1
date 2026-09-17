@@ -11,6 +11,8 @@ enum StockMovementReason {
   DAMAGE // written off as damaged
   COUNT // variance posted by a stock count
   WRITE_OFF // lost, stolen, expired
+  PRODUCTION_CONSUMPTION // raw material consumed by a released WorkOrder
+  PRODUCTION_RECEIPT // finished goods credited by a completed WorkOrder
 }
 
 model StockMovement {
@@ -63,8 +65,9 @@ model Location {
   address   Json?
   createdAt DateTime @default(now())
 
-  stocks    VariantLocationStock[]
-  movements StockMovement[]
+  stocks     VariantLocationStock[]
+  movements  StockMovement[]
+  workOrders WorkOrder[]
 
   @@index([isActive])
 }

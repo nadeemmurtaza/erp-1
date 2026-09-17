@@ -1,6 +1,7 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
 import { cn } from '@/utils/cn';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { formatMoney } from '@yaseen/shared';
@@ -47,6 +48,7 @@ function Th({ children, className }: { children: React.ReactNode; className?: st
 export default function AdminInventoryPage() {
   const user = getStoredUser();
   const canViewCost = user?.permissions.includes('inventory.view_cost');
+  const canViewChain = user?.permissions.includes('production.view_chain');
 
   const [variants, setVariants] = useState<InventoryVariant[] | null>(null);
   const [search, setSearch] = useState('');
@@ -216,7 +218,7 @@ export default function AdminInventoryPage() {
                             ? new Date(variant.salesStat.lastSoldAt).toLocaleDateString()
                             : '—'}
                         </td>
-                        <td className="px-3 py-3 text-end">
+                        <td className="px-3 py-3 text-end whitespace-nowrap">
                           <button
                             type="button"
                             onClick={() => toggleHistory(variant.id)}
@@ -224,6 +226,11 @@ export default function AdminInventoryPage() {
                           >
                             {historyOpen ? 'Hide ledger' : 'Ledger'}
                           </button>
+                          {canViewChain ? (
+                            <Link href={`/admin/inventory/${variant.id}/chain`} className="ml-3 text-accent-hover hover:underline">
+                              Chain
+                            </Link>
+                          ) : null}
                         </td>
                       </tr>
 

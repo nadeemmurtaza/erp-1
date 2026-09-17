@@ -4,6 +4,7 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { InventoryService } from '../inventory/inventory.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { EventBusService } from '../../core/events/event-bus.service';
+import { AppConfigService } from '../../core/config/app-config.service';
 
 describe('PurchasingService', () => {
   let service: PurchasingService;
@@ -18,6 +19,7 @@ describe('PurchasingService', () => {
         { provide: PrismaService, useValue: {} },
         { provide: InventoryService, useValue: {} },
         { provide: SettingsService, useValue: {} },
+        { provide: AppConfigService, useValue: {} },
         { provide: EventBusService, useValue: {} },
       ],
     }).compile();

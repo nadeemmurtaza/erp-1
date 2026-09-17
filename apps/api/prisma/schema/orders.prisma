@@ -194,7 +194,11 @@ model Shipment {
 }
 
 /// Backing store for sequential per-year order numbers (YSN-2026-0001). One
-/// row per year; `counter` is incremented via a single atomic
+/// row per year — this node's own row, in this node's own database, which
+/// is why it stays correct once a chain deployment has more than one node
+/// (WO-18.2): the sequence is allocated purely locally, and NODE_ID is
+/// folded into the final string by document-number.ts, not into this
+/// table. `counter` is incremented via a single atomic
 /// `INSERT ... ON CONFLICT DO UPDATE ... RETURNING`, which Postgres
 /// serialises at the row level — no application-side lock or transaction
 /// needed. See nextOrderNumber() in orders.service.ts for why: an earlier

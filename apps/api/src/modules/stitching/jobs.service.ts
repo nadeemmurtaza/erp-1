@@ -1,4 +1,6 @@
 import { documentPrefix } from '../../core/settings/document-prefix';
+import { documentNumber } from '../../core/settings/document-number';
+import { AppConfigService } from '../../core/config/app-config.service';
 import {
   BadRequestException,
   Injectable,
@@ -56,6 +58,7 @@ export class StitchingJobsService implements OnModuleInit {
     private readonly audit: AuditService,
     private readonly storage: StorageService,
     private readonly settings: SettingsService,
+    private readonly config: AppConfigService,
     private readonly enrichment: EntityEnrichmentRegistry,
   ) {}
 
@@ -197,7 +200,7 @@ export class StitchingJobsService implements OnModuleInit {
     const job = await this.prisma.$transaction(async (tx) => {
       const created = await tx.stitchingJob.create({
         data: {
-          number: await nextJobNumber(tx, this.settings),
+          number: await nextJobNumber(tx, this.settings, this.config),
           orderItemId,
           garmentTypeId: garmentType.id,
           measurementSnapshot: item.measurementSnapshot as Prisma.InputJsonValue,
@@ -461,11 +464,15 @@ export class StitchingJobsService implements OnModuleInit {
  * each call is its own atomic step, so sequential calls on the same
  * transaction still hand out distinct, gapless-under-success numbers.
  */
-export async function nextJobNumber(tx: Prisma.TransactionClient, settings: SettingsService): Promise<string> {
+export async function nextJobNumber(
+  tx: Prisma.TransactionClient,
+  settings: SettingsService,
+  config: AppConfigService,
+): Promise<string> {
   const year = new Date().getFullYear();
   // The prefix is a Setting, so a shop can match paperwork it already
   // numbers its own way. See core/settings/document-prefix.ts.
-  const prefix = `${await documentPrefix(settings, 'stitchingJob')}-${year}-`;
+  const prefix = await documentPrefix(settings, 'stitchingJob');
 
   const [{ counter }] = await tx.$queryRaw<Array<{ counter: number }>>`
     INSERT INTO "StitchingJobNumberCounter" ("year", "counter") VALUES (${year}, 1)
@@ -473,7 +480,7 @@ export async function nextJobNumber(tx: Prisma.TransactionClient, settings: Sett
     RETURNING "counter"
   `;
 
-  return `${prefix}${String(counter).padStart(4, '0')}`;
+  return documentNumber(config, prefix, year, counter);
 }
 
 /** Promised dates skip Sundays, the one day the workshop is shut. */

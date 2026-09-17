@@ -1,4 +1,6 @@
 import { documentPrefix } from '../../core/settings/document-prefix';
+import { documentNumber, documentNumberPrefix } from '../../core/settings/document-number';
+import { AppConfigService } from '../../core/config/app-config.service';
 import type { PurchaseOrderStatus } from '../../core/prisma/client';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
@@ -14,34 +16,50 @@ import { EventBusService } from '../../core/events/event-bus.service';
 const PO_NUMBER_LOCK_NAMESPACE = 8_241_120;
 const GRN_NUMBER_LOCK_NAMESPACE = 8_241_121;
 
-async function nextPONumber(tx: Prisma.TransactionClient, settings: SettingsService): Promise<string> {
+async function nextPONumber(
+  tx: Prisma.TransactionClient,
+  settings: SettingsService,
+  config: AppConfigService,
+): Promise<string> {
   const year = new Date().getFullYear();
   // The prefix is a Setting, so a shop can match paperwork it already
   // numbers its own way. See core/settings/document-prefix.ts.
-  const prefix = `${await documentPrefix(settings, 'purchaseOrder')}-${year}-`;
+  const prefix = await documentPrefix(settings, 'purchaseOrder');
+  // Scanning by this node's own prefix — see document-number.ts — keeps the
+  // MAX scan correct once a chain deployment's numbers carry a node id: a
+  // branch's scan still only ever sees its own node's rows. The sequence is
+  // always the LAST '-'-separated field (split_part's negative n counts
+  // from the end), which stays true whether or not NODE_ID itself contains
+  // a hyphen (RETAIL-ERP.md's own example, "lhr-01", does).
+  const like = documentNumberPrefix(config, prefix, year);
   await tx.$executeRaw`SELECT pg_advisory_xact_lock(${PO_NUMBER_LOCK_NAMESPACE}::int, ${year}::int)`;
   const [{ max }] = await tx.$queryRaw<Array<{ max: number | null }>>`
-    SELECT MAX(CAST(split_part("number", '-', 3) AS INTEGER)) AS max
+    SELECT MAX(CAST(split_part("number", '-', -1) AS INTEGER)) AS max
     FROM "PurchaseOrder"
-    WHERE "number" LIKE ${`${prefix}%`}
+    WHERE "number" LIKE ${`${like}%`}
   `;
   const nextSequence = (max ?? 0) + 1;
-  return `${prefix}${nextSequence.toString().padStart(4, '0')}`;
+  return documentNumber(config, prefix, year, nextSequence);
 }
 
-async function nextGRNNumber(tx: Prisma.TransactionClient, settings: SettingsService): Promise<string> {
+async function nextGRNNumber(
+  tx: Prisma.TransactionClient,
+  settings: SettingsService,
+  config: AppConfigService,
+): Promise<string> {
   const year = new Date().getFullYear();
   // The prefix is a Setting, so a shop can match paperwork it already
   // numbers its own way. See core/settings/document-prefix.ts.
-  const prefix = `${await documentPrefix(settings, 'goodsReceipt')}-${year}-`;
+  const prefix = await documentPrefix(settings, 'goodsReceipt');
+  const like = documentNumberPrefix(config, prefix, year);
   await tx.$executeRaw`SELECT pg_advisory_xact_lock(${GRN_NUMBER_LOCK_NAMESPACE}::int, ${year}::int)`;
   const [{ max }] = await tx.$queryRaw<Array<{ max: number | null }>>`
-    SELECT MAX(CAST(split_part("number", '-', 3) AS INTEGER)) AS max
+    SELECT MAX(CAST(split_part("number", '-', -1) AS INTEGER)) AS max
     FROM "GoodsReceipt"
-    WHERE "number" LIKE ${`${prefix}%`}
+    WHERE "number" LIKE ${`${like}%`}
   `;
   const nextSequence = (max ?? 0) + 1;
-  return `${prefix}${nextSequence.toString().padStart(4, '0')}`;
+  return documentNumber(config, prefix, year, nextSequence);
 }
 
 @Injectable()
@@ -50,6 +68,7 @@ export class PurchasingService {
     private readonly prisma: PrismaService,
     private readonly inventoryService: InventoryService,
     private readonly settingsService: SettingsService,
+    private readonly config: AppConfigService,
     private readonly events: EventBusService,
   ) {}
 
@@ -191,7 +210,7 @@ export class PurchasingService {
 
   async createPurchaseOrder(dto: CreatePurchaseOrderDto, userId: string) {
     return this.prisma.$transaction(async (tx) => {
-      const number = await nextPONumber(tx, this.settingsService);
+      const number = await nextPONumber(tx, this.settingsService, this.config);
       const subtotal = dto.items.reduce((sum, item) => sum + (item.quantityOrdered * item.unitCost), 0);
       const freightCost = dto.freightCost ?? 0;
       const dutyCost = dto.dutyCost ?? 0;
@@ -265,7 +284,7 @@ export class PurchasingService {
         return { reqItem, poLine };
       });
 
-      const grnNumber = await nextGRNNumber(tx, this.settingsService);
+      const grnNumber = await nextGRNNumber(tx, this.settingsService, this.config);
       const freightCost = dto.freightCost ?? 0;
       const dutyCost = dto.dutyCost ?? 0;
       const otherCost = dto.otherCost ?? 0;

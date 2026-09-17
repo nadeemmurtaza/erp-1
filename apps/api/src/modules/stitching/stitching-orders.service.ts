@@ -1,4 +1,6 @@
 import { documentPrefix } from '../../core/settings/document-prefix';
+import { documentNumber } from '../../core/settings/document-number';
+import { AppConfigService } from '../../core/config/app-config.service';
 import {
   BadRequestException,
   ForbiddenException,
@@ -54,6 +56,7 @@ export class StitchingOrdersService {
     private readonly events: EventBusService,
     private readonly audit: AuditService,
     private readonly settings: SettingsService,
+    private readonly config: AppConfigService,
   ) {}
 
   async book(userId: string | undefined, input: BookStitchingInput) {
@@ -115,7 +118,7 @@ export class StitchingOrdersService {
     return this.prisma.$transaction(async (tx) => {
       const created = await tx.stitchingOrder.create({
         data: {
-          number: await nextStitchingOrderNumber(tx, this.settings),
+          number: await nextStitchingOrderNumber(tx, this.settings, this.config),
           userId: userId ?? null,
           status: 'AWAITING_FABRIC',
           guestName: input.name.trim(),
@@ -128,7 +131,7 @@ export class StitchingOrdersService {
           jobs: {
             create: await Promise.all(
               garments.map(async (garment) => ({
-                number: await nextJobNumber(tx, this.settings),
+                number: await nextJobNumber(tx, this.settings, this.config),
                 garmentTypeId: garment.garmentType.id,
                 measurementSnapshot: garment.measurements as Prisma.InputJsonValue,
                 instructions: garment.instructions,
@@ -259,11 +262,15 @@ export class StitchingOrdersService {
  * nextJobNumber() in jobs.service.ts (same fix, same underlying race) and
  * nextOrderNumber() in orders/orders.service.ts (the original bug).
  */
-async function nextStitchingOrderNumber(tx: Prisma.TransactionClient, settings: SettingsService): Promise<string> {
+async function nextStitchingOrderNumber(
+  tx: Prisma.TransactionClient,
+  settings: SettingsService,
+  config: AppConfigService,
+): Promise<string> {
   const year = new Date().getFullYear();
   // The prefix is a Setting, so a shop can match paperwork it already
   // numbers its own way. See core/settings/document-prefix.ts.
-  const prefix = `${await documentPrefix(settings, 'stitchingOrder')}-${year}-`;
+  const prefix = await documentPrefix(settings, 'stitchingOrder');
 
   const [{ counter }] = await tx.$queryRaw<Array<{ counter: number }>>`
     INSERT INTO "StitchingOrderNumberCounter" ("year", "counter") VALUES (${year}, 1)
@@ -271,5 +278,5 @@ async function nextStitchingOrderNumber(tx: Prisma.TransactionClient, settings: 
     RETURNING "counter"
   `;
 
-  return `${prefix}${String(counter).padStart(4, '0')}`;
+  return documentNumber(config, prefix, year, counter);
 }

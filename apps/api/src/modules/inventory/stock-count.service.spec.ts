@@ -6,6 +6,7 @@ import { StockCountService } from './stock-count.service';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { AuditService } from '../../core/audit/audit.service';
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
+import { AppConfigService } from '../../core/config/app-config.service';
 
 describe('StockCountService', () => {
   let service: StockCountService;
@@ -24,6 +25,9 @@ describe('StockCountService', () => {
         // The count number's prefix is a Setting now; this test is about the
         // variance maths, so it takes the shipped default.
         { provide: SettingsService, useValue: { get: jest.fn().mockResolvedValue(undefined) } },
+        // Node-prefixing is document-number.ts's own concern (see its spec);
+        // this test takes the STANDALONE shape, same as every deployment today.
+        { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'main' } },
       ],
     }).compile();
 

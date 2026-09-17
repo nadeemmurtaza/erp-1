@@ -8,6 +8,7 @@ import { InventoryModule } from './inventory/inventory.module';
 import { MarketingModule } from './marketing/marketing.module';
 import { MeasurementsModule } from './measurements/measurements.module';
 import { OrdersModule } from './orders/orders.module';
+import { OrganizationModule } from './organization/organization.module';
 import { PaymentsModule } from './payments/payments.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
 import { ReportsModule } from './reports/reports.module';
@@ -48,6 +49,11 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'reports', module: ReportsModule },
   { name: 'tax', module: TaxModule },
   { name: 'tracking', module: TrackingModule },
+  // Off by default for every deployment today (WO-18.3) — a chain
+  // deployment switches it on when it actually has branches or brands to
+  // register (RETAIL-ERP.md R14: "every tier concept must be invisible in
+  // Solo").
+  { name: 'organization', module: OrganizationModule },
   // Account administration — not togglable business features.
   { name: 'settings', module: SettingsAdminModule, alwaysOn: true },
   { name: 'users', module: UsersAdminModule, alwaysOn: true },

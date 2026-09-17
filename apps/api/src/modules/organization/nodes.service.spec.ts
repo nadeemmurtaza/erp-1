@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NodesService } from './nodes.service';
-import { PrismaService } from '../prisma/prisma.service';
-import { AppConfigService } from '../config/app-config.service';
+import { PrismaService } from '../../core/prisma/prisma.service';
+import { AppConfigService } from '../../core/config/app-config.service';
 
 describe('NodesService', () => {
   let prisma: any;

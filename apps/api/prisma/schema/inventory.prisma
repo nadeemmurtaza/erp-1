@@ -58,15 +58,36 @@ model Location {
   id        String   @id @default(cuid())
   name      String
   code      String   @unique // "MAIN", "LHR-01" — short, used in ledger refs
+
+  /// Which retail brand this location belongs to — null for every
+  /// deployment today (the deployment's own implicit brand, brand.ts).
+  /// Populated once sub-brands exist and a BRAND-tier database's locations
+  /// need to say which sub-brand they serve.
+  retailBrandId String?
+  /// The node that reported this location — null for every deployment
+  /// today. Scaffolding for R6 point 2 ("Location.code" is one of the
+  /// natural keys R6 names as needing `@@unique([originNodeId, value])`
+  /// once branches create locations independently), deliberately NOT wired
+  /// into `code`'s constraint yet: Postgres does not treat two NULLs as
+  /// equal in a composite unique index, so `@@unique([originNodeId, code])`
+  /// with both columns nullable would let two STANDALONE-deployment
+  /// locations both be coded "MAIN" — silently *weaker* than today's
+  /// `@unique`, the opposite of the point. Needs a NULL-safe index (a
+  /// COALESCE'd expression index, hand-written into the migration) before
+  /// it can replace the plain unique below — deferred alongside
+  /// Product.slug/SKU/barcode (WO-18.2's commit), not attempted half-safe.
+  originNodeId  String?
   isDefault Boolean  @default(false)
   isActive  Boolean  @default(true)
   address   Json?
   createdAt DateTime @default(now())
 
-  stocks    VariantLocationStock[]
-  movements StockMovement[]
+  retailBrand RetailBrand? @relation(fields: [retailBrandId], references: [id], onDelete: SetNull)
+  stocks      VariantLocationStock[]
+  movements   StockMovement[]
 
   @@index([isActive])
+  @@index([retailBrandId])
 }
 
 /// Stock, per variant, per location. The thing InventoryService.move() writes

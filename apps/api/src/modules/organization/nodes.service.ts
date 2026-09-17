@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { AppConfigService } from '../config/app-config.service';
-import type { Node, NodeRole } from '../prisma/client';
+import { PrismaService } from '../../core/prisma/prisma.service';
+import { AppConfigService } from '../../core/config/app-config.service';
+import type { Node, NodeRole } from '../../core/prisma/client';
 
 /**
  * The registry of child nodes this deployment is authoritative for — a
- * brand's branches, or an organization's brands (RETAIL-ERP.md R1, WO-18.1).
+ * brand's branches, or an organization's brands (RETAIL-ERP.md R1, WO-18.1;
+ * moved into the `organization` module in WO-18.3 once it had siblings to
+ * live beside — Part 5 owns it here, not core platform infra).
  *
  * What tier of child a deployment may hold follows directly from its own
  * NODE_ROLE: an ORG registers BRAND children, a BRAND registers BRANCH

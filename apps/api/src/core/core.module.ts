@@ -10,7 +10,6 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { SettingsModule } from './settings/settings.module';
 import { StorageModule } from './storage/storage.module';
-import { TopologyModule } from './topology/topology.module';
 
 /**
  * Everything a feature module is allowed to depend on.
@@ -32,7 +31,6 @@ import { TopologyModule } from './topology/topology.module';
     AuditModule,
     AuthModule,
     HealthModule,
-    TopologyModule,
   ],
 })
 export class CoreModule {}

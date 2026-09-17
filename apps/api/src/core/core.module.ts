@@ -8,6 +8,7 @@ import { ExtensionPointsModule } from './extension-points/extension-points.modul
 import { HealthModule } from './health/health.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { ReplicationModule } from './replication/replication.module';
 import { SettingsModule } from './settings/settings.module';
 import { StorageModule } from './storage/storage.module';
 
@@ -25,6 +26,7 @@ import { StorageModule } from './storage/storage.module';
     ScheduleModule.forRoot(),
     EventsModule,
     ExtensionPointsModule,
+    ReplicationModule,
     SettingsModule,
     StorageModule,
     NotificationsModule,

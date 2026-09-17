@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react';
 import type { AuthUser } from '@/types/api';
 import { AdminSessionProvider } from '@/components/admin/session';
+import { EnabledModulesProvider } from '@/components/admin/deployment-modules';
 
 /**
  * Every context the back office runs on, in one place.
@@ -18,6 +19,18 @@ import { AdminSessionProvider } from '@/components/admin/session';
  * page beneath this can fetch on mount without first checking whether anyone
  * is signed in.
  */
-export function AdminProviders({ user, children }: { user: AuthUser; children: ReactNode }) {
-  return <AdminSessionProvider value={user}>{children}</AdminSessionProvider>;
+export function AdminProviders({
+  user,
+  enabledModules,
+  children,
+}: {
+  user: AuthUser;
+  enabledModules: readonly string[] | undefined;
+  children: ReactNode;
+}) {
+  return (
+    <AdminSessionProvider value={user}>
+      <EnabledModulesProvider value={enabledModules}>{children}</EnabledModulesProvider>
+    </AdminSessionProvider>
+  );
 }

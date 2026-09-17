@@ -294,7 +294,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
     label: 'Trading Partners',
     href: '/admin/trading-partners',
     permissions: ['purchasing.manage'],
-    group: 'inventory',
+    group: 'stock',
     module: 'tradingpartners',
   },
 

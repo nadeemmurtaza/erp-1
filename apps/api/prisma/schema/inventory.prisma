@@ -11,6 +11,8 @@ enum StockMovementReason {
   DAMAGE // written off as damaged
   COUNT // variance posted by a stock count
   WRITE_OFF // lost, stolen, expired
+  PRODUCTION_CONSUMPTION // raw material consumed by a released WorkOrder
+  PRODUCTION_RECEIPT // finished goods credited by a completed WorkOrder
 }
 
 model StockMovement {
@@ -85,6 +87,7 @@ model Location {
   retailBrand RetailBrand? @relation(fields: [retailBrandId], references: [id], onDelete: SetNull)
   stocks      VariantLocationStock[]
   movements   StockMovement[]
+  workOrders  WorkOrder[]
 
   @@index([isActive])
   @@index([retailBrandId])

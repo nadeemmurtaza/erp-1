@@ -116,6 +116,18 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     category: 'Production',
     sensitivity: 'low',
   },
+  {
+    key: 'production.manage',
+    label: 'Manage bills of materials and work orders',
+    category: 'Production',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'production.view_chain',
+    label: "View a SKU's full supply-chain status (stock, POs, work orders, pending orders)",
+    category: 'Production',
+    sensitivity: 'low',
+  },
 
   {
     key: 'catalog.manage',
@@ -147,6 +159,12 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
   {
     key: 'purchasing.manage',
     label: 'Create and receive purchase orders',
+    category: 'Purchasing',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'parties.manage',
+    label: 'Manage the shared counterparty (supplier/retailer/distributor/manufacturer) profile directory',
     category: 'Purchasing',
     sensitivity: 'medium',
   },
@@ -280,8 +298,14 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'purchasing',
     label: 'Purchasing & suppliers',
-    description: 'Suppliers, and creating or receiving purchase orders.',
-    permissions: ['suppliers.manage', 'purchasing.manage'],
+    description: 'Suppliers, the shared counterparty directory, and creating or receiving purchase orders.',
+    permissions: ['suppliers.manage', 'purchasing.manage', 'parties.manage'],
+  },
+  {
+    key: 'production',
+    label: 'Production',
+    description: 'Bills of materials, work orders, and a SKU\'s full supply-chain status.',
+    permissions: ['production.manage', 'production.view_chain'],
   },
   {
     key: 'marketing',
@@ -343,6 +367,9 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'measurements.manage_blueprints',
     'suppliers.manage',
     'purchasing.manage',
+    'production.manage',
+    'production.view_chain',
+    'parties.manage',
   ],
   ADMIN: [
     'account.change_own_password',
@@ -367,6 +394,9 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'measurements.manage_blueprints',
     'suppliers.manage',
     'purchasing.manage',
+    'production.manage',
+    'production.view_chain',
+    'parties.manage',
     'settings.manage',
     'roles.manage_permissions',
     'audit.view',

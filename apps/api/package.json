@@ -16,6 +16,7 @@
     "db:reset": "prisma migrate reset --force",
     "db:seed": "ts-node --project tsconfig.seed.json prisma/seed.ts",
     "db:backfill-options": "ts-node --project tsconfig.seed.json prisma/backfill-product-options.ts",
+    "db:backfill-parties": "ts-node --project tsconfig.seed.json prisma/backfill-parties.ts",
     "db:studio": "prisma studio"
   },
   "dependencies": {

@@ -59,4 +59,11 @@ export class InventoryAdminController {
   history(@Param('variantId') variantId: string) {
     return this.inventory.history(variantId);
   }
+
+  @Get(':variantId/chain')
+  @RequirePermission('production.view_chain')
+  @ApiOperation({ summary: "A SKU's full supply-chain status: stock, open POs, open work orders, pending order lines" })
+  chain(@Param('variantId') variantId: string) {
+    return this.inventory.getChainStatus(variantId);
+  }
 }

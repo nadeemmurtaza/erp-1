@@ -161,7 +161,7 @@ export default function TradingPartnerDetailPage({ params }: { params: Promise<{
         </p>
 
         {issuedKey ? (
-          <div className="mb-4 rounded-md border border-amber-300 bg-amber-50 p-4">
+          <div className="mb-4 rounded-md bg-amber-50 p-4">
             <p className="mb-2 text-sm font-medium text-amber-900">
               This key will not be shown again.
             </p>

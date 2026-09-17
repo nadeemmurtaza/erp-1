@@ -8,6 +8,7 @@ import { CreateSupplierDto, UpdateSupplierDto, AddSupplierProductDto } from './d
 import { CreatePurchaseOrderDto, ReceiveGoodsDto } from './dto/purchase-order.dto';
 import { CreateSupplierBillDto, RecordSupplierBillPaymentDto } from './dto/supplier-bill.dto';
 import { InventoryService } from '../inventory/inventory.service';
+import { PartiesService } from '../parties/parties.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { Prisma } from '../../core/prisma/client';
 import { allocateLandedCost, weightedAverageCost, convertToBase, BRAND } from '@newax/shared';
@@ -16,6 +17,7 @@ import { EventBusService } from '../../core/events/event-bus.service';
 
 const PO_NUMBER_LOCK_NAMESPACE = 8_241_120;
 const GRN_NUMBER_LOCK_NAMESPACE = 8_241_121;
+const DRAFT_PO_LOCK_NAMESPACE = 8_241_122;
 
 async function nextPONumber(
   tx: Prisma.TransactionClient,
@@ -68,6 +70,7 @@ export class PurchasingService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly inventoryService: InventoryService,
+    private readonly parties: PartiesService,
     private readonly settingsService: SettingsService,
     private readonly config: AppConfigService,
     private readonly events: EventBusService,
@@ -132,8 +135,31 @@ export class PurchasingService {
     return supplier;
   }
 
+  /**
+   * Creates the Supplier and its backing Party in one transaction — a
+   * Supplier must never exist without the permanent counterparty profile it
+   * is the SUPPLIER-role extension of (parties.prisma). Dedupes on
+   * phone/taxId: creating a supplier for a business already known under
+   * another role (or a prior Supplier with the same phone) links the
+   * existing Party rather than creating a second profile for the same
+   * real business.
+   */
   async create(dto: CreateSupplierDto) {
-    return this.prisma.supplier.create({ data: dto });
+    return this.prisma.$transaction(async (tx) => {
+      const party = await this.parties.findOrCreateForRole(
+        {
+          name: dto.name,
+          contactName: dto.contactName,
+          phone: dto.phone,
+          email: dto.email,
+          address: dto.address,
+          city: dto.city,
+        },
+        'SUPPLIER',
+        tx,
+      );
+      return tx.supplier.create({ data: { ...dto, partyId: party.id } });
+    });
   }
 
   async update(id: string, dto: UpdateSupplierDto) {
@@ -401,6 +427,65 @@ export class PurchasingService {
       );
 
       return receipt;
+    });
+  }
+
+  /**
+   * Adds (or tops up) one reorder line on a supplier's open DRAFT PO,
+   * creating that PO if none exists. Called from two places that must stay
+   * behaviourally identical: the real-time reorder.listener.ts (fires the
+   * moment a variant crosses reorderPoint) and purchasing.cron.ts (the
+   * nightly safety-net sweep for anything the real-time path missed, e.g. a
+   * bulk stock import that bypasses InventoryService.move()).
+   */
+  async upsertReorderDraftLine(input: {
+    supplierId: string;
+    variantId: string;
+    quantity: number;
+    unitCost: number;
+  }): Promise<void> {
+    await this.prisma.$transaction(async (tx) => {
+      // Serializes concurrent callers for the SAME supplier — otherwise two
+      // near-simultaneous low-stock events (or a real-time event racing the
+      // nightly sweep) could each see "no DRAFT PO yet" and create two.
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(${DRAFT_PO_LOCK_NAMESPACE}::int, hashtext(${input.supplierId})::int)`;
+
+      let po = await tx.purchaseOrder.findFirst({
+        where: { supplierId: input.supplierId, status: 'DRAFT' },
+        include: { items: true },
+      });
+
+      if (!po) {
+        const number = await nextPONumber(tx, this.settingsService, this.config);
+        po = await tx.purchaseOrder.create({
+          data: { supplierId: input.supplierId, number, status: 'DRAFT', currency: BRAND.locale.currency },
+          include: { items: true },
+        });
+      }
+
+      const existingLine = po.items.find((i) => i.variantId === input.variantId);
+      if (existingLine) {
+        if (existingLine.quantityOrdered < input.quantity) {
+          await tx.purchaseOrderItem.update({
+            where: { id: existingLine.id },
+            data: { quantityOrdered: input.quantity, lineTotal: input.quantity * existingLine.unitCost },
+          });
+        }
+      } else {
+        await tx.purchaseOrderItem.create({
+          data: {
+            purchaseOrderId: po.id,
+            variantId: input.variantId,
+            quantityOrdered: input.quantity,
+            unitCost: input.unitCost,
+            lineTotal: input.quantity * input.unitCost,
+          },
+        });
+      }
+
+      const updatedItems = await tx.purchaseOrderItem.findMany({ where: { purchaseOrderId: po.id } });
+      const subtotal = updatedItems.reduce((acc, i) => acc + i.lineTotal, 0);
+      await tx.purchaseOrder.update({ where: { id: po.id }, data: { subtotal, total: subtotal } });
     });
   }
 

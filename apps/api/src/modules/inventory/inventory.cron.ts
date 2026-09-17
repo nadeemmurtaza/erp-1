@@ -3,7 +3,6 @@ import { Cron } from '@nestjs/schedule';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
-import { BRAND } from '@newax/shared';
 
 @Injectable()
 export class InventoryCron {
@@ -20,26 +19,19 @@ export class InventoryCron {
 
     const slowMoverDays = await this.settings.get<number>(SettingKey.InventorySlowMoverDays);
     const deadStockDays = await this.settings.get<number>(SettingKey.InventoryDeadStockDays);
-    const autoDraft = await this.settings.get<boolean>(SettingKey.PurchasingAutoDraftReorder);
 
     const variants = await this.prisma.productVariant.findMany({
       where: { isActive: true },
-      select: { 
-        id: true, 
-        stock: true, 
-        reorderPoint: true, 
-        reorderQuantity: true, 
-        preferredSupplierId: true,
-        createdAt: true 
+      select: {
+        id: true,
+        stock: true,
+        createdAt: true
       }
     });
 
     const now = new Date();
     const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
     const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
-
-    // To group PO drafts by supplier
-    const draftsToUpdate = new Map<string, { variantId: string; qty: number; unitCost: number }[]>();
 
     for (const variant of variants) {
       // 1. Compute sales stats
@@ -119,82 +111,12 @@ export class InventoryCron {
           computedAt: now
         }
       });
-
-      // 2. Draft reorder POs
-      if (autoDraft && variant.reorderPoint !== null && variant.stock <= variant.reorderPoint && variant.preferredSupplierId) {
-        let qty = variant.reorderQuantity || (variant.reorderPoint - variant.stock);
-        if (qty < 1) qty = 1;
-
-        // Get last unit cost (costPrice)
-        const vFull = await this.prisma.productVariant.findUnique({
-          where: { id: variant.id },
-          select: { costPrice: true }
-        });
-
-        const drafts = draftsToUpdate.get(variant.preferredSupplierId) || [];
-        drafts.push({ variantId: variant.id, qty, unitCost: vFull?.costPrice || 0 });
-        draftsToUpdate.set(variant.preferredSupplierId, drafts);
-      }
     }
 
-    // 3. Upsert DRAFT POs for suppliers
-    for (const [supplierId, lines] of draftsToUpdate.entries()) {
-      let po = await this.prisma.purchaseOrder.findFirst({
-        where: { supplierId, status: 'DRAFT' },
-        include: { items: true }
-      });
-
-      if (!po) {
-        const supplier = await this.prisma.supplier.findUnique({ where: { id: supplierId } });
-        const count = await this.prisma.purchaseOrder.count({ where: { supplierId } });
-        const number = `${supplier?.name.substring(0, 3).toUpperCase() || 'PO'}-${String(count + 1).padStart(4, '0')}`;
-
-        po = await this.prisma.purchaseOrder.create({
-          data: {
-            supplierId,
-            number,
-            status: 'DRAFT',
-            currency: BRAND.locale.currency,
-          },
-          include: { items: true }
-        });
-      }
-
-      for (const line of lines) {
-        const existingLine = po.items.find((i) => i.variantId === line.variantId);
-        if (existingLine) {
-          if (existingLine.quantityOrdered < line.qty) {
-             await this.prisma.purchaseOrderItem.update({
-               where: { id: existingLine.id },
-               data: { 
-                 quantityOrdered: line.qty,
-                 lineTotal: line.qty * existingLine.unitCost 
-               }
-             });
-          }
-        } else {
-          await this.prisma.purchaseOrderItem.create({
-            data: {
-              purchaseOrderId: po.id,
-              variantId: line.variantId,
-              quantityOrdered: line.qty,
-              unitCost: line.unitCost,
-              lineTotal: line.qty * line.unitCost
-            }
-          });
-        }
-      }
-
-      // Update PO subtotal/total
-      const updatedItems = await this.prisma.purchaseOrderItem.findMany({
-        where: { purchaseOrderId: po.id }
-      });
-      const subtotal = updatedItems.reduce((acc, i) => acc + i.lineTotal, 0);
-      await this.prisma.purchaseOrder.update({
-        where: { id: po.id },
-        data: { subtotal, total: subtotal }
-      });
-    }
+    // Reorder-PO drafting moved to purchasing.cron.ts (PurchasingCron) —
+    // it belongs with the module that owns PurchaseOrder, and now shares its
+    // implementation with the real-time reorder.listener.ts instead of
+    // duplicating this loop's old inline version.
 
     this.logger.log('Nightly inventory computation complete');
   }

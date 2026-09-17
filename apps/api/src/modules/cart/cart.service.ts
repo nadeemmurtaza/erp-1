@@ -140,7 +140,8 @@ export class CartService {
     if (!variant || !variant.isActive || variant.product.status !== 'ACTIVE') {
       throw new NotFoundException('That item is no longer available.');
     }
-    if (variant.stock < dto.quantity) {
+    const allowBackorder = await this.settings.get<boolean>(SettingKey.OrdersAllowBackorder);
+    if (!allowBackorder && variant.stock < dto.quantity) {
       throw new BadRequestException(
         variant.stock === 0
           ? 'That item is out of stock.'
@@ -162,7 +163,7 @@ export class CartService {
 
     if (twin) {
       const quantity = twin.quantity + dto.quantity;
-      if (variant.stock < quantity) {
+      if (!allowBackorder && variant.stock < quantity) {
         throw new BadRequestException(`Only ${variant.stock} left in stock.`);
       }
       await this.prisma.cartItem.update({
@@ -220,7 +221,8 @@ export class CartService {
       const variant = await this.prisma.productVariant.findUniqueOrThrow({
         where: { id: item.variantId },
       });
-      if (variant.stock < dto.quantity) {
+      const allowBackorder = await this.settings.get<boolean>(SettingKey.OrdersAllowBackorder);
+      if (!allowBackorder && variant.stock < dto.quantity) {
         throw new BadRequestException(`Only ${variant.stock} left in stock.`);
       }
 

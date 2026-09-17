@@ -85,8 +85,16 @@ export const SettingKey = {
   MonthlyRevenueTarget: 'analytics.monthly_revenue_target',
   PurchasingOverReceiptTolerance: 'purchasing.over_receipt_tolerance',
   PurchasingAutoDraftReorder: 'purchasing.auto_draft_reorder',
+  /** Off until an owner turns it on — checkout keeps its "stock lands or none of it does" behavior by default. */
+  OrdersAllowBackorder: 'checkout.allow_backorder',
   InventorySlowMoverDays: 'inventory.slow_mover_days',
   InventoryDeadStockDays: 'inventory.dead_stock_days',
+  /** How many days out a projected stockout has to be before the supplier stock/velocity digest flags a variant as "action required". */
+  PurchasingSupplierDigestLeadDays: 'purchasing.supplier_digest_lead_days',
+  /** OTIF percentage below which the weekly supplier scorecard alerts procurement. */
+  PurchasingSupplierScorecardOtifThreshold: 'purchasing.supplier_scorecard_otif_threshold',
+  /** Projected days-of-cover (current stock + everything already in flight) below which the weekly demand alert fires for a variant whose sales velocity is rising. */
+  InventoryDemandSurgeHorizonDays: 'inventory.demand_surge_horizon_days',
   /** Off until an owner turns it on — every order's tax is zero either way. */
   TaxEnabled: 'tax.enabled',
   /** 'INCLUSIVE' (unitPrice already contains tax) or 'EXCLUSIVE' (tax is added at checkout). */
@@ -213,9 +221,13 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
 
   [SettingKey.PurchasingOverReceiptTolerance]: 0,
   [SettingKey.PurchasingAutoDraftReorder]: true,
+  [SettingKey.OrdersAllowBackorder]: false,
 
   [SettingKey.InventorySlowMoverDays]: 60,
   [SettingKey.InventoryDeadStockDays]: 180,
+  [SettingKey.PurchasingSupplierDigestLeadDays]: 3,
+  [SettingKey.PurchasingSupplierScorecardOtifThreshold]: 85,
+  [SettingKey.InventoryDemandSurgeHorizonDays]: 14,
 
   [SettingKey.TaxEnabled]: false,
   [SettingKey.TaxPricingMode]: 'EXCLUSIVE',

@@ -4,12 +4,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { adminFetch } from '@/lib/admin-client';
 import { formatMoney } from '@newax/shared';
+import { PartyPicker } from '@/components/admin/party-picker';
 import { Loading } from '@/components/ui';
-
-interface Supplier {
-  id: string;
-  name: string;
-}
 
 interface SupplierProduct {
   id: string;
@@ -27,9 +23,8 @@ interface SupplierProduct {
 
 export default function NewPurchaseOrderPage() {
   const router = useRouter();
-  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [supplierId, setSupplierId] = useState('');
-  
+
   const [supplierProducts, setSupplierProducts] = useState<SupplierProduct[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
 
@@ -40,12 +35,6 @@ export default function NewPurchaseOrderPage() {
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    adminFetch<{ data: Supplier[] }>('/admin/suppliers')
-      .then((res) => setSuppliers(res.data))
-      .catch(console.error);
-  }, []);
 
   useEffect(() => {
     if (!supplierId) {
@@ -130,17 +119,17 @@ export default function NewPurchaseOrderPage() {
 
       <div className="card p-6 mb-6">
         <label className="block mb-2 text-sm font-medium text-neutral-900">Supplier</label>
-        <select 
-          className="field-input w-full max-w-md"
+        <PartyPicker
+          role="SUPPLIER"
           value={supplierId}
-          onChange={(e) => {
-            setSupplierId(e.target.value);
+          className="max-w-md"
+          placeholder="Search suppliers by name or phone..."
+          onSelect={(result) => {
+            if (!result.supplierId) return;
+            setSupplierId(result.supplierId);
             setLines([]);
           }}
-        >
-          <option value="">Select a supplier...</option>
-          {suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
-        </select>
+        />
       </div>
 
       {supplierId && (

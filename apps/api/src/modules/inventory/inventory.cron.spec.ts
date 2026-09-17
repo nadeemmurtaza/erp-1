@@ -15,9 +15,6 @@ describe('InventoryCron', () => {
       productVariant: { findMany: jest.fn() },
       stockMovement: { findMany: jest.fn(), findFirst: jest.fn() },
       variantSalesStat: { upsert: jest.fn() },
-      purchaseOrder: { findFirst: jest.fn(), count: jest.fn(), create: jest.fn(), update: jest.fn() },
-      purchaseOrderItem: { create: jest.fn(), update: jest.fn(), findMany: jest.fn() },
-      supplier: { findUnique: jest.fn() },
     };
 
     settings = {
@@ -93,43 +90,5 @@ describe('InventoryCron', () => {
         create: expect.objectContaining({ isSlowMover: false, isDeadStock: false }),
       })
     );
-  });
-
-  it('running the job twice yields one draft PO', async () => {
-    settings.get.mockImplementation(async (key: any) => {
-      if (key === SettingKey.PurchasingAutoDraftReorder) return true;
-      return 60;
-    });
-
-    prisma.productVariant.findMany.mockResolvedValue([
-      { id: 'v1', stock: 5, reorderPoint: 10, reorderQuantity: 20, preferredSupplierId: 'sup1' }
-    ]);
-    prisma.productVariant.findUnique = jest.fn().mockResolvedValue({ costPrice: 100 });
-    prisma.stockMovement.findMany.mockResolvedValue([]);
-    prisma.stockMovement.findFirst.mockResolvedValue(null);
-    prisma.supplier.findUnique.mockResolvedValue({ name: 'Supplier', code: 'SUP' });
-    prisma.purchaseOrder.count.mockResolvedValue(0);
-
-    // Run 1: no DRAFT exists
-    prisma.purchaseOrder.findFirst.mockResolvedValue(null);
-    prisma.purchaseOrder.create.mockResolvedValue({ id: 'po1', items: [] });
-    prisma.purchaseOrderItem.findMany.mockResolvedValue([{ lineTotal: 2000 }]);
-
-    await cron.computeNightlyStats();
-    expect(prisma.purchaseOrder.create).toHaveBeenCalledTimes(1);
-    expect(prisma.purchaseOrderItem.create).toHaveBeenCalledTimes(1);
-
-    // Reset mocks for run 2
-    jest.clearAllMocks();
-
-    // Run 2: DRAFT exists
-    prisma.purchaseOrder.findFirst.mockResolvedValue({ id: 'po1', items: [{ id: 'poi1', variantId: 'v1', quantityOrdered: 20, unitCost: 100 }] });
-    prisma.purchaseOrderItem.findMany.mockResolvedValue([{ lineTotal: 2000 }]);
-
-    await cron.computeNightlyStats();
-    expect(prisma.purchaseOrder.create).not.toHaveBeenCalled(); // No new PO created
-    // It's the exact same qty so no update to the line
-    expect(prisma.purchaseOrderItem.update).not.toHaveBeenCalled();
-    expect(prisma.purchaseOrderItem.create).not.toHaveBeenCalled();
   });
 });

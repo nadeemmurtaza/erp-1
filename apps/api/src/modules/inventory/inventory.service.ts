@@ -6,6 +6,7 @@ import { Prisma, StockMovement, StockMovementReason } from '../../core/prisma/cl
 import { EventBusService } from '../../core/events/event-bus.service';
 import { DomainEvent } from '../../core/events/domain-events';
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
+import { EntityEnrichmentRegistry } from '../../core/extension-points/entity-enrichment.registry';
 
 const variantListInclude = {
   product: {
@@ -60,6 +61,7 @@ export class InventoryService implements OnModuleInit {
     private readonly audit: AuditService,
     private readonly events: EventBusService,
     private readonly stockIntake: StockIntakeRegistry,
+    private readonly enrichment: EntityEnrichmentRegistry,
   ) {}
 
   /**
@@ -186,7 +188,16 @@ export class InventoryService implements OnModuleInit {
     // know whether this movement crosses the low-stock threshold.
     const beforeVariant = await tx.productVariant.findUnique({
       where: { id: input.variantId },
-      select: { stock: true, lowStockThreshold: true, productId: true, sku: true },
+      select: {
+        stock: true,
+        lowStockThreshold: true,
+        productId: true,
+        sku: true,
+        reorderPoint: true,
+        reorderQuantity: true,
+        producedInHouse: true,
+        preferredSupplierId: true,
+      },
     });
 
     if (!beforeVariant) {
@@ -194,6 +205,8 @@ export class InventoryService implements OnModuleInit {
     }
 
     const wasAboveThreshold = beforeVariant.stock > beforeVariant.lowStockThreshold;
+    const wasAboveReorderPoint =
+      beforeVariant.reorderPoint !== null && beforeVariant.stock > beforeVariant.reorderPoint;
 
     // A variant may not yet have touched this location — lazily ensure the
     // row exists before the guarded update below. Idempotent: a concurrent
@@ -275,6 +288,40 @@ export class InventoryService implements OnModuleInit {
       );
     }
 
+    if (
+      wasAboveReorderPoint &&
+      beforeVariant.reorderPoint !== null &&
+      resultingStock <= beforeVariant.reorderPoint
+    ) {
+      await this.events.publish(
+        DomainEvent.ProductReorderPointReached,
+        {
+          productId: beforeVariant.productId,
+          variantId: input.variantId,
+          sku: beforeVariant.sku,
+          stock: resultingStock,
+          reorderPoint: beforeVariant.reorderPoint,
+          reorderQuantity: beforeVariant.reorderQuantity,
+          producedInHouse: beforeVariant.producedInHouse,
+          preferredSupplierId: beforeVariant.preferredSupplierId,
+        },
+        tx,
+      );
+    }
+
+    if (input.delta > 0) {
+      await this.events.publish(
+        DomainEvent.StockReplenished,
+        {
+          variantId: input.variantId,
+          locationId: input.locationId,
+          delta: input.delta,
+          resultingStock,
+        },
+        tx,
+      );
+    }
+
     // The audit write is deliberately outside the caller's transaction because
     // AuditService is best-effort and never throws.
     await this.audit.record({
@@ -301,6 +348,94 @@ export class InventoryService implements OnModuleInit {
       movements.push(await this.move(input, tx));
     }
     return movements;
+  }
+
+  /**
+   * Everything about one SKU's place in the chain, in one call: stock per
+   * location, purchase orders still in flight, work orders still open,
+   * order lines still owed to a customer, and (via the existing
+   * "orderItem.stitchingJob" enrichment point stitching already registers)
+   * each of those lines' tailoring stage when it has one. Read-only, no
+   * write-path risk — safe to ship ahead of or alongside anything else.
+   */
+  async getChainStatus(variantId: string) {
+    const variant = await this.prisma.productVariant.findUnique({
+      where: { id: variantId },
+      select: { id: true, sku: true, label: true, stock: true, producedInHouse: true, reorderPoint: true },
+    });
+    if (!variant) throw new NotFoundException('That variant no longer exists.');
+
+    const [stocks, openPurchaseOrderItems, openWorkOrders, pendingOrderItems] = await Promise.all([
+      this.prisma.variantLocationStock.findMany({
+        where: { variantId },
+        include: { location: { select: { id: true, name: true, code: true } } },
+      }),
+      this.prisma.purchaseOrderItem.findMany({
+        where: { variantId, purchaseOrder: { status: { in: ['DRAFT', 'SENT', 'PARTIAL'] } } },
+        include: {
+          purchaseOrder: {
+            select: { id: true, number: true, status: true, expectedAt: true, supplier: { select: { id: true, name: true } } },
+          },
+        },
+      }),
+      this.prisma.workOrder.findMany({
+        where: { variantId, status: { in: ['DRAFT', 'RELEASED'] } },
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prisma.orderItem.findMany({
+        where: { variantId, order: { status: { notIn: ['SHIPPED', 'DELIVERED', 'CANCELLED', 'RETURNED'] } } },
+        select: {
+          id: true,
+          quantity: true,
+          fulfillmentStatus: true,
+          awaitingSince: true,
+          order: { select: { id: true, number: true, status: true, placedAt: true } },
+        },
+      }),
+    ]);
+
+    const stitchingByOrderItem = await this.enrichment.enrich<{ number: string; stage: string; dueAt: Date | null }>(
+      'orderItem.stitchingJob',
+      pendingOrderItems.map((item) => item.id),
+    );
+
+    return {
+      variant,
+      stock: stocks.map((row) => ({
+        locationId: row.locationId,
+        locationName: row.location.name,
+        locationCode: row.location.code,
+        quantity: row.quantity,
+      })),
+      openPurchaseOrders: openPurchaseOrderItems.map((item) => ({
+        purchaseOrderId: item.purchaseOrder.id,
+        number: item.purchaseOrder.number,
+        status: item.purchaseOrder.status,
+        expectedAt: item.purchaseOrder.expectedAt,
+        supplier: item.purchaseOrder.supplier,
+        quantityOrdered: item.quantityOrdered,
+        quantityReceived: item.quantityReceived,
+      })),
+      openWorkOrders: openWorkOrders.map((wo) => ({
+        id: wo.id,
+        number: wo.number,
+        status: wo.status,
+        source: wo.source,
+        quantityOrdered: wo.quantityOrdered,
+        quantityCompleted: wo.quantityCompleted,
+      })),
+      pendingOrderLines: pendingOrderItems.map((item) => ({
+        orderItemId: item.id,
+        orderId: item.order.id,
+        orderNumber: item.order.number,
+        orderStatus: item.order.status,
+        placedAt: item.order.placedAt,
+        quantity: item.quantity,
+        fulfillmentStatus: item.fulfillmentStatus,
+        awaitingSince: item.awaitingSince,
+        stitchingJob: stitchingByOrderItem.get(item.id) ?? null,
+      })),
+    };
   }
 
   async history(variantId: string) {

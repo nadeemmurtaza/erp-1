@@ -10,6 +10,7 @@ import { BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../src/core/prisma/prisma.service';
 import { SettingsService } from '../src/core/settings/settings.service';
 import { AccountingService } from '../src/modules/accounting/accounting.service';
+import { FiscalPeriodsService } from '../src/modules/accounting/fiscal-periods.service';
 
 describe('Accounting ledger invariants (integration)', () => {
   let prisma: PrismaService;
@@ -19,6 +20,7 @@ describe('Accounting ledger invariants (integration)', () => {
   let cashAccountId: string;
   let revenueAccountId: string;
   let fiscalYearId: string;
+  let wo195FiscalYearId: string | undefined;
 
   const createdEntryIds: string[] = [];
 
@@ -81,6 +83,15 @@ describe('Accounting ledger invariants (integration)', () => {
     await prisma.journalEntryNumberCounter.deleteMany({ where: { fiscalYearId } }).catch(() => undefined);
     await prisma.fiscalPeriod.deleteMany({ where: { fiscalYearId } }).catch(() => undefined);
     await prisma.fiscalYear.delete({ where: { id: fiscalYearId } }).catch(() => undefined);
+    // The WO-19.5 nested describe's own fiscal year, cleaned up here rather
+    // than in its own afterAll — its FiscalPeriod rows are still referenced
+    // by JournalEntry.periodId (onDelete: Restrict) until the entry cleanup
+    // above has run, and nested afterAll blocks run before this one.
+    if (wo195FiscalYearId) {
+      await prisma.journalEntryNumberCounter.deleteMany({ where: { fiscalYearId: wo195FiscalYearId } }).catch(() => undefined);
+      await prisma.fiscalPeriod.deleteMany({ where: { fiscalYearId: wo195FiscalYearId } }).catch(() => undefined);
+      await prisma.fiscalYear.delete({ where: { id: wo195FiscalYearId } }).catch(() => undefined);
+    }
     await prisma.account.deleteMany({ where: { id: { in: [cashAccountId, revenueAccountId] } } }).catch(() => undefined);
     await prisma.$disconnect();
   });
@@ -263,5 +274,88 @@ describe('Accounting ledger invariants (integration)', () => {
     expect(entry.date.getTime()).toBe(threeDaysAgo.getTime());
     const period = await prisma.fiscalPeriod.findUniqueOrThrow({ where: { id: entry.periodId } });
     expect(period.status).toBe('OPEN');
+  });
+
+  describe('WO-19.5 — closing a period redirects a fact dated inside it to the next OPEN one', () => {
+    let fiscalPeriods: FiscalPeriodsService;
+    let closedPeriodId: string;
+    let openPeriodId: string;
+
+    beforeAll(async () => {
+      fiscalPeriods = new FiscalPeriodsService(prisma);
+      // A separate, future fiscal year — never overlaps the suite's own
+      // current-year P1, so resolveOpenPeriod's global "most recently
+      // opened OPEN period" fallback cannot ambiguously pick between them.
+      const nextYear = new Date().getFullYear() + 5;
+      const fiscalYear = await fiscalPeriods.createFiscalYear({
+        name: `FYTEST-WO195-${Date.now().toString(36)}`,
+        startsOn: new Date(nextYear, 0, 1).toISOString(),
+        endsOn: new Date(nextYear + 1, 0, 1).toISOString(),
+      });
+      wo195FiscalYearId = fiscalYear.id;
+
+      const closed = await fiscalPeriods.createFiscalPeriod({
+        fiscalYearId: fiscalYear.id,
+        name: 'Q1',
+        startsOn: new Date(nextYear, 0, 1).toISOString(),
+        endsOn: new Date(nextYear, 3, 1).toISOString(),
+      });
+      closedPeriodId = closed.id;
+
+      const open = await fiscalPeriods.createFiscalPeriod({
+        fiscalYearId: fiscalYear.id,
+        name: 'Q2',
+        startsOn: new Date(nextYear, 3, 1).toISOString(),
+        endsOn: new Date(nextYear, 6, 1).toISOString(),
+      });
+      openPeriodId = open.id;
+
+      await fiscalPeriods.closePeriod(closedPeriodId);
+    });
+
+    it('posts a fact dated inside the now-CLOSED Q1 into the still-OPEN Q2 instead, keeping Q1\'s own date', async () => {
+      const dateInsideClosedQ1 = new Date(new Date().getFullYear() + 5, 1, 15); // mid-February, inside Q1
+
+      const entry = await accounting.postEntry({
+        date: dateInsideClosedQ1,
+        source: 'test.wo195-late-fact',
+        lines: [
+          { accountId: cashAccountId, debitMinor: 99 },
+          { accountId: revenueAccountId, creditMinor: 99 },
+        ],
+      });
+      createdEntryIds.push(entry.id);
+
+      expect(entry.periodId).toBe(openPeriodId);
+      expect(entry.periodId).not.toBe(closedPeriodId);
+      expect(entry.date.getTime()).toBe(dateInsideClosedQ1.getTime());
+    });
+
+    it('reopening Q1 lets a fact dated inside it post there again', async () => {
+      await fiscalPeriods.reopenPeriod(closedPeriodId);
+
+      const dateInsideQ1 = new Date(new Date().getFullYear() + 5, 1, 20);
+      const entry = await accounting.postEntry({
+        date: dateInsideQ1,
+        source: 'test.wo195-reopened',
+        lines: [
+          { accountId: cashAccountId, debitMinor: 42 },
+          { accountId: revenueAccountId, creditMinor: 42 },
+        ],
+      });
+      createdEntryIds.push(entry.id);
+
+      expect(entry.periodId).toBe(closedPeriodId);
+    });
+
+    it('locking a period refuses a later reopen — permanent', async () => {
+      await fiscalPeriods.closePeriod(closedPeriodId);
+      await fiscalPeriods.lockPeriod(closedPeriodId);
+
+      await expect(fiscalPeriods.reopenPeriod(closedPeriodId)).rejects.toThrow(/never be reopened/i);
+
+      const period = await prisma.fiscalPeriod.findUniqueOrThrow({ where: { id: closedPeriodId } });
+      expect(period.status).toBe('LOCKED');
+    });
   });
 });

@@ -189,6 +189,12 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     category: 'Administration',
     sensitivity: 'high',
   },
+  {
+    key: 'accounting.manage_periods',
+    label: 'Open, close and lock fiscal periods — locking is irreversible',
+    category: 'Administration',
+    sensitivity: 'medium',
+  },
 ] as const;
 
 export type PermissionKey = (typeof PERMISSION_CATALOG)[number]['key'];
@@ -293,7 +299,13 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     key: 'system-admin',
     label: 'System administration',
     description: 'Settings, roles, user accounts and the audit log — the most sensitive group.',
-    permissions: ['settings.manage', 'roles.manage_permissions', 'users.manage', 'audit.view'],
+    permissions: [
+      'settings.manage',
+      'roles.manage_permissions',
+      'users.manage',
+      'audit.view',
+      'accounting.manage_periods',
+    ],
   },
 ] as const;
 
@@ -361,6 +373,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'users.manage',
     'tax.manage',
     'marketing.manage',
+    'accounting.manage_periods',
   ],
 };
 

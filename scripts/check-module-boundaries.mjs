@@ -191,9 +191,11 @@ function modulePacks() {
     );
   }
 
+  // A key is either a bareword identifier (accounting:) or a quoted string
+  // (needed for a hyphenated module name, e.g. 'identity-verification':).
   const packs = {};
-  for (const entry of block[1].matchAll(/^\s*(\w+)\s*:\s*'([^']+)'/gm)) {
-    packs[entry[1]] = entry[2];
+  for (const entry of block[1].matchAll(/^\s*(?:(\w+)|'([^']+)')\s*:\s*'([^']+)'/gm)) {
+    packs[entry[1] ?? entry[2]] = entry[3];
   }
 
   if (Object.keys(packs).length === 0) {

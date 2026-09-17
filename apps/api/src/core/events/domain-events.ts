@@ -36,6 +36,10 @@ export const DomainEvent = {
   SupplierBillPaid: 'purchasing.supplier_bill_paid',
 
   EmailReplyReceived: 'email.reply_received',
+
+  IdentityVerificationApproved: 'identity_verification.approved',
+  IdentityVerificationRejected: 'identity_verification.rejected',
+  IdentityVerificationExpired: 'identity_verification.expired',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -171,6 +175,12 @@ export interface EmailReplyReceivedPayload {
   fromAddress: string;
 }
 
+export interface IdentityVerificationPayload {
+  userId: string;
+  /** The VerificationMethodProvider key nID resolved the case with, e.g. "otp_sms". */
+  method: string | null;
+}
+
 export interface DomainEventPayloads {
   [DomainEvent.OrderPlaced]: OrderPlacedPayload;
   [DomainEvent.OrderStatusChanged]: OrderStatusChangedPayload;
@@ -193,4 +203,7 @@ export interface DomainEventPayloads {
   [DomainEvent.SupplierBillRaised]: SupplierBillRaisedPayload;
   [DomainEvent.SupplierBillPaid]: SupplierBillPaidPayload;
   [DomainEvent.EmailReplyReceived]: EmailReplyReceivedPayload;
+  [DomainEvent.IdentityVerificationApproved]: IdentityVerificationPayload;
+  [DomainEvent.IdentityVerificationRejected]: IdentityVerificationPayload;
+  [DomainEvent.IdentityVerificationExpired]: IdentityVerificationPayload;
 }

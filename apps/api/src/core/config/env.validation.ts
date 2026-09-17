@@ -100,6 +100,16 @@ export const envSchema = z.object({
   EASYPAISA_RETURN_URL: z.string().optional(),
   EASYPAISA_SANDBOX: bool('true'),
 
+  // nID (github.com/nadeemmurtaza/nID) — this shop's identity-verification
+  // tenant credentials. Optional at the env-schema level, same as the
+  // payment-gateway secrets above: the identity-verification module has to
+  // be in MODULES too, and NidVerificationProvider throws at call time
+  // (not boot time) if these are missing while it's enabled.
+  NID_API_URL: z.string().optional(),
+  NID_API_KEY: z.string().optional(),
+  /** Verifies inbound webhooks from nID — see providers/nid.provider.ts. */
+  NID_WEBHOOK_SECRET: z.string().optional(),
+
   // Outbound email. Plain SMTP on purpose: the mail server is ours (see
   // docker-compose.mail.yml), and if its reputation ever disappoints, pointing
   // these four values at a relay is the whole migration — no code changes.

@@ -5,6 +5,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
 import { CartModule } from './cart/cart.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { CrmModule } from './crm/crm.module';
+import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { MarketingModule } from './marketing/marketing.module';
 import { MeasurementsModule } from './measurements/measurements.module';
@@ -58,9 +59,13 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // Off by default — a deployment turns it on once it wants a real GL
   // instead of the sum-of-tables reports in `finance`/`reports`. Couples to
   // nothing either way (R15): no module imports AccountingModule, and its
-  // posting rules (WO-19.2) reach `orders`/`payments` only through domain
-  // events, never a service import.
+  // posting rules (WO-19.2/19.3) reach `orders`/`payments`/`purchasing` only
+  // through domain events, never a service import.
   { name: 'accounting', module: AccountingModule },
+  // Off by default — see docs/implementation/18-identity-verification.md.
+  // Add 'identity-verification' to MODULES once NID_API_URL/NID_API_KEY/
+  // NID_WEBHOOK_SECRET are set.
+  { name: 'identity-verification', module: IdentityVerificationModule },
   // Account administration — not togglable business features.
   { name: 'settings', module: SettingsAdminModule, alwaysOn: true },
   { name: 'users', module: UsersAdminModule, alwaysOn: true },

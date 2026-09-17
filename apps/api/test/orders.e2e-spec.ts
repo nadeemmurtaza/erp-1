@@ -349,7 +349,7 @@ describe('Orders (e2e)', () => {
         .send({ shippingAddress: { ...KARACHI, phone: '12345' }, paymentMethod: 'cod' })
         .expect(400);
 
-      expect(String(response.body.message)).toMatch(/valid Pakistani phone/i);
+      expect(String(response.body.message)).toMatch(/valid phone number/i);
     });
 
     it('rejects an empty cart', async () => {

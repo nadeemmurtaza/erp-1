@@ -172,7 +172,8 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
                 <table className="w-full min-w-full whitespace-nowrap text-left text-xs">
                   <thead>
                     <tr className="border-b border-neutral-100">
-                      <th scope="col"
+                      <th
+                        scope="col"
                         // Sticky to match the row labels below it. Without this the
                         // corner cell scrolls away while they stay put, and every
                         // size header ends up over the wrong column — the chart then

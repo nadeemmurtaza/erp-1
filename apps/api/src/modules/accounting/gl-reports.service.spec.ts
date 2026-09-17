@@ -74,6 +74,15 @@ describe('GlReportsService — WO-19.4', () => {
       expect(result.totalExpenseMinor).toBe(2000);
       expect(result.netIncomeMinor).toBe(3000);
     });
+
+    it('carries accountId on each row, so a year-end close can post straight back to it', async () => {
+      prisma.journalLine.groupBy.mockResolvedValue([{ accountId: 'a-rev', _sum: { debitMinor: 0, creditMinor: 5000 } }]);
+      prisma.account.findMany.mockResolvedValue([{ id: 'a-rev', code: '4000', name: 'Sales Revenue', type: 'INCOME' }]);
+
+      const result = await service.profitAndLoss(new Date('2026-01-01'), new Date('2026-01-31'));
+
+      expect(result.income[0]).toMatchObject({ accountId: 'a-rev', code: '4000', amountMinor: 5000 });
+    });
   });
 
   describe('balanceSheet', () => {

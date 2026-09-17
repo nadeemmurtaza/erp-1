@@ -29,6 +29,13 @@ export class FiscalPeriodsController {
     return this.fiscalPeriods.createFiscalYear(dto);
   }
 
+  @Post('fiscal-years/:id/close')
+  @RequirePermission('accounting.manage_periods')
+  @ApiOperation({ summary: 'Year-end close — zeros INCOME/EXPENSE into Retained Earnings, permanent' })
+  async closeFiscalYear(@Param('id') id: string) {
+    return this.fiscalPeriods.closeFiscalYear(id);
+  }
+
   @Get('fiscal-periods')
   @RequirePermission('accounting.view')
   @ApiOperation({ summary: 'List fiscal periods, optionally filtered by fiscal year' })

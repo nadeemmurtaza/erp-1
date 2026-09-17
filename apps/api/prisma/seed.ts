@@ -166,7 +166,8 @@ async function seedRoles(): Promise<void> {
 }
 
 /**
- * Seeds the six accounts the posting rules (WO-19.2) resolve by code —
+ * Seeds the accounts the posting rules (WO-19.2) and the year-end close
+ * (WO-19.5) resolve by code —
  * `chart-of-accounts.ts`'s `CHART_OF_ACCOUNTS`. Runs unconditionally, the
  * same as every other reference-data seed here, even when `accounting` is
  * off in MODULES: the rows are inert until a posting rule looks one up, and

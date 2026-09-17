@@ -60,6 +60,21 @@ export const envSchema = z.object({
   MODULES: csv(
     'catalog,measurements,cart,orders,payments,stitching,inventory,crm,analytics,reports,tracking',
   ),
+
+  /**
+   * Which tier of the retail topology this deployment is (RETAIL-ERP.md R1,
+   * R14). STANDALONE is the default and is what every deployment today
+   * already is — one node, one database, no replication, every chain concept
+   * invisible. BRANCH and BRAND replicate to a PARENT_URL; ORG has nothing
+   * above it. The same schema and the same image run at every tier; only
+   * this value differs, exactly like MODULES.
+   */
+  NODE_ROLE: z.enum(['STANDALONE', 'BRANCH', 'BRAND', 'ORG']).default('STANDALONE'),
+  /** Unique per deployment. The replication origin id (R2, R6) once Tranche 3 exists. */
+  NODE_ID: z.string().min(1).default('main'),
+  /** Where this node pulls policy from and pushes facts to. Required for BRANCH — a branch always reports to a brand. Optional for BRAND (a Chain-edition brand has no organization above it); refused for ORG and STANDALONE, which are the top of whatever topology they have. */
+  PARENT_URL: z.string().url().optional(),
+
   PAYMENT_PROVIDERS: csv('cod,bank_transfer'),
   NOTIFICATION_CHANNELS: csv('log'),
 
@@ -189,6 +204,24 @@ export function validateEnv(raw: Record<string, unknown>): Env {
         `NOTIFICATION_CHANNELS includes "email" but missing: ${missing.join(', ')}`,
       );
     }
+  }
+
+  // RETAIL-ERP.md R1: "the API refuses to boot without it" for the tier
+  // relationship that follows from NODE_ROLE — a branch with nowhere to
+  // replicate to, or a top-of-topology node pointed somewhere, is a
+  // misconfigured deployment, not a valid one.
+  if (result.data.NODE_ROLE === 'BRANCH' && !result.data.PARENT_URL) {
+    throw new Error(
+      'NODE_ROLE=BRANCH requires PARENT_URL — a branch always replicates to its brand.',
+    );
+  }
+  if (
+    (result.data.NODE_ROLE === 'ORG' || result.data.NODE_ROLE === 'STANDALONE') &&
+    result.data.PARENT_URL
+  ) {
+    throw new Error(
+      `NODE_ROLE=${result.data.NODE_ROLE} does not take a PARENT_URL — it is the top of its topology.`,
+    );
   }
 
   return result.data;

@@ -303,6 +303,8 @@ export interface AuthResult {
 export interface DeploymentMeta {
   modules: string[];
   packs: string[];
+  /** 'STANDALONE' for every deployment today. Chain-topology UI must stay hidden until this is something else — see docs/implementation/RETAIL-ERP.md R14. */
+  nodeRole: 'STANDALONE' | 'BRANCH' | 'BRAND' | 'ORG';
 }
 
 // --- Inventory --------------------------------------------------------------

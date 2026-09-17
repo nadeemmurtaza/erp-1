@@ -330,6 +330,44 @@ model DeviceToken {
 /// IP or User-Agent, and this table is intentionally NOT related to User or
 /// Contact: do not add a userId column here, it would join anonymous session
 /// activity to a real identity.
+enum NodeRole {
+  BRANCH
+  BRAND
+}
+
+enum NodeStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+/// A child node this deployment knows about — a brand's branches, or an
+/// organization's brands (RETAIL-ERP.md R1, R14; WO-18.1). Recorded on the
+/// PARENT only: a branch never lists itself here, its brand does, and that
+/// is what the drill-down dashboard (R19, WO-18.5) reads and what the
+/// replication engine (Tranche 3) will authenticate a child against. This
+/// deployment's OWN identity is NODE_ROLE/NODE_ID (env.validation.ts), never
+/// a row in its own Node table — a STANDALONE or BRANCH deployment has no
+/// tier below it and this table stays empty.
+model Node {
+  id         String     @id @default(cuid())
+  /// The child deployment's own NODE_ID. Globally unique the way every other
+  /// natural key here is (R6) — two branches of the same brand, or two
+  /// brands of different organizations, must never collide.
+  nodeId     String     @unique
+  role       NodeRole
+  /// Display name for the admin drill-down — "Lahore — Gulberg", not a slug.
+  label      String
+  /// Where the parent reaches this child to pull facts and push policy.
+  url        String
+  status     NodeStatus @default(ACTIVE)
+  lastSeenAt DateTime?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  @@index([role])
+  @@index([status])
+}
+
 model AnalyticsEvent {
   id        String   @id @default(cuid())
   type      String // "page_view" | "add_to_cart" | "checkout_started"

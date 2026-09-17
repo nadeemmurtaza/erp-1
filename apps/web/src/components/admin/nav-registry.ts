@@ -1,4 +1,5 @@
 import type { PermissionKey } from '@newax/shared';
+import { isModuleEnabled } from '@/utils/module-gate';
 
 import {
   LayoutDashboard,
@@ -376,8 +377,7 @@ export function navFor(
   permissions = permissions || [];
   const hasPermission = (item: AdminNavItem) =>
     !item.permissions || item.permissions.some((key) => permissions.includes(key));
-  const moduleOn = (item: AdminNavItem) =>
-    !item.module || !enabledModules || enabledModules.includes(item.module);
+  const moduleOn = (item: AdminNavItem) => isModuleEnabled(item.module, enabledModules);
 
   return ADMIN_NAV.filter((item) => hasPermission(item) && moduleOn(item)).map((item) => {
     if (!item.children) return item;

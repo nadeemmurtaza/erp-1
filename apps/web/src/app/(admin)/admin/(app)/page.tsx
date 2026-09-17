@@ -10,6 +10,8 @@ import type { VisitorAnalytics } from '@/types/api';
 import { ROUTES } from '@/constants/routes';
 import { Disclosure, Loading, MetricStrip, PageHeader, Section } from '@/components/ui';
 import { RangePicker, type RangeDays } from '@/components/admin/range-picker';
+import { useEnabledModules } from '@/components/admin/deployment-modules';
+import { isModuleEnabled } from '@/utils/module-gate';
 
 interface Dashboard {
   today: { orders: number; revenue: number };
@@ -42,13 +44,27 @@ interface FollowUp {
   lead: { id: string; name: string; phone: string | null } | null;
 }
 
+interface TradingPartnerSummary {
+  id: string;
+  status: 'PENDING' | 'ACTIVE' | 'SUSPENDED';
+}
+
 export default function AdminDashboardPage() {
   const router = useRouter();
+  const enabledModules = useEnabledModules();
+  const trackingOn = isModuleEnabled('tracking', enabledModules);
+  const crmOn = isModuleEnabled('crm', enabledModules);
+  const ordersOn = isModuleEnabled('orders', enabledModules);
+  const catalogOn = isModuleEnabled('catalog', enabledModules);
+  const stitchingOn = isModuleEnabled('stitching', enabledModules);
+  const tradingPartnersOn = isModuleEnabled('tradingpartners', enabledModules);
+
   const [days, setDays] = useState<RangeDays>(30);
   const [data, setData] = useState<Dashboard | null>(null);
   const [extended, setExtended] = useState<ExtendedAnalyticsSlice | null>(null);
   const [visitors, setVisitors] = useState<VisitorAnalytics | null>(null);
   const [followUps, setFollowUps] = useState<FollowUp[]>([]);
+  const [pendingPartners, setPendingPartners] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
 
@@ -64,18 +80,24 @@ export default function AdminDashboardPage() {
     if (lacksDashboard) return;
     let cancelled = false;
 
+    // `tracking`/`crm`/`tradingpartners` are separate modules that may be
+    // off for this deployment — their routes would 404, so only fetched
+    // when enabled rather than failing the whole dashboard for a B2B-only
+    // shop with no consumer storefront.
     Promise.all([
       adminFetch<Dashboard>('/admin/analytics/dashboard', { query: { days } }),
       adminFetch<ExtendedAnalyticsSlice>('/admin/analytics/extended', { query: { days } }),
-      adminFetch<VisitorAnalytics>('/admin/analytics/visitors', { query: { days } }),
-      adminFetch<FollowUp[]>('/admin/crm/follow-ups/due'),
+      trackingOn ? adminFetch<VisitorAnalytics>('/admin/analytics/visitors', { query: { days } }) : null,
+      crmOn ? adminFetch<FollowUp[]>('/admin/crm/follow-ups/due') : [],
+      tradingPartnersOn ? adminFetch<{ data: TradingPartnerSummary[] }>('/admin/trading-partners') : null,
     ])
-      .then(([dashboard, extendedData, visitorData, due]) => {
+      .then(([dashboard, extendedData, visitorData, due, partners]) => {
         if (cancelled) return;
         setData(dashboard);
         setExtended(extendedData);
         setVisitors(visitorData);
         setFollowUps(due);
+        setPendingPartners(partners?.data.filter((p) => p.status === 'PENDING').length ?? 0);
       })
       .catch((cause: unknown) => {
         if (!cancelled) {
@@ -86,7 +108,7 @@ export default function AdminDashboardPage() {
     return () => {
       cancelled = true;
     };
-  }, [days, lacksDashboard]);
+  }, [days, lacksDashboard, trackingOn, crmOn, tradingPartnersOn]);
 
 
 
@@ -98,7 +120,7 @@ export default function AdminDashboardPage() {
     );
   }
 
-  if (!data || !extended || !visitors) {
+  if (!data || !extended || (trackingOn && !visitors)) {
     return <Loading />;
   }
 
@@ -107,33 +129,45 @@ export default function AdminDashboardPage() {
       label: 'Orders to confirm',
       value: data.needsAttention.pendingOrders,
       href: '/admin/orders?status=PENDING',
+      module: 'orders',
     },
     {
       label: 'Payments to approve',
       value: data.needsAttention.paymentsAwaitingApproval,
       href: '/admin/payments',
+      module: 'payments',
     },
     {
       label: 'Follow-ups due',
       value: data.needsAttention.followUpsDue,
       href: '/admin/contacts',
+      module: 'crm',
     },
     {
       label: 'Variants low on stock',
       value: data.needsAttention.lowStockVariants,
       href: '/admin/products',
+      module: 'inventory',
     },
     {
       label: 'Failed background events',
       value: data.needsAttention.failedEvents,
       href: '/admin/orders',
+      module: undefined,
     },
     {
       label: 'Abandoned carts',
-      value: visitors.abandonedCarts,
+      value: visitors?.abandonedCarts ?? 0,
       href: '/admin/reports',
+      module: 'cart',
     },
-  ].filter((item) => item.value > 0);
+    {
+      label: 'Trading partners awaiting connection',
+      value: pendingPartners,
+      href: '/admin/trading-partners',
+      module: 'tradingpartners',
+    },
+  ].filter((item) => item.value > 0 && isModuleEnabled(item.module, enabledModules));
 
   return (
     <>
@@ -189,13 +223,16 @@ export default function AdminDashboardPage() {
         lead="today"
         className="mb-10"
         items={[
+          ...(!ordersOn
+            ? []
+            : [
           {
             key: 'today',
             label: 'Today',
             value: formatMoney(data.today.revenue),
             delta: {
               label: `${data.today.orders} ${data.today.orders === 1 ? 'order' : 'orders'}`,
-              direction: 'flat',
+              direction: 'flat' as const,
             },
             detail: (
               <>
@@ -250,7 +287,7 @@ export default function AdminDashboardPage() {
             value: formatMoney(data.month.revenue),
             delta: {
               label: `${data.month.orders} ${data.month.orders === 1 ? 'order' : 'orders'}`,
-              direction: 'flat',
+              direction: 'flat' as const,
             },
             detail: (
               <div className="grid gap-6 fold:grid-cols-2">
@@ -288,6 +325,10 @@ export default function AdminDashboardPage() {
               </div>
             ),
           },
+          ]),
+          ...(!trackingOn || !visitors
+            ? []
+            : [
           {
             key: 'visitors',
             label: 'Visitors',
@@ -349,13 +390,14 @@ export default function AdminDashboardPage() {
               </div>
             ),
           },
+          ]),
           {
             key: 'customers',
             label: 'Customers',
             value: formatNumber(data.customers.total),
             delta: {
               label: `${data.customers.repeat} repeat · ${data.customers.newThisMonth} new`,
-              direction: 'flat',
+              direction: 'flat' as const,
             },
             detail: (
               <div className="grid gap-6 fold:grid-cols-2">
@@ -414,7 +456,7 @@ export default function AdminDashboardPage() {
        * a three-column one with a permanent gap in it.
        */}
       <div className="grid gap-8 fold:grid-cols-2">
-        {data.stitchingByStage.length > 0 ? (
+        {stitchingOn && data.stitchingByStage.length > 0 ? (
           <Section
             title="Tailoring in progress"
             action={
@@ -437,20 +479,22 @@ export default function AdminDashboardPage() {
           </Section>
         ) : null}
 
-        <Section
-          title="Catalogue"
-          action={
-            <Link href={ROUTES.admin.products} className="btn-text">
-              Products
-            </Link>
-          }
-        >
-          <dl className="grid grid-cols-3 gap-3 text-sm">
-            <Mini label="Live" value={data.catalogue.live} />
-            <Mini label="Drafts" value={data.catalogue.drafts} />
-            <Mini label="Services" value={data.catalogue.services} />
-          </dl>
-        </Section>
+        {catalogOn ? (
+          <Section
+            title="Catalogue"
+            action={
+              <Link href={ROUTES.admin.products} className="btn-text">
+                Products
+              </Link>
+            }
+          >
+            <dl className="grid grid-cols-3 gap-3 text-sm">
+              <Mini label="Live" value={data.catalogue.live} />
+              <Mini label="Drafts" value={data.catalogue.drafts} />
+              <Mini label="Services" value={data.catalogue.services} />
+            </dl>
+          </Section>
+        ) : null}
       </div>
     </>
   );

@@ -6,6 +6,8 @@ import { adminFetch } from '@/lib/admin-client';
 import type { AuditLogEntry, AuditLogPage, RoleSummary } from '@/types/api';
 import { Loading, PageHeader, Tabs } from '@/components/ui';
 import { RoleWizard } from '@/components/admin/role-wizard';
+import { useEnabledModules } from '@/components/admin/deployment-modules';
+import { isModuleEnabled } from '@/utils/module-gate';
 
 /** Undefined = wizard closed. `null` = creating a new role. A `RoleSummary` = editing that one. */
 type WizardTarget = RoleSummary | null | undefined;
@@ -319,14 +321,22 @@ interface DocumentSettings {
   prefixes: Record<string, string>;
 }
 
-const PREFIX_FIELDS: Array<{ key: string; label: string }> = [
-  { key: 'order', label: 'Orders' },
-  { key: 'purchaseOrder', label: 'Purchase orders' },
-  { key: 'goodsReceipt', label: 'Goods receipts' },
-  { key: 'stitchingOrder', label: 'Stitching orders' },
-  { key: 'stitchingJob', label: 'Workshop jobs' },
-  { key: 'stockCount', label: 'Stock counts' },
-  { key: 'journalEntry', label: 'Journal entries' },
+/**
+ * `module` ties a field to the API module it only means something for — a
+ * pure B2B supplier deployment with `stitching`/`orders` off has no use for
+ * a stitching-order prefix or a consumer order prefix. Omitted `module`
+ * means universal (purchasing is `core`, so every deployment sees it).
+ */
+const PREFIX_FIELDS: Array<{ key: string; label: string; module?: string }> = [
+  { key: 'order', label: 'Orders', module: 'orders' },
+  { key: 'purchaseOrder', label: 'Purchase orders', module: 'purchasing' },
+  { key: 'goodsReceipt', label: 'Goods receipts', module: 'purchasing' },
+  { key: 'stitchingOrder', label: 'Stitching orders', module: 'stitching' },
+  { key: 'stitchingJob', label: 'Workshop jobs', module: 'stitching' },
+  { key: 'stockCount', label: 'Stock counts', module: 'inventory' },
+  { key: 'journalEntry', label: 'Journal entries', module: 'accounting' },
+  { key: 'invoice', label: 'Invoices (to trading partners)', module: 'tradingpartners' },
+  { key: 'quote', label: 'Quotes (to trading partners)', module: 'tradingpartners' },
 ];
 
 const LOGO_CHOICES: Array<{ value: DocumentSettings['logoSource']; label: string; hint: string }> = [
@@ -356,6 +366,8 @@ const LOGO_CHOICES: Array<{ value: DocumentSettings['logoSource']; label: string
  * client will want changed. Changing one affects new documents only.
  */
 function DocumentSettingsPanel() {
+  const enabledModules = useEnabledModules();
+  const prefixFields = PREFIX_FIELDS.filter((field) => isModuleEnabled(field.module, enabledModules));
   const [settings, setSettings] = useState<DocumentSettings | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -451,7 +463,7 @@ function DocumentSettingsPanel() {
         sequence — <code className="text-neutral-900">{settings.prefixes.order}-2026-0001</code>.
       </p>
       <div className="grid gap-3 fold:grid-cols-2">
-        {PREFIX_FIELDS.map((field) => (
+        {prefixFields.map((field) => (
           <label key={field.key} className="block">
             <span className="field-label">{field.label}</span>
             <input

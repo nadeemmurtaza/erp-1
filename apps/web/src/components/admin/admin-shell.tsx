@@ -189,7 +189,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
         </header>
 
         <main className="min-w-0 flex-1 p-4 sm:p-6">
-          <AdminProviders user={user}>{children}</AdminProviders>
+          <AdminProviders user={user} enabledModules={enabledModules}>
+            {children}
+          </AdminProviders>
         </main>
       </div>
     </div>

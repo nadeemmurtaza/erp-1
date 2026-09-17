@@ -26,7 +26,9 @@ describe('TradingPartnersService', () => {
         findMany: jest.fn().mockResolvedValue([]),
       },
     };
-    config = { get: jest.fn().mockReturnValue('dev-app-encryption-key-32-bytes0') };
+    config = {
+      get: jest.fn((key: string) => (key === 'STOREFRONT_URL' ? 'https://yaseen.pk' : 'dev-app-encryption-key-32-bytes0')),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -304,6 +306,79 @@ describe('TradingPartnersService', () => {
       fetchSpy.mockResolvedValue({ ok: false, status: 500 } as Response);
 
       await expect(service.pushOutbound('tp1', 'product.new', {})).resolves.toBeUndefined();
+    });
+  });
+
+  describe('inviteConnection / acceptConnection — first-connection handshake', () => {
+    it('issues a one-time token for a PENDING, not-yet-accepted partner and returns an accept link', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue({
+        id: 'tp1',
+        status: 'PENDING',
+        acceptedAt: null,
+      });
+      prisma.tradingPartner.update.mockResolvedValue({});
+
+      const result = await service.inviteConnection('tp1');
+
+      expect(result.token).toEqual(expect.any(String));
+      expect(result.acceptUrl).toBe(`https://yaseen.pk/partner-invite?token=${encodeURIComponent(result.token)}`);
+      const call = prisma.tradingPartner.update.mock.calls[0][0];
+      expect(call.where).toEqual({ id: 'tp1' });
+      expect(call.data.inviteTokenHash).toBe(hashApiKey(result.token));
+      expect(call.data.invitedAt).toBeInstanceOf(Date);
+    });
+
+    it('refuses to invite a partner that already accepted', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue({ id: 'tp1', status: 'ACTIVE', acceptedAt: new Date() });
+
+      await expect(service.inviteConnection('tp1')).rejects.toBeInstanceOf(BadRequestException);
+      expect(prisma.tradingPartner.update).not.toHaveBeenCalled();
+    });
+
+    it('refuses to invite a partner that is SUSPENDED', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue({ id: 'tp1', status: 'SUSPENDED', acceptedAt: null });
+
+      await expect(service.inviteConnection('tp1')).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it('404s inviting a partner that does not exist', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue(null);
+
+      await expect(service.inviteConnection('missing')).rejects.toBeInstanceOf(NotFoundException);
+    });
+
+    it.each([
+      ['SUPPLIER', 'SUPPLIER'],
+      ['MANUFACTURER', 'SUPPLIER'],
+      ['DISTRIBUTOR', 'CUSTOMER'],
+      ['RETAILER', 'CUSTOMER'],
+    ] as const)('accepting as %s derives kind %s, activates, and consumes the token', async (role, expectedKind) => {
+      prisma.tradingPartner.findUnique.mockResolvedValue({ id: 'tp1', inviteTokenHash: hashApiKey('raw-token') });
+      prisma.tradingPartner.update.mockResolvedValue({ id: 'tp1', name: 'Acme', kind: expectedKind, status: 'ACTIVE' });
+
+      await service.acceptConnection('raw-token', role);
+
+      const call = prisma.tradingPartner.update.mock.calls[0][0];
+      expect(call.where).toEqual({ id: 'tp1' });
+      expect(call.data).toMatchObject({
+        acceptedRole: role,
+        status: 'ACTIVE',
+        kind: expectedKind,
+        inviteTokenHash: null,
+      });
+      expect(call.data.acceptedAt).toBeInstanceOf(Date);
+    });
+
+    it('rejects an invalid or already-used token', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue(null);
+
+      await expect(service.acceptConnection('bad-token', 'RETAILER')).rejects.toBeInstanceOf(UnauthorizedException);
+      expect(prisma.tradingPartner.update).not.toHaveBeenCalled();
+    });
+
+    it('rejects a blank token', async () => {
+      await expect(service.acceptConnection('  ', 'RETAILER')).rejects.toBeInstanceOf(UnauthorizedException);
+      expect(prisma.tradingPartner.findUnique).not.toHaveBeenCalled();
     });
   });
 });

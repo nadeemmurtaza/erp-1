@@ -36,4 +36,6 @@ const FALLBACK: DocumentPrefixes = {
   stitchingJob: 'JOB',
   stockCount: 'SC',
   journalEntry: 'JE',
+  invoice: 'INV',
+  quote: 'QTE',
 };

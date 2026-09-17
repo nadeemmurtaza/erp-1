@@ -52,4 +52,10 @@ export class TradingPartnersController {
     await this.tradingPartners.setOutboundApiKey(id, dto.apiKey);
     return { saved: true };
   }
+
+  @Post(':id/invite')
+  @ApiOperation({ summary: 'Send the first-connection request — returns a one-time accept link, shown once' })
+  async invite(@Param('id') id: string) {
+    return this.tradingPartners.inviteConnection(id);
+  }
 }

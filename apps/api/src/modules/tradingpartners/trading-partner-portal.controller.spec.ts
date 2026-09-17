@@ -15,6 +15,7 @@ describe('TradingPartnerPortalController', () => {
     tradingPartners = {
       verifyInboundKey: jest.fn().mockResolvedValue({ id: 'tp1', kind: 'CUSTOMER' }),
       getLiveStock: jest.fn().mockResolvedValue([{ sku: 'SKU-1', found: true, stock: 5, priceMinor: 1000 }]),
+      acceptConnection: jest.fn().mockResolvedValue({ id: 'tp1', name: 'Acme', kind: 'CUSTOMER', status: 'ACTIVE' }),
     };
     controller = new TradingPartnerPortalController(tradingPartners);
   });
@@ -48,5 +49,14 @@ describe('TradingPartnerPortalController', () => {
     await controller.stock('Bearer tp_therawkey', undefined);
 
     expect(tradingPartners.getLiveStock).toHaveBeenCalledWith({ id: 'tp1', kind: 'CUSTOMER' }, []);
+  });
+
+  describe('accept', () => {
+    it('passes the token and role through and returns a trimmed-down summary', async () => {
+      const result = await controller.accept({ token: 'tpi_raw', role: 'RETAILER' });
+
+      expect(tradingPartners.acceptConnection).toHaveBeenCalledWith('tpi_raw', 'RETAILER');
+      expect(result).toEqual({ id: 'tp1', name: 'Acme', kind: 'CUSTOMER', status: 'ACTIVE' });
+    });
   });
 });

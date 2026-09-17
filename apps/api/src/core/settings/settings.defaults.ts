@@ -41,6 +41,9 @@ export interface DocumentPrefixes {
   stockCount: string;
   /** A legal sequence, not node-prefixed the way the rest are (R18/R6) — see accounting.service.ts. */
   journalEntry: string;
+  /** Trading-partner document (WO-18.3+) — R6-style numbering, not R18's fiscal-year legal sequence. */
+  invoice: string;
+  quote: string;
 }
 
 export interface DocumentSettings {
@@ -213,6 +216,8 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
       stitchingJob: 'JOB',
       stockCount: 'SC',
       journalEntry: 'JE',
+      invoice: 'INV',
+      quote: 'QTE',
     },
   } satisfies DocumentSettings,
 

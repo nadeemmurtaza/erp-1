@@ -143,6 +143,18 @@ export const ADMIN_NAV: AdminNavItem[] = [
     module: 'payments',
   },
 
+  // Group: Overview — the three-level admin shell (R19, WO-18.5). Invisible
+  // for every deployment today: `organization` module is off by default, so
+  // `moduleOn()` below drops this entry before permissions are even checked.
+  {
+    key: 'organization',
+    label: 'Organization',
+    href: '/admin/o',
+    permissions: ['organization.view'],
+    group: 'overview',
+    module: 'organization',
+  },
+
   // Group: Insights
   {
     key: 'insights',

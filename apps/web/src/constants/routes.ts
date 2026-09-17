@@ -102,5 +102,17 @@ export const ROUTES = {
     emailAccounts: '/admin/email-accounts',
     /** `new` is a real id here: the editor route handles creating and editing. */
     emailAccount: (id: string) => `/admin/email-accounts/${id}`,
+
+    /**
+     * The three-level admin shell (RETAIL-ERP.md R19, WO-18.5) — invisible
+     * for every deployment today (`organization` module off by default,
+     * gated in nav-registry.ts). `organization` has no id: it resolves the
+     * caller's own scope and redirects to whichever of the three below is
+     * theirs.
+     */
+    organization: '/admin/o',
+    organizationOrg: (orgId: string) => `/admin/o/${orgId}`,
+    organizationBrand: (brandId: string) => `/admin/b/${brandId}`,
+    organizationBranch: (branchId: string) => `/admin/br/${branchId}`,
   },
 } as const;

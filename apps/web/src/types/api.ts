@@ -307,6 +307,41 @@ export interface DeploymentMeta {
   nodeRole: 'STANDALONE' | 'BRANCH' | 'BRAND' | 'ORG';
 }
 
+// --- Organization (RETAIL-ERP.md R19, WO-18.5) -------------------------------
+// Empty for every deployment today — `organization` module off by default.
+
+export interface RetailBrandSummary {
+  id: string;
+  name: string;
+  slug: string;
+  isActive: boolean;
+  organizationId: string | null;
+  parentId: string | null;
+}
+
+export interface OrgNodeSummary {
+  id: string;
+  nodeId: string;
+  role: 'BRANCH' | 'BRAND';
+  label: string;
+  status: 'ACTIVE' | 'SUSPENDED';
+}
+
+/** GET /organization/me/scope — where the caller lands, and what chips they see. */
+export interface MyScope {
+  isOrgWide: boolean;
+  /**
+   * The authoritative landing signal — check this, never `brands.length`.
+   * `brands` is deliberately widened to include a BRANCH grant's own
+   * parent brand for breadcrumb visibility, so it is non-empty even for a
+   * BRANCH-level actor.
+   */
+  level: 'ORG' | 'BRAND' | 'BRANCH' | 'NONE';
+  organization: { id: string; name: string } | null;
+  brands: RetailBrandSummary[];
+  nodes: OrgNodeSummary[];
+}
+
 // --- Inventory --------------------------------------------------------------
 
 export interface StockAdjustment {

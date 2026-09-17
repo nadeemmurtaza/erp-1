@@ -30,6 +30,11 @@ export interface PermissionDefinition {
 export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
   { key: 'analytics.view', label: 'View dashboard analytics', category: 'Dashboard' },
   { key: 'reports.view', label: 'Export CSV reports', category: 'Dashboard' },
+  {
+    key: 'organization.view',
+    label: 'View the organization/brand/branch dashboard',
+    category: 'Dashboard',
+  },
 
   { key: 'crm.manage', label: 'Manage leads, contacts and CRM', category: 'Customers' },
 
@@ -133,6 +138,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'account.change_own_password',
     'analytics.view',
     'reports.view',
+    'organization.view',
     'crm.manage',
     'orders.manage',
     'payments.approve',
@@ -153,6 +159,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'account.change_own_password',
     'analytics.view',
     'reports.view',
+    'organization.view',
     'crm.manage',
     'orders.manage',
     'payments.approve',

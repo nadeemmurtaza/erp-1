@@ -10,7 +10,7 @@ import {
   type SupplierBillPaidPayload,
 } from '../../core/events/domain-events';
 import { PrismaService } from '../../core/prisma/prisma.service';
-import { AccountingService } from './accounting.service';
+import { AccountingService, type PostLineInput } from './accounting.service';
 import { ACCOUNT_CODE } from './chart-of-accounts';
 
 /**
@@ -51,6 +51,7 @@ export class PostingRulesSubscriber {
         grandTotal: true,
         taxAmount: true,
         placedAt: true,
+        contactId: true,
         items: { select: { unitCost: true, quantity: true } },
       },
     });
@@ -73,8 +74,11 @@ export class PostingRulesSubscriber {
       return;
     }
 
-    const lines = [
-      { accountId: ar, debitMinor: order.grandTotal },
+    // contactId tags the AR line for Aged Receivables (WO-19.4) to group by
+    // customer — null for a guest order, which ages in its own "no contact"
+    // bucket rather than being silently dropped from the report.
+    const lines: PostLineInput[] = [
+      { accountId: ar, debitMinor: order.grandTotal, contactId: order.contactId },
       { accountId: revenue, creditMinor: order.grandTotal - order.taxAmount },
     ];
 
@@ -183,6 +187,8 @@ export class PostingRulesSubscriber {
       source,
       sourceRef: payload.billId,
       memo: `Supplier bill — ${payload.currency} ${payload.amountMinor}`,
+      // supplierId tags this origination for Aged Payables (WO-19.4) to
+      // group and FIFO-match against this same supplier's payment lines.
       lines: [
         { accountId: inventory, debitMinor: payload.baseAmountMinor },
         {
@@ -191,6 +197,7 @@ export class PostingRulesSubscriber {
           currency: payload.currency,
           fxRateScaled: payload.fxRateScaled,
           baseAmountMinor: payload.baseAmountMinor,
+          supplierId: payload.supplierId,
         },
       ],
     });
@@ -205,10 +212,11 @@ export class PostingRulesSubscriber {
    * (House Rule 11), never a bespoke calculation.
    *
    * Idempotency keys on `${billId}:${paidAt}` rather than a payment id —
-   * `SupplierBill` has no per-payment row yet (only a running `amountPaid`),
-   * so this is the stable, redelivery-safe key available today; a
-   * `SupplierBillPayment` ledger is a natural follow-up once AP aging needs
-   * one, not a prerequisite for posting this correctly.
+   * `SupplierBill` has no per-payment row yet (only a running `amountPaid`);
+   * this is the stable, redelivery-safe key available today. Aged Payables
+   * (WO-19.4) does not need a separate payment ledger either — it FIFO-
+   * matches this line against the bill's own origination line, both tagged
+   * `supplierId`, directly off the AP account's JournalLine trail.
    */
   @OnDomainEvent(DomainEvent.SupplierBillPaid)
   async onSupplierBillPaid(payload: SupplierBillPaidPayload): Promise<void> {
@@ -234,8 +242,8 @@ export class PostingRulesSubscriber {
     const paidBase = convertToBase(payload.amountMinor, payload.settlementFxRateScaled);
     const diff = paidBase - bookedBase;
 
-    const lines = [
-      { accountId: ap, debitMinor: bookedBase },
+    const lines: PostLineInput[] = [
+      { accountId: ap, debitMinor: bookedBase, supplierId: payload.supplierId },
       { accountId: bank, creditMinor: paidBase },
     ];
 

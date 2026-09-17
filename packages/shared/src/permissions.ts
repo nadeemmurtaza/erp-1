@@ -57,6 +57,12 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     category: 'Dashboard',
     sensitivity: 'high',
   },
+  {
+    key: 'accounting.view',
+    label: 'View the general ledger and its reports (trial balance, P&L, balance sheet, cash flow, aged AR/AP)',
+    category: 'Dashboard',
+    sensitivity: 'medium',
+  },
 
   { key: 'crm.manage', label: 'Manage leads, contacts and CRM', category: 'Customers', sensitivity: 'low' },
 
@@ -215,7 +221,7 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     key: 'dashboards',
     label: 'Dashboards & reports',
     description: 'Read-only views of how the shop is doing.',
-    permissions: ['analytics.view', 'reports.view'],
+    permissions: ['analytics.view', 'reports.view', 'accounting.view'],
   },
   {
     key: 'chain-admin',
@@ -332,6 +338,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'reports.view',
     'organization.view',
     'organization.manage',
+    'accounting.view',
     'crm.manage',
     'orders.manage',
     'payments.approve',

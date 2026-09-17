@@ -84,6 +84,27 @@ describe('PostingRulesSubscriber — WO-19.2', () => {
       );
     });
 
+    it('tags the AR line with the order’s contactId, for Aged Receivables (WO-19.4) to group by customer', async () => {
+      prisma.order.findUnique.mockResolvedValue({
+        grandTotal: 1000,
+        taxAmount: 0,
+        placedAt: new Date('2026-01-01'),
+        contactId: 'contact1',
+        items: [],
+      });
+
+      await subscriber.onOrderPlaced(payload);
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          lines: [
+            { accountId: 'acc-ar', debitMinor: 1000, contactId: 'contact1' },
+            { accountId: 'acc-revenue', creditMinor: 1000 },
+          ],
+        }),
+      );
+    });
+
     it('omits the tax line when taxAmount is 0, and the COGS/Inventory lines when there is no cost', async () => {
       prisma.order.findUnique.mockResolvedValue({
         grandTotal: 1000,
@@ -213,6 +234,7 @@ describe('PostingRulesSubscriber — WO-19.2', () => {
               currency: 'USD',
               fxRateScaled: 280_500_000,
               baseAmountMinor: 28_050_000,
+              supplierId: 'sup1',
             },
           ],
         }),
@@ -254,7 +276,7 @@ describe('PostingRulesSubscriber — WO-19.2', () => {
         expect.objectContaining({
           source: DomainEvent.SupplierBillPaid,
           lines: [
-            { accountId: 'acc-ap', debitMinor: 28_000_000 },
+            { accountId: 'acc-ap', debitMinor: 28_000_000, supplierId: 'sup1' },
             { accountId: 'acc-bank', creditMinor: 28_200_000 },
             { accountId: 'acc-fx-loss', debitMinor: 200_000 },
           ],
@@ -273,7 +295,7 @@ describe('PostingRulesSubscriber — WO-19.2', () => {
       expect(accounting.postEntry).toHaveBeenCalledWith(
         expect.objectContaining({
           lines: [
-            { accountId: 'acc-ap', debitMinor: 28_000_000 },
+            { accountId: 'acc-ap', debitMinor: 28_000_000, supplierId: 'sup1' },
             { accountId: 'acc-bank', creditMinor: 27_800_000 },
             { accountId: 'acc-fx-gain', creditMinor: 200_000 },
           ],
@@ -291,7 +313,7 @@ describe('PostingRulesSubscriber — WO-19.2', () => {
       expect(accounting.postEntry).toHaveBeenCalledWith(
         expect.objectContaining({
           lines: [
-            { accountId: 'acc-ap', debitMinor: 28_000_000 },
+            { accountId: 'acc-ap', debitMinor: 28_000_000, supplierId: 'sup1' },
             { accountId: 'acc-bank', creditMinor: 28_000_000 },
           ],
         }),

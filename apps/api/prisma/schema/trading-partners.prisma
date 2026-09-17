@@ -1,0 +1,56 @@
+// The trading-partner network (18-trading-partner-network.md, WO-18) — lets
+// a supplier, distributor or wholesaler that also runs this software (or
+// exposes any HTTP+JSON API) exchange documents with this deployment
+// without either side re-typing them. A `Supplier` with no linked
+// `TradingPartner` behaves exactly as it always has: nothing here is
+// required for purchasing to keep working.
+
+enum TradingPartnerKind {
+  /// We buy from them — their invoice becomes our SupplierBill (WO-18.2).
+  SUPPLIER
+  /// They buy from us — not wired to anything yet; reserved so `kind`
+  /// doesn't need a breaking change when the sell-side direction is built.
+  CUSTOMER
+  BOTH
+}
+
+enum TradingPartnerStatus {
+  /// Registered, no working inbound key yet — cannot authenticate.
+  PENDING
+  ACTIVE
+  /// Manually disabled; `verifyInboundKey` (WO-18.2) refuses a SUSPENDED
+  /// partner's key even if it still hashes correctly.
+  SUSPENDED
+}
+
+/// The business on the other end of a document exchange. Two independent
+/// credentials, because the two directions are independent capabilities:
+/// `outboundApiKeyEncrypted` is what WE present calling THEM
+/// (`outboundBaseUrl`, WO-18.3); `inboundApiKeyHash` is what THEY must
+/// present calling US (WO-18.2). Either, both, or neither may be set — a
+/// partner who only ever pushes to us never needs an outbound key, and vice
+/// versa.
+model TradingPartner {
+  id   String             @id @default(cuid())
+  name String
+  kind TradingPartnerKind
+
+  outboundBaseUrl         String?
+  /// AES-256-GCM via core/security/secret-crypto.ts — never stored plain,
+  /// same as an email account's SMTP password.
+  outboundApiKeyEncrypted String?
+
+  /// SHA-256 of the raw key (core/security/api-token.ts) — the raw key
+  /// itself is shown to the operator exactly once, at issue/rotate time,
+  /// and never persisted. Unique so a presented key resolves its partner in
+  /// one indexed lookup rather than a hash comparison per row.
+  inboundApiKeyHash String? @unique
+
+  status    TradingPartnerStatus @default(PENDING)
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+
+  suppliers Supplier[]
+
+  @@index([status])
+}

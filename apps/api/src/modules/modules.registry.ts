@@ -15,6 +15,7 @@ import { SettingsAdminModule } from './settings/settings-admin.module';
 import { StitchingModule } from './stitching/stitching.module';
 import { TaxModule } from './tax/tax.module';
 import { TrackingModule } from './tracking/tracking.module';
+import { TradingPartnersModule } from './tradingpartners/trading-partners.module';
 import { UsersAdminModule } from './users/users-admin.module';
 
 export interface FeatureModuleEntry {
@@ -40,6 +41,7 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'stitching', module: StitchingModule },
   { name: 'inventory', module: InventoryModule },
   { name: 'purchasing', module: PurchasingModule },
+  { name: 'tradingpartners', module: TradingPartnersModule },
   { name: 'payments', module: PaymentsModule },
   { name: 'orders', module: OrdersModule },
   { name: 'crm', module: CrmModule },

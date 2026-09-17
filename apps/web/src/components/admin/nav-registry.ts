@@ -251,6 +251,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'inventory',
     module: 'purchasing',
   },
+  {
+    key: 'trading-partners',
+    label: 'Trading Partners',
+    href: '/admin/trading-partners',
+    permissions: ['purchasing.manage'],
+    group: 'inventory',
+    module: 'tradingpartners',
+  },
 
   // Group: Settings
   {

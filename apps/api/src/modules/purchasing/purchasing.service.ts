@@ -95,7 +95,11 @@ export class PurchasingService {
       include: {
         products: {
           include: { variant: true }
-        }
+        },
+        // TradingPartner is owned by the tradingpartners module, but both
+        // it and purchasing are 'core' pack (module-packs.ts) — a core<->core
+        // relation is allowed, unlike a relation into a sector pack would be.
+        tradingPartner: { select: { id: true, name: true, status: true } },
       }
     });
     if (!supplier) throw new NotFoundException('Supplier not found');

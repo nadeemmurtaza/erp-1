@@ -46,6 +46,26 @@ model TradingPartner {
   /// one indexed lookup rather than a hash comparison per row.
   inboundApiKeyHash String? @unique
 
+  /// The role they confirmed at acceptance — SUPPLIER, MANUFACTURER,
+  /// DISTRIBUTOR or RETAILER (parties.prisma's own `PartyRoleName`, reused
+  /// rather than duplicated). Recorded verbatim for display/audit; `kind`
+  /// is derived from it at accept time and stays the field push-routing
+  /// (WO-18.3) reads, so nothing downstream needs to know this exists.
+  acceptedRole PartyRoleName?
+
+  /// First-connection handshake — "send a request, they accept to start the
+  /// relation." A partner created with no credentials at all gets one of
+  /// these. Same shape as `inboundApiKeyHash`: a single-use secret shown to
+  /// the operator once, never persisted raw, and cleared the moment
+  /// `acceptConnection()` succeeds so a stale link cannot be replayed.
+  inviteTokenHash String?   @unique
+  invitedAt       DateTime?
+  acceptedAt      DateTime?
+  /// Where the invite link is emailed, if we have one on file. Optional —
+  /// an invite with no address still works, the operator just shares the
+  /// link by hand.
+  contactEmail    String?
+
   status    TradingPartnerStatus @default(PENDING)
   createdAt DateTime             @default(now())
   updatedAt DateTime             @updatedAt
@@ -53,4 +73,22 @@ model TradingPartner {
   suppliers Supplier[]
 
   @@index([status])
+}
+
+/// A marketing push to the retail end of the chain (WO-18.3's third "forth"
+/// document, alongside the product-alerts push) — never targeted, never a
+/// coupon engine: one broadcast row, fanned out to every ACTIVE
+/// CUSTOMER/BOTH partner the same way a new product is. `discountLabel` is
+/// display text a partner's own system shows; nothing here is redeemed or
+/// enforced by this deployment.
+model Offer {
+  id            String    @id @default(cuid())
+  title         String
+  description   String
+  discountLabel String?
+  validFrom     DateTime  @default(now())
+  validUntil    DateTime?
+  createdAt     DateTime  @default(now())
+
+  @@index([createdAt])
 }

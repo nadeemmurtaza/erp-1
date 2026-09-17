@@ -4,9 +4,23 @@ import { generateApiKey, hashApiKey } from '../../core/security/api-token';
 import { decryptSecret, encryptSecret } from '../../core/security/secret-crypto';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { TradingPartner } from '../../core/prisma/client';
-import { CreateTradingPartnerDto, UpdateTradingPartnerDto } from './dto/trading-partner.dto';
+import { CreateTradingPartnerDto, PartyRoleNameDto, UpdateTradingPartnerDto } from './dto/trading-partner.dto';
 
 const INBOUND_KEY_PREFIX = 'tp';
+const INVITE_TOKEN_PREFIX = 'tpi';
+
+/**
+ * SUPPLIER/MANUFACTURER sell to us; DISTRIBUTOR/RETAILER buy from us. `kind`
+ * only ever needs this coarser split — see product-alerts.listener.ts and
+ * supplier-digest.listener.ts, both of which route on `kind`, never on
+ * `acceptedRole`.
+ */
+const KIND_BY_ACCEPTED_ROLE: Record<PartyRoleNameDto, 'SUPPLIER' | 'CUSTOMER'> = {
+  SUPPLIER: 'SUPPLIER',
+  MANUFACTURER: 'SUPPLIER',
+  DISTRIBUTOR: 'CUSTOMER',
+  RETAILER: 'CUSTOMER',
+};
 
 /**
  * `TradingPartner` CRUD, credential issuance (WO-18.1), inbound
@@ -33,11 +47,14 @@ export class TradingPartnersService {
         status: true,
         createdAt: true,
         updatedAt: true,
-        // Never selected: outboundApiKeyEncrypted, inboundApiKeyHash. A
-        // credential is write-only from this service outward — see
-        // Definition of Done's "no secrets in logs/responses" discipline
-        // elsewhere in this codebase (email-accounts.service.ts's own
-        // password handling is the precedent).
+        acceptedRole: true,
+        invitedAt: true,
+        acceptedAt: true,
+        // Never selected: outboundApiKeyEncrypted, inboundApiKeyHash,
+        // inviteTokenHash. A credential is write-only from this service
+        // outward — see Definition of Done's "no secrets in logs/responses"
+        // discipline elsewhere in this codebase (email-accounts.service.ts's
+        // own password handling is the precedent).
         _count: { select: { suppliers: true } },
       },
     });
@@ -54,6 +71,7 @@ export class TradingPartnersService {
         name: dto.name,
         kind: dto.kind,
         outboundBaseUrl: dto.outboundBaseUrl,
+        contactEmail: dto.contactEmail,
       },
       select: this.summarySelect(),
     });
@@ -67,6 +85,7 @@ export class TradingPartnersService {
         name: dto.name,
         kind: dto.kind,
         outboundBaseUrl: dto.outboundBaseUrl,
+        contactEmail: dto.contactEmail,
         status: dto.status,
       },
       select: this.summarySelect(),
@@ -193,6 +212,56 @@ export class TradingPartnersService {
     }
   }
 
+  /**
+   * "Send a request" — the first half of the first-connection handshake
+   * (WO-18.1 extension). Issues a single-use token, shown once, the same
+   * discipline as `rotateInboundKey`. Only a PENDING partner with no
+   * acceptance yet can be (re-)invited — re-inviting an already-ACTIVE
+   * partner would silently reopen a relation that already started.
+   */
+  async inviteConnection(id: string): Promise<{ token: string; acceptUrl: string }> {
+    const partner = await this.findSummaryOrThrow(id);
+    if (partner.status !== 'PENDING' || partner.acceptedAt) {
+      throw new BadRequestException('Only a PENDING partner with no acceptance yet can be invited.');
+    }
+
+    const token = generateApiKey(INVITE_TOKEN_PREFIX);
+    await this.prisma.tradingPartner.update({
+      where: { id },
+      data: { inviteTokenHash: hashApiKey(token), invitedAt: new Date() },
+    });
+
+    const base = this.config.get('STOREFRONT_URL').replace(/\/+$/, '');
+    return { token, acceptUrl: `${base}/partner-invite?token=${encodeURIComponent(token)}` };
+  }
+
+  /**
+   * "They accept" — starts the relation. Public and token-authenticated,
+   * the same shape as `verifyInboundKey`: the raw token, hashed and looked
+   * up, is the only credential needed. `kind` is derived from the role they
+   * confirm, `status` moves PENDING -> ACTIVE, and the token is consumed
+   * (cleared) so the link cannot be replayed.
+   */
+  async acceptConnection(rawToken: string, role: PartyRoleNameDto): Promise<TradingPartner> {
+    if (!rawToken.trim()) throw new UnauthorizedException('Missing invite token.');
+
+    const partner = await this.prisma.tradingPartner.findUnique({
+      where: { inviteTokenHash: hashApiKey(rawToken) },
+    });
+    if (!partner) throw new UnauthorizedException('Invalid or already-used invite token.');
+
+    return this.prisma.tradingPartner.update({
+      where: { id: partner.id },
+      data: {
+        acceptedRole: role,
+        acceptedAt: new Date(),
+        status: 'ACTIVE',
+        kind: KIND_BY_ACCEPTED_ROLE[role],
+        inviteTokenHash: null,
+      },
+    });
+  }
+
   private async assertExists(id: string): Promise<void> {
     const exists = await this.prisma.tradingPartner.findUnique({ where: { id }, select: { id: true } });
     if (!exists) throw new NotFoundException('Trading partner not found');
@@ -216,6 +285,10 @@ export class TradingPartnersService {
       status: true,
       createdAt: true,
       updatedAt: true,
+      acceptedRole: true,
+      invitedAt: true,
+      acceptedAt: true,
+      contactEmail: true,
     } as const;
   }
 

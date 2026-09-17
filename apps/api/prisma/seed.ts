@@ -19,13 +19,20 @@ import { AuditService } from '../src/core/audit/audit.service';
 import { InventoryService } from '../src/modules/inventory/inventory.service';
 import { PrismaService } from '../src/core/prisma/prisma.service';
 import { StockIntakeRegistry } from '../src/core/extension-points/stock-intake.registry';
+import { EntityEnrichmentRegistry } from '../src/core/extension-points/entity-enrichment.registry';
 import { CHART_OF_ACCOUNTS } from '../src/modules/accounting/chart-of-accounts';
 
 const prisma = new PrismaClient();
 const prismaService = prisma as unknown as PrismaService;
 const eventBus = new EventBusService(prismaService, new EventEmitter2());
 const audit = new AuditService(prismaService);
-const inventoryService = new InventoryService(prismaService, audit, eventBus, new StockIntakeRegistry());
+const inventoryService = new InventoryService(
+  prismaService,
+  audit,
+  eventBus,
+  new StockIntakeRegistry(),
+  new EntityEnrichmentRegistry(),
+);
 
 /**
  * Seeds a working store: staff accounts, garment types with their measurement

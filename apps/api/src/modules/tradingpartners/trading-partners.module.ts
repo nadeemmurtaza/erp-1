@@ -1,7 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TradingPartnersController } from './trading-partners.controller';
 import { TradingPartnerPortalController } from './trading-partner-portal.controller';
+import { InvoicesController } from './invoices.controller';
+import { QuotesController } from './quotes.controller';
+import { OffersController } from './offers.controller';
 import { TradingPartnersService } from './trading-partners.service';
+import { InvoiceService } from './invoice.service';
+import { QuoteService } from './quote.service';
+import { OfferService } from './offer.service';
 import { SupplierDigestListener } from './supplier-digest.listener';
 import { ProductAlertsListener } from './product-alerts.listener';
 
@@ -18,10 +24,29 @@ import { ProductAlertsListener } from './product-alerts.listener';
  * document type that writes into another module (an order, an invoice)
  * will do so through that module's own public service methods, the same
  * way a browser does, not a new parallel path.
+ *
+ * `InvoiceService`/`QuoteService`/`OfferService` (a bounded MVP of R18, see
+ * invoicing.prisma's own header) are the mirror case: every Invoice, Quote
+ * and Offer belongs to a TradingPartner and nothing else, so they call
+ * `TradingPartnersService.pushOutbound()` directly rather than through a
+ * domain event — there is no cross-module boundary here to decouple.
  */
 @Module({
-  controllers: [TradingPartnersController, TradingPartnerPortalController],
-  providers: [TradingPartnersService, SupplierDigestListener, ProductAlertsListener],
+  controllers: [
+    TradingPartnersController,
+    TradingPartnerPortalController,
+    InvoicesController,
+    QuotesController,
+    OffersController,
+  ],
+  providers: [
+    TradingPartnersService,
+    InvoiceService,
+    QuoteService,
+    OfferService,
+    SupplierDigestListener,
+    ProductAlertsListener,
+  ],
   exports: [TradingPartnersService],
 })
 export class TradingPartnersModule {}

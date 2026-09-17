@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PurchasingService } from './purchasing.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { InventoryService } from '../inventory/inventory.service';
+import { PartiesService } from '../parties/parties.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { EventBusService } from '../../core/events/event-bus.service';
 
@@ -20,6 +21,7 @@ describe('PurchasingService', () => {
         PurchasingService,
         { provide: PrismaService, useValue: prisma },
         { provide: InventoryService, useValue: {} },
+        { provide: PartiesService, useValue: {} },
         { provide: SettingsService, useValue: {} },
         { provide: EventBusService, useValue: {} },
       ],
@@ -111,6 +113,50 @@ describe('PurchasingService', () => {
 
       expect(tx.purchaseOrderItem.update).not.toHaveBeenCalled();
       expect(tx.purchaseOrderItem.create).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('create (Supplier + its backing Party)', () => {
+    let createService: PurchasingService;
+    let createPrisma: any;
+    let createParties: any;
+    let createTx: any;
+
+    beforeEach(async () => {
+      createTx = { supplier: { create: jest.fn() } };
+      createParties = { findOrCreateForRole: jest.fn() };
+      createPrisma = { $transaction: jest.fn((fn: any) => fn(createTx)) };
+
+      const module: TestingModule = await Test.createTestingModule({
+        providers: [
+          PurchasingService,
+          { provide: PrismaService, useValue: createPrisma },
+          { provide: InventoryService, useValue: {} },
+          { provide: PartiesService, useValue: createParties },
+          { provide: SettingsService, useValue: {} },
+          { provide: EventBusService, useValue: {} },
+        ],
+      }).compile();
+
+      createService = module.get(PurchasingService);
+    });
+
+    it('creates the Party (or links an existing match) before creating the Supplier', async () => {
+      createParties.findOrCreateForRole.mockResolvedValue({ id: 'party1' });
+      createTx.supplier.create.mockResolvedValue({ id: 'sup1', partyId: 'party1' });
+
+      const dto = { name: 'Acme Textiles', phone: '0300', email: null, address: null, city: null, contactName: null } as any;
+      const result = await createService.create(dto);
+
+      expect(createParties.findOrCreateForRole).toHaveBeenCalledWith(
+        expect.objectContaining({ name: 'Acme Textiles', phone: '0300' }),
+        'SUPPLIER',
+        createTx,
+      );
+      expect(createTx.supplier.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({ ...dto, partyId: 'party1' }),
+      });
+      expect(result).toEqual({ id: 'sup1', partyId: 'party1' });
     });
   });
 });

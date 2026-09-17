@@ -3,6 +3,7 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { CreateSupplierDto, UpdateSupplierDto, AddSupplierProductDto } from './dto/supplier.dto';
 import { CreatePurchaseOrderDto, ReceiveGoodsDto } from './dto/purchase-order.dto';
 import { InventoryService } from '../inventory/inventory.service';
+import { PartiesService } from '../parties/parties.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { Prisma } from '../../core/prisma/client';
 import { allocateLandedCost, weightedAverageCost } from '@yaseen/shared';
@@ -44,6 +45,7 @@ export class PurchasingService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly inventoryService: InventoryService,
+    private readonly parties: PartiesService,
     private readonly settingsService: SettingsService,
     private readonly events: EventBusService,
   ) {}
@@ -103,8 +105,31 @@ export class PurchasingService {
     return supplier;
   }
 
+  /**
+   * Creates the Supplier and its backing Party in one transaction — a
+   * Supplier must never exist without the permanent counterparty profile it
+   * is the SUPPLIER-role extension of (parties.prisma). Dedupes on
+   * phone/taxId: creating a supplier for a business already known under
+   * another role (or a prior Supplier with the same phone) links the
+   * existing Party rather than creating a second profile for the same
+   * real business.
+   */
   async create(dto: CreateSupplierDto) {
-    return this.prisma.supplier.create({ data: dto });
+    return this.prisma.$transaction(async (tx) => {
+      const party = await this.parties.findOrCreateForRole(
+        {
+          name: dto.name,
+          contactName: dto.contactName,
+          phone: dto.phone,
+          email: dto.email,
+          address: dto.address,
+          city: dto.city,
+        },
+        'SUPPLIER',
+        tx,
+      );
+      return tx.supplier.create({ data: { ...dto, partyId: party.id } });
+    });
   }
 
   async update(id: string, dto: UpdateSupplierDto) {

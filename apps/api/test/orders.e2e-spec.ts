@@ -851,6 +851,7 @@ describe('Orders (e2e)', () => {
   describe('backorder (checkout.allow_backorder)', () => {
     let settings: SettingsService;
     let outbox: OutboxDispatcher;
+    const createdVariantIds: string[] = [];
 
     beforeAll(() => {
       settings = app.get(SettingsService);
@@ -861,10 +862,27 @@ describe('Orders (e2e)', () => {
       await settings.set(SettingKey.OrdersAllowBackorder, false);
     });
 
-    it('still refuses an out-of-stock item at cart-add while the setting is off (default)', async () => {
-      const variant = await prisma.productVariant.findFirstOrThrow({
-        where: { isActive: true, product: { status: 'ACTIVE' } },
+    afterAll(async () => {
+      await prisma.productVariant.deleteMany({ where: { id: { in: createdVariantIds } } });
+    });
+
+    /**
+     * A dedicated variant per test, never a shared seed row — this suite
+     * runs alongside every other e2e file against the same database, and a
+     * "first active variant" query is not stable under their concurrent
+     * writes. Isolation, not luck, is what keeps this deterministic.
+     */
+    async function freshVariant() {
+      const product = await prisma.product.findFirstOrThrow({ where: { status: 'ACTIVE' }, select: { id: true } });
+      const variant = await prisma.productVariant.create({
+        data: { productId: product.id, sku: `BACKORDER-TEST-${Date.now()}-${Math.random().toString(36).slice(2)}` },
       });
+      createdVariantIds.push(variant.id);
+      return variant;
+    }
+
+    it('still refuses an out-of-stock item at cart-add while the setting is off (default)', async () => {
+      const variant = await freshVariant();
       await setVariantStock(prisma, variant.id, 0);
 
       const agent = request.agent(app.getHttpServer());
@@ -872,16 +890,12 @@ describe('Orders (e2e)', () => {
 
       expect(response.status).toBe(400);
       expect(String(response.body.message)).toMatch(/out of stock/i);
-
-      await setVariantStock(prisma, variant.id, 100);
     });
 
     it('parks a backordered line as AWAITING_STOCK, then auto-fulfills it once stock is replenished', async () => {
       await settings.set(SettingKey.OrdersAllowBackorder, true);
 
-      const variant = await prisma.productVariant.findFirstOrThrow({
-        where: { isActive: true, product: { status: 'ACTIVE' }, producedInHouse: false },
-      });
+      const variant = await freshVariant();
       await setVariantStock(prisma, variant.id, 0);
 
       const agent = request.agent(app.getHttpServer());
@@ -912,18 +926,24 @@ describe('Orders (e2e)', () => {
         .send({ delta: 5, reason: 'restock' })
         .expect(201);
 
-      // Drive the outbox directly rather than waiting on its 2s poll.
-      await outbox.processBatch();
-
-      const updatedItem = await prisma.orderItem.findUniqueOrThrow({ where: { id: orderItem.id } });
+      // Drive the outbox directly rather than waiting on its 2s poll. The
+      // real @Interval poller is also live for the whole suite though, so a
+      // background drain can race this explicit one for the same event —
+      // harmless (FOR UPDATE SKIP LOCKED means only one of them claims it),
+      // but it means "processed" isn't always visible the instant our own
+      // call returns. Poll briefly rather than asserting on a single race.
+      let updatedItem = await prisma.orderItem.findUniqueOrThrow({ where: { id: orderItem.id } });
+      for (let attempt = 0; attempt < 10 && updatedItem.fulfillmentStatus !== 'READY'; attempt++) {
+        await outbox.processBatch();
+        await new Promise((resolve) => setTimeout(resolve, 200));
+        updatedItem = await prisma.orderItem.findUniqueOrThrow({ where: { id: orderItem.id } });
+      }
       expect(updatedItem.fulfillmentStatus).toBe('READY');
       expect(updatedItem.awaitingSince).toBeNull();
 
       // 5 arrived, 1 allocated to the backordered line.
       const finalStock = await prisma.variantLocationStock.findFirstOrThrow({ where: { variantId: variant.id } });
       expect(finalStock.quantity).toBe(4);
-
-      await setVariantStock(prisma, variant.id, 100);
     });
   });
 });

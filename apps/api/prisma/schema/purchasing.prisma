@@ -15,6 +15,17 @@ model Supplier {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  /// The permanent counterparty profile this Supplier is the SUPPLIER-role
+  /// extension of (parties.prisma). Nullable during the expand phase of an
+  /// expand/contract rollout: a backfill script (prisma/backfill-parties.ts)
+  /// creates one Party per pre-existing Supplier row; every Supplier created
+  /// from here on gets one transactionally (see PurchasingService.create()).
+  /// name/contactName/phone/email/address/city above stay in place — reading
+  /// exclusively through party and dropping them is a deliberate follow-up,
+  /// not part of this change.
+  partyId String? @unique
+  party   Party?  @relation(fields: [partyId], references: [id], onDelete: SetNull)
+
   products SupplierProduct[]
   // Note: purchaseOrders and bills are for WO-1.5, not included yet.
 

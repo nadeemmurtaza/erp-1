@@ -216,6 +216,7 @@ model ProductVariant {
   stockAdjustments   StockAdjustment[]
   stockMovements     StockMovement[]
   locationStocks     VariantLocationStock[]
+  stockVariances     StockVariance[]
   purchaseOrderItems PurchaseOrderItem[]
   goodsReceiptItems  GoodsReceiptItem[]
   stockCountLines    StockCountLine[]

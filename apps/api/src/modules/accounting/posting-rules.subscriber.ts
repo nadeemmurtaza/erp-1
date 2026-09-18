@@ -8,6 +8,7 @@ import {
   type PaymentRefundedPayload,
   type SupplierBillRaisedPayload,
   type SupplierBillPaidPayload,
+  type StockVarianceRecordedPayload,
 } from '../../core/events/domain-events';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { AccountingService, type PostLineInput } from './accounting.service';
@@ -261,6 +262,47 @@ export class PostingRulesSubscriber {
       sourceRef,
       memo: `Payment on supplier bill ${payload.billId}`,
       lines,
+    });
+  }
+
+  /**
+   * Dr Inventory Shrinkage · Cr Inventory — R15's shrinkage journal for an
+   * oversell InventoryService.postUnconditional() let through (R5). No
+   * reversal path: a variance is resolved by a manager (StockVarianceService),
+   * not undone — the shrinkage already happened whether or not the queue
+   * entry gets closed out.
+   */
+  @OnDomainEvent(DomainEvent.StockVarianceRecorded)
+  async onStockVarianceRecorded(payload: StockVarianceRecordedPayload): Promise<void> {
+    const source = DomainEvent.StockVarianceRecorded;
+    if (await this.accounting.findPostedEntry(source, payload.stockVarianceId)) return;
+    if (!payload.unitCost || payload.unitCost <= 0) return;
+
+    const amountMinor = payload.unitCost * payload.overshootQty;
+    if (amountMinor <= 0) return;
+
+    const accountId = await this.accounting.accountIdsByCode([
+      ACCOUNT_CODE.INVENTORY_SHRINKAGE,
+      ACCOUNT_CODE.INVENTORY,
+    ]);
+    const shrinkage = accountId.get(ACCOUNT_CODE.INVENTORY_SHRINKAGE);
+    const inventory = accountId.get(ACCOUNT_CODE.INVENTORY);
+    if (!shrinkage || !inventory) {
+      this.logger.error(
+        `Chart of accounts is missing Inventory Shrinkage or Inventory — cannot post the variance ${payload.stockVarianceId}.`,
+      );
+      return;
+    }
+
+    await this.accounting.postEntry({
+      date: new Date(),
+      source,
+      sourceRef: payload.stockVarianceId,
+      memo: `Stock variance — oversold ${payload.overshootQty}`,
+      lines: [
+        { accountId: shrinkage, debitMinor: amountMinor },
+        { accountId: inventory, creditMinor: amountMinor },
+      ],
     });
   }
 }

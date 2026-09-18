@@ -151,6 +151,12 @@ const KNOWN_MODULE_COUPLINGS = new Set([
   // (parties.prisma) inside the same transaction as the Supplier write, so a
   // Supplier never exists without its Party or vice versa.
   'purchasing -> parties',
+  // pos-sales.service.ts hands a validated till sale to
+  // OrdersService.placeFromPos() (RETAIL-ERP.md R11: a till sale is a
+  // channel of orders, not a parallel system) — the stock deduction, the
+  // cash Payment row and the Order itself all commit in one transaction, the
+  // same correctness reason as orders -> inventory above.
+  'pos -> orders',
 ]);
 
 function walk(dir) {

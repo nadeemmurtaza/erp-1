@@ -11,6 +11,7 @@ const ACCOUNT_ID: Record<string, string> = {
   [ACCOUNT_CODE.TAX_PAYABLE]: 'acc-tax',
   [ACCOUNT_CODE.INVENTORY]: 'acc-inventory',
   [ACCOUNT_CODE.COGS]: 'acc-cogs',
+  [ACCOUNT_CODE.INVENTORY_SHRINKAGE]: 'acc-shrinkage',
   [ACCOUNT_CODE.CASH_AND_BANK]: 'acc-bank',
   [ACCOUNT_CODE.ACCOUNTS_PAYABLE]: 'acc-ap',
   [ACCOUNT_CODE.FX_GAIN]: 'acc-fx-gain',
@@ -339,6 +340,44 @@ describe('PostingRulesSubscriber — WO-19.2', () => {
         billFxRateScaled: 280_000_000,
         settlementFxRateScaled: 282_000_000,
       });
+
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('onStockVarianceRecorded — WO-21.3', () => {
+    const payload = {
+      stockVarianceId: 'variance1',
+      variantId: 'variant1',
+      locationId: 'loc1',
+      overshootQty: 3,
+      unitCost: 500,
+    };
+
+    it('posts Dr Inventory Shrinkage / Cr Inventory at overshootQty * unitCost', async () => {
+      await subscriber.onStockVarianceRecorded(payload);
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          source: DomainEvent.StockVarianceRecorded,
+          sourceRef: 'variance1',
+          lines: [
+            { accountId: 'acc-shrinkage', debitMinor: 1500 },
+            { accountId: 'acc-inventory', creditMinor: 1500 },
+          ],
+        }),
+      );
+    });
+
+    it('does nothing when unitCost is null — nothing to value the shrinkage at', async () => {
+      await subscriber.onStockVarianceRecorded({ ...payload, unitCost: null });
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+
+    it('does nothing when this variance already posted (redelivery)', async () => {
+      accounting.findPostedEntry.mockResolvedValue({ id: 'already-there' });
+
+      await subscriber.onStockVarianceRecorded(payload);
 
       expect(accounting.postEntry).not.toHaveBeenCalled();
     });

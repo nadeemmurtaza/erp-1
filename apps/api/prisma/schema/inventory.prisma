@@ -13,6 +13,8 @@ enum StockMovementReason {
   WRITE_OFF // lost, stolen, expired
   PRODUCTION_CONSUMPTION // raw material consumed by a released WorkOrder
   PRODUCTION_RECEIPT // finished goods credited by a completed WorkOrder
+  POS_SALE // till sale (RETAIL-ERP.md R11) — distinct from SALE so a ledger read can tell channel apart without joining Order
+  POS_OFFLINE_VARIANCE // InventoryService.postUnconditional() drove a variant negative (R5) — paired 1:1 with a StockVariance row
 }
 
 model StockMovement {
@@ -88,9 +90,47 @@ model Location {
   stocks      VariantLocationStock[]
   movements   StockMovement[]
   workOrders  WorkOrder[]
+  variances   StockVariance[]
 
   @@index([isActive])
   @@index([retailBrandId])
+}
+
+enum StockVarianceStatus {
+  OPEN
+  RESOLVED
+}
+
+/// One row per oversell InventoryService.postUnconditional() let through (R5:
+/// a POS sale that already happened is never rejected by sync). Paired with
+/// the StockMovement (POS_OFFLINE_VARIANCE) that recorded the actual negative
+/// delta; this row is the exception queue a manager works from, and its
+/// posting rule (posting-rules.subscriber.ts) books the shrinkage journal
+/// (R15). refType/refId follow StockMovement's own convention rather than a
+/// relation, so inventory stays independent of orders/pos.
+model StockVariance {
+  id              String              @id @default(cuid())
+  variantId       String
+  locationId      String
+  /// Positive magnitude the variant went negative by. Always > 0.
+  overshootQty    Int
+  stockMovementId String              @unique
+  refType         String?
+  refId           String?
+  status          StockVarianceStatus @default(OPEN)
+
+  resolvedByUserId String?
+  resolvedAt       DateTime?
+  resolutionNote   String?
+
+  createdAt DateTime @default(now())
+
+  variant  ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  location Location       @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([variantId])
+  @@index([locationId])
 }
 
 /// Stock, per variant, per location. The thing InventoryService.move() writes

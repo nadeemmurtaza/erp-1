@@ -74,6 +74,12 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'high',
   },
   {
+    key: 'pos.operate',
+    label: 'Open and close till shifts, and record cash movements',
+    category: 'Sales',
+    sensitivity: 'medium',
+  },
+  {
     key: 'payments.approve',
     label: 'Approve bank-transfer payments',
     category: 'Sales',
@@ -268,8 +274,8 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'sales',
     label: 'Sales & payments',
-    description: 'Order fulfilment, approving a bank-transfer payment, and registering till terminals.',
-    permissions: ['orders.manage', 'payments.approve', 'pos.manage'],
+    description: 'Order fulfilment, approving a bank-transfer payment, running a till shift, and registering terminals.',
+    permissions: ['orders.manage', 'payments.approve', 'pos.manage', 'pos.operate'],
   },
   {
     key: 'tailor-queue',
@@ -361,6 +367,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'crm.manage',
     'orders.manage',
     'payments.approve',
+    'pos.operate',
     'stitching.jobs.view_queue',
     'stitching.jobs.change_stage',
     'stitching.jobs.manage_all',
@@ -411,6 +418,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'marketing.manage',
     'accounting.manage_periods',
     'pos.manage',
+    'pos.operate',
   ],
 };
 

@@ -4,7 +4,7 @@ import { AppConfigService } from '../config/app-config.service';
 import { ReplicationCursorService } from './replication-cursor.service';
 import { ReplicationApplyService } from './replication-apply.service';
 
-describe('ReplicationSyncAgent — WO-20.2', () => {
+describe('ReplicationSyncAgent — WO-20.2 / WO-20.5', () => {
   let agent: ReplicationSyncAgent;
   let prisma: any;
   let config: any;
@@ -167,6 +167,53 @@ describe('ReplicationSyncAgent — WO-20.2', () => {
       fetchSpy.mockRejectedValue(new Error('ECONNREFUSED'));
 
       await expect(agent.pullPolicy()).resolves.toBeUndefined();
+    });
+
+    it('drains every page while hasMore is true — WO-20.5 bootstrap-from-cloud, not one page per tick', async () => {
+      const cursorState: Array<{ lastSequence: bigint } | null> = [null];
+      cursor.get.mockImplementation(async () => cursorState[cursorState.length - 1]);
+      cursor.advance.mockImplementation(async (_peer: string, _dir: string, sequence: bigint) => {
+        cursorState.push({ lastSequence: sequence });
+        return { lastSequence: sequence };
+      });
+
+      fetchSpy
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            originNodeId: 'brand1',
+            records: [{ sequence: '1', entity: 'Product', entityId: 'p1', op: 'UPSERT', payload: {}, schemaVersion: 1, occurredAt: '2026-01-01T00:00:00.000Z' }],
+            hasMore: true,
+          }),
+        } as Response)
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({
+            originNodeId: 'brand1',
+            records: [{ sequence: '2', entity: 'Product', entityId: 'p2', op: 'UPSERT', payload: {}, schemaVersion: 1, occurredAt: '2026-01-02T00:00:00.000Z' }],
+            hasMore: false,
+          }),
+        } as Response);
+
+      await agent.pullPolicy();
+
+      expect(fetchSpy).toHaveBeenCalledTimes(2);
+      expect(fetchSpy).toHaveBeenNthCalledWith(1, 'https://brand1.example/api/v1/replication/pull?since=0', expect.anything());
+      expect(fetchSpy).toHaveBeenNthCalledWith(2, 'https://brand1.example/api/v1/replication/pull?since=1', expect.anything());
+      expect(apply.apply).toHaveBeenCalledTimes(2);
+    });
+
+    it('stops after a non-2xx page instead of looping forever on a broken parent', async () => {
+      fetchSpy
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => ({ originNodeId: 'brand1', records: [{ sequence: '1', entity: 'Product', entityId: 'p1', op: 'UPSERT', payload: {}, schemaVersion: 1, occurredAt: '2026-01-01T00:00:00.000Z' }], hasMore: true }),
+        } as Response)
+        .mockResolvedValueOnce({ ok: false, status: 500 } as Response);
+
+      await agent.pullPolicy();
+
+      expect(fetchSpy).toHaveBeenCalledTimes(2);
     });
   });
 });

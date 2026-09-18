@@ -7,6 +7,8 @@ import { OrganizationService } from './organization.service';
 import { NodesService } from './nodes.service';
 import { GrantScopeDto } from './dto/admin-scope.dto';
 import { RegisterNodeDto } from './dto/node.dto';
+import { ReplicationCursorService } from '../../core/replication/replication-cursor.service';
+import { PARENT_PEER_ID } from '../../core/replication/replication.types';
 
 /**
  * The three-level admin shell (R19, WO-18.5) plus who holds a seat in it
@@ -24,6 +26,7 @@ export class OrganizationController {
   constructor(
     private readonly organization: OrganizationService,
     private readonly nodesService: NodesService,
+    private readonly replicationCursor: ReplicationCursorService,
   ) {}
 
   private async actorFor(user: AuthenticatedUser): Promise<ScopedActor> {
@@ -61,6 +64,17 @@ export class OrganizationController {
   @ApiOperation({ summary: 'Issue a fresh replication credential for a child node — shown once, never retrievable again' })
   async rotateNodeInboundKey(@Param('nodeId') nodeId: string) {
     return this.nodesService.rotateInboundKey(nodeId);
+  }
+
+  @Post('replication/resync')
+  @RequirePermission('organization.manage')
+  @ApiOperation({
+    summary:
+      "Re-pull this box's entire POLICY log from its parent from scratch (WO-20.5) — deletes the local DOWN cursor; the next sync tick replays everything",
+  })
+  async resyncFromParent() {
+    await this.replicationCursor.reset(PARENT_PEER_ID, 'DOWN');
+    return { resyncing: true };
   }
 
   @Get('admin-scopes')

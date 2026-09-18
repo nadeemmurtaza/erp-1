@@ -36,4 +36,18 @@ export class ReplicationCursorService {
       update: { lastSequence: sequence, lastSyncAt: new Date() },
     });
   }
+
+  /**
+   * Resync (WO-20.5): deletes this cursor so the next sync tick starts
+   * over from sequence 0 — the same path a fresh box's first-ever
+   * bootstrap-from-cloud takes, `ReplicationSyncAgent.pullPolicy()`'s
+   * `hasMore` loop just replays the parent's entire log again. Applying an
+   * already-applied POLICY record twice is safe (an UPSERT converges to
+   * the same value); it is never offered for the UP direction, where
+   * re-pushing old facts would double them up on a parent that has no
+   * such idempotent replay guarantee for an apply that already ran.
+   */
+  async reset(peerNodeId: string, direction: ReplicationDirection): Promise<void> {
+    await this.prisma.replicationCursor.deleteMany({ where: { peerNodeId, direction } });
+  }
 }

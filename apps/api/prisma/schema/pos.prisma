@@ -1,12 +1,12 @@
-// The till (RETAIL-ERP.md R7/R11, Tranche 4, WO-21.1) — "the box is a cache,
-// the branch cloud DB is the record, the till has the last word." This file
-// owns only WO-21.1's own piece: a terminal's identity and how it
-// authenticates. `PosShift`/`CashMovement`/`PosReceipt` (WO-21.2) and the
-// actual `pos -> orders` sale hand-off (WO-21.3, which is what will earn
-// `pos` its `KNOWN_MODULE_COUPLINGS` entry per R11 — nothing here needs
-// one) are later, separate work orders; this table is inert until either
-// exists, the same "built before its caller exists" shape WO-20.1's
-// replication log already used.
+// The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's
+// identity and how it authenticates. WO-21.2 (this file's other half) owns
+// the shift lifecycle and cash movements — X/Z reporting on cash only, since
+// nothing posts a SALE through here yet: the actual `pos -> orders` hand-off
+// (WO-21.3, which is what will earn `pos` its `KNOWN_MODULE_COUPLINGS` entry
+// per R11 — nothing here needs one) is a later, separate work order, the
+// same "built before its caller exists" shape WO-20.1's replication log
+// already used. `PosReceipt`, park/retrieve, price override and returns are
+// WO-21.5's.
 
 enum PosTerminalStatus {
   /// Registered, no working device credential yet — cannot authenticate.
@@ -42,6 +42,74 @@ model PosTerminal {
   createdAt  DateTime          @default(now())
   updatedAt  DateTime          @updatedAt
 
+  shifts PosShift[]
+
   @@index([locationId])
   @@index([status])
+}
+
+enum PosShiftStatus {
+  OPEN
+  CLOSED
+}
+
+/// One cashier's stretch at one terminal, opened with a cash float and
+/// closed with a physical count (RETAIL-ERP.md R11, WO-21.2). `terminalId`
+/// is a real `@relation` — unlike `PosTerminal.locationId`, this stays
+/// inside the SAME module's own schema file, so there is no cross-module
+/// coupling to avoid. `openedByUserId`/`closedByUserId` are bare scalars,
+/// the same decoupling `JournalLine.contactId`/`supplierId`
+/// (accounting.prisma) already use for naming a `User` without a
+/// `@relation` into another module's table.
+model PosShift {
+  id             String         @id @default(cuid())
+  terminalId     String
+  openedByUserId String
+  closedByUserId String?
+
+  openingCashMinor Int
+  /// The cashier's own physical count at close — compared against the
+  /// running total from `cashMovements` for the Z-report's over/short.
+  closingCashMinor Int?
+
+  status   PosShiftStatus @default(OPEN)
+  openedAt DateTime       @default(now())
+  closedAt DateTime?
+
+  terminal      PosTerminal    @relation(fields: [terminalId], references: [id], onDelete: Restrict)
+  cashMovements CashMovement[]
+
+  @@index([terminalId])
+  @@index([status])
+}
+
+enum CashMovementType {
+  /// The float the shift opened with — recorded once, by `openShift()`, never by `recordCashMovement()` directly.
+  OPENING_FLOAT
+  /// Cash added to the drawer mid-shift outside a sale (a bank top-up, a correction).
+  CASH_IN
+  /// Cash removed for a reason other than a drop — a refund paid in cash, a till-to-safe correction.
+  CASH_OUT
+  /// A cash drop to the safe — physically leaves the drawer, still counted toward the shift's own cash-in total until the Z-report.
+  DROP
+  /// Petty cash paid out of the drawer for an expense (a delivery rider, a supply run).
+  PAID_OUT
+}
+
+/// One physical cash movement at the drawer during a shift — always a
+/// positive `amountMinor`; `type` says which direction. Never a sale: once
+/// WO-21.3 wires `pos -> orders`, a sale's cash tender posts through
+/// `orders`/`payments` like any other payment, not as a row here.
+model CashMovement {
+  id          String           @id @default(cuid())
+  shiftId     String
+  type        CashMovementType
+  amountMinor Int
+  reason      String?
+  actorId     String
+  createdAt   DateTime         @default(now())
+
+  shift PosShift @relation(fields: [shiftId], references: [id], onDelete: Cascade)
+
+  @@index([shiftId])
 }

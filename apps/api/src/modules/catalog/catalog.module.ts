@@ -6,6 +6,7 @@ import { BrandAdminService } from './brand-admin.service';
 import { CategoryAdminService } from './category-admin.service';
 import { ProductAdminService } from './product-admin.service';
 import { ProductImportService } from './product-import.service';
+import { ProductReplicationListener } from './product-replication.listener';
 import { InventoryModule } from '../inventory/inventory.module';
 
 // InventoryModule stays imported for ProductAdminService, which writes stock
@@ -25,6 +26,7 @@ import { InventoryModule } from '../inventory/inventory.module';
     CategoryAdminService,
     BrandAdminService,
     ProductImportService,
+    ProductReplicationListener,
   ],
   // Exported for cart/orders, which need to price a variant and check stock.
   exports: [CatalogService],

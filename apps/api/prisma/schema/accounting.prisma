@@ -188,6 +188,13 @@ model JournalLine {
   costCentreId   String?
   contactId      String?
   supplierId     String?
+  /// R17: set only on an intercompany line (its account is also flagged
+  /// `isIntercompany`) — the OTHER brand in the trade, so consolidation at
+  /// the org tier (WO-20.6) can find this line's matching opposite number
+  /// and eliminate the pair before producing the group P&L/balance sheet.
+  /// A bare scalar, not a `@relation`, the same decoupling this model's own
+  /// header already explains for `contactId`/`supplierId`.
+  counterpartyBrandId String?
 
   entry   JournalEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
   account Account      @relation(fields: [accountId], references: [id], onDelete: Restrict)
@@ -196,6 +203,7 @@ model JournalLine {
   @@index([accountId])
   @@index([retailBrandId])
   @@index([branchNodeId])
+  @@index([counterpartyBrandId])
 }
 
 /// Backing store for gapless per-fiscal-year journal numbers (R18) — same

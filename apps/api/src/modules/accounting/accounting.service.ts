@@ -20,6 +20,8 @@ export interface PostLineInput {
   costCentreId?: string | null;
   contactId?: string | null;
   supplierId?: string | null;
+  /** R17 — set only on an intercompany line, naming the OTHER brand in the trade. See accounting.prisma's own comment on JournalLine. */
+  counterpartyBrandId?: string | null;
 }
 
 export interface PostEntryInput {
@@ -138,6 +140,7 @@ export class AccountingService {
               costCentreId: line.costCentreId,
               contactId: line.contactId,
               supplierId: line.supplierId,
+              counterpartyBrandId: line.counterpartyBrandId,
             })),
           },
         },
@@ -240,6 +243,7 @@ export class AccountingService {
       costCentreId: line.costCentreId,
       contactId: line.contactId,
       supplierId: line.supplierId,
+      counterpartyBrandId: line.counterpartyBrandId,
     };
   }
 

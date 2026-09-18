@@ -68,6 +68,12 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
 
   { key: 'orders.manage', label: 'Manage orders and shipments', category: 'Sales', sensitivity: 'medium' },
   {
+    key: 'pos.manage',
+    label: 'Register till terminals and issue their device credentials',
+    category: 'Sales',
+    sensitivity: 'high',
+  },
+  {
     key: 'payments.approve',
     label: 'Approve bank-transfer payments',
     category: 'Sales',
@@ -262,8 +268,8 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'sales',
     label: 'Sales & payments',
-    description: 'Order fulfilment, and approving a bank-transfer payment.',
-    permissions: ['orders.manage', 'payments.approve'],
+    description: 'Order fulfilment, approving a bank-transfer payment, and registering till terminals.',
+    permissions: ['orders.manage', 'payments.approve', 'pos.manage'],
   },
   {
     key: 'tailor-queue',
@@ -404,6 +410,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'tax.manage',
     'marketing.manage',
     'accounting.manage_periods',
+    'pos.manage',
   ],
 };
 

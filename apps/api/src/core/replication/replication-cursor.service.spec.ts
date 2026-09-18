@@ -1,13 +1,13 @@
 import { ReplicationCursorService } from './replication-cursor.service';
 import { PrismaService } from '../prisma/prisma.service';
 
-describe('ReplicationCursorService — WO-20.1 / WO-20.2', () => {
+describe('ReplicationCursorService — WO-20.1 / WO-20.2 / WO-20.5', () => {
   let service: ReplicationCursorService;
   let prisma: any;
 
   beforeEach(() => {
     prisma = {
-      replicationCursor: { findUnique: jest.fn(), upsert: jest.fn() },
+      replicationCursor: { findUnique: jest.fn(), upsert: jest.fn(), deleteMany: jest.fn().mockResolvedValue({ count: 1 }) },
     };
     service = new ReplicationCursorService(prisma as PrismaService);
   });
@@ -76,6 +76,22 @@ describe('ReplicationCursorService — WO-20.1 / WO-20.2', () => {
       expect(prisma.replicationCursor.findUnique).toHaveBeenCalledWith({
         where: { peerNodeId_direction: { peerNodeId: 'parent', direction: 'DOWN' } },
       });
+    });
+  });
+
+  describe('reset — WO-20.5 resync', () => {
+    it('deletes the cursor for that peer/direction only', async () => {
+      await service.reset('parent', 'DOWN');
+
+      expect(prisma.replicationCursor.deleteMany).toHaveBeenCalledWith({
+        where: { peerNodeId: 'parent', direction: 'DOWN' },
+      });
+    });
+
+    it('does not throw when there was no cursor to delete', async () => {
+      prisma.replicationCursor.deleteMany.mockResolvedValue({ count: 0 });
+
+      await expect(service.reset('parent', 'DOWN')).resolves.toBeUndefined();
     });
   });
 });

@@ -5,12 +5,15 @@ import { AppConfigService } from '../config/app-config.service';
 import type { ReplicationOp } from '../prisma/client';
 import { ReplicationCursorService } from './replication-cursor.service';
 import { ReplicationApplyService } from './replication-apply.service';
+import { PARENT_PEER_ID } from './replication.types';
 
 const SYNC_INTERVAL_MS = 10_000;
 const PUSH_BATCH_SIZE = 100;
-
-/** `'parent'` — a BRANCH or BRAND has exactly one parent, so nothing to disambiguate (see replication.prisma's own comment on `ReplicationCursor`). */
-const PARENT_PEER_ID = 'parent';
+/** Pages fetched per tick before yielding — a generous cap (the pull
+ * endpoint's own page size is 100), not a real limit: it exists so a bug
+ * that always reports `hasMore: true` degrades to "slow" on the next tick
+ * instead of a tick that never returns. */
+const MAX_PULL_PAGES_PER_TICK = 1000;
 
 interface PullResponse {
   originNodeId: string;
@@ -104,7 +107,23 @@ export class ReplicationSyncAgent {
     }
   }
 
+  /**
+   * Drains every page the parent reports as `hasMore`, not just one — this
+   * is what makes a fresh branch box's first tick a full bootstrap-from-
+   * cloud (WO-20.5) rather than a trickle: a box starting at cursor 0
+   * catches up to the parent's entire POLICY log before this method
+   * returns, the same loop a resync (deleting the local cursor) replays.
+   */
   async pullPolicy(): Promise<void> {
+    for (let page = 0; page < MAX_PULL_PAGES_PER_TICK; page++) {
+      const hasMore = await this.pullOnePage();
+      if (!hasMore) return;
+    }
+    this.logger.warn(`Pull from parent stopped after ${MAX_PULL_PAGES_PER_TICK} pages in one tick — resuming next tick.`);
+  }
+
+  /** Fetches and applies one page. Returns whether the parent reports more waiting — false on any failure, so a broken parent cannot spin this in a tight loop. */
+  private async pullOnePage(): Promise<boolean> {
     const parentUrl = this.config.parentUrl!;
     const cursor = await this.cursor.get(PARENT_PEER_ID, 'DOWN');
     const since = cursor?.lastSequence ?? 0n;
@@ -116,10 +135,10 @@ export class ReplicationSyncAgent {
       );
       if (!response.ok) {
         this.logger.warn(`Pull from parent failed: HTTP ${response.status}`);
-        return;
+        return false;
       }
       const body = (await response.json()) as PullResponse;
-      if (body.records.length === 0) return;
+      if (body.records.length === 0) return false;
 
       let maxSequence = since;
       for (const record of body.records) {
@@ -137,8 +156,10 @@ export class ReplicationSyncAgent {
         if (sequence > maxSequence) maxSequence = sequence;
       }
       await this.cursor.advance(PARENT_PEER_ID, 'DOWN', maxSequence);
+      return body.hasMore;
     } catch (error) {
       this.logger.warn(`Pull from parent failed: ${describe(error)}`);
+      return false;
     }
   }
 }

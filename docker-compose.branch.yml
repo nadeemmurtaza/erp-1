@@ -1,0 +1,97 @@
+# Branch box — on-premise, WO-20.5 (RETAIL-ERP.md Part 6). Runs at the
+# branch itself (a back office PC, a small server in a stockroom), behind
+# whatever router the branch already has. It is never internet-facing: the
+# replication engine (WO-20.2) is pull-based specifically so this box only
+# ever calls OUT to PARENT_URL, the same way docker-compose.caddy.yml's
+# shared edge is what makes the CLOUD stacks reachable — this one needs no
+# such thing, and joins no yaseen-edge network.
+#
+# First-time setup, on the branch's own machine:
+#   cp .env.branch.example .env.branch                          # fill in real values
+#   docker compose -f docker-compose.branch.yml --env-file .env.branch up -d --build
+#   docker compose -f docker-compose.branch.yml exec api pnpm prisma migrate deploy
+#
+# Bootstrap-from-cloud is not a separate step: ReplicationSyncAgent
+# (core/replication/replication-sync.agent.ts) drains its parent's full
+# POLICY backlog on its very first ticks — a fresh box's pull cursor starts
+# at 0, and pullPolicy() loops on `hasMore` until it is caught up, not one
+# page per tick. Watch it happen:
+#   docker compose -f docker-compose.branch.yml logs -f api | grep Replication
+#
+# Resync — if this box's local data is ever suspect (a bad disk, a restore
+# from an old backup) — is POST /api/v1/organization/replication/resync
+# (organization.manage): it deletes this box's own DOWN cursor, so the next
+# tick re-pulls and re-applies the parent's entire POLICY log from
+# scratch, the same as a fresh box's first bootstrap.
+name: yaseen-branch
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: yaseen-postgres-branch
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-yaseen}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-yaseen}
+    volumes:
+      - postgres-branch-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-yaseen} -d ${POSTGRES_DB:-yaseen}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [yaseen-branch]
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: yaseen-api-branch
+    restart: unless-stopped
+    env_file: .env.branch
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-yaseen}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-yaseen}?schema=public&connection_limit=10&pool_timeout=20&connect_timeout=10
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - api-branch-uploads:/repo/apps/api/uploads
+    healthcheck:
+      # 127.0.0.1, not localhost — see docker-compose.prod.yml's own note.
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1:3001/api/v1/health']
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    ports:
+      # LAN-only by convention — nothing here binds this to a public
+      # interface, but nothing stops it either; the branch's own router not
+      # forwarding these is the actual boundary, same as any till or POS box.
+      - '3001:3001'
+    networks: [yaseen-branch]
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:3001/api/v1
+        NEXT_PUBLIC_SITE_URL: http://localhost:3000
+    container_name: yaseen-web-branch
+    restart: unless-stopped
+    env_file: .env.branch
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - '3000:3000'
+    networks: [yaseen-branch]
+
+networks:
+  yaseen-branch:
+    name: yaseen-branch
+
+volumes:
+  postgres-branch-data:
+  api-branch-uploads:

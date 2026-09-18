@@ -1,21 +1,27 @@
 import { Module } from '@nestjs/common';
+import { OrdersModule } from '../orders/orders.module';
 import { PosTerminalsService } from './pos-terminals.service';
 import { PosTerminalsController } from './pos-terminals.controller';
 import { PosShiftsService } from './pos-shifts.service';
 import { PosShiftsController } from './pos-shifts.controller';
+import { PosSalesService } from './pos-sales.service';
+import { PosSalesController } from './pos-sales.controller';
 
 /**
- * The till (RETAIL-ERP.md R7/R11). Off by default — see
- * modules.registry.ts — and imports no other module: `locationId` is a bare
- * scalar (see pos.prisma), so registering a terminal never requires
- * `inventory` to be enabled, and `PosShift`/`CashMovement` (WO-21.2) never
- * leave this module's own schema file either. `PosReceipt` (WO-21.5) and
- * WO-21.3's `pos -> orders` sale hand-off (R11's own
- * `KNOWN_MODULE_COUPLINGS` addition) are later, separate work orders.
+ * The till (RETAIL-ERP.md R7/R11). Off by default — see modules.registry.ts.
+ * `locationId` on PosTerminal is still a bare scalar (no coupling to
+ * `organization`), so registering a terminal never requires anything else to
+ * be enabled. OrdersModule is the one hard import, for the same reason
+ * orders.module.ts imports InventoryModule directly rather than through an
+ * event: PosSalesService -> OrdersService.placeFromPos() has to commit the
+ * Order, the stock deduction and the cash Payment in one transaction
+ * (WO-21.3, `pos -> orders` in KNOWN_MODULE_COUPLINGS). `PosReceipt`, park/
+ * retrieve, price override and returns are WO-21.5's.
  */
 @Module({
-  controllers: [PosTerminalsController, PosShiftsController],
-  providers: [PosTerminalsService, PosShiftsService],
-  exports: [PosTerminalsService, PosShiftsService],
+  imports: [OrdersModule],
+  controllers: [PosTerminalsController, PosShiftsController, PosSalesController],
+  providers: [PosTerminalsService, PosShiftsService, PosSalesService],
+  exports: [PosTerminalsService, PosShiftsService, PosSalesService],
 })
 export class PosModule {}

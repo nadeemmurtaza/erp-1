@@ -180,6 +180,32 @@ export class InventoryService implements OnModuleInit {
    * keeps working unmodified — B6, 17-inventory-locations.md.
    */
   async move(input: StockMoveInput, tx: Prisma.TransactionClient | PrismaService = this.prisma): Promise<StockMovement> {
+    return this.applyMovement(input, tx, { unconditional: false });
+  }
+
+  /**
+   * The oversell path (RETAIL-ERP.md R5): a POS sale that already happened
+   * must never be rejected by sync, so this never throws InsufficientStockError
+   * — it applies the delta regardless of what's on the shelf. A DELIBERATE
+   * second method, not a flag on move(), because a flag would let a caller
+   * silently pass `unconditional: true` into the one guard the rest of the
+   * system relies on; this name has to be grepped for and chosen on purpose.
+   * When it drives a location negative, the movement's own reason becomes
+   * POS_OFFLINE_VARIANCE and a paired StockVariance row opens the exception
+   * queue a manager works from (R15's shrinkage journal follows from that row).
+   */
+  async postUnconditional(
+    input: StockMoveInput,
+    tx: Prisma.TransactionClient | PrismaService = this.prisma,
+  ): Promise<StockMovement> {
+    return this.applyMovement(input, tx, { unconditional: true });
+  }
+
+  private async applyMovement(
+    input: StockMoveInput,
+    tx: Prisma.TransactionClient | PrismaService,
+    opts: { unconditional: boolean },
+  ): Promise<StockMovement> {
     if (input.delta === 0) {
       throw new BadRequestException('Stock movement delta cannot be zero.');
     }
@@ -221,9 +247,11 @@ export class InventoryService implements OnModuleInit {
     // The predicate-on-write idiom (House Rule 10), now keyed on the
     // composite (variantId, locationId) — the database arbitrates whether
     // THIS location has enough stock, not a read-then-write guess.
+    // postUnconditional() skips the predicate entirely (R5) rather than
+    // widening it — the till already happened, there is nothing left to guard.
     const updated = await tx.variantLocationStock.updateMany({
       where:
-        input.delta < 0
+        !opts.unconditional && input.delta < 0
           ? {
               variantId: input.variantId,
               locationId: input.locationId,
@@ -259,13 +287,27 @@ export class InventoryService implements OnModuleInit {
       RETURNING stock
     `;
 
+    // postUnconditional() may have driven THIS location negative. Read it
+    // back — updateMany() doesn't return rows — and if so, the movement
+    // records the variance reason and gets a paired StockVariance opened.
+    let overshootQty: number | null = null;
+    if (opts.unconditional) {
+      const locationRow = await tx.variantLocationStock.findUnique({
+        where: { variantId_locationId: { variantId: input.variantId, locationId: input.locationId } },
+        select: { quantity: true },
+      });
+      if (locationRow && locationRow.quantity < 0) {
+        overshootQty = -locationRow.quantity;
+      }
+    }
+
     const movement = await tx.stockMovement.create({
       data: {
         variantId: input.variantId,
         locationId: input.locationId,
         delta: input.delta,
         resultingStock,
-        reason: input.reason,
+        reason: overshootQty !== null ? 'POS_OFFLINE_VARIANCE' : input.reason,
         refType: input.refType ?? null,
         refId: input.refId ?? null,
         unitCost: input.unitCost ?? null,
@@ -273,6 +315,30 @@ export class InventoryService implements OnModuleInit {
         actorId: input.actorId ?? null,
       },
     });
+
+    if (overshootQty !== null) {
+      const variance = await tx.stockVariance.create({
+        data: {
+          variantId: input.variantId,
+          locationId: input.locationId,
+          overshootQty,
+          stockMovementId: movement.id,
+          refType: input.refType ?? null,
+          refId: input.refId ?? null,
+        },
+      });
+      await this.events.publish(
+        DomainEvent.StockVarianceRecorded,
+        {
+          stockVarianceId: variance.id,
+          variantId: input.variantId,
+          locationId: input.locationId,
+          overshootQty,
+          unitCost: input.unitCost ?? null,
+        },
+        tx,
+      );
+    }
 
     if (wasAboveThreshold && resultingStock <= beforeVariant.lowStockThreshold) {
       await this.events.publish(

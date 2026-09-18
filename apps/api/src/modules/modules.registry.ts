@@ -74,9 +74,10 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // NID_WEBHOOK_SECRET are set.
   { name: 'identity-verification', module: IdentityVerificationModule },
   // Off by default — a deployment turns it on once it actually runs a
-  // physical till (RETAIL-ERP.md R14: invisible until then). WO-21.1 only —
-  // terminal registration and device auth; there is no sale path yet for a
-  // registered terminal to use.
+  // physical till (RETAIL-ERP.md R14: invisible until then). Terminal
+  // registration, device auth, shift lifecycle and the sale path
+  // (`pos -> orders`, WO-21.3) are all built; `PosReceipt`, park/retrieve,
+  // price override and returns (WO-21.5) are not.
   { name: 'pos', module: PosModule },
   // Account administration — not togglable business features.
   { name: 'settings', module: SettingsAdminModule, alwaysOn: true },

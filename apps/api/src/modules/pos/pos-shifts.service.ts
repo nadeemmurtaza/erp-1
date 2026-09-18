@@ -18,11 +18,12 @@ export interface CashBreakdown {
  * and closing it compares the cashier's own physical count against what
  * the recorded movements say should be there.
  *
- * X/Z reporting here is cash-only: nothing posts a SALE through `pos` yet
- * (WO-21.3's `pos -> orders` hand-off doesn't exist). Once it does, a real
- * report needs sales/tender totals folded in alongside this cash
- * breakdown — a change to make then, not something faked here by pretending
- * a cash-only report is the whole picture today.
+ * X/Z reporting here is still cash-movements-only: PosSalesService (WO-21.3)
+ * posts a sale straight through OrdersService.placeFromPos(), which creates
+ * its own Payment row rather than a CashMovement. A real report needs
+ * sales/tender totals folded in alongside this cash breakdown — a change to
+ * make then, not something faked here by pretending a cash-only report is
+ * the whole picture today.
  */
 @Injectable()
 export class PosShiftsService {

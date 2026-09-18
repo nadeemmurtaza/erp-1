@@ -1,12 +1,11 @@
 // The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's
 // identity and how it authenticates. WO-21.2 (this file's other half) owns
-// the shift lifecycle and cash movements — X/Z reporting on cash only, since
-// nothing posts a SALE through here yet: the actual `pos -> orders` hand-off
-// (WO-21.3, which is what will earn `pos` its `KNOWN_MODULE_COUPLINGS` entry
-// per R11 — nothing here needs one) is a later, separate work order, the
-// same "built before its caller exists" shape WO-20.1's replication log
-// already used. `PosReceipt`, park/retrieve, price override and returns are
-// WO-21.5's.
+// the shift lifecycle and cash movements. WO-21.3 wired the actual sale —
+// PosSalesService hands a validated line list to OrdersService.placeFromPos()
+// (`pos -> orders` in KNOWN_MODULE_COUPLINGS, per R11) — so a shift's X/Z
+// report is still cash-movements-only here; folding sale/tender totals into
+// it is a follow-up, not faked by this file. `PosReceipt`, park/retrieve,
+// price override and returns are WO-21.5's.
 
 enum PosTerminalStatus {
   /// Registered, no working device credential yet — cannot authenticate.
@@ -97,9 +96,10 @@ enum CashMovementType {
 }
 
 /// One physical cash movement at the drawer during a shift — always a
-/// positive `amountMinor`; `type` says which direction. Never a sale: once
-/// WO-21.3 wires `pos -> orders`, a sale's cash tender posts through
-/// `orders`/`payments` like any other payment, not as a row here.
+/// positive `amountMinor`; `type` says which direction. Never a sale: a
+/// sale's cash tender posts through `orders`/`payments`
+/// (OrdersService.placeFromPos(), WO-21.3) like any other payment, not as a
+/// row here.
 model CashMovement {
   id          String           @id @default(cuid())
   shiftId     String

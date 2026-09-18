@@ -24,6 +24,7 @@ export const CHART_OF_ACCOUNTS: ReadonlyArray<{
   { code: '4000', name: 'Sales Revenue', type: 'INCOME' },
   { code: '4900', name: 'Realised FX Gain', type: 'INCOME' },
   { code: '5000', name: 'Cost of Goods Sold', type: 'EXPENSE' },
+  { code: '5100', name: 'Inventory Shrinkage', type: 'EXPENSE' },
   { code: '5900', name: 'Realised FX Loss', type: 'EXPENSE' },
 ];
 
@@ -38,5 +39,6 @@ export const ACCOUNT_CODE = {
   SALES_REVENUE: '4000',
   FX_GAIN: '4900',
   COGS: '5000',
+  INVENTORY_SHRINKAGE: '5100',
   FX_LOSS: '5900',
 } as const;

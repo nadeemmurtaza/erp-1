@@ -142,6 +142,130 @@ describe('InventoryService — locations (B6)', () => {
   });
 });
 
+/**
+ * RETAIL-ERP.md R5 — a POS sale that already happened must never be
+ * rejected by sync. postUnconditional() is the escape hatch move() does
+ * not have: it applies the delta regardless of what's on the shelf, and
+ * when that drives a location negative it opens a StockVariance instead of
+ * throwing InsufficientStockError.
+ */
+describe('InventoryService — postUnconditional (R5 oversell)', () => {
+  let inventory: InventoryService;
+  let prisma: PrismaService;
+  let events: { publish: jest.Mock };
+  let defaultLocationId: string;
+  let productId: string;
+  const createdVariantIds: string[] = [];
+
+  beforeAll(async () => {
+    events = { publish: jest.fn() };
+    const module = await Test.createTestingModule({
+      providers: [
+        InventoryService,
+        PrismaService,
+        StockIntakeRegistry,
+        EntityEnrichmentRegistry,
+        { provide: EventBusService, useValue: events },
+        { provide: AuditService, useValue: { record: jest.fn() } },
+      ],
+    }).compile();
+
+    inventory = module.get(InventoryService);
+    prisma = module.get(PrismaService);
+    defaultLocationId = await inventory.defaultLocationId();
+
+    const product = await prisma.product.findFirstOrThrow({ select: { id: true } });
+    productId = product.id;
+  });
+
+  afterAll(async () => {
+    await prisma.productVariant.deleteMany({ where: { id: { in: createdVariantIds } } });
+  });
+
+  beforeEach(() => events.publish.mockClear());
+
+  async function freshVariant() {
+    const variant = await prisma.productVariant.create({
+      data: { productId, sku: `POS-VARIANCE-${Date.now()}-${Math.random().toString(36).slice(2)}` },
+    });
+    createdVariantIds.push(variant.id);
+    return variant;
+  }
+
+  it('applies the delta even when it takes a location negative, never throwing InsufficientStockError', async () => {
+    const variant = await freshVariant();
+    await inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: 2, reason: 'ADJUSTMENT' });
+
+    const movement = await inventory.postUnconditional({
+      variantId: variant.id,
+      locationId: defaultLocationId,
+      delta: -5,
+      reason: 'POS_SALE',
+      refType: 'Order',
+      refId: 'test-order-1',
+    });
+
+    expect(movement.reason).toBe('POS_OFFLINE_VARIANCE');
+    const stock = await prisma.variantLocationStock.findUniqueOrThrow({
+      where: { variantId_locationId: { variantId: variant.id, locationId: defaultLocationId } },
+    });
+    expect(stock.quantity).toBe(-3);
+  });
+
+  it('opens a StockVariance row sized to the overshoot, paired to the movement', async () => {
+    const variant = await freshVariant();
+    await inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: 2, reason: 'ADJUSTMENT' });
+
+    const movement = await inventory.postUnconditional({
+      variantId: variant.id,
+      locationId: defaultLocationId,
+      delta: -5,
+      reason: 'POS_SALE',
+    });
+
+    const variance = await prisma.stockVariance.findUniqueOrThrow({ where: { stockMovementId: movement.id } });
+    expect(variance.overshootQty).toBe(3);
+    expect(variance.status).toBe('OPEN');
+    expect(variance.variantId).toBe(variant.id);
+
+    expect(events.publish).toHaveBeenCalledWith(
+      'inventory.stock_variance_recorded',
+      expect.objectContaining({ stockVarianceId: variance.id, overshootQty: 3 }),
+      expect.anything(),
+    );
+  });
+
+  it('does not open a StockVariance when the sale stays within stock', async () => {
+    const variant = await freshVariant();
+    await inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: 5, reason: 'ADJUSTMENT' });
+
+    const movement = await inventory.postUnconditional({
+      variantId: variant.id,
+      locationId: defaultLocationId,
+      delta: -3,
+      reason: 'POS_SALE',
+    });
+
+    expect(movement.reason).toBe('POS_SALE');
+    const variance = await prisma.stockVariance.findUnique({ where: { stockMovementId: movement.id } });
+    expect(variance).toBeNull();
+    expect(events.publish).not.toHaveBeenCalledWith(
+      'inventory.stock_variance_recorded',
+      expect.anything(),
+      expect.anything(),
+    );
+  });
+
+  it('move() still refuses to oversell — postUnconditional() did not weaken the guard', async () => {
+    const variant = await freshVariant();
+    await inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: 2, reason: 'ADJUSTMENT' });
+
+    await expect(
+      inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: -5, reason: 'SALE' }),
+    ).rejects.toBeInstanceOf(InsufficientStockError);
+  });
+});
+
 describe('InventoryService — reorder point and replenishment events', () => {
   let inventory: InventoryService;
   let prisma: PrismaService;

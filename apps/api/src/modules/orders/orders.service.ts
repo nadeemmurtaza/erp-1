@@ -9,6 +9,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import {
+  computeLineItem,
   computeOrderTotals,
   computeShippingFee,
   DEFAULT_LOCALE,
@@ -33,6 +34,22 @@ import { Prisma, type OrderStatus } from '../../core/prisma/client';
 import { PaymentsService } from '../payments/payments.service';
 import { TaxService } from '../tax/tax.service';
 import type { PlaceOrderDto } from './dto/order.dto';
+
+export interface PosSaleLineInput {
+  variantId: string;
+  quantity: number;
+}
+
+export interface PlaceFromPosInput {
+  locationId: string;
+  terminalId: string;
+  shiftId: string;
+  cashierUserId: string;
+  lines: PosSaleLineInput[];
+  customerName?: string;
+  customerPhone?: string;
+  customerEmail?: string;
+}
 
 /**
  * Which status may follow which. A shop that can jump an order straight from
@@ -349,6 +366,198 @@ export class OrdersService {
 
     this.logger.log(`Order ${order.number} placed for ${order.grandTotal} paisa`);
     await this.attachStitchingJobs(order);
+    return order;
+  }
+
+  /**
+   * The till's sale path (RETAIL-ERP.md R11): `pos` resolves the shift/
+   * terminal context and validates the shift is open, then hands a flat list
+   * of {variantId, quantity} here — a deliberately separate, minimal method
+   * from place(), not a reuse of it, because place() is wired through a cart,
+   * a shipping address and stitching options none of which a till sale has.
+   *
+   * Three things a web order does that this does not, on purpose, quarantined
+   * to a later work order rather than faked: no stitching line (a till sells
+   * ready stock, WO-21.4+ if a shop wants to take stitching orders at the
+   * counter), no tax lookup (TaxService integration for POS is unscoped
+   * here), no backorder path — postUnconditional() below means there is
+   * never a reason to park a line, only to record how far it oversold.
+   *
+   * Stock posts through postUnconditional(), never move(): R5 — a sale that
+   * already happened at the till must not be rejected by sync. Payment is
+   * created directly as a paid cash tender, bypassing PaymentsService's
+   * provider registry (R11) — a till has no gateway callback to route
+   * through. Status is set straight to DELIVERED at creation (the customer
+   * already has the goods), which ALLOWED_TRANSITIONS never has to know
+   * about since it only governs updateStatus(), not create().
+   */
+  async placeFromPos(input: PlaceFromPosInput) {
+    if (input.lines.length === 0) {
+      throw new BadRequestException('A sale needs at least one line.');
+    }
+
+    const variantIds = [...new Set(input.lines.map((line) => line.variantId))];
+    const variants = await this.prisma.productVariant.findMany({
+      where: { id: { in: variantIds }, isActive: true },
+      include: {
+        product: {
+          include: {
+            translations: { where: { locale: DEFAULT_LOCALE }, take: 1 },
+            images: { orderBy: { isPrimary: 'desc' }, take: 1 },
+          },
+        },
+      },
+    });
+    const variantMap = new Map(variants.map((variant) => [variant.id, variant]));
+
+    const missing = variantIds.filter((id) => !variantMap.has(id));
+    if (missing.length > 0) {
+      throw new BadRequestException(`Unknown or inactive variant(s): ${missing.join(', ')}`);
+    }
+
+    const lines = input.lines.map((line) => {
+      const variant = variantMap.get(line.variantId)!;
+      const unitPrice = variant.priceOverride ?? variant.product.basePrice;
+      const lineTotals = computeLineItem({ unitPrice, quantity: line.quantity });
+      const english = pickTranslation(variant.product.translations, 'en');
+      return {
+        variant,
+        variantId: line.variantId,
+        productId: variant.productId,
+        quantity: line.quantity,
+        unitPrice,
+        lineTotal: lineTotals.lineTotal,
+        nameEn: english?.name ?? variant.product.slug,
+        imageUrl: variant.product.images[0]?.url ?? null,
+        variantLabel: getVariantDisplayLabel(variant),
+      };
+    });
+
+    const totals = computeOrderTotals({
+      items: lines.map((line) => ({ unitPrice: line.unitPrice, quantity: line.quantity })),
+      shippingFee: 0,
+      codFee: 0,
+      taxAmount: 0,
+    });
+
+    const orderNumber = await nextOrderNumber(this.prisma, this.settings, this.config);
+
+    const order = await this.prisma.$transaction(async (tx) => {
+      const created = await tx.order.create({
+        data: {
+          number: orderNumber,
+          status: 'DELIVERED',
+          channel: 'POS',
+          locationId: input.locationId,
+          terminalId: input.terminalId,
+          shiftId: input.shiftId,
+          guestName: input.customerName ?? null,
+          guestEmail: input.customerEmail ?? null,
+          guestPhone: input.customerPhone ?? null,
+          shippingAddress: {},
+          itemsSubtotal: totals.itemsSubtotal,
+          stitchingSubtotal: totals.stitchingSubtotal,
+          itemDiscountTotal: totals.itemDiscountTotal,
+          orderDiscount: totals.orderDiscount,
+          shippingFee: totals.shippingFee,
+          codFee: totals.codFee,
+          taxAmount: totals.taxAmount,
+          grandTotal: totals.grandTotal,
+          deliveredAt: new Date(),
+          items: {
+            create: lines.map((line) => ({
+              productId: line.productId,
+              variantId: line.variantId,
+              kind: line.variant.product.kind,
+              nameEn: line.nameEn,
+              sku: line.variant.sku,
+              imageUrl: line.imageUrl,
+              variantLabel: line.variantLabel,
+              unitPrice: line.unitPrice,
+              unitCost: line.variant.costPrice,
+              quantity: line.quantity,
+              lineTotal: line.lineTotal,
+            })),
+          },
+          statusEvents: {
+            create: { toStatus: 'DELIVERED', note: 'POS sale', actorId: input.cashierUserId },
+          },
+        },
+        include: orderInclude,
+      });
+
+      // Sorted the same way moveMany() locks — see place()'s own comment on
+      // sortedItems for why this matters under concurrent tills at the same
+      // location.
+      const sortedItems = [...created.items].sort((a, b) => (a.variantId ?? '').localeCompare(b.variantId ?? ''));
+      for (const item of sortedItems) {
+        if (!item.variantId) continue;
+        const variant = variantMap.get(item.variantId)!;
+        await this.inventory.postUnconditional(
+          {
+            variantId: item.variantId,
+            locationId: input.locationId,
+            delta: -item.quantity,
+            reason: 'POS_SALE',
+            refType: 'Order',
+            refId: created.id,
+            unitCost: variant.costPrice,
+            actorId: input.cashierUserId,
+          },
+          tx,
+        );
+      }
+
+      // A till's cash tender has no gateway callback to route through
+      // PaymentsService's provider registry — it is paid the instant it is
+      // rung up, so the Payment row is created directly rather than through
+      // createForOrder()'s PENDING-then-webhook flow. PaymentSucceeded is
+      // published by hand for the same reason createForOrder() would have:
+      // posting-rules.subscriber.ts's Dr Cash & Bank / Cr AR only fires off
+      // that event, and a cash sale must not sit in the books as an
+      // uncollected receivable forever.
+      const payment = await tx.payment.create({
+        data: {
+          orderId: created.id,
+          provider: 'cash',
+          amount: created.grandTotal,
+          status: 'PAID',
+          paidAt: new Date(),
+        },
+      });
+
+      await this.events.publish(
+        DomainEvent.PaymentSucceeded,
+        {
+          paymentId: payment.id,
+          orderId: created.id,
+          provider: payment.provider,
+          amount: payment.amount,
+          status: payment.status,
+        },
+        tx,
+      );
+
+      await this.events.publish(
+        DomainEvent.OrderPlaced,
+        {
+          orderId: created.id,
+          orderNumber: created.number,
+          userId: null,
+          customerName: input.customerName ?? 'Walk-in customer',
+          customerPhone: input.customerPhone ?? null,
+          customerEmail: input.customerEmail ?? null,
+          grandTotal: created.grandTotal,
+          placedAt: created.placedAt.toISOString(),
+          stitchingItemIds: [],
+        },
+        tx,
+      );
+
+      return { ...created, payment };
+    });
+
+    this.logger.log(`POS sale ${order.number} placed for ${order.grandTotal} paisa at terminal ${input.terminalId}`);
     return order;
   }
 

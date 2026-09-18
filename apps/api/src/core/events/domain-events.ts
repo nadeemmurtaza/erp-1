@@ -39,6 +39,8 @@ export const DomainEvent = {
   ProductPriceChanged: 'catalog.product_price_changed',
   /** Any positive-delta stock movement — the one signal that can unblock a waiting order line, whatever replenished the stock. */
   StockReplenished: 'inventory.stock_replenished',
+  /** InventoryService.postUnconditional() drove a location negative (RETAIL-ERP.md R5) — never fired by move(). */
+  StockVarianceRecorded: 'inventory.stock_variance_recorded',
   GoodsReceived: 'purchasing.goods_received',
   SupplierBillRaised: 'purchasing.supplier_bill_raised',
   SupplierBillPaid: 'purchasing.supplier_bill_paid',
@@ -176,6 +178,14 @@ export interface StockReplenishedPayload {
   resultingStock: number;
 }
 
+export interface StockVarianceRecordedPayload {
+  stockVarianceId: string;
+  variantId: string;
+  locationId: string;
+  overshootQty: number;
+  unitCost: number | null;
+}
+
 /** Never a cost price or margin — this leaves the platform to whoever is listening. */
 export interface ProductPublishedPayload {
   productId: string;
@@ -275,6 +285,7 @@ export interface DomainEventPayloads {
   [DomainEvent.ProductPublished]: ProductPublishedPayload;
   [DomainEvent.ProductPriceChanged]: ProductPriceChangedPayload;
   [DomainEvent.StockReplenished]: StockReplenishedPayload;
+  [DomainEvent.StockVarianceRecorded]: StockVarianceRecordedPayload;
   [DomainEvent.GoodsReceived]: GoodsReceivedPayload;
   [DomainEvent.WorkOrderCreated]: WorkOrderPayload;
   [DomainEvent.WorkOrderReleased]: WorkOrderPayload;

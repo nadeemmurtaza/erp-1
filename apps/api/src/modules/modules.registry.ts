@@ -13,6 +13,7 @@ import { OrdersModule } from './orders/orders.module';
 import { OrganizationModule } from './organization/organization.module';
 import { PartiesModule } from './parties/parties.module';
 import { PaymentsModule } from './payments/payments.module';
+import { PosModule } from './pos/pos.module';
 import { ProductionModule } from './production/production.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
 import { ReportsModule } from './reports/reports.module';
@@ -72,6 +73,11 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // Add 'identity-verification' to MODULES once NID_API_URL/NID_API_KEY/
   // NID_WEBHOOK_SECRET are set.
   { name: 'identity-verification', module: IdentityVerificationModule },
+  // Off by default — a deployment turns it on once it actually runs a
+  // physical till (RETAIL-ERP.md R14: invisible until then). WO-21.1 only —
+  // terminal registration and device auth; there is no sale path yet for a
+  // registered terminal to use.
+  { name: 'pos', module: PosModule },
   // Account administration — not togglable business features.
   { name: 'settings', module: SettingsAdminModule, alwaysOn: true },
   { name: 'users', module: UsersAdminModule, alwaysOn: true },

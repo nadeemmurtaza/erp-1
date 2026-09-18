@@ -1,0 +1,47 @@
+// The till (RETAIL-ERP.md R7/R11, Tranche 4, WO-21.1) — "the box is a cache,
+// the branch cloud DB is the record, the till has the last word." This file
+// owns only WO-21.1's own piece: a terminal's identity and how it
+// authenticates. `PosShift`/`CashMovement`/`PosReceipt` (WO-21.2) and the
+// actual `pos -> orders` sale hand-off (WO-21.3, which is what will earn
+// `pos` its `KNOWN_MODULE_COUPLINGS` entry per R11 — nothing here needs
+// one) are later, separate work orders; this table is inert until either
+// exists, the same "built before its caller exists" shape WO-20.1's
+// replication log already used.
+
+enum PosTerminalStatus {
+  /// Registered, no working device credential yet — cannot authenticate.
+  PENDING
+  ACTIVE
+  /// Manually disabled — a lost or decommissioned till. Its own credential
+  /// stops working immediately even if it still hashes correctly, the same
+  /// guarantee TradingPartner/Node give their SUSPENDED row.
+  SUSPENDED
+}
+
+/// A physical till. `locationId` is a bare scalar, not a `@relation` — the
+/// same "no coupling to another module's schema file" choice
+/// invoicing.prisma already made for `tradingPartnerId`/`orderId` — so this
+/// file stays fully self-contained; `PosTerminalsService` checks the
+/// location exists at write time instead of leaning on a DB-level FK.
+model PosTerminal {
+  id    String @id @default(cuid())
+  /// Short, human-chosen — "LHR-01-T1" — printed on receipts (WO-21.5) and
+  /// shown on the branch's own exception dashboard.
+  code  String @unique
+  label String
+  locationId String
+
+  /// SHA-256 of the device credential this terminal presents on every
+  /// request — same shape as `TradingPartner.inboundApiKeyHash` /
+  /// `Node.inboundApiKeyHash`: issued once via `rotateDeviceKey()`, shown to
+  /// the operator raw exactly that once, never persisted or echoed back.
+  deviceKeyHash String? @unique
+
+  status     PosTerminalStatus @default(PENDING)
+  lastSeenAt DateTime?
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+
+  @@index([locationId])
+  @@index([status])
+}

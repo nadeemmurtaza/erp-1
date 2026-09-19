@@ -44,6 +44,8 @@ export const DomainEvent = {
   GoodsReceived: 'purchasing.goods_received',
   SupplierBillRaised: 'purchasing.supplier_bill_raised',
   SupplierBillPaid: 'purchasing.supplier_bill_paid',
+  /** An InterBranchInvoice was raised — TransfersService.receive() on an INVOICED transfer (R12/R17, WO-22.3). Never fired for NONE/INTERNAL_PL. */
+  InterBranchTransferInvoiced: 'transfers.inter_branch_invoiced',
   /** SupplyChainDigestCron's own nightly per-supplier stock/velocity computation, republished as an event so a connected TradingPartner can receive it structured, not only as the email it already sends. */
   SupplierDigestReady: 'analytics.supplier_digest_ready',
 
@@ -237,6 +239,19 @@ export interface SupplierBillRaisedPayload {
   issuedAt: string;
 }
 
+export interface InterBranchTransferInvoicedPayload {
+  invoiceId: string;
+  invoiceNumber: string;
+  transferId: string;
+  /** The seller — books Revenue. */
+  sourceRetailBrandId: string;
+  /** The buyer — books Cost. */
+  destinationRetailBrandId: string;
+  /** Sum of received qty * dispatch-time unitCost — R12's transfer price (weighted-average cost, no markup). */
+  amountMinor: number;
+  issuedAt: string;
+}
+
 export interface SupplierBillPaidPayload {
   billId: string;
   supplierId: string;
@@ -292,6 +307,7 @@ export interface DomainEventPayloads {
   [DomainEvent.WorkOrderCompleted]: WorkOrderPayload;
   [DomainEvent.SupplierBillRaised]: SupplierBillRaisedPayload;
   [DomainEvent.SupplierBillPaid]: SupplierBillPaidPayload;
+  [DomainEvent.InterBranchTransferInvoiced]: InterBranchTransferInvoicedPayload;
   [DomainEvent.SupplierDigestReady]: SupplierDigestReadyPayload;
   [DomainEvent.EmailReplyReceived]: EmailReplyReceivedPayload;
   [DomainEvent.IdentityVerificationApproved]: IdentityVerificationPayload;

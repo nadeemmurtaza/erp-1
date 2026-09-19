@@ -46,6 +46,8 @@ export interface DocumentPrefixes {
   quote: string;
   /** Inter-branch stock transfer (WO-22.1, R4/R6) — node-prefixed like the rest. */
   stockTransfer: string;
+  /** R12/R17's inter-brand settlement document (WO-22.3) — node-prefixed like the rest, and distinct from `invoice` above (a different document). */
+  interBranchInvoice: string;
 }
 
 export interface DocumentSettings {
@@ -221,6 +223,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
       invoice: 'INV',
       quote: 'QTE',
       stockTransfer: 'TRF',
+      interBranchInvoice: 'IBI',
     },
   } satisfies DocumentSettings,
 

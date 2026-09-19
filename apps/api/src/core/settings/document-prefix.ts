@@ -39,4 +39,5 @@ const FALLBACK: DocumentPrefixes = {
   invoice: 'INV',
   quote: 'QTE',
   stockTransfer: 'TRF',
+  interBranchInvoice: 'IBI',
 };

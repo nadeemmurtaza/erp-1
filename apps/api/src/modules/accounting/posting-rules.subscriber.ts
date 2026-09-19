@@ -9,6 +9,7 @@ import {
   type SupplierBillRaisedPayload,
   type SupplierBillPaidPayload,
   type StockVarianceRecordedPayload,
+  type InterBranchTransferInvoicedPayload,
 } from '../../core/events/domain-events';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { AccountingService, type PostLineInput } from './accounting.service';
@@ -302,6 +303,72 @@ export class PostingRulesSubscriber {
       lines: [
         { accountId: shrinkage, debitMinor: amountMinor },
         { accountId: inventory, creditMinor: amountMinor },
+      ],
+    });
+  }
+
+  /**
+   * Dr Accounts Receivable (source brand) · Cr Intercompany Revenue (source
+   * brand, counterparty = destination) · Dr Intercompany Cost of Goods
+   * (destination brand, counterparty = source) · Cr Accounts Payable
+   * (destination brand) — R17's own words made literal: "brand A books
+   * revenue and brand B books cost." Both intercompany lines post in the
+   * SAME entry, for the SAME amount, so ConsolidationService's elimination
+   * (WO-20.6) always finds a matched pair with nothing unmatched — true only
+   * because R12 fixes the transfer price at cost with no markup, so there is
+   * no unrealized intercompany profit to defer (that harder case stays
+   * unattempted, per ConsolidationService's own doc comment).
+   *
+   * Does not touch the Inventory account — the physical stock ledger
+   * (InventoryService, via TransfersService.dispatch()/receive()) already
+   * moved the quantity between locations; ordinary sale postings
+   * (onOrderPlaced) do not dimension Inventory/COGS by brand either, so this
+   * rule stays consistent with that existing precedent rather than inventing
+   * a new one.
+   */
+  @OnDomainEvent(DomainEvent.InterBranchTransferInvoiced)
+  async onInterBranchTransferInvoiced(payload: InterBranchTransferInvoicedPayload): Promise<void> {
+    const source = DomainEvent.InterBranchTransferInvoiced;
+    if (payload.amountMinor <= 0) return;
+    if (await this.accounting.findPostedEntry(source, payload.invoiceId)) return;
+
+    const accountId = await this.accounting.accountIdsByCode([
+      ACCOUNT_CODE.ACCOUNTS_RECEIVABLE,
+      ACCOUNT_CODE.INTERCOMPANY_REVENUE,
+      ACCOUNT_CODE.INTERCOMPANY_COGS,
+      ACCOUNT_CODE.ACCOUNTS_PAYABLE,
+    ]);
+    const ar = accountId.get(ACCOUNT_CODE.ACCOUNTS_RECEIVABLE);
+    const icRevenue = accountId.get(ACCOUNT_CODE.INTERCOMPANY_REVENUE);
+    const icCogs = accountId.get(ACCOUNT_CODE.INTERCOMPANY_COGS);
+    const ap = accountId.get(ACCOUNT_CODE.ACCOUNTS_PAYABLE);
+    if (!ar || !icRevenue || !icCogs || !ap) {
+      this.logger.error(
+        `Chart of accounts is missing AR, Intercompany Revenue, Intercompany COGS or AP — cannot post invoice ${payload.invoiceNumber}.`,
+      );
+      return;
+    }
+
+    await this.accounting.postEntry({
+      date: new Date(payload.issuedAt),
+      source,
+      sourceRef: payload.invoiceId,
+      memo: `Inter-brand transfer — invoice ${payload.invoiceNumber}`,
+      lines: [
+        { accountId: ar, debitMinor: payload.amountMinor, retailBrandId: payload.sourceRetailBrandId },
+        {
+          accountId: icRevenue,
+          creditMinor: payload.amountMinor,
+          retailBrandId: payload.sourceRetailBrandId,
+          counterpartyBrandId: payload.destinationRetailBrandId,
+        },
+        {
+          accountId: icCogs,
+          debitMinor: payload.amountMinor,
+          retailBrandId: payload.destinationRetailBrandId,
+          counterpartyBrandId: payload.sourceRetailBrandId,
+        },
+        { accountId: ap, creditMinor: payload.amountMinor, retailBrandId: payload.destinationRetailBrandId },
       ],
     });
   }

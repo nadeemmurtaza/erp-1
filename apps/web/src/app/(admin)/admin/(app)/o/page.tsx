@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { adminFetch } from '@/lib/admin-client';
+import { adminFetch, clearSession, logout } from '@/lib/admin-client';
 import type { MyScope } from '@/types/api';
 import { ROUTES } from '@/constants/routes';
 import { EmptyState, Loading } from '@/components/ui';
@@ -72,6 +72,22 @@ export default function OrganizationLandingPage() {
     <EmptyState
       title="No organization scope yet"
       description="Your account has no brand or branch assigned. Ask a super admin to grant you one."
+      // CLAUDE.md "No dead ends" — landing here with nothing to manage and no
+      // way out was a dead end; sign out at least frees the account for
+      // someone who does have a scope, mirroring AdminShell's own logout.
+      action={
+        <button
+          type="button"
+          className="btn-secondary"
+          onClick={async () => {
+            await logout();
+            clearSession();
+            router.replace('/admin/login');
+          }}
+        >
+          Sign out
+        </button>
+      }
     />
   );
 }

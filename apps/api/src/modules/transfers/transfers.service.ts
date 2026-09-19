@@ -4,8 +4,10 @@ import { SettingsService } from '../../core/settings/settings.service';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { documentPrefix } from '../../core/settings/document-prefix';
 import { documentNumber } from '../../core/settings/document-number';
+import { EventBusService } from '../../core/events/event-bus.service';
+import { DomainEvent } from '../../core/events/domain-events';
 import { InventoryService } from '../inventory/inventory.service';
-import type { Location, Prisma } from '../../core/prisma/client';
+import type { Location, Prisma, SettlementMode } from '../../core/prisma/client';
 
 export interface TransferLineInput {
   variantId: string;
@@ -28,8 +30,11 @@ export interface ReceiveLineInput {
  * `dispatch()` also gates on R9's policy switches —
  * `BrandPolicy.allowInterBranchTransfers` for a same-brand transfer,
  * `Organization.allowInterBrandTransfers` for a genuinely brand-crossing
- * one — see `resolveTransferBrandOwnership()` below for the full reasoning,
- * including what WO-22.2 does and does not honestly cover.
+ * one — and resolves R12's `settlementMode` in the same pass. `receive()`
+ * raises an `InterBranchInvoice` and publishes `InterBranchTransferInvoiced`
+ * for an INVOICED transfer (R12/R17, WO-22.3) — see
+ * `resolveTransferSettlement()` below for the full reasoning, including what
+ * WO-22.2/22.3 do and do not honestly cover.
  *
  * Imports InventoryService directly (`transfers -> inventory` in
  * KNOWN_MODULE_COUPLINGS, anticipated by R11 itself) because every stock
@@ -38,7 +43,10 @@ export interface ReceiveLineInput {
  * already carries. Reads Organization/BrandPolicy directly via Prisma
  * rather than importing OrganizationModule — a read, not a
  * same-transaction write, needs no coupling entry (the same precedent
- * PosCatalogService and OrdersService.placeFromPos() already set).
+ * PosCatalogService and OrdersService.placeFromPos() already set). Publishes
+ * to `EventBusService` rather than importing `AccountingService` — R15's
+ * "accounting couples to nothing": `transfers` does not know a posting rule
+ * exists, the same decoupling `orders`/`pos`/`inventory` already keep.
  */
 @Injectable()
 export class TransfersService {
@@ -47,6 +55,7 @@ export class TransfersService {
     private readonly settings: SettingsService,
     private readonly config: AppConfigService,
     private readonly inventory: InventoryService,
+    private readonly events: EventBusService,
   ) {}
 
   async dispatch(actorId: string, sourceLocationId: string, destinationLocationId: string, lines: TransferLineInput[], note?: string) {
@@ -67,13 +76,17 @@ export class TransfersService {
     if (!source) throw new BadRequestException('Source location does not exist.');
     if (!destination) throw new BadRequestException('Destination location does not exist.');
 
-    const inTransitRetailBrandId = await this.resolveTransferBrandOwnership(source, destination);
+    const { inTransitRetailBrandId, settlementMode } = await this.resolveTransferSettlement(source, destination);
 
     const variantIds = [...new Set(lines.map((l) => l.variantId))];
-    const variantCount = await this.prisma.productVariant.count({ where: { id: { in: variantIds } } });
-    if (variantCount !== variantIds.length) {
+    const variants = await this.prisma.productVariant.findMany({
+      where: { id: { in: variantIds } },
+      select: { id: true, costPrice: true },
+    });
+    if (variants.length !== variantIds.length) {
       throw new BadRequestException('One or more variants do not exist.');
     }
+    const costByVariantId = new Map(variants.map((v) => [v.id, v.costPrice]));
 
     const number = await nextTransferNumber(this.prisma, this.settings, this.config);
 
@@ -87,7 +100,7 @@ export class TransfersService {
           // brand at all" case, both null): the in-transit bucket belongs
           // to that brand too. Crossing brands (WO-22.2, R4): null — it
           // "belongs to neither brand", the organization tier's own
-          // in-transit location, per resolveTransferBrandOwnership() below.
+          // in-transit location, per resolveTransferSettlement() below.
           retailBrandId: inTransitRetailBrandId,
           // isActive: false keeps it out of InventoryService.listLocations()
           // (below) without that list needing to know IN_TRANSIT exists —
@@ -104,9 +117,16 @@ export class TransfersService {
           destinationLocationId,
           inTransitLocationId: inTransitLocation.id,
           createdByUserId: actorId,
+          settlementMode,
           note: note?.trim() || null,
           lines: {
-            create: lines.map((line) => ({ variantId: line.variantId, quantityDispatched: line.quantity })),
+            create: lines.map((line) => ({
+              variantId: line.variantId,
+              quantityDispatched: line.quantity,
+              // Snapshotted only when it will actually be billed (House Rule
+              // 7) — NONE/INTERNAL_PL transfers need no valuation.
+              unitCost: settlementMode === 'INVOICED' ? (costByVariantId.get(line.variantId) ?? 0) : null,
+            })),
           },
         },
         include: { lines: true },
@@ -160,12 +180,19 @@ export class TransfersService {
 
     return this.prisma.$transaction(async (tx) => {
       const sortedLines = [...transfer.lines].sort((a, b) => a.variantId.localeCompare(b.variantId));
+      let invoiceAmountMinor = 0;
 
       for (const line of sortedLines) {
         const received = overrideByLine.get(line.id) ?? line.quantityDispatched;
         const shortfall = line.quantityDispatched - received;
 
         await tx.stockTransferLine.update({ where: { id: line.id }, data: { quantityReceived: received } });
+
+        // Only what actually arrived gets billed (R12/R17) — a short
+        // receipt's shortfall is a write-off below, never invoiced.
+        if (transfer.settlementMode === 'INVOICED' && received > 0) {
+          invoiceAmountMinor += received * (line.unitCost ?? 0);
+        }
 
         if (received > 0) {
           await this.inventory.move(
@@ -214,11 +241,54 @@ export class TransfersService {
         }
       }
 
-      return tx.stockTransfer.update({
+      const updated = await tx.stockTransfer.update({
         where: { id: transferId },
         data: { status: 'RECEIVED', receivedAt: new Date(), receivedByUserId: actorId },
         include: { lines: true },
       });
+
+      // A fully short-received transfer (everything written off) has
+      // nothing to bill — no invoice for zero.
+      if (transfer.settlementMode !== 'INVOICED' || invoiceAmountMinor <= 0) {
+        return updated;
+      }
+
+      const [sourceLocation, destinationLocation] = await Promise.all([
+        tx.location.findUniqueOrThrow({ where: { id: transfer.sourceLocationId }, select: { retailBrandId: true } }),
+        tx.location.findUniqueOrThrow({ where: { id: transfer.destinationLocationId }, select: { retailBrandId: true } }),
+      ]);
+      // Guaranteed non-null: resolveTransferSettlement() only returns
+      // INVOICED when both locations name a real RetailBrand, and nothing
+      // in this codebase mutates Location.retailBrandId after creation.
+      const sourceRetailBrandId = sourceLocation.retailBrandId!;
+      const destinationRetailBrandId = destinationLocation.retailBrandId!;
+
+      const invoiceNumber = await nextInterBranchInvoiceNumber(tx, this.settings, this.config);
+      const invoice = await tx.interBranchInvoice.create({
+        data: {
+          number: invoiceNumber,
+          transferId: transfer.id,
+          sourceRetailBrandId,
+          destinationRetailBrandId,
+          amountMinor: invoiceAmountMinor,
+        },
+      });
+
+      await this.events.publish(
+        DomainEvent.InterBranchTransferInvoiced,
+        {
+          invoiceId: invoice.id,
+          invoiceNumber: invoice.number,
+          transferId: transfer.id,
+          sourceRetailBrandId,
+          destinationRetailBrandId,
+          amountMinor: invoice.amountMinor,
+          issuedAt: invoice.issuedAt.toISOString(),
+        },
+        tx,
+      );
+
+      return { ...updated, interBranchInvoice: invoice };
     }, { timeout: 20_000 });
   }
 
@@ -270,7 +340,7 @@ export class TransfersService {
     const [rows, total] = await this.prisma.$transaction([
       this.prisma.stockTransfer.findMany({
         where,
-        include: { lines: true },
+        include: { lines: true, interBranchInvoice: true },
         orderBy: { createdAt: 'desc' },
         skip: (query.page - 1) * query.pageSize,
         take: query.pageSize,
@@ -281,7 +351,10 @@ export class TransfersService {
   }
 
   async get(id: string) {
-    const transfer = await this.prisma.stockTransfer.findUnique({ where: { id }, include: { lines: true } });
+    const transfer = await this.prisma.stockTransfer.findUnique({
+      where: { id },
+      include: { lines: true, interBranchInvoice: true },
+    });
     if (!transfer) throw new NotFoundException('Transfer not found');
     return transfer;
   }
@@ -290,30 +363,41 @@ export class TransfersService {
    * R9's two policy switches, gated at the one tier that exists today
    * (there is no separate "receiving tier" to also enforce it against in a
    * STANDALONE deployment — this IS the ingest point). Returns the
-   * `retailBrandId` the transfer's own in-transit Location should carry.
+   * `retailBrandId` the transfer's own in-transit Location should carry,
+   * plus R12's `settlementMode` — the same same-brand/cross-brand branch
+   * decides both, so one pass resolves them together rather than repeating
+   * the query.
    *
    * Same brand (including today's default deployment, where every Location
    * has `retailBrandId: null` — WO-22.1's own behavior, unchanged): checked
    * against that brand's own `BrandPolicy.allowInterBranchTransfers` only
    * when a real `RetailBrand` is actually involved; a `null`-brand transfer
    * has no `BrandPolicy` row to check and always proceeds, exactly as
-   * WO-22.1 shipped.
+   * WO-22.1 shipped. `settlementMode` is NONE — R12's "owned→owned inside a
+   * brand settles NONE."
    *
    * Different brands (WO-22.2, R4): a genuine inter-brand transfer needs
    * BOTH locations to name a real brand — crossing from "no brand" into "a
    * brand" is not a coherent request — and checks
    * `Organization.allowInterBrandTransfers`. The in-transit location gets
    * `retailBrandId: null`: it "belongs to neither brand" (R4's own words),
-   * the organization tier's own bucket.
+   * the organization tier's own bucket. `settlementMode` is INVOICED — R12's
+   * "brand-to-brand is INVOICED by construction, because two brands are two
+   * businesses." R12 also names `INTERNAL_PL`, but gives no trigger for it
+   * and nothing else in RETAIL-ERP.md does either — this method never
+   * returns it (see SettlementMode's own doc comment in transfers.prisma).
    *
-   * This is the LOCAL half of R4/R9 — genuinely testable today, for two
+   * This is the LOCAL half of R4/R9/R12 — genuinely testable today, for two
    * `RetailBrand` rows sharing one physical database (sub-brands, Part 1).
    * A true inter-brand transfer between two SEPARATE brand deployments
    * (Br1) needs the replication engine to carry this fact from one
    * database to another and is not something a STANDALONE dev environment
    * can honestly build or verify — deferred, not faked.
    */
-  private async resolveTransferBrandOwnership(source: Location, destination: Location): Promise<string | null> {
+  private async resolveTransferSettlement(
+    source: Location,
+    destination: Location,
+  ): Promise<{ inTransitRetailBrandId: string | null; settlementMode: SettlementMode }> {
     if (source.retailBrandId === destination.retailBrandId) {
       if (source.retailBrandId) {
         const policy = await this.prisma.brandPolicy.findUnique({ where: { retailBrandId: source.retailBrandId } });
@@ -321,7 +405,7 @@ export class TransfersService {
           throw new ForbiddenException('This brand does not allow transfers between its own branches.');
         }
       }
-      return source.retailBrandId;
+      return { inTransitRetailBrandId: source.retailBrandId, settlementMode: 'NONE' };
     }
 
     if (!source.retailBrandId || !destination.retailBrandId) {
@@ -335,7 +419,7 @@ export class TransfersService {
       throw new ForbiddenException('Inter-brand transfers are not enabled for this organization.');
     }
 
-    return null;
+    return { inTransitRetailBrandId: null, settlementMode: 'INVOICED' };
   }
 }
 
@@ -355,6 +439,28 @@ async function nextTransferNumber(
   const [{ counter }] = await prisma.$queryRaw<Array<{ counter: number }>>`
     INSERT INTO "TransferNumberCounter" ("year", "counter") VALUES (${year}, 1)
     ON CONFLICT ("year") DO UPDATE SET "counter" = "TransferNumberCounter"."counter" + 1
+    RETURNING "counter"
+  `;
+
+  return documentNumber(config, prefix, year, counter);
+}
+
+/**
+ * Node-prefixed per R6, same counter-row pattern as nextTransferNumber() —
+ * a separate sequence (InterBranchInvoiceNumberCounter) because an invoice
+ * is a different document with its own numbering series, not the transfer's.
+ */
+async function nextInterBranchInvoiceNumber(
+  prisma: Prisma.TransactionClient,
+  settings: SettingsService,
+  config: AppConfigService,
+): Promise<string> {
+  const year = new Date().getFullYear();
+  const prefix = await documentPrefix(settings, 'interBranchInvoice');
+
+  const [{ counter }] = await prisma.$queryRaw<Array<{ counter: number }>>`
+    INSERT INTO "InterBranchInvoiceNumberCounter" ("year", "counter") VALUES (${year}, 1)
+    ON CONFLICT ("year") DO UPDATE SET "counter" = "InterBranchInvoiceNumberCounter"."counter" + 1
     RETURNING "counter"
   `;
 

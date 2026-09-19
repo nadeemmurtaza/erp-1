@@ -16,6 +16,8 @@ const ACCOUNT_ID: Record<string, string> = {
   [ACCOUNT_CODE.ACCOUNTS_PAYABLE]: 'acc-ap',
   [ACCOUNT_CODE.FX_GAIN]: 'acc-fx-gain',
   [ACCOUNT_CODE.FX_LOSS]: 'acc-fx-loss',
+  [ACCOUNT_CODE.INTERCOMPANY_REVENUE]: 'acc-ic-revenue',
+  [ACCOUNT_CODE.INTERCOMPANY_COGS]: 'acc-ic-cogs',
 };
 
 describe('PostingRulesSubscriber — WO-19.2', () => {
@@ -378,6 +380,48 @@ describe('PostingRulesSubscriber — WO-19.2', () => {
       accounting.findPostedEntry.mockResolvedValue({ id: 'already-there' });
 
       await subscriber.onStockVarianceRecorded(payload);
+
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('onInterBranchTransferInvoiced — WO-22.3', () => {
+    const payload = {
+      invoiceId: 'invoice1',
+      invoiceNumber: 'IBI-2026-0001',
+      transferId: 'transfer1',
+      sourceRetailBrandId: 'brandA',
+      destinationRetailBrandId: 'brandB',
+      amountMinor: 5000,
+      issuedAt: '2026-01-01T00:00:00.000Z',
+    };
+
+    it('posts Dr AR (source) / Cr Intercompany Revenue (source, counterparty=dest) / Dr Intercompany COGS (dest, counterparty=source) / Cr AP (dest), balanced', async () => {
+      await subscriber.onInterBranchTransferInvoiced(payload);
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          source: DomainEvent.InterBranchTransferInvoiced,
+          sourceRef: 'invoice1',
+          lines: [
+            { accountId: 'acc-ar', debitMinor: 5000, retailBrandId: 'brandA' },
+            { accountId: 'acc-ic-revenue', creditMinor: 5000, retailBrandId: 'brandA', counterpartyBrandId: 'brandB' },
+            { accountId: 'acc-ic-cogs', debitMinor: 5000, retailBrandId: 'brandB', counterpartyBrandId: 'brandA' },
+            { accountId: 'acc-ap', creditMinor: 5000, retailBrandId: 'brandB' },
+          ],
+        }),
+      );
+    });
+
+    it('does nothing for a zero or negative amount', async () => {
+      await subscriber.onInterBranchTransferInvoiced({ ...payload, amountMinor: 0 });
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+
+    it('does nothing when this invoice already posted (redelivery)', async () => {
+      accounting.findPostedEntry.mockResolvedValue({ id: 'already-there' });
+
+      await subscriber.onInterBranchTransferInvoiced(payload);
 
       expect(accounting.postEntry).not.toHaveBeenCalled();
     });

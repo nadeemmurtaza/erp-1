@@ -34,7 +34,7 @@ export const envSchema = z.object({
 
   API_PORT: port(3001),
   API_PREFIX: z.string().default('api'),
-  CORS_ORIGINS: csv('http://localhost:3000'),
+  CORS_ORIGINS: csv('http://localhost:3000,http://localhost:3002'),
 
   // 32 characters is the shortest secret worth having for HS256.
   JWT_ACCESS_SECRET: z.string().min(32, 'JWT_ACCESS_SECRET must be at least 32 characters'),

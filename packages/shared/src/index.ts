@@ -7,6 +7,7 @@ export * from './phone';
 export * from './pricing';
 export * from './slug';
 export * from './brand';
+export * from './http-client';
 export * from './theme-colors';
 export * from './theme-radii';
 export * from './theme-type';

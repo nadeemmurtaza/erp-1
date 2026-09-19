@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * A small, till-specific class set — not a second copy of apps/web's
+ * `.btn`/`.card` family. A touchscreen till has different needs (huge tap
+ * targets, no hover state worth designing for) from a marketing/admin
+ * surface, so these are new shapes, not the same button styled twice. What
+ * IS shared: the colour, radius and type tokens both surfaces resolve from
+ * the same `@newax/shared` import (see tailwind.config.ts) — only the
+ * component layer differs, which is what CLAUDE.md's "a variant inside
+ * that system" allows for a genuinely different surface.
+ */
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    @apply bg-neutral-50 text-neutral-900 antialiased;
+  }
+}
+
+@layer components {
+  /* A primary action big enough to hit reliably on a tablet: open shift, complete sale, sign in. */
+  .tap-btn {
+    @apply flex min-h-16 w-full items-center justify-center rounded-lg bg-accent px-6 text-lg font-semibold text-white active:opacity-80 disabled:opacity-40;
+  }
+
+  .tap-btn-secondary {
+    @apply flex min-h-16 w-full items-center justify-center rounded-lg border border-neutral-200 bg-white px-6 text-lg font-semibold text-neutral-900 active:bg-neutral-50 disabled:opacity-40;
+  }
+
+  /* A numeric-keypad key — square, large, no hover affordance. */
+  .keypad-key {
+    @apply flex h-16 items-center justify-center rounded-lg bg-white text-2xl font-semibold text-neutral-900 shadow-sm active:bg-neutral-100;
+  }
+
+  .field-input {
+    @apply w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 text-lg text-neutral-900 focus:border-accent focus:outline-none;
+  }
+
+  /* One basket row — the sale's own working list, not a data table. */
+  .basket-row {
+    @apply flex items-center justify-between gap-3 border-b border-neutral-100 py-3;
+  }
+}

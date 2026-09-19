@@ -1,6 +1,6 @@
 import { Controller, Get, NotFoundException, Param, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { DEFAULT_LOCALE, isLocale, type Locale } from '@yaseen/shared';
+import { DEFAULT_LOCALE, isLocale, type Locale } from '@newax/shared';
 import { RequirePermission } from '../../auth/decorators';
 import { AppConfigService } from '../../config/app-config.service';
 import { EMAIL_TEMPLATE_CATALOG } from './catalog';

@@ -3,10 +3,11 @@
 import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { formatMoney, type Locale } from '@yaseen/shared';
+import { formatMoney, type Locale } from '@newax/shared';
 import { Link } from '@/i18n/navigation';
 import { useCart } from '@/components/storefront/cart-provider';
-import type { CartLine } from '@/lib/cart-types';
+import type { CartLine } from '@/types/cart';
+import { ROUTES } from '@/constants/routes';
 
 export default function CartPage() {
   const t = useTranslations('cart');
@@ -15,7 +16,7 @@ export default function CartPage() {
 
   if (loading) {
     return (
-      <div className="container-page pb-28 pt-16 text-center font-display text-sm text-noir-400 md:pb-16">
+      <div className="container-page pt-16 text-center font-display text-sm text-neutral-400 md:pb-16">
         {t('loading')}
       </div>
     );
@@ -23,10 +24,10 @@ export default function CartPage() {
 
   if (!cart || cart.items.length === 0) {
     return (
-      <div className="container-page pb-28 pt-16 text-center font-display md:pb-16">
-        <h1 className="text-2xl font-semibold tracking-tight text-noir-900">{t('title')}</h1>
-        <p className="mt-2 text-sm text-noir-500">{t('empty')}</p>
-        <Link href="/shop" className="mt-6 sf-btn-primary">
+      <div className="container-page pt-16 text-center font-display md:pb-16">
+        <h1 className="text-2xl font-semibold tracking-tight text-neutral-900">{t('title')}</h1>
+        <p className="mt-2 text-sm text-neutral-500">{t('empty')}</p>
+        <Link href={ROUTES.storefront.shop} className="mt-6 btn-primary">
           {t('startShopping')}
         </Link>
       </div>
@@ -34,20 +35,20 @@ export default function CartPage() {
   }
 
   return (
-    <div className="container-page pb-28 pt-6 font-display sm:pt-8 md:pb-12">
-      <h1 className="text-2xl font-semibold tracking-tight text-noir-900 sm:text-3xl">{t('title')}</h1>
+    <div className="container-page pt-6 font-display sm:pt-8 md:pb-12">
+      <h1 className="text-2xl font-semibold tracking-tight text-neutral-900 sm:text-3xl">{t('title')}</h1>
 
       {error ? (
         <p
           role="alert"
-          className="mt-4 whitespace-pre-line rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+          className="notice notice-error mt-4 whitespace-pre-line"
         >
           {error}
         </p>
       ) : null}
 
       {cart.issues.length > 0 ? (
-        <ul className="mt-4 space-y-1 rounded-2xl border border-noir-200 bg-noir-50 px-4 py-3 text-sm text-noir-800">
+        <ul className="mt-4 space-y-1 rounded-2xl border border-neutral-100 bg-neutral-50 px-4 py-3 text-sm text-neutral-800">
           {cart.issues.map((issue) => (
             <li key={issue}>{issue}</li>
           ))}
@@ -67,8 +68,8 @@ export default function CartPage() {
           ))}
         </ul>
 
-        <aside className="sf-card h-fit p-4 sm:p-6 lg:sticky lg:top-24">
-          <h2 className="text-base font-semibold text-noir-900">{t('summary')}</h2>
+        <aside className="card h-fit p-4 sm:p-6 lg:sticky lg:top-24">
+          <h2 className="text-base font-semibold text-neutral-900">{t('summary')}</h2>
 
           <dl className="mt-4 space-y-2 text-sm">
             <Row label={t('itemsSubtotal')} value={formatMoney(cart.totals.itemsSubtotal, locale)} />
@@ -81,28 +82,28 @@ export default function CartPage() {
             <Row label={t('shipping')} value={t('shippingAtCheckout')} muted />
           </dl>
 
-          <div className="mt-4 flex items-baseline justify-between border-t border-noir-200 pt-4">
-            <span className="text-sm font-medium text-noir-900">{t('total')}</span>
-            <span className="text-xl font-semibold text-noir-900">
+          <div className="mt-4 flex items-baseline justify-between border-t border-neutral-100 pt-4">
+            <span className="text-sm font-medium text-neutral-900">{t('total')}</span>
+            <span className="text-xl font-semibold text-neutral-900">
               {formatMoney(cart.totals.grandTotal, locale)}
             </span>
           </div>
 
           <Link
-            href="/checkout"
+            href={ROUTES.storefront.checkout}
             aria-disabled={cart.issues.length > 0}
             className={
               cart.issues.length > 0
-                ? 'sf-btn-primary pointer-events-none mt-4 block w-full py-3.5 opacity-50 sm:text-base'
-                : 'sf-btn-primary mt-4 block w-full py-3.5 sm:text-base'
+                ? 'btn-primary pointer-events-none mt-4 block w-full py-3.5 opacity-50 sm:text-base'
+                : 'btn-primary mt-4 block w-full py-3.5 sm:text-base'
             }
           >
             {t('checkout')}
           </Link>
 
           <Link
-            href="/shop"
-            className="mt-4 block text-center text-sm text-noir-600 transition-colors duration-200 hover:text-noir-900 hover:underline"
+            href={ROUTES.storefront.shop}
+            className="mt-4 block text-center text-sm text-neutral-600 transition-colors duration-200 hover:text-neutral-900 hover:underline"
           >
             {t('continueShopping')}
           </Link>
@@ -141,8 +142,8 @@ function CartRow({
   }
 
   return (
-    <li className="sf-card flex gap-3 p-3 sm:gap-4 sm:p-4">
-      <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-noir-50 sm:h-24 sm:w-24">
+    <li className="card flex gap-3 p-3 sm:gap-4 sm:p-4">
+      <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-neutral-50 sm:h-24 sm:w-24">
         {line.imageUrl ? (
           <Image src={line.imageUrl} alt={line.name} fill sizes="96px" className="object-cover" />
         ) : null}
@@ -153,11 +154,11 @@ function CartRow({
           <div className="min-w-0">
             <Link
               href={`/product/${line.slug}`}
-              className="text-sm font-medium text-noir-900 transition-colors duration-200 hover:text-noir-600"
+              className="text-sm font-medium text-neutral-900 transition-colors duration-200 hover:text-neutral-600"
             >
               {line.name}
             </Link>
-            {line.variantLabel ? <p className="mt-0.5 text-xs text-noir-500">{line.variantLabel}</p> : null}
+            {line.variantLabel ? <p className="mt-0.5 text-xs text-neutral-500">{line.variantLabel}</p> : null}
           </div>
 
           <button
@@ -165,7 +166,7 @@ function CartRow({
             onClick={() => void guarded(onRemove)}
             disabled={busy}
             aria-label={t('remove')}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-noir-400 transition-colors duration-200 hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-noir-400"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-neutral-400 transition-colors duration-200 hover:bg-red-50 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-neutral-400"
           >
             <TrashIcon />
           </button>
@@ -178,8 +179,8 @@ function CartRow({
           monochrome surface.
         */}
         {line.stitching ? (
-          <div className="mt-2 rounded-xl bg-noir-50 p-2.5 text-xs text-noir-600">
-            <p className="font-medium text-noir-800">
+          <div className="mt-2 rounded-xl bg-neutral-50 p-2.5 text-xs text-neutral-600">
+            <p className="font-medium text-neutral-800">
               {line.stitching.serviceName} · {formatMoney(line.stitching.feePerUnit, locale)}
               {line.quantity > 1 ? ` × ${line.quantity}` : ''}
             </p>
@@ -203,7 +204,7 @@ function CartRow({
             </p>
 
             {line.stitching.notes ? (
-              <p className="mt-1 italic text-noir-500">&ldquo;{line.stitching.notes}&rdquo;</p>
+              <p className="mt-1 italic text-neutral-500">&ldquo;{line.stitching.notes}&rdquo;</p>
             ) : null}
           </div>
         ) : null}
@@ -217,7 +218,7 @@ function CartRow({
             decreaseLabel={t('decreaseQuantity')}
             increaseLabel={t('increaseQuantity')}
           />
-          <span className="text-sm font-semibold text-noir-900">
+          <span className="text-sm font-semibold text-neutral-900">
             {formatMoney(line.lineTotal, locale)}
           </span>
         </div>
@@ -252,23 +253,23 @@ function QuantityStepper({
   // convention like a tab bar's icon order, so it should reverse under
   // `dir="rtl"` the way any other flex row does.
   return (
-    <div className="inline-flex items-center gap-1 rounded-full border border-noir-200 p-1">
+    <div className="inline-flex items-center gap-1 rounded border border-neutral-100 p-1">
       <button
         type="button"
         onClick={() => onChange(quantity - 1)}
         disabled={busy || quantity <= 1}
         aria-label={decreaseLabel}
-        className="flex h-7 w-7 items-center justify-center rounded-full text-noir-700 transition-colors duration-200 hover:bg-noir-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
+        className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-700 transition-colors duration-200 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
       >
         <MinusIcon />
       </button>
-      <span className="min-w-[1.5rem] text-center text-sm font-medium text-noir-900">{quantity}</span>
+      <span className="min-w-[1.5rem] text-center text-sm font-medium text-neutral-900">{quantity}</span>
       <button
         type="button"
         onClick={() => onChange(quantity + 1)}
         disabled={busy || quantity >= max}
         aria-label={increaseLabel}
-        className="flex h-7 w-7 items-center justify-center rounded-full text-noir-700 transition-colors duration-200 hover:bg-noir-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
+        className="flex h-7 w-7 items-center justify-center rounded-full text-neutral-700 transition-colors duration-200 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
       >
         <PlusIcon />
       </button>
@@ -287,8 +288,8 @@ function Row({
 }) {
   return (
     <div className="flex justify-between">
-      <dt className="text-noir-500">{label}</dt>
-      <dd className={muted ? 'text-noir-400' : 'text-noir-900'}>{value}</dd>
+      <dt className="text-neutral-500">{label}</dt>
+      <dd className={muted ? 'text-neutral-400' : 'text-neutral-900'}>{value}</dd>
     </div>
   );
 }

@@ -68,7 +68,7 @@ jobs:
         run: pnpm db:generate
 
       - name: Apply migrations
-        run: pnpm --filter @yaseen/api db:deploy
+        run: pnpm --filter @newax/api db:deploy
 
       - name: Seed the database
         run: pnpm db:seed

@@ -1,9 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
-import { useToast } from '@/lib/use-toast';
+import { useToast } from '@/hooks/use-toast';
+import { Loading } from '@/components/ui';
 
 interface TaxRate {
   id: string;
@@ -155,7 +156,7 @@ export default function TaxAdminPage() {
           {toasts.map((t) => (
             <div
               key={t.id}
-              className={clsx(
+              className={cn(
                 'cursor-pointer rounded-md border p-4 text-sm shadow-md',
                 t.type === 'error'
                   ? 'border-red-200 bg-red-50 text-red-800'
@@ -171,18 +172,18 @@ export default function TaxAdminPage() {
         </div>
       )}
 
-      <h1 className="mb-1 text-xl font-semibold text-ink">Tax</h1>
-      <p className="mb-6 text-sm text-ink/60">
+      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Tax</h1>
+      <p className="mb-6 text-sm text-neutral-900/60">
         Off by default. Turning it on charges GST at checkout using the classes and rates below —
         see docs/implementation/15-tax-module.md for the design.
       </p>
 
       {busy && !settings ? (
-        <p className="text-ink/50">Loading…</p>
+        <Loading />
       ) : (
         <>
           <section className="card mb-6 p-5">
-            <h2 className="mb-4 text-sm font-semibold text-ink">Settings</h2>
+            <h2 className="mb-4 text-sm font-semibold text-neutral-900">Settings</h2>
             <div className="flex flex-col gap-4">
               <label className="flex items-center gap-2 text-sm">
                 <input
@@ -195,7 +196,7 @@ export default function TaxAdminPage() {
               </label>
 
               <div className="flex flex-wrap items-center gap-4">
-                <label className="flex items-center gap-2 text-sm text-ink/80">
+                <label className="flex items-center gap-2 text-sm text-neutral-900/80">
                   Pricing mode
                   <select
                     className="field-input"
@@ -212,7 +213,7 @@ export default function TaxAdminPage() {
                   </select>
                 </label>
 
-                <label className="flex items-center gap-2 text-sm text-ink/80">
+                <label className="flex items-center gap-2 text-sm text-neutral-900/80">
                   Default class
                   <select
                     className="field-input"
@@ -231,29 +232,29 @@ export default function TaxAdminPage() {
             </div>
           </section>
 
-          <section className="card overflow-hidden">
-            <div className="border-b border-sand-200 bg-sand-50 p-4">
-              <h2 className="text-sm font-semibold text-ink">Tax classes</h2>
-              <p className="text-xs text-ink/60">
+          <section className="overflow-hidden">
+            <div className="border-b border-neutral-100 bg-neutral-50 p-4">
+              <h2 className="text-sm font-semibold text-neutral-900">Tax classes</h2>
+              <p className="text-xs text-neutral-900/60">
                 A product variant with no class of its own uses the default class above.
               </p>
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="border-b border-sand-200 bg-sand-50 whitespace-nowrap">
+              <table className="table-flat">
+                <thead className="whitespace-nowrap">
                   <tr>
-                    <th className="px-3 py-3 text-start font-medium text-ink/70">Name</th>
-                    <th className="px-3 py-3 text-start font-medium text-ink/70">Key</th>
-                    <th className="px-3 py-3 text-start font-medium text-ink/70">Current rate</th>
-                    <th className="px-3 py-3 text-start font-medium text-ink/70">New rate</th>
-                    <th className="px-3 py-3" />
+                    <th>Name</th>
+                    <th>Key</th>
+                    <th>Current rate</th>
+                    <th>New rate</th>
+                    <th />
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-sand-100">
+                <tbody className="divide-y divide-neutral-100">
                   {classes?.length === 0 ? (
                     <tr>
-                      <td colSpan={5} className="p-8 text-center text-ink/50">
+                      <td colSpan={5} className="p-8 text-center text-neutral-900/50">
                         No tax classes yet — add one below.
                       </td>
                     </tr>
@@ -261,20 +262,20 @@ export default function TaxAdminPage() {
                     classes?.map((taxClass) => {
                       const activeRate = taxClass.rates[0] ?? null;
                       return (
-                        <tr key={taxClass.id} className="hover:bg-sand-50/50">
-                          <td className="px-3 py-3 font-medium">
+                        <tr key={taxClass.id} className="hover:bg-neutral-50/50">
+                          <td className="font-medium">
                             {taxClass.name}
                             {taxClass.isDefault && (
-                              <span className="ms-2 rounded-full bg-brand-100 px-2 py-0.5 text-xs text-brand-700">
+                              <span className="ms-2 rounded bg-neutral-100 px-2 py-0.5 text-xs text-accent-hover">
                                 default
                               </span>
                             )}
                           </td>
-                          <td className="px-3 py-3 text-ink/60">{taxClass.key}</td>
-                          <td className="px-3 py-3 text-ink/80">
+                          <td className="text-neutral-900/60">{taxClass.key}</td>
+                          <td className="text-neutral-900/80">
                             {activeRate ? formatRateBps(activeRate.rateBps) : '—'}
                           </td>
-                          <td className="px-3 py-3">
+                          <td>
                             <div className="flex items-center gap-2">
                               <input
                                 type="number"
@@ -300,7 +301,7 @@ export default function TaxAdminPage() {
                               </button>
                             </div>
                           </td>
-                          <td className="px-3 py-3 text-end">
+                          <td className="text-end">
                             <button
                               type="button"
                               className="text-xs text-red-600 hover:underline"
@@ -317,8 +318,8 @@ export default function TaxAdminPage() {
               </table>
             </div>
 
-            <div className="flex flex-wrap items-end gap-3 border-t border-sand-200 p-4">
-              <label className="flex flex-col gap-1 text-xs text-ink/60">
+            <div className="flex flex-wrap items-end gap-3 border-t border-neutral-100 p-4">
+              <label className="flex flex-col gap-1 text-xs text-neutral-900/60">
                 Key
                 <input
                   className="field-input w-32"
@@ -327,7 +328,7 @@ export default function TaxAdminPage() {
                   onChange={(e) => setNewClassKey(e.target.value)}
                 />
               </label>
-              <label className="flex flex-col gap-1 text-xs text-ink/60">
+              <label className="flex flex-col gap-1 text-xs text-neutral-900/60">
                 Name
                 <input
                   className="field-input w-48"
@@ -336,7 +337,7 @@ export default function TaxAdminPage() {
                   onChange={(e) => setNewClassName(e.target.value)}
                 />
               </label>
-              <label className="flex flex-col gap-1 text-xs text-ink/60">
+              <label className="flex flex-col gap-1 text-xs text-neutral-900/60">
                 Starting rate %
                 <input
                   type="number"

@@ -248,6 +248,19 @@ export function allocateLandedCost(lines: ReceiptLineInput[], extra: number): nu
   return shares;
 }
 
+/**
+ * Converts a minor-unit amount in a foreign currency to the deployment's own
+ * base currency, given a scaled FX rate (RETAIL-ERP.md R16 / House Rule 11).
+ *
+ * `fxRateScaled` is the rate times 1,000,000, stored as an integer so the
+ * rate itself never becomes a float (House Rule 5) — 1_000_000 means "no
+ * conversion". Written once here so the API, web and till round every
+ * conversion identically; nowhere else may re-derive this formula.
+ */
+export function convertToBase(amountMinor: number, fxRateScaled: number): number {
+  return Math.round((amountMinor * fxRateScaled) / 1_000_000);
+}
+
 export function weightedAverageCost(stockBefore: number, currentCostPrice: number, receivedQty: number, landedUnitCost: number): number {
   const clampedStockBefore = Math.max(0, stockBefore);
   if (clampedStockBefore === 0 || currentCostPrice === 0) {

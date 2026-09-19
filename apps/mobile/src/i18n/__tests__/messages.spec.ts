@@ -1,4 +1,4 @@
-import { STITCHING_STAGES } from '@yaseen/shared';
+import { STITCHING_STAGES } from '@newax/shared';
 import { MESSAGES } from '../messages';
 
 describe('the message catalogue', () => {

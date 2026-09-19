@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Switch, View } from 'react-native';
-import type { Locale } from '@yaseen/shared';
+import type { Locale } from '@newax/shared';
 import {
   Body,
   Button,

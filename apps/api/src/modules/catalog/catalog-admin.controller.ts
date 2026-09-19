@@ -1,3 +1,4 @@
+import { BRAND } from '@newax/shared';
 import {
   BadRequestException,
   Body,
@@ -19,8 +20,10 @@ import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { IsArray, IsInt, IsOptional, IsString, Min } from 'class-validator';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
+import { BrandAdminService } from './brand-admin.service';
 import { CategoryAdminService } from './category-admin.service';
 import { AdminProductQueryDto } from './dto/product-query.dto';
+import { UpsertBrandDto } from './dto/brand.dto';
 import { UpsertCategoryDto } from './dto/category.dto';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { ProductAdminService } from './product-admin.service';
@@ -65,6 +68,7 @@ export class CatalogAdminController {
   constructor(
     private readonly products: ProductAdminService,
     private readonly categories: CategoryAdminService,
+    private readonly brands: BrandAdminService,
     private readonly importer: ProductImportService,
   ) {}
 
@@ -193,11 +197,41 @@ export class CatalogAdminController {
     return this.categories.remove(user.id, id);
   }
 
+  // --- Brands ---------------------------------------------------------------
+
+  @Get('brands')
+  listBrands() {
+    return this.brands.list();
+  }
+
+  @Post('brands')
+  createBrand(@CurrentUser() user: AuthenticatedUser, @Body() dto: UpsertBrandDto) {
+    return this.brands.create(user.id, dto);
+  }
+
+  @Patch('brands/:id')
+  updateBrand(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') id: string,
+    @Body() dto: UpsertBrandDto,
+  ) {
+    return this.brands.update(user.id, id, dto);
+  }
+
+  @Delete('brands/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  deleteBrand(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
+    return this.brands.remove(user.id, id);
+  }
+
   // --- Bulk import ----------------------------------------------------------
 
   @Get('import/template')
   @Header('Content-Type', 'text/csv; charset=utf-8')
-  @Header('Content-Disposition', 'attachment; filename="yaseen-products-template.csv"')
+  @Header(
+    'Content-Disposition',
+    `attachment; filename="${BRAND.identity.domain.split('.')[0]}-products-template.csv"`,
+  )
   @ApiOperation({ summary: 'Download the CSV template for bulk product upload' })
   importTemplate(): string {
     return this.importer.template();

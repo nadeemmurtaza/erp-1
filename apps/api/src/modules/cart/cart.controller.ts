@@ -14,8 +14,13 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
-import { DEFAULT_LOCALE, isLocale, type Locale } from '@yaseen/shared';
-import { CART_COOKIE, type AuthenticatedUser } from '../../core/auth/auth.constants';
+import { DEFAULT_LOCALE, isLocale, type Locale } from '@newax/shared';
+import {
+  CART_COOKIE,
+  LEGACY_CART_COOKIE,
+  readCookie,
+  type AuthenticatedUser,
+} from '../../core/auth/auth.constants';
 import { CurrentUser, Public } from '../../core/auth/decorators';
 import { CartService, type CartView } from './cart.service';
 import { AddCartItemDto, MergeCartDto, UpdateCartItemDto } from './dto/cart.dto';
@@ -164,7 +169,7 @@ function tokenFrom(request: Request): string | undefined {
   const header = request.header('x-cart-token');
   if (header) return header;
 
-  const cookie = request.cookies?.[CART_COOKIE];
+  const cookie = readCookie(request.cookies, CART_COOKIE, LEGACY_CART_COOKIE);
   return typeof cookie === 'string' ? cookie : undefined;
 }
 

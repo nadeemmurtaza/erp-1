@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
-import type { AdminCategory, AdminProduct, GarmentType } from '@/lib/api-types';
+import type { AdminBrand, AdminCategory, AdminProduct, GarmentType } from '@/types/api';
 import { ProductForm } from './product-form';
+import { Loading } from '@/components/ui';
 
 /**
  * Loads the reference data the editor needs (categories, garment types) and,
@@ -15,6 +16,7 @@ import { ProductForm } from './product-form';
 export function ProductEditorLoader({ productId }: { productId?: string }) {
   const [categories, setCategories] = useState<AdminCategory[] | null>(null);
   const [garmentTypes, setGarmentTypes] = useState<GarmentType[] | null>(null);
+  const [brands, setBrands] = useState<AdminBrand[] | null>(null);
   const [product, setProduct] = useState<AdminProduct | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,14 +26,16 @@ export function ProductEditorLoader({ productId }: { productId?: string }) {
     Promise.all([
       adminFetch<AdminCategory[]>('/admin/catalog/categories'),
       adminFetch<GarmentType[]>('/admin/measurements/garment-types'),
+      adminFetch<AdminBrand[]>('/admin/catalog/brands'),
       productId
         ? adminFetch<AdminProduct>(`/admin/catalog/products/${productId}`)
         : Promise.resolve(null),
     ])
-      .then(([loadedCategories, loadedGarments, loadedProduct]) => {
+      .then(([loadedCategories, loadedGarments, loadedBrands, loadedProduct]) => {
         if (cancelled) return;
         setCategories(loadedCategories);
         setGarmentTypes(loadedGarments);
+        setBrands(loadedBrands);
         setProduct(loadedProduct);
       })
       .catch((cause: unknown) => {
@@ -47,14 +51,14 @@ export function ProductEditorLoader({ productId }: { productId?: string }) {
 
   if (error) {
     return (
-      <p role="alert" className="card p-4 text-sm text-red-700">
+      <p role="alert" className="notice notice-error">
         {error}
       </p>
     );
   }
 
-  if (!categories || !garmentTypes || (productId && !product)) {
-    return <p className="text-sm text-ink/50">Loading…</p>;
+  if (!categories || !garmentTypes || !brands || (productId && !product)) {
+    return <Loading />;
   }
 
   return (
@@ -62,6 +66,7 @@ export function ProductEditorLoader({ productId }: { productId?: string }) {
       product={product ?? undefined}
       categories={categories}
       garmentTypes={garmentTypes}
+      brands={brands}
     />
   );
 }

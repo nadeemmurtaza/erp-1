@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { formatMoney } from '@yaseen/shared';
+import { formatMoney } from '@newax/shared';
 import {
   Body,
   Button,

@@ -1,41 +1,68 @@
+import { documentPrefix } from '../../core/settings/document-prefix';
+import { documentNumber, documentNumberPrefix } from '../../core/settings/document-number';
+import { AppConfigService } from '../../core/config/app-config.service';
+import type { PurchaseOrderStatus } from '../../core/prisma/client';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { CreateSupplierDto, UpdateSupplierDto, AddSupplierProductDto } from './dto/supplier.dto';
 import { CreatePurchaseOrderDto, ReceiveGoodsDto } from './dto/purchase-order.dto';
+import { CreateSupplierBillDto, RecordSupplierBillPaymentDto } from './dto/supplier-bill.dto';
 import { InventoryService } from '../inventory/inventory.service';
+import { PartiesService } from '../parties/parties.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { Prisma } from '../../core/prisma/client';
-import { allocateLandedCost, weightedAverageCost } from '@yaseen/shared';
+import { allocateLandedCost, weightedAverageCost, convertToBase, BRAND } from '@newax/shared';
 import { DomainEvent } from '../../core/events/domain-events';
 import { EventBusService } from '../../core/events/event-bus.service';
 
 const PO_NUMBER_LOCK_NAMESPACE = 8_241_120;
 const GRN_NUMBER_LOCK_NAMESPACE = 8_241_121;
+const DRAFT_PO_LOCK_NAMESPACE = 8_241_122;
 
-async function nextPONumber(tx: Prisma.TransactionClient): Promise<string> {
+async function nextPONumber(
+  tx: Prisma.TransactionClient,
+  settings: SettingsService,
+  config: AppConfigService,
+): Promise<string> {
   const year = new Date().getFullYear();
-  const prefix = `PO-${year}-`;
+  // The prefix is a Setting, so a shop can match paperwork it already
+  // numbers its own way. See core/settings/document-prefix.ts.
+  const prefix = await documentPrefix(settings, 'purchaseOrder');
+  // Scanning by this node's own prefix — see document-number.ts — keeps the
+  // MAX scan correct once a chain deployment's numbers carry a node id: a
+  // branch's scan still only ever sees its own node's rows. The sequence is
+  // always the LAST '-'-separated field (split_part's negative n counts
+  // from the end), which stays true whether or not NODE_ID itself contains
+  // a hyphen (RETAIL-ERP.md's own example, "lhr-01", does).
+  const like = documentNumberPrefix(config, prefix, year);
   await tx.$executeRaw`SELECT pg_advisory_xact_lock(${PO_NUMBER_LOCK_NAMESPACE}::int, ${year}::int)`;
   const [{ max }] = await tx.$queryRaw<Array<{ max: number | null }>>`
-    SELECT MAX(CAST(split_part("number", '-', 3) AS INTEGER)) AS max
+    SELECT MAX(CAST(split_part("number", '-', -1) AS INTEGER)) AS max
     FROM "PurchaseOrder"
-    WHERE "number" LIKE ${`${prefix}%`}
+    WHERE "number" LIKE ${`${like}%`}
   `;
   const nextSequence = (max ?? 0) + 1;
-  return `${prefix}${nextSequence.toString().padStart(4, '0')}`;
+  return documentNumber(config, prefix, year, nextSequence);
 }
 
-async function nextGRNNumber(tx: Prisma.TransactionClient): Promise<string> {
+async function nextGRNNumber(
+  tx: Prisma.TransactionClient,
+  settings: SettingsService,
+  config: AppConfigService,
+): Promise<string> {
   const year = new Date().getFullYear();
-  const prefix = `GRN-${year}-`;
+  // The prefix is a Setting, so a shop can match paperwork it already
+  // numbers its own way. See core/settings/document-prefix.ts.
+  const prefix = await documentPrefix(settings, 'goodsReceipt');
+  const like = documentNumberPrefix(config, prefix, year);
   await tx.$executeRaw`SELECT pg_advisory_xact_lock(${GRN_NUMBER_LOCK_NAMESPACE}::int, ${year}::int)`;
   const [{ max }] = await tx.$queryRaw<Array<{ max: number | null }>>`
-    SELECT MAX(CAST(split_part("number", '-', 3) AS INTEGER)) AS max
+    SELECT MAX(CAST(split_part("number", '-', -1) AS INTEGER)) AS max
     FROM "GoodsReceipt"
-    WHERE "number" LIKE ${`${prefix}%`}
+    WHERE "number" LIKE ${`${like}%`}
   `;
   const nextSequence = (max ?? 0) + 1;
-  return `${prefix}${nextSequence.toString().padStart(4, '0')}`;
+  return documentNumber(config, prefix, year, nextSequence);
 }
 
 @Injectable()
@@ -43,7 +70,9 @@ export class PurchasingService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly inventoryService: InventoryService,
+    private readonly parties: PartiesService,
     private readonly settingsService: SettingsService,
+    private readonly config: AppConfigService,
     private readonly events: EventBusService,
   ) {}
 
@@ -55,7 +84,7 @@ export class PurchasingService {
 
   async findAllPurchaseOrders(status?: string) {
     return this.prisma.purchaseOrder.findMany({
-      where: status ? { status: status as any } : undefined,
+      where: status ? { status: status as PurchaseOrderStatus } : undefined,
       include: {
         supplier: { select: { id: true, name: true } },
       },
@@ -95,15 +124,42 @@ export class PurchasingService {
       include: {
         products: {
           include: { variant: true }
-        }
+        },
+        // TradingPartner is owned by the tradingpartners module, but both
+        // it and purchasing are 'core' pack (module-packs.ts) — a core<->core
+        // relation is allowed, unlike a relation into a sector pack would be.
+        tradingPartner: { select: { id: true, name: true, status: true } },
       }
     });
     if (!supplier) throw new NotFoundException('Supplier not found');
     return supplier;
   }
 
+  /**
+   * Creates the Supplier and its backing Party in one transaction — a
+   * Supplier must never exist without the permanent counterparty profile it
+   * is the SUPPLIER-role extension of (parties.prisma). Dedupes on
+   * phone/taxId: creating a supplier for a business already known under
+   * another role (or a prior Supplier with the same phone) links the
+   * existing Party rather than creating a second profile for the same
+   * real business.
+   */
   async create(dto: CreateSupplierDto) {
-    return this.prisma.supplier.create({ data: dto });
+    return this.prisma.$transaction(async (tx) => {
+      const party = await this.parties.findOrCreateForRole(
+        {
+          name: dto.name,
+          contactName: dto.contactName,
+          phone: dto.phone,
+          email: dto.email,
+          address: dto.address,
+          city: dto.city,
+        },
+        'SUPPLIER',
+        tx,
+      );
+      return tx.supplier.create({ data: { ...dto, partyId: party.id } });
+    });
   }
 
   async update(id: string, dto: UpdateSupplierDto) {
@@ -185,7 +241,7 @@ export class PurchasingService {
 
   async createPurchaseOrder(dto: CreatePurchaseOrderDto, userId: string) {
     return this.prisma.$transaction(async (tx) => {
-      const number = await nextPONumber(tx);
+      const number = await nextPONumber(tx, this.settingsService, this.config);
       const subtotal = dto.items.reduce((sum, item) => sum + (item.quantityOrdered * item.unitCost), 0);
       const freightCost = dto.freightCost ?? 0;
       const dutyCost = dto.dutyCost ?? 0;
@@ -259,7 +315,7 @@ export class PurchasingService {
         return { reqItem, poLine };
       });
 
-      const grnNumber = await nextGRNNumber(tx);
+      const grnNumber = await nextGRNNumber(tx, this.settingsService, this.config);
       const freightCost = dto.freightCost ?? 0;
       const dutyCost = dto.dutyCost ?? 0;
       const otherCost = dto.otherCost ?? 0;
@@ -371,6 +427,208 @@ export class PurchasingService {
       );
 
       return receipt;
+    });
+  }
+
+  /**
+   * Adds (or tops up) one reorder line on a supplier's open DRAFT PO,
+   * creating that PO if none exists. Called from two places that must stay
+   * behaviourally identical: the real-time reorder.listener.ts (fires the
+   * moment a variant crosses reorderPoint) and purchasing.cron.ts (the
+   * nightly safety-net sweep for anything the real-time path missed, e.g. a
+   * bulk stock import that bypasses InventoryService.move()).
+   */
+  async upsertReorderDraftLine(input: {
+    supplierId: string;
+    variantId: string;
+    quantity: number;
+    unitCost: number;
+  }): Promise<void> {
+    await this.prisma.$transaction(async (tx) => {
+      // Serializes concurrent callers for the SAME supplier — otherwise two
+      // near-simultaneous low-stock events (or a real-time event racing the
+      // nightly sweep) could each see "no DRAFT PO yet" and create two.
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(${DRAFT_PO_LOCK_NAMESPACE}::int, hashtext(${input.supplierId})::int)`;
+
+      let po = await tx.purchaseOrder.findFirst({
+        where: { supplierId: input.supplierId, status: 'DRAFT' },
+        include: { items: true },
+      });
+
+      if (!po) {
+        const number = await nextPONumber(tx, this.settingsService, this.config);
+        po = await tx.purchaseOrder.create({
+          data: { supplierId: input.supplierId, number, status: 'DRAFT', currency: BRAND.locale.currency },
+          include: { items: true },
+        });
+      }
+
+      const existingLine = po.items.find((i) => i.variantId === input.variantId);
+      if (existingLine) {
+        if (existingLine.quantityOrdered < input.quantity) {
+          await tx.purchaseOrderItem.update({
+            where: { id: existingLine.id },
+            data: { quantityOrdered: input.quantity, lineTotal: input.quantity * existingLine.unitCost },
+          });
+        }
+      } else {
+        await tx.purchaseOrderItem.create({
+          data: {
+            purchaseOrderId: po.id,
+            variantId: input.variantId,
+            quantityOrdered: input.quantity,
+            unitCost: input.unitCost,
+            lineTotal: input.quantity * input.unitCost,
+          },
+        });
+      }
+
+      const updatedItems = await tx.purchaseOrderItem.findMany({ where: { purchaseOrderId: po.id } });
+      const subtotal = updatedItems.reduce((acc, i) => acc + i.lineTotal, 0);
+      await tx.purchaseOrder.update({ where: { id: po.id }, data: { subtotal, total: subtotal } });
+    });
+  }
+
+  async findAllSupplierBills(supplierId?: string) {
+    return this.prisma.supplierBill.findMany({
+      where: supplierId ? { supplierId } : undefined,
+      include: { supplier: { select: { id: true, name: true } } },
+      orderBy: { issuedAt: 'desc' },
+    });
+  }
+
+  async findOneSupplierBill(id: string) {
+    const bill = await this.prisma.supplierBill.findUnique({
+      where: { id },
+      include: { supplier: { select: { id: true, name: true, currency: true } } },
+    });
+    if (!bill) throw new NotFoundException('Supplier bill not found');
+    return bill;
+  }
+
+  /**
+   * Raises a bill against a supplier — a demand for payment distinct from
+   * the goods receipt it may relate to (R18). `fxRateScaled` is the booked
+   * rate for a foreign-currency bill (R16): snapshotted here and never
+   * re-derived (House Rule 7), so a later FX rate move shows up as a
+   * realised gain/loss at payment time, not a silent rewrite of this bill.
+   */
+  async createSupplierBill(dto: CreateSupplierBillDto) {
+    return this.prisma.$transaction(async (tx) => {
+      const supplier = await tx.supplier.findUnique({ where: { id: dto.supplierId } });
+      if (!supplier) throw new NotFoundException('Supplier not found');
+
+      if (dto.purchaseOrderId) {
+        const po = await tx.purchaseOrder.findUnique({ where: { id: dto.purchaseOrderId } });
+        if (!po) throw new NotFoundException('Purchase order not found');
+        if (po.supplierId !== dto.supplierId) {
+          throw new BadRequestException('That purchase order belongs to a different supplier.');
+        }
+      }
+
+      const currency = dto.currency ?? supplier.currency;
+      const isBase = currency === BRAND.locale.currency;
+      if (!isBase && !dto.fxRateScaled) {
+        throw new BadRequestException(
+          `fxRateScaled is required to raise a bill in ${currency} (not the base currency, ${BRAND.locale.currency}).`,
+        );
+      }
+      const fxRateScaled = isBase ? 1_000_000 : dto.fxRateScaled!;
+      const baseAmountMinor = convertToBase(dto.amount, fxRateScaled);
+
+      const bill = await tx.supplierBill.create({
+        data: {
+          supplierId: dto.supplierId,
+          purchaseOrderId: dto.purchaseOrderId,
+          reference: dto.reference,
+          amount: dto.amount,
+          currency,
+          fxRateScaled,
+          baseAmountMinor,
+          dueAt: dto.dueAt ? new Date(dto.dueAt) : null,
+          notes: dto.notes,
+        },
+      });
+
+      await this.events.publish(
+        DomainEvent.SupplierBillRaised,
+        {
+          billId: bill.id,
+          supplierId: bill.supplierId,
+          purchaseOrderId: bill.purchaseOrderId,
+          amountMinor: bill.amount,
+          currency: bill.currency,
+          fxRateScaled: bill.fxRateScaled,
+          baseAmountMinor: bill.baseAmountMinor,
+          issuedAt: bill.issuedAt.toISOString(),
+        },
+        tx,
+      );
+
+      return bill;
+    });
+  }
+
+  /**
+   * Records a payment against a bill, in the bill's own currency. For a
+   * foreign-currency bill, `settlementFxRateScaled` is the rate actually
+   * used to buy the currency today — the posting rule
+   * (posting-rules.subscriber.ts) compares it against the bill's own booked
+   * rate to post the realised FX gain/loss (R16); this method never
+   * computes that difference itself, matching accounting's "couples to
+   * nothing" boundary (R15).
+   */
+  async recordSupplierBillPayment(billId: string, dto: RecordSupplierBillPaymentDto) {
+    return this.prisma.$transaction(async (tx) => {
+      const bill = await tx.supplierBill.findUnique({ where: { id: billId } });
+      if (!bill) throw new NotFoundException('Supplier bill not found');
+      if (bill.status === 'PAID') {
+        throw new BadRequestException('This bill is already fully paid.');
+      }
+
+      const outstanding = bill.amount - bill.amountPaid;
+      if (dto.amountMinor > outstanding) {
+        throw new BadRequestException(
+          `Payment of ${dto.amountMinor} exceeds the outstanding balance of ${outstanding}.`,
+        );
+      }
+
+      const isBase = bill.currency === BRAND.locale.currency;
+      if (!isBase && !dto.fxRateScaled) {
+        throw new BadRequestException(
+          `fxRateScaled is required to record a payment against a bill in ${bill.currency}.`,
+        );
+      }
+      const settlementFxRateScaled = isBase ? 1_000_000 : dto.fxRateScaled!;
+
+      const amountPaid = bill.amountPaid + dto.amountMinor;
+      const status = amountPaid >= bill.amount ? 'PAID' : 'PARTIAL';
+      const paidAt = dto.paidAt ? new Date(dto.paidAt) : new Date();
+
+      const updated = await tx.supplierBill.update({
+        where: { id: billId },
+        data: {
+          amountPaid,
+          status,
+          ...(status === 'PAID' ? { paidAt } : {}),
+        },
+      });
+
+      await this.events.publish(
+        DomainEvent.SupplierBillPaid,
+        {
+          billId: bill.id,
+          supplierId: bill.supplierId,
+          amountMinor: dto.amountMinor,
+          currency: bill.currency,
+          billFxRateScaled: bill.fxRateScaled,
+          settlementFxRateScaled,
+          paidAt: paidAt.toISOString(),
+        },
+        tx,
+      );
+
+      return updated;
     });
   }
 }

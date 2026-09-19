@@ -11,6 +11,12 @@ enum StockMovementReason {
   DAMAGE // written off as damaged
   COUNT // variance posted by a stock count
   WRITE_OFF // lost, stolen, expired
+  PRODUCTION_CONSUMPTION // raw material consumed by a released WorkOrder
+  PRODUCTION_RECEIPT // finished goods credited by a completed WorkOrder
+  POS_SALE // till sale (RETAIL-ERP.md R11) — distinct from SALE so a ledger read can tell channel apart without joining Order
+  POS_OFFLINE_VARIANCE // InventoryService.postUnconditional() drove a variant negative (R5) — paired 1:1 with a StockVariance row
+  TRANSFER_OUT // WO-22.1: leaving a location (source on dispatch, or the in-transit bucket returning to source on cancel)
+  TRANSFER_IN // WO-22.1: arriving at a location (the in-transit bucket on dispatch, or the destination/source on receive/cancel)
 }
 
 model StockMovement {
@@ -52,21 +58,95 @@ model StockMovement {
   @@index([locationId])
 }
 
+/// STORE/WAREHOUSE are physical, staffed or stocked normally. IN_TRANSIT is
+/// neither — a transient bucket a StockTransfer (WO-22.1, R4) creates for
+/// itself, holding exactly the quantity currently between two real
+/// locations. Splitting it out as its own Location (rather than a flag on
+/// the transfer) is what R4 turns on: everything VariantLocationStock and
+/// the ledger already do for a real location comes free for "goods on a
+/// truck" too, with no schema change and no unsafe cross-database constraint.
+enum LocationType {
+  STORE
+  WAREHOUSE
+  IN_TRANSIT
+}
+
 /// A place stock physically lives. Single-location shops get exactly one row
 /// (isDefault: true) and never see it in any UI — B6, MULTI-SECTOR.md.
 model Location {
-  id        String   @id @default(cuid())
+  id        String       @id @default(cuid())
   name      String
-  code      String   @unique // "MAIN", "LHR-01" — short, used in ledger refs
+  code      String       @unique // "MAIN", "LHR-01" — short, used in ledger refs
+  type      LocationType @default(STORE)
+
+  /// Which retail brand this location belongs to — null for every
+  /// deployment today (the deployment's own implicit brand, brand.ts).
+  /// Populated once sub-brands exist and a BRAND-tier database's locations
+  /// need to say which sub-brand they serve.
+  retailBrandId String?
+  /// The node that reported this location — null for every deployment
+  /// today. Scaffolding for R6 point 2 ("Location.code" is one of the
+  /// natural keys R6 names as needing `@@unique([originNodeId, value])`
+  /// once branches create locations independently), deliberately NOT wired
+  /// into `code`'s constraint yet: Postgres does not treat two NULLs as
+  /// equal in a composite unique index, so `@@unique([originNodeId, code])`
+  /// with both columns nullable would let two STANDALONE-deployment
+  /// locations both be coded "MAIN" — silently *weaker* than today's
+  /// `@unique`, the opposite of the point. Needs a NULL-safe index (a
+  /// COALESCE'd expression index, hand-written into the migration) before
+  /// it can replace the plain unique below — deferred alongside
+  /// Product.slug/SKU/barcode (WO-18.2's commit), not attempted half-safe.
+  originNodeId  String?
   isDefault Boolean  @default(false)
   isActive  Boolean  @default(true)
   address   Json?
   createdAt DateTime @default(now())
 
-  stocks    VariantLocationStock[]
-  movements StockMovement[]
+  retailBrand RetailBrand? @relation(fields: [retailBrandId], references: [id], onDelete: SetNull)
+  stocks      VariantLocationStock[]
+  movements   StockMovement[]
+  workOrders  WorkOrder[]
+  variances   StockVariance[]
 
   @@index([isActive])
+  @@index([retailBrandId])
+}
+
+enum StockVarianceStatus {
+  OPEN
+  RESOLVED
+}
+
+/// One row per oversell InventoryService.postUnconditional() let through (R5:
+/// a POS sale that already happened is never rejected by sync). Paired with
+/// the StockMovement (POS_OFFLINE_VARIANCE) that recorded the actual negative
+/// delta; this row is the exception queue a manager works from, and its
+/// posting rule (posting-rules.subscriber.ts) books the shrinkage journal
+/// (R15). refType/refId follow StockMovement's own convention rather than a
+/// relation, so inventory stays independent of orders/pos.
+model StockVariance {
+  id              String              @id @default(cuid())
+  variantId       String
+  locationId      String
+  /// Positive magnitude the variant went negative by. Always > 0.
+  overshootQty    Int
+  stockMovementId String              @unique
+  refType         String?
+  refId           String?
+  status          StockVarianceStatus @default(OPEN)
+
+  resolvedByUserId String?
+  resolvedAt       DateTime?
+  resolutionNote   String?
+
+  createdAt DateTime @default(now())
+
+  variant  ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  location Location       @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([variantId])
+  @@index([locationId])
 }
 
 /// Stock, per variant, per location. The thing InventoryService.move() writes

@@ -1,3 +1,6 @@
+import { documentPrefix } from '../../core/settings/document-prefix';
+import { documentNumber } from '../../core/settings/document-number';
+import { AppConfigService } from '../../core/config/app-config.service';
 import {
   BadRequestException,
   ForbiddenException,
@@ -6,6 +9,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import {
+  computeLineItem,
   computeOrderTotals,
   computeShippingFee,
   DEFAULT_LOCALE,
@@ -16,7 +20,7 @@ import {
   taxExclusive,
   taxInclusive,
   type Locale,
-} from '@yaseen/shared';
+} from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { CheckoutValidatorRegistry } from '../../core/checkout/checkout-validator.registry';
 import { DomainEvent } from '../../core/events/domain-events';
@@ -30,6 +34,22 @@ import { Prisma, type OrderStatus } from '../../core/prisma/client';
 import { PaymentsService } from '../payments/payments.service';
 import { TaxService } from '../tax/tax.service';
 import type { PlaceOrderDto } from './dto/order.dto';
+
+export interface PosSaleLineInput {
+  variantId: string;
+  quantity: number;
+}
+
+export interface PlaceFromPosInput {
+  locationId: string;
+  terminalId: string;
+  shiftId: string;
+  cashierUserId: string;
+  lines: PosSaleLineInput[];
+  customerName?: string;
+  customerPhone?: string;
+  customerEmail?: string;
+}
 
 /**
  * Which status may follow which. A shop that can jump an order straight from
@@ -71,6 +91,7 @@ export class OrdersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly settings: SettingsService,
+    private readonly config: AppConfigService,
     private readonly events: EventBusService,
     private readonly audit: AuditService,
     private readonly payments: PaymentsService,
@@ -124,7 +145,7 @@ export class OrdersService {
     const phone = normalizePkPhone(dto.shippingAddress.phone).e164;
     if (!phone) {
       throw new BadRequestException(
-        'Enter a valid Pakistani phone number — the courier needs it.',
+        'Enter a valid phone number — the courier needs it.',
       );
     }
 
@@ -149,6 +170,8 @@ export class OrdersService {
       // per the rounding-trap discipline (one source of truth, never two).
       taxAmount: priced.totals.taxAmount,
     });
+
+    const allowBackorder = await this.settings.get<boolean>(SettingKey.OrdersAllowBackorder);
 
     const minimum = await this.settings.get<number>(SettingKey.MinOrderValue);
     if (goodsSubtotal < minimum) {
@@ -177,15 +200,16 @@ export class OrdersService {
     // Reserved before checkout's own transaction opens — see
     // nextOrderNumber() for why this has to be a separate atomic step
     // rather than something computed inside that transaction.
-    const orderNumber = await nextOrderNumber(this.prisma);
+    const orderNumber = await nextOrderNumber(this.prisma, this.settings, this.config);
 
     const order = await this.prisma.$transaction(async (tx) => {
       const variantIds = [...new Set(priced.lines.map(l => l.variantId))];
       const variants = await tx.productVariant.findMany({
         where: { id: { in: variantIds } },
-        select: { id: true, costPrice: true },
+        select: { id: true, costPrice: true, producedInHouse: true },
       });
       const costMap = new Map(variants.map(v => [v.id, v.costPrice]));
+      const producedInHouseMap = new Map(variants.map(v => [v.id, v.producedInHouse]));
 
       const created = await tx.order.create({
         data: {
@@ -242,24 +266,62 @@ export class OrdersService {
       });
 
       const locationId = await this.inventory.defaultLocationId(tx);
-      const sortedLines = [...priced.lines].sort((a, b) => a.variantId.localeCompare(b.variantId));
-      for (const line of sortedLines) {
+      // Sorted by variantId, same as moveMany()'s own internal ordering —
+      // this is the actual lock order two concurrent checkouts touching the
+      // same variants must agree on to avoid a deadlock (see "survives
+      // opposite-order checkouts" in orders.e2e-spec.ts). item.id as the
+      // tiebreaker only matters when two lines share a variantId (same
+      // product, different stitching options) and doesn't affect lock order.
+      const sortedItems = [...created.items].sort((a, b) => {
+        const byVariant = (a.variantId ?? '').localeCompare(b.variantId ?? '');
+        return byVariant !== 0 ? byVariant : a.id.localeCompare(b.id);
+      });
+      const backorderedStockIds: string[] = [];
+      const backorderedProductionIds: string[] = [];
+      for (const item of sortedItems) {
+        if (!item.variantId) continue; // a stitching-service line has no stock to move
         try {
           await this.inventory.move({
-            variantId: line.variantId,
+            variantId: item.variantId,
             locationId,
-            delta: -line.quantity,
+            delta: -item.quantity,
             reason: 'SALE',
             refType: 'Order',
             refId: created.id,
-            unitCost: costMap.get(line.variantId) ?? 0,
+            unitCost: costMap.get(item.variantId) ?? 0,
           }, tx);
         } catch (error) {
           if (error instanceof InsufficientStockError) {
-            throw new BadRequestException(`${line.nameEn} sold out while you were checking out. Please adjust your cart.`);
+            if (!allowBackorder) {
+              throw new BadRequestException(`${item.nameEn} sold out while you were checking out. Please adjust your cart.`);
+            }
+            // Ship-safe default keeps today's behavior (the throw above);
+            // only with checkout.allow_backorder on does a line get parked
+            // instead of failing the whole order. backorder.listener.ts
+            // (@OnDomainEvent(StockReplenished)) allocates the stock and
+            // flips it to READY automatically once it exists.
+            if (producedInHouseMap.get(item.variantId)) {
+              backorderedProductionIds.push(item.id);
+            } else {
+              backorderedStockIds.push(item.id);
+            }
+            continue;
           }
           throw error;
         }
+      }
+
+      if (backorderedStockIds.length > 0) {
+        await tx.orderItem.updateMany({
+          where: { id: { in: backorderedStockIds } },
+          data: { fulfillmentStatus: 'AWAITING_STOCK', awaitingSince: new Date() },
+        });
+      }
+      if (backorderedProductionIds.length > 0) {
+        await tx.orderItem.updateMany({
+          where: { id: { in: backorderedProductionIds } },
+          data: { fulfillmentStatus: 'AWAITING_PRODUCTION', awaitingSince: new Date() },
+        });
       }
 
       const payment = await this.payments.createForOrder(tx, dto.paymentMethod, {
@@ -285,7 +347,7 @@ export class OrdersService {
           grandTotal: created.grandTotal,
           placedAt: created.placedAt.toISOString(),
           stitchingItemIds: created.items
-            .filter((item) => (item as any).garmentTypeKey)
+            .filter((item) => item.garmentTypeKey)
             .map((item) => item.id),
         },
         tx,
@@ -304,6 +366,198 @@ export class OrdersService {
 
     this.logger.log(`Order ${order.number} placed for ${order.grandTotal} paisa`);
     await this.attachStitchingJobs(order);
+    return order;
+  }
+
+  /**
+   * The till's sale path (RETAIL-ERP.md R11): `pos` resolves the shift/
+   * terminal context and validates the shift is open, then hands a flat list
+   * of {variantId, quantity} here — a deliberately separate, minimal method
+   * from place(), not a reuse of it, because place() is wired through a cart,
+   * a shipping address and stitching options none of which a till sale has.
+   *
+   * Three things a web order does that this does not, on purpose, quarantined
+   * to a later work order rather than faked: no stitching line (a till sells
+   * ready stock, WO-21.4+ if a shop wants to take stitching orders at the
+   * counter), no tax lookup (TaxService integration for POS is unscoped
+   * here), no backorder path — postUnconditional() below means there is
+   * never a reason to park a line, only to record how far it oversold.
+   *
+   * Stock posts through postUnconditional(), never move(): R5 — a sale that
+   * already happened at the till must not be rejected by sync. Payment is
+   * created directly as a paid cash tender, bypassing PaymentsService's
+   * provider registry (R11) — a till has no gateway callback to route
+   * through. Status is set straight to DELIVERED at creation (the customer
+   * already has the goods), which ALLOWED_TRANSITIONS never has to know
+   * about since it only governs updateStatus(), not create().
+   */
+  async placeFromPos(input: PlaceFromPosInput) {
+    if (input.lines.length === 0) {
+      throw new BadRequestException('A sale needs at least one line.');
+    }
+
+    const variantIds = [...new Set(input.lines.map((line) => line.variantId))];
+    const variants = await this.prisma.productVariant.findMany({
+      where: { id: { in: variantIds }, isActive: true },
+      include: {
+        product: {
+          include: {
+            translations: { where: { locale: DEFAULT_LOCALE }, take: 1 },
+            images: { orderBy: { isPrimary: 'desc' }, take: 1 },
+          },
+        },
+      },
+    });
+    const variantMap = new Map(variants.map((variant) => [variant.id, variant]));
+
+    const missing = variantIds.filter((id) => !variantMap.has(id));
+    if (missing.length > 0) {
+      throw new BadRequestException(`Unknown or inactive variant(s): ${missing.join(', ')}`);
+    }
+
+    const lines = input.lines.map((line) => {
+      const variant = variantMap.get(line.variantId)!;
+      const unitPrice = variant.priceOverride ?? variant.product.basePrice;
+      const lineTotals = computeLineItem({ unitPrice, quantity: line.quantity });
+      const english = pickTranslation(variant.product.translations, 'en');
+      return {
+        variant,
+        variantId: line.variantId,
+        productId: variant.productId,
+        quantity: line.quantity,
+        unitPrice,
+        lineTotal: lineTotals.lineTotal,
+        nameEn: english?.name ?? variant.product.slug,
+        imageUrl: variant.product.images[0]?.url ?? null,
+        variantLabel: getVariantDisplayLabel(variant),
+      };
+    });
+
+    const totals = computeOrderTotals({
+      items: lines.map((line) => ({ unitPrice: line.unitPrice, quantity: line.quantity })),
+      shippingFee: 0,
+      codFee: 0,
+      taxAmount: 0,
+    });
+
+    const orderNumber = await nextOrderNumber(this.prisma, this.settings, this.config);
+
+    const order = await this.prisma.$transaction(async (tx) => {
+      const created = await tx.order.create({
+        data: {
+          number: orderNumber,
+          status: 'DELIVERED',
+          channel: 'POS',
+          locationId: input.locationId,
+          terminalId: input.terminalId,
+          shiftId: input.shiftId,
+          guestName: input.customerName ?? null,
+          guestEmail: input.customerEmail ?? null,
+          guestPhone: input.customerPhone ?? null,
+          shippingAddress: {},
+          itemsSubtotal: totals.itemsSubtotal,
+          stitchingSubtotal: totals.stitchingSubtotal,
+          itemDiscountTotal: totals.itemDiscountTotal,
+          orderDiscount: totals.orderDiscount,
+          shippingFee: totals.shippingFee,
+          codFee: totals.codFee,
+          taxAmount: totals.taxAmount,
+          grandTotal: totals.grandTotal,
+          deliveredAt: new Date(),
+          items: {
+            create: lines.map((line) => ({
+              productId: line.productId,
+              variantId: line.variantId,
+              kind: line.variant.product.kind,
+              nameEn: line.nameEn,
+              sku: line.variant.sku,
+              imageUrl: line.imageUrl,
+              variantLabel: line.variantLabel,
+              unitPrice: line.unitPrice,
+              unitCost: line.variant.costPrice,
+              quantity: line.quantity,
+              lineTotal: line.lineTotal,
+            })),
+          },
+          statusEvents: {
+            create: { toStatus: 'DELIVERED', note: 'POS sale', actorId: input.cashierUserId },
+          },
+        },
+        include: orderInclude,
+      });
+
+      // Sorted the same way moveMany() locks — see place()'s own comment on
+      // sortedItems for why this matters under concurrent tills at the same
+      // location.
+      const sortedItems = [...created.items].sort((a, b) => (a.variantId ?? '').localeCompare(b.variantId ?? ''));
+      for (const item of sortedItems) {
+        if (!item.variantId) continue;
+        const variant = variantMap.get(item.variantId)!;
+        await this.inventory.postUnconditional(
+          {
+            variantId: item.variantId,
+            locationId: input.locationId,
+            delta: -item.quantity,
+            reason: 'POS_SALE',
+            refType: 'Order',
+            refId: created.id,
+            unitCost: variant.costPrice,
+            actorId: input.cashierUserId,
+          },
+          tx,
+        );
+      }
+
+      // A till's cash tender has no gateway callback to route through
+      // PaymentsService's provider registry — it is paid the instant it is
+      // rung up, so the Payment row is created directly rather than through
+      // createForOrder()'s PENDING-then-webhook flow. PaymentSucceeded is
+      // published by hand for the same reason createForOrder() would have:
+      // posting-rules.subscriber.ts's Dr Cash & Bank / Cr AR only fires off
+      // that event, and a cash sale must not sit in the books as an
+      // uncollected receivable forever.
+      const payment = await tx.payment.create({
+        data: {
+          orderId: created.id,
+          provider: 'cash',
+          amount: created.grandTotal,
+          status: 'PAID',
+          paidAt: new Date(),
+        },
+      });
+
+      await this.events.publish(
+        DomainEvent.PaymentSucceeded,
+        {
+          paymentId: payment.id,
+          orderId: created.id,
+          provider: payment.provider,
+          amount: payment.amount,
+          status: payment.status,
+        },
+        tx,
+      );
+
+      await this.events.publish(
+        DomainEvent.OrderPlaced,
+        {
+          orderId: created.id,
+          orderNumber: created.number,
+          userId: null,
+          customerName: input.customerName ?? 'Walk-in customer',
+          customerPhone: input.customerPhone ?? null,
+          customerEmail: input.customerEmail ?? null,
+          grandTotal: created.grandTotal,
+          placedAt: created.placedAt.toISOString(),
+          stitchingItemIds: [],
+        },
+        tx,
+      );
+
+      return { ...created, payment };
+    });
+
+    this.logger.log(`POS sale ${order.number} placed for ${order.grandTotal} paisa at terminal ${input.terminalId}`);
     return order;
   }
 
@@ -436,10 +690,14 @@ export class OrdersService {
         data: { orderId, fromStatus: order.status, toStatus, note: note ?? null, actorId },
       });
 
-      // Cancelling or returning releases the stock back to the shelf.
+      // Cancelling or returning releases the stock back to the shelf — at the
+      // location it was actually sold from (order.locationId, set for a POS
+      // sale by placeFromPos(), WO-21.3) rather than always the default one.
+      // A web order has no locationId, so it still falls back to the default
+      // — exactly today's behavior, unchanged for every order this doesn't apply to.
       if (toStatus === 'CANCELLED' || toStatus === 'RETURNED') {
         const moveReason = toStatus === 'CANCELLED' ? 'CANCELLATION' : 'RETURN';
-        const locationId = await this.inventory.defaultLocationId(tx);
+        const locationId = order.locationId ?? (await this.inventory.defaultLocationId(tx));
         await this.inventory.moveMany(
           order.items.filter(i => i.variantId).map(item => ({
             variantId: item.variantId!,
@@ -805,7 +1063,11 @@ function jsonOrNull(value: unknown): Prisma.InputJsonValue | typeof Prisma.DbNul
 }
 
 /**
- * Sequential order numbers per year: YSN-2026-0001.
+ * Sequential order numbers per year: YSN-2026-0001, the prefix from BRAND —
+ * or, once this deployment is part of a chain (WO-18.1's NODE_ROLE),
+ * YSN-lhr-01-2026-0001, so two branches' locally-allocated numbers can
+ * never collide once their facts merge upward (RETAIL-ERP.md R2, R6). See
+ * core/settings/document-number.ts.
  *
  * Two earlier designs both got this wrong. Reading MAX(Order.number) and
  * adding one is a read-then-write, and READ COMMITTED (Postgres' default,
@@ -830,9 +1092,16 @@ function jsonOrNull(value: unknown): Prisma.InputJsonValue | typeof Prisma.DbNul
  * reserved is simply skipped, the same way a gap appears after any failed
  * insert on an auto-increment key.
  */
-async function nextOrderNumber(prisma: PrismaService): Promise<string> {
+async function nextOrderNumber(
+  prisma: PrismaService,
+  settings: SettingsService,
+  config: AppConfigService,
+): Promise<string> {
   const year = new Date().getFullYear();
-  const prefix = `YSN-${year}-`;
+  // A Setting, defaulting to the brand's own initials. The number a
+  // customer quotes back to you is the one place a shop is most likely to
+  // already have a convention.
+  const prefix = await documentPrefix(settings, 'order');
 
   const [{ counter }] = await prisma.$queryRaw<Array<{ counter: number }>>`
     INSERT INTO "OrderNumberCounter" ("year", "counter") VALUES (${year}, 1)
@@ -840,5 +1109,5 @@ async function nextOrderNumber(prisma: PrismaService): Promise<string> {
     RETURNING "counter"
   `;
 
-  return `${prefix}${String(counter).padStart(4, '0')}`;
+  return documentNumber(config, prefix, year, counter);
 }

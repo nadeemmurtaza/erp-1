@@ -1,21 +1,21 @@
 import type { Metadata } from 'next';
 import { Encode_Sans } from 'next/font/google';
-import { NextIntlClientProvider, hasLocale } from 'next-intl';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { hasLocale } from 'next-intl';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { directionFor, type Locale } from '@yaseen/shared';
+import { directionFor, type Locale } from '@newax/shared';
 import '@/app/globals.css';
 import { AnalyticsBeacon } from '@/components/storefront/analytics-beacon';
-import { CartProvider } from '@/components/storefront/cart-provider';
-import { CustomerSessionProvider } from '@/components/storefront/customer-session';
 import { Footer } from '@/components/storefront/footer';
 import { Header } from '@/components/storefront/header';
 import { JsonLd } from '@/components/storefront/json-ld';
 import { SmoothScroller } from '@/components/storefront/smooth-scroller';
+import { StorefrontProviders } from '@/providers/storefront-providers';
 import { businessProfile } from '@/config/business-profile';
 import { routing } from '@/i18n/routing';
-import { SITE_URL } from '@/lib/site';
+import { SITE_URL } from '@/config/site';
+import { BRAND, intlTag } from '@newax/shared';
 
 // Storefront reskin typeface. Variable font, so no `weight` list is needed —
 // the full 100-900 range loads under one file. Exposed as --font-encode-sans
@@ -56,7 +56,7 @@ export async function generateMetadata({
     openGraph: {
       type: 'website',
       siteName: t('name'),
-      locale: locale === 'ur' ? 'ur_PK' : 'en_PK',
+      locale: intlTag(locale as Locale).replace('-', '_'),
     },
     twitter: { card: 'summary_large_image' },
   };
@@ -72,14 +72,16 @@ function organizationJsonLd() {
     url: SITE_URL,
     // A raster export, not icon.svg — Google's structured-data guidelines
     // require the Organization logo to be jpg/png/gif, SVG isn't supported.
-    logo: `${SITE_URL}/logo-512.png`,
+    // Rendered from that same icon.svg by scripts/build-logo-raster.mjs, so it
+    // stays sharp wherever it is scaled; re-run that script if the icon changes.
+    logo: `${SITE_URL}/logo-1024.png`,
     email: businessProfile.email,
     telephone: businessProfile.phone,
     address: {
       '@type': 'PostalAddress',
       streetAddress: businessProfile.address,
       addressLocality: businessProfile.city,
-      addressCountry: 'PK',
+      addressCountry: BRAND.locale.countryCode,
     },
     sameAs: Object.values(businessProfile.socials),
   };
@@ -101,34 +103,34 @@ export default async function LocaleLayout({
   // rendering the moment they read a translation.
   setRequestLocale(locale);
 
+  // Read on the server and handed to the client provider below, which
+  // cannot fetch them itself — see StorefrontProviders.
+  const messages = await getMessages();
+
   const t = await getTranslations({ locale, namespace: 'site' });
 
   return (
     <html lang={locale} dir={directionFor(locale as Locale)}>
       <body
-        className={`flex min-h-screen flex-col ${encodeSans.variable}`}
+        className={`flex min-h-screen flex-col pb-24 md:pb-0 ${encodeSans.variable}`}
         suppressHydrationWarning
       >
         <JsonLd data={organizationJsonLd()} />
         <SmoothScroller>
-          <NextIntlClientProvider>
-            <CustomerSessionProvider>
-              <CartProvider>
-              <AnalyticsBeacon />
-              <a
-                href="#main"
-                className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-2 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:shadow"
-              >
-                {t('skipToContent')}
-              </a>
-              <Header />
-              <main id="main" className="flex-1">
-                {children}
-              </main>
-              <Footer />
-              </CartProvider>
-            </CustomerSessionProvider>
-          </NextIntlClientProvider>
+          <StorefrontProviders locale={locale} messages={messages}>
+            <AnalyticsBeacon />
+            <a
+              href="#main"
+              className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-2 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:shadow"
+            >
+              {t('skipToContent')}
+            </a>
+            <Header />
+            <main id="main" className="flex-1">
+              {children}
+            </main>
+            <Footer />
+          </StorefrontProviders>
         </SmoothScroller>
       </body>
     </html>

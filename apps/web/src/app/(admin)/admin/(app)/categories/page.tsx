@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
-import type { AdminCategory } from '@/lib/api-types';
+import { DataTable } from '@/components/ui';
+import type { AdminCategory } from '@/types/api';
 
 interface Draft {
   id?: string;
@@ -103,87 +104,94 @@ export default function AdminCategoriesPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-ink">Categories</h1>
-      <p className="mb-6 text-sm text-ink/60">
+      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Categories</h1>
+      <p className="mb-6 text-sm text-neutral-900/60">
         How the storefront navigation is organised. Both languages are shown to customers.
       </p>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_22rem]">
-        <div className="card overflow-hidden">
+        <div className="overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="border-b border-sand-200 bg-sand-50">
-                <tr>
-                  <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-ink/50">
-                    Name
-                  </th>
-                  <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-ink/50">
-                    Urdu
-                  </th>
-                  <th className="px-4 py-2 text-end text-xs font-semibold uppercase tracking-wide text-ink/50">
-                    Products
-                  </th>
-                  <th className="px-4 py-2" />
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-sand-100">
-                {categories.length === 0 ? (
-                  <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-ink/50">
-                      No categories yet.
-                    </td>
-                  </tr>
-                ) : (
-                  categories.map((category) => (
-                    <tr key={category.id} className="hover:bg-sand-50">
-                      <td className="px-4 py-3">
-                        <span className="font-medium text-ink">
-                          {category.translations.find((t) => t.locale === 'en')?.name ??
-                            category.slug}
-                        </span>
-                        <p className="text-xs text-ink/40">
-                          {category.slug}
-                          {category.isActive ? '' : ' · hidden'}
-                        </p>
-                      </td>
-                      <td className="px-4 py-3 font-urdu text-ink/70" dir="rtl">
-                        {category.translations.find((t) => t.locale === 'ur')?.name ?? '—'}
-                      </td>
-                      <td className="px-4 py-3 text-end tabular-nums text-ink/70">
-                        {category._count.products}
-                      </td>
-                      <td className="px-4 py-3 text-end">
-                        <button
-                          type="button"
-                          onClick={() => edit(category)}
-                          className="rounded px-2 py-1 text-xs text-brand-700 hover:bg-brand-50"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => void remove(category)}
-                          className="rounded px-2 py-1 text-xs text-red-700 hover:bg-red-50"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+            <DataTable
+              rows={asTree(categories)}
+              rowKey={({ category }) => category.id}
+              emptyLabel="No categories yet."
+              columns={[
+                {
+                  header: 'Name',
+                  cell: ({ category, depth }) => (
+                    // Indent by depth, with a leader on nested rows so the
+                    // hierarchy reads at a glance instead of having to be
+                    // inferred from the parent picker.
+                    <div style={{ paddingInlineStart: `${depth * 1.25}rem` }}>
+                      <span className="font-medium text-neutral-900">
+                        {depth > 0 ? (
+                          <span aria-hidden className="me-1 text-neutral-900/30">
+                            └
+                          </span>
+                        ) : null}
+                        {category.translations.find((t) => t.locale === 'en')?.name ??
+                          category.slug}
+                      </span>
+                      <p className="text-xs text-neutral-900/40">
+                        {category.slug}
+                        {category.isActive ? '' : ' · hidden'}
+                      </p>
+                    </div>
+                  ),
+                },
+                {
+                  header: 'Urdu',
+                  muted: true,
+                  className: 'font-urdu',
+                  cell: ({ category }) => (
+                    <span dir="rtl">
+                      {category.translations.find((t) => t.locale === 'ur')?.name ?? '—'}
+                    </span>
+                  ),
+                },
+                {
+                  header: 'Products',
+                  align: 'end',
+                  numeric: true,
+                  muted: true,
+                  cell: ({ category }) => category._count.products,
+                },
+                {
+                  header: '',
+                  align: 'end',
+                  cell: ({ category }) => (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => edit(category)}
+                        className="rounded px-2 py-1 text-xs text-accent-hover hover:bg-neutral-50"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => void remove(category)}
+                        className="rounded px-2 py-1 text-xs text-red-700 hover:bg-red-50"
+                      >
+                        Delete
+                      </button>
+                    </>
+                  ),
+                },
+              ]}
+            />
           </div>
         </div>
 
         <form onSubmit={save} className="card h-fit space-y-4 p-4">
-          <h2 className="text-sm font-semibold text-ink">
+          <h2 className="text-sm font-semibold text-neutral-900">
             {draft.id ? 'Edit category' : 'Add a category'}
           </h2>
 
@@ -240,7 +248,7 @@ export default function AdminCategoriesPage() {
               type="checkbox"
               checked={draft.isActive}
               onChange={(event) => setDraft({ ...draft, isActive: event.target.checked })}
-              className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+              className="field-check"
             />
             Visible on the storefront
           </label>
@@ -259,4 +267,42 @@ export default function AdminCategoriesPage() {
       </div>
     </>
   );
+}
+
+/**
+ * Flattens the category list into parent-then-children order, carrying a
+ * depth so the table can indent.
+ *
+ * The API returns a flat array ordered by parentId, which renders as one
+ * undifferentiated list — a sub-category looks exactly like a top-level one,
+ * so the tree you built is invisible on the screen where you build it.
+ *
+ * Anything whose parent is missing from the list (deactivated, or filtered
+ * out) is treated as top level rather than dropped, so a category can never
+ * disappear from this table because of its parent.
+ */
+function asTree(categories: AdminCategory[]): Array<{ category: AdminCategory; depth: number }> {
+  const byParent = new Map<string | null, AdminCategory[]>();
+  const ids = new Set(categories.map((category) => category.id));
+
+  for (const category of categories) {
+    const parent = category.parentId && ids.has(category.parentId) ? category.parentId : null;
+    const siblings = byParent.get(parent) ?? [];
+    siblings.push(category);
+    byParent.set(parent, siblings);
+  }
+
+  const rows: Array<{ category: AdminCategory; depth: number }> = [];
+  const walk = (parentId: string | null, depth: number) => {
+    const children = [...(byParent.get(parentId) ?? [])].sort(
+      (a, b) => a.order - b.order || a.slug.localeCompare(b.slug),
+    );
+    for (const category of children) {
+      rows.push({ category, depth });
+      walk(category.id, depth + 1);
+    }
+  };
+  walk(null, 0);
+
+  return rows;
 }

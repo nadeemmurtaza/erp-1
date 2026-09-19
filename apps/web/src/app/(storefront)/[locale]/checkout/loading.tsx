@@ -32,7 +32,7 @@ export default function Loading() {
               </div>
             ))}
           </div>
-          <div className="mt-4 border-t border-sand-200 pt-4">
+          <div className="mt-4 border-t border-neutral-100 pt-4">
             <div className="flex justify-between mb-4">
               <div className="skeleton h-3 w-12 rounded" />
               <div className="skeleton h-5 w-20 rounded" />

@@ -2,7 +2,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { formatMoney } from '@yaseen/shared';
+import { formatMoney } from '@newax/shared';
 import * as resources from '../src/api/resources';
 import type { Order, PaymentMethod } from '../src/api/types';
 import {

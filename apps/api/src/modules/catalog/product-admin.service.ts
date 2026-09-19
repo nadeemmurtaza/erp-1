@@ -1,6 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { DEFAULT_LOCALE, slugifyWithFallback, uniqueSlug } from '@yaseen/shared';
+import { DEFAULT_LOCALE, slugifyWithFallback, uniqueSlug } from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
+import { DomainEvent } from '../../core/events/domain-events';
+import { EventBusService } from '../../core/events/event-bus.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { StorageService } from '../../core/storage/storage.service';
 import { InventoryService } from '../inventory/inventory.service';
@@ -31,6 +33,7 @@ export class ProductAdminService {
     private readonly audit: AuditService,
     private readonly storage: StorageService,
     private readonly inventory: InventoryService,
+    private readonly events: EventBusService,
   ) {}
 
   async list(query: AdminProductQueryDto) {
@@ -94,7 +97,7 @@ export class ProductAdminService {
           categoryId: dto.categoryId || null,
           basePrice: dto.basePrice,
           compareAtPrice: dto.compareAtPrice ?? null,
-          brand: dto.brand?.trim() || null,
+          brandId: dto.brandId || null,
           fabric: normaliseTag(dto.fabric),
           season: normaliseTag(dto.season),
           tags: (dto.tags ?? []).map((tag) => tag.trim().toLowerCase()).filter(Boolean),
@@ -163,6 +166,19 @@ export class ProductAdminService {
         data: { slug },
       });
 
+      if (product.status === 'ACTIVE') {
+        await this.events.publish(
+          DomainEvent.ProductPublished,
+          {
+            productId: product.id,
+            slug: product.slug,
+            nameEn: product.translations.find((t) => t.locale === DEFAULT_LOCALE)?.name ?? product.slug,
+            basePriceMinor: product.basePrice,
+          },
+          tx,
+        );
+      }
+
       return toAdminView(await tx.product.findUniqueOrThrow({ where: { id: product.id }, include: adminInclude }));
     });
   }
@@ -183,7 +199,11 @@ export class ProductAdminService {
     if (dto.kind !== undefined) data.kind = dto.kind;
     if (dto.basePrice !== undefined) data.basePrice = dto.basePrice;
     if (dto.compareAtPrice !== undefined) data.compareAtPrice = dto.compareAtPrice;
-    if (dto.brand !== undefined) data.brand = dto.brand.trim() || null;
+    if (dto.brandId !== undefined) {
+      // ProductUpdateInput takes the relation, not the scalar key: connect to
+      // the brand, or disconnect when the field is cleared.
+      data.brand = dto.brandId ? { connect: { id: dto.brandId } } : { disconnect: true };
+    }
     if (dto.fabric !== undefined) data.fabric = normaliseTag(dto.fabric);
     if (dto.season !== undefined) data.season = normaliseTag(dto.season);
     if (dto.tags !== undefined) {
@@ -266,6 +286,16 @@ export class ProductAdminService {
       entityId: id,
       data: { changed: Object.keys(dto) },
     });
+
+    if (dto.basePrice !== undefined && dto.basePrice !== existing.basePrice) {
+      await this.events.publish(DomainEvent.ProductPriceChanged, {
+        productId: product.id,
+        slug: product.slug,
+        nameEn: product.translations.find((t) => t.locale === DEFAULT_LOCALE)?.name ?? product.slug,
+        oldPriceMinor: existing.basePrice,
+        newPriceMinor: dto.basePrice,
+      });
+    }
 
     return toAdminView(product);
   }

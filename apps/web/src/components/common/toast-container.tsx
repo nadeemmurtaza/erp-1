@@ -1,7 +1,7 @@
 'use client';
 
-import clsx from 'clsx';
-import type { Toast } from '@/lib/use-toast';
+import { cn } from '@/utils/cn';
+import type { Toast } from '@/hooks/use-toast';
 
 interface ToastContainerProps {
   toasts: Toast[];
@@ -14,7 +14,7 @@ export function ToastContainer({ toasts, onRemove }: ToastContainerProps) {
   const typeStyles = {
     success: 'bg-green-50 text-green-800 border-green-200',
     error: 'bg-red-50 text-red-700 border-red-200',
-    info: 'bg-brand-50 text-brand-800 border-brand-200',
+    info: 'bg-neutral-50 text-accent-hover border-neutral-100',
   };
 
   return (
@@ -27,7 +27,7 @@ export function ToastContainer({ toasts, onRemove }: ToastContainerProps) {
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className={clsx(
+          className={cn(
             'rounded-md border p-3 text-sm pointer-events-auto animate-slideUp',
             typeStyles[toast.type]
           )}

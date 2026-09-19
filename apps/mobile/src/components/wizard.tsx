@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   },
   dotActive: { backgroundColor: theme.color.brand, borderColor: theme.color.brand },
   dotLabel: { ...theme.text.tiny, fontWeight: '700', color: theme.color.inkSoft },
-  dotLabelActive: { color: '#fff' },
+  dotLabelActive: { color: theme.color.surface },
   tabLabel: { ...theme.text.small, color: theme.color.inkFaint, fontWeight: '600' },
   tabLabelActive: { color: theme.color.ink },
   tabLabelUnreached: { color: theme.color.inkFaint },

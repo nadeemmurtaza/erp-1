@@ -148,22 +148,51 @@ docker compose -f docker-compose.caddy.yml up -d
 
 # 2. Env files — copy the templates and fill in every CHANGE-ME
 cp .env.production.example .env.production
-cp .env.staging.example .env.staging
-nano .env.production   # generate secrets: openssl rand -base64 48 / -base64 32
-nano .env.staging       # use DIFFERENT secrets from production
+nano .env.production   # fill in EVERY value marked CHANGE-ME (see the table below)
 
-# 3. Bring up staging (this is what `main` deploys to)
-docker compose -f docker-compose.staging.yml --env-file .env.staging up -d --build
-
-# 4. Switch to the production branch and bring up production
+# 3. Switch to the production branch and bring up production
 git checkout production
 docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build
 git checkout main   # leave the working tree on main for day-to-day pulls
 ```
 
-Each `up --build` runs `prisma migrate deploy` automatically as part of the
-api container's startup (`apps/api/Dockerfile`'s `CMD`) — migrations apply
-themselves on every start, including the very first one.
+There is no staging stack on this VPS any more — preview deployments are
+handled by Coolify (`chore: remove staging stack`). `docker-compose.staging.yml`
+and `.env.staging.example` were removed with it; earlier revisions of this
+guide told you to copy them, which now fails.
+
+### Secrets you must generate, and what breaks if you get them wrong
+
+| Variable | Generate with | If it is missing / changed |
+|---|---|---|
+| `APP_ENCRYPTION_KEY` | `openssl rand -hex 16` (**exactly 32 bytes**) | **The API refuses to boot.** It encrypts stored email-account passwords and signs unsubscribe links, so it must also stay the SAME forever — rotating it makes every already-encrypted value unreadable. |
+| `JWT_ACCESS_SECRET` | `openssl rand -base64 48` | API refuses to boot. Changing it signs everyone out. |
+| `JWT_REFRESH_SECRET` | `openssl rand -base64 48` | Same, and must differ from the access secret. |
+
+The API validates these at startup and exits with the exact command to run,
+so a container that will not come up is worth reading the logs for before
+anything else.
+
+> **Migrations do NOT run on container start.** This paragraph used to claim
+> they did; they do not. `apps/api/Dockerfile`'s `CMD` is `node dist/main.js`
+> and nothing else, deliberately — migrating from every replica at once races
+> when more than one is running. They were instead run as a pre-deploy step in
+> `deploy-production.yml`, which stopped reaching the server when the VPS was
+> retired in favour of Coolify, so nothing has run them since.
+>
+> **Run them yourself as part of every release**, from a shell in the api
+> container:
+>
+> ```bash
+> cd /repo/apps/api && npx prisma migrate deploy --schema=prisma/schema
+> ```
+>
+> `--schema` is needed because the schema is a folder (one `.prisma` per
+> module). Check first with `prisma migrate status --schema=prisma/schema`.
+>
+> Symptom when this is skipped: the app deploys fine and then every page that
+> touches the database fails, because new code is querying columns the old
+> schema does not have.
 
 **Then seed each environment — this is required, not optional.** Migrations
 create the tables but leave them empty, and an empty `Permission` /
@@ -174,9 +203,18 @@ garment/measurement reference data the storefront reads. It is idempotent
 (every write is an upsert), so re-running it is safe:
 
 ```bash
-docker compose -f docker-compose.staging.yml exec api pnpm db:seed
-docker compose -f docker-compose.prod.yml exec api pnpm db:seed
+# In a shell inside the api container (Coolify: Terminal on the api app).
+# NOT `pnpm db:seed`: the runtime image ships only @newax/api, so pnpm's
+# workspace check fails before the script ever runs, with
+# ERR_PNPM_WORKSPACE_PKG_NOT_FOUND for @newax/config. Call ts-node directly,
+# which is exactly what the db:seed script does.
+cd /repo/apps/api && ./node_modules/.bin/ts-node --project tsconfig.seed.json prisma/seed.ts
 ```
+
+**Re-run this after every release that adds permissions.** New
+`@RequirePermission` keys only reach the database through the seed, so an
+admin screen shipped with a new permission 403s for everyone — including
+you — until it has run.
 
 Override the default admin credentials with `SEED_ADMIN_EMAIL` /
 `SEED_ADMIN_PASSWORD` in the env file before seeding, or change the password
@@ -243,6 +281,28 @@ click in the Actions tab, on top of already requiring CI to pass.
 ---
 
 ## 8. Day-to-day deploys
+
+### Before a deploy that adds an env var — check this first
+
+A release can introduce a variable the API validates at startup. If it is not
+on the server before you merge, the api container starts, fails validation and
+exits, and the deploy looks like it "hung" or rolled back for no reason.
+
+Before promoting, diff the templates against what the server actually has:
+
+```bash
+# on the VPS, in ~/apps/yaseenecom
+git fetch origin
+diff <(grep -oE '^[A-Z_]+' .env.production | sort -u)      <(git show origin/main:.env.production.example | grep -oE '^[A-Z_]+' | sort -u)
+```
+
+Anything listed as only in the template is a variable you need to add to
+`.env.production` **before** the merge. Then restart to pick it up.
+
+**Known for the release currently in flight:** `APP_ENCRYPTION_KEY` is new and
+required (`openssl rand -hex 16`, exactly 32 bytes), and `MODULES` gains
+`marketing` and `tax`.
+
 
 - **Push/merge to `main`** → CI runs → on success, `deploy-staging.yml`
   SSHes in and redeploys `test.yaseen.pk`/`api-test.yaseen.pk` automatically.
@@ -426,6 +486,6 @@ docker compose -f docker-compose.caddy.yml logs -f caddy
 # is blocked — recheck `dig yaseen.pk` and `ufw status`.
 
 # Re-run migrations/seed manually
-docker compose -f docker-compose.prod.yml exec api pnpm --filter @yaseen/api db:deploy
-docker compose -f docker-compose.prod.yml exec api pnpm db:seed
+docker compose -f docker-compose.prod.yml exec api pnpm --filter @newax/api db:deploy
+cd /repo/apps/api && ./node_modules/.bin/ts-node --project tsconfig.seed.json prisma/seed.ts
 ```

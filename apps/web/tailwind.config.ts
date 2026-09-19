@@ -1,64 +1,70 @@
 import type { Config } from 'tailwindcss';
 import forms from '@tailwindcss/forms';
+import plugin from 'tailwindcss/plugin';
+import { THEME_COLORS, THEME_RADII, TAILWIND_FONT_SIZE, radiusPx } from '@newax/shared';
 
 /**
- * Pacific Cyan + Bone Art Deco palette. Vibrant teal primary (#1B9AAA)
- * with warm bone accents (#DDDBCB). Cream background (#F5F1E3) and pure white
- * for clean luxury. Nearly black text (#050505) for maximum contrast.
- * Kept deliberately small so a later rebrand is a few hex values.
+ * One palette for admin and storefront both, imported from
+ * packages/shared/src/theme-colors.ts rather than declared here — that file
+ * is also what apps/mobile and the web chart components import, so every
+ * surface renders the same hex values by construction instead of by three
+ * people independently eyeballing "close enough".
+ *
+ * `neutral` (monochrome ramp) is the whole background/text/border system for
+ * both admin and storefront. `accent` (`#0f8fa3`) is the one brand colour,
+ * used sparingly for calls to action, links and focus rings. `star` stays
+ * reserved for rating stars — never repurpose it. Error/success/warning use
+ * Tailwind's stock `red`/`green`/`amber` scales, already used consistently
+ * throughout the app; there is no custom token for those.
  */
 export default {
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
     extend: {
+      /*
+       * Seven tiers, not Tailwind's five, and the two extra ones are the two
+       * the stock scale has no answer for.
+       *
+       * `xs` (380px) is the floor that actually exists in Pakistan: a Galaxy
+       * Z Fold's cover screen is 280px, an iPhone SE is 320px, and plenty of
+       * budget Androids are 360px. Everything below `xs` has to work on the
+       * base styles alone, so the base layout is the narrow one and each tier
+       * adds, never subtracts.
+       *
+       * `fold` (672px) is the gap that matters most. A Z Fold opened into
+       * tablet mode is ~673-717px wide, a Surface Duo spanned across both
+       * panels is 720px — all of which land above `sm` (640) and below `md`
+       * (768), so with the stock scale an unfolded tablet-sized screen gets
+       * the one-column phone layout. Measured: at 717px the home page's hero
+       * grid still computed to a single 669px column.
+       *
+       * The rest are Tailwind's own values, restated here because `screens`
+       * inside `extend` merges rather than replaces and listing all seven in
+       * order is how the scale stays readable. Tailwind sorts by min-width, so
+       * `xs` and `fold` slot in correctly wherever they are written.
+       */
+      screens: {
+        xs: '380px',
+        sm: '640px',
+        fold: '672px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        '2xl': '1536px',
+      },
+      /*
+       * The viewport minus the storefront header. Four auth pages each wrote
+       * `min-h-[calc(100vh-4rem)]`, which states a header height nothing else
+       * knows about — change the header and all four are silently wrong.
+       */
+      minHeight: {
+        auth: 'calc(100vh - theme(spacing.16))',
+      },
       colors: {
-        brand: {
-          50: '#f5f1e3',
-          100: '#e8e4d5',
-          200: '#ddd9c7',
-          300: '#cfccb3',
-          400: '#c0bb9a',
-          500: '#1b9aaa',
-          600: '#188896',
-          700: '#157782',
-          800: '#12666e',
-          900: '#050505',
-        },
-        sand: {
-          50: '#f8f8f8',
-          100: '#ffffff',
-          200: '#f0f0f0',
-          300: '#e8e8e8',
-          400: '#e0e0e0',
-        },
-        gold: '#dddbcb',
-        ink: '#050505',
-        /*
-         * Storefront reskin palette (monochrome, per the Figma mobile
-         * e-commerce reference). Kept separate from `brand`/`sand`/`gold`/
-         * `ink` above, which the admin panel's own freshly-rebuilt dashboard
-         * depends on by exact name — this scale is for storefront use only.
-         * Ramp anchored at 50/900 (page background / near-black text) and
-         * 700 (the warm charcoal CTA/bottom-nav fill), with the reference's
-         * two named grays (secondary text, muted/border) landing at 500 and
-         * 300; the remaining stops are interpolated between those anchors so
-         * hover/border/muted-text variants have somewhere sensible to land.
-         */
-        noir: {
-          50: '#F2F2F2',
-          100: '#E8E8E8',
-          200: '#C6C5C5',
-          300: '#A3A1A2',
-          400: '#8E8C8C',
-          500: '#787676',
-          600: '#514E4E',
-          700: '#292526',
-          800: '#1E1B1C',
-          900: '#121111',
-        },
-        // Star-rating accent — the ONLY spot of color in the storefront
-        // reskin. Never use this for anything other than rating stars.
-        star: '#F5B841',
+        neutral: THEME_COLORS.neutral,
+        accent: THEME_COLORS.accent,
+        star: THEME_COLORS.star,
+        feedback: THEME_COLORS.feedback,
       },
       fontFamily: {
         // Noto Nastaliq renders Urdu properly where it is installed; the rest
@@ -81,6 +87,45 @@ export default {
       },
       maxWidth: {
         page: '80rem',
+      },
+      /*
+       * Built from packages/shared/src/theme-type.ts rather than left to
+       * Tailwind's defaults, so `text-sm` here and `theme.text.small` in
+       * apps/mobile resolve to the same number.
+       *
+       * The values ARE Tailwind's defaults — web already uses these
+       * utilities at 817 call sites, so nothing moves on screen. What
+       * changes is that mobile can no longer drift away unnoticed, which
+       * is exactly what had happened: every step disagreed, 11/13/15/17/22
+       * against 12/14/16/20/24.
+       */
+      fontSize: TAILWIND_FONT_SIZE,
+      /*
+       * The house shape is square, and this is where that is enforced.
+       *
+       * `borderRadius` is overridden rather than extended, so every step of
+       * the scale — `rounded`, `rounded-md`, `rounded-lg`, `rounded-2xl` —
+       * resolves to the same 2px. Three hundred-odd radius utilities were
+       * already written across sixty-odd files in four different sizes; this
+       * collapses them all without a codemod touching a single call site, and
+       * without leaving a `rounded-2xl` somewhere that quietly disagrees with
+       * the system next time someone pastes markup in.
+       *
+       * `full` survives because circles are not a radius choice — avatars,
+       * spinners, status dots and the icon buttons over product photography
+       * are round by nature, and squaring them would be a bug, not a restyle.
+       * `none` survives for deliberate square-off (a cell inside a table).
+       */
+      borderRadius: {
+        none: '0',
+        DEFAULT: 'var(--radius)',
+        sm: 'var(--radius)',
+        md: 'var(--radius)',
+        lg: 'var(--radius-lg)',
+        xl: 'var(--radius-lg)',
+        '2xl': 'var(--radius-lg)',
+        '3xl': 'var(--radius-lg)',
+        full: '9999px',
       },
       animation: {
         fadeIn: 'fadeIn 200ms ease-out',
@@ -121,5 +166,22 @@ export default {
       },
     },
   },
-  plugins: [forms],
+  plugins: [
+    forms,
+    /*
+     * Publishes the radius scale as the custom properties globals.css reads.
+     * The numbers come from packages/shared so apps/mobile can import the
+     * same ones — a CSS variable is invisible to React Native, which is how
+     * the web and the app came to disagree about the house shape in the
+     * first place.
+     */
+    plugin(({ addBase }) => {
+      addBase({
+        ':root': {
+          '--radius': radiusPx(THEME_RADII.sharp),
+          '--radius-lg': radiusPx(THEME_RADII.lg),
+        },
+      });
+    }),
+  ],
 } satisfies Config;

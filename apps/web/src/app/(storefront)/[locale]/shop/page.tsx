@@ -1,13 +1,13 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
-import type { Locale, ProductKind } from '@yaseen/shared';
+import type { Locale, ProductKind } from '@newax/shared';
 import { FilterPanel } from '@/components/storefront/filter-panel';
 import { ShopControls } from '@/components/storefront/shop-controls';
 import { Link } from '@/i18n/navigation';
 import { getFacets, getProducts } from '@/lib/api';
 import { AnimatedSection } from '@/components/storefront/animated-section';
-import type { ProductListQuery } from '@/lib/api-types';
-import { alternateLanguages, canonicalUrl } from '@/lib/seo';
+import type { ProductListQuery } from '@/types/api';
+import { alternateLanguages, canonicalUrl } from '@/config/seo';
 
 export const revalidate = 120;
 
@@ -99,7 +99,7 @@ export default async function ShopPage({
     // Extra bottom padding on mobile only: the floating pill bottom-nav is
     // `fixed`, so it sits on top of whatever the page renders last (the
     // pagination row) unless the page reserves room for it below md:.
-    <div className="container-page pt-6 pb-28 md:pt-10 md:pb-12 lg:pt-12">
+    <div className="container-page pt-6 md:pt-10 md:pb-12 lg:pt-12">
       <div className="grid gap-6 lg:gap-8 lg:grid-cols-[16rem_1fr]">
         <aside className="min-w-0 lg:sticky lg:top-24 lg:h-fit">
           <AnimatedSection direction="right">
@@ -111,17 +111,17 @@ export default async function ShopPage({
           <div>
             {products.data.length === 0 ? (
               <>
-                <div className="sf-card flex items-center justify-between gap-4 mb-6 p-4">
+                <div className="card mb-6 flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                   <div>
-                    <h1 className="font-display text-2xl font-semibold text-noir-900">{t('title')}</h1>
-                    <p className="mt-1 text-sm text-noir-500">
+                    <h1 className="font-display text-2xl font-semibold text-neutral-900">{t('title')}</h1>
+                    <p className="mt-1 text-sm text-neutral-500">
                       {t('resultsCount', { count: products.meta.total })}
                     </p>
                   </div>
                 </div>
-                <div className="sf-card p-10 text-center">
-                  <p className="text-sm font-medium text-noir-900">{t('empty')}</p>
-                  <p className="mt-1 text-sm text-noir-500">{t('emptyBody')}</p>
+                <div className="card p-10 text-center">
+                  <p className="text-sm font-medium text-neutral-900">{t('empty')}</p>
+                  <p className="mt-1 text-sm text-neutral-500">{t('emptyBody')}</p>
                 </div>
               </>
             ) : (
@@ -139,19 +139,19 @@ export default async function ShopPage({
                 className="mt-10 flex items-center justify-between gap-4"
               >
                 {products.meta.hasPrevious ? (
-                  <Link href={pageHref(page - 1)} className="sf-btn-secondary">
+                  <Link href={pageHref(page - 1)} className="btn-secondary">
                     {t('previous')}
                   </Link>
                 ) : (
                   <span />
                 )}
 
-                <span className="text-sm text-noir-500">
+                <span className="text-sm text-neutral-500">
                   {t('pageOf', { page, total: products.meta.totalPages })}
                 </span>
 
                 {products.meta.hasNext ? (
-                  <Link href={pageHref(page + 1)} className="sf-btn-secondary">
+                  <Link href={pageHref(page + 1)} className="btn-secondary">
                     {t('next')}
                   </Link>
                 ) : (

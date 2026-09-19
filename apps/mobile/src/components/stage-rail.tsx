@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { STITCHING_STAGES, type StitchingStage } from '@yaseen/shared';
+import { STITCHING_STAGES, type StitchingStage } from '@newax/shared';
 import { useI18n } from '../i18n';
 import { theme } from '../theme';
 import type { TimelineEvent } from '../api/types';

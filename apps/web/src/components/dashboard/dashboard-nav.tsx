@@ -1,0 +1,66 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
+import { cn } from '@/utils/cn';
+import { Link, usePathname } from '@/i18n/navigation';
+import { ROUTES } from '@/constants/routes';
+
+/**
+ * The shopper's section nav.
+ *
+ * Wishlist was missing from this list. It has always been a real page with a
+ * real route — the heart on a product card saves to it — but the only way to
+ * reach it was to already know the URL, because nothing in the signed-in area
+ * linked to it. That is the kind of gap that survives precisely because the
+ * nav was inline in a layout rather than a thing with a name.
+ *
+ * Labels are translation keys, not strings: this is a customer-facing surface
+ * and half of it reads in Urdu.
+ */
+interface Tab {
+  href: string;
+  /** Key under `account.nav` in the message files. */
+  key: string;
+  /**
+   * Matched exactly rather than by prefix. Profile only: /account is the
+   * parent of every other tab's route and would otherwise light up on all of
+   * them.
+   */
+  exact?: boolean;
+}
+
+const TABS: Tab[] = [
+  { href: ROUTES.storefront.account, key: 'profile', exact: true },
+  { href: ROUTES.storefront.accountAddresses, key: 'addresses' },
+  { href: ROUTES.storefront.accountMeasurements, key: 'measurements' },
+  { href: ROUTES.storefront.orders, key: 'orders' },
+  { href: ROUTES.storefront.wishlist, key: 'wishlist' },
+];
+
+export function DashboardNav() {
+  const pathname = usePathname();
+  const t = useTranslations('account.nav');
+
+  return (
+    <nav aria-label={t('label')} className="mb-6 flex flex-wrap gap-1 border-b border-neutral-100">
+      {TABS.map((tab) => {
+        const isActive = tab.exact ? pathname === tab.href : pathname.startsWith(tab.href);
+        return (
+          <Link
+            key={tab.href}
+            href={tab.href}
+            aria-current={isActive ? 'page' : undefined}
+            className={cn(
+              'border-b-2 px-3 py-2 text-sm font-medium transition-colors',
+              isActive
+                ? 'border-accent text-accent-hover'
+                : 'border-transparent text-neutral-900/60 hover:text-neutral-900',
+            )}
+          >
+            {t(tab.key)}
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}

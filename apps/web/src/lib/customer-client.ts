@@ -1,11 +1,13 @@
 'use client';
 
-import { API_URL, ApiError, toSearchParams } from './api';
-import type { AuthResult, AuthUser } from './api-types';
+import { API_URL } from './api';
+import { request, requestWithRefresh } from './api-client';
+import type { AuthResult, AuthUser, CustomerOrder } from '@/types/api';
+import { STORAGE_KEYS } from '@/constants/storage';
 
-const ACCESS_KEY = 'yaseen.customer.access';
-const REFRESH_KEY = 'yaseen.customer.refresh';
-const USER_KEY = 'yaseen.customer.user';
+const ACCESS_KEY = STORAGE_KEYS.customer.access;
+const REFRESH_KEY = STORAGE_KEYS.customer.refresh;
+const USER_KEY = STORAGE_KEYS.customer.user;
 
 export function getCustomerToken(): string | null {
   return typeof window === 'undefined' ? null : localStorage.getItem(ACCESS_KEY);
@@ -36,17 +38,12 @@ export function clearCustomerSession(): void {
 }
 
 export async function loginCustomer(identifier: string, password: string): Promise<AuthUser> {
-  const response = await fetch(`${API_URL}/auth/login`, {
+  const body = await request<unknown>('/auth/login', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ identifier, password }),
+    body: { identifier, password },
     credentials: 'include',
+    fallbackMessage: 'Sign-in failed',
   });
-
-  const body = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new ApiError(response.status, messageOf(body) ?? 'Sign-in failed', body);
-  }
 
   const result = body as AuthResult;
   storeSession(result);
@@ -60,17 +57,12 @@ export async function registerCustomer(input: {
   lastName?: string;
   phone?: string;
 }): Promise<AuthUser> {
-  const response = await fetch(`${API_URL}/auth/register`, {
+  const body = await request<unknown>('/auth/register', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(input),
+    body: input,
     credentials: 'include',
+    fallbackMessage: 'Registration failed',
   });
-
-  const body = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new ApiError(response.status, messageOf(body) ?? 'Registration failed', body);
-  }
 
   const result = body as AuthResult;
   storeSession(result);
@@ -78,59 +70,39 @@ export async function registerCustomer(input: {
 }
 
 export async function forgotPassword(email: string): Promise<void> {
-  const response = await fetch(`${API_URL}/auth/forgot-password`, {
+  await request('/auth/forgot-password', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email }),
+    body: { email },
+    expect: 'none',
+    fallbackMessage: 'Could not send the reset email',
   });
-
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new ApiError(response.status, messageOf(body) ?? 'Could not send the reset email', body);
-  }
 }
 
 export async function resetPassword(token: string, newPassword: string): Promise<void> {
-  const response = await fetch(`${API_URL}/auth/reset-password`, {
+  await request('/auth/reset-password', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ token, newPassword }),
+    body: { token, newPassword },
+    expect: 'none',
+    fallbackMessage: 'Could not reset your password',
   });
-
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new ApiError(response.status, messageOf(body) ?? 'Could not reset your password', body);
-  }
 }
 
 export async function verifyEmail(token: string): Promise<void> {
-  const response = await fetch(`${API_URL}/auth/verify-email`, {
+  await request('/auth/verify-email', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ token }),
+    body: { token },
+    expect: 'none',
+    fallbackMessage: 'Could not confirm your email address',
   });
-
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new ApiError(
-      response.status,
-      messageOf(body) ?? 'Could not confirm your email address',
-      body,
-    );
-  }
 }
 
 export async function unsubscribeFromMarketing(userId: string, token: string): Promise<void> {
-  const response = await fetch(`${API_URL}/email/unsubscribe`, {
+  await request('/email/unsubscribe', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ userId, token }),
+    body: { userId, token },
+    expect: 'none',
+    fallbackMessage: 'Could not process this request',
   });
-
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw new ApiError(response.status, messageOf(body) ?? 'Could not process this request', body);
-  }
 }
 
 export async function logoutCustomer(): Promise<void> {
@@ -145,6 +117,35 @@ export async function logoutCustomer(): Promise<void> {
   }).catch(() => undefined);
 }
 
+/**
+ * One order, for whoever is allowed to see it.
+ *
+ * Two ways in, because an order has two kinds of reader. A signed-in customer
+ * is authenticated; a guest proves it with the phone number the order was
+ * placed with. Which check applies is the API's decision, not the page's —
+ * order numbers on their own reveal nothing.
+ */
+export async function getMyOrder(number: string): Promise<CustomerOrder> {
+  return customerFetch<CustomerOrder>(`/orders/${number}`);
+}
+
+export async function trackOrder(number: string, phone: string): Promise<CustomerOrder> {
+  return request<CustomerOrder>(`/orders/${number}/track`, {
+    method: 'POST',
+    body: { phone },
+    credentials: 'include',
+    fallbackMessage: 'That number does not match this order',
+  });
+}
+
+/**
+ * The two calls below stay on raw `fetch` deliberately.
+ *
+ * Logout is fire-and-forget — the local session is already gone, and a failed
+ * request must not surface as an error. Refresh cannot go through the client
+ * that calls it without recursing, and it answers a boolean rather than
+ * throwing, which is the opposite of what `request` is for.
+ */
 async function refreshCustomerSession(): Promise<boolean> {
   const refreshToken = localStorage.getItem(REFRESH_KEY);
   if (!refreshToken) return false;
@@ -173,52 +174,22 @@ export async function customerFetch<T>(
   path: string,
   options: CustomerRequestOptions = {},
 ): Promise<T> {
-  const send = async (): Promise<Response> => {
-    const headers: Record<string, string> = { Accept: 'application/json' };
-
-    const token = getCustomerToken();
-    if (token) headers.Authorization = `Bearer ${token}`;
-
-    let body: BodyInit | undefined;
-    if (options.body !== undefined) {
-      headers['Content-Type'] = 'application/json';
-      body = JSON.stringify(options.body);
-    }
-
-    return fetch(`${API_URL}${path}${toSearchParams(options.query ?? {})}`, {
+  return requestWithRefresh<T>(
+    path,
+    {
       method: options.method ?? 'GET',
-      headers,
-      body,
+      body: options.body,
+      query: options.query,
       credentials: 'include',
-    });
-  };
-
-  let response = await send();
-
-  if (response.status === 401 && (await refreshCustomerSession())) {
-    response = await send();
-  }
-
-  if (response.status === 401) {
-    clearCustomerSession();
-    throw new ApiError(401, 'Your session has expired. Please sign in again.');
-  }
-
-  if (!response.ok) {
-    const errorBody = await response.json().catch(() => undefined);
-    throw new ApiError(
-      response.status,
-      messageOf(errorBody) ?? `Request failed with ${response.status}`,
-      errorBody,
-    );
-  }
-
-  if (response.status === 204) return undefined as T;
-  return (await response.json()) as T;
-}
-
-function messageOf(body: unknown): string | undefined {
-  const message = (body as { message?: string | string[] } | undefined)?.message;
-  if (!message) return undefined;
-  return Array.isArray(message) ? message.join('\n') : String(message);
+    },
+    {
+      token: getCustomerToken,
+      refresh: refreshCustomerSession,
+      // No redirect here, unlike admin: a customer hitting an expired session
+      // mid-browse should land back where they were once they sign in, and the
+      // page that called this decides where that is.
+      onExpired: clearCustomerSession,
+      expiredMessage: 'Your session has expired. Please sign in again.',
+    },
+  );
 }

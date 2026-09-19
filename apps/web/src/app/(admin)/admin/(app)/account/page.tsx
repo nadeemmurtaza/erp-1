@@ -36,14 +36,14 @@ export default function AdminAccountPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-ink">My account</h1>
-      <p className="mb-6 text-sm text-ink/60">
-        {user?.firstName ?? user?.email} · {user?.role.toLowerCase()}
+      <h1 className="mb-1 text-xl font-semibold text-neutral-900">My account</h1>
+      <p className="mb-6 text-sm text-neutral-900/60">
+        {user?.firstName ?? user?.email} · {user?.roles.join(', ') || 'No role assigned'}
       </p>
 
       {canChangePassword ? (
         <form onSubmit={onSubmit} className="card max-w-sm space-y-4 p-4">
-          <h2 className="text-sm font-semibold text-ink">Change password</h2>
+          <h2 className="text-sm font-semibold text-neutral-900">Change password</h2>
 
           <label className="block">
             <span className="field-label">Current password</span>
@@ -71,7 +71,7 @@ export default function AdminAccountPage() {
           </label>
 
           {error ? (
-            <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p role="alert" className="notice notice-error">
               {error}
             </p>
           ) : null}
@@ -82,7 +82,7 @@ export default function AdminAccountPage() {
           </button>
         </form>
       ) : (
-        <div className="card max-w-sm p-4 text-sm text-ink/60">
+        <div className="card max-w-sm p-4 text-sm text-neutral-900/60">
           An admin has turned off self-service password changes for your account. Ask an admin
           to reset your password from Team &amp; Access.
         </div>

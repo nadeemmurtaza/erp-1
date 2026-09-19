@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-client';
-import { formatMoney } from '@yaseen/shared';
+import { formatDate, formatMoney } from '@newax/shared';
+import { ROUTES } from '@/constants/routes';
+import { Loading } from '@/components/ui';
 
 interface PurchaseOrderListRow {
   id: string;
@@ -18,7 +20,7 @@ interface PurchaseOrderListRow {
 
 function Th({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <th className={clsx('px-3 py-3 text-start font-medium text-ink/70', className)}>
+    <th className={cn('px-3 py-3 text-start font-medium text-neutral-900/70', className)}>
       {children}
     </th>
   );
@@ -46,26 +48,26 @@ export default function PurchaseOrdersPage() {
     <>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="mb-1 text-xl font-semibold text-ink">Purchase Orders</h1>
-          <p className="text-sm text-ink/60">
+          <h1 className="mb-1 text-xl font-semibold text-neutral-900">Purchase Orders</h1>
+          <p className="text-sm text-neutral-900/60">
             Manage incoming stock from suppliers.
           </p>
         </div>
-        <Link href="/admin/purchase-orders/new" className="btn-primary">
+        <Link href={ROUTES.admin.purchaseOrderNew} className="btn-primary">
           New PO
         </Link>
       </div>
 
-      <div className="card mb-4 flex flex-wrap items-center gap-3 p-3">
-        <label className="text-sm font-medium text-ink/70">Filter by status:</label>
+      <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-neutral-100 pb-4">
+        <label className="text-sm font-medium text-neutral-900/70">Filter by status:</label>
         <div className="flex gap-2">
           {['', 'DRAFT', 'SENT', 'PARTIAL', 'RECEIVED', 'CANCELLED'].map((s) => (
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={clsx(
+              className={cn(
                 'px-3 py-1 rounded text-sm',
-                statusFilter === s ? 'bg-brand-100 text-brand-800 font-medium' : 'bg-sand-100 text-ink/70 hover:bg-sand-200'
+                statusFilter === s ? 'bg-neutral-100 text-accent-hover font-medium' : 'bg-white text-neutral-900/70 hover:bg-neutral-100'
               )}
             >
               {s === '' ? 'All' : s}
@@ -75,15 +77,15 @@ export default function PurchaseOrdersPage() {
       </div>
 
       {error ? (
-        <p role="alert" className="card mb-4 p-4 text-sm text-red-700">
+        <p role="alert" className="notice notice-error mb-4">
           {error}
         </p>
       ) : null}
 
-      <div className="card overflow-hidden">
+      <div className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-sand-200 bg-sand-50 whitespace-nowrap">
+          <table className="table-flat">
+            <thead className="whitespace-nowrap">
               <tr>
                 <Th>PO Number</Th>
                 <Th>Supplier</Th>
@@ -93,32 +95,32 @@ export default function PurchaseOrdersPage() {
                 <Th className="text-end">Total</Th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-sand-100">
+            <tbody className="divide-y divide-neutral-100">
               {busy && !pos ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-ink/50">
-                    Loading...
+                  <td colSpan={6} className="p-8 text-center">
+                    <Loading className="p-0" />
                   </td>
                 </tr>
               ) : pos?.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-ink/50">
+                  <td colSpan={6} className="p-8 text-center text-neutral-900/50">
                     No purchase orders found.
                   </td>
                 </tr>
               ) : (
                 pos?.map((po) => (
-                  <tr key={po.id} className="hover:bg-sand-50/50">
-                    <td className="px-3 py-3 font-medium">
-                      <Link href={`/admin/purchase-orders/${po.id}`} className="text-brand-600 hover:underline">
+                  <tr key={po.id} className="hover:bg-neutral-50/50">
+                    <td className="font-medium">
+                      <Link href={`/admin/purchase-orders/${po.id}`} className="text-accent-hover hover:underline">
                         {po.number}
                       </Link>
                     </td>
-                    <td className="px-3 py-3 text-ink/80">{po.supplier.name}</td>
-                    <td className="px-3 py-3">
-                      <span className={clsx(
+                    <td className="text-neutral-900/80">{po.supplier.name}</td>
+                    <td>
+                      <span className={cn(
                         'px-2 py-0.5 rounded text-xs font-medium',
-                        po.status === 'DRAFT' ? 'bg-sand-200 text-ink/80' :
+                        po.status === 'DRAFT' ? 'bg-neutral-100 text-neutral-900/80' :
                         po.status === 'SENT' ? 'bg-blue-100 text-blue-800' :
                         po.status === 'PARTIAL' ? 'bg-amber-100 text-amber-800' :
                         po.status === 'RECEIVED' ? 'bg-green-100 text-green-800' :
@@ -127,13 +129,13 @@ export default function PurchaseOrdersPage() {
                         {po.status}
                       </span>
                     </td>
-                    <td className="px-3 py-3 text-ink/60">
-                      {new Date(po.createdAt).toLocaleDateString()}
+                    <td className="text-neutral-900/60">
+                      {formatDate(po.createdAt)}
                     </td>
-                    <td className="px-3 py-3 text-ink/60">
-                      {po.expectedAt ? new Date(po.expectedAt).toLocaleDateString() : '—'}
+                    <td className="text-neutral-900/60">
+                      {po.expectedAt ? formatDate(po.expectedAt) : '—'}
                     </td>
-                    <td className="px-3 py-3 text-end font-medium text-ink/80">
+                    <td className="text-end font-medium text-neutral-900/80">
                       {formatMoney(po.total)}
                     </td>
                   </tr>

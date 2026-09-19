@@ -6,7 +6,7 @@
  * internals. Allowed from inside apps/api/src/modules/<name>/:
  *   - anything under its own folder
  *   - anything under src/core/          (the shared platform)
- *   - packages (@yaseen/shared, node_modules)
+ *   - packages (@newax/shared, node_modules)
  *   - another module's public surface:  ../<other>/<other>.module  |  .service
  *
  * Forbidden: ../<other>/dto/…, ../<other>/internal/…, deep files. Reaching for
@@ -142,6 +142,26 @@ const KNOWN_MODULE_COUPLINGS = new Set([
   // goes through StockIntakeRegistry instead, so this entry covers only the
   // transactional call sites.
   'catalog -> inventory',
+  // work-orders.service.ts consumes BOM component stock (RELEASED) and
+  // credits the produced variant's stock (COMPLETED) inside the same
+  // transaction as the WorkOrder's own status change — same reasoning as
+  // purchasing -> inventory above.
+  'production -> inventory',
+  // purchasing.service.ts creates/links a Supplier's backing Party record
+  // (parties.prisma) inside the same transaction as the Supplier write, so a
+  // Supplier never exists without its Party or vice versa.
+  'purchasing -> parties',
+  // pos-sales.service.ts hands a validated till sale to
+  // OrdersService.placeFromPos() (RETAIL-ERP.md R11: a till sale is a
+  // channel of orders, not a parallel system) — the stock deduction, the
+  // cash Payment row and the Order itself all commit in one transaction, the
+  // same correctness reason as orders -> inventory above.
+  'pos -> orders',
+  // transfers.service.ts's dispatch()/receive()/cancel() each move stock
+  // (InventoryService.move()/moveMany()) in the same transaction as the
+  // StockTransfer status write they belong to (RETAIL-ERP.md R4/WO-22.1) —
+  // anticipated by R11's own text alongside pos -> orders, same reasoning.
+  'transfers -> inventory',
 ]);
 
 function walk(dir) {
@@ -191,9 +211,11 @@ function modulePacks() {
     );
   }
 
+  // A key is either a bareword identifier (accounting:) or a quoted string
+  // (needed for a hyphenated module name, e.g. 'identity-verification':).
   const packs = {};
-  for (const entry of block[1].matchAll(/^\s*(\w+)\s*:\s*'([^']+)'/gm)) {
-    packs[entry[1]] = entry[2];
+  for (const entry of block[1].matchAll(/^\s*(?:(\w+)|'([^']+)')\s*:\s*'([^']+)'/gm)) {
+    packs[entry[1] ?? entry[2]] = entry[3];
   }
 
   if (Object.keys(packs).length === 0) {

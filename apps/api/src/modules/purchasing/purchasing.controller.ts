@@ -70,6 +70,7 @@ export class PurchasingController {
 
 import { CurrentUser } from '../../core/auth/decorators';
 import { CreatePurchaseOrderDto, ReceiveGoodsDto } from './dto/purchase-order.dto';
+import { CreateSupplierBillDto, RecordSupplierBillPaymentDto } from './dto/supplier-bill.dto';
 import { Query } from '@nestjs/common';
 
 @ApiTags('Purchase Orders')
@@ -110,6 +111,40 @@ export class PurchaseOrderAdminController {
   @ApiOperation({ summary: 'Receive goods against a purchase order' })
   async receiveGoods(@Param('id') id: string, @Body() dto: ReceiveGoodsDto, @CurrentUser('id') userId: string) {
     return this.purchasing.receiveGoods(id, dto, userId);
+  }
+}
+
+@ApiTags('Supplier Bills')
+@Controller('admin/supplier-bills')
+export class SupplierBillAdminController {
+  constructor(private readonly purchasing: PurchasingService) {}
+
+  @Get()
+  @RequirePermission('purchasing.manage')
+  @ApiOperation({ summary: 'List supplier bills, optionally filtered by supplier' })
+  async findAll(@Query('supplierId') supplierId?: string) {
+    return { data: await this.purchasing.findAllSupplierBills(supplierId) };
+  }
+
+  @Get(':id')
+  @RequirePermission('purchasing.manage')
+  @ApiOperation({ summary: 'Get a supplier bill' })
+  async findOne(@Param('id') id: string) {
+    return this.purchasing.findOneSupplierBill(id);
+  }
+
+  @Post()
+  @RequirePermission('purchasing.manage')
+  @ApiOperation({ summary: 'Raise a bill against a supplier — distinct from the goods receipt it may relate to' })
+  async create(@Body() dto: CreateSupplierBillDto) {
+    return this.purchasing.createSupplierBill(dto);
+  }
+
+  @Post(':id/payments')
+  @RequirePermission('purchasing.manage')
+  @ApiOperation({ summary: 'Record a payment against a bill — posts a realised FX gain/loss for a foreign-currency bill settled at a different rate' })
+  async recordPayment(@Param('id') id: string, @Body() dto: RecordSupplierBillPaymentDto) {
+    return this.purchasing.recordSupplierBillPayment(id, dto);
   }
 }
 

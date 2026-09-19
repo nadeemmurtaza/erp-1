@@ -15,7 +15,7 @@ COPY packages/shared/package.json packages/shared/package.json
 COPY packages/config/package.json packages/config/package.json
 RUN pnpm install --frozen-lockfile
 
-# --- build: @yaseen/shared first (web imports its build output), then web ---
+# --- build: @newax/shared first (web imports its build output), then web ---
 FROM base AS build
 WORKDIR /repo
 COPY --from=deps /repo/node_modules ./node_modules
@@ -26,8 +26,8 @@ ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_SITE_URL
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
-RUN pnpm --filter @yaseen/shared build
-RUN pnpm --filter @yaseen/web build
+RUN pnpm --filter @newax/shared build
+RUN pnpm --filter @newax/web build
 
 # --- runtime: just the standalone server, nothing else ---
 FROM base AS runtime

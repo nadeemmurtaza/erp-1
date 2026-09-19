@@ -2,9 +2,9 @@
 
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import type { Locale } from '@yaseen/shared';
+import type { Locale } from '@newax/shared';
 import { Link } from '@/i18n/navigation';
-import type { StorefrontProduct } from '@/lib/api-types';
+import type { StorefrontProduct } from '@/types/api';
 import { useWishlist } from '@/lib/wishlist';
 import { Price } from './price';
 
@@ -58,7 +58,7 @@ export function ProductCard({
         belong to the photograph, while the lift belongs to the whole card.
       */}
       <div
-        className={`group/media relative overflow-hidden rounded-2xl bg-noir-50 ${
+        className={`group/media relative overflow-hidden rounded-2xl bg-neutral-50 ${
           featured ? 'aspect-square' : 'aspect-[3/4]'
         }`}
       >
@@ -87,7 +87,7 @@ export function ProductCard({
             ) : null}
           </>
         ) : (
-          <div className="flex h-full items-center justify-center px-4 text-center text-xs text-noir-400">
+          <div className="flex h-full items-center justify-center px-4 text-center text-xs text-neutral-400">
             {t('noImage')}
           </div>
         )}
@@ -102,17 +102,17 @@ export function ProductCard({
         {/* Status badges stack at the reading-start corner, clear of the heart button opposite. */}
         <div className="pointer-events-none absolute start-3 top-3 z-20 flex flex-col items-start gap-2">
           {discount !== null ? (
-            <span className="rounded-full bg-noir-900 px-2.5 py-1 text-xs font-semibold text-white">
+            <span className="rounded bg-neutral-900 px-2.5 py-1 text-xs font-semibold text-white">
               -{discount}%
             </span>
           ) : null}
 
           {!product.inStock ? (
-            <span className="rounded-full bg-noir-900/90 px-2.5 py-1 text-xs font-medium text-white">
+            <span className="rounded bg-neutral-900/90 px-2.5 py-1 text-xs font-medium text-white">
               {t('outOfStock')}
             </span>
           ) : product.stitchingAvailable ? (
-            <span className="rounded-full bg-noir-700 px-2.5 py-1 text-xs font-medium text-white">
+            <span className="rounded bg-neutral-700 px-2.5 py-1 text-xs font-medium text-white">
               {t('getItStitched')}
             </span>
           ) : null}
@@ -130,7 +130,7 @@ export function ProductCard({
             event.preventDefault();
             toggle(product.id);
           }}
-          className="absolute end-3 top-3 z-30 sf-icon-btn"
+          className="absolute end-3 top-3 z-30 icon-btn"
           aria-label={saved ? t('removeFromFavourites') : t('addToFavourites')}
           aria-pressed={saved}
         >
@@ -158,13 +158,13 @@ export function ProductCard({
           button group, making the focus ring visible. Sits below the wishlist
           button's z-30 so that toggle stays reachable while the scrim is up.
         */}
-        <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-noir-900/30 opacity-0 transition-opacity duration-300 ease-out group-hover/media:opacity-100 group-focus-within/media:opacity-100">
+        <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-neutral-900/30 opacity-0 transition-opacity duration-300 ease-out group-hover/media:opacity-100 group-focus-within/media:opacity-100">
           <div className="pointer-events-none flex items-center gap-3 group-hover/media:pointer-events-auto group-focus-within/media:pointer-events-auto">
             {onQuickView ? (
               <button
                 type="button"
                 onClick={onQuickView}
-                className="group/btn relative flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-noir-900 backdrop-blur-sm transition-transform duration-200 hover:scale-110"
+                className="group/btn relative flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-neutral-900 backdrop-blur-sm transition-transform duration-200 hover:scale-110"
                 aria-label={t('quickView')}
               >
                 <svg
@@ -188,7 +188,7 @@ export function ProductCard({
 
           <button
             type="button"
-            className="pointer-events-none transition-all hover:scale-105 sf-btn-primary group-hover/media:pointer-events-auto group-focus-within/media:pointer-events-auto"
+            className="pointer-events-none transition-all hover:scale-105 btn-primary group-hover/media:pointer-events-auto group-focus-within/media:pointer-events-auto"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -218,11 +218,11 @@ export function ProductCard({
       </div>
 
       <Link href={`/product/${product.slug}`} className="flex flex-1 flex-col gap-1.5 px-2 pb-4 pt-3">
-        <h3 className="line-clamp-2 text-sm font-medium leading-snug text-noir-900 transition-colors duration-200 group-hover:text-noir-600">
+        <h3 className="line-clamp-2 text-sm font-medium leading-snug text-neutral-900 transition-colors duration-200 group-hover:text-neutral-600">
           {product.name}
         </h3>
 
-        <p className="flex flex-wrap gap-x-3 text-xs text-noir-500">
+        <p className="flex flex-wrap gap-x-3 text-xs text-neutral-500">
           {product.fabric ? <span className="capitalize">{product.fabric}</span> : null}
           {product.pieceCount ? (
             <span>{tShop('pieceCount', { count: product.pieceCount })}</span>

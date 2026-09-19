@@ -10,7 +10,7 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
-import { INTERACTION_KINDS, LEAD_STATUSES } from '@yaseen/shared';
+import { INTERACTION_KINDS, LEAD_STATUSES } from '@newax/shared';
 import { PaginationQueryDto } from '../../../core/common/dto/pagination.dto';
 
 const CONTACT_STATUSES = ['LEAD', 'ACTIVE', 'REPEAT', 'DORMANT', 'BLOCKED'] as const;

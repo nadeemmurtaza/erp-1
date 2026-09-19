@@ -1185,7 +1185,7 @@ apps/web/src/app/(admin)/admin/(app)/products/page.tsx    badge/hide raw-materia
 // QUANTITIES ARE INTEGER BASE UNITS, the same discipline money uses. unitScale
 // says how many base units make one display unit: fabric is GAZ with unitScale
 // 1000, so stock 12500 is 12.5 gaz and costPrice is paisa per milli-gaz.
-// Convert only at the UI boundary, through @yaseen/shared's toBaseUnits /
+// Convert only at the UI boundary, through @newax/shared's toBaseUnits /
 // fromBaseUnits. A bare scale multiplication in a component is a bug.
 
 enum RawMaterialUnit { GAZ METRE PIECE SPOOL GRAM MILLILITRE }
@@ -1805,7 +1805,7 @@ On top of the house rules' checklist, every PR:
 - [ ] The dashboard still makes **one** request per range change.
 - [ ] Every money value in request, response, column and test is integer paisa.
 - [ ] Every raw-material quantity is integer base units, converted only through
-      `@yaseen/shared`.
+      `@newax/shared`.
 - [ ] Every new route has `@ApiOperation` and `@RequirePermission`.
 - [ ] Cost/margin data is **absent from the payload** — not merely hidden in the
       UI — for callers without `inventory.view_cost`.
@@ -1836,7 +1836,7 @@ Runnable once C.3 and B.5 have merged:
 ### A note on running the checks
 
 On Windows, `turbo run` currently fails with `spawn UNKNOWN`; run per-package
-(`cd apps/api && pnpm test`) until that is fixed. `pnpm --filter @yaseen/web build`
+(`cd apps/api && pnpm test`) until that is fixed. `pnpm --filter @newax/web build`
 also fails at the `.next/standalone` symlink step with `EPERM` — that is a
 Windows permissions issue, not a code defect; the compile itself succeeds. Do not
 "fix" either by weakening a check.

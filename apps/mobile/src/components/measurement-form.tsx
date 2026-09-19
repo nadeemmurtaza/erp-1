@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { View } from 'react-native';
-import { validateMeasurements } from '@yaseen/shared';
+import { validateMeasurements } from '@newax/shared';
 import type { MeasurementField } from '../api/types';
 import { useI18n } from '../i18n';
 import { Field } from './ui';

@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import clsx from 'clsx';
+import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
-import { formatMoney } from '@yaseen/shared';
+import { formatMoney } from '@newax/shared';
+import { Loading } from '@/components/ui';
 
 interface Supplier {
   id: string;
@@ -26,7 +27,7 @@ interface ReorderSuggestion {
 
 function Th({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <th className={clsx('px-3 py-3 text-start font-medium text-ink/70', className)}>
+    <th className={cn('px-3 py-3 text-start font-medium text-neutral-900/70', className)}>
       {children}
     </th>
   );
@@ -136,16 +137,16 @@ export default function ReorderSuggestionsPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-ink">Reorder Suggestions</h1>
-      <p className="mb-6 text-sm text-ink/60">
+      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Reorder Suggestions</h1>
+      <p className="mb-6 text-sm text-neutral-900/60">
         Variants below their reorder point. Select items to draft purchase orders automatically.
       </p>
 
-      {error ? <p role="alert" className="card mb-4 p-4 text-sm text-red-700">{error}</p> : null}
-      {success ? <p role="alert" className="card mb-4 p-4 text-sm text-green-700">{success}</p> : null}
+      {error ? <p role="alert" className="notice notice-error mb-4">{error}</p> : null}
+      {success ? <p role="alert" className="notice notice-success mb-4">{success}</p> : null}
 
       <div className="mb-4 flex items-center justify-between">
-        <p className="text-sm text-ink/70">
+        <p className="text-sm text-neutral-900/70">
           {selectedIds.size} selected
         </p>
         <button 
@@ -157,15 +158,15 @@ export default function ReorderSuggestionsPage() {
         </button>
       </div>
 
-      <div className="card overflow-hidden">
+      <div className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-sand-200 bg-sand-50 whitespace-nowrap">
+          <table className="table-flat">
+            <thead className="whitespace-nowrap">
               <tr>
-                <th className="px-3 py-3 w-10 text-center">
+                <th className="w-10 text-center">
                   <input 
                     type="checkbox" 
-                    className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                    className="field-check"
                     checked={suggestions?.length !== 0 && selectedIds.size === suggestions?.length}
                     onChange={toggleAll}
                   />
@@ -180,14 +181,16 @@ export default function ReorderSuggestionsPage() {
                 <Th className="text-end">Suggested Qty</Th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-sand-100">
+            <tbody className="divide-y divide-neutral-100">
               {busy && !suggestions ? (
                 <tr>
-                  <td colSpan={9} className="p-8 text-center text-ink/50">Loading...</td>
+                  <td colSpan={9} className="p-8 text-center">
+                    <Loading className="p-0" />
+                  </td>
                 </tr>
               ) : suggestions?.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="p-8 text-center text-ink/50">No reorder suggestions right now.</td>
+                  <td colSpan={9} className="p-8 text-center text-neutral-900/50">No reorder suggestions right now.</td>
                 </tr>
               ) : (
                 suggestions?.map((variant) => {
@@ -195,32 +198,32 @@ export default function ReorderSuggestionsPage() {
                   if (suggestedQty < variant.moq) suggestedQty = variant.moq;
 
                   return (
-                    <tr key={variant.id} className={clsx("hover:bg-sand-50/50", selectedIds.has(variant.id) && "bg-brand-50/30")}>
-                      <td className="px-3 py-3 text-center">
+                    <tr key={variant.id} className={cn("hover:bg-neutral-50/50", selectedIds.has(variant.id) && "bg-neutral-50/30")}>
+                      <td className="text-center">
                         <input 
                           type="checkbox" 
-                          className="rounded border-sand-300 text-brand-600 focus:ring-brand-500"
+                          className="field-check"
                           checked={selectedIds.has(variant.id)}
                           onChange={() => toggleOne(variant.id)}
                         />
                       </td>
-                      <td className="px-3 py-3">
-                        <div className="font-medium text-ink">{variant.product.name}</div>
-                        <div className="text-xs text-ink/60">
+                      <td>
+                        <div className="font-medium text-neutral-900">{variant.product.name}</div>
+                        <div className="text-xs text-neutral-900/60">
                           {[variant.size, variant.color].filter(Boolean).join(' / ')}
                         </div>
                       </td>
-                      <td className="px-3 py-3 text-ink/80">{variant.sku}</td>
-                      <td className="px-3 py-3 text-ink/80">
+                      <td className="text-neutral-900/80">{variant.sku}</td>
+                      <td className="text-neutral-900/80">
                         {variant.preferredSupplier ? variant.preferredSupplier.name : <span className="text-red-500">No Supplier</span>}
                       </td>
-                      <td className="px-3 py-3 text-end font-medium text-red-600">
+                      <td className="text-end font-medium text-red-600">
                         {variant.stock}
                       </td>
-                      <td className="px-3 py-3 text-end text-ink/60">{variant.reorderPoint}</td>
-                      <td className="px-3 py-3 text-end text-ink/80">{formatMoney(variant.lastCost)}</td>
-                      <td className="px-3 py-3 text-end text-ink/60">{variant.moq}</td>
-                      <td className="px-3 py-3 text-end font-medium text-brand-700">
+                      <td className="text-end text-neutral-900/60">{variant.reorderPoint}</td>
+                      <td className="text-end text-neutral-900/80">{formatMoney(variant.lastCost)}</td>
+                      <td className="text-end text-neutral-900/60">{variant.moq}</td>
+                      <td className="text-end font-medium text-accent-hover">
                         {suggestedQty}
                       </td>
                     </tr>

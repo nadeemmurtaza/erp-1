@@ -1,0 +1,94 @@
+// The trading-partner network (18-trading-partner-network.md, WO-18) — lets
+// a supplier, distributor or wholesaler that also runs this software (or
+// exposes any HTTP+JSON API) exchange documents with this deployment
+// without either side re-typing them. A `Supplier` with no linked
+// `TradingPartner` behaves exactly as it always has: nothing here is
+// required for purchasing to keep working.
+
+enum TradingPartnerKind {
+  /// We buy from them — their invoice becomes our SupplierBill (WO-18.2).
+  SUPPLIER
+  /// They buy from us — not wired to anything yet; reserved so `kind`
+  /// doesn't need a breaking change when the sell-side direction is built.
+  CUSTOMER
+  BOTH
+}
+
+enum TradingPartnerStatus {
+  /// Registered, no working inbound key yet — cannot authenticate.
+  PENDING
+  ACTIVE
+  /// Manually disabled; `verifyInboundKey` (WO-18.2) refuses a SUSPENDED
+  /// partner's key even if it still hashes correctly.
+  SUSPENDED
+}
+
+/// The business on the other end of a document exchange. Two independent
+/// credentials, because the two directions are independent capabilities:
+/// `outboundApiKeyEncrypted` is what WE present calling THEM
+/// (`outboundBaseUrl`, WO-18.3); `inboundApiKeyHash` is what THEY must
+/// present calling US (WO-18.2). Either, both, or neither may be set — a
+/// partner who only ever pushes to us never needs an outbound key, and vice
+/// versa.
+model TradingPartner {
+  id   String             @id @default(cuid())
+  name String
+  kind TradingPartnerKind
+
+  outboundBaseUrl         String?
+  /// AES-256-GCM via core/security/secret-crypto.ts — never stored plain,
+  /// same as an email account's SMTP password.
+  outboundApiKeyEncrypted String?
+
+  /// SHA-256 of the raw key (core/security/api-token.ts) — the raw key
+  /// itself is shown to the operator exactly once, at issue/rotate time,
+  /// and never persisted. Unique so a presented key resolves its partner in
+  /// one indexed lookup rather than a hash comparison per row.
+  inboundApiKeyHash String? @unique
+
+  /// The role they confirmed at acceptance — SUPPLIER, MANUFACTURER,
+  /// DISTRIBUTOR or RETAILER (parties.prisma's own `PartyRoleName`, reused
+  /// rather than duplicated). Recorded verbatim for display/audit; `kind`
+  /// is derived from it at accept time and stays the field push-routing
+  /// (WO-18.3) reads, so nothing downstream needs to know this exists.
+  acceptedRole PartyRoleName?
+
+  /// First-connection handshake — "send a request, they accept to start the
+  /// relation." A partner created with no credentials at all gets one of
+  /// these. Same shape as `inboundApiKeyHash`: a single-use secret shown to
+  /// the operator once, never persisted raw, and cleared the moment
+  /// `acceptConnection()` succeeds so a stale link cannot be replayed.
+  inviteTokenHash String?   @unique
+  invitedAt       DateTime?
+  acceptedAt      DateTime?
+  /// Where the invite link is emailed, if we have one on file. Optional —
+  /// an invite with no address still works, the operator just shares the
+  /// link by hand.
+  contactEmail    String?
+
+  status    TradingPartnerStatus @default(PENDING)
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+
+  suppliers Supplier[]
+
+  @@index([status])
+}
+
+/// A marketing push to the retail end of the chain (WO-18.3's third "forth"
+/// document, alongside the product-alerts push) — never targeted, never a
+/// coupon engine: one broadcast row, fanned out to every ACTIVE
+/// CUSTOMER/BOTH partner the same way a new product is. `discountLabel` is
+/// display text a partner's own system shows; nothing here is redeemed or
+/// enforced by this deployment.
+model Offer {
+  id            String    @id @default(cuid())
+  title         String
+  description   String
+  discountLabel String?
+  validFrom     DateTime  @default(now())
+  validUntil    DateTime?
+  createdAt     DateTime  @default(now())
+
+  @@index([createdAt])
+}

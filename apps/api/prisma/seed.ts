@@ -2,12 +2,13 @@ import { config } from 'dotenv';
 import { hash } from 'bcryptjs';
 import {
   DEFAULT_GARMENT_TYPES,
+  DEFAULT_LOCALE,
   PERMISSION_CATALOG,
   ROLE_PERMISSION_SEED,
   slugify,
   toMinor,
   type PermissionKey,
-} from '@yaseen/shared';
+} from '@newax/shared';
 import { PrismaClient, type Prisma, type UserRole } from '../src/generated/prisma';
 
 config({ path: ['.env', '../../.env'], quiet: true });
@@ -18,12 +19,20 @@ import { AuditService } from '../src/core/audit/audit.service';
 import { InventoryService } from '../src/modules/inventory/inventory.service';
 import { PrismaService } from '../src/core/prisma/prisma.service';
 import { StockIntakeRegistry } from '../src/core/extension-points/stock-intake.registry';
+import { EntityEnrichmentRegistry } from '../src/core/extension-points/entity-enrichment.registry';
+import { CHART_OF_ACCOUNTS } from '../src/modules/accounting/chart-of-accounts';
 
 const prisma = new PrismaClient();
 const prismaService = prisma as unknown as PrismaService;
 const eventBus = new EventBusService(prismaService, new EventEmitter2());
 const audit = new AuditService(prismaService);
-const inventoryService = new InventoryService(prismaService, audit, eventBus, new StockIntakeRegistry());
+const inventoryService = new InventoryService(
+  prismaService,
+  audit,
+  eventBus,
+  new StockIntakeRegistry(),
+  new EntityEnrichmentRegistry(),
+);
 
 /**
  * Seeds a working store: staff accounts, garment types with their measurement
@@ -38,6 +47,8 @@ async function main(): Promise<void> {
 
   await seedPermissions();
   const users = await seedUsers();
+  await seedRoles();
+  await seedChartOfAccounts();
   const garments = await seedGarmentTypes();
   await seedGarmentCatalogExpansion(garments);
   await seedStitchingOptions(garments);
@@ -59,7 +70,7 @@ async function main(): Promise<void> {
 /**
  * Loads the permission catalog and, for any permission that has never been
  * granted to anyone, applies its default role grants from
- * ROLE_PERMISSION_SEED (@yaseen/shared).
+ * ROLE_PERMISSION_SEED (@newax/shared).
  *
  * The label/category upsert always runs — that's just display metadata. The
  * grant step deliberately does not: once a permission has at least one
@@ -98,47 +109,172 @@ async function seedPermissions(): Promise<void> {
   }
 }
 
+/**
+ * One-time bootstrap of the custom-roles system onto the old fixed-enum
+ * one: creates a real `Role` row for each of the four `UserRole` enum
+ * values, copies each one's *current* `RolePermission` grants (not the
+ * static `ROLE_PERMISSION_SEED` constant — a deployment may have hand-edited
+ * these from /admin/settings already, and the backfill must carry that
+ * forward, not reset it), and assigns every existing user the `Role`
+ * matching their current `role` column.
+ *
+ * Strictly one-time: if any `Role` row already exists — from this having
+ * run before, or from a super admin having created a custom role since —
+ * this returns immediately and touches nothing. There is no "re-sync"
+ * step, on purpose: once roles are real, editable rows, a later seed run
+ * asserting anything about them would fight whatever an admin has since
+ * done, the same reasoning `seedPermissions()` already applies to grants.
+ */
+async function seedRoles(): Promise<void> {
+  const alreadySeeded = await prisma.role.count();
+  if (alreadySeeded > 0) return;
+
+  console.warn('Seeding roles (one-time: migrating the fixed role enum into real Role rows)…');
+
+  const ROLE_DISPLAY: Record<UserRole, { name: string; description: string }> = {
+    CUSTOMER: { name: 'Customer', description: 'A storefront shopper — the default for every signup.' },
+    TAILOR: { name: 'Tailor', description: 'Works the stitching queue.' },
+    STAFF: { name: 'Staff', description: 'Day-to-day back-office operations.' },
+    ADMIN: { name: 'Admin', description: 'Full back-office access, including settings and permissions.' },
+  };
+
+  const roleIdByEnum = new Map<UserRole, string>();
+
+  for (const enumRole of Object.keys(ROLE_DISPLAY) as UserRole[]) {
+    const { name, description } = ROLE_DISPLAY[enumRole];
+    const role = await prisma.role.create({ data: { name, description } });
+    roleIdByEnum.set(enumRole, role.id);
+
+    const currentGrants = await prisma.rolePermission.findMany({ where: { role: enumRole } });
+    if (currentGrants.length > 0) {
+      await prisma.roleGrant.createMany({
+        data: currentGrants.map((grant) => ({ roleId: role.id, permissionId: grant.permissionId })),
+        skipDuplicates: true,
+      });
+    }
+  }
+
+  const users = await prisma.user.findMany({ select: { id: true, role: true } });
+  if (users.length > 0) {
+    await prisma.userRoleAssignment.createMany({
+      data: users.map((user) => ({ userId: user.id, roleId: roleIdByEnum.get(user.role)! })),
+      skipDuplicates: true,
+    });
+  }
+
+  console.warn(`  Migrated ${users.length} user(s) onto the new Role system.`);
+}
+
+/**
+ * Seeds the accounts the posting rules (WO-19.2) and the year-end close
+ * (WO-19.5) resolve by code —
+ * `chart-of-accounts.ts`'s `CHART_OF_ACCOUNTS`. Runs unconditionally, the
+ * same as every other reference-data seed here, even when `accounting` is
+ * off in MODULES: the rows are inert until a posting rule looks one up, and
+ * seeding them only on toggle-on would mean the first sale after turning
+ * accounting on has nothing to post to.
+ *
+ * Only `name` is re-asserted on a re-run — never `type`/`isBank`/`isControl`,
+ * which are structural and, once an accounts-admin screen exists, editable —
+ * the same "label always upserts, structure never gets reset" split
+ * `seedPermissions()` already uses for grants.
+ */
+async function seedChartOfAccounts(): Promise<void> {
+  for (const account of CHART_OF_ACCOUNTS) {
+    await prisma.account.upsert({
+      where: { code: account.code },
+      update: { name: account.name },
+      create: account,
+    });
+  }
+}
+
+/**
+ * Upserts a seeded user by EITHER its email or its phone.
+ *
+ * Both columns are unique, and the seed hard-codes a phone per role. Keying
+ * only on email meant that renaming a seeded account — `staff@yaseen.pk` to a
+ * real person's address, say — made the seed look for an email that no longer
+ * exists, try to CREATE the user, and collide on a phone the renamed row
+ * still holds:
+ *
+ *   Unique constraint failed on the fields: (`phone`)
+ *
+ * That is not recoverable by re-running, and it aborts the whole seed, so
+ * every later step (reference data, and on a fresh database the permission
+ * catalog) never runs.
+ *
+ * Matching on either identifier makes it idempotent against a database whose
+ * accounts have since been edited. An existing row keeps its email, phone,
+ * name and password — only `role` is asserted, which is the one thing the
+ * seed is responsible for. Nothing here ever resets a live user's password.
+ */
+async function upsertSeedUser(input: {
+  email: string;
+  phone: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  role: 'ADMIN' | 'STAFF' | 'TAILOR' | 'CUSTOMER';
+  /** CUSTOMER is left alone if it already exists; staff roles are asserted. */
+  assertRole?: boolean;
+}) {
+  const existing = await prisma.user.findFirst({
+    where: { OR: [{ email: input.email }, { phone: input.phone }] },
+  });
+
+  if (existing) {
+    if (!input.assertRole || existing.role === input.role) return existing;
+    return prisma.user.update({
+      where: { id: existing.id },
+      data: { role: input.role },
+    });
+  }
+
+  return prisma.user.create({
+    data: {
+      email: input.email,
+      passwordHash: await hash(input.password, 12),
+      firstName: input.firstName,
+      lastName: input.lastName,
+      role: input.role,
+      phone: input.phone,
+    },
+  });
+}
+
 async function seedUsers() {
   const adminEmail = process.env.SEED_ADMIN_EMAIL ?? 'admin@yaseen.pk';
   const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? 'admin12345';
 
-  const admin = await prisma.user.upsert({
-    where: { email: adminEmail },
-    update: { role: 'ADMIN' },
-    create: {
-      email: adminEmail,
-      passwordHash: await hash(adminPassword, 12),
-      firstName: 'Store',
-      lastName: 'Admin',
-      role: 'ADMIN',
-      phone: '+923001110001',
-    },
+  const admin = await upsertSeedUser({
+    email: adminEmail,
+    phone: '+923001110001',
+    password: adminPassword,
+    firstName: 'Store',
+    lastName: 'Admin',
+    role: 'ADMIN',
+    assertRole: true,
   });
 
-  const staff = await prisma.user.upsert({
-    where: { email: 'staff@yaseen.pk' },
-    update: { role: 'STAFF' },
-    create: {
-      email: 'staff@yaseen.pk',
-      passwordHash: await hash('staff12345', 12),
-      firstName: 'Sana',
-      lastName: 'Iqbal',
-      role: 'STAFF',
-      phone: '+923001110002',
-    },
+  const staff = await upsertSeedUser({
+    email: 'staff@yaseen.pk',
+    phone: '+923001110002',
+    password: 'staff12345',
+    firstName: 'Sana',
+    lastName: 'Iqbal',
+    role: 'STAFF',
+    assertRole: true,
   });
 
-  const tailor = await prisma.user.upsert({
-    where: { email: 'tailor@yaseen.pk' },
-    update: { role: 'TAILOR' },
-    create: {
-      email: 'tailor@yaseen.pk',
-      passwordHash: await hash('tailor12345', 12),
-      firstName: 'Rashid',
-      lastName: 'Master',
-      role: 'TAILOR',
-      phone: '+923001110003',
-    },
+  const tailor = await upsertSeedUser({
+    email: 'tailor@yaseen.pk',
+    phone: '+923001110003',
+    password: 'tailor12345',
+    firstName: 'Rashid',
+    lastName: 'Master',
+    role: 'TAILOR',
+    assertRole: true,
   });
 
   await prisma.tailorProfile.upsert({
@@ -153,17 +289,15 @@ async function seedUsers() {
     },
   });
 
-  const customer = await prisma.user.upsert({
-    where: { email: 'ayesha@example.com' },
-    update: {},
-    create: {
-      email: 'ayesha@example.com',
-      passwordHash: await hash('customer12345', 12),
-      firstName: 'Ayesha',
-      lastName: 'Khan',
-      role: 'CUSTOMER',
-      phone: '+923001234567',
-    },
+  const customer = await upsertSeedUser({
+    email: 'ayesha@example.com',
+    phone: '+923001234567',
+    password: 'customer12345',
+    firstName: 'Ayesha',
+    lastName: 'Khan',
+    role: 'CUSTOMER',
+    // Demo customer: if a real account already holds this address or number,
+    // leave its role alone rather than demoting somebody to CUSTOMER.
   });
 
   await prisma.address.createMany({
@@ -2356,7 +2490,7 @@ async function seedProducts(
         compareAtPrice: definition.compareAtRupees
           ? toMinor(definition.compareAtRupees)
           : null,
-        brand: 'Yaseen',
+        brandId: await houseBrandId(),
         fabric: definition.fabric,
         season: definition.season,
         tags: definition.tags,
@@ -2806,3 +2940,30 @@ main()
     process.exitCode = 1;
   })
   .finally(() => prisma.$disconnect());
+
+/**
+ * The shop's own label, as a Brand row.
+ *
+ * Products used to carry `brand: 'Yaseen'` as free text. Seeded products now
+ * point at a real brand, so the seeded catalogue exercises the same path the
+ * admin does. Memoised because seedProducts calls it once per product.
+ */
+let houseBrandIdCache: string | null = null;
+async function houseBrandId(): Promise<string> {
+  if (houseBrandIdCache) return houseBrandIdCache;
+
+  const existing = await prisma.brand.findUnique({ where: { slug: 'yaseen' } });
+  if (existing) {
+    houseBrandIdCache = existing.id;
+    return existing.id;
+  }
+
+  const brand = await prisma.brand.create({
+    data: {
+      slug: 'yaseen',
+      translations: { create: [{ locale: DEFAULT_LOCALE, name: 'Yaseen' }] },
+    },
+  });
+  houseBrandIdCache = brand.id;
+  return brand.id;
+}

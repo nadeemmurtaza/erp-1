@@ -1,3 +1,4 @@
+import { BRAND } from '@newax/shared';
 import {
   Body,
   Controller,
@@ -13,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { stringify } from 'csv-stringify/sync';
-import { toMajor } from '@yaseen/shared';
+import { toMajor } from '@newax/shared';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, Public, RequirePermission } from '../../core/auth/decorators';
 import { CrmService } from './crm.service';
@@ -66,7 +67,10 @@ export class CrmAdminController {
 
   @Get('contacts/export')
   @Header('Content-Type', 'text/csv; charset=utf-8')
-  @Header('Content-Disposition', 'attachment; filename="yaseen-contacts.csv"')
+  @Header(
+    'Content-Disposition',
+    `attachment; filename="${BRAND.identity.domain.split('.')[0]}-contacts.csv"`,
+  )
   @ApiOperation({
     summary: 'Export the filtered list as CSV — for a WhatsApp broadcast list',
   })

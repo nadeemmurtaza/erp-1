@@ -1,20 +1,28 @@
 import { DynamicModule, Logger, Module, type Type } from '@nestjs/common';
+import { AccountingModule } from './accounting/accounting.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { CartModule } from './cart/cart.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { CrmModule } from './crm/crm.module';
+import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { MarketingModule } from './marketing/marketing.module';
 import { MeasurementsModule } from './measurements/measurements.module';
 import { OrdersModule } from './orders/orders.module';
+import { OrganizationModule } from './organization/organization.module';
+import { PartiesModule } from './parties/parties.module';
 import { PaymentsModule } from './payments/payments.module';
+import { PosModule } from './pos/pos.module';
+import { ProductionModule } from './production/production.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
 import { ReportsModule } from './reports/reports.module';
 import { SettingsAdminModule } from './settings/settings-admin.module';
 import { StitchingModule } from './stitching/stitching.module';
 import { TaxModule } from './tax/tax.module';
 import { TrackingModule } from './tracking/tracking.module';
+import { TradingPartnersModule } from './tradingpartners/trading-partners.module';
+import { TransfersModule } from './transfers/transfers.module';
 import { UsersAdminModule } from './users/users-admin.module';
 
 export interface FeatureModuleEntry {
@@ -40,6 +48,9 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'stitching', module: StitchingModule },
   { name: 'inventory', module: InventoryModule },
   { name: 'purchasing', module: PurchasingModule },
+  { name: 'production', module: ProductionModule },
+  { name: 'parties', module: PartiesModule },
+  { name: 'tradingpartners', module: TradingPartnersModule },
   { name: 'payments', module: PaymentsModule },
   { name: 'orders', module: OrdersModule },
   { name: 'crm', module: CrmModule },
@@ -48,6 +59,32 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'reports', module: ReportsModule },
   { name: 'tax', module: TaxModule },
   { name: 'tracking', module: TrackingModule },
+  // Off by default for every deployment today (WO-18.3) — a chain
+  // deployment switches it on when it actually has branches or brands to
+  // register (RETAIL-ERP.md R14: "every tier concept must be invisible in
+  // Solo").
+  { name: 'organization', module: OrganizationModule },
+  // Off by default — a deployment turns it on once it wants a real GL
+  // instead of the sum-of-tables reports in `finance`/`reports`. Couples to
+  // nothing either way (R15): no module imports AccountingModule, and its
+  // posting rules (WO-19.2/19.3) reach `orders`/`payments`/`purchasing` only
+  // through domain events, never a service import.
+  { name: 'accounting', module: AccountingModule },
+  // Off by default — see docs/implementation/18-identity-verification.md.
+  // Add 'identity-verification' to MODULES once NID_API_URL/NID_API_KEY/
+  // NID_WEBHOOK_SECRET are set.
+  { name: 'identity-verification', module: IdentityVerificationModule },
+  // Off by default — a deployment turns it on once it actually runs a
+  // physical till (RETAIL-ERP.md R14: invisible until then). Terminal
+  // registration, device auth, shift lifecycle, the sale path
+  // (`pos -> orders`, WO-21.3) and receipts/returns (WO-21.5) are all
+  // built; park/retrieve and a till-side price override are not.
+  { name: 'pos', module: PosModule },
+  // Off by default — a single-location deployment has nothing to transfer
+  // between (RETAIL-ERP.md R14). Inter-brand transfers via the org tier
+  // (R4's own note), settlement modes and InterBranchInvoice (R12) are
+  // WO-22.2/22.3's, not this module's.
+  { name: 'transfers', module: TransfersModule },
   // Account administration — not togglable business features.
   { name: 'settings', module: SettingsAdminModule, alwaysOn: true },
   { name: 'users', module: UsersAdminModule, alwaysOn: true },

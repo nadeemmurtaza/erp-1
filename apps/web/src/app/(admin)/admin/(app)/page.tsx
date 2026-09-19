@@ -3,14 +3,15 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import clsx from 'clsx';
-import { formatMoney, toMajor } from '@yaseen/shared';
+import { formatDate, formatMoney, formatNumber, toMajor } from '@newax/shared';
 import { SalesChart } from '@/components/admin/sales-chart';
-import { DonutChart } from '@/components/admin/donut-chart';
-import { GaugeChart } from '@/components/admin/gauge-chart';
-import { FunnelChart } from '@/components/admin/funnel-chart';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
-import type { MonthlyTarget, VisitorAnalytics } from '@/lib/api-types';
+import type { VisitorAnalytics } from '@/types/api';
+import { ROUTES } from '@/constants/routes';
+import { Disclosure, Loading, MetricStrip, PageHeader, Section } from '@/components/ui';
+import { RangePicker, type RangeDays } from '@/components/admin/range-picker';
+import { useEnabledModules } from '@/components/admin/deployment-modules';
+import { isModuleEnabled } from '@/utils/module-gate';
 
 interface Dashboard {
   today: { orders: number; revenue: number };
@@ -28,7 +29,6 @@ interface Dashboard {
   salesSeries: Array<{ date: string; orders: number; revenue: number }>;
   topProducts: Array<{ name: string; quantity: number; revenue: number }>;
   stitchingByStage: Array<{ stage: string; count: number }>;
-  monthlyTarget: MonthlyTarget;
 }
 
 /** Only the slice this page needs — the full shape is consumed by reports/page.tsx. */
@@ -44,21 +44,29 @@ interface FollowUp {
   lead: { id: string; name: string; phone: string | null } | null;
 }
 
-const RANGES = [7, 30, 90] as const;
+interface TradingPartnerSummary {
+  id: string;
+  status: 'PENDING' | 'ACTIVE' | 'SUSPENDED';
+}
 
 export default function AdminDashboardPage() {
   const router = useRouter();
-  const [days, setDays] = useState<number>(30);
+  const enabledModules = useEnabledModules();
+  const trackingOn = isModuleEnabled('tracking', enabledModules);
+  const crmOn = isModuleEnabled('crm', enabledModules);
+  const ordersOn = isModuleEnabled('orders', enabledModules);
+  const catalogOn = isModuleEnabled('catalog', enabledModules);
+  const stitchingOn = isModuleEnabled('stitching', enabledModules);
+  const tradingPartnersOn = isModuleEnabled('tradingpartners', enabledModules);
+
+  const [days, setDays] = useState<RangeDays>(30);
   const [data, setData] = useState<Dashboard | null>(null);
   const [extended, setExtended] = useState<ExtendedAnalyticsSlice | null>(null);
   const [visitors, setVisitors] = useState<VisitorAnalytics | null>(null);
   const [followUps, setFollowUps] = useState<FollowUp[]>([]);
+  const [pendingPartners, setPendingPartners] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
-  const [editingTarget, setEditingTarget] = useState(false);
-  const [targetDraft, setTargetDraft] = useState('0');
-  const [targetSaving, setTargetSaving] = useState(false);
-  const [targetError, setTargetError] = useState<string | null>(null);
 
   // No analytics.view permission means no dashboard to read — the analytics
   // endpoints below would just 403 — so send them to the queue instead.
@@ -72,18 +80,24 @@ export default function AdminDashboardPage() {
     if (lacksDashboard) return;
     let cancelled = false;
 
+    // `tracking`/`crm`/`tradingpartners` are separate modules that may be
+    // off for this deployment — their routes would 404, so only fetched
+    // when enabled rather than failing the whole dashboard for a B2B-only
+    // shop with no consumer storefront.
     Promise.all([
       adminFetch<Dashboard>('/admin/analytics/dashboard', { query: { days } }),
       adminFetch<ExtendedAnalyticsSlice>('/admin/analytics/extended', { query: { days } }),
-      adminFetch<VisitorAnalytics>('/admin/analytics/visitors', { query: { days } }),
-      adminFetch<FollowUp[]>('/admin/crm/follow-ups/due'),
+      trackingOn ? adminFetch<VisitorAnalytics>('/admin/analytics/visitors', { query: { days } }) : null,
+      crmOn ? adminFetch<FollowUp[]>('/admin/crm/follow-ups/due') : [],
+      tradingPartnersOn ? adminFetch<{ data: TradingPartnerSummary[] }>('/admin/trading-partners') : null,
     ])
-      .then(([dashboard, extendedData, visitorData, due]) => {
+      .then(([dashboard, extendedData, visitorData, due, partners]) => {
         if (cancelled) return;
         setData(dashboard);
         setExtended(extendedData);
         setVisitors(visitorData);
         setFollowUps(due);
+        setPendingPartners(partners?.data.filter((p) => p.status === 'PENDING').length ?? 0);
       })
       .catch((cause: unknown) => {
         if (!cancelled) {
@@ -94,49 +108,20 @@ export default function AdminDashboardPage() {
     return () => {
       cancelled = true;
     };
-  }, [days, lacksDashboard]);
+  }, [days, lacksDashboard, trackingOn, crmOn, tradingPartnersOn]);
 
-  function openTargetEditor() {
-    if (!data) return;
-    // Rupees on screen, paisa in the API — same ×100/÷100 boundary as the
-    // garments page's stitching-fee field.
-    setTargetDraft(String(data.monthlyTarget.targetAmount / 100));
-    setTargetError(null);
-    setEditingTarget(true);
-  }
 
-  async function saveTarget(event: React.FormEvent) {
-    event.preventDefault();
-    setTargetSaving(true);
-    setTargetError(null);
-
-    try {
-      const targetAmount = Math.round(Number(targetDraft || 0) * 100);
-      const monthlyTarget = await adminFetch<MonthlyTarget>('/admin/analytics/monthly-target', {
-        method: 'PATCH',
-        body: { targetAmount },
-      });
-      // Splice the recomputed target back into the already-loaded dashboard
-      // rather than refetching the whole thing.
-      setData((current) => (current ? { ...current, monthlyTarget } : current));
-      setEditingTarget(false);
-    } catch (cause) {
-      setTargetError(cause instanceof Error ? cause.message : 'Could not save the target');
-    } finally {
-      setTargetSaving(false);
-    }
-  }
 
   if (error) {
     return (
-      <p role="alert" className="card p-4 text-sm text-red-700">
+      <p role="alert" className="text-sm text-feedback-negative">
         {error}
       </p>
     );
   }
 
-  if (!data || !extended || !visitors) {
-    return <p className="text-sm text-ink/50">Loading…</p>;
+  if (!data || !extended || (trackingOn && !visitors)) {
+    return <Loading />;
   }
 
   const attention = [
@@ -144,413 +129,391 @@ export default function AdminDashboardPage() {
       label: 'Orders to confirm',
       value: data.needsAttention.pendingOrders,
       href: '/admin/orders?status=PENDING',
+      module: 'orders',
     },
     {
       label: 'Payments to approve',
       value: data.needsAttention.paymentsAwaitingApproval,
       href: '/admin/payments',
+      module: 'payments',
     },
     {
       label: 'Follow-ups due',
       value: data.needsAttention.followUpsDue,
       href: '/admin/contacts',
+      module: 'crm',
     },
     {
       label: 'Variants low on stock',
       value: data.needsAttention.lowStockVariants,
       href: '/admin/products',
+      module: 'inventory',
     },
     {
       label: 'Failed background events',
       value: data.needsAttention.failedEvents,
       href: '/admin/orders',
+      module: undefined,
     },
     {
       label: 'Abandoned carts',
-      value: visitors.abandonedCarts,
+      value: visitors?.abandonedCarts ?? 0,
       href: '/admin/reports',
+      module: 'cart',
     },
-  ].filter((item) => item.value > 0);
+    {
+      label: 'Trading partners awaiting connection',
+      value: pendingPartners,
+      href: '/admin/trading-partners',
+      module: 'tradingpartners',
+    },
+  ].filter((item) => item.value > 0 && isModuleEnabled(item.module, enabledModules));
 
   return (
     <>
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-semibold text-ink">Dashboard</h1>
-          <p className="mt-1 text-sm text-ink/60">How the shop is doing right now.</p>
-        </div>
-        <Link href="/admin/products/new" className="btn-primary">
-          Add product
-        </Link>
-      </div>
+      <PageHeader
+        title="Dashboard"
+        description="What needs doing right now. For how the shop is performing, see Insights."
+        action={
+          <Link href={ROUTES.admin.productNew} className="btn-primary">
+            Add product
+          </Link>
+        }
+      />
 
-      {/* The headline numbers are stat tiles, not a chart. */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat
-          index={0}
-          label="Today"
-          value={formatMoney(data.today.revenue)}
-          hint={`${data.today.orders} ${data.today.orders === 1 ? 'order' : 'orders'}`}
-        />
-        <Stat
-          index={1}
-          label="This month"
-          value={formatMoney(data.month.revenue)}
-          hint={`${data.month.orders} ${data.month.orders === 1 ? 'order' : 'orders'}`}
-        />
-        <Stat
-          index={2}
-          label="Total visitors"
-          value={visitors.totalVisitors.toLocaleString('en-PK')}
-          hint={visitorsHint(days, visitors.visitorsChangePercent)}
-        />
-        <Stat
-          index={3}
-          label="Customers"
-          value={String(data.customers.total)}
-          hint={`${data.customers.repeat} repeat · ${data.customers.newThisMonth} new this month`}
-        />
-      </div>
+      {/*
+        First, and prominent. This is the question the page exists to answer,
+        and it used to sit under four KPI tiles as a row of small chips — the
+        one actionable thing on the page, rendered smaller than the things
+        that are only informative.
 
-      {attention.length > 0 ? (
-        <ul className="mt-4 flex flex-wrap gap-2">
-          {attention.map((item, idx) => (
-            <li key={item.label} className="animate-slideUp" style={{ animationDelay: `${(idx + 5) * 75}ms` }}>
-              <Link
-                href={item.href}
-                className="inline-flex items-center gap-2 rounded-md border border-gold/40 bg-gold/10 px-3 py-1.5 text-sm text-ink/80 transition-colors hover:bg-gold/20"
-              >
-                <span className="font-semibold text-ink">{item.value}</span>
-                {item.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      ) : null}
-
-      <div className="mt-6 grid gap-4 lg:grid-cols-3">
-        <section className="card p-4 sm:p-5 lg:col-span-2">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h2 className="text-sm font-semibold text-ink">Revenue</h2>
-              <p className="text-xs text-ink/50">Daily, excluding cancelled and returned orders.</p>
-            </div>
-
-            <div className="flex gap-1" role="group" aria-label="Date range">
-              {RANGES.map((option) => (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() => setDays(option)}
-                  aria-pressed={days === option}
-                  className={clsx(
-                    'rounded-md px-3 py-1.5 text-sm transition-colors',
-                    days === option ? 'bg-brand-600 text-white' : 'text-ink/70 hover:bg-sand-100',
-                  )}
-                >
-                  {option} days
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <SalesChart series={data.salesSeries} />
-        </section>
-
-        <section className="card p-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-ink">Monthly target</h2>
-            {!editingTarget ? (
-              <button
-                type="button"
-                onClick={openTargetEditor}
-                className="text-xs font-medium text-brand-700 hover:underline"
-              >
-                Edit target
-              </button>
-            ) : null}
-          </div>
-
-          {editingTarget ? (
-            <form onSubmit={saveTarget} className="mt-4 space-y-3">
-              <div>
-                <label htmlFor="monthly-target-input" className="field-label">
-                  Target this month (Rs)
-                </label>
-                <input
-                  id="monthly-target-input"
-                  type="number"
-                  min="0"
-                  step="1000"
-                  value={targetDraft}
-                  onChange={(event) => setTargetDraft(event.target.value)}
-                  className="field-input"
-                  autoFocus
-                />
-              </div>
-
-              {targetError ? (
-                <p role="alert" className="text-xs text-red-700">
-                  {targetError}
-                </p>
-              ) : null}
-
-              <div className="flex gap-2">
-                <button type="submit" disabled={targetSaving} className="btn-primary">
-                  {targetSaving ? 'Saving…' : 'Save'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setEditingTarget(false);
-                    setTargetError(null);
-                  }}
-                  className="btn-ghost"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          ) : (
-            <>
-              <GaugeChart
-                percent={data.monthlyTarget.percent}
-                caption={
-                  data.monthlyTarget.targetAmount > 0
-                    ? `${formatMoney(data.monthlyTarget.achievedAmount)} of ${formatMoney(data.monthlyTarget.targetAmount)}`
-                    : 'No target set yet'
-                }
-              />
-              <p className="mt-3 border-t border-sand-100 pt-3 text-xs text-ink/50">
-                Average order <span className="font-semibold text-ink">{formatMoney(data.averageOrderValue)}</span>
-              </p>
-            </>
-          )}
-        </section>
-      </div>
-
-      <div className="mt-6 grid gap-4 lg:grid-cols-3">
-        <section className="card p-4">
-          <h2 className="text-sm font-semibold text-ink">
-            Top categories <span className="font-normal text-ink/50">· last {days} days</span>
-          </h2>
-          <div className="mt-4">
-            <DonutChart
-              items={extended.revenueByCategory.map((row) => ({ label: row.category, value: row.revenue }))}
-              valueFormatter={formatMoney}
-            />
-          </div>
-        </section>
-
-        <section className="card p-4">
-          <h2 className="text-sm font-semibold text-ink">
-            Conversion funnel <span className="font-normal text-ink/50">· last {days} days</span>
-          </h2>
-          <div className="mt-4">
-            <FunnelChart
-              stages={[
-                { label: 'Product views', value: visitors.funnel.productViews },
-                { label: 'Added to cart', value: visitors.funnel.addToCart },
-                { label: 'Checkout started', value: visitors.funnel.checkoutStarted },
-                { label: 'Purchases completed', value: visitors.funnel.purchasesCompleted },
-              ]}
-            />
-          </div>
-        </section>
-
-        <section className="card p-4">
-          <h2 className="text-sm font-semibold text-ink">
-            Traffic sources <span className="font-normal text-ink/50">· last {days} days</span>
-          </h2>
-          {visitors.trafficSources.length === 0 ? (
-            <p className="mt-4 text-sm text-ink/50">No page views in this window.</p>
-          ) : (
-            <BarList
-              items={visitors.trafficSources.map((row) => ({
-                key: row.source,
-                label: capitalize(row.source),
-                value: row.percent,
-                sub: `${row.count} ${row.count === 1 ? 'view' : 'views'}`,
-              }))}
-              valueFormatter={(value) => `${value}%`}
-            />
-          )}
-        </section>
-      </div>
-
-      <div className="mt-6 grid gap-4 lg:grid-cols-2">
-        <section className="card p-4">
-          <h2 className="text-sm font-semibold text-ink">
-            Best sellers <span className="font-normal text-ink/50">· last {days} days</span>
-          </h2>
-
-          {data.topProducts.length === 0 ? (
-            <p className="mt-4 text-sm text-ink/50">No sales in this window.</p>
-          ) : (
-            <BarList
-              items={data.topProducts.map((product) => ({
-                key: product.name,
-                label: product.name,
-                value: product.revenue,
-                sub: `${product.quantity} sold`,
-              }))}
-              valueFormatter={formatMoney}
-            />
-          )}
-        </section>
-
-        <div className="space-y-4">
-          <section className="card">
-            <div className="flex items-center justify-between border-b border-sand-200 px-4 py-3">
-              <h2 className="text-sm font-semibold text-ink">Follow-ups due</h2>
-              <Link href="/admin/contacts" className="text-xs font-medium text-brand-700 hover:underline">
-                Customers
-              </Link>
-            </div>
-
-            {followUps.length === 0 ? (
-              <p className="px-4 py-6 text-sm text-ink/50">Nothing due. Nobody forgotten.</p>
-            ) : (
-              <ul className="divide-y divide-sand-100">
-                {followUps.slice(0, 6).map((task) => (
-                  <li key={task.id} className="px-4 py-3">
-                    <p className="text-sm text-ink">{task.note}</p>
-                    <p className="text-xs text-ink/50">
-                      {task.contact?.name ?? task.lead?.name ?? 'Unassigned'} · due{' '}
-                      {new Date(task.dueAt).toLocaleDateString('en-PK')}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-
-          {data.stitchingByStage.length > 0 ? (
-            <section className="card p-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-sm font-semibold text-ink">Tailoring in progress</h2>
+        Flex, not a grid. A three-column grid holding four chips leaves two
+        empty cells on the second row, and an empty cell in a bordered grid
+        reads as something that failed to load.
+      */}
+      <Section title="Needs attention">
+        {attention.length === 0 ? (
+          <p className="text-sm text-neutral-900/50">Nothing waiting. Everything is up to date.</p>
+        ) : (
+          <ul className="flex flex-wrap gap-2">
+            {attention.map((item) => (
+              <li key={item.label} className="min-w-0 flex-1 basis-64">
                 <Link
-                  href="/admin/stitching"
-                  className="text-xs font-medium text-brand-700 hover:underline"
+                  href={item.href}
+                  className="flex h-full items-baseline gap-2 rounded border border-amber-600/40 bg-amber-600/10 px-3 py-2.5 text-sm transition-colors hover:bg-amber-600/20"
                 >
-                  Tailor queue
+                  <span className="text-base font-semibold text-neutral-900">{item.value}</span>
+                  <span className="text-neutral-900/80">{item.label}</span>
                 </Link>
-              </div>
-              {/* Six named stages: a labelled list reads better than a chart. */}
-              <dl className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2 text-sm sm:grid-cols-3">
-                {data.stitchingByStage.map((row) => (
-                  <div key={row.stage} className="flex justify-between gap-2">
-                    <dt className="text-ink/60">
-                      {row.stage.charAt(0) + row.stage.slice(1).toLowerCase()}
-                    </dt>
-                    <dd className="font-medium text-ink">{row.count}</dd>
-                  </div>
-                ))}
-              </dl>
-            </section>
-          ) : null}
+              </li>
+            ))}
+          </ul>
+        )}
+      </Section>
 
-          <section className="card p-4">
-            <h2 className="text-sm font-semibold text-ink">Catalogue</h2>
-            <dl className="mt-3 grid grid-cols-3 gap-3 text-sm">
+      {/*
+       * The strip is the overview and every cell is a way into its own
+       * detail. Four screens' worth of breakdown live here, one click apart
+       * and none of it on screen until asked for — which is also what closed
+       * the hole this page used to carry, where a chart sat in two columns of
+       * a three-column grid and the third column was simply empty.
+       */}
+      <MetricStrip
+        label="Shop summary"
+        lead="today"
+        className="mb-10"
+        items={[
+          ...(!ordersOn
+            ? []
+            : [
+          {
+            key: 'today',
+            label: 'Today',
+            value: formatMoney(data.today.revenue),
+            delta: {
+              label: `${data.today.orders} ${data.today.orders === 1 ? 'order' : 'orders'}`,
+              direction: 'flat' as const,
+            },
+            detail: (
+              <>
+                <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <h3 className="text-sm font-medium text-neutral-900">Revenue</h3>
+                    <p className="text-xs text-neutral-900/50">
+                      Daily, excluding cancelled and returned orders.
+                    </p>
+                  </div>
+                  <RangePicker value={days} onChange={setDays} />
+                </div>
+
+                <SalesChart series={data.salesSeries} />
+
+                <Disclosure label="Revenue as a table" className="mt-4">
+                  <div className="max-h-64 overflow-auto">
+                    <table className="table-flat">
+                      <thead>
+                        <tr>
+                          <th scope="col">Date</th>
+                          <th scope="col" className="text-end">
+                            Orders
+                          </th>
+                          <th scope="col" className="text-end">
+                            Revenue
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[...data.salesSeries].reverse().map((point) => (
+                          <tr key={point.date}>
+                            <td className="text-neutral-900/70">{point.date}</td>
+                            <td className="text-end tabular-nums text-neutral-900/70">
+                              {point.orders}
+                            </td>
+                            <td className="text-end tabular-nums text-neutral-900">
+                              {formatNumber(toMajor(point.revenue))}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </Disclosure>
+              </>
+            ),
+          },
+          {
+            key: 'month',
+            label: 'This month',
+            value: formatMoney(data.month.revenue),
+            delta: {
+              label: `${data.month.orders} ${data.month.orders === 1 ? 'order' : 'orders'}`,
+              direction: 'flat' as const,
+            },
+            detail: (
+              <div className="grid gap-6 fold:grid-cols-2">
+                <div>
+                  <h3 className="eyebrow mb-3">Average order value</h3>
+                  <p className="text-2xl font-medium tabular-nums text-neutral-900">
+                    {formatMoney(data.averageOrderValue)}
+                  </p>
+                  <p className="mt-1 text-xs text-neutral-900/50">
+                    Across {data.month.orders} {data.month.orders === 1 ? 'order' : 'orders'} this
+                    month.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="eyebrow mb-3">Revenue by category</h3>
+                  {extended.revenueByCategory.length === 0 ? (
+                    <p className="text-sm text-neutral-900/45">No sales in this window.</p>
+                  ) : (
+                    <ul className="divide-y divide-neutral-100">
+                      {extended.revenueByCategory.slice(0, 6).map((row) => (
+                        <li
+                          key={row.category}
+                          className="flex items-baseline justify-between gap-3 py-2 text-sm"
+                        >
+                          <span className="min-w-0 truncate text-neutral-900">{row.category}</span>
+                          <span className="shrink-0 tabular-nums text-neutral-900/60">
+                            {formatMoney(row.revenue)}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            ),
+          },
+          ]),
+          ...(!trackingOn || !visitors
+            ? []
+            : [
+          {
+            key: 'visitors',
+            label: 'Visitors',
+            value: formatNumber(visitors.totalVisitors),
+            delta: {
+              label: visitorsHint(days, visitors.visitorsChangePercent),
+              direction: visitorDirection(visitors.visitorsChangePercent),
+            },
+            detail: (
+              <div className="grid gap-6 fold:grid-cols-2">
+                <div>
+                  <h3 className="eyebrow mb-3">Where they stop</h3>
+                  <ul className="divide-y divide-neutral-100">
+                    {[
+                      { label: 'Product views', value: visitors.funnel.productViews },
+                      { label: 'Added to cart', value: visitors.funnel.addToCart },
+                      { label: 'Checkout started', value: visitors.funnel.checkoutStarted },
+                      { label: 'Purchases completed', value: visitors.funnel.purchasesCompleted },
+                    ].map((stage) => (
+                      <li
+                        key={stage.label}
+                        className="flex items-baseline justify-between gap-3 py-2 text-sm"
+                      >
+                        <span className="text-neutral-900">{stage.label}</span>
+                        <span className="tabular-nums text-neutral-900/60">
+                          {formatNumber(stage.value)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="eyebrow mb-3">Where they came from</h3>
+                  {visitors.trafficSources.length === 0 ? (
+                    <p className="text-sm text-neutral-900/45">No page views in this window.</p>
+                  ) : (
+                    <ul className="divide-y divide-neutral-100">
+                      {visitors.trafficSources.slice(0, 6).map((row) => (
+                        <li
+                          key={row.source}
+                          className="flex items-baseline justify-between gap-3 py-2 text-sm"
+                        >
+                          <span className="min-w-0 truncate text-neutral-900">{row.source}</span>
+                          <span className="shrink-0 tabular-nums text-neutral-900/60">
+                            {formatNumber(row.count)} · {row.percent}%
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <Link
+                    href={ROUTES.admin.insights}
+                    className="btn-text mt-3"
+                  >
+                    Full traffic report
+                  </Link>
+                </div>
+              </div>
+            ),
+          },
+          ]),
+          {
+            key: 'customers',
+            label: 'Customers',
+            value: formatNumber(data.customers.total),
+            delta: {
+              label: `${data.customers.repeat} repeat · ${data.customers.newThisMonth} new`,
+              direction: 'flat' as const,
+            },
+            detail: (
+              <div className="grid gap-6 fold:grid-cols-2">
+                <div>
+                  <h3 className="eyebrow mb-3">Follow-ups due</h3>
+                  {followUps.length === 0 ? (
+                    <p className="text-sm text-neutral-900/45">Nothing due. Nobody forgotten.</p>
+                  ) : (
+                    <ul className="divide-y divide-neutral-100">
+                      {followUps.slice(0, 6).map((task) => (
+                        <li key={task.id} className="py-2">
+                          <p className="text-sm text-neutral-900">{task.note}</p>
+                          <p className="text-xs text-neutral-900/50">
+                            {task.contact?.name ?? task.lead?.name ?? 'Unassigned'} · due{' '}
+                            {formatDate(task.dueAt)}
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <Link href={ROUTES.admin.contacts} className="btn-text mt-3">
+                    All customers
+                  </Link>
+                </div>
+
+                <div>
+                  <h3 className="eyebrow mb-3">Best sellers</h3>
+                  {data.topProducts.length === 0 ? (
+                    <p className="text-sm text-neutral-900/45">No sales in this window.</p>
+                  ) : (
+                    <ul className="divide-y divide-neutral-100">
+                      {data.topProducts.slice(0, 6).map((product) => (
+                        <li
+                          key={product.name}
+                          className="flex items-baseline justify-between gap-3 py-2 text-sm"
+                        >
+                          <span className="min-w-0 truncate text-neutral-900">{product.name}</span>
+                          <span className="shrink-0 tabular-nums text-neutral-900/60">
+                            {product.quantity} sold
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            ),
+          },
+        ]}
+      />
+
+      {/*
+       * What is happening in the workshop and the catalogue right now. These
+       * are states rather than figures, so they stay on the page rather than
+       * behind a metric — and they sit in a grid sized to what it holds, not
+       * a three-column one with a permanent gap in it.
+       */}
+      <div className="grid gap-8 fold:grid-cols-2">
+        {stitchingOn && data.stitchingByStage.length > 0 ? (
+          <Section
+            title="Tailoring in progress"
+            action={
+              <Link href={ROUTES.admin.stitching} className="btn-text">
+                Tailor queue
+              </Link>
+            }
+          >
+            {/* Six named stages: a labelled list reads better than a chart. */}
+            <dl className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm sm:grid-cols-3">
+              {data.stitchingByStage.map((row) => (
+                <div key={row.stage} className="flex justify-between gap-2">
+                  <dt className="text-neutral-900/60">
+                    {row.stage.charAt(0) + row.stage.slice(1).toLowerCase()}
+                  </dt>
+                  <dd className="font-medium tabular-nums text-neutral-900">{row.count}</dd>
+                </div>
+              ))}
+            </dl>
+          </Section>
+        ) : null}
+
+        {catalogOn ? (
+          <Section
+            title="Catalogue"
+            action={
+              <Link href={ROUTES.admin.products} className="btn-text">
+                Products
+              </Link>
+            }
+          >
+            <dl className="grid grid-cols-3 gap-3 text-sm">
               <Mini label="Live" value={data.catalogue.live} />
               <Mini label="Drafts" value={data.catalogue.drafts} />
               <Mini label="Services" value={data.catalogue.services} />
             </dl>
-          </section>
-        </div>
+          </Section>
+        ) : null}
       </div>
-
-      {/* Everything the chart plots, also available as numbers. */}
-      <details className="card mt-6 p-4">
-        <summary className="cursor-pointer text-sm font-semibold text-ink">
-          Revenue as a table
-        </summary>
-        <div className="mt-3 max-h-64 overflow-auto">
-          <table className="w-full text-sm">
-            <thead className="sticky top-0 bg-white">
-              <tr>
-                <th scope="col" className="py-1 text-start text-xs font-semibold uppercase tracking-wide text-ink/50">
-                  Date
-                </th>
-                <th scope="col" className="py-1 text-end text-xs font-semibold uppercase tracking-wide text-ink/50">
-                  Orders
-                </th>
-                <th scope="col" className="py-1 text-end text-xs font-semibold uppercase tracking-wide text-ink/50">
-                  Revenue
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-sand-100">
-              {[...data.salesSeries].reverse().map((point) => (
-                <tr key={point.date}>
-                  <td className="py-1 text-ink/70">{point.date}</td>
-                  <td className="py-1 text-end tabular-nums text-ink/70">{point.orders}</td>
-                  <td className="py-1 text-end tabular-nums text-ink">
-                    {toMajor(point.revenue).toLocaleString('en-PK')}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </details>
     </>
-  );
-}
-
-function Stat({ index, label, value, hint }: { index?: number; label: string; value: string; hint?: string }) {
-  return (
-    <div
-      className="card p-4 animate-fadeIn"
-      style={index !== undefined ? { animationDelay: `${(index + 1) * 75}ms` } : undefined}
-    >
-      <p className="text-sm text-ink/60">{label}</p>
-      <p className="mt-1 text-2xl font-semibold text-ink">{value}</p>
-      {hint ? <p className="mt-1 text-xs text-ink/40">{hint}</p> : null}
-    </div>
   );
 }
 
 function Mini({ label, value }: { label: string; value: number }) {
   return (
     <div>
-      <dt className="text-xs text-ink/50">{label}</dt>
-      <dd className="text-lg font-semibold text-ink">{value}</dd>
+      <dt className="text-xs text-neutral-900/50">{label}</dt>
+      <dd className="text-lg font-semibold text-neutral-900">{value}</dd>
     </div>
   );
 }
 
-/** Ranked list with a proportional bar, matching reports/page.tsx's BarList. */
-function BarList({
-  items,
-  valueFormatter,
-}: {
-  items: Array<{ key: string; label: string; value: number; sub?: string }>;
-  valueFormatter: (value: number) => string;
-}) {
-  const max = Math.max(...items.map((item) => item.value), 1);
 
-  return (
-    <ul className="mt-4 space-y-3">
-      {items.map((item) => (
-        <li key={item.key}>
-          <div className="flex justify-between gap-3 text-sm">
-            <span className="min-w-0 truncate text-ink">{item.label}</span>
-            <span className="shrink-0 text-ink/70">{valueFormatter(item.value)}</span>
-          </div>
-          {/* Sequential single hue: more of the metric is a longer bar. */}
-          <div className="mt-1 h-2 overflow-hidden rounded-full bg-sand-100">
-            <div
-              className="h-full rounded-full"
-              style={{ width: `${Math.max((item.value / max) * 100, 2)}%`, backgroundColor: '#0f8fa3' }}
-            />
-          </div>
-          {item.sub ? <p className="mt-0.5 text-xs text-ink/40">{item.sub}</p> : null}
-        </li>
-      ))}
-    </ul>
-  );
+/** More visitors is good news; fewer is not. Null reads as neither. */
+function visitorDirection(changePercent: number | null): 'up' | 'down' | 'flat' {
+  if (changePercent === null || changePercent === 0) return 'flat';
+  return changePercent > 0 ? 'up' : 'down';
 }
 
 /** vs the immediately preceding window of the same length, matching VisitorAnalytics.visitorsChangePercent. */
@@ -560,6 +523,3 @@ function visitorsHint(days: number, changePercent: number | null): string {
   return `${sign}${changePercent}% vs previous ${days} days`;
 }
 
-function capitalize(value: string): string {
-  return value.length === 0 ? value : value.charAt(0).toUpperCase() + value.slice(1);
-}

@@ -31,9 +31,31 @@ export const DomainEvent = {
   EmailVerificationRequested: 'user.email_verification_requested',
 
   ProductLowStock: 'catalog.product_low_stock',
+  /** Distinct from ProductLowStock: fires against reorderPoint, drives auto-replenishment (PO or WorkOrder). ProductLowStock fires against lowStockThreshold and only ever notifies. */
+  ProductReorderPointReached: 'catalog.product_reorder_point_reached',
+  /** Fires once, the moment a product's status first becomes ACTIVE — never again on a later re-save. */
+  ProductPublished: 'catalog.product_published',
+  /** Fires only when basePrice actually changes value, never on an unrelated field edit. */
+  ProductPriceChanged: 'catalog.product_price_changed',
+  /** Any positive-delta stock movement — the one signal that can unblock a waiting order line, whatever replenished the stock. */
+  StockReplenished: 'inventory.stock_replenished',
+  /** InventoryService.postUnconditional() drove a location negative (RETAIL-ERP.md R5) — never fired by move(). */
+  StockVarianceRecorded: 'inventory.stock_variance_recorded',
   GoodsReceived: 'purchasing.goods_received',
+  SupplierBillRaised: 'purchasing.supplier_bill_raised',
+  SupplierBillPaid: 'purchasing.supplier_bill_paid',
+  /** SupplyChainDigestCron's own nightly per-supplier stock/velocity computation, republished as an event so a connected TradingPartner can receive it structured, not only as the email it already sends. */
+  SupplierDigestReady: 'analytics.supplier_digest_ready',
+
+  WorkOrderCreated: 'production.work_order_created',
+  WorkOrderReleased: 'production.work_order_released',
+  WorkOrderCompleted: 'production.work_order_completed',
 
   EmailReplyReceived: 'email.reply_received',
+
+  IdentityVerificationApproved: 'identity_verification.approved',
+  IdentityVerificationRejected: 'identity_verification.rejected',
+  IdentityVerificationExpired: 'identity_verification.expired',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -75,6 +97,16 @@ export interface StitchingJobPayload {
   assignedTailorId: string | null;
   orderId: string | null;
   stitchingOrderId: string | null;
+  /**
+   * The purchased variant this job is stitching, and how many — set only by
+   * StitchingJobCreated (from the order line), left undefined by
+   * StitchingJobStageChanged. production's stitching-cascade.listener.ts
+   * reads these to open a WorkOrder without production ever importing or
+   * querying StitchingJob directly (core must not know the apparel pack
+   * exists — MULTI-SECTOR.md).
+   */
+  variantId?: string | null;
+  quantity?: number;
 }
 
 export interface ContactUpsertedPayload {
@@ -128,6 +160,54 @@ export interface ProductLowStockPayload {
   threshold: number;
 }
 
+export interface ProductReorderPointReachedPayload {
+  productId: string;
+  variantId: string;
+  sku: string;
+  stock: number;
+  reorderPoint: number;
+  reorderQuantity: number | null;
+  producedInHouse: boolean;
+  preferredSupplierId: string | null;
+}
+
+export interface StockReplenishedPayload {
+  variantId: string;
+  locationId: string;
+  delta: number;
+  resultingStock: number;
+}
+
+export interface StockVarianceRecordedPayload {
+  stockVarianceId: string;
+  variantId: string;
+  locationId: string;
+  overshootQty: number;
+  unitCost: number | null;
+}
+
+/** Never a cost price or margin — this leaves the platform to whoever is listening. */
+export interface ProductPublishedPayload {
+  productId: string;
+  slug: string;
+  nameEn: string;
+  basePriceMinor: number;
+}
+
+/** Never a cost price or margin — this leaves the platform to whoever is listening. */
+export interface ProductPriceChangedPayload {
+  productId: string;
+  slug: string;
+  nameEn: string;
+  oldPriceMinor: number;
+  newPriceMinor: number;
+}
+
+export interface SupplierDigestReadyPayload {
+  supplierId: string;
+  items: Array<{ sku: string; stock: number; soldToday: number; soldThisWeek: number; actionNeeded: boolean }>;
+}
+
 export interface GoodsReceivedPayload {
   goodsReceiptId: string;
   number: string;
@@ -135,11 +215,52 @@ export interface GoodsReceivedPayload {
   supplierId: string;
 }
 
+export interface WorkOrderPayload {
+  workOrderId: string;
+  number: string;
+  variantId: string;
+  status: string;
+  source: string;
+}
+
+export interface SupplierBillRaisedPayload {
+  billId: string;
+  supplierId: string;
+  purchaseOrderId: string | null;
+  /** In `currency` below — the supplier's own invoiced amount. */
+  amountMinor: number;
+  currency: string;
+  /** rate * 1_000_000 at the moment this bill was raised (R16) — the "booked" rate a later payment's settlement rate is compared against. */
+  fxRateScaled: number;
+  /** `amountMinor` converted to the base currency, computed once (`convertToBase`, @newax/shared). */
+  baseAmountMinor: number;
+  issuedAt: string;
+}
+
+export interface SupplierBillPaidPayload {
+  billId: string;
+  supplierId: string;
+  /** The portion of the bill settled by this payment, in `currency` below. */
+  amountMinor: number;
+  currency: string;
+  /** The bill's own booked rate (SupplierBillRaisedPayload.fxRateScaled) — what AP was booked at. */
+  billFxRateScaled: number;
+  /** The rate actually used to convert this payment to the base currency — the difference from `billFxRateScaled` is the realised FX gain/loss (R16). */
+  settlementFxRateScaled: number;
+  paidAt: string;
+}
+
 export interface EmailReplyReceivedPayload {
   inboundEmailId: string;
   emailAccountId: string;
   contactId: string | null;
   fromAddress: string;
+}
+
+export interface IdentityVerificationPayload {
+  userId: string;
+  /** The VerificationMethodProvider key nID resolved the case with, e.g. "otp_sms". */
+  method: string | null;
 }
 
 export interface DomainEventPayloads {
@@ -160,6 +281,20 @@ export interface DomainEventPayloads {
   [DomainEvent.PasswordResetRequested]: PasswordResetRequestedPayload;
   [DomainEvent.EmailVerificationRequested]: EmailVerificationRequestedPayload;
   [DomainEvent.ProductLowStock]: ProductLowStockPayload;
+  [DomainEvent.ProductReorderPointReached]: ProductReorderPointReachedPayload;
+  [DomainEvent.ProductPublished]: ProductPublishedPayload;
+  [DomainEvent.ProductPriceChanged]: ProductPriceChangedPayload;
+  [DomainEvent.StockReplenished]: StockReplenishedPayload;
+  [DomainEvent.StockVarianceRecorded]: StockVarianceRecordedPayload;
   [DomainEvent.GoodsReceived]: GoodsReceivedPayload;
+  [DomainEvent.WorkOrderCreated]: WorkOrderPayload;
+  [DomainEvent.WorkOrderReleased]: WorkOrderPayload;
+  [DomainEvent.WorkOrderCompleted]: WorkOrderPayload;
+  [DomainEvent.SupplierBillRaised]: SupplierBillRaisedPayload;
+  [DomainEvent.SupplierBillPaid]: SupplierBillPaidPayload;
+  [DomainEvent.SupplierDigestReady]: SupplierDigestReadyPayload;
   [DomainEvent.EmailReplyReceived]: EmailReplyReceivedPayload;
+  [DomainEvent.IdentityVerificationApproved]: IdentityVerificationPayload;
+  [DomainEvent.IdentityVerificationRejected]: IdentityVerificationPayload;
+  [DomainEvent.IdentityVerificationExpired]: IdentityVerificationPayload;
 }

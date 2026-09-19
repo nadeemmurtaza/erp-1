@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { DEFAULT_LOCALE, isLocale, type Locale } from '@yaseen/shared';
+import { DEFAULT_LOCALE, isLocale, type Locale } from '@newax/shared';
 import {
   DomainEvent,
   type PaymentPayload,

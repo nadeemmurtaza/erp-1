@@ -30,7 +30,7 @@ export interface MyScopeResult {
   isOrgWide: boolean;
   level: MyScopeLevel;
   /** The single Organization row this deployment describes itself with — only fetched (and only ever non-null) for an org-wide actor. There is at most one per database (WO-18.3). */
-  organization: { id: string; name: string } | null;
+  organization: { id: string; name: string; allowInterBrandTransfers: boolean } | null;
   brands: RetailBrand[];
   nodes: Node[];
 }
@@ -55,7 +55,7 @@ export class OrganizationService {
       this.listBrands(actor),
       this.listNodes(actor),
       scope.isOrgWide
-        ? this.prisma.organization.findFirst({ select: { id: true, name: true } })
+        ? this.prisma.organization.findFirst({ select: { id: true, name: true, allowInterBrandTransfers: true } })
         : Promise.resolve(null),
     ]);
 
@@ -150,6 +150,35 @@ export class OrganizationService {
   async revokeScope(actor: ScopedActor, adminScopeId: string): Promise<void> {
     this.assertOrgWide(actor, 'revoke admin scope');
     await this.prisma.adminScope.delete({ where: { id: adminScopeId } });
+  }
+
+  /**
+   * R9's `org.allow_inter_brand_transfers` — the switch `TransfersService`
+   * (WO-22.2) reads directly via Prisma before letting a dispatch cross a
+   * `RetailBrand` boundary. ORG-scope only, same reasoning `grantScope()`
+   * already gives: the organization's own cross-brand policy is not
+   * something a brand admin can turn on for themselves.
+   *
+   * Throws if no `Organization` row exists yet (WO-18.3's own note: "a
+   * Chain-edition deployment has no Organization row at all") — there is no
+   * "register the organization" endpoint yet either, so this is honest
+   * about what it cannot do rather than fabricating a row with a name
+   * nobody supplied.
+   */
+  async setInterBrandTransfersPolicy(actor: ScopedActor, allow: boolean) {
+    this.assertOrgWide(actor, 'change the inter-brand transfer policy');
+
+    const existing = await this.prisma.organization.findFirst({ select: { id: true } });
+    if (existing) {
+      return this.prisma.organization.update({
+        where: { id: existing.id },
+        data: { allowInterBrandTransfers: allow },
+      });
+    }
+
+    throw new BadRequestException(
+      'No Organization row exists yet for this deployment — register the organization before setting its policy.',
+    );
   }
 
   private assertOrgWide(actor: ScopedActor, action: string): void {

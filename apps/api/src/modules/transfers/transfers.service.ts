@@ -1,11 +1,11 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { documentPrefix } from '../../core/settings/document-prefix';
 import { documentNumber } from '../../core/settings/document-number';
 import { InventoryService } from '../inventory/inventory.service';
-import type { Prisma } from '../../core/prisma/client';
+import type { Location, Prisma } from '../../core/prisma/client';
 
 export interface TransferLineInput {
   variantId: string;
@@ -19,16 +19,26 @@ export interface ReceiveLineInput {
 }
 
 /**
- * Inter-branch stock transfers (RETAIL-ERP.md R4, WO-22.1). `dispatch()` and
- * `receive()` are the two local operations R4 names — "Dispatch is one
- * local moveMany() at source; receipt is another at destination" — each its
- * own transaction, never a distributed one spanning two branch databases.
+ * Inter-branch and inter-brand stock transfers (RETAIL-ERP.md R4, WO-22.1
+ * + WO-22.2). `dispatch()` and `receive()` are the two local operations R4
+ * names — "Dispatch is one local moveMany() at source; receipt is another
+ * at destination" — each its own transaction, never a distributed one
+ * spanning two databases (R3: no distributed transactions, ever).
+ *
+ * `dispatch()` also gates on R9's policy switches —
+ * `BrandPolicy.allowInterBranchTransfers` for a same-brand transfer,
+ * `Organization.allowInterBrandTransfers` for a genuinely brand-crossing
+ * one — see `resolveTransferBrandOwnership()` below for the full reasoning,
+ * including what WO-22.2 does and does not honestly cover.
  *
  * Imports InventoryService directly (`transfers -> inventory` in
  * KNOWN_MODULE_COUPLINGS, anticipated by R11 itself) because every stock
  * change here must commit in the same transaction as the StockTransfer
  * status write it belongs to — the same reasoning `orders -> inventory`
- * already carries.
+ * already carries. Reads Organization/BrandPolicy directly via Prisma
+ * rather than importing OrganizationModule — a read, not a
+ * same-transaction write, needs no coupling entry (the same precedent
+ * PosCatalogService and OrdersService.placeFromPos() already set).
  */
 @Injectable()
 export class TransfersService {
@@ -57,6 +67,8 @@ export class TransfersService {
     if (!source) throw new BadRequestException('Source location does not exist.');
     if (!destination) throw new BadRequestException('Destination location does not exist.');
 
+    const inTransitRetailBrandId = await this.resolveTransferBrandOwnership(source, destination);
+
     const variantIds = [...new Set(lines.map((l) => l.variantId))];
     const variantCount = await this.prisma.productVariant.count({ where: { id: { in: variantIds } } });
     if (variantCount !== variantIds.length) {
@@ -71,6 +83,12 @@ export class TransfersService {
           name: `In transit — ${number}`,
           code: `IT-${number}`,
           type: 'IN_TRANSIT',
+          // Same brand as both ends (including the today's-default "no
+          // brand at all" case, both null): the in-transit bucket belongs
+          // to that brand too. Crossing brands (WO-22.2, R4): null — it
+          // "belongs to neither brand", the organization tier's own
+          // in-transit location, per resolveTransferBrandOwnership() below.
+          retailBrandId: inTransitRetailBrandId,
           // isActive: false keeps it out of InventoryService.listLocations()
           // (below) without that list needing to know IN_TRANSIT exists —
           // it already filters on isActive, the same flag a real
@@ -266,6 +284,58 @@ export class TransfersService {
     const transfer = await this.prisma.stockTransfer.findUnique({ where: { id }, include: { lines: true } });
     if (!transfer) throw new NotFoundException('Transfer not found');
     return transfer;
+  }
+
+  /**
+   * R9's two policy switches, gated at the one tier that exists today
+   * (there is no separate "receiving tier" to also enforce it against in a
+   * STANDALONE deployment — this IS the ingest point). Returns the
+   * `retailBrandId` the transfer's own in-transit Location should carry.
+   *
+   * Same brand (including today's default deployment, where every Location
+   * has `retailBrandId: null` — WO-22.1's own behavior, unchanged): checked
+   * against that brand's own `BrandPolicy.allowInterBranchTransfers` only
+   * when a real `RetailBrand` is actually involved; a `null`-brand transfer
+   * has no `BrandPolicy` row to check and always proceeds, exactly as
+   * WO-22.1 shipped.
+   *
+   * Different brands (WO-22.2, R4): a genuine inter-brand transfer needs
+   * BOTH locations to name a real brand — crossing from "no brand" into "a
+   * brand" is not a coherent request — and checks
+   * `Organization.allowInterBrandTransfers`. The in-transit location gets
+   * `retailBrandId: null`: it "belongs to neither brand" (R4's own words),
+   * the organization tier's own bucket.
+   *
+   * This is the LOCAL half of R4/R9 — genuinely testable today, for two
+   * `RetailBrand` rows sharing one physical database (sub-brands, Part 1).
+   * A true inter-brand transfer between two SEPARATE brand deployments
+   * (Br1) needs the replication engine to carry this fact from one
+   * database to another and is not something a STANDALONE dev environment
+   * can honestly build or verify — deferred, not faked.
+   */
+  private async resolveTransferBrandOwnership(source: Location, destination: Location): Promise<string | null> {
+    if (source.retailBrandId === destination.retailBrandId) {
+      if (source.retailBrandId) {
+        const policy = await this.prisma.brandPolicy.findUnique({ where: { retailBrandId: source.retailBrandId } });
+        if (policy && !policy.allowInterBranchTransfers) {
+          throw new ForbiddenException('This brand does not allow transfers between its own branches.');
+        }
+      }
+      return source.retailBrandId;
+    }
+
+    if (!source.retailBrandId || !destination.retailBrandId) {
+      throw new BadRequestException(
+        'Cannot transfer between a brand-owned location and one with no brand — assign both a RetailBrand first.',
+      );
+    }
+
+    const organization = await this.prisma.organization.findFirst({ select: { allowInterBrandTransfers: true } });
+    if (!organization || !organization.allowInterBrandTransfers) {
+      throw new ForbiddenException('Inter-brand transfers are not enabled for this organization.');
+    }
+
+    return null;
   }
 }
 

@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { AppConfigService } from '../../core/config/app-config.service';
@@ -253,5 +253,207 @@ describe('TransfersService — dispatch/receive/cancel (WO-22.1)', () => {
     const locations = await inventory.listLocations();
     expect(locations.some((l) => l.id === transfer.inTransitLocationId)).toBe(false);
     expect(locations.some((l) => l.id === sourceLocationId)).toBe(true);
+  });
+});
+
+/**
+ * resolveTransferBrandOwnership() — R9's policy gating (WO-22.2), exercised
+ * through dispatch() since the method itself is private. Real Postgres, real
+ * RetailBrand/BrandPolicy/Organization rows, deleted afterward — this is the
+ * LOCAL half of R4/R9 the class doc comment describes: two brands sharing
+ * one physical database, not a true cross-database saga.
+ */
+describe('TransfersService — brand-policy gating (WO-22.2)', () => {
+  let transfers: TransfersService;
+  let inventory: InventoryService;
+  let prisma: PrismaService;
+  let productId: string;
+  let actorId: string;
+  const createdVariantIds: string[] = [];
+  const createdLocationIds: string[] = [];
+  const createdTransferIds: string[] = [];
+  const createdRetailBrandIds: string[] = [];
+  let createdOrganizationId: string | null = null;
+
+  beforeAll(async () => {
+    const module = await Test.createTestingModule({
+      providers: [
+        TransfersService,
+        InventoryService,
+        PrismaService,
+        SettingsService,
+        StockIntakeRegistry,
+        EntityEnrichmentRegistry,
+        { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'test-node' } },
+        { provide: AuditService, useValue: { record: jest.fn() } },
+        { provide: EventBusService, useValue: { publish: jest.fn() } },
+      ],
+    }).compile();
+
+    transfers = module.get(TransfersService);
+    inventory = module.get(InventoryService);
+    prisma = module.get(PrismaService);
+
+    const product = await prisma.product.findFirstOrThrow({ select: { id: true } });
+    productId = product.id;
+
+    const user = await prisma.user.findFirstOrThrow({ select: { id: true } });
+    actorId = user.id;
+  });
+
+  afterAll(async () => {
+    await prisma.stockTransferLine.deleteMany({ where: { transferId: { in: createdTransferIds } } });
+    await prisma.stockTransfer.deleteMany({ where: { id: { in: createdTransferIds } } });
+    await prisma.productVariant.deleteMany({ where: { id: { in: createdVariantIds } } });
+    await prisma.location.deleteMany({ where: { id: { in: createdLocationIds } } });
+    await prisma.brandPolicy.deleteMany({ where: { retailBrandId: { in: createdRetailBrandIds } } });
+    await prisma.retailBrand.deleteMany({ where: { id: { in: createdRetailBrandIds } } });
+    if (createdOrganizationId) {
+      await prisma.organization.delete({ where: { id: createdOrganizationId } });
+    }
+  });
+
+  async function freshVariant() {
+    const variant = await prisma.productVariant.create({
+      data: { productId, sku: `TRANSFER-POLICY-${Date.now()}-${Math.random().toString(36).slice(2)}` },
+    });
+    createdVariantIds.push(variant.id);
+    return variant;
+  }
+
+  async function freshBrand(name: string) {
+    const brand = await prisma.retailBrand.create({
+      data: { name, slug: `${name.toLowerCase()}-${Date.now()}-${Math.random().toString(36).slice(2)}` },
+    });
+    createdRetailBrandIds.push(brand.id);
+    return brand;
+  }
+
+  async function freshLocation(name: string, retailBrandId: string | null) {
+    const location = await prisma.location.create({
+      data: { name, code: `POLICY-${Date.now()}-${Math.random().toString(36).slice(2)}`, retailBrandId },
+    });
+    createdLocationIds.push(location.id);
+    return location;
+  }
+
+  /**
+   * Ensures exactly one Organization row for the duration of a test, since
+   * `resolveTransferBrandOwnership()` reads `findFirst()` and this dev
+   * database is shared with other suites/sessions — mirrors the same
+   * "another session touching the shared DB" caveat documented elsewhere in
+   * this repo's test suites. Restores the flag afterward rather than
+   * deleting a row this test did not create.
+   */
+  async function withOrganizationPolicy(allow: boolean, run: () => Promise<void>) {
+    const existing = await prisma.organization.findFirst({ select: { id: true, allowInterBrandTransfers: true } });
+    if (existing) {
+      await prisma.organization.update({ where: { id: existing.id }, data: { allowInterBrandTransfers: allow } });
+      try {
+        await run();
+      } finally {
+        await prisma.organization.update({
+          where: { id: existing.id },
+          data: { allowInterBrandTransfers: existing.allowInterBrandTransfers },
+        });
+      }
+      return;
+    }
+
+    const created = await prisma.organization.create({
+      data: { name: 'WO-22.2 Test Org', allowInterBrandTransfers: allow },
+    });
+    createdOrganizationId = created.id;
+    await run();
+  }
+
+  it('same brand, no BrandPolicy row — proceeds (nothing to check, matches WO-22.1 default)', async () => {
+    const brand = await freshBrand('SameBrandNoPolicy');
+    const source = await freshLocation('Source', brand.id);
+    const destination = await freshLocation('Destination', brand.id);
+    const variant = await freshVariant();
+    await inventory.move({ variantId: variant.id, locationId: source.id, delta: 3, reason: 'ADJUSTMENT' });
+
+    const transfer = await transfers.dispatch(actorId, source.id, destination.id, [{ variantId: variant.id, quantity: 3 }]);
+    createdTransferIds.push(transfer.id);
+    createdLocationIds.push(transfer.inTransitLocationId);
+
+    const inTransit = await prisma.location.findUniqueOrThrow({ where: { id: transfer.inTransitLocationId } });
+    expect(inTransit.retailBrandId).toBe(brand.id);
+  });
+
+  it('same brand, BrandPolicy.allowInterBranchTransfers = false — rejected', async () => {
+    const brand = await freshBrand('SameBrandBlocked');
+    await prisma.brandPolicy.create({ data: { retailBrandId: brand.id, allowInterBranchTransfers: false } });
+    const source = await freshLocation('Source', brand.id);
+    const destination = await freshLocation('Destination', brand.id);
+    const variant = await freshVariant();
+    await inventory.move({ variantId: variant.id, locationId: source.id, delta: 3, reason: 'ADJUSTMENT' });
+
+    await expect(
+      transfers.dispatch(actorId, source.id, destination.id, [{ variantId: variant.id, quantity: 3 }]),
+    ).rejects.toBeInstanceOf(ForbiddenException);
+  });
+
+  it('same brand, BrandPolicy.allowInterBranchTransfers = true — proceeds', async () => {
+    const brand = await freshBrand('SameBrandAllowed');
+    await prisma.brandPolicy.create({ data: { retailBrandId: brand.id, allowInterBranchTransfers: true } });
+    const source = await freshLocation('Source', brand.id);
+    const destination = await freshLocation('Destination', brand.id);
+    const variant = await freshVariant();
+    await inventory.move({ variantId: variant.id, locationId: source.id, delta: 3, reason: 'ADJUSTMENT' });
+
+    const transfer = await transfers.dispatch(actorId, source.id, destination.id, [{ variantId: variant.id, quantity: 3 }]);
+    createdTransferIds.push(transfer.id);
+    createdLocationIds.push(transfer.inTransitLocationId);
+
+    expect(transfer.status).toBe('IN_TRANSIT');
+  });
+
+  it('cross-brand, one side has no brand — rejected as an incoherent request', async () => {
+    const brand = await freshBrand('CrossBrandOneSided');
+    const source = await freshLocation('Source', brand.id);
+    const destination = await freshLocation('Destination', null);
+    const variant = await freshVariant();
+    await inventory.move({ variantId: variant.id, locationId: source.id, delta: 3, reason: 'ADJUSTMENT' });
+
+    await expect(
+      transfers.dispatch(actorId, source.id, destination.id, [{ variantId: variant.id, quantity: 3 }]),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('cross-brand, Organization.allowInterBrandTransfers = false — rejected', async () => {
+    const brandA = await freshBrand('CrossBrandA1');
+    const brandB = await freshBrand('CrossBrandB1');
+    const source = await freshLocation('Source', brandA.id);
+    const destination = await freshLocation('Destination', brandB.id);
+    const variant = await freshVariant();
+    await inventory.move({ variantId: variant.id, locationId: source.id, delta: 3, reason: 'ADJUSTMENT' });
+
+    await withOrganizationPolicy(false, async () => {
+      await expect(
+        transfers.dispatch(actorId, source.id, destination.id, [{ variantId: variant.id, quantity: 3 }]),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+    });
+  });
+
+  it('cross-brand, Organization.allowInterBrandTransfers = true — proceeds, in-transit location belongs to neither brand', async () => {
+    const brandA = await freshBrand('CrossBrandA2');
+    const brandB = await freshBrand('CrossBrandB2');
+    const source = await freshLocation('Source', brandA.id);
+    const destination = await freshLocation('Destination', brandB.id);
+    const variant = await freshVariant();
+    await inventory.move({ variantId: variant.id, locationId: source.id, delta: 3, reason: 'ADJUSTMENT' });
+
+    await withOrganizationPolicy(true, async () => {
+      const transfer = await transfers.dispatch(actorId, source.id, destination.id, [
+        { variantId: variant.id, quantity: 3 },
+      ]);
+      createdTransferIds.push(transfer.id);
+      createdLocationIds.push(transfer.inTransitLocationId);
+
+      const inTransit = await prisma.location.findUniqueOrThrow({ where: { id: transfer.inTransitLocationId } });
+      expect(inTransit.retailBrandId).toBeNull();
+    });
   });
 });

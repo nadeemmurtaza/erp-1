@@ -30,7 +30,7 @@ describe('OrganizationService', () => {
         create: jest.fn().mockResolvedValue({}),
         delete: jest.fn().mockResolvedValue({}),
       },
-      organization: { findFirst: jest.fn().mockResolvedValue(null) },
+      organization: { findFirst: jest.fn().mockResolvedValue(null), update: jest.fn().mockResolvedValue({}) },
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -219,6 +219,35 @@ describe('OrganizationService', () => {
       await expect(
         service.grantScope(actor([org()]), { userId: 'u2', level: 'BRANCH', branchNodeId: 'n1' }),
       ).rejects.toBeInstanceOf(BadRequestException);
+    });
+  });
+
+  describe('setInterBrandTransfersPolicy', () => {
+    it('refuses a non-ORG-scope actor', async () => {
+      await expect(service.setInterBrandTransfersPolicy(actor([brand('b1')]), true)).rejects.toBeInstanceOf(
+        ForbiddenException,
+      );
+      expect(prisma.organization.update).not.toHaveBeenCalled();
+    });
+
+    it('throws when no Organization row exists yet — there is nothing to update', async () => {
+      prisma.organization.findFirst.mockResolvedValue(null);
+
+      await expect(service.setInterBrandTransfersPolicy(actor([org()]), true)).rejects.toBeInstanceOf(
+        BadRequestException,
+      );
+      expect(prisma.organization.update).not.toHaveBeenCalled();
+    });
+
+    it('updates the existing Organization row for an ORG-scope actor', async () => {
+      prisma.organization.findFirst.mockResolvedValue({ id: 'org1' });
+
+      await service.setInterBrandTransfersPolicy(actor([org()]), true);
+
+      expect(prisma.organization.update).toHaveBeenCalledWith({
+        where: { id: 'org1' },
+        data: { allowInterBrandTransfers: true },
+      });
     });
   });
 

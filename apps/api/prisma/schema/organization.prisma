@@ -15,6 +15,12 @@
 model Organization {
   id        String   @id @default(cuid())
   name      String
+  /// R9's `org.allow_inter_brand_transfers` — off by default, the same
+  /// permissive-switch-starts-closed convention `BrandPolicy`'s three flags
+  /// already use. Read directly by TransfersService (WO-22.2) via Prisma,
+  /// not through OrganizationService — a read, not a same-transaction
+  /// write, so it needs no KNOWN_MODULE_COUPLINGS entry.
+  allowInterBrandTransfers Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

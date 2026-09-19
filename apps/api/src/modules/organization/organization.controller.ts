@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
@@ -7,6 +7,7 @@ import { OrganizationService } from './organization.service';
 import { NodesService } from './nodes.service';
 import { GrantScopeDto } from './dto/admin-scope.dto';
 import { RegisterNodeDto } from './dto/node.dto';
+import { SetInterBrandTransfersPolicyDto } from './dto/organization-policy.dto';
 import { ReplicationCursorService } from '../../core/replication/replication-cursor.service';
 import { PARENT_PEER_ID } from '../../core/replication/replication.types';
 
@@ -75,6 +76,16 @@ export class OrganizationController {
   async resyncFromParent() {
     await this.replicationCursor.reset(PARENT_PEER_ID, 'DOWN');
     return { resyncing: true };
+  }
+
+  @Patch('policy/inter-brand-transfers')
+  @RequirePermission('organization.manage')
+  @ApiOperation({ summary: 'Turn inter-brand transfers on or off for this organization (RETAIL-ERP.md R9, WO-22.2)' })
+  async setInterBrandTransfersPolicy(
+    @CurrentUser() user: AuthenticatedUser,
+    @Body() dto: SetInterBrandTransfersPolicyDto,
+  ) {
+    return this.organization.setInterBrandTransfersPolicy(await this.actorFor(user), dto.allow);
   }
 
   @Get('admin-scopes')

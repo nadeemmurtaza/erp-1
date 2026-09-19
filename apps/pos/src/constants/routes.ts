@@ -4,4 +4,5 @@ export const ROUTES = {
   openShift: '/shift/open',
   till: '/till',
   closeShift: '/shift/close',
+  returns: '/returns',
 } as const;

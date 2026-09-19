@@ -4,8 +4,10 @@
 // PosSalesService hands a validated line list to OrdersService.placeFromPos()
 // (`pos -> orders` in KNOWN_MODULE_COUPLINGS, per R11) — so a shift's X/Z
 // report is still cash-movements-only here; folding sale/tender totals into
-// it is a follow-up, not faked by this file. `PosReceipt`, park/retrieve,
-// price override and returns are WO-21.5's.
+// it is a follow-up, not faked by this file. WO-21.5 adds PosReceipt and a
+// return path (reusing OrdersService.changeStatus()/PaymentsService.refund()
+// through their EXISTING admin endpoints — no new pos -> payments coupling).
+// Park/retrieve and a till-side price override remain unbuilt.
 
 enum PosTerminalStatus {
   /// Registered, no working device credential yet — cannot authenticate.
@@ -112,4 +114,22 @@ model CashMovement {
   shift PosShift @relation(fields: [shiftId], references: [id], onDelete: Cascade)
 
   @@index([shiftId])
+}
+
+/// One receipt per POS sale (WO-21.5) — created by PosSalesService right
+/// after OrdersService.placeFromPos() succeeds, best-effort and outside that
+/// call's own transaction, the same "not core to the sale's correctness"
+/// reasoning AuditService.record() already uses: a missing receipt row would
+/// never be why a sale should roll back. `orderId` is a bare scalar (orders
+/// is a different module's schema file), unique — one receipt per order, its
+/// print history tracked by incrementing `printCount` rather than creating a
+/// new row per reprint.
+model PosReceipt {
+  id         String    @id @default(cuid())
+  orderId    String    @unique
+  printCount Int       @default(0)
+  printedAt  DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([orderId])
 }

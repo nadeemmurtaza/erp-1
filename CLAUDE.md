@@ -32,6 +32,115 @@ If a detail elsewhere disagrees with a law, the law wins.
 
 ---
 
+## Software engineering, not vibe coding
+
+Every rule in this file and in the NEWAX Engineering Operating Protocol
+further down exists to keep this repository on one side of a single line:
+architecture over improvisation. A system that is understood before it is
+built, not assembled by trial and error against a running app and never
+revisited. This section makes that binding, explicitly, project-specifically,
+with no exception for "it's a small change."
+
+No agent, developer, or automated process working here vibe-codes: no
+unstructured trial-and-error against a running app, no quick fix stacked on
+a quick fix, no "make the error go away" without understanding why it
+appeared, no code shipped because it happened to work once. Every change
+traces to a requirement, is scoped before it is written, and is verified by
+a command, not by eyeballing a screen.
+
+### Flexibility, resilience and innovation outrank everything else here
+
+When a choice below trades off against one of these three, these three win.
+A locally tidy shortcut that forecloses a future capability is the wrong
+trade even when it ships faster today — that is the whole reason the
+module-pack architecture and the three-axes model exist instead of a
+simpler design that would have been faster to write once and impossible to
+extend twice.
+
+- **Flexibility first.** The module-pack system, extension points and
+  domain events exist so that a new sector, a new brand, a new payment
+  provider, or a capability nobody has asked for yet is a new file, not a
+  rewrite of an existing one. Before choosing an implementation, ask which
+  option leaves more doors open for a requirement not yet known, and take
+  that one — even at a small cost today. Never hardcode an assumption
+  ("there is only one of these," "this never changes," "nobody will need
+  X") without writing down, next to it, why that assumption is safe.
+- **Resilience first.** The transactional outbox, idempotent event
+  handlers, predicate-on-write guards, and R5's "a sale that already
+  happened is never rejected by sync" are all instances of one rule: the
+  system keeps working, or degrades honestly and recoverably, when a
+  dependency is slow, offline, partial, or wrong — it never silently loses
+  or corrupts a fact. Every new integration point states its failure mode,
+  its retry/idempotency story, and its recovery path before it ships, not
+  after an incident forces the question.
+- **Innovation first.** The architecture must not calcify around today's
+  feature set. A change that makes tomorrow's plausible feature (a new
+  sector, a new channel, a new tier of the business) measurably easier to
+  build is worth more than a change that only makes today's feature
+  marginally cleaner. When the two trade off, choose the one that keeps
+  optionality open, and say so in the plan.
+
+This ordering does not excuse skipping the rest of this section — it
+explains *why* the rest of this section is strict. Proper architecture,
+security and observability are how flexibility, resilience and innovation
+stay possible at scale, not competitors to them.
+
+### The five pillars, made concrete for this codebase
+
+A generic engineering principle is useless until it names where it lives.
+Each pillar below states the actual mechanism THIS repository uses — not an
+aspiration, not a diagram — and, where nothing enforces it yet, says so
+honestly rather than pretending it does.
+
+| Pillar | What it means here | Enforced by |
+|---|---|---|
+| **Proper architecture** | Module packs, the core/pack boundary, `KNOWN_MODULE_COUPLINGS` as the only sanctioned cross-module coupling, domain events and extension points instead of direct calls (see "Scale: the three axes" below, `ENTERPRISE-SCALE.md`). | `scripts/check-module-boundaries.mjs`, run by `pnpm lint` and CI |
+| **Scalable systems** | The sector/brand/branch axes, the node/replication model for chain deployments (`RETAIL-ERP.md`), pagination on every list endpoint, N+1 prevention, indexing justified by real query patterns (see Performance engineering below). | Partially — pagination and index discipline are code review today, not a lint rule |
+| **Secure by design** | Permission-based access control (PBAC) — every route states its `@RequirePermission`, checked server-side only, never trusted from the client; tenant/branch isolation via scoped queries. | `scripts/check-route-permissions.mjs`; enforcement is `core/auth`'s `PermissionGuard`, applied globally |
+| **Stable & reliable** | The transactional outbox (`EventBusService` + `OutboxDispatcher`) for at-least-once event delivery, idempotent event handlers, predicate-on-write for concurrent stock changes (House Rule 10), hand-written forward-only migrations — never `migrate diff` against a real database. | `pnpm test`; the migration discipline itself has no automated guard — a reviewer's job |
+| **Observable** | Structured logging via Nest's `Logger` in every service (never `console.log`), an audit trail (`AuditService`) for state-changing actions, domain events as a natural trace of what happened and when. | Not yet: no APM, error tracker, or metrics backend is wired in this codebase today. Adopting one is a decision for `docs/implementation/DECISIONS.md`, not something to silently assume exists. |
+
+### Mapping a reference architecture diagram's boxes
+
+A "software engineering" reference architecture names infrastructure pieces
+— API Gateway, Load Balancer, Services, Databases, Cache, Monitoring,
+Logging, Security — as separate deployed services. This repository is a
+**deliberate modular monolith** (`ENTERPRISE-SCALE.md`, `RETAIL-ERP.md`): one
+NestJS process per node, not a microservice mesh. That choice is already
+made and is not reopened by this section. The boxes still have to exist —
+they live inside that choice, not beside it:
+
+- **API Gateway** → the single NestJS entrypoint's own hardening: a global
+  `ValidationPipe`, API versioning, `JwtAuthGuard` + `PermissionGuard` on
+  every route, the `CORS_ORIGINS` allowlist. Not a separate gateway process.
+- **Load Balancer** → not applicable at today's single-process-per-node
+  scale. When a node needs horizontal replicas this gets a real answer in
+  `DECISIONS.md` before it gets an env var — never assumed into existence.
+- **Services** → the module-pack system itself; each module is the unit the
+  independence rules already govern.
+- **Databases** → Postgres via Prisma, one database per node (`RETAIL-ERP.md`
+  R2/R7), hand-written forward-only migrations.
+- **Cache** → `VariantSalesStat`-style precomputed caches, HTTP/application
+  caching per the Performance engineering table — each with a stated owner,
+  key and invalidation strategy, never introduced silently.
+- **Monitoring / Logging** → structured `Logger` output today; no APM is
+  wired — see the Observable row above. Never claim monitoring exists where
+  only logging does.
+- **Security** → PBAC, server-side enforcement, the Security engineering
+  section below — never a client-side check standing in for one.
+
+### No compromise
+
+These five pillars are not aspirational language to skim past. A
+non-trivial change states, in its own plan or PR description, which pillars
+it touches and how — the same discipline "Plan before build" below already
+asks for, made explicit here so it cannot be silently dropped. A change that
+weakens module independence, skips permission enforcement, ships without a
+migration reason, or adds a cache with no stated invalidation strategy is a
+defect, not a shortcut — no exception for urgency, and none for a small diff.
+
+---
+
 ## Scale: the three axes
 
 This repository serves several sectors, several clients, and clients with

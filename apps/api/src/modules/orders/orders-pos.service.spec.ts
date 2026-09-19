@@ -159,4 +159,74 @@ describe('OrdersService — placeFromPos (WO-21.3)', () => {
       }),
     ).rejects.toBeInstanceOf(BadRequestException);
   });
+
+  /**
+   * WO-21.5: changeStatus()'s RETURNED/CANCELLED stock release used to
+   * always credit the DEFAULT location, even for a POS order sold from a
+   * different one — silently corrupting that location's stock the moment a
+   * till return was processed. Fixed to prefer order.locationId.
+   */
+  describe('changeStatus — return releases stock to the order\'s own location', () => {
+    let secondLocationId: string;
+
+    beforeAll(async () => {
+      const location = await prisma.location.create({
+        data: { name: 'WO-21.5 Test Branch', code: `WO215-${Date.now()}`, isDefault: false },
+      });
+      secondLocationId = location.id;
+    });
+
+    afterAll(async () => {
+      await prisma.location.delete({ where: { id: secondLocationId } });
+    });
+
+    it('credits the POS order\'s own selling location, not the default one', async () => {
+      const variant = await freshVariant();
+      await inventory.move({ variantId: variant.id, locationId: secondLocationId, delta: 5, reason: 'ADJUSTMENT' });
+
+      const order = await orders.placeFromPos({
+        locationId: secondLocationId,
+        terminalId: 'terminal-2',
+        shiftId: 'shift-2',
+        cashierUserId,
+        lines: [{ variantId: variant.id, quantity: 2 }],
+      });
+      createdOrderIds.push(order.id);
+
+      await orders.changeStatus(cashierUserId, order.id, 'RETURNED');
+
+      const secondLocationStock = await prisma.variantLocationStock.findUniqueOrThrow({
+        where: { variantId_locationId: { variantId: variant.id, locationId: secondLocationId } },
+      });
+      expect(secondLocationStock.quantity).toBe(5); // 5 - 2 sold + 2 returned
+
+      const defaultLocationStock = await prisma.variantLocationStock.findUnique({
+        where: { variantId_locationId: { variantId: variant.id, locationId: defaultLocationId } },
+      });
+      expect(defaultLocationStock?.quantity ?? 0).toBe(0);
+    });
+
+    it('still falls back to the default location for an order with no locationId (a web order)', async () => {
+      const variant = await freshVariant();
+      await inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: 5, reason: 'ADJUSTMENT' });
+
+      const order = await orders.placeFromPos({
+        locationId: defaultLocationId,
+        terminalId: 'terminal-3',
+        shiftId: 'shift-3',
+        cashierUserId,
+        lines: [{ variantId: variant.id, quantity: 2 }],
+      });
+      createdOrderIds.push(order.id);
+      // Simulate a web order's shape: no locationId set.
+      await prisma.order.update({ where: { id: order.id }, data: { locationId: null } });
+
+      await orders.changeStatus(cashierUserId, order.id, 'RETURNED');
+
+      const defaultLocationStock = await prisma.variantLocationStock.findUniqueOrThrow({
+        where: { variantId_locationId: { variantId: variant.id, locationId: defaultLocationId } },
+      });
+      expect(defaultLocationStock.quantity).toBe(5);
+    });
+  });
 });

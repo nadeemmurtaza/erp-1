@@ -1,6 +1,7 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { OrdersService } from '../orders/orders.service';
+import { PosReceiptsService } from './pos-receipts.service';
 import type { PosSaleLineDto } from './dto/pos-sale.dto';
 
 /**
@@ -12,9 +13,12 @@ import type { PosSaleLineDto } from './dto/pos-sale.dto';
  */
 @Injectable()
 export class PosSalesService {
+  private readonly logger = new Logger(PosSalesService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly orders: OrdersService,
+    private readonly receipts: PosReceiptsService,
   ) {}
 
   async sell(
@@ -32,7 +36,7 @@ export class PosSalesService {
       throw new BadRequestException('This shift is closed — open a new shift before ringing up a sale.');
     }
 
-    return this.orders.placeFromPos({
+    const order = await this.orders.placeFromPos({
       locationId: shift.terminal.locationId,
       terminalId: shift.terminalId,
       shiftId: shift.id,
@@ -40,5 +44,15 @@ export class PosSalesService {
       lines,
       ...customer,
     });
+
+    // Best-effort, outside the sale's own transaction (WO-21.5) — a receipt
+    // row is bookkeeping for reprinting, never something the sale's own
+    // correctness depends on. Its absence should never surface as a failed
+    // sale to the cashier.
+    await this.receipts.createForOrder(order.id).catch((error: unknown) => {
+      this.logger.warn(`Could not record a receipt for order ${order.number}: ${String(error)}`);
+    });
+
+    return order;
   }
 }

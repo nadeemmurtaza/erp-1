@@ -141,6 +141,91 @@ defect, not a shortcut — no exception for urgency, and none for a small diff.
 
 ---
 
+## Feature scope: build the whole capability, not one slice of it
+
+The owner's own standing instruction, stated directly and repeated because
+it was under-applied: naming a feature is not a request for the narrowest
+technical thing those words could mean. Building "a cart" is not done at
+add/remove line items — a cart nobody can check out with was never a
+complete feature, only a fragment presented as one. This section is the
+method for finding the rest of it, every time, before calling anything done.
+
+### The worked example, in the owner's own words
+
+Cart depends on saved addresses, shipping methods, payment methods, voucher
+and discount application — the customer cannot complete a purchase without
+them. The merchant side needs an abandoned-cart tracker, stage-of-abandonment
+visibility, transactional email to bring the customer back. After a sale
+completes, the customer can return it — so a return-item portal and a
+written return policy are part of the same feature, not later work. Real
+payment and delivery-partner integrations are part of it, not a status enum
+standing in for one. Vouchers imply voucher creation and management, not
+only redemption at checkout.
+
+Generalize this to every feature request with five lenses, run before
+implementation, as part of "Plan before build" below:
+
+1. **The transaction, start to finish.** What does the actor — customer,
+   till user, merchant — need, end to end, to complete the real job the
+   feature exists for? A feature that cannot carry a real transaction to
+   completion is not complete, whatever fraction of it is finished.
+2. **The other side of the same transaction.** Every customer-facing
+   capability has an operator-facing twin: reporting, exception handling,
+   intervention. Cart's twin is the abandoned-cart tracker; an order's twin
+   is the fulfilment queue; a return's twin is the refund approval screen.
+3. **What happens after "done."** A completed purchase is not the end of a
+   feature's life. Returns, cancellations, disputes and refunds are
+   checkout's own back half, not later add-ons — a feature that only runs
+   forward is half a feature.
+4. **The integrations a real business needs, not a demo.** A payment method
+   is a real gateway integration; a shipping method is a real
+   delivery-partner integration with rate, label and tracking. If the
+   feature cannot go live in front of a real customer without a piece
+   existing, that piece is part of the feature.
+5. **The policy/rules layer that governs it.** Vouchers imply management,
+   not just redemption. Discounts imply a rules engine, not a hardcoded
+   percentage. A return flow implies a written policy the flow actually
+   enforces.
+
+### What this means for scope
+
+- Before implementing a named feature, run the five lenses and write down
+  the resulting map — what's in the transaction, the operator's twin, the
+  after-completion lifecycle, the implied integrations, the policy layer.
+  This is the "Plan before build" section below, made specific to features.
+- Build the feature and everything the map surfaces that it cannot function
+  as a real, sellable capability without. The test: could a real customer
+  complete a real transaction, and could a real merchant run their business
+  on it, without the piece in question? If no, it is in scope now, not a
+  future work order.
+- Anything the map surfaces that is a genuinely separable, larger capability
+  on its own — a full CRM, a loyalty program, multi-provider payment
+  orchestration — is never silently stubbed and never silently skipped
+  either. Name it, plan it, and sequence it as its own explicit next work
+  order — the same discipline RETAIL-ERP.md's own tranches already use,
+  surfaced to the owner, never buried in a PR description nobody reads.
+- Every piece that ships must also be reachable: the minimum UI to actually
+  perform it, a nav entry so it's found by clicking rather than typing a
+  URL, and every permission it needs seeded all the way through to a real
+  grant a live user holds — not just the Permission row (`seedPermissions()`
+  vs. `seedRoles()`'s one-time migration is this repo's own tracked
+  instance of that trap; do not repeat it on purpose).
+
+### The boundary, stated plainly
+
+This is this repository's default scoping posture for a named feature or
+capability request — it replaces "ship the narrowest thing the literal
+words require." It does not license scope creep on a bug fix, a one-line
+change, or a request that is already narrow and complete on its own terms;
+Change minimization and No speculative functionality below still govern
+those. The distinction is the test in the second bullet above: something
+the named feature cannot work as a real capability without is required, not
+speculative, however far it reaches — a discount-code field on checkout
+with no voucher management behind it is not a smaller version of the
+feature, it is a broken one.
+
+---
+
 ## Scale: the three axes
 
 This repository serves several sectors, several clients, and clients with
@@ -284,6 +369,54 @@ a second container.
 # Two bordered containers, one inside the other. Should print 0 beyond the
 # two known controls.
 python scripts/nested-borders.py
+```
+
+---
+
+## No dead ends
+
+A screen a user can actually reach must always offer a next step — a
+primary action, a way back, or both. Law 7 ("overview first, detail on
+click") is only half the promise if detail can dead-end once you get there.
+No screen in this product may be the end of the road.
+
+- Every `EmptyState` carries an action, unless the primary action for that
+  state already sits directly above it — a `PageHeader` create button, a
+  filter row's own clear control. Never a state with literally nothing to
+  click and no action anywhere nearby. `EmptyState` already exists precisely
+  to stop hand-rolled ones from drifting into this — use it, don't
+  re-invent a bare message.
+- Every terminal screen — order confirmation, payment result, a completed
+  wizard step, a printed receipt, a finished POS sale — offers at least one
+  next action: continue, view, print, back to till. Good news that just
+  stops is still a dead end.
+- Every Next.js app in this repo ships its own root `global-error.tsx` and
+  `not-found.tsx`, each with a working link home, plus an `error.tsx`
+  somewhere in the tree that actually covers its routes — one per
+  top-level route group is fine (`apps/web` does exactly this:
+  `global-error.tsx` and `not-found.tsx` at the root, `error.tsx` inside
+  each of `(admin)` and `(storefront)`), a bare root one is fine too, but
+  none anywhere is not. Falling through to the framework default is not
+  "fine" — the default carries no branding, no nav, and no way back into
+  the product. `apps/pos` has none of the three today and must gain them,
+  not assume the till never crashes.
+- A disabled control states why — a tooltip, `aria-describedby`, or visible
+  adjacent text — never just greyed out with the reason left for the user
+  to guess.
+- A modal or drawer closes three ways: Escape, backdrop click, and a
+  labeled close button. The shared `Dialog` already wires all three by
+  construction — a hand-rolled modal that skips one of them is the dead
+  end, not a stylistic choice.
+
+```bash
+# Every Next app ships root global-error.tsx + not-found.tsx, and at least
+# one error.tsx somewhere in its tree. Should print nothing.
+for app in apps/web apps/pos; do
+  for f in global-error.tsx not-found.tsx; do
+    [ -f "$app/src/app/$f" ] || echo "MISSING: $app/src/app/$f"
+  done
+  find "$app/src/app" -name error.tsx | grep -q . || echo "MISSING: $app has no error.tsx anywhere"
+done
 ```
 
 ---
@@ -552,6 +685,8 @@ failure.
 [ ] Plan created
 [ ] Documentation updated where required
 [ ] Implementation completed
+[ ] Reachable — nav entry + real UI + permission actually granted to a role,
+    not backend-only, unless nothing a human clicks depends on it
 [ ] No unnecessary code added
 [ ] No duplicate implementation introduced
 [ ] Security reviewed
@@ -587,7 +722,31 @@ Don't implement anything not requested or required — no future-proofing for
 imagined requirements, extra configuration, unused abstractions, unused API
 endpoints, placeholder infrastructure, unnecessary tables, unnecessary
 dependencies, unused permissions, unused env vars. Every addition needs a
-documented reason.
+documented reason. For a named feature request, "required" is defined by
+"Feature scope: build the whole capability" near the top of this file, not
+by the narrowest reading of the request's literal words — that section's
+five lenses are the documented reason.
+
+### A feature ships whole, not backend-only
+
+See "Feature scope: build the whole capability" near the top of this file
+for the full method (the five lenses, the worked cart example, the
+build-vs-sequence boundary) — this is that section's mechanical checklist.
+A work order is not done because the service and its tests pass. Every
+piece that ships also ships:
+
+- the backend — schema, service, controller, tests (already required above);
+- the minimum UI to perform the capability — one page, section or action,
+  not a page suite; the seven laws already say how small that is allowed
+  to be, they do not say it is allowed to be zero;
+- a nav-registry entry, so the capability is reachable by clicking, not
+  only by typing a URL or curling the API by hand;
+- every permission the capability needs, seeded all the way through — the
+  Permission row AND a real grant in whichever system actually gates a
+  live user's access today. A permission that exists in the catalogue but
+  reaches no role a real user holds is not shipped, it is scaffolding —
+  the `seedPermissions()`-vs-`seedRoles()` gap this codebase already
+  carries is exactly this trap, tracked, not repeated on purpose.
 
 ### Refactoring
 

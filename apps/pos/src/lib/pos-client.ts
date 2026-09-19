@@ -81,6 +81,43 @@ export interface PosSaleRequest {
   customerEmail?: string;
 }
 
+export interface PosReceiptData {
+  orderNumber: string;
+  placedAt: string;
+  terminalId: string | null;
+  cashierUserId: string | null;
+  customerName: string | null;
+  customerPhone: string | null;
+  lines: PosOrderItem[];
+  itemsSubtotal: number;
+  grandTotal: number;
+  paymentProvider: string | null;
+  printCount: number;
+  printedAt: string | null;
+}
+
+export interface AdminOrderSummary {
+  id: string;
+  number: string;
+  status: string;
+  channel: string;
+  grandTotal: number;
+  placedAt: string;
+  guestName: string | null;
+}
+
+export interface AdminOrderPayment {
+  id: string;
+  provider: string;
+  status: string;
+  amount: number;
+}
+
+export interface AdminOrderDetail extends AdminOrderSummary {
+  items: PosOrderItem[];
+  payments: AdminOrderPayment[];
+}
+
 /**
  * Terminal setup is a one-time, admin-tier action (`pos.manage`, not
  * `pos.operate`) — a plain cashier session 403s here, which is correct: the
@@ -122,4 +159,36 @@ export function recordCashMovement(
 
 export function sell(shiftId: string, sale: PosSaleRequest): Promise<PosOrder> {
   return request(`/admin/pos/shifts/${shiftId}/sales`, { method: 'POST', body: sale });
+}
+
+export function getReceipt(orderId: string): Promise<PosReceiptData> {
+  return request(`/admin/pos/receipts/${orderId}`);
+}
+
+/** Marks the receipt printed and returns its data — call right before `window.print()`. */
+export function printReceipt(orderId: string): Promise<PosReceiptData> {
+  return request(`/admin/pos/receipts/${orderId}/print`, { method: 'POST' });
+}
+
+/**
+ * Order lookup and the return path reuse the EXISTING admin/orders and
+ * admin/payments endpoints directly — `orders.manage` and `payments.approve`
+ * (STAFF holds both by default), not a new pos-specific return endpoint.
+ * "Exchange" is this same return, followed by a new sale on the till screen
+ * — no separate atomic model, WO-21.5's own documented scope.
+ */
+export function searchOrders(q: string): Promise<{ data: AdminOrderSummary[] }> {
+  return request('/admin/orders', { query: { q, pageSize: 10 } });
+}
+
+export function getOrder(orderId: string): Promise<AdminOrderDetail> {
+  return request(`/admin/orders/${orderId}`);
+}
+
+export function returnOrder(orderId: string, note?: string): Promise<AdminOrderDetail> {
+  return request(`/admin/orders/${orderId}/status`, { method: 'POST', body: { status: 'RETURNED', note } });
+}
+
+export function refundPayment(paymentId: string, amount?: number, note?: string) {
+  return request(`/admin/payments/${paymentId}/refund`, { method: 'POST', body: { amount, note } });
 }

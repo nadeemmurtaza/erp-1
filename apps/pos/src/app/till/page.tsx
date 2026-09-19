@@ -34,9 +34,12 @@ export default function TillPage() {
   const [tenderRupees, setTenderRupees] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [lastResult, setLastResult] = useState<{ queued: boolean; orderNumber?: string; changeMinor: number } | null>(
-    null,
-  );
+  const [lastResult, setLastResult] = useState<{
+    queued: boolean;
+    orderId?: string;
+    orderNumber?: string;
+    changeMinor: number;
+  } | null>(null);
   const [pendingCount, setPendingCount] = useState(0);
 
   useEffect(() => {
@@ -89,7 +92,7 @@ export default function TillPage() {
 
     try {
       const order = await sell(shiftId, payload);
-      setLastResult({ queued: false, orderNumber: order.number, changeMinor: tender.changeMinor });
+      setLastResult({ queued: false, orderId: order.id, orderNumber: order.number, changeMinor: tender.changeMinor });
       setBasket(clearBasket());
       setScreen('done');
     } catch (cause) {
@@ -141,7 +144,12 @@ export default function TillPage() {
         {lastResult.changeMinor > 0 && (
           <p className="mt-4 text-xl font-semibold text-neutral-900">Change due: {formatMoney(lastResult.changeMinor)}</p>
         )}
-        <button className="tap-btn mt-6" onClick={newSale}>
+        {lastResult.orderId && (
+          <button className="tap-btn-secondary mt-6" onClick={() => router.push(`/receipt/${lastResult.orderId}`)}>
+            Print receipt
+          </button>
+        )}
+        <button className="tap-btn mt-3" onClick={newSale}>
           New sale
         </button>
       </main>
@@ -162,6 +170,9 @@ export default function TillPage() {
               {pendingCount} pending — retry
             </button>
           )}
+          <button className="text-sm text-neutral-500 underline" onClick={() => router.push(ROUTES.returns)}>
+            Returns
+          </button>
           <button className="text-sm text-neutral-500 underline" onClick={() => router.push(ROUTES.closeShift)}>
             Close shift
           </button>

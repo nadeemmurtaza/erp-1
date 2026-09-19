@@ -690,10 +690,14 @@ export class OrdersService {
         data: { orderId, fromStatus: order.status, toStatus, note: note ?? null, actorId },
       });
 
-      // Cancelling or returning releases the stock back to the shelf.
+      // Cancelling or returning releases the stock back to the shelf — at the
+      // location it was actually sold from (order.locationId, set for a POS
+      // sale by placeFromPos(), WO-21.3) rather than always the default one.
+      // A web order has no locationId, so it still falls back to the default
+      // — exactly today's behavior, unchanged for every order this doesn't apply to.
       if (toStatus === 'CANCELLED' || toStatus === 'RETURNED') {
         const moveReason = toStatus === 'CANCELLED' ? 'CANCELLATION' : 'RETURN';
-        const locationId = await this.inventory.defaultLocationId(tx);
+        const locationId = order.locationId ?? (await this.inventory.defaultLocationId(tx));
         await this.inventory.moveMany(
           order.items.filter(i => i.variantId).map(item => ({
             variantId: item.variantId!,

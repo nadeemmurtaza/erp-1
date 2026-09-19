@@ -2,16 +2,23 @@ import { NotFoundException } from '@nestjs/common';
 import { PosSalesService } from './pos-sales.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { OrdersService } from '../orders/orders.service';
+import { PosReceiptsService } from './pos-receipts.service';
 
 describe('PosSalesService — WO-21.3', () => {
   let service: PosSalesService;
   let prisma: any;
   let orders: { placeFromPos: jest.Mock };
+  let receipts: { createForOrder: jest.Mock };
 
   beforeEach(() => {
     prisma = { posShift: { findUnique: jest.fn() } };
     orders = { placeFromPos: jest.fn() };
-    service = new PosSalesService(prisma as PrismaService, orders as unknown as OrdersService);
+    receipts = { createForOrder: jest.fn().mockResolvedValue(undefined) };
+    service = new PosSalesService(
+      prisma as PrismaService,
+      orders as unknown as OrdersService,
+      receipts as unknown as PosReceiptsService,
+    );
   });
 
   it('404s for a shift that does not exist', async () => {
@@ -50,6 +57,22 @@ describe('PosSalesService — WO-21.3', () => {
       lines,
       customerName: 'Ali',
     });
+    expect(result).toEqual({ id: 'order1', number: 'YSN-POS-0001' });
+    expect(receipts.createForOrder).toHaveBeenCalledWith('order1');
+  });
+
+  it('still returns the order when recording the receipt fails — a missing receipt never fails the sale', async () => {
+    prisma.posShift.findUnique.mockResolvedValue({
+      id: 's1',
+      status: 'OPEN',
+      terminalId: 't1',
+      terminal: { id: 't1', locationId: 'loc1' },
+    });
+    orders.placeFromPos.mockResolvedValue({ id: 'order1', number: 'YSN-POS-0001' });
+    receipts.createForOrder.mockRejectedValue(new Error('db hiccup'));
+
+    const result = await service.sell('s1', 'u1', [{ variantId: 'v1', quantity: 1 }], {});
+
     expect(result).toEqual({ id: 'order1', number: 'YSN-POS-0001' });
   });
 });

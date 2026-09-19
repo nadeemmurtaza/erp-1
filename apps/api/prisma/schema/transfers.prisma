@@ -1,0 +1,87 @@
+// Inter-branch stock transfers (RETAIL-ERP.md R4, Tranche 5). Off by default
+// — see modules.registry.ts. Inter-brand transfers via the org tier (R4's
+// own "for an inter-brand transfer the in-transit location belongs to the
+// organization tier"), settlement modes and InterBranchInvoice (R12) are
+// WO-22.2/22.3's, not this file's.
+//
+// R4 is the whole design: in-transit is a Location, not a flag or a status
+// string. `sourceLocationId`/`destinationLocationId`/`inTransitLocationId`
+// are bare scalars (inventory.prisma is a different module's schema file,
+// same "no cross-module Prisma coupling" choice PosTerminal.locationId and
+// Order.locationId already made) — TransfersService checks they exist at
+// write time and owns the in-transit Location's whole lifecycle, creating
+// it on dispatch and never touching it again after receipt/cancel empties it.
+
+enum StockTransferStatus {
+  /// Dispatched: stock has left the source and sits in the transfer's own
+  /// IN_TRANSIT location. The only status a transfer can be received or
+  /// cancelled from.
+  IN_TRANSIT
+  RECEIVED
+  CANCELLED
+}
+
+model StockTransfer {
+  id     String              @id @default(cuid())
+  /// Node-prefixed per R6 — see nextTransferNumber() in transfers.service.ts,
+  /// the same TransferNumberCounter pattern orders.service.ts's
+  /// nextOrderNumber() already uses.
+  number String              @unique
+  status StockTransferStatus @default(IN_TRANSIT)
+
+  sourceLocationId      String
+  destinationLocationId String
+  /// The Location this transfer's own dispatch created — one in-transit
+  /// bucket per transfer, never shared. Cleared to net zero by receive() or
+  /// cancel(); the row itself is never deleted (it is the transfer's own
+  /// ledger anchor — every TRANSFER_OUT/TRANSFER_IN movement for this
+  /// transfer references it).
+  inTransitLocationId String
+
+  createdByUserId  String
+  receivedByUserId String?
+
+  note String?
+
+  dispatchedAt DateTime  @default(now())
+  receivedAt   DateTime?
+  cancelledAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  lines StockTransferLine[]
+
+  @@index([status])
+  @@index([sourceLocationId])
+  @@index([destinationLocationId])
+}
+
+model StockTransferLine {
+  id         String @id @default(cuid())
+  transferId String
+  /// Bare scalar — catalog is a different module's schema file, same
+  /// convention OrderItem.productId/variantId already use for cross-module
+  /// snapshot fields.
+  variantId  String
+
+  quantityDispatched Int
+  /// Null until received. Less than quantityDispatched means a short
+  /// receipt — receive() write-offs the difference from the in-transit
+  /// location rather than silently letting it vanish from the ledger.
+  quantityReceived   Int?
+
+  transfer StockTransfer @relation(fields: [transferId], references: [id], onDelete: Cascade)
+
+  @@index([transferId])
+  @@index([variantId])
+}
+
+/// Same shape as OrderNumberCounter (orders.prisma) — an
+/// `INSERT ... ON CONFLICT DO UPDATE ... RETURNING` counter row sidesteps
+/// the read-then-write race a MAX(number)+1 read would have under
+/// concurrent dispatches, for the same reason nextOrderNumber()'s own
+/// doc comment gives in full.
+model TransferNumberCounter {
+  year    Int @id
+  counter Int @default(0)
+}

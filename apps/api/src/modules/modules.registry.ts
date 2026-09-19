@@ -22,6 +22,7 @@ import { StitchingModule } from './stitching/stitching.module';
 import { TaxModule } from './tax/tax.module';
 import { TrackingModule } from './tracking/tracking.module';
 import { TradingPartnersModule } from './tradingpartners/trading-partners.module';
+import { TransfersModule } from './transfers/transfers.module';
 import { UsersAdminModule } from './users/users-admin.module';
 
 export interface FeatureModuleEntry {
@@ -75,10 +76,15 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'identity-verification', module: IdentityVerificationModule },
   // Off by default — a deployment turns it on once it actually runs a
   // physical till (RETAIL-ERP.md R14: invisible until then). Terminal
-  // registration, device auth, shift lifecycle and the sale path
-  // (`pos -> orders`, WO-21.3) are all built; `PosReceipt`, park/retrieve,
-  // price override and returns (WO-21.5) are not.
+  // registration, device auth, shift lifecycle, the sale path
+  // (`pos -> orders`, WO-21.3) and receipts/returns (WO-21.5) are all
+  // built; park/retrieve and a till-side price override are not.
   { name: 'pos', module: PosModule },
+  // Off by default — a single-location deployment has nothing to transfer
+  // between (RETAIL-ERP.md R14). Inter-brand transfers via the org tier
+  // (R4's own note), settlement modes and InterBranchInvoice (R12) are
+  // WO-22.2/22.3's, not this module's.
+  { name: 'transfers', module: TransfersModule },
   // Account administration — not togglable business features.
   { name: 'settings', module: SettingsAdminModule, alwaysOn: true },
   { name: 'users', module: UsersAdminModule, alwaysOn: true },

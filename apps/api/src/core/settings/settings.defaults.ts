@@ -44,6 +44,8 @@ export interface DocumentPrefixes {
   /** Trading-partner document (WO-18.3+) — R6-style numbering, not R18's fiscal-year legal sequence. */
   invoice: string;
   quote: string;
+  /** Inter-branch stock transfer (WO-22.1, R4/R6) — node-prefixed like the rest. */
+  stockTransfer: string;
 }
 
 export interface DocumentSettings {
@@ -218,6 +220,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
       journalEntry: 'JE',
       invoice: 'INV',
       quote: 'QTE',
+      stockTransfer: 'TRF',
     },
   } satisfies DocumentSettings,
 

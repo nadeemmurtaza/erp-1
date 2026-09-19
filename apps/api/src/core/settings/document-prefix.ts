@@ -38,4 +38,5 @@ const FALLBACK: DocumentPrefixes = {
   journalEntry: 'JE',
   invoice: 'INV',
   quote: 'QTE',
+  stockTransfer: 'TRF',
 };

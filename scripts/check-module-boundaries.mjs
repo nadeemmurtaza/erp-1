@@ -157,6 +157,11 @@ const KNOWN_MODULE_COUPLINGS = new Set([
   // cash Payment row and the Order itself all commit in one transaction, the
   // same correctness reason as orders -> inventory above.
   'pos -> orders',
+  // transfers.service.ts's dispatch()/receive()/cancel() each move stock
+  // (InventoryService.move()/moveMany()) in the same transaction as the
+  // StockTransfer status write they belong to (RETAIL-ERP.md R4/WO-22.1) —
+  // anticipated by R11's own text alongside pos -> orders, same reasoning.
+  'transfers -> inventory',
 ]);
 
 function walk(dir) {

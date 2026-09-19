@@ -30,6 +30,12 @@ export class InventoryAdminController {
     return this.inventory.getSlowMovers();
   }
 
+  @Get('locations')
+  @ApiOperation({ summary: 'Every real, active location — never an in-transit bucket (WO-22.1)' })
+  locations() {
+    return this.inventory.listLocations();
+  }
+
   @Post(':variantId/adjust')
   @ApiOperation({ summary: 'Move stock up or down, with a reason on record' })
   async adjust(

@@ -15,6 +15,8 @@ enum StockMovementReason {
   PRODUCTION_RECEIPT // finished goods credited by a completed WorkOrder
   POS_SALE // till sale (RETAIL-ERP.md R11) — distinct from SALE so a ledger read can tell channel apart without joining Order
   POS_OFFLINE_VARIANCE // InventoryService.postUnconditional() drove a variant negative (R5) — paired 1:1 with a StockVariance row
+  TRANSFER_OUT // WO-22.1: leaving a location (source on dispatch, or the in-transit bucket returning to source on cancel)
+  TRANSFER_IN // WO-22.1: arriving at a location (the in-transit bucket on dispatch, or the destination/source on receive/cancel)
 }
 
 model StockMovement {
@@ -56,12 +58,26 @@ model StockMovement {
   @@index([locationId])
 }
 
+/// STORE/WAREHOUSE are physical, staffed or stocked normally. IN_TRANSIT is
+/// neither — a transient bucket a StockTransfer (WO-22.1, R4) creates for
+/// itself, holding exactly the quantity currently between two real
+/// locations. Splitting it out as its own Location (rather than a flag on
+/// the transfer) is what R4 turns on: everything VariantLocationStock and
+/// the ledger already do for a real location comes free for "goods on a
+/// truck" too, with no schema change and no unsafe cross-database constraint.
+enum LocationType {
+  STORE
+  WAREHOUSE
+  IN_TRANSIT
+}
+
 /// A place stock physically lives. Single-location shops get exactly one row
 /// (isDefault: true) and never see it in any UI — B6, MULTI-SECTOR.md.
 model Location {
-  id        String   @id @default(cuid())
+  id        String       @id @default(cuid())
   name      String
-  code      String   @unique // "MAIN", "LHR-01" — short, used in ledger refs
+  code      String       @unique // "MAIN", "LHR-01" — short, used in ledger refs
+  type      LocationType @default(STORE)
 
   /// Which retail brand this location belongs to — null for every
   /// deployment today (the deployment's own implicit brand, brand.ts).

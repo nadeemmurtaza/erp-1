@@ -169,6 +169,22 @@ export class InventoryService implements OnModuleInit {
   }
 
   /**
+   * Every real, active location — a store or a warehouse, never an
+   * IN_TRANSIT bucket a StockTransfer (WO-22.1) created for itself. The one
+   * place anything that needs to let staff pick a location (a transfer's
+   * source/destination, a future terminal setup screen) should read from,
+   * rather than querying Prisma's Location table directly and re-deriving
+   * this exclusion.
+   */
+  async listLocations(): Promise<{ id: string; name: string; code: string; isDefault: boolean }[]> {
+    return this.prisma.location.findMany({
+      where: { isActive: true, type: { not: 'IN_TRANSIT' } },
+      select: { id: true, name: true, code: true, isDefault: true },
+      orderBy: { name: 'asc' },
+    });
+  }
+
+  /**
    * The ONLY way stock changes. Callers inside a transaction pass their tx
    * client so the movement row and the stock change commit together.
    *

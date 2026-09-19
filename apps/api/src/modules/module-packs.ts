@@ -71,6 +71,7 @@ export const MODULE_PACKS: Record<string, PackName> = {
   settings: 'core',
   tax: 'core',
   tracking: 'core',
+  transfers: 'core',
   users: 'core',
 
   // Apparel & boutique — what makes this particular shop what it is.

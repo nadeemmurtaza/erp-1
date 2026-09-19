@@ -161,6 +161,12 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
   },
   { key: 'inventory.count', label: 'Run stock counts', category: 'Catalogue', sensitivity: 'low' },
   {
+    key: 'transfers.manage',
+    label: 'Dispatch, receive and cancel inter-branch stock transfers',
+    category: 'Catalogue',
+    sensitivity: 'medium',
+  },
+  {
     key: 'measurements.manage_blueprints',
     label: 'Manage garment types, measurement fields and size charts',
     category: 'Catalogue',
@@ -304,8 +310,8 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'inventory',
     label: 'Inventory',
-    description: 'Stock levels, stock counts, and — separately — cost prices and margins.',
-    permissions: ['inventory.manage', 'inventory.count', 'inventory.view_cost'],
+    description: 'Stock levels, stock counts, inter-branch transfers, and — separately — cost prices and margins.',
+    permissions: ['inventory.manage', 'inventory.count', 'transfers.manage', 'inventory.view_cost'],
   },
   {
     key: 'purchasing',
@@ -377,6 +383,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'catalog.manage',
     'inventory.manage',
     'inventory.count',
+    'transfers.manage',
     'measurements.manage_blueprints',
     'suppliers.manage',
     'purchasing.manage',
@@ -404,6 +411,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'inventory.manage',
     'inventory.view_cost',
     'inventory.count',
+    'transfers.manage',
     'measurements.manage_blueprints',
     'suppliers.manage',
     'purchasing.manage',

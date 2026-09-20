@@ -70,7 +70,8 @@ since no non-`User` principal has ever been checked against a permission key.
 
 **Done test:** The PR names the exact guard or strategy class the new
 credential authenticates through, and states whether `AuditLog.actorId`
-(core.prisma:220) records the device's own id or a human's.
+(core.prisma:222, inside `model AuditLog` starting line 220) records the
+device's own id or a human's.
 
 **Breaks without:** A fourth ad-hoc key-hash pattern ships alongside the
 other three, `StockMovement` and `AuditLog` rows carry a device id that
@@ -100,10 +101,11 @@ employee's access (today a manual edit through `RolesService`), and what
 `AuditLog` record proves the access existed only for that window if a tax
 authority asks a year later.
 
-**Done test:** `grep -n "expiresAt" apps/api/prisma/schema/core.prisma` —
-returns nothing today. A PR introducing a time-boxed actor kind must either
-add such a column or state in `DECISIONS.md` why an unenforced manual sweep
-is the accepted substitute.
+**Done test:** `grep -A8 "^model RoleGrant\b\|^model UserRoleAssignment\b\|^model UserPermission\b" apps/api/prisma/schema/core.prisma | grep -c expiresAt`
+and `grep -A12 "^model AdminScope\b" apps/api/prisma/schema/organization.prisma | grep -c expiresAt`
+— both return `0` today. A PR introducing a time-boxed actor kind must either
+make one of them non-zero or state in `DECISIONS.md` why an unenforced manual
+sweep is the accepted substitute.
 
 **Breaks without:** External auditors and tax agents accumulate permanent
 `RoleGrant` rows across audit cycles that nobody circles back to revoke — the
@@ -121,3 +123,46 @@ org fails its own access review, and per the existing scope brief, has no
 - No `expiresAt` or `grantedBy` on `RoleGrant`, `UserRoleAssignment`,
   `UserPermission`, or `AdminScope` — no way to represent a time-boxed or
   externally-sourced grant, or to prove later that one lapsed on schedule.
+
+## Hardening record
+
+**Kept (3 of 3):**
+
+- **The actor with three tables** — distinct from the five CLAUDE.md lenses
+  and the 30 WO-22 lenses: none of those addresses which table a new actor
+  *becomes*, only what happens once an actor already exists. Verified: `User`
+  (core.prisma:11) has no `partyId`; `Party` (parties.prisma:15) has no
+  `userId`; no `FRANCHISEE`/`Franchisee` token exists anywhere under
+  `apps/api/prisma/schema`.
+- **The credential with no permission key** — distinct from "Which tier owns
+  the credential" (WO-22 Integrations): that lens is about tier ownership of
+  an external partner's key, this one is about whether a non-`User` principal
+  is checked against `PERMISSION_CATALOG` at all. Verified: `PERMISSION_CATALOG`
+  exists in `packages/shared/src/permissions.ts`; `resolveForUser` exists on
+  the permissions service and is called from `jwt.strategy.ts`; `PosTerminal.deviceKeyHash`,
+  `TradingPartner.inboundApiKeyHash`, and `Node.inboundApiKeyHash` are three
+  separate unique hash columns with no shared principal type.
+- **The access with no end date** — distinct from "The version stamp" and
+  "Authority and blast radius" (WO-22 Policy and rules): those govern rule
+  changes over time, this one is about a grant's own lifespan. Verified:
+  `RoleGrant`, `UserRoleAssignment`, `UserPermission` (core.prisma) and
+  `AdminScope` (organization.prisma:106) each carry only `createdAt`, no
+  `expiresAt`/`grantedBy`.
+
+**Killed:** none — all three lenses cited real, checkable repository facts,
+asked a question that demands a specific artifact (a table name, a guard
+class, a column), and did not restate an existing lens.
+
+**Corrections:**
+
+- The third lens's done test claimed `grep -n "expiresAt" apps/api/prisma/schema/core.prisma`
+  "returns nothing today." This is false as written: that grep returns six
+  lines, because `RefreshToken`, `PasswordResetToken`, and
+  `EmailVerificationToken` (all in core.prisma) do have `expiresAt` columns —
+  just not the four access-grant models the lens is about. Corrected to two
+  scoped commands (`grep -A8 "^model RoleGrant\b|^model UserRoleAssignment\b|^model UserPermission\b" apps/api/prisma/schema/core.prisma | grep -c expiresAt`
+  and the equivalent for `AdminScope` in organization.prisma), each of which
+  does return `0` today, confirmed by running it.
+- The second lens cited `AuditLog.actorId` at `core.prisma:220`. Line 220 is
+  where `model AuditLog {` begins; the `actorId` field itself is on line 222.
+  Corrected the citation to name both.

@@ -51,3 +51,15 @@ fills, not just that a number changed.
 - No price-change ledger carrying old/new values queryable by an auditor; only a domain event carries the numbers, and `AuditLog` carries only field names.
 - No till discount mechanism, ceiling, or manager-override flow (`pos.prisma:10` names this directly as unbuilt).
 - No approval threshold or second-signature requirement for any price or discount action; `catalog.manage` and `payments.approve` are both flat booleans.
+
+## Hardening record
+
+**Kept (3):**
+
+- **The price that wins** — verified: all seven `priceOverride ?? basePrice` call sites confirmed at the exact cited lines (`cart.service.ts:549`, `pos-catalog.service.ts:66`, `marketing-automation.cron.ts:292`, `orders.service.ts:420` and `:846`, `catalog.service.ts:268`, `trading-partners.service.ts:180`); the coupon/promotion grep returning only `core/notifications/email/catalog.ts` is confirmed. Distinct from any existing lens — no prior lens names price resolution across channels.
+- **The number the auditor cannot see** — verified: `product-admin.service.ts:282-288` writes `changed: Object.keys(dto)` exactly as cited; `ProductPriceChanged` at lines 290-297 exactly as cited; `catalog.manage` (`permissions.ts:145`) and `payments.approve` (`permissions.ts:83`) confirmed as flat, ceiling-less booleans. Distinct from 05's "The trigger `AuditLog` doesn't have" and "Who read it, not just who wrote it": those are about `AuditLog`'s DB-level immutability and read-tracking in general; this lens is about the *content* of one specific write — that a price change's own audit row carries no old/new number at all, only field names.
+- **The till has no floor** — verified: `pos.prisma:10` states the override is unbuilt, verbatim; `grep -rn "discount" apps/api/src/modules/pos` returns nothing, confirmed; `pos.operate` (`permissions.ts:77`) confirmed as a flat boolean; `OrderItem.discountUnit` (`orders.prisma:128`) and `Order.orderDiscount` (`orders.prisma:56`) confirmed present in schema but unused by the POS module; `pos-shifts.service.ts`'s X/Z report confirmed cash-movements-only by its own header comment (lines 16-25).
+
+**Killed:** none. All three lenses are scope questions (which cell of the price/discount matrix a feature must fill), demand a checkable artifact, are grounded in verified real citations, and are not restatements of the five original lenses or the thirty WO-22 lenses.
+
+**Citations corrected:** none. Every path, line range, permission key, and grep result cited in the file was independently re-run and matched exactly as claimed — no wrong citations found.

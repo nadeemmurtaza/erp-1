@@ -87,7 +87,7 @@ labour cost needs to land against a branch — and if none exists, say so.
 `CostCentre` model exists in any `.prisma` file) beside `retailBrandId` and
 `branchNodeId`, but none of the seven posting-rule subscribers in
 `posting-rules.subscriber.ts` ever sets it — none of them is labour.
-`domain-events.ts`'s ~40 event names include no shift-closed or payroll
+`domain-events.ts`'s 34 event names include no shift-closed or payroll
 event at all. `PosShift` (pos.prisma:65) carries a cash float and a status,
 never a wage rate, hours, or a cost centre. The ledger has a place for the
 number and nothing that ever computes or posts one.
@@ -122,3 +122,47 @@ anyone reconciles the two.
 - An attendance/roster/timesheet concept altogether — `PosShift` is the only
   record of someone's working hours, and it has no relation to `User`, only
   a bare `openedByUserId`/`closedByUserId` scalar.
+
+## Hardening record
+
+**Kept (3):**
+
+- **The leaver keeps the keys** — verified against
+  `users-admin.service.ts:248-254` (the deactivation transaction touches
+  only `User` and `RefreshToken`), `core.prisma:335-345`
+  (`UserRoleAssignment`, no `expiresAt`), `organization.prisma:106-120`
+  (`AdminScope`, no `expiresAt`), `pos.prisma:65-68`
+  (`PosShift.openedByUserId` is a bare scalar), and
+  `permissions.service.ts:26-58` (`PermissionsResolverService.resolveForUser`
+  never queries `User.isActive`). Distinct from the existing "reversal
+  document, not the reversal flag" lens: that one is about undo of a
+  transaction, this one is about a status flip on an actor row that other
+  tables never observe.
+- **Branch means database, not location** — verified against
+  `organization.prisma:106-120` (`AdminScope.branchNodeId` → `Node`),
+  `organization.prisma:130-142` (`Node`'s own doc comment: recorded only for
+  a genuinely separate child deployment), `pos.prisma:33`
+  (`PosTerminal.locationId`), and `inventory.prisma:75-76` (`Location`).
+  Distinct from "The edition above and the day it appears" (multi-entity
+  topology): that lens is about a BRAND/ORG tier appearing above a
+  deployment; this one is about `AdminScope` having no column that can name
+  a `Location` inside a single deployment at all.
+- **The column with no producer** — verified against
+  `accounting.prisma:188` (`JournalLine.costCentreId`, bare scalar, no
+  `CostCentre` model in any `.prisma` file), `posting-rules.subscriber.ts`
+  (exactly seven `@OnDomainEvent` handlers, none of them setting
+  `costCentreId`), `domain-events.ts` (34 named events, none named
+  shift-closed or payroll), and `gl-reports.service.ts:74,94`
+  (`trialBalance`/`profitAndLoss`, the ledger reports a labour-cost tile
+  would have to agree with). Distinct from "The file outlives the app"
+  (reporting): that lens is about an export surviving the app that produced
+  it; this one is about a ledger column with a place for a number and no
+  code path that ever computes one.
+
+**Killed:** none — all three claims held up under citation and none
+restates an existing lens without a stated difference.
+
+**Corrections:**
+
+- claimed `domain-events.ts`'s "~40 event names"; actual count is 34 named
+  events (`DomainEvent` object, `domain-events.ts:11-61`).

@@ -45,44 +45,6 @@ reads as ours-on-hand when it is not) or silently zeroes fabric that a
 dishonest or bankrupt subcontractor never returns — with no row anywhere that
 ever said it was theirs to hold.
 
-## Lens: The posting that never fires
-
-**Question:** Name the `DomainEvent` and the posting rule that debits a WIP
-or Inventory account when a `WorkOrder` consumes raw material, and credits it
-when the finished good is completed — then say what account balance is wrong
-between `release()` and `complete()` today.
-
-**Why:** `WorkOrdersService.release()` and `.complete()`
-(`apps/api/src/modules/production/work-orders.service.ts:143,190`) call only
-`InventoryService.moveMany`/`.move()` — no `EventBusService.publish` reaches
-`AccountingService.postEntry()`. `posting-rules.subscriber.ts` has exactly
-seven `@OnDomainEvent` handlers (confirmed by grep: OrderPlaced,
-PaymentSucceeded, PaymentRefunded, SupplierBillRaised, SupplierBillPaid,
-StockVarianceRecorded, InterBranchTransferInvoiced) and none is
-`WorkOrderReleased` or `WorkOrderCompleted`. R15 itself lists
-`BomProductionRunPosted` as one of five journals NOT built. So a `WorkOrder`
-moves real inventory value between a components account and a finished-goods
-account and the ledger never notices.
-
-**Worked example:** Narrow slice: release a work order, watch
-`VariantLocationStock` drop for the fabric and rise for the shirt on
-`complete()`, call it done because stock moved. Complete capability: a
-`WorkOrderReleased` posting rule (Dr WIP · Cr Raw Materials at the
-component's `costPrice`) and a `WorkOrderCompleted` one (Dr Finished Goods ·
-Cr WIP), idempotent via `AccountingService.findPostedEntry('production.work_
-order', workOrder.id)` exactly like the existing seven.
-
-**Done test:** `grep -n "WorkOrder" apps/api/src/modules/accounting/posting-
-rules.subscriber.ts` must return the two new handlers. Reviewer runs
-`trialBalance()` before and after completing a work order in a test fixture
-and confirms the WIP account moved by the components' cost, not by zero.
-
-**Breaks without:** With 10,000+ variants cycling through work orders, the
-stock ledger (physical count) and the general ledger (`GlReportsService`'s
-`balanceSheet`) diverge by the entire value of everything currently in
-production — a number an external auditor or tax agent will ask for by name
-and find nowhere, because no account was ever debited to hold it.
-
 ## Lens: The scrap that has no reason code
 
 **Question:** When a released `WorkOrder` consumes more fabric than the BOM
@@ -134,3 +96,53 @@ actual cause.
 - Multi-level BOM explosion, routing/labour/operations, and BOM versioning
   or effectivity dates — `BillOfMaterial` is one flat, unversioned recipe
   per variant (ground truth, confirmed in `bom.service.ts`).
+
+## Hardening record
+
+**Kept**
+
+- *The cloth that leaves the building* — subcontractor stock has no
+  representable home (`LocationType` lacks a subcontractor value,
+  `PartyRoleName` lacks one, `StitchingJob.assignedTailorId` points at
+  `User` not `Party`). Distinct from any WO-22 or CLAUDE.md lens: those
+  cover intercompany netting and transfer topology between our own nodes,
+  not stock held by a third party who is not a node in the org tree at all.
+- *The scrap that has no reason code* — `release()`'s
+  `-Math.ceil(line.quantityPerUnit * quantityOrdered)` is a fixed debit with
+  no yield/wastage column on `BillOfMaterialLine`, and `StockMovementReason`
+  has no scrap-specific value, so over-consumption has no distinct home from
+  `WRITE_OFF`/`ADJUSTMENT`. Distinct from *The cloth that leaves the
+  building*: that lens is about representing WHERE stock sits while out;
+  this one is about representing WHY inventory value left the count at all.
+
+**Killed**
+
+- *The posting that never fires* — restates
+  `docs/erp-lenses/07-money-integrity-gl.md`'s "The unwritten posting rule"
+  lens verbatim in substance, not just in domain. That lens's own "Why" and
+  "Worked example" already cite this exact gap — `work-orders.service.ts`'s
+  `complete()` moving `PRODUCTION_RECEIPT` stock with no matching journal,
+  the same missing `WorkOrderReleased`/`WorkOrderCompleted` handlers in
+  `posting-rules.subscriber.ts`, and the same `BomProductionRunPosted`
+  citation from R15 — down to the identical worked example (release a work
+  order, watch stock move, no journal fires). A second lens that asks the
+  same question of the same object with the same fix is not a sharper cut,
+  it is the landfill failure the review exists to stop. Killing it leaves
+  two lenses, which meets the floor, so no replacement was written.
+
+**Citations corrected**
+
+- None. Every path, model, enum and service method cited in the surviving
+  lenses was opened and verified against the current schema and source:
+  `WorkOrder.locationId` (`production.prisma:72`, scalar `String?`),
+  `LocationType` (`inventory.prisma:68-71`, `STORE | WAREHOUSE | IN_TRANSIT`),
+  `StitchingJob.assignedTailorId` (`stitching.prisma:132`),
+  `PartyRoleName` (`parties.prisma:8-13`, no subcontractor role),
+  `BillOfMaterialLine.quantityPerUnit` (`production.prisma:30`, the only
+  quantity column), `WorkOrdersService.release()`'s
+  `delta = -Math.ceil(...)` (`work-orders.service.ts:165`), and
+  `StockMovementReason` (`inventory.prisma:5-19`, no scrap-specific value)
+  all matched the claimed text and line numbers exactly. `SUBCONTRACT` and
+  `PRODUCTION_SCRAP`/`scrapQuantity` were confirmed absent from
+  `apps/api/prisma/schema/*.prisma` and `packages/shared/src/permissions.ts`,
+  which is what makes both `doneTest`s falsifiable rather than already-true.

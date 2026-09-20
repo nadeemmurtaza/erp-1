@@ -136,3 +136,54 @@ why.
   unrealised FX is a ruling (R16), not code.
 - No GRNI clearing account, no `BomProductionRunPosted`, no
   `PayrollPosted`, no `ShiftClosed` journal — R15 names all five as unbuilt.
+
+## Hardening record
+
+**Kept (3):**
+
+- **The unwritten posting rule** — demands a named domain event, Dr/Cr
+  account codes and the `findPostedEntry` idempotency key before a feature
+  ships; verified against a real gap (`work-orders.service.ts complete()`
+  moves `PRODUCTION_RECEIPT` stock via `inventory.move` with no posting
+  rule). Distinct from the five CLAUDE.md lenses: it is not "the transaction
+  start to finish" (that's the workflow), it is the specific ledger artifact
+  that workflow must produce.
+- **Every column or none** — demands naming which of the four `JournalLine`
+  dimension columns a new rule sets, verified against the real fact that 6 of
+  7 posting rules set none. Distinct from "the policy and rules layer" lens
+  and from the intercompany/`counterpartyBrandId` lens (WO-20.6 R17): this is
+  ordinary single-brand postings carrying no scope dimension at all, not
+  consolidation netting.
+- **The period that already moved** — demands a stated answer for a fact
+  dated inside a CLOSED/LOCKED period, verified against
+  `resolveOpenPeriod()`'s actual fallback (most-recently-started OPEN
+  period, not the nearest one) and the absence of any DB constraint or
+  restatement trail. Distinct from "day two operations"/backdating lenses
+  elsewhere: this one is scoped to the GL specifically — the period a
+  `JournalEntry` posts into versus the period its own date belongs to.
+
+**Killed:** none — all three lenses cite real, currently-true gaps
+(confirmed by reading `accounting.service.ts`, `posting-rules.subscriber.ts`,
+`accounting.prisma`, and `work-orders.service.ts`), demand a specific
+artifact rather than a yes/no, and are not restatements of the five CLAUDE.md
+lenses or the thirty WO-22 lenses.
+
+**Corrections:** none. Every citation verified as written:
+- `AccountingService.postEntry()` / `findPostedEntry()` / `resolveOpenPeriod()`
+  — all three methods exist in `accounting.service.ts` at the cited behavior.
+- Seven `@OnDomainEvent` handlers in `posting-rules.subscriber.ts`
+  (OrderPlaced, PaymentSucceeded, PaymentRefunded, SupplierBillRaised,
+  SupplierBillPaid, StockVarianceRecorded, InterBranchTransferInvoiced) —
+  count and names match; only `onInterBranchTransferInvoiced` sets
+  `retailBrandId`, confirmed.
+- `JournalLine`'s `organizationId`/`retailBrandId`/`branchNodeId`/
+  `costCentreId` columns — present at accounting.prisma:185-188, exactly as
+  cited.
+- `work-orders.service.ts complete()` — exists in
+  `apps/api/src/modules/production/work-orders.service.ts` (the doc cites it
+  by filename only, no directory, so no path correction needed); it calls
+  `this.inventory.move(..., reason: 'PRODUCTION_RECEIPT')` inside a
+  transaction with no accompanying journal call, confirming the gap.
+- `FiscalPeriod.startsOn`/`endsOn` and `FiscalPeriodStatus` — present in
+  accounting.prisma as cited, supporting the "period that already moved"
+  done-test query.

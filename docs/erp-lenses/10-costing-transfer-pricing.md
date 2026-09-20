@@ -142,3 +142,76 @@ looking like a working feature rather than a missing one.
   brands buying the same SKU at different landed costs cannot be told apart.
 - FX-adjusted or standard costing: no FIFO/standard-cost option exists
   alongside the single weighted average.
+
+## Hardening record
+
+**Kept (3/3):**
+
+- **Transfer price fixed at cost** — grounded in `transfers.prisma:132-137`
+  (`InterBranchInvoice.amountMinor` doc comment) and the `SettlementMode`
+  enum (`INTERNAL_PL` at line 37, "left buildable, not built" at line 34).
+  Distinct from the existing multi-entity-topology lenses, which are about
+  org/brand *ownership* structure, not about intercompany *pricing*; this
+  lens is the one place in the lens set that asks where a markup would live.
+- **Opt-in cost redaction** — grounded in `inventory.view_cost`
+  (`packages/shared/src/permissions.ts:157-158`), the opt-in stripper
+  contract in `apps/api/src/core/common/cost-fields.ts`, its adoption in
+  `catalog-admin.controller.ts` and `orders.controller.ts`, its absence in
+  `inventory.controller.ts` (permission-gated only by `inventory.manage` at
+  line 11, with `toVariantView()` embedding `costPrice` unconditionally at
+  line 564), and the correct discipline example at
+  `reports.controller.ts:54`. Distinct from the existing "audience is a
+  capability" notification lens: that lens is about who a message reaches,
+  this one is about a field leaking through a coarse permission at a
+  response boundary — a different failure class (authorization surface,
+  not delivery targeting).
+- **The ledger's five unfilled columns** — grounded in `accounting.prisma`
+  lines 185-197 (five scope columns including `costCentreId` at 188), the
+  seven `@OnDomainEvent` posting rules in `posting-rules.subscriber.ts`
+  (`OrderPlaced`, `PaymentSucceeded`, `PaymentRefunded`,
+  `SupplierBillRaised`, `SupplierBillPaid`, `StockVarianceRecorded`,
+  `InterBranchTransferInvoiced` — confirmed exactly seven), of which only
+  `onInterBranchTransferInvoiced` (lines 358-371) ever sets
+  `retailBrandId`/`counterpartyBrandId`, and the confirmed absence of any
+  `model CostCentre` in any `.prisma` file in the repo. Distinct from the
+  multi-entity-topology lenses (which ask whether an owner/reader is named
+  at all) because this lens is about GL posting-rule *coverage*, not about
+  whether the entity model exists.
+
+**Killed:** none. All three lenses cited real, currently-true facts in this
+repository, demanded a specific artifact (a column, a diffed grep, a set of
+posting-rule hits), and named a scope gap distinct from every one of the 35
+pre-existing lenses.
+
+**Corrections:** none. Every cited path, line range, model, enum value,
+permission key and method name was opened and verified against the current
+source:
+
+- `transfers.prisma:132-137` (`amountMinor` doc comment) — verified.
+- `SettlementMode.INTERNAL_PL` at `transfers.prisma:37`, "Left buildable,
+  not built." at line 34 — verified (lens paraphrases this correctly).
+- `inventory.view_cost` at `permissions.ts:157-158` — verified.
+- `cost-fields.ts` exports `stripProductCost`, `stripOrderCost`,
+  `stripProductListCost`, `stripOrderListCost`, keyed on `VIEW_COST` —
+  verified.
+- `inventory.controller.ts:11` `@RequirePermission('inventory.manage')` on
+  the controller, `toVariantView()` embedding `costPrice` unconditionally
+  at `inventory.service.ts:564` — verified, `inventory.controller.ts` is
+  confirmed as an unaudited leak today.
+- `reports.controller.ts:54` `@RequirePermission('inventory.view_cost')` —
+  verified.
+- `accounting.prisma:185-197`, five scope columns
+  (`organizationId`, `retailBrandId`, `branchNodeId`, `costCentreId`,
+  `counterpartyBrandId`) — verified.
+- Seven posting rules in `posting-rules.subscriber.ts` — verified by
+  counting `@OnDomainEvent` decorators (7 exact matches).
+- `onInterBranchTransferInvoiced` (lines 358-371) is the only rule setting
+  `retailBrandId`/`counterpartyBrandId`; no rule sets `organizationId`,
+  `branchNodeId`, or `costCentreId` — verified by grep across the whole
+  file.
+- `grep '^model CostCentre'` across every `.prisma` file returns nothing —
+  verified, no such model exists anywhere in the schema.
+- `ConsolidationService.groupProfitAndLoss()` exists
+  (`consolidation.controller.ts:26`, `consolidation.service.ts`) and its
+  "not attempted here" comment re: unrealized intercompany profit is at
+  `consolidation.service.ts:38` — verified.

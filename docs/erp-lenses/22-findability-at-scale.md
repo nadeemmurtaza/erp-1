@@ -17,8 +17,8 @@ must apply themselves.
 
 **Why:** `scopeFilterFor()` (`apps/api/src/core/auth/scope.guard.ts:124`)
 already computes exactly this narrowing, but it has exactly one production
-call site, `OrganizationController.actorFor` (`organization.controller.ts:33`).
-`InventoryService.list()` (`inventory.service.ts:90-117`, confirmed by
+call site, `OrganizationService.listBrands()` (`organization.service.ts:74-76`).
+`InventoryService.list()` (`inventory.service.ts:84-117`, confirmed by
 reading it) builds its `where` from stock/search/filter query params alone —
 no `retailBrandId`, no `branchNodeId`, ever. A branch floor manager and an
 org-wide buyer see the identical unscoped list of every active variant across
@@ -163,3 +163,64 @@ like the same feature working correctly.
   paths this domain lives on (`pos-catalog.service.ts`'s `searchVariants`,
   `InventoryService.list()`) — one caps silently, the other never caps at
   all, and neither reports how many rows really matched.
+
+## Hardening record
+
+**Kept (4 of 4):**
+
+- **The default is a scope, not a filter** — asks that a list *opens*
+  already narrowed to the viewer's `AdminScope`, not merely filterable by
+  it; distinct from lens 10 ("Name the owner, name the reader it refuses"),
+  which is about a table exposing an owner column, not about the query's
+  default state before any click.
+- **The view nobody can name back** — asks where a saved, reusable filter
+  is persisted; no existing lens addresses filter/view persistence.
+- **The selection that outlives the page** — asks what a "select all N
+  matching" bulk selection is stored as when execution is re-evaluated
+  later; explicitly scoped apart from lens 16 ("The weaker writer", write
+  parity across paths) and lens 17 ("Row 4,312's authority", per-row
+  permission checks), both of which assume the id list already exists.
+- **The 21st row** — asks what happens past a hard-coded page cap and
+  contrasts it with an uncapped equivalent already live in this repo;
+  distinct from the selection lens above (that lens is about what a
+  selection *is*, this one is about whether the operator can even see
+  past row 20/find out there's more).
+
+**Killed:** none. All four survived — each demands a specific artifact
+(a field name and file, a table/row shape, a persisted-selection contract,
+a total-count field), each is falsifiable by grep or by reading a named
+line range, and each is scoped to something that changes what gets built,
+not just what gets documented.
+
+**Corrections:**
+
+- Lens 1 ("The default is a scope, not a filter") claimed `scopeFilterFor()`'s
+  one production call site was `OrganizationController.actorFor`
+  (`organization.controller.ts:33`). Read: `actorFor` (confirmed at that
+  line) only assembles the `ScopedActor` object from resolved grants — it
+  never calls `scopeFilterFor()`. The actual, and only, production call
+  site is `OrganizationService.listBrands()`
+  (`organization.service.ts:74-76`), which spreads
+  `...scopeFilterFor(actor)` into the `RetailBrand` `where` clause. Fixed
+  in the lens text above. The core claim (exactly one production call
+  site; `InventoryService.list()` has none) still holds.
+- Lens 1 cited `InventoryService.list()` as `inventory.service.ts:90-117`;
+  the method's declaration and full `where`-building body actually start
+  at line 84. Corrected to `84-117`. This does not change the claim — the
+  scope/search/filter logic in that range still never touches
+  `retailBrandId` or `branchNodeId`.
+- All other citations checked against the repository and found accurate
+  as written: `scope.guard.ts:124` (`scopeFilterFor` definition, confirmed
+  it returns only `{ retailBrandId: { in: [...] } }`, never a
+  `branchNodeId` field); 115 models under `apps/api/prisma/schema/*.prisma`
+  (counted: 115 across 21 files); no `SavedView`/`FilterPreset`/`UserView`
+  model anywhere in that schema directory (confirmed, zero matches);
+  `Setting` at `core.prisma:153` (`key String @id`, no user/brand/branch
+  column, confirmed); `pos-catalog.service.ts:56` `take: 20` inside
+  `searchVariants()` (confirmed); `catalog.service.ts:65-84`
+  `listProducts()` using `skip`/`take`/`this.prisma.$transaction([findMany,
+  count])` (confirmed, exact line range matches); cross-references to
+  lens 10 ("Name the owner..."), lens 16 ("The weaker writer") and lens 17
+  ("Row 4,312's authority") in `docs/implementation/WO-22-lens-workflow-results.md`
+  all resolve to the correct lenses by sequential position (10th, 16th and
+  17th lens produced across the ten completed domains).

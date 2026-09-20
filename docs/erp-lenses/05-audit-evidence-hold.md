@@ -46,7 +46,7 @@ record — a customer's PII, a payroll figure, a supplier's bank details —
 creates its own row, separate from `AuditLog`'s write-only `action` strings.
 **Why:** `AuditService.record()` and `AuditLog`
 (`core.prisma:220-235`) capture only what a call site chooses to log on a
-write; 24 files call `AuditService` and none of them logs a read. There is
+write; 23 files reference `AuditService` and none of them logs a read. There is
 no `high`/`critical` sensitivity gate (`packages/shared/src/permissions.ts:221`,
 `audit.view` itself is only `medium`) that also writes an access record.
 `GlReportsService`'s five reports and any customer-PII endpoint are read
@@ -103,3 +103,56 @@ destroyed exactly when it is most needed — a legal liability, not a bug.
 - No before/after value capture — `AuditLog.data` is a free-form `Json?`
   set per call site; there is no structured diff, no schema, and no
   guarantee two call sites logging the "same" action shape it the same way.
+
+## Hardening record
+
+**Kept (all three survive review):**
+
+- **The trigger `AuditLog` doesn't have** — grounded in a real, checkable gap:
+  `AuditLog` (`core.prisma:220-235`) has no DB trigger while the migration
+  that added `JournalLine`/`JournalEntry` immutability
+  (`20260917070552_add_accounting_ledger/migration.sql`, functions
+  `forbid_journal_line_mutation` at line 221 and `forbid_journal_entry_mutation`
+  at line 237, triggers `journal_line_immutable` at 228 and
+  `journal_entry_immutable` at 262, both raising `23514`) never touches it.
+  Demands a specific artifact (a `CREATE TRIGGER` clause) and a runnable test.
+- **Who read it, not just who wrote it** — grounded in a real asymmetry:
+  `permissions.ts:221` marks `audit.view` itself only `sensitivity: 'medium'`,
+  and of the 23 files that reference `AuditService`, none calls it on a read
+  path — `AuditService.record()`'s own shape (`action`, `entity`, `entityId`,
+  `data`) has no read-vs-write discriminator. Distinct from "Row 4312
+  authority" (bulk-write ownership) and from the existing audit-adjacent
+  lenses in the 30-lens set, none of which cover reads.
+  Demands a named table and a grep-checkable permission-to-log mapping.
+- **The hold that beats the delete button** — grounded in a real absence: no
+  `LegalHold` or `Retention` symbol anywhere under
+  `apps/api/prisma/schema/*.prisma` (verified by grep, zero hits), and
+  `FiscalPeriodsService.closeFiscalYear()`
+  (`apps/api/src/modules/accounting/fiscal-periods.service.ts:128-170`) sweeps
+  and posts a closing journal entry with no hold check of any kind. Distinct
+  from "Dry run before live" (policy simulation) and "Who may unmake it"
+  (reversal authority) — this is about a hold blocking destruction outright,
+  not about who may reverse or simulate a change.
+  Demands a schema symbol (`LegalHold`) and a diff-visible check preceding a
+  destructive write.
+
+**Killed:** none. All three lenses cite verified, currently-true gaps
+(no trigger, no read log, no hold model), are specific to this domain rather
+than restating the five original or thirty prior lenses, and each demands a
+falsifiable artifact (a trigger clause, a named table, a schema symbol plus
+a preceding check) rather than a yes/no answer or a coding-standard fix.
+
+**Citations corrected:**
+- "Who read it, not just who wrote it" claimed "24 files call `AuditService`";
+  actual count via `grep -rl "AuditService" apps/api/src --include=*.ts` is
+  23 files (including `audit.module.ts` and `audit.service.ts` themselves).
+  Corrected in the Why field above.
+- All other citations verified as stated: `AuditLog` model at
+  `core.prisma:220-235`; `AuditService.record()`'s "append-only" comment at
+  `audit.service.ts:14-21`; the journal-immutability migration and its
+  trigger names/line ranges in
+  `20260917070552_add_accounting_ledger/migration.sql`; `audit.view` at
+  `permissions.ts:221` with `sensitivity: 'medium'`; zero `legalHold`/
+  `retention` hits across `apps/api/prisma/schema/*.prisma`; and
+  `FiscalPeriodsService.closeFiscalYear()` in `fiscal-periods.service.ts`
+  with no hold check.

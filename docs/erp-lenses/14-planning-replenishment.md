@@ -152,3 +152,56 @@ assumed.
 - A demand forecast distinct from a point stock figure — `getReorderSuggestions()`
   and the auto-draft path both work off current stock and a static threshold,
   never a projected demand-during-lead-time figure.
+
+## Hardening record
+
+**Kept (3/3):**
+
+- **The reorder point has no address** — verified: `ProductVariant.reorderPoint`
+  is one nullable `Int` (`catalog.prisma:184`); the crossing check at
+  `inventory.service.ts:373-391` (condition begins line 373, event publishes
+  379) compares against `resultingStock`, the cross-location SUM, so a healthy
+  central warehouse structurally masks every branch stockout. Distinct from
+  lens 10 (read-scoping of a row) — this is about the write-time signal itself
+  being computed over an aggregate that erases location. Kept as written.
+- **Not enough to go around** — verified: `purchasing.service.ts:358-360`
+  posts the entire `moveMany` at the single `defaultLocationId(tx)`
+  (`inventory.service.ts:166`); `grep -in allocat` on
+  `purchasing.service.ts` returns only `allocateLandedCost` (cost splitting,
+  not units); `grep -n locationId purchasing.prisma` returns nothing —
+  confirmed no allocation table/column/function exists anywhere in
+  `purchasing/` or `inventory/`. R26 confirmed at
+  `docs/implementation/RETAIL-ERP.md` (section starts ~line 712): it covers
+  splitting stock already at a branch to online demand, a distinct, later
+  question from splitting one incoming receipt among branches that all
+  requested it. Kept as written.
+- **A forecast is not a commitment** — verified: `reorder.listener.ts:38`
+  computes `quantity = payload.reorderQuantity ?? payload.reorderPoint -
+  payload.stock`, no lead-time window; `Supplier.leadTimeDays`
+  (`purchasing.prisma:31`, default `7`) and `SupplierProduct.leadTimeDays`
+  (line 78) are bare scalars, `moq` at line 77; `PurchaseOrderStatus`
+  (`purchasing.prisma:88-94`) confirmed `DRAFT` below `SENT`. R25 confirmed
+  at `docs/implementation/RETAIL-ERP.md` (section starts ~line 695), stating
+  mean-and-variance are both derivable from existing `GoodsReceipt` vs
+  `PurchaseOrder` history and not yet computed. Kept as written.
+
+**Killed:** none — all three lenses survived verification with their claims
+intact; no lens here restates an existing one without a stated difference, no
+lens is generic advice, and each demands a concrete, checkable artifact (a
+`(variantId, locationId)` threshold column, a per-line allocation shape, a
+variance/stddev column).
+
+**Corrections:**
+
+- `RETAIL-ERP.md` is cited in the lens bodies as a bare filename; the actual
+  path in this repo is `docs/implementation/RETAIL-ERP.md`. Section numbers
+  (R25, R26) and quoted text are correct and unchanged — this is a path
+  precision note, not a collapsed claim.
+- All other citations checked (`catalog.prisma:184`;
+  `inventory.service.ts` reorder-crossing block and `resultingStock` SUM;
+  `inventory.controller.ts:24` `getReorderSuggestions()`;
+  `purchasing.service.ts` `defaultLocationId`/`moveMany`/`allocateLandedCost`;
+  `purchasing.prisma` `leadTimeDays` ×2, `moq`, `PurchaseOrderStatus` enum;
+  `reorder.listener.ts:38`; `transfers.service.ts` serial per-line loop
+  inside a `{ timeout: 20_000 }` transaction) matched the repository exactly
+  — no further corrections needed.

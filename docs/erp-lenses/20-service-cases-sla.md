@@ -51,28 +51,37 @@ credit, name the field that records the authorized amount, the approving
 rank's ceiling it was checked against, and the document — a credit note,
 a replacement order, or a reversed `Payment` — the resolution produced.
 
-**Why:** `payments.approve` (`packages/shared/src/permissions.ts`) is a
-flat boolean capability with no amount ceiling. `Payment.refundAmount` /
-`refundedAt` (`payments.prisma:36-37`) record that a refund happened but
-carry no reason, no case link and no approver-vs-limit check;
-`payment.refunded` posts `reverseEntry()` as a full reversal only — no
-partial-refund path, and no `CreditNote`/`DebitNote` model exists anywhere
-in the schema. This differs from lens 04's threshold question, which asks
-what amount band a document type needs approved: this one asks what the
-case-resolution artifact itself must contain to trace back to the
-complaint that caused it.
+**Why:** `payments.approve` (`packages/shared/src/permissions.ts:83`) is a
+flat boolean capability with no amount ceiling. `PaymentsService.refund()`
+(`payments.service.ts:288-334`) does take an `amount` argument — the
+controller doc comment even says "full or partial" — and sets
+`Payment.refundAmount`/`refundedAt` (`payments.prisma:36-37`); but that
+amount carries no reason code, no case link and no approver-vs-limit
+check, and the ledger side does not honour it:
+`PostingRulesSubscriber.onPaymentRefunded` (`posting-rules.subscriber.ts:140-155`)
+calls `AccountingService.reverseEntry()` on the full original receipt and
+sale entries regardless of `payload.amount`, so a $200 partial refund
+still reverses a $1,000 sale in the ledger. No `CreditNote`/`DebitNote`
+model exists anywhere in the schema. This differs from lens 04's threshold
+question, which asks what amount band a document type needs approved:
+this one asks what the case-resolution artifact itself must contain to
+trace back to the complaint that caused it, and what stops a partial
+refund from posting as a full reversal.
 
 **Worked example:** Narrow slice: an agent holding `payments.approve`
-clicks refund; `Payment.refundedAt` is set. Complete capability: the case
+calls `refund(actorId, paymentId, 20000)` on a PKR 100,000 order;
+`Payment.refundAmount` is set to 20000 but `onPaymentRefunded` reverses
+the entire 100,000 sale and receipt entries. Complete capability: the case
 records the offer type, the amount, the approver's rank compared against
-a ceiling for that rank, and a `CreditNote` or replacement `Order` created
-from the case — not a `Payment` field flipped with nothing pointing back
-at the complaint.
+a ceiling for that rank, a `CreditNote` (or replacement `Order`) created
+from the case, and a ledger reversal scaled to the refunded amount — not
+a full reversal triggered by a partial `Payment` field.
 
 **Done test:** The PR names the column holding the authorized amount and
-the approver-ceiling comparison; `grep -rn "refundAmount"
-apps/api/src/modules/payments` today shows it is only ever set, never
-compared against a per-rank limit.
+the approver-ceiling comparison; `grep -n "reverseEntry" apps/api/src/modules/accounting/posting-rules.subscriber.ts`
+today shows `onPaymentRefunded` never reads `payload.amount` before
+reversing — the PR must change that or add the partial-amount ledger
+entry it is missing.
 
 **Breaks without:** An agent with a blanket `payments.approve` grant can
 authorize any refund at any branch with no ceiling and no second
@@ -86,14 +95,17 @@ that lets a reviewer pull every fact touching it — the `Interaction`, the
 `InboundEmail` thread, the refunded `Payment`, the `Order` or
 `StockTransfer` it concerns, and the `AuditLog` rows — in one query.
 
-**Why:** `Interaction`, `InboundEmail` (`crm.prisma`), `Payment`
+**Why:** `Interaction`, `InboundEmail` (`crm.prisma:142`), `Payment`
 (`payments.prisma`), `StockTransfer` (`transfers.prisma`) and `AuditLog`
 (`core.prisma:220`, indexed on `[entity, entityId]`) share no common case
 identifier. Nothing writes an `entity: 'ServiceCase'` row today because no
-such entity exists, and `AuditService.record()` is called by hand from
-only 24 of 26 modules — so even the audit half of the trail has gaps a
-subpoena would find. This is a linkage gap, not a repeat of lens 05's
-DB-immutability question.
+such entity exists, and `audit.record()` is only called from 10 of the 25
+module directories under `apps/api/src/modules` (`catalog`, `crm`,
+`identity-verification`, `inventory`, `measurements`, `orders`,
+`payments`, `pos`, `stitching`, `users` — confirmed by grep; `accounting`,
+`cart`, `transfers` and eleven others never call it), so even the audit
+half of the trail has gaps a subpoena would find. This is a linkage gap,
+not a repeat of lens 05's DB-immutability question.
 
 **Worked example:** Narrow slice: a support-ticketing feature that stores
 its own case list, linked only to `Contact`. Complete capability: a case
@@ -127,3 +139,47 @@ way is invisible until it is subpoenaed.
 - No case identifier threaded through `Interaction`, `InboundEmail`,
   `Payment`, `StockTransfer` or `AuditLog` — the trail a regulator would
   read must be assembled by hand today.
+
+## Hardening record
+
+**Kept (3):**
+
+- *The complaint that isn't a record* — verified against `crm.prisma`
+  (`Interaction`, `InteractionKind`, `FollowUpTask`) and
+  `transfers.service.ts:225-238` (`receive()`'s `WRITE_OFF` movement). No
+  changes needed; citations were accurate as written.
+- *Compensation authority is a boolean, not a ceiling* — sharpened. The
+  original claimed "no partial-refund path"; the actual gap is sharper and
+  worse: `PaymentsService.refund()` already accepts a partial `amount`,
+  but `PostingRulesSubscriber.onPaymentRefunded` reverses the full ledger
+  entries regardless, so a partial refund silently overstates the reversal
+  in the general ledger. Rewritten to name that mismatch precisely.
+- *One case ID, or five unrelated tables* — kept, with the audit-coverage
+  citation corrected (see below). The underlying claim — no shared case
+  identifier across `Interaction`/`InboundEmail`/`Payment`/`AuditLog` — was
+  verified true by schema inspection.
+
+**Killed:** none. All three lenses name a real, currently-missing model or
+a real code path that behaves differently than a narrow build would
+assume, and each demands an artifact (a model name, a column, a scaled
+ledger entry) rather than a yes/no.
+
+**Corrections:**
+
+- Lens 2 claimed `payment.refunded` "posts `reverseEntry()` as a full
+  reversal only — no partial-refund path." Actual: `PaymentsService.refund()`
+  (`payments.service.ts:288`) takes an `amount` parameter and the
+  controller documents it as "full or partial" (`payments.controller.ts:108`);
+  the missing piece is that `onPaymentRefunded`
+  (`posting-rules.subscriber.ts:140-155`) never reads `payload.amount` and
+  always reverses the full original entries — corrected to describe the
+  actual defect (partial payment refund, full ledger reversal) rather than
+  a nonexistent missing feature.
+- Lens 3 claimed "`AuditService.record()` is called by hand from only 24
+  of 26 modules." Actual: `apps/api/src/modules` has 25 top-level module
+  directories, and only 10 of them (`catalog`, `crm`,
+  `identity-verification`, `inventory`, `measurements`, `orders`,
+  `payments`, `pos`, `stitching`, `users`) contain any call to
+  `audit.record()` or import `AuditService` outside test files — corrected
+  the count, which makes the coverage gap larger than originally claimed,
+  not smaller.

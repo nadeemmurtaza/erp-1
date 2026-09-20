@@ -50,9 +50,11 @@ delivery record in the repo and carries `courier` (a string like `"manual"`),
 `trackingNumber`, `trackingUrl` and `deliveredAt` — no driver, no vehicle, no
 signature, no photo, no recipient name. `orders.manage`
 (`packages/shared/src/permissions.ts:69`, labelled "Manage orders and
-shipments") is one flat key covering both. This is distinct from lens 25
-(the reversal document): that lens is about undoing a movement after the
-fact; this one is about whether the movement itself left evidence at all.
+shipments") is one flat key covering both. This is distinct from the
+reversal-document lens (WO-22's Lifecycle-reversal set, in
+`docs/implementation/WO-22-lens-workflow-results.md`): that lens is about
+undoing a movement after the fact; this one is about whether the movement
+itself left evidence at all.
 
 **Worked example:** Narrow slice: `transfers.service.ts`'s `receive()` flips
 `StockTransfer.status` to RECEIVED and stamps `receivedByUserId`. Complete
@@ -77,15 +79,18 @@ damage from theft from a miscount, and what evidence field holds the proof —
 not just the quantity delta that gets written off?
 
 **Why:** `StockTransferLine` (`apps/api/prisma/schema/transfers.prisma:82`)
-has exactly `quantityDispatched`, `quantityReceived` and `unitCost`. When
-`receive()` (`apps/api/src/modules/transfers/transfers.service.ts:233`) finds
-`quantityReceived < quantityDispatched`, the shortfall posts with reason
-`WRITE_OFF` — the same enum value (`inventory.prisma:5-20`) used for every
-other kind of write-off in the system, with no sub-reason and no evidence
-column on the line itself. R5's `StockVariance` model exists for
-`postUnconditional()` oversells, not for transfer shortage, so there is
-nowhere to attach a damage photo, a claim number or a carrier reference even
-if one existed.
+has exactly `quantityDispatched`, `quantityReceived` and `unitCost` — no
+reason, no evidence column. `receive()`
+(`apps/api/src/modules/transfers/transfers.service.ts:166`, shortfall handled
+at line 233) hardcodes `reason: 'WRITE_OFF'` for every short receipt.
+`StockMovementReason` (`inventory.prisma:5-20`) already distinguishes
+`DAMAGE`, `COUNT` and `WRITE_OFF` as separate values elsewhere in the ledger —
+so the gap is not that the schema has no vocabulary for the difference, it is
+that transfer shortage never gets asked which of them applies; every short
+receipt is coded `WRITE_OFF` regardless of cause. `StockVariance`
+(`inventory.prisma:127`, R5) exists for `postUnconditional()` oversells, not
+for transfer shortage, so there is nowhere to attach a damage photo, a claim
+number or a carrier reference even if the right reason were picked.
 
 **Worked example:** Narrow slice: `receive()` accepts a lower
 `quantityReceived` and silently write-offs the gap, exactly as it does today.
@@ -95,7 +100,7 @@ write-off posts, because a corporate warehouse team files an insurance claim
 against a carrier using exactly that distinction, and "WRITE_OFF" alone
 cannot tell finance which brand or which driver to charge back.
 
-**Done test:** `grep -n "damageReason\|shortageReason\|claimRef\|evidenceUrl" apps/api/prisma/schema/transfers.prisma` — prints nothing today; the PR either adds a reason/evidence column on `StockTransferLine` or states, in writing, that all in-transit shortage is treated as one undifferentiated write-off for this release.
+**Done test:** `grep -n "reason: 'WRITE_OFF'" apps/api/src/modules/transfers/transfers.service.ts` matches today (line 233, unconditionally); the PR either makes that reason a parameter sourced from a new column on `StockTransferLine` (with an evidence reference alongside it) or states, in writing, that all in-transit shortage is treated as one undifferentiated write-off for this release.
 
 **Breaks without:** At 100+ locations moving stock between each other daily,
 every damaged, stolen and miscounted shipment lands in the same 5100
@@ -115,5 +120,50 @@ whether shrinkage is rising because of theft or bad counting.
 - No pick-list or pick-wave concept spanning multiple orders or transfers —
   fulfilment and dispatch are both single-document actions with no shared
   walk-the-warehouse batching.
-- No damage/shortage sub-reason or evidence field distinct from the generic
-  `WRITE_OFF` stock-movement reason.
+- No damage/shortage sub-reason or evidence field on `StockTransferLine` —
+  `StockMovementReason` already has `DAMAGE` and `COUNT` as distinct values,
+  but `transfers.service.ts`'s `receive()` never selects between them and
+  posts every short receipt as `WRITE_OFF`.
+
+## Hardening record
+
+**Kept (3):**
+- *Bins are not built, locations are the floor* — verified against
+  `VariantLocationStock` (`inventory.prisma:156`, `@@id([variantId,
+  locationId])`) and a full-repo grep for a bin/zone/aisle/shelf model, which
+  returns nothing. Sharpened doneTest wording only.
+- *The handoff that has no signer* — verified against `StockTransfer`
+  (`transfers.prisma:41`), `Shipment` (`orders.prisma:213`) and the
+  `orders.manage` permission (`permissions.ts:69`). Corrected a broken
+  cross-reference (see below).
+- *Shortage with no reason, no evidence* — verified against
+  `StockTransferLine` (`transfers.prisma:82`), `receive()`
+  (`transfers.service.ts:166`, shortfall branch at line 233) and
+  `StockMovementReason` (`inventory.prisma:5-20`). Sharpened the "why" and
+  doneTest (see corrections below) because the original understated the
+  finding.
+
+**Killed:** none. All three lenses cite verifiable, currently-true facts in
+this repository, are scope questions (they change what the PR must contain,
+not just what it documents), and are not restatements of the five CLAUDE.md
+lenses or the thirty WO-22 lenses — none of those addresses bin-level
+location grain, in-transit custody evidence, or transfer-shortage reason
+codes.
+
+**Corrections:**
+- Lens 2 ("The handoff that has no signer") cited "lens 25" as the
+  reversal-document lens. File `docs/erp-lenses/25-privacy-retention-residency.md`
+  exists but has nothing to do with reversals — the actual reversal-document
+  lens is in the WO-22 "Lifecycle reversal" set
+  (`docs/implementation/WO-22-lens-workflow-results.md`), not in a numbered
+  file 25. Corrected the cross-reference to point at that document instead of
+  a fabricated file number.
+- Lens 3 ("Shortage with no reason, no evidence") claimed `WRITE_OFF` is "the
+  same enum value ... used for every other kind of write-off in the system,
+  with no sub-reason" — this understates what is actually true.
+  `StockMovementReason` (`inventory.prisma:5-20`) already defines `DAMAGE` and
+  `COUNT` as separate, more specific reasons used elsewhere in the ledger; the
+  real defect is that `receive()`'s shortfall branch
+  (`transfers.service.ts:233`) never chooses between them and hardcodes
+  `reason: 'WRITE_OFF'` regardless of cause. Rewrote the "why" and doneTest to
+  state this precisely instead of implying the vocabulary itself is missing.

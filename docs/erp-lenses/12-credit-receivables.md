@@ -15,7 +15,7 @@ such field exists, state what a payment against one of several open orders
 for the same customer resolves to today.
 **Why:** `onPaymentSucceeded` posts Dr Cash & Bank / Cr Accounts Receivable
 but never sets `contactId` on the credit line
-(`posting-rules.subscriber.ts:134-137`), while `agedReceivables()` only reads
+(`posting-rules.subscriber.ts:133-136`), while `agedReceivables()` only reads
 `JournalLine` rows where `contactId` is not null
 (`gl-reports.service.ts:233`). Every settlement is invisible to aging; a
 customer who has fully paid still ages as if nothing was received.
@@ -109,3 +109,48 @@ exposure — the group under- or over-extends credit without knowing it.
   distinct "stop supplying" permission in `PERMISSION_CATALOG`.
 - No shared key between `Contact` (storefront/POS identity) and
   `TradingPartner` (B2B invoicing identity).
+
+## Hardening record
+
+**Kept (3):**
+
+- **The receipt that doesn't find its bill** — verified: `onPaymentSucceeded`
+  in `posting-rules.subscriber.ts` (lines 133-136, not 134-137 as first
+  drafted) posts the AR credit line with no `contactId`, and
+  `agedReceivables()` (`gl-reports.service.ts:233`) filters on
+  `contactId: { not: null }` — so a real, checked settlement is invisible to
+  aging today. Distinct from the WO-22 "A fact that already happened is never
+  rejected" lens: that one is about integration events being accepted, this
+  one is about a posted, accepted GL entry that is structurally unreadable by
+  its own aging report.
+- **The status nobody checks** — verified: `ContactStatus.BLOCKED` exists
+  (`crm.prisma:8-14`) and is settable via `ContactQueryDto`
+  (`crm.dto.ts:16`), but `orders.service.ts`'s `place()` (line 133) and
+  `placeFromPos()` (line 394) contain no read of `contact.status` anywhere in
+  the file — confirmed by grep, only `order.status` appears. `creditLimit`
+  confirmed absent from every `.prisma` file. `PERMISSION_CATALOG`
+  (`packages/shared/src/permissions.ts:45`) confirmed to contain
+  `payments.approve` but no stop-supply/credit-hold key. Distinct from the
+  WO-22 "Authority and blast radius" lens: that one is about who a rule
+  change reaches, this one is about a specific existing flag that checkout
+  never reads at all.
+- **One customer, two ledgers** — verified: `Contact` backs
+  `Order.contactId` and the AR aging counterparty key;
+  `trading-partners.prisma` has no `contactId` field (confirmed by grep);
+  `Invoice`/`Quote` carry only `tradingPartnerId`
+  (`invoicing.prisma:25,58`); the file's own header (lines 2-5) states AR
+  aging across every customer needs a larger accounting tranche it defers.
+  Distinct from the WO-22 "The other end and what nets it out" lens: that one
+  is about a single transaction's counter-entry, this one is about the same
+  legal customer existing as two unlinked identity rows with no combined
+  exposure query.
+
+**Killed:** none — all three claimed lenses survived verification with one
+citation correction (below). No replacement lens was needed.
+
+**Corrections:**
+
+- Claimed `posting-rules.subscriber.ts:134-137` for the AR credit line with
+  no `contactId`; actual location is lines 133-136 (the `lines: [...]` array
+  inside the `postEntry` call starts at 133, and the cited `creditMinor` line
+  is 136, not 137).

@@ -120,10 +120,12 @@ invoice and line it corrects.
 FK to the original `InvoiceLine`, posts a partial reversal of just that line's
 tax and revenue and leaves the rest of the invoice, and the original invoice's
 number, intact and citable.
-**Done test:** `grep -n "CreditNote\|DebitNote" apps/api/prisma/schema/*.prisma`
-returns nothing today; the PR must add a model with its own number counter and
-an FK into `InvoiceLine`, plus a posting rule distinct from `reverseEntry()`
-that can move less than the full entry.
+**Done test:** `grep -n "^model CreditNote\|^model DebitNote" apps/api/prisma/schema/*.prisma`
+returns nothing today (the bare string "CreditNote" already appears once, in a
+scope comment at `invoicing.prisma:4` — no model backs it); the PR must add a
+model with its own number counter and an FK into `InvoiceLine`, plus a
+posting rule distinct from `reverseEntry()` that can move less than the full
+entry.
 **Breaks without:** The only way to correct one line of a ten-line invoice is
 to reverse or void the whole document, which either restates revenue that was
 correct or leaves a "VOID" invoice with no paper trail explaining which nine
@@ -147,3 +149,65 @@ its own effect on output tax, not merely a repeatable reverse-document shape.)*
 - A brand-scoped (or entity-scoped) number-series key for `Invoice`,
   `JournalEntry` and `InterBranchInvoice` — all three number off a single
   deployment-wide counter or a single global `Setting` prefix today.
+
+## Hardening record
+
+**Kept (4/4 survived review):**
+
+- **One tax regime, many legal entities** — grounded in
+  `packages/shared/src/brand.ts` (single compile-time `taxLabel`/`taxNumber`/
+  `currency`/`countryCode`) and `TaxClass.key @unique` with no
+  `retailBrandId`/jurisdiction column in `apps/api/prisma/schema/tax.prisma`,
+  and `RetailBrand` (`organization.prisma:40`) carrying no country or tax
+  fields at all. Demands a specific field/table, not a yes-or-no.
+- **Number series, one legal entity at a time** — grounded in
+  `documentPrefix()` reading one global `Setting` row (`Setting.key @id`,
+  `core.prisma:153`, no brand column), `JournalEntry`'s own schema comment
+  that it is never node-prefixed because "a journal is never posted at
+  branch tier," and the advisory-lock-plus-MAX-scan numbering `Invoice`/
+  `Quote` share with `PurchaseOrder`. Explicitly distinguished from lens 15
+  ("The adoption test"), which is about node-safe replication uniqueness,
+  not legal-entity-scoped counters.
+- **Tax point is not the GL date** — grounded in `Order.placedAt`/
+  `deliveredAt` (`orders.prisma:69,71`), `JournalEntry.date`'s documented
+  role as "the fact's own original time" rather than a declared tax point
+  (`accounting.prisma:127-129`), and `InterBranchInvoice.issuedAt`
+  (`transfers.prisma`) carrying no tax field of its own. Names a concrete
+  missing field, not a general "think about tax timing" admonition.
+- **The credit note is a filed document, not a status flip** — grounded in
+  `AccountingService.reverseEntry()` (`accounting.service.ts:102`, full
+  reversal only, no partial-refund path), `InvoiceStatus` having no
+  `CREDITED` value (`invoicing.prisma`), and no `CreditNote`/`DebitNote`
+  model anywhere in the schema. Explicitly distinguished from lens 25 ("The
+  reversal document, not the reversal flag"), which is the general
+  undo-pattern lens; this one is narrower and legal — a tax filing with its
+  own number series and its own partial effect on output tax.
+
+**Killed:** none. All four claimed lenses cited real, currently-true facts in
+this repository, asked for a specific artifact (a field, a counter key, a
+model, a date column) rather than a yes/no, and are each about a business/tax
+scoping question that no other lens in the existing 5 + 30 already covers —
+none are generic software advice, coding standards, or restatements.
+
+**Citations corrected:**
+
+- Lens "The credit note is a filed document, not a status flip" — done test
+  claimed `grep -n "CreditNote\|DebitNote" apps/api/prisma/schema/*.prisma`
+  "returns nothing today." Actual: it returns one hit — the bare string
+  "CreditNote" appears in a scope-boundary comment at `invoicing.prisma:4`
+  ("R18 asks for ... CreditNote ... that needs the accounting module's
+  FiscalYear/FiscalPeriod machinery"), not a model. Corrected the check to
+  `grep -n "^model CreditNote\|^model DebitNote"`, which does return nothing
+  today, and noted the comment explicitly so a reviewer isn't surprised by
+  the plain-string hit.
+
+All other citations verified exactly as claimed: `brand.ts` lines 81-82/105/115,
+`tax.prisma` (`TaxClass.key @unique`, no brand/jurisdiction column),
+`organization.prisma:40` (`RetailBrand`, no country/tax fields),
+`document-prefix.ts` (global `Setting` read, no brand key),
+`core.prisma:153` (`Setting.key @id`, no brand column),
+`accounting.prisma:115-129` (`JournalEntry.number`/`.date` comments),
+`orders.prisma:69,71` (`placedAt`/`deliveredAt`),
+`transfers.prisma:119-150` (`InterBranchInvoice`, `issuedAt`, no tax field),
+`invoicing.prisma` (`InvoiceStatus` enum, `Invoice`/`InvoiceLine` models),
+and `accounting.service.ts:102` (`reverseEntry()`).

@@ -116,3 +116,56 @@ check at all.
 - A permission model for non-User principals: `PosTerminal`, `TradingPartner`
   and `Node` each hold an ad hoc key hash with no shared principal type and
   no permission keys of their own to check per action.
+
+## Hardening record
+
+**Kept (3 of 3):**
+
+- **The gate checked once, not per action** — verified against
+  `apps/pos/src/lib/auth-client.ts:64` (the `pos.operate` login-time check)
+  and `apps/web/src/components/admin/nav-registry.ts` (`navFor()` filtering
+  every nav entry by its `permissions` list on every render). Confirmed
+  `apps/pos/src/app/till/page.tsx` and `returns/page.tsx` contain no
+  action-level permission check — the only hit for "permission" in either
+  file is a comment, not a guard. Distinct from "Authority and blast radius"
+  (Policy and rules), which is about who may change a rule and how far the
+  change reaches, not about whether a surface re-checks a key per action.
+- **The registry only one surface has** — verified `ADMIN_NAV`/`navFor()` is
+  the only reachability table; POS has exactly eight hand-linked route
+  folders (login, terminal, till, shift/open, shift/close, receipt,
+  returns); the storefront customer area is split across
+  `customer-nav.tsx`, `bottom-nav.tsx`, `mobile-nav.tsx`, and
+  `dashboard-nav.tsx` with no shared filter. Distinct from "Name the owner
+  name the reader it refuses" (Multi-entity topology), which is about who
+  owns and who may read a record, not about which file a reviewer greps to
+  confirm a feature is reachable on a given surface.
+- **The principal with no permission to check** — verified
+  `JwtStrategy.validate` (`jwt.strategy.ts:39`, `resolveForUser(user.id)`)
+  is the only call site into `PermissionsResolverService`; confirmed no
+  auth guard or strategy file in `apps/api/src` references `TradingPartner`,
+  `PosTerminal`, or their key-hash fields, so a device/partner-authenticated
+  request never reaches `PermissionsGuard`
+  (`apps/api/src/core/auth/guards.ts:80`). `PosTerminal.deviceKeyHash`
+  (`pos.prisma:39`, inside `model PosTerminal {` at line 27),
+  `TradingPartner.inboundApiKeyHash` (`trading-partners.prisma:47`, inside
+  `model TradingPartner {` at line 33), and `Node.inboundApiKeyHash`
+  (`organization.prisma:158`, inside `model Node {` at line 142) each
+  confirmed to exist with no shared principal type. Distinct from every
+  existing lens: none of the 35 prior lenses addresses non-User
+  authentication paths.
+
+**Killed:** none. All three claimed lenses survived verification —
+each cites a real, currently-true fact about this repo, each is falsifiable
+by a named grep, and none restates an existing lens without a stated
+difference.
+
+**Citations corrected:** none. Every path, line number, model field, and
+permission-catalog claim in the file was opened and confirmed exact:
+`nav-registry.ts`'s `permissions` filtering; `auth-client.ts:64`'s
+`pos.operate` check; the absence of a second check in `till/page.tsx` and
+`returns/page.tsx`; `jwt.strategy.ts:39`'s `resolveForUser` call; `pos.prisma`
+line 27 (`model PosTerminal {`) and line 39 (`deviceKeyHash`);
+`trading-partners.prisma` line 33 (`model TradingPartner {`) and line 47
+(`inboundApiKeyHash`); `organization.prisma` line 142 (`model Node {`) and
+line 158 (`inboundApiKeyHash`); and `PERMISSION_CATALOG` in
+`packages/shared/src/permissions.ts` holding exactly 50 keys.

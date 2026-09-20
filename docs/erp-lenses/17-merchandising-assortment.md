@@ -121,3 +121,51 @@ several provinces away.
   starting assortment and quantities as a distinct, auditable artifact.
 - A shelf/fixture capacity or planogram concept of any kind — space is not
   represented anywhere in the schema.
+
+## Hardening record
+
+**Kept (3):**
+
+- **Carried, not just in stock** — demands a real artifact (the field/table
+  that separates "ranged" from "in stock"), the done test is a runnable
+  `grep`, and it is distinct from the five originals' policy/rules lens: this
+  is a missing *state* on a specific table, not a missing *rule engine*.
+- **No such thing as a store grade** — distinct from WO-22's "Three
+  silhouettes" (which asks an engineer to draw any capability across Solo/
+  Org/Brand tiers in general): this lens is narrower and concrete — one
+  specific missing column/model (`Location` grade or cluster) and one
+  specific downstream query (grade-vs-plan compliance), not a general
+  tier-awareness exercise.
+- **The new store's first delivery** — distinct from "The absent
+  collaborator" (which asks what happens when an off-by-default *module* is
+  missing): this lens is about a *lifecycle event* (Location creation) with
+  no seeding process at all, module-independent.
+
+**Killed:** none. All three lenses cite artifacts that exist exactly as
+described, name a runnable or readable done test, and would change what an
+engineer builds (a schema column, a join table, a seeding workflow) rather
+than only what they document.
+
+**Citations verified, all correct as claimed — no corrections required:**
+
+- `VariantLocationStock` at `inventory.prisma:156`, `@@id([variantId,
+  locationId])`, fields limited to `quantity`/`updatedAt` — confirmed, no
+  `isRanged`/`assortmentStatus` column exists anywhere in
+  `apps/api/prisma/schema/*.prisma`.
+- `Location` at `inventory.prisma:76` with `type`, `isDefault`, `isActive`,
+  `retailBrandId`, `originNodeId` and no grade/tier/cluster column —
+  confirmed; `grep -rni "cluster|zone|region|storeGroup"
+  apps/api/prisma/schema` returns only `Order.shippingZone`
+  (`orders.prisma:65`) and unrelated comment text, no location-grouping
+  model.
+- `Product.season` (`catalog.prisma:103`) is `String?` free text
+  (`// summer, winter, festive`) — confirmed, not an entity with dates or
+  state.
+- `InventoryService.defaultLocationId()` at `inventory.service.ts:166-168` —
+  confirmed verbatim: `findFirstOrThrow({ where: { isDefault: true } })`.
+- `StockCountService.start()` at `stock-count.service.ts:92-101` — confirmed:
+  snapshots `productVariant.findMany({ where: { isActive: true } })` with no
+  `locationId` filter.
+- `StockTransfer` (`transfers.prisma:41`), `GoodsReceipt`
+  (`purchasing.prisma:146`) and the `PURCHASE_RECEIPT` movement type
+  (`inventory.prisma:6`) all exist as cited.

@@ -17,11 +17,12 @@ balance" separately from every other location and account — and where on
 **Why:** `CHART_OF_ACCOUNTS` (`chart-of-accounts.ts:20`) has exactly one row,
 code `1000`, `isBank: true`, for every drawer and every bank account in the
 deployment. `JournalLine` (`accounting.prisma:162-207`) carries
-`retailBrandId`/`branchNodeId`, but per the posting-rules ground truth only
-`order.placed`'s AR line ever sets one — `payment.succeeded`'s Dr 1000/Cr
-1100 sets neither. `PosShift`/`CashMovement` (`pos.prisma:65-117`) have no
-`accountId` or `journalEntryId` at all: a till's cash movements never touch
-the GL.
+`retailBrandId`/`branchNodeId`, but in `posting-rules.subscriber.ts` only
+`onInterBranchTransferInvoiced` (lines 358-371) ever sets `retailBrandId`;
+`branchNodeId` is set by no posting rule at all, and `onPaymentSucceeded`
+(lines 112-139, Dr 1000/Cr 1100) sets neither. `PosShift`/`CashMovement`
+(`pos.prisma:65-117`) have no `accountId` or `journalEntryId` at all: a
+till's cash movements never touch the GL.
 
 **Worked example:** Narrow slice: a "branch cash position" report sums
 `PosShift.closingCashMinor` across shifts at one location. Complete
@@ -114,3 +115,42 @@ statement review months later — with no aging list to catch it sooner.
   destination entity to land in, so nothing tracks cash from drawer to bank.
 - No location or bank-account dimension actually populated on the Cash &
   Bank ledger account or on the `JournalLine`s `payment.succeeded` writes.
+
+## Hardening record
+
+**Kept (3):**
+
+- **One ledger line for every drawer and every bank** — survives: demands a
+  named column/table, not an opinion, and the `payment.succeeded` zero-rows
+  claim is independently verifiable by grep.
+- **The overshort that vanishes** — survives: it is about a row not existing
+  at all (parallel to `StockVariance`), which is a different failure from
+  lens 04's amount-band approval rule on a row that already exists; the
+  file already states that distinction in its own `Why`.
+- **Reconciliation with nothing to reconcile against** — survives: no
+  `BankStatementLine`/`BankAccount`/reconciled column exists anywhere in the
+  schema (confirmed empty grep), and the done test names a concrete table
+  and query a reviewer can run.
+
+**Killed:** none. All three lenses cite real, currently-true facts about
+this repository, ask for a specific artifact rather than a yes/no, and are
+distinct from each other and from the 5 base + 30 prior lenses (verified
+against the Notifications/Integrations/Reporting/Multi-entity/Scale/Bulk/
+Policy/Resilience/Lifecycle/Concurrency lists — none of those thirty concern
+a cash or bank ledger dimension, a shift's over/short persistence, or bank
+statement matching).
+
+**Corrections (1):**
+
+- Lens 1's `Why` claimed "per the posting-rules ground truth only
+  `order.placed`'s AR line ever sets [`retailBrandId`/`branchNodeId`]."
+  Reading `posting-rules.subscriber.ts` shows `onOrderPlaced`'s AR line sets
+  only `contactId` (line 83) — it never sets `retailBrandId` or
+  `branchNodeId`. The only posting rule that sets `retailBrandId` at all is
+  `onInterBranchTransferInvoiced` (lines 358-371), and that handler's own
+  comment (line 325) confirms ordinary sale postings don't dimension by
+  brand. No posting rule anywhere in the file sets `branchNodeId`. Claimed:
+  order.placed sets the dimension. Actual: onInterBranchTransferInvoiced
+  sets `retailBrandId` only; `branchNodeId` is set nowhere; the lens's core
+  conclusion (payment.succeeded sets neither, so the GL can't answer
+  Branch 42's cash position) is unaffected and remains true.

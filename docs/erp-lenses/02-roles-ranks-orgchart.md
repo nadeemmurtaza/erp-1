@@ -143,3 +143,73 @@ audit because it was never in that system to begin with.
 - A common principal abstraction covering `User`, `TradingPartner`,
   `PosTerminal`, and `Node` — each authenticates through its own hash
   pattern with no shared permission surface.
+
+## Hardening record
+
+**Kept (4/4):**
+
+- **Rank is a ceiling, not a location** — survives because it names a
+  concrete missing artifact (a numeric ceiling column) and distinguishes
+  rank from `AdminScopeLevel`, which answers *where* not *how much*; a
+  reviewer without this lens would accept an unconditional
+  `payments.approve` grant as complete.
+- **Who may mint a role, and what a hundred of them costs** — survives
+  because `RolesService.findRoleWithIdenticalPermissions` only flags a
+  duplicate grant set via `duplicateOfRoleName`, never blocks it, and
+  `Role` has no `parentId` to inherit from — a real gap a narrow build
+  would ship past silently.
+- **The grant that never expires** — survives because all four grant
+  tables (`RoleGrant`, `UserRoleAssignment`, `UserPermission`,
+  `AdminScope`) carry only `createdAt`, and the lens explicitly scopes
+  itself against lens 27 (undo authority on a document) rather than
+  restating it.
+- **The actor with no role** — survives because
+  `PermissionsResolverService.resolveForUser()` only resolves grants for a
+  `userId`, and `TradingPartner`, `PosTerminal`, and `Node` each carry
+  their own ad hoc `*KeyHash` column outside the `User`/`Role` system
+  entirely — a coverage gap no existing lens (human-facing notifications,
+  policy versioning, bulk operations) touches.
+
+**Killed:** none. All four lenses pass the hard constraints — none is
+generic software advice, none restates an existing lens, none is
+unfalsifiable, and none is true of only one edition.
+
+**Citations checked (12 targeted, all confirmed accurate — no
+corrections required):**
+
+1. `payments.approve` key exists in `packages/shared/src/permissions.ts`
+   (lines 83, 284, 375, 403).
+2. `Role` model at `core.prisma:307` — confirmed fields are exactly
+   `id`, `name`, `description`, `createdAt`, `updatedAt`; no level, no
+   `parentId`.
+3. `AdminScopeLevel` enum at `organization.prisma:82` (`ORG | BRAND |
+   BRANCH`), used as the `level` field on `AdminScope` at
+   `organization.prisma:109` — the file's line reference points at the
+   field usage, not the enum declaration, and both check out.
+4. `RolesService` duplicate-role handling in `roles.service.ts` — confirmed
+   `duplicateOfRoleName` is set (flagged) but never causes a refusal;
+   only a duplicate *name* throws `ConflictException`.
+5. `ADMIN_LOCKED_PERMISSIONS` at `packages/shared/src/permissions.ts:438`
+   — confirmed exported array, re-used by `apps/web/src/constants/permissions.ts`.
+6. `AdminScope` model at `organization.prisma:106` — confirmed fields
+   `id`, `userId`, `level`, `retailBrandId`, `branchNodeId`, `createdAt`
+   only; no `expiresAt`, no `grantedBy`.
+7. `PermissionsResolverService.resolveForUser()` at
+   `permissions.service.ts:29` — confirmed signature
+   `resolveForUser(userId: string)`.
+8. `TradingPartner.inboundApiKeyHash`, `PosTerminal.deviceKeyHash`, and
+   `Node.inboundApiKeyHash` — confirmed in `trading-partners.prisma:47`,
+   `pos.prisma:39`, and `organization.prisma:158` respectively, each a
+   separate `String? @unique` column with no shared table or type.
+9. `seedRoles()` one-time migration — confirmed in
+   `apps/api/prisma/seed.ts:128`, guarded by `prisma.role.count()` so it
+   runs at most once, matching the "one-time trap already on record"
+   claim.
+10. `@RequirePermission` decorator — confirmed in
+    `apps/api/src/core/auth/decorators.ts:25`, enforced by the guard in
+    `apps/api/src/core/auth/guards.ts`.
+11. `RoleGrant` model in `core.prisma` — confirmed fields `id`, `roleId`,
+    `permissionId`, `createdAt` only.
+12. `Role.grants` / `Role.assignments` relations — confirmed `Role` links
+    to `RoleGrant[]` and `UserRoleAssignment[]`, supporting the "no
+    inheritance to extend" claim in lens 2.

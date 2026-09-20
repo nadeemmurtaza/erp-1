@@ -332,6 +332,16 @@ Three rules about it:
 If the index is missing or stale in your checkout, the pre-commit hook is not
 installed: run `pnpm install`, or `node scripts/install-git-hooks.mjs`.
 
+**Match the model to the job.** `docs/index/cross/model-routing.md` is the
+routing table, generated from `scripts/lib/model-routing.mjs`. In Claude Code
+it is applied automatically for anything delegated to a subagent — the
+definitions in `.claude/agents/` pin both `model` and `effort`, so `locate`
+runs on Haiku at low effort and `security` on Opus at max. The main session's
+own model and effort are `/model` and `/effort`; a hook cannot set them, so
+`.claude/hooks/suggest-model.sh` only advises, and only for access control,
+migrations and architecture. Default downward: staying at `sonnet`/`medium`
+needs no justification, going above it does.
+
 **This file is the contract for every agent, not only for Claude.** The same
 generator writes `AGENTS.md`, `.github/copilot-instructions.md`, `GEMINI.md`,
 `.cursor/rules/repo-index.mdc`, `.windsurfrules`, `.clinerules` and

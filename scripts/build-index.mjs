@@ -26,7 +26,7 @@
  *
  * See docs/index/README.md for the reader's side of this.
  */
-import { mkdirSync, writeFileSync, readFileSync, rmSync, existsSync, readdirSync, statSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, rmSync, existsSync, readdirSync, statSync, chmodSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { join, dirname, basename, extname, relative } from 'node:path';
@@ -41,6 +41,7 @@ import {
   appRouterPath, routeKind, isClientComponent,
   scanDescribes, scanTestNames, scanHeadings, classify,
 } from './lib/index-scan.mjs';
+import { ROUTING_POLICY, ADVISORY_SIGNALS } from './lib/model-routing.mjs';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '');
 const OUT_DIR = join(ROOT, 'docs', 'index');
@@ -519,6 +520,162 @@ Every tracked file is accounted for: see
 [\`cross/files.md\`](${link(self, 'docs/index/cross/files.md')}) for the complete
 file-by-file inventory.
 `);
+}
+
+/* ── Model routing: subagent definitions, the page, the advisory hook ──── */
+
+/**
+ * Turns `scripts/lib/model-routing.mjs` into the things that act on it.
+ *
+ * A subagent definition is the ONLY mechanism in Claude Code that selects a
+ * model and an effort level per job without a human choosing: the frontmatter
+ * pins both, and delegation happens automatically by matching `description`.
+ * The main session's own model and effort are `/model` and `/effort`, and a
+ * hook cannot set either — so the hook generated here advises and says that it
+ * is advising, rather than pretending to switch something it cannot.
+ */
+{
+  const self = 'docs/index/cross/model-routing.md';
+
+  // ── one subagent definition per policy row
+  for (const r of ROUTING_POLICY) {
+    // The description is what Claude Code matches on to delegate, so it has
+    // to read as a trigger rather than a title. "Use proactively" is the
+    // documented way to encourage delegation for the two agents that should
+    // run without being asked.
+    const proactive = r.proactive ? ' Use proactively.' : '';
+    const description =
+      `${r.job}. Use for ${r.when}.${proactive} ` +
+      `Runs on ${r.model} at ${r.effort} effort.`;
+    const front = [
+      '---',
+      `name: ${r.agent}`,
+      `description: ${description}`,
+      `model: ${r.model}`,
+      `effort: ${r.effort}`,
+      ...(r.tools ? [`tools: ${r.tools}`] : []),
+      '---',
+    ].join('\n');
+
+    emit(`.claude/agents/${r.agent}.md`, `${front}
+
+<!-- GENERATED from scripts/lib/model-routing.mjs by scripts/build-index.mjs.
+     DO NOT EDIT: run \`pnpm index\`. Change the policy, not this file. -->
+
+# ${r.job}
+
+**${r.model} · ${r.effort} effort.** ${r.why}
+
+${r.body.join('\n')}
+
+---
+
+\`CLAUDE.md\` binds you as it binds every agent here — the seven laws, the
+engineering protocol and the definition of done. Look things up in
+\`docs/index/\` before searching the repository; \`docs/index/README.md\` is the
+routing table.
+
+If this job turns out to belong to a different category, say so and hand it
+back rather than pressing on — the routing table is in
+\`docs/index/cross/model-routing.md\`.
+`);
+  }
+
+  // ── the advisory hook, for the main session where nothing can auto-switch
+  const cases = ADVISORY_SIGNALS.map((sig) => {
+    const row = ROUTING_POLICY.find((r) => r.agent === sig.agent);
+    return `if printf '%s' "$PROMPT" | grep -qiE '${sig.pattern}'; then
+  HITS="$HITS  · ${row.job} → \\\`${row.model}\\\` at \\\`${row.effort}\\\` effort (the \\\`${row.agent}\\\` subagent)
+"
+fi`;
+  }).join('\n');
+
+  emit('.claude/hooks/suggest-model.sh', `#!/bin/bash
+#
+# GENERATED from scripts/lib/model-routing.mjs by scripts/build-index.mjs.
+# DO NOT EDIT: run \\\`pnpm index\\\`. Change the policy, not this file.
+#
+# UserPromptSubmit hook. Its stdout is added to the session's context, which is
+# the most a hook can do here: Claude Code does not let a hook set the model or
+# the effort level, so this ADVISES and says so. Work delegated to a subagent
+# is where selection is genuinely automatic — see .claude/agents/ and
+# docs/index/cross/model-routing.md.
+#
+# It is deliberately quiet. It fires only for the three categories where
+# choosing wrong is expensive — access control, migrations and architecture —
+# because a hook that comments on every prompt is a hook people delete.
+
+set -uo pipefail
+
+PROMPT=$(cat 2>/dev/null | tr '\\n' ' ')
+[ -z "\${PROMPT:-}" ] && exit 0
+
+HITS=""
+
+${cases}
+
+if [ -n "$HITS" ]; then
+  echo "> Model routing, advisory. A hook cannot switch the model — delegate to the"
+  echo "> named subagent (which pins both), or set it yourself with /model and /effort."
+  echo ""
+  printf '%s' "$HITS"
+  echo "  · Full table: docs/index/cross/model-routing.md"
+fi
+
+exit 0
+`);
+
+  // ── the reference page
+  const rows = ROUTING_POLICY.map((r) => [
+    `\`${r.agent}\``, `\`${r.model}\``, `\`${r.effort}\``, r.job, r.when,
+  ]);
+
+  emit(self, `${head(self, 'Model routing', 'Which model and how much effort each kind of work here gets — and, honestly, which parts of that are automatic and which are not.')}
+
+Policy source: \`scripts/lib/model-routing.mjs\`. Everything below, the subagent
+definitions in \`.claude/agents/\` and the advisory hook are all generated from
+that one array, so they cannot disagree.
+
+## What actually switches
+
+| Layer | Mechanism | Automatic? |
+|---|---|---|
+| Work delegated to a subagent | \`.claude/agents/*.md\` frontmatter — \`model:\` and \`effort:\` | **Yes.** Claude Code delegates by matching the agent's \`description\`; nobody picks |
+| The main session | \`/model\` and \`/effort\`, or \`model\`/\`effortLevel\` in settings | **No.** Hooks cannot set either — this is a documented limit |
+| The main session, advisory | \`.claude/hooks/suggest-model.sh\` (UserPromptSubmit) | Recommends only, and only for the costly categories |
+
+So: hand a job to the matching subagent and the model and effort are chosen for
+you. For work you keep in the main session, the table below is what to set by
+hand.
+
+## The table
+
+${table(['Agent', 'Model', 'Effort', 'Job', 'Use when'], rows)}
+
+## Why each one
+
+${ROUTING_POLICY.map((r) => `### \`${r.agent}\` — ${r.model} · ${r.effort}
+
+**${r.job}.** Use when ${r.when}.
+
+${r.why}`).join('\n\n')}
+
+## The default direction is down
+
+Every row above has to justify going beyond \`sonnet\` / \`medium\`; nothing has to
+justify staying below it. Routing everything to \`opus\` at \`max\` would be far
+slower and far more expensive with no benefit on work that does not need it.
+The expensive models are spent where being wrong is costly — permissions,
+money, migrations and the module boundaries — and nothing extra is spent on
+looking a file up, which is the most common thing an agent does here.
+
+## Other tools
+
+\`model\` and \`effort\` frontmatter is Claude Code's mechanism. Cursor, Copilot,
+Gemini and the rest each have their own model picker, so for them this table is
+guidance rather than configuration — it is reproduced in \`AGENTS.md\` and the
+other agent-instruction files so every tool at least gets the policy.
+${BACK(self)}`);
 }
 
 /* ── Agent instruction files — one body, every tool's filename ─────────── */
@@ -2056,6 +2213,9 @@ for (const [p, body] of written) {
   if (current === body) continue;
   mkdirSync(dirname(abs), { recursive: true });
   writeFileSync(abs, body, 'utf8');
+  // A generated hook that is not executable is a hook that silently never
+  // runs, and nothing else in the pipeline would notice.
+  if (p.endsWith('.sh')) chmodSync(abs, 0o755);
   changed += 1;
 }
 for (const p of stale) {

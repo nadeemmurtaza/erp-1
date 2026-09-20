@@ -3,7 +3,7 @@
 
 # Files — root
 
-All 23 tracked files in `repository root files`, by directory.
+All 32 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -18,7 +18,7 @@ All 23 tracked files in `repository root files`, by directory.
 | `.windsurfrules` | file | — |  |
 | `AGENTS.md` | doc | 79 |  |
 | `check_output.txt` | txt | — |  |
-| `CLAUDE.md` | doc | 931 |  |
+| `CLAUDE.md` | doc | 941 |  |
 | `CONTRIBUTING.md` | doc | 127 |  |
 | `DEPLOYMENT.md` | doc | 492 |  |
 | `fix-all.js` | script | 15 | Get all files from git grep |
@@ -34,13 +34,27 @@ All 23 tracked files in `repository root files`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `launch.json` | json | 24 |  |
-| `settings.json` | json | 15 |  |
+| `settings.json` | json | 25 |  |
 
-### `.claude/hooks` (1)
+### `.claude/agents` (8)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `architect.md` | doc | 46 |  |
+| `debug.md` | doc | 36 |  |
+| `feature.md` | doc | 42 |  |
+| `implement.md` | doc | 37 |  |
+| `locate.md` | doc | 37 |  |
+| `schema.md` | doc | 44 |  |
+| `security.md` | doc | 44 |  |
+| `verify.md` | doc | 45 |  |
+
+### `.claude/hooks` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `session-start.sh` | hook | 54 |  |
+| `suggest-model.sh` | hook | 45 |  |
 
 ### `.cursor/rules` (1)
 

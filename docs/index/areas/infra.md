@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-46 files · 23,923 lines
+47 files · 24,371 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -25,8 +25,8 @@ on them.
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 10 | 3,749 | script, py |
-| `scripts/lib` | 1 | 877 | utility |
+| `scripts` | 10 | 3,909 | script, py |
+| `scripts/lib` | 2 | 1,165 | utility |
 
 
 ## Entry points
@@ -41,10 +41,11 @@ on them.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `pnpm-lock.yaml` | 17,493 | yaml |  |
-| `scripts/build-index.mjs` | 2,069 | script |  |
+| `scripts/build-index.mjs` | 2,229 | script |  |
 | `scripts/lib/index-scan.mjs` | 877 | utility | Scanners for the repository index. |
 | `scripts/check-module-boundaries.mjs` | 535 | script |  |
 | `scripts/check-email-dns.mjs` | 399 | script |  |
+| `scripts/lib/model-routing.mjs` | 288 | utility | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/sync-client.mjs` | 243 | script | scripts/sync-client.mjs |
 | `deploy/backup.sh` | 141 | sh |  |
 | `scripts/check-frontend-secrets.mjs` | 137 | script |  |
@@ -54,7 +55,6 @@ on them.
 | `docker-compose.prod.yml` | 101 | yaml |  |
 | `docker-compose.branch.yml` | 98 | yaml |  |
 | `.github/workflows/ci.yml` | 95 | yaml |  |
-| `.github/workflows/deploy-cloudflare.yml` | 91 | yaml |  |
 
 
 ---

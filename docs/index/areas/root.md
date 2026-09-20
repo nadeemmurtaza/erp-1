@@ -3,7 +3,7 @@
 
 # repository root files
 
-23 files · 8,137 lines
+32 files · 8,533 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -16,9 +16,10 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 16 | 7,965 | file, doc, txt, script |
-| `.claude` | 2 | 39 | json |
-| `.claude/hooks` | 1 | 54 | hook |
+| `.` | 16 | 7,975 | file, doc, txt, script |
+| `.claude` | 2 | 49 | json |
+| `.claude/agents` | 8 | 331 | doc |
+| `.claude/hooks` | 2 | 99 | hook |
 | `.cursor/rules` | 1 | 0 | mdc |
 | `.githooks` | 2 | 0 | file |
 | `.junie` | 1 | 79 | doc |
@@ -31,7 +32,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `yaseen-backup-before-reset.sql` | 5,870 | sql |  |
-| `CLAUDE.md` | 931 | doc |  |
+| `CLAUDE.md` | 941 | doc |  |
 | `DEPLOYMENT.md` | 492 | doc |  |
 | `README.md` | 348 | doc |  |
 | `CONTRIBUTING.md` | 127 | doc |  |
@@ -39,12 +40,12 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `AGENTS.md` | 79 | doc |  |
 | `GEMINI.md` | 79 | doc |  |
 | `.claude/hooks/session-start.sh` | 54 | hook |  |
-| `.claude/launch.json` | 24 | json |  |
-| `.claude/settings.json` | 15 | json |  |
-| `fix-all.js` | 15 | script | Get all files from git grep |
-| `fix-db.js` | 15 | script |  |
-| `fix.js` | 9 | script | Use regex to remove duplicate users block |
-| `.clinerules` | 0 | file |  |
+| `.claude/agents/architect.md` | 46 | doc |  |
+| `.claude/agents/verify.md` | 45 | doc |  |
+| `.claude/hooks/suggest-model.sh` | 45 | hook |  |
+| `.claude/agents/schema.md` | 44 | doc |  |
+| `.claude/agents/security.md` | 44 | doc |  |
+| `.claude/agents/feature.md` | 42 | doc |  |
 
 
 ---

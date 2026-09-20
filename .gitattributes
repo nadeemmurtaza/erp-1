@@ -11,6 +11,7 @@ GEMINI.md          text eol=lf linguist-generated=true
 .junie/**          text eol=lf linguist-generated=true
 .cursor/**         text eol=lf linguist-generated=true
 .github/copilot-instructions.md text eol=lf linguist-generated=true
+.claude/agents/**  text eol=lf linguist-generated=true
 
 # Shell hooks must keep LF or /bin/sh refuses them on a checkout made on
 # Windows and used in a Linux container.

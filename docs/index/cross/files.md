@@ -3,7 +3,7 @@
 
 # Every tracked file
 
-All **893** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **903** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
@@ -16,8 +16,8 @@ Split by area so you load one, not all of them.
 | apps/mobile | 42 | 5,292 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 53 | 4,476 | [files/packages.md](../files/packages.md) |
 | docs/* | 33 | 9,527 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 46 | 23,923 | [files/infra.md](../files/infra.md) |
-| repository root files | 23 | 8,137 | [files/root.md](../files/root.md) |
+| scripts, CI, deployment and container configuration | 47 | 24,371 | [files/infra.md](../files/infra.md) |
+| repository root files | 32 | 8,533 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -36,14 +36,14 @@ name a new file: the convention is what makes it findable.
 | controller | 49 |
 | dto | 46 |
 | migration | 45 |
+| doc | 42 |
 | nest module | 38 |
-| doc | 34 |
 | script | 28 |
 | asset | 26 |
 | json | 24 |
 | prisma schema | 22 |
 | react | 22 |
-| utility | 19 |
+| utility | 20 |
 | event subscriber | 16 |
 | e2e test | 15 |
 | file | 13 |
@@ -53,9 +53,9 @@ name a new file: the convention is what makes it findable.
 | loading | 7 |
 | registry | 6 |
 | layout | 6 |
+| hook | 5 |
 | scheduled job | 5 |
 | types | 5 |
-| hook | 4 |
 | example | 3 |
 | toml | 3 |
 | channel | 3 |

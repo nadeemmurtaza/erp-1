@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**35** markdown documents. These explain **why**; this index only says **where**.
+**43** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -20,6 +20,38 @@ Architectural decisions go in `docs/implementation/DECISIONS.md` — a settled
 decision is not reopened without new evidence.
 
 ## Outlines
+
+### `.claude/agents/architect.md`  <sub>46 lines</sub>
+
+_no second-level headings_
+
+### `.claude/agents/debug.md`  <sub>36 lines</sub>
+
+_no second-level headings_
+
+### `.claude/agents/feature.md`  <sub>42 lines</sub>
+
+_no second-level headings_
+
+### `.claude/agents/implement.md`  <sub>37 lines</sub>
+
+_no second-level headings_
+
+### `.claude/agents/locate.md`  <sub>37 lines</sub>
+
+_no second-level headings_
+
+### `.claude/agents/schema.md`  <sub>44 lines</sub>
+
+_no second-level headings_
+
+### `.claude/agents/security.md`  <sub>44 lines</sub>
+
+_no second-level headings_
+
+### `.claude/agents/verify.md`  <sub>45 lines</sub>
+
+_no second-level headings_
 
 ### `.github/copilot-instructions.md`  <sub>79 lines</sub>
 
@@ -42,19 +74,19 @@ decision is not reopened without new evidence.
 - Three rules about the index  <sub>:54</sub>
 - Commands  <sub>:66</sub>
 
-### `CLAUDE.md`  <sub>931 lines</sub>
+### `CLAUDE.md`  <sub>941 lines</sub>
 
 - The seven laws  <sub>:13</sub>
 - Software engineering, not vibe coding  <sub>:35</sub>
 - Feature scope: build the whole capability, not one slice of it  <sub>:144</sub>
 - Scale: the three axes  <sub>:229</sub>
 - Look it up before you search  <sub>:286</sub>
-- Use what exists  <sub>:343</sub>
-- Borders and boxes  <sub>:393</sub>
-- No dead ends  <sub>:433</sub>
-- Before you open a PR  <sub>:481</sub>
-- Deployment  <sub>:512</sub>
-- NEWAX Engineering Operating Protocol  <sub>:525</sub>
+- Use what exists  <sub>:353</sub>
+- Borders and boxes  <sub>:403</sub>
+- No dead ends  <sub>:443</sub>
+- Before you open a PR  <sub>:491</sub>
+- Deployment  <sub>:522</sub>
+- NEWAX Engineering Operating Protocol  <sub>:535</sub>
 
 ### `CONTRIBUTING.md`  <sub>127 lines</sub>
 

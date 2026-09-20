@@ -61,6 +61,7 @@ node scripts/build-index.mjs --quiet || {
 # instruction files (AGENTS.md, GEMINI.md, .cursor/rules/…) come out of the
 # same generator and are covered by the same `--check`.
 git add -A docs/index AGENTS.md GEMINI.md .windsurfrules .clinerules \
-          .junie .cursor .github/copilot-instructions.md 2>/dev/null || true
+          .junie .cursor .github/copilot-instructions.md \
+          .claude/agents .claude/hooks/suggest-model.sh 2>/dev/null || true
 
 exit 0

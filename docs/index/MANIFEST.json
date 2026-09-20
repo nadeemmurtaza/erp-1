@@ -1,8 +1,17 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "d4072715f443afa1",
+  "contentHash": "7abfd47191ef12c4",
   "pages": [
+    ".claude/agents/architect.md",
+    ".claude/agents/debug.md",
+    ".claude/agents/feature.md",
+    ".claude/agents/implement.md",
+    ".claude/agents/locate.md",
+    ".claude/agents/schema.md",
+    ".claude/agents/security.md",
+    ".claude/agents/verify.md",
+    ".claude/hooks/suggest-model.sh",
     ".clinerules",
     ".cursor/rules/repo-index.mdc",
     ".github/copilot-instructions.md",
@@ -44,6 +53,7 @@
     "docs/index/cross/files.md",
     "docs/index/cross/jobs.md",
     "docs/index/cross/migrations.md",
+    "docs/index/cross/model-routing.md",
     "docs/index/cross/permissions.md",
     "docs/index/cross/routes.md",
     "docs/index/cross/tests.md",
@@ -111,8 +121,8 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 893,
-    "lines": 144510,
+    "files": 903,
+    "lines": 145354,
     "routes": 286,
     "controllers": 57,
     "models": 113,

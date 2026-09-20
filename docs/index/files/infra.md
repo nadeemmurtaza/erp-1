@@ -3,7 +3,7 @@
 
 # Files — infra
 
-All 46 tracked files in `scripts, CI, deployment and container configuration`, by directory.
+All 47 tracked files in `scripts, CI, deployment and container configuration`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -77,7 +77,7 @@ All 46 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `build-index.mjs` | script | 2069 |  |
+| `build-index.mjs` | script | 2229 |  |
 | `build-logo-raster.mjs` | script | 54 |  |
 | `check-email-dns.mjs` | script | 399 |  |
 | `check-env-templates.mjs` | script | 87 |  |
@@ -88,11 +88,12 @@ All 46 tracked files in `scripts, CI, deployment and container configuration`, b
 | `nested-borders.py` | py | — |  |
 | `sync-client.mjs` | script | 243 | scripts/sync-client.mjs |
 
-### `scripts/lib` (1)
+### `scripts/lib` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `index-scan.mjs` | utility | 877 | Scanners for the repository index. |
+| `model-routing.mjs` | utility | 288 | Which model and how much effort each kind of job in this repository deserves. |
 
 
 ---

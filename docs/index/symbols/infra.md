@@ -47,6 +47,10 @@ Every top-level export in `infra`, with the line to open.
 | `index-scan.mjs` | `schemaMigrationDrift` | function | :850 | Which models, fields and enums the schema declares that no migration builds. |
 | `index-scan.mjs` | `a` `b` | re-export |  | from `./x` |
 | `index-scan.mjs` | `*` | re-export |  | from `./x` |
+| `model-routing.mjs` | `ROUTING_POLICY` | const | :35 | @typedef {'low'\|'medium'\|'high'\|'xhigh'\|'max'} EffortLevel |
+| `model-routing.mjs` | `ADVISORY_SIGNALS` | const | :280 | The advisory hook only speaks up for jobs where the wrong choice is costly. |
+| `model-routing.mjs` | `MODEL_ORDER` | const | :286 |  |
+| `model-routing.mjs` | `EFFORT_ORDER` | const | :287 |  |
 
 
 ---

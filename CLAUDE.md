@@ -283,6 +283,55 @@ Three of these are **not machine-enforced yet** — branch-scoped reads,
 pack-absence boot, and undecorated routes. ENTERPRISE-SCALE.md names them, in
 the order they bite. Do not assume a green build proves them.
 
+## Look it up before you search
+
+This repository is ~880 files and ~141k lines across four applications. A
+generated index of all of it lives in **`docs/index/`**, and it is regenerated
+and staged by `.githooks/pre-commit` on every commit, so it always describes
+the commit you are looking at.
+
+**Read the index page for your question before grepping the repository.** Not
+because searching is forbidden, but because the index already answers the
+questions grep answers badly — which permission actually guards a route, which
+module publishes an event, whether a component already exists — and answers
+them in one file instead of forty.
+
+| Looking for | Open |
+|---|---|
+| orientation, and which page answers what | `docs/index/README.md` |
+| the whole repository on one screen | `docs/index/01-MAP.md` |
+| an API endpoint and the permission guarding it | `docs/index/cross/routes.md` |
+| a permission: what enforces it, which roles hold it | `docs/index/cross/permissions.md` |
+| a table, column or enum | `docs/index/cross/data-model.md` → `docs/index/data/<schema>.md` |
+| how two modules talk to each other | `docs/index/cross/events.md` |
+| a screen, URL or nav entry | `docs/index/cross/ui-routes.md` |
+| whether a component already exists | `docs/index/cross/components.md` |
+| everything about one API module | `docs/index/modules/<name>.md` |
+| what a file exports, with line numbers | `docs/index/symbols/<area>.md` |
+| every tracked file, by area | `docs/index/cross/files.md` |
+| a command, a test, a migration, a doc outline | `docs/index/cross/{commands,tests,migrations,docs}.md` |
+| a machine-readable form to `jq` | `docs/index/index.json` |
+
+```bash
+pnpm index         # regenerate (under a second, zero dependencies)
+pnpm index:check   # exit 1 if stale — CI runs this, so does the post-commit hook
+```
+
+Three rules about it:
+
+- **Never edit a file under `docs/index/` by hand.** It is generated; the next
+  commit overwrites your edit. Fix `scripts/build-index.mjs`, or fix the code
+  the generator read.
+- **The index says *where*. This file and `docs/implementation/` say *why* and
+  *what you may do*, and they win.** If the index and a document of record
+  disagree, the document is right and the generator has a bug.
+- **It is a map, not the territory.** The scanners are line-based, not a type
+  checker. Open the file the index points you at — never cite the index as
+  evidence that code does something.
+
+If the index is missing or stale in your checkout, the pre-commit hook is not
+installed: run `pnpm install`, or `node scripts/install-git-hooks.mjs`.
+
 ## Use what exists
 
 Most drift here came from someone building a thing that already existed. Before

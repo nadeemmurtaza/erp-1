@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+# A safety net, not the mechanism. `pre-commit` is what keeps docs/index/ in
+# step; this only notices when that did not happen — a commit made with
+# --no-verify, or a hook that was not installed at the time.
+#
+# It never writes and never amends: a post-commit hook that changes the commit
+# it was triggered by is how people lose work. It prints, and leaves the fix to
+# a human.
+
+set -e
+
+[ -f .git/MERGE_HEAD ] && exit 0
+command -v node >/dev/null 2>&1 || exit 0
+
+if ! node scripts/build-index.mjs --check >/dev/null 2>&1; then
+  echo ""
+  echo "  ! docs/index/ is stale for the commit you just made."
+  echo "    Run:  pnpm index && git add docs/index && git commit --amend --no-edit"
+  echo "    (or leave it — the next commit's pre-commit hook will catch up.)"
+  echo ""
+fi
+
+exit 0

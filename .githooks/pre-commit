@@ -1,0 +1,52 @@
+#!/bin/sh
+#
+# Regenerates docs/index/ and stages it, so the index ships INSIDE the same
+# commit as the code it describes.
+#
+# Why pre-commit and not post-commit: a post-commit hook would have to either
+# amend the commit that just ran (rewriting history from inside a hook, which
+# breaks signatures and surprises people mid-rebase) or leave the tree dirty
+# and hope somebody commits it later. Staging here costs nothing and makes
+# "every commit has a matching index" true by construction rather than by
+# discipline.
+#
+# The generator is zero-dependency and takes well under a second on this
+# repository, so this does not need `node_modules` and does not slow a commit
+# down enough to be worth skipping.
+#
+# Installed by `node scripts/install-git-hooks.mjs`, which `pnpm install` runs
+# via the root package.json "prepare" script.
+
+set -e
+
+# Nothing to index during a merge or rebase conflict resolution — the tree is
+# not in a state the index should describe, and regenerating mid-rebase would
+# fight the rebase for every replayed commit.
+if [ -f .git/MERGE_HEAD ] || [ -d .git/rebase-merge ] || [ -d .git/rebase-apply ]; then
+  exit 0
+fi
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "pre-commit: node not found — skipping the repository index."
+  echo "            Run 'pnpm index' and commit docs/index/ yourself."
+  exit 0
+fi
+
+# Only rebuild when something the index actually reads has changed. A commit
+# that touches only docs/index/ itself, or only a binary asset, does not need a
+# rebuild — and a hook that does visible work on every commit gets disabled.
+CHANGED=$(git diff --cached --name-only --diff-filter=ACMRD)
+if [ -z "$(printf '%s\n' "$CHANGED" | grep -v '^docs/index/' || true)" ]; then
+  exit 0
+fi
+
+node scripts/build-index.mjs --quiet || {
+  echo "pre-commit: the index generator failed. Commit blocked."
+  echo "            Fix scripts/build-index.mjs, or commit with --no-verify and"
+  echo "            run 'pnpm index' before pushing."
+  exit 1
+}
+
+git add -A docs/index
+
+exit 0

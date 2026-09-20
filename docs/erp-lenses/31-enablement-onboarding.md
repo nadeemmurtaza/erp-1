@@ -73,7 +73,7 @@ field changes, who may flip it, and what does every screen reading
 `Location` today do differently for a branch that exists but is not yet
 live?
 
-**Why:** `Location` (`apps/api/prisma/schema/inventory.prisma:76-106`)
+**Why:** `Location` (`apps/api/prisma/schema/inventory.prisma:76-113`)
 carries only `isDefault` and `isActive`, both operational flags —
 `isActive` already means "eligible for stock/transfer/reorder logic," not
 "staff here are trained." There is no provisioning/training/live state
@@ -138,3 +138,50 @@ user's own globalization rules name as worse than none.
 - No training-completion or first-run-tour record on `User` or
   `UserRoleAssignment` — nothing to gate an onboarding walkthrough by the
   permission set a role actually holds.
+
+## Hardening record
+
+**Kept (4 of 4):**
+
+- *The landing page assumes two roles* — `landingFor()`
+  (`nav-registry.ts:358-360`) is verified as a two-branch function
+  (`analytics.view` vs. everyone else) and `navFor()` (L373-387) is verified
+  as the permission/module filter it feeds. Neither symbol nor line range
+  needed correction.
+- *Demo data has one persona* — `seed.ts`'s `STO-DEMO-0001..0003` /
+  `JOB-DEMO-0001..0005` rows (L2798-2860) are verified as a single
+  stitching-shop persona with no other actor-family data or demo-tag
+  convention anywhere else in the seed file.
+- *Going live has no state* — `Location` is verified to carry only
+  `isDefault`/`isActive` (no rollout/training state), and
+  `AccountingService.postEntry()` is verified as the general ledger's sole
+  write path (`accounting.service.ts:41-45`, "Two operations only... the
+  only caller of `postEntry()` today" refers to `posting-rules.subscriber.ts`
+  calling it, not a second writer). No competing enablement-state field
+  exists on `Location` or `Node`.
+- *Permission with no explanation* — `PermissionDefinition`
+  (`permissions.ts:38-43`) is verified as exactly `{key, label, category,
+  sensitivity}`, with no `description`/`helpText`/`docsUrl` field. Checked
+  for a false premise: `PermissionGroup` (L248-252) does carry a
+  `description` field, but it describes a *group* of permissions for the
+  role-wizard step, not a single permission's guidance text — the gap the
+  lens names stands. An i18n system exists (`apps/web/src/i18n`,
+  `apps/mobile/src/i18n`), so the "translation-file lookup" the done test
+  demands is a real target, not a hypothetical mechanism.
+
+**Killed:** none. All four lenses are scope questions specific to symbols
+this file cites and verified to exist; none restates the five CLAUDE.md
+lenses or any of the thirty in `WO-22-lens-workflow-results.md` (none of
+those thirty touch landing routing, demo-data personas, rollout state, or
+permission guidance copy); none is generic software advice or a coding
+standard — each forces a named schema field, seed function, or routing
+change, not merely a written-down decision.
+
+**Corrections:**
+
+- *Going live has no state* cited `Location`
+  (`apps/api/prisma/schema/inventory.prisma:76-106`) — the model actually
+  spans lines 76-113 (the cited range stopped short of the model's closing
+  brace and its two `@@index` lines). The fields the lens relies on
+  (`isDefault` at L100, `isActive` at L101) are unaffected; only the line
+  range is corrected.

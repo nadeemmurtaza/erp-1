@@ -135,3 +135,52 @@ reconciliation days later.
 - No client-generated idempotency key anywhere in the POS write path —
   `PosSaleRequest`, the outbox entry shape, and `placeFromPos()` all lack a
   field a retried, previously-ambiguous write could be deduplicated on.
+
+## Hardening record
+
+**Kept (3 of 3):**
+
+- **The barcode that already decided** — verified `PosCatalogService.searchVariants()`
+  (`apps/api/src/modules/pos/pos-catalog.service.ts:31-49`, exact/fuzzy branches
+  at lines 39-40) against `TillPage` (`apps/pos/src/app/till/page.tsx`: 250ms
+  debounce at line 72, `addToBasket()` at line 80, unconditional `<ul>` render
+  at `results.length > 0` line 191). Citations accurate; kept as written.
+- **Which writes get the queue** — verified `outbox.ts`'s PENDING/SYNCING/
+  SYNCED/FAILED machine (`packages/pos-core/src/outbox.ts:16-82`),
+  `TillPage.completeSale()` as the sole `createOutboxEntry`/`putOutboxEntry`
+  call site (`apps/pos/src/app/till/page.tsx:86-107`; confirmed by
+  `grep -rln "createOutboxEntry|putOutboxEntry" apps/pos/src` returning only
+  `till/page.tsx`, `outbox-db.ts`, `outbox-sync.ts`), and `ReturnsPage.confirmReturn()`
+  (`apps/pos/src/app/returns/page.tsx:61-75`) queuing nothing on failure.
+  Its differentiation from the existing resilience lens "Request or record —
+  classify every write" (confirmed present, `docs/erp-lenses/26-day-two-operations.md`)
+  is stated and correct: that lens is server posting semantics, this one is
+  client-device disconnection handling. Citations accurate; kept as written.
+- **The tap that might have already landed** — verified `sell()`
+  (`apps/pos/src/lib/pos-client.ts:160`) posts `PosSaleRequest`
+  (`lines`, `customerName`, `customerPhone`, `customerEmail` only — no id
+  field, lines 77-82) and `placeFromPos()`
+  (`apps/api/src/modules/orders/orders.service.ts:394`) with zero idempotency
+  handling (`grep -n idempot apps/api/src/modules/orders/orders.service.ts`
+  returns nothing). Its differentiation from the existing concurrency lens
+  "The second copy of the write" (confirmed present,
+  `docs/erp-lenses/18-master-data-taxonomy.md`) is stated and correct: that
+  lens is two concurrent editors racing on one row, this is one device
+  replaying its own unconfirmed write. Citations accurate; kept as written.
+
+**Killed:** none. All three lenses cite real, current code; none restates an
+existing lens without a stated difference; none is generic advice, a coding
+standard, or unfalsifiable; each demands a specific artifact (a line/branch,
+a grep result, a DTO field) rather than a yes/no.
+
+**Corrections:** none. Every path, method, and line range cited in the file
+was opened and matches what is claimed:
+`apps/api/src/modules/pos/pos-catalog.service.ts` (searchVariants, exact vs.
+fuzzy match), `apps/pos/src/app/till/page.tsx` (debounce, addToBasket, result
+list, completeSale/outbox calls), `packages/pos-core/src/outbox.ts` (status
+machine), `apps/pos/src/app/returns/page.tsx` (confirmReturn's two sequential
+calls and single error string), `apps/pos/src/lib/pos-client.ts` (`sell()`,
+`PosSaleRequest` shape), `apps/api/src/modules/orders/orders.service.ts`
+(`placeFromPos()`, absence of any idempotency check), and
+`apps/api/src/modules/pos/pos-shifts.service.ts` (exists; no outbox usage,
+confirmed by the same repo-wide grep above).

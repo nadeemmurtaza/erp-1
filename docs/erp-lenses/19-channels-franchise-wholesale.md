@@ -204,7 +204,8 @@ claim did not survive verification (see corrections).
   suspended partner's still-valid key from working on the very next
   call"); actual: `verifyInboundKey()` already throws
   `UnauthorizedException` when `partner.status !== 'ACTIVE'`
-  (`trading-partners.service.ts:143-145`), and this is already tested
+  (`trading-partners.service.ts:144-146`, not 143-145 as originally
+  written — corrected), and this is already tested
   ("refuses a SUSPENDED partner even though its key still hashes
   correctly," `trading-partners.service.spec.ts:166`). The lens was
   narrowed to the part that is genuinely unbuilt: there is no scope
@@ -215,7 +216,7 @@ claim did not survive verification (see corrections).
   `AuditService.record()` the way 24 other modules already are"; actual:
   `AuditService` is used in 15 `*.service.ts` files
   (`grep -rl "AuditService" apps/api/src/modules --include=*.service.ts |
-  wc -l` → 15), not 24.
+  wc -l` → 15, reconfirmed at review), not 24.
 - Claimed the "lens 11" and "lens 5" cross-references (Multi-entity
   topology's "the other end and what nets it out," Integrations'
   "which tier owns the credential") by number; these thirty prior lenses

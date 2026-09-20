@@ -136,3 +136,49 @@ this branch" even when that is the only thing an operator wanted to check.
   recomputed by summing `VariantLocationStock` inline on every movement
   rather than maintained incrementally, so its cost is tied to how many
   locations a SKU is stocked at, not to the size of the movement itself.
+
+## Hardening record
+
+**Kept (3 of 3):**
+
+- **The cost that multiplies by location** — verified against
+  `inventory.service.ts:220-304` (the `applyMovement` private method both
+  `move()` and `postUnconditional()` call) and its recompute query at
+  `inventory.service.ts:296-304`, an unconditional `UPDATE "ProductVariant"
+  SET stock = (SELECT SUM(quantity) FROM "VariantLocationStock" ...)`. This
+  is genuinely a scope question (does the design account for the aggregate
+  growing with location count) and is explicitly distinguished in the file
+  from lens 30's lock-duration question, which it does not restate.
+- **The report that recomputes from scratch** — verified `gl-reports.service.ts:37`
+  (`balancesAsOf`), `:74` (`trialBalance`) and `:146` (`balanceSheet`) all
+  read the same `journalLine.groupBy({ where: { entry: { status: 'POSTED',
+  date: { lte: asOf } } } })`. Verified in `accounting.prisma`:
+  `JournalLine` has `@@index([accountId])` at line 203 exactly as cited;
+  `JournalEntry` (lines 120-150) indexes `periodId`, `[source, sourceRef]`
+  and `status` (lines 147-149) but has no index touching `date`. Verified
+  `settings.service.ts:6` (`CACHE_TTL_MS = 30_000`) covers only
+  `SettingsService.get()`/the `Setting` table, nothing in `GlReportsService`.
+  All citations accurate as written.
+- **The write that doesn't chunk** — verified `stock-count.service.ts:92-120`
+  (`StockCountService.start()`): one `$transaction` that `findMany`s every
+  `isActive` `ProductVariant` and `createMany`s one `StockCountLine` per row,
+  with no batching. Verified `StockCount` (`inventory.prisma:191-212`) has
+  no `locationId` field anywhere in the model, confirming the "cannot be
+  narrowed" claim. Verified `transfers.service.ts` uses `{ timeout: 20_000 }`
+  (20-second transaction budget) at lines 163, 292 and 335, supporting the
+  "same shape of risk ... already carries" comparison. All citations
+  accurate as written.
+
+**Killed:** none. All three lenses cite real, currently-true code; each asks
+a scope question (what must the design state about behavior at Org volume)
+rather than a coding-standard question; each is distinguished by name from
+lens 30 and from each other (aggregate shape vs. missing index vs. unbounded
+transaction — three different failure mechanisms, not three phrasings of
+one); and none is true of an arbitrary codebase — each names a specific
+query, a specific missing index, and a specific missing column in this repo.
+
+**Citations corrected:** none. Every path, line range, model field and
+service method cited in the file was opened and confirmed to match, including
+the two narrowest claims (`JournalLine`'s index at exactly line 203, and
+`StockCount` having zero `locationId` columns) which were the ones most
+likely to have drifted.

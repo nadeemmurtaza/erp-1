@@ -51,8 +51,6 @@ with a threshold, a timestamp someone reads, and a screen a non-DBA can open.
 
 ## Hardening record
 
-**Note on filename:** the review brief named the target `docs/erp-lenses/26-day-two-operations.md`. No file at path `26-*` exists in this repository; the domain, title and three lens names given in the brief match this file, `24-day-two-operations.md`, exactly. Reviewed and corrected in place at the actual path.
-
 **Kept (3 of 3):**
 
 - **The number that pages, and the number that doesn't** — demands a named metric, threshold and non-DBA-reachable screen, not "add monitoring." Distinct from the Notifications set's "Delivery is a fact not a hope" (that lens is about customer-facing delivery confirmation; this one is about an internal paging threshold on operational backlog) and from Resilience's "Four hours down the counter stays open" (that lens is about degraded-mode continuity of a feature; this one is about who is told the feature is broken).

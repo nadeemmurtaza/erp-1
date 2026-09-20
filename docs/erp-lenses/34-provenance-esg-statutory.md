@@ -122,3 +122,48 @@ regulator's or parent's own boxes.
   receipt.
 - No Filing/ReportTemplate model and no account-to-external-line mapping
   — `GlReportsService`'s five reports are internal-shaped only.
+
+## Hardening record
+
+**Kept (3 of 3):**
+
+- **Every unit, not the whole SKU** — verified `StockMovement`
+  (inventory.prisma:22-59) has `variantId`/`locationId`/`refType`/`refId`
+  and no `lotId`/`batchNumber`; `GoodsReceiptItem` (purchasing.prisma:165-180)
+  and `VariantLocationStock` (inventory.prisma:156-166,
+  `@@id([variantId, locationId])`) confirmed exactly as cited. Distinct from
+  every existing lens — none of the 30 prior lenses or the five CLAUDE.md
+  lenses touch batch/lot traceability. Demands a named column and a
+  chainable query; the done test is a literal grep. Kept as written.
+- **The claim, not the supplier** — verified `Supplier.country`
+  (purchasing.prisma:9-11, nullable ISO alpha-2) is the only origin-shaped
+  field, and `GoodsReceiptItem`/`Product`/`ProductVariant`
+  (catalog.prisma:89-229, `fabric`/`season`/`tags`) carry nothing
+  origin-shaped. Distinct scope from the lot lens above: this is about
+  which row a customer/regulator-facing claim is sourced from, not about
+  tracing a bad unit. Kept as written.
+- **The regulator's own boxes** — verified `GlReportsService`
+  (gl-reports.service.ts, class at line 28, doc comment 16-26 naming the
+  five reports) exposes `trialBalance`/`profitAndLoss`/`balanceSheet`/
+  `cashFlow`/`agedReceivables`/`agedPayables` (lines 74, 94, 146, 191, 228,
+  256) shaped around internal `Account.code` values; confirmed no
+  `Filing`/`ReportTemplate` model exists anywhere under
+  `apps/api/prisma/schema`. The file's own text already distinguishes this
+  from "Click the number" (drill-down) and "The file outlives the app"
+  (export self-description/reproducibility, WO-22 results line 143) —
+  checked that lens's text directly: it is about a CSV proving its own
+  period/scope/currency, never about matching a regulator's named line
+  layout. No overlap. Kept as written.
+
+**Killed:** none. All three lenses are scope questions (what the feature
+must contain), demand a specific artifact, are falsifiable by a reviewer,
+and are grounded in citations that check out against the current schema and
+service code — not generic advice, not restatements, not edition-specific.
+
+**Corrections:** none required. Every cited path, model, field, line range
+and method name was opened and matches:
+`StockMovement` fields and line range, `GoodsReceiptItem` fields and line
+range, `VariantLocationStock`'s composite key, `Supplier.country`'s
+nullability and type, `Product`/`ProductVariant`'s combined line span
+(89-229), the absence of any `Filing`/`ReportTemplate` model, and
+`GlReportsService`'s six report method names all confirmed as claimed.

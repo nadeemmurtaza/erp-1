@@ -64,11 +64,11 @@ in any audit of hardware that stores payment data.
 **Question:** When equipment failure takes a branch's ability to trade,
 what event fires, what status does the object move to, and what query
 answers "which of our 100+ locations are degraded right now"?
-**Why:** `PosTerminalStatus` (`pos.prisma:12-18`) has `PENDING/ACTIVE/SUSPENDED`,
+**Why:** `PosTerminalStatus` (`pos.prisma:12-20`) has `PENDING/ACTIVE/SUSPENDED`,
 and `PosShiftsService.openShift()` is the only place equipment state gates
 trading — it requires `status === 'ACTIVE'`. `domain-events.ts`'s roughly
 forty entries contain none matching `/downtime|asset|equipment|maintenance/i`.
-`Location.isActive` (`inventory.prisma:100`) is the only branch-level status
+`Location.isActive` (`inventory.prisma:101`) is the only branch-level status
 flag and nothing surfaces it across locations.
 **Worked example:** Narrow slice: an admin manually flips a terminal to
 `SUSPENDED` when it breaks. Complete capability: an `asset.downtime_started`/`_ended`
@@ -94,3 +94,59 @@ degraded trading capacity only when someone calls.
 - No domain event for asset downtime, maintenance state change, or
   equipment failure — `openShift()`'s `ACTIVE`-only gate is the sole place
   equipment health already blocks a transaction, and it emits nothing.
+
+## Hardening record
+
+**Kept**
+
+- **The register the ledger never sees** — verified: `CHART_OF_ACCOUNTS`
+  (`chart-of-accounts.ts:20-32`) has exactly the 13 seeded accounts, three of
+  type `ASSET` (1000/1100/1200), none named Fixed Assets or Accumulated
+  Depreciation; `domain-events.ts` (281 lines total) has zero matches for
+  `/depreciat/i`. Distinct from the existing "policy and rules: the version
+  stamp" and "reporting: whose rows" lenses — this is about a missing
+  postable account and event, not about who reads a report or which policy
+  version applied.
+- **Custody has no holder** — verified: `PosTerminal`
+  (`pos.prisma:27-46`) has no `custodianUserId` or assignment history field;
+  `grep -rn AuditService apps/api/src/modules/pos` hits only
+  `pos-receipts.service.ts`, none of the five files that actually touch
+  `PosTerminal` (`pos.module.ts`, `pos-terminals.service.ts`,
+  `pos-terminals.service.spec.ts`, `pos-terminals.controller.ts`,
+  `dto/pos-terminal.dto.ts`). Distinct from "multi-entity topology: name the
+  owner name the reader it refuses" — that lens is about which entity a
+  record belongs to, this is about which *person* holds a physical object
+  right now, independent of entity.
+- **Downtime that outranks the sale** — verified:
+  `pos-shifts.service.ts:35-36` does `if (terminal.status !== 'ACTIVE')
+  throw BadRequestException(...)`, confirming `openShift()` is the sole
+  trading gate on equipment status; `domain-events.ts` has zero matches for
+  `/downtime|asset|equipment|maintenance/i`; `Location.isActive`
+  (`inventory.prisma:101`) is the only cross-branch status flag and nothing
+  aggregates it. Distinct from "resilience: four hours down the counter
+  stays open" — that lens is about a payment-provider or infra outage
+  degrading the whole system; this is about one physical object's failure
+  being invisible above its own branch.
+
+**Killed**
+
+None. All three claimed lenses survived verification and are scoped
+distinctly from the 5 CLAUDE.md lenses and the 30 prior-workflow lenses.
+
+**Corrections**
+
+- `PosTerminalStatus` cited as `pos.prisma:12-18`; the enum actually spans
+  `12-20` (closing brace at 20) — corrected.
+- `Location.isActive` cited as `inventory.prisma:100`; the field is actually
+  declared at line `101` (`100` is a blank/comment line above it) —
+  corrected.
+- All other citations checked and confirmed as written: `chart-of-accounts.ts:20-32`
+  (13 seeded accounts, 3 of type `ASSET`), `AccountingService.postEntry()`'s
+  seven posting-rule subscribers plus year-end close (none posting
+  capex/depreciation), 115 total Prisma models with none named `Asset`,
+  `PosTerminal` field list at `pos.prisma:27-46`, `AuditLog` at
+  `core.prisma:220`, the five pos-module files touching `PosTerminal`
+  (none importing `AuditService`), `pos-shifts.service.ts`'s `ACTIVE`-only
+  gate, and the zero-hit greps against `domain-events.ts` for
+  `/depreciat/i`, `custodianId|assignedToUserId|AssetAssignment` (across all
+  `*.prisma`), and `/downtime|asset|equipment|maintenance/i`.

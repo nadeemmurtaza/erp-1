@@ -87,11 +87,14 @@ blocks new `PosShift` opens at that location's terminals, refuses new
 `StockTransfer` dispatch to or from it, reroutes `defaultLocationId()`
 fallbacks elsewhere, and flags in-flight orders/transfers still pointing at
 it.
-**Done test:** PR names every write path gated on `Location.isActive`
-(`grep -rn "isActive" apps/api/src/modules/{inventory,pos,transfers}`) and
-shows `PosTerminal` and `TransfersService` both refusing against an
-inactive location. Today that grep finds the field with no consuming
-guard in those services.
+**Done test:** `grep -rn "isActive" apps/api/src/modules/{inventory,pos,transfers}`
+returns real hits today, but every one either filters `ProductVariant.isActive`
+or, in `transfers.service.ts:105-109`, sets the scratch IN_TRANSIT location's
+own flag false to hide it from `InventoryService.listLocations()` — none of
+them reads a *destination* `Location.isActive` before a receipt, a transfer
+dispatch or a `PosShift` open. The PR must add that read in at least
+`TransfersService` and the shift-open path, and show the same grep now
+returning it, or its body names the exception.
 **Breaks without:** The branch burns down at 6pm; nothing stops tomorrow's
 goods receipt or a dispatched transfer landing there, and a terminal opens
 a shift because `PosTerminalStatus` never read `Location.isActive` — the
@@ -142,3 +145,70 @@ register.
   `PosTerminalStatus` are three unlinked flags today.
 - No business-interruption or continuity-plan model (alternate location,
   failover roster, resumption target) anywhere in the schema.
+
+## Hardening record
+
+**Kept (4):**
+- **The insured value nobody can total** — distinct from every notification/
+  reporting/multi-entity lens already produced; no prior lens asks for a
+  per-location valuation basis separate from the costing average. Citations
+  verified: `ProductVariant.costPrice` (`catalog.prisma:183`), no location
+  dimension on it; `VariantLocationStock` `inventory.prisma:156`,
+  `@@id([variantId, locationId])` at line 165; `Location`
+  `inventory.prisma:76-113`, no value/insured-value/valuation-basis field.
+- **The claim's evidence pack, not just the claim** — not a restatement of
+  "the reversal document, not the reversal flag" (that lens is about undo
+  authority on a reversible write; this one is about an insurer-facing
+  record surviving a write that is never reversed). Citations verified:
+  `StockVariance` `inventory.prisma:127-150`; `resolve()` in
+  `stock-variance.service.ts:24-37` updates only `status`/`resolvedAt`/
+  `resolvedByUserId`/`resolutionNote` — moves no stock, reverses no journal,
+  matching the file's own comment ("does not move stock or reverse the
+  shrinkage journal"); `AuditLog` `core.prisma:220-235`; no
+  `Attachment`/`Document`/`fileUrl`/`s3Key` model anywhere under
+  `apps/api/prisma/schema`.
+- **The branch that cannot trade tomorrow** — not a restatement of "the
+  switch, its scope and who may throw it" (that lens is about a generic
+  kill-switch's blast radius; this one names the exact three call sites that
+  do not read the switch at all). Citations verified: `Location.isActive`
+  at `inventory.prisma:101`; `InventoryService.defaultLocationId()` at
+  `inventory.service.ts:166`, resolved by `isDefault` with no
+  caller-supplied `locationId` on its eight call sites; `NodeStatus`
+  (`ACTIVE|SUSPENDED`) at `organization.prisma:127-130`, and `Node` (full
+  model read starting at `organization.prisma:142`) carries no `locationId`
+  field;
+  `PosTerminal.status: PosTerminalStatus` at `pos.prisma:41`, its own enum
+  with no relation back to `Location`. **Corrected:** the original doneTest's
+  grep (`isActive` across inventory/pos/transfers) returns hits today, but
+  they are all `ProductVariant.isActive` filters plus one unrelated use —
+  `transfers.service.ts:105-109` sets the IN_TRANSIT scratch location's own
+  `isActive: false` only to hide it from `listLocations()`, not to gate
+  dispatch to or from a real, deactivated destination. Rewrote the doneTest
+  to say what the grep actually returns and what "passing" requires.
+- **The risk register with no register** — kept as already scoped in the
+  file, which itself states the one-clause difference from lens 10 ("name
+  the owner, name the reader it refuses"): that lens adds a scope column to
+  an existing business object, this one is a standalone governance object
+  with its own review cadence. Citations verified: no `model Risk` anywhere
+  in `apps/api/prisma/schema` (12-file grep, zero hits); `RoleGrant`
+  (`core.prisma:321`), `UserRoleAssignment` (`core.prisma:336`),
+  `UserPermission` (`core.prisma:278`) each carry only `createdAt`, no
+  review-date or likelihood/impact shape; `AdminScope`
+  (`organization.prisma:106-120`) confirmed as the closest owner-shaped row,
+  and it grants access rather than registering a risk.
+
+**Killed:** none. All four lenses in the file cite real, verified schema and
+service facts, ask for a specific artifact rather than a yes/no, and are
+each differentiated in writing from every lens already produced (five
+CLAUDE.md lenses and the thirty from the prior workflow run) — none of them
+would be true of an arbitrary codebase, and none is satisfied by writing
+better prose instead of building something.
+
+**Citations corrected:** one. The branch-cannot-trade lens's doneTest cited
+a bare `grep -rn "isActive" apps/api/src/modules/{inventory,pos,transfers}`
+as if it would return nothing consuming the field — in fact it returns
+several hits, all `ProductVariant.isActive` reads or the IN_TRANSIT
+location's own scratch flag (`transfers.service.ts:109`), none of them a
+guard on a *destination* `Location.isActive`. Corrected to describe what the
+grep actually surfaces and to require a new read, not a bare model field, as
+the passing condition.

@@ -125,3 +125,62 @@ until someone manually compares receipts to the price list.
 - No amount-banded or rank-based approval anywhere in the codebase —
   `payments.approve` is boolean, and the ground brief confirms no
   rank/grade/approval-limit model exists to attach one to.
+
+## Hardening record
+
+**Kept (3):**
+
+- *The void that outruns the refund* — distinct from the existing
+  "reversal document, not the reversal flag" lens: that lens asks whether a
+  reversal, once triggered, is a real linked document; this one is upstream
+  of that — it asks why `OrdersService.changeStatus()` lets `CANCELLED` fire
+  at all on an order whose payment already posted, with no reversal
+  triggered in either direction. Verified: `ALLOWED_TRANSITIONS`
+  (orders.service.ts:58, enforced at :672) permits `CONFIRMED` /
+  `PROCESSING` / `READY_TO_SHIP` → `CANCELLED`; `changeStatus()`
+  (orders.service.ts:658-710) never reads `Payment.status` and never calls
+  `reverseEntry`; the only path that calls `AccountingService.reverseEntry()`
+  (accounting.service.ts:102) is the separate `payment.refunded` handler in
+  `PostingRulesSubscriber` (posting-rules.subscriber.ts) — confirmed by grep,
+  nothing in `changeStatus()` triggers it.
+- *The write-off with no address* — distinct from "Row 4312 authority" (bulk
+  operations): that lens is about who may act on someone else's already-listed
+  row; this is about a single-row write that silently discards which of the
+  100+ locations it happened at. Verified: `AdjustStockDto`
+  (inventory.dto.ts:15-30) has `delta`, `reason`, `note` — no `locationId`;
+  `InventoryAdminController.adjust()` (inventory.controller.ts:41-61) always
+  resolves `this.inventory.defaultLocationId()` (:51); `reasonMap`
+  (inventory.controller.ts:46-48) maps only `'damaged'` to `DAMAGE`, and
+  `STOCK_ADJUSTMENT_REASONS` (inventory.dto.ts:5-11) does not even include a
+  write-off-shaped reason as a caller-selectable value — `WRITE_OFF`
+  (inventory.prisma:13, comment "lost, stolen, expired") exists in the Prisma
+  enum but is unreachable from this endpoint.
+- *The price nobody can point to* — distinct from `04-approval-delegation`'s
+  use of the same `payments.approve` fact: that domain asks about delegating
+  an existing approval; this one is about a feature that does not exist yet
+  (till price override) and what evidence it must ship with on day one, not
+  after. Verified: `pos.module.ts:29` states the override "remain[s]
+  unbuilt"; `placeFromPos()` (orders.service.ts:420, also :846) derives
+  `unitPrice` only from `variant.priceOverride ?? variant.product.basePrice`;
+  `OrderItem` (orders.prisma:124-129) has `unitPrice`/`discountUnit`, no
+  `listPrice`; `payments.approve` (permissions.ts:83) is a flat boolean with
+  no ceiling; `pos.operate` (permissions.ts:77) and `pos.manage` (:71) both
+  confirmed to exist as separate, real keys.
+
+**Killed:** none. All three lenses cite verifiable, currently-true facts, ask
+for a specific artifact (a field, a permission key, a check), fail a
+concrete PR without one, and are not restatements of the five original
+lenses or the thirty prior-workflow lenses — each states its distinction
+above.
+
+**Corrections:** none. Every cited path, method, field, enum value and
+permission key was opened and confirmed to exist with the stated behavior:
+`ALLOWED_TRANSITIONS` / `changeStatus()` (orders.service.ts), `reverseEntry()`
+(accounting.service.ts:102), `payment.refunded` → `PostingRulesSubscriber`
+(posting-rules.subscriber.ts), `AdjustStockDto` / `STOCK_ADJUSTMENT_REASONS`
+(inventory.dto.ts), `InventoryAdminController.adjust()` /  `reasonMap`
+(inventory.controller.ts), `StockMovementReason.WRITE_OFF`
+(inventory.prisma:13), `pos.module.ts:29`, `placeFromPos()` (orders.service.ts:420,846),
+`OrderItem` (orders.prisma:124-129), and `payments.approve` / `pos.operate` /
+`pos.manage` (permissions.ts:83,77,71 — file is `packages/shared/src/permissions.ts`,
+abbreviated to match this doc set's existing citation convention).

@@ -104,3 +104,51 @@ row belongs to.
   replication or retention by.
 - No consent or legal-basis model beyond `User.marketingEmailOptOut`
   (`core.prisma:35`), which is scoped to marketing sends only.
+
+## Hardening record
+
+**Kept (all three, unchanged in substance — every citation verified against
+the current schema and source):**
+
+- **The row the ledger will not let you touch** — `journal_line_immutable`
+  (`forbid_journal_line_mutation()`) is a real Postgres trigger in
+  `apps/api/prisma/schema/migrations/20260917070552_add_accounting_ledger/migration.sql:221-231`;
+  `JournalLine.contactId` is confirmed at `accounting.prisma:189`;
+  `AuditLog.actorId` confirmed `SetNull` at `core.prisma:230` while
+  `AuditLog.data` stays a bare `Json?`; `InboundEmail.contactId` confirmed
+  `SetNull` at `crm.prisma:160` with `fromAddress`/`fromName`/`bodyText` kept
+  as raw text at `crm.prisma:147-151`.
+- **The payload that already left** — `OutboxEvent.payload` confirmed `Json`
+  at `core.prisma:364` with no delete call anywhere in `apps/api/src`;
+  `ReplicationRecord.payload` confirmed append-only at
+  `replication.prisma:49-62`, and the push/pull transport this lens depends
+  on is not vaporware — `replication-sync.agent.ts` actually calls
+  `fetch(`${parentUrl}/api/v1/replication/push`)` and
+  `.../replication/pull` under `NODE_ROLE=BRANCH`/`BRAND`
+  (`env.validation.ts` — full path
+  `apps/api/src/core/config/env.validation.ts:72`), so the cross-database
+  copy this lens asks about is a real, wired code path, not a schema
+  comment's aspiration.
+- **The retention clock with no dial** — `Setting` confirmed flat `key`/
+  `value` at `core.prisma:153-158`; `grep -rn "retentionUntil\|purgeAfter\|
+  RetentionPolicy" apps/api/prisma/schema` returns zero matches today, exactly
+  as claimed; `ReplicationRecord.dataClass` confirmed to drive FACT/POLICY
+  conflict resolution, not retention, per the file's own header comment at
+  `replication.prisma:1-16`.
+
+**Killed:** none. Each of the three lenses names a distinct table-level
+mechanism (an immutable trigger; a payload column with no delete path and a
+live cross-node copy; a config store with no retention schema) and none
+restates a lens from CLAUDE.md or the thirty prior lenses — the nearest
+neighbor, Integrations' "A fact that already happened is never rejected," is
+about accepting late-arriving facts, not about what happens to a person's
+identifiers already embedded inside one.
+
+**Citations corrected:** none — every path, line range, model, field,
+trigger name, service, and grep in the file was opened and verified to match
+the repository exactly. The one imprecision worth noting: the file cites
+`env.validation.ts:72` without its directory; the full path is
+`apps/api/src/core/config/env.validation.ts`, and line 72 there is indeed
+`NODE_ROLE: z.enum(['STANDALONE', 'BRANCH', 'BRAND', 'ORG']).default
+('STANDALONE')`, so the line content is correct — only the path was
+abbreviated, not wrong.

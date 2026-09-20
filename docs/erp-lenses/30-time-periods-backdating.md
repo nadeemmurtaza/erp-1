@@ -126,3 +126,67 @@ shift caused it.
   `RoleGrant`, `UserPermission`) that could bound how far back an actor
   may backdate a fact — the only mechanism today is the general
   `accounting.manage_periods` permission on the period itself.
+
+## Hardening record
+
+**Kept (3):**
+
+- **One clock, a hundred branches** — demands naming the field that would
+  hold a per-`Location` timezone, verified against the real facts that
+  `SHOP_TIME_ZONE` (`packages/shared/src/constants.ts:76`) is
+  `BRAND.locale.timeZone`, a single compile-time constant; `Setting`
+  (`core.prisma:153-158`) is a bare `key`/`value` pair with no location
+  column; and `Location` (`inventory.prisma:76`) has no timezone field.
+  Not a restatement of any WO-22 lens — none of the thirty address
+  timezone at all.
+- **The calendar every brand shares** — demands naming the column that
+  would let one `RetailBrand` close independently, verified against
+  `FiscalPeriod`'s actual columns (`fiscalYearId`, `name`,
+  `@@unique([fiscalYearId, name])`, accounting.prisma:91-108, no brand or
+  org column) and `FiscalPeriodsService.closePeriod`/`lockPeriod`
+  (fiscal-periods.service.ts:89,109) taking only a bare `id`. Explicitly
+  distinguished in its own question from the `JournalLine`-dimensioning
+  lens in `07-money-integrity-gl.md` ("Every column or none") — that lens
+  is about which of four columns a posting rule sets on a line; this one
+  is that `FiscalPeriod` itself has no brand column for any rule to set a
+  line against in the first place.
+- **The day with no name** — demands naming the model or field for a
+  Location's closeable business day, verified against `PosShift`
+  (pos.prisma:65-80, `openedAt`/`closedAt` timestamps, `terminalId`, no
+  `locationId` of its own and no day-level link) and against
+  `FiscalPeriod.name`'s monthly convention (accounting.prisma:94-95) — a
+  grep for `model.*Day` across `pos.prisma`/`accounting.prisma` returns
+  nothing. Not a restatement of "The 14:02 undo" (bulk-operations) or any
+  reversal lens — this is about which day a fact belongs to, not about
+  undoing it.
+
+**Killed:** none. All three lenses in the file as found already cited
+real, currently-true, verifiable gaps, demanded a specific artifact (a
+schema column, a grep result, a decisions-doc statement) rather than a
+yes/no, and did not restate any of the five CLAUDE.md lenses or the
+thirty WO-22 lenses.
+
+**Corrections:** none. Every citation checked against the current
+codebase and confirmed exactly as written:
+- `SHOP_TIME_ZONE` at `packages/shared/src/constants.ts:76` —
+  `export const SHOP_TIME_ZONE = BRAND.locale.timeZone;`, confirmed.
+- `Setting` model at `core.prisma:153-158` — `key String @id, value
+  Json`, no location/branch column, confirmed.
+- `Location` model at `inventory.prisma:76` — no timezone field among its
+  columns, confirmed.
+- `FiscalPeriod` at `accounting.prisma:91-108` — `fiscalYearId`, `name`,
+  `@@unique([fiscalYearId, name])`, no `retailBrandId`/`organizationId`,
+  confirmed.
+- `FiscalPeriodsService.closePeriod`/`lockPeriod` at
+  `fiscal-periods.service.ts:89,109` — both take only `id: string`,
+  confirmed.
+- `RetailBrand` at `organization.prisma:40` — exists with
+  `organizationId`, confirmed.
+- `PosShift` at `pos.prisma:65` — `openedAt`/`closedAt`, `terminalId`, no
+  `locationId`, confirmed.
+- "Seven posting-rule subscribers" — confirmed against
+  `posting-rules.subscriber.ts` and the hardening record already logged
+  in `07-money-integrity-gl.md`: exactly seven `@OnDomainEvent` handlers
+  exist today.
+- `accounting.manage_periods` permission — confirmed present in
+  `packages/shared/src/permissions.ts`.

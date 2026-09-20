@@ -157,3 +157,76 @@ codebase knows to look there.
   time (`scripts/check-module-boundaries.mjs`), not by
   `FeatureModulesModule.register()`, so an incompatible module combination
   is only caught at Nest boot, not before.
+
+## Hardening record
+
+**Kept (3 of 3):**
+
+- **Five doors, one hallway** — forces the engineer to name the one
+  mechanism (`module-packs.ts`, `EntityEnrichmentRegistry.register()`,
+  `SettingKey`, a nullable schema field, or a documented refusal) before
+  writing code, and the done test (`grep` the diff for `BRAND.slug ===`)
+  is directly runnable. Distinct from the existing "policy and rules"
+  lenses (The version stamp, Authority and blast radius, Dry run before
+  live), which are about how an *enabled* rule is versioned and applied,
+  not about which subsystem a client-specific ask should become in the
+  first place.
+- **The refusal that isn't graceful** — turns "the client doesn't want
+  module X" into a specific `KNOWN_MODULE_COUPLINGS` lookup with a named
+  consequence (boot-time DI crash, not a graceful no-op). Distinct from
+  "Multi-entity topology"'s lenses, which are about ownership and netting
+  across entities, not about module-enable/disable safety.
+- **The field with no home** — forces a binary choice (real nullable
+  column vs. declined-with-Setting) precisely because this repo has no
+  metafield table, which is a fact specific to this codebase, not generic
+  schema advice. Distinct from "Bulk operations" and "Concurrency" lenses,
+  which are about write safety on existing columns, not about where a new
+  per-client attribute is allowed to live.
+
+**Killed:** none. All three lenses cite verifiable, currently-true facts
+about this repository, demand a written artifact rather than a yes/no, and
+occupy scope ground (which mechanism owns an exception) that none of the
+five original or thirty prior lenses cover.
+
+**Citations checked, all confirmed accurate as cited (12 checks against
+the working tree):**
+
+1. `apps/api/src/modules/module-packs.ts:28-34` — the pack-eligibility
+   rule and the grocery/electronics rejection. Confirmed verbatim.
+2. `EntityEnrichmentRegistry.register()` — confirmed it throws on a
+   duplicate point registration
+   (`apps/api/src/core/extension-points/entity-enrichment.registry.ts:28-33`).
+3. `core.prisma:153-158` — confirmed `model Setting { key, value, description,
+   updatedAt }`, no `retailBrandId`/`branchNodeId` column.
+4. `document-prefix.ts:31-43` — confirmed the `FALLBACK: DocumentPrefixes`
+   object and the get-with-fallback pattern in `documentPrefix()`.
+5. `GoodsReceipt` — confirmed `freightCost`/`dutyCost`/`otherCost` exist as
+   `Int @default(0)` columns (`apps/api/prisma/schema/purchasing.prisma:153-155`).
+6. `settings.defaults.ts` — confirmed `SettingKey` is exported from this
+   file, so "add a `SettingKey` in `settings.defaults.ts`" is a real
+   instruction, not an invented file.
+7. `modules.registry.ts:101-124` — confirmed `FeatureModulesModule.register()`
+   filters `FEATURE_MODULES` against the env allowlist with no cross-entry
+   dependency check.
+8. `check-module-boundaries.mjs:134-138` — confirmed `KNOWN_MODULE_COUPLINGS`
+   contains `orders -> payments`, `orders -> inventory`, and
+   `purchasing -> inventory` verbatim, plus the "trade a correctness
+   guarantee for architectural purity" rationale in the file's header
+   comment.
+9. `StockIntakeRegistry` — confirmed it exists as the graceful,
+   registration-based counterpart the lens contrasts with a direct import
+   (`apps/api/src/core/extension-points/stock-intake.registry.ts`).
+10. `docs/implementation/DECISIONS.md` — this file does not exist yet, but
+    the same forward reference is already load-bearing convention across
+    this lens set (`00f-ground-surfaces.md`, `01-identity-actor-types.md`,
+    `WO-22-lens-workflow-results.md` all point PRs at it for the same kind
+    of unenforced ruling), so it is kept as-is rather than corrected.
+11. `grep -rn "customField|CustomField|metafield|Metafield" apps packages
+    --include='*.ts*'` — re-run, confirmed zero matches today.
+12. Module registry filter — confirmed `FeatureModulesModule.register()`
+    performs no dependency check between `FEATURE_MODULES` entries,
+    supporting the "Not modelled yet" item above it.
+
+**Corrections:** none. Every citation checked against the working tree
+matched the claim made about it; no path, line range, or method name in
+this file needed to change.

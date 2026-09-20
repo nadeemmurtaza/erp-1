@@ -18,9 +18,10 @@ where does the AuditLog entry it produces point back to that row?
 **Why:** `AuditLog` (`core.prisma:220-235`) is `action: String`,
 `entity: String`, `entityId: String?`, `data: Json?` — a free-text fact per
 event, with no `controlId` or `ownerId` column, and `AuditService.record()`
-(`audit.service.ts:29-45`) accepts exactly that shape. Only 24 of 26 modules
-call it, and only at call sites their authors chose. A control ("segregation
-of duties over `payments.approve`", "period-close authorization") is a claim
+(`audit.service.ts:29-45`) accepts exactly that shape. Only about 11 of the
+25 feature-module directories under `apps/api/src/modules` call it at all,
+and only at call sites their authors chose. A control ("segregation of
+duties over `payments.approve`", "period-close authorization") is a claim
 that spans many actions and entities; nothing in the schema names it as a
 row, so today "we have a control" means "we have some AuditLog rows a person
 could read if they knew to look for them."
@@ -125,3 +126,62 @@ ever flag it.
 - Scoped audit-log reads: `SettingsAdminService.listAuditLog()` calls no
   `scopeFilterFor()`, so `audit.view` is deployment-wide today with no
   per-brand or per-branch narrowing to hand a local auditor.
+
+## Hardening record
+
+**Kept (3):**
+
+- *The control has no name, only the fact does* — verified against
+  `AuditLog` (`core.prisma:220-235`, no `controlId`/`ownerId` column) and
+  `AuditService.record()` (`audit.service.ts:29-45`). Distinct from every
+  notification/reporting/policy lens already on file: those ask whether an
+  event was recorded or delivered, this asks whether the *claim of a
+  control* has a row of its own that events can point back to.
+- *Testing is a record, not a query* — verified against
+  `AuditService.record()`'s fire-and-forget comment (`audit.service.ts:18-20`)
+  and confirmed no `Control`/`AuditTest`/`AuditSample`/`AuditException`/
+  `Remediation` model exists anywhere in `apps/api/prisma/schema/*.prisma`,
+  and that `FiscalPeriodsService.lockPeriod()` (`accounting.prisma:91-106`)
+  is a one-way close, not a tester attestation. Distinct from "Dry run
+  before live" (policy/rules lens): that is about previewing a rule change,
+  this is about recording that a *sample was pulled and judged*, after the
+  fact.
+- *The auditor's key is not a master key* — verified against `audit.view`
+  (`packages/shared/src/permissions.ts:221`), `ADMIN_LOCKED_PERMISSIONS`
+  (`permissions.ts:438-441`, exactly `settings.manage` and
+  `roles.manage_permissions`), `PermissionsGuard.canActivate`
+  (`apps/api/src/core/auth/guards.ts:80-99`, a pure "holds any required key"
+  OR check with no cross-key exclusion), and
+  `assertLockedPermissionsStillHeldSomewhere`
+  (`apps/api/src/core/auth/roles.service.ts:261`, which only refuses
+  orphaning a locked key, never a conflicting combination). Distinct from
+  "Authority and blast radius" (policy/rules lens): that is about how large
+  a change one grant can make, this is about two grants a *single role*
+  should never hold together.
+
+**Killed:** none. All three claimed lenses in the file were grounded, scope-
+shaping, and distinct from the 5 original and 30 prior lenses; no generic,
+restated, unfalsifiable, or single-edition claim was present to cut.
+
+**Citations corrected (1):**
+
+- Lens 1, "Why": claimed "Only 24 of 26 modules call it." Grepped
+  `apps/api/src/modules` for `AuditService` usage: 25 feature-module
+  directories exist (excluding `module-packs.ts` and
+  `modules.registry.ts`), and only about 11 of them
+  (`catalog`, `crm`, `identity-verification`, `inventory`, `measurements`,
+  `orders`, `payments`, `pos`, `stitching`, `users`, plus `accounting`)
+  contain a call site that writes an audit entry. Corrected in the file
+  above to "about 11 of the 25 feature-module directories."
+
+**Citations confirmed unchanged (no correction needed):** `AuditLog` model
+shape and line range; `AuditService.record()` body and its
+logged-not-thrown comment; `FiscalPeriodsService.lockPeriod()` and the
+`FiscalPeriod`/`FiscalPeriodStatus` model; `SettingsAdminService.listAuditLog()`
+building its filter from entity/actorId/date with no `scopeFilterFor()` call;
+`audit.view`, `accounting.manage_periods`, `transfers.manage`,
+`inventory.manage` as real permission keys in
+`packages/shared/src/permissions.ts`; `ADMIN_LOCKED_PERMISSIONS`'s exact
+two-key contents; `PermissionsGuard.canActivate`'s OR-over-held-keys logic;
+`assertLockedPermissionsStillHeldSomewhere`'s existence and orphan-only scope
+in `roles.service.ts`.

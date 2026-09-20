@@ -76,6 +76,22 @@ the record of what actually ran - including what failed and was retried.
 | `harden:23:loyalty-consent-data-rights` | Harden | completed | [23h-harden-loyalty-consent-data-rights.md](23h-harden-loyalty-consent-data-rights.md) |
 | `harden:18:master-data-taxonomy` | Harden | completed | [18h-harden-master-data-taxonomy.md](18h-harden-master-data-taxonomy.md) |
 | `harden:22:findability-at-scale` | Harden | completed | [22h-harden-findability-at-scale.md](22h-harden-findability-at-scale.md) |
+| `harden:19:channels-franchise-wholesale` | Harden | completed | [19h-harden-channels-franchise-wholesale.md](19h-harden-channels-franchise-wholesale.md) |
+| `harden:27:migration-cutover-restatement` | Harden | completed | [27h-harden-migration-cutover-restatement.md](27h-harden-migration-cutover-restatement.md) |
+| `harden:24:fraud-insider-risk` | Harden | completed | [24h-harden-fraud-insider-risk.md](24h-harden-fraud-insider-risk.md) |
+| `harden:26:day-two-operations` | Harden | completed | [26h-harden-day-two-operations.md](26h-harden-day-two-operations.md) |
+| `harden:25:privacy-retention-residency` | Harden | completed | [25h-harden-privacy-retention-residency.md](25h-harden-privacy-retention-residency.md) |
+| `harden:29:cost-to-serve` | Harden | completed | [29h-harden-cost-to-serve.md](29h-harden-cost-to-serve.md) |
+| `harden:30:time-periods-backdating` | Harden | completed | [30h-harden-time-periods-backdating.md](30h-harden-time-periods-backdating.md) |
+| `harden:28:extensibility-without-fork` | Harden | completed | [28h-harden-extensibility-without-fork.md](28h-harden-extensibility-without-fork.md) |
+| `harden:31:enablement-onboarding` | Harden | completed | [31h-harden-enablement-onboarding.md](31h-harden-enablement-onboarding.md) |
+| `harden:33:operator-hands` | Harden | completed | [33h-harden-operator-hands.md](33h-harden-operator-hands.md) |
+| `harden:34:provenance-esg-statutory` | Harden | completed | [34h-harden-provenance-esg-statutory.md](34h-harden-provenance-esg-statutory.md) |
+| `harden:32:automation-and-ai-surface` | Harden | completed | [32h-harden-automation-and-ai-surface.md](32h-harden-automation-and-ai-surface.md) |
+| `harden:37:assets-facilities-maintenance` | Harden | completed | [37h-harden-assets-facilities-maintenance.md](37h-harden-assets-facilities-maintenance.md) |
+| `harden:35:risk-insurance-continuity` | Harden | completed | [35h-harden-risk-insurance-continuity.md](35h-harden-risk-insurance-continuity.md) |
+| `harden:36:internal-audit-controls-testing` | Harden | completed | [36h-harden-internal-audit-controls-testing.md](36h-harden-internal-audit-controls-testing.md) |
+| `cluster` | Cluster | completed | [_agent-cluster.md](_agent-cluster.md) |
 | `gen:costing-transfer-pricing` | Generate | not completed | - |
 | `gen:credit-receivables` | Generate | not completed | - |
 | `gen:procurement-supplier-lifecycle` | Generate | not completed | - |
@@ -111,7 +127,6 @@ the record of what actually ran - including what failed and was retried.
 | `gen:money-integrity-gl` | Generate | not completed | - |
 | `gen:approval-delegation` | Generate | not completed | - |
 | `gen:treasury-cash-reconciliation` | Generate | not completed | - |
-| `cluster` | Cluster | not completed | - |
 | `draft:terse` | Draft | not completed | - |
 | `draft:auditor` | Draft | not completed | - |
 | `draft:teacher` | Draft | not completed | - |
@@ -124,18 +139,3 @@ the record of what actually ran - including what failed and was retried.
 | `gap:roles-ranks` | Gaps | not completed | - |
 | `gap:innovation` | Gaps | not completed | - |
 | `gap:repo-blindspots` | Gaps | not completed | - |
-| `harden:19:channels-franchise-wholesale` | Harden | not completed | - |
-| `harden:25:privacy-retention-residency` | Harden | not completed | - |
-| `harden:24:fraud-insider-risk` | Harden | not completed | - |
-| `harden:29:cost-to-serve` | Harden | not completed | - |
-| `harden:31:enablement-onboarding` | Harden | not completed | - |
-| `harden:30:time-periods-backdating` | Harden | not completed | - |
-| `harden:34:provenance-esg-statutory` | Harden | not completed | - |
-| `harden:32:automation-and-ai-surface` | Harden | not completed | - |
-| `harden:33:operator-hands` | Harden | not completed | - |
-| `harden:28:extensibility-without-fork` | Harden | not completed | - |
-| `harden:37:assets-facilities-maintenance` | Harden | not completed | - |
-| `harden:36:internal-audit-controls-testing` | Harden | not completed | - |
-| `harden:35:risk-insurance-continuity` | Harden | not completed | - |
-| `harden:27:migration-cutover-restatement` | Harden | not completed | - |
-| `harden:26:day-two-operations` | Harden | not completed | - |

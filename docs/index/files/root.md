@@ -62,7 +62,7 @@ All 41 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `configuration.md` | doc | 20 |  |
 | `database.md` | doc | 19 |  |
-| `decisions.md` | doc | 15 |  |
+| `decisions.md` | doc | 16 |  |
 | `dependencies.md` | doc | 23 |  |
 | `performance.md` | doc | 42 |  |
 | `security.md` | doc | 20 |  |

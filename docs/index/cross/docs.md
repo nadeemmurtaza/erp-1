@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**52** markdown documents. These explain **why**; this index only says **where**.
+**53** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -61,9 +61,9 @@ _no second-level headings_
 
 - Database change protocol  <sub>:10</sub>
 
-### `.claude/rules/decisions.md`  <sub>15 lines</sub>
+### `.claude/rules/decisions.md`  <sub>16 lines</sub>
 
-- Architectural decision records  <sub>:10</sub>
+- Architectural decision records  <sub>:11</sub>
 
 ### `.claude/rules/dependencies.md`  <sub>23 lines</sub>
 
@@ -410,6 +410,28 @@ _no second-level headings_
 
 - Work orders  <sub>:18</sub>
 - Out of scope (for now)  <sub>:54</sub>
+
+### `docs/implementation/DECISIONS.md`  <sub>752 lines</sub>
+
+- How to read this  <sub>:13</sub>
+- ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
+- ADR-002 — A sector is a module pack behind an allowlist  <sub>:104</sub>
+- ADR-003 — Modules are independent; side effects cross through events  <sub>:145</sub>
+- ADR-004 — Events are delivered through a transactional outbox  <sub>:186</sub>
+- ADR-005 — Money is an integer in minor units  <sub>:222</sub>
+- ADR-006 — Customer-facing text is a row, not a column  <sub>:257</sub>
+- ADR-007 — Access control is permission-based, and the grants are data  <sub>:291</sub>
+- ADR-008 — Migrations are hand-written and forward-only  <sub>:331</sub>
+- ADR-009 — A branch is a node with its own database, not a tenant row  <sub>:370</sub>
+- ADR-010 — In-transit stock is a Location, not a flag  <sub>:410</sub>
+- ADR-011 — A till sale is a channel of `orders`  <sub>:449</sub>
+- ADR-012 — Cross-module references are bare scalars, not foreign keys  <sub>:484</sub>
+- ADR-013 — One deployment serves one brand  <sub>:522</sub>
+- ADR-014 — The repository index is generated and enforced, not written  <sub>:555</sub>
+- ADR-015 — Model and effort are routed per job, from one policy  <sub>:597</sub>
+- ADR-016 — Rules that apply to one kind of file are path-scoped  <sub>:640</sub>
+- ADR-017 — An observability backend  <sub>:682</sub>
+- ADR-018 — Horizontal replicas and load balancing  <sub>:719</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>266 lines</sub>
 

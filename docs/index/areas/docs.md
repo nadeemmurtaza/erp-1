@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-33 files · 9,527 lines
+34 files · 10,279 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -21,7 +21,7 @@ has a bug.
 | `docs` | 1 | 438 | doc |
 | `docs/brand` | 1 | 97 | doc |
 | `docs/brand/logo` | 6 | 0 | asset |
-| `docs/implementation` | 25 | 8,992 | doc, file |
+| `docs/implementation` | 26 | 9,744 | doc, file |
 
 
 
@@ -34,6 +34,7 @@ has a bug.
 | `docs/implementation/RETAIL-ERP.md` | 1,083 | doc |  |
 | `docs/implementation/01-inventory-purchasing-cost.md` | 937 | doc |  |
 | `docs/implementation/MULTI-SECTOR.md` | 806 | doc |  |
+| `docs/implementation/DECISIONS.md` | 752 | doc |  |
 | `docs/implementation/00-HOUSE-RULES.md` | 496 | doc |  |
 | `docs/implementation/03-variants-sku-seo.md` | 471 | doc |  |
 | `docs/email.md` | 438 | doc |  |
@@ -44,7 +45,6 @@ has a bug.
 | `docs/implementation/17-inventory-locations.md` | 254 | doc |  |
 | `docs/implementation/02-admin-shell.md` | 242 | doc |  |
 | `docs/implementation/04-finance.md` | 239 | doc |  |
-| `docs/implementation/09-ai-layer.md` | 221 | doc |  |
 
 
 ---

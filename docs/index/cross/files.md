@@ -3,7 +3,7 @@
 
 # Every tracked file
 
-All **920** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **921** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
@@ -15,9 +15,9 @@ Split by area so you load one, not all of them.
 | apps/pos | 28 | 1,732 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 42 | 5,292 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 53 | 4,476 | [files/packages.md](../files/packages.md) |
-| docs/* | 33 | 9,527 | [files/docs.md](../files/docs.md) |
+| docs/* | 34 | 10,279 | [files/docs.md](../files/docs.md) |
 | scripts, CI, deployment and container configuration | 50 | 25,336 | [files/infra.md](../files/infra.md) |
-| repository root files | 41 | 8,720 | [files/root.md](../files/root.md) |
+| repository root files | 41 | 8,721 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -33,7 +33,7 @@ name a new file: the convention is what makes it findable.
 | module | 83 |
 | component | 70 |
 | service | 68 |
-| doc | 51 |
+| doc | 52 |
 | migration | 50 |
 | controller | 49 |
 | dto | 46 |

@@ -1,5 +1,6 @@
 ---
 paths:
+  - "docs/implementation/DECISIONS.md"
   - "docs/implementation/*.md"
 ---
 

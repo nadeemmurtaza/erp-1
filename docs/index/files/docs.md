@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 33 tracked files in `docs/*`, by directory.
+All 34 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,7 +31,7 @@ All 33 tracked files in `docs/*`, by directory.
 | `yaseen-wordmark.svg` | asset | — |  |
 | `yaseen-y.svg` | asset | — |  |
 
-### `docs/implementation` (25)
+### `docs/implementation` (26)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -55,6 +55,7 @@ All 33 tracked files in `docs/*`, by directory.
 | `17-inventory-locations.md` | doc | 254 |  |
 | `18-identity-verification.md` | doc | 143 |  |
 | `18-trading-partner-network.md` | doc | 61 |  |
+| `DECISIONS.md` | doc | 752 |  |
 | `ENTERPRISE-SCALE.md` | doc | 266 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |

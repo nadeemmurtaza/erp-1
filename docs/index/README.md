@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **903 files / 145,392 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **908 files / 145,731 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -33,7 +33,7 @@ that is `docs/implementation/`, and `CLAUDE.md` is binding over both.
 | “Is there already a component for this?” | [cross/components.md](cross/components.md) | shared primitives and every component, with usage counts |
 | “What runs on a schedule?” | [cross/jobs.md](cross/jobs.md) | 6 cron jobs and the background dispatchers |
 | “What command do I run?” | [cross/commands.md](cross/commands.md) | every script in every package.json (65) |
-| “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | 45 migrations, newest last |
+| “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | 50 migrations, newest last |
 | “What is already tested?” | [cross/tests.md](cross/tests.md) | 103 spec files → what each one pins down |
 | “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | every document of record, with its outline |
 | “What is in this one module?” | [modules/](modules) | one page per API feature module (25) |
@@ -96,13 +96,13 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 
 | Area | Files | Lines | L1 page |
 |---|---|---|---|
-| apps/api | 440 | 57,887 | [api](areas/api.md) |
+| apps/api | 445 | 58,118 | [api](areas/api.md) |
 | apps/web | 228 | 33,536 | [web](areas/web.md) |
 | apps/pos | 28 | 1,732 | [pos](areas/pos.md) |
 | apps/mobile | 42 | 5,292 | [mobile](areas/mobile.md) |
 | packages/* | 53 | 4,476 | [packages](areas/packages.md) |
 | docs/* | 33 | 9,527 | [docs](areas/docs.md) |
-| scripts, CI, deployment and container configuration | 47 | 24,390 | [infra](areas/infra.md) |
+| scripts, CI, deployment and container configuration | 47 | 24,498 | [infra](areas/infra.md) |
 | repository root files | 32 | 8,552 | [root](areas/root.md) |
 
 Every tracked file is accounted for: see

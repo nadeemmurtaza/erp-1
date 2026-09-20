@@ -3,13 +3,13 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 903,
-    "lines": 145392,
+    "files": 908,
+    "lines": 145731,
     "routes": 286,
     "controllers": 57,
     "models": 113,
     "enums": 48,
-    "migrations": 45,
+    "migrations": 50,
     "events": 33,
     "permissions": 36,
     "screens": 122,
@@ -25,14 +25,14 @@
     },
     "infra": {
       "files": 47,
-      "lines": 24390,
-      "bytes": 931777,
+      "lines": 24498,
+      "bytes": 937907,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 440,
-      "lines": 57887,
-      "bytes": 2058127,
+      "files": 445,
+      "lines": 58118,
+      "bytes": 2067391,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -17844,119 +17844,92 @@
         "CashMovement",
         "PosShift"
       ]
+    },
+    {
+      "folder": "20260920090000_add_pos_and_transfer_stock_reasons",
+      "file": "apps/api/prisma/schema/migrations/20260920090000_add_pos_and_transfer_stock_reasons/migration.sql",
+      "date": "2026-09-20",
+      "slug": "add_pos_and_transfer_stock_reasons",
+      "statements": 4,
+      "kinds": [
+        "ALTER TYPE"
+      ],
+      "tables": []
+    },
+    {
+      "folder": "20260920091000_add_location_type",
+      "file": "apps/api/prisma/schema/migrations/20260920091000_add_location_type/migration.sql",
+      "date": "2026-09-20",
+      "slug": "add_location_type",
+      "statements": 2,
+      "kinds": [
+        "CREATE TYPE",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "Location"
+      ]
+    },
+    {
+      "folder": "20260920092000_add_stock_variance",
+      "file": "apps/api/prisma/schema/migrations/20260920092000_add_stock_variance/migration.sql",
+      "date": "2026-09-20",
+      "slug": "add_stock_variance",
+      "statements": 8,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "StockVariance"
+      ]
+    },
+    {
+      "folder": "20260920093000_add_order_channel_and_pos_receipt",
+      "file": "apps/api/prisma/schema/migrations/20260920093000_add_order_channel_and_pos_receipt/migration.sql",
+      "date": "2026-09-20",
+      "slug": "add_order_channel_and_pos_receipt",
+      "statements": 7,
+      "kinds": [
+        "CREATE TYPE",
+        "ALTER TABLE",
+        "CREATE INDEX",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX"
+      ],
+      "tables": [
+        "Order",
+        "PosReceipt"
+      ]
+    },
+    {
+      "folder": "20260920094000_add_stock_transfers",
+      "file": "apps/api/prisma/schema/migrations/20260920094000_add_stock_transfers/migration.sql",
+      "date": "2026-09-20",
+      "slug": "add_stock_transfers",
+      "statements": 11,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "StockTransfer",
+        "StockTransferLine",
+        "TransferNumberCounter"
+      ]
     }
   ],
   "schemaMigrationDrift": {
-    "missingTables": [
-      {
-        "model": "PosReceipt",
-        "table": "PosReceipt",
-        "file": "apps/api/prisma/schema/pos.prisma",
-        "line": 127
-      },
-      {
-        "model": "StockTransfer",
-        "table": "StockTransfer",
-        "file": "apps/api/prisma/schema/transfers.prisma",
-        "line": 24
-      },
-      {
-        "model": "StockTransferLine",
-        "table": "StockTransferLine",
-        "file": "apps/api/prisma/schema/transfers.prisma",
-        "line": 59
-      },
-      {
-        "model": "StockVariance",
-        "table": "StockVariance",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 127
-      },
-      {
-        "model": "TransferNumberCounter",
-        "table": "TransferNumberCounter",
-        "file": "apps/api/prisma/schema/transfers.prisma",
-        "line": 84
-      }
-    ],
-    "missingColumns": [
-      {
-        "model": "Location",
-        "table": "Location",
-        "field": "type",
-        "column": "type",
-        "type": "LocationType",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 76
-      },
-      {
-        "model": "Order",
-        "table": "Order",
-        "field": "channel",
-        "column": "channel",
-        "type": "OrderChannel",
-        "file": "apps/api/prisma/schema/orders.prisma",
-        "line": 24
-      },
-      {
-        "model": "Order",
-        "table": "Order",
-        "field": "locationId",
-        "column": "locationId",
-        "type": "String?",
-        "file": "apps/api/prisma/schema/orders.prisma",
-        "line": 24
-      },
-      {
-        "model": "Order",
-        "table": "Order",
-        "field": "terminalId",
-        "column": "terminalId",
-        "type": "String?",
-        "file": "apps/api/prisma/schema/orders.prisma",
-        "line": 24
-      },
-      {
-        "model": "Order",
-        "table": "Order",
-        "field": "shiftId",
-        "column": "shiftId",
-        "type": "String?",
-        "file": "apps/api/prisma/schema/orders.prisma",
-        "line": 24
-      },
-      {
-        "model": "Order",
-        "table": "Order",
-        "field": "originNodeId",
-        "column": "originNodeId",
-        "type": "String?",
-        "file": "apps/api/prisma/schema/orders.prisma",
-        "line": 24
-      }
-    ],
-    "missingEnums": [
-      {
-        "enum": "LocationType",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 68
-      },
-      {
-        "enum": "OrderChannel",
-        "file": "apps/api/prisma/schema/orders.prisma",
-        "line": 19
-      },
-      {
-        "enum": "StockTransferStatus",
-        "file": "apps/api/prisma/schema/transfers.prisma",
-        "line": 15
-      },
-      {
-        "enum": "StockVarianceStatus",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 115
-      }
-    ]
+    "missingTables": [],
+    "missingColumns": [],
+    "missingEnums": [],
+    "missingEnumValues": []
   },
   "screens": [
     {
@@ -20764,8 +20737,8 @@
       "path": ".env.branch.example",
       "area": "infra",
       "kind": "example",
-      "lines": 86,
-      "bytes": 4027,
+      "lines": 99,
+      "bytes": 5053,
       "doc": "",
       "symbols": []
     },
@@ -20773,8 +20746,8 @@
       "path": ".env.example",
       "area": "infra",
       "kind": "example",
-      "lines": 117,
-      "bytes": 5274,
+      "lines": 125,
+      "bytes": 5904,
       "doc": "",
       "symbols": []
     },
@@ -20782,8 +20755,8 @@
       "path": ".env.production.example",
       "area": "infra",
       "kind": "example",
-      "lines": 107,
-      "bytes": 4444,
+      "lines": 113,
+      "bytes": 5046,
       "doc": "",
       "symbols": []
     },
@@ -21507,6 +21480,51 @@
       "kind": "migration",
       "lines": 49,
       "bytes": 1571,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260920090000_add_pos_and_transfer_stock_reasons/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 19,
+      "bytes": 989,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260920091000_add_location_type/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 15,
+      "bytes": 678,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260920092000_add_stock_variance/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 50,
+      "bytes": 1923,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260920093000_add_order_channel_and_pos_receipt/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 51,
+      "bytes": 1868,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260920094000_add_stock_transfers/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 80,
+      "bytes": 2905,
       "doc": "",
       "symbols": []
     },
@@ -25596,8 +25614,8 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 126,
-      "bytes": 6052,
+      "lines": 141,
+      "bytes": 6894,
       "doc": "",
       "symbols": [
         {
@@ -25608,12 +25626,12 @@
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 44
+          "line": 59
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 102
+          "line": 117
         }
       ]
     },
@@ -28034,8 +28052,8 @@
       "path": "apps/api/test/email-channel.behavior.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 579,
-      "bytes": 19131,
+      "lines": 580,
+      "bytes": 19190,
       "doc": "Behavior tests for the email notification channel.",
       "symbols": []
     },
@@ -35771,8 +35789,8 @@
       "path": "scripts/check-env-templates.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 87,
-      "bytes": 2867,
+      "lines": 139,
+      "bytes": 5414,
       "doc": "",
       "symbols": []
     },
@@ -35816,8 +35834,8 @@
       "path": "scripts/lib/index-scan.mjs",
       "area": "infra",
       "kind": "utility",
-      "lines": 877,
-      "bytes": 36323,
+      "lines": 906,
+      "bytes": 37648,
       "doc": "Scanners for the repository index.",
       "symbols": [
         {
@@ -35983,7 +36001,7 @@
         {
           "name": "schemaMigrationDrift",
           "kind": "function",
-          "line": 850
+          "line": 864
         }
       ]
     },

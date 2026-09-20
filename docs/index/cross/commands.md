@@ -134,12 +134,12 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 | `scripts/build-index.mjs` | 2248 |  |
 | `scripts/build-logo-raster.mjs` | 54 |  |
 | `scripts/check-email-dns.mjs` | 399 |  |
-| `scripts/check-env-templates.mjs` | 87 |  |
+| `scripts/check-env-templates.mjs` | 139 |  |
 | `scripts/check-frontend-secrets.mjs` | 137 |  |
 | `scripts/check-module-boundaries.mjs` | 535 |  |
 | `scripts/check-route-permissions.mjs` | 136 |  |
 | `scripts/install-git-hooks.mjs` | 89 |  |
-| `scripts/lib/index-scan.mjs` | 877 | Scanners for the repository index. |
+| `scripts/lib/index-scan.mjs` | 906 | Scanners for the repository index. |
 | `scripts/lib/model-routing.mjs` | 288 | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/nested-borders.py` | 0 |  |
 | `scripts/sync-client.mjs` | 243 | scripts/sync-client.mjs |

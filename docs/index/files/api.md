@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 440 tracked files in `apps/api`, by directory.
+All 445 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -333,6 +333,36 @@ All 440 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 49 |  |
 
+### `apps/api/prisma/schema/migrations/20260920090000_add_pos_and_transfer_stock_reasons` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 19 |  |
+
+### `apps/api/prisma/schema/migrations/20260920091000_add_location_type` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 15 |  |
+
+### `apps/api/prisma/schema/migrations/20260920092000_add_stock_variance` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 50 |  |
+
+### `apps/api/prisma/schema/migrations/20260920093000_add_order_channel_and_pos_receipt` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 51 |  |
+
+### `apps/api/prisma/schema/migrations/20260920094000_add_stock_transfers` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 80 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -562,7 +592,7 @@ All 440 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `module-packs.ts` | module | 81 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 126 |  |
+| `modules.registry.ts` | registry | 141 |  |
 
 ### `apps/api/src/modules/accounting` (17)
 
@@ -1066,7 +1096,7 @@ All 440 tracked files in `apps/api`, by directory.
 | `crm.e2e-spec.ts` | e2e test | 489 |  |
 | `devices.e2e-spec.ts` | e2e test | 150 |  |
 | `email-accounts-admin.e2e-spec.ts` | e2e test | 342 |  |
-| `email-channel.behavior.spec.ts` | unit test | 579 | Behavior tests for the email notification channel. |
+| `email-channel.behavior.spec.ts` | unit test | 580 | Behavior tests for the email notification channel. |
 | `email-inbox.e2e-spec.ts` | e2e test | 225 |  |
 | `email-templates-admin.e2e-spec.ts` | e2e test | 86 |  |
 | `meta.e2e-spec.ts` | e2e test | 65 |  |

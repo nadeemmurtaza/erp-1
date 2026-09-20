@@ -41,8 +41,8 @@ root, Prisma tooling, and the e2e suite.
 | `module-packs.ts` | `PackName` | type | :40 | The sector packs. |
 | `module-packs.ts` | `MODULE_PACKS` | const | :50 |  |
 | `modules.registry.ts` | `FeatureModuleEntry` | interface | :28 |  |
-| `modules.registry.ts` | `FEATURE_MODULES` | const | :44 | The registry of feature modules. |
-| `modules.registry.ts` | `FeatureModulesModule` | class | :102 | Composes the enabled modules into one import. |
+| `modules.registry.ts` | `FEATURE_MODULES` | const | :59 | The registry of feature modules. |
+| `modules.registry.ts` | `FeatureModulesModule` | class | :117 | Composes the enabled modules into one import. |
 
 ### `apps/api/test/support`
 

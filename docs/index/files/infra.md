@@ -13,9 +13,9 @@ All 47 tracked files in `scripts, CI, deployment and container configuration`, b
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `.dockerignore` | file | — |  |
-| `.env.branch.example` | example | 86 |  |
-| `.env.example` | example | 117 |  |
-| `.env.production.example` | example | 107 |  |
+| `.env.branch.example` | example | 99 |  |
+| `.env.example` | example | 125 |  |
+| `.env.production.example` | example | 113 |  |
 | `.gitignore` | file | 50 |  |
 | `Caddyfile` | file | 63 |  |
 | `cloudflare.json` | json | 22 |  |
@@ -80,7 +80,7 @@ All 47 tracked files in `scripts, CI, deployment and container configuration`, b
 | `build-index.mjs` | script | 2248 |  |
 | `build-logo-raster.mjs` | script | 54 |  |
 | `check-email-dns.mjs` | script | 399 |  |
-| `check-env-templates.mjs` | script | 87 |  |
+| `check-env-templates.mjs` | script | 139 |  |
 | `check-frontend-secrets.mjs` | script | 137 |  |
 | `check-module-boundaries.mjs` | script | 535 |  |
 | `check-route-permissions.mjs` | script | 136 |  |
@@ -92,7 +92,7 @@ All 47 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `index-scan.mjs` | utility | 877 | Scanners for the repository index. |
+| `index-scan.mjs` | utility | 906 | Scanners for the repository index. |
 | `model-routing.mjs` | utility | 288 | Which model and how much effort each kind of job in this repository deserves. |
 
 

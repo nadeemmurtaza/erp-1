@@ -784,7 +784,7 @@ export function splitSqlStatements(sql) {
 
 export function scanMigrationSql(sqlTexts) {
   const tables = new Map(); // table -> Set(column)
-  const enums = new Set();
+  const enums = new Map();  // enum  -> Set(value)
   const bare = (name) => name.replace(/"/g, '').split('.').pop();
   const add = (table, column) => {
     if (!tables.has(table)) tables.set(table, new Set());
@@ -802,10 +802,24 @@ export function scanMigrationSql(sqlTexts) {
     for (const stmt of splitSqlStatements(sql)) {
 
       let m;
-      if ((m = stmt.match(/^CREATE\s+TYPE\s+("?[\w."]+"?)/i))) { enums.add(bare(m[1])); continue; }
+      if ((m = stmt.match(/^CREATE\s+TYPE\s+("?[\w."]+"?)\s+AS\s+ENUM\s*\(([\s\S]*)\)\s*$/i))) {
+        enums.set(bare(m[1]), new Set([...m[2].matchAll(/'([^']*)'/g)].map((v) => v[1])));
+        continue;
+      }
+      if ((m = stmt.match(/^CREATE\s+TYPE\s+("?[\w."]+"?)/i))) { enums.set(bare(m[1]), new Set()); continue; }
+      // `ALTER TYPE x ADD VALUE 'y'` is how a value joins an existing enum.
+      if ((m = stmt.match(/^ALTER\s+TYPE\s+("?[\w."]+"?)\s+ADD\s+VALUE\s+(?:IF NOT EXISTS\s+)?'([^']*)'/i))) {
+        const name = bare(m[1]);
+        if (!enums.has(name)) enums.set(name, new Set());
+        enums.get(name).add(m[2]);
+        continue;
+      }
       if ((m = stmt.match(/^DROP\s+TYPE\s+(?:IF EXISTS\s+)?("?[\w."]+"?)/i))) { enums.delete(bare(m[1])); continue; }
       if ((m = stmt.match(/^ALTER\s+TYPE\s+("?[\w."]+"?)\s+RENAME\s+TO\s+("?[\w."]+"?)/i))) {
-        enums.delete(bare(m[1])); enums.add(bare(m[2])); continue;
+        const from = bare(m[1]);
+        enums.set(bare(m[2]), enums.get(from) ?? new Set());
+        enums.delete(from);
+        continue;
       }
 
       if ((m = stmt.match(/^CREATE\s+TABLE\s+(?:IF NOT EXISTS\s+)?("?[\w."]+"?)\s*\(([\s\S]*)\)\s*$/i))) {
@@ -872,5 +886,20 @@ export function schemaMigrationDrift(models, enums, built) {
     .filter((e) => !built.enums.has(e.name))
     .map((e) => ({ enum: e.name, file: e.file, line: e.line }));
 
-  return { missingTables, missingColumns, missingEnums };
+  // A value added to an existing enum needs its own `ALTER TYPE … ADD VALUE`.
+  // Forgetting one is invisible until a write uses it: the schema typechecks,
+  // Prisma generates the value into its client, and Postgres rejects the
+  // INSERT at runtime. `StockMovementReason` was carrying four such values.
+  const missingEnumValues = [];
+  for (const e of enums) {
+    const have = built.enums.get(e.name);
+    if (!have) continue; // whole enum already reported above
+    for (const value of e.values) {
+      if (!have.has(value)) {
+        missingEnumValues.push({ enum: e.name, value, file: e.file, line: e.line });
+      }
+    }
+  }
+
+  return { missingTables, missingColumns, missingEnums, missingEnumValues };
 }

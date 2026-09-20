@@ -15,6 +15,7 @@ jest.mock('nodemailer', () => ({
 }));
 
 import { Logger } from '@nestjs/common';
+import { BRAND } from '@newax/shared';
 import { validateEnv } from '../src/core/config/env.validation';
 import { EmailChannel, isDeliverable } from '../src/core/notifications/email.channel';
 import type { EmailAccountsService } from '../src/core/notifications/email-accounts/email-accounts.service';
@@ -324,7 +325,7 @@ describe('EmailChannel — interface contract', () => {
       expect.objectContaining({
         'Auto-Submitted': 'auto-generated',
         'X-Auto-Response-Suppress': 'All',
-        'X-Yaseen-Template': 'user.welcome',
+        'X-Newax-Template': 'user.welcome',
       }),
     );
     expect(call.disableFileAccess).toBe(true);
@@ -356,7 +357,7 @@ describe('EmailChannel — interface contract', () => {
     });
 
     const call = mockSendMail.mock.calls[0][0];
-    expect(call.subject).toBe('Welcome to Yaseen');
+    expect(call.subject).toBe(`Welcome to ${BRAND.identity.shortName}`);
     expect(call.html).toContain('Sania');
     expect(call.subject).not.toBe('Fallback subject — should not appear');
   });

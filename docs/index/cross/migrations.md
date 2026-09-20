@@ -3,7 +3,7 @@
 
 # Migrations
 
-**45** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**50** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -26,42 +26,7 @@ CI's own seed step.
 This section compares the two sides. It is a statement of fact, not a gate:
 nothing here fails a build.
 
-> [!WARNING]
-> The schema declares **5 table(s)**, **6 column(s)** and **4 enum(s)** that no committed migration creates.
-> A database built from `migrations/` alone will be missing them.
-
-### Models with no migration (5)
-
-| Model | Table | Declared at |
-|---|---|---|
-| `PosReceipt` | `PosReceipt` | `apps/api/prisma/schema/pos.prisma:127` |
-| `StockTransfer` | `StockTransfer` | `apps/api/prisma/schema/transfers.prisma:24` |
-| `StockTransferLine` | `StockTransferLine` | `apps/api/prisma/schema/transfers.prisma:59` |
-| `StockVariance` | `StockVariance` | `apps/api/prisma/schema/inventory.prisma:127` |
-| `TransferNumberCounter` | `TransferNumberCounter` | `apps/api/prisma/schema/transfers.prisma:84` |
-
-
-### Columns with no migration (6)
-
-| Table | Column | Type | Declared at |
-|---|---|---|---|
-| `Location` | `type` | `LocationType` | `apps/api/prisma/schema/inventory.prisma:76` |
-| `Order` | `channel` | `OrderChannel` | `apps/api/prisma/schema/orders.prisma:24` |
-| `Order` | `locationId` | `String?` | `apps/api/prisma/schema/orders.prisma:24` |
-| `Order` | `terminalId` | `String?` | `apps/api/prisma/schema/orders.prisma:24` |
-| `Order` | `shiftId` | `String?` | `apps/api/prisma/schema/orders.prisma:24` |
-| `Order` | `originNodeId` | `String?` | `apps/api/prisma/schema/orders.prisma:24` |
-
-
-### Enums with no migration (4)
-
-| Enum | Declared at |
-|---|---|
-| `LocationType` | `apps/api/prisma/schema/inventory.prisma:68` |
-| `OrderChannel` | `apps/api/prisma/schema/orders.prisma:19` |
-| `StockTransferStatus` | `apps/api/prisma/schema/transfers.prisma:15` |
-| `StockVarianceStatus` | `apps/api/prisma/schema/inventory.prisma:115` |
-
+**In step.** Every model, column and enum the schema declares is built by a migration.
 
 
 ## Every migration
@@ -113,6 +78,11 @@ nothing here fails a build.
 | 2026-09-18 | `add_journal_line_counterparty_brand` | 2 | ALTER TABLE, CREATE INDEX | JournalLine |
 | 2026-09-18 | `add_pos_terminals` | 6 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | PosTerminal |
 | 2026-09-18 | `add_pos_shifts_cash_movements` | 9 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | CashMovement, PosShift |
+| 2026-09-20 | `add_pos_and_transfer_stock_reasons` | 4 | ALTER TYPE |  |
+| 2026-09-20 | `add_location_type` | 2 | CREATE TYPE, ALTER TABLE | Location |
+| 2026-09-20 | `add_stock_variance` | 8 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | StockVariance |
+| 2026-09-20 | `add_order_channel_and_pos_receipt` | 7 | CREATE TYPE, ALTER TABLE, CREATE INDEX, CREATE TABLE, CREATE UNIQUE INDEX | Order, PosReceipt |
+| 2026-09-20 | `add_stock_transfers` | 11 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | StockTransfer, StockTransferLine, TransferNumberCounter |
 
 
 ---

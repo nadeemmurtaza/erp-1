@@ -44,7 +44,7 @@ Every top-level export in `infra`, with the line to open.
 | `index-scan.mjs` | `classify` | function | :678 | What kind of thing a file is, from the conventions this repo actually uses. |
 | `index-scan.mjs` | `splitSqlStatements` | function | :744 | Splits SQL into statements, ignoring semicolons inside strings, identifiers, dollar-quoted bodies a… |
 | `index-scan.mjs` | `scanMigrationSql` | function | :785 |  |
-| `index-scan.mjs` | `schemaMigrationDrift` | function | :850 | Which models, fields and enums the schema declares that no migration builds. |
+| `index-scan.mjs` | `schemaMigrationDrift` | function | :864 | Which models, fields and enums the schema declares that no migration builds. |
 | `index-scan.mjs` | `a` `b` | re-export |  | from `./x` |
 | `index-scan.mjs` | `*` | re-export |  | from `./x` |
 | `model-routing.mjs` | `ROUTING_POLICY` | const | :35 | @typedef {'low'\|'medium'\|'high'\|'xhigh'\|'max'} EffortLevel |

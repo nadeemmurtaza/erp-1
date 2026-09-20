@@ -131,7 +131,7 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 
 | Script | Lines | What it enforces |
 |---|---|---|
-| `scripts/build-index.mjs` | 1904 |  |
+| `scripts/build-index.mjs` | 2069 |  |
 | `scripts/build-logo-raster.mjs` | 54 |  |
 | `scripts/check-email-dns.mjs` | 399 |  |
 | `scripts/check-env-templates.mjs` | 87 |  |

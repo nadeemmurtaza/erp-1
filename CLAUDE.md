@@ -332,6 +332,14 @@ Three rules about it:
 If the index is missing or stale in your checkout, the pre-commit hook is not
 installed: run `pnpm install`, or `node scripts/install-git-hooks.mjs`.
 
+**This file is the contract for every agent, not only for Claude.** The same
+generator writes `AGENTS.md`, `.github/copilot-instructions.md`, `GEMINI.md`,
+`.cursor/rules/repo-index.mdc`, `.windsurfrules`, `.clinerules` and
+`.junie/guidelines.md` from one shared body, and every one of them points back
+here. They are generated — add a tool to `AGENT_FILES` in
+`scripts/build-index.mjs`; never hand-edit one, and never put a rule in one
+that is not already in this file.
+
 ## Use what exists
 
 Most drift here came from someone building a thing that already existed. Before

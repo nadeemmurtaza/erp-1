@@ -38,3 +38,9 @@ coverage
 **/coverage
 .dockerignore
 **/Dockerfile
+
+# The generated repository index — documentation for humans and agents, never
+# read at runtime by the API or the web app. Keeping ~2MB of markdown out of
+# the build context speeds every image build and puts nothing in the image
+# that could go stale there.
+docs/index

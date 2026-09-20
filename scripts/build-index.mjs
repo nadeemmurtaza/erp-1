@@ -483,6 +483,28 @@ you ever see it drift, the hook is not installed — run \`pnpm install\`, or
 **Never edit a file under \`docs/index/\` by hand.** The next commit overwrites
 it. Fix the generator, or fix the code the generator read.
 
+## Every agent, not just Claude
+
+The same generator writes the file each agent tool looks for, from one shared
+body, so no two of them can drift apart:
+
+${table(['File', 'Read by'], [
+  ['\`AGENTS.md\`', 'OpenAI Codex, Jules, Devin, Amp, Factory, Aider, Zed, Warp, Cursor ≥1.0'],
+  ['\`.github/copilot-instructions.md\`', 'GitHub Copilot'],
+  ['\`GEMINI.md\`', 'Gemini CLI, Gemini Code Assist'],
+  ['\`.cursor/rules/repo-index.mdc\`', 'Cursor'],
+  ['\`.windsurfrules\`', 'Windsurf / Codeium'],
+  ['\`.clinerules\`', 'Cline, Roo Code'],
+  ['\`.junie/guidelines.md\`', 'JetBrains Junie'],
+  ['\`CLAUDE.md\`', 'Claude Code — hand-written; the contract the others point to'],
+])}
+Each one is a **pointer**, never a copy of the rules: they send every tool to
+\`CLAUDE.md\`, which stays the single contract. They are generated and checked
+like the rest of the index — edit \`AGENT_FILES\` in the generator, not the files.
+
+Claude Code additionally runs \`.claude/hooks/session-start.sh\`, which prints
+\`SESSION-BRIEF.md\` into every session and installs the git hooks.
+
 ## Coverage
 
 ${table(['Area', 'Files', 'Lines', 'L1 page'], Object.keys(AREA_LABEL)
@@ -496,6 +518,149 @@ ${table(['Area', 'Files', 'Lines', 'L1 page'], Object.keys(AREA_LABEL)
 Every tracked file is accounted for: see
 [\`cross/files.md\`](${link(self, 'docs/index/cross/files.md')}) for the complete
 file-by-file inventory.
+`);
+}
+
+/* ── Agent instruction files — one body, every tool's filename ─────────── */
+
+/**
+ * The same pointer, written to every filename an agent tool looks for.
+ *
+ * Only Claude Code reads `CLAUDE.md`. Copilot reads
+ * `.github/copilot-instructions.md`, Gemini reads `GEMINI.md`, Cursor reads
+ * `.cursor/rules/*.mdc`, and a growing set of tools (Codex, Jules, Devin, Amp,
+ * Aider, Zed, Warp, Cursor ≥1.0) read `AGENTS.md`. Without these, every
+ * non-Claude agent working here starts blind: no index, and — more
+ * importantly — no seven laws and no engineering protocol, because those live
+ * in a file it never opens.
+ *
+ * They are GENERATED from one string for the reason everything else here is:
+ * eight hand-maintained copies of the same paragraph are eight chances to
+ * disagree, and the one that is wrong is the one somebody's agent reads. Each
+ * file is a POINTER, never a copy of the rules — `CLAUDE.md` stays the single
+ * contract, and these send every tool to it.
+ *
+ * Adding a tool is one line in AGENT_FILES below.
+ *
+ * Deliberately carries no counts. These files are themselves tracked, so a
+ * figure like "877 files" printed here would feed back into the next build's
+ * own totals. Numbers live in `docs/index/SESSION-BRIEF.md`, which the index
+ * excludes from its own scan.
+ */
+{
+  const ROUTING = [
+    ['orientation — which page answers what', 'docs/index/README.md'],
+    ['the whole repository on one screen', 'docs/index/01-MAP.md'],
+    ['an API endpoint and the permission guarding it', 'docs/index/cross/routes.md'],
+    ['a permission: what enforces it, which roles hold it', 'docs/index/cross/permissions.md'],
+    ['a table, column or enum', 'docs/index/cross/data-model.md'],
+    ['how two modules talk (domain events)', 'docs/index/cross/events.md'],
+    ['a screen, URL or nav entry', 'docs/index/cross/ui-routes.md'],
+    ['whether a component already exists', 'docs/index/cross/components.md'],
+    ['everything about one API module', 'docs/index/modules/<name>.md'],
+    ['what a file exports, with line numbers', 'docs/index/symbols/<area>.md'],
+    ['every tracked file, by area', 'docs/index/cross/files.md'],
+    ['a command, a test, a migration, a doc outline', 'docs/index/cross/{commands,tests,migrations,docs}.md'],
+    ['a machine-readable form to jq', 'docs/index/index.json'],
+  ];
+
+  const BODY = `## Read the rules first
+
+**\`CLAUDE.md\` at the repository root is the binding contract for every agent
+working here, not only for Claude.** It carries the seven laws, the module-pack
+architecture, the engineering operating protocol and the definition of done.
+Read it before you write code. \`docs/implementation/00-HOUSE-RULES.md\` is its
+long form, and \`docs/implementation/\` holds the documents of record.
+
+Nothing in this file overrides it. If they disagree, \`CLAUDE.md\` wins.
+
+## Look it up before you search
+
+This is a large monorepo — four applications, three shared packages, a NestJS
+API with independent feature modules, a multi-file Prisma schema and
+hand-written forward-only migrations. Searching it from scratch is expensive
+and unreliable.
+
+A generated index of the whole repository lives in **\`docs/index/\`**. It is
+rebuilt and staged by \`.githooks/pre-commit\` on every commit, so it always
+describes the commit you are looking at.
+
+**Open the index page for your question before grepping.** It answers the
+things grep answers badly — which permission actually guards a route, which
+module publishes an event, whether a component already exists — in one file
+instead of forty.
+
+| Looking for | Open |
+|---|---|
+${ROUTING.map(([q, f]) => `| ${q} | \`${f}\` |`).join('\n')}
+
+Start at \`docs/index/README.md\`. For a compact orientation, read
+\`docs/index/SESSION-BRIEF.md\`.
+
+## Three rules about the index
+
+- **Never edit anything under \`docs/index/\` by hand.** It is generated; the next
+  commit overwrites your edit. Fix \`scripts/build-index.mjs\`, or fix the code
+  the generator read.
+- **The index says *where*. \`CLAUDE.md\` and \`docs/implementation/\` say *why* and
+  *what you may do*, and they win.** If the index and a document of record
+  disagree, the document is right and the generator has a bug.
+- **It is a map, not the territory.** Its scanners are line-based, not a type
+  checker. Open the file the index points you at — never cite the index as
+  evidence that code does something.
+
+## Commands
+
+\`\`\`bash
+pnpm install                       # also installs the git hooks (see below)
+pnpm lint && pnpm typecheck && pnpm test   # before opening a PR
+
+pnpm index                         # regenerate docs/index/ (zero deps, under a second)
+pnpm index:check                   # exit 1 if the committed index is stale — CI runs this
+node scripts/install-git-hooks.mjs # if the pre-commit hook is not installed
+\`\`\`
+
+If \`docs/index/\` is missing or stale in your checkout, the hook is not
+installed — run \`pnpm install\`, or the command above.`;
+
+  const GENERATED_NOTE = (file) => `<!-- GENERATED by scripts/build-index.mjs from one shared body, so that every
+     agent tool is told the same thing. DO NOT EDIT: run \`pnpm index\` instead.
+     Durable project rules belong in CLAUDE.md, which this file points to. -->`;
+
+  /**
+   * filename → which tools read it. Curated rather than exhaustive: each entry
+   * is a file some tool will actually open, and one more unread dotfile in the
+   * root is clutter (House Rule 6).
+   */
+  const AGENT_FILES = [
+    ['AGENTS.md', 'OpenAI Codex · Jules · Devin · Amp · Factory · Aider · Zed · Warp · Cursor ≥1.0 — the cross-vendor default'],
+    ['.github/copilot-instructions.md', 'GitHub Copilot — VS Code, JetBrains, and the Copilot coding agent'],
+    ['GEMINI.md', 'Gemini CLI · Gemini Code Assist'],
+    ['.windsurfrules', 'Windsurf / Codeium'],
+    ['.clinerules', 'Cline · Roo Code'],
+    ['.junie/guidelines.md', 'JetBrains Junie'],
+  ];
+
+  for (const [file, tools] of AGENT_FILES) {
+    emit(file, `${GENERATED_NOTE(file)}
+
+# Working in this repository
+
+_Read by: ${tools}._
+
+${BODY}
+`);
+  }
+
+  // Cursor's project-rule format needs its own frontmatter to load every time.
+  emit('.cursor/rules/repo-index.mdc', `---
+description: Repository index and house rules — read before searching the codebase
+alwaysApply: true
+---
+
+${GENERATED_NOTE('.cursor/rules/repo-index.mdc')}
+
+${BODY}
 `);
 }
 

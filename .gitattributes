@@ -1,0 +1,18 @@
+# Generated artefacts are compared BYTE FOR BYTE by `pnpm index:check`, which
+# CI and .githooks/post-commit both run. Without this, a checkout on Windows
+# with core.autocrlf=true gets them with CRLF endings while the generator
+# writes LF — so the check would report the index as stale on every run, on
+# every machine, forever, with nothing actually wrong. Pin them to LF.
+docs/index/**      text eol=lf linguist-generated=true
+AGENTS.md          text eol=lf linguist-generated=true
+GEMINI.md          text eol=lf linguist-generated=true
+.windsurfrules     text eol=lf linguist-generated=true
+.clinerules        text eol=lf linguist-generated=true
+.junie/**          text eol=lf linguist-generated=true
+.cursor/**         text eol=lf linguist-generated=true
+.github/copilot-instructions.md text eol=lf linguist-generated=true
+
+# Shell hooks must keep LF or /bin/sh refuses them on a checkout made on
+# Windows and used in a Linux container.
+.githooks/*        text eol=lf
+.claude/hooks/*    text eol=lf

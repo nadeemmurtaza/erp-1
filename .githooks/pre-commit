@@ -19,6 +19,13 @@
 
 set -e
 
+# Git normally runs a hook from the top of the working tree, but not in every
+# environment: a worktree, a submodule, or a GUI client can invoke it from
+# elsewhere, and then `node scripts/build-index.mjs` resolves against the wrong
+# directory and the commit fails for no reason the author can see.
+ROOT=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
+cd "$ROOT" || exit 0
+
 # Nothing to index during a merge or rebase conflict resolution — the tree is
 # not in a state the index should describe, and regenerating mid-rebase would
 # fight the rebase for every replayed commit.
@@ -32,9 +39,12 @@ if ! command -v node >/dev/null 2>&1; then
   exit 0
 fi
 
-# Only rebuild when something the index actually reads has changed. A commit
-# that touches only docs/index/ itself, or only a binary asset, does not need a
-# rebuild — and a hook that does visible work on every commit gets disabled.
+# Only rebuild when something the index reads has changed. A commit that
+# touches nothing but docs/index/ itself does not need one — and a hook that
+# does visible work on every commit is a hook people start passing
+# --no-verify to. Every other generated file (AGENTS.md and friends) is
+# deliberately NOT excluded here: a hand-edit to one of those should trigger a
+# rebuild, which is what puts the generated content back.
 CHANGED=$(git diff --cached --name-only --diff-filter=ACMRD)
 if [ -z "$(printf '%s\n' "$CHANGED" | grep -v '^docs/index/' || true)" ]; then
   exit 0
@@ -47,6 +57,10 @@ node scripts/build-index.mjs --quiet || {
   exit 1
 }
 
-git add -A docs/index
+# Stage every generated artefact, not just docs/index/ — the agent
+# instruction files (AGENTS.md, GEMINI.md, .cursor/rules/…) come out of the
+# same generator and are covered by the same `--check`.
+git add -A docs/index AGENTS.md GEMINI.md .windsurfrules .clinerules \
+          .junie .cursor .github/copilot-instructions.md 2>/dev/null || true
 
 exit 0

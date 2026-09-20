@@ -3,23 +3,28 @@
 
 # Files — root
 
-All 16 tracked files in `repository root files`, by directory.
+All 23 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
 
-### `.` (11)
+### `.` (16)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `.clinerules` | file | — |  |
+| `.gitattributes` | file | — |  |
 | `.prettierignore` | file | — |  |
+| `.windsurfrules` | file | — |  |
+| `AGENTS.md` | doc | 79 |  |
 | `check_output.txt` | txt | — |  |
-| `CLAUDE.md` | doc | 923 |  |
+| `CLAUDE.md` | doc | 931 |  |
 | `CONTRIBUTING.md` | doc | 127 |  |
 | `DEPLOYMENT.md` | doc | 492 |  |
 | `fix-all.js` | script | 15 | Get all files from git grep |
 | `fix-db.js` | script | 15 |  |
 | `fix.js` | script | 9 | Use regex to remove duplicate users block |
+| `GEMINI.md` | doc | 79 |  |
 | `raw_output.txt` | txt | — |  |
 | `README.md` | doc | 348 |  |
 | `yaseen-backup-before-reset.sql` | sql | 5870 |  |
@@ -37,12 +42,24 @@ All 16 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `session-start.sh` | hook | 54 |  |
 
+### `.cursor/rules` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `repo-index.mdc` | mdc | — |  |
+
 ### `.githooks` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `post-commit` | file | — |  |
 | `pre-commit` | file | — |  |
+
+### `.junie` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `guidelines.md` | doc | 79 |  |
 
 
 ---

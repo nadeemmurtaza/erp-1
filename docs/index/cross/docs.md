@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**31** markdown documents. These explain **why**; this index only says **where**.
+**35** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -21,19 +21,40 @@ decision is not reopened without new evidence.
 
 ## Outlines
 
-### `CLAUDE.md`  <sub>923 lines</sub>
+### `.github/copilot-instructions.md`  <sub>79 lines</sub>
+
+- Read the rules first  <sub>:9</sub>
+- Look it up before you search  <sub>:19</sub>
+- Three rules about the index  <sub>:54</sub>
+- Commands  <sub>:66</sub>
+
+### `.junie/guidelines.md`  <sub>79 lines</sub>
+
+- Read the rules first  <sub>:9</sub>
+- Look it up before you search  <sub>:19</sub>
+- Three rules about the index  <sub>:54</sub>
+- Commands  <sub>:66</sub>
+
+### `AGENTS.md`  <sub>79 lines</sub>
+
+- Read the rules first  <sub>:9</sub>
+- Look it up before you search  <sub>:19</sub>
+- Three rules about the index  <sub>:54</sub>
+- Commands  <sub>:66</sub>
+
+### `CLAUDE.md`  <sub>931 lines</sub>
 
 - The seven laws  <sub>:13</sub>
 - Software engineering, not vibe coding  <sub>:35</sub>
 - Feature scope: build the whole capability, not one slice of it  <sub>:144</sub>
 - Scale: the three axes  <sub>:229</sub>
 - Look it up before you search  <sub>:286</sub>
-- Use what exists  <sub>:335</sub>
-- Borders and boxes  <sub>:385</sub>
-- No dead ends  <sub>:425</sub>
-- Before you open a PR  <sub>:473</sub>
-- Deployment  <sub>:504</sub>
-- NEWAX Engineering Operating Protocol  <sub>:517</sub>
+- Use what exists  <sub>:343</sub>
+- Borders and boxes  <sub>:393</sub>
+- No dead ends  <sub>:433</sub>
+- Before you open a PR  <sub>:481</sub>
+- Deployment  <sub>:512</sub>
+- NEWAX Engineering Operating Protocol  <sub>:525</sub>
 
 ### `CONTRIBUTING.md`  <sub>127 lines</sub>
 
@@ -378,6 +399,13 @@ _no second-level headings_
 - Part 7 — Roadmap  <sub>:865</sub>
 - Part 8 — The briefs this spawns  <sub>:946</sub>
 - Acceptance  <sub>:990</sub>
+
+### `GEMINI.md`  <sub>79 lines</sub>
+
+- Read the rules first  <sub>:9</sub>
+- Look it up before you search  <sub>:19</sub>
+- Three rules about the index  <sub>:54</sub>
+- Commands  <sub>:66</sub>
 
 ### `README.md`  <sub>348 lines</sub>
 

@@ -3,7 +3,7 @@
 
 # Every tracked file
 
-All **885** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **893** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
@@ -16,8 +16,8 @@ Split by area so you load one, not all of them.
 | apps/mobile | 42 | 5,292 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 53 | 4,476 | [files/packages.md](../files/packages.md) |
 | docs/* | 33 | 9,527 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 45 | 23,679 | [files/infra.md](../files/infra.md) |
-| repository root files | 16 | 7,892 | [files/root.md](../files/root.md) |
+| scripts, CI, deployment and container configuration | 46 | 23,923 | [files/infra.md](../files/infra.md) |
+| repository root files | 23 | 8,137 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -37,7 +37,7 @@ name a new file: the convention is what makes it findable.
 | dto | 46 |
 | migration | 45 |
 | nest module | 38 |
-| doc | 30 |
+| doc | 34 |
 | script | 28 |
 | asset | 26 |
 | json | 24 |
@@ -46,8 +46,8 @@ name a new file: the convention is what makes it findable.
 | utility | 19 |
 | event subscriber | 16 |
 | e2e test | 15 |
+| file | 13 |
 | yaml | 12 |
-| file | 10 |
 | config | 9 |
 | constants | 7 |
 | loading | 7 |
@@ -69,6 +69,7 @@ name a new file: the convention is what makes it findable.
 | route handler | 2 |
 | txt | 2 |
 | sql | 2 |
+| mdc | 1 |
 | auth strategy | 1 |
 | dispatcher | 1 |
 | agent | 1 |

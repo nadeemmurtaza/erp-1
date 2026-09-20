@@ -3,7 +3,7 @@
 
 # repository root files
 
-16 files · 7,892 lines
+23 files · 8,137 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -16,10 +16,12 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 11 | 7,799 | file, doc, txt, script |
+| `.` | 16 | 7,965 | file, doc, txt, script |
 | `.claude` | 2 | 39 | json |
 | `.claude/hooks` | 1 | 54 | hook |
+| `.cursor/rules` | 1 | 0 | mdc |
 | `.githooks` | 2 | 0 | file |
+| `.junie` | 1 | 79 | doc |
 
 
 
@@ -29,20 +31,20 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `yaseen-backup-before-reset.sql` | 5,870 | sql |  |
-| `CLAUDE.md` | 923 | doc |  |
+| `CLAUDE.md` | 931 | doc |  |
 | `DEPLOYMENT.md` | 492 | doc |  |
 | `README.md` | 348 | doc |  |
 | `CONTRIBUTING.md` | 127 | doc |  |
+| `.junie/guidelines.md` | 79 | doc |  |
+| `AGENTS.md` | 79 | doc |  |
+| `GEMINI.md` | 79 | doc |  |
 | `.claude/hooks/session-start.sh` | 54 | hook |  |
 | `.claude/launch.json` | 24 | json |  |
 | `.claude/settings.json` | 15 | json |  |
 | `fix-all.js` | 15 | script | Get all files from git grep |
 | `fix-db.js` | 15 | script |  |
 | `fix.js` | 9 | script | Use regex to remove duplicate users block |
-| `.githooks/post-commit` | 0 | file |  |
-| `.githooks/pre-commit` | 0 | file |  |
-| `.prettierignore` | 0 | file |  |
-| `check_output.txt` | 0 | txt |  |
+| `.clinerules` | 0 | file |  |
 
 
 ---

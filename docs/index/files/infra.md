@@ -3,7 +3,7 @@
 
 # Files — infra
 
-All 45 tracked files in `scripts, CI, deployment and container configuration`, by directory.
+All 46 tracked files in `scripts, CI, deployment and container configuration`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -32,6 +32,12 @@ All 45 tracked files in `scripts, CI, deployment and container configuration`, b
 | `pnpm-workspace.yaml` | yaml | 12 |  |
 | `turbo.json` | json | 49 |  |
 | `wrangler.toml` | toml | 17 |  |
+
+### `.github` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `copilot-instructions.md` | doc | 79 |  |
 
 ### `.github/workflows` (2)
 
@@ -71,7 +77,7 @@ All 45 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `build-index.mjs` | script | 1904 |  |
+| `build-index.mjs` | script | 2069 |  |
 | `build-logo-raster.mjs` | script | 54 |  |
 | `check-email-dns.mjs` | script | 399 |  |
 | `check-env-templates.mjs` | script | 87 |  |

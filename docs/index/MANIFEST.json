@@ -1,8 +1,15 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "5b6c58a4064cec36",
+  "contentHash": "d4072715f443afa1",
   "pages": [
+    ".clinerules",
+    ".cursor/rules/repo-index.mdc",
+    ".github/copilot-instructions.md",
+    ".junie/guidelines.md",
+    ".windsurfrules",
+    "AGENTS.md",
+    "GEMINI.md",
     "docs/index/01-MAP.md",
     "docs/index/README.md",
     "docs/index/SESSION-BRIEF.md",
@@ -104,8 +111,8 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 885,
-    "lines": 144021,
+    "files": 893,
+    "lines": 144510,
     "routes": 286,
     "controllers": 57,
     "models": 113,

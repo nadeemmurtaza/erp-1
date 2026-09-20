@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **885 files / 144,021 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **893 files / 144,510 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -69,6 +69,29 @@ you ever see it drift, the hook is not installed — run `pnpm install`, or
 **Never edit a file under `docs/index/` by hand.** The next commit overwrites
 it. Fix the generator, or fix the code the generator read.
 
+## Every agent, not just Claude
+
+The same generator writes the file each agent tool looks for, from one shared
+body, so no two of them can drift apart:
+
+| File | Read by |
+|---|---|
+| `AGENTS.md` | OpenAI Codex, Jules, Devin, Amp, Factory, Aider, Zed, Warp, Cursor ≥1.0 |
+| `.github/copilot-instructions.md` | GitHub Copilot |
+| `GEMINI.md` | Gemini CLI, Gemini Code Assist |
+| `.cursor/rules/repo-index.mdc` | Cursor |
+| `.windsurfrules` | Windsurf / Codeium |
+| `.clinerules` | Cline, Roo Code |
+| `.junie/guidelines.md` | JetBrains Junie |
+| `CLAUDE.md` | Claude Code — hand-written; the contract the others point to |
+
+Each one is a **pointer**, never a copy of the rules: they send every tool to
+`CLAUDE.md`, which stays the single contract. They are generated and checked
+like the rest of the index — edit `AGENT_FILES` in the generator, not the files.
+
+Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
+`SESSION-BRIEF.md` into every session and installs the git hooks.
+
 ## Coverage
 
 | Area | Files | Lines | L1 page |
@@ -79,8 +102,8 @@ it. Fix the generator, or fix the code the generator read.
 | apps/mobile | 42 | 5,292 | [mobile](areas/mobile.md) |
 | packages/* | 53 | 4,476 | [packages](areas/packages.md) |
 | docs/* | 33 | 9,527 | [docs](areas/docs.md) |
-| scripts, CI, deployment and container configuration | 45 | 23,679 | [infra](areas/infra.md) |
-| repository root files | 16 | 7,892 | [root](areas/root.md) |
+| scripts, CI, deployment and container configuration | 46 | 23,923 | [infra](areas/infra.md) |
+| repository root files | 23 | 8,137 | [root](areas/root.md) |
 
 Every tracked file is accounted for: see
 [`cross/files.md`](cross/files.md) for the complete

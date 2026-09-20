@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 885,
-    "lines": 144021,
+    "files": 893,
+    "lines": 144510,
     "routes": 286,
     "controllers": 57,
     "models": 113,
@@ -18,15 +18,15 @@
   },
   "areas": {
     "root": {
-      "files": 16,
-      "lines": 7892,
-      "bytes": 580834,
+      "files": 23,
+      "lines": 8137,
+      "bytes": 606328,
       "label": "repository root files"
     },
     "infra": {
-      "files": 45,
-      "lines": 23679,
-      "bytes": 898900,
+      "files": 46,
+      "lines": 23923,
+      "bytes": 910464,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -20653,11 +20653,29 @@
       "symbols": []
     },
     {
+      "path": ".clinerules",
+      "area": "root",
+      "kind": "file",
+      "lines": 0,
+      "bytes": 3760,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": ".cursor/rules/repo-index.mdc",
+      "area": "root",
+      "kind": "mdc",
+      "lines": 0,
+      "bytes": 3811,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": ".dockerignore",
       "area": "infra",
       "kind": "file",
       "lines": 0,
-      "bytes": 832,
+      "bytes": 1105,
       "doc": "",
       "symbols": []
     },
@@ -20689,11 +20707,20 @@
       "symbols": []
     },
     {
+      "path": ".gitattributes",
+      "area": "root",
+      "kind": "file",
+      "lines": 0,
+      "bytes": 1008,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": ".githooks/post-commit",
       "area": "root",
       "kind": "file",
       "lines": 0,
-      "bytes": 804,
+      "bytes": 886,
       "doc": "",
       "symbols": []
     },
@@ -20702,7 +20729,16 @@
       "area": "root",
       "kind": "file",
       "lines": 0,
-      "bytes": 2022,
+      "bytes": 2925,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": ".github/copilot-instructions.md",
+      "area": "infra",
+      "kind": "doc",
+      "lines": 79,
+      "bytes": 3810,
       "doc": "",
       "symbols": []
     },
@@ -20734,11 +20770,38 @@
       "symbols": []
     },
     {
+      "path": ".junie/guidelines.md",
+      "area": "root",
+      "kind": "doc",
+      "lines": 79,
+      "bytes": 3758,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": ".prettierignore",
       "area": "root",
       "kind": "file",
       "lines": 0,
-      "bytes": 299,
+      "bytes": 601,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": ".windsurfrules",
+      "area": "root",
+      "kind": "file",
+      "lines": 0,
+      "bytes": 3761,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "AGENTS.md",
+      "area": "root",
+      "kind": "doc",
+      "lines": 79,
+      "bytes": 3861,
       "doc": "",
       "symbols": []
     },
@@ -20746,8 +20809,8 @@
       "path": "CLAUDE.md",
       "area": "root",
       "kind": "doc",
-      "lines": 923,
-      "bytes": 45634,
+      "lines": 931,
+      "bytes": 46107,
       "doc": "",
       "symbols": []
     },
@@ -20775,6 +20838,15 @@
       "kind": "doc",
       "lines": 492,
       "bytes": 20352,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "GEMINI.md",
+      "area": "root",
+      "kind": "doc",
+      "lines": 79,
+      "bytes": 3775,
       "doc": "",
       "symbols": []
     },
@@ -35591,8 +35663,8 @@
       "path": "scripts/build-index.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 1904,
-      "bytes": 87293,
+      "lines": 2069,
+      "bytes": 94774,
       "doc": "",
       "symbols": []
     },

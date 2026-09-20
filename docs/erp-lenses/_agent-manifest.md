@@ -92,6 +92,12 @@ the record of what actually ran - including what failed and was retried.
 | `harden:35:risk-insurance-continuity` | Harden | completed | [35h-harden-risk-insurance-continuity.md](35h-harden-risk-insurance-continuity.md) |
 | `harden:36:internal-audit-controls-testing` | Harden | completed | [36h-harden-internal-audit-controls-testing.md](36h-harden-internal-audit-controls-testing.md) |
 | `cluster` | Cluster | completed | [_agent-cluster.md](_agent-cluster.md) |
+| `draft:terse` | Draft | completed | [_agent-draft-terse.md](_agent-draft-terse.md) |
+| `draft:teacher` | Draft | completed | [_agent-draft-teacher.md](_agent-draft-teacher.md) |
+| `draft:auditor` | Draft | completed | [_agent-draft-auditor.md](_agent-draft-auditor.md) |
+| `judge:owner` | Judge | completed | [_agent-judge-owner.md](_agent-judge-owner.md) |
+| `judge:auditor` | Judge | completed | [_agent-judge-auditor.md](_agent-judge-auditor.md) |
+| `judge:engineer` | Judge | completed | [_agent-judge-engineer.md](_agent-judge-engineer.md) |
 | `gen:costing-transfer-pricing` | Generate | not completed | - |
 | `gen:credit-receivables` | Generate | not completed | - |
 | `gen:procurement-supplier-lifecycle` | Generate | not completed | - |
@@ -127,12 +133,6 @@ the record of what actually ran - including what failed and was retried.
 | `gen:money-integrity-gl` | Generate | not completed | - |
 | `gen:approval-delegation` | Generate | not completed | - |
 | `gen:treasury-cash-reconciliation` | Generate | not completed | - |
-| `draft:terse` | Draft | not completed | - |
-| `draft:auditor` | Draft | not completed | - |
-| `draft:teacher` | Draft | not completed | - |
-| `judge:engineer` | Judge | not completed | - |
-| `judge:owner` | Judge | not completed | - |
-| `judge:auditor` | Judge | not completed | - |
 | `final-writer` | Write | not completed | - |
 | `gap:departments` | Gaps | not completed | - |
 | `gap:editions-and-volume` | Gaps | not completed | - |

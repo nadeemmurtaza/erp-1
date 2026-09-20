@@ -1,4 +1,4 @@
-# 24. Day two: who watches it and who gets paged
+# 26. Day two: who watches it and who gets paged
 
 At corporate scale a feature does not fail loudly — it fails at one of 100+
 locations while the aggregate looks fine, or it goes quiet at 2am with no one

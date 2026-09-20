@@ -15,7 +15,26 @@
 
 set -uo pipefail
 
-PROMPT=$(cat 2>/dev/null | tr '\n' ' ')
+# UserPromptSubmit delivers a JSON OBJECT on stdin, not the bare prompt. Reading
+# it raw matches the envelope's own field names — `permission_mode` alone makes
+# every prompt look like security work — so the prompt has to be extracted
+# first. Caught exactly that way: "merge to main" tripped the security rule.
+RAW=$(cat 2>/dev/null)
+[ -z "${RAW:-}" ] && exit 0
+
+if command -v node >/dev/null 2>&1; then
+  PROMPT=$(printf '%s' "$RAW" | node -e '
+let d="";process.stdin.on("data",c=>d+=c).on("end",()=>{
+  try { process.stdout.write(String(JSON.parse(d).prompt ?? "")); }
+  catch { process.stdout.write(d); }
+});' 2>/dev/null)
+else
+  # No node: fall back to the raw text, but strip the envelope keys that would
+  # otherwise fire the rules on their own.
+  PROMPT=$(printf '%s' "$RAW" | sed -E 's/"(permission_mode|transcript_path|session_id|hook_event_name|cwd)"[^,]*//g')
+fi
+
+PROMPT=$(printf '%s' "${PROMPT:-}" | tr '\n' ' ')
 [ -z "${PROMPT:-}" ] && exit 0
 
 HITS=""

@@ -77,7 +77,7 @@ All 47 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `build-index.mjs` | script | 2229 |  |
+| `build-index.mjs` | script | 2248 |  |
 | `build-logo-raster.mjs` | script | 54 |  |
 | `check-email-dns.mjs` | script | 399 |  |
 | `check-env-templates.mjs` | script | 87 |  |

@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-47 files · 24,371 lines
+47 files · 24,390 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -25,7 +25,7 @@ on them.
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 10 | 3,909 | script, py |
+| `scripts` | 10 | 3,928 | script, py |
 | `scripts/lib` | 2 | 1,165 | utility |
 
 
@@ -41,7 +41,7 @@ on them.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `pnpm-lock.yaml` | 17,493 | yaml |  |
-| `scripts/build-index.mjs` | 2,229 | script |  |
+| `scripts/build-index.mjs` | 2,248 | script |  |
 | `scripts/lib/index-scan.mjs` | 877 | utility | Scanners for the repository index. |
 | `scripts/check-module-boundaries.mjs` | 535 | script |  |
 | `scripts/check-email-dns.mjs` | 399 | script |  |

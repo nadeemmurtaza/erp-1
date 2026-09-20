@@ -37,11 +37,11 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 | `(root)` | 36 | 26,606 | workspace manifests, docker compose/stack files, env templates |
 | `docs` | 33 | 9,527 | documents of record — implementation plans, house rules, brand |
 | `apps/mobile` | 42 | 5,292 | Expo — customer mobile app |
-| `scripts` | 12 | 5,074 | repository checks and generators (lint gates, this index) |
+| `scripts` | 12 | 5,093 | repository checks and generators (lint gates, this index) |
 | `packages/shared` | 36 | 3,894 | brand, money, permissions, measurements, entities |
 | `apps/pos` | 28 | 1,732 | Next.js PWA — offline-first point of sale |
+| `.claude` | 12 | 498 |  |
 | `packages/pos-core` | 13 | 481 | basket, tender, receipt and outbox maths, UI-free |
-| `.claude` | 12 | 479 |  |
 | `deploy` | 12 | 401 | systemd units, backup and alert scripts, mail configuration |
 | `.github` | 3 | 265 | CI and deployment workflows |
 | `packages/config` | 4 | 101 | shared tsconfig and eslint bases |

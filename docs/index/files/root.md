@@ -54,7 +54,7 @@ All 32 tracked files in `repository root files`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `session-start.sh` | hook | 54 |  |
-| `suggest-model.sh` | hook | 45 |  |
+| `suggest-model.sh` | hook | 64 |  |
 
 ### `.cursor/rules` (1)
 

@@ -3,7 +3,7 @@
 
 # Commands
 
-Every script in every `package.json` (**67**), plus the repository's own check scripts.
+Every script in every `package.json` (**68**), plus the repository's own check scripts.
 
 
 ## The one you run before a PR
@@ -104,7 +104,7 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 |---|---|
 | `build` | `turbo run build` |
 | `dev` | `turbo run dev` |
-| `lint` | `turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs` |
+| `lint` | `turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node…` |
 | `typecheck` | `turbo run typecheck` |
 | `test` | `turbo run test` |
 | `format` | `prettier --write "**/*.{ts,tsx,js,mjs,json,md}"` |
@@ -112,6 +112,7 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 | `boundaries` | `node scripts/check-module-boundaries.mjs` |
 | `check:secrets` | `node scripts/check-frontend-secrets.mjs` |
 | `check:env` | `node scripts/check-env-templates.mjs` |
+| `check:rules` | `node scripts/check-rules.mjs` |
 | `check:email` | `node scripts/check-email-dns.mjs` |
 | `index` | `node scripts/build-index.mjs` |
 | `index:check` | `node scripts/build-index.mjs --check` |
@@ -140,8 +141,9 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 | `scripts/check-frontend-secrets.mjs` | 137 |  |
 | `scripts/check-module-boundaries.mjs` | 535 |  |
 | `scripts/check-route-permissions.mjs` | 136 |  |
+| `scripts/check-rules.mjs` | 120 |  |
 | `scripts/check.mjs` | 153 |  |
-| `scripts/idx.mjs` | 364 |  |
+| `scripts/idx.mjs` | 402 |  |
 | `scripts/install-git-hooks.mjs` | 89 |  |
 | `scripts/lib/index-scan.mjs` | 906 | Scanners for the repository index. |
 | `scripts/lib/model-routing.mjs` | 363 | Which model and how much effort each kind of job in this repository deserves. |

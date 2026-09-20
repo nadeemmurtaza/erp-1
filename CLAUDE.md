@@ -350,143 +350,40 @@ here. They are generated — add a tool to `AGENT_FILES` in
 `scripts/build-index.mjs`; never hand-edit one, and never put a rule in one
 that is not already in this file.
 
-## Use what exists
+## The rule index
 
-Most drift here came from someone building a thing that already existed. Before
-writing markup, check this list. **Grep for the literal before adding one.**
+Every rule in this repository is binding. Not every rule needs to be in front of
+you at every moment, so the ones that apply to a particular kind of file live in
+`.claude/rules/` and load automatically the moment you open a file they govern.
 
-### Primitives — `apps/web/src/components/ui`
+This is the complete list. A rule being scoped does not make it optional — it
+makes it arrive when it applies, which is when it is most likely to be followed.
+**If you are about to work on one of these areas, read its file.**
 
-| Import | For |
-|---|---|
-| `PageHeader` | context, title, one line, ONE primary action |
-| `Section` | a titled region with no box around it |
-| `SectionRail` | parts of one object — all present, jump to any |
-| `Tabs` | separate tasks on one object — one at a time |
-| `Disclosure` | rare, advanced or destructive — closed by default |
-| `MetricStrip` | a row of figures; give an item `detail` to make it open a panel |
-| `DataTable`, `EmptyState`, `Badge`, `Button`, `Dialog`, `Loading` | as named |
-
-Cross-surface: `components/common/status-badge` (**the** status pill — do not
-write an eighth), `components/common/wizard`.
-Storefront: `components/storefront/auth-page`, `legal-page`.
-Admin: `components/admin/range-picker`.
-
-### Classes — `apps/web/src/app/globals.css`
-
-`.btn` `.btn-primary` `.btn-secondary` `.btn-ghost` `.btn-danger` `.btn-text`
-`.card` `.chip` `.icon-btn` `.field-label` `.field-input` `.field-check`
-`.field-inline` `.field-flat` `.notice` `.notice-error` `.notice-success`
-`.notice-info` `.eyebrow` `.metric-strip` `.metric` `.table-flat` `.pill`
-`.nav-link` `.nav-tab` `.prose-legal` `.lift` `.skeleton` `.stagger`
-`.no-scrollbar` `.container-page`
-
-### Everything else
-
-| Concern | Import from |
-|---|---|
-| Money, dates, numbers | `@newax/shared` — `formatMoney` `formatDate` `formatDateTime` `formatDateShort` `formatNumber` |
-| Brand, locale, theme | `@newax/shared` — `BRAND` |
-| Routes | `@/constants/routes` — `ROUTES` |
-| API calls | `@/lib/api-client` `request()`, `@/lib/admin-client` `adminFetch()` |
-| CSV download | `@/lib/download-csv` |
-| Storage keys | `@/constants/storage` |
-| Permissions | `@/constants/permissions` |
-
-**Never**: a bare `fetch` in a page · `toLocaleString` at a call site · a hex
-in a component · a path literal in an `href` · English in customer-facing JSX
-(use `apps/web/messages/*.json`) · a second palette · a hand-rolled alert,
-status pill, table or modal.
-
----
-
-## Borders and boxes
-
-A border must mean something. Prefer whitespace and alignment.
-
-**One border, soft, and never two.**
-
-- **Never a box inside a box.** A bordered container directly inside another
-  bordered container draws two lines a few pixels apart with nothing between
-  them; the reader sees a seam, not a boundary. The inner one goes — a tint
-  (`bg-neutral-50`) or plain spacing separates it just as well. This is the
-  single most common way these screens get noisy: the wizard was a card, and
-  every step inside it drew another.
-- **Soft.** Container edges are `border-neutral-100` (#E8E8E8). Controls that
-  have to be findable — inputs, checkboxes, the secondary button — get
-  `border-neutral-200`, and nothing goes darker. A border is an edge, not a
-  drawn line.
-- **Never a border and a shadow on the same edge.** That is also two
-  boundaries. `.card` has no shadow; `.lift` adds one on hover, when it means
-  "this rose".
-- A **card** must be a summary, object, status, action, warning or result.
-  No decorative cards. A form that is the only thing on its page gets no box.
-- A **table** is already a grid — `.table-flat` draws row rules and nothing
-  else. No outer frame, no vertical lines, no zebra, and no `divide-*` on top
-  of it.
-- A **message** gets a tint, not a border — `.notice`.
-- A **filter row** is controls, not an object. No box.
-
-The one exception is a **control**, not a container: a segmented toggle whose
-outline groups its buttons into one thing, or a dashed placeholder marking an
-empty slot. Those may sit inside a card, because they are not claiming to be
-a second container.
+| Rule file | Loads when you touch | What it governs |
+|---|---|---|
+| `.claude/rules/ui.md` | web / POS / mobile components and CSS | Use what exists (primitives, classes, `@newax/shared`) · Borders and boxes · No dead ends |
+| `.claude/rules/performance.md` | services, controllers, React components, Prisma | the performance engineering table — caching, indexing, N+1, pagination, bundles |
+| `.claude/rules/database.md` | `apps/api/prisma/**` | the database change protocol; migrations are hand-written and forward-only |
+| `.claude/rules/security.md` | auth, controllers, the permission catalogue | what a security review covers; server-side enforcement only |
+| `.claude/rules/services.md` | services, controllers, listeners, crons | error handling and observability |
+| `.claude/rules/testing.md` | any spec file | the testing standard and its minimum scenarios |
+| `.claude/rules/dependencies.md` | any `package.json` | what must be answered before adding a dependency |
+| `.claude/rules/configuration.md` | env templates, config, compose files | never hardcode an environment value; never commit a secret |
+| `.claude/rules/decisions.md` | `docs/implementation/*.md` | how an architectural decision is recorded |
 
 ```bash
-# Two bordered containers, one inside the other. Should print 0 beyond the
-# two known controls.
-python scripts/nested-borders.py
+pnpm idx rule <text>        # search every rule, scoped or not
+node scripts/check-rules.mjs  # verify no rule went missing (pnpm lint runs this)
 ```
 
----
+**Adding a rule later.** If it applies to everything, it belongs in this file. If
+it applies to one kind of file, add it to the matching `.claude/rules/` file — or
+a new one with a `paths:` frontmatter block — and add a row above.
+`scripts/check-rules.mjs` fails the build if a rule file exists that this table
+does not list, or a listed file that does not exist, so the index cannot drift
+from the rules it indexes.
 
-## No dead ends
-
-A screen a user can actually reach must always offer a next step — a
-primary action, a way back, or both. Law 7 ("overview first, detail on
-click") is only half the promise if detail can dead-end once you get there.
-No screen in this product may be the end of the road.
-
-- Every `EmptyState` carries an action, unless the primary action for that
-  state already sits directly above it — a `PageHeader` create button, a
-  filter row's own clear control. Never a state with literally nothing to
-  click and no action anywhere nearby. `EmptyState` already exists precisely
-  to stop hand-rolled ones from drifting into this — use it, don't
-  re-invent a bare message.
-- Every terminal screen — order confirmation, payment result, a completed
-  wizard step, a printed receipt, a finished POS sale — offers at least one
-  next action: continue, view, print, back to till. Good news that just
-  stops is still a dead end.
-- Every Next.js app in this repo ships its own root `global-error.tsx` and
-  `not-found.tsx`, each with a working link home, plus an `error.tsx`
-  somewhere in the tree that actually covers its routes — one per
-  top-level route group is fine (`apps/web` does exactly this:
-  `global-error.tsx` and `not-found.tsx` at the root, `error.tsx` inside
-  each of `(admin)` and `(storefront)`), a bare root one is fine too, but
-  none anywhere is not. Falling through to the framework default is not
-  "fine" — the default carries no branding, no nav, and no way back into
-  the product. `apps/pos` has none of the three today and must gain them,
-  not assume the till never crashes.
-- A disabled control states why — a tooltip, `aria-describedby`, or visible
-  adjacent text — never just greyed out with the reason left for the user
-  to guess.
-- A modal or drawer closes three ways: Escape, backdrop click, and a
-  labeled close button. The shared `Dialog` already wires all three by
-  construction — a hand-rolled modal that skips one of them is the dead
-  end, not a stylistic choice.
-
-```bash
-# Every Next app ships root global-error.tsx + not-found.tsx, and at least
-# one error.tsx somewhere in its tree. Should print nothing.
-for app in apps/web apps/pos; do
-  for f in global-error.tsx not-found.tsx; do
-    [ -f "$app/src/app/$f" ] || echo "MISSING: $app/src/app/$f"
-  done
-  find "$app/src/app" -name error.tsx | grep -q . || echo "MISSING: $app has no error.tsx anywhere"
-done
-```
-
----
 
 ## Before you open a PR
 
@@ -634,41 +531,6 @@ unnecessarily, introduce speculative abstractions, or modify a shared
 component without checking every consumer. Every unrelated change adds
 review complexity and regression risk for nothing.
 
-### Performance engineering
-
-Every technique below must be *considered* where it applies to the change
-at hand — never applied blindly, and never treated as mandatory everywhere.
-The correct optimization depends on the actual system, and every claim
-needs a measurement (Lighthouse, Core Web Vitals, bundle size, API/DB
-response time, image transfer size, JS execution cost, layout shift — not
-a guess).
-
-| Area | What to check |
-|---|---|
-| **Cache API responses** | HTTP / server-side / application / Redis / CDN caching where safe. Every cache states: owner, key, expiration, invalidation strategy, data-freshness requirement, auth isolation. Never cache sensitive or user-specific data incorrectly. |
-| **Database indexing** | Justify by real WHERE, JOIN, ORDER BY, foreign-key and frequently-combined-column patterns; verify with `EXPLAIN ANALYZE`. No index added just because it seems generally useful. |
-| **Images** | Appropriate dimensions, compression, modern formats where supported, responsive delivery, lazy loading, correct aspect ratios, prevented layout shift. Never ship oversized images unnecessarily. |
-| **Loading skeletons** | Match the real content structure; avoid excessive animation; never replace a meaningful empty state; never hide an error; respect reduced-motion preferences. |
-| **Expensive query caching** | Redis, materialized views, precomputed aggregates, background jobs, or request-level memoization — always with a stated freshness requirement. |
-| **N+1 queries** | Fetching N records then querying related data separately per record is a performance *defect*. Fix with batch queries, joins, aggregation, eager loading, or data loaders. |
-| **Debounce expensive inputs** | API requests, search, filtering, validation, autosave, suggestions. Never debounce an action that needs immediate feedback. |
-| **Code splitting** | Route-level splitting, dynamic imports, lazy-loaded heavy components, deferred secondary features. Must improve loading behavior, not just multiply files. |
-| **CDN evaluation** | Static assets, public images, video, large downloads, public API responses where appropriate — weighed against traffic volume, geographic distribution, cacheability, cost, security, invalidation needs. Don't add CDN infra without a reason. |
-| **Server-side caching** | Public content, configuration, expensive computations, frequently-requested aggregates — every one needs invalidation logic. |
-| **Pagination** | Never assume a dataset stays small. Offset, cursor, or keyset pagination on every potentially large collection — no unbounded queries. |
-| **API payload compression** | Compression, field selection, DTO optimization, pagination, trimming unnecessary nested data — without sacrificing API clarity. |
-| **Prevent unnecessary re-renders** | Fix via state placement, stable references, correct reactive dependencies — not excessive watchers or expensive computed values or unnecessary global state. Don't reach for memoization without understanding the actual rendering problem. |
-| **Minify production assets** | Through the framework's own build pipeline only, never by hand. Watch JS/CSS bundle size, dead code, duplicate packages, unused polyfills. |
-| **Lazy loading** | Below-the-fold images, secondary dashboards, heavy charts, optional integrations, large editor components. Never delay critical content. |
-| **Defer non-critical scripts** | Analytics, chat widgets, tracking, ads, optional integrations must not block critical rendering. Every third-party script needs a documented purpose. |
-| **Remove unused dependencies** | Before adding one: check the language stdlib, then framework capability, then existing NEWAX utilities, then whether it's actually necessary, then its security/maintenance/bundle impact. Remove what's unused. |
-| **Database connection pooling** | Connections reused appropriately, pool size justified, connections released safely, serverless limits understood, exhaustion prevented. |
-
-### Architectural decision records
-
-Record significant technical decisions in `docs/implementation/DECISIONS.md`:
-
-```markdown
 ## Decision
 ### Context — what problem required a decision?
 ### Options Considered
@@ -679,52 +541,6 @@ Record significant technical decisions in `docs/implementation/DECISIONS.md`:
 ```
 
 Don't repeatedly revisit a settled decision without new evidence.
-
-### Security engineering
-
-Review: authentication, authorization, permission enforcement, tenant
-isolation, branch isolation, input validation, output encoding, SQL
-injection, XSS, CSRF, file uploads, secrets, environment variables, rate
-limiting, error exposure, logging privacy, dependency vulnerabilities.
-Security is enforced **server-side** — client-side restrictions are not
-authorization.
-
-### Error handling
-
-Every external operation (database, API, network) needs a failure path
-covering: validation failure, auth failure, timeout, partial failure,
-duplicate request, concurrent request. Errors are understandable to users
-where appropriate, useful to operators, safe to expose, and logged without
-leaking sensitive information. Never silently swallow an error; never
-expose a stack trace or a secret to a user.
-
-### Observability
-
-Where applicable: structured logging, error tracking, health checks,
-request tracing, performance metrics, database monitoring, queue
-monitoring, external-integration monitoring. A log should answer: what
-happened, when, which operation, which organization/context, what was the
-result, what failed. Never log passwords, tokens, secrets, or unnecessary
-personal data.
-
-### Database change protocol
-
-Before modifying a database: inspect the current schema, identify
-relationships, review existing migrations, check constraints and indexes,
-determine data ownership, consider backward compatibility and rollback,
-update documentation, add or update tests. Never casual — every migration
-states a clear reason (this repo's own D1/D2 above go further: forward-only,
-tested against a copy of production data, never `migrate dev` against
-production).
-
-### Testing standard
-
-Match the category (unit / integration / API / e2e / permission / security
-/ regression / performance) to the risk. Minimum scenarios to consider:
-normal case, invalid input, boundary values, unauthorized access, wrong
-organization, wrong branch, duplicate request, concurrent request, external
-service failure, partial failure, empty state, loading state, error state.
-Tests verify business behavior, not implementation details.
 
 ### Verification after every change
 
@@ -822,26 +638,6 @@ understand current behavior, identify consumers, check tests, name the
 risks, define the expected outcome. After: run relevant tests, compare
 behavior, review performance and affected boundaries. Never refactor
 unrelated code while implementing a feature.
-
-### Dependency standard
-
-Before installing one:
-
-```
-Dependency: / Purpose: / Existing Alternative: /
-Why Existing Alternative Is Insufficient: / Security Considerations: /
-Maintenance Considerations: / Bundle / Runtime Impact: / Approval Required:
-```
-
-Prefer fewer dependencies — each one is a long-term maintenance obligation,
-not a temporary convenience.
-
-### Environment and configuration
-
-Never hardcode an environment-specific value — URLs, API keys, database
-credentials, feature flags, deployment settings, external service ids,
-timezones, locale configuration all resolve through config. Never commit a
-secret or a production credential.
 
 ### Git discipline
 

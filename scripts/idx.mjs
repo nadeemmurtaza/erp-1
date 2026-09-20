@@ -318,6 +318,43 @@ const commands = {
     emit(found, 'entries');
   },
 
+  /**
+   * Search every rule, scoped or not.
+   *
+   * A scoped rule only enters context when a matching file is opened, which is
+   * the point — but it also means an agent can be unaware a rule exists while
+   * planning the work it governs. This makes all of them reachable by hand.
+   */
+  rule(args) {
+    const q = args.join(' ');
+    const sources = [
+      { file: 'CLAUDE.md', scope: 'always' },
+      ...(db.files ?? [])
+        .filter((f) => f.path.startsWith('.claude/rules/'))
+        .map((f) => ({ file: f.path, scope: 'scoped' })),
+    ];
+    const rows = [];
+    for (const src of sources) {
+      let text;
+      try { text = readFileSync(join(ROOT, src.file), 'utf8'); } catch { continue; }
+      const lines = text.split('\n');
+      const paths = (text.match(/^---\n([\s\S]*?)\n---/) ?? [])[1];
+      const globs = paths ? [...paths.matchAll(/^\s*-\s*["']?([^"'\n]+)["']?/gm)].map((m) => m[1]) : [];
+      let heading = '';
+      lines.forEach((line, i) => {
+        if (/^#{1,4} /.test(line)) heading = line.replace(/^#+ /, '');
+        if (!q || hit(line, q)) {
+          if (/^#{1,4} /.test(line) || (q && hit(line, q) && line.trim().length > 3)) {
+            rows.push(
+              `${dim(`${src.file}:${i + 1}`)}${globs.length ? dim(` [loads on ${globs[0]}${globs.length > 1 ? ` +${globs.length - 1}` : ''}]` ) : dim(' [always]')}\n  ${heading !== line.replace(/^#+ /, '') ? dim(`${heading} → `) : ''}${line.trim()}`,
+            );
+          }
+        }
+      });
+    }
+    emit(rows, 'rules');
+  },
+
   stats() {
     for (const [k, v] of Object.entries(db.totals)) {
       console.log(`  ${k.padEnd(14)} ${String(v).padStart(7)}`);
@@ -348,6 +385,7 @@ is itself far cheaper than grepping the repository.
   idx module inventory                one module at a glance
   idx show <file> [symbol]            print a symbol, not the whole file
   idx where "abandoned cart"          fuzzy, across everything
+  idx rule borders                    search every rule, scoped or not
   idx stats                           totals, and any schema drift
 
 Results cap at ${LIMIT}; set IDX_LIMIT to raise it.

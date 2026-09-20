@@ -3,7 +3,7 @@
 
 # Files — root
 
-All 32 tracked files in `repository root files`, by directory.
+All 41 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -18,7 +18,7 @@ All 32 tracked files in `repository root files`, by directory.
 | `.windsurfrules` | file | — |  |
 | `AGENTS.md` | doc | 79 |  |
 | `check_output.txt` | txt | — |  |
-| `CLAUDE.md` | doc | 941 |  |
+| `CLAUDE.md` | doc | 737 |  |
 | `CONTRIBUTING.md` | doc | 127 |  |
 | `DEPLOYMENT.md` | doc | 492 |  |
 | `fix-all.js` | script | 15 | Get all files from git grep |
@@ -55,6 +55,20 @@ All 32 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `session-start.sh` | hook | 54 |  |
 | `suggest-model.sh` | hook | 85 |  |
+
+### `.claude/rules` (9)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `configuration.md` | doc | 20 |  |
+| `database.md` | doc | 19 |  |
+| `decisions.md` | doc | 15 |  |
+| `dependencies.md` | doc | 23 |  |
+| `performance.md` | doc | 42 |  |
+| `security.md` | doc | 20 |  |
+| `services.md` | doc | 31 |  |
+| `testing.md` | doc | 20 |  |
+| `ui.md` | doc | 151 |  |
 
 ### `.cursor/rules` (1)
 

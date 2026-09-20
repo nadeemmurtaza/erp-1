@@ -3,7 +3,7 @@
 
 # Every tracked file
 
-All **910** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **920** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
@@ -16,8 +16,8 @@ Split by area so you load one, not all of them.
 | apps/mobile | 42 | 5,292 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 53 | 4,476 | [files/packages.md](../files/packages.md) |
 | docs/* | 33 | 9,527 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 49 | 25,177 | [files/infra.md](../files/infra.md) |
-| repository root files | 32 | 8,583 | [files/root.md](../files/root.md) |
+| scripts, CI, deployment and container configuration | 50 | 25,336 | [files/infra.md](../files/infra.md) |
+| repository root files | 41 | 8,720 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -33,12 +33,12 @@ name a new file: the convention is what makes it findable.
 | module | 83 |
 | component | 70 |
 | service | 68 |
+| doc | 51 |
 | migration | 50 |
 | controller | 49 |
 | dto | 46 |
-| doc | 42 |
 | nest module | 38 |
-| script | 30 |
+| script | 31 |
 | asset | 26 |
 | json | 24 |
 | prisma schema | 22 |

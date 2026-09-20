@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**43** markdown documents. These explain **why**; this index only says **where**.
+**52** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -53,6 +53,45 @@ _no second-level headings_
 
 _no second-level headings_
 
+### `.claude/rules/configuration.md`  <sub>20 lines</sub>
+
+- Environment and configuration  <sub>:14</sub>
+
+### `.claude/rules/database.md`  <sub>19 lines</sub>
+
+- Database change protocol  <sub>:10</sub>
+
+### `.claude/rules/decisions.md`  <sub>15 lines</sub>
+
+- Architectural decision records  <sub>:10</sub>
+
+### `.claude/rules/dependencies.md`  <sub>23 lines</sub>
+
+- Dependency standard  <sub>:11</sub>
+
+### `.claude/rules/performance.md`  <sub>42 lines</sub>
+
+- Performance engineering  <sub>:13</sub>
+
+### `.claude/rules/security.md`  <sub>20 lines</sub>
+
+- Security engineering  <sub>:12</sub>
+
+### `.claude/rules/services.md`  <sub>31 lines</sub>
+
+- Error handling  <sub>:14</sub>
+- Observability  <sub>:23</sub>
+
+### `.claude/rules/testing.md`  <sub>20 lines</sub>
+
+- Testing standard  <sub>:12</sub>
+
+### `.claude/rules/ui.md`  <sub>151 lines</sub>
+
+- Use what exists  <sub>:14</sub>
+- Borders and boxes  <sub>:64</sub>
+- No dead ends  <sub>:104</sub>
+
 ### `.github/copilot-instructions.md`  <sub>79 lines</sub>
 
 - Read the rules first  <sub>:9</sub>
@@ -74,19 +113,18 @@ _no second-level headings_
 - Three rules about the index  <sub>:54</sub>
 - Commands  <sub>:66</sub>
 
-### `CLAUDE.md`  <sub>941 lines</sub>
+### `CLAUDE.md`  <sub>737 lines</sub>
 
 - The seven laws  <sub>:13</sub>
 - Software engineering, not vibe coding  <sub>:35</sub>
 - Feature scope: build the whole capability, not one slice of it  <sub>:144</sub>
 - Scale: the three axes  <sub>:229</sub>
 - Look it up before you search  <sub>:286</sub>
-- Use what exists  <sub>:353</sub>
-- Borders and boxes  <sub>:403</sub>
-- No dead ends  <sub>:443</sub>
-- Before you open a PR  <sub>:491</sub>
-- Deployment  <sub>:522</sub>
-- NEWAX Engineering Operating Protocol  <sub>:535</sub>
+- The rule index  <sub>:353</sub>
+- Before you open a PR  <sub>:388</sub>
+- Deployment  <sub>:419</sub>
+- NEWAX Engineering Operating Protocol  <sub>:432</sub>
+- Decision  <sub>:534</sub>
 
 ### `CONTRIBUTING.md`  <sub>127 lines</sub>
 

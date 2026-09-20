@@ -72,8 +72,8 @@ export function docAbove(lines, lineIdx) {
       if (/\/\*\*?/.test(lines[i])) break;
       i -= 1;
     }
-  } else if (/^\s*\/\//.test(lines[i])) {
-    while (i >= 0 && /^\s*\/\//.test(lines[i])) {
+  } else if (/^\s*\/{2,3}/.test(lines[i])) {
+    while (i >= 0 && /^\s*\/{2,3}/.test(lines[i])) {
       collected.unshift(lines[i]);
       i -= 1;
     }
@@ -83,7 +83,7 @@ export function docAbove(lines, lineIdx) {
 
   const text = collected
     .join(' ')
-    .replace(/\/\*\*?|\*\/|^\s*\*\s?|\/\//g, ' ')
+    .replace(/\/\*\*?|\*\/|^\s*\*\s?|\/{2,3}/g, ' ')
     .replace(/\s*\*\s/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();

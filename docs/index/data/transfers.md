@@ -57,7 +57,7 @@ Indexes: `@@index([transferId])` · `@@index([variantId])`
 
 ### `TransferNumberCounter`  <sub>`apps/api/prisma/schema/transfers.prisma:84`</sub>
 
-> / Same shape as OrderNumberCounter (orders.prisma) — an / `INSERT ...
+> Same shape as OrderNumberCounter (orders.prisma) — an `INSERT ...
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|

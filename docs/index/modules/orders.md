@@ -69,7 +69,7 @@ All paths relative to `apps/api/src/modules/orders`.
 |---|---|---|---|
 | `Order` | 42 | :24 |  |
 | `OrderItem` | 35 | :108 |  |
-| `OrderNumberCounter` | 2 | :252 | / Backing store for sequential per-year order numbers (YSN-2026-0001). |
+| `OrderNumberCounter` | 2 | :252 | Backing store for sequential per-year order numbers (YSN-2026-0001). |
 | `OrderStatusEvent` | 9 | :189 |  |
 | `Shipment` | 12 | :213 |  |
 

@@ -22,7 +22,7 @@ against a real database.
 
 ### `AdminScope`  <sub>`apps/api/prisma/schema/organization.prisma:100`</sub>
 
-> / What a user's admin access is scoped to (R10) — never a role check / (House Rule 9 forbids `if (user.role === 'SUPER_ADMIN')`).
+> What a user's admin access is scoped to (R10) — never a role check (House Rule 9 forbids `if (user.role === 'SUPER_ADMIN')`).
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -40,7 +40,7 @@ Indexes: `@@unique([userId, level, retailBrandId, branchNodeId])` · `@@index([u
 
 ### `BrandPolicy`  <sub>`apps/api/prisma/schema/organization.prisma:64`</sub>
 
-> / Per-brand policy switches (R9) — what R9 calls / `brand.allow_branch_product_creation` and its siblings, generalised from / a single Setting row (House Rule 4, still the answer while a deployment /…
+> Per-brand policy switches (R9) — what R9 calls `brand.allow_branch_product_creation` and its siblings, generalised from a single Setting row (House Rule 4, still the answer while a deployment has onl…
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -55,7 +55,7 @@ Indexes: `@@unique([userId, level, retailBrandId, branchNodeId])` · `@@index([u
 
 ### `Node`  <sub>`apps/api/prisma/schema/organization.prisma:136`</sub>
 
-> / A child node this deployment knows about — a brand's branches, or an / organization's brands (R1, R14; WO-18.1, moved here from core.prisma in / WO-18.3 once it had siblings to live beside — Part 5…
+> A child node this deployment knows about — a brand's branches, or an organization's brands (R1, R14; WO-18.1, moved here from core.prisma in WO-18.3 once it had siblings to live beside — Part 5 owns…
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -75,7 +75,7 @@ Indexes: `@@index([role])` · `@@index([status])`
 
 ### `Organization`  <sub>`apps/api/prisma/schema/organization.prisma:15`</sub>
 
-> / The top tier — the owner's group, run by a super admin from one / dashboard (Part 1).
+> The top tier — the owner's group, run by a super admin from one dashboard (Part 1).
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -87,7 +87,7 @@ Indexes: `@@index([role])` · `@@index([status])`
 
 ### `RetailBrand`  <sub>`apps/api/prisma/schema/organization.prisma:34`</sub>
 
-> / A retail brand — the business entity a branch belongs to.
+> A retail brand — the business entity a branch belongs to.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|

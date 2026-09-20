@@ -22,7 +22,7 @@ against a real database.
 
 ### `Location`  <sub>`apps/api/prisma/schema/inventory.prisma:76`</sub>
 
-> / A place stock physically lives.
+> A place stock physically lives.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -106,7 +106,7 @@ Indexes: `@@index([variantId, createdAt])` · `@@index([reason, createdAt])` · 
 
 ### `StockVariance`  <sub>`apps/api/prisma/schema/inventory.prisma:127`</sub>
 
-> / One row per oversell InventoryService.postUnconditional() let through (R5: / a POS sale that already happened is never rejected by sync).
+> One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale that already happened is never rejected by sync).
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -129,7 +129,7 @@ Indexes: `@@index([status])` · `@@index([variantId])` · `@@index([locationId])
 
 ### `VariantLocationStock`  <sub>`apps/api/prisma/schema/inventory.prisma:156`</sub>
 
-> / Stock, per variant, per location.
+> Stock, per variant, per location.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -144,7 +144,7 @@ Indexes: `@@id([variantId, locationId])`
 
 ### `VariantSalesStat`  <sub>`apps/api/prisma/schema/inventory.prisma:169`</sub>
 
-> / CACHE: variantId as primary key.
+> CACHE: variantId as primary key.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -165,7 +165,7 @@ Indexes: `@@id([variantId, locationId])`
 
 ### `LocationType`  <sub>`apps/api/prisma/schema/inventory.prisma:68`</sub>
 
-> / STORE/WAREHOUSE are physical, staffed or stocked normally.
+> STORE/WAREHOUSE are physical, staffed or stocked normally.
 
 | Value | Meaning |
 |---|---|

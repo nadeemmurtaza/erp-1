@@ -22,7 +22,7 @@ against a real database.
 
 ### `Offer`  <sub>`apps/api/prisma/schema/trading-partners.prisma:84`</sub>
 
-> / A marketing push to the retail end of the chain (WO-18.3's third "forth" / document, alongside the product-alerts push) — never targeted, never a / coupon engine: one broadcast row, fanned out to e…
+> A marketing push to the retail end of the chain (WO-18.3's third "forth" document, alongside the product-alerts push) — never targeted, never a coupon engine: one broadcast row, fanned out to every A…
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -38,7 +38,7 @@ Indexes: `@@index([createdAt])`
 
 ### `TradingPartner`  <sub>`apps/api/prisma/schema/trading-partners.prisma:33`</sub>
 
-> / The business on the other end of a document exchange.
+> The business on the other end of a document exchange.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|

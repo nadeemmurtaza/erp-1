@@ -21,15 +21,15 @@ decision is not reopened without new evidence.
 
 ## Outlines
 
-### `.claude/agents/architect.md`  <sub>46 lines</sub>
+### `.claude/agents/architect.md`  <sub>48 lines</sub>
 
 _no second-level headings_
 
-### `.claude/agents/debug.md`  <sub>36 lines</sub>
+### `.claude/agents/debug.md`  <sub>38 lines</sub>
 
 _no second-level headings_
 
-### `.claude/agents/feature.md`  <sub>42 lines</sub>
+### `.claude/agents/feature.md`  <sub>44 lines</sub>
 
 _no second-level headings_
 
@@ -41,11 +41,11 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `.claude/agents/schema.md`  <sub>44 lines</sub>
+### `.claude/agents/schema.md`  <sub>46 lines</sub>
 
 _no second-level headings_
 
-### `.claude/agents/security.md`  <sub>44 lines</sub>
+### `.claude/agents/security.md`  <sub>46 lines</sub>
 
 _no second-level headings_
 

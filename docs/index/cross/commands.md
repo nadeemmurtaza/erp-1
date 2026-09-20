@@ -3,7 +3,7 @@
 
 # Commands
 
-Every script in every `package.json` (**65**), plus the repository's own check scripts.
+Every script in every `package.json` (**67**), plus the repository's own check scripts.
 
 
 ## The one you run before a PR
@@ -115,6 +115,8 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 | `check:email` | `node scripts/check-email-dns.mjs` |
 | `index` | `node scripts/build-index.mjs` |
 | `index:check` | `node scripts/build-index.mjs --check` |
+| `idx` | `node scripts/idx.mjs` |
+| `check` | `node scripts/check.mjs` |
 | `hooks:install` | `node scripts/install-git-hooks.mjs` |
 | `db:migrate` | `pnpm --filter @newax/api db:migrate` |
 | `db:generate` | `pnpm --filter @newax/api db:generate` |
@@ -131,16 +133,18 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 
 | Script | Lines | What it enforces |
 |---|---|---|
-| `scripts/build-index.mjs` | 2248 |  |
+| `scripts/build-index.mjs` | 2333 |  |
 | `scripts/build-logo-raster.mjs` | 54 |  |
 | `scripts/check-email-dns.mjs` | 399 |  |
 | `scripts/check-env-templates.mjs` | 139 |  |
 | `scripts/check-frontend-secrets.mjs` | 137 |  |
 | `scripts/check-module-boundaries.mjs` | 535 |  |
 | `scripts/check-route-permissions.mjs` | 136 |  |
+| `scripts/check.mjs` | 153 |  |
+| `scripts/idx.mjs` | 364 |  |
 | `scripts/install-git-hooks.mjs` | 89 |  |
 | `scripts/lib/index-scan.mjs` | 906 | Scanners for the repository index. |
-| `scripts/lib/model-routing.mjs` | 288 | Which model and how much effort each kind of job in this repository deserves. |
+| `scripts/lib/model-routing.mjs` | 363 | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/nested-borders.py` | 0 |  |
 | `scripts/sync-client.mjs` | 243 | scripts/sync-client.mjs |
 

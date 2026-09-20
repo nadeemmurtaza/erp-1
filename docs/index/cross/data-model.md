@@ -52,119 +52,119 @@ against a real database.
 
 | Model | Schema | Fields | Relations | Key | Purpose |
 |---|---|---|---|---|---|
-| [`Account`](../data/accounting.md#account) | `accounting` | 14 | 2 | id | / The chart of accounts. |
+| [`Account`](../data/accounting.md#account) | `accounting` | 14 | 2 | id | The chart of accounts. |
 | [`Address`](../data/core.md#address) | `core` | 15 | 1 | id |  |
-| [`AdminScope`](../data/organization.md#adminscope) | `organization` | 9 | 3 | id | / What a user's admin access is scoped to (R10) — never a role check / (House Rule 9 forb… |
-| [`AnalyticsEvent`](../data/core.md#analyticsevent) | `core` | 7 | 0 | id | / Anonymous, aggregate first-party analytics — page views, add-to-cart, / checkout-starte… |
+| [`AdminScope`](../data/organization.md#adminscope) | `organization` | 9 | 3 | id | What a user's admin access is scoped to (R10) — never a role check (House Rule 9 forbids… |
+| [`AnalyticsEvent`](../data/core.md#analyticsevent) | `core` | 7 | 0 | id | Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started. |
 | [`AuditLog`](../data/core.md#auditlog) | `core` | 9 | 1 | id |  |
-| [`BillOfMaterial`](../data/production.md#billofmaterial) | `production` | 8 | 1 | id | / One recipe per produced variant: how many of each component variant it / takes to make… |
+| [`BillOfMaterial`](../data/production.md#billofmaterial) | `production` | 8 | 1 | id | One recipe per produced variant: how many of each component variant it takes to make one… |
 | [`BillOfMaterialLine`](../data/production.md#billofmaterialline) | `production` | 6 | 2 | id |  |
-| [`Brand`](../data/catalog.md#brand) | `catalog` | 9 | 0 | id | / A label a product is sold under. |
-| [`BrandPolicy`](../data/organization.md#brandpolicy) | `organization` | 8 | 1 | id | / Per-brand policy switches (R9) — what R9 calls / `brand.allow_branch_product_creation`… |
-| [`BrandTranslation`](../data/catalog.md#brandtranslation) | `catalog` | 6 | 1 | id | / House Rule 6: a customer-facing name is a translation row, not a column. |
+| [`Brand`](../data/catalog.md#brand) | `catalog` | 9 | 0 | id | A label a product is sold under. |
+| [`BrandPolicy`](../data/organization.md#brandpolicy) | `organization` | 8 | 1 | id | Per-brand policy switches (R9) — what R9 calls `brand.allow_branch_product_creation` and… |
+| [`BrandTranslation`](../data/catalog.md#brandtranslation) | `catalog` | 6 | 1 | id | House Rule 6: a customer-facing name is a translation row, not a column. |
 | [`Cart`](../data/cart.md#cart) | `cart` | 10 | 1 | id | Cart. |
 | [`CartItem`](../data/cart.md#cartitem) | `cart` | 19 | 4 | id |  |
 | [`CartItemStitchingOption`](../data/cart.md#cartitemstitchingoption) | `cart` | 4 | 2 | — |  |
-| [`CashMovement`](../data/pos.md#cashmovement) | `pos` | 8 | 1 | id | / One physical cash movement at the drawer during a shift — always a / positive `amountMi… |
+| [`CashMovement`](../data/pos.md#cashmovement) | `pos` | 8 | 1 | id | One physical cash movement at the drawer during a shift — always a positive `amountMinor`… |
 | [`Category`](../data/catalog.md#category) | `catalog` | 12 | 2 | id |  |
 | [`CategoryTranslation`](../data/catalog.md#categorytranslation) | `catalog` | 6 | 1 | id |  |
 | [`Contact`](../data/crm.md#contact) | `crm` | 28 | 2 | id |  |
 | [`ContactTag`](../data/crm.md#contacttag) | `crm` | 4 | 2 | — |  |
-| [`DeviceToken`](../data/core.md#devicetoken) | `core` | 9 | 1 | id | / A push notification target: one installation of the mobile app. |
-| [`EmailAccount`](../data/core.md#emailaccount) | `core` | 25 | 0 | id | / A connected mailbox: SMTP to send, optionally IMAP to receive. |
+| [`DeviceToken`](../data/core.md#devicetoken) | `core` | 9 | 1 | id | A push notification target: one installation of the mobile app. |
+| [`EmailAccount`](../data/core.md#emailaccount) | `core` | 25 | 0 | id | A connected mailbox: SMTP to send, optionally IMAP to receive. |
 | [`EmailVerificationToken`](../data/core.md#emailverificationtoken) | `core` | 7 | 1 | id | A one-time token mailed to confirm an email address. |
-| [`FiscalPeriod`](../data/accounting.md#fiscalperiod) | `accounting` | 10 | 1 | id | / What a `JournalEntry` posts into. |
-| [`FiscalYear`](../data/accounting.md#fiscalyear) | `accounting` | 7 | 0 | id | / A trading year. |
+| [`FiscalPeriod`](../data/accounting.md#fiscalperiod) | `accounting` | 10 | 1 | id | What a `JournalEntry` posts into. |
+| [`FiscalYear`](../data/accounting.md#fiscalyear) | `accounting` | 7 | 0 | id | A trading year. |
 | [`FollowUpTask`](../data/crm.md#followuptask) | `crm` | 13 | 3 | id |  |
-| [`GarmentSizeChart`](../data/measurements.md#garmentsizechart) | `measurements` | 8 | 1 | id | / A standard RTW size row (XS-XXL) for a garment, offered as a shortcut / alongside the "… |
+| [`GarmentSizeChart`](../data/measurements.md#garmentsizechart) | `measurements` | 8 | 1 | id | A standard RTW size row (XS-XXL) for a garment, offered as a shortcut alongside the "type… |
 | [`GarmentType`](../data/measurements.md#garmenttype) | `measurements` | 18 | 0 | id |  |
 | [`GoodsReceipt`](../data/purchasing.md#goodsreceipt) | `purchasing` | 13 | 2 | id |  |
 | [`GoodsReceiptItem`](../data/purchasing.md#goodsreceiptitem) | `purchasing` | 10 | 3 | id |  |
 | [`IdentityVerification`](../data/identity-verification.md#identityverification) | `identity-verification` | 12 | 1 | id |  |
-| [`InboundEmail`](../data/crm.md#inboundemail) | `crm` | 17 | 3 | id | / A message pulled from a connected mailbox's IMAP inbox by the poller / (modules/crm/ema… |
-| [`InboundEmailReply`](../data/crm.md#inboundemailreply) | `crm` | 7 | 2 | id | / A staff reply sent from the Support Inbox, over the SAME connected / mailbox the origin… |
+| [`InboundEmail`](../data/crm.md#inboundemail) | `crm` | 17 | 3 | id | A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-i… |
+| [`InboundEmailReply`](../data/crm.md#inboundemailreply) | `crm` | 7 | 2 | id | A staff reply sent from the Support Inbox, over the SAME connected mailbox the original m… |
 | [`Interaction`](../data/crm.md#interaction) | `crm` | 11 | 3 | id |  |
 | [`Invoice`](../data/invoicing.md#invoice) | `invoicing` | 13 | 0 | id |  |
 | [`InvoiceLine`](../data/invoicing.md#invoiceline) | `invoicing` | 8 | 1 | id |  |
-| [`JournalEntry`](../data/accounting.md#journalentry) | `accounting` | 14 | 3 | id | / One fact, posted as a balanced set of `JournalLine` rows. |
-| [`JournalEntryNumberCounter`](../data/accounting.md#journalentrynumbercounter) | `accounting` | 3 | 1 | fiscalYearId | / Backing store for gapless per-fiscal-year journal numbers (R18) — same / atomic-counter… |
-| [`JournalLine`](../data/accounting.md#journalline) | `accounting` | 17 | 2 | id | / One debit or credit. |
-| [`Lead`](../data/crm.md#lead) | `crm` | 21 | 3 | id | / An enquiry that is not yet an order: a stitching quote request, a WhatsApp / message lo… |
-| [`Location`](../data/inventory.md#location) | `inventory` | 15 | 1 | id | / A place stock physically lives. |
+| [`JournalEntry`](../data/accounting.md#journalentry) | `accounting` | 14 | 3 | id | One fact, posted as a balanced set of `JournalLine` rows. |
+| [`JournalEntryNumberCounter`](../data/accounting.md#journalentrynumbercounter) | `accounting` | 3 | 1 | fiscalYearId | Backing store for gapless per-fiscal-year journal numbers (R18) — same atomic-counter sha… |
+| [`JournalLine`](../data/accounting.md#journalline) | `accounting` | 17 | 2 | id | One debit or credit. |
+| [`Lead`](../data/crm.md#lead) | `crm` | 21 | 3 | id | An enquiry that is not yet an order: a stitching quote request, a WhatsApp message logged… |
+| [`Location`](../data/inventory.md#location) | `inventory` | 15 | 1 | id | A place stock physically lives. |
 | [`MeasurementField`](../data/measurements.md#measurementfield) | `measurements` | 14 | 1 | id |  |
-| [`MeasurementProfile`](../data/measurements.md#measurementprofile) | `measurements` | 10 | 1 | id | / A saved set of measurements: "Ammi – kameez", "Self – shalwar". |
-| [`Node`](../data/organization.md#node) | `organization` | 11 | 0 | id | / A child node this deployment knows about — a brand's branches, or an / organization's b… |
-| [`Offer`](../data/trading-partners.md#offer) | `trading-partners` | 7 | 0 | id | / A marketing push to the retail end of the chain (WO-18.3's third "forth" / document, al… |
+| [`MeasurementProfile`](../data/measurements.md#measurementprofile) | `measurements` | 10 | 1 | id | A saved set of measurements: "Ammi – kameez", "Self – shalwar". |
+| [`Node`](../data/organization.md#node) | `organization` | 11 | 0 | id | A child node this deployment knows about — a brand's branches, or an organization's brand… |
+| [`Offer`](../data/trading-partners.md#offer) | `trading-partners` | 7 | 0 | id | A marketing push to the retail end of the chain (WO-18.3's third "forth" document, alongs… |
 | [`Order`](../data/orders.md#order) | `orders` | 42 | 3 | id |  |
 | [`OrderItem`](../data/orders.md#orderitem) | `orders` | 35 | 4 | id |  |
-| [`OrderNumberCounter`](../data/orders.md#ordernumbercounter) | `orders` | 2 | 0 | year | / Backing store for sequential per-year order numbers (YSN-2026-0001). |
+| [`OrderNumberCounter`](../data/orders.md#ordernumbercounter) | `orders` | 2 | 0 | year | Backing store for sequential per-year order numbers (YSN-2026-0001). |
 | [`OrderStatusEvent`](../data/orders.md#orderstatusevent) | `orders` | 9 | 2 | id |  |
-| [`Organization`](../data/organization.md#organization) | `organization` | 5 | 0 | id | / The top tier — the owner's group, run by a super admin from one / dashboard (Part 1). |
-| [`OutboxEvent`](../data/core.md#outboxevent) | `core` | 9 | 0 | id | / Transactional outbox. |
+| [`Organization`](../data/organization.md#organization) | `organization` | 5 | 0 | id | The top tier — the owner's group, run by a super admin from one dashboard (Part 1). |
+| [`OutboxEvent`](../data/core.md#outboxevent) | `core` | 9 | 0 | id | Transactional outbox. |
 | [`Party`](../data/parties.md#party) | `parties` | 16 | 0 | id |  |
 | [`PartyRoleAssignment`](../data/parties.md#partyroleassignment) | `parties` | 4 | 1 | id |  |
 | [`PasswordResetToken`](../data/core.md#passwordresettoken) | `core` | 7 | 1 | id | A one-time token mailed to reset a forgotten password. |
 | [`Payment`](../data/payments.md#payment) | `payments` | 19 | 2 | id |  |
-| [`Permission`](../data/core.md#permission) | `core` | 8 | 0 | id | / A single grantable capability, e.g. |
-| [`PosReceipt`](../data/pos.md#posreceipt) | `pos` | 5 | 0 | id | / One receipt per POS sale (WO-21.5) — created by PosSalesService right / after OrdersSer… |
-| [`PosShift`](../data/pos.md#posshift) | `pos` | 11 | 1 | id | / One cashier's stretch at one terminal, opened with a cash float and / closed with a phy… |
-| [`PosTerminal`](../data/pos.md#posterminal) | `pos` | 10 | 0 | id | / A physical till. |
+| [`Permission`](../data/core.md#permission) | `core` | 8 | 0 | id | A single grantable capability, e.g. |
+| [`PosReceipt`](../data/pos.md#posreceipt) | `pos` | 5 | 0 | id | One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService… |
+| [`PosShift`](../data/pos.md#posshift) | `pos` | 11 | 1 | id | One cashier's stretch at one terminal, opened with a cash float and closed with a physica… |
+| [`PosTerminal`](../data/pos.md#posterminal) | `pos` | 10 | 0 | id | A physical till. |
 | [`Product`](../data/catalog.md#product) | `catalog` | 31 | 4 | id |  |
-| [`ProductGarmentType`](../data/catalog.md#productgarmenttype) | `catalog` | 3 | 1 | — | / Which garments a given unstitched fabric can be made into. |
+| [`ProductGarmentType`](../data/catalog.md#productgarmenttype) | `catalog` | 3 | 1 | — | Which garments a given unstitched fabric can be made into. |
 | [`ProductImage`](../data/catalog.md#productimage) | `catalog` | 10 | 2 | id |  |
-| [`ProductOption`](../data/catalog.md#productoption) | `catalog` | 9 | 1 | id | / A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
+| [`ProductOption`](../data/catalog.md#productoption) | `catalog` | 9 | 1 | id | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
 | [`ProductOptionTranslation`](../data/catalog.md#productoptiontranslation) | `catalog` | 5 | 1 | id |  |
-| [`ProductOptionValue`](../data/catalog.md#productoptionvalue) | `catalog` | 9 | 1 | id | / A specific value on an option axis: "M", "Ferozi", "128GB". |
+| [`ProductOptionValue`](../data/catalog.md#productoptionvalue) | `catalog` | 9 | 1 | id | A specific value on an option axis: "M", "Ferozi", "128GB". |
 | [`ProductOptionValueTranslation`](../data/catalog.md#productoptionvaluetranslation) | `catalog` | 5 | 1 | id |  |
 | [`ProductTranslation`](../data/catalog.md#producttranslation) | `catalog` | 9 | 1 | id |  |
 | [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 41 | 4 | id |  |
-| [`ProductVariantOptionValue`](../data/catalog.md#productvariantoptionvalue) | `catalog` | 5 | 2 | — | / The join that DEFINES a variant: one row per option axis per variant. |
+| [`ProductVariantOptionValue`](../data/catalog.md#productvariantoptionvalue) | `catalog` | 5 | 2 | — | The join that DEFINES a variant: one row per option axis per variant. |
 | [`PurchaseOrder`](../data/purchasing.md#purchaseorder) | `purchasing` | 23 | 2 | id |  |
 | [`PurchaseOrderItem`](../data/purchasing.md#purchaseorderitem) | `purchasing` | 11 | 2 | id |  |
 | [`Quote`](../data/invoicing.md#quote) | `invoicing` | 9 | 0 | id |  |
 | [`QuoteLine`](../data/invoicing.md#quoteline) | `invoicing` | 7 | 1 | id |  |
 | [`RefreshToken`](../data/core.md#refreshtoken) | `core` | 9 | 1 | id |  |
-| [`ReplicationCursor`](../data/replication.md#replicationcursor) | `replication` | 4 | 0 | — | / "The highest sequence I've already synced with this peer, in this / direction" — read a… |
-| [`ReplicationQuarantine`](../data/replication.md#replicationquarantine) | `replication` | 12 | 0 | id | / Where an incoming record lands when it fails to apply — never dropped, / never retried… |
-| [`ReplicationRecord`](../data/replication.md#replicationrecord) | `replication` | 12 | 0 | id | / The log. |
-| [`ReplicationSequenceCounter`](../data/replication.md#replicationsequencecounter) | `replication` | 2 | 0 | nodeId | / This node's own per-origin sequence counter — `originNodeId` is always / this node's ow… |
-| [`RetailBrand`](../data/organization.md#retailbrand) | `organization` | 14 | 3 | id | / A retail brand — the business entity a branch belongs to. |
-| [`Role`](../data/core.md#role) | `core` | 7 | 0 | id | / A named, reusable bundle of permissions a super admin defines — "roles / are data, not… |
-| [`RoleGrant`](../data/core.md#rolegrant) | `core` | 6 | 2 | id | / Which permissions a `Role` holds — the direct successor to the old / enum-keyed `RolePe… |
-| [`RolePermission`](../data/core.md#rolepermission) | `core` | 5 | 1 | id | / Which roles currently hold a given permission. |
-| [`Segment`](../data/crm.md#segment) | `crm` | 8 | 1 | id | / A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — / stored as a… |
-| [`Setting`](../data/core.md#setting) | `core` | 4 | 0 | key | / Runtime configuration edited from the admin dashboard: store name, shipping / zones, CO… |
+| [`ReplicationCursor`](../data/replication.md#replicationcursor) | `replication` | 4 | 0 | — | "The highest sequence I've already synced with this peer, in this direction" — read and a… |
+| [`ReplicationQuarantine`](../data/replication.md#replicationquarantine) | `replication` | 12 | 0 | id | Where an incoming record lands when it fails to apply — never dropped, never retried fore… |
+| [`ReplicationRecord`](../data/replication.md#replicationrecord) | `replication` | 12 | 0 | id | The log. |
+| [`ReplicationSequenceCounter`](../data/replication.md#replicationsequencecounter) | `replication` | 2 | 0 | nodeId | This node's own per-origin sequence counter — `originNodeId` is always this node's own `N… |
+| [`RetailBrand`](../data/organization.md#retailbrand) | `organization` | 14 | 3 | id | A retail brand — the business entity a branch belongs to. |
+| [`Role`](../data/core.md#role) | `core` | 7 | 0 | id | A named, reusable bundle of permissions a super admin defines — "roles are data, not code… |
+| [`RoleGrant`](../data/core.md#rolegrant) | `core` | 6 | 2 | id | Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermis… |
+| [`RolePermission`](../data/core.md#rolepermission) | `core` | 5 | 1 | id | Which roles currently hold a given permission. |
+| [`Segment`](../data/crm.md#segment) | `crm` | 8 | 1 | id | A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — stored as a filt… |
+| [`Setting`](../data/core.md#setting) | `core` | 4 | 0 | key | Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fe… |
 | [`Shipment`](../data/orders.md#shipment) | `orders` | 12 | 1 | id |  |
 | [`StitchingJob`](../data/stitching.md#stitchingjob) | `stitching` | 19 | 2 | id |  |
-| [`StitchingJobEvent`](../data/stitching.md#stitchingjobevent) | `stitching` | 9 | 1 | id | / Every stage transition, appended and never updated. |
-| [`StitchingJobNumberCounter`](../data/stitching.md#stitchingjobnumbercounter) | `stitching` | 2 | 0 | year | / Same as StitchingOrderNumberCounter, for JOB-2026-0001 numbers. |
+| [`StitchingJobEvent`](../data/stitching.md#stitchingjobevent) | `stitching` | 9 | 1 | id | Every stage transition, appended and never updated. |
+| [`StitchingJobNumberCounter`](../data/stitching.md#stitchingjobnumbercounter) | `stitching` | 2 | 0 | year | Same as StitchingOrderNumberCounter, for JOB-2026-0001 numbers. |
 | [`StitchingOption`](../data/stitching.md#stitchingoption) | `stitching` | 11 | 1 | id |  |
 | [`StitchingOptionGroup`](../data/stitching.md#stitchingoptiongroup) | `stitching` | 17 | 1 | id |  |
-| [`StitchingOrder`](../data/stitching.md#stitchingorder) | `stitching` | 18 | 0 | id | / A tailoring booking where the customer supplies the cloth. |
-| [`StitchingOrderNumberCounter`](../data/stitching.md#stitchingordernumbercounter) | `stitching` | 2 | 0 | year | / Backing store for sequential per-year STO-2026-0001 numbers. |
-| [`StockAdjustment`](../data/catalog.md#stockadjustment) | `catalog` | 10 | 2 | id | / One entry per change to ProductVariant.stock, so "why is stock 4" has an / answer witho… |
+| [`StitchingOrder`](../data/stitching.md#stitchingorder) | `stitching` | 18 | 0 | id | A tailoring booking where the customer supplies the cloth. |
+| [`StitchingOrderNumberCounter`](../data/stitching.md#stitchingordernumbercounter) | `stitching` | 2 | 0 | year | Backing store for sequential per-year STO-2026-0001 numbers. |
+| [`StockAdjustment`](../data/catalog.md#stockadjustment) | `catalog` | 10 | 2 | id | One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without a… |
 | [`StockCount`](../data/inventory.md#stockcount) | `inventory` | 14 | 2 | id |  |
 | [`StockCountLine`](../data/inventory.md#stockcountline) | `inventory` | 10 | 2 | id |  |
 | [`StockMovement`](../data/inventory.md#stockmovement) | `inventory` | 15 | 3 | id |  |
 | [`StockTransfer`](../data/transfers.md#stocktransfer) | `transfers` | 15 | 0 | id |  |
 | [`StockTransferLine`](../data/transfers.md#stocktransferline) | `transfers` | 6 | 1 | id |  |
-| [`StockVariance`](../data/inventory.md#stockvariance) | `inventory` | 14 | 2 | id | / One row per oversell InventoryService.postUnconditional() let through (R5: / a POS sale… |
+| [`StockVariance`](../data/inventory.md#stockvariance) | `inventory` | 14 | 2 | id | One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale tha… |
 | [`Supplier`](../data/purchasing.md#supplier) | `purchasing` | 26 | 3 | id |  |
 | [`SupplierBill`](../data/purchasing.md#supplierbill) | `purchasing` | 18 | 2 | id |  |
-| [`SupplierProduct`](../data/purchasing.md#supplierproduct) | `purchasing` | 10 | 2 | id | / What a given supplier charges for a given variant, and under what terms. |
+| [`SupplierProduct`](../data/purchasing.md#supplierproduct) | `purchasing` | 10 | 2 | id | What a given supplier charges for a given variant, and under what terms. |
 | [`Tag`](../data/crm.md#tag) | `crm` | 5 | 0 | id |  |
 | [`TailorProfile`](../data/stitching.md#tailorprofile) | `stitching` | 9 | 0 | id |  |
 | [`TaxClass`](../data/tax.md#taxclass) | `tax` | 8 | 0 | id | Tax: rate/class definitions and the pricing-mode setting. |
-| [`TaxRate`](../data/tax.md#taxrate) | `tax` | 7 | 1 | id | / One row per rate that has ever applied to a class. |
-| [`TradingPartner`](../data/trading-partners.md#tradingpartner) | `trading-partners` | 15 | 0 | id | / The business on the other end of a document exchange. |
-| [`TransferNumberCounter`](../data/transfers.md#transfernumbercounter) | `transfers` | 2 | 0 | year | / Same shape as OrderNumberCounter (orders.prisma) — an / `INSERT ... |
+| [`TaxRate`](../data/tax.md#taxrate) | `tax` | 7 | 1 | id | One row per rate that has ever applied to a class. |
+| [`TradingPartner`](../data/trading-partners.md#tradingpartner) | `trading-partners` | 15 | 0 | id | The business on the other end of a document exchange. |
+| [`TransferNumberCounter`](../data/transfers.md#transfernumbercounter) | `transfers` | 2 | 0 | year | Same shape as OrderNumberCounter (orders.prisma) — an `INSERT ... |
 | [`User`](../data/core.md#user) | `core` | 44 | 11 | id |  |
-| [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | / A per-user adjustment layered on top of their role's grants: GRANT adds a / permission… |
-| [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | / Which `Role` rows a user holds. |
-| [`VariantLocationStock`](../data/inventory.md#variantlocationstock) | `inventory` | 6 | 2 | — | / Stock, per variant, per location. |
-| [`VariantSalesStat`](../data/inventory.md#variantsalesstat) | `inventory` | 11 | 1 | variantId | / CACHE: variantId as primary key. |
-| [`WorkOrder`](../data/production.md#workorder) | `production` | 20 | 3 | id | / The in-house "make this" ledger entry. |
-| [`WorkOrderNumberCounter`](../data/production.md#workordernumbercounter) | `production` | 2 | 0 | year | / Same shape as PurchaseOrder's OrderNumberCounter-style tables: one row / per year, incr… |
+| [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | A per-user adjustment layered on top of their role's grants: GRANT adds a permission thei… |
+| [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | Which `Role` rows a user holds. |
+| [`VariantLocationStock`](../data/inventory.md#variantlocationstock) | `inventory` | 6 | 2 | — | Stock, per variant, per location. |
+| [`VariantSalesStat`](../data/inventory.md#variantsalesstat) | `inventory` | 11 | 1 | variantId | CACHE: variantId as primary key. |
+| [`WorkOrder`](../data/production.md#workorder) | `production` | 20 | 3 | id | The in-house "make this" ledger entry. |
+| [`WorkOrderNumberCounter`](../data/production.md#workordernumbercounter) | `production` | 2 | 0 | year | Same shape as PurchaseOrder's OrderNumberCounter-style tables: one row per year, incremen… |
 
 
 ## Every enum

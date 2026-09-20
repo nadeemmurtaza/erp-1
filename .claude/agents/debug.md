@@ -3,6 +3,8 @@ name: debug
 description: Root-cause a failure. Use for a failing test, a red CI run, a bug reproduced but not explained. Runs on sonnet at high effort.
 model: sonnet
 effort: high
+experimental:
+  cacheTtl: 1h
 ---
 
 <!-- GENERATED from scripts/lib/model-routing.mjs by scripts/build-index.mjs.
@@ -10,7 +12,7 @@ effort: high
 
 # Root-cause a failure
 
-**sonnet · high effort.** Debugging is search over hypotheses, which is exactly what extra effort buys. The failure mode this guards against is the "make the error go away" fix the house rules forbid.
+**sonnet · high effort · 1h prompt cache.** Debugging is search over hypotheses, which is exactly what extra effort buys. The failure mode this guards against is the "make the error go away" fix the house rules forbid.
 
 Understand why the failure appeared before changing anything. A fix that
 makes the error go away without an explanation is not a fix — `CLAUDE.md`

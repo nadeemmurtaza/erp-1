@@ -20,6 +20,8 @@
     "check:email": "node scripts/check-email-dns.mjs",
     "index": "node scripts/build-index.mjs",
     "index:check": "node scripts/build-index.mjs --check",
+    "idx": "node scripts/idx.mjs",
+    "check": "node scripts/check.mjs",
     "hooks:install": "node scripts/install-git-hooks.mjs",
     "db:migrate": "pnpm --filter @newax/api db:migrate",
     "db:generate": "pnpm --filter @newax/api db:generate",

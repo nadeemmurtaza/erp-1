@@ -22,7 +22,7 @@ against a real database.
 
 ### `GarmentSizeChart`  <sub>`apps/api/prisma/schema/measurements.prisma:92`</sub>
 
-> / A standard RTW size row (XS-XXL) for a garment, offered as a shortcut / alongside the "type your own measurements" flow.
+> A standard RTW size row (XS-XXL) for a garment, offered as a shortcut alongside the "type your own measurements" flow.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -85,7 +85,7 @@ Indexes: `@@unique([garmentTypeId, key])` · `@@index([garmentTypeId, order])`
 
 ### `MeasurementProfile`  <sub>`apps/api/prisma/schema/measurements.prisma:73`</sub>
 
-> / A saved set of measurements: "Ammi – kameez", "Self – shalwar".
+> A saved set of measurements: "Ammi – kameez", "Self – shalwar".
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|

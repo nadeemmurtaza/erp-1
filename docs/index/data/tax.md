@@ -39,7 +39,7 @@ Indexes: `@@index([isDefault])`
 
 ### `TaxRate`  <sub>`apps/api/prisma/schema/tax.prisma:25`</sub>
 
-> / One row per rate that has ever applied to a class.
+> One row per rate that has ever applied to a class.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|

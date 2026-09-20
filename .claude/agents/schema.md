@@ -3,6 +3,8 @@ name: schema
 description: Database schema and migrations. Use for a Prisma model or column change, or writing a migration. Runs on opus at high effort.
 model: opus
 effort: high
+experimental:
+  cacheTtl: 1h
 ---
 
 <!-- GENERATED from scripts/lib/model-routing.mjs by scripts/build-index.mjs.
@@ -10,7 +12,7 @@ effort: high
 
 # Database schema and migrations
 
-**opus · high effort.** Migrations here are hand-written and forward-only against real data. A wrong one is not a revert — it is a restore. This repository already carries five models and six columns that were declared but never migrated, which is what that mistake looks like.
+**opus · high effort · 1h prompt cache.** Migrations here are hand-written and forward-only against real data. A wrong one is not a revert — it is a restore. This repository already carries five models and six columns that were declared but never migrated, which is what that mistake looks like.
 
 Before touching the database: inspect the current schema, identify
 relationships, review existing migrations, check constraints and indexes,

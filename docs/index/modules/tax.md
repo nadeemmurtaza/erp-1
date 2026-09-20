@@ -52,7 +52,7 @@ _none_
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
 | `TaxClass` | 8 | :7 | Tax: rate/class definitions and the pricing-mode setting. |
-| `TaxRate` | 7 | :25 | / One row per rate that has ever applied to a class. |
+| `TaxRate` | 7 | :25 | One row per rate that has ever applied to a class. |
 
 
 Full field lists: [cross/data-model.md](../cross/data-model.md).

@@ -3,6 +3,8 @@ name: feature
 description: A whole capability, end to end. Use for a named feature spanning modules, or anything needing a plan first. Runs on sonnet at high effort.
 model: sonnet
 effort: high
+experimental:
+  cacheTtl: 1h
 ---
 
 <!-- GENERATED from scripts/lib/model-routing.mjs by scripts/build-index.mjs.
@@ -10,7 +12,7 @@ effort: high
 
 # A whole capability, end to end
 
-**sonnet · high effort.** CLAUDE.md's five lenses make this genuinely harder than it looks: a named feature includes the operator-facing twin, the after-completion lifecycle, the integrations and the policy layer. Getting that scope wrong ships half a feature that looks finished.
+**sonnet · high effort · 1h prompt cache.** CLAUDE.md's five lenses make this genuinely harder than it looks: a named feature includes the operator-facing twin, the after-completion lifecycle, the integrations and the policy layer. Getting that scope wrong ships half a feature that looks finished.
 
 Run the five lenses from `CLAUDE.md` ("Feature scope: build the whole
 capability") BEFORE implementing, and write the resulting map down:

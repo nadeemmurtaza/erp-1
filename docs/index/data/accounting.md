@@ -22,7 +22,7 @@ against a real database.
 
 ### `Account`  <sub>`apps/api/prisma/schema/accounting.prisma:33`</sub>
 
-> / The chart of accounts.
+> The chart of accounts.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -45,7 +45,7 @@ Indexes: `@@index([type])` · `@@index([parentId])`
 
 ### `FiscalPeriod`  <sub>`apps/api/prisma/schema/accounting.prisma:91`</sub>
 
-> / What a `JournalEntry` posts into.
+> What a `JournalEntry` posts into.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -64,7 +64,7 @@ Indexes: `@@unique([fiscalYearId, name])` · `@@index([status])` · `@@index([st
 
 ### `FiscalYear`  <sub>`apps/api/prisma/schema/accounting.prisma:57`</sub>
 
-> / A trading year.
+> A trading year.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -80,7 +80,7 @@ Indexes: `@@index([startsOn])`
 
 ### `JournalEntry`  <sub>`apps/api/prisma/schema/accounting.prisma:120`</sub>
 
-> / One fact, posted as a balanced set of `JournalLine` rows.
+> One fact, posted as a balanced set of `JournalLine` rows.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -103,7 +103,7 @@ Indexes: `@@index([periodId])` · `@@index([source, sourceRef])` · `@@index([st
 
 ### `JournalEntryNumberCounter`  <sub>`apps/api/prisma/schema/accounting.prisma:217`</sub>
 
-> / Backing store for gapless per-fiscal-year journal numbers (R18) — same / atomic-counter shape as `OrderNumberCounter` and its siblings / (orders.prisma), keyed by `fiscalYearId` instead of a calend…
+> Backing store for gapless per-fiscal-year journal numbers (R18) — same atomic-counter shape as `OrderNumberCounter` and its siblings (orders.prisma), keyed by `fiscalYearId` instead of a calendar yea…
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -113,7 +113,7 @@ Indexes: `@@index([periodId])` · `@@index([source, sourceRef])` · `@@index([st
 
 ### `JournalLine`  <sub>`apps/api/prisma/schema/accounting.prisma:162`</sub>
 
-> / One debit or credit.
+> One debit or credit.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|

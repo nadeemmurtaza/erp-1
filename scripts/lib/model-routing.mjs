@@ -27,6 +27,25 @@
  *
  * EFFORT LEVELS: low · medium · high · xhigh · max (which ones a given model
  * offers depends on the model — haiku is kept at low/medium here on purpose).
+ *
+ * CACHE TTL. A subagent definition can carry `experimental.cacheTtl`, which
+ * sets how long its prompt prefix stays cached. The choice is NOT "longer is
+ * better": a cache read refreshes the entry's timer for free, so anything
+ * whose turns finish well inside five minutes keeps the default 5-minute
+ * entry warm indefinitely, and paying the 1-hour TTL's doubled write price
+ * there is a straight loss. The 1-hour TTL earns its cost only when the gap
+ * between reads lands in the 5-60 minute window — which for an agent means
+ * its own turns run long enough to outlive a 5-minute entry.
+ *
+ * That maps exactly onto effort, so the rule is mechanical rather than a
+ * guess: low effort keeps the default (fast turns, always warm), high and
+ * above take `1h` (a turn at xhigh or max can easily run past five minutes,
+ * and the next read would otherwise find a cold cache). Break-even is two
+ * requests at 5m and three at 1h, which is why a rarely-used agent is never
+ * pushed to 1h on frequency alone.
+ *
+ * Verify rather than assume: `usage.cache_read_input_tokens` staying at zero
+ * across repeated invocations means something is invalidating the prefix.
  */
 
 /** @typedef {'haiku'|'sonnet'|'opus'|'fable'|'inherit'} ModelAlias */
@@ -276,12 +295,68 @@ export const ROUTING_POLICY = [
   },
 ];
 
-/** The advisory hook only speaks up for jobs where the wrong choice is costly. */
+/**
+ * The advisory hook only speaks up for jobs where the wrong choice is costly.
+ *
+ * PRECISION MATTERS MORE THAN RECALL HERE. This hook's own header says a hook
+ * that comments on every prompt is one people delete, and the first version
+ * proved the point twice: a bare `token` fired on "save tokens" (LLM tokens,
+ * not auth tokens), and a bare `auth` fires on "author". Both were noise on a
+ * prompt that had nothing to do with access control.
+ *
+ * So each signal now needs a phrase that is unambiguous in this repository's
+ * vocabulary, and `requires` lets a broad word count only when a second,
+ * corroborating word appears with it. Missing a real security prompt costs a
+ * suggestion; crying wolf costs the hook.
+ */
 export const ADVISORY_SIGNALS = [
-  { agent: 'security', pattern: 'permission|auth|token|secret|isolation|payment|refund|credential|vulnerab|injection|csrf|xss' },
-  { agent: 'schema', pattern: 'migration|prisma|schema|column|database table|db schema' },
-  { agent: 'architect', pattern: 'architect|module boundar|module pack|extension point|decisions\\.md|new module|new sector|coupling' },
+  {
+    agent: 'security',
+    pattern:
+      'permission|@requirepermission|authenticat|authoriz|isolation|refund|credential|vulnerab|sql injection|csrf|xss|rbac|pbac',
+    // These are real words here but also ordinary English, so they only count
+    // alongside something that pins the meaning.
+    requires: [
+      { word: 'token', with: 'auth|jwt|bearer|access|refresh|api|secret|revoke|expiry' },
+      { word: 'secret', with: 'env|key|store|rotate|leak|manage' },
+      { word: 'payment', with: 'gateway|provider|capture|charge|method|approve' },
+      { word: 'role', with: 'grant|permission|assign|admin|staff' },
+    ],
+  },
+  {
+    agent: 'schema',
+    pattern: 'migration|prisma|\\.prisma|db:deploy|forward-only',
+    requires: [
+      { word: 'schema', with: 'prisma|database|db|migration|column|table' },
+      { word: 'column', with: 'add|drop|rename|nullable|index|table|migration' },
+      { word: 'table', with: 'create|drop|database|column|index|migration' },
+    ],
+  },
+  {
+    agent: 'architect',
+    pattern:
+      'module boundar|module pack|extension point|decisions\\.md|known_module_coupling|new sector|three axes|domain event',
+    requires: [
+      { word: 'architect', with: 'decision|boundar|design|module|pack|layer' },
+      { word: 'coupling', with: 'module|cross|import|boundar' },
+      { word: 'new module', with: 'add|create|register|pack' },
+    ],
+  },
 ];
+
+/**
+ * The TTL each effort level earns. See the CACHE TTL note above — this is
+ * derived from turn duration, not from how often an agent runs.
+ */
+export const CACHE_TTL_BY_EFFORT = {
+  low: null,        // default 5m: turns finish in seconds, every read refreshes it
+  medium: null,     // still comfortably inside 5m
+  high: '1h',       // turns can outlive a 5-minute entry
+  xhigh: '1h',
+  max: '1h',
+};
+
+export const cacheTtlFor = (effort) => CACHE_TTL_BY_EFFORT[effort] ?? null;
 
 export const MODEL_ORDER = ['haiku', 'sonnet', 'opus'];
 export const EFFORT_ORDER = ['low', 'medium', 'high', 'xhigh', 'max'];

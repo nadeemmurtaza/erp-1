@@ -85,21 +85,21 @@ All paths relative to `apps/api/src/modules/catalog`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Brand` | 9 | :46 | / A label a product is sold under. |
-| `BrandTranslation` | 6 | :65 | / House Rule 6: a customer-facing name is a translation row, not a column. |
+| `Brand` | 9 | :46 | A label a product is sold under. |
+| `BrandTranslation` | 6 | :65 | House Rule 6: a customer-facing name is a translation row, not a column. |
 | `Category` | 12 | :23 |  |
 | `CategoryTranslation` | 6 | :77 |  |
 | `Product` | 31 | :89 |  |
-| `ProductGarmentType` | 3 | :268 | / Which garments a given unstitched fabric can be made into. |
+| `ProductGarmentType` | 3 | :268 | Which garments a given unstitched fabric can be made into. |
 | `ProductImage` | 10 | :251 |  |
-| `ProductOption` | 9 | :289 | / A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
+| `ProductOption` | 9 | :289 | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
 | `ProductOptionTranslation` | 5 | :306 |  |
-| `ProductOptionValue` | 9 | :318 | / A specific value on an option axis: "M", "Ferozi", "128GB". |
+| `ProductOptionValue` | 9 | :318 | A specific value on an option axis: "M", "Ferozi", "128GB". |
 | `ProductOptionValueTranslation` | 5 | :336 |  |
 | `ProductTranslation` | 9 | :149 |  |
 | `ProductVariant` | 41 | :165 |  |
-| `ProductVariantOptionValue` | 5 | :350 | / The join that DEFINES a variant: one row per option axis per variant. |
-| `StockAdjustment` | 10 | :233 | / One entry per change to ProductVariant.stock, so "why is stock 4" has an / answer without an audit table bo… |
+| `ProductVariantOptionValue` | 5 | :350 | The join that DEFINES a variant: one row per option axis per variant. |
+| `StockAdjustment` | 10 | :233 | One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without an audit table bolted… |
 
 
 Enums: `OptionDisplay` (4) · `ProductKind` (6) · `ProductStatus` (3)

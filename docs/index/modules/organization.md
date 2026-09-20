@@ -58,11 +58,11 @@ _none_
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `AdminScope` | 9 | :100 | / What a user's admin access is scoped to (R10) — never a role check / (House Rule 9 forbids `if (user.role =… |
-| `BrandPolicy` | 8 | :64 | / Per-brand policy switches (R9) — what R9 calls / `brand.allow_branch_product_creation` and its siblings, ge… |
-| `Node` | 11 | :136 | / A child node this deployment knows about — a brand's branches, or an / organization's brands (R1, R14; WO-1… |
-| `Organization` | 5 | :15 | / The top tier — the owner's group, run by a super admin from one / dashboard (Part 1). |
-| `RetailBrand` | 14 | :34 | / A retail brand — the business entity a branch belongs to. |
+| `AdminScope` | 9 | :100 | What a user's admin access is scoped to (R10) — never a role check (House Rule 9 forbids `if (user.role === '… |
+| `BrandPolicy` | 8 | :64 | Per-brand policy switches (R9) — what R9 calls `brand.allow_branch_product_creation` and its siblings, genera… |
+| `Node` | 11 | :136 | A child node this deployment knows about — a brand's branches, or an organization's brands (R1, R14; WO-18.1,… |
+| `Organization` | 5 | :15 | The top tier — the owner's group, run by a super admin from one dashboard (Part 1). |
+| `RetailBrand` | 14 | :34 | A retail brand — the business entity a branch belongs to. |
 
 
 Enums: `AdminScopeLevel` (3) · `NodeRole` (2) · `NodeStatus` (2)

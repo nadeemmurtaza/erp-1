@@ -78,13 +78,13 @@ All paths relative to `apps/api/src/modules/inventory/dto`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Location` | 15 | :76 | / A place stock physically lives. |
+| `Location` | 15 | :76 | A place stock physically lives. |
 | `StockCount` | 14 | :191 |  |
 | `StockCountLine` | 10 | :214 |  |
 | `StockMovement` | 15 | :22 |  |
-| `StockVariance` | 14 | :127 | / One row per oversell InventoryService.postUnconditional() let through (R5: / a POS sale that already happen… |
-| `VariantLocationStock` | 6 | :156 | / Stock, per variant, per location. |
-| `VariantSalesStat` | 11 | :169 | / CACHE: variantId as primary key. |
+| `StockVariance` | 14 | :127 | One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale that already happened i… |
+| `VariantLocationStock` | 6 | :156 | Stock, per variant, per location. |
+| `VariantSalesStat` | 11 | :169 | CACHE: variantId as primary key. |
 
 
 Enums: `LocationType` (3) · `StockCountStatus` (4) · `StockMovementReason` (14) · `StockVarianceStatus` (2)

@@ -77,11 +77,11 @@ All paths relative to `apps/api/src/modules/crm`.
 | `Contact` | 28 | :16 |  |
 | `ContactTag` | 4 | :216 |  |
 | `FollowUpTask` | 13 | :187 |  |
-| `InboundEmail` | 17 | :142 | / A message pulled from a connected mailbox's IMAP inbox by the poller / (modules/crm/email-inbox) — a custom… |
-| `InboundEmailReply` | 7 | :174 | / A staff reply sent from the Support Inbox, over the SAME connected / mailbox the original message arrived a… |
+| `InboundEmail` | 17 | :142 | A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-inbox) — a customer's… |
+| `InboundEmailReply` | 7 | :174 | A staff reply sent from the Support Inbox, over the SAME connected mailbox the original message arrived at (n… |
 | `Interaction` | 11 | :116 |  |
-| `Lead` | 21 | :75 | / An enquiry that is not yet an order: a stitching quote request, a WhatsApp / message logged by staff, a con… |
-| `Segment` | 8 | :228 | / A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — / stored as a filter definition an… |
+| `Lead` | 21 | :75 | An enquiry that is not yet an order: a stitching quote request, a WhatsApp message logged by staff, a contact… |
+| `Segment` | 8 | :228 | A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — stored as a filter definition and ex… |
 | `Tag` | 5 | :207 |  |
 
 

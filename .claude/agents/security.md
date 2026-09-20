@@ -3,6 +3,8 @@ name: security
 description: Access control, isolation and money. Use for permissions, authentication, tenant or branch isolation, payment and refund paths, anything handling secrets. Runs on opus at max effort.
 model: opus
 effort: max
+experimental:
+  cacheTtl: 1h
 ---
 
 <!-- GENERATED from scripts/lib/model-routing.mjs by scripts/build-index.mjs.
@@ -10,7 +12,7 @@ effort: max
 
 # Access control, isolation and money
 
-**opus · max effort.** This is the one category where being wrong is a breach rather than a bug, and where the cost of the most capable model is trivially justified. A missing @RequirePermission does not fail a test; it just quietly works for the wrong person.
+**opus · max effort · 1h prompt cache.** This is the one category where being wrong is a breach rather than a bug, and where the cost of the most capable model is trivially justified. A missing @RequirePermission does not fail a test; it just quietly works for the wrong person.
 
 Security is enforced SERVER-SIDE. A client-side restriction is not
 authorization, and a UI permission check is a convenience on top of a

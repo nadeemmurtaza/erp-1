@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 908,
-    "lines": 145731,
+    "files": 910,
+    "lines": 146441,
     "routes": 286,
     "controllers": 57,
     "models": 113,
@@ -19,14 +19,14 @@
   "areas": {
     "root": {
       "files": 32,
-      "lines": 8552,
-      "bytes": 624828,
+      "lines": 8583,
+      "bytes": 626902,
       "label": "repository root files"
     },
     "infra": {
-      "files": 47,
-      "lines": 24498,
-      "bytes": 937907,
+      "files": 49,
+      "lines": 25177,
+      "bytes": 966911,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -5218,7 +5218,11 @@
         "GET /admin/analytics/visitors"
       ],
       "uiSites": 3,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "reports.view",
@@ -5235,7 +5239,11 @@
         "GET /admin/reports/export/stock-ledger"
       ],
       "uiSites": 2,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "organization.view",
@@ -5248,7 +5256,11 @@
         "GET /organization/nodes"
       ],
       "uiSites": 1,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "organization.manage",
@@ -5264,7 +5276,10 @@
         "POST /organization/replication/resync"
       ],
       "uiSites": 0,
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "accounting.view",
@@ -5284,7 +5299,10 @@
         "GET /admin/accounting/reports/trial-balance"
       ],
       "uiSites": 0,
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "crm.manage",
@@ -5312,7 +5330,11 @@
         "GET /admin/crm/tags"
       ],
       "uiSites": 3,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "orders.manage",
@@ -5334,7 +5356,11 @@
         "GET /admin/quotes/:id"
       ],
       "uiSites": 1,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "pos.manage",
@@ -5350,7 +5376,10 @@
         "POST /admin/pos/terminals/:id/suspend"
       ],
       "uiSites": 0,
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "pos.operate",
@@ -5369,7 +5398,11 @@
         "POST /admin/pos/shifts/open"
       ],
       "uiSites": 1,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "payments.approve",
@@ -5382,7 +5415,11 @@
         "GET /admin/payments/awaiting-approval"
       ],
       "uiSites": 2,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "stitching.jobs.view_queue",
@@ -5395,7 +5432,12 @@
         "GET /admin/stitching/jobs/workload"
       ],
       "uiSites": 1,
-      "inSeed": false
+      "roles": [
+        "TAILOR",
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "stitching.jobs.change_stage",
@@ -5406,7 +5448,12 @@
         "POST /admin/stitching/jobs/:id/stage"
       ],
       "uiSites": 0,
-      "inSeed": false
+      "roles": [
+        "TAILOR",
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "stitching.jobs.manage_own",
@@ -5415,7 +5462,10 @@
       "sensitivity": "low",
       "routes": [],
       "uiSites": 0,
-      "inSeed": false
+      "roles": [
+        "TAILOR"
+      ],
+      "inSeed": true
     },
     {
       "key": "stitching.jobs.manage_all",
@@ -5424,7 +5474,11 @@
       "sensitivity": "medium",
       "routes": [],
       "uiSites": 0,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "stitching.jobs.assign",
@@ -5435,7 +5489,11 @@
         "POST /admin/stitching/jobs/:id/assign"
       ],
       "uiSites": 2,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "stitching.bookings.manage",
@@ -5450,7 +5508,11 @@
         "POST /admin/stitching/bookings/:id/status"
       ],
       "uiSites": 1,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "stitching.designs.manage",
@@ -5467,7 +5529,11 @@
         "PATCH /admin/stitching/options/:id"
       ],
       "uiSites": 1,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "production.manage",
@@ -5486,7 +5552,11 @@
         "POST /admin/production/work-orders/:id/release"
       ],
       "uiSites": 0,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "production.view_chain",
@@ -5497,7 +5567,11 @@
         "GET /admin/inventory/:variantId/chain"
       ],
       "uiSites": 1,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "catalog.manage",
@@ -5527,7 +5601,11 @@
         "PATCH /admin/catalog/variants/:variantId/stock"
       ],
       "uiSites": 4,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "inventory.manage",
@@ -5545,7 +5623,11 @@
         "POST /admin/inventory/variances/:id/resolve"
       ],
       "uiSites": 3,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "inventory.view_cost",
@@ -5556,7 +5638,10 @@
         "GET /admin/reports/export/stock-valuation"
       ],
       "uiSites": 3,
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "inventory.count",
@@ -5573,7 +5658,11 @@
         "POST /admin/inventory/counts/:id/start"
       ],
       "uiSites": 3,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "transfers.manage",
@@ -5588,7 +5677,11 @@
         "POST /admin/transfers/:id/receive"
       ],
       "uiSites": 0,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "measurements.manage_blueprints",
@@ -5603,7 +5696,11 @@
         "PUT /admin/measurements/garment-types/:id/size-chart"
       ],
       "uiSites": 1,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "suppliers.manage",
@@ -5621,7 +5718,11 @@
         "DELETE /admin/suppliers/:id/products/:variantId"
       ],
       "uiSites": 1,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "purchasing.manage",
@@ -5648,7 +5749,11 @@
         "POST /admin/trading-partners/:id/rotate-inbound-key"
       ],
       "uiSites": 2,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "parties.manage",
@@ -5661,7 +5766,11 @@
         "GET /admin/parties/search"
       ],
       "uiSites": 0,
-      "inSeed": false
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "account.change_own_password",
@@ -5672,7 +5781,13 @@
         "POST /auth/change-password"
       ],
       "uiSites": 2,
-      "inSeed": false
+      "roles": [
+        "CUSTOMER",
+        "TAILOR",
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "settings.manage",
@@ -5698,7 +5813,10 @@
         "GET /admin/settings/permissions"
       ],
       "uiSites": 3,
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "tax.manage",
@@ -5716,7 +5834,10 @@
         "PUT /admin/tax/settings"
       ],
       "uiSites": 1,
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "marketing.manage",
@@ -5728,7 +5849,10 @@
         "PUT /admin/marketing/settings"
       ],
       "uiSites": 1,
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "roles.manage_permissions",
@@ -5742,7 +5866,10 @@
         "PATCH /admin/roles/:id"
       ],
       "uiSites": 0,
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "audit.view",
@@ -5753,7 +5880,10 @@
         "GET /admin/settings/audit-log"
       ],
       "uiSites": 0,
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "users.manage",
@@ -5771,7 +5901,10 @@
         "POST /admin/users/:id/roles/:roleId"
       ],
       "uiSites": 1,
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "accounting.manage_periods",
@@ -5787,7 +5920,10 @@
         "POST /admin/accounting/fiscal-years/:id/close"
       ],
       "uiSites": 0,
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     }
   ],
   "events": [
@@ -6156,7 +6292,7 @@
       "name": "Account",
       "file": "apps/api/prisma/schema/accounting.prisma",
       "line": 33,
-      "doc": "/ The chart of accounts.",
+      "doc": "The chart of accounts.",
       "fields": [
         {
           "name": "id",
@@ -6382,7 +6518,7 @@
       "name": "AdminScope",
       "file": "apps/api/prisma/schema/organization.prisma",
       "line": 100,
-      "doc": "/ What a user's admin access is scoped to (R10) — never a role check / (House Rule 9 forbids `if (user.role === 'SUPER_ADMIN')`).",
+      "doc": "What a user's admin access is scoped to (R10) — never a role check (House Rule 9 forbids `if (user.role === 'SUPER_ADMIN')`).",
       "fields": [
         {
           "name": "id",
@@ -6457,7 +6593,7 @@
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 408,
-      "doc": "/ Anonymous, aggregate first-party analytics — page views, add-to-cart, / checkout-started.",
+      "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
           "name": "id",
@@ -6594,7 +6730,7 @@
       "name": "BillOfMaterial",
       "file": "apps/api/prisma/schema/production.prisma",
       "line": 13,
-      "doc": "/ One recipe per produced variant: how many of each component variant it / takes to make one unit.",
+      "doc": "One recipe per produced variant: how many of each component variant it takes to make one unit.",
       "fields": [
         {
           "name": "id",
@@ -6713,7 +6849,7 @@
       "name": "Brand",
       "file": "apps/api/prisma/schema/catalog.prisma",
       "line": 46,
-      "doc": "/ A label a product is sold under.",
+      "doc": "A label a product is sold under.",
       "fields": [
         {
           "name": "id",
@@ -6787,7 +6923,7 @@
       "name": "BrandPolicy",
       "file": "apps/api/prisma/schema/organization.prisma",
       "line": 64,
-      "doc": "/ Per-brand policy switches (R9) — what R9 calls / `brand.allow_branch_product_creation` and its siblings, generalised from / a single Setting row (House Rule 4, still the answer while a deployment /…",
+      "doc": "Per-brand policy switches (R9) — what R9 calls `brand.allow_branch_product_creation` and its siblings, generalised from a single Setting row (House Rule 4, still the answer while a deployment has onl…",
       "fields": [
         {
           "name": "id",
@@ -6852,7 +6988,7 @@
       "name": "BrandTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
       "line": 65,
-      "doc": "/ House Rule 6: a customer-facing name is a translation row, not a column.",
+      "doc": "House Rule 6: a customer-facing name is a translation row, not a column.",
       "fields": [
         {
           "name": "id",
@@ -7170,7 +7306,7 @@
       "name": "CashMovement",
       "file": "apps/api/prisma/schema/pos.prisma",
       "line": 105,
-      "doc": "/ One physical cash movement at the drawer during a shift — always a / positive `amountMinor`; `type` says which direction.",
+      "doc": "One physical cash movement at the drawer during a shift — always a positive `amountMinor`; `type` says which direction.",
       "fields": [
         {
           "name": "id",
@@ -7635,7 +7771,7 @@
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 388,
-      "doc": "/ A push notification target: one installation of the mobile app.",
+      "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
           "name": "id",
@@ -7709,7 +7845,7 @@
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 175,
-      "doc": "/ A connected mailbox: SMTP to send, optionally IMAP to receive.",
+      "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
           "name": "id",
@@ -7956,7 +8092,7 @@
       "name": "FiscalPeriod",
       "file": "apps/api/prisma/schema/accounting.prisma",
       "line": 91,
-      "doc": "/ What a `JournalEntry` posts into.",
+      "doc": "What a `JournalEntry` posts into.",
       "fields": [
         {
           "name": "id",
@@ -8039,7 +8175,7 @@
       "name": "FiscalYear",
       "file": "apps/api/prisma/schema/accounting.prisma",
       "line": 57,
-      "doc": "/ A trading year.",
+      "doc": "A trading year.",
       "fields": [
         {
           "name": "id",
@@ -8202,7 +8338,7 @@
       "name": "GarmentSizeChart",
       "file": "apps/api/prisma/schema/measurements.prisma",
       "line": 92,
-      "doc": "/ A standard RTW size row (XS-XXL) for a garment, offered as a shortcut / alongside the \"type your own measurements\" flow.",
+      "doc": "A standard RTW size row (XS-XXL) for a garment, offered as a shortcut alongside the \"type your own measurements\" flow.",
       "fields": [
         {
           "name": "id",
@@ -8684,7 +8820,7 @@
       "name": "InboundEmail",
       "file": "apps/api/prisma/schema/crm.prisma",
       "line": 142,
-      "doc": "/ A message pulled from a connected mailbox's IMAP inbox by the poller / (modules/crm/email-inbox) — a customer's reply to an order or support / email.",
+      "doc": "A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-inbox) — a customer's reply to an order or support email.",
       "fields": [
         {
           "name": "id",
@@ -8816,7 +8952,7 @@
       "name": "InboundEmailReply",
       "file": "apps/api/prisma/schema/crm.prisma",
       "line": 174,
-      "doc": "/ A staff reply sent from the Support Inbox, over the SAME connected / mailbox the original message arrived at (not resolved by purpose — a / reply has to leave from the mailbox the customer is alrea…",
+      "doc": "A staff reply sent from the Support Inbox, over the SAME connected mailbox the original message arrived at (not resolved by purpose — a reply has to leave from the mailbox the customer is already tal…",
       "fields": [
         {
           "name": "id",
@@ -9136,7 +9272,7 @@
       "name": "JournalEntry",
       "file": "apps/api/prisma/schema/accounting.prisma",
       "line": 120,
-      "doc": "/ One fact, posted as a balanced set of `JournalLine` rows.",
+      "doc": "One fact, posted as a balanced set of `JournalLine` rows.",
       "fields": [
         {
           "name": "id",
@@ -9247,7 +9383,7 @@
       "name": "JournalEntryNumberCounter",
       "file": "apps/api/prisma/schema/accounting.prisma",
       "line": 217,
-      "doc": "/ Backing store for gapless per-fiscal-year journal numbers (R18) — same / atomic-counter shape as `OrderNumberCounter` and its siblings / (orders.prisma), keyed by `fiscalYearId` instead of a calend…",
+      "doc": "Backing store for gapless per-fiscal-year journal numbers (R18) — same atomic-counter shape as `OrderNumberCounter` and its siblings (orders.prisma), keyed by `fiscalYearId` instead of a calendar yea…",
       "fields": [
         {
           "name": "fiscalYearId",
@@ -9277,7 +9413,7 @@
       "name": "JournalLine",
       "file": "apps/api/prisma/schema/accounting.prisma",
       "line": 162,
-      "doc": "/ One debit or credit.",
+      "doc": "One debit or credit.",
       "fields": [
         {
           "name": "id",
@@ -9411,7 +9547,7 @@
       "name": "Lead",
       "file": "apps/api/prisma/schema/crm.prisma",
       "line": 75,
-      "doc": "/ An enquiry that is not yet an order: a stitching quote request, a WhatsApp / message logged by staff, a contact-form submission.",
+      "doc": "An enquiry that is not yet an order: a stitching quote request, a WhatsApp message logged by staff, a contact-form submission.",
       "fields": [
         {
           "name": "id",
@@ -9571,7 +9707,7 @@
       "name": "Location",
       "file": "apps/api/prisma/schema/inventory.prisma",
       "line": 76,
-      "doc": "/ A place stock physically lives.",
+      "doc": "A place stock physically lives.",
       "fields": [
         {
           "name": "id",
@@ -9798,7 +9934,7 @@
       "name": "MeasurementProfile",
       "file": "apps/api/prisma/schema/measurements.prisma",
       "line": 73,
-      "doc": "/ A saved set of measurements: \"Ammi – kameez\", \"Self – shalwar\".",
+      "doc": "A saved set of measurements: \"Ammi – kameez\", \"Self – shalwar\".",
       "fields": [
         {
           "name": "id",
@@ -9880,7 +10016,7 @@
       "name": "Node",
       "file": "apps/api/prisma/schema/organization.prisma",
       "line": 136,
-      "doc": "/ A child node this deployment knows about — a brand's branches, or an / organization's brands (R1, R14; WO-18.1, moved here from core.prisma in / WO-18.3 once it had siblings to live beside — Part 5…",
+      "doc": "A child node this deployment knows about — a brand's branches, or an organization's brands (R1, R14; WO-18.1, moved here from core.prisma in WO-18.3 once it had siblings to live beside — Part 5 owns…",
       "fields": [
         {
           "name": "id",
@@ -9969,7 +10105,7 @@
       "name": "Offer",
       "file": "apps/api/prisma/schema/trading-partners.prisma",
       "line": 84,
-      "doc": "/ A marketing push to the retail end of the chain (WO-18.3's third \"forth\" / document, alongside the product-alerts push) — never targeted, never a / coupon engine: one broadcast row, fanned out to e…",
+      "doc": "A marketing push to the retail end of the chain (WO-18.3's third \"forth\" document, alongside the product-alerts push) — never targeted, never a coupon engine: one broadcast row, fanned out to every A…",
       "fields": [
         {
           "name": "id",
@@ -10596,7 +10732,7 @@
       "name": "OrderNumberCounter",
       "file": "apps/api/prisma/schema/orders.prisma",
       "line": 252,
-      "doc": "/ Backing store for sequential per-year order numbers (YSN-2026-0001).",
+      "doc": "Backing store for sequential per-year order numbers (YSN-2026-0001).",
       "fields": [
         {
           "name": "year",
@@ -10693,7 +10829,7 @@
       "name": "Organization",
       "file": "apps/api/prisma/schema/organization.prisma",
       "line": 15,
-      "doc": "/ The top tier — the owner's group, run by a super admin from one / dashboard (Part 1).",
+      "doc": "The top tier — the owner's group, run by a super admin from one dashboard (Part 1).",
       "fields": [
         {
           "name": "id",
@@ -10737,7 +10873,7 @@
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 361,
-      "doc": "/ Transactional outbox.",
+      "doc": "Transactional outbox.",
       "fields": [
         {
           "name": "id",
@@ -11182,7 +11318,7 @@
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 241,
-      "doc": "/ A single grantable capability, e.g.",
+      "doc": "A single grantable capability, e.g.",
       "fields": [
         {
           "name": "id",
@@ -11247,7 +11383,7 @@
       "name": "PosReceipt",
       "file": "apps/api/prisma/schema/pos.prisma",
       "line": 127,
-      "doc": "/ One receipt per POS sale (WO-21.5) — created by PosSalesService right / after OrdersService.placeFromPos() succeeds, best-effort and outside that / call's own transaction, the same \"not core to the…",
+      "doc": "One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService.placeFromPos() succeeds, best-effort and outside that call's own transaction, the same \"not core to the sale'…",
       "fields": [
         {
           "name": "id",
@@ -11293,7 +11429,7 @@
       "name": "PosShift",
       "file": "apps/api/prisma/schema/pos.prisma",
       "line": 65,
-      "doc": "/ One cashier's stretch at one terminal, opened with a cash float and / closed with a physical count (RETAIL-ERP.md R11, WO-21.2).",
+      "doc": "One cashier's stretch at one terminal, opened with a cash float and closed with a physical count (RETAIL-ERP.md R11, WO-21.2).",
       "fields": [
         {
           "name": "id",
@@ -11382,7 +11518,7 @@
       "name": "PosTerminal",
       "file": "apps/api/prisma/schema/pos.prisma",
       "line": 27,
-      "doc": "/ A physical till.",
+      "doc": "A physical till.",
       "fields": [
         {
           "name": "id",
@@ -11695,7 +11831,7 @@
       "name": "ProductGarmentType",
       "file": "apps/api/prisma/schema/catalog.prisma",
       "line": 268,
-      "doc": "/ Which garments a given unstitched fabric can be made into.",
+      "doc": "Which garments a given unstitched fabric can be made into.",
       "fields": [
         {
           "name": "productId",
@@ -11808,7 +11944,7 @@
       "name": "ProductOption",
       "file": "apps/api/prisma/schema/catalog.prisma",
       "line": 289,
-      "doc": "/ A dynamic option axis a product varies along: \"Size\", \"Colour\", \"Storage\".",
+      "doc": "A dynamic option axis a product varies along: \"Size\", \"Colour\", \"Storage\".",
       "fields": [
         {
           "name": "id",
@@ -11929,7 +12065,7 @@
       "name": "ProductOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
       "line": 318,
-      "doc": "/ A specific value on an option axis: \"M\", \"Ferozi\", \"128GB\".",
+      "doc": "A specific value on an option axis: \"M\", \"Ferozi\", \"128GB\".",
       "fields": [
         {
           "name": "id",
@@ -12424,7 +12560,7 @@
       "name": "ProductVariantOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
       "line": 350,
-      "doc": "/ The join that DEFINES a variant: one row per option axis per variant.",
+      "doc": "The join that DEFINES a variant: one row per option axis per variant.",
       "fields": [
         {
           "name": "variantId",
@@ -12943,7 +13079,7 @@
       "name": "ReplicationCursor",
       "file": "apps/api/prisma/schema/replication.prisma",
       "line": 97,
-      "doc": "/ \"The highest sequence I've already synced with this peer, in this / direction\" — read and advanced by `ReplicationSyncAgent` (WO-20.2).",
+      "doc": "\"The highest sequence I've already synced with this peer, in this direction\" — read and advanced by `ReplicationSyncAgent` (WO-20.2).",
       "fields": [
         {
           "name": "peerNodeId",
@@ -12982,7 +13118,7 @@
       "name": "ReplicationQuarantine",
       "file": "apps/api/prisma/schema/replication.prisma",
       "line": 118,
-      "doc": "/ Where an incoming record lands when it fails to apply — never dropped, / never retried forever (that would silently corrupt a peer's own / convergence guarantee the same way an infinite-retry webho…",
+      "doc": "Where an incoming record lands when it fails to apply — never dropped, never retried forever (that would silently corrupt a peer's own convergence guarantee the same way an infinite-retry webhook cor…",
       "fields": [
         {
           "name": "id",
@@ -13077,7 +13213,7 @@
       "name": "ReplicationRecord",
       "file": "apps/api/prisma/schema/replication.prisma",
       "line": 49,
-      "doc": "/ The log.",
+      "doc": "The log.",
       "fields": [
         {
           "name": "id",
@@ -13173,7 +13309,7 @@
       "name": "ReplicationSequenceCounter",
       "file": "apps/api/prisma/schema/replication.prisma",
       "line": 81,
-      "doc": "/ This node's own per-origin sequence counter — `originNodeId` is always / this node's own `NODE_ID` when appending locally, so in practice there / is exactly one row.",
+      "doc": "This node's own per-origin sequence counter — `originNodeId` is always this node's own `NODE_ID` when appending locally, so in practice there is exactly one row.",
       "fields": [
         {
           "name": "nodeId",
@@ -13196,7 +13332,7 @@
       "name": "RetailBrand",
       "file": "apps/api/prisma/schema/organization.prisma",
       "line": 34,
-      "doc": "/ A retail brand — the business entity a branch belongs to.",
+      "doc": "A retail brand — the business entity a branch belongs to.",
       "fields": [
         {
           "name": "id",
@@ -13306,7 +13442,7 @@
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 307,
-      "doc": "/ A named, reusable bundle of permissions a super admin defines — \"roles / are data, not code\" (House Rule 9) taken to its actual conclusion.",
+      "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
           "name": "id",
@@ -13364,7 +13500,7 @@
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 321,
-      "doc": "/ Which permissions a `Role` holds — the direct successor to the old / enum-keyed `RolePermission`, just pointing at a real `Role` row instead / of a fixed enum value.",
+      "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
           "name": "id",
@@ -13418,7 +13554,7 @@
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 257,
-      "doc": "/ Which roles currently hold a given permission.",
+      "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
           "name": "id",
@@ -13465,7 +13601,7 @@
       "name": "Segment",
       "file": "apps/api/prisma/schema/crm.prisma",
       "line": 228,
-      "doc": "/ A saved contact filter — \"repeat buyers in Lahore\", \"bridal enquiries\" — / stored as a filter definition and exportable to CSV for WhatsApp broadcasts.",
+      "doc": "A saved contact filter — \"repeat buyers in Lahore\", \"bridal enquiries\" — stored as a filter definition and exportable to CSV for WhatsApp broadcasts.",
       "fields": [
         {
           "name": "id",
@@ -13530,7 +13666,7 @@
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 153,
-      "doc": "/ Runtime configuration edited from the admin dashboard: store name, shipping / zones, COD fee, stitching lead times.",
+      "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
           "name": "key",
@@ -13809,7 +13945,7 @@
       "name": "StitchingJobEvent",
       "file": "apps/api/prisma/schema/stitching.prisma",
       "line": 158,
-      "doc": "/ Every stage transition, appended and never updated.",
+      "doc": "Every stage transition, appended and never updated.",
       "fields": [
         {
           "name": "id",
@@ -13883,7 +14019,7 @@
       "name": "StitchingJobNumberCounter",
       "file": "apps/api/prisma/schema/stitching.prisma",
       "line": 198,
-      "doc": "/ Same as StitchingOrderNumberCounter, for JOB-2026-0001 numbers.",
+      "doc": "Same as StitchingOrderNumberCounter, for JOB-2026-0001 numbers.",
       "fields": [
         {
           "name": "year",
@@ -14126,7 +14262,7 @@
       "name": "StitchingOrder",
       "file": "apps/api/prisma/schema/stitching.prisma",
       "line": 73,
-      "doc": "/ A tailoring booking where the customer supplies the cloth.",
+      "doc": "A tailoring booking where the customer supplies the cloth.",
       "fields": [
         {
           "name": "id",
@@ -14265,7 +14401,7 @@
       "name": "StitchingOrderNumberCounter",
       "file": "apps/api/prisma/schema/stitching.prisma",
       "line": 190,
-      "doc": "/ Backing store for sequential per-year STO-2026-0001 numbers.",
+      "doc": "Backing store for sequential per-year STO-2026-0001 numbers.",
       "fields": [
         {
           "name": "year",
@@ -14288,7 +14424,7 @@
       "name": "StockAdjustment",
       "file": "apps/api/prisma/schema/catalog.prisma",
       "line": 233,
-      "doc": "/ One entry per change to ProductVariant.stock, so \"why is stock 4\" has an / answer without an audit table bolted on after the fact.",
+      "doc": "One entry per change to ProductVariant.stock, so \"why is stock 4\" has an answer without an audit table bolted on after the fact.",
       "fields": [
         {
           "name": "id",
@@ -14850,7 +14986,7 @@
       "name": "StockVariance",
       "file": "apps/api/prisma/schema/inventory.prisma",
       "line": 127,
-      "doc": "/ One row per oversell InventoryService.postUnconditional() let through (R5: / a POS sale that already happened is never rejected by sync).",
+      "doc": "One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale that already happened is never rejected by sync).",
       "fields": [
         {
           "name": "id",
@@ -15293,7 +15429,7 @@
       "name": "SupplierProduct",
       "file": "apps/api/prisma/schema/purchasing.prisma",
       "line": 68,
-      "doc": "/ What a given supplier charges for a given variant, and under what terms.",
+      "doc": "What a given supplier charges for a given variant, and under what terms.",
       "fields": [
         {
           "name": "id",
@@ -15558,7 +15694,7 @@
       "name": "TaxRate",
       "file": "apps/api/prisma/schema/tax.prisma",
       "line": 25,
-      "doc": "/ One row per rate that has ever applied to a class.",
+      "doc": "One row per rate that has ever applied to a class.",
       "fields": [
         {
           "name": "id",
@@ -15618,7 +15754,7 @@
       "name": "TradingPartner",
       "file": "apps/api/prisma/schema/trading-partners.prisma",
       "line": 33,
-      "doc": "/ The business on the other end of a document exchange.",
+      "doc": "The business on the other end of a document exchange.",
       "fields": [
         {
           "name": "id",
@@ -15734,7 +15870,7 @@
       "name": "TransferNumberCounter",
       "file": "apps/api/prisma/schema/transfers.prisma",
       "line": 84,
-      "doc": "/ Same shape as OrderNumberCounter (orders.prisma) — an / `INSERT ...",
+      "doc": "Same shape as OrderNumberCounter (orders.prisma) — an `INSERT ...",
       "fields": [
         {
           "name": "year",
@@ -16077,7 +16213,7 @@
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 278,
-      "doc": "/ A per-user adjustment layered on top of their role's grants: GRANT adds a / permission their role doesn't have, REVOKE takes one away that it does.",
+      "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
           "name": "id",
@@ -16138,7 +16274,7 @@
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 336,
-      "doc": "/ Which `Role` rows a user holds.",
+      "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
           "name": "id",
@@ -16193,7 +16329,7 @@
       "name": "VariantLocationStock",
       "file": "apps/api/prisma/schema/inventory.prisma",
       "line": 156,
-      "doc": "/ Stock, per variant, per location.",
+      "doc": "Stock, per variant, per location.",
       "fields": [
         {
           "name": "variantId",
@@ -16246,7 +16382,7 @@
       "name": "VariantSalesStat",
       "file": "apps/api/prisma/schema/inventory.prisma",
       "line": 169,
-      "doc": "/ CACHE: variantId as primary key.",
+      "doc": "CACHE: variantId as primary key.",
       "fields": [
         {
           "name": "variantId",
@@ -16332,7 +16468,7 @@
       "name": "WorkOrder",
       "file": "apps/api/prisma/schema/production.prisma",
       "line": 56,
-      "doc": "/ The in-house \"make this\" ledger entry.",
+      "doc": "The in-house \"make this\" ledger entry.",
       "fields": [
         {
           "name": "id",
@@ -16485,7 +16621,7 @@
       "name": "WorkOrderNumberCounter",
       "file": "apps/api/prisma/schema/production.prisma",
       "line": 92,
-      "doc": "/ Same shape as PurchaseOrder's OrderNumberCounter-style tables: one row / per year, incremented atomically to avoid the MAX()-read race.",
+      "doc": "Same shape as PurchaseOrder's OrderNumberCounter-style tables: one row per year, incremented atomically to avoid the MAX()-read race.",
       "fields": [
         {
           "name": "year",
@@ -19362,6 +19498,18 @@
     {
       "pkg": "yaseenecom",
       "file": "package.json",
+      "name": "idx",
+      "cmd": "node scripts/idx.mjs"
+    },
+    {
+      "pkg": "yaseenecom",
+      "file": "package.json",
+      "name": "check",
+      "cmd": "node scripts/check.mjs"
+    },
+    {
+      "pkg": "yaseenecom",
+      "file": "package.json",
       "name": "hooks:install",
       "cmd": "node scripts/install-git-hooks.mjs"
     },
@@ -20602,8 +20750,8 @@
       "path": ".claude/agents/architect.md",
       "area": "root",
       "kind": "doc",
-      "lines": 46,
-      "bytes": 2144,
+      "lines": 48,
+      "bytes": 2192,
       "doc": "",
       "symbols": []
     },
@@ -20611,8 +20759,8 @@
       "path": ".claude/agents/debug.md",
       "area": "root",
       "kind": "doc",
-      "lines": 36,
-      "bytes": 1539,
+      "lines": 38,
+      "bytes": 1587,
       "doc": "",
       "symbols": []
     },
@@ -20620,8 +20768,8 @@
       "path": ".claude/agents/feature.md",
       "area": "root",
       "kind": "doc",
-      "lines": 42,
-      "bytes": 1872,
+      "lines": 44,
+      "bytes": 1920,
       "doc": "",
       "symbols": []
     },
@@ -20647,8 +20795,8 @@
       "path": ".claude/agents/schema.md",
       "area": "root",
       "kind": "doc",
-      "lines": 44,
-      "bytes": 1942,
+      "lines": 46,
+      "bytes": 1990,
       "doc": "",
       "symbols": []
     },
@@ -20656,8 +20804,8 @@
       "path": ".claude/agents/security.md",
       "area": "root",
       "kind": "doc",
-      "lines": 44,
-      "bytes": 2135,
+      "lines": 46,
+      "bytes": 2183,
       "doc": "",
       "symbols": []
     },
@@ -20683,8 +20831,8 @@
       "path": ".claude/hooks/suggest-model.sh",
       "area": "root",
       "kind": "hook",
-      "lines": 64,
-      "bytes": 2769,
+      "lines": 85,
+      "bytes": 4603,
       "doc": "",
       "symbols": []
     },
@@ -34390,8 +34538,8 @@
       "path": "package.json",
       "area": "infra",
       "kind": "json",
-      "lines": 50,
-      "bytes": 1712,
+      "lines": 52,
+      "bytes": 1786,
       "doc": "",
       "symbols": []
     },
@@ -35762,8 +35910,8 @@
       "path": "scripts/build-index.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 2248,
-      "bytes": 102091,
+      "lines": 2333,
+      "bytes": 106069,
       "doc": "",
       "symbols": []
     },
@@ -35822,6 +35970,24 @@
       "symbols": []
     },
     {
+      "path": "scripts/check.mjs",
+      "area": "infra",
+      "kind": "script",
+      "lines": 153,
+      "bytes": 6541,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "scripts/idx.mjs",
+      "area": "infra",
+      "kind": "script",
+      "lines": 364,
+      "bytes": 15053,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "scripts/install-git-hooks.mjs",
       "area": "infra",
       "kind": "script",
@@ -35835,7 +36001,7 @@
       "area": "infra",
       "kind": "utility",
       "lines": 906,
-      "bytes": 37648,
+      "bytes": 37657,
       "doc": "Scanners for the repository index.",
       "symbols": [
         {
@@ -36009,29 +36175,39 @@
       "path": "scripts/lib/model-routing.mjs",
       "area": "infra",
       "kind": "utility",
-      "lines": 288,
-      "bytes": 13996,
+      "lines": 363,
+      "bytes": 17345,
       "doc": "Which model and how much effort each kind of job in this repository deserves.",
       "symbols": [
         {
           "name": "ROUTING_POLICY",
           "kind": "const",
-          "line": 35
+          "line": 54
         },
         {
           "name": "ADVISORY_SIGNALS",
           "kind": "const",
-          "line": 280
+          "line": 312
+        },
+        {
+          "name": "CACHE_TTL_BY_EFFORT",
+          "kind": "const",
+          "line": 351
+        },
+        {
+          "name": "cacheTtlFor",
+          "kind": "const",
+          "line": 359
         },
         {
           "name": "MODEL_ORDER",
           "kind": "const",
-          "line": 286
+          "line": 361
         },
         {
           "name": "EFFORT_ORDER",
           "kind": "const",
-          "line": 287
+          "line": 362
         }
       ]
     },

@@ -53,7 +53,7 @@ _none_
 |---|---|---|---|
 | `StockTransfer` | 15 | :24 |  |
 | `StockTransferLine` | 6 | :59 |  |
-| `TransferNumberCounter` | 2 | :84 | / Same shape as OrderNumberCounter (orders.prisma) — an / `INSERT ... |
+| `TransferNumberCounter` | 2 | :84 | Same shape as OrderNumberCounter (orders.prisma) — an `INSERT ... |
 
 
 Enums: `StockTransferStatus` (3)

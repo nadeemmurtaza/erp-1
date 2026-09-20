@@ -89,12 +89,12 @@ All paths relative to `apps/api/src/modules/accounting`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Account` | 14 | :33 | / The chart of accounts. |
-| `FiscalPeriod` | 10 | :91 | / What a `JournalEntry` posts into. |
-| `FiscalYear` | 7 | :57 | / A trading year. |
-| `JournalEntry` | 14 | :120 | / One fact, posted as a balanced set of `JournalLine` rows. |
-| `JournalEntryNumberCounter` | 3 | :217 | / Backing store for gapless per-fiscal-year journal numbers (R18) — same / atomic-counter shape as `OrderNumb… |
-| `JournalLine` | 17 | :162 | / One debit or credit. |
+| `Account` | 14 | :33 | The chart of accounts. |
+| `FiscalPeriod` | 10 | :91 | What a `JournalEntry` posts into. |
+| `FiscalYear` | 7 | :57 | A trading year. |
+| `JournalEntry` | 14 | :120 | One fact, posted as a balanced set of `JournalLine` rows. |
+| `JournalEntryNumberCounter` | 3 | :217 | Backing store for gapless per-fiscal-year journal numbers (R18) — same atomic-counter shape as `OrderNumberCo… |
+| `JournalLine` | 17 | :162 | One debit or credit. |
 
 
 Enums: `AccountType` (5) · `FiscalPeriodStatus` (3) · `JournalEntryStatus` (2)

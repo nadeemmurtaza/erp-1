@@ -3,7 +3,7 @@
 
 # Files — infra
 
-All 47 tracked files in `scripts, CI, deployment and container configuration`, by directory.
+All 49 tracked files in `scripts, CI, deployment and container configuration`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -27,7 +27,7 @@ All 47 tracked files in `scripts, CI, deployment and container configuration`, b
 | `docker-stack.edge.yml` | yaml | 42 |  |
 | `docker-stack.prod.yml` | yaml | 88 |  |
 | `docker-stack.staging.yml` | yaml | 88 |  |
-| `package.json` | json | 50 |  |
+| `package.json` | json | 52 |  |
 | `pnpm-lock.yaml` | yaml | 17493 |  |
 | `pnpm-workspace.yaml` | yaml | 12 |  |
 | `turbo.json` | json | 49 |  |
@@ -73,17 +73,19 @@ All 47 tracked files in `scripts, CI, deployment and container configuration`, b
 | `yaseen-disk-alert.timer` | timer | — |  |
 | `yaseen.service` | service | — |  |
 
-### `scripts` (10)
+### `scripts` (12)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `build-index.mjs` | script | 2248 |  |
+| `build-index.mjs` | script | 2333 |  |
 | `build-logo-raster.mjs` | script | 54 |  |
 | `check-email-dns.mjs` | script | 399 |  |
 | `check-env-templates.mjs` | script | 139 |  |
 | `check-frontend-secrets.mjs` | script | 137 |  |
 | `check-module-boundaries.mjs` | script | 535 |  |
 | `check-route-permissions.mjs` | script | 136 |  |
+| `check.mjs` | script | 153 |  |
+| `idx.mjs` | script | 364 |  |
 | `install-git-hooks.mjs` | script | 89 |  |
 | `nested-borders.py` | py | — |  |
 | `sync-client.mjs` | script | 243 | scripts/sync-client.mjs |
@@ -93,7 +95,7 @@ All 47 tracked files in `scripts, CI, deployment and container configuration`, b
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `index-scan.mjs` | utility | 906 | Scanners for the repository index. |
-| `model-routing.mjs` | utility | 288 | Which model and how much effort each kind of job in this repository deserves. |
+| `model-routing.mjs` | utility | 363 | Which model and how much effort each kind of job in this repository deserves. |
 
 
 ---

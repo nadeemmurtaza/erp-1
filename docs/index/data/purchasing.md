@@ -165,7 +165,7 @@ Indexes: `@@index([supplierId, status])` · `@@index([status, dueAt])`
 
 ### `SupplierProduct`  <sub>`apps/api/prisma/schema/purchasing.prisma:68`</sub>
 
-> / What a given supplier charges for a given variant, and under what terms.
+> What a given supplier charges for a given variant, and under what terms.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|

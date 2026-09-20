@@ -22,7 +22,7 @@ against a real database.
 
 ### `ReplicationCursor`  <sub>`apps/api/prisma/schema/replication.prisma:97`</sub>
 
-> / "The highest sequence I've already synced with this peer, in this / direction" — read and advanced by `ReplicationSyncAgent` (WO-20.2).
+> "The highest sequence I've already synced with this peer, in this direction" — read and advanced by `ReplicationSyncAgent` (WO-20.2).
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -35,7 +35,7 @@ Indexes: `@@id([peerNodeId, direction])`
 
 ### `ReplicationQuarantine`  <sub>`apps/api/prisma/schema/replication.prisma:118`</sub>
 
-> / Where an incoming record lands when it fails to apply — never dropped, / never retried forever (that would silently corrupt a peer's own / convergence guarantee the same way an infinite-retry webho…
+> Where an incoming record lands when it fails to apply — never dropped, never retried forever (that would silently corrupt a peer's own convergence guarantee the same way an infinite-retry webhook cor…
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -56,7 +56,7 @@ Indexes: `@@index([status])`
 
 ### `ReplicationRecord`  <sub>`apps/api/prisma/schema/replication.prisma:49`</sub>
 
-> / The log.
+> The log.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -77,7 +77,7 @@ Indexes: `@@unique([originNodeId, sequence])` · `@@index([entity, entityId])`
 
 ### `ReplicationSequenceCounter`  <sub>`apps/api/prisma/schema/replication.prisma:81`</sub>
 
-> / This node's own per-origin sequence counter — `originNodeId` is always / this node's own `NODE_ID` when appending locally, so in practice there / is exactly one row.
+> This node's own per-origin sequence counter — `originNodeId` is always this node's own `NODE_ID` when appending locally, so in practice there is exactly one row.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|

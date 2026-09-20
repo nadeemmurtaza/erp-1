@@ -9,9 +9,12 @@
 # is where selection is genuinely automatic — see .claude/agents/ and
 # docs/index/cross/model-routing.md.
 #
-# It is deliberately quiet. It fires only for the three categories where
-# choosing wrong is expensive — access control, migrations and architecture —
-# because a hook that comments on every prompt is a hook people delete.
+# It is deliberately quiet, and precision beats recall: it fires only for the
+# three categories where choosing wrong is expensive — access control,
+# migrations and architecture. Broad words such as `token` or `schema` count
+# only alongside a corroborating word, because a bare `token` matched "save
+# tokens" and a bare `auth` matches "author". Missing a real prompt costs a
+# suggestion; crying wolf costs the hook.
 
 set -uo pipefail
 
@@ -39,15 +42,33 @@ PROMPT=$(printf '%s' "${PROMPT:-}" | tr '\n' ' ')
 
 HITS=""
 
-if printf '%s' "$PROMPT" | grep -qiE 'permission|auth|token|secret|isolation|payment|refund|credential|vulnerab|injection|csrf|xss'; then
+MATCH=0
+if printf '%s' "$PROMPT" | grep -qiE 'permission|@requirepermission|authenticat|authoriz|isolation|refund|credential|vulnerab|sql injection|csrf|xss|rbac|pbac'; then MATCH=1; fi
+  if printf '%s' "$PROMPT" | grep -qiE 'token' && printf '%s' "$PROMPT" | grep -qiE 'auth|jwt|bearer|access|refresh|api|secret|revoke|expiry'; then MATCH=1; fi
+  if printf '%s' "$PROMPT" | grep -qiE 'secret' && printf '%s' "$PROMPT" | grep -qiE 'env|key|store|rotate|leak|manage'; then MATCH=1; fi
+  if printf '%s' "$PROMPT" | grep -qiE 'payment' && printf '%s' "$PROMPT" | grep -qiE 'gateway|provider|capture|charge|method|approve'; then MATCH=1; fi
+  if printf '%s' "$PROMPT" | grep -qiE 'role' && printf '%s' "$PROMPT" | grep -qiE 'grant|permission|assign|admin|staff'; then MATCH=1; fi
+if [ "$MATCH" = "1" ]; then
   HITS="$HITS  · Access control, isolation and money → \`opus\` at \`max\` effort (the \`security\` subagent)
 "
 fi
-if printf '%s' "$PROMPT" | grep -qiE 'migration|prisma|schema|column|database table|db schema'; then
+
+MATCH=0
+if printf '%s' "$PROMPT" | grep -qiE 'migration|prisma|\.prisma|db:deploy|forward-only'; then MATCH=1; fi
+  if printf '%s' "$PROMPT" | grep -qiE 'schema' && printf '%s' "$PROMPT" | grep -qiE 'prisma|database|db|migration|column|table'; then MATCH=1; fi
+  if printf '%s' "$PROMPT" | grep -qiE 'column' && printf '%s' "$PROMPT" | grep -qiE 'add|drop|rename|nullable|index|table|migration'; then MATCH=1; fi
+  if printf '%s' "$PROMPT" | grep -qiE 'table' && printf '%s' "$PROMPT" | grep -qiE 'create|drop|database|column|index|migration'; then MATCH=1; fi
+if [ "$MATCH" = "1" ]; then
   HITS="$HITS  · Database schema and migrations → \`opus\` at \`high\` effort (the \`schema\` subagent)
 "
 fi
-if printf '%s' "$PROMPT" | grep -qiE 'architect|module boundar|module pack|extension point|decisions\.md|new module|new sector|coupling'; then
+
+MATCH=0
+if printf '%s' "$PROMPT" | grep -qiE 'module boundar|module pack|extension point|decisions\.md|known_module_coupling|new sector|three axes|domain event'; then MATCH=1; fi
+  if printf '%s' "$PROMPT" | grep -qiE 'architect' && printf '%s' "$PROMPT" | grep -qiE 'decision|boundar|design|module|pack|layer'; then MATCH=1; fi
+  if printf '%s' "$PROMPT" | grep -qiE 'coupling' && printf '%s' "$PROMPT" | grep -qiE 'module|cross|import|boundar'; then MATCH=1; fi
+  if printf '%s' "$PROMPT" | grep -qiE 'new module' && printf '%s' "$PROMPT" | grep -qiE 'add|create|register|pack'; then MATCH=1; fi
+if [ "$MATCH" = "1" ]; then
   HITS="$HITS  · Architecture and irreversible decisions → \`opus\` at \`xhigh\` effort (the \`architect\` subagent)
 "
 fi

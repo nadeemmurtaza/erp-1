@@ -76,12 +76,12 @@ All paths relative to `apps/api/src/modules/stitching`.
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
 | `StitchingJob` | 19 | :116 |  |
-| `StitchingJobEvent` | 9 | :158 | / Every stage transition, appended and never updated. |
-| `StitchingJobNumberCounter` | 2 | :198 | / Same as StitchingOrderNumberCounter, for JOB-2026-0001 numbers. |
+| `StitchingJobEvent` | 9 | :158 | Every stage transition, appended and never updated. |
+| `StitchingJobNumberCounter` | 2 | :198 | Same as StitchingOrderNumberCounter, for JOB-2026-0001 numbers. |
 | `StitchingOption` | 11 | :43 |  |
 | `StitchingOptionGroup` | 17 | :13 |  |
-| `StitchingOrder` | 18 | :73 | / A tailoring booking where the customer supplies the cloth. |
-| `StitchingOrderNumberCounter` | 2 | :190 | / Backing store for sequential per-year STO-2026-0001 numbers. |
+| `StitchingOrder` | 18 | :73 | A tailoring booking where the customer supplies the cloth. |
+| `StitchingOrderNumberCounter` | 2 | :190 | Backing store for sequential per-year STO-2026-0001 numbers. |
 | `TailorProfile` | 9 | :173 |  |
 
 

@@ -22,7 +22,7 @@ against a real database.
 
 ### `BillOfMaterial`  <sub>`apps/api/prisma/schema/production.prisma:13`</sub>
 
-> / One recipe per produced variant: how many of each component variant it / takes to make one unit.
+> One recipe per produced variant: how many of each component variant it takes to make one unit.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -50,7 +50,7 @@ Indexes: `@@unique([billOfMaterialId, componentVariantId])` · `@@index([compone
 
 ### `WorkOrder`  <sub>`apps/api/prisma/schema/production.prisma:56`</sub>
 
-> / The in-house "make this" ledger entry.
+> The in-house "make this" ledger entry.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -79,7 +79,7 @@ Indexes: `@@index([status, createdAt])` · `@@index([variantId])` · `@@index([s
 
 ### `WorkOrderNumberCounter`  <sub>`apps/api/prisma/schema/production.prisma:92`</sub>
 
-> / Same shape as PurchaseOrder's OrderNumberCounter-style tables: one row / per year, incremented atomically to avoid the MAX()-read race.
+> Same shape as PurchaseOrder's OrderNumberCounter-style tables: one row per year, incremented atomically to avoid the MAX()-read race.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|

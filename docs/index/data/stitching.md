@@ -48,7 +48,7 @@ Indexes: `@@index([stage, dueAt])` · `@@index([assignedTailorId, stage])` · `@
 
 ### `StitchingJobEvent`  <sub>`apps/api/prisma/schema/stitching.prisma:158`</sub>
 
-> / Every stage transition, appended and never updated.
+> Every stage transition, appended and never updated.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -66,7 +66,7 @@ Indexes: `@@index([jobId, createdAt])`
 
 ### `StitchingJobNumberCounter`  <sub>`apps/api/prisma/schema/stitching.prisma:198`</sub>
 
-> / Same as StitchingOrderNumberCounter, for JOB-2026-0001 numbers.
+> Same as StitchingOrderNumberCounter, for JOB-2026-0001 numbers.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -117,7 +117,7 @@ Indexes: `@@index([garmentTypeId, order])` · `@@index([area, order])`
 
 ### `StitchingOrder`  <sub>`apps/api/prisma/schema/stitching.prisma:73`</sub>
 
-> / A tailoring booking where the customer supplies the cloth.
+> A tailoring booking where the customer supplies the cloth.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -144,7 +144,7 @@ Indexes: `@@index([status])` · `@@index([userId])` · `@@index([contactId])`
 
 ### `StitchingOrderNumberCounter`  <sub>`apps/api/prisma/schema/stitching.prisma:190`</sub>
 
-> / Backing store for sequential per-year STO-2026-0001 numbers.
+> Backing store for sequential per-year STO-2026-0001 numbers.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|

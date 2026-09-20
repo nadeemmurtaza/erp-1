@@ -88,7 +88,7 @@ Indexes: `@@index([isDone, dueAt])` · `@@index([assigneeId, isDone])`
 
 ### `InboundEmail`  <sub>`apps/api/prisma/schema/crm.prisma:142`</sub>
 
-> / A message pulled from a connected mailbox's IMAP inbox by the poller / (modules/crm/email-inbox) — a customer's reply to an order or support / email.
+> A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-inbox) — a customer's reply to an order or support email.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -114,7 +114,7 @@ Indexes: `@@unique([emailAccountId, messageId])` · `@@index([contactId])` · `@
 
 ### `InboundEmailReply`  <sub>`apps/api/prisma/schema/crm.prisma:174`</sub>
 
-> / A staff reply sent from the Support Inbox, over the SAME connected / mailbox the original message arrived at (not resolved by purpose — a / reply has to leave from the mailbox the customer is alrea…
+> A staff reply sent from the Support Inbox, over the SAME connected mailbox the original message arrived at (not resolved by purpose — a reply has to leave from the mailbox the customer is already tal…
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -148,7 +148,7 @@ Indexes: `@@index([contactId, occurredAt])` · `@@index([leadId, occurredAt])`
 
 ### `Lead`  <sub>`apps/api/prisma/schema/crm.prisma:75`</sub>
 
-> / An enquiry that is not yet an order: a stitching quote request, a WhatsApp / message logged by staff, a contact-form submission.
+> An enquiry that is not yet an order: a stitching quote request, a WhatsApp message logged by staff, a contact-form submission.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -178,7 +178,7 @@ Indexes: `@@index([status, createdAt])` · `@@index([ownerId])` · `@@index([con
 
 ### `Segment`  <sub>`apps/api/prisma/schema/crm.prisma:228`</sub>
 
-> / A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — / stored as a filter definition and exportable to CSV for WhatsApp broadcasts.
+> A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — stored as a filter definition and exportable to CSV for WhatsApp broadcasts.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|

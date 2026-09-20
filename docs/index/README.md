@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **908 files / 145,731 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **910 files / 146,441 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -21,24 +21,45 @@ do not grep blindly through `apps/` for a name that this index already maps.
 Come back to the code, not to this index, for *why* something is the way it is —
 that is `docs/implementation/`, and `CLAUDE.md` is binding over both.
 
+## Ask before you open
+
+Opening a page is the second-cheapest way to use this index. The cheapest is to
+query it:
+
+```bash
+pnpm idx route POST /admin/inventory   # ~7 lines, not a 12,000-token page
+pnpm idx perm inventory.manage         # routes enforcing it, UI sites, roles
+pnpm idx model Order                   # fields, without opening data-model.md
+pnpm idx show <file> <symbol>          # one method, not the whole file
+pnpm idx where "abandoned cart"        # fuzzy, across everything
+pnpm idx help                          # every command
+```
+
+`idx` reads [`index.json`](index.json) — a file far too
+large to open — and prints only the lines that answer the question. Reach for a
+page below when you want the whole picture, not one fact.
+
 ## Where to look
 
-| Your question | Open this | What it gives you |
-|---|---|---|
-| “Where is the endpoint for X?” | [cross/routes.md](cross/routes.md) | all 286 HTTP routes, with the permission that guards each |
-| “What permission do I need / who has it?” | [cross/permissions.md](cross/permissions.md) | all 36 permissions → routes, UI call sites, seed |
-| “Which table/column holds X?” | [cross/data-model.md](cross/data-model.md) | all 113 Prisma models and 48 enums, field by field |
-| “How do modules talk to each other?” | [cross/events.md](cross/events.md) | all 33 domain events → publishers and subscribers |
-| “What screen serves this URL?” | [cross/ui-routes.md](cross/ui-routes.md) | all 122 screens across web, POS and mobile |
-| “Is there already a component for this?” | [cross/components.md](cross/components.md) | shared primitives and every component, with usage counts |
-| “What runs on a schedule?” | [cross/jobs.md](cross/jobs.md) | 6 cron jobs and the background dispatchers |
-| “What command do I run?” | [cross/commands.md](cross/commands.md) | every script in every package.json (65) |
-| “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | 50 migrations, newest last |
-| “What is already tested?” | [cross/tests.md](cross/tests.md) | 103 spec files → what each one pins down |
-| “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | every document of record, with its outline |
-| “What is in this one module?” | [modules/](modules) | one page per API feature module (25) |
-| “What does this file export?” | [symbols/](symbols) | every exported symbol in the repo, with line numbers |
-| “I need a machine-readable form.” | [index.json](index.json) | the whole index as JSON — grep or jq it |
+Token costs are estimates, and they are the reason to prefer `idx` for a
+single fact — the page is the right tool when you need the shape of something.
+
+| Your question | Open this | Cost | What it gives you |
+|---|---|---|---|
+| “Where is the endpoint for X?” | [cross/routes.md](cross/routes.md) | ~12.5k | all 286 HTTP routes, with the permission that guards each |
+| “What permission do I need / who has it?” | [cross/permissions.md](cross/permissions.md) | ~2.2k | all 36 permissions → routes, UI call sites, seed |
+| “Which table/column holds X?” | [cross/data-model.md](cross/data-model.md) | ~6.5k | all 113 Prisma models and 48 enums, field by field |
+| “How do modules talk to each other?” | [cross/events.md](cross/events.md) | ~4.6k | all 33 domain events → publishers and subscribers |
+| “What screen serves this URL?” | [cross/ui-routes.md](cross/ui-routes.md) | ~3.6k | all 122 screens across web, POS and mobile |
+| “Is there already a component for this?” | [cross/components.md](cross/components.md) | ~1.8k | shared primitives and every component, with usage counts |
+| “What runs on a schedule?” | [cross/jobs.md](cross/jobs.md) | ~491 | 6 cron jobs and the background dispatchers |
+| “What command do I run?” | [cross/commands.md](cross/commands.md) | ~1.5k | every script in every package.json (67) |
+| “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | ~2.2k | 50 migrations, newest last |
+| “What is already tested?” | [cross/tests.md](cross/tests.md) | ~4.1k | 103 spec files → what each one pins down |
+| “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~4.6k | every document of record, with its outline |
+| “What is in this one module?” | [modules/](modules) | — | one page per API feature module (25) |
+| “What does this file export?” | [symbols/](symbols) | — | every exported symbol in the repo, with line numbers |
+| “I need a machine-readable form.” | [index.json](index.json) | ~236.8k | the whole index as JSON — grep or jq it |
 
 
 ## The levels
@@ -102,8 +123,8 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 | apps/mobile | 42 | 5,292 | [mobile](areas/mobile.md) |
 | packages/* | 53 | 4,476 | [packages](areas/packages.md) |
 | docs/* | 33 | 9,527 | [docs](areas/docs.md) |
-| scripts, CI, deployment and container configuration | 47 | 24,498 | [infra](areas/infra.md) |
-| repository root files | 32 | 8,552 | [root](areas/root.md) |
+| scripts, CI, deployment and container configuration | 49 | 25,177 | [infra](areas/infra.md) |
+| repository root files | 32 | 8,583 | [root](areas/root.md) |
 
 Every tracked file is accounted for: see
 [`cross/files.md`](cross/files.md) for the complete

@@ -57,10 +57,10 @@ _none_
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `GarmentSizeChart` | 8 | :92 | / A standard RTW size row (XS-XXL) for a garment, offered as a shortcut / alongside the "type your own measur… |
+| `GarmentSizeChart` | 8 | :92 | A standard RTW size row (XS-XXL) for a garment, offered as a shortcut alongside the "type your own measuremen… |
 | `GarmentType` | 18 | :14 |  |
 | `MeasurementField` | 14 | :50 |  |
-| `MeasurementProfile` | 10 | :73 | / A saved set of measurements: "Ammi – kameez", "Self – shalwar". |
+| `MeasurementProfile` | 10 | :73 | A saved set of measurements: "Ammi – kameez", "Self – shalwar". |
 
 
 Enums: `MeasurementUnit` (2)

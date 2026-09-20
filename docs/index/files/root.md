@@ -40,13 +40,13 @@ All 32 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `architect.md` | doc | 46 |  |
-| `debug.md` | doc | 36 |  |
-| `feature.md` | doc | 42 |  |
+| `architect.md` | doc | 48 |  |
+| `debug.md` | doc | 38 |  |
+| `feature.md` | doc | 44 |  |
 | `implement.md` | doc | 37 |  |
 | `locate.md` | doc | 37 |  |
-| `schema.md` | doc | 44 |  |
-| `security.md` | doc | 44 |  |
+| `schema.md` | doc | 46 |  |
+| `security.md` | doc | 46 |  |
 | `verify.md` | doc | 45 |  |
 
 ### `.claude/hooks` (2)
@@ -54,7 +54,7 @@ All 32 tracked files in `repository root files`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `session-start.sh` | hook | 54 |  |
-| `suggest-model.sh` | hook | 64 |  |
+| `suggest-model.sh` | hook | 85 |  |
 
 ### `.cursor/rules` (1)
 

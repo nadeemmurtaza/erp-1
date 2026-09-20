@@ -80,7 +80,7 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 | `PurchaseOrderItem` | 11 | :128 |  |
 | `Supplier` | 26 | :1 |  |
 | `SupplierBill` | 18 | :188 |  |
-| `SupplierProduct` | 10 | :68 | / What a given supplier charges for a given variant, and under what terms. |
+| `SupplierProduct` | 10 | :68 | What a given supplier charges for a given variant, and under what terms. |
 
 
 Enums: `PurchaseOrderStatus` (5) · `SupplierBillStatus` (3)

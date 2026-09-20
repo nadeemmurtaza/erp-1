@@ -22,7 +22,7 @@ against a real database.
 
 ### `CashMovement`  <sub>`apps/api/prisma/schema/pos.prisma:105`</sub>
 
-> / One physical cash movement at the drawer during a shift — always a / positive `amountMinor`; `type` says which direction.
+> One physical cash movement at the drawer during a shift — always a positive `amountMinor`; `type` says which direction.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -39,7 +39,7 @@ Indexes: `@@index([shiftId])`
 
 ### `PosReceipt`  <sub>`apps/api/prisma/schema/pos.prisma:127`</sub>
 
-> / One receipt per POS sale (WO-21.5) — created by PosSalesService right / after OrdersService.placeFromPos() succeeds, best-effort and outside that / call's own transaction, the same "not core to the…
+> One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService.placeFromPos() succeeds, best-effort and outside that call's own transaction, the same "not core to the sale'…
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -53,7 +53,7 @@ Indexes: `@@index([orderId])`
 
 ### `PosShift`  <sub>`apps/api/prisma/schema/pos.prisma:65`</sub>
 
-> / One cashier's stretch at one terminal, opened with a cash float and / closed with a physical count (RETAIL-ERP.md R11, WO-21.2).
+> One cashier's stretch at one terminal, opened with a cash float and closed with a physical count (RETAIL-ERP.md R11, WO-21.2).
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -73,7 +73,7 @@ Indexes: `@@index([terminalId])` · `@@index([status])`
 
 ### `PosTerminal`  <sub>`apps/api/prisma/schema/pos.prisma:27`</sub>
 
-> / A physical till.
+> A physical till.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|

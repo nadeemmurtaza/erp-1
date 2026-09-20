@@ -42,7 +42,7 @@ against a real database.
 
 ### `IdentityVerificationStatus`  <sub>`apps/api/prisma/schema/identity-verification.prisma:8`</sub>
 
-> / Tracks a User's identity verification against nID (Newax's external / identity/KYC platform — https: github.com/nadeemmurtaza/nID).
+> Tracks a User's identity verification against nID (Newax's external identity/KYC platform — https: github.com/nadeemmurtaza/nID).
 
 | Value | Meaning |
 |---|---|

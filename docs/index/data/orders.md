@@ -113,7 +113,7 @@ Indexes: `@@index([orderId])` · `@@index([productId])`
 
 ### `OrderNumberCounter`  <sub>`apps/api/prisma/schema/orders.prisma:252`</sub>
 
-> / Backing store for sequential per-year order numbers (YSN-2026-0001).
+> Backing store for sequential per-year order numbers (YSN-2026-0001).
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -160,7 +160,7 @@ Indexes: `@@index([orderId])` · `@@index([trackingNumber])`
 
 ### `OrderChannel`  <sub>`apps/api/prisma/schema/orders.prisma:19`</sub>
 
-> / R11: a till sale is a channel of `orders`, not a parallel order system.
+> R11: a till sale is a channel of `orders`, not a parallel order system.
 
 | Value | Meaning |
 |---|---|

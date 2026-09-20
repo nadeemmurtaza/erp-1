@@ -41,7 +41,7 @@ import {
   appRouterPath, routeKind, isClientComponent,
   scanDescribes, scanTestNames, scanHeadings, classify,
 } from './lib/index-scan.mjs';
-import { ROUTING_POLICY, ADVISORY_SIGNALS } from './lib/model-routing.mjs';
+import { ROUTING_POLICY, ADVISORY_SIGNALS, cacheTtlFor } from './lib/model-routing.mjs';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url)).replace(/\/$/, '');
 const OUT_DIR = join(ROOT, 'docs', 'index');
@@ -387,6 +387,40 @@ function table(headers, rows) {
 }
 
 const fmt = (n) => n.toLocaleString('en-US');
+
+/**
+ * Roughly what a page costs to put in a context window.
+ *
+ * ~3.7 bytes per token is a serviceable approximation for English prose and
+ * markdown tables; it is here to separate a 500-token page from a 12,000-token
+ * one, not to be exact. The point is that `cross/files.md` and `cross/jobs.md`
+ * look identical in a link list while costing twenty times differently, and a
+ * reader deciding what to open deserves to know which is which.
+ */
+const tokens = (text) => Math.round(Buffer.byteLength(text, 'utf8') / 3.7);
+
+/**
+ * A placeholder resolved after every page exists.
+ *
+ * The README is written first but measures pages written later, so asking for
+ * a size at emit time reports nothing — which is how the cost column shipped
+ * blank the first time. Emitting a marker and substituting it in a final pass
+ * makes the answer independent of the order pages happen to be generated in.
+ */
+const cost = (page) => `{{COST:${page}}}`;
+
+function resolveCostMarkers() {
+  const sizeOf = (page) => {
+    const body = written.get(page);
+    if (!body) return 'n/a';
+    const t = tokens(body);
+    return t >= 1000 ? `~${(t / 1000).toFixed(1)}k` : `~${t}`;
+  };
+  for (const [page, body] of written) {
+    if (!body.includes('{{COST:')) continue;
+    written.set(page, body.replace(/\{\{COST:([^}]+)\}\}/g, (_, target) => sizeOf(target)));
+  }
+}
 const link = (from, to) => relative(dirname(from), to) || basename(to);
 const anchor = (text) => text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
 
@@ -452,9 +486,36 @@ do not grep blindly through \`apps/\` for a name that this index already maps.
 Come back to the code, not to this index, for *why* something is the way it is —
 that is \`docs/implementation/\`, and \`CLAUDE.md\` is binding over both.
 
+## Ask before you open
+
+Opening a page is the second-cheapest way to use this index. The cheapest is to
+query it:
+
+\`\`\`bash
+pnpm idx route POST /admin/inventory   # ~7 lines, not a 12,000-token page
+pnpm idx perm inventory.manage         # routes enforcing it, UI sites, roles
+pnpm idx model Order                   # fields, without opening data-model.md
+pnpm idx show <file> <symbol>          # one method, not the whole file
+pnpm idx where "abandoned cart"        # fuzzy, across everything
+pnpm idx help                          # every command
+\`\`\`
+
+\`idx\` reads [\`index.json\`](${link(self, 'docs/index/index.json')}) — a file far too
+large to open — and prints only the lines that answer the question. Reach for a
+page below when you want the whole picture, not one fact.
+
 ## Where to look
 
-${table(['Your question', 'Open this', 'What it gives you'], routing)}
+Token costs are estimates, and they are the reason to prefer \`idx\` for a
+single fact — the page is the right tool when you need the shape of something.
+
+${table(['Your question', 'Open this', 'Cost', 'What it gives you'],
+  routing.map((r) => {
+    const m = r[1].match(/\(([^)]+)\)/);
+    const rel = m ? join('docs/index', m[1].replace(/^\.\//, '')) : '';
+    const page = rel.includes('<') || !/\.(md|json)$/.test(rel) ? '' : rel;
+    return [r[0], r[1], page ? cost(page) : '—', r[2]];
+  }))}
 
 ## The levels
 
@@ -547,6 +608,10 @@ file-by-file inventory.
     const description =
       `${r.job}. Use for ${r.when}.${proactive} ` +
       `Runs on ${r.model} at ${r.effort} effort.`;
+    // `experimental.cacheTtl` is only set where a longer-lived cache actually
+    // pays: see CACHE TTL in scripts/lib/model-routing.mjs. Omitting it leaves
+    // the 5-minute default, which a fast agent's own reads keep warm for free.
+    const ttl = cacheTtlFor(r.effort);
     const front = [
       '---',
       `name: ${r.agent}`,
@@ -554,6 +619,7 @@ file-by-file inventory.
       `model: ${r.model}`,
       `effort: ${r.effort}`,
       ...(r.tools ? [`tools: ${r.tools}`] : []),
+      ...(ttl ? ['experimental:', `  cacheTtl: ${ttl}`] : []),
       '---',
     ].join('\n');
 
@@ -564,7 +630,7 @@ file-by-file inventory.
 
 # ${r.job}
 
-**${r.model} · ${r.effort} effort.** ${r.why}
+**${r.model} · ${r.effort} effort${ttl ? ` · ${ttl} prompt cache` : ''}.** ${r.why}
 
 ${r.body.join('\n')}
 
@@ -584,11 +650,19 @@ back rather than pressing on — the routing table is in
   // ── the advisory hook, for the main session where nothing can auto-switch
   const cases = ADVISORY_SIGNALS.map((sig) => {
     const row = ROUTING_POLICY.find((r) => r.agent === sig.agent);
-    return `if printf '%s' "$PROMPT" | grep -qiE '${sig.pattern}'; then
+    // An unambiguous phrase fires on its own; an ordinary English word only
+    // counts when a corroborating word appears with it.
+    const corroborated = (sig.requires ?? [])
+      .map((req) => `  if printf '%s' "$PROMPT" | grep -qiE '${req.word}' && printf '%s' "$PROMPT" | grep -qiE '${req.with}'; then MATCH=1; fi`)
+      .join('\n');
+    return `MATCH=0
+if printf '%s' "$PROMPT" | grep -qiE '${sig.pattern}'; then MATCH=1; fi
+${corroborated}
+if [ "$MATCH" = "1" ]; then
   HITS="$HITS  · ${row.job} → \\\`${row.model}\\\` at \\\`${row.effort}\\\` effort (the \\\`${row.agent}\\\` subagent)
 "
 fi`;
-  }).join('\n');
+  }).join('\n\n');
 
   emit('.claude/hooks/suggest-model.sh', `#!/bin/bash
 #
@@ -601,9 +675,12 @@ fi`;
 # is where selection is genuinely automatic — see .claude/agents/ and
 # docs/index/cross/model-routing.md.
 #
-# It is deliberately quiet. It fires only for the three categories where
-# choosing wrong is expensive — access control, migrations and architecture —
-# because a hook that comments on every prompt is a hook people delete.
+# It is deliberately quiet, and precision beats recall: it fires only for the
+# three categories where choosing wrong is expensive — access control,
+# migrations and architecture. Broad words such as \`token\` or \`schema\` count
+# only alongside a corroborating word, because a bare \`token\` matched "save
+# tokens" and a bare \`auth\` matches "author". Missing a real prompt costs a
+# suggestion; crying wolf costs the hook.
 
 set -uo pipefail
 
@@ -2098,7 +2175,13 @@ const json = {
     ...p,
     routes: permissionUse.get(p.key).api.map((r) => `${r.method} ${r.path}`),
     uiSites: permissionUse.get(p.key).web.length,
-    inSeed: permissionUse.get(p.key).seed.length > 0,
+    // ROLE_PERMISSION_SEED is the authoritative answer to "can a live user
+    // hold this", and it is what cross/permissions.md already reports. An
+    // earlier `inSeed` grepped seed.ts for the literal instead and disagreed
+    // with that page — two answers to one question, which is the failure this
+    // whole index is built to avoid.
+    roles: rolesGranting(p.key),
+    inSeed: rolesGranting(p.key).length > 0,
   })),
   events: eventCatalog.map((e) => ({
     symbol: e.symbol, name: e.name, doc: e.doc,
@@ -2137,6 +2220,8 @@ emit('docs/index/index.json', JSON.stringify(json, null, 2));
  * committed index instantly "stale" by its own check — the exact failure mode
  * that teaches people to pass `--no-verify`.
  */
+resolveCostMarkers();
+
 const hash = createHash('sha256');
 for (const [p, body] of [...written.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
   hash.update(p).update('\0').update(body).update('\0');

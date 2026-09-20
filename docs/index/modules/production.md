@@ -68,10 +68,10 @@ All paths relative to `apps/api/src/modules/production`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `BillOfMaterial` | 8 | :13 | / One recipe per produced variant: how many of each component variant it / takes to make one unit. |
+| `BillOfMaterial` | 8 | :13 | One recipe per produced variant: how many of each component variant it takes to make one unit. |
 | `BillOfMaterialLine` | 6 | :25 |  |
-| `WorkOrder` | 20 | :56 | / The in-house "make this" ledger entry. |
-| `WorkOrderNumberCounter` | 2 | :92 | / Same shape as PurchaseOrder's OrderNumberCounter-style tables: one row / per year, incremented atomically t… |
+| `WorkOrder` | 20 | :56 | The in-house "make this" ledger entry. |
+| `WorkOrderNumberCounter` | 2 | :92 | Same shape as PurchaseOrder's OrderNumberCounter-style tables: one row per year, incremented atomically to av… |
 
 
 Enums: `WorkOrderSource` (3) · `WorkOrderStatus` (4)

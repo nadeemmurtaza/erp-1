@@ -22,7 +22,7 @@ against a real database.
 
 ### `Brand`  <sub>`apps/api/prisma/schema/catalog.prisma:46`</sub>
 
-> / A label a product is sold under.
+> A label a product is sold under.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -40,7 +40,7 @@ Indexes: `@@index([isActive])`
 
 ### `BrandTranslation`  <sub>`apps/api/prisma/schema/catalog.prisma:65`</sub>
 
-> / House Rule 6: a customer-facing name is a translation row, not a column.
+> House Rule 6: a customer-facing name is a translation row, not a column.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -125,7 +125,7 @@ Indexes: `@@index([status, kind])` · `@@index([categoryId])` · `@@index([featu
 
 ### `ProductGarmentType`  <sub>`apps/api/prisma/schema/catalog.prisma:268`</sub>
 
-> / Which garments a given unstitched fabric can be made into.
+> Which garments a given unstitched fabric can be made into.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -154,7 +154,7 @@ Indexes: `@@index([productId, order])`
 
 ### `ProductOption`  <sub>`apps/api/prisma/schema/catalog.prisma:289`</sub>
 
-> / A dynamic option axis a product varies along: "Size", "Colour", "Storage".
+> A dynamic option axis a product varies along: "Size", "Colour", "Storage".
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -184,7 +184,7 @@ Indexes: `@@unique([optionId, locale])`
 
 ### `ProductOptionValue`  <sub>`apps/api/prisma/schema/catalog.prisma:318`</sub>
 
-> / A specific value on an option axis: "M", "Ferozi", "128GB".
+> A specific value on an option axis: "M", "Ferozi", "128GB".
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -278,7 +278,7 @@ Indexes: `@@index([productId])` · `@@index([stock])`
 
 ### `ProductVariantOptionValue`  <sub>`apps/api/prisma/schema/catalog.prisma:350`</sub>
 
-> / The join that DEFINES a variant: one row per option axis per variant.
+> The join that DEFINES a variant: one row per option axis per variant.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -292,7 +292,7 @@ Indexes: `@@id([variantId, optionId])` · `@@index([valueId])`
 
 ### `StockAdjustment`  <sub>`apps/api/prisma/schema/catalog.prisma:233`</sub>
 
-> / One entry per change to ProductVariant.stock, so "why is stock 4" has an / answer without an audit table bolted on after the fact.
+> One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without an audit table bolted on after the fact.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|

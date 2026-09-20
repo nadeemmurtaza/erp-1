@@ -3,6 +3,8 @@ name: architect
 description: Architecture and irreversible decisions. Use for module boundaries, the sector/brand/branch axes, a new module or pack, an extension point, anything going in DECISIONS.md. Runs on opus at xhigh effort.
 model: opus
 effort: xhigh
+experimental:
+  cacheTtl: 1h
 ---
 
 <!-- GENERATED from scripts/lib/model-routing.mjs by scripts/build-index.mjs.
@@ -10,7 +12,7 @@ effort: xhigh
 
 # Architecture and irreversible decisions
 
-**opus · xhigh effort.** These decisions are load-bearing for every deployment and expensive to reverse — the whole module-pack design exists so that a new sector is a new folder rather than a rewrite. Getting one wrong forecloses that.
+**opus · xhigh effort · 1h prompt cache.** These decisions are load-bearing for every deployment and expensive to reverse — the whole module-pack design exists so that a new sector is a new folder rather than a rewrite. Getting one wrong forecloses that.
 
 Read `docs/implementation/ENTERPRISE-SCALE.md`, `MULTI-SECTOR.md` and
 `RETAIL-ERP.md` (the document of record where the last two overlap) before

@@ -50,7 +50,8 @@ grep -rn "style={{" apps/web/src --include='*.tsx'           # inline styles
 grep -rn "toLocaleString\|toLocaleDateString" apps/web/src    # stray formatting
 grep -rn "await fetch(\|= fetch(" apps/web/src                # bare fetch
 grep -ro "text-gray-[0-9]*\|bg-gray-[0-9]*" apps/web/src      # second palette
-grep -rni "yaseen" apps/*/src packages/*/src --include='*.ts*' | grep -v '@newax/'
+grep -rni "yaseen" apps/*/src packages/*/src --include='*.ts*' \
+  | grep -vE '@newax/|/brand\.ts:|\.spec\.tsx?:|:[0-9]+:[[:space:]]*(//|\*|/\*)'                 # rebrand leak
 ```
 
 The documented exceptions are listed in `CLAUDE.md` — inline `style` on
@@ -58,7 +59,10 @@ data-driven widths and colours, `app/global-error.tsx` and `app/not-found.tsx`
 which render before any stylesheet exists, and `any` in `*.spec.ts`. Do not
 "fix" them. The last grep must return only the two `LEGACY_*_COOKIE`
 constants; anything else is a rebrand leak, and this codebase ships to more
-than one client.
+than one client. Its four exclusions — the `@newax/` scope, `brand.ts`, spec
+fixtures and comment lines — each have a reason `CLAUDE.md` states; widening
+the filter back returns 42 lines of which none is a leak, which is the same as
+having no check.
 
 ### Reviewed by a person
 

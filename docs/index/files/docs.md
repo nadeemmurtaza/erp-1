@@ -41,10 +41,10 @@ All 180 tracked files in `docs/*`, by directory.
 | `03-components.md` | doc | 113 |  |
 | `04-states.md` | doc | 141 |  |
 | `05-motion.md` | doc | 193 |  |
-| `06-content.md` | doc | 120 |  |
+| `06-content.md` | doc | 122 |  |
 | `07-accessibility.md` | doc | 155 |  |
 | `08-governance.md` | doc | 145 |  |
-| `09-quality.md` | doc | 169 |  |
+| `09-quality.md` | doc | 173 |  |
 | `README.md` | doc | 67 |  |
 
 ### `docs/erp-lenses` (134)

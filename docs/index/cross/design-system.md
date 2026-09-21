@@ -32,10 +32,10 @@ binding and load automatically when you open a component:
 | [Components](../../design/03-components.md) | The ladder from a token to a page, and the rule that keeps it from growing | primitives are built and enforced — `.claude/rules/ui.md` is | 113 lines |
 | [States and behaviour](../../design/04-states.md) | What every element can be, and what each state promises the user. | partly built. | 141 lines |
 | [Motion](../../design/05-motion.md) | Motion exists to make the system easier to understand. Nothing else justifies | essentially unbuilt. | 193 lines |
-| [Content](../../design/06-content.md) | How the product speaks. Copy is interface, not decoration applied afterwards. | unbuilt as a system. | 120 lines |
+| [Content](../../design/06-content.md) | How the product speaks. Copy is interface, not decoration applied afterwards. | unbuilt as a system. | 122 lines |
 | [Accessibility and internationalisation](../../design/07-accessibility.md) | How broadly the product can actually be used. | the largest gap in the system. | 155 lines |
 | [Governance](../../design/08-governance.md) | Who may add to this system, how a thing gets named, and how something leaves | partly enforced. | 145 lines |
-| [Quality gates](../../design/09-quality.md) | What has to be true before a screen ships, and — stated honestly — which of it | the engineering gates are real and green; | 169 lines |
+| [Quality gates](../../design/09-quality.md) | What has to be true before a screen ships, and — stated honestly — which of it | the engineering gates are real and green; | 173 lines |
 
 
 ## Measured state of the code
@@ -151,7 +151,7 @@ descriptions.
 - Rejection list  <sub>:172</sub>
 - Benchmark, not template  <sub>:183</sub>
 
-### [`docs/design/06-content.md`](../../design/06-content.md)  <sub>120 lines</sub>
+### [`docs/design/06-content.md`](../../design/06-content.md)  <sub>122 lines</sub>
 
 - Voice  <sub>:10</sub>
 - Terminology — one word per concept  <sub>:29</sub>
@@ -188,12 +188,12 @@ descriptions.
 - Change approval  <sub>:117</sub>
 - Keeping this system honest  <sub>:129</sub>
 
-### [`docs/design/09-quality.md`](../../design/09-quality.md)  <sub>169 lines</sub>
+### [`docs/design/09-quality.md`](../../design/09-quality.md)  <sub>173 lines</sub>
 
 - The two columns  <sub>:12</sub>
-- Regression  <sub>:121</sub>
-- The honest gap, ranked  <sub>:139</sub>
-- Definition of done, for a screen  <sub>:158</sub>
+- Regression  <sub>:125</sub>
+- The honest gap, ranked  <sub>:143</sub>
+- Definition of done, for a screen  <sub>:162</sub>
 
 
 ---

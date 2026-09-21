@@ -111,8 +111,10 @@ Order: what this is → what state it is in → what you can do → the detail.
 # English leaking into customer-facing JSX, and stray formatting
 grep -rn "toLocaleString\|toLocaleDateString" apps/web/src
 
-# Brand leaks — must return only the two documented LEGACY_*_COOKIE constants
-grep -rni "yaseen" apps/*/src packages/*/src --include='*.ts*' | grep -v '@newax/'
+# Brand leaks — must return only the two documented LEGACY_*_COOKIE constants.
+# The exclusions are not optional; CLAUDE.md says what each one is for.
+grep -rni "yaseen" apps/*/src packages/*/src --include='*.ts*' \
+  | grep -vE '@newax/|/brand\.ts:|\.spec\.tsx?:|:[0-9]+:[[:space:]]*(//|\*|/\*)'
 ```
 
 There is no automated check for voice, terminology or error-message shape

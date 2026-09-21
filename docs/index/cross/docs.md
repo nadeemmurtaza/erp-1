@@ -121,7 +121,7 @@ _no second-level headings_
 - Three rules about the index  <sub>:55</sub>
 - Commands  <sub>:67</sub>
 
-### `CLAUDE.md`  <sub>729 lines</sub>
+### `CLAUDE.md`  <sub>748 lines</sub>
 
 - The seven laws  <sub>:13</sub>
 - Software engineering, not vibe coding  <sub>:35</sub>
@@ -130,8 +130,8 @@ _no second-level headings_
 - Look it up before you search  <sub>:286</sub>
 - The rule index  <sub>:354</sub>
 - Before you open a PR  <sub>:391</sub>
-- Deployment  <sub>:422</sub>
-- NEWAX Engineering Operating Protocol  <sub>:435</sub>
+- Deployment  <sub>:441</sub>
+- NEWAX Engineering Operating Protocol  <sub>:454</sub>
 
 ### `CONTRIBUTING.md`  <sub>127 lines</sub>
 
@@ -240,7 +240,7 @@ _no second-level headings_
 - Rejection list  <sub>:172</sub>
 - Benchmark, not template  <sub>:183</sub>
 
-### `docs/design/06-content.md`  <sub>120 lines</sub>
+### `docs/design/06-content.md`  <sub>122 lines</sub>
 
 - Voice  <sub>:10</sub>
 - Terminology — one word per concept  <sub>:29</sub>
@@ -277,12 +277,12 @@ _no second-level headings_
 - Change approval  <sub>:117</sub>
 - Keeping this system honest  <sub>:129</sub>
 
-### `docs/design/09-quality.md`  <sub>169 lines</sub>
+### `docs/design/09-quality.md`  <sub>173 lines</sub>
 
 - The two columns  <sub>:12</sub>
-- Regression  <sub>:121</sub>
-- The honest gap, ranked  <sub>:139</sub>
-- Definition of done, for a screen  <sub>:158</sub>
+- Regression  <sub>:125</sub>
+- The honest gap, ranked  <sub>:143</sub>
+- Definition of done, for a screen  <sub>:162</sub>
 
 ### `docs/design/README.md`  <sub>67 lines</sub>
 

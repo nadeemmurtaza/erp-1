@@ -403,11 +403,30 @@ grep -rn "style={{" apps/web/src --include='*.tsx'          # inline styles
 grep -rn "toLocaleString\|toLocaleDateString" apps/web/src   # stray formatting
 grep -rn "await fetch(\|= fetch(" apps/web/src               # bare fetch
 grep -ro "text-gray-[0-9]*\|bg-gray-[0-9]*" apps/web/src     # second palette
-grep -rni "yaseen" apps/*/src packages/*/src --include='*.ts*' | grep -v '@newax/'
+
+# rebrand leak — must print exactly the two LEGACY_*_COOKIE lines, nothing else
+grep -rni "yaseen" apps/*/src packages/*/src --include='*.ts*' \
+  | grep -vE '@newax/|/brand\.ts:|\.spec\.tsx?:|:[0-9]+:[[:space:]]*(//|\*|/\*)'
 ```
 
-The last one must return only the two documented `LEGACY_*_COOKIE` constants.
-Anything else is a rebrand leak — this codebase ships to multiple clients.
+The last one must return only the two documented `LEGACY_*_COOKIE` constants in
+`core/auth/auth.constants.ts`. Anything else is a rebrand leak — this codebase
+ships to multiple clients.
+
+Each exclusion in that filter is there for a reason, so do not widen it back:
+
+- `@newax/` — Newax's own package scope, the one literal Law 1 exempts.
+- `/brand.ts:` — `packages/shared/src/brand.ts` is where Law 1 *sends* every
+  brand value. A brand name in that file is the rule working, not a leak.
+- `.spec.ts`/`.spec.tsx` — fixtures use realistic values on purpose and ship to
+  no client's runtime. A leak that only exists in a fixture is not a leak.
+- a comment line — the remaining mentions are comments recording *why* a
+  hardcoded brand value was removed. Deleting them would lose that history. A
+  brand name in a trailing comment on a line of code still fires, deliberately:
+  mixed with code is where one hides.
+
+Without those four, the command returns 42 lines of which none is a leak, and a
+check whose output you have to mentally filter is a check nobody runs.
 
 Legitimate remaining exceptions, so you do not "fix" them:
 

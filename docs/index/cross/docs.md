@@ -121,17 +121,17 @@ _no second-level headings_
 - Three rules about the index  <sub>:55</sub>
 - Commands  <sub>:67</sub>
 
-### `CLAUDE.md`  <sub>890 lines</sub>
+### `CLAUDE.md`  <sub>912 lines</sub>
 
 - The seven laws  <sub>:13</sub>
 - Software engineering, not vibe coding  <sub>:35</sub>
 - Feature scope: build the whole capability, not one slice of it  <sub>:144</sub>
-- Scale: the three axes  <sub>:336</sub>
-- Look it up before you search  <sub>:393</sub>
-- The rule index  <sub>:461</sub>
-- Before you open a PR  <sub>:499</sub>
-- Deployment  <sub>:578</sub>
-- NEWAX Engineering Operating Protocol  <sub>:591</sub>
+- Scale: the three axes  <sub>:358</sub>
+- Look it up before you search  <sub>:415</sub>
+- The rule index  <sub>:483</sub>
+- Before you open a PR  <sub>:521</sub>
+- Deployment  <sub>:600</sub>
+- NEWAX Engineering Operating Protocol  <sub>:613</sub>
 
 ### `CONTRIBUTING.md`  <sub>127 lines</sub>
 
@@ -487,7 +487,7 @@ _no second-level headings_
 - Group 6 — The afterlife  <sub>:690</sub>
 - Catalogue merges  <sub>:757</sub>
 
-### `docs/erp-lenses/_claude-md-feature-scope.md`  <sub>190 lines</sub>
+### `docs/erp-lenses/_claude-md-feature-scope.md`  <sub>212 lines</sub>
 
 - Feature scope: build the whole capability, not one slice of it  <sub>:1</sub>
 
@@ -559,13 +559,14 @@ _no second-level headings_
 - Gaps  <sub>:50</sub>
 - Verdict  <sub>:224</sub>
 
-### `docs/erp-lenses/_index.md`  <sub>495 lines</sub>
+### `docs/erp-lenses/_index.md`  <sub>548 lines</sub>
 
 - How to run the pass  <sub>:14</sub>
 - How to read the table  <sub>:41</sub>
-- The catalogue  <sub>:57</sub>
-- The six groups, and what each is for  <sub>:277</sub>
-- What this repository does not model yet  <sub>:313</sub>
+- Promoted from the catalogue, after the fact  <sub>:57</sub>
+- The catalogue  <sub>:110</sub>
+- The six groups, and what each is for  <sub>:330</sub>
+- What this repository does not model yet  <sub>:366</sub>
 
 ### `docs/erp-lenses/_integrate.md`  <sub>272 lines</sub>
 

@@ -3,7 +3,7 @@
 
 # repository root files
 
-42 files · 9,024 lines
+42 files · 9,046 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -16,7 +16,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 16 | 7,927 | file, doc, txt, script |
+| `.` | 16 | 7,949 | file, doc, txt, script |
 | `.claude` | 2 | 49 | json |
 | `.claude/agents` | 8 | 341 | doc |
 | `.claude/hooks` | 2 | 139 | hook |
@@ -33,7 +33,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `yaseen-backup-before-reset.sql` | 5,870 | sql |  |
-| `CLAUDE.md` | 890 | doc |  |
+| `CLAUDE.md` | 912 | doc |  |
 | `DEPLOYMENT.md` | 492 | doc |  |
 | `README.md` | 349 | doc |  |
 | `.claude/rules/ui.md` | 151 | doc |  |

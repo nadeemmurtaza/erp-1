@@ -73,7 +73,7 @@ All 247 tracked files in `docs/*`, by directory.
 | `_agent-judge-owner.md` | doc | 76 |  |
 | `_agent-manifest.md` | doc | 175 |  |
 | `_canonical-decisions.md` | doc | 828 |  |
-| `_claude-md-feature-scope.md` | doc | 190 |  |
+| `_claude-md-feature-scope.md` | doc | 212 |  |
 | `_cluster-analysis.md` | doc | 675 |  |
 | `_conflicts.md` | doc | 645 |  |
 | `_draft-auditor.md` | doc | 194 |  |
@@ -84,7 +84,7 @@ All 247 tracked files in `docs/*`, by directory.
 | `_gap-innovation.md` | doc | 216 |  |
 | `_gap-repo-blindspots.md` | doc | 108 |  |
 | `_gap-roles-ranks.md` | doc | 237 |  |
-| `_index.md` | doc | 495 |  |
+| `_index.md` | doc | 548 |  |
 | `_integrate.md` | doc | 272 |  |
 | `_judge-auditor.md` | doc | 256 |  |
 | `_judge-engineer.md` | doc | 264 |  |

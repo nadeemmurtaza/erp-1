@@ -5,7 +5,7 @@ answer must name an artifact in this repository — a column, a table, a
 permission key, a service method, a screen, or a number. A question whose
 answer could be "yes, handled" is not a lens.
 
-This folder holds 189 of them. Twenty-four are the rule, quoted in full in
+This folder holds 189 of them. Twenty-seven are the rule, quoted in full in
 CLAUDE.md's "Feature scope: build the whole capability, not one slice of it".
 The rest are here, each in a numbered domain file with its repository
 evidence, its worked example, its done test, and the hardening record of what
@@ -16,7 +16,7 @@ an adversarial pass killed or corrected in it.
 1. Read the five shop-scale lenses in CLAUDE.md — the transaction end to end,
    the operator's twin, what happens after "done", the real integrations, the
    policy layer. They cost minutes and they set the shape.
-2. Walk the twenty-four group-scale lenses in order. Group 1 first, because
+2. Walk the twenty-seven group-scale lenses in order. Group 1 first, because
    everything after it is a property of somebody; group 6 last, because it is
    the one a narrow build always postpones.
 3. Write one line per lens into the plan. `### Scope lenses` is a heading
@@ -54,6 +54,59 @@ that contradicts a line of it.
   one location, one brand — not that the lens is optional there. The column
   it demands still ships in the first migration; see ruling 4.
 
+## Promoted from the catalogue, after the fact
+
+Three of WO-22's thirty lenses moved from `catalogue` to a headline group
+after this pass first landed them — the same **leverage** test
+[`_integrate.md`](_integrate.md) applies to the backfill: does the lens beat
+a sitting one on damage-caused-by-absence times how-often-it-fires. That
+file's own standard — "the twenty-four sitting lenses fire on nearly every
+feature" — is the bar; promotion earns a lens the next line only by clearing
+it, not by being good on its own terms.
+
+**Audience is a capability, not an address** → group 2 (authority). Nearly
+every feature that changes state eventually tells someone — an approval, a
+variance, a status change — and group 2 is already "who may see or do a
+thing". `inventory.listener.ts` hardcoding `ProductLowStock` to
+`store.supportEmail` is not a notifications-module bug; it is what happens
+when audience is never asked as a scope question, and the pattern repeats at
+every call site a feature adds.
+
+**Click the number** → group 4 (money). Nearly every ERP screen ends in a
+number a person has to trust, and this repo already tells revenue four
+disagreeing ways (`Order`, `JournalEntry`, `PosShift`/`CashMovement`) and
+stock three (`ProductVariant.stock`, `StockMovement`,
+`VariantLocationStock`). Group 4's other lenses already assume the ledger is
+the source of truth; this is the one that forces every OTHER surface
+reporting the same fact to say so, and to prove it by drilling through.
+
+**The adoption test** → group 5 (scale). R14's whole commercial promise —
+grow from one shop into a chain and keep your history — depends on it, and
+it is checkable with one grep for a bare `@unique` on a generated string.
+Group 5 already asks what a feature costs at three editions; this is the one
+editions-question that fails silently, not slowly, when skipped: a
+collision surfaces at merge, months after the code that caused it shipped.
+
+**The other ten stayed in the catalogue**, each for the reason
+`_integrate.md` already names for a lens that is real but does not clear the
+bar: *Delivery is a fact, not a hope* fires only where *Audience* already
+fires and adds evidence, not a new question; *The recipient's daily total*
+is a symptom of *Audience* firing badly, not a separate lens; *Which tier
+owns the credential* is conditional on calling an external endpoint, which
+most features do not. *The file outlives the app*, *The other end, and what
+nets it out*, *The weaker writer*, *Row 4,312's authority* and *The 14:02
+undo* are each scoped to one surface — exports, cross-brand flows, bulk
+loops — the department-scoped reasoning that kept files `38`–`41` out. *The
+busiest minute, and the lock you hold through it* is real and adjacent to
+the sitting *The hundred-thousandth row*, but asks about lock duration under
+one invocation rather than row count under repeated ones — a genuine second
+question, kept for the surface it fires on rather than duplicated into the
+rule. *The switch, its scope, and who may throw it* is the closest call:
+every feature could in principle need a runtime kill switch, but "could" is
+not "does" — `MODULES` already covers the build-time case this repo uses
+today, and a runtime switch is real work owed by the feature that turns out
+to need one, not a question every feature answers differently.
+
 ## The catalogue
 
 | Lens | Asks | File | Group | Bites |
@@ -65,6 +118,7 @@ that contradicts a line of it.
 | **The threshold nobody approves alone** | Amount bands, the role and rank per band, the quorum on top, the method that checks before draft — then the same for the undo | 04 | 2 authority | S C O |
 | **The toxic pair, caught at grant or at act** | The permission-key pair this makes toxic together, and the single place it is refused | 03 | 2 authority | S C O |
 | **Authority and blast radius** | Who may change this rule, at which scope, the worst value they can set, and the audit row holding old and new | WO-22 | 2 authority | S C O |
+| **Audience is a capability, not an address** | The permission key and scope that decide who receives a message, and what happens at zero holders and at two hundred | WO-22 | 2 authority | S C O |
 | **Request or record — classify every write** | Is each write refusable, or a record of something that already happened and may never be refused | WO-22 | 3 act | S C O |
 | **The movement with no address** | The `locationId` on every stock or cash write, and where the value comes from | 24 | 3 act | · C O |
 | **Four hours down, the counter stays open** | Who was mid-task, what they do on paper, the surface that ingests it, and the reconciliation proving no double count | WO-22 | 3 act | S C O |
@@ -73,23 +127,22 @@ that contradicts a line of it.
 | **The period that already moved** | What happens to a fact dated inside a `CLOSED` or `LOCKED` `FiscalPeriod` | 07 | 4 money | S C O |
 | **The second legal entity** | The tax label, the gapless per-brand series, and the column that closes one brand's period alone | 08 | 4 money | · · O |
 | **Dry run before live** | Can the rule replay over last month's records with nothing written — is the deciding function pure | WO-22 | 4 money | S C O |
+| **Click the number** | What a figure drills into, and whether the drill-down reproduces the figure exactly | WO-22 | 4 money | S C O |
 | **Three silhouettes, and the day the tier above appears** | Which tier-bearing columns ship in the first migration and never render on the Solo screen | WO-22 | 5 scale | S C O |
 | **The absent collaborator** | Each module this needs that is off by default: what is recorded, what is not, and whether absence degrades or fails boot | WO-22 | 5 scale | S C O |
 | **The second copy of the write** | The two moments it arrives twice, and the unique constraint making the second a no-op | WO-22 | 5 scale | S C O |
 | **The hundred-thousandth row** | Row count at Organization edition, statements per page, how many come from an index | WO-22 | 5 scale | · C O |
+| **The adoption test** | Two nodes generating the same code offline, and what makes a merge safe | WO-22 | 5 scale | · C O |
 | **The reversal document, not the reversal flag** | The reverse document's entity, series, amount field and FK to the original line — partial and repeatable | WO-22 | 6 afterlife | S C O |
 | **The undo fan-out** | Every side effect the forward path fires, each marked automatic, human, or deliberately irreversible | WO-22 | 6 afterlife | S C O |
 | **The version stamp** | What happens to records written under the old rule, and whether their number can still be explained | WO-22 | 6 afterlife | S C O |
 | **The erasure the ledger cannot obey** | Every table still holding the person after the `User` row is gone, each with a disposition | 25 | 6 afterlife | S C O |
 | **The failure path, and who is allowed to walk it** | The durable store, the screen, the permission, the replay action, and what makes a second replay safe | WO-22 | 6 afterlife | S C O |
-| Audience is a capability, not an address | The permission key and scope that decide who receives a message, and what happens at zero holders and at two hundred | WO-22 | catalogue | S C O |
 | Delivery is a fact, not a hope | The one query answering: sent, to which address, accepted, bounced, suppressed | WO-22 | catalogue | S C O |
 | The recipient's daily total | How many messages this adds to the busiest recipient's day, which digest, which may wake them | WO-22 | catalogue | · C O |
 | Which tier owns the credential | Which tier holds an external endpoint's secret, and what happens when it is absent | WO-22 | catalogue | S C O |
-| Click the number | What a figure drills into, and whether the drill-down reproduces the figure exactly | WO-22 | catalogue | S C O |
 | The file outlives the app | The provenance block on an export: who, when, which filter, which scope | WO-22 | catalogue | S C O |
 | The other end, and what nets it out | For a cross-entity flow, the matching opposite entry and what eliminates the pair | WO-22 | catalogue | · · O |
-| The adoption test | Two nodes generating the same code offline, and what makes a merge safe | WO-22 | catalogue | · C O |
 | The weaker writer | Per-row outcome vocabulary for a bulk loop — accepted, rejected, skipped, and why | WO-22 | catalogue | S C O |
 | Row 4,312's authority | Whether authority is checked per row inside a bulk run or once at the top | WO-22 | catalogue | S C O |
 | The 14:02 undo | The before-image a bulk run stores, and how it is re-uploaded to undo | WO-22 | catalogue | S C O |
@@ -258,7 +311,7 @@ that contradicts a line of it.
 
 197 rows for 189 lenses: eight canonicals appear twice, once under the name
 the rule uses and once under the name their own domain file still carries, so
-that grepping either finds it. Of the 189 — 24 headline, 96 kept in the
+that grepping either finds it. Of the 189 — 27 headline, 93 kept in the
 catalogue for the surface they fire on, 64 absorbed into a canonical, 5 cut.
 
 Files `38`–`52` are the backfill, run in two passes. The first wrote `38`–`45`

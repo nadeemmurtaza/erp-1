@@ -69,6 +69,13 @@ Chain, Organization (`RETAIL-ERP.md` R14). A lens that fits only one is not one.
 - **Authority and blast radius.** Who may change this rule, at which scope, with
   whose second signature, the worst value one can set before anything notices,
   and the audit row carrying old and new value — not a list of changed fields.
+- **Audience is a capability, not an address.** Every message this feature
+  sends resolves its recipients from a `PERMISSION_CATALOG` key plus a scope
+  (brand, branch/`Location`, node) — never a literal address;
+  `inventory.listener.ts` mailing `ProductLowStock` to `store.supportEmail`
+  is the standing counter-example. State what a zero-holder query does (a
+  named escalation) and what a two-hundred-holder one does (a digest, never
+  two hundred pings).
 
 ### 3. The act in the world — the write as a physical event
 
@@ -101,6 +108,14 @@ Chain, Organization (`RETAIL-ERP.md` R14). A lens that fits only one is not one.
 - **Dry run before live.** Can this rule replay over last month's real records
   with nothing written? The deciding function takes inputs, returns the outcome,
   holds no `prisma.` write and no `publish(`, and has a second read-only caller.
+- **Click the number.** Every figure a screen shows links to the exact rows
+  that produced it, pre-filtered, so the reader can click through and the
+  drill-down sums back to the tile. This repo already knows revenue four ways
+  — `Order`, `JournalEntry`, `PosShift`/`CashMovement` — and stock three ways
+  — `ProductVariant.stock`, `StockMovement`, `VariantLocationStock` — so where
+  two surfaces report the same fact, the plan states which is authoritative
+  and the enumerated reasons a delta is legitimate, never leaves it to be
+  discovered in a meeting.
 
 ### 5. The scale — what the same code costs at three editions
 
@@ -117,6 +132,13 @@ Chain, Organization (`RETAIL-ERP.md` R14). A lens that fits only one is not one.
 - **The hundred-thousandth row.** The row count the largest table reaches at
   Organization edition, the statements one page issues at that size, how many
   come from an index, and whether a refreshable figure's columns are indexed.
+- **The adoption test.** Every human-readable code or number this feature
+  invents — a slug, a document number, a counter — must be safe for two nodes
+  to generate independently offline and merge without collision, the way
+  `documentNumber()` folds `nodeId` into the sequence while collapsing to the
+  identical `PREFIX-YEAR-SEQ` a Solo deployment has always seen. A bare
+  `@unique` on a generated string, or a counter upserted against one shared
+  row, fails the day a second node exists.
 
 ### 6. The afterlife — what a narrow build always postpones
 

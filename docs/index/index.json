@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1063,
-    "lines": 163427,
+    "files": 1075,
+    "lines": 165164,
     "routes": 287,
     "controllers": 57,
     "models": 115,
@@ -18,15 +18,15 @@
   },
   "areas": {
     "root": {
-      "files": 41,
-      "lines": 8720,
-      "bytes": 632445,
+      "files": 42,
+      "lines": 8819,
+      "bytes": 637731,
       "label": "repository root files"
     },
     "infra": {
       "files": 50,
-      "lines": 25364,
-      "bytes": 975450,
+      "lines": 25520,
+      "bytes": 983359,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -54,9 +54,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 169,
-      "lines": 24478,
-      "bytes": 1563909,
+      "files": 180,
+      "lines": 25960,
+      "bytes": 1627332,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -21119,6 +21119,15 @@
       "symbols": []
     },
     {
+      "path": ".claude/rules/design.md",
+      "area": "root",
+      "kind": "doc",
+      "lines": 93,
+      "bytes": 4287,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": ".claude/rules/performance.md",
       "area": "root",
       "kind": "doc",
@@ -21177,7 +21186,7 @@
       "area": "root",
       "kind": "file",
       "lines": 0,
-      "bytes": 3760,
+      "bytes": 3844,
       "doc": "",
       "symbols": []
     },
@@ -21186,7 +21195,7 @@
       "area": "root",
       "kind": "mdc",
       "lines": 0,
-      "bytes": 3811,
+      "bytes": 3895,
       "doc": "",
       "symbols": []
     },
@@ -21257,8 +21266,8 @@
       "path": ".github/copilot-instructions.md",
       "area": "infra",
       "kind": "doc",
-      "lines": 79,
-      "bytes": 3810,
+      "lines": 80,
+      "bytes": 3894,
       "doc": "",
       "symbols": []
     },
@@ -21293,8 +21302,8 @@
       "path": ".junie/guidelines.md",
       "area": "root",
       "kind": "doc",
-      "lines": 79,
-      "bytes": 3758,
+      "lines": 80,
+      "bytes": 3842,
       "doc": "",
       "symbols": []
     },
@@ -21312,7 +21321,7 @@
       "area": "root",
       "kind": "file",
       "lines": 0,
-      "bytes": 3761,
+      "bytes": 3845,
       "doc": "",
       "symbols": []
     },
@@ -21320,8 +21329,8 @@
       "path": "AGENTS.md",
       "area": "root",
       "kind": "doc",
-      "lines": 79,
-      "bytes": 3861,
+      "lines": 80,
+      "bytes": 3945,
       "doc": "",
       "symbols": []
     },
@@ -21329,8 +21338,8 @@
       "path": "CLAUDE.md",
       "area": "root",
       "kind": "doc",
-      "lines": 726,
-      "bytes": 35464,
+      "lines": 729,
+      "bytes": 35959,
       "doc": "",
       "symbols": []
     },
@@ -21365,8 +21374,8 @@
       "path": "GEMINI.md",
       "area": "root",
       "kind": "doc",
-      "lines": 79,
-      "bytes": 3775,
+      "lines": 80,
+      "bytes": 3859,
       "doc": "",
       "symbols": []
     },
@@ -34684,6 +34693,105 @@
       "symbols": []
     },
     {
+      "path": "docs/design/00-principles.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 83,
+      "bytes": 3879,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/design/01-foundations.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 175,
+      "bytes": 6659,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/design/02-layout.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 121,
+      "bytes": 4762,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/design/03-components.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 113,
+      "bytes": 4298,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/design/04-states.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 141,
+      "bytes": 5983,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/design/05-motion.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 193,
+      "bytes": 7360,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/design/06-content.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 120,
+      "bytes": 4885,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/design/07-accessibility.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 155,
+      "bytes": 6652,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/design/08-governance.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 145,
+      "bytes": 7285,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/design/09-quality.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 169,
+      "bytes": 7704,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/design/README.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 67,
+      "bytes": 3956,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/email.md",
       "area": "docs",
       "kind": "doc",
@@ -37544,8 +37652,8 @@
       "path": "scripts/build-index.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 2333,
-      "bytes": 106069,
+      "lines": 2456,
+      "bytes": 112505,
       "doc": "",
       "symbols": []
     },
@@ -37625,8 +37733,8 @@
       "path": "scripts/idx.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 402,
-      "bytes": 16660,
+      "lines": 434,
+      "bytes": 18049,
       "doc": "",
       "symbols": []
     },

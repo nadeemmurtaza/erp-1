@@ -355,6 +355,37 @@ const commands = {
     emit(rows, 'rules');
   },
 
+  /**
+   * Search the design system's chapters.
+   *
+   * The chapters are prose, not data, so this greps them — but it greps the
+   * ten files that govern design rather than the 1,063 in the repository, and
+   * prints the heading each hit sits under, which is usually enough to decide
+   * whether the chapter is worth opening at all.
+   */
+  design(args) {
+    const q = args.join(' ');
+    const chapters = (db.files ?? [])
+      .filter((f) => /^docs\/design\/.+\.md$/.test(f.path))
+      .map((f) => f.path)
+      .sort();
+    if (!chapters.length) return console.error('no design chapters indexed — run `pnpm index`');
+    const rows = [];
+    for (const file of chapters) {
+      let text;
+      try { text = readFileSync(join(ROOT, file), 'utf8'); } catch { continue; }
+      let heading = '';
+      text.split('\n').forEach((line, i) => {
+        if (/^#{1,4} /.test(line)) heading = line.replace(/^#+ /, '');
+        if (!q) { if (/^#{1,3} /.test(line)) rows.push(`${dim(`${file}:${i + 1}`)}\n  ${line.trim()}`); return; }
+        if (!hit(line, q) || line.trim().length < 4) return;
+        const own = heading === line.replace(/^#+ /, '');
+        rows.push(`${dim(`${file}:${i + 1}`)}\n  ${own ? '' : dim(`${heading} → `)}${line.trim()}`);
+      });
+    }
+    emit(rows, 'design lines');
+  },
+
   stats() {
     for (const [k, v] of Object.entries(db.totals)) {
       console.log(`  ${k.padEnd(14)} ${String(v).padStart(7)}`);
@@ -386,6 +417,7 @@ is itself far cheaper than grepping the repository.
   idx show <file> [symbol]            print a symbol, not the whole file
   idx where "abandoned cart"          fuzzy, across everything
   idx rule borders                    search every rule, scoped or not
+  idx design focus ring               search the design system's chapters
   idx stats                           totals, and any schema drift
 
 Results cap at ${LIMIT}; set IDX_LIMIT to raise it.

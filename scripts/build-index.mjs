@@ -435,6 +435,10 @@ const BACK = (self) => `\n---\n\n[← index home](${link(self, 'docs/index/READM
 
 /* ── counts used in several places ─────────────────────────────────────── */
 
+/** Design-system chapters, counted early because the README routes to them. */
+const DESIGN_CHAPTER_RE = /^docs\/design\/\d\d-.+\.md$/;
+const designChapterCount = records.filter((r) => DESIGN_CHAPTER_RE.test(r.rel)).length;
+
 const areaStats = {};
 for (const r of records) {
   const a = (areaStats[r.area] ??= { files: 0, lines: 0, bytes: 0 });
@@ -459,6 +463,7 @@ const areaFile = (name) => `docs/index/areas/${name}.md`;
     ['“How do modules talk to each other?”', `[cross/events.md](${link(self, 'docs/index/cross/events.md')})`, `all ${eventCatalog.length} domain events → publishers and subscribers`],
     ['“What screen serves this URL?”', `[cross/ui-routes.md](${link(self, 'docs/index/cross/ui-routes.md')})`, `all ${uiRoutes.length} screens across web, POS and mobile`],
     ['“Is there already a component for this?”', `[cross/components.md](${link(self, 'docs/index/cross/components.md')})`, 'shared primitives and every component, with usage counts'],
+    ['“How should this look / behave / read?”', `[cross/design-system.md](${link(self, 'docs/index/cross/design-system.md')})`, `the ${designChapterCount} design chapters, and the measured state of the code they govern`],
     ['“What runs on a schedule?”', `[cross/jobs.md](${link(self, 'docs/index/cross/jobs.md')})`, `${crons.length} cron jobs and the background dispatchers`],
     ['“What command do I run?”', `[cross/commands.md](${link(self, 'docs/index/cross/commands.md')})`, `every script in every package.json (${workspaceScripts.length})`],
     ['“What does the schema history look like?”', `[cross/migrations.md](${link(self, 'docs/index/cross/migrations.md')})`, `${migrations.length} migrations, newest last`],
@@ -810,6 +815,7 @@ ${BACK(self)}`);
     ['how two modules talk (domain events)', 'docs/index/cross/events.md'],
     ['a screen, URL or nav entry', 'docs/index/cross/ui-routes.md'],
     ['whether a component already exists', 'docs/index/cross/components.md'],
+    ['how something should look, behave or read', 'docs/index/cross/design-system.md'],
     ['everything about one API module', 'docs/index/modules/<name>.md'],
     ['what a file exports, with line numbers', 'docs/index/symbols/<area>.md'],
     ['every tracked file, by area', 'docs/index/cross/files.md'],
@@ -939,6 +945,7 @@ ${BODY}
     ['how two modules talk (domain events)', 'docs/index/cross/events.md'],
     ['a screen, URL or nav entry', 'docs/index/cross/ui-routes.md'],
     ['whether a component already exists', 'docs/index/cross/components.md'],
+    ['how something should look, behave or read', 'docs/index/cross/design-system.md'],
     ['everything about one API module', `docs/index/modules/<name>.md`],
     ['what a file exports', 'docs/index/symbols/<area>.md'],
     ['a command to run', 'docs/index/cross/commands.md'],
@@ -2092,6 +2099,122 @@ ${table(['Spec', 'Cases', 'Covers'], e2e.map((t) => [`\`${t.file}\``, t.cases, c
 ${table(['Spec', 'Module', 'Cases', 'Covers'], unit
   .sort((a, b) => a.file.localeCompare(b.file))
   .map((t) => [`\`${t.file}\``, t.module || t.area, t.cases, clip(t.describes.join(' · '), 100)]))}
+${BACK(self)}`);
+}
+
+/* ── ⊗ cross/design-system.md ──────────────────────────────────────────── */
+
+{
+  const self = 'docs/index/cross/design-system.md';
+
+  // The chapters, read from disk so the table cannot drift from the files.
+  const chapterRecords = records
+    .filter((r) => DESIGN_CHAPTER_RE.test(r.rel))
+    .sort((a, b) => a.base.localeCompare(b.base));
+
+  const chapters = chapterRecords.map((r) => {
+    const h1 = (r.source.match(/^#\s+(.+)$/m) ?? [])[1] ?? r.base;
+    const tagline = (r.source.split('\n').slice(1).find((l) => l.trim() && !l.startsWith('#')) ?? '').trim();
+    const status = (r.source.match(/^>?\s*\**Status[:\s]\**\s*(.+)$/m) ?? [])[1] ?? '';
+    return {
+      rel: r.rel,
+      base: r.base,
+      title: h1.replace(/^\d+\s*·\s*/, ''),
+      tagline,
+      status: (status.replace(/\*\*/g, '').replace(/\s+/g, ' ').trim().split(/(?<=[.:;])\s/)[0] ?? '').trim(),
+      lines: r.lines,
+      headings: scanHeadings(r.source, 2).filter((h) => h.depth === 2),
+    };
+  });
+
+  // ── measured reality, so a chapter that overclaims can be caught ──────
+  const count = (rs, re) => rs.reduce((n, r) => n + (r.source.match(re) ?? []).length, 0);
+  const webSrc = records.filter((r) => r.rel.startsWith('apps/web/src/') && isTs(r) && !isSpec(r));
+  const surfaceSrc = records.filter((r) => /^apps\/(web|pos|mobile)\/src\//.test(r.rel) && isTs(r) && !isSpec(r));
+  const cssRecords = records.filter((r) => r.ext === '.css');
+  const tokenFiles = records.filter((r) => /^packages\/shared\/src\/theme-[a-z]+\.ts$/.test(r.rel));
+  const primitives = records.filter((r) => r.rel.startsWith('apps/web/src/components/ui/') && r.ext === '.tsx');
+  const motionImporters = surfaceSrc.filter((r) => (r.imports ?? []).some((i) => /^framer-motion(?:\/|$)/.test(i)));
+
+  const TOKEN_GROUPS = [
+    ['colour', 'packages/shared/src/theme-colors.ts'],
+    ['radius', 'packages/shared/src/theme-radii.ts'],
+    ['type', 'packages/shared/src/theme-type.ts'],
+    ['space', null],
+    ['size', null],
+    ['shadow', null],
+    ['z-index', null],
+    ['motion', null],
+  ];
+  const tokenRows = TOKEN_GROUPS.map(([group, file]) => {
+    const r = file ? byPath.get(file) : null;
+    return [
+      `\`${group}\``,
+      r ? `\`${file}\`` : '—',
+      r ? `${r.lines} lines` : '**unbuilt**',
+      r ? 'exists' : 'Chapter 01 specifies it; nothing implements it',
+    ];
+  });
+
+  const measured = [
+    ['Token files', `${tokenFiles.length} (${tokenFiles.reduce((n, r) => n + r.lines, 0)} lines)`, 'Token groups that exist at all — see the table below'],
+    ['Primitives', String(primitives.length), '`apps/web/src/components/ui` — the ladder\'s second rung'],
+    ['`framer-motion` importers', String(motionImporters.length), motionImporters.length ? motionImporters.map((r) => `\`${r.rel}\``).join(', ') : 'installed and unused'],
+    ['CSS `transition`', String(count(cssRecords, /\btransition(?:-[a-z]+)?\s*:/g)), 'declared transitions across every stylesheet'],
+    ['Tailwind `transition-*` classes', String(count(surfaceSrc, /\btransition(?:-(?:all|colors|opacity|shadow|transform))?\b(?=[\s"'`])/g)), 'the actual motion surface today — utility classes, not a token'],
+    ['CSS `@keyframes`', String(count(cssRecords, /@keyframes\b/g)), 'named animations'],
+    ['`prefers-reduced-motion` blocks', String(count(cssRecords, /prefers-reduced-motion/g)), 'chapter 05 and 07 both require this on every motion'],
+    ['`aria-*` attributes', String(count(surfaceSrc, /\saria-[a-z]+=/g)), 'written by hand; **no accessibility lint runs**'],
+    ['`role=` attributes', String(count(surfaceSrc, /\srole=/g)), ''],
+    ['RTL / `dir` references', String(count(surfaceSrc, /\b(?:rtl|dir=|useLocale\(\)|isRtl)\b/g)), 'Urdu ships; chapter 07 says this is scattered, not systematic'],
+    ['Inline `style={{`', String(count(webSrc, /style=\{\{/g)), 'CLAUDE.md lists the legitimate exceptions — data-driven widths and colours, and the two pre-stylesheet pages'],
+  ];
+
+  emit(self, `${head(self, 'Design system', `The ${chapters.length} chapters in [\`docs/design/\`](${link(self, 'docs/design/README.md')}), and the measured state of the code they govern.`)}
+
+This page is **generated**. The chapters are not — they are written, and they
+are the document of record. What is generated here is the *evidence*: the
+counts below come from the code, so a chapter claiming something the code does
+not do can be caught rather than quoted.
+
+\`\`\`bash
+pnpm idx design <text>    # search every chapter
+\`\`\`
+
+## Precedence
+
+\`CLAUDE.md\` first — the seven laws are the constitution and the design system
+elaborates them, never contradicts them. Three parts of the system are already
+binding and load automatically when you open a component:
+\`.claude/rules/ui.md\` and \`.claude/rules/design.md\`.
+
+## The chapters
+
+${table(['Chapter', 'Governs', 'Status as written', 'Size'],
+  chapters.map((c) => [
+    `[${c.title}](${link(self, c.rel)})`,
+    clip(c.tagline, 90),
+    c.status ? clip(c.status, 110) : '—',
+    `${c.lines} lines`,
+  ]))}
+
+## Measured state of the code
+
+Counted at index time by \`scripts/build-index.mjs\`, not typed by hand.
+
+${table(['Signal', 'Today', 'Note'], measured)}
+
+## Token groups
+
+The ladder in chapter 03 starts at tokens. Five of the eight groups it needs
+do not exist yet, which is why several chapters are specifications rather than
+descriptions.
+
+${table(['Group', 'File', 'Size', 'State'], tokenRows)}
+
+## Outlines
+
+${chapters.map((c) => `### [\`${c.rel}\`](${link(self, c.rel)})  <sub>${c.lines} lines</sub>\n\n${c.headings.length ? c.headings.map((h) => `- ${h.text}  <sub>:${h.line}</sub>`).join('\n') : '_no second-level headings_'}\n`).join('\n')}
 ${BACK(self)}`);
 }
 

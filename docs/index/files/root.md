@@ -3,7 +3,7 @@
 
 # Files — root
 
-All 41 tracked files in `repository root files`, by directory.
+All 42 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -16,15 +16,15 @@ All 41 tracked files in `repository root files`, by directory.
 | `.gitattributes` | file | — |  |
 | `.prettierignore` | file | — |  |
 | `.windsurfrules` | file | — |  |
-| `AGENTS.md` | doc | 79 |  |
+| `AGENTS.md` | doc | 80 |  |
 | `check_output.txt` | txt | — |  |
-| `CLAUDE.md` | doc | 726 |  |
+| `CLAUDE.md` | doc | 729 |  |
 | `CONTRIBUTING.md` | doc | 127 |  |
 | `DEPLOYMENT.md` | doc | 492 |  |
 | `fix-all.js` | script | 15 | Get all files from git grep |
 | `fix-db.js` | script | 15 |  |
 | `fix.js` | script | 9 | Use regex to remove duplicate users block |
-| `GEMINI.md` | doc | 79 |  |
+| `GEMINI.md` | doc | 80 |  |
 | `raw_output.txt` | txt | — |  |
 | `README.md` | doc | 348 |  |
 | `yaseen-backup-before-reset.sql` | sql | 5870 |  |
@@ -56,7 +56,7 @@ All 41 tracked files in `repository root files`, by directory.
 | `session-start.sh` | hook | 54 |  |
 | `suggest-model.sh` | hook | 85 |  |
 
-### `.claude/rules` (9)
+### `.claude/rules` (10)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -64,6 +64,7 @@ All 41 tracked files in `repository root files`, by directory.
 | `database.md` | doc | 19 |  |
 | `decisions.md` | doc | 26 |  |
 | `dependencies.md` | doc | 23 |  |
+| `design.md` | doc | 93 |  |
 | `performance.md` | doc | 42 |  |
 | `security.md` | doc | 20 |  |
 | `services.md` | doc | 31 |  |
@@ -87,7 +88,7 @@ All 41 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `guidelines.md` | doc | 79 |  |
+| `guidelines.md` | doc | 80 |  |
 
 
 ---

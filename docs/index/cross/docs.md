@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**188** markdown documents. These explain **why**; this index only says **where**.
+**200** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -69,6 +69,14 @@ _no second-level headings_
 
 - Dependency standard  <sub>:11</sub>
 
+### `.claude/rules/design.md`  <sub>93 lines</sub>
+
+- The design system  <sub>:17</sub>
+- Read the chapter before you build the thing  <sub>:37</sub>
+- The obligations, stated so they can be checked  <sub>:48</sub>
+- Promoting something into the system  <sub>:78</sub>
+- What is not enforced by any command  <sub>:85</sub>
+
 ### `.claude/rules/performance.md`  <sub>42 lines</sub>
 
 - Performance engineering  <sub>:13</sub>
@@ -92,38 +100,38 @@ _no second-level headings_
 - Borders and boxes  <sub>:64</sub>
 - No dead ends  <sub>:104</sub>
 
-### `.github/copilot-instructions.md`  <sub>79 lines</sub>
+### `.github/copilot-instructions.md`  <sub>80 lines</sub>
 
 - Read the rules first  <sub>:9</sub>
 - Look it up before you search  <sub>:19</sub>
-- Three rules about the index  <sub>:54</sub>
-- Commands  <sub>:66</sub>
+- Three rules about the index  <sub>:55</sub>
+- Commands  <sub>:67</sub>
 
-### `.junie/guidelines.md`  <sub>79 lines</sub>
-
-- Read the rules first  <sub>:9</sub>
-- Look it up before you search  <sub>:19</sub>
-- Three rules about the index  <sub>:54</sub>
-- Commands  <sub>:66</sub>
-
-### `AGENTS.md`  <sub>79 lines</sub>
+### `.junie/guidelines.md`  <sub>80 lines</sub>
 
 - Read the rules first  <sub>:9</sub>
 - Look it up before you search  <sub>:19</sub>
-- Three rules about the index  <sub>:54</sub>
-- Commands  <sub>:66</sub>
+- Three rules about the index  <sub>:55</sub>
+- Commands  <sub>:67</sub>
 
-### `CLAUDE.md`  <sub>726 lines</sub>
+### `AGENTS.md`  <sub>80 lines</sub>
+
+- Read the rules first  <sub>:9</sub>
+- Look it up before you search  <sub>:19</sub>
+- Three rules about the index  <sub>:55</sub>
+- Commands  <sub>:67</sub>
+
+### `CLAUDE.md`  <sub>729 lines</sub>
 
 - The seven laws  <sub>:13</sub>
 - Software engineering, not vibe coding  <sub>:35</sub>
 - Feature scope: build the whole capability, not one slice of it  <sub>:144</sub>
 - Scale: the three axes  <sub>:229</sub>
 - Look it up before you search  <sub>:286</sub>
-- The rule index  <sub>:353</sub>
-- Before you open a PR  <sub>:388</sub>
-- Deployment  <sub>:419</sub>
-- NEWAX Engineering Operating Protocol  <sub>:432</sub>
+- The rule index  <sub>:354</sub>
+- Before you open a PR  <sub>:391</sub>
+- Deployment  <sub>:422</sub>
+- NEWAX Engineering Operating Protocol  <sub>:435</sub>
 
 ### `CONTRIBUTING.md`  <sub>127 lines</sub>
 
@@ -157,6 +165,131 @@ _no second-level headings_
 - Clear space and minimum size  <sub>:60</sub>
 - Don't  <sub>:74</sub>
 - Still open  <sub>:83</sub>
+
+### `docs/design/00-principles.md`  <sub>83 lines</sub>
+
+- The constitution  <sub>:8</sub>
+- Design philosophy  <sub>:13</sub>
+- Product principles  <sub>:29</sub>
+- UX principles  <sub>:42</sub>
+- Visual principles  <sub>:56</sub>
+- Decision principles  <sub>:67</sub>
+
+### `docs/design/01-foundations.md`  <sub>175 lines</sub>
+
+- Why tokens and not values  <sub>:12</sub>
+- Colour  <sub>:22</sub>
+- Typography  <sub>:36</sub>
+- Spacing — *unbuilt*  <sub>:49</sub>
+- Size — *unbuilt*  <sub>:71</sub>
+- Radius  <sub>:82</sub>
+- Shadow and elevation — *unbuilt*  <sub>:89</sub>
+- Z-index / layering — *unbuilt*  <sub>:101</sub>
+- Breakpoints  <sub>:121</sub>
+- Motion tokens — *unbuilt*  <sub>:132</sub>
+- Where tokens live  <sub>:165</sub>
+
+### `docs/design/02-layout.md`  <sub>121 lines</sub>
+
+- The page skeleton  <sub>:8</sub>
+- Grid  <sub>:21</sub>
+- Density  <sub>:35</sub>
+- The seven screens  <sub>:50</sub>
+- Reflow rules  <sub>:64</sub>
+- Multi-surface parity  <sub>:79</sub>
+- The POS is a different animal  <sub>:92</sub>
+- Verifying  <sub>:105</sub>
+
+### `docs/design/03-components.md`  <sub>113 lines</sub>
+
+- The ladder  <sub>:10</sub>
+- Primitives  <sub>:33</sub>
+- Choosing between them  <sub>:53</sub>
+- Patterns — *undocumented*  <sub>:64</sub>
+- Templates — *undocumented*  <sub>:81</sub>
+- Component contract  <sub>:92</sub>
+- What never gets hand-rolled  <sub>:107</sub>
+
+### `docs/design/04-states.md`  <sub>141 lines</sub>
+
+- The rule  <sub>:8</sub>
+- The state matrix  <sub>:14</sub>
+- Focus is not optional  <sub>:36</sub>
+- Disabled must explain itself  <sub>:42</sub>
+- Empty states  <sub>:49</sub>
+- Loading  <sub>:66</sub>
+- Validation  <sub>:81</sub>
+- Confirmation and destructive actions  <sub>:90</sub>
+- Permission states  <sub>:105</sub>
+- Notifications and system feedback  <sub>:119</sub>
+- Offline and degraded — the POS case  <sub>:127</sub>
+
+### `docs/design/05-motion.md`  <sub>193 lines</sub>
+
+- The one test  <sub>:13</sub>
+- What motion may communicate  <sub>:28</sub>
+- The language  <sub>:43</sub>
+- Hierarchy of motion  <sub>:61</sub>
+- Continuity over replacement  <sub>:78</sub>
+- Orchestration  <sub>:94</sub>
+- Micro-interactions  <sub>:103</sub>
+- Scroll  <sub>:119</sub>
+- Responsive motion  <sub>:131</sub>
+- Reduced motion — required  <sub>:142</sub>
+- Performance  <sub>:161</sub>
+- Rejection list  <sub>:172</sub>
+- Benchmark, not template  <sub>:183</sub>
+
+### `docs/design/06-content.md`  <sub>120 lines</sub>
+
+- Voice  <sub>:10</sub>
+- Terminology — one word per concept  <sub>:29</sub>
+- Labels  <sub>:48</sub>
+- Microcopy  <sub>:58</sub>
+- Error messages  <sub>:66</sub>
+- Content hierarchy  <sub>:87</sub>
+- Localisation  <sub>:95</sub>
+- Verifying  <sub>:108</sub>
+
+### `docs/design/07-accessibility.md`  <sub>155 lines</sub>
+
+- Why this is grouped with i18n  <sub>:13</sub>
+- The target  <sub>:20</sub>
+- Keyboard  <sub>:24</sub>
+- Focus  <sub>:40</sub>
+- Screen readers  <sub>:51</sub>
+- Contrast  <sub>:66</sub>
+- Touch targets  <sub>:88</sub>
+- Reduced motion  <sub>:98</sub>
+- Semantic structure  <sub>:107</sub>
+- Right-to-left  <sub>:114</sub>
+- Internationalisation beyond direction  <sub>:131</sub>
+- What would make this real  <sub>:138</sub>
+
+### `docs/design/08-governance.md`  <sub>145 lines</sub>
+
+- Why a design system needs governance at all  <sub>:11</sub>
+- Naming  <sub>:19</sub>
+- What belongs in the system, and what does not  <sub>:40</sub>
+- Contribution  <sub>:60</sub>
+- Versioning  <sub>:81</sub>
+- Deprecation  <sub>:96</sub>
+- Change approval  <sub>:117</sub>
+- Keeping this system honest  <sub>:129</sub>
+
+### `docs/design/09-quality.md`  <sub>169 lines</sub>
+
+- The two columns  <sub>:12</sub>
+- Regression  <sub>:121</sub>
+- The honest gap, ranked  <sub>:139</sub>
+- Definition of done, for a screen  <sub>:158</sub>
+
+### `docs/design/README.md`  <sub>67 lines</sub>
+
+- Precedence, before anything else  <sub>:8</sub>
+- The chapters  <sub>:20</sub>
+- How to use it  <sub>:35</sub>
+- An honest statement of maturity  <sub>:47</sub>
 
 ### `docs/email.md`  <sub>438 lines</sub>
 
@@ -1470,12 +1603,12 @@ _no second-level headings_
 - Grounded Context (partial, from ground:4 retries)  <sub>:510</sub>
 - Recommendation  <sub>:524</sub>
 
-### `GEMINI.md`  <sub>79 lines</sub>
+### `GEMINI.md`  <sub>80 lines</sub>
 
 - Read the rules first  <sub>:9</sub>
 - Look it up before you search  <sub>:19</sub>
-- Three rules about the index  <sub>:54</sub>
-- Commands  <sub>:66</sub>
+- Three rules about the index  <sub>:55</sub>
+- Commands  <sub>:67</sub>
 
 ### `README.md`  <sub>348 lines</sub>
 

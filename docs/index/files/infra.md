@@ -37,7 +37,7 @@ All 50 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `copilot-instructions.md` | doc | 79 |  |
+| `copilot-instructions.md` | doc | 80 |  |
 
 ### `.github/workflows` (2)
 
@@ -77,7 +77,7 @@ All 50 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `build-index.mjs` | script | 2333 |  |
+| `build-index.mjs` | script | 2456 |  |
 | `build-logo-raster.mjs` | script | 54 |  |
 | `check-email-dns.mjs` | script | 399 |  |
 | `check-env-templates.mjs` | script | 139 |  |
@@ -86,7 +86,7 @@ All 50 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check-route-permissions.mjs` | script | 136 |  |
 | `check-rules.mjs` | script | 134 |  |
 | `check.mjs` | script | 164 |  |
-| `idx.mjs` | script | 402 |  |
+| `idx.mjs` | script | 434 |  |
 | `install-git-hooks.mjs` | script | 89 |  |
 | `nested-borders.py` | py | — |  |
 | `sync-client.mjs` | script | 243 | scripts/sync-client.mjs |

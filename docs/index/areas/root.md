@@ -3,7 +3,7 @@
 
 # repository root files
 
-41 files · 8,720 lines
+42 files · 8,819 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -16,14 +16,14 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 16 | 7,760 | file, doc, txt, script |
+| `.` | 16 | 7,765 | file, doc, txt, script |
 | `.claude` | 2 | 49 | json |
 | `.claude/agents` | 8 | 341 | doc |
 | `.claude/hooks` | 2 | 139 | hook |
-| `.claude/rules` | 9 | 352 | doc |
+| `.claude/rules` | 10 | 445 | doc |
 | `.cursor/rules` | 1 | 0 | mdc |
 | `.githooks` | 2 | 0 | file |
-| `.junie` | 1 | 79 | doc |
+| `.junie` | 1 | 80 | doc |
 
 
 
@@ -33,20 +33,20 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `yaseen-backup-before-reset.sql` | 5,870 | sql |  |
-| `CLAUDE.md` | 726 | doc |  |
+| `CLAUDE.md` | 729 | doc |  |
 | `DEPLOYMENT.md` | 492 | doc |  |
 | `README.md` | 348 | doc |  |
 | `.claude/rules/ui.md` | 151 | doc |  |
 | `CONTRIBUTING.md` | 127 | doc |  |
+| `.claude/rules/design.md` | 93 | doc |  |
 | `.claude/hooks/suggest-model.sh` | 85 | hook |  |
-| `.junie/guidelines.md` | 79 | doc |  |
-| `AGENTS.md` | 79 | doc |  |
-| `GEMINI.md` | 79 | doc |  |
+| `.junie/guidelines.md` | 80 | doc |  |
+| `AGENTS.md` | 80 | doc |  |
+| `GEMINI.md` | 80 | doc |  |
 | `.claude/hooks/session-start.sh` | 54 | hook |  |
 | `.claude/agents/architect.md` | 48 | doc |  |
 | `.claude/agents/schema.md` | 46 | doc |  |
 | `.claude/agents/security.md` | 46 | doc |  |
-| `.claude/agents/verify.md` | 45 | doc |  |
 
 
 ---

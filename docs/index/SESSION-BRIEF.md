@@ -3,7 +3,7 @@
 
 # Repository index — orientation
 
-This repository is **1,063 files / 163,427 lines** across four apps and
+This repository is **1,075 files / 165,164 lines** across four apps and
 three packages. A generated index of it lives in `docs/index/` and is kept in
 step with every commit by `.githooks/pre-commit`.
 
@@ -20,6 +20,7 @@ route or which module publishes an event.
 | how two modules talk (domain events) | `docs/index/cross/events.md` |
 | a screen, URL or nav entry | `docs/index/cross/ui-routes.md` |
 | whether a component already exists | `docs/index/cross/components.md` |
+| how something should look, behave or read | `docs/index/cross/design-system.md` |
 | everything about one API module | `docs/index/modules/<name>.md` |
 | what a file exports | `docs/index/symbols/<area>.md` |
 | a command to run | `docs/index/cross/commands.md` |

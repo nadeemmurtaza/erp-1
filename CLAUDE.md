@@ -306,6 +306,7 @@ them in one file instead of forty.
 | how two modules talk to each other | `docs/index/cross/events.md` |
 | a screen, URL or nav entry | `docs/index/cross/ui-routes.md` |
 | whether a component already exists | `docs/index/cross/components.md` |
+| the design system, and the measured state of what it governs | `docs/index/cross/design-system.md` → `docs/design/` |
 | everything about one API module | `docs/index/modules/<name>.md` |
 | what a file exports, with line numbers | `docs/index/symbols/<area>.md` |
 | every tracked file, by area | `docs/index/cross/files.md` |
@@ -363,6 +364,7 @@ makes it arrive when it applies, which is when it is most likely to be followed.
 | Rule file | Loads when you touch | What it governs |
 |---|---|---|
 | `.claude/rules/ui.md` | web / POS / mobile components and CSS | Use what exists (primitives, classes, `@newax/shared`) · Borders and boxes · No dead ends |
+| `.claude/rules/design.md` | web / POS / mobile components and CSS, theme and brand files | the design system in `docs/design/` — which chapter to read, and the obligations that are binding now: every state shipped, motion that communicates, keyboard, targets, logical properties, one word per concept |
 | `.claude/rules/performance.md` | services, controllers, React components, Prisma | the performance engineering table — caching, indexing, N+1, pagination, bundles |
 | `.claude/rules/database.md` | `apps/api/prisma/**` | the database change protocol; migrations are hand-written and forward-only |
 | `.claude/rules/security.md` | auth, controllers, the permission catalogue | what a security review covers; server-side enforcement only |
@@ -374,6 +376,7 @@ makes it arrive when it applies, which is when it is most likely to be followed.
 
 ```bash
 pnpm idx rule <text>        # search every rule, scoped or not
+pnpm idx design <text>      # search the design system's chapters
 node scripts/check-rules.mjs  # verify no rule went missing (pnpm lint runs this)
 ```
 

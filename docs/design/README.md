@@ -86,13 +86,13 @@ because it is quoted as though it were true. So, measured rather than claimed:
 | Patterns and templates | undocumented; they exist only as precedent in pages |
 | Motion | `framer-motion` 13.1.1 is installed and imported by **one** file. Motion today is 83 Tailwind `transition-*` utilities, 4 CSS `transition` declarations and 1 `@keyframes` |
 | Reduced motion | **2** `prefers-reduced-motion` blocks across both stylesheets |
-| Accessibility | 120 `aria-*` attributes, **zero** lint enforcement |
+| Accessibility | `eslint-plugin-jsx-a11y` runs on both apps; focus order, in-place contrast, reduced motion and RTL still unchecked |
 | RTL | Urdu ships today; RTL handling is 30 scattered references and no system |
 
 | Workflow | long processes exist; a shared primitive, a draft contract and a reachability check do not |
 | Permissions | enforced server-side; no design contract for what a page becomes at partial privilege |
 | Composition | module boundaries checked in the API by `pnpm lint`; **nothing checks the UI** |
-| Integrity | **no check exists** for a dead end, a broken link, a missing image or an overflow |
+| Integrity | broken links, missing images and orphan screens are checked (`check-links.mjs`); contrast is checked (`check-contrast.mjs`); overflow and dead ends still are not |
 
 Chapters marked **unbuilt** are specifications to build against, not
 descriptions of the code. Each says so at the top. When one becomes real, the

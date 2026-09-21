@@ -143,14 +143,16 @@ The gates above stop a defect entering. These stop one returning.
 
 What the next automation should be, in the order it would catch the most:
 
-1. **`eslint-plugin-jsx-a11y`** — 120 `aria-*` attributes exist today across the three surfaces, with
-   zero lint. This is the cheapest large win in the list.
+1. ~~**`eslint-plugin-jsx-a11y`**~~ — **done.** Enabled in both apps' configs;
+   the 24 violations it found are fixed, and its four documented exceptions
+   each carry their reason at the line.
 2. **A token lint** — once spacing/size/shadow/z/motion tokens exist
    ([01 · Foundations](01-foundations.md)), a rule that rejects a raw value
    where a token exists. Without it the token layer decays the week after
    it ships.
-3. **Contrast checking in CI** — the table in chapter 07 already records a
-   real failure: `border-neutral-100` at #E8E8E8 does not reach 3:1.
+3. ~~**Contrast checking in CI**~~ — **done**, `scripts/check-contrast.mjs`.
+   It confirmed the failure chapter 07 records, and found a larger one: the
+   brand accent is under the body-text floor.
 4. **Screenshot diffing at the seven widths** — expensive, and the only thing
    that makes Law 4 verifiable rather than remembered.
 

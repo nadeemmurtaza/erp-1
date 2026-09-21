@@ -583,7 +583,7 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `landingFor` | function | :358 | Where a signed-in user lands after login. |
 | `nav-registry.ts` | `navFor` | function | :373 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
-| `party-picker.tsx` | `PartyPicker` | function | :32 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
+| `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
 | `product-form.tsx` | `ProductForm` | function | :55 | One editor for all three product kinds. |
 | `range-picker.tsx` | `RANGES` | const | :6 | The windows every analytics screen offers. |
@@ -689,7 +689,7 @@ Every top-level export in `web`, with the line to open.
 | `section-rail.tsx` | `SectionRail` | function | :36 | A long object page with a rail to jump around it. |
 | `section.tsx` | `Section` | function | :19 | A titled region of a page, with no box around it. |
 | `tabs.tsx` | `TabItem` | interface | :6 |  |
-| `tabs.tsx` | `Tabs` | function | :34 | Splits one page into several, without splitting the route. |
+| `tabs.tsx` | `Tabs` | function | :37 | Splits one page into several, without splitting the route. |
 
 ### `apps/web/src/config`
 

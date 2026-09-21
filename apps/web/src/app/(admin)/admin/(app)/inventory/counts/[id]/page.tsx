@@ -110,18 +110,20 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
       {toasts.length > 0 && (
         <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
           {toasts.map((t) => (
-            <div 
+            <button 
               key={t.id} 
               className={cn(
-                "p-4 rounded-md shadow-md text-sm cursor-pointer",
+                "w-full p-4 rounded-md shadow-md text-sm text-start cursor-pointer",
                 t.type === 'error' ? "bg-red-50 text-red-800 border border-red-200" :
                 t.type === 'success' ? "bg-green-50 text-green-800 border border-green-200" :
                 "bg-blue-50 text-blue-800 border border-blue-200"
               )}
+              type="button"
               onClick={() => removeToast(t.id)}
+              aria-label={`Dismiss: ${t.message}`}
             >
               {t.message}
-            </div>
+            </button>
           ))}
         </div>
       )}
@@ -152,6 +154,7 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
           <form onSubmit={handleScan} className="flex gap-3 max-w-sm">
             <input
               ref={inputRef}
+              // eslint-disable-next-line jsx-a11y/no-autofocus -- a stock count is a scan loop: the operator holds a scanner, not a mouse, and every scan must land in this field. ACT-1 / HEU-7.
               autoFocus
               type="text"
               className="field-input w-full"

@@ -128,10 +128,13 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
                         onChange={(e) => setReceiveQtys({ ...receiveQtys, [item.id]: parseInt(e.target.value) || 0 })}
                       />
                       {remaining > 0 && receiveQtys[item.id] !== remaining && (
-                        <div className="text-xs text-neutral-900/50 mt-1 cursor-pointer hover:underline" 
-                             onClick={() => setReceiveQtys({...receiveQtys, [item.id]: remaining})}>
+                        <button
+                          type="button"
+                          className="mt-1 cursor-pointer text-xs text-neutral-900/50 hover:underline"
+                          onClick={() => setReceiveQtys({ ...receiveQtys, [item.id]: remaining })}
+                        >
                           Max: {remaining}
-                        </div>
+                        </button>
                       )}
                     </td>
                   </tr>
@@ -143,8 +146,11 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
       </div>
 
       <div className="card p-6 max-w-2xl">
-        <label className="block mb-2 text-sm font-medium text-neutral-900">Receipt Notes (optional)</label>
-        <textarea 
+        <label htmlFor="receipt-notes" className="block mb-2 text-sm font-medium text-neutral-900">
+          Receipt Notes (optional)
+        </label>
+        <textarea
+          id="receipt-notes"
           className="field-input w-full mb-6"
           rows={3}
           value={notes}

@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1082,
-    "lines": 167596,
+    "files": 1084,
+    "lines": 168545,
     "routes": 287,
     "controllers": 57,
     "models": 115,
@@ -975,111 +975,111 @@
       "family": "ITG",
       "name": "No dead end",
       "file": "docs/design/15-integrity.md",
-      "line": 33
+      "line": 35
     },
     {
       "id": "ITG-2",
       "family": "ITG",
       "name": "Every internal link resolves",
       "file": "docs/design/15-integrity.md",
-      "line": 41
+      "line": 43
     },
     {
       "id": "ITG-3",
       "family": "ITG",
       "name": "Every image has a source, dimensions, and a fallback",
       "file": "docs/design/15-integrity.md",
-      "line": 51
+      "line": 53
     },
     {
       "id": "ITG-4",
       "family": "ITG",
       "name": "Nothing overflows at any of the seven widths",
       "file": "docs/design/15-integrity.md",
-      "line": 64
+      "line": 66
     },
     {
       "id": "ITG-5",
       "family": "ITG",
       "name": "Every screen is reachable by clicking",
       "file": "docs/design/15-integrity.md",
-      "line": 77
+      "line": 79
     },
     {
       "id": "ITG-6",
       "family": "ITG",
       "name": "Every page renders with every module absent",
       "file": "docs/design/15-integrity.md",
-      "line": 85
+      "line": 87
     },
     {
       "id": "ITG-7",
       "family": "ITG",
       "name": "Every page renders at minimum privilege",
       "file": "docs/design/15-integrity.md",
-      "line": 94
+      "line": 96
     },
     {
       "id": "ITG-8",
       "family": "ITG",
       "name": "No layout depends on string length",
       "file": "docs/design/15-integrity.md",
-      "line": 101
+      "line": 103
     },
     {
       "id": "ITG-9",
       "family": "ITG",
       "name": "Every user-visible string is translatable",
       "file": "docs/design/15-integrity.md",
-      "line": 108
+      "line": 110
     },
     {
       "id": "ITG-10",
       "family": "ITG",
       "name": "Colour is never the only channel",
       "file": "docs/design/15-integrity.md",
-      "line": 116
+      "line": 118
     },
     {
       "id": "ITG-11",
       "family": "ITG",
       "name": "Contrast meets its floor",
       "file": "docs/design/15-integrity.md",
-      "line": 123
+      "line": 125
     },
     {
       "id": "ITG-12",
       "family": "ITG",
       "name": "Focus is never obscured, and never lost",
       "file": "docs/design/15-integrity.md",
-      "line": 132
+      "line": 134
     },
     {
       "id": "ITG-13",
       "family": "ITG",
       "name": "Nothing is reachable by hover alone",
       "file": "docs/design/15-integrity.md",
-      "line": 139
+      "line": 141
     },
     {
       "id": "ITG-14",
       "family": "ITG",
       "name": "A check that cannot run is a failing check",
       "file": "docs/design/15-integrity.md",
-      "line": 145
+      "line": 147
     }
   ],
   "areas": {
     "root": {
       "files": 42,
-      "lines": 8878,
-      "bytes": 641704,
+      "lines": 8896,
+      "bytes": 642581,
       "label": "repository root files"
     },
     "infra": {
-      "files": 51,
-      "lines": 25909,
-      "bytes": 1001139,
+      "files": 53,
+      "lines": 26725,
+      "bytes": 1039411,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -1096,20 +1096,20 @@
     },
     "pos": {
       "files": 31,
-      "lines": 1863,
-      "bytes": 61557,
+      "lines": 1874,
+      "bytes": 62504,
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
       "files": 228,
-      "lines": 33552,
-      "bytes": 1247198,
+      "lines": 33616,
+      "bytes": 1250942,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 186,
-      "lines": 27935,
-      "bytes": 1727556,
+      "lines": 27975,
+      "bytes": 1729699,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -20712,7 +20712,7 @@
       "pkg": "yaseenecom",
       "file": "package.json",
       "name": "lint",
-      "cmd": "turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-rules.mjs"
+      "cmd": "turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-rules.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -20761,6 +20761,18 @@
       "file": "package.json",
       "name": "check:rebrand",
       "cmd": "node scripts/check-rebrand.mjs"
+    },
+    {
+      "pkg": "yaseenecom",
+      "file": "package.json",
+      "name": "check:contrast",
+      "cmd": "node scripts/check-contrast.mjs"
+    },
+    {
+      "pkg": "yaseenecom",
+      "file": "package.json",
+      "name": "check:links",
+      "cmd": "node scripts/check-links.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -22181,8 +22193,8 @@
       "path": ".claude/rules/design.md",
       "area": "root",
       "kind": "doc",
-      "lines": 132,
-      "bytes": 7010,
+      "lines": 136,
+      "bytes": 7212,
       "doc": "",
       "symbols": []
     },
@@ -22397,8 +22409,8 @@
       "path": "CLAUDE.md",
       "area": "root",
       "kind": "doc",
-      "lines": 749,
-      "bytes": 37209,
+      "lines": 763,
+      "bytes": 37884,
       "doc": "",
       "symbols": []
     },
@@ -30743,8 +30755,8 @@
       "path": "apps/pos/eslint.config.mjs",
       "area": "pos",
       "kind": "script",
-      "lines": 19,
-      "bytes": 530,
+      "lines": 29,
+      "bytes": 1280,
       "doc": "",
       "symbols": []
     },
@@ -30996,8 +31008,8 @@
       "path": "apps/pos/src/app/till/page.tsx",
       "area": "pos",
       "kind": "page",
-      "lines": 287,
-      "bytes": 10858,
+      "lines": 288,
+      "bytes": 11055,
       "doc": "",
       "symbols": [
         {
@@ -31372,8 +31384,8 @@
       "path": "apps/web/eslint.config.mjs",
       "area": "web",
       "kind": "script",
-      "lines": 19,
-      "bytes": 530,
+      "lines": 29,
+      "bytes": 1280,
       "doc": "",
       "symbols": []
     },
@@ -31795,8 +31807,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/insights/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 275,
-      "bytes": 10539,
+      "lines": 276,
+      "bytes": 10768,
       "doc": "",
       "symbols": [
         {
@@ -31825,8 +31837,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/inventory/counts/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 221,
-      "bytes": 8400,
+      "lines": 224,
+      "bytes": 8698,
       "doc": "",
       "symbols": [
         {
@@ -31885,8 +31897,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 149,
-      "bytes": 5296,
+      "lines": 151,
+      "bytes": 5390,
       "doc": "",
       "symbols": [
         {
@@ -31945,8 +31957,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/marketing/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 180,
-      "bytes": 5814,
+      "lines": 182,
+      "bytes": 5917,
       "doc": "",
       "symbols": [
         {
@@ -32125,8 +32137,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/receive/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 177,
-      "bytes": 6343,
+      "lines": 183,
+      "bytes": 6510,
       "doc": "",
       "symbols": [
         {
@@ -32140,8 +32152,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/new/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 277,
-      "bytes": 10170,
+      "lines": 286,
+      "bytes": 10428,
       "doc": "",
       "symbols": [
         {
@@ -32155,8 +32167,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 151,
-      "bytes": 5425,
+      "lines": 153,
+      "bytes": 5525,
       "doc": "",
       "symbols": [
         {
@@ -32290,8 +32302,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/tax/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 367,
-      "bytes": 13606,
+      "lines": 369,
+      "bytes": 13709,
       "doc": "",
       "symbols": [
         {
@@ -33193,8 +33205,8 @@
       "path": "apps/web/src/components/admin/command-palette.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 284,
-      "bytes": 9479,
+      "lines": 285,
+      "bytes": 9677,
       "doc": "",
       "symbols": [
         {
@@ -33363,8 +33375,8 @@
       "path": "apps/web/src/components/admin/party-picker.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 108,
-      "bytes": 3906,
+      "lines": 117,
+      "bytes": 4253,
       "doc": "",
       "symbols": [
         {
@@ -33375,7 +33387,7 @@
         {
           "name": "PartyPicker",
           "kind": "function",
-          "line": 32
+          "line": 40
         }
       ]
     },
@@ -34153,8 +34165,8 @@
       "path": "apps/web/src/components/ui/dialog.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 183,
-      "bytes": 5838,
+      "lines": 197,
+      "bytes": 6675,
       "doc": "",
       "symbols": [
         {
@@ -34292,8 +34304,8 @@
       "path": "apps/web/src/components/ui/tabs.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 113,
-      "bytes": 3605,
+      "lines": 116,
+      "bytes": 3865,
       "doc": "",
       "symbols": [
         {
@@ -34304,7 +34316,7 @@
         {
           "name": "Tabs",
           "kind": "function",
-          "line": 34
+          "line": 37
         }
       ]
     },
@@ -35818,8 +35830,8 @@
       "path": "docs/design/07-accessibility.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 155,
-      "bytes": 6652,
+      "lines": 157,
+      "bytes": 6788,
       "doc": "",
       "symbols": []
     },
@@ -35836,8 +35848,8 @@
       "path": "docs/design/09-quality.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 172,
-      "bytes": 7813,
+      "lines": 174,
+      "bytes": 7903,
       "doc": "",
       "symbols": []
     },
@@ -35890,8 +35902,8 @@
       "path": "docs/design/15-integrity.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 210,
-      "bytes": 10068,
+      "lines": 246,
+      "bytes": 11841,
       "doc": "",
       "symbols": []
     },
@@ -35900,7 +35912,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 109,
-      "bytes": 6716,
+      "bytes": 6860,
       "doc": "",
       "symbols": []
     },
@@ -37393,8 +37405,8 @@
       "path": "package.json",
       "area": "infra",
       "kind": "json",
-      "lines": 54,
-      "bytes": 1958,
+      "lines": 56,
+      "bytes": 2133,
       "doc": "",
       "symbols": []
     },
@@ -38780,6 +38792,26 @@
       "symbols": []
     },
     {
+      "path": "scripts/check-contrast.mjs",
+      "area": "infra",
+      "kind": "script",
+      "lines": 427,
+      "bytes": 21008,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "contrast",
+          "kind": "const",
+          "line": 69
+        },
+        {
+          "name": "scanColours",
+          "kind": "function",
+          "line": 215
+        }
+      ]
+    },
+    {
       "path": "scripts/check-email-dns.mjs",
       "area": "infra",
       "kind": "script",
@@ -38805,6 +38837,36 @@
       "bytes": 4804,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "scripts/check-links.mjs",
+      "area": "infra",
+      "kind": "script",
+      "lines": 387,
+      "bytes": 17089,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "routeUrl",
+          "kind": "function",
+          "line": 77
+        },
+        {
+          "name": "matches",
+          "kind": "function",
+          "line": 102
+        },
+        {
+          "name": "resolve1",
+          "kind": "function",
+          "line": 143
+        },
+        {
+          "name": "scanLinks",
+          "kind": "function",
+          "line": 188
+        }
+      ]
     },
     {
       "path": "scripts/check-module-boundaries.mjs",

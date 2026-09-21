@@ -418,6 +418,20 @@ pnpm check:rebrand                        # Law 1, brand axis — part of pnpm l
 node scripts/check-rebrand.mjs --self-test  # proves the matcher still catches a leak
 ```
 
+Three more design checks run inside `pnpm lint`, from
+`docs/design/15-integrity.md`'s build order. Each carries a declared baseline
+of the debt it found on the day it was written — a count that may shrink and
+may not grow — and each has a `--self-test` that proves its own maths:
+
+```bash
+pnpm check:contrast    # COL-3 / ITG-11 — WCAG floors, palette read from brand.ts
+pnpm check:links       # ITG-2/3/5 — links resolve, images exist, no orphan screen
+```
+
+`eslint-plugin-jsx-a11y` runs on both apps for the same reason. What still has
+no check — focus order, reduced motion, RTL, overflow at the seven widths —
+needs a render, and `15-integrity.md` ranks it.
+
 Its terms are **derived from `packages/shared/src/brand.ts`**, so a rebrand
 rebrands the check too and there is nothing to remember. It reads application
 code only — `apps/*/src` and `packages/*/src` — because that is what Law 1

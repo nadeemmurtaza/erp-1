@@ -12,6 +12,12 @@ Every top-level export in `infra`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
+| `check-contrast.mjs` | `contrast` | const | :69 | WCAG 2.x contrast ratio. |
+| `check-contrast.mjs` | `scanColours` | function | :215 | Every colour utility in a file, with the className it shared, if any. |
+| `check-links.mjs` | `routeUrl` | function | :77 | The URL a `page.tsx` / `route.ts` serves: route groups vanish, `[id]` stays. |
+| `check-links.mjs` | `matches` | function | :102 | Does `link` land on `route`? |
+| `check-links.mjs` | `resolve1` | function | :143 | The route Next.js would pick for this link, or null. |
+| `check-links.mjs` | `scanLinks` | function | :188 | Every internal path a file refers to, with the line it is on. |
 | `check-rebrand.mjs` | `scan` | function | :160 | Every violation on one file's contents. |
 
 ### `scripts/lib`

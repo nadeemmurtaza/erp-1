@@ -179,6 +179,7 @@ export default function InsightsPage() {
                           value={targetDraft}
                           onChange={(event) => setTargetDraft(event.target.value)}
                           className="field-input"
+                          // eslint-disable-next-line jsx-a11y/no-autofocus -- the field appears only after the user clicks "edit target"; focusing what they just asked for is the expected behaviour, not a page-load focus steal.
                           autoFocus
                         />
                       </label>

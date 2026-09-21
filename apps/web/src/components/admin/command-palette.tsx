@@ -216,6 +216,7 @@ export function CommandPalette({
           <div className="flex items-center gap-3 border-b border-neutral-100 px-4">
             <SearchIcon className="shrink-0 text-neutral-900/35" />
             <input
+              // eslint-disable-next-line jsx-a11y/no-autofocus -- a command palette is opened by a keystroke in order to type into it. Not focusing the field would break the only reason it exists.
               autoFocus
               value={query}
               onChange={(event) => setQuery(event.target.value)}

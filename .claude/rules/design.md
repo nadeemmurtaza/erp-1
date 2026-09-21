@@ -123,9 +123,13 @@ Governance, deprecation and naming are `08-governance`.
 
 ## What is not enforced by any command
 
-Stated out loud so a green build is never mistaken for a reviewed screen:
-contrast, focus order, reduced motion, RTL, touch-target size and whether a
-screen wastes its width have **no** automated check in this repository today.
-There is no accessibility lint and no visual regression. `09-quality` lists
-them as questions a person answers before merge, and ranks what should be
-automated first.
+Stated out loud so a green build is never mistaken for a reviewed screen.
+
+`pnpm lint` **does** check: contrast against the WCAG floor
+(`check-contrast.mjs`), that every link and image resolves and every screen is
+reachable (`check-links.mjs`), and the `eslint-plugin-jsx-a11y` rules.
+
+It does **not** check: focus order, reduced motion, RTL, touch-target size, or
+whether a screen wastes its width — those need a render, which does not exist
+yet. There is no visual regression. `09-quality` lists them as questions a
+person answers before merge, and `15-integrity` ranks what to automate next.

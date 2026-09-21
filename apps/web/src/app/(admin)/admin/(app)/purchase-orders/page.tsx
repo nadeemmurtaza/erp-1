@@ -59,8 +59,10 @@ export default function PurchaseOrdersPage() {
       </div>
 
       <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-neutral-100 pb-4">
-        <label className="text-sm font-medium text-neutral-900/70">Filter by status:</label>
-        <div className="flex gap-2">
+        <span id="po-status-filter-label" className="text-sm font-medium text-neutral-900/70">
+          Filter by status:
+        </span>
+        <div role="group" aria-labelledby="po-status-filter-label" className="flex gap-2">
           {['', 'DRAFT', 'SENT', 'PARTIAL', 'RECEIVED', 'CANCELLED'].map((s) => (
             <button
               key={s}

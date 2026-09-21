@@ -14,7 +14,7 @@ All 228 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `.gitignore` | file | 3 |  |
 | `Dockerfile` | file | 52 |  |
-| `eslint.config.mjs` | script | 19 |  |
+| `eslint.config.mjs` | script | 29 |  |
 | `next.config.mjs` | script | 42 |  |
 | `package.json` | json | 41 |  |
 | `postcss.config.mjs` | script | 8 | @type {import('postcss-load-config').Config} |
@@ -186,7 +186,7 @@ All 228 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 275 |  |
+| `page.tsx` | page | 276 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory` (1)
 
@@ -210,7 +210,7 @@ All 228 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 221 |  |
+| `page.tsx` | page | 224 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/reorder` (1)
 
@@ -222,7 +222,7 @@ All 228 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 149 |  |
+| `page.tsx` | page | 151 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/leads` (1)
 
@@ -234,7 +234,7 @@ All 228 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 180 |  |
+| `page.tsx` | page | 182 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/o` (1)
 
@@ -294,7 +294,7 @@ All 228 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 151 |  |
+| `page.tsx` | page | 153 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]` (1)
 
@@ -306,13 +306,13 @@ All 228 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 177 |  |
+| `page.tsx` | page | 183 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/purchase-orders/new` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 277 |  |
+| `page.tsx` | page | 286 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/reports` (1)
 
@@ -366,7 +366,7 @@ All 228 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 367 |  |
+| `page.tsx` | page | 369 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/trading-partners` (1)
 
@@ -597,14 +597,14 @@ All 228 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `admin-shell.tsx` | component | 410 |  |
-| `command-palette.tsx` | component | 284 |  |
+| `command-palette.tsx` | component | 285 |  |
 | `deployment-modules.tsx` | component | 21 |  |
 | `donut-chart.tsx` | component | 136 |  |
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 485 |  |
 | `nav-registry.ts` | component | 388 |  |
-| `party-picker.tsx` | component | 108 |  |
+| `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1034 |  |
 | `range-picker.tsx` | component | 58 |  |
@@ -671,7 +671,7 @@ All 228 tracked files in `apps/web`, by directory.
 | `badge.tsx` | component | 45 |  |
 | `button.tsx` | component | 56 |  |
 | `data-table.tsx` | component | 140 |  |
-| `dialog.tsx` | component | 183 |  |
+| `dialog.tsx` | component | 197 |  |
 | `disclosure.tsx` | component | 69 |  |
 | `empty-state.tsx` | component | 40 |  |
 | `index.ts` | component | 28 | Design-system primitives. |
@@ -680,7 +680,7 @@ All 228 tracked files in `apps/web`, by directory.
 | `page-header.tsx` | component | 53 |  |
 | `section-rail.tsx` | component | 154 |  |
 | `section.tsx` | component | 59 |  |
-| `tabs.tsx` | component | 113 |  |
+| `tabs.tsx` | component | 116 |  |
 
 ### `apps/web/src/config` (3)
 

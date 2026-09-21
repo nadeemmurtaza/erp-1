@@ -69,7 +69,7 @@ _no second-level headings_
 
 - Dependency standard  <sub>:11</sub>
 
-### `.claude/rules/design.md`  <sub>132 lines</sub>
+### `.claude/rules/design.md`  <sub>136 lines</sub>
 
 - The design system  <sub>:17</sub>
 - Read the chapter before you build the thing  <sub>:42</sub>
@@ -121,7 +121,7 @@ _no second-level headings_
 - Three rules about the index  <sub>:55</sub>
 - Commands  <sub>:67</sub>
 
-### `CLAUDE.md`  <sub>749 lines</sub>
+### `CLAUDE.md`  <sub>763 lines</sub>
 
 - The seven laws  <sub>:13</sub>
 - Software engineering, not vibe coding  <sub>:35</sub>
@@ -130,8 +130,8 @@ _no second-level headings_
 - Look it up before you search  <sub>:286</sub>
 - The rule index  <sub>:354</sub>
 - Before you open a PR  <sub>:392</sub>
-- Deployment  <sub>:442</sub>
-- NEWAX Engineering Operating Protocol  <sub>:455</sub>
+- Deployment  <sub>:456</sub>
+- NEWAX Engineering Operating Protocol  <sub>:469</sub>
 
 ### `CONTRIBUTING.md`  <sub>127 lines</sub>
 
@@ -251,20 +251,20 @@ _no second-level headings_
 - Localisation  <sub>:95</sub>
 - Verifying  <sub>:108</sub>
 
-### `docs/design/07-accessibility.md`  <sub>155 lines</sub>
+### `docs/design/07-accessibility.md`  <sub>157 lines</sub>
 
-- Why this is grouped with i18n  <sub>:13</sub>
-- The target  <sub>:20</sub>
-- Keyboard  <sub>:24</sub>
-- Focus  <sub>:40</sub>
-- Screen readers  <sub>:51</sub>
-- Contrast  <sub>:66</sub>
-- Touch targets  <sub>:88</sub>
-- Reduced motion  <sub>:98</sub>
-- Semantic structure  <sub>:107</sub>
-- Right-to-left  <sub>:114</sub>
-- Internationalisation beyond direction  <sub>:131</sub>
-- What would make this real  <sub>:138</sub>
+- Why this is grouped with i18n  <sub>:15</sub>
+- The target  <sub>:22</sub>
+- Keyboard  <sub>:26</sub>
+- Focus  <sub>:42</sub>
+- Screen readers  <sub>:53</sub>
+- Contrast  <sub>:68</sub>
+- Touch targets  <sub>:90</sub>
+- Reduced motion  <sub>:100</sub>
+- Semantic structure  <sub>:109</sub>
+- Right-to-left  <sub>:116</sub>
+- Internationalisation beyond direction  <sub>:133</sub>
+- What would make this real  <sub>:140</sub>
 
 ### `docs/design/08-governance.md`  <sub>145 lines</sub>
 
@@ -277,12 +277,12 @@ _no second-level headings_
 - Change approval  <sub>:117</sub>
 - Keeping this system honest  <sub>:129</sub>
 
-### `docs/design/09-quality.md`  <sub>172 lines</sub>
+### `docs/design/09-quality.md`  <sub>174 lines</sub>
 
 - The two columns  <sub>:12</sub>
 - Regression  <sub>:124</sub>
 - The honest gap, ranked  <sub>:142</sub>
-- Definition of done, for a screen  <sub>:161</sub>
+- Definition of done, for a screen  <sub>:163</sub>
 
 ### `docs/design/10-laws.md`  <sub>850 lines</sub>
 
@@ -332,13 +332,13 @@ _no second-level headings_
 - What must be built  <sub>:178</sub>
 - Sources  <sub>:191</sub>
 
-### `docs/design/15-integrity.md`  <sub>210 lines</sub>
+### `docs/design/15-integrity.md`  <sub>246 lines</sub>
 
-- Why this chapter is different  <sub>:13</sub>
-- ITG · The laws  <sub>:31</sub>
-- The build order  <sub>:153</sub>
-- What a person still has to do  <sub>:183</sub>
-- Sources  <sub>:203</sub>
+- Why this chapter is different  <sub>:15</sub>
+- ITG · The laws  <sub>:33</sub>
+- The build order  <sub>:155</sub>
+- What a person still has to do  <sub>:219</sub>
+- Sources  <sub>:239</sub>
 
 ### `docs/design/README.md`  <sub>109 lines</sub>
 

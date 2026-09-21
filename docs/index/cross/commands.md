@@ -3,7 +3,7 @@
 
 # Commands
 
-Every script in every `package.json` (**69**), plus the repository's own check scripts.
+Every script in every `package.json` (**71**), plus the repository's own check scripts.
 
 
 ## The one you run before a PR
@@ -113,6 +113,8 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 | `check:secrets` | `node scripts/check-frontend-secrets.mjs` |
 | `check:env` | `node scripts/check-env-templates.mjs` |
 | `check:rebrand` | `node scripts/check-rebrand.mjs` |
+| `check:contrast` | `node scripts/check-contrast.mjs` |
+| `check:links` | `node scripts/check-links.mjs` |
 | `check:rules` | `node scripts/check-rules.mjs` |
 | `check:email` | `node scripts/check-email-dns.mjs` |
 | `index` | `node scripts/build-index.mjs` |
@@ -137,9 +139,11 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 |---|---|---|
 | `scripts/build-index.mjs` | 2500 |  |
 | `scripts/build-logo-raster.mjs` | 54 |  |
+| `scripts/check-contrast.mjs` | 427 |  |
 | `scripts/check-email-dns.mjs` | 399 |  |
 | `scripts/check-env-templates.mjs` | 139 |  |
 | `scripts/check-frontend-secrets.mjs` | 137 |  |
+| `scripts/check-links.mjs` | 387 |  |
 | `scripts/check-module-boundaries.mjs` | 535 |  |
 | `scripts/check-rebrand.mjs` | 292 |  |
 | `scripts/check-route-permissions.mjs` | 136 |  |

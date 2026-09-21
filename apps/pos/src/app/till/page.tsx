@@ -262,6 +262,7 @@ export default function TillPage() {
             placeholder="Cash tendered (Rs)"
             value={tenderRupees}
             onChange={(e) => setTenderRupees(e.target.value)}
+            // eslint-disable-next-line jsx-a11y/no-autofocus -- the tender field appears when the operator opens payment, with a customer waiting. Typing the amount is the next action every time.
             autoFocus
           />
 

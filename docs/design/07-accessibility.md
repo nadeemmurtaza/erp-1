@@ -2,9 +2,11 @@
 
 How broadly the product can actually be used.
 
-> **Status: the largest gap in the system.** The three surfaces contain 120 `aria-*`
-> attributes and **zero** accessibility lint configuration — so accessibility
-> today is individual diligence, unverified. The stylesheet has **two**
+> **Status: still the largest gap, but no longer unverified.**
+> `eslint-plugin-jsx-a11y` now runs on both apps (chapter 15's check 4), so
+> the hand-written `aria-*` across the three surfaces has something checking
+> it. What lint cannot see — focus order, contrast in place, reduced motion,
+> RTL — is still individual diligence. The stylesheet has **two**
 > `prefers-reduced-motion` blocks. Urdu ships in production and RTL is 30
 > scattered references with no system behind them.
 >
@@ -139,7 +141,7 @@ Urdu ships today. RTL is not a translation concern; it is a layout concern.
 
 In rough order of value per effort:
 
-1. **`eslint-plugin-jsx-a11y`** in both web eslint configs. Turns 120 hopeful
+1. ~~**`eslint-plugin-jsx-a11y`** in both web eslint configs.~~ **Done.** Turns hopeful
    `aria-*` attributes into something verified, and catches the whole class of
    missing-label and bad-role errors at build time.
 2. **A contrast checker** over `theme-colors.ts`, run by `pnpm lint`.

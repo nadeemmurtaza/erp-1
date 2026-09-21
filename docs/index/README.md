@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **1,082 files / 167,596 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **1,084 files / 168,545 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -54,13 +54,13 @@ single fact — the page is the right tool when you need the shape of something.
 | “Is there already a component for this?” | [cross/components.md](cross/components.md) | ~1.8k | shared primitives and every component, with usage counts |
 | “How should this look / behave / read?” | [cross/design-system.md](cross/design-system.md) | ~9.1k | the 16 design chapters, and the measured state of the code they govern |
 | “What runs on a schedule?” | [cross/jobs.md](cross/jobs.md) | ~491 | 6 cron jobs and the background dispatchers |
-| “What command do I run?” | [cross/commands.md](cross/commands.md) | ~1.5k | every script in every package.json (69) |
+| “What command do I run?” | [cross/commands.md](cross/commands.md) | ~1.6k | every script in every package.json (71) |
 | “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | ~2.3k | 52 migrations, newest last |
 | “What is already tested?” | [cross/tests.md](cross/tests.md) | ~4.1k | 103 spec files → what each one pins down |
 | “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~15.7k | every document of record, with its outline |
 | “What is in this one module?” | [modules/](modules) | — | one page per API feature module (25) |
 | “What does this file export?” | [symbols/](symbols) | — | every exported symbol in the repo, with line numbers |
-| “I need a machine-readable form.” | [index.json](index.json) | ~254.8k | the whole index as JSON — grep or jq it |
+| “I need a machine-readable form.” | [index.json](index.json) | ~255.1k | the whole index as JSON — grep or jq it |
 
 
 ## The levels
@@ -119,13 +119,13 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 | Area | Files | Lines | L1 page |
 |---|---|---|---|
 | apps/api | 449 | 59,691 | [api](areas/api.md) |
-| apps/web | 228 | 33,552 | [web](areas/web.md) |
-| apps/pos | 31 | 1,863 | [pos](areas/pos.md) |
+| apps/web | 228 | 33,616 | [web](areas/web.md) |
+| apps/pos | 31 | 1,874 | [pos](areas/pos.md) |
 | apps/mobile | 42 | 5,292 | [mobile](areas/mobile.md) |
 | packages/* | 53 | 4,476 | [packages](areas/packages.md) |
-| docs/* | 186 | 27,935 | [docs](areas/docs.md) |
-| scripts, CI, deployment and container configuration | 51 | 25,909 | [infra](areas/infra.md) |
-| repository root files | 42 | 8,878 | [root](areas/root.md) |
+| docs/* | 186 | 27,975 | [docs](areas/docs.md) |
+| scripts, CI, deployment and container configuration | 53 | 26,725 | [infra](areas/infra.md) |
+| repository root files | 42 | 8,896 | [root](areas/root.md) |
 
 Every tracked file is accounted for: see
 [`cross/files.md`](cross/files.md) for the complete

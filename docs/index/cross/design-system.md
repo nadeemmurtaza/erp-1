@@ -33,15 +33,15 @@ binding and load automatically when you open a component:
 | [States and behaviour](../../design/04-states.md) | What every element can be, and what each state promises the user. | partly built. | — | 141 lines |
 | [Motion](../../design/05-motion.md) | Motion exists to make the system easier to understand. Nothing else justifies | essentially unbuilt. | — | 193 lines |
 | [Content](../../design/06-content.md) | How the product speaks. Copy is interface, not decoration applied afterwards. | unbuilt as a system. | — | 121 lines |
-| [Accessibility and internationalisation](../../design/07-accessibility.md) | How broadly the product can actually be used. | the largest gap in the system. | — | 155 lines |
+| [Accessibility and internationalisation](../../design/07-accessibility.md) | How broadly the product can actually be used. | still the largest gap, but no longer unverified. | — | 157 lines |
 | [Governance](../../design/08-governance.md) | Who may add to this system, how a thing gets named, and how something leaves | partly enforced. | — | 145 lines |
-| [Quality gates](../../design/09-quality.md) | What has to be true before a screen ships, and — stated honestly — which of it | the engineering gates are real and green; | — | 172 lines |
+| [Quality gates](../../design/09-quality.md) | What has to be true before a screen ships, and — stated honestly — which of it | the engineering gates are real and green; | — | 174 lines |
 | [The law catalogue](../../design/10-laws.md) | Every borrowed law this system rests on, with a stable ID, the source it comes | binding as rulings, unenforced as code. | 87 | 850 lines |
 | [Workflow](../../design/11-workflow.md) | Processes with a hundred steps, several actors, days of elapsed time, and a | unbuilt as a system. | 15 | 260 lines |
 | [Permissions](../../design/12-permissions.md) | Designing a screen when no two people who open it see the same thing. | partly built, and the gap is structural. | 12 | 214 lines |
 | [Composition](../../design/13-composition.md) | One codebase that ships as an online shop, or as a manufacturing group's | architecturally enforced, visually unenforced. | 10 | 197 lines |
 | [Navigation](../../design/14-navigation.md) | One information space holding hundreds of departments, without anybody having | exists, unmeasured. | 12 | 198 lines |
-| [Integrity](../../design/15-integrity.md) | The mechanical failures — dead ends, broken links, missing images, overflow, | specified, not built. | 14 | 210 lines |
+| [Integrity](../../design/15-integrity.md) | The mechanical failures — dead ends, broken links, missing images, overflow, | four of ten built. | 14 | 246 lines |
 
 
 ## The laws
@@ -209,20 +209,20 @@ cited in a review, a commit or a PR. `pnpm idx law <id>` prints one.
 | `NAV-10` | Recency and pinning belong to the user | [14-navigation.md:108](../../design/14-navigation.md#nav-10-recency-and-pinning-belong-to-the-user) |
 | `NAV-11` | Label like the business speaks | [14-navigation.md:114](../../design/14-navigation.md#nav-11-label-like-the-business-speaks) |
 | `NAV-12` | A cross-surface concept keeps its place | [14-navigation.md:120](../../design/14-navigation.md#nav-12-a-cross-surface-concept-keeps-its-place) |
-| `ITG-1` | No dead end | [15-integrity.md:33](../../design/15-integrity.md#itg-1-no-dead-end) |
-| `ITG-2` | Every internal link resolves | [15-integrity.md:41](../../design/15-integrity.md#itg-2-every-internal-link-resolves) |
-| `ITG-3` | Every image has a source, dimensions, and a fallback | [15-integrity.md:51](../../design/15-integrity.md#itg-3-every-image-has-a-source-dimensions-and-a-fallback) |
-| `ITG-4` | Nothing overflows at any of the seven widths | [15-integrity.md:64](../../design/15-integrity.md#itg-4-nothing-overflows-at-any-of-the-seven-widths) |
-| `ITG-5` | Every screen is reachable by clicking | [15-integrity.md:77](../../design/15-integrity.md#itg-5-every-screen-is-reachable-by-clicking) |
-| `ITG-6` | Every page renders with every module absent | [15-integrity.md:85](../../design/15-integrity.md#itg-6-every-page-renders-with-every-module-absent) |
-| `ITG-7` | Every page renders at minimum privilege | [15-integrity.md:94](../../design/15-integrity.md#itg-7-every-page-renders-at-minimum-privilege) |
-| `ITG-8` | No layout depends on string length | [15-integrity.md:101](../../design/15-integrity.md#itg-8-no-layout-depends-on-string-length) |
-| `ITG-9` | Every user-visible string is translatable | [15-integrity.md:108](../../design/15-integrity.md#itg-9-every-user-visible-string-is-translatable) |
-| `ITG-10` | Colour is never the only channel | [15-integrity.md:116](../../design/15-integrity.md#itg-10-colour-is-never-the-only-channel) |
-| `ITG-11` | Contrast meets its floor | [15-integrity.md:123](../../design/15-integrity.md#itg-11-contrast-meets-its-floor) |
-| `ITG-12` | Focus is never obscured, and never lost | [15-integrity.md:132](../../design/15-integrity.md#itg-12-focus-is-never-obscured-and-never-lost) |
-| `ITG-13` | Nothing is reachable by hover alone | [15-integrity.md:139](../../design/15-integrity.md#itg-13-nothing-is-reachable-by-hover-alone) |
-| `ITG-14` | A check that cannot run is a failing check | [15-integrity.md:145](../../design/15-integrity.md#itg-14-a-check-that-cannot-run-is-a-failing-check) |
+| `ITG-1` | No dead end | [15-integrity.md:35](../../design/15-integrity.md#itg-1-no-dead-end) |
+| `ITG-2` | Every internal link resolves | [15-integrity.md:43](../../design/15-integrity.md#itg-2-every-internal-link-resolves) |
+| `ITG-3` | Every image has a source, dimensions, and a fallback | [15-integrity.md:53](../../design/15-integrity.md#itg-3-every-image-has-a-source-dimensions-and-a-fallback) |
+| `ITG-4` | Nothing overflows at any of the seven widths | [15-integrity.md:66](../../design/15-integrity.md#itg-4-nothing-overflows-at-any-of-the-seven-widths) |
+| `ITG-5` | Every screen is reachable by clicking | [15-integrity.md:79](../../design/15-integrity.md#itg-5-every-screen-is-reachable-by-clicking) |
+| `ITG-6` | Every page renders with every module absent | [15-integrity.md:87](../../design/15-integrity.md#itg-6-every-page-renders-with-every-module-absent) |
+| `ITG-7` | Every page renders at minimum privilege | [15-integrity.md:96](../../design/15-integrity.md#itg-7-every-page-renders-at-minimum-privilege) |
+| `ITG-8` | No layout depends on string length | [15-integrity.md:103](../../design/15-integrity.md#itg-8-no-layout-depends-on-string-length) |
+| `ITG-9` | Every user-visible string is translatable | [15-integrity.md:110](../../design/15-integrity.md#itg-9-every-user-visible-string-is-translatable) |
+| `ITG-10` | Colour is never the only channel | [15-integrity.md:118](../../design/15-integrity.md#itg-10-colour-is-never-the-only-channel) |
+| `ITG-11` | Contrast meets its floor | [15-integrity.md:125](../../design/15-integrity.md#itg-11-contrast-meets-its-floor) |
+| `ITG-12` | Focus is never obscured, and never lost | [15-integrity.md:134](../../design/15-integrity.md#itg-12-focus-is-never-obscured-and-never-lost) |
+| `ITG-13` | Nothing is reachable by hover alone | [15-integrity.md:141](../../design/15-integrity.md#itg-13-nothing-is-reachable-by-hover-alone) |
+| `ITG-14` | A check that cannot run is a failing check | [15-integrity.md:147](../../design/15-integrity.md#itg-14-a-check-that-cannot-run-is-a-failing-check) |
 
 
 </details>
@@ -240,8 +240,8 @@ Counted at index time by `scripts/build-index.mjs`, not typed by hand.
 | Tailwind `transition-*` classes | 83 | the actual motion surface today — utility classes, not a token |
 | CSS `@keyframes` | 1 | named animations |
 | `prefers-reduced-motion` blocks | 2 | chapter 05 and 07 both require this on every motion |
-| `aria-*` attributes | 120 | written by hand; **no accessibility lint runs** |
-| `role=` attributes | 111 |  |
+| `aria-*` attributes | 125 | written by hand; **no accessibility lint runs** |
+| `role=` attributes | 112 |  |
 | RTL / `dir` references | 30 | Urdu ships; chapter 07 says this is scattered, not systematic |
 | Inline `style={{` | 16 | CLAUDE.md lists the legitimate exceptions — data-driven widths and colours, and the two pre-stylesheet pages |
 
@@ -351,20 +351,20 @@ descriptions.
 - Localisation  <sub>:95</sub>
 - Verifying  <sub>:108</sub>
 
-### [`docs/design/07-accessibility.md`](../../design/07-accessibility.md)  <sub>155 lines</sub>
+### [`docs/design/07-accessibility.md`](../../design/07-accessibility.md)  <sub>157 lines</sub>
 
-- Why this is grouped with i18n  <sub>:13</sub>
-- The target  <sub>:20</sub>
-- Keyboard  <sub>:24</sub>
-- Focus  <sub>:40</sub>
-- Screen readers  <sub>:51</sub>
-- Contrast  <sub>:66</sub>
-- Touch targets  <sub>:88</sub>
-- Reduced motion  <sub>:98</sub>
-- Semantic structure  <sub>:107</sub>
-- Right-to-left  <sub>:114</sub>
-- Internationalisation beyond direction  <sub>:131</sub>
-- What would make this real  <sub>:138</sub>
+- Why this is grouped with i18n  <sub>:15</sub>
+- The target  <sub>:22</sub>
+- Keyboard  <sub>:26</sub>
+- Focus  <sub>:42</sub>
+- Screen readers  <sub>:53</sub>
+- Contrast  <sub>:68</sub>
+- Touch targets  <sub>:90</sub>
+- Reduced motion  <sub>:100</sub>
+- Semantic structure  <sub>:109</sub>
+- Right-to-left  <sub>:116</sub>
+- Internationalisation beyond direction  <sub>:133</sub>
+- What would make this real  <sub>:140</sub>
 
 ### [`docs/design/08-governance.md`](../../design/08-governance.md)  <sub>145 lines</sub>
 
@@ -377,12 +377,12 @@ descriptions.
 - Change approval  <sub>:117</sub>
 - Keeping this system honest  <sub>:129</sub>
 
-### [`docs/design/09-quality.md`](../../design/09-quality.md)  <sub>172 lines</sub>
+### [`docs/design/09-quality.md`](../../design/09-quality.md)  <sub>174 lines</sub>
 
 - The two columns  <sub>:12</sub>
 - Regression  <sub>:124</sub>
 - The honest gap, ranked  <sub>:142</sub>
-- Definition of done, for a screen  <sub>:161</sub>
+- Definition of done, for a screen  <sub>:163</sub>
 
 ### [`docs/design/10-laws.md`](../../design/10-laws.md)  <sub>850 lines</sub>
 
@@ -432,13 +432,13 @@ descriptions.
 - What must be built  <sub>:178</sub>
 - Sources  <sub>:191</sub>
 
-### [`docs/design/15-integrity.md`](../../design/15-integrity.md)  <sub>210 lines</sub>
+### [`docs/design/15-integrity.md`](../../design/15-integrity.md)  <sub>246 lines</sub>
 
-- Why this chapter is different  <sub>:13</sub>
-- ITG · The laws  <sub>:31</sub>
-- The build order  <sub>:153</sub>
-- What a person still has to do  <sub>:183</sub>
-- Sources  <sub>:203</sub>
+- Why this chapter is different  <sub>:15</sub>
+- ITG · The laws  <sub>:33</sub>
+- The build order  <sub>:155</sub>
+- What a person still has to do  <sub>:219</sub>
+- Sources  <sub>:239</sub>
 
 
 ---

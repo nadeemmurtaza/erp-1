@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-51 files · 25,909 lines
+53 files · 26,725 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -19,13 +19,13 @@ on them.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 20 | 18,665 | file, example, json, yaml |
+| `.` | 20 | 18,667 | file, example, json, yaml |
 | `.github` | 1 | 80 | doc |
 | `.github/workflows` | 2 | 186 | yaml |
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 14 | 5,308 | script, py |
+| `scripts` | 16 | 6,122 | script, py |
 | `scripts/lib` | 2 | 1,269 | utility |
 
 
@@ -45,7 +45,9 @@ on them.
 | `scripts/lib/index-scan.mjs` | 906 | utility | Scanners for the repository index. |
 | `scripts/check-module-boundaries.mjs` | 535 | script |  |
 | `scripts/idx.mjs` | 486 | script |  |
+| `scripts/check-contrast.mjs` | 427 | script |  |
 | `scripts/check-email-dns.mjs` | 399 | script |  |
+| `scripts/check-links.mjs` | 387 | script |  |
 | `scripts/lib/model-routing.mjs` | 363 | utility | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/check-rebrand.mjs` | 292 | script |  |
 | `scripts/sync-client.mjs` | 243 | script | scripts/sync-client.mjs |
@@ -53,8 +55,6 @@ on them.
 | `deploy/backup.sh` | 141 | sh |  |
 | `scripts/check-env-templates.mjs` | 139 | script |  |
 | `scripts/check-frontend-secrets.mjs` | 137 | script |  |
-| `scripts/check-route-permissions.mjs` | 136 | script |  |
-| `scripts/check-rules.mjs` | 134 | script |  |
 
 
 ---

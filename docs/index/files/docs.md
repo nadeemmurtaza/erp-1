@@ -42,15 +42,15 @@ All 186 tracked files in `docs/*`, by directory.
 | `04-states.md` | doc | 141 |  |
 | `05-motion.md` | doc | 193 |  |
 | `06-content.md` | doc | 121 |  |
-| `07-accessibility.md` | doc | 155 |  |
+| `07-accessibility.md` | doc | 157 |  |
 | `08-governance.md` | doc | 145 |  |
-| `09-quality.md` | doc | 172 |  |
+| `09-quality.md` | doc | 174 |  |
 | `10-laws.md` | doc | 850 |  |
 | `11-workflow.md` | doc | 260 |  |
 | `12-permissions.md` | doc | 214 |  |
 | `13-composition.md` | doc | 197 |  |
 | `14-navigation.md` | doc | 198 |  |
-| `15-integrity.md` | doc | 210 |  |
+| `15-integrity.md` | doc | 246 |  |
 | `README.md` | doc | 109 |  |
 
 ### `docs/erp-lenses` (134)

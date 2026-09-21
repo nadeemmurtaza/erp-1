@@ -12,7 +12,7 @@ All 31 tracked files in `apps/pos`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `eslint.config.mjs` | script | 19 |  |
+| `eslint.config.mjs` | script | 29 |  |
 | `next.config.mjs` | script | 18 |  |
 | `package.json` | json | 35 |  |
 | `postcss.config.mjs` | script | 8 | @type {import('postcss-load-config').Config} |
@@ -78,7 +78,7 @@ All 31 tracked files in `apps/pos`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 287 |  |
+| `page.tsx` | page | 288 |  |
 
 ### `apps/pos/src/components` (2)
 

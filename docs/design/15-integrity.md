@@ -4,11 +4,13 @@ The mechanical failures — dead ends, broken links, missing images, overflow,
 unreachable screens. The ones that are not matters of judgement, and are
 therefore the ones a machine should be finding.
 
-> **Status: specified, not built.** Nothing in this repository checks any of
-> the failures below today. That is the honest position, and it is also the
-> point of this chapter: every other chapter ends in "binding on review",
-> which at 125 screens across four surfaces and seven shipping combinations
-> is a promise nobody can keep by reading. This chapter is the work order.
+> **Status: four of ten built.** `ITG-2`, `ITG-3`, `ITG-5` and `ITG-11` are
+> enforced by `pnpm lint` and by CI; `ACC-6` is enforced by eslint. The six
+> that need a running app are still specified only.
+>
+> The reason this chapter exists is unchanged: every other chapter ends in
+> "binding on review", which at 125 screens across four surfaces and seven
+> shipping combinations is a promise nobody can keep by reading.
 
 ## Why this chapter is different
 
@@ -155,25 +157,59 @@ to mean "this did not run".**
 Ranked by defects-caught per unit of effort, with what each needs. Nothing
 here exists yet.
 
-| # | Check | Needs | Catches |
+| # | Check | Built | Catches |
 |---|---|---|---|
-| 1 | **Contrast** (`ITG-11`) | arithmetic over token files | a whole class of `COL-3` failures, including the one already known |
-| 2 | **Route graph** (`ITG-2`, `ITG-5`) | static extraction, no browser | broken links, orphan screens |
-| 3 | **Image paths** (`ITG-3`) | filesystem check | broken images |
-| 4 | **Accessibility lint** (`ACC-6`) | `eslint-plugin-jsx-a11y` | 120 hand-written `aria-*` with zero enforcement today |
-| 5 | **Translatable strings** (`ITG-9`) | static analysis | untranslatable literals |
-| 6 | **Overflow at seven widths** (`ITG-4`) | headless browser, Playwright — already installed | the responsive failures Law 4 forbids |
-| 7 | **Pseudo-localisation** (`ITG-8`) | 6, plus padded strings | length-dependent layouts |
-| 8 | **Absent-module render** (`ITG-6`) | 6, plus a module matrix | the combination space nobody can click through |
-| 9 | **Minimum-privilege render** (`ITG-7`) | 6, plus capability contracts | hollow pages |
-| 10 | **Focus integrity** (`ITG-12`) | 6, plus a tab walk | obscured and lost focus |
+| 1 | **Contrast** (`ITG-11`) | ✅ `scripts/check-contrast.mjs` | a whole class of `COL-3` failures, including the one already known |
+| 2 | **Route graph** (`ITG-2`, `ITG-5`) | ✅ `scripts/check-links.mjs` | broken links, orphan screens |
+| 3 | **Image paths** (`ITG-3`) | ✅ `scripts/check-links.mjs` | broken images |
+| 4 | **Accessibility lint** (`ACC-6`) | ✅ `eslint-plugin-jsx-a11y` | hand-written `aria-*` with nothing checking it |
+| 5 | **Translatable strings** (`ITG-9`) | — static analysis | untranslatable literals |
+| 6 | **Overflow at seven widths** (`ITG-4`) | — headless browser (Playwright is installed) | the responsive failures Law 4 forbids |
+| 7 | **Pseudo-localisation** (`ITG-8`) | — 6, plus padded strings | length-dependent layouts |
+| 8 | **Absent-module render** (`ITG-6`) | — 6, plus a module matrix | the combination space nobody can click through |
+| 9 | **Minimum-privilege render** (`ITG-7`) | — 6, plus capability contracts | hollow pages |
+| 10 | **Focus integrity** (`ITG-12`) | — 6, plus a tab walk | obscured and lost focus |
 
-Checks 1–5 are static, fast, and belong in `pnpm lint` beside
+```bash
+pnpm check:contrast      # ITG-11 · also --self-test
+pnpm check:links         # ITG-2, ITG-3, ITG-5 · also --self-test
+pnpm lint                # runs both, plus the a11y rules
+```
+
+Checks 1–5 are static and fast, and belong in `pnpm lint` beside
 `check-module-boundaries.mjs`, `check-frontend-secrets.mjs` and
-`check-rebrand.mjs`. Checks 6–10 need a running app and belong in CI as their
-own job — slower, and worth it.
+`check-rebrand.mjs` — four of them now are. Checks 6–10 need a running app and
+belong in CI as their own job: slower, and worth it.
 
-**Sequencing note.** 1 through 5 are a normal work order. 6 through 10 are a
+### What the built four are honest about
+
+Each one states its own blind spot rather than implying coverage it does not
+have, because a checker trusted beyond its reach is worse than none:
+
+- **Contrast** proves a ratio between two known colours. It cannot know which
+  surface an element is actually on or how large its text renders — that needs
+  check 6. Where a token clears the floor on *some* painted surface but not on
+  the body surface, it reports rather than fails.
+- **Links** resolve statically. A path assembled from a value the checker
+  cannot evaluate is matched liberally, and a link rendered only under a
+  condition is invisible to it.
+- **Reachability** answers "does anything lead here", not "can *this person*
+  get here" — that is `PRM-3`, and it needs checks 6 and 9.
+
+### Declared debt, not silent passes
+
+Both checkers carry a baseline: the failures that existed the day they were
+written, each with a reason, and a count that may shrink but not grow. That is
+this repository's existing pattern — `KNOWN_MODULE_COUPLINGS` and the module
+checker's "1 known violation still to pay off" — and it is the difference
+between a check that ships and a check that gets switched off.
+
+The contrast baseline is worth reading: it records that the brand accent
+reaches 3.83:1 on white, so white-on-accent — the primary button across the
+whole product — is under the 4.5:1 body floor. That is a brand decision
+(Law 1), so the checker records it instead of changing it.
+
+**Sequencing note.** 5 is a normal work order. 6 through 10 are a
 capability in their own right — a render harness, a route inventory, a module
 matrix and a capability fixture set. Per `CLAUDE.md`, that is named and
 sequenced here rather than stubbed or silently skipped.

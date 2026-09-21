@@ -242,7 +242,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
               type="file"
               accept="image/*"
               onChange={(event) => setPhoto(event.target.files?.[0] ?? null)}
-              className="text-sm text-neutral-900/70"
+              className="block w-full max-w-full text-sm text-neutral-900/70"
             />
           </label>
 

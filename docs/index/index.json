@@ -1103,7 +1103,7 @@
     "web": {
       "files": 228,
       "lines": 33618,
-      "bytes": 1251198,
+      "bytes": 1251232,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -31754,7 +31754,7 @@
       "area": "web",
       "kind": "page",
       "lines": 521,
-      "bytes": 20218,
+      "bytes": 20228,
       "doc": "",
       "symbols": [
         {
@@ -32249,7 +32249,7 @@
       "area": "web",
       "kind": "page",
       "lines": 306,
-      "bytes": 10780,
+      "bytes": 10804,
       "doc": "",
       "symbols": [
         {

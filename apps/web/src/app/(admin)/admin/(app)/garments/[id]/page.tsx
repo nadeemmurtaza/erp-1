@@ -386,7 +386,7 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
                           className="field-input py-1 text-sm"
                         />
                       </Small>
-                      <div className="flex items-center gap-3 pb-1">
+                      <div className="flex flex-wrap items-center gap-3 pb-1">
                         <label className="flex items-center gap-1 text-xs text-neutral-900/70">
                           <input
                             type="checkbox"

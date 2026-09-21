@@ -121,6 +121,20 @@ the record of what actually ran - including what failed and was retried.
 | `harden:gap:38` | Backfill | completed | [38h-harden-gap.md](38h-harden-gap.md) |
 | `harden:gap:45` | Backfill | completed | [45h-harden-gap.md](45h-harden-gap.md) |
 | `integrate` | Integrate | completed | [_agent-integrate.md](_agent-integrate.md) |
+| `gen:gap:49` | Backfill | completed | [49g-generate-gap.md](49g-generate-gap.md) |
+| `gen:gap:50` | Backfill | completed | [50g-generate-gap.md](50g-generate-gap.md) |
+| `gen:gap:46` | Backfill | completed | [46g-generate-gap.md](46g-generate-gap.md) |
+| `gen:gap:47` | Backfill | completed | [47g-generate-gap.md](47g-generate-gap.md) |
+| `gen:gap:48` | Backfill | completed | [48g-generate-gap.md](48g-generate-gap.md) |
+| `gen:gap:52` | Backfill | completed | [52g-generate-gap.md](52g-generate-gap.md) |
+| `gen:gap:51` | Backfill | completed | [51g-generate-gap.md](51g-generate-gap.md) |
+| `harden:gap:48` | Backfill | completed | [48h-harden-gap.md](48h-harden-gap.md) |
+| `harden:gap:47` | Backfill | completed | [47h-harden-gap.md](47h-harden-gap.md) |
+| `harden:gap:46` | Backfill | completed | [46h-harden-gap.md](46h-harden-gap.md) |
+| `harden:gap:50` | Backfill | completed | [50h-harden-gap.md](50h-harden-gap.md) |
+| `harden:gap:51` | Backfill | completed | [51h-harden-gap.md](51h-harden-gap.md) |
+| `harden:gap:49` | Backfill | completed | [49h-harden-gap.md](49h-harden-gap.md) |
+| `harden:gap:52` | Backfill | completed | [52h-harden-gap.md](52h-harden-gap.md) |
 | `gen:costing-transfer-pricing` | Generate | superseded by a later revision of the same agent | - |
 | `gen:credit-receivables` | Generate | superseded by a later revision of the same agent | - |
 | `gen:procurement-supplier-lifecycle` | Generate | superseded by a later revision of the same agent | - |

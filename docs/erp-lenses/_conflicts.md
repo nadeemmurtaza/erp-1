@@ -1,6 +1,6 @@
 # Where two lenses pull against each other
 
-Fourteen places where running the whole lens set produces two demands that
+Sixteen places where running the whole lens set produces two demands that
 cannot both be satisfied as stated. None of these is a mistake in a lens. Each
 is a real trade-off this repository has already half-made, usually by accident,
 and each one an engineer will meet inside a single PR.
@@ -17,13 +17,20 @@ A note on what counts. Two lenses asking for expensive things is not a
 conflict — that is just work. A conflict is where satisfying one lens as
 written makes the other unsatisfiable, so the engineer has to know which
 yields. Where a lens and an existing repository invariant collide, that counts
-too, and four of the fourteen are of that kind.
+too, and five of the sixteen are of that kind.
 
-Sections 11–14 came out of the backfill files (`38`–`45`), and two of them are
-a shape the first ten did not contain: a new lens against a **prior ruling**
+Sections 11–14 came out of the first backfill pass (`38`–`45`), and two of them
+are a shape the first ten did not contain: a new lens against a **prior ruling**
 rather than against another lens. Those are not worked around. A ruling that
 turns out to be stated too widely is narrowed in writing, with a date, in
 `_canonical-decisions.md` — 11 narrows ruling 4 and 14 narrows ruling 6.
+
+Sections 15–16 came out of the second pass (`46`–`52`). 15 is the fifth
+lens-against-invariant: a lens requiring a rate to be re-derived after the
+fact, against House Rule 7's flat prohibition on re-deriving one. 16 is the
+general case ruling 14 already met in one specific form and answered in its
+closing paragraph — a control the live roster cannot staff — now asked of
+every such control rather than only of a deactivation.
 
 ---
 
@@ -552,3 +559,86 @@ administrator cannot be deactivated. Both ways out are wrong — skip the guard
 when `isActive` is going false, which reopens the hole on the one path nobody
 watches, or refuse the deactivation, which leaves a departed person holding the
 keys.
+
+---
+
+## 15. A rate snapshotted once against a consolidation that must re-rate the period
+
+**The pull.** *One rate model cannot serve both a flow account and a stock
+account* (48) requires the group's statements to apply a period-average rate
+across every income and expense line and a single period-end closing rate to
+every balance-sheet line. Both are rates applied **after** the fact, to lines
+that already carry a rate of their own. House Rule 7 says a snapshot is never
+re-derived, and R16 applies that to FX by name.
+
+**For the snapshot.** House Rule 7 — "order lines are snapshots" — is not a
+style preference; it is why last month's order does not silently change when
+this month's price does. R16 extends it to FX in one sentence: the rate "is
+snapshotted onto the document at transaction time and never re-derived." A
+document's own number must be explicable from that document forever, which is
+the same demand *The version stamp* makes of every other rule.
+
+**For the re-rating.** A consolidated statement is not a document, and it is
+not asking what a transaction was worth on its own day. Revenue earned evenly
+across a month is translated at the month's average rate; what the group owns
+at month end is translated at month-end spot. Those are two different rates,
+neither of which is "the rate this line posted at", and no accounting standard
+lets one stand in for both. Applying the last posted `fxRateScaled` to a whole
+trial balance is not a conservative reading of R16 — it is a wrong number.
+
+**Where it collides here.** `JournalLine.fxRateScaled` (`accounting.prisma:177-180`)
+is exactly one rate per line, and `convertToBase()` (`pricing.ts:260`) takes
+one rate and one amount. `ConsolidationService.rawTotals()`
+(`consolidation.service.ts:69-74`) is a `groupBy` over `accountId` summing
+`debitMinor`/`creditMinor` with no currency or brand split at all, so today
+there is no seam where a second rate could even be applied. No `FxRate` table
+exists to hold a period-average or closing rate, and `Organization` has no
+currency field to translate into.
+
+**What the engineer sees.** They read R16, conclude correctly that a rate is
+never re-derived, and build consolidation on the rates already sitting on the
+lines. The group P&L balances, every entry underneath it is individually
+correct and trigger-verified, and the revenue figure is wrong by the spread
+between the month's average rate and whatever rate happened to sit on the last
+posted line — a difference nothing in the system contradicts, because every
+input to it was, by its own rule, right.
+
+---
+
+## 16. A control that needs two people against a roster that has one
+
+**The pull.** *The toxic pair, caught at grant or at act* requires the second
+half of a control to be performed by a different person — its own worked
+instance is that `closeShift()` never compares `closedByUserId` to
+`openedByUserId`. *The quorum of one* (46) observes that a Solo deployment may
+contain exactly one person qualified to do either half. Both fire on the same
+shift close, and one of them has to yield.
+
+**For the two people.** Segregation of duties is not paperwork. The whole point
+of the cash-count control is that the person who held the drawer does not get
+to be the person who says what was in it, and ruling 9 already treats that
+evidence as a class of its own. A control with a documented way around it is a
+control an insider reads as an instruction.
+
+**For the one person.** The shop has two staff and no accountant. Ruling 4 says
+the column ships at Solo even when the control waits, but a control that
+*blocks* at Solo is not waiting — it is a shop that cannot close its till, and
+the next morning `openShift()` refuses because the terminal is not `ACTIVE`.
+*The branch that cannot trade tomorrow* names that failure as the one a
+retailer never accepts.
+
+**Where it collides here.** Neither half exists yet, which is why the collision
+is still cheap to settle. `PosShiftStatus` (`pos.prisma:52-55`) is exactly
+`OPEN` and `CLOSED` — ruling 6's abandoned state has no value to occupy —
+and `closeShift()` (`pos-shifts.service.ts:72`) compares no ids at all. On the
+counting side, `assertLockedPermissionsStillHeldSomewhere`
+(`roles.service.ts:261`) is the only code that reasons about how many people
+hold a key, and it asks only whether the count is zero, never whether it is
+two. So nothing today can even tell an implementer that the roster is short.
+
+**What the engineer sees.** They implement the control as written, a Solo
+client's late shift is closed by the only cashier on duty, and the throw fires.
+The fix that ships under deadline is a single-approver path with no field
+distinguishing it from a real two-person close — and four years later, at forty
+branches, an auditor pulling that terminal's history cannot tell which closes
+were genuinely witnessed and which were the exception nobody wrote down.

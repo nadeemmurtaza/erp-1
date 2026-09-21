@@ -21,7 +21,7 @@ Three rules about this file:
 
 ---
 
-# Part 1 — The fourteen rulings
+# Part 1 — The sixteen rulings
 
 ## Ruling 1. The ledger wins. Erasure pseudonymises the reference; it does not touch the row
 
@@ -186,6 +186,20 @@ does not have an upward flow — it has a request for a second replication
 direction. That is refused in an architectural decision record — the home
 CLAUDE.md names is `docs/implementation/DECISIONS.md` — never special-cased in
 the registry.
+
+**Asked of every table, not only of `Product`.** *The propose-up path that never
+opens* (18) is the `Product` instance of this ruling and stays in the catalogue
+as such. *The registration that either exists or gets carved around* (52) is the
+general form — every new cross-node-visible table names its `dataClass`,
+`direction` and the `register()` call site — and it stays beside 18 rather than
+absorbing it, because the two have different done tests: 18's is whether
+`Product` carries a `scopeLevel`/`originNodeId` before the registry is reached,
+52's is whether a `register()` call exists at all. 52 also carries the half this
+ruling's "never special-cased" clause cannot catch by itself: a table can be
+classified correctly, pass the registry, and still reach no listener, because
+only `Product` and `Order` have one today. A correctly-classified table with no
+listener is silent, not refused — it never leaves its node, and the brand-tier
+report reading zero rows says nothing about why.
 
 ## Ruling 9. Two audit classes, declared per call site
 
@@ -355,11 +369,106 @@ explicit input, named by a person, recorded evidence-class per ruling 9. Never a
 silent single-approver bypass, and never a path that simply blocks. Both the
 successor grant and the revoke are audited with the old and the new holder.
 
+> **Generalised, 2026-09-21.** That closing paragraph was written for one path
+> and turned out to state the rule for all of them. Ruling 16 lifts it to every
+> control requiring more than one distinct person, and adds the two artifacts
+> this ruling did not need: a way to *count* qualified holders before the
+> control fires, and a stored roster size so the shortfall stays legible after
+> the roster grows. Ruling 14 is unchanged and still governs the deactivation
+> path specifically.
+
+## Ruling 15. The document keeps its snapshot. Translation is a second rate, applied at the report, never written back
+
+**Default:** both, separated by which artifact is being produced.
+
+**On a document, the snapshot stands.** R16 and House Rule 7 are not narrowed.
+`JournalLine.fxRateScaled` is the rate that line posted at, it is written once,
+and no consolidation, revaluation or restatement ever updates it. A number on a
+document is explicable from that document forever.
+
+**On a consolidated statement, a second rate is resolved at read time.** A
+period-average rate for flow accounts and a period-end closing rate for stock
+accounts are looked up from an `FxRate` table keyed by
+`(currency, effectiveDate)` and applied by the reporting path. This is not
+re-deriving the snapshot: the snapshot answers "what was this transaction
+worth on its day", the translation answers "what is this brand's year worth in
+the group's currency", and those are two questions with two right answers.
+
+**One table, two query shapes.** *The rate has no source to resolve from* (47)
+and *One rate model cannot serve both a flow account and a stock account* (48)
+both end at an `FxRate` table, and they get **one**, not two. 47 asks it for a
+point lookup on a fact's own date, at write time, to compute
+`baseAmountMinor`; 48 asks it for an average over a range and a single as-of
+close, at read time. Same rows, same effective dates, two accessors. A PR that
+adds a second rate table for the second question is refused.
+
+**They are also staged, and in this order.** 47 is a prerequisite for 48: until
+a brand's own sales post with a real rate, there is no correctly-stated local
+book to translate, and translating a book whose lines silently defaulted to
+1:1 produces a confident wrong number rather than an obvious one. A plan that
+schedules group translation before the posting path resolves a rate has them
+backwards.
+
+**The other side applies when** the translation adjustment has to be *posted*
+rather than rendered. Then it is an entry like any other and ruling 3's single
+writer governs it: it goes through `postEntry()`, it balances, and its plug
+goes to a named equity account — the CTA account the seeded chart lacks, since
+`CHART_OF_ACCOUNTS` holds exactly one `EQUITY` row, `3000 Retained Earnings`.
+A translated balance sheet that does not net to zero is not a rounding note;
+`journal_line_balance_check` refuses the transaction outright.
+
+**When both bite:** the consolidation run records the rates it used and the
+dates it resolved them at, on the run itself. A group statement that cannot say
+which two rates produced it fails review, because a figure nobody can reproduce
+is not a statement, it is a screenshot.
+
+## Ruling 16. A control short of people degrades into a named, counted, recorded exception — never into silence and never into a wall
+
+**Default:** a control requiring N distinct qualified people never blocks and
+never quietly passes. It takes a third path, and all three of these ship
+together or none of them does:
+
+1. **A named fallback state**, distinct in the schema from both the ordinary
+   pass and the blocked state — ruling 6's `ABANDONED` shift is the worked
+   instance, and `PosShiftStatus` has no such value today.
+2. **A count before the fact.** The deciding path asks how many distinct people
+   currently hold the required key. Nothing in this codebase can answer that:
+   `assertLockedPermissionsStillHeldSomewhere` (`roles.service.ts:261`) and
+   `assertLockedKeysStillHeldAfterRevoke` (`:175`) test only for **zero**
+   holders of the two `ADMIN_LOCKED_PERMISSIONS` keys. The method that counts
+   distinct holders is part of the feature that first needs a quorum.
+3. **A stored shortfall, with its roster size.** The record carries how many
+   qualified holders were required and how many actually existed at that
+   moment — not a bare `wasFallback` boolean. Recorded evidence-class per
+   ruling 9, and gated by a permission key of its own, never the ordinary
+   operating key reused.
+
+**Segregation of duties yields the person, never the record.** Conflict 16 is
+decided for trading: the till closes. What does not yield is the evidence — the
+close is marked as performed by one person because one was all there was, and
+that mark is permanent.
+
+**The roster is counted at the act, not at the report.** A row written when
+three people qualified must still read as correct after the client grows to
+forty branches, and a row written when one person qualified must still read as
+an exception. Re-deriving headcount later from role assignments that have since
+changed cannot do this, which is why the number is stored, not computed.
+
+**The other side applies when** the control's whole purpose is that it can
+block — a legal hold under ruling 1, or a locked period. Those are not
+quorum shortfalls and this ruling does not reach them.
+
+**When both bite:** ruling 4 governs the schema half. The fallback state and
+the roster columns ship in the first migration at every edition, including
+Solo, and the Solo screen never renders them. A client that grows into the
+control finds the history already legible; a client that never does has paid
+three nullable columns for it.
+
 ---
 
 # Part 2 — Canonical names, and what each absorbed
 
-169 lenses became 24 headline lenses plus a catalogue. The ranking rule was
+189 lenses became 24 headline lenses plus a catalogue. The ranking rule was
 **leverage**: the damage a lens's absence causes, times how often it fires. A
 lens that fires on every feature beats one that fires on three, even when the
 three are expensive. Where one domain would have taken over a group, the
@@ -414,7 +523,17 @@ redaction* (10) — the column half, where the `cost-fields.ts` strippers are
 opt-in and no call site is forced to use them; and *Branch means database, not
 location* (06) — the fact that makes today's answer negative:
 `AdminScope.branchNodeId` is a foreign key into `Node`, which names a child
-deployment, not one of 100+ `Location` rows. See ruling 7.
+deployment, not one of 100+ `Location` rows. Also absorbs *The close nobody
+can see happening* (49), which adds the case where there is no column to
+filter yet: `FiscalPeriod` carries no `branchNodeId`/`retailBrandId` and the
+accounting module applies no `AdminScope` narrowing anywhere
+(`gl-reports.service.ts:22` says so of its own reports), so the scope column
+has to arrive with the close-task table that first needs it rather than be
+retrofitted once 100+ branches are writing rows — ruling 4. The read/write
+permission split that lens originally asked for already exists
+(`accounting.view` vs `accounting.manage_periods`,
+`fiscal-periods.controller.ts:18,38`); the data to read does not.
+See ruling 7.
 
 **The threshold nobody approves alone** (04) — canonical, unchanged.
 Absorbs *Rank is a ceiling, not a location* (02) — `AdminScopeLevel` answers
@@ -428,7 +547,11 @@ artifact — outranking is a comparison, so it needs a number on an axis every
 role shares, not a name-to-name lookup in the shape of
 `NodesService.childRole`'s hardcoded `NodeRole` switch (`nodes.service.ts:34`).
 Where that number is allowed to live is ruling 12; which grant supplies it when
-the actor holds several is ruling 13.
+the actor holds several is ruling 13; and what the canonical's "quorum on the
+top band" clause does when the live roster cannot supply that many distinct
+people is ruling 16 — which is not an absorption, because *The quorum of one*
+(46) stays in the catalogue: it fires on any control needing two people, most
+of which commit no amount and so have no band.
 
 **The toxic pair, caught at grant or at act** — renamed, and merged from 03's
 first two lenses, *The conflict matrix has no home* and *Detected at grant or
@@ -484,7 +607,20 @@ in the thirteen-row chart; *The ledger has no door for opening balances* (27) �
 `postEntry()`'s only callers are the seven event handlers and year-end close, so
 a non-event fact has no entry point at all; and *The register the ledger never
 sees* (37) — capex and depreciation as a second instance of missing account plus
-missing rule. See ruling 3 for where the rule's decision lives.
+missing rule. Two more from the second backfill pass, both missing accounts and
+both sharper than the three above because the absence is already contradicted
+in writing: *Inventory debited against stock that is already gone* (50) — GRNI
+is not an unbuilt nicety, `RETAIL-ERP.md` R15's event table already specifies
+Dr GRNI / Cr AP fed by a `GoodsReceived` handler, and the live rule posts Dr
+Inventory / Cr AP with no `GoodsReceived` handler among the seven in
+`posting-rules.subscriber.ts`, so the code disagrees with the document of
+record; and *The plug the balance trigger will not let through unnamed* (48) —
+a cumulative translation adjustment has no equity account to land in
+(`CHART_OF_ACCOUNTS` seeds exactly one, `3000 Retained Earnings`), and because
+`journal_line_balance_check` is a deferred constraint trigger, the missing
+account is not a reporting gap but an entry the database refuses at commit.
+See ruling 3 for where the rule's decision lives, and ruling 15 for the
+translation case specifically.
 
 **Every column or none** (07) — canonical, unchanged, and the five dimension
 columns are named in the rule rather than counted.
@@ -586,7 +722,13 @@ its own stored fields a year later" has a specific answer here and it is not the
 actor: it is which grant supplied the ceiling, because grants expire and roles
 are re-granted, so a record naming only the actor becomes unexplainable the day
 a two-week acting cover ends. Ruling 13 states how the grant is selected and
-requires the record to name it.
+requires the record to name it. Also absorbs *The record that must outlive its
+own excuse* (46), which adds a second stored field of the same kind and for the
+same reason: where a control passed on a short roster, the record carries how
+many qualified holders were required and how many existed, because the policy
+version explains what the rule *was* and cannot explain why this record was
+allowed to depart from it. Both are stamped at the act; neither is re-derived
+later from role assignments that have since changed. Ruling 16.
 
 **The erasure the ledger cannot obey** — renamed from 25's *The row the ledger
 will not let you touch*, because the lens covers every table, not one row.
@@ -601,14 +743,24 @@ unchanged.
 Absorbs *The operator's second door* (26), which names the concrete artifact:
 an `ADMIN_NAV` entry gated by a real `PERMISSION_CATALOG` key, because
 `nav-registry.ts` has no operations group and `OutboxEvent`, the replication
-tables and `AuditLog` have zero admin routes.
+tables and `AuditLog` have zero admin routes. Also absorbs *The quarantine
+nobody opens* (52), which is the same lens with the durable store already
+built and every other half missing: `ReplicationQuarantineService` implements
+`quarantine()`, `listOpen()` and `resolve()`, no controller in `apps/api/src`
+calls any of the three, and no `@RequirePermission` key exists for the path —
+so `listOpen()` is a screen's query with no screen and `resolve()` is the
+replay action as dead code. It sharpens the canonical's "what makes a replay
+safe" clause too: `OrderReplicationListener.apply()` throws unconditionally
+for every incoming `Order` today, so a chain deployment is already writing
+rows nothing can read.
 
 ## Catalogue merges
 
-Eleven catalogue lenses absorbed a narrower twin rather than standing beside it,
-and two of them absorbed two. The last four are from the backfill files, where
-two lenses in one file, or two files in one pass, had reached the same artifact
-from different directions:
+Twelve catalogue lenses absorbed a narrower twin rather than standing beside it,
+and two of them absorbed two. The last five are from the backfill files. Four of
+those are within the backfill itself — two lenses in one file, or two files in
+one pass, reaching the same artifact from different directions — and the fifth
+is a backfill lens absorbed by a catalogue lens that already existed:
 
 | Canonical | Absorbed | What the absorbed one contributes |
 |---|---|---|
@@ -623,11 +775,12 @@ from different directions:
 | The agreement is not the row it governs (41) | The lease nobody renews (39) | A lease is one `kind` of agreement, and it contributes the two fields the general shape missed: the rent, and a `LANDLORD` value in `PartyRoleName`, which today is exactly `SUPPLIER`, `MANUFACTURER`, `DISTRIBUTOR`, `RETAILER` (`parties.prisma:8-13`). Its lapse half goes to *The renewal nobody is watching* |
 | The manager column that doesn't exist (43) | The chain HR actually needs (43) | The same person-to-person edge, demanded by a second set of consumers — leave, reviews, headcount — and adding the negative half: it may not be `AdminScope`, which answers what a person may administer, not who they report to |
 | The union that outruns its parts (44) | Scope must gate the ceiling, not just widen it (44) | One rule with two clauses, not two rules: the grant must be scope-matched before its number is read, reusing `assertCanManageAtScope()`'s existing intersection (`scope.guard.ts:84`). Ruling 13 |
+| One clock, a hundred branches (30) | Store time is not the approver's time (51) | The same missing per-`Location` timezone, demanded from the other end: a reminder or escalation clock runs against the *approver's* day, not the shop's, so the timezone has to be reachable from a person — `User` has no timezone column and `SettingKey.StoreTimezone` is one deployment-wide `Setting` row with no user, branch or location column. Its own lens offers `User.timezone` **or** resolution through the `Location`/`AdminScope` the document sits under, and the second is this canonical already |
 | Rank's own table, or a fused column (45) | The number nobody can group by (45) | The reportability argument for the same choice — grade headcount needs a `RankId` foreign key, since every report here groups on a real key (`GlReportsService`, `gl-reports.service.ts:38,95,192`) and none parses a name. Ruling 12 |
 
 ---
 
-# Part 3 — The four cuts, and why
+# Part 3 — The five cuts, and why
 
 A cut lens is not a question anyone was wrong to ask. It is a question whose
 answer never changes, or whose answer is work rather than scope. Carrying it in
@@ -652,6 +805,19 @@ always "add seed rows" and it never changes the shape of the feature being
 scoped. The part that genuinely bites — a trainee's practice sale posting a real
 journal entry at an unlaunched branch — is already owned by *The branch that
 cannot trade tomorrow*, which demands a `Location` state every reader honours.
+
+**The department nobody notifies** (39). Asked facilities to name the
+permission key, the nav group and the seeded grant that put the function in
+front of somebody. Every word of that is true, and every word of it is already
+CLAUDE.md's own "Reachable" item in the Definition of done — the UI, the nav
+entry, and the permission seeded through to a real grant rather than a bare
+`Permission` row, which is this repository's own tracked
+`seedPermissions()`-vs-`seedRoles()` gap. A question whose answer is identical
+for facilities, payroll, legal and every other feature is a checklist item the
+reader already walks, not a lens that scopes this one. The genuinely
+facilities-specific fact underneath it survives in file `39`'s "Not modelled
+yet" and in `_index.md`'s: no `Department` model exists, so "route this to
+facilities" cannot be written as a scope predicate at all.
 
 **The risk register with no register** (35). Asks where a risk entry lives, with
 owner, likelihood, impact and next review date. Every honest answer on every

@@ -13,7 +13,7 @@ Source: `apps/api/src/core/storage/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (7 · 480 lines)
+## Files (7 · 571 lines)
 
 All paths relative to `apps/api/src/core/storage`.
 
@@ -24,8 +24,8 @@ All paths relative to `apps/api/src/core/storage`.
 | `s3-storage.driver.ts` | driver | 77 | 1 | S3-compatible object storage: MinIO locally, Cloudflare R2 or AWS S3 in production. |
 | `storage.driver.ts` | driver | 31 | 3 | Extension point: file storage. |
 | `storage.module.ts` | nest module | 14 | 1 |  |
-| `storage.service.spec.ts` | unit test | 121 | — |  |
-| `storage.service.ts` | service | 107 | 1 | Front door for file storage. |
+| `storage.service.spec.ts` | unit test | 186 | — |  |
+| `storage.service.ts` | service | 133 | 1 | Front door for file storage. |
 
 
 ## HTTP routes (1)
@@ -74,7 +74,7 @@ check there before adding another.
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `storage.service.spec.ts` | 7 | StorageService.putImage |
+| `storage.service.spec.ts` | 11 | StorageService.putImage · StorageService.putDocument |
 
 
 ## Every export in this unit
@@ -89,7 +89,7 @@ check there before adding another.
 | `PutFileInput` | interface | `storage.driver.ts:17` |  |
 | `StorageDriver` | interface | `storage.driver.ts:25` |  |
 | `StorageModule` | class | `storage.module.ts:13` |  |
-| `StorageService` | class | `storage.service.ts:26` | Front door for file storage. |
+| `StorageService` | class | `storage.service.ts:28` | Front door for file storage. |
 
 
 ---

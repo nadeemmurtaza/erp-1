@@ -3,13 +3,13 @@
 
 # Module: `finance`
 
-Pack **core** · enabled by the `MODULES` allowlist · 6 files
+Pack **core** · enabled by the `MODULES` allowlist · 8 files
 
 
 
 Source: `apps/api/src/modules/finance/`
 
-## Files (6 · 667 lines)
+## Files (8 · 1,042 lines)
 
 All paths relative to `apps/api/src/modules/finance/dto`.
 
@@ -17,25 +17,28 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 |---|---|---|---|---|
 | `expense-category.dto.ts` | dto | 35 | 2 |  |
 | `expense.dto.ts` | dto | 100 | 4 |  |
-| `finance.controller.ts` | controller | 78 | 1 |  |
-| `finance.module.ts` | nest module | 10 | 1 |  |
-| `finance.service.ts` | service | 260 | 2 |  |
-| `finance.spec.ts` | unit test | 184 | — |  |
+| `finance.controller.ts` | controller | 98 | 1 |  |
+| `finance.cron.spec.ts` | unit test | 69 | — |  |
+| `finance.cron.ts` | scheduled job | 36 | 1 | WO-B.2's recurring-expense job. |
+| `finance.module.ts` | nest module | 11 | 1 |  |
+| `finance.service.ts` | service | 394 | 2 |  |
+| `finance.spec.ts` | unit test | 299 | — |  |
 
 
-## HTTP routes (9)
+## HTTP routes (10)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/finance/expense-categories` | `finance.view` | `FinanceController.listCategories` :16 | List expense categories with their expense count |
-| POST | `/admin/finance/expense-categories` | `finance.manage` | `FinanceController.createCategory` :23 | Create an expense category |
-| DELETE | `/admin/finance/expense-categories/:id` | `finance.manage` | `FinanceController.deleteCategory` :37 | Delete an unused expense category |
-| PATCH | `/admin/finance/expense-categories/:id` | `finance.manage` | `FinanceController.updateCategory` :30 | Rename, redirect or (de)activate an expense category |
-| GET | `/admin/finance/expenses` | `finance.view` | `FinanceController.listExpenses` :45 | List expenses, paginated and filtered |
-| POST | `/admin/finance/expenses` | `finance.manage` | `FinanceController.createExpense` :59 | Record an expense |
-| DELETE | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.deleteExpense` :73 | Delete an expense |
-| PATCH | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.updateExpense` :66 | Edit an expense |
-| GET | `/admin/finance/expenses/summary` | `finance.view` | `FinanceController.summary` :52 | Totals, per-category breakdown and a daily series |
+| GET | `/admin/finance/expense-categories` | `finance.view` | `FinanceController.listCategories` :25 | List expense categories with their expense count |
+| POST | `/admin/finance/expense-categories` | `finance.manage` | `FinanceController.createCategory` :32 | Create an expense category |
+| DELETE | `/admin/finance/expense-categories/:id` | `finance.manage` | `FinanceController.deleteCategory` :46 | Delete an unused expense category |
+| PATCH | `/admin/finance/expense-categories/:id` | `finance.manage` | `FinanceController.updateCategory` :39 | Rename, redirect or (de)activate an expense category |
+| GET | `/admin/finance/expenses` | `finance.view` | `FinanceController.listExpenses` :54 | List expenses, paginated and filtered |
+| POST | `/admin/finance/expenses` | `finance.manage` | `FinanceController.createExpense` :68 | Record an expense |
+| DELETE | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.deleteExpense` :82 | Delete an expense |
+| PATCH | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.updateExpense` :75 | Edit an expense |
+| POST | `/admin/finance/expenses/:id/receipt` | `finance.manage` | `FinanceController.uploadReceipt` :93 | Attach a receipt image or PDF to an expense |
+| GET | `/admin/finance/expenses/summary` | `finance.view` | `FinanceController.summary` :61 | Totals, per-category breakdown and a daily series |
 
 
 ## Domain events
@@ -44,7 +47,7 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `ExpenseRecorded` | `finance.expense_recorded` | `finance.service.ts:160` |
+| `ExpenseRecorded` | `finance.expense_recorded` | `finance.service.ts:203`, `finance.service.ts:366` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -65,6 +68,12 @@ Enums: `ExpenseRecurrence` (5)
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 
+## Scheduled work
+
+| Schedule | Handler | Where | What it does |
+|---|---|---|---|
+| `0 3 * * *` | `generateRecurringInstances()` | `finance.cron.ts:13` |  |
+| `0 * * * *` | `generateRecurringExpenses()` | `finance.cron.ts:27` |  |
 
 
 ## Nest wiring
@@ -72,7 +81,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`FinanceModule`** (`finance.module.ts`)
 - imports: —
 - controllers: `FinanceController`
-- providers: `FinanceService`
+- providers: `FinanceService`, `FinanceCron`
 - exports: —
 
 
@@ -82,17 +91,20 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `common`
 - core `events`
 - core `prisma`
+- core `settings`
+- core `storage`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
 either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (2)
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `finance.spec.ts` | 8 | FinanceService |
+| `finance.cron.spec.ts` | 3 | FinanceCron |
+| `finance.spec.ts` | 13 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 |
 
 
 ## Every export in this unit
@@ -105,10 +117,11 @@ check there before adding another.
 | `UpdateExpenseDto` | class | `expense.dto.ts:59` |  |
 | `ExpenseQueryDto` | class | `expense.dto.ts:61` |  |
 | `ExpenseSummaryQueryDto` | class | `expense.dto.ts:89` |  |
-| `FinanceController` | class | `finance.controller.ts:10` |  |
-| `FinanceModule` | class | `finance.module.ts:9` |  |
-| `ExpenseSummary` | interface | `finance.service.ts:13` |  |
-| `FinanceService` | class | `finance.service.ts:39` | Finance: operational expenses (RETAIL-ERP.md Tranche 6, WO-23.1 — building `10-admin-dashboard.md` WO-B.1 as… |
+| `FinanceController` | class | `finance.controller.ts:19` |  |
+| `FinanceCron` | class | `finance.cron.ts:19` | WO-B.2's recurring-expense job. |
+| `FinanceModule` | class | `finance.module.ts:10` |  |
+| `ExpenseSummary` | interface | `finance.service.ts:53` |  |
+| `FinanceService` | class | `finance.service.ts:79` | Finance: operational expenses (RETAIL-ERP.md Tranche 6, WO-23.1 — building `10-admin-dashboard.md` WO-B.1 as… |
 
 
 ---

@@ -3,7 +3,7 @@
 
 # Tests
 
-**104** spec files, **1,015** cases. What is already pinned down — and what is not.
+**105** spec files, **1,027** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -50,7 +50,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (89)
+## Unit and integration (90)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -74,7 +74,7 @@ regression or an N+1.
 | `apps/api/src/core/security/secret-crypto.spec.ts` | core/security | 5 | secret-crypto |
 | `apps/api/src/core/security/unsubscribe-token.spec.ts` | core/security | 6 | unsubscribeToken / isValidUnsubscribeToken |
 | `apps/api/src/core/settings/document-number.spec.ts` | core/settings | 5 | documentNumber |
-| `apps/api/src/core/storage/storage.service.spec.ts` | core/storage | 7 | StorageService.putImage |
+| `apps/api/src/core/storage/storage.service.spec.ts` | core/storage | 11 | StorageService.putImage · StorageService.putDocument |
 | `apps/api/src/core/time/shop-time.spec.ts` | core/time | 16 | shopDayKey · startOfShopDay · startOfShopDaysAgo · shopDayKeys · shopDayExpr · assertIanaTimeZone |
 | `apps/api/src/modules/accounting/accounting.service.spec.ts` | accounting | 5 | AccountingService — WO-19.1 · postEntry |
 | `apps/api/src/modules/accounting/aging.spec.ts` | accounting | 7 | ageMovements |
@@ -86,7 +86,8 @@ regression or an N+1.
 | `apps/api/src/modules/catalog/product-admin.service.spec.ts` | catalog | 13 | assertKindRules · assertUniqueSkus |
 | `apps/api/src/modules/catalog/product-replication.listener.spec.ts` | catalog | 7 | ProductReplicationListener — WO-20.3 · onModuleInit · onProductPublished · onProductPriceChanged ·… |
 | `apps/api/src/modules/crm/email-inbox/email-inbox.service.spec.ts` | crm | 7 | EmailInboxService · reply |
-| `apps/api/src/modules/finance/finance.spec.ts` | finance | 8 | FinanceService |
+| `apps/api/src/modules/finance/finance.cron.spec.ts` | finance | 3 | FinanceCron |
+| `apps/api/src/modules/finance/finance.spec.ts` | finance | 13 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 |
 | `apps/api/src/modules/identity-verification/providers/nid-callback-verification.spec.ts` | identity-verification | 6 | nID webhook signature verification |
 | `apps/api/src/modules/inventory/inventory.cron.spec.ts` | inventory | 2 | InventoryCron |
 | `apps/api/src/modules/inventory/inventory.listener.spec.ts` | inventory | 1 | InventoryListener |

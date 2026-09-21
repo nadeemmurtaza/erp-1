@@ -2,24 +2,41 @@ import { Test } from '@nestjs/testing';
 import { ConflictException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { EventBusService } from '../../core/events/event-bus.service';
+import { StorageService } from '../../core/storage/storage.service';
 import { DomainEvent } from '../../core/events/domain-events';
 import { FinanceService } from './finance.service';
 
 /**
- * WO-23.1 (10-admin-dashboard.md WO-B.1). Real PrismaService against the
+ * WO-23.1 (10-admin-dashboard.md WO-B.1) and WO-23.1's WO-B.2 follow-up
+ * (recurring expenses, receipt upload). Real PrismaService against the
  * seeded test database — same idiom as stock-count.service.spec.ts — with
- * only EventBusService mocked, since GL posting is
- * posting-rules.subscriber.spec.ts's own concern, not this service's.
+ * EventBusService and StorageService mocked: GL posting is
+ * posting-rules.subscriber.spec.ts's own concern, and file storage is
+ * storage.service.spec.ts's own concern, not this service's.
  */
 describe('FinanceService', () => {
   let service: FinanceService;
   let prisma: PrismaService;
   let events: { publish: jest.Mock };
+  let storage: { putDocument: jest.Mock };
 
   beforeAll(async () => {
     events = { publish: jest.fn() };
+    storage = {
+      putDocument: jest.fn().mockResolvedValue({
+        key: 'receipts/receipt.pdf',
+        url: 'http://stored/receipt.pdf',
+        size: 10,
+        contentType: 'application/pdf',
+      }),
+    };
     const module = await Test.createTestingModule({
-      providers: [FinanceService, PrismaService, { provide: EventBusService, useValue: events }],
+      providers: [
+        FinanceService,
+        PrismaService,
+        { provide: EventBusService, useValue: events },
+        { provide: StorageService, useValue: storage },
+      ],
     }).compile();
 
     service = module.get(FinanceService);
@@ -179,5 +196,103 @@ describe('FinanceService', () => {
 
     expect(unpaid.data.every((expense) => expense.paidAt === null)).toBe(true);
     expect(unpaid.data.some((expense) => expense.description === 'finance.spec unpaid filter')).toBe(true);
+  });
+
+  describe('generateRecurringInstances — WO-B.2', () => {
+    it('creates exactly one instance per elapsed period since incurredAt, unpaid and non-recurring', async () => {
+      const rent = await seededCategory('rent');
+      const template = await prisma.expense.create({
+        data: {
+          categoryId: rent.id,
+          amount: 5000,
+          description: 'finance.spec recurring monthly template',
+          incurredAt: new Date('2026-06-15T00:00:00.000Z'),
+          recurrence: 'MONTHLY',
+        },
+      });
+
+      const result = await service.generateRecurringInstances(new Date('2026-09-21T00:00:00.000Z'));
+      expect(result.created).toBe(3);
+
+      const generated = await prisma.expense.findMany({ where: { recurringFromId: template.id } });
+      expect(generated.length).toBe(3);
+      expect(generated.every((e) => e.recurrence === 'NONE')).toBe(true);
+      expect(generated.every((e) => e.paidAt === null)).toBe(true);
+      expect(generated.every((e) => e.amount === 5000)).toBe(true);
+    });
+
+    it('running twice creates the instances once — the second run only skips', async () => {
+      const rent = await seededCategory('rent');
+      await prisma.expense.create({
+        data: {
+          categoryId: rent.id,
+          amount: 1500,
+          description: 'finance.spec recurring idempotent template',
+          incurredAt: new Date('2026-07-01T00:00:00.000Z'),
+          recurrence: 'MONTHLY',
+        },
+      });
+      const now = new Date('2026-09-21T00:00:00.000Z');
+
+      const first = await service.generateRecurringInstances(now);
+      expect(first.created).toBe(2);
+
+      const second = await service.generateRecurringInstances(now);
+      expect(second.created).toBe(0);
+      expect(second.skipped).toBe(2);
+    });
+
+    it('deleting a template leaves its generated instances (recurringFromId set null, history not rewritten)', async () => {
+      const rent = await seededCategory('rent');
+      const template = await prisma.expense.create({
+        data: {
+          categoryId: rent.id,
+          amount: 1000,
+          description: 'finance.spec recurring delete template',
+          incurredAt: new Date('2026-07-01T00:00:00.000Z'),
+          recurrence: 'MONTHLY',
+        },
+      });
+      await service.generateRecurringInstances(new Date('2026-09-21T00:00:00.000Z'));
+      const before = await prisma.expense.findMany({ where: { recurringFromId: template.id } });
+      expect(before.length).toBeGreaterThan(0);
+
+      await prisma.expense.delete({ where: { id: template.id } });
+
+      const after = await prisma.expense.findMany({ where: { id: { in: before.map((e) => e.id) } } });
+      expect(after).toHaveLength(before.length);
+      expect(after.every((e) => e.recurringFromId === null)).toBe(true);
+    });
+  });
+
+  describe('attachReceipt — WO-B.2', () => {
+    it('stores the file via StorageService.putDocument and sets receiptUrl', async () => {
+      const rent = await seededCategory('rent');
+      const expense = await service.createExpense(
+        { categoryId: rent.id, amount: 100, description: 'finance.spec receipt attach', incurredAt: '2026-08-01T00:00:00.000Z' },
+        null,
+      );
+
+      const updated = await service.attachReceipt(expense.id, {
+        buffer: Buffer.from('fake pdf bytes'),
+        originalname: 'receipt.pdf',
+        mimetype: 'application/pdf',
+      });
+
+      expect(storage.putDocument).toHaveBeenCalledWith(
+        expect.objectContaining({ folder: 'receipts', filename: 'receipt.pdf', contentType: 'application/pdf' }),
+      );
+      expect(updated.receiptUrl).toBe('http://stored/receipt.pdf');
+    });
+
+    it('refuses to attach a receipt to an expense that no longer exists', async () => {
+      await expect(
+        service.attachReceipt('does-not-exist', {
+          buffer: Buffer.from('x'),
+          originalname: 'r.pdf',
+          mimetype: 'application/pdf',
+        }),
+      ).rejects.toThrow();
+    });
   });
 });

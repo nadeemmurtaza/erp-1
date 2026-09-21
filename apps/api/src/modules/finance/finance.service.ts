@@ -1,14 +1,54 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { paginated, type PaginatedResult } from '../../core/common/dto/pagination.dto';
 import { DomainEvent } from '../../core/events/domain-events';
 import { EventBusService } from '../../core/events/event-bus.service';
-import { Prisma, type Expense, type ExpenseCategory } from '../../core/prisma/client';
+import { StorageService } from '../../core/storage/storage.service';
+import { Prisma, type Expense, type ExpenseCategory, type ExpenseRecurrence } from '../../core/prisma/client';
 import type {
   CreateExpenseCategoryDto,
   UpdateExpenseCategoryDto,
 } from './dto/expense-category.dto';
 import type { CreateExpenseDto, ExpenseQueryDto, ExpenseSummaryQueryDto, UpdateExpenseDto } from './dto/expense.dto';
+
+/**
+ * Period math for recurring expenses (WO-B.2). Not a calendar library — just
+ * enough to turn "MONTHLY since 2026-06-15" into a list of due period keys,
+ * each one unique and monotonically increasing so
+ * `@@unique([recurringFromId, recurringPeriod])` can do its job.
+ */
+function addPeriod(date: Date, recurrence: ExpenseRecurrence, count: number): Date {
+  if (recurrence === 'WEEKLY') {
+    return new Date(date.getTime() + count * 7 * 24 * 60 * 60 * 1000);
+  }
+  const months = recurrence === 'MONTHLY' ? count : recurrence === 'QUARTERLY' ? count * 3 : count * 12;
+  const day = date.getUTCDate();
+  const shifted = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + months, 1));
+  const lastDayOfMonth = new Date(Date.UTC(shifted.getUTCFullYear(), shifted.getUTCMonth() + 1, 0)).getUTCDate();
+  shifted.setUTCDate(Math.min(day, lastDayOfMonth));
+  return shifted;
+}
+
+/**
+ * A stable, collision-free key per period — not a calendar-standard ISO week
+ * number, which this doesn't need to be; it only has to never repeat and
+ * never skip, since it exists purely to make the unique constraint work.
+ */
+function periodKey(date: Date, recurrence: ExpenseRecurrence): string {
+  const year = date.getUTCFullYear();
+  switch (recurrence) {
+    case 'WEEKLY':
+      return `${year}-W${Math.floor(date.getTime() / (7 * 24 * 60 * 60 * 1000))}`;
+    case 'MONTHLY':
+      return `${year}-${String(date.getUTCMonth() + 1).padStart(2, '0')}`;
+    case 'QUARTERLY':
+      return `${year}-Q${Math.floor(date.getUTCMonth() / 3) + 1}`;
+    case 'YEARLY':
+      return `${year}`;
+    default:
+      throw new Error(`periodKey() called with recurrence "${recurrence}" — NONE is never a template.`);
+  }
+}
 
 export interface ExpenseSummary {
   totals: {
@@ -37,9 +77,12 @@ export interface ExpenseSummary {
  */
 @Injectable()
 export class FinanceService {
+  private readonly logger = new Logger(FinanceService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly events: EventBusService,
+    private readonly storage: StorageService,
   ) {}
 
   async listCategories(): Promise<Array<ExpenseCategory & { expenseCount: number }>> {
@@ -204,6 +247,21 @@ export class FinanceService {
     await this.prisma.expense.delete({ where: { id } });
   }
 
+  /** A photo of a receipt or a PDF a supplier emailed — WO-B.2. */
+  async attachReceipt(
+    id: string,
+    file: { buffer: Buffer; originalname: string; mimetype: string },
+  ): Promise<Expense> {
+    await this.getExpense(id);
+    const stored = await this.storage.putDocument({
+      folder: 'receipts',
+      filename: file.originalname,
+      contentType: file.mimetype,
+      body: file.buffer,
+    });
+    return this.prisma.expense.update({ where: { id }, data: { receiptUrl: stored.url } });
+  }
+
   private async getExpense(id: string): Promise<Expense> {
     const expense = await this.prisma.expense.findUnique({ where: { id } });
     if (!expense) throw new NotFoundException('That expense no longer exists.');
@@ -255,5 +313,81 @@ export class FinanceService {
       byCategory: [...byCategory.values()].sort((a, b) => b.amount - a.amount),
       series: [...byDay.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([date, amount]) => ({ date, amount })),
     };
+  }
+
+  /**
+   * WO-B.2's daily job: for every recurring TEMPLATE (recurrence != NONE,
+   * recurringFromId null — a generated instance is created with recurrence
+   * forced to NONE below precisely so it never becomes a template itself),
+   * create one instance per period due since its incurredAt that doesn't
+   * already exist. `@@unique([recurringFromId, recurringPeriod])` is the
+   * real guarantee: a re-run, a retry, or a race between two ticks all land
+   * on the same P2002 for a period already generated, caught here and
+   * counted as skipped rather than crashing the job — a missing catch would
+   * turn "this ran twice" into "this shop's rent is now double-booked."
+   * Each instance is unpaid (paidAt null — cash flow is the only consumer)
+   * and posts to the GL exactly like a hand-entered expense, via the same
+   * ExpenseRecorded event `createExpense` publishes.
+   */
+  async generateRecurringInstances(now: Date = new Date()): Promise<{ created: number; skipped: number }> {
+    const templates = await this.prisma.expense.findMany({
+      where: { recurrence: { not: 'NONE' }, recurringFromId: null },
+      include: { category: true },
+    });
+
+    let created = 0;
+    let skipped = 0;
+
+    for (const template of templates) {
+      for (let i = 1; ; i += 1) {
+        const periodStart = addPeriod(template.incurredAt, template.recurrence, i);
+        if (periodStart > now) break;
+        const period = periodKey(periodStart, template.recurrence);
+
+        try {
+          await this.prisma.$transaction(async (tx) => {
+            const instance = await tx.expense.create({
+              data: {
+                categoryId: template.categoryId,
+                amount: template.amount,
+                currency: template.currency,
+                description: template.description,
+                incurredAt: periodStart,
+                payee: template.payee,
+                supplierId: template.supplierId,
+                reference: template.reference,
+                recurrence: 'NONE',
+                recurringFromId: template.id,
+                recurringPeriod: period,
+              },
+            });
+
+            await this.events.publish(
+              DomainEvent.ExpenseRecorded,
+              {
+                expenseId: instance.id,
+                categoryKey: template.category.key,
+                isDirect: template.category.isDirect,
+                amountMinor: instance.amount,
+                incurredAt: instance.incurredAt.toISOString(),
+                paidAtIso: null,
+                supplierId: instance.supplierId,
+              },
+              tx,
+            );
+          });
+          created += 1;
+        } catch (error) {
+          if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+            skipped += 1;
+            this.logger.warn(`Recurring expense ${template.id} period ${period} was already generated — skipped.`);
+          } else {
+            throw error;
+          }
+        }
+      }
+    }
+
+    return { created, skipped };
   }
 }

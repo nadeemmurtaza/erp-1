@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **296** endpoints across **58** controllers, with the access rule that actually guards each one.
+All **297** endpoints across **58** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -243,7 +243,7 @@ never authorization.
 | GET | `/admin/crm/tags` | `crm.manage` | `CrmAdminController.listTags` |  |
 | POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` | Contact-form enquiry — becomes a lead in the CRM |
 
-### [`finance`](../modules/finance.md) (9)
+### [`finance`](../modules/finance.md) (10)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -255,6 +255,7 @@ never authorization.
 | POST | `/admin/finance/expenses` | `finance.manage` | `FinanceController.createExpense` | Record an expense |
 | DELETE | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.deleteExpense` | Delete an expense |
 | PATCH | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.updateExpense` | Edit an expense |
+| POST | `/admin/finance/expenses/:id/receipt` | `finance.manage` | `FinanceController.uploadReceipt` | Attach a receipt image or PDF to an expense |
 | GET | `/admin/finance/expenses/summary` | `finance.view` | `FinanceController.summary` | Totals, per-category breakdown and a daily series |
 
 ### [`identity-verification`](../modules/identity-verification.md) (4)

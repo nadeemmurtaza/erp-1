@@ -3,9 +3,9 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1157,
-    "lines": 178967,
-    "routes": 296,
+    "files": 1159,
+    "lines": 179526,
+    "routes": 297,
     "controllers": 58,
     "models": 117,
     "enums": 50,
@@ -13,8 +13,8 @@
     "events": 35,
     "permissions": 38,
     "screens": 127,
-    "crons": 6,
-    "specs": 104,
+    "crons": 8,
+    "specs": 105,
     "designLaws": 150
   },
   "designLaws": [
@@ -1083,9 +1083,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 457,
-      "lines": 60712,
-      "bytes": 2175053,
+      "files": 459,
+      "lines": 61181,
+      "bytes": 2193777,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1102,8 +1102,8 @@
     },
     "web": {
       "files": 230,
-      "lines": 34199,
-      "bytes": 1269904,
+      "lines": 34289,
+      "bytes": 1273331,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -1247,11 +1247,13 @@
         "apps/api/src/modules/finance/dto/expense-category.dto.ts",
         "apps/api/src/modules/finance/dto/expense.dto.ts",
         "apps/api/src/modules/finance/finance.controller.ts",
+        "apps/api/src/modules/finance/finance.cron.spec.ts",
+        "apps/api/src/modules/finance/finance.cron.ts",
         "apps/api/src/modules/finance/finance.module.ts",
         "apps/api/src/modules/finance/finance.service.ts",
         "apps/api/src/modules/finance/finance.spec.ts"
       ],
-      "routes": 9,
+      "routes": 10,
       "page": "docs/index/modules/finance.md"
     },
     {
@@ -3000,7 +3002,7 @@
       "controller": "FinanceController",
       "handler": "listCategories",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 16,
+      "line": 25,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -3016,7 +3018,7 @@
       "controller": "FinanceController",
       "handler": "createCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 23,
+      "line": 32,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -3032,7 +3034,7 @@
       "controller": "FinanceController",
       "handler": "deleteCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 37,
+      "line": 46,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -3048,7 +3050,7 @@
       "controller": "FinanceController",
       "handler": "updateCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 30,
+      "line": 39,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -3064,7 +3066,7 @@
       "controller": "FinanceController",
       "handler": "listExpenses",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 45,
+      "line": 54,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -3080,7 +3082,7 @@
       "controller": "FinanceController",
       "handler": "createExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 59,
+      "line": 68,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -3096,7 +3098,7 @@
       "controller": "FinanceController",
       "handler": "deleteExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 73,
+      "line": 82,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -3112,7 +3114,7 @@
       "controller": "FinanceController",
       "handler": "updateExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 66,
+      "line": 75,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -3122,13 +3124,29 @@
       "summary": "Edit an expense"
     },
     {
+      "method": "POST",
+      "path": "/admin/finance/expenses/:id/receipt",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "uploadReceipt",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 93,
+      "access": "finance.manage",
+      "permissions": [
+        "finance.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Attach a receipt image or PDF to an expense"
+    },
+    {
       "method": "GET",
       "path": "/admin/finance/expenses/summary",
       "module": "finance",
       "controller": "FinanceController",
       "handler": "summary",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 52,
+      "line": 61,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -7098,7 +7116,8 @@
         "PATCH /admin/finance/expense-categories/:id",
         "POST /admin/finance/expenses",
         "DELETE /admin/finance/expenses/:id",
-        "PATCH /admin/finance/expenses/:id"
+        "PATCH /admin/finance/expenses/:id",
+        "POST /admin/finance/expenses/:id/receipt"
       ],
       "uiSites": 1,
       "roles": [
@@ -7571,7 +7590,8 @@
       "doc": "FinanceService.create() (WO-23.1) — fires whether or not `accounting` is on; posting-rules.subscriber.ts is the only subscriber today.",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:392",
-        "apps/api/src/modules/finance/finance.service.ts:160"
+        "apps/api/src/modules/finance/finance.service.ts:203",
+        "apps/api/src/modules/finance/finance.service.ts:366"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:390 onExpenseRecorded()"
@@ -20983,6 +21003,20 @@
       "doc": "--- 3."
     },
     {
+      "schedule": "0 3 * * *",
+      "file": "apps/api/src/modules/finance/finance.cron.ts",
+      "line": 13,
+      "handler": "generateRecurringInstances",
+      "doc": ""
+    },
+    {
+      "schedule": "0 * * * *",
+      "file": "apps/api/src/modules/finance/finance.cron.ts",
+      "line": 27,
+      "handler": "generateRecurringExpenses",
+      "doc": ""
+    },
+    {
       "schedule": "0 2 * * *",
       "file": "apps/api/src/modules/inventory/inventory.cron.ts",
       "line": 16,
@@ -21647,9 +21681,10 @@
       "file": "apps/api/src/core/storage/storage.service.spec.ts",
       "module": "core/storage",
       "kind": "unit test",
-      "cases": 7,
+      "cases": 11,
       "describes": [
-        "StorageService.putImage"
+        "StorageService.putImage",
+        "StorageService.putDocument"
       ]
     },
     {
@@ -21789,12 +21824,23 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/finance/finance.cron.spec.ts",
+      "module": "finance",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "FinanceCron"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/finance/finance.spec.ts",
       "module": "finance",
       "kind": "unit test",
-      "cases": 8,
+      "cases": 13,
       "describes": [
-        "FinanceService"
+        "FinanceService",
+        "generateRecurringInstances — WO-B.2",
+        "attachReceipt — WO-B.2"
       ]
     },
     {
@@ -25845,8 +25891,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 256,
-      "bytes": 10323,
+      "lines": 259,
+      "bytes": 10603,
       "doc": "",
       "symbols": [
         {
@@ -25882,12 +25928,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 129
+          "line": 131
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 131
+          "line": 133
         }
       ]
     },
@@ -26015,8 +26061,8 @@
       "path": "apps/api/src/core/storage/storage.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 121,
-      "bytes": 4584,
+      "lines": 186,
+      "bytes": 7165,
       "doc": "",
       "symbols": []
     },
@@ -26024,14 +26070,14 @@
       "path": "apps/api/src/core/storage/storage.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 107,
-      "bytes": 3697,
+      "lines": 133,
+      "bytes": 4807,
       "doc": "",
       "symbols": [
         {
           "name": "StorageService",
           "kind": "class",
-          "line": 26
+          "line": 28
         }
       ]
     },
@@ -27217,14 +27263,38 @@
       "path": "apps/api/src/modules/finance/finance.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 78,
-      "bytes": 2910,
+      "lines": 98,
+      "bytes": 3815,
       "doc": "",
       "symbols": [
         {
           "name": "FinanceController",
           "kind": "class",
-          "line": 10
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/finance/finance.cron.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 69,
+      "bytes": 2218,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/finance/finance.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 36,
+      "bytes": 1552,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FinanceCron",
+          "kind": "class",
+          "line": 19
         }
       ]
     },
@@ -27232,14 +27302,14 @@
       "path": "apps/api/src/modules/finance/finance.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 10,
-      "bytes": 262,
+      "lines": 11,
+      "bytes": 321,
       "doc": "",
       "symbols": [
         {
           "name": "FinanceModule",
           "kind": "class",
-          "line": 9
+          "line": 10
         }
       ]
     },
@@ -27247,19 +27317,19 @@
       "path": "apps/api/src/modules/finance/finance.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 260,
-      "bytes": 9852,
+      "lines": 394,
+      "bytes": 15352,
       "doc": "",
       "symbols": [
         {
           "name": "ExpenseSummary",
           "kind": "interface",
-          "line": 13
+          "line": 53
         },
         {
           "name": "FinanceService",
           "kind": "class",
-          "line": 39
+          "line": 79
         }
       ]
     },
@@ -27267,8 +27337,8 @@
       "path": "apps/api/src/modules/finance/finance.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 184,
-      "bytes": 6390,
+      "lines": 299,
+      "bytes": 10909,
       "doc": "",
       "symbols": []
     },
@@ -32423,14 +32493,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 344,
-      "bytes": 11214,
+      "lines": 434,
+      "bytes": 14641,
       "doc": "",
       "symbols": [
         {
           "name": "ExpensesPage",
           "kind": "default",
-          "line": 47
+          "line": 60
         }
       ]
     },

@@ -12,7 +12,7 @@ Source: `apps/api/src/core/settings/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (6 · 500 lines)
+## Files (6 · 503 lines)
 
 All paths relative to `apps/api/src/core/settings`.
 
@@ -21,7 +21,7 @@ All paths relative to `apps/api/src/core/settings`.
 | `document-number.spec.ts` | unit test | 37 | — |  |
 | `document-number.ts` | module | 50 | 2 |  |
 | `document-prefix.ts` | module | 44 | 1 | What this shop's documents are numbered with. |
-| `settings.defaults.ts` | module | 256 | 8 | Business rules that staff must be able to change without a deploy: shipping zones, the COD fee, stitching lead times. |
+| `settings.defaults.ts` | module | 259 | 8 | Business rules that staff must be able to change without a deploy: shipping zones, the COD fee, stitching lead times. |
 | `settings.module.ts` | nest module | 10 | 1 |  |
 | `settings.service.ts` | service | 103 | 1 | Runtime business configuration, read from the Setting table and cached briefly so hot paths (every cart total needs the… |
 
@@ -85,8 +85,8 @@ check there before adding another.
 | `DocumentPrefixes` | interface | `settings.defaults.ts:35` | What each kind of document's numbers start with. |
 | `DocumentSettings` | interface | `settings.defaults.ts:53` |  |
 | `SettingKey` | const | `settings.defaults.ts:60` |  |
-| `SettingKeyName` | type | `settings.defaults.ts:129` |  |
-| `DEFAULT_SETTINGS` | const | `settings.defaults.ts:131` |  |
+| `SettingKeyName` | type | `settings.defaults.ts:131` |  |
+| `DEFAULT_SETTINGS` | const | `settings.defaults.ts:133` |  |
 | `SettingsModule` | class | `settings.module.ts:9` |  |
 | `SettingsService` | class | `settings.service.ts:14` | Runtime business configuration, read from the Setting table and cached briefly so hot paths (every cart total… |
 

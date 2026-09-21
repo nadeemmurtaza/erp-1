@@ -16,6 +16,16 @@ interface ExpenseCategory {
   isActive: boolean;
 }
 
+type ExpenseRecurrence = 'NONE' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'YEARLY';
+
+const RECURRENCE_LABEL: Record<ExpenseRecurrence, string> = {
+  NONE: 'One-off',
+  WEEKLY: 'Weekly',
+  MONTHLY: 'Monthly',
+  QUARTERLY: 'Quarterly',
+  YEARLY: 'Yearly',
+};
+
 interface Expense {
   id: string;
   categoryId: string;
@@ -25,6 +35,9 @@ interface Expense {
   incurredAt: string;
   paidAt: string | null;
   payee: string | null;
+  receiptUrl: string | null;
+  recurrence: ExpenseRecurrence;
+  recurringFromId: string | null;
   category: ExpenseCategory;
 }
 
@@ -63,7 +76,9 @@ export default function ExpensesPage() {
   const [incurredAt, setIncurredAt] = useState(() => new Date().toISOString().slice(0, 10));
   const [paid, setPaid] = useState(true);
   const [payee, setPayee] = useState('');
+  const [recurrence, setRecurrence] = useState<ExpenseRecurrence>('NONE');
   const [recording, setRecording] = useState(false);
+  const [uploadingReceiptFor, setUploadingReceiptFor] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setBusy(true);
@@ -110,12 +125,17 @@ export default function ExpensesPage() {
           incurredAt: new Date(incurredAt).toISOString(),
           paidAt: paid ? new Date().toISOString() : undefined,
           payee: payee.trim() || undefined,
+          recurrence: recurrence === 'NONE' ? undefined : recurrence,
         },
       });
       setAmount('');
       setDescription('');
       setPayee('');
-      addToast('Expense recorded.', 'success');
+      setRecurrence('NONE');
+      addToast(
+        recurrence === 'NONE' ? 'Expense recorded.' : 'Expense recorded. Future instances generate automatically.',
+        'success',
+      );
       await load();
     } catch (cause) {
       addToast(cause instanceof Error ? cause.message : 'Could not record the expense', 'error');
@@ -131,6 +151,21 @@ export default function ExpensesPage() {
       await load();
     } catch (cause) {
       addToast(cause instanceof Error ? cause.message : 'Could not delete the expense', 'error');
+    }
+  }
+
+  async function uploadReceipt(expense: Expense, file: File) {
+    setUploadingReceiptFor(expense.id);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      await adminFetch(`/admin/finance/expenses/${expense.id}/receipt`, { method: 'POST', formData });
+      addToast('Receipt attached.', 'success');
+      await load();
+    } catch (cause) {
+      addToast(cause instanceof Error ? cause.message : 'Could not attach the receipt', 'error');
+    } finally {
+      setUploadingReceiptFor(null);
     }
   }
 
@@ -261,7 +296,21 @@ export default function ExpensesPage() {
             className="field-input"
           />
         </label>
-        <div className="flex items-end lg:col-span-4">
+        <label className="block">
+          <span className="field-label">Repeats</span>
+          <select
+            value={recurrence}
+            onChange={(event) => setRecurrence(event.target.value as ExpenseRecurrence)}
+            className="field-input"
+          >
+            {(Object.keys(RECURRENCE_LABEL) as ExpenseRecurrence[]).map((value) => (
+              <option key={value} value={value}>
+                {RECURRENCE_LABEL[value]}
+              </option>
+            ))}
+          </select>
+        </label>
+        <div className="flex items-end lg:col-span-3">
           <button type="submit" disabled={recording} className="btn-primary">
             {recording ? 'Recording…' : 'Record expense'}
           </button>
@@ -308,7 +357,19 @@ export default function ExpensesPage() {
           rowKey={(expense) => expense.id}
           emptyLabel="No expenses match those filters."
           columns={[
-            { header: 'Date', muted: true, cell: (e) => formatDate(e.incurredAt) },
+            {
+              header: 'Date',
+              muted: true,
+              cell: (e) => (
+                <>
+                  {formatDate(e.incurredAt)}
+                  {e.recurrence !== 'NONE' ? (
+                    <span className="ms-1 text-xs text-neutral-900/60">({RECURRENCE_LABEL[e.recurrence]})</span>
+                  ) : null}
+                  {e.recurringFromId ? <span className="ms-1 text-xs text-neutral-900/60">(auto)</span> : null}
+                </>
+              ),
+            },
             { header: 'Description', cell: (e) => e.description },
             { header: 'Category', muted: true, cell: (e) => e.category.name },
             {
@@ -321,6 +382,35 @@ export default function ExpensesPage() {
               header: 'Status',
               cell: (e) => (e.paidAt ? 'Paid' : 'Unpaid'),
               muted: true,
+            },
+            {
+              header: 'Receipt',
+              cell: (e) =>
+                e.receiptUrl ? (
+                  <a
+                    href={e.receiptUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-xs text-neutral-900/70 underline hover:text-neutral-900"
+                  >
+                    View
+                  </a>
+                ) : (
+                  <label className="cursor-pointer text-xs text-neutral-900/60 underline hover:text-neutral-900">
+                    {uploadingReceiptFor === e.id ? 'Uploading…' : 'Attach'}
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp,image/avif,application/pdf"
+                      disabled={uploadingReceiptFor === e.id}
+                      onChange={(event) => {
+                        const file = event.target.files?.[0];
+                        event.target.value = '';
+                        if (file) void uploadReceipt(e, file);
+                      }}
+                      className="sr-only"
+                    />
+                  </label>
+                ),
             },
             {
               header: '',

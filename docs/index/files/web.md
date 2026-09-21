@@ -162,7 +162,7 @@ All 230 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 344 |  |
+| `page.tsx` | page | 434 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories` (1)
 

@@ -3,15 +3,15 @@
 
 # Every tracked file
 
-All **1,157** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,159** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 457 | 60,712 | [files/api.md](../files/api.md) |
-| apps/web | 230 | 34,199 | [files/web.md](../files/web.md) |
+| apps/api | 459 | 61,181 | [files/api.md](../files/api.md) |
+| apps/web | 230 | 34,289 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 42 | 5,292 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 53 | 4,507 | [files/packages.md](../files/packages.md) |
@@ -29,7 +29,7 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 266 |
-| unit test | 89 |
+| unit test | 90 |
 | page | 89 |
 | module | 83 |
 | component | 70 |
@@ -52,9 +52,9 @@ name a new file: the convention is what makes it findable.
 | constants | 7 |
 | loading | 7 |
 | registry | 6 |
+| scheduled job | 6 |
 | layout | 6 |
 | hook | 5 |
-| scheduled job | 5 |
 | types | 5 |
 | not-found | 4 |
 | example | 3 |

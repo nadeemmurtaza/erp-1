@@ -1,9 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
 import { FinanceService } from './finance.service';
 import { CreateExpenseCategoryDto, UpdateExpenseCategoryDto } from './dto/expense-category.dto';
 import { CreateExpenseDto, ExpenseQueryDto, ExpenseSummaryQueryDto, UpdateExpenseDto } from './dto/expense.dto';
+
+/** Uploaded file as Multer hands it over — same shape catalog-admin.controller.ts uses. */
+interface UploadedReceipt {
+  buffer: Buffer;
+  originalname: string;
+  mimetype: string;
+  size: number;
+}
 
 @ApiTags('Finance Admin')
 @Controller('admin/finance')
@@ -73,5 +82,16 @@ export class FinanceController {
   async deleteExpense(@Param('id') id: string) {
     await this.finance.deleteExpense(id);
     return { success: true };
+  }
+
+  @Post('expenses/:id/receipt')
+  @RequirePermission('finance.manage')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ schema: { type: 'object', properties: { file: { type: 'string', format: 'binary' } } } })
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({ summary: 'Attach a receipt image or PDF to an expense' })
+  async uploadReceipt(@Param('id') id: string, @UploadedFile() file: UploadedReceipt | undefined) {
+    if (!file) throw new BadRequestException('Choose a receipt file to upload.');
+    return this.finance.attachReceipt(id, file);
   }
 }

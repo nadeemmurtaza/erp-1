@@ -111,7 +111,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `ExpensesPage` | default | :47 | Record expenses and see what the shop is spending. |
+| `page.tsx` | `ExpensesPage` | default | :60 | Record expenses and see what the shop is spending. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories`
 

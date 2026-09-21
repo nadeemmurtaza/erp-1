@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 457 tracked files in `apps/api`, by directory.
+All 459 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -584,7 +584,7 @@ All 457 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 44 |  |
-| `settings.defaults.ts` | module | 256 |  |
+| `settings.defaults.ts` | module | 259 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 103 |  |
 
@@ -597,8 +597,8 @@ All 457 tracked files in `apps/api`, by directory.
 | `s3-storage.driver.ts` | driver | 77 |  |
 | `storage.driver.ts` | driver | 31 | Extension point: file storage. |
 | `storage.module.ts` | nest module | 14 |  |
-| `storage.service.spec.ts` | unit test | 121 |  |
-| `storage.service.ts` | service | 107 |  |
+| `storage.service.spec.ts` | unit test | 186 |  |
+| `storage.service.ts` | service | 133 |  |
 
 ### `apps/api/src/core/time` (2)
 
@@ -737,14 +737,16 @@ All 457 tracked files in `apps/api`, by directory.
 | `email-inbox.service.ts` | service | 234 |  |
 | `mailbox-poller.cron.ts` | scheduled job | 133 |  |
 
-### `apps/api/src/modules/finance` (4)
+### `apps/api/src/modules/finance` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `finance.controller.ts` | controller | 78 |  |
-| `finance.module.ts` | nest module | 10 |  |
-| `finance.service.ts` | service | 260 |  |
-| `finance.spec.ts` | unit test | 184 |  |
+| `finance.controller.ts` | controller | 98 |  |
+| `finance.cron.spec.ts` | unit test | 69 |  |
+| `finance.cron.ts` | scheduled job | 36 |  |
+| `finance.module.ts` | nest module | 11 |  |
+| `finance.service.ts` | service | 394 |  |
+| `finance.spec.ts` | unit test | 299 |  |
 
 ### `apps/api/src/modules/finance/dto` (2)
 

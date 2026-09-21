@@ -14,6 +14,8 @@ const ALLOWED_IMAGE_TYPES = new Set([
   'image/webp',
   'image/avif',
 ]);
+/** Receipts (WO-B.2): a photo of a receipt, or a PDF a supplier emailed. */
+const ALLOWED_DOCUMENT_TYPES = new Set([...ALLOWED_IMAGE_TYPES, 'application/pdf']);
 
 /** Matches Next.js's own default WebP quality — a well-tested size/quality balance. */
 const WEBP_QUALITY = 75;
@@ -94,6 +96,30 @@ export class StorageService {
       filename: `${input.filename.replace(/\.[^./]+$/, '')}.webp`,
       contentType: 'image/webp',
     });
+  }
+
+  /**
+   * A receipt: an image (converted to WebP via putImage) or a PDF (stored
+   * as-is — sharp cannot decode a PDF, and converting a receipt away from
+   * PDF would lose the one thing that makes it a legible source document).
+   * Same size cap as putImage — one number for "how big may an upload be",
+   * not a second one invented for this file type.
+   */
+  async putDocument(input: PutFileInput): Promise<StoredFile> {
+    if (!ALLOWED_DOCUMENT_TYPES.has(input.contentType)) {
+      throw new BadRequestException(
+        `Unsupported file type "${input.contentType}". Use JPEG, PNG, WebP, AVIF or PDF.`,
+      );
+    }
+    if (input.body.byteLength > MAX_IMAGE_BYTES) {
+      throw new BadRequestException(
+        `File is larger than ${Math.round(MAX_IMAGE_BYTES / 1024 / 1024)}MB.`,
+      );
+    }
+    if (input.contentType === 'application/pdf') {
+      return this.driver.put(input);
+    }
+    return this.putImage(input);
   }
 
   delete(key: string): Promise<void> {

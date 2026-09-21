@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-230 files · 34,199 lines
+230 files · 34,289 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -31,7 +31,7 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 19 | module |
-| `apps/web/src/app` | 104 | 20,443 | page, layout, loading, error |
+| `apps/web/src/app` | 104 | 20,533 | page, layout, loading, error |
 | `apps/web/src/components` | 65 | 9,770 | component, loading |
 | `apps/web/src/config` | 3 | 106 | config |
 | `apps/web/src/constants` | 5 | 248 | constants |
@@ -77,7 +77,7 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/src/components/admin/image-manager.tsx` | 485 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/designs/[id]/page.tsx` | 467 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/users/[id]/page.tsx` | 454 | page |  |
-| `apps/web/src/components/storefront/product-purchase.tsx` | 433 | component |  |
+| `apps/web/src/app/(admin)/admin/(app)/finance/expenses/page.tsx` | 434 | page |  |
 
 
 ---

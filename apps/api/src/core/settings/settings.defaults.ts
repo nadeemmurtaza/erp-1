@@ -110,6 +110,8 @@ export const SettingKey = {
   TaxDefaultClass: 'tax.default_class',
   /** ISO 4217 — pre-fills a new expense's currency field. */
   FinanceDefaultCurrency: 'finance.default_currency',
+  /** 0-23, server-local. Hour of day FinanceCron generates due recurring expense instances — adjustable without a deploy, same idiom as the other cron-gating settings below. */
+  FinanceRecurringRunHour: 'finance.recurring_run_hour',
   /**
    * Off until an owner turns it on — MarketingAutomationCron no-ops entirely
    * while this is false, the ship-safe default for anything that emails a
@@ -246,6 +248,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.TaxPricingMode]: 'EXCLUSIVE',
   [SettingKey.TaxDefaultClass]: 'standard',
   [SettingKey.FinanceDefaultCurrency]: 'PKR',
+  [SettingKey.FinanceRecurringRunHour]: 3,
 
   [SettingKey.MarketingAutomationEnabled]: false,
   [SettingKey.MarketingAbandonedCartReminderHours]: 24,

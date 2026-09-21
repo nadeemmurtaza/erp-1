@@ -30,13 +30,27 @@ const ROOT = resolve('.');
 const RULES_DIR = join(ROOT, '.claude', 'rules');
 const CLAUDE_MD = join(ROOT, 'CLAUDE.md');
 
+/**
+ * Read a file with its line endings normalised to LF.
+ *
+ * Every pattern below is written against `\n`. A checkout made on Windows with
+ * `core.autocrlf=true` hands them `\r\n` instead, so `^---\n` never matches and
+ * a `paths:` block that is plainly in the file is reported as missing — all ten
+ * rule files at once, with the message telling you to add frontmatter they
+ * already have. That is a failure of who checked the repository out, not of
+ * what is in it. `.gitattributes` already pins the generated files to LF for
+ * this same reason; the rule files are hand-edited, so the checker absorbs the
+ * difference instead of constraining how they are stored.
+ */
+const readText = (path) => readFileSync(path, 'utf8').replace(/\r\n/g, '\n');
+
 if (!existsSync(RULES_DIR)) {
   console.log('No .claude/rules/ directory — nothing to check.');
   process.exit(0);
 }
 
 const problems = [];
-const claude = readFileSync(CLAUDE_MD, 'utf8');
+const claude = readText(CLAUDE_MD);
 const files = readdirSync(RULES_DIR).filter((f) => f.endsWith('.md')).sort();
 
 if (files.length === 0) {
@@ -68,7 +82,7 @@ function globToRe(glob) {
 
 for (const file of files) {
   const rel = `.claude/rules/${file}`;
-  const body = readFileSync(join(RULES_DIR, file), 'utf8');
+  const body = readText(join(RULES_DIR, file));
 
   // 1. listed in CLAUDE.md
   if (!claude.includes(rel)) {

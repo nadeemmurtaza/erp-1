@@ -11,13 +11,13 @@ Pack **core** · always on · 4 files
 
 Source: `apps/api/src/modules/settings/`
 
-## Files (4 · 281 lines)
+## Files (4 · 282 lines)
 
 All paths relative to `apps/api/src/modules/settings/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `settings.dto.ts` | dto | 93 | 3 |  |
+| `settings.dto.ts` | dto | 94 | 3 |  |
 | `settings-admin.controller.ts` | controller | 61 | 1 |  |
 | `settings-admin.module.ts` | nest module | 10 | 1 |  |
 | `settings-admin.service.ts` | service | 117 | 2 |  |
@@ -65,6 +65,7 @@ _none_
 - core `auth`
 - core `prisma`
 - core `settings`
+- package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
 either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
@@ -80,9 +81,9 @@ _No spec files in this unit._
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `AuditLogQueryDto` | class | `settings.dto.ts:15` |  |
-| `UpdateMediaSettingsDto` | class | `settings.dto.ts:51` |  |
-| `UpdateDocumentSettingsDto` | class | `settings.dto.ts:72` |  |
+| `AuditLogQueryDto` | class | `settings.dto.ts:16` |  |
+| `UpdateMediaSettingsDto` | class | `settings.dto.ts:52` |  |
+| `UpdateDocumentSettingsDto` | class | `settings.dto.ts:73` |  |
 | `SettingsAdminController` | class | `settings-admin.controller.ts:9` |  |
 | `SettingsAdminModule` | class | `settings-admin.module.ts:9` |  |
 | `AuditLogQuery` | interface | `settings-admin.service.ts:11` |  |

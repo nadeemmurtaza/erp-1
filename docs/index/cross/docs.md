@@ -240,7 +240,7 @@ _no second-level headings_
 - Rejection list  <sub>:172</sub>
 - Benchmark, not template  <sub>:183</sub>
 
-### `docs/design/06-content.md`  <sub>122 lines</sub>
+### `docs/design/06-content.md`  <sub>121 lines</sub>
 
 - Voice  <sub>:10</sub>
 - Terminology — one word per concept  <sub>:29</sub>
@@ -277,12 +277,12 @@ _no second-level headings_
 - Change approval  <sub>:117</sub>
 - Keeping this system honest  <sub>:129</sub>
 
-### `docs/design/09-quality.md`  <sub>173 lines</sub>
+### `docs/design/09-quality.md`  <sub>172 lines</sub>
 
 - The two columns  <sub>:12</sub>
-- Regression  <sub>:125</sub>
-- The honest gap, ranked  <sub>:143</sub>
-- Definition of done, for a screen  <sub>:162</sub>
+- Regression  <sub>:124</sub>
+- The honest gap, ranked  <sub>:142</sub>
+- Definition of done, for a screen  <sub>:161</sub>
 
 ### `docs/design/README.md`  <sub>67 lines</sub>
 

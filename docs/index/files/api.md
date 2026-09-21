@@ -507,7 +507,7 @@ All 449 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `catalog.ts` | module | 334 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which catego… |
+| `catalog.ts` | module | 342 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which catego… |
 | `copy.ts` | module | 557 |  |
 | `email-templates.admin.controller.ts` | controller | 59 |  |
 | `html.ts` | module | 414 |  |
@@ -985,7 +985,7 @@ All 449 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `settings.dto.ts` | dto | 93 |  |
+| `settings.dto.ts` | dto | 94 |  |
 
 ### `apps/api/src/modules/stitching` (7)
 

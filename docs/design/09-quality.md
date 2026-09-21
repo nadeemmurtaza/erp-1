@@ -29,6 +29,7 @@ pnpm check <gate>          # one gate: index, lint, typecheck, test, build
 | No cross-module import outside `KNOWN_MODULE_COUPLINGS` | `scripts/check-module-boundaries.mjs` |
 | No secret reachable from the frontend bundle | `scripts/check-frontend-secrets.mjs` |
 | Every env var documented in the templates | `scripts/check-env-templates.mjs` |
+| No brand literal in application code (Law 1) | `scripts/check-rebrand.mjs` |
 | No rule file orphaned from `CLAUDE.md`'s index | `scripts/check-rules.mjs` |
 | Types sound across the workspace | `turbo run typecheck` |
 | Behaviour as specified | `turbo run test` |
@@ -50,19 +51,17 @@ grep -rn "style={{" apps/web/src --include='*.tsx'           # inline styles
 grep -rn "toLocaleString\|toLocaleDateString" apps/web/src    # stray formatting
 grep -rn "await fetch(\|= fetch(" apps/web/src                # bare fetch
 grep -ro "text-gray-[0-9]*\|bg-gray-[0-9]*" apps/web/src      # second palette
-grep -rni "yaseen" apps/*/src packages/*/src --include='*.ts*' \
-  | grep -vE '@newax/|/brand\.ts:|\.spec\.tsx?:|:[0-9]+:[[:space:]]*(//|\*|/\*)'                 # rebrand leak
 ```
 
 The documented exceptions are listed in `CLAUDE.md` — inline `style` on
 data-driven widths and colours, `app/global-error.tsx` and `app/not-found.tsx`
 which render before any stylesheet exists, and `any` in `*.spec.ts`. Do not
-"fix" them. The last grep must return only the two `LEGACY_*_COOKIE`
-constants; anything else is a rebrand leak, and this codebase ships to more
-than one client. Its four exclusions — the `@newax/` scope, `brand.ts`, spec
-fixtures and comment lines — each have a reason `CLAUDE.md` states; widening
-the filter back returns 42 lines of which none is a leak, which is the same as
-having no check.
+"fix" them.
+
+The rebrand leak is no longer one of these greps. It is
+`scripts/check-rebrand.mjs`, run by `pnpm lint`, and it belongs in the table
+above rather than here — a brand literal in a screen now fails the build
+instead of waiting for someone to remember a command.
 
 ### Reviewed by a person
 

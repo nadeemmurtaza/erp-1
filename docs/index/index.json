@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1075,
-    "lines": 165189,
+    "files": 1076,
+    "lines": 165489,
     "routes": 287,
     "controllers": 57,
     "models": 115,
@@ -20,19 +20,19 @@
     "root": {
       "files": 42,
       "lines": 8838,
-      "bytes": 638797,
+      "bytes": 638792,
       "label": "repository root files"
     },
     "infra": {
-      "files": 50,
-      "lines": 25520,
-      "bytes": 983359,
+      "files": 51,
+      "lines": 25813,
+      "bytes": 997377,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
       "files": 449,
-      "lines": 59682,
-      "bytes": 2137359,
+      "lines": 59691,
+      "bytes": 2137795,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -55,8 +55,8 @@
     },
     "docs": {
       "files": 180,
-      "lines": 25966,
-      "bytes": 1627799,
+      "lines": 25964,
+      "bytes": 1627424,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -19659,7 +19659,7 @@
       "pkg": "yaseenecom",
       "file": "package.json",
       "name": "lint",
-      "cmd": "turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rules.mjs"
+      "cmd": "turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-rules.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -19702,6 +19702,12 @@
       "file": "package.json",
       "name": "check:env",
       "cmd": "node scripts/check-env-templates.mjs"
+    },
+    {
+      "pkg": "yaseenecom",
+      "file": "package.json",
+      "name": "check:rebrand",
+      "cmd": "node scripts/check-rebrand.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -21339,7 +21345,7 @@
       "area": "root",
       "kind": "doc",
       "lines": 748,
-      "bytes": 37025,
+      "bytes": 37020,
       "doc": "",
       "symbols": []
     },
@@ -23386,8 +23392,8 @@
       "path": "apps/api/src/core/notifications/email/catalog.ts",
       "area": "api",
       "kind": "module",
-      "lines": 334,
-      "bytes": 12861,
+      "lines": 342,
+      "bytes": 13231,
       "doc": "Everything the admin \"manage templates\" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which category it belongs to, whether something in the codebase actually sends it automatically (and what), and…",
       "symbols": [
         {
@@ -23403,12 +23409,12 @@
         {
           "name": "EMAIL_TEMPLATE_CATALOG",
           "kind": "const",
-          "line": 75
+          "line": 83
         },
         {
           "name": "purposeForTemplate",
           "kind": "function",
-          "line": 330
+          "line": 338
         }
       ]
     },
@@ -27476,24 +27482,24 @@
       "path": "apps/api/src/modules/settings/dto/settings.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 93,
-      "bytes": 2758,
+      "lines": 94,
+      "bytes": 2824,
       "doc": "",
       "symbols": [
         {
           "name": "AuditLogQueryDto",
           "kind": "class",
-          "line": 15
+          "line": 16
         },
         {
           "name": "UpdateMediaSettingsDto",
           "kind": "class",
-          "line": 51
+          "line": 52
         },
         {
           "name": "UpdateDocumentSettingsDto",
           "kind": "class",
-          "line": 72
+          "line": 73
         }
       ]
     },
@@ -34750,8 +34756,8 @@
       "path": "docs/design/06-content.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 122,
-      "bytes": 5021,
+      "lines": 121,
+      "bytes": 4868,
       "doc": "",
       "symbols": []
     },
@@ -34777,8 +34783,8 @@
       "path": "docs/design/09-quality.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 173,
-      "bytes": 8035,
+      "lines": 172,
+      "bytes": 7813,
       "doc": "",
       "symbols": []
     },
@@ -36280,8 +36286,8 @@
       "path": "package.json",
       "area": "infra",
       "kind": "json",
-      "lines": 53,
-      "bytes": 1869,
+      "lines": 54,
+      "bytes": 1958,
       "doc": "",
       "symbols": []
     },
@@ -37701,6 +37707,21 @@
       "bytes": 22395,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "scripts/check-rebrand.mjs",
+      "area": "infra",
+      "kind": "script",
+      "lines": 292,
+      "bytes": 13929,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "scan",
+          "kind": "function",
+          "line": 160
+        }
+      ]
     },
     {
       "path": "scripts/check-route-permissions.mjs",

@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { BRAND } from '@newax/shared';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
@@ -59,7 +60,7 @@ export class UpdateMediaSettingsDto {
 }
 
 class DocumentPrefixesDto {
-  @ApiPropertyOptional({ example: 'YSN' }) @IsOptional() @IsString() @MaxLength(8) order?: string;
+  @ApiPropertyOptional({ example: BRAND.commerce.orderNumberPrefix }) @IsOptional() @IsString() @MaxLength(8) order?: string;
   @ApiPropertyOptional({ example: 'PO' }) @IsOptional() @IsString() @MaxLength(8) purchaseOrder?: string;
   @ApiPropertyOptional({ example: 'GRN' }) @IsOptional() @IsString() @MaxLength(8) goodsReceipt?: string;
   @ApiPropertyOptional({ example: 'STO' }) @IsOptional() @IsString() @MaxLength(8) stitchingOrder?: string;

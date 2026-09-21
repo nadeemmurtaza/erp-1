@@ -9,7 +9,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "lint": "turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rules.mjs",
+    "lint": "turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-rules.mjs",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,js,mjs,json,md}\"",
@@ -17,6 +17,7 @@
     "boundaries": "node scripts/check-module-boundaries.mjs",
     "check:secrets": "node scripts/check-frontend-secrets.mjs",
     "check:env": "node scripts/check-env-templates.mjs",
+    "check:rebrand": "node scripts/check-rebrand.mjs",
     "check:rules": "node scripts/check-rules.mjs",
     "check:email": "node scripts/check-email-dns.mjs",
     "index": "node scripts/build-index.mjs",

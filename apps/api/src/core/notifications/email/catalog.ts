@@ -55,6 +55,14 @@ const sampleOrderItems = [
   },
 ];
 
+/**
+ * The order number every preview shows. The prefix is the client's initials,
+ * so it is a brand value (BRAND.commerce.orderNumberPrefix) and not a literal
+ * to type — an admin previewing these for another client must not be shown
+ * this one's order numbers.
+ */
+const sampleOrderNumber = `${BRAND.commerce.orderNumberPrefix}-2026-0142`;
+
 const sampleAddress = {
   fullName: 'Ayesha Khan',
   phone: BRAND.contact.phone,
@@ -80,7 +88,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     trigger: 'automatic',
     triggerDescription: 'Sent when checkout completes (order.placed → OrderNotificationSubscriber).',
     sampleData: {
-      orderNumber: 'YSN-2026-0142',
+      orderNumber: sampleOrderNumber,
       items: sampleOrderItems,
       itemsSubtotal: 479700,
       stitchingSubtotal: 150000,
@@ -101,7 +109,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     trigger: 'automatic',
     triggerDescription:
       'Sent when an order moves to SHIPPED (order.status_changed → OrderNotificationSubscriber). Also covers "out for delivery" — the schema has no distinct status for that hand-off yet.',
-    sampleData: { orderNumber: 'YSN-2026-0142', status: 'SHIPPED' },
+    sampleData: { orderNumber: sampleOrderNumber, status: 'SHIPPED' },
   },
   {
     key: 'order.delivered',
@@ -109,7 +117,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     category: 'Orders',
     trigger: 'automatic',
     triggerDescription: 'Sent when an order moves to DELIVERED (order.status_changed).',
-    sampleData: { orderNumber: 'YSN-2026-0142', status: 'DELIVERED' },
+    sampleData: { orderNumber: sampleOrderNumber, status: 'DELIVERED' },
   },
   {
     key: 'order.cancelled',
@@ -118,7 +126,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     trigger: 'automatic',
     triggerDescription:
       'Sent when an order is cancelled (order.cancelled). Adds a refund note automatically when the order was already paid.',
-    sampleData: { orderNumber: 'YSN-2026-0142', status: 'CANCELLED', awaitingRefund: true },
+    sampleData: { orderNumber: sampleOrderNumber, status: 'CANCELLED', awaitingRefund: true },
   },
   {
     key: 'order.status_changed',
@@ -127,7 +135,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     trigger: 'automatic',
     triggerDescription:
       'Fallback for any status not covered by a dedicated template above — currently RETURNED.',
-    sampleData: { orderNumber: 'YSN-2026-0142', status: 'RETURNED' },
+    sampleData: { orderNumber: sampleOrderNumber, status: 'RETURNED' },
   },
   {
     key: 'payment.received',
@@ -135,7 +143,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     category: 'Payments',
     trigger: 'automatic',
     triggerDescription: 'Sent when an online payment settles (payment.succeeded), excluding COD.',
-    sampleData: { orderNumber: 'YSN-2026-0142', amount: 639700 },
+    sampleData: { orderNumber: sampleOrderNumber, amount: 639700 },
   },
   {
     key: 'payment.failed',
@@ -143,7 +151,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     category: 'Payments',
     trigger: 'automatic',
     triggerDescription: 'Sent when a gateway declines a payment (payment.failed).',
-    sampleData: { orderNumber: 'YSN-2026-0142', amount: 639700 },
+    sampleData: { orderNumber: sampleOrderNumber, amount: 639700 },
   },
   {
     key: 'payment.refunded',
@@ -152,7 +160,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     trigger: 'automatic',
     triggerDescription:
       'Sent when staff mark a payment refunded (POST /admin/payments/:id/refund → payment.refunded). Moving the money back is still a manual step outside this system, same as bank-transfer approval.',
-    sampleData: { orderNumber: 'YSN-2026-0142', amount: 349900, provider: 'bank_transfer' },
+    sampleData: { orderNumber: sampleOrderNumber, amount: 349900, provider: 'bank_transfer' },
   },
   {
     key: 'user.welcome',
@@ -234,7 +242,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     triggerDescription:
       "Sent by MarketingAutomationCron marketing.review_request_days (Settings) after an order is marked DELIVERED. The CTA links to the order's own page — there is no separate reviews module, so it points customers at what they can already see rather than a review form that doesn't exist. Off by default (marketing.automation_enabled).",
     sampleData: {
-      orderNumber: 'YSN-2026-0142',
+      orderNumber: sampleOrderNumber,
       items: sampleProducts,
       unsubscribeUrl: `${BRAND.identity.url}/en/unsubscribe?u=sample&t=sample`,
     },
@@ -308,7 +316,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     category: 'Stitching',
     trigger: 'automatic',
     triggerDescription: 'Sent when a stitching job reaches the READY stage (stitching.job_stage_changed).',
-    sampleData: { garment: 'Kurta', stage: 'READY', reference: 'YSN-2026-0142' },
+    sampleData: { garment: 'Kurta', stage: 'READY', reference: sampleOrderNumber },
   },
   {
     key: 'stitching.stage_changed',
@@ -316,7 +324,7 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     category: 'Stitching',
     trigger: 'automatic',
     triggerDescription: 'Sent on other tracked stitching-stage changes.',
-    sampleData: { garment: 'Kurta', stage: 'CUTTING', reference: 'YSN-2026-0142' },
+    sampleData: { garment: 'Kurta', stage: 'CUTTING', reference: sampleOrderNumber },
   },
 ];
 

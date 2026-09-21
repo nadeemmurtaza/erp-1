@@ -403,30 +403,30 @@ grep -rn "style={{" apps/web/src --include='*.tsx'          # inline styles
 grep -rn "toLocaleString\|toLocaleDateString" apps/web/src   # stray formatting
 grep -rn "await fetch(\|= fetch(" apps/web/src               # bare fetch
 grep -ro "text-gray-[0-9]*\|bg-gray-[0-9]*" apps/web/src     # second palette
-
-# rebrand leak — must print exactly the two LEGACY_*_COOKIE lines, nothing else
-grep -rni "yaseen" apps/*/src packages/*/src --include='*.ts*' \
-  | grep -vE '@newax/|/brand\.ts:|\.spec\.tsx?:|:[0-9]+:[[:space:]]*(//|\*|/\*)'
 ```
 
-The last one must return only the two documented `LEGACY_*_COOKIE` constants in
-`core/auth/auth.constants.ts`. Anything else is a rebrand leak — this codebase
-ships to multiple clients.
+The rebrand leak used to be a fifth grep here. It is a script now —
+`pnpm check:rebrand`, and `pnpm lint` runs it — because a grep for the current
+client's name was itself the thing Law 1 forbids, and could not see a brand
+literal that does not contain that name. `brand.ts` says so in its own words
+next to `orderNumberPrefix`: "a case-insensitive search for the client's name
+would never find it."
 
-Each exclusion in that filter is there for a reason, so do not widen it back:
+```bash
+pnpm check:rebrand                        # Law 1, brand axis — part of pnpm lint
+node scripts/check-rebrand.mjs --self-test  # proves the matcher still catches a leak
+```
 
-- `@newax/` — Newax's own package scope, the one literal Law 1 exempts.
-- `/brand.ts:` — `packages/shared/src/brand.ts` is where Law 1 *sends* every
-  brand value. A brand name in that file is the rule working, not a leak.
-- `.spec.ts`/`.spec.tsx` — fixtures use realistic values on purpose and ship to
-  no client's runtime. A leak that only exists in a fixture is not a leak.
-- a comment line — the remaining mentions are comments recording *why* a
-  hardcoded brand value was removed. Deleting them would lose that history. A
-  brand name in a trailing comment on a line of code still fires, deliberately:
-  mixed with code is where one hides.
-
-Without those four, the command returns 42 lines of which none is a leak, and a
-check whose output you have to mentally filter is a check nobody runs.
+Its terms are **derived from `packages/shared/src/brand.ts`**, so a rebrand
+rebrands the check too and there is nothing to remember. It reads application
+code only — `apps/*/src` and `packages/*/src` — because that is what Law 1
+scopes itself to; deployment configuration, migrations and `docs/` are named
+as out of scope in the script's own header rather than left as silent blind
+spots. Its exceptions (the brand file, spec fixtures, whole-line comments, the
+`@newax/` scope, and an allowlist that holds the two `LEGACY_*_COOKIE`
+constants and nothing else) each carry their reason in the file. A brand name
+in a *trailing* comment on a line of code still fails — mixed in with code is
+where one hides.
 
 Legitimate remaining exceptions, so you do not "fix" them:
 

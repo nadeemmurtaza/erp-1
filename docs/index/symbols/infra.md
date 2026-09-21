@@ -8,6 +8,12 @@ Every top-level export in `infra`, with the line to open.
 
 
 
+### `scripts`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `check-rebrand.mjs` | `scan` | function | :160 | Every violation on one file's contents. |
+
 ### `scripts/lib`
 
 | File | Symbol | Kind | Line | Doc |

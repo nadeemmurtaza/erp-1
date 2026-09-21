@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-50 files · 25,520 lines
+51 files · 25,813 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -19,13 +19,13 @@ on them.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 20 | 18,664 | file, example, json, yaml |
+| `.` | 20 | 18,665 | file, example, json, yaml |
 | `.github` | 1 | 80 | doc |
 | `.github/workflows` | 2 | 186 | yaml |
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 13 | 4,920 | script, py |
+| `scripts` | 14 | 5,212 | script, py |
 | `scripts/lib` | 2 | 1,269 | utility |
 
 
@@ -47,6 +47,7 @@ on them.
 | `scripts/idx.mjs` | 434 | script |  |
 | `scripts/check-email-dns.mjs` | 399 | script |  |
 | `scripts/lib/model-routing.mjs` | 363 | utility | Which model and how much effort each kind of job in this repository deserves. |
+| `scripts/check-rebrand.mjs` | 292 | script |  |
 | `scripts/sync-client.mjs` | 243 | script | scripts/sync-client.mjs |
 | `scripts/check.mjs` | 164 | script |  |
 | `deploy/backup.sh` | 141 | sh |  |
@@ -54,7 +55,6 @@ on them.
 | `scripts/check-frontend-secrets.mjs` | 137 | script |  |
 | `scripts/check-route-permissions.mjs` | 136 | script |  |
 | `scripts/check-rules.mjs` | 134 | script |  |
-| `.env.example` | 125 | example |  |
 
 
 ---

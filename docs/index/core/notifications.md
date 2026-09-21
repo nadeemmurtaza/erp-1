@@ -13,7 +13,7 @@ Source: `apps/api/src/core/notifications/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (19 · 4,185 lines)
+## Files (19 · 4,193 lines)
 
 All paths relative to `apps/api/src/core/notifications`.
 
@@ -25,7 +25,7 @@ All paths relative to `apps/api/src/core/notifications`.
 | `email-accounts.service.ts` | service | 389 | 6 | Everything but the two *Encrypted columns — what the API is allowed to return. |
 | `email.channel.spec.ts` | unit test | 43 | — |  |
 | `email.channel.ts` | channel | 337 | 2 | Sends customer email over SMTP. |
-| `catalog.ts` | module | 334 | 4 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which catego… |
+| `catalog.ts` | module | 342 | 4 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which catego… |
 | `copy.ts` | module | 557 | 2 | Email wording, in both languages the storefront ships. |
 | `email-templates.admin.controller.ts` | controller | 59 | 1 | The "manage email templates" screen's backend: a list of every registered template with what triggers it (or the honest… |
 | `html.ts` | module | 414 | 19 | Escapes text for interpolation into HTML. |
@@ -127,8 +127,8 @@ check there before adding another.
 | `isDeliverable` | function | `email.channel.ts:332` | Whether an address is worth attempting. |
 | `EmailTemplateCategory` | type | `catalog.ts:18` |  |
 | `EmailTemplateCatalogEntry` | interface | `catalog.ts:20` |  |
-| `EMAIL_TEMPLATE_CATALOG` | const | `catalog.ts:75` |  |
-| `purposeForTemplate` | function | `catalog.ts:330` | Which connected mailbox (see EmailAccountsService) a template should send from. |
+| `EMAIL_TEMPLATE_CATALOG` | const | `catalog.ts:83` |  |
+| `purposeForTemplate` | function | `catalog.ts:338` | Which connected mailbox (see EmailAccountsService) a template should send from. |
 | `EmailCopy` | interface | `copy.ts:15` | Email wording, in both languages the storefront ships. |
 | `copyFor` | function | `copy.ts:554` |  |
 | `EmailTemplatesAdminController` | class | `email-templates.admin.controller.ts:23` | The "manage email templates" screen's backend: a list of every registered template with what triggers it (or… |

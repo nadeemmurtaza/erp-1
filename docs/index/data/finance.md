@@ -3,7 +3,7 @@
 
 # Schema: `finance.prisma`
 
-2 models · 1 enums. Owned by module [`finance`](../modules/finance.md).
+3 models · 1 enums. Owned by module [`finance`](../modules/finance.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `Expense`  <sub>`apps/api/prisma/schema/finance.prisma:40`</sub>
+### `Expense`  <sub>`apps/api/prisma/schema/finance.prisma:44`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -49,7 +49,7 @@ against a real database.
 
 Indexes: `@@unique([recurringFromId, recurringPeriod])` · `@@index([incurredAt])` · `@@index([categoryId, incurredAt])` · `@@index([paidAt])` · `@@index([supplierId])`
 
-### `ExpenseCategory`  <sub>`apps/api/prisma/schema/finance.prisma:15`</sub>
+### `ExpenseCategory`  <sub>`apps/api/prisma/schema/finance.prisma:19`</sub>
 
 > Finance: operational expenses and per-order economics (RETAIL-ERP.md Tranche 6, WO-23.1 — "build 10-admin-dashboard.md §B as written, now posting to the GL").
 
@@ -67,10 +67,29 @@ Indexes: `@@unique([recurringFromId, recurringPeriod])` · `@@index([incurredAt]
 
 Indexes: `@@index([isActive, order])`
 
+### `OrderEconomics`  <sub>`apps/api/prisma/schema/finance.prisma:91`</sub>
+
+> One row per order, written when it reaches DELIVERED and recomputed if it is later RETURNED (WO-B.3).
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `orderId` | `String` | id | @id |
+| `revenue` | `Int` |  |  |
+| `shippingIncome` | `Int` |  |  |
+| `codFeeIncome` | `Int` |  |  |
+| `cogs` | `Int` |  |  |
+| `shippingCost` | `Int` |  |  |
+| `shippingCostEstimated` | `Boolean` |  | @default(false) |
+| `gatewayFee` | `Int` |  |  |
+| `packagingCost` | `Int` |  |  |
+| `contribution` | `Int` |  |  |
+| `computedAt` | `DateTime` |  | @default(now()) |
+| `order` | `Order` | relation | @relation(fields: [orderId], references: [id], onDelete: Cascade) |
+
 
 ## Enums
 
-### `ExpenseRecurrence`  <sub>`apps/api/prisma/schema/finance.prisma:32`</sub>
+### `ExpenseRecurrence`  <sub>`apps/api/prisma/schema/finance.prisma:36`</sub>
 
 | Value | Meaning |
 |---|---|

@@ -85,6 +85,8 @@ model Order {
   shipments      Shipment[]
   statusEvents   OrderStatusEvent[]
   convertedLeads Lead[]             @relation("LeadConvertedOrder")
+  /// finance.prisma's OrderEconomics (WO-B.3) — null until DELIVERED.
+  economics      OrderEconomics?
 
   @@index([status, placedAt])
   @@index([userId])

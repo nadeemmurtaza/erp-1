@@ -57,6 +57,20 @@ export interface DocumentSettings {
   prefixes: DocumentPrefixes;
 }
 
+/**
+ * Basis points per payment provider (Rule 5 — 250 = 2.5%), read by
+ * OrderEconomicsService (WO-B.3) to derive `gatewayFee` from `Order.grandTotal`.
+ * The index signature covers a provider PaymentProvider.key names that isn't
+ * one of the two explicit keys below (jazzcash, easypaisa) — those fall back
+ * to `default` until they carry their own real rate.
+ */
+export interface FinanceGatewayFeeBpsSettings {
+  [provider: string]: number;
+  cod: number;
+  bank_transfer: number;
+  default: number;
+}
+
 export const SettingKey = {
   Store: 'store',
   /** IANA zone the shop trades in. Decides where a calendar day begins. */
@@ -112,6 +126,10 @@ export const SettingKey = {
   FinanceDefaultCurrency: 'finance.default_currency',
   /** 0-23, server-local. Hour of day FinanceCron generates due recurring expense instances — adjustable without a deploy, same idiom as the other cron-gating settings below. */
   FinanceRecurringRunHour: 'finance.recurring_run_hour',
+  /** Flat per-order packaging cost, paisa (WO-B.3) — every order costs the same to box, whatever it contains. */
+  FinancePackagingCostPerOrder: 'finance.packaging_cost_per_order',
+  /** See FinanceGatewayFeeBpsSettings above. */
+  FinanceGatewayFeeBps: 'finance.gateway_fee_bps',
   /**
    * Off until an owner turns it on — MarketingAutomationCron no-ops entirely
    * while this is false, the ship-safe default for anything that emails a
@@ -249,6 +267,12 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.TaxDefaultClass]: 'standard',
   [SettingKey.FinanceDefaultCurrency]: 'PKR',
   [SettingKey.FinanceRecurringRunHour]: 3,
+  [SettingKey.FinancePackagingCostPerOrder]: toMinor(50),
+  [SettingKey.FinanceGatewayFeeBps]: {
+    cod: 0,
+    bank_transfer: 0,
+    default: 250,
+  } satisfies FinanceGatewayFeeBpsSettings,
 
   [SettingKey.MarketingAutomationEnabled]: false,
   [SettingKey.MarketingAbandonedCartReminderHours]: 24,

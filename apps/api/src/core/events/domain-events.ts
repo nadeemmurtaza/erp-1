@@ -61,6 +61,8 @@ export const DomainEvent = {
 
   /** FinanceService.create() (WO-23.1) — fires whether or not `accounting` is on; posting-rules.subscriber.ts is the only subscriber today. */
   ExpenseRecorded: 'finance.expense_recorded',
+  /** OrderEconomicsService's own derived-row write (WO-23.1's WO-B.3) — not a GL posting, just notice that a fresh contribution-per-order figure exists. */
+  OrderEconomicsComputed: 'finance.order_economics_computed',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -281,6 +283,14 @@ export interface ExpenseRecordedPayload {
   supplierId: string | null;
 }
 
+export interface OrderEconomicsComputedPayload {
+  orderId: string;
+  /** All paisa. */
+  revenue: number;
+  cogs: number;
+  contribution: number;
+}
+
 export interface EmailReplyReceivedPayload {
   inboundEmailId: string;
   emailAccountId: string;
@@ -330,4 +340,5 @@ export interface DomainEventPayloads {
   [DomainEvent.IdentityVerificationRejected]: IdentityVerificationPayload;
   [DomainEvent.IdentityVerificationExpired]: IdentityVerificationPayload;
   [DomainEvent.ExpenseRecorded]: ExpenseRecordedPayload;
+  [DomainEvent.OrderEconomicsComputed]: OrderEconomicsComputedPayload;
 }

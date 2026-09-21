@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1159,
-    "lines": 179526,
+    "files": 1164,
+    "lines": 180066,
     "routes": 297,
     "controllers": 58,
-    "models": 117,
+    "models": 118,
     "enums": 50,
-    "migrations": 53,
-    "events": 35,
+    "migrations": 54,
+    "events": 36,
     "permissions": 38,
     "screens": 127,
     "crons": 8,
-    "specs": 105,
+    "specs": 107,
     "designLaws": 150
   },
   "designLaws": [
@@ -1083,9 +1083,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 459,
-      "lines": 61181,
-      "bytes": 2193777,
+      "files": 464,
+      "lines": 61721,
+      "bytes": 2215752,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1249,9 +1249,13 @@
         "apps/api/src/modules/finance/finance.controller.ts",
         "apps/api/src/modules/finance/finance.cron.spec.ts",
         "apps/api/src/modules/finance/finance.cron.ts",
+        "apps/api/src/modules/finance/finance.listener.spec.ts",
+        "apps/api/src/modules/finance/finance.listener.ts",
         "apps/api/src/modules/finance/finance.module.ts",
         "apps/api/src/modules/finance/finance.service.ts",
-        "apps/api/src/modules/finance/finance.spec.ts"
+        "apps/api/src/modules/finance/finance.spec.ts",
+        "apps/api/src/modules/finance/order-economics.service.spec.ts",
+        "apps/api/src/modules/finance/order-economics.service.ts"
       ],
       "routes": 10,
       "page": "docs/index/modules/finance.md"
@@ -7241,6 +7245,7 @@
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
+        "apps/api/src/modules/finance/finance.listener.ts:18 onOrderStatusChanged()",
         "apps/api/src/modules/orders/notification.subscriber.ts:166 onStatusChanged()"
       ]
     },
@@ -7249,6 +7254,7 @@
       "name": "order.cancelled",
       "doc": "",
       "publishers": [
+        "apps/api/src/modules/finance/finance.listener.ts:9",
         "apps/api/src/modules/orders/orders.service.ts:716"
       ],
       "subscribers": [
@@ -7596,6 +7602,15 @@
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:390 onExpenseRecorded()"
       ]
+    },
+    {
+      "symbol": "OrderEconomicsComputed",
+      "name": "finance.order_economics_computed",
+      "doc": "OrderEconomicsService's own derived-row write (WO-23.1's WO-B.3) — not a GL posting, just notice that a fresh contribution-per-order figure exists.",
+      "publishers": [
+        "apps/api/src/modules/finance/order-economics.service.ts:127"
+      ],
+      "subscribers": []
     }
   ],
   "models": [
@@ -9402,7 +9417,7 @@
     {
       "name": "Expense",
       "file": "apps/api/prisma/schema/finance.prisma",
-      "line": 40,
+      "line": 44,
       "doc": "",
       "fields": [
         {
@@ -9571,7 +9586,7 @@
     {
       "name": "ExpenseCategory",
       "file": "apps/api/prisma/schema/finance.prisma",
-      "line": 15,
+      "line": 19,
       "doc": "Finance: operational expenses and per-order economics (RETAIL-ERP.md Tranche 6, WO-23.1 — \"build 10-admin-dashboard.md §B as written, now posting to the GL\").",
       "fields": [
         {
@@ -12112,6 +12127,13 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "economics",
+          "type": "OrderEconomics?",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -12124,9 +12146,102 @@
       ]
     },
     {
+      "name": "OrderEconomics",
+      "file": "apps/api/prisma/schema/finance.prisma",
+      "line": 91,
+      "doc": "One row per order, written when it reaches DELIVERED and recomputed if it is later RETURNED (WO-B.3).",
+      "fields": [
+        {
+          "name": "orderId",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "revenue",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "shippingIncome",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "codFeeIncome",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "cogs",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "shippingCost",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "shippingCostEstimated",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "gatewayFee",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "packagingCost",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "contribution",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "computedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Order",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "OrderItem",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 108,
+      "line": 110,
       "doc": "",
       "fields": [
         {
@@ -12383,7 +12498,7 @@
     {
       "name": "OrderNumberCounter",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 252,
+      "line": 254,
       "doc": "Backing store for sequential per-year order numbers (YSN-2026-0001).",
       "fields": [
         {
@@ -12406,7 +12521,7 @@
     {
       "name": "OrderStatusEvent",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 189,
+      "line": 191,
       "doc": "",
       "fields": [
         {
@@ -15361,7 +15476,7 @@
     {
       "name": "Shipment",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 213,
+      "line": 215,
       "doc": "",
       "fields": [
         {
@@ -18405,7 +18520,7 @@
     {
       "name": "ExpenseRecurrence",
       "file": "apps/api/prisma/schema/finance.prisma",
-      "line": 32,
+      "line": 36,
       "values": [
         "NONE",
         "WEEKLY",
@@ -18541,7 +18656,7 @@
     {
       "name": "OrderItemFulfillmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 97,
+      "line": 99,
       "values": [
         "READY",
         "AWAITING_STOCK",
@@ -18721,7 +18836,7 @@
     {
       "name": "ShipmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 204,
+      "line": 206,
       "values": [
         "PENDING",
         "DISPATCHED",
@@ -19825,6 +19940,20 @@
       "tables": [
         "Expense",
         "ExpenseCategory"
+      ]
+    },
+    {
+      "folder": "20260921191326_add_order_economics",
+      "file": "apps/api/prisma/schema/migrations/20260921191326_add_order_economics/migration.sql",
+      "date": "2026-09-21",
+      "slug": "add_order_economics",
+      "statements": 2,
+      "kinds": [
+        "CREATE TABLE",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "OrderEconomics"
       ]
     }
   ],
@@ -21833,6 +21962,15 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/finance/finance.listener.spec.ts",
+      "module": "finance",
+      "kind": "unit test",
+      "cases": 2,
+      "describes": [
+        "FinanceListener"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/finance/finance.spec.ts",
       "module": "finance",
       "kind": "unit test",
@@ -21841,6 +21979,15 @@
         "FinanceService",
         "generateRecurringInstances — WO-B.2",
         "attachReceipt — WO-B.2"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/finance/order-economics.service.spec.ts",
+      "module": "finance",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "OrderEconomicsService"
       ]
     },
     {
@@ -23167,8 +23314,8 @@
       "path": "apps/api/prisma/schema/finance.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 80,
-      "bytes": 3010,
+      "lines": 122,
+      "bytes": 5089,
       "doc": "Finance: operational expenses and per-order economics (RETAIL-ERP.md",
       "symbols": []
     },
@@ -23686,6 +23833,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260921191326_add_order_economics/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 31,
+      "bytes": 1287,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -23698,8 +23854,8 @@
       "path": "apps/api/prisma/schema/orders.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 256,
-      "bytes": 9878,
+      "lines": 258,
+      "bytes": 9984,
       "doc": "Orders and shipments.",
       "symbols": []
     },
@@ -24571,8 +24727,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 334,
-      "bytes": 11755,
+      "lines": 345,
+      "bytes": 12197,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -24583,142 +24739,147 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 66
+          "line": 68
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 68
+          "line": 70
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 81
+          "line": 83
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 89
+          "line": 91
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 97
+          "line": 99
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 117
+          "line": 119
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 123
+          "line": 125
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 130
+          "line": 132
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 137
+          "line": 139
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 141
+          "line": 143
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 147
+          "line": 149
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 153
+          "line": 155
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 160
+          "line": 162
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 168
+          "line": 170
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 179
+          "line": 181
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 186
+          "line": 188
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 195
+          "line": 197
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 203
+          "line": 205
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 211
+          "line": 213
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 216
+          "line": 218
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 223
+          "line": 225
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 231
+          "line": 233
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 245
+          "line": 247
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 258
+          "line": 260
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 271
+          "line": 273
+        },
+        {
+          "name": "OrderEconomicsComputedPayload",
+          "kind": "interface",
+          "line": 286
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 284
+          "line": 294
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 291
+          "line": 301
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 297
+          "line": 307
         }
       ]
     },
@@ -25891,8 +26052,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 259,
-      "bytes": 10603,
+      "lines": 283,
+      "bytes": 11592,
       "doc": "",
       "symbols": [
         {
@@ -25921,19 +26082,24 @@
           "line": 53
         },
         {
+          "name": "FinanceGatewayFeeBpsSettings",
+          "kind": "interface",
+          "line": 67
+        },
+        {
           "name": "SettingKey",
           "kind": "const",
-          "line": 60
+          "line": 74
         },
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 131
+          "line": 149
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 133
+          "line": 151
         }
       ]
     },
@@ -27299,17 +27465,41 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/finance/finance.listener.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 48,
+      "bytes": 1949,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/finance/finance.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 27,
+      "bytes": 1190,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FinanceListener",
+          "kind": "class",
+          "line": 15
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/finance/finance.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 11,
-      "bytes": 321,
+      "lines": 13,
+      "bytes": 482,
       "doc": "",
       "symbols": [
         {
           "name": "FinanceModule",
           "kind": "class",
-          "line": 10
+          "line": 12
         }
       ]
     },
@@ -27341,6 +27531,30 @@
       "bytes": 10909,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/finance/order-economics.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 216,
+      "bytes": 8712,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/finance/order-economics.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 137,
+      "bytes": 5060,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrderEconomicsService",
+          "kind": "class",
+          "line": 40
+        }
+      ]
     },
     {
       "path": "apps/api/src/modules/identity-verification/dto/submit-otp.dto.ts",

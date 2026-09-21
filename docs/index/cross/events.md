@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **35** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **36** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -24,15 +24,15 @@ order" is a new file, not an edit to checkout.
 ## Attention list
 
 - Events **nothing publishes**: `crm.contact_upserted`, `crm.lead_created`
-- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `purchasing.goods_received`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`
+- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `purchasing.goods_received`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`
 
 ## Summary
 
 | Event | Symbol | Published by | Subscribed by |
 |---|---|---|---|
 | `order.placed` | `OrderPlaced` | `accounting`, `orders` | core/`events`, `accounting`, `crm`, `orders`, `stitching` |
-| `order.status_changed` | `OrderStatusChanged` | `orders` | `crm`, `orders` |
-| `order.cancelled` | `OrderCancelled` | `orders` | `crm`, `orders` |
+| `order.status_changed` | `OrderStatusChanged` | `orders` | `crm`, `finance`, `orders` |
+| `order.cancelled` | `OrderCancelled` | `finance`, `orders` | `crm`, `orders` |
 | `payment.succeeded` | `PaymentSucceeded` | `accounting`, `orders`, `payments` | `accounting`, `payments` |
 | `payment.failed` | `PaymentFailed` | `payments` | `payments` |
 | `payment.awaiting_approval` | `PaymentAwaitingApproval` | `payments` | _none_ |
@@ -65,6 +65,7 @@ order" is a new file, not an edit to checkout.
 | `identity_verification.rejected` | `IdentityVerificationRejected` | `identity-verification` | _none_ |
 | `identity_verification.expired` | `IdentityVerificationExpired` | `identity-verification` | _none_ |
 | `finance.expense_recorded` | `ExpenseRecorded` | `accounting`, `finance` | `accounting` |
+| `finance.order_economics_computed` | `OrderEconomicsComputed` | `finance` | _none_ |
 
 
 ## Detail
@@ -108,6 +109,7 @@ order" is a new file, not an edit to checkout.
 | Handler | Where | Module |
 |---|---|---|
 | `onStatusChanged()` | `apps/api/src/modules/crm/order.subscriber.ts:66` | `crm` |
+| `onOrderStatusChanged()` | `apps/api/src/modules/finance/finance.listener.ts:18` | `finance` |
 | `onStatusChanged()` | `apps/api/src/modules/orders/notification.subscriber.ts:166` | `orders` |
 
 ### `order.cancelled`
@@ -117,6 +119,7 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
+| `apps/api/src/modules/finance/finance.listener.ts:9` | `finance` |
 | `apps/api/src/modules/orders/orders.service.ts:716` | `orders` |
 
 
@@ -635,6 +638,21 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Handler | Where | Module |
 |---|---|---|
 | `onExpenseRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:390` | `accounting` |
+
+### `finance.order_economics_computed`
+
+> OrderEconomicsService's own derived-row write (WO-23.1's WO-B.3) — not a GL posting, just notice that a fresh contribution-per-order figure exists.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/finance/order-economics.service.ts:127` | `finance` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
 
 
 ---

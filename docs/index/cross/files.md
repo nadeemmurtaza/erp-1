@@ -3,14 +3,14 @@
 
 # Every tracked file
 
-All **1,159** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,164** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 459 | 61,181 | [files/api.md](../files/api.md) |
+| apps/api | 464 | 61,721 | [files/api.md](../files/api.md) |
 | apps/web | 230 | 34,289 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 42 | 5,292 | [files/mobile.md](../files/mobile.md) |
@@ -29,12 +29,12 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 266 |
-| unit test | 90 |
+| unit test | 92 |
 | page | 89 |
 | module | 83 |
+| service | 70 |
 | component | 70 |
-| service | 69 |
-| migration | 53 |
+| migration | 54 |
 | controller | 50 |
 | dto | 49 |
 | nest module | 39 |
@@ -44,7 +44,7 @@ name a new file: the convention is what makes it findable.
 | prisma schema | 23 |
 | react | 22 |
 | utility | 21 |
-| event subscriber | 16 |
+| event subscriber | 17 |
 | e2e test | 15 |
 | file | 13 |
 | yaml | 12 |

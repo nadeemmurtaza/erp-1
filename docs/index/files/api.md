@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 459 tracked files in `apps/api`, by directory.
+All 464 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -40,12 +40,12 @@ All 459 tracked files in `apps/api`, by directory.
 | `catalog.prisma` | prisma schema | 361 | Catalog: categories, products, variants, images. |
 | `core.prisma` | prisma schema | 421 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 239 | CRM: one customer record, whatever door the customer came in through. |
-| `finance.prisma` | prisma schema | 80 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
+| `finance.prisma` | prisma schema | 122 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `identity-verification.prisma` | prisma schema | 40 | / Tracks a User's identity verification against nID (Newax's external |
 | `inventory.prisma` | prisma schema | 231 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
 | `invoicing.prisma` | prisma schema | 88 | Trading-partner invoices and quotes (WO-18.3's remaining "forth" |
 | `measurements.prisma` | prisma schema | 107 | Measurements: garment types, their measurement fields, and saved customer |
-| `orders.prisma` | prisma schema | 256 | Orders and shipments. |
+| `orders.prisma` | prisma schema | 258 | Orders and shipments. |
 | `organization.prisma` | prisma schema | 169 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
 | `parties.prisma` | prisma schema | 52 | Parties: the permanent counterparty profile. One canonical record per |
 | `payments.prisma` | prisma schema | 48 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
@@ -383,6 +383,12 @@ All 459 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 88 |  |
 
+### `apps/api/prisma/schema/migrations/20260921191326_add_order_economics` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 31 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -473,7 +479,7 @@ All 459 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 334 | The catalogue of domain events. |
+| `domain-events.ts` | module | 345 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
@@ -584,7 +590,7 @@ All 459 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 44 |  |
-| `settings.defaults.ts` | module | 259 |  |
+| `settings.defaults.ts` | module | 283 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 103 |  |
 
@@ -737,16 +743,20 @@ All 459 tracked files in `apps/api`, by directory.
 | `email-inbox.service.ts` | service | 234 |  |
 | `mailbox-poller.cron.ts` | scheduled job | 133 |  |
 
-### `apps/api/src/modules/finance` (6)
+### `apps/api/src/modules/finance` (10)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `finance.controller.ts` | controller | 98 |  |
 | `finance.cron.spec.ts` | unit test | 69 |  |
 | `finance.cron.ts` | scheduled job | 36 |  |
-| `finance.module.ts` | nest module | 11 |  |
+| `finance.listener.spec.ts` | unit test | 48 |  |
+| `finance.listener.ts` | event subscriber | 27 |  |
+| `finance.module.ts` | nest module | 13 |  |
 | `finance.service.ts` | service | 394 |  |
 | `finance.spec.ts` | unit test | 299 |  |
+| `order-economics.service.spec.ts` | unit test | 216 |  |
+| `order-economics.service.ts` | service | 137 |  |
 
 ### `apps/api/src/modules/finance/dto` (2)
 

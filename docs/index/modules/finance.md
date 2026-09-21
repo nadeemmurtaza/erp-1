@@ -3,13 +3,13 @@
 
 # Module: `finance`
 
-Pack **core** · enabled by the `MODULES` allowlist · 8 files
+Pack **core** · enabled by the `MODULES` allowlist · 12 files
 
 
 
 Source: `apps/api/src/modules/finance/`
 
-## Files (8 · 1,042 lines)
+## Files (12 · 1,472 lines)
 
 All paths relative to `apps/api/src/modules/finance/dto`.
 
@@ -20,9 +20,13 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 | `finance.controller.ts` | controller | 98 | 1 |  |
 | `finance.cron.spec.ts` | unit test | 69 | — |  |
 | `finance.cron.ts` | scheduled job | 36 | 1 | WO-B.2's recurring-expense job. |
-| `finance.module.ts` | nest module | 11 | 1 |  |
+| `finance.listener.spec.ts` | unit test | 48 | — |  |
+| `finance.listener.ts` | event subscriber | 27 | 1 | WO-23.1's WO-B.3: compute OrderEconomics on DELIVERED, recompute on RETURNED. |
+| `finance.module.ts` | nest module | 13 | 1 |  |
 | `finance.service.ts` | service | 394 | 2 |  |
 | `finance.spec.ts` | unit test | 299 | — |  |
+| `order-economics.service.spec.ts` | unit test | 216 | — |  |
+| `order-economics.service.ts` | service | 137 | 1 | WO-23.1's WO-B.3: contribution per order. |
 
 
 ## HTTP routes (10)
@@ -47,20 +51,25 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 
 | Event | Name | Published at |
 |---|---|---|
+| `OrderCancelled` | `order.cancelled` | `finance.listener.ts:9` |
 | `ExpenseRecorded` | `finance.expense_recorded` | `finance.service.ts:203`, `finance.service.ts:366` |
+| `OrderEconomicsComputed` | `finance.order_economics_computed` | `order-economics.service.ts:127` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
 
-_none_
+| Event | Name | Handler |
+|---|---|---|
+| `OrderStatusChanged` | `order.status_changed` | `finance.listener.ts:18` → `onOrderStatusChanged()` |
 
 
 ## Tables it owns (`finance.prisma`)
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Expense` | 22 | :40 |  |
-| `ExpenseCategory` | 9 | :15 | Finance: operational expenses and per-order economics (RETAIL-ERP.md Tranche 6, WO-23.1 — "build 10-admin-das… |
+| `Expense` | 22 | :44 |  |
+| `ExpenseCategory` | 9 | :19 | Finance: operational expenses and per-order economics (RETAIL-ERP.md Tranche 6, WO-23.1 — "build 10-admin-das… |
+| `OrderEconomics` | 12 | :91 | One row per order, written when it reaches DELIVERED and recomputed if it is later RETURNED (WO-B.3). |
 
 
 Enums: `ExpenseRecurrence` (5)
@@ -81,7 +90,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`FinanceModule`** (`finance.module.ts`)
 - imports: —
 - controllers: `FinanceController`
-- providers: `FinanceService`, `FinanceCron`
+- providers: `FinanceService`, `FinanceCron`, `FinanceListener`, `OrderEconomicsService`
 - exports: —
 
 
@@ -99,12 +108,14 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (2)
+## Tests (4)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `finance.cron.spec.ts` | 3 | FinanceCron |
+| `finance.listener.spec.ts` | 2 | FinanceListener |
 | `finance.spec.ts` | 13 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 |
+| `order-economics.service.spec.ts` | 8 | OrderEconomicsService |
 
 
 ## Every export in this unit
@@ -119,9 +130,11 @@ check there before adding another.
 | `ExpenseSummaryQueryDto` | class | `expense.dto.ts:89` |  |
 | `FinanceController` | class | `finance.controller.ts:19` |  |
 | `FinanceCron` | class | `finance.cron.ts:19` | WO-B.2's recurring-expense job. |
-| `FinanceModule` | class | `finance.module.ts:10` |  |
+| `FinanceListener` | class | `finance.listener.ts:15` | WO-23.1's WO-B.3: compute OrderEconomics on DELIVERED, recompute on RETURNED. |
+| `FinanceModule` | class | `finance.module.ts:12` |  |
 | `ExpenseSummary` | interface | `finance.service.ts:53` |  |
 | `FinanceService` | class | `finance.service.ts:79` | Finance: operational expenses (RETAIL-ERP.md Tranche 6, WO-23.1 — building `10-admin-dashboard.md` WO-B.1 as… |
+| `OrderEconomicsService` | class | `order-economics.service.ts:40` | WO-23.1's WO-B.3: contribution per order. |
 
 
 ---

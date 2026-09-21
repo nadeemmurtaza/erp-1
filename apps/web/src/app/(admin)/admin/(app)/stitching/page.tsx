@@ -79,7 +79,7 @@ export default function TailorQueuePage() {
                 stage === entry.stage ? 'ring-2 ring-accent' : 'hover:bg-neutral-50',
               )}
             >
-              <p className="text-xs uppercase tracking-wide text-neutral-900/50">
+              <p className="text-xs uppercase tracking-wide text-neutral-900/60">
                 {STAGE_LABELS[entry.stage]}
               </p>
               <p className="mt-1 text-2xl font-semibold tabular-nums text-neutral-900">
@@ -140,7 +140,7 @@ export default function TailorQueuePage() {
         </label>
 
         {workload && canManageAssignments ? (
-          <span className="ms-auto text-sm text-neutral-900/50">
+          <span className="ms-auto text-sm text-neutral-900/60">
             {workload.unassigned} unassigned
           </span>
         ) : null}
@@ -174,7 +174,7 @@ export default function TailorQueuePage() {
                 </tr>
               ) : jobs.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-neutral-900/50">
+                  <td colSpan={6} className="px-4 py-8 text-center text-neutral-900/60">
                     Nothing in the queue matches those filters.
                   </td>
                 </tr>
@@ -196,7 +196,7 @@ export default function TailorQueuePage() {
                       <td className="text-neutral-900/80">{job.garmentType.labelEn}</td>
                       <td>
                         <p className="text-neutral-900">{customer.name}</p>
-                        <p className="text-xs text-neutral-900/40">{customer.reference}</p>
+                        <p className="text-xs text-neutral-900/60">{customer.reference}</p>
                       </td>
                       <td>
                         <StageBadge stage={job.stage} />
@@ -266,7 +266,7 @@ function isOverdue(job: StitchingJob): boolean {
 function Th({ children }: { children?: React.ReactNode }) {
   return (
     <th scope="col"
-      className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50"
+      className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60"
     >
       {children}
     </th>

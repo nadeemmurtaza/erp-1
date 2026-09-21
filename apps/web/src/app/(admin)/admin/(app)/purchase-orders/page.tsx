@@ -106,7 +106,7 @@ export default function PurchaseOrdersPage() {
                 </tr>
               ) : pos?.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-neutral-900/50">
+                  <td colSpan={6} className="p-8 text-center text-neutral-900/60">
                     No purchase orders found.
                   </td>
                 </tr>

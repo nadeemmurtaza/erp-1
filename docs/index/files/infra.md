@@ -79,7 +79,7 @@ All 53 tracked files in `scripts, CI, deployment and container configuration`, b
 |---|---|---|---|
 | `build-index.mjs` | script | 2500 |  |
 | `build-logo-raster.mjs` | script | 54 |  |
-| `check-contrast.mjs` | script | 427 |  |
+| `check-contrast.mjs` | script | 425 |  |
 | `check-email-dns.mjs` | script | 399 |  |
 | `check-env-templates.mjs` | script | 139 |  |
 | `check-frontend-secrets.mjs` | script | 137 |  |

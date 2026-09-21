@@ -71,13 +71,13 @@ export default function TradingPartnersPage() {
             <tbody className="divide-y divide-neutral-100">
               {busy && !partners ? (
                 <tr>
-                  <td colSpan={5} className="p-8 text-center text-neutral-900/50">
+                  <td colSpan={5} className="p-8 text-center text-neutral-900/60">
                     Loading...
                   </td>
                 </tr>
               ) : partners?.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="p-8 text-center text-neutral-900/50">
+                  <td colSpan={5} className="p-8 text-center text-neutral-900/60">
                     No trading partners yet.
                   </td>
                 </tr>

@@ -128,7 +128,7 @@ export default function MarketingAdminPage() {
             />
           </div>
 
-          <p className="mt-6 text-xs text-neutral-900/50">
+          <p className="mt-6 text-xs text-neutral-900/60">
             Flag which products are worth a reorder nudge from the product editor (Consumable /
             repeat-buy).
           </p>

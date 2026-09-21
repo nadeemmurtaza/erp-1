@@ -120,7 +120,7 @@ export default function AccountAddressesPage() {
           ) : null}
 
           {addresses.length === 0 ? (
-            <div className="p-6 text-center text-sm text-neutral-900/45">
+            <div className="p-6 text-center text-sm text-neutral-900/60">
               No saved addresses yet — add one to speed up checkout.
             </div>
           ) : (

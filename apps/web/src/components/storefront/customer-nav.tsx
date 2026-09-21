@@ -29,7 +29,7 @@ export function CustomerNav() {
         {/* Dropdown menu */}
         <div className="absolute end-0 top-full mt-3 hidden w-48 rounded-lg border border-neutral-100 bg-white p-4 shadow-md group-hover:block animate-fadeIn z-50">
           <div className="mb-3 pb-3 border-b border-neutral-100">
-            <p className="text-xs font-medium uppercase tracking-widest text-neutral-900/50">{t('account')}</p>
+            <p className="text-xs font-medium uppercase tracking-widest text-neutral-900/60">{t('account')}</p>
             <p className="mt-2 text-sm text-neutral-900">{user.email}</p>
           </div>
           <Link

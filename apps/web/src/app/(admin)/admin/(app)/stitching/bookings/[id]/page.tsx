@@ -184,7 +184,7 @@ export default function BookingDetailPage({
                   </Link>
                   <span className="text-sm text-neutral-900/70">{job.garmentType.labelEn}</span>
                   <StageBadge stage={job.stage} />
-                  <span className="text-xs text-neutral-900/40">
+                  <span className="text-xs text-neutral-900/60">
                     {job.assignedTailor?.firstName ?? 'Unassigned'}
                   </span>
                 </div>
@@ -196,7 +196,7 @@ export default function BookingDetailPage({
                 <dl className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-sm">
                   {measurementValues(job.measurementSnapshot).map(([key, value]) => (
                     <div key={key} className="flex gap-1">
-                      <dt className="text-neutral-900/50">{fieldLabel(key)}</dt>
+                      <dt className="text-neutral-900/60">{fieldLabel(key)}</dt>
                       <dd className="tabular-nums text-neutral-900/80">{value}&quot;</dd>
                     </div>
                   ))}

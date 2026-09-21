@@ -31,7 +31,7 @@ export function EmptyState({
     <div className={cn('px-6 py-12 text-center', className)}>
       <p className="text-sm font-medium text-neutral-900">{title}</p>
       {description ? (
-        <p className="mx-auto mt-1 max-w-sm text-sm text-neutral-900/50">{description}</p>
+        <p className="mx-auto mt-1 max-w-sm text-sm text-neutral-900/60">{description}</p>
       ) : null}
       {action ? <div className="mt-4">{action}</div> : null}
     </div>

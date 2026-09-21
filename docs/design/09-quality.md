@@ -151,8 +151,10 @@ What the next automation should be, in the order it would catch the most:
    where a token exists. Without it the token layer decays the week after
    it ships.
 3. ~~**Contrast checking in CI**~~ — **done**, `scripts/check-contrast.mjs`.
-   It confirmed the failure chapter 07 records, and found a larger one: the
-   brand accent is under the body-text floor.
+   It confirmed the failure chapter 07 records, found a larger one — the
+   brand accent and the secondary-text ramp were both under the body-text
+   floor — and both are now fixed: the accent darkened (same hue) in
+   `brand.ts`, the ramp's five failing steps consolidated onto `/60`.
 4. **Screenshot diffing at the seven widths** — expensive, and the only thing
    that makes Law 4 verifiable rather than remembered.
 

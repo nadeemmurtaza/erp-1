@@ -44,8 +44,8 @@ Every top-level export in `packages`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `brand.ts` | `BRAND` | const | :311 | --------------------------------------------------------------------------- |
-| `brand.ts` | `Brand` | type | :323 |  |
+| `brand.ts` | `BRAND` | const | :321 | --------------------------------------------------------------------------- |
+| `brand.ts` | `Brand` | type | :333 |  |
 | `constants.ts` | `LOCALES` | const | :3 | Locales the storefront ships in. |
 | `constants.ts` | `Locale` | type | :4 | Locales the storefront ships in. |
 | `constants.ts` | `DEFAULT_LOCALE` | const | :6 | Locales the storefront ships in. |

@@ -95,7 +95,7 @@ export default function AdminGarmentsPage() {
                        * content, it sits where the eye expects.
                        */}
                       <span
-                        className="mt-0.5 block w-fit font-urdu text-xs text-neutral-900/45"
+                        className="mt-0.5 block w-fit font-urdu text-xs text-neutral-900/60"
                         dir="rtl"
                       >
                         {garment.labelUr}

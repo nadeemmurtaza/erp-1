@@ -129,25 +129,6 @@ function readPalette(source) {
  * shrink and cannot grow.
  */
 const BASELINE = [
-  // ── the secondary-text ramp ───────────────────────────────────────────
-  //
-  // `text-neutral-900/NN` is how this product has always written quieter
-  // text, and the alpha steps below 60% do not reach 4.5:1 on any surface it
-  // paints. This is ~227 call sites: a single deliberate pass to re-tone
-  // them, not a side effect of adding a checker, and not a decision to make
-  // silently — the tones carry the visual hierarchy (TYP-4, COG-12) and
-  // raising them all flattens it.
-  //
-  // The remedy is small per site and known: /60 clears the floor at 4.93:1
-  // on white and 4.75:1 on neutral-50. Whether every one of these should
-  // become /60, or some should become larger or bolder instead, is a design
-  // decision. Until it is made, the ratchet below stops the debt growing.
-  { token: 'neutral-900/50', max: 148, reason: '3.54:1 — the standard secondary-text tone. /60 reaches 4.93:1.' },
-  { token: 'neutral-900/40', max: 54, reason: '2.62:1 — tertiary text and hints.' },
-  { token: 'neutral-900/45', max: 20, reason: '3.03:1 — tertiary text.' },
-  { token: 'neutral-900/30', max: 4, reason: '1.99:1 — placeholder and empty-slot tones.' },
-  { token: 'neutral-900/35', max: 1, reason: '2.28:1 — the command palette\'s search icon.' },
-
   // ── decorative boundaries ─────────────────────────────────────────────
   //
   // WCAG 1.4.11 governs a boundary that CONVEYS information — the outline of
@@ -161,20 +142,37 @@ const BASELINE = [
   { token: 'neutral-200', max: 2, reason: '1.54:1 — a dropdown edge and a table rule.' },
   { token: 'neutral-800', max: 1, reason: '1.10:1 — the dark footer\'s top border.' },
   { token: 'neutral-300', max: 1, reason: '2.10:1 — a gallery thumbnail edge.' },
-
-  // ── the accent ────────────────────────────────────────────────────────
-  //
-  // The brand accent (#0f8fa3) reaches 3.83:1 on white: fine for a large
-  // label or a boundary, under the 4.5:1 body floor — and white ON it, which
-  // is the primary button across the whole product, is the same 3.83:1.
-  //
-  // The accent is a brand value in brand.ts and its tone is the client's
-  // decision (Law 1), so this checker records it rather than changing it.
-  // Darkening to about #0b7385 clears the floor and keeps the hue.
-  { token: 'white', max: 4, reason: '3.83:1 — white text on the accent button.' },
-  { token: 'accent-hover/80', max: 2, reason: '3.97:1 — the storefront auth-page link tone.' },
-  { token: 'neutral-400', max: 1, reason: '2.99:1 on neutral-50 — a gallery placeholder.' },
+  { token: 'neutral-400', max: 1, reason: '2.99:1 on neutral-50 — a gallery placeholder (paired bg-neutral-50 text-neutral-400).' },
 ];
+
+// ── retired entries, kept as a record rather than deleted outright ───────
+//
+// Both were resolved in the same change: the accent was darkened (same hue,
+// see brand.ts) and the secondary-text ramp's five failing alpha steps
+// (/30 /35 /40 /45 /50) were consolidated onto /60, the nearest tone that
+// already cleared the floor — the remedy this file itself had already
+// worked out and left as a comment for whoever did the re-tone pass. That
+// pass touched 231 call sites across 109 files, mechanically: no other
+// change. `git log -p -- scripts/check-contrast.mjs` at the commit that
+// removed them has the counts and the per-file breakdown.
+//
+//   neutral-900/50    148 uses, 3.54:1  →  now /60, 4.93:1
+//   neutral-900/40     54 uses, 2.62:1  →  now /60
+//   neutral-900/45     20 uses, 3.03:1  →  now /60
+//   neutral-900/30      7 uses, 1.99:1  →  now /60
+//   neutral-900/35      2 uses, 2.28:1  →  now /60
+//   white                4 uses, 3.83:1  →  now 4.55:1 (accent darkened)
+//   accent-hover/80      2 uses, 3.97:1  →  now 4.55:1 on neutral-50 (solved directly against it)
+//
+// Still open, and NOT touched by that pass — informational only today,
+// because the checker cannot prove a failure without knowing the real
+// ambient surface (see the "clears the floor on some painted surface but
+// NOT on the body surface" report): `neutral-500` (88 uses, mostly POS) and
+// `neutral-400` (26 uses, storefront) as bare text colours miss 4.5:1 on
+// `neutral-50`. Neither is part of "the text ramp" — both are solid steps
+// on the neutral SCALE (theme-colors.ts), a different part of the palette
+// from the alpha-based ramp this pass addressed — so raising them is a
+// separate decision, not made here.
 
 /* ── scanning ──────────────────────────────────────────────────────────── */
 

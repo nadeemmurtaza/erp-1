@@ -108,7 +108,7 @@ export default function SlowMoversPage() {
                 </tr>
               ) : filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={canViewCost ? 6 : 5} className="p-8 text-center text-neutral-900/50">
+                  <td colSpan={canViewCost ? 6 : 5} className="p-8 text-center text-neutral-900/60">
                     No slow movers found for this bucket.
                   </td>
                 </tr>

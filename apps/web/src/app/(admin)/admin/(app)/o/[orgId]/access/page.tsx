@@ -128,7 +128,7 @@ export default function AdminScopesPage() {
                   <tr key={row.id}>
                     <td>
                       <span className="font-medium text-neutral-900">{holderName(row.user)}</span>
-                      <p className="text-xs text-neutral-900/40">{row.user.email}</p>
+                      <p className="text-xs text-neutral-900/60">{row.user.email}</p>
                     </td>
                     <td className="text-neutral-900/70">
                       {row.level === 'ORG' && 'Super admin — every brand and branch'}

@@ -232,7 +232,7 @@ export default function AdminContactsPage() {
                   </tr>
                 ) : contacts.data.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/50">
+                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/60">
                       No customers match those filters.
                     </td>
                   </tr>
@@ -248,7 +248,7 @@ export default function AdminContactsPage() {
                     >
                       <td>
                         <p className="font-medium text-neutral-900">{contact.name}</p>
-                        <p className="text-xs text-neutral-900/40">
+                        <p className="text-xs text-neutral-900/60">
                           {contact.phoneE164 ?? contact.email ?? '—'}
                           {contact.city ? ` · ${contact.city}` : ''}
                         </p>
@@ -311,7 +311,7 @@ export default function AdminContactsPage() {
 
         <aside className="card h-fit p-4 lg:sticky lg:top-4">
           {!selected ? (
-            <p className="py-8 text-center text-sm text-neutral-900/50">
+            <p className="py-8 text-center text-sm text-neutral-900/60">
               Choose a customer to see their history.
             </p>
           ) : (
@@ -383,7 +383,7 @@ function ContactDetailPanel({
         }}
         className="mt-4 border-t border-neutral-100 pt-4"
       >
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
           Log an interaction
         </h3>
         <select
@@ -411,7 +411,7 @@ function ContactDetailPanel({
 
       {contact.followUps.filter((task) => !task.isDone).length > 0 ? (
         <div className="mt-4 border-t border-neutral-100 pt-4">
-          <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
             Open follow-ups
           </h3>
           <ul className="mt-2 space-y-1 text-sm">
@@ -420,7 +420,7 @@ function ContactDetailPanel({
               .map((task) => (
                 <li key={task.id} className="text-neutral-900/70">
                   {task.note}
-                  <span className="ms-2 text-xs text-neutral-900/40">
+                  <span className="ms-2 text-xs text-neutral-900/60">
                     {formatDate(task.dueAt)}
                   </span>
                 </li>
@@ -430,9 +430,9 @@ function ContactDetailPanel({
       ) : null}
 
       <div className="mt-4 border-t border-neutral-100 pt-4">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/50">Orders</h3>
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/60">Orders</h3>
         {contact.orders.length === 0 ? (
-          <p className="mt-2 text-sm text-neutral-900/50">No orders yet.</p>
+          <p className="mt-2 text-sm text-neutral-900/60">No orders yet.</p>
         ) : (
           <ul className="mt-2 space-y-1 text-sm">
             {contact.orders.slice(0, 6).map((order) => (
@@ -446,15 +446,15 @@ function ContactDetailPanel({
       </div>
 
       <div className="mt-4 border-t border-neutral-100 pt-4">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/50">Timeline</h3>
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/60">Timeline</h3>
         {contact.interactions.length === 0 ? (
-          <p className="mt-2 text-sm text-neutral-900/50">Nothing logged yet.</p>
+          <p className="mt-2 text-sm text-neutral-900/60">Nothing logged yet.</p>
         ) : (
           <ol className="mt-2 space-y-2 text-sm">
             {contact.interactions.map((interaction) => (
               <li key={interaction.id}>
                 <p className="text-neutral-900/80">{interaction.body}</p>
-                <p className="text-xs text-neutral-900/40">
+                <p className="text-xs text-neutral-900/60">
                   {interaction.kind.toLowerCase()} ·{' '}
                   {formatDate(interaction.occurredAt)}
                   {interaction.actor?.firstName ? ` · ${interaction.actor.firstName}` : ''}
@@ -471,7 +471,7 @@ function ContactDetailPanel({
 function Metric({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-md bg-neutral-50 p-2">
-      <dt className="text-[10px] uppercase tracking-wide text-neutral-900/40">{label}</dt>
+      <dt className="text-[10px] uppercase tracking-wide text-neutral-900/60">{label}</dt>
       <dd className="text-sm font-semibold text-neutral-900">{value}</dd>
     </div>
   );
@@ -481,7 +481,7 @@ function Th({ children, className }: { children: React.ReactNode; className?: st
   return (
     <th scope="col"
       className={cn(
-        'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50',
+        'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60',
         className,
       )}
     >

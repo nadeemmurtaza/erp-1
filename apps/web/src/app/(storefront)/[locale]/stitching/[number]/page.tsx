@@ -96,7 +96,7 @@ export default function StitchingBookingPage({
   }
 
   if (loading) {
-    return <div className="container-page py-16 text-center text-sm text-neutral-900/50">…</div>;
+    return <div className="container-page py-16 text-center text-sm text-neutral-900/60">…</div>;
   }
 
   if (!booking) {
@@ -149,7 +149,7 @@ export default function StitchingBookingPage({
 
       <dl className="mt-3 flex flex-wrap gap-x-8 gap-y-2 text-sm">
         <div>
-          <dt className="text-neutral-900/50">{t('fabric')}</dt>
+          <dt className="text-neutral-900/60">{t('fabric')}</dt>
           <dd className="text-neutral-900">
             {booking.fabricReceivedAt
               ? t('fabricReceivedOn', {
@@ -160,7 +160,7 @@ export default function StitchingBookingPage({
         </div>
         {booking.promisedAt ? (
           <div>
-            <dt className="text-neutral-900/50">{t('promised')}</dt>
+            <dt className="text-neutral-900/60">{t('promised')}</dt>
             <dd className="text-neutral-900">
               {formatDate(booking.promisedAt, locale as Locale)}
             </dd>
@@ -168,7 +168,7 @@ export default function StitchingBookingPage({
         ) : null}
         {booking.quotedFee !== null ? (
           <div>
-            <dt className="text-neutral-900/50">{t('quote')}</dt>
+            <dt className="text-neutral-900/60">{t('quote')}</dt>
             <dd className="text-neutral-900">{formatMoney(booking.quotedFee, locale)}</dd>
           </div>
         ) : null}
@@ -181,7 +181,7 @@ export default function StitchingBookingPage({
               <h2 className="text-sm font-semibold text-neutral-900">
                 {locale === 'ur' ? job.garmentType.labelUr : job.garmentType.labelEn}
               </h2>
-              <span className="text-xs text-neutral-900/40">{job.number}</span>
+              <span className="text-xs text-neutral-900/60">{job.number}</span>
             </div>
 
             {job.instructions ? (

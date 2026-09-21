@@ -97,7 +97,7 @@ export default function TradingPartnerDetailPage({ params }: { params: Promise<{
   }
 
   if (busy) {
-    return <p className="p-4 text-sm text-neutral-900/50">Loading trading partner...</p>;
+    return <p className="p-4 text-sm text-neutral-900/60">Loading trading partner...</p>;
   }
 
   if (error && !partner) {
@@ -148,7 +148,7 @@ export default function TradingPartnerDetailPage({ params }: { params: Promise<{
             </button>
           ))}
         </div>
-        <p className="mt-2 text-xs text-neutral-900/50">
+        <p className="mt-2 text-xs text-neutral-900/60">
           A SUSPENDED partner&apos;s inbound key stops working immediately, even if it still hashes correctly.
         </p>
       </div>

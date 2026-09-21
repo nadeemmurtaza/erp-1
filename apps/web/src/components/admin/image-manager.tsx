@@ -142,7 +142,7 @@ export function ImageManager({
 
       {images.length > 0 ? (
         <>
-        <p className="mb-3 text-xs text-neutral-900/50">{ALT_TEXT_GUIDANCE}</p>
+        <p className="mb-3 text-xs text-neutral-900/60">{ALT_TEXT_GUIDANCE}</p>
         <ul className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
           {images.map((image, index) => (
             <li
@@ -201,7 +201,7 @@ export function ImageManager({
         </ul>
         </>
       ) : (
-        <p className="mb-4 text-sm text-neutral-900/50">No photographs yet.</p>
+        <p className="mb-4 text-sm text-neutral-900/60">No photographs yet.</p>
       )}
 
       <label className="btn-secondary cursor-pointer">
@@ -218,7 +218,7 @@ export function ImageManager({
           className="sr-only"
         />
       </label>
-      <p className="mt-2 text-xs text-neutral-900/40">JPEG, PNG, WebP or AVIF, up to 8MB each.</p>
+      <p className="mt-2 text-xs text-neutral-900/60">JPEG, PNG, WebP or AVIF, up to 8MB each.</p>
     </div>
   );
 }
@@ -241,7 +241,7 @@ function AltTextField({ value, onSave }: { value: string; onSave: (value: string
       onBlur={() => {
         if (draft !== value) onSave(draft);
       }}
-      className="w-full rounded border border-neutral-100 px-1.5 py-1 text-[11px] text-neutral-900 placeholder:text-neutral-900/30 focus:border-accent focus:outline-none"
+      className="w-full rounded border border-neutral-100 px-1.5 py-1 text-[11px] text-neutral-900 placeholder:text-neutral-900/60 focus:border-accent focus:outline-none"
     />
   );
 }
@@ -353,7 +353,7 @@ export function ImageStager({
     <div>
       {images.length > 0 ? (
         <>
-          <p className="mb-3 text-xs text-neutral-900/50">{ALT_TEXT_GUIDANCE}</p>
+          <p className="mb-3 text-xs text-neutral-900/60">{ALT_TEXT_GUIDANCE}</p>
           <ul className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
             {images.map((image, index) => (
               <li
@@ -407,7 +407,7 @@ export function ImageStager({
                     value={image.alt}
                     placeholder={ALT_TEXT_PLACEHOLDER}
                     onChange={(event) => setAlt(image.localId, event.target.value)}
-                    className="w-full rounded border border-neutral-100 px-1.5 py-1 text-[11px] text-neutral-900 placeholder:text-neutral-900/30 focus:border-accent focus:outline-none"
+                    className="w-full rounded border border-neutral-100 px-1.5 py-1 text-[11px] text-neutral-900 placeholder:text-neutral-900/60 focus:border-accent focus:outline-none"
                   />
                 </div>
               </li>
@@ -415,7 +415,7 @@ export function ImageStager({
           </ul>
         </>
       ) : (
-        <p className="mb-4 text-sm text-neutral-900/50">No photographs yet.</p>
+        <p className="mb-4 text-sm text-neutral-900/60">No photographs yet.</p>
       )}
 
       <label className="btn-secondary cursor-pointer">
@@ -431,7 +431,7 @@ export function ImageStager({
           className="sr-only"
         />
       </label>
-      <p className="mt-2 text-xs text-neutral-900/40">
+      <p className="mt-2 text-xs text-neutral-900/60">
         JPEG, PNG, WebP or AVIF, up to 8MB each. Uploaded when you create the product below — no
         separate trip needed.
       </p>

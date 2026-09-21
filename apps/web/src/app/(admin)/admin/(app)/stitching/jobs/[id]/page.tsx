@@ -146,7 +146,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
         <section className="card p-4 lg:col-span-1">
           <h2 className="mb-3 text-sm font-semibold text-neutral-900">Measurements</h2>
           {measurements.length === 0 ? (
-            <p className="text-sm text-neutral-900/50">No measurements were recorded.</p>
+            <p className="text-sm text-neutral-900/60">No measurements were recorded.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -187,13 +187,13 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
           <dl className="mt-4 space-y-1 text-sm">
             <div className="flex justify-between">
-              <dt className="text-neutral-900/50">Due</dt>
+              <dt className="text-neutral-900/60">Due</dt>
               <dd className="text-neutral-900/80">
                 {job.dueAt ? formatDate(job.dueAt) : '—'}
               </dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-neutral-900/50">Tailor</dt>
+              <dt className="text-neutral-900/60">Tailor</dt>
               <dd className="text-neutral-900/80">
                 {job.assignedTailor?.firstName ?? 'Unassigned'}
               </dd>
@@ -268,7 +268,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
               </button>
             ) : null}
             {!forward && !back ? (
-              <p className="text-sm text-neutral-900/50">This job is finished.</p>
+              <p className="text-sm text-neutral-900/60">This job is finished.</p>
             ) : null}
           </div>
 
@@ -279,13 +279,13 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                 <p className="text-neutral-900">
                   {event.fromStage ? `${STAGE_LABELS[event.fromStage]} → ` : ''}
                   {STAGE_LABELS[event.toStage]}
-                  <span className="ms-2 text-xs text-neutral-900/40">
+                  <span className="ms-2 text-xs text-neutral-900/60">
                     {formatDateTime(event.createdAt)}
                   </span>
                 </p>
                 {event.note ? <p className="text-neutral-900/60">{event.note}</p> : null}
                 {event.actor?.firstName ? (
-                  <p className="text-xs text-neutral-900/40">by {event.actor.firstName}</p>
+                  <p className="text-xs text-neutral-900/60">by {event.actor.firstName}</p>
                 ) : null}
                 {event.photoUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element

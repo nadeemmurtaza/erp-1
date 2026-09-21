@@ -590,7 +590,7 @@ Every top-level export in `web`, with the line to open.
 | `range-picker.tsx` | `RangeDays` | type | :7 | The windows every analytics screen offers. |
 | `range-picker.tsx` | `RangePicker` | function | :22 | How long a window the figures below cover. |
 | `role-wizard.tsx` | `RoleWizard` | function | :22 | Create-or-edit a role, one permission group per screen (owner's request): name and description firs… |
-| `sales-chart.tsx` | `SalesChart` | function | :34 |  |
+| `sales-chart.tsx` | `SalesChart` | function | :36 |  |
 | `scope-chips.tsx` | `ScopeChip` | interface | :6 |  |
 | `scope-chips.tsx` | `ScopeChips` | function | :27 | The scope switcher for the three-level admin shell (RETAIL-ERP.md R19, WO-18.5) — brand chips over… |
 | `session.tsx` | `AdminSessionProvider` | const | :8 |  |

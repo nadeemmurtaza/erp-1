@@ -303,7 +303,7 @@ export default function EmailAccountPage({ params }: { params: Promise<{ id: str
                       </option>
                     ))}
                   </select>
-                  <p className="mt-1 text-xs text-neutral-900/50">
+                  <p className="mt-1 text-xs text-neutral-900/60">
                     {PURPOSES.find((purpose) => purpose.value === form.purpose)?.hint}
                   </p>
                 </div>
@@ -513,7 +513,7 @@ export default function EmailAccountPage({ params }: { params: Promise<{ id: str
                   />
                   Connect IMAP as well
                 </label>
-                <p className="mb-4 max-w-prose text-xs text-neutral-900/50">
+                <p className="mb-4 max-w-prose text-xs text-neutral-900/60">
                   Connection-tested only. Nothing in this store reads a mailbox yet, so IMAP does
                   not do anything beyond proving the mailbox is reachable.
                 </p>

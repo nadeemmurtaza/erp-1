@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-53 files · 26,725 lines
+53 files · 26,723 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -25,7 +25,7 @@ on them.
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 16 | 6,122 | script, py |
+| `scripts` | 16 | 6,120 | script, py |
 | `scripts/lib` | 2 | 1,269 | utility |
 
 
@@ -45,7 +45,7 @@ on them.
 | `scripts/lib/index-scan.mjs` | 906 | utility | Scanners for the repository index. |
 | `scripts/check-module-boundaries.mjs` | 535 | script |  |
 | `scripts/idx.mjs` | 486 | script |  |
-| `scripts/check-contrast.mjs` | 427 | script |  |
+| `scripts/check-contrast.mjs` | 425 | script |  |
 | `scripts/check-email-dns.mjs` | 399 | script |  |
 | `scripts/check-links.mjs` | 387 | script |  |
 | `scripts/lib/model-routing.mjs` | 363 | utility | Which model and how much effort each kind of job in this repository deserves. |

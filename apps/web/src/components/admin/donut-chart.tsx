@@ -77,7 +77,7 @@ export function DonutChart({
   const total = slices.reduce((sum, item) => sum + item.value, 0);
 
   if (slices.length === 0) {
-    return <p className="p-8 text-center text-sm text-neutral-900/50">No revenue in this window.</p>;
+    return <p className="p-8 text-center text-sm text-neutral-900/60">No revenue in this window.</p>;
   }
 
   return (
@@ -125,7 +125,7 @@ export function DonutChart({
               <span className="truncate text-neutral-900/80">{slice.label}</span>
             </span>
             <span className="shrink-0 text-neutral-900/60">
-              {valueFormatter(slice.value)} <span className="text-neutral-900/40">· {slice.percent}%</span>
+              {valueFormatter(slice.value)} <span className="text-neutral-900/60">· {slice.percent}%</span>
             </span>
           </li>
         ))}

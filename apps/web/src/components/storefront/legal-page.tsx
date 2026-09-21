@@ -45,7 +45,7 @@ export function LegalPage({
           <h1 className="text-2xl font-medium tracking-tight text-neutral-900 lg:text-3xl">
             {title}
           </h1>
-          <p className="mt-1.5 text-sm text-neutral-900/50">{updated}</p>
+          <p className="mt-1.5 text-sm text-neutral-900/60">{updated}</p>
         </header>
 
         {/*

@@ -84,9 +84,9 @@ export function PartyPicker({ partyRole, id, value, onSelect, placeholder, class
       {open ? (
         <div className="absolute z-10 mt-1 max-h-64 w-full overflow-y-auto rounded border border-neutral-200 bg-white shadow-lg">
           {busy ? (
-            <div className="p-3 text-sm text-neutral-900/50">Searching...</div>
+            <div className="p-3 text-sm text-neutral-900/60">Searching...</div>
           ) : results.length === 0 ? (
-            <div className="p-3 text-sm text-neutral-900/50">No matches.</div>
+            <div className="p-3 text-sm text-neutral-900/60">No matches.</div>
           ) : (
             results.map((result) => (
               <button

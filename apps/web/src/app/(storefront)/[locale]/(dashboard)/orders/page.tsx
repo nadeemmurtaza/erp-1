@@ -91,7 +91,7 @@ export default function OrderHistoryPage() {
                   <p className="text-sm font-medium text-neutral-900">
                     {formatMoney(order.grandTotal, locale)}
                   </p>
-                  <p className="text-xs text-neutral-900/50">
+                  <p className="text-xs text-neutral-900/60">
                     {formatDate(order.placedAt, locale)}
                   </p>
                 </div>

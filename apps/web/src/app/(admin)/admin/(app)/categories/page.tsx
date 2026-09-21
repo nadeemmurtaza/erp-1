@@ -132,14 +132,14 @@ export default function AdminCategoriesPage() {
                     <div style={{ paddingInlineStart: `${depth * 1.25}rem` }}>
                       <span className="font-medium text-neutral-900">
                         {depth > 0 ? (
-                          <span aria-hidden className="me-1 text-neutral-900/30">
+                          <span aria-hidden className="me-1 text-neutral-900/60">
                             └
                           </span>
                         ) : null}
                         {category.translations.find((t) => t.locale === 'en')?.name ??
                           category.slug}
                       </span>
-                      <p className="text-xs text-neutral-900/40">
+                      <p className="text-xs text-neutral-900/60">
                         {category.slug}
                         {category.isActive ? '' : ' · hidden'}
                       </p>

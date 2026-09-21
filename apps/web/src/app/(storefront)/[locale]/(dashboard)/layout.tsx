@@ -65,7 +65,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div className="container-page py-8">
       {user ? (
         <>
-          <p className="mb-4 text-sm text-neutral-900/50">
+          <p className="mb-4 text-sm text-neutral-900/60">
             {t('signedInAs', { who: user.email ?? user.phone ?? '' })}
           </p>
           <DashboardNav />

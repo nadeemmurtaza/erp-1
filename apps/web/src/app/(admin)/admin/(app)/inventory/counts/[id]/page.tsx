@@ -102,7 +102,7 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
     }
   };
 
-  if (busy) return <p className="p-4 text-neutral-900/50">Loading count sheet...</p>;
+  if (busy) return <p className="p-4 text-neutral-900/60">Loading count sheet...</p>;
   if (!count) return <p className="p-4 text-red-600">Count not found.</p>;
 
   return (
@@ -166,7 +166,7 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
               Enter
             </button>
           </form>
-          <p className="mt-2 text-xs text-neutral-900/50">USB barcode scanners automatically submit on scan.</p>
+          <p className="mt-2 text-xs text-neutral-900/60">USB barcode scanners automatically submit on scan.</p>
         </div>
       )}
 
@@ -174,17 +174,17 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-neutral-100">
-              <th className="px-4 py-2 font-semibold text-neutral-900/50 uppercase text-xs">SKU</th>
-              <th className="px-4 py-2 font-semibold text-neutral-900/50 uppercase text-xs">Product</th>
-              <th className="px-4 py-2 text-right font-semibold text-neutral-900/50 uppercase text-xs">Expected</th>
-              <th className="px-4 py-2 text-right font-semibold text-neutral-900/50 uppercase text-xs">Counted</th>
-              <th className="px-4 py-2 text-right font-semibold text-neutral-900/50 uppercase text-xs">Variance</th>
+              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">SKU</th>
+              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">Product</th>
+              <th className="px-4 py-2 text-right font-semibold text-neutral-900/60 uppercase text-xs">Expected</th>
+              <th className="px-4 py-2 text-right font-semibold text-neutral-900/60 uppercase text-xs">Counted</th>
+              <th className="px-4 py-2 text-right font-semibold text-neutral-900/60 uppercase text-xs">Variance</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-neutral-100">
             {count.lines.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-neutral-900/50">
+                <td colSpan={5} className="px-4 py-8 text-center text-neutral-900/60">
                   {count.status === 'DRAFT' ? 'Lines will be generated when count is started.' : 'No items found.'}
                 </td>
               </tr>
@@ -208,7 +208,7 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
                   </td>
                   <td className={cn(
                     'px-4 py-3 text-right tabular-nums font-medium',
-                    variance === null || variance === 0 ? 'text-neutral-900/50' : variance > 0 ? 'text-green-600' : 'text-red-600'
+                    variance === null || variance === 0 ? 'text-neutral-900/60' : variance > 0 ? 'text-green-600' : 'text-red-600'
                   )}>
                     {variance === null ? '-' : variance > 0 ? `+${variance}` : variance}
                   </td>

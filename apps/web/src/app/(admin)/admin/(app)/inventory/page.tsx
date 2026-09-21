@@ -170,7 +170,7 @@ export default function AdminInventoryPage() {
                 </tr>
               ) : variants?.length === 0 ? (
                 <tr>
-                  <td colSpan={canViewCost ? 10 : 8} className="p-8 text-center text-neutral-900/50">
+                  <td colSpan={canViewCost ? 10 : 8} className="p-8 text-center text-neutral-900/60">
                     No variants found.
                   </td>
                 </tr>
@@ -241,7 +241,7 @@ export default function AdminInventoryPage() {
                             {historyBusy ? (
                               <Loading label="Loading ledger" />
                             ) : !historyRows || historyRows.length === 0 ? (
-                              <p className="text-sm text-neutral-900/50">No movements recorded yet.</p>
+                              <p className="text-sm text-neutral-900/60">No movements recorded yet.</p>
                             ) : (
                               <div className="overflow-x-auto">
                                 <table className="table-flat">

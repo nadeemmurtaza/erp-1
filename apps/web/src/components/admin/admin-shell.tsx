@@ -71,7 +71,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
   if (!checked || !user) {
     return (
-      <div className="flex min-h-screen items-center justify-center text-sm text-neutral-900/50">
+      <div className="flex min-h-screen items-center justify-center text-sm text-neutral-900/60">
         Checking your session…
       </div>
     );
@@ -170,7 +170,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
             <Link href="/en" className="text-neutral-900/60 hover:text-accent-hover">
               View store
             </Link>
-            <span className="text-neutral-900/40">|</span>
+            <span className="text-neutral-900/60">|</span>
             <Link href={ROUTES.admin.account} className="text-neutral-900/70 hover:text-accent-hover">
               {user.firstName ?? user.email} · {user.roles.join(', ') || 'No role assigned'}
             </Link>
@@ -302,7 +302,7 @@ function NavGroup({
         aria-expanded={open}
         aria-controls={listId}
         className={cn(
-          'flex w-full items-center gap-2 rounded px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-900/40 transition-colors duration-200',
+          'flex w-full items-center gap-2 rounded px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-900/60 transition-colors duration-200',
           holdsActivePage ? 'cursor-default' : 'hover:text-neutral-900/70',
         )}
       >
@@ -385,7 +385,7 @@ function NavItemNode({
             aria-expanded={isOpen}
             aria-controls={`nav-children-${item.key}`}
             aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${item.label}`}
-            className="ms-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-neutral-900/50 hover:bg-neutral-50 hover:text-neutral-900"
+            className="ms-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-neutral-900/60 hover:bg-neutral-50 hover:text-neutral-900"
           >
             <Chevron open={isOpen} />
           </button>

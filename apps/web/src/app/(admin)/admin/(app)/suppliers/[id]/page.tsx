@@ -123,7 +123,7 @@ export default function SupplierDetailPage({ params }: { params: Promise<{ id: s
           <div>
             <dt className="text-neutral-900/60 mb-1">Status</dt>
             <dd className="font-medium">
-              {supplier.isActive ? <span className="text-green-600">Active</span> : <span className="text-neutral-900/50">Inactive</span>}
+              {supplier.isActive ? <span className="text-green-600">Active</span> : <span className="text-neutral-900/60">Inactive</span>}
             </dd>
           </div>
           <div>

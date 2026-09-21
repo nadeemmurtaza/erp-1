@@ -260,7 +260,7 @@ export default function BookStitchingPage() {
                             }
                             className="field-input"
                           />
-                          <span className="text-xs text-neutral-900/40">
+                          <span className="text-xs text-neutral-900/60">
                             {field.unit === 'CM' ? 'cm' : 'in'} · {field.min}–{field.max}
                           </span>
                         </label>
@@ -382,7 +382,7 @@ export default function BookStitchingPage() {
               {busy ? t('booking') : t('book')}
             </button>
 
-            <p className="text-xs text-neutral-900/50">{t('quoteLater')}</p>
+            <p className="text-xs text-neutral-900/60">{t('quoteLater')}</p>
           </section>
         </aside>
       </form>

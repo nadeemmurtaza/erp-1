@@ -44,13 +44,13 @@ All 186 tracked files in `docs/*`, by directory.
 | `06-content.md` | doc | 121 |  |
 | `07-accessibility.md` | doc | 157 |  |
 | `08-governance.md` | doc | 145 |  |
-| `09-quality.md` | doc | 174 |  |
+| `09-quality.md` | doc | 176 |  |
 | `10-laws.md` | doc | 850 |  |
 | `11-workflow.md` | doc | 260 |  |
 | `12-permissions.md` | doc | 214 |  |
 | `13-composition.md` | doc | 197 |  |
 | `14-navigation.md` | doc | 198 |  |
-| `15-integrity.md` | doc | 246 |  |
+| `15-integrity.md` | doc | 250 |  |
 | `README.md` | doc | 109 |  |
 
 ### `docs/erp-lenses` (134)

@@ -53,7 +53,7 @@ All 53 tracked files in `packages/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `brand.ts` | module | 324 | THE BRAND FILE. |
+| `brand.ts` | module | 334 | THE BRAND FILE. |
 | `constants.ts` | module | 146 |  |
 | `enums.ts` | module | 100 | Enum values mirrored from the Prisma schema. |
 | `fabric-estimate.spec.ts` | unit test | 79 | ((40 + 3) * 2 + (23 + 2)) / 36 = (86 + 25) / 36 = 3.0833... |

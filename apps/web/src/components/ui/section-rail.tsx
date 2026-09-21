@@ -122,7 +122,7 @@ export function SectionRail({
             >
               {section.label}
               {section.badge != null ? (
-                <span className="text-2xs text-neutral-900/40">{section.badge}</span>
+                <span className="text-2xs text-neutral-900/60">{section.badge}</span>
               ) : null}
             </a>
           );

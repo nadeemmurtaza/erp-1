@@ -79,7 +79,7 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
     }
   };
 
-  if (busy) return <p className="text-sm text-neutral-900/50 p-4">Loading receiving sheet...</p>;
+  if (busy) return <p className="text-sm text-neutral-900/60 p-4">Loading receiving sheet...</p>;
   if (error || !po) return <p className="notice notice-error">{error || 'Not found'}</p>;
 
   return (
@@ -130,7 +130,7 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
                       {remaining > 0 && receiveQtys[item.id] !== remaining && (
                         <button
                           type="button"
-                          className="mt-1 cursor-pointer text-xs text-neutral-900/50 hover:underline"
+                          className="mt-1 cursor-pointer text-xs text-neutral-900/60 hover:underline"
                           onClick={() => setReceiveQtys({ ...receiveQtys, [item.id]: remaining })}
                         >
                           Max: {remaining}

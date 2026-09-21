@@ -91,7 +91,7 @@ export function MetricStrip({
                     'metric-delta',
                     item.delta.direction === 'up' && 'metric-up',
                     item.delta.direction === 'down' && 'metric-down',
-                    item.delta.direction === 'flat' && 'text-neutral-900/50',
+                    item.delta.direction === 'flat' && 'text-neutral-900/60',
                   )}
                 >
                   {item.delta.label}

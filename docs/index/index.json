@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 1084,
-    "lines": 168545,
+    "lines": 168561,
     "routes": 287,
     "controllers": 57,
     "models": 115,
@@ -1078,8 +1078,8 @@
     },
     "infra": {
       "files": 53,
-      "lines": 26725,
-      "bytes": 1039411,
+      "lines": 26723,
+      "bytes": 1039025,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -1102,20 +1102,20 @@
     },
     "web": {
       "files": 228,
-      "lines": 33616,
-      "bytes": 1250942,
+      "lines": 33618,
+      "bytes": 1251109,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 186,
-      "lines": 27975,
-      "bytes": 1729699,
+      "lines": 27981,
+      "bytes": 1730307,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 53,
-      "lines": 4476,
-      "bytes": 144801,
+      "lines": 4486,
+      "bytes": 145306,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -33465,14 +33465,14 @@
       "path": "apps/web/src/components/admin/sales-chart.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 240,
-      "bytes": 8137,
+      "lines": 242,
+      "bytes": 8304,
       "doc": "",
       "symbols": [
         {
           "name": "SalesChart",
           "kind": "function",
-          "line": 34
+          "line": 36
         }
       ]
     },
@@ -35848,8 +35848,8 @@
       "path": "docs/design/09-quality.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 174,
-      "bytes": 7903,
+      "lines": 176,
+      "bytes": 8071,
       "doc": "",
       "symbols": []
     },
@@ -35902,8 +35902,8 @@
       "path": "docs/design/15-integrity.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 246,
-      "bytes": 11841,
+      "lines": 250,
+      "bytes": 12162,
       "doc": "",
       "symbols": []
     },
@@ -37226,7 +37226,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 1843,
-      "bytes": 92071,
+      "bytes": 92190,
       "doc": "",
       "symbols": []
     },
@@ -37713,19 +37713,19 @@
       "path": "packages/shared/src/brand.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 324,
-      "bytes": 11799,
+      "lines": 334,
+      "bytes": 12304,
       "doc": "THE BRAND FILE.",
       "symbols": [
         {
           "name": "BRAND",
           "kind": "const",
-          "line": 311
+          "line": 321
         },
         {
           "name": "Brand",
           "kind": "type",
-          "line": 323
+          "line": 333
         }
       ]
     },
@@ -38795,8 +38795,8 @@
       "path": "scripts/check-contrast.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 427,
-      "bytes": 21008,
+      "lines": 425,
+      "bytes": 20622,
       "doc": "",
       "symbols": [
         {
@@ -38807,7 +38807,7 @@
         {
           "name": "scanColours",
           "kind": "function",
-          "line": 215
+          "line": 213
         }
       ]
     },

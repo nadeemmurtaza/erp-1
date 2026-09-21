@@ -197,11 +197,11 @@ export function CommandPalette({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="hidden items-center gap-2 border border-neutral-100 px-3 py-1.5 text-sm text-neutral-900/45 transition-colors hover:border-neutral-300 hover:text-neutral-900/70 md:flex"
+        className="hidden items-center gap-2 border border-neutral-100 px-3 py-1.5 text-sm text-neutral-900/60 transition-colors hover:border-neutral-300 hover:text-neutral-900/70 md:flex"
       >
         <SearchIcon />
         <span>Search</span>
-        <kbd className="ms-2 rounded border border-neutral-100 px-1.5 py-0.5 font-sans text-2xs text-neutral-900/45">
+        <kbd className="ms-2 rounded border border-neutral-100 px-1.5 py-0.5 font-sans text-2xs text-neutral-900/60">
           ⌘K
         </kbd>
       </button>
@@ -214,7 +214,7 @@ export function CommandPalette({
         className="max-w-xl"
         header={
           <div className="flex items-center gap-3 border-b border-neutral-100 px-4">
-            <SearchIcon className="shrink-0 text-neutral-900/35" />
+            <SearchIcon className="shrink-0 text-neutral-900/60" />
             <input
               // eslint-disable-next-line jsx-a11y/no-autofocus -- a command palette is opened by a keystroke in order to type into it. Not focusing the field would break the only reason it exists.
               autoFocus
@@ -227,13 +227,13 @@ export function CommandPalette({
               aria-activedescendant={
                 results[active] ? `command-${results[active].id}` : undefined
               }
-              className="min-h-0 w-full border-0 bg-transparent py-4 text-base text-neutral-900 placeholder:text-neutral-900/35 focus:ring-0"
+              className="min-h-0 w-full border-0 bg-transparent py-4 text-base text-neutral-900 placeholder:text-neutral-900/60 focus:ring-0"
             />
           </div>
         }
       >
         {results.length === 0 ? (
-          <p className="py-6 text-center text-sm text-neutral-900/45">
+          <p className="py-6 text-center text-sm text-neutral-900/60">
             Nothing matches “{query}”.
           </p>
         ) : (
@@ -254,7 +254,7 @@ export function CommandPalette({
                 >
                   <span className="text-sm text-neutral-900">{command.label}</span>
                   {command.context ? (
-                    <span className="text-xs text-neutral-900/45">{command.context}</span>
+                    <span className="text-xs text-neutral-900/60">{command.context}</span>
                   ) : null}
                 </button>
               </li>

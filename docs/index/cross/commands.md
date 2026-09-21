@@ -139,7 +139,7 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 |---|---|---|
 | `scripts/build-index.mjs` | 2500 |  |
 | `scripts/build-logo-raster.mjs` | 54 |  |
-| `scripts/check-contrast.mjs` | 427 |  |
+| `scripts/check-contrast.mjs` | 425 |  |
 | `scripts/check-email-dns.mjs` | 399 |  |
 | `scripts/check-env-templates.mjs` | 139 |  |
 | `scripts/check-frontend-secrets.mjs` | 137 |  |

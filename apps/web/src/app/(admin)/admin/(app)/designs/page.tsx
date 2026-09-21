@@ -128,7 +128,7 @@ export default function AdminDesignsPage() {
                         >
                           {group.labelEn}
                         </Link>
-                        <span className="mt-0.5 block text-xs text-neutral-900/45">
+                        <span className="mt-0.5 block text-xs text-neutral-900/60">
                           {live} {live === 1 ? 'option' : 'options'}
                           {group.required ? ' · Required' : ''}
                           {group.selectionType === 'MULTI' ? ' · Several choices' : ''}
@@ -169,7 +169,7 @@ export default function AdminDesignsPage() {
               className="field-input"
               required
             />
-            <span className="mt-1 block text-xs text-neutral-900/50">
+            <span className="mt-1 block text-xs text-neutral-900/60">
               Tidied into snake_case by the server, and fixed afterwards — carts store answers
               against it.
             </span>

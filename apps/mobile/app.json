@@ -44,7 +44,7 @@
       [
         "expo-notifications",
         {
-          "color": "#0f8fa3"
+          "color": "#0e8294"
         }
       ],
       "expo-font"

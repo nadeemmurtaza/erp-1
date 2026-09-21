@@ -85,7 +85,7 @@ export function DataTable<Row>({
                 key={i}
                 scope="col"
                 className={cn(
-                  'px-3 py-2.5 text-xs font-semibold uppercase tracking-wide text-neutral-900/50',
+                  'px-3 py-2.5 text-xs font-semibold uppercase tracking-wide text-neutral-900/60',
                   column.align === 'end' ? 'text-end' : 'text-start',
                 )}
               >
@@ -100,7 +100,7 @@ export function DataTable<Row>({
             <tr>
               <td
                 colSpan={columns.length}
-                className="px-4 py-10 text-center text-sm text-neutral-900/50"
+                className="px-4 py-10 text-center text-sm text-neutral-900/60"
               >
                 {isLoading ? loadingLabel : emptyLabel}
               </td>

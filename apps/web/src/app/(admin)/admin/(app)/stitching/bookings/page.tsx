@@ -94,7 +94,7 @@ export default function BookingsPage() {
                 </tr>
               ) : bookings.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-neutral-900/50">
+                  <td colSpan={6} className="px-4 py-8 text-center text-neutral-900/60">
                     No bookings yet.
                   </td>
                 </tr>
@@ -108,13 +108,13 @@ export default function BookingsPage() {
                       >
                         {booking.number}
                       </Link>
-                      <p className="text-xs text-neutral-900/40">
+                      <p className="text-xs text-neutral-900/60">
                         {formatDate(booking.createdAt)}
                       </p>
                     </td>
                     <td>
                       <p className="text-neutral-900">{booking.guestName ?? '—'}</p>
-                      <p className="text-xs text-neutral-900/40">{booking.guestPhone}</p>
+                      <p className="text-xs text-neutral-900/60">{booking.guestPhone}</p>
                     </td>
                     <td className="text-neutral-900/70">
                       {booking.jobs.map((job) => job.garmentType.labelEn).join(', ')}
@@ -156,7 +156,7 @@ function Th({ children, className }: { children?: React.ReactNode; className?: s
   return (
     <th scope="col"
       className={cn(
-        'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50',
+        'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60',
         className,
       )}
     >

@@ -35,13 +35,13 @@ binding and load automatically when you open a component:
 | [Content](../../design/06-content.md) | How the product speaks. Copy is interface, not decoration applied afterwards. | unbuilt as a system. | — | 121 lines |
 | [Accessibility and internationalisation](../../design/07-accessibility.md) | How broadly the product can actually be used. | still the largest gap, but no longer unverified. | — | 157 lines |
 | [Governance](../../design/08-governance.md) | Who may add to this system, how a thing gets named, and how something leaves | partly enforced. | — | 145 lines |
-| [Quality gates](../../design/09-quality.md) | What has to be true before a screen ships, and — stated honestly — which of it | the engineering gates are real and green; | — | 174 lines |
+| [Quality gates](../../design/09-quality.md) | What has to be true before a screen ships, and — stated honestly — which of it | the engineering gates are real and green; | — | 176 lines |
 | [The law catalogue](../../design/10-laws.md) | Every borrowed law this system rests on, with a stable ID, the source it comes | binding as rulings, unenforced as code. | 87 | 850 lines |
 | [Workflow](../../design/11-workflow.md) | Processes with a hundred steps, several actors, days of elapsed time, and a | unbuilt as a system. | 15 | 260 lines |
 | [Permissions](../../design/12-permissions.md) | Designing a screen when no two people who open it see the same thing. | partly built, and the gap is structural. | 12 | 214 lines |
 | [Composition](../../design/13-composition.md) | One codebase that ships as an online shop, or as a manufacturing group's | architecturally enforced, visually unenforced. | 10 | 197 lines |
 | [Navigation](../../design/14-navigation.md) | One information space holding hundreds of departments, without anybody having | exists, unmeasured. | 12 | 198 lines |
-| [Integrity](../../design/15-integrity.md) | The mechanical failures — dead ends, broken links, missing images, overflow, | four of ten built. | 14 | 246 lines |
+| [Integrity](../../design/15-integrity.md) | The mechanical failures — dead ends, broken links, missing images, overflow, | four of ten built. | 14 | 250 lines |
 
 
 ## The laws
@@ -377,12 +377,12 @@ descriptions.
 - Change approval  <sub>:117</sub>
 - Keeping this system honest  <sub>:129</sub>
 
-### [`docs/design/09-quality.md`](../../design/09-quality.md)  <sub>174 lines</sub>
+### [`docs/design/09-quality.md`](../../design/09-quality.md)  <sub>176 lines</sub>
 
 - The two columns  <sub>:12</sub>
 - Regression  <sub>:124</sub>
 - The honest gap, ranked  <sub>:142</sub>
-- Definition of done, for a screen  <sub>:163</sub>
+- Definition of done, for a screen  <sub>:165</sub>
 
 ### [`docs/design/10-laws.md`](../../design/10-laws.md)  <sub>850 lines</sub>
 
@@ -432,13 +432,13 @@ descriptions.
 - What must be built  <sub>:178</sub>
 - Sources  <sub>:191</sub>
 
-### [`docs/design/15-integrity.md`](../../design/15-integrity.md)  <sub>246 lines</sub>
+### [`docs/design/15-integrity.md`](../../design/15-integrity.md)  <sub>250 lines</sub>
 
 - Why this chapter is different  <sub>:15</sub>
 - ITG · The laws  <sub>:33</sub>
 - The build order  <sub>:155</sub>
-- What a person still has to do  <sub>:219</sub>
-- Sources  <sub>:239</sub>
+- What a person still has to do  <sub>:223</sub>
+- Sources  <sub>:243</sub>
 
 
 ---

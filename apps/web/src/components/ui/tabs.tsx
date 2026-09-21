@@ -95,7 +95,7 @@ export function Tabs({
             >
               {item.label}
               {item.badge != null ? (
-                <span className="text-xs text-neutral-900/40">{item.badge}</span>
+                <span className="text-xs text-neutral-900/60">{item.badge}</span>
               ) : null}
             </button>
           );

@@ -277,12 +277,12 @@ _no second-level headings_
 - Change approval  <sub>:117</sub>
 - Keeping this system honest  <sub>:129</sub>
 
-### `docs/design/09-quality.md`  <sub>174 lines</sub>
+### `docs/design/09-quality.md`  <sub>176 lines</sub>
 
 - The two columns  <sub>:12</sub>
 - Regression  <sub>:124</sub>
 - The honest gap, ranked  <sub>:142</sub>
-- Definition of done, for a screen  <sub>:163</sub>
+- Definition of done, for a screen  <sub>:165</sub>
 
 ### `docs/design/10-laws.md`  <sub>850 lines</sub>
 
@@ -332,13 +332,13 @@ _no second-level headings_
 - What must be built  <sub>:178</sub>
 - Sources  <sub>:191</sub>
 
-### `docs/design/15-integrity.md`  <sub>246 lines</sub>
+### `docs/design/15-integrity.md`  <sub>250 lines</sub>
 
 - Why this chapter is different  <sub>:15</sub>
 - ITG · The laws  <sub>:33</sub>
 - The build order  <sub>:155</sub>
-- What a person still has to do  <sub>:219</sub>
-- Sources  <sub>:239</sub>
+- What a person still has to do  <sub>:223</sub>
+- Sources  <sub>:243</sub>
 
 ### `docs/design/README.md`  <sub>109 lines</sub>
 

@@ -11,10 +11,12 @@ import { THEME_COLORS, formatDateShort, formatMoney, toMajor } from '@newax/shar
  * every day. Drawn as inline SVG rather than pulling in a charting library for a
  * single line.
  *
- * The mark colour is THEME_COLORS.accent.DEFAULT (`#0f8fa3`) — this is in fact
+ * The mark colour is THEME_COLORS.accent.DEFAULT (`#0e8294`) — this is in fact
  * the origin of that exact value: chosen as the step of the brand teal that
  * clears the chroma floor and 3:1 contrast against the white card, since the
- * nominal Tailwind `accent` shade read as gray at data-mark size. Every other
+ * nominal Tailwind `accent` shade read as gray at data-mark size. (Darkened
+ * from #0f8fa3 in brand.ts when check-contrast.mjs found the original shade
+ * under the 4.5:1 text floor for the button it also colours — see brand.ts.) Every other
  * chart in the app now uses the same constant for the same reason.
  */
 const SERIES = THEME_COLORS.accent.DEFAULT;
@@ -62,7 +64,7 @@ export function SalesChart({ series }: { series: Point[] }) {
   }, [series]);
 
   if (series.length === 0) {
-    return <p className="p-8 text-center text-sm text-neutral-900/50">No sales yet.</p>;
+    return <p className="p-8 text-center text-sm text-neutral-900/60">No sales yet.</p>;
   }
 
   const path = plot.points

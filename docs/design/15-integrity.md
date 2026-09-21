@@ -204,10 +204,14 @@ this repository's existing pattern — `KNOWN_MODULE_COUPLINGS` and the module
 checker's "1 known violation still to pay off" — and it is the difference
 between a check that ships and a check that gets switched off.
 
-The contrast baseline is worth reading: it records that the brand accent
-reaches 3.83:1 on white, so white-on-accent — the primary button across the
-whole product — is under the 4.5:1 body floor. That is a brand decision
-(Law 1), so the checker records it instead of changing it.
+The contrast baseline is worth reading — not for what it currently holds, but
+for what it *used to*: it once recorded that the brand accent reached only
+3.83:1 on white, so white-on-accent — the primary button across the whole
+product — was under the 4.5:1 body floor. That was a brand decision (Law 1),
+so the checker recorded it rather than silently changing it; when the decision
+was made to darken the accent (same hue, in `brand.ts`), the entry came out
+and the baseline shrank from 277 known-below-floor uses to 44 — every
+remaining one a decorative boundary WCAG does not govern (`COL-3`).
 
 **Sequencing note.** 5 is a normal work order. 6 through 10 are a
 capability in their own right — a render harness, a route inventory, a module

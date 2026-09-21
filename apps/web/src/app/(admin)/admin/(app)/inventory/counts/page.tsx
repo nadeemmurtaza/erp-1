@@ -67,10 +67,10 @@ export default function CountsListPage() {
         <table className="w-full min-w-[600px] text-left text-sm">
           <thead>
             <tr className="border-b border-neutral-100">
-              <th className="px-4 py-2 font-semibold text-neutral-900/50 uppercase text-xs">Number</th>
-              <th className="px-4 py-2 font-semibold text-neutral-900/50 uppercase text-xs">Status</th>
-              <th className="px-4 py-2 font-semibold text-neutral-900/50 uppercase text-xs">Started</th>
-              <th className="px-4 py-2 font-semibold text-neutral-900/50 uppercase text-xs">Creator</th>
+              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">Number</th>
+              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">Status</th>
+              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">Started</th>
+              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">Creator</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-neutral-100">
@@ -83,7 +83,7 @@ export default function CountsListPage() {
             )}
             {!busy && counts?.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/50">
+                <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/60">
                   No stock counts found.
                 </td>
               </tr>

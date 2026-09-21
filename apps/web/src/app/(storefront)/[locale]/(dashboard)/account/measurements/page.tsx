@@ -122,7 +122,7 @@ export default function AccountMeasurementsPage() {
           ) : null}
 
           {profiles.length === 0 ? (
-            <div className="p-6 text-center text-sm text-neutral-900/45">
+            <div className="p-6 text-center text-sm text-neutral-900/60">
               No saved measurement profiles yet.
             </div>
           ) : (
@@ -138,7 +138,7 @@ export default function AccountMeasurementsPage() {
                     ) : null}
                   </p>
                   <p className="mt-1 text-sm text-neutral-900/60">{profile.garmentType.labelEn}</p>
-                  <p className="mt-1 text-xs text-neutral-900/50">
+                  <p className="mt-1 text-xs text-neutral-900/60">
                     {Object.entries(profile.values)
                       .map(([key, value]) => `${key}: ${value}`)
                       .join(' · ')}

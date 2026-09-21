@@ -609,7 +609,7 @@ All 228 tracked files in `apps/web`, by directory.
 | `product-form.tsx` | component | 1034 |  |
 | `range-picker.tsx` | component | 58 |  |
 | `role-wizard.tsx` | component | 359 |  |
-| `sales-chart.tsx` | component | 240 |  |
+| `sales-chart.tsx` | component | 242 |  |
 | `scope-chips.tsx` | component | 71 |  |
 | `session.tsx` | component | 25 |  |
 | `stage-badge.tsx` | component | 15 |  |

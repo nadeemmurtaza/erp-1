@@ -192,7 +192,7 @@ export default function AdminDesignPage({ params }: { params: Promise<{ id: stri
                     readOnly
                     className="field-input bg-neutral-50 text-neutral-900/60"
                   />
-                  <span className="mt-1 block text-xs text-neutral-900/50">
+                  <span className="mt-1 block text-xs text-neutral-900/60">
                     Fixed — open carts store their custom notes against it.
                   </span>
                 </label>
@@ -326,7 +326,7 @@ export default function AdminDesignPage({ params }: { params: Promise<{ id: stri
                     {draft.isActive ? 'Retire this group' : 'Restore this group'}
                   </button>
                   {draft.isActive === group.isActive ? null : (
-                    <span className="ms-3 text-xs text-neutral-900/50">Save to apply.</span>
+                    <span className="ms-3 text-xs text-neutral-900/60">Save to apply.</span>
                   )}
                 </Disclosure>
               </div>
@@ -459,7 +459,7 @@ function patch(
 function Small({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs text-neutral-900/50">{label}</span>
+      <span className="mb-1 block text-xs text-neutral-900/60">{label}</span>
       {children}
     </label>
   );

@@ -207,6 +207,18 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'medium',
   },
   {
+    key: 'finance.view',
+    label: 'View expenses and finance reports',
+    category: 'Finance',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'finance.manage',
+    label: 'Record and edit expenses',
+    category: 'Finance',
+    sensitivity: 'medium',
+  },
+  {
     key: 'marketing.manage',
     label: 'Turn on automated marketing email and set its timing',
     category: 'Administration',
@@ -263,7 +275,7 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     key: 'dashboards',
     label: 'Dashboards & reports',
     description: 'Read-only views of how the shop is doing.',
-    permissions: ['analytics.view', 'reports.view', 'accounting.view'],
+    permissions: ['analytics.view', 'reports.view', 'accounting.view', 'finance.view'],
   },
   {
     key: 'chain-admin',
@@ -338,6 +350,12 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     permissions: ['tax.manage'],
   },
   {
+    key: 'finance',
+    label: 'Finance',
+    description: 'Record and edit operational expenses.',
+    permissions: ['finance.manage'],
+  },
+  {
     key: 'system-admin',
     label: 'System administration',
     description: 'Settings, roles, user accounts and the audit log — the most sensitive group.',
@@ -390,6 +408,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'production.manage',
     'production.view_chain',
     'parties.manage',
+    'finance.view',
   ],
   ADMIN: [
     'account.change_own_password',
@@ -418,6 +437,8 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'production.manage',
     'production.view_chain',
     'parties.manage',
+    'finance.view',
+    'finance.manage',
     'settings.manage',
     'roles.manage_permissions',
     'audit.view',

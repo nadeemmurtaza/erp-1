@@ -10,6 +10,7 @@ import {
   type SupplierBillPaidPayload,
   type StockVarianceRecordedPayload,
   type InterBranchTransferInvoicedPayload,
+  type ExpenseRecordedPayload,
 } from '../../core/events/domain-events';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { AccountingService, type PostLineInput } from './accounting.service';
@@ -369,6 +370,54 @@ export class PostingRulesSubscriber {
           counterpartyBrandId: payload.sourceRetailBrandId,
         },
         { accountId: ap, creditMinor: payload.amountMinor, retailBrandId: payload.destinationRetailBrandId },
+      ],
+    });
+  }
+
+  /**
+   * WO-23.1 — finance is the eighth posting rule (the count in file `50`'s
+   * hardening record was correct at seven; this changes it). Dr Direct
+   * Expenses or Operating Expenses, by `ExpenseCategory.isDirect`, same
+   * split `04-finance.md`'s reports already use above/below the
+   * gross-profit line · Cr Accounts Payable when unpaid at the moment
+   * recorded, or Cash & Bank when `paidAt` is already set — the same
+   * unpaid-vs-paid branch `onSupplierBillRaised`/`onSupplierBillPaid` model,
+   * collapsed into one handler because an Expense, unlike a SupplierBill,
+   * has no separate "paid" event yet (WO-B.2 is a later work order in this
+   * tranche; a later payment on an initially-unpaid expense is not covered
+   * here — see finance.service.ts).
+   */
+  @OnDomainEvent(DomainEvent.ExpenseRecorded)
+  async onExpenseRecorded(payload: ExpenseRecordedPayload): Promise<void> {
+    const source = DomainEvent.ExpenseRecorded;
+    if (await this.accounting.findPostedEntry(source, payload.expenseId)) return;
+    if (payload.amountMinor <= 0) return;
+
+    const accountId = await this.accounting.accountIdsByCode([
+      ACCOUNT_CODE.DIRECT_EXPENSES,
+      ACCOUNT_CODE.OPERATING_EXPENSES,
+      ACCOUNT_CODE.ACCOUNTS_PAYABLE,
+      ACCOUNT_CODE.CASH_AND_BANK,
+    ]);
+    const expenseAccount = accountId.get(payload.isDirect ? ACCOUNT_CODE.DIRECT_EXPENSES : ACCOUNT_CODE.OPERATING_EXPENSES);
+    const creditAccount = accountId.get(payload.paidAtIso ? ACCOUNT_CODE.CASH_AND_BANK : ACCOUNT_CODE.ACCOUNTS_PAYABLE);
+    if (!expenseAccount || !creditAccount) {
+      this.logger.error(`Chart of accounts is missing an expense account, Accounts Payable or Cash & Bank — cannot post expense ${payload.expenseId}.`);
+      return;
+    }
+
+    await this.accounting.postEntry({
+      date: new Date(payload.incurredAt),
+      source,
+      sourceRef: payload.expenseId,
+      memo: `Expense — ${payload.categoryKey}`,
+      lines: [
+        { accountId: expenseAccount, debitMinor: payload.amountMinor },
+        {
+          accountId: creditAccount,
+          creditMinor: payload.amountMinor,
+          supplierId: payload.paidAtIso ? null : payload.supplierId,
+        },
       ],
     });
   }

@@ -49,6 +49,7 @@ async function main(): Promise<void> {
   const users = await seedUsers();
   await seedRoles();
   await seedChartOfAccounts();
+  await seedExpenseCategories();
   const garments = await seedGarmentTypes();
   await seedGarmentCatalogExpansion(garments);
   await seedStitchingOptions(garments);
@@ -185,6 +186,37 @@ async function seedChartOfAccounts(): Promise<void> {
       where: { code: account.code },
       update: { name: account.name },
       create: account,
+    });
+  }
+}
+
+/**
+ * WO-23.1 — categories are seed data, not a setting (staff edit them as
+ * rows from the admin UI once seeded). `isDirect: true` on exactly
+ * packaging/courier_charges/gateway_fees: they scale with orders and sit
+ * above the gross-profit line with COGS, everything else sits below it.
+ * Upsert on `key` keeps ids stable across re-runs.
+ */
+async function seedExpenseCategories(): Promise<void> {
+  const categories: Array<{ key: string; name: string; isDirect: boolean; order: number }> = [
+    { key: 'rent', name: 'Rent', isDirect: false, order: 0 },
+    { key: 'salaries', name: 'Salaries', isDirect: false, order: 1 },
+    { key: 'utilities', name: 'Utilities', isDirect: false, order: 2 },
+    { key: 'marketing', name: 'Marketing', isDirect: false, order: 3 },
+    { key: 'transport', name: 'Transport', isDirect: false, order: 4 },
+    { key: 'packaging', name: 'Packaging', isDirect: true, order: 5 },
+    { key: 'courier_charges', name: 'Courier charges', isDirect: true, order: 6 },
+    { key: 'gateway_fees', name: 'Payment gateway fees', isDirect: true, order: 7 },
+    { key: 'equipment_rent', name: 'Equipment rent', isDirect: false, order: 8 },
+    { key: 'repairs', name: 'Repairs', isDirect: false, order: 9 },
+    { key: 'misc', name: 'Miscellaneous', isDirect: false, order: 10 },
+  ];
+
+  for (const category of categories) {
+    await prisma.expenseCategory.upsert({
+      where: { key: category.key },
+      update: { name: category.name, isDirect: category.isDirect, order: category.order },
+      create: category,
     });
   }
 }

@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **287** endpoints across **57** controllers, with the access rule that actually guards each one.
+All **296** endpoints across **58** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -242,6 +242,20 @@ never authorization.
 | PATCH | `/admin/crm/leads/:id` | `crm.manage` | `CrmAdminController.updateLead` |  |
 | GET | `/admin/crm/tags` | `crm.manage` | `CrmAdminController.listTags` |  |
 | POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` | Contact-form enquiry — becomes a lead in the CRM |
+
+### [`finance`](../modules/finance.md) (9)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/finance/expense-categories` | `finance.view` | `FinanceController.listCategories` | List expense categories with their expense count |
+| POST | `/admin/finance/expense-categories` | `finance.manage` | `FinanceController.createCategory` | Create an expense category |
+| DELETE | `/admin/finance/expense-categories/:id` | `finance.manage` | `FinanceController.deleteCategory` | Delete an unused expense category |
+| PATCH | `/admin/finance/expense-categories/:id` | `finance.manage` | `FinanceController.updateCategory` | Rename, redirect or (de)activate an expense category |
+| GET | `/admin/finance/expenses` | `finance.view` | `FinanceController.listExpenses` | List expenses, paginated and filtered |
+| POST | `/admin/finance/expenses` | `finance.manage` | `FinanceController.createExpense` | Record an expense |
+| DELETE | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.deleteExpense` | Delete an expense |
+| PATCH | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.updateExpense` | Edit an expense |
+| GET | `/admin/finance/expenses/summary` | `finance.view` | `FinanceController.summary` | Totals, per-category breakdown and a daily series |
 
 ### [`identity-verification`](../modules/identity-verification.md) (4)
 

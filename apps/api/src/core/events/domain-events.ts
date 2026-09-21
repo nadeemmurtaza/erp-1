@@ -58,6 +58,9 @@ export const DomainEvent = {
   IdentityVerificationApproved: 'identity_verification.approved',
   IdentityVerificationRejected: 'identity_verification.rejected',
   IdentityVerificationExpired: 'identity_verification.expired',
+
+  /** FinanceService.create() (WO-23.1) — fires whether or not `accounting` is on; posting-rules.subscriber.ts is the only subscriber today. */
+  ExpenseRecorded: 'finance.expense_recorded',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -265,6 +268,19 @@ export interface SupplierBillPaidPayload {
   paidAt: string;
 }
 
+export interface ExpenseRecordedPayload {
+  expenseId: string;
+  categoryKey: string;
+  isDirect: boolean;
+  /** Paisa. */
+  amountMinor: number;
+  /** ISO date the cost belongs to — posts here, never at paidAtIso. */
+  incurredAt: string;
+  /** Null = unpaid at creation, posts to Accounts Payable instead of Cash & Bank. */
+  paidAtIso: string | null;
+  supplierId: string | null;
+}
+
 export interface EmailReplyReceivedPayload {
   inboundEmailId: string;
   emailAccountId: string;
@@ -313,4 +329,5 @@ export interface DomainEventPayloads {
   [DomainEvent.IdentityVerificationApproved]: IdentityVerificationPayload;
   [DomainEvent.IdentityVerificationRejected]: IdentityVerificationPayload;
   [DomainEvent.IdentityVerificationExpired]: IdentityVerificationPayload;
+  [DomainEvent.ExpenseRecorded]: ExpenseRecordedPayload;
 }

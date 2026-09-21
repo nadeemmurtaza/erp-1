@@ -70,6 +70,7 @@ model User {
   stockCountsCreated      StockCount[]             @relation("StockCountCreator")
   stockCountsAssigned     StockCount[]             @relation("StockCountAssignee")
   workOrdersCreated       WorkOrder[]              @relation("WorkOrderCreator")
+  expensesCreated         Expense[]                @relation("ExpenseCreator")
 
   @@index([role])
   @@index([createdAt])

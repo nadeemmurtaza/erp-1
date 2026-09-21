@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **34** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **35** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -64,6 +64,7 @@ order" is a new file, not an edit to checkout.
 | `identity_verification.approved` | `IdentityVerificationApproved` | `identity-verification` | _none_ |
 | `identity_verification.rejected` | `IdentityVerificationRejected` | `identity-verification` | _none_ |
 | `identity_verification.expired` | `IdentityVerificationExpired` | `identity-verification` | _none_ |
+| `finance.expense_recorded` | `ExpenseRecorded` | `accounting`, `finance` | `accounting` |
 
 
 ## Detail
@@ -75,8 +76,8 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:47` | `accounting` |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:154` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:48` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:155` | `accounting` |
 | `apps/api/src/modules/orders/orders.service.ts:339` | `orders` |
 | `apps/api/src/modules/orders/orders.service.ts:542` | `orders` |
 
@@ -86,7 +87,7 @@ order" is a new file, not an edit to checkout.
 | Handler | Where | Module |
 |---|---|---|
 | `handle()` | `apps/api/src/core/events/on-domain-event.decorator.ts:7` | core/`events` |
-| `onOrderPlaced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:45` | `accounting` |
+| `onOrderPlaced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:46` | `accounting` |
 | `onOrderPlaced()` | `apps/api/src/modules/crm/order.subscriber.ts:27` | `crm` |
 | `onOrderPlaced()` | `apps/api/src/modules/orders/notification.subscriber.ts:70` | `orders` |
 | `onOrderPlaced()` | `apps/api/src/modules/orders/order-replication.listener.ts:48` | `orders` |
@@ -133,8 +134,8 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:114` | `accounting` |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:151` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:115` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:152` | `accounting` |
 | `apps/api/src/modules/orders/orders.service.ts:530` | `orders` |
 | `apps/api/src/modules/payments/payments.service.ts:188` | `payments` |
 | `apps/api/src/modules/payments/payments.service.ts:257` | `payments` |
@@ -144,7 +145,7 @@ order" is a new file, not an edit to checkout.
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPaymentSucceeded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:112` | `accounting` |
+| `onPaymentSucceeded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:113` | `accounting` |
 | `onPaymentSucceeded()` | `apps/api/src/modules/payments/notification.subscriber.ts:34` | `payments` |
 
 ### `payment.failed`
@@ -191,7 +192,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPaymentRefunded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:149` | `accounting` |
+| `onPaymentRefunded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:150` | `accounting` |
 | `onPaymentRefunded()` | `apps/api/src/modules/payments/notification.subscriber.ts:118` | `payments` |
 
 ### `stitching.job_created`
@@ -425,7 +426,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:278` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:279` | `accounting` |
 | `apps/api/src/modules/inventory/inventory.service.ts:347` | `inventory` |
 
 
@@ -433,7 +434,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onStockVarianceRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:276` | `accounting` |
+| `onStockVarianceRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:277` | `accounting` |
 
 ### `purchasing.goods_received`
 
@@ -456,7 +457,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:175` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:176` | `accounting` |
 | `apps/api/src/modules/purchasing/purchasing.service.ts:554` | `purchasing` |
 
 
@@ -464,7 +465,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSupplierBillRaised()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:173` | `accounting` |
+| `onSupplierBillRaised()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:174` | `accounting` |
 
 ### `purchasing.supplier_bill_paid`
 
@@ -473,7 +474,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:225` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:226` | `accounting` |
 | `apps/api/src/modules/purchasing/purchasing.service.ts:618` | `purchasing` |
 
 
@@ -481,7 +482,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSupplierBillPaid()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:223` | `accounting` |
+| `onSupplierBillPaid()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:224` | `accounting` |
 
 ### `transfers.inter_branch_invoiced`
 
@@ -491,7 +492,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:331` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:332` | `accounting` |
 | `apps/api/src/modules/transfers/transfers.service.ts:278` | `transfers` |
 
 
@@ -499,7 +500,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onInterBranchTransferInvoiced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:329` | `accounting` |
+| `onInterBranchTransferInvoiced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:330` | `accounting` |
 
 ### `analytics.supplier_digest_ready`
 
@@ -615,6 +616,24 @@ _Nothing subscribes. Publishing it is a no-op today._
 **Subscribed by**
 
 _Nothing subscribes. Publishing it is a no-op today._
+
+### `finance.expense_recorded`
+
+> FinanceService.create() (WO-23.1) — fires whether or not `accounting` is on; posting-rules.subscriber.ts is the only subscriber today.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:392` | `accounting` |
+| `apps/api/src/modules/finance/finance.service.ts:160` | `finance` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onExpenseRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:390` | `accounting` |
 
 
 ---

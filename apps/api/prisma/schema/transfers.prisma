@@ -39,14 +39,14 @@ enum SettlementMode {
 }
 
 model StockTransfer {
-  id     String              @id @default(cuid())
+  id             String              @id @default(cuid())
   /// Node-prefixed per R6 — see nextTransferNumber() in transfers.service.ts,
   /// the same TransferNumberCounter pattern orders.service.ts's
   /// nextOrderNumber() already uses.
-  number String              @unique
-  status StockTransferStatus @default(IN_TRANSIT)
+  number         String              @unique
+  status         StockTransferStatus @default(IN_TRANSIT)
   /// Resolved once at dispatch() and never changed — see SettlementMode.
-  settlementMode SettlementMode @default(NONE)
+  settlementMode SettlementMode      @default(NONE)
 
   sourceLocationId      String
   destinationLocationId String
@@ -55,7 +55,7 @@ model StockTransfer {
   /// cancel(); the row itself is never deleted (it is the transfer's own
   /// ledger anchor — every TRANSFER_OUT/TRANSFER_IN movement for this
   /// transfer references it).
-  inTransitLocationId String
+  inTransitLocationId   String
 
   createdByUserId  String
   receivedByUserId String?
@@ -68,11 +68,11 @@ model StockTransfer {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
-  lines               StockTransferLine[]
+  lines              StockTransferLine[]
   /// Set only when settlementMode is INVOICED, and only once receive()
   /// values what actually arrived (R12/R17, WO-22.3) — see
   /// InterBranchInvoice's own comment for why receive(), not dispatch().
-  interBranchInvoice  InterBranchInvoice?
+  interBranchInvoice InterBranchInvoice?
 
   @@index([status])
   @@index([sourceLocationId])
@@ -97,7 +97,7 @@ model StockTransferLine {
   /// between dispatch and receive never retroactively reprices an invoice
   /// already promised. Null unless settlementMode is INVOICED: NONE and
   /// INTERNAL_PL transfers need no valuation, so none is computed.
-  unitCost Int?
+  unitCost           Int?
 
   transfer StockTransfer @relation(fields: [transferId], references: [id], onDelete: Cascade)
 

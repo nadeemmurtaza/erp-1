@@ -74,13 +74,13 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `GoodsReceipt` | 13 | :146 |  |
-| `GoodsReceiptItem` | 10 | :165 |  |
-| `PurchaseOrder` | 23 | :96 |  |
-| `PurchaseOrderItem` | 11 | :128 |  |
-| `Supplier` | 26 | :1 |  |
-| `SupplierBill` | 18 | :188 |  |
-| `SupplierProduct` | 10 | :68 | What a given supplier charges for a given variant, and under what terms. |
+| `GoodsReceipt` | 13 | :147 |  |
+| `GoodsReceiptItem` | 10 | :166 |  |
+| `PurchaseOrder` | 23 | :97 |  |
+| `PurchaseOrderItem` | 11 | :129 |  |
+| `Supplier` | 27 | :1 |  |
+| `SupplierBill` | 18 | :189 |  |
+| `SupplierProduct` | 10 | :69 | What a given supplier charges for a given variant, and under what terms. |
 
 
 Enums: `PurchaseOrderStatus` (5) · `SupplierBillStatus` (3)

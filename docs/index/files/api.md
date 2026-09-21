@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 449 tracked files in `apps/api`, by directory.
+All 457 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -29,17 +29,18 @@ All 449 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `backfill-parties.ts` | module | 69 |  |
 | `backfill-product-options.ts` | module | 170 |  |
-| `seed.ts` | module | 2970 |  |
+| `seed.ts` | module | 3002 |  |
 
-### `apps/api/prisma/schema` (22)
+### `apps/api/prisma/schema` (23)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.prisma` | prisma schema | 222 | The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a |
 | `cart.prisma` | prisma schema | 73 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
 | `catalog.prisma` | prisma schema | 361 | Catalog: categories, products, variants, images. |
-| `core.prisma` | prisma schema | 420 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `core.prisma` | prisma schema | 421 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 239 | CRM: one customer record, whatever door the customer came in through. |
+| `finance.prisma` | prisma schema | 80 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `identity-verification.prisma` | prisma schema | 40 | / Tracks a User's identity verification against nID (Newax's external |
 | `inventory.prisma` | prisma schema | 231 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
 | `invoicing.prisma` | prisma schema | 88 | Trading-partner invoices and quotes (WO-18.3's remaining "forth" |
@@ -50,7 +51,7 @@ All 449 tracked files in `apps/api`, by directory.
 | `payments.prisma` | prisma schema | 48 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
 | `pos.prisma` | prisma schema | 136 | The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's |
 | `production.prisma` | prisma schema | 96 | Production: bills of materials and work orders for variants made in-house |
-| `purchasing.prisma` | prisma schema | 226 | / ISO 3166-1 alpha-2, e.g. "PK", "CN". Null for a domestic supplier whose |
+| `purchasing.prisma` | prisma schema | 227 |  |
 | `replication.prisma` | prisma schema | 134 | The replication engine (RETAIL-ERP.md Part 6, WO-20.1: "log, cursors, |
 | `schema.prisma` | prisma schema | 20 | Datasource and generator only. Models live in one file per module — |
 | `stitching.prisma` | prisma schema | 202 | Stitching: the style options a customer picks, standalone stitching orders |
@@ -376,6 +377,12 @@ All 449 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 75 |  |
 
+### `apps/api/prisma/schema/migrations/20260921152354_add_finance_expenses` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 88 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -466,7 +473,7 @@ All 449 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 317 | The catalogue of domain events. |
+| `domain-events.ts` | module | 334 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
@@ -577,7 +584,7 @@ All 449 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 44 |  |
-| `settings.defaults.ts` | module | 253 |  |
+| `settings.defaults.ts` | module | 256 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 103 |  |
 
@@ -604,8 +611,8 @@ All 449 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 81 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 141 |  |
+| `module-packs.ts` | module | 82 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 143 |  |
 
 ### `apps/api/src/modules/accounting` (17)
 
@@ -616,7 +623,7 @@ All 449 tracked files in `apps/api`, by directory.
 | `accounting.service.ts` | service | 279 |  |
 | `aging.spec.ts` | unit test | 75 |  |
 | `aging.ts` | module | 69 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control accoun… |
-| `chart-of-accounts.ts` | module | 51 |  |
+| `chart-of-accounts.ts` | module | 59 |  |
 | `consolidation.controller.ts` | controller | 38 |  |
 | `consolidation.service.spec.ts` | unit test | 128 |  |
 | `consolidation.service.ts` | service | 132 |  |
@@ -626,8 +633,8 @@ All 449 tracked files in `apps/api`, by directory.
 | `gl-reports.controller.ts` | controller | 67 |  |
 | `gl-reports.service.spec.ts` | unit test | 174 |  |
 | `gl-reports.service.ts` | service | 298 |  |
-| `posting-rules.subscriber.spec.ts` | unit test | 430 |  |
-| `posting-rules.subscriber.ts` | event subscriber | 376 |  |
+| `posting-rules.subscriber.spec.ts` | unit test | 502 |  |
+| `posting-rules.subscriber.ts` | event subscriber | 425 |  |
 
 ### `apps/api/src/modules/accounting/dto` (2)
 
@@ -729,6 +736,22 @@ All 449 tracked files in `apps/api`, by directory.
 | `email-inbox.service.spec.ts` | unit test | 142 |  |
 | `email-inbox.service.ts` | service | 234 |  |
 | `mailbox-poller.cron.ts` | scheduled job | 133 |  |
+
+### `apps/api/src/modules/finance` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `finance.controller.ts` | controller | 78 |  |
+| `finance.module.ts` | nest module | 10 |  |
+| `finance.service.ts` | service | 260 |  |
+| `finance.spec.ts` | unit test | 184 |  |
+
+### `apps/api/src/modules/finance/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `expense-category.dto.ts` | dto | 35 |  |
+| `expense.dto.ts` | dto | 100 |  |
 
 ### `apps/api/src/modules/identity-verification` (4)
 

@@ -70,6 +70,7 @@ export const MODULE_PACKS: Record<string, PackName> = {
   reports: 'core',
   settings: 'core',
   tax: 'core',
+  finance: 'core',
   tracking: 'core',
   transfers: 'core',
   users: 'core',

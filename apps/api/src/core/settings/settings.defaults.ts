@@ -108,6 +108,8 @@ export const SettingKey = {
   TaxPricingMode: 'tax.pricing_mode',
   /** TaxClass.key used for a variant with no taxClassId of its own. */
   TaxDefaultClass: 'tax.default_class',
+  /** ISO 4217 — pre-fills a new expense's currency field. */
+  FinanceDefaultCurrency: 'finance.default_currency',
   /**
    * Off until an owner turns it on — MarketingAutomationCron no-ops entirely
    * while this is false, the ship-safe default for anything that emails a
@@ -243,6 +245,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.TaxEnabled]: false,
   [SettingKey.TaxPricingMode]: 'EXCLUSIVE',
   [SettingKey.TaxDefaultClass]: 'standard',
+  [SettingKey.FinanceDefaultCurrency]: 'PKR',
 
   [SettingKey.MarketingAutomationEnabled]: false,
   [SettingKey.MarketingAbandonedCartReminderHours]: 24,

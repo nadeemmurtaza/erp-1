@@ -29,6 +29,12 @@ export const CHART_OF_ACCOUNTS: ReadonlyArray<{
   { code: '5000', name: 'Cost of Goods Sold', type: 'EXPENSE' },
   { code: '5050', name: 'Intercompany Cost of Goods', type: 'EXPENSE', isIntercompany: true },
   { code: '5100', name: 'Inventory Shrinkage', type: 'EXPENSE' },
+  // WO-23.1: the two accounts finance's posting rule (onExpenseRecorded)
+  // resolves by ExpenseCategory.isDirect — packaging/courier/gateway fees
+  // scale with orders and sit above the gross-profit line with COGS;
+  // everything else (rent, salaries, marketing, ...) sits below it.
+  { code: '5150', name: 'Direct Expenses', type: 'EXPENSE' },
+  { code: '5200', name: 'Operating Expenses', type: 'EXPENSE' },
   { code: '5900', name: 'Realised FX Loss', type: 'EXPENSE' },
 ];
 
@@ -46,5 +52,7 @@ export const ACCOUNT_CODE = {
   COGS: '5000',
   INTERCOMPANY_COGS: '5050',
   INVENTORY_SHRINKAGE: '5100',
+  DIRECT_EXPENSES: '5150',
+  OPERATING_EXPENSES: '5200',
   FX_LOSS: '5900',
 } as const;

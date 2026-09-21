@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1147,
-    "lines": 177344,
-    "routes": 287,
-    "controllers": 57,
-    "models": 115,
-    "enums": 49,
-    "migrations": 52,
-    "events": 34,
-    "permissions": 36,
-    "screens": 125,
+    "files": 1157,
+    "lines": 178967,
+    "routes": 296,
+    "controllers": 58,
+    "models": 117,
+    "enums": 50,
+    "migrations": 53,
+    "events": 35,
+    "permissions": 38,
+    "screens": 127,
     "crons": 6,
-    "specs": 103,
+    "specs": 104,
     "designLaws": 150
   },
   "designLaws": [
@@ -1079,13 +1079,13 @@
     "infra": {
       "files": 55,
       "lines": 27839,
-      "bytes": 1091818,
+      "bytes": 1091851,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 449,
-      "lines": 59691,
-      "bytes": 2137795,
+      "files": 457,
+      "lines": 60712,
+      "bytes": 2175053,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1101,9 +1101,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 228,
-      "lines": 33618,
-      "bytes": 1251232,
+      "files": 230,
+      "lines": 34199,
+      "bytes": 1269904,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -1114,8 +1114,8 @@
     },
     "packages": {
       "files": 53,
-      "lines": 4486,
-      "bytes": 145306,
+      "lines": 4507,
+      "bytes": 145791,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -1237,6 +1237,22 @@
       ],
       "routes": 19,
       "page": "docs/index/modules/crm.md"
+    },
+    {
+      "name": "finance",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/finance/dto/expense-category.dto.ts",
+        "apps/api/src/modules/finance/dto/expense.dto.ts",
+        "apps/api/src/modules/finance/finance.controller.ts",
+        "apps/api/src/modules/finance/finance.module.ts",
+        "apps/api/src/modules/finance/finance.service.ts",
+        "apps/api/src/modules/finance/finance.spec.ts"
+      ],
+      "routes": 9,
+      "page": "docs/index/modules/finance.md"
     },
     {
       "name": "identity-verification",
@@ -2976,6 +2992,150 @@
       "public": false,
       "authOnly": false,
       "summary": "Render a template against sample data"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/finance/expense-categories",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "listCategories",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 16,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List expense categories with their expense count"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/finance/expense-categories",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "createCategory",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 23,
+      "access": "finance.manage",
+      "permissions": [
+        "finance.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create an expense category"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/finance/expense-categories/:id",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "deleteCategory",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 37,
+      "access": "finance.manage",
+      "permissions": [
+        "finance.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Delete an unused expense category"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/finance/expense-categories/:id",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "updateCategory",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 30,
+      "access": "finance.manage",
+      "permissions": [
+        "finance.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Rename, redirect or (de)activate an expense category"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/finance/expenses",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "listExpenses",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 45,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List expenses, paginated and filtered"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/finance/expenses",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "createExpense",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 59,
+      "access": "finance.manage",
+      "permissions": [
+        "finance.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Record an expense"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/finance/expenses/:id",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "deleteExpense",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 73,
+      "access": "finance.manage",
+      "permissions": [
+        "finance.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Delete an expense"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/finance/expenses/:id",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "updateExpense",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 66,
+      "access": "finance.manage",
+      "permissions": [
+        "finance.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Edit an expense"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/finance/expenses/summary",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "summary",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 52,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Totals, per-category breakdown and a daily series"
     },
     {
       "method": "GET",
@@ -6911,6 +7071,42 @@
       "inSeed": true
     },
     {
+      "key": "finance.view",
+      "label": "View expenses and finance reports",
+      "category": "Finance",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/finance/expense-categories",
+        "GET /admin/finance/expenses",
+        "GET /admin/finance/expenses/summary"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "finance.manage",
+      "label": "Record and edit expenses",
+      "category": "Finance",
+      "sensitivity": "medium",
+      "routes": [
+        "POST /admin/finance/expense-categories",
+        "DELETE /admin/finance/expense-categories/:id",
+        "PATCH /admin/finance/expense-categories/:id",
+        "POST /admin/finance/expenses",
+        "DELETE /admin/finance/expenses/:id",
+        "PATCH /admin/finance/expenses/:id"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
       "key": "marketing.manage",
       "label": "Turn on automated marketing email and set its timing",
       "category": "Administration",
@@ -7003,14 +7199,14 @@
       "name": "order.placed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:47",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:154",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:48",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:155",
         "apps/api/src/modules/orders/orders.service.ts:339",
         "apps/api/src/modules/orders/orders.service.ts:542"
       ],
       "subscribers": [
         "apps/api/src/core/events/on-domain-event.decorator.ts:7 handle()",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:45 onOrderPlaced()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:46 onOrderPlaced()",
         "apps/api/src/modules/crm/order.subscriber.ts:27 onOrderPlaced()",
         "apps/api/src/modules/orders/notification.subscriber.ts:70 onOrderPlaced()",
         "apps/api/src/modules/orders/order-replication.listener.ts:48 onOrderPlaced()",
@@ -7046,14 +7242,14 @@
       "name": "payment.succeeded",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:114",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:151",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:115",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:152",
         "apps/api/src/modules/orders/orders.service.ts:530",
         "apps/api/src/modules/payments/payments.service.ts:188",
         "apps/api/src/modules/payments/payments.service.ts:257"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:112 onPaymentSucceeded()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:113 onPaymentSucceeded()",
         "apps/api/src/modules/payments/notification.subscriber.ts:34 onPaymentSucceeded()"
       ]
     },
@@ -7085,7 +7281,7 @@
         "apps/api/src/modules/payments/payments.service.ts:316"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:149 onPaymentRefunded()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:150 onPaymentRefunded()",
         "apps/api/src/modules/payments/notification.subscriber.ts:118 onPaymentRefunded()"
       ]
     },
@@ -7243,11 +7439,11 @@
       "name": "inventory.stock_variance_recorded",
       "doc": "InventoryService.postUnconditional() drove a location negative (RETAIL-ERP.md R5) — never fired by move().",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:278",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:279",
         "apps/api/src/modules/inventory/inventory.service.ts:347"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:276 onStockVarianceRecorded()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:277 onStockVarianceRecorded()"
       ]
     },
     {
@@ -7264,11 +7460,11 @@
       "name": "purchasing.supplier_bill_raised",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:175",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:176",
         "apps/api/src/modules/purchasing/purchasing.service.ts:554"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:173 onSupplierBillRaised()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:174 onSupplierBillRaised()"
       ]
     },
     {
@@ -7276,11 +7472,11 @@
       "name": "purchasing.supplier_bill_paid",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:225",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:226",
         "apps/api/src/modules/purchasing/purchasing.service.ts:618"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:223 onSupplierBillPaid()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:224 onSupplierBillPaid()"
       ]
     },
     {
@@ -7288,11 +7484,11 @@
       "name": "transfers.inter_branch_invoiced",
       "doc": "An InterBranchInvoice was raised — TransfersService.receive() on an INVOICED transfer (R12/R17, WO-22.3).",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:331",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:332",
         "apps/api/src/modules/transfers/transfers.service.ts:278"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:329 onInterBranchTransferInvoiced()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:330 onInterBranchTransferInvoiced()"
       ]
     },
     {
@@ -7368,6 +7564,18 @@
         "apps/api/src/modules/identity-verification/identity-verification.service.ts:140"
       ],
       "subscribers": []
+    },
+    {
+      "symbol": "ExpenseRecorded",
+      "name": "finance.expense_recorded",
+      "doc": "FinanceService.create() (WO-23.1) — fires whether or not `accounting` is on; posting-rules.subscriber.ts is the only subscriber today.",
+      "publishers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:392",
+        "apps/api/src/modules/finance/finance.service.ts:160"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:390 onExpenseRecorded()"
+      ]
     }
   ],
   "models": [
@@ -7484,7 +7692,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 130,
+      "line": 131,
       "doc": "",
       "fields": [
         {
@@ -7675,7 +7883,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 408,
+      "line": 409,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -7736,7 +7944,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 220,
+      "line": 221,
       "doc": "",
       "fields": [
         {
@@ -8853,7 +9061,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 388,
+      "line": 389,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -8927,7 +9135,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 175,
+      "line": 176,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -9113,7 +9321,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 116,
+      "line": 117,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -9169,6 +9377,249 @@
       "indexes": [
         "@@index([userId])",
         "@@index([expiresAt])"
+      ]
+    },
+    {
+      "name": "Expense",
+      "file": "apps/api/prisma/schema/finance.prisma",
+      "line": 40,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "categoryId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amount",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "currency",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "incurredAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "paidAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payee",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "supplierId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reference",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "receiptUrl",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "recurrence",
+          "type": "ExpenseRecurrence",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "recurringFromId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "recurringPeriod",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "category",
+          "type": "ExpenseCategory",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "supplier",
+          "type": "Supplier?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "createdBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "recurringFrom",
+          "type": "Expense?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "generated",
+          "type": "Expense[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([recurringFromId, recurringPeriod])",
+        "@@index([incurredAt])",
+        "@@index([categoryId, incurredAt])",
+        "@@index([paidAt])",
+        "@@index([supplierId])"
+      ]
+    },
+    {
+      "name": "ExpenseCategory",
+      "file": "apps/api/prisma/schema/finance.prisma",
+      "line": 15,
+      "doc": "Finance: operational expenses and per-order economics (RETAIL-ERP.md Tranche 6, WO-23.1 — \"build 10-admin-dashboard.md §B as written, now posting to the GL\").",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isDirect",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "expenses",
+          "type": "Expense[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([isActive, order])"
       ]
     },
     {
@@ -9625,7 +10076,7 @@
     {
       "name": "GoodsReceipt",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 146,
+      "line": 147,
       "doc": "",
       "fields": [
         {
@@ -9727,7 +10178,7 @@
     {
       "name": "GoodsReceiptItem",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 165,
+      "line": 166,
       "doc": "",
       "fields": [
         {
@@ -12060,7 +12511,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 361,
+      "line": 362,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -12298,7 +12749,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 99,
+      "line": 100,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -12505,7 +12956,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 241,
+      "line": 242,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -13794,7 +14245,7 @@
     {
       "name": "PurchaseOrder",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 96,
+      "line": 97,
       "doc": "",
       "fields": [
         {
@@ -13967,7 +14418,7 @@
     {
       "name": "PurchaseOrderItem",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 128,
+      "line": 129,
       "doc": "",
       "fields": [
         {
@@ -14191,7 +14642,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 78,
+      "line": 79,
       "doc": "",
       "fields": [
         {
@@ -14629,7 +15080,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 307,
+      "line": 308,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -14687,7 +15138,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 321,
+      "line": 322,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -14741,7 +15192,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 257,
+      "line": 258,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -14853,7 +15304,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 153,
+      "line": 154,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -16463,6 +16914,13 @@
           "relation": false
         },
         {
+          "name": "expenses",
+          "type": "Expense[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "tradingPartner",
           "type": "TradingPartner?",
           "id": false,
@@ -16499,7 +16957,7 @@
     {
       "name": "SupplierBill",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 188,
+      "line": 189,
       "doc": "",
       "fields": [
         {
@@ -16637,7 +17095,7 @@
     {
       "name": "SupplierProduct",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 68,
+      "line": 69,
       "doc": "What a given supplier charges for a given variant, and under what terms.",
       "fields": [
         {
@@ -17411,6 +17869,13 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "expensesCreated",
+          "type": "Expense[]",
+          "id": false,
+          "unique": false,
+          "relation": true
         }
       ],
       "indexes": [
@@ -17421,7 +17886,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 278,
+      "line": 279,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -17482,7 +17947,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 336,
+      "line": 337,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -17900,7 +18365,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 376,
+      "line": 377,
       "values": [
         "IOS",
         "ANDROID",
@@ -17910,11 +18375,23 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 164,
+      "line": 165,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
         "SUPPORT"
+      ]
+    },
+    {
+      "name": "ExpenseRecurrence",
+      "file": "apps/api/prisma/schema/finance.prisma",
+      "line": 32,
+      "values": [
+        "NONE",
+        "WEEKLY",
+        "MONTHLY",
+        "QUARTERLY",
+        "YEARLY"
       ]
     },
     {
@@ -18069,7 +18546,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 350,
+      "line": 351,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -18104,7 +18581,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 269,
+      "line": 270,
       "values": [
         "GRANT",
         "REVOKE"
@@ -18155,7 +18632,7 @@
     {
       "name": "PurchaseOrderStatus",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 88,
+      "line": 89,
       "values": [
         "DRAFT",
         "SENT",
@@ -18324,7 +18801,7 @@
     {
       "name": "SupplierBillStatus",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 182,
+      "line": 183,
       "values": [
         "UNPAID",
         "PARTIAL",
@@ -19311,6 +19788,24 @@
         "StockTransfer",
         "StockTransferLine"
       ]
+    },
+    {
+      "folder": "20260921152354_add_finance_expenses",
+      "file": "apps/api/prisma/schema/migrations/20260921152354_add_finance_expenses/migration.sql",
+      "date": "2026-09-21",
+      "slug": "add_finance_expenses",
+      "statements": 14,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "Expense",
+        "ExpenseCategory"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -20054,6 +20549,24 @@
       "kind": "page",
       "url": "/admin/email-templates",
       "file": "apps/web/src/app/(admin)/admin/(app)/email-templates/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/finance/expenses",
+      "file": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/finance/expenses/categories",
+      "file": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -21217,7 +21730,7 @@
       "file": "apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts",
       "module": "accounting",
       "kind": "unit test",
-      "cases": 25,
+      "cases": 30,
       "describes": [
         "PostingRulesSubscriber — WO-19.2",
         "onOrderPlaced",
@@ -21226,7 +21739,8 @@
         "onSupplierBillRaised — WO-19.3",
         "onSupplierBillPaid — WO-19.3 realised FX gain/loss",
         "onStockVarianceRecorded — WO-21.3",
-        "onInterBranchTransferInvoiced — WO-22.3"
+        "onInterBranchTransferInvoiced — WO-22.3",
+        "onExpenseRecorded — WO-23.1"
       ]
     },
     {
@@ -21272,6 +21786,15 @@
       "describes": [
         "EmailInboxService",
         "reply"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/finance/finance.spec.ts",
+      "module": "finance",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "FinanceService"
       ]
     },
     {
@@ -22290,7 +22813,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 99,
-      "bytes": 5053,
+      "bytes": 5070,
       "doc": "",
       "symbols": []
     },
@@ -22299,7 +22822,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 125,
-      "bytes": 5904,
+      "bytes": 5912,
       "doc": "",
       "symbols": []
     },
@@ -22308,7 +22831,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 113,
-      "bytes": 5046,
+      "bytes": 5054,
       "doc": "",
       "symbols": []
     },
@@ -22554,7 +23077,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 222,
-      "bytes": 9665,
+      "bytes": 9701,
       "doc": "The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a",
       "symbols": []
     },
@@ -22580,8 +23103,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 420,
-      "bytes": 15111,
+      "lines": 421,
+      "bytes": 15190,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -22590,8 +23113,17 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 239,
-      "bytes": 8231,
+      "bytes": 8238,
       "doc": "CRM: one customer record, whatever door the customer came in through.",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/finance.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 80,
+      "bytes": 3010,
+      "doc": "Finance: operational expenses and per-order economics (RETAIL-ERP.md",
       "symbols": []
     },
     {
@@ -22599,7 +23131,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 40,
-      "bytes": 1501,
+      "bytes": 1506,
       "doc": "/ Tracks a User's identity verification against nID (Newax's external",
       "symbols": []
     },
@@ -22608,7 +23140,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 231,
-      "bytes": 9038,
+      "bytes": 9044,
       "doc": "Inventory: the stock ledger. Every change to ProductVariant.stock has",
       "symbols": []
     },
@@ -23099,6 +23631,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260921152354_add_finance_expenses/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 88,
+      "bytes": 3406,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -23112,7 +23653,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 256,
-      "bytes": 9874,
+      "bytes": 9878,
       "doc": "Orders and shipments.",
       "symbols": []
     },
@@ -23121,7 +23662,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 169,
-      "bytes": 7873,
+      "bytes": 7989,
       "doc": "The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier",
       "symbols": []
     },
@@ -23148,7 +23689,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 136,
-      "bytes": 5509,
+      "bytes": 5517,
       "doc": "The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's",
       "symbols": []
     },
@@ -23165,9 +23706,9 @@
       "path": "apps/api/prisma/schema/purchasing.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 226,
-      "bytes": 8713,
-      "doc": "/ ISO 3166-1 alpha-2, e.g. \"PK\", \"CN\". Null for a domestic supplier whose",
+      "lines": 227,
+      "bytes": 8804,
+      "doc": "",
       "symbols": []
     },
     {
@@ -23175,7 +23716,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 134,
-      "bytes": 5730,
+      "bytes": 5741,
       "doc": "The replication engine (RETAIL-ERP.md Part 6, WO-20.1: \"log, cursors,",
       "symbols": []
     },
@@ -23220,7 +23761,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 167,
-      "bytes": 7294,
+      "bytes": 7333,
       "doc": "Inter-branch stock transfers (RETAIL-ERP.md R4, Tranche 5). Off by default",
       "symbols": []
     },
@@ -23228,8 +23769,8 @@
       "path": "apps/api/prisma/seed.ts",
       "area": "api",
       "kind": "module",
-      "lines": 2970,
-      "bytes": 101188,
+      "lines": 3002,
+      "bytes": 102784,
       "doc": "",
       "symbols": []
     },
@@ -23921,7 +24462,7 @@
       "area": "api",
       "kind": "config",
       "lines": 250,
-      "bytes": 10610,
+      "bytes": 10629,
       "doc": "",
       "symbols": [
         {
@@ -23984,8 +24525,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 317,
-      "bytes": 11116,
+      "lines": 334,
+      "bytes": 11755,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -23996,137 +24537,142 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 63
+          "line": 66
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 65
+          "line": 68
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 78
+          "line": 81
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 86
+          "line": 89
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 94
+          "line": 97
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 114
+          "line": 117
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 120
+          "line": 123
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 127
+          "line": 130
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 134
+          "line": 137
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 138
+          "line": 141
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 144
+          "line": 147
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 150
+          "line": 153
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 157
+          "line": 160
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 165
+          "line": 168
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 176
+          "line": 179
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 183
+          "line": 186
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 192
+          "line": 195
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 200
+          "line": 203
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 208
+          "line": 211
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 213
+          "line": 216
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 220
+          "line": 223
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 228
+          "line": 231
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 242
+          "line": 245
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 255
+          "line": 258
+        },
+        {
+          "name": "ExpenseRecordedPayload",
+          "kind": "interface",
+          "line": 271
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 268
+          "line": 284
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 275
+          "line": 291
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 281
+          "line": 297
         }
       ]
     },
@@ -25299,8 +25845,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 253,
-      "bytes": 10159,
+      "lines": 256,
+      "bytes": 10323,
       "doc": "",
       "symbols": [
         {
@@ -25336,12 +25882,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 127
+          "line": 129
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 129
+          "line": 131
         }
       ]
     },
@@ -25669,8 +26215,8 @@
       "path": "apps/api/src/modules/accounting/chart-of-accounts.ts",
       "area": "api",
       "kind": "module",
-      "lines": 51,
-      "bytes": 2211,
+      "lines": 59,
+      "bytes": 2685,
       "doc": "",
       "symbols": [
         {
@@ -25681,7 +26227,7 @@
         {
           "name": "ACCOUNT_CODE",
           "kind": "const",
-          "line": 36
+          "line": 42
         }
       ]
     },
@@ -25856,8 +26402,8 @@
       "path": "apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 430,
-      "bytes": 15242,
+      "lines": 502,
+      "bytes": 17713,
       "doc": "",
       "symbols": []
     },
@@ -25865,14 +26411,14 @@
       "path": "apps/api/src/modules/accounting/posting-rules.subscriber.ts",
       "area": "api",
       "kind": "event subscriber",
-      "lines": 376,
-      "bytes": 16052,
+      "lines": 425,
+      "bytes": 18309,
       "doc": "",
       "symbols": [
         {
           "name": "PostingRulesSubscriber",
           "kind": "class",
-          "line": 31
+          "line": 32
         }
       ]
     },
@@ -26618,6 +27164,115 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/finance/dto/expense-category.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 35,
+      "bytes": 935,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateExpenseCategoryDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "UpdateExpenseCategoryDto",
+          "kind": "class",
+          "line": 34
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/finance/dto/expense.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 100,
+      "bytes": 2348,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateExpenseDto",
+          "kind": "class",
+          "line": 8
+        },
+        {
+          "name": "UpdateExpenseDto",
+          "kind": "class",
+          "line": 59
+        },
+        {
+          "name": "ExpenseQueryDto",
+          "kind": "class",
+          "line": 61
+        },
+        {
+          "name": "ExpenseSummaryQueryDto",
+          "kind": "class",
+          "line": 89
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/finance/finance.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 78,
+      "bytes": 2910,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FinanceController",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/finance/finance.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 10,
+      "bytes": 262,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FinanceModule",
+          "kind": "class",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/finance/finance.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 260,
+      "bytes": 9852,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ExpenseSummary",
+          "kind": "interface",
+          "line": 13
+        },
+        {
+          "name": "FinanceService",
+          "kind": "class",
+          "line": 39
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/finance/finance.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 184,
+      "bytes": 6390,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/modules/identity-verification/dto/submit-otp.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -27178,8 +27833,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 81,
-      "bytes": 2662,
+      "lines": 82,
+      "bytes": 2681,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -27198,24 +27853,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 141,
-      "bytes": 6894,
+      "lines": 143,
+      "bytes": 6998,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 28
+          "line": 29
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 59
+          "line": 60
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 117
+          "line": 119
         }
       ]
     },
@@ -31750,6 +32405,36 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 220,
+      "bytes": 7047,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ExpenseCategoriesPage",
+          "kind": "default",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 344,
+      "bytes": 11214,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ExpensesPage",
+          "kind": "default",
+          "line": 47
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/garments/[id]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -33336,8 +34021,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 388,
-      "bytes": 10413,
+      "lines": 405,
+      "bytes": 10824,
       "doc": "",
       "symbols": [
         {
@@ -33368,12 +34053,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 358
+          "line": 375
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 373
+          "line": 390
         }
       ]
     },
@@ -38968,8 +39653,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 451,
-      "bytes": 14182,
+      "lines": 472,
+      "bytes": 14667,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -38990,47 +39675,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 236
+          "line": 248
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 238
+          "line": 250
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 248
+          "line": 260
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 255
+          "line": 267
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 360
+          "line": 378
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 438
+          "line": 459
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 443
+          "line": 464
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 444
+          "line": 465
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 447
+          "line": 468
         }
       ]
     },

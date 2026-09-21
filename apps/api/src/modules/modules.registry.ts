@@ -5,6 +5,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
 import { CartModule } from './cart/cart.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { CrmModule } from './crm/crm.module';
+import { FinanceModule } from './finance/finance.module';
 import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { MarketingModule } from './marketing/marketing.module';
@@ -73,6 +74,7 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'analytics', module: AnalyticsModule },
   { name: 'reports', module: ReportsModule },
   { name: 'tax', module: TaxModule },
+  { name: 'finance', module: FinanceModule },
   { name: 'tracking', module: TrackingModule },
   // Off by default for every deployment today (WO-18.3) — a chain
   // deployment switches it on when it actually has branches or brands to

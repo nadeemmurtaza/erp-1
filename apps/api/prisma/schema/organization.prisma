@@ -13,16 +13,16 @@
 /// itself. A BRAND-tier deployment never holds one — it knows its
 /// organization only through PARENT_URL (WO-18.1), never a local row.
 model Organization {
-  id        String   @id @default(cuid())
-  name      String
+  id                       String   @id @default(cuid())
+  name                     String
   /// R9's `org.allow_inter_brand_transfers` — off by default, the same
   /// permissive-switch-starts-closed convention `BrandPolicy`'s three flags
   /// already use. Read directly by TransfersService (WO-22.2) via Prisma,
   /// not through OrganizationService — a read, not a same-transaction
   /// write, so it needs no KNOWN_MODULE_COUPLINGS entry.
   allowInterBrandTransfers Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
 
   retailBrands RetailBrand[]
 }
@@ -68,13 +68,13 @@ model RetailBrand {
 /// branch alone. `org.allow_inter_brand_transfers` (R9's fourth switch) is
 /// organization-level, not brand-level, and stays a plain Setting.
 model BrandPolicy {
-  id                          String   @id @default(cuid())
-  retailBrandId               String   @unique
-  allowBranchProductCreation  Boolean  @default(false)
-  allowBranchLocalPurchasing  Boolean  @default(false)
-  allowInterBranchTransfers   Boolean  @default(false)
-  createdAt                   DateTime @default(now())
-  updatedAt                   DateTime @updatedAt
+  id                         String   @id @default(cuid())
+  retailBrandId              String   @unique
+  allowBranchProductCreation Boolean  @default(false)
+  allowBranchLocalPurchasing Boolean  @default(false)
+  allowInterBranchTransfers  Boolean  @default(false)
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
 
   retailBrand RetailBrand @relation(fields: [retailBrandId], references: [id], onDelete: Cascade)
 }
@@ -140,26 +140,26 @@ enum NodeStatus {
 /// its own Node table — a STANDALONE or BRANCH deployment has no tier below
 /// it and this table stays empty.
 model Node {
-  id         String     @id @default(cuid())
+  id                String     @id @default(cuid())
   /// The child deployment's own NODE_ID. Globally unique the way every other
   /// natural key here is (R6) — two branches of the same brand, or two
   /// brands of different organizations, must never collide.
-  nodeId     String     @unique
-  role       NodeRole
+  nodeId            String     @unique
+  role              NodeRole
   /// Display name for the admin drill-down — "Lahore — Gulberg", not a slug.
-  label      String
+  label             String
   /// Where the parent reaches this child to pull facts and push policy.
-  url        String
+  url               String
   /// SHA-256 of the credential this child presents on every replication
   /// call (WO-20.2) — same shape as `TradingPartner.inboundApiKeyHash`
   /// (trading-partners.prisma): issued once via `rotateInboundKey()`, shown
   /// to the operator raw exactly that once, never persisted or echoed back.
   /// The child is configured with the raw value as its own `PARENT_API_KEY`.
   inboundApiKeyHash String?    @unique
-  status     NodeStatus @default(ACTIVE)
-  lastSeenAt DateTime?
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  status            NodeStatus @default(ACTIVE)
+  lastSeenAt        DateTime?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
 
   adminScopes AdminScope[]
 

@@ -58,7 +58,7 @@ export const envSchema = z.object({
     }),
 
   MODULES: csv(
-    'catalog,measurements,cart,orders,payments,stitching,inventory,crm,analytics,reports,tracking',
+    'catalog,measurements,cart,orders,payments,stitching,inventory,purchasing,crm,analytics,reports,tracking,finance',
   ),
 
   /**

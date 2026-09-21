@@ -1,0 +1,79 @@
+// Finance: operational expenses and per-order economics (RETAIL-ERP.md
+// Tranche 6, WO-23.1 — "build 10-admin-dashboard.md §B as written, now
+// posting to the GL"). This file is WO-B.1 only: ExpenseCategory + Expense.
+// OrderEconomics (WO-B.3) is a later work order in the same tranche.
+//
+// Deliberately NOT double-entry. If you find yourself wanting a JournalEntry
+// model, stop - see docs/implementation/04-finance.md. The GL posting this
+// tranche adds (posting-rules.subscriber.ts's onExpenseRecorded) is a
+// DERIVED journal entry keyed off (source, sourceRef) — Expense itself never
+// gains a status column for it, matching how OrderPlaced/PaymentSucceeded
+// already work.
+// Money is integer paisa (Rule 5). Every report groups by incurredAt, never
+// paidAt: October's rent paid in November is an October expense.
+
+model ExpenseCategory {
+  id       String  @id @default(cuid())
+  key      String  @unique // "rent", "salaries", "marketing", "packaging"
+  /// Staff-only label. NOT a translation row - Rule 6's second paragraph, and D10.
+  name     String
+  /// Direct costs sit above the gross-profit line; operating below it.
+  isDirect Boolean @default(false)
+  isActive Boolean @default(true)
+  order    Int     @default(0)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  expenses  Expense[]
+
+  @@index([isActive, order])
+}
+
+enum ExpenseRecurrence {
+  NONE
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+  YEARLY
+}
+
+model Expense {
+  id          String @id @default(cuid())
+  categoryId  String
+  /// Paisa. Always positive - an expense is not a negative income.
+  amount      Int
+  currency    String @default("PKR")
+  description String
+
+  /// The date the cost BELONGS TO, which is not always when it was entered.
+  incurredAt DateTime
+  /// When money actually left. Null = unpaid. Cash flow is the only consumer.
+  paidAt     DateTime?
+
+  payee      String?
+  supplierId String?
+  reference  String?
+  receiptUrl String? // via the existing StorageDriver (WO-B.2)
+
+  recurrence      ExpenseRecurrence @default(NONE)
+  recurringFromId String?
+  /// Period key of a generated instance, e.g. "2026-08". With recurringFromId
+  /// this is what makes the cron idempotent at the DATABASE level (WO-B.2).
+  recurringPeriod String?
+
+  createdById String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category      ExpenseCategory @relation(fields: [categoryId], references: [id])
+  supplier      Supplier?       @relation(fields: [supplierId], references: [id], onDelete: SetNull)
+  createdBy     User?           @relation("ExpenseCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  recurringFrom Expense?        @relation("ExpenseRecurrence", fields: [recurringFromId], references: [id], onDelete: SetNull)
+  generated     Expense[]       @relation("ExpenseRecurrence")
+
+  @@unique([recurringFromId, recurringPeriod])
+  @@index([incurredAt])
+  @@index([categoryId, incurredAt])
+  @@index([paidAt])
+  @@index([supplierId])
+}

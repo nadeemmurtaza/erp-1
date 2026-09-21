@@ -173,6 +173,23 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'insights',
     module: 'reports',
   },
+  {
+    key: 'finance-expenses',
+    label: 'Expenses',
+    href: '/admin/finance/expenses',
+    permissions: ['finance.view'],
+    group: 'insights',
+    module: 'finance',
+    children: [
+      {
+        key: 'finance-expense-categories',
+        label: 'Categories',
+        href: '/admin/finance/expenses/categories',
+        permissions: ['finance.manage'],
+        group: 'insights',
+      },
+    ],
+  },
 
   // Group: Workshop
   {

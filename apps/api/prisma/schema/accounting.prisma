@@ -71,7 +71,7 @@ model FiscalYear {
   /// by un-closing the year.
   closedAt DateTime?
 
-  periods FiscalPeriod[]
+  periods       FiscalPeriod[]
   numberCounter JournalEntryNumberCounter?
 
   @@index([startsOn])
@@ -182,12 +182,12 @@ model JournalLine {
   /// as its own column so a report never needs a CASE WHEN to pick one.
   baseAmountMinor Int
 
-  organizationId String?
-  retailBrandId  String?
-  branchNodeId   String?
-  costCentreId   String?
-  contactId      String?
-  supplierId     String?
+  organizationId      String?
+  retailBrandId       String?
+  branchNodeId        String?
+  costCentreId        String?
+  contactId           String?
+  supplierId          String?
   /// R17: set only on an intercompany line (its account is also flagged
   /// `isIntercompany`) — the OTHER brand in the trade, so consolidation at
   /// the org tier (WO-20.6) can find this line's matching opposite number

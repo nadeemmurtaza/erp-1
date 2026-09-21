@@ -25,11 +25,11 @@ enum PosTerminalStatus {
 /// file stays fully self-contained; `PosTerminalsService` checks the
 /// location exists at write time instead of leaning on a DB-level FK.
 model PosTerminal {
-  id    String @id @default(cuid())
+  id         String @id @default(cuid())
   /// Short, human-chosen — "LHR-01-T1" — printed on receipts (WO-21.5) and
   /// shown on the branch's own exception dashboard.
-  code  String @unique
-  label String
+  code       String @unique
+  label      String
   locationId String
 
   /// SHA-256 of the device credential this terminal presents on every
@@ -63,7 +63,7 @@ enum PosShiftStatus {
 /// (accounting.prisma) already use for naming a `User` without a
 /// `@relation` into another module's table.
 model PosShift {
-  id             String         @id @default(cuid())
+  id             String  @id @default(cuid())
   terminalId     String
   openedByUserId String
   closedByUserId String?

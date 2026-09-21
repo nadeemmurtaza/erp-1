@@ -1,38 +1,38 @@
 model Supplier {
-  id           String   @id @default(cuid())
-  name         String
-  contactName  String?
-  phone        String?
-  email        String?
-  address      String?
-  city         String?
+  id              String   @id @default(cuid())
+  name            String
+  contactName     String?
+  phone           String?
+  email           String?
+  address         String?
+  city            String?
   /// ISO 3166-1 alpha-2, e.g. "PK", "CN". Null for a domestic supplier whose
   /// country was never recorded before this field existed (RETAIL-ERP.md R16).
-  country      String?
+  country         String?
   /// ISO 4217 — the currency their bills are raised in. Defaults to the
   /// deployment's own base currency; only an international supplier's bills
   /// actually carry FX (see SupplierBill.fxRateScaled).
-  currency     String   @default("PKR")
+  currency        String   @default("PKR")
   /// Their tax registration number — NTN, TRN, VAT id, whatever the
   /// jurisdiction calls it. Free text: the label is locale policy, not a
   /// column (see brand.ts), and a supplier's own paperwork is what the
   /// bookkeeper reads regardless of what we'd call it.
-  taxId        String?
+  taxId           String?
   /// Free text: "FOB Shanghai", "DDP", "EXW" — customs/shipping terms for an
   /// international supplier. Display-only today, no INCOTERMS enum.
-  incoterms    String?
+  incoterms       String?
   /// True marks a supplier whose bills need the FX posting rules (WO-19.3) —
   /// distinct from `currency !== base`, since a shop may quote a domestic
   /// supplier in USD without customs/duty being involved at all.
-  isInternational Boolean @default(false)
+  isInternational Boolean  @default(false)
   /// Free text: "30 days net", "advance", "on delivery".
-  paymentTerms String?
+  paymentTerms    String?
   /// Typical days from order to delivery. Feeds reorder suggestions.
-  leadTimeDays Int      @default(7)
-  notes        String?
-  isActive     Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  leadTimeDays    Int      @default(7)
+  notes           String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   /// The permanent counterparty profile this Supplier is the SUPPLIER-role
   /// extension of (parties.prisma). Nullable during the expand phase of an
@@ -42,8 +42,8 @@ model Supplier {
   /// name/contactName/phone/email/address/city above stay in place — reading
   /// exclusively through party and dropping them is a deliberate follow-up,
   /// not part of this change.
-  partyId String? @unique
-  party   Party?  @relation(fields: [partyId], references: [id], onDelete: SetNull)
+  partyId          String? @unique
+  party            Party?  @relation(fields: [partyId], references: [id], onDelete: SetNull)
   /// Null (the default) means manual entry, exactly as before this field
   /// existed. Set it to feed this supplier's bills in automatically once
   /// they're a connected TradingPartner (18-trading-partner-network.md,
@@ -53,6 +53,7 @@ model Supplier {
   tradingPartnerId String?
 
   products SupplierProduct[]
+  expenses Expense[]
   // Note: purchaseOrders and bills are for WO-1.5, not included yet.
 
   tradingPartner    TradingPartner?  @relation(fields: [tradingPartnerId], references: [id], onDelete: SetNull)

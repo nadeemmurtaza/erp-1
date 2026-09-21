@@ -53,11 +53,11 @@ export default function BranchDashboardPage() {
       <Section title="Node">
         <dl className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
           <div>
-            <dt className="text-xs text-neutral-900/50">Status</dt>
+            <dt className="text-xs text-neutral-900/60">Status</dt>
             <dd className="text-neutral-900">{branch?.status ?? '—'}</dd>
           </div>
           <div>
-            <dt className="text-xs text-neutral-900/50">Node id</dt>
+            <dt className="text-xs text-neutral-900/60">Node id</dt>
             <dd className="text-neutral-900">{branch?.nodeId ?? '—'}</dd>
           </div>
         </dl>

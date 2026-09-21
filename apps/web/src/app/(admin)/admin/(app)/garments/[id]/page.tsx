@@ -248,7 +248,7 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
                     className="field-input"
                     required
                   />
-                  <span className="mt-1 block text-xs text-neutral-900/50">
+                  <span className="mt-1 block text-xs text-neutral-900/60">
                     Charged when the customer picks no premium stitching service.
                   </span>
                 </label>
@@ -264,7 +264,7 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
                     />
                     Show in the stitching flow
                   </label>
-                  <span className="mt-1 block text-xs text-neutral-900/50">
+                  <span className="mt-1 block text-xs text-neutral-900/60">
                     Unticking hides this garment from customers without deleting anything.
                   </span>
                 </div>
@@ -279,7 +279,7 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
                     onChange={(event) => setBaseFabricGaz(event.target.value)}
                     className="field-input"
                   />
-                  <span className="mt-1 block text-xs text-neutral-900/50">
+                  <span className="mt-1 block text-xs text-neutral-900/60">
                     Flat fabric benchmark, used when the yardage formula doesn&apos;t apply.
                   </span>
                 </label>
@@ -292,7 +292,7 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
                     placeholder="Anarkali, Panel Dress, Gown"
                     className="field-input"
                   />
-                  <span className="mt-1 block text-xs text-neutral-900/50">Comma-separated.</span>
+                  <span className="mt-1 block text-xs text-neutral-900/60">Comma-separated.</span>
                 </label>
 
                 <label className="block" dir="rtl">
@@ -302,7 +302,7 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
                     onChange={(event) => setAliasesUr(event.target.value)}
                     className="field-input font-urdu"
                   />
-                  <span className="mt-1 block text-xs text-neutral-900/50" dir="ltr">
+                  <span className="mt-1 block text-xs text-neutral-900/60" dir="ltr">
                     Comma-separated.
                   </span>
                 </label>
@@ -445,7 +445,7 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
                 </p>
 
                 {activeFields.length === 0 ? (
-                  <p className="text-sm text-neutral-900/45">
+                  <p className="text-sm text-neutral-900/60">
                     Add at least one measurement and save before setting standard sizes.
                   </p>
                 ) : (
@@ -513,7 +513,7 @@ function patch(
 function Small({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs text-neutral-900/50">{label}</span>
+      <span className="mb-1 block text-xs text-neutral-900/60">{label}</span>
       {children}
     </label>
   );

@@ -195,7 +195,7 @@ function StepLink({
           {badge}
         </span>
       ) : done ? (
-        <span className={cn('shrink-0 text-xs', active ? 'text-white/80' : 'text-neutral-900/30')}>✓</span>
+        <span className={cn('shrink-0 text-xs', active ? 'text-white/80' : 'text-neutral-900/60')}>✓</span>
       ) : null}
     </button>
   );
@@ -286,7 +286,7 @@ function GroupStep({
               />
               <div className="min-w-0">
                 <span className="text-sm text-neutral-900">{permission.label}</span>
-                <p className="text-xs text-neutral-900/40">{permission.key}</p>
+                <p className="text-xs text-neutral-900/60">{permission.key}</p>
                 {warn ? (
                   <p
                     className={cn(
@@ -340,7 +340,7 @@ function ReviewStep({
       ) : null}
 
       {totalCount === 0 ? (
-        <p className="text-sm text-neutral-900/50">
+        <p className="text-sm text-neutral-900/60">
           Nothing selected yet — a role with no permissions is valid, but does nothing until edited.
         </p>
       ) : (

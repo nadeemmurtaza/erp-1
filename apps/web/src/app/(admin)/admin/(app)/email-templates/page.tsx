@@ -91,7 +91,7 @@ export default function EmailTemplatesPage() {
               if (!items?.length) return null;
               return (
                 <div key={category} className="mb-2">
-                  <p className="px-2 py-1.5 text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
+                  <p className="px-2 py-1.5 text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
                     {category}
                   </p>
                   {items.map((template) => (
@@ -122,7 +122,7 @@ export default function EmailTemplatesPage() {
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <h2 className="text-sm font-semibold text-neutral-900">{selected.label}</h2>
-                    <p className="mt-1 font-mono text-xs text-neutral-900/40">{selected.key}</p>
+                    <p className="mt-1 font-mono text-xs text-neutral-900/60">{selected.key}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <TriggerBadge trigger={selected.trigger} />
@@ -153,7 +153,7 @@ export default function EmailTemplatesPage() {
 
               <div className="overflow-hidden">
                 {previewLoading ? (
-                  <p className="p-8 text-center text-sm text-neutral-900/50">Rendering…</p>
+                  <p className="p-8 text-center text-sm text-neutral-900/60">Rendering…</p>
                 ) : previewError ? (
                   <p role="alert" className="p-8 text-center text-sm text-red-700">
                     {previewError}
@@ -175,7 +175,7 @@ export default function EmailTemplatesPage() {
               </div>
             </>
           ) : (
-            <p className="p-8 text-center text-sm text-neutral-900/50">Select a template to preview it.</p>
+            <p className="p-8 text-center text-sm text-neutral-900/60">Select a template to preview it.</p>
           )}
         </div>
       </div>

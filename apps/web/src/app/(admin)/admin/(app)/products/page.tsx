@@ -137,7 +137,7 @@ export default function AdminProductsPage() {
                 </tr>
               ) : products && products.data.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-neutral-900/50">
+                  <td colSpan={5} className="px-4 py-8 text-center text-neutral-900/60">
                     No products match those filters.
                   </td>
                 </tr>
@@ -152,7 +152,7 @@ export default function AdminProductsPage() {
                         {product.translations.find((t) => t.locale === 'en')?.name ??
                           product.slug}
                       </Link>
-                      <p className="text-xs text-neutral-900/40">{product.slug}</p>
+                      <p className="text-xs text-neutral-900/60">{product.slug}</p>
                     </td>
                     <td className="text-neutral-900/70">{KIND_LABELS[product.kind]}</td>
                     <td>
@@ -165,7 +165,7 @@ export default function AdminProductsPage() {
                       className={cn(
                         'px-4 py-3 text-end tabular-nums',
                         product.kind === 'STITCHING_SERVICE'
-                          ? 'text-neutral-900/30'
+                          ? 'text-neutral-900/60'
                           : product.totalStock === 0
                             ? 'font-medium text-red-700'
                             : product.lowStockVariants > 0
@@ -214,7 +214,7 @@ export default function AdminProductsPage() {
 function Th({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
     <th scope="col"
-      className={cn('px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50', className)}
+      className={cn('px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60', className)}
     >
       {children}
     </th>

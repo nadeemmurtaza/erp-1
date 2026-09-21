@@ -28,7 +28,7 @@ export interface FunnelStage {
 export function FunnelChart({ stages }: { stages: FunnelStage[] }) {
   const allZero = stages.every((stage) => stage.value === 0);
   if (allZero) {
-    return <p className="p-8 text-center text-sm text-neutral-900/50">No visitor activity yet.</p>;
+    return <p className="p-8 text-center text-sm text-neutral-900/60">No visitor activity yet.</p>;
   }
 
   const max = Math.max(...stages.map((stage) => stage.value), 1);

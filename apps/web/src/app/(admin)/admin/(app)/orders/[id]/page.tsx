@@ -273,7 +273,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
       <div className="grid gap-6 fold:grid-cols-2 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
           <section className="overflow-hidden">
-            <h2 className="border-b border-neutral-100 bg-neutral-50 px-4 py-3 text-sm font-semibold uppercase tracking-wide text-neutral-900/50">
+            <h2 className="border-b border-neutral-100 bg-neutral-50 px-4 py-3 text-sm font-semibold uppercase tracking-wide text-neutral-900/60">
               Items
             </h2>
             <ul className="divide-y divide-neutral-100">
@@ -282,7 +282,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                   <div className="flex justify-between gap-4">
                     <div className="min-w-0">
                       <p className="text-sm font-medium text-neutral-900">{item.nameEn}</p>
-                      <p className="text-xs text-neutral-900/50">
+                      <p className="text-xs text-neutral-900/60">
                         {[item.variantLabel, item.sku].filter(Boolean).join(' · ')} × {item.quantity}
                       </p>
                     </div>
@@ -326,13 +326,13 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
 
           {order.shipments.length > 0 ? (
             <section className="card p-4">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-900/50">Shipments</h2>
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-neutral-900/60">Shipments</h2>
               <ul className="mt-2 space-y-1 text-sm text-neutral-900/70">
                 {order.shipments.map((shipment) => (
                   <li key={shipment.id}>
                     {shipment.courier.toUpperCase()}
                     {shipment.trackingNumber ? ` · ${shipment.trackingNumber}` : ''}
-                    <span className="ms-2 text-xs text-neutral-900/40">
+                    <span className="ms-2 text-xs text-neutral-900/60">
                       {formatDateTime(shipment.createdAt)}
                     </span>
                   </li>
@@ -367,7 +367,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
 
         <div className="space-y-6">
           <section className="card p-6">
-            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-neutral-900/50">Summary</h2>
+            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-neutral-900/60">Summary</h2>
             <dl className="space-y-2 text-sm">
               <Row label="Items" value={formatMoney(order.itemsSubtotal)} />
               {order.stitchingSubtotal > 0 ? (
@@ -393,7 +393,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
           </section>
 
           <section className="card p-6">
-            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-neutral-900/50">Payments</h2>
+            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-neutral-900/60">Payments</h2>
             <ul className="space-y-4">
               {order.payments.map((payment) => (
                 <li key={payment.id} className="border-b border-white pb-4 last:border-0 last:pb-0">
@@ -403,10 +403,10 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                   </div>
                   <p className="mt-1 text-xs text-neutral-900/60">{formatMoney(payment.amount)}</p>
                   {payment.reference ? (
-                    <p className="text-xs text-neutral-900/40">Ref {payment.reference}</p>
+                    <p className="text-xs text-neutral-900/60">Ref {payment.reference}</p>
                   ) : null}
                   {payment.providerRef ? (
-                    <p className="text-xs text-neutral-900/40">Gateway ref {payment.providerRef}</p>
+                    <p className="text-xs text-neutral-900/60">Gateway ref {payment.providerRef}</p>
                   ) : null}
                   {payment.receiptUrl ? (
                     <a
@@ -460,7 +460,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
           </section>
 
           <section>
-            <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-neutral-900/50">
+            <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-neutral-900/60">
               Delivering to
             </h2>
             <address className="text-sm not-italic text-neutral-900/70">
@@ -489,7 +489,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
               <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-accent" />
               <span>
                 <span className="font-medium text-neutral-900">{statusLabel(event.toStatus)}</span>
-                <span className="ms-2 text-xs text-neutral-900/40">
+                <span className="ms-2 text-xs text-neutral-900/60">
                   {formatDateTime(event.createdAt)}
                 </span>
                 {event.note ? (

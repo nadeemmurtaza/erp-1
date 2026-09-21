@@ -29,7 +29,10 @@ export interface TabItem {
  * it mounted.
  *
  * Arrow keys move between tabs, which is what the tablist role promises and
- * what anybody navigating by keyboard will try.
+ * what anybody navigating by keyboard will try. The handler sits on the tab
+ * buttons rather than on the tablist, because the tablist is not focusable —
+ * a roving tabindex keeps focus on the tabs themselves (WAI-ARIA APG), so a
+ * handler on the container is one that only ever fires by bubbling.
  */
 export function Tabs({
   items,
@@ -68,7 +71,6 @@ export function Tabs({
       <div
         role="tablist"
         aria-label={label}
-        onKeyDown={onKeyDown}
         className="mb-6 flex flex-wrap gap-1 border-b border-neutral-100"
       >
         {items.map((item) => {
@@ -82,6 +84,7 @@ export function Tabs({
               aria-selected={selected}
               aria-controls={`${id}-panel-${item.key}`}
               tabIndex={selected ? 0 : -1}
+              onKeyDown={onKeyDown}
               onClick={() => setActive(item.key)}
               className={cn(
                 'inline-flex items-center gap-2 border-b-2 px-3 py-2 text-sm font-medium transition-colors',
@@ -92,7 +95,7 @@ export function Tabs({
             >
               {item.label}
               {item.badge != null ? (
-                <span className="text-xs text-neutral-900/40">{item.badge}</span>
+                <span className="text-xs text-neutral-900/60">{item.badge}</span>
               ) : null}
             </button>
           );

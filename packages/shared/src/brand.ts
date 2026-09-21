@@ -177,10 +177,20 @@ const colors = {
     800: '#1E1B1C',
     900: '#121111',
   },
-  /** The one brand colour. Calls to action, links, focus rings. */
+  /**
+   * The one brand colour. Calls to action, links, focus rings.
+   *
+   * Darkened from the original #0f8fa3 / #0b6d7d — same hue and saturation
+   * (188°, 83%), lightness only — after `check-contrast.mjs` found
+   * white-on-DEFAULT (the primary button, every surface) at 3.83:1, under
+   * the 4.5:1 WCAG AA floor for text (COL-3). DEFAULT clears white text at
+   * 4.55:1; HOVER, which also stands alone as link/nav text on the
+   * `neutral-50` page background, clears 4.5:1 even at 80% alpha there
+   * (its one such call site) with margin to spare.
+   */
   accent: {
-    DEFAULT: '#0f8fa3',
-    hover: '#0b6d7d',
+    DEFAULT: '#0e8294',
+    hover: '#095865',
   },
   /**
    * The surface cards sit on, and the label colour on a filled button.

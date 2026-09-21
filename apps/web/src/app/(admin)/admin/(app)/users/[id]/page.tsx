@@ -302,7 +302,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
           </label>
 
           {isSelf ? (
-            <p className="text-xs text-neutral-900/50">
+            <p className="text-xs text-neutral-900/60">
               You can&rsquo;t change your own role or active status here — ask another admin.
             </p>
           ) : null}
@@ -314,7 +314,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
 
         <form onSubmit={resetPassword} className="card h-fit space-y-4 p-4">
           <h2 className="text-sm font-semibold text-neutral-900">Reset password</h2>
-          <p className="text-xs text-neutral-900/50">
+          <p className="text-xs text-neutral-900/60">
             Sets their password directly and signs them out of every device.
           </p>
 
@@ -341,7 +341,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
       <div className="mt-6 card overflow-hidden">
         <div className="border-b border-neutral-100 px-4 py-3">
           <h2 className="text-sm font-semibold text-neutral-900">Custom roles</h2>
-          <p className="text-xs text-neutral-900/50">
+          <p className="text-xs text-neutral-900/60">
             A person may hold several — their permissions are the union of every one checked below.
           </p>
         </div>
@@ -361,7 +361,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
                   />
                   <span className="min-w-0">
                     <span className="text-neutral-900">{role.name}</span>
-                    <span className="ms-2 text-xs text-neutral-900/40">
+                    <span className="ms-2 text-xs text-neutral-900/60">
                       {role.permissions.length} permission{role.permissions.length === 1 ? '' : 's'} · {role.userCount}{' '}
                       holder{role.userCount === 1 ? '' : 's'}
                     </span>
@@ -394,7 +394,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
         <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
           <div>
             <h2 className="text-sm font-semibold text-neutral-900">Permissions</h2>
-            <p className="text-xs text-neutral-900/50">
+            <p className="text-xs text-neutral-900/60">
               Checked by default from their held role(s). Toggle a row to override it just for this
               person.
             </p>
@@ -428,7 +428,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
                         </td>
                         <td className="py-2.5">
                           <span className="text-neutral-900">{permission.label}</span>
-                          <p className="text-xs text-neutral-900/40">{permission.key}</p>
+                          <p className="text-xs text-neutral-900/60">{permission.key}</p>
                         </td>
                         <td className="py-2.5 text-end">
                           {overrideEffect === 'GRANT' ? (
@@ -436,7 +436,7 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
                           ) : overrideEffect === 'REVOKE' ? (
                             <span className="font-medium text-red-700">revoked (override)</span>
                           ) : (
-                            <span className="text-neutral-900/40">role default</span>
+                            <span className="text-neutral-900/60">role default</span>
                           )}
                         </td>
                       </tr>

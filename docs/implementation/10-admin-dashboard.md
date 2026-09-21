@@ -338,7 +338,7 @@ PR** so the next agent does not "fix" it back.
 |---|---|
 | Next 15.5.23 + React 19.2.8 | Recharts 3 declares react 18-or-19 and ships ESM. The whole admin tree is client-rendered by design (`admin-shell.tsx:20-22`), so there is no SSR or hydration surface to defend. |
 | Bundle | ~100 kB gz with d3 sub-deps — real, but confined. Imported only from `components/admin/charts/`, reachable only from the `(admin)` route group, which Next code-splits per route. **The storefront bundle does not change.** WO-A.2 adds a CI check enforcing it. |
-| Theming | Plain props for stroke/fill/tick — no CSS-in-JS, no theme provider to fight. Series 1 stays `#0f8fa3`, the exact value `sales-chart.tsx` uses. Grid stays `#e9e0cd`. |
+| Theming | Plain props for stroke/fill/tick — no CSS-in-JS, no theme provider to fight. Series 1 stays `#0e8294`, the exact value `sales-chart.tsx` uses (darkened from `#0f8fa3` when `check-contrast.mjs` found the original under the WCAG AA text floor — see `brand.ts`). Grid stays `#e9e0cd`. |
 | Accessibility | Weak on its own — which is why the wrapper is non-negotiable. |
 
 Rejected: **visx** (primitives, not charts — with 25 charts to build you would
@@ -638,7 +638,7 @@ scripts/check-chart-imports.mjs
 `package.json` (`lint` runs the new script), `pnpm-lock.yaml`.
 
 `chart-theme.ts` holds the categorical ramp
-`['#0f8fa3','#b8860b','#4a6fa5','#8a5a44','#5f7a4f','#7d5ba6']` (six hues, each
+`['#0e8294','#b8860b','#4a6fa5','#8a5a44','#5f7a4f','#7d5ba6']` (six hues, each
 at least 3:1 on white and distinguishable in common dichromacies),
 `GRID = '#e9e0cd'`, `SURFACE = '#ffffff'`, ink text at `#050505` with the
 50–60% opacities the existing charts use, the dash-pattern ramp, and

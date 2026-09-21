@@ -193,7 +193,7 @@ export default function AdminDashboardPage() {
       */}
       <Section title="Needs attention">
         {attention.length === 0 ? (
-          <p className="text-sm text-neutral-900/50">Nothing waiting. Everything is up to date.</p>
+          <p className="text-sm text-neutral-900/60">Nothing waiting. Everything is up to date.</p>
         ) : (
           <ul className="flex flex-wrap gap-2">
             {attention.map((item) => (
@@ -239,7 +239,7 @@ export default function AdminDashboardPage() {
                 <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <h3 className="text-sm font-medium text-neutral-900">Revenue</h3>
-                    <p className="text-xs text-neutral-900/50">
+                    <p className="text-xs text-neutral-900/60">
                       Daily, excluding cancelled and returned orders.
                     </p>
                   </div>
@@ -296,7 +296,7 @@ export default function AdminDashboardPage() {
                   <p className="text-2xl font-medium tabular-nums text-neutral-900">
                     {formatMoney(data.averageOrderValue)}
                   </p>
-                  <p className="mt-1 text-xs text-neutral-900/50">
+                  <p className="mt-1 text-xs text-neutral-900/60">
                     Across {data.month.orders} {data.month.orders === 1 ? 'order' : 'orders'} this
                     month.
                   </p>
@@ -305,7 +305,7 @@ export default function AdminDashboardPage() {
                 <div>
                   <h3 className="eyebrow mb-3">Revenue by category</h3>
                   {extended.revenueByCategory.length === 0 ? (
-                    <p className="text-sm text-neutral-900/45">No sales in this window.</p>
+                    <p className="text-sm text-neutral-900/60">No sales in this window.</p>
                   ) : (
                     <ul className="divide-y divide-neutral-100">
                       {extended.revenueByCategory.slice(0, 6).map((row) => (
@@ -364,7 +364,7 @@ export default function AdminDashboardPage() {
                 <div>
                   <h3 className="eyebrow mb-3">Where they came from</h3>
                   {visitors.trafficSources.length === 0 ? (
-                    <p className="text-sm text-neutral-900/45">No page views in this window.</p>
+                    <p className="text-sm text-neutral-900/60">No page views in this window.</p>
                   ) : (
                     <ul className="divide-y divide-neutral-100">
                       {visitors.trafficSources.slice(0, 6).map((row) => (
@@ -404,13 +404,13 @@ export default function AdminDashboardPage() {
                 <div>
                   <h3 className="eyebrow mb-3">Follow-ups due</h3>
                   {followUps.length === 0 ? (
-                    <p className="text-sm text-neutral-900/45">Nothing due. Nobody forgotten.</p>
+                    <p className="text-sm text-neutral-900/60">Nothing due. Nobody forgotten.</p>
                   ) : (
                     <ul className="divide-y divide-neutral-100">
                       {followUps.slice(0, 6).map((task) => (
                         <li key={task.id} className="py-2">
                           <p className="text-sm text-neutral-900">{task.note}</p>
-                          <p className="text-xs text-neutral-900/50">
+                          <p className="text-xs text-neutral-900/60">
                             {task.contact?.name ?? task.lead?.name ?? 'Unassigned'} · due{' '}
                             {formatDate(task.dueAt)}
                           </p>
@@ -426,7 +426,7 @@ export default function AdminDashboardPage() {
                 <div>
                   <h3 className="eyebrow mb-3">Best sellers</h3>
                   {data.topProducts.length === 0 ? (
-                    <p className="text-sm text-neutral-900/45">No sales in this window.</p>
+                    <p className="text-sm text-neutral-900/60">No sales in this window.</p>
                   ) : (
                     <ul className="divide-y divide-neutral-100">
                       {data.topProducts.slice(0, 6).map((product) => (
@@ -503,7 +503,7 @@ export default function AdminDashboardPage() {
 function Mini({ label, value }: { label: string; value: number }) {
   return (
     <div>
-      <dt className="text-xs text-neutral-900/50">{label}</dt>
+      <dt className="text-xs text-neutral-900/60">{label}</dt>
       <dd className="text-lg font-semibold text-neutral-900">{value}</dd>
     </div>
   );

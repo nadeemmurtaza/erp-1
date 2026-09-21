@@ -35,7 +35,7 @@ export function PageHeader({
 }) {
   return (
     <header className={cn('mb-6', className)}>
-      {context ? <div className="mb-2 text-sm text-neutral-900/50">{context}</div> : null}
+      {context ? <div className="mb-2 text-sm text-neutral-900/60">{context}</div> : null}
 
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">

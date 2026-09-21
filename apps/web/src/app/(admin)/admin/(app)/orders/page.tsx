@@ -185,13 +185,13 @@ export default function AdminOrdersPage() {
                       >
                         {order.number}
                       </Link>
-                      <p className="text-xs text-neutral-900/40">
+                      <p className="text-xs text-neutral-900/60">
                         {formatDate(order.placedAt)}
                       </p>
                     </td>
                     <td>
                       <p className="text-neutral-900">{order.guestName ?? '—'}</p>
-                      <p className="text-xs text-neutral-900/40">
+                      <p className="text-xs text-neutral-900/60">
                         {order.guestPhone} · {order.shippingAddress.city}
                       </p>
                     </td>
@@ -286,7 +286,7 @@ function Th({ children, className }: { children?: React.ReactNode; className?: s
   return (
     <th scope="col"
       className={cn(
-        'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50',
+        'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60',
         className,
       )}
     >

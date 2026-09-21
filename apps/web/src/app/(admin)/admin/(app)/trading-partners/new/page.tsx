@@ -75,7 +75,7 @@ export default function NewTradingPartnerPage() {
             placeholder="https://partner.example.com/api"
             className="field-input"
           />
-          <span className="mt-1 block text-xs text-neutral-900/50">
+          <span className="mt-1 block text-xs text-neutral-900/60">
             Where we send documents to them. Leave blank if they only push to us.
           </span>
         </label>

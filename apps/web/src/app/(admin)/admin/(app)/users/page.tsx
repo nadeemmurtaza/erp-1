@@ -120,7 +120,7 @@ export default function AdminUsersPage() {
               <tbody className="divide-y divide-neutral-100">
                 {users.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/50">
+                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/60">
                       No back-office users yet.
                     </td>
                   </tr>
@@ -133,7 +133,7 @@ export default function AdminUsersPage() {
                             user.email ||
                             user.phone}
                         </span>
-                        <p className="text-xs text-neutral-900/40">{user.email ?? user.phone}</p>
+                        <p className="text-xs text-neutral-900/60">{user.email ?? user.phone}</p>
                       </td>
                       <td className="text-neutral-900/70">{user.role}</td>
                       <td>
@@ -228,7 +228,7 @@ export default function AdminUsersPage() {
           {allRoles.length > 0 ? (
             <div>
               <span className="field-label">Custom roles</span>
-              <p className="mb-1 text-xs text-neutral-900/50">
+              <p className="mb-1 text-xs text-neutral-900/60">
                 Separate from the account kind above — a person may hold several; permissions are
                 the union of every one checked.
               </p>

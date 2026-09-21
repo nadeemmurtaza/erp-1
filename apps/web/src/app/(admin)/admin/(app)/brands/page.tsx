@@ -136,7 +136,7 @@ export default function AdminBrandsPage() {
                     <span className="font-medium text-neutral-900">
                       {brand.translations.find((t) => t.locale === 'en')?.name ?? brand.slug}
                     </span>
-                    <p className="text-xs text-neutral-900/40">{brand.slug}</p>
+                    <p className="text-xs text-neutral-900/60">{brand.slug}</p>
                   </>
                 ),
               },
@@ -217,7 +217,7 @@ export default function AdminBrandsPage() {
               dir="rtl"
               className="field-input font-urdu"
             />
-            <span className="mt-1 block text-xs text-neutral-900/40">
+            <span className="mt-1 block text-xs text-neutral-900/60">
               Optional. Most brand names read the same in both languages; leave it blank
               and the storefront falls back to the English one.
             </span>

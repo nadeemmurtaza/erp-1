@@ -118,9 +118,12 @@ export default function NewPurchaseOrderPage() {
       ) : null}
 
       <div className="card p-6 mb-6">
-        <label className="block mb-2 text-sm font-medium text-neutral-900">Supplier</label>
+        <label htmlFor="po-supplier" className="mb-2 block text-sm font-medium text-neutral-900">
+          Supplier
+        </label>
         <PartyPicker
-          role="SUPPLIER"
+          id="po-supplier"
+          partyRole="SUPPLIER"
           value={supplierId}
           className="max-w-md"
           placeholder="Search suppliers by name or phone..."
@@ -140,7 +143,7 @@ export default function NewPurchaseOrderPage() {
                 <h2 className="font-medium text-neutral-900">Order Lines</h2>
               </div>
               {lines.length === 0 ? (
-                <div className="p-8 text-center text-neutral-900/50 text-sm">
+                <div className="p-8 text-center text-neutral-900/60 text-sm">
                   Add items from the catalogue.
                 </div>
               ) : (
@@ -198,18 +201,24 @@ export default function NewPurchaseOrderPage() {
               <h2 className="font-medium text-neutral-900 mb-4">Additional Costs</h2>
               <div className="grid grid-cols-2 gap-4 max-w-md">
                 <div>
-                  <label className="block text-sm text-neutral-900/70 mb-1">Freight (paisa)</label>
-                  <input 
-                    type="number" 
+                  <label htmlFor="po-freight" className="block text-sm text-neutral-900/70 mb-1">
+                    Freight (paisa)
+                  </label>
+                  <input
+                    id="po-freight"
+                    type="number"
                     className="field-input w-full"
                     value={freightCost}
                     onChange={e => setFreightCost(parseInt(e.target.value) || 0)}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-neutral-900/70 mb-1">Duty (paisa)</label>
-                  <input 
-                    type="number" 
+                  <label htmlFor="po-duty" className="block text-sm text-neutral-900/70 mb-1">
+                    Duty (paisa)
+                  </label>
+                  <input
+                    id="po-duty"
+                    type="number"
                     className="field-input w-full"
                     value={dutyCost}
                     onChange={e => setDutyCost(parseInt(e.target.value) || 0)}
@@ -247,7 +256,7 @@ export default function NewPurchaseOrderPage() {
               {loadingProducts ? (
                 <Loading label="Loading catalogue" />
               ) : supplierProducts.length === 0 ? (
-                <p className="text-sm text-neutral-900/50">This supplier has no products linked.</p>
+                <p className="text-sm text-neutral-900/60">This supplier has no products linked.</p>
               ) : (
                 <ul className="space-y-3">
                   {supplierProducts.map(sp => (
@@ -259,7 +268,7 @@ export default function NewPurchaseOrderPage() {
                       <button 
                         onClick={() => addLine(sp)}
                         disabled={lines.some(l => l.variantId === sp.variantId)}
-                        className="text-xs font-medium text-accent-hover hover:underline disabled:text-neutral-900/30 disabled:no-underline"
+                        className="text-xs font-medium text-accent-hover hover:underline disabled:text-neutral-900/60 disabled:no-underline"
                       >
                         Add
                       </button>

@@ -187,9 +187,9 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
                       {locale === 'ur' && item.nameUr ? item.nameUr : item.nameEn}
                     </p>
                     {item.variantLabel ? (
-                      <p className="text-xs text-neutral-900/50">{item.variantLabel}</p>
+                      <p className="text-xs text-neutral-900/60">{item.variantLabel}</p>
                     ) : null}
-                    <p className="text-xs text-neutral-900/50">&times; {item.quantity}</p>
+                    <p className="text-xs text-neutral-900/60">&times; {item.quantity}</p>
                   </div>
                   <p className="shrink-0 text-sm font-medium text-neutral-900">
                     {formatMoney(item.lineTotal, locale)}
@@ -305,7 +305,7 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
               <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-accent-hover" />
               <span>
                 <span className="font-medium text-neutral-900">{statusLabel(event.toStatus)}</span>
-                <span className="ms-2 text-xs text-neutral-900/40">
+                <span className="ms-2 text-xs text-neutral-900/60">
                   {formatDateTime(event.createdAt, locale)}
                 </span>
                 {event.note ? (

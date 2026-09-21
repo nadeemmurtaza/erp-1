@@ -87,21 +87,21 @@ export default function EmailAccountsPage() {
                     >
                       {account.label}
                     </Link>
-                    <span className="mt-0.5 block text-xs text-neutral-900/45">
+                    <span className="mt-0.5 block text-xs text-neutral-900/60">
                       {account.fromEmail}
                     </span>
                   </td>
                   <td className="text-neutral-900/70">
                     {purposeLabel(account.purpose)}
                     {account.isDefault ? (
-                      <span className="block text-xs text-neutral-900/45">Default</span>
+                      <span className="block text-xs text-neutral-900/60">Default</span>
                     ) : null}
                   </td>
                   <td className="text-neutral-900/70">
                     {account.smtpVerifiedAt ? (
                       formatDateTime(account.smtpVerifiedAt)
                     ) : (
-                      <span className="text-neutral-900/45">Never</span>
+                      <span className="text-neutral-900/60">Never</span>
                     )}
                   </td>
                   <td>

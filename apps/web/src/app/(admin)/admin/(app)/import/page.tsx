@@ -127,13 +127,13 @@ export default function AdminImportPage() {
             <table className="w-full text-sm">
               <thead className="bg-neutral-50">
                 <tr>
-                  <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
+                  <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
                     Row
                   </th>
-                  <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
+                  <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
                     SKU
                   </th>
-                  <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
+                  <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
                     Result
                   </th>
                 </tr>
@@ -141,7 +141,7 @@ export default function AdminImportPage() {
               <tbody className="divide-y divide-neutral-100">
                 {summary.results.map((result) => (
                   <tr key={`${result.row}-${result.sku}`}>
-                    <td className="px-4 py-2 tabular-nums text-neutral-900/50">{result.row}</td>
+                    <td className="px-4 py-2 tabular-nums text-neutral-900/60">{result.row}</td>
                     <td className="px-4 py-2 font-mono text-xs text-neutral-900">{result.sku || '—'}</td>
                     <td className="px-4 py-2">
                       <span
@@ -179,7 +179,7 @@ function Count({
 }) {
   return (
     <div>
-      <p className="text-xs text-neutral-900/50">{label}</p>
+      <p className="text-xs text-neutral-900/60">{label}</p>
       <p
         className={
           tone === 'bad'

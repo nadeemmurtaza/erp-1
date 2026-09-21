@@ -11,7 +11,7 @@ import { THEME_COLORS, THEME_RADII, TAILWIND_FONT_SIZE, radiusPx } from '@newax/
  * people independently eyeballing "close enough".
  *
  * `neutral` (monochrome ramp) is the whole background/text/border system for
- * both admin and storefront. `accent` (`#0f8fa3`) is the one brand colour,
+ * both admin and storefront. `accent` (`#0e8294`) is the one brand colour,
  * used sparingly for calls to action, links and focus rings. `star` stays
  * reserved for rating stars — never repurpose it. Error/success/warning use
  * Tailwind's stock `red`/`green`/`amber` scales, already used consistently

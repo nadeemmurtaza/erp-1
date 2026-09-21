@@ -14,8 +14,16 @@ export interface PartySearchResult {
 }
 
 interface PartyPickerProps {
-  role: 'SUPPLIER' | 'MANUFACTURER' | 'DISTRIBUTOR' | 'RETAILER';
-  /** The id the caller actually wants (e.g. Supplier.id for role="SUPPLIER"), not the Party id. */
+  /**
+   * Which side of the trade to search.
+   *
+   * Named `partyRole`, not `role`: `role` on a JSX element is the ARIA
+   * attribute, so a prop of that name both reads as one and is linted as one.
+   */
+  partyRole: 'SUPPLIER' | 'MANUFACTURER' | 'DISTRIBUTOR' | 'RETAILER';
+  /** Set it to label the search field from outside — `<label htmlFor>`. */
+  id?: string;
+  /** The id the caller actually wants (e.g. Supplier.id for a SUPPLIER pick), not the Party id. */
   value: string;
   onSelect: (result: PartySearchResult) => void;
   placeholder?: string;
@@ -29,7 +37,7 @@ interface PartyPickerProps {
  * Manufacturer or Quote/Invoice picker should reuse rather than reinventing
  * a free-text counterparty field.
  */
-export function PartyPicker({ role, value, onSelect, placeholder, className }: PartyPickerProps) {
+export function PartyPicker({ partyRole, id, value, onSelect, placeholder, className }: PartyPickerProps) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<PartySearchResult[]>([]);
   const [open, setOpen] = useState(false);
@@ -51,17 +59,18 @@ export function PartyPicker({ role, value, onSelect, placeholder, className }: P
     if (!open) return;
     setBusy(true);
     const timer = setTimeout(() => {
-      adminFetch<{ data: PartySearchResult[] }>('/admin/parties/search', { query: { q: query || undefined, role } })
+      adminFetch<{ data: PartySearchResult[] }>('/admin/parties/search', { query: { q: query || undefined, role: partyRole } })
         .then((res) => setResults(res.data))
         .catch(() => setResults([]))
         .finally(() => setBusy(false));
     }, 200);
     return () => clearTimeout(timer);
-  }, [query, role, open]);
+  }, [query, partyRole, open]);
 
   return (
     <div ref={containerRef} className={cn('relative', className)}>
       <input
+        id={id}
         type="text"
         className="field-input w-full"
         placeholder={placeholder ?? 'Search by name or phone...'}
@@ -75,9 +84,9 @@ export function PartyPicker({ role, value, onSelect, placeholder, className }: P
       {open ? (
         <div className="absolute z-10 mt-1 max-h-64 w-full overflow-y-auto rounded border border-neutral-200 bg-white shadow-lg">
           {busy ? (
-            <div className="p-3 text-sm text-neutral-900/50">Searching...</div>
+            <div className="p-3 text-sm text-neutral-900/60">Searching...</div>
           ) : results.length === 0 ? (
-            <div className="p-3 text-sm text-neutral-900/50">No matches.</div>
+            <div className="p-3 text-sm text-neutral-900/60">No matches.</div>
           ) : (
             results.map((result) => (
               <button

@@ -51,7 +51,7 @@ export default function PurchaseOrderDetailPage({ params }: { params: Promise<{ 
   }, [id]);
 
   if (busy) {
-    return <p className="text-sm text-neutral-900/50 p-4">Loading purchase order...</p>;
+    return <p className="text-sm text-neutral-900/60 p-4">Loading purchase order...</p>;
   }
 
   if (error || !po) {

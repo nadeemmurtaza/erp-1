@@ -122,7 +122,6 @@ export function Dialog({
         'fixed inset-0 z-50 flex justify-center p-4',
         align === 'top' ? 'items-start pt-[10vh]' : 'items-center',
       )}
-      onKeyDown={onKeyDown}
     >
       <div
         className="absolute inset-0 bg-neutral-900/40 backdrop-blur-sm animate-fadeIn"
@@ -130,12 +129,27 @@ export function Dialog({
         aria-hidden="true"
       />
 
+      {/*
+        Escape and the focus trap live on the panel, not on the positioning
+        wrapper. Focus is always inside the panel while the dialog is open
+        (see the focus effect above), so every relevant keystroke reaches here
+        by bubbling — and a static wrapper carrying interaction is the thing
+        jsx-a11y correctly refuses.
+
+        The rule below treats role="dialog" as non-interactive. That holds for
+        a dialog's *content* but not for a modal container: the WAI-ARIA APG
+        puts Escape and the Tab trap exactly here. The alternative, a
+        document-level listener, is worse — it fires for every nested dialog
+        at once, where this stops propagation and closes only the innermost.
+      */}
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
       <div
         ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-label={title}
         tabIndex={-1}
+        onKeyDown={onKeyDown}
         className={cn(
           'card relative z-10 flex max-h-[85vh] w-full max-w-lg flex-col outline-none animate-scaleIn',
           className,

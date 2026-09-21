@@ -137,7 +137,7 @@ export default function AdminInboxPage() {
                   </tr>
                 ) : messages.data.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/50">
+                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/60">
                       Nothing here.
                     </td>
                   </tr>
@@ -153,7 +153,7 @@ export default function AdminInboxPage() {
                     >
                       <td>
                         <p className="font-medium text-neutral-900">{message.fromName || message.fromAddress}</p>
-                        <p className="text-xs text-neutral-900/40">{message.fromAddress}</p>
+                        <p className="text-xs text-neutral-900/60">{message.fromAddress}</p>
                       </td>
                       <td className="text-neutral-900/80">
                         {message.subject || '(no subject)'}
@@ -201,7 +201,7 @@ export default function AdminInboxPage() {
 
         <aside className="card h-fit p-4 lg:sticky lg:top-4">
           {!selected ? (
-            <p className="py-8 text-center text-sm text-neutral-900/50">Choose a message to read it.</p>
+            <p className="py-8 text-center text-sm text-neutral-900/60">Choose a message to read it.</p>
           ) : (
             <MessageDetailPanel message={selected} onLink={link} onReply={reply} />
           )}
@@ -275,7 +275,7 @@ function MessageDetailPanel({
         {message.fromName ? `${message.fromName} · ` : ''}
         {message.fromAddress}
       </p>
-      <p className="text-xs text-neutral-900/40">
+      <p className="text-xs text-neutral-900/60">
         {formatDateTime(message.receivedAt)} · via {message.emailAccount.label}
       </p>
 
@@ -299,7 +299,7 @@ function MessageDetailPanel({
       ) : null}
 
       <div className="mt-4 border-t border-neutral-100 pt-4">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/50">Reply</h3>
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/60">Reply</h3>
         <textarea
           rows={4}
           value={draft}
@@ -326,7 +326,7 @@ function MessageDetailPanel({
           </p>
         ) : (
           <>
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
               Link to a customer
             </h3>
             <input
@@ -336,7 +336,7 @@ function MessageDetailPanel({
               onChange={(event) => setQ(event.target.value)}
               className="field-input mt-2 text-sm"
             />
-            {searching ? <p className="mt-2 text-xs text-neutral-900/40">Searching…</p> : null}
+            {searching ? <p className="mt-2 text-xs text-neutral-900/60">Searching…</p> : null}
             {options.length > 0 ? (
               <ul className="mt-2 divide-y divide-neutral-100 rounded-md border border-neutral-100">
                 {options.map((option) => (
@@ -347,7 +347,7 @@ function MessageDetailPanel({
                       className="block w-full px-3 py-2 text-start text-sm hover:bg-neutral-50"
                     >
                       <span className="font-medium text-neutral-900">{option.name}</span>
-                      <span className="ms-2 text-neutral-900/40">
+                      <span className="ms-2 text-neutral-900/60">
                         {option.phoneE164 ?? option.email ?? ''}
                       </span>
                     </button>
@@ -365,7 +365,7 @@ function MessageDetailPanel({
 function Th({ children }: { children: React.ReactNode }) {
   return (
     <th scope="col"
-      className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/50"
+      className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60"
     >
       {children}
     </th>

@@ -319,7 +319,7 @@ export default function AdminReportsPage() {
                     <li key={row.key} className="flex items-center justify-between gap-4 py-2.5">
                       <span className="min-w-0">
                         <span className="block truncate text-sm text-neutral-900">{row.label}</span>
-                        <span className="block text-xs text-neutral-900/45">
+                        <span className="block text-xs text-neutral-900/60">
                           {row.ranged ? `Last ${days} days` : 'Current snapshot'}
                         </span>
                       </span>
@@ -371,7 +371,7 @@ function Panel({
   return (
     <div className="min-w-0">
       <h3 className="eyebrow mb-3">{title}</h3>
-      {empty ? <p className="text-sm text-neutral-900/45">{emptyLabel}</p> : children}
+      {empty ? <p className="text-sm text-neutral-900/60">{emptyLabel}</p> : children}
     </div>
   );
 }
@@ -403,7 +403,7 @@ function BarList({
               style={{ width: `${Math.max((item.value / max) * 100, 2)}%` }}
             />
           </div>
-          {item.sub ? <p className="mt-0.5 text-xs text-neutral-900/40">{item.sub}</p> : null}
+          {item.sub ? <p className="mt-0.5 text-xs text-neutral-900/60">{item.sub}</p> : null}
         </li>
       ))}
     </ul>

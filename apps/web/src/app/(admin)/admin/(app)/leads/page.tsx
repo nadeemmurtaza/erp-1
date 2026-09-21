@@ -101,7 +101,7 @@ export default function AdminLeadsPage() {
 
           return (
             <section key={column} className="rounded-lg bg-neutral-50 p-3">
-              <h2 className="flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-neutral-900/50">
+              <h2 className="flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
                 {column.charAt(0) + column.slice(1).toLowerCase()}
                 <span className="rounded bg-white px-1.5 py-0.5 text-neutral-900/60">
                   {inColumn.length}
@@ -110,12 +110,12 @@ export default function AdminLeadsPage() {
 
               <ul className="mt-3 space-y-2">
                 {inColumn.length === 0 ? (
-                  <li className="py-4 text-center text-xs text-neutral-900/40">Empty</li>
+                  <li className="py-4 text-center text-xs text-neutral-900/60">Empty</li>
                 ) : (
                   inColumn.map((lead) => (
                     <li key={lead.id} className="rounded-md border border-neutral-100 p-2.5">
                       <p className="text-sm font-medium text-neutral-900">{lead.name}</p>
-                      <p className="text-xs text-neutral-900/50">{lead.phone ?? lead.email ?? '—'}</p>
+                      <p className="text-xs text-neutral-900/60">{lead.phone ?? lead.email ?? '—'}</p>
 
                       {lead.message ? (
                         <p className="mt-1 line-clamp-3 text-xs text-neutral-900/70">{lead.message}</p>
@@ -133,7 +133,7 @@ export default function AdminLeadsPage() {
                         </p>
                       ) : null}
 
-                      <p className="mt-1 text-[10px] uppercase tracking-wide text-neutral-900/30">
+                      <p className="mt-1 text-[10px] uppercase tracking-wide text-neutral-900/60">
                         {lead.source.replace(/_/g, ' ')} ·{' '}
                         {formatDate(lead.createdAt)}
                       </p>
@@ -167,7 +167,7 @@ export default function AdminLeadsPage() {
         })}
       </div>
 
-      <p className="mt-6 text-xs text-neutral-900/40">
+      <p className="mt-6 text-xs text-neutral-900/60">
         Statuses: {LEAD_STATUSES.join(' → ')}
       </p>
     </>

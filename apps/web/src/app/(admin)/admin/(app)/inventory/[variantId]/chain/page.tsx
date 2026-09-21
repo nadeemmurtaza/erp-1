@@ -67,7 +67,7 @@ export default function VariantChainPage({ params }: { params: Promise<{ variant
       .finally(() => setBusy(false));
   }, [variantId]);
 
-  if (busy) return <p className="text-sm text-neutral-900/50">Loading...</p>;
+  if (busy) return <p className="text-sm text-neutral-900/60">Loading...</p>;
   if (error) return <p role="alert" className="card p-4 text-sm text-red-700">{error}</p>;
   if (!chain) return null;
 
@@ -94,7 +94,7 @@ export default function VariantChainPage({ params }: { params: Promise<{ variant
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <SectionCard title={`Stock on hand — ${variant.stock} total`}>
           {chain.stock.length === 0 ? (
-            <p className="text-sm text-neutral-900/50">No stock recorded at any location.</p>
+            <p className="text-sm text-neutral-900/60">No stock recorded at any location.</p>
           ) : (
             <ul className="divide-y divide-neutral-100 text-sm">
               {chain.stock.map((row) => (
@@ -109,7 +109,7 @@ export default function VariantChainPage({ params }: { params: Promise<{ variant
 
         <SectionCard title="Open purchase orders">
           {chain.openPurchaseOrders.length === 0 ? (
-            <p className="text-sm text-neutral-900/50">Nothing in flight from a supplier.</p>
+            <p className="text-sm text-neutral-900/60">Nothing in flight from a supplier.</p>
           ) : (
             <ul className="divide-y divide-neutral-100 text-sm">
               {chain.openPurchaseOrders.map((po) => (
@@ -132,7 +132,7 @@ export default function VariantChainPage({ params }: { params: Promise<{ variant
 
         <SectionCard title="Open work orders">
           {chain.openWorkOrders.length === 0 ? (
-            <p className="text-sm text-neutral-900/50">Nothing in production.</p>
+            <p className="text-sm text-neutral-900/60">Nothing in production.</p>
           ) : (
             <ul className="divide-y divide-neutral-100 text-sm">
               {chain.openWorkOrders.map((wo) => (
@@ -149,7 +149,7 @@ export default function VariantChainPage({ params }: { params: Promise<{ variant
 
         <SectionCard title="Order lines still owed to a customer">
           {chain.pendingOrderLines.length === 0 ? (
-            <p className="text-sm text-neutral-900/50">No open orders on this SKU.</p>
+            <p className="text-sm text-neutral-900/60">No open orders on this SKU.</p>
           ) : (
             <ul className="divide-y divide-neutral-100 text-sm">
               {chain.pendingOrderLines.map((line) => (

@@ -58,13 +58,13 @@ export function StitchingTimeline({
               <span
                 className={cn(
                   'text-xs',
-                  current ? 'font-semibold text-accent-hover' : done ? 'text-neutral-900/70' : 'text-neutral-900/40',
+                  current ? 'font-semibold text-accent-hover' : done ? 'text-neutral-900/70' : 'text-neutral-900/60',
                 )}
               >
                 {t(`stage.${entry}`)}
               </span>
               {at ? (
-                <span className="text-[0.7rem] text-neutral-900/40">
+                <span className="text-[0.7rem] text-neutral-900/60">
                   {formatDate(at, locale as Locale)}
                 </span>
               ) : null}
@@ -74,7 +74,7 @@ export function StitchingTimeline({
       </ol>
 
       {dueAt ? (
-        <p className="mt-3 text-xs text-neutral-900/50">
+        <p className="mt-3 text-xs text-neutral-900/60">
           {t('promisedFor', { date: formatDate(dueAt, locale as Locale) })}
         </p>
       ) : null}

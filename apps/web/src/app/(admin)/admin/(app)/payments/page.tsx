@@ -84,7 +84,7 @@ export default function AdminPaymentsPage() {
       {!payments ? (
         <Loading />
       ) : payments.length === 0 ? (
-        <p className="p-8 text-center text-sm text-neutral-900/45">
+        <p className="p-8 text-center text-sm text-neutral-900/60">
           Nothing waiting. Every payment is settled.
         </p>
       ) : (
@@ -107,7 +107,7 @@ export default function AdminPaymentsPage() {
                   />
                 </a>
               ) : (
-                <div className="flex h-32 w-24 shrink-0 items-center justify-center rounded border border-dashed border-neutral-100 p-2 text-center text-xs text-neutral-900/40">
+                <div className="flex h-32 w-24 shrink-0 items-center justify-center rounded border border-dashed border-neutral-100 p-2 text-center text-xs text-neutral-900/60">
                   No receipt uploaded
                 </div>
               )}

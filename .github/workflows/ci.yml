@@ -76,6 +76,14 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      # The repository index (docs/index/) is generated from the code and staged
+      # by .githooks/pre-commit, so a commit should always carry a matching one.
+      # This catches the two ways that fails: a commit made with --no-verify, and
+      # a contributor whose hooks were never installed. Both leave agents and
+      # reviewers reading a map of a repository that has moved.
+      - name: Index is current
+        run: pnpm index:check
+
       - name: Typecheck
         run: pnpm typecheck
 

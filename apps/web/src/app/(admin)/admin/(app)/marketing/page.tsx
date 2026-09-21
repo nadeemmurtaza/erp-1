@@ -59,20 +59,22 @@ export default function MarketingAdminPage() {
       {toasts.length > 0 && (
         <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
           {toasts.map((t) => (
-            <div
+            <button
               key={t.id}
               className={cn(
-                'cursor-pointer rounded-md border p-4 text-sm shadow-md',
+                'w-full cursor-pointer rounded-md border p-4 text-start text-sm shadow-md',
                 t.type === 'error'
                   ? 'border-red-200 bg-red-50 text-red-800'
                   : t.type === 'success'
                     ? 'border-green-200 bg-green-50 text-green-800'
                     : 'border-blue-200 bg-blue-50 text-blue-800',
               )}
+              type="button"
               onClick={() => removeToast(t.id)}
+              aria-label={`Dismiss: ${t.message}`}
             >
               {t.message}
-            </div>
+            </button>
           ))}
         </div>
       )}
@@ -126,7 +128,7 @@ export default function MarketingAdminPage() {
             />
           </div>
 
-          <p className="mt-6 text-xs text-neutral-900/50">
+          <p className="mt-6 text-xs text-neutral-900/60">
             Flag which products are worth a reorder nudge from the product editor (Consumable /
             repeat-buy).
           </p>

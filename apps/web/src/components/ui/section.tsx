@@ -40,7 +40,7 @@ export function Section({
         <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
           <div className="min-w-0">
             {title ? (
-              <Heading className="text-sm font-semibold uppercase tracking-wide text-neutral-900/50">
+              <Heading className="text-sm font-semibold uppercase tracking-wide text-neutral-900/60">
                 {title}
               </Heading>
             ) : null}

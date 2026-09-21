@@ -47,3 +47,6 @@ fix-all.js
 fix-db.js
 fix.js
 yaseen-backup-before-reset.sql
+
+# Worktree metadata from an external tool — machine-local, never shared.
+.freebuff/

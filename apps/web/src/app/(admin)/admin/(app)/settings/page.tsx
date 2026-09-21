@@ -137,7 +137,7 @@ export default function AdminSettingsPage() {
                 <tbody>
                   {roles.length === 0 ? (
                     <tr>
-                      <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/50">
+                      <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/60">
                         No roles yet.
                       </td>
                     </tr>
@@ -153,7 +153,7 @@ export default function AdminSettingsPage() {
                             {role.name}
                           </button>
                           {role.description ? (
-                            <p className="text-xs text-neutral-900/40">{role.description}</p>
+                            <p className="text-xs text-neutral-900/60">{role.description}</p>
                           ) : null}
                         </td>
                         <td className="text-end tabular-nums text-neutral-900/70">{role.permissions.length}</td>
@@ -268,7 +268,7 @@ export default function AdminSettingsPage() {
                   </tr>
                 ) : audit.entries.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/50">
+                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/60">
                       No matching entries.
                     </td>
                   </tr>
@@ -432,7 +432,7 @@ function DocumentSettingsPanel() {
             />
             <span>
               <span className="block text-sm text-neutral-900">{choice.label}</span>
-              <span className="mt-0.5 block text-xs text-neutral-900/50">{choice.hint}</span>
+              <span className="mt-0.5 block text-xs text-neutral-900/60">{choice.hint}</span>
             </span>
           </label>
         ))}
@@ -450,7 +450,7 @@ function DocumentSettingsPanel() {
             placeholder="https://…"
             className="field-input"
           />
-          <span className="mt-1 block text-xs text-neutral-900/50">
+          <span className="mt-1 block text-xs text-neutral-900/60">
             Upload it under Products &rsaquo; Images, then paste the address here. A wide,
             short mark reads best — it is shown 36px tall.
           </span>
@@ -567,7 +567,7 @@ function MediaSettings() {
             Lighthouse stops flagging &ldquo;next-gen formats&rdquo;. Turn it off only if an
             original has to be kept byte-for-byte.
           </span>
-          <span className="mt-2 block text-xs text-neutral-900/45">
+          <span className="mt-2 block text-xs text-neutral-900/60">
             Applies to new uploads. Images already stored keep the format they were saved in.
           </span>
         </span>
@@ -596,7 +596,7 @@ function AuditRow({ entry }: { entry: AuditLogEntry }) {
       <td className="font-mono text-neutral-900/80">{entry.action}</td>
       <td className="text-neutral-900/70">
         {entry.entity}
-        {entry.entityId ? <span className="text-xs text-neutral-900/40"> · {entry.entityId}</span> : null}
+        {entry.entityId ? <span className="text-xs text-neutral-900/60"> · {entry.entityId}</span> : null}
       </td>
     </tr>
   );

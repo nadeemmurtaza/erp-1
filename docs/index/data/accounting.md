@@ -3,7 +3,7 @@
 
 # Schema: `accounting.prisma`
 
-6 models · 3 enums. Owned by module [`accounting`](..\modules\accounting.md).
+6 models · 3 enums. Owned by module [`accounting`](../modules/accounting.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -170,4 +170,4 @@ Indexes: `@@index([entryId])` · `@@index([accountId])` · `@@index([retailBrand
 
 ---
 
-[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)
+[← all schemas](../cross/data-model.md) · [← index home](../README.md)

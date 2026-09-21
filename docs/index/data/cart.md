@@ -3,7 +3,7 @@
 
 # Schema: `cart.prisma`
 
-3 models · 0 enums. Owned by module [`cart`](..\modules\cart.md).
+3 models · 0 enums. Owned by module [`cart`](../modules/cart.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -81,4 +81,4 @@ Indexes: `@@id([cartItemId, optionId])`
 
 ---
 
-[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)
+[← all schemas](../cross/data-model.md) · [← index home](../README.md)

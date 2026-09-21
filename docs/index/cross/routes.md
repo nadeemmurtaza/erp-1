@@ -73,7 +73,7 @@ never authorization.
 
 ## By module
 
-### [`accounting`](..\modules\accounting.md) (16)
+### [`accounting`](../modules/accounting.md) (16)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -94,7 +94,7 @@ never authorization.
 | GET | `/admin/accounting/reports/profit-and-loss` | `accounting.view` | `GlReportsController.profitAndLoss` | Income and expense for a date range, and the net |
 | GET | `/admin/accounting/reports/trial-balance` | `accounting.view` | `GlReportsController.trialBalance` | Every account, cumulative debit/credit as of a date — SUM(debit) = SUM(credit)… |
 
-### [`addresses`](..\modules\addresses.md) (4)
+### [`addresses`](../modules/addresses.md) (4)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -103,7 +103,7 @@ never authorization.
 | DELETE | `/addresses/:id` | signed-in | `AddressesController.remove` | Remove a saved address |
 | PATCH | `/addresses/:id` | signed-in | `AddressesController.update` | Edit a saved address |
 
-### [`analytics`](..\modules\analytics.md) (5)
+### [`analytics`](../modules/analytics.md) (5)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -113,7 +113,7 @@ never authorization.
 | GET | `/admin/analytics/stitching` | `analytics.view` | `AnalyticsController.stitching` | Which garments and style options drive the stitching business |
 | GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` | Visitor counts, view-to-order funnel and traffic sources |
 
-### [`cart`](..\modules\cart.md) (6)
+### [`cart`](../modules/cart.md) (6)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -124,7 +124,7 @@ never authorization.
 | PATCH | `/cart/items/:itemId` | **PUBLIC** | `CartController.updateItem` | Change quantity, or attach measurements |
 | POST | `/cart/merge` | **PUBLIC** | `CartController.merge` | Fold a guest cart into the signed-in account |
 
-### [`catalog`](..\modules\catalog.md) (25)
+### [`catalog`](../modules/catalog.md) (25)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -154,7 +154,7 @@ never authorization.
 | GET | `/catalog/products/:slug` | **PUBLIC** | `CatalogController.product` | One product by slug |
 | GET | `/catalog/stitching-services` | **PUBLIC** | `CatalogController.stitchingServices` | Stitching services, optionally for one garment type |
 
-### [`core/auth`](..\core\auth.md) (15)
+### [`core/auth`](../core/auth.md) (15)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -174,20 +174,20 @@ never authorization.
 | POST | `/auth/reset-password` | **PUBLIC** | `AuthController.resetPassword` | Set a new password using a reset link token |
 | POST | `/auth/verify-email` | **PUBLIC** | `AuthController.verifyEmail` | Confirm an email address using a verification link token |
 
-### [`core/config`](..\core\config.md) (1)
+### [`core/config`](../core/config.md) (1)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/meta` | **PUBLIC** | `MetaController.get` | Which optional modules and sector packs this deployment has enabled |
 
-### [`core/health`](..\core\health.md) (2)
+### [`core/health`](../core/health.md) (2)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/health` | **PUBLIC** | `HealthController.live` | Liveness probe |
 | GET | `/health/ready` | **PUBLIC** | `HealthController.ready` | Readiness probe — checks the database |
 
-### [`core/notifications`](..\core\notifications.md) (14)
+### [`core/notifications`](../core/notifications.md) (14)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -206,20 +206,20 @@ never authorization.
 | POST | `/me/devices` | signed-in | `DevicesController.register` | Register this installation for push notifications |
 | DELETE | `/me/devices/:token` | signed-in | `DevicesController.unregister` | Stop sending push notifications to this installation |
 
-### [`core/replication`](..\core\replication.md) (2)
+### [`core/replication`](../core/replication.md) (2)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/replication/pull` | **PUBLIC** | `ReplicationController.pull` | This node's own POLICY records since a cursor, pulled down |
 | POST | `/replication/push` | **PUBLIC** | `ReplicationController.push` | A child's own FACT records, pushed up |
 
-### [`core/storage`](..\core\storage.md) (1)
+### [`core/storage`](../core/storage.md) (1)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/files/*path` | **PUBLIC** | `FilesController.serve` |  |
 
-### [`crm`](..\modules\crm.md) (19)
+### [`crm`](../modules/crm.md) (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -243,7 +243,7 @@ never authorization.
 | GET | `/admin/crm/tags` | `crm.manage` | `CrmAdminController.listTags` |  |
 | POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` | Contact-form enquiry — becomes a lead in the CRM |
 
-### [`identity-verification`](..\modules\identity-verification.md) (4)
+### [`identity-verification`](../modules/identity-verification.md) (4)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -252,7 +252,7 @@ never authorization.
 | POST | `/identity-verification/start` | signed-in | `IdentityVerificationController.start` | Start (or restart, after a rejection/expiry) identity verification |
 | POST | `/identity-verification/webhook` | **PUBLIC** | `IdentityVerificationController.webhook` | nID verification-result callback (signature-verified, not session-authenticated) |
 
-### [`inventory`](..\modules\inventory.md) (16)
+### [`inventory`](../modules/inventory.md) (16)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -273,14 +273,14 @@ never authorization.
 | GET | `/admin/inventory/variances` | `inventory.manage` | `StockVarianceController.listOpen` | Open oversells — postUnconditional() drove a location negative |
 | POST | `/admin/inventory/variances/:id/resolve` | `inventory.manage` | `StockVarianceController.resolve` | Acknowledge a variance — never reverses the shrinkage journal it already posted |
 
-### [`marketing`](..\modules\marketing.md) (2)
+### [`marketing`](../modules/marketing.md) (2)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/marketing/settings` | `marketing.manage` | `MarketingController.getSettings` | Automation on/off and its timing thresholds |
 | PUT | `/admin/marketing/settings` | `marketing.manage` | `MarketingController.updateSettings` | Turn automation on/off and/or change its timing |
 
-### [`measurements`](..\modules\measurements.md) (12)
+### [`measurements`](../modules/measurements.md) (12)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -297,7 +297,7 @@ never authorization.
 | GET | `/measurements/profiles/:id` | signed-in | `MeasurementsController.getProfile` |  |
 | PATCH | `/measurements/profiles/:id` | signed-in | `MeasurementsController.updateProfile` |  |
 
-### [`orders`](..\modules\orders.md) (8)
+### [`orders`](../modules/orders.md) (8)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -310,7 +310,7 @@ never authorization.
 | POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` |  |
 | GET | `/orders/mine` | signed-in | `OrdersController.mine` | The signed-in customer's orders |
 
-### [`organization`](..\modules\organization.md) (10)
+### [`organization`](../modules/organization.md) (10)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -325,7 +325,7 @@ never authorization.
 | PATCH | `/organization/policy/inter-brand-transfers` | `organization.manage` | `OrganizationController.setInterBrandTransfersPolicy` | Turn inter-brand transfers on or off for this organization (RETAIL-ERP.md R9, W… |
 | POST | `/organization/replication/resync` | `organization.manage` | `OrganizationController.resyncFromParent` |  |
 
-### [`parties`](..\modules\parties.md) (3)
+### [`parties`](../modules/parties.md) (3)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -333,7 +333,7 @@ never authorization.
 | GET | `/admin/parties/:id` | `parties.manage` | `PartiesController.get` | Get a party |
 | GET | `/admin/parties/search` | `parties.manage` | `PartiesController.search` | Typeahead search for the counterparty picker |
 
-### [`payments`](..\modules\payments.md) (6)
+### [`payments`](../modules/payments.md) (6)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -344,7 +344,7 @@ never authorization.
 | POST | `/payments/callback/:provider` | **PUBLIC** | `PaymentsController.callback` | Gateway return URL — verifies and settles a payment |
 | GET | `/payments/methods` | **PUBLIC** | `PaymentsController.methods` | Payment methods currently accepted |
 
-### [`pos`](..\modules\pos.md) (15)
+### [`pos`](../modules/pos.md) (15)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -364,7 +364,7 @@ never authorization.
 | POST | `/admin/pos/terminals/:id/rotate-device-key` | `pos.manage` | `PosTerminalsController.rotateDeviceKey` | Issue a fresh device credential for this terminal — shown once, never retrievab… |
 | POST | `/admin/pos/terminals/:id/suspend` | `pos.manage` | `PosTerminalsController.suspend` | Suspend a terminal — never deletes it, its history stays put |
 
-### [`production`](..\modules\production.md) (9)
+### [`production`](../modules/production.md) (9)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -378,7 +378,7 @@ never authorization.
 | POST | `/admin/production/work-orders/:id/complete` | `production.manage` | `WorkOrdersController.complete` | Complete a work order, crediting finished stock |
 | POST | `/admin/production/work-orders/:id/release` | `production.manage` | `WorkOrdersController.release` | Release a work order, consuming its bill of materials |
 
-### [`purchasing`](..\modules\purchasing.md) (17)
+### [`purchasing`](../modules/purchasing.md) (17)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -400,7 +400,7 @@ never authorization.
 | POST | `/admin/suppliers/:id/products` | `suppliers.manage` | `PurchasingController.addProduct` | Add a product to a supplier |
 | DELETE | `/admin/suppliers/:id/products/:variantId` | `suppliers.manage` | `PurchasingController.removeProduct` | Remove a product from a supplier |
 
-### [`reports`](..\modules\reports.md) (8)
+### [`reports`](../modules/reports.md) (8)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -413,7 +413,7 @@ never authorization.
 | GET | `/admin/reports/export/stock-ledger` | `reports.view` | `ReportsController.exportStockLedger` | CSV: stock movement ledger |
 | GET | `/admin/reports/export/stock-valuation` | `inventory.view_cost` | `ReportsController.exportStockValuation` | CSV: stock valuation, one row per variant |
 
-### [`settings`](..\modules\settings.md) (6)
+### [`settings`](../modules/settings.md) (6)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -424,7 +424,7 @@ never authorization.
 | PUT | `/admin/settings/media` | `settings.manage` | `SettingsAdminController.updateMedia` | Turn WebP conversion on or off for new uploads |
 | GET | `/admin/settings/permissions` | `settings.manage` | `SettingsAdminController.listPermissions` | The full permission catalog, grouped by category |
 
-### [`stitching`](..\modules\stitching.md) (21)
+### [`stitching`](../modules/stitching.md) (21)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -450,7 +450,7 @@ never authorization.
 | GET | `/stitching/garments` | **PUBLIC** | `StitchingController.garments` |  |
 | GET | `/stitching/option-groups` | **PUBLIC** | `StitchingController.optionGroups` | Style options for a garment, with their price deltas |
 
-### [`tax`](..\modules\tax.md) (8)
+### [`tax`](../modules/tax.md) (8)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -463,13 +463,13 @@ never authorization.
 | GET | `/admin/tax/settings` | `tax.manage` | `TaxController.getSettings` | tax.enabled, pricing mode and default class |
 | PUT | `/admin/tax/settings` | `tax.manage` | `TaxController.updateSettings` | Update tax.enabled, pricing mode and/or default class |
 
-### [`tracking`](..\modules\tracking.md) (1)
+### [`tracking`](../modules/tracking.md) (1)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | POST | `/track/event` | **PUBLIC** | `TrackingController.track` | Record one page_view / add_to_cart / checkout_started event |
 
-### [`tradingpartners`](..\modules\tradingpartners.md) (18)
+### [`tradingpartners`](../modules/tradingpartners.md) (18)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -492,7 +492,7 @@ never authorization.
 | POST | `/trading-partners/accept` | **PUBLIC** | `TradingPartnerPortalController.accept` | "They accept" — the second half of the first-connection handshake, starts the r… |
 | GET | `/trading-partners/stock` | **PUBLIC** | `TradingPartnerPortalController.stock` |  |
 
-### [`transfers`](..\modules\transfers.md) (5)
+### [`transfers`](../modules/transfers.md) (5)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -502,7 +502,7 @@ never authorization.
 | POST | `/admin/transfers/:id/cancel` | `transfers.manage` | `TransfersController.cancel` | Cancel a transfer still in transit — returns its stock to the source |
 | POST | `/admin/transfers/:id/receive` | `transfers.manage` | `TransfersController.receive` | Receive a transfer — moves stock from in-transit into the destination; a short… |
 
-### [`users`](..\modules\users.md) (8)
+### [`users`](../modules/users.md) (8)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -518,4 +518,4 @@ never authorization.
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

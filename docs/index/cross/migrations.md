@@ -89,4 +89,4 @@ nothing here fails a build.
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

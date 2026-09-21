@@ -3,21 +3,21 @@
 
 # Every tracked file
 
-All **1,145** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,147** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 449 | 59,691 | [files/api.md](..\files\api.md) |
-| apps/web | 228 | 33,618 | [files/web.md](..\files\web.md) |
-| apps/pos | 31 | 1,874 | [files/pos.md](..\files\pos.md) |
-| apps/mobile | 42 | 5,292 | [files/mobile.md](..\files\mobile.md) |
-| packages/* | 53 | 4,486 | [files/packages.md](..\files\packages.md) |
-| docs/* | 247 | 35,413 | [files/docs.md](..\files\docs.md) |
-| scripts, CI, deployment and container configuration | 53 | 26,737 | [files/infra.md](..\files\infra.md) |
-| repository root files | 42 | 9,008 | [files/root.md](..\files\root.md) |
+| apps/api | 449 | 59,691 | [files/api.md](../files/api.md) |
+| apps/web | 228 | 33,618 | [files/web.md](../files/web.md) |
+| apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
+| apps/mobile | 42 | 5,292 | [files/mobile.md](../files/mobile.md) |
+| packages/* | 53 | 4,486 | [files/packages.md](../files/packages.md) |
+| docs/* | 247 | 35,420 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 55 | 27,834 | [files/infra.md](../files/infra.md) |
+| repository root files | 42 | 9,024 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -38,12 +38,12 @@ name a new file: the convention is what makes it findable.
 | controller | 49 |
 | dto | 47 |
 | nest module | 38 |
-| script | 34 |
+| script | 35 |
 | asset | 26 |
 | json | 25 |
 | prisma schema | 22 |
 | react | 22 |
-| utility | 20 |
+| utility | 21 |
 | event subscriber | 16 |
 | e2e test | 15 |
 | file | 13 |
@@ -79,4 +79,4 @@ name a new file: the convention is what makes it findable.
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

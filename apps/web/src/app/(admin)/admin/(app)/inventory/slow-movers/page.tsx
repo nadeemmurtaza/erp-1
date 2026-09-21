@@ -62,7 +62,7 @@ export default function SlowMoversPage() {
         <span id="ageing-bucket-label" className="text-sm font-medium text-neutral-900/70">
           Ageing bucket:
         </span>
-        <div role="group" aria-labelledby="ageing-bucket-label" className="flex gap-2">
+        <div role="group" aria-labelledby="ageing-bucket-label" className="flex flex-wrap gap-2">
           {[0, 60, 90, 180, 365].map((age) => (
             <button
               key={age}

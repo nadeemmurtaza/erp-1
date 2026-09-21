@@ -185,4 +185,4 @@ check there before adding another.
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

@@ -314,6 +314,7 @@ three-line rule doesn't reach on its own:
 | `pnpm build` | Builds everything |
 | `pnpm test` | Unit and end-to-end tests |
 | `pnpm lint` | ESLint plus the module boundary check |
+| `pnpm check:overflow` | Boots the real stack and sweeps every route at Law 4's seven widths in a browser — CI's own job, not part of `pnpm lint` |
 | `pnpm typecheck` | Types across the workspace |
 | `pnpm db:migrate` | Creates and applies a migration |
 | `pnpm db:seed` | Loads the sample catalogue |

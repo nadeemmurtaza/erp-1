@@ -3,7 +3,7 @@
 
 # Schema: `crm.prisma`
 
-9 models · 3 enums. Owned by module [`crm`](..\modules\crm.md).
+9 models · 3 enums. Owned by module [`crm`](../modules/crm.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -38,8 +38,8 @@ against a real database.
 | `userId` | `String?` | unique, optional | @unique |
 | `notes` | `String?` | optional |  |
 | `orderCount` | `Int` |  | @default(0) |
-| `lifetimeValue` | `Int` |  | @default(0) |
-| `avgOrderValue` | `Int` |  | @default(0) |
+| `lifetimeValue` | `Int` |  | paisa |
+| `avgOrderValue` | `Int` |  | paisa |
 | `lastOrderAt` | `DateTime?` | optional |  |
 | `firstOrderAt` | `DateTime?` | optional |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
@@ -241,4 +241,4 @@ Indexes: `@@index([status, createdAt])` · `@@index([ownerId])` · `@@index([con
 
 ---
 
-[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)
+[← all schemas](../cross/data-model.md) · [← index home](../README.md)

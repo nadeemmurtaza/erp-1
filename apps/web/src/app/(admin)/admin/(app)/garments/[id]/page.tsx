@@ -326,8 +326,8 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
                       key={`${field.key}-${index}`}
                       className={
                         field.isActive
-                          ? 'grid items-end gap-2 border border-neutral-100 p-2 sm:grid-cols-7'
-                          : 'grid items-end gap-2 border border-neutral-100 bg-neutral-50 p-2 opacity-60 sm:grid-cols-7'
+                          ? 'grid items-end gap-2 border border-neutral-100 p-2 sm:grid-cols-7 [&>*]:min-w-0'
+                          : 'grid items-end gap-2 border border-neutral-100 bg-neutral-50 p-2 opacity-60 sm:grid-cols-7 [&>*]:min-w-0'
                       }
                     >
                       <Small label="Key">
@@ -386,7 +386,7 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
                           className="field-input py-1 text-sm"
                         />
                       </Small>
-                      <div className="flex items-center gap-3 pb-1">
+                      <div className="flex flex-wrap items-center gap-3 pb-1">
                         <label className="flex items-center gap-1 text-xs text-neutral-900/70">
                           <input
                             type="checkbox"

@@ -120,4 +120,4 @@ Indexes: `@@unique([originNodeId, sequence])` · `@@index([entity, entityId])`
 
 ---
 
-[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)
+[← all schemas](../cross/data-model.md) · [← index home](../README.md)

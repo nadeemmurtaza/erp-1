@@ -32,4 +32,4 @@ runs on every node that has its module enabled.
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

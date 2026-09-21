@@ -14,10 +14,12 @@ Every top-level export in `infra`, with the line to open.
 |---|---|---|---|---|
 | `check-contrast.mjs` | `contrast` | const | :69 | WCAG 2.x contrast ratio. |
 | `check-contrast.mjs` | `scanColours` | function | :213 | Every colour utility in a file, with the className it shared, if any. |
+| `check-links.mjs` | `APPS` | const | :37 | The apps with a Next.js app router, and where each one's assets live. |
 | `check-links.mjs` | `routeUrl` | function | :77 | The URL a `page.tsx` / `route.ts` serves: route groups vanish, `[id]` stays. |
-| `check-links.mjs` | `matches` | function | :102 | Does `link` land on `route`? |
-| `check-links.mjs` | `resolve1` | function | :143 | The route Next.js would pick for this link, or null. |
-| `check-links.mjs` | `scanLinks` | function | :188 | Every internal path a file refers to, with the line it is on. |
+| `check-links.mjs` | `routeInventory` | function | :93 | Every `page.tsx` / `route.ts` under one app's router, as `{url, file}`. |
+| `check-links.mjs` | `matches` | function | :126 | Does `link` land on `route`? |
+| `check-links.mjs` | `resolve1` | function | :167 | The route Next.js would pick for this link, or null. |
+| `check-links.mjs` | `scanLinks` | function | :212 | Every internal path a file refers to, with the line it is on. |
 | `check-rebrand.mjs` | `scan` | function | :160 | Every violation on one file's contents. |
 
 ### `scripts/lib`
@@ -65,8 +67,15 @@ Every top-level export in `infra`, with the line to open.
 | `model-routing.mjs` | `cacheTtlFor` | const | :359 |  |
 | `model-routing.mjs` | `MODEL_ORDER` | const | :361 |  |
 | `model-routing.mjs` | `EFFORT_ORDER` | const | :362 |  |
+| `render-harness.mjs` | `WIDTHS` | const | :59 | Law 4's own numbers, read from `CLAUDE.md` / `docs/design/02-layout.md`, NOT from `apps/web/tailwin… |
+| `render-harness.mjs` | `spawnServer` | function | :100 | Spawn a long-running server process. |
+| `render-harness.mjs` | `login` | function | :148 | `POST /auth/login` against a running API. |
+| `render-harness.mjs` | `authedContext` | function | :174 | A browser context pre-authenticated for one app's storage convention. |
+| `render-harness.mjs` | `measureOverflow` | function | :200 | `document.documentElement.scrollWidth > clientWidth` at the current viewport, plus — when it does —… |
+| `render-harness.mjs` | `sweepWidths` | function | :289 | One navigation, then a resize-and-measure at every width — not a reload per width. |
+| `render-harness.mjs` | `launchBrowser` | function | :318 |  |
 
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

@@ -55,7 +55,7 @@ _none_
 | `CartItemStitchingOption` | 4 | :64 |  |
 
 
-Full field lists: [cross/data-model.md](..\cross\data-model.md).
+Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 
 
@@ -104,4 +104,4 @@ _No spec files in this unit._
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

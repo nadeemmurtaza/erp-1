@@ -132,4 +132,4 @@ write an eighth. `components/common/wizard` is the only wizard.
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

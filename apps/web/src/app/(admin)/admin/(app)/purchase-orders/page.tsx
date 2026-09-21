@@ -62,7 +62,7 @@ export default function PurchaseOrdersPage() {
         <span id="po-status-filter-label" className="text-sm font-medium text-neutral-900/70">
           Filter by status:
         </span>
-        <div role="group" aria-labelledby="po-status-filter-label" className="flex gap-2">
+        <div role="group" aria-labelledby="po-status-filter-label" className="flex flex-wrap gap-2">
           {['', 'DRAFT', 'SENT', 'PARTIAL', 'RECEIVED', 'CANCELLED'].map((s) => (
             <button
               key={s}

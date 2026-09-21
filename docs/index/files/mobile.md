@@ -138,4 +138,4 @@ All 42 tracked files in `apps/mobile`, by directory.
 
 ---
 
-[← all files](..\cross\files.md) · [L1 page](..\areas\mobile.md) · [← index home](..\README.md)
+[← all files](../cross/files.md) · [L1 page](../areas/mobile.md) · [← index home](../README.md)

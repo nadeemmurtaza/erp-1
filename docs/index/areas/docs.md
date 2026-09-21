@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-247 files · 35,413 lines
+247 files · 35,420 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -12,7 +12,7 @@ has a bug.
 
 ## Go deeper
 
-- **Every file here:** [files/docs.md](..\files\docs.md)
+- **Every file here:** [files/docs.md](../files/docs.md)
 
 ## Directory breakdown
 
@@ -21,7 +21,7 @@ has a bug.
 | `docs` | 1 | 438 | doc |
 | `docs/brand` | 1 | 97 | doc |
 | `docs/brand/logo` | 6 | 0 | asset |
-| `docs/design` | 17 | 3,503 | doc |
+| `docs/design` | 17 | 3,510 | doc |
 | `docs/erp-lenses` | 195 | 21,092 | doc |
 | `docs/implementation` | 27 | 10,283 | doc, file |
 
@@ -51,4 +51,4 @@ has a bug.
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

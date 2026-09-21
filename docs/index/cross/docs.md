@@ -55,43 +55,50 @@ _no second-level headings_
 
 ### `.claude/rules/configuration.md`  <sub>20 lines</sub>
 
-_no second-level headings_
+- Environment and configuration  <sub>:14</sub>
 
 ### `.claude/rules/database.md`  <sub>19 lines</sub>
 
-_no second-level headings_
+- Database change protocol  <sub>:10</sub>
 
 ### `.claude/rules/decisions.md`  <sub>26 lines</sub>
 
-_no second-level headings_
+- Architectural decision records  <sub>:11</sub>
 
 ### `.claude/rules/dependencies.md`  <sub>23 lines</sub>
 
-_no second-level headings_
+- Dependency standard  <sub>:11</sub>
 
 ### `.claude/rules/design.md`  <sub>136 lines</sub>
 
-_no second-level headings_
+- The design system  <sub>:17</sub>
+- Read the chapter before you build the thing  <sub>:42</sub>
+- The obligations, stated so they can be checked  <sub>:58</sub>
+- Promoting something into the system  <sub>:117</sub>
+- What is not enforced by any command  <sub>:124</sub>
 
 ### `.claude/rules/performance.md`  <sub>42 lines</sub>
 
-_no second-level headings_
+- Performance engineering  <sub>:13</sub>
 
 ### `.claude/rules/security.md`  <sub>20 lines</sub>
 
-_no second-level headings_
+- Security engineering  <sub>:12</sub>
 
 ### `.claude/rules/services.md`  <sub>31 lines</sub>
 
-_no second-level headings_
+- Error handling  <sub>:14</sub>
+- Observability  <sub>:23</sub>
 
 ### `.claude/rules/testing.md`  <sub>20 lines</sub>
 
-_no second-level headings_
+- Testing standard  <sub>:12</sub>
 
 ### `.claude/rules/ui.md`  <sub>151 lines</sub>
 
-_no second-level headings_
+- Use what exists  <sub>:14</sub>
+- Borders and boxes  <sub>:64</sub>
+- No dead ends  <sub>:104</sub>
 
 ### `.github/copilot-instructions.md`  <sub>80 lines</sub>
 
@@ -114,93 +121,245 @@ _no second-level headings_
 - Three rules about the index  <sub>:55</sub>
 - Commands  <sub>:67</sub>
 
-### `CLAUDE.md`  <sub>875 lines</sub>
+### `CLAUDE.md`  <sub>890 lines</sub>
 
-_no second-level headings_
+- The seven laws  <sub>:13</sub>
+- Software engineering, not vibe coding  <sub>:35</sub>
+- Feature scope: build the whole capability, not one slice of it  <sub>:144</sub>
+- Scale: the three axes  <sub>:336</sub>
+- Look it up before you search  <sub>:393</sub>
+- The rule index  <sub>:461</sub>
+- Before you open a PR  <sub>:499</sub>
+- Deployment  <sub>:578</sub>
+- NEWAX Engineering Operating Protocol  <sub>:591</sub>
 
 ### `CONTRIBUTING.md`  <sub>127 lines</sub>
 
-_no second-level headings_
+- Layout  <sub>:6</sub>
+- Adding a module  <sub>:21</sub>
+- The rules that keep this working  <sub>:52</sub>
+- Before you push  <sub>:104</sub>
+- Local setup  <sub>:114</sub>
 
 ### `DEPLOYMENT.md`  <sub>492 lines</sub>
 
-_no second-level headings_
+- 1. Provision the VPS  <sub>:39</sub>
+- 2. First login: base setup, a deploy user, and firewall  <sub>:53</sub>
+- 3. Install Docker  <sub>:83</sub>
+- 4. DNS  <sub>:100</sub>
+- 5. Clone the repo and create the `production` branch  <sub>:116</sub>
+- 6. First-time bootstrap on the VPS  <sub>:139</sub>
+- 7. GitHub Actions: secrets for automatic deploys  <sub>:240</sub>
+- 8. Day-to-day deploys  <sub>:283</sub>
+- 9. Backups, restore tests and off-site copies  <sub>:324</sub>
+- 10. Disk threshold alerts  <sub>:401</sub>
+- 11. Automatic restart at boot  <sub>:423</sub>
+- 12. Resource limits and connection pooling  <sub>:441</sub>
+- 13. Troubleshooting  <sub>:474</sub>
 
 ### `docs/brand/README.md`  <sub>97 lines</sub>
 
-_no second-level headings_
+- Files  <sub>:6</sub>
+- The artwork  <sub>:21</sub>
+- Colour  <sub>:47</sub>
+- Clear space and minimum size  <sub>:60</sub>
+- Don't  <sub>:74</sub>
+- Still open  <sub>:83</sub>
 
 ### `docs/design/00-principles.md`  <sub>83 lines</sub>
 
-_no second-level headings_
+- The constitution  <sub>:8</sub>
+- Design philosophy  <sub>:13</sub>
+- Product principles  <sub>:29</sub>
+- UX principles  <sub>:42</sub>
+- Visual principles  <sub>:56</sub>
+- Decision principles  <sub>:67</sub>
 
 ### `docs/design/01-foundations.md`  <sub>175 lines</sub>
 
-_no second-level headings_
+- Why tokens and not values  <sub>:12</sub>
+- Colour  <sub>:22</sub>
+- Typography  <sub>:36</sub>
+- Spacing — *unbuilt*  <sub>:49</sub>
+- Size — *unbuilt*  <sub>:71</sub>
+- Radius  <sub>:82</sub>
+- Shadow and elevation — *unbuilt*  <sub>:89</sub>
+- Z-index / layering — *unbuilt*  <sub>:101</sub>
+- Breakpoints  <sub>:121</sub>
+- Motion tokens — *unbuilt*  <sub>:132</sub>
+- Where tokens live  <sub>:165</sub>
 
 ### `docs/design/02-layout.md`  <sub>121 lines</sub>
 
-_no second-level headings_
+- The page skeleton  <sub>:8</sub>
+- Grid  <sub>:21</sub>
+- Density  <sub>:35</sub>
+- The seven screens  <sub>:50</sub>
+- Reflow rules  <sub>:64</sub>
+- Multi-surface parity  <sub>:79</sub>
+- The POS is a different animal  <sub>:92</sub>
+- Verifying  <sub>:105</sub>
 
 ### `docs/design/03-components.md`  <sub>113 lines</sub>
 
-_no second-level headings_
+- The ladder  <sub>:10</sub>
+- Primitives  <sub>:33</sub>
+- Choosing between them  <sub>:53</sub>
+- Patterns — *undocumented*  <sub>:64</sub>
+- Templates — *undocumented*  <sub>:81</sub>
+- Component contract  <sub>:92</sub>
+- What never gets hand-rolled  <sub>:107</sub>
 
 ### `docs/design/04-states.md`  <sub>141 lines</sub>
 
-_no second-level headings_
+- The rule  <sub>:8</sub>
+- The state matrix  <sub>:14</sub>
+- Focus is not optional  <sub>:36</sub>
+- Disabled must explain itself  <sub>:42</sub>
+- Empty states  <sub>:49</sub>
+- Loading  <sub>:66</sub>
+- Validation  <sub>:81</sub>
+- Confirmation and destructive actions  <sub>:90</sub>
+- Permission states  <sub>:105</sub>
+- Notifications and system feedback  <sub>:119</sub>
+- Offline and degraded — the POS case  <sub>:127</sub>
 
 ### `docs/design/05-motion.md`  <sub>193 lines</sub>
 
-_no second-level headings_
+- The one test  <sub>:13</sub>
+- What motion may communicate  <sub>:28</sub>
+- The language  <sub>:43</sub>
+- Hierarchy of motion  <sub>:61</sub>
+- Continuity over replacement  <sub>:78</sub>
+- Orchestration  <sub>:94</sub>
+- Micro-interactions  <sub>:103</sub>
+- Scroll  <sub>:119</sub>
+- Responsive motion  <sub>:131</sub>
+- Reduced motion — required  <sub>:142</sub>
+- Performance  <sub>:161</sub>
+- Rejection list  <sub>:172</sub>
+- Benchmark, not template  <sub>:183</sub>
 
 ### `docs/design/06-content.md`  <sub>121 lines</sub>
 
-_no second-level headings_
+- Voice  <sub>:10</sub>
+- Terminology — one word per concept  <sub>:29</sub>
+- Labels  <sub>:48</sub>
+- Microcopy  <sub>:58</sub>
+- Error messages  <sub>:66</sub>
+- Content hierarchy  <sub>:87</sub>
+- Localisation  <sub>:95</sub>
+- Verifying  <sub>:108</sub>
 
 ### `docs/design/07-accessibility.md`  <sub>157 lines</sub>
 
-_no second-level headings_
+- Why this is grouped with i18n  <sub>:15</sub>
+- The target  <sub>:22</sub>
+- Keyboard  <sub>:26</sub>
+- Focus  <sub>:42</sub>
+- Screen readers  <sub>:53</sub>
+- Contrast  <sub>:68</sub>
+- Touch targets  <sub>:90</sub>
+- Reduced motion  <sub>:100</sub>
+- Semantic structure  <sub>:109</sub>
+- Right-to-left  <sub>:116</sub>
+- Internationalisation beyond direction  <sub>:133</sub>
+- What would make this real  <sub>:140</sub>
 
 ### `docs/design/08-governance.md`  <sub>145 lines</sub>
 
-_no second-level headings_
+- Why a design system needs governance at all  <sub>:11</sub>
+- Naming  <sub>:19</sub>
+- What belongs in the system, and what does not  <sub>:40</sub>
+- Contribution  <sub>:60</sub>
+- Versioning  <sub>:81</sub>
+- Deprecation  <sub>:96</sub>
+- Change approval  <sub>:117</sub>
+- Keeping this system honest  <sub>:129</sub>
 
 ### `docs/design/09-quality.md`  <sub>176 lines</sub>
 
-_no second-level headings_
+- The two columns  <sub>:12</sub>
+- Regression  <sub>:124</sub>
+- The honest gap, ranked  <sub>:142</sub>
+- Definition of done, for a screen  <sub>:165</sub>
 
 ### `docs/design/10-laws.md`  <sub>850 lines</sub>
 
-_no second-level headings_
+- Why a catalogue, and why rulings  <sub>:19</sub>
+- PER · Perception  <sub>:59</sub>
+- COG · Cognition  <sub>:150</sub>
+- ACT · Action and time  <sub>:291</sub>
+- HEU · Nielsen's ten, ruled  <sub>:381</sub>
+- TYP · Typography  <sub>:439</sub>
+- COL · Colour  <sub>:501</sub>
+- SPA · Space, ratio and the shape of a page  <sub>:557</sub>
+- MOT · Motion  <sub>:642</sub>
+- ACC · Accessibility  <sub>:690</sub>
+- GLO · Globalization  <sub>:752</sub>
+- What this chapter does not settle  <sub>:815</sub>
+- Sources  <sub>:830</sub>
 
 ### `docs/design/11-workflow.md`  <sub>260 lines</sub>
 
-_no second-level headings_
+- The thing that actually goes wrong  <sub>:14</sub>
+- FLO · The laws  <sub>:33</sub>
+- Patterns  <sub>:164</sub>
+- What must be built  <sub>:232</sub>
+- Sources  <sub>:251</sub>
 
 ### `docs/design/12-permissions.md`  <sub>214 lines</sub>
 
-_no second-level headings_
+- The problem, stated precisely  <sub>:13</sub>
+- PRM · The laws  <sub>:35</sub>
+- Patterns  <sub>:163</sub>
+- What must be built  <sub>:189</sub>
+- Sources  <sub>:207</sub>
 
 ### `docs/design/13-composition.md`  <sub>197 lines</sub>
 
-_no second-level headings_
+- What is actually being shipped  <sub>:14</sub>
+- MOD · The laws  <sub>:38</sub>
+- Patterns  <sub>:148</sub>
+- What must be built  <sub>:179</sub>
+- Sources  <sub>:190</sub>
 
 ### `docs/design/14-navigation.md`  <sub>198 lines</sub>
 
-_no second-level headings_
+- The scale problem  <sub>:13</sub>
+- NAV · The laws  <sub>:30</sub>
+- Patterns  <sub>:127</sub>
+- What must be built  <sub>:178</sub>
+- Sources  <sub>:191</sub>
 
-### `docs/design/15-integrity.md`  <sub>250 lines</sub>
+### `docs/design/15-integrity.md`  <sub>257 lines</sub>
 
-_no second-level headings_
+- Why this chapter is different  <sub>:17</sub>
+- ITG · The laws  <sub>:35</sub>
+- The build order  <sub>:157</sub>
+- What a person still has to do  <sub>:230</sub>
+- Sources  <sub>:250</sub>
 
 ### `docs/design/README.md`  <sub>109 lines</sub>
 
-_no second-level headings_
+- Precedence, before anything else  <sub>:12</sub>
+- The chapters  <sub>:24</sub>
+- How to use it  <sub>:45</sub>
+- The law families  <sub>:63</sub>
+- An honest statement of maturity  <sub>:76</sub>
+- The one thing this system refuses to do  <sub>:102</sub>
 
 ### `docs/email.md`  <sub>438 lines</sub>
 
-_no second-level headings_
+- What runs, and what it reuses  <sub>:6</sub>
+- Read this first  <sub>:35</sub>
+- Setup  <sub>:57</sub>
+- Reading the mail  <sub>:267</sub>
+- Backups  <sub>:282</sub>
+- Staying out of spam  <sub>:303</sub>
+- Warming up  <sub>:348</sub>
+- Switching to a relay  <sub>:366</sub>
+- How it works  <sub>:381</sub>
 
 ### `docs/erp-lenses/_agent-cluster.md`  <sub>944 lines</sub>
 
@@ -1648,95 +1807,297 @@ _no second-level headings_
 
 ### `docs/implementation/00-HOUSE-RULES.md`  <sub>496 lines</sub>
 
-_no second-level headings_
+- 0. Before you start  <sub>:13</sub>
+- 1. The repository  <sub>:36</sub>
+- 2. The twelve rules  <sub>:53</sub>
+- 3. Definition of done  <sub>:308</sub>
+- 4. How to write a migration that cannot lose data  <sub>:338</sub>
+- 5. Things that are already true — do not "fix" them  <sub>:358</sub>
+- 6. Working with these briefs  <sub>:372</sub>
+- 7. Commit and PR conventions  <sub>:387</sub>
+- 8. Interface rules  <sub>:440</sub>
 
 ### `docs/implementation/01-inventory-purchasing-cost.md`  <sub>937 lines</sub>
 
-_no second-level headings_
+- Why this phase is first  <sub>:18</sub>
+- What Phase 1 delivers  <sub>:32</sub>
+- Work orders  <sub>:42</sub>
+- WO-1.1 — Nav foundation  <sub>:60</sub>
+- WO-1.2 — The unified stock ledger  <sub>:149</sub>
+- WO-1.3 — Cost price and COGS  <sub>:318</sub>
+- WO-1.4 — Suppliers  <sub>:382</sub>
+- WO-1.5 — Purchase orders, goods receipts, and cost  <sub>:460</sub>
+- WO-1.6 — Reorder, low stock and slow movers  <sub>:710</sub>
+- WO-1.7 — Stock counts  <sub>:786</sub>
+- WO-1.8 — Admin screens  <sub>:866</sub>
+- WO-1.9 — Reports  <sub>:905</sub>
+- Phase 1 exit criteria  <sub>:922</sub>
 
 ### `docs/implementation/02-admin-shell.md`  <sub>242 lines</sub>
 
-_no second-level headings_
+- Why  <sub>:5</sub>
+- Rules for this phase  <sub>:24</sub>
+- Work orders  <sub>:37</sub>
+- WO-2.1 — The small four  <sub>:54</sub>
+- WO-2.2 — DataTable and Pagination  <sub>:80</sub>
+- WO-2.3 — Modal and ConfirmDialog  <sub>:119</sub>
+- WO-2.4 — FilterBar with URL-synced state  <sub>:140</sub>
+- WO-2.5 — Migrate the pages  <sub>:164</sub>
+- WO-2.6 — Command palette, breadcrumbs, collapsible groups  <sub>:182</sub>
+- WO-2.7 — Error, not-found and loading states  <sub>:197</sub>
+- WO-2.8 — Permission-check cleanup  <sub>:211</sub>
+- Phase 2 exit criteria  <sub>:233</sub>
 
 ### `docs/implementation/03-variants-sku-seo.md`  <sub>471 lines</sub>
 
-_no second-level headings_
+- Why  <sub>:32</sub>
+- Work orders  <sub>:66</sub>
+- WO-3.1 — The option model  <sub>:82</sub>
+- WO-3.2 — Switch readers, then retire the columns  <sub>:216</sub>
+- WO-3.3 — SKU templates and barcodes  <sub>:235</sub>
+- WO-3.4 — The sectioned product editor  <sub>:265</sub>
+- WO-3.5 — The variant matrix builder  <sub>:297</sub>
+- WO-3.6 — Media with enforced alt text  <sub>:321</sub>
+- WO-3.7 — The SEO section and the publish gate  <sub>:345</sub>
+- WO-3.8 — Storefront SEO  <sub>:389</sub>
+- WO-3.9 — Redirects  <sub>:426</sub>
+- Phase 3 exit criteria  <sub>:460</sub>
 
 ### `docs/implementation/04-finance.md`  <sub>239 lines</sub>
 
-_no second-level headings_
+- Scope decision, already taken  <sub>:6</sub>
+- Work orders  <sub>:16</sub>
+- WO-4.1 — Expenses  <sub>:32</sub>
+- WO-4.2 — Order economics  <sub>:108</sub>
+- WO-4.3 — The P&L report  <sub>:148</sub>
+- WO-4.4 — Cash flow  <sub>:187</sub>
+- WO-4.5 — Screens  <sub>:201</sub>
+- WO-4.6 — Month-end close and export  <sub>:221</sub>
+- Phase 4 exit criteria  <sub>:231</sub>
 
 ### `docs/implementation/05-promotions-giftcards.md`  <sub>320 lines</sub>
 
-_no second-level headings_
+- Why now  <sub>:5</sub>
+- Work orders  <sub>:14</sub>
+- WO-5.1 — The rules engine  <sub>:31</sub>
+- WO-5.2 — Promo codes  <sub>:122</sub>
+- WO-5.3 — Checkout  <sub>:163</sub>
+- WO-5.4 — Gift cards  <sub>:196</sub>
+- WO-5.5 — Store credit  <sub>:267</sub>
+- WO-5.6 — Screens  <sub>:294</sub>
+- Phase 5 exit criteria  <sub>:310</sub>
 
 ### `docs/implementation/06-shipping-fulfilment-returns.md`  <sub>288 lines</sub>
 
-_no second-level headings_
+- Why  <sub>:5</sub>
+- Work orders  <sub>:25</sub>
+- WO-6.1 — Shipping as a module  <sub>:40</sub>
+- WO-6.2 — The `CourierProvider` interface  <sub>:104</sub>
+- WO-6.3 — Real couriers  <sub>:135</sub>
+- WO-6.4 — Shipment lifecycle  <sub>:151</sub>
+- WO-6.5 — Tracking automation  <sub>:167</sub>
+- WO-6.6 — Returns and RMA  <sub>:184</sub>
+- WO-6.7 — RTO  <sub>:253</sub>
+- WO-6.8 — Screens  <sub>:268</sub>
+- Phase 6 exit criteria  <sub>:278</sub>
 
 ### `docs/implementation/07-customer-portal.md`  <sub>186 lines</sub>
 
-_no second-level headings_
+- Why  <sub>:5</sub>
+- Work orders  <sub>:21</sub>
+- WO-7.1 — Portal shell  <sub>:37</sub>
+- WO-7.2 — Orders  <sub>:52</sub>
+- WO-7.3 — Self-service returns  <sub>:66</sub>
+- WO-7.4 — Credit and gift cards  <sub>:78</sub>
+- WO-7.5 — Reviews and Q&A  <sub>:89</sub>
+- WO-7.6 — Wishlist and back-in-stock  <sub>:128</sub>
+- WO-7.7 — Loyalty and referrals  <sub>:145</sub>
+- WO-7.8 — Notification preferences  <sub>:160</sub>
+- WO-7.9 — Mobile parity  <sub>:169</sub>
+- Phase 7 exit criteria  <sub>:178</sub>
 
 ### `docs/implementation/08-content-marketing-search.md`  <sub>138 lines</sub>
 
-_no second-level headings_
+- Why  <sub>:5</sub>
+- Work orders  <sub>:13</sub>
+- WO-8.1 — CMS  <sub>:26</sub>
+- WO-8.2 — Collections and merchandising  <sub>:46</sub>
+- WO-8.3 — Search  <sub>:61</sub>
+- WO-8.4 — Campaigns and broadcasts  <sub>:85</sub>
+- WO-8.5 — Abandoned cart recovery  <sub>:104</sub>
+- WO-8.6 — On-site messaging  <sub>:120</sub>
+- Phase 8 exit criteria  <sub>:129</sub>
 
 ### `docs/implementation/09-ai-layer.md`  <sub>221 lines</sub>
 
-_no second-level headings_
+- The two rules that govern this entire phase  <sub>:5</sub>
+- Work orders, in payoff order  <sub>:36</sub>
+- WO-9.1 — Alt text and SEO copy  <sub>:53</sub>
+- WO-9.2 — Size recommendation  <sub>:74</sub>
+- WO-9.3 — Demand forecasting  <sub>:95</sub>
+- WO-9.4 — COD risk scoring  <sub>:113</sub>
+- WO-9.5 — Semantic and visual search  <sub>:133</sub>
+- WO-9.6 — Recommendations  <sub>:149</sub>
+- WO-9.7 — WhatsApp assistant  <sub>:163</sub>
+- WO-9.8 — Markdown suggestions  <sub>:180</sub>
+- WO-9.9 — Review summarisation  <sub>:191</sub>
+- WO-9.10 — Bulk-import cleanup  <sub>:200</sub>
+- Phase 9 exit criteria  <sub>:210</sub>
 
 ### `docs/implementation/10-admin-dashboard.md`  <sub>1,843 lines</sub>
 
-_no second-level headings_
+- Why  <sub>:9</sub>
+- What Phase 10 delivers  <sub>:31</sub>
+- Base branch  <sub>:43</sub>
+- Work orders  <sub>:50</sub>
+- Rules for this phase  <sub>:82</sub>
+- The corrected route tree  <sub>:388</sub>
+- The card inventory (~55 cards)  <sub>:471</sub>
+- A live bug the rebuild must not inherit  <sub>:527</sub>
+- Track A — Foundations  <sub>:566</sub>
+- Track B — Finance and expenses  <sub>:833</sub>
+- Track C — BOM and manufacturing  <sub>:1146</sub>
+- Track D — The remaining analytics pages  <sub>:1604</sub>
+- Track E — Navigation and retirement  <sub>:1635</sub>
+- Dependency table  <sub>:1691</sub>
+- Sequencing  <sub>:1725</sub>
+- Migration safety register  <sub>:1754</sub>
+- Phase 10 definition of done  <sub>:1798</sub>
 
 ### `docs/implementation/11-client-handover-model.md`  <sub>121 lines</sub>
 
-_no second-level headings_
+- 1. The Business Goals  <sub>:3</sub>
+- 2. The Rejected Approaches  <sub>:12</sub>
+- 3. The Solution: The "Blueprint & Extractor" Model  <sub>:22</sub>
+- 4. Customization & Upgradability (Engine vs. Glass)  <sub>:64</sub>
+- 5. Hosting Contracts & Infrastructure as a Service (IaaS)  <sub>:89</sub>
+- 6. The API Layer (Dynamic NestJS Separation)  <sub>:109</sub>
 
 ### `docs/implementation/12-extractor-script-spec.md`  <sub>59 lines</sub>
 
-_no second-level headings_
+- Phase 1: Initialization & Validation  <sub>:6</sub>
+- Phase 2: The Engine Extraction (Backend)  <sub>:15</sub>
+- Phase 3: AST Modification (Bulletproof TypeScript)  <sub>:23</sub>
+- Phase 4: The Glass Protection (Frontend Boundaries)  <sub>:32</sub>
+- Phase 5: IaaS & Environment Scaffolding  <sub>:40</sub>
+- Phase 6: CI/CD & Database Cleanup  <sub>:45</sub>
+- Phase 7: Delivery & Pull Request  <sub>:53</sub>
 
 ### `docs/implementation/13-email-service-plan.md`  <sub>32 lines</sub>
 
-_no second-level headings_
+- 1. The Technology Stack  <sub>:5</sub>
+- 2. The Client Experience  <sub>:10</sub>
+- 3. Strict DNS Requirements (Crucial for Independence)  <sub>:14</sub>
+- 4. Application Architecture (How the API sends emails)  <sub>:23</sub>
+- 5. The Ultimate Agency Flex (Future API Integration)  <sub>:29</sub>
 
 ### `docs/implementation/14-managed-services-module.md`  <sub>270 lines</sub>
 
-_no second-level headings_
+- Why this is two modules, not one  <sub>:15</sub>
+- The load-bearing scope decision: where usage numbers actually come from  <sub>:33</sub>
+- Master side: the `agency` module  <sub>:58</sub>
+- Client side: the `managed-services` module  <sub>:181</sub>
+- Security notes  <sub>:205</sub>
+- Explicitly out of scope for v1  <sub>:221</sub>
+- Work orders  <sub>:234</sub>
+- When to actually build this  <sub>:261</sub>
 
 ### `docs/implementation/15-tax-module.md`  <sub>178 lines</sub>
 
-_no second-level headings_
+- The design decision this doc locks in  <sub>:16</sub>
+- Schema — new module `tax`  <sub>:24</sub>
+- The pricing math — and where the rounding trap is  <sub>:86</sub>
+- Checkout integration  <sub>:122</sub>
+- What this doc deliberately does not specify  <sub>:132</sub>
+- Work orders  <sub>:143</sub>
+- When to actually build this  <sub>:171</sub>
 
 ### `docs/implementation/16-pbac-row-scoping.md`  <sub>184 lines</sub>
 
-_no second-level headings_
+- The good news: the convention already exists, once  <sub>:35</sub>
+- Why this is scoped rather than built now  <sub>:57</sub>
+- The design  <sub>:68</sub>
+- Explicitly out of scope for this doc  <sub>:145</sub>
+- Work orders  <sub>:157</sub>
+- When to actually build this  <sub>:176</sub>
 
 ### `docs/implementation/17-inventory-locations.md`  <sub>254 lines</sub>
 
-_no second-level headings_
+- Why the aggregate write is one atomic statement  <sub>:26</sub>
+- Why this is the risky one, specifically  <sub>:42</sub>
+- The design: additive first, single-location behavior byte-identical  <sub>:57</sub>
+- What every existing caller needs  <sub>:175</sub>
+- Explicitly out of scope for this doc  <sub>:184</sub>
+- Work orders  <sub>:197</sub>
+- Why one snippet in this doc was wrong  <sub>:239</sub>
+- When to actually build this  <sub>:247</sub>
 
 ### `docs/implementation/18-identity-verification.md`  <sub>143 lines</sub>
 
-_no second-level headings_
+- What this is  <sub>:13</sub>
+- Design  <sub>:25</sub>
+- What's built  <sub>:83</sub>
+- Explicitly out of scope for this module  <sub>:109</sub>
+- Local setup  <sub>:131</sub>
 
 ### `docs/implementation/18-trading-partner-network.md`  <sub>61 lines</sub>
 
-_no second-level headings_
+- Work orders  <sub>:18</sub>
+- Out of scope (for now)  <sub>:54</sub>
 
 ### `docs/implementation/DECISIONS.md`  <sub>752 lines</sub>
 
-_no second-level headings_
+- How to read this  <sub>:13</sub>
+- ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
+- ADR-002 — A sector is a module pack behind an allowlist  <sub>:104</sub>
+- ADR-003 — Modules are independent; side effects cross through events  <sub>:145</sub>
+- ADR-004 — Events are delivered through a transactional outbox  <sub>:186</sub>
+- ADR-005 — Money is an integer in minor units  <sub>:222</sub>
+- ADR-006 — Customer-facing text is a row, not a column  <sub>:257</sub>
+- ADR-007 — Access control is permission-based, and the grants are data  <sub>:291</sub>
+- ADR-008 — Migrations are hand-written and forward-only  <sub>:331</sub>
+- ADR-009 — A branch is a node with its own database, not a tenant row  <sub>:370</sub>
+- ADR-010 — In-transit stock is a Location, not a flag  <sub>:410</sub>
+- ADR-011 — A till sale is a channel of `orders`  <sub>:449</sub>
+- ADR-012 — Cross-module references are bare scalars, not foreign keys  <sub>:484</sub>
+- ADR-013 — One deployment serves one brand  <sub>:522</sub>
+- ADR-014 — The repository index is generated and enforced, not written  <sub>:555</sub>
+- ADR-015 — Model and effort are routed per job, from one policy  <sub>:597</sub>
+- ADR-016 — Rules that apply to one kind of file are path-scoped  <sub>:640</sub>
+- ADR-017 — An observability backend  <sub>:682</sub>
+- ADR-018 — Horizontal replicas and load balancing  <sub>:719</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>266 lines</sub>
 
-_no second-level headings_
+- The three axes  <sub>:12</sub>
+- S — Sector rules  <sub>:29</sub>
+- Br — Brand rules  <sub>:62</sub>
+- L — Branch (location) rules  <sub>:102</sub>
+- D — Data rules  <sub>:170</sub>
+- P — Permission rules  <sub>:191</sub>
+- What is actually enforced today  <sub>:205</sub>
 
 ### `docs/implementation/MULTI-SECTOR.md`  <sub>806 lines</sub>
 
-_no second-level headings_
+- The ruling, up front  <sub>:7</sub>
+- Why not `master_clothing_boutique`, `master_grocery`, …  <sub>:17</sub>
+- What a sector actually is  <sub>:55</sub>
+- The rule that makes this safe  <sub>:85</sub>
+- Branch naming  <sub>:255</sub>
+- Deployment model  <sub>:307</sub>
+- The database  <sub>:318</sub>
+- The API  <sub>:395</sub>
+- Adding a new sector  <sub>:444</sub>
+- When branches or repos WOULD be right  <sub>:464</sub>
+- Summary  <sub>:481</sub>
+- The two axes  <sub>:506</sub>
+- The finding that reorganised everything  <sub>:520</sub>
+- Sector packs, after reconciliation  <sub>:553</sub>
+- Capability modules for business models  <sub>:571</sub>
+- The blockers — read this before planning anything  <sub>:616</sub>
+- What a deployment looks like  <sub>:727</sub>
+- Sequencing  <sub>:754</sub>
+- Open questions for the owner  <sub>:794</sub>
 
 ### `docs/implementation/NEWAX AI Engineering Master Protocol`  <sub>0 lines</sub>
 
@@ -1744,11 +2105,26 @@ _no second-level headings_
 
 ### `docs/implementation/README.md`  <sub>154 lines</sub>
 
-_no second-level headings_
+- Read in this order  <sub>:7</sub>
+- Dependency order  <sub>:24</sub>
+- The two module groups  <sub>:53</sub>
+- How a work order runs  <sub>:90</sub>
+- Known gaps not yet owned by a phase  <sub>:108</sub>
+- When a brief is wrong  <sub>:135</sub>
+- Scope, honestly  <sub>:148</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,083 lines</sub>
 
-_no second-level headings_
+- Context  <sub>:15</sub>
+- Part 1 — The topology  <sub>:78</sub>
+- Part 2 — The rulings  <sub>:135</sub>
+- Part 3 — Accounting (the pillar)  <sub>:378</sub>
+- Part 4 — Resilience, supply chain, liquidity and predictive analytics  <sub>:575</sub>
+- Part 5 — The modules  <sub>:755</sub>
+- Part 6 — Replication and the apps  <sub>:801</sub>
+- Part 7 — Roadmap  <sub>:865</sub>
+- Part 8 — The briefs this spawns  <sub>:946</sub>
+- Acceptance  <sub>:990</sub>
 
 ### `docs/implementation/WO-22-lens-workflow-results.md`  <sub>539 lines</sub>
 
@@ -1778,11 +2154,19 @@ _no second-level headings_
 - Three rules about the index  <sub>:55</sub>
 - Commands  <sub>:67</sub>
 
-### `README.md`  <sub>348 lines</sub>
+### `README.md`  <sub>349 lines</sub>
 
-_no second-level headings_
+- Read this before touching anything  <sub>:12</sub>
+- Documentation map  <sub>:101</sub>
+- What is here today  <sub>:131</sub>
+- Running it  <sub>:152</sub>
+- Design decisions worth knowing  <sub>:223</sub>
+- Security architecture  <sub>:255</sub>
+- Commands  <sub>:309</sub>
+- Where the project is going  <sub>:323</sub>
+- Repository layout  <sub>:337</sub>
 
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

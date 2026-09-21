@@ -3,7 +3,7 @@
 
 # Schema: `purchasing.prisma`
 
-7 models · 2 enums. Owned by module [`purchasing`](..\modules\purchasing.md).
+7 models · 2 enums. Owned by module [`purchasing`](../modules/purchasing.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -206,4 +206,4 @@ Indexes: `@@unique([supplierId, variantId])` · `@@index([variantId, isPreferred
 
 ---
 
-[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)
+[← all schemas](../cross/data-model.md) · [← index home](../README.md)

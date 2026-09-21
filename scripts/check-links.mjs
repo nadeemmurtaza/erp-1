@@ -34,7 +34,7 @@ const SKIP_DIRS = new Set(['node_modules', '.next', '.expo', 'dist', 'build', 'g
 const SOURCE_EXT = new Set(['.ts', '.tsx']);
 
 /** The apps with a Next.js app router, and where each one's assets live. */
-const APPS = [
+export const APPS = [
   { name: 'web', appDir: 'apps/web/src/app', src: 'apps/web/src', publicDir: 'apps/web/public' },
   { name: 'pos', appDir: 'apps/pos/src/app', src: 'apps/pos/src', publicDir: 'apps/pos/public' },
 ];
@@ -79,6 +79,30 @@ export function routeUrl(rel, appDir) {
   segments.pop();
   const url = segments.filter((s) => !(s.startsWith('(') && s.endsWith(')')) && !s.startsWith('@')).join('/');
   return `/${url}`.replace(/\/$/, '') || '/';
+}
+
+/**
+ * Every `page.tsx` / `route.ts` under one app's router, as `{url, file}`.
+ *
+ * Extracted so a render harness (docs/design/15-integrity.md checks 6-10,
+ * `scripts/check-overflow.mjs` is the first) can ask "what exists" without
+ * re-walking the app router a second way — this is already the canonical
+ * walk, and the whole point of ITG-2's own reasoning (no duplicate
+ * implementation) applies to this checker's own internals too.
+ */
+export function routeInventory(app) {
+  const appDir = join(ROOT, app.appDir);
+  const routes = [];
+  for (const file of files(appDir)) {
+    const base = basename(file);
+    if (!/^(page|route)\.(tsx?|jsx?)$/.test(base)) continue;
+    routes.push({ url: routeUrl(relative(ROOT, file), app.appDir), file: relative(ROOT, file) });
+  }
+  if (!routes.length) {
+    console.error(`\nFound no routes under ${app.appDir}. Either the app moved or this check is\nreading the wrong place; it fails rather than reporting every link broken.\n`);
+    process.exit(1);
+  }
+  return routes;
 }
 
 /* ── matching a link against a route ───────────────────────────────────── */
@@ -302,16 +326,7 @@ function main() {
     if (!existsSync(appDir)) continue;
 
     // 1. What exists.
-    const routes = [];
-    for (const file of files(appDir)) {
-      const base = basename(file);
-      if (!/^(page|route)\.(tsx?|jsx?)$/.test(base)) continue;
-      routes.push({ url: routeUrl(relative(ROOT, file), app.appDir), file: relative(ROOT, file) });
-    }
-    if (!routes.length) {
-      console.error(`\nFound no routes under ${app.appDir}. Either the app moved or this check is\nreading the wrong place; it fails rather than reporting every link broken.\n`);
-      process.exit(1);
-    }
+    const routes = routeInventory(app);
     routeCount += routes.length;
 
     // 2. What is referred to.

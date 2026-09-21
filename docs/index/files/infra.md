@@ -3,7 +3,7 @@
 
 # Files — infra
 
-All 53 tracked files in `scripts, CI, deployment and container configuration`, by directory.
+All 55 tracked files in `scripts, CI, deployment and container configuration`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -27,8 +27,8 @@ All 53 tracked files in `scripts, CI, deployment and container configuration`, b
 | `docker-stack.edge.yml` | yaml | 42 |  |
 | `docker-stack.prod.yml` | yaml | 88 |  |
 | `docker-stack.staging.yml` | yaml | 88 |  |
-| `package.json` | json | 56 |  |
-| `pnpm-lock.yaml` | yaml | 17493 |  |
+| `package.json` | json | 58 |  |
+| `pnpm-lock.yaml` | yaml | 17512 |  |
 | `pnpm-workspace.yaml` | yaml | 12 |  |
 | `turbo.json` | json | 49 |  |
 | `wrangler.toml` | toml | 17 |  |
@@ -43,7 +43,7 @@ All 53 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `ci.yml` | yaml | 95 |  |
+| `ci.yml` | yaml | 164 |  |
 | `deploy-cloudflare.yml` | yaml | 91 |  |
 
 ### `deploy` (3)
@@ -73,18 +73,19 @@ All 53 tracked files in `scripts, CI, deployment and container configuration`, b
 | `yaseen-disk-alert.timer` | timer | — |  |
 | `yaseen.service` | service | — |  |
 
-### `scripts` (16)
+### `scripts` (17)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `build-index.mjs` | script | 2500 |  |
+| `build-index.mjs` | script | 2511 |  |
 | `build-logo-raster.mjs` | script | 54 |  |
 | `check-contrast.mjs` | script | 425 |  |
 | `check-email-dns.mjs` | script | 399 |  |
 | `check-env-templates.mjs` | script | 139 |  |
 | `check-frontend-secrets.mjs` | script | 137 |  |
-| `check-links.mjs` | script | 387 |  |
+| `check-links.mjs` | script | 402 |  |
 | `check-module-boundaries.mjs` | script | 535 |  |
+| `check-overflow.mjs` | script | 644 |  |
 | `check-rebrand.mjs` | script | 292 |  |
 | `check-route-permissions.mjs` | script | 136 |  |
 | `check-rules.mjs` | script | 148 |  |
@@ -94,14 +95,15 @@ All 53 tracked files in `scripts, CI, deployment and container configuration`, b
 | `nested-borders.py` | py | — |  |
 | `sync-client.mjs` | script | 243 | scripts/sync-client.mjs |
 
-### `scripts/lib` (2)
+### `scripts/lib` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `index-scan.mjs` | utility | 906 | Scanners for the repository index. |
 | `model-routing.mjs` | utility | 363 | Which model and how much effort each kind of job in this repository deserves. |
+| `render-harness.mjs` | utility | 337 | Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — th… |
 
 
 ---
 
-[← all files](..\cross\files.md) · [L1 page](..\areas\infra.md) · [← index home](..\README.md)
+[← all files](../cross/files.md) · [L1 page](../areas/infra.md) · [← index home](../README.md)

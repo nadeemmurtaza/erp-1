@@ -3,7 +3,7 @@
 
 # Schema: `payments.prisma`
 
-1 models · 1 enums. Owned by module [`payments`](..\modules\payments.md).
+1 models · 1 enums. Owned by module [`payments`](../modules/payments.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -26,7 +26,7 @@ against a real database.
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
 | `orderId` | `String` |  |  |
-| `provider` | `String` |  |  |
+| `provider` | `String` |  | "cod" \| "bank_transfer" \| "jazzcash" \| "easypaisa" |
 | `status` | `PaymentStatus` |  | @default(PENDING) |
 | `amount` | `Int` |  |  |
 | `currency` | `String` |  | @default("PKR") |
@@ -56,7 +56,7 @@ Indexes: `@@index([orderId])` · `@@index([status])` · `@@index([provider, stat
 | Value | Meaning |
 |---|---|
 | `PENDING` |  |
-| `AWAITING_APPROVAL // bank transfer receipt uploaded, staff must approve` |  |
+| `AWAITING_APPROVAL` | bank transfer receipt uploaded, staff must approve |
 | `PAID` |  |
 | `FAILED` |  |
 | `REFUNDED` |  |
@@ -65,4 +65,4 @@ Indexes: `@@index([orderId])` · `@@index([status])` · `@@index([provider, stat
 
 ---
 
-[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)
+[← all schemas](../cross/data-model.md) · [← index home](../README.md)

@@ -3,7 +3,7 @@
 
 # Schema: `transfers.prisma`
 
-5 models · 2 enums. Owned by module [`transfers`](..\modules\transfers.md).
+5 models · 2 enums. Owned by module [`transfers`](../modules/transfers.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -120,4 +120,4 @@ Indexes: `@@index([transferId])` · `@@index([variantId])`
 
 ---
 
-[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)
+[← all schemas](../cross/data-model.md) · [← index home](../README.md)

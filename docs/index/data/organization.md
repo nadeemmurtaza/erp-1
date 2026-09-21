@@ -3,7 +3,7 @@
 
 # Schema: `organization.prisma`
 
-5 models · 3 enums. Owned by module [`organization`](..\modules\organization.md).
+5 models · 3 enums. Owned by module [`organization`](../modules/organization.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -137,4 +137,4 @@ Indexes: `@@index([organizationId])` · `@@index([parentId])`
 
 ---
 
-[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)
+[← all schemas](../cross/data-model.md) · [← index home](../README.md)

@@ -3,7 +3,7 @@
 
 # Commands
 
-Every script in every `package.json` (**71**), plus the repository's own check scripts.
+Every script in every `package.json` (**72**), plus the repository's own check scripts.
 
 
 ## The one you run before a PR
@@ -115,6 +115,7 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 | `check:rebrand` | `node scripts/check-rebrand.mjs` |
 | `check:contrast` | `node scripts/check-contrast.mjs` |
 | `check:links` | `node scripts/check-links.mjs` |
+| `check:overflow` | `node scripts/check-overflow.mjs` |
 | `check:rules` | `node scripts/check-rules.mjs` |
 | `check:email` | `node scripts/check-email-dns.mjs` |
 | `index` | `node scripts/build-index.mjs` |
@@ -137,14 +138,15 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 
 | Script | Lines | What it enforces |
 |---|---|---|
-| `scripts/build-index.mjs` | 2500 |  |
+| `scripts/build-index.mjs` | 2511 |  |
 | `scripts/build-logo-raster.mjs` | 54 |  |
 | `scripts/check-contrast.mjs` | 425 |  |
 | `scripts/check-email-dns.mjs` | 399 |  |
 | `scripts/check-env-templates.mjs` | 139 |  |
 | `scripts/check-frontend-secrets.mjs` | 137 |  |
-| `scripts/check-links.mjs` | 387 |  |
+| `scripts/check-links.mjs` | 402 |  |
 | `scripts/check-module-boundaries.mjs` | 535 |  |
+| `scripts/check-overflow.mjs` | 644 |  |
 | `scripts/check-rebrand.mjs` | 292 |  |
 | `scripts/check-route-permissions.mjs` | 136 |  |
 | `scripts/check-rules.mjs` | 148 |  |
@@ -153,10 +155,11 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 | `scripts/install-git-hooks.mjs` | 89 |  |
 | `scripts/lib/index-scan.mjs` | 906 | Scanners for the repository index. |
 | `scripts/lib/model-routing.mjs` | 363 | Which model and how much effort each kind of job in this repository deserves. |
+| `scripts/lib/render-harness.mjs` | 337 | Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — the shared infrastruct… |
 | `scripts/nested-borders.py` | 0 |  |
 | `scripts/sync-client.mjs` | 243 | scripts/sync-client.mjs |
 
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

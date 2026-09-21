@@ -3,7 +3,7 @@
 
 # Schema: `pos.prisma`
 
-4 models · 3 enums. Owned by module [`pos`](..\modules\pos.md).
+4 models · 3 enums. Owned by module [`pos`](../modules/pos.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -123,4 +123,4 @@ Indexes: `@@index([locationId])` · `@@index([status])`
 
 ---
 
-[← all schemas](..\cross\data-model.md) · [← index home](..\README.md)
+[← all schemas](../cross/data-model.md) · [← index home](../README.md)

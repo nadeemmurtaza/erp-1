@@ -759,4 +759,4 @@ All 228 tracked files in `apps/web`, by directory.
 
 ---
 
-[← all files](..\cross\files.md) · [L1 page](..\areas\web.md) · [← index home](..\README.md)
+[← all files](../cross/files.md) · [L1 page](../areas/web.md) · [← index home](../README.md)

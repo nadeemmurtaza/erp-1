@@ -50,7 +50,7 @@ All 449 tracked files in `apps/api`, by directory.
 | `payments.prisma` | prisma schema | 48 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
 | `pos.prisma` | prisma schema | 136 | The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's |
 | `production.prisma` | prisma schema | 96 | Production: bills of materials and work orders for variants made in-house |
-| `purchasing.prisma` | prisma schema | 226 |  |
+| `purchasing.prisma` | prisma schema | 226 | / ISO 3166-1 alpha-2, e.g. "PK", "CN". Null for a domestic supplier whose |
 | `replication.prisma` | prisma schema | 134 | The replication engine (RETAIL-ERP.md Part 6, WO-20.1: "log, cursors, |
 | `schema.prisma` | prisma schema | 20 | Datasource and generator only. Models live in one file per module — |
 | `stitching.prisma` | prisma schema | 202 | Stitching: the style options a customer picks, standalone stitching orders |
@@ -1130,4 +1130,4 @@ All 449 tracked files in `apps/api`, by directory.
 
 ---
 
-[← all files](..\cross\files.md) · [L1 page](..\areas\api.md) · [← index home](..\README.md)
+[← all files](../cross/files.md) · [L1 page](../areas/api.md) · [← index home](../README.md)

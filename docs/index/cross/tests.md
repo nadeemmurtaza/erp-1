@@ -18,13 +18,13 @@ such exemption.
 
 ## API modules with no spec file
 
-- [`addresses`](..\modules\addresses.md)
-- [`cart`](..\modules\cart.md)
-- [`reports`](..\modules\reports.md)
-- [`settings`](..\modules\settings.md)
-- [`stitching`](..\modules\stitching.md)
-- [`tax`](..\modules\tax.md)
-- [`tracking`](..\modules\tracking.md)
+- [`addresses`](../modules/addresses.md)
+- [`cart`](../modules/cart.md)
+- [`reports`](../modules/reports.md)
+- [`settings`](../modules/settings.md)
+- [`stitching`](../modules/stitching.md)
+- [`tax`](../modules/tax.md)
+- [`tracking`](../modules/tracking.md)
 
 ## End-to-end (15)
 
@@ -146,4 +146,4 @@ regression or an N+1.
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

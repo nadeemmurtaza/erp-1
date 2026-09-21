@@ -76,7 +76,7 @@ All paths relative to `apps/api/src/modules/production`.
 
 Enums: `WorkOrderSource` (3) · `WorkOrderStatus` (4)
 
-Full field lists: [cross/data-model.md](..\cross\data-model.md).
+Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 
 
@@ -132,4 +132,4 @@ check there before adding another.
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-53 files · 26,737 lines
+55 files · 27,834 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -12,21 +12,21 @@ on them.
 
 ## Go deeper
 
-- **Every exported symbol here:** [symbols/infra.md](..\symbols\infra.md)
-- **Every file here:** [files/infra.md](..\files\infra.md)
+- **Every exported symbol here:** [symbols/infra.md](../symbols/infra.md)
+- **Every file here:** [files/infra.md](../files/infra.md)
 
 ## Directory breakdown
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 20 | 18,667 | file, example, json, yaml |
+| `.` | 20 | 18,688 | file, example, json, yaml |
 | `.github` | 1 | 80 | doc |
-| `.github/workflows` | 2 | 186 | yaml |
+| `.github/workflows` | 2 | 255 | yaml |
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 16 | 6,134 | script, py |
-| `scripts/lib` | 2 | 1,269 | utility |
+| `scripts` | 17 | 6,804 | script, py |
+| `scripts/lib` | 3 | 1,606 | utility |
 
 
 ## Entry points
@@ -40,23 +40,23 @@ on them.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `pnpm-lock.yaml` | 17,493 | yaml |  |
-| `scripts/build-index.mjs` | 2,500 | script |  |
+| `pnpm-lock.yaml` | 17,512 | yaml |  |
+| `scripts/build-index.mjs` | 2,511 | script |  |
 | `scripts/lib/index-scan.mjs` | 906 | utility | Scanners for the repository index. |
+| `scripts/check-overflow.mjs` | 644 | script |  |
 | `scripts/check-module-boundaries.mjs` | 535 | script |  |
 | `scripts/idx.mjs` | 486 | script |  |
 | `scripts/check-contrast.mjs` | 425 | script |  |
+| `scripts/check-links.mjs` | 402 | script |  |
 | `scripts/check-email-dns.mjs` | 399 | script |  |
-| `scripts/check-links.mjs` | 387 | script |  |
 | `scripts/lib/model-routing.mjs` | 363 | utility | Which model and how much effort each kind of job in this repository deserves. |
+| `scripts/lib/render-harness.mjs` | 337 | utility | Boots the real stack (Postgres already running, api + web + pos as real servers) and driv… |
 | `scripts/check-rebrand.mjs` | 292 | script |  |
 | `scripts/sync-client.mjs` | 243 | script | scripts/sync-client.mjs |
+| `.github/workflows/ci.yml` | 164 | yaml |  |
 | `scripts/check.mjs` | 164 | script |  |
-| `scripts/check-rules.mjs` | 148 | script |  |
-| `deploy/backup.sh` | 141 | sh |  |
-| `scripts/check-env-templates.mjs` | 139 | script |  |
 
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

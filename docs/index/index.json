@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1145,
-    "lines": 176119,
+    "files": 1147,
+    "lines": 177239,
     "routes": 287,
     "controllers": 57,
     "models": 115,
@@ -975,147 +975,147 @@
       "family": "ITG",
       "name": "No dead end",
       "file": "docs/design/15-integrity.md",
-      "line": 35
+      "line": 37
     },
     {
       "id": "ITG-2",
       "family": "ITG",
       "name": "Every internal link resolves",
       "file": "docs/design/15-integrity.md",
-      "line": 43
+      "line": 45
     },
     {
       "id": "ITG-3",
       "family": "ITG",
       "name": "Every image has a source, dimensions, and a fallback",
       "file": "docs/design/15-integrity.md",
-      "line": 53
+      "line": 55
     },
     {
       "id": "ITG-4",
       "family": "ITG",
       "name": "Nothing overflows at any of the seven widths",
       "file": "docs/design/15-integrity.md",
-      "line": 66
+      "line": 68
     },
     {
       "id": "ITG-5",
       "family": "ITG",
       "name": "Every screen is reachable by clicking",
       "file": "docs/design/15-integrity.md",
-      "line": 79
+      "line": 81
     },
     {
       "id": "ITG-6",
       "family": "ITG",
       "name": "Every page renders with every module absent",
       "file": "docs/design/15-integrity.md",
-      "line": 87
+      "line": 89
     },
     {
       "id": "ITG-7",
       "family": "ITG",
       "name": "Every page renders at minimum privilege",
       "file": "docs/design/15-integrity.md",
-      "line": 96
+      "line": 98
     },
     {
       "id": "ITG-8",
       "family": "ITG",
       "name": "No layout depends on string length",
       "file": "docs/design/15-integrity.md",
-      "line": 103
+      "line": 105
     },
     {
       "id": "ITG-9",
       "family": "ITG",
       "name": "Every user-visible string is translatable",
       "file": "docs/design/15-integrity.md",
-      "line": 110
+      "line": 112
     },
     {
       "id": "ITG-10",
       "family": "ITG",
       "name": "Colour is never the only channel",
       "file": "docs/design/15-integrity.md",
-      "line": 118
+      "line": 120
     },
     {
       "id": "ITG-11",
       "family": "ITG",
       "name": "Contrast meets its floor",
       "file": "docs/design/15-integrity.md",
-      "line": 125
+      "line": 127
     },
     {
       "id": "ITG-12",
       "family": "ITG",
       "name": "Focus is never obscured, and never lost",
       "file": "docs/design/15-integrity.md",
-      "line": 134
+      "line": 136
     },
     {
       "id": "ITG-13",
       "family": "ITG",
       "name": "Nothing is reachable by hover alone",
       "file": "docs/design/15-integrity.md",
-      "line": 141
+      "line": 143
     },
     {
       "id": "ITG-14",
       "family": "ITG",
       "name": "A check that cannot run is a failing check",
       "file": "docs/design/15-integrity.md",
-      "line": 147
+      "line": 149
     }
   ],
   "areas": {
     "root": {
       "files": 42,
-      "lines": 9008,
-      "bytes": 658156,
+      "lines": 9024,
+      "bytes": 650690,
       "label": "repository root files"
     },
     "infra": {
-      "files": 53,
-      "lines": 26737,
-      "bytes": 1066593,
+      "files": 55,
+      "lines": 27834,
+      "bytes": 1091409,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
       "files": 449,
       "lines": 59691,
-      "bytes": 2196407,
+      "bytes": 2137795,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
       "files": 42,
       "lines": 5292,
-      "bytes": 267828,
+      "bytes": 262575,
       "label": "apps/mobile — Expo/React Native customer app"
     },
     "pos": {
       "files": 31,
       "lines": 1874,
-      "bytes": 64352,
+      "bytes": 62504,
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
       "files": 228,
       "lines": 33618,
-      "bytes": 1284857,
+      "bytes": 1251232,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 247,
-      "lines": 35413,
-      "bytes": 2231629,
+      "lines": 35420,
+      "bytes": 2217183,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 53,
       "lines": 4486,
-      "bytes": 149739,
+      "bytes": 145306,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -18026,10 +18026,10 @@
       "file": "apps/api/prisma/schema/catalog.prisma",
       "line": 277,
       "values": [
-        "BUTTON // \"S M L XL\"",
-        "DROPDOWN // long lists",
-        "SWATCH // colour or fabric image",
-        "TEXT // free entry, e.g. a monogram"
+        "BUTTON",
+        "DROPDOWN",
+        "SWATCH",
+        "TEXT"
       ]
     },
     {
@@ -18094,7 +18094,7 @@
       "line": 8,
       "values": [
         "PENDING",
-        "AWAITING_APPROVAL // bank transfer receipt uploaded, staff must approve",
+        "AWAITING_APPROVAL",
         "PAID",
         "FAILED",
         "REFUNDED",
@@ -18134,12 +18134,12 @@
       "file": "apps/api/prisma/schema/catalog.prisma",
       "line": 8,
       "values": [
-        "GOODS // physical goods (electronics, grocery, etc)",
-        "SERVICE // non-physical services",
-        "DIGITAL // software, licenses, digital downloads",
-        "STITCHED // legacy: ready to wear",
-        "UNSTITCHED // legacy: fabric, optionally stitched to measure",
-        "STITCHING_SERVICE // legacy: the tailoring itself, sold as a product"
+        "GOODS",
+        "SERVICE",
+        "DIGITAL",
+        "STITCHED",
+        "UNSTITCHED",
+        "STITCHING_SERVICE"
       ]
     },
     {
@@ -18286,20 +18286,20 @@
       "file": "apps/api/prisma/schema/inventory.prisma",
       "line": 5,
       "values": [
-        "PURCHASE_RECEIPT // goods received against a purchase order",
-        "SALE // order placed",
-        "CANCELLATION // order cancelled, stock returned to the shelf",
-        "RETURN // customer returned goods",
-        "ADJUSTMENT // manual correction by staff",
-        "DAMAGE // written off as damaged",
-        "COUNT // variance posted by a stock count",
-        "WRITE_OFF // lost, stolen, expired",
-        "PRODUCTION_CONSUMPTION // raw material consumed by a released WorkOrder",
-        "PRODUCTION_RECEIPT // finished goods credited by a completed WorkOrder",
-        "POS_SALE // till sale (RETAIL-ERP.md R11) — distinct from SALE so a ledger read can tell channel apart without joining Order",
-        "POS_OFFLINE_VARIANCE // InventoryService.postUnconditional() drove a variant negative (R5) — paired 1:1 with a StockVariance row",
-        "TRANSFER_OUT // WO-22.1: leaving a location (source on dispatch, or the in-transit bucket returning to source on cancel)",
-        "TRANSFER_IN // WO-22.1: arriving at a location (the in-transit bucket on dispatch, or the destination/source on receive/cancel)"
+        "PURCHASE_RECEIPT",
+        "SALE",
+        "CANCELLATION",
+        "RETURN",
+        "ADJUSTMENT",
+        "DAMAGE",
+        "COUNT",
+        "WRITE_OFF",
+        "PRODUCTION_CONSUMPTION",
+        "PRODUCTION_RECEIPT",
+        "POS_SALE",
+        "POS_OFFLINE_VARIANCE",
+        "TRANSFER_OUT",
+        "TRANSFER_IN"
       ]
     },
     {
@@ -19317,158 +19317,7 @@
     "missingTables": [],
     "missingColumns": [],
     "missingEnums": [],
-    "missingEnumValues": [
-      {
-        "enum": "OptionDisplay",
-        "value": "BUTTON // \"S M L XL\"",
-        "file": "apps/api/prisma/schema/catalog.prisma",
-        "line": 277
-      },
-      {
-        "enum": "OptionDisplay",
-        "value": "DROPDOWN // long lists",
-        "file": "apps/api/prisma/schema/catalog.prisma",
-        "line": 277
-      },
-      {
-        "enum": "OptionDisplay",
-        "value": "SWATCH // colour or fabric image",
-        "file": "apps/api/prisma/schema/catalog.prisma",
-        "line": 277
-      },
-      {
-        "enum": "OptionDisplay",
-        "value": "TEXT // free entry, e.g. a monogram",
-        "file": "apps/api/prisma/schema/catalog.prisma",
-        "line": 277
-      },
-      {
-        "enum": "PaymentStatus",
-        "value": "AWAITING_APPROVAL // bank transfer receipt uploaded, staff must approve",
-        "file": "apps/api/prisma/schema/payments.prisma",
-        "line": 8
-      },
-      {
-        "enum": "ProductKind",
-        "value": "GOODS // physical goods (electronics, grocery, etc)",
-        "file": "apps/api/prisma/schema/catalog.prisma",
-        "line": 8
-      },
-      {
-        "enum": "ProductKind",
-        "value": "SERVICE // non-physical services",
-        "file": "apps/api/prisma/schema/catalog.prisma",
-        "line": 8
-      },
-      {
-        "enum": "ProductKind",
-        "value": "DIGITAL // software, licenses, digital downloads",
-        "file": "apps/api/prisma/schema/catalog.prisma",
-        "line": 8
-      },
-      {
-        "enum": "ProductKind",
-        "value": "STITCHED // legacy: ready to wear",
-        "file": "apps/api/prisma/schema/catalog.prisma",
-        "line": 8
-      },
-      {
-        "enum": "ProductKind",
-        "value": "UNSTITCHED // legacy: fabric, optionally stitched to measure",
-        "file": "apps/api/prisma/schema/catalog.prisma",
-        "line": 8
-      },
-      {
-        "enum": "ProductKind",
-        "value": "STITCHING_SERVICE // legacy: the tailoring itself, sold as a product",
-        "file": "apps/api/prisma/schema/catalog.prisma",
-        "line": 8
-      },
-      {
-        "enum": "StockMovementReason",
-        "value": "PURCHASE_RECEIPT // goods received against a purchase order",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 5
-      },
-      {
-        "enum": "StockMovementReason",
-        "value": "SALE // order placed",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 5
-      },
-      {
-        "enum": "StockMovementReason",
-        "value": "CANCELLATION // order cancelled, stock returned to the shelf",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 5
-      },
-      {
-        "enum": "StockMovementReason",
-        "value": "RETURN // customer returned goods",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 5
-      },
-      {
-        "enum": "StockMovementReason",
-        "value": "ADJUSTMENT // manual correction by staff",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 5
-      },
-      {
-        "enum": "StockMovementReason",
-        "value": "DAMAGE // written off as damaged",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 5
-      },
-      {
-        "enum": "StockMovementReason",
-        "value": "COUNT // variance posted by a stock count",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 5
-      },
-      {
-        "enum": "StockMovementReason",
-        "value": "WRITE_OFF // lost, stolen, expired",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 5
-      },
-      {
-        "enum": "StockMovementReason",
-        "value": "PRODUCTION_CONSUMPTION // raw material consumed by a released WorkOrder",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 5
-      },
-      {
-        "enum": "StockMovementReason",
-        "value": "PRODUCTION_RECEIPT // finished goods credited by a completed WorkOrder",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 5
-      },
-      {
-        "enum": "StockMovementReason",
-        "value": "POS_SALE // till sale (RETAIL-ERP.md R11) — distinct from SALE so a ledger read can tell channel apart without joining Order",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 5
-      },
-      {
-        "enum": "StockMovementReason",
-        "value": "POS_OFFLINE_VARIANCE // InventoryService.postUnconditional() drove a variant negative (R5) — paired 1:1 with a StockVariance row",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 5
-      },
-      {
-        "enum": "StockMovementReason",
-        "value": "TRANSFER_OUT // WO-22.1: leaving a location (source on dispatch, or the in-transit bucket returning to source on cancel)",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 5
-      },
-      {
-        "enum": "StockMovementReason",
-        "value": "TRANSFER_IN // WO-22.1: arriving at a location (the in-transit bucket on dispatch, or the destination/source on receive/cancel)",
-        "file": "apps/api/prisma/schema/inventory.prisma",
-        "line": 5
-      }
-    ]
+    "missingEnumValues": []
   },
   "screens": [
     {
@@ -20928,6 +20777,12 @@
     {
       "pkg": "yaseenecom",
       "file": "package.json",
+      "name": "check:overflow",
+      "cmd": "node scripts/check-overflow.mjs"
+    },
+    {
+      "pkg": "yaseenecom",
+      "file": "package.json",
       "name": "check:rules",
       "cmd": "node scripts/check-rules.mjs"
     },
@@ -22300,7 +22155,7 @@
       "area": "root",
       "kind": "json",
       "lines": 24,
-      "bytes": 539,
+      "bytes": 516,
       "doc": "",
       "symbols": []
     },
@@ -22309,7 +22164,7 @@
       "area": "root",
       "kind": "doc",
       "lines": 20,
-      "bytes": 682,
+      "bytes": 663,
       "doc": "",
       "symbols": []
     },
@@ -22318,7 +22173,7 @@
       "area": "root",
       "kind": "doc",
       "lines": 19,
-      "bytes": 817,
+      "bytes": 799,
       "doc": "",
       "symbols": []
     },
@@ -22327,7 +22182,7 @@
       "area": "root",
       "kind": "doc",
       "lines": 26,
-      "bytes": 768,
+      "bytes": 743,
       "doc": "",
       "symbols": []
     },
@@ -22336,7 +22191,7 @@
       "area": "root",
       "kind": "doc",
       "lines": 23,
-      "bytes": 661,
+      "bytes": 639,
       "doc": "",
       "symbols": []
     },
@@ -22345,7 +22200,7 @@
       "area": "root",
       "kind": "doc",
       "lines": 136,
-      "bytes": 7347,
+      "bytes": 7212,
       "doc": "",
       "symbols": []
     },
@@ -22354,7 +22209,7 @@
       "area": "root",
       "kind": "doc",
       "lines": 42,
-      "bytes": 4478,
+      "bytes": 4437,
       "doc": "",
       "symbols": []
     },
@@ -22363,7 +22218,7 @@
       "area": "root",
       "kind": "doc",
       "lines": 20,
-      "bytes": 757,
+      "bytes": 738,
       "doc": "",
       "symbols": []
     },
@@ -22372,7 +22227,7 @@
       "area": "root",
       "kind": "doc",
       "lines": 31,
-      "bytes": 1280,
+      "bytes": 1250,
       "doc": "",
       "symbols": []
     },
@@ -22381,7 +22236,7 @@
       "area": "root",
       "kind": "doc",
       "lines": 20,
-      "bytes": 765,
+      "bytes": 746,
       "doc": "",
       "symbols": []
     },
@@ -22390,7 +22245,7 @@
       "area": "root",
       "kind": "doc",
       "lines": 151,
-      "bytes": 6975,
+      "bytes": 6825,
       "doc": "",
       "symbols": []
     },
@@ -22399,7 +22254,7 @@
       "area": "root",
       "kind": "json",
       "lines": 25,
-      "bytes": 458,
+      "bytes": 434,
       "doc": "",
       "symbols": []
     },
@@ -22426,7 +22281,7 @@
       "area": "infra",
       "kind": "file",
       "lines": 0,
-      "bytes": 1151,
+      "bytes": 1105,
       "doc": "",
       "symbols": []
     },
@@ -22435,7 +22290,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 99,
-      "bytes": 5151,
+      "bytes": 5053,
       "doc": "",
       "symbols": []
     },
@@ -22444,7 +22299,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 125,
-      "bytes": 6028,
+      "bytes": 5904,
       "doc": "",
       "symbols": []
     },
@@ -22453,7 +22308,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 113,
-      "bytes": 5158,
+      "bytes": 5046,
       "doc": "",
       "symbols": []
     },
@@ -22462,7 +22317,7 @@
       "area": "root",
       "kind": "file",
       "lines": 0,
-      "bytes": 1082,
+      "bytes": 1063,
       "doc": "",
       "symbols": []
     },
@@ -22497,8 +22352,8 @@
       "path": ".github/workflows/ci.yml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 95,
-      "bytes": 3054,
+      "lines": 164,
+      "bytes": 5678,
       "doc": "",
       "symbols": []
     },
@@ -22507,7 +22362,7 @@
       "area": "infra",
       "kind": "yaml",
       "lines": 91,
-      "bytes": 2768,
+      "bytes": 2678,
       "doc": "",
       "symbols": []
     },
@@ -22516,7 +22371,7 @@
       "area": "infra",
       "kind": "file",
       "lines": 53,
-      "bytes": 1065,
+      "bytes": 1013,
       "doc": "",
       "symbols": []
     },
@@ -22534,7 +22389,7 @@
       "area": "root",
       "kind": "file",
       "lines": 0,
-      "bytes": 634,
+      "bytes": 617,
       "doc": "",
       "symbols": []
     },
@@ -22560,8 +22415,8 @@
       "path": "CLAUDE.md",
       "area": "root",
       "kind": "doc",
-      "lines": 875,
-      "bytes": 46029,
+      "lines": 890,
+      "bytes": 45842,
       "doc": "",
       "symbols": []
     },
@@ -22570,7 +22425,7 @@
       "area": "root",
       "kind": "doc",
       "lines": 127,
-      "bytes": 4612,
+      "bytes": 4486,
       "doc": "",
       "symbols": []
     },
@@ -22579,7 +22434,7 @@
       "area": "infra",
       "kind": "file",
       "lines": 63,
-      "bytes": 2328,
+      "bytes": 2266,
       "doc": "",
       "symbols": []
     },
@@ -22588,7 +22443,7 @@
       "area": "root",
       "kind": "doc",
       "lines": 492,
-      "bytes": 20843,
+      "bytes": 20352,
       "doc": "",
       "symbols": []
     },
@@ -22605,8 +22460,8 @@
       "path": "README.md",
       "area": "root",
       "kind": "doc",
-      "lines": 348,
-      "bytes": 22363,
+      "lines": 349,
+      "bytes": 22167,
       "doc": "",
       "symbols": []
     },
@@ -22615,7 +22470,7 @@
       "area": "api",
       "kind": "file",
       "lines": 77,
-      "bytes": 4379,
+      "bytes": 4303,
       "doc": "",
       "symbols": []
     },
@@ -22624,7 +22479,7 @@
       "area": "api",
       "kind": "script",
       "lines": 36,
-      "bytes": 1276,
+      "bytes": 1241,
       "doc": "Nest resolves constructor parameter types at runtime through decorator",
       "symbols": []
     },
@@ -22633,7 +22488,7 @@
       "area": "api",
       "kind": "script",
       "lines": 26,
-      "bytes": 985,
+      "bytes": 960,
       "doc": "@type {import('jest').Config}",
       "symbols": []
     },
@@ -22642,7 +22497,7 @@
       "area": "api",
       "kind": "json",
       "lines": 18,
-      "bytes": 386,
+      "bytes": 369,
       "doc": "",
       "symbols": []
     },
@@ -22651,7 +22506,7 @@
       "area": "api",
       "kind": "json",
       "lines": 76,
-      "bytes": 2467,
+      "bytes": 2392,
       "doc": "",
       "symbols": []
     },
@@ -22660,7 +22515,7 @@
       "area": "api",
       "kind": "module",
       "lines": 19,
-      "bytes": 728,
+      "bytes": 710,
       "doc": "A Prisma config file switches OFF Prisma's automatic .env loading, so we do",
       "symbols": []
     },
@@ -22669,7 +22524,7 @@
       "area": "api",
       "kind": "module",
       "lines": 69,
-      "bytes": 2374,
+      "bytes": 2306,
       "doc": "",
       "symbols": [
         {
@@ -22684,7 +22539,7 @@
       "area": "api",
       "kind": "module",
       "lines": 170,
-      "bytes": 5878,
+      "bytes": 5709,
       "doc": "",
       "symbols": [
         {
@@ -22699,7 +22554,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 222,
-      "bytes": 9886,
+      "bytes": 9665,
       "doc": "The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a",
       "symbols": []
     },
@@ -22708,7 +22563,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 73,
-      "bytes": 3128,
+      "bytes": 3056,
       "doc": "Cart. Guest carts are keyed by an opaque token held in a cookie and merged",
       "symbols": []
     },
@@ -22717,7 +22572,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 361,
-      "bytes": 12923,
+      "bytes": 12563,
       "doc": "Catalog: categories, products, variants, images.",
       "symbols": []
     },
@@ -22726,7 +22581,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 420,
-      "bytes": 15530,
+      "bytes": 15111,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -22735,7 +22590,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 239,
-      "bytes": 8469,
+      "bytes": 8231,
       "doc": "CRM: one customer record, whatever door the customer came in through.",
       "symbols": []
     },
@@ -22744,7 +22599,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 40,
-      "bytes": 1540,
+      "bytes": 1501,
       "doc": "/ Tracks a User's identity verification against nID (Newax's external",
       "symbols": []
     },
@@ -22753,7 +22608,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 231,
-      "bytes": 9268,
+      "bytes": 9038,
       "doc": "Inventory: the stock ledger. Every change to ProductVariant.stock has",
       "symbols": []
     },
@@ -22762,7 +22617,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 88,
-      "bytes": 2793,
+      "bytes": 2706,
       "doc": "Trading-partner invoices and quotes (WO-18.3's remaining \"forth\"",
       "symbols": []
     },
@@ -22771,7 +22626,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 107,
-      "bytes": 3917,
+      "bytes": 3811,
       "doc": "Measurements: garment types, their measurement fields, and saved customer",
       "symbols": []
     },
@@ -22780,7 +22635,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 1076,
-      "bytes": 37587,
+      "bytes": 36512,
       "doc": "",
       "symbols": []
     },
@@ -22789,7 +22644,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 26,
-      "bytes": 855,
+      "bytes": 830,
       "doc": "",
       "symbols": []
     },
@@ -22798,7 +22653,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 21,
-      "bytes": 742,
+      "bytes": 722,
       "doc": "",
       "symbols": []
     },
@@ -22807,7 +22662,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 13,
-      "bytes": 532,
+      "bytes": 520,
       "doc": "",
       "symbols": []
     },
@@ -22816,7 +22671,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 33,
-      "bytes": 1214,
+      "bytes": 1182,
       "doc": "",
       "symbols": []
     },
@@ -22825,7 +22680,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 23,
-      "bytes": 877,
+      "bytes": 855,
       "doc": "",
       "symbols": []
     },
@@ -22834,7 +22689,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 19,
-      "bytes": 575,
+      "bytes": 557,
       "doc": "",
       "symbols": []
     },
@@ -22843,7 +22698,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 33,
-      "bytes": 1043,
+      "bytes": 1011,
       "doc": "",
       "symbols": []
     },
@@ -22852,7 +22707,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 26,
-      "bytes": 980,
+      "bytes": 955,
       "doc": "",
       "symbols": []
     },
@@ -22861,7 +22716,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 35,
-      "bytes": 1735,
+      "bytes": 1701,
       "doc": "",
       "symbols": []
     },
@@ -22870,7 +22725,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 24,
-      "bytes": 917,
+      "bytes": 894,
       "doc": "",
       "symbols": []
     },
@@ -22879,7 +22734,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 51,
-      "bytes": 1844,
+      "bytes": 1794,
       "doc": "",
       "symbols": []
     },
@@ -22888,7 +22743,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 158,
-      "bytes": 6224,
+      "bytes": 6067,
       "doc": "",
       "symbols": []
     },
@@ -22897,7 +22752,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 16,
-      "bytes": 599,
+      "bytes": 584,
       "doc": "",
       "symbols": []
     },
@@ -22906,7 +22761,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 5,
-      "bytes": 222,
+      "bytes": 218,
       "doc": "",
       "symbols": []
     },
@@ -22915,7 +22770,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 55,
-      "bytes": 2041,
+      "bytes": 1987,
       "doc": "",
       "symbols": []
     },
@@ -22924,7 +22779,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 95,
-      "bytes": 3506,
+      "bytes": 3412,
       "doc": "",
       "symbols": []
     },
@@ -22933,7 +22788,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 46,
-      "bytes": 1566,
+      "bytes": 1521,
       "doc": "",
       "symbols": []
     },
@@ -22942,7 +22797,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 3,
-      "bytes": 91,
+      "bytes": 89,
       "doc": "",
       "symbols": []
     },
@@ -22951,7 +22806,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 63,
-      "bytes": 2695,
+      "bytes": 2633,
       "doc": "",
       "symbols": []
     },
@@ -22960,7 +22815,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 103,
-      "bytes": 3864,
+      "bytes": 3762,
       "doc": "",
       "symbols": []
     },
@@ -22969,7 +22824,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 11,
-      "bytes": 293,
+      "bytes": 283,
       "doc": "",
       "symbols": []
     },
@@ -22978,7 +22833,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 51,
-      "bytes": 1810,
+      "bytes": 1760,
       "doc": "",
       "symbols": []
     },
@@ -22987,7 +22842,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 34,
-      "bytes": 1158,
+      "bytes": 1125,
       "doc": "",
       "symbols": []
     },
@@ -22996,7 +22851,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 44,
-      "bytes": 1619,
+      "bytes": 1576,
       "doc": "",
       "symbols": []
     },
@@ -23005,7 +22860,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 8,
-      "bytes": 195,
+      "bytes": 188,
       "doc": "",
       "symbols": []
     },
@@ -23014,7 +22869,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 38,
-      "bytes": 1638,
+      "bytes": 1601,
       "doc": "",
       "symbols": []
     },
@@ -23023,7 +22878,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 15,
-      "bytes": 832,
+      "bytes": 818,
       "doc": "",
       "symbols": []
     },
@@ -23032,7 +22887,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 36,
-      "bytes": 1346,
+      "bytes": 1311,
       "doc": "",
       "symbols": []
     },
@@ -23041,7 +22896,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 90,
-      "bytes": 3920,
+      "bytes": 3831,
       "doc": "",
       "symbols": []
     },
@@ -23050,7 +22905,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 30,
-      "bytes": 787,
+      "bytes": 758,
       "doc": "",
       "symbols": []
     },
@@ -23059,7 +22914,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 98,
-      "bytes": 3677,
+      "bytes": 3580,
       "doc": "",
       "symbols": []
     },
@@ -23068,7 +22923,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 266,
-      "bytes": 9765,
+      "bytes": 9500,
       "doc": "",
       "symbols": []
     },
@@ -23077,7 +22932,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 61,
-      "bytes": 2124,
+      "bytes": 2064,
       "doc": "",
       "symbols": []
     },
@@ -23086,7 +22941,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 18,
-      "bytes": 648,
+      "bytes": 631,
       "doc": "",
       "symbols": []
     },
@@ -23095,7 +22950,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 36,
-      "bytes": 1253,
+      "bytes": 1218,
       "doc": "",
       "symbols": []
     },
@@ -23104,7 +22959,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 26,
-      "bytes": 948,
+      "bytes": 923,
       "doc": "",
       "symbols": []
     },
@@ -23113,7 +22968,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 173,
-      "bytes": 6143,
+      "bytes": 5971,
       "doc": "",
       "symbols": []
     },
@@ -23122,7 +22977,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 122,
-      "bytes": 3726,
+      "bytes": 3605,
       "doc": "",
       "symbols": []
     },
@@ -23131,7 +22986,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 3,
-      "bytes": 81,
+      "bytes": 79,
       "doc": "",
       "symbols": []
     },
@@ -23140,7 +22995,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 74,
-      "bytes": 2293,
+      "bytes": 2220,
       "doc": "",
       "symbols": []
     },
@@ -23149,7 +23004,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 20,
-      "bytes": 653,
+      "bytes": 634,
       "doc": "",
       "symbols": []
     },
@@ -23158,7 +23013,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 6,
-      "bytes": 196,
+      "bytes": 191,
       "doc": "",
       "symbols": []
     },
@@ -23167,7 +23022,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 30,
-      "bytes": 912,
+      "bytes": 883,
       "doc": "",
       "symbols": []
     },
@@ -23176,7 +23031,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 49,
-      "bytes": 1619,
+      "bytes": 1571,
       "doc": "",
       "symbols": []
     },
@@ -23185,7 +23040,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 19,
-      "bytes": 1007,
+      "bytes": 989,
       "doc": "",
       "symbols": []
     },
@@ -23194,7 +23049,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 15,
-      "bytes": 692,
+      "bytes": 678,
       "doc": "",
       "symbols": []
     },
@@ -23203,7 +23058,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 50,
-      "bytes": 1972,
+      "bytes": 1923,
       "doc": "",
       "symbols": []
     },
@@ -23212,7 +23067,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 51,
-      "bytes": 1918,
+      "bytes": 1868,
       "doc": "",
       "symbols": []
     },
@@ -23221,7 +23076,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 80,
-      "bytes": 2984,
+      "bytes": 2905,
       "doc": "",
       "symbols": []
     },
@@ -23230,7 +23085,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 17,
-      "bytes": 962,
+      "bytes": 946,
       "doc": "",
       "symbols": []
     },
@@ -23239,7 +23094,7 @@
       "area": "api",
       "kind": "migration",
       "lines": 75,
-      "bytes": 3352,
+      "bytes": 3278,
       "doc": "",
       "symbols": []
     },
@@ -23248,7 +23103,7 @@
       "area": "api",
       "kind": "toml",
       "lines": 4,
-      "bytes": 131,
+      "bytes": 128,
       "doc": "",
       "symbols": []
     },
@@ -23257,7 +23112,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 256,
-      "bytes": 10129,
+      "bytes": 9874,
       "doc": "Orders and shipments.",
       "symbols": []
     },
@@ -23266,7 +23121,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 169,
-      "bytes": 8041,
+      "bytes": 7873,
       "doc": "The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier",
       "symbols": []
     },
@@ -23275,7 +23130,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 52,
-      "bytes": 1505,
+      "bytes": 1454,
       "doc": "Parties: the permanent counterparty profile. One canonical record per",
       "symbols": []
     },
@@ -23284,7 +23139,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 48,
-      "bytes": 1465,
+      "bytes": 1418,
       "doc": "Payments. `provider` is a plain string key, not an enum, so a new gateway is",
       "symbols": []
     },
@@ -23293,7 +23148,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 136,
-      "bytes": 5644,
+      "bytes": 5509,
       "doc": "The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's",
       "symbols": []
     },
@@ -23302,7 +23157,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 96,
-      "bytes": 3651,
+      "bytes": 3556,
       "doc": "Production: bills of materials and work orders for variants made in-house",
       "symbols": []
     },
@@ -23311,8 +23166,8 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 226,
-      "bytes": 8938,
-      "doc": "",
+      "bytes": 8713,
+      "doc": "/ ISO 3166-1 alpha-2, e.g. \"PK\", \"CN\". Null for a domestic supplier whose",
       "symbols": []
     },
     {
@@ -23320,7 +23175,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 134,
-      "bytes": 5863,
+      "bytes": 5730,
       "doc": "The replication engine (RETAIL-ERP.md Part 6, WO-20.1: \"log, cursors,",
       "symbols": []
     },
@@ -23329,7 +23184,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 20,
-      "bytes": 732,
+      "bytes": 713,
       "doc": "Datasource and generator only. Models live in one file per module —",
       "symbols": []
     },
@@ -23338,7 +23193,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 202,
-      "bytes": 7050,
+      "bytes": 6849,
       "doc": "Stitching: the style options a customer picks, standalone stitching orders",
       "symbols": []
     },
@@ -23347,7 +23202,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 38,
-      "bytes": 1364,
+      "bytes": 1327,
       "doc": "Tax: rate/class definitions and the pricing-mode setting. Universal",
       "symbols": []
     },
@@ -23356,7 +23211,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 95,
-      "bytes": 4043,
+      "bytes": 3949,
       "doc": "The trading-partner network (18-trading-partner-network.md, WO-18) — lets",
       "symbols": []
     },
@@ -23365,7 +23220,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 167,
-      "bytes": 7460,
+      "bytes": 7294,
       "doc": "Inter-branch stock transfers (RETAIL-ERP.md R4, Tranche 5). Off by default",
       "symbols": []
     },
@@ -23374,7 +23229,7 @@
       "area": "api",
       "kind": "module",
       "lines": 2970,
-      "bytes": 104157,
+      "bytes": 101188,
       "doc": "",
       "symbols": []
     },
@@ -23383,7 +23238,7 @@
       "area": "api",
       "kind": "json",
       "lines": 548,
-      "bytes": 21638,
+      "bytes": 21091,
       "doc": "",
       "symbols": []
     },
@@ -23392,7 +23247,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 30,
-      "bytes": 1244,
+      "bytes": 1215,
       "doc": "",
       "symbols": [
         {
@@ -23407,7 +23262,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 10,
-      "bytes": 214,
+      "bytes": 205,
       "doc": "",
       "symbols": [
         {
@@ -23422,7 +23277,7 @@
       "area": "api",
       "kind": "service",
       "lines": 49,
-      "bytes": 1467,
+      "bytes": 1419,
       "doc": "",
       "symbols": [
         {
@@ -23442,7 +23297,7 @@
       "area": "api",
       "kind": "module",
       "lines": 62,
-      "bytes": 2404,
+      "bytes": 2343,
       "doc": "",
       "symbols": [
         {
@@ -23502,7 +23357,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 197,
-      "bytes": 6236,
+      "bytes": 6040,
       "doc": "",
       "symbols": [
         {
@@ -23517,7 +23372,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 19,
-      "bytes": 815,
+      "bytes": 797,
       "doc": "",
       "symbols": [
         {
@@ -23532,7 +23387,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 24,
-      "bytes": 768,
+      "bytes": 745,
       "doc": "",
       "symbols": []
     },
@@ -23541,7 +23396,7 @@
       "area": "api",
       "kind": "service",
       "lines": 429,
-      "bytes": 15051,
+      "bytes": 14623,
       "doc": "",
       "symbols": [
         {
@@ -23581,7 +23436,7 @@
       "area": "api",
       "kind": "module",
       "lines": 16,
-      "bytes": 709,
+      "bytes": 694,
       "doc": "",
       "symbols": [
         {
@@ -23596,7 +23451,7 @@
       "area": "api",
       "kind": "module",
       "lines": 53,
-      "bytes": 2151,
+      "bytes": 2099,
       "doc": "",
       "symbols": [
         {
@@ -23626,7 +23481,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 126,
-      "bytes": 2876,
+      "bytes": 2751,
       "doc": "",
       "symbols": [
         {
@@ -23676,7 +23531,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 44,
-      "bytes": 965,
+      "bytes": 922,
       "doc": "",
       "symbols": [
         {
@@ -23696,7 +23551,7 @@
       "area": "api",
       "kind": "module",
       "lines": 102,
-      "bytes": 3220,
+      "bytes": 3119,
       "doc": "",
       "symbols": [
         {
@@ -23716,7 +23571,7 @@
       "area": "api",
       "kind": "auth strategy",
       "lines": 44,
-      "bytes": 1717,
+      "bytes": 1674,
       "doc": "",
       "symbols": [
         {
@@ -23731,7 +23586,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 49,
-      "bytes": 1581,
+      "bytes": 1533,
       "doc": "",
       "symbols": []
     },
@@ -23740,7 +23595,7 @@
       "area": "api",
       "kind": "guard",
       "lines": 24,
-      "bytes": 840,
+      "bytes": 817,
       "doc": "",
       "symbols": [
         {
@@ -23760,7 +23615,7 @@
       "area": "api",
       "kind": "module",
       "lines": 9,
-      "bytes": 329,
+      "bytes": 321,
       "doc": "",
       "symbols": [
         {
@@ -23780,7 +23635,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 85,
-      "bytes": 3421,
+      "bytes": 3337,
       "doc": "",
       "symbols": []
     },
@@ -23789,7 +23644,7 @@
       "area": "api",
       "kind": "service",
       "lines": 64,
-      "bytes": 2311,
+      "bytes": 2248,
       "doc": "",
       "symbols": [
         {
@@ -23809,7 +23664,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 44,
-      "bytes": 1624,
+      "bytes": 1581,
       "doc": "",
       "symbols": [
         {
@@ -23824,7 +23679,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 236,
-      "bytes": 9437,
+      "bytes": 9202,
       "doc": "",
       "symbols": []
     },
@@ -23833,7 +23688,7 @@
       "area": "api",
       "kind": "service",
       "lines": 301,
-      "bytes": 12019,
+      "bytes": 11719,
       "doc": "",
       "symbols": [
         {
@@ -23863,7 +23718,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 151,
-      "bytes": 5384,
+      "bytes": 5234,
       "doc": "",
       "symbols": []
     },
@@ -23872,7 +23727,7 @@
       "area": "api",
       "kind": "guard",
       "lines": 129,
-      "bytes": 5974,
+      "bytes": 5846,
       "doc": "",
       "symbols": [
         {
@@ -23917,7 +23772,7 @@
       "area": "api",
       "kind": "registry",
       "lines": 59,
-      "bytes": 2286,
+      "bytes": 2228,
       "doc": "",
       "symbols": [
         {
@@ -23947,7 +23802,7 @@
       "area": "api",
       "kind": "module",
       "lines": 72,
-      "bytes": 2610,
+      "bytes": 2539,
       "doc": "",
       "symbols": [
         {
@@ -23982,7 +23837,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 77,
-      "bytes": 1813,
+      "bytes": 1737,
       "doc": "",
       "symbols": [
         {
@@ -24012,7 +23867,7 @@
       "area": "api",
       "kind": "module",
       "lines": 136,
-      "bytes": 3984,
+      "bytes": 3849,
       "doc": "",
       "symbols": [
         {
@@ -24027,7 +23882,7 @@
       "area": "api",
       "kind": "service",
       "lines": 64,
-      "bytes": 1836,
+      "bytes": 1773,
       "doc": "",
       "symbols": [
         {
@@ -24042,7 +23897,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 23,
-      "bytes": 698,
+      "bytes": 676,
       "doc": "",
       "symbols": [
         {
@@ -24057,7 +23912,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 154,
-      "bytes": 5333,
+      "bytes": 5180,
       "doc": "",
       "symbols": []
     },
@@ -24066,7 +23921,7 @@
       "area": "api",
       "kind": "config",
       "lines": 250,
-      "bytes": 10859,
+      "bytes": 10610,
       "doc": "",
       "symbols": [
         {
@@ -24091,7 +23946,7 @@
       "area": "api",
       "kind": "config",
       "lines": 14,
-      "bytes": 576,
+      "bytes": 563,
       "doc": "",
       "symbols": []
     },
@@ -24100,7 +23955,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 41,
-      "bytes": 1823,
+      "bytes": 1783,
       "doc": "",
       "symbols": [
         {
@@ -24115,7 +23970,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 39,
-      "bytes": 1370,
+      "bytes": 1332,
       "doc": "",
       "symbols": [
         {
@@ -24130,7 +23985,7 @@
       "area": "api",
       "kind": "module",
       "lines": 317,
-      "bytes": 11432,
+      "bytes": 11116,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -24280,7 +24135,7 @@
       "area": "api",
       "kind": "service",
       "lines": 53,
-      "bytes": 1919,
+      "bytes": 1867,
       "doc": "",
       "symbols": [
         {
@@ -24300,7 +24155,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 19,
-      "bytes": 575,
+      "bytes": 557,
       "doc": "",
       "symbols": [
         {
@@ -24315,7 +24170,7 @@
       "area": "api",
       "kind": "module",
       "lines": 16,
-      "bytes": 599,
+      "bytes": 584,
       "doc": "",
       "symbols": [
         {
@@ -24330,7 +24185,7 @@
       "area": "api",
       "kind": "dispatcher",
       "lines": 120,
-      "bytes": 3675,
+      "bytes": 3556,
       "doc": "",
       "symbols": [
         {
@@ -24345,7 +24200,7 @@
       "area": "api",
       "kind": "registry",
       "lines": 64,
-      "bytes": 2941,
+      "bytes": 2878,
       "doc": "",
       "symbols": [
         {
@@ -24365,7 +24220,7 @@
       "area": "api",
       "kind": "registry",
       "lines": 45,
-      "bytes": 1970,
+      "bytes": 1926,
       "doc": "",
       "symbols": [
         {
@@ -24385,7 +24240,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 32,
-      "bytes": 1226,
+      "bytes": 1195,
       "doc": "",
       "symbols": [
         {
@@ -24400,7 +24255,7 @@
       "area": "api",
       "kind": "registry",
       "lines": 71,
-      "bytes": 3041,
+      "bytes": 2971,
       "doc": "",
       "symbols": [
         {
@@ -24425,7 +24280,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 52,
-      "bytes": 1723,
+      "bytes": 1672,
       "doc": "",
       "symbols": [
         {
@@ -24440,7 +24295,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 6,
-      "bytes": 177,
+      "bytes": 172,
       "doc": "",
       "symbols": [
         {
@@ -24455,7 +24310,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 85,
-      "bytes": 2726,
+      "bytes": 2642,
       "doc": "",
       "symbols": [
         {
@@ -24475,7 +24330,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 100,
-      "bytes": 3092,
+      "bytes": 2993,
       "doc": "",
       "symbols": [
         {
@@ -24490,7 +24345,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 199,
-      "bytes": 3768,
+      "bytes": 3570,
       "doc": "",
       "symbols": [
         {
@@ -24540,7 +24395,7 @@
       "area": "api",
       "kind": "service",
       "lines": 389,
-      "bytes": 13909,
+      "bytes": 13521,
       "doc": "",
       "symbols": [
         {
@@ -24580,7 +24435,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 43,
-      "bytes": 1424,
+      "bytes": 1382,
       "doc": "",
       "symbols": []
     },
@@ -24589,7 +24444,7 @@
       "area": "api",
       "kind": "channel",
       "lines": 337,
-      "bytes": 14133,
+      "bytes": 13797,
       "doc": "",
       "symbols": [
         {
@@ -24609,7 +24464,7 @@
       "area": "api",
       "kind": "module",
       "lines": 342,
-      "bytes": 13572,
+      "bytes": 13231,
       "doc": "Everything the admin \"manage templates\" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which category it belongs to, whether something in the codebase actually sends it automatically (and what), and…",
       "symbols": [
         {
@@ -24639,7 +24494,7 @@
       "area": "api",
       "kind": "module",
       "lines": 557,
-      "bytes": 23654,
+      "bytes": 23098,
       "doc": "",
       "symbols": [
         {
@@ -24659,7 +24514,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 59,
-      "bytes": 2570,
+      "bytes": 2512,
       "doc": "",
       "symbols": [
         {
@@ -24674,7 +24529,7 @@
       "area": "api",
       "kind": "module",
       "lines": 414,
-      "bytes": 16219,
+      "bytes": 15806,
       "doc": "",
       "symbols": [
         {
@@ -24779,7 +24634,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 365,
-      "bytes": 13008,
+      "bytes": 12644,
       "doc": "",
       "symbols": []
     },
@@ -24788,7 +24643,7 @@
       "area": "api",
       "kind": "module",
       "lines": 1005,
-      "bytes": 29290,
+      "bytes": 28286,
       "doc": "",
       "symbols": [
         {
@@ -24903,7 +24758,7 @@
       "area": "api",
       "kind": "channel",
       "lines": 89,
-      "bytes": 3111,
+      "bytes": 3023,
       "doc": "",
       "symbols": [
         {
@@ -24918,7 +24773,7 @@
       "area": "api",
       "kind": "channel",
       "lines": 26,
-      "bytes": 934,
+      "bytes": 909,
       "doc": "",
       "symbols": [
         {
@@ -24933,7 +24788,7 @@
       "area": "api",
       "kind": "module",
       "lines": 38,
-      "bytes": 1304,
+      "bytes": 1267,
       "doc": "Extension point: outbound customer messaging.",
       "symbols": [
         {
@@ -24958,7 +24813,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 30,
-      "bytes": 1103,
+      "bytes": 1074,
       "doc": "",
       "symbols": [
         {
@@ -24973,7 +24828,7 @@
       "area": "api",
       "kind": "service",
       "lines": 59,
-      "bytes": 1932,
+      "bytes": 1874,
       "doc": "",
       "symbols": [
         {
@@ -24988,7 +24843,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 41,
-      "bytes": 1656,
+      "bytes": 1616,
       "doc": "",
       "symbols": [
         {
@@ -25003,7 +24858,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 15,
-      "bytes": 282,
+      "bytes": 268,
       "doc": "",
       "symbols": [
         {
@@ -25018,7 +24873,7 @@
       "area": "api",
       "kind": "module",
       "lines": 11,
-      "bytes": 366,
+      "bytes": 356,
       "doc": "Single import point for the generated Prisma client.",
       "symbols": []
     },
@@ -25027,7 +24882,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 66,
-      "bytes": 2304,
+      "bytes": 2239,
       "doc": "",
       "symbols": []
     },
@@ -25036,7 +24891,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 10,
-      "bytes": 219,
+      "bytes": 210,
       "doc": "",
       "symbols": [
         {
@@ -25051,7 +24906,7 @@
       "area": "api",
       "kind": "service",
       "lines": 46,
-      "bytes": 1422,
+      "bytes": 1377,
       "doc": "",
       "symbols": [
         {
@@ -25066,7 +24921,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 48,
-      "bytes": 1250,
+      "bytes": 1203,
       "doc": "",
       "symbols": [
         {
@@ -25086,7 +24941,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 51,
-      "bytes": 2079,
+      "bytes": 2029,
       "doc": "",
       "symbols": []
     },
@@ -25095,7 +24950,7 @@
       "area": "api",
       "kind": "service",
       "lines": 38,
-      "bytes": 1640,
+      "bytes": 1603,
       "doc": "",
       "symbols": [
         {
@@ -25110,7 +24965,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 62,
-      "bytes": 2158,
+      "bytes": 2097,
       "doc": "",
       "symbols": []
     },
@@ -25119,7 +24974,7 @@
       "area": "api",
       "kind": "service",
       "lines": 48,
-      "bytes": 2011,
+      "bytes": 1964,
       "doc": "",
       "symbols": [
         {
@@ -25134,7 +24989,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 98,
-      "bytes": 4170,
+      "bytes": 4073,
       "doc": "",
       "symbols": []
     },
@@ -25143,7 +24998,7 @@
       "area": "api",
       "kind": "service",
       "lines": 54,
-      "bytes": 2598,
+      "bytes": 2545,
       "doc": "",
       "symbols": [
         {
@@ -25158,7 +25013,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 74,
-      "bytes": 2886,
+      "bytes": 2813,
       "doc": "",
       "symbols": []
     },
@@ -25167,7 +25022,7 @@
       "area": "api",
       "kind": "service",
       "lines": 81,
-      "bytes": 3013,
+      "bytes": 2933,
       "doc": "",
       "symbols": [
         {
@@ -25182,7 +25037,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 72,
-      "bytes": 2448,
+      "bytes": 2377,
       "doc": "",
       "symbols": []
     },
@@ -25191,7 +25046,7 @@
       "area": "api",
       "kind": "service",
       "lines": 48,
-      "bytes": 1758,
+      "bytes": 1711,
       "doc": "",
       "symbols": [
         {
@@ -25206,7 +25061,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 220,
-      "bytes": 9032,
+      "bytes": 8813,
       "doc": "",
       "symbols": []
     },
@@ -25215,7 +25070,7 @@
       "area": "api",
       "kind": "agent",
       "lines": 174,
-      "bytes": 6579,
+      "bytes": 6406,
       "doc": "",
       "symbols": [
         {
@@ -25230,7 +25085,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 104,
-      "bytes": 4021,
+      "bytes": 3918,
       "doc": "",
       "symbols": []
     },
@@ -25239,7 +25094,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 109,
-      "bytes": 4389,
+      "bytes": 4281,
       "doc": "",
       "symbols": [
         {
@@ -25254,7 +25109,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 46,
-      "bytes": 1897,
+      "bytes": 1852,
       "doc": "",
       "symbols": [
         {
@@ -25269,7 +25124,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 41,
-      "bytes": 1445,
+      "bytes": 1405,
       "doc": "",
       "symbols": []
     },
@@ -25278,7 +25133,7 @@
       "area": "api",
       "kind": "registry",
       "lines": 43,
-      "bytes": 1912,
+      "bytes": 1870,
       "doc": "",
       "symbols": [
         {
@@ -25293,7 +25148,7 @@
       "area": "api",
       "kind": "module",
       "lines": 50,
-      "bytes": 1798,
+      "bytes": 1749,
       "doc": "",
       "symbols": [
         {
@@ -25323,7 +25178,7 @@
       "area": "api",
       "kind": "module",
       "lines": 17,
-      "bytes": 688,
+      "bytes": 672,
       "doc": "",
       "symbols": [
         {
@@ -25343,7 +25198,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 36,
-      "bytes": 1451,
+      "bytes": 1416,
       "doc": "",
       "symbols": []
     },
@@ -25352,7 +25207,7 @@
       "area": "api",
       "kind": "module",
       "lines": 56,
-      "bytes": 2302,
+      "bytes": 2247,
       "doc": "",
       "symbols": [
         {
@@ -25372,7 +25227,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 35,
-      "bytes": 1290,
+      "bytes": 1256,
       "doc": "",
       "symbols": []
     },
@@ -25381,7 +25236,7 @@
       "area": "api",
       "kind": "module",
       "lines": 24,
-      "bytes": 1158,
+      "bytes": 1135,
       "doc": "",
       "symbols": [
         {
@@ -25401,7 +25256,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 37,
-      "bytes": 1385,
+      "bytes": 1349,
       "doc": "",
       "symbols": []
     },
@@ -25410,7 +25265,7 @@
       "area": "api",
       "kind": "module",
       "lines": 50,
-      "bytes": 2150,
+      "bytes": 2101,
       "doc": "",
       "symbols": [
         {
@@ -25430,7 +25285,7 @@
       "area": "api",
       "kind": "module",
       "lines": 44,
-      "bytes": 1692,
+      "bytes": 1649,
       "doc": "",
       "symbols": [
         {
@@ -25445,7 +25300,7 @@
       "area": "api",
       "kind": "module",
       "lines": 253,
-      "bytes": 10411,
+      "bytes": 10159,
       "doc": "",
       "symbols": [
         {
@@ -25495,7 +25350,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 10,
-      "bytes": 229,
+      "bytes": 220,
       "doc": "",
       "symbols": [
         {
@@ -25510,7 +25365,7 @@
       "area": "api",
       "kind": "service",
       "lines": 103,
-      "bytes": 3636,
+      "bytes": 3534,
       "doc": "",
       "symbols": [
         {
@@ -25525,7 +25380,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 58,
-      "bytes": 1991,
+      "bytes": 1934,
       "doc": "",
       "symbols": [
         {
@@ -25540,7 +25395,7 @@
       "area": "api",
       "kind": "driver",
       "lines": 72,
-      "bytes": 2584,
+      "bytes": 2513,
       "doc": "",
       "symbols": [
         {
@@ -25560,7 +25415,7 @@
       "area": "api",
       "kind": "driver",
       "lines": 77,
-      "bytes": 2659,
+      "bytes": 2583,
       "doc": "",
       "symbols": [
         {
@@ -25575,7 +25430,7 @@
       "area": "api",
       "kind": "driver",
       "lines": 31,
-      "bytes": 872,
+      "bytes": 842,
       "doc": "Extension point: file storage.",
       "symbols": [
         {
@@ -25600,7 +25455,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 14,
-      "bytes": 469,
+      "bytes": 456,
       "doc": "",
       "symbols": [
         {
@@ -25615,7 +25470,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 121,
-      "bytes": 4704,
+      "bytes": 4584,
       "doc": "",
       "symbols": []
     },
@@ -25624,7 +25479,7 @@
       "area": "api",
       "kind": "service",
       "lines": 107,
-      "bytes": 3803,
+      "bytes": 3697,
       "doc": "",
       "symbols": [
         {
@@ -25639,7 +25494,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 157,
-      "bytes": 6413,
+      "bytes": 6257,
       "doc": "",
       "symbols": []
     },
@@ -25648,7 +25503,7 @@
       "area": "api",
       "kind": "module",
       "lines": 223,
-      "bytes": 8861,
+      "bytes": 8639,
       "doc": "Calendar days in the shop's timezone.",
       "symbols": [
         {
@@ -25713,7 +25568,7 @@
       "area": "api",
       "kind": "module",
       "lines": 101,
-      "bytes": 4174,
+      "bytes": 4074,
       "doc": "Must come before AppModule: the module registry reads MODULES from the",
       "symbols": []
     },
@@ -25722,7 +25577,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 28,
-      "bytes": 1500,
+      "bytes": 1473,
       "doc": "",
       "symbols": [
         {
@@ -25737,7 +25592,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 92,
-      "bytes": 3582,
+      "bytes": 3491,
       "doc": "",
       "symbols": []
     },
@@ -25746,7 +25601,7 @@
       "area": "api",
       "kind": "service",
       "lines": 279,
-      "bytes": 11957,
+      "bytes": 11679,
       "doc": "",
       "symbols": [
         {
@@ -25776,7 +25631,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 75,
-      "bytes": 2893,
+      "bytes": 2819,
       "doc": "",
       "symbols": []
     },
@@ -25785,7 +25640,7 @@
       "area": "api",
       "kind": "module",
       "lines": 69,
-      "bytes": 2684,
+      "bytes": 2616,
       "doc": "FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control account (Accounts Receivable or Accounts Payable), so it is unit-testable without a database.",
       "symbols": [
         {
@@ -25815,7 +25670,7 @@
       "area": "api",
       "kind": "module",
       "lines": 51,
-      "bytes": 2261,
+      "bytes": 2211,
       "doc": "",
       "symbols": [
         {
@@ -25835,7 +25690,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 38,
-      "bytes": 1729,
+      "bytes": 1692,
       "doc": "",
       "symbols": [
         {
@@ -25850,7 +25705,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 128,
-      "bytes": 5895,
+      "bytes": 5768,
       "doc": "",
       "symbols": []
     },
@@ -25859,7 +25714,7 @@
       "area": "api",
       "kind": "service",
       "lines": 132,
-      "bytes": 6271,
+      "bytes": 6140,
       "doc": "",
       "symbols": [
         {
@@ -25879,7 +25734,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 38,
-      "bytes": 700,
+      "bytes": 663,
       "doc": "",
       "symbols": [
         {
@@ -25899,7 +25754,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 24,
-      "bytes": 833,
+      "bytes": 810,
       "doc": "",
       "symbols": [
         {
@@ -25919,7 +25774,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 74,
-      "bytes": 3065,
+      "bytes": 2992,
       "doc": "",
       "symbols": [
         {
@@ -25934,7 +25789,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 312,
-      "bytes": 13408,
+      "bytes": 13097,
       "doc": "",
       "symbols": []
     },
@@ -25943,7 +25798,7 @@
       "area": "api",
       "kind": "service",
       "lines": 196,
-      "bytes": 8519,
+      "bytes": 8324,
       "doc": "",
       "symbols": [
         {
@@ -25958,7 +25813,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 67,
-      "bytes": 2840,
+      "bytes": 2774,
       "doc": "",
       "symbols": [
         {
@@ -25973,7 +25828,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 174,
-      "bytes": 7997,
+      "bytes": 7824,
       "doc": "",
       "symbols": []
     },
@@ -25982,7 +25837,7 @@
       "area": "api",
       "kind": "service",
       "lines": 298,
-      "bytes": 12720,
+      "bytes": 12423,
       "doc": "",
       "symbols": [
         {
@@ -26002,7 +25857,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 430,
-      "bytes": 15671,
+      "bytes": 15242,
       "doc": "",
       "symbols": []
     },
@@ -26011,7 +25866,7 @@
       "area": "api",
       "kind": "event subscriber",
       "lines": 376,
-      "bytes": 16427,
+      "bytes": 16052,
       "doc": "",
       "symbols": [
         {
@@ -26026,7 +25881,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 46,
-      "bytes": 1599,
+      "bytes": 1554,
       "doc": "",
       "symbols": [
         {
@@ -26041,7 +25896,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 10,
-      "bytes": 285,
+      "bytes": 276,
       "doc": "",
       "symbols": [
         {
@@ -26056,7 +25911,7 @@
       "area": "api",
       "kind": "service",
       "lines": 86,
-      "bytes": 3270,
+      "bytes": 3185,
       "doc": "",
       "symbols": [
         {
@@ -26071,7 +25926,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 113,
-      "bytes": 2633,
+      "bytes": 2521,
       "doc": "",
       "symbols": [
         {
@@ -26091,7 +25946,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 52,
-      "bytes": 2008,
+      "bytes": 1957,
       "doc": "",
       "symbols": [
         {
@@ -26106,7 +25961,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 11,
-      "bytes": 377,
+      "bytes": 367,
       "doc": "",
       "symbols": [
         {
@@ -26121,7 +25976,7 @@
       "area": "api",
       "kind": "service",
       "lines": 635,
-      "bytes": 24954,
+      "bytes": 24320,
       "doc": "",
       "symbols": [
         {
@@ -26161,7 +26016,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 10,
-      "bytes": 273,
+      "bytes": 264,
       "doc": "",
       "symbols": [
         {
@@ -26176,7 +26031,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 254,
-      "bytes": 9841,
+      "bytes": 9588,
       "doc": "",
       "symbols": []
     },
@@ -26185,7 +26040,7 @@
       "area": "api",
       "kind": "scheduled job",
       "lines": 257,
-      "bytes": 10930,
+      "bytes": 10674,
       "doc": "",
       "symbols": [
         {
@@ -26200,7 +26055,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 179,
-      "bytes": 5314,
+      "bytes": 5136,
       "doc": "",
       "symbols": [
         {
@@ -26215,7 +26070,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 17,
-      "bytes": 658,
+      "bytes": 642,
       "doc": "Measurements typed straight into the stitching panel are validated",
       "symbols": [
         {
@@ -26230,7 +26085,7 @@
       "area": "api",
       "kind": "service",
       "lines": 678,
-      "bytes": 24409,
+      "bytes": 23732,
       "doc": "",
       "symbols": [
         {
@@ -26255,7 +26110,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 131,
-      "bytes": 3396,
+      "bytes": 3266,
       "doc": "",
       "symbols": [
         {
@@ -26285,7 +26140,7 @@
       "area": "api",
       "kind": "service",
       "lines": 170,
-      "bytes": 5287,
+      "bytes": 5118,
       "doc": "",
       "symbols": [
         {
@@ -26300,7 +26155,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 260,
-      "bytes": 7946,
+      "bytes": 7687,
       "doc": "",
       "symbols": [
         {
@@ -26315,7 +26170,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 51,
-      "bytes": 1758,
+      "bytes": 1708,
       "doc": "",
       "symbols": [
         {
@@ -26330,7 +26185,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 35,
-      "bytes": 1649,
+      "bytes": 1615,
       "doc": "",
       "symbols": [
         {
@@ -26345,7 +26200,7 @@
       "area": "api",
       "kind": "service",
       "lines": 353,
-      "bytes": 12179,
+      "bytes": 11827,
       "doc": "",
       "symbols": [
         {
@@ -26370,7 +26225,7 @@
       "area": "api",
       "kind": "service",
       "lines": 192,
-      "bytes": 6080,
+      "bytes": 5889,
       "doc": "",
       "symbols": [
         {
@@ -26385,7 +26240,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 63,
-      "bytes": 1474,
+      "bytes": 1412,
       "doc": "",
       "symbols": [
         {
@@ -26405,7 +26260,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 68,
-      "bytes": 1412,
+      "bytes": 1345,
       "doc": "",
       "symbols": [
         {
@@ -26425,7 +26280,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 88,
-      "bytes": 2576,
+      "bytes": 2489,
       "doc": "",
       "symbols": [
         {
@@ -26450,7 +26305,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 253,
-      "bytes": 5900,
+      "bytes": 5648,
       "doc": "",
       "symbols": [
         {
@@ -26480,7 +26335,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 109,
-      "bytes": 4006,
+      "bytes": 3898,
       "doc": "",
       "symbols": []
     },
@@ -26519,7 +26374,7 @@
       "area": "api",
       "kind": "service",
       "lines": 476,
-      "bytes": 15766,
+      "bytes": 15291,
       "doc": "",
       "symbols": [
         {
@@ -26544,7 +26399,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 120,
-      "bytes": 4570,
+      "bytes": 4451,
       "doc": "",
       "symbols": []
     },
@@ -26553,7 +26408,7 @@
       "area": "api",
       "kind": "event subscriber",
       "lines": 77,
-      "bytes": 3540,
+      "bytes": 3464,
       "doc": "",
       "symbols": [
         {
@@ -26568,7 +26423,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 199,
-      "bytes": 5577,
+      "bytes": 5379,
       "doc": "",
       "symbols": [
         {
@@ -26588,7 +26443,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 15,
-      "bytes": 697,
+      "bytes": 683,
       "doc": "",
       "symbols": [
         {
@@ -26603,7 +26458,7 @@
       "area": "api",
       "kind": "service",
       "lines": 526,
-      "bytes": 16193,
+      "bytes": 15668,
       "doc": "",
       "symbols": [
         {
@@ -26623,7 +26478,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 195,
-      "bytes": 4313,
+      "bytes": 4119,
       "doc": "",
       "symbols": [
         {
@@ -26668,7 +26523,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 57,
-      "bytes": 1929,
+      "bytes": 1873,
       "doc": "",
       "symbols": [
         {
@@ -26683,7 +26538,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 30,
-      "bytes": 1197,
+      "bytes": 1168,
       "doc": "",
       "symbols": [
         {
@@ -26708,7 +26563,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 142,
-      "bytes": 5000,
+      "bytes": 4859,
       "doc": "",
       "symbols": []
     },
@@ -26717,7 +26572,7 @@
       "area": "api",
       "kind": "service",
       "lines": 234,
-      "bytes": 7992,
+      "bytes": 7759,
       "doc": "",
       "symbols": [
         {
@@ -26737,7 +26592,7 @@
       "area": "api",
       "kind": "scheduled job",
       "lines": 133,
-      "bytes": 4765,
+      "bytes": 4633,
       "doc": "",
       "symbols": [
         {
@@ -26752,7 +26607,7 @@
       "area": "api",
       "kind": "event subscriber",
       "lines": 87,
-      "bytes": 3161,
+      "bytes": 3075,
       "doc": "",
       "symbols": [
         {
@@ -26767,7 +26622,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 8,
-      "bytes": 138,
+      "bytes": 131,
       "doc": "",
       "symbols": [
         {
@@ -26782,7 +26637,7 @@
       "area": "api",
       "kind": "module",
       "lines": 76,
-      "bytes": 3133,
+      "bytes": 3058,
       "doc": "Extension point: identity-verification providers.",
       "symbols": [
         {
@@ -26812,7 +26667,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 51,
-      "bytes": 2132,
+      "bytes": 2082,
       "doc": "",
       "symbols": [
         {
@@ -26827,7 +26682,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 11,
-      "bytes": 458,
+      "bytes": 448,
       "doc": "",
       "symbols": [
         {
@@ -26842,7 +26697,7 @@
       "area": "api",
       "kind": "service",
       "lines": 149,
-      "bytes": 5703,
+      "bytes": 5555,
       "doc": "",
       "symbols": [
         {
@@ -26857,7 +26712,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 123,
-      "bytes": 4906,
+      "bytes": 4784,
       "doc": "",
       "symbols": []
     },
@@ -26866,7 +26721,7 @@
       "area": "api",
       "kind": "module",
       "lines": 176,
-      "bytes": 6318,
+      "bytes": 6143,
       "doc": "",
       "symbols": [
         {
@@ -26881,7 +26736,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 31,
-      "bytes": 872,
+      "bytes": 842,
       "doc": "",
       "symbols": [
         {
@@ -26906,7 +26761,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 9,
-      "bytes": 192,
+      "bytes": 184,
       "doc": "",
       "symbols": [
         {
@@ -26921,7 +26776,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 76,
-      "bytes": 2765,
+      "bytes": 2690,
       "doc": "",
       "symbols": [
         {
@@ -26936,7 +26791,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 95,
-      "bytes": 3435,
+      "bytes": 3341,
       "doc": "",
       "symbols": []
     },
@@ -26945,7 +26800,7 @@
       "area": "api",
       "kind": "scheduled job",
       "lines": 124,
-      "bytes": 3850,
+      "bytes": 3727,
       "doc": "",
       "symbols": [
         {
@@ -26960,7 +26815,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 70,
-      "bytes": 2355,
+      "bytes": 2286,
       "doc": "",
       "symbols": []
     },
@@ -26969,7 +26824,7 @@
       "area": "api",
       "kind": "event subscriber",
       "lines": 61,
-      "bytes": 2246,
+      "bytes": 2186,
       "doc": "",
       "symbols": [
         {
@@ -26984,7 +26839,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 18,
-      "bytes": 825,
+      "bytes": 808,
       "doc": "",
       "symbols": [
         {
@@ -26999,7 +26854,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 442,
-      "bytes": 19239,
+      "bytes": 18798,
       "doc": "",
       "symbols": []
     },
@@ -27008,7 +26863,7 @@
       "area": "api",
       "kind": "service",
       "lines": 576,
-      "bytes": 22326,
+      "bytes": 21751,
       "doc": "",
       "symbols": [
         {
@@ -27033,7 +26888,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 62,
-      "bytes": 1872,
+      "bytes": 1811,
       "doc": "JwtAuthGuard is registered globally (see core/auth/decorators.ts), so a",
       "symbols": [
         {
@@ -27048,7 +26903,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 95,
-      "bytes": 4406,
+      "bytes": 4312,
       "doc": "",
       "symbols": []
     },
@@ -27057,7 +26912,7 @@
       "area": "api",
       "kind": "service",
       "lines": 233,
-      "bytes": 8019,
+      "bytes": 7787,
       "doc": "",
       "symbols": [
         {
@@ -27072,7 +26927,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 30,
-      "bytes": 1177,
+      "bytes": 1148,
       "doc": "",
       "symbols": [
         {
@@ -27087,7 +26942,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 59,
-      "bytes": 2164,
+      "bytes": 2106,
       "doc": "",
       "symbols": []
     },
@@ -27096,7 +26951,7 @@
       "area": "api",
       "kind": "service",
       "lines": 39,
-      "bytes": 1565,
+      "bytes": 1527,
       "doc": "",
       "symbols": [
         {
@@ -27111,7 +26966,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 38,
-      "bytes": 1169,
+      "bytes": 1132,
       "doc": "",
       "symbols": [
         {
@@ -27126,7 +26981,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 299,
-      "bytes": 10666,
+      "bytes": 10368,
       "doc": "",
       "symbols": []
     },
@@ -27135,7 +26990,7 @@
       "area": "api",
       "kind": "scheduled job",
       "lines": 347,
-      "bytes": 12887,
+      "bytes": 12541,
       "doc": "",
       "symbols": [
         {
@@ -27150,7 +27005,7 @@
       "area": "api",
       "kind": "service",
       "lines": 71,
-      "bytes": 2545,
+      "bytes": 2475,
       "doc": "",
       "symbols": [
         {
@@ -27170,7 +27025,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 26,
-      "bytes": 989,
+      "bytes": 964,
       "doc": "",
       "symbols": [
         {
@@ -27185,7 +27040,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 11,
-      "bytes": 407,
+      "bytes": 397,
       "doc": "",
       "symbols": [
         {
@@ -27200,7 +27055,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 236,
-      "bytes": 5274,
+      "bytes": 5039,
       "doc": "",
       "symbols": [
         {
@@ -27245,7 +27100,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 64,
-      "bytes": 2339,
+      "bytes": 2276,
       "doc": "",
       "symbols": []
     },
@@ -27254,7 +27109,7 @@
       "area": "api",
       "kind": "service",
       "lines": 283,
-      "bytes": 9863,
+      "bytes": 9581,
       "doc": "",
       "symbols": [
         {
@@ -27269,7 +27124,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 137,
-      "bytes": 4391,
+      "bytes": 4255,
       "doc": "",
       "symbols": [
         {
@@ -27289,7 +27144,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 16,
-      "bytes": 586,
+      "bytes": 571,
       "doc": "",
       "symbols": [
         {
@@ -27304,7 +27159,7 @@
       "area": "api",
       "kind": "service",
       "lines": 204,
-      "bytes": 7155,
+      "bytes": 6952,
       "doc": "",
       "symbols": [
         {
@@ -27324,7 +27179,7 @@
       "area": "api",
       "kind": "module",
       "lines": 81,
-      "bytes": 2742,
+      "bytes": 2662,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -27344,7 +27199,7 @@
       "area": "api",
       "kind": "registry",
       "lines": 141,
-      "bytes": 7034,
+      "bytes": 6894,
       "doc": "",
       "symbols": [
         {
@@ -27369,7 +27224,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 84,
-      "bytes": 3236,
+      "bytes": 3153,
       "doc": "",
       "symbols": []
     },
@@ -27378,7 +27233,7 @@
       "area": "api",
       "kind": "event subscriber",
       "lines": 70,
-      "bytes": 2883,
+      "bytes": 2814,
       "doc": "",
       "symbols": [
         {
@@ -27393,7 +27248,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 145,
-      "bytes": 3456,
+      "bytes": 3312,
       "doc": "",
       "symbols": [
         {
@@ -27438,7 +27293,7 @@
       "area": "api",
       "kind": "event subscriber",
       "lines": 259,
-      "bytes": 9951,
+      "bytes": 9693,
       "doc": "",
       "symbols": [
         {
@@ -27453,7 +27308,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 54,
-      "bytes": 1927,
+      "bytes": 1874,
       "doc": "",
       "symbols": []
     },
@@ -27462,7 +27317,7 @@
       "area": "api",
       "kind": "event subscriber",
       "lines": 53,
-      "bytes": 2423,
+      "bytes": 2371,
       "doc": "",
       "symbols": [
         {
@@ -27477,7 +27332,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 233,
-      "bytes": 9711,
+      "bytes": 9479,
       "doc": "",
       "symbols": []
     },
@@ -27486,7 +27341,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 148,
-      "bytes": 4468,
+      "bytes": 4321,
       "doc": "",
       "symbols": [
         {
@@ -27506,7 +27361,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 28,
-      "bytes": 1558,
+      "bytes": 1531,
       "doc": "",
       "symbols": [
         {
@@ -27521,7 +27376,7 @@
       "area": "api",
       "kind": "service",
       "lines": 1114,
-      "bytes": 43445,
+      "bytes": 42332,
       "doc": "",
       "symbols": [
         {
@@ -27546,7 +27401,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 34,
-      "bytes": 1197,
+      "bytes": 1164,
       "doc": "",
       "symbols": [
         {
@@ -27561,7 +27416,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 19,
-      "bytes": 509,
+      "bytes": 491,
       "doc": "",
       "symbols": [
         {
@@ -27576,7 +27431,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 10,
-      "bytes": 306,
+      "bytes": 297,
       "doc": "",
       "symbols": [
         {
@@ -27591,7 +27446,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 113,
-      "bytes": 4317,
+      "bytes": 4205,
       "doc": "",
       "symbols": []
     },
@@ -27600,7 +27455,7 @@
       "area": "api",
       "kind": "service",
       "lines": 95,
-      "bytes": 3813,
+      "bytes": 3719,
       "doc": "",
       "symbols": [
         {
@@ -27615,7 +27470,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 113,
-      "bytes": 5136,
+      "bytes": 5024,
       "doc": "",
       "symbols": [
         {
@@ -27630,7 +27485,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 20,
-      "bytes": 832,
+      "bytes": 813,
       "doc": "",
       "symbols": [
         {
@@ -27645,7 +27500,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 266,
-      "bytes": 10544,
+      "bytes": 10279,
       "doc": "",
       "symbols": []
     },
@@ -27654,7 +27509,7 @@
       "area": "api",
       "kind": "service",
       "lines": 205,
-      "bytes": 9173,
+      "bytes": 8969,
       "doc": "",
       "symbols": [
         {
@@ -27689,7 +27544,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 3,
-      "bytes": 280,
+      "bytes": 278,
       "doc": "Mirrors the Prisma PartyRoleName enum — kept as a plain array so DTOs can validate against it without importing the generated client into a decorator's argument position.",
       "symbols": [
         {
@@ -27704,7 +27559,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 44,
-      "bytes": 738,
+      "bytes": 695,
       "doc": "",
       "symbols": [
         {
@@ -27719,7 +27574,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 32,
-      "bytes": 1150,
+      "bytes": 1119,
       "doc": "",
       "symbols": [
         {
@@ -27734,7 +27589,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 11,
-      "bytes": 301,
+      "bytes": 291,
       "doc": "",
       "symbols": [
         {
@@ -27749,7 +27604,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 129,
-      "bytes": 4632,
+      "bytes": 4504,
       "doc": "",
       "symbols": []
     },
@@ -27758,7 +27613,7 @@
       "area": "api",
       "kind": "service",
       "lines": 148,
-      "bytes": 4850,
+      "bytes": 4703,
       "doc": "",
       "symbols": [
         {
@@ -27778,7 +27633,7 @@
       "area": "api",
       "kind": "event subscriber",
       "lines": 168,
-      "bytes": 5776,
+      "bytes": 5609,
       "doc": "",
       "symbols": [
         {
@@ -27793,7 +27648,7 @@
       "area": "api",
       "kind": "module",
       "lines": 73,
-      "bytes": 2722,
+      "bytes": 2650,
       "doc": "Extension point: payment providers.",
       "symbols": [
         {
@@ -27823,7 +27678,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 117,
-      "bytes": 3302,
+      "bytes": 3186,
       "doc": "",
       "symbols": [
         {
@@ -27843,7 +27698,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 24,
-      "bytes": 923,
+      "bytes": 900,
       "doc": "",
       "symbols": [
         {
@@ -27858,7 +27713,7 @@
       "area": "api",
       "kind": "service",
       "lines": 353,
-      "bytes": 12181,
+      "bytes": 11829,
       "doc": "",
       "symbols": [
         {
@@ -27873,7 +27728,7 @@
       "area": "api",
       "kind": "module",
       "lines": 54,
-      "bytes": 1856,
+      "bytes": 1803,
       "doc": "",
       "symbols": [
         {
@@ -27888,7 +27743,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 159,
-      "bytes": 5682,
+      "bytes": 5524,
       "doc": "",
       "symbols": []
     },
@@ -27897,7 +27752,7 @@
       "area": "api",
       "kind": "module",
       "lines": 41,
-      "bytes": 1488,
+      "bytes": 1448,
       "doc": "",
       "symbols": [
         {
@@ -27912,7 +27767,7 @@
       "area": "api",
       "kind": "module",
       "lines": 184,
-      "bytes": 6980,
+      "bytes": 6797,
       "doc": "",
       "symbols": [
         {
@@ -27927,7 +27782,7 @@
       "area": "api",
       "kind": "module",
       "lines": 184,
-      "bytes": 7059,
+      "bytes": 6876,
       "doc": "",
       "symbols": [
         {
@@ -27942,7 +27797,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 40,
-      "bytes": 984,
+      "bytes": 945,
       "doc": "",
       "symbols": [
         {
@@ -27962,7 +27817,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 44,
-      "bytes": 1240,
+      "bytes": 1197,
       "doc": "",
       "symbols": [
         {
@@ -27992,7 +27847,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 27,
-      "bytes": 835,
+      "bytes": 809,
       "doc": "",
       "symbols": [
         {
@@ -28012,7 +27867,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 26,
-      "bytes": 1185,
+      "bytes": 1160,
       "doc": "",
       "symbols": [
         {
@@ -28027,7 +27882,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 59,
-      "bytes": 1936,
+      "bytes": 1878,
       "doc": "",
       "symbols": []
     },
@@ -28036,7 +27891,7 @@
       "area": "api",
       "kind": "service",
       "lines": 71,
-      "bytes": 2461,
+      "bytes": 2391,
       "doc": "",
       "symbols": [
         {
@@ -28056,7 +27911,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 24,
-      "bytes": 919,
+      "bytes": 896,
       "doc": "",
       "symbols": [
         {
@@ -28071,7 +27926,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 110,
-      "bytes": 4071,
+      "bytes": 3962,
       "doc": "",
       "symbols": []
     },
@@ -28080,7 +27935,7 @@
       "area": "api",
       "kind": "service",
       "lines": 94,
-      "bytes": 3373,
+      "bytes": 3280,
       "doc": "",
       "symbols": [
         {
@@ -28100,7 +27955,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 24,
-      "bytes": 1027,
+      "bytes": 1004,
       "doc": "",
       "symbols": [
         {
@@ -28115,7 +27970,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 79,
-      "bytes": 3102,
+      "bytes": 3024,
       "doc": "",
       "symbols": []
     },
@@ -28124,7 +27979,7 @@
       "area": "api",
       "kind": "service",
       "lines": 59,
-      "bytes": 2246,
+      "bytes": 2188,
       "doc": "",
       "symbols": [
         {
@@ -28139,7 +27994,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 55,
-      "bytes": 2369,
+      "bytes": 2315,
       "doc": "",
       "symbols": [
         {
@@ -28154,7 +28009,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 177,
-      "bytes": 7392,
+      "bytes": 7216,
       "doc": "",
       "symbols": []
     },
@@ -28163,7 +28018,7 @@
       "area": "api",
       "kind": "service",
       "lines": 139,
-      "bytes": 5654,
+      "bytes": 5516,
       "doc": "",
       "symbols": [
         {
@@ -28183,7 +28038,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 49,
-      "bytes": 1737,
+      "bytes": 1689,
       "doc": "",
       "symbols": [
         {
@@ -28198,7 +28053,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 145,
-      "bytes": 5930,
+      "bytes": 5786,
       "doc": "",
       "symbols": []
     },
@@ -28207,7 +28062,7 @@
       "area": "api",
       "kind": "service",
       "lines": 116,
-      "bytes": 4950,
+      "bytes": 4835,
       "doc": "",
       "symbols": [
         {
@@ -28222,7 +28077,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 44,
-      "bytes": 2316,
+      "bytes": 2273,
       "doc": "",
       "symbols": [
         {
@@ -28237,7 +28092,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 62,
-      "bytes": 2538,
+      "bytes": 2477,
       "doc": "",
       "symbols": []
     },
@@ -28246,7 +28101,7 @@
       "area": "api",
       "kind": "service",
       "lines": 63,
-      "bytes": 2404,
+      "bytes": 2342,
       "doc": "",
       "symbols": [
         {
@@ -28261,7 +28116,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 24,
-      "bytes": 541,
+      "bytes": 518,
       "doc": "",
       "symbols": [
         {
@@ -28281,7 +28136,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 26,
-      "bytes": 443,
+      "bytes": 418,
       "doc": "",
       "symbols": [
         {
@@ -28301,7 +28156,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 84,
-      "bytes": 3102,
+      "bytes": 3019,
       "doc": "",
       "symbols": [
         {
@@ -28321,7 +28176,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 16,
-      "bytes": 723,
+      "bytes": 708,
       "doc": "",
       "symbols": [
         {
@@ -28336,7 +28191,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 70,
-      "bytes": 2724,
+      "bytes": 2655,
       "doc": "",
       "symbols": []
     },
@@ -28345,7 +28200,7 @@
       "area": "api",
       "kind": "event subscriber",
       "lines": 53,
-      "bytes": 2306,
+      "bytes": 2254,
       "doc": "",
       "symbols": [
         {
@@ -28360,7 +28215,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 103,
-      "bytes": 4807,
+      "bytes": 4705,
       "doc": "",
       "symbols": []
     },
@@ -28369,7 +28224,7 @@
       "area": "api",
       "kind": "event subscriber",
       "lines": 81,
-      "bytes": 3622,
+      "bytes": 3542,
       "doc": "",
       "symbols": [
         {
@@ -28384,7 +28239,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 188,
-      "bytes": 7431,
+      "bytes": 7244,
       "doc": "",
       "symbols": []
     },
@@ -28393,7 +28248,7 @@
       "area": "api",
       "kind": "service",
       "lines": 270,
-      "bytes": 10211,
+      "bytes": 9942,
       "doc": "",
       "symbols": [
         {
@@ -28413,7 +28268,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 92,
-      "bytes": 1550,
+      "bytes": 1459,
       "doc": "",
       "symbols": [
         {
@@ -28443,7 +28298,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 67,
-      "bytes": 2131,
+      "bytes": 2065,
       "doc": "",
       "symbols": [
         {
@@ -28463,7 +28318,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 104,
-      "bytes": 2163,
+      "bytes": 2060,
       "doc": "",
       "symbols": [
         {
@@ -28488,7 +28343,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 151,
-      "bytes": 5570,
+      "bytes": 5420,
       "doc": "",
       "symbols": [
         {
@@ -28513,7 +28368,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 67,
-      "bytes": 2412,
+      "bytes": 2346,
       "doc": "",
       "symbols": []
     },
@@ -28522,7 +28377,7 @@
       "area": "api",
       "kind": "scheduled job",
       "lines": 71,
-      "bytes": 2553,
+      "bytes": 2483,
       "doc": "",
       "symbols": [
         {
@@ -28537,7 +28392,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 18,
-      "bytes": 865,
+      "bytes": 848,
       "doc": "",
       "symbols": [
         {
@@ -28552,7 +28407,7 @@
       "area": "api",
       "kind": "service",
       "lines": 635,
-      "bytes": 24201,
+      "bytes": 23567,
       "doc": "",
       "symbols": [
         {
@@ -28567,7 +28422,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 166,
-      "bytes": 6190,
+      "bytes": 6025,
       "doc": "",
       "symbols": []
     },
@@ -28576,7 +28431,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 79,
-      "bytes": 2984,
+      "bytes": 2906,
       "doc": "",
       "symbols": []
     },
@@ -28585,7 +28440,7 @@
       "area": "api",
       "kind": "event subscriber",
       "lines": 51,
-      "bytes": 2071,
+      "bytes": 2021,
       "doc": "",
       "symbols": [
         {
@@ -28600,7 +28455,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 228,
-      "bytes": 8573,
+      "bytes": 8346,
       "doc": "",
       "symbols": []
     },
@@ -28609,7 +28464,7 @@
       "area": "api",
       "kind": "module",
       "lines": 15,
-      "bytes": 608,
+      "bytes": 594,
       "doc": "RFC 4180 field/row escaping for the three characters that break a bare CSV field (comma, quote, newline).",
       "symbols": [
         {
@@ -28629,7 +28484,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 25,
-      "bytes": 767,
+      "bytes": 743,
       "doc": "",
       "symbols": [
         {
@@ -28649,7 +28504,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 99,
-      "bytes": 3654,
+      "bytes": 3556,
       "doc": "",
       "symbols": [
         {
@@ -28664,7 +28519,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 10,
-      "bytes": 271,
+      "bytes": 262,
       "doc": "",
       "symbols": [
         {
@@ -28679,7 +28534,7 @@
       "area": "api",
       "kind": "service",
       "lines": 509,
-      "bytes": 17051,
+      "bytes": 16543,
       "doc": "",
       "symbols": [
         {
@@ -28699,7 +28554,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 94,
-      "bytes": 2917,
+      "bytes": 2824,
       "doc": "",
       "symbols": [
         {
@@ -28724,7 +28579,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 61,
-      "bytes": 2192,
+      "bytes": 2132,
       "doc": "",
       "symbols": [
         {
@@ -28739,7 +28594,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 10,
-      "bytes": 315,
+      "bytes": 306,
       "doc": "",
       "symbols": [
         {
@@ -28754,7 +28609,7 @@
       "area": "api",
       "kind": "service",
       "lines": 117,
-      "bytes": 4087,
+      "bytes": 3971,
       "doc": "",
       "symbols": [
         {
@@ -28774,7 +28629,7 @@
       "area": "api",
       "kind": "service",
       "lines": 320,
-      "bytes": 11039,
+      "bytes": 10720,
       "doc": "",
       "symbols": [
         {
@@ -28789,7 +28644,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 401,
-      "bytes": 8883,
+      "bytes": 8483,
       "doc": "",
       "symbols": [
         {
@@ -28869,7 +28724,7 @@
       "area": "api",
       "kind": "service",
       "lines": 500,
-      "bytes": 18074,
+      "bytes": 17575,
       "doc": "",
       "symbols": [
         {
@@ -28894,7 +28749,7 @@
       "area": "api",
       "kind": "event subscriber",
       "lines": 126,
-      "bytes": 4468,
+      "bytes": 4343,
       "doc": "",
       "symbols": [
         {
@@ -28909,7 +28764,7 @@
       "area": "api",
       "kind": "service",
       "lines": 283,
-      "bytes": 9722,
+      "bytes": 9440,
       "doc": "",
       "symbols": [
         {
@@ -28929,7 +28784,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 275,
-      "bytes": 8744,
+      "bytes": 8470,
       "doc": "",
       "symbols": [
         {
@@ -28949,7 +28804,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 21,
-      "bytes": 790,
+      "bytes": 770,
       "doc": "",
       "symbols": [
         {
@@ -28964,7 +28819,7 @@
       "area": "api",
       "kind": "service",
       "lines": 234,
-      "bytes": 8683,
+      "bytes": 8450,
       "doc": "",
       "symbols": [
         {
@@ -28984,7 +28839,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 56,
-      "bytes": 1488,
+      "bytes": 1433,
       "doc": "",
       "symbols": [
         {
@@ -29014,7 +28869,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 74,
-      "bytes": 2415,
+      "bytes": 2342,
       "doc": "",
       "symbols": [
         {
@@ -29029,7 +28884,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 13,
-      "bytes": 425,
+      "bytes": 413,
       "doc": "",
       "symbols": [
         {
@@ -29044,7 +28899,7 @@
       "area": "api",
       "kind": "service",
       "lines": 189,
-      "bytes": 6977,
+      "bytes": 6789,
       "doc": "",
       "symbols": [
         {
@@ -29064,7 +28919,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 46,
-      "bytes": 1458,
+      "bytes": 1413,
       "doc": "",
       "symbols": [
         {
@@ -29089,7 +28944,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 30,
-      "bytes": 1254,
+      "bytes": 1225,
       "doc": "",
       "symbols": [
         {
@@ -29104,7 +28959,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 10,
-      "bytes": 278,
+      "bytes": 269,
       "doc": "",
       "symbols": [
         {
@@ -29119,7 +28974,7 @@
       "area": "api",
       "kind": "service",
       "lines": 100,
-      "bytes": 3143,
+      "bytes": 3044,
       "doc": "",
       "symbols": [
         {
@@ -29139,7 +28994,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 67,
-      "bytes": 1288,
+      "bytes": 1222,
       "doc": "",
       "symbols": [
         {
@@ -29159,7 +29014,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 25,
-      "bytes": 596,
+      "bytes": 572,
       "doc": "",
       "symbols": [
         {
@@ -29174,7 +29029,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 56,
-      "bytes": 1059,
+      "bytes": 1004,
       "doc": "",
       "symbols": [
         {
@@ -29194,7 +29049,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 55,
-      "bytes": 1933,
+      "bytes": 1879,
       "doc": "",
       "symbols": [
         {
@@ -29244,7 +29099,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 106,
-      "bytes": 4200,
+      "bytes": 4095,
       "doc": "",
       "symbols": []
     },
@@ -29253,7 +29108,7 @@
       "area": "api",
       "kind": "service",
       "lines": 117,
-      "bytes": 4667,
+      "bytes": 4551,
       "doc": "",
       "symbols": [
         {
@@ -29268,7 +29123,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 31,
-      "bytes": 1031,
+      "bytes": 1001,
       "doc": "",
       "symbols": [
         {
@@ -29283,7 +29138,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 73,
-      "bytes": 2806,
+      "bytes": 2734,
       "doc": "",
       "symbols": []
     },
@@ -29292,7 +29147,7 @@
       "area": "api",
       "kind": "service",
       "lines": 53,
-      "bytes": 1819,
+      "bytes": 1767,
       "doc": "",
       "symbols": [
         {
@@ -29307,7 +29162,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 25,
-      "bytes": 864,
+      "bytes": 840,
       "doc": "",
       "symbols": [
         {
@@ -29322,7 +29177,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 72,
-      "bytes": 2935,
+      "bytes": 2864,
       "doc": "",
       "symbols": []
     },
@@ -29331,7 +29186,7 @@
       "area": "api",
       "kind": "event subscriber",
       "lines": 44,
-      "bytes": 1875,
+      "bytes": 1832,
       "doc": "",
       "symbols": [
         {
@@ -29346,7 +29201,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 96,
-      "bytes": 3898,
+      "bytes": 3803,
       "doc": "",
       "symbols": []
     },
@@ -29355,7 +29210,7 @@
       "area": "api",
       "kind": "service",
       "lines": 102,
-      "bytes": 3869,
+      "bytes": 3768,
       "doc": "",
       "symbols": [
         {
@@ -29370,7 +29225,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 31,
-      "bytes": 992,
+      "bytes": 962,
       "doc": "",
       "symbols": [
         {
@@ -29385,7 +29240,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 51,
-      "bytes": 1970,
+      "bytes": 1920,
       "doc": "",
       "symbols": []
     },
@@ -29394,7 +29249,7 @@
       "area": "api",
       "kind": "event subscriber",
       "lines": 35,
-      "bytes": 1490,
+      "bytes": 1456,
       "doc": "",
       "symbols": [
         {
@@ -29409,7 +29264,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 63,
-      "bytes": 2831,
+      "bytes": 2769,
       "doc": "",
       "symbols": []
     },
@@ -29418,7 +29273,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 46,
-      "bytes": 1934,
+      "bytes": 1889,
       "doc": "",
       "symbols": [
         {
@@ -29433,7 +29288,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 62,
-      "bytes": 2371,
+      "bytes": 2310,
       "doc": "",
       "symbols": [
         {
@@ -29448,7 +29303,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 53,
-      "bytes": 2431,
+      "bytes": 2379,
       "doc": "",
       "symbols": [
         {
@@ -29463,7 +29318,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 385,
-      "bytes": 16001,
+      "bytes": 15617,
       "doc": "",
       "symbols": []
     },
@@ -29472,7 +29327,7 @@
       "area": "api",
       "kind": "service",
       "lines": 299,
-      "bytes": 11323,
+      "bytes": 11025,
       "doc": "",
       "symbols": [
         {
@@ -29487,7 +29342,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 109,
-      "bytes": 2247,
+      "bytes": 2139,
       "doc": "",
       "symbols": [
         {
@@ -29532,7 +29387,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 44,
-      "bytes": 1980,
+      "bytes": 1937,
       "doc": "",
       "symbols": [
         {
@@ -29547,7 +29402,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 22,
-      "bytes": 896,
+      "bytes": 875,
       "doc": "",
       "symbols": [
         {
@@ -29562,7 +29417,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 701,
-      "bytes": 34186,
+      "bytes": 33486,
       "doc": "",
       "symbols": []
     },
@@ -29571,7 +29426,7 @@
       "area": "api",
       "kind": "service",
       "lines": 469,
-      "bytes": 20569,
+      "bytes": 20101,
       "doc": "",
       "symbols": [
         {
@@ -29596,7 +29451,7 @@
       "area": "api",
       "kind": "dto",
       "lines": 122,
-      "bytes": 3201,
+      "bytes": 3080,
       "doc": "",
       "symbols": [
         {
@@ -29641,7 +29496,7 @@
       "area": "api",
       "kind": "event subscriber",
       "lines": 43,
-      "bytes": 1829,
+      "bytes": 1787,
       "doc": "",
       "symbols": [
         {
@@ -29656,7 +29511,7 @@
       "area": "api",
       "kind": "event subscriber",
       "lines": 115,
-      "bytes": 4698,
+      "bytes": 4584,
       "doc": "",
       "symbols": [
         {
@@ -29671,7 +29526,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 83,
-      "bytes": 2870,
+      "bytes": 2788,
       "doc": "",
       "symbols": [
         {
@@ -29686,7 +29541,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 12,
-      "bytes": 519,
+      "bytes": 508,
       "doc": "",
       "symbols": [
         {
@@ -29701,7 +29556,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 88,
-      "bytes": 3279,
+      "bytes": 3192,
       "doc": "",
       "symbols": []
     },
@@ -29710,7 +29565,7 @@
       "area": "api",
       "kind": "service",
       "lines": 340,
-      "bytes": 10923,
+      "bytes": 10584,
       "doc": "",
       "symbols": [
         {
@@ -29725,7 +29580,7 @@
       "area": "api",
       "kind": "e2e test",
       "lines": 462,
-      "bytes": 19208,
+      "bytes": 18747,
       "doc": "The general ledger's invariants (RETAIL-ERP.md R15, WO-19.1), proven against a real database rather than a mocked PrismaService — a posted entry's immutability and the balance check are both database triggers (see the `…",
       "symbols": []
     },
@@ -29734,7 +29589,7 @@
       "area": "api",
       "kind": "e2e test",
       "lines": 198,
-      "bytes": 7657,
+      "bytes": 7460,
       "doc": "",
       "symbols": []
     },
@@ -29743,7 +29598,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 114,
-      "bytes": 4593,
+      "bytes": 4480,
       "doc": "",
       "symbols": []
     },
@@ -29752,7 +29607,7 @@
       "area": "api",
       "kind": "e2e test",
       "lines": 800,
-      "bytes": 29011,
+      "bytes": 28212,
       "doc": "",
       "symbols": []
     },
@@ -29761,7 +29616,7 @@
       "area": "api",
       "kind": "e2e test",
       "lines": 407,
-      "bytes": 14385,
+      "bytes": 13979,
       "doc": "",
       "symbols": []
     },
@@ -29770,7 +29625,7 @@
       "area": "api",
       "kind": "e2e test",
       "lines": 489,
-      "bytes": 18007,
+      "bytes": 17519,
       "doc": "",
       "symbols": []
     },
@@ -29779,7 +29634,7 @@
       "area": "api",
       "kind": "e2e test",
       "lines": 150,
-      "bytes": 5449,
+      "bytes": 5300,
       "doc": "",
       "symbols": []
     },
@@ -29788,7 +29643,7 @@
       "area": "api",
       "kind": "e2e test",
       "lines": 342,
-      "bytes": 12823,
+      "bytes": 12482,
       "doc": "",
       "symbols": []
     },
@@ -29797,7 +29652,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 580,
-      "bytes": 19769,
+      "bytes": 19190,
       "doc": "Behavior tests for the email notification channel.",
       "symbols": []
     },
@@ -29806,7 +29661,7 @@
       "area": "api",
       "kind": "e2e test",
       "lines": 225,
-      "bytes": 8550,
+      "bytes": 8326,
       "doc": "",
       "symbols": []
     },
@@ -29815,7 +29670,7 @@
       "area": "api",
       "kind": "e2e test",
       "lines": 86,
-      "bytes": 3205,
+      "bytes": 3120,
       "doc": "",
       "symbols": []
     },
@@ -29824,7 +29679,7 @@
       "area": "api",
       "kind": "e2e test",
       "lines": 65,
-      "bytes": 2768,
+      "bytes": 2704,
       "doc": "",
       "symbols": []
     },
@@ -29833,7 +29688,7 @@
       "area": "api",
       "kind": "e2e test",
       "lines": 950,
-      "bytes": 36661,
+      "bytes": 35712,
       "doc": "",
       "symbols": []
     },
@@ -29842,7 +29697,7 @@
       "area": "api",
       "kind": "e2e test",
       "lines": 214,
-      "bytes": 8826,
+      "bytes": 8613,
       "doc": "",
       "symbols": []
     },
@@ -29851,7 +29706,7 @@
       "area": "api",
       "kind": "e2e test",
       "lines": 164,
-      "bytes": 5727,
+      "bytes": 5564,
       "doc": "",
       "symbols": []
     },
@@ -29860,7 +29715,7 @@
       "area": "api",
       "kind": "e2e test",
       "lines": 189,
-      "bytes": 7690,
+      "bytes": 7502,
       "doc": "",
       "symbols": []
     },
@@ -29869,7 +29724,7 @@
       "area": "api",
       "kind": "module",
       "lines": 11,
-      "bytes": 490,
+      "bytes": 480,
       "doc": "Same ordering rule as src/core/config/load-env.ts: the environment must be",
       "symbols": []
     },
@@ -29878,7 +29733,7 @@
       "area": "api",
       "kind": "e2e test",
       "lines": 590,
-      "bytes": 21364,
+      "bytes": 20775,
       "doc": "",
       "symbols": []
     },
@@ -29887,7 +29742,7 @@
       "area": "api",
       "kind": "module",
       "lines": 43,
-      "bytes": 1830,
+      "bytes": 1788,
       "doc": "",
       "symbols": [
         {
@@ -29907,7 +29762,7 @@
       "area": "api",
       "kind": "json",
       "lines": 5,
-      "bytes": 120,
+      "bytes": 116,
       "doc": "",
       "symbols": []
     },
@@ -29916,7 +29771,7 @@
       "area": "api",
       "kind": "json",
       "lines": 17,
-      "bytes": 491,
+      "bytes": 475,
       "doc": "",
       "symbols": []
     },
@@ -29925,7 +29780,7 @@
       "area": "api",
       "kind": "json",
       "lines": 10,
-      "bytes": 204,
+      "bytes": 195,
       "doc": "",
       "symbols": []
     },
@@ -29934,7 +29789,7 @@
       "area": "mobile",
       "kind": "json",
       "lines": 61,
-      "bytes": 1311,
+      "bytes": 1251,
       "doc": "",
       "symbols": []
     },
@@ -29943,7 +29798,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 64,
-      "bytes": 1947,
+      "bytes": 1884,
       "doc": "",
       "symbols": [
         {
@@ -29958,7 +29813,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 155,
-      "bytes": 4750,
+      "bytes": 4596,
       "doc": "",
       "symbols": [
         {
@@ -29973,7 +29828,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 183,
-      "bytes": 6247,
+      "bytes": 6065,
       "doc": "",
       "symbols": [
         {
@@ -29988,7 +29843,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 170,
-      "bytes": 5806,
+      "bytes": 5637,
       "doc": "",
       "symbols": [
         {
@@ -30003,7 +29858,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 256,
-      "bytes": 8169,
+      "bytes": 7914,
       "doc": "",
       "symbols": [
         {
@@ -30018,7 +29873,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 83,
-      "bytes": 3100,
+      "bytes": 3018,
       "doc": "",
       "symbols": [
         {
@@ -30033,7 +29888,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 332,
-      "bytes": 10382,
+      "bytes": 10051,
       "doc": "",
       "symbols": [
         {
@@ -30048,7 +29903,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 74,
-      "bytes": 2288,
+      "bytes": 2215,
       "doc": "",
       "symbols": [
         {
@@ -30063,7 +29918,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 216,
-      "bytes": 6257,
+      "bytes": 6042,
       "doc": "",
       "symbols": [
         {
@@ -30078,7 +29933,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 97,
-      "bytes": 2891,
+      "bytes": 2795,
       "doc": "",
       "symbols": [
         {
@@ -30093,7 +29948,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 179,
-      "bytes": 6398,
+      "bytes": 6220,
       "doc": "",
       "symbols": [
         {
@@ -30108,7 +29963,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 61,
-      "bytes": 1981,
+      "bytes": 1921,
       "doc": "",
       "symbols": [
         {
@@ -30123,7 +29978,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 103,
-      "bytes": 3710,
+      "bytes": 3608,
       "doc": "",
       "symbols": [
         {
@@ -30138,7 +29993,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 355,
-      "bytes": 12373,
+      "bytes": 12019,
       "doc": "",
       "symbols": [
         {
@@ -30153,7 +30008,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 145,
-      "bytes": 4332,
+      "bytes": 4188,
       "doc": "",
       "symbols": [
         {
@@ -30168,7 +30023,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 183,
-      "bytes": 5725,
+      "bytes": 5543,
       "doc": "",
       "symbols": [
         {
@@ -30183,7 +30038,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 146,
-      "bytes": 4827,
+      "bytes": 4682,
       "doc": "",
       "symbols": [
         {
@@ -30225,7 +30080,7 @@
       "area": "mobile",
       "kind": "json",
       "lines": 32,
-      "bytes": 672,
+      "bytes": 641,
       "doc": "",
       "symbols": []
     },
@@ -30234,7 +30089,7 @@
       "area": "mobile",
       "kind": "script",
       "lines": 34,
-      "bytes": 1292,
+      "bytes": 1259,
       "doc": "The native modules the app talks to have no implementation under Jest, and",
       "symbols": []
     },
@@ -30243,7 +30098,7 @@
       "area": "mobile",
       "kind": "script",
       "lines": 29,
-      "bytes": 1251,
+      "bytes": 1223,
       "doc": "Metro, taught about the monorepo.",
       "symbols": []
     },
@@ -30252,7 +30107,7 @@
       "area": "mobile",
       "kind": "json",
       "lines": 53,
-      "bytes": 1495,
+      "bytes": 1443,
       "doc": "",
       "symbols": []
     },
@@ -30261,7 +30116,7 @@
       "area": "mobile",
       "kind": "unit test",
       "lines": 23,
-      "bytes": 770,
+      "bytes": 748,
       "doc": "",
       "symbols": []
     },
@@ -30270,7 +30125,7 @@
       "area": "mobile",
       "kind": "module",
       "lines": 197,
-      "bytes": 6802,
+      "bytes": 6606,
       "doc": "",
       "symbols": [
         {
@@ -30340,7 +30195,7 @@
       "area": "mobile",
       "kind": "module",
       "lines": 244,
-      "bytes": 7444,
+      "bytes": 7201,
       "doc": "",
       "symbols": [
         {
@@ -30500,7 +30355,7 @@
       "area": "mobile",
       "kind": "module",
       "lines": 264,
-      "bytes": 6529,
+      "bytes": 6266,
       "doc": "",
       "symbols": [
         {
@@ -30605,7 +30460,7 @@
       "area": "mobile",
       "kind": "unit test",
       "lines": 90,
-      "bytes": 2814,
+      "bytes": 2725,
       "doc": "",
       "symbols": []
     },
@@ -30614,7 +30469,7 @@
       "area": "mobile",
       "kind": "component",
       "lines": 102,
-      "bytes": 3185,
+      "bytes": 3084,
       "doc": "",
       "symbols": [
         {
@@ -30649,7 +30504,7 @@
       "area": "mobile",
       "kind": "component",
       "lines": 82,
-      "bytes": 2943,
+      "bytes": 2862,
       "doc": "",
       "symbols": [
         {
@@ -30664,7 +30519,7 @@
       "area": "mobile",
       "kind": "component",
       "lines": 301,
-      "bytes": 8229,
+      "bytes": 7929,
       "doc": "",
       "symbols": [
         {
@@ -30744,7 +30599,7 @@
       "area": "mobile",
       "kind": "component",
       "lines": 137,
-      "bytes": 4378,
+      "bytes": 4242,
       "doc": "",
       "symbols": [
         {
@@ -30764,7 +30619,7 @@
       "area": "mobile",
       "kind": "unit test",
       "lines": 35,
-      "bytes": 1377,
+      "bytes": 1343,
       "doc": "",
       "symbols": []
     },
@@ -30773,7 +30628,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 95,
-      "bytes": 2859,
+      "bytes": 2765,
       "doc": "",
       "symbols": [
         {
@@ -30793,7 +30648,7 @@
       "area": "mobile",
       "kind": "module",
       "lines": 343,
-      "bytes": 15549,
+      "bytes": 15207,
       "doc": "",
       "symbols": [
         {
@@ -30813,7 +30668,7 @@
       "area": "mobile",
       "kind": "module",
       "lines": 71,
-      "bytes": 2511,
+      "bytes": 2441,
       "doc": "",
       "symbols": [
         {
@@ -30838,7 +30693,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 99,
-      "bytes": 2908,
+      "bytes": 2810,
       "doc": "",
       "symbols": [
         {
@@ -30858,7 +30713,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 111,
-      "bytes": 3120,
+      "bytes": 3010,
       "doc": "",
       "symbols": [
         {
@@ -30878,7 +30733,7 @@
       "area": "mobile",
       "kind": "module",
       "lines": 66,
-      "bytes": 2933,
+      "bytes": 2868,
       "doc": "",
       "symbols": [
         {
@@ -30898,7 +30753,7 @@
       "area": "mobile",
       "kind": "json",
       "lines": 21,
-      "bytes": 504,
+      "bytes": 484,
       "doc": "",
       "symbols": []
     },
@@ -30907,7 +30762,7 @@
       "area": "pos",
       "kind": "script",
       "lines": 29,
-      "bytes": 1308,
+      "bytes": 1280,
       "doc": "",
       "symbols": []
     },
@@ -30916,7 +30771,7 @@
       "area": "pos",
       "kind": "script",
       "lines": 18,
-      "bytes": 611,
+      "bytes": 594,
       "doc": "",
       "symbols": []
     },
@@ -30925,7 +30780,7 @@
       "area": "pos",
       "kind": "json",
       "lines": 35,
-      "bytes": 946,
+      "bytes": 912,
       "doc": "",
       "symbols": []
     },
@@ -30934,7 +30789,7 @@
       "area": "pos",
       "kind": "script",
       "lines": 8,
-      "bytes": 140,
+      "bytes": 133,
       "doc": "@type {import('postcss-load-config').Config}",
       "symbols": []
     },
@@ -30943,7 +30798,7 @@
       "area": "pos",
       "kind": "asset",
       "lines": 0,
-      "bytes": 262,
+      "bytes": 258,
       "doc": "",
       "symbols": []
     },
@@ -30952,7 +30807,7 @@
       "area": "pos",
       "kind": "script",
       "lines": 46,
-      "bytes": 1781,
+      "bytes": 1736,
       "doc": "App-shell cache: static assets only, never an API call. A sale that fails",
       "symbols": []
     },
@@ -30961,7 +30816,7 @@
       "area": "pos",
       "kind": "error",
       "lines": 34,
-      "bytes": 1145,
+      "bytes": 1112,
       "doc": "",
       "symbols": [
         {
@@ -30976,7 +30831,7 @@
       "area": "pos",
       "kind": "global-error",
       "lines": 76,
-      "bytes": 2404,
+      "bytes": 2329,
       "doc": "",
       "symbols": [
         {
@@ -30991,7 +30846,7 @@
       "area": "pos",
       "kind": "stylesheet",
       "lines": 73,
-      "bytes": 2579,
+      "bytes": 2507,
       "doc": "",
       "symbols": []
     },
@@ -31000,7 +30855,7 @@
       "area": "pos",
       "kind": "layout",
       "lines": 29,
-      "bytes": 717,
+      "bytes": 689,
       "doc": "",
       "symbols": [
         {
@@ -31025,7 +30880,7 @@
       "area": "pos",
       "kind": "page",
       "lines": 63,
-      "bytes": 1963,
+      "bytes": 1901,
       "doc": "",
       "symbols": [
         {
@@ -31040,7 +30895,7 @@
       "area": "pos",
       "kind": "module",
       "lines": 26,
-      "bytes": 892,
+      "bytes": 867,
       "doc": "",
       "symbols": [
         {
@@ -31055,7 +30910,7 @@
       "area": "pos",
       "kind": "not-found",
       "lines": 21,
-      "bytes": 783,
+      "bytes": 763,
       "doc": "",
       "symbols": [
         {
@@ -31070,7 +30925,7 @@
       "area": "pos",
       "kind": "page",
       "lines": 31,
-      "bytes": 848,
+      "bytes": 818,
       "doc": "",
       "symbols": [
         {
@@ -31085,7 +30940,7 @@
       "area": "pos",
       "kind": "page",
       "lines": 74,
-      "bytes": 2350,
+      "bytes": 2277,
       "doc": "",
       "symbols": [
         {
@@ -31100,7 +30955,7 @@
       "area": "pos",
       "kind": "page",
       "lines": 184,
-      "bytes": 6217,
+      "bytes": 6034,
       "doc": "",
       "symbols": [
         {
@@ -31115,7 +30970,7 @@
       "area": "pos",
       "kind": "page",
       "lines": 106,
-      "bytes": 3535,
+      "bytes": 3430,
       "doc": "",
       "symbols": [
         {
@@ -31130,7 +30985,7 @@
       "area": "pos",
       "kind": "page",
       "lines": 71,
-      "bytes": 2323,
+      "bytes": 2253,
       "doc": "",
       "symbols": [
         {
@@ -31145,7 +31000,7 @@
       "area": "pos",
       "kind": "page",
       "lines": 67,
-      "bytes": 2488,
+      "bytes": 2422,
       "doc": "",
       "symbols": [
         {
@@ -31160,7 +31015,7 @@
       "area": "pos",
       "kind": "page",
       "lines": 288,
-      "bytes": 11342,
+      "bytes": 11055,
       "doc": "",
       "symbols": [
         {
@@ -31175,7 +31030,7 @@
       "area": "pos",
       "kind": "component",
       "lines": 43,
-      "bytes": 1758,
+      "bytes": 1716,
       "doc": "",
       "symbols": [
         {
@@ -31190,7 +31045,7 @@
       "area": "pos",
       "kind": "component",
       "lines": 20,
-      "bytes": 687,
+      "bytes": 668,
       "doc": "",
       "symbols": [
         {
@@ -31205,7 +31060,7 @@
       "area": "pos",
       "kind": "constants",
       "lines": 9,
-      "bytes": 192,
+      "bytes": 184,
       "doc": "",
       "symbols": [
         {
@@ -31220,7 +31075,7 @@
       "area": "pos",
       "kind": "constants",
       "lines": 12,
-      "bytes": 448,
+      "bytes": 437,
       "doc": "Its own localStorage/IndexedDB namespace — a till session is not an admin-panel session, even signed in as the same staff account on the same machine.",
       "symbols": [
         {
@@ -31245,7 +31100,7 @@
       "area": "pos",
       "kind": "utility",
       "lines": 67,
-      "bytes": 2475,
+      "bytes": 2409,
       "doc": "",
       "symbols": [
         {
@@ -31275,7 +31130,7 @@
       "area": "pos",
       "kind": "utility",
       "lines": 80,
-      "bytes": 2615,
+      "bytes": 2536,
       "doc": "",
       "symbols": [
         {
@@ -31315,7 +31170,7 @@
       "area": "pos",
       "kind": "utility",
       "lines": 55,
-      "bytes": 2109,
+      "bytes": 2055,
       "doc": "",
       "symbols": [
         {
@@ -31340,7 +31195,7 @@
       "area": "pos",
       "kind": "utility",
       "lines": 39,
-      "bytes": 1470,
+      "bytes": 1432,
       "doc": "",
       "symbols": [
         {
@@ -31355,7 +31210,7 @@
       "area": "pos",
       "kind": "utility",
       "lines": 195,
-      "bytes": 5683,
+      "bytes": 5489,
       "doc": "",
       "symbols": [
         {
@@ -31500,7 +31355,7 @@
       "area": "pos",
       "kind": "module",
       "lines": 51,
-      "bytes": 1682,
+      "bytes": 1632,
       "doc": "",
       "symbols": []
     },
@@ -31509,7 +31364,7 @@
       "area": "pos",
       "kind": "json",
       "lines": 24,
-      "bytes": 599,
+      "bytes": 576,
       "doc": "",
       "symbols": []
     },
@@ -31518,7 +31373,7 @@
       "area": "web",
       "kind": "file",
       "lines": 3,
-      "bytes": 23,
+      "bytes": 21,
       "doc": "",
       "symbols": []
     },
@@ -31527,7 +31382,7 @@
       "area": "web",
       "kind": "file",
       "lines": 52,
-      "bytes": 2125,
+      "bytes": 2074,
       "doc": "",
       "symbols": []
     },
@@ -31536,7 +31391,7 @@
       "area": "web",
       "kind": "script",
       "lines": 29,
-      "bytes": 1308,
+      "bytes": 1280,
       "doc": "",
       "symbols": []
     },
@@ -31545,7 +31400,7 @@
       "area": "web",
       "kind": "json",
       "lines": 405,
-      "bytes": 16196,
+      "bytes": 15792,
       "doc": "",
       "symbols": []
     },
@@ -31554,7 +31409,7 @@
       "area": "web",
       "kind": "json",
       "lines": 405,
-      "bytes": 21515,
+      "bytes": 21111,
       "doc": "",
       "symbols": []
     },
@@ -31563,7 +31418,7 @@
       "area": "web",
       "kind": "script",
       "lines": 42,
-      "bytes": 1873,
+      "bytes": 1832,
       "doc": "",
       "symbols": []
     },
@@ -31572,7 +31427,7 @@
       "area": "web",
       "kind": "json",
       "lines": 41,
-      "bytes": 1141,
+      "bytes": 1101,
       "doc": "",
       "symbols": []
     },
@@ -31581,7 +31436,7 @@
       "area": "web",
       "kind": "script",
       "lines": 8,
-      "bytes": 140,
+      "bytes": 133,
       "doc": "@type {import('postcss-load-config').Config}",
       "symbols": []
     },
@@ -31599,7 +31454,7 @@
       "area": "web",
       "kind": "asset",
       "lines": 0,
-      "bytes": 1394,
+      "bytes": 1370,
       "doc": "",
       "symbols": []
     },
@@ -31608,7 +31463,7 @@
       "area": "web",
       "kind": "asset",
       "lines": 0,
-      "bytes": 1023,
+      "bytes": 1003,
       "doc": "",
       "symbols": []
     },
@@ -31617,7 +31472,7 @@
       "area": "web",
       "kind": "asset",
       "lines": 0,
-      "bytes": 1392,
+      "bytes": 1368,
       "doc": "",
       "symbols": []
     },
@@ -31626,7 +31481,7 @@
       "area": "web",
       "kind": "asset",
       "lines": 0,
-      "bytes": 946,
+      "bytes": 927,
       "doc": "",
       "symbols": []
     },
@@ -31635,7 +31490,7 @@
       "area": "web",
       "kind": "asset",
       "lines": 0,
-      "bytes": 946,
+      "bytes": 927,
       "doc": "",
       "symbols": []
     },
@@ -31644,7 +31499,7 @@
       "area": "web",
       "kind": "asset",
       "lines": 0,
-      "bytes": 1393,
+      "bytes": 1369,
       "doc": "",
       "symbols": []
     },
@@ -31653,7 +31508,7 @@
       "area": "web",
       "kind": "asset",
       "lines": 0,
-      "bytes": 946,
+      "bytes": 927,
       "doc": "",
       "symbols": []
     },
@@ -31662,7 +31517,7 @@
       "area": "web",
       "kind": "asset",
       "lines": 0,
-      "bytes": 1391,
+      "bytes": 1367,
       "doc": "",
       "symbols": []
     },
@@ -31671,7 +31526,7 @@
       "area": "web",
       "kind": "asset",
       "lines": 0,
-      "bytes": 1301,
+      "bytes": 1273,
       "doc": "",
       "symbols": []
     },
@@ -31680,7 +31535,7 @@
       "area": "web",
       "kind": "asset",
       "lines": 0,
-      "bytes": 1389,
+      "bytes": 1365,
       "doc": "",
       "symbols": []
     },
@@ -31689,7 +31544,7 @@
       "area": "web",
       "kind": "asset",
       "lines": 0,
-      "bytes": 1301,
+      "bytes": 1273,
       "doc": "",
       "symbols": []
     },
@@ -31698,7 +31553,7 @@
       "area": "web",
       "kind": "asset",
       "lines": 0,
-      "bytes": 1002,
+      "bytes": 981,
       "doc": "",
       "symbols": []
     },
@@ -31707,7 +31562,7 @@
       "area": "web",
       "kind": "asset",
       "lines": 0,
-      "bytes": 1394,
+      "bytes": 1370,
       "doc": "",
       "symbols": []
     },
@@ -31716,7 +31571,7 @@
       "area": "web",
       "kind": "asset",
       "lines": 0,
-      "bytes": 869,
+      "bytes": 851,
       "doc": "",
       "symbols": []
     },
@@ -31725,7 +31580,7 @@
       "area": "web",
       "kind": "script",
       "lines": 115,
-      "bytes": 4868,
+      "bytes": 4754,
       "doc": "",
       "symbols": []
     },
@@ -31734,7 +31589,7 @@
       "area": "web",
       "kind": "page",
       "lines": 93,
-      "bytes": 3186,
+      "bytes": 3094,
       "doc": "",
       "symbols": [
         {
@@ -31749,7 +31604,7 @@
       "area": "web",
       "kind": "page",
       "lines": 74,
-      "bytes": 2361,
+      "bytes": 2288,
       "doc": "",
       "symbols": [
         {
@@ -31764,7 +31619,7 @@
       "area": "web",
       "kind": "page",
       "lines": 68,
-      "bytes": 2188,
+      "bytes": 2121,
       "doc": "",
       "symbols": [
         {
@@ -31779,7 +31634,7 @@
       "area": "web",
       "kind": "page",
       "lines": 273,
-      "bytes": 9110,
+      "bytes": 8838,
       "doc": "",
       "symbols": [
         {
@@ -31794,7 +31649,7 @@
       "area": "web",
       "kind": "page",
       "lines": 309,
-      "bytes": 10739,
+      "bytes": 10431,
       "doc": "",
       "symbols": [
         {
@@ -31809,7 +31664,7 @@
       "area": "web",
       "kind": "page",
       "lines": 498,
-      "bytes": 17234,
+      "bytes": 16737,
       "doc": "",
       "symbols": [
         {
@@ -31824,7 +31679,7 @@
       "area": "web",
       "kind": "page",
       "lines": 467,
-      "bytes": 18255,
+      "bytes": 17789,
       "doc": "",
       "symbols": [
         {
@@ -31839,7 +31694,7 @@
       "area": "web",
       "kind": "page",
       "lines": 202,
-      "bytes": 7523,
+      "bytes": 7322,
       "doc": "",
       "symbols": [
         {
@@ -31854,7 +31709,7 @@
       "area": "web",
       "kind": "page",
       "lines": 666,
-      "bytes": 24980,
+      "bytes": 24315,
       "doc": "",
       "symbols": [
         {
@@ -31869,7 +31724,7 @@
       "area": "web",
       "kind": "page",
       "lines": 121,
-      "bytes": 4432,
+      "bytes": 4312,
       "doc": "",
       "symbols": [
         {
@@ -31884,7 +31739,7 @@
       "area": "web",
       "kind": "page",
       "lines": 197,
-      "bytes": 7910,
+      "bytes": 7714,
       "doc": "",
       "symbols": [
         {
@@ -31899,7 +31754,7 @@
       "area": "web",
       "kind": "page",
       "lines": 521,
-      "bytes": 20710,
+      "bytes": 20228,
       "doc": "",
       "symbols": [
         {
@@ -31914,7 +31769,7 @@
       "area": "web",
       "kind": "page",
       "lines": 125,
-      "bytes": 4949,
+      "bytes": 4825,
       "doc": "",
       "symbols": [
         {
@@ -31929,7 +31784,7 @@
       "area": "web",
       "kind": "page",
       "lines": 197,
-      "bytes": 7520,
+      "bytes": 7324,
       "doc": "",
       "symbols": [
         {
@@ -31944,7 +31799,7 @@
       "area": "web",
       "kind": "page",
       "lines": 374,
-      "bytes": 13330,
+      "bytes": 12957,
       "doc": "",
       "symbols": [
         {
@@ -31959,7 +31814,7 @@
       "area": "web",
       "kind": "page",
       "lines": 276,
-      "bytes": 11043,
+      "bytes": 10768,
       "doc": "",
       "symbols": [
         {
@@ -31974,7 +31829,7 @@
       "area": "web",
       "kind": "page",
       "lines": 175,
-      "bytes": 6888,
+      "bytes": 6714,
       "doc": "",
       "symbols": [
         {
@@ -31989,7 +31844,7 @@
       "area": "web",
       "kind": "page",
       "lines": 224,
-      "bytes": 8921,
+      "bytes": 8698,
       "doc": "",
       "symbols": [
         {
@@ -32004,7 +31859,7 @@
       "area": "web",
       "kind": "page",
       "lines": 121,
-      "bytes": 4722,
+      "bytes": 4602,
       "doc": "",
       "symbols": [
         {
@@ -32019,7 +31874,7 @@
       "area": "web",
       "kind": "page",
       "lines": 299,
-      "bytes": 12434,
+      "bytes": 12136,
       "doc": "",
       "symbols": [
         {
@@ -32034,7 +31889,7 @@
       "area": "web",
       "kind": "page",
       "lines": 240,
-      "bytes": 8798,
+      "bytes": 8559,
       "doc": "",
       "symbols": [
         {
@@ -32049,7 +31904,7 @@
       "area": "web",
       "kind": "page",
       "lines": 151,
-      "bytes": 5540,
+      "bytes": 5400,
       "doc": "",
       "symbols": [
         {
@@ -32064,7 +31919,7 @@
       "area": "web",
       "kind": "layout",
       "lines": 15,
-      "bytes": 464,
+      "bytes": 450,
       "doc": "",
       "symbols": [
         {
@@ -32079,7 +31934,7 @@
       "area": "web",
       "kind": "page",
       "lines": 176,
-      "bytes": 6324,
+      "bytes": 6149,
       "doc": "",
       "symbols": [
         {
@@ -32094,7 +31949,7 @@
       "area": "web",
       "kind": "loading",
       "lines": 65,
-      "bytes": 2574,
+      "bytes": 2510,
       "doc": "The shape of the dashboard, before the dashboard.",
       "symbols": [
         {
@@ -32109,7 +31964,7 @@
       "area": "web",
       "kind": "page",
       "lines": 182,
-      "bytes": 6098,
+      "bytes": 5917,
       "doc": "",
       "symbols": [
         {
@@ -32124,7 +31979,7 @@
       "area": "web",
       "kind": "page",
       "lines": 248,
-      "bytes": 9107,
+      "bytes": 8860,
       "doc": "",
       "symbols": [
         {
@@ -32139,7 +31994,7 @@
       "area": "web",
       "kind": "page",
       "lines": 89,
-      "bytes": 2944,
+      "bytes": 2856,
       "doc": "",
       "symbols": [
         {
@@ -32154,7 +32009,7 @@
       "area": "web",
       "kind": "page",
       "lines": 94,
-      "bytes": 3537,
+      "bytes": 3444,
       "doc": "",
       "symbols": [
         {
@@ -32169,7 +32024,7 @@
       "area": "web",
       "kind": "page",
       "lines": 539,
-      "bytes": 20420,
+      "bytes": 19882,
       "doc": "",
       "symbols": [
         {
@@ -32184,7 +32039,7 @@
       "area": "web",
       "kind": "page",
       "lines": 298,
-      "bytes": 10573,
+      "bytes": 10276,
       "doc": "",
       "symbols": [
         {
@@ -32199,7 +32054,7 @@
       "area": "web",
       "kind": "page",
       "lines": 526,
-      "bytes": 21197,
+      "bytes": 20672,
       "doc": "",
       "symbols": [
         {
@@ -32214,7 +32069,7 @@
       "area": "web",
       "kind": "page",
       "lines": 155,
-      "bytes": 5374,
+      "bytes": 5220,
       "doc": "",
       "symbols": [
         {
@@ -32229,7 +32084,7 @@
       "area": "web",
       "kind": "page",
       "lines": 30,
-      "bytes": 786,
+      "bytes": 757,
       "doc": "",
       "symbols": [
         {
@@ -32244,7 +32099,7 @@
       "area": "web",
       "kind": "page",
       "lines": 23,
-      "bytes": 661,
+      "bytes": 639,
       "doc": "",
       "symbols": [
         {
@@ -32259,7 +32114,7 @@
       "area": "web",
       "kind": "page",
       "lines": 224,
-      "bytes": 7979,
+      "bytes": 7756,
       "doc": "",
       "symbols": [
         {
@@ -32274,7 +32129,7 @@
       "area": "web",
       "kind": "page",
       "lines": 186,
-      "bytes": 7314,
+      "bytes": 7129,
       "doc": "",
       "symbols": [
         {
@@ -32289,7 +32144,7 @@
       "area": "web",
       "kind": "page",
       "lines": 183,
-      "bytes": 6692,
+      "bytes": 6510,
       "doc": "",
       "symbols": [
         {
@@ -32304,7 +32159,7 @@
       "area": "web",
       "kind": "page",
       "lines": 286,
-      "bytes": 10713,
+      "bytes": 10428,
       "doc": "",
       "symbols": [
         {
@@ -32319,7 +32174,7 @@
       "area": "web",
       "kind": "page",
       "lines": 153,
-      "bytes": 5677,
+      "bytes": 5535,
       "doc": "",
       "symbols": [
         {
@@ -32334,7 +32189,7 @@
       "area": "web",
       "kind": "page",
       "lines": 423,
-      "bytes": 15554,
+      "bytes": 15132,
       "doc": "",
       "symbols": [
         {
@@ -32349,7 +32204,7 @@
       "area": "web",
       "kind": "page",
       "lines": 604,
-      "bytes": 21868,
+      "bytes": 21265,
       "doc": "",
       "symbols": [
         {
@@ -32364,7 +32219,7 @@
       "area": "web",
       "kind": "page",
       "lines": 212,
-      "bytes": 7566,
+      "bytes": 7355,
       "doc": "",
       "symbols": [
         {
@@ -32379,7 +32234,7 @@
       "area": "web",
       "kind": "page",
       "lines": 167,
-      "bytes": 5996,
+      "bytes": 5830,
       "doc": "",
       "symbols": [
         {
@@ -32394,7 +32249,7 @@
       "area": "web",
       "kind": "page",
       "lines": 306,
-      "bytes": 11069,
+      "bytes": 10804,
       "doc": "",
       "symbols": [
         {
@@ -32409,7 +32264,7 @@
       "area": "web",
       "kind": "page",
       "lines": 275,
-      "bytes": 10048,
+      "bytes": 9799,
       "doc": "",
       "symbols": [
         {
@@ -32424,7 +32279,7 @@
       "area": "web",
       "kind": "page",
       "lines": 186,
-      "bytes": 6980,
+      "bytes": 6795,
       "doc": "No clsx import needed",
       "symbols": [
         {
@@ -32439,7 +32294,7 @@
       "area": "web",
       "kind": "page",
       "lines": 80,
-      "bytes": 2523,
+      "bytes": 2444,
       "doc": "",
       "symbols": [
         {
@@ -32454,7 +32309,7 @@
       "area": "web",
       "kind": "page",
       "lines": 369,
-      "bytes": 14077,
+      "bytes": 13709,
       "doc": "",
       "symbols": [
         {
@@ -32469,7 +32324,7 @@
       "area": "web",
       "kind": "page",
       "lines": 207,
-      "bytes": 7491,
+      "bytes": 7285,
       "doc": "",
       "symbols": [
         {
@@ -32484,7 +32339,7 @@
       "area": "web",
       "kind": "page",
       "lines": 90,
-      "bytes": 3142,
+      "bytes": 3053,
       "doc": "",
       "symbols": [
         {
@@ -32499,7 +32354,7 @@
       "area": "web",
       "kind": "page",
       "lines": 119,
-      "bytes": 4461,
+      "bytes": 4343,
       "doc": "",
       "symbols": [
         {
@@ -32514,7 +32369,7 @@
       "area": "web",
       "kind": "page",
       "lines": 454,
-      "bytes": 16635,
+      "bytes": 16182,
       "doc": "",
       "symbols": [
         {
@@ -32529,7 +32384,7 @@
       "area": "web",
       "kind": "page",
       "lines": 261,
-      "bytes": 8947,
+      "bytes": 8687,
       "doc": "",
       "symbols": [
         {
@@ -32544,7 +32399,7 @@
       "area": "web",
       "kind": "error",
       "lines": 51,
-      "bytes": 1577,
+      "bytes": 1527,
       "doc": "",
       "symbols": [
         {
@@ -32559,7 +32414,7 @@
       "area": "web",
       "kind": "layout",
       "lines": 24,
-      "bytes": 802,
+      "bytes": 779,
       "doc": "",
       "symbols": [
         {
@@ -32579,7 +32434,7 @@
       "area": "web",
       "kind": "page",
       "lines": 89,
-      "bytes": 2981,
+      "bytes": 2893,
       "doc": "",
       "symbols": [
         {
@@ -32594,7 +32449,7 @@
       "area": "web",
       "kind": "not-found",
       "lines": 21,
-      "bytes": 860,
+      "bytes": 840,
       "doc": "",
       "symbols": [
         {
@@ -32609,7 +32464,7 @@
       "area": "web",
       "kind": "page",
       "lines": 277,
-      "bytes": 9099,
+      "bytes": 8823,
       "doc": "",
       "symbols": [
         {
@@ -32624,7 +32479,7 @@
       "area": "web",
       "kind": "page",
       "lines": 258,
-      "bytes": 8972,
+      "bytes": 8715,
       "doc": "",
       "symbols": [
         {
@@ -32639,7 +32494,7 @@
       "area": "web",
       "kind": "page",
       "lines": 219,
-      "bytes": 7594,
+      "bytes": 7376,
       "doc": "",
       "symbols": [
         {
@@ -32654,7 +32509,7 @@
       "area": "web",
       "kind": "layout",
       "lines": 79,
-      "bytes": 2942,
+      "bytes": 2864,
       "doc": "",
       "symbols": [
         {
@@ -32669,7 +32524,7 @@
       "area": "web",
       "kind": "page",
       "lines": 360,
-      "bytes": 13887,
+      "bytes": 13528,
       "doc": "",
       "symbols": [
         {
@@ -32684,7 +32539,7 @@
       "area": "web",
       "kind": "page",
       "lines": 135,
-      "bytes": 4964,
+      "bytes": 4830,
       "doc": "",
       "symbols": [
         {
@@ -32699,7 +32554,7 @@
       "area": "web",
       "kind": "page",
       "lines": 117,
-      "bytes": 4292,
+      "bytes": 4176,
       "doc": "",
       "symbols": [
         {
@@ -32714,7 +32569,7 @@
       "area": "web",
       "kind": "page",
       "lines": 50,
-      "bytes": 1582,
+      "bytes": 1533,
       "doc": "",
       "symbols": [
         {
@@ -32749,7 +32604,7 @@
       "area": "web",
       "kind": "page",
       "lines": 49,
-      "bytes": 1731,
+      "bytes": 1683,
       "doc": "",
       "symbols": [
         {
@@ -32769,7 +32624,7 @@
       "area": "web",
       "kind": "page",
       "lines": 52,
-      "bytes": 2327,
+      "bytes": 2276,
       "doc": "",
       "symbols": [
         {
@@ -32789,7 +32644,7 @@
       "area": "web",
       "kind": "page",
       "lines": 60,
-      "bytes": 1724,
+      "bytes": 1665,
       "doc": "",
       "symbols": [
         {
@@ -32809,7 +32664,7 @@
       "area": "web",
       "kind": "loading",
       "lines": 48,
-      "bytes": 1881,
+      "bytes": 1834,
       "doc": "",
       "symbols": [
         {
@@ -32824,7 +32679,7 @@
       "area": "web",
       "kind": "page",
       "lines": 325,
-      "bytes": 11623,
+      "bytes": 11299,
       "doc": "",
       "symbols": [
         {
@@ -32839,7 +32694,7 @@
       "area": "web",
       "kind": "loading",
       "lines": 47,
-      "bytes": 1835,
+      "bytes": 1789,
       "doc": "",
       "symbols": [
         {
@@ -32854,7 +32709,7 @@
       "area": "web",
       "kind": "page",
       "lines": 493,
-      "bytes": 17991,
+      "bytes": 17499,
       "doc": "",
       "symbols": [
         {
@@ -32869,7 +32724,7 @@
       "area": "web",
       "kind": "error",
       "lines": 62,
-      "bytes": 2279,
+      "bytes": 2218,
       "doc": "",
       "symbols": [
         {
@@ -32884,7 +32739,7 @@
       "area": "web",
       "kind": "page",
       "lines": 83,
-      "bytes": 2649,
+      "bytes": 2567,
       "doc": "",
       "symbols": [
         {
@@ -32899,7 +32754,7 @@
       "area": "web",
       "kind": "layout",
       "lines": 139,
-      "bytes": 5209,
+      "bytes": 5071,
       "doc": "",
       "symbols": [
         {
@@ -32919,7 +32774,7 @@
       "area": "web",
       "kind": "loading",
       "lines": 66,
-      "bytes": 2761,
+      "bytes": 2696,
       "doc": "",
       "symbols": [
         {
@@ -32934,7 +32789,7 @@
       "area": "web",
       "kind": "page",
       "lines": 114,
-      "bytes": 3704,
+      "bytes": 3591,
       "doc": "",
       "symbols": [
         {
@@ -32949,7 +32804,7 @@
       "area": "web",
       "kind": "not-found",
       "lines": 37,
-      "bytes": 1385,
+      "bytes": 1349,
       "doc": "",
       "symbols": [
         {
@@ -32964,7 +32819,7 @@
       "area": "web",
       "kind": "page",
       "lines": 239,
-      "bytes": 10235,
+      "bytes": 9997,
       "doc": "",
       "symbols": [
         {
@@ -32989,7 +32844,7 @@
       "area": "web",
       "kind": "page",
       "lines": 279,
-      "bytes": 15670,
+      "bytes": 15392,
       "doc": "",
       "symbols": [
         {
@@ -33009,7 +32864,7 @@
       "area": "web",
       "kind": "loading",
       "lines": 79,
-      "bytes": 2873,
+      "bytes": 2795,
       "doc": "",
       "symbols": [
         {
@@ -33024,7 +32879,7 @@
       "area": "web",
       "kind": "page",
       "lines": 373,
-      "bytes": 14693,
+      "bytes": 14321,
       "doc": "",
       "symbols": [
         {
@@ -33049,7 +32904,7 @@
       "area": "web",
       "kind": "page",
       "lines": 159,
-      "bytes": 5149,
+      "bytes": 4991,
       "doc": "",
       "symbols": [
         {
@@ -33064,7 +32919,7 @@
       "area": "web",
       "kind": "page",
       "lines": 82,
-      "bytes": 2709,
+      "bytes": 2628,
       "doc": "",
       "symbols": [
         {
@@ -33079,7 +32934,7 @@
       "area": "web",
       "kind": "page",
       "lines": 295,
-      "bytes": 13239,
+      "bytes": 12945,
       "doc": "",
       "symbols": [
         {
@@ -33099,7 +32954,7 @@
       "area": "web",
       "kind": "loading",
       "lines": 55,
-      "bytes": 2142,
+      "bytes": 2088,
       "doc": "",
       "symbols": [
         {
@@ -33114,7 +32969,7 @@
       "area": "web",
       "kind": "page",
       "lines": 168,
-      "bytes": 6194,
+      "bytes": 6027,
       "doc": "",
       "symbols": [
         {
@@ -33139,7 +32994,7 @@
       "area": "web",
       "kind": "page",
       "lines": 208,
-      "bytes": 6861,
+      "bytes": 6654,
       "doc": "",
       "symbols": [
         {
@@ -33154,7 +33009,7 @@
       "area": "web",
       "kind": "page",
       "lines": 392,
-      "bytes": 14611,
+      "bytes": 14220,
       "doc": "",
       "symbols": [
         {
@@ -33169,7 +33024,7 @@
       "area": "web",
       "kind": "page",
       "lines": 306,
-      "bytes": 13401,
+      "bytes": 13096,
       "doc": "",
       "symbols": [
         {
@@ -33189,7 +33044,7 @@
       "area": "web",
       "kind": "page",
       "lines": 63,
-      "bytes": 2162,
+      "bytes": 2100,
       "doc": "",
       "symbols": [
         {
@@ -33204,7 +33059,7 @@
       "area": "web",
       "kind": "page",
       "lines": 61,
-      "bytes": 2014,
+      "bytes": 1954,
       "doc": "",
       "symbols": [
         {
@@ -33219,7 +33074,7 @@
       "area": "web",
       "kind": "route handler",
       "lines": 79,
-      "bytes": 3082,
+      "bytes": 3004,
       "doc": "",
       "symbols": [
         {
@@ -33239,7 +33094,7 @@
       "area": "web",
       "kind": "route handler",
       "lines": 17,
-      "bytes": 578,
+      "bytes": 562,
       "doc": "",
       "symbols": [
         {
@@ -33259,7 +33114,7 @@
       "area": "web",
       "kind": "global-error",
       "lines": 82,
-      "bytes": 2827,
+      "bytes": 2746,
       "doc": "",
       "symbols": [
         {
@@ -33274,7 +33129,7 @@
       "area": "web",
       "kind": "stylesheet",
       "lines": 603,
-      "bytes": 21073,
+      "bytes": 20471,
       "doc": "",
       "symbols": []
     },
@@ -33283,7 +33138,7 @@
       "area": "web",
       "kind": "asset",
       "lines": 0,
-      "bytes": 1854,
+      "bytes": 1828,
       "doc": "",
       "symbols": []
     },
@@ -33292,7 +33147,7 @@
       "area": "web",
       "kind": "not-found",
       "lines": 79,
-      "bytes": 2764,
+      "bytes": 2686,
       "doc": "",
       "symbols": [
         {
@@ -33307,7 +33162,7 @@
       "area": "web",
       "kind": "module",
       "lines": 33,
-      "bytes": 857,
+      "bytes": 825,
       "doc": "",
       "symbols": [
         {
@@ -33322,7 +33177,7 @@
       "area": "web",
       "kind": "module",
       "lines": 75,
-      "bytes": 2319,
+      "bytes": 2245,
       "doc": "Renders per-request rather than being prerendered at `next build` time —",
       "symbols": [
         {
@@ -33342,7 +33197,7 @@
       "area": "web",
       "kind": "component",
       "lines": 410,
-      "bytes": 14482,
+      "bytes": 14073,
       "doc": "",
       "symbols": [
         {
@@ -33357,7 +33212,7 @@
       "area": "web",
       "kind": "component",
       "lines": 285,
-      "bytes": 9961,
+      "bytes": 9677,
       "doc": "",
       "symbols": [
         {
@@ -33372,7 +33227,7 @@
       "area": "web",
       "kind": "component",
       "lines": 21,
-      "bytes": 867,
+      "bytes": 847,
       "doc": "",
       "symbols": [
         {
@@ -33392,7 +33247,7 @@
       "area": "web",
       "kind": "component",
       "lines": 136,
-      "bytes": 4876,
+      "bytes": 4741,
       "doc": "",
       "symbols": [
         {
@@ -33412,7 +33267,7 @@
       "area": "web",
       "kind": "component",
       "lines": 81,
-      "bytes": 2718,
+      "bytes": 2638,
       "doc": "",
       "symbols": [
         {
@@ -33432,7 +33287,7 @@
       "area": "web",
       "kind": "component",
       "lines": 69,
-      "bytes": 2269,
+      "bytes": 2201,
       "doc": "",
       "symbols": [
         {
@@ -33447,7 +33302,7 @@
       "area": "web",
       "kind": "component",
       "lines": 485,
-      "bytes": 17170,
+      "bytes": 16686,
       "doc": "",
       "symbols": [
         {
@@ -33482,7 +33337,7 @@
       "area": "web",
       "kind": "component",
       "lines": 388,
-      "bytes": 10800,
+      "bytes": 10413,
       "doc": "",
       "symbols": [
         {
@@ -33527,7 +33382,7 @@
       "area": "web",
       "kind": "component",
       "lines": 117,
-      "bytes": 4369,
+      "bytes": 4253,
       "doc": "",
       "symbols": [
         {
@@ -33547,7 +33402,7 @@
       "area": "web",
       "kind": "component",
       "lines": 73,
-      "bytes": 2402,
+      "bytes": 2330,
       "doc": "",
       "symbols": [
         {
@@ -33562,7 +33417,7 @@
       "area": "web",
       "kind": "component",
       "lines": 1034,
-      "bytes": 38361,
+      "bytes": 37328,
       "doc": "",
       "symbols": [
         {
@@ -33577,7 +33432,7 @@
       "area": "web",
       "kind": "component",
       "lines": 58,
-      "bytes": 1773,
+      "bytes": 1716,
       "doc": "",
       "symbols": [
         {
@@ -33602,7 +33457,7 @@
       "area": "web",
       "kind": "component",
       "lines": 359,
-      "bytes": 12836,
+      "bytes": 12478,
       "doc": "",
       "symbols": [
         {
@@ -33617,7 +33472,7 @@
       "area": "web",
       "kind": "component",
       "lines": 242,
-      "bytes": 8545,
+      "bytes": 8304,
       "doc": "",
       "symbols": [
         {
@@ -33632,7 +33487,7 @@
       "area": "web",
       "kind": "component",
       "lines": 71,
-      "bytes": 2168,
+      "bytes": 2098,
       "doc": "",
       "symbols": [
         {
@@ -33652,7 +33507,7 @@
       "area": "web",
       "kind": "component",
       "lines": 25,
-      "bytes": 751,
+      "bytes": 727,
       "doc": "",
       "symbols": [
         {
@@ -33672,7 +33527,7 @@
       "area": "web",
       "kind": "component",
       "lines": 15,
-      "bytes": 621,
+      "bytes": 607,
       "doc": "",
       "symbols": [
         {
@@ -33687,7 +33542,7 @@
       "area": "web",
       "kind": "component",
       "lines": 62,
-      "bytes": 2384,
+      "bytes": 2323,
       "doc": "",
       "symbols": [
         {
@@ -33707,7 +33562,7 @@
       "area": "web",
       "kind": "component",
       "lines": 60,
-      "bytes": 1734,
+      "bytes": 1675,
       "doc": "",
       "symbols": [
         {
@@ -33722,7 +33577,7 @@
       "area": "web",
       "kind": "component",
       "lines": 146,
-      "bytes": 4521,
+      "bytes": 4376,
       "doc": "",
       "symbols": [
         {
@@ -33742,7 +33597,7 @@
       "area": "web",
       "kind": "component",
       "lines": 67,
-      "bytes": 2293,
+      "bytes": 2227,
       "doc": "",
       "symbols": [
         {
@@ -33757,7 +33612,7 @@
       "area": "web",
       "kind": "component",
       "lines": 54,
-      "bytes": 2010,
+      "bytes": 1957,
       "doc": "",
       "symbols": [
         {
@@ -33772,7 +33627,7 @@
       "area": "web",
       "kind": "component",
       "lines": 96,
-      "bytes": 3409,
+      "bytes": 3314,
       "doc": "",
       "symbols": [
         {
@@ -33787,7 +33642,7 @@
       "area": "web",
       "kind": "component",
       "lines": 62,
-      "bytes": 2227,
+      "bytes": 2166,
       "doc": "",
       "symbols": [
         {
@@ -33802,7 +33657,7 @@
       "area": "web",
       "kind": "component",
       "lines": 150,
-      "bytes": 5457,
+      "bytes": 5308,
       "doc": "",
       "symbols": [
         {
@@ -33817,7 +33672,7 @@
       "area": "web",
       "kind": "component",
       "lines": 30,
-      "bytes": 1299,
+      "bytes": 1270,
       "doc": "",
       "symbols": [
         {
@@ -33832,7 +33687,7 @@
       "area": "web",
       "kind": "component",
       "lines": 104,
-      "bytes": 2868,
+      "bytes": 2765,
       "doc": "",
       "symbols": [
         {
@@ -33852,7 +33707,7 @@
       "area": "web",
       "kind": "component",
       "lines": 87,
-      "bytes": 3521,
+      "bytes": 3435,
       "doc": "",
       "symbols": [
         {
@@ -33867,7 +33722,7 @@
       "area": "web",
       "kind": "component",
       "lines": 36,
-      "bytes": 962,
+      "bytes": 927,
       "doc": "",
       "symbols": [
         {
@@ -33887,7 +33742,7 @@
       "area": "web",
       "kind": "component",
       "lines": 358,
-      "bytes": 11934,
+      "bytes": 11577,
       "doc": "",
       "symbols": [
         {
@@ -33902,7 +33757,7 @@
       "area": "web",
       "kind": "component",
       "lines": 110,
-      "bytes": 5028,
+      "bytes": 4919,
       "doc": "",
       "symbols": [
         {
@@ -33917,7 +33772,7 @@
       "area": "web",
       "kind": "component",
       "lines": 13,
-      "bytes": 311,
+      "bytes": 299,
       "doc": "",
       "symbols": [
         {
@@ -33932,7 +33787,7 @@
       "area": "web",
       "kind": "component",
       "lines": 41,
-      "bytes": 1281,
+      "bytes": 1241,
       "doc": "",
       "symbols": [
         {
@@ -33947,7 +33802,7 @@
       "area": "web",
       "kind": "component",
       "lines": 208,
-      "bytes": 9750,
+      "bytes": 9543,
       "doc": "",
       "symbols": [
         {
@@ -33962,7 +33817,7 @@
       "area": "web",
       "kind": "component",
       "lines": 15,
-      "bytes": 523,
+      "bytes": 509,
       "doc": "Renders one JSON-LD `<script>` tag.",
       "symbols": [
         {
@@ -33977,7 +33832,7 @@
       "area": "web",
       "kind": "component",
       "lines": 72,
-      "bytes": 2832,
+      "bytes": 2761,
       "doc": "",
       "symbols": [
         {
@@ -33992,7 +33847,7 @@
       "area": "web",
       "kind": "component",
       "lines": 75,
-      "bytes": 2736,
+      "bytes": 2662,
       "doc": "",
       "symbols": [
         {
@@ -34007,7 +33862,7 @@
       "area": "web",
       "kind": "component",
       "lines": 126,
-      "bytes": 8619,
+      "bytes": 8494,
       "doc": "The \"yaseen\" wordmark, traced from the brand's source artwork into a single vector path.",
       "symbols": [
         {
@@ -34022,7 +33877,7 @@
       "area": "web",
       "kind": "component",
       "lines": 190,
-      "bytes": 7006,
+      "bytes": 6817,
       "doc": "",
       "symbols": [
         {
@@ -34037,7 +33892,7 @@
       "area": "web",
       "kind": "component",
       "lines": 39,
-      "bytes": 1187,
+      "bytes": 1149,
       "doc": "",
       "symbols": [
         {
@@ -34052,7 +33907,7 @@
       "area": "web",
       "kind": "component",
       "lines": 239,
-      "bytes": 9835,
+      "bytes": 9597,
       "doc": "",
       "symbols": [
         {
@@ -34067,7 +33922,7 @@
       "area": "web",
       "kind": "component",
       "lines": 137,
-      "bytes": 4900,
+      "bytes": 4764,
       "doc": "",
       "symbols": [
         {
@@ -34082,7 +33937,7 @@
       "area": "web",
       "kind": "component",
       "lines": 433,
-      "bytes": 15419,
+      "bytes": 14987,
       "doc": "",
       "symbols": [
         {
@@ -34102,7 +33957,7 @@
       "area": "web",
       "kind": "component",
       "lines": 70,
-      "bytes": 2550,
+      "bytes": 2481,
       "doc": "",
       "symbols": [
         {
@@ -34117,7 +33972,7 @@
       "area": "web",
       "kind": "component",
       "lines": 79,
-      "bytes": 2620,
+      "bytes": 2542,
       "doc": "",
       "symbols": [
         {
@@ -34132,7 +33987,7 @@
       "area": "web",
       "kind": "component",
       "lines": 131,
-      "bytes": 5394,
+      "bytes": 5264,
       "doc": "",
       "symbols": [
         {
@@ -34147,7 +34002,7 @@
       "area": "web",
       "kind": "component",
       "lines": 56,
-      "bytes": 2177,
+      "bytes": 2122,
       "doc": "",
       "symbols": [
         {
@@ -34162,7 +34017,7 @@
       "area": "web",
       "kind": "component",
       "lines": 219,
-      "bytes": 8869,
+      "bytes": 8651,
       "doc": "",
       "symbols": [
         {
@@ -34177,7 +34032,7 @@
       "area": "web",
       "kind": "component",
       "lines": 35,
-      "bytes": 781,
+      "bytes": 747,
       "doc": "",
       "symbols": [
         {
@@ -34192,7 +34047,7 @@
       "area": "web",
       "kind": "component",
       "lines": 64,
-      "bytes": 2459,
+      "bytes": 2396,
       "doc": "",
       "symbols": [
         {
@@ -34207,7 +34062,7 @@
       "area": "web",
       "kind": "component",
       "lines": 969,
-      "bytes": 34916,
+      "bytes": 33948,
       "doc": "",
       "symbols": [
         {
@@ -34237,7 +34092,7 @@
       "area": "web",
       "kind": "component",
       "lines": 105,
-      "bytes": 3719,
+      "bytes": 3615,
       "doc": "",
       "symbols": [
         {
@@ -34257,7 +34112,7 @@
       "area": "web",
       "kind": "component",
       "lines": 45,
-      "bytes": 1258,
+      "bytes": 1214,
       "doc": "",
       "symbols": [
         {
@@ -34277,7 +34132,7 @@
       "area": "web",
       "kind": "component",
       "lines": 56,
-      "bytes": 1624,
+      "bytes": 1569,
       "doc": "",
       "symbols": [
         {
@@ -34297,7 +34152,7 @@
       "area": "web",
       "kind": "component",
       "lines": 140,
-      "bytes": 5019,
+      "bytes": 4880,
       "doc": "",
       "symbols": [
         {
@@ -34317,7 +34172,7 @@
       "area": "web",
       "kind": "component",
       "lines": 197,
-      "bytes": 6871,
+      "bytes": 6675,
       "doc": "",
       "symbols": [
         {
@@ -34332,7 +34187,7 @@
       "area": "web",
       "kind": "component",
       "lines": 69,
-      "bytes": 2204,
+      "bytes": 2136,
       "doc": "",
       "symbols": [
         {
@@ -34347,7 +34202,7 @@
       "area": "web",
       "kind": "component",
       "lines": 40,
-      "bytes": 1407,
+      "bytes": 1368,
       "doc": "",
       "symbols": [
         {
@@ -34362,7 +34217,7 @@
       "area": "web",
       "kind": "component",
       "lines": 28,
-      "bytes": 1046,
+      "bytes": 1019,
       "doc": "Design-system primitives.",
       "symbols": []
     },
@@ -34371,7 +34226,7 @@
       "area": "web",
       "kind": "loading",
       "lines": 31,
-      "bytes": 1061,
+      "bytes": 1031,
       "doc": "",
       "symbols": [
         {
@@ -34386,7 +34241,7 @@
       "area": "web",
       "kind": "component",
       "lines": 158,
-      "bytes": 5318,
+      "bytes": 5161,
       "doc": "",
       "symbols": [
         {
@@ -34406,7 +34261,7 @@
       "area": "web",
       "kind": "component",
       "lines": 53,
-      "bytes": 1834,
+      "bytes": 1782,
       "doc": "",
       "symbols": [
         {
@@ -34421,7 +34276,7 @@
       "area": "web",
       "kind": "component",
       "lines": 154,
-      "bytes": 5803,
+      "bytes": 5650,
       "doc": "",
       "symbols": [
         {
@@ -34441,7 +34296,7 @@
       "area": "web",
       "kind": "component",
       "lines": 59,
-      "bytes": 2067,
+      "bytes": 2009,
       "doc": "",
       "symbols": [
         {
@@ -34456,7 +34311,7 @@
       "area": "web",
       "kind": "component",
       "lines": 116,
-      "bytes": 3980,
+      "bytes": 3865,
       "doc": "",
       "symbols": [
         {
@@ -34476,7 +34331,7 @@
       "area": "web",
       "kind": "config",
       "lines": 61,
-      "bytes": 2008,
+      "bytes": 1948,
       "doc": "",
       "symbols": [
         {
@@ -34491,7 +34346,7 @@
       "area": "web",
       "kind": "config",
       "lines": 31,
-      "bytes": 1264,
+      "bytes": 1234,
       "doc": "",
       "symbols": [
         {
@@ -34516,7 +34371,7 @@
       "area": "web",
       "kind": "config",
       "lines": 14,
-      "bytes": 507,
+      "bytes": 494,
       "doc": "",
       "symbols": [
         {
@@ -34531,7 +34386,7 @@
       "area": "web",
       "kind": "constants",
       "lines": 21,
-      "bytes": 882,
+      "bytes": 862,
       "doc": "",
       "symbols": [
         {
@@ -34546,7 +34401,7 @@
       "area": "web",
       "kind": "constants",
       "lines": 30,
-      "bytes": 1200,
+      "bytes": 1171,
       "doc": "How a payment provider's key is written for staff.",
       "symbols": [
         {
@@ -34566,7 +34421,7 @@
       "area": "web",
       "kind": "constants",
       "lines": 24,
-      "bytes": 830,
+      "bytes": 807,
       "doc": "Permission keys, re-exported from the shared catalogue.",
       "symbols": []
     },
@@ -34575,7 +34430,7 @@
       "area": "web",
       "kind": "constants",
       "lines": 121,
-      "bytes": 4510,
+      "bytes": 4390,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -34590,7 +34445,7 @@
       "area": "web",
       "kind": "constants",
       "lines": 52,
-      "bytes": 2025,
+      "bytes": 1974,
       "doc": "Browser storage keys.",
       "symbols": [
         {
@@ -34605,7 +34460,7 @@
       "area": "web",
       "kind": "hook",
       "lines": 13,
-      "bytes": 545,
+      "bytes": 533,
       "doc": "The cart, from anywhere in the storefront.",
       "symbols": []
     },
@@ -34614,7 +34469,7 @@
       "area": "web",
       "kind": "hook",
       "lines": 23,
-      "bytes": 835,
+      "bytes": 813,
       "doc": "",
       "symbols": [
         {
@@ -34629,7 +34484,7 @@
       "area": "web",
       "kind": "hook",
       "lines": 36,
-      "bytes": 880,
+      "bytes": 845,
       "doc": "",
       "symbols": [
         {
@@ -34649,7 +34504,7 @@
       "area": "web",
       "kind": "module",
       "lines": 11,
-      "bytes": 424,
+      "bytes": 414,
       "doc": "",
       "symbols": []
     },
@@ -34658,7 +34513,7 @@
       "area": "web",
       "kind": "module",
       "lines": 24,
-      "bytes": 996,
+      "bytes": 973,
       "doc": "",
       "symbols": []
     },
@@ -34667,7 +34522,7 @@
       "area": "web",
       "kind": "module",
       "lines": 18,
-      "bytes": 605,
+      "bytes": 588,
       "doc": "",
       "symbols": [
         {
@@ -34682,7 +34537,7 @@
       "area": "web",
       "kind": "utility",
       "lines": 143,
-      "bytes": 4588,
+      "bytes": 4446,
       "doc": "",
       "symbols": [
         {
@@ -34722,7 +34577,7 @@
       "area": "web",
       "kind": "utility",
       "lines": 91,
-      "bytes": 3304,
+      "bytes": 3214,
       "doc": "",
       "symbols": [
         {
@@ -34747,7 +34602,7 @@
       "area": "web",
       "kind": "utility",
       "lines": 41,
-      "bytes": 1323,
+      "bytes": 1283,
       "doc": "The one HTTP layer.",
       "symbols": [
         {
@@ -34772,7 +34627,7 @@
       "area": "web",
       "kind": "utility",
       "lines": 65,
-      "bytes": 2164,
+      "bytes": 2100,
       "doc": "",
       "symbols": [
         {
@@ -34812,7 +34667,7 @@
       "area": "web",
       "kind": "utility",
       "lines": 85,
-      "bytes": 2894,
+      "bytes": 2810,
       "doc": "",
       "symbols": [
         {
@@ -34852,7 +34707,7 @@
       "area": "web",
       "kind": "utility",
       "lines": 196,
-      "bytes": 6084,
+      "bytes": 5889,
       "doc": "",
       "symbols": [
         {
@@ -34927,7 +34782,7 @@
       "area": "web",
       "kind": "utility",
       "lines": 36,
-      "bytes": 1381,
+      "bytes": 1346,
       "doc": "",
       "symbols": [
         {
@@ -34942,7 +34797,7 @@
       "area": "web",
       "kind": "utility",
       "lines": 96,
-      "bytes": 2899,
+      "bytes": 2804,
       "doc": "",
       "symbols": [
         {
@@ -34967,7 +34822,7 @@
       "area": "web",
       "kind": "module",
       "lines": 19,
-      "bytes": 853,
+      "bytes": 835,
       "doc": "",
       "symbols": [
         {
@@ -34982,7 +34837,7 @@
       "area": "web",
       "kind": "react",
       "lines": 37,
-      "bytes": 1318,
+      "bytes": 1282,
       "doc": "",
       "symbols": [
         {
@@ -34997,7 +34852,7 @@
       "area": "web",
       "kind": "react",
       "lines": 45,
-      "bytes": 1801,
+      "bytes": 1757,
       "doc": "",
       "symbols": [
         {
@@ -35012,7 +34867,7 @@
       "area": "web",
       "kind": "types",
       "lines": 711,
-      "bytes": 19346,
+      "bytes": 18636,
       "doc": "",
       "symbols": [
         {
@@ -35327,7 +35182,7 @@
       "area": "web",
       "kind": "types",
       "lines": 110,
-      "bytes": 3123,
+      "bytes": 3014,
       "doc": "",
       "symbols": [
         {
@@ -35377,7 +35232,7 @@
       "area": "web",
       "kind": "types",
       "lines": 24,
-      "bytes": 791,
+      "bytes": 768,
       "doc": "The commerce contracts — product, order, cart, inventory — in one import.",
       "symbols": []
     },
@@ -35386,7 +35241,7 @@
       "area": "web",
       "kind": "types",
       "lines": 14,
-      "bytes": 631,
+      "bytes": 618,
       "doc": "Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel imports.",
       "symbols": []
     },
@@ -35395,7 +35250,7 @@
       "area": "web",
       "kind": "types",
       "lines": 176,
-      "bytes": 4840,
+      "bytes": 4665,
       "doc": "",
       "symbols": [
         {
@@ -35465,7 +35320,7 @@
       "area": "web",
       "kind": "utility",
       "lines": 21,
-      "bytes": 924,
+      "bytes": 904,
       "doc": "",
       "symbols": [
         {
@@ -35480,7 +35335,7 @@
       "area": "web",
       "kind": "utility",
       "lines": 91,
-      "bytes": 3266,
+      "bytes": 3176,
       "doc": "",
       "symbols": [
         {
@@ -35535,7 +35390,7 @@
       "area": "web",
       "kind": "utility",
       "lines": 100,
-      "bytes": 2766,
+      "bytes": 2667,
       "doc": "",
       "symbols": [
         {
@@ -35570,7 +35425,7 @@
       "area": "web",
       "kind": "utility",
       "lines": 76,
-      "bytes": 2633,
+      "bytes": 2558,
       "doc": "",
       "symbols": [
         {
@@ -35625,7 +35480,7 @@
       "area": "web",
       "kind": "utility",
       "lines": 18,
-      "bytes": 816,
+      "bytes": 799,
       "doc": "Whether a piece of admin UI tagged with an API module name should render for this deployment — the one predicate nav-registry.ts's `navFor()`, the dashboard and the settings page all share, so \"is this module on?\" is an…",
       "symbols": [
         {
@@ -35640,7 +35495,7 @@
       "area": "web",
       "kind": "module",
       "lines": 188,
-      "bytes": 7747,
+      "bytes": 7560,
       "doc": "",
       "symbols": []
     },
@@ -35649,7 +35504,7 @@
       "area": "web",
       "kind": "json",
       "lines": 24,
-      "bytes": 599,
+      "bytes": 576,
       "doc": "",
       "symbols": []
     },
@@ -35667,7 +35522,7 @@
       "area": "infra",
       "kind": "json",
       "lines": 22,
-      "bytes": 477,
+      "bytes": 456,
       "doc": "",
       "symbols": []
     },
@@ -35676,7 +35531,7 @@
       "area": "infra",
       "kind": "sh",
       "lines": 141,
-      "bytes": 6584,
+      "bytes": 6444,
       "doc": "",
       "symbols": []
     },
@@ -35685,7 +35540,7 @@
       "area": "infra",
       "kind": "sh",
       "lines": 71,
-      "bytes": 3030,
+      "bytes": 2960,
       "doc": "",
       "symbols": []
     },
@@ -35694,7 +35549,7 @@
       "area": "infra",
       "kind": "sql",
       "lines": 48,
-      "bytes": 1976,
+      "bytes": 1929,
       "doc": "",
       "symbols": []
     },
@@ -35703,7 +35558,7 @@
       "area": "infra",
       "kind": "toml",
       "lines": 90,
-      "bytes": 4170,
+      "bytes": 4081,
       "doc": "",
       "symbols": []
     },
@@ -35712,7 +35567,7 @@
       "area": "infra",
       "kind": "sh",
       "lines": 51,
-      "bytes": 1881,
+      "bytes": 1831,
       "doc": "",
       "symbols": []
     },
@@ -35721,7 +35576,7 @@
       "area": "infra",
       "kind": "service",
       "lines": 0,
-      "bytes": 352,
+      "bytes": 344,
       "doc": "",
       "symbols": []
     },
@@ -35730,7 +35585,7 @@
       "area": "infra",
       "kind": "timer",
       "lines": 0,
-      "bytes": 172,
+      "bytes": 162,
       "doc": "",
       "symbols": []
     },
@@ -35739,7 +35594,7 @@
       "area": "infra",
       "kind": "service",
       "lines": 0,
-      "bytes": 492,
+      "bytes": 477,
       "doc": "",
       "symbols": []
     },
@@ -35748,7 +35603,7 @@
       "area": "infra",
       "kind": "timer",
       "lines": 0,
-      "bytes": 245,
+      "bytes": 234,
       "doc": "",
       "symbols": []
     },
@@ -35757,7 +35612,7 @@
       "area": "infra",
       "kind": "service",
       "lines": 0,
-      "bytes": 313,
+      "bytes": 302,
       "doc": "",
       "symbols": []
     },
@@ -35766,7 +35621,7 @@
       "area": "infra",
       "kind": "timer",
       "lines": 0,
-      "bytes": 167,
+      "bytes": 157,
       "doc": "",
       "symbols": []
     },
@@ -35775,7 +35630,7 @@
       "area": "infra",
       "kind": "service",
       "lines": 0,
-      "bytes": 1379,
+      "bytes": 1339,
       "doc": "",
       "symbols": []
     },
@@ -35784,7 +35639,7 @@
       "area": "infra",
       "kind": "yaml",
       "lines": 98,
-      "bytes": 3765,
+      "bytes": 3668,
       "doc": "",
       "symbols": []
     },
@@ -35793,7 +35648,7 @@
       "area": "infra",
       "kind": "yaml",
       "lines": 31,
-      "bytes": 883,
+      "bytes": 853,
       "doc": "",
       "symbols": []
     },
@@ -35802,7 +35657,7 @@
       "area": "infra",
       "kind": "yaml",
       "lines": 75,
-      "bytes": 3378,
+      "bytes": 3304,
       "doc": "",
       "symbols": []
     },
@@ -35811,7 +35666,7 @@
       "area": "infra",
       "kind": "yaml",
       "lines": 101,
-      "bytes": 3511,
+      "bytes": 3411,
       "doc": "",
       "symbols": []
     },
@@ -35820,7 +35675,7 @@
       "area": "infra",
       "kind": "yaml",
       "lines": 42,
-      "bytes": 978,
+      "bytes": 937,
       "doc": "",
       "symbols": []
     },
@@ -35829,7 +35684,7 @@
       "area": "infra",
       "kind": "yaml",
       "lines": 42,
-      "bytes": 1115,
+      "bytes": 1074,
       "doc": "",
       "symbols": []
     },
@@ -35838,7 +35693,7 @@
       "area": "infra",
       "kind": "yaml",
       "lines": 88,
-      "bytes": 2382,
+      "bytes": 2295,
       "doc": "",
       "symbols": []
     },
@@ -35847,7 +35702,7 @@
       "area": "infra",
       "kind": "yaml",
       "lines": 88,
-      "bytes": 2396,
+      "bytes": 2309,
       "doc": "",
       "symbols": []
     },
@@ -35856,7 +35711,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 97,
-      "bytes": 4142,
+      "bytes": 4046,
       "doc": "",
       "symbols": []
     },
@@ -35865,7 +35720,7 @@
       "area": "docs",
       "kind": "asset",
       "lines": 0,
-      "bytes": 2078,
+      "bytes": 2064,
       "doc": "",
       "symbols": []
     },
@@ -35874,7 +35729,7 @@
       "area": "docs",
       "kind": "asset",
       "lines": 0,
-      "bytes": 2074,
+      "bytes": 2060,
       "doc": "",
       "symbols": []
     },
@@ -35883,7 +35738,7 @@
       "area": "docs",
       "kind": "asset",
       "lines": 0,
-      "bytes": 9725,
+      "bytes": 9715,
       "doc": "",
       "symbols": []
     },
@@ -35892,7 +35747,7 @@
       "area": "docs",
       "kind": "asset",
       "lines": 0,
-      "bytes": 9613,
+      "bytes": 9605,
       "doc": "",
       "symbols": []
     },
@@ -35901,7 +35756,7 @@
       "area": "docs",
       "kind": "asset",
       "lines": 0,
-      "bytes": 9666,
+      "bytes": 9657,
       "doc": "",
       "symbols": []
     },
@@ -35910,7 +35765,7 @@
       "area": "docs",
       "kind": "asset",
       "lines": 0,
-      "bytes": 1828,
+      "bytes": 1819,
       "doc": "",
       "symbols": []
     },
@@ -35919,7 +35774,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 83,
-      "bytes": 3961,
+      "bytes": 3879,
       "doc": "",
       "symbols": []
     },
@@ -35928,7 +35783,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 175,
-      "bytes": 6833,
+      "bytes": 6659,
       "doc": "",
       "symbols": []
     },
@@ -35937,7 +35792,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 121,
-      "bytes": 4882,
+      "bytes": 4762,
       "doc": "",
       "symbols": []
     },
@@ -35946,7 +35801,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 113,
-      "bytes": 4410,
+      "bytes": 4298,
       "doc": "",
       "symbols": []
     },
@@ -35955,7 +35810,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 141,
-      "bytes": 6123,
+      "bytes": 5983,
       "doc": "",
       "symbols": []
     },
@@ -35964,7 +35819,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 193,
-      "bytes": 7552,
+      "bytes": 7360,
       "doc": "",
       "symbols": []
     },
@@ -35973,7 +35828,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 121,
-      "bytes": 4988,
+      "bytes": 4868,
       "doc": "",
       "symbols": []
     },
@@ -35982,7 +35837,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 157,
-      "bytes": 6944,
+      "bytes": 6788,
       "doc": "",
       "symbols": []
     },
@@ -35991,7 +35846,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 145,
-      "bytes": 7429,
+      "bytes": 7285,
       "doc": "",
       "symbols": []
     },
@@ -36000,7 +35855,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 176,
-      "bytes": 8246,
+      "bytes": 8071,
       "doc": "",
       "symbols": []
     },
@@ -36009,7 +35864,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 850,
-      "bytes": 45118,
+      "bytes": 44269,
       "doc": "",
       "symbols": []
     },
@@ -36018,7 +35873,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 260,
-      "bytes": 13382,
+      "bytes": 13123,
       "doc": "",
       "symbols": []
     },
@@ -36027,7 +35882,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 214,
-      "bytes": 11098,
+      "bytes": 10885,
       "doc": "",
       "symbols": []
     },
@@ -36036,7 +35891,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 197,
-      "bytes": 10268,
+      "bytes": 10072,
       "doc": "",
       "symbols": []
     },
@@ -36045,7 +35900,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 198,
-      "bytes": 9152,
+      "bytes": 8955,
       "doc": "",
       "symbols": []
     },
@@ -36053,8 +35908,8 @@
       "path": "docs/design/15-integrity.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 250,
-      "bytes": 12411,
+      "lines": 257,
+      "bytes": 12706,
       "doc": "",
       "symbols": []
     },
@@ -36063,7 +35918,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 109,
-      "bytes": 6968,
+      "bytes": 6860,
       "doc": "",
       "symbols": []
     },
@@ -36072,7 +35927,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 438,
-      "bytes": 19710,
+      "bytes": 19273,
       "doc": "",
       "symbols": []
     },
@@ -37836,7 +37691,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 496,
-      "bytes": 23710,
+      "bytes": 23215,
       "doc": "",
       "symbols": []
     },
@@ -37845,7 +37700,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 937,
-      "bytes": 37645,
+      "bytes": 36709,
       "doc": "",
       "symbols": []
     },
@@ -37854,7 +37709,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 242,
-      "bytes": 9649,
+      "bytes": 9408,
       "doc": "",
       "symbols": []
     },
@@ -37863,7 +37718,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 471,
-      "bytes": 21178,
+      "bytes": 20708,
       "doc": "",
       "symbols": []
     },
@@ -37872,7 +37727,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 239,
-      "bytes": 8712,
+      "bytes": 8474,
       "doc": "",
       "symbols": []
     },
@@ -37881,7 +37736,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 320,
-      "bytes": 10556,
+      "bytes": 10237,
       "doc": "",
       "symbols": []
     },
@@ -37890,7 +37745,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 288,
-      "bytes": 10600,
+      "bytes": 10313,
       "doc": "",
       "symbols": []
     },
@@ -37899,7 +37754,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 186,
-      "bytes": 7485,
+      "bytes": 7300,
       "doc": "",
       "symbols": []
     },
@@ -37908,7 +37763,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 138,
-      "bytes": 5780,
+      "bytes": 5643,
       "doc": "",
       "symbols": []
     },
@@ -37917,7 +37772,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 221,
-      "bytes": 9297,
+      "bytes": 9077,
       "doc": "",
       "symbols": []
     },
@@ -37926,7 +37781,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 1843,
-      "bytes": 94032,
+      "bytes": 92190,
       "doc": "",
       "symbols": []
     },
@@ -37935,7 +37790,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 121,
-      "bytes": 9948,
+      "bytes": 9828,
       "doc": "",
       "symbols": []
     },
@@ -37944,7 +37799,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 59,
-      "bytes": 4698,
+      "bytes": 4640,
       "doc": "",
       "symbols": []
     },
@@ -37953,7 +37808,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 32,
-      "bytes": 3298,
+      "bytes": 3267,
       "doc": "",
       "symbols": []
     },
@@ -37962,7 +37817,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 270,
-      "bytes": 12938,
+      "bytes": 12669,
       "doc": "",
       "symbols": []
     },
@@ -37971,7 +37826,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 178,
-      "bytes": 8321,
+      "bytes": 8144,
       "doc": "",
       "symbols": []
     },
@@ -37980,7 +37835,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 184,
-      "bytes": 8771,
+      "bytes": 8588,
       "doc": "",
       "symbols": []
     },
@@ -37989,7 +37844,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 254,
-      "bytes": 12594,
+      "bytes": 12341,
       "doc": "",
       "symbols": []
     },
@@ -37998,7 +37853,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 143,
-      "bytes": 7759,
+      "bytes": 7617,
       "doc": "",
       "symbols": []
     },
@@ -38007,7 +37862,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 61,
-      "bytes": 3278,
+      "bytes": 3218,
       "doc": "",
       "symbols": []
     },
@@ -38016,7 +37871,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 752,
-      "bytes": 33176,
+      "bytes": 32425,
       "doc": "",
       "symbols": []
     },
@@ -38025,7 +37880,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 266,
-      "bytes": 13519,
+      "bytes": 13254,
       "doc": "",
       "symbols": []
     },
@@ -38034,7 +37889,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 806,
-      "bytes": 42482,
+      "bytes": 41677,
       "doc": "",
       "symbols": []
     },
@@ -38043,7 +37898,7 @@
       "area": "docs",
       "kind": "file",
       "lines": 0,
-      "bytes": 19742,
+      "bytes": 18554,
       "doc": "",
       "symbols": []
     },
@@ -38052,7 +37907,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 154,
-      "bytes": 9558,
+      "bytes": 9405,
       "doc": "",
       "symbols": []
     },
@@ -38061,7 +37916,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 1083,
-      "bytes": 64941,
+      "bytes": 63859,
       "doc": "",
       "symbols": []
     },
@@ -38079,7 +37934,7 @@
       "area": "root",
       "kind": "script",
       "lines": 15,
-      "bytes": 494,
+      "bytes": 480,
       "doc": "Get all files from git grep",
       "symbols": []
     },
@@ -38088,7 +37943,7 @@
       "area": "root",
       "kind": "script",
       "lines": 15,
-      "bytes": 549,
+      "bytes": 535,
       "doc": "",
       "symbols": []
     },
@@ -38097,7 +37952,7 @@
       "area": "root",
       "kind": "script",
       "lines": 9,
-      "bytes": 510,
+      "bytes": 502,
       "doc": "Use regex to remove duplicate users block",
       "symbols": []
     },
@@ -38105,8 +37960,8 @@
       "path": "package.json",
       "area": "infra",
       "kind": "json",
-      "lines": 56,
-      "bytes": 2188,
+      "lines": 58,
+      "bytes": 2219,
       "doc": "",
       "symbols": []
     },
@@ -38115,7 +37970,7 @@
       "area": "packages",
       "kind": "config",
       "lines": 37,
-      "bytes": 1012,
+      "bytes": 976,
       "doc": "",
       "symbols": []
     },
@@ -38124,7 +37979,7 @@
       "area": "packages",
       "kind": "config",
       "lines": 23,
-      "bytes": 484,
+      "bytes": 462,
       "doc": "",
       "symbols": []
     },
@@ -38133,7 +37988,7 @@
       "area": "packages",
       "kind": "config",
       "lines": 26,
-      "bytes": 727,
+      "bytes": 702,
       "doc": "",
       "symbols": []
     },
@@ -38142,7 +37997,7 @@
       "area": "packages",
       "kind": "config",
       "lines": 15,
-      "bytes": 406,
+      "bytes": 392,
       "doc": "",
       "symbols": []
     },
@@ -38151,7 +38006,7 @@
       "area": "packages",
       "kind": "script",
       "lines": 4,
-      "bytes": 112,
+      "bytes": 109,
       "doc": "",
       "symbols": []
     },
@@ -38160,7 +38015,7 @@
       "area": "packages",
       "kind": "script",
       "lines": 13,
-      "bytes": 368,
+      "bytes": 356,
       "doc": "@type {import('jest').Config}",
       "symbols": []
     },
@@ -38169,7 +38024,7 @@
       "area": "packages",
       "kind": "json",
       "lines": 37,
-      "bytes": 830,
+      "bytes": 794,
       "doc": "",
       "symbols": []
     },
@@ -38178,7 +38033,7 @@
       "area": "packages",
       "kind": "unit test",
       "lines": 55,
-      "bytes": 2048,
+      "bytes": 1994,
       "doc": "",
       "symbols": []
     },
@@ -38187,7 +38042,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 66,
-      "bytes": 2607,
+      "bytes": 2542,
       "doc": "",
       "symbols": [
         {
@@ -38237,7 +38092,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 5,
-      "bytes": 109,
+      "bytes": 105,
       "doc": "",
       "symbols": []
     },
@@ -38246,7 +38101,7 @@
       "area": "packages",
       "kind": "unit test",
       "lines": 70,
-      "bytes": 2442,
+      "bytes": 2373,
       "doc": "",
       "symbols": []
     },
@@ -38255,7 +38110,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 84,
-      "bytes": 3121,
+      "bytes": 3038,
       "doc": "The offline sale outbox — a pure state machine, no I/O (RETAIL-ERP.md's own `packages/pos-core` description).",
       "symbols": [
         {
@@ -38310,7 +38165,7 @@
       "area": "packages",
       "kind": "unit test",
       "lines": 34,
-      "bytes": 1175,
+      "bytes": 1142,
       "doc": "",
       "symbols": []
     },
@@ -38319,7 +38174,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 62,
-      "bytes": 1840,
+      "bytes": 1779,
       "doc": "The receipt model — a plain, print-ready shape built from a placed sale's API response.",
       "symbols": [
         {
@@ -38349,7 +38204,7 @@
       "area": "packages",
       "kind": "unit test",
       "lines": 16,
-      "bytes": 683,
+      "bytes": 668,
       "doc": "",
       "symbols": []
     },
@@ -38358,7 +38213,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 20,
-      "bytes": 814,
+      "bytes": 795,
       "doc": "Cash tender and change — pure, in paisa.",
       "symbols": [
         {
@@ -38378,7 +38233,7 @@
       "area": "packages",
       "kind": "json",
       "lines": 15,
-      "bytes": 388,
+      "bytes": 374,
       "doc": "",
       "symbols": []
     },
@@ -38387,7 +38242,7 @@
       "area": "packages",
       "kind": "script",
       "lines": 4,
-      "bytes": 112,
+      "bytes": 109,
       "doc": "",
       "symbols": []
     },
@@ -38396,7 +38251,7 @@
       "area": "packages",
       "kind": "script",
       "lines": 13,
-      "bytes": 368,
+      "bytes": 356,
       "doc": "@type {import('jest').Config}",
       "symbols": []
     },
@@ -38405,7 +38260,7 @@
       "area": "packages",
       "kind": "json",
       "lines": 37,
-      "bytes": 814,
+      "bytes": 778,
       "doc": "",
       "symbols": []
     },
@@ -38414,7 +38269,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 334,
-      "bytes": 12637,
+      "bytes": 12304,
       "doc": "THE BRAND FILE.",
       "symbols": [
         {
@@ -38434,7 +38289,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 146,
-      "bytes": 5270,
+      "bytes": 5125,
       "doc": "",
       "symbols": [
         {
@@ -38534,7 +38389,7 @@
       "area": "packages",
       "kind": "unit test",
       "lines": 44,
-      "bytes": 1186,
+      "bytes": 1143,
       "doc": "",
       "symbols": []
     },
@@ -38543,7 +38398,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 29,
-      "bytes": 1033,
+      "bytes": 1005,
       "doc": "Address getters.",
       "symbols": [
         {
@@ -38568,7 +38423,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 6,
-      "bytes": 138,
+      "bytes": 133,
       "doc": "",
       "symbols": []
     },
@@ -38577,7 +38432,7 @@
       "area": "packages",
       "kind": "unit test",
       "lines": 56,
-      "bytes": 1844,
+      "bytes": 1789,
       "doc": "",
       "symbols": []
     },
@@ -38586,7 +38441,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 48,
-      "bytes": 1941,
+      "bytes": 1894,
       "doc": "",
       "symbols": [
         {
@@ -38621,7 +38476,7 @@
       "area": "packages",
       "kind": "unit test",
       "lines": 124,
-      "bytes": 4004,
+      "bytes": 3881,
       "doc": "",
       "symbols": []
     },
@@ -38630,7 +38485,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 99,
-      "bytes": 4030,
+      "bytes": 3932,
       "doc": "",
       "symbols": [
         {
@@ -38690,7 +38545,7 @@
       "area": "packages",
       "kind": "unit test",
       "lines": 145,
-      "bytes": 4845,
+      "bytes": 4701,
       "doc": "",
       "symbols": []
     },
@@ -38699,7 +38554,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 119,
-      "bytes": 4653,
+      "bytes": 4535,
       "doc": "",
       "symbols": [
         {
@@ -38774,7 +38629,7 @@
       "area": "packages",
       "kind": "unit test",
       "lines": 45,
-      "bytes": 1363,
+      "bytes": 1319,
       "doc": "",
       "symbols": []
     },
@@ -38783,7 +38638,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 44,
-      "bytes": 1826,
+      "bytes": 1783,
       "doc": "Organization-shaped data in this system today is vendor-side: `Supplier`.",
       "symbols": [
         {
@@ -38818,7 +38673,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 100,
-      "bytes": 3054,
+      "bytes": 2955,
       "doc": "Enum values mirrored from the Prisma schema.",
       "symbols": [
         {
@@ -38933,7 +38788,7 @@
       "area": "packages",
       "kind": "unit test",
       "lines": 79,
-      "bytes": 3186,
+      "bytes": 3108,
       "doc": "((40 + 3) * 2 + (23 + 2)) / 36 = (86 + 25) / 36 = 3.0833...",
       "symbols": []
     },
@@ -38942,7 +38797,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 95,
-      "bytes": 3758,
+      "bytes": 3664,
       "doc": "Fabric yardage estimator, per the tailor's Tech-Pack benchmarks.",
       "symbols": [
         {
@@ -38967,7 +38822,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 200,
-      "bytes": 7467,
+      "bytes": 7268,
       "doc": "The one HTTP layer for a signed-in browser client.",
       "symbols": [
         {
@@ -39007,7 +38862,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 17,
-      "bytes": 507,
+      "bytes": 491,
       "doc": "",
       "symbols": []
     },
@@ -39016,7 +38871,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 448,
-      "bytes": 9776,
+      "bytes": 9329,
       "doc": "",
       "symbols": [
         {
@@ -39036,7 +38891,7 @@
       "area": "packages",
       "kind": "unit test",
       "lines": 166,
-      "bytes": 5496,
+      "bytes": 5331,
       "doc": "",
       "symbols": []
     },
@@ -39045,7 +38900,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 78,
-      "bytes": 2514,
+      "bytes": 2437,
       "doc": "",
       "symbols": [
         {
@@ -39080,7 +38935,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 42,
-      "bytes": 1393,
+      "bytes": 1352,
       "doc": "",
       "symbols": [
         {
@@ -39105,7 +38960,7 @@
       "area": "packages",
       "kind": "unit test",
       "lines": 68,
-      "bytes": 2243,
+      "bytes": 2176,
       "doc": "",
       "symbols": []
     },
@@ -39114,7 +38969,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 451,
-      "bytes": 14632,
+      "bytes": 14182,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -39184,7 +39039,7 @@
       "area": "packages",
       "kind": "unit test",
       "lines": 65,
-      "bytes": 2226,
+      "bytes": 2162,
       "doc": "",
       "symbols": []
     },
@@ -39193,7 +39048,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 82,
-      "bytes": 3273,
+      "bytes": 3192,
       "doc": "",
       "symbols": [
         {
@@ -39233,7 +39088,7 @@
       "area": "packages",
       "kind": "unit test",
       "lines": 307,
-      "bytes": 10608,
+      "bytes": 10302,
       "doc": "",
       "symbols": []
     },
@@ -39242,7 +39097,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 275,
-      "bytes": 9735,
+      "bytes": 9461,
       "doc": "Order maths.",
       "symbols": [
         {
@@ -39347,7 +39202,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 44,
-      "bytes": 1419,
+      "bytes": 1376,
       "doc": "URL slugs.",
       "symbols": [
         {
@@ -39372,7 +39227,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 18,
-      "bytes": 791,
+      "bytes": 774,
       "doc": "",
       "symbols": [
         {
@@ -39392,7 +39247,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 17,
-      "bytes": 573,
+      "bytes": 557,
       "doc": "",
       "symbols": [
         {
@@ -39412,7 +39267,7 @@
       "area": "packages",
       "kind": "module",
       "lines": 42,
-      "bytes": 1313,
+      "bytes": 1272,
       "doc": "",
       "symbols": [
         {
@@ -39442,7 +39297,7 @@
       "area": "packages",
       "kind": "json",
       "lines": 17,
-      "bytes": 545,
+      "bytes": 529,
       "doc": "",
       "symbols": []
     },
@@ -39450,8 +39305,8 @@
       "path": "pnpm-lock.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 17493,
-      "bytes": 662486,
+      "lines": 17512,
+      "bytes": 645552,
       "doc": "",
       "symbols": []
     },
@@ -39460,7 +39315,7 @@
       "area": "infra",
       "kind": "yaml",
       "lines": 12,
-      "bytes": 177,
+      "bytes": 166,
       "doc": "",
       "symbols": []
     },
@@ -39477,8 +39332,8 @@
       "path": "scripts/build-index.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 2500,
-      "bytes": 116776,
+      "lines": 2511,
+      "bytes": 114955,
       "doc": "",
       "symbols": []
     },
@@ -39487,7 +39342,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 54,
-      "bytes": 1998,
+      "bytes": 1945,
       "doc": "",
       "symbols": []
     },
@@ -39496,7 +39351,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 425,
-      "bytes": 21046,
+      "bytes": 20622,
       "doc": "",
       "symbols": [
         {
@@ -39516,7 +39371,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 399,
-      "bytes": 12794,
+      "bytes": 12396,
       "doc": "",
       "symbols": []
     },
@@ -39525,7 +39380,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 139,
-      "bytes": 5552,
+      "bytes": 5414,
       "doc": "",
       "symbols": []
     },
@@ -39534,7 +39389,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 137,
-      "bytes": 4940,
+      "bytes": 4804,
       "doc": "",
       "symbols": []
     },
@@ -39542,29 +39397,39 @@
       "path": "scripts/check-links.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 387,
-      "bytes": 17475,
+      "lines": 402,
+      "bytes": 17660,
       "doc": "",
       "symbols": [
+        {
+          "name": "APPS",
+          "kind": "const",
+          "line": 37
+        },
         {
           "name": "routeUrl",
           "kind": "function",
           "line": 77
         },
         {
+          "name": "routeInventory",
+          "kind": "function",
+          "line": 93
+        },
+        {
           "name": "matches",
           "kind": "function",
-          "line": 102
+          "line": 126
         },
         {
           "name": "resolve1",
           "kind": "function",
-          "line": 143
+          "line": 167
         },
         {
           "name": "scanLinks",
           "kind": "function",
-          "line": 188
+          "line": 212
         }
       ]
     },
@@ -39573,7 +39438,16 @@
       "area": "infra",
       "kind": "script",
       "lines": 535,
-      "bytes": 22929,
+      "bytes": 22395,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "scripts/check-overflow.mjs",
+      "area": "infra",
+      "kind": "script",
+      "lines": 644,
+      "bytes": 31761,
       "doc": "",
       "symbols": []
     },
@@ -39582,7 +39456,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 292,
-      "bytes": 14220,
+      "bytes": 13929,
       "doc": "",
       "symbols": [
         {
@@ -39597,7 +39471,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 136,
-      "bytes": 4840,
+      "bytes": 4705,
       "doc": "",
       "symbols": []
     },
@@ -39606,7 +39480,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 148,
-      "bytes": 6749,
+      "bytes": 6602,
       "doc": "",
       "symbols": []
     },
@@ -39615,7 +39489,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 164,
-      "bytes": 7599,
+      "bytes": 7436,
       "doc": "",
       "symbols": []
     },
@@ -39624,7 +39498,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 486,
-      "bytes": 20524,
+      "bytes": 20039,
       "doc": "",
       "symbols": []
     },
@@ -39633,7 +39507,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 89,
-      "bytes": 3397,
+      "bytes": 3309,
       "doc": "",
       "symbols": []
     },
@@ -39642,7 +39516,7 @@
       "area": "infra",
       "kind": "utility",
       "lines": 906,
-      "bytes": 38562,
+      "bytes": 37657,
       "doc": "Scanners for the repository index.",
       "symbols": [
         {
@@ -39817,7 +39691,7 @@
       "area": "infra",
       "kind": "utility",
       "lines": 363,
-      "bytes": 17707,
+      "bytes": 17345,
       "doc": "Which model and how much effort each kind of job in this repository deserves.",
       "symbols": [
         {
@@ -39853,11 +39727,56 @@
       ]
     },
     {
+      "path": "scripts/lib/render-harness.mjs",
+      "area": "infra",
+      "kind": "utility",
+      "lines": 337,
+      "bytes": 15267,
+      "doc": "Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — the shared infrastructure every render-based integrity check needs.",
+      "symbols": [
+        {
+          "name": "WIDTHS",
+          "kind": "const",
+          "line": 59
+        },
+        {
+          "name": "spawnServer",
+          "kind": "function",
+          "line": 100
+        },
+        {
+          "name": "login",
+          "kind": "function",
+          "line": 148
+        },
+        {
+          "name": "authedContext",
+          "kind": "function",
+          "line": 174
+        },
+        {
+          "name": "measureOverflow",
+          "kind": "function",
+          "line": 200
+        },
+        {
+          "name": "sweepWidths",
+          "kind": "function",
+          "line": 289
+        },
+        {
+          "name": "launchBrowser",
+          "kind": "function",
+          "line": 318
+        }
+      ]
+    },
+    {
       "path": "scripts/nested-borders.py",
       "area": "infra",
       "kind": "py",
       "lines": 0,
-      "bytes": 2188,
+      "bytes": 2130,
       "doc": "",
       "symbols": []
     },
@@ -39866,7 +39785,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 243,
-      "bytes": 10575,
+      "bytes": 10333,
       "doc": "scripts/sync-client.mjs",
       "symbols": []
     },
@@ -39875,7 +39794,7 @@
       "area": "infra",
       "kind": "json",
       "lines": 49,
-      "bytes": 1163,
+      "bytes": 1115,
       "doc": "",
       "symbols": []
     },
@@ -39884,7 +39803,7 @@
       "area": "infra",
       "kind": "toml",
       "lines": 17,
-      "bytes": 465,
+      "bytes": 449,
       "doc": "",
       "symbols": []
     },
@@ -39893,7 +39812,7 @@
       "area": "root",
       "kind": "sql",
       "lines": 5870,
-      "bytes": 479284,
+      "bytes": 473415,
       "doc": "",
       "symbols": []
     }

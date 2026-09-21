@@ -99,4 +99,4 @@ All 53 tracked files in `packages/*`, by directory.
 
 ---
 
-[← all files](..\cross\files.md) · [L1 page](..\areas\packages.md) · [← index home](..\README.md)
+[← all files](../cross/files.md) · [L1 page](../areas/packages.md) · [← index home](../README.md)

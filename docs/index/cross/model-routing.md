@@ -104,4 +104,4 @@ other agent-instruction files so every tool at least gets the policy.
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

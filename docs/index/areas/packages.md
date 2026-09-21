@@ -12,8 +12,8 @@ file may hard-code one.
 
 ## Go deeper
 
-- **Every exported symbol here:** [symbols/packages.md](..\symbols\packages.md)
-- **Every file here:** [files/packages.md](..\files\packages.md)
+- **Every exported symbol here:** [symbols/packages.md](../symbols/packages.md)
+- **Every file here:** [files/packages.md](../files/packages.md)
 
 ## Directory breakdown
 
@@ -61,4 +61,4 @@ file may hard-code one.
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

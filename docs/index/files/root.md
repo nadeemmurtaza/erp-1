@@ -18,7 +18,7 @@ All 42 tracked files in `repository root files`, by directory.
 | `.windsurfrules` | file | — |  |
 | `AGENTS.md` | doc | 80 |  |
 | `check_output.txt` | txt | — |  |
-| `CLAUDE.md` | doc | 875 |  |
+| `CLAUDE.md` | doc | 890 |  |
 | `CONTRIBUTING.md` | doc | 127 |  |
 | `DEPLOYMENT.md` | doc | 492 |  |
 | `fix-all.js` | script | 15 | Get all files from git grep |
@@ -26,7 +26,7 @@ All 42 tracked files in `repository root files`, by directory.
 | `fix.js` | script | 9 | Use regex to remove duplicate users block |
 | `GEMINI.md` | doc | 80 |  |
 | `raw_output.txt` | txt | — |  |
-| `README.md` | doc | 348 |  |
+| `README.md` | doc | 349 |  |
 | `yaseen-backup-before-reset.sql` | sql | 5870 |  |
 
 ### `.claude` (2)
@@ -93,4 +93,4 @@ All 42 tracked files in `repository root files`, by directory.
 
 ---
 
-[← all files](..\cross\files.md) · [L1 page](..\areas\root.md) · [← index home](..\README.md)
+[← all files](../cross/files.md) · [L1 page](../areas/root.md) · [← index home](../README.md)

@@ -231,7 +231,7 @@ export default function TailorQueuePage() {
           <ul className="space-y-2">
             {workload.tailors.map((tailor) => (
               <li key={tailor.id} className="flex items-center gap-3 text-sm">
-                <span className="w-40 shrink-0 text-neutral-900/80">{tailor.name}</span>
+                <span className="w-20 shrink-0 truncate xs:w-40 text-neutral-900/80">{tailor.name}</span>
                 <span className="h-2 flex-1 overflow-hidden rounded bg-white">
                   <span
                     className="block h-full rounded bg-accent"
@@ -245,7 +245,7 @@ export default function TailorQueuePage() {
                     }}
                   />
                 </span>
-                <span className="w-28 shrink-0 text-end tabular-nums text-neutral-900/60">
+                <span className="w-14 shrink-0 text-end tabular-nums text-neutral-900/60 xs:w-28">
                   {tailor.openJobs} / {tailor.capacityPerWeek}
                 </span>
               </li>

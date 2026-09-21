@@ -619,4 +619,4 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

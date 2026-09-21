@@ -50,7 +50,7 @@ All 247 tracked files in `docs/*`, by directory.
 | `12-permissions.md` | doc | 214 |  |
 | `13-composition.md` | doc | 197 |  |
 | `14-navigation.md` | doc | 198 |  |
-| `15-integrity.md` | doc | 250 |  |
+| `15-integrity.md` | doc | 257 |  |
 | `README.md` | doc | 109 |  |
 
 ### `docs/erp-lenses` (195)
@@ -288,4 +288,4 @@ All 247 tracked files in `docs/*`, by directory.
 
 ---
 
-[← all files](..\cross\files.md) · [L1 page](..\areas\docs.md) · [← index home](..\README.md)
+[← all files](../cross/files.md) · [L1 page](../areas/docs.md) · [← index home](../README.md)

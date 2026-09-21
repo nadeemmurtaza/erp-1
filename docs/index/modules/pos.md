@@ -83,7 +83,7 @@ _none_
 
 Enums: `CashMovementType` (5) · `PosShiftStatus` (2) · `PosTerminalStatus` (3)
 
-Full field lists: [cross/data-model.md](..\cross\data-model.md).
+Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 
 
@@ -151,4 +151,4 @@ check there before adding another.
 
 ---
 
-[← index home](..\README.md)
+[← index home](../README.md)

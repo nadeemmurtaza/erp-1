@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 226 tracked files in `docs/*`, by directory.
+All 247 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -53,7 +53,7 @@ All 226 tracked files in `docs/*`, by directory.
 | `15-integrity.md` | doc | 257 |  |
 | `README.md` | doc | 109 |  |
 
-### `docs/erp-lenses` (174)
+### `docs/erp-lenses` (195)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -71,11 +71,11 @@ All 226 tracked files in `docs/*`, by directory.
 | `_agent-judge-auditor.md` | doc | 84 |  |
 | `_agent-judge-engineer.md` | doc | 76 |  |
 | `_agent-judge-owner.md` | doc | 76 |  |
-| `_agent-manifest.md` | doc | 161 |  |
-| `_canonical-decisions.md` | doc | 662 |  |
+| `_agent-manifest.md` | doc | 175 |  |
+| `_canonical-decisions.md` | doc | 828 |  |
 | `_claude-md-feature-scope.md` | doc | 190 |  |
 | `_cluster-analysis.md` | doc | 675 |  |
-| `_conflicts.md` | doc | 555 |  |
+| `_conflicts.md` | doc | 645 |  |
 | `_draft-auditor.md` | doc | 194 |  |
 | `_draft-teacher.md` | doc | 194 |  |
 | `_draft-terse.md` | doc | 194 |  |
@@ -84,8 +84,8 @@ All 226 tracked files in `docs/*`, by directory.
 | `_gap-innovation.md` | doc | 216 |  |
 | `_gap-repo-blindspots.md` | doc | 108 |  |
 | `_gap-roles-ranks.md` | doc | 237 |  |
-| `_index.md` | doc | 421 |  |
-| `_integrate.md` | doc | 174 |  |
+| `_index.md` | doc | 495 |  |
+| `_integrate.md` | doc | 272 |  |
 | `_judge-auditor.md` | doc | 256 |  |
 | `_judge-engineer.md` | doc | 264 |  |
 | `_judge-owner.md` | doc | 261 |  |
@@ -210,7 +210,7 @@ All 226 tracked files in `docs/*`, by directory.
 | `38-gap-hr-payroll-no-posting-artifact-for-compe.md` | doc | 205 |  |
 | `38g-generate-gap.md` | doc | 42 |  |
 | `38h-harden-gap.md` | doc | 50 |  |
-| `39-gap-facilities-asset-maintenance-file-37-has.md` | doc | 176 |  |
+| `39-gap-facilities-asset-maintenance-file-37-has.md` | doc | 159 |  |
 | `39g-generate-gap.md` | doc | 40 |  |
 | `39h-harden-gap.md` | doc | 48 |  |
 | `40-gap-esg-the-file-s-title-promises-it-the-con.md` | doc | 177 |  |
@@ -231,6 +231,27 @@ All 226 tracked files in `docs/*`, by directory.
 | `45-gap-the-catalogue-s-only-rank-lens-contradic.md` | doc | 220 |  |
 | `45g-generate-gap.md` | doc | 41 |  |
 | `45h-harden-gap.md` | doc | 50 |  |
+| `46-gap-no-lens-asks-what-a-quorum-dual-custody-.md` | doc | 207 |  |
+| `46g-generate-gap.md` | doc | 41 |  |
+| `46h-harden-gap.md` | doc | 54 |  |
+| `47-gap-the-per-brand-currency-field-forces-the-.md` | doc | 179 |  |
+| `47g-generate-gap.md` | doc | 41 |  |
+| `47h-harden-gap.md` | doc | 46 |  |
+| `48-gap-group-currency-translation-for-consolida.md` | doc | 169 |  |
+| `48g-generate-gap.md` | doc | 40 |  |
+| `48h-harden-gap.md` | doc | 48 |  |
+| `49-gap-financial-close-as-a-managed-process-not.md` | doc | 175 |  |
+| `49g-generate-gap.md` | doc | 41 |  |
+| `49h-harden-gap.md` | doc | 53 |  |
+| `50-gap-landed-cost-apportionment-and-its-timing.md` | doc | 206 |  |
+| `50g-generate-gap.md` | doc | 41 |  |
+| `50h-harden-gap.md` | doc | 48 |  |
+| `51-gap-the-approval-that-stalls-without-a-leave.md` | doc | 195 |  |
+| `51g-generate-gap.md` | doc | 41 |  |
+| `51h-harden-gap.md` | doc | 46 |  |
+| `52-gap-no-lens-classifies-a-new-table-s-replica.md` | doc | 46 |  |
+| `52g-generate-gap.md` | doc | 26 |  |
+| `52h-harden-gap.md` | doc | 40 |  |
 
 ### `docs/implementation` (27)
 

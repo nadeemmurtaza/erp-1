@@ -4,10 +4,10 @@ File 37 asked three questions — capex posting, custody, downtime — and every
 one was absorbed into a canonical lens built for a different problem
 (accounting's missing account, a handoff's missing signer, a branch's
 trading state). None of those three ever asks what a physical asset or a
-leased premises *is* as a row, when it is due for service, or which
-department is told. At 100+ locations across timezones, that gap means no
-equipment registry, no lease-renewal calendar, and no facilities role with
-anywhere to look.
+leased premises *is* as a row, or when it is due for service. At 100+
+locations across timezones, that gap means no equipment registry and no
+lease-renewal calendar — a fact discovered only when a landlord changes the
+locks or a fire extinguisher fails at the moment it exists to prevent.
 
 ## Lens: The lease nobody renews
 
@@ -45,14 +45,15 @@ silently expires mid-quarter.
 extinguisher, a generator, a sewing machine — name the field that stores
 the last service date, the interval and the next due date, and what fires
 when that date passes with nothing logged.
-**Why:** `domain-events.ts`'s roughly forty entries have zero matches for
-`/maintenance|service_due/i` (confirmed by 37h's own grep for
-`/downtime|asset|equipment|maintenance/i`). `WorkOrder` (`production.prisma`)
-is BOM production, not equipment repair — there is no maintenance-schedule
-model anywhere in the 115-model schema. This differs from "Downtime that
-outranks the sale", absorbed into "The branch that cannot trade tomorrow":
-that lens fires after equipment has already failed and a branch cannot
-trade; this one is preventive — it asks what stops the failure happening.
+**Why:** `domain-events.ts` (`apps/api/src/core/events/domain-events.ts`,
+316 lines) has zero matches for `/maintenance|service_due/i`. `WorkOrder`
+(`production.prisma:56-88`) is BOM production — `variantId`,
+`quantityOrdered`, `sourceRefType` — not equipment repair; there is no
+maintenance-schedule model anywhere in the 115-model schema. This differs
+from "Downtime that outranks the sale", absorbed into "The branch that
+cannot trade tomorrow": that lens fires after equipment has already failed
+and a branch cannot trade; this one is preventive — it asks what stops the
+failure happening.
 **Worked example:** Narrow slice: a paper checklist a facilities
 coordinator keeps in a drawer. Complete capability: a `MaintenanceSchedule`
 row per asset or location (`intervalDays`, `lastServicedAt`, `nextDueAt`),
@@ -67,37 +68,6 @@ for service is invisible until it fails at the moment it exists to prevent
 — a fire, a power cut, a stitching-floor stoppage. An ESG or statutory
 auditor asking for a maintenance log across 100+ locations gets none.
 
-## Lens: The department nobody notifies
-
-**Question:** When a facility needs service or a lease nears renewal, name
-the permission key and the admin nav entry that puts it in front of a
-facilities role, and which of the 100+ named roles is seeded to hold that
-key.
-**Why:** `PERMISSION_CATALOG` (`packages/shared/src/permissions.ts`) has
-zero of its 50 keys matching `/facilit|asset|maintenance|lease/i` —
-confirmed by direct grep. `nav-registry.ts`'s eight `NAV_GROUPS` has no
-facilities group. No Department model exists anywhere, so "route this to
-facilities" cannot be expressed as a scope predicate, only as a new
-permission key someone must seed all the way to a real `RoleGrant` — the
-`seedRoles()` gap CLAUDE.md names at lines 305 and 769. This differs from "The failure
-path, and who is allowed to walk it" (absorbed "The operator's second
-door"): that lens is about ops surfaces for outbox/replication/audit, not a
-business department having nowhere to look at all.
-**Worked example:** Narrow slice: an engineer emails the office manager
-when the AC breaks, and the mail sits unread. Complete capability: a
-`facilities.manage` permission key seeded through to a real `RoleGrant`
-(not just a `RolePermission` row), an `ADMIN_NAV` entry gated by it, and the
-service-due and lease-renewal events from the two lenses above landing on
-that list.
-**Done test:** `grep "key: '" packages/shared/src/permissions.ts | grep -i
-facilit` — zero today. The PR must add the key, a `RoleGrant` for a named
-role, and an `ADMIN_NAV` entry, or state in writing why not.
-**Breaks without:** Facilities events (service overdue, lease expiring,
-equipment downtime) can post to `domain-events.ts` all day, but with no
-permission key and no nav entry, nobody with a facilities role is watching
-— the capability writes into a void that only a database query, not a
-person, will ever read.
-
 ## Not modelled yet
 
 - No `Facility` or lease fields on `Location` — no `leaseStartDate`,
@@ -108,11 +78,16 @@ person, will ever read.
 - No `facilities.*` (or `assets.*`/`maintenance.*`) key anywhere in
   `PERMISSION_CATALOG`, no facilities group in `nav-registry.ts`'s
   `NAV_GROUPS`, and no Department model to route the notification through
-  in the first place.
+  in the first place — reachability for whatever ships here is governed by
+  CLAUDE.md's own "Feature scope: build the whole capability" and
+  "Definition of done" sections (permission seeded through to a real
+  `RoleGrant`, an `ADMIN_NAV` entry), not by a domain-specific lens; that
+  requirement applies to this feature the same way it applies to every
+  other one, so it is not restated here as a third lens.
 
 ## Hardening record
 
-**Kept (3 of 3):**
+**Kept (2 of 3):**
 
 - **The lease nobody renews** — verified: `Location` (`inventory.prisma:76-113`)
   has no `leaseStartDate`/`leaseEndDate`/`rentAmount`/`landlordPartyId`, and
@@ -121,55 +96,63 @@ person, will ever read.
   `lease|renewalDueAt|landlordPartyId` across `apps/api/prisma/schema/*.prisma`
   returns zero. Distinct from the absorbed capex/depreciation lens by clause
   (rented premises with a renewal date vs. an owned asset in the chart of
-  accounts).
+  accounts). Demands a concrete artifact (a field set or model plus a
+  90-day-renewal query) no other kept or absorbed lens would force.
 - **The service that has no due date** — verified: `domain-events.ts`
   (`apps/api/src/core/events/domain-events.ts`, 316 lines) has zero matches
-  for `maintenance|service_due`; `WorkOrder` (`production.prisma:56-71`) is
-  BOM/quantity production (`variantId`, `quantityOrdered`, `sourceRefType`),
-  not equipment repair; no maintenance-schedule model exists in the
-  115-model schema (counted: `grep -c "^model " apps/api/prisma/schema/*.prisma`
-  sums to 115). Distinct from "Downtime that outranks the sale" by clause
-  (preventive vs. reactive-after-failure).
-- **The department nobody notifies** — verified: `PERMISSION_CATALOG`
-  (`packages/shared/src/permissions.ts`) has exactly 50 keys, zero matching
-  `facilit|asset|maintenance|lease`; `NAV_GROUPS` in `nav-registry.ts`
-  (actual path `apps/web/src/components/admin/nav-registry.ts`, not
-  `packages/shared`) has exactly the 8 groups named (`overview`, `orders`,
-  `workshop`, `customers`, `catalogue`, `stock`, `insights`, `settings`), no
-  facilities group; both `RolePermission` and `RoleGrant` models exist in
-  `core.prisma` (lines 257, 321), and CLAUDE.md names the
-  `seedPermissions()`-vs-`seedRoles()` gap twice (lines 305, 769 — corrected
-  here from a prior draft's mistaken "305, 860"; line 860 is unrelated
-  boilerplate about implementation-status reporting). Distinct
-  from "The failure path, and who is allowed to walk it" by clause (ops
-  surfaces for outbox/replication/audit vs. a business department having no
-  nav entry at all).
+  for `maintenance|service_due`; `WorkOrder` (`production.prisma:56-88`) is
+  BOM/quantity production (`variantId`, `quantityOrdered`, `sourceRefType`
+  at lines 59-69, model closes at line 88), not equipment repair; no
+  maintenance-schedule model exists in the 115-model schema (re-summed via
+  `grep -c "^model " apps/api/prisma/schema/*.prisma`). Distinct from
+  "Downtime that outranks the sale" by clause (preventive vs.
+  reactive-after-failure).
 
-**Killed:** none. All three lenses survived — each demands a specific
-artifact (a field/model addition, a grep with a currently-zero result, a
-named permission key plus `RoleGrant` plus `ADMIN_NAV` entry), each names a
-concrete corporate-scale consequence, and each states its difference from
-the nearest existing lens in one clause.
+**Killed (1 of 3):**
+
+- **The department nobody notifies** — killed as generic-to-every-feature
+  disguised as a domain lens, not a facilities-specific scoping question.
+  Its question ("name the permission key and nav entry, and which role is
+  seeded to hold it") is exactly CLAUDE.md's own universal "Reachable" item
+  in the Definition of done and the `seedPermissions()`-vs-`seedRoles()` gap
+  already named twice in this file (lines 305 and 769 of CLAUDE.md,
+  verified — not 305/860 as a prior draft claimed; line 860 is unrelated
+  "IMPLEMENTATION STATUS" reporting boilerplate). That requirement is true
+  of literally any feature in this repository, facilities included, and
+  answering it forces nothing into existence that the repo-wide checklist
+  does not already force — it fails the hard constraint that a sentence
+  true of any codebase (here, any feature) is not a lens. The one genuinely
+  domain-specific fact it surfaced — that no `Department` model exists to
+  route a notification through at all — is preserved below in "Not modelled
+  yet" as a named gap, without manufacturing a third lens around it.
 
 **Corrections:**
 
-- `nav-registry.ts` is cited by filename only in the body text (no
-  directory), which reads as if it lives beside `permissions.ts` in
-  `packages/shared/src/`. Actual path: `apps/web/src/components/admin/nav-registry.ts`.
-  Corrected here; the lens body is left as a bare filename since it does not
-  claim a directory.
-- Claimed the CLAUDE.md `seedPermissions()`-vs-`seedRoles()` gap is named
-  "twice (lines 305, 860)"; actual second occurrence is line 769, not 860 —
-  line 860 falls inside an unrelated "IMPLEMENTATION STATUS" reporting
-  template. Corrected in both the lens body and this record.
-- No other citation required correction: `Location` fields (`inventory.prisma:76-113`,
-  re-verified field-for-field), `PartyRoleName` values (`parties.prisma:8-13`,
-  exactly `SUPPLIER`/`MANUFACTURER`/`DISTRIBUTOR`/`RETAILER`),
-  `domain-events.ts`'s zero-match grep for `maintenance|service_due` (316
-  lines, re-run), `WorkOrder`'s production scope (`production.prisma:56-88`,
-  `variantId`/`quantityOrdered`/`sourceRefType` all present), the 115-model
-  schema count (re-summed), the 50-key `PERMISSION_CATALOG` with zero
-  facilities/asset/maintenance/lease matches, the 8-entry `NAV_GROUPS`
-  (`overview`, `orders`, `workshop`, `customers`, `catalogue`, `stock`,
-  `insights`, `settings`), and `RolePermission`/`RoleGrant` at `core.prisma:257,321`
-  were each re-opened and confirmed exactly as claimed.
+- `nav-registry.ts` was cited by filename only in a prior draft's body text
+  (no directory), reading as if it lives beside `permissions.ts` in
+  `packages/shared/src/`. Actual path:
+  `apps/web/src/components/admin/nav-registry.ts` (verified: `NAV_GROUPS` at
+  line 45, exactly `overview`, `orders`, `workshop`, `customers`,
+  `catalogue`, `stock`, `insights`, `settings` — 8 groups, no facilities
+  group). This citation now lives only in the killed lens's record above,
+  since the corresponding lens no longer appears in the body.
+- A prior draft claimed the CLAUDE.md `seedPermissions()`-vs-`seedRoles()`
+  gap is named "twice (lines 305, 860)"; the actual second occurrence is
+  line 769, not 860 — line 860 falls inside an unrelated "IMPLEMENTATION
+  STATUS" reporting template. Corrected here.
+- `WorkOrder`'s line range was cited inconsistently across a prior draft
+  (`production.prisma:56-71` in one place, `56-88` in another). Re-read:
+  the model opens at line 56 and closes at line 88 (its indexes and
+  relations run to 88); `56-88` is the correct span and is now used
+  consistently.
+- No other citation required correction: `Location` fields
+  (`inventory.prisma:76-113`, re-verified field-for-field), `PartyRoleName`
+  values (`parties.prisma:8-13`, exactly
+  `SUPPLIER`/`MANUFACTURER`/`DISTRIBUTOR`/`RETAILER`), `domain-events.ts`'s
+  zero-match grep for `maintenance|service_due` (316 lines, re-run), the
+  115-model schema count (re-summed), and the 50-key `PERMISSION_CATALOG`
+  with zero facilities/asset/maintenance/lease matches (re-run:
+  `grep -c "key: '" packages/shared/src/permissions.ts` → 50;
+  `grep -i "facilit|asset|maintenance|lease" packages/shared/src/permissions.ts
+  | grep "key: '"` → zero) were each re-opened and confirmed exactly as
+  claimed.

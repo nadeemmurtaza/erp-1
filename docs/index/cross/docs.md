@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**246** markdown documents. These explain **why**; this index only says **where**.
+**267** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -457,11 +457,11 @@ _no second-level headings_
 - Must Fix  <sub>:10</sub>
 - Scores  <sub>:20</sub>
 
-### `docs/erp-lenses/_agent-manifest.md`  <sub>161 lines</sub>
+### `docs/erp-lenses/_agent-manifest.md`  <sub>175 lines</sub>
 
 _no second-level headings_
 
-### `docs/erp-lenses/_canonical-decisions.md`  <sub>662 lines</sub>
+### `docs/erp-lenses/_canonical-decisions.md`  <sub>828 lines</sub>
 
 - Ruling 1. The ledger wins. Erasure pseudonymises the reference; it does not touch the row  <sub>:26</sub>
 - Ruling 2. The classification decides, and it is fixed at design time  <sub>:55</sub>
@@ -471,19 +471,21 @@ _no second-level headings_
 - Ruling 6. Deactivation removes authority synchronously and never closes a fact synchronously  <sub>:132</sub>
 - Ruling 7. Scope wins over comparability, and the surface says so on its face  <sub>:154</sub>
 - Ruling 8. The registry is not relaxed. An upward flow is a fact or it does not exist  <sub>:170</sub>
-- Ruling 9. Two audit classes, declared per call site  <sub>:190</sub>
-- Ruling 10. A rule that must differ by brand does not become a `Setting`  <sub>:214</sub>
-- Ruling 11. Ruling 4 governs scope columns, not edges. An edge ships nullable, with null's meaning written down  <sub>:233</sub>
-- Ruling 12. Rank is its own axis. `Role.ceiling` is refused; a per-assignment override is allowed only above a rank  <sub>:268</sub>
-- Ruling 13. Scope-match first, then take the highest ceiling among the grants that survive  <sub>:299</sub>
-- Ruling 14. The guard refuses a revoke. It never refuses a deactivation — the deactivation names a successor  <sub>:330</sub>
-- Group 1 — The actor  <sub>:374</sub>
-- Group 2 — The authority  <sub>:406</sub>
-- Group 3 — The act in the world  <sub>:458</sub>
-- Group 4 — The money  <sub>:479</sub>
-- Group 5 — The scale  <sub>:519</sub>
-- Group 6 — The afterlife  <sub>:554</sub>
-- Catalogue merges  <sub>:606</sub>
+- Ruling 9. Two audit classes, declared per call site  <sub>:204</sub>
+- Ruling 10. A rule that must differ by brand does not become a `Setting`  <sub>:228</sub>
+- Ruling 11. Ruling 4 governs scope columns, not edges. An edge ships nullable, with null's meaning written down  <sub>:247</sub>
+- Ruling 12. Rank is its own axis. `Role.ceiling` is refused; a per-assignment override is allowed only above a rank  <sub>:282</sub>
+- Ruling 13. Scope-match first, then take the highest ceiling among the grants that survive  <sub>:313</sub>
+- Ruling 14. The guard refuses a revoke. It never refuses a deactivation — the deactivation names a successor  <sub>:344</sub>
+- Ruling 15. The document keeps its snapshot. Translation is a second rate, applied at the report, never written back  <sub>:380</sub>
+- Ruling 16. A control short of people degrades into a named, counted, recorded exception — never into silence and never into a wall  <sub>:425</sub>
+- Group 1 — The actor  <sub>:483</sub>
+- Group 2 — The authority  <sub>:515</sub>
+- Group 3 — The act in the world  <sub>:581</sub>
+- Group 4 — The money  <sub>:602</sub>
+- Group 5 — The scale  <sub>:655</sub>
+- Group 6 — The afterlife  <sub>:690</sub>
+- Catalogue merges  <sub>:757</sub>
 
 ### `docs/erp-lenses/_claude-md-feature-scope.md`  <sub>190 lines</sub>
 
@@ -497,22 +499,24 @@ _no second-level headings_
 - The cut list  <sub>:568</sub>
 - The catalogue  <sub>:610</sub>
 
-### `docs/erp-lenses/_conflicts.md`  <sub>555 lines</sub>
+### `docs/erp-lenses/_conflicts.md`  <sub>645 lines</sub>
 
-- 1. Immutable evidence against the right to erasure  <sub>:30</sub>
-- 2. A branch that must keep trading offline against an approval before the act  <sub>:77</sub>
-- 3. Dry run against the single writer  <sub>:115</sub>
-- 4. A scope column on every row against making the product look small  <sub>:150</sub>
-- 5. More dimensions on every fact against what the feature costs at scale  <sub>:187</sub>
-- 6. Closing the leaver's shift against never fabricating a count  <sub>:225</sub>
-- 7. Lists that open scoped against figures that must reconcile  <sub>:263</sub>
-- 8. Master data that must travel up against a registry that forbids it  <sub>:296</sub>
-- 9. Evidence-class audit against never blocking the sale  <sub>:328</sub>
-- 10. A rule that differs by brand against `Setting`'s actual shape  <sub>:362</sub>
-- 11. A scope column that must be NOT NULL against a ladder whose top rung has nobody above it  <sub>:398</sub>
-- 12. One ceiling per role name against ranks being an axis of their own  <sub>:441</sub>
-- 13. One rank per act against a resolver that unions every grant  <sub>:481</sub>
-- 14. Stripping a leaver's grants on the spot against a deployment that must stay administrable  <sub>:517</sub>
+- 1. Immutable evidence against the right to erasure  <sub>:37</sub>
+- 2. A branch that must keep trading offline against an approval before the act  <sub>:84</sub>
+- 3. Dry run against the single writer  <sub>:122</sub>
+- 4. A scope column on every row against making the product look small  <sub>:157</sub>
+- 5. More dimensions on every fact against what the feature costs at scale  <sub>:194</sub>
+- 6. Closing the leaver's shift against never fabricating a count  <sub>:232</sub>
+- 7. Lists that open scoped against figures that must reconcile  <sub>:270</sub>
+- 8. Master data that must travel up against a registry that forbids it  <sub>:303</sub>
+- 9. Evidence-class audit against never blocking the sale  <sub>:335</sub>
+- 10. A rule that differs by brand against `Setting`'s actual shape  <sub>:369</sub>
+- 11. A scope column that must be NOT NULL against a ladder whose top rung has nobody above it  <sub>:405</sub>
+- 12. One ceiling per role name against ranks being an axis of their own  <sub>:448</sub>
+- 13. One rank per act against a resolver that unions every grant  <sub>:488</sub>
+- 14. Stripping a leaver's grants on the spot against a deployment that must stay administrable  <sub>:524</sub>
+- 15. A rate snapshotted once against a consolidation that must re-rate the period  <sub>:565</sub>
+- 16. A control that needs two people against a roster that has one  <sub>:608</sub>
 
 ### `docs/erp-lenses/_draft-auditor.md`  <sub>194 lines</sub>
 
@@ -555,22 +559,23 @@ _no second-level headings_
 - Gaps  <sub>:50</sub>
 - Verdict  <sub>:224</sub>
 
-### `docs/erp-lenses/_index.md`  <sub>421 lines</sub>
+### `docs/erp-lenses/_index.md`  <sub>495 lines</sub>
 
 - How to run the pass  <sub>:14</sub>
 - How to read the table  <sub>:41</sub>
 - The catalogue  <sub>:57</sub>
-- The six groups, and what each is for  <sub>:253</sub>
-- What this repository does not model yet  <sub>:289</sub>
+- The six groups, and what each is for  <sub>:277</sub>
+- What this repository does not model yet  <sub>:313</sub>
 
-### `docs/erp-lenses/_integrate.md`  <sub>174 lines</sub>
+### `docs/erp-lenses/_integrate.md`  <sub>272 lines</sub>
 
-- What was promoted: nothing  <sub>:15</sub>
-- What was merged  <sub>:70</sub>
-- The four rulings the backfill forced  <sub>:93</sub>
-- Citations repaired during the merge  <sub>:116</sub>
-- The seven gaps that got no file  <sub>:146</sub>
-- What this merge did not do  <sub>:167</sub>
+- What was promoted: nothing, in either pass  <sub>:16</sub>
+- What was demoted, and from where  <sub>:105</sub>
+- What was merged  <sub>:126</sub>
+- The six rulings the backfill forced  <sub>:157</sub>
+- Citations repaired during the merge  <sub>:196</sub>
+- The seven gaps that had no file, and now do  <sub>:245</sub>
+- What this merge did not do  <sub>:264</sub>
 
 ### `docs/erp-lenses/_judge-auditor.md`  <sub>256 lines</sub>
 
@@ -1476,13 +1481,12 @@ _no second-level headings_
 - Corrections  <sub>:42</sub>
 - Absences  <sub>:48</sub>
 
-### `docs/erp-lenses/39-gap-facilities-asset-maintenance-file-37-has.md`  <sub>176 lines</sub>
+### `docs/erp-lenses/39-gap-facilities-asset-maintenance-file-37-has.md`  <sub>159 lines</sub>
 
 - Lens: The lease nobody renews  <sub>:12</sub>
 - Lens: The service that has no due date  <sub>:42</sub>
-- Lens: The department nobody notifies  <sub>:70</sub>
-- Not modelled yet  <sub>:101</sub>
-- Hardening record  <sub>:113</sub>
+- Not modelled yet  <sub>:71</sub>
+- Hardening record  <sub>:88</sub>
 
 ### `docs/erp-lenses/39g-generate-gap.md`  <sub>40 lines</sub>
 
@@ -1637,6 +1641,169 @@ _no second-level headings_
 - Killed  <sub>:40</sub>
 - Corrections  <sub>:42</sub>
 - Absences  <sub>:48</sub>
+
+### `docs/erp-lenses/46-gap-no-lens-asks-what-a-quorum-dual-custody-.md`  <sub>207 lines</sub>
+
+- Lens: The quorum of one  <sub>:12</sub>
+- Lens: The count nobody keeps  <sub>:58</sub>
+- Lens: The record that must outlive its own excuse  <sub>:99</sub>
+- Not modelled yet  <sub>:138</sub>
+- Hardening record  <sub>:151</sub>
+
+### `docs/erp-lenses/46g-generate-gap.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/46h-harden-gap.md`  <sub>54 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+- Absences  <sub>:47</sub>
+
+### `docs/erp-lenses/47-gap-the-per-brand-currency-field-forces-the-.md`  <sub>179 lines</sub>
+
+- Lens: The rate the sale never asked for  <sub>:12</sub>
+- Lens: The rate has no source to resolve from  <sub>:50</sub>
+- Lens: Consolidation trusts a number it never checked  <sub>:88</sub>
+- Not modelled yet  <sub>:123</sub>
+- Hardening record  <sub>:137</sub>
+
+### `docs/erp-lenses/47g-generate-gap.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/47h-harden-gap.md`  <sub>46 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+
+### `docs/erp-lenses/48-gap-group-currency-translation-for-consolida.md`  <sub>169 lines</sub>
+
+- Lens: The group presentation currency is not any brand's functional currency  <sub>:12</sub>
+- Lens: One rate model cannot serve both a flow account and a stock account  <sub>:45</sub>
+- Lens: The plug the balance trigger will not let through unnamed  <sub>:78</sub>
+- Not modelled yet  <sub>:109</sub>
+- Hardening record  <sub>:121</sub>
+
+### `docs/erp-lenses/48g-generate-gap.md`  <sub>40 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/48h-harden-gap.md`  <sub>48 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+- Absences  <sub>:44</sub>
+
+### `docs/erp-lenses/49-gap-financial-close-as-a-managed-process-not.md`  <sub>175 lines</sub>
+
+- Lens: The close that has no task list  <sub>:11</sub>
+- Lens: The lock with one signer  <sub>:46</sub>
+- Lens: The close nobody can see happening  <sub>:84</sub>
+- Not modelled yet  <sub>:122</sub>
+- Hardening record  <sub>:140</sub>
+
+### `docs/erp-lenses/49g-generate-gap.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/49h-harden-gap.md`  <sub>53 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+- Absences  <sub>:48</sub>
+
+### `docs/erp-lenses/50-gap-landed-cost-apportionment-and-its-timing.md`  <sub>206 lines</sub>
+
+- Lens: The apportionment basis nobody chose  <sub>:11</sub>
+- Lens: The bill that never reaches the shelf  <sub>:45</sub>
+- Lens: Inventory debited against stock that is already gone  <sub>:90</sub>
+- Not modelled yet  <sub>:135</sub>
+- Hardening record  <sub>:154</sub>
+
+### `docs/erp-lenses/50g-generate-gap.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/50h-harden-gap.md`  <sub>48 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+
+### `docs/erp-lenses/51-gap-the-approval-that-stalls-without-a-leave.md`  <sub>195 lines</sub>
+
+- Lens: The clock nobody starts  <sub>:12</sub>
+- Lens: Store time is not the approver's time  <sub>:53</sub>
+- Lens: Acted on, not delivered  <sub>:86</sub>
+- Not modelled yet  <sub>:123</sub>
+- Hardening record  <sub>:141</sub>
+
+### `docs/erp-lenses/51g-generate-gap.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/51h-harden-gap.md`  <sub>46 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+
+### `docs/erp-lenses/52-gap-no-lens-classifies-a-new-table-s-replica.md`  <sub>46 lines</sub>
+
+- Lens: The registration that either exists or gets carved around  <sub>:5</sub>
+- Lens: The quarantine nobody opens  <sub>:17</sub>
+- Not modelled yet  <sub>:29</sub>
+- Hardening record  <sub>:34</sub>
+
+### `docs/erp-lenses/52g-generate-gap.md`  <sub>26 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:22</sub>
+
+### `docs/erp-lenses/52h-harden-gap.md`  <sub>40 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:32</sub>
+- Corrections  <sub>:34</sub>
 
 ### `docs/implementation/00-HOUSE-RULES.md`  <sub>496 lines</sub>
 

@@ -4,24 +4,26 @@ Five critics re-read the finished catalogue from angles its generators could
 not see: the org chart department by department, the roles-to-ranks chain
 against the live source, the walk from one shop to a corporate group, what the
 established suites force that this one does not, and this repository's own
-recorded scars. Fifteen gaps were raised. **Eight** were carried into domain
-files of their own, `38`–`45`, twenty-three lenses between them. The remaining
-seven were never written; they are listed at the end of this file, so that
-nobody reads the eight as the whole answer.
+recorded scars. **Fifteen gaps were raised, and all fifteen are now closed**,
+across two passes: `38`–`45` first, then `46`–`52`, which took the seven gaps
+the first pass had listed as open and put each through the same
+generate-and-harden treatment.
 
-This file records where each one landed, what was promoted into the rule, what
-was demoted to make room, and — for every lens not promoted — the reason.
+Forty-three lenses across the fifteen files. This file records where each one
+landed, what was promoted into the rule, what was demoted to make room, and —
+for every lens not promoted — the reason.
 
-## What was promoted: nothing
+## What was promoted: nothing, in either pass
 
 **The rule is unchanged.** `_claude-md-feature-scope.md` is the same 189 lines
-it was before the backfill, and nothing was demoted, because nothing took a
-place. That is the finding, not a failure to reach one: the section is not
-improved by being longer, and none of the twenty-three beat a sitting lens on
-**leverage** — the damage a lens's absence causes, times how often it fires.
+it was before the backfill began, and nothing was demoted from it, because
+nothing took a place. That is the finding, not a failure to reach one: the
+section is not improved by being longer, and none of the forty-three beat a
+sitting lens on **leverage** — the damage a lens's absence causes, times how
+often it fires.
 
 The twenty-four sitting lenses fire on nearly every feature. Every one of the
-twenty-three fails that second term, in one of two ways:
+forty-three fails that second term, in one of three ways:
 
 **Department-scoped — fires on one department's features** (`38`–`41`). Payroll
 posting, maintenance scheduling, ESG measurement and contract terms are each
@@ -31,15 +33,24 @@ would answer "n/a, this writes no pay run" four more times for no gain. This is
 exactly what the catalogue is for — a lens kept for the surface it fires on —
 and all four files' lenses are in it.
 
-**Conditional on an artifact that does not exist yet** (`42`–`45`). The ceiling
-composition rule, the rank axis and the manager edge cannot be answered until
-there is a ceiling, a rank or an edge to answer about. Today the honest answer
-to each is a line in *What this repository does not model yet*, which is where
-it now is. Their normative content is not lost — it became four rulings, which
-is the stronger placement: a ruling binds when the conflict arrives, without
-costing attention on every feature until then.
+**Conditional on an artifact that does not exist yet** (`42`–`46`). The ceiling
+composition rule, the rank axis, the manager edge and the quorum shortfall
+cannot be answered until there is a ceiling, a rank, an edge or an approval to
+answer about. Today the honest answer to each is a line in *What this
+repository does not model yet*, which is where it now is. Their normative
+content is not lost — it became six rulings, which is the stronger placement: a
+ruling binds when the conflict arrives, without costing attention on every
+feature until then.
 
-### Lens by lens, and why each stayed out
+**Edition-gated — the answer is `·` until a tier appears** (`47`–`52`). The
+currency, close, landed-cost, escalation and replication lenses are the second
+pass's yield, and most of them fire at Chain or Organization edition only. The
+two currency files in particular are `· · O` throughout: they have no answer at
+all until a second `RetailBrand` in a second country exists. A lens that is
+`n/a` on every Solo feature cannot beat one that fires on all three editions,
+however expensive it is on the day it lands.
+
+### Pass one, lens by lens, and why each stayed out
 
 | Lens | File | Why not promoted |
 |---|---|---|
@@ -47,7 +58,6 @@ costing attention on every feature until then.
 | The pay run is a document, not a report | 38 | One document's existence. *Request or record* and *The reversal document* already bound the general shape |
 | The overpayment has no way back | 38 | Absorbed into *The reversal document, not the reversal flag* — it is that lens's line-level clause, not a rival |
 | The service that has no due date | 39 | Fires on facilities features only. Nothing in a pricing or fulfilment change has a service interval |
-| The department nobody notifies | 39 | Reachability is already a stated PR-failure condition in the rule's own review clause (a seeded grant, a nav entry) — this names the department instance of it |
 | The lease nobody renews | 39 | Absorbed into *The agreement is not the row it governs*; a lease is one `kind` of agreement |
 | The metric with nowhere to live | 40 | ESG-only. The grain question is real and has no reader outside a disclosure feature |
 | Whose shipment, whose emissions | 40 | Same, narrower: it fires only where a figure is derived from transport |
@@ -67,33 +77,88 @@ costing attention on every feature until then.
 | The number nobody can group by | 45 | Absorbed into the above: the reportability argument for the same choice |
 | Escalation across roles needs a number, not a name | 45 | Absorbed into *The threshold nobody approves alone*, whose "who outranks whom" this makes numeric |
 
+### Pass two, lens by lens, and why each stayed out
+
+| Lens | File | Why not promoted |
+|---|---|---|
+| The quorum of one | 46 | **Blocking, and the closest call in either pass.** It fires wherever a control needs two people, and a narrow build produces either a till that cannot close or a silent bypass. It stays out because the answer is already *written and citable*: ruling 14's closing paragraph stated the general shape, and ruling 16 now lifts it explicitly. A reviewer who runs *The threshold nobody approves alone* and hits a quorum has a ruling to cite. Promoting it would put a duplicate of a ruling into the rule |
+| The count nobody keeps | 46 | Same surface. Names a real missing method (`countDistinctHolders`) and the exact two call sites that must call it — which is work, recorded in *Not modelled yet*, not a question whose answer varies by feature |
+| The record that must outlive its own excuse | 46 | Absorbed into *The version stamp* — a second stored field of the same kind, for the same reason: the policy version explains what the rule was, the roster size explains why this record departed from it |
+| The rate the sale never asked for | 47 | `· · O`. No answer at all until a second `RetailBrand` in a second currency exists, and then it fires only on money-posting features. *The second legal entity*, already in the rule, is the lens that reaches this one |
+| The rate has no source to resolve from | 47 | Same edition gate. An `FxRate` table is one migration written once — work, not a question that scopes a feature. Ruling 15 binds it when it arrives |
+| Consolidation trusts a number it never checked | 47 | Same edition gate, and narrower still: it fires on the consolidation path alone |
+| The group presentation currency is not any brand's functional currency | 48 | `· · O`, and conditional on 47 shipping first — see ruling 15's staging clause. Until a brand's own sales post at a real rate there is no local book to translate |
+| One rate model cannot serve both a flow account and a stock account | 48 | Same. Its real yield was conflict 15 and ruling 15, which is the stronger placement: it is a lens against a standing invariant (House Rule 7), and those bind through a ruling, not through a line in a checklist |
+| The plug the balance trigger will not let through unnamed | 48 | Absorbed into *The unwritten posting rule*, which already says "naming any account the thirteen-account chart lacks". The CTA account is literally that, with the balance trigger making the absence a refused transaction rather than a reporting gap |
+| The close that has no task list | 49 | `· C O`, and fires on period-close features only. Real, and the catalogue is where a once-per-feature-family question belongs |
+| The lock with one signer | 49 | Adjacent to *Authority and blast radius*, which already asks "with whose second signature". What this adds is one named transition and two named columns — an instance, kept in the catalogue where instances go |
+| The close nobody can see happening | 49 | Absorbed into *Whose rows, and which columns*, with ruling 4 governing: the scope column arrives with the table that first needs it. Its original premise — that no read/write permission split exists — was **false** and was corrected before merge; see below |
+| The apportionment basis nobody chose | 50 | Fires on receiving and costing features. Prior to *Click the number*, which already demands a figure be explicable, and this is one input to one figure |
+| The bill that never reaches the shelf | 50 | Same surface. A real and ordinary failure — late freight bills are the normal case for international suppliers — but silent on any feature that does not receive goods |
+| Inventory debited against stock that is already gone | 50 | Absorbed into *The unwritten posting rule*. The sharpest of the four absorbed into it, because the account is not merely missing: R15's event table already specifies Dr GRNI / Cr AP and the live code posts Dr Inventory / Cr AP, so the code disagrees with the document of record |
+| The clock nobody starts | 51 | `· C O`. The strongest of the approval three, and still narrower than both rule lenses it sits between — *The threshold nobody approves alone* covers who may approve, *The grant that ends itself* covers the leaver. Inaction by a healthy approver is a third thing, and it fires only where an approval step exists, which is nowhere yet |
+| Store time is not the approver's time | 51 | Absorbed into *One clock, a hundred branches* (30) — the same missing per-`Location` timezone, demanded from the person's end rather than the transaction's. The lens's own answer offers resolution through `Location`/`AdminScope`, which is that canonical |
+| Acted on, not delivered | 51 | Kept in the catalogue because it forbids a specific wrong build (`remindedAt`-gated escalation) that *Delivery is a fact, not a hope* does not rule out. A prohibition on one implementation is not a scoping question for every feature |
+| The registration that either exists or gets carved around | 52 | `· C O`, and its frequency is future rather than present: `00a-ground-topology.md` calls replication "dormant machinery", with only `Product` and `Order` holding listeners. Ruling 8 already forbids relaxing the registry; this generalises file 18's Product instance and sits beside it |
+| The quarantine nobody opens | 52 | Absorbed into *The failure path, and who is allowed to walk it*, which asks for exactly this list: the durable store, the screen, the permission, the replay action. Here the store is built and every other half is missing |
+
+## What was demoted, and from where
+
+Nothing was demoted from the rule, because nothing was promoted into it. One
+lens was demoted **within the catalogue**, and it came out of the first pass's
+own material rather than the second's:
+
+**`39`'s *The department nobody notifies* — catalogue → cut.** The first pass
+kept it, noting in this file that "reachability is already a stated PR-failure
+condition in the rule's own review clause". A hardening re-pass on file `39`
+then killed it outright, and that judgement is now carried through to
+`_index.md` (its row reads `cut — true of every feature, not of this one`) and
+written up in Part 3 of `_canonical-decisions.md`. Its question — name the
+permission key, the nav group and the seeded grant — is word for word
+CLAUDE.md's own "Reachable" item in the Definition of done, and is true of
+payroll, legal and every other feature identically. A question with the same
+answer everywhere is a checklist item, not a lens. The one genuinely
+facilities-specific fact it surfaced, that no `Department` model exists to
+route a notification through, survives in both *Not modelled yet* lists.
+
+File `39` therefore now carries two lenses, not three.
+
 ## What was merged
 
-Twenty-three lenses: **fourteen** into the catalogue table as rows of their
-own, **nine** absorbed, **none** cut. All twenty-three carry their editions.
+Forty-three lenses: **twenty-seven** into the catalogue table as rows of their
+own, **fifteen** absorbed, **one** cut. All forty-three carry their editions.
+Pass one contributed 13 / 9 / 1 after its own demotion, pass two 14 / 6 / 0.
 
-Four of the nine absorptions are within the backfill itself — two lenses in one
-file, or two files in one pass, reaching the same artifact from different
-directions — and are recorded in *Catalogue merges*. The other five go into
-lenses that already existed and are recorded under their canonical's own entry
-in Part 2.
+Four of the fifteen absorptions are within the backfill itself — two lenses in
+one file, or two files in one pass, reaching the same artifact from different
+directions. The other eleven go into lenses that already existed: ten into
+headline lenses, recorded under their canonical's own entry in Part 2, and one
+into a catalogue lens, recorded in *Catalogue merges*.
 
-The table's totals moved from 154 rows to **177 rows for 169 lenses**: 24
-headline, 83 catalogue, 58 absorbed, 4 cut, plus the 8 rows that repeat a
-canonical under the name its own domain file still carries.
+The table's totals moved from 154 rows, before either pass, to **197 rows for
+189 lenses**: 24 headline, 96 catalogue, 64 absorbed, 5 cut, plus the 8 rows
+that repeat a canonical under the name its own domain file still carries. The
+arithmetic closes: 24 + 96 + 64 + 5 = 189, and 189 + 8 = 197.
 
-*What this repository does not model yet* gained the eight domains' absences —
-compensation and pay-run artifacts, the maintenance and agreement models, the
-whole environmental-metric grain, the granter's missing `actorId` seam, the
-rank axis and the manager edge — including the fact that of
-`PERMISSION_CATALOG`'s 50 keys not one matches `facilit`, `asset`,
-`maintenance`, `lease`, `legal.`, `esg`, `sustainab` or `payroll`, and that
-`NAV_GROUPS`' eight entries contain no facilities, legal or people group.
+*What this repository does not model yet* gained both passes' absences. Pass
+one added the compensation and pay-run artifacts, the maintenance and agreement
+models, the whole environmental-metric grain, the granter's missing `actorId`
+seam, the rank axis and the manager edge. Pass two added the money half —
+no rate source of any kind, no currency on `Organization`, no
+period-average or closing rate, no CTA equity account beside `3000`, no GRNI
+handler among the seven, no apportionment basis, no cost-adjustment model, no
+close-task model, no second signer on `lockPeriod()`, no branch column on
+`FiscalPeriod`, and `AuditService` called from nowhere in the accounting
+module — plus the authority half (nothing counts distinct holders of a key
+above zero; nothing stores a roster size) and the operations half (the
+quarantine service with no route, key or screen; no job ageing a pending
+decision; no per-user timezone).
 
-## The four rulings the backfill forced
+## The six rulings the backfill forced
 
-Each of `42`–`45` collided with something already decided. The argument is
-stated at length in `_conflicts.md` 11–14; the rulings are:
+Each of `42`–`45` collided with something already decided, and two more
+collisions came out of `46`–`52`. The arguments are stated at length in
+`_conflicts.md` 11–16; the rulings are:
 
 - **11.** Ruling 4 governs scope columns, not edges. An edge ships nullable,
   with null's meaning written down — and never inside a module that is off by
@@ -104,6 +169,21 @@ stated at length in `_conflicts.md` 11–14; the rulings are:
   that survive. The skipped step is the bug, not the max.
 - **14.** The guard refuses a revoke. It never refuses a deactivation — the
   deactivation names a successor.
+- **15.** The document keeps its snapshot. Translation is a second rate,
+  applied at the report, never written back. One `FxRate` table serves both
+  questions, and 47 is staged before 48.
+- **16.** A control short of people degrades into a named, counted, recorded
+  exception — never into silence and never into a wall.
+
+### The one ruling that generalised another
+
+Ruling 16 does not overturn ruling 14; it lifts ruling 14's closing paragraph,
+which had been written for the deactivation path and turned out to state the
+rule for every control the live roster cannot staff. Ruling 14 now carries a
+dated note saying so, and is otherwise unchanged. Ruling 16 adds the two
+artifacts the narrower case never needed: a way to count qualified holders
+before the control fires, and a stored roster size so the shortfall stays
+legible after the roster grows.
 
 ### The one done test the backfill overturned
 
@@ -115,59 +195,77 @@ the only place the backfill changed a standing answer rather than adding one.
 
 ## Citations repaired during the merge
 
-- `modules.registry.ts:66` → **`:81`**, in ruling 11, in Group 5's *Three
-  silhouettes* entry, and in conflict 11. Line 66 is the `production` entry;
-  the `organization` entry — the registry's only `offByDefault: true` — is line
-  81, and the comment citing R14 by name runs `:77-80`. The hardening re-pass
-  caught this inside file `43` and corrected it there; the same wrong range had
-  already been copied into three normative paragraphs, which read the R14
-  premise off a line that does not carry it.
+**Pass two.** `posting-rules.subscriber.ts` "has exactly eight `@OnDomainEvent`
+handlers today" (file `50`) → **seven**. `grep -c "@OnDomainEvent"` returns 7:
+`OrderPlaced`, `PaymentSucceeded`, `PaymentRefunded`, `SupplierBillRaised`,
+`SupplierBillPaid`, `StockVarianceRecorded`, `InterBranchTransferInvoiced`. The
+seven are now named in the lens so the count cannot drift again silently. The
+load-bearing half — that none of them is `GoodsReceived` — is unaffected, and
+file `48` independently cites "the seven existing posting rules", which was
+already the correct figure.
 
-Re-verified against source and correct as written: the 50-key
-`PERMISSION_CATALOG` and its zero department matches; `NAV_GROUPS`' eight
-entries; the seven document number counters, with `ReplicationSequenceCounter`
-correctly excluded as a replication sequence rather than a document number;
-`PartyRoleName`'s exactly four values; `Setting` as one global `key`/`value`
-row with no `locationId`; `assertLockedKeysStillHeldAfterRevoke` wired only at
-`users-admin.service.ts:297` while `RolesService.unassign()` is a bare
-`deleteMany` at `roles.service.ts:155-157`; `scope.guard.ts:84` and `:124`;
-`organization.prisma:43` and `:106-120`; `core.prisma:307` and `:336`;
-`.env.example:33`; and `00b-ground-identity.md:50` carrying the
-"no `managerId`, no `reportsTo`" language verbatim.
+Also carried through from a hardening re-pass rather than found here: file
+`49`'s third lens originally claimed no permission distinguishes reading close
+state from closing a period. That is false — `accounting.view` gates
+`listFiscalYears()`/`listPeriods()` while `accounting.manage_periods` gates
+every write (`fiscal-periods.controller.ts:18,38`) — and the lens was rewritten
+around the gap that is real: no branch column on any close-related row, and no
+`AdminScope` narrowing anywhere in the accounting module.
+
+Re-verified against source before merge and correct as written:
+`PosShiftStatus` as exactly `OPEN`/`CLOSED` and `PurchaseOrderStatus` as
+exactly `DRAFT`/`SENT`/`PARTIAL`/`RECEIVED`/`CANCELLED`;
+`assertLockedPermissionsStillHeldSomewhere` (`roles.service.ts:261`) and
+`assertLockedKeysStillHeldAfterRevoke` (`:175`) testing only for zero holders;
+`Organization` carrying no currency field; `PostLineInput`'s WO-19.3 comment
+and `lineData()`'s `BRAND.locale.currency` / `1_000_000` defaults;
+`onOrderPlaced` and `onPaymentSucceeded` passing neither `currency` nor
+`fxRateScaled`, against `onSupplierBillPaid`'s real `billFxRateScaled` and
+`settlementFxRateScaled`; `rawTotals()` as a `groupBy` on `accountId` with no
+currency or brand split; `CHART_OF_ACCOUNTS` holding exactly one `EQUITY` row,
+`3000 Retained Earnings`; `allocateLandedCost` at `pricing.ts:205` allocating
+by `quantity * unitCost` with `GoodsReceiptItem` carrying no weight or volume
+column; `closePeriod()`/`lockPeriod()` checking only `period.status`;
+`SettingKey.StoreTimezone` at `settings.defaults.ts:63` with `User` carrying no
+timezone column; the registry's FACT-up/POLICY-down throw; and no controller
+under `apps/api/src` referencing `Quarantine` at all.
+
+**Pass one.** `modules.registry.ts:66` → **`:81`**, in ruling 11, in Group 5's
+*Three silhouettes* entry, and in conflict 11. Line 66 is the `production`
+entry; the `organization` entry — the registry's only `offByDefault: true` — is
+line 81, and the comment citing R14 by name runs `:77-80`.
 
 **Left alone, and reported rather than edited:** `00a-ground-topology.md:37`
 states that `organization` and `transfers` are both togglable entries at
 `modules.registry.ts:66,87`. Neither half holds today — `organization` is line
-81, and `transfers` is not in the registry at all; `organization` is now the
-only `offByDefault` entry. That line predates this pass and belongs to the
-ground-truth files, so it is named here rather than rewritten from inside an
-integration.
+81, and `transfers` is not in the registry at all. That line predates both
+passes and belongs to the ground-truth files, so it is named here rather than
+rewritten from inside an integration.
 
-## The seven gaps that got no file
+## The seven gaps that had no file, and now do
 
-Of the fifteen raised, seven reached no lens and are in none of the artifacts.
-They are recorded here as open, not as closed, because the catalogue now
-carries eight backfill files and a reader could reasonably assume the audit was
-worked to the end:
+The first pass closed eight of the fifteen gaps and listed seven as open. The
+second pass wrote all seven. For the record, with the lens each became:
 
-| Gap | Severity as raised | State |
+| Gap, as raised | Severity | File |
 |---|---|---|
-| Group currency translation for consolidated reporting — presentation currency, translation method, rate source, the equity account taking the cumulative adjustment | blocking | No lens. `_index.md` still says only "No `FxRate` table and no period-end revaluation" |
-| Financial close as a managed process — what must be true before `lockPeriod()` may run at all, not a permission check on the flip | blocking | No lens |
-| A quorum or dual-custody control whose deployment roster cannot supply the second person | blocking | No lens. *The threshold nobody approves alone* asks for the quorum; nothing asks what it does at a roster of two |
-| The per-brand currency field forces the invoice; nothing forces the ledger to convert — `JournalLine` minor units summed across currencies by `ConsolidationService` | significant | No lens |
-| Landed cost apportionment and its timing — basis, and the freight bill arriving after COGS has already posted | significant | No lens |
-| The approval that stalls without a leaver — a time-based escalation for a healthy approver who simply is not acting | significant | No lens. `04` covers only the deactivation and the expiring delegation |
-| Replication data-class and direction (R2) for every new table, not only `Product` | significant | No lens. Only file `18`'s Product-shaped instance exists |
+| Group currency translation for consolidated reporting — presentation currency, translation method, rate source, the equity account taking the cumulative adjustment | blocking | `48`, 3 lenses. Forced conflict 15 / ruling 15 |
+| Financial close as a managed process — what must be true before `lockPeriod()` may run at all | blocking | `49`, 3 lenses |
+| A quorum or dual-custody control whose roster cannot supply the second person | blocking | `46`, 3 lenses. Forced conflict 16 / ruling 16 |
+| The per-brand currency field forces the invoice; nothing forces the ledger to convert | significant | `47`, 3 lenses |
+| Landed cost apportionment and its timing | significant | `50`, 3 lenses |
+| The approval that stalls without a leaver | significant | `51`, 3 lenses |
+| Replication data-class and direction (R2) for every new table, not only `Product` | significant | `52`, 2 lenses |
 
-Three of those seven are blocking as raised. Nothing here judges them — they
-were not put to the generate-and-harden pass at all, so there is no verified
-lens to promote, absorb or cut. They are the next pass's input.
+All three blocking gaps produced lenses, and two of the three produced a ruling
+as well — which is where their normative weight actually sits. None produced a
+promotion, and the reasoning for each is in the pass-two table above.
 
 ## What this merge did not do
 
 It did not touch the twenty-four, and it did not lengthen the rule by a line.
-The backfill's yield is four rulings, one overturned done test, fourteen new
-catalogue rows, nine absorptions and a materially longer list of what this
-repository cannot yet store an answer in. A reader walking the rule on their
-next feature walks exactly what they walked before it.
+The backfill's whole yield across both passes is six rulings, one overturned
+done test, one demoted lens, twenty-seven new catalogue rows, fifteen
+absorptions and a materially longer list of what this repository cannot yet
+store an answer in. A reader walking the rule on their next feature walks
+exactly what they walked before it.

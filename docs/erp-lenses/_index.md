@@ -5,7 +5,7 @@ answer must name an artifact in this repository — a column, a table, a
 permission key, a service method, a screen, or a number. A question whose
 answer could be "yes, handled" is not a lens.
 
-This folder holds 169 of them. Twenty-four are the rule, quoted in full in
+This folder holds 189 of them. Twenty-four are the rule, quoted in full in
 CLAUDE.md's "Feature scope: build the whole capability, not one slice of it".
 The rest are here, each in a numbered domain file with its repository
 evidence, its worked example, its done test, and the hardening record of what
@@ -154,7 +154,7 @@ that contradicts a line of it.
 | The wage has no table | The table holding one person's rate, its basis and its effective date, joined at pay-run build time | 38 | catalogue | S C O |
 | The pay run is a document, not a report | Payroll's own number series, its draft-to-posted lifecycle, and the deductions table each line reads | 38 | catalogue | S C O |
 | The service that has no due date | The interval, last-serviced and next-due fields, and what fires when the date passes unlogged | 39 | catalogue | S C O |
-| The department nobody notifies | The key, the nav group and the seeded grant putting a whole business function in front of somebody | 39 | catalogue | S C O |
+| The department nobody notifies | The key, the nav group and the seeded grant putting a whole business function in front of somebody | 39 | cut — true of every feature, not of this one | S C O |
 | The metric with nowhere to live | The row holding one environmental reading at one `Location` for one period, written when it was taken | 40 | catalogue | · C O |
 | Whose shipment, whose emissions | The physical activity a transport figure multiplies — distance, mode, weight — as against `freightCost` | 40 | catalogue | · C O |
 | The disclosure period has no lock | What stops a filed non-ledger figure being edited afterwards, given `FiscalPeriod` protects only the ledger | 40 | catalogue | S C O |
@@ -165,6 +165,20 @@ that contradicts a line of it.
 | The manager column that doesn't exist | The person-to-person edge escalation resolves through, and the tie-break when two share a level; absorbs "The chain HR actually needs" | 43 | catalogue | · C O |
 | The union that outruns its parts | Which of several simultaneous grants supplies the ceiling for one act (ruling 13); absorbs "Scope must gate the ceiling" | 44 | catalogue | · C O |
 | Rank's own table, or a fused column | Whether rank is `UserId`→`RankId` or a ceiling fused onto `Role` (ruling 12); absorbs "The number nobody can group by" | 45 | catalogue | · C O |
+| The quorum of one | The fallback state, the shortfall marker and the distinct key, when the live roster holds fewer qualified people than a control needs (ruling 16) | 46 | catalogue | S C O |
+| The count nobody keeps | The method returning how many distinct users hold a key today, against a guard that only ever checks for zero | 46 | catalogue | S C O |
+| The rate the sale never asked for | The call site resolving an `fxRateScaled` before `postEntry()`, against `lineData()`'s silent 1:1 default | 47 | catalogue | · · O |
+| The rate has no source to resolve from | The `FxRate` table, its effective date, and the key gating who may enter a rate about to post (ruling 15) | 47 | catalogue | · · O |
+| Consolidation trusts a number it never checked | The query catching a line converted at the 1:1 default before `rawTotals()` sums it | 47 | catalogue | · · O |
+| The group presentation currency is not any brand's functional currency | The org-level currency the group P&L renders in, distinct from any one brand's | 48 | catalogue | · · O |
+| One rate model cannot serve both a flow account and a stock account | The period-average rate for the P&L against the closing rate for the balance sheet (ruling 15) | 48 | catalogue | · · O |
+| The close that has no task list | The reconciliation-task row per branch per period, and the query refusing `closePeriod()` while one is open | 49 | catalogue | · C O |
+| The lock with one signer | The second `userId` `lockPeriod()` requires, and the row storing both | 49 | catalogue | S C O |
+| The apportionment basis nobody chose | The stored basis — value, weight, volume or unit — against `allocateLandedCost`'s hardcoded value split | 50 | catalogue | S C O |
+| The bill that never reaches the shelf | The rule restating `costPrice` when a late freight bill disagrees with the receipt's estimate | 50 | catalogue | S C O |
+| The clock nobody starts | The `assignedAt`, the cron ageing it, and the threshold a still-active approver's inaction trips | 51 | catalogue | · C O |
+| Acted on, not delivered | Why the escalation trigger reads the step's own status and never a `remindedAt` the sender set | 51 | catalogue | S C O |
+| The registration that either exists or gets carved around | Each new cross-node table's `dataClass`, `direction` and `register()` call site (ruling 8) | 52 | catalogue | · C O |
 | The access with no end date | The externally-sourced, time-boxed actor | 01 | → The grant that ends itself | S C O |
 | The credential with no permission key | The domain file's own name for it | 01 | → renamed The principal with no permission key | S C O |
 | The actor with no role | The same question asked from the role side | 02 | → The principal with no permission key | S C O |
@@ -229,6 +243,12 @@ that contradicts a line of it.
 | The act nobody can trace to its grant | Which grant supplied the ceiling, on a record whose grant may since have expired | 44 | → The version stamp | · C O |
 | The number nobody can group by | Headcount by grade needs a `RankId` foreign key, not `Role.name` matching | 45 | → Rank's own table, or a fused column | · C O |
 | Escalation across roles needs a number, not a name | "Who outranks whom" is a numeric comparison on one axis, not a name-to-name lookup | 45 | → The threshold nobody approves alone | · C O |
+| The record that must outlive its own excuse | The roster size in force at approval time, stored beside the policy version | 46 | → The version stamp | S C O |
+| The plug the balance trigger will not let through unnamed | A translation adjustment has no equity account, and the balance trigger refuses the entry outright | 48 | → The unwritten posting rule | · · O |
+| The close nobody can see happening | The branch column a close row needs before any scope filter can read it (ruling 4) | 49 | → Whose rows, and which columns | · C O |
+| Inventory debited against stock that is already gone | GRNI is a missing account R15 already specifies and the live posting rule contradicts | 50 | → The unwritten posting rule | S C O |
+| Store time is not the approver's time | The same missing per-`Location` timezone, reached from a person rather than a transaction | 51 | → One clock, a hundred branches | · C O |
+| The quarantine nobody opens | `ReplicationQuarantine` is a durable store with no route, no key and no screen | 52 | → The failure path, and who is allowed to walk it | · C O |
 | Whose rows? | Exports, schedules and drill-downs apply the same filter and mask as the screen | WO-22 | → Whose rows, and which columns | S C O |
 | Name the owner, name the reader it refuses | WO-22's own name for it | WO-22 | → renamed Whose rows, and which columns | S C O |
 | The edition above and the day it appears | The nullable-scope trap: `{ in: [...] }` never matches NULL (ruling 4) | WO-22 | → Three silhouettes, and the day the tier above appears | S C O |
@@ -236,19 +256,23 @@ that contradicts a line of it.
 | Who may unmake it, how large, how late, and whose | Value band, time window and reverse-your-own here; its closed-period half went to the period lens | WO-22 | → The threshold nobody approves alone | S C O |
 | A fact that already happened is never rejected | The inbound-message case, and the one sanctioned exception: an authenticity failure | WO-22 | → Request or record — classify every write | S C O |
 
-177 rows for 169 lenses: eight canonicals appear twice, once under the name
+197 rows for 189 lenses: eight canonicals appear twice, once under the name
 the rule uses and once under the name their own domain file still carries, so
-that grepping either finds it. Of the 169 — 24 headline, 83 kept in the
-catalogue for the surface they fire on, 58 absorbed into a canonical, 4 cut.
+that grepping either finds it. Of the 189 — 24 headline, 96 kept in the
+catalogue for the surface they fire on, 64 absorbed into a canonical, 5 cut.
 
-Files `38`–`45` are the backfill pass: eight domains a department-by-department
-walk, a roles-and-ranks walk and a repository-scar walk found the first
-thirty-seven files never reached. None of their twenty-three lenses was
-promoted into the rule; [`_integrate.md`](_integrate.md) says why for each.
-Seven further gaps that audit raised reached no lens at all — group currency
-translation, the close as a managed process, and a quorum the live roster
-cannot fill among them — and are listed as open at the end of
-[`_integrate.md`](_integrate.md), not closed by these eight files.
+Files `38`–`52` are the backfill, run in two passes. The first wrote `38`–`45`
+from a department-by-department walk, a roles-and-ranks walk and a
+repository-scar walk; the second wrote `46`–`52`, closing the seven gaps that
+first pass had raised and left open — group currency translation, the close as
+a managed process, landed-cost timing, the approval that stalls without a
+leaver, replication data-class, the ledger half of per-brand currency, and a
+quorum the live roster cannot fill. Forty-three lenses across the fifteen
+files. **None was promoted into the rule**, in either pass;
+[`_integrate.md`](_integrate.md) says why for each, and records the one lens
+the second pass demoted — `39`'s *The department nobody notifies*, cut for
+asking of facilities what CLAUDE.md's own "Reachable" item already asks of
+every feature.
 
 ## The six groups, and what each is for
 
@@ -314,7 +338,18 @@ own authority has no seam to be compared against; the orphan guard
 `updatePermissions()`, never into `unassign()`, which is a bare `deleteMany`
 (ruling 14). No per-grant provenance on `ResolvedPermissions` — it is
 `{ roles, permissions }`, a flat union — and no grant-identifying field on any
-approved record (ruling 13).
+approved record (ruling 13). No method anywhere counts how many distinct
+people hold a permission key: `assertLockedPermissionsStillHeldSomewhere`
+(`roles.service.ts:261`) and `assertLockedKeysStillHeldAfterRevoke` (`:175`)
+refuse only a drop to **zero** holders, and only for the two
+`ADMIN_LOCKED_PERMISSIONS` keys — nothing checks a quorum's threshold above
+one, so two sequential role edits can silently collapse a two-person control
+to one holder. No column on any record stores the roster size in force when a
+decision was approved, so a shortfall pass cannot be told from a control that
+was never wired (ruling 16). `PosShiftStatus` is exactly `OPEN`/`CLOSED` —
+ruling 6's abandoned state is a ruling, not a column — and
+`PurchaseOrderStatus` is `DRAFT`/`SENT`/`PARTIAL`/`RECEIVED`/`CANCELLED`, so
+an approval ladder has nothing to attach to.
 
 **Evidence and retention.** No `LegalHold` model and nothing a hold could
 attach to. No DB-level immutability on `AuditLog` — only `JournalLine` and
@@ -331,8 +366,34 @@ or unposted journal state and no maker-checker before `POSTED`. No
 partial-refund model: `Payment.refundAmount` exists, and nothing sets it
 below the full amount. No prior-period-adjustment account, no restatement
 trail, and no constraint tying `JournalEntry.date` to its period's range. No
-`FxRate` table and no period-end revaluation. No GRNI clearing account, and
-no journal for production, payroll or shift close. No per-`RetailBrand` home
+`FxRate` table and no period-end revaluation — no rate source of any kind,
+so even the one path that needs a rate today takes whatever the caller
+supplies (`onSupplierBillPaid` reads `billFxRateScaled` and
+`settlementFxRateScaled` straight off the payload), and `lineData()` defaults
+`currency` to `BRAND.locale.currency` and `fxRateScaled` to `1_000_000` for
+everything else; `onOrderPlaced` and `onPaymentSucceeded` pass neither. No
+currency field on `Organization` (`id`, `name`, `allowInterBrandTransfers`,
+timestamps), so a group has no presentation currency distinct from a brand's
+functional one, and `ConsolidationService.rawTotals()` is a bare `groupBy`
+with no currency or brand split. No period-average or period-end closing rate
+— `JournalLine.fxRateScaled` is one rate per line, snapshotted once (R16). No
+cumulative-translation-adjustment account: `CHART_OF_ACCOUNTS` seeds exactly
+one `EQUITY` row, `3000 Retained Earnings`. No GRNI clearing account, and no
+journal for production, payroll or shift close — `posting-rules.subscriber.ts`
+has seven `@OnDomainEvent` handlers and no `GoodsReceived` among them, so the
+live `SupplierBillRaised` rule posts Dr Inventory / Cr AP where R15 specifies
+Dr GRNI / Cr AP. No apportionment-basis field on a receipt or its lines, and
+no weight or volume column on `GoodsReceiptItem` — `allocateLandedCost`
+apportions by `quantity * unitCost` alone. No cost-adjustment model tying a
+later `SupplierBill` back to the `GoodsReceiptItem` rows it corrects;
+`receiveGoods` is the only writer of `ProductVariant.costPrice` and never
+re-runs. No `PeriodCloseTask`, reconciliation, checklist or sign-off model —
+the close is a `FiscalPeriod.status` flip, and `closePeriod()`/`lockPeriod()`
+each check only that status. No actor argument on `lockPeriod()` and no
+second-signer column, so one holder can close and permanently lock alone. No
+`branchNodeId`/`retailBrandId` on `FiscalPeriod`, and no `AdminScope`
+narrowing anywhere in the accounting module. `AuditService` is called from
+nowhere under `apps/api/src/modules/accounting/`. No per-`RetailBrand` home
 for tax label, registration number, currency or default tax classes — all
 four are compile-time constants today. No `CreditNote`/`DebitNote` model. No
 declared tax-point date. No brand-scoped number-series key. No brand or org
@@ -399,8 +460,21 @@ permission key or UI. No shared reachability registry outside admin. No
 metafield or custom-field table. No per-brand or per-location module toggle —
 `MODULES` is one process-wide variable. No runtime dependency check between
 module entries. No admin screen for `OutboxEvent`, the replication tables or
-`AuditLog`; `nav-registry.ts` has no operations group. No alerting or paging
-integration, and no runbook referenced from code. No per-node breakdown on
+`AuditLog`; `nav-registry.ts` has no operations group.
+`ReplicationQuarantineService` implements `quarantine()`, `listOpen()` and
+`resolve()`, and no controller anywhere calls any of the three — no route, no
+`@RequirePermission` key, no screen — while `OrderReplicationListener.apply()`
+throws unconditionally for every incoming `Order`, so rows accumulate with
+`status: 'OPEN'` and `resolve()` is dead code. No build-time check that a
+chain-visible model has a matching `ReplicationRegistry.register()` call — the
+FACT-up/POLICY-down pairing is caught only by the registry's own boot-time
+throw, and not at all when `register()` is simply never called. No
+quarantine-age alert. No `@Cron`/`@Interval` job ages a pending decision; the
+only idle-timer precedent is `MarketingAutomationCron`, which acts on a `Cart`
+or `Order`. No per-user timezone: `User` has no timezone column and
+`SettingKey.StoreTimezone` is one deployment-wide row on a `Setting` table
+with no user, branch or location column. No alerting or paging integration,
+and no runbook referenced from code. No per-node breakdown on
 the readiness endpoint. No report cache for the GL reports. No per-location
 running stock counter. No identity-scoped quota — global IP throttling
 exists, nothing per partner, device or key. No webhook model. No AI

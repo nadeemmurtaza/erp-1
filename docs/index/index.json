@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1126,
-    "lines": 175031,
+    "files": 1147,
+    "lines": 177239,
     "routes": 287,
     "controllers": 57,
     "models": 115,
@@ -1107,9 +1107,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 226,
-      "lines": 33212,
-      "bytes": 2070249,
+      "files": 247,
+      "lines": 35420,
+      "bytes": 2217183,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -37024,8 +37024,8 @@
       "path": "docs/erp-lenses/39-gap-facilities-asset-maintenance-file-37-has.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 176,
-      "bytes": 10562,
+      "lines": 159,
+      "bytes": 9529,
       "doc": "",
       "symbols": []
     },
@@ -37210,6 +37210,195 @@
       "symbols": []
     },
     {
+      "path": "docs/erp-lenses/46-gap-no-lens-asks-what-a-quorum-dual-custody-.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 207,
+      "bytes": 11957,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/46g-generate-gap.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 41,
+      "bytes": 3059,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/46h-harden-gap.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 54,
+      "bytes": 3025,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/47-gap-the-per-brand-currency-field-forces-the-.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 179,
+      "bytes": 9877,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/47g-generate-gap.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 41,
+      "bytes": 3338,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/47h-harden-gap.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 46,
+      "bytes": 2628,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/48-gap-group-currency-translation-for-consolida.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 169,
+      "bytes": 10682,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/48g-generate-gap.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 40,
+      "bytes": 2774,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/48h-harden-gap.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 48,
+      "bytes": 2006,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/49-gap-financial-close-as-a-managed-process-not.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 175,
+      "bytes": 9699,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/49g-generate-gap.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 41,
+      "bytes": 2589,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/49h-harden-gap.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 53,
+      "bytes": 4008,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/50-gap-landed-cost-apportionment-and-its-timing.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 206,
+      "bytes": 11964,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/50g-generate-gap.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 41,
+      "bytes": 2664,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/50h-harden-gap.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 48,
+      "bytes": 3289,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/51-gap-the-approval-that-stalls-without-a-leave.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 195,
+      "bytes": 10746,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/51g-generate-gap.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 41,
+      "bytes": 2731,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/51h-harden-gap.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 46,
+      "bytes": 2440,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/52-gap-no-lens-classifies-a-new-table-s-replica.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 46,
+      "bytes": 9358,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/52g-generate-gap.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 26,
+      "bytes": 1412,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/erp-lenses/52h-harden-gap.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 40,
+      "bytes": 2714,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/erp-lenses/_agent-cluster.md",
       "area": "docs",
       "kind": "doc",
@@ -37339,8 +37528,8 @@
       "path": "docs/erp-lenses/_agent-manifest.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 161,
-      "bytes": 17974,
+      "lines": 175,
+      "bytes": 19157,
       "doc": "",
       "symbols": []
     },
@@ -37348,8 +37537,8 @@
       "path": "docs/erp-lenses/_canonical-decisions.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 662,
-      "bytes": 38017,
+      "lines": 828,
+      "bytes": 49409,
       "doc": "",
       "symbols": []
     },
@@ -37375,8 +37564,8 @@
       "path": "docs/erp-lenses/_conflicts.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 555,
-      "bytes": 31050,
+      "lines": 645,
+      "bytes": 36399,
       "doc": "",
       "symbols": []
     },
@@ -37456,8 +37645,8 @@
       "path": "docs/erp-lenses/_index.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 421,
-      "bytes": 43219,
+      "lines": 495,
+      "bytes": 50723,
       "doc": "",
       "symbols": []
     },
@@ -37465,8 +37654,8 @@
       "path": "docs/erp-lenses/_integrate.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 174,
-      "bytes": 13039,
+      "lines": 272,
+      "bytes": 22618,
       "doc": "",
       "symbols": []
     },

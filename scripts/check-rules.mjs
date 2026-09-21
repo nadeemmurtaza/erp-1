@@ -100,10 +100,10 @@ for (const file of files) {
   // The extraction that created these files found a section's end by scanning
   // for the next heading, and was not fence-aware — the ADR template contains
   // a literal `## Decision` inside a code block, so decisions.md was cut at
-  // the opening fence and CLAUDE.md kept the rest as orphaned headings. No
-  // rule text was lost, but the section was broken in both files and nothing
-  // noticed. An odd number of fences is the cheap signal for that whole class
-  // of truncation.
+  // the opening fence and CLAUDE.md kept the rest as orphaned headings outside
+  // any fence. No rule text was lost, but the section was broken in both files
+  // and nothing noticed. An odd number of fences is the cheap signal for that
+  // whole class of truncation.
   const fences = (body.match(/^```/gm) ?? []).length;
   if (fences % 2 !== 0) {
     problems.push(`${rel}\n    has ${fences} code fences — an odd number means one is unclosed, so the\n    file is truncated or a fenced block leaked out of it.`);

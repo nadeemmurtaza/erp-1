@@ -26,7 +26,7 @@
     "infra": {
       "files": 50,
       "lines": 25364,
-      "bytes": 975432,
+      "bytes": 975450,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -37608,7 +37608,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 134,
-      "bytes": 5849,
+      "bytes": 5867,
       "doc": "",
       "symbols": []
     },

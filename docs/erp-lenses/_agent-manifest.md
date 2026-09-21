@@ -98,44 +98,46 @@ the record of what actually ran - including what failed and was retried.
 | `judge:owner` | Judge | completed | [_agent-judge-owner.md](_agent-judge-owner.md) |
 | `judge:auditor` | Judge | completed | [_agent-judge-auditor.md](_agent-judge-auditor.md) |
 | `judge:engineer` | Judge | completed | [_agent-judge-engineer.md](_agent-judge-engineer.md) |
-| `gen:costing-transfer-pricing` | Generate | not completed | - |
-| `gen:credit-receivables` | Generate | not completed | - |
-| `gen:procurement-supplier-lifecycle` | Generate | not completed | - |
-| `gen:pricing-discount-governance` | Generate | not completed | - |
-| `gen:planning-replenishment` | Generate | not completed | - |
-| `gen:warehouse-logistics-fleet` | Generate | not completed | - |
-| `gen:production-bom-subcontract` | Generate | not completed | - |
-| `gen:merchandising-assortment` | Generate | not completed | - |
-| `gen:master-data-taxonomy` | Generate | not completed | - |
-| `gen:channels-franchise-wholesale` | Generate | not completed | - |
-| `gen:service-cases-sla` | Generate | not completed | - |
-| `gen:omnichannel-parity` | Generate | not completed | - |
-| `gen:findability-at-scale` | Generate | not completed | - |
-| `gen:tax-jurisdiction-invoice` | Generate | not completed | - |
-| `gen:loyalty-consent-data-rights` | Generate | not completed | - |
-| `gen:fraud-insider-risk` | Generate | not completed | - |
-| `gen:privacy-retention-residency` | Generate | not completed | - |
-| `gen:day-two-operations` | Generate | not completed | - |
-| `gen:migration-cutover-restatement` | Generate | not completed | - |
-| `gen:extensibility-without-fork` | Generate | not completed | - |
-| `gen:cost-to-serve` | Generate | not completed | - |
-| `gen:time-periods-backdating` | Generate | not completed | - |
-| `gen:enablement-onboarding` | Generate | not completed | - |
-| `gen:automation-and-ai-surface` | Generate | not completed | - |
-| `gen:operator-hands` | Generate | not completed | - |
-| `gen:provenance-esg-statutory` | Generate | not completed | - |
-| `gen:assets-facilities-maintenance` | Generate | not completed | - |
-| `harden:roles-ranks-orgchart` | Harden | not completed | - |
-| `harden:identity-actor-types` | Harden | not completed | - |
-| `harden:segregation-of-duties` | Harden | not completed | - |
-| `harden:audit-evidence-hold` | Harden | not completed | - |
-| `harden:workforce-shifts-jml` | Harden | not completed | - |
-| `gen:money-integrity-gl` | Generate | not completed | - |
-| `gen:approval-delegation` | Generate | not completed | - |
-| `gen:treasury-cash-reconciliation` | Generate | not completed | - |
-| `final-writer` | Write | not completed | - |
-| `gap:departments` | Gaps | not completed | - |
-| `gap:editions-and-volume` | Gaps | not completed | - |
-| `gap:roles-ranks` | Gaps | not completed | - |
-| `gap:innovation` | Gaps | not completed | - |
-| `gap:repo-blindspots` | Gaps | not completed | - |
+| `final-writer` | Write | completed | [_agent-final-writer.md](_agent-final-writer.md) |
+| `gen:costing-transfer-pricing` | Generate | superseded by a later revision of the same agent | - |
+| `gen:credit-receivables` | Generate | superseded by a later revision of the same agent | - |
+| `gen:procurement-supplier-lifecycle` | Generate | superseded by a later revision of the same agent | - |
+| `gen:pricing-discount-governance` | Generate | superseded by a later revision of the same agent | - |
+| `gen:planning-replenishment` | Generate | superseded by a later revision of the same agent | - |
+| `gen:warehouse-logistics-fleet` | Generate | superseded by a later revision of the same agent | - |
+| `gen:production-bom-subcontract` | Generate | superseded by a later revision of the same agent | - |
+| `gen:merchandising-assortment` | Generate | superseded by a later revision of the same agent | - |
+| `gen:master-data-taxonomy` | Generate | superseded by a later revision of the same agent | - |
+| `gen:channels-franchise-wholesale` | Generate | superseded by a later revision of the same agent | - |
+| `gen:service-cases-sla` | Generate | superseded by a later revision of the same agent | - |
+| `gen:omnichannel-parity` | Generate | superseded by a later revision of the same agent | - |
+| `gen:findability-at-scale` | Generate | superseded by a later revision of the same agent | - |
+| `gen:tax-jurisdiction-invoice` | Generate | superseded by a later revision of the same agent | - |
+| `gen:loyalty-consent-data-rights` | Generate | superseded by a later revision of the same agent | - |
+| `gen:fraud-insider-risk` | Generate | superseded by a later revision of the same agent | - |
+| `gen:privacy-retention-residency` | Generate | superseded by a later revision of the same agent | - |
+| `gen:day-two-operations` | Generate | superseded by a later revision of the same agent | - |
+| `gen:migration-cutover-restatement` | Generate | superseded by a later revision of the same agent | - |
+| `gen:extensibility-without-fork` | Generate | superseded by a later revision of the same agent | - |
+| `gen:cost-to-serve` | Generate | superseded by a later revision of the same agent | - |
+| `gen:time-periods-backdating` | Generate | superseded by a later revision of the same agent | - |
+| `gen:enablement-onboarding` | Generate | superseded by a later revision of the same agent | - |
+| `gen:automation-and-ai-surface` | Generate | superseded by a later revision of the same agent | - |
+| `gen:operator-hands` | Generate | superseded by a later revision of the same agent | - |
+| `gen:provenance-esg-statutory` | Generate | superseded by a later revision of the same agent | - |
+| `gen:assets-facilities-maintenance` | Generate | superseded by a later revision of the same agent | - |
+| `harden:roles-ranks-orgchart` | Harden | superseded by a later revision of the same agent | - |
+| `harden:identity-actor-types` | Harden | superseded by a later revision of the same agent | - |
+| `harden:segregation-of-duties` | Harden | superseded by a later revision of the same agent | - |
+| `harden:audit-evidence-hold` | Harden | superseded by a later revision of the same agent | - |
+| `harden:workforce-shifts-jml` | Harden | superseded by a later revision of the same agent | - |
+| `gen:money-integrity-gl` | Generate | superseded by a later revision of the same agent | - |
+| `gen:approval-delegation` | Generate | superseded by a later revision of the same agent | - |
+| `gen:treasury-cash-reconciliation` | Generate | superseded by a later revision of the same agent | - |
+| `gap:departments` | Gaps | never completed | - |
+| `gap:editions-and-volume` | Gaps | never completed | - |
+| `gap:roles-ranks` | Gaps | never completed | - |
+| `gap:innovation` | Gaps | never completed | - |
+| `gap:repo-blindspots` | Gaps | never completed | - |
+
+Outstanding: 5 agent(s) that failed and were never re-run to completion.

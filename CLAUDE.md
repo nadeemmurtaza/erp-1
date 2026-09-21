@@ -531,17 +531,6 @@ unnecessarily, introduce speculative abstractions, or modify a shared
 component without checking every consumer. Every unrelated change adds
 review complexity and regression risk for nothing.
 
-## Decision
-### Context — what problem required a decision?
-### Options Considered
-### Decision — what was selected?
-### Reasoning — why?
-### Consequences — benefits and trade-offs
-### Status — Accepted / Superseded / Rejected
-```
-
-Don't repeatedly revisit a settled decision without new evidence.
-
 ### Verification after every change
 
 ```bash

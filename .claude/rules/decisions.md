@@ -13,3 +13,13 @@ paths:
 Record significant technical decisions in `docs/implementation/DECISIONS.md`:
 
 ```markdown
+## Decision
+### Context — what problem required a decision?
+### Options Considered
+### Decision — what was selected?
+### Reasoning — why?
+### Consequences — benefits and trade-offs
+### Status — Accepted / Superseded / Rejected
+```
+
+Don't repeatedly revisit a settled decision without new evidence.

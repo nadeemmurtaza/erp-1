@@ -61,7 +61,7 @@ _no second-level headings_
 
 - Database change protocol  <sub>:10</sub>
 
-### `.claude/rules/decisions.md`  <sub>16 lines</sub>
+### `.claude/rules/decisions.md`  <sub>26 lines</sub>
 
 - Architectural decision records  <sub>:11</sub>
 
@@ -113,7 +113,7 @@ _no second-level headings_
 - Three rules about the index  <sub>:54</sub>
 - Commands  <sub>:66</sub>
 
-### `CLAUDE.md`  <sub>737 lines</sub>
+### `CLAUDE.md`  <sub>726 lines</sub>
 
 - The seven laws  <sub>:13</sub>
 - Software engineering, not vibe coding  <sub>:35</sub>
@@ -124,7 +124,6 @@ _no second-level headings_
 - Before you open a PR  <sub>:388</sub>
 - Deployment  <sub>:419</sub>
 - NEWAX Engineering Operating Protocol  <sub>:432</sub>
-- Decision  <sub>:534</sub>
 
 ### `CONTRIBUTING.md`  <sub>127 lines</sub>
 

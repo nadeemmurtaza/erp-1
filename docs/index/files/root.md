@@ -18,7 +18,7 @@ All 41 tracked files in `repository root files`, by directory.
 | `.windsurfrules` | file | — |  |
 | `AGENTS.md` | doc | 79 |  |
 | `check_output.txt` | txt | — |  |
-| `CLAUDE.md` | doc | 737 |  |
+| `CLAUDE.md` | doc | 726 |  |
 | `CONTRIBUTING.md` | doc | 127 |  |
 | `DEPLOYMENT.md` | doc | 492 |  |
 | `fix-all.js` | script | 15 | Get all files from git grep |
@@ -62,7 +62,7 @@ All 41 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `configuration.md` | doc | 20 |  |
 | `database.md` | doc | 19 |  |
-| `decisions.md` | doc | 16 |  |
+| `decisions.md` | doc | 26 |  |
 | `dependencies.md` | doc | 23 |  |
 | `performance.md` | doc | 42 |  |
 | `security.md` | doc | 20 |  |

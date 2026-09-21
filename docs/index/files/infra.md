@@ -84,7 +84,7 @@ All 50 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check-frontend-secrets.mjs` | script | 137 |  |
 | `check-module-boundaries.mjs` | script | 535 |  |
 | `check-route-permissions.mjs` | script | 136 |  |
-| `check-rules.mjs` | script | 120 |  |
+| `check-rules.mjs` | script | 134 |  |
 | `check.mjs` | script | 153 |  |
 | `idx.mjs` | script | 402 |  |
 | `install-git-hooks.mjs` | script | 89 |  |

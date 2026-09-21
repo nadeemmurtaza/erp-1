@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 1147,
-    "lines": 177336,
+    "lines": 177344,
     "routes": 287,
     "controllers": 57,
     "models": 115,
@@ -1072,14 +1072,14 @@
   "areas": {
     "root": {
       "files": 42,
-      "lines": 9046,
-      "bytes": 652222,
+      "lines": 9049,
+      "bytes": 652451,
       "label": "repository root files"
     },
     "infra": {
       "files": 55,
-      "lines": 27834,
-      "bytes": 1091409,
+      "lines": 27839,
+      "bytes": 1091818,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -20712,7 +20712,7 @@
       "pkg": "yaseenecom",
       "file": "package.json",
       "name": "lint",
-      "cmd": "turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-rules.mjs"
+      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-rules.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -22415,8 +22415,8 @@
       "path": "CLAUDE.md",
       "area": "root",
       "kind": "doc",
-      "lines": 912,
-      "bytes": 47374,
+      "lines": 915,
+      "bytes": 47603,
       "doc": "",
       "symbols": []
     },
@@ -37961,7 +37961,7 @@
       "area": "infra",
       "kind": "json",
       "lines": 58,
-      "bytes": 2219,
+      "bytes": 2257,
       "doc": "",
       "symbols": []
     },
@@ -39506,8 +39506,8 @@
       "path": "scripts/install-git-hooks.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 89,
-      "bytes": 3309,
+      "lines": 94,
+      "bytes": 3680,
       "doc": "",
       "symbols": []
     },

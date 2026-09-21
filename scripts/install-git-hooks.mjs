@@ -7,8 +7,13 @@
  * where a clone, a CI runner and a cloud agent session all get the same ones.
  *
  * Run automatically by the root package.json "prepare" script, so `pnpm
- * install` is all anybody has to remember. Safe to run repeatedly: it only
- * writes the config when it is not already correct, and it refuses to
+ * install` is all anybody has to remember — and, as a second entry point,
+ * by `pnpm lint`'s first step, because a sandbox with cached `node_modules`
+ * can skip `pnpm install` entirely (and did: the commit that landed with a
+ * stale docs/index/ despite this file's existence had never set
+ * `core.hooksPath` at all) while `pnpm lint` is the one command every
+ * session's own pre-commit ritual already runs. Safe to run repeatedly: it
+ * only writes the config when it is not already correct, and it refuses to
  * overwrite a hooksPath somebody deliberately set somewhere else.
  *
  *   node scripts/install-git-hooks.mjs          install

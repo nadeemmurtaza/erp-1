@@ -91,7 +91,7 @@ All 55 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check-rules.mjs` | script | 148 |  |
 | `check.mjs` | script | 164 |  |
 | `idx.mjs` | script | 486 |  |
-| `install-git-hooks.mjs` | script | 89 |  |
+| `install-git-hooks.mjs` | script | 94 |  |
 | `nested-borders.py` | py | — |  |
 | `sync-client.mjs` | script | 243 | scripts/sync-client.mjs |
 

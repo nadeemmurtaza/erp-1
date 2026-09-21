@@ -121,17 +121,17 @@ _no second-level headings_
 - Three rules about the index  <sub>:55</sub>
 - Commands  <sub>:67</sub>
 
-### `CLAUDE.md`  <sub>912 lines</sub>
+### `CLAUDE.md`  <sub>915 lines</sub>
 
 - The seven laws  <sub>:13</sub>
 - Software engineering, not vibe coding  <sub>:35</sub>
 - Feature scope: build the whole capability, not one slice of it  <sub>:144</sub>
 - Scale: the three axes  <sub>:358</sub>
 - Look it up before you search  <sub>:415</sub>
-- The rule index  <sub>:483</sub>
-- Before you open a PR  <sub>:521</sub>
-- Deployment  <sub>:600</sub>
-- NEWAX Engineering Operating Protocol  <sub>:613</sub>
+- The rule index  <sub>:486</sub>
+- Before you open a PR  <sub>:524</sub>
+- Deployment  <sub>:603</sub>
+- NEWAX Engineering Operating Protocol  <sub>:616</sub>
 
 ### `CONTRIBUTING.md`  <sub>127 lines</sub>
 

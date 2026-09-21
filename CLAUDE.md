@@ -460,7 +460,10 @@ Three rules about it:
   evidence that code does something.
 
 If the index is missing or stale in your checkout, the pre-commit hook is not
-installed: run `pnpm install`, or `node scripts/install-git-hooks.mjs`.
+installed: run `pnpm install`, or `node scripts/install-git-hooks.mjs`. Both
+`pnpm install`'s own "prepare" step and `pnpm lint`'s first step run this
+already — a sandbox with cached `node_modules` can skip the former, and
+`pnpm lint` is the backstop, since every session runs it before committing.
 
 **Match the model to the job.** `docs/index/cross/model-routing.md` is the
 routing table, generated from `scripts/lib/model-routing.mjs`. In Claude Code

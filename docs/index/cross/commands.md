@@ -104,7 +104,7 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 |---|---|
 | `build` | `turbo run build` |
 | `dev` | `turbo run dev` |
-| `lint` | `turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node…` |
+| `lint` | `node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-frontend-secrets.mjs && node s…` |
 | `typecheck` | `turbo run typecheck` |
 | `test` | `turbo run test` |
 | `format` | `prettier --write "**/*.{ts,tsx,js,mjs,json,md}"` |
@@ -152,7 +152,7 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 | `scripts/check-rules.mjs` | 148 |  |
 | `scripts/check.mjs` | 164 |  |
 | `scripts/idx.mjs` | 486 |  |
-| `scripts/install-git-hooks.mjs` | 89 |  |
+| `scripts/install-git-hooks.mjs` | 94 |  |
 | `scripts/lib/index-scan.mjs` | 906 | Scanners for the repository index. |
 | `scripts/lib/model-routing.mjs` | 363 | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/lib/render-harness.mjs` | 337 | Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — the shared infrastruct… |

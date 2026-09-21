@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 1063,
-    "lines": 163416,
+    "lines": 163427,
     "routes": 287,
     "controllers": 57,
     "models": 115,
@@ -25,8 +25,8 @@
     },
     "infra": {
       "files": 50,
-      "lines": 25353,
-      "bytes": 974537,
+      "lines": 25364,
+      "bytes": 975432,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -37616,8 +37616,8 @@
       "path": "scripts/check.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 153,
-      "bytes": 6541,
+      "lines": 164,
+      "bytes": 7436,
       "doc": "",
       "symbols": []
     },

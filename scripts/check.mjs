@@ -138,10 +138,21 @@ for (const { gate, out } of failed) {
   console.log(`${'─'.repeat(70)}\n${gate.label} FAILED\n${'─'.repeat(70)}`);
   if (VERBOSE) { console.log('(output above)'); continue; }
   const lines = out.split('\n');
-  const interesting = lines.filter((l) =>
-    /●|✕|error|Error|FAIL|failed|Expected|Received|missing|drift|violation|✖|warning/i.test(l),
-  );
-  const show = interesting.length ? interesting : lines.filter(Boolean);
+
+  // Prefer the runner's OWN failure markers over anything that merely says
+  // "error". Several suites here deliberately exercise failure paths and log
+  // loudly while passing — a rejected payment hash, a refused replication
+  // push, an immutable-ledger constraint — and a filter matching /error/i
+  // surfaced all of that instead of the two assertions that actually failed.
+  // A verification tool whose output buries the result is not much better
+  // than one that prints everything.
+  // Turbo prefixes every line with `@pkg:task: `, so anchoring to the start of
+  // the line matches nothing — the same trap that made the test summary report
+  // task counts instead of test counts. Strip the prefix before matching.
+  const bare = (l) => l.replace(/^\s*@[\w/-]+:[\w-]+:\s?/, '');
+  const markers = lines.filter((l) => /^\s*(●|✕|✖)|^\s*(FAIL|Tests:|Test Suites:)|^\s*(Expected|Received)\b/.test(bare(l)));
+  const fallback = lines.filter((l) => /error|failed|missing|drift|violation/i.test(l));
+  const show = markers.length ? markers : (fallback.length ? fallback : lines.filter(Boolean));
   const MAX = 60;
   console.log(show.slice(0, MAX).join('\n'));
   if (show.length > MAX) {

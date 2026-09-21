@@ -36,7 +36,7 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 | `apps/web` | 228 | 33,552 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 36 | 26,424 | workspace manifests, docker compose/stack files, env templates |
 | `docs` | 169 | 24,478 | documents of record — implementation plans, house rules, brand |
-| `scripts` | 15 | 6,023 | repository checks and generators (lint gates, this index) |
+| `scripts` | 15 | 6,034 | repository checks and generators (lint gates, this index) |
 | `apps/mobile` | 42 | 5,292 | Expo — customer mobile app |
 | `packages/shared` | 36 | 3,894 | brand, money, permissions, measurements, entities |
 | `apps/pos` | 31 | 1,863 | Next.js PWA — offline-first point of sale |

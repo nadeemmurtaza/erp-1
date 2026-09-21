@@ -85,7 +85,7 @@ All 50 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check-module-boundaries.mjs` | script | 535 |  |
 | `check-route-permissions.mjs` | script | 136 |  |
 | `check-rules.mjs` | script | 134 |  |
-| `check.mjs` | script | 153 |  |
+| `check.mjs` | script | 164 |  |
 | `idx.mjs` | script | 402 |  |
 | `install-git-hooks.mjs` | script | 89 |  |
 | `nested-borders.py` | py | — |  |

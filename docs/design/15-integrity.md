@@ -4,8 +4,10 @@ The mechanical failures — dead ends, broken links, missing images, overflow,
 unreachable screens. The ones that are not matters of judgement, and are
 therefore the ones a machine should be finding.
 
-> **Status: four of ten built.** `ITG-2`, `ITG-3`, `ITG-5` and `ITG-11` are
-> enforced by `pnpm lint` and by CI; `ACC-6` is enforced by eslint. The six
+> **Status: five of ten built.** `ITG-2`, `ITG-3`, `ITG-5` and `ITG-11` are
+> enforced by `pnpm lint` and by CI; `ACC-6` is enforced by eslint. `ITG-4`
+> is enforced by its own CI job (`scripts/check-overflow.mjs`), separate
+> from `pnpm lint` because it needs a running app. The five remaining checks
 > that need a running app are still specified only.
 >
 > The reason this chapter exists is unchanged: every other chapter ends in
@@ -164,7 +166,7 @@ here exists yet.
 | 3 | **Image paths** (`ITG-3`) | ✅ `scripts/check-links.mjs` | broken images |
 | 4 | **Accessibility lint** (`ACC-6`) | ✅ `eslint-plugin-jsx-a11y` | hand-written `aria-*` with nothing checking it |
 | 5 | **Translatable strings** (`ITG-9`) | — static analysis | untranslatable literals |
-| 6 | **Overflow at seven widths** (`ITG-4`) | — headless browser (Playwright is installed) | the responsive failures Law 4 forbids |
+| 6 | **Overflow at seven widths** (`ITG-4`) | ✅ `scripts/check-overflow.mjs` | the responsive failures Law 4 forbids |
 | 7 | **Pseudo-localisation** (`ITG-8`) | — 6, plus padded strings | length-dependent layouts |
 | 8 | **Absent-module render** (`ITG-6`) | — 6, plus a module matrix | the combination space nobody can click through |
 | 9 | **Minimum-privilege render** (`ITG-7`) | — 6, plus capability contracts | hollow pages |
@@ -174,6 +176,7 @@ here exists yet.
 pnpm check:contrast      # ITG-11 · also --self-test
 pnpm check:links         # ITG-2, ITG-3, ITG-5 · also --self-test
 pnpm lint                # runs both, plus the a11y rules
+pnpm check:overflow      # ITG-4 · needs a running app · also --self-test, --skip-build, --only=<substring>
 ```
 
 Checks 1–5 are static and fast, and belong in `pnpm lint` beside
@@ -213,10 +216,14 @@ was made to darken the accent (same hue, in `brand.ts`), the entry came out
 and the baseline shrank from 277 known-below-floor uses to 44 — every
 remaining one a decorative boundary WCAG does not govern (`COL-3`).
 
-**Sequencing note.** 5 is a normal work order. 6 through 10 are a
+**Sequencing note.** 5 is a normal work order. 6 through 10 share one
 capability in their own right — a render harness, a route inventory, a module
 matrix and a capability fixture set. Per `CLAUDE.md`, that is named and
-sequenced here rather than stubbed or silently skipped.
+sequenced here rather than stubbed or silently skipped. 6 is now built: the
+render harness (`scripts/lib/render-harness.mjs`) boots the real api, web and
+pos apps against a seeded database, signs in as admin/customer/POS operator,
+and resolves fixtures for every dynamic route — 7 through 10 extend the same
+harness rather than building their own.
 
 ---
 

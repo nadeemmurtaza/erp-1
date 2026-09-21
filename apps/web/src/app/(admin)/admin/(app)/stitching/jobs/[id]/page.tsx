@@ -143,7 +143,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
       ) : null}
 
       <div className="grid gap-6 fold:grid-cols-2 lg:grid-cols-3">
-        <section className="card p-4 lg:col-span-1">
+        <section className="card min-w-0 p-4 lg:col-span-1">
           <h2 className="mb-3 text-sm font-semibold text-neutral-900">Measurements</h2>
           {measurements.length === 0 ? (
             <p className="text-sm text-neutral-900/60">No measurements were recorded.</p>
@@ -220,7 +220,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
           ) : null}
         </section>
 
-        <section className="card p-4 lg:col-span-2">
+        <section className="card min-w-0 p-4 lg:col-span-2">
           <h2 className="mb-3 text-sm font-semibold text-neutral-900">Move this job on</h2>
 
           <label className="block text-sm">

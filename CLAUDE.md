@@ -536,8 +536,23 @@ pnpm check:links       # ITG-2/3/5 — links resolve, images exist, no orphan sc
 ```
 
 `eslint-plugin-jsx-a11y` runs on both apps for the same reason. What still has
-no check — focus order, reduced motion, RTL, overflow at the seven widths —
-needs a render, and `15-integrity.md` ranks it.
+no check — focus order, reduced motion, RTL — needs a render, and
+`15-integrity.md` ranks it.
+
+**Overflow at the seven widths (`ITG-4`) is checked too, but not by
+`pnpm lint`.** It needs a running api + web + pos against a seeded database
+and a real browser, so it is its own CI job (the `overflow` job in
+`.github/workflows/ci.yml`), not one of the fast static checks above:
+
+```bash
+pnpm check:overflow                          # boots the real stack, sweeps every route
+node scripts/check-overflow.mjs --self-test  # pure-logic checks, no server or DB needed
+node scripts/check-overflow.mjs --skip-build --only=stitching  # fast iteration
+```
+
+It shares `scripts/lib/render-harness.mjs` with checks 7–10
+(`15-integrity.md`'s build order), which will extend the same harness rather
+than building their own.
 
 Its terms are **derived from `packages/shared/src/brand.ts`**, so a rebrand
 rebrands the check too and there is nothing to remember. It reads application

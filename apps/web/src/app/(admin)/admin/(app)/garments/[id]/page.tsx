@@ -326,8 +326,8 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
                       key={`${field.key}-${index}`}
                       className={
                         field.isActive
-                          ? 'grid items-end gap-2 border border-neutral-100 p-2 sm:grid-cols-7'
-                          : 'grid items-end gap-2 border border-neutral-100 bg-neutral-50 p-2 opacity-60 sm:grid-cols-7'
+                          ? 'grid items-end gap-2 border border-neutral-100 p-2 sm:grid-cols-7 [&>*]:min-w-0'
+                          : 'grid items-end gap-2 border border-neutral-100 bg-neutral-50 p-2 opacity-60 sm:grid-cols-7 [&>*]:min-w-0'
                       }
                     >
                       <Small label="Key">

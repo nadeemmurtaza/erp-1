@@ -2415,6 +2415,7 @@ emit('docs/index/MANIFEST.json', JSON.stringify({
  */
 {
   const broken = [];
+  const writtenPaths = [...written.keys()];
   for (const [page, body] of written) {
     if (!page.endsWith('.md')) continue;
     for (const m of body.matchAll(/\]\(([^)#\s]+)(?:#[^)\s]*)?\)/g)) {
@@ -2423,6 +2424,16 @@ emit('docs/index/MANIFEST.json', JSON.stringify({
       const resolved = join(dirname(page), target).replace(/\\/g, '/');
       if (written.has(resolved)) continue;
       if (existsSync(join(ROOT, resolved))) continue;
+      // A link with no file extension (e.g. `modules/`, `symbols/`) names a
+      // directory this same generator populates, not a single page — its
+      // contents land in `written` but the directory itself never does, and
+      // on a from-scratch run (nothing on disk yet, since the actual
+      // `writeFileSync` pass runs after this check) `existsSync` can't see it
+      // either. Satisfied if this run wrote at least one page under it.
+      if (!/\.[a-zA-Z0-9]+$/.test(target)) {
+        const prefix = `${resolved.replace(/\/+$/, '')}/`;
+        if (writtenPaths.some((p) => p.startsWith(prefix))) continue;
+      }
       broken.push(`${page} → ${target}`);
     }
   }

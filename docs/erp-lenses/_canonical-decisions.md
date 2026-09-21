@@ -21,7 +21,7 @@ Three rules about this file:
 
 ---
 
-# Part 1 — The ten rulings
+# Part 1 — The fourteen rulings
 
 ## Ruling 1. The ledger wins. Erasure pseudonymises the reference; it does not touch the row
 
@@ -230,11 +230,135 @@ another door.
 is that none of the five fit, that is a platform work item, not a clever key
 string.
 
+## Ruling 11. Ruling 4 governs scope columns, not edges. An edge ships nullable, with null's meaning written down
+
+**Default:** the distinction, decided by what the column names. A **scope**
+column names which entity owns this row — org, brand, node, `Location`,
+terminal. That question always has an answer, so ruling 4 stands unchanged:
+first migration, **NOT NULL**, defaulted to this deployment's own entity. An
+**edge** column names which *other row of the same kind* this one points to — a
+manager, a parent brand, a predecessor. That question genuinely has no answer at
+the root, so it ships **nullable**, and the repository's own precedent is
+`RetailBrand.parentId String?` with `onDelete: SetNull`
+(`organization.prisma:43`).
+
+**Null's meaning is part of the column.** Ruling 4's real clause was never
+"NOT NULL", it was "no unwritten null" — so a nullable edge still fails the
+review unless the schema states, in words beside the column, what null means.
+And where "nobody recorded a manager" and "top of the ladder" are different
+facts the feature must tell apart, that is a second column or an enum, never a
+convention in somebody's head.
+
+**Neither kind of column lives in a module that is off by default.**
+`organization` is off in every deployment today (`modules.registry.ts:66`,
+citing R14), so a hierarchy column placed in its tables is not empty at Solo and
+SME — it is absent, which is an edition boundary doing density's job. `managerId`
+belongs on `core.prisma`'s `User`.
+
+**The other side applies** never. There is no case for defaulting an edge to the
+row's own id, or to whoever the single admin happens to be. That manufactures a
+reporting line nobody asserted and makes it indistinguishable from one somebody
+did — the same failure ruling 6 refuses for a cash count.
+
+**When both bite:** the escalation query reads the edge, and on null falls back
+to a **named** backup approver. A `findFirst` over everyone sharing an
+`AdminScopeLevel` is an arbitrary row, and an arbitrary row fails the review.
+
+## Ruling 12. Rank is its own axis. `Role.ceiling` is refused; a per-assignment override is allowed only above a rank
+
+**Default:** a `Rank` model carrying a numeric level, and a `UserId`→`RankId`
+grant beside `UserRoleAssignment` rather than inside it. Rank orders people;
+`Role` grants keys. A feature needing a ceiling names the rank that carries it,
+and escalation is a comparison of numbers on that one axis.
+
+**Refused outright:** a ceiling column on `Role`. `Role.name` is `@unique` and
+`RoleGrant` keys off `roleId`, so varying the number for identical duties forks
+a duplicate `Role` row with a duplicated grant set to maintain forever —
+and `RolesService`'s `duplicateOfRoleName` flags that shape without blocking it,
+so nothing catches it in review.
+
+**Allowed, with its cost written down:** `UserRoleAssignment.ceiling` as a
+**per-assignment override above a rank the person already holds** — one person,
+one scope, with an end date. It may not *be* the rank. A PR using it states in
+writing that the number is not comparable across roles and that grade reporting
+reads the rank, never the override.
+
+**This supersedes lens 02's done test (2026-09-21)**, which accepted "a numeric
+ceiling column reachable from `Role` or `UserRoleAssignment`" as sufficient. It
+is not: neither location builds the second axis the rule's own premise requires,
+and the catalogue may not hold a test that contradicts the rule it serves.
+*Rank is a ceiling, not a location* stays absorbed into *The threshold nobody
+approves alone*; what changes is where the ceiling is allowed to live.
+
+**When both bite:** a feature that genuinely needs no ladder — one shop, one
+owner, no escalation — says so and adds nothing, exactly as lens 02 already
+allows with "no ceiling, the grant is unconditional, reviewed". What is refused
+is a number that looks like a rank and can be neither ordered nor grouped.
+
+## Ruling 13. Scope-match first, then take the highest ceiling among the grants that survive
+
+**Default:** a ceiling is never read off the resolved permission set. It is
+resolved per act, from the grants that act's own scope admits:
+
+1. Take every live grant the actor holds.
+2. Keep only those whose `AdminScope` reach covers the act's own
+   `retailBrandId`/`branchNodeId` — the intersection `assertCanManageAtScope()`
+   already performs for authorization (`scope.guard.ts:84`).
+3. Apply the **highest** ceiling among the survivors.
+4. Record which grant supplied it on the record that was approved.
+
+**The skipped step is the bug, not the max.** Step 3 is deliberately
+permissive: acting cover exists in order to raise a ceiling, and a rule taking
+the lowest would defeat the grant it was given for. What lens 44 names is step 2
+being absent — a Branch 12 cover raising a Branch 5 purchase order.
+
+**`resolveForUser()` does not change shape.** `ResolvedPermissions` stays
+`{ roles, permissions }`. The composition rule is a separate function with its
+own unit test, and the approval check calls that, not the resolver. Ruling 3
+applies unchanged: the selection is a `decide`, and it holds no write.
+
+**The other side applies when** a grant carries no end date — and then it is not
+a grant this ruling will compose. Any grant that can raise a ceiling expires on
+its own, per *The grant that ends itself*. A max over an unexpiring cover is a
+permanent promotion nobody signed.
+
+**When both bite:** the approved record names the grant, the scope it matched
+at, and the number. A record naming only the actor fails the review, because
+once the cover expires nothing can say what authorized it.
+
+## Ruling 14. The guard refuses a revoke. It never refuses a deactivation — the deactivation names a successor
+
+**Default:** both, separated by which path is running.
+
+**On an ordinary revoke** — `unassign()`, or a personal override — the orphan
+guard applies and refusal is correct: nobody is leaving, and the operator can
+simply not do it. That check belongs on `RolesService.unassign()`, which today
+runs a bare `deleteMany` (`roles.service.ts:155`) while
+`assertLockedKeysStillHeldAfterRevoke` is wired only into `updatePermissions()`
+(`users-admin.service.ts:297`).
+
+**On a deactivation the guard may not refuse.** The transaction still strips
+every grant, per ruling 6. Where the leaver was the last holder of a locked key,
+the deactivation **requires a named successor for that key and grants it inside
+the same transaction.** The refusal, when it comes, is at the API boundary and
+says who is missing — "name who takes over `roles.manage_permissions`" — not a
+guard exception the operator cannot act on.
+
+**The other side applies** never. Skipping the guard when `isActive` is going
+false reopens the hole on the one path nobody watches; refusing the deactivation
+leaves a departed person holding keys. Neither is available.
+
+**When both bite:** this is the general shape of a control the live roster
+cannot satisfy, and the answer is always the same — the shortfall becomes an
+explicit input, named by a person, recorded evidence-class per ruling 9. Never a
+silent single-approver bypass, and never a path that simply blocks. Both the
+successor grant and the revoke are audited with the old and the new holder.
+
 ---
 
 # Part 2 — Canonical names, and what each absorbed
 
-146 lenses became 24 headline lenses plus a catalogue. The ranking rule was
+169 lenses became 24 headline lenses plus a catalogue. The ranking rule was
 **leverage**: the damage a lens's absence causes, times how often it fires. A
 lens that fires on every feature beats one that fires on three, even when the
 three are expensive. Where one domain would have taken over a group, the
@@ -295,9 +419,15 @@ deployment, not one of 100+ `Location` rows. See ruling 7.
 Absorbs *Rank is a ceiling, not a location* (02) — `AdminScopeLevel` answers
 where, never how much; *Five commitments, one key* (13) — the five purchasing
 moments behind one `purchasing.manage` grant; the ceiling half of *Compensation
-authority is a boolean, not a ceiling* (20); and the value-band, time-window
+authority is a boolean, not a ceiling* (20); the value-band, time-window
 and reverse-your-own clauses of WO-22's *Who may unmake it, how large, how
-late, and whose*.
+late, and whose*; and *Escalation across roles needs a number, not a name*
+(45), which sharpens the canonical's own "who outranks whom" clause into an
+artifact — outranking is a comparison, so it needs a number on an axis every
+role shares, not a name-to-name lookup in the shape of
+`NodesService.childRole`'s hardcoded `NodeRole` switch (`nodes.service.ts:34`).
+Where that number is allowed to live is ruling 12; which grant supplies it when
+the actor holds several is ruling 13.
 
 **The toxic pair, caught at grant or at act** — renamed, and merged from 03's
 first two lenses, *The conflict matrix has no home* and *Detected at grant or
@@ -314,6 +444,15 @@ live instance of the missing audit row: `product-admin.service.ts:287` logs
 `{ changed: Object.keys(dto) }` — field names with no values — while the old
 and new price exist only inside a fire-and-forget domain event. See ruling 9
 for which class that row belongs to.
+Absorbs *The grant nobody can trace back* (42), which extends the row itself:
+for a change to **who holds what**, the target's before and after is not
+enough — the row must also carry the granter's own resolved permissions at that
+instant, because a reviewer cannot otherwise tell whether the grant was inside
+the actor's authority when it was made. `user.role_assigned` /
+`user.role_unassigned` write `{ roleId }` and nothing else
+(`users-admin.service.ts:88-111`), and `UserRoleAssignment` (`core.prisma:336`)
+has no `grantedBy`, so the question has no data to answer it from. Evidence
+class, per ruling 9.
 
 ## Group 3 — The act in the world
 
@@ -383,6 +522,14 @@ silhouettes*, extended in the name because the second half is the part that
 gets dropped.
 Absorbs *The edition above and the day it appears* (WO-22 topology), which adds
 the nullable-scope trap. See ruling 4.
+Absorbs *The ladder that must stay empty at Solo* (43), which adds the clause
+ruling 4 never covered: **where** the column lives, not only whether it is
+nullable. A tier-bearing column placed inside a module that is off by default is
+not empty at the editions below — it is absent, and the edition boundary has
+quietly done density's job. `organization`, which holds `AdminScope` and
+`RetailBrand`, is off in every deployment today (`modules.registry.ts:66`), so
+the column goes on the core model. Ruling 11 splits scope columns from edges and
+settles which of the two may be null.
 
 **The absent collaborator** (WO-22) — canonical, unchanged.
 Absorbs *The refusal that isn't graceful* (28), which adds the distinction that
@@ -413,6 +560,14 @@ must move output tax; and the ledger half of *Compensation authority is a
 boolean, not a ceiling* (20) — `PaymentsService.refund()` accepts, validates and
 persists a partial `refundAmount`, while `onPaymentRefunded()` ignores it and
 reverses both the receipt and the sale in full.
+Absorbs *The overpayment has no way back* (38), which adds the clause where this
+lens meets *The period that already moved*: a correction is issued against a
+line whose **own document sits in a period that has since closed**, so the
+reverse document lands in the currently open period carrying a foreign key back
+to the original line, and is neither refused nor silently re-dated with no link.
+`reverseEntry()` reverses a whole `JournalEntry` in one transaction, and the
+`payment.refunded` handler's own comment in `posting-rules.subscriber.ts`
+records that full reversal is the only shape the domain model supports today.
 
 **The undo fan-out** (WO-22) — canonical, unchanged.
 Absorbs *The void that outruns the refund* (24): `changeStatus()` reaches
@@ -424,6 +579,13 @@ lens enumerates.
 `effectiveAt`/`endedAt` is the only rule in the schema that already answers it;
 every other rule is read live from a flat `Setting` row behind a 30-second
 cache. See ruling 10 for why that row cannot also carry a scope.
+Absorbs *The act nobody can trace to its grant* (44), which names the version
+stamp an **approval** needs. "Can the number on this record be explained from
+its own stored fields a year later" has a specific answer here and it is not the
+actor: it is which grant supplied the ceiling, because grants expire and roles
+are re-granted, so a record naming only the actor becomes unexplainable the day
+a two-week acting cover ends. Ruling 13 states how the grant is selected and
+requires the record to name it.
 
 **The erasure the ledger cannot obey** — renamed from 25's *The row the ledger
 will not let you touch*, because the lens covers every table, not one row.
@@ -442,8 +604,10 @@ tables and `AuditLog` have zero admin routes.
 
 ## Catalogue merges
 
-Seven catalogue lenses absorbed a narrower twin rather than standing beside it,
-and two of them absorbed two:
+Eleven catalogue lenses absorbed a narrower twin rather than standing beside it,
+and two of them absorbed two. The last four are from the backfill files, where
+two lenses in one file, or two files in one pass, had reached the same artifact
+from different directions:
 
 | Canonical | Absorbed | What the absorbed one contributes |
 |---|---|---|
@@ -455,6 +619,10 @@ and two of them absorbed two:
 | The branch that cannot trade tomorrow (35) | Going live has no state (31); Downtime that outranks the sale (37) | One missing `Location` state machine, asked at both ends of a branch's life |
 | Five doors, one hallway (28) | The field with no home (28) | A subset of the same five doors |
 | The busiest minute, and the lock you hold through it (WO-22) | The write that doesn't chunk (29) | `StockCountService.start()` inserts one row per active variant in one unbounded transaction |
+| The agreement is not the row it governs (41) | The lease nobody renews (39) | A lease is one `kind` of agreement, and it contributes the two fields the general shape missed: the rent, and a `LANDLORD` value in `PartyRoleName`, which today is exactly `SUPPLIER`, `MANUFACTURER`, `DISTRIBUTOR`, `RETAILER` (`parties.prisma:8-13`). Its lapse half goes to *The renewal nobody is watching* |
+| The manager column that doesn't exist (43) | The chain HR actually needs (43) | The same person-to-person edge, demanded by a second set of consumers — leave, reviews, headcount — and adding the negative half: it may not be `AdminScope`, which answers what a person may administer, not who they report to |
+| The union that outruns its parts (44) | Scope must gate the ceiling, not just widen it (44) | One rule with two clauses, not two rules: the grant must be scope-matched before its number is read, reusing `assertCanManageAtScope()`'s existing intersection (`scope.guard.ts:84`). Ruling 13 |
+| Rank's own table, or a fused column (45) | The number nobody can group by (45) | The reportability argument for the same choice — grade headcount needs a `RankId` foreign key, since every report here groups on a real key (`GlReportsService`, `gl-reports.service.ts:38,95,192`) and none parses a name. Ruling 12 |
 
 ---
 

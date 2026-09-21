@@ -99,6 +99,27 @@ the record of what actually ran - including what failed and was retried.
 | `judge:auditor` | Judge | completed | [_agent-judge-auditor.md](_agent-judge-auditor.md) |
 | `judge:engineer` | Judge | completed | [_agent-judge-engineer.md](_agent-judge-engineer.md) |
 | `final-writer` | Write | completed | [_agent-final-writer.md](_agent-final-writer.md) |
+| `gap:departments` | Gaps | completed | [_agent-gap-departments.md](_agent-gap-departments.md) |
+| `gap:roles-ranks` | Gaps | completed | [_agent-gap-roles-ranks.md](_agent-gap-roles-ranks.md) |
+| `gap:repo-blindspots` | Gaps | completed | [_agent-gap-repo-blindspots.md](_agent-gap-repo-blindspots.md) |
+| `gap:innovation` | Gaps | completed | [_agent-gap-innovation.md](_agent-gap-innovation.md) |
+| `gap:editions-and-volume` | Gaps | completed | [_agent-gap-editions-and-volume.md](_agent-gap-editions-and-volume.md) |
+| `gen:gap:40` | Backfill | completed | [40g-generate-gap.md](40g-generate-gap.md) |
+| `gen:gap:41` | Backfill | completed | [41g-generate-gap.md](41g-generate-gap.md) |
+| `gen:gap:43` | Backfill | completed | [43g-generate-gap.md](43g-generate-gap.md) |
+| `gen:gap:39` | Backfill | completed | [39g-generate-gap.md](39g-generate-gap.md) |
+| `gen:gap:42` | Backfill | completed | [42g-generate-gap.md](42g-generate-gap.md) |
+| `gen:gap:38` | Backfill | completed | [38g-generate-gap.md](38g-generate-gap.md) |
+| `harden:gap:43` | Backfill | completed | [43h-harden-gap.md](43h-harden-gap.md) |
+| `harden:gap:40` | Backfill | completed | [40h-harden-gap.md](40h-harden-gap.md) |
+| `harden:gap:39` | Backfill | completed | [39h-harden-gap.md](39h-harden-gap.md) |
+| `gen:gap:45` | Backfill | completed | [45g-generate-gap.md](45g-generate-gap.md) |
+| `harden:gap:41` | Backfill | completed | [41h-harden-gap.md](41h-harden-gap.md) |
+| `gen:gap:44` | Backfill | completed | [44g-generate-gap.md](44g-generate-gap.md) |
+| `harden:gap:42` | Backfill | completed | [42h-harden-gap.md](42h-harden-gap.md) |
+| `harden:gap:44` | Backfill | completed | [44h-harden-gap.md](44h-harden-gap.md) |
+| `harden:gap:38` | Backfill | completed | [38h-harden-gap.md](38h-harden-gap.md) |
+| `harden:gap:45` | Backfill | completed | [45h-harden-gap.md](45h-harden-gap.md) |
 | `gen:costing-transfer-pricing` | Generate | superseded by a later revision of the same agent | - |
 | `gen:credit-receivables` | Generate | superseded by a later revision of the same agent | - |
 | `gen:procurement-supplier-lifecycle` | Generate | superseded by a later revision of the same agent | - |
@@ -134,10 +155,6 @@ the record of what actually ran - including what failed and was retried.
 | `gen:money-integrity-gl` | Generate | superseded by a later revision of the same agent | - |
 | `gen:approval-delegation` | Generate | superseded by a later revision of the same agent | - |
 | `gen:treasury-cash-reconciliation` | Generate | superseded by a later revision of the same agent | - |
-| `gap:departments` | Gaps | never completed | - |
-| `gap:editions-and-volume` | Gaps | never completed | - |
-| `gap:roles-ranks` | Gaps | never completed | - |
-| `gap:innovation` | Gaps | never completed | - |
-| `gap:repo-blindspots` | Gaps | never completed | - |
+| `integrate` | Integrate | never completed | - |
 
-Outstanding: 5 agent(s) that failed and were never re-run to completion.
+Outstanding: 1 agent(s) that failed and were never re-run to completion.

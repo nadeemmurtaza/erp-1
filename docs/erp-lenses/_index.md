@@ -5,7 +5,7 @@ answer must name an artifact in this repository — a column, a table, a
 permission key, a service method, a screen, or a number. A question whose
 answer could be "yes, handled" is not a lens.
 
-This folder holds 146 of them. Twenty-four are the rule, quoted in full in
+This folder holds 169 of them. Twenty-four are the rule, quoted in full in
 CLAUDE.md's "Feature scope: build the whole capability, not one slice of it".
 The rest are here, each in a numbered domain file with its repository
 evidence, its worked example, its done test, and the hardening record of what
@@ -151,6 +151,20 @@ that contradicts a line of it.
 | The branch that cannot trade tomorrow | One flip stopping receipts, transfers and shift opens at once; absorbs "Going live has no state" and "Downtime that outranks the sale" | 35 | catalogue | · C O |
 | The control has no name, only the fact does | The `Control` row that `AuditLog` entries point back to | 36 | catalogue | S C O |
 | Testing is a record, not a query | The `ControlTest` row with sample, result and remediation due date | 36 | catalogue | S C O |
+| The wage has no table | The table holding one person's rate, its basis and its effective date, joined at pay-run build time | 38 | catalogue | S C O |
+| The pay run is a document, not a report | Payroll's own number series, its draft-to-posted lifecycle, and the deductions table each line reads | 38 | catalogue | S C O |
+| The service that has no due date | The interval, last-serviced and next-due fields, and what fires when the date passes unlogged | 39 | catalogue | S C O |
+| The department nobody notifies | The key, the nav group and the seeded grant putting a whole business function in front of somebody | 39 | catalogue | S C O |
+| The metric with nowhere to live | The row holding one environmental reading at one `Location` for one period, written when it was taken | 40 | catalogue | · C O |
+| Whose shipment, whose emissions | The physical activity a transport figure multiplies — distance, mode, weight — as against `freightCost` | 40 | catalogue | · C O |
+| The disclosure period has no lock | What stops a filed non-ledger figure being edited afterwards, given `FiscalPeriod` protects only the ledger | 40 | catalogue | S C O |
+| The agreement is not the row it governs | Where a lease, franchise or supplier contract's own term, notice period and governing law live; absorbs "The lease nobody renews" | 41 | catalogue | S C O |
+| The renewal nobody is watching | The job computing "expiring within N days" over it, the key gating the result, the audience receiving it | 41 | catalogue | S C O |
+| The mint has no ceiling | The rule comparing the role being handed out against the granting actor's own resolved permissions | 42 | catalogue | S C O |
+| The un-grant checks less than the grant | Why removing authority passes fewer checks than editing a role's permission list does (ruling 14) | 42 | catalogue | S C O |
+| The manager column that doesn't exist | The person-to-person edge escalation resolves through, and the tie-break when two share a level; absorbs "The chain HR actually needs" | 43 | catalogue | · C O |
+| The union that outruns its parts | Which of several simultaneous grants supplies the ceiling for one act (ruling 13); absorbs "Scope must gate the ceiling" | 44 | catalogue | · C O |
+| Rank's own table, or a fused column | Whether rank is `UserId`→`RankId` or a ceiling fused onto `Role` (ruling 12); absorbs "The number nobody can group by" | 45 | catalogue | · C O |
 | The access with no end date | The externally-sourced, time-boxed actor | 01 | → The grant that ends itself | S C O |
 | The credential with no permission key | The domain file's own name for it | 01 | → renamed The principal with no permission key | S C O |
 | The actor with no role | The same question asked from the role side | 02 | → The principal with no permission key | S C O |
@@ -206,6 +220,15 @@ that contradicts a line of it.
 | Custody has no holder | A carton and a card-handling device need the same row | 37 | → The handoff that has no signer | · C O |
 | Downtime that outranks the sale | The query listing which locations are degraded now | 37 | → The branch that cannot trade tomorrow | · C O |
 | The register the ledger never sees | Capex and depreciation as a second instance of missing account plus missing rule | 37 | → The unwritten posting rule | S C O |
+| The overpayment has no way back | A line-level correction against a document whose own period has since closed | 38 | → The reversal document, not the reversal flag | S C O |
+| The lease nobody renews | The rent, and the missing `LANDLORD` `PartyRoleName`, on that same agreement row | 39 | → The agreement is not the row it governs | S C O |
+| The grant nobody can trace back | The evidence row carries the granter's own authority at that instant, not only the target's before and after | 42 | → Authority and blast radius | S C O |
+| The chain HR actually needs | The same edge, asked by leave, review and headcount rather than by escalation | 43 | → The manager column that doesn't exist | · C O |
+| The ladder that must stay empty at Solo | An edge column belongs on a core model, never inside an off-by-default module (ruling 11) | 43 | → Three silhouettes, and the day the tier above appears | S C O |
+| Scope must gate the ceiling, not just widen it | The act's own scope is intersected against each grant before that grant's number is read (ruling 13) | 44 | → The union that outruns its parts | · C O |
+| The act nobody can trace to its grant | Which grant supplied the ceiling, on a record whose grant may since have expired | 44 | → The version stamp | · C O |
+| The number nobody can group by | Headcount by grade needs a `RankId` foreign key, not `Role.name` matching | 45 | → Rank's own table, or a fused column | · C O |
+| Escalation across roles needs a number, not a name | "Who outranks whom" is a numeric comparison on one axis, not a name-to-name lookup | 45 | → The threshold nobody approves alone | · C O |
 | Whose rows? | Exports, schedules and drill-downs apply the same filter and mask as the screen | WO-22 | → Whose rows, and which columns | S C O |
 | Name the owner, name the reader it refuses | WO-22's own name for it | WO-22 | → renamed Whose rows, and which columns | S C O |
 | The edition above and the day it appears | The nullable-scope trap: `{ in: [...] }` never matches NULL (ruling 4) | WO-22 | → Three silhouettes, and the day the tier above appears | S C O |
@@ -213,10 +236,15 @@ that contradicts a line of it.
 | Who may unmake it, how large, how late, and whose | Value band, time window and reverse-your-own here; its closed-period half went to the period lens | WO-22 | → The threshold nobody approves alone | S C O |
 | A fact that already happened is never rejected | The inbound-message case, and the one sanctioned exception: an authenticity failure | WO-22 | → Request or record — classify every write | S C O |
 
-154 rows for 146 lenses: eight canonicals appear twice, once under the name
+177 rows for 169 lenses: eight canonicals appear twice, once under the name
 the rule uses and once under the name their own domain file still carries, so
-that grepping either finds it. Of the 146 — 24 headline, 69 kept in the
-catalogue for the surface they fire on, 49 absorbed into a canonical, 4 cut.
+that grepping either finds it. Of the 169 — 24 headline, 83 kept in the
+catalogue for the surface they fire on, 58 absorbed into a canonical, 4 cut.
+
+Files `38`–`45` are the backfill pass: eight domains a department-by-department
+walk, a roles-and-ranks walk and a repository-scar walk found the first
+thirty-seven files never reached. None of their twenty-three lenses was
+promoted into the rule; [`_integrate.md`](_integrate.md) says why for each.
 
 ## The six groups, and what each is for
 
@@ -265,14 +293,24 @@ owes. Gathered from the "Not modelled yet" section of every domain file:
 across `TradingPartner`, `PosTerminal` and `Node` — three independent
 key-hash patterns, none checked against `PERMISSION_CATALOG`. No `expiresAt`
 or `grantedBy` on `RoleGrant`, `UserRoleAssignment`, `UserPermission` or
-`AdminScope`. No rank, grade, seniority or approval-ceiling field anywhere,
-and no `managerId`/`reportsTo` — there is no org chart of people, only
-`RetailBrand.parentId` nesting brands. No `Role.parentId`, so no role
-inheritance. No department or cost-centre model. No `conflictsWith` pairing
-two permission keys as toxic. No maker-checker field on any model. No
-`Approval`/`ApprovalStep` model and no amount-band table. No delegation
-table. No `Location`-keyed admin scope for staff, distinct from
-`AdminScope.branchNodeId`, which names a child deployment.
+`AdminScope`. No rank, grade, seniority or approval-ceiling field anywhere —
+no `Rank` model and no `UserId`→`RankId` join beside `UserRoleAssignment`
+(ruling 12) — and no `managerId`/`reportsTo`: there is no org chart of people,
+only `RetailBrand.parentId` nesting brands, and no tie-break rule for two
+people sharing one `AdminScopeLevel` and `retailBrandId` (ruling 11). No
+`Role.parentId`, so no role inheritance. No department or cost-centre model,
+so "route this to facilities" cannot be written as a scope predicate at all.
+No `conflictsWith` pairing two permission keys as toxic. No maker-checker
+field on any model. No `Approval`/`ApprovalStep` model and no amount-band
+table. No delegation table. No `Location`-keyed admin scope for staff,
+distinct from `AdminScope.branchNodeId`, which names a child deployment. No
+`actorId` parameter on `RolesService.assign()`/`unassign()`, so a granter's
+own authority has no seam to be compared against; the orphan guard
+`assertLockedKeysStillHeldAfterRevoke` is wired only into
+`updatePermissions()`, never into `unassign()`, which is a bare `deleteMany`
+(ruling 14). No per-grant provenance on `ResolvedPermissions` — it is
+`{ roles, permissions }`, a flat union — and no grant-identifying field on any
+approved record (ruling 13).
 
 **Evidence and retention.** No `LegalHold` model and nothing a hold could
 attach to. No DB-level immutability on `AuditLog` — only `JournalLine` and
@@ -303,7 +341,17 @@ No opening-balance or manual-journal entry point into `postEntry()`. No
 legacy-identifier or crosswalk column. No reason code distinguishing a
 restatement from a business reversal. No loyalty model and no points-liability
 account. No Fixed Assets or Accumulated Depreciation account, and no `Asset`,
-`Equipment`, `Maintenance`, `Downtime` or `Depreciation` model.
+`Equipment`, `Maintenance`, `Downtime` or `Depreciation` model. Nothing
+anywhere carries a pay rate: no `CompensationRate` or wage-agreement table, and
+no rate, salary or commission column on `User`. No `PayRun`/`PayRunLine`
+document, no payroll key among `documentPrefix()`'s eleven, and no
+`PayRunNumberCounter` beside the seven document counters that exist
+(`OrderNumberCounter`, `JournalEntryNumberCounter`, `WorkOrderNumberCounter`,
+`StitchingOrderNumberCounter`, `StitchingJobNumberCounter`,
+`TransferNumberCounter`, `InterBranchInvoiceNumberCounter`). No
+statutory-deductions table. No `payroll.run_posted` event and no eighth posting
+rule for it. No line-level reversal path for money already paid out —
+`reverseEntry()` reverses a whole `JournalEntry` in one transaction.
 
 **Stock, place and time.** No bin, zone, aisle or shelf — `Location` is the
 finest storage grain. No driver, vehicle or fleet model. No proof-of-delivery
@@ -322,7 +370,21 @@ any catalogue model. No consignment custody type, per-partner price list or
 percentage-of-sales settlement mode. No consignment-liability account. No
 single switch stopping one `Location` from trading across inventory,
 transfers and POS at once. No business-interruption or continuity model. No
-insurance-claim or attachment model anywhere in the schema.
+insurance-claim or attachment model anywhere in the schema. No
+`Agreement`/`Lease`/`Contract` model: `Location` has `address Json?` and no
+term, rent, renewal date or landlord, `PartyRoleName` is exactly `SUPPLIER`,
+`MANUFACTURER`, `DISTRIBUTOR`, `RETAILER` with no `LANDLORD`, and
+`TradingPartner`'s `invitedAt`/`acceptedAt` are a connection handshake, not a
+contract's dates. No `MaintenanceSchedule`, and no interval, last-serviced or
+next-due field on any equipment or location row — `WorkOrder` is BOM
+production. No environmental or social metric, unit or fact table anywhere:
+energy, waste, water and emissions have no column at any grain, and `Setting`
+is one global `key`/`value` row with no `locationId` to scope a target by. No
+shipment-level physical activity — no distance, mode or weight on
+`StockTransfer` or `GoodsReceipt`, only the money in `freightCost`, `dutyCost`
+and `otherCost`. No disclosure period or lock for a filed non-ledger figure;
+`FiscalPeriod`'s `OPEN`/`CLOSED`/`LOCKED` and
+`forbid_journal_line_mutation()` protect the ledger and nothing else.
 
 **Surfaces and operations.** No `ServiceCase`/`Complaint`/`Ticket` model, no
 SLA policy, no `dueAt`, and no case identifier threading the tables a dispute
@@ -344,4 +406,11 @@ outside the till's own sale flow. No rollout or go-live state on `Location`
 or `Node`. No guidance-text field on a permission. No training-completion
 record. No `Control`, `ControlTest` or attestation model, and `audit.view` is
 deployment-wide with no scope filter. No `Risk` model. No
-`Filing`/`ReportTemplate` model or account-to-external-line mapping.
+`Filing`/`ReportTemplate` model or account-to-external-line mapping. Whole
+departments have no door: of `PERMISSION_CATALOG`'s 50 keys not one matches
+`facilit`, `asset`, `maintenance`, `lease`, `legal.`, `esg`, `sustainab` or
+`payroll`, and `NAV_GROUPS`' eight entries are `overview`, `orders`,
+`workshop`, `customers`, `catalogue`, `stock`, `insights`, `settings` — no
+facilities, legal or people group. The `@Cron` pattern exists
+(`purchasing.cron.ts`, `supply-chain-digest.cron.ts`) and no job reads a legal
+or contractual date, because none is stored.

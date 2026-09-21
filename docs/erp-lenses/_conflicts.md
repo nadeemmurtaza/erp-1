@@ -1,9 +1,9 @@
 # Where two lenses pull against each other
 
-Ten places where running the whole lens set produces two demands that cannot
-both be satisfied as stated. None of these is a mistake in a lens. Each is a
-real trade-off this repository has already half-made, usually by accident, and
-each one an engineer will meet inside a single PR.
+Fourteen places where running the whole lens set produces two demands that
+cannot both be satisfied as stated. None of these is a mistake in a lens. Each
+is a real trade-off this repository has already half-made, usually by accident,
+and each one an engineer will meet inside a single PR.
 
 This file is the argument. It states each side as its own advocate would, names
 the file and line where the collision actually sits today, and says what the
@@ -17,7 +17,13 @@ A note on what counts. Two lenses asking for expensive things is not a
 conflict — that is just work. A conflict is where satisfying one lens as
 written makes the other unsatisfiable, so the engineer has to know which
 yields. Where a lens and an existing repository invariant collide, that counts
-too, and three of the ten are of that kind.
+too, and four of the fourteen are of that kind.
+
+Sections 11–14 came out of the backfill files (`38`–`45`), and two of them are
+a shape the first ten did not contain: a new lens against a **prior ruling**
+rather than against another lens. Those are not worked around. A ruling that
+turns out to be stated too widely is narrowed in writing, with a date, in
+`_canonical-decisions.md` — 11 narrows ruling 4 and 14 narrows ruling 6.
 
 ---
 
@@ -386,3 +392,162 @@ brand. `Setting` is the sanctioned door and takes an afternoon. Scoping
 `Setting` properly is a platform change with its own cache-invalidation
 problem. The composite key works today, on this client, with one brand, and
 nothing in review catches it.
+
+---
+
+## 11. A scope column that must be NOT NULL against a ladder whose top rung has nobody above it
+
+**The pull.** Ruling 4 settled that a tier-bearing column ships in the first
+migration, NOT NULL, defaulted to this deployment's own entity, and that a
+nullable scope column with no written meaning for null fails the review on its
+own. *The ladder that must stay empty at Solo* (43) asks for the opposite shape
+for the people hierarchy: a nullable `managerId`, genuinely empty at Solo, on a
+core model.
+
+**For NOT NULL.** `scopeFilterFor()` (`core/auth/scope.guard.ts:124`) returns
+`{ retailBrandId: { in: [...] } }`, which in Postgres never matches NULL, so
+history written while the column was nullable and unset disappears the instant
+a tier is switched on. Behind that is a stronger claim: "which entity owns this
+row" always has a right answer, and the `MAIN` `Location` every deployment
+carries is the proof — so a blank is never the honest value, only the
+unrecorded one.
+
+**For nullable.** A reporting edge is not a scope. "Which entity owns this row"
+always has an answer; "which other row does this row point to" does not — the
+top of any ladder has nobody above it, and a Solo deployment has no managers at
+all. Defaulting `managerId` to the row's own id, or to whoever the single admin
+happens to be, manufactures a reporting line nobody asserted, and it is
+indistinguishable from one somebody did. The repository already has the honest
+shape for exactly this: `RetailBrand.parentId String?` (`organization.prisma:43`)
+is nullable with `onDelete: SetNull`, because the root brand has no parent.
+
+**Where it collides here.** Both kinds of column would sit on models the same
+guard reads. `AdminScope` (`organization.prisma:106-120`) carries
+`retailBrandId`/`branchNodeId` — scope, always resolvable. `RetailBrand.parentId`
+(`:43`) carries an edge — null at the root. And the `organization` module that
+holds both is off by default (`modules.registry.ts:66`, whose comment cites R14
+by name), so a hierarchy column placed inside it is not empty at Solo and SME,
+it is absent.
+
+**What the engineer sees.** They add `managerId` and a reviewer cites ruling 4
+at them: NOT NULL, defaulted, first migration. There is nothing honest to
+default it to. The two escapes each look reasonable — point it at the row
+itself, or put the column in the `organization` module where the rest of the
+tier lives — and each breaks a different half of R14.
+
+---
+
+## 12. One ceiling per role name against ranks being an axis of their own
+
+**The pull.** The rule's own premise is that ranks are not roles and an
+approval ladder needs both axes. Lens 02's done test accepts a numeric ceiling
+column reachable from `Role` **or** from `UserRoleAssignment`. Neither of those
+builds a second axis, so the rule's premise and the catalogue's only rank test
+disagree about what a ceiling is.
+
+**For the fused column.** It is the cheapest honest answer to the question
+actually asked. `Role` (`core.prisma:307`) is `id`/`name`/`description` and has
+nowhere to put a number; one column on it, or on `UserRoleAssignment`
+(`core.prisma:336`), ships a ceiling in a single migration with no new model, no
+new join and no new screen — and this same lens set fails a build for adding a
+table nothing reads.
+
+**For the separate axis.** `Role.name` is `@unique` and `RoleGrant` keys off
+`roleId`, so varying a ceiling for identical duties means a second full `Role`
+row with a duplicated grant set — the explosion *Who may mint a role* exists to
+prevent, and which `RolesService` flags through `duplicateOfRoleName` without
+ever blocking it. A `UserRoleAssignment.ceiling` avoids the fork and produces a
+number with no meaning outside one row: nothing orders two people holding
+different titles, and nothing groups by grade. Every report here groups on a
+real foreign key — `GlReportsService` calls `journalLine.groupBy` three times
+(`gl-reports.service.ts:38,95,192`) and parses no names.
+
+**Where it collides here.** `PERMISSION_CATALOG` already shows what a
+bolted-on grouping axis costs: a `category` on each definition plus a separate
+`PERMISSION_GROUPS` list, two hand-synchronised taxonomies over one key set
+(`packages/shared/src/permissions.ts`). And there is nothing to compare against
+yet — no `Rank` model, no `UserId`→`RankId` join, no level column on `Role`, and
+`grep -rn "managerId\|reportsTo" apps/api/prisma/schema` returns nothing.
+
+**What the engineer sees.** They are asked for an approval ceiling. Lens 02's
+done test is satisfied by one column and the review passes. Two quarters later
+HR asks for headcount by grade and finance asks for escalation across titles —
+neither of which the column can answer — and by then every ceiling in
+production is attached to a role name.
+
+---
+
+## 13. One rank per act against a resolver that unions every grant
+
+**The pull.** *The threshold nobody approves alone* asks for the role and rank
+each band requires, worded as though one act has one applicable rank. A person
+at Org scale holds several live grants at once — base role, acting cover, a
+temporary scope. Something has to pick which one speaks.
+
+**For one number.** A band table is only usable if a single act yields a single
+ceiling. An approval check that reasons at runtime about which of three grants
+is speaking is a check nobody can read, and a rule an operator cannot predict
+is not a control — it is a lottery with an audit trail.
+
+**For the several grants.** `PermissionsResolverService.resolveForUser()`
+(`permissions.service.ts:29`) unions every `UserRoleAssignment`'s `RoleGrant`
+keys into one `Set<string>` and returns `ResolvedPermissions` =
+`{ roles: string[], permissions: string[] }` (`:4-7`) with no record of which
+assignment contributed which key. For booleans that is correct — holding a key
+once is holding it. For a number it is not, and the cheapest port of the
+existing pattern to a ceiling field is a max over the whole resolved set.
+
+**Where it collides here.** The right pattern is already next door and is not
+used for numbers: `resolveScope()`/`assertCanManageAtScope()`
+(`scope.guard.ts:47,84`) check the *target's* `retailBrandId`/`branchNodeId`
+against that specific grant's reach before authorizing. Nothing analogous
+exists for a ceiling, because no ceiling exists — so on the day one is added,
+the default is one flat number for the whole session.
+
+**What the engineer sees.** A Branch Manager covers a Regional Director for two
+weeks through a second `UserRoleAssignment`. The resolver hands the approval
+check one permission set with one number in it. The engineer writes the obvious
+thing, and for two weeks that person approves at the Director's ceiling
+everywhere — including branches the cover never touched — and when the cover
+expires, nothing on the approved documents says which grant let them through.
+
+---
+
+## 14. Stripping a leaver's grants on the spot against a deployment that must stay administrable
+
+**The pull.** Ruling 6 requires the deactivation transaction to delete every
+`UserRoleAssignment` and `AdminScope` row. The orphan guard exists to refuse
+exactly that write when it would leave a locked permission held by nobody. The
+sole holder of `roles.manage_permissions` resigns, and both fire on one
+transaction.
+
+**For removing the authority.** *The grant that ends itself* and ruling 6 are
+about the window between a person leaving and their keys leaving. Deactivation
+today touches `User.isActive` and `RefreshToken` and nothing else. A leaver who
+keeps a live grant is the whole gap, and a deactivation that can be refused is
+a deactivation somebody will postpone.
+
+**For the guard.** `assertLockedPermissionsStillHeldSomewhere`
+(`roles.service.ts:261`) refuses a role edit or delete that would leave an
+`ADMIN_LOCKED_PERMISSIONS` key held by nobody, because a deployment with no
+holder of `roles.manage_permissions` or `settings.manage` cannot be
+administered again without a hand edit to the database. That is not tidiness;
+it is the one thing between a personnel change and an unrecoverable
+deployment.
+
+**Where it collides here.** The guard is not wired to the path that matters.
+`unassignRole` (`users-admin.service.ts:103`) calls the bare
+`RolesService.unassign` (`roles.service.ts:155`), a `deleteMany` with no check
+at all, while `assertLockedKeysStillHeldAfterRevoke` (`roles.service.ts:175`)
+is reached only from `updatePermissions()` (`users-admin.service.ts:297`), for
+personal overrides. So ruling 6 and the guard do not collide today — because
+the ordinary revoke path passes fewer checks than a role edit does. The
+collision is waiting for the moment somebody fixes that, which is the fix lens
+42 asks for.
+
+**What the engineer sees.** They wire the guard into `unassign()`, which is
+plainly correct, and a leaver test that used to pass starts failing: the last
+administrator cannot be deactivated. Both ways out are wrong — skip the guard
+when `isActive` is going false, which reopens the hole on the one path nobody
+watches, or refuse the deactivation, which leaves a departed person holding the
+keys.

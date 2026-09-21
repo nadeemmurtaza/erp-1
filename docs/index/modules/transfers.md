@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 5 files
 
 Source: `apps/api/src/modules/transfers/`
 
-## Files (5 · 1,301 lines)
+## Files (5 · 1,345 lines)
 
 All paths relative to `apps/api/src/modules/transfers/dto`.
 
@@ -20,7 +20,7 @@ All paths relative to `apps/api/src/modules/transfers/dto`.
 | `transfer.dto.ts` | dto | 109 | 7 |  |
 | `transfers.controller.ts` | controller | 44 | 1 |  |
 | `transfers.module.ts` | nest module | 22 | 1 |  |
-| `transfers.service.spec.ts` | unit test | 657 | — |  |
+| `transfers.service.spec.ts` | unit test | 701 | — |  |
 | `transfers.service.ts` | service | 469 | 3 |  |
 
 

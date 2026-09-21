@@ -3,12 +3,12 @@
 
 # Files — api
 
-All 448 tracked files in `apps/api`, by directory.
+All 449 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
 
-### `apps/api` (9)
+### `apps/api` (10)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -18,6 +18,7 @@ All 448 tracked files in `apps/api`, by directory.
 | `nest-cli.json` | json | 18 |  |
 | `package.json` | json | 76 |  |
 | `prisma.config.ts` | module | 19 | A Prisma config file switches OFF Prisma's automatic .env loading, so we do |
+| `report.20260921.035047.1334.0.001.json` | json | 548 |  |
 | `tsconfig.build.json` | json | 5 |  |
 | `tsconfig.json` | json | 17 |  |
 | `tsconfig.seed.json` | json | 10 |  |
@@ -1071,7 +1072,7 @@ All 448 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `transfers.controller.ts` | controller | 44 |  |
 | `transfers.module.ts` | nest module | 22 |  |
-| `transfers.service.spec.ts` | unit test | 657 |  |
+| `transfers.service.spec.ts` | unit test | 701 |  |
 | `transfers.service.ts` | service | 469 |  |
 
 ### `apps/api/src/modules/transfers/dto` (1)
@@ -1104,7 +1105,7 @@ All 448 tracked files in `apps/api`, by directory.
 | `accounting.e2e-spec.ts` | e2e test | 462 | The general ledger's invariants (RETAIL-ERP.md R15, WO-19.1), proven against a real database rather than a mocked Prism… |
 | `auth.e2e-spec.ts` | e2e test | 198 |  |
 | `backfill-product-options.spec.ts` | unit test | 114 |  |
-| `cart.e2e-spec.ts` | e2e test | 796 |  |
+| `cart.e2e-spec.ts` | e2e test | 800 |  |
 | `catalog.e2e-spec.ts` | e2e test | 407 |  |
 | `crm.e2e-spec.ts` | e2e test | 489 |  |
 | `devices.e2e-spec.ts` | e2e test | 150 |  |

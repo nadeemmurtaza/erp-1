@@ -85,7 +85,11 @@ describe('Cart (e2e)', () => {
 
     const unstitched = await prisma.product.findFirstOrThrow({
       where: { slug: 'embroidered-lawn-3-piece-ferozi' },
-      include: { variants: true },
+      // Ordered, like the `ready` lookup below it. Without an `orderBy`,
+      // `variants[0]` is whichever row Postgres happens to return first, which
+      // changes as rows are inserted and deleted elsewhere — so this suite
+      // picked a different variant depending on what else was running.
+      include: { variants: { orderBy: { order: 'asc' } } },
     });
     unstitchedVariantId = unstitched.variants[0]!.id;
 

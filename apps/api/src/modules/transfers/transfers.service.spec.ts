@@ -24,12 +24,31 @@ describe('TransfersService', () => {
   let transfers: TransfersService;
   let inventory: InventoryService;
   let prisma: PrismaService;
-  let events: { publish: jest.Mock };
+  /**
+   * What the service published, as (name, payload) only.
+   *
+   * Deliberately NOT a `jest.fn()`. `EventBusService.publish` takes the
+   * caller's Prisma transaction client as its third argument, and a jest mock
+   * keeps every argument it was called with. A transaction client is a Proxy
+   * whose every property access returns another proxy, so when an assertion on
+   * such a mock FAILS, jest's pretty-printer walks it without bound and the
+   * worker dies of heap exhaustion — reporting nothing at all, not even the
+   * assertion that failed, which is how this file came to hang with no output.
+   * Recording only what the assertions actually need means a failure here
+   * fails the way a test should.
+   */
+  const published: Array<{ name: string; payload: Record<string, unknown> }> = [];
+  const publishedOfType = (name: string) => published.filter((e) => e.name === name);
+  let events: { publish: (name: string, payload: unknown) => Promise<void> };
   let productId: string;
   let actorId: string;
 
   beforeAll(async () => {
-    events = { publish: jest.fn() };
+    events = {
+      publish: async (name: string, payload: unknown) => {
+        published.push({ name, payload: payload as Record<string, unknown> });
+      },
+    };
 
     const module = await Test.createTestingModule({
       providers: [
@@ -49,11 +68,32 @@ describe('TransfersService', () => {
     inventory = module.get(InventoryService);
     prisma = module.get(PrismaService);
 
-    const product = await prisma.product.findFirstOrThrow({ select: { id: true } });
+    // A product of this file's OWN, never a seeded one.
+    //
+    // `findFirstOrThrow()` with no `where` used to borrow whichever product
+    // came first and hang this file's variants off it. Those variants are
+    // visible to every suite running concurrently against the same database,
+    // and cart.e2e reads that product's variants — so this file silently
+    // decided which variant cart tested with. Creating and deleting its own
+    // product means nothing here can be observed by anything else.
+    const product = await prisma.product.create({
+      data: {
+        slug: `transfer-spec-fixture-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+        kind: 'GOODS',
+        basePrice: 0,
+      },
+      select: { id: true },
+    });
     productId = product.id;
 
     const user = await prisma.user.findFirstOrThrow({ select: { id: true } });
     actorId = user.id;
+  });
+
+  afterAll(async () => {
+    // Every describe block's own afterAll has already removed its variants,
+    // so the product is free to go.
+    await prisma.product.deleteMany({ where: { id: productId } });
   });
 
   /**
@@ -470,7 +510,7 @@ describe('TransfersService', () => {
     });
 
     beforeEach(() => {
-      events.publish.mockClear();
+      published.length = 0;
     });
 
     async function freshVariant(costPrice: number) {
@@ -539,7 +579,8 @@ describe('TransfersService', () => {
 
       const invoice = await prisma.interBranchInvoice.findUnique({ where: { transferId: transfer.id } });
       expect(invoice).toBeNull();
-      expect(events.publish).not.toHaveBeenCalled();
+      // NOT `no events at all` — see the note on the cross-brand case below.
+      expect(publishedOfType('transfers.inter_branch_invoiced')).toHaveLength(0);
     });
 
     it('cross-brand INVOICED, received in full — snapshots unitCost at dispatch, raises an InterBranchInvoice at cost, publishes the event', async () => {
@@ -571,17 +612,18 @@ describe('TransfersService', () => {
         const invoice = await prisma.interBranchInvoice.findUniqueOrThrow({ where: { transferId: transfer.id } });
         expect(invoice.amountMinor).toBe(2800);
 
-        expect(events.publish).toHaveBeenCalledWith(
-          'transfers.inter_branch_invoiced',
-          expect.objectContaining({
-            invoiceId: invoice.id,
-            transferId: transfer.id,
-            sourceRetailBrandId: brandA.id,
-            destinationRetailBrandId: brandB.id,
-            amountMinor: 2800,
-          }),
-          expect.anything(),
-        );
+        expect(publishedOfType('transfers.inter_branch_invoiced')).toEqual([
+          {
+            name: 'transfers.inter_branch_invoiced',
+            payload: expect.objectContaining({
+              invoiceId: invoice.id,
+              transferId: transfer.id,
+              sourceRetailBrandId: brandA.id,
+              destinationRetailBrandId: brandB.id,
+              amountMinor: 2800,
+            }),
+          },
+        ]);
       });
     });
 
@@ -627,7 +669,9 @@ describe('TransfersService', () => {
 
         const invoice = await prisma.interBranchInvoice.findUnique({ where: { transferId: transfer.id } });
         expect(invoice).toBeNull();
-        expect(events.publish).not.toHaveBeenCalled();
+        // NOT `no events at all`: InventoryService.move() publishes
+        // StockReplenished on every positive delta, including the setup above.
+        expect(publishedOfType('transfers.inter_branch_invoiced')).toHaveLength(0);
       });
     });
 

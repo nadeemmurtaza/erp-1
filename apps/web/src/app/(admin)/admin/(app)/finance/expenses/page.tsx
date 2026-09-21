@@ -69,6 +69,8 @@ export default function ExpensesPage() {
   const [categoryFilter, setCategoryFilter] = useState('');
   const [paidFilter, setPaidFilter] = useState<'' | 'true' | 'false'>('');
   const [search, setSearch] = useState('');
+  const [fromFilter, setFromFilter] = useState('');
+  const [toFilter, setToFilter] = useState('');
 
   const [categoryId, setCategoryId] = useState('');
   const [amount, setAmount] = useState('');
@@ -88,6 +90,8 @@ export default function ExpensesPage() {
         categoryId: categoryFilter || undefined,
         paid: paidFilter || undefined,
         q: search || undefined,
+        from: fromFilter || undefined,
+        to: toFilter || undefined,
       };
       const [expensesRes, summaryRes, categoriesRes] = await Promise.all([
         adminFetch<{ data: Expense[] }>('/admin/finance/expenses', { query }),
@@ -102,11 +106,24 @@ export default function ExpensesPage() {
     } finally {
       setBusy(false);
     }
-  }, [categoryFilter, paidFilter, search]);
+  }, [categoryFilter, paidFilter, search, fromFilter, toFilter]);
 
   useEffect(() => {
     void load();
   }, [load]);
+
+  // Pre-fills the filters when arriving from the analytics screen's
+  // by-category drill-through (?categoryId=&from=&to=) — read post-mount,
+  // not as the initial state, so server and first client render still match.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get('categoryId');
+    const from = params.get('from');
+    const to = params.get('to');
+    if (category) setCategoryFilter(category);
+    if (from) setFromFilter(from);
+    if (to) setToFilter(to);
+  }, []);
 
   async function recordExpense(event: React.FormEvent) {
     event.preventDefault();
@@ -198,9 +215,14 @@ export default function ExpensesPage() {
         title="Expenses"
         description="What the shop spends, grouped by category and gross-profit line."
         action={
-          <Link href="/admin/finance/expenses/categories" className="btn-secondary">
-            Categories
-          </Link>
+          <div className="flex gap-2">
+            <Link href="/admin/finance/expenses/analytics" className="btn-secondary">
+              Analytics
+            </Link>
+            <Link href="/admin/finance/expenses/categories" className="btn-secondary">
+              Categories
+            </Link>
+          </div>
         }
       />
 
@@ -347,6 +369,20 @@ export default function ExpensesPage() {
           placeholder="Search description, payee, reference…"
           className="field-input w-auto flex-1"
           aria-label="Search"
+        />
+        <input
+          type="date"
+          value={fromFilter}
+          onChange={(event) => setFromFilter(event.target.value)}
+          className="field-input w-auto"
+          aria-label="From date"
+        />
+        <input
+          type="date"
+          value={toFilter}
+          onChange={(event) => setToFilter(event.target.value)}
+          className="field-input w-auto"
+          aria-label="To date"
         />
       </div>
 

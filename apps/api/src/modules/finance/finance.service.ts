@@ -4,6 +4,7 @@ import { paginated, type PaginatedResult } from '../../core/common/dto/paginatio
 import { DomainEvent } from '../../core/events/domain-events';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { StorageService } from '../../core/storage/storage.service';
+import { VOID_ORDER_STATUSES } from '../../core/common/sales-revenue';
 import { Prisma, type Expense, type ExpenseCategory, type ExpenseRecurrence } from '../../core/prisma/client';
 import type {
   CreateExpenseCategoryDto,
@@ -62,6 +63,50 @@ export interface ExpenseSummary {
   byCategory: Array<{ categoryId: string; categoryName: string; isDirect: boolean; amount: number; count: number }>;
   /** One point per day with at least one expense — the comparative chart (WO-B.5) reads this directly. */
   series: Array<{ date: string; amount: number }>;
+}
+
+export interface ExpenseByCategoryRow {
+  categoryId: string;
+  key: string;
+  name: string;
+  isDirect: boolean;
+  amount: number;
+  /** This row's share of `total`, in basis points (Rule 5) — 0 when `total` is 0. */
+  shareBps: number;
+  count: number;
+  /**
+   * Change vs. the immediately preceding period of equal length, in basis
+   * points. Null when the previous period had no spend in this category at
+   * all — "infinite growth" is not a number, and reporting 0 would say
+   * "unchanged" when the truth is "new."
+   */
+  changeBps: number | null;
+}
+
+export interface ExpenseByCategoryResult {
+  total: number;
+  /**
+   * total ÷ sales revenue for the same window, in basis points — WO-B.4's
+   * acceptance criterion that this figure and `sales.revenue` never disagree
+   * is why the revenue definition lives in one shared place
+   * (core/common/sales-revenue.ts) rather than a second copy here.
+   */
+  vsRevenueBps: number;
+  rows: ExpenseByCategoryRow[];
+}
+
+export interface ExpenseTrendPoint {
+  /** Bucket start — an ISO date ("2026-08-14") or an ISO month ("2026-08"), matching `bucket`. */
+  t: string;
+  total: number;
+  direct: number;
+  operating: number;
+  byCategory: Record<string, number>;
+}
+
+export interface ExpenseTrendResult {
+  series: ExpenseTrendPoint[];
+  bucket: 'day' | 'month';
 }
 
 /**
@@ -312,6 +357,119 @@ export class FinanceService {
       totals,
       byCategory: [...byCategory.values()].sort((a, b) => b.amount - a.amount),
       series: [...byDay.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([date, amount]) => ({ date, amount })),
+    };
+  }
+
+  /** `from`/`to`, defaulted to a trailing window ending now when either is omitted — never an unbounded scan of the whole table. */
+  private resolveWindow(query: ExpenseSummaryQueryDto, defaultDays: number): { from: Date; to: Date } {
+    const to = query.to ? new Date(query.to) : new Date();
+    const from = query.from ? new Date(query.from) : new Date(to.getTime() - defaultDays * 24 * 60 * 60 * 1000);
+    if (from > to) throw new BadRequestException('"from" must not be after "to".');
+    return { from, to };
+  }
+
+  /**
+   * WO-B.4: totals by category for the window, each with its share of the
+   * total, its change vs. the immediately preceding window of equal length,
+   * and the window's total expressed against sales revenue for the same
+   * window — see ExpenseByCategoryResult's own note on why that revenue
+   * figure can never quietly drift from `sales.revenue`.
+   */
+  async byCategory(query: ExpenseSummaryQueryDto): Promise<ExpenseByCategoryResult> {
+    const { from, to } = this.resolveWindow(query, 30);
+    const periodMs = to.getTime() - from.getTime();
+    const previousTo = new Date(from.getTime() - 1);
+    const previousFrom = new Date(previousTo.getTime() - periodMs);
+
+    const [expenses, previousExpenses, revenue] = await Promise.all([
+      this.prisma.expense.findMany({
+        where: { incurredAt: { gte: from, lte: to } },
+        include: { category: true },
+      }),
+      this.prisma.expense.findMany({
+        where: { incurredAt: { gte: previousFrom, lte: previousTo } },
+        select: { categoryId: true, amount: true },
+      }),
+      this.prisma.order.aggregate({
+        where: { status: { notIn: VOID_ORDER_STATUSES }, placedAt: { gte: from, lte: to } },
+        _sum: { grandTotal: true },
+      }),
+    ]);
+
+    const previousByCategory = new Map<string, number>();
+    for (const expense of previousExpenses) {
+      previousByCategory.set(expense.categoryId, (previousByCategory.get(expense.categoryId) ?? 0) + expense.amount);
+    }
+
+    const byCategory = new Map<string, Omit<ExpenseByCategoryRow, 'shareBps' | 'changeBps'>>();
+    let total = 0;
+    for (const expense of expenses) {
+      total += expense.amount;
+      const row = byCategory.get(expense.categoryId) ?? {
+        categoryId: expense.categoryId,
+        key: expense.category.key,
+        name: expense.category.name,
+        isDirect: expense.category.isDirect,
+        amount: 0,
+        count: 0,
+      };
+      row.amount += expense.amount;
+      row.count += 1;
+      byCategory.set(expense.categoryId, row);
+    }
+
+    const rows: ExpenseByCategoryRow[] = [...byCategory.values()]
+      .map((row) => {
+        const previousAmount = previousByCategory.get(row.categoryId) ?? 0;
+        const changeBps =
+          previousAmount > 0
+            ? Math.round(((row.amount - previousAmount) * 10_000) / previousAmount)
+            : row.amount > 0
+              ? null
+              : 0;
+        return {
+          ...row,
+          shareBps: total > 0 ? Math.round((row.amount * 10_000) / total) : 0,
+          changeBps,
+        };
+      })
+      .sort((a, b) => b.amount - a.amount);
+
+    const revenueAmount = revenue._sum.grandTotal ?? 0;
+    const vsRevenueBps = revenueAmount > 0 ? Math.round((total * 10_000) / revenueAmount) : 0;
+
+    return { total, vsRevenueBps, rows };
+  }
+
+  /**
+   * WO-B.4: expense totals over time, bucketed by day for a window of up to
+   * 62 days and by month for anything wider — a year of daily points is a
+   * chart nobody can read, and a week of monthly points is one bar.
+   */
+  async trend(query: ExpenseSummaryQueryDto): Promise<ExpenseTrendResult> {
+    const { from, to } = this.resolveWindow(query, 365);
+    const bucket: 'day' | 'month' = to.getTime() - from.getTime() <= 62 * 24 * 60 * 60 * 1000 ? 'day' : 'month';
+
+    const expenses = await this.prisma.expense.findMany({
+      where: { incurredAt: { gte: from, lte: to } },
+      include: { category: true },
+    });
+
+    const points = new Map<string, ExpenseTrendPoint>();
+    for (const expense of expenses) {
+      const key =
+        bucket === 'day' ? expense.incurredAt.toISOString().slice(0, 10) : expense.incurredAt.toISOString().slice(0, 7);
+      const point = points.get(key) ?? { t: key, total: 0, direct: 0, operating: 0, byCategory: {} };
+      point.total += expense.amount;
+      if (expense.category.isDirect) point.direct += expense.amount;
+      else point.operating += expense.amount;
+      point.byCategory[expense.categoryId] = (point.byCategory[expense.categoryId] ?? 0) + expense.amount;
+      points.set(key, point);
+    }
+
+    return {
+      series: [...points.values()].sort((a, b) => a.t.localeCompare(b.t)),
+      bucket,
     };
   }
 

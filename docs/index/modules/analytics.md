@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 6 files
 
 Source: `apps/api/src/modules/analytics/`
 
-## Files (6 · 1,219 lines)
+## Files (6 · 1,217 lines)
 
 All paths relative to `apps/api/src/modules/analytics`.
 
@@ -17,7 +17,7 @@ All paths relative to `apps/api/src/modules/analytics`.
 |---|---|---|---|---|
 | `analytics.controller.ts` | controller | 52 | 1 |  |
 | `analytics.module.ts` | nest module | 11 | 1 |  |
-| `analytics.service.ts` | service | 635 | 6 |  |
+| `analytics.service.ts` | service | 633 | 6 |  |
 | `analytics.dto.ts` | dto | 10 | 1 |  |
 | `supply-chain-digest.cron.spec.ts` | unit test | 254 | — |  |
 | `supply-chain-digest.cron.ts` | scheduled job | 257 | 1 | Three scheduled reports, none of them new machinery — each reads tables Increments 1-5 already populate (StockMovement,… |
@@ -71,6 +71,7 @@ _none_
 ## Reaches out to
 
 - core `auth`
+- core `common`
 - core `events`
 - core `notifications`
 - core `prisma`
@@ -95,12 +96,12 @@ check there before adding another.
 |---|---|---|---|
 | `AnalyticsController` | class | `analytics.controller.ts:10` |  |
 | `AnalyticsModule` | class | `analytics.module.ts:10` |  |
-| `MonthlyTarget` | interface | `analytics.service.ts:17` |  |
-| `DashboardSummary` | interface | `analytics.service.ts:24` |  |
-| `StitchingAnalytics` | interface | `analytics.service.ts:44` |  |
-| `ExtendedAnalytics` | interface | `analytics.service.ts:53` |  |
-| `VisitorAnalytics` | interface | `analytics.service.ts:74` |  |
-| `AnalyticsService` | class | `analytics.service.ts:96` | Dashboard numbers. |
+| `MonthlyTarget` | interface | `analytics.service.ts:15` |  |
+| `DashboardSummary` | interface | `analytics.service.ts:22` |  |
+| `StitchingAnalytics` | interface | `analytics.service.ts:42` |  |
+| `ExtendedAnalytics` | interface | `analytics.service.ts:51` |  |
+| `VisitorAnalytics` | interface | `analytics.service.ts:72` |  |
+| `AnalyticsService` | class | `analytics.service.ts:94` | Dashboard numbers. |
 | `SetMonthlyTargetDto` | class | `analytics.dto.ts:4` |  |
 | `SupplyChainDigestCron` | class | `supply-chain-digest.cron.ts:24` | Three scheduled reports, none of them new machinery — each reads tables Increments 1-5 already populate (Stoc… |
 

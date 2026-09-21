@@ -113,6 +113,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `ExpensesPage` | default | :60 | Record expenses and see what the shop is spending. |
 
+### `apps/web/src/app/(admin)/admin/(app)/finance/expenses/analytics`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `ExpenseAnalyticsPage` | default | :56 | WO-23.1's WO-B.4 — expense-by-category, expense trend, and how spend compares to revenue. |
+
 ### `apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories`
 
 | File | Symbol | Kind | Line | Doc |
@@ -592,8 +598,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :45 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :56 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :92 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :375 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :390 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :382 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :397 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |

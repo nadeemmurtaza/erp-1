@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
-import type { OrderStatus, Prisma } from '../../core/prisma/client';
+import type { Prisma } from '../../core/prisma/client';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
+import { VOID_ORDER_STATUSES as VOID_STATUSES } from '../../core/common/sales-revenue';
 import {
   shopDayExpr,
   shopDayKeys,
@@ -10,9 +11,6 @@ import {
   startOfShopDaysAgo,
   startOfShopMonth,
 } from '../../core/time/shop-time';
-
-/** Orders in these states never count toward revenue. */
-const VOID_STATUSES: OrderStatus[] = ['CANCELLED', 'RETURNED'];
 
 export interface MonthlyTarget {
   targetAmount: number;

@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 464 tracked files in `apps/api`, by directory.
+All 465 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -446,11 +446,12 @@ All 464 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `checkout-validator.registry.ts` | registry | 59 |  |
 
-### `apps/api/src/core/common` (1)
+### `apps/api/src/core/common` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `cost-fields.ts` | module | 72 |  |
+| `sales-revenue.ts` | module | 17 |  |
 
 ### `apps/api/src/core/common/dto` (1)
 
@@ -669,7 +670,7 @@ All 464 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `analytics.controller.ts` | controller | 52 |  |
 | `analytics.module.ts` | nest module | 11 |  |
-| `analytics.service.ts` | service | 635 |  |
+| `analytics.service.ts` | service | 633 |  |
 | `supply-chain-digest.cron.spec.ts` | unit test | 254 |  |
 | `supply-chain-digest.cron.ts` | scheduled job | 257 |  |
 
@@ -747,14 +748,14 @@ All 464 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `finance.controller.ts` | controller | 98 |  |
+| `finance.controller.ts` | controller | 112 |  |
 | `finance.cron.spec.ts` | unit test | 69 |  |
 | `finance.cron.ts` | scheduled job | 36 |  |
 | `finance.listener.spec.ts` | unit test | 48 |  |
 | `finance.listener.ts` | event subscriber | 27 |  |
 | `finance.module.ts` | nest module | 13 |  |
-| `finance.service.ts` | service | 394 |  |
-| `finance.spec.ts` | unit test | 299 |  |
+| `finance.service.ts` | service | 552 |  |
+| `finance.spec.ts` | unit test | 486 |  |
 | `order-economics.service.spec.ts` | unit test | 216 |  |
 | `order-economics.service.ts` | service | 137 |  |
 

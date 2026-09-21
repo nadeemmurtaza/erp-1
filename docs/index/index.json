@@ -3,16 +3,16 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1164,
-    "lines": 180066,
-    "routes": 297,
+    "files": 1166,
+    "lines": 180788,
+    "routes": 299,
     "controllers": 58,
     "models": 118,
     "enums": 50,
     "migrations": 54,
     "events": 36,
     "permissions": 38,
-    "screens": 127,
+    "screens": 128,
     "crons": 8,
     "specs": 107,
     "designLaws": 150
@@ -1083,9 +1083,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 464,
-      "lines": 61721,
-      "bytes": 2215752,
+      "files": 465,
+      "lines": 62095,
+      "bytes": 2231468,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1101,15 +1101,15 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 230,
-      "lines": 34289,
-      "bytes": 1273331,
+      "files": 231,
+      "lines": 34533,
+      "bytes": 1281627,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 247,
-      "lines": 35495,
-      "bytes": 2222091,
+      "lines": 35599,
+      "bytes": 2228013,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -1257,7 +1257,7 @@
         "apps/api/src/modules/finance/order-economics.service.spec.ts",
         "apps/api/src/modules/finance/order-economics.service.ts"
       ],
-      "routes": 10,
+      "routes": 12,
       "page": "docs/index/modules/finance.md"
     },
     {
@@ -1672,7 +1672,8 @@
       "files": [
         "apps/api/src/core/common/cost-fields.ts",
         "apps/api/src/core/common/dto/pagination.dto.ts",
-        "apps/api/src/core/common/filters/all-exceptions.filter.ts"
+        "apps/api/src/core/common/filters/all-exceptions.filter.ts",
+        "apps/api/src/core/common/sales-revenue.ts"
       ],
       "page": "docs/index/core/common.md"
     },
@@ -3086,7 +3087,7 @@
       "controller": "FinanceController",
       "handler": "createExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 68,
+      "line": 82,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -3102,7 +3103,7 @@
       "controller": "FinanceController",
       "handler": "deleteExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 82,
+      "line": 96,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -3118,7 +3119,7 @@
       "controller": "FinanceController",
       "handler": "updateExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 75,
+      "line": 89,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -3134,7 +3135,7 @@
       "controller": "FinanceController",
       "handler": "uploadReceipt",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 93,
+      "line": 107,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -3142,6 +3143,22 @@
       "public": false,
       "authOnly": false,
       "summary": "Attach a receipt image or PDF to an expense"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/finance/expenses/by-category",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "byCategory",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 68,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Expense totals by category — share, period-over-period change, and share of revenue"
     },
     {
       "method": "GET",
@@ -3158,6 +3175,22 @@
       "public": false,
       "authOnly": false,
       "summary": "Totals, per-category breakdown and a daily series"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/finance/expenses/trend",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "trend",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 75,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Expense totals over time, bucketed by day or month"
     },
     {
       "method": "GET",
@@ -7100,9 +7133,11 @@
       "routes": [
         "GET /admin/finance/expense-categories",
         "GET /admin/finance/expenses",
-        "GET /admin/finance/expenses/summary"
+        "GET /admin/finance/expenses/by-category",
+        "GET /admin/finance/expenses/summary",
+        "GET /admin/finance/expenses/trend"
       ],
-      "uiSites": 1,
+      "uiSites": 2,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -7596,8 +7631,8 @@
       "doc": "FinanceService.create() (WO-23.1) — fires whether or not `accounting` is on; posting-rules.subscriber.ts is the only subscriber today.",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:392",
-        "apps/api/src/modules/finance/finance.service.ts:203",
-        "apps/api/src/modules/finance/finance.service.ts:366"
+        "apps/api/src/modules/finance/finance.service.ts:248",
+        "apps/api/src/modules/finance/finance.service.ts:524"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:390 onExpenseRecorded()"
@@ -20714,6 +20749,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/finance/expenses/analytics",
+      "file": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/analytics/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/finance/expenses/categories",
       "file": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories/page.tsx",
       "client": true,
@@ -21974,11 +22018,13 @@
       "file": "apps/api/src/modules/finance/finance.spec.ts",
       "module": "finance",
       "kind": "unit test",
-      "cases": 13,
+      "cases": 24,
       "describes": [
         "FinanceService",
         "generateRecurringInstances — WO-B.2",
-        "attachReceipt — WO-B.2"
+        "attachReceipt — WO-B.2",
+        "byCategory — WO-B.4",
+        "trend — WO-B.4"
       ]
     },
     {
@@ -24621,6 +24667,21 @@
       ]
     },
     {
+      "path": "apps/api/src/core/common/sales-revenue.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 17,
+      "bytes": 896,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "VOID_ORDER_STATUSES",
+          "kind": "const",
+          "line": 16
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/config/app-config.service.ts",
       "area": "api",
       "kind": "service",
@@ -26733,39 +26794,39 @@
       "path": "apps/api/src/modules/analytics/analytics.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 635,
-      "bytes": 24320,
+      "lines": 633,
+      "bytes": 24272,
       "doc": "",
       "symbols": [
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 17
+          "line": 15
         },
         {
           "name": "DashboardSummary",
           "kind": "interface",
-          "line": 24
+          "line": 22
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 44
+          "line": 42
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 53
+          "line": 51
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 74
+          "line": 72
         },
         {
           "name": "AnalyticsService",
           "kind": "class",
-          "line": 96
+          "line": 94
         }
       ]
     },
@@ -27429,8 +27490,8 @@
       "path": "apps/api/src/modules/finance/finance.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 98,
-      "bytes": 3815,
+      "lines": 112,
+      "bytes": 4354,
       "doc": "",
       "symbols": [
         {
@@ -27507,19 +27568,39 @@
       "path": "apps/api/src/modules/finance/finance.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 394,
-      "bytes": 15352,
+      "lines": 552,
+      "bytes": 21467,
       "doc": "",
       "symbols": [
         {
           "name": "ExpenseSummary",
           "kind": "interface",
-          "line": 53
+          "line": 54
+        },
+        {
+          "name": "ExpenseByCategoryRow",
+          "kind": "interface",
+          "line": 68
+        },
+        {
+          "name": "ExpenseByCategoryResult",
+          "kind": "interface",
+          "line": 86
+        },
+        {
+          "name": "ExpenseTrendPoint",
+          "kind": "interface",
+          "line": 98
+        },
+        {
+          "name": "ExpenseTrendResult",
+          "kind": "interface",
+          "line": 107
         },
         {
           "name": "FinanceService",
           "kind": "class",
-          "line": 79
+          "line": 124
         }
       ]
     },
@@ -27527,8 +27608,8 @@
       "path": "apps/api/src/modules/finance/finance.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 299,
-      "bytes": 10909,
+      "lines": 486,
+      "bytes": 19123,
       "doc": "",
       "symbols": []
     },
@@ -32689,6 +32770,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/analytics/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 201,
+      "bytes": 6729,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ExpenseAnalyticsPage",
+          "kind": "default",
+          "line": 56
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories/page.tsx",
       "area": "web",
       "kind": "page",
@@ -32707,8 +32803,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 434,
-      "bytes": 14641,
+      "lines": 470,
+      "bytes": 16004,
       "doc": "",
       "symbols": [
         {
@@ -34305,8 +34401,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 405,
-      "bytes": 10824,
+      "lines": 412,
+      "bytes": 11028,
       "doc": "",
       "symbols": [
         {
@@ -34337,12 +34433,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 375
+          "line": 382
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 390
+          "line": 397
         }
       ]
     },
@@ -38839,8 +38935,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 752,
-      "bytes": 32425,
+      "lines": 856,
+      "bytes": 38347,
       "doc": "",
       "symbols": []
     },

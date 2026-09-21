@@ -62,6 +62,20 @@ export class FinanceController {
     return this.finance.summary(query);
   }
 
+  @Get('expenses/by-category')
+  @RequirePermission('finance.view')
+  @ApiOperation({ summary: 'Expense totals by category — share, period-over-period change, and share of revenue' })
+  async byCategory(@Query() query: ExpenseSummaryQueryDto) {
+    return this.finance.byCategory(query);
+  }
+
+  @Get('expenses/trend')
+  @RequirePermission('finance.view')
+  @ApiOperation({ summary: 'Expense totals over time, bucketed by day or month' })
+  async trend(@Query() query: ExpenseSummaryQueryDto) {
+    return this.finance.trend(query);
+  }
+
   @Post('expenses')
   @RequirePermission('finance.manage')
   @ApiOperation({ summary: 'Record an expense' })

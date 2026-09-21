@@ -629,8 +629,8 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:392` | `accounting` |
-| `apps/api/src/modules/finance/finance.service.ts:203` | `finance` |
-| `apps/api/src/modules/finance/finance.service.ts:366` | `finance` |
+| `apps/api/src/modules/finance/finance.service.ts:248` | `finance` |
+| `apps/api/src/modules/finance/finance.service.ts:524` | `finance` |
 
 
 **Subscribed by**

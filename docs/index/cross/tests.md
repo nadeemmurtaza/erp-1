@@ -3,7 +3,7 @@
 
 # Tests
 
-**107** spec files, **1,037** cases. What is already pinned down — and what is not.
+**107** spec files, **1,048** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -88,7 +88,7 @@ regression or an N+1.
 | `apps/api/src/modules/crm/email-inbox/email-inbox.service.spec.ts` | crm | 7 | EmailInboxService · reply |
 | `apps/api/src/modules/finance/finance.cron.spec.ts` | finance | 3 | FinanceCron |
 | `apps/api/src/modules/finance/finance.listener.spec.ts` | finance | 2 | FinanceListener |
-| `apps/api/src/modules/finance/finance.spec.ts` | finance | 13 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 |
+| `apps/api/src/modules/finance/finance.spec.ts` | finance | 24 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4… |
 | `apps/api/src/modules/finance/order-economics.service.spec.ts` | finance | 8 | OrderEconomicsService |
 | `apps/api/src/modules/identity-verification/providers/nid-callback-verification.spec.ts` | identity-verification | 6 | nID webhook signature verification |
 | `apps/api/src/modules/inventory/inventory.cron.spec.ts` | inventory | 2 | InventoryCron |

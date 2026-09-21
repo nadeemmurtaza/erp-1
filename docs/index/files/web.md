@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 230 tracked files in `apps/web`, by directory.
+All 231 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -162,7 +162,13 @@ All 230 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 434 |  |
+| `page.tsx` | page | 470 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/finance/expenses/analytics` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 201 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories` (1)
 
@@ -615,7 +621,7 @@ All 230 tracked files in `apps/web`, by directory.
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 485 |  |
-| `nav-registry.ts` | component | 405 |  |
+| `nav-registry.ts` | component | 412 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1034 |  |

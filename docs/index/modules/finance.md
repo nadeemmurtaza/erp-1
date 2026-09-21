@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 12 files
 
 Source: `apps/api/src/modules/finance/`
 
-## Files (12 · 1,472 lines)
+## Files (12 · 1,831 lines)
 
 All paths relative to `apps/api/src/modules/finance/dto`.
 
@@ -17,19 +17,19 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 |---|---|---|---|---|
 | `expense-category.dto.ts` | dto | 35 | 2 |  |
 | `expense.dto.ts` | dto | 100 | 4 |  |
-| `finance.controller.ts` | controller | 98 | 1 |  |
+| `finance.controller.ts` | controller | 112 | 1 |  |
 | `finance.cron.spec.ts` | unit test | 69 | — |  |
 | `finance.cron.ts` | scheduled job | 36 | 1 | WO-B.2's recurring-expense job. |
 | `finance.listener.spec.ts` | unit test | 48 | — |  |
 | `finance.listener.ts` | event subscriber | 27 | 1 | WO-23.1's WO-B.3: compute OrderEconomics on DELIVERED, recompute on RETURNED. |
 | `finance.module.ts` | nest module | 13 | 1 |  |
-| `finance.service.ts` | service | 394 | 2 |  |
-| `finance.spec.ts` | unit test | 299 | — |  |
+| `finance.service.ts` | service | 552 | 6 |  |
+| `finance.spec.ts` | unit test | 486 | — |  |
 | `order-economics.service.spec.ts` | unit test | 216 | — |  |
 | `order-economics.service.ts` | service | 137 | 1 | WO-23.1's WO-B.3: contribution per order. |
 
 
-## HTTP routes (10)
+## HTTP routes (12)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -38,11 +38,13 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 | DELETE | `/admin/finance/expense-categories/:id` | `finance.manage` | `FinanceController.deleteCategory` :46 | Delete an unused expense category |
 | PATCH | `/admin/finance/expense-categories/:id` | `finance.manage` | `FinanceController.updateCategory` :39 | Rename, redirect or (de)activate an expense category |
 | GET | `/admin/finance/expenses` | `finance.view` | `FinanceController.listExpenses` :54 | List expenses, paginated and filtered |
-| POST | `/admin/finance/expenses` | `finance.manage` | `FinanceController.createExpense` :68 | Record an expense |
-| DELETE | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.deleteExpense` :82 | Delete an expense |
-| PATCH | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.updateExpense` :75 | Edit an expense |
-| POST | `/admin/finance/expenses/:id/receipt` | `finance.manage` | `FinanceController.uploadReceipt` :93 | Attach a receipt image or PDF to an expense |
+| POST | `/admin/finance/expenses` | `finance.manage` | `FinanceController.createExpense` :82 | Record an expense |
+| DELETE | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.deleteExpense` :96 | Delete an expense |
+| PATCH | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.updateExpense` :89 | Edit an expense |
+| POST | `/admin/finance/expenses/:id/receipt` | `finance.manage` | `FinanceController.uploadReceipt` :107 | Attach a receipt image or PDF to an expense |
+| GET | `/admin/finance/expenses/by-category` | `finance.view` | `FinanceController.byCategory` :68 | Expense totals by category — share, period-over-period change, and share of revenue |
 | GET | `/admin/finance/expenses/summary` | `finance.view` | `FinanceController.summary` :61 | Totals, per-category breakdown and a daily series |
+| GET | `/admin/finance/expenses/trend` | `finance.view` | `FinanceController.trend` :75 | Expense totals over time, bucketed by day or month |
 
 
 ## Domain events
@@ -52,7 +54,7 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 | Event | Name | Published at |
 |---|---|---|
 | `OrderCancelled` | `order.cancelled` | `finance.listener.ts:9` |
-| `ExpenseRecorded` | `finance.expense_recorded` | `finance.service.ts:203`, `finance.service.ts:366` |
+| `ExpenseRecorded` | `finance.expense_recorded` | `finance.service.ts:248`, `finance.service.ts:524` |
 | `OrderEconomicsComputed` | `finance.order_economics_computed` | `order-economics.service.ts:127` |
 
 
@@ -114,7 +116,7 @@ check there before adding another.
 |---|---|---|
 | `finance.cron.spec.ts` | 3 | FinanceCron |
 | `finance.listener.spec.ts` | 2 | FinanceListener |
-| `finance.spec.ts` | 13 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 |
+| `finance.spec.ts` | 24 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4 · trend — WO-B.4 |
 | `order-economics.service.spec.ts` | 8 | OrderEconomicsService |
 
 
@@ -132,8 +134,12 @@ check there before adding another.
 | `FinanceCron` | class | `finance.cron.ts:19` | WO-B.2's recurring-expense job. |
 | `FinanceListener` | class | `finance.listener.ts:15` | WO-23.1's WO-B.3: compute OrderEconomics on DELIVERED, recompute on RETURNED. |
 | `FinanceModule` | class | `finance.module.ts:12` |  |
-| `ExpenseSummary` | interface | `finance.service.ts:53` |  |
-| `FinanceService` | class | `finance.service.ts:79` | Finance: operational expenses (RETAIL-ERP.md Tranche 6, WO-23.1 — building `10-admin-dashboard.md` WO-B.1 as… |
+| `ExpenseSummary` | interface | `finance.service.ts:54` |  |
+| `ExpenseByCategoryRow` | interface | `finance.service.ts:68` |  |
+| `ExpenseByCategoryResult` | interface | `finance.service.ts:86` |  |
+| `ExpenseTrendPoint` | interface | `finance.service.ts:98` |  |
+| `ExpenseTrendResult` | interface | `finance.service.ts:107` |  |
+| `FinanceService` | class | `finance.service.ts:124` | Finance: operational expenses (RETAIL-ERP.md Tranche 6, WO-23.1 — building `10-admin-dashboard.md` WO-B.1 as… |
 | `OrderEconomicsService` | class | `order-economics.service.ts:40` | WO-23.1's WO-B.3: contribution per order. |
 
 

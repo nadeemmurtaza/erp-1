@@ -250,8 +250,9 @@ facts the feature must tell apart, that is a second column or an enum, never a
 convention in somebody's head.
 
 **Neither kind of column lives in a module that is off by default.**
-`organization` is off in every deployment today (`modules.registry.ts:66`,
-citing R14), so a hierarchy column placed in its tables is not empty at Solo and
+`organization` is off in every deployment today (`modules.registry.ts:81`, the
+only `offByDefault: true` entry, whose comment at `:77-80` cites R14 by name),
+so a hierarchy column placed in its tables is not empty at Solo and
 SME — it is absent, which is an edition boundary doing density's job. `managerId`
 belongs on `core.prisma`'s `User`.
 
@@ -527,7 +528,7 @@ ruling 4 never covered: **where** the column lives, not only whether it is
 nullable. A tier-bearing column placed inside a module that is off by default is
 not empty at the editions below — it is absent, and the edition boundary has
 quietly done density's job. `organization`, which holds `AdminScope` and
-`RetailBrand`, is off in every deployment today (`modules.registry.ts:66`), so
+`RetailBrand`, is off in every deployment today (`modules.registry.ts:81`), so
 the column goes on the core model. Ruling 11 splits scope columns from edges and
 settles which of the two may be null.
 

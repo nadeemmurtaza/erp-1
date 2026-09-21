@@ -79,7 +79,7 @@ confirmed by direct grep. `nav-registry.ts`'s eight `NAV_GROUPS` has no
 facilities group. No Department model exists anywhere, so "route this to
 facilities" cannot be expressed as a scope predicate, only as a new
 permission key someone must seed all the way to a real `RoleGrant` — the
-`seedRoles()` gap CLAUDE.md names twice. This differs from "The failure
+`seedRoles()` gap CLAUDE.md names at lines 305 and 769. This differs from "The failure
 path, and who is allowed to walk it" (absorbed "The operator's second
 door"): that lens is about ops surfaces for outbox/replication/audit, not a
 business department having nowhere to look at all.
@@ -138,7 +138,9 @@ person, will ever read.
   `workshop`, `customers`, `catalogue`, `stock`, `insights`, `settings`), no
   facilities group; both `RolePermission` and `RoleGrant` models exist in
   `core.prisma` (lines 257, 321), and CLAUDE.md names the
-  `seedPermissions()`-vs-`seedRoles()` gap twice (lines 305, 860). Distinct
+  `seedPermissions()`-vs-`seedRoles()` gap twice (lines 305, 769 — corrected
+  here from a prior draft's mistaken "305, 860"; line 860 is unrelated
+  boilerplate about implementation-status reporting). Distinct
   from "The failure path, and who is allowed to walk it" by clause (ops
   surfaces for outbox/replication/audit vs. a business department having no
   nav entry at all).
@@ -156,8 +158,18 @@ the nearest existing lens in one clause.
   `packages/shared/src/`. Actual path: `apps/web/src/components/admin/nav-registry.ts`.
   Corrected here; the lens body is left as a bare filename since it does not
   claim a directory.
-- No other citation required correction: `Location` fields, `PartyRoleName`
-  values, `domain-events.ts`'s zero-match grep, `WorkOrder`'s production
-  scope, the 115-model schema count, the 50-key `PERMISSION_CATALOG`, the
-  8-entry `NAV_GROUPS`, `RolePermission`/`RoleGrant`, and the two CLAUDE.md
-  `seedRoles()` mentions were each opened and confirmed exactly as claimed.
+- Claimed the CLAUDE.md `seedPermissions()`-vs-`seedRoles()` gap is named
+  "twice (lines 305, 860)"; actual second occurrence is line 769, not 860 —
+  line 860 falls inside an unrelated "IMPLEMENTATION STATUS" reporting
+  template. Corrected in both the lens body and this record.
+- No other citation required correction: `Location` fields (`inventory.prisma:76-113`,
+  re-verified field-for-field), `PartyRoleName` values (`parties.prisma:8-13`,
+  exactly `SUPPLIER`/`MANUFACTURER`/`DISTRIBUTOR`/`RETAILER`),
+  `domain-events.ts`'s zero-match grep for `maintenance|service_due` (316
+  lines, re-run), `WorkOrder`'s production scope (`production.prisma:56-88`,
+  `variantId`/`quantityOrdered`/`sourceRefType` all present), the 115-model
+  schema count (re-summed), the 50-key `PERMISSION_CATALOG` with zero
+  facilities/asset/maintenance/lease matches, the 8-entry `NAV_GROUPS`
+  (`overview`, `orders`, `workshop`, `customers`, `catalogue`, `stock`,
+  `insights`, `settings`), and `RolePermission`/`RoleGrant` at `core.prisma:257,321`
+  were each re-opened and confirmed exactly as claimed.

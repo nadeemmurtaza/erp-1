@@ -71,9 +71,12 @@ this feature ships. If the answer routes through `Role.name` string matching
 instead of a `RankId` foreign key, say so explicitly.
 
 **Why:** `GlReportsService`
-(`apps/api/src/modules/accounting/gl-reports.service.ts`) groups every sum by
-a real foreign key via Prisma `groupBy` (`retailBrandId`, `branchNodeId`) —
-never by parsing a name string. `PERMISSION_CATALOG`'s two parallel
+(`apps/api/src/modules/accounting/gl-reports.service.ts:38,95,192`) groups
+every sum by a real foreign key via Prisma `groupBy` (`by: ['accountId']`) —
+never by parsing a name string. (Its own file comment, line 23, names
+`retailBrandId`/`branchNodeId` as columns no posting rule sets yet — unused
+placeholders, not what these `groupBy` calls key off.) `PERMISSION_CATALOG`'s
+two parallel
 taxonomies (`category` on each `PermissionDefinition`, and the separate
 `PERMISSION_GROUPS` list, both in `packages/shared/src/permissions.ts`)
 already show what happens when a grouping axis is bolted on after the fact:
@@ -151,9 +154,9 @@ at just two deployment-tier transitions.
   `UserRoleAssignment.ceiling` (if chosen instead) would be per-assignment,
   not comparable across roles.
 - A headcount or pay-band grouping dimension — every existing report groups
-  by a real foreign key via Prisma `groupBy` (e.g. `retailBrandId`,
-  `branchNodeId` in `GlReportsService`), never by a grade axis, because no
-  grade column exists to group by.
+  by a real foreign key via Prisma `groupBy` (e.g. `accountId` in
+  `GlReportsService`), never by a grade axis, because no grade column exists
+  to group by.
 - Any escalation-ladder representation beyond `NodesService.childRole`'s
   hardcoded `NodeRole` switch, which orders deployment tiers (`ORG` ->
   `BRAND` -> `BRANCH`), not people.
@@ -175,9 +178,9 @@ at just two deployment-tier transitions.
 - **The number nobody can group by** — kept. Distinct from lens 1: this is
   about reportability (`GROUP BY`), not row duplication, and cites a
   different real precedent (`GlReportsService`'s `groupBy` calls, verified
-  at `gl-reports.service.ts:38,95,192`, and `PERMISSION_CATALOG`'s dual
-  `category`/`PERMISSION_GROUPS` taxonomies, verified in
-  `packages/shared/src/permissions.ts`).
+  at `gl-reports.service.ts:38,95,192` — corrected in place, see below — and
+  `PERMISSION_CATALOG`'s dual `category`/`PERMISSION_GROUPS` taxonomies,
+  verified in `packages/shared/src/permissions.ts`).
 - **Escalation across roles needs a number, not a name** — kept. Distinct
   from the base framework's "who outranks whom on escalation" question
   (`_claude-md-feature-scope.md:62`) because it demands the specific lookup
@@ -206,3 +209,11 @@ padding lens was added.
   "tiers" as a map), not the permission `Role` model this file otherwise
   discusses. Corrected in lens 3's "Why," done test and "breaks without" to
   say "switch" and "NodeRole," and to stop implying it orders "people."
+- "`GlReportsService` groups every sum by a real foreign key via Prisma
+  `groupBy` (`retailBrandId`, `branchNodeId`)" — actual: all three `groupBy`
+  calls (`gl-reports.service.ts:38,95,192`) key `by: ['accountId']` only.
+  `retailBrandId`/`branchNodeId` appear nowhere in that file except a
+  comment (line 23) stating no posting rule sets them yet — they are unused
+  placeholder columns, not what the reports group by. Corrected in lens 2's
+  "Why" and in "Not modelled yet" to cite `accountId`, the column the code
+  actually uses.

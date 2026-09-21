@@ -245,6 +245,10 @@ Files `38`–`45` are the backfill pass: eight domains a department-by-departmen
 walk, a roles-and-ranks walk and a repository-scar walk found the first
 thirty-seven files never reached. None of their twenty-three lenses was
 promoted into the rule; [`_integrate.md`](_integrate.md) says why for each.
+Seven further gaps that audit raised reached no lens at all — group currency
+translation, the close as a managed process, and a quorum the live roster
+cannot fill among them — and are listed as open at the end of
+[`_integrate.md`](_integrate.md), not closed by these eight files.
 
 ## The six groups, and what each is for
 

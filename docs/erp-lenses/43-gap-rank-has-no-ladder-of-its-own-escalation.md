@@ -157,10 +157,12 @@ existence checks on review.
    lenses and the done tests that depend on it.
 5. `core.prisma` has a `User` model at line 11 — confirmed, so "nullable
    on core `User`" in lens 3 names a real target model.
-6. `organization` module is off by default — confirmed at
-   `apps/api/src/modules/modules.registry.ts:62-66`, comment reads
-   "Off by default for every deployment today (WO-18.3)," citing R14
-   by name, matching the lens's claim exactly.
+6. `organization` module is off by default — confirmed, but at
+   `apps/api/src/modules/modules.registry.ts:77-81` (the array entry
+   itself is line 81; the explanatory comment starts line 77), not
+   `:62-66` as previously recorded. Comment reads "Off by default for
+   every deployment today (WO-18.3)," citing R14 by name, matching the
+   lens's claim exactly once the line range is corrected.
 7. `NODE_ROLE=STANDALONE` — confirmed present in `.env.example:33`.
 8. Lens 04 (`docs/erp-lenses/04-approval-delegation.md`) resolves
    escalation to "the next level up their `AdminScope`" (line 100) and
@@ -169,13 +171,21 @@ existence checks on review.
    `AdminScopeLevel` — confirming this file's lenses extend 04's named
    gap rather than duplicate it.
 9. `00b-ground-identity.md` and `00e-ground-platform.md` both exist at
-   the cited paths (confirmed via glob); full-text search of
-   `00b-ground-identity.md` did not surface a `managerId`/`reportsTo`
-   hit, consistent with the "confirmed independently" claim.
-10. `PERMISSION_CATALOG` / permission-key ground truth in
-    `00e-ground-platform.md` line 74 independently states "There is no
-    rank, grade, level, approval limit or delegation anywhere" —
-    corroborating this file's premise from a second source.
+   the cited paths. Correction: full-text search of
+   `00b-ground-identity.md` was previously reported as not surfacing a
+   `managerId`/`reportsTo` hit — that is wrong. Line 50 states verbatim:
+   "No `managerId`, no `reportsTo`, no org chart..." This is a stronger,
+   named source for the "doesn't exist" claim than previously recorded,
+   not a weaker one.
+10. Corrected: `00e-ground-platform.md` has only 44 lines total, so
+    "line 74" cited in the prior pass does not exist in that file — a
+    fabricated citation. The corroborating "no rank" language actually
+    lives in `00b-ground-identity.md:50` ("There is no rank model.
+    There is no grade, level, seniority, band or step field anywhere
+    ... no approval limit ... no delegation"), not in
+    `00e-ground-platform.md` at all. `00e-ground-platform.md:29` and
+    `:39` separately confirm "no rank model" and "no department model"
+    via grep, which is the correct second-source corroboration.
 11. `NodeRole` enum at `organization.prisma:122-125` is `BRANCH | BRAND`
     — confirmed to nest brand/branch nodes, not people, consistent with
     "RetailBrand.parentId... nests brands, not people."
@@ -184,5 +194,14 @@ existence checks on review.
     whole prisma schema directory returned zero hits, confirming the
     "Not modelled yet" claim is accurate today.
 
-**Corrections:** none. Every citation matched the file it named on first
-read; no path, line range, model or column needed correction.
+**Corrections:** the prior hardening pass on this file contained two
+citation errors of its own, both fixed above:
+- claimed `modules.registry.ts:62-66` for the organization module's
+  off-by-default registration; actual location is `:77-81`.
+- claimed `00e-ground-platform.md` line 74 states "There is no rank,
+  grade, level, approval limit or delegation anywhere"; that file is
+  only 44 lines long and contains no such line. The real source of that
+  language is `00b-ground-identity.md:50`, and it also directly
+  contradicts the prior pass's claim that a search of that same file
+  "did not surface a `managerId`/`reportsTo` hit" — it does, verbatim,
+  on line 50.

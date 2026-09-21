@@ -120,6 +120,7 @@ the record of what actually ran - including what failed and was retried.
 | `harden:gap:44` | Backfill | completed | [44h-harden-gap.md](44h-harden-gap.md) |
 | `harden:gap:38` | Backfill | completed | [38h-harden-gap.md](38h-harden-gap.md) |
 | `harden:gap:45` | Backfill | completed | [45h-harden-gap.md](45h-harden-gap.md) |
+| `integrate` | Integrate | completed | [_agent-integrate.md](_agent-integrate.md) |
 | `gen:costing-transfer-pricing` | Generate | superseded by a later revision of the same agent | - |
 | `gen:credit-receivables` | Generate | superseded by a later revision of the same agent | - |
 | `gen:procurement-supplier-lifecycle` | Generate | superseded by a later revision of the same agent | - |
@@ -155,6 +156,5 @@ the record of what actually ran - including what failed and was retried.
 | `gen:money-integrity-gl` | Generate | superseded by a later revision of the same agent | - |
 | `gen:approval-delegation` | Generate | superseded by a later revision of the same agent | - |
 | `gen:treasury-cash-reconciliation` | Generate | superseded by a later revision of the same agent | - |
-| `integrate` | Integrate | never completed | - |
 
-Outstanding: 1 agent(s) that failed and were never re-run to completion.
+Outstanding: 0 agent(s) that failed and were never re-run to completion.

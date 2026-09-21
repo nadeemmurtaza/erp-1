@@ -425,8 +425,9 @@ is nullable with `onDelete: SetNull`, because the root brand has no parent.
 guard reads. `AdminScope` (`organization.prisma:106-120`) carries
 `retailBrandId`/`branchNodeId` — scope, always resolvable. `RetailBrand.parentId`
 (`:43`) carries an edge — null at the root. And the `organization` module that
-holds both is off by default (`modules.registry.ts:66`, whose comment cites R14
-by name), so a hierarchy column placed inside it is not empty at Solo and SME,
+holds both is off by default (`modules.registry.ts:81`, whose comment at
+`:77-80` cites R14 by name — the registry's only `offByDefault: true` entry),
+so a hierarchy column placed inside it is not empty at Solo and SME,
 it is absent.
 
 **What the engineer sees.** They add `managerId` and a reviewer cites ruling 4

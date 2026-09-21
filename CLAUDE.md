@@ -96,7 +96,7 @@ honestly rather than pretending it does.
 |---|---|---|
 | **Proper architecture** | Module packs, the core/pack boundary, `KNOWN_MODULE_COUPLINGS` as the only sanctioned cross-module coupling, domain events and extension points instead of direct calls (see "Scale: the three axes" below, `ENTERPRISE-SCALE.md`). | `scripts/check-module-boundaries.mjs`, run by `pnpm lint` and CI |
 | **Scalable systems** | The sector/brand/branch axes, the node/replication model for chain deployments (`RETAIL-ERP.md`), pagination on every list endpoint, N+1 prevention, indexing justified by real query patterns (see Performance engineering below). | Partially — pagination and index discipline are code review today, not a lint rule |
-| **Secure by design** | Permission-based access control (PBAC) — every route states its `@RequirePermission`, checked server-side only, never trusted from the client; tenant/branch isolation via scoped queries. | `scripts/check-route-permissions.mjs`; enforcement is `core/auth`'s `PermissionGuard`, applied globally |
+| **Secure by design** | Permission-based access control (PBAC) — every route states its `@RequirePermission`, checked server-side only, never trusted from the client; tenant/branch isolation via scoped queries. | `scripts/check-route-permissions.mjs`; enforcement is `core/auth`'s `PermissionsGuard`, applied globally |
 | **Stable & reliable** | The transactional outbox (`EventBusService` + `OutboxDispatcher`) for at-least-once event delivery, idempotent event handlers, predicate-on-write for concurrent stock changes (House Rule 10), hand-written forward-only migrations — never `migrate diff` against a real database. | `pnpm test`; the migration discipline itself has no automated guard — a reviewer's job |
 | **Observable** | Structured logging via Nest's `Logger` in every service (never `console.log`), an audit trail (`AuditService`) for state-changing actions, domain events as a natural trace of what happened and when. | Not yet: no APM, error tracker, or metrics backend is wired in this codebase today. Adopting one is a decision for `docs/implementation/DECISIONS.md`, not something to silently assume exists. |
 
@@ -111,7 +111,7 @@ made and is not reopened by this section. The boxes still have to exist —
 they live inside that choice, not beside it:
 
 - **API Gateway** → the single NestJS entrypoint's own hardening: a global
-  `ValidationPipe`, API versioning, `JwtAuthGuard` + `PermissionGuard` on
+  `ValidationPipe`, API versioning, `JwtAuthGuard` + `PermissionsGuard` on
   every route, the `CORS_ORIGINS` allowlist. Not a separate gateway process.
 - **Load Balancer** → not applicable at today's single-process-per-node
   scale. When a node needs horizontal replicas this gets a real answer in
@@ -146,11 +146,11 @@ defect, not a shortcut — no exception for urgency, and none for a small diff.
 The owner's own standing instruction, stated directly and repeated because it
 was under-applied: naming a feature is not a request for the narrowest
 technical thing those words could mean. Building "a cart" is not done at
-add/remove line items — a cart nobody can check out with was never a
-complete feature, only a fragment presented as one. This section is the
-method for finding the rest of it, every time, before calling anything done.
+add/remove line items — a cart nobody can check out with was never a complete
+feature, only a fragment presented as one. This section is the method for
+finding the rest of it, every time, before calling anything done.
 
-### The worked example, in the owner's own words
+### The shop-scale five, in the owner's own words
 
 > Cart depends on saved addresses, shipping methods, payment methods, voucher
 > and discount application — the customer cannot complete a purchase without
@@ -162,67 +162,174 @@ method for finding the rest of it, every time, before calling anything done.
 > standing in for one. Vouchers imply voucher creation and management, not
 > only redemption at checkout.
 
-Generalize this to every feature request with five lenses, run **before**
-implementation, as part of "Plan before build" below:
+1. **The transaction, start to finish.** What does the actor need, end to end, to
+   complete the real job? One that cannot carry a real transaction through is
+   not complete, whatever fraction of it is finished.
+2. **The other side of the same transaction.** Every customer-facing capability
+   has an operator-facing twin: cart's is the abandoned-cart tracker, an order's
+   the fulfilment queue, a return's the refund approval.
+3. **What happens after "done."** Returns, cancellations, disputes and refunds
+   are checkout's own back half, not later add-ons.
+4. **The integrations a real business needs, not a demo.** A payment method is a
+   gateway; a shipping method is rate, label and tracking.
+5. **The policy layer that governs it.** Vouchers imply management, not only
+   redemption; a return flow implies a written policy the flow enforces.
 
-1. **The transaction, start to finish.** What does the actor — customer,
-   till user, merchant — need, end to end, to complete the real job the
-   feature exists for? A feature that cannot carry a real transaction to
-   completion is not complete, whatever fraction of it is finished.
-2. **The other side of the same transaction.** Every customer-facing
-   capability has an operator-facing twin: reporting, exception handling,
-   intervention. Cart's twin is the abandoned-cart tracker; an order's twin
-   is the fulfilment queue; a return's twin is the refund approval screen.
-3. **What happens after "done."** A completed purchase is not the end of a
-   feature's life. Returns, cancellations, disputes and refunds are checkout's
-   own back half, not later add-ons — a feature that only runs forward is
-   half a feature.
-4. **The integrations a real business needs, not a demo.** A payment method
-   is a real gateway integration; a shipping method is a real delivery-partner
-   integration with rate, label and tracking. If the feature cannot go live in
-   front of a real customer without a piece existing, that piece is part of
-   the feature.
-5. **The policy/rules layer that governs it.** Vouchers imply management, not
-   just redemption. Discounts imply a rules engine, not a hardcoded
-   percentage. A return flow implies a written policy the flow actually
-   enforces.
+Those five scope a feature for one shop with one till. The six groups below are
+what the **same feature** needs when the shop is a group: one `Organization`,
+several brands, 100+ locations across timezones, 10k+ products, 100+ kinds of
+actor, 100+ roles and as many ranks — ranks are not roles, and an approval ladder
+needs both — every department a group runs. One codebase, three editions: Solo,
+Chain, Organization (`RETAIL-ERP.md` R14). A lens that fits only one is not one.
 
-### What this means for scope
+### 1. The actor — everything after this is a property of somebody
 
-- Before implementing a named feature, run the five lenses and **write down
-  the resulting map** — what's in the transaction, the operator's twin, the
-  after-completion lifecycle, the implied integrations, the policy layer.
-  This is the "Plan before build" section below, made specific to features.
-- Build the feature **and** everything the map surfaces that it cannot
-  function as a real, sellable capability without. The test: could a real
-  customer complete a real transaction, and could a real merchant run their
-  business on it, without the piece in question? If no, it is in scope now,
-  not a future work order.
-- Anything the map surfaces that is a genuinely separable, larger capability
-  on its own — a full CRM, a loyalty program, multi-provider payment
-  orchestration — is never silently stubbed and never silently skipped
-  either. Name it, plan it, and sequence it as its own explicit next work
-  order — the same discipline RETAIL-ERP.md's own tranches already use,
-  surfaced to the owner, never buried in a PR description nobody reads.
-- Every piece that ships must also be reachable: the minimum UI to actually
-  perform it, a nav entry so it's found by clicking rather than typing a URL,
-  and every permission it needs seeded all the way through to a real grant a
-  live user holds — not just the `Permission` row (`seedPermissions()` vs.
-  `seedRoles()`'s one-time migration is this repo's own tracked instance of
-  that trap; do not repeat it on purpose).
+- **The actor with three tables.** For every new actor or counterparty, name
+  which table it becomes — `User`, `Party`, `Contact`, `TradingPartner`, a
+  key-hash principal — and, where one party is two at once, the linking column.
+- **The principal with no permission key.** For every actor that is not a
+  `User`, name the `PERMISSION_CATALOG` keys it is checked against, or the path
+  authenticating it instead of `PermissionsGuard`, and which rows it reads.
+- **The grant that ends itself.** For every grant — role, override, admin scope,
+  acting cover — what ends it without a human remembering, and every row keyed to
+  that `userId` the deactivation transaction changes, pending decisions included.
+
+### 2. The authority — what bounds the act
+
+- **Whose rows, and which columns.** Name the entity each row names — org,
+  brand, node, `Location`, terminal — the actor who gets fewer rows and columns
+  on every list, export, schedule and drill-down, and the fields they never
+  see. One class-level `@RequirePermission('orders.manage')` on
+  `OrdersAdminController` lets the staff-note key push DELIVERED to RETURNED.
+- **The threshold nobody approves alone.** For each act committing money or
+  stock at a value: the amount bands, the role per band, who outranks whom on
+  escalation, the quorum on the top band, and the method checking before the row
+  leaves draft — then the same five for the undo, never the same authority.
+- **The toxic pair, caught at grant or at act.** Name the permission-key pair
+  this makes toxic together and the single enforcement point: a refusal in
+  `RolesService.create`/`.update`, or a throw comparing actor to a stored id —
+  `closeShift()` never compares `closedByUserId` to `openedByUserId`.
+- **Authority and blast radius.** Who may change this rule, at which scope, with
+  whose second signature, the worst value one can set before anything notices,
+  and the audit row carrying old and new value — not a list of changed fields.
+
+### 3. The act in the world — the write as a physical event
+
+- **Request or record — classify every write.** Is each write a request the
+  system may refuse, or a record of what already happened and may therefore
+  never be refused? Every record names its unconditional path, the variance row
+  a refusal would have been, its queue, and who clears it.
+- **The movement with no address.** Name the `locationId` on every stock or cash
+  write and where it comes from — if `InventoryService.defaultLocationId()`, which
+  of the 100+ locations that silently is, and what that branch sees on its shelf.
+- **Four hours down, the counter stays open.** Four hours unavailable
+  mid-trading: who was mid-task, what they do instead, the surface that ingests
+  their paper, its permission, and the reconciliation proving no double count.
+
+### 4. The money — what the act does to the books
+
+- **The unwritten posting rule.** Write it out: the domain event, the Dr/Cr codes
+  — naming any account the thirteen-account chart lacks — and the
+  `findPostedEntry(source, sourceRef)` key. Or the report reconciling it instead.
+- **Every column or none.** For every `JournalLine`, which of `organizationId` /
+  `retailBrandId` / `branchNodeId` / `costCentreId` / `counterpartyBrandId` it sets
+  and to what — or declare it undimensioned and name the report that may blend it.
+- **The period that already moved.** What happens when a fact dated inside a
+  `CLOSED` or `LOCKED` `FiscalPeriod` posts, and which report lists entries dated
+  outside their own period? `reverseEntry()` resolves the period from `now`.
+- **The second legal entity.** What breaks the day a second `RetailBrand` in a
+  second country goes live: the field holding its tax label, number and
+  currency, the counter key keeping its series gapless, the column closing its
+  period while the other brand's stays open.
+- **Dry run before live.** Can this rule replay over last month's real records
+  with nothing written? The deciding function takes inputs, returns the outcome,
+  holds no `prisma.` write and no `publish(`, and has a second read-only caller.
+
+### 5. The scale — what the same code costs at three editions
+
+- **Three silhouettes, and the day the tier above appears.** Draw it as one
+  shop, a forty-branch chain, a group of brands: which tier-bearing columns are
+  in the first migration while never rendering on the Solo screen, and what
+  happens to rows already written the day a tier appears above them.
+- **The absent collaborator.** Every module this reads, writes or emits toward
+  that is off by default: what is still recorded, what is not, what the user
+  sees instead, and whether it degrades on an event or fails Nest boot.
+- **The second copy of the write.** The two moments this write arrives twice —
+  retried call, redelivered outbox event, a till replaying a timed-out sale —
+  and the column, with its unique constraint, making the second a no-op.
+- **The hundred-thousandth row.** The row count the largest table reaches at
+  Organization edition, the statements one page issues at that size, how many
+  come from an index, and whether a refreshable figure's columns are indexed.
+
+### 6. The afterlife — what a narrow build always postpones
+
+- **The reversal document, not the reversal flag.** Name the reverse document:
+  entity, number series, amount field, the foreign key to the specific original
+  line — issuable for part, repeatedly, until exhausted.
+  (`PaymentsService.refund()` takes a partial amount; `onPaymentRefunded()`
+  ignores it and reverses receipt and sale in full, erasing the whole sale.)
+- **The undo fan-out.** Enumerate every side effect the forward path fires, each
+  marked one of three: reverses automatically (name the method), needs a human
+  (name the screen and the permission), or deliberately irreversible.
+- **The version stamp.** When this rule is edited next quarter, what happens to
+  records already created under the old one, and can the number on one be
+  explained from its own stored fields plus the policy version it names?
+- **The erasure the ledger cannot obey.** Name every table still holding the
+  person once the `User` row is gone — `JournalLine.contactId`, `AuditLog.data`,
+  `InboundEmail.bodyText`, `OutboxEvent.payload`, a pushed `ReplicationRecord`
+  — each given cascade, pseudonymise, or a named basis.
+- **The failure path, and who is allowed to walk it.** On the last failure: the
+  durable store it lands in with its payload, the screen listing it, the
+  permission opening it, the action replaying it, what makes a replay safe.
+
+### The scoping pass, and the artifact it produces
+
+Before the first line of a named feature, the plan in "Plan before build" below
+gains one more heading, beside `### Out of Scope`:
+
+```markdown
+### Scope lenses
+The movement with no address — the adjust screen sends its own `locationId`;
+  `InventoryService.defaultLocationId()` is reached on no path here.
+The second legal entity — n/a: writes no tax document, no numbered series.
+```
+
+One line per lens, in catalogue order. An answer names an artifact: a column, a
+table, a permission key, a service method, a screen, a number. "This feature
+writes no money fact" is a reason; "N/A" is not, and silence is not. What is
+separably larger — a CRM, a loyalty programme, payment orchestration — is named
+and sequenced as its own work order, never silently stubbed and never silently
+skipped. What ships is reachable: the UI to perform it, a nav entry so it is
+found by clicking, and every permission seeded through to a real grant a live
+user holds — not just the `Permission` row (`seedPermissions()` vs.
+`seedRoles()`'s one-time migration is this repo's own tracked instance).
+
+A reviewer fails the PR, naming the offending line, when there is no scope map;
+when a line is blank, "TBD", "handled", or any answer naming no artifact; when an
+`n/a` carries no reason, or a reason the diff contradicts; when an artifact the
+map named is absent from the diff; when a write was never classified REQUEST or
+RECORD; when a permission key named in the plan reaches no `ROLE_PERMISSION_SEED`
+grant, only a `Permission` row; or when a scope column ships nullable with no
+written meaning for null. An otherwise correct diff still fails on these.
 
 ### The boundary, stated plainly
 
-This is this repository's default scoping posture for a named feature or
-capability request — it replaces "ship the narrowest thing the literal words
-require." It does not license scope creep on a bug fix, a one-line change, or
-a request that is already narrow and complete on its own terms; *Change
-minimization* and *No speculative functionality* below still govern those.
-The distinction is the test in the second bullet above: something the named
-feature cannot work as a real capability without is **required**, not
-speculative, however far it reaches — a discount-code field on checkout with
-no voucher management behind it is not a smaller version of the feature, it
-is a broken one.
+**A one-line fix runs no lenses; a named feature or capability runs all of
+them.** Nothing sits in between: *Change minimization* and *No speculative
+functionality* below still govern a bug fix or a request already narrow and
+complete on its own terms. What the named feature cannot work as a real
+capability without is **required**, not speculative, however far it reaches — a
+discount-code field on checkout with no voucher management behind it is not a
+smaller version of the feature, it is a broken one, and a scope column left out
+because this client has one brand is not a simpler schema, only a migration run
+later under deadline.
+
+The catalogue — every lens with its repository evidence, worked example and done
+test, plus the surface-specific ones held back here, catalogue findability at
+10k+ products among them — is [`_index.md`](docs/erp-lenses/_index.md). Where two
+lenses pull against each other the ruling is already written and numbered in
+[`_canonical-decisions.md`](docs/erp-lenses/_canonical-decisions.md); citing it is
+an answer, deciding it privately inside a PR is not.
 
 ---
 
@@ -527,7 +634,12 @@ Every non-trivial task gets a written plan first, proportional to the task
 ### Risks
 ### Acceptance Criteria
 ### Out of Scope
+### Scope lenses
 ```
+
+`### Scope lenses` is required for a named feature and omitted for a fix — one
+line per lens, in the order *Feature scope* above lists them. That section is
+what a reviewer reads first.
 
 Every meaningful implementation traces back to a requirement — product
 docs, an issue, a spec, an existing business rule, an acceptance criterion,

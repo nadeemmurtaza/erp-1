@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 180 tracked files in `docs/*`, by directory.
+All 186 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,7 +31,7 @@ All 180 tracked files in `docs/*`, by directory.
 | `yaseen-wordmark.svg` | asset | — |  |
 | `yaseen-y.svg` | asset | — |  |
 
-### `docs/design` (11)
+### `docs/design` (17)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -45,7 +45,13 @@ All 180 tracked files in `docs/*`, by directory.
 | `07-accessibility.md` | doc | 155 |  |
 | `08-governance.md` | doc | 145 |  |
 | `09-quality.md` | doc | 172 |  |
-| `README.md` | doc | 67 |  |
+| `10-laws.md` | doc | 850 |  |
+| `11-workflow.md` | doc | 260 |  |
+| `12-permissions.md` | doc | 214 |  |
+| `13-composition.md` | doc | 197 |  |
+| `14-navigation.md` | doc | 198 |  |
+| `15-integrity.md` | doc | 210 |  |
+| `README.md` | doc | 109 |  |
 
 ### `docs/erp-lenses` (134)
 

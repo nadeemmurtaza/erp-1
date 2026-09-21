@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-51 files · 25,813 lines
+51 files · 25,909 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -25,7 +25,7 @@ on them.
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 14 | 5,212 | script, py |
+| `scripts` | 14 | 5,308 | script, py |
 | `scripts/lib` | 2 | 1,269 | utility |
 
 
@@ -41,10 +41,10 @@ on them.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `pnpm-lock.yaml` | 17,493 | yaml |  |
-| `scripts/build-index.mjs` | 2,456 | script |  |
+| `scripts/build-index.mjs` | 2,500 | script |  |
 | `scripts/lib/index-scan.mjs` | 906 | utility | Scanners for the repository index. |
 | `scripts/check-module-boundaries.mjs` | 535 | script |  |
-| `scripts/idx.mjs` | 434 | script |  |
+| `scripts/idx.mjs` | 486 | script |  |
 | `scripts/check-email-dns.mjs` | 399 | script |  |
 | `scripts/lib/model-routing.mjs` | 363 | utility | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/check-rebrand.mjs` | 292 | script |  |

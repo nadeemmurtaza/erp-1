@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**200** markdown documents. These explain **why**; this index only says **where**.
+**206** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -69,13 +69,13 @@ _no second-level headings_
 
 - Dependency standard  <sub>:11</sub>
 
-### `.claude/rules/design.md`  <sub>93 lines</sub>
+### `.claude/rules/design.md`  <sub>132 lines</sub>
 
 - The design system  <sub>:17</sub>
-- Read the chapter before you build the thing  <sub>:37</sub>
-- The obligations, stated so they can be checked  <sub>:48</sub>
-- Promoting something into the system  <sub>:78</sub>
-- What is not enforced by any command  <sub>:85</sub>
+- Read the chapter before you build the thing  <sub>:42</sub>
+- The obligations, stated so they can be checked  <sub>:58</sub>
+- Promoting something into the system  <sub>:117</sub>
+- What is not enforced by any command  <sub>:124</sub>
 
 ### `.claude/rules/performance.md`  <sub>42 lines</sub>
 
@@ -121,7 +121,7 @@ _no second-level headings_
 - Three rules about the index  <sub>:55</sub>
 - Commands  <sub>:67</sub>
 
-### `CLAUDE.md`  <sub>748 lines</sub>
+### `CLAUDE.md`  <sub>749 lines</sub>
 
 - The seven laws  <sub>:13</sub>
 - Software engineering, not vibe coding  <sub>:35</sub>
@@ -129,9 +129,9 @@ _no second-level headings_
 - Scale: the three axes  <sub>:229</sub>
 - Look it up before you search  <sub>:286</sub>
 - The rule index  <sub>:354</sub>
-- Before you open a PR  <sub>:391</sub>
-- Deployment  <sub>:441</sub>
-- NEWAX Engineering Operating Protocol  <sub>:454</sub>
+- Before you open a PR  <sub>:392</sub>
+- Deployment  <sub>:442</sub>
+- NEWAX Engineering Operating Protocol  <sub>:455</sub>
 
 ### `CONTRIBUTING.md`  <sub>127 lines</sub>
 
@@ -284,12 +284,70 @@ _no second-level headings_
 - The honest gap, ranked  <sub>:142</sub>
 - Definition of done, for a screen  <sub>:161</sub>
 
-### `docs/design/README.md`  <sub>67 lines</sub>
+### `docs/design/10-laws.md`  <sub>850 lines</sub>
 
-- Precedence, before anything else  <sub>:8</sub>
-- The chapters  <sub>:20</sub>
-- How to use it  <sub>:35</sub>
-- An honest statement of maturity  <sub>:47</sub>
+- Why a catalogue, and why rulings  <sub>:19</sub>
+- PER · Perception  <sub>:59</sub>
+- COG · Cognition  <sub>:150</sub>
+- ACT · Action and time  <sub>:291</sub>
+- HEU · Nielsen's ten, ruled  <sub>:381</sub>
+- TYP · Typography  <sub>:439</sub>
+- COL · Colour  <sub>:501</sub>
+- SPA · Space, ratio and the shape of a page  <sub>:557</sub>
+- MOT · Motion  <sub>:642</sub>
+- ACC · Accessibility  <sub>:690</sub>
+- GLO · Globalization  <sub>:752</sub>
+- What this chapter does not settle  <sub>:815</sub>
+- Sources  <sub>:830</sub>
+
+### `docs/design/11-workflow.md`  <sub>260 lines</sub>
+
+- The thing that actually goes wrong  <sub>:14</sub>
+- FLO · The laws  <sub>:33</sub>
+- Patterns  <sub>:164</sub>
+- What must be built  <sub>:232</sub>
+- Sources  <sub>:251</sub>
+
+### `docs/design/12-permissions.md`  <sub>214 lines</sub>
+
+- The problem, stated precisely  <sub>:13</sub>
+- PRM · The laws  <sub>:35</sub>
+- Patterns  <sub>:163</sub>
+- What must be built  <sub>:189</sub>
+- Sources  <sub>:207</sub>
+
+### `docs/design/13-composition.md`  <sub>197 lines</sub>
+
+- What is actually being shipped  <sub>:14</sub>
+- MOD · The laws  <sub>:38</sub>
+- Patterns  <sub>:148</sub>
+- What must be built  <sub>:179</sub>
+- Sources  <sub>:190</sub>
+
+### `docs/design/14-navigation.md`  <sub>198 lines</sub>
+
+- The scale problem  <sub>:13</sub>
+- NAV · The laws  <sub>:30</sub>
+- Patterns  <sub>:127</sub>
+- What must be built  <sub>:178</sub>
+- Sources  <sub>:191</sub>
+
+### `docs/design/15-integrity.md`  <sub>210 lines</sub>
+
+- Why this chapter is different  <sub>:13</sub>
+- ITG · The laws  <sub>:31</sub>
+- The build order  <sub>:153</sub>
+- What a person still has to do  <sub>:183</sub>
+- Sources  <sub>:203</sub>
+
+### `docs/design/README.md`  <sub>109 lines</sub>
+
+- Precedence, before anything else  <sub>:12</sub>
+- The chapters  <sub>:24</sub>
+- How to use it  <sub>:45</sub>
+- The law families  <sub>:63</sub>
+- An honest statement of maturity  <sub>:76</sub>
+- The one thing this system refuses to do  <sub>:102</sub>
 
 ### `docs/email.md`  <sub>438 lines</sub>
 

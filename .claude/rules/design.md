@@ -16,15 +16,20 @@ paths:
 
 ## The design system
 
-The long form is **[`docs/design/`](../../docs/design/README.md)** — ten
-chapters covering principles, tokens, layout, components, states, motion,
-content, accessibility, governance and quality gates. Its measured state,
-generated from the code, is `docs/index/cross/design-system.md`.
+The long form is **[`docs/design/`](../../docs/design/README.md)** — sixteen
+chapters and **150 numbered laws**, covering principles, tokens, layout,
+components, states, motion, content, accessibility, governance, quality
+gates, the borrowed law catalogue, workflow, permissions, composition,
+navigation and integrity. Its measured state, generated from the code, is
+`docs/index/cross/design-system.md`.
 
-Search it rather than reading it:
+Search it rather than reading it. Every law has a stable ID, so cite the ID
+in a review or a commit rather than paraphrasing:
 
 ```bash
-pnpm idx design <text>
+pnpm idx law SPA-4          # one law: what it says, and the ruling here
+pnpm idx law PRM            # one family
+pnpm idx design <text>      # search every chapter
 ```
 
 `.claude/rules/ui.md` already carries the three parts of the system that were
@@ -43,7 +48,12 @@ that appears to contradict a law is wrong, and this rule does not change that.
 | anything that animates | `05-motion` |
 | anything a user reads | `06-content` |
 | a token, or adding a token group | `01-foundations`, then `DECISIONS.md` |
+| a long or multi-step process | `11-workflow` — `FLO-1` through `FLO-15` |
+| anything that differs by role or permission | `12-permissions` — `PRM-1` through `PRM-12` |
+| a module, or anything that can be absent | `13-composition` — `MOD-1` through `MOD-10` |
+| a nav entry, or anything about findability | `14-navigation` — `NAV-1` through `NAV-12` |
 | reviewing before merge | `09-quality` — a checklist, not prose |
+| settling an argument | `10-laws` — cite the ID |
 
 ## The obligations, stated so they can be checked
 
@@ -74,6 +84,35 @@ specification for something not yet built.
   `toLocaleString`. This is Law 1 as much as it is content.
 - **One word per concept.** The terminology table in `06-content` decides it;
   a synonym is a defect, not a style choice.
+- **No dead end** (`ITG-1`). Every screen and every state — empty, error,
+  permission-blocked, absent-module, end-of-flow — has a forward action and a
+  marked exit.
+- **No ring of content around an empty middle** (`SPA-4`). At every one of the
+  seven widths, the optical centre carries the page's job. Where content does
+  not fill the width, constrain and centre the container; never push content
+  outward to reach the edges.
+- **Space is the primary grouping device** (`PER-1`, `SPA-2`), ahead of borders
+  and boxes — and the gap inside a group is always smaller than the gap around
+  it. When that inverts, the page groups backwards and is read wrong.
+- **Hide a nav entry, disable an action, explain both** (`PRM-2`). A door to a
+  locked room is a dead end; a silently missing action makes the object look
+  different than it is. The reason text names the permission, not "denied".
+- **Layout closes over absence** (`PRM-5`, `MOD-1`). When a permission or a
+  module is missing, the layout reflows — it never leaves a hole. So a
+  permission- or module-sensitive region is content-driven (`auto-fit`,
+  `flex-wrap`), never a fixed template with slots that may be empty.
+- **Acknowledge within one frame** (`ACT-3`), whatever the result costs. The
+  acknowledgement and the result are two different promises.
+- **Match friction to blast radius** (`ACT-6`). Reversible and small → do it,
+  offer undo. Irreversible or wide → name the object and the count.
+  Irreversible and financial or cross-branch → require typing the name.
+- **A refusal states its remedy** (`FLO-7`). "Awaiting approval" is a status,
+  not a message.
+- **Work is durable from the first real value** (`FLO-3`). Closing a tab may
+  cost the current field, never the current hour.
+- **Tabular figures, right-aligned, for every column of numbers** (`TYP-5`).
+  Misaligned money is misread money.
+- **Prose caps at ~70 characters** (`TYP-1`), however wide the screen.
 
 ## Promoting something into the system
 

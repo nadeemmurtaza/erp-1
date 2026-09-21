@@ -386,6 +386,57 @@ const commands = {
     emit(rows, 'design lines');
   },
 
+  /**
+   * Resolve a law ID to the law itself.
+   *
+   * The design system's laws are numbered so a review can cite one — "SPA-4",
+   * not "the thing about empty middles". A citation is only useful if the
+   * person reading it can resolve it in one step, which is what this is: the
+   * ID, the ruling, and the chapter line, without opening a 850-line
+   * catalogue and scrolling.
+   *
+   *   idx law           every ID, one line each
+   *   idx law SPA       one family
+   *   idx law SPA-4     the law, in full
+   */
+  law(args) {
+    const laws = db.designLaws ?? [];
+    if (!laws.length) return console.error('no design laws indexed — run `pnpm index`');
+    const q = (args[0] ?? '').toUpperCase();
+
+    if (!q) {
+      emit(laws.map((l) => `${l.id.padEnd(8)}${l.name}  ${dim(`${l.file}:${l.line}`)}`), 'laws');
+      return;
+    }
+
+    const exact = laws.filter((l) => l.id === q);
+    if (exact.length) {
+      for (const l of exact) {
+        const lines = readFileSync(join(ROOT, l.file), 'utf8').split('\n');
+        console.log(dim(`${l.file}:${l.line}`));
+        // From the heading to the one before the next heading: the whole law.
+        for (let i = l.line - 1; i < lines.length; i += 1) {
+          if (i > l.line - 1 && /^#{1,3} /.test(lines[i])) break;
+          console.log(`  ${lines[i]}`);
+        }
+      }
+      return;
+    }
+
+    const family = laws.filter((l) => l.family === q.replace(/-.*$/, ''));
+    if (family.length) {
+      emit(family.map((l) => `${l.id.padEnd(8)}${l.name}  ${dim(`${l.file}:${l.line}`)}`), `${q} laws`);
+      return;
+    }
+
+    const fuzzy = laws.filter((l) => hit(`${l.id} ${l.name}`, args.join(' ')));
+    if (!fuzzy.length) {
+      console.error(`no law matches "${args.join(' ')}" — try \`idx law\` for every ID`);
+      process.exit(1);
+    }
+    emit(fuzzy.map((l) => `${l.id.padEnd(8)}${l.name}  ${dim(`${l.file}:${l.line}`)}`), 'laws');
+  },
+
   stats() {
     for (const [k, v] of Object.entries(db.totals)) {
       console.log(`  ${k.padEnd(14)} ${String(v).padStart(7)}`);
@@ -418,6 +469,7 @@ is itself far cheaper than grepping the repository.
   idx where "abandoned cart"          fuzzy, across everything
   idx rule borders                    search every rule, scoped or not
   idx design focus ring               search the design system's chapters
+  idx law SPA-4                       a design law by ID, family, or text
   idx stats                           totals, and any schema drift
 
 Results cap at ${LIMIT}; set IDX_LIMIT to raise it.

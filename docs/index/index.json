@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1076,
-    "lines": 165489,
+    "files": 1082,
+    "lines": 167596,
     "routes": 287,
     "controllers": 57,
     "models": 115,
@@ -14,19 +14,1072 @@
     "permissions": 36,
     "screens": 125,
     "crons": 6,
-    "specs": 103
+    "specs": 103,
+    "designLaws": 150
   },
+  "designLaws": [
+    {
+      "id": "PER-1",
+      "family": "PER",
+      "name": "Proximity",
+      "file": "docs/design/10-laws.md",
+      "line": 64
+    },
+    {
+      "id": "PER-2",
+      "family": "PER",
+      "name": "Common region",
+      "file": "docs/design/10-laws.md",
+      "line": 73
+    },
+    {
+      "id": "PER-3",
+      "family": "PER",
+      "name": "Similarity",
+      "file": "docs/design/10-laws.md",
+      "line": 82
+    },
+    {
+      "id": "PER-4",
+      "family": "PER",
+      "name": "Continuity",
+      "file": "docs/design/10-laws.md",
+      "line": 92
+    },
+    {
+      "id": "PER-5",
+      "family": "PER",
+      "name": "Closure",
+      "file": "docs/design/10-laws.md",
+      "line": 101
+    },
+    {
+      "id": "PER-6",
+      "family": "PER",
+      "name": "Figure / ground",
+      "file": "docs/design/10-laws.md",
+      "line": 109
+    },
+    {
+      "id": "PER-7",
+      "family": "PER",
+      "name": "Uniform connectedness",
+      "file": "docs/design/10-laws.md",
+      "line": 119
+    },
+    {
+      "id": "PER-8",
+      "family": "PER",
+      "name": "Prägnanz (simplicity)",
+      "file": "docs/design/10-laws.md",
+      "line": 129
+    },
+    {
+      "id": "PER-9",
+      "family": "PER",
+      "name": "Focal point",
+      "file": "docs/design/10-laws.md",
+      "line": 139
+    },
+    {
+      "id": "COG-1",
+      "family": "COG",
+      "name": "Hick's law",
+      "file": "docs/design/10-laws.md",
+      "line": 152
+    },
+    {
+      "id": "COG-2",
+      "family": "COG",
+      "name": "Miller's law",
+      "file": "docs/design/10-laws.md",
+      "line": 162
+    },
+    {
+      "id": "COG-3",
+      "family": "COG",
+      "name": "Chunking",
+      "file": "docs/design/10-laws.md",
+      "line": 176
+    },
+    {
+      "id": "COG-4",
+      "family": "COG",
+      "name": "Cognitive load — intrinsic, extraneous, germane",
+      "file": "docs/design/10-laws.md",
+      "line": 186
+    },
+    {
+      "id": "COG-5",
+      "family": "COG",
+      "name": "Progressive disclosure",
+      "file": "docs/design/10-laws.md",
+      "line": 197
+    },
+    {
+      "id": "COG-6",
+      "family": "COG",
+      "name": "Recognition over recall",
+      "file": "docs/design/10-laws.md",
+      "line": 205
+    },
+    {
+      "id": "COG-7",
+      "family": "COG",
+      "name": "Jakob's law",
+      "file": "docs/design/10-laws.md",
+      "line": 214
+    },
+    {
+      "id": "COG-8",
+      "family": "COG",
+      "name": "Tesler's law (conservation of complexity)",
+      "file": "docs/design/10-laws.md",
+      "line": 224
+    },
+    {
+      "id": "COG-9",
+      "family": "COG",
+      "name": "Zeigarnik effect",
+      "file": "docs/design/10-laws.md",
+      "line": 234
+    },
+    {
+      "id": "COG-10",
+      "family": "COG",
+      "name": "Goal-gradient effect",
+      "file": "docs/design/10-laws.md",
+      "line": 244
+    },
+    {
+      "id": "COG-11",
+      "family": "COG",
+      "name": "Serial position effect",
+      "file": "docs/design/10-laws.md",
+      "line": 254
+    },
+    {
+      "id": "COG-12",
+      "family": "COG",
+      "name": "Von Restorff (isolation) effect",
+      "file": "docs/design/10-laws.md",
+      "line": 263
+    },
+    {
+      "id": "COG-13",
+      "family": "COG",
+      "name": "Peak-end rule",
+      "file": "docs/design/10-laws.md",
+      "line": 271
+    },
+    {
+      "id": "COG-14",
+      "family": "COG",
+      "name": "Selective attention / banner blindness",
+      "file": "docs/design/10-laws.md",
+      "line": 280
+    },
+    {
+      "id": "ACT-1",
+      "family": "ACT",
+      "name": "Fitts's law",
+      "file": "docs/design/10-laws.md",
+      "line": 293
+    },
+    {
+      "id": "ACT-2",
+      "family": "ACT",
+      "name": "The consequence–proximity rule",
+      "file": "docs/design/10-laws.md",
+      "line": 302
+    },
+    {
+      "id": "ACT-3",
+      "family": "ACT",
+      "name": "The Doherty threshold",
+      "file": "docs/design/10-laws.md",
+      "line": 311
+    },
+    {
+      "id": "ACT-4",
+      "family": "ACT",
+      "name": "Response-time limits — 0.1 s / 1 s / 10 s",
+      "file": "docs/design/10-laws.md",
+      "line": 322
+    },
+    {
+      "id": "ACT-5",
+      "family": "ACT",
+      "name": "Postel's law (robustness)",
+      "file": "docs/design/10-laws.md",
+      "line": 336
+    },
+    {
+      "id": "ACT-6",
+      "family": "ACT",
+      "name": "The undo-over-confirm rule",
+      "file": "docs/design/10-laws.md",
+      "line": 345
+    },
+    {
+      "id": "ACT-7",
+      "family": "ACT",
+      "name": "Pareto (the 80/20 rule)",
+      "file": "docs/design/10-laws.md",
+      "line": 360
+    },
+    {
+      "id": "ACT-8",
+      "family": "ACT",
+      "name": "Occam's razor",
+      "file": "docs/design/10-laws.md",
+      "line": 370
+    },
+    {
+      "id": "HEU-1",
+      "family": "HEU",
+      "name": "Visibility of system status",
+      "file": "docs/design/10-laws.md",
+      "line": 386
+    },
+    {
+      "id": "HEU-2",
+      "family": "HEU",
+      "name": "Match the real world",
+      "file": "docs/design/10-laws.md",
+      "line": 391
+    },
+    {
+      "id": "HEU-3",
+      "family": "HEU",
+      "name": "User control and freedom",
+      "file": "docs/design/10-laws.md",
+      "line": 396
+    },
+    {
+      "id": "HEU-4",
+      "family": "HEU",
+      "name": "Consistency and standards",
+      "file": "docs/design/10-laws.md",
+      "line": 401
+    },
+    {
+      "id": "HEU-5",
+      "family": "HEU",
+      "name": "Error prevention",
+      "file": "docs/design/10-laws.md",
+      "line": 406
+    },
+    {
+      "id": "HEU-6",
+      "family": "HEU",
+      "name": "Recognition over recall",
+      "file": "docs/design/10-laws.md",
+      "line": 413
+    },
+    {
+      "id": "HEU-7",
+      "family": "HEU",
+      "name": "Flexibility and efficiency",
+      "file": "docs/design/10-laws.md",
+      "line": 416
+    },
+    {
+      "id": "HEU-8",
+      "family": "HEU",
+      "name": "Aesthetic and minimalist design",
+      "file": "docs/design/10-laws.md",
+      "line": 422
+    },
+    {
+      "id": "HEU-9",
+      "family": "HEU",
+      "name": "Recognise, diagnose, recover",
+      "file": "docs/design/10-laws.md",
+      "line": 427
+    },
+    {
+      "id": "HEU-10",
+      "family": "HEU",
+      "name": "Help and documentation",
+      "file": "docs/design/10-laws.md",
+      "line": 432
+    },
+    {
+      "id": "TYP-1",
+      "family": "TYP",
+      "name": "Measure (line length)",
+      "file": "docs/design/10-laws.md",
+      "line": 441
+    },
+    {
+      "id": "TYP-2",
+      "family": "TYP",
+      "name": "Leading follows measure",
+      "file": "docs/design/10-laws.md",
+      "line": 451
+    },
+    {
+      "id": "TYP-3",
+      "family": "TYP",
+      "name": "A scale, not sizes",
+      "file": "docs/design/10-laws.md",
+      "line": 457
+    },
+    {
+      "id": "TYP-4",
+      "family": "TYP",
+      "name": "Hierarchy is contrast, not size alone",
+      "file": "docs/design/10-laws.md",
+      "line": 464
+    },
+    {
+      "id": "TYP-5",
+      "family": "TYP",
+      "name": "Tabular numerals for tabular data",
+      "file": "docs/design/10-laws.md",
+      "line": 471
+    },
+    {
+      "id": "TYP-6",
+      "family": "TYP",
+      "name": "Case carries meaning",
+      "file": "docs/design/10-laws.md",
+      "line": 480
+    },
+    {
+      "id": "TYP-7",
+      "family": "TYP",
+      "name": "Alignment: one edge",
+      "file": "docs/design/10-laws.md",
+      "line": 486
+    },
+    {
+      "id": "TYP-8",
+      "family": "TYP",
+      "name": "Type must survive the font not loading",
+      "file": "docs/design/10-laws.md",
+      "line": 492
+    },
+    {
+      "id": "COL-1",
+      "family": "COL",
+      "name": "Colour is semantic, never decorative",
+      "file": "docs/design/10-laws.md",
+      "line": 503
+    },
+    {
+      "id": "COL-2",
+      "family": "COL",
+      "name": "Never colour alone",
+      "file": "docs/design/10-laws.md",
+      "line": 513
+    },
+    {
+      "id": "COL-3",
+      "family": "COL",
+      "name": "Contrast floors",
+      "file": "docs/design/10-laws.md",
+      "line": 522
+    },
+    {
+      "id": "COL-4",
+      "family": "COL",
+      "name": "Accent scarcity (the 60–30–10 heuristic)",
+      "file": "docs/design/10-laws.md",
+      "line": 532
+    },
+    {
+      "id": "COL-5",
+      "family": "COL",
+      "name": "Dark mode inverts lightness, not the palette",
+      "file": "docs/design/10-laws.md",
+      "line": 541
+    },
+    {
+      "id": "COL-6",
+      "family": "COL",
+      "name": "Neutral does the work",
+      "file": "docs/design/10-laws.md",
+      "line": 548
+    },
+    {
+      "id": "SPA-1",
+      "family": "SPA",
+      "name": "The 8-point grid, with a 4-point half step",
+      "file": "docs/design/10-laws.md",
+      "line": 559
+    },
+    {
+      "id": "SPA-2",
+      "family": "SPA",
+      "name": "Space encodes relation",
+      "file": "docs/design/10-laws.md",
+      "line": 567
+    },
+    {
+      "id": "SPA-3",
+      "family": "SPA",
+      "name": "Density is a mode, not a value",
+      "file": "docs/design/10-laws.md",
+      "line": 575
+    },
+    {
+      "id": "SPA-4",
+      "family": "SPA",
+      "name": "Centre of gravity — *no ring of content around a void*",
+      "file": "docs/design/10-laws.md",
+      "line": 583
+    },
+    {
+      "id": "SPA-5",
+      "family": "SPA",
+      "name": "Whitespace is structure, not leftovers",
+      "file": "docs/design/10-laws.md",
+      "line": 595
+    },
+    {
+      "id": "SPA-5a",
+      "family": "SPA",
+      "name": "Density and emptiness are different failures",
+      "file": "docs/design/10-laws.md",
+      "line": 602
+    },
+    {
+      "id": "SPA-6",
+      "family": "SPA",
+      "name": "Optical alignment beats mathematical alignment",
+      "file": "docs/design/10-laws.md",
+      "line": 612
+    },
+    {
+      "id": "SPA-7",
+      "family": "SPA",
+      "name": "Ratio: one scale for space, one for type, one for size",
+      "file": "docs/design/10-laws.md",
+      "line": 618
+    },
+    {
+      "id": "SPA-8",
+      "family": "SPA",
+      "name": "Intrinsic layout before breakpoints",
+      "file": "docs/design/10-laws.md",
+      "line": 625
+    },
+    {
+      "id": "SPA-9",
+      "family": "SPA",
+      "name": "Fluid type has a ceiling",
+      "file": "docs/design/10-laws.md",
+      "line": 634
+    },
+    {
+      "id": "MOT-1",
+      "family": "MOT",
+      "name": "Motion communicates or it does not ship",
+      "file": "docs/design/10-laws.md",
+      "line": 646
+    },
+    {
+      "id": "MOT-2",
+      "family": "MOT",
+      "name": "Duration scales with distance and size",
+      "file": "docs/design/10-laws.md",
+      "line": 653
+    },
+    {
+      "id": "MOT-3",
+      "family": "MOT",
+      "name": "Easing carries meaning",
+      "file": "docs/design/10-laws.md",
+      "line": 660
+    },
+    {
+      "id": "MOT-4",
+      "family": "MOT",
+      "name": "Reduced motion is a requirement, and it preserves information",
+      "file": "docs/design/10-laws.md",
+      "line": 667
+    },
+    {
+      "id": "MOT-5",
+      "family": "MOT",
+      "name": "Never animate a property that forces layout",
+      "file": "docs/design/10-laws.md",
+      "line": 675
+    },
+    {
+      "id": "MOT-6",
+      "family": "MOT",
+      "name": "Orchestration, not simultaneity",
+      "file": "docs/design/10-laws.md",
+      "line": 681
+    },
+    {
+      "id": "ACC-1",
+      "family": "ACC",
+      "name": "Keyboard reaches everything",
+      "file": "docs/design/10-laws.md",
+      "line": 695
+    },
+    {
+      "id": "ACC-2",
+      "family": "ACC",
+      "name": "Focus is visible, and not obscured",
+      "file": "docs/design/10-laws.md",
+      "line": 702
+    },
+    {
+      "id": "ACC-3",
+      "family": "ACC",
+      "name": "Focus goes somewhere sensible",
+      "file": "docs/design/10-laws.md",
+      "line": 710
+    },
+    {
+      "id": "ACC-4",
+      "family": "ACC",
+      "name": "Target size",
+      "file": "docs/design/10-laws.md",
+      "line": 717
+    },
+    {
+      "id": "ACC-5",
+      "family": "ACC",
+      "name": "Accessible authentication",
+      "file": "docs/design/10-laws.md",
+      "line": 723
+    },
+    {
+      "id": "ACC-6",
+      "family": "ACC",
+      "name": "Semantics before ARIA",
+      "file": "docs/design/10-laws.md",
+      "line": 730
+    },
+    {
+      "id": "ACC-7",
+      "family": "ACC",
+      "name": "Never rely on hover or pointer alone",
+      "file": "docs/design/10-laws.md",
+      "line": 737
+    },
+    {
+      "id": "ACC-8",
+      "family": "ACC",
+      "name": "Motion, contrast and text size are user settings",
+      "file": "docs/design/10-laws.md",
+      "line": 744
+    },
+    {
+      "id": "GLO-1",
+      "family": "GLO",
+      "name": "Text expands",
+      "file": "docs/design/10-laws.md",
+      "line": 756
+    },
+    {
+      "id": "GLO-2",
+      "family": "GLO",
+      "name": "Logical properties, never physical",
+      "file": "docs/design/10-laws.md",
+      "line": 764
+    },
+    {
+      "id": "GLO-3",
+      "family": "GLO",
+      "name": "Mirroring is not flipping",
+      "file": "docs/design/10-laws.md",
+      "line": 771
+    },
+    {
+      "id": "GLO-4",
+      "family": "GLO",
+      "name": "Locale is not language",
+      "file": "docs/design/10-laws.md",
+      "line": 778
+    },
+    {
+      "id": "GLO-5",
+      "family": "GLO",
+      "name": "Scripts have different metrics",
+      "file": "docs/design/10-laws.md",
+      "line": 785
+    },
+    {
+      "id": "GLO-6",
+      "family": "GLO",
+      "name": "Never concatenate a sentence",
+      "file": "docs/design/10-laws.md",
+      "line": 791
+    },
+    {
+      "id": "GLO-7",
+      "family": "GLO",
+      "name": "Formatting goes through the formatter",
+      "file": "docs/design/10-laws.md",
+      "line": 798
+    },
+    {
+      "id": "GLO-8",
+      "family": "GLO",
+      "name": "Personal and postal data have no universal shape",
+      "file": "docs/design/10-laws.md",
+      "line": 806
+    },
+    {
+      "id": "FLO-1",
+      "family": "FLO",
+      "name": "Every state has a forward action and a marked exit",
+      "file": "docs/design/11-workflow.md",
+      "line": 35
+    },
+    {
+      "id": "FLO-2",
+      "family": "FLO",
+      "name": "Back is never destructive, and never a lie",
+      "file": "docs/design/11-workflow.md",
+      "line": 45
+    },
+    {
+      "id": "FLO-3",
+      "family": "FLO",
+      "name": "Work is durable from the first meaningful action",
+      "file": "docs/design/11-workflow.md",
+      "line": 54
+    },
+    {
+      "id": "FLO-4",
+      "family": "FLO",
+      "name": "An unfinished thing is findable without its URL",
+      "file": "docs/design/11-workflow.md",
+      "line": 63
+    },
+    {
+      "id": "FLO-5",
+      "family": "FLO",
+      "name": "Position is always answerable",
+      "file": "docs/design/11-workflow.md",
+      "line": 74
+    },
+    {
+      "id": "FLO-6",
+      "family": "FLO",
+      "name": "A step carries its own context",
+      "file": "docs/design/11-workflow.md",
+      "line": 84
+    },
+    {
+      "id": "FLO-7",
+      "family": "FLO",
+      "name": "A refusal states its remedy",
+      "file": "docs/design/11-workflow.md",
+      "line": 94
+    },
+    {
+      "id": "FLO-8",
+      "family": "FLO",
+      "name": "The state machine is explicit, and the user sees fewer states",
+      "file": "docs/design/11-workflow.md",
+      "line": 104
+    },
+    {
+      "id": "FLO-9",
+      "family": "FLO",
+      "name": "Long flows are interruptible by design, not by accident",
+      "file": "docs/design/11-workflow.md",
+      "line": 115
+    },
+    {
+      "id": "FLO-10",
+      "family": "FLO",
+      "name": "Hand-off is a first-class step",
+      "file": "docs/design/11-workflow.md",
+      "line": 122
+    },
+    {
+      "id": "FLO-11",
+      "family": "FLO",
+      "name": "Every committed action is attributable and reconstructable",
+      "file": "docs/design/11-workflow.md",
+      "line": 129
+    },
+    {
+      "id": "FLO-12",
+      "family": "FLO",
+      "name": "Parallel is shown as parallel",
+      "file": "docs/design/11-workflow.md",
+      "line": 138
+    },
+    {
+      "id": "FLO-13",
+      "family": "FLO",
+      "name": "A dry run precedes an expensive commit",
+      "file": "docs/design/11-workflow.md",
+      "line": 144
+    },
+    {
+      "id": "FLO-14",
+      "family": "FLO",
+      "name": "Time is shown where time matters",
+      "file": "docs/design/11-workflow.md",
+      "line": 151
+    },
+    {
+      "id": "FLO-15",
+      "family": "FLO",
+      "name": "The end of a flow is designed",
+      "file": "docs/design/11-workflow.md",
+      "line": 156
+    },
+    {
+      "id": "PRM-1",
+      "family": "PRM",
+      "name": "The server decides; the interface only reflects",
+      "file": "docs/design/12-permissions.md",
+      "line": 37
+    },
+    {
+      "id": "PRM-2",
+      "family": "PRM",
+      "name": "Hide navigation, disable action, explain both",
+      "file": "docs/design/12-permissions.md",
+      "line": 46
+    },
+    {
+      "id": "PRM-3",
+      "family": "PRM",
+      "name": "A page with nothing to do is not that page",
+      "file": "docs/design/12-permissions.md",
+      "line": 67
+    },
+    {
+      "id": "PRM-4",
+      "family": "PRM",
+      "name": "Design for the smallest viable holder, then add",
+      "file": "docs/design/12-permissions.md",
+      "line": 77
+    },
+    {
+      "id": "PRM-5",
+      "family": "PRM",
+      "name": "Layout closes over absence",
+      "file": "docs/design/12-permissions.md",
+      "line": 89
+    },
+    {
+      "id": "PRM-6",
+      "family": "PRM",
+      "name": "Permission state is not an error state",
+      "file": "docs/design/12-permissions.md",
+      "line": 99
+    },
+    {
+      "id": "PRM-7",
+      "family": "PRM",
+      "name": "One capability, one name, everywhere",
+      "file": "docs/design/12-permissions.md",
+      "line": 105
+    },
+    {
+      "id": "PRM-8",
+      "family": "PRM",
+      "name": "Granting is a design surface, not a data grid",
+      "file": "docs/design/12-permissions.md",
+      "line": 113
+    },
+    {
+      "id": "PRM-9",
+      "family": "PRM",
+      "name": "Templates over assembly",
+      "file": "docs/design/12-permissions.md",
+      "line": 128
+    },
+    {
+      "id": "PRM-10",
+      "family": "PRM",
+      "name": "Separation of duties is shown, not just enforced",
+      "file": "docs/design/12-permissions.md",
+      "line": 138
+    },
+    {
+      "id": "PRM-11",
+      "family": "PRM",
+      "name": "Never leak existence through absence",
+      "file": "docs/design/12-permissions.md",
+      "line": 144
+    },
+    {
+      "id": "PRM-12",
+      "family": "PRM",
+      "name": "Scope is part of the permission, and it is visible",
+      "file": "docs/design/12-permissions.md",
+      "line": 154
+    },
+    {
+      "id": "MOD-1",
+      "family": "MOD",
+      "name": "A page is correct when a module it mentions is absent",
+      "file": "docs/design/13-composition.md",
+      "line": 40
+    },
+    {
+      "id": "MOD-2",
+      "family": "MOD",
+      "name": "The composition is data, never a conditional",
+      "file": "docs/design/13-composition.md",
+      "line": 50
+    },
+    {
+      "id": "MOD-3",
+      "family": "MOD",
+      "name": "Navigation is composed, never authored",
+      "file": "docs/design/13-composition.md",
+      "line": 58
+    },
+    {
+      "id": "MOD-4",
+      "family": "MOD",
+      "name": "No cross-module link without a fallback",
+      "file": "docs/design/13-composition.md",
+      "line": 70
+    },
+    {
+      "id": "MOD-5",
+      "family": "MOD",
+      "name": "The core is complete on its own",
+      "file": "docs/design/13-composition.md",
+      "line": 80
+    },
+    {
+      "id": "MOD-6",
+      "family": "MOD",
+      "name": "Brand is a value, branch is a row, sector is a folder",
+      "file": "docs/design/13-composition.md",
+      "line": 89
+    },
+    {
+      "id": "MOD-7",
+      "family": "MOD",
+      "name": "Multi-party screens name the party's side",
+      "file": "docs/design/13-composition.md",
+      "line": 106
+    },
+    {
+      "id": "MOD-8",
+      "family": "MOD",
+      "name": "An integration is a capability, not a brand",
+      "file": "docs/design/13-composition.md",
+      "line": 116
+    },
+    {
+      "id": "MOD-9",
+      "family": "MOD",
+      "name": "One component, many densities and surfaces — never a fork",
+      "file": "docs/design/13-composition.md",
+      "line": 129
+    },
+    {
+      "id": "MOD-10",
+      "family": "MOD",
+      "name": "Capability discovery is honest",
+      "file": "docs/design/13-composition.md",
+      "line": 138
+    },
+    {
+      "id": "NAV-1",
+      "family": "NAV",
+      "name": "Organise by job, not by org chart",
+      "file": "docs/design/14-navigation.md",
+      "line": 32
+    },
+    {
+      "id": "NAV-2",
+      "family": "NAV",
+      "name": "Breadth over depth, within reason",
+      "file": "docs/design/14-navigation.md",
+      "line": 45
+    },
+    {
+      "id": "NAV-3",
+      "family": "NAV",
+      "name": "Search is a first-class path, not a fallback",
+      "file": "docs/design/14-navigation.md",
+      "line": 55
+    },
+    {
+      "id": "NAV-4",
+      "family": "NAV",
+      "name": "The current position is always stated",
+      "file": "docs/design/14-navigation.md",
+      "line": 64
+    },
+    {
+      "id": "NAV-5",
+      "family": "NAV",
+      "name": "One destination, one route",
+      "file": "docs/design/14-navigation.md",
+      "line": 74
+    },
+    {
+      "id": "NAV-6",
+      "family": "NAV",
+      "name": "Every screen is reachable by clicking",
+      "file": "docs/design/14-navigation.md",
+      "line": 80
+    },
+    {
+      "id": "NAV-7",
+      "family": "NAV",
+      "name": "Navigation state survives the task",
+      "file": "docs/design/14-navigation.md",
+      "line": 87
+    },
+    {
+      "id": "NAV-8",
+      "family": "NAV",
+      "name": "Depth is a promise of specificity",
+      "file": "docs/design/14-navigation.md",
+      "line": 96
+    },
+    {
+      "id": "NAV-9",
+      "family": "NAV",
+      "name": "The tree is composed, not authored",
+      "file": "docs/design/14-navigation.md",
+      "line": 102
+    },
+    {
+      "id": "NAV-10",
+      "family": "NAV",
+      "name": "Recency and pinning belong to the user",
+      "file": "docs/design/14-navigation.md",
+      "line": 108
+    },
+    {
+      "id": "NAV-11",
+      "family": "NAV",
+      "name": "Label like the business speaks",
+      "file": "docs/design/14-navigation.md",
+      "line": 114
+    },
+    {
+      "id": "NAV-12",
+      "family": "NAV",
+      "name": "A cross-surface concept keeps its place",
+      "file": "docs/design/14-navigation.md",
+      "line": 120
+    },
+    {
+      "id": "ITG-1",
+      "family": "ITG",
+      "name": "No dead end",
+      "file": "docs/design/15-integrity.md",
+      "line": 33
+    },
+    {
+      "id": "ITG-2",
+      "family": "ITG",
+      "name": "Every internal link resolves",
+      "file": "docs/design/15-integrity.md",
+      "line": 41
+    },
+    {
+      "id": "ITG-3",
+      "family": "ITG",
+      "name": "Every image has a source, dimensions, and a fallback",
+      "file": "docs/design/15-integrity.md",
+      "line": 51
+    },
+    {
+      "id": "ITG-4",
+      "family": "ITG",
+      "name": "Nothing overflows at any of the seven widths",
+      "file": "docs/design/15-integrity.md",
+      "line": 64
+    },
+    {
+      "id": "ITG-5",
+      "family": "ITG",
+      "name": "Every screen is reachable by clicking",
+      "file": "docs/design/15-integrity.md",
+      "line": 77
+    },
+    {
+      "id": "ITG-6",
+      "family": "ITG",
+      "name": "Every page renders with every module absent",
+      "file": "docs/design/15-integrity.md",
+      "line": 85
+    },
+    {
+      "id": "ITG-7",
+      "family": "ITG",
+      "name": "Every page renders at minimum privilege",
+      "file": "docs/design/15-integrity.md",
+      "line": 94
+    },
+    {
+      "id": "ITG-8",
+      "family": "ITG",
+      "name": "No layout depends on string length",
+      "file": "docs/design/15-integrity.md",
+      "line": 101
+    },
+    {
+      "id": "ITG-9",
+      "family": "ITG",
+      "name": "Every user-visible string is translatable",
+      "file": "docs/design/15-integrity.md",
+      "line": 108
+    },
+    {
+      "id": "ITG-10",
+      "family": "ITG",
+      "name": "Colour is never the only channel",
+      "file": "docs/design/15-integrity.md",
+      "line": 116
+    },
+    {
+      "id": "ITG-11",
+      "family": "ITG",
+      "name": "Contrast meets its floor",
+      "file": "docs/design/15-integrity.md",
+      "line": 123
+    },
+    {
+      "id": "ITG-12",
+      "family": "ITG",
+      "name": "Focus is never obscured, and never lost",
+      "file": "docs/design/15-integrity.md",
+      "line": 132
+    },
+    {
+      "id": "ITG-13",
+      "family": "ITG",
+      "name": "Nothing is reachable by hover alone",
+      "file": "docs/design/15-integrity.md",
+      "line": 139
+    },
+    {
+      "id": "ITG-14",
+      "family": "ITG",
+      "name": "A check that cannot run is a failing check",
+      "file": "docs/design/15-integrity.md",
+      "line": 145
+    }
+  ],
   "areas": {
     "root": {
       "files": 42,
-      "lines": 8838,
-      "bytes": 638792,
+      "lines": 8878,
+      "bytes": 641704,
       "label": "repository root files"
     },
     "infra": {
       "files": 51,
-      "lines": 25813,
-      "bytes": 997377,
+      "lines": 25909,
+      "bytes": 1001139,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -54,9 +1107,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 180,
-      "lines": 25964,
-      "bytes": 1627424,
+      "files": 186,
+      "lines": 27935,
+      "bytes": 1727556,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -21128,8 +22181,8 @@
       "path": ".claude/rules/design.md",
       "area": "root",
       "kind": "doc",
-      "lines": 93,
-      "bytes": 4287,
+      "lines": 132,
+      "bytes": 7010,
       "doc": "",
       "symbols": []
     },
@@ -21344,8 +22397,8 @@
       "path": "CLAUDE.md",
       "area": "root",
       "kind": "doc",
-      "lines": 748,
-      "bytes": 37020,
+      "lines": 749,
+      "bytes": 37209,
       "doc": "",
       "symbols": []
     },
@@ -34789,11 +35842,65 @@
       "symbols": []
     },
     {
+      "path": "docs/design/10-laws.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 850,
+      "bytes": 44269,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/design/11-workflow.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 260,
+      "bytes": 13123,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/design/12-permissions.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 214,
+      "bytes": 10885,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/design/13-composition.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 197,
+      "bytes": 10072,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/design/14-navigation.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 198,
+      "bytes": 8955,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/design/15-integrity.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 210,
+      "bytes": 10068,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/design/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 67,
-      "bytes": 3956,
+      "lines": 109,
+      "bytes": 6716,
       "doc": "",
       "symbols": []
     },
@@ -37658,8 +38765,8 @@
       "path": "scripts/build-index.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 2456,
-      "bytes": 112505,
+      "lines": 2500,
+      "bytes": 114277,
       "doc": "",
       "symbols": []
     },
@@ -37754,8 +38861,8 @@
       "path": "scripts/idx.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 434,
-      "bytes": 18049,
+      "lines": 486,
+      "bytes": 20039,
       "doc": "",
       "symbols": []
     },

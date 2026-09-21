@@ -2102,6 +2102,9 @@ ${table(['Spec', 'Module', 'Cases', 'Covers'], unit
 ${BACK(self)}`);
 }
 
+/** Filled by the design-system page below; also published in index.json. */
+let designLaws = [];
+
 /* ── ⊗ cross/design-system.md ──────────────────────────────────────────── */
 
 {
@@ -2111,6 +2114,22 @@ ${BACK(self)}`);
   const chapterRecords = records
     .filter((r) => DESIGN_CHAPTER_RE.test(r.rel))
     .sort((a, b) => a.base.localeCompare(b.base));
+
+  /**
+   * Every numbered law, pulled from the chapters' `### PREFIX-n · Name`
+   * headings. The IDs are the citable surface of this system — a review says
+   * "SPA-4", not "the thing about empty middles" — so the index has to be
+   * able to resolve one to its chapter and line without opening ten files.
+   */
+  const LAW_RE = /^###\s+([A-Z]{3})-(\d+[a-z]?)\s+·\s+(.+?)\s*$/;
+  const laws = [];
+  for (const r of chapterRecords) {
+    r.source.split('\n').forEach((line, i) => {
+      const m = line.match(LAW_RE);
+      if (m) laws.push({ family: m[1], id: `${m[1]}-${m[2]}`, name: m[3], file: r.rel, line: i + 1 });
+    });
+  }
+  const lawFamilies = [...new Set(laws.map((l) => l.family))].sort();
 
   const chapters = chapterRecords.map((r) => {
     const h1 = (r.source.match(/^#\s+(.+)$/m) ?? [])[1] ?? r.base;
@@ -2156,6 +2175,8 @@ ${BACK(self)}`);
     ];
   });
 
+  designLaws = laws;
+
   const measured = [
     ['Token files', `${tokenFiles.length} (${tokenFiles.reduce((n, r) => n + r.lines, 0)} lines)`, 'Token groups that exist at all — see the table below'],
     ['Primitives', String(primitives.length), '`apps/web/src/components/ui` — the ladder\'s second rung'],
@@ -2190,13 +2211,33 @@ binding and load automatically when you open a component:
 
 ## The chapters
 
-${table(['Chapter', 'Governs', 'Status as written', 'Size'],
+${table(['Chapter', 'Governs', 'Status as written', 'Laws', 'Size'],
   chapters.map((c) => [
     `[${c.title}](${link(self, c.rel)})`,
     clip(c.tagline, 90),
     c.status ? clip(c.status, 110) : '—',
+    laws.filter((l) => l.file === c.rel).length || '—',
     `${c.lines} lines`,
   ]))}
+
+## The laws
+
+**${laws.length}** numbered laws across **${lawFamilies.length}** families. Each has a stable ID so it can be
+cited in a review, a commit or a PR. \`pnpm idx law <id>\` prints one.
+
+${table(['Family', 'Laws', 'IDs'],
+  lawFamilies.map((f) => {
+    const own = laws.filter((l) => l.family === f);
+    return [`\`${f}\``, own.length, own.map((l) => `\`${l.id}\``).join(' ')];
+  }))}
+
+<details>
+<summary>Every law, by ID</summary>
+
+${table(['ID', 'Law', 'Where'],
+  laws.map((l) => [`\`${l.id}\``, l.name, `[${l.file.replace('docs/design/', '')}:${l.line}](${link(self, l.rel ?? l.file)}#${anchor(`${l.id} ${l.name}`)})`]))}
+
+</details>
 
 ## Measured state of the code
 
@@ -2273,7 +2314,10 @@ const json = {
     screens: uiRoutes.length,
     crons: crons.length,
     specs: testFiles.length,
+    designLaws: designLaws.length,
   },
+  // The citable surface of the design system: `idx law SPA-4` resolves here.
+  designLaws: designLaws.map((l) => ({ id: l.id, family: l.family, name: l.name, file: l.file, line: l.line })),
   areas: Object.fromEntries(Object.entries(areaStats).map(([k, v]) => [k, { ...v, label: AREA_LABEL[k] }])),
   apiModules: apiModuleNames.map((name) => ({
     name,

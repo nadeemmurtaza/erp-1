@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-180 files · 25,964 lines
+186 files · 27,935 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -21,7 +21,7 @@ has a bug.
 | `docs` | 1 | 438 | doc |
 | `docs/brand` | 1 | 97 | doc |
 | `docs/brand/logo` | 6 | 0 | asset |
-| `docs/design` | 11 | 1,486 | doc |
+| `docs/design` | 17 | 3,457 | doc |
 | `docs/erp-lenses` | 134 | 13,660 | doc |
 | `docs/implementation` | 27 | 10,283 | doc, file |
 
@@ -36,6 +36,7 @@ has a bug.
 | `docs/implementation/RETAIL-ERP.md` | 1,083 | doc |  |
 | `docs/erp-lenses/_agent-cluster.md` | 944 | doc |  |
 | `docs/implementation/01-inventory-purchasing-cost.md` | 937 | doc |  |
+| `docs/design/10-laws.md` | 850 | doc |  |
 | `docs/implementation/MULTI-SECTOR.md` | 806 | doc |  |
 | `docs/implementation/DECISIONS.md` | 752 | doc |  |
 | `docs/erp-lenses/_cluster-analysis.md` | 675 | doc |  |
@@ -46,7 +47,6 @@ has a bug.
 | `docs/implementation/05-promotions-giftcards.md` | 320 | doc |  |
 | `docs/erp-lenses/00-uagent.md` | 299 | doc |  |
 | `docs/implementation/06-shipping-fulfilment-returns.md` | 288 | doc |  |
-| `docs/implementation/14-managed-services-module.md` | 270 | doc |  |
 
 
 ---

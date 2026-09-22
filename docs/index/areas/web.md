@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-251 files · 38,824 lines
+252 files · 39,084 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -31,15 +31,15 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 19 | module |
-| `apps/web/src/app` | 122 | 24,041 | page, layout, loading, error |
-| `apps/web/src/components` | 68 | 10,564 | component, loading |
+| `apps/web/src/app` | 123 | 24,255 | page, layout, loading, error |
+| `apps/web/src/components` | 68 | 10,574 | component, loading |
 | `apps/web/src/config` | 3 | 106 | config |
-| `apps/web/src/constants` | 5 | 260 | constants |
+| `apps/web/src/constants` | 5 | 262 | constants |
 | `apps/web/src/hooks` | 3 | 72 | hook |
 | `apps/web/src/i18n` | 3 | 53 | module |
 | `apps/web/src/lib` | 8 | 753 | utility |
 | `apps/web/src/providers` | 2 | 82 | react |
-| `apps/web/src/types` | 5 | 1,256 | types |
+| `apps/web/src/types` | 5 | 1,290 | types |
 | `apps/web/src/utils` | 5 | 306 | utility |
 
 
@@ -65,15 +65,15 @@ through `@newax/shared`'s `BRAND`.
 |---|---|---|---|
 | `apps/web/src/components/admin/product-form.tsx` | 1,034 | component |  |
 | `apps/web/src/components/storefront/stitching-panel.tsx` | 969 | component |  |
-| `apps/web/src/types/api.ts` | 932 | types |  |
+| `apps/web/src/types/api.ts` | 966 | types |  |
 | `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx` | 666 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` | 604 | page |  |
 | `apps/web/src/app/globals.css` | 603 | stylesheet |  |
 | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 539 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/page.tsx` | 526 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/garments/[id]/page.tsx` | 521 | page |  |
-| `apps/web/src/app/(admin)/admin/(app)/contacts/page.tsx` | 498 | page |  |
-| `apps/web/src/components/admin/nav-registry.ts` | 496 | component |  |
+| `apps/web/src/app/(admin)/admin/(app)/contacts/page.tsx` | 513 | page |  |
+| `apps/web/src/components/admin/nav-registry.ts` | 506 | component |  |
 | `apps/web/src/app/(storefront)/[locale]/checkout/page.tsx` | 493 | page |  |
 | `apps/web/src/components/admin/image-manager.tsx` | 485 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/finance/expenses/page.tsx` | 470 | page |  |

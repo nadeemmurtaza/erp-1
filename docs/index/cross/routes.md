@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **334** endpoints across **59** controllers, with the access rule that actually guards each one.
+All **337** endpoints across **59** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -103,11 +103,14 @@ never authorization.
 | DELETE | `/addresses/:id` | signed-in | `AddressesController.remove` | Remove a saved address |
 | PATCH | `/addresses/:id` | signed-in | `AddressesController.update` | Edit a saved address |
 
-### [`analytics`](../modules/analytics.md) (15)
+### [`analytics`](../modules/analytics.md) (18)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/analytics/comparison` | `analytics.view` | `AnalyticsController.comparison` | Sales, purchases and expenses side by side, bucketed by day, week or month |
+| GET | `/admin/analytics/customers/overview` | `analytics.view` | `AnalyticsController.customersOverview` | The customer book — totals, by city, by acquisition source, by lifecycle status |
+| GET | `/admin/analytics/customers/retention` | `analytics.view` | `AnalyticsController.customersRetention` | Signup cohorts and how many of each went on to order again, plus the overall re… |
+| GET | `/admin/analytics/customers/top` | `analytics.view` | `AnalyticsController.customersTop` | The highest-lifetime-value customers |
 | GET | `/admin/analytics/dashboard` | `analytics.view` | `AnalyticsController.dashboard` | Everything the dashboard shows, in one request |
 | GET | `/admin/analytics/extended` | `analytics.view` | `AnalyticsController.extended` | Funnel, geography, fulfilment and payment-mix metrics |
 | GET | `/admin/analytics/inventory/movements` | `analytics.view` | `AnalyticsController.inventoryMovements` | Stock movement volume by day and reason, plus the most recent individual moveme… |

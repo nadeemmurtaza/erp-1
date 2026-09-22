@@ -612,6 +612,40 @@ export interface InventoryMovements {
   recent: InventoryMovementRow[];
 }
 
+// --- WO-D.5: customers overview / retention / top ----------------------------
+
+export interface CustomersOverview {
+  totals: { total: number; repeat: number; newThisMonth: number };
+  byCity: Array<{ city: string; count: number }>;
+  bySource: Array<{ source: string; count: number }>;
+  byStatus: Array<{ status: string; count: number }>;
+}
+
+export interface CustomerCohort {
+  cohort: string;
+  size: number;
+  retained: number;
+}
+
+export interface CustomersRetention {
+  cohorts: CustomerCohort[];
+  repeatRateBps: number;
+}
+
+export interface CustomerTopRow {
+  contactId: string;
+  name: string;
+  city: string | null;
+  orders: number;
+  lifetimeValue: number;
+  avgOrderValue: number;
+  lastOrderAt: string | null;
+}
+
+export interface CustomersTop {
+  rows: CustomerTopRow[];
+}
+
 // --- Settings: roles & permissions, audit log --------------------------------
 
 export type EmailAccountPurpose = 'TRANSACTIONAL' | 'MARKETING' | 'SUPPORT';

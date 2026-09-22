@@ -1,10 +1,13 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { cn } from '@/utils/cn';
 import { formatDate, formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { downloadCsv } from '@/lib/download-csv';
+import { ROUTES } from '@/constants/routes';
 import type { PaginatedResponse } from '@/types/api';
 import { Loading } from '@/components/ui';
 import { exportFilename } from '@/constants/downloads';
@@ -47,9 +50,16 @@ const INTERACTION_KINDS = ['CALL', 'WHATSAPP', 'EMAIL', 'SMS', 'VISIT', 'NOTE', 
  * the same person ordering as a guest twice is one row here, not two.
  */
 export default function AdminContactsPage() {
+  // An analytics report (WO-D.5's top-customers table) can only link
+  // "somewhere useful" (the Track D shared acceptance criterion) since
+  // customers have no standalone detail route — a contact opens as a
+  // selection within this list, so the list itself has to be reachable
+  // pre-searched.
+  const initialQuery = useSearchParams().get('q') ?? '';
+
   const [contacts, setContacts] = useState<PaginatedResponse<Contact> | null>(null);
   const [selected, setSelected] = useState<ContactDetail | null>(null);
-  const [q, setQ] = useState('');
+  const [q, setQ] = useState(initialQuery);
   const [status, setStatus] = useState('');
   const [minOrders, setMinOrders] = useState('');
   const [page, setPage] = useState(1);
@@ -159,9 +169,14 @@ export default function AdminContactsPage() {
             Built from orders and enquiries, matched on phone number.
           </p>
         </div>
-        <button type="button" onClick={() => void exportCsv()} disabled={busy} className="btn-secondary">
-          Export this list
-        </button>
+        <div className="flex gap-2">
+          <Link href={ROUTES.admin.customerInsights} className="btn-secondary">
+            Insights
+          </Link>
+          <button type="button" onClick={() => void exportCsv()} disabled={busy} className="btn-secondary">
+            Export this list
+          </button>
+        </div>
       </div>
 
       <div className="mb-6 flex flex-wrap gap-3 border-b border-neutral-100 pb-4">

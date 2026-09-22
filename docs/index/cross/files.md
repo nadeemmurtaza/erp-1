@@ -3,15 +3,15 @@
 
 # Every tracked file
 
-All **1,232** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,234** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 509 | 70,112 | [files/api.md](../files/api.md) |
-| apps/web | 251 | 38,824 | [files/web.md](../files/web.md) |
+| apps/api | 510 | 70,477 | [files/api.md](../files/api.md) |
+| apps/web | 252 | 39,084 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 42 | 5,292 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 55 | 4,638 | [files/packages.md](../files/packages.md) |
@@ -29,8 +29,8 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 266 |
-| unit test | 109 |
-| page | 107 |
+| unit test | 110 |
+| page | 108 |
 | module | 88 |
 | service | 75 |
 | component | 73 |

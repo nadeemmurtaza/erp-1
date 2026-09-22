@@ -32,7 +32,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `analytics.view` | View dashboard analytics | low | 15 | 9 | STAFF, ADMIN |
+| `analytics.view` | View dashboard analytics | low | 18 | 9 | STAFF, ADMIN |
 | `reports.view` | Export CSV reports | low | 7 | 2 | STAFF, ADMIN |
 | `organization.view` | View the organization/brand/branch dashboard | low | 5 | 1 | STAFF, ADMIN |
 | `organization.manage` | Grant and revoke who is a brand or branch admin | high | 10 | 3 | ADMIN |
@@ -42,7 +42,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `crm.manage` | Manage leads, contacts and CRM | low | 18 | 3 | STAFF, ADMIN |
+| `crm.manage` | Manage leads, contacts and CRM | low | 18 | 4 | STAFF, ADMIN |
 
 ### Sales
 

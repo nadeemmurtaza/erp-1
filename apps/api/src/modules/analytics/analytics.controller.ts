@@ -130,6 +130,33 @@ export class AnalyticsController {
     return this.analytics.inventoryMovements(Math.min(Math.max(days, 7), 365));
   }
 
+  @Get('customers/overview')
+  @ApiOperation({ summary: 'The customer book — totals, by city, by acquisition source, by lifecycle status' })
+  customersOverview(@CurrentUser() user: AuthenticatedUser) {
+    if (!user.permissions.includes('crm.manage')) {
+      throw new ForbiddenException('You do not have access to customer analytics.');
+    }
+    return this.analytics.customersOverview();
+  }
+
+  @Get('customers/retention')
+  @ApiOperation({ summary: 'Signup cohorts and how many of each went on to order again, plus the overall repeat rate' })
+  customersRetention(@CurrentUser() user: AuthenticatedUser) {
+    if (!user.permissions.includes('crm.manage')) {
+      throw new ForbiddenException('You do not have access to customer analytics.');
+    }
+    return this.analytics.customersRetention();
+  }
+
+  @Get('customers/top')
+  @ApiOperation({ summary: 'The highest-lifetime-value customers' })
+  customersTop(@CurrentUser() user: AuthenticatedUser) {
+    if (!user.permissions.includes('crm.manage')) {
+      throw new ForbiddenException('You do not have access to customer analytics.');
+    }
+    return this.analytics.customersTop();
+  }
+
   @Get('visitors')
   @ApiOperation({ summary: 'Visitor counts, view-to-order funnel and traffic sources' })
   visitors(

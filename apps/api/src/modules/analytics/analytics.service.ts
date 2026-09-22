@@ -214,6 +214,40 @@ export interface InventoryMovements {
   recent: InventoryMovementRow[];
 }
 
+export interface CustomersOverview {
+  totals: { total: number; repeat: number; newThisMonth: number };
+  byCity: Array<{ city: string; count: number }>;
+  bySource: Array<{ source: string; count: number }>;
+  byStatus: Array<{ status: string; count: number }>;
+}
+
+export interface CustomerCohort {
+  /** "YYYY-MM" — the month the contact signed up. */
+  cohort: string;
+  size: number;
+  /** How many of this cohort went on to place a second order (`orderCount >= 2`) — the same threshold `Contact.status: REPEAT` and `summary()`'s own `repeat` figure already use. */
+  retained: number;
+}
+
+export interface CustomersRetention {
+  cohorts: CustomerCohort[];
+  repeatRateBps: number;
+}
+
+export interface CustomerTopRow {
+  contactId: string;
+  name: string;
+  city: string | null;
+  orders: number;
+  lifetimeValue: number;
+  avgOrderValue: number;
+  lastOrderAt: string | null;
+}
+
+export interface CustomersTop {
+  rows: CustomerTopRow[];
+}
+
 export interface ComparisonBucket {
   t: string;
   sales: number;
@@ -1578,6 +1612,144 @@ export class AnalyticsService {
         reason: movement.reason,
         delta: movement.delta,
         createdAt: movement.createdAt.toISOString(),
+      })),
+    };
+  }
+
+  /**
+   * WO-D.5 (10-admin-dashboard.md Track D) — the customer book, by where
+   * they are, where they came from, and their lifecycle stage. `totals`
+   * reuses `summary()`'s own `total`/`repeat`/`newThisMonth` queries
+   * verbatim (`contact.count()`, `orderCount >= 2`, `createdAt >=` this
+   * shop-month) rather than re-deriving the same three figures a second
+   * way — the same "don't diverge" discipline `sales-revenue.ts` names
+   * for revenue.
+   *
+   * EXPLAIN (test DB, ~10 contacts): sequential scans — correct at this
+   * size. `Contact`'s own `@@index([status])` (crm.prisma) is what the
+   * planner uses once row count justifies it; no new index needed.
+   */
+  async customersOverview(): Promise<CustomersOverview> {
+    const now = new Date();
+    const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+    const startOfMonth = startOfShopMonth(now, timeZone);
+
+    const [total, repeat, newThisMonth, cityRows, sourceRows, statusRows] = await Promise.all([
+      this.prisma.contact.count(),
+      this.prisma.contact.count({ where: { orderCount: { gte: 2 } } }),
+      this.prisma.contact.count({ where: { createdAt: { gte: startOfMonth } } }),
+
+      this.prisma.$queryRaw<Array<{ city: string; count: bigint }>>`
+        SELECT COALESCE(city, 'Unknown') AS city, COUNT(*) AS count
+        FROM "Contact"
+        GROUP BY 1
+        ORDER BY count DESC
+        LIMIT 10
+      `,
+
+      this.prisma.$queryRaw<Array<{ source: string; count: bigint }>>`
+        SELECT source, COUNT(*) AS count
+        FROM "Contact"
+        GROUP BY 1
+        ORDER BY count DESC
+        LIMIT 10
+      `,
+
+      this.prisma.$queryRaw<Array<{ status: string; count: bigint }>>`
+        SELECT status, COUNT(*) AS count
+        FROM "Contact"
+        GROUP BY 1
+        ORDER BY count DESC
+      `,
+    ]);
+
+    return {
+      totals: { total, repeat, newThisMonth },
+      byCity: cityRows.map((row) => ({ city: row.city, count: Number(row.count) })),
+      bySource: sourceRows.map((row) => ({ source: row.source, count: Number(row.count) })),
+      byStatus: statusRows.map((row) => ({ status: row.status, count: Number(row.count) })),
+    };
+  }
+
+  /**
+   * WO-D.5 — cohort retention and the overall repeat rate. No existing
+   * cohort/retention definition anywhere in this codebase to reuse or
+   * diverge from, so both are defined here, deliberately narrowly:
+   *
+   *   - A cohort is a signup MONTH (`Contact.createdAt`, shop-local not
+   *     needed — a month boundary is coarse enough that a timezone shift
+   *     never moves a contact into a different one in practice).
+   *   - "Retained" means the same thing `summary()`'s own `repeat` figure
+   *     and `Contact.status: REPEAT` already mean: went on to place a
+   *     SECOND order (`orderCount >= 2`) — not a time-windowed
+   *     "purchased again within N days" curve, which nothing in this
+   *     codebase defines and this report doesn't ask for beyond
+   *     `{cohort, size, retained}`.
+   *   - `repeatRateBps` is the SAME ratio, unwindowed (every contact ever,
+   *     matching `summary()`'s own `repeat`/`total`), not limited to the
+   *     last 24 months of cohorts below it — a shop's overall repeat rate
+   *     is a different question than "how is this month's cohort doing."
+   *
+   * Capped at the last 24 months so the cohort table stays a table, not a
+   * scroll — old enough to show a trend, not the shop's entire history.
+   */
+  async customersRetention(): Promise<CustomersRetention> {
+    const now = new Date();
+    const cohortWindowStart = new Date(now.getFullYear(), now.getMonth() - 23, 1);
+
+    const [cohortRows, total, repeat] = await Promise.all([
+      this.prisma.$queryRaw<Array<{ cohort: string; size: bigint; retained: bigint }>>`
+        SELECT to_char("createdAt", 'YYYY-MM') AS cohort,
+               COUNT(*) AS size,
+               COUNT(*) FILTER (WHERE "orderCount" >= 2) AS retained
+        FROM "Contact"
+        WHERE "createdAt" >= ${cohortWindowStart}
+        GROUP BY 1
+        ORDER BY 1 ASC
+      `,
+      this.prisma.contact.count(),
+      this.prisma.contact.count({ where: { orderCount: { gte: 2 } } }),
+    ]);
+
+    return {
+      cohorts: cohortRows.map((row) => ({
+        cohort: row.cohort,
+        size: Number(row.size),
+        retained: Number(row.retained),
+      })),
+      repeatRateBps: total > 0 ? Math.round((repeat / total) * 10_000) : 0,
+    };
+  }
+
+  /**
+   * WO-D.5 — the highest-lifetime-value customers. Reads straight from
+   * `Contact.lifetimeValue`/`avgOrderValue`/`orderCount` — the CRM's own
+   * denormalised rollup (`CrmService.refreshOrderRollups()`,
+   * crm.service.ts), computed with the same `status NOT IN
+   * ('CANCELLED','RETURNED')` exclusion `sales-revenue.ts`'s
+   * `VOID_ORDER_STATUSES` names — not summed fresh from `Order` here,
+   * which would either duplicate that definition or risk drifting from it.
+   * `lifetimeValue: { gt: 0 }` excludes a lead who has never ordered; a
+   * "top customers" ranking padded with $0 rows once real spenders run out
+   * is not a smaller version of the report, it's a wrong one.
+   */
+  async customersTop(): Promise<CustomersTop> {
+    const contacts = await this.prisma.contact.findMany({
+      where: { lifetimeValue: { gt: 0 } },
+      orderBy: { lifetimeValue: 'desc' },
+      take: 20,
+      select: { id: true, name: true, city: true, orderCount: true, lifetimeValue: true, avgOrderValue: true, lastOrderAt: true },
+    });
+
+    return {
+      rows: contacts.map((contact) => ({
+        contactId: contact.id,
+        name: contact.name,
+        city: contact.city,
+        orders: contact.orderCount,
+        lifetimeValue: contact.lifetimeValue,
+        avgOrderValue: contact.avgOrderValue,
+        lastOrderAt: contact.lastOrderAt?.toISOString() ?? null,
       })),
     };
   }

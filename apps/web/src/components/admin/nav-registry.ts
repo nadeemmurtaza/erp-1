@@ -120,6 +120,16 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['crm.manage'],
     group: 'customers',
     module: 'crm',
+    children: [
+      {
+        key: 'contacts-insights',
+        label: 'Insights',
+        href: '/admin/customers/insights',
+        permissions: ['crm.manage'],
+        group: 'customers',
+        module: 'analytics',
+      },
+    ],
   },
   {
     key: 'inbox',

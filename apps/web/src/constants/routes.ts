@@ -98,6 +98,8 @@ export const ROUTES = {
     design: (id: string) => `/admin/designs/${id}`,
 
     contacts: '/admin/contacts',
+    contactSearch: (q: string) => `/admin/contacts?q=${encodeURIComponent(q)}`,
+    customerInsights: '/admin/customers/insights',
     leads: '/admin/leads',
     inbox: '/admin/inbox',
     marketing: '/admin/marketing',

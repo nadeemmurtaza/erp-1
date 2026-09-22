@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 252 tracked files in `apps/web`, by directory.
+All 253 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -438,7 +438,7 @@ All 252 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 275 |  |
+| `page.tsx` | page | 283 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/stitching/bookings` (1)
 
@@ -523,6 +523,12 @@ All 252 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 454 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/workshop/insights` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 109 |  |
 
 ### `apps/web/src/app/(admin)/admin/login` (1)
 
@@ -730,7 +736,7 @@ All 252 tracked files in `apps/web`, by directory.
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 485 |  |
-| `nav-registry.ts` | component | 506 |  |
+| `nav-registry.ts` | component | 516 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1034 |  |
@@ -831,7 +837,7 @@ All 252 tracked files in `apps/web`, by directory.
 | `downloads.ts` | constants | 21 |  |
 | `payment-methods.ts` | constants | 30 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 24 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 135 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 136 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 52 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)
@@ -874,7 +880,7 @@ All 252 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 966 |  |
+| `api.ts` | types | 988 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

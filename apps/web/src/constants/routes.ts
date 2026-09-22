@@ -92,6 +92,7 @@ export const ROUTES = {
     stitchingBookings: '/admin/stitching/bookings',
     stitchingBooking: (id: string) => `/admin/stitching/bookings/${id}`,
     stitchingJob: (id: string) => `/admin/stitching/jobs/${id}`,
+    workshopInsights: '/admin/workshop/insights',
     garments: '/admin/garments',
     garment: (id: string) => `/admin/garments/${id}`,
     designs: '/admin/designs',

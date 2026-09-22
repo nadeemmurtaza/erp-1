@@ -3,7 +3,7 @@
 
 # Tests
 
-**125** spec files, **1,218** cases. What is already pinned down — and what is not.
+**126** spec files, **1,225** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -50,7 +50,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (110)
+## Unit and integration (111)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -91,6 +91,7 @@ regression or an N+1.
 | `apps/api/src/modules/analytics/analytics.orders.spec.ts` | analytics | 8 | AnalyticsService — WO-D.1 orders overview/fulfilment · ordersOverview · ordersFulfilment |
 | `apps/api/src/modules/analytics/analytics.products.spec.ts` | analytics | 9 | AnalyticsService — WO-D.3 products top/slow-sellers, categories · productsTopSellers · productsSlow… |
 | `apps/api/src/modules/analytics/analytics.purchasing.spec.ts` | analytics | 10 | AnalyticsService — WO-D.2 purchasing spend/suppliers · purchasingSpend · purchasingSuppliers |
+| `apps/api/src/modules/analytics/analytics.workshop.spec.ts` | analytics | 7 | AnalyticsService — WO-D.6 workshop output · series · byStage · byTailor |
 | `apps/api/src/modules/analytics/supply-chain-digest.cron.spec.ts` | analytics | 11 | SupplyChainDigestCron · sendSupplierDigests · sendSupplierScorecards · sendDemandAlerts |
 | `apps/api/src/modules/bom/bom-production-replication.listener.spec.ts` | bom | 3 | BomProductionReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onBomProductionCompleted |
 | `apps/api/src/modules/bom/bom.listener.spec.ts` | bom | 4 | BomListener |

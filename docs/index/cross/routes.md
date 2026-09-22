@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **337** endpoints across **59** controllers, with the access rule that actually guards each one.
+All **338** endpoints across **59** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -103,7 +103,7 @@ never authorization.
 | DELETE | `/addresses/:id` | signed-in | `AddressesController.remove` | Remove a saved address |
 | PATCH | `/addresses/:id` | signed-in | `AddressesController.update` | Edit a saved address |
 
-### [`analytics`](../modules/analytics.md) (18)
+### [`analytics`](../modules/analytics.md) (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -125,6 +125,7 @@ never authorization.
 | GET | `/admin/analytics/purchasing/suppliers` | `analytics.view` | `AnalyticsController.purchasingSuppliers` | Spend, order count, on-time rate and lead time by supplier |
 | GET | `/admin/analytics/stitching` | `analytics.view` | `AnalyticsController.stitching` | Which garments and style options drive the stitching business |
 | GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` | Visitor counts, view-to-order funnel and traffic sources |
+| GET | `/admin/analytics/workshop/output` | `analytics.view` | `AnalyticsController.workshopOutput` | Workshop throughput — started/completed per day, time in each stage, output by… |
 
 ### [`bom`](../modules/bom.md) (20)
 

@@ -157,6 +157,18 @@ export class AnalyticsController {
     return this.analytics.customersTop();
   }
 
+  @Get('workshop/output')
+  @ApiOperation({ summary: 'Workshop throughput — started/completed per day, time in each stage, output by tailor, the bottleneck stage' })
+  workshopOutput(
+    @Query('days', new DefaultValuePipe(30), ParseIntPipe) days: number,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    if (!user.permissions.includes('stitching.jobs.view_queue')) {
+      throw new ForbiddenException('You do not have access to the workshop queue.');
+    }
+    return this.analytics.workshopOutput(Math.min(Math.max(days, 7), 365));
+  }
+
   @Get('visitors')
   @ApiOperation({ summary: 'Visitor counts, view-to-order funnel and traffic sources' })
   visitors(

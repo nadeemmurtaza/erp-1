@@ -230,6 +230,16 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['stitching.jobs.view_queue'],
     group: 'workshop',
     module: 'stitching',
+    children: [
+      {
+        key: 'stitching-insights',
+        label: 'Insights',
+        href: '/admin/workshop/insights',
+        permissions: ['stitching.jobs.view_queue'],
+        group: 'workshop',
+        module: 'analytics',
+      },
+    ],
   },
   {
     key: 'stitching-bookings',

@@ -32,7 +32,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `analytics.view` | View dashboard analytics | low | 18 | 9 | STAFF, ADMIN |
+| `analytics.view` | View dashboard analytics | low | 19 | 9 | STAFF, ADMIN |
 | `reports.view` | Export CSV reports | low | 7 | 2 | STAFF, ADMIN |
 | `organization.view` | View the organization/brand/branch dashboard | low | 5 | 1 | STAFF, ADMIN |
 | `organization.manage` | Grant and revoke who is a brand or branch admin | high | 10 | 3 | ADMIN |
@@ -57,7 +57,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `stitching.jobs.view_queue` | View the tailor job queue | low | 3 | 1 | TAILOR, STAFF, ADMIN |
+| `stitching.jobs.view_queue` | View the tailor job queue | low | 3 | 2 | TAILOR, STAFF, ADMIN |
 | `stitching.jobs.change_stage` | Move a job to its next stage | low | 1 | — | TAILOR, STAFF, ADMIN |
 | `stitching.jobs.manage_own` | Change stage on own assigned jobs only | low | **0 — enforces nothing** | — | TAILOR |
 | `stitching.jobs.manage_all` | Change stage on any job, regardless of assignment | medium | **0 — enforces nothing** | — | STAFF, ADMIN |

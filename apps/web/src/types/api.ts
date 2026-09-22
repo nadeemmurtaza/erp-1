@@ -646,6 +646,28 @@ export interface CustomersTop {
   rows: CustomerTopRow[];
 }
 
+// --- WO-D.6: workshop output --------------------------------------------------
+
+export interface WorkshopStageRow {
+  stage: string;
+  count: number;
+  avgHours: number;
+}
+
+export interface WorkshopTailorRow {
+  tailorId: string;
+  name: string;
+  jobsCompleted: number;
+  avgHours: number;
+}
+
+export interface WorkshopOutput {
+  series: Array<{ date: string; started: number; completed: number }>;
+  byStage: WorkshopStageRow[];
+  byTailor: WorkshopTailorRow[];
+  bottleneck: { stage: string; avgHours: number } | null;
+}
+
 // --- Settings: roles & permissions, audit log --------------------------------
 
 export type EmailAccountPurpose = 'TRANSACTIONAL' | 'MARKETING' | 'SUPPORT';

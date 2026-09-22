@@ -248,6 +248,26 @@ export interface CustomersTop {
   rows: CustomerTopRow[];
 }
 
+export interface WorkshopStageRow {
+  stage: string;
+  count: number;
+  avgHours: number;
+}
+
+export interface WorkshopTailorRow {
+  tailorId: string;
+  name: string;
+  jobsCompleted: number;
+  avgHours: number;
+}
+
+export interface WorkshopOutput {
+  series: Array<{ date: string; started: number; completed: number }>;
+  byStage: WorkshopStageRow[];
+  byTailor: WorkshopTailorRow[];
+  bottleneck: { stage: string; avgHours: number } | null;
+}
+
 export interface ComparisonBucket {
   t: string;
   sales: number;
@@ -1751,6 +1771,148 @@ export class AnalyticsService {
         avgOrderValue: contact.avgOrderValue,
         lastOrderAt: contact.lastOrderAt?.toISOString() ?? null,
       })),
+    };
+  }
+
+  /**
+   * WO-D.6 (10-admin-dashboard.md Track D, the last one) — workshop
+   * throughput: how many jobs started and finished each day, how long a
+   * job sits in each pipeline stage, who's finishing the most work, and
+   * where the pipeline is actually stuck.
+   *
+   * `byStage`'s timing reuses `ordersFulfilment()`'s own LAG-window
+   * pattern verbatim, against `StitchingJobEvent` instead of
+   * `OrderStatusEvent` — that table is the exact same shape (append-only,
+   * `fromStage`/`toStage`/`createdAt`, `fromStage` always populated since
+   * `JobsService.changeStage()` writes `fromStage: job.stage`, never a
+   * genesis row — jobs.service.ts:365). Grouped by the single `fromStage`
+   * here, not the `(from, to)` pair `ordersFulfilment()` groups by — D.6
+   * wants "how long in this stage," not "how long for this exact
+   * transition," and `RECEIVED→CUTTING→STITCHING→QC→READY→DISPATCHED` is
+   * close enough to linear that the pair distinction adds noise, not
+   * signal, for a workshop supervisor.
+   *
+   * `started`/`completed` in `series`, and `byTailor`'s own `avgHours`,
+   * read `StitchingJob.startedAt`/`completedAt` directly (set once, at
+   * CUTTING and READY respectively — `jobs.service.ts:357-359`) rather
+   * than the event log — a tailor's own throughput is "how long did MY
+   * job take end to end," a different question from "how long did the
+   * pipeline spend in each stage across every tailor."
+   *
+   * `byTailor`'s row shape is this WO's one genuine judgment call — the
+   * doc names only the bare word `byTailor`. Chosen: `{tailorId, name,
+   * jobsCompleted, avgHours}`, mirroring `byStage`'s own field names.
+   * `name` prefers `TailorProfile.displayName` (the purpose-built field
+   * for this) over concatenating `User.firstName`/`lastName`, falling
+   * back to the latter only for a tailor with no profile row.
+   *
+   * `bottleneck` is simply the `byStage` row with the highest `avgHours`
+   * — computed here, not a separate query, since `byStage` already has it.
+   *
+   * EXPLAIN (test DB, ~10 jobs): sequential scans throughout — correct at
+   * this size. `StitchingJob`'s `@@index([assignedTailorId, stage])` and
+   * `StitchingJobEvent`'s `@@index([jobId, createdAt])` (stitching.prisma)
+   * are what the planner uses once row count justifies it.
+   */
+  async workshopOutput(days: number): Promise<WorkshopOutput> {
+    const start = this.windowStart(days);
+    const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+
+    const [startedRows, completedRows, stageRows, tailorRows] = await Promise.all([
+      this.prisma.$queryRawUnsafe<Array<{ day: string; started: bigint }>>(
+        `SELECT ${shopDayExpr('"startedAt"', timeZone)} AS day, COUNT(*) AS started
+         FROM "StitchingJob"
+         WHERE "startedAt" >= $1
+         GROUP BY 1`,
+        start,
+      ),
+
+      this.prisma.$queryRawUnsafe<Array<{ day: string; completed: bigint }>>(
+        `SELECT ${shopDayExpr('"completedAt"', timeZone)} AS day, COUNT(*) AS completed
+         FROM "StitchingJob"
+         WHERE "completedAt" >= $1
+         GROUP BY 1`,
+        start,
+      ),
+
+      this.prisma.$queryRaw<Array<{ stage: string; count: bigint; avg_hours: number | null }>>`
+        WITH gaps AS (
+          SELECT
+            e."fromStage" AS stage,
+            EXTRACT(EPOCH FROM (
+              e."createdAt" - COALESCE(
+                LAG(e."createdAt") OVER (PARTITION BY e."jobId" ORDER BY e."createdAt"),
+                j."createdAt"
+              )
+            )) / 3600.0 AS hours
+          FROM "StitchingJobEvent" e
+          JOIN "StitchingJob" j ON j.id = e."jobId"
+          WHERE e."createdAt" >= ${start} AND e."fromStage" IS NOT NULL
+        )
+        SELECT stage, COUNT(*) AS count, AVG(hours)::float8 AS avg_hours
+        FROM gaps
+        GROUP BY stage
+      `,
+
+      this.prisma.$queryRaw<Array<{ tailorId: string; jobsCompleted: bigint; avg_hours: number | null }>>`
+        SELECT "assignedTailorId" AS "tailorId",
+               COUNT(*) AS "jobsCompleted",
+               AVG(EXTRACT(EPOCH FROM ("completedAt" - "startedAt")) / 3600.0)::float8 AS avg_hours
+        FROM "StitchingJob"
+        WHERE "completedAt" >= ${start} AND "assignedTailorId" IS NOT NULL AND "startedAt" IS NOT NULL
+        GROUP BY "assignedTailorId"
+        ORDER BY "jobsCompleted" DESC
+        LIMIT 20
+      `,
+    ]);
+
+    const dayKeys = shopDayKeys(start, days, timeZone);
+    const startedByDay = new Map(startedRows.map((row) => [row.day, Number(row.started)]));
+    const completedByDay = new Map(completedRows.map((row) => [row.day, Number(row.completed)]));
+
+    const byStage: WorkshopStageRow[] = stageRows.map((row) => ({
+      stage: row.stage,
+      count: Number(row.count),
+      avgHours: round1(row.avg_hours ?? 0),
+    }));
+
+    let byTailor: WorkshopTailorRow[] = [];
+    if (tailorRows.length > 0) {
+      const tailorIds = tailorRows.map((row) => row.tailorId);
+      const [profiles, users] = await Promise.all([
+        this.prisma.tailorProfile.findMany({ where: { userId: { in: tailorIds } }, select: { userId: true, displayName: true } }),
+        this.prisma.user.findMany({ where: { id: { in: tailorIds } }, select: { id: true, firstName: true, lastName: true } }),
+      ]);
+      const nameByTailorId = new Map<string, string>();
+      for (const user of users) {
+        nameByTailorId.set(user.id, [user.firstName, user.lastName].filter(Boolean).join(' ') || user.id);
+      }
+      for (const profile of profiles) {
+        nameByTailorId.set(profile.userId, profile.displayName);
+      }
+
+      byTailor = tailorRows.map((row) => ({
+        tailorId: row.tailorId,
+        name: nameByTailorId.get(row.tailorId) ?? row.tailorId,
+        jobsCompleted: Number(row.jobsCompleted),
+        avgHours: round1(row.avg_hours ?? 0),
+      }));
+    }
+
+    const bottleneck = byStage.reduce<WorkshopStageRow | null>(
+      (worst, row) => (!worst || row.avgHours > worst.avgHours ? row : worst),
+      null,
+    );
+
+    return {
+      series: dayKeys.map((day) => ({
+        date: day,
+        started: startedByDay.get(day) ?? 0,
+        completed: completedByDay.get(day) ?? 0,
+      })),
+      byStage,
+      byTailor,
+      bottleneck: bottleneck ? { stage: bottleneck.stage, avgHours: bottleneck.avgHours } : null,
     };
   }
 

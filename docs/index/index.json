@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1234,
-    "lines": 194518,
-    "routes": 337,
+    "files": 1236,
+    "lines": 195022,
+    "routes": 338,
     "controllers": 59,
     "models": 124,
     "enums": 53,
     "migrations": 59,
     "events": 37,
     "permissions": 41,
-    "screens": 146,
+    "screens": 147,
     "crons": 8,
-    "specs": 125,
+    "specs": 126,
     "designLaws": 150
   },
   "designLaws": [
@@ -1083,9 +1083,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 510,
-      "lines": 70477,
-      "bytes": 2573164,
+      "files": 511,
+      "lines": 70831,
+      "bytes": 2588002,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1101,9 +1101,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 252,
-      "lines": 39084,
-      "bytes": 1443991,
+      "files": 253,
+      "lines": 39234,
+      "bytes": 1449172,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -1178,11 +1178,12 @@
         "apps/api/src/modules/analytics/analytics.products.spec.ts",
         "apps/api/src/modules/analytics/analytics.purchasing.spec.ts",
         "apps/api/src/modules/analytics/analytics.service.ts",
+        "apps/api/src/modules/analytics/analytics.workshop.spec.ts",
         "apps/api/src/modules/analytics/dto/analytics.dto.ts",
         "apps/api/src/modules/analytics/supply-chain-digest.cron.spec.ts",
         "apps/api/src/modules/analytics/supply-chain-digest.cron.ts"
       ],
-      "routes": 18,
+      "routes": 19,
       "page": "docs/index/modules/analytics.md"
     },
     {
@@ -2192,7 +2193,7 @@
       "controller": "AnalyticsController",
       "handler": "comparison",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 170,
+      "line": 182,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2320,7 +2321,7 @@
       "controller": "AnalyticsController",
       "handler": "setMonthlyTarget",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 187,
+      "line": 199,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2464,7 +2465,7 @@
       "controller": "AnalyticsController",
       "handler": "visitors",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 162,
+      "line": 174,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2472,6 +2473,22 @@
       "public": false,
       "authOnly": false,
       "summary": "Visitor counts, view-to-order funnel and traffic sources"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/workshop/output",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "workshopOutput",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 162,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Workshop throughput — started/completed per day, time in each stage, output by tailor, the bottleneck stage"
     },
     {
       "method": "GET",
@@ -7170,7 +7187,8 @@
         "GET /admin/analytics/purchasing/spend",
         "GET /admin/analytics/purchasing/suppliers",
         "GET /admin/analytics/stitching",
-        "GET /admin/analytics/visitors"
+        "GET /admin/analytics/visitors",
+        "GET /admin/analytics/workshop/output"
       ],
       "uiSites": 9,
       "roles": [
@@ -7392,7 +7410,7 @@
         "GET /admin/stitching/jobs/:id",
         "GET /admin/stitching/jobs/workload"
       ],
-      "uiSites": 1,
+      "uiSites": 2,
       "roles": [
         "TAILOR",
         "STAFF",
@@ -22950,6 +22968,15 @@
     },
     {
       "app": "web",
+      "kind": "page",
+      "url": "/admin/workshop/insights",
+      "file": "apps/web/src/app/(admin)/admin/(app)/workshop/insights/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
       "kind": "handler",
       "url": "/checkout/callback/[provider]",
       "file": "apps/web/src/app/checkout/callback/[provider]/route.ts",
@@ -23863,6 +23890,18 @@
         "AnalyticsService — WO-D.2 purchasing spend/suppliers",
         "purchasingSpend",
         "purchasingSuppliers"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/analytics/analytics.workshop.spec.ts",
+      "module": "analytics",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "AnalyticsService — WO-D.6 workshop output",
+        "series",
+        "byStage",
+        "byTailor"
       ]
     },
     {
@@ -28968,8 +29007,8 @@
       "path": "apps/api/src/modules/analytics/analytics.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 191,
-      "bytes": 8213,
+      "lines": 203,
+      "bytes": 8761,
       "doc": "",
       "symbols": [
         {
@@ -29043,8 +29082,8 @@
       "path": "apps/api/src/modules/analytics/analytics.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1856,
-      "bytes": 74133,
+      "lines": 2018,
+      "bytes": 80927,
       "doc": "",
       "symbols": [
         {
@@ -29178,26 +29217,50 @@
           "line": 247
         },
         {
-          "name": "ComparisonBucket",
+          "name": "WorkshopStageRow",
           "kind": "interface",
           "line": 251
         },
         {
+          "name": "WorkshopTailorRow",
+          "kind": "interface",
+          "line": 257
+        },
+        {
+          "name": "WorkshopOutput",
+          "kind": "interface",
+          "line": 264
+        },
+        {
+          "name": "ComparisonBucket",
+          "kind": "interface",
+          "line": 271
+        },
+        {
           "name": "ComparisonAnalytics",
           "kind": "interface",
-          "line": 261
+          "line": 281
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 276
+          "line": 296
         },
         {
           "name": "AnalyticsService",
           "kind": "class",
-          "line": 298
+          "line": 318
         }
       ]
+    },
+    {
+      "path": "apps/api/src/modules/analytics/analytics.workshop.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 180,
+      "bytes": 7496,
+      "doc": "",
+      "symbols": []
     },
     {
       "path": "apps/api/src/modules/analytics/dto/analytics.dto.ts",
@@ -36359,14 +36422,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/stitching/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 275,
-      "bytes": 9799,
+      "lines": 283,
+      "bytes": 10092,
       "doc": "",
       "symbols": [
         {
           "name": "TailorQueuePage",
           "kind": "default",
-          "line": 24
+          "line": 25
         }
       ]
     },
@@ -36532,6 +36595,21 @@
           "name": "AdminUsersPage",
           "kind": "default",
           "line": 28
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/workshop/insights/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 109,
+      "bytes": 4059,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WorkshopInsightsPage",
+          "kind": "default",
+          "line": 17
         }
       ]
     },
@@ -37527,8 +37605,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 506,
-      "bytes": 13191,
+      "lines": 516,
+      "bytes": 13443,
       "doc": "",
       "symbols": [
         {
@@ -37559,12 +37637,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 476
+          "line": 486
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 491
+          "line": 501
         }
       ]
     },
@@ -38620,8 +38698,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 135,
-      "bytes": 5281,
+      "lines": 136,
+      "bytes": 5331,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -39057,8 +39135,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 966,
-      "bytes": 25510,
+      "lines": 988,
+      "bytes": 26037,
       "doc": "",
       "symbols": [
         {
@@ -39372,149 +39450,164 @@
           "line": 645
         },
         {
+          "name": "WorkshopStageRow",
+          "kind": "interface",
+          "line": 651
+        },
+        {
+          "name": "WorkshopTailorRow",
+          "kind": "interface",
+          "line": 657
+        },
+        {
+          "name": "WorkshopOutput",
+          "kind": "interface",
+          "line": 664
+        },
+        {
           "name": "EmailAccountPurpose",
           "kind": "type",
-          "line": 651
+          "line": 673
         },
         {
           "name": "EmailAccount",
           "kind": "interface",
-          "line": 653
+          "line": 675
         },
         {
           "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 678
+          "line": 700
         },
         {
           "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 686
+          "line": 708
         },
         {
           "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 694
+          "line": 716
         },
         {
           "name": "InboundEmail",
           "kind": "interface",
-          "line": 701
+          "line": 723
         },
         {
           "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 718
+          "line": 740
         },
         {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 725
+          "line": 747
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 737
+          "line": 759
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 746
+          "line": 768
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 748
+          "line": 770
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 760
+          "line": 782
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 766
+          "line": 788
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 773
+          "line": 795
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 778
+          "line": 800
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 790
+          "line": 812
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 799
+          "line": 821
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 806
+          "line": 828
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 820
+          "line": 842
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 831
+          "line": 853
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 835
+          "line": 857
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 844
+          "line": 866
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 852
+          "line": 874
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 881
+          "line": 903
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 913
+          "line": 935
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 928
+          "line": 950
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 937
+          "line": 959
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 946
+          "line": 968
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 962
+          "line": 984
         }
       ]
     },

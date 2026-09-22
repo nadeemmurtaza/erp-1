@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1170,
-    "lines": 181698,
+    "files": 1172,
+    "lines": 181891,
     "routes": 300,
     "controllers": 58,
     "models": 118,
@@ -14,7 +14,7 @@
     "permissions": 38,
     "screens": 128,
     "crons": 8,
-    "specs": 109,
+    "specs": 110,
     "designLaws": 150
   },
   "designLaws": [
@@ -1108,14 +1108,14 @@
     },
     "docs": {
       "files": 247,
-      "lines": 35599,
-      "bytes": 2228013,
+      "lines": 35690,
+      "bytes": 2233317,
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 53,
-      "lines": 4507,
-      "bytes": 145791,
+      "files": 55,
+      "lines": 4609,
+      "bytes": 149696,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -22860,6 +22860,17 @@
         "weightedAverageCost",
         "convertToBase"
       ]
+    },
+    {
+      "file": "packages/shared/src/units.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "toBaseUnits",
+        "fromBaseUnits",
+        "formatQuantity"
+      ]
     }
   ],
   "files": [
@@ -39059,8 +39070,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 856,
-      "bytes": 38347,
+      "lines": 947,
+      "bytes": 43651,
       "doc": "",
       "symbols": []
     },
@@ -40050,8 +40061,8 @@
       "path": "packages/shared/src/index.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 17,
-      "bytes": 491,
+      "lines": 18,
+      "bytes": 516,
       "doc": "",
       "symbols": []
     },
@@ -40478,6 +40489,50 @@
           "name": "TAILWIND_FONT_SIZE",
           "kind": "const",
           "line": 31
+        }
+      ]
+    },
+    {
+      "path": "packages/shared/src/units.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 43,
+      "bytes": 1471,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/shared/src/units.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 58,
+      "bytes": 2409,
+      "doc": "Raw-material quantities.",
+      "symbols": [
+        {
+          "name": "RawMaterialUnit",
+          "kind": "type",
+          "line": 14
+        },
+        {
+          "name": "UNIT_LABELS",
+          "kind": "const",
+          "line": 16
+        },
+        {
+          "name": "toBaseUnits",
+          "kind": "function",
+          "line": 33
+        },
+        {
+          "name": "fromBaseUnits",
+          "kind": "function",
+          "line": 38
+        },
+        {
+          "name": "formatQuantity",
+          "kind": "function",
+          "line": 47
         }
       ]
     },

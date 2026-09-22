@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **1,170 files / 181,698 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **1,172 files / 181,891 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -56,11 +56,11 @@ single fact — the page is the right tool when you need the shape of something.
 | “What runs on a schedule?” | [cross/jobs.md](cross/jobs.md) | ~554 | 8 cron jobs and the background dispatchers |
 | “What command do I run?” | [cross/commands.md](cross/commands.md) | ~1.6k | every script in every package.json (72) |
 | “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | ~2.4k | 54 migrations, newest last |
-| “What is already tested?” | [cross/tests.md](cross/tests.md) | ~4.3k | 109 spec files → what each one pins down |
+| “What is already tested?” | [cross/tests.md](cross/tests.md) | ~4.3k | 110 spec files → what each one pins down |
 | “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~20.3k | every document of record, with its outline |
 | “What is in this one module?” | [modules/](modules) | — | one page per API feature module (26) |
 | “What does this file export?” | [symbols/](symbols) | — | every exported symbol in the repo, with line numbers |
-| “I need a machine-readable form.” | [index.json](index.json) | ~267.0k | the whole index as JSON — grep or jq it |
+| “I need a machine-readable form.” | [index.json](index.json) | ~267.3k | the whole index as JSON — grep or jq it |
 
 
 ## The levels
@@ -122,8 +122,8 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 | apps/web | 232 | 34,810 | [web](areas/web.md) |
 | apps/pos | 31 | 1,874 | [pos](areas/pos.md) |
 | apps/mobile | 42 | 5,292 | [mobile](areas/mobile.md) |
-| packages/* | 53 | 4,507 | [packages](areas/packages.md) |
-| docs/* | 247 | 35,599 | [docs](areas/docs.md) |
+| packages/* | 55 | 4,609 | [packages](areas/packages.md) |
+| docs/* | 247 | 35,690 | [docs](areas/docs.md) |
 | scripts, CI, deployment and container configuration | 55 | 27,839 | [infra](areas/infra.md) |
 | repository root files | 42 | 9,049 | [root](areas/root.md) |
 

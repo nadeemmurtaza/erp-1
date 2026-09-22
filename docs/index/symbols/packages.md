@@ -107,6 +107,7 @@ Every top-level export in `packages`, with the line to open.
 | `index.ts` | `*` | re-export |  | from `./theme-colors` |
 | `index.ts` | `*` | re-export |  | from `./theme-radii` |
 | `index.ts` | `*` | re-export |  | from `./theme-type` |
+| `index.ts` | `*` | re-export |  | from `./units` |
 | `index.ts` | `*` | re-export |  | from `./measurements/types` |
 | `index.ts` | `*` | re-export |  | from `./measurements/schema` |
 | `index.ts` | `*` | re-export |  | from `./measurements/defaults` |
@@ -158,6 +159,11 @@ Every top-level export in `packages`, with the line to open.
 | `theme-type.ts` | `THEME_TYPE` | const | :21 |  |
 | `theme-type.ts` | `THEME_FONTS` | const | :24 | Font families, for the Tailwind config and mobile's theme. |
 | `theme-type.ts` | `TAILWIND_FONT_SIZE` | const | :31 | The scale keyed by Tailwind's utility names, ready for `theme.fontSize`. |
+| `units.ts` | `RawMaterialUnit` | type | :14 | Mirrors bom.prisma's `RawMaterialUnit` enum — kept as a literal union here rather than importing th… |
+| `units.ts` | `UNIT_LABELS` | const | :16 | Mirrors bom.prisma's `RawMaterialUnit` enum — kept as a literal union here rather than importing th… |
+| `units.ts` | `toBaseUnits` | function | :33 | A display quantity (12.5 gaz) to base units (12500), rounded to the nearest whole base unit — base… |
+| `units.ts` | `fromBaseUnits` | function | :38 | Base units (12500) back to a display quantity (12.5 gaz). |
+| `units.ts` | `formatQuantity` | function | :47 | "12.5 gaz" — only as many decimal places as `unitScale` actually implies (three for scale 1000, non… |
 
 ### `packages/shared/src/entities`
 

@@ -3,7 +3,7 @@
 
 # Tests
 
-**109** spec files, **1,065** cases. What is already pinned down — and what is not.
+**110** spec files, **1,072** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -50,7 +50,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (94)
+## Unit and integration (95)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -148,6 +148,7 @@ regression or an N+1.
 | `packages/shared/src/permissions.spec.ts` | packages | 8 | PERMISSION_CATALOG · PERMISSION_GROUPS — the role-creation wizard\ |
 | `packages/shared/src/phone.spec.ts` | packages | 7 | normalizePkPhone · normalizeEmail |
 | `packages/shared/src/pricing.spec.ts` | packages | 35 | computeStitchingFee · computeLineItem · lineMargin · computeOrderTotals · taxExclusive · taxInclusi… |
+| `packages/shared/src/units.spec.ts` | packages | 7 | toBaseUnits · fromBaseUnits · formatQuantity |
 
 
 ---

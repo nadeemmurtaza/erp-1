@@ -3,7 +3,7 @@
 
 # Files — packages
 
-All 53 tracked files in `packages/*`, by directory.
+All 55 tracked files in `packages/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -49,7 +49,7 @@ All 53 tracked files in `packages/*`, by directory.
 | `package.json` | json | 37 |  |
 | `tsconfig.json` | json | 17 |  |
 
-### `packages/shared/src` (17)
+### `packages/shared/src` (19)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -59,7 +59,7 @@ All 53 tracked files in `packages/*`, by directory.
 | `fabric-estimate.spec.ts` | unit test | 79 | ((40 + 3) * 2 + (23 + 2)) / 36 = (86 + 25) / 36 = 3.0833... |
 | `fabric-estimate.ts` | module | 95 | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
 | `http-client.ts` | module | 200 | The one HTTP layer for a signed-in browser client. |
-| `index.ts` | module | 17 |  |
+| `index.ts` | module | 18 |  |
 | `permissions.spec.ts` | unit test | 68 |  |
 | `permissions.ts` | module | 472 | The permission catalog for PBAC (Permission-Based Access Control). |
 | `phone.spec.ts` | unit test | 65 |  |
@@ -70,6 +70,8 @@ All 53 tracked files in `packages/*`, by directory.
 | `theme-colors.ts` | module | 18 |  |
 | `theme-radii.ts` | module | 17 |  |
 | `theme-type.ts` | module | 42 |  |
+| `units.spec.ts` | unit test | 43 |  |
+| `units.ts` | module | 58 | Raw-material quantities. |
 
 ### `packages/shared/src/entities` (11)
 

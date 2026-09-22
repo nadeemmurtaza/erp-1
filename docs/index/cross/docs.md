@@ -2046,7 +2046,7 @@ _no second-level headings_
 - Work orders  <sub>:18</sub>
 - Out of scope (for now)  <sub>:54</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>856 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>947 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2068,6 +2068,7 @@ _no second-level headings_
 - ADR-017 — An observability backend  <sub>:682</sub>
 - ADR-018 — Horizontal replicas and load balancing  <sub>:719</sub>
 - ADR-019 — WO-B.4 ships against the live reports idiom, not Track A's unbuilt registry  <sub>:755</sub>
+- ADR-020 — `bom` (Track C) ships as a new module, `production` stays as-is  <sub>:859</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>266 lines</sub>
 

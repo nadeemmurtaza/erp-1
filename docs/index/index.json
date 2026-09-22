@@ -3,9 +3,9 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1166,
-    "lines": 180788,
-    "routes": 299,
+    "files": 1170,
+    "lines": 181698,
+    "routes": 300,
     "controllers": 58,
     "models": 118,
     "enums": 50,
@@ -14,7 +14,7 @@
     "permissions": 38,
     "screens": 128,
     "crons": 8,
-    "specs": 107,
+    "specs": 109,
     "designLaws": 150
   },
   "designLaws": [
@@ -1083,9 +1083,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 465,
-      "lines": 62095,
-      "bytes": 2231468,
+      "files": 468,
+      "lines": 62728,
+      "bytes": 2257084,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1101,9 +1101,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 231,
-      "lines": 34533,
-      "bytes": 1281627,
+      "files": 232,
+      "lines": 34810,
+      "bytes": 1292431,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -1169,6 +1169,7 @@
       "alwaysOn": false,
       "inRegistry": true,
       "files": [
+        "apps/api/src/modules/analytics/analytics.comparison.spec.ts",
         "apps/api/src/modules/analytics/analytics.controller.ts",
         "apps/api/src/modules/analytics/analytics.module.ts",
         "apps/api/src/modules/analytics/analytics.service.ts",
@@ -1176,7 +1177,7 @@
         "apps/api/src/modules/analytics/supply-chain-digest.cron.spec.ts",
         "apps/api/src/modules/analytics/supply-chain-digest.cron.ts"
       ],
-      "routes": 5,
+      "routes": 6,
       "page": "docs/index/modules/analytics.md"
     },
     {
@@ -1817,6 +1818,8 @@
     {
       "name": "time",
       "files": [
+        "apps/api/src/core/time/metric-window.spec.ts",
+        "apps/api/src/core/time/metric-window.ts",
         "apps/api/src/core/time/shop-time.spec.ts",
         "apps/api/src/core/time/shop-time.ts"
       ],
@@ -2138,12 +2141,28 @@
     },
     {
       "method": "GET",
+      "path": "/admin/analytics/comparison",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "comparison",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 52,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Sales, purchases and expenses side by side, bucketed by day, week or month"
+    },
+    {
+      "method": "GET",
       "path": "/admin/analytics/dashboard",
       "module": "analytics",
       "controller": "AnalyticsController",
       "handler": "dashboard",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 15,
+      "line": 19,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2159,7 +2178,7 @@
       "controller": "AnalyticsController",
       "handler": "extended",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 32,
+      "line": 36,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2175,7 +2194,7 @@
       "controller": "AnalyticsController",
       "handler": "setMonthlyTarget",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 48,
+      "line": 69,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2191,7 +2210,7 @@
       "controller": "AnalyticsController",
       "handler": "stitching",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 24,
+      "line": 28,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2207,7 +2226,7 @@
       "controller": "AnalyticsController",
       "handler": "visitors",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 40,
+      "line": 44,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -6496,6 +6515,7 @@
       "category": "Dashboard",
       "sensitivity": "low",
       "routes": [
+        "GET /admin/analytics/comparison",
         "GET /admin/analytics/dashboard",
         "GET /admin/analytics/extended",
         "PATCH /admin/analytics/monthly-target",
@@ -21861,6 +21881,18 @@
       ]
     },
     {
+      "file": "apps/api/src/core/time/metric-window.spec.ts",
+      "module": "core/time",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "weekKeyOf",
+        "monthKeyOf",
+        "bucketKeyOf",
+        "rollUpDays"
+      ]
+    },
+    {
       "file": "apps/api/src/core/time/shop-time.spec.ts",
       "module": "core/time",
       "kind": "unit test",
@@ -21949,6 +21981,15 @@
         "onStockVarianceRecorded — WO-21.3",
         "onInterBranchTransferInvoiced — WO-22.3",
         "onExpenseRecorded — WO-23.1"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/analytics/analytics.comparison.spec.ts",
+      "module": "analytics",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "AnalyticsService.comparison"
       ]
     },
     {
@@ -26309,6 +26350,50 @@
       ]
     },
     {
+      "path": "apps/api/src/core/time/metric-window.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 85,
+      "bytes": 3306,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/time/metric-window.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 73,
+      "bytes": 2965,
+      "doc": "Rolling a daily series up into week or month buckets — WO-B.5's comparative chart, and anything after it that wants the same three granularities.",
+      "symbols": [
+        {
+          "name": "MetricBucket",
+          "kind": "type",
+          "line": 15
+        },
+        {
+          "name": "weekKeyOf",
+          "kind": "function",
+          "line": 18
+        },
+        {
+          "name": "monthKeyOf",
+          "kind": "function",
+          "line": 27
+        },
+        {
+          "name": "bucketKeyOf",
+          "kind": "function",
+          "line": 32
+        },
+        {
+          "name": "rollUpDays",
+          "kind": "function",
+          "line": 46
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/time/shop-time.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -26761,17 +26846,26 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/analytics/analytics.comparison.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 308,
+      "bytes": 11871,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/modules/analytics/analytics.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 52,
-      "bytes": 1957,
+      "lines": 73,
+      "bytes": 3077,
       "doc": "",
       "symbols": [
         {
           "name": "AnalyticsController",
           "kind": "class",
-          "line": 10
+          "line": 14
         }
       ]
     },
@@ -26794,39 +26888,49 @@
       "path": "apps/api/src/modules/analytics/analytics.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 633,
-      "bytes": 24272,
+      "lines": 779,
+      "bytes": 30626,
       "doc": "",
       "symbols": [
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 15
+          "line": 17
         },
         {
           "name": "DashboardSummary",
           "kind": "interface",
-          "line": 22
+          "line": 24
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 42
+          "line": 44
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 51
+          "line": 53
+        },
+        {
+          "name": "ComparisonBucket",
+          "kind": "interface",
+          "line": 74
+        },
+        {
+          "name": "ComparisonAnalytics",
+          "kind": "interface",
+          "line": 84
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 72
+          "line": 99
         },
         {
           "name": "AnalyticsService",
           "kind": "class",
-          "line": 94
+          "line": 121
         }
       ]
     },
@@ -32878,14 +32982,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/insights/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 276,
-      "bytes": 10768,
+      "lines": 334,
+      "bytes": 13578,
       "doc": "",
       "symbols": [
         {
           "name": "InsightsPage",
           "kind": "default",
-          "line": 34
+          "line": 44
         }
       ]
     },
@@ -34284,6 +34388,26 @@
           "name": "CommandPalette",
           "kind": "function",
           "line": 97
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/comparison-chart.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 219,
+      "bytes": 7994,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ComparisonBucketPoint",
+          "kind": "interface",
+          "line": 31
+        },
+        {
+          "name": "ComparisonChart",
+          "kind": "function",
+          "line": 40
         }
       ]
     },

@@ -3,35 +3,37 @@
 
 # Module: `analytics`
 
-Pack **core** · enabled by the `MODULES` allowlist · 6 files
+Pack **core** · enabled by the `MODULES` allowlist · 7 files
 
 
 
 Source: `apps/api/src/modules/analytics/`
 
-## Files (6 · 1,217 lines)
+## Files (7 · 1,692 lines)
 
 All paths relative to `apps/api/src/modules/analytics`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `analytics.controller.ts` | controller | 52 | 1 |  |
+| `analytics.comparison.spec.ts` | unit test | 308 | — |  |
+| `analytics.controller.ts` | controller | 73 | 1 |  |
 | `analytics.module.ts` | nest module | 11 | 1 |  |
-| `analytics.service.ts` | service | 633 | 6 |  |
+| `analytics.service.ts` | service | 779 | 8 |  |
 | `analytics.dto.ts` | dto | 10 | 1 |  |
 | `supply-chain-digest.cron.spec.ts` | unit test | 254 | — |  |
 | `supply-chain-digest.cron.ts` | scheduled job | 257 | 1 | Three scheduled reports, none of them new machinery — each reads tables Increments 1-5 already populate (StockMovement,… |
 
 
-## HTTP routes (5)
+## HTTP routes (6)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/analytics/dashboard` | `analytics.view` | `AnalyticsController.dashboard` :15 | Everything the dashboard shows, in one request |
-| GET | `/admin/analytics/extended` | `analytics.view` | `AnalyticsController.extended` :32 | Funnel, geography, fulfilment and payment-mix metrics |
-| PATCH | `/admin/analytics/monthly-target` | `analytics.view` | `AnalyticsController.setMonthlyTarget` :48 | Set the monthly revenue target shown on the dashboard |
-| GET | `/admin/analytics/stitching` | `analytics.view` | `AnalyticsController.stitching` :24 | Which garments and style options drive the stitching business |
-| GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` :40 | Visitor counts, view-to-order funnel and traffic sources |
+| GET | `/admin/analytics/comparison` | `analytics.view` | `AnalyticsController.comparison` :52 | Sales, purchases and expenses side by side, bucketed by day, week or month |
+| GET | `/admin/analytics/dashboard` | `analytics.view` | `AnalyticsController.dashboard` :19 | Everything the dashboard shows, in one request |
+| GET | `/admin/analytics/extended` | `analytics.view` | `AnalyticsController.extended` :36 | Funnel, geography, fulfilment and payment-mix metrics |
+| PATCH | `/admin/analytics/monthly-target` | `analytics.view` | `AnalyticsController.setMonthlyTarget` :69 | Set the monthly revenue target shown on the dashboard |
+| GET | `/admin/analytics/stitching` | `analytics.view` | `AnalyticsController.stitching` :28 | Which garments and style options drive the stitching business |
+| GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` :44 | Visitor counts, view-to-order funnel and traffic sources |
 
 
 ## Domain events
@@ -72,6 +74,7 @@ _none_
 
 - core `auth`
 - core `common`
+- core `config`
 - core `events`
 - core `notifications`
 - core `prisma`
@@ -83,10 +86,11 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (2)
 
 | Spec | Cases | Covers |
 |---|---|---|
+| `analytics.comparison.spec.ts` | 8 | AnalyticsService.comparison |
 | `supply-chain-digest.cron.spec.ts` | 11 | SupplyChainDigestCron · sendSupplierDigests · sendSupplierScorecards · sendDemandAlerts |
 
 
@@ -94,14 +98,16 @@ check there before adding another.
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `AnalyticsController` | class | `analytics.controller.ts:10` |  |
+| `AnalyticsController` | class | `analytics.controller.ts:14` |  |
 | `AnalyticsModule` | class | `analytics.module.ts:10` |  |
-| `MonthlyTarget` | interface | `analytics.service.ts:15` |  |
-| `DashboardSummary` | interface | `analytics.service.ts:22` |  |
-| `StitchingAnalytics` | interface | `analytics.service.ts:42` |  |
-| `ExtendedAnalytics` | interface | `analytics.service.ts:51` |  |
-| `VisitorAnalytics` | interface | `analytics.service.ts:72` |  |
-| `AnalyticsService` | class | `analytics.service.ts:94` | Dashboard numbers. |
+| `MonthlyTarget` | interface | `analytics.service.ts:17` |  |
+| `DashboardSummary` | interface | `analytics.service.ts:24` |  |
+| `StitchingAnalytics` | interface | `analytics.service.ts:44` |  |
+| `ExtendedAnalytics` | interface | `analytics.service.ts:53` |  |
+| `ComparisonBucket` | interface | `analytics.service.ts:74` |  |
+| `ComparisonAnalytics` | interface | `analytics.service.ts:84` |  |
+| `VisitorAnalytics` | interface | `analytics.service.ts:99` |  |
+| `AnalyticsService` | class | `analytics.service.ts:121` | Dashboard numbers. |
 | `SetMonthlyTargetDto` | class | `analytics.dto.ts:4` |  |
 | `SupplyChainDigestCron` | class | `supply-chain-digest.cron.ts:24` | Three scheduled reports, none of them new machinery — each reads tables Increments 1-5 already populate (Stoc… |
 

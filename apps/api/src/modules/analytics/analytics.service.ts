@@ -3,6 +3,7 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import type { Prisma } from '../../core/prisma/client';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
+import { AppConfigService } from '../../core/config/app-config.service';
 import { VOID_ORDER_STATUSES as VOID_STATUSES } from '../../core/common/sales-revenue';
 import {
   shopDayExpr,
@@ -11,6 +12,7 @@ import {
   startOfShopDaysAgo,
   startOfShopMonth,
 } from '../../core/time/shop-time';
+import { rollUpDays, type MetricBucket } from '../../core/time/metric-window';
 
 export interface MonthlyTarget {
   targetAmount: number;
@@ -69,6 +71,31 @@ export interface ExtendedAnalytics {
   revenueByCity: Array<{ city: string; revenue: number }>;
 }
 
+export interface ComparisonBucket {
+  t: string;
+  sales: number;
+  purchases: number;
+  expenses: number;
+  /** null without `inventory.view_cost` — cost data is not this user's to see. */
+  grossProfit: number | null;
+  net: number | null;
+}
+
+export interface ComparisonAnalytics {
+  bucket: MetricBucket;
+  /** Oldest first; a bucket spanning "now" is the partial current one, last. */
+  buckets: ComparisonBucket[];
+  totals: {
+    sales: number;
+    purchases: number;
+    expenses: number;
+    grossProfit: number | null;
+    net: number | null;
+  };
+  /** False when MODULES excludes `finance` — `expenses` is all zeros because there is truly nothing to show, not because the query silently failed. */
+  financeEnabled: boolean;
+}
+
 export interface VisitorAnalytics {
   totalVisitors: number;
   /** vs the immediately preceding window of the same length; null if that window had no visitors. */
@@ -95,6 +122,7 @@ export class AnalyticsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly settings: SettingsService,
+    private readonly config: AppConfigService,
   ) {}
 
   async summary(days = 30): Promise<DashboardSummary> {
@@ -277,6 +305,124 @@ export class AnalyticsService {
       })),
       monthlyTarget: this.buildMonthlyTarget(monthlyTargetAmount, monthRevenue),
     };
+  }
+
+  /**
+   * WO-23.1's WO-B.5 — the owner's own headline request: sales, purchases
+   * and expenses, side by side, over the same axis.
+   *
+   * Three DEFINITIONS, pinned down because they are the whole value of the
+   * chart (10-admin-dashboard.md WO-B.5):
+   *   - Sales = Σ Order.grandTotal by placedAt, excluding CANCELLED/RETURNED.
+   *     Deliberately NOT OrderEconomics.revenue, which is null until an order
+   *     is DELIVERED and would make the current week look empty.
+   *   - Purchases = Σ GoodsReceiptItem.quantity × landedUnitCost by
+   *     GoodsReceipt.receivedAt. Deliberately NOT PurchaseOrder.total by
+   *     sentAt — a purchase order is an intention, a goods receipt is a cost.
+   *   - Expenses = Σ Expense.amount by incurredAt.
+   *
+   * Every query still asks Postgres for one row per shop-local DAY (the same
+   * `shopDayExpr` the dashboard's own daily series uses) — see
+   * core/time/metric-window.ts's own header for why day/week/month bucketing
+   * is done by summing those day rows in JS rather than teaching SQL a
+   * second grain: it is what makes "daily buckets sum to monthly buckets sum
+   * to totals" true by construction.
+   */
+  async comparison(days: number, bucket: MetricBucket, includeCost: boolean): Promise<ComparisonAnalytics> {
+    const now = new Date();
+    const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+    const seriesStart = startOfShopDaysAgo(now, days, timeZone);
+    const financeEnabled = this.config.isModuleEnabled('finance');
+    // VOID_STATUSES interpolated rather than hardcoded a third time in this
+    // file — the one place "which orders count" is decided.
+    const voidStatusList = VOID_STATUSES.map((status) => `'${status}'`).join(', ');
+
+    const [salesRows, cogsRows, purchaseRows, expenseRows] = await Promise.all([
+      this.prisma.$queryRawUnsafe<Array<{ day: string; sales: bigint }>>(
+        `SELECT ${shopDayExpr('"placedAt"', timeZone)} AS day,
+                COALESCE(SUM("grandTotal"), 0) AS sales
+         FROM "Order"
+         WHERE "placedAt" >= $1 AND "status" NOT IN (${voidStatusList})
+         GROUP BY 1`,
+        seriesStart,
+      ),
+      this.prisma.$queryRawUnsafe<Array<{ day: string; cogs: bigint }>>(
+        `SELECT ${shopDayExpr('o."placedAt"', timeZone)} AS day,
+                COALESCE(SUM(oi."unitCost" * oi."quantity"), 0) AS cogs
+         FROM "OrderItem" oi
+         JOIN "Order" o ON o.id = oi."orderId"
+         WHERE o."placedAt" >= $1 AND o."status" NOT IN (${voidStatusList})
+         GROUP BY 1`,
+        seriesStart,
+      ),
+      this.prisma.$queryRawUnsafe<Array<{ day: string; purchases: bigint }>>(
+        `SELECT ${shopDayExpr('gr."receivedAt"', timeZone)} AS day,
+                COALESCE(SUM(gri."quantity" * gri."landedUnitCost"), 0) AS purchases
+         FROM "GoodsReceiptItem" gri
+         JOIN "GoodsReceipt" gr ON gr.id = gri."goodsReceiptId"
+         WHERE gr."receivedAt" >= $1
+         GROUP BY 1`,
+        seriesStart,
+      ),
+      // No row from a module that isn't even running — never a query against
+      // a table whose data nobody should be reading right now.
+      financeEnabled
+        ? this.prisma.$queryRawUnsafe<Array<{ day: string; expenses: bigint }>>(
+            `SELECT ${shopDayExpr('"incurredAt"', timeZone)} AS day,
+                    COALESCE(SUM("amount"), 0) AS expenses
+             FROM "Expense"
+             WHERE "incurredAt" >= $1
+             GROUP BY 1`,
+            seriesStart,
+          )
+        : Promise.resolve([] as Array<{ day: string; expenses: bigint }>),
+    ]);
+
+    const dayKeys = shopDayKeys(seriesStart, days, timeZone);
+    const salesByDay = new Map(salesRows.map((row) => [row.day, Number(row.sales)]));
+    const cogsByDay = new Map(cogsRows.map((row) => [row.day, Number(row.cogs)]));
+    const purchasesByDay = new Map(purchaseRows.map((row) => [row.day, Number(row.purchases)]));
+    const expensesByDay = new Map(expenseRows.map((row) => [row.day, Number(row.expenses)]));
+
+    const zero = { sales: 0, cogs: 0, purchases: 0, expenses: 0 };
+    const valuesByDay = new Map(
+      dayKeys.map((day) => [
+        day,
+        {
+          sales: salesByDay.get(day) ?? 0,
+          cogs: cogsByDay.get(day) ?? 0,
+          purchases: purchasesByDay.get(day) ?? 0,
+          expenses: expensesByDay.get(day) ?? 0,
+        },
+      ]),
+    );
+
+    const rolled = rollUpDays(dayKeys, valuesByDay, zero, bucket);
+
+    const buckets: ComparisonBucket[] = rolled.map((row) => {
+      const grossProfit = includeCost ? row.sales - row.cogs : null;
+      const net = includeCost && grossProfit !== null ? grossProfit - row.expenses : null;
+      return { t: row.t, sales: row.sales, purchases: row.purchases, expenses: row.expenses, grossProfit, net };
+    });
+
+    const totals = buckets.reduce(
+      (sum, b) => ({
+        sales: sum.sales + b.sales,
+        purchases: sum.purchases + b.purchases,
+        expenses: sum.expenses + b.expenses,
+        grossProfit: includeCost ? (sum.grossProfit ?? 0) + (b.grossProfit ?? 0) : null,
+        net: includeCost ? (sum.net ?? 0) + (b.net ?? 0) : null,
+      }),
+      {
+        sales: 0,
+        purchases: 0,
+        expenses: 0,
+        grossProfit: includeCost ? 0 : null,
+        net: includeCost ? 0 : null,
+      } as ComparisonAnalytics['totals'],
+    );
+
+    return { bucket, buckets, totals, financeEnabled };
   }
 
   /**

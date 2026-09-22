@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 465 tracked files in `apps/api`, by directory.
+All 468 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -607,10 +607,12 @@ All 465 tracked files in `apps/api`, by directory.
 | `storage.service.spec.ts` | unit test | 186 |  |
 | `storage.service.ts` | service | 133 |  |
 
-### `apps/api/src/core/time` (2)
+### `apps/api/src/core/time` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `metric-window.spec.ts` | unit test | 85 |  |
+| `metric-window.ts` | module | 73 | Rolling a daily series up into week or month buckets — WO-B.5's comparative chart, and anything after it that wants the… |
 | `shop-time.spec.ts` | unit test | 157 |  |
 | `shop-time.ts` | module | 223 | Calendar days in the shop's timezone. |
 
@@ -664,13 +666,14 @@ All 465 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `address.dto.ts` | dto | 113 |  |
 
-### `apps/api/src/modules/analytics` (5)
+### `apps/api/src/modules/analytics` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `analytics.controller.ts` | controller | 52 |  |
+| `analytics.comparison.spec.ts` | unit test | 308 |  |
+| `analytics.controller.ts` | controller | 73 |  |
 | `analytics.module.ts` | nest module | 11 |  |
-| `analytics.service.ts` | service | 633 |  |
+| `analytics.service.ts` | service | 779 |  |
 | `supply-chain-digest.cron.spec.ts` | unit test | 254 |  |
 | `supply-chain-digest.cron.ts` | scheduled job | 257 |  |
 

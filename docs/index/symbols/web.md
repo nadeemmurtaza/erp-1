@@ -153,7 +153,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `InsightsPage` | default | :34 |  |
+| `page.tsx` | `InsightsPage` | default | :44 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory`
 
@@ -581,6 +581,8 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `admin-shell.tsx` | `AdminShell` | function | :34 | The back office frame: role guard, sidebar and header. |
 | `command-palette.tsx` | `CommandPalette` | function | :97 |  |
+| `comparison-chart.tsx` | `ComparisonBucketPoint` | interface | :31 |  |
+| `comparison-chart.tsx` | `ComparisonChart` | function | :40 |  |
 | `deployment-modules.tsx` | `EnabledModulesProvider` | const | :7 |  |
 | `deployment-modules.tsx` | `useEnabledModules` | function | :18 | Which API modules `GET /meta` reported for this deployment — the same value `AdminShell` already fe… |
 | `donut-chart.tsx` | `DonutItem` | interface | :37 |  |

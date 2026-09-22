@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 231 tracked files in `apps/web`, by directory.
+All 232 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -204,7 +204,7 @@ All 231 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 276 |  |
+| `page.tsx` | page | 334 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory` (1)
 
@@ -610,12 +610,13 @@ All 231 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `route.ts` | route handler | 17 |  |
 
-### `apps/web/src/components/admin` (17)
+### `apps/web/src/components/admin` (18)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `admin-shell.tsx` | component | 410 |  |
 | `command-palette.tsx` | component | 285 |  |
+| `comparison-chart.tsx` | component | 219 |  |
 | `deployment-modules.tsx` | component | 21 |  |
 | `donut-chart.tsx` | component | 136 |  |
 | `funnel-chart.tsx` | component | 81 |  |

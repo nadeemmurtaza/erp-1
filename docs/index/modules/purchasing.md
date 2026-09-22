@@ -9,24 +9,24 @@ Pack **core** · enabled by the `MODULES` allowlist · 12 files
 
 Source: `apps/api/src/modules/purchasing/`
 
-## Files (12 · 1,729 lines)
+## Files (12 · 1,829 lines)
 
 All paths relative to `apps/api/src/modules/purchasing/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `purchase-order.dto.ts` | dto | 92 | 4 |  |
+| `purchase-order.dto.ts` | dto | 104 | 4 |  |
 | `supplier-bill.dto.ts` | dto | 67 | 2 |  |
 | `supplier.dto.ts` | dto | 104 | 3 |  |
 | `purchasing.controller.ts` | controller | 151 | 3 |  |
 | `purchasing.cron.spec.ts` | unit test | 67 | — |  |
 | `purchasing.cron.ts` | scheduled job | 71 | 1 | The nightly safety-net sweep for reorder drafting. |
 | `purchasing.module.ts` | nest module | 18 | 1 |  |
-| `purchasing.service.ts` | service | 635 | 1 |  |
-| `purchasing.spec.ts` | unit test | 166 | — |  |
+| `purchasing.service.ts` | service | 654 | 1 |  |
+| `purchasing.spec.ts` | unit test | 233 | — |  |
 | `reorder.listener.spec.ts` | unit test | 79 | — |  |
 | `reorder.listener.ts` | event subscriber | 51 | 1 | Turns a real-time reorder-point crossing into an immediate DRAFT PO line, for variants sourced from an external supplie… |
-| `supplier-bill.spec.ts` | unit test | 228 | — |  |
+| `supplier-bill.spec.ts` | unit test | 230 | — |  |
 
 
 ## HTTP routes (17)
@@ -58,9 +58,9 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `GoodsReceived` | `purchasing.goods_received` | `purchasing.service.ts:419` |
-| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `purchasing.service.ts:554` |
-| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `purchasing.service.ts:618` |
+| `GoodsReceived` | `purchasing.goods_received` | `purchasing.service.ts:432` |
+| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `purchasing.service.ts:573` |
+| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `purchasing.service.ts:637` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -74,13 +74,13 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `GoodsReceipt` | 13 | :146 |  |
-| `GoodsReceiptItem` | 10 | :165 |  |
-| `PurchaseOrder` | 23 | :96 |  |
-| `PurchaseOrderItem` | 11 | :128 |  |
-| `Supplier` | 26 | :1 |  |
-| `SupplierBill` | 18 | :188 |  |
-| `SupplierProduct` | 10 | :68 | What a given supplier charges for a given variant, and under what terms. |
+| `GoodsReceipt` | 14 | :159 |  |
+| `GoodsReceiptItem` | 10 | :187 |  |
+| `PurchaseOrder` | 25 | :97 |  |
+| `PurchaseOrderItem` | 11 | :141 |  |
+| `Supplier` | 27 | :1 |  |
+| `SupplierBill` | 18 | :210 |  |
+| `SupplierProduct` | 10 | :69 | What a given supplier charges for a given variant, and under what terms. |
 
 
 Enums: `PurchaseOrderStatus` (5) · `SupplierBillStatus` (3)
@@ -111,6 +111,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `auth`
 - core `config`
 - core `events`
+- core `extension-points`
 - core `prisma`
 - core `settings`
 - package `@newax/shared`
@@ -125,7 +126,7 @@ check there before adding another.
 | Spec | Cases | Covers |
 |---|---|---|
 | `purchasing.cron.spec.ts` | 2 | PurchasingCron |
-| `purchasing.spec.ts` | 5 | PurchasingService · upsertReorderDraftLine · create (Supplier + its backing Party) |
+| `purchasing.spec.ts` | 10 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR-021 · create (Suppl… |
 | `reorder.listener.spec.ts` | 5 | PurchasingReorderListener |
 | `supplier-bill.spec.ts` | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
 
@@ -134,10 +135,10 @@ check there before adding another.
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `CreatePurchaseOrderItemDto` | class | `purchase-order.dto.ts:4` |  |
-| `CreatePurchaseOrderDto` | class | `purchase-order.dto.ts:22` |  |
-| `ReceiveGoodsItemDto` | class | `purchase-order.dto.ts:56` |  |
-| `ReceiveGoodsDto` | class | `purchase-order.dto.ts:66` |  |
+| `CreatePurchaseOrderItemDto` | class | `purchase-order.dto.ts:6` |  |
+| `CreatePurchaseOrderDto` | class | `purchase-order.dto.ts:24` |  |
+| `ReceiveGoodsItemDto` | class | `purchase-order.dto.ts:63` |  |
+| `ReceiveGoodsDto` | class | `purchase-order.dto.ts:73` |  |
 | `CreateSupplierBillDto` | class | `supplier-bill.dto.ts:4` |  |
 | `RecordSupplierBillPaymentDto` | class | `supplier-bill.dto.ts:47` |  |
 | `CreateSupplierDto` | class | `supplier.dto.ts:4` |  |
@@ -148,7 +149,7 @@ check there before adding another.
 | `SupplierBillAdminController` | class | `purchasing.controller.ts:119` |  |
 | `PurchasingCron` | class | `purchasing.cron.ts:19` | The nightly safety-net sweep for reorder drafting. |
 | `PurchasingModule` | class | `purchasing.module.ts:17` |  |
-| `PurchasingService` | class | `purchasing.service.ts:69` |  |
+| `PurchasingService` | class | `purchasing.service.ts:70` |  |
 | `PurchasingReorderListener` | class | `reorder.listener.ts:16` | Turns a real-time reorder-point crossing into an immediate DRAFT PO line, for variants sourced from an extern… |
 
 

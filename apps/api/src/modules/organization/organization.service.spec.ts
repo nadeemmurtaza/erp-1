@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { OrganizationService } from './organization.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { BranchPolicyRegistry } from '../../core/extension-points/branch-policy.registry';
 import type { AdminScopeGrant, ScopedActor } from '../../core/auth/scope.guard';
 
 const org = (): AdminScopeGrant => ({ level: 'ORG', retailBrandId: null, branchNodeId: null });
@@ -20,10 +21,11 @@ const actor = (adminScopes: AdminScopeGrant[]): ScopedActor => ({
 describe('OrganizationService', () => {
   let service: OrganizationService;
   let prisma: any;
+  let branchPolicy: BranchPolicyRegistry;
 
   beforeEach(async () => {
     prisma = {
-      retailBrand: { findMany: jest.fn().mockResolvedValue([]) },
+      retailBrand: { findMany: jest.fn().mockResolvedValue([]), findUnique: jest.fn().mockResolvedValue({ id: 'b1' }) },
       node: { findMany: jest.fn().mockResolvedValue([]) },
       adminScope: {
         findMany: jest.fn().mockResolvedValue([]),
@@ -31,13 +33,20 @@ describe('OrganizationService', () => {
         delete: jest.fn().mockResolvedValue({}),
       },
       organization: { findFirst: jest.fn().mockResolvedValue(null), update: jest.fn().mockResolvedValue({}) },
+      brandPolicy: {
+        findUnique: jest.fn().mockResolvedValue(null),
+        upsert: jest.fn().mockResolvedValue({}),
+        findMany: jest.fn().mockResolvedValue([]),
+      },
     };
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [OrganizationService, { provide: PrismaService, useValue: prisma }],
+      providers: [OrganizationService, { provide: PrismaService, useValue: prisma }, BranchPolicyRegistry],
     }).compile();
 
     service = module.get<OrganizationService>(OrganizationService);
+    branchPolicy = module.get(BranchPolicyRegistry);
+    service.onModuleInit();
   });
 
   describe('listBrands', () => {
@@ -248,6 +257,106 @@ describe('OrganizationService', () => {
         where: { id: 'org1' },
         data: { allowInterBrandTransfers: true },
       });
+    });
+  });
+
+  describe('getBrandPolicy / setBrandPolicy — WO-23.3b, RETAIL-ERP.md R9/R13', () => {
+    it('getBrandPolicy refuses an actor whose scope does not reach the brand', async () => {
+      await expect(service.getBrandPolicy(actor([brand('other-brand')]), 'b1')).rejects.toBeInstanceOf(
+        ForbiddenException,
+      );
+    });
+
+    it('getBrandPolicy returns null when no BrandPolicy row exists yet', async () => {
+      await expect(service.getBrandPolicy(actor([org()]), 'b1')).resolves.toBeNull();
+    });
+
+    it('getBrandPolicy allows a BRAND-scope actor managing their own brand', async () => {
+      prisma.brandPolicy.findUnique.mockResolvedValue({ retailBrandId: 'b1', allowBranchLocalPurchasing: true });
+
+      const result = await service.getBrandPolicy(actor([brand('b1')]), 'b1');
+
+      expect(result).toEqual({ retailBrandId: 'b1', allowBranchLocalPurchasing: true });
+    });
+
+    it('setBrandPolicy refuses an actor whose scope does not reach the brand', async () => {
+      await expect(
+        service.setBrandPolicy(actor([brand('other-brand')]), 'b1', { allowBranchLocalPurchasing: true }),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+      expect(prisma.brandPolicy.upsert).not.toHaveBeenCalled();
+    });
+
+    it('setBrandPolicy throws when the retail brand no longer exists', async () => {
+      prisma.retailBrand.findUnique.mockResolvedValue(null);
+
+      await expect(
+        service.setBrandPolicy(actor([org()]), 'b1', { allowBranchLocalPurchasing: true }),
+      ).rejects.toBeInstanceOf(BadRequestException);
+      expect(prisma.brandPolicy.upsert).not.toHaveBeenCalled();
+    });
+
+    it('setBrandPolicy upserts, defaulting unset switches to false on create', async () => {
+      await service.setBrandPolicy(actor([org()]), 'b1', { allowBranchLocalPurchasing: true });
+
+      expect(prisma.brandPolicy.upsert).toHaveBeenCalledWith({
+        where: { retailBrandId: 'b1' },
+        create: {
+          retailBrandId: 'b1',
+          allowBranchProductCreation: false,
+          allowBranchLocalPurchasing: true,
+          allowInterBranchTransfers: false,
+        },
+        update: {
+          allowBranchProductCreation: undefined,
+          allowBranchLocalPurchasing: true,
+          allowInterBranchTransfers: undefined,
+        },
+      });
+    });
+  });
+
+  describe('allowsBranchLocalPurchasing (BranchPolicyRegistry handler) — WO-23.3b', () => {
+    it('allows an ORG-wide actor without consulting BrandPolicy', async () => {
+      prisma.adminScope.findMany.mockResolvedValue([org()]);
+
+      await expect(branchPolicy.allowsBranchLocalPurchasing('user-1')).resolves.toBe(true);
+      expect(prisma.brandPolicy.findMany).not.toHaveBeenCalled();
+    });
+
+    it('allows a BRAND-level actor without consulting BrandPolicy', async () => {
+      prisma.adminScope.findMany.mockResolvedValue([brand('b1')]);
+
+      await expect(branchPolicy.allowsBranchLocalPurchasing('user-1')).resolves.toBe(true);
+      expect(prisma.brandPolicy.findMany).not.toHaveBeenCalled();
+    });
+
+    it('allows an actor with no AdminScope grant at all — nothing claims a branch identity', async () => {
+      prisma.adminScope.findMany.mockResolvedValue([]);
+
+      await expect(branchPolicy.allowsBranchLocalPurchasing('user-1')).resolves.toBe(true);
+      expect(prisma.brandPolicy.findMany).not.toHaveBeenCalled();
+    });
+
+    it('fails closed for a BRANCH-only actor when no BrandPolicy row exists for their brand', async () => {
+      prisma.adminScope.findMany.mockResolvedValue([branch('b1', 'node1')]);
+      prisma.brandPolicy.findMany.mockResolvedValue([]);
+
+      await expect(branchPolicy.allowsBranchLocalPurchasing('user-1')).resolves.toBe(false);
+      expect(prisma.brandPolicy.findMany).toHaveBeenCalledWith({ where: { retailBrandId: { in: ['b1'] } } });
+    });
+
+    it('fails closed for a BRANCH-only actor whose brand explicitly disallows it', async () => {
+      prisma.adminScope.findMany.mockResolvedValue([branch('b1', 'node1')]);
+      prisma.brandPolicy.findMany.mockResolvedValue([{ retailBrandId: 'b1', allowBranchLocalPurchasing: false }]);
+
+      await expect(branchPolicy.allowsBranchLocalPurchasing('user-1')).resolves.toBe(false);
+    });
+
+    it('allows a BRANCH-only actor whose brand explicitly allows it', async () => {
+      prisma.adminScope.findMany.mockResolvedValue([branch('b1', 'node1')]);
+      prisma.brandPolicy.findMany.mockResolvedValue([{ retailBrandId: 'b1', allowBranchLocalPurchasing: true }]);
+
+      await expect(branchPolicy.allowsBranchLocalPurchasing('user-1')).resolves.toBe(true);
     });
   });
 

@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 449 | 59,691 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 247 | 35,495 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 228 | 33,618 | Next.js — admin console and customer storefront in one app |
+| `apps/api` | 493 | 66,893 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/web` | 243 | 37,096 | Next.js — admin console and customer storefront in one app |
+| `docs` | 247 | 35,981 | documents of record — implementation plans, house rules, brand |
 | `(root)` | 36 | 26,640 | workspace manifests, docker compose/stack files, env templates |
-| `scripts` | 20 | 8,415 | repository checks and generators (lint gates, this index) |
+| `scripts` | 20 | 8,422 | repository checks and generators (lint gates, this index) |
 | `apps/mobile` | 42 | 5,292 | Expo — customer mobile app |
-| `packages/shared` | 36 | 3,904 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 38 | 4,056 | brand, money, permissions, measurements, entities |
 | `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
 | `.claude` | 22 | 1,017 |  |
 | `packages/pos-core` | 13 | 481 | basket, tender, receipt and outbox maths, UI-free |
@@ -60,16 +60,18 @@ Each is independent: no module imports another except through a named
 |---|---|---|---|---|
 | [`accounting`](modules/accounting.md) | core | MODULES allowlist | 16 | 6 |
 | [`addresses`](modules/addresses.md) | core | always on | 4 | — |
-| [`analytics`](modules/analytics.md) | core | MODULES allowlist | 5 | — |
+| [`analytics`](modules/analytics.md) | core | MODULES allowlist | 6 | — |
+| [`bom`](modules/bom.md) | core | MODULES allowlist | 20 | 5 |
 | [`cart`](modules/cart.md) | core | MODULES allowlist | 6 | 3 |
 | [`catalog`](modules/catalog.md) | core | MODULES allowlist | 25 | 15 |
 | [`crm`](modules/crm.md) | core | MODULES allowlist | 19 | 9 |
+| [`finance`](modules/finance.md) | core | MODULES allowlist | 12 | 3 |
 | [`identity-verification`](modules/identity-verification.md) | core | MODULES allowlist | 4 | 1 |
 | [`inventory`](modules/inventory.md) | core | MODULES allowlist | 16 | 7 |
 | [`marketing`](modules/marketing.md) | core | MODULES allowlist | 2 | — |
 | [`measurements`](modules/measurements.md) | apparel | MODULES allowlist | 12 | 4 |
 | [`orders`](modules/orders.md) | core | MODULES allowlist | 8 | 5 |
-| [`organization`](modules/organization.md) | core | MODULES allowlist | 10 | 5 |
+| [`organization`](modules/organization.md) | core | MODULES allowlist | 12 | 5 |
 | [`parties`](modules/parties.md) | core | MODULES allowlist | 3 | 2 |
 | [`payments`](modules/payments.md) | core | MODULES allowlist | 6 | 1 |
 | [`pos`](modules/pos.md) | core | MODULES allowlist | 15 | 4 |
@@ -95,10 +97,10 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`audit`](core/audit.md) | 2 |  |
 | [`auth`](core/auth.md) | 21 |  |
 | [`checkout`](core/checkout.md) | 1 |  |
-| [`common`](core/common.md) | 3 |  |
+| [`common`](core/common.md) | 4 |  |
 | [`config`](core/config.md) | 6 |  |
 | [`events`](core/events.md) | 5 | The catalogue of domain events. |
-| [`extension-points`](core/extension-points.md) | 4 |  |
+| [`extension-points`](core/extension-points.md) | 5 |  |
 | [`health`](core/health.md) | 2 |  |
 | [`notifications`](core/notifications.md) | 19 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |
 | [`prisma`](core/prisma.md) | 4 | Single import point for the generated Prisma client. |
@@ -106,7 +108,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`security`](core/security.md) | 5 |  |
 | [`settings`](core/settings.md) | 6 |  |
 | [`storage`](core/storage.md) | 7 | Extension point: file storage. |
-| [`time`](core/time.md) | 2 | Calendar days in the shop's timezone. |
+| [`time`](core/time.md) | 4 | Rolling a daily series up into week or month buckets — WO-B.5's comparative chart, and anything after it that… |
 
 
 ## Entry points

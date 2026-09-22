@@ -3,7 +3,7 @@
 
 # Core: `common`
 
-Shared platform — available to every module, part of no feature · 3 files
+Shared platform — available to every module, part of no feature · 4 files
 
 
 
@@ -12,7 +12,7 @@ Source: `apps/api/src/core/common/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (3 · 285 lines)
+## Files (4 · 302 lines)
 
 All paths relative to `apps/api/src/core/common`.
 
@@ -21,6 +21,7 @@ All paths relative to `apps/api/src/core/common`.
 | `cost-fields.ts` | module | 72 | 5 | The permission that gates visibility of cost / margin data. |
 | `pagination.dto.ts` | dto | 77 | 4 |  |
 | `all-exceptions.filter.ts` | module | 136 | 1 | Turns every thrown value into one predictable JSON shape, and translates Prisma's error codes into the right HTTP statu… |
+| `sales-revenue.ts` | module | 17 | 1 | The one place "does this order count as revenue" is decided. |
 
 
 ## HTTP routes (0)
@@ -74,6 +75,7 @@ _No spec files in this unit._
 | `PaginatedResult` | interface | `pagination.dto.ts:47` |  |
 | `paginated` | function | `pagination.dto.ts:59` |  |
 | `AllExceptionsFilter` | class | `all-exceptions.filter.ts:26` | Turns every thrown value into one predictable JSON shape, and translates Prisma's error codes into the right… |
+| `VOID_ORDER_STATUSES` | const | `sales-revenue.ts:16` | The one place "does this order count as revenue" is decided. |
 
 
 ---

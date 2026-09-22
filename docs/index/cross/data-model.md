@@ -3,7 +3,7 @@
 
 # Data model
 
-All **115** Prisma models and **49** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **123** Prisma models and **53** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -26,10 +26,12 @@ against a real database.
 | Schema | Models | Enums | Owner | Contains |
 |---|---|---|---|---|
 | [`accounting.prisma`](../data/accounting.md) | 6 | 3 | [`accounting`](../modules/accounting.md) | Account, FiscalPeriod, FiscalYear, JournalEntry, JournalEntryNumberCounter, JournalLine |
+| [`bom.prisma`](../data/bom.md) | 5 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomProductionLine, BomProductionRun, BomRecipe, RawMaterial |
 | [`cart.prisma`](../data/cart.md) | 3 | 0 | [`cart`](../modules/cart.md) | Cart, CartItem, CartItemStitchingOption |
 | [`catalog.prisma`](../data/catalog.md) | 15 | 3 | [`catalog`](../modules/catalog.md) | Brand, BrandTranslation, Category, CategoryTranslation, Product, ProductGarmentType, ProductImage, ProductOption, ProductOptionTr… |
-| [`core.prisma`](../data/core.md) | 17 | 5 | foundational | Address, AnalyticsEvent, AuditLog, DeviceToken, EmailAccount, EmailVerificationToken, OutboxEvent, PasswordResetToken, Permission… |
+| [`core.prisma`](../data/core.md) | 17 | 6 | foundational | Address, AnalyticsEvent, AuditLog, DeviceToken, EmailAccount, EmailVerificationToken, OutboxEvent, PasswordResetToken, Permission… |
 | [`crm.prisma`](../data/crm.md) | 9 | 3 | [`crm`](../modules/crm.md) | Contact, ContactTag, FollowUpTask, InboundEmail, InboundEmailReply, Interaction, Lead, Segment, Tag |
+| [`finance.prisma`](../data/finance.md) | 3 | 1 | [`finance`](../modules/finance.md) | Expense, ExpenseCategory, OrderEconomics |
 | [`identity-verification.prisma`](../data/identity-verification.md) | 1 | 1 | [`identity-verification`](../modules/identity-verification.md) | IdentityVerification |
 | [`inventory.prisma`](../data/inventory.md) | 7 | 4 | [`inventory`](../modules/inventory.md) | Location, StockCount, StockCountLine, StockMovement, StockVariance, VariantLocationStock, VariantSalesStat |
 | [`invoicing.prisma`](../data/invoicing.md) | 4 | 2 | core platform | Invoice, InvoiceLine, Quote, QuoteLine |
@@ -59,6 +61,10 @@ against a real database.
 | [`AuditLog`](../data/core.md#auditlog) | `core` | 9 | 1 | id |  |
 | [`BillOfMaterial`](../data/production.md#billofmaterial) | `production` | 8 | 1 | id | One recipe per produced variant: how many of each component variant it takes to make one… |
 | [`BillOfMaterialLine`](../data/production.md#billofmaterialline) | `production` | 6 | 2 | id |  |
+| [`BomComponent`](../data/bom.md#bomcomponent) | `bom` | 10 | 2 | id |  |
+| [`BomProductionLine`](../data/bom.md#bomproductionline) | `bom` | 9 | 2 | id | One raw-material line consumed by a production run — the same SNAPSHOT discipline as the… |
+| [`BomProductionRun`](../data/bom.md#bomproductionrun) | `bom` | 21 | 3 | id | One production run: the recipe was run N times, consuming raw stock and crediting finishe… |
+| [`BomRecipe`](../data/bom.md#bomrecipe) | `bom` | 19 | 2 | id | The recipe for one finished ProductVariant: which raw materials, how much of each, and th… |
 | [`Brand`](../data/catalog.md#brand) | `catalog` | 9 | 0 | id | A label a product is sold under. |
 | [`BrandPolicy`](../data/organization.md#brandpolicy) | `organization` | 8 | 1 | id | Per-brand policy switches (R9) — what R9 calls `brand.allow_branch_product_creation` and… |
 | [`BrandTranslation`](../data/catalog.md#brandtranslation) | `catalog` | 6 | 1 | id | House Rule 6: a customer-facing name is a translation row, not a column. |
@@ -73,12 +79,14 @@ against a real database.
 | [`DeviceToken`](../data/core.md#devicetoken) | `core` | 9 | 1 | id | A push notification target: one installation of the mobile app. |
 | [`EmailAccount`](../data/core.md#emailaccount) | `core` | 25 | 0 | id | A connected mailbox: SMTP to send, optionally IMAP to receive. |
 | [`EmailVerificationToken`](../data/core.md#emailverificationtoken) | `core` | 7 | 1 | id | A one-time token mailed to confirm an email address. |
+| [`Expense`](../data/finance.md#expense) | `finance` | 24 | 5 | id |  |
+| [`ExpenseCategory`](../data/finance.md#expensecategory) | `finance` | 9 | 0 | id | Finance: operational expenses and per-order economics (RETAIL-ERP.md Tranche 6, WO-23.1 —… |
 | [`FiscalPeriod`](../data/accounting.md#fiscalperiod) | `accounting` | 10 | 1 | id | What a `JournalEntry` posts into. |
 | [`FiscalYear`](../data/accounting.md#fiscalyear) | `accounting` | 7 | 0 | id | A trading year. |
 | [`FollowUpTask`](../data/crm.md#followuptask) | `crm` | 13 | 3 | id |  |
 | [`GarmentSizeChart`](../data/measurements.md#garmentsizechart) | `measurements` | 8 | 1 | id | A standard RTW size row (XS-XXL) for a garment, offered as a shortcut alongside the "type… |
 | [`GarmentType`](../data/measurements.md#garmenttype) | `measurements` | 18 | 0 | id |  |
-| [`GoodsReceipt`](../data/purchasing.md#goodsreceipt) | `purchasing` | 13 | 2 | id |  |
+| [`GoodsReceipt`](../data/purchasing.md#goodsreceipt) | `purchasing` | 14 | 2 | id |  |
 | [`GoodsReceiptItem`](../data/purchasing.md#goodsreceiptitem) | `purchasing` | 10 | 3 | id |  |
 | [`IdentityVerification`](../data/identity-verification.md#identityverification) | `identity-verification` | 12 | 1 | id |  |
 | [`InboundEmail`](../data/crm.md#inboundemail) | `crm` | 17 | 3 | id | A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-i… |
@@ -97,7 +105,8 @@ against a real database.
 | [`MeasurementProfile`](../data/measurements.md#measurementprofile) | `measurements` | 10 | 1 | id | A saved set of measurements: "Ammi – kameez", "Self – shalwar". |
 | [`Node`](../data/organization.md#node) | `organization` | 11 | 0 | id | A child node this deployment knows about — a brand's branches, or an organization's brand… |
 | [`Offer`](../data/trading-partners.md#offer) | `trading-partners` | 7 | 0 | id | A marketing push to the retail end of the chain (WO-18.3's third "forth" document, alongs… |
-| [`Order`](../data/orders.md#order) | `orders` | 42 | 3 | id |  |
+| [`Order`](../data/orders.md#order) | `orders` | 43 | 3 | id |  |
+| [`OrderEconomics`](../data/finance.md#ordereconomics) | `finance` | 12 | 1 | orderId | One row per order, written when it reaches DELIVERED and recomputed if it is later RETURN… |
 | [`OrderItem`](../data/orders.md#orderitem) | `orders` | 35 | 4 | id |  |
 | [`OrderNumberCounter`](../data/orders.md#ordernumbercounter) | `orders` | 2 | 0 | year | Backing store for sequential per-year order numbers (YSN-2026-0001). |
 | [`OrderStatusEvent`](../data/orders.md#orderstatusevent) | `orders` | 9 | 2 | id |  |
@@ -119,12 +128,13 @@ against a real database.
 | [`ProductOptionValue`](../data/catalog.md#productoptionvalue) | `catalog` | 9 | 1 | id | A specific value on an option axis: "M", "Ferozi", "128GB". |
 | [`ProductOptionValueTranslation`](../data/catalog.md#productoptionvaluetranslation) | `catalog` | 5 | 1 | id |  |
 | [`ProductTranslation`](../data/catalog.md#producttranslation) | `catalog` | 9 | 1 | id |  |
-| [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 41 | 4 | id |  |
+| [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 44 | 5 | id |  |
 | [`ProductVariantOptionValue`](../data/catalog.md#productvariantoptionvalue) | `catalog` | 5 | 2 | — | The join that DEFINES a variant: one row per option axis per variant. |
-| [`PurchaseOrder`](../data/purchasing.md#purchaseorder) | `purchasing` | 23 | 2 | id |  |
+| [`PurchaseOrder`](../data/purchasing.md#purchaseorder) | `purchasing` | 25 | 2 | id |  |
 | [`PurchaseOrderItem`](../data/purchasing.md#purchaseorderitem) | `purchasing` | 11 | 2 | id |  |
 | [`Quote`](../data/invoicing.md#quote) | `invoicing` | 9 | 0 | id |  |
 | [`QuoteLine`](../data/invoicing.md#quoteline) | `invoicing` | 7 | 1 | id |  |
+| [`RawMaterial`](../data/bom.md#rawmaterial) | `bom` | 13 | 1 | id |  |
 | [`RefreshToken`](../data/core.md#refreshtoken) | `core` | 9 | 1 | id |  |
 | [`ReplicationCursor`](../data/replication.md#replicationcursor) | `replication` | 4 | 0 | — | "The highest sequence I've already synced with this peer, in this direction" — read and a… |
 | [`ReplicationQuarantine`](../data/replication.md#replicationquarantine) | `replication` | 12 | 0 | id | Where an incoming record lands when it fails to apply — never dropped, never retried fore… |
@@ -151,7 +161,7 @@ against a real database.
 | [`StockTransfer`](../data/transfers.md#stocktransfer) | `transfers` | 17 | 0 | id |  |
 | [`StockTransferLine`](../data/transfers.md#stocktransferline) | `transfers` | 7 | 1 | id |  |
 | [`StockVariance`](../data/inventory.md#stockvariance) | `inventory` | 14 | 2 | id | One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale tha… |
-| [`Supplier`](../data/purchasing.md#supplier) | `purchasing` | 26 | 3 | id |  |
+| [`Supplier`](../data/purchasing.md#supplier) | `purchasing` | 27 | 3 | id |  |
 | [`SupplierBill`](../data/purchasing.md#supplierbill) | `purchasing` | 18 | 2 | id |  |
 | [`SupplierProduct`](../data/purchasing.md#supplierproduct) | `purchasing` | 10 | 2 | id | What a given supplier charges for a given variant, and under what terms. |
 | [`Tag`](../data/crm.md#tag) | `crm` | 5 | 0 | id |  |
@@ -160,7 +170,7 @@ against a real database.
 | [`TaxRate`](../data/tax.md#taxrate) | `tax` | 7 | 1 | id | One row per rate that has ever applied to a class. |
 | [`TradingPartner`](../data/trading-partners.md#tradingpartner) | `trading-partners` | 15 | 0 | id | The business on the other end of a document exchange. |
 | [`TransferNumberCounter`](../data/transfers.md#transfernumbercounter) | `transfers` | 2 | 0 | year | Same shape as OrderNumberCounter (orders.prisma) — an `INSERT ... |
-| [`User`](../data/core.md#user) | `core` | 44 | 11 | id |  |
+| [`User`](../data/core.md#user) | `core` | 47 | 14 | id |  |
 | [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | A per-user adjustment layered on top of their role's grants: GRANT adds a permission thei… |
 | [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | Which `Role` rows a user holds. |
 | [`VariantLocationStock`](../data/inventory.md#variantlocationstock) | `inventory` | 6 | 2 | — | Stock, per variant, per location. |
@@ -175,17 +185,19 @@ against a real database.
 |---|---|---|
 | [`AccountType`](../data/accounting.md#accounttype) | `accounting` | `ASSET` `LIABILITY` `EQUITY` `INCOME` `EXPENSE` |
 | [`AdminScopeLevel`](../data/organization.md#adminscopelevel) | `organization` | `ORG` `BRAND` `BRANCH` |
+| [`BomStatus`](../data/bom.md#bomstatus) | `bom` | `DRAFT` `ACTIVE` `ARCHIVED` |
 | [`CashMovementType`](../data/pos.md#cashmovementtype) | `pos` | `OPENING_FLOAT` `CASH_IN` `CASH_OUT` `DROP` `PAID_OUT` |
 | [`ContactStatus`](../data/crm.md#contactstatus) | `crm` | `LEAD` `ACTIVE` `REPEAT` `DORMANT` `BLOCKED` |
 | [`DevicePlatform`](../data/core.md#deviceplatform) | `core` | `IOS` `ANDROID` `WEB` |
 | [`EmailAccountPurpose`](../data/core.md#emailaccountpurpose) | `core` | `TRANSACTIONAL` `MARKETING` `SUPPORT` |
+| [`ExpenseRecurrence`](../data/finance.md#expenserecurrence) | `finance` | `NONE` `WEEKLY` `MONTHLY` `QUARTERLY` `YEARLY` |
 | [`FiscalPeriodStatus`](../data/accounting.md#fiscalperiodstatus) | `accounting` | `OPEN` `CLOSED` `LOCKED` |
 | [`IdentityVerificationStatus`](../data/identity-verification.md#identityverificationstatus) | `identity-verification` | `NOT_STARTED` `PENDING` `APPROVED` `REJECTED` `EXPIRED` |
 | [`InteractionKind`](../data/crm.md#interactionkind) | `crm` | `CALL` `WHATSAPP` `EMAIL` `SMS` `VISIT` `NOTE` `COMPLAINT` |
 | [`InvoiceStatus`](../data/invoicing.md#invoicestatus) | `invoicing` | `ISSUED` `PAID` `VOID` |
 | [`JournalEntryStatus`](../data/accounting.md#journalentrystatus) | `accounting` | `POSTED` `REVERSED` |
 | [`LeadStatus`](../data/crm.md#leadstatus) | `crm` | `NEW` `CONTACTED` `QUOTED` `WON` `LOST` |
-| [`LocationType`](../data/inventory.md#locationtype) | `inventory` | `STORE` `WAREHOUSE` `IN_TRANSIT` |
+| [`LocationType`](../data/inventory.md#locationtype) | `inventory` | `STORE` `WAREHOUSE` `IN_TRANSIT` `PRODUCTION` |
 | [`MeasurementUnit`](../data/measurements.md#measurementunit) | `measurements` | `INCH` `CM` |
 | [`NodeRole`](../data/organization.md#noderole) | `organization` | `BRANCH` `BRAND` |
 | [`NodeStatus`](../data/organization.md#nodestatus) | `organization` | `ACTIVE` `SUSPENDED` |
@@ -203,10 +215,12 @@ against a real database.
 | [`ProductStatus`](../data/catalog.md#productstatus) | `catalog` | `DRAFT` `ACTIVE` `ARCHIVED` |
 | [`PurchaseOrderStatus`](../data/purchasing.md#purchaseorderstatus) | `purchasing` | `DRAFT` `SENT` `PARTIAL` `RECEIVED` `CANCELLED` |
 | [`QuoteStatus`](../data/invoicing.md#quotestatus) | `invoicing` | `SENT` `ACCEPTED` `REJECTED` `EXPIRED` |
+| [`RawMaterialUnit`](../data/bom.md#rawmaterialunit) | `bom` | `GAZ` `METRE` `PIECE` `SPOOL` `GRAM` `MILLILITRE` |
 | [`ReplicationClass`](../data/replication.md#replicationclass) | `replication` | `FACT` `POLICY` |
 | [`ReplicationDirection`](../data/replication.md#replicationdirection) | `replication` | `UP` `DOWN` |
 | [`ReplicationOp`](../data/replication.md#replicationop) | `replication` | `UPSERT` `DELETE` |
 | [`ReplicationQuarantineStatus`](../data/replication.md#replicationquarantinestatus) | `replication` | `OPEN` `RESOLVED` |
+| [`ScopeLevel`](../data/core.md#scopelevel) | `core` | `ORG` `BRAND` `BRANCH` |
 | [`SettlementMode`](../data/transfers.md#settlementmode) | `transfers` | `NONE` `INTERNAL_PL` `INVOICED` |
 | [`ShipmentStatus`](../data/orders.md#shipmentstatus) | `orders` | `PENDING` `DISPATCHED` `IN_TRANSIT` `DELIVERED` `RETURNED` `LOST` |
 | [`StitchingOrderStatus`](../data/stitching.md#stitchingorderstatus) | `stitching` | `DRAFT` `AWAITING_FABRIC` `FABRIC_RECEIVED` `IN_PRODUCTION` `READY` `COMPLETED` `CANCELLED` |

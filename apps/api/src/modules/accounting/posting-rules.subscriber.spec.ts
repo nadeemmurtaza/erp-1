@@ -18,6 +18,8 @@ const ACCOUNT_ID: Record<string, string> = {
   [ACCOUNT_CODE.FX_LOSS]: 'acc-fx-loss',
   [ACCOUNT_CODE.INTERCOMPANY_REVENUE]: 'acc-ic-revenue',
   [ACCOUNT_CODE.INTERCOMPANY_COGS]: 'acc-ic-cogs',
+  [ACCOUNT_CODE.DIRECT_EXPENSES]: 'acc-direct-expenses',
+  [ACCOUNT_CODE.OPERATING_EXPENSES]: 'acc-operating-expenses',
 };
 
 describe('PostingRulesSubscriber — WO-19.2', () => {
@@ -422,6 +424,76 @@ describe('PostingRulesSubscriber — WO-19.2', () => {
       accounting.findPostedEntry.mockResolvedValue({ id: 'already-there' });
 
       await subscriber.onInterBranchTransferInvoiced(payload);
+
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('onExpenseRecorded — WO-23.1', () => {
+    const payload = {
+      expenseId: 'e1',
+      categoryKey: 'rent',
+      isDirect: false,
+      amountMinor: 5000,
+      incurredAt: '2026-10-05T00:00:00.000Z',
+      paidAtIso: null as string | null,
+      supplierId: null as string | null,
+    };
+
+    it('Dr Operating Expenses / Cr Accounts Payable when unpaid', async () => {
+      await subscriber.onExpenseRecorded(payload);
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          source: DomainEvent.ExpenseRecorded,
+          sourceRef: 'e1',
+          lines: [
+            { accountId: 'acc-operating-expenses', debitMinor: 5000 },
+            { accountId: 'acc-ap', creditMinor: 5000, supplierId: null },
+          ],
+        }),
+      );
+    });
+
+    it('Dr Direct Expenses / Cr Cash & Bank when isDirect and already paid', async () => {
+      await subscriber.onExpenseRecorded({
+        ...payload,
+        isDirect: true,
+        paidAtIso: '2026-10-06T00:00:00.000Z',
+      });
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          lines: [
+            { accountId: 'acc-direct-expenses', debitMinor: 5000 },
+            { accountId: 'acc-bank', creditMinor: 5000, supplierId: null },
+          ],
+        }),
+      );
+    });
+
+    it('tags the Accounts Payable line with supplierId only while unpaid — a paid line carries no supplier tag to age', async () => {
+      await subscriber.onExpenseRecorded({ ...payload, supplierId: 's1' });
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          lines: [
+            { accountId: 'acc-operating-expenses', debitMinor: 5000 },
+            { accountId: 'acc-ap', creditMinor: 5000, supplierId: 's1' },
+          ],
+        }),
+      );
+    });
+
+    it('does nothing for a zero or negative amount', async () => {
+      await subscriber.onExpenseRecorded({ ...payload, amountMinor: 0 });
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+
+    it('does nothing when this expense already posted (redelivery)', async () => {
+      accounting.findPostedEntry.mockResolvedValue({ id: 'already-there' });
+
+      await subscriber.onExpenseRecorded(payload);
 
       expect(accounting.postEntry).not.toHaveBeenCalled();
     });

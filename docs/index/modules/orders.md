@@ -67,11 +67,11 @@ All paths relative to `apps/api/src/modules/orders`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Order` | 42 | :24 |  |
-| `OrderItem` | 35 | :108 |  |
-| `OrderNumberCounter` | 2 | :252 | Backing store for sequential per-year order numbers (YSN-2026-0001). |
-| `OrderStatusEvent` | 9 | :189 |  |
-| `Shipment` | 12 | :213 |  |
+| `Order` | 43 | :24 |  |
+| `OrderItem` | 35 | :110 |  |
+| `OrderNumberCounter` | 2 | :254 | Backing store for sequential per-year order numbers (YSN-2026-0001). |
+| `OrderStatusEvent` | 9 | :191 |  |
+| `Shipment` | 12 | :215 |  |
 
 
 Enums: `OrderChannel` (2) · `OrderItemFulfillmentStatus` (3) · `OrderStatus` (8) · `ShipmentStatus` (6)

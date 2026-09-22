@@ -162,6 +162,13 @@ const KNOWN_MODULE_COUPLINGS = new Set([
   // StockTransfer status write they belong to (RETAIL-ERP.md R4/WO-22.1) —
   // anticipated by R11's own text alongside pos -> orders, same reasoning.
   'transfers -> inventory',
+  // production.service.ts's recordRun() consumes raw-material stock and
+  // credits the finished variant's stock (InventoryService.moveMany()/move())
+  // inside the same transaction as the BomProductionRun/BomProductionLine
+  // rows it writes (WO-C.3, 10-admin-dashboard.md §C) — the same
+  // same-transaction-write reasoning as production -> inventory above, for
+  // the bom module's own production step.
+  'bom -> inventory',
 ]);
 
 function walk(dir) {

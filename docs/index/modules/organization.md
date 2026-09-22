@@ -3,7 +3,7 @@
 
 # Module: `organization`
 
-Pack **core** · enabled by the `MODULES` allowlist · 9 files
+Pack **core** · enabled by the `MODULES` allowlist · 10 files
 
 
 
@@ -11,37 +11,40 @@ Pack **core** · enabled by the `MODULES` allowlist · 9 files
 
 Source: `apps/api/src/modules/organization/`
 
-## Files (9 · 875 lines)
+## Files (10 · 1,112 lines)
 
 All paths relative to `apps/api/src/modules/organization/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `admin-scope.dto.ts` | dto | 34 | 1 | What makes someone a super admin, a brand admin, or a branch admin (RETAIL-ERP.md R10, WO-18.6) — never a role, only th… |
+| `brand-policy.dto.ts` | dto | 21 | 1 | RETAIL-ERP.md R9/R13 — the three switches a brand sets for its own branches, ADR-021/ADR-022. |
 | `node.dto.ts` | dto | 19 | 1 |  |
 | `organization-policy.dto.ts` | dto | 10 | 1 | R9's org.allow_inter_brand_transfers — see OrganizationService.setInterBrandTransfersPolicy(). |
 | `nodes.service.spec.ts` | unit test | 113 | — |  |
 | `nodes.service.ts` | service | 95 | 1 | The registry of child nodes this deployment is authoritative for — a brand's branches, or an organization's brands (RET… |
-| `organization.controller.ts` | controller | 113 | 1 | The three-level admin shell (R19, WO-18.5) plus who holds a seat in it (R10, WO-18.6). |
-| `organization.module.ts` | nest module | 20 | 1 |  |
-| `organization.service.spec.ts` | unit test | 266 | — |  |
-| `organization.service.ts` | service | 205 | 5 |  |
+| `organization.controller.ts` | controller | 131 | 1 | The three-level admin shell (R19, WO-18.5) plus who holds a seat in it (R10, WO-18.6). |
+| `organization.module.ts` | nest module | 23 | 1 |  |
+| `organization.service.spec.ts` | unit test | 375 | — |  |
+| `organization.service.ts` | service | 291 | 5 |  |
 
 
-## HTTP routes (10)
+## HTTP routes (12)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/organization/admin-scopes` | `organization.manage` | `OrganizationController.adminScopes` :94 | Every AdminScope grant — who is a super admin, who runs which brand, who manages which br… |
-| POST | `/organization/admin-scopes` | `organization.manage` | `OrganizationController.grantScope` :101 | Make a user a super admin, a brand admin, or a branch admin |
-| DELETE | `/organization/admin-scopes/:id` | `organization.manage` | `OrganizationController.revokeScope` :108 | Revoke an AdminScope grant |
-| GET | `/organization/brands` | `organization.view` | `OrganizationController.brands` :46 | Retail brands visible to the caller |
-| GET | `/organization/me/scope` | `organization.view` | `OrganizationController.myScope` :40 | The caller's resolved scope — where to land, and what chips to draw |
-| GET | `/organization/nodes` | `organization.view` | `OrganizationController.nodes` :52 | This deployment's registered child nodes, visible to the caller |
-| POST | `/organization/nodes` | `organization.manage` | `OrganizationController.registerNode` :59 | Register a child node — or re-activate and update one that already exists |
-| POST | `/organization/nodes/:nodeId/rotate-inbound-key` | `organization.manage` | `OrganizationController.rotateNodeInboundKey` :66 | Issue a fresh replication credential for a child node — shown once, never retrievable aga… |
-| PATCH | `/organization/policy/inter-brand-transfers` | `organization.manage` | `OrganizationController.setInterBrandTransfersPolicy` :84 | Turn inter-brand transfers on or off for this organization (RETAIL-ERP.md R9, WO-22.2) |
-| POST | `/organization/replication/resync` | `organization.manage` | `OrganizationController.resyncFromParent` :76 |  |
+| GET | `/organization/admin-scopes` | `organization.manage` | `OrganizationController.adminScopes` :112 | Every AdminScope grant — who is a super admin, who runs which brand, who manages which br… |
+| POST | `/organization/admin-scopes` | `organization.manage` | `OrganizationController.grantScope` :119 | Make a user a super admin, a brand admin, or a branch admin |
+| DELETE | `/organization/admin-scopes/:id` | `organization.manage` | `OrganizationController.revokeScope` :126 | Revoke an AdminScope grant |
+| GET | `/organization/brands` | `organization.view` | `OrganizationController.brands` :47 | Retail brands visible to the caller |
+| GET | `/organization/brands/:brandId/policy` | `organization.view` | `OrganizationController.brandPolicy` :94 | A brand's own policy switches for its branches (RETAIL-ERP.md R9/R13) — null when never c… |
+| PATCH | `/organization/brands/:brandId/policy` | `organization.manage` | `OrganizationController.setBrandPolicy` :101 | Set a brand policy switch — allowBranchProductCreation, allowBranchLocalPurchasing, allow… |
+| GET | `/organization/me/scope` | `organization.view` | `OrganizationController.myScope` :41 | The caller's resolved scope — where to land, and what chips to draw |
+| GET | `/organization/nodes` | `organization.view` | `OrganizationController.nodes` :53 | This deployment's registered child nodes, visible to the caller |
+| POST | `/organization/nodes` | `organization.manage` | `OrganizationController.registerNode` :60 | Register a child node — or re-activate and update one that already exists |
+| POST | `/organization/nodes/:nodeId/rotate-inbound-key` | `organization.manage` | `OrganizationController.rotateNodeInboundKey` :67 | Issue a fresh replication credential for a child node — shown once, never retrievable aga… |
+| PATCH | `/organization/policy/inter-brand-transfers` | `organization.manage` | `OrganizationController.setInterBrandTransfersPolicy` :85 | Turn inter-brand transfers on or off for this organization (RETAIL-ERP.md R9, WO-22.2) |
+| POST | `/organization/replication/resync` | `organization.manage` | `OrganizationController.resyncFromParent` :77 |  |
 
 
 ## Domain events
@@ -87,6 +90,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 - core `auth`
 - core `config`
+- core `extension-points`
 - core `prisma`
 - core `replication`
 - core `security`
@@ -101,7 +105,7 @@ check there before adding another.
 | Spec | Cases | Covers |
 |---|---|---|
 | `nodes.service.spec.ts` | 8 | NodesService · rotateInboundKey |
-| `organization.service.spec.ts` | 27 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setInterBrandTransfersPo… |
+| `organization.service.spec.ts` | 39 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setInterBrandTransfersPo… |
 
 
 ## Every export in this unit
@@ -109,16 +113,17 @@ check there before adding another.
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
 | `GrantScopeDto` | class | `admin-scope.dto.ts:14` | What makes someone a super admin, a brand admin, or a branch admin (RETAIL-ERP.md R10, WO-18.6) — never a rol… |
+| `UpdateBrandPolicyDto` | class | `brand-policy.dto.ts:5` | RETAIL-ERP.md R9/R13 — the three switches a brand sets for its own branches, ADR-021/ADR-022. |
 | `RegisterNodeDto` | class | `node.dto.ts:4` |  |
 | `SetInterBrandTransfersPolicyDto` | class | `organization-policy.dto.ts:5` | R9's org.allow_inter_brand_transfers — see OrganizationService.setInterBrandTransfersPolicy(). |
 | `NodesService` | class | `nodes.service.ts:28` | The registry of child nodes this deployment is authoritative for — a brand's branches, or an organization's b… |
-| `OrganizationController` | class | `organization.controller.ts:26` | The three-level admin shell (R19, WO-18.5) plus who holds a seat in it (R10, WO-18.6). |
-| `OrganizationModule` | class | `organization.module.ts:19` |  |
-| `AdminScopeWithHolder` | interface | `organization.service.ts:6` |  |
-| `GrantScopeInput` | interface | `organization.service.ts:10` |  |
-| `MyScopeLevel` | type | `organization.service.ts:27` | Where this actor lands (R19) — the *authoritative signal, not something the frontend should infer from `brand… |
-| `MyScopeResult` | interface | `organization.service.ts:29` | Where this actor lands (R19) — the *authoritative signal, not something the frontend should infer from `brand… |
-| `OrganizationService` | class | `organization.service.ts:47` | The `organization` module's data (RETAIL-ERP.md R19/R10). |
+| `OrganizationController` | class | `organization.controller.ts:27` | The three-level admin shell (R19, WO-18.5) plus who holds a seat in it (R10, WO-18.6). |
+| `OrganizationModule` | class | `organization.module.ts:22` |  |
+| `AdminScopeWithHolder` | interface | `organization.service.ts:8` |  |
+| `GrantScopeInput` | interface | `organization.service.ts:12` |  |
+| `MyScopeLevel` | type | `organization.service.ts:29` | Where this actor lands (R19) — the *authoritative signal, not something the frontend should infer from `brand… |
+| `MyScopeResult` | interface | `organization.service.ts:31` | Where this actor lands (R19) — the *authoritative signal, not something the frontend should infer from `brand… |
+| `OrganizationService` | class | `organization.service.ts:49` | The `organization` module's data (RETAIL-ERP.md R19/R10). |
 
 
 ---

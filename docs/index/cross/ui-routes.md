@@ -3,7 +3,7 @@
 
 # Screens
 
-All **125** routable files across the web app, the till and the mobile app.
+All **137** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (58)
+### admin (70)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -41,6 +41,15 @@ _none_
 | `/admin` | page | client | `apps/web/src/app/(admin)/admin/(app)/page.tsx` |
 | `/admin/account` | page | client | `apps/web/src/app/(admin)/admin/(app)/account/page.tsx` |
 | `/admin/b/[brandId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx` |
+| `/admin/bom` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/page.tsx` |
+| `/admin/bom/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/[id]/page.tsx` |
+| `/admin/bom/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/new/page.tsx` |
+| `/admin/bom/production` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/production/page.tsx` |
+| `/admin/bom/production/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/production/[id]/page.tsx` |
+| `/admin/bom/production/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/production/new/page.tsx` |
+| `/admin/bom/raw-materials` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/page.tsx` |
+| `/admin/bom/raw-materials/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/[id]/page.tsx` |
+| `/admin/bom/raw-usage` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/raw-usage/page.tsx` |
 | `/admin/br/[branchId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/br/[branchId]/page.tsx` |
 | `/admin/brands` | page | client | `apps/web/src/app/(admin)/admin/(app)/brands/page.tsx` |
 | `/admin/categories` | page | client | `apps/web/src/app/(admin)/admin/(app)/categories/page.tsx` |
@@ -50,6 +59,9 @@ _none_
 | `/admin/email-accounts` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-accounts/page.tsx` |
 | `/admin/email-accounts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx` |
 | `/admin/email-templates` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-templates/page.tsx` |
+| `/admin/finance/expenses` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/expenses/page.tsx` |
+| `/admin/finance/expenses/analytics` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/expenses/analytics/page.tsx` |
+| `/admin/finance/expenses/categories` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories/page.tsx` |
 | `/admin/garments` | page | client | `apps/web/src/app/(admin)/admin/(app)/garments/page.tsx` |
 | `/admin/garments/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/garments/[id]/page.tsx` |
 | `/admin/import` | page | client | `apps/web/src/app/(admin)/admin/(app)/import/page.tsx` |

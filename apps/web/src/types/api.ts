@@ -361,6 +361,25 @@ export interface GrantScopeInput {
   branchNodeId?: string;
 }
 
+/**
+ * GET/PATCH /organization/brands/:brandId/policy (WO-23.3b, RETAIL-ERP.md
+ * R9/R13) — a brand's own switches for its branches. `null` from the GET
+ * means no row exists yet, which reads the same as every switch being off
+ * (the API's own default).
+ */
+export interface BrandPolicy {
+  retailBrandId: string;
+  allowBranchProductCreation: boolean;
+  allowBranchLocalPurchasing: boolean;
+  allowInterBranchTransfers: boolean;
+}
+
+export interface UpdateBrandPolicyInput {
+  allowBranchProductCreation?: boolean;
+  allowBranchLocalPurchasing?: boolean;
+  allowInterBranchTransfers?: boolean;
+}
+
 // --- Inventory --------------------------------------------------------------
 
 export interface StockAdjustment {

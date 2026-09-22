@@ -47,27 +47,27 @@ enum ReplicationOp {
 /// makes a gap safe to buffer-and-flag rather than something that must
 /// block: the peer can tell exactly what it is missing.
 model ReplicationRecord {
-  id           String               @id @default(cuid())
-  originNodeId String
-  sequence     BigInt
+  id            String               @id @default(cuid())
+  originNodeId  String
+  sequence      BigInt
   /// "Order", "JournalLine", "Product" — must be registered with
   /// `ReplicationRegistry` before anything can log or apply it.
-  entity       String
+  entity        String
   /// The cuid — identical at every tier (R6), so this is never translated
   /// in transit the way a per-node autoincrement id would have to be.
-  entityId     String
-  dataClass    ReplicationClass
-  direction    ReplicationDirection
-  op           ReplicationOp
-  payload      Json
+  entityId      String
+  dataClass     ReplicationClass
+  direction     ReplicationDirection
+  op            ReplicationOp
+  payload       Json
   /// Lets a receiving node that hasn't yet deployed a payload-shape change
   /// tell "old shape, still valid" apart from "genuinely broken" — carried
   /// on every record rather than inferred from `entity` alone.
   schemaVersion Int
   /// The fact's own original time — never rewritten by a late apply,
   /// mirroring how a late-posted JournalEntry keeps its own date (R15).
-  occurredAt   DateTime
-  createdAt    DateTime             @default(now())
+  occurredAt    DateTime
+  createdAt     DateTime             @default(now())
 
   @@unique([originNodeId, sequence])
   @@index([entity, entityId])

@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **287** endpoints across **57** controllers, with the access rule that actually guards each one.
+All **322** endpoints across **59** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -103,15 +103,41 @@ never authorization.
 | DELETE | `/addresses/:id` | signed-in | `AddressesController.remove` | Remove a saved address |
 | PATCH | `/addresses/:id` | signed-in | `AddressesController.update` | Edit a saved address |
 
-### [`analytics`](../modules/analytics.md) (5)
+### [`analytics`](../modules/analytics.md) (6)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/analytics/comparison` | `analytics.view` | `AnalyticsController.comparison` | Sales, purchases and expenses side by side, bucketed by day, week or month |
 | GET | `/admin/analytics/dashboard` | `analytics.view` | `AnalyticsController.dashboard` | Everything the dashboard shows, in one request |
 | GET | `/admin/analytics/extended` | `analytics.view` | `AnalyticsController.extended` | Funnel, geography, fulfilment and payment-mix metrics |
 | PATCH | `/admin/analytics/monthly-target` | `analytics.view` | `AnalyticsController.setMonthlyTarget` | Set the monthly revenue target shown on the dashboard |
 | GET | `/admin/analytics/stitching` | `analytics.view` | `AnalyticsController.stitching` | Which garments and style options drive the stitching business |
 | GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` | Visitor counts, view-to-order funnel and traffic sources |
+
+### [`bom`](../modules/bom.md) (20)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/bom/missing` | `bom.view` | `BomController.missing` | Variants with no recipe, and ACTIVE recipes whose cost is still incomplete |
+| GET | `/admin/bom/production-runs` | `bom.view` | `BomController.listProductionRuns` | List production runs |
+| POST | `/admin/bom/production-runs` | `bom.produce` | `BomController.createProductionRun` | Record a production run — consumes raw stock, credits finished stock, rolls the… |
+| DELETE | `/admin/bom/production-runs/:id` | `bom.manage` | `BomController.deleteProductionRun` | Always 405 — a production run is ledger history, never deleted |
+| GET | `/admin/bom/production-runs/:id` | `bom.view` | `BomController.getProductionRun` | Production run detail with its consumed-material lines |
+| GET | `/admin/bom/raw-materials` | `bom.view` | `BomController.list` | List raw materials, paginated and filtered |
+| POST | `/admin/bom/raw-materials` | `bom.manage` | `BomController.create` | Create a raw material — a Product/ProductVariant pair, filed under the raw-mate… |
+| GET | `/admin/bom/raw-materials/:id` | `bom.view` | `BomController.get` | Raw material detail plus its recent stock movements |
+| PATCH | `/admin/bom/raw-materials/:id` | `bom.manage` | `BomController.update` | Edit a raw material |
+| POST | `/admin/bom/raw-materials/:id/deactivate` | `bom.manage` | `BomController.deactivate` | Deactivate a raw material |
+| GET | `/admin/bom/raw-usage` | `bom.view` | `BomController.rawUsage` | Raw-material consumption over time, sourced from the stock ledger — cost fields… |
+| GET | `/admin/bom/recipes` | `bom.view` | `BomController.listRecipes` | List recipes — filter=all\|active\|missing\|incomplete-cost |
+| POST | `/admin/bom/recipes` | `bom.manage` | `BomController.createRecipe` | Create a recipe for a finished ProductVariant |
+| GET | `/admin/bom/recipes/:id` | `bom.view` | `BomController.getRecipe` | Recipe detail with its components |
+| PATCH | `/admin/bom/recipes/:id` | `bom.manage` | `BomController.updateRecipe` | Edit a recipe — recomputes the cost rollup in the same transaction |
+| POST | `/admin/bom/recipes/:id/activate` | `bom.manage` | `BomController.activateRecipe` | Activate a recipe — 400 unless it has at least one non-optional component |
+| POST | `/admin/bom/recipes/:id/archive` | `bom.manage` | `BomController.archiveRecipe` | Archive a recipe |
+| GET | `/admin/bom/recipes/:id/availability` | `bom.view` | `BomController.recipeAvailability` | Whether this recipe can be produced now, and how many runs current stock suppor… |
+| GET | `/admin/bom/recipes/:id/cost` | `bom.view` | `BomController.recipeCost` | Per-component cost breakdown, recomputed live |
+| POST | `/admin/bom/recipes/:id/seed-cost-price` | `bom.manage` | `BomController.seedCostPrice` | Backfill costPrice = rolledUpUnitCost for a variant manufactured before BOM exi… |
 
 ### [`cart`](../modules/cart.md) (6)
 
@@ -243,6 +269,23 @@ never authorization.
 | GET | `/admin/crm/tags` | `crm.manage` | `CrmAdminController.listTags` |  |
 | POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` | Contact-form enquiry — becomes a lead in the CRM |
 
+### [`finance`](../modules/finance.md) (12)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/finance/expense-categories` | `finance.view` | `FinanceController.listCategories` | List expense categories with their expense count |
+| POST | `/admin/finance/expense-categories` | `finance.manage` | `FinanceController.createCategory` | Create an expense category |
+| DELETE | `/admin/finance/expense-categories/:id` | `finance.manage` | `FinanceController.deleteCategory` | Delete an unused expense category |
+| PATCH | `/admin/finance/expense-categories/:id` | `finance.manage` | `FinanceController.updateCategory` | Rename, redirect or (de)activate an expense category |
+| GET | `/admin/finance/expenses` | `finance.view` | `FinanceController.listExpenses` | List expenses, paginated and filtered |
+| POST | `/admin/finance/expenses` | `finance.manage` | `FinanceController.createExpense` | Record an expense |
+| DELETE | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.deleteExpense` | Delete an expense |
+| PATCH | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.updateExpense` | Edit an expense |
+| POST | `/admin/finance/expenses/:id/receipt` | `finance.manage` | `FinanceController.uploadReceipt` | Attach a receipt image or PDF to an expense |
+| GET | `/admin/finance/expenses/by-category` | `finance.view` | `FinanceController.byCategory` | Expense totals by category — share, period-over-period change, and share of rev… |
+| GET | `/admin/finance/expenses/summary` | `finance.view` | `FinanceController.summary` | Totals, per-category breakdown and a daily series |
+| GET | `/admin/finance/expenses/trend` | `finance.view` | `FinanceController.trend` | Expense totals over time, bucketed by day or month |
+
 ### [`identity-verification`](../modules/identity-verification.md) (4)
 
 | Method | Path | Access | Handler | Summary |
@@ -310,7 +353,7 @@ never authorization.
 | POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` |  |
 | GET | `/orders/mine` | signed-in | `OrdersController.mine` | The signed-in customer's orders |
 
-### [`organization`](../modules/organization.md) (10)
+### [`organization`](../modules/organization.md) (12)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -318,6 +361,8 @@ never authorization.
 | POST | `/organization/admin-scopes` | `organization.manage` | `OrganizationController.grantScope` | Make a user a super admin, a brand admin, or a branch admin |
 | DELETE | `/organization/admin-scopes/:id` | `organization.manage` | `OrganizationController.revokeScope` | Revoke an AdminScope grant |
 | GET | `/organization/brands` | `organization.view` | `OrganizationController.brands` | Retail brands visible to the caller |
+| GET | `/organization/brands/:brandId/policy` | `organization.view` | `OrganizationController.brandPolicy` | A brand's own policy switches for its branches (RETAIL-ERP.md R9/R13) — null wh… |
+| PATCH | `/organization/brands/:brandId/policy` | `organization.manage` | `OrganizationController.setBrandPolicy` | Set a brand policy switch — allowBranchProductCreation, allowBranchLocalPurchas… |
 | GET | `/organization/me/scope` | `organization.view` | `OrganizationController.myScope` | The caller's resolved scope — where to land, and what chips to draw |
 | GET | `/organization/nodes` | `organization.view` | `OrganizationController.nodes` | This deployment's registered child nodes, visible to the caller |
 | POST | `/organization/nodes` | `organization.manage` | `OrganizationController.registerNode` | Register a child node — or re-activate and update one that already exists |

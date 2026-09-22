@@ -5,10 +5,20 @@ import { formatMoney, formatNumber } from '@newax/shared';
 import { DonutChart } from '@/components/admin/donut-chart';
 import { GaugeChart } from '@/components/admin/gauge-chart';
 import { FunnelChart } from '@/components/admin/funnel-chart';
+import { ComparisonChart, type ComparisonBucketPoint } from '@/components/admin/comparison-chart';
 import { adminFetch } from '@/lib/admin-client';
 import { RangePicker, type RangeDays } from '@/components/admin/range-picker';
 import type { MonthlyTarget, VisitorAnalytics } from '@/types/api';
 import { EmptyState, Loading, PageHeader, Section, Tabs } from '@/components/ui';
+
+type MetricBucket = 'day' | 'week' | 'month';
+
+interface ComparisonSlice {
+  bucket: MetricBucket;
+  buckets: ComparisonBucketPoint[];
+  totals: { sales: number; purchases: number; expenses: number; grossProfit: number | null; net: number | null };
+  financeEnabled: boolean;
+}
 
 /**
  * Where the analytics live.
@@ -36,6 +46,8 @@ export default function InsightsPage() {
   const [data, setData] = useState<DashboardSlice | null>(null);
   const [extended, setExtended] = useState<ExtendedSlice | null>(null);
   const [visitors, setVisitors] = useState<VisitorAnalytics | null>(null);
+  const [comparison, setComparison] = useState<ComparisonSlice | null>(null);
+  const [comparisonBucket, setComparisonBucket] = useState<MetricBucket>('day');
   const [error, setError] = useState<string | null>(null);
 
   // The target is the one editable thing on this page, so it keeps its own
@@ -47,18 +59,20 @@ export default function InsightsPage() {
   const load = useCallback(async () => {
     setError(null);
     try {
-      const [dashboard, extendedData, visitorData] = await Promise.all([
+      const [dashboard, extendedData, visitorData, comparisonData] = await Promise.all([
         adminFetch<DashboardSlice>('/admin/analytics/dashboard', { query: { days } }),
         adminFetch<ExtendedSlice>('/admin/analytics/extended', { query: { days } }),
         adminFetch<VisitorAnalytics>('/admin/analytics/visitors', { query: { days } }),
+        adminFetch<ComparisonSlice>('/admin/analytics/comparison', { query: { days, bucket: comparisonBucket } }),
       ]);
       setData(dashboard);
       setExtended(extendedData);
       setVisitors(visitorData);
+      setComparison(comparisonData);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not load insights');
     }
-  }, [days]);
+  }, [days, comparisonBucket]);
 
   useEffect(() => {
     void load();
@@ -98,7 +112,7 @@ export default function InsightsPage() {
     );
   }
 
-  if (!data || !extended || !visitors) {
+  if (!data || !extended || !visitors || !comparison) {
     return (
       <>
         <PageHeader title="Insights" description="How the shop is performing." />
@@ -266,6 +280,50 @@ export default function InsightsPage() {
                   )}
                 </Section>
               </>
+            ),
+          },
+          {
+            key: 'comparison',
+            label: 'Comparison',
+            content: (
+              <Section
+                title={`Sales, purchases and expenses · last ${days} days`}
+                description="What came in against what went out — restocking and operating costs together."
+                action={
+                  <div className="flex gap-1" role="group" aria-label="Bucket size">
+                    {(['day', 'week', 'month'] as const).map((option) => (
+                      <button
+                        key={option}
+                        type="button"
+                        onClick={() => setComparisonBucket(option)}
+                        aria-pressed={comparisonBucket === option}
+                        className={
+                          comparisonBucket === option
+                            ? 'rounded bg-accent px-3 py-1.5 text-sm font-medium text-white'
+                            : 'rounded px-3 py-1.5 text-sm text-neutral-900/60 hover:bg-neutral-50 hover:text-neutral-900'
+                        }
+                      >
+                        {option === 'day' ? 'Daily' : option === 'week' ? 'Weekly' : 'Monthly'}
+                      </button>
+                    ))}
+                  </div>
+                }
+              >
+                {!comparison.financeEnabled ? (
+                  <p className="notice notice-info mb-4">
+                    Expenses are shown as zero — the finance module isn&apos;t enabled on this deployment.
+                  </p>
+                ) : null}
+
+                {comparison.buckets.every((b) => b.sales === 0 && b.purchases === 0 && b.expenses === 0) ? (
+                  <EmptyState
+                    title="No activity in this window"
+                    description="No sales, purchases or expenses were recorded in the selected range."
+                  />
+                ) : (
+                  <ComparisonChart buckets={comparison.buckets} bucket={comparison.bucket} />
+                )}
+              </Section>
             ),
           },
         ]}

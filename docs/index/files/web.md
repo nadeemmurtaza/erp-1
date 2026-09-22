@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 228 tracked files in `apps/web`, by directory.
+All 243 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -102,7 +102,61 @@ All 228 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 74 |  |
+| `page.tsx` | page | 180 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/bom` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 245 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/bom/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 183 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/bom/new` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 18 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/bom/production` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 131 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/bom/production/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 119 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/bom/production/new` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 190 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 328 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 273 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/bom/raw-usage` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 143 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/br/[branchId]` (1)
 
@@ -158,6 +212,24 @@ All 228 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 197 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/finance/expenses` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 470 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/finance/expenses/analytics` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 201 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 220 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/garments` (1)
 
 | File | Kind | Lines | Purpose |
@@ -186,7 +258,7 @@ All 228 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 276 |  |
+| `page.tsx` | page | 334 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory` (1)
 
@@ -276,7 +348,7 @@ All 228 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 224 |  |
+| `page.tsx` | page | 233 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/products/[id]` (1)
 
@@ -592,18 +664,19 @@ All 228 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `route.ts` | route handler | 17 |  |
 
-### `apps/web/src/components/admin` (17)
+### `apps/web/src/components/admin` (18)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `admin-shell.tsx` | component | 410 |  |
 | `command-palette.tsx` | component | 285 |  |
+| `comparison-chart.tsx` | component | 219 |  |
 | `deployment-modules.tsx` | component | 21 |  |
 | `donut-chart.tsx` | component | 136 |  |
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 485 |  |
-| `nav-registry.ts` | component | 388 |  |
+| `nav-registry.ts` | component | 450 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1034 |  |
@@ -613,6 +686,13 @@ All 228 tracked files in `apps/web`, by directory.
 | `scope-chips.tsx` | component | 71 |  |
 | `session.tsx` | component | 25 |  |
 | `stage-badge.tsx` | component | 15 |  |
+
+### `apps/web/src/components/admin/bom` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `cost-breakdown.tsx` | component | 121 |  |
+| `recipe-editor.tsx` | component | 363 |  |
 
 ### `apps/web/src/components/common` (3)
 
@@ -740,7 +820,7 @@ All 228 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 711 |  |
+| `api.ts` | types | 730 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

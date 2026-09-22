@@ -277,7 +277,7 @@ All 247 tracked files in `docs/*`, by directory.
 | `17-inventory-locations.md` | doc | 254 |  |
 | `18-identity-verification.md` | doc | 143 |  |
 | `18-trading-partner-network.md` | doc | 61 |  |
-| `DECISIONS.md` | doc | 752 |  |
+| `DECISIONS.md` | doc | 1238 |  |
 | `ENTERPRISE-SCALE.md` | doc | 266 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |

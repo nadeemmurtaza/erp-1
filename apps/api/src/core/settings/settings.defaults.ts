@@ -48,6 +48,8 @@ export interface DocumentPrefixes {
   stockTransfer: string;
   /** R12/R17's inter-brand settlement document (WO-22.3) — node-prefixed like the rest, and distinct from `invoice` above (a different document). */
   interBranchInvoice: string;
+  /** BomProductionRun (WO-C.3) — node-prefixed like the rest. */
+  productionRun: string;
 }
 
 export interface DocumentSettings {
@@ -55,6 +57,20 @@ export interface DocumentSettings {
   /** Only read when logoSource is 'custom'. */
   logoUrl: string | null;
   prefixes: DocumentPrefixes;
+}
+
+/**
+ * Basis points per payment provider (Rule 5 — 250 = 2.5%), read by
+ * OrderEconomicsService (WO-B.3) to derive `gatewayFee` from `Order.grandTotal`.
+ * The index signature covers a provider PaymentProvider.key names that isn't
+ * one of the two explicit keys below (jazzcash, easypaisa) — those fall back
+ * to `default` until they carry their own real rate.
+ */
+export interface FinanceGatewayFeeBpsSettings {
+  [provider: string]: number;
+  cod: number;
+  bank_transfer: number;
+  default: number;
 }
 
 export const SettingKey = {
@@ -108,6 +124,14 @@ export const SettingKey = {
   TaxPricingMode: 'tax.pricing_mode',
   /** TaxClass.key used for a variant with no taxClassId of its own. */
   TaxDefaultClass: 'tax.default_class',
+  /** ISO 4217 — pre-fills a new expense's currency field. */
+  FinanceDefaultCurrency: 'finance.default_currency',
+  /** 0-23, server-local. Hour of day FinanceCron generates due recurring expense instances — adjustable without a deploy, same idiom as the other cron-gating settings below. */
+  FinanceRecurringRunHour: 'finance.recurring_run_hour',
+  /** Flat per-order packaging cost, paisa (WO-B.3) — every order costs the same to box, whatever it contains. */
+  FinancePackagingCostPerOrder: 'finance.packaging_cost_per_order',
+  /** See FinanceGatewayFeeBpsSettings above. */
+  FinanceGatewayFeeBps: 'finance.gateway_fee_bps',
   /**
    * Off until an owner turns it on — MarketingAutomationCron no-ops entirely
    * while this is false, the ship-safe default for anything that emails a
@@ -122,6 +146,10 @@ export const SettingKey = {
   MarketingReviewRequestDays: 'marketing.review_request_days',
   /** Days after DELIVERED before a Product.isConsumable purchase gets a reorder nudge. One global cadence, not per-product. */
   MarketingReplenishmentReminderDays: 'marketing.replenishment_reminder_days',
+  /** Category.slug every RawMaterial's underlying Product is filed under (WO-C.1). Seeded at boot by seedRawMaterialCategory(); resolved at runtime, never hardcoded. */
+  BomRawMaterialCategorySlug: 'bom.raw_material_category_slug',
+  /** Basis points of expected wastage assumed on a recipe with no line-level override (WO-C.2). 0 until a recipe says otherwise. */
+  BomDefaultWastageBps: 'bom.default_wastage_bps',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -224,6 +252,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
       quote: 'QTE',
       stockTransfer: 'TRF',
       interBranchInvoice: 'IBI',
+      productionRun: 'PR',
     },
   } satisfies DocumentSettings,
 
@@ -243,10 +272,21 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.TaxEnabled]: false,
   [SettingKey.TaxPricingMode]: 'EXCLUSIVE',
   [SettingKey.TaxDefaultClass]: 'standard',
+  [SettingKey.FinanceDefaultCurrency]: 'PKR',
+  [SettingKey.FinanceRecurringRunHour]: 3,
+  [SettingKey.FinancePackagingCostPerOrder]: toMinor(50),
+  [SettingKey.FinanceGatewayFeeBps]: {
+    cod: 0,
+    bank_transfer: 0,
+    default: 250,
+  } satisfies FinanceGatewayFeeBpsSettings,
 
   [SettingKey.MarketingAutomationEnabled]: false,
   [SettingKey.MarketingAbandonedCartReminderHours]: 24,
   [SettingKey.MarketingAbandonedCartIncentiveHours]: 72,
   [SettingKey.MarketingReviewRequestDays]: 7,
   [SettingKey.MarketingReplenishmentReminderDays]: 30,
+
+  [SettingKey.BomRawMaterialCategorySlug]: 'raw-materials',
+  [SettingKey.BomDefaultWastageBps]: 0,
 };

@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `Location`  <sub>`apps/api/prisma/schema/inventory.prisma:76`</sub>
+### `Location`  <sub>`apps/api/prisma/schema/inventory.prisma:81`</sub>
 
 > A place stock physically lives.
 
@@ -44,7 +44,7 @@ against a real database.
 
 Indexes: `@@index([isActive])` · `@@index([retailBrandId])`
 
-### `StockCount`  <sub>`apps/api/prisma/schema/inventory.prisma:191`</sub>
+### `StockCount`  <sub>`apps/api/prisma/schema/inventory.prisma:196`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -65,7 +65,7 @@ Indexes: `@@index([isActive])` · `@@index([retailBrandId])`
 
 Indexes: `@@index([status])`
 
-### `StockCountLine`  <sub>`apps/api/prisma/schema/inventory.prisma:214`</sub>
+### `StockCountLine`  <sub>`apps/api/prisma/schema/inventory.prisma:219`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -104,7 +104,7 @@ Indexes: `@@unique([stockCountId, variantId])`
 
 Indexes: `@@index([variantId, createdAt])` · `@@index([reason, createdAt])` · `@@index([refType, refId])` · `@@index([locationId])`
 
-### `StockVariance`  <sub>`apps/api/prisma/schema/inventory.prisma:127`</sub>
+### `StockVariance`  <sub>`apps/api/prisma/schema/inventory.prisma:132`</sub>
 
 > One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale that already happened is never rejected by sync).
 
@@ -127,7 +127,7 @@ Indexes: `@@index([variantId, createdAt])` · `@@index([reason, createdAt])` · 
 
 Indexes: `@@index([status])` · `@@index([variantId])` · `@@index([locationId])`
 
-### `VariantLocationStock`  <sub>`apps/api/prisma/schema/inventory.prisma:156`</sub>
+### `VariantLocationStock`  <sub>`apps/api/prisma/schema/inventory.prisma:161`</sub>
 
 > Stock, per variant, per location.
 
@@ -142,7 +142,7 @@ Indexes: `@@index([status])` · `@@index([variantId])` · `@@index([locationId])
 
 Indexes: `@@id([variantId, locationId])`
 
-### `VariantSalesStat`  <sub>`apps/api/prisma/schema/inventory.prisma:169`</sub>
+### `VariantSalesStat`  <sub>`apps/api/prisma/schema/inventory.prisma:174`</sub>
 
 > CACHE: variantId as primary key.
 
@@ -172,8 +172,9 @@ Indexes: `@@id([variantId, locationId])`
 | `STORE` |  |
 | `WAREHOUSE` |  |
 | `IN_TRANSIT` |  |
+| `PRODUCTION` |  |
 
-### `StockCountStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:184`</sub>
+### `StockCountStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:189`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -203,7 +204,7 @@ Indexes: `@@id([variantId, locationId])`
 | `TRANSFER_OUT` | WO-22.1: leaving a location (source on dispatch, or the in-transit bucket returning to source on cancel) |
 | `TRANSFER_IN` | WO-22.1: arriving at a location (the in-transit bucket on dispatch, or the destination/source on receive/canc… |
 
-### `StockVarianceStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:115`</sub>
+### `StockVarianceStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:120`</sub>
 
 | Value | Meaning |
 |---|---|

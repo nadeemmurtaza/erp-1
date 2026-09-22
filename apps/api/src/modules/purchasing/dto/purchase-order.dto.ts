@@ -1,5 +1,7 @@
-﻿import { IsString, IsNotEmpty, IsNumber, IsOptional, ValidateNested, IsArray, IsDateString, Min } from 'class-validator';
+﻿import { IsString, IsNotEmpty, IsNumber, IsOptional, IsIn, ValidateNested, IsArray, IsDateString, Min } from 'class-validator';
 import { Type } from 'class-transformer';
+
+const SCOPE_LEVELS = ['ORG', 'BRAND', 'BRANCH'] as const;
 
 export class CreatePurchaseOrderItemDto {
   @IsString()
@@ -47,6 +49,11 @@ export class CreatePurchaseOrderDto {
   @IsOptional()
   notes?: string;
 
+  /** RETAIL-ERP.md R13/ADR-021. Omit for BRAND (the default — "brand purchasing is the default and behaves as today"). ORG names org-central buying; BRANCH names branch-local purchasing, gated by BrandPolicy.allowBranchLocalPurchasing. */
+  @IsIn(SCOPE_LEVELS)
+  @IsOptional()
+  scopeLevel?: (typeof SCOPE_LEVELS)[number];
+
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreatePurchaseOrderItemDto)
@@ -82,6 +89,11 @@ export class ReceiveGoodsDto {
   @IsString()
   @IsOptional()
   notes?: string;
+
+  /** Where the goods actually landed. Omit for the shop's one default Location — WO-23.3's org-warehouse receiving names this explicitly. */
+  @IsString()
+  @IsOptional()
+  locationId?: string;
 
   @IsArray()
   @ValidateNested({ each: true })

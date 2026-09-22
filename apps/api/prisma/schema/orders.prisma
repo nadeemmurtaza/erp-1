@@ -22,21 +22,21 @@ enum OrderChannel {
 }
 
 model Order {
-  id        String       @id @default(cuid())
-  number    String       @unique // "YSN-2026-0001"
+  id        String      @id @default(cuid())
+  number    String      @unique // "YSN-2026-0001"
   userId    String?
   contactId String?
-  status    OrderStatus  @default(PENDING)
-  currency  String       @default("PKR")
+  status    OrderStatus @default(PENDING)
+  currency  String      @default("PKR")
 
   /// R11's additive scalar columns. Bare scalars, not relations — `pos` and
   /// `organization` are separate modules from `orders` (module-boundary
   /// rule), and originNodeId is replication scaffolding (R6/R7), not
   /// currently written by anything. Null for every WEB order.
-  channel    OrderChannel @default(WEB)
-  locationId String?
-  terminalId String?
-  shiftId    String?
+  channel      OrderChannel @default(WEB)
+  locationId   String?
+  terminalId   String?
+  shiftId      String?
   originNodeId String?
 
   /// Guest checkout: no account, so contact details live on the order.
@@ -85,6 +85,8 @@ model Order {
   shipments      Shipment[]
   statusEvents   OrderStatusEvent[]
   convertedLeads Lead[]             @relation("LeadConvertedOrder")
+  /// finance.prisma's OrderEconomics (WO-B.3) — null until DELIVERED.
+  economics      OrderEconomics?
 
   @@index([status, placedAt])
   @@index([userId])

@@ -3,22 +3,24 @@
 
 # Core: `time`
 
-Shared platform — available to every module, part of no feature · 2 files
+Shared platform — available to every module, part of no feature · 4 files
 
 
-> Calendar days in the shop's timezone.
+> Rolling a daily series up into week or month buckets — WO-B.5's comparative chart, and anything after it that wants the same three granularities.
 
 Source: `apps/api/src/core/time/`
 
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (2 · 380 lines)
+## Files (4 · 538 lines)
 
 All paths relative to `apps/api/src/core/time`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
+| `metric-window.spec.ts` | unit test | 85 | — |  |
+| `metric-window.ts` | module | 73 | 5 | Rolling a daily series up into week or month buckets — WO-B.5's comparative chart, and anything after it that wants the… |
 | `shop-time.spec.ts` | unit test | 157 | — |  |
 | `shop-time.ts` | module | 223 | 11 | Calendar days in the shop's timezone. |
 
@@ -48,10 +50,11 @@ _none_
 
 
 
-## Tests (1)
+## Tests (2)
 
 | Spec | Cases | Covers |
 |---|---|---|
+| `metric-window.spec.ts` | 9 | weekKeyOf · monthKeyOf · bucketKeyOf · rollUpDays |
 | `shop-time.spec.ts` | 16 | shopDayKey · startOfShopDay · startOfShopDaysAgo · shopDayKeys · shopDayExpr · assertIanaTimeZone |
 
 
@@ -59,6 +62,11 @@ _none_
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
+| `MetricBucket` | type | `metric-window.ts:15` | Rolling a daily series up into week or month buckets — WO-B.5's comparative chart, and anything after it that… |
+| `weekKeyOf` | function | `metric-window.ts:18` | The Monday (ISO week start) containing the shop-local day named by `dayKey`, as its own `YYYY-MM-DD` key. |
+| `monthKeyOf` | function | `metric-window.ts:27` | The first day of the shop-local month containing `dayKey`, as its own `YYYY-MM-DD` key. |
+| `bucketKeyOf` | function | `metric-window.ts:32` | Which bucket a shop-local day key rolls up into, at the requested granularity. |
+| `rollUpDays` | function | `metric-window.ts:46` | Sums a day-keyed series into day/week/month buckets, oldest first. |
 | `TimeZone` | type | `shop-time.ts:25` | An IANA zone name, e.g. |
 | `shopDayKey` | function | `shop-time.ts:41` | The shop-local calendar day an instant falls on, as `YYYY-MM-DD`. |
 | `startOfShopDay` | function | `shop-time.ts:100` | The UTC instant of shop-local midnight on the day `instant` falls in. |

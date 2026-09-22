@@ -107,21 +107,22 @@ Every top-level export in `packages`, with the line to open.
 | `index.ts` | `*` | re-export |  | from `./theme-colors` |
 | `index.ts` | `*` | re-export |  | from `./theme-radii` |
 | `index.ts` | `*` | re-export |  | from `./theme-type` |
+| `index.ts` | `*` | re-export |  | from `./units` |
 | `index.ts` | `*` | re-export |  | from `./measurements/types` |
 | `index.ts` | `*` | re-export |  | from `./measurements/schema` |
 | `index.ts` | `*` | re-export |  | from `./measurements/defaults` |
 | `permissions.ts` | `PermissionSensitivity` | type | :36 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PermissionDefinition` | interface | :38 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PERMISSION_CATALOG` | const | :45 |  |
-| `permissions.ts` | `PermissionKey` | type | :236 |  |
-| `permissions.ts` | `PERMISSION_KEYS` | const | :238 |  |
-| `permissions.ts` | `PermissionGroup` | interface | :248 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
-| `permissions.ts` | `PERMISSION_GROUPS` | const | :255 |  |
-| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :360 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
-| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :438 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
-| `permissions.ts` | `PERMISSION_EFFECTS` | const | :443 |  |
-| `permissions.ts` | `PermissionEffect` | type | :444 |  |
-| `permissions.ts` | `PermissionOverride` | interface | :447 | One entry in a user's permission-override set (@see UserPermission). |
+| `permissions.ts` | `PermissionKey` | type | :266 |  |
+| `permissions.ts` | `PERMISSION_KEYS` | const | :268 |  |
+| `permissions.ts` | `PermissionGroup` | interface | :278 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
+| `permissions.ts` | `PERMISSION_GROUPS` | const | :285 |  |
+| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :402 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
+| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :488 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
+| `permissions.ts` | `PERMISSION_EFFECTS` | const | :493 |  |
+| `permissions.ts` | `PermissionEffect` | type | :494 |  |
+| `permissions.ts` | `PermissionOverride` | interface | :497 | One entry in a user's permission-override set (@see UserPermission). |
 | `phone.ts` | `NormalizedPhone` | interface | :21 |  |
 | `phone.ts` | `normalizePhone` | function | :29 |  |
 | `phone.ts` | `isValidPhone` | function | :64 |  |
@@ -158,6 +159,11 @@ Every top-level export in `packages`, with the line to open.
 | `theme-type.ts` | `THEME_TYPE` | const | :21 |  |
 | `theme-type.ts` | `THEME_FONTS` | const | :24 | Font families, for the Tailwind config and mobile's theme. |
 | `theme-type.ts` | `TAILWIND_FONT_SIZE` | const | :31 | The scale keyed by Tailwind's utility names, ready for `theme.fontSize`. |
+| `units.ts` | `RawMaterialUnit` | type | :14 | Mirrors bom.prisma's `RawMaterialUnit` enum — kept as a literal union here rather than importing th… |
+| `units.ts` | `UNIT_LABELS` | const | :16 | Mirrors bom.prisma's `RawMaterialUnit` enum — kept as a literal union here rather than importing th… |
+| `units.ts` | `toBaseUnits` | function | :33 | A display quantity (12.5 gaz) to base units (12500), rounded to the nearest whole base unit — base… |
+| `units.ts` | `fromBaseUnits` | function | :38 | Base units (12500) back to a display quantity (12.5 gaz). |
+| `units.ts` | `formatQuantity` | function | :47 | "12.5 gaz" — only as many decimal places as `unitScale` actually implies (three for scale 1000, non… |
 
 ### `packages/shared/src/entities`
 

@@ -10,6 +10,7 @@ import {
   Users,
   BarChart3,
   Settings,
+  Factory,
 } from 'lucide-react';
 
 export const ICON_MAP = {
@@ -21,6 +22,7 @@ export const ICON_MAP = {
   Users,
   BarChart3,
   Settings,
+  Factory,
 } as const;
 
 export interface AdminNavGroup {
@@ -49,6 +51,7 @@ export const NAV_GROUPS: readonly AdminNavGroup[] = [
   { key: 'customers', label: 'Customers', icon: 'Users' },
   { key: 'catalogue', label: 'Catalogue', icon: 'Package' },
   { key: 'stock',     label: 'Stock',     icon: 'Boxes' },
+  { key: 'manufacturing', label: 'Manufacturing', icon: 'Factory' },
   { key: 'insights',  label: 'Insights',  icon: 'BarChart3' },
   { key: 'settings',  label: 'Settings',  icon: 'Settings' },
 ] as const;
@@ -67,6 +70,7 @@ export interface AdminNavItem {
     | 'customers'
     | 'catalogue'
     | 'stock'
+    | 'manufacturing'
     | 'insights'
     | 'settings';
   /** lucide-react icon name. */
@@ -172,6 +176,30 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['reports.view'],
     group: 'insights',
     module: 'reports',
+  },
+  {
+    key: 'finance-expenses',
+    label: 'Expenses',
+    href: '/admin/finance/expenses',
+    permissions: ['finance.view'],
+    group: 'insights',
+    module: 'finance',
+    children: [
+      {
+        key: 'finance-expense-analytics',
+        label: 'Analytics',
+        href: '/admin/finance/expenses/analytics',
+        permissions: ['finance.view'],
+        group: 'insights',
+      },
+      {
+        key: 'finance-expense-categories',
+        label: 'Categories',
+        href: '/admin/finance/expenses/categories',
+        permissions: ['finance.manage'],
+        group: 'insights',
+      },
+    ],
   },
 
   // Group: Workshop
@@ -297,6 +325,40 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['purchasing.manage'],
     group: 'stock',
     module: 'tradingpartners',
+  },
+
+  // Group: Manufacturing
+  {
+    key: 'bom-recipes',
+    label: 'Recipes',
+    href: '/admin/bom',
+    permissions: ['bom.view'],
+    group: 'manufacturing',
+    module: 'bom',
+  },
+  {
+    key: 'bom-raw-materials',
+    label: 'Raw Materials',
+    href: '/admin/bom/raw-materials',
+    permissions: ['bom.view'],
+    group: 'manufacturing',
+    module: 'bom',
+  },
+  {
+    key: 'bom-production',
+    label: 'Production',
+    href: '/admin/bom/production',
+    permissions: ['bom.view'],
+    group: 'manufacturing',
+    module: 'bom',
+  },
+  {
+    key: 'bom-raw-usage',
+    label: 'Raw Usage',
+    href: '/admin/bom/raw-usage',
+    permissions: ['bom.view'],
+    group: 'manufacturing',
+    module: 'bom',
   },
 
   // Group: Settings

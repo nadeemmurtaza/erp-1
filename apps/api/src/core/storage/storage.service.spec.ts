@@ -118,3 +118,68 @@ describe('StorageService.putImage', () => {
     expect(local.put).not.toHaveBeenCalled();
   });
 });
+
+describe('StorageService.putDocument', () => {
+  let service: StorageService;
+  let local: any;
+
+  const tinyPng = () => sharp({ create: { width: 4, height: 4, channels: 3, background: 'red' } }).png().toBuffer();
+
+  beforeEach(async () => {
+    local = { name: 'local', put: jest.fn(async (input) => ({ key: `k/${input.filename}`, url: `http://x/${input.filename}`, size: input.body.byteLength, contentType: input.contentType })) };
+    const s3 = { name: 's3', put: jest.fn() };
+    const config = { get: jest.fn().mockReturnValue('local') };
+    const settings = { get: jest.fn().mockResolvedValue(true) };
+
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        StorageService,
+        { provide: AppConfigService, useValue: config },
+        { provide: LocalStorageDriver, useValue: local },
+        { provide: S3StorageDriver, useValue: s3 },
+        { provide: SettingsService, useValue: settings },
+      ],
+    }).compile();
+
+    service = module.get<StorageService>(StorageService);
+  });
+
+  it('stores a PDF as-is, never through sharp', async () => {
+    const pdf = Buffer.from('%PDF-1.4 fake receipt bytes');
+    const stored = await service.putDocument({
+      folder: 'receipts',
+      filename: 'receipt.pdf',
+      contentType: 'application/pdf',
+      body: pdf,
+    });
+
+    expect(local.put).toHaveBeenCalledTimes(1);
+    const putArg = local.put.mock.calls[0][0];
+    expect(putArg.contentType).toBe('application/pdf');
+    expect(putArg.body).toBe(pdf);
+    expect(stored.contentType).toBe('application/pdf');
+  });
+
+  it('converts an image receipt to WebP, same as putImage', async () => {
+    const png = await tinyPng();
+    await service.putDocument({ folder: 'receipts', filename: 'r.png', contentType: 'image/png', body: png });
+
+    const putArg = local.put.mock.calls[0][0];
+    expect(putArg.contentType).toBe('image/webp');
+  });
+
+  it('rejects a content type that is neither an image nor a PDF', async () => {
+    await expect(
+      service.putDocument({ folder: 'receipts', filename: 'r.txt', contentType: 'text/plain', body: Buffer.from('x') }),
+    ).rejects.toThrow(BadRequestException);
+    expect(local.put).not.toHaveBeenCalled();
+  });
+
+  it('rejects an oversized PDF before touching the storage driver', async () => {
+    const big = Buffer.alloc(9 * 1024 * 1024);
+    await expect(
+      service.putDocument({ folder: 'receipts', filename: 'big.pdf', contentType: 'application/pdf', body: big }),
+    ).rejects.toThrow(BadRequestException);
+    expect(local.put).not.toHaveBeenCalled();
+  });
+});

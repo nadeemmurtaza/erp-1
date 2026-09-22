@@ -3,7 +3,7 @@
 
 # Components
 
-All **69** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **72** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 71 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 84 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 4 |  |
 
 ### `apps/pos/src/components` (2)
@@ -41,32 +41,40 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `receipt-view.tsx` | `ReceiptView` | server | 1 |  |
 | `service-worker-registration.tsx` | `ServiceWorkerRegistration` | client | 1 |  |
 
-### `apps/web/src/components/admin` (16)
+### `apps/web/src/components/admin` (17)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `admin-shell.tsx` | `AdminShell` | client | 1 |  |
 | `command-palette.tsx` | `CommandPalette` | client | 1 |  |
+| `comparison-chart.tsx` | `ComparisonBucketPoint` `ComparisonChart` | client | 1 |  |
 | `deployment-modules.tsx` | `EnabledModulesProvider` `useEnabledModules` | client | 3 |  |
-| `donut-chart.tsx` | `DonutItem` `DonutChart` | client | 1 |  |
+| `donut-chart.tsx` | `DonutItem` `DonutChart` | client | 2 |  |
 | `funnel-chart.tsx` | `FunnelStage` `FunnelChart` | client | 1 |  |
 | `gauge-chart.tsx` | `GaugeChart` | client | 1 |  |
 | `image-manager.tsx` | `ImageManager` `StagedImage` `ImageStager` `StagedImageUploadResult` `uploadStagedImages` | client | 1 |  |
 | `party-picker.tsx` | `PartySearchResult` `PartyPicker` | client | 1 |  |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | client | 2 |  |
 | `product-form.tsx` | `ProductForm` | client | 1 |  |
-| `range-picker.tsx` | `RANGES` `RangeDays` `RangePicker` | client | 3 |  |
+| `range-picker.tsx` | `RANGES` `RangeDays` `RangePicker` | client | 4 |  |
 | `role-wizard.tsx` | `RoleWizard` | client | 1 |  |
 | `sales-chart.tsx` | `SalesChart` | client | 1 |  |
 | `scope-chips.tsx` | `ScopeChip` `ScopeChips` | client | 2 |  |
 | `session.tsx` | `AdminSessionProvider` `useAdminSession` | client | 9 |  |
 | `stage-badge.tsx` | `StageBadge` | server | 3 |  |
 
+### `apps/web/src/components/admin/bom` (2)
+
+| Component file | Exports | Client? | Imported by | Purpose |
+|---|---|---|---|---|
+| `cost-breakdown.tsx` | `CostBreakdown` | client | 1 |  |
+| `recipe-editor.tsx` | `RecipeEditor` | client | 2 |  |
+
 ### `apps/web/src/components/common` (3)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 7 |  |
+| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 9 |  |
 | `toast-container.tsx` | `ToastContainer` | client | 0 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | client | 4 |  |
 
@@ -116,7 +124,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `badge.tsx` | `BadgeTone` `Badge` | server | 12 |  |
+| `badge.tsx` | `BadgeTone` `Badge` | server | 14 |  |
 | `button.tsx` | `ButtonProps` `Button` | server | 1 |  |
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 1 |  |
 | `dialog.tsx` | `Dialog` | client | 1 |  |

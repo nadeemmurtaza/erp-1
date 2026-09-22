@@ -42,6 +42,8 @@ export const DomainEvent = {
   /** InventoryService.postUnconditional() drove a location negative (RETAIL-ERP.md R5) — never fired by move(). */
   StockVarianceRecorded: 'inventory.stock_variance_recorded',
   GoodsReceived: 'purchasing.goods_received',
+  /** A BomProductionRun completed (WO-C.3) — fires after stock consumption, stock credit and the weighted-average cost update all land in the same transaction. */
+  BomProductionCompleted: 'bom.production_completed',
   SupplierBillRaised: 'purchasing.supplier_bill_raised',
   SupplierBillPaid: 'purchasing.supplier_bill_paid',
   /** An InterBranchInvoice was raised — TransfersService.receive() on an INVOICED transfer (R12/R17, WO-22.3). Never fired for NONE/INTERNAL_PL. */
@@ -58,6 +60,11 @@ export const DomainEvent = {
   IdentityVerificationApproved: 'identity_verification.approved',
   IdentityVerificationRejected: 'identity_verification.rejected',
   IdentityVerificationExpired: 'identity_verification.expired',
+
+  /** FinanceService.create() (WO-23.1) — fires whether or not `accounting` is on; posting-rules.subscriber.ts is the only subscriber today. */
+  ExpenseRecorded: 'finance.expense_recorded',
+  /** OrderEconomicsService's own derived-row write (WO-23.1's WO-B.3) — not a GL posting, just notice that a fresh contribution-per-order figure exists. */
+  OrderEconomicsComputed: 'finance.order_economics_computed',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -217,6 +224,16 @@ export interface GoodsReceivedPayload {
   supplierId: string;
 }
 
+export interface BomProductionCompletedPayload {
+  runId: string;
+  number: string;
+  recipeId: string;
+  variantId: string;
+  quantityProduced: number;
+  producedUnitCost: number;
+  operatorId: string | null;
+}
+
 export interface WorkOrderPayload {
   workOrderId: string;
   number: string;
@@ -265,6 +282,27 @@ export interface SupplierBillPaidPayload {
   paidAt: string;
 }
 
+export interface ExpenseRecordedPayload {
+  expenseId: string;
+  categoryKey: string;
+  isDirect: boolean;
+  /** Paisa. */
+  amountMinor: number;
+  /** ISO date the cost belongs to — posts here, never at paidAtIso. */
+  incurredAt: string;
+  /** Null = unpaid at creation, posts to Accounts Payable instead of Cash & Bank. */
+  paidAtIso: string | null;
+  supplierId: string | null;
+}
+
+export interface OrderEconomicsComputedPayload {
+  orderId: string;
+  /** All paisa. */
+  revenue: number;
+  cogs: number;
+  contribution: number;
+}
+
 export interface EmailReplyReceivedPayload {
   inboundEmailId: string;
   emailAccountId: string;
@@ -302,6 +340,7 @@ export interface DomainEventPayloads {
   [DomainEvent.StockReplenished]: StockReplenishedPayload;
   [DomainEvent.StockVarianceRecorded]: StockVarianceRecordedPayload;
   [DomainEvent.GoodsReceived]: GoodsReceivedPayload;
+  [DomainEvent.BomProductionCompleted]: BomProductionCompletedPayload;
   [DomainEvent.WorkOrderCreated]: WorkOrderPayload;
   [DomainEvent.WorkOrderReleased]: WorkOrderPayload;
   [DomainEvent.WorkOrderCompleted]: WorkOrderPayload;
@@ -313,4 +352,6 @@ export interface DomainEventPayloads {
   [DomainEvent.IdentityVerificationApproved]: IdentityVerificationPayload;
   [DomainEvent.IdentityVerificationRejected]: IdentityVerificationPayload;
   [DomainEvent.IdentityVerificationExpired]: IdentityVerificationPayload;
+  [DomainEvent.ExpenseRecorded]: ExpenseRecordedPayload;
+  [DomainEvent.OrderEconomicsComputed]: OrderEconomicsComputedPayload;
 }

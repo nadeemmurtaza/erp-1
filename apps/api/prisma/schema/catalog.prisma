@@ -203,6 +203,16 @@ model ProductVariant {
 
   salesStat VariantSalesStat?
 
+  /// bom.prisma's RawMaterial (WO-C.1) — set only when this variant IS a raw
+  /// material, not one built from them.
+  rawMaterial RawMaterial?
+  /// bom.prisma's BomRecipe (WO-C.2) — set only when this variant IS BUILT
+  /// FROM raw materials. A variant is at most one of rawMaterial/bomRecipe,
+  /// enforced in recipe.service.ts (no nesting in v1).
+  bomRecipe   BomRecipe?
+  /// Every BomProductionRun that has credited this variant's stock (WO-C.3).
+  producedRuns BomProductionRun[] @relation("BomProducedVariant")
+
   order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

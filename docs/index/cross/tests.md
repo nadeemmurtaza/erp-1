@@ -3,7 +3,7 @@
 
 # Tests
 
-**103** spec files, **1,002** cases. What is already pinned down — and what is not.
+**115** spec files, **1,140** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -50,7 +50,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (88)
+## Unit and integration (100)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -74,18 +74,29 @@ regression or an N+1.
 | `apps/api/src/core/security/secret-crypto.spec.ts` | core/security | 5 | secret-crypto |
 | `apps/api/src/core/security/unsubscribe-token.spec.ts` | core/security | 6 | unsubscribeToken / isValidUnsubscribeToken |
 | `apps/api/src/core/settings/document-number.spec.ts` | core/settings | 5 | documentNumber |
-| `apps/api/src/core/storage/storage.service.spec.ts` | core/storage | 7 | StorageService.putImage |
+| `apps/api/src/core/storage/storage.service.spec.ts` | core/storage | 11 | StorageService.putImage · StorageService.putDocument |
+| `apps/api/src/core/time/metric-window.spec.ts` | core/time | 9 | weekKeyOf · monthKeyOf · bucketKeyOf · rollUpDays |
 | `apps/api/src/core/time/shop-time.spec.ts` | core/time | 16 | shopDayKey · startOfShopDay · startOfShopDaysAgo · shopDayKeys · shopDayExpr · assertIanaTimeZone |
 | `apps/api/src/modules/accounting/accounting.service.spec.ts` | accounting | 5 | AccountingService — WO-19.1 · postEntry |
 | `apps/api/src/modules/accounting/aging.spec.ts` | accounting | 7 | ageMovements |
 | `apps/api/src/modules/accounting/consolidation.service.spec.ts` | accounting | 7 | ConsolidationService — R17, WO-20.6 · groupProfitAndLoss · unmatchedIntercompany |
 | `apps/api/src/modules/accounting/fiscal-periods.service.spec.ts` | accounting | 24 | FiscalPeriodsService — WO-19.5 · createFiscalYear · createFiscalPeriod · closePeriod · reopenPeriod… |
 | `apps/api/src/modules/accounting/gl-reports.service.spec.ts` | accounting | 9 | GlReportsService — WO-19.4 · trialBalance · profitAndLoss · balanceSheet · cashFlow · agedReceivabl… |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | accounting | 25 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSuppl… |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | accounting | 30 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSuppl… |
+| `apps/api/src/modules/analytics/analytics.comparison.spec.ts` | analytics | 8 | AnalyticsService.comparison |
 | `apps/api/src/modules/analytics/supply-chain-digest.cron.spec.ts` | analytics | 11 | SupplyChainDigestCron · sendSupplierDigests · sendSupplierScorecards · sendDemandAlerts |
+| `apps/api/src/modules/bom/bom.listener.spec.ts` | bom | 4 | BomListener |
+| `apps/api/src/modules/bom/bom.metrics.spec.ts` | bom | 5 | BomMetricsService — raw usage · missing-recipe count consistency |
+| `apps/api/src/modules/bom/bom.spec.ts` | bom | 21 | bom module — raw materials · resolveCategoryId · create · unitScale immutability · deactivate · lis… |
+| `apps/api/src/modules/bom/cost-rollup.spec.ts` | bom | 7 | computeRecipeCost |
+| `apps/api/src/modules/bom/production.service.spec.ts` | bom | 12 | ProductionService · consuming raw stock and producing finished stock · scopeLevel/originNodeId/loca… |
 | `apps/api/src/modules/catalog/product-admin.service.spec.ts` | catalog | 13 | assertKindRules · assertUniqueSkus |
 | `apps/api/src/modules/catalog/product-replication.listener.spec.ts` | catalog | 7 | ProductReplicationListener — WO-20.3 · onModuleInit · onProductPublished · onProductPriceChanged ·… |
 | `apps/api/src/modules/crm/email-inbox/email-inbox.service.spec.ts` | crm | 7 | EmailInboxService · reply |
+| `apps/api/src/modules/finance/finance.cron.spec.ts` | finance | 3 | FinanceCron |
+| `apps/api/src/modules/finance/finance.listener.spec.ts` | finance | 2 | FinanceListener |
+| `apps/api/src/modules/finance/finance.spec.ts` | finance | 26 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4… |
+| `apps/api/src/modules/finance/order-economics.service.spec.ts` | finance | 8 | OrderEconomicsService |
 | `apps/api/src/modules/identity-verification/providers/nid-callback-verification.spec.ts` | identity-verification | 6 | nID webhook signature verification |
 | `apps/api/src/modules/inventory/inventory.cron.spec.ts` | inventory | 2 | InventoryCron |
 | `apps/api/src/modules/inventory/inventory.listener.spec.ts` | inventory | 1 | InventoryListener |
@@ -98,7 +109,7 @@ regression or an N+1.
 | `apps/api/src/modules/orders/order-replication.listener.spec.ts` | orders | 3 | OrderReplicationListener — WO-20.4 · onModuleInit · onOrderPlaced |
 | `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 6 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ |
 | `apps/api/src/modules/organization/nodes.service.spec.ts` | organization | 8 | NodesService · rotateInboundKey |
-| `apps/api/src/modules/organization/organization.service.spec.ts` | organization | 27 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setI… |
+| `apps/api/src/modules/organization/organization.service.spec.ts` | organization | 39 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setI… |
 | `apps/api/src/modules/parties/parties.service.spec.ts` | parties | 7 | PartiesService · get · dedupeCandidate · findOrCreateForRole · search |
 | `apps/api/src/modules/payments/providers/callback-verification.spec.ts` | payments | 8 | Easypaisa callback verification · JazzCash callback verification |
 | `apps/api/src/modules/pos/pos-catalog.service.spec.ts` | pos | 3 | PosCatalogService — WO-21.4 |
@@ -111,7 +122,7 @@ regression or an N+1.
 | `apps/api/src/modules/production/stitching-cascade.listener.spec.ts` | production | 8 | StitchingCascadeListener · onStitchingJobCreated · onStitchingJobStageChanged |
 | `apps/api/src/modules/production/work-orders.service.spec.ts` | production | 11 | WorkOrdersService · create · release · complete · cancel |
 | `apps/api/src/modules/purchasing/purchasing.cron.spec.ts` | purchasing | 2 | PurchasingCron |
-| `apps/api/src/modules/purchasing/purchasing.spec.ts` | purchasing | 5 | PurchasingService · upsertReorderDraftLine · create (Supplier + its backing Party) |
+| `apps/api/src/modules/purchasing/purchasing.spec.ts` | purchasing | 10 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR… |
 | `apps/api/src/modules/purchasing/reorder.listener.spec.ts` | purchasing | 5 | PurchasingReorderListener |
 | `apps/api/src/modules/purchasing/supplier-bill.spec.ts` | purchasing | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
 | `apps/api/src/modules/tradingpartners/invoice.service.spec.ts` | tradingpartners | 4 | InvoiceService · issue · findOne |
@@ -142,6 +153,7 @@ regression or an N+1.
 | `packages/shared/src/permissions.spec.ts` | packages | 8 | PERMISSION_CATALOG · PERMISSION_GROUPS — the role-creation wizard\ |
 | `packages/shared/src/phone.spec.ts` | packages | 7 | normalizePkPhone · normalizeEmail |
 | `packages/shared/src/pricing.spec.ts` | packages | 35 | computeStitchingFee · computeLineItem · lineMargin · computeOrderTotals · taxExclusive · taxInclusi… |
+| `packages/shared/src/units.spec.ts` | packages | 7 | toBaseUnits · fromBaseUnits · formatQuantity |
 
 
 ---

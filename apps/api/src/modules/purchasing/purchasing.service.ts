@@ -2,7 +2,7 @@ import { documentPrefix } from '../../core/settings/document-prefix';
 import { documentNumber, documentNumberPrefix } from '../../core/settings/document-number';
 import { AppConfigService } from '../../core/config/app-config.service';
 import type { PurchaseOrderStatus } from '../../core/prisma/client';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { CreateSupplierDto, UpdateSupplierDto, AddSupplierProductDto } from './dto/supplier.dto';
 import { CreatePurchaseOrderDto, ReceiveGoodsDto } from './dto/purchase-order.dto';
@@ -14,6 +14,7 @@ import { Prisma } from '../../core/prisma/client';
 import { allocateLandedCost, weightedAverageCost, convertToBase, BRAND } from '@newax/shared';
 import { DomainEvent } from '../../core/events/domain-events';
 import { EventBusService } from '../../core/events/event-bus.service';
+import { BranchPolicyRegistry } from '../../core/extension-points/branch-policy.registry';
 
 const PO_NUMBER_LOCK_NAMESPACE = 8_241_120;
 const GRN_NUMBER_LOCK_NAMESPACE = 8_241_121;
@@ -74,6 +75,7 @@ export class PurchasingService {
     private readonly settingsService: SettingsService,
     private readonly config: AppConfigService,
     private readonly events: EventBusService,
+    private readonly branchPolicy: BranchPolicyRegistry,
   ) {}
 
   async findAll() {
@@ -240,6 +242,13 @@ export class PurchasingService {
   }
 
   async createPurchaseOrder(dto: CreatePurchaseOrderDto, userId: string) {
+    const scopeLevel = dto.scopeLevel ?? 'BRAND';
+    if (scopeLevel === 'BRANCH' && !(await this.branchPolicy.allowsBranchLocalPurchasing(userId))) {
+      throw new ForbiddenException(
+        "This brand does not allow branch-local purchasing — ask a brand admin to turn it on, or create this purchase order at BRAND scope instead.",
+      );
+    }
+
     return this.prisma.$transaction(async (tx) => {
       const number = await nextPONumber(tx, this.settingsService, this.config);
       const subtotal = dto.items.reduce((sum, item) => sum + (item.quantityOrdered * item.unitCost), 0);
@@ -261,6 +270,8 @@ export class PurchasingService {
           expectedAt: dto.expectedAt ? new Date(dto.expectedAt) : null,
           notes: dto.notes,
           createdById: userId,
+          scopeLevel,
+          originNodeId: this.config.nodeId,
           items: {
             create: dto.items.map(item => ({
               variantId: item.variantId,
@@ -339,6 +350,8 @@ export class PurchasingService {
         };
       });
 
+      const locationId = dto.locationId || (await this.inventoryService.defaultLocationId(tx));
+
       const receipt = await tx.goodsReceipt.create({
         data: {
           number: grnNumber,
@@ -348,6 +361,7 @@ export class PurchasingService {
           freightCost,
           dutyCost,
           otherCost,
+          locationId,
           items: {
             create: receiptItemsData,
           },
@@ -355,7 +369,6 @@ export class PurchasingService {
       });
 
       const sortedItems = [...receiptItemsData].sort((a, b) => a.variantId.localeCompare(b.variantId));
-      const locationId = await this.inventoryService.defaultLocationId(tx);
 
       const movements = await this.inventoryService.moveMany(
         sortedItems.map(item => ({
@@ -458,7 +471,13 @@ export class PurchasingService {
       if (!po) {
         const number = await nextPONumber(tx, this.settingsService, this.config);
         po = await tx.purchaseOrder.create({
-          data: { supplierId: input.supplierId, number, status: 'DRAFT', currency: BRAND.locale.currency },
+          data: {
+            supplierId: input.supplierId,
+            number,
+            status: 'DRAFT',
+            currency: BRAND.locale.currency,
+            originNodeId: this.config.nodeId,
+          },
           include: { items: true },
         });
       }

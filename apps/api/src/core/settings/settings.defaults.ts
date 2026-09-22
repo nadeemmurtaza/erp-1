@@ -144,6 +144,10 @@ export const SettingKey = {
   MarketingReviewRequestDays: 'marketing.review_request_days',
   /** Days after DELIVERED before a Product.isConsumable purchase gets a reorder nudge. One global cadence, not per-product. */
   MarketingReplenishmentReminderDays: 'marketing.replenishment_reminder_days',
+  /** Category.slug every RawMaterial's underlying Product is filed under (WO-C.1). Seeded at boot by seedRawMaterialCategory(); resolved at runtime, never hardcoded. */
+  BomRawMaterialCategorySlug: 'bom.raw_material_category_slug',
+  /** Basis points of expected wastage assumed on a recipe with no line-level override (WO-C.2). 0 until a recipe says otherwise. */
+  BomDefaultWastageBps: 'bom.default_wastage_bps',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -279,4 +283,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.MarketingAbandonedCartIncentiveHours]: 72,
   [SettingKey.MarketingReviewRequestDays]: 7,
   [SettingKey.MarketingReplenishmentReminderDays]: 30,
+
+  [SettingKey.BomRawMaterialCategorySlug]: 'raw-materials',
+  [SettingKey.BomDefaultWastageBps]: 0,
 };

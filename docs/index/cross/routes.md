@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **300** endpoints across **58** controllers, with the access rule that actually guards each one.
+All **305** endpoints across **59** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -113,6 +113,16 @@ never authorization.
 | PATCH | `/admin/analytics/monthly-target` | `analytics.view` | `AnalyticsController.setMonthlyTarget` | Set the monthly revenue target shown on the dashboard |
 | GET | `/admin/analytics/stitching` | `analytics.view` | `AnalyticsController.stitching` | Which garments and style options drive the stitching business |
 | GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` | Visitor counts, view-to-order funnel and traffic sources |
+
+### [`bom`](../modules/bom.md) (5)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/bom/raw-materials` | `bom.view` | `BomController.list` | List raw materials, paginated and filtered |
+| POST | `/admin/bom/raw-materials` | `bom.manage` | `BomController.create` | Create a raw material — a Product/ProductVariant pair, filed under the raw-mate… |
+| GET | `/admin/bom/raw-materials/:id` | `bom.view` | `BomController.get` | Raw material detail plus its recent stock movements |
+| PATCH | `/admin/bom/raw-materials/:id` | `bom.manage` | `BomController.update` | Edit a raw material |
+| POST | `/admin/bom/raw-materials/:id/deactivate` | `bom.manage` | `BomController.deactivate` | Deactivate a raw material |
 
 ### [`cart`](../modules/cart.md) (6)
 

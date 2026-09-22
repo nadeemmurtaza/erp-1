@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 232 tracked files in `apps/web`, by directory.
+All 234 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -103,6 +103,18 @@ All 232 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 74 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 328 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 273 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/br/[branchId]` (1)
 
@@ -294,7 +306,7 @@ All 232 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 224 |  |
+| `page.tsx` | page | 233 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/products/[id]` (1)
 
@@ -622,7 +634,7 @@ All 232 tracked files in `apps/web`, by directory.
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 485 |  |
-| `nav-registry.ts` | component | 412 |  |
+| `nav-registry.ts` | component | 426 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1034 |  |

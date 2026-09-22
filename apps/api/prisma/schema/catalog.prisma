@@ -203,6 +203,10 @@ model ProductVariant {
 
   salesStat VariantSalesStat?
 
+  /// bom.prisma's RawMaterial (WO-C.1) — set only when this variant IS a raw
+  /// material, not one built from them.
+  rawMaterial RawMaterial?
+
   order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

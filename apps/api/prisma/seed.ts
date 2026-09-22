@@ -55,6 +55,7 @@ async function main(): Promise<void> {
   await seedStitchingOptions(garments);
   await retireOldOptionGroups();
   const categories = await seedCategories();
+  await seedRawMaterialCategory();
   const locationId = await inventoryService.defaultLocationId();
   await seedProducts(categories, garments, locationId);
   await seedStitchingServices(categories, garments, locationId);
@@ -2336,6 +2337,33 @@ async function seedCategories() {
   }
 
   return byslug;
+}
+
+/**
+ * The Category every RawMaterial's Product is filed under (WO-C.1,
+ * bom.prisma). Its slug must match Setting `bom.raw_material_category_slug`'s
+ * default in settings.defaults.ts — hardcoded here the same way
+ * seedCategories()'s slugs are, not read back from Setting, since this seed
+ * runs before SettingsService.onModuleInit() has a database connection to
+ * seed defaults into.
+ */
+async function seedRawMaterialCategory(): Promise<void> {
+  const category = await prisma.category.upsert({
+    where: { slug: 'raw-materials' },
+    update: {},
+    create: { slug: 'raw-materials', isActive: true },
+  });
+
+  for (const [locale, name] of [
+    ['en', 'Raw Materials'],
+    ['ur', 'خام مال'],
+  ] as const) {
+    await prisma.categoryTranslation.upsert({
+      where: { categoryId_locale: { categoryId: category.id, locale } },
+      update: { name },
+      create: { categoryId: category.id, locale, name },
+    });
+  }
 }
 
 interface SeedProduct {

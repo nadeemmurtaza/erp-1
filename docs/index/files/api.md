@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 468 tracked files in `apps/api`, by directory.
+All 476 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -29,15 +29,16 @@ All 468 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `backfill-parties.ts` | module | 69 |  |
 | `backfill-product-options.ts` | module | 170 |  |
-| `seed.ts` | module | 3002 |  |
+| `seed.ts` | module | 3030 |  |
 
-### `apps/api/prisma/schema` (23)
+### `apps/api/prisma/schema` (24)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.prisma` | prisma schema | 222 | The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a |
+| `bom.prisma` | prisma schema | 61 | BOM: which raw materials go into a finished product, how much of each, and |
 | `cart.prisma` | prisma schema | 73 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
-| `catalog.prisma` | prisma schema | 361 | Catalog: categories, products, variants, images. |
+| `catalog.prisma` | prisma schema | 365 | Catalog: categories, products, variants, images. |
 | `core.prisma` | prisma schema | 421 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 239 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 122 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
@@ -389,6 +390,12 @@ All 468 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 31 |  |
 
+### `apps/api/prisma/schema/migrations/20260922005415_add_bom_raw_materials` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 38 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -591,7 +598,7 @@ All 468 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 44 |  |
-| `settings.defaults.ts` | module | 283 |  |
+| `settings.defaults.ts` | module | 290 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 103 |  |
 
@@ -620,8 +627,8 @@ All 468 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 82 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 143 |  |
+| `module-packs.ts` | module | 83 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 145 |  |
 
 ### `apps/api/src/modules/accounting` (17)
 
@@ -682,6 +689,22 @@ All 468 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `analytics.dto.ts` | dto | 10 |  |
+
+### `apps/api/src/modules/bom` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `bom.controller.ts` | controller | 73 |  |
+| `bom.module.ts` | nest module | 11 |  |
+| `bom.service.ts` | service | 47 |  |
+| `bom.spec.ts` | unit test | 294 |  |
+| `raw-material.service.ts` | service | 218 |  |
+
+### `apps/api/src/modules/bom/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `raw-material.dto.ts` | dto | 52 |  |
 
 ### `apps/api/src/modules/cart` (3)
 

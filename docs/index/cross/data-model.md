@@ -3,7 +3,7 @@
 
 # Data model
 
-All **118** Prisma models and **50** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **119** Prisma models and **51** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -26,6 +26,7 @@ against a real database.
 | Schema | Models | Enums | Owner | Contains |
 |---|---|---|---|---|
 | [`accounting.prisma`](../data/accounting.md) | 6 | 3 | [`accounting`](../modules/accounting.md) | Account, FiscalPeriod, FiscalYear, JournalEntry, JournalEntryNumberCounter, JournalLine |
+| [`bom.prisma`](../data/bom.md) | 1 | 1 | [`bom`](../modules/bom.md) | RawMaterial |
 | [`cart.prisma`](../data/cart.md) | 3 | 0 | [`cart`](../modules/cart.md) | Cart, CartItem, CartItemStitchingOption |
 | [`catalog.prisma`](../data/catalog.md) | 15 | 3 | [`catalog`](../modules/catalog.md) | Brand, BrandTranslation, Category, CategoryTranslation, Product, ProductGarmentType, ProductImage, ProductOption, ProductOptionTr… |
 | [`core.prisma`](../data/core.md) | 17 | 5 | foundational | Address, AnalyticsEvent, AuditLog, DeviceToken, EmailAccount, EmailVerificationToken, OutboxEvent, PasswordResetToken, Permission… |
@@ -123,12 +124,13 @@ against a real database.
 | [`ProductOptionValue`](../data/catalog.md#productoptionvalue) | `catalog` | 9 | 1 | id | A specific value on an option axis: "M", "Ferozi", "128GB". |
 | [`ProductOptionValueTranslation`](../data/catalog.md#productoptionvaluetranslation) | `catalog` | 5 | 1 | id |  |
 | [`ProductTranslation`](../data/catalog.md#producttranslation) | `catalog` | 9 | 1 | id |  |
-| [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 41 | 4 | id |  |
+| [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 42 | 4 | id |  |
 | [`ProductVariantOptionValue`](../data/catalog.md#productvariantoptionvalue) | `catalog` | 5 | 2 | — | The join that DEFINES a variant: one row per option axis per variant. |
 | [`PurchaseOrder`](../data/purchasing.md#purchaseorder) | `purchasing` | 23 | 2 | id |  |
 | [`PurchaseOrderItem`](../data/purchasing.md#purchaseorderitem) | `purchasing` | 11 | 2 | id |  |
 | [`Quote`](../data/invoicing.md#quote) | `invoicing` | 9 | 0 | id |  |
 | [`QuoteLine`](../data/invoicing.md#quoteline) | `invoicing` | 7 | 1 | id |  |
+| [`RawMaterial`](../data/bom.md#rawmaterial) | `bom` | 11 | 1 | id |  |
 | [`RefreshToken`](../data/core.md#refreshtoken) | `core` | 9 | 1 | id |  |
 | [`ReplicationCursor`](../data/replication.md#replicationcursor) | `replication` | 4 | 0 | — | "The highest sequence I've already synced with this peer, in this direction" — read and a… |
 | [`ReplicationQuarantine`](../data/replication.md#replicationquarantine) | `replication` | 12 | 0 | id | Where an incoming record lands when it fails to apply — never dropped, never retried fore… |
@@ -208,6 +210,7 @@ against a real database.
 | [`ProductStatus`](../data/catalog.md#productstatus) | `catalog` | `DRAFT` `ACTIVE` `ARCHIVED` |
 | [`PurchaseOrderStatus`](../data/purchasing.md#purchaseorderstatus) | `purchasing` | `DRAFT` `SENT` `PARTIAL` `RECEIVED` `CANCELLED` |
 | [`QuoteStatus`](../data/invoicing.md#quotestatus) | `invoicing` | `SENT` `ACCEPTED` `REJECTED` `EXPIRED` |
+| [`RawMaterialUnit`](../data/bom.md#rawmaterialunit) | `bom` | `GAZ` `METRE` `PIECE` `SPOOL` `GRAM` `MILLILITRE` |
 | [`ReplicationClass`](../data/replication.md#replicationclass) | `replication` | `FACT` `POLICY` |
 | [`ReplicationDirection`](../data/replication.md#replicationdirection) | `replication` | `UP` `DOWN` |
 | [`ReplicationOp`](../data/replication.md#replicationop) | `replication` | `UPSERT` `DELETE` |

@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1172,
-    "lines": 181891,
-    "routes": 300,
-    "controllers": 58,
-    "models": 118,
-    "enums": 50,
-    "migrations": 54,
+    "files": 1182,
+    "lines": 183380,
+    "routes": 305,
+    "controllers": 59,
+    "models": 119,
+    "enums": 51,
+    "migrations": 55,
     "events": 36,
-    "permissions": 38,
-    "screens": 128,
+    "permissions": 41,
+    "screens": 130,
     "crons": 8,
-    "specs": 110,
+    "specs": 111,
     "designLaws": 150
   },
   "designLaws": [
@@ -1079,13 +1079,13 @@
     "infra": {
       "files": 55,
       "lines": 27839,
-      "bytes": 1091851,
+      "bytes": 1091867,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 468,
-      "lines": 62728,
-      "bytes": 2257084,
+      "files": 476,
+      "lines": 63564,
+      "bytes": 2290099,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1101,9 +1101,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 232,
-      "lines": 34810,
-      "bytes": 1292431,
+      "files": 234,
+      "lines": 35434,
+      "bytes": 1313003,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -1114,8 +1114,8 @@
     },
     "packages": {
       "files": 55,
-      "lines": 4609,
-      "bytes": 149696,
+      "lines": 4638,
+      "bytes": 150370,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -1179,6 +1179,22 @@
       ],
       "routes": 6,
       "page": "docs/index/modules/analytics.md"
+    },
+    {
+      "name": "bom",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/bom/bom.controller.ts",
+        "apps/api/src/modules/bom/bom.module.ts",
+        "apps/api/src/modules/bom/bom.service.ts",
+        "apps/api/src/modules/bom/bom.spec.ts",
+        "apps/api/src/modules/bom/dto/raw-material.dto.ts",
+        "apps/api/src/modules/bom/raw-material.service.ts"
+      ],
+      "routes": 5,
+      "page": "docs/index/modules/bom.md"
     },
     {
       "name": "cart",
@@ -2234,6 +2250,86 @@
       "public": false,
       "authOnly": false,
       "summary": "Visitor counts, view-to-order funnel and traffic sources"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/bom/raw-materials",
+      "module": "bom",
+      "controller": "BomController",
+      "handler": "list",
+      "file": "apps/api/src/modules/bom/bom.controller.ts",
+      "line": 35,
+      "access": "bom.view",
+      "permissions": [
+        "bom.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List raw materials, paginated and filtered"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/bom/raw-materials",
+      "module": "bom",
+      "controller": "BomController",
+      "handler": "create",
+      "file": "apps/api/src/modules/bom/bom.controller.ts",
+      "line": 51,
+      "access": "bom.manage",
+      "permissions": [
+        "bom.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create a raw material — a Product/ProductVariant pair, filed under the raw-materials category"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/bom/raw-materials/:id",
+      "module": "bom",
+      "controller": "BomController",
+      "handler": "get",
+      "file": "apps/api/src/modules/bom/bom.controller.ts",
+      "line": 44,
+      "access": "bom.view",
+      "permissions": [
+        "bom.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Raw material detail plus its recent stock movements"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/bom/raw-materials/:id",
+      "module": "bom",
+      "controller": "BomController",
+      "handler": "update",
+      "file": "apps/api/src/modules/bom/bom.controller.ts",
+      "line": 58,
+      "access": "bom.manage",
+      "permissions": [
+        "bom.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Edit a raw material"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/bom/raw-materials/:id/deactivate",
+      "module": "bom",
+      "controller": "BomController",
+      "handler": "deactivate",
+      "file": "apps/api/src/modules/bom/bom.controller.ts",
+      "line": 69,
+      "access": "bom.manage",
+      "permissions": [
+        "bom.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Deactivate a raw material"
     },
     {
       "method": "GET",
@@ -7180,6 +7276,51 @@
       ],
       "uiSites": 1,
       "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "bom.view",
+      "label": "View bills of materials and raw stock",
+      "category": "Manufacturing",
+      "sensitivity": "low",
+      "routes": [
+        "GET /admin/bom/raw-materials",
+        "GET /admin/bom/raw-materials/:id"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "bom.manage",
+      "label": "Create and edit raw materials and recipes",
+      "category": "Manufacturing",
+      "sensitivity": "medium",
+      "routes": [
+        "POST /admin/bom/raw-materials",
+        "PATCH /admin/bom/raw-materials/:id",
+        "POST /admin/bom/raw-materials/:id/deactivate"
+      ],
+      "uiSites": 2,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "bom.produce",
+      "label": "Record a production run",
+      "category": "Manufacturing",
+      "sensitivity": "low",
+      "routes": [],
+      "uiSites": 0,
+      "roles": [
+        "STAFF",
         "ADMIN"
       ],
       "inSeed": true
@@ -13659,7 +13800,7 @@
     {
       "name": "ProductGarmentType",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 268,
+      "line": 272,
       "doc": "Which garments a given unstitched fabric can be made into.",
       "fields": [
         {
@@ -13691,7 +13832,7 @@
     {
       "name": "ProductImage",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 251,
+      "line": 255,
       "doc": "",
       "fields": [
         {
@@ -13772,7 +13913,7 @@
     {
       "name": "ProductOption",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 289,
+      "line": 293,
       "doc": "A dynamic option axis a product varies along: \"Size\", \"Colour\", \"Storage\".",
       "fields": [
         {
@@ -13847,7 +13988,7 @@
     {
       "name": "ProductOptionTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 306,
+      "line": 310,
       "doc": "",
       "fields": [
         {
@@ -13893,7 +14034,7 @@
     {
       "name": "ProductOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 318,
+      "line": 322,
       "doc": "A specific value on an option axis: \"M\", \"Ferozi\", \"128GB\".",
       "fields": [
         {
@@ -13968,7 +14109,7 @@
     {
       "name": "ProductOptionValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 336,
+      "line": 340,
       "doc": "",
       "fields": [
         {
@@ -14247,6 +14388,13 @@
           "relation": false
         },
         {
+          "name": "rawMaterial",
+          "type": "RawMaterial?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "order",
           "type": "Int",
           "id": false,
@@ -14388,7 +14536,7 @@
     {
       "name": "ProductVariantOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 350,
+      "line": 354,
       "doc": "The join that DEFINES a variant: one row per option axis per variant.",
       "fields": [
         {
@@ -14827,6 +14975,95 @@
       ],
       "indexes": [
         "@@index([quoteId])"
+      ]
+    },
+    {
+      "name": "RawMaterial",
+      "file": "apps/api/prisma/schema/bom.prisma",
+      "line": 32,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variantId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "kind",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "unit",
+          "type": "RawMaterialUnit",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "unitScale",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "notes",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variant",
+          "type": "ProductVariant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([isActive, kind])",
+        "@@index([name])"
       ]
     },
     {
@@ -16252,7 +16489,7 @@
     {
       "name": "StockAdjustment",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 233,
+      "line": 237,
       "doc": "One entry per change to ProductVariant.stock, so \"why is stock 4\" has an answer without an audit table bolted on after the fact.",
       "fields": [
         {
@@ -18691,7 +18928,7 @@
     {
       "name": "OptionDisplay",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 277,
+      "line": 281,
       "values": [
         "BUTTON",
         "DROPDOWN",
@@ -18840,6 +19077,19 @@
         "ACCEPTED",
         "REJECTED",
         "EXPIRED"
+      ]
+    },
+    {
+      "name": "RawMaterialUnit",
+      "file": "apps/api/prisma/schema/bom.prisma",
+      "line": 23,
+      "values": [
+        "GAZ",
+        "METRE",
+        "PIECE",
+        "SPOOL",
+        "GRAM",
+        "MILLILITRE"
       ]
     },
     {
@@ -20010,6 +20260,23 @@
       "tables": [
         "OrderEconomics"
       ]
+    },
+    {
+      "folder": "20260922005415_add_bom_raw_materials",
+      "file": "apps/api/prisma/schema/migrations/20260922005415_add_bom_raw_materials/migration.sql",
+      "date": "2026-09-22",
+      "slug": "add_bom_raw_materials",
+      "statements": 7,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "RawMaterial"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -20672,6 +20939,24 @@
       "kind": "page",
       "url": "/admin/b/[brandId]",
       "file": "apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/bom/raw-materials",
+      "file": "apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/bom/raw-materials/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/[id]/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -22005,6 +22290,22 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/bom/bom.spec.ts",
+      "module": "bom",
+      "kind": "unit test",
+      "cases": 12,
+      "describes": [
+        "bom module — raw materials",
+        "resolveCategoryId",
+        "create",
+        "unitScale immutability",
+        "deactivate",
+        "list/get",
+        "purchasing integration — no changes to purchasing.service.ts",
+        "storefront visibility"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/catalog/product-admin.service.spec.ts",
       "module": "catalog",
       "kind": "unit test",
@@ -23104,7 +23405,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 99,
-      "bytes": 5070,
+      "bytes": 5078,
       "doc": "",
       "symbols": []
     },
@@ -23113,7 +23414,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 125,
-      "bytes": 5912,
+      "bytes": 5916,
       "doc": "",
       "symbols": []
     },
@@ -23122,7 +23423,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 113,
-      "bytes": 5054,
+      "bytes": 5058,
       "doc": "",
       "symbols": []
     },
@@ -23373,6 +23674,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/bom.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 61,
+      "bytes": 2406,
+      "doc": "BOM: which raw materials go into a finished product, how much of each, and",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/cart.prisma",
       "area": "api",
       "kind": "prisma schema",
@@ -23385,8 +23695,8 @@
       "path": "apps/api/prisma/schema/catalog.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 361,
-      "bytes": 12563,
+      "lines": 365,
+      "bytes": 12712,
       "doc": "Catalog: categories, products, variants, images.",
       "symbols": []
     },
@@ -23940,6 +24250,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260922005415_add_bom_raw_materials/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 38,
+      "bytes": 1449,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -24069,8 +24388,8 @@
       "path": "apps/api/prisma/seed.ts",
       "area": "api",
       "kind": "module",
-      "lines": 3002,
-      "bytes": 102784,
+      "lines": 3030,
+      "bytes": 103762,
       "doc": "",
       "symbols": []
     },
@@ -24777,7 +25096,7 @@
       "area": "api",
       "kind": "config",
       "lines": 250,
-      "bytes": 10629,
+      "bytes": 10633,
       "doc": "",
       "symbols": [
         {
@@ -26165,8 +26484,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 283,
-      "bytes": 11592,
+      "lines": 290,
+      "bytes": 12111,
       "doc": "",
       "symbols": [
         {
@@ -26207,12 +26526,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 149
+          "line": 153
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 151
+          "line": 155
         }
       ]
     },
@@ -26981,6 +27300,100 @@
           "name": "SupplyChainDigestCron",
           "kind": "class",
           "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/bom/bom.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 73,
+      "bytes": 3078,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BomController",
+          "kind": "class",
+          "line": 29
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/bom/bom.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 11,
+      "bytes": 315,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BomModule",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/bom/bom.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 47,
+      "bytes": 1739,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BomService",
+          "kind": "class",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/bom/bom.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 294,
+      "bytes": 12662,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/bom/dto/raw-material.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 52,
+      "bytes": 1676,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateRawMaterialDto",
+          "kind": "class",
+          "line": 9
+        },
+        {
+          "name": "UpdateRawMaterialDto",
+          "kind": "class",
+          "line": 39
+        },
+        {
+          "name": "RawMaterialQueryDto",
+          "kind": "class",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/bom/raw-material.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 218,
+      "bytes": 7941,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RawMaterialService",
+          "kind": "class",
+          "line": 17
         }
       ]
     },
@@ -28313,8 +28726,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 82,
-      "bytes": 2681,
+      "lines": 83,
+      "bytes": 2696,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -28333,24 +28746,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 143,
-      "bytes": 6998,
+      "lines": 145,
+      "bytes": 7082,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 29
+          "line": 30
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 60
+          "line": 61
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 119
+          "line": 121
         }
       ]
     },
@@ -32750,6 +33163,36 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 273,
+      "bytes": 8949,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RawMaterialDetailPage",
+          "kind": "default",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 328,
+      "bytes": 10898,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RawMaterialsPage",
+          "kind": "default",
+          "line": 40
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/br/[branchId]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -33293,14 +33736,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/products/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 224,
-      "bytes": 7756,
+      "lines": 233,
+      "bytes": 8158,
       "doc": "",
       "symbols": [
         {
           "name": "AdminProductsPage",
           "kind": "default",
-          "line": 19
+          "line": 24
         }
       ]
     },
@@ -34536,44 +34979,44 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 412,
-      "bytes": 11028,
+      "lines": 426,
+      "bytes": 11351,
       "doc": "",
       "symbols": [
         {
           "name": "ICON_MAP",
           "kind": "const",
-          "line": 15
+          "line": 16
         },
         {
           "name": "AdminNavGroup",
           "kind": "interface",
-          "line": 26
+          "line": 28
         },
         {
           "name": "NAV_GROUPS",
           "kind": "const",
-          "line": 45
+          "line": 47
         },
         {
           "name": "AdminNavItem",
           "kind": "interface",
-          "line": 56
+          "line": 59
         },
         {
           "name": "ADMIN_NAV",
           "kind": "const",
-          "line": 92
+          "line": 96
         },
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 382
+          "line": 396
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 397
+          "line": 411
         }
       ]
     },
@@ -40168,8 +40611,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 472,
-      "bytes": 14667,
+      "lines": 501,
+      "bytes": 15341,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -40190,47 +40633,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 248
+          "line": 266
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 250
+          "line": 268
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 260
+          "line": 278
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 267
+          "line": 285
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 378
+          "line": 402
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 459
+          "line": 488
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 464
+          "line": 493
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 465
+          "line": 494
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 468
+          "line": 497
         }
       ]
     },

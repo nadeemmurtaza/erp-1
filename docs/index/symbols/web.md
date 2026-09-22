@@ -53,6 +53,18 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `BrandDashboardPage` | default | :20 | The brand-level dashboard (RETAIL-ERP.md R19) — branch chips over that brand's combined figures. |
 
+### `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `RawMaterialsPage` | default | :40 | Raw materials — fabric, trim, packaging, consumables bought in to make finished products. |
+
+### `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `RawMaterialDetailPage` | default | :41 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/br/[branchId]`
 
 | File | Symbol | Kind | Line | Doc |
@@ -243,7 +255,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminProductsPage` | default | :19 |  |
+| `page.tsx` | `AdminProductsPage` | default | :24 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/products/[id]`
 
@@ -595,13 +607,13 @@ Every top-level export in `web`, with the line to open.
 | `image-manager.tsx` | `ImageStager` | function | :303 | Photo picker for a product that does not have an id yet — new-product creation, where `ImageManager… |
 | `image-manager.tsx` | `StagedImageUploadResult` | interface | :442 |  |
 | `image-manager.tsx` | `uploadStagedImages` | function | :460 | Uploads every staged image to a now-existing product, in order (the first upload becomes the thumbn… |
-| `nav-registry.ts` | `ICON_MAP` | const | :15 |  |
-| `nav-registry.ts` | `AdminNavGroup` | interface | :26 |  |
-| `nav-registry.ts` | `NAV_GROUPS` | const | :45 | Sidebar order is THIS ARRAY's order. |
-| `nav-registry.ts` | `AdminNavItem` | interface | :56 |  |
-| `nav-registry.ts` | `ADMIN_NAV` | const | :92 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :382 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :397 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `ICON_MAP` | const | :16 |  |
+| `nav-registry.ts` | `AdminNavGroup` | interface | :28 |  |
+| `nav-registry.ts` | `NAV_GROUPS` | const | :47 | Sidebar order is THIS ARRAY's order. |
+| `nav-registry.ts` | `AdminNavItem` | interface | :59 |  |
+| `nav-registry.ts` | `ADMIN_NAV` | const | :96 | The admin navigation, as data. |
+| `nav-registry.ts` | `landingFor` | function | :396 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :411 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |

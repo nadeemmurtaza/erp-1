@@ -219,6 +219,24 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'medium',
   },
   {
+    key: 'bom.view',
+    label: 'View bills of materials and raw stock',
+    category: 'Manufacturing',
+    sensitivity: 'low',
+  },
+  {
+    key: 'bom.manage',
+    label: 'Create and edit raw materials and recipes',
+    category: 'Manufacturing',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'bom.produce',
+    label: 'Record a production run',
+    category: 'Manufacturing',
+    sensitivity: 'low',
+  },
+  {
     key: 'marketing.manage',
     label: 'Turn on automated marketing email and set its timing',
     category: 'Administration',
@@ -356,6 +374,12 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     permissions: ['finance.manage'],
   },
   {
+    key: 'bom',
+    label: 'Manufacturing',
+    description: 'Raw materials, recipes and production runs.',
+    permissions: ['bom.view', 'bom.manage', 'bom.produce'],
+  },
+  {
     key: 'system-admin',
     label: 'System administration',
     description: 'Settings, roles, user accounts and the audit log — the most sensitive group.',
@@ -409,6 +433,8 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'production.view_chain',
     'parties.manage',
     'finance.view',
+    'bom.view',
+    'bom.produce',
   ],
   ADMIN: [
     'account.change_own_password',
@@ -439,6 +465,9 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'parties.manage',
     'finance.view',
     'finance.manage',
+    'bom.view',
+    'bom.manage',
+    'bom.produce',
     'settings.manage',
     'roles.manage_permissions',
     'audit.view',

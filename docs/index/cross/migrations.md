@@ -3,7 +3,7 @@
 
 # Migrations
 
-**54** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**55** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -87,6 +87,7 @@ nothing here fails a build.
 | 2026-09-21 | `add_transfer_settlement_and_invoicing` | 10 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | InterBranchInvoice, InterBranchInvoiceNumberCounter, StockTransfer, StockTransferLine |
 | 2026-09-21 | `add_finance_expenses` | 14 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | Expense, ExpenseCategory |
 | 2026-09-21 | `add_order_economics` | 2 | CREATE TABLE, ALTER TABLE | OrderEconomics |
+| 2026-09-22 | `add_bom_raw_materials` | 7 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | RawMaterial |
 
 
 ---

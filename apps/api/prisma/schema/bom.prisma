@@ -1,0 +1,60 @@
+// BOM: which raw materials go into a finished product, how much of each, and
+// what that makes the product cost to produce (RETAIL-ERP.md Tranche 6,
+// WO-23.2 — "build 10-admin-dashboard.md §C as written"). This file is
+// WO-C.1 only: RawMaterial. Recipes (BomComponent, WO-C.2) and production
+// runs (BomProductionRun/BomProductionLine, WO-C.3) are later work orders
+// in the same tranche — RawMaterial.components/.productionLines back-relations
+// are added then, not stubbed in now (no model to point at yet).
+//
+// A raw material is NOT a new kind of thing. It is an ordinary ProductVariant
+// with a RawMaterial marker row pointing at it, so purchase orders, goods
+// receipts, the stock ledger, stock counts, reorder points and weighted-average
+// costing all work on fabric exactly as they work on a kurta (D5) — this file
+// adds no coupling to inventory/purchasing at all; every one of those already
+// works on any ProductVariant.
+//
+// QUANTITIES ARE INTEGER BASE UNITS, the same discipline money uses. unitScale
+// says how many base units make one display unit: fabric is GAZ with unitScale
+// 1000, so stock 12500 is 12.5 gaz and costPrice is paisa per milli-gaz.
+// Convert only at the UI boundary, through @newax/shared's toBaseUnits /
+// fromBaseUnits / formatQuantity. A bare scale multiplication in a component
+// is a bug.
+
+enum RawMaterialUnit {
+  GAZ
+  METRE
+  PIECE
+  SPOOL
+  GRAM
+  MILLILITRE
+}
+
+model RawMaterial {
+  id String @id @default(cuid())
+
+  /// The ProductVariant that carries stock, costPrice, supplier links and the
+  /// movement ledger. One variant is at most one raw material.
+  variantId String @unique
+
+  /// Staff-only. Not a translation row (Rule 6, D10): nobody shopping sees this.
+  name String
+  /// "fabric" | "trim" | "packaging" | "consumable". Groups the raw-usage report.
+  kind String @default("fabric")
+
+  unit RawMaterialUnit
+  /// Base units per display unit. 1000 for continuous goods, 1 for countable.
+  /// Effectively immutable once stock or a StockMovement exists for the
+  /// variant — see raw-material.service.ts's own note on why.
+  unitScale Int @default(1)
+
+  notes    String?
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@index([isActive, kind])
+  @@index([name])
+}

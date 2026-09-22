@@ -16,6 +16,11 @@ const KIND_LABELS: Record<string, string> = {
   STITCHING_SERVICE: 'Stitching service',
 };
 
+/** Matches Setting `bom.raw_material_category_slug`'s seeded value (seed.ts's
+ * seedRawMaterialCategory). Raw materials have their own screen
+ * (/admin/bom/raw-materials) — this list is finished goods and services. */
+const RAW_MATERIAL_CATEGORY_SLUG = 'raw-materials';
+
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<PaginatedResponse<AdminProduct> | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -47,6 +52,10 @@ export default function AdminProductsPage() {
     const timer = setTimeout(load, 250);
     return () => clearTimeout(timer);
   }, [load]);
+
+  const visibleProducts = (products?.data ?? []).filter(
+    (product) => product.category?.slug !== RAW_MATERIAL_CATEGORY_SLUG,
+  );
 
   return (
     <>
@@ -135,14 +144,14 @@ export default function AdminProductsPage() {
                     <Loading className="p-0" />
                   </td>
                 </tr>
-              ) : products && products.data.length === 0 ? (
+              ) : visibleProducts.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="px-4 py-8 text-center text-neutral-900/60">
                     No products match those filters.
                   </td>
                 </tr>
               ) : (
-                products?.data.map((product) => (
+                visibleProducts.map((product) => (
                   <tr key={product.id} className="hover:bg-neutral-50">
                     <td>
                       <Link

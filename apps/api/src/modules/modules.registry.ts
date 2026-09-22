@@ -2,6 +2,7 @@ import { DynamicModule, Logger, Module, type Type } from '@nestjs/common';
 import { AccountingModule } from './accounting/accounting.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { BomModule } from './bom/bom.module';
 import { CartModule } from './cart/cart.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { CrmModule } from './crm/crm.module';
@@ -65,6 +66,7 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'inventory', module: InventoryModule },
   { name: 'purchasing', module: PurchasingModule },
   { name: 'production', module: ProductionModule },
+  { name: 'bom', module: BomModule },
   { name: 'parties', module: PartiesModule },
   { name: 'tradingpartners', module: TradingPartnersModule },
   { name: 'payments', module: PaymentsModule },

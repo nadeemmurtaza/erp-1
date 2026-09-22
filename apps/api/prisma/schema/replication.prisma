@@ -131,3 +131,54 @@ model ReplicationQuarantine {
 
   @@index([status])
 }
+
+/// R9's OTHER quarantine — "a fact arriving in violation is accepted and
+/// quarantined for review — never silently dropped, never silently
+/// honoured." Deliberately a SEPARATE table from `ReplicationQuarantine`
+/// above (ADR-021/ADR-023): that one is for a record that failed to
+/// apply at all — a bug, a schema mismatch, nothing registered — a
+/// technical fault with no relation to what the fact itself says. This one
+/// is for a fact that is technically fine but whose own `scopeLevel`
+/// disagrees with the `BrandPolicy` switch that was supposed to govern the
+/// node that raised it — a governance exception, never a failure, and
+/// R5/R2 both forbid rejecting it outright: the fact already happened.
+/// `sequence`/`op`/`schemaVersion` are deliberately absent — those describe
+/// the REPLICATION mechanics `ReplicationApplyService` already handled
+/// successfully by the time a policy check runs; this row is about the
+/// fact's own content, not its transport.
+model PolicyQuarantine {
+  id            String                      @id @default(cuid())
+  /// The branch (or other node) whose own fact triggered this — always the
+  /// authenticated node from the inbound push, never taken from the payload
+  /// itself (`ReplicationController.push()`'s own convention).
+  originNodeId  String
+  entity        String
+  entityId      String
+  /// The `BrandPolicy` column violated — e.g. "allowBranchLocalPurchasing".
+  /// A string, not an enum: R9 names four switches total and only one has a
+  /// real receiving-tier check today (WO-23.3b) — an enum would have to
+  /// grow every time a new switch gains enforcement, for a column nothing
+  /// queries by value alone.
+  policyKey     String
+  /// Resolved from `Node.retailBrandId` — null when that node carries no
+  /// brand at all, which `reason` says explicitly rather than leaving the
+  /// column to explain itself.
+  retailBrandId String?
+  /// The fact's own payload, unmodified — the same one `ReplicationRecord`
+  /// carried, so a reviewer sees exactly what arrived.
+  payload       Json
+  reason        String
+  status        ReplicationQuarantineStatus @default(OPEN)
+  createdAt     DateTime                    @default(now())
+  resolvedAt    DateTime?
+  resolvedById  String?
+  /// The reviewer's own note. "Quarantined for review" with no record of
+  /// what the review concluded is not a review.
+  resolvedNote  String?
+
+  resolvedBy User? @relation("PolicyQuarantineResolver", fields: [resolvedById], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([entity, entityId])
+  @@index([retailBrandId])
+}

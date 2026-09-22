@@ -86,6 +86,7 @@ model User {
   expensesCreated         Expense[]                @relation("ExpenseCreator")
   bomRecipesCreated       BomRecipe[]              @relation("BomRecipeCreator")
   bomProductionRuns       BomProductionRun[]       @relation("BomProductionOperator")
+  policyQuarantinesResolved PolicyQuarantine[]     @relation("PolicyQuarantineResolver")
 
   @@index([role])
   @@index([createdAt])

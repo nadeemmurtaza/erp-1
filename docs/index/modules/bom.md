@@ -3,24 +3,26 @@
 
 # Module: `bom`
 
-Pack **core** · enabled by the `MODULES` allowlist · 18 files
+Pack **core** · enabled by the `MODULES` allowlist · 20 files
 
 
 
 Source: `apps/api/src/modules/bom/`
 
-## Files (18 · 3,135 lines)
+## Files (20 · 3,267 lines)
 
 All paths relative to `apps/api/src/modules/bom`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
+| `bom-production-replication.listener.spec.ts` | unit test | 62 | — |  |
+| `bom-production-replication.listener.ts` | event subscriber | 50 | 1 | WO-23.3c/e (RETAIL-ERP.md R13, ADR-021) — `BomProductionRun` registers FACT/UP, exactly like `OrderReplicationListener`… |
 | `bom.controller.ts` | controller | 228 | 1 |  |
-| `bom.listener.spec.ts` | unit test | 80 | — |  |
+| `bom.listener.spec.ts` | unit test | 88 | — |  |
 | `bom.listener.ts` | event subscriber | 49 | 1 | Rule 3 in action, no new event needed: receiving fabric against a PO already publishes GoodsReceived (purchasing.servic… |
 | `bom.metrics.spec.ts` | unit test | 202 | — |  |
 | `bom.metrics.ts` | module | 131 | 4 |  |
-| `bom.module.ts` | nest module | 17 | 1 |  |
+| `bom.module.ts` | nest module | 26 | 1 |  |
 | `bom.service.ts` | service | 47 | 1 | Helpers shared by every bom. |
 | `bom.spec.ts` | unit test | 527 | — |  |
 | `cost-rollup.spec.ts` | unit test | 124 | — | 2000 base units of fabric at 50 paisa/base-unit = 100000 |
@@ -30,7 +32,7 @@ All paths relative to `apps/api/src/modules/bom`.
 | `raw-usage.dto.ts` | dto | 30 | 1 |  |
 | `recipe.dto.ts` | dto | 113 | 5 |  |
 | `production.service.spec.ts` | unit test | 436 | — |  |
-| `production.service.ts` | service | 262 | 1 | The step that makes BOM real: a run consumes raw stock and credits finished stock, both through InventoryService — a di… |
+| `production.service.ts` | service | 265 | 1 | The step that makes BOM real: a run consumes raw stock and credits finished stock, both through InventoryService — a di… |
 | `raw-material.service.ts` | service | 218 | 1 | A raw material is an ordinary ProductVariant with a RawMaterial marker row (D5, bom.prisma). |
 | `recipe.service.ts` | service | 501 | 3 |  |
 
@@ -75,6 +77,7 @@ All paths relative to `apps/api/src/modules/bom`.
 | Event | Name | Handler |
 |---|---|---|
 | `GoodsReceived` | `purchasing.goods_received` | `bom.listener.ts:22` → `recomputeAffectedRecipes()` |
+| `BomProductionCompleted` | `bom.production_completed` | `bom-production-replication.listener.ts:38` → `onBomProductionCompleted()` |
 
 
 ## Tables it owns (`bom.prisma`)
@@ -100,7 +103,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`BomModule`** (`bom.module.ts`)
 - imports: `InventoryModule`
 - controllers: `BomController`
-- providers: `BomService`, `RawMaterialService`, `RecipeService`, `BomListener`, `ProductionService`, `BomMetricsService`
+- providers: `BomService`, `RawMaterialService`, `RecipeService`, `BomListener`, `ProductionService`, `BomMetricsService`, `BomProductionReplicationListener`
 - exports: —
 
 
@@ -118,6 +121,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `events`
 - core `extension-points`
 - core `prisma`
+- core `replication`
 - core `settings`
 - package `@newax/shared`
 
@@ -126,10 +130,11 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (5)
+## Tests (6)
 
 | Spec | Cases | Covers |
 |---|---|---|
+| `bom-production-replication.listener.spec.ts` | 3 | BomProductionReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onBomProductionCompleted |
 | `bom.listener.spec.ts` | 4 | BomListener |
 | `bom.metrics.spec.ts` | 5 | BomMetricsService — raw usage · missing-recipe count consistency |
 | `bom.spec.ts` | 21 | bom module — raw materials · resolveCategoryId · create · unitScale immutability · deactivate · list/get · purchasing i… |
@@ -141,13 +146,14 @@ check there before adding another.
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
+| `BomProductionReplicationListener` | class | `bom-production-replication.listener.ts:20` | WO-23.3c/e (RETAIL-ERP.md R13, ADR-021) — `BomProductionRun` registers FACT/UP, exactly like `OrderReplicatio… |
 | `BomController` | class | `bom.controller.ts:53` |  |
 | `BomListener` | class | `bom.listener.ts:16` | Rule 3 in action, no new event needed: receiving fabric against a PO already publishes GoodsReceived (purchas… |
 | `RawUsagePoint` | interface | `bom.metrics.ts:6` |  |
 | `RawUsageTotal` | interface | `bom.metrics.ts:13` |  |
 | `RawUsageResult` | interface | `bom.metrics.ts:27` |  |
 | `BomMetricsService` | class | `bom.metrics.ts:47` | WO-C.4 (10-admin-dashboard.md §C) — raw-material consumption over time. |
-| `BomModule` | class | `bom.module.ts:16` |  |
+| `BomModule` | class | `bom.module.ts:25` |  |
 | `BomService` | class | `bom.service.ts:14` | Helpers shared by every bom. |
 | `RecipeCostComponentInput` | interface | `cost-rollup.ts:16` | The BOM cost rollup (WO-C.2, 10-admin-dashboard.md §C) — a pure function, deliberately: it takes plain number… |
 | `RecipeCostInput` | interface | `cost-rollup.ts:27` |  |

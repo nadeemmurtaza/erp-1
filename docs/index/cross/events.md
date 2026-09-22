@@ -24,7 +24,7 @@ order" is a new file, not an edit to checkout.
 ## Attention list
 
 - Events **nothing publishes**: `crm.contact_upserted`, `crm.lead_created`
-- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `bom.production_completed`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`
+- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`
 
 ## Summary
 
@@ -52,8 +52,8 @@ order" is a new file, not an edit to checkout.
 | `catalog.product_price_changed` | `ProductPriceChanged` | `catalog` | `catalog`, `tradingpartners` |
 | `inventory.stock_replenished` | `StockReplenished` | `inventory` | `orders` |
 | `inventory.stock_variance_recorded` | `StockVarianceRecorded` | `accounting`, `inventory` | `accounting` |
-| `purchasing.goods_received` | `GoodsReceived` | `purchasing` | `bom` |
-| `bom.production_completed` | `BomProductionCompleted` | `bom` | _none_ |
+| `purchasing.goods_received` | `GoodsReceived` | `purchasing` | `bom`, `purchasing` |
+| `bom.production_completed` | `BomProductionCompleted` | `bom` | `bom` |
 | `purchasing.supplier_bill_raised` | `SupplierBillRaised` | `accounting`, `purchasing` | `accounting` |
 | `purchasing.supplier_bill_paid` | `SupplierBillPaid` | `accounting`, `purchasing` | `accounting` |
 | `transfers.inter_branch_invoiced` | `InterBranchTransferInvoiced` | `accounting`, `transfers` | `accounting` |
@@ -65,7 +65,7 @@ order" is a new file, not an edit to checkout.
 | `identity_verification.approved` | `IdentityVerificationApproved` | `identity-verification` | _none_ |
 | `identity_verification.rejected` | `IdentityVerificationRejected` | `identity-verification` | _none_ |
 | `identity_verification.expired` | `IdentityVerificationExpired` | `identity-verification` | _none_ |
-| `finance.expense_recorded` | `ExpenseRecorded` | `accounting`, `finance` | `accounting` |
+| `finance.expense_recorded` | `ExpenseRecorded` | `accounting`, `finance` | `accounting`, `finance` |
 | `finance.order_economics_computed` | `OrderEconomicsComputed` | `finance` | _none_ |
 
 
@@ -455,6 +455,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Handler | Where | Module |
 |---|---|---|
 | `recomputeAffectedRecipes()` | `apps/api/src/modules/bom/bom.listener.ts:22` | `bom` |
+| `onGoodsReceived()` | `apps/api/src/modules/purchasing/goods-receipt-replication.listener.ts:70` | `purchasing` |
 
 ### `bom.production_completed`
 
@@ -469,7 +470,9 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 **Subscribed by**
 
-_Nothing subscribes. Publishing it is a no-op today._
+| Handler | Where | Module |
+|---|---|---|
+| `onBomProductionCompleted()` | `apps/api/src/modules/bom/bom-production-replication.listener.ts:38` | `bom` |
 
 ### `purchasing.supplier_bill_raised`
 
@@ -479,7 +482,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:176` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:573` | `purchasing` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:576` | `purchasing` |
 
 
 **Subscribed by**
@@ -496,7 +499,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:226` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:637` | `purchasing` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:640` | `purchasing` |
 
 
 **Subscribed by**
@@ -648,7 +651,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:392` | `accounting` |
 | `apps/api/src/modules/finance/finance.service.ts:252` | `finance` |
-| `apps/api/src/modules/finance/finance.service.ts:530` | `finance` |
+| `apps/api/src/modules/finance/finance.service.ts:532` | `finance` |
 
 
 **Subscribed by**
@@ -656,6 +659,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Handler | Where | Module |
 |---|---|---|
 | `onExpenseRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:390` | `accounting` |
+| `onExpenseRecorded()` | `apps/api/src/modules/finance/expense-replication.listener.ts:38` | `finance` |
 
 ### `finance.order_economics_computed`
 

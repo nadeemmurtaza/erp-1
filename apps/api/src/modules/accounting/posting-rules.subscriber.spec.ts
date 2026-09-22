@@ -438,6 +438,8 @@ describe('PostingRulesSubscriber — WO-19.2', () => {
       incurredAt: '2026-10-05T00:00:00.000Z',
       paidAtIso: null as string | null,
       supplierId: null as string | null,
+      scopeLevel: 'BRAND' as const,
+      originNodeId: null as string | null,
     };
 
     it('Dr Operating Expenses / Cr Accounts Payable when unpaid', async () => {

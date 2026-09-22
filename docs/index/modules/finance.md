@@ -3,13 +3,13 @@
 
 # Module: `finance`
 
-Pack **core** · enabled by the `MODULES` allowlist · 12 files
+Pack **core** · enabled by the `MODULES` allowlist · 14 files
 
 
 
 Source: `apps/api/src/modules/finance/`
 
-## Files (12 · 1,880 lines)
+## Files (14 · 1,996 lines)
 
 All paths relative to `apps/api/src/modules/finance/dto`.
 
@@ -17,13 +17,15 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 |---|---|---|---|---|
 | `expense-category.dto.ts` | dto | 35 | 2 |  |
 | `expense.dto.ts` | dto | 107 | 4 |  |
+| `expense-replication.listener.spec.ts` | unit test | 61 | — |  |
+| `expense-replication.listener.ts` | event subscriber | 50 | 1 | WO-23.3c/e (RETAIL-ERP.md R2/R13, ADR-021) — `Expense` is R2's own other named FACT example ("expense"), registered UP… |
 | `finance.controller.ts` | controller | 112 | 1 |  |
 | `finance.cron.spec.ts` | unit test | 69 | — |  |
 | `finance.cron.ts` | scheduled job | 36 | 1 | WO-B.2's recurring-expense job. |
 | `finance.listener.spec.ts` | unit test | 48 | — |  |
 | `finance.listener.ts` | event subscriber | 27 | 1 | WO-23.1's WO-B.3: compute OrderEconomics on DELIVERED, recompute on RETURNED. |
-| `finance.module.ts` | nest module | 13 | 1 |  |
-| `finance.service.ts` | service | 558 | 6 |  |
+| `finance.module.ts` | nest module | 14 | 1 |  |
+| `finance.service.ts` | service | 562 | 6 |  |
 | `finance.spec.ts` | unit test | 522 | — |  |
 | `order-economics.service.spec.ts` | unit test | 216 | — |  |
 | `order-economics.service.ts` | service | 137 | 1 | WO-23.1's WO-B.3: contribution per order. |
@@ -54,7 +56,7 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 | Event | Name | Published at |
 |---|---|---|
 | `OrderCancelled` | `order.cancelled` | `finance.listener.ts:9` |
-| `ExpenseRecorded` | `finance.expense_recorded` | `finance.service.ts:252`, `finance.service.ts:530` |
+| `ExpenseRecorded` | `finance.expense_recorded` | `finance.service.ts:252`, `finance.service.ts:532` |
 | `OrderEconomicsComputed` | `finance.order_economics_computed` | `order-economics.service.ts:127` |
 
 
@@ -63,6 +65,7 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 | Event | Name | Handler |
 |---|---|---|
 | `OrderStatusChanged` | `order.status_changed` | `finance.listener.ts:18` → `onOrderStatusChanged()` |
+| `ExpenseRecorded` | `finance.expense_recorded` | `expense-replication.listener.ts:38` → `onExpenseRecorded()` |
 
 
 ## Tables it owns (`finance.prisma`)
@@ -92,7 +95,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`FinanceModule`** (`finance.module.ts`)
 - imports: —
 - controllers: `FinanceController`
-- providers: `FinanceService`, `FinanceCron`, `FinanceListener`, `OrderEconomicsService`
+- providers: `FinanceService`, `FinanceCron`, `FinanceListener`, `OrderEconomicsService`, `ExpenseReplicationListener`
 - exports: —
 
 
@@ -103,6 +106,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `config`
 - core `events`
 - core `prisma`
+- core `replication`
 - core `settings`
 - core `storage`
 
@@ -111,10 +115,11 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (4)
+## Tests (5)
 
 | Spec | Cases | Covers |
 |---|---|---|
+| `expense-replication.listener.spec.ts` | 3 | ExpenseReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onExpenseRecorded |
 | `finance.cron.spec.ts` | 3 | FinanceCron |
 | `finance.listener.spec.ts` | 2 | FinanceListener |
 | `finance.spec.ts` | 26 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4 · trend — WO-B.4 |
@@ -131,10 +136,11 @@ check there before adding another.
 | `UpdateExpenseDto` | class | `expense.dto.ts:66` |  |
 | `ExpenseQueryDto` | class | `expense.dto.ts:68` |  |
 | `ExpenseSummaryQueryDto` | class | `expense.dto.ts:96` |  |
+| `ExpenseReplicationListener` | class | `expense-replication.listener.ts:20` | WO-23.3c/e (RETAIL-ERP.md R2/R13, ADR-021) — `Expense` is R2's own other named FACT example ("expense"), regi… |
 | `FinanceController` | class | `finance.controller.ts:19` |  |
 | `FinanceCron` | class | `finance.cron.ts:19` | WO-B.2's recurring-expense job. |
 | `FinanceListener` | class | `finance.listener.ts:15` | WO-23.1's WO-B.3: compute OrderEconomics on DELIVERED, recompute on RETURNED. |
-| `FinanceModule` | class | `finance.module.ts:12` |  |
+| `FinanceModule` | class | `finance.module.ts:13` |  |
 | `ExpenseSummary` | interface | `finance.service.ts:55` |  |
 | `ExpenseByCategoryRow` | interface | `finance.service.ts:69` |  |
 | `ExpenseByCategoryResult` | interface | `finance.service.ts:87` |  |

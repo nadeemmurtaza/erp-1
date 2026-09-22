@@ -8,7 +8,15 @@ describe('BomListener', () => {
   let prisma: any;
   let recipes: any;
 
-  const payload = { goodsReceiptId: 'gr1', number: 'GRN-1', purchaseOrderId: 'po1', supplierId: 'sup1' };
+  const payload = {
+    goodsReceiptId: 'gr1',
+    number: 'GRN-1',
+    purchaseOrderId: 'po1',
+    supplierId: 'sup1',
+    scopeLevel: 'BRAND' as const,
+    originNodeId: null,
+    receivedAtIso: '2026-09-22T00:00:00.000Z',
+  };
 
   beforeEach(async () => {
     prisma = {

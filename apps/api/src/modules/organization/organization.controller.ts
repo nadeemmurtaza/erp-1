@@ -9,6 +9,8 @@ import { GrantScopeDto } from './dto/admin-scope.dto';
 import { RegisterNodeDto } from './dto/node.dto';
 import { SetInterBrandTransfersPolicyDto } from './dto/organization-policy.dto';
 import { UpdateBrandPolicyDto } from './dto/brand-policy.dto';
+import { SetNodeBrandDto } from './dto/node-brand.dto';
+import { ResolvePolicyQuarantineDto } from './dto/policy-quarantine.dto';
 import { ReplicationCursorService } from '../../core/replication/replication-cursor.service';
 import { PARENT_PEER_ID } from '../../core/replication/replication.types';
 
@@ -61,6 +63,13 @@ export class OrganizationController {
     return this.nodesService.register(dto);
   }
 
+  @Patch('nodes/:nodeId/brand')
+  @RequirePermission('organization.manage')
+  @ApiOperation({ summary: 'Set which brand a registered node belongs to (WO-23.3c/e) — governs its BrandPolicy checks on replication receipt' })
+  async setNodeBrand(@Param('nodeId') nodeId: string, @Body() dto: SetNodeBrandDto) {
+    return this.nodesService.setRetailBrand(nodeId, dto.retailBrandId);
+  }
+
   @Post('nodes/:nodeId/rotate-inbound-key')
   @RequirePermission('organization.manage')
   @ApiOperation({ summary: 'Issue a fresh replication credential for a child node — shown once, never retrievable again' })
@@ -104,6 +113,23 @@ export class OrganizationController {
     @Body() dto: UpdateBrandPolicyDto,
   ) {
     return this.organization.setBrandPolicy(await this.actorFor(user), brandId, dto);
+  }
+
+  @Get('policy-quarantine')
+  @ApiOperation({ summary: "R9's quarantine — facts that applied but violate the BrandPolicy switch meant to govern their origin node, held open for review (WO-23.3c/e)" })
+  async listPolicyQuarantine(@CurrentUser() user: AuthenticatedUser) {
+    return this.organization.listPolicyQuarantine(await this.actorFor(user));
+  }
+
+  @Post('policy-quarantine/:id/resolve')
+  @RequirePermission('organization.manage')
+  @ApiOperation({ summary: 'Mark a quarantined policy exception reviewed' })
+  async resolvePolicyQuarantine(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id') id: string,
+    @Body() dto: ResolvePolicyQuarantineDto,
+  ) {
+    return this.organization.resolvePolicyQuarantine(await this.actorFor(user), id, user.id, dto.note);
   }
 
   @Get('admin-scopes')

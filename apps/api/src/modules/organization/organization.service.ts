@@ -1,8 +1,9 @@
-import { BadRequestException, ForbiddenException, Injectable, type OnModuleInit } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException, type OnModuleInit } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { resolveScope, scopeFilterFor, assertCanManageAtScope, type AdminScopeGrant, type ScopedActor } from '../../core/auth/scope.guard';
 import { BranchPolicyRegistry } from '../../core/extension-points/branch-policy.registry';
-import type { AdminScope, AdminScopeLevel, BrandPolicy, Node, RetailBrand } from '../../core/prisma/client';
+import { PolicyQuarantineService } from '../../core/replication/policy-quarantine.service';
+import type { AdminScope, AdminScopeLevel, BrandPolicy, Node, PolicyQuarantine, RetailBrand } from '../../core/prisma/client';
 import type { UpdateBrandPolicyDto } from './dto/brand-policy.dto';
 
 export interface AdminScopeWithHolder extends AdminScope {
@@ -50,12 +51,14 @@ export class OrganizationService implements OnModuleInit {
   constructor(
     private readonly prisma: PrismaService,
     private readonly branchPolicy: BranchPolicyRegistry,
+    private readonly policyQuarantine: PolicyQuarantineService,
   ) {}
 
-  /** Registers `allowsBranchLocalPurchasing` for BranchPolicyRegistry, so `purchasing` (always-on) can ask "is this branch allowed to buy locally?" without importing this off-by-default module — the same seam `inventory` uses for StockIntakeRegistry. */
+  /** Registers both BranchPolicyRegistry handlers, so `purchasing` (always-on) can ask "is this branch allowed to buy locally?" — from a user's own session, or from a replicated fact's origin node — without importing this off-by-default module, the same seam `inventory` uses for StockIntakeRegistry. */
   onModuleInit(): void {
     this.branchPolicy.register({
       allowsBranchLocalPurchasing: (userId) => this.allowsBranchLocalPurchasing(userId),
+      allowsBranchLocalPurchasingForNode: (originNodeId) => this.allowsBranchLocalPurchasingForNode(originNodeId),
     });
   }
 
@@ -235,6 +238,40 @@ export class OrganizationService implements OnModuleInit {
   }
 
   /**
+   * R9's quarantine (WO-23.3c/e) — an ORG-wide actor sees every open entry;
+   * a BRAND/BRANCH-scope actor sees only entries attributable to a brand
+   * their scope reaches. An entry with no `retailBrandId` at all (the
+   * origin node couldn't even be resolved to a brand) is ORG-only — a
+   * brand-scoped viewer has no legitimate claim on an exception that isn't
+   * attributable to their own brand. An actor with no grant at all sees
+   * nothing, the same fail-closed default `scopeFilterFor` already gives.
+   */
+  async listPolicyQuarantine(actor: ScopedActor): Promise<PolicyQuarantine[]> {
+    const entries = await this.policyQuarantine.listOpen();
+    const scope = resolveScope(actor.adminScopes);
+    if (scope.isOrgWide) return entries;
+    return entries.filter((entry) => entry.retailBrandId && scope.visibleBrandIds.includes(entry.retailBrandId));
+  }
+
+  /** Same scope reach as `listPolicyQuarantine()` — a brand admin may resolve their own brand's exceptions, never another's. */
+  async resolvePolicyQuarantine(
+    actor: ScopedActor,
+    id: string,
+    resolvedById: string,
+    note?: string,
+  ): Promise<PolicyQuarantine> {
+    const entry = await this.policyQuarantine.get(id);
+    if (!entry) throw new NotFoundException('Quarantined record not found.');
+
+    const scope = resolveScope(actor.adminScopes);
+    if (!scope.isOrgWide && !(entry.retailBrandId && scope.visibleBrandIds.includes(entry.retailBrandId))) {
+      throw new ForbiddenException('You do not have access to resolve this quarantined record.');
+    }
+
+    return this.policyQuarantine.resolve(id, resolvedById, note);
+  }
+
+  /**
    * BranchPolicyRegistry's own handler (registered in `onModuleInit()`
    * above). An ORG-wide or BRAND-level (or wider) grant may always create a
    * BRANCH-scope purchase order — R9's switch protects a branch from
@@ -265,6 +302,25 @@ export class OrganizationService implements OnModuleInit {
       where: { retailBrandId: { in: branchGrantBrandIds } },
     });
     return policies.some((policy) => policy.allowBranchLocalPurchasing);
+  }
+
+  /**
+   * BranchPolicyRegistry's RECEIVING-side handler (WO-23.3c/e, ADR-023) —
+   * a replicated FACT claims `scopeLevel: 'BRANCH'` and there is no acting
+   * user, only the authenticated child node that pushed it. Resolves
+   * `Node.retailBrandId` → that brand's `BrandPolicy`, failing CLOSED at
+   * every step: no `Node` row for this `nodeId`, no `retailBrandId`
+   * recorded on it, or no `BrandPolicy` row for that brand all read as
+   * "not allowed" — the opposite default from the user-keyed method above,
+   * because a fact that explicitly claims a branch identity is exactly the
+   * claim R9 says is never trusted by default.
+   */
+  private async allowsBranchLocalPurchasingForNode(originNodeId: string): Promise<boolean> {
+    const node = await this.prisma.node.findUnique({ where: { nodeId: originNodeId }, select: { retailBrandId: true } });
+    if (!node?.retailBrandId) return false;
+
+    const policy = await this.prisma.brandPolicy.findUnique({ where: { retailBrandId: node.retailBrandId } });
+    return policy?.allowBranchLocalPurchasing ?? false;
   }
 
   private assertOrgWide(actor: ScopedActor, action: string): void {

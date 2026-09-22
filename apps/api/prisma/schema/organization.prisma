@@ -53,6 +53,7 @@ model RetailBrand {
   policy       BrandPolicy?
   locations    Location[]
   adminScopes  AdminScope[]
+  nodes        Node[]
 
   @@index([organizationId])
   @@index([parentId])
@@ -161,8 +162,20 @@ model Node {
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @updatedAt
 
+  /// WO-23.3c/e (RETAIL-ERP.md R9/R13, ADR-023). Which brand this child
+  /// belongs to — a BRAND-role Node names the one brand that deployment
+  /// represents; a BRANCH-role Node names the (sub-)brand it is a branch
+  /// of. Null until an operator sets it (registration alone cannot infer
+  /// it), which is itself meaningful: the receiving tier CANNOT resolve a
+  /// `BrandPolicy` for an unbadged node and treats that the same as "policy
+  /// says no" (fail closed, same reasoning as ADR-021's missing-row
+  /// default), never as "no brand, so nothing to check."
+  retailBrandId String?
+
   adminScopes AdminScope[]
+  retailBrand RetailBrand? @relation(fields: [retailBrandId], references: [id], onDelete: SetNull)
 
   @@index([role])
   @@index([status])
+  @@index([retailBrandId])
 }

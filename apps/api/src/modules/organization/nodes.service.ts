@@ -47,7 +47,7 @@ export class NodesService {
    * exists. Idempotent on `nodeId` so a child can safely retry its own
    * registration call.
    */
-  async register(input: { nodeId: string; label: string; url: string }): Promise<Node> {
+  async register(input: { nodeId: string; label: string; url: string; retailBrandId?: string }): Promise<Node> {
     const role = this.childRole;
     if (!role) {
       throw new Error(
@@ -58,13 +58,26 @@ export class NodesService {
 
     return this.prisma.node.upsert({
       where: { nodeId: input.nodeId },
-      create: { nodeId: input.nodeId, role, label: input.label, url: input.url },
-      update: { label: input.label, url: input.url, status: 'ACTIVE' },
+      create: { nodeId: input.nodeId, role, label: input.label, url: input.url, retailBrandId: input.retailBrandId },
+      update: { label: input.label, url: input.url, status: 'ACTIVE', retailBrandId: input.retailBrandId },
     });
   }
 
   async list(): Promise<Node[]> {
     return this.prisma.node.findMany({ orderBy: { label: 'asc' } });
+  }
+
+  /**
+   * WO-23.3c/e (ADR-023) — which brand this node belongs to. Omitting
+   * `retailBrandId` clears it, not "leaves it unchanged": this endpoint's
+   * only job is this one field, so there is nothing else a bare PATCH
+   * could mean by "unset".
+   */
+  async setRetailBrand(nodeId: string, retailBrandId?: string): Promise<Node> {
+    const exists = await this.prisma.node.findUnique({ where: { nodeId }, select: { id: true } });
+    if (!exists) throw new NotFoundException('Node not found');
+
+    return this.prisma.node.update({ where: { nodeId }, data: { retailBrandId: retailBrandId ?? null } });
   }
 
   /** Marks a child inactive without deleting it — its history (and its own database) stays put. */

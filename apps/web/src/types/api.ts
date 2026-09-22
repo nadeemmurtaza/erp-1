@@ -327,6 +327,8 @@ export interface OrgNodeSummary {
   role: 'BRANCH' | 'BRAND';
   label: string;
   status: 'ACTIVE' | 'SUSPENDED';
+  /** WO-23.3c/e — which brand this node belongs to; null until an operator sets it. Governs its BrandPolicy checks on replication receipt. */
+  retailBrandId: string | null;
 }
 
 /** GET /organization/me/scope — where the caller lands, and what chips they see. */
@@ -352,6 +354,28 @@ export interface AdminScopeWithHolder {
   branchNodeId: string | null;
   createdAt: string;
   user: { id: string; email: string | null; firstName: string | null; lastName: string | null };
+}
+
+/**
+ * GET /organization/policy-quarantine (WO-23.3c/e, RETAIL-ERP.md R9) — a
+ * fact that applied but whose own `scopeLevel` disagreed with the
+ * `BrandPolicy` switch meant to govern the node that raised it. Accepted,
+ * never rejected — held here for review instead.
+ */
+export interface PolicyQuarantineEntry {
+  id: string;
+  originNodeId: string;
+  entity: string;
+  entityId: string;
+  policyKey: string;
+  retailBrandId: string | null;
+  payload: unknown;
+  reason: string;
+  status: 'OPEN' | 'RESOLVED';
+  createdAt: string;
+  resolvedAt: string | null;
+  resolvedById: string | null;
+  resolvedNote: string | null;
 }
 
 export interface GrantScopeInput {

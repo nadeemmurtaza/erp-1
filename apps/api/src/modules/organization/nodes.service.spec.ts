@@ -38,6 +38,24 @@ describe('NodesService', () => {
     });
   });
 
+  it('registers a BRANCH child with the brand it belongs to (WO-23.3c/e)', async () => {
+    const service = await build('BRAND');
+    prisma.node.upsert.mockResolvedValue({ id: '1', nodeId: 'lhr-01', role: 'BRANCH', retailBrandId: 'b1' });
+
+    await service.register({
+      nodeId: 'lhr-01',
+      label: 'Lahore — Gulberg',
+      url: 'https://lhr-01.example',
+      retailBrandId: 'b1',
+    });
+
+    expect(prisma.node.upsert).toHaveBeenCalledWith({
+      where: { nodeId: 'lhr-01' },
+      create: { nodeId: 'lhr-01', role: 'BRANCH', label: 'Lahore — Gulberg', url: 'https://lhr-01.example', retailBrandId: 'b1' },
+      update: { label: 'Lahore — Gulberg', url: 'https://lhr-01.example', status: 'ACTIVE', retailBrandId: 'b1' },
+    });
+  });
+
   it('registers a BRAND child when this deployment is an ORG', async () => {
     const service = await build('ORG');
     prisma.node.upsert.mockResolvedValue({ id: '1', nodeId: 'brand1', role: 'BRAND' });

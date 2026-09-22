@@ -3,7 +3,7 @@
 
 # Tests
 
-**115** spec files, **1,140** cases. What is already pinned down — and what is not.
+**120** spec files, **1,172** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -50,7 +50,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (100)
+## Unit and integration (105)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -60,10 +60,12 @@ regression or an N+1.
 | `apps/api/src/core/auth/roles.service.spec.ts` | core/auth | 18 | RolesService · create · update / delete — the locked-permission orphan guard · assertLockedKeysStil… |
 | `apps/api/src/core/auth/scope.guard.spec.ts` | core/auth | 20 | resolveScope · assertCanManageAtScope · scopeFilterFor |
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 20 | validateEnv |
+| `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |
 | `apps/api/src/core/notifications/email.channel.spec.ts` | core/notifications | 2 | isDeliverable |
 | `apps/api/src/core/notifications/email/templates.spec.ts` | core/notifications | 27 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment re… |
 | `apps/api/src/core/prisma/enums.spec.ts` | core/prisma | 0 | shared enums stay in sync with the Prisma schema |
 | `apps/api/src/core/replication/node-credential.service.spec.ts` | core/replication | 5 | NodeCredentialService — WO-20.2 |
+| `apps/api/src/core/replication/policy-quarantine.service.spec.ts` | core/replication | 4 | PolicyQuarantineService — WO-23.3c/e, RETAIL-ERP.md R9, ADR-023 · resolve |
 | `apps/api/src/core/replication/replication-apply.service.spec.ts` | core/replication | 3 | ReplicationApplyService — WO-20.1 |
 | `apps/api/src/core/replication/replication-cursor.service.spec.ts` | core/replication | 8 | ReplicationCursorService — WO-20.1 / WO-20.2 / WO-20.5 · get · advance · reset — WO-20.5 resync |
 | `apps/api/src/core/replication/replication-log.service.spec.ts` | core/replication | 4 | ReplicationLogService — WO-20.1 |
@@ -85,6 +87,7 @@ regression or an N+1.
 | `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | accounting | 30 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSuppl… |
 | `apps/api/src/modules/analytics/analytics.comparison.spec.ts` | analytics | 8 | AnalyticsService.comparison |
 | `apps/api/src/modules/analytics/supply-chain-digest.cron.spec.ts` | analytics | 11 | SupplyChainDigestCron · sendSupplierDigests · sendSupplierScorecards · sendDemandAlerts |
+| `apps/api/src/modules/bom/bom-production-replication.listener.spec.ts` | bom | 3 | BomProductionReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onBomProductionCompleted |
 | `apps/api/src/modules/bom/bom.listener.spec.ts` | bom | 4 | BomListener |
 | `apps/api/src/modules/bom/bom.metrics.spec.ts` | bom | 5 | BomMetricsService — raw usage · missing-recipe count consistency |
 | `apps/api/src/modules/bom/bom.spec.ts` | bom | 21 | bom module — raw materials · resolveCategoryId · create · unitScale immutability · deactivate · lis… |
@@ -93,6 +96,7 @@ regression or an N+1.
 | `apps/api/src/modules/catalog/product-admin.service.spec.ts` | catalog | 13 | assertKindRules · assertUniqueSkus |
 | `apps/api/src/modules/catalog/product-replication.listener.spec.ts` | catalog | 7 | ProductReplicationListener — WO-20.3 · onModuleInit · onProductPublished · onProductPriceChanged ·… |
 | `apps/api/src/modules/crm/email-inbox/email-inbox.service.spec.ts` | crm | 7 | EmailInboxService · reply |
+| `apps/api/src/modules/finance/expense-replication.listener.spec.ts` | finance | 3 | ExpenseReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onExpenseRecorded |
 | `apps/api/src/modules/finance/finance.cron.spec.ts` | finance | 3 | FinanceCron |
 | `apps/api/src/modules/finance/finance.listener.spec.ts` | finance | 2 | FinanceListener |
 | `apps/api/src/modules/finance/finance.spec.ts` | finance | 26 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4… |
@@ -108,8 +112,8 @@ regression or an N+1.
 | `apps/api/src/modules/orders/backorder.listener.spec.ts` | orders | 4 | BackorderListener |
 | `apps/api/src/modules/orders/order-replication.listener.spec.ts` | orders | 3 | OrderReplicationListener — WO-20.4 · onModuleInit · onOrderPlaced |
 | `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 6 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ |
-| `apps/api/src/modules/organization/nodes.service.spec.ts` | organization | 8 | NodesService · rotateInboundKey |
-| `apps/api/src/modules/organization/organization.service.spec.ts` | organization | 39 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setI… |
+| `apps/api/src/modules/organization/nodes.service.spec.ts` | organization | 9 | NodesService · rotateInboundKey |
+| `apps/api/src/modules/organization/organization.service.spec.ts` | organization | 51 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setI… |
 | `apps/api/src/modules/parties/parties.service.spec.ts` | parties | 7 | PartiesService · get · dedupeCandidate · findOrCreateForRole · search |
 | `apps/api/src/modules/payments/providers/callback-verification.spec.ts` | payments | 8 | Easypaisa callback verification · JazzCash callback verification |
 | `apps/api/src/modules/pos/pos-catalog.service.spec.ts` | pos | 3 | PosCatalogService — WO-21.4 |
@@ -121,6 +125,7 @@ regression or an N+1.
 | `apps/api/src/modules/production/reorder-work-order.listener.spec.ts` | production | 5 | ReorderWorkOrderListener |
 | `apps/api/src/modules/production/stitching-cascade.listener.spec.ts` | production | 8 | StitchingCascadeListener · onStitchingJobCreated · onStitchingJobStageChanged |
 | `apps/api/src/modules/production/work-orders.service.spec.ts` | production | 11 | WorkOrdersService · create · release · complete · cancel |
+| `apps/api/src/modules/purchasing/goods-receipt-replication.listener.spec.ts` | purchasing | 5 | GoodsReceiptReplicationListener — WO-23.3c/e, RETAIL-ERP.md R2/R9/R13, ADR-023 · onModuleInit · onG… |
 | `apps/api/src/modules/purchasing/purchasing.cron.spec.ts` | purchasing | 2 | PurchasingCron |
 | `apps/api/src/modules/purchasing/purchasing.spec.ts` | purchasing | 10 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR… |
 | `apps/api/src/modules/purchasing/reorder.listener.spec.ts` | purchasing | 5 | PurchasingReorderListener |

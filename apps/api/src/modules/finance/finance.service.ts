@@ -258,6 +258,8 @@ export class FinanceService {
           incurredAt: expense.incurredAt.toISOString(),
           paidAtIso: expense.paidAt ? expense.paidAt.toISOString() : null,
           supplierId: expense.supplierId,
+          scopeLevel: expense.scopeLevel,
+          originNodeId: expense.originNodeId,
         },
         tx,
       );
@@ -536,6 +538,8 @@ export class FinanceService {
                 incurredAt: instance.incurredAt.toISOString(),
                 paidAtIso: null,
                 supplierId: instance.supplierId,
+                scopeLevel: instance.scopeLevel,
+                originNodeId: instance.originNodeId,
               },
               tx,
             );

@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 19 files
 
 Source: `apps/api/src/modules/accounting/`
 
-## Files (19 · 3,010 lines)
+## Files (19 · 3,012 lines)
 
 All paths relative to `apps/api/src/modules/accounting`.
 
@@ -34,7 +34,7 @@ All paths relative to `apps/api/src/modules/accounting`.
 | `gl-reports.controller.ts` | controller | 67 | 1 | The general ledger's read side (RETAIL-ERP.md R15, WO-19.4) — every route a grouping over `JournalLine`, gated by `acco… |
 | `gl-reports.service.spec.ts` | unit test | 174 | — |  |
 | `gl-reports.service.ts` | service | 298 | 2 |  |
-| `posting-rules.subscriber.spec.ts` | unit test | 502 | — |  |
+| `posting-rules.subscriber.spec.ts` | unit test | 504 | — |  |
 | `posting-rules.subscriber.ts` | event subscriber | 425 | 1 | Posting rules (RETAIL-ERP.md R15, WO-19.2) — the only place a sale, a receipt or a refund becomes a journal entry. |
 
 

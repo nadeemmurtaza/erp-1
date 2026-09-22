@@ -13,13 +13,13 @@ Source: `apps/api/src/core/events/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (5 · 566 lines)
+## Files (5 · 579 lines)
 
 All paths relative to `apps/api/src/core/events`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `domain-events.ts` | module | 358 | 31 | The catalogue of domain events. |
+| `domain-events.ts` | module | 371 | 31 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 | 2 | Anything that can run a query: the PrismaService or an open transaction. |
 | `events.module.ts` | nest module | 19 | 1 |  |
 | `on-domain-event.decorator.ts` | module | 16 | 1 | Subscribes a method to a domain event. |
@@ -90,16 +90,16 @@ _No spec files in this unit._
 | `ProductPriceChangedPayload` | interface | `domain-events.ts:207` | Never a cost price or margin — this leaves the platform to whoever is listening. |
 | `SupplierDigestReadyPayload` | interface | `domain-events.ts:215` |  |
 | `GoodsReceivedPayload` | interface | `domain-events.ts:220` |  |
-| `BomProductionCompletedPayload` | interface | `domain-events.ts:227` |  |
-| `WorkOrderPayload` | interface | `domain-events.ts:237` |  |
-| `SupplierBillRaisedPayload` | interface | `domain-events.ts:245` |  |
-| `InterBranchTransferInvoicedPayload` | interface | `domain-events.ts:259` |  |
-| `SupplierBillPaidPayload` | interface | `domain-events.ts:272` |  |
-| `ExpenseRecordedPayload` | interface | `domain-events.ts:285` |  |
-| `OrderEconomicsComputedPayload` | interface | `domain-events.ts:298` |  |
-| `EmailReplyReceivedPayload` | interface | `domain-events.ts:306` |  |
-| `IdentityVerificationPayload` | interface | `domain-events.ts:313` |  |
-| `DomainEventPayloads` | interface | `domain-events.ts:319` |  |
+| `BomProductionCompletedPayload` | interface | `domain-events.ts:232` |  |
+| `WorkOrderPayload` | interface | `domain-events.ts:247` |  |
+| `SupplierBillRaisedPayload` | interface | `domain-events.ts:255` |  |
+| `InterBranchTransferInvoicedPayload` | interface | `domain-events.ts:269` |  |
+| `SupplierBillPaidPayload` | interface | `domain-events.ts:282` |  |
+| `ExpenseRecordedPayload` | interface | `domain-events.ts:295` |  |
+| `OrderEconomicsComputedPayload` | interface | `domain-events.ts:311` |  |
+| `EmailReplyReceivedPayload` | interface | `domain-events.ts:319` |  |
+| `IdentityVerificationPayload` | interface | `domain-events.ts:326` |  |
+| `DomainEventPayloads` | interface | `domain-events.ts:332` |  |
 | `PrismaLike` | type | `event-bus.service.ts:8` | Anything that can run a query: the PrismaService or an open transaction. |
 | `EventBusService` | class | `event-bus.service.ts:22` | Publishes domain events through a transactional outbox. |
 | `EventsModule` | class | `events.module.ts:18` |  |

@@ -3,13 +3,13 @@
 
 # Module: `purchasing`
 
-Pack **core** · enabled by the `MODULES` allowlist · 12 files
+Pack **core** · enabled by the `MODULES` allowlist · 14 files
 
 
 
 Source: `apps/api/src/modules/purchasing/`
 
-## Files (12 · 1,829 lines)
+## Files (14 · 2,042 lines)
 
 All paths relative to `apps/api/src/modules/purchasing/dto`.
 
@@ -18,11 +18,13 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 | `purchase-order.dto.ts` | dto | 104 | 4 |  |
 | `supplier-bill.dto.ts` | dto | 67 | 2 |  |
 | `supplier.dto.ts` | dto | 104 | 3 |  |
+| `goods-receipt-replication.listener.spec.ts` | unit test | 127 | — |  |
+| `goods-receipt-replication.listener.ts` | event subscriber | 82 | 1 | WO-23.3c/e (RETAIL-ERP.md R2/R9/R13, ADR-021/ADR-023) — `GoodsReceipt` is one of R2's own named FACT examples ("goods r… |
 | `purchasing.controller.ts` | controller | 151 | 3 |  |
 | `purchasing.cron.spec.ts` | unit test | 67 | — |  |
 | `purchasing.cron.ts` | scheduled job | 71 | 1 | The nightly safety-net sweep for reorder drafting. |
-| `purchasing.module.ts` | nest module | 18 | 1 |  |
-| `purchasing.service.ts` | service | 654 | 1 |  |
+| `purchasing.module.ts` | nest module | 19 | 1 |  |
+| `purchasing.service.ts` | service | 657 | 1 |  |
 | `purchasing.spec.ts` | unit test | 233 | — |  |
 | `reorder.listener.spec.ts` | unit test | 79 | — |  |
 | `reorder.listener.ts` | event subscriber | 51 | 1 | Turns a real-time reorder-point crossing into an immediate DRAFT PO line, for variants sourced from an external supplie… |
@@ -59,8 +61,8 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 | Event | Name | Published at |
 |---|---|---|
 | `GoodsReceived` | `purchasing.goods_received` | `purchasing.service.ts:432` |
-| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `purchasing.service.ts:573` |
-| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `purchasing.service.ts:637` |
+| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `purchasing.service.ts:576` |
+| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `purchasing.service.ts:640` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -68,6 +70,7 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 | Event | Name | Handler |
 |---|---|---|
 | `ProductReorderPointReached` | `catalog.product_reorder_point_reached` | `reorder.listener.ts:25` → `onReorderPointReached()` |
+| `GoodsReceived` | `purchasing.goods_received` | `goods-receipt-replication.listener.ts:70` → `onGoodsReceived()` |
 
 
 ## Tables it owns (`purchasing.prisma`)
@@ -100,7 +103,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`PurchasingModule`** (`purchasing.module.ts`)
 - imports: `InventoryModule`, `PartiesModule`, `SettingsModule`
 - controllers: `PurchasingController`, `PurchaseOrderAdminController`, `SupplierBillAdminController`
-- providers: `PurchasingService`, `PurchasingCron`, `PurchasingReorderListener`
+- providers: `PurchasingService`, `PurchasingCron`, `PurchasingReorderListener`, `GoodsReceiptReplicationListener`
 - exports: `PurchasingService`
 
 
@@ -113,6 +116,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `events`
 - core `extension-points`
 - core `prisma`
+- core `replication`
 - core `settings`
 - package `@newax/shared`
 
@@ -121,10 +125,11 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (4)
+## Tests (5)
 
 | Spec | Cases | Covers |
 |---|---|---|
+| `goods-receipt-replication.listener.spec.ts` | 5 | GoodsReceiptReplicationListener — WO-23.3c/e, RETAIL-ERP.md R2/R9/R13, ADR-023 · onModuleInit · onGoodsReceived |
 | `purchasing.cron.spec.ts` | 2 | PurchasingCron |
 | `purchasing.spec.ts` | 10 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR-021 · create (Suppl… |
 | `reorder.listener.spec.ts` | 5 | PurchasingReorderListener |
@@ -144,11 +149,12 @@ check there before adding another.
 | `CreateSupplierDto` | class | `supplier.dto.ts:4` |  |
 | `UpdateSupplierDto` | class | `supplier.dto.ts:57` |  |
 | `AddSupplierProductDto` | class | `supplier.dto.ts:70` |  |
+| `GoodsReceiptReplicationListener` | class | `goods-receipt-replication.listener.ts:30` | WO-23.3c/e (RETAIL-ERP.md R2/R9/R13, ADR-021/ADR-023) — `GoodsReceipt` is one of R2's own named FACT examples… |
 | `PurchasingController` | class | `purchasing.controller.ts:9` |  |
 | `PurchaseOrderAdminController` | class | `purchasing.controller.ts:78` |  |
 | `SupplierBillAdminController` | class | `purchasing.controller.ts:119` |  |
 | `PurchasingCron` | class | `purchasing.cron.ts:19` | The nightly safety-net sweep for reorder drafting. |
-| `PurchasingModule` | class | `purchasing.module.ts:17` |  |
+| `PurchasingModule` | class | `purchasing.module.ts:18` |  |
 | `PurchasingService` | class | `purchasing.service.ts:70` |  |
 | `PurchasingReorderListener` | class | `reorder.listener.ts:16` | Turns a real-time reorder-point crossing into an immediate DRAFT PO line, for variants sourced from an extern… |
 

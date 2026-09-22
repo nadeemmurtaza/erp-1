@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1208,
-    "lines": 188669,
-    "routes": 322,
+    "files": 1221,
+    "lines": 190093,
+    "routes": 325,
     "controllers": 59,
-    "models": 123,
+    "models": 124,
     "enums": 53,
-    "migrations": 58,
+    "migrations": 59,
     "events": 37,
     "permissions": 41,
-    "screens": 137,
+    "screens": 138,
     "crons": 8,
-    "specs": 115,
+    "specs": 120,
     "designLaws": 150
   },
   "designLaws": [
@@ -1083,9 +1083,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 493,
-      "lines": 66893,
-      "bytes": 2424124,
+      "files": 505,
+      "lines": 67979,
+      "bytes": 2468800,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1101,15 +1101,15 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 243,
-      "lines": 37096,
-      "bytes": 1369954,
+      "files": 244,
+      "lines": 37299,
+      "bytes": 1377531,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 247,
-      "lines": 35981,
-      "bytes": 2251129,
+      "lines": 36116,
+      "bytes": 2259325,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -1186,6 +1186,8 @@
       "alwaysOn": false,
       "inRegistry": true,
       "files": [
+        "apps/api/src/modules/bom/bom-production-replication.listener.spec.ts",
+        "apps/api/src/modules/bom/bom-production-replication.listener.ts",
         "apps/api/src/modules/bom/bom.controller.ts",
         "apps/api/src/modules/bom/bom.listener.spec.ts",
         "apps/api/src/modules/bom/bom.listener.ts",
@@ -1275,6 +1277,8 @@
       "files": [
         "apps/api/src/modules/finance/dto/expense-category.dto.ts",
         "apps/api/src/modules/finance/dto/expense.dto.ts",
+        "apps/api/src/modules/finance/expense-replication.listener.spec.ts",
+        "apps/api/src/modules/finance/expense-replication.listener.ts",
         "apps/api/src/modules/finance/finance.controller.ts",
         "apps/api/src/modules/finance/finance.cron.spec.ts",
         "apps/api/src/modules/finance/finance.cron.ts",
@@ -1392,8 +1396,10 @@
       "files": [
         "apps/api/src/modules/organization/dto/admin-scope.dto.ts",
         "apps/api/src/modules/organization/dto/brand-policy.dto.ts",
+        "apps/api/src/modules/organization/dto/node-brand.dto.ts",
         "apps/api/src/modules/organization/dto/node.dto.ts",
         "apps/api/src/modules/organization/dto/organization-policy.dto.ts",
+        "apps/api/src/modules/organization/dto/policy-quarantine.dto.ts",
         "apps/api/src/modules/organization/nodes.service.spec.ts",
         "apps/api/src/modules/organization/nodes.service.ts",
         "apps/api/src/modules/organization/organization.controller.ts",
@@ -1401,7 +1407,7 @@
         "apps/api/src/modules/organization/organization.service.spec.ts",
         "apps/api/src/modules/organization/organization.service.ts"
       ],
-      "routes": 12,
+      "routes": 15,
       "page": "docs/index/modules/organization.md"
     },
     {
@@ -1500,6 +1506,8 @@
         "apps/api/src/modules/purchasing/dto/purchase-order.dto.ts",
         "apps/api/src/modules/purchasing/dto/supplier-bill.dto.ts",
         "apps/api/src/modules/purchasing/dto/supplier.dto.ts",
+        "apps/api/src/modules/purchasing/goods-receipt-replication.listener.spec.ts",
+        "apps/api/src/modules/purchasing/goods-receipt-replication.listener.ts",
         "apps/api/src/modules/purchasing/purchasing.controller.ts",
         "apps/api/src/modules/purchasing/purchasing.cron.spec.ts",
         "apps/api/src/modules/purchasing/purchasing.cron.ts",
@@ -1733,6 +1741,7 @@
     {
       "name": "extension-points",
       "files": [
+        "apps/api/src/core/extension-points/branch-policy.registry.spec.ts",
         "apps/api/src/core/extension-points/branch-policy.registry.ts",
         "apps/api/src/core/extension-points/cart-line-validator.registry.ts",
         "apps/api/src/core/extension-points/entity-enrichment.registry.ts",
@@ -1790,6 +1799,8 @@
         "apps/api/src/core/replication/dto/push-replication.dto.ts",
         "apps/api/src/core/replication/node-credential.service.spec.ts",
         "apps/api/src/core/replication/node-credential.service.ts",
+        "apps/api/src/core/replication/policy-quarantine.service.spec.ts",
+        "apps/api/src/core/replication/policy-quarantine.service.ts",
         "apps/api/src/core/replication/replication-apply.service.spec.ts",
         "apps/api/src/core/replication/replication-apply.service.ts",
         "apps/api/src/core/replication/replication-cursor.service.spec.ts",
@@ -6536,7 +6547,7 @@
       "controller": "OrganizationController",
       "handler": "adminScopes",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 112,
+      "line": 138,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6552,7 +6563,7 @@
       "controller": "OrganizationController",
       "handler": "grantScope",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 119,
+      "line": 145,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6568,7 +6579,7 @@
       "controller": "OrganizationController",
       "handler": "revokeScope",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 126,
+      "line": 152,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6584,7 +6595,7 @@
       "controller": "OrganizationController",
       "handler": "brands",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 47,
+      "line": 49,
       "access": "organization.view",
       "permissions": [
         "organization.view"
@@ -6600,7 +6611,7 @@
       "controller": "OrganizationController",
       "handler": "brandPolicy",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 94,
+      "line": 103,
       "access": "organization.view",
       "permissions": [
         "organization.view"
@@ -6616,7 +6627,7 @@
       "controller": "OrganizationController",
       "handler": "setBrandPolicy",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 101,
+      "line": 110,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6632,7 +6643,7 @@
       "controller": "OrganizationController",
       "handler": "myScope",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 41,
+      "line": 43,
       "access": "organization.view",
       "permissions": [
         "organization.view"
@@ -6648,7 +6659,7 @@
       "controller": "OrganizationController",
       "handler": "nodes",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 53,
+      "line": 55,
       "access": "organization.view",
       "permissions": [
         "organization.view"
@@ -6664,7 +6675,7 @@
       "controller": "OrganizationController",
       "handler": "registerNode",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 60,
+      "line": 62,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6674,13 +6685,29 @@
       "summary": "Register a child node — or re-activate and update one that already exists"
     },
     {
+      "method": "PATCH",
+      "path": "/organization/nodes/:nodeId/brand",
+      "module": "organization",
+      "controller": "OrganizationController",
+      "handler": "setNodeBrand",
+      "file": "apps/api/src/modules/organization/organization.controller.ts",
+      "line": 69,
+      "access": "organization.manage",
+      "permissions": [
+        "organization.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Set which brand a registered node belongs to (WO-23.3c/e) — governs its BrandPolicy checks on replication receipt"
+    },
+    {
       "method": "POST",
       "path": "/organization/nodes/:nodeId/rotate-inbound-key",
       "module": "organization",
       "controller": "OrganizationController",
       "handler": "rotateNodeInboundKey",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 67,
+      "line": 76,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6690,13 +6717,45 @@
       "summary": "Issue a fresh replication credential for a child node — shown once, never retrievable again"
     },
     {
+      "method": "GET",
+      "path": "/organization/policy-quarantine",
+      "module": "organization",
+      "controller": "OrganizationController",
+      "handler": "listPolicyQuarantine",
+      "file": "apps/api/src/modules/organization/organization.controller.ts",
+      "line": 120,
+      "access": "organization.view",
+      "permissions": [
+        "organization.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "R9's quarantine — facts that applied but violate the BrandPolicy switch meant to govern their origin node, held open for review (WO-23.3c/e)"
+    },
+    {
+      "method": "POST",
+      "path": "/organization/policy-quarantine/:id/resolve",
+      "module": "organization",
+      "controller": "OrganizationController",
+      "handler": "resolvePolicyQuarantine",
+      "file": "apps/api/src/modules/organization/organization.controller.ts",
+      "line": 127,
+      "access": "organization.manage",
+      "permissions": [
+        "organization.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Mark a quarantined policy exception reviewed"
+    },
+    {
       "method": "PATCH",
       "path": "/organization/policy/inter-brand-transfers",
       "module": "organization",
       "controller": "OrganizationController",
       "handler": "setInterBrandTransfersPolicy",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 85,
+      "line": 94,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6712,7 +6771,7 @@
       "controller": "OrganizationController",
       "handler": "resyncFromParent",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 77,
+      "line": 86,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6941,7 +7000,8 @@
         "GET /organization/brands",
         "GET /organization/brands/:brandId/policy",
         "GET /organization/me/scope",
-        "GET /organization/nodes"
+        "GET /organization/nodes",
+        "GET /organization/policy-quarantine"
       ],
       "uiSites": 1,
       "roles": [
@@ -6961,11 +7021,13 @@
         "DELETE /organization/admin-scopes/:id",
         "PATCH /organization/brands/:brandId/policy",
         "POST /organization/nodes",
+        "PATCH /organization/nodes/:nodeId/brand",
         "POST /organization/nodes/:nodeId/rotate-inbound-key",
+        "POST /organization/policy-quarantine/:id/resolve",
         "PATCH /organization/policy/inter-brand-transfers",
         "POST /organization/replication/resync"
       ],
-      "uiSites": 1,
+      "uiSites": 3,
       "roles": [
         "ADMIN"
       ],
@@ -7979,7 +8041,8 @@
         "apps/api/src/modules/purchasing/purchasing.service.ts:432"
       ],
       "subscribers": [
-        "apps/api/src/modules/bom/bom.listener.ts:22 recomputeAffectedRecipes()"
+        "apps/api/src/modules/bom/bom.listener.ts:22 recomputeAffectedRecipes()",
+        "apps/api/src/modules/purchasing/goods-receipt-replication.listener.ts:70 onGoodsReceived()"
       ]
     },
     {
@@ -7989,7 +8052,9 @@
       "publishers": [
         "apps/api/src/modules/bom/production.service.ts:200"
       ],
-      "subscribers": []
+      "subscribers": [
+        "apps/api/src/modules/bom/bom-production-replication.listener.ts:38 onBomProductionCompleted()"
+      ]
     },
     {
       "symbol": "SupplierBillRaised",
@@ -7997,7 +8062,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:176",
-        "apps/api/src/modules/purchasing/purchasing.service.ts:573"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:576"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:174 onSupplierBillRaised()"
@@ -8009,7 +8074,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:226",
-        "apps/api/src/modules/purchasing/purchasing.service.ts:637"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:640"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:224 onSupplierBillPaid()"
@@ -8108,10 +8173,11 @@
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:392",
         "apps/api/src/modules/finance/finance.service.ts:252",
-        "apps/api/src/modules/finance/finance.service.ts:530"
+        "apps/api/src/modules/finance/finance.service.ts:532"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:390 onExpenseRecorded()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:390 onExpenseRecorded()",
+        "apps/api/src/modules/finance/expense-replication.listener.ts:38 onExpenseRecorded()"
       ]
     },
     {
@@ -8238,7 +8304,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 146,
+      "line": 147,
       "doc": "",
       "fields": [
         {
@@ -8354,7 +8420,7 @@
     {
       "name": "AdminScope",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 106,
+      "line": 107,
       "doc": "What a user's admin access is scoped to (R10) — never a role check (House Rule 9 forbids `if (user.role === 'SUPER_ADMIN')`).",
       "fields": [
         {
@@ -8429,7 +8495,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 424,
+      "line": 425,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -8490,7 +8556,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 236,
+      "line": 237,
       "doc": "",
       "fields": [
         {
@@ -9223,7 +9289,7 @@
     {
       "name": "BrandPolicy",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 70,
+      "line": 71,
       "doc": "Per-brand policy switches (R9) — what R9 calls `brand.allow_branch_product_creation` and its siblings, generalised from a single Setting row (House Rule 4, still the answer while a deployment has onl…",
       "fields": [
         {
@@ -10071,7 +10137,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 404,
+      "line": 405,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -10145,7 +10211,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 191,
+      "line": 192,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -10331,7 +10397,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 132,
+      "line": 133,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -12680,7 +12746,7 @@
     {
       "name": "Node",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 142,
+      "line": 143,
       "doc": "A child node this deployment knows about — a brand's branches, or an organization's brands (R1, R14; WO-18.1, moved here from core.prisma in WO-18.3 once it had siblings to live beside — Part 5 owns…",
       "fields": [
         {
@@ -12754,16 +12820,31 @@
           "relation": false
         },
         {
+          "name": "retailBrandId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "adminScopes",
           "type": "AdminScope[]",
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "retailBrand",
+          "type": "RetailBrand?",
+          "id": false,
+          "unique": false,
+          "relation": true
         }
       ],
       "indexes": [
         "@@index([role])",
-        "@@index([status])"
+        "@@index([status])",
+        "@@index([retailBrandId])"
       ]
     },
     {
@@ -13644,7 +13725,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 377,
+      "line": 378,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -13882,7 +13963,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 115,
+      "line": 116,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -14089,7 +14170,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 257,
+      "line": 258,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -14150,6 +14231,117 @@
         }
       ],
       "indexes": []
+    },
+    {
+      "name": "PolicyQuarantine",
+      "file": "apps/api/prisma/schema/replication.prisma",
+      "line": 149,
+      "doc": "R9's OTHER quarantine — \"a fact arriving in violation is accepted and quarantined for review — never silently dropped, never silently honoured.\" Deliberately a SEPARATE table from `ReplicationQuarant…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "originNodeId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "entity",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "entityId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "policyKey",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "retailBrandId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payload",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "ReplicationQuarantineStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedNote",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([status])",
+        "@@index([entity, entityId])",
+        "@@index([retailBrandId])"
+      ]
     },
     {
       "name": "PosReceipt",
@@ -15914,7 +16106,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 94,
+      "line": 95,
       "doc": "",
       "fields": [
         {
@@ -16342,6 +16534,13 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "nodes",
+          "type": "Node[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -16352,7 +16551,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 323,
+      "line": 324,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -16410,7 +16609,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 337,
+      "line": 338,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -16464,7 +16663,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 273,
+      "line": 274,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -16576,7 +16775,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 169,
+      "line": 170,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -19162,6 +19361,13 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "policyQuarantinesResolved",
+          "type": "PolicyQuarantine[]",
+          "id": false,
+          "unique": false,
+          "relation": true
         }
       ],
       "indexes": [
@@ -19172,7 +19378,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 294,
+      "line": 295,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -19233,7 +19439,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 352,
+      "line": 353,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -19617,7 +19823,7 @@
     {
       "name": "AdminScopeLevel",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 82,
+      "line": 83,
       "values": [
         "ORG",
         "BRAND",
@@ -19661,7 +19867,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 392,
+      "line": 393,
       "values": [
         "IOS",
         "ANDROID",
@@ -19671,7 +19877,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 180,
+      "line": 181,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -19780,7 +19986,7 @@
     {
       "name": "NodeRole",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 122,
+      "line": 123,
       "values": [
         "BRANCH",
         "BRAND"
@@ -19789,7 +19995,7 @@
     {
       "name": "NodeStatus",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 127,
+      "line": 128,
       "values": [
         "ACTIVE",
         "SUSPENDED"
@@ -19843,7 +20049,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 366,
+      "line": 367,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -19878,7 +20084,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 285,
+      "line": 286,
       "values": [
         "GRANT",
         "REVOKE"
@@ -21212,6 +21418,22 @@
         "GoodsReceipt",
         "PurchaseOrder"
       ]
+    },
+    {
+      "folder": "20260922072219_add_node_brand_and_policy_quarantine",
+      "file": "apps/api/prisma/schema/migrations/20260922072219_add_node_brand_and_policy_quarantine/migration.sql",
+      "date": "2026-09-22",
+      "slug": "add_node_brand_and_policy_quarantine",
+      "statements": 8,
+      "kinds": [
+        "ALTER TABLE",
+        "CREATE TABLE",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "Node",
+        "PolicyQuarantine"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -22223,6 +22445,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/o/[orgId]/policy-quarantine",
+      "file": "apps/web/src/app/(admin)/admin/(app)/o/[orgId]/policy-quarantine/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/orders",
       "file": "apps/web/src/app/(admin)/admin/(app)/orders/page.tsx",
       "client": true,
@@ -23011,6 +23242,17 @@
       ]
     },
     {
+      "file": "apps/api/src/core/extension-points/branch-policy.registry.spec.ts",
+      "module": "core/extension-points",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023",
+        "allowsBranchLocalPurchasing (user-keyed)",
+        "allowsBranchLocalPurchasingForNode (node-keyed, replication-received)"
+      ]
+    },
+    {
       "file": "apps/api/src/core/notifications/email.channel.spec.ts",
       "module": "core/notifications",
       "kind": "unit test",
@@ -23052,6 +23294,16 @@
       "cases": 5,
       "describes": [
         "NodeCredentialService — WO-20.2"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/replication/policy-quarantine.service.spec.ts",
+      "module": "core/replication",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "PolicyQuarantineService — WO-23.3c/e, RETAIL-ERP.md R9, ADR-023",
+        "resolve"
       ]
     },
     {
@@ -23288,6 +23540,17 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/bom/bom-production-replication.listener.spec.ts",
+      "module": "bom",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "BomProductionReplicationListener — WO-23.3c/e, ADR-021",
+        "onModuleInit",
+        "onBomProductionCompleted"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/bom/bom.listener.spec.ts",
       "module": "bom",
       "kind": "unit test",
@@ -23386,6 +23649,17 @@
       "describes": [
         "EmailInboxService",
         "reply"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/finance/expense-replication.listener.spec.ts",
+      "module": "finance",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "ExpenseReplicationListener — WO-23.3c/e, ADR-021",
+        "onModuleInit",
+        "onExpenseRecorded"
       ]
     },
     {
@@ -23543,7 +23817,7 @@
       "file": "apps/api/src/modules/organization/nodes.service.spec.ts",
       "module": "organization",
       "kind": "unit test",
-      "cases": 8,
+      "cases": 9,
       "describes": [
         "NodesService",
         "rotateInboundKey"
@@ -23553,7 +23827,7 @@
       "file": "apps/api/src/modules/organization/organization.service.spec.ts",
       "module": "organization",
       "kind": "unit test",
-      "cases": 39,
+      "cases": 51,
       "describes": [
         "OrganizationService",
         "listBrands",
@@ -23564,7 +23838,11 @@
         "grantScope",
         "setInterBrandTransfersPolicy",
         "getBrandPolicy / setBrandPolicy — WO-23.3b, RETAIL-ERP.md R9/R13",
+        "listPolicyQuarantine / resolvePolicyQuarantine — WO-23.3c/e, RETAIL-ERP.md R9",
+        "listPolicyQuarantine",
+        "resolvePolicyQuarantine",
         "allowsBranchLocalPurchasing (BranchPolicyRegistry handler) — WO-23.3b",
+        "allowsBranchLocalPurchasingForNode (BranchPolicyRegistry handler) — WO-23.3c/e, ADR-023",
         "revokeScope"
       ]
     },
@@ -23689,6 +23967,17 @@
         "release",
         "complete",
         "cancel"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/purchasing/goods-receipt-replication.listener.spec.ts",
+      "module": "purchasing",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "GoodsReceiptReplicationListener — WO-23.3c/e, RETAIL-ERP.md R2/R9/R13, ADR-023",
+        "onModuleInit",
+        "onGoodsReceived"
       ]
     },
     {
@@ -24757,8 +25046,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 436,
-      "bytes": 15886,
+      "lines": 437,
+      "bytes": 15975,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -25339,6 +25628,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260922072219_add_node_brand_and_policy_quarantine/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 50,
+      "bytes": 2067,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -25360,8 +25658,8 @@
       "path": "apps/api/prisma/schema/organization.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 169,
-      "bytes": 7989,
+      "lines": 182,
+      "bytes": 8737,
       "doc": "The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier",
       "symbols": []
     },
@@ -25414,8 +25712,8 @@
       "path": "apps/api/prisma/schema/replication.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 134,
-      "bytes": 5741,
+      "lines": 185,
+      "bytes": 8373,
       "doc": "The replication engine (RETAIL-ERP.md Part 6, WO-20.1: \"log, cursors,",
       "symbols": []
     },
@@ -26239,8 +26537,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 358,
-      "bytes": 12701,
+      "lines": 371,
+      "bytes": 13455,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -26351,52 +26649,52 @@
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 227
+          "line": 232
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 237
+          "line": 247
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 245
+          "line": 255
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 259
+          "line": 269
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 272
+          "line": 282
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 285
+          "line": 295
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 298
+          "line": 311
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 306
+          "line": 319
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 313
+          "line": 326
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 319
+          "line": 332
         }
       ]
     },
@@ -26466,11 +26764,20 @@
       ]
     },
     {
+      "path": "apps/api/src/core/extension-points/branch-policy.registry.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 44,
+      "bytes": 1782,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/core/extension-points/branch-policy.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 43,
-      "bytes": 1849,
+      "lines": 68,
+      "bytes": 3170,
       "doc": "",
       "symbols": [
         {
@@ -26481,7 +26788,7 @@
         {
           "name": "BranchPolicyRegistry",
           "kind": "class",
-          "line": 30
+          "line": 41
         }
       ]
     },
@@ -27251,6 +27558,35 @@
       ]
     },
     {
+      "path": "apps/api/src/core/replication/policy-quarantine.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 80,
+      "bytes": 2760,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/replication/policy-quarantine.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 73,
+      "bytes": 2622,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PolicyQuarantineInput",
+          "kind": "interface",
+          "line": 5
+        },
+        {
+          "name": "PolicyQuarantineService",
+          "kind": "class",
+          "line": 30
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/replication/replication-apply.service.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -27398,14 +27734,14 @@
       "path": "apps/api/src/core/replication/replication.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 46,
-      "bytes": 1852,
+      "lines": 49,
+      "bytes": 1981,
       "doc": "",
       "symbols": [
         {
           "name": "ReplicationModule",
           "kind": "class",
-          "line": 45
+          "line": 48
         }
       ]
     },
@@ -28195,8 +28531,8 @@
       "path": "apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 502,
-      "bytes": 17713,
+      "lines": 504,
+      "bytes": 17792,
       "doc": "",
       "symbols": []
     },
@@ -28409,6 +28745,30 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/bom/bom-production-replication.listener.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 62,
+      "bytes": 2125,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/bom/bom-production-replication.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 50,
+      "bytes": 1925,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BomProductionReplicationListener",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/bom/bom.controller.ts",
       "area": "api",
       "kind": "controller",
@@ -28427,8 +28787,8 @@
       "path": "apps/api/src/modules/bom/bom.listener.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 80,
-      "bytes": 3052,
+      "lines": 88,
+      "bytes": 3176,
       "doc": "",
       "symbols": []
     },
@@ -28490,14 +28850,14 @@
       "path": "apps/api/src/modules/bom/bom.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 17,
-      "bytes": 681,
+      "lines": 26,
+      "bytes": 838,
       "doc": "",
       "symbols": [
         {
           "name": "BomModule",
           "kind": "class",
-          "line": 16
+          "line": 25
         }
       ]
     },
@@ -28677,8 +29037,8 @@
       "path": "apps/api/src/modules/bom/production.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 262,
-      "bytes": 10075,
+      "lines": 265,
+      "bytes": 10210,
       "doc": "",
       "symbols": [
         {
@@ -29346,6 +29706,30 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/finance/expense-replication.listener.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 61,
+      "bytes": 2012,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/finance/expense-replication.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 50,
+      "bytes": 1857,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ExpenseReplicationListener",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/finance/finance.controller.ts",
       "area": "api",
       "kind": "controller",
@@ -29412,14 +29796,14 @@
       "path": "apps/api/src/modules/finance/finance.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 13,
-      "bytes": 482,
+      "lines": 14,
+      "bytes": 587,
       "doc": "",
       "symbols": [
         {
           "name": "FinanceModule",
           "kind": "class",
-          "line": 12
+          "line": 13
         }
       ]
     },
@@ -29427,8 +29811,8 @@
       "path": "apps/api/src/modules/finance/finance.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 558,
-      "bytes": 21782,
+      "lines": 562,
+      "bytes": 21972,
       "doc": "",
       "symbols": [
         {
@@ -30306,11 +30690,26 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/organization/dto/node-brand.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 11,
+      "bytes": 311,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SetNodeBrandDto",
+          "kind": "class",
+          "line": 5
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/organization/dto/node.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 19,
-      "bytes": 491,
+      "lines": 25,
+      "bytes": 757,
       "doc": "",
       "symbols": [
         {
@@ -30336,11 +30735,26 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/organization/dto/policy-quarantine.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 11,
+      "bytes": 352,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ResolvePolicyQuarantineDto",
+          "kind": "class",
+          "line": 5
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/organization/nodes.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 113,
-      "bytes": 4205,
+      "lines": 131,
+      "bytes": 4962,
       "doc": "",
       "symbols": []
     },
@@ -30348,8 +30762,8 @@
       "path": "apps/api/src/modules/organization/nodes.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 95,
-      "bytes": 3719,
+      "lines": 108,
+      "bytes": 4430,
       "doc": "",
       "symbols": [
         {
@@ -30363,14 +30777,14 @@
       "path": "apps/api/src/modules/organization/organization.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 131,
-      "bytes": 5935,
+      "lines": 157,
+      "bytes": 7237,
       "doc": "",
       "symbols": [
         {
           "name": "OrganizationController",
           "kind": "class",
-          "line": 27
+          "line": 29
         }
       ]
     },
@@ -30393,8 +30807,8 @@
       "path": "apps/api/src/modules/organization/organization.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 375,
-      "bytes": 15347,
+      "lines": 504,
+      "bytes": 21200,
       "doc": "",
       "symbols": []
     },
@@ -30402,34 +30816,34 @@
       "path": "apps/api/src/modules/organization/organization.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 291,
-      "bytes": 13181,
+      "lines": 347,
+      "bytes": 16263,
       "doc": "",
       "symbols": [
         {
           "name": "AdminScopeWithHolder",
           "kind": "interface",
-          "line": 8
+          "line": 9
         },
         {
           "name": "GrantScopeInput",
           "kind": "interface",
-          "line": 12
+          "line": 13
         },
         {
           "name": "MyScopeLevel",
           "kind": "type",
-          "line": 29
+          "line": 30
         },
         {
           "name": "MyScopeResult",
           "kind": "interface",
-          "line": 31
+          "line": 32
         },
         {
           "name": "OrganizationService",
           "kind": "class",
-          "line": 49
+          "line": 50
         }
       ]
     },
@@ -31233,6 +31647,30 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/purchasing/goods-receipt-replication.listener.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 127,
+      "bytes": 4636,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/purchasing/goods-receipt-replication.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 82,
+      "bytes": 3535,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GoodsReceiptReplicationListener",
+          "kind": "class",
+          "line": 30
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/purchasing/purchasing.controller.ts",
       "area": "api",
       "kind": "controller",
@@ -31285,14 +31723,14 @@
       "path": "apps/api/src/modules/purchasing/purchasing.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 18,
-      "bytes": 848,
+      "lines": 19,
+      "bytes": 969,
       "doc": "",
       "symbols": [
         {
           "name": "PurchasingModule",
           "kind": "class",
-          "line": 17
+          "line": 18
         }
       ]
     },
@@ -31300,8 +31738,8 @@
       "path": "apps/api/src/modules/purchasing/purchasing.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 654,
-      "bytes": 24304,
+      "lines": 657,
+      "bytes": 24441,
       "doc": "",
       "symbols": [
         {
@@ -34647,14 +35085,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/br/[branchId]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 68,
-      "bytes": 2121,
+      "lines": 111,
+      "bytes": 3648,
       "doc": "",
       "symbols": [
         {
           "name": "BranchDashboardPage",
           "kind": "default",
-          "line": 16
+          "line": 17
         }
       ]
     },
@@ -35067,14 +35505,29 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/o/[orgId]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 89,
-      "bytes": 2856,
+      "lines": 94,
+      "bytes": 3079,
       "doc": "",
       "symbols": [
         {
           "name": "OrganizationDashboardPage",
           "kind": "default",
           "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/o/[orgId]/policy-quarantine/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 129,
+      "bytes": 4816,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PolicyQuarantinePage",
+          "kind": "default",
+          "line": 17
         }
       ]
     },
@@ -37553,8 +38006,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 121,
-      "bytes": 4390,
+      "lines": 123,
+      "bytes": 4592,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -37990,8 +38443,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 730,
-      "bytes": 19237,
+      "lines": 754,
+      "bytes": 20046,
       "doc": "",
       "symbols": [
         {
@@ -38122,192 +38575,197 @@
         {
           "name": "MyScope",
           "kind": "interface",
-          "line": 333
+          "line": 335
         },
         {
           "name": "AdminScopeWithHolder",
           "kind": "interface",
-          "line": 348
+          "line": 350
+        },
+        {
+          "name": "PolicyQuarantineEntry",
+          "kind": "interface",
+          "line": 365
         },
         {
           "name": "GrantScopeInput",
           "kind": "interface",
-          "line": 357
+          "line": 381
         },
         {
           "name": "BrandPolicy",
           "kind": "interface",
-          "line": 370
+          "line": 394
         },
         {
           "name": "UpdateBrandPolicyInput",
           "kind": "interface",
-          "line": 377
+          "line": 401
         },
         {
           "name": "StockAdjustment",
           "kind": "interface",
-          "line": 385
+          "line": 409
         },
         {
           "name": "InventoryVariantRow",
           "kind": "interface",
-          "line": 397
+          "line": 421
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 410
+          "line": 434
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 416
+          "line": 440
         },
         {
           "name": "VisitorFunnel",
           "kind": "interface",
-          "line": 427
+          "line": 451
         },
         {
           "name": "TrafficSourceRow",
           "kind": "interface",
-          "line": 434
+          "line": 458
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 440
+          "line": 464
         },
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 449
+          "line": 473
         },
         {
           "name": "EmailAccountPurpose",
           "kind": "type",
-          "line": 457
+          "line": 481
         },
         {
           "name": "EmailAccount",
           "kind": "interface",
-          "line": 459
+          "line": 483
         },
         {
           "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 484
+          "line": 508
         },
         {
           "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 492
+          "line": 516
         },
         {
           "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 500
+          "line": 524
         },
         {
           "name": "InboundEmail",
           "kind": "interface",
-          "line": 507
+          "line": 531
         },
         {
           "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 524
+          "line": 548
         },
         {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 531
+          "line": 555
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 543
+          "line": 567
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 552
+          "line": 576
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 554
+          "line": 578
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 566
+          "line": 590
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 572
+          "line": 596
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 579
+          "line": 603
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 584
+          "line": 608
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 596
+          "line": 620
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 605
+          "line": 629
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 612
+          "line": 636
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 626
+          "line": 650
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 637
+          "line": 661
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 641
+          "line": 665
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 650
+          "line": 674
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 658
+          "line": 682
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 687
+          "line": 711
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 719
+          "line": 743
         }
       ]
     },
@@ -41004,8 +41462,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 1238,
-      "bytes": 61463,
+      "lines": 1373,
+      "bytes": 69659,
       "doc": "",
       "symbols": []
     },

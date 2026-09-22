@@ -2046,7 +2046,7 @@ _no second-level headings_
 - Work orders  <sub>:18</sub>
 - Out of scope (for now)  <sub>:54</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>1,238 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>1,373 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2071,6 +2071,7 @@ _no second-level headings_
 - ADR-020 — `bom` (Track C) ships as a new module, `production` stays as-is  <sub>:859</sub>
 - ADR-021 — WO-23.3's scopeLevel pattern: a new core-owned enum, fail-closed on the money switch, and originNodeId as the node-prefix string  <sub>:948</sub>
 - ADR-022 — WO-23.3b enforces `allowBranchLocalPurchasing` through a new BranchPolicyRegistry extension point, keyed off the caller's own AdminScope grant  <sub>:1123</sub>
+- ADR-023 — WO-23.3c/e: Node.retailBrandId, a separate PolicyQuarantine table, and apply() drawing exactly one distinction per entity  <sub>:1239</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>266 lines</sub>
 

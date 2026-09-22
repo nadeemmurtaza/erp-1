@@ -116,5 +116,7 @@ export const ROUTES = {
     organizationBranch: (branchId: string) => `/admin/br/${branchId}`,
     /** Grant/revoke who is a brand or branch admin (WO-18.6) — ORG-scoped only. */
     organizationAccess: (orgId: string) => `/admin/o/${orgId}/access`,
+    /** R9's quarantine — a fact that applied but violates its origin's BrandPolicy switch (WO-23.3c/e). */
+    organizationPolicyQuarantine: (orgId: string) => `/admin/o/${orgId}/policy-quarantine`,
   },
 } as const;

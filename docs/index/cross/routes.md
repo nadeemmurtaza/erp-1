@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **322** endpoints across **59** controllers, with the access rule that actually guards each one.
+All **325** endpoints across **59** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -353,7 +353,7 @@ never authorization.
 | POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` |  |
 | GET | `/orders/mine` | signed-in | `OrdersController.mine` | The signed-in customer's orders |
 
-### [`organization`](../modules/organization.md) (12)
+### [`organization`](../modules/organization.md) (15)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -366,7 +366,10 @@ never authorization.
 | GET | `/organization/me/scope` | `organization.view` | `OrganizationController.myScope` | The caller's resolved scope — where to land, and what chips to draw |
 | GET | `/organization/nodes` | `organization.view` | `OrganizationController.nodes` | This deployment's registered child nodes, visible to the caller |
 | POST | `/organization/nodes` | `organization.manage` | `OrganizationController.registerNode` | Register a child node — or re-activate and update one that already exists |
+| PATCH | `/organization/nodes/:nodeId/brand` | `organization.manage` | `OrganizationController.setNodeBrand` | Set which brand a registered node belongs to (WO-23.3c/e) — governs its BrandPo… |
 | POST | `/organization/nodes/:nodeId/rotate-inbound-key` | `organization.manage` | `OrganizationController.rotateNodeInboundKey` | Issue a fresh replication credential for a child node — shown once, never retri… |
+| GET | `/organization/policy-quarantine` | `organization.view` | `OrganizationController.listPolicyQuarantine` | R9's quarantine — facts that applied but violate the BrandPolicy switch meant t… |
+| POST | `/organization/policy-quarantine/:id/resolve` | `organization.manage` | `OrganizationController.resolvePolicyQuarantine` | Mark a quarantined policy exception reviewed |
 | PATCH | `/organization/policy/inter-brand-transfers` | `organization.manage` | `OrganizationController.setInterBrandTransfersPolicy` | Turn inter-brand transfers on or off for this organization (RETAIL-ERP.md R9, W… |
 | POST | `/organization/replication/resync` | `organization.manage` | `OrganizationController.resyncFromParent` |  |
 

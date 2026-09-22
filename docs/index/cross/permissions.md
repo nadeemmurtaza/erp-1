@@ -34,8 +34,8 @@ the *catalogue*, not any particular deployment's grants.
 |---|---|---|---|---|---|
 | `analytics.view` | View dashboard analytics | low | 6 | 3 | STAFF, ADMIN |
 | `reports.view` | Export CSV reports | low | 7 | 2 | STAFF, ADMIN |
-| `organization.view` | View the organization/brand/branch dashboard | low | 4 | 1 | STAFF, ADMIN |
-| `organization.manage` | Grant and revoke who is a brand or branch admin | high | 8 | 1 | ADMIN |
+| `organization.view` | View the organization/brand/branch dashboard | low | 5 | 1 | STAFF, ADMIN |
+| `organization.manage` | Grant and revoke who is a brand or branch admin | high | 10 | 3 | ADMIN |
 | `accounting.view` | View the general ledger and its reports (trial balance, P&L, balance sheet, cas… | medium | 10 | — | ADMIN |
 
 ### Customers

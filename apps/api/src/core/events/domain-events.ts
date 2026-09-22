@@ -222,6 +222,11 @@ export interface GoodsReceivedPayload {
   number: string;
   purchaseOrderId: string;
   supplierId: string;
+  /** WO-23.3c/e — carried so GoodsReceiptReplicationListener can log the FACT without a second read. */
+  scopeLevel: 'ORG' | 'BRAND' | 'BRANCH';
+  originNodeId: string | null;
+  /** ISO. The fact's own original time (R2) — never `new Date()` at log time. */
+  receivedAtIso: string;
 }
 
 export interface BomProductionCompletedPayload {
@@ -232,6 +237,11 @@ export interface BomProductionCompletedPayload {
   quantityProduced: number;
   producedUnitCost: number;
   operatorId: string | null;
+  /** WO-23.3c/e — carried so BomProductionReplicationListener can log the FACT without a second read. */
+  scopeLevel: 'ORG' | 'BRAND' | 'BRANCH';
+  originNodeId: string | null;
+  /** ISO. The fact's own original time (R2) — never `new Date()` at log time. */
+  producedAtIso: string;
 }
 
 export interface WorkOrderPayload {
@@ -293,6 +303,9 @@ export interface ExpenseRecordedPayload {
   /** Null = unpaid at creation, posts to Accounts Payable instead of Cash & Bank. */
   paidAtIso: string | null;
   supplierId: string | null;
+  /** WO-23.3c/e — carried so ExpenseReplicationListener can log the FACT without a second read. */
+  scopeLevel: 'ORG' | 'BRAND' | 'BRANCH';
+  originNodeId: string | null;
 }
 
 export interface OrderEconomicsComputedPayload {

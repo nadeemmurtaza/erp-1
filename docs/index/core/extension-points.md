@@ -3,7 +3,7 @@
 
 # Core: `extension-points`
 
-Shared platform — available to every module, part of no feature · 5 files
+Shared platform — available to every module, part of no feature · 6 files
 
 
 
@@ -12,13 +12,14 @@ Source: `apps/api/src/core/extension-points/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (5 · 259 lines)
+## Files (6 · 328 lines)
 
 All paths relative to `apps/api/src/core/extension-points`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `branch-policy.registry.ts` | registry | 43 | 2 |  |
+| `branch-policy.registry.spec.ts` | unit test | 44 | — |  |
+| `branch-policy.registry.ts` | registry | 68 | 2 |  |
 | `cart-line-validator.registry.ts` | registry | 64 | 2 | What a validator is: given a garment's field definitions and the values a customer supplied, either return the values i… |
 | `entity-enrichment.registry.ts` | registry | 45 | 2 | Lets a pack attach its own data onto a core entity's API response without core ever importing the pack, or even knowing… |
 | `extension-points.module.ts` | nest module | 36 | 1 |  |
@@ -57,9 +58,11 @@ _none_
 
 
 
-## Tests (0)
+## Tests (1)
 
-_No spec files in this unit._
+| Spec | Cases | Covers |
+|---|---|---|
+| `branch-policy.registry.spec.ts` | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · allowsBranchLocalPurcha… |
 
 
 ## Every export in this unit
@@ -67,7 +70,7 @@ _No spec files in this unit._
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
 | `BranchPolicyHandler` | interface | `branch-policy.registry.ts:3` |  |
-| `BranchPolicyRegistry` | class | `branch-policy.registry.ts:30` | Lets `purchasing` (always-on) ask "is this user's branch allowed to purchase locally?" without importing `org… |
+| `BranchPolicyRegistry` | class | `branch-policy.registry.ts:41` | Lets `purchasing` (always-on) ask "is this user's branch allowed to purchase locally?" without importing `org… |
 | `CartLineValidator` | type | `cart-line-validator.registry.ts:30` | What a validator is: given a garment's field definitions and the values a customer supplied, either return th… |
 | `CartLineValidatorRegistry` | class | `cart-line-validator.registry.ts:36` |  |
 | `EntityEnricher` | interface | `entity-enrichment.registry.ts:19` | Lets a pack attach its own data onto a core entity's API response without core ever importing the pack, or ev… |

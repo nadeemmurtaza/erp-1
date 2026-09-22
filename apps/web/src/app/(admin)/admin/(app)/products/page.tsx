@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { formatMoney, PRODUCT_KINDS, PRODUCT_STATUSES } from '@newax/shared';
-import { adminFetch } from '@/lib/admin-client';
+import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import type { AdminProduct, PaginatedResponse } from '@/types/api';
 import { ROUTES } from '@/constants/routes';
 import { Loading } from '@/components/ui';
@@ -30,6 +30,8 @@ export default function AdminProductsPage() {
   const [kind, setKind] = useState('');
   const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
+
+  const canViewInsights = getStoredUser()?.permissions.includes('analytics.view') ?? false;
 
   const load = useCallback(async () => {
     setBusy(true);
@@ -67,6 +69,11 @@ export default function AdminProductsPage() {
           </p>
         </div>
         <div className="flex gap-2">
+          {canViewInsights ? (
+            <Link href={ROUTES.admin.productInsights} className="btn-secondary">
+              Insights
+            </Link>
+          ) : null}
           <Link href={ROUTES.admin.import} className="btn-secondary">
             Bulk import
           </Link>

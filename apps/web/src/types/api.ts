@@ -535,6 +535,51 @@ export interface PurchasingSuppliers {
   rows: PurchasingSupplierRow[];
 }
 
+// --- WO-D.3: products top/slow-sellers, categories ---------------------------
+
+export interface ProductTopSellerRow {
+  productId: string | null;
+  variantId: string | null;
+  sku: string;
+  name: string;
+  units: number;
+  revenue: number;
+  /** Absent (not present as a key) without inventory.view_cost. */
+  cogs?: number;
+  marginBps?: number;
+}
+
+export interface ProductsTopSellers {
+  rows: ProductTopSellerRow[];
+}
+
+export interface ProductSlowSellerRow {
+  productId: string;
+  variantId: string;
+  sku: string;
+  name: string;
+  daysSinceLastSale: number;
+  ageDays: number;
+}
+
+export interface ProductsSlowSellers {
+  rows: ProductSlowSellerRow[];
+}
+
+export interface ProductCategoryRow {
+  categoryId: string | null;
+  name: string;
+  revenue: number;
+  units: number;
+  productCount: number;
+  share: number;
+}
+
+export interface ProductsCategories {
+  rows: ProductCategoryRow[];
+  series: Array<{ date: string; revenue: number }>;
+}
+
 // --- Settings: roles & permissions, audit log --------------------------------
 
 export type EmailAccountPurpose = 'TRANSACTIONAL' | 'MARKETING' | 'SUPPORT';

@@ -133,6 +133,51 @@ export interface PurchasingSuppliers {
   rows: PurchasingSupplierRow[];
 }
 
+export interface ProductTopSellerRow {
+  productId: string | null;
+  variantId: string | null;
+  sku: string;
+  name: string;
+  units: number;
+  revenue: number;
+  /** Absent (not null) without `inventory.view_cost` — cost-fields.ts's own OMIT convention, not comparison()'s null one; see purchasingTopSellers()'s docstring. */
+  cogs?: number;
+  marginBps?: number;
+}
+
+export interface ProductsTopSellers {
+  rows: ProductTopSellerRow[];
+}
+
+export interface ProductSlowSellerRow {
+  productId: string;
+  variantId: string;
+  sku: string;
+  name: string;
+  daysSinceLastSale: number;
+  ageDays: number;
+}
+
+export interface ProductsSlowSellers {
+  rows: ProductSlowSellerRow[];
+}
+
+export interface ProductCategoryRow {
+  /** null for the "Uncategorised" bucket — Product.categoryId is genuinely nullable. */
+  categoryId: string | null;
+  name: string;
+  revenue: number;
+  units: number;
+  productCount: number;
+  /** Share of the returned rows' own total revenue, basis points. */
+  share: number;
+}
+
+export interface ProductsCategories {
+  rows: ProductCategoryRow[];
+  series: Array<{ date: string; revenue: number }>;
+}
+
 export interface ComparisonBucket {
   t: string;
   sales: number;
@@ -1142,6 +1187,182 @@ export class AnalyticsService {
           share: totalSpend > 0 ? Math.round((spend / totalSpend) * 10_000) : 0,
         };
       }),
+    };
+  }
+
+  /**
+   * WO-D.3 (10-admin-dashboard.md Track D) — richer than `summary()`'s own
+   * `topProducts` (grouped by `oi."nameEn"` text alone, no ids, no
+   * cost/margin — fine for a dashboard glance, not for a report whose rows
+   * must link somewhere). Grouped by `OrderItem`'s own snapshot columns
+   * (`productId`, `variantId`, `sku`, `nameEn`) instead — the same columns
+   * already on the line, so no join to `Product`/`ProductVariant` is
+   * needed. `productId`/`variantId` are nullable on `OrderItem` by design
+   * ("kept for reporting; nullable so deleting a product cannot delete
+   * history") — a null one simply can't be linked from the screen.
+   *
+   * OMIT, not null, for `cogs`/`marginBps` without `inventory.view_cost` —
+   * a deliberate departure from `comparison()`'s null convention just above
+   * in this file. Two precedents disagree here: `comparison()`'s own
+   * cost fields are null (the analytics idiom), but `cost-fields.ts`'s
+   * product-domain convention — the one this report's subject (products,
+   * cost prices) actually belongs to — is explicit: "the safe default is
+   * to OMIT cost, so callers that forget the check are safe, not leaky."
+   * This report sits with the products/cost-price domain, and the WO's own
+   * row shape (`cogs?`, `marginBps?` — optional keys, not nullable ones)
+   * reads the same way. Chosen: omit.
+   */
+  async productsTopSellers(days: number, includeCost: boolean): Promise<ProductsTopSellers> {
+    const start = this.windowStart(days);
+    const voidStatusList = VOID_STATUSES.map((status) => `'${status}'`).join(', ');
+
+    const rows = await this.prisma.$queryRawUnsafe<
+      Array<{
+        productId: string | null;
+        variantId: string | null;
+        sku: string | null;
+        name: string;
+        units: bigint;
+        revenue: bigint;
+        cogs: bigint;
+      }>
+    >(
+      `SELECT oi."productId" AS "productId", oi."variantId" AS "variantId", oi.sku, oi."nameEn" AS name,
+              COALESCE(SUM(oi.quantity), 0) AS units,
+              COALESCE(SUM(oi."lineTotal"), 0) AS revenue,
+              COALESCE(SUM(oi."unitCost" * oi.quantity), 0) AS cogs
+       FROM "OrderItem" oi
+       JOIN "Order" o ON o.id = oi."orderId"
+       WHERE o."placedAt" >= $1 AND o.status NOT IN (${voidStatusList})
+       GROUP BY oi."productId", oi."variantId", oi.sku, oi."nameEn"
+       ORDER BY revenue DESC
+       LIMIT 20`,
+      start,
+    );
+
+    return {
+      rows: rows.map((row) => {
+        const revenue = Number(row.revenue);
+        const base = {
+          productId: row.productId,
+          variantId: row.variantId,
+          sku: row.sku ?? '—',
+          name: row.name,
+          units: Number(row.units),
+          revenue,
+        };
+        if (!includeCost) return base;
+        const cogs = Number(row.cogs);
+        return { ...base, cogs, marginBps: revenue > 0 ? Math.round(((revenue - cogs) / revenue) * 10_000) : 0 };
+      }),
+    };
+  }
+
+  /**
+   * WO-D.3 — the same `isSlowMover` population `InventoryService
+   * .getSlowMovers()` already lists (isActive, in stock,
+   * `VariantSalesStat.isSlowMover`), ranked and capped here where that
+   * method isn't. `daysSinceLastSale` is NOT a stored column —
+   * `VariantSalesStat` only persists `lastSoldAt`/`ageDays`
+   * (`InventoryCron.computeNightlyStats()` computes the day-count in-loop
+   * and never writes it back) — so it's re-derived here with the exact
+   * same formula the cron uses: days since `lastSoldAt`, or `ageDays` for
+   * a variant that has never sold at all.
+   */
+  async productsSlowSellers(): Promise<ProductsSlowSellers> {
+    const now = Date.now();
+    const variants = await this.prisma.productVariant.findMany({
+      where: { isActive: true, stock: { gt: 0 }, salesStat: { isSlowMover: true } },
+      orderBy: { salesStat: { ageDays: 'desc' } },
+      take: 20,
+      select: {
+        id: true,
+        sku: true,
+        productId: true,
+        product: { select: { translations: { where: { locale: 'en' }, select: { name: true } } } },
+        salesStat: { select: { lastSoldAt: true, ageDays: true } },
+      },
+    });
+
+    return {
+      rows: variants.map((variant) => {
+        const lastSoldAt = variant.salesStat?.lastSoldAt ?? null;
+        const ageDays = variant.salesStat?.ageDays ?? 0;
+        const daysSinceLastSale = lastSoldAt ? Math.floor((now - lastSoldAt.getTime()) / 86_400_000) : ageDays;
+        return {
+          productId: variant.productId,
+          variantId: variant.id,
+          sku: variant.sku,
+          name: variant.product?.translations[0]?.name ?? variant.sku,
+          daysSinceLastSale,
+          ageDays,
+        };
+      }),
+    };
+  }
+
+  /**
+   * WO-D.3 — the same category join chain `extendedAnalytics()`'s
+   * `revenueByCategory` already uses (`OrderItem` → `Order` → `Product` →
+   * `Category` → `CategoryTranslation`, `COALESCE(ct.name,
+   * 'Uncategorised')`), extended with a product count and this row's own
+   * `categoryId` (null for the Uncategorised bucket — `Product.categoryId`
+   * is genuinely nullable, so null is the correct value here, not a
+   * placeholder). `series` is the SAME window's overall daily product
+   * revenue — one trend line behind the category breakdown, the same
+   * "one axis" idiom `comparison()`'s own docstring names.
+   */
+  async productsCategories(days: number): Promise<ProductsCategories> {
+    const start = this.windowStart(days);
+    const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+    const voidStatusList = VOID_STATUSES.map((status) => `'${status}'`).join(', ');
+
+    const [categoryRows, seriesRows] = await Promise.all([
+      this.prisma.$queryRawUnsafe<
+        Array<{ categoryId: string | null; name: string; revenue: bigint; units: bigint; productCount: bigint }>
+      >(
+        `SELECT c.id AS "categoryId", COALESCE(ct.name, 'Uncategorised') AS name,
+                COALESCE(SUM(oi."lineTotal"), 0) AS revenue,
+                COALESCE(SUM(oi.quantity), 0) AS units,
+                COUNT(DISTINCT p.id) AS "productCount"
+         FROM "OrderItem" oi
+         JOIN "Order" o ON o.id = oi."orderId"
+         LEFT JOIN "Product" p ON p.id = oi."productId"
+         LEFT JOIN "Category" c ON c.id = p."categoryId"
+         LEFT JOIN "CategoryTranslation" ct ON ct."categoryId" = c.id AND ct.locale = 'en'
+         WHERE o."placedAt" >= $1 AND o.status NOT IN (${voidStatusList})
+         GROUP BY c.id, ct.name
+         ORDER BY revenue DESC
+         LIMIT 10`,
+        start,
+      ),
+
+      this.prisma.$queryRawUnsafe<Array<{ day: string; revenue: bigint }>>(
+        `SELECT ${shopDayExpr('"placedAt"', timeZone)} AS day, COALESCE(SUM("grandTotal"), 0) AS revenue
+         FROM "Order"
+         WHERE "placedAt" >= $1 AND status NOT IN (${voidStatusList})
+         GROUP BY 1`,
+        start,
+      ),
+    ]);
+
+    const totalRevenue = categoryRows.reduce((sum, row) => sum + Number(row.revenue), 0);
+    const dayKeys = shopDayKeys(start, days, timeZone);
+    const revenueByDay = new Map(seriesRows.map((row) => [row.day, Number(row.revenue)]));
+
+    return {
+      rows: categoryRows.map((row) => {
+        const revenue = Number(row.revenue);
+        return {
+          categoryId: row.categoryId,
+          name: row.name,
+          revenue,
+          units: Number(row.units),
+          productCount: Number(row.productCount),
+          share: totalRevenue > 0 ? Math.round((revenue / totalRevenue) * 10_000) : 0,
+        };
+      }),
+      series: dayKeys.map((day) => ({ date: day, revenue: revenueByDay.get(day) ?? 0 })),
     };
   }
 

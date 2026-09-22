@@ -246,6 +246,16 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['catalog.manage'],
     group: 'catalogue',
     module: 'catalog',
+    children: [
+      {
+        key: 'products-insights',
+        label: 'Insights',
+        href: '/admin/products/insights',
+        permissions: ['analytics.view'],
+        group: 'catalogue',
+        module: 'analytics',
+      },
+    ],
   },
   {
     key: 'categories',

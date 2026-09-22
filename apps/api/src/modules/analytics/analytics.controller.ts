@@ -82,6 +82,30 @@ export class AnalyticsController {
     return this.analytics.purchasingSuppliers(Math.min(Math.max(days, 7), 365));
   }
 
+  @Get('products/top-sellers')
+  @ApiOperation({ summary: 'Best-selling products by revenue, with units and margin' })
+  productsTopSellers(
+    @Query('days', new DefaultValuePipe(30), ParseIntPipe) days: number,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    const includeCost = user.permissions.includes('inventory.view_cost');
+    return this.analytics.productsTopSellers(Math.min(Math.max(days, 7), 365), includeCost);
+  }
+
+  @Get('products/slow-sellers')
+  @ApiOperation({ summary: 'In-stock, active variants flagged as slow movers, oldest first' })
+  productsSlowSellers() {
+    return this.analytics.productsSlowSellers();
+  }
+
+  @Get('products/categories')
+  @ApiOperation({ summary: 'Revenue, units and product count by category, with a daily trend' })
+  productsCategories(
+    @Query('days', new DefaultValuePipe(30), ParseIntPipe) days: number,
+  ) {
+    return this.analytics.productsCategories(Math.min(Math.max(days, 7), 365));
+  }
+
   @Get('visitors')
   @ApiOperation({ summary: 'Visitor counts, view-to-order funnel and traffic sources' })
   visitors(

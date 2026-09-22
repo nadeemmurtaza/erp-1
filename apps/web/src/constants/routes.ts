@@ -60,6 +60,7 @@ export const ROUTES = {
     products: '/admin/products',
     productNew: '/admin/products/new',
     product: (id: string) => `/admin/products/${id}`,
+    productInsights: '/admin/products/insights',
     categories: '/admin/categories',
     brands: '/admin/brands',
     import: '/admin/import',

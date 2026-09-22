@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 487 tracked files in `apps/api`, by directory.
+All 490 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -702,16 +702,18 @@ All 487 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `analytics.dto.ts` | dto | 10 |  |
 
-### `apps/api/src/modules/bom` (12)
+### `apps/api/src/modules/bom` (14)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `bom.controller.ts` | controller | 210 |  |
+| `bom.controller.ts` | controller | 228 |  |
 | `bom.listener.spec.ts` | unit test | 80 |  |
 | `bom.listener.ts` | event subscriber | 49 |  |
-| `bom.module.ts` | nest module | 16 |  |
+| `bom.metrics.spec.ts` | unit test | 202 |  |
+| `bom.metrics.ts` | module | 131 |  |
+| `bom.module.ts` | nest module | 17 |  |
 | `bom.service.ts` | service | 47 |  |
-| `bom.spec.ts` | unit test | 523 |  |
+| `bom.spec.ts` | unit test | 525 |  |
 | `cost-rollup.spec.ts` | unit test | 124 | 2000 base units of fabric at 50 paisa/base-unit = 100000 |
 | `cost-rollup.ts` | module | 70 | The BOM cost rollup (WO-C.2, 10-admin-dashboard.md §C) — a pure function, deliberately: it takes plain numbers in, retu… |
 | `production.service.spec.ts` | unit test | 390 |  |
@@ -719,12 +721,13 @@ All 487 tracked files in `apps/api`, by directory.
 | `raw-material.service.ts` | service | 218 |  |
 | `recipe.service.ts` | service | 501 |  |
 
-### `apps/api/src/modules/bom/dto` (3)
+### `apps/api/src/modules/bom/dto` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `production-run.dto.ts` | dto | 34 |  |
 | `raw-material.dto.ts` | dto | 52 |  |
+| `raw-usage.dto.ts` | dto | 30 |  |
 | `recipe.dto.ts` | dto | 113 |  |
 
 ### `apps/api/src/modules/cart` (3)

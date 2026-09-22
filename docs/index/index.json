@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1201,
-    "lines": 187086,
-    "routes": 319,
+    "files": 1205,
+    "lines": 187626,
+    "routes": 320,
     "controllers": 59,
     "models": 123,
     "enums": 52,
     "migrations": 57,
     "events": 37,
     "permissions": 41,
-    "screens": 136,
+    "screens": 137,
     "crons": 8,
-    "specs": 114,
+    "specs": 115,
     "designLaws": 150
   },
   "designLaws": [
@@ -1083,9 +1083,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 487,
-      "lines": 65882,
-      "bytes": 2380737,
+      "files": 490,
+      "lines": 66266,
+      "bytes": 2396011,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1101,9 +1101,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 242,
-      "lines": 36815,
-      "bytes": 1360271,
+      "files": 243,
+      "lines": 36971,
+      "bytes": 1365394,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -1189,6 +1189,8 @@
         "apps/api/src/modules/bom/bom.controller.ts",
         "apps/api/src/modules/bom/bom.listener.spec.ts",
         "apps/api/src/modules/bom/bom.listener.ts",
+        "apps/api/src/modules/bom/bom.metrics.spec.ts",
+        "apps/api/src/modules/bom/bom.metrics.ts",
         "apps/api/src/modules/bom/bom.module.ts",
         "apps/api/src/modules/bom/bom.service.ts",
         "apps/api/src/modules/bom/bom.spec.ts",
@@ -1196,13 +1198,14 @@
         "apps/api/src/modules/bom/cost-rollup.ts",
         "apps/api/src/modules/bom/dto/production-run.dto.ts",
         "apps/api/src/modules/bom/dto/raw-material.dto.ts",
+        "apps/api/src/modules/bom/dto/raw-usage.dto.ts",
         "apps/api/src/modules/bom/dto/recipe.dto.ts",
         "apps/api/src/modules/bom/production.service.spec.ts",
         "apps/api/src/modules/bom/production.service.ts",
         "apps/api/src/modules/bom/raw-material.service.ts",
         "apps/api/src/modules/bom/recipe.service.ts"
       ],
-      "routes": 19,
+      "routes": 20,
       "page": "docs/index/modules/bom.md"
     },
     {
@@ -2267,7 +2270,7 @@
       "controller": "BomController",
       "handler": "missing",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 102,
+      "line": 105,
       "access": "bom.view",
       "permissions": [
         "bom.view"
@@ -2283,7 +2286,7 @@
       "controller": "BomController",
       "handler": "listProductionRuns",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 185,
+      "line": 188,
       "access": "bom.view",
       "permissions": [
         "bom.view"
@@ -2299,7 +2302,7 @@
       "controller": "BomController",
       "handler": "createProductionRun",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 199,
+      "line": 202,
       "access": "bom.produce",
       "permissions": [
         "bom.produce"
@@ -2315,7 +2318,7 @@
       "controller": "BomController",
       "handler": "deleteProductionRun",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 206,
+      "line": 209,
       "access": "bom.manage",
       "permissions": [
         "bom.manage"
@@ -2331,7 +2334,7 @@
       "controller": "BomController",
       "handler": "getProductionRun",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 192,
+      "line": 195,
       "access": "bom.view",
       "permissions": [
         "bom.view"
@@ -2347,7 +2350,7 @@
       "controller": "BomController",
       "handler": "list",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 61,
+      "line": 64,
       "access": "bom.view",
       "permissions": [
         "bom.view"
@@ -2363,7 +2366,7 @@
       "controller": "BomController",
       "handler": "create",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 77,
+      "line": 80,
       "access": "bom.manage",
       "permissions": [
         "bom.manage"
@@ -2379,7 +2382,7 @@
       "controller": "BomController",
       "handler": "get",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 70,
+      "line": 73,
       "access": "bom.view",
       "permissions": [
         "bom.view"
@@ -2395,7 +2398,7 @@
       "controller": "BomController",
       "handler": "update",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 84,
+      "line": 87,
       "access": "bom.manage",
       "permissions": [
         "bom.manage"
@@ -2411,7 +2414,7 @@
       "controller": "BomController",
       "handler": "deactivate",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 95,
+      "line": 98,
       "access": "bom.manage",
       "permissions": [
         "bom.manage"
@@ -2422,12 +2425,28 @@
     },
     {
       "method": "GET",
+      "path": "/admin/bom/raw-usage",
+      "module": "bom",
+      "controller": "BomController",
+      "handler": "rawUsage",
+      "file": "apps/api/src/modules/bom/bom.controller.ts",
+      "line": 216,
+      "access": "bom.view",
+      "permissions": [
+        "bom.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Raw-material consumption over time, sourced from the stock ledger — cost fields only with inventory.view_cost"
+    },
+    {
+      "method": "GET",
       "path": "/admin/bom/recipes",
       "module": "bom",
       "controller": "BomController",
       "handler": "listRecipes",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 109,
+      "line": 112,
       "access": "bom.view",
       "permissions": [
         "bom.view"
@@ -2443,7 +2462,7 @@
       "controller": "BomController",
       "handler": "createRecipe",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 126,
+      "line": 129,
       "access": "bom.manage",
       "permissions": [
         "bom.manage"
@@ -2459,7 +2478,7 @@
       "controller": "BomController",
       "handler": "getRecipe",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 119,
+      "line": 122,
       "access": "bom.view",
       "permissions": [
         "bom.view"
@@ -2475,7 +2494,7 @@
       "controller": "BomController",
       "handler": "updateRecipe",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 133,
+      "line": 136,
       "access": "bom.manage",
       "permissions": [
         "bom.manage"
@@ -2491,7 +2510,7 @@
       "controller": "BomController",
       "handler": "activateRecipe",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 144,
+      "line": 147,
       "access": "bom.manage",
       "permissions": [
         "bom.manage"
@@ -2507,7 +2526,7 @@
       "controller": "BomController",
       "handler": "archiveRecipe",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 151,
+      "line": 154,
       "access": "bom.manage",
       "permissions": [
         "bom.manage"
@@ -2523,7 +2542,7 @@
       "controller": "BomController",
       "handler": "recipeAvailability",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 168,
+      "line": 171,
       "access": "bom.view",
       "permissions": [
         "bom.view"
@@ -2539,7 +2558,7 @@
       "controller": "BomController",
       "handler": "recipeCost",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 158,
+      "line": 161,
       "access": "bom.view",
       "permissions": [
         "bom.view"
@@ -2555,7 +2574,7 @@
       "controller": "BomController",
       "handler": "seedCostPrice",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 175,
+      "line": 178,
       "access": "bom.manage",
       "permissions": [
         "bom.manage"
@@ -7272,7 +7291,7 @@
       "routes": [
         "GET /admin/reports/export/stock-valuation"
       ],
-      "uiSites": 5,
+      "uiSites": 6,
       "roles": [
         "ADMIN"
       ],
@@ -7524,12 +7543,13 @@
         "GET /admin/bom/production-runs/:id",
         "GET /admin/bom/raw-materials",
         "GET /admin/bom/raw-materials/:id",
+        "GET /admin/bom/raw-usage",
         "GET /admin/bom/recipes",
         "GET /admin/bom/recipes/:id",
         "GET /admin/bom/recipes/:id/availability",
         "GET /admin/bom/recipes/:id/cost"
       ],
-      "uiSites": 3,
+      "uiSites": 4,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -21805,6 +21825,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/bom/raw-usage",
+      "file": "apps/web/src/app/(admin)/admin/(app)/bom/raw-usage/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/br/[branchId]",
       "file": "apps/web/src/app/(admin)/admin/(app)/br/[branchId]/page.tsx",
       "client": true,
@@ -23137,6 +23166,16 @@
       "cases": 4,
       "describes": [
         "BomListener"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/bom/bom.metrics.spec.ts",
+      "module": "bom",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "BomMetricsService — raw usage",
+        "missing-recipe count consistency"
       ]
     },
     {
@@ -28212,14 +28251,14 @@
       "path": "apps/api/src/modules/bom/bom.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 210,
-      "bytes": 8692,
+      "lines": 228,
+      "bytes": 9433,
       "doc": "",
       "symbols": [
         {
           "name": "BomController",
           "kind": "class",
-          "line": 51
+          "line": 53
         }
       ]
     },
@@ -28248,17 +28287,56 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/bom/bom.metrics.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 202,
+      "bytes": 8645,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/bom/bom.metrics.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 131,
+      "bytes": 4856,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RawUsagePoint",
+          "kind": "interface",
+          "line": 6
+        },
+        {
+          "name": "RawUsageTotal",
+          "kind": "interface",
+          "line": 13
+        },
+        {
+          "name": "RawUsageResult",
+          "kind": "interface",
+          "line": 27
+        },
+        {
+          "name": "BomMetricsService",
+          "kind": "class",
+          "line": 47
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/bom/bom.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 16,
-      "bytes": 611,
+      "lines": 17,
+      "bytes": 681,
       "doc": "",
       "symbols": [
         {
           "name": "BomModule",
           "kind": "class",
-          "line": 15
+          "line": 16
         }
       ]
     },
@@ -28281,8 +28359,8 @@
       "path": "apps/api/src/modules/bom/bom.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 523,
-      "bytes": 23634,
+      "lines": 525,
+      "bytes": 23712,
       "doc": "",
       "symbols": []
     },
@@ -28372,6 +28450,21 @@
           "name": "RawMaterialQueryDto",
           "kind": "class",
           "line": 41
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/bom/dto/raw-usage.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 30,
+      "bytes": 884,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RawUsageQueryDto",
+          "kind": "class",
+          "line": 7
         }
       ]
     },
@@ -34318,8 +34411,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/production/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 126,
-      "bytes": 3912,
+      "lines": 131,
+      "bytes": 4092,
       "doc": "",
       "symbols": [
         {
@@ -34356,6 +34449,21 @@
           "name": "RawMaterialsPage",
           "kind": "default",
           "line": 40
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/bom/raw-usage/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 143,
+      "bytes": 4772,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RawUsagePage",
+          "kind": "default",
+          "line": 34
         }
       ]
     },
@@ -36176,8 +36284,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 442,
-      "bytes": 11682,
+      "lines": 450,
+      "bytes": 11853,
       "doc": "",
       "symbols": [
         {
@@ -36208,12 +36316,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 412
+          "line": 420
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 427
+          "line": 435
         }
       ]
     },

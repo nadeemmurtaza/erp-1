@@ -352,6 +352,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'manufacturing',
     module: 'bom',
   },
+  {
+    key: 'bom-raw-usage',
+    label: 'Raw Usage',
+    href: '/admin/bom/raw-usage',
+    permissions: ['bom.view'],
+    group: 'manufacturing',
+    module: 'bom',
+  },
 
   // Group: Settings
   {

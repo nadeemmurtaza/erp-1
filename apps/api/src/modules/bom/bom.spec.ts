@@ -12,6 +12,7 @@ import { PartiesService } from '../parties/parties.service';
 import { PurchasingService } from '../purchasing/purchasing.service';
 import { CatalogService } from '../catalog/catalog.service';
 import { BomController } from './bom.controller';
+import { BomMetricsService } from './bom.metrics';
 import { BomService } from './bom.service';
 import { ProductionService } from './production.service';
 import { RawMaterialService } from './raw-material.service';
@@ -51,6 +52,7 @@ describe('bom module — raw materials', () => {
         CatalogService,
         RecipeService,
         ProductionService,
+        BomMetricsService,
         PrismaService,
         SettingsService,
         AuditService,

@@ -6,6 +6,8 @@ import { VIEW_COST } from '../../core/common/cost-fields';
 import { CreateRawMaterialDto, RawMaterialQueryDto, UpdateRawMaterialDto } from './dto/raw-material.dto';
 import { CreateRecipeDto, RecipeAvailabilityQueryDto, RecipeQueryDto, UpdateRecipeDto } from './dto/recipe.dto';
 import { CreateProductionRunDto, ProductionRunQueryDto } from './dto/production-run.dto';
+import { RawUsageQueryDto } from './dto/raw-usage.dto';
+import { BomMetricsService } from './bom.metrics';
 import { ProductionService } from './production.service';
 import { RawMaterialService } from './raw-material.service';
 import { RecipeService } from './recipe.service';
@@ -53,6 +55,7 @@ export class BomController {
     private readonly rawMaterials: RawMaterialService,
     private readonly recipes: RecipeService,
     private readonly production: ProductionService,
+    private readonly metrics: BomMetricsService,
   ) {}
 
   @Get('raw-materials')
@@ -205,5 +208,20 @@ export class BomController {
   @ApiOperation({ summary: 'Always 405 — a production run is ledger history, never deleted' })
   deleteProductionRun(): never {
     return this.production.remove();
+  }
+
+  @Get('raw-usage')
+  @RequirePermission('bom.view')
+  @ApiOperation({ summary: 'Raw-material consumption over time, sourced from the stock ledger — cost fields only with inventory.view_cost' })
+  async rawUsage(@CurrentUser() user: AuthenticatedUser, @Query() query: RawUsageQueryDto) {
+    const result = await this.metrics.rawUsage(query);
+    if (!user.permissions.includes(VIEW_COST)) {
+      result.totals = result.totals.map((row) => {
+        const stripped = { ...row };
+        delete stripped.consumedCost;
+        return stripped;
+      });
+    }
+    return result;
   }
 }

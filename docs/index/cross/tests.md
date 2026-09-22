@@ -3,7 +3,7 @@
 
 # Tests
 
-**114** spec files, **1,114** cases. What is already pinned down — and what is not.
+**115** spec files, **1,119** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -50,7 +50,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (99)
+## Unit and integration (100)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -86,6 +86,7 @@ regression or an N+1.
 | `apps/api/src/modules/analytics/analytics.comparison.spec.ts` | analytics | 8 | AnalyticsService.comparison |
 | `apps/api/src/modules/analytics/supply-chain-digest.cron.spec.ts` | analytics | 11 | SupplyChainDigestCron · sendSupplierDigests · sendSupplierScorecards · sendDemandAlerts |
 | `apps/api/src/modules/bom/bom.listener.spec.ts` | bom | 4 | BomListener |
+| `apps/api/src/modules/bom/bom.metrics.spec.ts` | bom | 5 | BomMetricsService — raw usage · missing-recipe count consistency |
 | `apps/api/src/modules/bom/bom.spec.ts` | bom | 21 | bom module — raw materials · resolveCategoryId · create · unitScale immutability · deactivate · lis… |
 | `apps/api/src/modules/bom/cost-rollup.spec.ts` | bom | 7 | computeRecipeCost |
 | `apps/api/src/modules/bom/production.service.spec.ts` | bom | 10 | ProductionService · consuming raw stock and producing finished stock · nothing writes ProductVarian… |

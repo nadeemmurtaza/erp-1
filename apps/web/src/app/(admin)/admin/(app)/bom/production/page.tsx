@@ -54,11 +54,16 @@ export default function ProductionRunsPage() {
         title="Production"
         description="Runs that consumed raw materials and credited finished stock."
         action={
-          canProduce ? (
-            <Link href="/admin/bom/production/new" className="btn-primary">
-              Record a run
+          <div className="flex gap-2">
+            <Link href="/admin/bom/raw-usage" className="btn-secondary">
+              Raw usage
             </Link>
-          ) : undefined
+            {canProduce ? (
+              <Link href="/admin/bom/production/new" className="btn-primary">
+                Record a run
+              </Link>
+            ) : null}
+          </div>
         }
       />
 

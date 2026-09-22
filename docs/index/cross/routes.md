@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **319** endpoints across **59** controllers, with the access rule that actually guards each one.
+All **320** endpoints across **59** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -114,7 +114,7 @@ never authorization.
 | GET | `/admin/analytics/stitching` | `analytics.view` | `AnalyticsController.stitching` | Which garments and style options drive the stitching business |
 | GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` | Visitor counts, view-to-order funnel and traffic sources |
 
-### [`bom`](../modules/bom.md) (19)
+### [`bom`](../modules/bom.md) (20)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -128,6 +128,7 @@ never authorization.
 | GET | `/admin/bom/raw-materials/:id` | `bom.view` | `BomController.get` | Raw material detail plus its recent stock movements |
 | PATCH | `/admin/bom/raw-materials/:id` | `bom.manage` | `BomController.update` | Edit a raw material |
 | POST | `/admin/bom/raw-materials/:id/deactivate` | `bom.manage` | `BomController.deactivate` | Deactivate a raw material |
+| GET | `/admin/bom/raw-usage` | `bom.view` | `BomController.rawUsage` | Raw-material consumption over time, sourced from the stock ledger — cost fields… |
 | GET | `/admin/bom/recipes` | `bom.view` | `BomController.listRecipes` | List recipes — filter=all\|active\|missing\|incomplete-cost |
 | POST | `/admin/bom/recipes` | `bom.manage` | `BomController.createRecipe` | Create a recipe for a finished ProductVariant |
 | GET | `/admin/bom/recipes/:id` | `bom.view` | `BomController.getRecipe` | Recipe detail with its components |

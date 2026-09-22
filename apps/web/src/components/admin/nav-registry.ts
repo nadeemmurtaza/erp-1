@@ -320,6 +320,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
         permissions: ['inventory.count'],
         group: 'stock',
       },
+      {
+        key: 'inventory-insights',
+        label: 'Insights',
+        href: '/admin/inventory/insights',
+        permissions: ['analytics.view'],
+        group: 'stock',
+        module: 'analytics',
+      },
     ],
   },
   {

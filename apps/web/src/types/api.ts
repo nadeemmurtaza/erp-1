@@ -580,6 +580,38 @@ export interface ProductsCategories {
   series: Array<{ date: string; revenue: number }>;
 }
 
+// --- WO-D.4: inventory valuation / movements ---------------------------------
+
+export interface InventoryValuation {
+  totals: { units: number; value: number; unknownCostVariants: number };
+  byCategory: Array<{ categoryId: string | null; name: string; units: number; value: number }>;
+  byKind: Array<{ kind: string; units: number; value: number }>;
+  ageing: Array<{ label: string; units: number; value: number }>;
+}
+
+export interface StockMovementReasonRow {
+  reason: string;
+  in: number;
+  out: number;
+  count: number;
+}
+
+export interface InventoryMovementRow {
+  id: string;
+  variantId: string;
+  sku: string;
+  name: string;
+  reason: string;
+  delta: number;
+  createdAt: string;
+}
+
+export interface InventoryMovements {
+  series: Array<{ date: string; in: number; out: number }>;
+  byReason: StockMovementReasonRow[];
+  recent: InventoryMovementRow[];
+}
+
 // --- Settings: roles & permissions, audit log --------------------------------
 
 export type EmailAccountPurpose = 'TRANSACTIONAL' | 'MARKETING' | 'SUPPORT';

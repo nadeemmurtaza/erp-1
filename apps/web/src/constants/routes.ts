@@ -73,6 +73,7 @@ export const ROUTES = {
     inventoryCounts: '/admin/inventory/counts',
     inventoryReorder: '/admin/inventory/reorder',
     inventorySlowMovers: '/admin/inventory/slow-movers',
+    inventoryInsights: '/admin/inventory/insights',
 
     purchaseOrders: '/admin/purchase-orders',
     purchaseOrderNew: '/admin/purchase-orders/new',

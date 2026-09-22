@@ -32,7 +32,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `analytics.view` | View dashboard analytics | low | 13 | 7 | STAFF, ADMIN |
+| `analytics.view` | View dashboard analytics | low | 15 | 9 | STAFF, ADMIN |
 | `reports.view` | Export CSV reports | low | 7 | 2 | STAFF, ADMIN |
 | `organization.view` | View the organization/brand/branch dashboard | low | 5 | 1 | STAFF, ADMIN |
 | `organization.manage` | Grant and revoke who is a brand or branch admin | high | 10 | 3 | ADMIN |
@@ -72,8 +72,8 @@ the *catalogue*, not any particular deployment's grants.
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
 | `catalog.manage` | Manage products, categories and import | medium | 20 | 4 | STAFF, ADMIN |
-| `inventory.manage` | Adjust and view stock levels | medium | 8 | 3 | STAFF, ADMIN |
-| `inventory.view_cost` | See cost prices and margins | medium | 1 | 6 | ADMIN |
+| `inventory.manage` | Adjust and view stock levels | medium | 8 | 4 | STAFF, ADMIN |
+| `inventory.view_cost` | See cost prices and margins | medium | 1 | 7 | ADMIN |
 | `inventory.count` | Run stock counts | low | 7 | 3 | STAFF, ADMIN |
 | `transfers.manage` | Dispatch, receive and cancel inter-branch stock transfers | medium | 5 | 2 | STAFF, ADMIN |
 | `measurements.manage_blueprints` | Manage garment types, measurement fields and size charts | low | 5 | 1 | STAFF, ADMIN |

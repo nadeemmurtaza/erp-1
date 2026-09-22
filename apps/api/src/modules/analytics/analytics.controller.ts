@@ -106,6 +106,30 @@ export class AnalyticsController {
     return this.analytics.productsCategories(Math.min(Math.max(days, 7), 365));
   }
 
+  @Get('inventory/valuation')
+  @ApiOperation({ summary: 'What the stock on hand is worth right now, by category, kind and age' })
+  inventoryValuation(@CurrentUser() user: AuthenticatedUser) {
+    // Every figure this report returns IS cost data, with no non-cost
+    // subset worth keeping — a hard, whole-endpoint gate, same as
+    // bom.controller.ts's recipeCost(), not a field-level null/omit.
+    if (!user.permissions.includes('inventory.view_cost')) {
+      throw new ForbiddenException('You do not have access to stock valuation.');
+    }
+    return this.analytics.inventoryValuation();
+  }
+
+  @Get('inventory/movements')
+  @ApiOperation({ summary: 'Stock movement volume by day and reason, plus the most recent individual movements' })
+  inventoryMovements(
+    @Query('days', new DefaultValuePipe(30), ParseIntPipe) days: number,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    if (!user.permissions.includes('inventory.manage')) {
+      throw new ForbiddenException('You do not have access to stock movements.');
+    }
+    return this.analytics.inventoryMovements(Math.min(Math.max(days, 7), 365));
+  }
+
   @Get('visitors')
   @ApiOperation({ summary: 'Visitor counts, view-to-order funnel and traffic sources' })
   visitors(

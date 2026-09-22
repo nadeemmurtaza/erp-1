@@ -178,6 +178,42 @@ export interface ProductsCategories {
   series: Array<{ date: string; revenue: number }>;
 }
 
+export interface InventoryValuation {
+  totals: {
+    units: number;
+    value: number;
+    /** In-stock variants with `costPrice: 0` — "never received against a PO," a real gap, not the normal state of an idle SKU. */
+    unknownCostVariants: number;
+  };
+  byCategory: Array<{ categoryId: string | null; name: string; units: number; value: number }>;
+  byKind: Array<{ kind: string; units: number; value: number }>;
+  /** `VariantSalesStat.ageDays` buckets — the same field WO-D.3's slow-sellers report already depends on, at the accounting aging.ts's own 30/60/90 boundaries (this is a weeks-to-months scale, not WO-D.1's few-day order ageing). */
+  ageing: Array<{ label: string; units: number; value: number }>;
+}
+
+export interface StockMovementReasonRow {
+  reason: string;
+  in: number;
+  out: number;
+  count: number;
+}
+
+export interface InventoryMovementRow {
+  id: string;
+  variantId: string;
+  sku: string;
+  name: string;
+  reason: string;
+  delta: number;
+  createdAt: string;
+}
+
+export interface InventoryMovements {
+  series: Array<{ date: string; in: number; out: number }>;
+  byReason: StockMovementReasonRow[];
+  recent: InventoryMovementRow[];
+}
+
 export interface ComparisonBucket {
   t: string;
   sales: number;
@@ -1363,6 +1399,186 @@ export class AnalyticsService {
         };
       }),
       series: dayKeys.map((day) => ({ date: day, revenue: revenueByDay.get(day) ?? 0 })),
+    };
+  }
+
+  /**
+   * WO-D.4 (10-admin-dashboard.md Track D) — what the stock on hand is
+   * worth, right now. Every figure here is `stock × costPrice`
+   * (`stockValuationCsv()`'s own definition, reports.service.ts) restricted
+   * to `stock > 0` — a zero-stock, zero-cost SKU is not a valuation gap,
+   * it is simply idle, so it is excluded from every total here rather than
+   * diluting them. `unknownCostVariants` counts the ones that DO hold
+   * stock with no cost basis (`costPrice: 0` — "never received against a
+   * PO," per `ProductVariant.costPrice`'s own doc comment), which is a
+   * real problem worth surfacing.
+   *
+   * This is a hard, whole-endpoint gate on `inventory.view_cost` — unlike
+   * WO-D.2/D.3's aggregate spend/revenue totals, every field this report
+   * returns IS cost data with no non-cost subset worth keeping; the
+   * controller throws before calling this method at all without it,
+   * mirroring `bom.controller.ts`'s `recipeCost()` precedent.
+   *
+   * EXPLAIN (test DB, ~10 variants): sequential scans throughout —
+   * correct at this size. `ProductVariant`'s own `@@index([stock])`
+   * (catalog.prisma) is what the planner uses once row count justifies it;
+   * no new index needed.
+   */
+  async inventoryValuation(): Promise<InventoryValuation> {
+    const [totalsRow, categoryRows, kindRows, ageingRows] = await Promise.all([
+      this.prisma.$queryRaw<Array<{ units: bigint; value: bigint; unknownCostVariants: bigint }>>`
+        SELECT COALESCE(SUM(stock), 0) AS units,
+               COALESCE(SUM(stock * "costPrice"), 0) AS value,
+               COUNT(*) FILTER (WHERE "costPrice" = 0) AS "unknownCostVariants"
+        FROM "ProductVariant"
+        WHERE stock > 0
+      `,
+
+      this.prisma.$queryRaw<
+        Array<{ categoryId: string | null; name: string; units: bigint; value: bigint }>
+      >`
+        SELECT c.id AS "categoryId", COALESCE(ct."name", 'Uncategorised') AS name,
+               COALESCE(SUM(v.stock), 0) AS units,
+               COALESCE(SUM(v.stock * v."costPrice"), 0) AS value
+        FROM "ProductVariant" v
+        JOIN "Product" p ON p.id = v."productId"
+        LEFT JOIN "Category" c ON c.id = p."categoryId"
+        LEFT JOIN "CategoryTranslation" ct ON ct."categoryId" = c.id AND ct.locale = 'en'
+        WHERE v.stock > 0
+        GROUP BY c.id, ct."name"
+        ORDER BY value DESC
+        LIMIT 10
+      `,
+
+      this.prisma.$queryRaw<Array<{ kind: string; units: bigint; value: bigint }>>`
+        SELECT p.kind,
+               COALESCE(SUM(v.stock), 0) AS units,
+               COALESCE(SUM(v.stock * v."costPrice"), 0) AS value
+        FROM "ProductVariant" v
+        JOIN "Product" p ON p.id = v."productId"
+        WHERE v.stock > 0
+        GROUP BY p.kind
+        ORDER BY value DESC
+      `,
+
+      this.prisma.$queryRaw<Array<{ bucket: string; units: bigint; value: bigint }>>`
+        SELECT
+          CASE
+            WHEN COALESCE(vs."ageDays", 0) <= 30 THEN '0-30 days'
+            WHEN COALESCE(vs."ageDays", 0) <= 60 THEN '31-60 days'
+            WHEN COALESCE(vs."ageDays", 0) <= 90 THEN '61-90 days'
+            ELSE '90+ days'
+          END AS bucket,
+          COALESCE(SUM(v.stock), 0) AS units,
+          COALESCE(SUM(v.stock * v."costPrice"), 0) AS value
+        FROM "ProductVariant" v
+        LEFT JOIN "VariantSalesStat" vs ON vs."variantId" = v.id
+        WHERE v.stock > 0
+        GROUP BY 1
+      `,
+    ]);
+
+    const bucketOrder = ['0-30 days', '31-60 days', '61-90 days', '90+ days'];
+    const ageingByBucket = new Map(ageingRows.map((row) => [row.bucket, row]));
+
+    return {
+      totals: {
+        units: Number(totalsRow[0]?.units ?? 0),
+        value: Number(totalsRow[0]?.value ?? 0),
+        unknownCostVariants: Number(totalsRow[0]?.unknownCostVariants ?? 0),
+      },
+      byCategory: categoryRows.map((row) => ({
+        categoryId: row.categoryId,
+        name: row.name,
+        units: Number(row.units),
+        value: Number(row.value),
+      })),
+      byKind: kindRows.map((row) => ({ kind: row.kind, units: Number(row.units), value: Number(row.value) })),
+      ageing: bucketOrder.map((label) => {
+        const row = ageingByBucket.get(label);
+        return { label, units: Number(row?.units ?? 0), value: Number(row?.value ?? 0) };
+      }),
+    };
+  }
+
+  /**
+   * WO-D.4 — stock movement volume: how much moved in and out, by day and
+   * by reason, plus the most recent individual movements. `delta`'s own
+   * sign (`StockMovement.delta`'s doc comment: "positive = stock in,
+   * negative = stock out") is trusted directly rather than inferred from
+   * `reason`, the same convention WO-D.1's order-status timing trusted
+   * `OrderStatusEvent`'s own recorded fields over re-deriving them.
+   *
+   * `series`/`byReason` here are flat, one-level aggregates — every other
+   * Track D series in this file is (WO-D.1 through D.3's `series` fields
+   * are all `Array<{date, ...numbers}>`, no nesting); a per-day reason
+   * breakdown would be real complexity for a JSON shape no chart in this
+   * codebase currently consumes.
+   */
+  async inventoryMovements(days: number): Promise<InventoryMovements> {
+    const start = this.windowStart(days);
+    const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+
+    const [seriesRows, reasonRows, recent] = await Promise.all([
+      this.prisma.$queryRawUnsafe<Array<{ day: string; in: bigint; out: bigint }>>(
+        `SELECT ${shopDayExpr('"createdAt"', timeZone)} AS day,
+                COALESCE(SUM(CASE WHEN delta > 0 THEN delta ELSE 0 END), 0) AS "in",
+                COALESCE(SUM(CASE WHEN delta < 0 THEN -delta ELSE 0 END), 0) AS "out"
+         FROM "StockMovement"
+         WHERE "createdAt" >= $1
+         GROUP BY 1`,
+        start,
+      ),
+
+      this.prisma.$queryRaw<Array<{ reason: string; in: bigint; out: bigint; count: bigint }>>`
+        SELECT reason,
+               COALESCE(SUM(CASE WHEN delta > 0 THEN delta ELSE 0 END), 0) AS "in",
+               COALESCE(SUM(CASE WHEN delta < 0 THEN -delta ELSE 0 END), 0) AS "out",
+               COUNT(*) AS count
+        FROM "StockMovement"
+        WHERE "createdAt" >= ${start}
+        GROUP BY reason
+        ORDER BY count DESC
+      `,
+
+      this.prisma.stockMovement.findMany({
+        where: { createdAt: { gte: start } },
+        orderBy: { createdAt: 'desc' },
+        take: 20,
+        select: {
+          id: true,
+          variantId: true,
+          delta: true,
+          reason: true,
+          createdAt: true,
+          variant: {
+            select: { sku: true, product: { select: { translations: { where: { locale: 'en' }, select: { name: true } } } } },
+          },
+        },
+      }),
+    ]);
+
+    const dayKeys = shopDayKeys(start, days, timeZone);
+    const inByDay = new Map(seriesRows.map((row) => [row.day, Number(row.in)]));
+    const outByDay = new Map(seriesRows.map((row) => [row.day, Number(row.out)]));
+
+    return {
+      series: dayKeys.map((day) => ({ date: day, in: inByDay.get(day) ?? 0, out: outByDay.get(day) ?? 0 })),
+      byReason: reasonRows.map((row) => ({
+        reason: row.reason,
+        in: Number(row.in),
+        out: Number(row.out),
+        count: Number(row.count),
+      })),
+      recent: recent.map((movement) => ({
+        id: movement.id,
+        variantId: movement.variantId,
+        sku: movement.variant.sku,
+        name: movement.variant.product?.translations[0]?.name ?? movement.variant.sku,
+        reason: movement.reason,
+        delta: movement.delta,
+        createdAt: movement.createdAt.toISOString(),
+      })),
     };
   }
 

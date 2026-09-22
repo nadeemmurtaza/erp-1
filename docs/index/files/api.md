@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 491 tracked files in `apps/api`, by directory.
+All 493 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -511,13 +511,14 @@ All 491 tracked files in `apps/api`, by directory.
 | `on-domain-event.decorator.ts` | module | 16 |  |
 | `outbox.dispatcher.ts` | dispatcher | 120 |  |
 
-### `apps/api/src/core/extension-points` (4)
+### `apps/api/src/core/extension-points` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `branch-policy.registry.ts` | registry | 43 |  |
 | `cart-line-validator.registry.ts` | registry | 64 |  |
 | `entity-enrichment.registry.ts` | registry | 45 |  |
-| `extension-points.module.ts` | nest module | 32 |  |
+| `extension-points.module.ts` | nest module | 36 |  |
 | `stock-intake.registry.ts` | registry | 71 |  |
 
 ### `apps/api/src/core/health` (2)
@@ -719,7 +720,7 @@ All 491 tracked files in `apps/api`, by directory.
 | `bom.metrics.ts` | module | 131 |  |
 | `bom.module.ts` | nest module | 17 |  |
 | `bom.service.ts` | service | 47 |  |
-| `bom.spec.ts` | unit test | 525 |  |
+| `bom.spec.ts` | unit test | 527 |  |
 | `cost-rollup.spec.ts` | unit test | 124 | 2000 base units of fabric at 50 paisa/base-unit = 100000 |
 | `cost-rollup.ts` | module | 70 | The BOM cost rollup (WO-C.2, 10-admin-dashboard.md §C) — a pure function, deliberately: it takes plain numbers in, retu… |
 | `production.service.spec.ts` | unit test | 436 |  |
@@ -928,16 +929,17 @@ All 491 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `nodes.service.spec.ts` | unit test | 113 |  |
 | `nodes.service.ts` | service | 95 |  |
-| `organization.controller.ts` | controller | 113 |  |
-| `organization.module.ts` | nest module | 20 |  |
-| `organization.service.spec.ts` | unit test | 266 |  |
-| `organization.service.ts` | service | 205 |  |
+| `organization.controller.ts` | controller | 131 |  |
+| `organization.module.ts` | nest module | 23 |  |
+| `organization.service.spec.ts` | unit test | 375 |  |
+| `organization.service.ts` | service | 291 |  |
 
-### `apps/api/src/modules/organization/dto` (3)
+### `apps/api/src/modules/organization/dto` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `admin-scope.dto.ts` | dto | 34 |  |
+| `brand-policy.dto.ts` | dto | 21 |  |
 | `node.dto.ts` | dto | 19 |  |
 | `organization-policy.dto.ts` | dto | 10 |  |
 
@@ -1036,11 +1038,11 @@ All 491 tracked files in `apps/api`, by directory.
 | `purchasing.cron.spec.ts` | unit test | 67 |  |
 | `purchasing.cron.ts` | scheduled job | 71 |  |
 | `purchasing.module.ts` | nest module | 18 |  |
-| `purchasing.service.ts` | service | 645 |  |
-| `purchasing.spec.ts` | unit test | 200 |  |
+| `purchasing.service.ts` | service | 654 |  |
+| `purchasing.spec.ts` | unit test | 233 |  |
 | `reorder.listener.spec.ts` | unit test | 79 |  |
 | `reorder.listener.ts` | event subscriber | 51 |  |
-| `supplier-bill.spec.ts` | unit test | 228 |  |
+| `supplier-bill.spec.ts` | unit test | 230 |  |
 
 ### `apps/api/src/modules/purchasing/dto` (3)
 

@@ -3,7 +3,7 @@
 
 # Tests
 
-**115** spec files, **1,125** cases. What is already pinned down — and what is not.
+**115** spec files, **1,140** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -109,7 +109,7 @@ regression or an N+1.
 | `apps/api/src/modules/orders/order-replication.listener.spec.ts` | orders | 3 | OrderReplicationListener — WO-20.4 · onModuleInit · onOrderPlaced |
 | `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 6 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ |
 | `apps/api/src/modules/organization/nodes.service.spec.ts` | organization | 8 | NodesService · rotateInboundKey |
-| `apps/api/src/modules/organization/organization.service.spec.ts` | organization | 27 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setI… |
+| `apps/api/src/modules/organization/organization.service.spec.ts` | organization | 39 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setI… |
 | `apps/api/src/modules/parties/parties.service.spec.ts` | parties | 7 | PartiesService · get · dedupeCandidate · findOrCreateForRole · search |
 | `apps/api/src/modules/payments/providers/callback-verification.spec.ts` | payments | 8 | Easypaisa callback verification · JazzCash callback verification |
 | `apps/api/src/modules/pos/pos-catalog.service.spec.ts` | pos | 3 | PosCatalogService — WO-21.4 |
@@ -122,7 +122,7 @@ regression or an N+1.
 | `apps/api/src/modules/production/stitching-cascade.listener.spec.ts` | production | 8 | StitchingCascadeListener · onStitchingJobCreated · onStitchingJobStageChanged |
 | `apps/api/src/modules/production/work-orders.service.spec.ts` | production | 11 | WorkOrdersService · create · release · complete · cancel |
 | `apps/api/src/modules/purchasing/purchasing.cron.spec.ts` | purchasing | 2 | PurchasingCron |
-| `apps/api/src/modules/purchasing/purchasing.spec.ts` | purchasing | 7 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR… |
+| `apps/api/src/modules/purchasing/purchasing.spec.ts` | purchasing | 10 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR… |
 | `apps/api/src/modules/purchasing/reorder.listener.spec.ts` | purchasing | 5 | PurchasingReorderListener |
 | `apps/api/src/modules/purchasing/supplier-bill.spec.ts` | purchasing | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
 | `apps/api/src/modules/tradingpartners/invoice.service.spec.ts` | tradingpartners | 4 | InvoiceService · issue · findOne |

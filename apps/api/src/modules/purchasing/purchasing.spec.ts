@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { ForbiddenException } from '@nestjs/common';
 import { PurchasingService } from './purchasing.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { InventoryService } from '../inventory/inventory.service';
@@ -6,16 +7,19 @@ import { PartiesService } from '../parties/parties.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { AppConfigService } from '../../core/config/app-config.service';
+import { BranchPolicyRegistry } from '../../core/extension-points/branch-policy.registry';
 
 describe('PurchasingService', () => {
   let service: PurchasingService;
   let prisma: any;
+  let branchPolicy: { allowsBranchLocalPurchasing: jest.Mock };
 
   beforeEach(async () => {
     // Every constructor dependency is stubbed. When a new one is injected this
     // suite fails to compile the module, which is the point — it is the cheap
     // guard that caught the receipt service growing two dependencies silently.
     prisma = { $transaction: jest.fn() };
+    branchPolicy = { allowsBranchLocalPurchasing: jest.fn().mockResolvedValue(true) };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -26,6 +30,7 @@ describe('PurchasingService', () => {
         { provide: SettingsService, useValue: { get: jest.fn().mockResolvedValue(undefined) } },
         { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'main' } },
         { provide: EventBusService, useValue: {} },
+        { provide: BranchPolicyRegistry, useValue: branchPolicy },
       ],
     }).compile();
 
@@ -150,6 +155,33 @@ describe('PurchasingService', () => {
         expect.objectContaining({ data: expect.objectContaining({ scopeLevel: 'ORG', originNodeId: 'main' }) }),
       );
     });
+
+    it('never asks BranchPolicyRegistry for a non-BRANCH scope', async () => {
+      await service.createPurchaseOrder({ supplierId: 'sup1', items: [], scopeLevel: 'BRAND' } as any, 'user1');
+
+      expect(branchPolicy.allowsBranchLocalPurchasing).not.toHaveBeenCalled();
+      expect(tx.purchaseOrder.create).toHaveBeenCalled();
+    });
+
+    it('creates a BRANCH-scope PO when BranchPolicyRegistry allows it', async () => {
+      branchPolicy.allowsBranchLocalPurchasing.mockResolvedValue(true);
+
+      await service.createPurchaseOrder({ supplierId: 'sup1', items: [], scopeLevel: 'BRANCH' } as any, 'user1');
+
+      expect(branchPolicy.allowsBranchLocalPurchasing).toHaveBeenCalledWith('user1');
+      expect(tx.purchaseOrder.create).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ scopeLevel: 'BRANCH' }) }),
+      );
+    });
+
+    it('refuses a BRANCH-scope PO when BranchPolicyRegistry denies it — WO-23.3b, R9', async () => {
+      branchPolicy.allowsBranchLocalPurchasing.mockResolvedValue(false);
+
+      await expect(
+        service.createPurchaseOrder({ supplierId: 'sup1', items: [], scopeLevel: 'BRANCH' } as any, 'user1'),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+      expect(tx.purchaseOrder.create).not.toHaveBeenCalled();
+    });
   });
 
   describe('create (Supplier + its backing Party)', () => {
@@ -172,6 +204,7 @@ describe('PurchasingService', () => {
           { provide: SettingsService, useValue: {} },
           { provide: AppConfigService, useValue: {} },
           { provide: EventBusService, useValue: {} },
+          { provide: BranchPolicyRegistry, useValue: { allowsBranchLocalPurchasing: jest.fn().mockResolvedValue(true) } },
         ],
       }).compile();
 

@@ -7,6 +7,7 @@ import { PartiesService } from '../parties/parties.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { AppConfigService } from '../../core/config/app-config.service';
+import { BranchPolicyRegistry } from '../../core/extension-points/branch-policy.registry';
 import { DomainEvent } from '../../core/events/domain-events';
 
 /**
@@ -37,6 +38,7 @@ describe('PurchasingService — supplier bills', () => {
         { provide: SettingsService, useValue: {} },
         { provide: AppConfigService, useValue: {} },
         { provide: EventBusService, useValue: events },
+        { provide: BranchPolicyRegistry, useValue: { allowsBranchLocalPurchasing: jest.fn().mockResolvedValue(true) } },
       ],
     }).compile();
 

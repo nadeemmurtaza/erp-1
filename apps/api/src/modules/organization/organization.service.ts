@@ -1,7 +1,9 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, type OnModuleInit } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
-import { resolveScope, scopeFilterFor, type AdminScopeGrant, type ScopedActor } from '../../core/auth/scope.guard';
-import type { AdminScope, AdminScopeLevel, Node, RetailBrand } from '../../core/prisma/client';
+import { resolveScope, scopeFilterFor, assertCanManageAtScope, type AdminScopeGrant, type ScopedActor } from '../../core/auth/scope.guard';
+import { BranchPolicyRegistry } from '../../core/extension-points/branch-policy.registry';
+import type { AdminScope, AdminScopeLevel, BrandPolicy, Node, RetailBrand } from '../../core/prisma/client';
+import type { UpdateBrandPolicyDto } from './dto/brand-policy.dto';
 
 export interface AdminScopeWithHolder extends AdminScope {
   user: { id: string; email: string | null; firstName: string | null; lastName: string | null };
@@ -44,8 +46,18 @@ export interface MyScopeResult {
  * registering a node — still later work.
  */
 @Injectable()
-export class OrganizationService {
-  constructor(private readonly prisma: PrismaService) {}
+export class OrganizationService implements OnModuleInit {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly branchPolicy: BranchPolicyRegistry,
+  ) {}
+
+  /** Registers `allowsBranchLocalPurchasing` for BranchPolicyRegistry, so `purchasing` (always-on) can ask "is this branch allowed to buy locally?" without importing this off-by-default module — the same seam `inventory` uses for StockIntakeRegistry. */
+  onModuleInit(): void {
+    this.branchPolicy.register({
+      allowsBranchLocalPurchasing: (userId) => this.allowsBranchLocalPurchasing(userId),
+    });
+  }
 
   /** This actor's own resolved scope — what the frontend uses to decide where to land and what chips to draw (R19). */
   async myScope(actor: ScopedActor): Promise<MyScopeResult> {
@@ -179,6 +191,80 @@ export class OrganizationService {
     throw new BadRequestException(
       'No Organization row exists yet for this deployment — register the organization before setting its policy.',
     );
+  }
+
+  /**
+   * The three switches a brand sets for its own branches (R9/R13, ADR-021/
+   * ADR-022): allowBranchProductCreation, allowBranchLocalPurchasing,
+   * allowInterBranchTransfers. `null` when no `BrandPolicy` row exists yet
+   * — a brand that never configured this needs no row to mean "as
+   * restrictive as possible" (the schema's own `@default(false)` on every
+   * column); the caller reads `null` the same way.
+   */
+  async getBrandPolicy(actor: ScopedActor, retailBrandId: string): Promise<BrandPolicy | null> {
+    assertCanManageAtScope(actor, 'organization', { retailBrandId });
+    return this.prisma.brandPolicy.findUnique({ where: { retailBrandId } });
+  }
+
+  /**
+   * A BRAND-level (or wider) grant may set its own brand's policy — an ORG
+   * grant may set any brand's. `assertCanManageAtScope` is the same
+   * mechanism `scopeFilterFor` already narrows list reads with; this is
+   * its first real write-side caller.
+   */
+  async setBrandPolicy(actor: ScopedActor, retailBrandId: string, patch: UpdateBrandPolicyDto): Promise<BrandPolicy> {
+    assertCanManageAtScope(actor, 'organization', { retailBrandId });
+
+    const brand = await this.prisma.retailBrand.findUnique({ where: { id: retailBrandId }, select: { id: true } });
+    if (!brand) throw new BadRequestException('That retail brand no longer exists.');
+
+    return this.prisma.brandPolicy.upsert({
+      where: { retailBrandId },
+      create: {
+        retailBrandId,
+        allowBranchProductCreation: patch.allowBranchProductCreation ?? false,
+        allowBranchLocalPurchasing: patch.allowBranchLocalPurchasing ?? false,
+        allowInterBranchTransfers: patch.allowInterBranchTransfers ?? false,
+      },
+      update: {
+        allowBranchProductCreation: patch.allowBranchProductCreation,
+        allowBranchLocalPurchasing: patch.allowBranchLocalPurchasing,
+        allowInterBranchTransfers: patch.allowInterBranchTransfers,
+      },
+    });
+  }
+
+  /**
+   * BranchPolicyRegistry's own handler (registered in `onModuleInit()`
+   * above). An ORG-wide or BRAND-level (or wider) grant may always create a
+   * BRANCH-scope purchase order — R9's switch protects a branch from
+   * overreaching its own brand's policy, not from an admin who already
+   * holds authority over that policy and could simply flip it. A
+   * BRANCH-only actor is checked against every brand their BRANCH grants
+   * name; `.some()` fails CLOSED the moment none of those brands has a
+   * `BrandPolicy` row saying `true` (ADR-021) — including the case where no
+   * row exists at all. An actor with no AdminScope grant at all (no
+   * `organization` involvement) is waved through: nothing about their
+   * request claims a branch identity this switch was ever meant to gate.
+   */
+  private async allowsBranchLocalPurchasing(userId: string): Promise<boolean> {
+    const grants = await this.grantsFor(userId);
+    const scope = resolveScope(grants);
+    if (scope.isOrgWide || scope.manageableBrandIds.length > 0) return true;
+
+    const branchGrantBrandIds = [
+      ...new Set(
+        grants
+          .filter((grant) => grant.level === 'BRANCH' && grant.retailBrandId)
+          .map((grant) => grant.retailBrandId as string),
+      ),
+    ];
+    if (branchGrantBrandIds.length === 0) return true;
+
+    const policies = await this.prisma.brandPolicy.findMany({
+      where: { retailBrandId: { in: branchGrantBrandIds } },
+    });
+    return policies.some((policy) => policy.allowBranchLocalPurchasing);
   }
 
   private assertOrgWide(actor: ScopedActor, action: string): void {

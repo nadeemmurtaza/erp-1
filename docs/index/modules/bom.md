@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 18 files
 
 Source: `apps/api/src/modules/bom/`
 
-## Files (18 · 3,133 lines)
+## Files (18 · 3,135 lines)
 
 All paths relative to `apps/api/src/modules/bom`.
 
@@ -22,7 +22,7 @@ All paths relative to `apps/api/src/modules/bom`.
 | `bom.metrics.ts` | module | 131 | 4 |  |
 | `bom.module.ts` | nest module | 17 | 1 |  |
 | `bom.service.ts` | service | 47 | 1 | Helpers shared by every bom. |
-| `bom.spec.ts` | unit test | 525 | — |  |
+| `bom.spec.ts` | unit test | 527 | — |  |
 | `cost-rollup.spec.ts` | unit test | 124 | — | 2000 base units of fabric at 50 paisa/base-unit = 100000 |
 | `cost-rollup.ts` | module | 70 | 5 | The BOM cost rollup (WO-C.2, 10-admin-dashboard.md §C) — a pure function, deliberately: it takes plain numbers in, retu… |
 | `production-run.dto.ts` | dto | 48 | 2 |  |

@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **1,206 files / 188,098 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **1,208 files / 188,669 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -46,7 +46,7 @@ single fact — the page is the right tool when you need the shape of something.
 
 | Your question | Open this | Cost | What it gives you |
 |---|---|---|---|
-| “Where is the endpoint for X?” | [cross/routes.md](cross/routes.md) | ~13.9k | all 320 HTTP routes, with the permission that guards each |
+| “Where is the endpoint for X?” | [cross/routes.md](cross/routes.md) | ~14.0k | all 322 HTTP routes, with the permission that guards each |
 | “What permission do I need / who has it?” | [cross/permissions.md](cross/permissions.md) | ~2.4k | all 41 permissions → routes, UI call sites, seed |
 | “Which table/column holds X?” | [cross/data-model.md](cross/data-model.md) | ~7.2k | all 123 Prisma models and 53 enums, field by field |
 | “How do modules talk to each other?” | [cross/events.md](cross/events.md) | ~5.3k | all 37 domain events → publishers and subscribers |
@@ -60,7 +60,7 @@ single fact — the page is the right tool when you need the shape of something.
 | “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~20.4k | every document of record, with its outline |
 | “What is in this one module?” | [modules/](modules) | — | one page per API feature module (27) |
 | “What does this file export?” | [symbols/](symbols) | — | every exported symbol in the repo, with line numbers |
-| “I need a machine-readable form.” | [index.json](index.json) | ~279.9k | the whole index as JSON — grep or jq it |
+| “I need a machine-readable form.” | [index.json](index.json) | ~280.6k | the whole index as JSON — grep or jq it |
 
 
 ## The levels
@@ -118,12 +118,12 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 
 | Area | Files | Lines | L1 page |
 |---|---|---|---|
-| apps/api | 491 | 66,563 | [api](areas/api.md) |
-| apps/web | 243 | 36,971 | [web](areas/web.md) |
+| apps/api | 493 | 66,893 | [api](areas/api.md) |
+| apps/web | 243 | 37,096 | [web](areas/web.md) |
 | apps/pos | 31 | 1,874 | [pos](areas/pos.md) |
 | apps/mobile | 42 | 5,292 | [mobile](areas/mobile.md) |
 | packages/* | 55 | 4,638 | [packages](areas/packages.md) |
-| docs/* | 247 | 35,865 | [docs](areas/docs.md) |
+| docs/* | 247 | 35,981 | [docs](areas/docs.md) |
 | scripts, CI, deployment and container configuration | 55 | 27,846 | [infra](areas/infra.md) |
 | repository root files | 42 | 9,049 | [root](areas/root.md) |
 

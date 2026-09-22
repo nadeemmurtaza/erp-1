@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 12 files
 
 Source: `apps/api/src/modules/purchasing/`
 
-## Files (12 · 1,785 lines)
+## Files (12 · 1,829 lines)
 
 All paths relative to `apps/api/src/modules/purchasing/dto`.
 
@@ -22,11 +22,11 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 | `purchasing.cron.spec.ts` | unit test | 67 | — |  |
 | `purchasing.cron.ts` | scheduled job | 71 | 1 | The nightly safety-net sweep for reorder drafting. |
 | `purchasing.module.ts` | nest module | 18 | 1 |  |
-| `purchasing.service.ts` | service | 645 | 1 |  |
-| `purchasing.spec.ts` | unit test | 200 | — |  |
+| `purchasing.service.ts` | service | 654 | 1 |  |
+| `purchasing.spec.ts` | unit test | 233 | — |  |
 | `reorder.listener.spec.ts` | unit test | 79 | — |  |
 | `reorder.listener.ts` | event subscriber | 51 | 1 | Turns a real-time reorder-point crossing into an immediate DRAFT PO line, for variants sourced from an external supplie… |
-| `supplier-bill.spec.ts` | unit test | 228 | — |  |
+| `supplier-bill.spec.ts` | unit test | 230 | — |  |
 
 
 ## HTTP routes (17)
@@ -58,9 +58,9 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `GoodsReceived` | `purchasing.goods_received` | `purchasing.service.ts:423` |
-| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `purchasing.service.ts:564` |
-| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `purchasing.service.ts:628` |
+| `GoodsReceived` | `purchasing.goods_received` | `purchasing.service.ts:432` |
+| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `purchasing.service.ts:573` |
+| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `purchasing.service.ts:637` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -111,6 +111,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `auth`
 - core `config`
 - core `events`
+- core `extension-points`
 - core `prisma`
 - core `settings`
 - package `@newax/shared`
@@ -125,7 +126,7 @@ check there before adding another.
 | Spec | Cases | Covers |
 |---|---|---|
 | `purchasing.cron.spec.ts` | 2 | PurchasingCron |
-| `purchasing.spec.ts` | 7 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR-021 · create (Suppl… |
+| `purchasing.spec.ts` | 10 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR-021 · create (Suppl… |
 | `reorder.listener.spec.ts` | 5 | PurchasingReorderListener |
 | `supplier-bill.spec.ts` | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
 
@@ -148,7 +149,7 @@ check there before adding another.
 | `SupplierBillAdminController` | class | `purchasing.controller.ts:119` |  |
 | `PurchasingCron` | class | `purchasing.cron.ts:19` | The nightly safety-net sweep for reorder drafting. |
 | `PurchasingModule` | class | `purchasing.module.ts:17` |  |
-| `PurchasingService` | class | `purchasing.service.ts:69` |  |
+| `PurchasingService` | class | `purchasing.service.ts:70` |  |
 | `PurchasingReorderListener` | class | `reorder.listener.ts:16` | Turns a real-time reorder-point crossing into an immediate DRAFT PO line, for variants sourced from an extern… |
 
 

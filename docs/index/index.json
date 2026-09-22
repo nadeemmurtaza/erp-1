@@ -3,9 +3,9 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1206,
-    "lines": 188098,
-    "routes": 320,
+    "files": 1208,
+    "lines": 188669,
+    "routes": 322,
     "controllers": 59,
     "models": 123,
     "enums": 53,
@@ -1083,9 +1083,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 491,
-      "lines": 66563,
-      "bytes": 2408460,
+      "files": 493,
+      "lines": 66893,
+      "bytes": 2424124,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1102,14 +1102,14 @@
     },
     "web": {
       "files": 243,
-      "lines": 36971,
-      "bytes": 1365394,
+      "lines": 37096,
+      "bytes": 1369954,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 247,
-      "lines": 35865,
-      "bytes": 2244093,
+      "lines": 35981,
+      "bytes": 2251129,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -1391,6 +1391,7 @@
       "inRegistry": true,
       "files": [
         "apps/api/src/modules/organization/dto/admin-scope.dto.ts",
+        "apps/api/src/modules/organization/dto/brand-policy.dto.ts",
         "apps/api/src/modules/organization/dto/node.dto.ts",
         "apps/api/src/modules/organization/dto/organization-policy.dto.ts",
         "apps/api/src/modules/organization/nodes.service.spec.ts",
@@ -1400,7 +1401,7 @@
         "apps/api/src/modules/organization/organization.service.spec.ts",
         "apps/api/src/modules/organization/organization.service.ts"
       ],
-      "routes": 10,
+      "routes": 12,
       "page": "docs/index/modules/organization.md"
     },
     {
@@ -1732,6 +1733,7 @@
     {
       "name": "extension-points",
       "files": [
+        "apps/api/src/core/extension-points/branch-policy.registry.ts",
         "apps/api/src/core/extension-points/cart-line-validator.registry.ts",
         "apps/api/src/core/extension-points/entity-enrichment.registry.ts",
         "apps/api/src/core/extension-points/extension-points.module.ts",
@@ -6534,7 +6536,7 @@
       "controller": "OrganizationController",
       "handler": "adminScopes",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 94,
+      "line": 112,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6550,7 +6552,7 @@
       "controller": "OrganizationController",
       "handler": "grantScope",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 101,
+      "line": 119,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6566,7 +6568,7 @@
       "controller": "OrganizationController",
       "handler": "revokeScope",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 108,
+      "line": 126,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6582,7 +6584,7 @@
       "controller": "OrganizationController",
       "handler": "brands",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 46,
+      "line": 47,
       "access": "organization.view",
       "permissions": [
         "organization.view"
@@ -6593,12 +6595,44 @@
     },
     {
       "method": "GET",
+      "path": "/organization/brands/:brandId/policy",
+      "module": "organization",
+      "controller": "OrganizationController",
+      "handler": "brandPolicy",
+      "file": "apps/api/src/modules/organization/organization.controller.ts",
+      "line": 94,
+      "access": "organization.view",
+      "permissions": [
+        "organization.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "A brand's own policy switches for its branches (RETAIL-ERP.md R9/R13) — null when never configured, which means every switch is off"
+    },
+    {
+      "method": "PATCH",
+      "path": "/organization/brands/:brandId/policy",
+      "module": "organization",
+      "controller": "OrganizationController",
+      "handler": "setBrandPolicy",
+      "file": "apps/api/src/modules/organization/organization.controller.ts",
+      "line": 101,
+      "access": "organization.manage",
+      "permissions": [
+        "organization.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Set a brand policy switch — allowBranchProductCreation, allowBranchLocalPurchasing, allowInterBranchTransfers"
+    },
+    {
+      "method": "GET",
       "path": "/organization/me/scope",
       "module": "organization",
       "controller": "OrganizationController",
       "handler": "myScope",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 40,
+      "line": 41,
       "access": "organization.view",
       "permissions": [
         "organization.view"
@@ -6614,7 +6648,7 @@
       "controller": "OrganizationController",
       "handler": "nodes",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 52,
+      "line": 53,
       "access": "organization.view",
       "permissions": [
         "organization.view"
@@ -6630,7 +6664,7 @@
       "controller": "OrganizationController",
       "handler": "registerNode",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 59,
+      "line": 60,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6646,7 +6680,7 @@
       "controller": "OrganizationController",
       "handler": "rotateNodeInboundKey",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 66,
+      "line": 67,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6662,7 +6696,7 @@
       "controller": "OrganizationController",
       "handler": "setInterBrandTransfersPolicy",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 84,
+      "line": 85,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6678,7 +6712,7 @@
       "controller": "OrganizationController",
       "handler": "resyncFromParent",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 76,
+      "line": 77,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6905,6 +6939,7 @@
       "sensitivity": "low",
       "routes": [
         "GET /organization/brands",
+        "GET /organization/brands/:brandId/policy",
         "GET /organization/me/scope",
         "GET /organization/nodes"
       ],
@@ -6924,12 +6959,13 @@
         "GET /organization/admin-scopes",
         "POST /organization/admin-scopes",
         "DELETE /organization/admin-scopes/:id",
+        "PATCH /organization/brands/:brandId/policy",
         "POST /organization/nodes",
         "POST /organization/nodes/:nodeId/rotate-inbound-key",
         "PATCH /organization/policy/inter-brand-transfers",
         "POST /organization/replication/resync"
       ],
-      "uiSites": 0,
+      "uiSites": 1,
       "roles": [
         "ADMIN"
       ],
@@ -7940,7 +7976,7 @@
       "name": "purchasing.goods_received",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/purchasing/purchasing.service.ts:423"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:432"
       ],
       "subscribers": [
         "apps/api/src/modules/bom/bom.listener.ts:22 recomputeAffectedRecipes()"
@@ -7961,7 +7997,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:176",
-        "apps/api/src/modules/purchasing/purchasing.service.ts:564"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:573"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:174 onSupplierBillRaised()"
@@ -7973,7 +8009,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:226",
-        "apps/api/src/modules/purchasing/purchasing.service.ts:628"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:637"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:224 onSupplierBillPaid()"
@@ -23517,7 +23553,7 @@
       "file": "apps/api/src/modules/organization/organization.service.spec.ts",
       "module": "organization",
       "kind": "unit test",
-      "cases": 27,
+      "cases": 39,
       "describes": [
         "OrganizationService",
         "listBrands",
@@ -23527,6 +23563,8 @@
         "listScopes",
         "grantScope",
         "setInterBrandTransfersPolicy",
+        "getBrandPolicy / setBrandPolicy — WO-23.3b, RETAIL-ERP.md R9/R13",
+        "allowsBranchLocalPurchasing (BranchPolicyRegistry handler) — WO-23.3b",
         "revokeScope"
       ]
     },
@@ -23666,7 +23704,7 @@
       "file": "apps/api/src/modules/purchasing/purchasing.spec.ts",
       "module": "purchasing",
       "kind": "unit test",
-      "cases": 7,
+      "cases": 10,
       "describes": [
         "PurchasingService",
         "upsertReorderDraftLine",
@@ -26428,6 +26466,26 @@
       ]
     },
     {
+      "path": "apps/api/src/core/extension-points/branch-policy.registry.ts",
+      "area": "api",
+      "kind": "registry",
+      "lines": 43,
+      "bytes": 1849,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BranchPolicyHandler",
+          "kind": "interface",
+          "line": 3
+        },
+        {
+          "name": "BranchPolicyRegistry",
+          "kind": "class",
+          "line": 30
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/extension-points/cart-line-validator.registry.ts",
       "area": "api",
       "kind": "registry",
@@ -26471,14 +26529,14 @@
       "path": "apps/api/src/core/extension-points/extension-points.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 32,
-      "bytes": 1195,
+      "lines": 36,
+      "bytes": 1361,
       "doc": "",
       "symbols": [
         {
           "name": "ExtensionPointsModule",
           "kind": "class",
-          "line": 31
+          "line": 35
         }
       ]
     },
@@ -28462,8 +28520,8 @@
       "path": "apps/api/src/modules/bom/bom.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 525,
-      "bytes": 23712,
+      "lines": 527,
+      "bytes": 23924,
       "doc": "",
       "symbols": []
     },
@@ -30233,6 +30291,21 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/organization/dto/brand-policy.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 21,
+      "bytes": 543,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UpdateBrandPolicyDto",
+          "kind": "class",
+          "line": 5
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/organization/dto/node.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -30290,14 +30363,14 @@
       "path": "apps/api/src/modules/organization/organization.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 113,
-      "bytes": 5024,
+      "lines": 131,
+      "bytes": 5935,
       "doc": "",
       "symbols": [
         {
           "name": "OrganizationController",
           "kind": "class",
-          "line": 26
+          "line": 27
         }
       ]
     },
@@ -30305,14 +30378,14 @@
       "path": "apps/api/src/modules/organization/organization.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 20,
-      "bytes": 813,
+      "lines": 23,
+      "bytes": 1022,
       "doc": "",
       "symbols": [
         {
           "name": "OrganizationModule",
           "kind": "class",
-          "line": 19
+          "line": 22
         }
       ]
     },
@@ -30320,8 +30393,8 @@
       "path": "apps/api/src/modules/organization/organization.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 266,
-      "bytes": 10279,
+      "lines": 375,
+      "bytes": 15347,
       "doc": "",
       "symbols": []
     },
@@ -30329,34 +30402,34 @@
       "path": "apps/api/src/modules/organization/organization.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 205,
-      "bytes": 8969,
+      "lines": 291,
+      "bytes": 13181,
       "doc": "",
       "symbols": [
         {
           "name": "AdminScopeWithHolder",
           "kind": "interface",
-          "line": 6
+          "line": 8
         },
         {
           "name": "GrantScopeInput",
           "kind": "interface",
-          "line": 10
+          "line": 12
         },
         {
           "name": "MyScopeLevel",
           "kind": "type",
-          "line": 27
+          "line": 29
         },
         {
           "name": "MyScopeResult",
           "kind": "interface",
-          "line": 29
+          "line": 31
         },
         {
           "name": "OrganizationService",
           "kind": "class",
-          "line": 47
+          "line": 49
         }
       ]
     },
@@ -31227,14 +31300,14 @@
       "path": "apps/api/src/modules/purchasing/purchasing.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 645,
-      "bytes": 23808,
+      "lines": 654,
+      "bytes": 24304,
       "doc": "",
       "symbols": [
         {
           "name": "PurchasingService",
           "kind": "class",
-          "line": 69
+          "line": 70
         }
       ]
     },
@@ -31242,8 +31315,8 @@
       "path": "apps/api/src/modules/purchasing/purchasing.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 200,
-      "bytes": 7304,
+      "lines": 233,
+      "bytes": 9090,
       "doc": "",
       "symbols": []
     },
@@ -31275,8 +31348,8 @@
       "path": "apps/api/src/modules/purchasing/supplier-bill.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 228,
-      "bytes": 8346,
+      "lines": 230,
+      "bytes": 8558,
       "doc": "",
       "symbols": []
     },
@@ -34424,14 +34497,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 74,
-      "bytes": 2288,
+      "lines": 180,
+      "bytes": 6247,
       "doc": "",
       "symbols": [
         {
           "name": "BrandDashboardPage",
           "kind": "default",
-          "line": 20
+          "line": 123
         }
       ]
     },
@@ -37917,8 +37990,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 711,
-      "bytes": 18636,
+      "lines": 730,
+      "bytes": 19237,
       "doc": "",
       "symbols": [
         {
@@ -38062,169 +38135,179 @@
           "line": 357
         },
         {
+          "name": "BrandPolicy",
+          "kind": "interface",
+          "line": 370
+        },
+        {
+          "name": "UpdateBrandPolicyInput",
+          "kind": "interface",
+          "line": 377
+        },
+        {
           "name": "StockAdjustment",
           "kind": "interface",
-          "line": 366
+          "line": 385
         },
         {
           "name": "InventoryVariantRow",
           "kind": "interface",
-          "line": 378
+          "line": 397
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 391
+          "line": 410
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 397
+          "line": 416
         },
         {
           "name": "VisitorFunnel",
           "kind": "interface",
-          "line": 408
+          "line": 427
         },
         {
           "name": "TrafficSourceRow",
           "kind": "interface",
-          "line": 415
+          "line": 434
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 421
+          "line": 440
         },
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 430
+          "line": 449
         },
         {
           "name": "EmailAccountPurpose",
           "kind": "type",
-          "line": 438
+          "line": 457
         },
         {
           "name": "EmailAccount",
           "kind": "interface",
-          "line": 440
+          "line": 459
         },
         {
           "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 465
+          "line": 484
         },
         {
           "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 473
+          "line": 492
         },
         {
           "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 481
+          "line": 500
         },
         {
           "name": "InboundEmail",
           "kind": "interface",
-          "line": 488
+          "line": 507
         },
         {
           "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 505
+          "line": 524
         },
         {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 512
+          "line": 531
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 524
+          "line": 543
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 533
+          "line": 552
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 535
+          "line": 554
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 547
+          "line": 566
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 553
+          "line": 572
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 560
+          "line": 579
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 565
+          "line": 584
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 577
+          "line": 596
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 586
+          "line": 605
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 593
+          "line": 612
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 607
+          "line": 626
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 618
+          "line": 637
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 622
+          "line": 641
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 631
+          "line": 650
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 639
+          "line": 658
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 668
+          "line": 687
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 700
+          "line": 719
         }
       ]
     },
@@ -40921,8 +41004,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 1122,
-      "bytes": 54427,
+      "lines": 1238,
+      "bytes": 61463,
       "doc": "",
       "symbols": []
     },

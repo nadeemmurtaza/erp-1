@@ -8,6 +8,7 @@ import { NodesService } from './nodes.service';
 import { GrantScopeDto } from './dto/admin-scope.dto';
 import { RegisterNodeDto } from './dto/node.dto';
 import { SetInterBrandTransfersPolicyDto } from './dto/organization-policy.dto';
+import { UpdateBrandPolicyDto } from './dto/brand-policy.dto';
 import { ReplicationCursorService } from '../../core/replication/replication-cursor.service';
 import { PARENT_PEER_ID } from '../../core/replication/replication.types';
 
@@ -86,6 +87,23 @@ export class OrganizationController {
     @Body() dto: SetInterBrandTransfersPolicyDto,
   ) {
     return this.organization.setInterBrandTransfersPolicy(await this.actorFor(user), dto.allow);
+  }
+
+  @Get('brands/:brandId/policy')
+  @ApiOperation({ summary: "A brand's own policy switches for its branches (RETAIL-ERP.md R9/R13) — null when never configured, which means every switch is off" })
+  async brandPolicy(@CurrentUser() user: AuthenticatedUser, @Param('brandId') brandId: string) {
+    return this.organization.getBrandPolicy(await this.actorFor(user), brandId);
+  }
+
+  @Patch('brands/:brandId/policy')
+  @RequirePermission('organization.manage')
+  @ApiOperation({ summary: 'Set a brand policy switch — allowBranchProductCreation, allowBranchLocalPurchasing, allowInterBranchTransfers' })
+  async setBrandPolicy(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('brandId') brandId: string,
+    @Body() dto: UpdateBrandPolicyDto,
+  ) {
+    return this.organization.setBrandPolicy(await this.actorFor(user), brandId, dto);
   }
 
   @Get('admin-scopes')

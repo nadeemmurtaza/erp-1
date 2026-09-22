@@ -7,6 +7,7 @@ import { EventBusService } from '../../core/events/event-bus.service';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { InventoryService } from '../inventory/inventory.service';
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
+import { BranchPolicyRegistry } from '../../core/extension-points/branch-policy.registry';
 import { EntityEnrichmentRegistry } from '../../core/extension-points/entity-enrichment.registry';
 import { PartiesService } from '../parties/parties.service';
 import { PurchasingService } from '../purchasing/purchasing.service';
@@ -62,6 +63,7 @@ describe('bom module — raw materials', () => {
         { provide: EventBusService, useValue: { publish: jest.fn() } },
         { provide: StockIntakeRegistry, useValue: { register: jest.fn() } },
         { provide: EntityEnrichmentRegistry, useValue: { register: jest.fn() } },
+        { provide: BranchPolicyRegistry, useValue: { allowsBranchLocalPurchasing: jest.fn().mockResolvedValue(true) } },
       ],
     }).compile();
 

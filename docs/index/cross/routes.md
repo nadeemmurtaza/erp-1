@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **320** endpoints across **59** controllers, with the access rule that actually guards each one.
+All **322** endpoints across **59** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -353,7 +353,7 @@ never authorization.
 | POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` |  |
 | GET | `/orders/mine` | signed-in | `OrdersController.mine` | The signed-in customer's orders |
 
-### [`organization`](../modules/organization.md) (10)
+### [`organization`](../modules/organization.md) (12)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -361,6 +361,8 @@ never authorization.
 | POST | `/organization/admin-scopes` | `organization.manage` | `OrganizationController.grantScope` | Make a user a super admin, a brand admin, or a branch admin |
 | DELETE | `/organization/admin-scopes/:id` | `organization.manage` | `OrganizationController.revokeScope` | Revoke an AdminScope grant |
 | GET | `/organization/brands` | `organization.view` | `OrganizationController.brands` | Retail brands visible to the caller |
+| GET | `/organization/brands/:brandId/policy` | `organization.view` | `OrganizationController.brandPolicy` | A brand's own policy switches for its branches (RETAIL-ERP.md R9/R13) — null wh… |
+| PATCH | `/organization/brands/:brandId/policy` | `organization.manage` | `OrganizationController.setBrandPolicy` | Set a brand policy switch — allowBranchProductCreation, allowBranchLocalPurchas… |
 | GET | `/organization/me/scope` | `organization.view` | `OrganizationController.myScope` | The caller's resolved scope — where to land, and what chips to draw |
 | GET | `/organization/nodes` | `organization.view` | `OrganizationController.nodes` | This deployment's registered child nodes, visible to the caller |
 | POST | `/organization/nodes` | `organization.manage` | `OrganizationController.registerNode` | Register a child node — or re-activate and update one that already exists |

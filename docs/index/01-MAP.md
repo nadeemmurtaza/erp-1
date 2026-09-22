@@ -32,9 +32,9 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 491 | 66,563 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `apps/web` | 243 | 36,971 | Next.js — admin console and customer storefront in one app |
-| `docs` | 247 | 35,865 | documents of record — implementation plans, house rules, brand |
+| `apps/api` | 493 | 66,893 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/web` | 243 | 37,096 | Next.js — admin console and customer storefront in one app |
+| `docs` | 247 | 35,981 | documents of record — implementation plans, house rules, brand |
 | `(root)` | 36 | 26,640 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 20 | 8,422 | repository checks and generators (lint gates, this index) |
 | `apps/mobile` | 42 | 5,292 | Expo — customer mobile app |
@@ -71,7 +71,7 @@ Each is independent: no module imports another except through a named
 | [`marketing`](modules/marketing.md) | core | MODULES allowlist | 2 | — |
 | [`measurements`](modules/measurements.md) | apparel | MODULES allowlist | 12 | 4 |
 | [`orders`](modules/orders.md) | core | MODULES allowlist | 8 | 5 |
-| [`organization`](modules/organization.md) | core | MODULES allowlist | 10 | 5 |
+| [`organization`](modules/organization.md) | core | MODULES allowlist | 12 | 5 |
 | [`parties`](modules/parties.md) | core | MODULES allowlist | 3 | 2 |
 | [`payments`](modules/payments.md) | core | MODULES allowlist | 6 | 1 |
 | [`pos`](modules/pos.md) | core | MODULES allowlist | 15 | 4 |
@@ -100,7 +100,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`common`](core/common.md) | 4 |  |
 | [`config`](core/config.md) | 6 |  |
 | [`events`](core/events.md) | 5 | The catalogue of domain events. |
-| [`extension-points`](core/extension-points.md) | 4 |  |
+| [`extension-points`](core/extension-points.md) | 5 |  |
 | [`health`](core/health.md) | 2 |  |
 | [`notifications`](core/notifications.md) | 19 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |
 | [`prisma`](core/prisma.md) | 4 | Single import point for the generated Prisma client. |

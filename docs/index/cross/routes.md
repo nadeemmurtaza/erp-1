@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **325** endpoints across **59** controllers, with the access rule that actually guards each one.
+All **327** endpoints across **59** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -103,7 +103,7 @@ never authorization.
 | DELETE | `/addresses/:id` | signed-in | `AddressesController.remove` | Remove a saved address |
 | PATCH | `/addresses/:id` | signed-in | `AddressesController.update` | Edit a saved address |
 
-### [`analytics`](../modules/analytics.md) (6)
+### [`analytics`](../modules/analytics.md) (8)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -111,6 +111,8 @@ never authorization.
 | GET | `/admin/analytics/dashboard` | `analytics.view` | `AnalyticsController.dashboard` | Everything the dashboard shows, in one request |
 | GET | `/admin/analytics/extended` | `analytics.view` | `AnalyticsController.extended` | Funnel, geography, fulfilment and payment-mix metrics |
 | PATCH | `/admin/analytics/monthly-target` | `analytics.view` | `AnalyticsController.setMonthlyTarget` | Set the monthly revenue target shown on the dashboard |
+| GET | `/admin/analytics/orders/fulfilment` | `analytics.view` | `AnalyticsController.ordersFulfilment` | Average and median time spent in each order-status transition |
+| GET | `/admin/analytics/orders/overview` | `analytics.view` | `AnalyticsController.ordersOverview` | Open orders right now — ageing buckets, the oldest worklist, by-city and by-pay… |
 | GET | `/admin/analytics/stitching` | `analytics.view` | `AnalyticsController.stitching` | Which garments and style options drive the stitching business |
 | GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` | Visitor counts, view-to-order funnel and traffic sources |
 

@@ -138,6 +138,16 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['orders.manage'],
     group: 'orders',
     module: 'orders',
+    children: [
+      {
+        key: 'orders-insights',
+        label: 'Insights',
+        href: '/admin/orders/insights',
+        permissions: ['analytics.view'],
+        group: 'orders',
+        module: 'analytics',
+      },
+    ],
   },
   {
     key: 'payments',

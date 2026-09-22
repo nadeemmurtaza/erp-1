@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1224,
-    "lines": 191040,
-    "routes": 325,
+    "files": 1226,
+    "lines": 191692,
+    "routes": 327,
     "controllers": 59,
     "models": 124,
     "enums": 53,
     "migrations": 59,
     "events": 37,
     "permissions": 41,
-    "screens": 141,
+    "screens": 142,
     "crons": 8,
-    "specs": 120,
+    "specs": 121,
     "designLaws": 150
   },
   "designLaws": [
@@ -1083,9 +1083,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 505,
-      "lines": 68143,
-      "bytes": 2478089,
+      "files": 506,
+      "lines": 68565,
+      "bytes": 2495713,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1101,9 +1101,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 247,
-      "lines": 37940,
-      "bytes": 1400750,
+      "files": 248,
+      "lines": 38170,
+      "bytes": 1409697,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -1172,12 +1172,13 @@
         "apps/api/src/modules/analytics/analytics.comparison.spec.ts",
         "apps/api/src/modules/analytics/analytics.controller.ts",
         "apps/api/src/modules/analytics/analytics.module.ts",
+        "apps/api/src/modules/analytics/analytics.orders.spec.ts",
         "apps/api/src/modules/analytics/analytics.service.ts",
         "apps/api/src/modules/analytics/dto/analytics.dto.ts",
         "apps/api/src/modules/analytics/supply-chain-digest.cron.spec.ts",
         "apps/api/src/modules/analytics/supply-chain-digest.cron.ts"
       ],
-      "routes": 6,
+      "routes": 8,
       "page": "docs/index/modules/analytics.md"
     },
     {
@@ -2187,7 +2188,7 @@
       "controller": "AnalyticsController",
       "handler": "comparison",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 52,
+      "line": 66,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2235,7 +2236,7 @@
       "controller": "AnalyticsController",
       "handler": "setMonthlyTarget",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 69,
+      "line": 83,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2243,6 +2244,38 @@
       "public": false,
       "authOnly": false,
       "summary": "Set the monthly revenue target shown on the dashboard"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/orders/fulfilment",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "ordersFulfilment",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 50,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Average and median time spent in each order-status transition"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/orders/overview",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "ordersOverview",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 44,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Open orders right now — ageing buckets, the oldest worklist, by-city and by-payment"
     },
     {
       "method": "GET",
@@ -2267,7 +2300,7 @@
       "controller": "AnalyticsController",
       "handler": "visitors",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 44,
+      "line": 58,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -6960,10 +6993,12 @@
         "GET /admin/analytics/dashboard",
         "GET /admin/analytics/extended",
         "PATCH /admin/analytics/monthly-target",
+        "GET /admin/analytics/orders/fulfilment",
+        "GET /admin/analytics/orders/overview",
         "GET /admin/analytics/stitching",
         "GET /admin/analytics/visitors"
       ],
-      "uiSites": 3,
+      "uiSites": 5,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -22472,6 +22507,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/orders/insights",
+      "file": "apps/web/src/app/(admin)/admin/(app)/orders/insights/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/payments",
       "file": "apps/web/src/app/(admin)/admin/(app)/payments/page.tsx",
       "client": true,
@@ -23552,6 +23596,17 @@
       "cases": 8,
       "describes": [
         "AnalyticsService.comparison"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/analytics/analytics.orders.spec.ts",
+      "module": "analytics",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "AnalyticsService — WO-D.1 orders overview/fulfilment",
+        "ordersOverview",
+        "ordersFulfilment"
       ]
     },
     {
@@ -28657,8 +28712,8 @@
       "path": "apps/api/src/modules/analytics/analytics.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 73,
-      "bytes": 3077,
+      "lines": 87,
+      "bytes": 3595,
       "doc": "",
       "symbols": [
         {
@@ -28684,52 +28739,81 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/analytics/analytics.orders.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 199,
+      "bytes": 8968,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/modules/analytics/analytics.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 779,
-      "bytes": 30626,
+      "lines": 988,
+      "bytes": 38764,
       "doc": "",
       "symbols": [
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 17
+          "line": 20
         },
         {
           "name": "DashboardSummary",
           "kind": "interface",
-          "line": 24
+          "line": 27
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 44
+          "line": 47
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 53
+          "line": 56
         },
         {
-          "name": "ComparisonBucket",
+          "name": "OrderAgeingBucket",
           "kind": "interface",
-          "line": 74
+          "line": 77
         },
         {
-          "name": "ComparisonAnalytics",
+          "name": "OrdersOverview",
           "kind": "interface",
-          "line": 84
+          "line": 82
         },
         {
-          "name": "VisitorAnalytics",
+          "name": "OrderTransitionTiming",
+          "kind": "interface",
+          "line": 91
+        },
+        {
+          "name": "OrdersFulfilment",
           "kind": "interface",
           "line": 99
         },
         {
+          "name": "ComparisonBucket",
+          "kind": "interface",
+          "line": 104
+        },
+        {
+          "name": "ComparisonAnalytics",
+          "kind": "interface",
+          "line": 114
+        },
+        {
+          "name": "VisitorAnalytics",
+          "kind": "interface",
+          "line": 129
+        },
+        {
           "name": "AnalyticsService",
           "kind": "class",
-          "line": 121
+          "line": 151
         }
       ]
     },
@@ -35590,17 +35674,32 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/orders/insights/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 183,
+      "bytes": 7624,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrderInsightsPage",
+          "kind": "default",
+          "line": 20
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/orders/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 298,
-      "bytes": 10276,
+      "lines": 308,
+      "bytes": 10632,
       "doc": "",
       "symbols": [
         {
           "name": "AdminOrdersPage",
           "kind": "default",
-          "line": 38
+          "line": 39
         }
       ]
     },
@@ -36986,8 +37085,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 458,
-      "bytes": 12022,
+      "lines": 468,
+      "bytes": 12256,
       "doc": "",
       "symbols": [
         {
@@ -37018,12 +37117,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 428
+          "line": 438
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 443
+          "line": 453
         }
       ]
     },
@@ -38079,8 +38178,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 129,
-      "bytes": 4951,
+      "lines": 130,
+      "bytes": 4996,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -38516,8 +38615,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 807,
-      "bytes": 21613,
+      "lines": 833,
+      "bytes": 22301,
       "doc": "",
       "symbols": [
         {
@@ -38721,149 +38820,169 @@
           "line": 484
         },
         {
+          "name": "OrderAgeingBucket",
+          "kind": "interface",
+          "line": 492
+        },
+        {
+          "name": "OrdersOverview",
+          "kind": "interface",
+          "line": 497
+        },
+        {
+          "name": "OrderTransitionTiming",
+          "kind": "interface",
+          "line": 504
+        },
+        {
+          "name": "OrdersFulfilment",
+          "kind": "interface",
+          "line": 512
+        },
+        {
           "name": "EmailAccountPurpose",
           "kind": "type",
-          "line": 492
+          "line": 518
         },
         {
           "name": "EmailAccount",
           "kind": "interface",
-          "line": 494
+          "line": 520
         },
         {
           "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 519
+          "line": 545
         },
         {
           "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 527
+          "line": 553
         },
         {
           "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 535
+          "line": 561
         },
         {
           "name": "InboundEmail",
           "kind": "interface",
-          "line": 542
+          "line": 568
         },
         {
           "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 559
+          "line": 585
         },
         {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 566
+          "line": 592
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 578
+          "line": 604
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 587
+          "line": 613
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 589
+          "line": 615
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 601
+          "line": 627
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 607
+          "line": 633
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 614
+          "line": 640
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 619
+          "line": 645
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 631
+          "line": 657
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 640
+          "line": 666
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 647
+          "line": 673
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 661
+          "line": 687
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 672
+          "line": 698
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 676
+          "line": 702
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 685
+          "line": 711
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 693
+          "line": 719
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 722
+          "line": 748
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 754
+          "line": 780
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 769
+          "line": 795
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 778
+          "line": 804
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 787
+          "line": 813
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 803
+          "line": 829
         }
       ]
     },

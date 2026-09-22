@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-505 files · 68,143 lines
+506 files · 68,565 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -32,7 +32,7 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | `apps/api/prisma/schema` | 84 | 7,895 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 131 | nest module, module |
 | `apps/api/src/core` | 114 | 11,936 | nest module, service, module, controller |
-| `apps/api/src/modules` | 273 | 38,001 | nest module, unit test, service, module |
+| `apps/api/src/modules` | 274 | 38,423 | nest module, unit test, service, module |
 | `apps/api/test` | 18 | 6,036 | e2e test, unit test, module |
 | `apps/api/test/support` | 1 | 43 | module |
 
@@ -54,10 +54,10 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | `apps/api/src/modules/orders/orders.service.ts` | 1,114 | service |  |
 | `apps/api/prisma/schema/migrations/20260816133646_init/migration.sql` | 1,076 | migration |  |
 | `apps/api/src/core/notifications/email/templates.ts` | 1,005 | module |  |
+| `apps/api/src/modules/analytics/analytics.service.ts` | 988 | service |  |
 | `apps/api/test/orders.e2e-spec.ts` | 950 | e2e test |  |
 | `apps/api/src/modules/transfers/transfers.service.spec.ts` | 818 | unit test |  |
 | `apps/api/test/cart.e2e-spec.ts` | 800 | e2e test |  |
-| `apps/api/src/modules/analytics/analytics.service.ts` | 779 | service |  |
 | `apps/api/src/modules/cart/cart.service.ts` | 678 | service |  |
 | `apps/api/src/modules/purchasing/purchasing.service.ts` | 657 | service |  |
 | `apps/api/src/modules/catalog/product-admin.service.ts` | 631 | service |  |

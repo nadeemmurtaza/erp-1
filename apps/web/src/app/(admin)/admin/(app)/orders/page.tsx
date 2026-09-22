@@ -4,7 +4,8 @@ import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { cn } from '@/utils/cn';
 import { ORDER_STATUSES, formatDate, formatMoney } from '@newax/shared';
-import { adminFetch } from '@/lib/admin-client';
+import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { ROUTES } from '@/constants/routes';
 import type { PaginatedResponse } from '@/types/api';
 import { EmptyState, Loading, PageHeader } from '@/components/ui';
 import { StatusBadge, statusLabel } from '@/components/common/status-badge';
@@ -42,6 +43,8 @@ export default function AdminOrdersPage() {
   const [page, setPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+
+  const canViewInsights = getStoredUser()?.permissions.includes('analytics.view') ?? false;
 
   const load = useCallback(async () => {
     setError(null);
@@ -110,6 +113,13 @@ export default function AdminOrdersPage() {
       <PageHeader
         title="Orders"
         description="Confirm, prepare and dispatch. Cancelling an order puts its stock back."
+        action={
+          canViewInsights ? (
+            <Link href={ROUTES.admin.orderInsights} className="btn-secondary">
+              Insights
+            </Link>
+          ) : undefined
+        }
       />
 
       <div className="mb-6 flex flex-wrap gap-3 border-b border-neutral-100 pb-4">

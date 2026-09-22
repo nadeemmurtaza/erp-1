@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
-import type { Prisma } from '../../core/prisma/client';
+import type { OrderStatus, Prisma } from '../../core/prisma/client';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { AppConfigService } from '../../core/config/app-config.service';
@@ -13,6 +13,9 @@ import {
   startOfShopMonth,
 } from '../../core/time/shop-time';
 import { rollUpDays, type MetricBucket } from '../../core/time/metric-window';
+
+/** Placed but not yet DELIVERED, CANCELLED or RETURNED — WO-D.1's "open". */
+const OPEN_ORDER_STATUSES: OrderStatus[] = ['PENDING', 'CONFIRMED', 'PROCESSING', 'READY_TO_SHIP', 'SHIPPED'];
 
 export interface MonthlyTarget {
   targetAmount: number;
@@ -69,6 +72,33 @@ export interface ExtendedAnalytics {
   averageFulfillmentDays: number;
   paymentMethodSplit: Array<{ provider: string; count: number; amount: number }>;
   revenueByCity: Array<{ city: string; revenue: number }>;
+}
+
+export interface OrderAgeingBucket {
+  label: string;
+  count: number;
+}
+
+export interface OrdersOverview {
+  /** Open orders only (not yet DELIVERED/CANCELLED/RETURNED), oldest bucket first. */
+  ageing: OrderAgeingBucket[];
+  /** The 20 longest-open orders, oldest first — the ones a fulfilment desk should look at now. */
+  oldestOpen: Array<{ id: string; number: string; status: string; placedAt: string; ageDays: number }>;
+  byCity: Array<{ city: string; count: number; avgAgeDays: number }>;
+  byPayment: Array<{ provider: string; count: number; avgAgeDays: number }>;
+}
+
+export interface OrderTransitionTiming {
+  from: string;
+  to: string;
+  count: number;
+  avgHours: number;
+  medianHours: number;
+}
+
+export interface OrdersFulfilment {
+  /** Pipeline order (PENDING→CONFIRMED→…), not grouped-row order. */
+  transitions: OrderTransitionTiming[];
 }
 
 export interface ComparisonBucket {
@@ -674,6 +704,185 @@ export class AnalyticsService {
         percent: totalPageViews > 0 ? round1((row._count._all / totalPageViews) * 100) : 0,
       })),
       abandonedCarts: cartAbandonment.abandonedCarts,
+    };
+  }
+
+  /**
+   * WO-D.1 (10-admin-dashboard.md Track D) — the ageing table and by-city/
+   * by-payment breakdowns `extendedAnalytics()` doesn't cover. That
+   * endpoint's `revenueByCity`/`paymentMethodSplit` are already-completed
+   * sales (PAID payments, revenue only, trailing window); this is a live
+   * snapshot of OPEN orders — not yet DELIVERED, CANCELLED or RETURNED —
+   * so it takes no `days` window, the same as `summary()`'s
+   * `needsAttention.pendingOrders`. Ships against the live "one endpoint,
+   * one screen" idiom (ADR-019/020) — Track A's report-registry catalog
+   * this doc assumes was never built.
+   *
+   * EXPLAIN (test DB, ~10 orders): every query here plans a sequential
+   * scan, not an index scan — correctly, at this row count Postgres's own
+   * cost estimator prefers it. `@@index([status, placedAt])` on `Order`
+   * exists (orders.prisma) and is what the planner will switch to once a
+   * real deployment's row count makes it cheaper; nothing here needs a new
+   * index today.
+   */
+  async ordersOverview(): Promise<OrdersOverview> {
+    const [ageingRows, oldestOpen, cityRows, paymentRows] = await Promise.all([
+      this.prisma.$queryRaw<Array<{ bucket: string; count: bigint }>>`
+        SELECT
+          CASE
+            WHEN now() - "placedAt" < interval '2 days' THEN '0-1 days'
+            WHEN now() - "placedAt" < interval '4 days' THEN '2-3 days'
+            WHEN now() - "placedAt" < interval '8 days' THEN '4-7 days'
+            ELSE '8+ days'
+          END AS bucket,
+          COUNT(*) AS count
+        FROM "Order"
+        WHERE "status" IN ('PENDING', 'CONFIRMED', 'PROCESSING', 'READY_TO_SHIP', 'SHIPPED')
+        GROUP BY 1
+      `,
+
+      // The 20 oldest open orders — a fulfilment desk's actual worklist, not
+      // a ranking that needs a bigger LIMIT. status+placedAt is indexed
+      // (orders.prisma @@index([status, placedAt])).
+      this.prisma.order.findMany({
+        where: { status: { in: OPEN_ORDER_STATUSES } },
+        orderBy: { placedAt: 'asc' },
+        take: 20,
+        select: { id: true, number: true, status: true, placedAt: true },
+      }),
+
+      this.prisma.$queryRaw<Array<{ city: string; count: bigint; avg_age_days: number | null }>>`
+        SELECT COALESCE("shippingAddress"->>'city', 'Unknown') AS city,
+               COUNT(*) AS count,
+               AVG(EXTRACT(EPOCH FROM (now() - "placedAt")) / 86400.0)::float8 AS avg_age_days
+        FROM "Order"
+        WHERE "status" IN ('PENDING', 'CONFIRMED', 'PROCESSING', 'READY_TO_SHIP', 'SHIPPED')
+        GROUP BY 1
+        ORDER BY count DESC
+        LIMIT 10
+      `,
+
+      // DISTINCT ON picks each order's first-ever payment attempt
+      // (createdAt ascending), so an order with a failed-then-retried
+      // payment is counted once, under the method actually tried first.
+      this.prisma.$queryRaw<Array<{ provider: string; count: bigint; avg_age_days: number | null }>>`
+        SELECT provider, COUNT(*) AS count, AVG(age_days)::float8 AS avg_age_days
+        FROM (
+          SELECT DISTINCT ON (p."orderId")
+            p.provider,
+            EXTRACT(EPOCH FROM (now() - o."placedAt")) / 86400.0 AS age_days
+          FROM "Payment" p
+          JOIN "Order" o ON o.id = p."orderId"
+          WHERE o."status" IN ('PENDING', 'CONFIRMED', 'PROCESSING', 'READY_TO_SHIP', 'SHIPPED')
+          ORDER BY p."orderId", p."createdAt" ASC
+        ) first_payment
+        GROUP BY provider
+        ORDER BY count DESC
+      `,
+    ]);
+
+    const bucketOrder = ['0-1 days', '2-3 days', '4-7 days', '8+ days'];
+    const bucketCounts = new Map(ageingRows.map((row) => [row.bucket, Number(row.count)]));
+    const now = Date.now();
+
+    return {
+      ageing: bucketOrder.map((label) => ({ label, count: bucketCounts.get(label) ?? 0 })),
+      oldestOpen: oldestOpen.map((order) => ({
+        id: order.id,
+        number: order.number,
+        status: order.status,
+        placedAt: order.placedAt.toISOString(),
+        ageDays: Math.floor((now - order.placedAt.getTime()) / 86_400_000),
+      })),
+      byCity: cityRows.map((row) => ({
+        city: row.city,
+        count: Number(row.count),
+        avgAgeDays: round1(row.avg_age_days ?? 0),
+      })),
+      byPayment: paymentRows.map((row) => ({
+        provider: row.provider,
+        count: Number(row.count),
+        avgAgeDays: round1(row.avg_age_days ?? 0),
+      })),
+    };
+  }
+
+  /**
+   * WO-D.1 — average and median time spent in each pipeline state, from
+   * `OrderStatusEvent` (orders.prisma). Every row there already IS a
+   * transition: `fromStatus` is always the order's status at the moment of
+   * the call (`OrdersService.changeStatus` writes `fromStatus: order.status`,
+   * a non-nullable column), never a genesis row — so "time in fromStatus" is
+   * just the gap to the PREVIOUS event for that same order, or to
+   * `placedAt` for an order's first-ever transition.
+   *
+   * EXPLAIN (test DB, ~10 orders): a sequential scan on both tables — the
+   * right plan at this size. `@@index([orderId, createdAt])` on
+   * `OrderStatusEvent` (orders.prisma) is exactly the join/window key this
+   * query needs and is what the planner switches to once row count justifies
+   * it; no new index needed.
+   */
+  async ordersFulfilment(days = 90): Promise<OrdersFulfilment> {
+    const start = this.windowStart(days);
+
+    const rows = await this.prisma.$queryRaw<
+      Array<{
+        from_status: string;
+        to_status: string;
+        count: bigint;
+        avg_hours: number | null;
+        median_hours: number | null;
+      }>
+    >`
+      WITH gaps AS (
+        SELECT
+          e."fromStatus" AS from_status,
+          e."toStatus" AS to_status,
+          EXTRACT(EPOCH FROM (
+            e."createdAt" - COALESCE(
+              LAG(e."createdAt") OVER (PARTITION BY e."orderId" ORDER BY e."createdAt"),
+              o."placedAt"
+            )
+          )) / 3600.0 AS hours
+        FROM "OrderStatusEvent" e
+        JOIN "Order" o ON o.id = e."orderId"
+        WHERE e."createdAt" >= ${start} AND e."fromStatus" IS NOT NULL
+      )
+      SELECT
+        from_status,
+        to_status,
+        COUNT(*) AS count,
+        AVG(hours)::float8 AS avg_hours,
+        PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY hours)::float8 AS median_hours
+      FROM gaps
+      GROUP BY from_status, to_status
+    `;
+
+    const pipelineOrder = [
+      'PENDING',
+      'CONFIRMED',
+      'PROCESSING',
+      'READY_TO_SHIP',
+      'SHIPPED',
+      'DELIVERED',
+      'CANCELLED',
+      'RETURNED',
+    ];
+    const rank = (status: string) => {
+      const index = pipelineOrder.indexOf(status);
+      return index === -1 ? pipelineOrder.length : index;
+    };
+
+    return {
+      transitions: rows
+        .map((row) => ({
+          from: row.from_status,
+          to: row.to_status,
+          count: Number(row.count),
+          avgHours: round1(row.avg_hours ?? 0),
+          medianHours: round1(row.median_hours ?? 0),
+        }))
+        .sort((a, b) => rank(a.from) - rank(b.from) || rank(a.to) - rank(b.to)),
     };
   }
 

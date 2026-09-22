@@ -487,6 +487,32 @@ export interface MonthlyTarget {
   percent: number;
 }
 
+// --- WO-D.1: orders overview / fulfilment ------------------------------------
+
+export interface OrderAgeingBucket {
+  label: string;
+  count: number;
+}
+
+export interface OrdersOverview {
+  ageing: OrderAgeingBucket[];
+  oldestOpen: Array<{ id: string; number: string; status: string; placedAt: string; ageDays: number }>;
+  byCity: Array<{ city: string; count: number; avgAgeDays: number }>;
+  byPayment: Array<{ provider: string; count: number; avgAgeDays: number }>;
+}
+
+export interface OrderTransitionTiming {
+  from: string;
+  to: string;
+  count: number;
+  avgHours: number;
+  medianHours: number;
+}
+
+export interface OrdersFulfilment {
+  transitions: OrderTransitionTiming[];
+}
+
 // --- Settings: roles & permissions, audit log --------------------------------
 
 export type EmailAccountPurpose = 'TRANSACTIONAL' | 'MARKETING' | 'SUPPORT';

@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 505 tracked files in `apps/api`, by directory.
+All 506 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -701,14 +701,15 @@ All 505 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `address.dto.ts` | dto | 113 |  |
 
-### `apps/api/src/modules/analytics` (6)
+### `apps/api/src/modules/analytics` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `analytics.comparison.spec.ts` | unit test | 309 |  |
-| `analytics.controller.ts` | controller | 73 |  |
+| `analytics.controller.ts` | controller | 87 |  |
 | `analytics.module.ts` | nest module | 11 |  |
-| `analytics.service.ts` | service | 779 |  |
+| `analytics.orders.spec.ts` | unit test | 199 |  |
+| `analytics.service.ts` | service | 988 |  |
 | `supply-chain-digest.cron.spec.ts` | unit test | 254 |  |
 | `supply-chain-digest.cron.ts` | scheduled job | 257 |  |
 

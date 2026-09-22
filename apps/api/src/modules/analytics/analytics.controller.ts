@@ -39,6 +39,20 @@ export class AnalyticsController {
     return this.analytics.extendedAnalytics(Math.min(Math.max(days, 7), 365));
   }
 
+  @Get('orders/overview')
+  @ApiOperation({ summary: 'Open orders right now — ageing buckets, the oldest worklist, by-city and by-payment' })
+  ordersOverview() {
+    return this.analytics.ordersOverview();
+  }
+
+  @Get('orders/fulfilment')
+  @ApiOperation({ summary: 'Average and median time spent in each order-status transition' })
+  ordersFulfilment(
+    @Query('days', new DefaultValuePipe(90), ParseIntPipe) days: number,
+  ) {
+    return this.analytics.ordersFulfilment(Math.min(Math.max(days, 7), 365));
+  }
+
   @Get('visitors')
   @ApiOperation({ summary: 'Visitor counts, view-to-order funnel and traffic sources' })
   visitors(

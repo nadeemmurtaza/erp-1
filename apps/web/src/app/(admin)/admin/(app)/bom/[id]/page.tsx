@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { use, useEffect, useState } from 'react';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
@@ -117,11 +116,6 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
       <PageHeader
         title={recipe.sku}
         description={`Version ${recipe.version}`}
-        context={
-          <Link href="/admin/bom" className="hover:text-neutral-900">
-            ← Recipes
-          </Link>
-        }
         action={
           canManage ? (
             <div className="flex items-center gap-3">

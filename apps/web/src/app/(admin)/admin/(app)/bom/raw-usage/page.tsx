@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { formatMoney, formatQuantity, type RawMaterialUnit } from '@newax/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
@@ -65,11 +64,6 @@ export default function RawUsagePage() {
       <PageHeader
         title="Raw-material usage"
         description="What production actually consumed, over time."
-        context={
-          <Link href="/admin/bom/production" className="hover:text-neutral-900">
-            ← Production
-          </Link>
-        }
       />
 
       {error ? (

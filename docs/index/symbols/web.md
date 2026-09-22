@@ -63,7 +63,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `RecipeDetailPage` | default | :26 |  |
+| `page.tsx` | `RecipeDetailPage` | default | :25 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/new`
 
@@ -99,13 +99,13 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `RawMaterialDetailPage` | default | :41 |  |
+| `page.tsx` | `RawMaterialDetailPage` | default | :40 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/raw-usage`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `RawUsagePage` | default | :34 | Raw-material consumption over time — the "did this actually get used" question a production run's o… |
+| `page.tsx` | `RawUsagePage` | default | :33 | Raw-material consumption over time — the "did this actually get used" question a production run's o… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/br/[branchId]`
 
@@ -147,7 +147,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminDesignPage` | default | :32 | One style question, and the answers a customer can give it. |
+| `page.tsx` | `AdminDesignPage` | default | :30 | One style question, and the answers a customer can give it. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/email-accounts`
 
@@ -159,7 +159,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `EmailAccountPage` | default | :36 | One connected mailbox — or a new one. |
+| `page.tsx` | `EmailAccountPage` | default | :35 | One connected mailbox — or a new one. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/email-templates`
 
@@ -183,7 +183,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `ExpenseCategoriesPage` | default | :25 | Expense categories — one page, one job (Law 5): decide what an expense can be classified as, and wh… |
+| `page.tsx` | `ExpenseCategoriesPage` | default | :24 | Expense categories — one page, one job (Law 5): decide what an expense can be classified as, and wh… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/garments`
 
@@ -195,7 +195,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminGarmentPage` | default | :36 | One garment: what it is called, what it costs, and what the tailor measures. |
+| `page.tsx` | `AdminGarmentPage` | default | :34 | One garment: what it is called, what it costs, and what the tailor measures. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/import`
 
@@ -303,7 +303,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminOrderDetailPage` | default | :104 |  |
+| `page.tsx` | `AdminOrderDetailPage` | default | :102 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/orders/insights`
 

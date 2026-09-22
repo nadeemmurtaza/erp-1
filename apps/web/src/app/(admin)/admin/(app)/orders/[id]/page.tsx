@@ -1,10 +1,8 @@
 'use client';
 
 import { use, useCallback, useEffect, useState } from 'react';
-import Link from 'next/link';
 import { formatDate, formatDateTime, formatMoney } from '@newax/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
-import { ROUTES } from '@/constants/routes';
 import { Disclosure, Loading, PageHeader } from '@/components/ui';
 import { StatusBadge, statusLabel } from '@/components/common/status-badge';
 import { paymentProviderLabel } from '@/constants/payment-methods';
@@ -225,11 +223,6 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
   return (
     <>
       <PageHeader
-        context={
-          <Link href={ROUTES.admin.orders} className="hover:text-neutral-900">
-            ← Orders
-          </Link>
-        }
         title={
           <span className="flex items-center gap-3">
             {order.number}

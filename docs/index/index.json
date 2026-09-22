@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 1236,
-    "lines": 195022,
+    "lines": 195019,
     "routes": 338,
     "controllers": 59,
     "models": 124,
@@ -1079,7 +1079,7 @@
     "infra": {
       "files": 55,
       "lines": 27846,
-      "bytes": 1092304,
+      "bytes": 1092313,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -1102,8 +1102,8 @@
     },
     "web": {
       "files": 253,
-      "lines": 39234,
-      "bytes": 1449172,
+      "lines": 39231,
+      "bytes": 1449680,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -35507,14 +35507,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 183,
-      "bytes": 6091,
+      "lines": 177,
+      "bytes": 5921,
       "doc": "",
       "symbols": [
         {
           "name": "RecipeDetailPage",
           "kind": "default",
-          "line": 26
+          "line": 25
         }
       ]
     },
@@ -35552,8 +35552,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/production/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 119,
-      "bytes": 3679,
+      "lines": 114,
+      "bytes": 3525,
       "doc": "",
       "symbols": [
         {
@@ -35597,14 +35597,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 273,
-      "bytes": 8949,
+      "lines": 267,
+      "bytes": 8759,
       "doc": "",
       "symbols": [
         {
           "name": "RawMaterialDetailPage",
           "kind": "default",
-          "line": 41
+          "line": 40
         }
       ]
     },
@@ -35627,14 +35627,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/raw-usage/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 143,
-      "bytes": 4772,
+      "lines": 137,
+      "bytes": 4588,
       "doc": "",
       "symbols": [
         {
           "name": "RawUsagePage",
           "kind": "default",
-          "line": 34
+          "line": 33
         }
       ]
     },
@@ -35717,14 +35717,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/designs/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 467,
-      "bytes": 17789,
+      "lines": 458,
+      "bytes": 17536,
       "doc": "",
       "symbols": [
         {
           "name": "AdminDesignPage",
           "kind": "default",
-          "line": 32
+          "line": 30
         }
       ]
     },
@@ -35747,14 +35747,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 666,
-      "bytes": 24315,
+      "lines": 658,
+      "bytes": 24089,
       "doc": "",
       "symbols": [
         {
           "name": "EmailAccountPage",
           "kind": "default",
-          "line": 36
+          "line": 35
         }
       ]
     },
@@ -35807,14 +35807,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 220,
-      "bytes": 7047,
+      "lines": 214,
+      "bytes": 6860,
       "doc": "",
       "symbols": [
         {
           "name": "ExpenseCategoriesPage",
           "kind": "default",
-          "line": 25
+          "line": 24
         }
       ]
     },
@@ -35837,14 +35837,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/garments/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 521,
-      "bytes": 20228,
+      "lines": 512,
+      "bytes": 19983,
       "doc": "",
       "symbols": [
         {
           "name": "AdminGarmentPage",
           "kind": "default",
-          "line": 36
+          "line": 34
         }
       ]
     },
@@ -36137,14 +36137,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 539,
-      "bytes": 19882,
+      "lines": 532,
+      "bytes": 19659,
       "doc": "",
       "symbols": [
         {
           "name": "AdminOrderDetailPage",
           "kind": "default",
-          "line": 104
+          "line": 102
         }
       ]
     },
@@ -37415,8 +37415,8 @@
       "path": "apps/web/src/components/admin/admin-shell.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 410,
-      "bytes": 14073,
+      "lines": 469,
+      "bytes": 16413,
       "doc": "",
       "symbols": [
         {
@@ -43876,7 +43876,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 402,
-      "bytes": 17660,
+      "bytes": 17669,
       "doc": "",
       "symbols": [
         {

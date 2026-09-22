@@ -1,7 +1,6 @@
 'use client';
 
 import { use, useCallback, useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { formatDateTime } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
@@ -210,16 +209,10 @@ export default function EmailAccountPage({ params }: { params: Promise<{ id: str
     }
   }
 
-  const back = (
-    <Link href={ROUTES.admin.emailAccounts} className="hover:text-neutral-900">
-      &larr; Email accounts
-    </Link>
-  );
-
   if (loading) {
     return (
       <>
-        <PageHeader title="Mailbox" context={back} />
+        <PageHeader title="Mailbox" />
         <Loading />
       </>
     );
@@ -228,7 +221,7 @@ export default function EmailAccountPage({ params }: { params: Promise<{ id: str
   if (!isNew && !account) {
     return (
       <>
-        <PageHeader title="Mailbox" context={back} />
+        <PageHeader title="Mailbox" />
         <p role="alert" className="text-sm text-feedback-negative">
           {error ?? 'That mailbox is no longer connected.'}
         </p>
@@ -249,7 +242,6 @@ export default function EmailAccountPage({ params }: { params: Promise<{ id: str
     <>
       <PageHeader
         title={isNew ? 'Connect a mailbox' : account!.label}
-        context={back}
         action={
           <button type="button" onClick={() => void save()} disabled={saving} className="btn-primary">
             {saving ? 'Saving…' : isNew ? 'Connect mailbox' : 'Save changes'}

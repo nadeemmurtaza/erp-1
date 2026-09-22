@@ -114,7 +114,7 @@ All 253 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 183 |  |
+| `page.tsx` | page | 177 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/new` (1)
 
@@ -132,7 +132,7 @@ All 253 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 119 |  |
+| `page.tsx` | page | 114 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/production/new` (1)
 
@@ -150,13 +150,13 @@ All 253 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 273 |  |
+| `page.tsx` | page | 267 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/raw-usage` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 143 |  |
+| `page.tsx` | page | 137 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/br/[branchId]` (1)
 
@@ -198,7 +198,7 @@ All 253 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 467 |  |
+| `page.tsx` | page | 458 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/email-accounts` (1)
 
@@ -210,7 +210,7 @@ All 253 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 666 |  |
+| `page.tsx` | page | 658 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/email-templates` (1)
 
@@ -234,7 +234,7 @@ All 253 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 220 |  |
+| `page.tsx` | page | 214 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/garments` (1)
 
@@ -246,7 +246,7 @@ All 253 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 521 |  |
+| `page.tsx` | page | 512 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/import` (1)
 
@@ -354,7 +354,7 @@ All 253 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 539 |  |
+| `page.tsx` | page | 532 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/orders/insights` (1)
 
@@ -728,7 +728,7 @@ All 253 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `admin-shell.tsx` | component | 410 |  |
+| `admin-shell.tsx` | component | 469 |  |
 | `command-palette.tsx` | component | 285 |  |
 | `comparison-chart.tsx` | component | 219 |  |
 | `deployment-modules.tsx` | component | 21 |  |

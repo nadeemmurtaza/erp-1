@@ -3,6 +3,7 @@
 import { useEffect, useState, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { adminFetch } from '@/lib/admin-client';
+import type { Location } from '@/types/api';
 
 interface PurchaseOrder {
   id: string;
@@ -28,6 +29,8 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
   const router = useRouter();
   
   const [po, setPo] = useState<PurchaseOrder | null>(null);
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [locationId, setLocationId] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(true);
 
@@ -49,6 +52,13 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
       })
       .catch((cause) => setError(cause instanceof Error ? cause.message : 'Could not load purchase order'))
       .finally(() => setBusy(false));
+
+    adminFetch<Location[]>('/admin/inventory/locations')
+      .then((result) => {
+        setLocations(result);
+        setLocationId(result.find((location) => location.isDefault)?.id ?? result[0]?.id ?? '');
+      })
+      .catch(() => undefined);
   }, [id]);
 
   const handleSubmit = async () => {
@@ -69,7 +79,7 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
 
       await adminFetch(`/admin/purchase-orders/${id}/receive`, {
         method: 'POST',
-        body: { items, notes: notes || undefined },
+        body: { items, notes: notes || undefined, locationId: locationId || undefined },
       });
       
       router.push(`/admin/purchase-orders/${id}`);
@@ -146,6 +156,27 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
       </div>
 
       <div className="card p-6 max-w-2xl">
+        {locations.length > 1 ? (
+          <div className="mb-6">
+            <label htmlFor="receipt-location" className="block mb-2 text-sm font-medium text-neutral-900">
+              Received at
+            </label>
+            <select
+              id="receipt-location"
+              className="field-input w-full"
+              value={locationId}
+              onChange={(e) => setLocationId(e.target.value)}
+            >
+              {locations.map((location) => (
+                <option key={location.id} value={location.id}>
+                  {location.name}
+                  {location.type === 'WAREHOUSE' && !location.retailBrandId ? ' (org warehouse)' : ''}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
+
         <label htmlFor="receipt-notes" className="block mb-2 text-sm font-medium text-neutral-900">
           Receipt Notes (optional)
         </label>

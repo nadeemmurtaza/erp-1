@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 16 files
 
 Source: `apps/api/src/modules/inventory/`
 
-## Files (16 · 2,020 lines)
+## Files (16 · 2,026 lines)
 
 All paths relative to `apps/api/src/modules/inventory/dto`.
 
@@ -24,7 +24,7 @@ All paths relative to `apps/api/src/modules/inventory/dto`.
 | `inventory.listener.ts` | event subscriber | 61 | 1 |  |
 | `inventory.module.ts` | nest module | 18 | 1 |  |
 | `inventory.service.spec.ts` | unit test | 442 | — |  |
-| `inventory.service.ts` | service | 576 | 3 |  |
+| `inventory.service.ts` | service | 582 | 3 |  |
 | `stock-count.controller.ts` | controller | 62 | 1 | JwtAuthGuard is registered globally (see core/auth/decorators.ts), so a |
 | `stock-count.service.spec.ts` | unit test | 95 | — |  |
 | `stock-count.service.ts` | service | 233 | 1 |  |
@@ -61,10 +61,10 @@ All paths relative to `apps/api/src/modules/inventory/dto`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `ProductLowStock` | `catalog.product_low_stock` | `inventory.service.ts:361` |
-| `ProductReorderPointReached` | `catalog.product_reorder_point_reached` | `inventory.service.ts:379` |
-| `StockReplenished` | `inventory.stock_replenished` | `inventory.service.ts:396` |
-| `StockVarianceRecorded` | `inventory.stock_variance_recorded` | `inventory.service.ts:347` |
+| `ProductLowStock` | `catalog.product_low_stock` | `inventory.service.ts:367` |
+| `ProductReorderPointReached` | `catalog.product_reorder_point_reached` | `inventory.service.ts:385` |
+| `StockReplenished` | `inventory.stock_replenished` | `inventory.service.ts:402` |
+| `StockVarianceRecorded` | `inventory.stock_variance_recorded` | `inventory.service.ts:353` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:

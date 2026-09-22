@@ -123,9 +123,19 @@ export class TransfersService {
             create: lines.map((line) => ({
               variantId: line.variantId,
               quantityDispatched: line.quantity,
-              // Snapshotted only when it will actually be billed (House Rule
-              // 7) — NONE/INTERNAL_PL transfers need no valuation.
-              unitCost: settlementMode === 'INVOICED' ? (costByVariantId.get(line.variantId) ?? 0) : null,
+              // WO-23.3d: snapshotted on EVERY transfer now, not only
+              // INVOICED ones (House Rule 7 — a line is a cost-basis
+              // snapshot the moment it leaves the source). Billing (below,
+              // the InterBranchInvoice) is still INVOICED-only — that is a
+              // separate question ("does money change hands") from this one
+              // ("what did this stock cost, so the arriving StockMovement
+              // carries a true landed-cost record — see ADR-024 on why that
+              // stops short of ProductVariant.costPrice"). An org-warehouse
+              // →branch transfer settles NONE (resolveTransferSettlement()
+              // below) but still needs this value so receive() can record
+              // it — R13's own "so a branch's margin reflects what the
+              // group actually paid".
+              unitCost: costByVariantId.get(line.variantId) ?? 0,
             })),
           },
         },
@@ -207,6 +217,17 @@ export class TransfersService {
             },
             tx,
           );
+          // WO-23.3d (ADR-021's own named gap, ADR-024): the landed cost
+          // snapshotted at dispatch, carried through onto the arriving
+          // `StockMovement` itself — ADR-021's literal complaint ("receive()
+          // never feeds it into move()'s unitCost") is fixed exactly here.
+          // Deliberately NOT re-run through weightedAverageCost() into
+          // ProductVariant.costPrice — see ADR-024: `costPrice` is one
+          // GLOBAL field per variant in today's schema, already covering
+          // every location a transfer's two ends share, so a transfer is a
+          // pure relocation of stock already counted in that average, not
+          // new stock entering the pool the way a purchase or a production
+          // run is. Recomputing it here would double-count the same units.
           await this.inventory.move(
             {
               variantId: line.variantId,
@@ -216,6 +237,7 @@ export class TransfersService {
               refType: 'StockTransfer',
               refId: transfer.id,
               actorId,
+              unitCost: line.unitCost ?? undefined,
             },
             tx,
           );
@@ -376,6 +398,21 @@ export class TransfersService {
    * WO-22.1 shipped. `settlementMode` is NONE — R12's "owned→owned inside a
    * brand settles NONE."
    *
+   * Org-central purchasing (WO-23.3d, R13): a `WAREHOUSE`-type Location
+   * with no brand recorded is this deployment's own org-tier stock — R13's
+   * "receives into an org warehouse Location, and pushes stock down as
+   * transfers". Shipping it down to a specific brand's location is not a
+   * sale between two businesses (R12's own reason INVOICED exists for
+   * brand-to-brand); the org already owns the brand it is shipping to, so
+   * it settles NONE like any other owned→owned move, and needs no
+   * `BrandPolicy` gate — the org-level actor dispatching it already holds
+   * authority over the brand's own policy (ADR-022's own reasoning: a
+   * grant wide enough to set the switch does not need to also clear it).
+   * Only the OUTBOUND direction is recognised: a `STORE`-type or otherwise
+   * unbadged Location with no brand is still rejected below, unchanged —
+   * this branch exists for the one shape R13 actually describes, not
+   * every possible null-brand pairing.
+   *
    * Different brands (WO-22.2, R4): a genuine inter-brand transfer needs
    * BOTH locations to name a real brand — crossing from "no brand" into "a
    * brand" is not a coherent request — and checks
@@ -406,6 +443,10 @@ export class TransfersService {
         }
       }
       return { inTransitRetailBrandId: source.retailBrandId, settlementMode: 'NONE' };
+    }
+
+    if (source.type === 'WAREHOUSE' && !source.retailBrandId && destination.retailBrandId) {
+      return { inTransitRetailBrandId: null, settlementMode: 'NONE' };
     }
 
     if (!source.retailBrandId || !destination.retailBrandId) {

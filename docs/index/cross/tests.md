@@ -3,7 +3,7 @@
 
 # Tests
 
-**120** spec files, **1,172** cases. What is already pinned down — and what is not.
+**120** spec files, **1,175** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -137,7 +137,7 @@ regression or an N+1.
 | `apps/api/src/modules/tradingpartners/supplier-digest.listener.spec.ts` | tradingpartners | 3 | SupplierDigestListener |
 | `apps/api/src/modules/tradingpartners/trading-partner-portal.controller.spec.ts` | tradingpartners | 6 | TradingPartnerPortalController · accept |
 | `apps/api/src/modules/tradingpartners/trading-partners.service.spec.ts` | tradingpartners | 32 | TradingPartnersService · create · findOne / update / remove — the not-found guard · rotateInboundKe… |
-| `apps/api/src/modules/transfers/transfers.service.spec.ts` | transfers | 22 | TransfersService · dispatch/receive/cancel (WO-22.1) · brand-policy gating (WO-22.2) · settlement m… |
+| `apps/api/src/modules/transfers/transfers.service.spec.ts` | transfers | 25 | TransfersService · dispatch/receive/cancel (WO-22.1) · brand-policy gating (WO-22.2) · settlement m… |
 | `apps/api/src/modules/users/users-admin.service.spec.ts` | users | 3 | UsersAdminService.create — role selection at creation time |
 | `apps/api/test/backfill-product-options.spec.ts` | api | 4 | backfillProductOptions |
 | `apps/api/test/email-channel.behavior.spec.ts` | api | 33 | env.validation — email cross-field check · isDeliverable · EmailChannel — interface contract · Emai… |

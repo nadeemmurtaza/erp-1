@@ -3,7 +3,7 @@
 
 # Screens
 
-All **138** routable files across the web app, the till and the mobile app.
+All **141** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (71)
+### admin (74)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -102,6 +102,9 @@ _none_
 | `/admin/trading-partners` | page | client | `apps/web/src/app/(admin)/admin/(app)/trading-partners/page.tsx` |
 | `/admin/trading-partners/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/trading-partners/[id]/page.tsx` |
 | `/admin/trading-partners/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/trading-partners/new/page.tsx` |
+| `/admin/transfers` | page | client | `apps/web/src/app/(admin)/admin/(app)/transfers/page.tsx` |
+| `/admin/transfers/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/transfers/[id]/page.tsx` |
+| `/admin/transfers/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/transfers/new/page.tsx` |
 | `/admin/users` | page | client | `apps/web/src/app/(admin)/admin/(app)/users/page.tsx` |
 | `/admin/users/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/users/[id]/page.tsx` |
 

@@ -869,7 +869,7 @@ All 505 tracked files in `apps/api`, by directory.
 | `inventory.listener.ts` | event subscriber | 61 |  |
 | `inventory.module.ts` | nest module | 18 |  |
 | `inventory.service.spec.ts` | unit test | 442 |  |
-| `inventory.service.ts` | service | 576 |  |
+| `inventory.service.ts` | service | 582 |  |
 | `stock-count.controller.ts` | controller | 62 | JwtAuthGuard is registered globally (see core/auth/decorators.ts), so a |
 | `stock-count.service.spec.ts` | unit test | 95 |  |
 | `stock-count.service.ts` | service | 233 |  |
@@ -1183,8 +1183,8 @@ All 505 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `transfers.controller.ts` | controller | 44 |  |
 | `transfers.module.ts` | nest module | 22 |  |
-| `transfers.service.spec.ts` | unit test | 701 |  |
-| `transfers.service.ts` | service | 469 |  |
+| `transfers.service.spec.ts` | unit test | 818 |  |
+| `transfers.service.ts` | service | 510 |  |
 
 ### `apps/api/src/modules/transfers/dto` (1)
 

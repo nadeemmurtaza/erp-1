@@ -53,9 +53,14 @@ export default function PurchaseOrdersPage() {
             Manage incoming stock from suppliers.
           </p>
         </div>
-        <Link href={ROUTES.admin.purchaseOrderNew} className="btn-primary">
-          New PO
-        </Link>
+        <div className="flex gap-2">
+          <Link href={ROUTES.admin.transfers} className="btn-secondary">
+            Transfers
+          </Link>
+          <Link href={ROUTES.admin.purchaseOrderNew} className="btn-primary">
+            New PO
+          </Link>
+        </div>
       </div>
 
       <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-neutral-100 pb-4">

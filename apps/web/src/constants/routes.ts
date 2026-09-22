@@ -76,8 +76,14 @@ export const ROUTES = {
     purchaseOrders: '/admin/purchase-orders',
     purchaseOrderNew: '/admin/purchase-orders/new',
     purchaseOrder: (id: string) => `/admin/purchase-orders/${id}`,
+    purchaseOrderReceive: (id: string) => `/admin/purchase-orders/${id}/receive`,
     suppliers: '/admin/suppliers',
     supplier: (id: string) => `/admin/suppliers/${id}`,
+
+    /** Inter-branch and org-central stock transfers (RETAIL-ERP.md R4, WO-22.1/22.2/22.3, WO-23.3d). Off by default — `transfers` module. */
+    transfers: '/admin/transfers',
+    transferNew: '/admin/transfers/new',
+    transfer: (id: string) => `/admin/transfers/${id}`,
 
     stitching: '/admin/stitching',
     stitchingBookings: '/admin/stitching/bookings',

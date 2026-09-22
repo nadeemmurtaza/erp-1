@@ -333,7 +333,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `ReceiveGoodsPage` | default | :26 |  |
+| `page.tsx` | `ReceiveGoodsPage` | default | :27 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/purchase-orders/new`
 
@@ -412,6 +412,24 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `NewTradingPartnerPage` | default | :7 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/transfers`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `TransfersPage` | default | :20 | Inter-branch and org-central stock transfers (RETAIL-ERP.md R4, WO-22.1/22.2/22.3, WO-23.3d). |
+
+### `apps/web/src/app/(admin)/admin/(app)/transfers/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `TransferDetailPage` | default | :17 | One transfer — its lines, where it stands, and the one action that matters while `IN_TRANSIT`: rece… |
+
+### `apps/web/src/app/(admin)/admin/(app)/transfers/new`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `NewTransferPage` | default | :25 | Dispatch a transfer (RETAIL-ERP.md R4, WO-22.1; org-central purchasing, WO-23.3d) — one local `move… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/users`
 
@@ -660,8 +678,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :47 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :59 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :96 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :420 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :435 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :428 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :443 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
@@ -902,39 +920,44 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `GrantScopeInput` | interface | :381 |  |
 | `api.ts` | `BrandPolicy` | interface | :394 | GET/PATCH /organization/brands/:brandId/policy (WO-23.3b, RETAIL-ERP.md R9/R13) — a brand's own swi… |
 | `api.ts` | `UpdateBrandPolicyInput` | interface | :401 |  |
-| `api.ts` | `StockAdjustment` | interface | :409 | --- Inventory -------------------------------------------------------------- |
-| `api.ts` | `InventoryVariantRow` | interface | :421 |  |
-| `api.ts` | `StitchingAnalytics` | interface | :434 | --- Analytics --------------------------------------------------------------- |
-| `api.ts` | `ExtendedAnalytics` | interface | :440 |  |
-| `api.ts` | `VisitorFunnel` | interface | :451 | --- Visitor analytics -------------------------------------------------------- |
-| `api.ts` | `TrafficSourceRow` | interface | :458 |  |
-| `api.ts` | `VisitorAnalytics` | interface | :464 |  |
-| `api.ts` | `MonthlyTarget` | interface | :473 | Amounts in paisa. |
-| `api.ts` | `EmailAccountPurpose` | type | :481 | --- Settings: roles & permissions, audit log -------------------------------- |
-| `api.ts` | `EmailAccount` | interface | :483 |  |
-| `api.ts` | `EmailTemplateCatalogEntry` | interface | :508 |  |
-| `api.ts` | `RenderedEmailPreview` | interface | :516 |  |
-| `api.ts` | `InboundEmailReply` | interface | :524 | --- Support inbox (IMAP replies) -------------------------------------------- |
-| `api.ts` | `InboundEmail` | interface | :531 |  |
-| `api.ts` | `PermissionDefinition` | interface | :548 |  |
-| `api.ts` | `AuditLogEntry` | interface | :555 |  |
-| `api.ts` | `AuditLogPage` | interface | :567 |  |
-| `api.ts` | `BackOfficeRole` | type | :576 | --- Back-office user management --------------------------------------------- |
-| `api.ts` | `AdminUser` | interface | :578 |  |
-| `api.ts` | `PermissionOverride` | interface | :590 |  |
-| `api.ts` | `HeldRole` | interface | :596 | A custom Role (owner's request) this user holds, with its own permission set inline. |
-| `api.ts` | `UserRoleConflicts` | interface | :603 | Non-blocking advisories — see RolesService.conflictsForUser() on the API. |
-| `api.ts` | `AdminUserDetail` | interface | :608 |  |
-| `api.ts` | `RoleSummary` | interface | :620 | --- Custom roles (owner's request) ----------------------------------------- GET/POST/PATCH/DELETE… |
-| `api.ts` | `RoleWriteResult` | interface | :629 | POST/PATCH /admin/roles response — `duplicateOfRoleName` is a suggestion, never a block. |
-| `api.ts` | `CustomerAddress` | interface | :636 | --- Customer account portal -------------------------------------------------- |
-| `api.ts` | `MeasurementProfile` | interface | :650 |  |
-| `api.ts` | `MeasurementProfileDetail` | interface | :661 |  |
-| `api.ts` | `CustomerOrderSummary` | interface | :665 |  |
-| `api.ts` | `StitchingTimelineEvent` | interface | :674 | One move along a garment's workshop timeline. |
-| `api.ts` | `CustomerOrderItem` | interface | :682 |  |
-| `api.ts` | `CustomerOrder` | interface | :711 | One order as its buyer sees it — signed in, or tracked with a phone number. |
-| `api.ts` | `PaginatedResult` | interface | :743 |  |
+| `api.ts` | `Location` | interface | :410 | GET /admin/inventory/locations — never an in-transit bucket (WO-22.1). |
+| `api.ts` | `StockAdjustment` | interface | :420 |  |
+| `api.ts` | `InventoryVariantRow` | interface | :432 |  |
+| `api.ts` | `StitchingAnalytics` | interface | :445 | --- Analytics --------------------------------------------------------------- |
+| `api.ts` | `ExtendedAnalytics` | interface | :451 |  |
+| `api.ts` | `VisitorFunnel` | interface | :462 | --- Visitor analytics -------------------------------------------------------- |
+| `api.ts` | `TrafficSourceRow` | interface | :469 |  |
+| `api.ts` | `VisitorAnalytics` | interface | :475 |  |
+| `api.ts` | `MonthlyTarget` | interface | :484 | Amounts in paisa. |
+| `api.ts` | `EmailAccountPurpose` | type | :492 | --- Settings: roles & permissions, audit log -------------------------------- |
+| `api.ts` | `EmailAccount` | interface | :494 |  |
+| `api.ts` | `EmailTemplateCatalogEntry` | interface | :519 |  |
+| `api.ts` | `RenderedEmailPreview` | interface | :527 |  |
+| `api.ts` | `InboundEmailReply` | interface | :535 | --- Support inbox (IMAP replies) -------------------------------------------- |
+| `api.ts` | `InboundEmail` | interface | :542 |  |
+| `api.ts` | `PermissionDefinition` | interface | :559 |  |
+| `api.ts` | `AuditLogEntry` | interface | :566 |  |
+| `api.ts` | `AuditLogPage` | interface | :578 |  |
+| `api.ts` | `BackOfficeRole` | type | :587 | --- Back-office user management --------------------------------------------- |
+| `api.ts` | `AdminUser` | interface | :589 |  |
+| `api.ts` | `PermissionOverride` | interface | :601 |  |
+| `api.ts` | `HeldRole` | interface | :607 | A custom Role (owner's request) this user holds, with its own permission set inline. |
+| `api.ts` | `UserRoleConflicts` | interface | :614 | Non-blocking advisories — see RolesService.conflictsForUser() on the API. |
+| `api.ts` | `AdminUserDetail` | interface | :619 |  |
+| `api.ts` | `RoleSummary` | interface | :631 | --- Custom roles (owner's request) ----------------------------------------- GET/POST/PATCH/DELETE… |
+| `api.ts` | `RoleWriteResult` | interface | :640 | POST/PATCH /admin/roles response — `duplicateOfRoleName` is a suggestion, never a block. |
+| `api.ts` | `CustomerAddress` | interface | :647 | --- Customer account portal -------------------------------------------------- |
+| `api.ts` | `MeasurementProfile` | interface | :661 |  |
+| `api.ts` | `MeasurementProfileDetail` | interface | :672 |  |
+| `api.ts` | `CustomerOrderSummary` | interface | :676 |  |
+| `api.ts` | `StitchingTimelineEvent` | interface | :685 | One move along a garment's workshop timeline. |
+| `api.ts` | `CustomerOrderItem` | interface | :693 |  |
+| `api.ts` | `CustomerOrder` | interface | :722 | One order as its buyer sees it — signed in, or tracked with a phone number. |
+| `api.ts` | `PaginatedResult` | interface | :754 |  |
+| `api.ts` | `StockTransferLine` | interface | :769 | --- Transfers (RETAIL-ERP.md R4, WO-22.1/22.2/22.3, WO-23.3d) --------------- `transfers` module is… |
+| `api.ts` | `InterBranchInvoice` | interface | :778 |  |
+| `api.ts` | `StockTransfer` | interface | :787 |  |
+| `api.ts` | `StockTransferListResult` | interface | :803 |  |
 | `cart.ts` | `CartStitching` | interface | :5 | Shapes returned by the cart endpoints. |
 | `cart.ts` | `CartLine` | interface | :18 |  |
 | `cart.ts` | `Cart` | interface | :37 |  |

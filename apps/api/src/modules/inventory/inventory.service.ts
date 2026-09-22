@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from
 import { DEFAULT_LOCALE, getPersonFullName } from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
-import { Prisma, StockMovement, StockMovementReason } from '../../core/prisma/client';
+import { Prisma, StockMovement, StockMovementReason, type LocationType } from '../../core/prisma/client';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { DomainEvent } from '../../core/events/domain-events';
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
@@ -176,10 +176,16 @@ export class InventoryService implements OnModuleInit {
    * rather than querying Prisma's Location table directly and re-deriving
    * this exclusion.
    */
-  async listLocations(): Promise<{ id: string; name: string; code: string; isDefault: boolean }[]> {
+  async listLocations(): Promise<
+    { id: string; name: string; code: string; isDefault: boolean; type: LocationType; retailBrandId: string | null }[]
+  > {
     return this.prisma.location.findMany({
       where: { isActive: true, type: { not: 'IN_TRANSIT' } },
-      select: { id: true, name: true, code: true, isDefault: true },
+      // WO-23.3d: type/retailBrandId added so a source/destination picker
+      // (transfers) can tell an org warehouse from a branded store — every
+      // existing caller already only destructured the four original fields,
+      // so this is additive, not a breaking change to any of them.
+      select: { id: true, name: true, code: true, isDefault: true, type: true, retailBrandId: true },
       orderBy: { name: 'asc' },
     });
   }

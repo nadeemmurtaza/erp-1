@@ -319,6 +319,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     module: 'purchasing',
   },
   {
+    key: 'transfers',
+    label: 'Transfers',
+    href: '/admin/transfers',
+    permissions: ['transfers.manage'],
+    group: 'stock',
+    module: 'transfers',
+  },
+  {
     key: 'trading-partners',
     label: 'Trading Partners',
     href: '/admin/trading-partners',

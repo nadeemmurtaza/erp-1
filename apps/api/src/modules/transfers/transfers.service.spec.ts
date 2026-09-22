@@ -560,7 +560,7 @@ describe('TransfersService', () => {
       await run();
     }
 
-    it('same brand — settlementMode NONE, no unitCost snapshot, no invoice on receive', async () => {
+    it('same brand — settlementMode NONE, unitCost still snapshotted and recorded on the arriving movement (WO-23.3d), no invoice on receive', async () => {
       const brand = await freshBrand('SettleSameBrand');
       const source = await freshLocation('Source', brand.id);
       const destination = await freshLocation('Destination', brand.id);
@@ -572,7 +572,11 @@ describe('TransfersService', () => {
       createdLocationIds.push(transfer.inTransitLocationId);
 
       expect(transfer.settlementMode).toBe('NONE');
-      expect(transfer.lines[0]!.unitCost).toBeNull();
+      // Billing (the invoice, below) is NONE-only-skipped; the cost-basis
+      // snapshot itself is unconditional now (WO-23.3d) — a `NONE` transfer
+      // still needs to know what the stock cost so receive() can record it
+      // on the arriving StockMovement (ADR-024).
+      expect(transfer.lines[0]!.unitCost).toBe(500);
 
       const received = await transfers.receive(actorId, transfer.id);
       expect((received as any).interBranchInvoice).toBeUndefined();
@@ -581,6 +585,19 @@ describe('TransfersService', () => {
       expect(invoice).toBeNull();
       // NOT `no events at all` — see the note on the cross-brand case below.
       expect(publishedOfType('transfers.inter_branch_invoiced')).toHaveLength(0);
+
+      // The arriving movement carries the landed cost (ADR-021's own named
+      // gap) — but ProductVariant.costPrice is deliberately left untouched
+      // (ADR-024): it is one GLOBAL field already covering both ends of
+      // this transfer, so re-blending it here would double-count stock the
+      // average already includes.
+      const creditMovement = await prisma.stockMovement.findFirstOrThrow({
+        where: { refType: 'StockTransfer', refId: transfer.id, locationId: destination.id },
+      });
+      expect(creditMovement.unitCost).toBe(500);
+
+      const destinationVariant = await prisma.productVariant.findUniqueOrThrow({ where: { id: variant.id } });
+      expect(destinationVariant.costPrice).toBe(500); // unchanged from freshVariant(500)
     });
 
     it('cross-brand INVOICED, received in full — snapshots unitCost at dispatch, raises an InterBranchInvoice at cost, publishes the event', async () => {
@@ -695,6 +712,106 @@ describe('TransfersService', () => {
         const fetched: any = await transfers.get(transfer.id);
         expect(fetched.interBranchInvoice.amountMinor).toBe(500); // 250 * 2
       });
+    });
+  });
+
+  /**
+   * Org-central purchasing (RETAIL-ERP.md R13, WO-23.3d) — a `WAREHOUSE`
+   * Location with no brand recorded is the org's own stock, pushed down to
+   * a specific brand's location. Settles NONE (not INVOICED — the org
+   * already owns the brand it ships to, unlike two separate brands), and
+   * needs no `BrandPolicy` row to proceed (the org-level actor dispatching
+   * already holds authority). See ADR-024 for why `receive()` records the
+   * landed cost on the arriving `StockMovement` but deliberately leaves
+   * `ProductVariant.costPrice` untouched.
+   */
+  describe('org-central purchasing (WO-23.3d)', () => {
+    const createdVariantIds: string[] = [];
+    const createdLocationIds: string[] = [];
+    const createdTransferIds: string[] = [];
+    const createdRetailBrandIds: string[] = [];
+
+    afterAll(async () => {
+      await prisma.stockTransferLine.deleteMany({ where: { transferId: { in: createdTransferIds } } });
+      await prisma.stockTransfer.deleteMany({ where: { id: { in: createdTransferIds } } });
+      await prisma.productVariant.deleteMany({ where: { id: { in: createdVariantIds } } });
+      await prisma.location.deleteMany({ where: { id: { in: createdLocationIds } } });
+      await prisma.retailBrand.deleteMany({ where: { id: { in: createdRetailBrandIds } } });
+    });
+
+    async function freshVariant(costPrice: number) {
+      const variant = await prisma.productVariant.create({
+        data: { productId, sku: `TRANSFER-ORGCENTRAL-${Date.now()}-${Math.random().toString(36).slice(2)}`, costPrice },
+      });
+      createdVariantIds.push(variant.id);
+      return variant;
+    }
+
+    async function freshBrand(name: string) {
+      const brand = await prisma.retailBrand.create({
+        data: { name, slug: `${name.toLowerCase()}-${Date.now()}-${Math.random().toString(36).slice(2)}` },
+      });
+      createdRetailBrandIds.push(brand.id);
+      return brand;
+    }
+
+    async function freshLocation(name: string, retailBrandId: string | null, type: 'STORE' | 'WAREHOUSE' = 'STORE') {
+      const location = await prisma.location.create({
+        data: { name, code: `ORGCENTRAL-${Date.now()}-${Math.random().toString(36).slice(2)}`, retailBrandId, type },
+      });
+      createdLocationIds.push(location.id);
+      return location;
+    }
+
+    it('an org warehouse (no brand) dispatching to a branded destination settles NONE, no BrandPolicy needed', async () => {
+      const brand = await freshBrand('OrgCentralBrand1');
+      const orgWarehouse = await freshLocation('Org warehouse', null, 'WAREHOUSE');
+      const branchStore = await freshLocation('Branch store', brand.id, 'STORE');
+      const variant = await freshVariant(400);
+      await inventory.move({ variantId: variant.id, locationId: orgWarehouse.id, delta: 10, reason: 'ADJUSTMENT' });
+
+      const transfer = await transfers.dispatch(actorId, orgWarehouse.id, branchStore.id, [
+        { variantId: variant.id, quantity: 10 },
+      ]);
+      createdTransferIds.push(transfer.id);
+      createdLocationIds.push(transfer.inTransitLocationId);
+
+      expect(transfer.settlementMode).toBe('NONE');
+      expect(transfer.lines[0]!.unitCost).toBe(400);
+
+      await transfers.receive(actorId, transfer.id);
+
+      const invoice = await prisma.interBranchInvoice.findUnique({ where: { transferId: transfer.id } });
+      expect(invoice).toBeNull();
+
+      const creditMovement = await prisma.stockMovement.findFirstOrThrow({
+        where: { refType: 'StockTransfer', refId: transfer.id, locationId: branchStore.id },
+      });
+      expect(creditMovement.unitCost).toBe(400);
+    });
+
+    it('a STORE-type Location with no brand is still rejected — only a WAREHOUSE dispatching outbound is org-central', async () => {
+      const brand = await freshBrand('OrgCentralBrand2');
+      const unbadgedStore = await freshLocation('Unbadged store', null, 'STORE');
+      const branchStore = await freshLocation('Branch store', brand.id, 'STORE');
+      const variant = await freshVariant(100);
+      await inventory.move({ variantId: variant.id, locationId: unbadgedStore.id, delta: 1, reason: 'ADJUSTMENT' });
+
+      await expect(
+        transfers.dispatch(actorId, unbadgedStore.id, branchStore.id, [{ variantId: variant.id, quantity: 1 }]),
+      ).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it('a branded source shipping to a brandless WAREHOUSE (the reverse direction) is still rejected — not the R13 flow', async () => {
+      const brand = await freshBrand('OrgCentralBrand3');
+      const branchStore = await freshLocation('Branch store', brand.id, 'STORE');
+      const orgWarehouse = await freshLocation('Org warehouse', null, 'WAREHOUSE');
+      const variant = await freshVariant(100);
+      await inventory.move({ variantId: variant.id, locationId: branchStore.id, delta: 1, reason: 'ADJUSTMENT' });
+
+      await expect(
+        transfers.dispatch(actorId, branchStore.id, orgWarehouse.id, [{ variantId: variant.id, quantity: 1 }]),
+      ).rejects.toBeInstanceOf(BadRequestException);
     });
   });
 });

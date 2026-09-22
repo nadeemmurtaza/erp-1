@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1221,
-    "lines": 190093,
+    "files": 1224,
+    "lines": 191040,
     "routes": 325,
     "controllers": 59,
     "models": 124,
@@ -12,7 +12,7 @@
     "migrations": 59,
     "events": 37,
     "permissions": 41,
-    "screens": 138,
+    "screens": 141,
     "crons": 8,
     "specs": 120,
     "designLaws": 150
@@ -1084,8 +1084,8 @@
     },
     "api": {
       "files": 505,
-      "lines": 67979,
-      "bytes": 2468800,
+      "lines": 68143,
+      "bytes": 2478089,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1101,15 +1101,15 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 244,
-      "lines": 37299,
-      "bytes": 1377531,
+      "files": 247,
+      "lines": 37940,
+      "bytes": 1400750,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 247,
-      "lines": 36116,
-      "bytes": 2259325,
+      "lines": 36258,
+      "bytes": 2268258,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -7428,7 +7428,7 @@
         "POST /admin/transfers/:id/cancel",
         "POST /admin/transfers/:id/receive"
       ],
-      "uiSites": 0,
+      "uiSites": 2,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -7968,7 +7968,7 @@
       "name": "catalog.product_low_stock",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:361"
+        "apps/api/src/modules/inventory/inventory.service.ts:367"
       ],
       "subscribers": [
         "apps/api/src/modules/inventory/inventory.listener.ts:19 handleLowStock()"
@@ -7979,7 +7979,7 @@
       "name": "catalog.product_reorder_point_reached",
       "doc": "Distinct from ProductLowStock: fires against reorderPoint, drives auto-replenishment (PO or WorkOrder).",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:379"
+        "apps/api/src/modules/inventory/inventory.service.ts:385"
       ],
       "subscribers": [
         "apps/api/src/modules/production/reorder-work-order.listener.ts:19 onReorderPointReached()",
@@ -8015,7 +8015,7 @@
       "name": "inventory.stock_replenished",
       "doc": "Any positive-delta stock movement — the one signal that can unblock a waiting order line, whatever replenished the stock.",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:396"
+        "apps/api/src/modules/inventory/inventory.service.ts:402"
       ],
       "subscribers": [
         "apps/api/src/modules/orders/backorder.listener.ts:29 onStockReplenished()"
@@ -8027,7 +8027,7 @@
       "doc": "InventoryService.postUnconditional() drove a location negative (RETAIL-ERP.md R5) — never fired by move().",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:279",
-        "apps/api/src/modules/inventory/inventory.service.ts:347"
+        "apps/api/src/modules/inventory/inventory.service.ts:353"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:277 onStockVarianceRecorded()"
@@ -8086,7 +8086,7 @@
       "doc": "An InterBranchInvoice was raised — TransfersService.receive() on an INVOICED transfer (R12/R17, WO-22.3).",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:332",
-        "apps/api/src/modules/transfers/transfers.service.ts:278"
+        "apps/api/src/modules/transfers/transfers.service.ts:300"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:330 onInterBranchTransferInvoiced()"
@@ -22652,6 +22652,33 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/transfers",
+      "file": "apps/web/src/app/(admin)/admin/(app)/transfers/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/transfers/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/transfers/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/transfers/new",
+      "file": "apps/web/src/app/(admin)/admin/(app)/transfers/new/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/users",
       "file": "apps/web/src/app/(admin)/admin/(app)/users/page.tsx",
       "client": true,
@@ -24102,12 +24129,13 @@
       "file": "apps/api/src/modules/transfers/transfers.service.spec.ts",
       "module": "transfers",
       "kind": "unit test",
-      "cases": 22,
+      "cases": 25,
       "describes": [
         "TransfersService",
         "dispatch/receive/cancel (WO-22.1)",
         "brand-policy gating (WO-22.2)",
-        "settlement modes and InterBranchInvoice (WO-22.3)"
+        "settlement modes and InterBranchInvoice (WO-22.3)",
+        "org-central purchasing (WO-23.3d)"
       ]
     },
     {
@@ -30125,8 +30153,8 @@
       "path": "apps/api/src/modules/inventory/inventory.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 576,
-      "bytes": 21751,
+      "lines": 582,
+      "bytes": 22159,
       "doc": "",
       "symbols": [
         {
@@ -32748,8 +32776,8 @@
       "path": "apps/api/src/modules/transfers/transfers.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 701,
-      "bytes": 33486,
+      "lines": 818,
+      "bytes": 39636,
       "doc": "",
       "symbols": []
     },
@@ -32757,8 +32785,8 @@
       "path": "apps/api/src/modules/transfers/transfers.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 469,
-      "bytes": 20101,
+      "lines": 510,
+      "bytes": 22832,
       "doc": "",
       "symbols": [
         {
@@ -35670,14 +35698,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/receive/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 183,
-      "bytes": 6510,
+      "lines": 214,
+      "bytes": 7735,
       "doc": "",
       "symbols": [
         {
           "name": "ReceiveGoodsPage",
           "kind": "default",
-          "line": 26
+          "line": 27
         }
       ]
     },
@@ -35685,8 +35713,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/new/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 286,
-      "bytes": 10428,
+      "lines": 306,
+      "bytes": 11410,
       "doc": "",
       "symbols": [
         {
@@ -35700,8 +35728,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 153,
-      "bytes": 5535,
+      "lines": 158,
+      "bytes": 5706,
       "doc": "",
       "symbols": [
         {
@@ -35888,6 +35916,51 @@
           "name": "TradingPartnersPage",
           "kind": "default",
           "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/transfers/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 163,
+      "bytes": 6335,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TransferDetailPage",
+          "kind": "default",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/transfers/new/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 237,
+      "bytes": 8314,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NewTransferPage",
+          "kind": "default",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/transfers/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 118,
+      "bytes": 4097,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TransfersPage",
+          "kind": "default",
+          "line": 20
         }
       ]
     },
@@ -36913,8 +36986,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 450,
-      "bytes": 11853,
+      "lines": 458,
+      "bytes": 12022,
       "doc": "",
       "symbols": [
         {
@@ -36945,12 +37018,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 420
+          "line": 428
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 435
+          "line": 443
         }
       ]
     },
@@ -38006,8 +38079,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 123,
-      "bytes": 4592,
+      "lines": 129,
+      "bytes": 4951,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -38443,8 +38516,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 754,
-      "bytes": 20046,
+      "lines": 807,
+      "bytes": 21613,
       "doc": "",
       "symbols": [
         {
@@ -38603,169 +38676,194 @@
           "line": 401
         },
         {
+          "name": "Location",
+          "kind": "interface",
+          "line": 410
+        },
+        {
           "name": "StockAdjustment",
           "kind": "interface",
-          "line": 409
+          "line": 420
         },
         {
           "name": "InventoryVariantRow",
           "kind": "interface",
-          "line": 421
+          "line": 432
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 434
+          "line": 445
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 440
+          "line": 451
         },
         {
           "name": "VisitorFunnel",
           "kind": "interface",
-          "line": 451
+          "line": 462
         },
         {
           "name": "TrafficSourceRow",
           "kind": "interface",
-          "line": 458
+          "line": 469
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 464
+          "line": 475
         },
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 473
+          "line": 484
         },
         {
           "name": "EmailAccountPurpose",
           "kind": "type",
-          "line": 481
+          "line": 492
         },
         {
           "name": "EmailAccount",
           "kind": "interface",
-          "line": 483
+          "line": 494
         },
         {
           "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 508
+          "line": 519
         },
         {
           "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 516
+          "line": 527
         },
         {
           "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 524
+          "line": 535
         },
         {
           "name": "InboundEmail",
           "kind": "interface",
-          "line": 531
+          "line": 542
         },
         {
           "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 548
+          "line": 559
         },
         {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 555
+          "line": 566
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 567
+          "line": 578
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 576
+          "line": 587
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 578
+          "line": 589
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 590
+          "line": 601
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 596
+          "line": 607
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 603
+          "line": 614
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 608
+          "line": 619
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 620
+          "line": 631
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 629
+          "line": 640
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 636
+          "line": 647
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 650
+          "line": 661
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 661
+          "line": 672
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 665
+          "line": 676
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 674
+          "line": 685
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 682
+          "line": 693
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 711
+          "line": 722
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 743
+          "line": 754
+        },
+        {
+          "name": "StockTransferLine",
+          "kind": "interface",
+          "line": 769
+        },
+        {
+          "name": "InterBranchInvoice",
+          "kind": "interface",
+          "line": 778
+        },
+        {
+          "name": "StockTransfer",
+          "kind": "interface",
+          "line": 787
+        },
+        {
+          "name": "StockTransferListResult",
+          "kind": "interface",
+          "line": 803
         }
       ]
     },
@@ -41462,8 +41560,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 1373,
-      "bytes": 69659,
+      "lines": 1515,
+      "bytes": 78592,
       "doc": "",
       "symbols": []
     },

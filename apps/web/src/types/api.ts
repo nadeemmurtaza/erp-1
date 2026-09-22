@@ -406,6 +406,17 @@ export interface UpdateBrandPolicyInput {
 
 // --- Inventory --------------------------------------------------------------
 
+/** GET /admin/inventory/locations — never an in-transit bucket (WO-22.1). */
+export interface Location {
+  id: string;
+  name: string;
+  code: string;
+  isDefault: boolean;
+  type: 'STORE' | 'WAREHOUSE' | 'PRODUCTION';
+  /** WO-23.3c/e/d — null means no brand recorded, which an org-central WAREHOUSE Location uses on purpose (RETAIL-ERP.md R13). */
+  retailBrandId: string | null;
+}
+
 export interface StockAdjustment {
   id: string;
   variantId: string;
@@ -750,4 +761,46 @@ export interface PaginatedResult<T> {
     hasNext: boolean;
     hasPrevious: boolean;
   };
+}
+
+// --- Transfers (RETAIL-ERP.md R4, WO-22.1/22.2/22.3, WO-23.3d) ---------------
+// `transfers` module is off by default — empty for a Solo deployment.
+
+export interface StockTransferLine {
+  id: string;
+  variantId: string;
+  quantityDispatched: number;
+  quantityReceived: number;
+  /** Snapshotted at dispatch, on every transfer (WO-23.3d) — what did this stock cost, landed. */
+  unitCost: number | null;
+}
+
+export interface InterBranchInvoice {
+  id: string;
+  number: string;
+  sourceRetailBrandId: string;
+  destinationRetailBrandId: string;
+  amountMinor: number;
+  issuedAt: string;
+}
+
+export interface StockTransfer {
+  id: string;
+  number: string;
+  status: 'IN_TRANSIT' | 'RECEIVED' | 'CANCELLED';
+  settlementMode: 'NONE' | 'INTERNAL_PL' | 'INVOICED';
+  sourceLocationId: string;
+  destinationLocationId: string;
+  inTransitLocationId: string;
+  note: string | null;
+  createdAt: string;
+  receivedAt: string | null;
+  cancelledAt: string | null;
+  lines: StockTransferLine[];
+  interBranchInvoice: InterBranchInvoice | null;
+}
+
+export interface StockTransferListResult {
+  data: StockTransfer[];
+  meta: { page: number; pageSize: number; total: number };
 }

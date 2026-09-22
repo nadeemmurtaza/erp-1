@@ -75,7 +75,7 @@ the *catalogue*, not any particular deployment's grants.
 | `inventory.manage` | Adjust and view stock levels | medium | 8 | 3 | STAFF, ADMIN |
 | `inventory.view_cost` | See cost prices and margins | medium | 1 | 6 | ADMIN |
 | `inventory.count` | Run stock counts | low | 7 | 3 | STAFF, ADMIN |
-| `transfers.manage` | Dispatch, receive and cancel inter-branch stock transfers | medium | 5 | — | STAFF, ADMIN |
+| `transfers.manage` | Dispatch, receive and cancel inter-branch stock transfers | medium | 5 | 2 | STAFF, ADMIN |
 | `measurements.manage_blueprints` | Manage garment types, measurement fields and size charts | low | 5 | 1 | STAFF, ADMIN |
 
 ### Purchasing

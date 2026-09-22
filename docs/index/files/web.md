@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 244 tracked files in `apps/web`, by directory.
+All 247 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -372,7 +372,7 @@ All 244 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 153 |  |
+| `page.tsx` | page | 158 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]` (1)
 
@@ -384,13 +384,13 @@ All 244 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 183 |  |
+| `page.tsx` | page | 214 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/purchase-orders/new` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 286 |  |
+| `page.tsx` | page | 306 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/reports` (1)
 
@@ -463,6 +463,24 @@ All 244 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 90 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/transfers` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 118 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/transfers/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 163 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/transfers/new` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 237 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/users` (1)
 
@@ -682,7 +700,7 @@ All 244 tracked files in `apps/web`, by directory.
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 485 |  |
-| `nav-registry.ts` | component | 450 |  |
+| `nav-registry.ts` | component | 458 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1034 |  |
@@ -783,7 +801,7 @@ All 244 tracked files in `apps/web`, by directory.
 | `downloads.ts` | constants | 21 |  |
 | `payment-methods.ts` | constants | 30 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 24 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 123 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 129 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 52 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)
@@ -826,7 +844,7 @@ All 244 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 754 |  |
+| `api.ts` | types | 807 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

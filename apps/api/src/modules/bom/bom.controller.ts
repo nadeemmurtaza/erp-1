@@ -1,10 +1,12 @@
-import { Body, Controller, ForbiddenException, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, ForbiddenException, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
 import { VIEW_COST } from '../../core/common/cost-fields';
 import { CreateRawMaterialDto, RawMaterialQueryDto, UpdateRawMaterialDto } from './dto/raw-material.dto';
 import { CreateRecipeDto, RecipeAvailabilityQueryDto, RecipeQueryDto, UpdateRecipeDto } from './dto/recipe.dto';
+import { CreateProductionRunDto, ProductionRunQueryDto } from './dto/production-run.dto';
+import { ProductionService } from './production.service';
 import { RawMaterialService } from './raw-material.service';
 import { RecipeService } from './recipe.service';
 
@@ -50,6 +52,7 @@ export class BomController {
   constructor(
     private readonly rawMaterials: RawMaterialService,
     private readonly recipes: RecipeService,
+    private readonly production: ProductionService,
   ) {}
 
   @Get('raw-materials')
@@ -164,5 +167,43 @@ export class BomController {
   @ApiOperation({ summary: 'Whether this recipe can be produced now, and how many runs current stock supports' })
   async recipeAvailability(@Param('id') id: string, @Query() query: RecipeAvailabilityQueryDto) {
     return this.recipes.availability(id, query.quantity);
+  }
+
+  @Post('recipes/:id/seed-cost-price')
+  @RequirePermission('bom.manage')
+  @ApiOperation({ summary: 'Backfill costPrice = rolledUpUnitCost for a variant manufactured before BOM existed — only where costPrice is 0 and the cost is complete' })
+  async seedCostPrice(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
+    if (!user.permissions.includes(VIEW_COST)) {
+      throw new ForbiddenException('You do not have access to cost data.');
+    }
+    return this.recipes.seedCostPrice(id, user.id);
+  }
+
+  @Get('production-runs')
+  @RequirePermission('bom.view')
+  @ApiOperation({ summary: 'List production runs' })
+  async listProductionRuns(@Query() query: ProductionRunQueryDto) {
+    return this.production.list(query);
+  }
+
+  @Get('production-runs/:id')
+  @RequirePermission('bom.view')
+  @ApiOperation({ summary: 'Production run detail with its consumed-material lines' })
+  async getProductionRun(@Param('id') id: string) {
+    return this.production.get(id);
+  }
+
+  @Post('production-runs')
+  @RequirePermission('bom.produce')
+  @ApiOperation({ summary: 'Record a production run — consumes raw stock, credits finished stock, rolls the finished cost forward' })
+  async createProductionRun(@CurrentUser() user: AuthenticatedUser, @Body() dto: CreateProductionRunDto) {
+    return this.production.create(dto, user.id);
+  }
+
+  @Delete('production-runs/:id')
+  @RequirePermission('bom.manage')
+  @ApiOperation({ summary: 'Always 405 — a production run is ledger history, never deleted' })
+  deleteProductionRun(): never {
+    return this.production.remove();
   }
 }

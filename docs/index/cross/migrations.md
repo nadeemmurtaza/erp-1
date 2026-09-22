@@ -3,7 +3,7 @@
 
 # Migrations
 
-**56** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**57** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -89,6 +89,7 @@ nothing here fails a build.
 | 2026-09-21 | `add_order_economics` | 2 | CREATE TABLE, ALTER TABLE | OrderEconomics |
 | 2026-09-22 | `add_bom_raw_materials` | 7 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | RawMaterial |
 | 2026-09-22 | `add_bom_recipes` | 14 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | BomComponent, BomRecipe |
+| 2026-09-22 | `add_bom_production_runs` | 13 | CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | BomProductionLine, BomProductionRun |
 
 
 ---

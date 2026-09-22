@@ -3,7 +3,7 @@
 
 # Data model
 
-All **121** Prisma models and **52** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **123** Prisma models and **52** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -26,7 +26,7 @@ against a real database.
 | Schema | Models | Enums | Owner | Contains |
 |---|---|---|---|---|
 | [`accounting.prisma`](../data/accounting.md) | 6 | 3 | [`accounting`](../modules/accounting.md) | Account, FiscalPeriod, FiscalYear, JournalEntry, JournalEntryNumberCounter, JournalLine |
-| [`bom.prisma`](../data/bom.md) | 3 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomRecipe, RawMaterial |
+| [`bom.prisma`](../data/bom.md) | 5 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomProductionLine, BomProductionRun, BomRecipe, RawMaterial |
 | [`cart.prisma`](../data/cart.md) | 3 | 0 | [`cart`](../modules/cart.md) | Cart, CartItem, CartItemStitchingOption |
 | [`catalog.prisma`](../data/catalog.md) | 15 | 3 | [`catalog`](../modules/catalog.md) | Brand, BrandTranslation, Category, CategoryTranslation, Product, ProductGarmentType, ProductImage, ProductOption, ProductOptionTr… |
 | [`core.prisma`](../data/core.md) | 17 | 5 | foundational | Address, AnalyticsEvent, AuditLog, DeviceToken, EmailAccount, EmailVerificationToken, OutboxEvent, PasswordResetToken, Permission… |
@@ -62,7 +62,9 @@ against a real database.
 | [`BillOfMaterial`](../data/production.md#billofmaterial) | `production` | 8 | 1 | id | One recipe per produced variant: how many of each component variant it takes to make one… |
 | [`BillOfMaterialLine`](../data/production.md#billofmaterialline) | `production` | 6 | 2 | id |  |
 | [`BomComponent`](../data/bom.md#bomcomponent) | `bom` | 10 | 2 | id |  |
-| [`BomRecipe`](../data/bom.md#bomrecipe) | `bom` | 18 | 2 | id | The recipe for one finished ProductVariant: which raw materials, how much of each, and th… |
+| [`BomProductionLine`](../data/bom.md#bomproductionline) | `bom` | 9 | 2 | id | One raw-material line consumed by a production run — the same SNAPSHOT discipline as the… |
+| [`BomProductionRun`](../data/bom.md#bomproductionrun) | `bom` | 18 | 3 | id | One production run: the recipe was run N times, consuming raw stock and crediting finishe… |
+| [`BomRecipe`](../data/bom.md#bomrecipe) | `bom` | 19 | 2 | id | The recipe for one finished ProductVariant: which raw materials, how much of each, and th… |
 | [`Brand`](../data/catalog.md#brand) | `catalog` | 9 | 0 | id | A label a product is sold under. |
 | [`BrandPolicy`](../data/organization.md#brandpolicy) | `organization` | 8 | 1 | id | Per-brand policy switches (R9) — what R9 calls `brand.allow_branch_product_creation` and… |
 | [`BrandTranslation`](../data/catalog.md#brandtranslation) | `catalog` | 6 | 1 | id | House Rule 6: a customer-facing name is a translation row, not a column. |
@@ -126,13 +128,13 @@ against a real database.
 | [`ProductOptionValue`](../data/catalog.md#productoptionvalue) | `catalog` | 9 | 1 | id | A specific value on an option axis: "M", "Ferozi", "128GB". |
 | [`ProductOptionValueTranslation`](../data/catalog.md#productoptionvaluetranslation) | `catalog` | 5 | 1 | id |  |
 | [`ProductTranslation`](../data/catalog.md#producttranslation) | `catalog` | 9 | 1 | id |  |
-| [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 43 | 4 | id |  |
+| [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 44 | 5 | id |  |
 | [`ProductVariantOptionValue`](../data/catalog.md#productvariantoptionvalue) | `catalog` | 5 | 2 | — | The join that DEFINES a variant: one row per option axis per variant. |
 | [`PurchaseOrder`](../data/purchasing.md#purchaseorder) | `purchasing` | 23 | 2 | id |  |
 | [`PurchaseOrderItem`](../data/purchasing.md#purchaseorderitem) | `purchasing` | 11 | 2 | id |  |
 | [`Quote`](../data/invoicing.md#quote) | `invoicing` | 9 | 0 | id |  |
 | [`QuoteLine`](../data/invoicing.md#quoteline) | `invoicing` | 7 | 1 | id |  |
-| [`RawMaterial`](../data/bom.md#rawmaterial) | `bom` | 12 | 1 | id |  |
+| [`RawMaterial`](../data/bom.md#rawmaterial) | `bom` | 13 | 1 | id |  |
 | [`RefreshToken`](../data/core.md#refreshtoken) | `core` | 9 | 1 | id |  |
 | [`ReplicationCursor`](../data/replication.md#replicationcursor) | `replication` | 4 | 0 | — | "The highest sequence I've already synced with this peer, in this direction" — read and a… |
 | [`ReplicationQuarantine`](../data/replication.md#replicationquarantine) | `replication` | 12 | 0 | id | Where an incoming record lands when it fails to apply — never dropped, never retried fore… |
@@ -168,7 +170,7 @@ against a real database.
 | [`TaxRate`](../data/tax.md#taxrate) | `tax` | 7 | 1 | id | One row per rate that has ever applied to a class. |
 | [`TradingPartner`](../data/trading-partners.md#tradingpartner) | `trading-partners` | 15 | 0 | id | The business on the other end of a document exchange. |
 | [`TransferNumberCounter`](../data/transfers.md#transfernumbercounter) | `transfers` | 2 | 0 | year | Same shape as OrderNumberCounter (orders.prisma) — an `INSERT ... |
-| [`User`](../data/core.md#user) | `core` | 46 | 13 | id |  |
+| [`User`](../data/core.md#user) | `core` | 47 | 14 | id |  |
 | [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | A per-user adjustment layered on top of their role's grants: GRANT adds a permission thei… |
 | [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | Which `Role` rows a user holds. |
 | [`VariantLocationStock`](../data/inventory.md#variantlocationstock) | `inventory` | 6 | 2 | — | Stock, per variant, per location. |

@@ -1,5 +1,6 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { paginated, type PaginatedResult } from '../../core/common/dto/pagination.dto';
+import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { computeRecipeCost, type RecipeCostResult } from './cost-rollup';
 import type { BomComponentDto, CreateRecipeDto, RecipeQueryDto, UpdateRecipeDto } from './dto/recipe.dto';
@@ -44,7 +45,10 @@ export interface RecipeListItem {
  */
 @Injectable()
 export class RecipeService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly audit: AuditService,
+  ) {}
 
   async list(query: RecipeQueryDto): Promise<PaginatedResult<RecipeListItem | MissingVariantRow>> {
     const filter = query.filter ?? 'all';
@@ -287,6 +291,38 @@ export class RecipeService {
       })),
       counts: { missing: missing.length, incompleteCost: incompleteCostRows.length },
     };
+  }
+
+  /**
+   * Backfill for a variant manufactured before BOM existed — its costPrice
+   * is 0, overstating gross profit. A business decision is a button the
+   * owner presses, not a migration that runs itself (10-admin-dashboard.md
+   * WO-C.3): only fires where costPrice really is 0 (never overwrites a
+   * real cost) and costComplete is true (never seeds a cost that is itself
+   * a lie), and leaves an AuditLog entry naming what changed.
+   */
+  async seedCostPrice(id: string, actorId: string | null) {
+    const recipe = await this.prisma.bomRecipe.findUnique({ where: { id }, include: { variant: true } });
+    if (!recipe) throw new NotFoundException('That recipe no longer exists.');
+
+    if (recipe.variant.costPrice !== 0 || !recipe.costComplete) {
+      return { changed: false, variantId: recipe.variantId, costPrice: recipe.variant.costPrice };
+    }
+
+    await this.prisma.productVariant.update({
+      where: { id: recipe.variantId },
+      data: { costPrice: recipe.rolledUpUnitCost },
+    });
+
+    await this.audit.record({
+      actorId,
+      action: 'bom.recipe.cost_price_seeded',
+      entity: 'ProductVariant',
+      entityId: recipe.variantId,
+      data: { from: 0, to: recipe.rolledUpUnitCost, recipeId: recipe.id },
+    });
+
+    return { changed: true, variantId: recipe.variantId, costPrice: recipe.rolledUpUnitCost };
   }
 
   /**

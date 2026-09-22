@@ -3,7 +3,7 @@
 
 # Tests
 
-**113** spec files, **1,104** cases. What is already pinned down — and what is not.
+**114** spec files, **1,114** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -50,7 +50,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (98)
+## Unit and integration (99)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -88,6 +88,7 @@ regression or an N+1.
 | `apps/api/src/modules/bom/bom.listener.spec.ts` | bom | 4 | BomListener |
 | `apps/api/src/modules/bom/bom.spec.ts` | bom | 21 | bom module — raw materials · resolveCategoryId · create · unitScale immutability · deactivate · lis… |
 | `apps/api/src/modules/bom/cost-rollup.spec.ts` | bom | 7 | computeRecipeCost |
+| `apps/api/src/modules/bom/production.service.spec.ts` | bom | 10 | ProductionService · consuming raw stock and producing finished stock · nothing writes ProductVarian… |
 | `apps/api/src/modules/catalog/product-admin.service.spec.ts` | catalog | 13 | assertKindRules · assertUniqueSkus |
 | `apps/api/src/modules/catalog/product-replication.listener.spec.ts` | catalog | 7 | ProductReplicationListener — WO-20.3 · onModuleInit · onProductPublished · onProductPriceChanged ·… |
 | `apps/api/src/modules/crm/email-inbox/email-inbox.service.spec.ts` | crm | 7 | EmailInboxService · reply |

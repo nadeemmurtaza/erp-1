@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 483 tracked files in `apps/api`, by directory.
+All 487 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -36,10 +36,10 @@ All 483 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.prisma` | prisma schema | 222 | The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a |
-| `bom.prisma` | prisma schema | 141 | BOM: which raw materials go into a finished product, how much of each, and |
+| `bom.prisma` | prisma schema | 212 | BOM: which raw materials go into a finished product, how much of each, and |
 | `cart.prisma` | prisma schema | 73 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
-| `catalog.prisma` | prisma schema | 369 | Catalog: categories, products, variants, images. |
-| `core.prisma` | prisma schema | 422 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `catalog.prisma` | prisma schema | 371 | Catalog: categories, products, variants, images. |
+| `core.prisma` | prisma schema | 423 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 239 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 122 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `identity-verification.prisma` | prisma schema | 40 | / Tracks a User's identity verification against nID (Newax's external |
@@ -402,6 +402,12 @@ All 483 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 75 |  |
 
+### `apps/api/prisma/schema/migrations/20260922013353_add_bom_production_runs` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 75 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -493,7 +499,7 @@ All 483 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 345 | The catalogue of domain events. |
+| `domain-events.ts` | module | 358 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
@@ -603,8 +609,8 @@ All 483 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
-| `document-prefix.ts` | module | 44 |  |
-| `settings.defaults.ts` | module | 290 |  |
+| `document-prefix.ts` | module | 45 |  |
+| `settings.defaults.ts` | module | 293 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 103 |  |
 
@@ -696,25 +702,28 @@ All 483 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `analytics.dto.ts` | dto | 10 |  |
 
-### `apps/api/src/modules/bom` (10)
+### `apps/api/src/modules/bom` (12)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `bom.controller.ts` | controller | 169 |  |
+| `bom.controller.ts` | controller | 210 |  |
 | `bom.listener.spec.ts` | unit test | 80 |  |
 | `bom.listener.ts` | event subscriber | 49 |  |
-| `bom.module.ts` | nest module | 13 |  |
+| `bom.module.ts` | nest module | 16 |  |
 | `bom.service.ts` | service | 47 |  |
-| `bom.spec.ts` | unit test | 521 |  |
+| `bom.spec.ts` | unit test | 523 |  |
 | `cost-rollup.spec.ts` | unit test | 124 | 2000 base units of fabric at 50 paisa/base-unit = 100000 |
 | `cost-rollup.ts` | module | 70 | The BOM cost rollup (WO-C.2, 10-admin-dashboard.md §C) — a pure function, deliberately: it takes plain numbers in, retu… |
+| `production.service.spec.ts` | unit test | 390 |  |
+| `production.service.ts` | service | 260 |  |
 | `raw-material.service.ts` | service | 218 |  |
-| `recipe.service.ts` | service | 465 |  |
+| `recipe.service.ts` | service | 501 |  |
 
-### `apps/api/src/modules/bom/dto` (2)
+### `apps/api/src/modules/bom/dto` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `production-run.dto.ts` | dto | 34 |  |
 | `raw-material.dto.ts` | dto | 52 |  |
 | `recipe.dto.ts` | dto | 113 |  |
 

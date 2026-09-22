@@ -42,6 +42,8 @@ export const DomainEvent = {
   /** InventoryService.postUnconditional() drove a location negative (RETAIL-ERP.md R5) — never fired by move(). */
   StockVarianceRecorded: 'inventory.stock_variance_recorded',
   GoodsReceived: 'purchasing.goods_received',
+  /** A BomProductionRun completed (WO-C.3) — fires after stock consumption, stock credit and the weighted-average cost update all land in the same transaction. */
+  BomProductionCompleted: 'bom.production_completed',
   SupplierBillRaised: 'purchasing.supplier_bill_raised',
   SupplierBillPaid: 'purchasing.supplier_bill_paid',
   /** An InterBranchInvoice was raised — TransfersService.receive() on an INVOICED transfer (R12/R17, WO-22.3). Never fired for NONE/INTERNAL_PL. */
@@ -222,6 +224,16 @@ export interface GoodsReceivedPayload {
   supplierId: string;
 }
 
+export interface BomProductionCompletedPayload {
+  runId: string;
+  number: string;
+  recipeId: string;
+  variantId: string;
+  quantityProduced: number;
+  producedUnitCost: number;
+  operatorId: string | null;
+}
+
 export interface WorkOrderPayload {
   workOrderId: string;
   number: string;
@@ -328,6 +340,7 @@ export interface DomainEventPayloads {
   [DomainEvent.StockReplenished]: StockReplenishedPayload;
   [DomainEvent.StockVarianceRecorded]: StockVarianceRecordedPayload;
   [DomainEvent.GoodsReceived]: GoodsReceivedPayload;
+  [DomainEvent.BomProductionCompleted]: BomProductionCompletedPayload;
   [DomainEvent.WorkOrderCreated]: WorkOrderPayload;
   [DomainEvent.WorkOrderReleased]: WorkOrderPayload;
   [DomainEvent.WorkOrderCompleted]: WorkOrderPayload;

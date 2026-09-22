@@ -48,6 +48,8 @@ export interface DocumentPrefixes {
   stockTransfer: string;
   /** R12/R17's inter-brand settlement document (WO-22.3) — node-prefixed like the rest, and distinct from `invoice` above (a different document). */
   interBranchInvoice: string;
+  /** BomProductionRun (WO-C.3) — node-prefixed like the rest. */
+  productionRun: string;
 }
 
 export interface DocumentSettings {
@@ -250,6 +252,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
       quote: 'QTE',
       stockTransfer: 'TRF',
       interBranchInvoice: 'IBI',
+      productionRun: 'PR',
     },
   } satisfies DocumentSettings,
 

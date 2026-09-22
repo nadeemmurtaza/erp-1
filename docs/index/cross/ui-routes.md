@@ -3,7 +3,7 @@
 
 # Screens
 
-All **133** routable files across the web app, the till and the mobile app.
+All **136** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (66)
+### admin (69)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -44,6 +44,9 @@ _none_
 | `/admin/bom` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/page.tsx` |
 | `/admin/bom/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/[id]/page.tsx` |
 | `/admin/bom/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/new/page.tsx` |
+| `/admin/bom/production` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/production/page.tsx` |
+| `/admin/bom/production/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/production/[id]/page.tsx` |
+| `/admin/bom/production/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/production/new/page.tsx` |
 | `/admin/bom/raw-materials` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/page.tsx` |
 | `/admin/bom/raw-materials/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/[id]/page.tsx` |
 | `/admin/br/[branchId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/br/[branchId]/page.tsx` |

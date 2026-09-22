@@ -344,6 +344,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'manufacturing',
     module: 'bom',
   },
+  {
+    key: 'bom-production',
+    label: 'Production',
+    href: '/admin/bom/production',
+    permissions: ['bom.view'],
+    group: 'manufacturing',
+    module: 'bom',
+  },
 
   // Group: Settings
   {

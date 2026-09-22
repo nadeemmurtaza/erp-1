@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1194,
-    "lines": 185704,
-    "routes": 314,
+    "files": 1201,
+    "lines": 187086,
+    "routes": 319,
     "controllers": 59,
-    "models": 121,
+    "models": 123,
     "enums": 52,
-    "migrations": 56,
-    "events": 36,
+    "migrations": 57,
+    "events": 37,
     "permissions": 41,
-    "screens": 133,
+    "screens": 136,
     "crons": 8,
-    "specs": 113,
+    "specs": 114,
     "designLaws": 150
   },
   "designLaws": [
@@ -1078,14 +1078,14 @@
     },
     "infra": {
       "files": 55,
-      "lines": 27839,
-      "bytes": 1091867,
+      "lines": 27846,
+      "bytes": 1092304,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 483,
-      "lines": 64950,
-      "bytes": 2343656,
+      "files": 487,
+      "lines": 65882,
+      "bytes": 2380737,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1101,9 +1101,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 239,
-      "lines": 36372,
-      "bytes": 1345558,
+      "files": 242,
+      "lines": 36815,
+      "bytes": 1360271,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -1194,12 +1194,15 @@
         "apps/api/src/modules/bom/bom.spec.ts",
         "apps/api/src/modules/bom/cost-rollup.spec.ts",
         "apps/api/src/modules/bom/cost-rollup.ts",
+        "apps/api/src/modules/bom/dto/production-run.dto.ts",
         "apps/api/src/modules/bom/dto/raw-material.dto.ts",
         "apps/api/src/modules/bom/dto/recipe.dto.ts",
+        "apps/api/src/modules/bom/production.service.spec.ts",
+        "apps/api/src/modules/bom/production.service.ts",
         "apps/api/src/modules/bom/raw-material.service.ts",
         "apps/api/src/modules/bom/recipe.service.ts"
       ],
-      "routes": 14,
+      "routes": 19,
       "page": "docs/index/modules/bom.md"
     },
     {
@@ -2264,7 +2267,7 @@
       "controller": "BomController",
       "handler": "missing",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 99,
+      "line": 102,
       "access": "bom.view",
       "permissions": [
         "bom.view"
@@ -2275,12 +2278,76 @@
     },
     {
       "method": "GET",
+      "path": "/admin/bom/production-runs",
+      "module": "bom",
+      "controller": "BomController",
+      "handler": "listProductionRuns",
+      "file": "apps/api/src/modules/bom/bom.controller.ts",
+      "line": 185,
+      "access": "bom.view",
+      "permissions": [
+        "bom.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List production runs"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/bom/production-runs",
+      "module": "bom",
+      "controller": "BomController",
+      "handler": "createProductionRun",
+      "file": "apps/api/src/modules/bom/bom.controller.ts",
+      "line": 199,
+      "access": "bom.produce",
+      "permissions": [
+        "bom.produce"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Record a production run — consumes raw stock, credits finished stock, rolls the finished cost forward"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/bom/production-runs/:id",
+      "module": "bom",
+      "controller": "BomController",
+      "handler": "deleteProductionRun",
+      "file": "apps/api/src/modules/bom/bom.controller.ts",
+      "line": 206,
+      "access": "bom.manage",
+      "permissions": [
+        "bom.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Always 405 — a production run is ledger history, never deleted"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/bom/production-runs/:id",
+      "module": "bom",
+      "controller": "BomController",
+      "handler": "getProductionRun",
+      "file": "apps/api/src/modules/bom/bom.controller.ts",
+      "line": 192,
+      "access": "bom.view",
+      "permissions": [
+        "bom.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Production run detail with its consumed-material lines"
+    },
+    {
+      "method": "GET",
       "path": "/admin/bom/raw-materials",
       "module": "bom",
       "controller": "BomController",
       "handler": "list",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 58,
+      "line": 61,
       "access": "bom.view",
       "permissions": [
         "bom.view"
@@ -2296,7 +2363,7 @@
       "controller": "BomController",
       "handler": "create",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 74,
+      "line": 77,
       "access": "bom.manage",
       "permissions": [
         "bom.manage"
@@ -2312,7 +2379,7 @@
       "controller": "BomController",
       "handler": "get",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 67,
+      "line": 70,
       "access": "bom.view",
       "permissions": [
         "bom.view"
@@ -2328,7 +2395,7 @@
       "controller": "BomController",
       "handler": "update",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 81,
+      "line": 84,
       "access": "bom.manage",
       "permissions": [
         "bom.manage"
@@ -2344,7 +2411,7 @@
       "controller": "BomController",
       "handler": "deactivate",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 92,
+      "line": 95,
       "access": "bom.manage",
       "permissions": [
         "bom.manage"
@@ -2360,7 +2427,7 @@
       "controller": "BomController",
       "handler": "listRecipes",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 106,
+      "line": 109,
       "access": "bom.view",
       "permissions": [
         "bom.view"
@@ -2376,7 +2443,7 @@
       "controller": "BomController",
       "handler": "createRecipe",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 123,
+      "line": 126,
       "access": "bom.manage",
       "permissions": [
         "bom.manage"
@@ -2392,7 +2459,7 @@
       "controller": "BomController",
       "handler": "getRecipe",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 116,
+      "line": 119,
       "access": "bom.view",
       "permissions": [
         "bom.view"
@@ -2408,7 +2475,7 @@
       "controller": "BomController",
       "handler": "updateRecipe",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 130,
+      "line": 133,
       "access": "bom.manage",
       "permissions": [
         "bom.manage"
@@ -2424,7 +2491,7 @@
       "controller": "BomController",
       "handler": "activateRecipe",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 141,
+      "line": 144,
       "access": "bom.manage",
       "permissions": [
         "bom.manage"
@@ -2440,7 +2507,7 @@
       "controller": "BomController",
       "handler": "archiveRecipe",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 148,
+      "line": 151,
       "access": "bom.manage",
       "permissions": [
         "bom.manage"
@@ -2456,7 +2523,7 @@
       "controller": "BomController",
       "handler": "recipeAvailability",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 165,
+      "line": 168,
       "access": "bom.view",
       "permissions": [
         "bom.view"
@@ -2472,7 +2539,7 @@
       "controller": "BomController",
       "handler": "recipeCost",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 155,
+      "line": 158,
       "access": "bom.view",
       "permissions": [
         "bom.view"
@@ -2480,6 +2547,22 @@
       "public": false,
       "authOnly": false,
       "summary": "Per-component cost breakdown, recomputed live"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/bom/recipes/:id/seed-cost-price",
+      "module": "bom",
+      "controller": "BomController",
+      "handler": "seedCostPrice",
+      "file": "apps/api/src/modules/bom/bom.controller.ts",
+      "line": 175,
+      "access": "bom.manage",
+      "permissions": [
+        "bom.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Backfill costPrice = rolledUpUnitCost for a variant manufactured before BOM existed — only where costPrice is 0 and the cost is complete"
     },
     {
       "method": "GET",
@@ -7437,6 +7520,8 @@
       "sensitivity": "low",
       "routes": [
         "GET /admin/bom/missing",
+        "GET /admin/bom/production-runs",
+        "GET /admin/bom/production-runs/:id",
         "GET /admin/bom/raw-materials",
         "GET /admin/bom/raw-materials/:id",
         "GET /admin/bom/recipes",
@@ -7444,7 +7529,7 @@
         "GET /admin/bom/recipes/:id/availability",
         "GET /admin/bom/recipes/:id/cost"
       ],
-      "uiSites": 2,
+      "uiSites": 3,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -7457,13 +7542,15 @@
       "category": "Manufacturing",
       "sensitivity": "medium",
       "routes": [
+        "DELETE /admin/bom/production-runs/:id",
         "POST /admin/bom/raw-materials",
         "PATCH /admin/bom/raw-materials/:id",
         "POST /admin/bom/raw-materials/:id/deactivate",
         "POST /admin/bom/recipes",
         "PATCH /admin/bom/recipes/:id",
         "POST /admin/bom/recipes/:id/activate",
-        "POST /admin/bom/recipes/:id/archive"
+        "POST /admin/bom/recipes/:id/archive",
+        "POST /admin/bom/recipes/:id/seed-cost-price"
       ],
       "uiSites": 4,
       "roles": [
@@ -7476,8 +7563,10 @@
       "label": "Record a production run",
       "category": "Manufacturing",
       "sensitivity": "low",
-      "routes": [],
-      "uiSites": 0,
+      "routes": [
+        "POST /admin/bom/production-runs"
+      ],
+      "uiSites": 1,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -7838,6 +7927,15 @@
       ]
     },
     {
+      "symbol": "BomProductionCompleted",
+      "name": "bom.production_completed",
+      "doc": "A BomProductionRun completed (WO-C.3) — fires after stock consumption, stock credit and the weighted-average cost update all land in the same transaction.",
+      "publishers": [
+        "apps/api/src/modules/bom/production.service.ts:198"
+      ],
+      "subscribers": []
+    },
+    {
       "symbol": "SupplierBillRaised",
       "name": "purchasing.supplier_bill_raised",
       "doc": "",
@@ -8084,7 +8182,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 132,
+      "line": 133,
       "doc": "",
       "fields": [
         {
@@ -8275,7 +8373,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 410,
+      "line": 411,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -8336,7 +8434,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 222,
+      "line": 223,
       "doc": "",
       "fields": [
         {
@@ -8531,7 +8629,7 @@
     {
       "name": "BomComponent",
       "file": "apps/api/prisma/schema/bom.prisma",
-      "line": 122,
+      "line": 125,
       "doc": "",
       "fields": [
         {
@@ -8611,9 +8709,223 @@
       ]
     },
     {
+      "name": "BomProductionLine",
+      "file": "apps/api/prisma/schema/bom.prisma",
+      "line": 189,
+      "doc": "One raw-material line consumed by a production run — the same SNAPSHOT discipline as the run itself.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "runId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rawMaterialId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "quantityBase",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "unitCost",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lineCost",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "run",
+          "type": "BomProductionRun",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "rawMaterial",
+          "type": "RawMaterial",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([runId])",
+        "@@index([rawMaterialId])"
+      ]
+    },
+    {
+      "name": "BomProductionRun",
+      "file": "apps/api/prisma/schema/bom.prisma",
+      "line": 152,
+      "doc": "One production run: the recipe was run N times, consuming raw stock and crediting finished stock, both through InventoryService.move()/moveMany() in the SAME transaction as this row (production.servi…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "number",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "recipeId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "runs",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "quantityProduced",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "materialCost",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "labourCost",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "overheadCost",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "producedUnitCost",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "notes",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "operatorId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "producedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "recipe",
+          "type": "BomRecipe",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "variant",
+          "type": "ProductVariant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "operator",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "lines",
+          "type": "BomProductionLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([producedAt])",
+        "@@index([recipeId])",
+        "@@index([variantId])"
+      ]
+    },
+    {
       "name": "BomRecipe",
       "file": "apps/api/prisma/schema/bom.prisma",
-      "line": 79,
+      "line": 81,
       "doc": "The recipe for one finished ProductVariant: which raw materials, how much of each, and the resulting cost estimate.",
       "fields": [
         {
@@ -8738,6 +9050,13 @@
         {
           "name": "components",
           "type": "BomComponent[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "runs",
+          "type": "BomProductionRun[]",
           "id": false,
           "unique": false,
           "relation": false
@@ -9673,7 +9992,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 390,
+      "line": 391,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -9747,7 +10066,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 177,
+      "line": 178,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -9933,7 +10252,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 118,
+      "line": 119,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -13223,7 +13542,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 363,
+      "line": 364,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -13461,7 +13780,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 101,
+      "line": 102,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -13668,7 +13987,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 243,
+      "line": 244,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -14181,7 +14500,7 @@
     {
       "name": "ProductGarmentType",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 276,
+      "line": 278,
       "doc": "Which garments a given unstitched fabric can be made into.",
       "fields": [
         {
@@ -14213,7 +14532,7 @@
     {
       "name": "ProductImage",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 259,
+      "line": 261,
       "doc": "",
       "fields": [
         {
@@ -14294,7 +14613,7 @@
     {
       "name": "ProductOption",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 297,
+      "line": 299,
       "doc": "A dynamic option axis a product varies along: \"Size\", \"Colour\", \"Storage\".",
       "fields": [
         {
@@ -14369,7 +14688,7 @@
     {
       "name": "ProductOptionTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 314,
+      "line": 316,
       "doc": "",
       "fields": [
         {
@@ -14415,7 +14734,7 @@
     {
       "name": "ProductOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 326,
+      "line": 328,
       "doc": "A specific value on an option axis: \"M\", \"Ferozi\", \"128GB\".",
       "fields": [
         {
@@ -14490,7 +14809,7 @@
     {
       "name": "ProductOptionValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 344,
+      "line": 346,
       "doc": "",
       "fields": [
         {
@@ -14783,6 +15102,13 @@
           "relation": false
         },
         {
+          "name": "producedRuns",
+          "type": "BomProductionRun[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
           "name": "order",
           "type": "Int",
           "id": false,
@@ -14924,7 +15250,7 @@
     {
       "name": "ProductVariantOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 358,
+      "line": 360,
       "doc": "The join that DEFINES a variant: one row per option axis per variant.",
       "fields": [
         {
@@ -15368,7 +15694,7 @@
     {
       "name": "RawMaterial",
       "file": "apps/api/prisma/schema/bom.prisma",
-      "line": 33,
+      "line": 32,
       "doc": "",
       "fields": [
         {
@@ -15454,6 +15780,13 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "productionLines",
+          "type": "BomProductionLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -15464,7 +15797,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 80,
+      "line": 81,
       "doc": "",
       "fields": [
         {
@@ -15902,7 +16235,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 309,
+      "line": 310,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -15960,7 +16293,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 323,
+      "line": 324,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -16014,7 +16347,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 259,
+      "line": 260,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -16126,7 +16459,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 155,
+      "line": 156,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -16884,7 +17217,7 @@
     {
       "name": "StockAdjustment",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 241,
+      "line": 243,
       "doc": "One entry per change to ProductVariant.stock, so \"why is stock 4\" has an answer without an audit table bolted on after the fact.",
       "fields": [
         {
@@ -18705,6 +19038,13 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "bomProductionRuns",
+          "type": "BomProductionRun[]",
+          "id": false,
+          "unique": false,
+          "relation": true
         }
       ],
       "indexes": [
@@ -18715,7 +19055,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 280,
+      "line": 281,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -18776,7 +19116,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 338,
+      "line": 339,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -19170,7 +19510,7 @@
     {
       "name": "BomStatus",
       "file": "apps/api/prisma/schema/bom.prisma",
-      "line": 67,
+      "line": 69,
       "values": [
         "DRAFT",
         "ACTIVE",
@@ -19204,7 +19544,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 378,
+      "line": 379,
       "values": [
         "IOS",
         "ANDROID",
@@ -19214,7 +19554,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 166,
+      "line": 167,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -19340,7 +19680,7 @@
     {
       "name": "OptionDisplay",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 285,
+      "line": 287,
       "values": [
         "BUTTON",
         "DROPDOWN",
@@ -19385,7 +19725,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 352,
+      "line": 353,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -19420,7 +19760,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 271,
+      "line": 272,
       "values": [
         "GRANT",
         "REVOKE"
@@ -19494,7 +19834,7 @@
     {
       "name": "RawMaterialUnit",
       "file": "apps/api/prisma/schema/bom.prisma",
-      "line": 24,
+      "line": 23,
       "values": [
         "GAZ",
         "METRE",
@@ -20707,6 +21047,23 @@
         "BomComponent",
         "BomRecipe"
       ]
+    },
+    {
+      "folder": "20260922013353_add_bom_production_runs",
+      "file": "apps/api/prisma/schema/migrations/20260922013353_add_bom_production_runs/migration.sql",
+      "date": "2026-09-22",
+      "slug": "add_bom_production_runs",
+      "statements": 13,
+      "kinds": [
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "BomProductionLine",
+        "BomProductionRun"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -21396,6 +21753,33 @@
       "kind": "page",
       "url": "/admin/bom/new",
       "file": "apps/web/src/app/(admin)/admin/(app)/bom/new/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/bom/production",
+      "file": "apps/web/src/app/(admin)/admin/(app)/bom/production/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/bom/production/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/bom/production/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/bom/production/new",
+      "file": "apps/web/src/app/(admin)/admin/(app)/bom/production/new/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -22786,6 +23170,24 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/bom/production.service.spec.ts",
+      "module": "bom",
+      "kind": "unit test",
+      "cases": 10,
+      "describes": [
+        "ProductionService",
+        "consuming raw stock and producing finished stock",
+        "nothing writes ProductVariant.stock except InventoryService.move()",
+        "insufficient raw stock",
+        "concurrent production runs — Rule 10",
+        "finished-good costing — the same weightedAverageCost() helper purchasing uses",
+        "downstream — the new cost reaches order economics",
+        "history is immutable",
+        "production is genuinely repeatable",
+        "deletion"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/catalog/product-admin.service.spec.ts",
       "module": "catalog",
       "kind": "unit test",
@@ -24157,8 +24559,8 @@
       "path": "apps/api/prisma/schema/bom.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 141,
-      "bytes": 5400,
+      "lines": 212,
+      "bytes": 8050,
       "doc": "BOM: which raw materials go into a finished product, how much of each, and",
       "symbols": []
     },
@@ -24175,8 +24577,8 @@
       "path": "apps/api/prisma/schema/catalog.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 369,
-      "bytes": 12948,
+      "lines": 371,
+      "bytes": 13092,
       "doc": "Catalog: categories, products, variants, images.",
       "symbols": []
     },
@@ -24184,8 +24586,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 422,
-      "bytes": 15271,
+      "lines": 423,
+      "bytes": 15357,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -24744,6 +25146,15 @@
       "kind": "migration",
       "lines": 75,
       "bytes": 3018,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260922013353_add_bom_production_runs/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 75,
+      "bytes": 3100,
       "doc": "",
       "symbols": []
     },
@@ -25648,8 +26059,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 345,
-      "bytes": 12197,
+      "lines": 358,
+      "bytes": 12701,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -25660,147 +26071,152 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 68
+          "line": 70
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 70
+          "line": 72
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 83
+          "line": 85
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 91
+          "line": 93
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 99
+          "line": 101
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 119
+          "line": 121
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 125
+          "line": 127
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 132
+          "line": 134
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 139
+          "line": 141
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 143
+          "line": 145
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 149
+          "line": 151
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 155
+          "line": 157
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 162
+          "line": 164
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 170
+          "line": 172
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 181
+          "line": 183
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 188
+          "line": 190
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 197
+          "line": 199
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 205
+          "line": 207
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 213
+          "line": 215
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 218
+          "line": 220
+        },
+        {
+          "name": "BomProductionCompletedPayload",
+          "kind": "interface",
+          "line": 227
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 225
+          "line": 237
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 233
+          "line": 245
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 247
+          "line": 259
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 260
+          "line": 272
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 273
+          "line": 285
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 286
+          "line": 298
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 294
+          "line": 306
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 301
+          "line": 313
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 307
+          "line": 319
         }
       ]
     },
@@ -26958,8 +27374,8 @@
       "path": "apps/api/src/core/settings/document-prefix.ts",
       "area": "api",
       "kind": "module",
-      "lines": 44,
-      "bytes": 1649,
+      "lines": 45,
+      "bytes": 1672,
       "doc": "",
       "symbols": [
         {
@@ -26973,8 +27389,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 290,
-      "bytes": 12111,
+      "lines": 293,
+      "bytes": 12231,
       "doc": "",
       "symbols": [
         {
@@ -27000,27 +27416,27 @@
         {
           "name": "DocumentSettings",
           "kind": "interface",
-          "line": 53
+          "line": 55
         },
         {
           "name": "FinanceGatewayFeeBpsSettings",
           "kind": "interface",
-          "line": 67
+          "line": 69
         },
         {
           "name": "SettingKey",
           "kind": "const",
-          "line": 74
+          "line": 76
         },
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 153
+          "line": 155
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 155
+          "line": 157
         }
       ]
     },
@@ -27796,14 +28212,14 @@
       "path": "apps/api/src/modules/bom/bom.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 169,
-      "bytes": 6894,
+      "lines": 210,
+      "bytes": 8692,
       "doc": "",
       "symbols": [
         {
           "name": "BomController",
           "kind": "class",
-          "line": 49
+          "line": 51
         }
       ]
     },
@@ -27835,14 +28251,14 @@
       "path": "apps/api/src/modules/bom/bom.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 13,
-      "bytes": 439,
+      "lines": 16,
+      "bytes": 611,
       "doc": "",
       "symbols": [
         {
           "name": "BomModule",
           "kind": "class",
-          "line": 12
+          "line": 15
         }
       ]
     },
@@ -27865,8 +28281,8 @@
       "path": "apps/api/src/modules/bom/bom.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 521,
-      "bytes": 23549,
+      "lines": 523,
+      "bytes": 23634,
       "doc": "",
       "symbols": []
     },
@@ -27911,6 +28327,26 @@
           "name": "computeRecipeCost",
           "kind": "function",
           "line": 54
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/bom/dto/production-run.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 34,
+      "bytes": 826,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateProductionRunDto",
+          "kind": "class",
+          "line": 5
+        },
+        {
+          "name": "ProductionRunQueryDto",
+          "kind": "class",
+          "line": 23
         }
       ]
     },
@@ -27975,6 +28411,30 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/bom/production.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 390,
+      "bytes": 16162,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/bom/production.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 260,
+      "bytes": 9941,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProductionService",
+          "kind": "class",
+          "line": 56
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/bom/raw-material.service.ts",
       "area": "api",
       "kind": "service",
@@ -27993,24 +28453,24 @@
       "path": "apps/api/src/modules/bom/recipe.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 465,
-      "bytes": 16987,
+      "lines": 501,
+      "bytes": 18457,
       "doc": "",
       "symbols": [
         {
           "name": "MissingVariantRow",
           "kind": "interface",
-          "line": 18
+          "line": 19
         },
         {
           "name": "RecipeListItem",
           "kind": "interface",
-          "line": 24
+          "line": 25
         },
         {
           "name": "RecipeService",
           "kind": "class",
-          "line": 46
+          "line": 47
         }
       ]
     },
@@ -33825,6 +34285,51 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/bom/production/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 119,
+      "bytes": 3679,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProductionRunDetailPage",
+          "kind": "default",
+          "line": 36
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/bom/production/new/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 190,
+      "bytes": 6948,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NewProductionRunPage",
+          "kind": "default",
+          "line": 28
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/bom/production/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 126,
+      "bytes": 3912,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProductionRunsPage",
+          "kind": "default",
+          "line": 23
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/[id]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -35671,8 +36176,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 434,
-      "bytes": 11508,
+      "lines": 442,
+      "bytes": 11682,
       "doc": "",
       "symbols": [
         {
@@ -35703,12 +36208,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 404
+          "line": 412
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 419
+          "line": 427
         }
       ]
     },
@@ -41816,8 +42321,8 @@
       "path": "scripts/check-module-boundaries.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 535,
-      "bytes": 22395,
+      "lines": 542,
+      "bytes": 22832,
       "doc": "",
       "symbols": []
     },

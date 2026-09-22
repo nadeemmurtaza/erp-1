@@ -3,7 +3,7 @@
 
 # Schema: `bom.prisma`
 
-3 models · 2 enums. Owned by module [`bom`](../modules/bom.md).
+5 models · 2 enums. Owned by module [`bom`](../modules/bom.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `BomComponent`  <sub>`apps/api/prisma/schema/bom.prisma:122`</sub>
+### `BomComponent`  <sub>`apps/api/prisma/schema/bom.prisma:125`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -37,7 +37,52 @@ against a real database.
 
 Indexes: `@@unique([recipeId, rawMaterialId])` · `@@index([rawMaterialId])`
 
-### `BomRecipe`  <sub>`apps/api/prisma/schema/bom.prisma:79`</sub>
+### `BomProductionLine`  <sub>`apps/api/prisma/schema/bom.prisma:189`</sub>
+
+> One raw-material line consumed by a production run — the same SNAPSHOT discipline as the run itself.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `runId` | `String` |  |  |
+| `rawMaterialId` | `String` |  |  |
+| `variantId` | `String` |  |  |
+| `quantityBase` | `Int` |  |  |
+| `unitCost` | `Int` |  |  |
+| `lineCost` | `Int` |  |  |
+| `run` | `BomProductionRun` | relation | @relation(fields: [runId], references: [id], onDelete: Cascade) |
+| `rawMaterial` | `RawMaterial` | relation | @relation(fields: [rawMaterialId], references: [id]) |
+
+Indexes: `@@index([runId])` · `@@index([rawMaterialId])`
+
+### `BomProductionRun`  <sub>`apps/api/prisma/schema/bom.prisma:152`</sub>
+
+> One production run: the recipe was run N times, consuming raw stock and crediting finished stock, both through InventoryService.move()/moveMany() in the SAME transaction as this row (production.servi…
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `number` | `String` | unique | @unique |
+| `recipeId` | `String` |  |  |
+| `variantId` | `String` |  |  |
+| `runs` | `Int` |  | @default(1) |
+| `quantityProduced` | `Int` |  |  |
+| `materialCost` | `Int` |  |  |
+| `labourCost` | `Int` |  |  |
+| `overheadCost` | `Int` |  |  |
+| `producedUnitCost` | `Int` |  |  |
+| `notes` | `String?` | optional |  |
+| `operatorId` | `String?` | optional |  |
+| `producedAt` | `DateTime` |  | @default(now()) |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `recipe` | `BomRecipe` | relation | @relation(fields: [recipeId], references: [id]) |
+| `variant` | `ProductVariant` | relation | @relation("BomProducedVariant", fields: [variantId], references: [id]) |
+| `operator` | `User?` | relation, optional | @relation("BomProductionOperator", fields: [operatorId], references: [id], onDelete: SetN… |
+| `lines` | `BomProductionLine[]` |  |  |
+
+Indexes: `@@index([producedAt])` · `@@index([recipeId])` · `@@index([variantId])`
+
+### `BomRecipe`  <sub>`apps/api/prisma/schema/bom.prisma:81`</sub>
 
 > The recipe for one finished ProductVariant: which raw materials, how much of each, and the resulting cost estimate.
 
@@ -61,10 +106,11 @@ Indexes: `@@unique([recipeId, rawMaterialId])` · `@@index([rawMaterialId])`
 | `variant` | `ProductVariant` | relation | @relation(fields: [variantId], references: [id], onDelete: Cascade) |
 | `createdBy` | `User?` | relation, optional | @relation("BomRecipeCreator", fields: [createdById], references: [id], onDelete: SetNull) |
 | `components` | `BomComponent[]` |  |  |
+| `runs` | `BomProductionRun[]` |  |  |
 
 Indexes: `@@index([status])` · `@@index([costComplete])`
 
-### `RawMaterial`  <sub>`apps/api/prisma/schema/bom.prisma:33`</sub>
+### `RawMaterial`  <sub>`apps/api/prisma/schema/bom.prisma:32`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -80,13 +126,14 @@ Indexes: `@@index([status])` · `@@index([costComplete])`
 | `updatedAt` | `DateTime` |  | @updatedAt |
 | `variant` | `ProductVariant` | relation | @relation(fields: [variantId], references: [id], onDelete: Cascade) |
 | `components` | `BomComponent[]` |  |  |
+| `productionLines` | `BomProductionLine[]` |  |  |
 
 Indexes: `@@index([isActive, kind])` · `@@index([name])`
 
 
 ## Enums
 
-### `BomStatus`  <sub>`apps/api/prisma/schema/bom.prisma:67`</sub>
+### `BomStatus`  <sub>`apps/api/prisma/schema/bom.prisma:69`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -94,7 +141,7 @@ Indexes: `@@index([isActive, kind])` · `@@index([name])`
 | `ACTIVE` |  |
 | `ARCHIVED` |  |
 
-### `RawMaterialUnit`  <sub>`apps/api/prisma/schema/bom.prisma:24`</sub>
+### `RawMaterialUnit`  <sub>`apps/api/prisma/schema/bom.prisma:23`</sub>
 
 > BOM: which raw materials go into a finished product, how much of each, and what that makes the product cost to produce (RETAIL-ERP.md Tranche 6, WO-23.2 — "build 10-admin-dashboard.md §C as written").
 

@@ -1,11 +1,10 @@
 // BOM: which raw materials go into a finished product, how much of each, and
 // what that makes the product cost to produce (RETAIL-ERP.md Tranche 6,
 // WO-23.2 — "build 10-admin-dashboard.md §C as written"). WO-C.1 added
-// RawMaterial; this file now also carries WO-C.2's BomRecipe/BomComponent.
-// Production runs (BomProductionRun/BomProductionLine, WO-C.3) are the next
-// work order in the same tranche — BomRecipe.runs and
-// RawMaterial.productionLines back-relations are added then, not stubbed in
-// now (no model to point at yet).
+// RawMaterial, WO-C.2 added BomRecipe/BomComponent, WO-C.3 (this revision)
+// adds BomProductionRun/BomProductionLine — the step that actually consumes
+// raw stock and produces finished stock, closing the loop the earlier two
+// work orders only estimated.
 //
 // A raw material is NOT a new kind of thing. It is an ordinary ProductVariant
 // with a RawMaterial marker row pointing at it, so purchase orders, goods
@@ -59,6 +58,9 @@ model RawMaterial {
   /// FK): a raw material a live recipe depends on cannot vanish out from
   /// under it.
   components BomComponent[]
+  /// Every production-run line that ever consumed this material — ledger
+  /// history, kept even after the material is deactivated.
+  productionLines BomProductionLine[]
 
   @@index([isActive, kind])
   @@index([name])
@@ -111,9 +113,10 @@ model BomRecipe {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  variant    ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  createdBy  User?          @relation("BomRecipeCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  variant    ProductVariant     @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  createdBy  User?              @relation("BomRecipeCreator", fields: [createdById], references: [id], onDelete: SetNull)
   components BomComponent[]
+  runs       BomProductionRun[]
 
   @@index([status])
   @@index([costComplete])
@@ -136,5 +139,73 @@ model BomComponent {
   rawMaterial RawMaterial @relation(fields: [rawMaterialId], references: [id], onDelete: Restrict)
 
   @@unique([recipeId, rawMaterialId])
+  @@index([rawMaterialId])
+}
+
+/// One production run: the recipe was run N times, consuming raw stock and
+/// crediting finished stock, both through InventoryService.move()/moveMany()
+/// in the SAME transaction as this row (production.service.ts, WO-C.3). A
+/// run is ledger history — SNAPSHOTS its costs (Rule 7) so a later recipe
+/// edit or raw-material cost change never rewrites what this batch actually
+/// cost. Deletion is not supported; a correction is a reversing adjustment
+/// through the normal inventory screen.
+model BomProductionRun {
+  id     String @id @default(cuid())
+  number String @unique
+
+  recipeId  String
+  variantId String
+
+  /// How many times the recipe was run.
+  runs             Int @default(1)
+  /// runs * recipe.outputQuantity at the time of this run.
+  quantityProduced Int
+
+  /// SNAPSHOTS. A later recipe edit or raw-material cost change must not
+  /// rewrite what this batch cost to make.
+  materialCost Int
+  labourCost   Int
+  overheadCost Int
+  /// round((materialCost + labourCost + overheadCost) / quantityProduced).
+  producedUnitCost Int
+
+  notes      String?
+  operatorId String?
+  producedAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+
+  recipe   BomRecipe           @relation(fields: [recipeId], references: [id])
+  variant  ProductVariant      @relation("BomProducedVariant", fields: [variantId], references: [id])
+  operator User?               @relation("BomProductionOperator", fields: [operatorId], references: [id], onDelete: SetNull)
+  lines    BomProductionLine[]
+
+  @@index([producedAt])
+  @@index([recipeId])
+  @@index([variantId])
+}
+
+/// One raw-material line consumed by a production run — the same SNAPSHOT
+/// discipline as the run itself.
+model BomProductionLine {
+  id    String @id @default(cuid())
+  runId String
+
+  rawMaterialId String
+  /// The raw material's own variant, denormalised so the ledger join is
+  /// direct — not a Prisma relation, deliberately: this is a read
+  /// convenience copied from RawMaterial.variantId at write time, never
+  /// itself the source of truth.
+  variantId     String
+
+  /// Base units actually consumed, wastage included.
+  quantityBase Int
+  /// Snapshot of the raw material's costPrice at run time, paisa per base unit.
+  unitCost     Int
+  lineCost     Int
+
+  run         BomProductionRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  rawMaterial RawMaterial      @relation(fields: [rawMaterialId], references: [id])
+
+  @@index([runId])
   @@index([rawMaterialId])
 }

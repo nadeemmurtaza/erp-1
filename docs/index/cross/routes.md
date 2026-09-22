@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **314** endpoints across **59** controllers, with the access rule that actually guards each one.
+All **319** endpoints across **59** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -114,11 +114,15 @@ never authorization.
 | GET | `/admin/analytics/stitching` | `analytics.view` | `AnalyticsController.stitching` | Which garments and style options drive the stitching business |
 | GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` | Visitor counts, view-to-order funnel and traffic sources |
 
-### [`bom`](../modules/bom.md) (14)
+### [`bom`](../modules/bom.md) (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/bom/missing` | `bom.view` | `BomController.missing` | Variants with no recipe, and ACTIVE recipes whose cost is still incomplete |
+| GET | `/admin/bom/production-runs` | `bom.view` | `BomController.listProductionRuns` | List production runs |
+| POST | `/admin/bom/production-runs` | `bom.produce` | `BomController.createProductionRun` | Record a production run — consumes raw stock, credits finished stock, rolls the… |
+| DELETE | `/admin/bom/production-runs/:id` | `bom.manage` | `BomController.deleteProductionRun` | Always 405 — a production run is ledger history, never deleted |
+| GET | `/admin/bom/production-runs/:id` | `bom.view` | `BomController.getProductionRun` | Production run detail with its consumed-material lines |
 | GET | `/admin/bom/raw-materials` | `bom.view` | `BomController.list` | List raw materials, paginated and filtered |
 | POST | `/admin/bom/raw-materials` | `bom.manage` | `BomController.create` | Create a raw material — a Product/ProductVariant pair, filed under the raw-mate… |
 | GET | `/admin/bom/raw-materials/:id` | `bom.view` | `BomController.get` | Raw material detail plus its recent stock movements |
@@ -132,6 +136,7 @@ never authorization.
 | POST | `/admin/bom/recipes/:id/archive` | `bom.manage` | `BomController.archiveRecipe` | Archive a recipe |
 | GET | `/admin/bom/recipes/:id/availability` | `bom.view` | `BomController.recipeAvailability` | Whether this recipe can be produced now, and how many runs current stock suppor… |
 | GET | `/admin/bom/recipes/:id/cost` | `bom.view` | `BomController.recipeCost` | Per-component cost breakdown, recomputed live |
+| POST | `/admin/bom/recipes/:id/seed-cost-price` | `bom.manage` | `BomController.seedCostPrice` | Backfill costPrice = rolledUpUnitCost for a variant manufactured before BOM exi… |
 
 ### [`cart`](../modules/cart.md) (6)
 

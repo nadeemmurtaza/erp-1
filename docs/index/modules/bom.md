@@ -3,57 +3,67 @@
 
 # Module: `bom`
 
-Pack **core** · enabled by the `MODULES` allowlist · 12 files
+Pack **core** · enabled by the `MODULES` allowlist · 15 files
 
 
 
 Source: `apps/api/src/modules/bom/`
 
-## Files (12 · 1,921 lines)
+## Files (15 · 2,687 lines)
 
 All paths relative to `apps/api/src/modules/bom`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `bom.controller.ts` | controller | 169 | 1 |  |
+| `bom.controller.ts` | controller | 210 | 1 |  |
 | `bom.listener.spec.ts` | unit test | 80 | — |  |
 | `bom.listener.ts` | event subscriber | 49 | 1 | Rule 3 in action, no new event needed: receiving fabric against a PO already publishes GoodsReceived (purchasing.servic… |
-| `bom.module.ts` | nest module | 13 | 1 |  |
+| `bom.module.ts` | nest module | 16 | 1 |  |
 | `bom.service.ts` | service | 47 | 1 | Helpers shared by every bom. |
-| `bom.spec.ts` | unit test | 521 | — |  |
+| `bom.spec.ts` | unit test | 523 | — |  |
 | `cost-rollup.spec.ts` | unit test | 124 | — | 2000 base units of fabric at 50 paisa/base-unit = 100000 |
 | `cost-rollup.ts` | module | 70 | 5 | The BOM cost rollup (WO-C.2, 10-admin-dashboard.md §C) — a pure function, deliberately: it takes plain numbers in, retu… |
+| `production-run.dto.ts` | dto | 34 | 2 |  |
 | `raw-material.dto.ts` | dto | 52 | 3 |  |
 | `recipe.dto.ts` | dto | 113 | 5 |  |
+| `production.service.spec.ts` | unit test | 390 | — |  |
+| `production.service.ts` | service | 260 | 1 | The step that makes BOM real: a run consumes raw stock and credits finished stock, both through InventoryService — a di… |
 | `raw-material.service.ts` | service | 218 | 1 | A raw material is an ordinary ProductVariant with a RawMaterial marker row (D5, bom.prisma). |
-| `recipe.service.ts` | service | 465 | 3 |  |
+| `recipe.service.ts` | service | 501 | 3 |  |
 
 
-## HTTP routes (14)
+## HTTP routes (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/bom/missing` | `bom.view` | `BomController.missing` :99 | Variants with no recipe, and ACTIVE recipes whose cost is still incomplete |
-| GET | `/admin/bom/raw-materials` | `bom.view` | `BomController.list` :58 | List raw materials, paginated and filtered |
-| POST | `/admin/bom/raw-materials` | `bom.manage` | `BomController.create` :74 | Create a raw material — a Product/ProductVariant pair, filed under the raw-materials cate… |
-| GET | `/admin/bom/raw-materials/:id` | `bom.view` | `BomController.get` :67 | Raw material detail plus its recent stock movements |
-| PATCH | `/admin/bom/raw-materials/:id` | `bom.manage` | `BomController.update` :81 | Edit a raw material |
-| POST | `/admin/bom/raw-materials/:id/deactivate` | `bom.manage` | `BomController.deactivate` :92 | Deactivate a raw material |
-| GET | `/admin/bom/recipes` | `bom.view` | `BomController.listRecipes` :106 | List recipes — filter=all\|active\|missing\|incomplete-cost |
-| POST | `/admin/bom/recipes` | `bom.manage` | `BomController.createRecipe` :123 | Create a recipe for a finished ProductVariant |
-| GET | `/admin/bom/recipes/:id` | `bom.view` | `BomController.getRecipe` :116 | Recipe detail with its components |
-| PATCH | `/admin/bom/recipes/:id` | `bom.manage` | `BomController.updateRecipe` :130 | Edit a recipe — recomputes the cost rollup in the same transaction |
-| POST | `/admin/bom/recipes/:id/activate` | `bom.manage` | `BomController.activateRecipe` :141 | Activate a recipe — 400 unless it has at least one non-optional component |
-| POST | `/admin/bom/recipes/:id/archive` | `bom.manage` | `BomController.archiveRecipe` :148 | Archive a recipe |
-| GET | `/admin/bom/recipes/:id/availability` | `bom.view` | `BomController.recipeAvailability` :165 | Whether this recipe can be produced now, and how many runs current stock supports |
-| GET | `/admin/bom/recipes/:id/cost` | `bom.view` | `BomController.recipeCost` :155 | Per-component cost breakdown, recomputed live |
+| GET | `/admin/bom/missing` | `bom.view` | `BomController.missing` :102 | Variants with no recipe, and ACTIVE recipes whose cost is still incomplete |
+| GET | `/admin/bom/production-runs` | `bom.view` | `BomController.listProductionRuns` :185 | List production runs |
+| POST | `/admin/bom/production-runs` | `bom.produce` | `BomController.createProductionRun` :199 | Record a production run — consumes raw stock, credits finished stock, rolls the finished… |
+| DELETE | `/admin/bom/production-runs/:id` | `bom.manage` | `BomController.deleteProductionRun` :206 | Always 405 — a production run is ledger history, never deleted |
+| GET | `/admin/bom/production-runs/:id` | `bom.view` | `BomController.getProductionRun` :192 | Production run detail with its consumed-material lines |
+| GET | `/admin/bom/raw-materials` | `bom.view` | `BomController.list` :61 | List raw materials, paginated and filtered |
+| POST | `/admin/bom/raw-materials` | `bom.manage` | `BomController.create` :77 | Create a raw material — a Product/ProductVariant pair, filed under the raw-materials cate… |
+| GET | `/admin/bom/raw-materials/:id` | `bom.view` | `BomController.get` :70 | Raw material detail plus its recent stock movements |
+| PATCH | `/admin/bom/raw-materials/:id` | `bom.manage` | `BomController.update` :84 | Edit a raw material |
+| POST | `/admin/bom/raw-materials/:id/deactivate` | `bom.manage` | `BomController.deactivate` :95 | Deactivate a raw material |
+| GET | `/admin/bom/recipes` | `bom.view` | `BomController.listRecipes` :109 | List recipes — filter=all\|active\|missing\|incomplete-cost |
+| POST | `/admin/bom/recipes` | `bom.manage` | `BomController.createRecipe` :126 | Create a recipe for a finished ProductVariant |
+| GET | `/admin/bom/recipes/:id` | `bom.view` | `BomController.getRecipe` :119 | Recipe detail with its components |
+| PATCH | `/admin/bom/recipes/:id` | `bom.manage` | `BomController.updateRecipe` :133 | Edit a recipe — recomputes the cost rollup in the same transaction |
+| POST | `/admin/bom/recipes/:id/activate` | `bom.manage` | `BomController.activateRecipe` :144 | Activate a recipe — 400 unless it has at least one non-optional component |
+| POST | `/admin/bom/recipes/:id/archive` | `bom.manage` | `BomController.archiveRecipe` :151 | Archive a recipe |
+| GET | `/admin/bom/recipes/:id/availability` | `bom.view` | `BomController.recipeAvailability` :168 | Whether this recipe can be produced now, and how many runs current stock supports |
+| GET | `/admin/bom/recipes/:id/cost` | `bom.view` | `BomController.recipeCost` :158 | Per-component cost breakdown, recomputed live |
+| POST | `/admin/bom/recipes/:id/seed-cost-price` | `bom.manage` | `BomController.seedCostPrice` :175 | Backfill costPrice = rolledUpUnitCost for a variant manufactured before BOM existed — onl… |
 
 
 ## Domain events
 
 **Publishes** — written to the outbox inside the same transaction as the state change:
 
-_none_
+| Event | Name | Published at |
+|---|---|---|
+| `BomProductionCompleted` | `bom.production_completed` | `production.service.ts:198` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -67,9 +77,11 @@ _none_
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `BomComponent` | 10 | :122 |  |
-| `BomRecipe` | 18 | :79 | The recipe for one finished ProductVariant: which raw materials, how much of each, and the resulting cost est… |
-| `RawMaterial` | 12 | :33 |  |
+| `BomComponent` | 10 | :125 |  |
+| `BomProductionLine` | 9 | :189 | One raw-material line consumed by a production run — the same SNAPSHOT discipline as the run itself. |
+| `BomProductionRun` | 18 | :152 | One production run: the recipe was run N times, consuming raw stock and crediting finished stock, both throug… |
+| `BomRecipe` | 19 | :81 | The recipe for one finished ProductVariant: which raw materials, how much of each, and the resulting cost est… |
+| `RawMaterial` | 13 | :32 |  |
 
 
 Enums: `BomStatus` (3) · `RawMaterialUnit` (6)
@@ -82,15 +94,16 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 ## Nest wiring
 
 **`BomModule`** (`bom.module.ts`)
-- imports: —
+- imports: `InventoryModule`
 - controllers: `BomController`
-- providers: `BomService`, `RawMaterialService`, `RecipeService`, `BomListener`
+- providers: `BomService`, `RawMaterialService`, `RecipeService`, `BomListener`, `ProductionService`
 - exports: —
 
 
 ## Reaches out to
 
 - **module `catalog`** ⚠ direct import
+- **module `finance`** ⚠ direct import
 - **module `inventory`** ⚠ direct import
 - **module `parties`** ⚠ direct import
 - **module `purchasing`** ⚠ direct import
@@ -109,28 +122,31 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (3)
+## Tests (4)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `bom.listener.spec.ts` | 4 | BomListener |
 | `bom.spec.ts` | 21 | bom module — raw materials · resolveCategoryId · create · unitScale immutability · deactivate · list/get · purchasing i… |
 | `cost-rollup.spec.ts` | 7 | computeRecipeCost |
+| `production.service.spec.ts` | 10 | ProductionService · consuming raw stock and producing finished stock · nothing writes ProductVariant.stock except Inven… |
 
 
 ## Every export in this unit
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `BomController` | class | `bom.controller.ts:49` |  |
+| `BomController` | class | `bom.controller.ts:51` |  |
 | `BomListener` | class | `bom.listener.ts:16` | Rule 3 in action, no new event needed: receiving fabric against a PO already publishes GoodsReceived (purchas… |
-| `BomModule` | class | `bom.module.ts:12` |  |
+| `BomModule` | class | `bom.module.ts:15` |  |
 | `BomService` | class | `bom.service.ts:14` | Helpers shared by every bom. |
 | `RecipeCostComponentInput` | interface | `cost-rollup.ts:16` | The BOM cost rollup (WO-C.2, 10-admin-dashboard.md §C) — a pure function, deliberately: it takes plain number… |
 | `RecipeCostInput` | interface | `cost-rollup.ts:27` |  |
 | `RecipeCostComponentResult` | interface | `cost-rollup.ts:36` |  |
 | `RecipeCostResult` | interface | `cost-rollup.ts:44` |  |
 | `computeRecipeCost` | function | `cost-rollup.ts:54` |  |
+| `CreateProductionRunDto` | class | `production-run.dto.ts:5` |  |
+| `ProductionRunQueryDto` | class | `production-run.dto.ts:23` |  |
 | `CreateRawMaterialDto` | class | `raw-material.dto.ts:9` |  |
 | `UpdateRawMaterialDto` | class | `raw-material.dto.ts:39` |  |
 | `RawMaterialQueryDto` | class | `raw-material.dto.ts:41` |  |
@@ -139,10 +155,11 @@ check there before adding another.
 | `UpdateRecipeDto` | class | `recipe.dto.ts:96` |  |
 | `RecipeQueryDto` | class | `recipe.dto.ts:98` |  |
 | `RecipeAvailabilityQueryDto` | class | `recipe.dto.ts:105` |  |
+| `ProductionService` | class | `production.service.ts:56` | The step that makes BOM real: a run consumes raw stock and credits finished stock, both through InventoryServ… |
 | `RawMaterialService` | class | `raw-material.service.ts:17` | A raw material is an ordinary ProductVariant with a RawMaterial marker row (D5, bom.prisma). |
-| `MissingVariantRow` | interface | `recipe.service.ts:18` |  |
-| `RecipeListItem` | interface | `recipe.service.ts:24` |  |
-| `RecipeService` | class | `recipe.service.ts:46` | The recipe for one finished ProductVariant and the cost it rolls up to (WO-C.2, 10-admin-dashboard.md §C). |
+| `MissingVariantRow` | interface | `recipe.service.ts:19` |  |
+| `RecipeListItem` | interface | `recipe.service.ts:25` |  |
+| `RecipeService` | class | `recipe.service.ts:47` | The recipe for one finished ProductVariant and the cost it rolls up to (WO-C.2, 10-admin-dashboard.md §C). |
 
 
 ---

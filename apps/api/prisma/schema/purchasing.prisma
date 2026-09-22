@@ -107,6 +107,17 @@ model PurchaseOrder {
   otherCost   Int @default(0)
   total       Int @default(0)
 
+  /// WO-23.3 (RETAIL-ERP.md R13/R8, ADR-021). Which tier raised this PO.
+  /// Defaults to BRAND — "brand purchasing is the default and behaves as
+  /// today," and every deployment shipped so far is exactly one brand. A
+  /// request, not itself a FACT (R2 names "goods receipt", not "purchase
+  /// order") — ReplicationRegistry registers GoodsReceipt, not this model.
+  scopeLevel ScopeLevel @default(BRAND)
+  /// This node's own identifier (AppConfigService.nodeId) at the moment the
+  /// PO was created — a bare string, never a Node row FK (a branch has no
+  /// Node row for itself). Null for a PO raised before this column existed.
+  originNodeId String?
+
   expectedAt  DateTime?
   sentAt      DateTime?
   receivedAt  DateTime?
@@ -124,6 +135,7 @@ model PurchaseOrder {
 
   @@index([status, createdAt])
   @@index([supplierId])
+  @@index([scopeLevel])
 }
 
 model PurchaseOrderItem {
@@ -156,11 +168,20 @@ model GoodsReceipt {
   otherCost       Int      @default(0)
   createdAt       DateTime @default(now())
 
+  /// Where this receipt actually landed — WO-23.3, R13's org-warehouse
+  /// receiving. Bare scalar, no `@relation`: purchasing decouples from
+  /// inventory the same way transfers.prisma's own Location-id columns
+  /// already do. Resolves to InventoryService.defaultLocationId() when the
+  /// caller does not name one, matching every receipt before this column
+  /// existed.
+  locationId String
+
   purchaseOrder PurchaseOrder      @relation(fields: [purchaseOrderId], references: [id])
   receivedBy    User?              @relation("GoodsReceiptReceiver", fields: [receivedById], references: [id], onDelete: SetNull)
   items         GoodsReceiptItem[]
 
   @@index([purchaseOrderId])
+  @@index([locationId])
 }
 
 model GoodsReceiptItem {

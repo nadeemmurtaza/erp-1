@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `GoodsReceipt`  <sub>`apps/api/prisma/schema/purchasing.prisma:147`</sub>
+### `GoodsReceipt`  <sub>`apps/api/prisma/schema/purchasing.prisma:159`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -34,13 +34,14 @@ against a real database.
 | `dutyCost` | `Int` |  | @default(0) |
 | `otherCost` | `Int` |  | @default(0) |
 | `createdAt` | `DateTime` |  | @default(now()) |
+| `locationId` | `String` |  |  |
 | `purchaseOrder` | `PurchaseOrder` | relation | @relation(fields: [purchaseOrderId], references: [id]) |
 | `receivedBy` | `User?` | relation, optional | @relation("GoodsReceiptReceiver", fields: [receivedById], references: [id], onDelete: Set… |
 | `items` | `GoodsReceiptItem[]` |  |  |
 
-Indexes: `@@index([purchaseOrderId])`
+Indexes: `@@index([purchaseOrderId])` · `@@index([locationId])`
 
-### `GoodsReceiptItem`  <sub>`apps/api/prisma/schema/purchasing.prisma:166`</sub>
+### `GoodsReceiptItem`  <sub>`apps/api/prisma/schema/purchasing.prisma:187`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -71,6 +72,8 @@ Indexes: `@@index([goodsReceiptId])` · `@@index([variantId])`
 | `dutyCost` | `Int` |  | @default(0) |
 | `otherCost` | `Int` |  | @default(0) |
 | `total` | `Int` |  | @default(0) |
+| `scopeLevel` | `ScopeLevel` |  | @default(BRAND) |
+| `originNodeId` | `String?` | optional |  |
 | `expectedAt` | `DateTime?` | optional |  |
 | `sentAt` | `DateTime?` | optional |  |
 | `receivedAt` | `DateTime?` | optional |  |
@@ -85,9 +88,9 @@ Indexes: `@@index([goodsReceiptId])` · `@@index([variantId])`
 | `receipts` | `GoodsReceipt[]` |  |  |
 | `bills` | `SupplierBill[]` |  |  |
 
-Indexes: `@@index([status, createdAt])` · `@@index([supplierId])`
+Indexes: `@@index([status, createdAt])` · `@@index([supplierId])` · `@@index([scopeLevel])`
 
-### `PurchaseOrderItem`  <sub>`apps/api/prisma/schema/purchasing.prisma:129`</sub>
+### `PurchaseOrderItem`  <sub>`apps/api/prisma/schema/purchasing.prisma:141`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -139,7 +142,7 @@ Indexes: `@@index([purchaseOrderId])` · `@@index([variantId])`
 
 Indexes: `@@index([isActive, name])` · `@@index([tradingPartnerId])`
 
-### `SupplierBill`  <sub>`apps/api/prisma/schema/purchasing.prisma:189`</sub>
+### `SupplierBill`  <sub>`apps/api/prisma/schema/purchasing.prisma:210`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -196,7 +199,7 @@ Indexes: `@@unique([supplierId, variantId])` · `@@index([variantId, isPreferred
 | `RECEIVED` |  |
 | `CANCELLED` |  |
 
-### `SupplierBillStatus`  <sub>`apps/api/prisma/schema/purchasing.prisma:183`</sub>
+### `SupplierBillStatus`  <sub>`apps/api/prisma/schema/purchasing.prisma:204`</sub>
 
 | Value | Meaning |
 |---|---|

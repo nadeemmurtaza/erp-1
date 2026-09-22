@@ -8,6 +8,19 @@ enum UserRole {
   ADMIN
 }
 
+/// Which tier a FACT belongs to (RETAIL-ERP.md R8/R13, ADR-021). Lives here,
+/// not in organization.prisma, so a scopeLevel column never makes an
+/// always-on module (purchasing, bom, finance) schema-depend on the
+/// off-by-default organization module. Same values as organization.prisma's
+/// AdminScopeLevel (a GRANT's own scope) by design, deliberately not merged
+/// with it — a grant and a fact's recorded scope are different concepts
+/// that happen to share a vocabulary.
+enum ScopeLevel {
+  ORG
+  BRAND
+  BRANCH
+}
+
 model User {
   id                   String    @id @default(cuid())
   email                String?   @unique

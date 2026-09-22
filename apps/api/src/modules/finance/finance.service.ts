@@ -1,6 +1,7 @@
 import { BadRequestException, ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { paginated, type PaginatedResult } from '../../core/common/dto/pagination.dto';
+import { AppConfigService } from '../../core/config/app-config.service';
 import { DomainEvent } from '../../core/events/domain-events';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { StorageService } from '../../core/storage/storage.service';
@@ -128,6 +129,7 @@ export class FinanceService {
     private readonly prisma: PrismaService,
     private readonly events: EventBusService,
     private readonly storage: StorageService,
+    private readonly config: AppConfigService,
   ) {}
 
   async listCategories(): Promise<Array<ExpenseCategory & { expenseCount: number }>> {
@@ -238,6 +240,8 @@ export class FinanceService {
           reference: dto.reference,
           recurrence: dto.recurrence ?? 'NONE',
           createdById: actorId ?? undefined,
+          scopeLevel: dto.scopeLevel ?? 'BRAND',
+          originNodeId: this.config.nodeId,
         },
       });
 
@@ -517,6 +521,8 @@ export class FinanceService {
                 recurrence: 'NONE',
                 recurringFromId: template.id,
                 recurringPeriod: period,
+                scopeLevel: template.scopeLevel,
+                originNodeId: template.originNodeId,
               },
             });
 

@@ -69,6 +69,11 @@ enum LocationType {
   STORE
   WAREHOUSE
   IN_TRANSIT
+  /// WO-23.3, RETAIL-ERP.md R13: where a BomProductionRun consumes raw stock
+  /// and credits finished stock. A deployment with no dedicated production
+  /// floor keeps using its one WAREHOUSE/STORE location — this type exists
+  /// for the deployment that wants the distinction, not as a requirement.
+  PRODUCTION
 }
 
 /// A place stock physically lives. Single-location shops get exactly one row

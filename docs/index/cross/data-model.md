@@ -3,7 +3,7 @@
 
 # Data model
 
-All **123** Prisma models and **52** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **123** Prisma models and **53** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -29,7 +29,7 @@ against a real database.
 | [`bom.prisma`](../data/bom.md) | 5 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomProductionLine, BomProductionRun, BomRecipe, RawMaterial |
 | [`cart.prisma`](../data/cart.md) | 3 | 0 | [`cart`](../modules/cart.md) | Cart, CartItem, CartItemStitchingOption |
 | [`catalog.prisma`](../data/catalog.md) | 15 | 3 | [`catalog`](../modules/catalog.md) | Brand, BrandTranslation, Category, CategoryTranslation, Product, ProductGarmentType, ProductImage, ProductOption, ProductOptionTr… |
-| [`core.prisma`](../data/core.md) | 17 | 5 | foundational | Address, AnalyticsEvent, AuditLog, DeviceToken, EmailAccount, EmailVerificationToken, OutboxEvent, PasswordResetToken, Permission… |
+| [`core.prisma`](../data/core.md) | 17 | 6 | foundational | Address, AnalyticsEvent, AuditLog, DeviceToken, EmailAccount, EmailVerificationToken, OutboxEvent, PasswordResetToken, Permission… |
 | [`crm.prisma`](../data/crm.md) | 9 | 3 | [`crm`](../modules/crm.md) | Contact, ContactTag, FollowUpTask, InboundEmail, InboundEmailReply, Interaction, Lead, Segment, Tag |
 | [`finance.prisma`](../data/finance.md) | 3 | 1 | [`finance`](../modules/finance.md) | Expense, ExpenseCategory, OrderEconomics |
 | [`identity-verification.prisma`](../data/identity-verification.md) | 1 | 1 | [`identity-verification`](../modules/identity-verification.md) | IdentityVerification |
@@ -63,7 +63,7 @@ against a real database.
 | [`BillOfMaterialLine`](../data/production.md#billofmaterialline) | `production` | 6 | 2 | id |  |
 | [`BomComponent`](../data/bom.md#bomcomponent) | `bom` | 10 | 2 | id |  |
 | [`BomProductionLine`](../data/bom.md#bomproductionline) | `bom` | 9 | 2 | id | One raw-material line consumed by a production run — the same SNAPSHOT discipline as the… |
-| [`BomProductionRun`](../data/bom.md#bomproductionrun) | `bom` | 18 | 3 | id | One production run: the recipe was run N times, consuming raw stock and crediting finishe… |
+| [`BomProductionRun`](../data/bom.md#bomproductionrun) | `bom` | 21 | 3 | id | One production run: the recipe was run N times, consuming raw stock and crediting finishe… |
 | [`BomRecipe`](../data/bom.md#bomrecipe) | `bom` | 19 | 2 | id | The recipe for one finished ProductVariant: which raw materials, how much of each, and th… |
 | [`Brand`](../data/catalog.md#brand) | `catalog` | 9 | 0 | id | A label a product is sold under. |
 | [`BrandPolicy`](../data/organization.md#brandpolicy) | `organization` | 8 | 1 | id | Per-brand policy switches (R9) — what R9 calls `brand.allow_branch_product_creation` and… |
@@ -79,14 +79,14 @@ against a real database.
 | [`DeviceToken`](../data/core.md#devicetoken) | `core` | 9 | 1 | id | A push notification target: one installation of the mobile app. |
 | [`EmailAccount`](../data/core.md#emailaccount) | `core` | 25 | 0 | id | A connected mailbox: SMTP to send, optionally IMAP to receive. |
 | [`EmailVerificationToken`](../data/core.md#emailverificationtoken) | `core` | 7 | 1 | id | A one-time token mailed to confirm an email address. |
-| [`Expense`](../data/finance.md#expense) | `finance` | 22 | 5 | id |  |
+| [`Expense`](../data/finance.md#expense) | `finance` | 24 | 5 | id |  |
 | [`ExpenseCategory`](../data/finance.md#expensecategory) | `finance` | 9 | 0 | id | Finance: operational expenses and per-order economics (RETAIL-ERP.md Tranche 6, WO-23.1 —… |
 | [`FiscalPeriod`](../data/accounting.md#fiscalperiod) | `accounting` | 10 | 1 | id | What a `JournalEntry` posts into. |
 | [`FiscalYear`](../data/accounting.md#fiscalyear) | `accounting` | 7 | 0 | id | A trading year. |
 | [`FollowUpTask`](../data/crm.md#followuptask) | `crm` | 13 | 3 | id |  |
 | [`GarmentSizeChart`](../data/measurements.md#garmentsizechart) | `measurements` | 8 | 1 | id | A standard RTW size row (XS-XXL) for a garment, offered as a shortcut alongside the "type… |
 | [`GarmentType`](../data/measurements.md#garmenttype) | `measurements` | 18 | 0 | id |  |
-| [`GoodsReceipt`](../data/purchasing.md#goodsreceipt) | `purchasing` | 13 | 2 | id |  |
+| [`GoodsReceipt`](../data/purchasing.md#goodsreceipt) | `purchasing` | 14 | 2 | id |  |
 | [`GoodsReceiptItem`](../data/purchasing.md#goodsreceiptitem) | `purchasing` | 10 | 3 | id |  |
 | [`IdentityVerification`](../data/identity-verification.md#identityverification) | `identity-verification` | 12 | 1 | id |  |
 | [`InboundEmail`](../data/crm.md#inboundemail) | `crm` | 17 | 3 | id | A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-i… |
@@ -130,7 +130,7 @@ against a real database.
 | [`ProductTranslation`](../data/catalog.md#producttranslation) | `catalog` | 9 | 1 | id |  |
 | [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 44 | 5 | id |  |
 | [`ProductVariantOptionValue`](../data/catalog.md#productvariantoptionvalue) | `catalog` | 5 | 2 | — | The join that DEFINES a variant: one row per option axis per variant. |
-| [`PurchaseOrder`](../data/purchasing.md#purchaseorder) | `purchasing` | 23 | 2 | id |  |
+| [`PurchaseOrder`](../data/purchasing.md#purchaseorder) | `purchasing` | 25 | 2 | id |  |
 | [`PurchaseOrderItem`](../data/purchasing.md#purchaseorderitem) | `purchasing` | 11 | 2 | id |  |
 | [`Quote`](../data/invoicing.md#quote) | `invoicing` | 9 | 0 | id |  |
 | [`QuoteLine`](../data/invoicing.md#quoteline) | `invoicing` | 7 | 1 | id |  |
@@ -197,7 +197,7 @@ against a real database.
 | [`InvoiceStatus`](../data/invoicing.md#invoicestatus) | `invoicing` | `ISSUED` `PAID` `VOID` |
 | [`JournalEntryStatus`](../data/accounting.md#journalentrystatus) | `accounting` | `POSTED` `REVERSED` |
 | [`LeadStatus`](../data/crm.md#leadstatus) | `crm` | `NEW` `CONTACTED` `QUOTED` `WON` `LOST` |
-| [`LocationType`](../data/inventory.md#locationtype) | `inventory` | `STORE` `WAREHOUSE` `IN_TRANSIT` |
+| [`LocationType`](../data/inventory.md#locationtype) | `inventory` | `STORE` `WAREHOUSE` `IN_TRANSIT` `PRODUCTION` |
 | [`MeasurementUnit`](../data/measurements.md#measurementunit) | `measurements` | `INCH` `CM` |
 | [`NodeRole`](../data/organization.md#noderole) | `organization` | `BRANCH` `BRAND` |
 | [`NodeStatus`](../data/organization.md#nodestatus) | `organization` | `ACTIVE` `SUSPENDED` |
@@ -220,6 +220,7 @@ against a real database.
 | [`ReplicationDirection`](../data/replication.md#replicationdirection) | `replication` | `UP` `DOWN` |
 | [`ReplicationOp`](../data/replication.md#replicationop) | `replication` | `UPSERT` `DELETE` |
 | [`ReplicationQuarantineStatus`](../data/replication.md#replicationquarantinestatus) | `replication` | `OPEN` `RESOLVED` |
+| [`ScopeLevel`](../data/core.md#scopelevel) | `core` | `ORG` `BRAND` `BRANCH` |
 | [`SettlementMode`](../data/transfers.md#settlementmode) | `transfers` | `NONE` `INTERNAL_PL` `INVOICED` |
 | [`ShipmentStatus`](../data/orders.md#shipmentstatus) | `orders` | `PENDING` `DISPATCHED` `IN_TRANSIT` `DELIVERED` `RETURNED` `LOST` |
 | [`StitchingOrderStatus`](../data/stitching.md#stitchingorderstatus) | `stitching` | `DRAFT` `AWAITING_FABRIC` `FABRIC_RECEIVED` `IN_PRODUCTION` `READY` `COMPLETED` `CANCELLED` |

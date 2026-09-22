@@ -37,7 +37,7 @@ against a real database.
 
 Indexes: `@@unique([recipeId, rawMaterialId])` · `@@index([rawMaterialId])`
 
-### `BomProductionLine`  <sub>`apps/api/prisma/schema/bom.prisma:189`</sub>
+### `BomProductionLine`  <sub>`apps/api/prisma/schema/bom.prisma:205`</sub>
 
 > One raw-material line consumed by a production run — the same SNAPSHOT discipline as the run itself.
 
@@ -75,12 +75,15 @@ Indexes: `@@index([runId])` · `@@index([rawMaterialId])`
 | `operatorId` | `String?` | optional |  |
 | `producedAt` | `DateTime` |  | @default(now()) |
 | `createdAt` | `DateTime` |  | @default(now()) |
+| `scopeLevel` | `ScopeLevel` |  | @default(BRAND) |
+| `originNodeId` | `String?` | optional |  |
+| `locationId` | `String` |  |  |
 | `recipe` | `BomRecipe` | relation | @relation(fields: [recipeId], references: [id]) |
 | `variant` | `ProductVariant` | relation | @relation("BomProducedVariant", fields: [variantId], references: [id]) |
 | `operator` | `User?` | relation, optional | @relation("BomProductionOperator", fields: [operatorId], references: [id], onDelete: SetN… |
 | `lines` | `BomProductionLine[]` |  |  |
 
-Indexes: `@@index([producedAt])` · `@@index([recipeId])` · `@@index([variantId])`
+Indexes: `@@index([producedAt])` · `@@index([scopeLevel])` · `@@index([locationId])` · `@@index([recipeId])` · `@@index([variantId])`
 
 ### `BomRecipe`  <sub>`apps/api/prisma/schema/bom.prisma:81`</sub>
 

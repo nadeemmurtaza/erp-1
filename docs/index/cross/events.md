@@ -447,7 +447,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/purchasing/purchasing.service.ts:419` | `purchasing` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:423` | `purchasing` |
 
 
 **Subscribed by**
@@ -464,7 +464,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/bom/production.service.ts:198` | `bom` |
+| `apps/api/src/modules/bom/production.service.ts:200` | `bom` |
 
 
 **Subscribed by**
@@ -479,7 +479,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:176` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:554` | `purchasing` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:564` | `purchasing` |
 
 
 **Subscribed by**
@@ -496,7 +496,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:226` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:618` | `purchasing` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:628` | `purchasing` |
 
 
 **Subscribed by**
@@ -647,8 +647,8 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:392` | `accounting` |
-| `apps/api/src/modules/finance/finance.service.ts:248` | `finance` |
-| `apps/api/src/modules/finance/finance.service.ts:524` | `finance` |
+| `apps/api/src/modules/finance/finance.service.ts:252` | `finance` |
+| `apps/api/src/modules/finance/finance.service.ts:530` | `finance` |
 
 
 **Subscribed by**

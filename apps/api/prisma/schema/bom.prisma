@@ -174,12 +174,28 @@ model BomProductionRun {
   producedAt DateTime @default(now())
   createdAt  DateTime @default(now())
 
+  /// WO-23.3 (RETAIL-ERP.md R13/R8, ADR-021). Which tier this run belongs
+  /// to. Defaults to BRAND, same reasoning as PurchaseOrder.scopeLevel.
+  scopeLevel ScopeLevel @default(BRAND)
+  /// This node's own identifier (AppConfigService.nodeId) at run time — a
+  /// bare string, never a Node row FK. Null for a run recorded before this
+  /// column existed.
+  originNodeId String?
+  /// Where this run actually happened — a WAREHOUSE/PRODUCTION Location
+  /// (R13). Bare scalar, no `@relation`, matching GoodsReceipt.locationId's
+  /// own decoupling reasoning. Resolves to
+  /// InventoryService.defaultLocationId() when the caller does not name
+  /// one, matching every run before this column existed.
+  locationId String
+
   recipe   BomRecipe           @relation(fields: [recipeId], references: [id])
   variant  ProductVariant      @relation("BomProducedVariant", fields: [variantId], references: [id])
   operator User?               @relation("BomProductionOperator", fields: [operatorId], references: [id], onDelete: SetNull)
   lines    BomProductionLine[]
 
   @@index([producedAt])
+  @@index([scopeLevel])
+  @@index([locationId])
   @@index([recipeId])
   @@index([variantId])
 }

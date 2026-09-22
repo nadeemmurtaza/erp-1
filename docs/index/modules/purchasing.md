@@ -9,21 +9,21 @@ Pack **core** · enabled by the `MODULES` allowlist · 12 files
 
 Source: `apps/api/src/modules/purchasing/`
 
-## Files (12 · 1,729 lines)
+## Files (12 · 1,785 lines)
 
 All paths relative to `apps/api/src/modules/purchasing/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `purchase-order.dto.ts` | dto | 92 | 4 |  |
+| `purchase-order.dto.ts` | dto | 104 | 4 |  |
 | `supplier-bill.dto.ts` | dto | 67 | 2 |  |
 | `supplier.dto.ts` | dto | 104 | 3 |  |
 | `purchasing.controller.ts` | controller | 151 | 3 |  |
 | `purchasing.cron.spec.ts` | unit test | 67 | — |  |
 | `purchasing.cron.ts` | scheduled job | 71 | 1 | The nightly safety-net sweep for reorder drafting. |
 | `purchasing.module.ts` | nest module | 18 | 1 |  |
-| `purchasing.service.ts` | service | 635 | 1 |  |
-| `purchasing.spec.ts` | unit test | 166 | — |  |
+| `purchasing.service.ts` | service | 645 | 1 |  |
+| `purchasing.spec.ts` | unit test | 200 | — |  |
 | `reorder.listener.spec.ts` | unit test | 79 | — |  |
 | `reorder.listener.ts` | event subscriber | 51 | 1 | Turns a real-time reorder-point crossing into an immediate DRAFT PO line, for variants sourced from an external supplie… |
 | `supplier-bill.spec.ts` | unit test | 228 | — |  |
@@ -58,9 +58,9 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `GoodsReceived` | `purchasing.goods_received` | `purchasing.service.ts:419` |
-| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `purchasing.service.ts:554` |
-| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `purchasing.service.ts:618` |
+| `GoodsReceived` | `purchasing.goods_received` | `purchasing.service.ts:423` |
+| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `purchasing.service.ts:564` |
+| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `purchasing.service.ts:628` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -74,12 +74,12 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `GoodsReceipt` | 13 | :147 |  |
-| `GoodsReceiptItem` | 10 | :166 |  |
-| `PurchaseOrder` | 23 | :97 |  |
-| `PurchaseOrderItem` | 11 | :129 |  |
+| `GoodsReceipt` | 14 | :159 |  |
+| `GoodsReceiptItem` | 10 | :187 |  |
+| `PurchaseOrder` | 25 | :97 |  |
+| `PurchaseOrderItem` | 11 | :141 |  |
 | `Supplier` | 27 | :1 |  |
-| `SupplierBill` | 18 | :189 |  |
+| `SupplierBill` | 18 | :210 |  |
 | `SupplierProduct` | 10 | :69 | What a given supplier charges for a given variant, and under what terms. |
 
 
@@ -125,7 +125,7 @@ check there before adding another.
 | Spec | Cases | Covers |
 |---|---|---|
 | `purchasing.cron.spec.ts` | 2 | PurchasingCron |
-| `purchasing.spec.ts` | 5 | PurchasingService · upsertReorderDraftLine · create (Supplier + its backing Party) |
+| `purchasing.spec.ts` | 7 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR-021 · create (Suppl… |
 | `reorder.listener.spec.ts` | 5 | PurchasingReorderListener |
 | `supplier-bill.spec.ts` | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
 
@@ -134,10 +134,10 @@ check there before adding another.
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `CreatePurchaseOrderItemDto` | class | `purchase-order.dto.ts:4` |  |
-| `CreatePurchaseOrderDto` | class | `purchase-order.dto.ts:22` |  |
-| `ReceiveGoodsItemDto` | class | `purchase-order.dto.ts:56` |  |
-| `ReceiveGoodsDto` | class | `purchase-order.dto.ts:66` |  |
+| `CreatePurchaseOrderItemDto` | class | `purchase-order.dto.ts:6` |  |
+| `CreatePurchaseOrderDto` | class | `purchase-order.dto.ts:24` |  |
+| `ReceiveGoodsItemDto` | class | `purchase-order.dto.ts:63` |  |
+| `ReceiveGoodsDto` | class | `purchase-order.dto.ts:73` |  |
 | `CreateSupplierBillDto` | class | `supplier-bill.dto.ts:4` |  |
 | `RecordSupplierBillPaymentDto` | class | `supplier-bill.dto.ts:47` |  |
 | `CreateSupplierDto` | class | `supplier.dto.ts:4` |  |

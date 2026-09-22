@@ -41,13 +41,15 @@ against a real database.
 | `createdById` | `String?` | optional |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `updatedAt` | `DateTime` |  | @updatedAt |
+| `scopeLevel` | `ScopeLevel` |  | @default(BRAND) |
+| `originNodeId` | `String?` | optional |  |
 | `category` | `ExpenseCategory` | relation | @relation(fields: [categoryId], references: [id]) |
 | `supplier` | `Supplier?` | relation, optional | @relation(fields: [supplierId], references: [id], onDelete: SetNull) |
 | `createdBy` | `User?` | relation, optional | @relation("ExpenseCreator", fields: [createdById], references: [id], onDelete: SetNull) |
 | `recurringFrom` | `Expense?` | relation, optional | @relation("ExpenseRecurrence", fields: [recurringFromId], references: [id], onDelete: Set… |
 | `generated` | `Expense[]` | relation | @relation("ExpenseRecurrence") |
 
-Indexes: `@@unique([recurringFromId, recurringPeriod])` · `@@index([incurredAt])` · `@@index([categoryId, incurredAt])` · `@@index([paidAt])` · `@@index([supplierId])`
+Indexes: `@@unique([recurringFromId, recurringPeriod])` · `@@index([incurredAt])` · `@@index([categoryId, incurredAt])` · `@@index([paidAt])` · `@@index([supplierId])` · `@@index([scopeLevel])`
 
 ### `ExpenseCategory`  <sub>`apps/api/prisma/schema/finance.prisma:19`</sub>
 
@@ -67,7 +69,7 @@ Indexes: `@@unique([recurringFromId, recurringPeriod])` · `@@index([incurredAt]
 
 Indexes: `@@index([isActive, order])`
 
-### `OrderEconomics`  <sub>`apps/api/prisma/schema/finance.prisma:91`</sub>
+### `OrderEconomics`  <sub>`apps/api/prisma/schema/finance.prisma:102`</sub>
 
 > One row per order, written when it reaches DELIVERED and recomputed if it is later RETURNED (WO-B.3).
 

@@ -69,6 +69,16 @@ model Expense {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  /// WO-23.3 (RETAIL-ERP.md R13/R8, ADR-021). "Expenses are recorded at
+  /// whichever tier pays them" — defaults to BRAND, same reasoning as
+  /// PurchaseOrder.scopeLevel. No locationId: an expense names a tier, not
+  /// a place stock sits.
+  scopeLevel ScopeLevel @default(BRAND)
+  /// This node's own identifier (AppConfigService.nodeId) when recorded —
+  /// a bare string, never a Node row FK. Null for an expense recorded
+  /// before this column existed.
+  originNodeId String?
+
   category      ExpenseCategory @relation(fields: [categoryId], references: [id])
   supplier      Supplier?       @relation(fields: [supplierId], references: [id], onDelete: SetNull)
   createdBy     User?           @relation("ExpenseCreator", fields: [createdById], references: [id], onDelete: SetNull)
@@ -80,6 +90,7 @@ model Expense {
   @@index([categoryId, incurredAt])
   @@index([paidAt])
   @@index([supplierId])
+  @@index([scopeLevel])
 }
 
 /// One row per order, written when it reaches DELIVERED and recomputed if it

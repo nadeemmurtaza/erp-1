@@ -125,6 +125,7 @@ export class ProductionService {
       const producedUnitCost = Math.round((materialCost + labourCost + overheadCost) / quantityProduced);
 
       const number = await nextProductionRunNumber(tx, this.settings, this.config);
+      const locationId = dto.locationId || (await this.inventory.defaultLocationId(tx));
 
       const run = await tx.bomProductionRun.create({
         data: {
@@ -139,10 +140,11 @@ export class ProductionService {
           producedUnitCost,
           notes: dto.notes?.trim() || null,
           operatorId: actorId,
+          locationId,
+          scopeLevel: dto.scopeLevel ?? 'BRAND',
+          originNodeId: this.config.nodeId,
         },
       });
-
-      const locationId = await this.inventory.defaultLocationId(tx);
 
       // Consume raw stock — InsufficientStockError (a 400 naming the short
       // material) rolls back this entire transaction, including the run row

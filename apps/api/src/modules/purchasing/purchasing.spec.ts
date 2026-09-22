@@ -118,6 +118,40 @@ describe('PurchasingService', () => {
     });
   });
 
+  describe('createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR-021', () => {
+    function stubTx() {
+      return {
+        $executeRaw: jest.fn(),
+        $queryRaw: jest.fn().mockResolvedValue([{ max: null }]),
+        purchaseOrder: { create: jest.fn().mockResolvedValue({ id: 'po1' }) },
+      };
+    }
+
+    let tx: ReturnType<typeof stubTx>;
+    beforeEach(() => {
+      tx = stubTx();
+      prisma.$transaction.mockImplementation((fn: any) => fn(tx));
+    });
+
+    it('defaults scopeLevel to BRAND and stamps originNodeId from AppConfigService.nodeId when the caller names no scope', async () => {
+      await service.createPurchaseOrder({ supplierId: 'sup1', items: [] } as any, 'user1');
+
+      expect(tx.purchaseOrder.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({ scopeLevel: 'BRAND', originNodeId: 'main' }),
+        }),
+      );
+    });
+
+    it('honours an explicit scopeLevel', async () => {
+      await service.createPurchaseOrder({ supplierId: 'sup1', items: [], scopeLevel: 'ORG' } as any, 'user1');
+
+      expect(tx.purchaseOrder.create).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ scopeLevel: 'ORG', originNodeId: 'main' }) }),
+      );
+    });
+  });
+
   describe('create (Supplier + its backing Party)', () => {
     let createService: PurchasingService;
     let createPrisma: any;

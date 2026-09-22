@@ -130,8 +130,9 @@ describe('AnalyticsService.comparison', () => {
         lineTotal: opts.quantity * opts.landedUnitCost,
       },
     });
+    const location = await prisma.location.findFirstOrThrow({ where: { isDefault: true } });
     const receipt = await prisma.goodsReceipt.create({
-      data: { number: uid(), purchaseOrderId: purchaseOrder.id, receivedAt: opts.receivedAt },
+      data: { number: uid(), purchaseOrderId: purchaseOrder.id, receivedAt: opts.receivedAt, locationId: location.id },
     });
     await prisma.goodsReceiptItem.create({
       data: {

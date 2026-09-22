@@ -90,6 +90,7 @@ describe('ProductionService', () => {
 
     await prisma.orderEconomics.deleteMany({ where: { order: { number: { startsWith: 'production.spec ' } } } });
     await prisma.orderItem.deleteMany({ where: { order: { number: { startsWith: 'production.spec ' } } } });
+    await prisma.location.deleteMany({ where: { code: { startsWith: 'PSPEC-' } } });
     await prisma.order.deleteMany({ where: { number: { startsWith: 'production.spec ' } } });
   });
 
@@ -188,6 +189,51 @@ describe('ProductionService', () => {
 
       expect(Number.isInteger(detail.producedUnitCost)).toBe(true);
       expect(detail.materialCost).toBe(detail.lines.reduce((sum, line) => sum + line.lineCost, 0));
+    });
+  });
+
+  describe('scopeLevel/originNodeId/locationId — WO-23.3a, RETAIL-ERP.md R13/R8, ADR-021', () => {
+    it('defaults scopeLevel to BRAND, stamps originNodeId from AppConfigService.nodeId, and defaults locationId to the shop default Location', async () => {
+      const { recipe } = await makeActiveRecipeWithFabric({
+        fabricStock: 10000,
+        fabricCostPrice: 50,
+        quantityBasePerBatch: 100,
+      });
+
+      const run = await production.create({ recipeId: recipe.id, runs: 1 }, actorId);
+      const stored = await prisma.bomProductionRun.findUniqueOrThrow({ where: { id: run.id } });
+
+      expect(stored.scopeLevel).toBe('BRAND');
+      expect(stored.originNodeId).toBe('main');
+      expect(stored.locationId).toBe(locationId);
+    });
+
+    it('respects an explicit locationId/scopeLevel override', async () => {
+      const { recipe, material } = await makeActiveRecipeWithFabric({
+        fabricStock: 10000,
+        fabricCostPrice: 50,
+        quantityBasePerBatch: 100,
+      });
+      const productionFloor = await prisma.location.create({
+        data: {
+          name: name('Production floor'),
+          code: `PSPEC-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          type: 'PRODUCTION',
+        },
+      });
+      // The recipe's fabric was stocked at the default location — move it to
+      // the production floor so the run has stock to consume there.
+      await inventory.move({ variantId: material.variantId, locationId, delta: -10000, reason: 'ADJUSTMENT', actorId });
+      await inventory.move({ variantId: material.variantId, locationId: productionFloor.id, delta: 10000, reason: 'ADJUSTMENT', actorId });
+
+      const run = await production.create(
+        { recipeId: recipe.id, runs: 1, locationId: productionFloor.id, scopeLevel: 'BRANCH' },
+        actorId,
+      );
+      const stored = await prisma.bomProductionRun.findUniqueOrThrow({ where: { id: run.id } });
+
+      expect(stored.locationId).toBe(productionFloor.id);
+      expect(stored.scopeLevel).toBe('BRANCH');
     });
   });
 

@@ -261,6 +261,8 @@ export class PurchasingService {
           expectedAt: dto.expectedAt ? new Date(dto.expectedAt) : null,
           notes: dto.notes,
           createdById: userId,
+          scopeLevel: dto.scopeLevel ?? 'BRAND',
+          originNodeId: this.config.nodeId,
           items: {
             create: dto.items.map(item => ({
               variantId: item.variantId,
@@ -339,6 +341,8 @@ export class PurchasingService {
         };
       });
 
+      const locationId = dto.locationId || (await this.inventoryService.defaultLocationId(tx));
+
       const receipt = await tx.goodsReceipt.create({
         data: {
           number: grnNumber,
@@ -348,6 +352,7 @@ export class PurchasingService {
           freightCost,
           dutyCost,
           otherCost,
+          locationId,
           items: {
             create: receiptItemsData,
           },
@@ -355,7 +360,6 @@ export class PurchasingService {
       });
 
       const sortedItems = [...receiptItemsData].sort((a, b) => a.variantId.localeCompare(b.variantId));
-      const locationId = await this.inventoryService.defaultLocationId(tx);
 
       const movements = await this.inventoryService.moveMany(
         sortedItems.map(item => ({
@@ -458,7 +462,13 @@ export class PurchasingService {
       if (!po) {
         const number = await nextPONumber(tx, this.settingsService, this.config);
         po = await tx.purchaseOrder.create({
-          data: { supplierId: input.supplierId, number, status: 'DRAFT', currency: BRAND.locale.currency },
+          data: {
+            supplierId: input.supplierId,
+            number,
+            status: 'DRAFT',
+            currency: BRAND.locale.currency,
+            originNodeId: this.config.nodeId,
+          },
           include: { items: true },
         });
       }

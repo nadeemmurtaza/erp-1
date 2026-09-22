@@ -3,7 +3,7 @@
 
 # Tests
 
-**115** spec files, **1,119** cases. What is already pinned down — and what is not.
+**115** spec files, **1,125** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -89,13 +89,13 @@ regression or an N+1.
 | `apps/api/src/modules/bom/bom.metrics.spec.ts` | bom | 5 | BomMetricsService — raw usage · missing-recipe count consistency |
 | `apps/api/src/modules/bom/bom.spec.ts` | bom | 21 | bom module — raw materials · resolveCategoryId · create · unitScale immutability · deactivate · lis… |
 | `apps/api/src/modules/bom/cost-rollup.spec.ts` | bom | 7 | computeRecipeCost |
-| `apps/api/src/modules/bom/production.service.spec.ts` | bom | 10 | ProductionService · consuming raw stock and producing finished stock · nothing writes ProductVarian… |
+| `apps/api/src/modules/bom/production.service.spec.ts` | bom | 12 | ProductionService · consuming raw stock and producing finished stock · scopeLevel/originNodeId/loca… |
 | `apps/api/src/modules/catalog/product-admin.service.spec.ts` | catalog | 13 | assertKindRules · assertUniqueSkus |
 | `apps/api/src/modules/catalog/product-replication.listener.spec.ts` | catalog | 7 | ProductReplicationListener — WO-20.3 · onModuleInit · onProductPublished · onProductPriceChanged ·… |
 | `apps/api/src/modules/crm/email-inbox/email-inbox.service.spec.ts` | crm | 7 | EmailInboxService · reply |
 | `apps/api/src/modules/finance/finance.cron.spec.ts` | finance | 3 | FinanceCron |
 | `apps/api/src/modules/finance/finance.listener.spec.ts` | finance | 2 | FinanceListener |
-| `apps/api/src/modules/finance/finance.spec.ts` | finance | 24 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4… |
+| `apps/api/src/modules/finance/finance.spec.ts` | finance | 26 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4… |
 | `apps/api/src/modules/finance/order-economics.service.spec.ts` | finance | 8 | OrderEconomicsService |
 | `apps/api/src/modules/identity-verification/providers/nid-callback-verification.spec.ts` | identity-verification | 6 | nID webhook signature verification |
 | `apps/api/src/modules/inventory/inventory.cron.spec.ts` | inventory | 2 | InventoryCron |
@@ -122,7 +122,7 @@ regression or an N+1.
 | `apps/api/src/modules/production/stitching-cascade.listener.spec.ts` | production | 8 | StitchingCascadeListener · onStitchingJobCreated · onStitchingJobStageChanged |
 | `apps/api/src/modules/production/work-orders.service.spec.ts` | production | 11 | WorkOrdersService · create · release · complete · cancel |
 | `apps/api/src/modules/purchasing/purchasing.cron.spec.ts` | purchasing | 2 | PurchasingCron |
-| `apps/api/src/modules/purchasing/purchasing.spec.ts` | purchasing | 5 | PurchasingService · upsertReorderDraftLine · create (Supplier + its backing Party) |
+| `apps/api/src/modules/purchasing/purchasing.spec.ts` | purchasing | 7 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR… |
 | `apps/api/src/modules/purchasing/reorder.listener.spec.ts` | purchasing | 5 | PurchasingReorderListener |
 | `apps/api/src/modules/purchasing/supplier-bill.spec.ts` | purchasing | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
 | `apps/api/src/modules/tradingpartners/invoice.service.spec.ts` | tradingpartners | 4 | InvoiceService · issue · findOne |

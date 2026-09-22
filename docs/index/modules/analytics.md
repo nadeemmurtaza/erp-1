@@ -9,13 +9,13 @@ Pack **core** · enabled by the `MODULES` allowlist · 7 files
 
 Source: `apps/api/src/modules/analytics/`
 
-## Files (7 · 1,692 lines)
+## Files (7 · 1,693 lines)
 
 All paths relative to `apps/api/src/modules/analytics`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `analytics.comparison.spec.ts` | unit test | 308 | — |  |
+| `analytics.comparison.spec.ts` | unit test | 309 | — |  |
 | `analytics.controller.ts` | controller | 73 | 1 |  |
 | `analytics.module.ts` | nest module | 11 | 1 |  |
 | `analytics.service.ts` | service | 779 | 8 |  |

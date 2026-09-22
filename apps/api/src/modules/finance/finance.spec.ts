@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { BadRequestException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { AppConfigService } from '../../core/config/app-config.service';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { StorageService } from '../../core/storage/storage.service';
 import { VOID_ORDER_STATUSES } from '../../core/common/sales-revenue';
@@ -37,6 +38,7 @@ describe('FinanceService', () => {
         PrismaService,
         { provide: EventBusService, useValue: events },
         { provide: StorageService, useValue: storage },
+        { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'main' } },
       ],
     }).compile();
 
@@ -86,6 +88,40 @@ describe('FinanceService', () => {
 
     expect(expense.amount).toBe(1500);
     expect(Number.isInteger(expense.amount)).toBe(true);
+  });
+
+  it('defaults scopeLevel to BRAND and stamps originNodeId from AppConfigService.nodeId (WO-23.3a, RETAIL-ERP.md R13, ADR-021)', async () => {
+    const rent = await seededCategory('rent');
+
+    const expense = await service.createExpense(
+      {
+        categoryId: rent.id,
+        amount: 1500,
+        description: 'finance.spec default scope',
+        incurredAt: '2026-10-05T00:00:00.000Z',
+      },
+      null,
+    );
+
+    expect(expense.scopeLevel).toBe('BRAND');
+    expect(expense.originNodeId).toBe('main');
+  });
+
+  it('honours an explicit scopeLevel', async () => {
+    const rent = await seededCategory('rent');
+
+    const expense = await service.createExpense(
+      {
+        categoryId: rent.id,
+        amount: 1500,
+        description: 'finance.spec explicit scope',
+        incurredAt: '2026-10-05T00:00:00.000Z',
+        scopeLevel: 'ORG',
+      },
+      null,
+    );
+
+    expect(expense.scopeLevel).toBe('ORG');
   });
 
   it('publishes ExpenseRecorded with the category’s isDirect flag and paidAtIso null when unpaid', async () => {

@@ -9,22 +9,22 @@ Pack **core** · enabled by the `MODULES` allowlist · 12 files
 
 Source: `apps/api/src/modules/finance/`
 
-## Files (12 · 1,831 lines)
+## Files (12 · 1,880 lines)
 
 All paths relative to `apps/api/src/modules/finance/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `expense-category.dto.ts` | dto | 35 | 2 |  |
-| `expense.dto.ts` | dto | 100 | 4 |  |
+| `expense.dto.ts` | dto | 107 | 4 |  |
 | `finance.controller.ts` | controller | 112 | 1 |  |
 | `finance.cron.spec.ts` | unit test | 69 | — |  |
 | `finance.cron.ts` | scheduled job | 36 | 1 | WO-B.2's recurring-expense job. |
 | `finance.listener.spec.ts` | unit test | 48 | — |  |
 | `finance.listener.ts` | event subscriber | 27 | 1 | WO-23.1's WO-B.3: compute OrderEconomics on DELIVERED, recompute on RETURNED. |
 | `finance.module.ts` | nest module | 13 | 1 |  |
-| `finance.service.ts` | service | 552 | 6 |  |
-| `finance.spec.ts` | unit test | 486 | — |  |
+| `finance.service.ts` | service | 558 | 6 |  |
+| `finance.spec.ts` | unit test | 522 | — |  |
 | `order-economics.service.spec.ts` | unit test | 216 | — |  |
 | `order-economics.service.ts` | service | 137 | 1 | WO-23.1's WO-B.3: contribution per order. |
 
@@ -54,7 +54,7 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 | Event | Name | Published at |
 |---|---|---|
 | `OrderCancelled` | `order.cancelled` | `finance.listener.ts:9` |
-| `ExpenseRecorded` | `finance.expense_recorded` | `finance.service.ts:248`, `finance.service.ts:524` |
+| `ExpenseRecorded` | `finance.expense_recorded` | `finance.service.ts:252`, `finance.service.ts:530` |
 | `OrderEconomicsComputed` | `finance.order_economics_computed` | `order-economics.service.ts:127` |
 
 
@@ -69,9 +69,9 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Expense` | 22 | :44 |  |
+| `Expense` | 24 | :44 |  |
 | `ExpenseCategory` | 9 | :19 | Finance: operational expenses and per-order economics (RETAIL-ERP.md Tranche 6, WO-23.1 — "build 10-admin-das… |
-| `OrderEconomics` | 12 | :91 | One row per order, written when it reaches DELIVERED and recomputed if it is later RETURNED (WO-B.3). |
+| `OrderEconomics` | 12 | :102 | One row per order, written when it reaches DELIVERED and recomputed if it is later RETURNED (WO-B.3). |
 
 
 Enums: `ExpenseRecurrence` (5)
@@ -100,6 +100,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 - core `auth`
 - core `common`
+- core `config`
 - core `events`
 - core `prisma`
 - core `settings`
@@ -116,7 +117,7 @@ check there before adding another.
 |---|---|---|
 | `finance.cron.spec.ts` | 3 | FinanceCron |
 | `finance.listener.spec.ts` | 2 | FinanceListener |
-| `finance.spec.ts` | 24 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4 · trend — WO-B.4 |
+| `finance.spec.ts` | 26 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4 · trend — WO-B.4 |
 | `order-economics.service.spec.ts` | 8 | OrderEconomicsService |
 
 
@@ -126,20 +127,20 @@ check there before adding another.
 |---|---|---|---|
 | `CreateExpenseCategoryDto` | class | `expense-category.dto.ts:4` |  |
 | `UpdateExpenseCategoryDto` | class | `expense-category.dto.ts:34` |  |
-| `CreateExpenseDto` | class | `expense.dto.ts:8` |  |
-| `UpdateExpenseDto` | class | `expense.dto.ts:59` |  |
-| `ExpenseQueryDto` | class | `expense.dto.ts:61` |  |
-| `ExpenseSummaryQueryDto` | class | `expense.dto.ts:89` |  |
+| `CreateExpenseDto` | class | `expense.dto.ts:9` |  |
+| `UpdateExpenseDto` | class | `expense.dto.ts:66` |  |
+| `ExpenseQueryDto` | class | `expense.dto.ts:68` |  |
+| `ExpenseSummaryQueryDto` | class | `expense.dto.ts:96` |  |
 | `FinanceController` | class | `finance.controller.ts:19` |  |
 | `FinanceCron` | class | `finance.cron.ts:19` | WO-B.2's recurring-expense job. |
 | `FinanceListener` | class | `finance.listener.ts:15` | WO-23.1's WO-B.3: compute OrderEconomics on DELIVERED, recompute on RETURNED. |
 | `FinanceModule` | class | `finance.module.ts:12` |  |
-| `ExpenseSummary` | interface | `finance.service.ts:54` |  |
-| `ExpenseByCategoryRow` | interface | `finance.service.ts:68` |  |
-| `ExpenseByCategoryResult` | interface | `finance.service.ts:86` |  |
-| `ExpenseTrendPoint` | interface | `finance.service.ts:98` |  |
-| `ExpenseTrendResult` | interface | `finance.service.ts:107` |  |
-| `FinanceService` | class | `finance.service.ts:124` | Finance: operational expenses (RETAIL-ERP.md Tranche 6, WO-23.1 — building `10-admin-dashboard.md` WO-B.1 as… |
+| `ExpenseSummary` | interface | `finance.service.ts:55` |  |
+| `ExpenseByCategoryRow` | interface | `finance.service.ts:69` |  |
+| `ExpenseByCategoryResult` | interface | `finance.service.ts:87` |  |
+| `ExpenseTrendPoint` | interface | `finance.service.ts:99` |  |
+| `ExpenseTrendResult` | interface | `finance.service.ts:108` |  |
+| `FinanceService` | class | `finance.service.ts:125` | Finance: operational expenses (RETAIL-ERP.md Tranche 6, WO-23.1 — building `10-admin-dashboard.md` WO-B.1 as… |
 | `OrderEconomicsService` | class | `order-economics.service.ts:40` | WO-23.1's WO-B.3: contribution per order. |
 
 

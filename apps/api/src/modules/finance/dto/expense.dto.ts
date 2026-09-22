@@ -4,6 +4,7 @@ import { IsBoolean, IsIn, IsInt, IsISO8601, IsNotEmpty, IsOptional, IsString, Mi
 import { PaginationQueryDto } from '../../../core/common/dto/pagination.dto';
 
 const EXPENSE_RECURRENCES = ['NONE', 'WEEKLY', 'MONTHLY', 'QUARTERLY', 'YEARLY'] as const;
+const SCOPE_LEVELS = ['ORG', 'BRAND', 'BRANCH'] as const;
 
 export class CreateExpenseDto {
   @ApiPropertyOptional()
@@ -54,6 +55,12 @@ export class CreateExpenseDto {
   @IsIn(EXPENSE_RECURRENCES)
   @IsOptional()
   recurrence?: (typeof EXPENSE_RECURRENCES)[number];
+
+  /** RETAIL-ERP.md R13/ADR-021. "Expenses are recorded at whichever tier pays them" — omit for BRAND (the default). */
+  @ApiPropertyOptional({ enum: SCOPE_LEVELS, default: 'BRAND' })
+  @IsIn(SCOPE_LEVELS)
+  @IsOptional()
+  scopeLevel?: (typeof SCOPE_LEVELS)[number];
 }
 
 export class UpdateExpenseDto extends PartialType(CreateExpenseDto) {}

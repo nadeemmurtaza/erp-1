@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 18 files
 
 Source: `apps/api/src/modules/bom/`
 
-## Files (18 · 3,071 lines)
+## Files (18 · 3,133 lines)
 
 All paths relative to `apps/api/src/modules/bom`.
 
@@ -25,12 +25,12 @@ All paths relative to `apps/api/src/modules/bom`.
 | `bom.spec.ts` | unit test | 525 | — |  |
 | `cost-rollup.spec.ts` | unit test | 124 | — | 2000 base units of fabric at 50 paisa/base-unit = 100000 |
 | `cost-rollup.ts` | module | 70 | 5 | The BOM cost rollup (WO-C.2, 10-admin-dashboard.md §C) — a pure function, deliberately: it takes plain numbers in, retu… |
-| `production-run.dto.ts` | dto | 34 | 2 |  |
+| `production-run.dto.ts` | dto | 48 | 2 |  |
 | `raw-material.dto.ts` | dto | 52 | 3 |  |
 | `raw-usage.dto.ts` | dto | 30 | 1 |  |
 | `recipe.dto.ts` | dto | 113 | 5 |  |
-| `production.service.spec.ts` | unit test | 390 | — |  |
-| `production.service.ts` | service | 260 | 1 | The step that makes BOM real: a run consumes raw stock and credits finished stock, both through InventoryService — a di… |
+| `production.service.spec.ts` | unit test | 436 | — |  |
+| `production.service.ts` | service | 262 | 1 | The step that makes BOM real: a run consumes raw stock and credits finished stock, both through InventoryService — a di… |
 | `raw-material.service.ts` | service | 218 | 1 | A raw material is an ordinary ProductVariant with a RawMaterial marker row (D5, bom.prisma). |
 | `recipe.service.ts` | service | 501 | 3 |  |
 
@@ -67,7 +67,7 @@ All paths relative to `apps/api/src/modules/bom`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `BomProductionCompleted` | `bom.production_completed` | `production.service.ts:198` |
+| `BomProductionCompleted` | `bom.production_completed` | `production.service.ts:200` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -82,8 +82,8 @@ All paths relative to `apps/api/src/modules/bom`.
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
 | `BomComponent` | 10 | :125 |  |
-| `BomProductionLine` | 9 | :189 | One raw-material line consumed by a production run — the same SNAPSHOT discipline as the run itself. |
-| `BomProductionRun` | 18 | :152 | One production run: the recipe was run N times, consuming raw stock and crediting finished stock, both throug… |
+| `BomProductionLine` | 9 | :205 | One raw-material line consumed by a production run — the same SNAPSHOT discipline as the run itself. |
+| `BomProductionRun` | 21 | :152 | One production run: the recipe was run N times, consuming raw stock and crediting finished stock, both throug… |
 | `BomRecipe` | 19 | :81 | The recipe for one finished ProductVariant: which raw materials, how much of each, and the resulting cost est… |
 | `RawMaterial` | 13 | :32 |  |
 
@@ -134,7 +134,7 @@ check there before adding another.
 | `bom.metrics.spec.ts` | 5 | BomMetricsService — raw usage · missing-recipe count consistency |
 | `bom.spec.ts` | 21 | bom module — raw materials · resolveCategoryId · create · unitScale immutability · deactivate · list/get · purchasing i… |
 | `cost-rollup.spec.ts` | 7 | computeRecipeCost |
-| `production.service.spec.ts` | 10 | ProductionService · consuming raw stock and producing finished stock · nothing writes ProductVariant.stock except Inven… |
+| `production.service.spec.ts` | 12 | ProductionService · consuming raw stock and producing finished stock · scopeLevel/originNodeId/locationId — WO-23.3a, R… |
 
 
 ## Every export in this unit
@@ -154,8 +154,8 @@ check there before adding another.
 | `RecipeCostComponentResult` | interface | `cost-rollup.ts:36` |  |
 | `RecipeCostResult` | interface | `cost-rollup.ts:44` |  |
 | `computeRecipeCost` | function | `cost-rollup.ts:54` |  |
-| `CreateProductionRunDto` | class | `production-run.dto.ts:5` |  |
-| `ProductionRunQueryDto` | class | `production-run.dto.ts:23` |  |
+| `CreateProductionRunDto` | class | `production-run.dto.ts:7` |  |
+| `ProductionRunQueryDto` | class | `production-run.dto.ts:37` |  |
 | `CreateRawMaterialDto` | class | `raw-material.dto.ts:9` |  |
 | `UpdateRawMaterialDto` | class | `raw-material.dto.ts:39` |  |
 | `RawMaterialQueryDto` | class | `raw-material.dto.ts:41` |  |

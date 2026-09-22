@@ -319,6 +319,16 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['purchasing.manage'],
     group: 'stock',
     module: 'purchasing',
+    children: [
+      {
+        key: 'purchasing-spend',
+        label: 'Spend',
+        href: '/admin/purchase-orders/spend',
+        permissions: ['purchasing.manage'],
+        group: 'stock',
+        module: 'analytics',
+      },
+    ],
   },
   {
     key: 'suppliers',

@@ -32,7 +32,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `analytics.view` | View dashboard analytics | low | 8 | 5 | STAFF, ADMIN |
+| `analytics.view` | View dashboard analytics | low | 10 | 5 | STAFF, ADMIN |
 | `reports.view` | Export CSV reports | low | 7 | 2 | STAFF, ADMIN |
 | `organization.view` | View the organization/brand/branch dashboard | low | 5 | 1 | STAFF, ADMIN |
 | `organization.manage` | Grant and revoke who is a brand or branch admin | high | 10 | 3 | ADMIN |
@@ -83,7 +83,7 @@ the *catalogue*, not any particular deployment's grants.
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
 | `suppliers.manage` | Manage suppliers | medium | 8 | 1 | STAFF, ADMIN |
-| `purchasing.manage` | Create and receive purchase orders | medium | 17 | 2 | STAFF, ADMIN |
+| `purchasing.manage` | Create and receive purchase orders | medium | 17 | 3 | STAFF, ADMIN |
 | `parties.manage` | Manage the shared counterparty (supplier/retailer/distributor/manufacturer) pro… | medium | 3 | — | STAFF, ADMIN |
 
 ### Account

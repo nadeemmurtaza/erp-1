@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, ParseIntPipe, Patch, Query, DefaultValuePipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, ForbiddenException, Get, ParseIntPipe, Patch, Query, DefaultValuePipe } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
@@ -51,6 +51,35 @@ export class AnalyticsController {
     @Query('days', new DefaultValuePipe(90), ParseIntPipe) days: number,
   ) {
     return this.analytics.ordersFulfilment(Math.min(Math.max(days, 7), 365));
+  }
+
+  @Get('purchasing/spend')
+  @ApiOperation({ summary: 'What was ordered, received, billed and is still owed to suppliers' })
+  purchasingSpend(
+    @Query('days', new DefaultValuePipe(90), ParseIntPipe) days: number,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    // Purchasing spend is domain-sensitive beyond the base analytics.view
+    // the class decorator already requires — bom.controller.ts's
+    // recipeCost()/seedCostPrice() are this repo's own precedent for a
+    // hard, method-level second permission check rather than a class-level
+    // decorator, for an endpoint whose whole payload is one domain's money.
+    if (!user.permissions.includes('purchasing.manage')) {
+      throw new ForbiddenException('You do not have access to purchasing spend.');
+    }
+    return this.analytics.purchasingSpend(Math.min(Math.max(days, 7), 365));
+  }
+
+  @Get('purchasing/suppliers')
+  @ApiOperation({ summary: 'Spend, order count, on-time rate and lead time by supplier' })
+  purchasingSuppliers(
+    @Query('days', new DefaultValuePipe(90), ParseIntPipe) days: number,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    if (!user.permissions.includes('purchasing.manage')) {
+      throw new ForbiddenException('You do not have access to supplier spend.');
+    }
+    return this.analytics.purchasingSuppliers(Math.min(Math.max(days, 7), 365));
   }
 
   @Get('visitors')

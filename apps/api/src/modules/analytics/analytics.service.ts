@@ -101,6 +101,38 @@ export interface OrdersFulfilment {
   transitions: OrderTransitionTiming[];
 }
 
+export interface PurchasingSpend {
+  totals: {
+    /** Σ PurchaseOrder.total by sentAt — a commitment, not yet a cost. */
+    ordered: number;
+    /** Σ GoodsReceiptItem.quantity × landedUnitCost by GoodsReceipt.receivedAt — comparison()'s own "purchases" definition, reused so the two never disagree. */
+    received: number;
+    /** Σ SupplierBill.amount by issuedAt. */
+    billed: number;
+    /** Σ (amount - amountPaid) across every non-PAID bill — a live balance, not windowed by `days`. */
+    unpaid: number;
+  };
+  series: Array<{ date: string; ordered: number; received: number }>;
+  byCategory: Array<{ category: string; spend: number }>;
+}
+
+export interface PurchasingSupplierRow {
+  supplierId: string;
+  name: string;
+  spend: number;
+  orders: number;
+  /** Basis points (0-10000); null if this supplier has no PO with a promised date. */
+  onTimeRateBps: number | null;
+  /** null if no PO of this supplier's has ever been both sent and received. */
+  avgLeadDays: number | null;
+  /** Share of the whole list's received spend, basis points. */
+  share: number;
+}
+
+export interface PurchasingSuppliers {
+  rows: PurchasingSupplierRow[];
+}
+
 export interface ComparisonBucket {
   t: string;
   sales: number;
@@ -883,6 +915,233 @@ export class AnalyticsService {
           medianHours: round1(row.median_hours ?? 0),
         }))
         .sort((a, b) => rank(a.from) - rank(b.from) || rank(a.to) - rank(b.to)),
+    };
+  }
+
+  /**
+   * WO-D.2 (10-admin-dashboard.md Track D) — what the business has
+   * committed to buy, actually received, been billed for, and still owes.
+   * `comparison()`'s own `purchases` bucket already defines "received
+   * spend" as Σ GoodsReceiptItem.quantity × landedUnitCost by
+   * GoodsReceipt.receivedAt (its own docstring: "a purchase order is an
+   * intention, a goods receipt is a cost") — reused verbatim here as
+   * `totals.received`/`series.received`, so the two screens can never
+   * quietly disagree about the same fact.
+   *
+   * `unpaid` is a live AP balance (`amount - amountPaid` on every non-PAID
+   * `SupplierBill`, the exact figure `PurchasingService.recordPayment`
+   * already computes at purchasing.service.ts:611), not windowed by
+   * `days` — an old unpaid bill is still owed today.
+   *
+   * PERMISSION NOTE: unlike `comparison()`'s `purchases` bucket (visible to
+   * any `analytics.view` holder), the controller requires `purchasing.manage`
+   * for this whole endpoint — purchasing spend is domain-sensitive in a way
+   * the general sales/purchases/expenses comparison isn't. It does NOT
+   * additionally hard-gate behind `inventory.view_cost`: every figure here
+   * is an aggregate spend total, not a per-unit cost — exactly the kind of
+   * figure `comparison()`'s own `purchases` bucket already treats as not
+   * margin-revealing on its own (cost-fields.ts's VIEW_COST gate exists for
+   * per-item `unitCost`/`costPrice`, which this endpoint never returns).
+   *
+   * EXPLAIN (test DB, ~10 rows across the touched tables): every query
+   * plans a sequential scan — correct at this size. `PurchaseOrder`'s
+   * `status`/`sentAt`, `GoodsReceipt.receivedAt` and `SupplierBill`'s
+   * `status`/`dueAt` index (purchasing.prisma) are what the planner
+   * switches to once row count justifies it.
+   */
+  async purchasingSpend(days: number): Promise<PurchasingSpend> {
+    const start = this.windowStart(days);
+    const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+
+    const [orderedRows, receivedRows, billedTotal, unpaidRows, categoryRows] = await Promise.all([
+      this.prisma.$queryRawUnsafe<Array<{ day: string; ordered: bigint }>>(
+        `SELECT ${shopDayExpr('"sentAt"', timeZone)} AS day, COALESCE(SUM("total"), 0) AS ordered
+         FROM "PurchaseOrder"
+         WHERE "sentAt" >= $1 AND status != 'CANCELLED'
+         GROUP BY 1`,
+        start,
+      ),
+
+      this.prisma.$queryRawUnsafe<Array<{ day: string; received: bigint }>>(
+        `SELECT ${shopDayExpr('gr."receivedAt"', timeZone)} AS day,
+                COALESCE(SUM(gri."quantity" * gri."landedUnitCost"), 0) AS received
+         FROM "GoodsReceiptItem" gri
+         JOIN "GoodsReceipt" gr ON gr.id = gri."goodsReceiptId"
+         WHERE gr."receivedAt" >= $1
+         GROUP BY 1`,
+        start,
+      ),
+
+      this.prisma.supplierBill.aggregate({
+        where: { issuedAt: { gte: start } },
+        _sum: { amount: true },
+      }),
+
+      // Not windowed — an AP balance is what's owed right now, whenever it
+      // was billed. amount/amountPaid, not baseAmountMinor: the schema's
+      // own comment on SupplierBill.amountPaid — "the same unit as amount,
+      // so amount - amountPaid is always the outstanding balance in the
+      // bill's own currency without a conversion" — is the same assumption
+      // purchasing.service.ts:611 already makes for this exact figure.
+      this.prisma.supplierBill.findMany({
+        where: { status: { not: 'PAID' } },
+        select: { amount: true, amountPaid: true },
+      }),
+
+      this.prisma.$queryRaw<Array<{ category: string; spend: bigint }>>`
+        SELECT COALESCE(ct."name", 'Uncategorised') AS category,
+               COALESCE(SUM(gri."quantity" * gri."landedUnitCost"), 0) AS spend
+        FROM "GoodsReceiptItem" gri
+        JOIN "GoodsReceipt" gr ON gr.id = gri."goodsReceiptId"
+        LEFT JOIN "ProductVariant" v ON v.id = gri."variantId"
+        LEFT JOIN "Product" p ON p.id = v."productId"
+        LEFT JOIN "Category" c ON c.id = p."categoryId"
+        LEFT JOIN "CategoryTranslation" ct ON ct."categoryId" = c.id AND ct.locale = 'en'
+        WHERE gr."receivedAt" >= ${start}
+        GROUP BY 1
+        ORDER BY spend DESC
+        LIMIT 10
+      `,
+    ]);
+
+    const dayKeys = shopDayKeys(start, days, timeZone);
+    const orderedByDay = new Map(orderedRows.map((row) => [row.day, Number(row.ordered)]));
+    const receivedByDay = new Map(receivedRows.map((row) => [row.day, Number(row.received)]));
+    const unpaid = unpaidRows.reduce((sum, bill) => sum + (bill.amount - bill.amountPaid), 0);
+
+    return {
+      totals: {
+        ordered: orderedRows.reduce((sum, row) => sum + Number(row.ordered), 0),
+        received: receivedRows.reduce((sum, row) => sum + Number(row.received), 0),
+        billed: billedTotal._sum.amount ?? 0,
+        unpaid,
+      },
+      series: dayKeys.map((day) => ({
+        date: day,
+        ordered: orderedByDay.get(day) ?? 0,
+        received: receivedByDay.get(day) ?? 0,
+      })),
+      byCategory: categoryRows.map((row) => ({ category: row.category, spend: Number(row.spend) })),
+    };
+  }
+
+  /**
+   * WO-D.2 — per-supplier spend, order count, on-time rate and average
+   * lead time. The spend/order-count half reuses `purchasesBySupplierCsv`'s
+   * own join shape (reports.service.ts) — `GoodsReceiptItem.quantity ×
+   * landedUnitCost`, joined `PurchaseOrder` → `Supplier` — with a `LIMIT`
+   * that CSV export doesn't need but this ranked screen does.
+   *
+   * On-time rate reuses the exact eligibility rule the weekly OTIF
+   * scorecard already ships (`supply-chain-digest.cron.ts`'s
+   * `sendSupplierScorecards`): a PO counts once it has a promised date
+   * (`expectedAt`) AND is either already RECEIVED/PARTIAL or SENT-but-
+   * overdue — never an in-flight order still inside its promised window.
+   * "On time" here means on-time alone, not OTIF's stricter
+   * on-time-AND-in-full.
+   *
+   * Lead time has no existing precedent (`Supplier.leadTimeDays` is a
+   * supplier's own QUOTED lead time, a policy value — not measured). This
+   * defines it as the actual gap `lastReceiptAt - sentAt`, averaged over
+   * every PO that has both — a wider population than on-time rate's, since
+   * lead time needs no promised date to be meaningful.
+   *
+   * No `inventory.view_cost` gate on `spend`/`share`, for the same reason
+   * `purchasingSpend()` above has none: both are aggregate spend figures,
+   * the same kind `comparison()`'s own `purchases` bucket already shows to
+   * any `analytics.view` holder — `purchasing.manage`, checked by the
+   * controller, is this report's real gate.
+   */
+  async purchasingSuppliers(days: number): Promise<PurchasingSuppliers> {
+    const start = this.windowStart(days);
+
+    const spendRows = await this.prisma.$queryRaw<
+      Array<{ supplierId: string; name: string; spend: bigint; orders: bigint }>
+    >`
+      SELECT s.id AS "supplierId", s.name,
+             COALESCE(SUM(gri."quantity" * gri."landedUnitCost"), 0) AS spend,
+             COUNT(DISTINCT po.id) AS orders
+      FROM "Supplier" s
+      JOIN "PurchaseOrder" po ON po."supplierId" = s.id
+      JOIN "GoodsReceipt" gr ON gr."purchaseOrderId" = po.id AND gr."receivedAt" >= ${start}
+      JOIN "GoodsReceiptItem" gri ON gri."goodsReceiptId" = gr.id
+      GROUP BY s.id, s.name
+      ORDER BY spend DESC
+      LIMIT 20
+    `;
+
+    if (spendRows.length === 0) return { rows: [] };
+
+    const totalSpend = spendRows.reduce((sum, row) => sum + Number(row.spend), 0);
+    const now = new Date();
+
+    // Bounded to the suppliers the ranking above already selected — not an
+    // unbounded scan of every supplier's every PO.
+    const suppliers = await this.prisma.supplier.findMany({
+      where: { id: { in: spendRows.map((row) => row.supplierId) } },
+      select: {
+        id: true,
+        purchaseOrders: {
+          where: { sentAt: { gte: start } },
+          select: {
+            expectedAt: true,
+            sentAt: true,
+            status: true,
+            receipts: { select: { receivedAt: true } },
+          },
+        },
+      },
+    });
+
+    const timingBySupplier = new Map(
+      suppliers.map((supplier) => {
+        let onTimeEligible = 0;
+        let onTimeCount = 0;
+        let leadDaySum = 0;
+        let leadDayCount = 0;
+
+        for (const po of supplier.purchaseOrders) {
+          const lastReceiptAt = po.receipts.reduce<Date | null>(
+            (latest, receipt) => (!latest || receipt.receivedAt > latest ? receipt.receivedAt : latest),
+            null,
+          );
+
+          if (po.sentAt && lastReceiptAt) {
+            leadDaySum += (lastReceiptAt.getTime() - po.sentAt.getTime()) / 86_400_000;
+            leadDayCount += 1;
+          }
+
+          const eligible = po.expectedAt !== null && (po.status !== 'SENT' || po.expectedAt < now);
+          if (eligible) {
+            onTimeEligible += 1;
+            if (lastReceiptAt !== null && lastReceiptAt <= po.expectedAt!) onTimeCount += 1;
+          }
+        }
+
+        return [
+          supplier.id,
+          {
+            onTimeRateBps: onTimeEligible > 0 ? Math.round((onTimeCount / onTimeEligible) * 10_000) : null,
+            avgLeadDays: leadDayCount > 0 ? round1(leadDaySum / leadDayCount) : null,
+          },
+        ] as const;
+      }),
+    );
+
+    return {
+      rows: spendRows.map((row) => {
+        const spend = Number(row.spend);
+        const timing = timingBySupplier.get(row.supplierId);
+        return {
+          supplierId: row.supplierId,
+          name: row.name,
+          spend,
+          orders: Number(row.orders),
+          onTimeRateBps: timing?.onTimeRateBps ?? null,
+          avgLeadDays: timing?.avgLeadDays ?? null,
+          share: totalSpend > 0 ? Math.round((spend / totalSpend) * 10_000) : 0,
+        };
+      }),
     };
   }
 

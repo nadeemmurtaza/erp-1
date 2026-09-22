@@ -513,6 +513,28 @@ export interface OrdersFulfilment {
   transitions: OrderTransitionTiming[];
 }
 
+// --- WO-D.2: purchasing spend / suppliers ------------------------------------
+
+export interface PurchasingSpend {
+  totals: { ordered: number; received: number; billed: number; unpaid: number };
+  series: Array<{ date: string; ordered: number; received: number }>;
+  byCategory: Array<{ category: string; spend: number }>;
+}
+
+export interface PurchasingSupplierRow {
+  supplierId: string;
+  name: string;
+  spend: number;
+  orders: number;
+  onTimeRateBps: number | null;
+  avgLeadDays: number | null;
+  share: number;
+}
+
+export interface PurchasingSuppliers {
+  rows: PurchasingSupplierRow[];
+}
+
 // --- Settings: roles & permissions, audit log --------------------------------
 
 export type EmailAccountPurpose = 'TRANSACTIONAL' | 'MARKETING' | 'SUPPORT';

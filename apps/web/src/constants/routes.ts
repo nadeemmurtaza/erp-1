@@ -77,6 +77,7 @@ export const ROUTES = {
     purchaseOrderNew: '/admin/purchase-orders/new',
     purchaseOrder: (id: string) => `/admin/purchase-orders/${id}`,
     purchaseOrderReceive: (id: string) => `/admin/purchase-orders/${id}/receive`,
+    purchasingSpend: '/admin/purchase-orders/spend',
     suppliers: '/admin/suppliers',
     supplier: (id: string) => `/admin/suppliers/${id}`,
 

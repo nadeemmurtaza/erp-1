@@ -54,6 +54,9 @@ export default function PurchaseOrdersPage() {
           </p>
         </div>
         <div className="flex gap-2">
+          <Link href={ROUTES.admin.purchasingSpend} className="btn-secondary">
+            Spend
+          </Link>
           <Link href={ROUTES.admin.transfers} className="btn-secondary">
             Transfers
           </Link>

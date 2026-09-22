@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1226,
-    "lines": 191692,
-    "routes": 327,
+    "files": 1228,
+    "lines": 192493,
+    "routes": 329,
     "controllers": 59,
     "models": 124,
     "enums": 53,
     "migrations": 59,
     "events": 37,
     "permissions": 41,
-    "screens": 142,
+    "screens": 143,
     "crons": 8,
-    "specs": 121,
+    "specs": 122,
     "designLaws": 150
   },
   "designLaws": [
@@ -1083,9 +1083,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 506,
-      "lines": 68565,
-      "bytes": 2495713,
+      "files": 507,
+      "lines": 69182,
+      "bytes": 2520238,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1101,9 +1101,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 248,
-      "lines": 38170,
-      "bytes": 1409697,
+      "files": 249,
+      "lines": 38354,
+      "bytes": 1416508,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -1173,12 +1173,13 @@
         "apps/api/src/modules/analytics/analytics.controller.ts",
         "apps/api/src/modules/analytics/analytics.module.ts",
         "apps/api/src/modules/analytics/analytics.orders.spec.ts",
+        "apps/api/src/modules/analytics/analytics.purchasing.spec.ts",
         "apps/api/src/modules/analytics/analytics.service.ts",
         "apps/api/src/modules/analytics/dto/analytics.dto.ts",
         "apps/api/src/modules/analytics/supply-chain-digest.cron.spec.ts",
         "apps/api/src/modules/analytics/supply-chain-digest.cron.ts"
       ],
-      "routes": 8,
+      "routes": 10,
       "page": "docs/index/modules/analytics.md"
     },
     {
@@ -2188,7 +2189,7 @@
       "controller": "AnalyticsController",
       "handler": "comparison",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 66,
+      "line": 95,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2236,7 +2237,7 @@
       "controller": "AnalyticsController",
       "handler": "setMonthlyTarget",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 83,
+      "line": 112,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2279,6 +2280,38 @@
     },
     {
       "method": "GET",
+      "path": "/admin/analytics/purchasing/spend",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "purchasingSpend",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 58,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "What was ordered, received, billed and is still owed to suppliers"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/purchasing/suppliers",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "purchasingSuppliers",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 75,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Spend, order count, on-time rate and lead time by supplier"
+    },
+    {
+      "method": "GET",
       "path": "/admin/analytics/stitching",
       "module": "analytics",
       "controller": "AnalyticsController",
@@ -2300,7 +2333,7 @@
       "controller": "AnalyticsController",
       "handler": "visitors",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 58,
+      "line": 87,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -6995,6 +7028,8 @@
         "PATCH /admin/analytics/monthly-target",
         "GET /admin/analytics/orders/fulfilment",
         "GET /admin/analytics/orders/overview",
+        "GET /admin/analytics/purchasing/spend",
+        "GET /admin/analytics/purchasing/suppliers",
         "GET /admin/analytics/stitching",
         "GET /admin/analytics/visitors"
       ],
@@ -7535,7 +7570,7 @@
         "POST /admin/trading-partners/:id/outbound-key",
         "POST /admin/trading-partners/:id/rotate-inbound-key"
       ],
-      "uiSites": 2,
+      "uiSites": 3,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -22588,6 +22623,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/purchase-orders/spend",
+      "file": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/spend/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/reports",
       "file": "apps/web/src/app/(admin)/admin/(app)/reports/page.tsx",
       "client": true,
@@ -23607,6 +23651,17 @@
         "AnalyticsService — WO-D.1 orders overview/fulfilment",
         "ordersOverview",
         "ordersFulfilment"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/analytics/analytics.purchasing.spec.ts",
+      "module": "analytics",
+      "kind": "unit test",
+      "cases": 10,
+      "describes": [
+        "AnalyticsService — WO-D.2 purchasing spend/suppliers",
+        "purchasingSpend",
+        "purchasingSuppliers"
       ]
     },
     {
@@ -28712,8 +28767,8 @@
       "path": "apps/api/src/modules/analytics/analytics.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 87,
-      "bytes": 3595,
+      "lines": 116,
+      "bytes": 4980,
       "doc": "",
       "symbols": [
         {
@@ -28748,11 +28803,20 @@
       "symbols": []
     },
     {
+      "path": "apps/api/src/modules/analytics/analytics.purchasing.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 329,
+      "bytes": 12086,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/modules/analytics/analytics.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 988,
-      "bytes": 38764,
+      "lines": 1247,
+      "bytes": 49818,
       "doc": "",
       "symbols": [
         {
@@ -28796,24 +28860,39 @@
           "line": 99
         },
         {
-          "name": "ComparisonBucket",
+          "name": "PurchasingSpend",
           "kind": "interface",
           "line": 104
         },
         {
+          "name": "PurchasingSupplierRow",
+          "kind": "interface",
+          "line": 119
+        },
+        {
+          "name": "PurchasingSuppliers",
+          "kind": "interface",
+          "line": 132
+        },
+        {
+          "name": "ComparisonBucket",
+          "kind": "interface",
+          "line": 136
+        },
+        {
           "name": "ComparisonAnalytics",
           "kind": "interface",
-          "line": 114
+          "line": 146
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 129
+          "line": 161
         },
         {
           "name": "AnalyticsService",
           "kind": "class",
-          "line": 151
+          "line": 183
         }
       ]
     },
@@ -35827,14 +35906,29 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 158,
-      "bytes": 5706,
+      "lines": 161,
+      "bytes": 5821,
       "doc": "",
       "symbols": [
         {
           "name": "PurchaseOrdersPage",
           "kind": "default",
           "line": 29
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/spend/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 148,
+      "bytes": 5803,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PurchasingSpendPage",
+          "kind": "default",
+          "line": 17
         }
       ]
     },
@@ -37085,8 +37179,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 468,
-      "bytes": 12256,
+      "lines": 478,
+      "bytes": 12496,
       "doc": "",
       "symbols": [
         {
@@ -37117,12 +37211,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 438
+          "line": 448
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 453
+          "line": 463
         }
       ]
     },
@@ -38178,8 +38272,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 130,
-      "bytes": 4996,
+      "lines": 131,
+      "bytes": 5049,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -38615,8 +38709,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 833,
-      "bytes": 22301,
+      "lines": 855,
+      "bytes": 22901,
       "doc": "",
       "symbols": [
         {
@@ -38840,149 +38934,164 @@
           "line": 512
         },
         {
+          "name": "PurchasingSpend",
+          "kind": "interface",
+          "line": 518
+        },
+        {
+          "name": "PurchasingSupplierRow",
+          "kind": "interface",
+          "line": 524
+        },
+        {
+          "name": "PurchasingSuppliers",
+          "kind": "interface",
+          "line": 534
+        },
+        {
           "name": "EmailAccountPurpose",
           "kind": "type",
-          "line": 518
+          "line": 540
         },
         {
           "name": "EmailAccount",
           "kind": "interface",
-          "line": 520
+          "line": 542
         },
         {
           "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 545
+          "line": 567
         },
         {
           "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 553
+          "line": 575
         },
         {
           "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 561
+          "line": 583
         },
         {
           "name": "InboundEmail",
           "kind": "interface",
-          "line": 568
+          "line": 590
         },
         {
           "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 585
+          "line": 607
         },
         {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 592
+          "line": 614
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 604
+          "line": 626
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 613
+          "line": 635
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 615
+          "line": 637
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 627
+          "line": 649
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 633
+          "line": 655
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 640
+          "line": 662
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 645
+          "line": 667
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 657
+          "line": 679
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 666
+          "line": 688
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 673
+          "line": 695
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 687
+          "line": 709
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 698
+          "line": 720
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 702
+          "line": 724
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 711
+          "line": 733
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 719
+          "line": 741
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 748
+          "line": 770
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 780
+          "line": 802
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 795
+          "line": 817
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 804
+          "line": 826
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 813
+          "line": 835
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 829
+          "line": 851
         }
       ]
     },

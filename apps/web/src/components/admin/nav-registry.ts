@@ -329,6 +329,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
 
   // Group: Manufacturing
   {
+    key: 'bom-recipes',
+    label: 'Recipes',
+    href: '/admin/bom',
+    permissions: ['bom.view'],
+    group: 'manufacturing',
+    module: 'bom',
+  },
+  {
     key: 'bom-raw-materials',
     label: 'Raw Materials',
     href: '/admin/bom/raw-materials',

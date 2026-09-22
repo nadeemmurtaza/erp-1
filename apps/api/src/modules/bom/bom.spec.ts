@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { ConflictException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { AuditService } from '../../core/audit/audit.service';
@@ -11,9 +11,12 @@ import { EntityEnrichmentRegistry } from '../../core/extension-points/entity-enr
 import { PartiesService } from '../parties/parties.service';
 import { PurchasingService } from '../purchasing/purchasing.service';
 import { CatalogService } from '../catalog/catalog.service';
+import { BomController } from './bom.controller';
 import { BomService } from './bom.service';
 import { RawMaterialService } from './raw-material.service';
+import { RecipeService } from './recipe.service';
 import { RawMaterialQueryDto } from './dto/raw-material.dto';
+import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 
 function query(overrides: Partial<RawMaterialQueryDto> = {}): RawMaterialQueryDto {
   return Object.assign(new RawMaterialQueryDto(), overrides);
@@ -33,15 +36,19 @@ describe('bom module — raw materials', () => {
   let prisma: PrismaService;
   let purchasing: PurchasingService;
   let catalog: CatalogService;
+  let recipes: RecipeService;
+  let controller: BomController;
   let actorId: string;
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
+      controllers: [BomController],
       providers: [
         RawMaterialService,
         BomService,
         PurchasingService,
         CatalogService,
+        RecipeService,
         PrismaService,
         SettingsService,
         AuditService,
@@ -59,6 +66,8 @@ describe('bom module — raw materials', () => {
     prisma = module.get(PrismaService);
     purchasing = module.get(PurchasingService);
     catalog = module.get(CatalogService);
+    recipes = module.get(RecipeService);
+    controller = module.get(BomController);
 
     // A real, seeded User — PurchaseOrder.createdById and GoodsReceipt.receivedById are FKs.
     actorId = (await prisma.user.findFirstOrThrow({ where: { role: 'ADMIN' } })).id;
@@ -89,9 +98,15 @@ describe('bom module — raw materials', () => {
 
     const products = await prisma.product.findMany({
       where: { translations: { some: { name: { startsWith: 'bom.spec ' } } } },
-      select: { id: true },
+      select: { id: true, variants: { select: { id: true } } },
     });
     if (products.length > 0) {
+      const variantIds = products.flatMap((p) => p.variants.map((v) => v.id));
+      // BomComponent.rawMaterial has onDelete: Restrict — clear recipes/components
+      // FIRST so a raw-material product's cascade delete is never blocked by a
+      // component that still references it.
+      await prisma.bomComponent.deleteMany({ where: { recipe: { variantId: { in: variantIds } } } });
+      await prisma.bomRecipe.deleteMany({ where: { variantId: { in: variantIds } } });
       await prisma.product.deleteMany({ where: { id: { in: products.map((p) => p.id) } } });
     }
     await prisma.supplier.deleteMany({ where: { name: { startsWith: 'bom.spec ' } } });
@@ -288,6 +303,218 @@ describe('bom module — raw materials', () => {
       });
 
       await expect(catalog.getProductBySlug(variant.product.slug)).rejects.toBeInstanceOf(NotFoundException);
+    });
+  });
+
+  async function createFinishedVariant(label: string) {
+    const suffix = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const product = await prisma.product.create({
+      data: {
+        slug: `bom-spec-${suffix}`,
+        kind: 'STITCHED',
+        status: 'DRAFT',
+        basePrice: 0,
+        translations: { create: [{ locale: 'en', name: name(label) }] },
+        variants: { create: [{ sku: `BOM-SPEC-${suffix.toUpperCase()}`, stock: 0 }] },
+      },
+      include: { variants: true },
+    });
+    return product.variants[0];
+  }
+
+  function fakeUser(permissions: string[]): AuthenticatedUser {
+    return { id: actorId, roles: [], permissions, email: null, phone: null };
+  }
+
+  describe('recipes — creation and the no-nesting rule', () => {
+    it('creates a recipe with components and rolls up the cost in the same transaction', async () => {
+      const fabric = await rawMaterials.create({ name: name('Recipe Fabric'), unit: 'GAZ', unitScale: 1000 });
+      await prisma.productVariant.update({ where: { id: fabric.variantId }, data: { costPrice: 50 } });
+      const finished = await createFinishedVariant('Kurta');
+
+      const recipe = await recipes.create(
+        {
+          variantId: finished.id,
+          outputQuantity: 1,
+          labourCost: 500,
+          overheadCost: 100,
+          components: [{ rawMaterialId: fabric.id, quantityBase: 2000, isOptional: false }],
+        },
+        actorId,
+      );
+
+      // 2000 base units * 50 paisa = 100000, + labour 500 + overhead 100
+      expect(recipe.rolledUpUnitCost).toBe(100000 + 500 + 100);
+      expect(recipe.costComplete).toBe(true);
+      expect(recipe.components).toHaveLength(1);
+    });
+
+    it('a component pointing at a raw material that itself has a recipe returns 400 (no sub-assemblies)', async () => {
+      // "subFabric" is itself the OUTPUT of another recipe — it is not a RawMaterial
+      // at all, but the doc's own guard is phrased against a raw material whose
+      // variant carries a recipe, so exercise it via a raw material's variant that
+      // has (incorrectly) also been given a BomRecipe.
+      const material = await rawMaterials.create({ name: name('Nested Material'), unit: 'PIECE' });
+      const finished = await createFinishedVariant('Nested Output');
+      const other = await createFinishedVariant('Other Output');
+
+      // Give the raw material's own variant a recipe of its own.
+      await prisma.bomRecipe.create({ data: { variantId: material.variantId } });
+
+      await expect(
+        recipes.create(
+          { variantId: finished.id, components: [{ rawMaterialId: material.id, quantityBase: 1, isOptional: false }] },
+          actorId,
+        ),
+      ).rejects.toBeInstanceOf(BadRequestException);
+
+      // Sanity: an unrelated recipe creation is unaffected.
+      await prisma.bomRecipe.deleteMany({ where: { variantId: material.variantId } });
+      await expect(
+        recipes.create({ variantId: other.id, components: [] }, actorId),
+      ).resolves.toBeDefined();
+    });
+
+    it('a component pointing at the recipe\'s own output variant returns 400', async () => {
+      const material = await rawMaterials.create({ name: name('Self Reference'), unit: 'PIECE' });
+      const finished = await createFinishedVariant('Self Output');
+
+      // Make the raw material BE the finished variant itself — contrived, but
+      // it is exactly the "cannot consume yourself" case the guard exists for.
+      await prisma.rawMaterial.update({ where: { id: material.id }, data: { variantId: finished.id } });
+
+      await expect(
+        recipes.create(
+          { variantId: finished.id, components: [{ rawMaterialId: material.id, quantityBase: 1, isOptional: false }] },
+          actorId,
+        ),
+      ).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it('returns 409 when the variant already has a recipe', async () => {
+      const finished = await createFinishedVariant('Double Recipe');
+      await recipes.create({ variantId: finished.id, components: [] }, actorId);
+
+      await expect(recipes.create({ variantId: finished.id, components: [] }, actorId)).rejects.toBeInstanceOf(
+        ConflictException,
+      );
+    });
+  });
+
+  describe('recipes — activation', () => {
+    it('refuses to activate a recipe with no non-optional component', async () => {
+      const finished = await createFinishedVariant('Empty Recipe');
+      const material = await rawMaterials.create({ name: name('Optional Only'), unit: 'PIECE' });
+      const recipe = await recipes.create(
+        { variantId: finished.id, components: [{ rawMaterialId: material.id, quantityBase: 1, isOptional: true }] },
+        actorId,
+      );
+
+      await expect(recipes.activate(recipe.id)).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it('activates once at least one non-optional component exists', async () => {
+      const finished = await createFinishedVariant('Real Recipe');
+      const material = await rawMaterials.create({ name: name('Required'), unit: 'PIECE' });
+      const recipe = await recipes.create(
+        { variantId: finished.id, components: [{ rawMaterialId: material.id, quantityBase: 1, isOptional: false }] },
+        actorId,
+      );
+
+      const activated = await recipes.activate(recipe.id);
+      expect(activated.status).toBe('ACTIVE');
+    });
+  });
+
+  describe('recipes — cost stripping without inventory.view_cost', () => {
+    it('GET recipes/:id omits every cost field for a caller without inventory.view_cost, and includes them with it', async () => {
+      const material = await rawMaterials.create({ name: name('Cost Strip Material'), unit: 'PIECE' });
+      await prisma.productVariant.update({ where: { id: material.variantId }, data: { costPrice: 250 } });
+      const finished = await createFinishedVariant('Cost Strip Output');
+      const recipe = await recipes.create(
+        {
+          variantId: finished.id,
+          labourCost: 10,
+          overheadCost: 5,
+          components: [{ rawMaterialId: material.id, quantityBase: 1, isOptional: false }],
+        },
+        actorId,
+      );
+
+      const withoutCost = await controller.getRecipe(fakeUser(['bom.view']), recipe.id);
+      expect(withoutCost.labourCost).toBeUndefined();
+      expect(withoutCost.overheadCost).toBeUndefined();
+      expect(withoutCost.rolledUpUnitCost).toBeUndefined();
+      expect(withoutCost.costComplete).toBeUndefined();
+      expect(withoutCost.costComputedAt).toBeUndefined();
+
+      const withCost = await controller.getRecipe(fakeUser(['bom.view', 'inventory.view_cost']), recipe.id);
+      expect(withCost.rolledUpUnitCost).toBe(10 + 5 + 250);
+    });
+  });
+
+  describe('recipes — cost recompute on receiving (the whole point of the rollup)', () => {
+    it('rolledUpUnitCost changes and costComputedAt moves forward once the raw material is received against a real PO; a second identical recompute is idempotent', async () => {
+      const material = await rawMaterials.create({ name: name('Recompute Fabric'), unit: 'GAZ', unitScale: 1000 });
+      const finished = await createFinishedVariant('Recompute Output');
+      const recipe = await recipes.create(
+        {
+          variantId: finished.id,
+          components: [{ rawMaterialId: material.id, quantityBase: 1000, isOptional: false }],
+        },
+        actorId,
+      );
+      expect(recipe.costComplete).toBe(false); // never received — costPrice 0, UNKNOWN not free
+
+      const supplier = await prisma.supplier.create({ data: { name: name('Recompute Supplier') } });
+      const po = await purchasing.createPurchaseOrder(
+        { supplierId: supplier.id, items: [{ variantId: material.variantId, quantityOrdered: 5000, unitCost: 40 }] },
+        actorId,
+      );
+      await purchasing.markPurchaseOrderSent(po.id);
+      const poItem = await prisma.purchaseOrderItem.findFirstOrThrow({ where: { purchaseOrderId: po.id } });
+      await purchasing.receiveGoods(po.id, { items: [{ purchaseOrderItemId: poItem.id, quantity: 5000 }] }, actorId);
+
+      // Simulates what bom.listener.ts does once GoodsReceived fires
+      // (bom.listener.spec.ts proves it identifies and calls this correctly).
+      const firstResult = await recipes.recompute(recipe.id);
+      const firstRecipe = await prisma.bomRecipe.findUniqueOrThrow({ where: { id: recipe.id } });
+
+      expect(firstResult.rolledUpUnitCost).toBe(1000 * 40);
+      expect(firstRecipe.costComplete).toBe(true);
+      expect(firstRecipe.costComputedAt).not.toBeNull();
+
+      const secondResult = await recipes.recompute(recipe.id);
+      const secondRecipe = await prisma.bomRecipe.findUniqueOrThrow({ where: { id: recipe.id } });
+
+      expect(secondResult.rolledUpUnitCost).toBe(firstResult.rolledUpUnitCost);
+      expect(secondRecipe.costComputedAt!.getTime()).toBeGreaterThanOrEqual(firstRecipe.costComputedAt!.getTime());
+    });
+  });
+
+  describe('recipes — missing BOMs', () => {
+    it('filter=missing matches the documented SQL run by hand', async () => {
+      const finished = await createFinishedVariant('Missing BOM Candidate');
+      await prisma.product.update({ where: { id: finished.productId }, data: { status: 'ACTIVE' } });
+
+      const handRun = await prisma.$queryRaw<Array<{ id: string }>>`
+        SELECT v.id
+        FROM "ProductVariant" v
+        JOIN "Product" p ON p.id = v."productId"
+        LEFT JOIN "BomRecipe"   r  ON r."variantId" = v.id AND r.status = 'ACTIVE'
+        LEFT JOIN "RawMaterial" rm ON rm."variantId" = v.id
+        WHERE v."isActive" = true
+          AND p.status = 'ACTIVE'
+          AND p.kind IN ('STITCHED', 'UNSTITCHED')
+          AND r.id IS NULL
+          AND rm.id IS NULL
+          AND v.id = ${finished.id}
+      `;
+      expect(handRun).toHaveLength(1);
+
+      const summary = await recipes.missingSummary();
+      expect(summary.missing.some((row) => row.id === finished.id)).toBe(true);
+      expect(summary.counts.missing).toBe(summary.missing.length);
     });
   });
 });

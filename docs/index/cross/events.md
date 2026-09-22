@@ -24,7 +24,7 @@ order" is a new file, not an edit to checkout.
 ## Attention list
 
 - Events **nothing publishes**: `crm.contact_upserted`, `crm.lead_created`
-- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `purchasing.goods_received`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`
+- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`
 
 ## Summary
 
@@ -52,7 +52,7 @@ order" is a new file, not an edit to checkout.
 | `catalog.product_price_changed` | `ProductPriceChanged` | `catalog` | `catalog`, `tradingpartners` |
 | `inventory.stock_replenished` | `StockReplenished` | `inventory` | `orders` |
 | `inventory.stock_variance_recorded` | `StockVarianceRecorded` | `accounting`, `inventory` | `accounting` |
-| `purchasing.goods_received` | `GoodsReceived` | `purchasing` | _none_ |
+| `purchasing.goods_received` | `GoodsReceived` | `purchasing` | `bom` |
 | `purchasing.supplier_bill_raised` | `SupplierBillRaised` | `accounting`, `purchasing` | `accounting` |
 | `purchasing.supplier_bill_paid` | `SupplierBillPaid` | `accounting`, `purchasing` | `accounting` |
 | `transfers.inter_branch_invoiced` | `InterBranchTransferInvoiced` | `accounting`, `transfers` | `accounting` |
@@ -451,7 +451,9 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 **Subscribed by**
 
-_Nothing subscribes. Publishing it is a no-op today._
+| Handler | Where | Module |
+|---|---|---|
+| `recomputeAffectedRecipes()` | `apps/api/src/modules/bom/bom.listener.ts:22` | `bom` |
 
 ### `purchasing.supplier_bill_raised`
 

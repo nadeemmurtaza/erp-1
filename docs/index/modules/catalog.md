@@ -90,16 +90,16 @@ All paths relative to `apps/api/src/modules/catalog`.
 | `Category` | 12 | :23 |  |
 | `CategoryTranslation` | 6 | :77 |  |
 | `Product` | 31 | :89 |  |
-| `ProductGarmentType` | 3 | :272 | Which garments a given unstitched fabric can be made into. |
-| `ProductImage` | 10 | :255 |  |
-| `ProductOption` | 9 | :293 | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
-| `ProductOptionTranslation` | 5 | :310 |  |
-| `ProductOptionValue` | 9 | :322 | A specific value on an option axis: "M", "Ferozi", "128GB". |
-| `ProductOptionValueTranslation` | 5 | :340 |  |
+| `ProductGarmentType` | 3 | :276 | Which garments a given unstitched fabric can be made into. |
+| `ProductImage` | 10 | :259 |  |
+| `ProductOption` | 9 | :297 | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
+| `ProductOptionTranslation` | 5 | :314 |  |
+| `ProductOptionValue` | 9 | :326 | A specific value on an option axis: "M", "Ferozi", "128GB". |
+| `ProductOptionValueTranslation` | 5 | :344 |  |
 | `ProductTranslation` | 9 | :149 |  |
-| `ProductVariant` | 42 | :165 |  |
-| `ProductVariantOptionValue` | 5 | :354 | The join that DEFINES a variant: one row per option axis per variant. |
-| `StockAdjustment` | 10 | :237 | One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without an audit table bolted… |
+| `ProductVariant` | 43 | :165 |  |
+| `ProductVariantOptionValue` | 5 | :358 | The join that DEFINES a variant: one row per option axis per variant. |
+| `StockAdjustment` | 10 | :241 | One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without an audit table bolted… |
 
 
 Enums: `OptionDisplay` (4) · `ProductKind` (6) · `ProductStatus` (3)

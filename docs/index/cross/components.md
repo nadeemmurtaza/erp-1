@@ -3,7 +3,7 @@
 
 # Components
 
-All **70** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **72** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 76 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 80 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 4 |  |
 
 ### `apps/pos/src/components` (2)
@@ -63,11 +63,18 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `session.tsx` | `AdminSessionProvider` `useAdminSession` | client | 9 |  |
 | `stage-badge.tsx` | `StageBadge` | server | 3 |  |
 
+### `apps/web/src/components/admin/bom` (2)
+
+| Component file | Exports | Client? | Imported by | Purpose |
+|---|---|---|---|---|
+| `cost-breakdown.tsx` | `CostBreakdown` | client | 1 |  |
+| `recipe-editor.tsx` | `RecipeEditor` | client | 2 |  |
+
 ### `apps/web/src/components/common` (3)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 7 |  |
+| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 9 |  |
 | `toast-container.tsx` | `ToastContainer` | client | 0 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | client | 4 |  |
 
@@ -117,7 +124,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `badge.tsx` | `BadgeTone` `Badge` | server | 12 |  |
+| `badge.tsx` | `BadgeTone` `Badge` | server | 14 |  |
 | `button.tsx` | `ButtonProps` `Button` | server | 1 |  |
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 1 |  |
 | `dialog.tsx` | `Dialog` | client | 1 |  |

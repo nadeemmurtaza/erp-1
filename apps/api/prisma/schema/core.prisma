@@ -71,6 +71,7 @@ model User {
   stockCountsAssigned     StockCount[]             @relation("StockCountAssignee")
   workOrdersCreated       WorkOrder[]              @relation("WorkOrderCreator")
   expensesCreated         Expense[]                @relation("ExpenseCreator")
+  bomRecipesCreated       BomRecipe[]              @relation("BomRecipeCreator")
 
   @@index([role])
   @@index([createdAt])

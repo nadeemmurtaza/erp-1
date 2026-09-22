@@ -3,15 +3,15 @@
 
 # Every tracked file
 
-All **1,182** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,194** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 476 | 63,564 | [files/api.md](../files/api.md) |
-| apps/web | 234 | 35,434 | [files/web.md](../files/web.md) |
+| apps/api | 483 | 64,950 | [files/api.md](../files/api.md) |
+| apps/web | 239 | 36,372 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 42 | 5,292 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 55 | 4,638 | [files/packages.md](../files/packages.md) |
@@ -29,14 +29,14 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 266 |
-| unit test | 96 |
-| page | 92 |
-| module | 86 |
-| service | 72 |
-| component | 71 |
-| migration | 55 |
+| unit test | 98 |
+| page | 95 |
+| module | 87 |
+| service | 73 |
+| component | 73 |
+| migration | 56 |
 | controller | 51 |
-| dto | 50 |
+| dto | 51 |
 | nest module | 40 |
 | script | 35 |
 | asset | 26 |
@@ -44,7 +44,7 @@ name a new file: the convention is what makes it findable.
 | prisma schema | 24 |
 | react | 22 |
 | utility | 21 |
-| event subscriber | 17 |
+| event subscriber | 18 |
 | e2e test | 15 |
 | file | 13 |
 | yaml | 12 |

@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **305** endpoints across **59** controllers, with the access rule that actually guards each one.
+All **314** endpoints across **59** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -114,15 +114,24 @@ never authorization.
 | GET | `/admin/analytics/stitching` | `analytics.view` | `AnalyticsController.stitching` | Which garments and style options drive the stitching business |
 | GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` | Visitor counts, view-to-order funnel and traffic sources |
 
-### [`bom`](../modules/bom.md) (5)
+### [`bom`](../modules/bom.md) (14)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/bom/missing` | `bom.view` | `BomController.missing` | Variants with no recipe, and ACTIVE recipes whose cost is still incomplete |
 | GET | `/admin/bom/raw-materials` | `bom.view` | `BomController.list` | List raw materials, paginated and filtered |
 | POST | `/admin/bom/raw-materials` | `bom.manage` | `BomController.create` | Create a raw material — a Product/ProductVariant pair, filed under the raw-mate… |
 | GET | `/admin/bom/raw-materials/:id` | `bom.view` | `BomController.get` | Raw material detail plus its recent stock movements |
 | PATCH | `/admin/bom/raw-materials/:id` | `bom.manage` | `BomController.update` | Edit a raw material |
 | POST | `/admin/bom/raw-materials/:id/deactivate` | `bom.manage` | `BomController.deactivate` | Deactivate a raw material |
+| GET | `/admin/bom/recipes` | `bom.view` | `BomController.listRecipes` | List recipes — filter=all\|active\|missing\|incomplete-cost |
+| POST | `/admin/bom/recipes` | `bom.manage` | `BomController.createRecipe` | Create a recipe for a finished ProductVariant |
+| GET | `/admin/bom/recipes/:id` | `bom.view` | `BomController.getRecipe` | Recipe detail with its components |
+| PATCH | `/admin/bom/recipes/:id` | `bom.manage` | `BomController.updateRecipe` | Edit a recipe — recomputes the cost rollup in the same transaction |
+| POST | `/admin/bom/recipes/:id/activate` | `bom.manage` | `BomController.activateRecipe` | Activate a recipe — 400 unless it has at least one non-optional component |
+| POST | `/admin/bom/recipes/:id/archive` | `bom.manage` | `BomController.archiveRecipe` | Archive a recipe |
+| GET | `/admin/bom/recipes/:id/availability` | `bom.view` | `BomController.recipeAvailability` | Whether this recipe can be produced now, and how many runs current stock suppor… |
+| GET | `/admin/bom/recipes/:id/cost` | `bom.view` | `BomController.recipeCost` | Per-component cost breakdown, recomputed live |
 
 ### [`cart`](../modules/cart.md) (6)
 

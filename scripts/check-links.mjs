@@ -212,7 +212,7 @@ const clean = (p) =>
 export function scanLinks(source) {
   const out = [];
   const patterns = [
-    /\bhref=\{?[`'"](\/[^`'"]*)[`'"]/g,
+    /\bhref\s*[:=]\s*\{?[`'"](\/[^`'"]*)[`'"]/g,
     /\brouter\.(?:push|replace|prefetch)\(\s*[`'"](\/[^`'"]*)[`'"]/g,
     /\bredirect\(\s*[`'"](\/[^`'"]*)[`'"]/g,
   ];

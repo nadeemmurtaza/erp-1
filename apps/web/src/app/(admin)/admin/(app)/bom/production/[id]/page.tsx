@@ -66,11 +66,6 @@ export default function ProductionRunDetailPage({ params }: { params: Promise<{ 
       <PageHeader
         title={run.number}
         description={`${run.sku} · ${run.runs} run(s), ${run.quantityProduced} unit(s) produced`}
-        context={
-          <Link href="/admin/bom/production" className="hover:text-neutral-900">
-            ← Production
-          </Link>
-        }
         action={
           <Link href={`/admin/bom/${run.recipeId}`} className="btn-secondary">
             View recipe

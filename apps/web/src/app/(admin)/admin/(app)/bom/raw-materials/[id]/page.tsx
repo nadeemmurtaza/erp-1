@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { formatDateTime, formatMoney, formatQuantity, UNIT_LABELS, type RawMaterialUnit } from '@newax/shared';
@@ -138,11 +137,6 @@ export default function RawMaterialDetailPage({ params }: { params: Promise<{ id
       <PageHeader
         title={material.name}
         description={`${material.sku} · ${material.isActive ? 'Active' : 'Inactive'}`}
-        context={
-          <Link href="/admin/bom/raw-materials" className="hover:text-neutral-900">
-            ← Raw Materials
-          </Link>
-        }
         action={
           canManage && material.isActive ? (
             <button type="button" onClick={() => void deactivate()} disabled={deactivating} className="btn-ghost text-red-700">

@@ -435,6 +435,9 @@ export class PurchasingService {
           number: receipt.number,
           purchaseOrderId: poId,
           supplierId: po.supplierId,
+          scopeLevel: po.scopeLevel,
+          originNodeId: po.originNodeId,
+          receivedAtIso: receipt.receivedAt.toISOString(),
         },
         tx,
       );

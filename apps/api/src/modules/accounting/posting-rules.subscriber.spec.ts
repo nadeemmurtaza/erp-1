@@ -20,6 +20,9 @@ const ACCOUNT_ID: Record<string, string> = {
   [ACCOUNT_CODE.INTERCOMPANY_COGS]: 'acc-ic-cogs',
   [ACCOUNT_CODE.DIRECT_EXPENSES]: 'acc-direct-expenses',
   [ACCOUNT_CODE.OPERATING_EXPENSES]: 'acc-operating-expenses',
+  [ACCOUNT_CODE.SALARIES_WAGES_EXPENSE]: 'acc-salaries-expense',
+  [ACCOUNT_CODE.SALARIES_PAYABLE]: 'acc-salaries-payable',
+  [ACCOUNT_CODE.EMPLOYEE_ADVANCES]: 'acc-advances',
 };
 
 describe('PostingRulesSubscriber — WO-19.2', () => {
@@ -438,6 +441,8 @@ describe('PostingRulesSubscriber — WO-19.2', () => {
       incurredAt: '2026-10-05T00:00:00.000Z',
       paidAtIso: null as string | null,
       supplierId: null as string | null,
+      scopeLevel: 'BRAND' as const,
+      originNodeId: null as string | null,
     };
 
     it('Dr Operating Expenses / Cr Accounts Payable when unpaid', async () => {
@@ -494,6 +499,142 @@ describe('PostingRulesSubscriber — WO-19.2', () => {
       accounting.findPostedEntry.mockResolvedValue({ id: 'already-there' });
 
       await subscriber.onExpenseRecorded(payload);
+
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('onPayrollRunPosted — WO-19.4', () => {
+    const payload = {
+      payRunId: 'pr1',
+      number: 'PAY-2026-0001',
+      postedAt: '2026-10-05T00:00:00.000Z',
+      grossMinor: 100_000,
+      netMinor: 80_000,
+      deductionsMinor: 15_000,
+      scopeLevel: 'BRAND' as const,
+      originNodeId: null as string | null,
+    };
+
+    it('Dr Salaries & Wages Expense (net + deductions, not the full theoretical gross) / Cr Tax Payable / Cr Salaries Payable', async () => {
+      await subscriber.onPayrollRunPosted(payload);
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          source: DomainEvent.PayrollRunPosted,
+          sourceRef: 'pr1',
+          lines: [
+            { accountId: 'acc-salaries-expense', debitMinor: 95_000 },
+            { accountId: 'acc-tax', creditMinor: 15_000 },
+            { accountId: 'acc-salaries-payable', creditMinor: 80_000 },
+          ],
+        }),
+      );
+    });
+
+    it('balances even when unpaid leave shrank the run below its theoretical gross', async () => {
+      // grossMinor here is the pre-deduction theoretical figure; net+deductions
+      // (what onPayrollRunPosted actually debits) is what unpaid leave left.
+      await subscriber.onPayrollRunPosted({ ...payload, grossMinor: 200_000, netMinor: 60_000, deductionsMinor: 10_000 });
+
+      const call = accounting.postEntry.mock.calls[0][0];
+      const totalDebit = call.lines.reduce((sum: number, l: { debitMinor?: number }) => sum + (l.debitMinor ?? 0), 0);
+      const totalCredit = call.lines.reduce((sum: number, l: { creditMinor?: number }) => sum + (l.creditMinor ?? 0), 0);
+      expect(totalDebit).toBe(totalCredit);
+      expect(totalDebit).toBe(70_000);
+    });
+
+    it('omits the Tax Payable line entirely when there are no deductions', async () => {
+      await subscriber.onPayrollRunPosted({ ...payload, deductionsMinor: 0, netMinor: 100_000 });
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          lines: [
+            { accountId: 'acc-salaries-expense', debitMinor: 100_000 },
+            { accountId: 'acc-salaries-payable', creditMinor: 100_000 },
+          ],
+        }),
+      );
+    });
+
+    it('does nothing when net + deductions is zero or negative', async () => {
+      await subscriber.onPayrollRunPosted({ ...payload, netMinor: 0, deductionsMinor: 0 });
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+
+    it('does nothing when this pay run already posted (redelivery)', async () => {
+      accounting.findPostedEntry.mockResolvedValue({ id: 'already-there' });
+
+      await subscriber.onPayrollRunPosted(payload);
+
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('onPayrollAdjustmentPosted — WO-19.5', () => {
+    const payload = {
+      adjustmentId: 'adj1',
+      payRunId: 'pr1',
+      payRunNumber: 'PAY-2026-0001',
+      userId: 'u1',
+      reason: 'OVERPAYMENT' as const,
+      amountMinor: 500_00,
+      postedAt: '2026-11-01T00:00:00.000Z',
+    };
+
+    it('Dr Employee Advances / Cr Salaries Payable for OVERPAYMENT', async () => {
+      await subscriber.onPayrollAdjustmentPosted(payload);
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          source: DomainEvent.PayrollAdjustmentPosted,
+          sourceRef: 'adj1',
+          lines: [
+            { accountId: 'acc-advances', debitMinor: 500_00 },
+            { accountId: 'acc-salaries-payable', creditMinor: 500_00 },
+          ],
+        }),
+      );
+    });
+
+    it('Dr Salaries & Wages Expense / Cr Salaries Payable for UNDERPAYMENT', async () => {
+      await subscriber.onPayrollAdjustmentPosted({ ...payload, reason: 'UNDERPAYMENT' });
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          lines: [
+            { accountId: 'acc-salaries-expense', debitMinor: 500_00 },
+            { accountId: 'acc-salaries-payable', creditMinor: 500_00 },
+          ],
+        }),
+      );
+    });
+
+    it('Dr Salaries & Wages Expense / Cr Salaries Payable for CORRECTION', async () => {
+      await subscriber.onPayrollAdjustmentPosted({ ...payload, reason: 'CORRECTION' });
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          lines: [
+            { accountId: 'acc-salaries-expense', debitMinor: 500_00 },
+            { accountId: 'acc-salaries-payable', creditMinor: 500_00 },
+          ],
+        }),
+      );
+    });
+
+    it('sourceRef is the adjustment id, never the original pay run id', async () => {
+      await subscriber.onPayrollAdjustmentPosted(payload);
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({ sourceRef: 'adj1' }),
+      );
+    });
+
+    it('does nothing when this adjustment already posted (redelivery)', async () => {
+      accounting.findPostedEntry.mockResolvedValue({ id: 'already-there' });
+
+      await subscriber.onPayrollAdjustmentPosted(payload);
 
       expect(accounting.postEntry).not.toHaveBeenCalled();
     });

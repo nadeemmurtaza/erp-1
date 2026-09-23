@@ -36,6 +36,11 @@ export const CHART_OF_ACCOUNTS: ReadonlyArray<{
   { code: '5150', name: 'Direct Expenses', type: 'EXPENSE' },
   { code: '5200', name: 'Operating Expenses', type: 'EXPENSE' },
   { code: '5900', name: 'Realised FX Loss', type: 'EXPENSE' },
+  // Payroll (docs/implementation/19-payroll.md WO-19.4) — the payroll
+  // additions this file's own comment above already named as coming.
+  { code: '1300', name: 'Employee Advances', type: 'ASSET' },
+  { code: '2300', name: 'Salaries Payable', type: 'LIABILITY' },
+  { code: '5300', name: 'Salaries & Wages Expense', type: 'EXPENSE' },
 ];
 
 /** The codes above, named — so a posting rule never hand-types a magic string. */
@@ -55,4 +60,7 @@ export const ACCOUNT_CODE = {
   DIRECT_EXPENSES: '5150',
   OPERATING_EXPENSES: '5200',
   FX_LOSS: '5900',
+  EMPLOYEE_ADVANCES: '1300',
+  SALARIES_PAYABLE: '2300',
+  SALARIES_WAGES_EXPENSE: '5300',
 } as const;

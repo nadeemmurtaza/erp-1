@@ -3,7 +3,7 @@
 
 # Permissions
 
-All **41** permissions in `PERMISSION_CATALOG`, mapped to the routes that enforce them, the UI that checks them, and the seed that grants them.
+All **44** permissions in `PERMISSION_CATALOG`, mapped to the routes that enforce them, the UI that checks them, and the seed that grants them.
 
 
 Catalogue: `packages/shared/src/permissions.ts` ·
@@ -32,17 +32,17 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `analytics.view` | View dashboard analytics | low | 6 | 3 | STAFF, ADMIN |
+| `analytics.view` | View dashboard analytics | low | 19 | 9 | STAFF, ADMIN |
 | `reports.view` | Export CSV reports | low | 7 | 2 | STAFF, ADMIN |
-| `organization.view` | View the organization/brand/branch dashboard | low | 4 | 1 | STAFF, ADMIN |
-| `organization.manage` | Grant and revoke who is a brand or branch admin | high | 8 | 1 | ADMIN |
+| `organization.view` | View the organization/brand/branch dashboard | low | 5 | 1 | STAFF, ADMIN |
+| `organization.manage` | Grant and revoke who is a brand or branch admin | high | 10 | 3 | ADMIN |
 | `accounting.view` | View the general ledger and its reports (trial balance, P&L, balance sheet, cas… | medium | 10 | — | ADMIN |
 
 ### Customers
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `crm.manage` | Manage leads, contacts and CRM | low | 18 | 3 | STAFF, ADMIN |
+| `crm.manage` | Manage leads, contacts and CRM | low | 18 | 4 | STAFF, ADMIN |
 
 ### Sales
 
@@ -57,7 +57,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `stitching.jobs.view_queue` | View the tailor job queue | low | 3 | 1 | TAILOR, STAFF, ADMIN |
+| `stitching.jobs.view_queue` | View the tailor job queue | low | 3 | 2 | TAILOR, STAFF, ADMIN |
 | `stitching.jobs.change_stage` | Move a job to its next stage | low | 1 | — | TAILOR, STAFF, ADMIN |
 | `stitching.jobs.manage_own` | Change stage on own assigned jobs only | low | **0 — enforces nothing** | — | TAILOR |
 | `stitching.jobs.manage_all` | Change stage on any job, regardless of assignment | medium | **0 — enforces nothing** | — | STAFF, ADMIN |
@@ -72,10 +72,10 @@ the *catalogue*, not any particular deployment's grants.
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
 | `catalog.manage` | Manage products, categories and import | medium | 20 | 4 | STAFF, ADMIN |
-| `inventory.manage` | Adjust and view stock levels | medium | 8 | 3 | STAFF, ADMIN |
-| `inventory.view_cost` | See cost prices and margins | medium | 1 | 6 | ADMIN |
+| `inventory.manage` | Adjust and view stock levels | medium | 8 | 4 | STAFF, ADMIN |
+| `inventory.view_cost` | See cost prices and margins | medium | 1 | 7 | ADMIN |
 | `inventory.count` | Run stock counts | low | 7 | 3 | STAFF, ADMIN |
-| `transfers.manage` | Dispatch, receive and cancel inter-branch stock transfers | medium | 5 | — | STAFF, ADMIN |
+| `transfers.manage` | Dispatch, receive and cancel inter-branch stock transfers | medium | 5 | 2 | STAFF, ADMIN |
 | `measurements.manage_blueprints` | Manage garment types, measurement fields and size charts | low | 5 | 1 | STAFF, ADMIN |
 
 ### Purchasing
@@ -83,7 +83,7 @@ the *catalogue*, not any particular deployment's grants.
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
 | `suppliers.manage` | Manage suppliers | medium | 8 | 1 | STAFF, ADMIN |
-| `purchasing.manage` | Create and receive purchase orders | medium | 17 | 2 | STAFF, ADMIN |
+| `purchasing.manage` | Create and receive purchase orders | medium | 17 | 3 | STAFF, ADMIN |
 | `parties.manage` | Manage the shared counterparty (supplier/retailer/distributor/manufacturer) pro… | medium | 3 | — | STAFF, ADMIN |
 
 ### Account
@@ -119,6 +119,14 @@ the *catalogue*, not any particular deployment's grants.
 | `bom.manage` | Create and edit raw materials and recipes | medium | 9 | 4 | ADMIN |
 | `bom.produce` | Record a production run | low | 1 | 1 | STAFF, ADMIN |
 
+### Payroll
+
+| Key | Label | Risk | API routes | UI sites | Roles granted at seed |
+|---|---|---|---|---|---|
+| `payroll.view_own` | View their own compensation, leave balance and payslips | low | 5 | 1 | TAILOR, STAFF, ADMIN |
+| `payroll.view` | View every employee's compensation, leave and pay-run data | medium | 7 | 3 | ADMIN |
+| `payroll.manage` | Set compensation rates, decide leave requests, and build, approve and post pay… | medium | 7 | 2 | ADMIN |
+
 
 ## Role → permission, as seeded
 
@@ -131,9 +139,9 @@ their own `UserPermission` GRANT/REVOKE overrides applied on top
 | Role | Grants | Permissions |
 |---|---|---|
 | `CUSTOMER` | 1 | `account.change_own_password` |
-| `TAILOR` | 4 | `account.change_own_password` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_own` |
-| `STAFF` | 27 | `account.change_own_password` `analytics.view` `reports.view` `organization.view` `crm.manage` `orders.manage` `payments.approve` `pos.operate` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `bom.view` `bom.produce` |
-| `ADMIN` | 40 | `account.change_own_password` `analytics.view` `reports.view` `organization.view` `organization.manage` `accounting.view` `crm.manage` `orders.manage` `payments.approve` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.view_cost` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.manage` `bom.view` `bom.manage` `bom.produce` `settings.manage` `roles.manage_permissions` `audit.view` `users.manage` `tax.manage` `marketing.manage` `accounting.manage_periods` `pos.manage` `pos.operate` |
+| `TAILOR` | 5 | `account.change_own_password` `payroll.view_own` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_own` |
+| `STAFF` | 28 | `account.change_own_password` `payroll.view_own` `analytics.view` `reports.view` `organization.view` `crm.manage` `orders.manage` `payments.approve` `pos.operate` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `bom.view` `bom.produce` |
+| `ADMIN` | 43 | `account.change_own_password` `payroll.view_own` `payroll.view` `payroll.manage` `analytics.view` `reports.view` `organization.view` `organization.manage` `accounting.view` `crm.manage` `orders.manage` `payments.approve` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.view_cost` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.manage` `bom.view` `bom.manage` `bom.produce` `settings.manage` `roles.manage_permissions` `audit.view` `users.manage` `tax.manage` `marketing.manage` `accounting.manage_periods` `pos.manage` `pos.operate` |
 
 
 ## Admin nav → permission

@@ -11,6 +11,7 @@ import {
   BarChart3,
   Settings,
   Factory,
+  Wallet,
 } from 'lucide-react';
 
 export const ICON_MAP = {
@@ -23,6 +24,7 @@ export const ICON_MAP = {
   BarChart3,
   Settings,
   Factory,
+  Wallet,
 } as const;
 
 export interface AdminNavGroup {
@@ -52,6 +54,7 @@ export const NAV_GROUPS: readonly AdminNavGroup[] = [
   { key: 'catalogue', label: 'Catalogue', icon: 'Package' },
   { key: 'stock',     label: 'Stock',     icon: 'Boxes' },
   { key: 'manufacturing', label: 'Manufacturing', icon: 'Factory' },
+  { key: 'payroll', label: 'Payroll', icon: 'Wallet' },
   { key: 'insights',  label: 'Insights',  icon: 'BarChart3' },
   { key: 'settings',  label: 'Settings',  icon: 'Settings' },
 ] as const;
@@ -71,6 +74,7 @@ export interface AdminNavItem {
     | 'catalogue'
     | 'stock'
     | 'manufacturing'
+    | 'payroll'
     | 'insights'
     | 'settings';
   /** lucide-react icon name. */
@@ -120,6 +124,16 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['crm.manage'],
     group: 'customers',
     module: 'crm',
+    children: [
+      {
+        key: 'contacts-insights',
+        label: 'Insights',
+        href: '/admin/customers/insights',
+        permissions: ['crm.manage'],
+        group: 'customers',
+        module: 'analytics',
+      },
+    ],
   },
   {
     key: 'inbox',
@@ -138,6 +152,16 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['orders.manage'],
     group: 'orders',
     module: 'orders',
+    children: [
+      {
+        key: 'orders-insights',
+        label: 'Insights',
+        href: '/admin/orders/insights',
+        permissions: ['analytics.view'],
+        group: 'orders',
+        module: 'analytics',
+      },
+    ],
   },
   {
     key: 'payments',
@@ -210,6 +234,16 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['stitching.jobs.view_queue'],
     group: 'workshop',
     module: 'stitching',
+    children: [
+      {
+        key: 'stitching-insights',
+        label: 'Insights',
+        href: '/admin/workshop/insights',
+        permissions: ['stitching.jobs.view_queue'],
+        group: 'workshop',
+        module: 'analytics',
+      },
+    ],
   },
   {
     key: 'stitching-bookings',
@@ -236,6 +270,16 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['catalog.manage'],
     group: 'catalogue',
     module: 'catalog',
+    children: [
+      {
+        key: 'products-insights',
+        label: 'Insights',
+        href: '/admin/products/insights',
+        permissions: ['analytics.view'],
+        group: 'catalogue',
+        module: 'analytics',
+      },
+    ],
   },
   {
     key: 'categories',
@@ -300,6 +344,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
         permissions: ['inventory.count'],
         group: 'stock',
       },
+      {
+        key: 'inventory-insights',
+        label: 'Insights',
+        href: '/admin/inventory/insights',
+        permissions: ['analytics.view'],
+        group: 'stock',
+        module: 'analytics',
+      },
     ],
   },
   {
@@ -309,6 +361,16 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['purchasing.manage'],
     group: 'stock',
     module: 'purchasing',
+    children: [
+      {
+        key: 'purchasing-spend',
+        label: 'Spend',
+        href: '/admin/purchase-orders/spend',
+        permissions: ['purchasing.manage'],
+        group: 'stock',
+        module: 'analytics',
+      },
+    ],
   },
   {
     key: 'suppliers',
@@ -317,6 +379,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['suppliers.manage'],
     group: 'stock',
     module: 'purchasing',
+  },
+  {
+    key: 'transfers',
+    label: 'Transfers',
+    href: '/admin/transfers',
+    permissions: ['transfers.manage'],
+    group: 'stock',
+    module: 'transfers',
   },
   {
     key: 'trading-partners',
@@ -359,6 +429,40 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['bom.view'],
     group: 'manufacturing',
     module: 'bom',
+  },
+
+  // Group: Payroll
+  {
+    key: 'payroll-compensation',
+    label: 'Compensation',
+    href: '/admin/payroll/compensation',
+    permissions: ['payroll.view'],
+    group: 'payroll',
+    module: 'payroll',
+  },
+  {
+    key: 'payroll-leave',
+    label: 'Leave requests',
+    href: '/admin/payroll/leave',
+    permissions: ['payroll.view'],
+    group: 'payroll',
+    module: 'payroll',
+  },
+  {
+    key: 'payroll-runs',
+    label: 'Pay runs',
+    href: '/admin/payroll/runs',
+    permissions: ['payroll.view'],
+    group: 'payroll',
+    module: 'payroll',
+  },
+  {
+    key: 'payroll-me',
+    label: 'My pay',
+    href: '/admin/payroll/me',
+    permissions: ['payroll.view_own'],
+    group: 'payroll',
+    module: 'payroll',
   },
 
   // Group: Settings

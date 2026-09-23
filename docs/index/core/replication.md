@@ -3,7 +3,7 @@
 
 # Core: `replication`
 
-Shared platform — available to every module, part of no feature · 19 files
+Shared platform — available to every module, part of no feature · 21 files
 
 
 
@@ -12,7 +12,7 @@ Source: `apps/api/src/core/replication/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (19 · 1,461 lines)
+## Files (21 · 1,617 lines)
 
 All paths relative to `apps/api/src/core/replication/dto`.
 
@@ -21,6 +21,8 @@ All paths relative to `apps/api/src/core/replication/dto`.
 | `push-replication.dto.ts` | dto | 48 | 2 |  |
 | `node-credential.service.spec.ts` | unit test | 51 | — |  |
 | `node-credential.service.ts` | service | 38 | 1 | Authenticates an inbound replication call from a child node (WO-20.2) — the raw key it presents, hashed and looked up,… |
+| `policy-quarantine.service.spec.ts` | unit test | 80 | — |  |
+| `policy-quarantine.service.ts` | service | 73 | 2 |  |
 | `replication-apply.service.spec.ts` | unit test | 62 | — |  |
 | `replication-apply.service.ts` | service | 48 | 1 | Applies one incoming record — WO-20.2's HTTP receiving side is the only intended caller once it exists; nothing calls t… |
 | `replication-cursor.service.spec.ts` | unit test | 98 | — |  |
@@ -33,7 +35,7 @@ All paths relative to `apps/api/src/core/replication/dto`.
 | `replication-sync.agent.ts` | agent | 174 | 1 | The child side of WO-20.2's transport: pushes this node's own FACT log up to its parent, and pulls the parent's POLICY… |
 | `replication.controller.spec.ts` | unit test | 104 | — |  |
 | `replication.controller.ts` | controller | 109 | 1 | What a child node's own sync agent calls (WO-20.2) — authenticated by a node credential (`NodeCredentialService`), neve… |
-| `replication.module.ts` | nest module | 46 | 1 |  |
+| `replication.module.ts` | nest module | 49 | 1 |  |
 | `replication.registry.spec.ts` | unit test | 41 | — |  |
 | `replication.registry.ts` | registry | 43 | 1 | Where a module states what it replicates — the same keyed-registration shape as `CartLineValidatorRegistry` (core/exten… |
 | `replication.types.ts` | module | 50 | 4 | The `peerNodeId` this node uses for its own cursors against its one parent — a BRANCH or BRAND has exactly one, so noth… |
@@ -68,17 +70,18 @@ _none_
 **`ReplicationModule`** (`replication.module.ts`)
 - imports: —
 - controllers: `ReplicationController`
-- providers: `ReplicationRegistry`, `ReplicationLogService`, `ReplicationCursorService`, `ReplicationQuarantineService`, `ReplicationApplyService`, `NodeCredentialService`, `ReplicationSyncAgent`
-- exports: `ReplicationRegistry`, `ReplicationLogService`, `ReplicationCursorService`, `ReplicationQuarantineService`, `ReplicationApplyService`, `NodeCredentialService`
+- providers: `ReplicationRegistry`, `ReplicationLogService`, `ReplicationCursorService`, `ReplicationQuarantineService`, `PolicyQuarantineService`, `ReplicationApplyService`, `NodeCredentialService`, `ReplicationSyncAgent`
+- exports: `ReplicationRegistry`, `ReplicationLogService`, `ReplicationCursorService`, `ReplicationQuarantineService`, `PolicyQuarantineService`, `ReplicationApplyService`, `NodeCredentialService`
 
 
 
 
-## Tests (8)
+## Tests (9)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `node-credential.service.spec.ts` | 5 | NodeCredentialService — WO-20.2 |
+| `policy-quarantine.service.spec.ts` | 4 | PolicyQuarantineService — WO-23.3c/e, RETAIL-ERP.md R9, ADR-023 · resolve |
 | `replication-apply.service.spec.ts` | 3 | ReplicationApplyService — WO-20.1 |
 | `replication-cursor.service.spec.ts` | 8 | ReplicationCursorService — WO-20.1 / WO-20.2 / WO-20.5 · get · advance · reset — WO-20.5 resync |
 | `replication-log.service.spec.ts` | 4 | ReplicationLogService — WO-20.1 |
@@ -95,13 +98,15 @@ _none_
 | `PushRecordDto` | class | `push-replication.dto.ts:7` |  |
 | `PushReplicationDto` | class | `push-replication.dto.ts:40` |  |
 | `NodeCredentialService` | class | `node-credential.service.ts:16` | Authenticates an inbound replication call from a child node (WO-20.2) — the raw key it presents, hashed and l… |
+| `PolicyQuarantineInput` | interface | `policy-quarantine.service.ts:5` |  |
+| `PolicyQuarantineService` | class | `policy-quarantine.service.ts:30` | R9's OTHER quarantine (WO-23.3c/e, ADR-023) — a fact that applied successfully but whose own `scopeLevel` dis… |
 | `ReplicationApplyService` | class | `replication-apply.service.ts:16` | Applies one incoming record — WO-20.2's HTTP receiving side is the only intended caller once it exists; nothi… |
 | `ReplicationCursorService` | class | `replication-cursor.service.ts:15` | "The highest sequence I've already synced with this peer, in this direction" — read by `ReplicationSyncAgent`… |
 | `ReplicationLogService` | class | `replication-log.service.ts:21` | The log's write side (WO-20.1). |
 | `ReplicationQuarantineService` | class | `replication-quarantine.service.ts:13` | Where a record that failed to apply lands — never dropped, never retried forever (WO-20.1's own scope, see re… |
 | `ReplicationSyncAgent` | class | `replication-sync.agent.ts:46` | The child side of WO-20.2's transport: pushes this node's own FACT log up to its parent, and pulls the parent… |
 | `ReplicationController` | class | `replication.controller.ts:22` | What a child node's own sync agent calls (WO-20.2) — authenticated by a node credential (`NodeCredentialServi… |
-| `ReplicationModule` | class | `replication.module.ts:45` |  |
+| `ReplicationModule` | class | `replication.module.ts:48` |  |
 | `ReplicationRegistry` | class | `replication.registry.ts:18` | Where a module states what it replicates — the same keyed-registration shape as `CartLineValidatorRegistry` (… |
 | `PARENT_PEER_ID` | const | `replication.types.ts:11` | The `peerNodeId` this node uses for its own cursors against its one parent — a BRANCH or BRAND has exactly on… |
 | `ReplicationEntityDescriptor` | interface | `replication.types.ts:19` | What a module states about one entity when it registers with `ReplicationRegistry` — its own answer to "is th… |

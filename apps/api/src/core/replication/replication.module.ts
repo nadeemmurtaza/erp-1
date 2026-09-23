@@ -3,6 +3,7 @@ import { ReplicationRegistry } from './replication.registry';
 import { ReplicationLogService } from './replication-log.service';
 import { ReplicationCursorService } from './replication-cursor.service';
 import { ReplicationQuarantineService } from './replication-quarantine.service';
+import { PolicyQuarantineService } from './policy-quarantine.service';
 import { ReplicationApplyService } from './replication-apply.service';
 import { NodeCredentialService } from './node-credential.service';
 import { ReplicationController } from './replication.controller';
@@ -29,6 +30,7 @@ import { ReplicationSyncAgent } from './replication-sync.agent';
     ReplicationLogService,
     ReplicationCursorService,
     ReplicationQuarantineService,
+    PolicyQuarantineService,
     ReplicationApplyService,
     NodeCredentialService,
     ReplicationSyncAgent,
@@ -38,6 +40,7 @@ import { ReplicationSyncAgent } from './replication-sync.agent';
     ReplicationLogService,
     ReplicationCursorService,
     ReplicationQuarantineService,
+    PolicyQuarantineService,
     ReplicationApplyService,
     NodeCredentialService,
   ],

@@ -327,6 +327,8 @@ export interface OrgNodeSummary {
   role: 'BRANCH' | 'BRAND';
   label: string;
   status: 'ACTIVE' | 'SUSPENDED';
+  /** WO-23.3c/e — which brand this node belongs to; null until an operator sets it. Governs its BrandPolicy checks on replication receipt. */
+  retailBrandId: string | null;
 }
 
 /** GET /organization/me/scope — where the caller lands, and what chips they see. */
@@ -352,6 +354,28 @@ export interface AdminScopeWithHolder {
   branchNodeId: string | null;
   createdAt: string;
   user: { id: string; email: string | null; firstName: string | null; lastName: string | null };
+}
+
+/**
+ * GET /organization/policy-quarantine (WO-23.3c/e, RETAIL-ERP.md R9) — a
+ * fact that applied but whose own `scopeLevel` disagreed with the
+ * `BrandPolicy` switch meant to govern the node that raised it. Accepted,
+ * never rejected — held here for review instead.
+ */
+export interface PolicyQuarantineEntry {
+  id: string;
+  originNodeId: string;
+  entity: string;
+  entityId: string;
+  policyKey: string;
+  retailBrandId: string | null;
+  payload: unknown;
+  reason: string;
+  status: 'OPEN' | 'RESOLVED';
+  createdAt: string;
+  resolvedAt: string | null;
+  resolvedById: string | null;
+  resolvedNote: string | null;
 }
 
 export interface GrantScopeInput {
@@ -381,6 +405,17 @@ export interface UpdateBrandPolicyInput {
 }
 
 // --- Inventory --------------------------------------------------------------
+
+/** GET /admin/inventory/locations — never an in-transit bucket (WO-22.1). */
+export interface Location {
+  id: string;
+  name: string;
+  code: string;
+  isDefault: boolean;
+  type: 'STORE' | 'WAREHOUSE' | 'PRODUCTION';
+  /** WO-23.3c/e/d — null means no brand recorded, which an org-central WAREHOUSE Location uses on purpose (RETAIL-ERP.md R13). */
+  retailBrandId: string | null;
+}
 
 export interface StockAdjustment {
   id: string;
@@ -450,6 +485,306 @@ export interface MonthlyTarget {
   targetAmount: number;
   achievedAmount: number;
   percent: number;
+}
+
+// --- WO-D.1: orders overview / fulfilment ------------------------------------
+
+export interface OrderAgeingBucket {
+  label: string;
+  count: number;
+}
+
+export interface OrdersOverview {
+  ageing: OrderAgeingBucket[];
+  oldestOpen: Array<{ id: string; number: string; status: string; placedAt: string; ageDays: number }>;
+  byCity: Array<{ city: string; count: number; avgAgeDays: number }>;
+  byPayment: Array<{ provider: string; count: number; avgAgeDays: number }>;
+}
+
+export interface OrderTransitionTiming {
+  from: string;
+  to: string;
+  count: number;
+  avgHours: number;
+  medianHours: number;
+}
+
+export interface OrdersFulfilment {
+  transitions: OrderTransitionTiming[];
+}
+
+// --- WO-D.2: purchasing spend / suppliers ------------------------------------
+
+export interface PurchasingSpend {
+  totals: { ordered: number; received: number; billed: number; unpaid: number };
+  series: Array<{ date: string; ordered: number; received: number }>;
+  byCategory: Array<{ category: string; spend: number }>;
+}
+
+export interface PurchasingSupplierRow {
+  supplierId: string;
+  name: string;
+  spend: number;
+  orders: number;
+  onTimeRateBps: number | null;
+  avgLeadDays: number | null;
+  share: number;
+}
+
+export interface PurchasingSuppliers {
+  rows: PurchasingSupplierRow[];
+}
+
+// --- WO-D.3: products top/slow-sellers, categories ---------------------------
+
+export interface ProductTopSellerRow {
+  productId: string | null;
+  variantId: string | null;
+  sku: string;
+  name: string;
+  units: number;
+  revenue: number;
+  /** Absent (not present as a key) without inventory.view_cost. */
+  cogs?: number;
+  marginBps?: number;
+}
+
+export interface ProductsTopSellers {
+  rows: ProductTopSellerRow[];
+}
+
+export interface ProductSlowSellerRow {
+  productId: string;
+  variantId: string;
+  sku: string;
+  name: string;
+  daysSinceLastSale: number;
+  ageDays: number;
+}
+
+export interface ProductsSlowSellers {
+  rows: ProductSlowSellerRow[];
+}
+
+export interface ProductCategoryRow {
+  categoryId: string | null;
+  name: string;
+  revenue: number;
+  units: number;
+  productCount: number;
+  share: number;
+}
+
+export interface ProductsCategories {
+  rows: ProductCategoryRow[];
+  series: Array<{ date: string; revenue: number }>;
+}
+
+// --- WO-D.4: inventory valuation / movements ---------------------------------
+
+export interface InventoryValuation {
+  totals: { units: number; value: number; unknownCostVariants: number };
+  byCategory: Array<{ categoryId: string | null; name: string; units: number; value: number }>;
+  byKind: Array<{ kind: string; units: number; value: number }>;
+  ageing: Array<{ label: string; units: number; value: number }>;
+}
+
+export interface StockMovementReasonRow {
+  reason: string;
+  in: number;
+  out: number;
+  count: number;
+}
+
+export interface InventoryMovementRow {
+  id: string;
+  variantId: string;
+  sku: string;
+  name: string;
+  reason: string;
+  delta: number;
+  createdAt: string;
+}
+
+export interface InventoryMovements {
+  series: Array<{ date: string; in: number; out: number }>;
+  byReason: StockMovementReasonRow[];
+  recent: InventoryMovementRow[];
+}
+
+// --- WO-D.5: customers overview / retention / top ----------------------------
+
+export interface CustomersOverview {
+  totals: { total: number; repeat: number; newThisMonth: number };
+  byCity: Array<{ city: string; count: number }>;
+  bySource: Array<{ source: string; count: number }>;
+  byStatus: Array<{ status: string; count: number }>;
+}
+
+export interface CustomerCohort {
+  cohort: string;
+  size: number;
+  retained: number;
+}
+
+export interface CustomersRetention {
+  cohorts: CustomerCohort[];
+  repeatRateBps: number;
+}
+
+export interface CustomerTopRow {
+  contactId: string;
+  name: string;
+  city: string | null;
+  orders: number;
+  lifetimeValue: number;
+  avgOrderValue: number;
+  lastOrderAt: string | null;
+}
+
+export interface CustomersTop {
+  rows: CustomerTopRow[];
+}
+
+// --- WO-D.6: workshop output --------------------------------------------------
+
+export interface WorkshopStageRow {
+  stage: string;
+  count: number;
+  avgHours: number;
+}
+
+export interface WorkshopTailorRow {
+  tailorId: string;
+  name: string;
+  jobsCompleted: number;
+  avgHours: number;
+}
+
+export interface WorkshopOutput {
+  series: Array<{ date: string; started: number; completed: number }>;
+  byStage: WorkshopStageRow[];
+  byTailor: WorkshopTailorRow[];
+  bottleneck: { stage: string; avgHours: number } | null;
+}
+
+// --- Payroll: compensation, leave, pay runs (docs/implementation/19-payroll.md) --
+
+export type CompensationBasis = 'MONTHLY' | 'HOURLY' | 'COMMISSION';
+
+export interface CompensationRate {
+  id: string;
+  userId: string;
+  basis: CompensationBasis;
+  amountMinor: number;
+  effectiveFrom: string;
+  effectiveTo: string | null;
+  createdById: string | null;
+  createdAt: string;
+}
+
+export interface EmployeeCompensation {
+  current: CompensationRate | null;
+  history: CompensationRate[];
+}
+
+export interface GrossPreview {
+  grossMinor: number;
+  rateIds: string[];
+  missingInput: boolean;
+}
+
+export type LeaveKind = 'ANNUAL' | 'SICK' | 'UNPAID' | 'OTHER';
+
+export interface LeaveType {
+  id: string;
+  key: string;
+  name: string;
+  kind: LeaveKind;
+  accrualDaysPerRun: number;
+  isActive: boolean;
+}
+
+export interface LeaveBalance {
+  id: string;
+  userId: string;
+  leaveTypeId: string;
+  balance: number;
+  updatedAt: string;
+  leaveType: LeaveType;
+}
+
+export type LeaveRequestStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
+
+export interface LeaveRequest {
+  id: string;
+  userId: string;
+  leaveTypeId: string;
+  startDate: string;
+  endDate: string;
+  days: number;
+  reason: string | null;
+  status: LeaveRequestStatus;
+  decidedById: string | null;
+  decidedAt: string | null;
+  decisionNote: string | null;
+  createdAt: string;
+  leaveType: LeaveType;
+  user?: { id: string; firstName: string | null; lastName: string | null; email: string | null };
+}
+
+export interface EmployeeLeave {
+  balances: LeaveBalance[];
+  requests: LeaveRequest[];
+}
+
+export type PayRunStatus = 'DRAFT' | 'APPROVED' | 'POSTED';
+
+export interface PayRunLine {
+  id: string;
+  payRunId: string;
+  userId: string;
+  compensationRateId: string;
+  grossMinor: number;
+  unpaidLeaveDays: number;
+  unpaidLeaveMinor: number;
+  deductions: unknown;
+  deductionsMinor: number;
+  netMinor: number;
+  user: { id: string; firstName: string | null; lastName: string | null; email: string | null };
+}
+
+export type PayRunAdjustmentReason = 'OVERPAYMENT' | 'UNDERPAYMENT' | 'CORRECTION';
+
+export interface PayRunAdjustment {
+  id: string;
+  payRunId: string;
+  userId: string;
+  reason: PayRunAdjustmentReason;
+  amountMinor: number;
+  note: string;
+  createdById: string | null;
+  createdAt: string;
+}
+
+export interface PayRun {
+  id: string;
+  number: string;
+  periodStart: string;
+  periodEnd: string;
+  status: PayRunStatus;
+  scopeLevel: 'ORG' | 'BRAND' | 'BRANCH';
+  originNodeId: string | null;
+  approvedById: string | null;
+  approvedAt: string | null;
+  postedAt: string | null;
+  createdById: string | null;
+  createdAt: string;
+}
+
+export interface PayRunWithLines extends PayRun {
+  lines: PayRunLine[];
+  adjustments: PayRunAdjustment[];
 }
 
 // --- Settings: roles & permissions, audit log --------------------------------
@@ -726,4 +1061,46 @@ export interface PaginatedResult<T> {
     hasNext: boolean;
     hasPrevious: boolean;
   };
+}
+
+// --- Transfers (RETAIL-ERP.md R4, WO-22.1/22.2/22.3, WO-23.3d) ---------------
+// `transfers` module is off by default — empty for a Solo deployment.
+
+export interface StockTransferLine {
+  id: string;
+  variantId: string;
+  quantityDispatched: number;
+  quantityReceived: number;
+  /** Snapshotted at dispatch, on every transfer (WO-23.3d) — what did this stock cost, landed. */
+  unitCost: number | null;
+}
+
+export interface InterBranchInvoice {
+  id: string;
+  number: string;
+  sourceRetailBrandId: string;
+  destinationRetailBrandId: string;
+  amountMinor: number;
+  issuedAt: string;
+}
+
+export interface StockTransfer {
+  id: string;
+  number: string;
+  status: 'IN_TRANSIT' | 'RECEIVED' | 'CANCELLED';
+  settlementMode: 'NONE' | 'INTERNAL_PL' | 'INVOICED';
+  sourceLocationId: string;
+  destinationLocationId: string;
+  inTransitLocationId: string;
+  note: string | null;
+  createdAt: string;
+  receivedAt: string | null;
+  cancelledAt: string | null;
+  lines: StockTransferLine[];
+  interBranchInvoice: InterBranchInvoice | null;
+}
+
+export interface StockTransferListResult {
+  data: StockTransfer[];
+  meta: { page: number; pageSize: number; total: number };
 }

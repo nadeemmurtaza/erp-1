@@ -15,6 +15,7 @@ import { OrdersModule } from './orders/orders.module';
 import { OrganizationModule } from './organization/organization.module';
 import { PartiesModule } from './parties/parties.module';
 import { PaymentsModule } from './payments/payments.module';
+import { PayrollModule } from './payroll/payroll.module';
 import { PosModule } from './pos/pos.module';
 import { ProductionModule } from './production/production.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
@@ -77,6 +78,7 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'reports', module: ReportsModule },
   { name: 'tax', module: TaxModule },
   { name: 'finance', module: FinanceModule },
+  { name: 'payroll', module: PayrollModule },
   { name: 'tracking', module: TrackingModule },
   // Off by default for every deployment today (WO-18.3) — a chain
   // deployment switches it on when it actually has branches or brands to

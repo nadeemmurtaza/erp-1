@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
-import type { Prisma } from '../../core/prisma/client';
+import type { OrderStatus, Prisma } from '../../core/prisma/client';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { AppConfigService } from '../../core/config/app-config.service';
@@ -13,6 +13,9 @@ import {
   startOfShopMonth,
 } from '../../core/time/shop-time';
 import { rollUpDays, type MetricBucket } from '../../core/time/metric-window';
+
+/** Placed but not yet DELIVERED, CANCELLED or RETURNED — WO-D.1's "open". */
+const OPEN_ORDER_STATUSES: OrderStatus[] = ['PENDING', 'CONFIRMED', 'PROCESSING', 'READY_TO_SHIP', 'SHIPPED'];
 
 export interface MonthlyTarget {
   targetAmount: number;
@@ -69,6 +72,200 @@ export interface ExtendedAnalytics {
   averageFulfillmentDays: number;
   paymentMethodSplit: Array<{ provider: string; count: number; amount: number }>;
   revenueByCity: Array<{ city: string; revenue: number }>;
+}
+
+export interface OrderAgeingBucket {
+  label: string;
+  count: number;
+}
+
+export interface OrdersOverview {
+  /** Open orders only (not yet DELIVERED/CANCELLED/RETURNED), oldest bucket first. */
+  ageing: OrderAgeingBucket[];
+  /** The 20 longest-open orders, oldest first — the ones a fulfilment desk should look at now. */
+  oldestOpen: Array<{ id: string; number: string; status: string; placedAt: string; ageDays: number }>;
+  byCity: Array<{ city: string; count: number; avgAgeDays: number }>;
+  byPayment: Array<{ provider: string; count: number; avgAgeDays: number }>;
+}
+
+export interface OrderTransitionTiming {
+  from: string;
+  to: string;
+  count: number;
+  avgHours: number;
+  medianHours: number;
+}
+
+export interface OrdersFulfilment {
+  /** Pipeline order (PENDING→CONFIRMED→…), not grouped-row order. */
+  transitions: OrderTransitionTiming[];
+}
+
+export interface PurchasingSpend {
+  totals: {
+    /** Σ PurchaseOrder.total by sentAt — a commitment, not yet a cost. */
+    ordered: number;
+    /** Σ GoodsReceiptItem.quantity × landedUnitCost by GoodsReceipt.receivedAt — comparison()'s own "purchases" definition, reused so the two never disagree. */
+    received: number;
+    /** Σ SupplierBill.amount by issuedAt. */
+    billed: number;
+    /** Σ (amount - amountPaid) across every non-PAID bill — a live balance, not windowed by `days`. */
+    unpaid: number;
+  };
+  series: Array<{ date: string; ordered: number; received: number }>;
+  byCategory: Array<{ category: string; spend: number }>;
+}
+
+export interface PurchasingSupplierRow {
+  supplierId: string;
+  name: string;
+  spend: number;
+  orders: number;
+  /** Basis points (0-10000); null if this supplier has no PO with a promised date. */
+  onTimeRateBps: number | null;
+  /** null if no PO of this supplier's has ever been both sent and received. */
+  avgLeadDays: number | null;
+  /** Share of the whole list's received spend, basis points. */
+  share: number;
+}
+
+export interface PurchasingSuppliers {
+  rows: PurchasingSupplierRow[];
+}
+
+export interface ProductTopSellerRow {
+  productId: string | null;
+  variantId: string | null;
+  sku: string;
+  name: string;
+  units: number;
+  revenue: number;
+  /** Absent (not null) without `inventory.view_cost` — cost-fields.ts's own OMIT convention, not comparison()'s null one; see purchasingTopSellers()'s docstring. */
+  cogs?: number;
+  marginBps?: number;
+}
+
+export interface ProductsTopSellers {
+  rows: ProductTopSellerRow[];
+}
+
+export interface ProductSlowSellerRow {
+  productId: string;
+  variantId: string;
+  sku: string;
+  name: string;
+  daysSinceLastSale: number;
+  ageDays: number;
+}
+
+export interface ProductsSlowSellers {
+  rows: ProductSlowSellerRow[];
+}
+
+export interface ProductCategoryRow {
+  /** null for the "Uncategorised" bucket — Product.categoryId is genuinely nullable. */
+  categoryId: string | null;
+  name: string;
+  revenue: number;
+  units: number;
+  productCount: number;
+  /** Share of the returned rows' own total revenue, basis points. */
+  share: number;
+}
+
+export interface ProductsCategories {
+  rows: ProductCategoryRow[];
+  series: Array<{ date: string; revenue: number }>;
+}
+
+export interface InventoryValuation {
+  totals: {
+    units: number;
+    value: number;
+    /** In-stock variants with `costPrice: 0` — "never received against a PO," a real gap, not the normal state of an idle SKU. */
+    unknownCostVariants: number;
+  };
+  byCategory: Array<{ categoryId: string | null; name: string; units: number; value: number }>;
+  byKind: Array<{ kind: string; units: number; value: number }>;
+  /** `VariantSalesStat.ageDays` buckets — the same field WO-D.3's slow-sellers report already depends on, at the accounting aging.ts's own 30/60/90 boundaries (this is a weeks-to-months scale, not WO-D.1's few-day order ageing). */
+  ageing: Array<{ label: string; units: number; value: number }>;
+}
+
+export interface StockMovementReasonRow {
+  reason: string;
+  in: number;
+  out: number;
+  count: number;
+}
+
+export interface InventoryMovementRow {
+  id: string;
+  variantId: string;
+  sku: string;
+  name: string;
+  reason: string;
+  delta: number;
+  createdAt: string;
+}
+
+export interface InventoryMovements {
+  series: Array<{ date: string; in: number; out: number }>;
+  byReason: StockMovementReasonRow[];
+  recent: InventoryMovementRow[];
+}
+
+export interface CustomersOverview {
+  totals: { total: number; repeat: number; newThisMonth: number };
+  byCity: Array<{ city: string; count: number }>;
+  bySource: Array<{ source: string; count: number }>;
+  byStatus: Array<{ status: string; count: number }>;
+}
+
+export interface CustomerCohort {
+  /** "YYYY-MM" — the month the contact signed up. */
+  cohort: string;
+  size: number;
+  /** How many of this cohort went on to place a second order (`orderCount >= 2`) — the same threshold `Contact.status: REPEAT` and `summary()`'s own `repeat` figure already use. */
+  retained: number;
+}
+
+export interface CustomersRetention {
+  cohorts: CustomerCohort[];
+  repeatRateBps: number;
+}
+
+export interface CustomerTopRow {
+  contactId: string;
+  name: string;
+  city: string | null;
+  orders: number;
+  lifetimeValue: number;
+  avgOrderValue: number;
+  lastOrderAt: string | null;
+}
+
+export interface CustomersTop {
+  rows: CustomerTopRow[];
+}
+
+export interface WorkshopStageRow {
+  stage: string;
+  count: number;
+  avgHours: number;
+}
+
+export interface WorkshopTailorRow {
+  tailorId: string;
+  name: string;
+  jobsCompleted: number;
+  avgHours: number;
+}
+
+export interface WorkshopOutput {
+  series: Array<{ date: string; started: number; completed: number }>;
+  byStage: WorkshopStageRow[];
+  byTailor: WorkshopTailorRow[];
+  bottleneck: { stage: string; avgHours: number } | null;
 }
 
 export interface ComparisonBucket {
@@ -674,6 +871,1048 @@ export class AnalyticsService {
         percent: totalPageViews > 0 ? round1((row._count._all / totalPageViews) * 100) : 0,
       })),
       abandonedCarts: cartAbandonment.abandonedCarts,
+    };
+  }
+
+  /**
+   * WO-D.1 (10-admin-dashboard.md Track D) — the ageing table and by-city/
+   * by-payment breakdowns `extendedAnalytics()` doesn't cover. That
+   * endpoint's `revenueByCity`/`paymentMethodSplit` are already-completed
+   * sales (PAID payments, revenue only, trailing window); this is a live
+   * snapshot of OPEN orders — not yet DELIVERED, CANCELLED or RETURNED —
+   * so it takes no `days` window, the same as `summary()`'s
+   * `needsAttention.pendingOrders`. Ships against the live "one endpoint,
+   * one screen" idiom (ADR-019/020) — Track A's report-registry catalog
+   * this doc assumes was never built.
+   *
+   * EXPLAIN (test DB, ~10 orders): every query here plans a sequential
+   * scan, not an index scan — correctly, at this row count Postgres's own
+   * cost estimator prefers it. `@@index([status, placedAt])` on `Order`
+   * exists (orders.prisma) and is what the planner will switch to once a
+   * real deployment's row count makes it cheaper; nothing here needs a new
+   * index today.
+   */
+  async ordersOverview(): Promise<OrdersOverview> {
+    const [ageingRows, oldestOpen, cityRows, paymentRows] = await Promise.all([
+      this.prisma.$queryRaw<Array<{ bucket: string; count: bigint }>>`
+        SELECT
+          CASE
+            WHEN now() - "placedAt" < interval '2 days' THEN '0-1 days'
+            WHEN now() - "placedAt" < interval '4 days' THEN '2-3 days'
+            WHEN now() - "placedAt" < interval '8 days' THEN '4-7 days'
+            ELSE '8+ days'
+          END AS bucket,
+          COUNT(*) AS count
+        FROM "Order"
+        WHERE "status" IN ('PENDING', 'CONFIRMED', 'PROCESSING', 'READY_TO_SHIP', 'SHIPPED')
+        GROUP BY 1
+      `,
+
+      // The 20 oldest open orders — a fulfilment desk's actual worklist, not
+      // a ranking that needs a bigger LIMIT. status+placedAt is indexed
+      // (orders.prisma @@index([status, placedAt])).
+      this.prisma.order.findMany({
+        where: { status: { in: OPEN_ORDER_STATUSES } },
+        orderBy: { placedAt: 'asc' },
+        take: 20,
+        select: { id: true, number: true, status: true, placedAt: true },
+      }),
+
+      this.prisma.$queryRaw<Array<{ city: string; count: bigint; avg_age_days: number | null }>>`
+        SELECT COALESCE("shippingAddress"->>'city', 'Unknown') AS city,
+               COUNT(*) AS count,
+               AVG(EXTRACT(EPOCH FROM (now() - "placedAt")) / 86400.0)::float8 AS avg_age_days
+        FROM "Order"
+        WHERE "status" IN ('PENDING', 'CONFIRMED', 'PROCESSING', 'READY_TO_SHIP', 'SHIPPED')
+        GROUP BY 1
+        ORDER BY count DESC
+        LIMIT 10
+      `,
+
+      // DISTINCT ON picks each order's first-ever payment attempt
+      // (createdAt ascending), so an order with a failed-then-retried
+      // payment is counted once, under the method actually tried first.
+      this.prisma.$queryRaw<Array<{ provider: string; count: bigint; avg_age_days: number | null }>>`
+        SELECT provider, COUNT(*) AS count, AVG(age_days)::float8 AS avg_age_days
+        FROM (
+          SELECT DISTINCT ON (p."orderId")
+            p.provider,
+            EXTRACT(EPOCH FROM (now() - o."placedAt")) / 86400.0 AS age_days
+          FROM "Payment" p
+          JOIN "Order" o ON o.id = p."orderId"
+          WHERE o."status" IN ('PENDING', 'CONFIRMED', 'PROCESSING', 'READY_TO_SHIP', 'SHIPPED')
+          ORDER BY p."orderId", p."createdAt" ASC
+        ) first_payment
+        GROUP BY provider
+        ORDER BY count DESC
+      `,
+    ]);
+
+    const bucketOrder = ['0-1 days', '2-3 days', '4-7 days', '8+ days'];
+    const bucketCounts = new Map(ageingRows.map((row) => [row.bucket, Number(row.count)]));
+    const now = Date.now();
+
+    return {
+      ageing: bucketOrder.map((label) => ({ label, count: bucketCounts.get(label) ?? 0 })),
+      oldestOpen: oldestOpen.map((order) => ({
+        id: order.id,
+        number: order.number,
+        status: order.status,
+        placedAt: order.placedAt.toISOString(),
+        ageDays: Math.floor((now - order.placedAt.getTime()) / 86_400_000),
+      })),
+      byCity: cityRows.map((row) => ({
+        city: row.city,
+        count: Number(row.count),
+        avgAgeDays: round1(row.avg_age_days ?? 0),
+      })),
+      byPayment: paymentRows.map((row) => ({
+        provider: row.provider,
+        count: Number(row.count),
+        avgAgeDays: round1(row.avg_age_days ?? 0),
+      })),
+    };
+  }
+
+  /**
+   * WO-D.1 — average and median time spent in each pipeline state, from
+   * `OrderStatusEvent` (orders.prisma). Every row there already IS a
+   * transition: `fromStatus` is always the order's status at the moment of
+   * the call (`OrdersService.changeStatus` writes `fromStatus: order.status`,
+   * a non-nullable column), never a genesis row — so "time in fromStatus" is
+   * just the gap to the PREVIOUS event for that same order, or to
+   * `placedAt` for an order's first-ever transition.
+   *
+   * EXPLAIN (test DB, ~10 orders): a sequential scan on both tables — the
+   * right plan at this size. `@@index([orderId, createdAt])` on
+   * `OrderStatusEvent` (orders.prisma) is exactly the join/window key this
+   * query needs and is what the planner switches to once row count justifies
+   * it; no new index needed.
+   */
+  async ordersFulfilment(days = 90): Promise<OrdersFulfilment> {
+    const start = this.windowStart(days);
+
+    const rows = await this.prisma.$queryRaw<
+      Array<{
+        from_status: string;
+        to_status: string;
+        count: bigint;
+        avg_hours: number | null;
+        median_hours: number | null;
+      }>
+    >`
+      WITH gaps AS (
+        SELECT
+          e."fromStatus" AS from_status,
+          e."toStatus" AS to_status,
+          EXTRACT(EPOCH FROM (
+            e."createdAt" - COALESCE(
+              LAG(e."createdAt") OVER (PARTITION BY e."orderId" ORDER BY e."createdAt"),
+              o."placedAt"
+            )
+          )) / 3600.0 AS hours
+        FROM "OrderStatusEvent" e
+        JOIN "Order" o ON o.id = e."orderId"
+        WHERE e."createdAt" >= ${start} AND e."fromStatus" IS NOT NULL
+      )
+      SELECT
+        from_status,
+        to_status,
+        COUNT(*) AS count,
+        AVG(hours)::float8 AS avg_hours,
+        PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY hours)::float8 AS median_hours
+      FROM gaps
+      GROUP BY from_status, to_status
+    `;
+
+    const pipelineOrder = [
+      'PENDING',
+      'CONFIRMED',
+      'PROCESSING',
+      'READY_TO_SHIP',
+      'SHIPPED',
+      'DELIVERED',
+      'CANCELLED',
+      'RETURNED',
+    ];
+    const rank = (status: string) => {
+      const index = pipelineOrder.indexOf(status);
+      return index === -1 ? pipelineOrder.length : index;
+    };
+
+    return {
+      transitions: rows
+        .map((row) => ({
+          from: row.from_status,
+          to: row.to_status,
+          count: Number(row.count),
+          avgHours: round1(row.avg_hours ?? 0),
+          medianHours: round1(row.median_hours ?? 0),
+        }))
+        .sort((a, b) => rank(a.from) - rank(b.from) || rank(a.to) - rank(b.to)),
+    };
+  }
+
+  /**
+   * WO-D.2 (10-admin-dashboard.md Track D) — what the business has
+   * committed to buy, actually received, been billed for, and still owes.
+   * `comparison()`'s own `purchases` bucket already defines "received
+   * spend" as Σ GoodsReceiptItem.quantity × landedUnitCost by
+   * GoodsReceipt.receivedAt (its own docstring: "a purchase order is an
+   * intention, a goods receipt is a cost") — reused verbatim here as
+   * `totals.received`/`series.received`, so the two screens can never
+   * quietly disagree about the same fact.
+   *
+   * `unpaid` is a live AP balance (`amount - amountPaid` on every non-PAID
+   * `SupplierBill`, the exact figure `PurchasingService.recordPayment`
+   * already computes at purchasing.service.ts:611), not windowed by
+   * `days` — an old unpaid bill is still owed today.
+   *
+   * PERMISSION NOTE: unlike `comparison()`'s `purchases` bucket (visible to
+   * any `analytics.view` holder), the controller requires `purchasing.manage`
+   * for this whole endpoint — purchasing spend is domain-sensitive in a way
+   * the general sales/purchases/expenses comparison isn't. It does NOT
+   * additionally hard-gate behind `inventory.view_cost`: every figure here
+   * is an aggregate spend total, not a per-unit cost — exactly the kind of
+   * figure `comparison()`'s own `purchases` bucket already treats as not
+   * margin-revealing on its own (cost-fields.ts's VIEW_COST gate exists for
+   * per-item `unitCost`/`costPrice`, which this endpoint never returns).
+   *
+   * EXPLAIN (test DB, ~10 rows across the touched tables): every query
+   * plans a sequential scan — correct at this size. `PurchaseOrder`'s
+   * `status`/`sentAt`, `GoodsReceipt.receivedAt` and `SupplierBill`'s
+   * `status`/`dueAt` index (purchasing.prisma) are what the planner
+   * switches to once row count justifies it.
+   */
+  async purchasingSpend(days: number): Promise<PurchasingSpend> {
+    const start = this.windowStart(days);
+    const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+
+    const [orderedRows, receivedRows, billedTotal, unpaidRows, categoryRows] = await Promise.all([
+      this.prisma.$queryRawUnsafe<Array<{ day: string; ordered: bigint }>>(
+        `SELECT ${shopDayExpr('"sentAt"', timeZone)} AS day, COALESCE(SUM("total"), 0) AS ordered
+         FROM "PurchaseOrder"
+         WHERE "sentAt" >= $1 AND status != 'CANCELLED'
+         GROUP BY 1`,
+        start,
+      ),
+
+      this.prisma.$queryRawUnsafe<Array<{ day: string; received: bigint }>>(
+        `SELECT ${shopDayExpr('gr."receivedAt"', timeZone)} AS day,
+                COALESCE(SUM(gri."quantity" * gri."landedUnitCost"), 0) AS received
+         FROM "GoodsReceiptItem" gri
+         JOIN "GoodsReceipt" gr ON gr.id = gri."goodsReceiptId"
+         WHERE gr."receivedAt" >= $1
+         GROUP BY 1`,
+        start,
+      ),
+
+      this.prisma.supplierBill.aggregate({
+        where: { issuedAt: { gte: start } },
+        _sum: { amount: true },
+      }),
+
+      // Not windowed — an AP balance is what's owed right now, whenever it
+      // was billed. amount/amountPaid, not baseAmountMinor: the schema's
+      // own comment on SupplierBill.amountPaid — "the same unit as amount,
+      // so amount - amountPaid is always the outstanding balance in the
+      // bill's own currency without a conversion" — is the same assumption
+      // purchasing.service.ts:611 already makes for this exact figure.
+      this.prisma.supplierBill.findMany({
+        where: { status: { not: 'PAID' } },
+        select: { amount: true, amountPaid: true },
+      }),
+
+      this.prisma.$queryRaw<Array<{ category: string; spend: bigint }>>`
+        SELECT COALESCE(ct."name", 'Uncategorised') AS category,
+               COALESCE(SUM(gri."quantity" * gri."landedUnitCost"), 0) AS spend
+        FROM "GoodsReceiptItem" gri
+        JOIN "GoodsReceipt" gr ON gr.id = gri."goodsReceiptId"
+        LEFT JOIN "ProductVariant" v ON v.id = gri."variantId"
+        LEFT JOIN "Product" p ON p.id = v."productId"
+        LEFT JOIN "Category" c ON c.id = p."categoryId"
+        LEFT JOIN "CategoryTranslation" ct ON ct."categoryId" = c.id AND ct.locale = 'en'
+        WHERE gr."receivedAt" >= ${start}
+        GROUP BY 1
+        ORDER BY spend DESC
+        LIMIT 10
+      `,
+    ]);
+
+    const dayKeys = shopDayKeys(start, days, timeZone);
+    const orderedByDay = new Map(orderedRows.map((row) => [row.day, Number(row.ordered)]));
+    const receivedByDay = new Map(receivedRows.map((row) => [row.day, Number(row.received)]));
+    const unpaid = unpaidRows.reduce((sum, bill) => sum + (bill.amount - bill.amountPaid), 0);
+
+    return {
+      totals: {
+        ordered: orderedRows.reduce((sum, row) => sum + Number(row.ordered), 0),
+        received: receivedRows.reduce((sum, row) => sum + Number(row.received), 0),
+        billed: billedTotal._sum.amount ?? 0,
+        unpaid,
+      },
+      series: dayKeys.map((day) => ({
+        date: day,
+        ordered: orderedByDay.get(day) ?? 0,
+        received: receivedByDay.get(day) ?? 0,
+      })),
+      byCategory: categoryRows.map((row) => ({ category: row.category, spend: Number(row.spend) })),
+    };
+  }
+
+  /**
+   * WO-D.2 — per-supplier spend, order count, on-time rate and average
+   * lead time. The spend/order-count half reuses `purchasesBySupplierCsv`'s
+   * own join shape (reports.service.ts) — `GoodsReceiptItem.quantity ×
+   * landedUnitCost`, joined `PurchaseOrder` → `Supplier` — with a `LIMIT`
+   * that CSV export doesn't need but this ranked screen does.
+   *
+   * On-time rate reuses the exact eligibility rule the weekly OTIF
+   * scorecard already ships (`supply-chain-digest.cron.ts`'s
+   * `sendSupplierScorecards`): a PO counts once it has a promised date
+   * (`expectedAt`) AND is either already RECEIVED/PARTIAL or SENT-but-
+   * overdue — never an in-flight order still inside its promised window.
+   * "On time" here means on-time alone, not OTIF's stricter
+   * on-time-AND-in-full.
+   *
+   * Lead time has no existing precedent (`Supplier.leadTimeDays` is a
+   * supplier's own QUOTED lead time, a policy value — not measured). This
+   * defines it as the actual gap `lastReceiptAt - sentAt`, averaged over
+   * every PO that has both — a wider population than on-time rate's, since
+   * lead time needs no promised date to be meaningful.
+   *
+   * No `inventory.view_cost` gate on `spend`/`share`, for the same reason
+   * `purchasingSpend()` above has none: both are aggregate spend figures,
+   * the same kind `comparison()`'s own `purchases` bucket already shows to
+   * any `analytics.view` holder — `purchasing.manage`, checked by the
+   * controller, is this report's real gate.
+   */
+  async purchasingSuppliers(days: number): Promise<PurchasingSuppliers> {
+    const start = this.windowStart(days);
+
+    const spendRows = await this.prisma.$queryRaw<
+      Array<{ supplierId: string; name: string; spend: bigint; orders: bigint }>
+    >`
+      SELECT s.id AS "supplierId", s.name,
+             COALESCE(SUM(gri."quantity" * gri."landedUnitCost"), 0) AS spend,
+             COUNT(DISTINCT po.id) AS orders
+      FROM "Supplier" s
+      JOIN "PurchaseOrder" po ON po."supplierId" = s.id
+      JOIN "GoodsReceipt" gr ON gr."purchaseOrderId" = po.id AND gr."receivedAt" >= ${start}
+      JOIN "GoodsReceiptItem" gri ON gri."goodsReceiptId" = gr.id
+      GROUP BY s.id, s.name
+      ORDER BY spend DESC
+      LIMIT 20
+    `;
+
+    if (spendRows.length === 0) return { rows: [] };
+
+    const totalSpend = spendRows.reduce((sum, row) => sum + Number(row.spend), 0);
+    const now = new Date();
+
+    // Bounded to the suppliers the ranking above already selected — not an
+    // unbounded scan of every supplier's every PO.
+    const suppliers = await this.prisma.supplier.findMany({
+      where: { id: { in: spendRows.map((row) => row.supplierId) } },
+      select: {
+        id: true,
+        purchaseOrders: {
+          where: { sentAt: { gte: start } },
+          select: {
+            expectedAt: true,
+            sentAt: true,
+            status: true,
+            receipts: { select: { receivedAt: true } },
+          },
+        },
+      },
+    });
+
+    const timingBySupplier = new Map(
+      suppliers.map((supplier) => {
+        let onTimeEligible = 0;
+        let onTimeCount = 0;
+        let leadDaySum = 0;
+        let leadDayCount = 0;
+
+        for (const po of supplier.purchaseOrders) {
+          const lastReceiptAt = po.receipts.reduce<Date | null>(
+            (latest, receipt) => (!latest || receipt.receivedAt > latest ? receipt.receivedAt : latest),
+            null,
+          );
+
+          if (po.sentAt && lastReceiptAt) {
+            leadDaySum += (lastReceiptAt.getTime() - po.sentAt.getTime()) / 86_400_000;
+            leadDayCount += 1;
+          }
+
+          const eligible = po.expectedAt !== null && (po.status !== 'SENT' || po.expectedAt < now);
+          if (eligible) {
+            onTimeEligible += 1;
+            if (lastReceiptAt !== null && lastReceiptAt <= po.expectedAt!) onTimeCount += 1;
+          }
+        }
+
+        return [
+          supplier.id,
+          {
+            onTimeRateBps: onTimeEligible > 0 ? Math.round((onTimeCount / onTimeEligible) * 10_000) : null,
+            avgLeadDays: leadDayCount > 0 ? round1(leadDaySum / leadDayCount) : null,
+          },
+        ] as const;
+      }),
+    );
+
+    return {
+      rows: spendRows.map((row) => {
+        const spend = Number(row.spend);
+        const timing = timingBySupplier.get(row.supplierId);
+        return {
+          supplierId: row.supplierId,
+          name: row.name,
+          spend,
+          orders: Number(row.orders),
+          onTimeRateBps: timing?.onTimeRateBps ?? null,
+          avgLeadDays: timing?.avgLeadDays ?? null,
+          share: totalSpend > 0 ? Math.round((spend / totalSpend) * 10_000) : 0,
+        };
+      }),
+    };
+  }
+
+  /**
+   * WO-D.3 (10-admin-dashboard.md Track D) — richer than `summary()`'s own
+   * `topProducts` (grouped by `oi."nameEn"` text alone, no ids, no
+   * cost/margin — fine for a dashboard glance, not for a report whose rows
+   * must link somewhere). Grouped by `OrderItem`'s own snapshot columns
+   * (`productId`, `variantId`, `sku`, `nameEn`) instead — the same columns
+   * already on the line, so no join to `Product`/`ProductVariant` is
+   * needed. `productId`/`variantId` are nullable on `OrderItem` by design
+   * ("kept for reporting; nullable so deleting a product cannot delete
+   * history") — a null one simply can't be linked from the screen.
+   *
+   * OMIT, not null, for `cogs`/`marginBps` without `inventory.view_cost` —
+   * a deliberate departure from `comparison()`'s null convention just above
+   * in this file. Two precedents disagree here: `comparison()`'s own
+   * cost fields are null (the analytics idiom), but `cost-fields.ts`'s
+   * product-domain convention — the one this report's subject (products,
+   * cost prices) actually belongs to — is explicit: "the safe default is
+   * to OMIT cost, so callers that forget the check are safe, not leaky."
+   * This report sits with the products/cost-price domain, and the WO's own
+   * row shape (`cogs?`, `marginBps?` — optional keys, not nullable ones)
+   * reads the same way. Chosen: omit.
+   */
+  async productsTopSellers(days: number, includeCost: boolean): Promise<ProductsTopSellers> {
+    const start = this.windowStart(days);
+    const voidStatusList = VOID_STATUSES.map((status) => `'${status}'`).join(', ');
+
+    const rows = await this.prisma.$queryRawUnsafe<
+      Array<{
+        productId: string | null;
+        variantId: string | null;
+        sku: string | null;
+        name: string;
+        units: bigint;
+        revenue: bigint;
+        cogs: bigint;
+      }>
+    >(
+      `SELECT oi."productId" AS "productId", oi."variantId" AS "variantId", oi.sku, oi."nameEn" AS name,
+              COALESCE(SUM(oi.quantity), 0) AS units,
+              COALESCE(SUM(oi."lineTotal"), 0) AS revenue,
+              COALESCE(SUM(oi."unitCost" * oi.quantity), 0) AS cogs
+       FROM "OrderItem" oi
+       JOIN "Order" o ON o.id = oi."orderId"
+       WHERE o."placedAt" >= $1 AND o.status NOT IN (${voidStatusList})
+       GROUP BY oi."productId", oi."variantId", oi.sku, oi."nameEn"
+       ORDER BY revenue DESC
+       LIMIT 20`,
+      start,
+    );
+
+    return {
+      rows: rows.map((row) => {
+        const revenue = Number(row.revenue);
+        const base = {
+          productId: row.productId,
+          variantId: row.variantId,
+          sku: row.sku ?? '—',
+          name: row.name,
+          units: Number(row.units),
+          revenue,
+        };
+        if (!includeCost) return base;
+        const cogs = Number(row.cogs);
+        return { ...base, cogs, marginBps: revenue > 0 ? Math.round(((revenue - cogs) / revenue) * 10_000) : 0 };
+      }),
+    };
+  }
+
+  /**
+   * WO-D.3 — the same `isSlowMover` population `InventoryService
+   * .getSlowMovers()` already lists (isActive, in stock,
+   * `VariantSalesStat.isSlowMover`), ranked and capped here where that
+   * method isn't. `daysSinceLastSale` is NOT a stored column —
+   * `VariantSalesStat` only persists `lastSoldAt`/`ageDays`
+   * (`InventoryCron.computeNightlyStats()` computes the day-count in-loop
+   * and never writes it back) — so it's re-derived here with the exact
+   * same formula the cron uses: days since `lastSoldAt`, or `ageDays` for
+   * a variant that has never sold at all.
+   */
+  async productsSlowSellers(): Promise<ProductsSlowSellers> {
+    const now = Date.now();
+    const variants = await this.prisma.productVariant.findMany({
+      where: { isActive: true, stock: { gt: 0 }, salesStat: { isSlowMover: true } },
+      orderBy: { salesStat: { ageDays: 'desc' } },
+      take: 20,
+      select: {
+        id: true,
+        sku: true,
+        productId: true,
+        product: { select: { translations: { where: { locale: 'en' }, select: { name: true } } } },
+        salesStat: { select: { lastSoldAt: true, ageDays: true } },
+      },
+    });
+
+    return {
+      rows: variants.map((variant) => {
+        const lastSoldAt = variant.salesStat?.lastSoldAt ?? null;
+        const ageDays = variant.salesStat?.ageDays ?? 0;
+        const daysSinceLastSale = lastSoldAt ? Math.floor((now - lastSoldAt.getTime()) / 86_400_000) : ageDays;
+        return {
+          productId: variant.productId,
+          variantId: variant.id,
+          sku: variant.sku,
+          name: variant.product?.translations[0]?.name ?? variant.sku,
+          daysSinceLastSale,
+          ageDays,
+        };
+      }),
+    };
+  }
+
+  /**
+   * WO-D.3 — the same category join chain `extendedAnalytics()`'s
+   * `revenueByCategory` already uses (`OrderItem` → `Order` → `Product` →
+   * `Category` → `CategoryTranslation`, `COALESCE(ct.name,
+   * 'Uncategorised')`), extended with a product count and this row's own
+   * `categoryId` (null for the Uncategorised bucket — `Product.categoryId`
+   * is genuinely nullable, so null is the correct value here, not a
+   * placeholder). `series` is the SAME window's overall daily product
+   * revenue — one trend line behind the category breakdown, the same
+   * "one axis" idiom `comparison()`'s own docstring names.
+   */
+  async productsCategories(days: number): Promise<ProductsCategories> {
+    const start = this.windowStart(days);
+    const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+    const voidStatusList = VOID_STATUSES.map((status) => `'${status}'`).join(', ');
+
+    const [categoryRows, seriesRows] = await Promise.all([
+      this.prisma.$queryRawUnsafe<
+        Array<{ categoryId: string | null; name: string; revenue: bigint; units: bigint; productCount: bigint }>
+      >(
+        `SELECT c.id AS "categoryId", COALESCE(ct.name, 'Uncategorised') AS name,
+                COALESCE(SUM(oi."lineTotal"), 0) AS revenue,
+                COALESCE(SUM(oi.quantity), 0) AS units,
+                COUNT(DISTINCT p.id) AS "productCount"
+         FROM "OrderItem" oi
+         JOIN "Order" o ON o.id = oi."orderId"
+         LEFT JOIN "Product" p ON p.id = oi."productId"
+         LEFT JOIN "Category" c ON c.id = p."categoryId"
+         LEFT JOIN "CategoryTranslation" ct ON ct."categoryId" = c.id AND ct.locale = 'en'
+         WHERE o."placedAt" >= $1 AND o.status NOT IN (${voidStatusList})
+         GROUP BY c.id, ct.name
+         ORDER BY revenue DESC
+         LIMIT 10`,
+        start,
+      ),
+
+      this.prisma.$queryRawUnsafe<Array<{ day: string; revenue: bigint }>>(
+        `SELECT ${shopDayExpr('"placedAt"', timeZone)} AS day, COALESCE(SUM("grandTotal"), 0) AS revenue
+         FROM "Order"
+         WHERE "placedAt" >= $1 AND status NOT IN (${voidStatusList})
+         GROUP BY 1`,
+        start,
+      ),
+    ]);
+
+    const totalRevenue = categoryRows.reduce((sum, row) => sum + Number(row.revenue), 0);
+    const dayKeys = shopDayKeys(start, days, timeZone);
+    const revenueByDay = new Map(seriesRows.map((row) => [row.day, Number(row.revenue)]));
+
+    return {
+      rows: categoryRows.map((row) => {
+        const revenue = Number(row.revenue);
+        return {
+          categoryId: row.categoryId,
+          name: row.name,
+          revenue,
+          units: Number(row.units),
+          productCount: Number(row.productCount),
+          share: totalRevenue > 0 ? Math.round((revenue / totalRevenue) * 10_000) : 0,
+        };
+      }),
+      series: dayKeys.map((day) => ({ date: day, revenue: revenueByDay.get(day) ?? 0 })),
+    };
+  }
+
+  /**
+   * WO-D.4 (10-admin-dashboard.md Track D) — what the stock on hand is
+   * worth, right now. Every figure here is `stock × costPrice`
+   * (`stockValuationCsv()`'s own definition, reports.service.ts) restricted
+   * to `stock > 0` — a zero-stock, zero-cost SKU is not a valuation gap,
+   * it is simply idle, so it is excluded from every total here rather than
+   * diluting them. `unknownCostVariants` counts the ones that DO hold
+   * stock with no cost basis (`costPrice: 0` — "never received against a
+   * PO," per `ProductVariant.costPrice`'s own doc comment), which is a
+   * real problem worth surfacing.
+   *
+   * This is a hard, whole-endpoint gate on `inventory.view_cost` — unlike
+   * WO-D.2/D.3's aggregate spend/revenue totals, every field this report
+   * returns IS cost data with no non-cost subset worth keeping; the
+   * controller throws before calling this method at all without it,
+   * mirroring `bom.controller.ts`'s `recipeCost()` precedent.
+   *
+   * EXPLAIN (test DB, ~10 variants): sequential scans throughout —
+   * correct at this size. `ProductVariant`'s own `@@index([stock])`
+   * (catalog.prisma) is what the planner uses once row count justifies it;
+   * no new index needed.
+   */
+  async inventoryValuation(): Promise<InventoryValuation> {
+    const [totalsRow, categoryRows, kindRows, ageingRows] = await Promise.all([
+      this.prisma.$queryRaw<Array<{ units: bigint; value: bigint; unknownCostVariants: bigint }>>`
+        SELECT COALESCE(SUM(stock), 0) AS units,
+               COALESCE(SUM(stock * "costPrice"), 0) AS value,
+               COUNT(*) FILTER (WHERE "costPrice" = 0) AS "unknownCostVariants"
+        FROM "ProductVariant"
+        WHERE stock > 0
+      `,
+
+      this.prisma.$queryRaw<
+        Array<{ categoryId: string | null; name: string; units: bigint; value: bigint }>
+      >`
+        SELECT c.id AS "categoryId", COALESCE(ct."name", 'Uncategorised') AS name,
+               COALESCE(SUM(v.stock), 0) AS units,
+               COALESCE(SUM(v.stock * v."costPrice"), 0) AS value
+        FROM "ProductVariant" v
+        JOIN "Product" p ON p.id = v."productId"
+        LEFT JOIN "Category" c ON c.id = p."categoryId"
+        LEFT JOIN "CategoryTranslation" ct ON ct."categoryId" = c.id AND ct.locale = 'en'
+        WHERE v.stock > 0
+        GROUP BY c.id, ct."name"
+        ORDER BY value DESC
+        LIMIT 10
+      `,
+
+      this.prisma.$queryRaw<Array<{ kind: string; units: bigint; value: bigint }>>`
+        SELECT p.kind,
+               COALESCE(SUM(v.stock), 0) AS units,
+               COALESCE(SUM(v.stock * v."costPrice"), 0) AS value
+        FROM "ProductVariant" v
+        JOIN "Product" p ON p.id = v."productId"
+        WHERE v.stock > 0
+        GROUP BY p.kind
+        ORDER BY value DESC
+      `,
+
+      this.prisma.$queryRaw<Array<{ bucket: string; units: bigint; value: bigint }>>`
+        SELECT
+          CASE
+            WHEN COALESCE(vs."ageDays", 0) <= 30 THEN '0-30 days'
+            WHEN COALESCE(vs."ageDays", 0) <= 60 THEN '31-60 days'
+            WHEN COALESCE(vs."ageDays", 0) <= 90 THEN '61-90 days'
+            ELSE '90+ days'
+          END AS bucket,
+          COALESCE(SUM(v.stock), 0) AS units,
+          COALESCE(SUM(v.stock * v."costPrice"), 0) AS value
+        FROM "ProductVariant" v
+        LEFT JOIN "VariantSalesStat" vs ON vs."variantId" = v.id
+        WHERE v.stock > 0
+        GROUP BY 1
+      `,
+    ]);
+
+    const bucketOrder = ['0-30 days', '31-60 days', '61-90 days', '90+ days'];
+    const ageingByBucket = new Map(ageingRows.map((row) => [row.bucket, row]));
+
+    return {
+      totals: {
+        units: Number(totalsRow[0]?.units ?? 0),
+        value: Number(totalsRow[0]?.value ?? 0),
+        unknownCostVariants: Number(totalsRow[0]?.unknownCostVariants ?? 0),
+      },
+      byCategory: categoryRows.map((row) => ({
+        categoryId: row.categoryId,
+        name: row.name,
+        units: Number(row.units),
+        value: Number(row.value),
+      })),
+      byKind: kindRows.map((row) => ({ kind: row.kind, units: Number(row.units), value: Number(row.value) })),
+      ageing: bucketOrder.map((label) => {
+        const row = ageingByBucket.get(label);
+        return { label, units: Number(row?.units ?? 0), value: Number(row?.value ?? 0) };
+      }),
+    };
+  }
+
+  /**
+   * WO-D.4 — stock movement volume: how much moved in and out, by day and
+   * by reason, plus the most recent individual movements. `delta`'s own
+   * sign (`StockMovement.delta`'s doc comment: "positive = stock in,
+   * negative = stock out") is trusted directly rather than inferred from
+   * `reason`, the same convention WO-D.1's order-status timing trusted
+   * `OrderStatusEvent`'s own recorded fields over re-deriving them.
+   *
+   * `series`/`byReason` here are flat, one-level aggregates — every other
+   * Track D series in this file is (WO-D.1 through D.3's `series` fields
+   * are all `Array<{date, ...numbers}>`, no nesting); a per-day reason
+   * breakdown would be real complexity for a JSON shape no chart in this
+   * codebase currently consumes.
+   */
+  async inventoryMovements(days: number): Promise<InventoryMovements> {
+    const start = this.windowStart(days);
+    const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+
+    const [seriesRows, reasonRows, recent] = await Promise.all([
+      this.prisma.$queryRawUnsafe<Array<{ day: string; in: bigint; out: bigint }>>(
+        `SELECT ${shopDayExpr('"createdAt"', timeZone)} AS day,
+                COALESCE(SUM(CASE WHEN delta > 0 THEN delta ELSE 0 END), 0) AS "in",
+                COALESCE(SUM(CASE WHEN delta < 0 THEN -delta ELSE 0 END), 0) AS "out"
+         FROM "StockMovement"
+         WHERE "createdAt" >= $1
+         GROUP BY 1`,
+        start,
+      ),
+
+      this.prisma.$queryRaw<Array<{ reason: string; in: bigint; out: bigint; count: bigint }>>`
+        SELECT reason,
+               COALESCE(SUM(CASE WHEN delta > 0 THEN delta ELSE 0 END), 0) AS "in",
+               COALESCE(SUM(CASE WHEN delta < 0 THEN -delta ELSE 0 END), 0) AS "out",
+               COUNT(*) AS count
+        FROM "StockMovement"
+        WHERE "createdAt" >= ${start}
+        GROUP BY reason
+        ORDER BY count DESC
+      `,
+
+      this.prisma.stockMovement.findMany({
+        where: { createdAt: { gte: start } },
+        orderBy: { createdAt: 'desc' },
+        take: 20,
+        select: {
+          id: true,
+          variantId: true,
+          delta: true,
+          reason: true,
+          createdAt: true,
+          variant: {
+            select: { sku: true, product: { select: { translations: { where: { locale: 'en' }, select: { name: true } } } } },
+          },
+        },
+      }),
+    ]);
+
+    const dayKeys = shopDayKeys(start, days, timeZone);
+    const inByDay = new Map(seriesRows.map((row) => [row.day, Number(row.in)]));
+    const outByDay = new Map(seriesRows.map((row) => [row.day, Number(row.out)]));
+
+    return {
+      series: dayKeys.map((day) => ({ date: day, in: inByDay.get(day) ?? 0, out: outByDay.get(day) ?? 0 })),
+      byReason: reasonRows.map((row) => ({
+        reason: row.reason,
+        in: Number(row.in),
+        out: Number(row.out),
+        count: Number(row.count),
+      })),
+      recent: recent.map((movement) => ({
+        id: movement.id,
+        variantId: movement.variantId,
+        sku: movement.variant.sku,
+        name: movement.variant.product?.translations[0]?.name ?? movement.variant.sku,
+        reason: movement.reason,
+        delta: movement.delta,
+        createdAt: movement.createdAt.toISOString(),
+      })),
+    };
+  }
+
+  /**
+   * WO-D.5 (10-admin-dashboard.md Track D) — the customer book, by where
+   * they are, where they came from, and their lifecycle stage. `totals`
+   * reuses `summary()`'s own `total`/`repeat`/`newThisMonth` queries
+   * verbatim (`contact.count()`, `orderCount >= 2`, `createdAt >=` this
+   * shop-month) rather than re-deriving the same three figures a second
+   * way — the same "don't diverge" discipline `sales-revenue.ts` names
+   * for revenue.
+   *
+   * EXPLAIN (test DB, ~10 contacts): sequential scans — correct at this
+   * size. `Contact`'s own `@@index([status])` (crm.prisma) is what the
+   * planner uses once row count justifies it; no new index needed.
+   */
+  async customersOverview(): Promise<CustomersOverview> {
+    const now = new Date();
+    const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+    const startOfMonth = startOfShopMonth(now, timeZone);
+
+    const [total, repeat, newThisMonth, cityRows, sourceRows, statusRows] = await Promise.all([
+      this.prisma.contact.count(),
+      this.prisma.contact.count({ where: { orderCount: { gte: 2 } } }),
+      this.prisma.contact.count({ where: { createdAt: { gte: startOfMonth } } }),
+
+      this.prisma.$queryRaw<Array<{ city: string; count: bigint }>>`
+        SELECT COALESCE(city, 'Unknown') AS city, COUNT(*) AS count
+        FROM "Contact"
+        GROUP BY 1
+        ORDER BY count DESC
+        LIMIT 10
+      `,
+
+      this.prisma.$queryRaw<Array<{ source: string; count: bigint }>>`
+        SELECT source, COUNT(*) AS count
+        FROM "Contact"
+        GROUP BY 1
+        ORDER BY count DESC
+        LIMIT 10
+      `,
+
+      this.prisma.$queryRaw<Array<{ status: string; count: bigint }>>`
+        SELECT status, COUNT(*) AS count
+        FROM "Contact"
+        GROUP BY 1
+        ORDER BY count DESC
+      `,
+    ]);
+
+    return {
+      totals: { total, repeat, newThisMonth },
+      byCity: cityRows.map((row) => ({ city: row.city, count: Number(row.count) })),
+      bySource: sourceRows.map((row) => ({ source: row.source, count: Number(row.count) })),
+      byStatus: statusRows.map((row) => ({ status: row.status, count: Number(row.count) })),
+    };
+  }
+
+  /**
+   * WO-D.5 — cohort retention and the overall repeat rate. No existing
+   * cohort/retention definition anywhere in this codebase to reuse or
+   * diverge from, so both are defined here, deliberately narrowly:
+   *
+   *   - A cohort is a signup MONTH (`Contact.createdAt`, shop-local not
+   *     needed — a month boundary is coarse enough that a timezone shift
+   *     never moves a contact into a different one in practice).
+   *   - "Retained" means the same thing `summary()`'s own `repeat` figure
+   *     and `Contact.status: REPEAT` already mean: went on to place a
+   *     SECOND order (`orderCount >= 2`) — not a time-windowed
+   *     "purchased again within N days" curve, which nothing in this
+   *     codebase defines and this report doesn't ask for beyond
+   *     `{cohort, size, retained}`.
+   *   - `repeatRateBps` is the SAME ratio, unwindowed (every contact ever,
+   *     matching `summary()`'s own `repeat`/`total`), not limited to the
+   *     last 24 months of cohorts below it — a shop's overall repeat rate
+   *     is a different question than "how is this month's cohort doing."
+   *
+   * Capped at the last 24 months so the cohort table stays a table, not a
+   * scroll — old enough to show a trend, not the shop's entire history.
+   */
+  async customersRetention(): Promise<CustomersRetention> {
+    const now = new Date();
+    const cohortWindowStart = new Date(now.getFullYear(), now.getMonth() - 23, 1);
+
+    const [cohortRows, total, repeat] = await Promise.all([
+      this.prisma.$queryRaw<Array<{ cohort: string; size: bigint; retained: bigint }>>`
+        SELECT to_char("createdAt", 'YYYY-MM') AS cohort,
+               COUNT(*) AS size,
+               COUNT(*) FILTER (WHERE "orderCount" >= 2) AS retained
+        FROM "Contact"
+        WHERE "createdAt" >= ${cohortWindowStart}
+        GROUP BY 1
+        ORDER BY 1 ASC
+      `,
+      this.prisma.contact.count(),
+      this.prisma.contact.count({ where: { orderCount: { gte: 2 } } }),
+    ]);
+
+    return {
+      cohorts: cohortRows.map((row) => ({
+        cohort: row.cohort,
+        size: Number(row.size),
+        retained: Number(row.retained),
+      })),
+      repeatRateBps: total > 0 ? Math.round((repeat / total) * 10_000) : 0,
+    };
+  }
+
+  /**
+   * WO-D.5 — the highest-lifetime-value customers. Reads straight from
+   * `Contact.lifetimeValue`/`avgOrderValue`/`orderCount` — the CRM's own
+   * denormalised rollup (`CrmService.refreshOrderRollups()`,
+   * crm.service.ts), computed with the same `status NOT IN
+   * ('CANCELLED','RETURNED')` exclusion `sales-revenue.ts`'s
+   * `VOID_ORDER_STATUSES` names — not summed fresh from `Order` here,
+   * which would either duplicate that definition or risk drifting from it.
+   * `lifetimeValue: { gt: 0 }` excludes a lead who has never ordered; a
+   * "top customers" ranking padded with $0 rows once real spenders run out
+   * is not a smaller version of the report, it's a wrong one.
+   */
+  async customersTop(): Promise<CustomersTop> {
+    const contacts = await this.prisma.contact.findMany({
+      where: { lifetimeValue: { gt: 0 } },
+      orderBy: { lifetimeValue: 'desc' },
+      take: 20,
+      select: { id: true, name: true, city: true, orderCount: true, lifetimeValue: true, avgOrderValue: true, lastOrderAt: true },
+    });
+
+    return {
+      rows: contacts.map((contact) => ({
+        contactId: contact.id,
+        name: contact.name,
+        city: contact.city,
+        orders: contact.orderCount,
+        lifetimeValue: contact.lifetimeValue,
+        avgOrderValue: contact.avgOrderValue,
+        lastOrderAt: contact.lastOrderAt?.toISOString() ?? null,
+      })),
+    };
+  }
+
+  /**
+   * WO-D.6 (10-admin-dashboard.md Track D, the last one) — workshop
+   * throughput: how many jobs started and finished each day, how long a
+   * job sits in each pipeline stage, who's finishing the most work, and
+   * where the pipeline is actually stuck.
+   *
+   * `byStage`'s timing reuses `ordersFulfilment()`'s own LAG-window
+   * pattern verbatim, against `StitchingJobEvent` instead of
+   * `OrderStatusEvent` — that table is the exact same shape (append-only,
+   * `fromStage`/`toStage`/`createdAt`, `fromStage` always populated since
+   * `JobsService.changeStage()` writes `fromStage: job.stage`, never a
+   * genesis row — jobs.service.ts:365). Grouped by the single `fromStage`
+   * here, not the `(from, to)` pair `ordersFulfilment()` groups by — D.6
+   * wants "how long in this stage," not "how long for this exact
+   * transition," and `RECEIVED→CUTTING→STITCHING→QC→READY→DISPATCHED` is
+   * close enough to linear that the pair distinction adds noise, not
+   * signal, for a workshop supervisor.
+   *
+   * `started`/`completed` in `series`, and `byTailor`'s own `avgHours`,
+   * read `StitchingJob.startedAt`/`completedAt` directly (set once, at
+   * CUTTING and READY respectively — `jobs.service.ts:357-359`) rather
+   * than the event log — a tailor's own throughput is "how long did MY
+   * job take end to end," a different question from "how long did the
+   * pipeline spend in each stage across every tailor."
+   *
+   * `byTailor`'s row shape is this WO's one genuine judgment call — the
+   * doc names only the bare word `byTailor`. Chosen: `{tailorId, name,
+   * jobsCompleted, avgHours}`, mirroring `byStage`'s own field names.
+   * `name` prefers `TailorProfile.displayName` (the purpose-built field
+   * for this) over concatenating `User.firstName`/`lastName`, falling
+   * back to the latter only for a tailor with no profile row.
+   *
+   * `bottleneck` is simply the `byStage` row with the highest `avgHours`
+   * — computed here, not a separate query, since `byStage` already has it.
+   *
+   * EXPLAIN (test DB, ~10 jobs): sequential scans throughout — correct at
+   * this size. `StitchingJob`'s `@@index([assignedTailorId, stage])` and
+   * `StitchingJobEvent`'s `@@index([jobId, createdAt])` (stitching.prisma)
+   * are what the planner uses once row count justifies it.
+   */
+  async workshopOutput(days: number): Promise<WorkshopOutput> {
+    const start = this.windowStart(days);
+    const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+
+    const [startedRows, completedRows, stageRows, tailorRows] = await Promise.all([
+      this.prisma.$queryRawUnsafe<Array<{ day: string; started: bigint }>>(
+        `SELECT ${shopDayExpr('"startedAt"', timeZone)} AS day, COUNT(*) AS started
+         FROM "StitchingJob"
+         WHERE "startedAt" >= $1
+         GROUP BY 1`,
+        start,
+      ),
+
+      this.prisma.$queryRawUnsafe<Array<{ day: string; completed: bigint }>>(
+        `SELECT ${shopDayExpr('"completedAt"', timeZone)} AS day, COUNT(*) AS completed
+         FROM "StitchingJob"
+         WHERE "completedAt" >= $1
+         GROUP BY 1`,
+        start,
+      ),
+
+      this.prisma.$queryRaw<Array<{ stage: string; count: bigint; avg_hours: number | null }>>`
+        WITH gaps AS (
+          SELECT
+            e."fromStage" AS stage,
+            EXTRACT(EPOCH FROM (
+              e."createdAt" - COALESCE(
+                LAG(e."createdAt") OVER (PARTITION BY e."jobId" ORDER BY e."createdAt"),
+                j."createdAt"
+              )
+            )) / 3600.0 AS hours
+          FROM "StitchingJobEvent" e
+          JOIN "StitchingJob" j ON j.id = e."jobId"
+          WHERE e."createdAt" >= ${start} AND e."fromStage" IS NOT NULL
+        )
+        SELECT stage, COUNT(*) AS count, AVG(hours)::float8 AS avg_hours
+        FROM gaps
+        GROUP BY stage
+      `,
+
+      this.prisma.$queryRaw<Array<{ tailorId: string; jobsCompleted: bigint; avg_hours: number | null }>>`
+        SELECT "assignedTailorId" AS "tailorId",
+               COUNT(*) AS "jobsCompleted",
+               AVG(EXTRACT(EPOCH FROM ("completedAt" - "startedAt")) / 3600.0)::float8 AS avg_hours
+        FROM "StitchingJob"
+        WHERE "completedAt" >= ${start} AND "assignedTailorId" IS NOT NULL AND "startedAt" IS NOT NULL
+        GROUP BY "assignedTailorId"
+        ORDER BY "jobsCompleted" DESC
+        LIMIT 20
+      `,
+    ]);
+
+    const dayKeys = shopDayKeys(start, days, timeZone);
+    const startedByDay = new Map(startedRows.map((row) => [row.day, Number(row.started)]));
+    const completedByDay = new Map(completedRows.map((row) => [row.day, Number(row.completed)]));
+
+    const byStage: WorkshopStageRow[] = stageRows.map((row) => ({
+      stage: row.stage,
+      count: Number(row.count),
+      avgHours: round1(row.avg_hours ?? 0),
+    }));
+
+    let byTailor: WorkshopTailorRow[] = [];
+    if (tailorRows.length > 0) {
+      const tailorIds = tailorRows.map((row) => row.tailorId);
+      const [profiles, users] = await Promise.all([
+        this.prisma.tailorProfile.findMany({ where: { userId: { in: tailorIds } }, select: { userId: true, displayName: true } }),
+        this.prisma.user.findMany({ where: { id: { in: tailorIds } }, select: { id: true, firstName: true, lastName: true } }),
+      ]);
+      const nameByTailorId = new Map<string, string>();
+      for (const user of users) {
+        nameByTailorId.set(user.id, [user.firstName, user.lastName].filter(Boolean).join(' ') || user.id);
+      }
+      for (const profile of profiles) {
+        nameByTailorId.set(profile.userId, profile.displayName);
+      }
+
+      byTailor = tailorRows.map((row) => ({
+        tailorId: row.tailorId,
+        name: nameByTailorId.get(row.tailorId) ?? row.tailorId,
+        jobsCompleted: Number(row.jobsCompleted),
+        avgHours: round1(row.avg_hours ?? 0),
+      }));
+    }
+
+    const bottleneck = byStage.reduce<WorkshopStageRow | null>(
+      (worst, row) => (!worst || row.avgHours > worst.avgHours ? row : worst),
+      null,
+    );
+
+    return {
+      series: dayKeys.map((day) => ({
+        date: day,
+        started: startedByDay.get(day) ?? 0,
+        completed: completedByDay.get(day) ?? 0,
+      })),
+      byStage,
+      byTailor,
+      bottleneck: bottleneck ? { stage: bottleneck.stage, avgHours: bottleneck.avgHours } : null,
     };
   }
 

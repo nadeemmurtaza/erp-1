@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { cn } from '@/utils/cn';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import { formatDate, formatDateTime, formatMoney } from '@newax/shared';
+import { ROUTES } from '@/constants/routes';
 import { Loading } from '@/components/ui';
 
 interface InventoryVariant {
@@ -50,6 +51,7 @@ export default function AdminInventoryPage() {
   const user = getStoredUser();
   const canViewCost = user?.permissions.includes('inventory.view_cost');
   const canViewChain = user?.permissions.includes('production.view_chain');
+  const canViewInsights = user?.permissions.includes('analytics.view') ?? false;
 
   const [variants, setVariants] = useState<InventoryVariant[] | null>(null);
   const [search, setSearch] = useState('');
@@ -105,10 +107,19 @@ export default function AdminInventoryPage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Inventory</h1>
-      <p className="mb-6 text-sm text-neutral-900/60">
-        Stock on hand and movement ledger.
-      </p>
+      <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="mb-1 text-xl font-semibold text-neutral-900">Inventory</h1>
+          <p className="text-sm text-neutral-900/60">
+            Stock on hand and movement ledger.
+          </p>
+        </div>
+        {canViewInsights ? (
+          <Link href={ROUTES.admin.inventoryInsights} className="btn-secondary">
+            Insights
+          </Link>
+        ) : null}
+      </div>
 
       <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-neutral-100 pb-4">
         <input

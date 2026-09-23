@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
@@ -120,11 +119,6 @@ export default function ExpenseCategoriesPage() {
 
       <PageHeader
         title="Expense categories"
-        context={
-          <Link href="/admin/finance/expenses" className="hover:text-neutral-900">
-            &larr; Expenses
-          </Link>
-        }
         description="Direct costs sit above the gross-profit line; operating costs sit below it."
       />
 

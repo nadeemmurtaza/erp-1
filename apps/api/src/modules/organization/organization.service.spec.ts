@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BadRequestException, ForbiddenException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { OrganizationService } from './organization.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { BranchPolicyRegistry } from '../../core/extension-points/branch-policy.registry';
+import { PolicyQuarantineService } from '../../core/replication/policy-quarantine.service';
 import type { AdminScopeGrant, ScopedActor } from '../../core/auth/scope.guard';
 
 const org = (): AdminScopeGrant => ({ level: 'ORG', retailBrandId: null, branchNodeId: null });
@@ -26,7 +27,7 @@ describe('OrganizationService', () => {
   beforeEach(async () => {
     prisma = {
       retailBrand: { findMany: jest.fn().mockResolvedValue([]), findUnique: jest.fn().mockResolvedValue({ id: 'b1' }) },
-      node: { findMany: jest.fn().mockResolvedValue([]) },
+      node: { findMany: jest.fn().mockResolvedValue([]), findUnique: jest.fn().mockResolvedValue(null) },
       adminScope: {
         findMany: jest.fn().mockResolvedValue([]),
         create: jest.fn().mockResolvedValue({}),
@@ -38,10 +39,20 @@ describe('OrganizationService', () => {
         upsert: jest.fn().mockResolvedValue({}),
         findMany: jest.fn().mockResolvedValue([]),
       },
+      policyQuarantine: {
+        findMany: jest.fn().mockResolvedValue([]),
+        findUnique: jest.fn().mockResolvedValue(null),
+        update: jest.fn().mockResolvedValue({}),
+      },
     };
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [OrganizationService, { provide: PrismaService, useValue: prisma }, BranchPolicyRegistry],
+      providers: [
+        OrganizationService,
+        { provide: PrismaService, useValue: prisma },
+        BranchPolicyRegistry,
+        PolicyQuarantineService,
+      ],
     }).compile();
 
     service = module.get<OrganizationService>(OrganizationService);
@@ -315,6 +326,82 @@ describe('OrganizationService', () => {
     });
   });
 
+  describe('listPolicyQuarantine / resolvePolicyQuarantine — WO-23.3c/e, RETAIL-ERP.md R9', () => {
+    const openEntries = [
+      { id: 'q1', retailBrandId: 'b1', status: 'OPEN' },
+      { id: 'q2', retailBrandId: 'b2', status: 'OPEN' },
+      { id: 'q3', retailBrandId: null, status: 'OPEN' },
+    ];
+
+    describe('listPolicyQuarantine', () => {
+      it('returns every open entry for an ORG-wide actor', async () => {
+        prisma.policyQuarantine.findMany.mockResolvedValue(openEntries);
+
+        const result = await service.listPolicyQuarantine(actor([org()]));
+
+        expect(result).toEqual(openEntries);
+      });
+
+      it('narrows to a BRAND-scope actor\'s own brand, dropping entries with no resolvable brand', async () => {
+        prisma.policyQuarantine.findMany.mockResolvedValue(openEntries);
+
+        const result = await service.listPolicyQuarantine(actor([brand('b1')]));
+
+        expect(result).toEqual([openEntries[0]]);
+      });
+
+      it('returns nothing for an actor with no grants at all', async () => {
+        prisma.policyQuarantine.findMany.mockResolvedValue(openEntries);
+
+        const result = await service.listPolicyQuarantine(actor([]));
+
+        expect(result).toEqual([]);
+      });
+    });
+
+    describe('resolvePolicyQuarantine', () => {
+      it('404s for a record that does not exist', async () => {
+        prisma.policyQuarantine.findUnique.mockResolvedValue(null);
+
+        await expect(service.resolvePolicyQuarantine(actor([org()]), 'missing', 'user1')).rejects.toBeInstanceOf(
+          NotFoundException,
+        );
+        expect(prisma.policyQuarantine.update).not.toHaveBeenCalled();
+      });
+
+      it('refuses a BRAND-scope actor resolving another brand\'s entry', async () => {
+        prisma.policyQuarantine.findUnique.mockResolvedValue({ id: 'q2', retailBrandId: 'b2', status: 'OPEN' });
+
+        await expect(
+          service.resolvePolicyQuarantine(actor([brand('b1')]), 'q2', 'user1'),
+        ).rejects.toBeInstanceOf(ForbiddenException);
+        expect(prisma.policyQuarantine.update).not.toHaveBeenCalled();
+      });
+
+      it('lets a BRAND-scope actor resolve their own brand\'s entry, recording the actor and note', async () => {
+        prisma.policyQuarantine.findUnique.mockResolvedValue({ id: 'q1', retailBrandId: 'b1', status: 'OPEN' });
+        prisma.policyQuarantine.update.mockResolvedValue({ id: 'q1', status: 'RESOLVED' });
+
+        const result = await service.resolvePolicyQuarantine(actor([brand('b1')]), 'q1', 'user1', 'Approved.');
+
+        expect(result.status).toBe('RESOLVED');
+        expect(prisma.policyQuarantine.update).toHaveBeenCalledWith({
+          where: { id: 'q1' },
+          data: { status: 'RESOLVED', resolvedAt: expect.any(Date), resolvedById: 'user1', resolvedNote: 'Approved.' },
+        });
+      });
+
+      it('lets an ORG-wide actor resolve any brand\'s entry, including one with no resolvable brand', async () => {
+        prisma.policyQuarantine.findUnique.mockResolvedValue({ id: 'q3', retailBrandId: null, status: 'OPEN' });
+        prisma.policyQuarantine.update.mockResolvedValue({ id: 'q3', status: 'RESOLVED' });
+
+        await expect(service.resolvePolicyQuarantine(actor([org()]), 'q3', 'user1')).resolves.toEqual(
+          expect.objectContaining({ status: 'RESOLVED' }),
+        );
+      });
+    });
+  });
+
   describe('allowsBranchLocalPurchasing (BranchPolicyRegistry handler) — WO-23.3b', () => {
     it('allows an ORG-wide actor without consulting BrandPolicy', async () => {
       prisma.adminScope.findMany.mockResolvedValue([org()]);
@@ -357,6 +444,48 @@ describe('OrganizationService', () => {
       prisma.brandPolicy.findMany.mockResolvedValue([{ retailBrandId: 'b1', allowBranchLocalPurchasing: true }]);
 
       await expect(branchPolicy.allowsBranchLocalPurchasing('user-1')).resolves.toBe(true);
+    });
+  });
+
+  describe('allowsBranchLocalPurchasingForNode (BranchPolicyRegistry handler) — WO-23.3c/e, ADR-023', () => {
+    it('fails closed when no Node row exists for the origin node', async () => {
+      prisma.node.findUnique.mockResolvedValue(null);
+
+      await expect(branchPolicy.allowsBranchLocalPurchasingForNode('branch-lhr01')).resolves.toBe(false);
+      expect(prisma.node.findUnique).toHaveBeenCalledWith({
+        where: { nodeId: 'branch-lhr01' },
+        select: { retailBrandId: true },
+      });
+      expect(prisma.brandPolicy.findUnique).not.toHaveBeenCalled();
+    });
+
+    it('fails closed when the Node row carries no retailBrandId', async () => {
+      prisma.node.findUnique.mockResolvedValue({ retailBrandId: null });
+
+      await expect(branchPolicy.allowsBranchLocalPurchasingForNode('branch-lhr01')).resolves.toBe(false);
+      expect(prisma.brandPolicy.findUnique).not.toHaveBeenCalled();
+    });
+
+    it('fails closed when the brand has no BrandPolicy row', async () => {
+      prisma.node.findUnique.mockResolvedValue({ retailBrandId: 'b1' });
+      prisma.brandPolicy.findUnique.mockResolvedValue(null);
+
+      await expect(branchPolicy.allowsBranchLocalPurchasingForNode('branch-lhr01')).resolves.toBe(false);
+      expect(prisma.brandPolicy.findUnique).toHaveBeenCalledWith({ where: { retailBrandId: 'b1' } });
+    });
+
+    it('fails closed when the brand explicitly disallows it', async () => {
+      prisma.node.findUnique.mockResolvedValue({ retailBrandId: 'b1' });
+      prisma.brandPolicy.findUnique.mockResolvedValue({ allowBranchLocalPurchasing: false });
+
+      await expect(branchPolicy.allowsBranchLocalPurchasingForNode('branch-lhr01')).resolves.toBe(false);
+    });
+
+    it('allows it once the Node is badged with a brand whose policy explicitly allows it', async () => {
+      prisma.node.findUnique.mockResolvedValue({ retailBrandId: 'b1' });
+      prisma.brandPolicy.findUnique.mockResolvedValue({ allowBranchLocalPurchasing: true });
+
+      await expect(branchPolicy.allowsBranchLocalPurchasingForNode('branch-lhr01')).resolves.toBe(true);
     });
   });
 

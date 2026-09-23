@@ -7,10 +7,19 @@ import { BomService } from './bom.service';
 import { ProductionService } from './production.service';
 import { RawMaterialService } from './raw-material.service';
 import { RecipeService } from './recipe.service';
+import { BomProductionReplicationListener } from './bom-production-replication.listener';
 
 @Module({
   imports: [InventoryModule],
   controllers: [BomController],
-  providers: [BomService, RawMaterialService, RecipeService, BomListener, ProductionService, BomMetricsService],
+  providers: [
+    BomService,
+    RawMaterialService,
+    RecipeService,
+    BomListener,
+    ProductionService,
+    BomMetricsService,
+    BomProductionReplicationListener,
+  ],
 })
 export class BomModule {}

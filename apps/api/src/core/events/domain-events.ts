@@ -65,6 +65,11 @@ export const DomainEvent = {
   ExpenseRecorded: 'finance.expense_recorded',
   /** OrderEconomicsService's own derived-row write (WO-23.1's WO-B.3) — not a GL posting, just notice that a fresh contribution-per-order figure exists. */
   OrderEconomicsComputed: 'finance.order_economics_computed',
+
+  /** PayRunService.post() (docs/implementation/19-payroll.md WO-19.4) — the eighth posting rule; fires whether or not `accounting` is on, same idiom as ExpenseRecorded. */
+  PayrollRunPosted: 'payroll.run_posted',
+  /** PayRunService.postAdjustment() (docs/implementation/19-payroll.md WO-19.5) — the overpayment/correction reversal path, a distinct postable fact from the original run it corrects. */
+  PayrollAdjustmentPosted: 'payroll.adjustment_posted',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -222,6 +227,11 @@ export interface GoodsReceivedPayload {
   number: string;
   purchaseOrderId: string;
   supplierId: string;
+  /** WO-23.3c/e — carried so GoodsReceiptReplicationListener can log the FACT without a second read. */
+  scopeLevel: 'ORG' | 'BRAND' | 'BRANCH';
+  originNodeId: string | null;
+  /** ISO. The fact's own original time (R2) — never `new Date()` at log time. */
+  receivedAtIso: string;
 }
 
 export interface BomProductionCompletedPayload {
@@ -232,6 +242,11 @@ export interface BomProductionCompletedPayload {
   quantityProduced: number;
   producedUnitCost: number;
   operatorId: string | null;
+  /** WO-23.3c/e — carried so BomProductionReplicationListener can log the FACT without a second read. */
+  scopeLevel: 'ORG' | 'BRAND' | 'BRANCH';
+  originNodeId: string | null;
+  /** ISO. The fact's own original time (R2) — never `new Date()` at log time. */
+  producedAtIso: string;
 }
 
 export interface WorkOrderPayload {
@@ -293,6 +308,9 @@ export interface ExpenseRecordedPayload {
   /** Null = unpaid at creation, posts to Accounts Payable instead of Cash & Bank. */
   paidAtIso: string | null;
   supplierId: string | null;
+  /** WO-23.3c/e — carried so ExpenseReplicationListener can log the FACT without a second read. */
+  scopeLevel: 'ORG' | 'BRAND' | 'BRANCH';
+  originNodeId: string | null;
 }
 
 export interface OrderEconomicsComputedPayload {
@@ -301,6 +319,29 @@ export interface OrderEconomicsComputedPayload {
   revenue: number;
   cogs: number;
   contribution: number;
+}
+
+export interface PayrollRunPostedPayload {
+  payRunId: string;
+  number: string;
+  postedAt: string;
+  /** All paisa, summed across every PayRunLine on the run. */
+  grossMinor: number;
+  netMinor: number;
+  deductionsMinor: number;
+  scopeLevel: 'ORG' | 'BRAND' | 'BRANCH';
+  originNodeId: string | null;
+}
+
+export interface PayrollAdjustmentPostedPayload {
+  adjustmentId: string;
+  payRunId: string;
+  payRunNumber: string;
+  userId: string;
+  reason: 'OVERPAYMENT' | 'UNDERPAYMENT' | 'CORRECTION';
+  /** Paisa, always positive — sign is implied by `reason`. */
+  amountMinor: number;
+  postedAt: string;
 }
 
 export interface EmailReplyReceivedPayload {
@@ -354,4 +395,6 @@ export interface DomainEventPayloads {
   [DomainEvent.IdentityVerificationExpired]: IdentityVerificationPayload;
   [DomainEvent.ExpenseRecorded]: ExpenseRecordedPayload;
   [DomainEvent.OrderEconomicsComputed]: OrderEconomicsComputedPayload;
+  [DomainEvent.PayrollRunPosted]: PayrollRunPostedPayload;
+  [DomainEvent.PayrollAdjustmentPosted]: PayrollAdjustmentPostedPayload;
 }

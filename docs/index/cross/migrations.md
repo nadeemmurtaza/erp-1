@@ -3,7 +3,7 @@
 
 # Migrations
 
-**58** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**60** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -91,6 +91,8 @@ nothing here fails a build.
 | 2026-09-22 | `add_bom_recipes` | 14 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | BomComponent, BomRecipe |
 | 2026-09-22 | `add_bom_production_runs` | 13 | CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | BomProductionLine, BomProductionRun |
 | 2026-09-22 | `add_tier_scope_columns` | 16 | CREATE TYPE, ALTER TYPE, ALTER TABLE, UPDATE, CREATE INDEX | BomProductionRun, Expense, GoodsReceipt, PurchaseOrder |
+| 2026-09-22 | `add_node_brand_and_policy_quarantine` | 8 | ALTER TABLE, CREATE TABLE, CREATE INDEX | Node, PolicyQuarantine |
+| 2026-09-23 | `add_payroll` | 39 | CREATE TYPE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX, ALTER TABLE | CompensationRate, LeaveAccrualRun, LeaveBalance, LeaveRequest, LeaveType, PayRun, PayRunAdjustment, PayRunLin… |
 
 
 ---

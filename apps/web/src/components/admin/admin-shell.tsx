@@ -80,14 +80,15 @@ export function AdminShell({ children }: { children: ReactNode }) {
   const items = navFor(user.permissions, enabledModules);
   const allItems = items.flatMap(item => [item, ...(item.children || [])]);
   const activeItem = allItems.reduce((best, item) => {
-    const isMatch = item.href === '/admin' 
-      ? pathname === '/admin' 
+    const isMatch = item.href === '/admin'
+      ? pathname === '/admin'
       : (pathname === item.href || pathname.startsWith(item.href + '/'));
     if (isMatch) {
       if (!best || item.href.length > best.href.length) return item;
     }
     return best;
   }, null as AdminNavItem | null);
+  const breadcrumbs = breadcrumbTrail(activeItem, items);
 
   return (
     <div className="flex min-h-screen bg-neutral-50">
@@ -189,12 +190,70 @@ export function AdminShell({ children }: { children: ReactNode }) {
         </header>
 
         <main className="min-w-0 flex-1 p-4 sm:p-6">
+          <Breadcrumbs trail={breadcrumbs} />
           <AdminProviders user={user} enabledModules={enabledModules}>
             {children}
           </AdminProviders>
         </main>
       </div>
     </div>
+  );
+}
+
+/** One crumb — a link, or (the last one, the current page) plain text. */
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+/**
+ * WO-E.1 — the trail for the current page, derived from `ADMIN_NAV` itself
+ * rather than written out per page: Group (never a link — `NAV_GROUPS` names
+ * a heading, not a destination) → the parent item, if `activeItem` is a
+ * child → `activeItem` itself, last and never linked (the current page,
+ * `aria-current="page"` in `Breadcrumbs` below — the same convention
+ * `NavLink`'s own `aria-current` already uses in this file). No route
+ * outside `ADMIN_NAV` (e.g. `/admin/account`) gets a trail; `activeItem`
+ * is null there and this returns nothing rather than a misleading guess.
+ */
+function breadcrumbTrail(activeItem: AdminNavItem | null, items: AdminNavItem[]): Crumb[] {
+  if (!activeItem) return [];
+
+  const group = NAV_GROUPS.find((candidate) => candidate.key === activeItem.group);
+  const parent = items.find((item) => item.children?.some((child) => child.key === activeItem.key));
+
+  const trail: Crumb[] = [];
+  if (group) trail.push({ label: group.label });
+  if (parent) trail.push({ label: parent.label, href: parent.href });
+  trail.push({ label: activeItem.label });
+  return trail;
+}
+
+function Breadcrumbs({ trail }: { trail: Crumb[] }) {
+  if (trail.length === 0) return null;
+
+  return (
+    <nav aria-label="Breadcrumb" className="mb-4 text-sm text-neutral-900/60">
+      <ol className="flex flex-wrap items-center gap-1.5">
+        {trail.map((crumb, index) => {
+          const isCurrent = index === trail.length - 1;
+          return (
+            <li key={`${crumb.label}-${index}`} className="flex items-center gap-1.5">
+              {index > 0 ? <span aria-hidden="true">/</span> : null}
+              {crumb.href && !isCurrent ? (
+                <Link href={crumb.href} className="hover:text-neutral-900">
+                  {crumb.label}
+                </Link>
+              ) : (
+                <span aria-current={isCurrent ? 'page' : undefined} className={isCurrent ? 'text-neutral-900' : undefined}>
+                  {crumb.label}
+                </span>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
   );
 }
 

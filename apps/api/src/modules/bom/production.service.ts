@@ -206,6 +206,9 @@ export class ProductionService {
           quantityProduced,
           producedUnitCost,
           operatorId: actorId,
+          scopeLevel: run.scopeLevel,
+          originNodeId: run.originNodeId,
+          producedAtIso: run.producedAt.toISOString(),
         },
         tx,
       );

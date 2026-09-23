@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, ParseIntPipe, Patch, Query, DefaultValuePipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, ForbiddenException, Get, ParseIntPipe, Patch, Query, DefaultValuePipe } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
@@ -37,6 +37,136 @@ export class AnalyticsController {
     @Query('days', new DefaultValuePipe(30), ParseIntPipe) days: number,
   ) {
     return this.analytics.extendedAnalytics(Math.min(Math.max(days, 7), 365));
+  }
+
+  @Get('orders/overview')
+  @ApiOperation({ summary: 'Open orders right now — ageing buckets, the oldest worklist, by-city and by-payment' })
+  ordersOverview() {
+    return this.analytics.ordersOverview();
+  }
+
+  @Get('orders/fulfilment')
+  @ApiOperation({ summary: 'Average and median time spent in each order-status transition' })
+  ordersFulfilment(
+    @Query('days', new DefaultValuePipe(90), ParseIntPipe) days: number,
+  ) {
+    return this.analytics.ordersFulfilment(Math.min(Math.max(days, 7), 365));
+  }
+
+  @Get('purchasing/spend')
+  @ApiOperation({ summary: 'What was ordered, received, billed and is still owed to suppliers' })
+  purchasingSpend(
+    @Query('days', new DefaultValuePipe(90), ParseIntPipe) days: number,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    // Purchasing spend is domain-sensitive beyond the base analytics.view
+    // the class decorator already requires — bom.controller.ts's
+    // recipeCost()/seedCostPrice() are this repo's own precedent for a
+    // hard, method-level second permission check rather than a class-level
+    // decorator, for an endpoint whose whole payload is one domain's money.
+    if (!user.permissions.includes('purchasing.manage')) {
+      throw new ForbiddenException('You do not have access to purchasing spend.');
+    }
+    return this.analytics.purchasingSpend(Math.min(Math.max(days, 7), 365));
+  }
+
+  @Get('purchasing/suppliers')
+  @ApiOperation({ summary: 'Spend, order count, on-time rate and lead time by supplier' })
+  purchasingSuppliers(
+    @Query('days', new DefaultValuePipe(90), ParseIntPipe) days: number,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    if (!user.permissions.includes('purchasing.manage')) {
+      throw new ForbiddenException('You do not have access to supplier spend.');
+    }
+    return this.analytics.purchasingSuppliers(Math.min(Math.max(days, 7), 365));
+  }
+
+  @Get('products/top-sellers')
+  @ApiOperation({ summary: 'Best-selling products by revenue, with units and margin' })
+  productsTopSellers(
+    @Query('days', new DefaultValuePipe(30), ParseIntPipe) days: number,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    const includeCost = user.permissions.includes('inventory.view_cost');
+    return this.analytics.productsTopSellers(Math.min(Math.max(days, 7), 365), includeCost);
+  }
+
+  @Get('products/slow-sellers')
+  @ApiOperation({ summary: 'In-stock, active variants flagged as slow movers, oldest first' })
+  productsSlowSellers() {
+    return this.analytics.productsSlowSellers();
+  }
+
+  @Get('products/categories')
+  @ApiOperation({ summary: 'Revenue, units and product count by category, with a daily trend' })
+  productsCategories(
+    @Query('days', new DefaultValuePipe(30), ParseIntPipe) days: number,
+  ) {
+    return this.analytics.productsCategories(Math.min(Math.max(days, 7), 365));
+  }
+
+  @Get('inventory/valuation')
+  @ApiOperation({ summary: 'What the stock on hand is worth right now, by category, kind and age' })
+  inventoryValuation(@CurrentUser() user: AuthenticatedUser) {
+    // Every figure this report returns IS cost data, with no non-cost
+    // subset worth keeping — a hard, whole-endpoint gate, same as
+    // bom.controller.ts's recipeCost(), not a field-level null/omit.
+    if (!user.permissions.includes('inventory.view_cost')) {
+      throw new ForbiddenException('You do not have access to stock valuation.');
+    }
+    return this.analytics.inventoryValuation();
+  }
+
+  @Get('inventory/movements')
+  @ApiOperation({ summary: 'Stock movement volume by day and reason, plus the most recent individual movements' })
+  inventoryMovements(
+    @Query('days', new DefaultValuePipe(30), ParseIntPipe) days: number,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    if (!user.permissions.includes('inventory.manage')) {
+      throw new ForbiddenException('You do not have access to stock movements.');
+    }
+    return this.analytics.inventoryMovements(Math.min(Math.max(days, 7), 365));
+  }
+
+  @Get('customers/overview')
+  @ApiOperation({ summary: 'The customer book — totals, by city, by acquisition source, by lifecycle status' })
+  customersOverview(@CurrentUser() user: AuthenticatedUser) {
+    if (!user.permissions.includes('crm.manage')) {
+      throw new ForbiddenException('You do not have access to customer analytics.');
+    }
+    return this.analytics.customersOverview();
+  }
+
+  @Get('customers/retention')
+  @ApiOperation({ summary: 'Signup cohorts and how many of each went on to order again, plus the overall repeat rate' })
+  customersRetention(@CurrentUser() user: AuthenticatedUser) {
+    if (!user.permissions.includes('crm.manage')) {
+      throw new ForbiddenException('You do not have access to customer analytics.');
+    }
+    return this.analytics.customersRetention();
+  }
+
+  @Get('customers/top')
+  @ApiOperation({ summary: 'The highest-lifetime-value customers' })
+  customersTop(@CurrentUser() user: AuthenticatedUser) {
+    if (!user.permissions.includes('crm.manage')) {
+      throw new ForbiddenException('You do not have access to customer analytics.');
+    }
+    return this.analytics.customersTop();
+  }
+
+  @Get('workshop/output')
+  @ApiOperation({ summary: 'Workshop throughput — started/completed per day, time in each stage, output by tailor, the bottleneck stage' })
+  workshopOutput(
+    @Query('days', new DefaultValuePipe(30), ParseIntPipe) days: number,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    if (!user.permissions.includes('stitching.jobs.view_queue')) {
+      throw new ForbiddenException('You do not have access to the workshop queue.');
+    }
+    return this.analytics.workshopOutput(Math.min(Math.max(days, 7), 365));
   }
 
   @Get('visitors')

@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1208,
-    "lines": 188669,
-    "routes": 322,
-    "controllers": 59,
-    "models": 123,
-    "enums": 53,
-    "migrations": 58,
-    "events": 37,
-    "permissions": 41,
-    "screens": 137,
-    "crons": 8,
-    "specs": 115,
+    "files": 1260,
+    "lines": 199345,
+    "routes": 357,
+    "controllers": 62,
+    "models": 133,
+    "enums": 58,
+    "migrations": 60,
+    "events": 39,
+    "permissions": 44,
+    "screens": 152,
+    "crons": 9,
+    "specs": 130,
     "designLaws": 150
   },
   "designLaws": [
@@ -1079,13 +1079,13 @@
     "infra": {
       "files": 55,
       "lines": 27846,
-      "bytes": 1092304,
+      "bytes": 1092337,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 493,
-      "lines": 66893,
-      "bytes": 2424124,
+      "files": 529,
+      "lines": 73347,
+      "bytes": 2688312,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1101,21 +1101,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 243,
-      "lines": 37096,
-      "bytes": 1369954,
+      "files": 258,
+      "lines": 40371,
+      "bytes": 1489386,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 247,
-      "lines": 35981,
-      "bytes": 2251129,
+      "files": 248,
+      "lines": 36899,
+      "bytes": 2299042,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 55,
-      "lines": 4638,
-      "bytes": 150370,
+      "lines": 4667,
+      "bytes": 151329,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -1171,13 +1171,19 @@
       "files": [
         "apps/api/src/modules/analytics/analytics.comparison.spec.ts",
         "apps/api/src/modules/analytics/analytics.controller.ts",
+        "apps/api/src/modules/analytics/analytics.customers.spec.ts",
+        "apps/api/src/modules/analytics/analytics.inventory.spec.ts",
         "apps/api/src/modules/analytics/analytics.module.ts",
+        "apps/api/src/modules/analytics/analytics.orders.spec.ts",
+        "apps/api/src/modules/analytics/analytics.products.spec.ts",
+        "apps/api/src/modules/analytics/analytics.purchasing.spec.ts",
         "apps/api/src/modules/analytics/analytics.service.ts",
+        "apps/api/src/modules/analytics/analytics.workshop.spec.ts",
         "apps/api/src/modules/analytics/dto/analytics.dto.ts",
         "apps/api/src/modules/analytics/supply-chain-digest.cron.spec.ts",
         "apps/api/src/modules/analytics/supply-chain-digest.cron.ts"
       ],
-      "routes": 6,
+      "routes": 19,
       "page": "docs/index/modules/analytics.md"
     },
     {
@@ -1186,6 +1192,8 @@
       "alwaysOn": false,
       "inRegistry": true,
       "files": [
+        "apps/api/src/modules/bom/bom-production-replication.listener.spec.ts",
+        "apps/api/src/modules/bom/bom-production-replication.listener.ts",
         "apps/api/src/modules/bom/bom.controller.ts",
         "apps/api/src/modules/bom/bom.listener.spec.ts",
         "apps/api/src/modules/bom/bom.listener.ts",
@@ -1275,6 +1283,8 @@
       "files": [
         "apps/api/src/modules/finance/dto/expense-category.dto.ts",
         "apps/api/src/modules/finance/dto/expense.dto.ts",
+        "apps/api/src/modules/finance/expense-replication.listener.spec.ts",
+        "apps/api/src/modules/finance/expense-replication.listener.ts",
         "apps/api/src/modules/finance/finance.controller.ts",
         "apps/api/src/modules/finance/finance.cron.spec.ts",
         "apps/api/src/modules/finance/finance.cron.ts",
@@ -1392,8 +1402,10 @@
       "files": [
         "apps/api/src/modules/organization/dto/admin-scope.dto.ts",
         "apps/api/src/modules/organization/dto/brand-policy.dto.ts",
+        "apps/api/src/modules/organization/dto/node-brand.dto.ts",
         "apps/api/src/modules/organization/dto/node.dto.ts",
         "apps/api/src/modules/organization/dto/organization-policy.dto.ts",
+        "apps/api/src/modules/organization/dto/policy-quarantine.dto.ts",
         "apps/api/src/modules/organization/nodes.service.spec.ts",
         "apps/api/src/modules/organization/nodes.service.ts",
         "apps/api/src/modules/organization/organization.controller.ts",
@@ -1401,7 +1413,7 @@
         "apps/api/src/modules/organization/organization.service.spec.ts",
         "apps/api/src/modules/organization/organization.service.ts"
       ],
-      "routes": 12,
+      "routes": 15,
       "page": "docs/index/modules/organization.md"
     },
     {
@@ -1439,6 +1451,32 @@
       ],
       "routes": 6,
       "page": "docs/index/modules/payments.md"
+    },
+    {
+      "name": "payroll",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/payroll/dto/compensation-rate.dto.ts",
+        "apps/api/src/modules/payroll/dto/leave.dto.ts",
+        "apps/api/src/modules/payroll/dto/pay-run-adjustment.dto.ts",
+        "apps/api/src/modules/payroll/dto/pay-run.dto.ts",
+        "apps/api/src/modules/payroll/leave-accrual.cron.spec.ts",
+        "apps/api/src/modules/payroll/leave-accrual.cron.ts",
+        "apps/api/src/modules/payroll/leave.controller.ts",
+        "apps/api/src/modules/payroll/leave.service.spec.ts",
+        "apps/api/src/modules/payroll/leave.service.ts",
+        "apps/api/src/modules/payroll/pay-run.controller.ts",
+        "apps/api/src/modules/payroll/pay-run.service.spec.ts",
+        "apps/api/src/modules/payroll/pay-run.service.ts",
+        "apps/api/src/modules/payroll/payroll.controller.ts",
+        "apps/api/src/modules/payroll/payroll.module.ts",
+        "apps/api/src/modules/payroll/payroll.service.spec.ts",
+        "apps/api/src/modules/payroll/payroll.service.ts"
+      ],
+      "routes": 19,
+      "page": "docs/index/modules/payroll.md"
     },
     {
       "name": "pos",
@@ -1500,6 +1538,8 @@
         "apps/api/src/modules/purchasing/dto/purchase-order.dto.ts",
         "apps/api/src/modules/purchasing/dto/supplier-bill.dto.ts",
         "apps/api/src/modules/purchasing/dto/supplier.dto.ts",
+        "apps/api/src/modules/purchasing/goods-receipt-replication.listener.spec.ts",
+        "apps/api/src/modules/purchasing/goods-receipt-replication.listener.ts",
         "apps/api/src/modules/purchasing/purchasing.controller.ts",
         "apps/api/src/modules/purchasing/purchasing.cron.spec.ts",
         "apps/api/src/modules/purchasing/purchasing.cron.ts",
@@ -1733,6 +1773,7 @@
     {
       "name": "extension-points",
       "files": [
+        "apps/api/src/core/extension-points/branch-policy.registry.spec.ts",
         "apps/api/src/core/extension-points/branch-policy.registry.ts",
         "apps/api/src/core/extension-points/cart-line-validator.registry.ts",
         "apps/api/src/core/extension-points/entity-enrichment.registry.ts",
@@ -1790,6 +1831,8 @@
         "apps/api/src/core/replication/dto/push-replication.dto.ts",
         "apps/api/src/core/replication/node-credential.service.spec.ts",
         "apps/api/src/core/replication/node-credential.service.ts",
+        "apps/api/src/core/replication/policy-quarantine.service.spec.ts",
+        "apps/api/src/core/replication/policy-quarantine.service.ts",
         "apps/api/src/core/replication/replication-apply.service.spec.ts",
         "apps/api/src/core/replication/replication-apply.service.ts",
         "apps/api/src/core/replication/replication-cursor.service.spec.ts",
@@ -2176,7 +2219,7 @@
       "controller": "AnalyticsController",
       "handler": "comparison",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 52,
+      "line": 182,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2184,6 +2227,54 @@
       "public": false,
       "authOnly": false,
       "summary": "Sales, purchases and expenses side by side, bucketed by day, week or month"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/customers/overview",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "customersOverview",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 135,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The customer book — totals, by city, by acquisition source, by lifecycle status"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/customers/retention",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "customersRetention",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 144,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Signup cohorts and how many of each went on to order again, plus the overall repeat rate"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/customers/top",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "customersTop",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 153,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The highest-lifetime-value customers"
     },
     {
       "method": "GET",
@@ -2218,13 +2309,45 @@
       "summary": "Funnel, geography, fulfilment and payment-mix metrics"
     },
     {
+      "method": "GET",
+      "path": "/admin/analytics/inventory/movements",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "inventoryMovements",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 123,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Stock movement volume by day and reason, plus the most recent individual movements"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/inventory/valuation",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "inventoryValuation",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 111,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "What the stock on hand is worth right now, by category, kind and age"
+    },
+    {
       "method": "PATCH",
       "path": "/admin/analytics/monthly-target",
       "module": "analytics",
       "controller": "AnalyticsController",
       "handler": "setMonthlyTarget",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 69,
+      "line": 199,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2232,6 +2355,118 @@
       "public": false,
       "authOnly": false,
       "summary": "Set the monthly revenue target shown on the dashboard"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/orders/fulfilment",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "ordersFulfilment",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 50,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Average and median time spent in each order-status transition"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/orders/overview",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "ordersOverview",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 44,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Open orders right now — ageing buckets, the oldest worklist, by-city and by-payment"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/products/categories",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "productsCategories",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 103,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Revenue, units and product count by category, with a daily trend"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/products/slow-sellers",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "productsSlowSellers",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 97,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "In-stock, active variants flagged as slow movers, oldest first"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/products/top-sellers",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "productsTopSellers",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 87,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Best-selling products by revenue, with units and margin"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/purchasing/spend",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "purchasingSpend",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 58,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "What was ordered, received, billed and is still owed to suppliers"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/purchasing/suppliers",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "purchasingSuppliers",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 75,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Spend, order count, on-time rate and lead time by supplier"
     },
     {
       "method": "GET",
@@ -2256,7 +2491,7 @@
       "controller": "AnalyticsController",
       "handler": "visitors",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 44,
+      "line": 174,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2264,6 +2499,22 @@
       "public": false,
       "authOnly": false,
       "summary": "Visitor counts, view-to-order funnel and traffic sources"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/workshop/output",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "workshopOutput",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 162,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Workshop throughput — started/completed per day, time in each stage, output by tailor, the bottleneck stage"
     },
     {
       "method": "GET",
@@ -4168,6 +4419,310 @@
       "public": false,
       "authOnly": false,
       "summary": "Payments waiting on a human decision"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/compensation",
+      "module": "payroll",
+      "controller": "PayrollController",
+      "handler": "listCompensation",
+      "file": "apps/api/src/modules/payroll/payroll.controller.ts",
+      "line": 22,
+      "access": "payroll.view",
+      "permissions": [
+        "payroll.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every employee's current compensation rate."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/compensation/:userId",
+      "module": "payroll",
+      "controller": "PayrollController",
+      "handler": "compensation",
+      "file": "apps/api/src/modules/payroll/payroll.controller.ts",
+      "line": 40,
+      "access": "payroll.view",
+      "permissions": [
+        "payroll.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One employee's current rate and rate history."
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/payroll/compensation/:userId",
+      "module": "payroll",
+      "controller": "PayrollController",
+      "handler": "setCompensation",
+      "file": "apps/api/src/modules/payroll/payroll.controller.ts",
+      "line": 52,
+      "access": "payroll.manage",
+      "permissions": [
+        "payroll.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Set a new effective-dated compensation rate, closing the previous one."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/compensation/:userId/preview",
+      "module": "payroll",
+      "controller": "PayrollController",
+      "handler": "previewGross",
+      "file": "apps/api/src/modules/payroll/payroll.controller.ts",
+      "line": 70,
+      "access": "payroll.view",
+      "permissions": [
+        "payroll.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Preview the gross salary calculation for a period, no write."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/compensation/me",
+      "module": "payroll",
+      "controller": "PayrollController",
+      "handler": "myCompensation",
+      "file": "apps/api/src/modules/payroll/payroll.controller.ts",
+      "line": 29,
+      "access": "payroll.view_own",
+      "permissions": [
+        "payroll.view_own"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The caller's own current rate and rate history."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/leave",
+      "module": "payroll",
+      "controller": "LeaveController",
+      "handler": "all",
+      "file": "apps/api/src/modules/payroll/leave.controller.ts",
+      "line": 54,
+      "access": "payroll.view",
+      "permissions": [
+        "payroll.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every leave request across every employee, newest first."
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/payroll/leave/:requestId/decide",
+      "module": "payroll",
+      "controller": "LeaveController",
+      "handler": "decide",
+      "file": "apps/api/src/modules/payroll/leave.controller.ts",
+      "line": 73,
+      "access": "payroll.manage",
+      "permissions": [
+        "payroll.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Approve or reject a pending leave request."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/leave/:userId",
+      "module": "payroll",
+      "controller": "LeaveController",
+      "handler": "forUser",
+      "file": "apps/api/src/modules/payroll/leave.controller.ts",
+      "line": 65,
+      "access": "payroll.view",
+      "permissions": [
+        "payroll.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One employee's leave balances and request history."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/leave/me",
+      "module": "payroll",
+      "controller": "LeaveController",
+      "handler": "mine",
+      "file": "apps/api/src/modules/payroll/leave.controller.ts",
+      "line": 32,
+      "access": "payroll.view_own",
+      "permissions": [
+        "payroll.view_own"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The caller's own leave balances and request history."
+    },
+    {
+      "method": "POST",
+      "path": "/admin/payroll/leave/me",
+      "module": "payroll",
+      "controller": "LeaveController",
+      "handler": "request",
+      "file": "apps/api/src/modules/payroll/leave.controller.ts",
+      "line": 40,
+      "access": "payroll.view_own",
+      "permissions": [
+        "payroll.view_own"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "File a leave request for the caller."
+    },
+    {
+      "method": "POST",
+      "path": "/admin/payroll/leave/me/:requestId/cancel",
+      "module": "payroll",
+      "controller": "LeaveController",
+      "handler": "cancelOwn",
+      "file": "apps/api/src/modules/payroll/leave.controller.ts",
+      "line": 47,
+      "access": "payroll.view_own",
+      "permissions": [
+        "payroll.view_own"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Cancel the caller's own pending leave request."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/leave/types",
+      "module": "payroll",
+      "controller": "LeaveController",
+      "handler": "types",
+      "file": "apps/api/src/modules/payroll/leave.controller.ts",
+      "line": 25,
+      "access": "payroll.view_own",
+      "permissions": [
+        "payroll.view_own"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every active leave type — needed by anyone filing a request."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/runs",
+      "module": "payroll",
+      "controller": "PayRunController",
+      "handler": "list",
+      "file": "apps/api/src/modules/payroll/pay-run.controller.ts",
+      "line": 23,
+      "access": "payroll.view",
+      "permissions": [
+        "payroll.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every pay run, most recent period first."
+    },
+    {
+      "method": "POST",
+      "path": "/admin/payroll/runs",
+      "module": "payroll",
+      "controller": "PayRunController",
+      "handler": "build",
+      "file": "apps/api/src/modules/payroll/pay-run.controller.ts",
+      "line": 37,
+      "access": "payroll.manage",
+      "permissions": [
+        "payroll.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Build a new DRAFT pay run for a period."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/runs/:id",
+      "module": "payroll",
+      "controller": "PayRunController",
+      "handler": "get",
+      "file": "apps/api/src/modules/payroll/pay-run.controller.ts",
+      "line": 30,
+      "access": "payroll.view",
+      "permissions": [
+        "payroll.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One pay run with every line."
+    },
+    {
+      "method": "POST",
+      "path": "/admin/payroll/runs/:id/adjustments",
+      "module": "payroll",
+      "controller": "PayRunController",
+      "handler": "postAdjustment",
+      "file": "apps/api/src/modules/payroll/pay-run.controller.ts",
+      "line": 65,
+      "access": "payroll.manage",
+      "permissions": [
+        "payroll.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Post an overpayment/underpayment/correction adjustment against a POSTED pay run."
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/payroll/runs/:id/approve",
+      "module": "payroll",
+      "controller": "PayRunController",
+      "handler": "approve",
+      "file": "apps/api/src/modules/payroll/pay-run.controller.ts",
+      "line": 51,
+      "access": "payroll.manage",
+      "permissions": [
+        "payroll.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "DRAFT → APPROVED."
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/payroll/runs/:id/post",
+      "module": "payroll",
+      "controller": "PayRunController",
+      "handler": "post",
+      "file": "apps/api/src/modules/payroll/pay-run.controller.ts",
+      "line": 58,
+      "access": "payroll.manage",
+      "permissions": [
+        "payroll.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "APPROVED → POSTED. Fires payroll.run_posted."
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/payroll/runs/:id/rebuild",
+      "module": "payroll",
+      "controller": "PayRunController",
+      "handler": "rebuild",
+      "file": "apps/api/src/modules/payroll/pay-run.controller.ts",
+      "line": 44,
+      "access": "payroll.manage",
+      "permissions": [
+        "payroll.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Recompute every line on a still-DRAFT pay run, replacing them."
     },
     {
       "method": "GET",
@@ -6536,7 +7091,7 @@
       "controller": "OrganizationController",
       "handler": "adminScopes",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 112,
+      "line": 138,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6552,7 +7107,7 @@
       "controller": "OrganizationController",
       "handler": "grantScope",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 119,
+      "line": 145,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6568,7 +7123,7 @@
       "controller": "OrganizationController",
       "handler": "revokeScope",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 126,
+      "line": 152,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6584,7 +7139,7 @@
       "controller": "OrganizationController",
       "handler": "brands",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 47,
+      "line": 49,
       "access": "organization.view",
       "permissions": [
         "organization.view"
@@ -6600,7 +7155,7 @@
       "controller": "OrganizationController",
       "handler": "brandPolicy",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 94,
+      "line": 103,
       "access": "organization.view",
       "permissions": [
         "organization.view"
@@ -6616,7 +7171,7 @@
       "controller": "OrganizationController",
       "handler": "setBrandPolicy",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 101,
+      "line": 110,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6632,7 +7187,7 @@
       "controller": "OrganizationController",
       "handler": "myScope",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 41,
+      "line": 43,
       "access": "organization.view",
       "permissions": [
         "organization.view"
@@ -6648,7 +7203,7 @@
       "controller": "OrganizationController",
       "handler": "nodes",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 53,
+      "line": 55,
       "access": "organization.view",
       "permissions": [
         "organization.view"
@@ -6664,7 +7219,7 @@
       "controller": "OrganizationController",
       "handler": "registerNode",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 60,
+      "line": 62,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6674,13 +7229,29 @@
       "summary": "Register a child node — or re-activate and update one that already exists"
     },
     {
+      "method": "PATCH",
+      "path": "/organization/nodes/:nodeId/brand",
+      "module": "organization",
+      "controller": "OrganizationController",
+      "handler": "setNodeBrand",
+      "file": "apps/api/src/modules/organization/organization.controller.ts",
+      "line": 69,
+      "access": "organization.manage",
+      "permissions": [
+        "organization.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Set which brand a registered node belongs to (WO-23.3c/e) — governs its BrandPolicy checks on replication receipt"
+    },
+    {
       "method": "POST",
       "path": "/organization/nodes/:nodeId/rotate-inbound-key",
       "module": "organization",
       "controller": "OrganizationController",
       "handler": "rotateNodeInboundKey",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 67,
+      "line": 76,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6690,13 +7261,45 @@
       "summary": "Issue a fresh replication credential for a child node — shown once, never retrievable again"
     },
     {
+      "method": "GET",
+      "path": "/organization/policy-quarantine",
+      "module": "organization",
+      "controller": "OrganizationController",
+      "handler": "listPolicyQuarantine",
+      "file": "apps/api/src/modules/organization/organization.controller.ts",
+      "line": 120,
+      "access": "organization.view",
+      "permissions": [
+        "organization.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "R9's quarantine — facts that applied but violate the BrandPolicy switch meant to govern their origin node, held open for review (WO-23.3c/e)"
+    },
+    {
+      "method": "POST",
+      "path": "/organization/policy-quarantine/:id/resolve",
+      "module": "organization",
+      "controller": "OrganizationController",
+      "handler": "resolvePolicyQuarantine",
+      "file": "apps/api/src/modules/organization/organization.controller.ts",
+      "line": 127,
+      "access": "organization.manage",
+      "permissions": [
+        "organization.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Mark a quarantined policy exception reviewed"
+    },
+    {
       "method": "PATCH",
       "path": "/organization/policy/inter-brand-transfers",
       "module": "organization",
       "controller": "OrganizationController",
       "handler": "setInterBrandTransfersPolicy",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 85,
+      "line": 94,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6712,7 +7315,7 @@
       "controller": "OrganizationController",
       "handler": "resyncFromParent",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 77,
+      "line": 86,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -6898,13 +7501,26 @@
       "sensitivity": "low",
       "routes": [
         "GET /admin/analytics/comparison",
+        "GET /admin/analytics/customers/overview",
+        "GET /admin/analytics/customers/retention",
+        "GET /admin/analytics/customers/top",
         "GET /admin/analytics/dashboard",
         "GET /admin/analytics/extended",
+        "GET /admin/analytics/inventory/movements",
+        "GET /admin/analytics/inventory/valuation",
         "PATCH /admin/analytics/monthly-target",
+        "GET /admin/analytics/orders/fulfilment",
+        "GET /admin/analytics/orders/overview",
+        "GET /admin/analytics/products/categories",
+        "GET /admin/analytics/products/slow-sellers",
+        "GET /admin/analytics/products/top-sellers",
+        "GET /admin/analytics/purchasing/spend",
+        "GET /admin/analytics/purchasing/suppliers",
         "GET /admin/analytics/stitching",
-        "GET /admin/analytics/visitors"
+        "GET /admin/analytics/visitors",
+        "GET /admin/analytics/workshop/output"
       ],
-      "uiSites": 3,
+      "uiSites": 9,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -6941,7 +7557,8 @@
         "GET /organization/brands",
         "GET /organization/brands/:brandId/policy",
         "GET /organization/me/scope",
-        "GET /organization/nodes"
+        "GET /organization/nodes",
+        "GET /organization/policy-quarantine"
       ],
       "uiSites": 1,
       "roles": [
@@ -6961,11 +7578,13 @@
         "DELETE /organization/admin-scopes/:id",
         "PATCH /organization/brands/:brandId/policy",
         "POST /organization/nodes",
+        "PATCH /organization/nodes/:nodeId/brand",
         "POST /organization/nodes/:nodeId/rotate-inbound-key",
+        "POST /organization/policy-quarantine/:id/resolve",
         "PATCH /organization/policy/inter-brand-transfers",
         "POST /organization/replication/resync"
       ],
-      "uiSites": 1,
+      "uiSites": 3,
       "roles": [
         "ADMIN"
       ],
@@ -7019,7 +7638,7 @@
         "PATCH /admin/crm/leads/:id",
         "GET /admin/crm/tags"
       ],
-      "uiSites": 3,
+      "uiSites": 4,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -7121,7 +7740,7 @@
         "GET /admin/stitching/jobs/:id",
         "GET /admin/stitching/jobs/workload"
       ],
-      "uiSites": 1,
+      "uiSites": 2,
       "roles": [
         "TAILOR",
         "STAFF",
@@ -7312,7 +7931,7 @@
         "GET /admin/inventory/variances",
         "POST /admin/inventory/variances/:id/resolve"
       ],
-      "uiSites": 3,
+      "uiSites": 4,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -7327,7 +7946,7 @@
       "routes": [
         "GET /admin/reports/export/stock-valuation"
       ],
-      "uiSites": 6,
+      "uiSites": 7,
       "roles": [
         "ADMIN"
       ],
@@ -7366,7 +7985,7 @@
         "POST /admin/transfers/:id/cancel",
         "POST /admin/transfers/:id/receive"
       ],
-      "uiSites": 0,
+      "uiSites": 2,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -7438,7 +8057,7 @@
         "POST /admin/trading-partners/:id/outbound-key",
         "POST /admin/trading-partners/:id/rotate-inbound-key"
       ],
-      "uiSites": 2,
+      "uiSites": 3,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -7630,6 +8249,66 @@
       "inSeed": true
     },
     {
+      "key": "payroll.view_own",
+      "label": "View their own compensation, leave balance and payslips",
+      "category": "Payroll",
+      "sensitivity": "low",
+      "routes": [
+        "GET /admin/payroll/compensation/me",
+        "GET /admin/payroll/leave/me",
+        "POST /admin/payroll/leave/me",
+        "POST /admin/payroll/leave/me/:requestId/cancel",
+        "GET /admin/payroll/leave/types"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "TAILOR",
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "payroll.view",
+      "label": "View every employee's compensation, leave and pay-run data",
+      "category": "Payroll",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/payroll/compensation",
+        "GET /admin/payroll/compensation/:userId",
+        "GET /admin/payroll/compensation/:userId/preview",
+        "GET /admin/payroll/leave",
+        "GET /admin/payroll/leave/:userId",
+        "GET /admin/payroll/runs",
+        "GET /admin/payroll/runs/:id"
+      ],
+      "uiSites": 3,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "payroll.manage",
+      "label": "Set compensation rates, decide leave requests, and build, approve and post pay runs",
+      "category": "Payroll",
+      "sensitivity": "medium",
+      "routes": [
+        "PATCH /admin/payroll/compensation/:userId",
+        "PATCH /admin/payroll/leave/:requestId/decide",
+        "POST /admin/payroll/runs",
+        "POST /admin/payroll/runs/:id/adjustments",
+        "PATCH /admin/payroll/runs/:id/approve",
+        "PATCH /admin/payroll/runs/:id/post",
+        "PATCH /admin/payroll/runs/:id/rebuild"
+      ],
+      "uiSites": 2,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
       "key": "marketing.manage",
       "label": "Turn on automated marketing email and set its timing",
       "category": "Administration",
@@ -7722,14 +8401,14 @@
       "name": "order.placed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:48",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:155",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:50",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:157",
         "apps/api/src/modules/orders/orders.service.ts:339",
         "apps/api/src/modules/orders/orders.service.ts:542"
       ],
       "subscribers": [
         "apps/api/src/core/events/on-domain-event.decorator.ts:7 handle()",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:46 onOrderPlaced()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:48 onOrderPlaced()",
         "apps/api/src/modules/crm/order.subscriber.ts:27 onOrderPlaced()",
         "apps/api/src/modules/orders/notification.subscriber.ts:70 onOrderPlaced()",
         "apps/api/src/modules/orders/order-replication.listener.ts:48 onOrderPlaced()",
@@ -7767,14 +8446,14 @@
       "name": "payment.succeeded",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:115",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:152",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:117",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:154",
         "apps/api/src/modules/orders/orders.service.ts:530",
         "apps/api/src/modules/payments/payments.service.ts:188",
         "apps/api/src/modules/payments/payments.service.ts:257"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:113 onPaymentSucceeded()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:115 onPaymentSucceeded()",
         "apps/api/src/modules/payments/notification.subscriber.ts:34 onPaymentSucceeded()"
       ]
     },
@@ -7806,7 +8485,7 @@
         "apps/api/src/modules/payments/payments.service.ts:316"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:150 onPaymentRefunded()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:152 onPaymentRefunded()",
         "apps/api/src/modules/payments/notification.subscriber.ts:118 onPaymentRefunded()"
       ]
     },
@@ -7906,7 +8585,7 @@
       "name": "catalog.product_low_stock",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:361"
+        "apps/api/src/modules/inventory/inventory.service.ts:367"
       ],
       "subscribers": [
         "apps/api/src/modules/inventory/inventory.listener.ts:19 handleLowStock()"
@@ -7917,7 +8596,7 @@
       "name": "catalog.product_reorder_point_reached",
       "doc": "Distinct from ProductLowStock: fires against reorderPoint, drives auto-replenishment (PO or WorkOrder).",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:379"
+        "apps/api/src/modules/inventory/inventory.service.ts:385"
       ],
       "subscribers": [
         "apps/api/src/modules/production/reorder-work-order.listener.ts:19 onReorderPointReached()",
@@ -7953,7 +8632,7 @@
       "name": "inventory.stock_replenished",
       "doc": "Any positive-delta stock movement — the one signal that can unblock a waiting order line, whatever replenished the stock.",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:396"
+        "apps/api/src/modules/inventory/inventory.service.ts:402"
       ],
       "subscribers": [
         "apps/api/src/modules/orders/backorder.listener.ts:29 onStockReplenished()"
@@ -7964,11 +8643,11 @@
       "name": "inventory.stock_variance_recorded",
       "doc": "InventoryService.postUnconditional() drove a location negative (RETAIL-ERP.md R5) — never fired by move().",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:279",
-        "apps/api/src/modules/inventory/inventory.service.ts:347"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:281",
+        "apps/api/src/modules/inventory/inventory.service.ts:353"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:277 onStockVarianceRecorded()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:279 onStockVarianceRecorded()"
       ]
     },
     {
@@ -7979,7 +8658,8 @@
         "apps/api/src/modules/purchasing/purchasing.service.ts:432"
       ],
       "subscribers": [
-        "apps/api/src/modules/bom/bom.listener.ts:22 recomputeAffectedRecipes()"
+        "apps/api/src/modules/bom/bom.listener.ts:22 recomputeAffectedRecipes()",
+        "apps/api/src/modules/purchasing/goods-receipt-replication.listener.ts:70 onGoodsReceived()"
       ]
     },
     {
@@ -7989,18 +8669,20 @@
       "publishers": [
         "apps/api/src/modules/bom/production.service.ts:200"
       ],
-      "subscribers": []
+      "subscribers": [
+        "apps/api/src/modules/bom/bom-production-replication.listener.ts:38 onBomProductionCompleted()"
+      ]
     },
     {
       "symbol": "SupplierBillRaised",
       "name": "purchasing.supplier_bill_raised",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:176",
-        "apps/api/src/modules/purchasing/purchasing.service.ts:573"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:178",
+        "apps/api/src/modules/purchasing/purchasing.service.ts:576"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:174 onSupplierBillRaised()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:176 onSupplierBillRaised()"
       ]
     },
     {
@@ -8008,11 +8690,11 @@
       "name": "purchasing.supplier_bill_paid",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:226",
-        "apps/api/src/modules/purchasing/purchasing.service.ts:637"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:228",
+        "apps/api/src/modules/purchasing/purchasing.service.ts:640"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:224 onSupplierBillPaid()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:226 onSupplierBillPaid()"
       ]
     },
     {
@@ -8020,11 +8702,11 @@
       "name": "transfers.inter_branch_invoiced",
       "doc": "An InterBranchInvoice was raised — TransfersService.receive() on an INVOICED transfer (R12/R17, WO-22.3).",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:332",
-        "apps/api/src/modules/transfers/transfers.service.ts:278"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:334",
+        "apps/api/src/modules/transfers/transfers.service.ts:300"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:330 onInterBranchTransferInvoiced()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:332 onInterBranchTransferInvoiced()"
       ]
     },
     {
@@ -8106,12 +8788,13 @@
       "name": "finance.expense_recorded",
       "doc": "FinanceService.create() (WO-23.1) — fires whether or not `accounting` is on; posting-rules.subscriber.ts is the only subscriber today.",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:392",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:394",
         "apps/api/src/modules/finance/finance.service.ts:252",
-        "apps/api/src/modules/finance/finance.service.ts:530"
+        "apps/api/src/modules/finance/finance.service.ts:532"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:390 onExpenseRecorded()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:392 onExpenseRecorded()",
+        "apps/api/src/modules/finance/expense-replication.listener.ts:38 onExpenseRecorded()"
       ]
     },
     {
@@ -8122,6 +8805,30 @@
         "apps/api/src/modules/finance/order-economics.service.ts:127"
       ],
       "subscribers": []
+    },
+    {
+      "symbol": "PayrollRunPosted",
+      "name": "payroll.run_posted",
+      "doc": "PayRunService.post() (docs/implementation/19-payroll.md WO-19.4) — the eighth posting rule; fires whether or not `accounting` is on, same idiom as ExpenseRecorded.",
+      "publishers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:439",
+        "apps/api/src/modules/payroll/pay-run.service.ts:186"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:437 onPayrollRunPosted()"
+      ]
+    },
+    {
+      "symbol": "PayrollAdjustmentPosted",
+      "name": "payroll.adjustment_posted",
+      "doc": "PayRunService.postAdjustment() (docs/implementation/19-payroll.md WO-19.5) — the overpayment/correction reversal path, a distinct postable fact from the original run it corrects.",
+      "publishers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:490",
+        "apps/api/src/modules/payroll/pay-run.service.ts:237"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:488 onPayrollAdjustmentPosted()"
+      ]
     }
   ],
   "models": [
@@ -8238,7 +8945,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 146,
+      "line": 161,
       "doc": "",
       "fields": [
         {
@@ -8354,7 +9061,7 @@
     {
       "name": "AdminScope",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 106,
+      "line": 107,
       "doc": "What a user's admin access is scoped to (R10) — never a role check (House Rule 9 forbids `if (user.role === 'SUPER_ADMIN')`).",
       "fields": [
         {
@@ -8429,7 +9136,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 424,
+      "line": 439,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -8490,7 +9197,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 236,
+      "line": 251,
       "doc": "",
       "fields": [
         {
@@ -9223,7 +9930,7 @@
     {
       "name": "BrandPolicy",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 70,
+      "line": 71,
       "doc": "Per-brand policy switches (R9) — what R9 calls `brand.allow_branch_product_creation` and its siblings, generalised from a single Setting row (House Rule 4, still the answer while a deployment has onl…",
       "fields": [
         {
@@ -9820,6 +10527,94 @@
       ]
     },
     {
+      "name": "CompensationRate",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 21,
+      "doc": "One row per rate change, never updated in place — effectiveFrom is what lets a pay-run built for a past period read the rate actually in force on each of its days, not today's rate applied retroactiv…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "basis",
+          "type": "CompensationBasis",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "effectiveFrom",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "effectiveTo",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "createdBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "payRunLines",
+          "type": "PayRunLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([userId, effectiveFrom])"
+      ]
+    },
+    {
       "name": "Contact",
       "file": "apps/api/prisma/schema/crm.prisma",
       "line": 16,
@@ -10071,7 +10866,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 404,
+      "line": 419,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -10145,7 +10940,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 191,
+      "line": 206,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -10331,7 +11126,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 132,
+      "line": 147,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -12369,6 +13164,300 @@
       ]
     },
     {
+      "name": "LeaveAccrualRun",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 87,
+      "doc": "Idempotency guard for LeaveAccrualCron (WO-19.3) — mirrors FinanceCron's own recurring-expense idempotency (WO-B.2): one row per (leaveTypeId, period) makes a re-run of the same period a no-op instea…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "leaveTypeId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "period",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "ranAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "leaveType",
+          "type": "LeaveType",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([leaveTypeId, period])"
+      ]
+    },
+    {
+      "name": "LeaveBalance",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 69,
+      "doc": "One row per user per leave type — the running balance a request debits and an accrual run credits.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "leaveTypeId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "balance",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "leaveType",
+          "type": "LeaveType",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([userId, leaveTypeId])"
+      ]
+    },
+    {
+      "name": "LeaveRequest",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 106,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "leaveTypeId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startDate",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "endDate",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "days",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "LeaveRequestStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "decidedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "decidedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "decisionNote",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "leaveType",
+          "type": "LeaveType",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "decidedBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([userId, status])"
+      ]
+    },
+    {
+      "name": "LeaveType",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 50,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "kind",
+          "type": "LeaveKind",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "accrualDaysPerRun",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "balances",
+          "type": "LeaveBalance[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requests",
+          "type": "LeaveRequest[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "accrualRuns",
+          "type": "LeaveAccrualRun[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "Location",
       "file": "apps/api/prisma/schema/inventory.prisma",
       "line": 81,
@@ -12680,7 +13769,7 @@
     {
       "name": "Node",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 142,
+      "line": 143,
       "doc": "A child node this deployment knows about — a brand's branches, or an organization's brands (R1, R14; WO-18.1, moved here from core.prisma in WO-18.3 once it had siblings to live beside — Part 5 owns…",
       "fields": [
         {
@@ -12754,16 +13843,31 @@
           "relation": false
         },
         {
+          "name": "retailBrandId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "adminScopes",
           "type": "AdminScope[]",
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "retailBrand",
+          "type": "RetailBrand?",
+          "id": false,
+          "unique": false,
+          "relation": true
         }
       ],
       "indexes": [
         "@@index([role])",
-        "@@index([status])"
+        "@@index([status])",
+        "@@index([retailBrandId])"
       ]
     },
     {
@@ -13644,7 +14748,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 377,
+      "line": 392,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -13882,7 +14986,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 115,
+      "line": 130,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -14087,9 +15191,343 @@
       ]
     },
     {
+      "name": "PayRun",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 141,
+      "doc": "The pay-run document (erp-lenses/38: \"the pay run is a document, not a report\").",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "number",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "periodStart",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodEnd",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "PayRunStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "scopeLevel",
+          "type": "ScopeLevel",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "originNodeId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "postedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lines",
+          "type": "PayRunLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "adjustments",
+          "type": "PayRunAdjustment[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "createdBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([status, periodStart])"
+      ]
+    },
+    {
+      "name": "PayRunAdjustment",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 204,
+      "doc": "erp-lenses/38's \"the overpayment has no way back\": a line-level correction keyed to the original PayRun, postable in the CURRENT open period even when the original run's period is CLOSED — never a fu…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payRunId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "PayRunAdjustmentReason",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "note",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payRun",
+          "type": "PayRun",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "createdBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "name": "PayRunLine",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 166,
+      "doc": "One line per employee per run.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payRunId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "compensationRateId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "grossMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "unpaidLeaveDays",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "unpaidLeaveMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "deductions",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "deductionsMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "netMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payRun",
+          "type": "PayRun",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "compensationRate",
+          "type": "CompensationRate",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([payRunId, userId])"
+      ]
+    },
+    {
+      "name": "PayRunNumberCounter",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 225,
+      "doc": "The eighth document-number counter (document-prefix.ts), same INSERT ...",
+      "fields": [
+        {
+          "name": "year",
+          "type": "Int",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "counter",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 257,
+      "line": 272,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -14150,6 +15588,117 @@
         }
       ],
       "indexes": []
+    },
+    {
+      "name": "PolicyQuarantine",
+      "file": "apps/api/prisma/schema/replication.prisma",
+      "line": 149,
+      "doc": "R9's OTHER quarantine — \"a fact arriving in violation is accepted and quarantined for review — never silently dropped, never silently honoured.\" Deliberately a SEPARATE table from `ReplicationQuarant…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "originNodeId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "entity",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "entityId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "policyKey",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "retailBrandId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payload",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "ReplicationQuarantineStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedNote",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([status])",
+        "@@index([entity, entityId])",
+        "@@index([retailBrandId])"
+      ]
     },
     {
       "name": "PosReceipt",
@@ -15914,7 +17463,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 94,
+      "line": 109,
       "doc": "",
       "fields": [
         {
@@ -16342,6 +17891,13 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "nodes",
+          "type": "Node[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -16352,7 +17908,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 323,
+      "line": 338,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -16410,7 +17966,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 337,
+      "line": 352,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -16464,7 +18020,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 273,
+      "line": 288,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -16576,7 +18132,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 169,
+      "line": 184,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -19162,6 +20718,83 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "policyQuarantinesResolved",
+          "type": "PolicyQuarantine[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "compensationRates",
+          "type": "CompensationRate[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "compensationRatesCreated",
+          "type": "CompensationRate[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "leaveBalances",
+          "type": "LeaveBalance[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "leaveRequests",
+          "type": "LeaveRequest[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "leaveRequestsDecided",
+          "type": "LeaveRequest[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "payRunsApproved",
+          "type": "PayRun[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "payRunsCreated",
+          "type": "PayRun[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "payRunLines",
+          "type": "PayRunLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payRunAdjustments",
+          "type": "PayRunAdjustment[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payRunAdjustmentsCreated",
+          "type": "PayRunAdjustment[]",
+          "id": false,
+          "unique": false,
+          "relation": true
         }
       ],
       "indexes": [
@@ -19172,7 +20805,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 294,
+      "line": 309,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -19233,7 +20866,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 352,
+      "line": 367,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -19617,7 +21250,7 @@
     {
       "name": "AdminScopeLevel",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 82,
+      "line": 83,
       "values": [
         "ORG",
         "BRAND",
@@ -19647,6 +21280,16 @@
       ]
     },
     {
+      "name": "CompensationBasis",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 11,
+      "values": [
+        "MONTHLY",
+        "HOURLY",
+        "COMMISSION"
+      ]
+    },
+    {
       "name": "ContactStatus",
       "file": "apps/api/prisma/schema/crm.prisma",
       "line": 8,
@@ -19661,7 +21304,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 392,
+      "line": 407,
       "values": [
         "IOS",
         "ANDROID",
@@ -19671,7 +21314,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 180,
+      "line": 195,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -19758,6 +21401,28 @@
       ]
     },
     {
+      "name": "LeaveKind",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 43,
+      "values": [
+        "ANNUAL",
+        "SICK",
+        "UNPAID",
+        "OTHER"
+      ]
+    },
+    {
+      "name": "LeaveRequestStatus",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 99,
+      "values": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED",
+        "CANCELLED"
+      ]
+    },
+    {
       "name": "LocationType",
       "file": "apps/api/prisma/schema/inventory.prisma",
       "line": 68,
@@ -19780,7 +21445,7 @@
     {
       "name": "NodeRole",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 122,
+      "line": 123,
       "values": [
         "BRANCH",
         "BRAND"
@@ -19789,7 +21454,7 @@
     {
       "name": "NodeStatus",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 127,
+      "line": 128,
       "values": [
         "ACTIVE",
         "SUSPENDED"
@@ -19843,7 +21508,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 366,
+      "line": 381,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -19876,9 +21541,29 @@
       ]
     },
     {
+      "name": "PayRunAdjustmentReason",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 194,
+      "values": [
+        "OVERPAYMENT",
+        "UNDERPAYMENT",
+        "CORRECTION"
+      ]
+    },
+    {
+      "name": "PayRunStatus",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 131,
+      "values": [
+        "DRAFT",
+        "APPROVED",
+        "POSTED"
+      ]
+    },
+    {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 285,
+      "line": 300,
       "values": [
         "GRANT",
         "REVOKE"
@@ -21212,6 +22897,47 @@
         "GoodsReceipt",
         "PurchaseOrder"
       ]
+    },
+    {
+      "folder": "20260922072219_add_node_brand_and_policy_quarantine",
+      "file": "apps/api/prisma/schema/migrations/20260922072219_add_node_brand_and_policy_quarantine/migration.sql",
+      "date": "2026-09-22",
+      "slug": "add_node_brand_and_policy_quarantine",
+      "statements": 8,
+      "kinds": [
+        "ALTER TABLE",
+        "CREATE TABLE",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "Node",
+        "PolicyQuarantine"
+      ]
+    },
+    {
+      "folder": "20260923172819_add_payroll",
+      "file": "apps/api/prisma/schema/migrations/20260923172819_add_payroll/migration.sql",
+      "date": "2026-09-23",
+      "slug": "add_payroll",
+      "statements": 39,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE INDEX",
+        "CREATE UNIQUE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "CompensationRate",
+        "LeaveAccrualRun",
+        "LeaveBalance",
+        "LeaveRequest",
+        "LeaveType",
+        "PayRun",
+        "PayRunAdjustment",
+        "PayRunLine",
+        "PayRunNumberCounter"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -21998,6 +23724,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/customers/insights",
+      "file": "apps/web/src/app/(admin)/admin/(app)/customers/insights/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/designs",
       "file": "apps/web/src/app/(admin)/admin/(app)/designs/page.tsx",
       "client": true,
@@ -22151,6 +23886,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/inventory/insights",
+      "file": "apps/web/src/app/(admin)/admin/(app)/inventory/insights/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/inventory/reorder",
       "file": "apps/web/src/app/(admin)/admin/(app)/inventory/reorder/page.tsx",
       "client": true,
@@ -22223,6 +23967,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/o/[orgId]/policy-quarantine",
+      "file": "apps/web/src/app/(admin)/admin/(app)/o/[orgId]/policy-quarantine/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/orders",
       "file": "apps/web/src/app/(admin)/admin/(app)/orders/page.tsx",
       "client": true,
@@ -22241,8 +23994,62 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/orders/insights",
+      "file": "apps/web/src/app/(admin)/admin/(app)/orders/insights/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/payments",
       "file": "apps/web/src/app/(admin)/admin/(app)/payments/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/payroll/compensation",
+      "file": "apps/web/src/app/(admin)/admin/(app)/payroll/compensation/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/payroll/leave",
+      "file": "apps/web/src/app/(admin)/admin/(app)/payroll/leave/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/payroll/me",
+      "file": "apps/web/src/app/(admin)/admin/(app)/payroll/me/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/payroll/runs",
+      "file": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/payroll/runs/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -22261,6 +24068,15 @@
       "kind": "page",
       "url": "/admin/products/[id]",
       "file": "apps/web/src/app/(admin)/admin/(app)/products/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/products/insights",
+      "file": "apps/web/src/app/(admin)/admin/(app)/products/insights/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -22306,6 +24122,15 @@
       "kind": "page",
       "url": "/admin/purchase-orders/new",
       "file": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/new/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/purchase-orders/spend",
+      "file": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/spend/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -22421,6 +24246,33 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/transfers",
+      "file": "apps/web/src/app/(admin)/admin/(app)/transfers/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/transfers/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/transfers/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/transfers/new",
+      "file": "apps/web/src/app/(admin)/admin/(app)/transfers/new/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/users",
       "file": "apps/web/src/app/(admin)/admin/(app)/users/page.tsx",
       "client": true,
@@ -22432,6 +24284,15 @@
       "kind": "page",
       "url": "/admin/users/[id]",
       "file": "apps/web/src/app/(admin)/admin/(app)/users/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/workshop/insights",
+      "file": "apps/web/src/app/(admin)/admin/(app)/workshop/insights/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -22503,6 +24364,13 @@
       "schedule": "0 3 * * *",
       "file": "apps/api/src/modules/marketing/marketing-automation.cron.ts",
       "line": 65,
+      "handler": "run",
+      "doc": ""
+    },
+    {
+      "schedule": "0 * * * *",
+      "file": "apps/api/src/modules/payroll/leave-accrual.cron.ts",
+      "line": 25,
       "handler": "run",
       "doc": ""
     },
@@ -23011,6 +24879,17 @@
       ]
     },
     {
+      "file": "apps/api/src/core/extension-points/branch-policy.registry.spec.ts",
+      "module": "core/extension-points",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023",
+        "allowsBranchLocalPurchasing (user-keyed)",
+        "allowsBranchLocalPurchasingForNode (node-keyed, replication-received)"
+      ]
+    },
+    {
       "file": "apps/api/src/core/notifications/email.channel.spec.ts",
       "module": "core/notifications",
       "kind": "unit test",
@@ -23052,6 +24931,16 @@
       "cases": 5,
       "describes": [
         "NodeCredentialService — WO-20.2"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/replication/policy-quarantine.service.spec.ts",
+      "module": "core/replication",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "PolicyQuarantineService — WO-23.3c/e, RETAIL-ERP.md R9, ADR-023",
+        "resolve"
       ]
     },
     {
@@ -23253,7 +25142,7 @@
       "file": "apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts",
       "module": "accounting",
       "kind": "unit test",
-      "cases": 30,
+      "cases": 40,
       "describes": [
         "PostingRulesSubscriber — WO-19.2",
         "onOrderPlaced",
@@ -23263,7 +25152,9 @@
         "onSupplierBillPaid — WO-19.3 realised FX gain/loss",
         "onStockVarianceRecorded — WO-21.3",
         "onInterBranchTransferInvoiced — WO-22.3",
-        "onExpenseRecorded — WO-23.1"
+        "onExpenseRecorded — WO-23.1",
+        "onPayrollRunPosted — WO-19.4",
+        "onPayrollAdjustmentPosted — WO-19.5"
       ]
     },
     {
@@ -23276,6 +25167,75 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/analytics/analytics.customers.spec.ts",
+      "module": "analytics",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "AnalyticsService — WO-D.5 customers overview/retention/top",
+        "customersOverview",
+        "customersRetention",
+        "customersTop"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/analytics/analytics.inventory.spec.ts",
+      "module": "analytics",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "AnalyticsService — WO-D.4 inventory valuation/movements",
+        "inventoryValuation",
+        "inventoryMovements"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/analytics/analytics.orders.spec.ts",
+      "module": "analytics",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "AnalyticsService — WO-D.1 orders overview/fulfilment",
+        "ordersOverview",
+        "ordersFulfilment"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/analytics/analytics.products.spec.ts",
+      "module": "analytics",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "AnalyticsService — WO-D.3 products top/slow-sellers, categories",
+        "productsTopSellers",
+        "productsSlowSellers",
+        "productsCategories"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/analytics/analytics.purchasing.spec.ts",
+      "module": "analytics",
+      "kind": "unit test",
+      "cases": 10,
+      "describes": [
+        "AnalyticsService — WO-D.2 purchasing spend/suppliers",
+        "purchasingSpend",
+        "purchasingSuppliers"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/analytics/analytics.workshop.spec.ts",
+      "module": "analytics",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "AnalyticsService — WO-D.6 workshop output",
+        "series",
+        "byStage",
+        "byTailor"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/analytics/supply-chain-digest.cron.spec.ts",
       "module": "analytics",
       "kind": "unit test",
@@ -23285,6 +25245,17 @@
         "sendSupplierDigests",
         "sendSupplierScorecards",
         "sendDemandAlerts"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/bom/bom-production-replication.listener.spec.ts",
+      "module": "bom",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "BomProductionReplicationListener — WO-23.3c/e, ADR-021",
+        "onModuleInit",
+        "onBomProductionCompleted"
       ]
     },
     {
@@ -23386,6 +25357,17 @@
       "describes": [
         "EmailInboxService",
         "reply"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/finance/expense-replication.listener.spec.ts",
+      "module": "finance",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "ExpenseReplicationListener — WO-23.3c/e, ADR-021",
+        "onModuleInit",
+        "onExpenseRecorded"
       ]
     },
     {
@@ -23543,7 +25525,7 @@
       "file": "apps/api/src/modules/organization/nodes.service.spec.ts",
       "module": "organization",
       "kind": "unit test",
-      "cases": 8,
+      "cases": 9,
       "describes": [
         "NodesService",
         "rotateInboundKey"
@@ -23553,7 +25535,7 @@
       "file": "apps/api/src/modules/organization/organization.service.spec.ts",
       "module": "organization",
       "kind": "unit test",
-      "cases": 39,
+      "cases": 51,
       "describes": [
         "OrganizationService",
         "listBrands",
@@ -23564,7 +25546,11 @@
         "grantScope",
         "setInterBrandTransfersPolicy",
         "getBrandPolicy / setBrandPolicy — WO-23.3b, RETAIL-ERP.md R9/R13",
+        "listPolicyQuarantine / resolvePolicyQuarantine — WO-23.3c/e, RETAIL-ERP.md R9",
+        "listPolicyQuarantine",
+        "resolvePolicyQuarantine",
         "allowsBranchLocalPurchasing (BranchPolicyRegistry handler) — WO-23.3b",
+        "allowsBranchLocalPurchasingForNode (BranchPolicyRegistry handler) — WO-23.3c/e, ADR-023",
         "revokeScope"
       ]
     },
@@ -23589,6 +25575,54 @@
       "describes": [
         "Easypaisa callback verification",
         "JazzCash callback verification"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/payroll/leave-accrual.cron.spec.ts",
+      "module": "payroll",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "LeaveAccrualCron"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/payroll/leave.service.spec.ts",
+      "module": "payroll",
+      "kind": "unit test",
+      "cases": 16,
+      "describes": [
+        "LeaveService",
+        "countWorkingDays",
+        "requestLeave / cancel",
+        "decide",
+        "accrue"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/payroll/pay-run.service.spec.ts",
+      "module": "payroll",
+      "kind": "unit test",
+      "cases": 15,
+      "describes": [
+        "PayRunService",
+        "build",
+        "approve / post lifecycle",
+        "postAdjustment — WO-19.5"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/payroll/payroll.service.spec.ts",
+      "module": "payroll",
+      "kind": "unit test",
+      "cases": 15,
+      "describes": [
+        "PayrollService",
+        "setCompensationRate",
+        "calculateGross — MONTHLY",
+        "calculateGross — HOURLY / COMMISSION honesty",
+        "requireUser",
+        "listCurrentRates"
       ]
     },
     {
@@ -23689,6 +25723,17 @@
         "release",
         "complete",
         "cancel"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/purchasing/goods-receipt-replication.listener.spec.ts",
+      "module": "purchasing",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "GoodsReceiptReplicationListener — WO-23.3c/e, RETAIL-ERP.md R2/R9/R13, ADR-023",
+        "onModuleInit",
+        "onGoodsReceived"
       ]
     },
     {
@@ -23813,12 +25858,13 @@
       "file": "apps/api/src/modules/transfers/transfers.service.spec.ts",
       "module": "transfers",
       "kind": "unit test",
-      "cases": 22,
+      "cases": 25,
       "describes": [
         "TransfersService",
         "dispatch/receive/cancel (WO-22.1)",
         "brand-policy gating (WO-22.2)",
-        "settlement modes and InterBranchInvoice (WO-22.3)"
+        "settlement modes and InterBranchInvoice (WO-22.3)",
+        "org-central purchasing (WO-23.3d)"
       ]
     },
     {
@@ -24458,7 +26504,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 99,
-      "bytes": 5078,
+      "bytes": 5086,
       "doc": "",
       "symbols": []
     },
@@ -24467,7 +26513,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 125,
-      "bytes": 5916,
+      "bytes": 5924,
       "doc": "",
       "symbols": []
     },
@@ -24476,7 +26522,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 113,
-      "bytes": 5058,
+      "bytes": 5066,
       "doc": "",
       "symbols": []
     },
@@ -24757,8 +26803,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 436,
-      "bytes": 15886,
+      "lines": 451,
+      "bytes": 16950,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -25339,6 +27385,24 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260922072219_add_node_brand_and_policy_quarantine/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 50,
+      "bytes": 2067,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260923172819_add_payroll/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 221,
+      "bytes": 8399,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -25360,8 +27424,8 @@
       "path": "apps/api/prisma/schema/organization.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 169,
-      "bytes": 7989,
+      "lines": 182,
+      "bytes": 8737,
       "doc": "The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier",
       "symbols": []
     },
@@ -25381,6 +27445,15 @@
       "lines": 48,
       "bytes": 1418,
       "doc": "Payments. `provider` is a plain string key, not an enum, so a new gateway is",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/payroll.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 229,
+      "bytes": 8378,
+      "doc": "Payroll: compensation rates, leave balances and pay runs",
       "symbols": []
     },
     {
@@ -25414,8 +27487,8 @@
       "path": "apps/api/prisma/schema/replication.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 134,
-      "bytes": 5741,
+      "lines": 185,
+      "bytes": 8373,
       "doc": "The replication engine (RETAIL-ERP.md Part 6, WO-20.1: \"log, cursors,",
       "symbols": []
     },
@@ -26239,8 +28312,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 358,
-      "bytes": 12701,
+      "lines": 401,
+      "bytes": 14664,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -26251,152 +28324,162 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 70
+          "line": 75
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 72
+          "line": 77
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 85
+          "line": 90
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 93
+          "line": 98
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 101
+          "line": 106
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 121
+          "line": 126
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 127
+          "line": 132
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 134
+          "line": 139
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 141
+          "line": 146
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 145
+          "line": 150
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 151
+          "line": 156
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 157
+          "line": 162
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 164
+          "line": 169
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 172
+          "line": 177
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 183
+          "line": 188
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 190
+          "line": 195
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 199
+          "line": 204
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 207
+          "line": 212
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 215
+          "line": 220
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 220
+          "line": 225
         },
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 227
+          "line": 237
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 237
+          "line": 252
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 245
+          "line": 260
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 259
+          "line": 274
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 272
+          "line": 287
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 285
+          "line": 300
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 298
+          "line": 316
+        },
+        {
+          "name": "PayrollRunPostedPayload",
+          "kind": "interface",
+          "line": 324
+        },
+        {
+          "name": "PayrollAdjustmentPostedPayload",
+          "kind": "interface",
+          "line": 336
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 306
+          "line": 347
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 313
+          "line": 354
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 319
+          "line": 360
         }
       ]
     },
@@ -26466,11 +28549,20 @@
       ]
     },
     {
+      "path": "apps/api/src/core/extension-points/branch-policy.registry.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 44,
+      "bytes": 1782,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/core/extension-points/branch-policy.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 43,
-      "bytes": 1849,
+      "lines": 68,
+      "bytes": 3170,
       "doc": "",
       "symbols": [
         {
@@ -26481,7 +28573,7 @@
         {
           "name": "BranchPolicyRegistry",
           "kind": "class",
-          "line": 30
+          "line": 41
         }
       ]
     },
@@ -27251,6 +29343,35 @@
       ]
     },
     {
+      "path": "apps/api/src/core/replication/policy-quarantine.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 80,
+      "bytes": 2760,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/replication/policy-quarantine.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 73,
+      "bytes": 2622,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PolicyQuarantineInput",
+          "kind": "interface",
+          "line": 5
+        },
+        {
+          "name": "PolicyQuarantineService",
+          "kind": "class",
+          "line": 30
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/replication/replication-apply.service.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -27398,14 +29519,14 @@
       "path": "apps/api/src/core/replication/replication.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 46,
-      "bytes": 1852,
+      "lines": 49,
+      "bytes": 1981,
       "doc": "",
       "symbols": [
         {
           "name": "ReplicationModule",
           "kind": "class",
-          "line": 45
+          "line": 48
         }
       ]
     },
@@ -27574,8 +29695,8 @@
       "path": "apps/api/src/core/settings/document-prefix.ts",
       "area": "api",
       "kind": "module",
-      "lines": 45,
-      "bytes": 1672,
+      "lines": 46,
+      "bytes": 1689,
       "doc": "",
       "symbols": [
         {
@@ -27589,8 +29710,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 293,
-      "bytes": 12231,
+      "lines": 302,
+      "bytes": 12812,
       "doc": "",
       "symbols": [
         {
@@ -27616,27 +29737,27 @@
         {
           "name": "DocumentSettings",
           "kind": "interface",
-          "line": 55
+          "line": 57
         },
         {
           "name": "FinanceGatewayFeeBpsSettings",
           "kind": "interface",
-          "line": 69
+          "line": 71
         },
         {
           "name": "SettingKey",
           "kind": "const",
-          "line": 76
+          "line": 78
         },
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 155
+          "line": 161
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 157
+          "line": 163
         }
       ]
     },
@@ -28008,8 +30129,8 @@
       "path": "apps/api/src/modules/accounting/chart-of-accounts.ts",
       "area": "api",
       "kind": "module",
-      "lines": 59,
-      "bytes": 2685,
+      "lines": 67,
+      "bytes": 3117,
       "doc": "",
       "symbols": [
         {
@@ -28020,7 +30141,7 @@
         {
           "name": "ACCOUNT_CODE",
           "kind": "const",
-          "line": 42
+          "line": 47
         }
       ]
     },
@@ -28195,8 +30316,8 @@
       "path": "apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 502,
-      "bytes": 17713,
+      "lines": 643,
+      "bytes": 23071,
       "doc": "",
       "symbols": []
     },
@@ -28204,14 +30325,14 @@
       "path": "apps/api/src/modules/accounting/posting-rules.subscriber.ts",
       "area": "api",
       "kind": "event subscriber",
-      "lines": 425,
-      "bytes": 18309,
+      "lines": 519,
+      "bytes": 22791,
       "doc": "",
       "symbols": [
         {
           "name": "PostingRulesSubscriber",
           "kind": "class",
-          "line": 32
+          "line": 34
         }
       ]
     },
@@ -28293,8 +30414,8 @@
       "path": "apps/api/src/modules/analytics/analytics.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 73,
-      "bytes": 3077,
+      "lines": 203,
+      "bytes": 8761,
       "doc": "",
       "symbols": [
         {
@@ -28303,6 +30424,24 @@
           "line": 14
         }
       ]
+    },
+    {
+      "path": "apps/api/src/modules/analytics/analytics.customers.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 166,
+      "bytes": 6604,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/analytics/analytics.inventory.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 194,
+      "bytes": 8979,
+      "doc": "",
+      "symbols": []
     },
     {
       "path": "apps/api/src/modules/analytics/analytics.module.ts",
@@ -28320,54 +30459,215 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/analytics/analytics.orders.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 199,
+      "bytes": 8968,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/analytics/analytics.products.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 251,
+      "bytes": 9795,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/analytics/analytics.purchasing.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 329,
+      "bytes": 12086,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/modules/analytics/analytics.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 779,
-      "bytes": 30626,
+      "lines": 2018,
+      "bytes": 80927,
       "doc": "",
       "symbols": [
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 17
+          "line": 20
         },
         {
           "name": "DashboardSummary",
           "kind": "interface",
-          "line": 24
+          "line": 27
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 44
+          "line": 47
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 53
+          "line": 56
         },
         {
-          "name": "ComparisonBucket",
+          "name": "OrderAgeingBucket",
           "kind": "interface",
-          "line": 74
+          "line": 77
         },
         {
-          "name": "ComparisonAnalytics",
+          "name": "OrdersOverview",
           "kind": "interface",
-          "line": 84
+          "line": 82
         },
         {
-          "name": "VisitorAnalytics",
+          "name": "OrderTransitionTiming",
+          "kind": "interface",
+          "line": 91
+        },
+        {
+          "name": "OrdersFulfilment",
           "kind": "interface",
           "line": 99
         },
         {
+          "name": "PurchasingSpend",
+          "kind": "interface",
+          "line": 104
+        },
+        {
+          "name": "PurchasingSupplierRow",
+          "kind": "interface",
+          "line": 119
+        },
+        {
+          "name": "PurchasingSuppliers",
+          "kind": "interface",
+          "line": 132
+        },
+        {
+          "name": "ProductTopSellerRow",
+          "kind": "interface",
+          "line": 136
+        },
+        {
+          "name": "ProductsTopSellers",
+          "kind": "interface",
+          "line": 148
+        },
+        {
+          "name": "ProductSlowSellerRow",
+          "kind": "interface",
+          "line": 152
+        },
+        {
+          "name": "ProductsSlowSellers",
+          "kind": "interface",
+          "line": 161
+        },
+        {
+          "name": "ProductCategoryRow",
+          "kind": "interface",
+          "line": 165
+        },
+        {
+          "name": "ProductsCategories",
+          "kind": "interface",
+          "line": 176
+        },
+        {
+          "name": "InventoryValuation",
+          "kind": "interface",
+          "line": 181
+        },
+        {
+          "name": "StockMovementReasonRow",
+          "kind": "interface",
+          "line": 194
+        },
+        {
+          "name": "InventoryMovementRow",
+          "kind": "interface",
+          "line": 201
+        },
+        {
+          "name": "InventoryMovements",
+          "kind": "interface",
+          "line": 211
+        },
+        {
+          "name": "CustomersOverview",
+          "kind": "interface",
+          "line": 217
+        },
+        {
+          "name": "CustomerCohort",
+          "kind": "interface",
+          "line": 224
+        },
+        {
+          "name": "CustomersRetention",
+          "kind": "interface",
+          "line": 232
+        },
+        {
+          "name": "CustomerTopRow",
+          "kind": "interface",
+          "line": 237
+        },
+        {
+          "name": "CustomersTop",
+          "kind": "interface",
+          "line": 247
+        },
+        {
+          "name": "WorkshopStageRow",
+          "kind": "interface",
+          "line": 251
+        },
+        {
+          "name": "WorkshopTailorRow",
+          "kind": "interface",
+          "line": 257
+        },
+        {
+          "name": "WorkshopOutput",
+          "kind": "interface",
+          "line": 264
+        },
+        {
+          "name": "ComparisonBucket",
+          "kind": "interface",
+          "line": 271
+        },
+        {
+          "name": "ComparisonAnalytics",
+          "kind": "interface",
+          "line": 281
+        },
+        {
+          "name": "VisitorAnalytics",
+          "kind": "interface",
+          "line": 296
+        },
+        {
           "name": "AnalyticsService",
           "kind": "class",
-          "line": 121
+          "line": 318
         }
       ]
+    },
+    {
+      "path": "apps/api/src/modules/analytics/analytics.workshop.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 180,
+      "bytes": 7496,
+      "doc": "",
+      "symbols": []
     },
     {
       "path": "apps/api/src/modules/analytics/dto/analytics.dto.ts",
@@ -28409,6 +30709,30 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/bom/bom-production-replication.listener.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 62,
+      "bytes": 2125,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/bom/bom-production-replication.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 50,
+      "bytes": 1925,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BomProductionReplicationListener",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/bom/bom.controller.ts",
       "area": "api",
       "kind": "controller",
@@ -28427,8 +30751,8 @@
       "path": "apps/api/src/modules/bom/bom.listener.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 80,
-      "bytes": 3052,
+      "lines": 88,
+      "bytes": 3176,
       "doc": "",
       "symbols": []
     },
@@ -28490,14 +30814,14 @@
       "path": "apps/api/src/modules/bom/bom.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 17,
-      "bytes": 681,
+      "lines": 26,
+      "bytes": 838,
       "doc": "",
       "symbols": [
         {
           "name": "BomModule",
           "kind": "class",
-          "line": 16
+          "line": 25
         }
       ]
     },
@@ -28677,8 +31001,8 @@
       "path": "apps/api/src/modules/bom/production.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 262,
-      "bytes": 10075,
+      "lines": 265,
+      "bytes": 10210,
       "doc": "",
       "symbols": [
         {
@@ -29346,6 +31670,30 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/finance/expense-replication.listener.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 61,
+      "bytes": 2012,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/finance/expense-replication.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 50,
+      "bytes": 1857,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ExpenseReplicationListener",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/finance/finance.controller.ts",
       "area": "api",
       "kind": "controller",
@@ -29412,14 +31760,14 @@
       "path": "apps/api/src/modules/finance/finance.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 13,
-      "bytes": 482,
+      "lines": 14,
+      "bytes": 587,
       "doc": "",
       "symbols": [
         {
           "name": "FinanceModule",
           "kind": "class",
-          "line": 12
+          "line": 13
         }
       ]
     },
@@ -29427,8 +31775,8 @@
       "path": "apps/api/src/modules/finance/finance.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 558,
-      "bytes": 21782,
+      "lines": 562,
+      "bytes": 21972,
       "doc": "",
       "symbols": [
         {
@@ -29741,8 +32089,8 @@
       "path": "apps/api/src/modules/inventory/inventory.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 576,
-      "bytes": 21751,
+      "lines": 582,
+      "bytes": 22159,
       "doc": "",
       "symbols": [
         {
@@ -30057,8 +32405,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 83,
-      "bytes": 2696,
+      "lines": 84,
+      "bytes": 2715,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -30077,24 +32425,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 145,
-      "bytes": 7082,
+      "lines": 147,
+      "bytes": 7186,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 30
+          "line": 31
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 61
+          "line": 62
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 121
+          "line": 123
         }
       ]
     },
@@ -30306,11 +32654,26 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/organization/dto/node-brand.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 11,
+      "bytes": 311,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SetNodeBrandDto",
+          "kind": "class",
+          "line": 5
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/organization/dto/node.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 19,
-      "bytes": 491,
+      "lines": 25,
+      "bytes": 757,
       "doc": "",
       "symbols": [
         {
@@ -30336,11 +32699,26 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/organization/dto/policy-quarantine.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 11,
+      "bytes": 352,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ResolvePolicyQuarantineDto",
+          "kind": "class",
+          "line": 5
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/organization/nodes.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 113,
-      "bytes": 4205,
+      "lines": 131,
+      "bytes": 4962,
       "doc": "",
       "symbols": []
     },
@@ -30348,8 +32726,8 @@
       "path": "apps/api/src/modules/organization/nodes.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 95,
-      "bytes": 3719,
+      "lines": 108,
+      "bytes": 4430,
       "doc": "",
       "symbols": [
         {
@@ -30363,14 +32741,14 @@
       "path": "apps/api/src/modules/organization/organization.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 131,
-      "bytes": 5935,
+      "lines": 157,
+      "bytes": 7237,
       "doc": "",
       "symbols": [
         {
           "name": "OrganizationController",
           "kind": "class",
-          "line": 27
+          "line": 29
         }
       ]
     },
@@ -30393,8 +32771,8 @@
       "path": "apps/api/src/modules/organization/organization.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 375,
-      "bytes": 15347,
+      "lines": 504,
+      "bytes": 21200,
       "doc": "",
       "symbols": []
     },
@@ -30402,34 +32780,34 @@
       "path": "apps/api/src/modules/organization/organization.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 291,
-      "bytes": 13181,
+      "lines": 347,
+      "bytes": 16263,
       "doc": "",
       "symbols": [
         {
           "name": "AdminScopeWithHolder",
           "kind": "interface",
-          "line": 8
+          "line": 9
         },
         {
           "name": "GrantScopeInput",
           "kind": "interface",
-          "line": 12
+          "line": 13
         },
         {
           "name": "MyScopeLevel",
           "kind": "type",
-          "line": 29
+          "line": 30
         },
         {
           "name": "MyScopeResult",
           "kind": "interface",
-          "line": 31
+          "line": 32
         },
         {
           "name": "OrganizationService",
           "kind": "class",
-          "line": 49
+          "line": 50
         }
       ]
     },
@@ -30683,6 +33061,257 @@
           "name": "JazzCashProvider",
           "kind": "class",
           "line": 31
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/dto/compensation-rate.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 40,
+      "bytes": 970,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SetCompensationRateDto",
+          "kind": "class",
+          "line": 6
+        },
+        {
+          "name": "GrossPreviewQueryDto",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/dto/leave.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 35,
+      "bytes": 719,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RequestLeaveDto",
+          "kind": "class",
+          "line": 6
+        },
+        {
+          "name": "DecideLeaveDto",
+          "kind": "class",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/dto/pay-run-adjustment.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 25,
+      "bytes": 642,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PostPayRunAdjustmentDto",
+          "kind": "class",
+          "line": 6
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/dto/pay-run.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 19,
+      "bytes": 468,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BuildPayRunDto",
+          "kind": "class",
+          "line": 6
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/leave-accrual.cron.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 73,
+      "bytes": 2455,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/payroll/leave-accrual.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 45,
+      "bytes": 1792,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LeaveAccrualCron",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/leave.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 81,
+      "bytes": 3254,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LeaveController",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/leave.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 224,
+      "bytes": 9277,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/payroll/leave.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 175,
+      "bytes": 7504,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "countWorkingDays",
+          "kind": "function",
+          "line": 12
+        },
+        {
+          "name": "accrualPeriodKey",
+          "kind": "function",
+          "line": 25
+        },
+        {
+          "name": "LeaveService",
+          "kind": "class",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/pay-run.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 73,
+      "bytes": 2947,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PayRunController",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/pay-run.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 282,
+      "bytes": 12306,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/payroll/pay-run.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 254,
+      "bytes": 9910,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PayRunWithLines",
+          "kind": "type",
+          "line": 17
+        },
+        {
+          "name": "PayRunService",
+          "kind": "class",
+          "line": 46
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/payroll.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 78,
+      "bytes": 2923,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PayrollController",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/payroll.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 23,
+      "bytes": 1039,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PayrollModule",
+          "kind": "class",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/payroll.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 182,
+      "bytes": 7785,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/payroll/payroll.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 159,
+      "bytes": 6444,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GrossCalculationInput",
+          "kind": "interface",
+          "line": 5
+        },
+        {
+          "name": "GrossCalculationResult",
+          "kind": "interface",
+          "line": 12
+        },
+        {
+          "name": "PayrollService",
+          "kind": "class",
+          "line": 25
         }
       ]
     },
@@ -31233,6 +33862,30 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/purchasing/goods-receipt-replication.listener.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 127,
+      "bytes": 4636,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/purchasing/goods-receipt-replication.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 82,
+      "bytes": 3535,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GoodsReceiptReplicationListener",
+          "kind": "class",
+          "line": 30
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/purchasing/purchasing.controller.ts",
       "area": "api",
       "kind": "controller",
@@ -31285,14 +33938,14 @@
       "path": "apps/api/src/modules/purchasing/purchasing.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 18,
-      "bytes": 848,
+      "lines": 19,
+      "bytes": 969,
       "doc": "",
       "symbols": [
         {
           "name": "PurchasingModule",
           "kind": "class",
-          "line": 17
+          "line": 18
         }
       ]
     },
@@ -31300,8 +33953,8 @@
       "path": "apps/api/src/modules/purchasing/purchasing.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 654,
-      "bytes": 24304,
+      "lines": 657,
+      "bytes": 24441,
       "doc": "",
       "symbols": [
         {
@@ -32310,8 +34963,8 @@
       "path": "apps/api/src/modules/transfers/transfers.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 701,
-      "bytes": 33486,
+      "lines": 818,
+      "bytes": 39636,
       "doc": "",
       "symbols": []
     },
@@ -32319,8 +34972,8 @@
       "path": "apps/api/src/modules/transfers/transfers.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 469,
-      "bytes": 20101,
+      "lines": 510,
+      "bytes": 22832,
       "doc": "",
       "symbols": [
         {
@@ -34512,14 +37165,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 183,
-      "bytes": 6091,
+      "lines": 177,
+      "bytes": 5921,
       "doc": "",
       "symbols": [
         {
           "name": "RecipeDetailPage",
           "kind": "default",
-          "line": 26
+          "line": 25
         }
       ]
     },
@@ -34557,8 +37210,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/production/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 119,
-      "bytes": 3679,
+      "lines": 114,
+      "bytes": 3525,
       "doc": "",
       "symbols": [
         {
@@ -34602,14 +37255,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 273,
-      "bytes": 8949,
+      "lines": 267,
+      "bytes": 8759,
       "doc": "",
       "symbols": [
         {
           "name": "RawMaterialDetailPage",
           "kind": "default",
-          "line": 41
+          "line": 40
         }
       ]
     },
@@ -34632,14 +37285,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/raw-usage/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 143,
-      "bytes": 4772,
+      "lines": 137,
+      "bytes": 4588,
       "doc": "",
       "symbols": [
         {
           "name": "RawUsagePage",
           "kind": "default",
-          "line": 34
+          "line": 33
         }
       ]
     },
@@ -34647,14 +37300,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/br/[branchId]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 68,
-      "bytes": 2121,
+      "lines": 111,
+      "bytes": 3648,
       "doc": "",
       "symbols": [
         {
           "name": "BranchDashboardPage",
           "kind": "default",
-          "line": 16
+          "line": 17
         }
       ]
     },
@@ -34692,14 +37345,29 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/contacts/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 498,
-      "bytes": 16737,
+      "lines": 513,
+      "bytes": 17413,
       "doc": "",
       "symbols": [
         {
           "name": "AdminContactsPage",
           "kind": "default",
-          "line": 49
+          "line": 52
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/customers/insights/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 199,
+      "bytes": 7732,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CustomerInsightsPage",
+          "kind": "default",
+          "line": 17
         }
       ]
     },
@@ -34707,14 +37375,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/designs/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 467,
-      "bytes": 17789,
+      "lines": 458,
+      "bytes": 17536,
       "doc": "",
       "symbols": [
         {
           "name": "AdminDesignPage",
           "kind": "default",
-          "line": 32
+          "line": 30
         }
       ]
     },
@@ -34737,14 +37405,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 666,
-      "bytes": 24315,
+      "lines": 658,
+      "bytes": 24089,
       "doc": "",
       "symbols": [
         {
           "name": "EmailAccountPage",
           "kind": "default",
-          "line": 36
+          "line": 35
         }
       ]
     },
@@ -34797,14 +37465,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 220,
-      "bytes": 7047,
+      "lines": 214,
+      "bytes": 6860,
       "doc": "",
       "symbols": [
         {
           "name": "ExpenseCategoriesPage",
           "kind": "default",
-          "line": 25
+          "line": 24
         }
       ]
     },
@@ -34827,14 +37495,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/garments/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 521,
-      "bytes": 20228,
+      "lines": 512,
+      "bytes": 19983,
       "doc": "",
       "symbols": [
         {
           "name": "AdminGarmentPage",
           "kind": "default",
-          "line": 36
+          "line": 34
         }
       ]
     },
@@ -34944,17 +37612,32 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/inventory/insights/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 188,
+      "bytes": 7875,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "InventoryInsightsPage",
+          "kind": "default",
+          "line": 20
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/inventory/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 299,
-      "bytes": 12136,
+      "lines": 310,
+      "bytes": 12560,
       "doc": "",
       "symbols": [
         {
           "name": "AdminInventoryPage",
           "kind": "default",
-          "line": 49
+          "line": 50
         }
       ]
     },
@@ -35067,14 +37750,29 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/o/[orgId]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 89,
-      "bytes": 2856,
+      "lines": 94,
+      "bytes": 3079,
       "doc": "",
       "symbols": [
         {
           "name": "OrganizationDashboardPage",
           "kind": "default",
           "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/o/[orgId]/policy-quarantine/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 129,
+      "bytes": 4816,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PolicyQuarantinePage",
+          "kind": "default",
+          "line": 17
         }
       ]
     },
@@ -35097,14 +37795,29 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 539,
-      "bytes": 19882,
+      "lines": 532,
+      "bytes": 19659,
       "doc": "",
       "symbols": [
         {
           "name": "AdminOrderDetailPage",
           "kind": "default",
-          "line": 104
+          "line": 102
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/orders/insights/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 183,
+      "bytes": 7624,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrderInsightsPage",
+          "kind": "default",
+          "line": 20
         }
       ]
     },
@@ -35112,14 +37825,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/orders/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 298,
-      "bytes": 10276,
+      "lines": 308,
+      "bytes": 10632,
       "doc": "",
       "symbols": [
         {
           "name": "AdminOrdersPage",
           "kind": "default",
-          "line": 38
+          "line": 39
         }
       ]
     },
@@ -35154,6 +37867,81 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/payroll/compensation/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 220,
+      "bytes": 8124,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PayrollCompensationPage",
+          "kind": "default",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/payroll/leave/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 156,
+      "bytes": 5793,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PayrollLeavePage",
+          "kind": "default",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/payroll/me/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 205,
+      "bytes": 7757,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MyPayPage",
+          "kind": "default",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 262,
+      "bytes": 9608,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PayrollRunDetailPage",
+          "kind": "default",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 137,
+      "bytes": 4796,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PayrollRunsPage",
+          "kind": "default",
+          "line": 18
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/products/[id]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -35165,6 +37953,21 @@
           "name": "EditProductPage",
           "kind": "default",
           "line": 8
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/products/insights/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 167,
+      "bytes": 6957,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProductInsightsPage",
+          "kind": "default",
+          "line": 18
         }
       ]
     },
@@ -35187,8 +37990,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/products/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 233,
-      "bytes": 8158,
+      "lines": 240,
+      "bytes": 8441,
       "doc": "",
       "symbols": [
         {
@@ -35217,14 +38020,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/receive/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 183,
-      "bytes": 6510,
+      "lines": 214,
+      "bytes": 7735,
       "doc": "",
       "symbols": [
         {
           "name": "ReceiveGoodsPage",
           "kind": "default",
-          "line": 26
+          "line": 27
         }
       ]
     },
@@ -35232,8 +38035,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/new/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 286,
-      "bytes": 10428,
+      "lines": 306,
+      "bytes": 11410,
       "doc": "",
       "symbols": [
         {
@@ -35247,14 +38050,29 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 153,
-      "bytes": 5535,
+      "lines": 161,
+      "bytes": 5821,
       "doc": "",
       "symbols": [
         {
           "name": "PurchaseOrdersPage",
           "kind": "default",
           "line": 29
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/spend/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 148,
+      "bytes": 5803,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PurchasingSpendPage",
+          "kind": "default",
+          "line": 17
         }
       ]
     },
@@ -35337,14 +38155,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/stitching/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 275,
-      "bytes": 9799,
+      "lines": 283,
+      "bytes": 10092,
       "doc": "",
       "symbols": [
         {
           "name": "TailorQueuePage",
           "kind": "default",
-          "line": 24
+          "line": 25
         }
       ]
     },
@@ -35439,6 +38257,51 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/transfers/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 163,
+      "bytes": 6335,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TransferDetailPage",
+          "kind": "default",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/transfers/new/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 237,
+      "bytes": 8314,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NewTransferPage",
+          "kind": "default",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/transfers/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 118,
+      "bytes": 4097,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TransfersPage",
+          "kind": "default",
+          "line": 20
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/users/[id]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -35465,6 +38328,21 @@
           "name": "AdminUsersPage",
           "kind": "default",
           "line": 28
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/workshop/insights/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 109,
+      "bytes": 4059,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WorkshopInsightsPage",
+          "kind": "default",
+          "line": 17
         }
       ]
     },
@@ -36270,8 +39148,8 @@
       "path": "apps/web/src/components/admin/admin-shell.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 410,
-      "bytes": 14073,
+      "lines": 469,
+      "bytes": 16413,
       "doc": "",
       "symbols": [
         {
@@ -36460,44 +39338,44 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 450,
-      "bytes": 11853,
+      "lines": 554,
+      "bytes": 14262,
       "doc": "",
       "symbols": [
         {
           "name": "ICON_MAP",
           "kind": "const",
-          "line": 16
+          "line": 17
         },
         {
           "name": "AdminNavGroup",
           "kind": "interface",
-          "line": 28
+          "line": 30
         },
         {
           "name": "NAV_GROUPS",
           "kind": "const",
-          "line": 47
+          "line": 49
         },
         {
           "name": "AdminNavItem",
           "kind": "interface",
-          "line": 59
+          "line": 62
         },
         {
           "name": "ADMIN_NAV",
           "kind": "const",
-          "line": 96
+          "line": 100
         },
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 420
+          "line": 524
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 435
+          "line": 539
         }
       ]
     },
@@ -36665,19 +39543,19 @@
       "path": "apps/web/src/components/common/status-badge.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 62,
-      "bytes": 2323,
+      "lines": 65,
+      "bytes": 2389,
       "doc": "",
       "symbols": [
         {
           "name": "statusLabel",
           "kind": "function",
-          "line": 55
+          "line": 58
         },
         {
           "name": "StatusBadge",
           "kind": "function",
-          "line": 59
+          "line": 62
         }
       ]
     },
@@ -37553,8 +40431,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 121,
-      "bytes": 4390,
+      "lines": 136,
+      "bytes": 5331,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -37990,8 +40868,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 730,
-      "bytes": 19237,
+      "lines": 1107,
+      "bytes": 28780,
       "doc": "",
       "symbols": [
         {
@@ -38122,192 +41000,427 @@
         {
           "name": "MyScope",
           "kind": "interface",
-          "line": 333
+          "line": 335
         },
         {
           "name": "AdminScopeWithHolder",
           "kind": "interface",
-          "line": 348
+          "line": 350
+        },
+        {
+          "name": "PolicyQuarantineEntry",
+          "kind": "interface",
+          "line": 365
         },
         {
           "name": "GrantScopeInput",
           "kind": "interface",
-          "line": 357
+          "line": 381
         },
         {
           "name": "BrandPolicy",
           "kind": "interface",
-          "line": 370
+          "line": 394
         },
         {
           "name": "UpdateBrandPolicyInput",
           "kind": "interface",
-          "line": 377
+          "line": 401
         },
         {
-          "name": "StockAdjustment",
-          "kind": "interface",
-          "line": 385
-        },
-        {
-          "name": "InventoryVariantRow",
-          "kind": "interface",
-          "line": 397
-        },
-        {
-          "name": "StitchingAnalytics",
+          "name": "Location",
           "kind": "interface",
           "line": 410
         },
         {
+          "name": "StockAdjustment",
+          "kind": "interface",
+          "line": 420
+        },
+        {
+          "name": "InventoryVariantRow",
+          "kind": "interface",
+          "line": 432
+        },
+        {
+          "name": "StitchingAnalytics",
+          "kind": "interface",
+          "line": 445
+        },
+        {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 416
+          "line": 451
         },
         {
           "name": "VisitorFunnel",
           "kind": "interface",
-          "line": 427
+          "line": 462
         },
         {
           "name": "TrafficSourceRow",
           "kind": "interface",
-          "line": 434
+          "line": 469
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 440
+          "line": 475
         },
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 449
-        },
-        {
-          "name": "EmailAccountPurpose",
-          "kind": "type",
-          "line": 457
-        },
-        {
-          "name": "EmailAccount",
-          "kind": "interface",
-          "line": 459
-        },
-        {
-          "name": "EmailTemplateCatalogEntry",
-          "kind": "interface",
           "line": 484
         },
         {
-          "name": "RenderedEmailPreview",
+          "name": "OrderAgeingBucket",
           "kind": "interface",
           "line": 492
         },
         {
-          "name": "InboundEmailReply",
+          "name": "OrdersOverview",
           "kind": "interface",
-          "line": 500
+          "line": 497
         },
         {
-          "name": "InboundEmail",
+          "name": "OrderTransitionTiming",
           "kind": "interface",
-          "line": 507
+          "line": 504
         },
         {
-          "name": "PermissionDefinition",
+          "name": "OrdersFulfilment",
+          "kind": "interface",
+          "line": 512
+        },
+        {
+          "name": "PurchasingSpend",
+          "kind": "interface",
+          "line": 518
+        },
+        {
+          "name": "PurchasingSupplierRow",
           "kind": "interface",
           "line": 524
         },
         {
+          "name": "PurchasingSuppliers",
+          "kind": "interface",
+          "line": 534
+        },
+        {
+          "name": "ProductTopSellerRow",
+          "kind": "interface",
+          "line": 540
+        },
+        {
+          "name": "ProductsTopSellers",
+          "kind": "interface",
+          "line": 552
+        },
+        {
+          "name": "ProductSlowSellerRow",
+          "kind": "interface",
+          "line": 556
+        },
+        {
+          "name": "ProductsSlowSellers",
+          "kind": "interface",
+          "line": 565
+        },
+        {
+          "name": "ProductCategoryRow",
+          "kind": "interface",
+          "line": 569
+        },
+        {
+          "name": "ProductsCategories",
+          "kind": "interface",
+          "line": 578
+        },
+        {
+          "name": "InventoryValuation",
+          "kind": "interface",
+          "line": 585
+        },
+        {
+          "name": "StockMovementReasonRow",
+          "kind": "interface",
+          "line": 592
+        },
+        {
+          "name": "InventoryMovementRow",
+          "kind": "interface",
+          "line": 599
+        },
+        {
+          "name": "InventoryMovements",
+          "kind": "interface",
+          "line": 609
+        },
+        {
+          "name": "CustomersOverview",
+          "kind": "interface",
+          "line": 617
+        },
+        {
+          "name": "CustomerCohort",
+          "kind": "interface",
+          "line": 624
+        },
+        {
+          "name": "CustomersRetention",
+          "kind": "interface",
+          "line": 630
+        },
+        {
+          "name": "CustomerTopRow",
+          "kind": "interface",
+          "line": 635
+        },
+        {
+          "name": "CustomersTop",
+          "kind": "interface",
+          "line": 645
+        },
+        {
+          "name": "WorkshopStageRow",
+          "kind": "interface",
+          "line": 651
+        },
+        {
+          "name": "WorkshopTailorRow",
+          "kind": "interface",
+          "line": 657
+        },
+        {
+          "name": "WorkshopOutput",
+          "kind": "interface",
+          "line": 664
+        },
+        {
+          "name": "CompensationBasis",
+          "kind": "type",
+          "line": 673
+        },
+        {
+          "name": "CompensationRate",
+          "kind": "interface",
+          "line": 675
+        },
+        {
+          "name": "EmployeeCompensation",
+          "kind": "interface",
+          "line": 686
+        },
+        {
+          "name": "GrossPreview",
+          "kind": "interface",
+          "line": 691
+        },
+        {
+          "name": "LeaveKind",
+          "kind": "type",
+          "line": 697
+        },
+        {
+          "name": "LeaveType",
+          "kind": "interface",
+          "line": 699
+        },
+        {
+          "name": "LeaveBalance",
+          "kind": "interface",
+          "line": 708
+        },
+        {
+          "name": "LeaveRequestStatus",
+          "kind": "type",
+          "line": 717
+        },
+        {
+          "name": "LeaveRequest",
+          "kind": "interface",
+          "line": 719
+        },
+        {
+          "name": "EmployeeLeave",
+          "kind": "interface",
+          "line": 736
+        },
+        {
+          "name": "PayRunStatus",
+          "kind": "type",
+          "line": 741
+        },
+        {
+          "name": "PayRunLine",
+          "kind": "interface",
+          "line": 743
+        },
+        {
+          "name": "PayRunAdjustmentReason",
+          "kind": "type",
+          "line": 757
+        },
+        {
+          "name": "PayRunAdjustment",
+          "kind": "interface",
+          "line": 759
+        },
+        {
+          "name": "PayRun",
+          "kind": "interface",
+          "line": 770
+        },
+        {
+          "name": "PayRunWithLines",
+          "kind": "interface",
+          "line": 785
+        },
+        {
+          "name": "EmailAccountPurpose",
+          "kind": "type",
+          "line": 792
+        },
+        {
+          "name": "EmailAccount",
+          "kind": "interface",
+          "line": 794
+        },
+        {
+          "name": "EmailTemplateCatalogEntry",
+          "kind": "interface",
+          "line": 819
+        },
+        {
+          "name": "RenderedEmailPreview",
+          "kind": "interface",
+          "line": 827
+        },
+        {
+          "name": "InboundEmailReply",
+          "kind": "interface",
+          "line": 835
+        },
+        {
+          "name": "InboundEmail",
+          "kind": "interface",
+          "line": 842
+        },
+        {
+          "name": "PermissionDefinition",
+          "kind": "interface",
+          "line": 859
+        },
+        {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 531
+          "line": 866
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 543
+          "line": 878
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 552
+          "line": 887
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 554
+          "line": 889
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 566
+          "line": 901
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 572
+          "line": 907
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 579
+          "line": 914
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 584
+          "line": 919
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 596
+          "line": 931
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 605
+          "line": 940
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 612
+          "line": 947
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 626
+          "line": 961
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 637
+          "line": 972
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 641
+          "line": 976
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 650
+          "line": 985
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 658
+          "line": 993
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 687
+          "line": 1022
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 719
+          "line": 1054
+        },
+        {
+          "name": "StockTransferLine",
+          "kind": "interface",
+          "line": 1069
+        },
+        {
+          "name": "InterBranchInvoice",
+          "kind": "interface",
+          "line": 1078
+        },
+        {
+          "name": "StockTransfer",
+          "kind": "interface",
+          "line": 1087
+        },
+        {
+          "name": "StockTransferListResult",
+          "kind": "interface",
+          "line": 1103
         }
       ]
     },
@@ -41001,11 +44114,20 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/19-payroll.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 516,
+      "bytes": 23587,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 1238,
-      "bytes": 61463,
+      "lines": 1640,
+      "bytes": 85789,
       "doc": "",
       "symbols": []
     },
@@ -42102,8 +45224,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 501,
-      "bytes": 15341,
+      "lines": 530,
+      "bytes": 16300,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -42124,47 +45246,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 266
+          "line": 284
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 268
+          "line": 286
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 278
+          "line": 296
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 285
+          "line": 303
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 402
+          "line": 426
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 488
+          "line": 517
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 493
+          "line": 522
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 494
+          "line": 523
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 497
+          "line": 526
         }
       ]
     },
@@ -42576,7 +45698,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 402,
-      "bytes": 17660,
+      "bytes": 17669,
       "doc": "",
       "symbols": [
         {

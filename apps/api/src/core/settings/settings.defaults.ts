@@ -50,6 +50,8 @@ export interface DocumentPrefixes {
   interBranchInvoice: string;
   /** BomProductionRun (WO-C.3) — node-prefixed like the rest. */
   productionRun: string;
+  /** PayRun (docs/implementation/19-payroll.md WO-19.4) — node-prefixed like the rest. */
+  payRun: string;
 }
 
 export interface DocumentSettings {
@@ -132,6 +134,10 @@ export const SettingKey = {
   FinancePackagingCostPerOrder: 'finance.packaging_cost_per_order',
   /** See FinanceGatewayFeeBpsSettings above. */
   FinanceGatewayFeeBps: 'finance.gateway_fee_bps',
+  /** 1-28, server-local. Day of month LeaveAccrualCron credits every active LeaveBalance — 28 so it never skips a short February. */
+  PayrollAccrualRunDay: 'payroll.accrual_run_day',
+  /** 0-23, server-local. Hour of day LeaveAccrualCron runs on its configured day — same idiom as FinanceRecurringRunHour. */
+  PayrollAccrualRunHour: 'payroll.accrual_run_hour',
   /**
    * Off until an owner turns it on — MarketingAutomationCron no-ops entirely
    * while this is false, the ship-safe default for anything that emails a
@@ -253,6 +259,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
       stockTransfer: 'TRF',
       interBranchInvoice: 'IBI',
       productionRun: 'PR',
+      payRun: 'PAY',
     },
   } satisfies DocumentSettings,
 
@@ -280,6 +287,8 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
     bank_transfer: 0,
     default: 250,
   } satisfies FinanceGatewayFeeBpsSettings,
+  [SettingKey.PayrollAccrualRunDay]: 1,
+  [SettingKey.PayrollAccrualRunHour]: 4,
 
   [SettingKey.MarketingAutomationEnabled]: false,
   [SettingKey.MarketingAbandonedCartReminderHours]: 24,

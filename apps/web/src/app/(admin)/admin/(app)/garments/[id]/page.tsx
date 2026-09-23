@@ -1,11 +1,9 @@
 'use client';
 
 import { use, useCallback, useEffect, useState } from 'react';
-import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-client';
 import type { AdminGarmentSizeChartRow } from '@/types/api';
 import { Loading, PageHeader, SectionRail } from '@/components/ui';
-import { ROUTES } from '@/constants/routes';
 import {
   SIZE_TOKENS,
   emptySizeChart,
@@ -169,16 +167,10 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
     }));
   }
 
-  const back = (
-    <Link href={ROUTES.admin.garments} className="hover:text-neutral-900">
-      &larr; Garments
-    </Link>
-  );
-
   if (!garment) {
     return (
       <>
-        <PageHeader title="Garment" context={back} />
+        <PageHeader title="Garment" />
         {error ? (
           <p role="alert" className="text-sm text-feedback-negative">
             {error}
@@ -194,7 +186,6 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
     <>
       <PageHeader
         title={garment.labelEn}
-        context={back}
         action={
           <button type="button" onClick={() => void save()} disabled={busy} className="btn-primary">
             {busy ? 'Saving…' : 'Save garment'}

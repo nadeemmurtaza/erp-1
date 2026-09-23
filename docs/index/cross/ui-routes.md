@@ -3,7 +3,7 @@
 
 # Screens
 
-All **137** routable files across the web app, the till and the mobile app.
+All **152** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (70)
+### admin (85)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -54,6 +54,7 @@ _none_
 | `/admin/brands` | page | client | `apps/web/src/app/(admin)/admin/(app)/brands/page.tsx` |
 | `/admin/categories` | page | client | `apps/web/src/app/(admin)/admin/(app)/categories/page.tsx` |
 | `/admin/contacts` | page | client | `apps/web/src/app/(admin)/admin/(app)/contacts/page.tsx` |
+| `/admin/customers/insights` | page | client | `apps/web/src/app/(admin)/admin/(app)/customers/insights/page.tsx` |
 | `/admin/designs` | page | client | `apps/web/src/app/(admin)/admin/(app)/designs/page.tsx` |
 | `/admin/designs/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/designs/[id]/page.tsx` |
 | `/admin/email-accounts` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-accounts/page.tsx` |
@@ -71,6 +72,7 @@ _none_
 | `/admin/inventory/[variantId]/chain` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/[variantId]/chain/page.tsx` |
 | `/admin/inventory/counts` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/counts/page.tsx` |
 | `/admin/inventory/counts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/counts/[id]/page.tsx` |
+| `/admin/inventory/insights` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/insights/page.tsx` |
 | `/admin/inventory/reorder` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/reorder/page.tsx` |
 | `/admin/inventory/slow-movers` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers/page.tsx` |
 | `/admin/leads` | page | client | `apps/web/src/app/(admin)/admin/(app)/leads/page.tsx` |
@@ -79,16 +81,25 @@ _none_
 | `/admin/o` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/page.tsx` |
 | `/admin/o/[orgId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/page.tsx` |
 | `/admin/o/[orgId]/access` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/access/page.tsx` |
+| `/admin/o/[orgId]/policy-quarantine` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/policy-quarantine/page.tsx` |
 | `/admin/orders` | page | client | `apps/web/src/app/(admin)/admin/(app)/orders/page.tsx` |
 | `/admin/orders/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` |
+| `/admin/orders/insights` | page | client | `apps/web/src/app/(admin)/admin/(app)/orders/insights/page.tsx` |
 | `/admin/payments` | page | client | `apps/web/src/app/(admin)/admin/(app)/payments/page.tsx` |
+| `/admin/payroll/compensation` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/compensation/page.tsx` |
+| `/admin/payroll/leave` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/leave/page.tsx` |
+| `/admin/payroll/me` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/me/page.tsx` |
+| `/admin/payroll/runs` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/runs/page.tsx` |
+| `/admin/payroll/runs/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]/page.tsx` |
 | `/admin/products` | page | client | `apps/web/src/app/(admin)/admin/(app)/products/page.tsx` |
 | `/admin/products/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/products/[id]/page.tsx` |
+| `/admin/products/insights` | page | client | `apps/web/src/app/(admin)/admin/(app)/products/insights/page.tsx` |
 | `/admin/products/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/products/new/page.tsx` |
 | `/admin/purchase-orders` | page | client | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/page.tsx` |
 | `/admin/purchase-orders/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/page.tsx` |
 | `/admin/purchase-orders/[id]/receive` | page | client | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/receive/page.tsx` |
 | `/admin/purchase-orders/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/new/page.tsx` |
+| `/admin/purchase-orders/spend` | page | client | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/spend/page.tsx` |
 | `/admin/reports` | page | client | `apps/web/src/app/(admin)/admin/(app)/reports/page.tsx` |
 | `/admin/settings` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` |
 | `/admin/stitching` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/page.tsx` |
@@ -101,8 +112,12 @@ _none_
 | `/admin/trading-partners` | page | client | `apps/web/src/app/(admin)/admin/(app)/trading-partners/page.tsx` |
 | `/admin/trading-partners/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/trading-partners/[id]/page.tsx` |
 | `/admin/trading-partners/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/trading-partners/new/page.tsx` |
+| `/admin/transfers` | page | client | `apps/web/src/app/(admin)/admin/(app)/transfers/page.tsx` |
+| `/admin/transfers/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/transfers/[id]/page.tsx` |
+| `/admin/transfers/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/transfers/new/page.tsx` |
 | `/admin/users` | page | client | `apps/web/src/app/(admin)/admin/(app)/users/page.tsx` |
 | `/admin/users/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/users/[id]/page.tsx` |
+| `/admin/workshop/insights` | page | client | `apps/web/src/app/(admin)/admin/(app)/workshop/insights/page.tsx` |
 
 ### mobile (15)
 

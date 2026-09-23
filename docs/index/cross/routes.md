@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **322** endpoints across **59** controllers, with the access rule that actually guards each one.
+All **357** endpoints across **62** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -103,16 +103,29 @@ never authorization.
 | DELETE | `/addresses/:id` | signed-in | `AddressesController.remove` | Remove a saved address |
 | PATCH | `/addresses/:id` | signed-in | `AddressesController.update` | Edit a saved address |
 
-### [`analytics`](../modules/analytics.md) (6)
+### [`analytics`](../modules/analytics.md) (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/analytics/comparison` | `analytics.view` | `AnalyticsController.comparison` | Sales, purchases and expenses side by side, bucketed by day, week or month |
+| GET | `/admin/analytics/customers/overview` | `analytics.view` | `AnalyticsController.customersOverview` | The customer book — totals, by city, by acquisition source, by lifecycle status |
+| GET | `/admin/analytics/customers/retention` | `analytics.view` | `AnalyticsController.customersRetention` | Signup cohorts and how many of each went on to order again, plus the overall re… |
+| GET | `/admin/analytics/customers/top` | `analytics.view` | `AnalyticsController.customersTop` | The highest-lifetime-value customers |
 | GET | `/admin/analytics/dashboard` | `analytics.view` | `AnalyticsController.dashboard` | Everything the dashboard shows, in one request |
 | GET | `/admin/analytics/extended` | `analytics.view` | `AnalyticsController.extended` | Funnel, geography, fulfilment and payment-mix metrics |
+| GET | `/admin/analytics/inventory/movements` | `analytics.view` | `AnalyticsController.inventoryMovements` | Stock movement volume by day and reason, plus the most recent individual moveme… |
+| GET | `/admin/analytics/inventory/valuation` | `analytics.view` | `AnalyticsController.inventoryValuation` | What the stock on hand is worth right now, by category, kind and age |
 | PATCH | `/admin/analytics/monthly-target` | `analytics.view` | `AnalyticsController.setMonthlyTarget` | Set the monthly revenue target shown on the dashboard |
+| GET | `/admin/analytics/orders/fulfilment` | `analytics.view` | `AnalyticsController.ordersFulfilment` | Average and median time spent in each order-status transition |
+| GET | `/admin/analytics/orders/overview` | `analytics.view` | `AnalyticsController.ordersOverview` | Open orders right now — ageing buckets, the oldest worklist, by-city and by-pay… |
+| GET | `/admin/analytics/products/categories` | `analytics.view` | `AnalyticsController.productsCategories` | Revenue, units and product count by category, with a daily trend |
+| GET | `/admin/analytics/products/slow-sellers` | `analytics.view` | `AnalyticsController.productsSlowSellers` | In-stock, active variants flagged as slow movers, oldest first |
+| GET | `/admin/analytics/products/top-sellers` | `analytics.view` | `AnalyticsController.productsTopSellers` | Best-selling products by revenue, with units and margin |
+| GET | `/admin/analytics/purchasing/spend` | `analytics.view` | `AnalyticsController.purchasingSpend` | What was ordered, received, billed and is still owed to suppliers |
+| GET | `/admin/analytics/purchasing/suppliers` | `analytics.view` | `AnalyticsController.purchasingSuppliers` | Spend, order count, on-time rate and lead time by supplier |
 | GET | `/admin/analytics/stitching` | `analytics.view` | `AnalyticsController.stitching` | Which garments and style options drive the stitching business |
 | GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` | Visitor counts, view-to-order funnel and traffic sources |
+| GET | `/admin/analytics/workshop/output` | `analytics.view` | `AnalyticsController.workshopOutput` | Workshop throughput — started/completed per day, time in each stage, output by… |
 
 ### [`bom`](../modules/bom.md) (20)
 
@@ -353,7 +366,7 @@ never authorization.
 | POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` |  |
 | GET | `/orders/mine` | signed-in | `OrdersController.mine` | The signed-in customer's orders |
 
-### [`organization`](../modules/organization.md) (12)
+### [`organization`](../modules/organization.md) (15)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -366,7 +379,10 @@ never authorization.
 | GET | `/organization/me/scope` | `organization.view` | `OrganizationController.myScope` | The caller's resolved scope — where to land, and what chips to draw |
 | GET | `/organization/nodes` | `organization.view` | `OrganizationController.nodes` | This deployment's registered child nodes, visible to the caller |
 | POST | `/organization/nodes` | `organization.manage` | `OrganizationController.registerNode` | Register a child node — or re-activate and update one that already exists |
+| PATCH | `/organization/nodes/:nodeId/brand` | `organization.manage` | `OrganizationController.setNodeBrand` | Set which brand a registered node belongs to (WO-23.3c/e) — governs its BrandPo… |
 | POST | `/organization/nodes/:nodeId/rotate-inbound-key` | `organization.manage` | `OrganizationController.rotateNodeInboundKey` | Issue a fresh replication credential for a child node — shown once, never retri… |
+| GET | `/organization/policy-quarantine` | `organization.view` | `OrganizationController.listPolicyQuarantine` | R9's quarantine — facts that applied but violate the BrandPolicy switch meant t… |
+| POST | `/organization/policy-quarantine/:id/resolve` | `organization.manage` | `OrganizationController.resolvePolicyQuarantine` | Mark a quarantined policy exception reviewed |
 | PATCH | `/organization/policy/inter-brand-transfers` | `organization.manage` | `OrganizationController.setInterBrandTransfersPolicy` | Turn inter-brand transfers on or off for this organization (RETAIL-ERP.md R9, W… |
 | POST | `/organization/replication/resync` | `organization.manage` | `OrganizationController.resyncFromParent` |  |
 
@@ -388,6 +404,30 @@ never authorization.
 | POST | `/payments/:paymentId/receipt` | **PUBLIC** | `PaymentsController.uploadReceipt` | Upload a bank-transfer receipt for staff to approve |
 | POST | `/payments/callback/:provider` | **PUBLIC** | `PaymentsController.callback` | Gateway return URL — verifies and settles a payment |
 | GET | `/payments/methods` | **PUBLIC** | `PaymentsController.methods` | Payment methods currently accepted |
+
+### [`payroll`](../modules/payroll.md) (19)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/payroll/compensation` | `payroll.view` | `PayrollController.listCompensation` | Every employee's current compensation rate. |
+| GET | `/admin/payroll/compensation/:userId` | `payroll.view` | `PayrollController.compensation` | One employee's current rate and rate history. |
+| PATCH | `/admin/payroll/compensation/:userId` | `payroll.manage` | `PayrollController.setCompensation` | Set a new effective-dated compensation rate, closing the previous one. |
+| GET | `/admin/payroll/compensation/:userId/preview` | `payroll.view` | `PayrollController.previewGross` | Preview the gross salary calculation for a period, no write. |
+| GET | `/admin/payroll/compensation/me` | `payroll.view_own` | `PayrollController.myCompensation` | The caller's own current rate and rate history. |
+| GET | `/admin/payroll/leave` | `payroll.view` | `LeaveController.all` | Every leave request across every employee, newest first. |
+| PATCH | `/admin/payroll/leave/:requestId/decide` | `payroll.manage` | `LeaveController.decide` | Approve or reject a pending leave request. |
+| GET | `/admin/payroll/leave/:userId` | `payroll.view` | `LeaveController.forUser` | One employee's leave balances and request history. |
+| GET | `/admin/payroll/leave/me` | `payroll.view_own` | `LeaveController.mine` | The caller's own leave balances and request history. |
+| POST | `/admin/payroll/leave/me` | `payroll.view_own` | `LeaveController.request` | File a leave request for the caller. |
+| POST | `/admin/payroll/leave/me/:requestId/cancel` | `payroll.view_own` | `LeaveController.cancelOwn` | Cancel the caller's own pending leave request. |
+| GET | `/admin/payroll/leave/types` | `payroll.view_own` | `LeaveController.types` | Every active leave type — needed by anyone filing a request. |
+| GET | `/admin/payroll/runs` | `payroll.view` | `PayRunController.list` | Every pay run, most recent period first. |
+| POST | `/admin/payroll/runs` | `payroll.manage` | `PayRunController.build` | Build a new DRAFT pay run for a period. |
+| GET | `/admin/payroll/runs/:id` | `payroll.view` | `PayRunController.get` | One pay run with every line. |
+| POST | `/admin/payroll/runs/:id/adjustments` | `payroll.manage` | `PayRunController.postAdjustment` | Post an overpayment/underpayment/correction adjustment against a POSTED pay run. |
+| PATCH | `/admin/payroll/runs/:id/approve` | `payroll.manage` | `PayRunController.approve` | DRAFT → APPROVED. |
+| PATCH | `/admin/payroll/runs/:id/post` | `payroll.manage` | `PayRunController.post` | APPROVED → POSTED. Fires payroll.run_posted. |
+| PATCH | `/admin/payroll/runs/:id/rebuild` | `payroll.manage` | `PayRunController.rebuild` | Recompute every line on a still-DRAFT pay run, replacing them. |
 
 ### [`pos`](../modules/pos.md) (15)
 

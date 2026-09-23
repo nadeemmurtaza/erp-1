@@ -1235,3 +1235,405 @@ deployment that never had the concept at all.
 
 ### Status
 **Accepted.**
+
+## ADR-023 — WO-23.3c/e: Node.retailBrandId, a separate PolicyQuarantine table, and apply() drawing exactly one distinction per entity
+
+### Context
+WO-23.3c/e registers `GoodsReceipt`, `BomProductionRun` and `Expense` with
+`ReplicationRegistry` as FACT/UP (ADR-021's own decision) and builds R9's
+"quarantined for review" mechanism ADR-021/ADR-022 both named as still
+missing. Doing so surfaced three questions neither prior ADR settled:
+
+1. **Nothing in the schema names "which brand does this branch belong
+   to."** `Node` (organization.prisma) carries `role: BRANCH|BRAND` but no
+   `retailBrandId` — confirmed in ADR-021's own research. `PurchaseOrder`/
+   `GoodsReceipt`/`BomProductionRun`/`Expense` carry `scopeLevel` but,
+   per ADR-021, deliberately no `retailBrandId` either. ADR-022's own
+   `allowsBranchLocalPurchasing(userId)` sidesteps this by resolving the
+   brand from the ACTING USER's own `AdminScope` grant — but a fact
+   arriving over replication has no acting user, only the authenticated
+   child node that pushed it (`ReplicationController.push()`'s own
+   convention: origin is always the credential, never the payload).
+2. **`ReplicationQuarantine` cannot hold a policy-violation record
+   honestly.** Its schema requires `sequence` (a replication-log position)
+   and always pairs with an apply() throw, routed there by
+   `ReplicationApplyService`'s own catch block. A policy violation is not
+   a failure to apply — R5/R2 forbid treating it as one — so writing it
+   into the same table under the same status enum would make "OPEN" mean
+   two unrelated things: "we could not process this" and "we processed
+   this and it needs a human decision."
+3. **Chain-wide consolidation for these three entities is not built**,
+   the same gap `OrderReplicationListener`'s own doc comment already
+   names for `Order` (WO-20.6): resolving `GoodsReceipt.purchaseOrderId`,
+   `BomProductionRun.recipeId`, or `Expense.categoryId` against a parent
+   database that was never sent the referenced row (`PurchaseOrder`,
+   `BomRecipe`'s owning module state, `ExpenseCategory`) has no answer
+   yet. `apply()` must be honest about this without pretending the
+   feature is further along than it is.
+
+### Options Considered
+**On resolving "which brand governs this node":**
+1. Add `retailBrandId` to each of the four scope-carrying models
+   (reopening ADR-021). Rejected: ADR-021 already decided against this,
+   for a value that is a property of the NODE that raised the fact, not
+   of the fact itself — every fact from the same branch would carry an
+   identical, redundant copy of the same value.
+2. **Add `Node.retailBrandId` (nullable, no backfill).** Chosen: this is
+   where the codebase already tracks a child's identity (`nodeId`,
+   `role`, `label`, `url`, its credential) — brand membership belongs
+   beside those, once, not duplicated onto every fact that node raises.
+   Nullable because no existing `Node` row can honestly claim a brand it
+   was never asked about; the receiving-tier check (below) treats a null
+   the same way ADR-021 already treats a missing `BrandPolicy` row —
+   "cannot verify" reads as "not allowed," never as "nothing to check."
+
+**On where the policy-violation record lives:**
+1. Add nullable `policyKey`/`retailBrandId` columns to the existing
+   `ReplicationQuarantine` and let both cases share one table. Rejected:
+   makes every row's meaning conditional on which columns happen to be
+   set, and forces every future query ("show me apply failures" vs. "show
+   me policy exceptions") to filter on that condition rather than the
+   table itself.
+2. **A new `PolicyQuarantine` table** (replication.prisma), structurally
+   parallel to `ReplicationQuarantine` — same `OPEN`/`RESOLVED` lifecycle,
+   reusing `ReplicationQuarantineStatus` since the two states mean the
+   same thing in both places — but with its own columns (`policyKey`,
+   `retailBrandId`, `resolvedById`, `resolvedNote`) and no `sequence`,
+   since this row describes the fact's CONTENT, not its transport
+   position. Chosen: two tables, two honest meanings, one shared status
+   vocabulary.
+
+**On `apply()`'s own shape for a BRANCH-scope fact:**
+1. Always quarantine into `PolicyQuarantine` for a BRANCH-scope fact,
+   whether or not the brand actually disallows it, since consolidation
+   isn't built anyway. Rejected: this would misfile a compliant fact
+   (a brand that DOES allow local purchasing) as a governance exception,
+   the exact "silently honoured when it shouldn't be flagged, or flagged
+   when it shouldn't be" confusion R9's "never silently" language is
+   trying to prevent from the other direction.
+2. **`apply()` checks the BrandPolicy switch ONLY for `GoodsReceipt`**
+   (the one entity R9 names a real switch for —
+   `allowBranchLocalPurchasing`); on violation it performs the quarantine
+   write and returns normally (no throw); on a compliant or non-BRANCH
+   fact it throws the same "not built yet" error `Order.apply()` already
+   throws, routing it into the EXISTING apply-failure quarantine.
+   `BomProductionRun`/`Expense` draw no policy distinction at all and
+   always throw — R9 names four switches total
+   (`allow_branch_product_creation`, `allow_branch_local_purchasing`,
+   `allow_inter_branch_transfers`, `org.allow_inter_brand_transfers`); none
+   governs branch-local manufacturing or branch-local expenses, so
+   inventing one for either would be exactly the kind of speculative
+   policy semantics this codebase's own "no speculative functionality"
+   rule forbids. Chosen.
+
+### Reasoning
+Each option above keeps the SAME two mechanisms ADR-022 already
+distinguished (a same-node synchronous refusal vs. a receiving-tier
+quarantine) internally honest about what each row means: a `Node` row
+either does or does not know its own brand; a `ReplicationQuarantine` row
+is always a technical apply-failure; a `PolicyQuarantine` row is always a
+governance exception on a fact that DID apply, in the sense that R5/R2
+require — accepted, never rejected. Registering `BomProductionRun`/
+`Expense` without inventing a policy check for them follows directly from
+"scoped, not tier-specific" (R13's own phrase): being tier-aware (carrying
+`scopeLevel`) does not obligate every entity to also be policy-gated —
+only the ones R9 actually names a switch for.
+
+### Consequences
+- `Node.retailBrandId` is unset (null) for every `Node` row that exists
+  today — a chain deployment gains no automatic policy enforcement from
+  this migration alone; an operator must explicitly badge each branch
+  with its brand (new `PATCH /organization/nodes/:nodeId/brand`, WO-23.3c/e's
+  own admin surface) before `GoodsReceipt.apply()`'s policy check can ever
+  return `true` for it. Silence here reads as "not yet configured," which
+  fails closed correctly but is not the same as "configured to disallow."
+- `GoodsReceiptReplicationListener.apply()` is the first `apply()`
+  implementation in this codebase that can both succeed (quarantine into
+  `PolicyQuarantine`, no throw) and fail (throw, quarantine into
+  `ReplicationQuarantine`) depending on its input — every other
+  registrant (`Order`, `Product`, now `BomProductionRun`/`Expense`) is
+  unconditionally one or the other. A future reader diffing entities by
+  "does its apply() ever succeed" needs to know this is the one exception
+  and why.
+- `PolicyQuarantine` rows are scope-filtered the same way `scopeFilterFor`
+  already narrows other list reads (`OrganizationService
+  .listPolicyQuarantine()`): an ORG-wide viewer sees every open entry, a
+  BRAND/BRANCH-scope viewer only entries whose `retailBrandId` their scope
+  reaches, and an entry with no resolvable `retailBrandId` at all — the
+  node that raised it was never badged — is ORG-only, since a
+  brand-scoped viewer has no attributable claim on it.
+- WO-23.3d (org-central purchasing, StockTransfer's own landed-cost
+  receive-side fix) and full chain-wide consolidation for these three
+  entities (the `Order`-shaped "not built yet" throw this ADR keeps) both
+  remain explicitly out of scope here, tracked separately, not silently
+  assumed solved by this migration.
+
+### Status
+**Accepted.**
+
+## ADR-024 — WO-23.3d: org-central purchasing recognized narrowly in `resolveTransferSettlement()`; landed cost snapshotted at dispatch but never re-fed into `ProductVariant.costPrice`
+
+### Context
+RETAIL-ERP.md R13's own words: "Organization (central) purchasing buys for
+several brands, receives into an org warehouse `Location`, and pushes stock
+down as transfers (R4) carrying landed cost." WO-23.3a–c/e built the
+scopeLevel/BrandPolicy/replication side of tier-scoped purchasing; this is
+the last slice — making a `StockTransfer` able to originate from an org
+warehouse at all, and making the landed cost R13 asks for actually reach
+the arriving side. Two decisions had to be made that the roadmap line
+doesn't settle on its own, plus one gap ADR-021 had already named and
+explicitly deferred to this WO ("`StockTransferLine.unitCost` is populated
+only for INVOICED transfers and `receive()` never feeds it into
+`InventoryService.move()`'s `unitCost`, so a received transfer does not
+currently update the destination's weighted-average cost at all").
+
+1. **Does an org warehouse get to dispatch a transfer at all?**
+   `resolveTransferSettlement()` (transfers.service.ts) already rejects any
+   transfer where either the source or destination `Location.retailBrandId`
+   is null, UNLESS both are equal (same-brand, settles `NONE`) or both are
+   set and differ (cross-brand, settles `INVOICED`) — a deliberate guard
+   against a genuinely misconfigured, unbadged `Location`. An org warehouse
+   is, by this codebase's own established convention (the in-transit-bucket
+   logic and the cross-brand branch both already use it this way),
+   `retailBrandId: null` — there is no `Location.organizationId` field in
+   the schema. Left as-is, R13's own flow is unreachable: an org warehouse
+   can never dispatch to a branded store, because "one side null" is
+   exactly what the existing guard rejects.
+2. **What does landed cost update on receive?** `InventoryService.move()`
+   only ever stores `input.unitCost ?? null` onto the `StockMovement` row
+   it creates — it does not itself touch `ProductVariant.costPrice`; every
+   caller that wants `costPrice` recomputed calls
+   `weightedAverageCost()` and writes it back itself (confirmed by reading
+   `PurchasingService.receiveGoods()`, the one existing caller that does).
+   The first implementation attempt here mirrored that pattern directly:
+   recompute `costPrice` via `weightedAverageCost()` on every transfer
+   receive, the same as a purchase. It was reverted before landing — see
+   Options Considered — because `ProductVariant.costPrice` is ONE GLOBAL
+   field per variant in the current schema, with no per-location or
+   per-node cost tracking anywhere. A `StockTransfer`'s two ends already
+   share that one global average (today's single shared-Postgres
+   deployment has exactly one `ProductVariant` row per SKU, full stop); a
+   transfer is a pure relocation of stock the average already counts, not
+   new stock entering the pool the way a purchase or a production run is.
+   Recomputing `costPrice` on receive would double-count those units.
+
+### Options Considered
+**On recognizing org-central dispatch:**
+1. Loosen the existing one-side-null rejection broadly — allow either
+   direction, any `Location.type`, whenever one side is brandless. Rejected:
+   this also accepts a `STORE`-type `Location` that simply never got
+   badged with a brand (a data-entry gap, not org-central intent) and a
+   branded store shipping INTO a brandless bucket (not R13's flow — R13 is
+   "receives into an org warehouse and pushes stock DOWN," one direction).
+   Both would silently launder a misconfiguration into a settlement
+   decision.
+2. **Add one new, narrow branch to `resolveTransferSettlement()`:
+   `source.type === 'WAREHOUSE' && !source.retailBrandId &&
+   destination.retailBrandId` → `{ inTransitRetailBrandId: null,
+   settlementMode: 'NONE' }`.** Chosen. Requires the source to be
+   `WAREHOUSE`-typed (not just brandless), requires the destination to
+   already carry a real brand, and only recognizes this one direction — the
+   reverse (a branded source shipping to a brandless `WAREHOUSE`) still
+   falls through to the pre-existing rejection, same as a brandless `STORE`
+   on either side. `settlementMode: NONE` because R13 does not describe
+   central purchasing as inter-brand billing — the group already owns the
+   stock before and after the move, same reasoning as the existing
+   same-brand `NONE` case just above it in the method.
+
+**On landed cost and `costPrice`:**
+1. Recompute `ProductVariant.costPrice` via `weightedAverageCost()` on
+   every transfer receive, mirroring `PurchasingService.receiveGoods()`
+   exactly. Rejected, after landing and reverting it: correct for a
+   purchase (new stock entering the average) and wrong for a transfer
+   (the same stock already inside the average, relocated). Applied here it
+   would silently distort `costPrice` any time another cost-affecting
+   event — a purchase, a production run — happened on that variant between
+   a transfer's dispatch and its receive, in a way no test or reviewer
+   would catch without re-deriving the weighted-average math by hand.
+2. **Snapshot `unitCost` onto every `StockTransferLine` at dispatch time
+   (previously written only when `settlementMode === 'INVOICED'`, now
+   unconditional — a line is a cost-basis snapshot the moment stock leaves
+   the source, independent of whether money changes hands for it), and
+   pass that same value through into `InventoryService.move()`'s
+   `unitCost` on the DESTINATION-crediting call inside `receive()`. Leave
+   `ProductVariant.costPrice` untouched by `transfers` entirely.** Chosen.
+   This is the literal, narrow fix for ADR-021's own complaint —
+   `receive()` now does feed `unitCost` into `move()` — without the
+   double-counting risk. The arriving `StockMovement` row carries a true
+   landed-cost record (R13's "so a branch's margin reflects what the group
+   actually paid" is satisfiable from that row today, by anyone reading
+   the movement itself), even though the variant's own blended cost does
+   not move.
+
+### Reasoning
+Both decisions follow the same shape: recognize exactly the case R13
+describes, on the narrowest test the schema and existing conventions
+already support, and refuse everything else exactly as before rather than
+loosening a guard that exists for a real reason. The `costPrice` reversal
+is the more important of the two — it is a genuine architectural fact
+about this schema (no per-location cost tracking exists anywhere) that a
+naive "copy the purchasing pattern" implementation would have gotten
+wrong silently, since the test suite's own fixtures (a single shared
+database, one `ProductVariant` row) cannot distinguish "correctly
+unchanged" from "incorrectly should have changed" without this reasoning
+written down.
+
+### Consequences
+- An org warehouse must be `Location.type === 'WAREHOUSE'` and carry
+  `retailBrandId: null` to be recognized as org-central; a `STORE`-type
+  brandless location is still just a data-entry gap and is still rejected,
+  same as before this WO.
+- `StockTransferLine.unitCost` is now populated on every transfer, not
+  only `INVOICED` ones — a pre-existing test asserting it stayed `null` on
+  a same-brand (`NONE`) transfer was rewritten to assert the value instead
+  (`transfers.service.spec.ts`). No consumer previously read that column
+  expecting `null` on a `NONE` transfer; the only two readers are the
+  arriving `StockMovement.unitCost` write this WO adds and the
+  `InterBranchInvoice` amount, which already only exists on `INVOICED`
+  transfers.
+- `ProductVariant.costPrice` remains a single global figure with no
+  location or node dimension. The day a real multi-database chain
+  deployment exists (`RETAIL-ERP.md`'s own node/replication model, not yet
+  built), each node's own `ProductVariant` row becomes genuinely
+  independent, and this decision will need to be revisited: at that point
+  a `StockTransfer` crossing nodes IS new stock entering the receiving
+  node's own local average, the same way a purchase is today, and
+  `receive()` will need its own `weightedAverageCost()` call — this ADR's
+  "leave `costPrice` untouched" is scoped to today's single-shared-database
+  reality, not a permanent architectural stance.
+- The minimum web UI to make this reachable (list, dispatch, receive) ships
+  in the same change — `/admin/transfers`, `/admin/transfers/new`,
+  `/admin/transfers/[id]` — gated by the existing `transfers.manage`
+  permission (PRM-2: read-only explanation when absent, not a hidden
+  action). No new permission key was needed; `transfers.manage` already
+  covers dispatch/receive/cancel and `purchasing.manage` already covers PO
+  scope selection, so neither WO-23.3d's backend nor its UI required a
+  `ROLE_PERMISSION_SEED` change.
+
+### Status
+**Accepted.**
+
+---
+
+## ADR-025 — WO-E.2 is not executed: its own prerequisites (WO-A.1, WO-A.2) were never built, and building them now would be the same speculative-infrastructure trap ADR-019 already rejected
+
+### Context
+`10-admin-dashboard.md`'s WO-E.2 ("Retire superseded charts, add guards,
+update docs") specs five things, every one of which assumes Track A
+shipped first:
+
+1. Delete `sales-chart.tsx` and `donut-chart.tsx`, "only after
+   `compactRupees()` is confirmed ported into `chart-theme.ts`" — i.e.
+   after WO-A.2 built a `recharts`-based replacement
+   (`components/admin/charts/{time-series,comparison,category-bar,share,
+   sparkline}-chart.tsx`, `chart-theme.ts`, `chart-data-table.tsx`,
+   `scripts/check-chart-imports.mjs`, the `recharts` dependency itself).
+2. Enforce that `recharts` is imported only from `components/admin/charts/`.
+3. Eliminate every `permissions.includes(` in `apps/web/src`, "achieved by
+   A.1's `can()`" — a permission-check helper WO-A.1 was to introduce.
+4. Confirm no division-by-100 remains under `components/admin/charts/`.
+5. Add a dated note to `04-finance.md` recording that its WO-4.5 rule — "Do
+   not add a charting library — those three files are inline SVG and match
+   the design system" — was deliberately overridden.
+
+Before starting, the same check ADR-019 ran for Track A's registry
+infrastructure was re-run for WO-A.1 and WO-A.2 specifically:
+`apps/web/src/components/admin/charts/` does not exist;
+`scripts/check-chart-imports.mjs` does not exist; `recharts` is not a
+dependency in `apps/web/package.json`; no `can()` permission helper exists
+anywhere in `apps/web/src`. Neither work order was ever built — this
+session's Track A work stopped exactly where ADR-019 described it: two
+hand-authored screens, four existing inline-SVG chart components, no
+registry, no `can()`, no chart library.
+
+What does exist, and is live: `sales-chart.tsx` and `donut-chart.tsx`,
+each rendered from three real, currently-shipping screens —
+`/admin` (the main dashboard), `/admin/insights`, and
+`/admin/finance/expenses/analytics` (built this session, WO-B.4). Every
+screen built across Tracks B, C, D and E.1 this session — roughly forty
+admin pages — uses `getStoredUser()?.permissions.includes('…')` as its
+permission check, because that is the only mechanism that has ever existed
+in this codebase; `apps/web/src/app/(admin)/admin/(app)/page.tsx`'s own
+TAILOR-redirect check (leaned on directly in WO-E.1) is one of the 31
+current call sites. `04-finance.md`'s "do not add a charting library" rule
+is accurate to the codebase today — no charting library was ever added, so
+there is nothing to record as overridden.
+
+### Options Considered
+1. **Build WO-A.1 and WO-A.2 now, then execute WO-E.2 as specced.**
+   Rejected for the same reason ADR-019 rejected building a minimal slice
+   of WO-A.4/A.5 for WO-B.4: it would introduce two new architectural
+   layers — a `recharts`-based chart library with its own theme, its own
+   accessibility contract, its own import-boundary lint script, and a
+   codebase-wide `can()` permission abstraction replacing 31 call sites
+   across every module — as a side effect of a work order whose own text
+   is "retirement," not "build." Nothing downstream of E.1 asked for a
+   second charting vocabulary or a permission-check refactor; both would
+   be built solely to satisfy this WO's own acceptance criteria, which is
+   the "unused abstraction" and "no real boundary justifies its existence"
+   trap `CLAUDE.md` names directly.
+2. **Delete `sales-chart.tsx` / `donut-chart.tsx` anyway, replacing their
+   three call sites with something ad hoc.** Rejected outright: the
+   dashboard, `/admin/insights` and the WO-B.4 expense-analytics screen
+   would lose their charts with nothing put back, which is a regression on
+   three live, shipped screens — not a retirement of something superseded,
+   since nothing supersedes them.
+3. **Do the parts of WO-E.2 that do not depend on A.1/A.2, skip the rest,
+   record why.** Checked each of the five items individually:
+   - Chart retirement (#1) and the `recharts` import boundary (#2): both
+     require WO-A.2's unbuilt replacement. Skipped.
+   - `permissions.includes(` elimination (#3): requires WO-A.1's unbuilt
+     `can()`. This is actually WO-2.8 in `02-admin-shell.md`
+     ("Permission-check cleanup"), an earlier, separately-specced,
+     similarly never-built work order — not something WO-E.2 itself
+     defines. Building it now would be the same speculative-build-to-
+     satisfy-an-AC pattern as option 1. Skipped.
+   - Division-by-100 check (#4): `components/admin/charts/` does not
+     exist, so the check is vacuously satisfied — there is nothing under a
+     nonexistent directory to divide by 100. Not a change; just a fact.
+   - The `04-finance.md` dated note (#5): would misrepresent history —
+     nothing was overridden, so noting an override is false documentation.
+     Not written.
+   Chosen: this option, which in practice is "no code change."
+
+### Decision
+WO-E.2 is not executed. No files are deleted, no dependency is added, no
+`can()` helper is introduced, and `04-finance.md` is left as-is because its
+existing rule is still true. Track E ends at WO-E.1.
+
+### Reasoning
+WO-E.2's title is "retire superseded" — a retirement work order has no
+honest content when the thing it retires was never superseded. Every other
+work order this session that found its Track A prerequisite missing (B.4,
+B.5, D.1–D.6, E.1) had a real, present-tense gap to fill and filled it
+against the codebase's actual live idiom instead of the unbuilt registry.
+WO-E.2 has no such gap: its acceptance criteria are entirely instructions
+to delete, restrict, or document things that depend on infrastructure this
+session's own prior decisions (ADR-019, and now this one) declined to
+build without a concrete requirement driving it. Building that
+infrastructure now, solely to make a deletion-shaped work order have
+something to delete, inverts "Feature scope: build the whole capability"
+into building a feature nobody asked for so a housekeeping ticket can
+close.
+
+### Consequences
+- `sales-chart.tsx`, `donut-chart.tsx`, `gauge-chart.tsx` and
+  `funnel-chart.tsx` remain the codebase's one and only charting
+  vocabulary, exactly as `04-finance.md` WO-4.5 already specifies. Any
+  future chart need keeps using them, the same way WO-B.4 and WO-B.5 did
+  this session.
+- The 31 `permissions.includes(` call sites remain untouched; this is
+  `02-admin-shell.md`'s own tracked WO-2.8, not something this ADR
+  resolves or claims to resolve.
+- If a real future requirement needs a second chart type these four
+  inline-SVG components cannot express (e.g. a true multi-series
+  time-series with zoom, which `sales-chart.tsx` does not attempt), WO-A.2
+  should be scoped and built then, against that requirement — not
+  speculatively now.
+- `10-admin-dashboard.md` itself is not edited by this ADR; it remains the
+  planning document, and its Track A / WO-E.2 text is still accurate as a
+  *plan that was not built*, which is exactly what ADR-019, ADR-020 and
+  this entry each independently confirm.
+
+### Status
+**Accepted.**

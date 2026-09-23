@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **37** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **39** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -24,7 +24,7 @@ order" is a new file, not an edit to checkout.
 ## Attention list
 
 - Events **nothing publishes**: `crm.contact_upserted`, `crm.lead_created`
-- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `bom.production_completed`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`
+- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`
 
 ## Summary
 
@@ -52,8 +52,8 @@ order" is a new file, not an edit to checkout.
 | `catalog.product_price_changed` | `ProductPriceChanged` | `catalog` | `catalog`, `tradingpartners` |
 | `inventory.stock_replenished` | `StockReplenished` | `inventory` | `orders` |
 | `inventory.stock_variance_recorded` | `StockVarianceRecorded` | `accounting`, `inventory` | `accounting` |
-| `purchasing.goods_received` | `GoodsReceived` | `purchasing` | `bom` |
-| `bom.production_completed` | `BomProductionCompleted` | `bom` | _none_ |
+| `purchasing.goods_received` | `GoodsReceived` | `purchasing` | `bom`, `purchasing` |
+| `bom.production_completed` | `BomProductionCompleted` | `bom` | `bom` |
 | `purchasing.supplier_bill_raised` | `SupplierBillRaised` | `accounting`, `purchasing` | `accounting` |
 | `purchasing.supplier_bill_paid` | `SupplierBillPaid` | `accounting`, `purchasing` | `accounting` |
 | `transfers.inter_branch_invoiced` | `InterBranchTransferInvoiced` | `accounting`, `transfers` | `accounting` |
@@ -65,8 +65,10 @@ order" is a new file, not an edit to checkout.
 | `identity_verification.approved` | `IdentityVerificationApproved` | `identity-verification` | _none_ |
 | `identity_verification.rejected` | `IdentityVerificationRejected` | `identity-verification` | _none_ |
 | `identity_verification.expired` | `IdentityVerificationExpired` | `identity-verification` | _none_ |
-| `finance.expense_recorded` | `ExpenseRecorded` | `accounting`, `finance` | `accounting` |
+| `finance.expense_recorded` | `ExpenseRecorded` | `accounting`, `finance` | `accounting`, `finance` |
 | `finance.order_economics_computed` | `OrderEconomicsComputed` | `finance` | _none_ |
+| `payroll.run_posted` | `PayrollRunPosted` | `accounting`, `payroll` | `accounting` |
+| `payroll.adjustment_posted` | `PayrollAdjustmentPosted` | `accounting`, `payroll` | `accounting` |
 
 
 ## Detail
@@ -78,8 +80,8 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:48` | `accounting` |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:155` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:50` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:157` | `accounting` |
 | `apps/api/src/modules/orders/orders.service.ts:339` | `orders` |
 | `apps/api/src/modules/orders/orders.service.ts:542` | `orders` |
 
@@ -89,7 +91,7 @@ order" is a new file, not an edit to checkout.
 | Handler | Where | Module |
 |---|---|---|
 | `handle()` | `apps/api/src/core/events/on-domain-event.decorator.ts:7` | core/`events` |
-| `onOrderPlaced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:46` | `accounting` |
+| `onOrderPlaced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:48` | `accounting` |
 | `onOrderPlaced()` | `apps/api/src/modules/crm/order.subscriber.ts:27` | `crm` |
 | `onOrderPlaced()` | `apps/api/src/modules/orders/notification.subscriber.ts:70` | `orders` |
 | `onOrderPlaced()` | `apps/api/src/modules/orders/order-replication.listener.ts:48` | `orders` |
@@ -138,8 +140,8 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:115` | `accounting` |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:152` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:117` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:154` | `accounting` |
 | `apps/api/src/modules/orders/orders.service.ts:530` | `orders` |
 | `apps/api/src/modules/payments/payments.service.ts:188` | `payments` |
 | `apps/api/src/modules/payments/payments.service.ts:257` | `payments` |
@@ -149,7 +151,7 @@ order" is a new file, not an edit to checkout.
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPaymentSucceeded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:113` | `accounting` |
+| `onPaymentSucceeded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:115` | `accounting` |
 | `onPaymentSucceeded()` | `apps/api/src/modules/payments/notification.subscriber.ts:34` | `payments` |
 
 ### `payment.failed`
@@ -196,7 +198,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPaymentRefunded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:150` | `accounting` |
+| `onPaymentRefunded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:152` | `accounting` |
 | `onPaymentRefunded()` | `apps/api/src/modules/payments/notification.subscriber.ts:118` | `payments` |
 
 ### `stitching.job_created`
@@ -342,7 +344,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:361` | `inventory` |
+| `apps/api/src/modules/inventory/inventory.service.ts:367` | `inventory` |
 
 
 **Subscribed by**
@@ -359,7 +361,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:379` | `inventory` |
+| `apps/api/src/modules/inventory/inventory.service.ts:385` | `inventory` |
 
 
 **Subscribed by**
@@ -413,7 +415,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:396` | `inventory` |
+| `apps/api/src/modules/inventory/inventory.service.ts:402` | `inventory` |
 
 
 **Subscribed by**
@@ -430,15 +432,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:279` | `accounting` |
-| `apps/api/src/modules/inventory/inventory.service.ts:347` | `inventory` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:281` | `accounting` |
+| `apps/api/src/modules/inventory/inventory.service.ts:353` | `inventory` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onStockVarianceRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:277` | `accounting` |
+| `onStockVarianceRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:279` | `accounting` |
 
 ### `purchasing.goods_received`
 
@@ -455,6 +457,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Handler | Where | Module |
 |---|---|---|
 | `recomputeAffectedRecipes()` | `apps/api/src/modules/bom/bom.listener.ts:22` | `bom` |
+| `onGoodsReceived()` | `apps/api/src/modules/purchasing/goods-receipt-replication.listener.ts:70` | `purchasing` |
 
 ### `bom.production_completed`
 
@@ -469,7 +472,9 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 **Subscribed by**
 
-_Nothing subscribes. Publishing it is a no-op today._
+| Handler | Where | Module |
+|---|---|---|
+| `onBomProductionCompleted()` | `apps/api/src/modules/bom/bom-production-replication.listener.ts:38` | `bom` |
 
 ### `purchasing.supplier_bill_raised`
 
@@ -478,15 +483,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:176` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:573` | `purchasing` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:178` | `accounting` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:576` | `purchasing` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSupplierBillRaised()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:174` | `accounting` |
+| `onSupplierBillRaised()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:176` | `accounting` |
 
 ### `purchasing.supplier_bill_paid`
 
@@ -495,15 +500,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:226` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:637` | `purchasing` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:228` | `accounting` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:640` | `purchasing` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSupplierBillPaid()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:224` | `accounting` |
+| `onSupplierBillPaid()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:226` | `accounting` |
 
 ### `transfers.inter_branch_invoiced`
 
@@ -513,15 +518,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:332` | `accounting` |
-| `apps/api/src/modules/transfers/transfers.service.ts:278` | `transfers` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:334` | `accounting` |
+| `apps/api/src/modules/transfers/transfers.service.ts:300` | `transfers` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onInterBranchTransferInvoiced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:330` | `accounting` |
+| `onInterBranchTransferInvoiced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:332` | `accounting` |
 
 ### `analytics.supplier_digest_ready`
 
@@ -646,16 +651,17 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:392` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:394` | `accounting` |
 | `apps/api/src/modules/finance/finance.service.ts:252` | `finance` |
-| `apps/api/src/modules/finance/finance.service.ts:530` | `finance` |
+| `apps/api/src/modules/finance/finance.service.ts:532` | `finance` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onExpenseRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:390` | `accounting` |
+| `onExpenseRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:392` | `accounting` |
+| `onExpenseRecorded()` | `apps/api/src/modules/finance/expense-replication.listener.ts:38` | `finance` |
 
 ### `finance.order_economics_computed`
 
@@ -671,6 +677,42 @@ _Nothing subscribes. Publishing it is a no-op today._
 **Subscribed by**
 
 _Nothing subscribes. Publishing it is a no-op today._
+
+### `payroll.run_posted`
+
+> PayRunService.post() (docs/implementation/19-payroll.md WO-19.4) — the eighth posting rule; fires whether or not `accounting` is on, same idiom as ExpenseRecorded.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:439` | `accounting` |
+| `apps/api/src/modules/payroll/pay-run.service.ts:186` | `payroll` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onPayrollRunPosted()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:437` | `accounting` |
+
+### `payroll.adjustment_posted`
+
+> PayRunService.postAdjustment() (docs/implementation/19-payroll.md WO-19.5) — the overpayment/correction reversal path, a distinct postable fact from the original run it corrects.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:490` | `accounting` |
+| `apps/api/src/modules/payroll/pay-run.service.ts:237` | `payroll` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onPayrollAdjustmentPosted()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:488` | `accounting` |
 
 
 ---

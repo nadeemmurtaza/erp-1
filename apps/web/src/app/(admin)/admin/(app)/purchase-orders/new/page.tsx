@@ -32,6 +32,11 @@ export default function NewPurchaseOrderPage() {
   const [lines, setLines] = useState<Array<{ variantId: string; qty: number; cost: number; sku: string; name: string }>>([]);
   const [freightCost, setFreightCost] = useState(0);
   const [dutyCost, setDutyCost] = useState(0);
+  // RETAIL-ERP.md R13 (WO-23.3): defaults to BRAND, same as the API — ORG
+  // names org-central buying (received into an org warehouse and pushed
+  // down as transfers, R13); BRANCH is gated server-side by the brand's own
+  // allowBranchLocalPurchasing switch.
+  const [scopeLevel, setScopeLevel] = useState<'ORG' | 'BRAND' | 'BRANCH'>('BRAND');
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -82,6 +87,7 @@ export default function NewPurchaseOrderPage() {
           supplierId,
           freightCost,
           dutyCost,
+          scopeLevel,
           items: lines.map(l => ({
             variantId: l.variantId,
             quantityOrdered: l.qty,
@@ -133,6 +139,20 @@ export default function NewPurchaseOrderPage() {
             setLines([]);
           }}
         />
+
+        <label htmlFor="po-scope" className="mb-2 mt-4 block text-sm font-medium text-neutral-900">
+          Scope
+        </label>
+        <select
+          id="po-scope"
+          className="field-input max-w-md"
+          value={scopeLevel}
+          onChange={(e) => setScopeLevel(e.target.value as 'ORG' | 'BRAND' | 'BRANCH')}
+        >
+          <option value="BRAND">Brand (default)</option>
+          <option value="ORG">Organization — central purchasing for several brands</option>
+          <option value="BRANCH">Branch — local purchasing, if this brand allows it</option>
+        </select>
       </div>
 
       {supplierId && (

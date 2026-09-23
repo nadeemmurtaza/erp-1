@@ -41,4 +41,5 @@ const FALLBACK: DocumentPrefixes = {
   stockTransfer: 'TRF',
   interBranchInvoice: 'IBI',
   productionRun: 'PR',
+  payRun: 'PAY',
 };

@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { STITCHING_STAGES, formatDate, type StitchingStage } from '@newax/shared';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { ROUTES } from '@/constants/routes';
 import { StageBadge } from '@/components/admin/stage-badge';
 import { Loading } from '@/components/ui';
 import {
@@ -60,11 +61,18 @@ export default function TailorQueuePage() {
 
   return (
     <>
-      <h1 className="mb-1 text-xl font-semibold text-neutral-900">Tailor queue</h1>
-      <p className="mb-6 text-sm text-neutral-900/60">
-        Every garment in the workshop, soonest due first. A job moves one stage at a
-        time; sending one back needs a reason.
-      </p>
+      <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="mb-1 text-xl font-semibold text-neutral-900">Tailor queue</h1>
+          <p className="text-sm text-neutral-900/60">
+            Every garment in the workshop, soonest due first. A job moves one stage at a
+            time; sending one back needs a reason.
+          </p>
+        </div>
+        <Link href={ROUTES.admin.workshopInsights} className="btn-secondary">
+          Insights
+        </Link>
+      </div>
 
       {workload ? (
         <div className="mb-6 grid gap-3 sm:grid-cols-3 lg:grid-cols-6">

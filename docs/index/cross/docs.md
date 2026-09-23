@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**267** markdown documents. These explain **why**; this index only says **where**.
+**268** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2046,7 +2046,22 @@ _no second-level headings_
 - Work orders  <sub>:18</sub>
 - Out of scope (for now)  <sub>:54</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>1,238 lines</sub>
+### `docs/implementation/19-payroll.md`  <sub>516 lines</sub>
+
+- Scope decision, taken with the owner  <sub>:8</sub>
+- Why `User`, not a new `Employee` table  <sub>:38</sub>
+- Permissions  <sub>:51</sub>
+- Work orders  <sub>:83</sub>
+- WO-19.1 — Schema, module skeleton, permissions, chart-of-accounts  <sub>:97</sub>
+- WO-19.2 — Compensation rates and the salary calculator  <sub>:339</sub>
+- WO-19.3 — Leave types, balances, accrual and requests  <sub>:382</sub>
+- WO-19.4 — Pay-run build, approve, post — and GL posting  <sub>:411</sub>
+- WO-19.5 — Overpayment adjustments  <sub>:444</sub>
+- WO-19.6 — Admin screens, nav, self-service  <sub>:464</sub>
+- WO-19.7 — Tests and full verification  <sub>:494</sub>
+- Not modelled in this phase (named, not silently dropped)  <sub>:505</sub>
+
+### `docs/implementation/DECISIONS.md`  <sub>1,640 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2071,6 +2086,9 @@ _no second-level headings_
 - ADR-020 — `bom` (Track C) ships as a new module, `production` stays as-is  <sub>:859</sub>
 - ADR-021 — WO-23.3's scopeLevel pattern: a new core-owned enum, fail-closed on the money switch, and originNodeId as the node-prefix string  <sub>:948</sub>
 - ADR-022 — WO-23.3b enforces `allowBranchLocalPurchasing` through a new BranchPolicyRegistry extension point, keyed off the caller's own AdminScope grant  <sub>:1123</sub>
+- ADR-023 — WO-23.3c/e: Node.retailBrandId, a separate PolicyQuarantine table, and apply() drawing exactly one distinction per entity  <sub>:1239</sub>
+- ADR-024 — WO-23.3d: org-central purchasing recognized narrowly in `resolveTransferSettlement()`; landed cost snapshotted at dispatch but never re-fed into `ProductVariant.costPrice`  <sub>:1374</sub>
+- ADR-025 — WO-E.2 is not executed: its own prerequisites (WO-A.1, WO-A.2) were never built, and building them now would be the same speculative-infrastructure trap ADR-019 already rejected  <sub>:1518</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>266 lines</sub>
 

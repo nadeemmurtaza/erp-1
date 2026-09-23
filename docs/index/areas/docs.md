@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-247 files · 35,981 lines
+248 files · 36,899 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -23,7 +23,7 @@ has a bug.
 | `docs/brand/logo` | 6 | 0 | asset |
 | `docs/design` | 17 | 3,510 | doc |
 | `docs/erp-lenses` | 195 | 21,167 | doc |
-| `docs/implementation` | 27 | 10,769 | doc, file |
+| `docs/implementation` | 28 | 11,687 | doc, file |
 
 
 
@@ -33,7 +33,7 @@ has a bug.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `docs/implementation/10-admin-dashboard.md` | 1,843 | doc |  |
-| `docs/implementation/DECISIONS.md` | 1,238 | doc |  |
+| `docs/implementation/DECISIONS.md` | 1,640 | doc |  |
 | `docs/implementation/RETAIL-ERP.md` | 1,083 | doc |  |
 | `docs/erp-lenses/_agent-cluster.md` | 944 | doc |  |
 | `docs/implementation/01-inventory-purchasing-cost.md` | 937 | doc |  |
@@ -44,9 +44,9 @@ has a bug.
 | `docs/erp-lenses/_conflicts.md` | 645 | doc |  |
 | `docs/erp-lenses/_index.md` | 548 | doc |  |
 | `docs/implementation/WO-22-lens-workflow-results.md` | 539 | doc |  |
+| `docs/implementation/19-payroll.md` | 516 | doc |  |
 | `docs/implementation/00-HOUSE-RULES.md` | 496 | doc |  |
 | `docs/implementation/03-variants-sku-seo.md` | 471 | doc |  |
-| `docs/email.md` | 438 | doc |  |
 
 
 ---

@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 514 tracked files in `apps/api`, by directory.
+All 518 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -1007,11 +1007,20 @@ All 514 tracked files in `apps/api`, by directory.
 | `easypaisa.provider.ts` | module | 184 |  |
 | `jazzcash.provider.ts` | module | 184 |  |
 
-### `apps/api/src/modules/payroll` (1)
+### `apps/api/src/modules/payroll` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `payroll.module.ts` | nest module | 11 |  |
+| `payroll.controller.ts` | controller | 71 |  |
+| `payroll.module.ts` | nest module | 17 |  |
+| `payroll.service.spec.ts` | unit test | 164 |  |
+| `payroll.service.ts` | service | 146 |  |
+
+### `apps/api/src/modules/payroll/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `compensation-rate.dto.ts` | dto | 40 |  |
 
 ### `apps/api/src/modules/pos` (16)
 

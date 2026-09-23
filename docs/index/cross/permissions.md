@@ -22,7 +22,7 @@ the *catalogue*, not any particular deployment's grants.
 | `Roles granted at seed` = none | `ROLE_PERMISSION_SEED` gives it to no role, so no live user holds it unless an admin grants it by hand — the `seedPermissions()` vs `seedRoles()` trap CLAUDE.md names |
 | `UI call sites` = — | nothing in the admin UI gates on it; if a screen needs it, the screen is missing |
 
-- Permissions enforcing **no route**: **5** — `stitching.jobs.manage_own`, `stitching.jobs.manage_all`, `payroll.view_own`, `payroll.view`, `payroll.manage`
+- Permissions enforcing **no route**: **2** — `stitching.jobs.manage_own`, `stitching.jobs.manage_all`
 - Permissions **no seeded role grants**: **0**
 - Keys required by a route but **not in the catalogue**: **0**
 
@@ -123,9 +123,9 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `payroll.view_own` | View their own compensation, leave balance and payslips | low | **0 — enforces nothing** | — | TAILOR, STAFF, ADMIN |
-| `payroll.view` | View every employee's compensation, leave and pay-run data | medium | **0 — enforces nothing** | — | ADMIN |
-| `payroll.manage` | Set compensation rates, decide leave requests, and build, approve and post pay… | medium | **0 — enforces nothing** | — | ADMIN |
+| `payroll.view_own` | View their own compensation, leave balance and payslips | low | 1 | — | TAILOR, STAFF, ADMIN |
+| `payroll.view` | View every employee's compensation, leave and pay-run data | medium | 2 | — | ADMIN |
+| `payroll.manage` | Set compensation rates, decide leave requests, and build, approve and post pay… | medium | 1 | — | ADMIN |
 
 
 ## Role → permission, as seeded

@@ -3,24 +3,33 @@
 
 # Module: `payroll`
 
-Pack **core** · enabled by the `MODULES` allowlist · 1 files
+Pack **core** · enabled by the `MODULES` allowlist · 5 files
 
 
 
 Source: `apps/api/src/modules/payroll/`
 
-## Files (1 · 11 lines)
+## Files (5 · 438 lines)
 
-All paths relative to `apps/api/src/modules/payroll`.
+All paths relative to `apps/api/src/modules/payroll/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `payroll.module.ts` | nest module | 11 | 1 | Compensation, leave and pay runs (docs/implementation/19-payroll.md). |
+| `compensation-rate.dto.ts` | dto | 40 | 2 |  |
+| `payroll.controller.ts` | controller | 71 | 1 | Compensation rates and the salary calculator (docs/implementation/ 19-payroll.md WO-19.2). |
+| `payroll.module.ts` | nest module | 17 | 1 |  |
+| `payroll.service.spec.ts` | unit test | 164 | — |  |
+| `payroll.service.ts` | service | 146 | 3 |  |
 
 
-## HTTP routes (0)
+## HTTP routes (4)
 
-_This unit exposes no HTTP routes._
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/payroll/compensation/:userId` | `payroll.view` | `PayrollController.compensation` :33 | One employee's current rate and rate history. |
+| PATCH | `/admin/payroll/compensation/:userId` | `payroll.manage` | `PayrollController.setCompensation` :45 | Set a new effective-dated compensation rate, closing the previous one. |
+| GET | `/admin/payroll/compensation/:userId/preview` | `payroll.view` | `PayrollController.previewGross` :63 | Preview the gross salary calculation for a period, no write. |
+| GET | `/admin/payroll/compensation/me` | `payroll.view_own` | `PayrollController.myCompensation` :22 | The caller's own current rate and rate history. |
 
 
 ## Domain events
@@ -61,23 +70,39 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 **`PayrollModule`** (`payroll.module.ts`)
 - imports: —
-- controllers: —
-- providers: —
-- exports: —
+- controllers: `PayrollController`
+- providers: `PayrollService`
+- exports: `PayrollService`
 
 
+## Reaches out to
+
+- core `auth`
+- core `prisma`
+
+A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
+either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
+check there before adding another.
 
 
-## Tests (0)
+## Tests (1)
 
-_No spec files in this unit._
+| Spec | Cases | Covers |
+|---|---|---|
+| `payroll.service.spec.ts` | 14 | PayrollService · setCompensationRate · calculateGross — MONTHLY · calculateGross — HOURLY / COMMISSION honesty · requir… |
 
 
 ## Every export in this unit
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `PayrollModule` | class | `payroll.module.ts:10` | Compensation, leave and pay runs (docs/implementation/19-payroll.md). |
+| `SetCompensationRateDto` | class | `compensation-rate.dto.ts:6` |  |
+| `GrossPreviewQueryDto` | class | `compensation-rate.dto.ts:21` |  |
+| `PayrollController` | class | `payroll.controller.ts:16` | Compensation rates and the salary calculator (docs/implementation/ 19-payroll.md WO-19.2). |
+| `PayrollModule` | class | `payroll.module.ts:16` |  |
+| `GrossCalculationInput` | interface | `payroll.service.ts:5` |  |
+| `GrossCalculationResult` | interface | `payroll.service.ts:12` |  |
+| `PayrollService` | class | `payroll.service.ts:25` | Compensation rates and the salary calculator (docs/implementation/ 19-payroll.md WO-19.2). |
 
 
 ---

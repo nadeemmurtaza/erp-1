@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **338** endpoints across **59** controllers, with the access rule that actually guards each one.
+All **342** endpoints across **60** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -404,6 +404,15 @@ never authorization.
 | POST | `/payments/:paymentId/receipt` | **PUBLIC** | `PaymentsController.uploadReceipt` | Upload a bank-transfer receipt for staff to approve |
 | POST | `/payments/callback/:provider` | **PUBLIC** | `PaymentsController.callback` | Gateway return URL — verifies and settles a payment |
 | GET | `/payments/methods` | **PUBLIC** | `PaymentsController.methods` | Payment methods currently accepted |
+
+### [`payroll`](../modules/payroll.md) (4)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/payroll/compensation/:userId` | `payroll.view` | `PayrollController.compensation` | One employee's current rate and rate history. |
+| PATCH | `/admin/payroll/compensation/:userId` | `payroll.manage` | `PayrollController.setCompensation` | Set a new effective-dated compensation rate, closing the previous one. |
+| GET | `/admin/payroll/compensation/:userId/preview` | `payroll.view` | `PayrollController.previewGross` | Preview the gross salary calculation for a period, no write. |
+| GET | `/admin/payroll/compensation/me` | `payroll.view_own` | `PayrollController.myCompensation` | The caller's own current rate and rate history. |
 
 ### [`pos`](../modules/pos.md) (15)
 

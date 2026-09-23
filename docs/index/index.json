@@ -3,10 +3,10 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1240,
-    "lines": 196139,
-    "routes": 338,
-    "controllers": 59,
+    "files": 1244,
+    "lines": 196591,
+    "routes": 342,
+    "controllers": 60,
     "models": 133,
     "enums": 58,
     "migrations": 60,
@@ -14,7 +14,7 @@
     "permissions": 44,
     "screens": 147,
     "crons": 8,
-    "specs": 126,
+    "specs": 127,
     "designLaws": 150
   },
   "designLaws": [
@@ -1083,9 +1083,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 514,
-      "lines": 71317,
-      "bytes": 2606689,
+      "files": 518,
+      "lines": 71744,
+      "bytes": 2623249,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1108,8 +1108,8 @@
     },
     "docs": {
       "files": 248,
-      "lines": 36863,
-      "bytes": 2296713,
+      "lines": 36888,
+      "bytes": 2298325,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -1458,9 +1458,13 @@
       "alwaysOn": false,
       "inRegistry": true,
       "files": [
-        "apps/api/src/modules/payroll/payroll.module.ts"
+        "apps/api/src/modules/payroll/dto/compensation-rate.dto.ts",
+        "apps/api/src/modules/payroll/payroll.controller.ts",
+        "apps/api/src/modules/payroll/payroll.module.ts",
+        "apps/api/src/modules/payroll/payroll.service.spec.ts",
+        "apps/api/src/modules/payroll/payroll.service.ts"
       ],
-      "routes": 0,
+      "routes": 4,
       "page": "docs/index/modules/payroll.md"
     },
     {
@@ -4404,6 +4408,70 @@
       "public": false,
       "authOnly": false,
       "summary": "Payments waiting on a human decision"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/compensation/:userId",
+      "module": "payroll",
+      "controller": "PayrollController",
+      "handler": "compensation",
+      "file": "apps/api/src/modules/payroll/payroll.controller.ts",
+      "line": 33,
+      "access": "payroll.view",
+      "permissions": [
+        "payroll.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One employee's current rate and rate history."
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/payroll/compensation/:userId",
+      "module": "payroll",
+      "controller": "PayrollController",
+      "handler": "setCompensation",
+      "file": "apps/api/src/modules/payroll/payroll.controller.ts",
+      "line": 45,
+      "access": "payroll.manage",
+      "permissions": [
+        "payroll.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Set a new effective-dated compensation rate, closing the previous one."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/compensation/:userId/preview",
+      "module": "payroll",
+      "controller": "PayrollController",
+      "handler": "previewGross",
+      "file": "apps/api/src/modules/payroll/payroll.controller.ts",
+      "line": 63,
+      "access": "payroll.view",
+      "permissions": [
+        "payroll.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Preview the gross salary calculation for a period, no write."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/compensation/me",
+      "module": "payroll",
+      "controller": "PayrollController",
+      "handler": "myCompensation",
+      "file": "apps/api/src/modules/payroll/payroll.controller.ts",
+      "line": 22,
+      "access": "payroll.view_own",
+      "permissions": [
+        "payroll.view_own"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The caller's own current rate and rate history."
     },
     {
       "method": "GET",
@@ -7934,7 +8002,9 @@
       "label": "View their own compensation, leave balance and payslips",
       "category": "Payroll",
       "sensitivity": "low",
-      "routes": [],
+      "routes": [
+        "GET /admin/payroll/compensation/me"
+      ],
       "uiSites": 0,
       "roles": [
         "TAILOR",
@@ -7948,7 +8018,10 @@
       "label": "View every employee's compensation, leave and pay-run data",
       "category": "Payroll",
       "sensitivity": "medium",
-      "routes": [],
+      "routes": [
+        "GET /admin/payroll/compensation/:userId",
+        "GET /admin/payroll/compensation/:userId/preview"
+      ],
       "uiSites": 0,
       "roles": [
         "ADMIN"
@@ -7960,7 +8033,9 @@
       "label": "Set compensation rates, decide leave requests, and build, approve and post pay runs",
       "category": "Payroll",
       "sensitivity": "medium",
-      "routes": [],
+      "routes": [
+        "PATCH /admin/payroll/compensation/:userId"
+      ],
       "uiSites": 0,
       "roles": [
         "ADMIN"
@@ -25159,6 +25234,19 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/payroll/payroll.service.spec.ts",
+      "module": "payroll",
+      "kind": "unit test",
+      "cases": 14,
+      "describes": [
+        "PayrollService",
+        "setCompensationRate",
+        "calculateGross — MONTHLY",
+        "calculateGross — HOURLY / COMMISSION honesty",
+        "requireUser"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/pos/pos-catalog.service.spec.ts",
       "module": "pos",
       "kind": "unit test",
@@ -32588,17 +32676,86 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/payroll/dto/compensation-rate.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 40,
+      "bytes": 970,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SetCompensationRateDto",
+          "kind": "class",
+          "line": 6
+        },
+        {
+          "name": "GrossPreviewQueryDto",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/payroll.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 71,
+      "bytes": 2709,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PayrollController",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/payroll/payroll.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 11,
-      "bytes": 380,
+      "lines": 17,
+      "bytes": 545,
       "doc": "",
       "symbols": [
         {
           "name": "PayrollModule",
           "kind": "class",
-          "line": 10
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/payroll.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 164,
+      "bytes": 6863,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/payroll/payroll.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 146,
+      "bytes": 5853,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GrossCalculationInput",
+          "kind": "interface",
+          "line": 5
+        },
+        {
+          "name": "GrossCalculationResult",
+          "kind": "interface",
+          "line": 12
+        },
+        {
+          "name": "PayrollService",
+          "kind": "class",
+          "line": 25
         }
       ]
     },
@@ -43249,8 +43406,8 @@
       "path": "docs/implementation/19-payroll.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 480,
-      "bytes": 21258,
+      "lines": 505,
+      "bytes": 22870,
       "doc": "",
       "symbols": []
     },

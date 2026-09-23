@@ -277,7 +277,7 @@ All 248 tracked files in `docs/*`, by directory.
 | `17-inventory-locations.md` | doc | 254 |  |
 | `18-identity-verification.md` | doc | 143 |  |
 | `18-trading-partner-network.md` | doc | 61 |  |
-| `19-payroll.md` | doc | 480 |  |
+| `19-payroll.md` | doc | 505 |  |
 | `DECISIONS.md` | doc | 1640 |  |
 | `ENTERPRISE-SCALE.md` | doc | 266 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |

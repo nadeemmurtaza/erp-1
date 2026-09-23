@@ -343,14 +343,39 @@ effectiveFrom)` closes the previous rate's `effectiveTo` to the new
 row's `effectiveFrom` in the same transaction — never two open-ended rows
 for one user.
 
-`PayrollService.calculateGross(userId, periodStart, periodEnd)`: reads the
-`CompensationRate` row(s) overlapping the period (a mid-period raise
-splits the period proportionally between the old and new rate — the exact
-gap lens-38 names); for `COMMISSION` basis, adds commission computed from
-`OrderEconomicsService` (WO-B.3) attributed to that user over the period.
-Pure function over its inputs — no `prisma.` write, so a dry run (lens's
-own "Click the number" / "Dry run before live" requirement) can call it
-read-only from an admin preview screen before a pay run is ever built.
+`PayrollService.calculateGross(userId, periodStart, periodEnd, input?)`:
+reads the `CompensationRate` row(s) overlapping the period. `MONTHLY`
+prorates by days-in-force ÷ days-in-period when a mid-period raise splits
+the period between the old and new rate (the exact gap lens-38 names) —
+fully computable from `CompensationRate` alone, no further input needed.
+
+**Checked before writing this, and worth stating plainly**: `HOURLY` and
+`COMMISSION` cannot be computed automatically today, for the same reason
+lens 38 itself gives for the wage table's own absence — the source fact
+does not exist. `PosShift.openedByUserId`/`openedAt`/`closedAt` is the
+only hours-adjacent data in this codebase, and it exists only for staff
+who operate a till, only when the off-by-default `pos` module is enabled
+— using it as HOURLY's hours source would make a payroll figure silently
+depend on an optional module, computing zero hours (not an error, a wrong
+number) the moment `pos` is off. `Order` carries no salesperson/attribution
+column at all — `userId` is the *customer* — so `COMMISSION` has no order
+to attribute to a payee, not even partially. Inventing either source now
+would be exactly the "narrow slice presented as complete" lens 38 already
+warns against (its own worked example: "a payroll screen sums PosShift/
+roster hours per user and calls it done").
+
+So `calculateGross` takes `input?: { hoursWorked?: number; commissionMinor?:
+number }` — the caller (the pay-run builder, WO-19.4, or a future admin
+screen) supplies the figure for an `HOURLY`/`COMMISSION` employee; the
+function itself never derives one from `PosShift` or `Order`. Omitted, both
+default to 0 — an unmistakable, visibly-wrong number on the pay-run
+preview (a $0 line for an hourly worker) rather than a plausible-looking
+wrong one silently computed from an incomplete signal. A real timesheet
+or sales-attribution capability is future work, named here so it is not
+mistaken for done. Still a pure function over its inputs — no `prisma.`
+write, so a dry run (lens's own "Click the number" / "Dry run before
+live" requirement) can call it read-only from an admin preview screen
+before a pay run is ever built.
 
 ---
 

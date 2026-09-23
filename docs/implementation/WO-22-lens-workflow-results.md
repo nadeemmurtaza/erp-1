@@ -1,4 +1,4 @@
-# Enterprise-Scale Feature-Scope Lenses (WO-22 Workflow)
+﻿# Enterprise-Scale Feature-Scope Lenses (WO-22 Workflow)
 
 Workflow run: `wf_8cc42e30-ada` — 41 agents spawned; 10 completed; 31 failed on session limits / DNS. Results captured for manual integration.
 

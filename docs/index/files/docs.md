@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 247 tracked files in `docs/*`, by directory.
+All 248 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -253,7 +253,7 @@ All 247 tracked files in `docs/*`, by directory.
 | `52g-generate-gap.md` | doc | 26 |  |
 | `52h-harden-gap.md` | doc | 40 |  |
 
-### `docs/implementation` (27)
+### `docs/implementation` (28)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -277,6 +277,7 @@ All 247 tracked files in `docs/*`, by directory.
 | `17-inventory-locations.md` | doc | 254 |  |
 | `18-identity-verification.md` | doc | 143 |  |
 | `18-trading-partner-network.md` | doc | 61 |  |
+| `19-payroll.md` | doc | 480 |  |
 | `DECISIONS.md` | doc | 1640 |  |
 | `ENTERPRISE-SCALE.md` | doc | 266 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |

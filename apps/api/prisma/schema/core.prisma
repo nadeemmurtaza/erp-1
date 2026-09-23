@@ -87,6 +87,20 @@ model User {
   bomRecipesCreated       BomRecipe[]              @relation("BomRecipeCreator")
   bomProductionRuns       BomProductionRun[]       @relation("BomProductionOperator")
   policyQuarantinesResolved PolicyQuarantine[]     @relation("PolicyQuarantineResolver")
+  /// Payroll (docs/implementation/19-payroll.md) — one User is both the
+  /// payee (compensationRates, leaveBalances, ...) and, for an ADMIN,
+  /// possibly the actor who set a rate or decided a leave request; the two
+  /// relation names below keep those two roles distinct on the same model.
+  compensationRates         CompensationRate[]
+  compensationRatesCreated  CompensationRate[]     @relation("CompensationRateCreator")
+  leaveBalances             LeaveBalance[]
+  leaveRequests             LeaveRequest[]         @relation("LeaveRequestUser")
+  leaveRequestsDecided      LeaveRequest[]         @relation("LeaveRequestDecider")
+  payRunsApproved           PayRun[]               @relation("PayRunApprover")
+  payRunsCreated            PayRun[]               @relation("PayRunCreator")
+  payRunLines               PayRunLine[]
+  payRunAdjustments         PayRunAdjustment[]
+  payRunAdjustmentsCreated  PayRunAdjustment[]      @relation("PayRunAdjustmentCreator")
 
   @@index([role])
   @@index([createdAt])

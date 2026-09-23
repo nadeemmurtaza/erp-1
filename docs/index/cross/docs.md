@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**267** markdown documents. These explain **why**; this index only says **where**.
+**268** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2045,6 +2045,21 @@ _no second-level headings_
 
 - Work orders  <sub>:18</sub>
 - Out of scope (for now)  <sub>:54</sub>
+
+### `docs/implementation/19-payroll.md`  <sub>480 lines</sub>
+
+- Scope decision, taken with the owner  <sub>:8</sub>
+- Why `User`, not a new `Employee` table  <sub>:38</sub>
+- Permissions  <sub>:51</sub>
+- Work orders  <sub>:83</sub>
+- WO-19.1 — Schema, module skeleton, permissions, chart-of-accounts  <sub>:97</sub>
+- WO-19.2 — Compensation rates and the salary calculator  <sub>:339</sub>
+- WO-19.3 — Leave types, balances, accrual and requests  <sub>:357</sub>
+- WO-19.4 — Pay-run build, approve, post — and GL posting  <sub>:386</sub>
+- WO-19.5 — Overpayment adjustments  <sub>:419</sub>
+- WO-19.6 — Admin screens, nav, self-service  <sub>:439</sub>
+- WO-19.7 — Tests and full verification  <sub>:458</sub>
+- Not modelled in this phase (named, not silently dropped)  <sub>:469</sub>
 
 ### `docs/implementation/DECISIONS.md`  <sub>1,640 lines</sub>
 

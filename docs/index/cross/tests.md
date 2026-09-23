@@ -20,6 +20,7 @@ such exemption.
 
 - [`addresses`](../modules/addresses.md)
 - [`cart`](../modules/cart.md)
+- [`payroll`](../modules/payroll.md)
 - [`reports`](../modules/reports.md)
 - [`settings`](../modules/settings.md)
 - [`stitching`](../modules/stitching.md)

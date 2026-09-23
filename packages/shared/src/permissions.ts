@@ -237,6 +237,24 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'low',
   },
   {
+    key: 'payroll.view_own',
+    label: 'View their own compensation, leave balance and payslips',
+    category: 'Payroll',
+    sensitivity: 'low',
+  },
+  {
+    key: 'payroll.view',
+    label: "View every employee's compensation, leave and pay-run data",
+    category: 'Payroll',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'payroll.manage',
+    label: 'Set compensation rates, decide leave requests, and build, approve and post pay runs',
+    category: 'Payroll',
+    sensitivity: 'medium',
+  },
+  {
     key: 'marketing.manage',
     label: 'Turn on automated marketing email and set its timing',
     category: 'Administration',
@@ -286,8 +304,8 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'account',
     label: 'Personal account',
-    description: 'What every role holder can do for themselves — granted to every seeded role today.',
-    permissions: ['account.change_own_password'],
+    description: 'What a role holder can do for themselves — account.change_own_password is granted to every seeded role; payroll.view_own only to a role that is actually paid.',
+    permissions: ['account.change_own_password', 'payroll.view_own'],
   },
   {
     key: 'dashboards',
@@ -380,6 +398,12 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     permissions: ['bom.view', 'bom.manage', 'bom.produce'],
   },
   {
+    key: 'payroll',
+    label: 'Payroll',
+    description: "Compensation rates, leave requests, and pay runs — everyone's own view is separate, granted alongside every seeded role.",
+    permissions: ['payroll.view', 'payroll.manage'],
+  },
+  {
     key: 'system-admin',
     label: 'System administration',
     description: 'Settings, roles, user accounts and the audit log — the most sensitive group.',
@@ -403,12 +427,14 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
   CUSTOMER: ['account.change_own_password'],
   TAILOR: [
     'account.change_own_password',
+    'payroll.view_own',
     'stitching.jobs.view_queue',
     'stitching.jobs.change_stage',
     'stitching.jobs.manage_own',
   ],
   STAFF: [
     'account.change_own_password',
+    'payroll.view_own',
     'analytics.view',
     'reports.view',
     'organization.view',
@@ -438,6 +464,9 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
   ],
   ADMIN: [
     'account.change_own_password',
+    'payroll.view_own',
+    'payroll.view',
+    'payroll.manage',
     'analytics.view',
     'reports.view',
     'organization.view',

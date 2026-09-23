@@ -3,15 +3,15 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1236,
-    "lines": 195144,
+    "files": 1240,
+    "lines": 196139,
     "routes": 338,
     "controllers": 59,
-    "models": 124,
-    "enums": 53,
-    "migrations": 59,
+    "models": 133,
+    "enums": 58,
+    "migrations": 60,
     "events": 37,
-    "permissions": 41,
+    "permissions": 44,
     "screens": 147,
     "crons": 8,
     "specs": 126,
@@ -1079,13 +1079,13 @@
     "infra": {
       "files": 55,
       "lines": 27846,
-      "bytes": 1092313,
+      "bytes": 1092337,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 511,
-      "lines": 70831,
-      "bytes": 2588002,
+      "files": 514,
+      "lines": 71317,
+      "bytes": 2606689,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1107,15 +1107,15 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 247,
-      "lines": 36383,
-      "bytes": 2275455,
+      "files": 248,
+      "lines": 36863,
+      "bytes": 2296713,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 55,
-      "lines": 4638,
-      "bytes": 150370,
+      "lines": 4667,
+      "bytes": 151329,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -1451,6 +1451,17 @@
       ],
       "routes": 6,
       "page": "docs/index/modules/payments.md"
+    },
+    {
+      "name": "payroll",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/payroll/payroll.module.ts"
+      ],
+      "routes": 0,
+      "page": "docs/index/modules/payroll.md"
     },
     {
       "name": "pos",
@@ -7919,6 +7930,44 @@
       "inSeed": true
     },
     {
+      "key": "payroll.view_own",
+      "label": "View their own compensation, leave balance and payslips",
+      "category": "Payroll",
+      "sensitivity": "low",
+      "routes": [],
+      "uiSites": 0,
+      "roles": [
+        "TAILOR",
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "payroll.view",
+      "label": "View every employee's compensation, leave and pay-run data",
+      "category": "Payroll",
+      "sensitivity": "medium",
+      "routes": [],
+      "uiSites": 0,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "payroll.manage",
+      "label": "Set compensation rates, decide leave requests, and build, approve and post pay runs",
+      "category": "Payroll",
+      "sensitivity": "medium",
+      "routes": [],
+      "uiSites": 0,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
       "key": "marketing.manage",
       "label": "Turn on automated marketing email and set its timing",
       "category": "Administration",
@@ -8531,7 +8580,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 147,
+      "line": 161,
       "doc": "",
       "fields": [
         {
@@ -8722,7 +8771,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 425,
+      "line": 439,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -8783,7 +8832,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 237,
+      "line": 251,
       "doc": "",
       "fields": [
         {
@@ -10113,6 +10162,94 @@
       ]
     },
     {
+      "name": "CompensationRate",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 21,
+      "doc": "One row per rate change, never updated in place — effectiveFrom is what lets a pay-run built for a past period read the rate actually in force on each of its days, not today's rate applied retroactiv…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "basis",
+          "type": "CompensationBasis",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "effectiveFrom",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "effectiveTo",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "createdBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "payRunLines",
+          "type": "PayRunLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([userId, effectiveFrom])"
+      ]
+    },
+    {
       "name": "Contact",
       "file": "apps/api/prisma/schema/crm.prisma",
       "line": 16,
@@ -10364,7 +10501,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 405,
+      "line": 419,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -10438,7 +10575,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 192,
+      "line": 206,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -10624,7 +10761,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 133,
+      "line": 147,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -12662,6 +12799,300 @@
       ]
     },
     {
+      "name": "LeaveAccrualRun",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 87,
+      "doc": "Idempotency guard for LeaveAccrualCron (WO-19.3) — mirrors FinanceCron's own recurring-expense idempotency (WO-B.2): one row per (leaveTypeId, period) makes a re-run of the same period a no-op instea…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "leaveTypeId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "period",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "ranAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "leaveType",
+          "type": "LeaveType",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([leaveTypeId, period])"
+      ]
+    },
+    {
+      "name": "LeaveBalance",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 69,
+      "doc": "One row per user per leave type — the running balance a request debits and an accrual run credits.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "leaveTypeId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "balance",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "leaveType",
+          "type": "LeaveType",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([userId, leaveTypeId])"
+      ]
+    },
+    {
+      "name": "LeaveRequest",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 106,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "leaveTypeId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startDate",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "endDate",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "days",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "LeaveRequestStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "decidedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "decidedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "decisionNote",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "leaveType",
+          "type": "LeaveType",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "decidedBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([userId, status])"
+      ]
+    },
+    {
+      "name": "LeaveType",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 50,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "kind",
+          "type": "LeaveKind",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "accrualDaysPerRun",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "balances",
+          "type": "LeaveBalance[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requests",
+          "type": "LeaveRequest[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "accrualRuns",
+          "type": "LeaveAccrualRun[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "Location",
       "file": "apps/api/prisma/schema/inventory.prisma",
       "line": 81,
@@ -13952,7 +14383,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 378,
+      "line": 392,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -14190,7 +14621,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 116,
+      "line": 130,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -14395,9 +14826,343 @@
       ]
     },
     {
+      "name": "PayRun",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 141,
+      "doc": "The pay-run document (erp-lenses/38: \"the pay run is a document, not a report\").",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "number",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "periodStart",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodEnd",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "PayRunStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "scopeLevel",
+          "type": "ScopeLevel",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "originNodeId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "postedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lines",
+          "type": "PayRunLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "adjustments",
+          "type": "PayRunAdjustment[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "createdBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([status, periodStart])"
+      ]
+    },
+    {
+      "name": "PayRunAdjustment",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 204,
+      "doc": "erp-lenses/38's \"the overpayment has no way back\": a line-level correction keyed to the original PayRun, postable in the CURRENT open period even when the original run's period is CLOSED — never a fu…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payRunId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "PayRunAdjustmentReason",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "note",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payRun",
+          "type": "PayRun",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "createdBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "name": "PayRunLine",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 166,
+      "doc": "One line per employee per run.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payRunId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "compensationRateId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "grossMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "unpaidLeaveDays",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "unpaidLeaveMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "deductions",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "deductionsMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "netMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payRun",
+          "type": "PayRun",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "compensationRate",
+          "type": "CompensationRate",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([payRunId, userId])"
+      ]
+    },
+    {
+      "name": "PayRunNumberCounter",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 225,
+      "doc": "The eighth document-number counter (document-prefix.ts), same INSERT ...",
+      "fields": [
+        {
+          "name": "year",
+          "type": "Int",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "counter",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 258,
+      "line": 272,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -16333,7 +17098,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 95,
+      "line": 109,
       "doc": "",
       "fields": [
         {
@@ -16778,7 +17543,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 324,
+      "line": 338,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -16836,7 +17601,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 338,
+      "line": 352,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -16890,7 +17655,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 274,
+      "line": 288,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -17002,7 +17767,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 170,
+      "line": 184,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -19595,6 +20360,76 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "compensationRates",
+          "type": "CompensationRate[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "compensationRatesCreated",
+          "type": "CompensationRate[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "leaveBalances",
+          "type": "LeaveBalance[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "leaveRequests",
+          "type": "LeaveRequest[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "leaveRequestsDecided",
+          "type": "LeaveRequest[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "payRunsApproved",
+          "type": "PayRun[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "payRunsCreated",
+          "type": "PayRun[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "payRunLines",
+          "type": "PayRunLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payRunAdjustments",
+          "type": "PayRunAdjustment[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payRunAdjustmentsCreated",
+          "type": "PayRunAdjustment[]",
+          "id": false,
+          "unique": false,
+          "relation": true
         }
       ],
       "indexes": [
@@ -19605,7 +20440,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 295,
+      "line": 309,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -19666,7 +20501,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 353,
+      "line": 367,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -20080,6 +20915,16 @@
       ]
     },
     {
+      "name": "CompensationBasis",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 11,
+      "values": [
+        "MONTHLY",
+        "HOURLY",
+        "COMMISSION"
+      ]
+    },
+    {
       "name": "ContactStatus",
       "file": "apps/api/prisma/schema/crm.prisma",
       "line": 8,
@@ -20094,7 +20939,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 393,
+      "line": 407,
       "values": [
         "IOS",
         "ANDROID",
@@ -20104,7 +20949,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 181,
+      "line": 195,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -20188,6 +21033,28 @@
         "QUOTED",
         "WON",
         "LOST"
+      ]
+    },
+    {
+      "name": "LeaveKind",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 43,
+      "values": [
+        "ANNUAL",
+        "SICK",
+        "UNPAID",
+        "OTHER"
+      ]
+    },
+    {
+      "name": "LeaveRequestStatus",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 99,
+      "values": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED",
+        "CANCELLED"
       ]
     },
     {
@@ -20276,7 +21143,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 367,
+      "line": 381,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -20309,9 +21176,29 @@
       ]
     },
     {
+      "name": "PayRunAdjustmentReason",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 194,
+      "values": [
+        "OVERPAYMENT",
+        "UNDERPAYMENT",
+        "CORRECTION"
+      ]
+    },
+    {
+      "name": "PayRunStatus",
+      "file": "apps/api/prisma/schema/payroll.prisma",
+      "line": 131,
+      "values": [
+        "DRAFT",
+        "APPROVED",
+        "POSTED"
+      ]
+    },
+    {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 286,
+      "line": 300,
       "values": [
         "GRANT",
         "REVOKE"
@@ -21660,6 +22547,31 @@
       "tables": [
         "Node",
         "PolicyQuarantine"
+      ]
+    },
+    {
+      "folder": "20260923172819_add_payroll",
+      "file": "apps/api/prisma/schema/migrations/20260923172819_add_payroll/migration.sql",
+      "date": "2026-09-23",
+      "slug": "add_payroll",
+      "statements": 39,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE INDEX",
+        "CREATE UNIQUE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "CompensationRate",
+        "LeaveAccrualRun",
+        "LeaveBalance",
+        "LeaveRequest",
+        "LeaveType",
+        "PayRun",
+        "PayRunAdjustment",
+        "PayRunLine",
+        "PayRunNumberCounter"
       ]
     }
   ],
@@ -25125,7 +26037,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 99,
-      "bytes": 5078,
+      "bytes": 5086,
       "doc": "",
       "symbols": []
     },
@@ -25134,7 +26046,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 125,
-      "bytes": 5916,
+      "bytes": 5924,
       "doc": "",
       "symbols": []
     },
@@ -25143,7 +26055,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 113,
-      "bytes": 5058,
+      "bytes": 5066,
       "doc": "",
       "symbols": []
     },
@@ -25424,8 +26336,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 437,
-      "bytes": 15975,
+      "lines": 451,
+      "bytes": 16950,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -26015,6 +26927,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260923172819_add_payroll/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 221,
+      "bytes": 8399,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -26057,6 +26978,15 @@
       "lines": 48,
       "bytes": 1418,
       "doc": "Payments. `provider` is a plain string key, not an enum, so a new gateway is",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/payroll.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 229,
+      "bytes": 8378,
+      "doc": "Payroll: compensation rates, leave balances and pay runs",
       "symbols": []
     },
     {
@@ -28722,8 +29652,8 @@
       "path": "apps/api/src/modules/accounting/chart-of-accounts.ts",
       "area": "api",
       "kind": "module",
-      "lines": 59,
-      "bytes": 2685,
+      "lines": 67,
+      "bytes": 3117,
       "doc": "",
       "symbols": [
         {
@@ -28734,7 +29664,7 @@
         {
           "name": "ACCOUNT_CODE",
           "kind": "const",
-          "line": 42
+          "line": 47
         }
       ]
     },
@@ -30998,8 +31928,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 83,
-      "bytes": 2696,
+      "lines": 84,
+      "bytes": 2715,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -31018,24 +31948,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 145,
-      "bytes": 7082,
+      "lines": 147,
+      "bytes": 7186,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 30
+          "line": 31
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 61
+          "line": 62
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 121
+          "line": 123
         }
       ]
     },
@@ -31654,6 +32584,21 @@
           "name": "JazzCashProvider",
           "kind": "class",
           "line": 31
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/payroll.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 11,
+      "bytes": 380,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PayrollModule",
+          "kind": "class",
+          "line": 10
         }
       ]
     },
@@ -42301,6 +43246,15 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/19-payroll.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 480,
+      "bytes": 21258,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
@@ -43402,8 +44356,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 501,
-      "bytes": 15341,
+      "lines": 530,
+      "bytes": 16300,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -43424,47 +44378,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 266
+          "line": 284
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 268
+          "line": 286
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 278
+          "line": 296
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 285
+          "line": 303
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 402
+          "line": 426
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 488
+          "line": 517
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 493
+          "line": 522
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 494
+          "line": 523
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 497
+          "line": 526
         }
       ]
     },

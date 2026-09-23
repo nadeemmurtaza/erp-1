@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 511 tracked files in `apps/api`, by directory.
+All 514 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,7 +31,7 @@ All 511 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 170 |  |
 | `seed.ts` | module | 3030 |  |
 
-### `apps/api/prisma/schema` (24)
+### `apps/api/prisma/schema` (25)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -39,7 +39,7 @@ All 511 tracked files in `apps/api`, by directory.
 | `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
 | `cart.prisma` | prisma schema | 73 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
 | `catalog.prisma` | prisma schema | 371 | Catalog: categories, products, variants, images. |
-| `core.prisma` | prisma schema | 437 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `core.prisma` | prisma schema | 451 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 239 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `identity-verification.prisma` | prisma schema | 40 | / Tracks a User's identity verification against nID (Newax's external |
@@ -50,6 +50,7 @@ All 511 tracked files in `apps/api`, by directory.
 | `organization.prisma` | prisma schema | 182 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
 | `parties.prisma` | prisma schema | 52 | Parties: the permanent counterparty profile. One canonical record per |
 | `payments.prisma` | prisma schema | 48 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
+| `payroll.prisma` | prisma schema | 229 | Payroll: compensation rates, leave balances and pay runs |
 | `pos.prisma` | prisma schema | 136 | The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's |
 | `production.prisma` | prisma schema | 96 | Production: bills of materials and work orders for variants made in-house |
 | `purchasing.prisma` | prisma schema | 248 |  |
@@ -420,6 +421,12 @@ All 511 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 50 |  |
 
+### `apps/api/prisma/schema/migrations/20260923172819_add_payroll` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 221 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -655,8 +662,8 @@ All 511 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 83 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 145 |  |
+| `module-packs.ts` | module | 84 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 147 |  |
 
 ### `apps/api/src/modules/accounting` (17)
 
@@ -667,7 +674,7 @@ All 511 tracked files in `apps/api`, by directory.
 | `accounting.service.ts` | service | 279 |  |
 | `aging.spec.ts` | unit test | 75 |  |
 | `aging.ts` | module | 69 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control accoun… |
-| `chart-of-accounts.ts` | module | 59 |  |
+| `chart-of-accounts.ts` | module | 67 |  |
 | `consolidation.controller.ts` | controller | 38 |  |
 | `consolidation.service.spec.ts` | unit test | 128 |  |
 | `consolidation.service.ts` | service | 132 |  |
@@ -999,6 +1006,12 @@ All 511 tracked files in `apps/api`, by directory.
 | `cod.provider.ts` | module | 41 |  |
 | `easypaisa.provider.ts` | module | 184 |  |
 | `jazzcash.provider.ts` | module | 184 |  |
+
+### `apps/api/src/modules/payroll` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `payroll.module.ts` | nest module | 11 |  |
 
 ### `apps/api/src/modules/pos` (16)
 

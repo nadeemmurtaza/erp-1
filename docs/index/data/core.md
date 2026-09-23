@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `Address`  <sub>`apps/api/prisma/schema/core.prisma:147`</sub>
+### `Address`  <sub>`apps/api/prisma/schema/core.prisma:161`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -42,7 +42,7 @@ against a real database.
 
 Indexes: `@@index([userId])`
 
-### `AnalyticsEvent`  <sub>`apps/api/prisma/schema/core.prisma:425`</sub>
+### `AnalyticsEvent`  <sub>`apps/api/prisma/schema/core.prisma:439`</sub>
 
 > Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.
 
@@ -58,7 +58,7 @@ Indexes: `@@index([userId])`
 
 Indexes: `@@index([type, createdAt])` · `@@index([sessionId, createdAt])`
 
-### `AuditLog`  <sub>`apps/api/prisma/schema/core.prisma:237`</sub>
+### `AuditLog`  <sub>`apps/api/prisma/schema/core.prisma:251`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -74,7 +74,7 @@ Indexes: `@@index([type, createdAt])` · `@@index([sessionId, createdAt])`
 
 Indexes: `@@index([entity, entityId])` · `@@index([actorId])` · `@@index([createdAt])`
 
-### `DeviceToken`  <sub>`apps/api/prisma/schema/core.prisma:405`</sub>
+### `DeviceToken`  <sub>`apps/api/prisma/schema/core.prisma:419`</sub>
 
 > A push notification target: one installation of the mobile app.
 
@@ -92,7 +92,7 @@ Indexes: `@@index([entity, entityId])` · `@@index([actorId])` · `@@index([crea
 
 Indexes: `@@index([userId])`
 
-### `EmailAccount`  <sub>`apps/api/prisma/schema/core.prisma:192`</sub>
+### `EmailAccount`  <sub>`apps/api/prisma/schema/core.prisma:206`</sub>
 
 > A connected mailbox: SMTP to send, optionally IMAP to receive.
 
@@ -126,7 +126,7 @@ Indexes: `@@index([userId])`
 
 Indexes: `@@index([purpose, isActive])`
 
-### `EmailVerificationToken`  <sub>`apps/api/prisma/schema/core.prisma:133`</sub>
+### `EmailVerificationToken`  <sub>`apps/api/prisma/schema/core.prisma:147`</sub>
 
 > A one-time token mailed to confirm an email address.
 
@@ -142,7 +142,7 @@ Indexes: `@@index([purpose, isActive])`
 
 Indexes: `@@index([userId])` · `@@index([expiresAt])`
 
-### `OutboxEvent`  <sub>`apps/api/prisma/schema/core.prisma:378`</sub>
+### `OutboxEvent`  <sub>`apps/api/prisma/schema/core.prisma:392`</sub>
 
 > Transactional outbox.
 
@@ -160,7 +160,7 @@ Indexes: `@@index([userId])` · `@@index([expiresAt])`
 
 Indexes: `@@index([status, availableAt])` · `@@index([name])`
 
-### `PasswordResetToken`  <sub>`apps/api/prisma/schema/core.prisma:116`</sub>
+### `PasswordResetToken`  <sub>`apps/api/prisma/schema/core.prisma:130`</sub>
 
 > A one-time token mailed to reset a forgotten password.
 
@@ -176,7 +176,7 @@ Indexes: `@@index([status, availableAt])` · `@@index([name])`
 
 Indexes: `@@index([userId])` · `@@index([expiresAt])`
 
-### `Permission`  <sub>`apps/api/prisma/schema/core.prisma:258`</sub>
+### `Permission`  <sub>`apps/api/prisma/schema/core.prisma:272`</sub>
 
 > A single grantable capability, e.g.
 
@@ -191,7 +191,7 @@ Indexes: `@@index([userId])` · `@@index([expiresAt])`
 | `userOverrides` | `UserPermission[]` |  |  |
 | `roleGrants` | `RoleGrant[]` |  |  |
 
-### `RefreshToken`  <sub>`apps/api/prisma/schema/core.prisma:95`</sub>
+### `RefreshToken`  <sub>`apps/api/prisma/schema/core.prisma:109`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -207,7 +207,7 @@ Indexes: `@@index([userId])` · `@@index([expiresAt])`
 
 Indexes: `@@index([userId])` · `@@index([expiresAt])`
 
-### `Role`  <sub>`apps/api/prisma/schema/core.prisma:324`</sub>
+### `Role`  <sub>`apps/api/prisma/schema/core.prisma:338`</sub>
 
 > A named, reusable bundle of permissions a super admin defines — "roles are data, not code" (House Rule 9) taken to its actual conclusion.
 
@@ -221,7 +221,7 @@ Indexes: `@@index([userId])` · `@@index([expiresAt])`
 | `grants` | `RoleGrant[]` |  |  |
 | `assignments` | `UserRoleAssignment[]` |  |  |
 
-### `RoleGrant`  <sub>`apps/api/prisma/schema/core.prisma:338`</sub>
+### `RoleGrant`  <sub>`apps/api/prisma/schema/core.prisma:352`</sub>
 
 > Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.
 
@@ -236,7 +236,7 @@ Indexes: `@@index([userId])` · `@@index([expiresAt])`
 
 Indexes: `@@unique([roleId, permissionId])` · `@@index([roleId])`
 
-### `RolePermission`  <sub>`apps/api/prisma/schema/core.prisma:274`</sub>
+### `RolePermission`  <sub>`apps/api/prisma/schema/core.prisma:288`</sub>
 
 > Which roles currently hold a given permission.
 
@@ -250,7 +250,7 @@ Indexes: `@@unique([roleId, permissionId])` · `@@index([roleId])`
 
 Indexes: `@@unique([role, permissionId])` · `@@index([role])`
 
-### `Setting`  <sub>`apps/api/prisma/schema/core.prisma:170`</sub>
+### `Setting`  <sub>`apps/api/prisma/schema/core.prisma:184`</sub>
 
 > Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.
 
@@ -313,10 +313,20 @@ Indexes: `@@unique([role, permissionId])` · `@@index([role])`
 | `bomRecipesCreated` | `BomRecipe[]` | relation | @relation("BomRecipeCreator") |
 | `bomProductionRuns` | `BomProductionRun[]` | relation | @relation("BomProductionOperator") |
 | `policyQuarantinesResolved` | `PolicyQuarantine[]` | relation | @relation("PolicyQuarantineResolver") |
+| `compensationRates` | `CompensationRate[]` |  |  |
+| `compensationRatesCreated` | `CompensationRate[]` | relation | @relation("CompensationRateCreator") |
+| `leaveBalances` | `LeaveBalance[]` |  |  |
+| `leaveRequests` | `LeaveRequest[]` | relation | @relation("LeaveRequestUser") |
+| `leaveRequestsDecided` | `LeaveRequest[]` | relation | @relation("LeaveRequestDecider") |
+| `payRunsApproved` | `PayRun[]` | relation | @relation("PayRunApprover") |
+| `payRunsCreated` | `PayRun[]` | relation | @relation("PayRunCreator") |
+| `payRunLines` | `PayRunLine[]` |  |  |
+| `payRunAdjustments` | `PayRunAdjustment[]` |  |  |
+| `payRunAdjustmentsCreated` | `PayRunAdjustment[]` | relation | @relation("PayRunAdjustmentCreator") |
 
 Indexes: `@@index([role])` · `@@index([createdAt])`
 
-### `UserPermission`  <sub>`apps/api/prisma/schema/core.prisma:295`</sub>
+### `UserPermission`  <sub>`apps/api/prisma/schema/core.prisma:309`</sub>
 
 > A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.
 
@@ -332,7 +342,7 @@ Indexes: `@@index([role])` · `@@index([createdAt])`
 
 Indexes: `@@unique([userId, permissionId])` · `@@index([userId])`
 
-### `UserRoleAssignment`  <sub>`apps/api/prisma/schema/core.prisma:353`</sub>
+### `UserRoleAssignment`  <sub>`apps/api/prisma/schema/core.prisma:367`</sub>
 
 > Which `Role` rows a user holds.
 
@@ -350,7 +360,7 @@ Indexes: `@@unique([userId, roleId])` · `@@index([userId])` · `@@index([roleId
 
 ## Enums
 
-### `DevicePlatform`  <sub>`apps/api/prisma/schema/core.prisma:393`</sub>
+### `DevicePlatform`  <sub>`apps/api/prisma/schema/core.prisma:407`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -358,7 +368,7 @@ Indexes: `@@unique([userId, roleId])` · `@@index([userId])` · `@@index([roleId
 | `ANDROID` |  |
 | `WEB` |  |
 
-### `EmailAccountPurpose`  <sub>`apps/api/prisma/schema/core.prisma:181`</sub>
+### `EmailAccountPurpose`  <sub>`apps/api/prisma/schema/core.prisma:195`</sub>
 
 > What an EmailAccount is for, so EmailChannel can route an outgoing message to the right mailbox instead of every email leaving from one address.
 
@@ -368,7 +378,7 @@ Indexes: `@@unique([userId, roleId])` · `@@index([userId])` · `@@index([roleId
 | `MARKETING` |  |
 | `SUPPORT` |  |
 
-### `OutboxStatus`  <sub>`apps/api/prisma/schema/core.prisma:367`</sub>
+### `OutboxStatus`  <sub>`apps/api/prisma/schema/core.prisma:381`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -377,7 +387,7 @@ Indexes: `@@unique([userId, roleId])` · `@@index([userId])` · `@@index([roleId
 | `DONE` |  |
 | `FAILED` |  |
 
-### `PermissionEffect`  <sub>`apps/api/prisma/schema/core.prisma:286`</sub>
+### `PermissionEffect`  <sub>`apps/api/prisma/schema/core.prisma:300`</sub>
 
 | Value | Meaning |
 |---|---|

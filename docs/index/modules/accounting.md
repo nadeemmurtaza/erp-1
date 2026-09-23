@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 19 files
 
 Source: `apps/api/src/modules/accounting/`
 
-## Files (19 · 3,012 lines)
+## Files (19 · 3,020 lines)
 
 All paths relative to `apps/api/src/modules/accounting`.
 
@@ -22,7 +22,7 @@ All paths relative to `apps/api/src/modules/accounting`.
 | `accounting.service.ts` | service | 279 | 4 |  |
 | `aging.spec.ts` | unit test | 75 | — |  |
 | `aging.ts` | module | 69 | 4 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control accoun… |
-| `chart-of-accounts.ts` | module | 59 | 2 | The minimal chart of accounts the posting rules (WO-19.2) resolve an `accountId` from by a stable `code` — seeded once… |
+| `chart-of-accounts.ts` | module | 67 | 2 | The minimal chart of accounts the posting rules (WO-19.2) resolve an `accountId` from by a stable `code` — seeded once… |
 | `consolidation.controller.ts` | controller | 38 | 1 | Consolidation at the org tier (RETAIL-ERP.md R17, WO-20.6) — see `ConsolidationService`'s own doc comment for what "eli… |
 | `consolidation.service.spec.ts` | unit test | 128 | — |  |
 | `consolidation.service.ts` | service | 132 | 2 |  |
@@ -156,7 +156,7 @@ check there before adding another.
 | `totalAgingBuckets` | function | `aging.ts:36` |  |
 | `ageMovements` | function | `aging.ts:42` |  |
 | `CHART_OF_ACCOUNTS` | const | `chart-of-accounts.ts:11` | The minimal chart of accounts the posting rules (WO-19.2) resolve an `accountId` from by a stable `code` — se… |
-| `ACCOUNT_CODE` | const | `chart-of-accounts.ts:42` | The codes above, named — so a posting rule never hand-types a magic string. |
+| `ACCOUNT_CODE` | const | `chart-of-accounts.ts:47` | The codes above, named — so a posting rule never hand-types a magic string. |
 | `ConsolidationController` | class | `consolidation.controller.ts:21` | Consolidation at the org tier (RETAIL-ERP.md R17, WO-20.6) — see `ConsolidationService`'s own doc comment for… |
 | `IntercompanyPair` | interface | `consolidation.service.ts:4` |  |
 | `ConsolidationService` | class | `consolidation.service.ts:41` | Consolidation at the org tier (RETAIL-ERP.md R17, WO-20.6) — "if brand A transfers goods to brand B at a tran… |

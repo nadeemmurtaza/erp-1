@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 264 tracked files in `docs/*`, by directory.
+All 265 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -253,7 +253,7 @@ All 264 tracked files in `docs/*`, by directory.
 | `52g-generate-gap.md` | doc | 26 |  |
 | `52h-harden-gap.md` | doc | 40 |  |
 
-### `docs/implementation` (44)
+### `docs/implementation` (45)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -294,11 +294,12 @@ All 264 tracked files in `docs/*`, by directory.
 | `32-lots-batch-expiry-fefo.md` | doc | 245 |  |
 | `33-sms-whatsapp-channels.md` | doc | 249 |  |
 | `34-partner-developer-api-access.md` | doc | 235 |  |
+| `35-scalable-rag-document-retrieval.md` | doc | 354 |  |
 | `DECISIONS.md` | doc | 1691 |  |
 | `ENTERPRISE-SCALE.md` | doc | 266 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 175 |  |
+| `README.md` | doc | 176 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 

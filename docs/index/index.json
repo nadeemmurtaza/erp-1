@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1276,
-    "lines": 203512,
+    "files": 1277,
+    "lines": 203867,
     "routes": 357,
     "controllers": 62,
     "models": 133,
@@ -1107,9 +1107,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 264,
-      "lines": 41066,
-      "bytes": 2510739,
+      "files": 265,
+      "lines": 41421,
+      "bytes": 2529862,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -44267,6 +44267,15 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/35-scalable-rag-document-retrieval.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 354,
+      "bytes": 18751,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
@@ -44306,8 +44315,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 175,
-      "bytes": 12007,
+      "lines": 176,
+      "bytes": 12379,
       "doc": "",
       "symbols": []
     },

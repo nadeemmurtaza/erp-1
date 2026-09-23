@@ -41,6 +41,7 @@ are built, the rest are specified but not yet built as of this table.
 | [`32-lots-batch-expiry-fefo.md`](./32-lots-batch-expiry-fefo.md) | `lots`: the core (not pack) batch/expiry/FEFO-allocation/recall-lookup sub-ledger `MULTI-SECTOR.md` already ruled on |
 | [`33-sms-whatsapp-channels.md`](./33-sms-whatsapp-channels.md) | Outbound SMS/WhatsApp `NotificationChannel` implementations — the send path WO-9.7's WhatsApp assistant will depend on, not that assistant itself |
 | [`34-partner-developer-api-access.md`](./34-partner-developer-api-access.md) | Generic scoped API-key principal (`ApiClient`) for third-party integrations, generalizing the `TradingPartner`/`Node` key-hash pattern |
+| [`35-scalable-rag-document-retrieval.md`](./35-scalable-rag-document-retrieval.md) | RAG over millions of PDFs (doc 28's vault, supplier catalogs, business documents, a knowledge base): ingestion, `pgvector` retrieval scoped per organization, a named escalation trigger to a dedicated vector store, built entirely on `09-ai-layer.md`'s existing `AiProvider` interface |
 
 ## Dependency order
 

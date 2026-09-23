@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**284** markdown documents. These explain **why**; this index only says **where**.
+**285** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2227,6 +2227,20 @@ _no second-level headings_
 - Acceptance  <sub>:212</sub>
 - Out of scope  <sub>:225</sub>
 
+### `docs/implementation/35-scalable-rag-document-retrieval.md`  <sub>354 lines</sub>
+
+- Scoping the claim before designing against it  <sub>:11</sub>
+- 1. A document is ingested once and produces chunks, never re-parsed per query  <sub>:38</sub>
+- 2. Where the vectors live, and the one trigger that changes it  <sub>:98</sub>
+- 3. Ingestion is async, idempotent, and never blocks a request  <sub>:128</sub>
+- 4. Retrieval is scoped before it is ranked  <sub>:148</sub>
+- 5. Generation reuses `AiProvider.complete()` and 09-ai-layer's own rule  <sub>:166</sub>
+- Scope lenses  <sub>:190</sub>
+- Cost and latency, restated for this module specifically  <sub>:287</sub>
+- Work orders  <sub>:305</sub>
+- Acceptance  <sub>:326</sub>
+- Out of scope  <sub>:342</sub>
+
 ### `docs/implementation/DECISIONS.md`  <sub>1,691 lines</sub>
 
 - How to read this  <sub>:13</sub>
@@ -2293,15 +2307,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>175 lines</sub>
+### `docs/implementation/README.md`  <sub>176 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:45</sub>
-- The two module groups  <sub>:74</sub>
-- How a work order runs  <sub>:111</sub>
-- Known gaps not yet owned by a phase  <sub>:129</sub>
-- When a brief is wrong  <sub>:156</sub>
-- Scope, honestly  <sub>:169</sub>
+- Dependency order  <sub>:46</sub>
+- The two module groups  <sub>:75</sub>
+- How a work order runs  <sub>:112</sub>
+- Known gaps not yet owned by a phase  <sub>:130</sub>
+- When a brief is wrong  <sub>:157</sub>
+- Scope, honestly  <sub>:170</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

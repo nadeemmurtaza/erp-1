@@ -16,6 +16,13 @@ import { PayrollService } from './payroll.service';
 export class PayrollController {
   constructor(private readonly payroll: PayrollService) {}
 
+  @Get('compensation')
+  @RequirePermission('payroll.view')
+  @ApiOperation({ summary: "Every employee's current compensation rate." })
+  async listCompensation() {
+    return this.payroll.listCurrentRates();
+  }
+
   @Get('compensation/me')
   @RequirePermission('payroll.view_own')
   @ApiOperation({ summary: "The caller's own current rate and rate history." })

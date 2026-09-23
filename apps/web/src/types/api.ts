@@ -668,6 +668,125 @@ export interface WorkshopOutput {
   bottleneck: { stage: string; avgHours: number } | null;
 }
 
+// --- Payroll: compensation, leave, pay runs (docs/implementation/19-payroll.md) --
+
+export type CompensationBasis = 'MONTHLY' | 'HOURLY' | 'COMMISSION';
+
+export interface CompensationRate {
+  id: string;
+  userId: string;
+  basis: CompensationBasis;
+  amountMinor: number;
+  effectiveFrom: string;
+  effectiveTo: string | null;
+  createdById: string | null;
+  createdAt: string;
+}
+
+export interface EmployeeCompensation {
+  current: CompensationRate | null;
+  history: CompensationRate[];
+}
+
+export interface GrossPreview {
+  grossMinor: number;
+  rateIds: string[];
+  missingInput: boolean;
+}
+
+export type LeaveKind = 'ANNUAL' | 'SICK' | 'UNPAID' | 'OTHER';
+
+export interface LeaveType {
+  id: string;
+  key: string;
+  name: string;
+  kind: LeaveKind;
+  accrualDaysPerRun: number;
+  isActive: boolean;
+}
+
+export interface LeaveBalance {
+  id: string;
+  userId: string;
+  leaveTypeId: string;
+  balance: number;
+  updatedAt: string;
+  leaveType: LeaveType;
+}
+
+export type LeaveRequestStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
+
+export interface LeaveRequest {
+  id: string;
+  userId: string;
+  leaveTypeId: string;
+  startDate: string;
+  endDate: string;
+  days: number;
+  reason: string | null;
+  status: LeaveRequestStatus;
+  decidedById: string | null;
+  decidedAt: string | null;
+  decisionNote: string | null;
+  createdAt: string;
+  leaveType: LeaveType;
+  user?: { id: string; firstName: string | null; lastName: string | null; email: string | null };
+}
+
+export interface EmployeeLeave {
+  balances: LeaveBalance[];
+  requests: LeaveRequest[];
+}
+
+export type PayRunStatus = 'DRAFT' | 'APPROVED' | 'POSTED';
+
+export interface PayRunLine {
+  id: string;
+  payRunId: string;
+  userId: string;
+  compensationRateId: string;
+  grossMinor: number;
+  unpaidLeaveDays: number;
+  unpaidLeaveMinor: number;
+  deductions: unknown;
+  deductionsMinor: number;
+  netMinor: number;
+  user: { id: string; firstName: string | null; lastName: string | null; email: string | null };
+}
+
+export type PayRunAdjustmentReason = 'OVERPAYMENT' | 'UNDERPAYMENT' | 'CORRECTION';
+
+export interface PayRunAdjustment {
+  id: string;
+  payRunId: string;
+  userId: string;
+  reason: PayRunAdjustmentReason;
+  amountMinor: number;
+  note: string;
+  createdById: string | null;
+  createdAt: string;
+}
+
+export interface PayRun {
+  id: string;
+  number: string;
+  periodStart: string;
+  periodEnd: string;
+  status: PayRunStatus;
+  scopeLevel: 'ORG' | 'BRAND' | 'BRANCH';
+  originNodeId: string | null;
+  approvedById: string | null;
+  approvedAt: string | null;
+  postedAt: string | null;
+  createdById: string | null;
+  createdAt: string;
+}
+
+export interface PayRunWithLines extends PayRun {
+  lines: PayRunLine[];
+  adjustments: PayRunAdjustment[];
+}
+
 // --- Settings: roles & permissions, audit log --------------------------------
 
 export type EmailAccountPurpose = 'TRANSACTIONAL' | 'MARKETING' | 'SUPPORT';

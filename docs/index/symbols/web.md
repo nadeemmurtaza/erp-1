@@ -317,6 +317,36 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `AdminPaymentsPage` | default | :30 | The money queue: bank transfers whose receipt a human has to check against the bank statement befor… |
 
+### `apps/web/src/app/(admin)/admin/(app)/payroll/compensation`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `PayrollCompensationPage` | default | :27 | WO-19.6 (docs/implementation/19-payroll.md) — every employee's current compensation rate, with a de… |
+
+### `apps/web/src/app/(admin)/admin/(app)/payroll/leave`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `PayrollLeavePage` | default | :24 | WO-19.6 (docs/implementation/19-payroll.md) — every leave request across every employee, with appro… |
+
+### `apps/web/src/app/(admin)/admin/(app)/payroll/me`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `MyPayPage` | default | :18 | WO-19.6 (docs/implementation/19-payroll.md) — self-service: the signed-in user's own compensation h… |
+
+### `apps/web/src/app/(admin)/admin/(app)/payroll/runs`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `PayrollRunsPage` | default | :18 | WO-19.6 (docs/implementation/19-payroll.md) — every pay run, and the form to build a new one for a… |
+
+### `apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `PayrollRunDetailPage` | default | :23 | WO-19.6 (docs/implementation/19-payroll.md) — one pay run: every line, the build/approve/post lifec… |
+
 ### `apps/web/src/app/(admin)/admin/(app)/products`
 
 | File | Symbol | Kind | Line | Doc |
@@ -709,13 +739,13 @@ Every top-level export in `web`, with the line to open.
 | `image-manager.tsx` | `ImageStager` | function | :303 | Photo picker for a product that does not have an id yet — new-product creation, where `ImageManager… |
 | `image-manager.tsx` | `StagedImageUploadResult` | interface | :442 |  |
 | `image-manager.tsx` | `uploadStagedImages` | function | :460 | Uploads every staged image to a now-existing product, in order (the first upload becomes the thumbn… |
-| `nav-registry.ts` | `ICON_MAP` | const | :16 |  |
-| `nav-registry.ts` | `AdminNavGroup` | interface | :28 |  |
-| `nav-registry.ts` | `NAV_GROUPS` | const | :47 | Sidebar order is THIS ARRAY's order. |
-| `nav-registry.ts` | `AdminNavItem` | interface | :59 |  |
-| `nav-registry.ts` | `ADMIN_NAV` | const | :96 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :486 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :501 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `ICON_MAP` | const | :17 |  |
+| `nav-registry.ts` | `AdminNavGroup` | interface | :30 |  |
+| `nav-registry.ts` | `NAV_GROUPS` | const | :49 | Sidebar order is THIS ARRAY's order. |
+| `nav-registry.ts` | `AdminNavItem` | interface | :62 |  |
+| `nav-registry.ts` | `ADMIN_NAV` | const | :100 | The admin navigation, as data. |
+| `nav-registry.ts` | `landingFor` | function | :524 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :539 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
@@ -742,8 +772,8 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `status-badge.tsx` | `statusLabel` | function | :55 | `READY_TO_SHIP` -> `Ready to ship`. |
-| `status-badge.tsx` | `StatusBadge` | function | :59 |  |
+| `status-badge.tsx` | `statusLabel` | function | :58 | `READY_TO_SHIP` -> `Ready to ship`. |
+| `status-badge.tsx` | `StatusBadge` | function | :62 |  |
 | `toast-container.tsx` | `ToastContainer` | function | :11 |  |
 | `wizard.tsx` | `WizardStep` | interface | :6 |  |
 | `wizard.tsx` | `Wizard` | function | :36 | A form split into small, single-purpose steps instead of one long page. |
@@ -990,35 +1020,51 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `WorkshopStageRow` | interface | :651 | --- WO-D.6: workshop output -------------------------------------------------- |
 | `api.ts` | `WorkshopTailorRow` | interface | :657 |  |
 | `api.ts` | `WorkshopOutput` | interface | :664 |  |
-| `api.ts` | `EmailAccountPurpose` | type | :673 | --- Settings: roles & permissions, audit log -------------------------------- |
-| `api.ts` | `EmailAccount` | interface | :675 |  |
-| `api.ts` | `EmailTemplateCatalogEntry` | interface | :700 |  |
-| `api.ts` | `RenderedEmailPreview` | interface | :708 |  |
-| `api.ts` | `InboundEmailReply` | interface | :716 | --- Support inbox (IMAP replies) -------------------------------------------- |
-| `api.ts` | `InboundEmail` | interface | :723 |  |
-| `api.ts` | `PermissionDefinition` | interface | :740 |  |
-| `api.ts` | `AuditLogEntry` | interface | :747 |  |
-| `api.ts` | `AuditLogPage` | interface | :759 |  |
-| `api.ts` | `BackOfficeRole` | type | :768 | --- Back-office user management --------------------------------------------- |
-| `api.ts` | `AdminUser` | interface | :770 |  |
-| `api.ts` | `PermissionOverride` | interface | :782 |  |
-| `api.ts` | `HeldRole` | interface | :788 | A custom Role (owner's request) this user holds, with its own permission set inline. |
-| `api.ts` | `UserRoleConflicts` | interface | :795 | Non-blocking advisories — see RolesService.conflictsForUser() on the API. |
-| `api.ts` | `AdminUserDetail` | interface | :800 |  |
-| `api.ts` | `RoleSummary` | interface | :812 | --- Custom roles (owner's request) ----------------------------------------- GET/POST/PATCH/DELETE… |
-| `api.ts` | `RoleWriteResult` | interface | :821 | POST/PATCH /admin/roles response — `duplicateOfRoleName` is a suggestion, never a block. |
-| `api.ts` | `CustomerAddress` | interface | :828 | --- Customer account portal -------------------------------------------------- |
-| `api.ts` | `MeasurementProfile` | interface | :842 |  |
-| `api.ts` | `MeasurementProfileDetail` | interface | :853 |  |
-| `api.ts` | `CustomerOrderSummary` | interface | :857 |  |
-| `api.ts` | `StitchingTimelineEvent` | interface | :866 | One move along a garment's workshop timeline. |
-| `api.ts` | `CustomerOrderItem` | interface | :874 |  |
-| `api.ts` | `CustomerOrder` | interface | :903 | One order as its buyer sees it — signed in, or tracked with a phone number. |
-| `api.ts` | `PaginatedResult` | interface | :935 |  |
-| `api.ts` | `StockTransferLine` | interface | :950 | --- Transfers (RETAIL-ERP.md R4, WO-22.1/22.2/22.3, WO-23.3d) --------------- `transfers` module is… |
-| `api.ts` | `InterBranchInvoice` | interface | :959 |  |
-| `api.ts` | `StockTransfer` | interface | :968 |  |
-| `api.ts` | `StockTransferListResult` | interface | :984 |  |
+| `api.ts` | `CompensationBasis` | type | :673 | --- Payroll: compensation, leave, pay runs (docs/implementation/19-payroll.md) -- |
+| `api.ts` | `CompensationRate` | interface | :675 |  |
+| `api.ts` | `EmployeeCompensation` | interface | :686 |  |
+| `api.ts` | `GrossPreview` | interface | :691 |  |
+| `api.ts` | `LeaveKind` | type | :697 |  |
+| `api.ts` | `LeaveType` | interface | :699 |  |
+| `api.ts` | `LeaveBalance` | interface | :708 |  |
+| `api.ts` | `LeaveRequestStatus` | type | :717 |  |
+| `api.ts` | `LeaveRequest` | interface | :719 |  |
+| `api.ts` | `EmployeeLeave` | interface | :736 |  |
+| `api.ts` | `PayRunStatus` | type | :741 |  |
+| `api.ts` | `PayRunLine` | interface | :743 |  |
+| `api.ts` | `PayRunAdjustmentReason` | type | :757 |  |
+| `api.ts` | `PayRunAdjustment` | interface | :759 |  |
+| `api.ts` | `PayRun` | interface | :770 |  |
+| `api.ts` | `PayRunWithLines` | interface | :785 |  |
+| `api.ts` | `EmailAccountPurpose` | type | :792 | --- Settings: roles & permissions, audit log -------------------------------- |
+| `api.ts` | `EmailAccount` | interface | :794 |  |
+| `api.ts` | `EmailTemplateCatalogEntry` | interface | :819 |  |
+| `api.ts` | `RenderedEmailPreview` | interface | :827 |  |
+| `api.ts` | `InboundEmailReply` | interface | :835 | --- Support inbox (IMAP replies) -------------------------------------------- |
+| `api.ts` | `InboundEmail` | interface | :842 |  |
+| `api.ts` | `PermissionDefinition` | interface | :859 |  |
+| `api.ts` | `AuditLogEntry` | interface | :866 |  |
+| `api.ts` | `AuditLogPage` | interface | :878 |  |
+| `api.ts` | `BackOfficeRole` | type | :887 | --- Back-office user management --------------------------------------------- |
+| `api.ts` | `AdminUser` | interface | :889 |  |
+| `api.ts` | `PermissionOverride` | interface | :901 |  |
+| `api.ts` | `HeldRole` | interface | :907 | A custom Role (owner's request) this user holds, with its own permission set inline. |
+| `api.ts` | `UserRoleConflicts` | interface | :914 | Non-blocking advisories — see RolesService.conflictsForUser() on the API. |
+| `api.ts` | `AdminUserDetail` | interface | :919 |  |
+| `api.ts` | `RoleSummary` | interface | :931 | --- Custom roles (owner's request) ----------------------------------------- GET/POST/PATCH/DELETE… |
+| `api.ts` | `RoleWriteResult` | interface | :940 | POST/PATCH /admin/roles response — `duplicateOfRoleName` is a suggestion, never a block. |
+| `api.ts` | `CustomerAddress` | interface | :947 | --- Customer account portal -------------------------------------------------- |
+| `api.ts` | `MeasurementProfile` | interface | :961 |  |
+| `api.ts` | `MeasurementProfileDetail` | interface | :972 |  |
+| `api.ts` | `CustomerOrderSummary` | interface | :976 |  |
+| `api.ts` | `StitchingTimelineEvent` | interface | :985 | One move along a garment's workshop timeline. |
+| `api.ts` | `CustomerOrderItem` | interface | :993 |  |
+| `api.ts` | `CustomerOrder` | interface | :1022 | One order as its buyer sees it — signed in, or tracked with a phone number. |
+| `api.ts` | `PaginatedResult` | interface | :1054 |  |
+| `api.ts` | `StockTransferLine` | interface | :1069 | --- Transfers (RETAIL-ERP.md R4, WO-22.1/22.2/22.3, WO-23.3d) --------------- `transfers` module is… |
+| `api.ts` | `InterBranchInvoice` | interface | :1078 |  |
+| `api.ts` | `StockTransfer` | interface | :1087 |  |
+| `api.ts` | `StockTransferListResult` | interface | :1103 |  |
 | `cart.ts` | `CartStitching` | interface | :5 | Shapes returned by the cart endpoints. |
 | `cart.ts` | `CartLine` | interface | :18 |  |
 | `cart.ts` | `Cart` | interface | :37 |  |

@@ -32,6 +32,7 @@ const TONES: Record<string, BadgeTone> = {
   FAILED: 'danger',
   ARCHIVED: 'danger',
   LOST: 'danger',
+  REJECTED: 'danger',
   // Ended well
   DELIVERED: 'success',
   ACTIVE: 'success',
@@ -40,6 +41,8 @@ const TONES: Record<string, BadgeTone> = {
   DISPATCHED: 'success',
   COMPLETED: 'success',
   WON: 'success',
+  APPROVED: 'success',
+  POSTED: 'success',
   // Waiting on someone
   PENDING: 'warning',
   AWAITING_APPROVAL: 'warning',

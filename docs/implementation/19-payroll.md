@@ -463,19 +463,30 @@ Salaries Payable` for the shortfall.
 
 ## WO-19.6 — Admin screens, nav, self-service
 
-Nav (Manufacturing group precedent, `nav-registry.ts`): a new `payroll`
-`NAV_GROUPS` entry between `finance` and `manufacturing`. Children:
-**Compensation** (`/admin/payroll/compensation`, `payroll.view`),
-**Leave requests** (`/admin/payroll/leave`, `payroll.view` for the
-all-employees list, decision actions gated `payroll.manage`), **Pay
-runs** (`/admin/payroll/runs` list + `/admin/payroll/runs/[id]` detail,
-`payroll.view` / build-approve-post actions `payroll.manage`). A
-self-service entry under **Account** — `/admin/account/pay` — gated
-`payroll.view_own`, showing the signed-in user's own compensation
-history, leave balance and payslips, reachable for `STAFF`/`TAILOR` who
-hold no other payroll permission (the same "layout closes over absence"
-principle WO-E.1 leaned on: `NavGroup` self-hides when a group's
-children all fail their permission check, so a TAILOR sees the one
+Nav (Manufacturing group precedent, `nav-registry.ts`): checked before
+writing this — there is no `finance` `NAV_GROUPS` entry at all today (its
+own comment: the previous eleven module-tracking groups included three
+that drew an empty heading, "finance" among them, and were deliberately
+collapsed to eight task-shaped groups; `finance-expenses` lives under
+`insights` instead). A new `payroll` group, not nested under `insights`,
+is still the right call — Payroll is an operational area with real
+write actions (approve leave, build/approve/post a run), the same
+reasoning that already earned `manufacturing` its own heading, not a
+read-only dashboard. Added between `manufacturing` and `insights`.
+Children: **Compensation** (`/admin/payroll/compensation`,
+`payroll.view`), **Leave requests** (`/admin/payroll/leave`,
+`payroll.view` for the all-employees list, decision actions gated
+`payroll.manage`), **Pay runs** (`/admin/payroll/runs` list +
+`/admin/payroll/runs/[id]` detail, `payroll.view` / build-approve-post
+actions `payroll.manage`), and **My pay** (`/admin/payroll/me`, gated
+`payroll.view_own`) — self-service lives in the same group rather than
+under a nonexistent `/admin/account` entry (checked: WO-E.1's own
+investigation already confirmed none exists), since it is still
+fundamentally payroll data, just self-scoped. Reachable for
+`STAFF`/`TAILOR` who hold no other payroll permission (the same "layout
+closes over absence" principle WO-E.1 leaned on: `NavGroup` self-hides
+when a group's children all fail their permission check, so a TAILOR sees
+a Payroll heading with only the one
 self-service entry with none of the admin group around it).
 
 ---

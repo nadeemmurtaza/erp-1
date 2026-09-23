@@ -1019,10 +1019,10 @@ All 529 tracked files in `apps/api`, by directory.
 | `pay-run.controller.ts` | controller | 73 |  |
 | `pay-run.service.spec.ts` | unit test | 282 |  |
 | `pay-run.service.ts` | service | 254 |  |
-| `payroll.controller.ts` | controller | 71 |  |
+| `payroll.controller.ts` | controller | 78 |  |
 | `payroll.module.ts` | nest module | 23 |  |
-| `payroll.service.spec.ts` | unit test | 164 |  |
-| `payroll.service.ts` | service | 146 |  |
+| `payroll.service.spec.ts` | unit test | 182 |  |
+| `payroll.service.ts` | service | 159 |  |
 
 ### `apps/api/src/modules/payroll/dto` (4)
 

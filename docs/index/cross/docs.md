@@ -2046,7 +2046,7 @@ _no second-level headings_
 - Work orders  <sub>:18</sub>
 - Out of scope (for now)  <sub>:54</sub>
 
-### `docs/implementation/19-payroll.md`  <sub>505 lines</sub>
+### `docs/implementation/19-payroll.md`  <sub>516 lines</sub>
 
 - Scope decision, taken with the owner  <sub>:8</sub>
 - Why `User`, not a new `Employee` table  <sub>:38</sub>
@@ -2058,8 +2058,8 @@ _no second-level headings_
 - WO-19.4 — Pay-run build, approve, post — and GL posting  <sub>:411</sub>
 - WO-19.5 — Overpayment adjustments  <sub>:444</sub>
 - WO-19.6 — Admin screens, nav, self-service  <sub>:464</sub>
-- WO-19.7 — Tests and full verification  <sub>:483</sub>
-- Not modelled in this phase (named, not silently dropped)  <sub>:494</sub>
+- WO-19.7 — Tests and full verification  <sub>:494</sub>
+- Not modelled in this phase (named, not silently dropped)  <sub>:505</sub>
 
 ### `docs/implementation/DECISIONS.md`  <sub>1,640 lines</sub>
 

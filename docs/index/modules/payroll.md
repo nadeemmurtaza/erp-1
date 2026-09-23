@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 16 files
 
 Source: `apps/api/src/modules/payroll/`
 
-## Files (16 · 1,730 lines)
+## Files (16 · 1,768 lines)
 
 All paths relative to `apps/api/src/modules/payroll/dto`.
 
@@ -27,20 +27,21 @@ All paths relative to `apps/api/src/modules/payroll/dto`.
 | `pay-run.controller.ts` | controller | 73 | 1 | Pay-run build/approve/post (docs/implementation/19-payroll.md WO-19.4). |
 | `pay-run.service.spec.ts` | unit test | 282 | — |  |
 | `pay-run.service.ts` | service | 254 | 2 |  |
-| `payroll.controller.ts` | controller | 71 | 1 | Compensation rates and the salary calculator (docs/implementation/ 19-payroll.md WO-19.2). |
+| `payroll.controller.ts` | controller | 78 | 1 | Compensation rates and the salary calculator (docs/implementation/ 19-payroll.md WO-19.2). |
 | `payroll.module.ts` | nest module | 23 | 1 |  |
-| `payroll.service.spec.ts` | unit test | 164 | — |  |
-| `payroll.service.ts` | service | 146 | 3 |  |
+| `payroll.service.spec.ts` | unit test | 182 | — |  |
+| `payroll.service.ts` | service | 159 | 3 |  |
 
 
-## HTTP routes (18)
+## HTTP routes (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/payroll/compensation/:userId` | `payroll.view` | `PayrollController.compensation` :33 | One employee's current rate and rate history. |
-| PATCH | `/admin/payroll/compensation/:userId` | `payroll.manage` | `PayrollController.setCompensation` :45 | Set a new effective-dated compensation rate, closing the previous one. |
-| GET | `/admin/payroll/compensation/:userId/preview` | `payroll.view` | `PayrollController.previewGross` :63 | Preview the gross salary calculation for a period, no write. |
-| GET | `/admin/payroll/compensation/me` | `payroll.view_own` | `PayrollController.myCompensation` :22 | The caller's own current rate and rate history. |
+| GET | `/admin/payroll/compensation` | `payroll.view` | `PayrollController.listCompensation` :22 | Every employee's current compensation rate. |
+| GET | `/admin/payroll/compensation/:userId` | `payroll.view` | `PayrollController.compensation` :40 | One employee's current rate and rate history. |
+| PATCH | `/admin/payroll/compensation/:userId` | `payroll.manage` | `PayrollController.setCompensation` :52 | Set a new effective-dated compensation rate, closing the previous one. |
+| GET | `/admin/payroll/compensation/:userId/preview` | `payroll.view` | `PayrollController.previewGross` :70 | Preview the gross salary calculation for a period, no write. |
+| GET | `/admin/payroll/compensation/me` | `payroll.view_own` | `PayrollController.myCompensation` :29 | The caller's own current rate and rate history. |
 | GET | `/admin/payroll/leave` | `payroll.view` | `LeaveController.all` :54 | Every leave request across every employee, newest first. |
 | PATCH | `/admin/payroll/leave/:requestId/decide` | `payroll.manage` | `LeaveController.decide` :73 | Approve or reject a pending leave request. |
 | GET | `/admin/payroll/leave/:userId` | `payroll.view` | `LeaveController.forUser` :65 | One employee's leave balances and request history. |
@@ -128,7 +129,7 @@ check there before adding another.
 | `leave-accrual.cron.spec.ts` | 3 | LeaveAccrualCron |
 | `leave.service.spec.ts` | 16 | LeaveService · countWorkingDays · requestLeave / cancel · decide · accrue |
 | `pay-run.service.spec.ts` | 15 | PayRunService · build · approve / post lifecycle · postAdjustment — WO-19.5 |
-| `payroll.service.spec.ts` | 14 | PayrollService · setCompensationRate · calculateGross — MONTHLY · calculateGross — HOURLY / COMMISSION honesty · requir… |
+| `payroll.service.spec.ts` | 15 | PayrollService · setCompensationRate · calculateGross — MONTHLY · calculateGross — HOURLY / COMMISSION honesty · requir… |
 
 
 ## Every export in this unit

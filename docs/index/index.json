@@ -3,16 +3,16 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1255,
-    "lines": 198156,
-    "routes": 356,
+    "files": 1260,
+    "lines": 199345,
+    "routes": 357,
     "controllers": 62,
     "models": 133,
     "enums": 58,
     "migrations": 60,
     "events": 39,
     "permissions": 44,
-    "screens": 147,
+    "screens": 152,
     "crons": 9,
     "specs": 130,
     "designLaws": 150
@@ -1084,8 +1084,8 @@
     },
     "api": {
       "files": 529,
-      "lines": 73309,
-      "bytes": 2686585,
+      "lines": 73347,
+      "bytes": 2688312,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1101,15 +1101,15 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 253,
-      "lines": 39231,
-      "bytes": 1449680,
+      "files": 258,
+      "lines": 40371,
+      "bytes": 1489386,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 248,
-      "lines": 36888,
-      "bytes": 2298325,
+      "lines": 36899,
+      "bytes": 2299042,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -1475,7 +1475,7 @@
         "apps/api/src/modules/payroll/payroll.service.spec.ts",
         "apps/api/src/modules/payroll/payroll.service.ts"
       ],
-      "routes": 18,
+      "routes": 19,
       "page": "docs/index/modules/payroll.md"
     },
     {
@@ -4422,12 +4422,28 @@
     },
     {
       "method": "GET",
+      "path": "/admin/payroll/compensation",
+      "module": "payroll",
+      "controller": "PayrollController",
+      "handler": "listCompensation",
+      "file": "apps/api/src/modules/payroll/payroll.controller.ts",
+      "line": 22,
+      "access": "payroll.view",
+      "permissions": [
+        "payroll.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every employee's current compensation rate."
+    },
+    {
+      "method": "GET",
       "path": "/admin/payroll/compensation/:userId",
       "module": "payroll",
       "controller": "PayrollController",
       "handler": "compensation",
       "file": "apps/api/src/modules/payroll/payroll.controller.ts",
-      "line": 33,
+      "line": 40,
       "access": "payroll.view",
       "permissions": [
         "payroll.view"
@@ -4443,7 +4459,7 @@
       "controller": "PayrollController",
       "handler": "setCompensation",
       "file": "apps/api/src/modules/payroll/payroll.controller.ts",
-      "line": 45,
+      "line": 52,
       "access": "payroll.manage",
       "permissions": [
         "payroll.manage"
@@ -4459,7 +4475,7 @@
       "controller": "PayrollController",
       "handler": "previewGross",
       "file": "apps/api/src/modules/payroll/payroll.controller.ts",
-      "line": 63,
+      "line": 70,
       "access": "payroll.view",
       "permissions": [
         "payroll.view"
@@ -4475,7 +4491,7 @@
       "controller": "PayrollController",
       "handler": "myCompensation",
       "file": "apps/api/src/modules/payroll/payroll.controller.ts",
-      "line": 22,
+      "line": 29,
       "access": "payroll.view_own",
       "permissions": [
         "payroll.view_own"
@@ -8244,7 +8260,7 @@
         "POST /admin/payroll/leave/me/:requestId/cancel",
         "GET /admin/payroll/leave/types"
       ],
-      "uiSites": 0,
+      "uiSites": 1,
       "roles": [
         "TAILOR",
         "STAFF",
@@ -8258,6 +8274,7 @@
       "category": "Payroll",
       "sensitivity": "medium",
       "routes": [
+        "GET /admin/payroll/compensation",
         "GET /admin/payroll/compensation/:userId",
         "GET /admin/payroll/compensation/:userId/preview",
         "GET /admin/payroll/leave",
@@ -8265,7 +8282,7 @@
         "GET /admin/payroll/runs",
         "GET /admin/payroll/runs/:id"
       ],
-      "uiSites": 0,
+      "uiSites": 3,
       "roles": [
         "ADMIN"
       ],
@@ -8285,7 +8302,7 @@
         "PATCH /admin/payroll/runs/:id/post",
         "PATCH /admin/payroll/runs/:id/rebuild"
       ],
-      "uiSites": 0,
+      "uiSites": 2,
       "roles": [
         "ADMIN"
       ],
@@ -23995,6 +24012,51 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/payroll/compensation",
+      "file": "apps/web/src/app/(admin)/admin/(app)/payroll/compensation/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/payroll/leave",
+      "file": "apps/web/src/app/(admin)/admin/(app)/payroll/leave/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/payroll/me",
+      "file": "apps/web/src/app/(admin)/admin/(app)/payroll/me/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/payroll/runs",
+      "file": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/payroll/runs/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/products",
       "file": "apps/web/src/app/(admin)/admin/(app)/products/page.tsx",
       "client": true,
@@ -25553,13 +25615,14 @@
       "file": "apps/api/src/modules/payroll/payroll.service.spec.ts",
       "module": "payroll",
       "kind": "unit test",
-      "cases": 14,
+      "cases": 15,
       "describes": [
         "PayrollService",
         "setCompensationRate",
         "calculateGross — MONTHLY",
         "calculateGross — HOURLY / COMMISSION honesty",
-        "requireUser"
+        "requireUser",
+        "listCurrentRates"
       ]
     },
     {
@@ -33192,8 +33255,8 @@
       "path": "apps/api/src/modules/payroll/payroll.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 71,
-      "bytes": 2709,
+      "lines": 78,
+      "bytes": 2923,
       "doc": "",
       "symbols": [
         {
@@ -33222,8 +33285,8 @@
       "path": "apps/api/src/modules/payroll/payroll.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 164,
-      "bytes": 6863,
+      "lines": 182,
+      "bytes": 7785,
       "doc": "",
       "symbols": []
     },
@@ -33231,8 +33294,8 @@
       "path": "apps/api/src/modules/payroll/payroll.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 146,
-      "bytes": 5853,
+      "lines": 159,
+      "bytes": 6444,
       "doc": "",
       "symbols": [
         {
@@ -37804,6 +37867,81 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/payroll/compensation/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 220,
+      "bytes": 8124,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PayrollCompensationPage",
+          "kind": "default",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/payroll/leave/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 156,
+      "bytes": 5793,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PayrollLeavePage",
+          "kind": "default",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/payroll/me/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 205,
+      "bytes": 7757,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MyPayPage",
+          "kind": "default",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 262,
+      "bytes": 9608,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PayrollRunDetailPage",
+          "kind": "default",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 137,
+      "bytes": 4796,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PayrollRunsPage",
+          "kind": "default",
+          "line": 18
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/products/[id]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -39200,44 +39338,44 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 516,
-      "bytes": 13443,
+      "lines": 554,
+      "bytes": 14262,
       "doc": "",
       "symbols": [
         {
           "name": "ICON_MAP",
           "kind": "const",
-          "line": 16
+          "line": 17
         },
         {
           "name": "AdminNavGroup",
           "kind": "interface",
-          "line": 28
+          "line": 30
         },
         {
           "name": "NAV_GROUPS",
           "kind": "const",
-          "line": 47
+          "line": 49
         },
         {
           "name": "AdminNavItem",
           "kind": "interface",
-          "line": 59
+          "line": 62
         },
         {
           "name": "ADMIN_NAV",
           "kind": "const",
-          "line": 96
+          "line": 100
         },
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 486
+          "line": 524
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 501
+          "line": 539
         }
       ]
     },
@@ -39405,19 +39543,19 @@
       "path": "apps/web/src/components/common/status-badge.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 62,
-      "bytes": 2323,
+      "lines": 65,
+      "bytes": 2389,
       "doc": "",
       "symbols": [
         {
           "name": "statusLabel",
           "kind": "function",
-          "line": 55
+          "line": 58
         },
         {
           "name": "StatusBadge",
           "kind": "function",
-          "line": 59
+          "line": 62
         }
       ]
     },
@@ -40730,8 +40868,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 988,
-      "bytes": 26037,
+      "lines": 1107,
+      "bytes": 28780,
       "doc": "",
       "symbols": [
         {
@@ -41060,149 +41198,229 @@
           "line": 664
         },
         {
-          "name": "EmailAccountPurpose",
+          "name": "CompensationBasis",
           "kind": "type",
           "line": 673
         },
         {
-          "name": "EmailAccount",
+          "name": "CompensationRate",
           "kind": "interface",
           "line": 675
         },
         {
-          "name": "EmailTemplateCatalogEntry",
+          "name": "EmployeeCompensation",
           "kind": "interface",
-          "line": 700
+          "line": 686
         },
         {
-          "name": "RenderedEmailPreview",
+          "name": "GrossPreview",
+          "kind": "interface",
+          "line": 691
+        },
+        {
+          "name": "LeaveKind",
+          "kind": "type",
+          "line": 697
+        },
+        {
+          "name": "LeaveType",
+          "kind": "interface",
+          "line": 699
+        },
+        {
+          "name": "LeaveBalance",
           "kind": "interface",
           "line": 708
         },
         {
-          "name": "InboundEmailReply",
-          "kind": "interface",
-          "line": 716
+          "name": "LeaveRequestStatus",
+          "kind": "type",
+          "line": 717
         },
         {
-          "name": "InboundEmail",
+          "name": "LeaveRequest",
           "kind": "interface",
-          "line": 723
+          "line": 719
         },
         {
-          "name": "PermissionDefinition",
+          "name": "EmployeeLeave",
           "kind": "interface",
-          "line": 740
+          "line": 736
         },
         {
-          "name": "AuditLogEntry",
-          "kind": "interface",
-          "line": 747
+          "name": "PayRunStatus",
+          "kind": "type",
+          "line": 741
         },
         {
-          "name": "AuditLogPage",
+          "name": "PayRunLine",
+          "kind": "interface",
+          "line": 743
+        },
+        {
+          "name": "PayRunAdjustmentReason",
+          "kind": "type",
+          "line": 757
+        },
+        {
+          "name": "PayRunAdjustment",
           "kind": "interface",
           "line": 759
         },
         {
-          "name": "BackOfficeRole",
-          "kind": "type",
-          "line": 768
-        },
-        {
-          "name": "AdminUser",
+          "name": "PayRun",
           "kind": "interface",
           "line": 770
         },
         {
-          "name": "PermissionOverride",
+          "name": "PayRunWithLines",
           "kind": "interface",
-          "line": 782
+          "line": 785
         },
         {
-          "name": "HeldRole",
-          "kind": "interface",
-          "line": 788
+          "name": "EmailAccountPurpose",
+          "kind": "type",
+          "line": 792
         },
         {
-          "name": "UserRoleConflicts",
+          "name": "EmailAccount",
           "kind": "interface",
-          "line": 795
+          "line": 794
         },
         {
-          "name": "AdminUserDetail",
+          "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 800
+          "line": 819
         },
         {
-          "name": "RoleSummary",
+          "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 812
+          "line": 827
         },
         {
-          "name": "RoleWriteResult",
+          "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 821
+          "line": 835
         },
         {
-          "name": "CustomerAddress",
-          "kind": "interface",
-          "line": 828
-        },
-        {
-          "name": "MeasurementProfile",
+          "name": "InboundEmail",
           "kind": "interface",
           "line": 842
         },
         {
-          "name": "MeasurementProfileDetail",
+          "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 853
+          "line": 859
         },
         {
-          "name": "CustomerOrderSummary",
-          "kind": "interface",
-          "line": 857
-        },
-        {
-          "name": "StitchingTimelineEvent",
+          "name": "AuditLogEntry",
           "kind": "interface",
           "line": 866
         },
         {
+          "name": "AuditLogPage",
+          "kind": "interface",
+          "line": 878
+        },
+        {
+          "name": "BackOfficeRole",
+          "kind": "type",
+          "line": 887
+        },
+        {
+          "name": "AdminUser",
+          "kind": "interface",
+          "line": 889
+        },
+        {
+          "name": "PermissionOverride",
+          "kind": "interface",
+          "line": 901
+        },
+        {
+          "name": "HeldRole",
+          "kind": "interface",
+          "line": 907
+        },
+        {
+          "name": "UserRoleConflicts",
+          "kind": "interface",
+          "line": 914
+        },
+        {
+          "name": "AdminUserDetail",
+          "kind": "interface",
+          "line": 919
+        },
+        {
+          "name": "RoleSummary",
+          "kind": "interface",
+          "line": 931
+        },
+        {
+          "name": "RoleWriteResult",
+          "kind": "interface",
+          "line": 940
+        },
+        {
+          "name": "CustomerAddress",
+          "kind": "interface",
+          "line": 947
+        },
+        {
+          "name": "MeasurementProfile",
+          "kind": "interface",
+          "line": 961
+        },
+        {
+          "name": "MeasurementProfileDetail",
+          "kind": "interface",
+          "line": 972
+        },
+        {
+          "name": "CustomerOrderSummary",
+          "kind": "interface",
+          "line": 976
+        },
+        {
+          "name": "StitchingTimelineEvent",
+          "kind": "interface",
+          "line": 985
+        },
+        {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 874
+          "line": 993
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 903
+          "line": 1022
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 935
+          "line": 1054
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 950
+          "line": 1069
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 959
+          "line": 1078
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 968
+          "line": 1087
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 984
+          "line": 1103
         }
       ]
     },
@@ -43899,8 +44117,8 @@
       "path": "docs/implementation/19-payroll.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 505,
-      "bytes": 22870,
+      "lines": 516,
+      "bytes": 23587,
       "doc": "",
       "symbols": []
     },

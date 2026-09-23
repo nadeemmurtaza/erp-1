@@ -160,4 +160,22 @@ describe('PayrollService', () => {
       await expect(service.requireUser(user.id)).resolves.toBeUndefined();
     });
   });
+
+  describe('listCurrentRates', () => {
+    it('includes every user with an open rate, and excludes a closed one', async () => {
+      const withRate = await makeUser();
+      const withoutRate = await makeUser();
+      await service.setCompensationRate(withRate.id, 'MONTHLY', 5_000_00, new Date('2026-01-01'));
+      await service.setCompensationRate(withoutRate.id, 'MONTHLY', 4_000_00, new Date('2025-01-01'));
+      await service.setCompensationRate(withoutRate.id, 'MONTHLY', 6_000_00, new Date('2026-06-01')); // closes the first
+
+      const rates = await service.listCurrentRates();
+      const ids = rates.map((r) => r.userId);
+
+      expect(ids).toContain(withRate.id);
+      expect(ids).toContain(withoutRate.id);
+      expect(rates.find((r) => r.userId === withoutRate.id)?.amountMinor).toBe(6_000_00);
+      expect(rates.find((r) => r.userId === withRate.id)?.user.email).toBe(withRate.email);
+    });
+  });
 });

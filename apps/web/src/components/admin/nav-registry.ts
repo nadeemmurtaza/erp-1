@@ -11,6 +11,7 @@ import {
   BarChart3,
   Settings,
   Factory,
+  Wallet,
 } from 'lucide-react';
 
 export const ICON_MAP = {
@@ -23,6 +24,7 @@ export const ICON_MAP = {
   BarChart3,
   Settings,
   Factory,
+  Wallet,
 } as const;
 
 export interface AdminNavGroup {
@@ -52,6 +54,7 @@ export const NAV_GROUPS: readonly AdminNavGroup[] = [
   { key: 'catalogue', label: 'Catalogue', icon: 'Package' },
   { key: 'stock',     label: 'Stock',     icon: 'Boxes' },
   { key: 'manufacturing', label: 'Manufacturing', icon: 'Factory' },
+  { key: 'payroll', label: 'Payroll', icon: 'Wallet' },
   { key: 'insights',  label: 'Insights',  icon: 'BarChart3' },
   { key: 'settings',  label: 'Settings',  icon: 'Settings' },
 ] as const;
@@ -71,6 +74,7 @@ export interface AdminNavItem {
     | 'catalogue'
     | 'stock'
     | 'manufacturing'
+    | 'payroll'
     | 'insights'
     | 'settings';
   /** lucide-react icon name. */
@@ -425,6 +429,40 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['bom.view'],
     group: 'manufacturing',
     module: 'bom',
+  },
+
+  // Group: Payroll
+  {
+    key: 'payroll-compensation',
+    label: 'Compensation',
+    href: '/admin/payroll/compensation',
+    permissions: ['payroll.view'],
+    group: 'payroll',
+    module: 'payroll',
+  },
+  {
+    key: 'payroll-leave',
+    label: 'Leave requests',
+    href: '/admin/payroll/leave',
+    permissions: ['payroll.view'],
+    group: 'payroll',
+    module: 'payroll',
+  },
+  {
+    key: 'payroll-runs',
+    label: 'Pay runs',
+    href: '/admin/payroll/runs',
+    permissions: ['payroll.view'],
+    group: 'payroll',
+    module: 'payroll',
+  },
+  {
+    key: 'payroll-me',
+    label: 'My pay',
+    href: '/admin/payroll/me',
+    permissions: ['payroll.view_own'],
+    group: 'payroll',
+    module: 'payroll',
   },
 
   // Group: Settings

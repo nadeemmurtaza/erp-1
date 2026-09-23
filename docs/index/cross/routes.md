@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **356** endpoints across **62** controllers, with the access rule that actually guards each one.
+All **357** endpoints across **62** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -405,10 +405,11 @@ never authorization.
 | POST | `/payments/callback/:provider` | **PUBLIC** | `PaymentsController.callback` | Gateway return URL — verifies and settles a payment |
 | GET | `/payments/methods` | **PUBLIC** | `PaymentsController.methods` | Payment methods currently accepted |
 
-### [`payroll`](../modules/payroll.md) (18)
+### [`payroll`](../modules/payroll.md) (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/payroll/compensation` | `payroll.view` | `PayrollController.listCompensation` | Every employee's current compensation rate. |
 | GET | `/admin/payroll/compensation/:userId` | `payroll.view` | `PayrollController.compensation` | One employee's current rate and rate history. |
 | PATCH | `/admin/payroll/compensation/:userId` | `payroll.manage` | `PayrollController.setCompensation` | Set a new effective-dated compensation rate, closing the previous one. |
 | GET | `/admin/payroll/compensation/:userId/preview` | `payroll.view` | `PayrollController.previewGross` | Preview the gross salary calculation for a period, no write. |

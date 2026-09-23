@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 253 tracked files in `apps/web`, by directory.
+All 258 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -367,6 +367,36 @@ All 253 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 155 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/payroll/compensation` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 220 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/payroll/leave` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 156 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/payroll/me` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 205 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/payroll/runs` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 137 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 262 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/products` (1)
 
@@ -736,7 +766,7 @@ All 253 tracked files in `apps/web`, by directory.
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 485 |  |
-| `nav-registry.ts` | component | 516 |  |
+| `nav-registry.ts` | component | 554 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1034 |  |
@@ -758,7 +788,7 @@ All 253 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `status-badge.tsx` | component | 62 |  |
+| `status-badge.tsx` | component | 65 |  |
 | `toast-container.tsx` | component | 60 |  |
 | `wizard.tsx` | component | 146 |  |
 
@@ -880,7 +910,7 @@ All 253 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 988 |  |
+| `api.ts` | types | 1107 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

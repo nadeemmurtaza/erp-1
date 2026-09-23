@@ -142,4 +142,17 @@ export class PayrollService {
     const exists = await this.prisma.user.findUnique({ where: { id: userId }, select: { id: true } });
     if (!exists) throw new NotFoundException('No such user.');
   }
+
+  /**
+   * Every currently-open CompensationRate, one per employee — the
+   * WO-19.6 admin screen's own list, so it never has to N+1 currentRate()
+   * per user in `/admin/users`.
+   */
+  async listCurrentRates(): Promise<Array<CompensationRate & { user: { id: string; firstName: string | null; lastName: string | null; email: string | null } }>> {
+    return this.prisma.compensationRate.findMany({
+      where: { effectiveTo: null },
+      include: { user: { select: { id: true, firstName: true, lastName: true, email: true } } },
+      orderBy: { effectiveFrom: 'desc' },
+    });
+  }
 }

@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **355** endpoints across **62** controllers, with the access rule that actually guards each one.
+All **356** endpoints across **62** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -405,7 +405,7 @@ never authorization.
 | POST | `/payments/callback/:provider` | **PUBLIC** | `PaymentsController.callback` | Gateway return URL — verifies and settles a payment |
 | GET | `/payments/methods` | **PUBLIC** | `PaymentsController.methods` | Payment methods currently accepted |
 
-### [`payroll`](../modules/payroll.md) (17)
+### [`payroll`](../modules/payroll.md) (18)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -423,6 +423,7 @@ never authorization.
 | GET | `/admin/payroll/runs` | `payroll.view` | `PayRunController.list` | Every pay run, most recent period first. |
 | POST | `/admin/payroll/runs` | `payroll.manage` | `PayRunController.build` | Build a new DRAFT pay run for a period. |
 | GET | `/admin/payroll/runs/:id` | `payroll.view` | `PayRunController.get` | One pay run with every line. |
+| POST | `/admin/payroll/runs/:id/adjustments` | `payroll.manage` | `PayRunController.postAdjustment` | Post an overpayment/underpayment/correction adjustment against a POSTED pay run. |
 | PATCH | `/admin/payroll/runs/:id/approve` | `payroll.manage` | `PayRunController.approve` | DRAFT → APPROVED. |
 | PATCH | `/admin/payroll/runs/:id/post` | `payroll.manage` | `PayRunController.post` | APPROVED → POSTED. Fires payroll.run_posted. |
 | PATCH | `/admin/payroll/runs/:id/rebuild` | `payroll.manage` | `PayRunController.rebuild` | Recompute every line on a still-DRAFT pay run, replacing them. |

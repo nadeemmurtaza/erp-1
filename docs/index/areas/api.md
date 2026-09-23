@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-528 files · 73,038 lines
+529 files · 73,309 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -31,8 +31,8 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | `apps/api/prisma` | 3 | 3,269 | module |
 | `apps/api/prisma/schema` | 86 | 8,359 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 131 | nest module, module |
-| `apps/api/src/core` | 114 | 11,962 | nest module, service, module, controller |
-| `apps/api/src/modules` | 294 | 42,406 | nest module, unit test, service, module |
+| `apps/api/src/core` | 114 | 11,976 | nest module, service, module, controller |
+| `apps/api/src/modules` | 295 | 42,663 | nest module, unit test, service, module |
 | `apps/api/test` | 18 | 6,036 | e2e test, unit test, module |
 | `apps/api/test/support` | 1 | 43 | module |
 
@@ -60,11 +60,11 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | `apps/api/test/cart.e2e-spec.ts` | 800 | e2e test |  |
 | `apps/api/src/modules/cart/cart.service.ts` | 678 | service |  |
 | `apps/api/src/modules/purchasing/purchasing.service.ts` | 657 | service |  |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | 643 | unit test |  |
 | `apps/api/src/modules/catalog/product-admin.service.ts` | 631 | service |  |
 | `apps/api/test/stitching.e2e-spec.ts` | 590 | e2e test |  |
 | `apps/api/src/modules/inventory/inventory.service.ts` | 582 | service |  |
 | `apps/api/test/email-channel.behavior.spec.ts` | 580 | unit test | Behavior tests for the email notification channel. |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | 574 | unit test |  |
 
 
 ---

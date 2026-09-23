@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 528 tracked files in `apps/api`, by directory.
+All 529 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -518,7 +518,7 @@ All 528 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 387 | The catalogue of domain events. |
+| `domain-events.ts` | module | 401 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
@@ -684,8 +684,8 @@ All 528 tracked files in `apps/api`, by directory.
 | `gl-reports.controller.ts` | controller | 67 |  |
 | `gl-reports.service.spec.ts` | unit test | 174 |  |
 | `gl-reports.service.ts` | service | 298 |  |
-| `posting-rules.subscriber.spec.ts` | unit test | 574 |  |
-| `posting-rules.subscriber.ts` | event subscriber | 477 |  |
+| `posting-rules.subscriber.spec.ts` | unit test | 643 |  |
+| `posting-rules.subscriber.ts` | event subscriber | 519 |  |
 
 ### `apps/api/src/modules/accounting/dto` (2)
 
@@ -1016,20 +1016,21 @@ All 528 tracked files in `apps/api`, by directory.
 | `leave.controller.ts` | controller | 81 |  |
 | `leave.service.spec.ts` | unit test | 224 |  |
 | `leave.service.ts` | service | 175 |  |
-| `pay-run.controller.ts` | controller | 61 |  |
-| `pay-run.service.spec.ts` | unit test | 223 |  |
-| `pay-run.service.ts` | service | 204 |  |
+| `pay-run.controller.ts` | controller | 73 |  |
+| `pay-run.service.spec.ts` | unit test | 282 |  |
+| `pay-run.service.ts` | service | 254 |  |
 | `payroll.controller.ts` | controller | 71 |  |
 | `payroll.module.ts` | nest module | 23 |  |
 | `payroll.service.spec.ts` | unit test | 164 |  |
 | `payroll.service.ts` | service | 146 |  |
 
-### `apps/api/src/modules/payroll/dto` (3)
+### `apps/api/src/modules/payroll/dto` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `compensation-rate.dto.ts` | dto | 40 |  |
 | `leave.dto.ts` | dto | 35 |  |
+| `pay-run-adjustment.dto.ts` | dto | 25 |  |
 | `pay-run.dto.ts` | dto | 19 |  |
 
 ### `apps/api/src/modules/pos` (16)

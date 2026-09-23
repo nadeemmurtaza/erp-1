@@ -570,4 +570,73 @@ describe('PostingRulesSubscriber — WO-19.2', () => {
       expect(accounting.postEntry).not.toHaveBeenCalled();
     });
   });
+
+  describe('onPayrollAdjustmentPosted — WO-19.5', () => {
+    const payload = {
+      adjustmentId: 'adj1',
+      payRunId: 'pr1',
+      payRunNumber: 'PAY-2026-0001',
+      userId: 'u1',
+      reason: 'OVERPAYMENT' as const,
+      amountMinor: 500_00,
+      postedAt: '2026-11-01T00:00:00.000Z',
+    };
+
+    it('Dr Employee Advances / Cr Salaries Payable for OVERPAYMENT', async () => {
+      await subscriber.onPayrollAdjustmentPosted(payload);
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          source: DomainEvent.PayrollAdjustmentPosted,
+          sourceRef: 'adj1',
+          lines: [
+            { accountId: 'acc-advances', debitMinor: 500_00 },
+            { accountId: 'acc-salaries-payable', creditMinor: 500_00 },
+          ],
+        }),
+      );
+    });
+
+    it('Dr Salaries & Wages Expense / Cr Salaries Payable for UNDERPAYMENT', async () => {
+      await subscriber.onPayrollAdjustmentPosted({ ...payload, reason: 'UNDERPAYMENT' });
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          lines: [
+            { accountId: 'acc-salaries-expense', debitMinor: 500_00 },
+            { accountId: 'acc-salaries-payable', creditMinor: 500_00 },
+          ],
+        }),
+      );
+    });
+
+    it('Dr Salaries & Wages Expense / Cr Salaries Payable for CORRECTION', async () => {
+      await subscriber.onPayrollAdjustmentPosted({ ...payload, reason: 'CORRECTION' });
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          lines: [
+            { accountId: 'acc-salaries-expense', debitMinor: 500_00 },
+            { accountId: 'acc-salaries-payable', creditMinor: 500_00 },
+          ],
+        }),
+      );
+    });
+
+    it('sourceRef is the adjustment id, never the original pay run id', async () => {
+      await subscriber.onPayrollAdjustmentPosted(payload);
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({ sourceRef: 'adj1' }),
+      );
+    });
+
+    it('does nothing when this adjustment already posted (redelivery)', async () => {
+      accounting.findPostedEntry.mockResolvedValue({ id: 'already-there' });
+
+      await subscriber.onPayrollAdjustmentPosted(payload);
+
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+  });
 });

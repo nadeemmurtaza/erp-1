@@ -68,6 +68,8 @@ export const DomainEvent = {
 
   /** PayRunService.post() (docs/implementation/19-payroll.md WO-19.4) — the eighth posting rule; fires whether or not `accounting` is on, same idiom as ExpenseRecorded. */
   PayrollRunPosted: 'payroll.run_posted',
+  /** PayRunService.postAdjustment() (docs/implementation/19-payroll.md WO-19.5) — the overpayment/correction reversal path, a distinct postable fact from the original run it corrects. */
+  PayrollAdjustmentPosted: 'payroll.adjustment_posted',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -331,6 +333,17 @@ export interface PayrollRunPostedPayload {
   originNodeId: string | null;
 }
 
+export interface PayrollAdjustmentPostedPayload {
+  adjustmentId: string;
+  payRunId: string;
+  payRunNumber: string;
+  userId: string;
+  reason: 'OVERPAYMENT' | 'UNDERPAYMENT' | 'CORRECTION';
+  /** Paisa, always positive — sign is implied by `reason`. */
+  amountMinor: number;
+  postedAt: string;
+}
+
 export interface EmailReplyReceivedPayload {
   inboundEmailId: string;
   emailAccountId: string;
@@ -383,4 +396,5 @@ export interface DomainEventPayloads {
   [DomainEvent.ExpenseRecorded]: ExpenseRecordedPayload;
   [DomainEvent.OrderEconomicsComputed]: OrderEconomicsComputedPayload;
   [DomainEvent.PayrollRunPosted]: PayrollRunPostedPayload;
+  [DomainEvent.PayrollAdjustmentPosted]: PayrollAdjustmentPostedPayload;
 }

@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
+import { PostPayRunAdjustmentDto } from './dto/pay-run-adjustment.dto';
 import { BuildPayRunDto } from './dto/pay-run.dto';
 import { PayRunService } from './pay-run.service';
 
@@ -56,5 +57,16 @@ export class PayRunController {
   @ApiOperation({ summary: 'APPROVED → POSTED. Fires payroll.run_posted.' })
   async post(@Param('id') id: string) {
     return this.payRuns.post(id);
+  }
+
+  @Post(':id/adjustments')
+  @RequirePermission('payroll.manage')
+  @ApiOperation({ summary: 'Post an overpayment/underpayment/correction adjustment against a POSTED pay run.' })
+  async postAdjustment(
+    @Param('id') id: string,
+    @Body() dto: PostPayRunAdjustmentDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.payRuns.postAdjustment(id, dto.userId, dto.reason, dto.amountMinor, dto.note, user.id);
   }
 }

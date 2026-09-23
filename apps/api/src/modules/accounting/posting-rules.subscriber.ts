@@ -12,6 +12,7 @@ import {
   type InterBranchTransferInvoicedPayload,
   type ExpenseRecordedPayload,
   type PayrollRunPostedPayload,
+  type PayrollAdjustmentPostedPayload,
 } from '../../core/events/domain-events';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { AccountingService, type PostLineInput } from './accounting.service';
@@ -471,6 +472,47 @@ export class PostingRulesSubscriber {
       sourceRef: payload.payRunId,
       memo: `Pay run — ${payload.number}`,
       lines,
+    });
+  }
+
+  /**
+   * WO-19.5's overpayment/correction reversal — a distinct postable fact
+   * from the original run (sourceRef is the adjustment's own id, never the
+   * parent PayRun's), dated today so postEntry()'s own resolveOpenPeriod()
+   * lands it in the CURRENT open period even when the original run's
+   * period has since CLOSED. OVERPAYMENT debits the employee's Advances
+   * account (money the business now expects back) rather than touching
+   * Salaries & Wages Expense a second time; UNDERPAYMENT/CORRECTION debit
+   * the expense for the shortfall being paid out now.
+   */
+  @OnDomainEvent(DomainEvent.PayrollAdjustmentPosted)
+  async onPayrollAdjustmentPosted(payload: PayrollAdjustmentPostedPayload): Promise<void> {
+    const source = DomainEvent.PayrollAdjustmentPosted;
+    if (await this.accounting.findPostedEntry(source, payload.adjustmentId)) return;
+
+    const accountId = await this.accounting.accountIdsByCode([
+      ACCOUNT_CODE.SALARIES_WAGES_EXPENSE,
+      ACCOUNT_CODE.SALARIES_PAYABLE,
+      ACCOUNT_CODE.EMPLOYEE_ADVANCES,
+    ]);
+    const payableAccount = accountId.get(ACCOUNT_CODE.SALARIES_PAYABLE);
+    const debitAccount = accountId.get(
+      payload.reason === 'OVERPAYMENT' ? ACCOUNT_CODE.EMPLOYEE_ADVANCES : ACCOUNT_CODE.SALARIES_WAGES_EXPENSE,
+    );
+    if (!payableAccount || !debitAccount) {
+      this.logger.error(`Chart of accounts is missing Salaries Payable or the debit account for this adjustment — cannot post ${payload.adjustmentId}.`);
+      return;
+    }
+
+    await this.accounting.postEntry({
+      date: new Date(payload.postedAt),
+      source,
+      sourceRef: payload.adjustmentId,
+      memo: `Pay run adjustment (${payload.reason}) — ${payload.payRunNumber}`,
+      lines: [
+        { accountId: debitAccount, debitMinor: payload.amountMinor },
+        { accountId: payableAccount, creditMinor: payload.amountMinor },
+      ],
     });
   }
 }

@@ -3,13 +3,13 @@
 
 # Module: `payroll`
 
-Pack **core** · enabled by the `MODULES` allowlist · 15 files
+Pack **core** · enabled by the `MODULES` allowlist · 16 files
 
 
 
 Source: `apps/api/src/modules/payroll/`
 
-## Files (15 · 1,584 lines)
+## Files (16 · 1,730 lines)
 
 All paths relative to `apps/api/src/modules/payroll/dto`.
 
@@ -17,22 +17,23 @@ All paths relative to `apps/api/src/modules/payroll/dto`.
 |---|---|---|---|---|
 | `compensation-rate.dto.ts` | dto | 40 | 2 |  |
 | `leave.dto.ts` | dto | 35 | 2 |  |
+| `pay-run-adjustment.dto.ts` | dto | 25 | 1 |  |
 | `pay-run.dto.ts` | dto | 19 | 1 |  |
 | `leave-accrual.cron.spec.ts` | unit test | 73 | — |  |
 | `leave-accrual.cron.ts` | scheduled job | 45 | 1 | WO-19.3's monthly accrual job. |
 | `leave.controller.ts` | controller | 81 | 1 | Leave types, balances and requests (docs/implementation/19-payroll.md WO-19.3). |
 | `leave.service.spec.ts` | unit test | 224 | — |  |
 | `leave.service.ts` | service | 175 | 3 | The days a leave request spans, Monday–Saturday counted, Sunday not — the "plain Mon–Sat week" fallback 19-payroll.md W… |
-| `pay-run.controller.ts` | controller | 61 | 1 | Pay-run build/approve/post (docs/implementation/19-payroll.md WO-19.4). |
-| `pay-run.service.spec.ts` | unit test | 223 | — |  |
-| `pay-run.service.ts` | service | 204 | 2 |  |
+| `pay-run.controller.ts` | controller | 73 | 1 | Pay-run build/approve/post (docs/implementation/19-payroll.md WO-19.4). |
+| `pay-run.service.spec.ts` | unit test | 282 | — |  |
+| `pay-run.service.ts` | service | 254 | 2 |  |
 | `payroll.controller.ts` | controller | 71 | 1 | Compensation rates and the salary calculator (docs/implementation/ 19-payroll.md WO-19.2). |
 | `payroll.module.ts` | nest module | 23 | 1 |  |
 | `payroll.service.spec.ts` | unit test | 164 | — |  |
 | `payroll.service.ts` | service | 146 | 3 |  |
 
 
-## HTTP routes (17)
+## HTTP routes (18)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -47,12 +48,13 @@ All paths relative to `apps/api/src/modules/payroll/dto`.
 | POST | `/admin/payroll/leave/me` | `payroll.view_own` | `LeaveController.request` :40 | File a leave request for the caller. |
 | POST | `/admin/payroll/leave/me/:requestId/cancel` | `payroll.view_own` | `LeaveController.cancelOwn` :47 | Cancel the caller's own pending leave request. |
 | GET | `/admin/payroll/leave/types` | `payroll.view_own` | `LeaveController.types` :25 | Every active leave type — needed by anyone filing a request. |
-| GET | `/admin/payroll/runs` | `payroll.view` | `PayRunController.list` :22 | Every pay run, most recent period first. |
-| POST | `/admin/payroll/runs` | `payroll.manage` | `PayRunController.build` :36 | Build a new DRAFT pay run for a period. |
-| GET | `/admin/payroll/runs/:id` | `payroll.view` | `PayRunController.get` :29 | One pay run with every line. |
-| PATCH | `/admin/payroll/runs/:id/approve` | `payroll.manage` | `PayRunController.approve` :50 | DRAFT → APPROVED. |
-| PATCH | `/admin/payroll/runs/:id/post` | `payroll.manage` | `PayRunController.post` :57 | APPROVED → POSTED. Fires payroll.run_posted. |
-| PATCH | `/admin/payroll/runs/:id/rebuild` | `payroll.manage` | `PayRunController.rebuild` :43 | Recompute every line on a still-DRAFT pay run, replacing them. |
+| GET | `/admin/payroll/runs` | `payroll.view` | `PayRunController.list` :23 | Every pay run, most recent period first. |
+| POST | `/admin/payroll/runs` | `payroll.manage` | `PayRunController.build` :37 | Build a new DRAFT pay run for a period. |
+| GET | `/admin/payroll/runs/:id` | `payroll.view` | `PayRunController.get` :30 | One pay run with every line. |
+| POST | `/admin/payroll/runs/:id/adjustments` | `payroll.manage` | `PayRunController.postAdjustment` :65 | Post an overpayment/underpayment/correction adjustment against a POSTED pay run. |
+| PATCH | `/admin/payroll/runs/:id/approve` | `payroll.manage` | `PayRunController.approve` :51 | DRAFT → APPROVED. |
+| PATCH | `/admin/payroll/runs/:id/post` | `payroll.manage` | `PayRunController.post` :58 | APPROVED → POSTED. Fires payroll.run_posted. |
+| PATCH | `/admin/payroll/runs/:id/rebuild` | `payroll.manage` | `PayRunController.rebuild` :44 | Recompute every line on a still-DRAFT pay run, replacing them. |
 
 
 ## Domain events
@@ -62,6 +64,7 @@ All paths relative to `apps/api/src/modules/payroll/dto`.
 | Event | Name | Published at |
 |---|---|---|
 | `PayrollRunPosted` | `payroll.run_posted` | `pay-run.service.ts:186` |
+| `PayrollAdjustmentPosted` | `payroll.adjustment_posted` | `pay-run.service.ts:237` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -124,7 +127,7 @@ check there before adding another.
 |---|---|---|
 | `leave-accrual.cron.spec.ts` | 3 | LeaveAccrualCron |
 | `leave.service.spec.ts` | 16 | LeaveService · countWorkingDays · requestLeave / cancel · decide · accrue |
-| `pay-run.service.spec.ts` | 11 | PayRunService · build · approve / post lifecycle |
+| `pay-run.service.spec.ts` | 15 | PayRunService · build · approve / post lifecycle · postAdjustment — WO-19.5 |
 | `payroll.service.spec.ts` | 14 | PayrollService · setCompensationRate · calculateGross — MONTHLY · calculateGross — HOURLY / COMMISSION honesty · requir… |
 
 
@@ -136,13 +139,14 @@ check there before adding another.
 | `GrossPreviewQueryDto` | class | `compensation-rate.dto.ts:21` |  |
 | `RequestLeaveDto` | class | `leave.dto.ts:6` |  |
 | `DecideLeaveDto` | class | `leave.dto.ts:25` |  |
+| `PostPayRunAdjustmentDto` | class | `pay-run-adjustment.dto.ts:6` |  |
 | `BuildPayRunDto` | class | `pay-run.dto.ts:6` |  |
 | `LeaveAccrualCron` | class | `leave-accrual.cron.ts:16` | WO-19.3's monthly accrual job. |
 | `LeaveController` | class | `leave.controller.ts:16` | Leave types, balances and requests (docs/implementation/19-payroll.md WO-19.3). |
 | `countWorkingDays` | function | `leave.service.ts:12` | The days a leave request spans, Monday–Saturday counted, Sunday not — the "plain Mon–Sat week" fallback 19-pa… |
 | `accrualPeriodKey` | function | `leave.service.ts:25` | "2026-09" — the accrual period a date falls in. |
 | `LeaveService` | class | `leave.service.ts:30` |  |
-| `PayRunController` | class | `pay-run.controller.ts:16` | Pay-run build/approve/post (docs/implementation/19-payroll.md WO-19.4). |
+| `PayRunController` | class | `pay-run.controller.ts:17` | Pay-run build/approve/post (docs/implementation/19-payroll.md WO-19.4). |
 | `PayRunWithLines` | type | `pay-run.service.ts:17` |  |
 | `PayRunService` | class | `pay-run.service.ts:46` | Pay-run build, approve, post (docs/implementation/19-payroll.md WO-19.4). |
 | `PayrollController` | class | `payroll.controller.ts:16` | Compensation rates and the salary calculator (docs/implementation/ 19-payroll.md WO-19.2). |

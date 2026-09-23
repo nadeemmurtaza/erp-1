@@ -58,6 +58,7 @@ describe('PayRunService', () => {
 
   afterEach(async () => {
     jest.clearAllMocks();
+    await prisma.payRunAdjustment.deleteMany({ where: { user: { email: { startsWith: 'payroll-spec-' } } } });
     await prisma.payRunLine.deleteMany({ where: { user: { email: { startsWith: 'payroll-spec-' } } } });
     await prisma.payRun.deleteMany({ where: { createdBy: { email: { startsWith: 'payroll-spec-' } } } });
     await prisma.leaveRequest.deleteMany({ where: { user: { email: { startsWith: 'payroll-spec-' } } } });
@@ -217,6 +218,64 @@ describe('PayRunService', () => {
       await expect(payRuns.approve('nonexistent', 'admin')).rejects.toThrow(NotFoundException);
       await expect(payRuns.post('nonexistent')).rejects.toThrow(NotFoundException);
       await expect(payRuns.get('nonexistent')).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('postAdjustment — WO-19.5', () => {
+    async function postedRun() {
+      const admin = await makeUser();
+      const payee = await makeUser();
+      await prisma.compensationRate.create({
+        data: { userId: payee.id, basis: 'MONTHLY', amountMinor: 6_000_00, effectiveFrom: new Date('2025-01-01') },
+      });
+      const run = await payRuns.build(periodStart, periodEnd, 'BRAND', admin.id);
+      await payRuns.approve(run.id, admin.id);
+      await payRuns.post(run.id);
+      return { admin, payee, run };
+    }
+
+    it('creates the adjustment row and fires PayrollAdjustmentPosted', async () => {
+      const { admin, payee, run } = await postedRun();
+
+      const adjustment = await payRuns.postAdjustment(run.id, payee.id, 'OVERPAYMENT', 500_00, 'paid twice by mistake', admin.id);
+
+      expect(adjustment.reason).toBe('OVERPAYMENT');
+      expect(adjustment.amountMinor).toBe(500_00);
+      expect(events.publish).toHaveBeenCalledTimes(2); // PayrollRunPosted (post) + PayrollAdjustmentPosted
+      expect(events.publish.mock.calls[1][0]).toBe(DomainEvent.PayrollAdjustmentPosted);
+      expect(events.publish.mock.calls[1][1]).toMatchObject({
+        adjustmentId: adjustment.id,
+        payRunId: run.id,
+        reason: 'OVERPAYMENT',
+        amountMinor: 500_00,
+      });
+    });
+
+    it('refuses an adjustment against a DRAFT pay run', async () => {
+      const admin = await makeUser();
+      const payee = await makeUser();
+      await prisma.compensationRate.create({
+        data: { userId: payee.id, basis: 'MONTHLY', amountMinor: 6_000_00, effectiveFrom: new Date('2025-01-01') },
+      });
+      const run = await payRuns.build(periodStart, periodEnd, 'BRAND', admin.id);
+
+      await expect(
+        payRuns.postAdjustment(run.id, payee.id, 'CORRECTION', 100_00, 'note', admin.id),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('rejects a non-positive amount', async () => {
+      const { admin, payee, run } = await postedRun();
+      await expect(
+        payRuns.postAdjustment(run.id, payee.id, 'CORRECTION', 0, 'note', admin.id),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('throws NotFoundException for a nonexistent pay run', async () => {
+      const admin = await makeUser();
+      await expect(
+        payRuns.postAdjustment('nonexistent', admin.id, 'CORRECTION', 100_00, 'note', admin.id),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 });

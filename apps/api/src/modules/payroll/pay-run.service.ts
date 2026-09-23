@@ -200,4 +200,54 @@ export class PayRunService {
       return posted;
     });
   }
+
+  /**
+   * The overpayment/correction reversal path (WO-19.5) — a line-level
+   * correction keyed to the original PayRun, not a mutation of it or a
+   * full-entry reversal. Requires the target run be POSTED (there is
+   * nothing to correct on a DRAFT/APPROVED run — build()/approve() already
+   * cover that). Fires PayrollAdjustmentPosted the same way post() fires
+   * PayrollRunPosted; the posting rule that turns it into a JournalEntry
+   * dates it today, so AccountingService.postEntry()'s own
+   * resolveOpenPeriod() lands it in the CURRENT open period regardless of
+   * whether the original run's period has since CLOSED — no extra code
+   * needed here for that, it falls out of postEntry()'s existing behaviour.
+   */
+  async postAdjustment(
+    payRunId: string,
+    userId: string,
+    reason: 'OVERPAYMENT' | 'UNDERPAYMENT' | 'CORRECTION',
+    amountMinor: number,
+    note: string,
+    createdById: string,
+  ) {
+    if (amountMinor <= 0) throw new BadRequestException('amountMinor must be positive.');
+
+    return this.prisma.$transaction(async (tx) => {
+      const run = await tx.payRun.findUnique({ where: { id: payRunId } });
+      if (!run) throw new NotFoundException('No such pay run.');
+      if (run.status !== 'POSTED') throw new BadRequestException('Only a POSTED pay run can carry an adjustment.');
+
+      const adjustment = await tx.payRunAdjustment.create({
+        data: { payRunId, userId, reason, amountMinor, note, createdById },
+      });
+
+      const postedAt = new Date();
+      await this.events.publish(
+        DomainEvent.PayrollAdjustmentPosted,
+        {
+          adjustmentId: adjustment.id,
+          payRunId: run.id,
+          payRunNumber: run.number,
+          userId,
+          reason,
+          amountMinor,
+          postedAt: postedAt.toISOString(),
+        },
+        tx,
+      );
+
+      return adjustment;
+    });
+  }
 }

@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 248 tracked files in `docs/*`, by directory.
+All 255 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -253,7 +253,7 @@ All 248 tracked files in `docs/*`, by directory.
 | `52g-generate-gap.md` | doc | 26 |  |
 | `52h-harden-gap.md` | doc | 40 |  |
 
-### `docs/implementation` (28)
+### `docs/implementation` (35)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -277,7 +277,14 @@ All 248 tracked files in `docs/*`, by directory.
 | `17-inventory-locations.md` | doc | 254 |  |
 | `18-identity-verification.md` | doc | 143 |  |
 | `18-trading-partner-network.md` | doc | 61 |  |
+| `19-org-structure-offices-departments.md` | doc | 244 |  |
 | `19-payroll.md` | doc | 516 |  |
+| `20-people-positions-ranks.md` | doc | 239 |  |
+| `21-access-over-the-org-tree.md` | doc | 228 |  |
+| `22-attendance-shifts-leave.md` | doc | 233 |  |
+| `23-tasks-allotment-tracking.md` | doc | 221 |  |
+| `24-internal-notifications-meetings-escalation.md` | doc | 225 |  |
+| `25-advance-salary-and-payroll-posting.md` | doc | 266 |  |
 | `DECISIONS.md` | doc | 1640 |  |
 | `ENTERPRISE-SCALE.md` | doc | 266 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |

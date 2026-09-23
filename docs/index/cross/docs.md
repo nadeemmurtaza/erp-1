@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**268** markdown documents. These explain **why**; this index only says **where**.
+**275** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2046,6 +2046,16 @@ _no second-level headings_
 - Work orders  <sub>:18</sub>
 - Out of scope (for now)  <sub>:54</sub>
 
+### `docs/implementation/19-org-structure-offices-departments.md`  <sub>244 lines</sub>
+
+- Two hierarchies that look like one  <sub>:9</sub>
+- The design: `OrgUnit`, orthogonal to `Node`  <sub>:32</sub>
+- Scope lenses  <sub>:143</sub>
+- Work orders  <sub>:199</sub>
+- Acceptance  <sub>:219</sub>
+- Out of scope for this document  <sub>:233</sub>
+- Decision to record  <sub>:239</sub>
+
 ### `docs/implementation/19-payroll.md`  <sub>516 lines</sub>
 
 - Scope decision, taken with the owner  <sub>:8</sub>
@@ -2060,6 +2070,69 @@ _no second-level headings_
 - WO-19.6 — Admin screens, nav, self-service  <sub>:464</sub>
 - WO-19.7 — Tests and full verification  <sub>:494</sub>
 - Not modelled in this phase (named, not silently dropped)  <sub>:505</sub>
+
+### `docs/implementation/20-people-positions-ranks.md`  <sub>239 lines</sub>
+
+- Three things that are not each other  <sub>:9</sub>
+- Schema — `hr.prisma`  <sub>:27</sub>
+- Scope lenses  <sub>:149</sub>
+- Work orders  <sub>:207</sub>
+- Acceptance  <sub>:222</sub>
+- Out of scope  <sub>:233</sub>
+
+### `docs/implementation/21-access-over-the-org-tree.md`  <sub>228 lines</sub>
+
+- Two sources of access, and only one of them is remembered  <sub>:11</sub>
+- The ceiling on the granter  <sub>:70</sub>
+- Resolution order  <sub>:94</sub>
+- What a department sees  <sub>:114</sub>
+- Scope lenses  <sub>:127</sub>
+- Work orders  <sub>:191</sub>
+- Acceptance  <sub>:206</sub>
+- Out of scope  <sub>:222</sub>
+
+### `docs/implementation/22-attendance-shifts-leave.md`  <sub>233 lines</sub>
+
+- The unconditional path  <sub>:13</sub>
+- Schema — append to `hr.prisma`  <sub>:31</sub>
+- The working day is not a date  <sub>:132</sub>
+- Scope lenses  <sub>:141</sub>
+- Work orders  <sub>:210</sub>
+- Acceptance  <sub>:219</sub>
+- Out of scope  <sub>:229</sub>
+
+### `docs/implementation/23-tasks-allotment-tracking.md`  <sub>221 lines</sub>
+
+- 1. Work is assigned to a post, and optionally to a person  <sub>:10</sub>
+- 2. Status is a small enum plus a per-client workflow, not a string  <sub>:22</sub>
+- 3. A transition is an event, not an overwrite  <sub>:35</sub>
+- Schema — `tasks.prisma`  <sub>:41</sub>
+- Reassignment when someone leaves  <sub>:123</sub>
+- Scope lenses  <sub>:131</sub>
+- Work orders  <sub>:188</sub>
+- Acceptance  <sub>:203</sub>
+- Out of scope  <sub>:215</sub>
+
+### `docs/implementation/24-internal-notifications-meetings-escalation.md`  <sub>225 lines</sub>
+
+- The new part: an audience is a query over the org tree  <sub>:15</sub>
+- Meetings are a notification that expects an answer  <sub>:48</sub>
+- Escalation: the timer that makes a stalled approval visible  <sub>:94</sub>
+- Scope lenses  <sub>:128</sub>
+- Work orders  <sub>:192</sub>
+- Acceptance  <sub>:207</sub>
+- Out of scope  <sub>:220</sub>
+
+### `docs/implementation/25-advance-salary-and-payroll-posting.md`  <sub>266 lines</sub>
+
+- The chart does not have the accounts  <sub>:13</sub>
+- The posting rules, written out  <sub>:31</sub>
+- Schema — append to `hr.prisma`  <sub>:60</sub>
+- Who may approve, and how much  <sub>:119</sub>
+- Scope lenses  <sub>:142</sub>
+- Work orders  <sub>:223</sub>
+- Acceptance  <sub>:238</sub>
+- Out of scope, and the gap this leaves open  <sub>:254</sub>
 
 ### `docs/implementation/DECISIONS.md`  <sub>1,640 lines</sub>
 

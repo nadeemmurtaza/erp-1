@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1260,
-    "lines": 199345,
+    "files": 1267,
+    "lines": 201001,
     "routes": 357,
     "controllers": 62,
     "models": 133,
@@ -1107,9 +1107,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 248,
-      "lines": 36899,
-      "bytes": 2299042,
+      "files": 255,
+      "lines": 38555,
+      "bytes": 2380196,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -44114,11 +44114,74 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/19-org-structure-offices-departments.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 244,
+      "bytes": 12484,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/19-payroll.md",
       "area": "docs",
       "kind": "doc",
       "lines": 516,
       "bytes": 23587,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/20-people-positions-ranks.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 239,
+      "bytes": 11471,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/21-access-over-the-org-tree.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 228,
+      "bytes": 11809,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/22-attendance-shifts-leave.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 233,
+      "bytes": 10717,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/23-tasks-allotment-tracking.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 221,
+      "bytes": 10083,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/24-internal-notifications-meetings-escalation.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 225,
+      "bytes": 11061,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/25-advance-salary-and-payroll-posting.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 266,
+      "bytes": 13526,
       "doc": "",
       "symbols": []
     },
@@ -44181,7 +44244,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 539,
-      "bytes": 106752,
+      "bytes": 106755,
       "doc": "",
       "symbols": []
     },

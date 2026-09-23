@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 255 tracked files in `docs/*`, by directory.
+All 264 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -253,7 +253,7 @@ All 255 tracked files in `docs/*`, by directory.
 | `52g-generate-gap.md` | doc | 26 |  |
 | `52h-harden-gap.md` | doc | 40 |  |
 
-### `docs/implementation` (35)
+### `docs/implementation` (44)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -272,25 +272,34 @@ All 255 tracked files in `docs/*`, by directory.
 | `12-extractor-script-spec.md` | doc | 59 |  |
 | `13-email-service-plan.md` | doc | 32 |  |
 | `14-managed-services-module.md` | doc | 270 |  |
-| `15-tax-module.md` | doc | 178 |  |
+| `15-tax-module.md` | doc | 232 |  |
 | `16-pbac-row-scoping.md` | doc | 184 |  |
 | `17-inventory-locations.md` | doc | 254 |  |
 | `18-identity-verification.md` | doc | 143 |  |
-| `18-trading-partner-network.md` | doc | 61 |  |
+| `18-trading-partner-network.md` | doc | 81 |  |
 | `19-org-structure-offices-departments.md` | doc | 244 |  |
 | `19-payroll.md` | doc | 516 |  |
 | `20-people-positions-ranks.md` | doc | 239 |  |
 | `21-access-over-the-org-tree.md` | doc | 228 |  |
-| `22-attendance-shifts-leave.md` | doc | 233 |  |
+| `22-attendance-shifts-leave.md` | doc | 230 |  |
 | `23-tasks-allotment-tracking.md` | doc | 221 |  |
 | `24-internal-notifications-meetings-escalation.md` | doc | 225 |  |
 | `25-advance-salary-and-payroll-posting.md` | doc | 266 |  |
-| `DECISIONS.md` | doc | 1640 |  |
+| `26-performance-reviews.md` | doc | 247 |  |
+| `27-training-skill-development.md` | doc | 246 |  |
+| `28-recruitment-onboarding-document-vault.md` | doc | 335 |  |
+| `29-company-asset-tracking.md` | doc | 262 |  |
+| `30-field-attendance-biometric-geofencing.md` | doc | 289 |  |
+| `31-sector-pos-hardware-integration.md` | doc | 244 |  |
+| `32-lots-batch-expiry-fefo.md` | doc | 245 |  |
+| `33-sms-whatsapp-channels.md` | doc | 249 |  |
+| `34-partner-developer-api-access.md` | doc | 235 |  |
+| `DECISIONS.md` | doc | 1691 |  |
 | `ENTERPRISE-SCALE.md` | doc | 266 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 154 |  |
-| `RETAIL-ERP.md` | doc | 1083 |  |
+| `README.md` | doc | 175 |  |
+| `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 
 

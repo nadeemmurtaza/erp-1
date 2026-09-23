@@ -138,7 +138,60 @@ exist and are shown on the invoice") are named as a need in
 an engineering one — get the actual FBR invoicing requirements from an
 accountant or the FBR's own documentation before building WO-15.5 below.
 Building compliance fields from a guess would be worse than not building
-them.
+them. **The same caution now extends to WO-15.6** (PRA — Punjab Revenue
+Authority — and any other provincial revenue authority a deployment needs):
+provincial sales-tax-on-services regimes are a separate legal question from
+FBR's federal sales tax on goods, with their own rates, registration and
+filing requirements, and must not be guessed from FBR's shape by analogy.
+
+### The engineering shape WO-15.5/15.6 can be scoped against today
+
+What follows is architecture, not compliance content — it can be built
+without knowing a single field name, and doing so now means WO-15.5/15.6
+are a field-mapping exercise once real requirements exist, not a schema
+migration under deadline.
+
+**A pluggable `FiscalComplianceProvider` per authority**, the same
+two-layer shape `payments`/doc 33 already use (an interface under
+`tax.service.ts`, one implementation per authority — `FbrProvider`,
+`PraProvider`), so a deployment enables only the authorities it actually
+files with, and adding a third provincial authority later is a new class,
+not a rewrite:
+
+```ts
+export interface FiscalComplianceProvider {
+  readonly authority: string; // "FBR" | "PRA" | ...
+  /** Whatever the confirmed field set turns out to be — opaque here on
+   *  purpose, since this document does not know it yet. */
+  buildInvoicePayload(order: OrderWithTax): Record<string, unknown>;
+  submit(payload: Record<string, unknown>): Promise<{ referenceNumber: string }>;
+}
+```
+
+**Real-time reporting is a queued submission, never a synchronous checkout
+step.** `OrderPlaced` (already an existing domain event) gains a subscriber
+that enqueues a `FiscalSubmission` row (`orderId`, `authority`, `status`,
+`referenceNumber`, `attempts`) and a cron drains it with retry/backoff —
+exactly the transactional-outbox discipline this repository already applies
+everywhere else, so a slow or down government API never blocks a sale (the
+"a sale that already happened is never rejected by sync" rule, R5, applied
+to a tax authority instead of a replication parent).
+
+**Invoice numbering, if a scheme requires its own gapless series** (FBR's
+own invoice numbering is exactly this kind of requirement), reuses
+`documentNumber()`'s existing `INSERT ... ON CONFLICT ... RETURNING` counter
+pattern — never a second, bespoke numbering mechanism — with the authority
+named in the counter key so FBR's series and PRA's series (if PRA needs one)
+never collide or share a sequence.
+
+**What still cannot be scoped without the real requirements**: the exact
+payload fields, any digital-signature or QR-code requirement on the printed
+invoice, the specific retry/resubmission rules the authority's own API
+demands, and whether registration happens per-branch or per-legal-entity.
+Get these from the authority's own developer documentation or a compliance
+consultant before writing `FbrProvider`'s or `PraProvider`'s actual
+`buildInvoicePayload()` — the interface above is deliberately empty of
+guesses so that filling it in later touches one file, not this one.
 
 ## Work orders
 
@@ -148,7 +201,8 @@ them.
 | 15.2 | Shared pricing functions (`taxExclusive`/`taxInclusive`) in `packages/shared/src/pricing.ts`, unit-tested against the rounding trap | 15.1 |
 | 15.3 | Checkout integration: `orders.service.ts` snapshots tax per line, `computeOrderTotals()` adds the exclusive-mode line item | 15.1, 15.2 |
 | 15.4 | Admin: tax classes/rates CRUD, the `tax.pricing_mode` toggle in `/admin/settings` | 15.1 |
-| 15.5 | Invoice/report tax breakdown — **blocked on real compliance requirements**, see above | 15.3 |
+| 15.5 | FBR e-invoicing: `FiscalComplianceProvider`, `FbrProvider`, `FiscalSubmission` queue + retry cron — **field payload blocked on real FBR requirements**, see above | 15.3 |
+| 15.6 | PRA (and other provincial authority) compliance: `PraProvider` on the same `FiscalComplianceProvider` interface — **blocked on real PRA requirements**, see above | 15.5 |
 
 ### Acceptance
 

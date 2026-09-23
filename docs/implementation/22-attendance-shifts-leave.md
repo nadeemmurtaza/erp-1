@@ -111,23 +111,17 @@ enum AttendanceExceptionReason {
   MISSING_COUNTERPART
 }
 
-model LeaveRequest {
-  id         String  @id @default(cuid())
-  employeeId String
-  typeKey    String  /// Rows in policy, not an enum — clients differ wildly.
-  startsOn   DateTime
-  endsOn     DateTime
-  status     LeaveStatus @default(PENDING)
-  decidedByUserId String?
-  decidedAt  DateTime?
-
-  employee Employee @relation(fields: [employeeId], references: [id])
-
-  @@index([employeeId, startsOn])
-}
-
-enum LeaveStatus { PENDING APPROVED REJECTED CANCELLED WITHDRAWN }
 ```
+
+**Leave does not get a model here.** `LeaveType`, `LeaveBalance`,
+`LeaveRequest` and `LeaveRequestStatus` already exist in `payroll.prisma`
+(WO-19.3, shipped) — a policy-row `LeaveType.kind: LeaveKind` (`ANNUAL` ·
+`SICK` · `UNPAID` · `OTHER`), not the enum this brief originally sketched.
+This doc's own `LeaveStatus`/typeKey draft above predates that build and is
+struck rather than kept as a second, conflicting shape (see `DECISIONS.md`).
+`AttendanceException`'s `WHILE_ON_LEAVE` reason is produced by querying that
+existing `LeaveRequest` (status `APPROVED`, date range covering the punch),
+not by a table this module owns.
 
 ## The working day is not a date
 
@@ -214,7 +208,10 @@ replay is safe because of `externalRef`.
 **WO-22.3 — `workingDayOf()`**, pure, with night-shift and DST specs.
 **WO-22.4 — device enrolment**, key hash, rotation, `externalRef` required.
 **WO-22.5 — reconcile screen** and `hr.attendance.reconcile`.
-**WO-22.6 — leave**, request/approve, and the balance rules deferred from doc 20.
+**WO-22.6 — wire `WHILE_ON_LEAVE`** against the existing `payroll` module's
+`LeaveRequest`/`LeaveBalance` (WO-19.3, already built) — no new leave schema,
+request flow or balance rule; this WO is the query and the exception
+classification only.
 
 ## Acceptance
 

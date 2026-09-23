@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**275** markdown documents. These explain **why**; this index only says **where**.
+**284** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2003,15 +2003,15 @@ _no second-level headings_
 - Work orders  <sub>:234</sub>
 - When to actually build this  <sub>:261</sub>
 
-### `docs/implementation/15-tax-module.md`  <sub>178 lines</sub>
+### `docs/implementation/15-tax-module.md`  <sub>232 lines</sub>
 
 - The design decision this doc locks in  <sub>:16</sub>
 - Schema — new module `tax`  <sub>:24</sub>
 - The pricing math — and where the rounding trap is  <sub>:86</sub>
 - Checkout integration  <sub>:122</sub>
 - What this doc deliberately does not specify  <sub>:132</sub>
-- Work orders  <sub>:143</sub>
-- When to actually build this  <sub>:171</sub>
+- Work orders  <sub>:196</sub>
+- When to actually build this  <sub>:225</sub>
 
 ### `docs/implementation/16-pbac-row-scoping.md`  <sub>184 lines</sub>
 
@@ -2041,10 +2041,10 @@ _no second-level headings_
 - Explicitly out of scope for this module  <sub>:109</sub>
 - Local setup  <sub>:131</sub>
 
-### `docs/implementation/18-trading-partner-network.md`  <sub>61 lines</sub>
+### `docs/implementation/18-trading-partner-network.md`  <sub>81 lines</sub>
 
 - Work orders  <sub>:18</sub>
-- Out of scope (for now)  <sub>:54</sub>
+- Out of scope (for now)  <sub>:74</sub>
 
 ### `docs/implementation/19-org-structure-offices-departments.md`  <sub>244 lines</sub>
 
@@ -2091,15 +2091,15 @@ _no second-level headings_
 - Acceptance  <sub>:206</sub>
 - Out of scope  <sub>:222</sub>
 
-### `docs/implementation/22-attendance-shifts-leave.md`  <sub>233 lines</sub>
+### `docs/implementation/22-attendance-shifts-leave.md`  <sub>230 lines</sub>
 
 - The unconditional path  <sub>:13</sub>
 - Schema — append to `hr.prisma`  <sub>:31</sub>
-- The working day is not a date  <sub>:132</sub>
-- Scope lenses  <sub>:141</sub>
-- Work orders  <sub>:210</sub>
-- Acceptance  <sub>:219</sub>
-- Out of scope  <sub>:229</sub>
+- The working day is not a date  <sub>:126</sub>
+- Scope lenses  <sub>:135</sub>
+- Work orders  <sub>:204</sub>
+- Acceptance  <sub>:216</sub>
+- Out of scope  <sub>:226</sub>
 
 ### `docs/implementation/23-tasks-allotment-tracking.md`  <sub>221 lines</sub>
 
@@ -2134,7 +2134,100 @@ _no second-level headings_
 - Acceptance  <sub>:238</sub>
 - Out of scope, and the gap this leaves open  <sub>:254</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>1,640 lines</sub>
+### `docs/implementation/26-performance-reviews.md`  <sub>247 lines</sub>
+
+- 1. A review is a document with a cycle, not a number with a date  <sub>:13</sub>
+- 2. Signals feed a review; they never become one automatically  <sub>:22</sub>
+- Schema — append to `hr.prisma`  <sub>:33</sub>
+- Scope lenses  <sub>:131</sub>
+- Work orders  <sub>:212</sub>
+- Acceptance  <sub>:228</sub>
+- Out of scope  <sub>:239</sub>
+
+### `docs/implementation/27-training-skill-development.md`  <sub>246 lines</sub>
+
+- 1. A skill is a row a `Position` can require, not a line in a résumé  <sub>:10</sub>
+- 2. A course produces a certification event, not a status flag  <sub>:20</sub>
+- Schema — append to `hr.prisma`  <sub>:30</sub>
+- Scope lenses  <sub>:129</sub>
+- Work orders  <sub>:211</sub>
+- Acceptance  <sub>:225</sub>
+- Out of scope  <sub>:238</sub>
+
+### `docs/implementation/28-recruitment-onboarding-document-vault.md`  <sub>335 lines</sub>
+
+- 1. A candidate is not an `Employee` until an offer is accepted  <sub>:12</sub>
+- 2. A document is a fact with a retention basis, not a file with a name  <sub>:22</sub>
+- Schema — append to `hr.prisma`  <sub>:32</sub>
+- Scope lenses  <sub>:187</sub>
+- Work orders  <sub>:290</sub>
+- Acceptance  <sub>:312</sub>
+- Out of scope  <sub>:325</sub>
+
+### `docs/implementation/29-company-asset-tracking.md`  <sub>262 lines</sub>
+
+- 1. An asset is a serialized thing with one current holder and a full history  <sub>:13</sub>
+- 2. Damage, loss and write-off are asset *events*, not deletions  <sub>:21</sub>
+- Schema — new `assets.prisma`  <sub>:29</sub>
+- Scope lenses  <sub>:113</sub>
+- Work orders  <sub>:223</sub>
+- Acceptance  <sub>:240</sub>
+- Out of scope  <sub>:253</sub>
+
+### `docs/implementation/30-field-attendance-biometric-geofencing.md`  <sub>289 lines</sub>
+
+- 1. CCTV face-match is a verification signal attached to a punch, never the punch itself  <sub>:13</sub>
+- 2. A geofence violation is a new exception reason, never a refusal  <sub>:34</sub>
+- 3. Field staff have no fixed branch, so the roster changes shape, not the rule  <sub>:45</sub>
+- Schema — append to `hr.prisma`  <sub>:56</sub>
+- Extension point  <sub>:137</sub>
+- Scope lenses  <sub>:155</sub>
+- Work orders  <sub>:244</sub>
+- Acceptance  <sub>:265</sub>
+- Out of scope  <sub>:280</sub>
+
+### `docs/implementation/31-sector-pos-hardware-integration.md`  <sub>244 lines</sub>
+
+- What each requested sector actually needs, checked against what exists  <sub>:13</sub>
+- 1. Hardware is an extension point, not a browser API call sprinkled through the till UI  <sub>:24</sub>
+- 2. A line can carry a modifier set and a quantity source other than "typed"  <sub>:68</sub>
+- 3. Order type decides whether a sale can be parked, not whether it exists  <sub>:106</sub>
+- Scope lenses  <sub>:139</sub>
+- Work orders  <sub>:205</sub>
+- Acceptance  <sub>:224</sub>
+- Out of scope  <sub>:237</sub>
+
+### `docs/implementation/32-lots-batch-expiry-fefo.md`  <sub>245 lines</sub>
+
+- 1. A lot is a sub-ledger under the existing stock row, never a second stock model  <sub>:18</sub>
+- 2. Allocation is FEFO by default, and it is the one writer  <sub>:82</sub>
+- 3. A recall query is a read path this ledger makes possible, not a new model  <sub>:98</sub>
+- Scope lenses  <sub>:113</sub>
+- Work orders  <sub>:201</sub>
+- Acceptance  <sub>:222</sub>
+- Out of scope  <sub>:236</sub>
+
+### `docs/implementation/33-sms-whatsapp-channels.md`  <sub>249 lines</sub>
+
+- 1. Two channels, one interface, no caller changes  <sub>:19</sub>
+- 2. The provider is a second, smaller extension point underneath the channel  <sub>:48</sub>
+- Schema — new `outbound-messaging.prisma`  <sub>:75</sub>
+- Scope lenses  <sub>:122</sub>
+- Work orders  <sub>:208</sub>
+- Acceptance  <sub>:226</sub>
+- Out of scope  <sub>:241</sub>
+
+### `docs/implementation/34-partner-developer-api-access.md`  <sub>235 lines</sub>
+
+- 1. An API key is a principal with a scope, never a `User` in disguise  <sub>:13</sub>
+- 2. Scoped read/write, never a bypass of tenant or branch isolation  <sub>:73</sub>
+- 3. Rate limiting protects the platform; scoping protects the data  <sub>:82</sub>
+- Scope lenses  <sub>:91</sub>
+- Work orders  <sub>:194</sub>
+- Acceptance  <sub>:212</sub>
+- Out of scope  <sub>:225</sub>
+
+### `docs/implementation/DECISIONS.md`  <sub>1,691 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2162,6 +2255,7 @@ _no second-level headings_
 - ADR-023 — WO-23.3c/e: Node.retailBrandId, a separate PolicyQuarantine table, and apply() drawing exactly one distinction per entity  <sub>:1239</sub>
 - ADR-024 — WO-23.3d: org-central purchasing recognized narrowly in `resolveTransferSettlement()`; landed cost snapshotted at dispatch but never re-fed into `ProductVariant.costPrice`  <sub>:1374</sub>
 - ADR-025 — WO-E.2 is not executed: its own prerequisites (WO-A.1, WO-A.2) were never built, and building them now would be the same speculative-infrastructure trap ADR-019 already rejected  <sub>:1518</sub>
+- Decision: doc 22's leave schema is struck in favour of payroll's (WO-19.3)  <sub>:1641</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>266 lines</sub>
 
@@ -2199,17 +2293,17 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>154 lines</sub>
+### `docs/implementation/README.md`  <sub>175 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:24</sub>
-- The two module groups  <sub>:53</sub>
-- How a work order runs  <sub>:90</sub>
-- Known gaps not yet owned by a phase  <sub>:108</sub>
-- When a brief is wrong  <sub>:135</sub>
-- Scope, honestly  <sub>:148</sub>
+- Dependency order  <sub>:45</sub>
+- The two module groups  <sub>:74</sub>
+- How a work order runs  <sub>:111</sub>
+- Known gaps not yet owned by a phase  <sub>:129</sub>
+- When a brief is wrong  <sub>:156</sub>
+- Scope, honestly  <sub>:169</sub>
 
-### `docs/implementation/RETAIL-ERP.md`  <sub>1,083 lines</sub>
+### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 
 - Context  <sub>:15</sub>
 - Part 1 — The topology  <sub>:78</sub>
@@ -2220,7 +2314,7 @@ _no second-level headings_
 - Part 6 — Replication and the apps  <sub>:801</sub>
 - Part 7 — Roadmap  <sub>:865</sub>
 - Part 8 — The briefs this spawns  <sub>:946</sub>
-- Acceptance  <sub>:990</sub>
+- Acceptance  <sub>:1006</sub>
 
 ### `docs/implementation/WO-22-lens-workflow-results.md`  <sub>539 lines</sub>
 

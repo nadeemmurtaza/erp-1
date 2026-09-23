@@ -945,6 +945,22 @@ creates drafts rather than executing.
 
 ## Part 8 — The briefs this spawns
 
+> **Numbering note (added later): the filenames below were never taken.**
+> Numbers 18–25 were independently claimed by a later HR/org-chart track —
+> `18-identity-verification.md`, `18-trading-partner-network.md`,
+> `19-org-structure-offices-departments.md`, `19-payroll.md`,
+> `20-people-positions-ranks.md`, `21-access-over-the-org-tree.md`,
+> `22-attendance-shifts-leave.md`, `23-tasks-allotment-tracking.md`,
+> `24-internal-notifications-meetings-escalation.md`,
+> `25-advance-salary-and-payroll-posting.md` — none of which match the
+> replication/POS/chain-pricing titles this section proposed for those same
+> numbers. This section's rulings (the schema and rules referenced from it)
+> are still authoritative where nothing later superseded them; its proposed
+> *filenames and numbers* are not — treat every "doc NN" reference below and
+> in "Documents this changes" as the ruling it points to, not a live
+> filename, and check `docs/implementation/README.md` for what NN actually
+> is today before creating a file at that number.
+
 A multi-quarter programme; one PR attempting it would be unreviewable. Each of
 these is a normal numbered brief in house format (rationale → schema → work orders
 → acceptance criteria), referring back to this document for the rulings:

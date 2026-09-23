@@ -49,7 +49,27 @@ partner actually needs X12, UBL/Peppol, or FBR e-invoicing translation.
 Building a parser for a standard nobody here is using yet is exactly the
 speculative-infrastructure the house rules warn against — the canonical
 payload in 18.2 stays field-sane so a translator can sit in front of it
-later without a redesign.
+later without a redesign. This deferral still holds — do not start 18.5
+because a product list names "EDI" as a wanted capability in the abstract;
+start it only once a real partner names the standard they need.
+
+**The shape it takes when a partner does trigger it**, so a real request
+does not become a design exercise under deadline: an
+`EdiTranslator` interface (`toCanonical(raw: Buffer, format: 'x12' |
+'ubl-peppol'): CanonicalDocument`, `fromCanonical(doc: CanonicalDocument,
+format): Buffer`) sits in front of 18.2's inbound endpoint and 18.3's
+outbound POST — never inside them. `TradingPartner` gains a nullable
+`ediFormat` column naming which translator, if any, that partner's traffic
+runs through; a partner with `ediFormat: null` keeps using the canonical
+JSON payload directly, exactly as every partner does today. This is
+additive and format-specific: adding UBL/Peppol support for one partner
+changes zero code for a partner still on canonical JSON, and the FBR
+e-invoicing case specifically reuses `15-tax-module.md`'s WO-15.5
+`FiscalComplianceProvider` payload rather than re-deriving FBR's field
+requirements a second time in a different document — one FBR-shaped
+payload, two places it can be sent from (a direct submission per doc 15,
+or riding a trading-partner document per this adapter), never two
+independently-guessed FBR schemas.
 
 ## Out of scope (for now)
 

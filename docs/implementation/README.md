@@ -21,6 +21,27 @@ who has not seen this codebase before.
 | [`09-ai-layer.md`](./09-ai-layer.md) | Alt text and SEO generation, size recommendation, forecasting, COD risk, semantic search, WhatsApp assistant |
 | [`10-admin-dashboard.md`](./10-admin-dashboard.md) | The admin master dashboard rebuild: registry-driven card grid, the analytics page tree, the `finance` module (expenses, order economics) and the `bom` module (raw materials, recipes, production runs) |
 
+**Numbers 11–25** cover, in order: client handover, the extractor script,
+email service, managed services, `tax`, PBAC row-scoping, inventory
+locations, identity verification, the trading-partner network, org
+structure (offices/departments), payroll, people/positions/ranks, access
+over the org tree, attendance/shifts/leave, task tracking, internal
+notifications, and advance salary/payroll posting. See each file's own
+header for status; `payroll` (19) and `tax`/`identity-verification` (15, 18)
+are built, the rest are specified but not yet built as of this table.
+
+| File | What it is |
+|---|---|
+| [`26-performance-reviews.md`](./26-performance-reviews.md) | Performance cycles, reviews, goals — signals from tasks (23) and notifications (24) feed a review, never become one automatically |
+| [`27-training-skill-development.md`](./27-training-skill-development.md) | Course scheduling, enrollment, certification, skill requirements a `Position` (20) can gate rostering on |
+| [`28-recruitment-onboarding-document-vault.md`](./28-recruitment-onboarding-document-vault.md) | Requisition → candidate pipeline → offer → conversion to `Employee` (20); digital onboarding checklist; the employee document vault (contracts, IDs, compliance records) over `StorageService` |
+| [`29-company-asset-tracking.md`](./29-company-asset-tracking.md) | Company-owned hardware/asset register, assignment history, condition events, write-off posting into `accounting` |
+| [`30-field-attendance-biometric-geofencing.md`](./30-field-attendance-biometric-geofencing.md) | Extends doc 22: CCTV face-match as a verification signal (never a refusal), geofence variance as a new exception reason, field-staff clock-in with no fixed branch |
+| [`31-sector-pos-hardware-integration.md`](./31-sector-pos-hardware-integration.md) | Barcode/receipt-printer/cash-drawer driver extension points; order-type + park/retrieve for tabs/tables; item modifiers — extends `pos`, does not replace it |
+| [`32-lots-batch-expiry-fefo.md`](./32-lots-batch-expiry-fefo.md) | `lots`: the core (not pack) batch/expiry/FEFO-allocation/recall-lookup sub-ledger `MULTI-SECTOR.md` already ruled on |
+| [`33-sms-whatsapp-channels.md`](./33-sms-whatsapp-channels.md) | Outbound SMS/WhatsApp `NotificationChannel` implementations — the send path WO-9.7's WhatsApp assistant will depend on, not that assistant itself |
+| [`34-partner-developer-api-access.md`](./34-partner-developer-api-access.md) | Generic scoped API-key principal (`ApiClient`) for third-party integrations, generalizing the `TradingPartner`/`Node` key-hash pattern |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

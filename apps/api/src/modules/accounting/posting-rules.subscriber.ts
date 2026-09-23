@@ -11,6 +11,7 @@ import {
   type StockVarianceRecordedPayload,
   type InterBranchTransferInvoicedPayload,
   type ExpenseRecordedPayload,
+  type PayrollRunPostedPayload,
 } from '../../core/events/domain-events';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { AccountingService, type PostLineInput } from './accounting.service';
@@ -419,6 +420,57 @@ export class PostingRulesSubscriber {
           supplierId: payload.paidAtIso ? null : payload.supplierId,
         },
       ],
+    });
+  }
+
+  /**
+   * The eighth posting rule — docs/implementation/19-payroll.md WO-19.4,
+   * closing the gap docs/erp-lenses/38-gap-hr-payroll-no-posting-artifact-
+   * for-compe.md names ("PayrollPosted" among five unbuilt journals). One
+   * JournalEntry per PayRun, sourceRef = payRun.id, guarded by
+   * findPostedEntry exactly like onExpenseRecorded. Employee Advances only
+   * debits when a line carries an ADVANCE-tagged deduction — none do yet
+   * (WO-19.1's note: deductions is an open JSON bag until a statutory rule
+   * is specified), so that debit is 0 and simply does not appear as a line.
+   */
+  @OnDomainEvent(DomainEvent.PayrollRunPosted)
+  async onPayrollRunPosted(payload: PayrollRunPostedPayload): Promise<void> {
+    const source = DomainEvent.PayrollRunPosted;
+    if (await this.accounting.findPostedEntry(source, payload.payRunId)) return;
+    // netMinor + deductionsMinor, not grossMinor: unpaid leave already
+    // reduced what the business actually owes before this event fired
+    // (PayRunLine.netMinor = grossMinor - unpaidLeaveMinor - deductionsMinor),
+    // so debiting the full theoretical gross here would leave the entry
+    // short of the unpaid-leave amount and never balance.
+    const payableGrossMinor = payload.netMinor + payload.deductionsMinor;
+    if (payableGrossMinor <= 0) return;
+
+    const accountId = await this.accounting.accountIdsByCode([
+      ACCOUNT_CODE.SALARIES_WAGES_EXPENSE,
+      ACCOUNT_CODE.SALARIES_PAYABLE,
+      ACCOUNT_CODE.EMPLOYEE_ADVANCES,
+      ACCOUNT_CODE.TAX_PAYABLE,
+    ]);
+    const expenseAccount = accountId.get(ACCOUNT_CODE.SALARIES_WAGES_EXPENSE);
+    const payableAccount = accountId.get(ACCOUNT_CODE.SALARIES_PAYABLE);
+    if (!expenseAccount || !payableAccount) {
+      this.logger.error(`Chart of accounts is missing Salaries & Wages Expense or Salaries Payable — cannot post pay run ${payload.number}.`);
+      return;
+    }
+
+    const lines: PostLineInput[] = [{ accountId: expenseAccount, debitMinor: payableGrossMinor }];
+    if (payload.deductionsMinor > 0) {
+      const taxAccount = accountId.get(ACCOUNT_CODE.TAX_PAYABLE);
+      if (taxAccount) lines.push({ accountId: taxAccount, creditMinor: payload.deductionsMinor });
+    }
+    lines.push({ accountId: payableAccount, creditMinor: payload.netMinor });
+
+    await this.accounting.postEntry({
+      date: new Date(payload.postedAt),
+      source,
+      sourceRef: payload.payRunId,
+      memo: `Pay run — ${payload.number}`,
+      lines,
     });
   }
 }

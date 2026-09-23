@@ -3,7 +3,7 @@
 
 # Tests
 
-**129** spec files, **1,258** cases. What is already pinned down — and what is not.
+**130** spec files, **1,274** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -50,7 +50,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (114)
+## Unit and integration (115)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -84,7 +84,7 @@ regression or an N+1.
 | `apps/api/src/modules/accounting/consolidation.service.spec.ts` | accounting | 7 | ConsolidationService — R17, WO-20.6 · groupProfitAndLoss · unmatchedIntercompany |
 | `apps/api/src/modules/accounting/fiscal-periods.service.spec.ts` | accounting | 24 | FiscalPeriodsService — WO-19.5 · createFiscalYear · createFiscalPeriod · closePeriod · reopenPeriod… |
 | `apps/api/src/modules/accounting/gl-reports.service.spec.ts` | accounting | 9 | GlReportsService — WO-19.4 · trialBalance · profitAndLoss · balanceSheet · cashFlow · agedReceivabl… |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | accounting | 30 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSuppl… |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | accounting | 35 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSuppl… |
 | `apps/api/src/modules/analytics/analytics.comparison.spec.ts` | analytics | 8 | AnalyticsService.comparison |
 | `apps/api/src/modules/analytics/analytics.customers.spec.ts` | analytics | 7 | AnalyticsService — WO-D.5 customers overview/retention/top · customersOverview · customersRetention… |
 | `apps/api/src/modules/analytics/analytics.inventory.spec.ts` | analytics | 9 | AnalyticsService — WO-D.4 inventory valuation/movements · inventoryValuation · inventoryMovements |
@@ -124,6 +124,7 @@ regression or an N+1.
 | `apps/api/src/modules/payments/providers/callback-verification.spec.ts` | payments | 8 | Easypaisa callback verification · JazzCash callback verification |
 | `apps/api/src/modules/payroll/leave-accrual.cron.spec.ts` | payroll | 3 | LeaveAccrualCron |
 | `apps/api/src/modules/payroll/leave.service.spec.ts` | payroll | 16 | LeaveService · countWorkingDays · requestLeave / cancel · decide · accrue |
+| `apps/api/src/modules/payroll/pay-run.service.spec.ts` | payroll | 11 | PayRunService · build · approve / post lifecycle |
 | `apps/api/src/modules/payroll/payroll.service.spec.ts` | payroll | 14 | PayrollService · setCompensationRate · calculateGross — MONTHLY · calculateGross — HOURLY / COMMISS… |
 | `apps/api/src/modules/pos/pos-catalog.service.spec.ts` | pos | 3 | PosCatalogService — WO-21.4 |
 | `apps/api/src/modules/pos/pos-receipts.service.spec.ts` | pos | 6 | PosReceiptsService — WO-21.5 · createForOrder · getForOrder · markPrinted |

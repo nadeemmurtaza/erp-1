@@ -65,6 +65,9 @@ export const DomainEvent = {
   ExpenseRecorded: 'finance.expense_recorded',
   /** OrderEconomicsService's own derived-row write (WO-23.1's WO-B.3) — not a GL posting, just notice that a fresh contribution-per-order figure exists. */
   OrderEconomicsComputed: 'finance.order_economics_computed',
+
+  /** PayRunService.post() (docs/implementation/19-payroll.md WO-19.4) — the eighth posting rule; fires whether or not `accounting` is on, same idiom as ExpenseRecorded. */
+  PayrollRunPosted: 'payroll.run_posted',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -316,6 +319,18 @@ export interface OrderEconomicsComputedPayload {
   contribution: number;
 }
 
+export interface PayrollRunPostedPayload {
+  payRunId: string;
+  number: string;
+  postedAt: string;
+  /** All paisa, summed across every PayRunLine on the run. */
+  grossMinor: number;
+  netMinor: number;
+  deductionsMinor: number;
+  scopeLevel: 'ORG' | 'BRAND' | 'BRANCH';
+  originNodeId: string | null;
+}
+
 export interface EmailReplyReceivedPayload {
   inboundEmailId: string;
   emailAccountId: string;
@@ -367,4 +382,5 @@ export interface DomainEventPayloads {
   [DomainEvent.IdentityVerificationExpired]: IdentityVerificationPayload;
   [DomainEvent.ExpenseRecorded]: ExpenseRecordedPayload;
   [DomainEvent.OrderEconomicsComputed]: OrderEconomicsComputedPayload;
+  [DomainEvent.PayrollRunPosted]: PayrollRunPostedPayload;
 }

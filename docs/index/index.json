@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1250,
-    "lines": 197234,
-    "routes": 349,
-    "controllers": 61,
+    "files": 1254,
+    "lines": 197885,
+    "routes": 355,
+    "controllers": 62,
     "models": 133,
     "enums": 58,
     "migrations": 60,
-    "events": 37,
+    "events": 38,
     "permissions": 44,
     "screens": 147,
     "crons": 9,
-    "specs": 129,
+    "specs": 130,
     "designLaws": 150
   },
   "designLaws": [
@@ -1083,9 +1083,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 524,
-      "lines": 72387,
-      "bytes": 2649001,
+      "files": 528,
+      "lines": 73038,
+      "bytes": 2676088,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1460,17 +1460,21 @@
       "files": [
         "apps/api/src/modules/payroll/dto/compensation-rate.dto.ts",
         "apps/api/src/modules/payroll/dto/leave.dto.ts",
+        "apps/api/src/modules/payroll/dto/pay-run.dto.ts",
         "apps/api/src/modules/payroll/leave-accrual.cron.spec.ts",
         "apps/api/src/modules/payroll/leave-accrual.cron.ts",
         "apps/api/src/modules/payroll/leave.controller.ts",
         "apps/api/src/modules/payroll/leave.service.spec.ts",
         "apps/api/src/modules/payroll/leave.service.ts",
+        "apps/api/src/modules/payroll/pay-run.controller.ts",
+        "apps/api/src/modules/payroll/pay-run.service.spec.ts",
+        "apps/api/src/modules/payroll/pay-run.service.ts",
         "apps/api/src/modules/payroll/payroll.controller.ts",
         "apps/api/src/modules/payroll/payroll.module.ts",
         "apps/api/src/modules/payroll/payroll.service.spec.ts",
         "apps/api/src/modules/payroll/payroll.service.ts"
       ],
-      "routes": 11,
+      "routes": 17,
       "page": "docs/index/modules/payroll.md"
     },
     {
@@ -4590,6 +4594,102 @@
       "public": false,
       "authOnly": false,
       "summary": "Every active leave type — needed by anyone filing a request."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/runs",
+      "module": "payroll",
+      "controller": "PayRunController",
+      "handler": "list",
+      "file": "apps/api/src/modules/payroll/pay-run.controller.ts",
+      "line": 22,
+      "access": "payroll.view",
+      "permissions": [
+        "payroll.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every pay run, most recent period first."
+    },
+    {
+      "method": "POST",
+      "path": "/admin/payroll/runs",
+      "module": "payroll",
+      "controller": "PayRunController",
+      "handler": "build",
+      "file": "apps/api/src/modules/payroll/pay-run.controller.ts",
+      "line": 36,
+      "access": "payroll.manage",
+      "permissions": [
+        "payroll.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Build a new DRAFT pay run for a period."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/runs/:id",
+      "module": "payroll",
+      "controller": "PayRunController",
+      "handler": "get",
+      "file": "apps/api/src/modules/payroll/pay-run.controller.ts",
+      "line": 29,
+      "access": "payroll.view",
+      "permissions": [
+        "payroll.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One pay run with every line."
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/payroll/runs/:id/approve",
+      "module": "payroll",
+      "controller": "PayRunController",
+      "handler": "approve",
+      "file": "apps/api/src/modules/payroll/pay-run.controller.ts",
+      "line": 50,
+      "access": "payroll.manage",
+      "permissions": [
+        "payroll.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "DRAFT → APPROVED."
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/payroll/runs/:id/post",
+      "module": "payroll",
+      "controller": "PayRunController",
+      "handler": "post",
+      "file": "apps/api/src/modules/payroll/pay-run.controller.ts",
+      "line": 57,
+      "access": "payroll.manage",
+      "permissions": [
+        "payroll.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "APPROVED → POSTED. Fires payroll.run_posted."
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/payroll/runs/:id/rebuild",
+      "module": "payroll",
+      "controller": "PayRunController",
+      "handler": "rebuild",
+      "file": "apps/api/src/modules/payroll/pay-run.controller.ts",
+      "line": 43,
+      "access": "payroll.manage",
+      "permissions": [
+        "payroll.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Recompute every line on a still-DRAFT pay run, replacing them."
     },
     {
       "method": "GET",
@@ -8144,7 +8244,9 @@
         "GET /admin/payroll/compensation/:userId",
         "GET /admin/payroll/compensation/:userId/preview",
         "GET /admin/payroll/leave",
-        "GET /admin/payroll/leave/:userId"
+        "GET /admin/payroll/leave/:userId",
+        "GET /admin/payroll/runs",
+        "GET /admin/payroll/runs/:id"
       ],
       "uiSites": 0,
       "roles": [
@@ -8159,7 +8261,11 @@
       "sensitivity": "medium",
       "routes": [
         "PATCH /admin/payroll/compensation/:userId",
-        "PATCH /admin/payroll/leave/:requestId/decide"
+        "PATCH /admin/payroll/leave/:requestId/decide",
+        "POST /admin/payroll/runs",
+        "PATCH /admin/payroll/runs/:id/approve",
+        "PATCH /admin/payroll/runs/:id/post",
+        "PATCH /admin/payroll/runs/:id/rebuild"
       ],
       "uiSites": 0,
       "roles": [
@@ -8260,14 +8366,14 @@
       "name": "order.placed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:48",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:155",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:49",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:156",
         "apps/api/src/modules/orders/orders.service.ts:339",
         "apps/api/src/modules/orders/orders.service.ts:542"
       ],
       "subscribers": [
         "apps/api/src/core/events/on-domain-event.decorator.ts:7 handle()",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:46 onOrderPlaced()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:47 onOrderPlaced()",
         "apps/api/src/modules/crm/order.subscriber.ts:27 onOrderPlaced()",
         "apps/api/src/modules/orders/notification.subscriber.ts:70 onOrderPlaced()",
         "apps/api/src/modules/orders/order-replication.listener.ts:48 onOrderPlaced()",
@@ -8305,14 +8411,14 @@
       "name": "payment.succeeded",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:115",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:152",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:116",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:153",
         "apps/api/src/modules/orders/orders.service.ts:530",
         "apps/api/src/modules/payments/payments.service.ts:188",
         "apps/api/src/modules/payments/payments.service.ts:257"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:113 onPaymentSucceeded()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:114 onPaymentSucceeded()",
         "apps/api/src/modules/payments/notification.subscriber.ts:34 onPaymentSucceeded()"
       ]
     },
@@ -8344,7 +8450,7 @@
         "apps/api/src/modules/payments/payments.service.ts:316"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:150 onPaymentRefunded()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:151 onPaymentRefunded()",
         "apps/api/src/modules/payments/notification.subscriber.ts:118 onPaymentRefunded()"
       ]
     },
@@ -8502,11 +8608,11 @@
       "name": "inventory.stock_variance_recorded",
       "doc": "InventoryService.postUnconditional() drove a location negative (RETAIL-ERP.md R5) — never fired by move().",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:279",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:280",
         "apps/api/src/modules/inventory/inventory.service.ts:353"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:277 onStockVarianceRecorded()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:278 onStockVarianceRecorded()"
       ]
     },
     {
@@ -8537,11 +8643,11 @@
       "name": "purchasing.supplier_bill_raised",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:176",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:177",
         "apps/api/src/modules/purchasing/purchasing.service.ts:576"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:174 onSupplierBillRaised()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:175 onSupplierBillRaised()"
       ]
     },
     {
@@ -8549,11 +8655,11 @@
       "name": "purchasing.supplier_bill_paid",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:226",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:227",
         "apps/api/src/modules/purchasing/purchasing.service.ts:640"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:224 onSupplierBillPaid()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:225 onSupplierBillPaid()"
       ]
     },
     {
@@ -8561,11 +8667,11 @@
       "name": "transfers.inter_branch_invoiced",
       "doc": "An InterBranchInvoice was raised — TransfersService.receive() on an INVOICED transfer (R12/R17, WO-22.3).",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:332",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:333",
         "apps/api/src/modules/transfers/transfers.service.ts:300"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:330 onInterBranchTransferInvoiced()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:331 onInterBranchTransferInvoiced()"
       ]
     },
     {
@@ -8647,12 +8753,12 @@
       "name": "finance.expense_recorded",
       "doc": "FinanceService.create() (WO-23.1) — fires whether or not `accounting` is on; posting-rules.subscriber.ts is the only subscriber today.",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:392",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:393",
         "apps/api/src/modules/finance/finance.service.ts:252",
         "apps/api/src/modules/finance/finance.service.ts:532"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:390 onExpenseRecorded()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:391 onExpenseRecorded()",
         "apps/api/src/modules/finance/expense-replication.listener.ts:38 onExpenseRecorded()"
       ]
     },
@@ -8664,6 +8770,18 @@
         "apps/api/src/modules/finance/order-economics.service.ts:127"
       ],
       "subscribers": []
+    },
+    {
+      "symbol": "PayrollRunPosted",
+      "name": "payroll.run_posted",
+      "doc": "PayRunService.post() (docs/implementation/19-payroll.md WO-19.4) — the eighth posting rule; fires whether or not `accounting` is on, same idiom as ExpenseRecorded.",
+      "publishers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:438",
+        "apps/api/src/modules/payroll/pay-run.service.ts:186"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:436 onPayrollRunPosted()"
+      ]
     }
   ],
   "models": [
@@ -24932,7 +25050,7 @@
       "file": "apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts",
       "module": "accounting",
       "kind": "unit test",
-      "cases": 30,
+      "cases": 35,
       "describes": [
         "PostingRulesSubscriber — WO-19.2",
         "onOrderPlaced",
@@ -24942,7 +25060,8 @@
         "onSupplierBillPaid — WO-19.3 realised FX gain/loss",
         "onStockVarianceRecorded — WO-21.3",
         "onInterBranchTransferInvoiced — WO-22.3",
-        "onExpenseRecorded — WO-23.1"
+        "onExpenseRecorded — WO-23.1",
+        "onPayrollRunPosted — WO-19.4"
       ]
     },
     {
@@ -25385,6 +25504,17 @@
         "requestLeave / cancel",
         "decide",
         "accrue"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/payroll/pay-run.service.spec.ts",
+      "module": "payroll",
+      "kind": "unit test",
+      "cases": 11,
+      "describes": [
+        "PayRunService",
+        "build",
+        "approve / post lifecycle"
       ]
     },
     {
@@ -28087,8 +28217,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 371,
-      "bytes": 13455,
+      "lines": 387,
+      "bytes": 14041,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -28099,152 +28229,157 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 70
+          "line": 73
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 72
+          "line": 75
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 85
+          "line": 88
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 93
+          "line": 96
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 101
+          "line": 104
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 121
+          "line": 124
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 127
+          "line": 130
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 134
+          "line": 137
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 141
+          "line": 144
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 145
+          "line": 148
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 151
+          "line": 154
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 157
+          "line": 160
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 164
+          "line": 167
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 172
+          "line": 175
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 183
+          "line": 186
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 190
+          "line": 193
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 199
+          "line": 202
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 207
+          "line": 210
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 215
+          "line": 218
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 220
+          "line": 223
         },
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 232
+          "line": 235
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 247
+          "line": 250
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 255
+          "line": 258
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 269
+          "line": 272
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 282
+          "line": 285
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 295
+          "line": 298
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 311
+          "line": 314
+        },
+        {
+          "name": "PayrollRunPostedPayload",
+          "kind": "interface",
+          "line": 322
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 319
+          "line": 334
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 326
+          "line": 341
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 332
+          "line": 347
         }
       ]
     },
@@ -29460,8 +29595,8 @@
       "path": "apps/api/src/core/settings/document-prefix.ts",
       "area": "api",
       "kind": "module",
-      "lines": 45,
-      "bytes": 1672,
+      "lines": 46,
+      "bytes": 1689,
       "doc": "",
       "symbols": [
         {
@@ -29475,8 +29610,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 299,
-      "bytes": 12680,
+      "lines": 302,
+      "bytes": 12812,
       "doc": "",
       "symbols": [
         {
@@ -29502,27 +29637,27 @@
         {
           "name": "DocumentSettings",
           "kind": "interface",
-          "line": 55
+          "line": 57
         },
         {
           "name": "FinanceGatewayFeeBpsSettings",
           "kind": "interface",
-          "line": 69
+          "line": 71
         },
         {
           "name": "SettingKey",
           "kind": "const",
-          "line": 76
+          "line": 78
         },
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 159
+          "line": 161
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 161
+          "line": 163
         }
       ]
     },
@@ -30081,8 +30216,8 @@
       "path": "apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 504,
-      "bytes": 17792,
+      "lines": 574,
+      "bytes": 20722,
       "doc": "",
       "symbols": []
     },
@@ -30090,14 +30225,14 @@
       "path": "apps/api/src/modules/accounting/posting-rules.subscriber.ts",
       "area": "api",
       "kind": "event subscriber",
-      "lines": 425,
-      "bytes": 18309,
+      "lines": 477,
+      "bytes": 20845,
       "doc": "",
       "symbols": [
         {
           "name": "PostingRulesSubscriber",
           "kind": "class",
-          "line": 32
+          "line": 33
         }
       ]
     },
@@ -32870,6 +33005,21 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/payroll/dto/pay-run.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 19,
+      "bytes": 468,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BuildPayRunDto",
+          "kind": "class",
+          "line": 6
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/payroll/leave-accrual.cron.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -32943,6 +33093,50 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/payroll/pay-run.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 61,
+      "bytes": 2442,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PayRunController",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/pay-run.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 223,
+      "bytes": 9759,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/payroll/pay-run.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 204,
+      "bytes": 8025,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PayRunWithLines",
+          "kind": "type",
+          "line": 17
+        },
+        {
+          "name": "PayRunService",
+          "kind": "class",
+          "line": 46
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/payroll/payroll.controller.ts",
       "area": "api",
       "kind": "controller",
@@ -32961,14 +33155,14 @@
       "path": "apps/api/src/modules/payroll/payroll.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 21,
-      "bytes": 847,
+      "lines": 23,
+      "bytes": 1039,
       "doc": "",
       "symbols": [
         {
           "name": "PayrollModule",
           "kind": "class",
-          "line": 20
+          "line": 22
         }
       ]
     },

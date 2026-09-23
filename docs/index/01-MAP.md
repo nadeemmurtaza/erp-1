@@ -32,7 +32,7 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 524 | 72,387 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 528 | 73,038 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `apps/web` | 253 | 39,231 | Next.js — admin console and customer storefront in one app |
 | `docs` | 248 | 36,888 | documents of record — implementation plans, house rules, brand |
 | `(root)` | 36 | 26,640 | workspace manifests, docker compose/stack files, env templates |
@@ -74,7 +74,7 @@ Each is independent: no module imports another except through a named
 | [`organization`](modules/organization.md) | core | MODULES allowlist | 15 | 5 |
 | [`parties`](modules/parties.md) | core | MODULES allowlist | 3 | 2 |
 | [`payments`](modules/payments.md) | core | MODULES allowlist | 6 | 1 |
-| [`payroll`](modules/payroll.md) | core | MODULES allowlist | 11 | 9 |
+| [`payroll`](modules/payroll.md) | core | MODULES allowlist | 17 | 9 |
 | [`pos`](modules/pos.md) | core | MODULES allowlist | 15 | 4 |
 | [`production`](modules/production.md) | core | MODULES allowlist | 9 | 4 |
 | [`purchasing`](modules/purchasing.md) | core | MODULES allowlist | 17 | 7 |

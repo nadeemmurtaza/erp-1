@@ -124,8 +124,8 @@ the *catalogue*, not any particular deployment's grants.
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
 | `payroll.view_own` | View their own compensation, leave balance and payslips | low | 5 | — | TAILOR, STAFF, ADMIN |
-| `payroll.view` | View every employee's compensation, leave and pay-run data | medium | 4 | — | ADMIN |
-| `payroll.manage` | Set compensation rates, decide leave requests, and build, approve and post pay… | medium | 2 | — | ADMIN |
+| `payroll.view` | View every employee's compensation, leave and pay-run data | medium | 6 | — | ADMIN |
+| `payroll.manage` | Set compensation rates, decide leave requests, and build, approve and post pay… | medium | 6 | — | ADMIN |
 
 
 ## Role → permission, as seeded

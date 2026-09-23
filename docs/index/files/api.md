@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 524 tracked files in `apps/api`, by directory.
+All 528 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -518,7 +518,7 @@ All 524 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 371 | The catalogue of domain events. |
+| `domain-events.ts` | module | 387 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
@@ -632,8 +632,8 @@ All 524 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
-| `document-prefix.ts` | module | 45 |  |
-| `settings.defaults.ts` | module | 299 |  |
+| `document-prefix.ts` | module | 46 |  |
+| `settings.defaults.ts` | module | 302 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 103 |  |
 
@@ -684,8 +684,8 @@ All 524 tracked files in `apps/api`, by directory.
 | `gl-reports.controller.ts` | controller | 67 |  |
 | `gl-reports.service.spec.ts` | unit test | 174 |  |
 | `gl-reports.service.ts` | service | 298 |  |
-| `posting-rules.subscriber.spec.ts` | unit test | 504 |  |
-| `posting-rules.subscriber.ts` | event subscriber | 425 |  |
+| `posting-rules.subscriber.spec.ts` | unit test | 574 |  |
+| `posting-rules.subscriber.ts` | event subscriber | 477 |  |
 
 ### `apps/api/src/modules/accounting/dto` (2)
 
@@ -1007,7 +1007,7 @@ All 524 tracked files in `apps/api`, by directory.
 | `easypaisa.provider.ts` | module | 184 |  |
 | `jazzcash.provider.ts` | module | 184 |  |
 
-### `apps/api/src/modules/payroll` (9)
+### `apps/api/src/modules/payroll` (12)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1016,17 +1016,21 @@ All 524 tracked files in `apps/api`, by directory.
 | `leave.controller.ts` | controller | 81 |  |
 | `leave.service.spec.ts` | unit test | 224 |  |
 | `leave.service.ts` | service | 175 |  |
+| `pay-run.controller.ts` | controller | 61 |  |
+| `pay-run.service.spec.ts` | unit test | 223 |  |
+| `pay-run.service.ts` | service | 204 |  |
 | `payroll.controller.ts` | controller | 71 |  |
-| `payroll.module.ts` | nest module | 21 |  |
+| `payroll.module.ts` | nest module | 23 |  |
 | `payroll.service.spec.ts` | unit test | 164 |  |
 | `payroll.service.ts` | service | 146 |  |
 
-### `apps/api/src/modules/payroll/dto` (2)
+### `apps/api/src/modules/payroll/dto` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `compensation-rate.dto.ts` | dto | 40 |  |
 | `leave.dto.ts` | dto | 35 |  |
+| `pay-run.dto.ts` | dto | 19 |  |
 
 ### `apps/api/src/modules/pos` (16)
 

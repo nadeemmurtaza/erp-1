@@ -50,6 +50,8 @@ export interface DocumentPrefixes {
   interBranchInvoice: string;
   /** BomProductionRun (WO-C.3) — node-prefixed like the rest. */
   productionRun: string;
+  /** PayRun (docs/implementation/19-payroll.md WO-19.4) — node-prefixed like the rest. */
+  payRun: string;
 }
 
 export interface DocumentSettings {
@@ -257,6 +259,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
       stockTransfer: 'TRF',
       interBranchInvoice: 'IBI',
       productionRun: 'PR',
+      payRun: 'PAY',
     },
   } satisfies DocumentSettings,
 

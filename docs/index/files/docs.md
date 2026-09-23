@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 265 tracked files in `docs/*`, by directory.
+All 269 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -253,7 +253,7 @@ All 265 tracked files in `docs/*`, by directory.
 | `52g-generate-gap.md` | doc | 26 |  |
 | `52h-harden-gap.md` | doc | 40 |  |
 
-### `docs/implementation` (45)
+### `docs/implementation` (49)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -295,11 +295,15 @@ All 265 tracked files in `docs/*`, by directory.
 | `33-sms-whatsapp-channels.md` | doc | 249 |  |
 | `34-partner-developer-api-access.md` | doc | 235 |  |
 | `35-scalable-rag-document-retrieval.md` | doc | 354 |  |
-| `DECISIONS.md` | doc | 1691 |  |
-| `ENTERPRISE-SCALE.md` | doc | 266 |  |
+| `36-universal-connectivity-integration-framework.md` | doc | 264 |  |
+| `37-scalability-future-upgrades.md` | doc | 247 |  |
+| `38-resilience-engineering.md` | doc | 238 |  |
+| `39-shared-cross-tenant-hosting-tier.md` | doc | 367 |  |
+| `DECISIONS.md` | doc | 1768 |  |
+| `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 176 |  |
+| `README.md` | doc | 180 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 

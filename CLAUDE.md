@@ -395,7 +395,12 @@ which is the document of record where it and `ENTERPRISE-SCALE.md` overlap:
 - **Extension points, not conditionals.** There is no `if (sector === …)`
   anywhere and there must never be.
 - **One deployment serves one brand**, resolved at build time. That is a
-  deliberate boundary; do not build toward multi-brand speculatively.
+  deliberate boundary; do not build toward multi-brand speculatively. The one
+  named exception is a hosting-provider control plane routing to many still
+  single-brand deployments — `docs/implementation/39-shared-cross-tenant-hosting-tier.md`,
+  adopted deliberately, never a default. It shares infrastructure, never a
+  database, across tenants; inside any one tenant's deployment this rule is
+  completely unchanged.
 - **Every movement of value names its location**, and any query that can span
   branches says which — there is no implicit "all branches" read.
 - **A branch is a node, not a tenant.** At chain scale it has its own database

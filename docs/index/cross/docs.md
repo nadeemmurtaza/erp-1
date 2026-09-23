@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**285** markdown documents. These explain **why**; this index only says **where**.
+**289** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -121,17 +121,17 @@ _no second-level headings_
 - Three rules about the index  <sub>:55</sub>
 - Commands  <sub>:67</sub>
 
-### `CLAUDE.md`  <sub>915 lines</sub>
+### `CLAUDE.md`  <sub>920 lines</sub>
 
 - The seven laws  <sub>:13</sub>
 - Software engineering, not vibe coding  <sub>:35</sub>
 - Feature scope: build the whole capability, not one slice of it  <sub>:144</sub>
 - Scale: the three axes  <sub>:358</sub>
-- Look it up before you search  <sub>:415</sub>
-- The rule index  <sub>:486</sub>
-- Before you open a PR  <sub>:524</sub>
-- Deployment  <sub>:603</sub>
-- NEWAX Engineering Operating Protocol  <sub>:616</sub>
+- Look it up before you search  <sub>:420</sub>
+- The rule index  <sub>:491</sub>
+- Before you open a PR  <sub>:529</sub>
+- Deployment  <sub>:608</sub>
+- NEWAX Engineering Operating Protocol  <sub>:621</sub>
 
 ### `CONTRIBUTING.md`  <sub>127 lines</sub>
 
@@ -2241,7 +2241,51 @@ _no second-level headings_
 - Acceptance  <sub>:326</sub>
 - Out of scope  <sub>:342</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>1,691 lines</sub>
+### `docs/implementation/36-universal-connectivity-integration-framework.md`  <sub>264 lines</sub>
+
+- The pattern, named once so it stops being reinvented per module  <sub>:14</sub>
+- 1. The generic outbound connector: HTTP, templated, retried, never bespoke code per target  <sub>:33</sub>
+- 2. OAuth2 client-credentials, because a static key is not always an option  <sub>:100</sub>
+- 3. Inbound stays doc 34's territory; this document is the outbound mirror  <sub>:117</sub>
+- Scope lenses  <sub>:128</sub>
+- Work orders  <sub>:225</sub>
+- Acceptance  <sub>:241</sub>
+- Out of scope  <sub>:253</sub>
+
+### `docs/implementation/37-scalability-future-upgrades.md`  <sub>247 lines</sub>
+
+- What already exists, referenced rather than repeated  <sub>:15</sub>
+- What is genuinely missing  <sub>:29</sub>
+- Scope lenses  <sub>:127</sub>
+- Work orders  <sub>:203</sub>
+- Acceptance  <sub>:218</sub>
+- Out of scope  <sub>:235</sub>
+
+### `docs/implementation/38-resilience-engineering.md`  <sub>238 lines</sub>
+
+- 1. The degradation matrix: what actually happens when each dependency is down  <sub>:15</sub>
+- 2. Circuit breakers, generalized from the one pattern the outbox already proves  <sub>:39</sub>
+- 3. SLOs and error budgets for the paths that actually matter  <sub>:64</sub>
+- 4. Disaster recovery, naming the numbers `deploy/backup.sh` already earns  <sub>:85</sub>
+- 5. Contract tests: the module-boundary guarantee, extended to behavior  <sub>:105</sub>
+- Scope lenses  <sub>:118</sub>
+- Work orders  <sub>:188</sub>
+- Acceptance  <sub>:209</sub>
+- Out of scope  <sub>:224</sub>
+
+### `docs/implementation/39-shared-cross-tenant-hosting-tier.md`  <sub>367 lines</sub>
+
+- The one design decision that makes this safe: shared compute, never shared data  <sub>:14</sub>
+- 1. A tenant is a provisioned instance, not a row in a shared table  <sub>:45</sub>
+- 2. `brand.ts` becomes the default, exactly as `ENTERPRISE-SCALE.md` already specified  <sub>:120</sub>
+- 3. Support access is a grant with a clock, never standing access  <sub>:147</sub>
+- Scope lenses  <sub>:178</sub>
+- 4. What this tier owes every tenant it hosts, stated as commitments  <sub>:299</sub>
+- Work orders  <sub>:314</sub>
+- Acceptance  <sub>:338</sub>
+- Out of scope  <sub>:355</sub>
+
+### `docs/implementation/DECISIONS.md`  <sub>1,768 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2270,16 +2314,17 @@ _no second-level headings_
 - ADR-024 — WO-23.3d: org-central purchasing recognized narrowly in `resolveTransferSettlement()`; landed cost snapshotted at dispatch but never re-fed into `ProductVariant.costPrice`  <sub>:1374</sub>
 - ADR-025 — WO-E.2 is not executed: its own prerequisites (WO-A.1, WO-A.2) were never built, and building them now would be the same speculative-infrastructure trap ADR-019 already rejected  <sub>:1518</sub>
 - Decision: doc 22's leave schema is struck in favour of payroll's (WO-19.3)  <sub>:1641</sub>
+- Decision: adopt a shared cross-tenant hosting tier via shared-infrastructure/isolated-data, not shared-schema multi-tenancy  <sub>:1692</sub>
 
-### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>266 lines</sub>
+### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
 - The three axes  <sub>:12</sub>
 - S — Sector rules  <sub>:29</sub>
 - Br — Brand rules  <sub>:62</sub>
-- L — Branch (location) rules  <sub>:102</sub>
-- D — Data rules  <sub>:170</sub>
-- P — Permission rules  <sub>:191</sub>
-- What is actually enforced today  <sub>:205</sub>
+- L — Branch (location) rules  <sub>:114</sub>
+- D — Data rules  <sub>:182</sub>
+- P — Permission rules  <sub>:203</sub>
+- What is actually enforced today  <sub>:217</sub>
 
 ### `docs/implementation/MULTI-SECTOR.md`  <sub>806 lines</sub>
 
@@ -2307,15 +2352,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>176 lines</sub>
+### `docs/implementation/README.md`  <sub>180 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:46</sub>
-- The two module groups  <sub>:75</sub>
-- How a work order runs  <sub>:112</sub>
-- Known gaps not yet owned by a phase  <sub>:130</sub>
-- When a brief is wrong  <sub>:157</sub>
-- Scope, honestly  <sub>:170</sub>
+- Dependency order  <sub>:50</sub>
+- The two module groups  <sub>:79</sub>
+- How a work order runs  <sub>:116</sub>
+- Known gaps not yet owned by a phase  <sub>:134</sub>
+- When a brief is wrong  <sub>:161</sub>
+- Scope, honestly  <sub>:174</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

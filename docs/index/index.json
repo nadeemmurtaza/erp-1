@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 1236,
-    "lines": 195019,
+    "lines": 195144,
     "routes": 338,
     "controllers": 59,
     "models": 124,
@@ -1108,8 +1108,8 @@
     },
     "docs": {
       "files": 247,
-      "lines": 36258,
-      "bytes": 2268258,
+      "lines": 36383,
+      "bytes": 2275455,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -42304,8 +42304,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 1515,
-      "bytes": 78592,
+      "lines": 1640,
+      "bytes": 85789,
       "doc": "",
       "symbols": []
     },

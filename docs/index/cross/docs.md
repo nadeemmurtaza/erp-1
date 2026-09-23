@@ -2046,7 +2046,7 @@ _no second-level headings_
 - Work orders  <sub>:18</sub>
 - Out of scope (for now)  <sub>:54</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>1,515 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>1,640 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2073,6 +2073,7 @@ _no second-level headings_
 - ADR-022 — WO-23.3b enforces `allowBranchLocalPurchasing` through a new BranchPolicyRegistry extension point, keyed off the caller's own AdminScope grant  <sub>:1123</sub>
 - ADR-023 — WO-23.3c/e: Node.retailBrandId, a separate PolicyQuarantine table, and apply() drawing exactly one distinction per entity  <sub>:1239</sub>
 - ADR-024 — WO-23.3d: org-central purchasing recognized narrowly in `resolveTransferSettlement()`; landed cost snapshotted at dispatch but never re-fed into `ProductVariant.costPrice`  <sub>:1374</sub>
+- ADR-025 — WO-E.2 is not executed: its own prerequisites (WO-A.1, WO-A.2) were never built, and building them now would be the same speculative-infrastructure trap ADR-019 already rejected  <sub>:1518</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>266 lines</sub>
 

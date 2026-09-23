@@ -3,26 +3,32 @@
 
 # Module: `payroll`
 
-Pack **core** · enabled by the `MODULES` allowlist · 5 files
+Pack **core** · enabled by the `MODULES` allowlist · 11 files
 
 
 
 Source: `apps/api/src/modules/payroll/`
 
-## Files (5 · 438 lines)
+## Files (11 · 1,075 lines)
 
 All paths relative to `apps/api/src/modules/payroll/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `compensation-rate.dto.ts` | dto | 40 | 2 |  |
+| `leave.dto.ts` | dto | 35 | 2 |  |
+| `leave-accrual.cron.spec.ts` | unit test | 73 | — |  |
+| `leave-accrual.cron.ts` | scheduled job | 45 | 1 | WO-19.3's monthly accrual job. |
+| `leave.controller.ts` | controller | 81 | 1 | Leave types, balances and requests (docs/implementation/19-payroll.md WO-19.3). |
+| `leave.service.spec.ts` | unit test | 224 | — |  |
+| `leave.service.ts` | service | 175 | 3 | The days a leave request spans, Monday–Saturday counted, Sunday not — the "plain Mon–Sat week" fallback 19-payroll.md W… |
 | `payroll.controller.ts` | controller | 71 | 1 | Compensation rates and the salary calculator (docs/implementation/ 19-payroll.md WO-19.2). |
-| `payroll.module.ts` | nest module | 17 | 1 |  |
+| `payroll.module.ts` | nest module | 21 | 1 |  |
 | `payroll.service.spec.ts` | unit test | 164 | — |  |
 | `payroll.service.ts` | service | 146 | 3 |  |
 
 
-## HTTP routes (4)
+## HTTP routes (11)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -30,6 +36,13 @@ All paths relative to `apps/api/src/modules/payroll/dto`.
 | PATCH | `/admin/payroll/compensation/:userId` | `payroll.manage` | `PayrollController.setCompensation` :45 | Set a new effective-dated compensation rate, closing the previous one. |
 | GET | `/admin/payroll/compensation/:userId/preview` | `payroll.view` | `PayrollController.previewGross` :63 | Preview the gross salary calculation for a period, no write. |
 | GET | `/admin/payroll/compensation/me` | `payroll.view_own` | `PayrollController.myCompensation` :22 | The caller's own current rate and rate history. |
+| GET | `/admin/payroll/leave` | `payroll.view` | `LeaveController.all` :54 | Every leave request across every employee, newest first. |
+| PATCH | `/admin/payroll/leave/:requestId/decide` | `payroll.manage` | `LeaveController.decide` :73 | Approve or reject a pending leave request. |
+| GET | `/admin/payroll/leave/:userId` | `payroll.view` | `LeaveController.forUser` :65 | One employee's leave balances and request history. |
+| GET | `/admin/payroll/leave/me` | `payroll.view_own` | `LeaveController.mine` :32 | The caller's own leave balances and request history. |
+| POST | `/admin/payroll/leave/me` | `payroll.view_own` | `LeaveController.request` :40 | File a leave request for the caller. |
+| POST | `/admin/payroll/leave/me/:requestId/cancel` | `payroll.view_own` | `LeaveController.cancelOwn` :47 | Cancel the caller's own pending leave request. |
+| GET | `/admin/payroll/leave/types` | `payroll.view_own` | `LeaveController.types` :25 | Every active leave type — needed by anyone filing a request. |
 
 
 ## Domain events
@@ -64,31 +77,39 @@ Enums: `CompensationBasis` (3) · `LeaveKind` (4) · `LeaveRequestStatus` (4) ·
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 
+## Scheduled work
+
+| Schedule | Handler | Where | What it does |
+|---|---|---|---|
+| `0 * * * *` | `run()` | `leave-accrual.cron.ts:25` |  |
 
 
 ## Nest wiring
 
 **`PayrollModule`** (`payroll.module.ts`)
 - imports: —
-- controllers: `PayrollController`
-- providers: `PayrollService`
-- exports: `PayrollService`
+- controllers: `PayrollController`, `LeaveController`
+- providers: `PayrollService`, `LeaveService`, `LeaveAccrualCron`
+- exports: `PayrollService`, `LeaveService`
 
 
 ## Reaches out to
 
 - core `auth`
 - core `prisma`
+- core `settings`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
 either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (3)
 
 | Spec | Cases | Covers |
 |---|---|---|
+| `leave-accrual.cron.spec.ts` | 3 | LeaveAccrualCron |
+| `leave.service.spec.ts` | 16 | LeaveService · countWorkingDays · requestLeave / cancel · decide · accrue |
 | `payroll.service.spec.ts` | 14 | PayrollService · setCompensationRate · calculateGross — MONTHLY · calculateGross — HOURLY / COMMISSION honesty · requir… |
 
 
@@ -98,8 +119,15 @@ check there before adding another.
 |---|---|---|---|
 | `SetCompensationRateDto` | class | `compensation-rate.dto.ts:6` |  |
 | `GrossPreviewQueryDto` | class | `compensation-rate.dto.ts:21` |  |
+| `RequestLeaveDto` | class | `leave.dto.ts:6` |  |
+| `DecideLeaveDto` | class | `leave.dto.ts:25` |  |
+| `LeaveAccrualCron` | class | `leave-accrual.cron.ts:16` | WO-19.3's monthly accrual job. |
+| `LeaveController` | class | `leave.controller.ts:16` | Leave types, balances and requests (docs/implementation/19-payroll.md WO-19.3). |
+| `countWorkingDays` | function | `leave.service.ts:12` | The days a leave request spans, Monday–Saturday counted, Sunday not — the "plain Mon–Sat week" fallback 19-pa… |
+| `accrualPeriodKey` | function | `leave.service.ts:25` | "2026-09" — the accrual period a date falls in. |
+| `LeaveService` | class | `leave.service.ts:30` |  |
 | `PayrollController` | class | `payroll.controller.ts:16` | Compensation rates and the salary calculator (docs/implementation/ 19-payroll.md WO-19.2). |
-| `PayrollModule` | class | `payroll.module.ts:16` |  |
+| `PayrollModule` | class | `payroll.module.ts:20` |  |
 | `GrossCalculationInput` | interface | `payroll.service.ts:5` |  |
 | `GrossCalculationResult` | interface | `payroll.service.ts:12` |  |
 | `PayrollService` | class | `payroll.service.ts:25` | Compensation rates and the salary calculator (docs/implementation/ 19-payroll.md WO-19.2). |

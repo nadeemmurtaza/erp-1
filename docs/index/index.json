@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1244,
-    "lines": 196591,
-    "routes": 342,
-    "controllers": 60,
+    "files": 1250,
+    "lines": 197234,
+    "routes": 349,
+    "controllers": 61,
     "models": 133,
     "enums": 58,
     "migrations": 60,
     "events": 37,
     "permissions": 44,
     "screens": 147,
-    "crons": 8,
-    "specs": 127,
+    "crons": 9,
+    "specs": 129,
     "designLaws": 150
   },
   "designLaws": [
@@ -1083,9 +1083,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 518,
-      "lines": 71744,
-      "bytes": 2623249,
+      "files": 524,
+      "lines": 72387,
+      "bytes": 2649001,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1459,12 +1459,18 @@
       "inRegistry": true,
       "files": [
         "apps/api/src/modules/payroll/dto/compensation-rate.dto.ts",
+        "apps/api/src/modules/payroll/dto/leave.dto.ts",
+        "apps/api/src/modules/payroll/leave-accrual.cron.spec.ts",
+        "apps/api/src/modules/payroll/leave-accrual.cron.ts",
+        "apps/api/src/modules/payroll/leave.controller.ts",
+        "apps/api/src/modules/payroll/leave.service.spec.ts",
+        "apps/api/src/modules/payroll/leave.service.ts",
         "apps/api/src/modules/payroll/payroll.controller.ts",
         "apps/api/src/modules/payroll/payroll.module.ts",
         "apps/api/src/modules/payroll/payroll.service.spec.ts",
         "apps/api/src/modules/payroll/payroll.service.ts"
       ],
-      "routes": 4,
+      "routes": 11,
       "page": "docs/index/modules/payroll.md"
     },
     {
@@ -4472,6 +4478,118 @@
       "public": false,
       "authOnly": false,
       "summary": "The caller's own current rate and rate history."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/leave",
+      "module": "payroll",
+      "controller": "LeaveController",
+      "handler": "all",
+      "file": "apps/api/src/modules/payroll/leave.controller.ts",
+      "line": 54,
+      "access": "payroll.view",
+      "permissions": [
+        "payroll.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every leave request across every employee, newest first."
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/payroll/leave/:requestId/decide",
+      "module": "payroll",
+      "controller": "LeaveController",
+      "handler": "decide",
+      "file": "apps/api/src/modules/payroll/leave.controller.ts",
+      "line": 73,
+      "access": "payroll.manage",
+      "permissions": [
+        "payroll.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Approve or reject a pending leave request."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/leave/:userId",
+      "module": "payroll",
+      "controller": "LeaveController",
+      "handler": "forUser",
+      "file": "apps/api/src/modules/payroll/leave.controller.ts",
+      "line": 65,
+      "access": "payroll.view",
+      "permissions": [
+        "payroll.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One employee's leave balances and request history."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/leave/me",
+      "module": "payroll",
+      "controller": "LeaveController",
+      "handler": "mine",
+      "file": "apps/api/src/modules/payroll/leave.controller.ts",
+      "line": 32,
+      "access": "payroll.view_own",
+      "permissions": [
+        "payroll.view_own"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The caller's own leave balances and request history."
+    },
+    {
+      "method": "POST",
+      "path": "/admin/payroll/leave/me",
+      "module": "payroll",
+      "controller": "LeaveController",
+      "handler": "request",
+      "file": "apps/api/src/modules/payroll/leave.controller.ts",
+      "line": 40,
+      "access": "payroll.view_own",
+      "permissions": [
+        "payroll.view_own"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "File a leave request for the caller."
+    },
+    {
+      "method": "POST",
+      "path": "/admin/payroll/leave/me/:requestId/cancel",
+      "module": "payroll",
+      "controller": "LeaveController",
+      "handler": "cancelOwn",
+      "file": "apps/api/src/modules/payroll/leave.controller.ts",
+      "line": 47,
+      "access": "payroll.view_own",
+      "permissions": [
+        "payroll.view_own"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Cancel the caller's own pending leave request."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/payroll/leave/types",
+      "module": "payroll",
+      "controller": "LeaveController",
+      "handler": "types",
+      "file": "apps/api/src/modules/payroll/leave.controller.ts",
+      "line": 25,
+      "access": "payroll.view_own",
+      "permissions": [
+        "payroll.view_own"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every active leave type — needed by anyone filing a request."
     },
     {
       "method": "GET",
@@ -8003,7 +8121,11 @@
       "category": "Payroll",
       "sensitivity": "low",
       "routes": [
-        "GET /admin/payroll/compensation/me"
+        "GET /admin/payroll/compensation/me",
+        "GET /admin/payroll/leave/me",
+        "POST /admin/payroll/leave/me",
+        "POST /admin/payroll/leave/me/:requestId/cancel",
+        "GET /admin/payroll/leave/types"
       ],
       "uiSites": 0,
       "roles": [
@@ -8020,7 +8142,9 @@
       "sensitivity": "medium",
       "routes": [
         "GET /admin/payroll/compensation/:userId",
-        "GET /admin/payroll/compensation/:userId/preview"
+        "GET /admin/payroll/compensation/:userId/preview",
+        "GET /admin/payroll/leave",
+        "GET /admin/payroll/leave/:userId"
       ],
       "uiSites": 0,
       "roles": [
@@ -8034,7 +8158,8 @@
       "category": "Payroll",
       "sensitivity": "medium",
       "routes": [
-        "PATCH /admin/payroll/compensation/:userId"
+        "PATCH /admin/payroll/compensation/:userId",
+        "PATCH /admin/payroll/leave/:requestId/decide"
       ],
       "uiSites": 0,
       "roles": [
@@ -24033,6 +24158,13 @@
       "doc": ""
     },
     {
+      "schedule": "0 * * * *",
+      "file": "apps/api/src/modules/payroll/leave-accrual.cron.ts",
+      "line": 25,
+      "handler": "run",
+      "doc": ""
+    },
+    {
       "schedule": "0 3 * * *",
       "file": "apps/api/src/modules/purchasing/purchasing.cron.ts",
       "line": 28,
@@ -25231,6 +25363,28 @@
       "describes": [
         "Easypaisa callback verification",
         "JazzCash callback verification"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/payroll/leave-accrual.cron.spec.ts",
+      "module": "payroll",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "LeaveAccrualCron"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/payroll/leave.service.spec.ts",
+      "module": "payroll",
+      "kind": "unit test",
+      "cases": 16,
+      "describes": [
+        "LeaveService",
+        "countWorkingDays",
+        "requestLeave / cancel",
+        "decide",
+        "accrue"
       ]
     },
     {
@@ -29321,8 +29475,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 293,
-      "bytes": 12231,
+      "lines": 299,
+      "bytes": 12680,
       "doc": "",
       "symbols": [
         {
@@ -29363,12 +29517,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 155
+          "line": 159
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 157
+          "line": 161
         }
       ]
     },
@@ -32696,6 +32850,99 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/payroll/dto/leave.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 35,
+      "bytes": 719,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RequestLeaveDto",
+          "kind": "class",
+          "line": 6
+        },
+        {
+          "name": "DecideLeaveDto",
+          "kind": "class",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/leave-accrual.cron.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 73,
+      "bytes": 2455,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/payroll/leave-accrual.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 45,
+      "bytes": 1792,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LeaveAccrualCron",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/leave.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 81,
+      "bytes": 3254,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LeaveController",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payroll/leave.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 224,
+      "bytes": 9277,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/payroll/leave.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 175,
+      "bytes": 7504,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "countWorkingDays",
+          "kind": "function",
+          "line": 12
+        },
+        {
+          "name": "accrualPeriodKey",
+          "kind": "function",
+          "line": 25
+        },
+        {
+          "name": "LeaveService",
+          "kind": "class",
+          "line": 30
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/payroll/payroll.controller.ts",
       "area": "api",
       "kind": "controller",
@@ -32714,14 +32961,14 @@
       "path": "apps/api/src/modules/payroll/payroll.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 17,
-      "bytes": 545,
+      "lines": 21,
+      "bytes": 847,
       "doc": "",
       "symbols": [
         {
           "name": "PayrollModule",
           "kind": "class",
-          "line": 16
+          "line": 20
         }
       ]
     },

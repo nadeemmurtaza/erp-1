@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 518 tracked files in `apps/api`, by directory.
+All 524 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -633,7 +633,7 @@ All 518 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 45 |  |
-| `settings.defaults.ts` | module | 293 |  |
+| `settings.defaults.ts` | module | 299 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 103 |  |
 
@@ -1007,20 +1007,26 @@ All 518 tracked files in `apps/api`, by directory.
 | `easypaisa.provider.ts` | module | 184 |  |
 | `jazzcash.provider.ts` | module | 184 |  |
 
-### `apps/api/src/modules/payroll` (4)
+### `apps/api/src/modules/payroll` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `leave-accrual.cron.spec.ts` | unit test | 73 |  |
+| `leave-accrual.cron.ts` | scheduled job | 45 |  |
+| `leave.controller.ts` | controller | 81 |  |
+| `leave.service.spec.ts` | unit test | 224 |  |
+| `leave.service.ts` | service | 175 |  |
 | `payroll.controller.ts` | controller | 71 |  |
-| `payroll.module.ts` | nest module | 17 |  |
+| `payroll.module.ts` | nest module | 21 |  |
 | `payroll.service.spec.ts` | unit test | 164 |  |
 | `payroll.service.ts` | service | 146 |  |
 
-### `apps/api/src/modules/payroll/dto` (1)
+### `apps/api/src/modules/payroll/dto` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `compensation-rate.dto.ts` | dto | 40 |  |
+| `leave.dto.ts` | dto | 35 |  |
 
 ### `apps/api/src/modules/pos` (16)
 

@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **342** endpoints across **60** controllers, with the access rule that actually guards each one.
+All **349** endpoints across **61** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -405,7 +405,7 @@ never authorization.
 | POST | `/payments/callback/:provider` | **PUBLIC** | `PaymentsController.callback` | Gateway return URL — verifies and settles a payment |
 | GET | `/payments/methods` | **PUBLIC** | `PaymentsController.methods` | Payment methods currently accepted |
 
-### [`payroll`](../modules/payroll.md) (4)
+### [`payroll`](../modules/payroll.md) (11)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -413,6 +413,13 @@ never authorization.
 | PATCH | `/admin/payroll/compensation/:userId` | `payroll.manage` | `PayrollController.setCompensation` | Set a new effective-dated compensation rate, closing the previous one. |
 | GET | `/admin/payroll/compensation/:userId/preview` | `payroll.view` | `PayrollController.previewGross` | Preview the gross salary calculation for a period, no write. |
 | GET | `/admin/payroll/compensation/me` | `payroll.view_own` | `PayrollController.myCompensation` | The caller's own current rate and rate history. |
+| GET | `/admin/payroll/leave` | `payroll.view` | `LeaveController.all` | Every leave request across every employee, newest first. |
+| PATCH | `/admin/payroll/leave/:requestId/decide` | `payroll.manage` | `LeaveController.decide` | Approve or reject a pending leave request. |
+| GET | `/admin/payroll/leave/:userId` | `payroll.view` | `LeaveController.forUser` | One employee's leave balances and request history. |
+| GET | `/admin/payroll/leave/me` | `payroll.view_own` | `LeaveController.mine` | The caller's own leave balances and request history. |
+| POST | `/admin/payroll/leave/me` | `payroll.view_own` | `LeaveController.request` | File a leave request for the caller. |
+| POST | `/admin/payroll/leave/me/:requestId/cancel` | `payroll.view_own` | `LeaveController.cancelOwn` | Cancel the caller's own pending leave request. |
+| GET | `/admin/payroll/leave/types` | `payroll.view_own` | `LeaveController.types` | Every active leave type — needed by anyone filing a request. |
 
 ### [`pos`](../modules/pos.md) (15)
 

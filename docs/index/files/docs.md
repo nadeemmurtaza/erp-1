@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 373 tracked files in `docs/*`, by directory.
+All 383 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -253,7 +253,7 @@ All 373 tracked files in `docs/*`, by directory.
 | `52g-generate-gap.md` | doc | 26 |  |
 | `52h-harden-gap.md` | doc | 40 |  |
 
-### `docs/implementation` (153)
+### `docs/implementation` (163)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -316,7 +316,17 @@ All 373 tracked files in `docs/*`, by directory.
 | `141-general-metadata-driven-ui-engine.md` | doc | 147 |  |
 | `142-bpmn-visual-workflow-engine.md` | doc | 109 |  |
 | `143-micro-frontend-architecture.md` | doc | 160 |  |
+| `144-supply-chain-resilience-planning-engine.md` | doc | 345 |  |
+| `145-receivables-credit-limits-dunning.md` | doc | 285 |  |
+| `146-wholesale-tiered-pricing.md` | doc | 182 |  |
+| `147-fixed-asset-depreciation.md` | doc | 210 |  |
+| `148-external-customer-support-portal.md` | doc | 176 |  |
+| `149-b2b-accounts-approvals-sector-packs.md` | doc | 163 |  |
 | `15-tax-module.md` | doc | 232 |  |
+| `150-product-kitting-bundles.md` | doc | 184 |  |
+| `151-layby-installment-sales.md` | doc | 201 |  |
+| `152-purchase-requisition.md` | doc | 190 |  |
+| `153-usage-based-pricing-model.md` | doc | 290 |  |
 | `16-pbac-row-scoping.md` | doc | 184 |  |
 | `17-inventory-locations.md` | doc | 254 |  |
 | `18-identity-verification.md` | doc | 143 |  |
@@ -407,7 +417,7 @@ All 373 tracked files in `docs/*`, by directory.
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 379 |  |
+| `README.md` | doc | 406 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 

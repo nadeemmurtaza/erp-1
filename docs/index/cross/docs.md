@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**393** markdown documents. These explain **why**; this index only says **where**.
+**403** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2394,6 +2394,67 @@ _no second-level headings_
 - Acceptance  <sub>:143</sub>
 - Out of scope  <sub>:153</sub>
 
+### `docs/implementation/144-supply-chain-resilience-planning-engine.md`  <sub>345 lines</sub>
+
+- 1. R20 — the dependency graph is a projection, never a second model  <sub>:20</sub>
+- 2. R21 — shocks and propagation, arithmetic over the graph, never inference  <sub>:52</sub>
+- 3. R22 — one ranking formula, actions generated from the graph, never invented  <sub>:89</sub>
+- 4. R23 — GenAI narrates, cites, never computes  <sub>:116</sub>
+- 5. R24 — liquidity is a ledger query plus a schedule, not a new forecast model  <sub>:137</sub>
+- 6. R25 — lead time as a distribution, backfilled from history already in the database  <sub>:155</sub>
+- 7. R26 — online stock is the sum of branch allotments, no separate reservation ledger  <sub>:188</sub>
+- Scope lenses  <sub>:210</sub>
+- Work orders  <sub>:302</sub>
+- Acceptance  <sub>:323</sub>
+- Out of scope  <sub>:338</sub>
+
+### `docs/implementation/145-receivables-credit-limits-dunning.md`  <sub>285 lines</sub>
+
+- 1. `CreditNote`/`DebitNote` — the two documents R18's own diagram already names  <sub>:13</sub>
+- 2. Credit limits — a policy row, checked at the one place a sale can be refused for it  <sub>:66</sub>
+- 3. Dunning — a scheduled reminder sequence, reusing the existing notification and expiry-watcher mechanisms, never a new scheduler  <sub>:102</sub>
+- 4. Customer statements — a read-model over rows that already exist  <sub>:133</sub>
+- Scope lenses  <sub>:148</sub>
+- Work orders  <sub>:250</sub>
+- Acceptance  <sub>:266</sub>
+- Out of scope  <sub>:278</sub>
+
+### `docs/implementation/146-wholesale-tiered-pricing.md`  <sub>182 lines</sub>
+
+- 1. Price resolution becomes a chain, never a second hardcoded fallback  <sub>:13</sub>
+- Scope lenses  <sub>:79</sub>
+- Work orders  <sub>:148</sub>
+- Acceptance  <sub>:165</sub>
+- Out of scope  <sub>:175</sub>
+
+### `docs/implementation/147-fixed-asset-depreciation.md`  <sub>210 lines</sub>
+
+- 1. A depreciation schedule, computed once at acquisition, posted periodically  <sub>:11</sub>
+- 2. Posting is a cron, through the identical `findPostedEntry()` idempotency key every other posting rule already uses  <sub>:55</sub>
+- 3. Write-off and disposal reuse doc 79's own `AssetStatus`, closing the schedule rather than deleting it  <sub>:81</sub>
+- Scope lenses  <sub>:94</sub>
+- Work orders  <sub>:175</sub>
+- Acceptance  <sub>:191</sub>
+- Out of scope  <sub>:202</sub>
+
+### `docs/implementation/148-external-customer-support-portal.md`  <sub>176 lines</sub>
+
+- 1. A customer ticket, keyed to a `Contact`/`Party`, never a `User`  <sub>:13</sub>
+- 2. The trust boundary this document exists to get right  <sub>:64</sub>
+- Scope lenses  <sub>:85</sub>
+- Work orders  <sub>:143</sub>
+- Acceptance  <sub>:161</sub>
+- Out of scope  <sub>:170</sub>
+
+### `docs/implementation/149-b2b-accounts-approvals-sector-packs.md`  <sub>163 lines</sub>
+
+- 1. `accounts` — an order settles against credit terms instead of an immediate tender  <sub>:17</sub>
+- 2. `approvals` — a buyer-side purchase-approval gate before an order commits  <sub>:39</sub>
+- Scope lenses  <sub>:61</sub>
+- Work orders  <sub>:132</sub>
+- Acceptance  <sub>:146</sub>
+- Out of scope  <sub>:155</sub>
+
 ### `docs/implementation/15-tax-module.md`  <sub>232 lines</sub>
 
 - The design decision this doc locks in  <sub>:16</sub>
@@ -2403,6 +2464,46 @@ _no second-level headings_
 - What this doc deliberately does not specify  <sub>:132</sub>
 - Work orders  <sub>:196</sub>
 - When to actually build this  <sub>:225</sub>
+
+### `docs/implementation/150-product-kitting-bundles.md`  <sub>184 lines</sub>
+
+- 1. A bundle is a sellable shell over existing variants, never a new physical item  <sub>:16</sub>
+- 2. Selling a bundle decrements every component, atomically, through the one existing writer  <sub>:44</sub>
+- 3. Bundle "stock" is computed, never stored — the same discipline R26 already establishes for online allotment  <sub>:73</sub>
+- Scope lenses  <sub>:84</sub>
+- Work orders  <sub>:151</sub>
+- Acceptance  <sub>:167</sub>
+- Out of scope  <sub>:177</sub>
+
+### `docs/implementation/151-layby-installment-sales.md`  <sub>201 lines</sub>
+
+- 1. A layby/instalment plan is a schedule of expected payments against one order, fulfilment gated on completion  <sub>:14</sub>
+- 2. Fulfilment gating is the one real difference between LAYBY and INSTALMENT, and the one place this touches the order lifecycle  <sub>:59</sub>
+- Scope lenses  <sub>:82</sub>
+- Work orders  <sub>:169</sub>
+- Acceptance  <sub>:184</sub>
+- Out of scope  <sub>:194</sub>
+
+### `docs/implementation/152-purchase-requisition.md`  <sub>190 lines</sub>
+
+- 1. A requisition is a request to buy; a PO is the resulting commitment — never the same row wearing two hats  <sub>:15</sub>
+- 2. Approval reuses doc 63's own generic chain, never a bespoke requisition-approval mechanism  <sub>:45</sub>
+- Scope lenses  <sub>:67</sub>
+- Work orders  <sub>:157</sub>
+- Acceptance  <sub>:172</sub>
+- Out of scope  <sub>:182</sub>
+
+### `docs/implementation/153-usage-based-pricing-model.md`  <sub>290 lines</sub>
+
+- What changed from the original proposal, and why  <sub>:13</sub>
+- 1. `PlatformPlan` gains `USAGE_BASED`, alongside doc 50's existing three shapes  <sub>:41</sub>
+- 2. Metering is event-driven, reusing this repository's own transactional outbox — never a slow end-of-month aggregate scan  <sub>:69</sub>
+- 3. Collection: COD and cash have no settlement to net against — this is doc 145's own mechanism, one level up  <sub>:117</sub>
+- 4. A graduated rate, so growth is rewarded rather than punished forever  <sub>:145</sub>
+- Scope lenses  <sub>:156</sub>
+- Work orders  <sub>:247</sub>
+- Acceptance  <sub>:267</sub>
+- Out of scope  <sub>:281</sub>
 
 ### `docs/implementation/16-pbac-row-scoping.md`  <sub>184 lines</sub>
 
@@ -3265,15 +3366,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>379 lines</sub>
+### `docs/implementation/README.md`  <sub>406 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:249</sub>
-- The two module groups  <sub>:278</sub>
-- How a work order runs  <sub>:315</sub>
-- Known gaps not yet owned by a phase  <sub>:333</sub>
-- When a brief is wrong  <sub>:360</sub>
-- Scope, honestly  <sub>:373</sub>
+- Dependency order  <sub>:276</sub>
+- The two module groups  <sub>:305</sub>
+- How a work order runs  <sub>:342</sub>
+- Known gaps not yet owned by a phase  <sub>:360</sub>
+- When a brief is wrong  <sub>:387</sub>
+- Scope, honestly  <sub>:400</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

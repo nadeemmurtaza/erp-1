@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-373 files · 54,223 lines
+383 files · 56,476 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -23,7 +23,7 @@ has a bug.
 | `docs/brand/logo` | 6 | 0 | asset |
 | `docs/design` | 17 | 3,510 | doc |
 | `docs/erp-lenses` | 195 | 21,167 | doc |
-| `docs/implementation` | 153 | 29,011 | doc, file |
+| `docs/implementation` | 163 | 31,264 | doc, file |
 
 
 

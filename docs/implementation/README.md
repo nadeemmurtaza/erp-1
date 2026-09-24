@@ -246,6 +246,33 @@ the four lower-risk items remain built:
 | [`142-bpmn-visual-workflow-engine.md`](./142-bpmn-visual-workflow-engine.md) | A BPMN diagram editor that compiles into doc 63's own `ApprovalChain`/`ApprovalStep` rows — a visual authoring layer, never a second execution runtime; an unsupported BPMN construct is rejected at compile time, not silently ignored |
 | [`143-micro-frontend-architecture.md`](./143-micro-frontend-architecture.md) | Module federation added as an opt-in, per-fragment layer alongside doc 93's single-app convention, with a mandatory design-law compliance attestation at registration and a `SUSPENDED` kill switch |
 
+**Numbers 144–153** answer "find gaps," this time cross-checked against
+`RETAIL-ERP.md`'s own numbered rules (R1–R26) and the actual schema
+rather than re-reading the 143 existing docs. Two large findings turned
+up nowhere else in this document set: an entire seven-rule resilience-
+planning architecture (R20–R26) fully designed in prose with zero code
+and zero implementation doc, and R18's own named receivables scope
+(credit limits, dunning, statements, `CreditNote`/`DebitNote`) confirmed
+missing by grep. The rest are smaller, some already self-named as
+out-of-scope by an earlier document, some newly found by checking common
+ERP domains against the schema directly. Doc 153 also designs the fourth
+commercial `PricingModel` (usage-based + a GMV transaction fee) the
+owner proposed, refined against three real problems in the original
+idea and one hard dependency on doc 68's own fix:
+
+| File | What it is |
+|---|---|
+| [`144-supply-chain-resilience-planning-engine.md`](./144-supply-chain-resilience-planning-engine.md) | `RETAIL-ERP.md`'s own R20–R26, entirely unbuilt: a derived dependency graph, typed shock propagation, one cash-preservation ranking formula, citation-only GenAI narration, ledger-based liquidity forecasting, supplier lead-time as a distribution, and R26's own online-stock-as-branch-allotment model — confirmed by grep that none of it exists beyond three unrelated nightly digest emails |
+| [`145-receivables-credit-limits-dunning.md`](./145-receivables-credit-limits-dunning.md) | R18's own named scope — `CreditNote`/`DebitNote`, customer credit limits, dunning, statements — confirmed missing; dunning reuses doc 54's existing expiry watcher, never a second scheduler |
+| [`146-wholesale-tiered-pricing.md`](./146-wholesale-tiered-pricing.md) | The `pricing` module `MULTI-SECTOR.md` already named as not built — price lists and quantity breaks replacing the inline `priceOverride ?? basePrice` fallback, byte-identical behavior when the pack is off |
+| [`147-fixed-asset-depreciation.md`](./147-fixed-asset-depreciation.md) | Doc 79's own named, unbuilt gap — a depreciation schedule and monthly GL posting over doc 79's existing `Asset` model, idempotent via the existing `findPostedEntry()` key |
+| [`148-external-customer-support-portal.md`](./148-external-customer-support-portal.md) | Doc 64's own named, unbuilt gap — customer-facing ticketing keyed to `Contact`/`Party`, never `User`, sharing doc 64's own staff-side queue and permissions |
+| [`149-b2b-accounts-approvals-sector-packs.md`](./149-b2b-accounts-approvals-sector-packs.md) | The `accounts`/`approvals` sector packs `MULTI-SECTOR.md` names but never scopes — on-account settlement over doc 145's own credit check, buyer-side purchase approval over doc 63's existing `ApprovalChain`, generalized to a buyer's own contacts as approvers |
+| [`150-product-kitting-bundles.md`](./150-product-kitting-bundles.md) | Genuinely new: no bundle/kit model existed — a sellable shell over existing variants, decremented atomically through the unchanged `InventoryService.move()`, never conflated with `bom`'s own recipe/production model |
+| [`151-layby-installment-sales.md`](./151-layby-installment-sales.md) | Genuinely new, and a real gap in this market specifically — a payment schedule against one order, fulfilment gated on completion for layby, unaffected for instalment, feeding doc 145's own aging unchanged |
+| [`152-purchase-requisition.md`](./152-purchase-requisition.md) | Genuinely new: no pre-PO internal request step existed — reuses doc 63's generic approval chain rather than a bespoke mechanism, converts to an ordinary `PurchaseOrder` through the unchanged existing path |
+| [`153-usage-based-pricing-model.md`](./153-usage-based-pricing-model.md) | A fourth `PricingModel` (doc 50's three plus this one): the owner's own per-feature-plus-1%-of-sales idea, refined to meter actions never things-at-rest, consolidate messages into one meter, and ship as an optional tier alongside flat-rate rather than replacing it — depends on doc 68's own POS-event fix so till sales aren't silently unmetered, and reuses doc 145's own receivables design one level up for Newax's own AR from tenants |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1425,
-    "lines": 218520,
+    "files": 1435,
+    "lines": 220773,
     "routes": 357,
     "controllers": 62,
     "models": 140,
@@ -1107,9 +1107,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 373,
-      "lines": 54223,
-      "bytes": 3222628,
+      "files": 383,
+      "lines": 56476,
+      "bytes": 3341854,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -45632,11 +45632,101 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/144-supply-chain-resilience-planning-engine.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 345,
+      "bytes": 17854,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/145-receivables-credit-limits-dunning.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 285,
+      "bytes": 14267,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/146-wholesale-tiered-pricing.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 182,
+      "bytes": 8682,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/147-fixed-asset-depreciation.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 210,
+      "bytes": 10340,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/148-external-customer-support-portal.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 176,
+      "bytes": 9288,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/149-b2b-accounts-approvals-sector-packs.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 163,
+      "bytes": 8913,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/15-tax-module.md",
       "area": "docs",
       "kind": "doc",
       "lines": 232,
       "bytes": 11414,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/150-product-kitting-bundles.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 184,
+      "bytes": 8894,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/151-layby-installment-sales.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 201,
+      "bytes": 10575,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/152-purchase-requisition.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 190,
+      "bytes": 10314,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/153-usage-based-pricing-model.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 290,
+      "bytes": 15871,
       "doc": "",
       "symbols": []
     },
@@ -46454,8 +46544,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 379,
-      "bytes": 45504,
+      "lines": 406,
+      "bytes": 49732,
       "doc": "",
       "symbols": []
     },

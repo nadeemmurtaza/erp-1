@@ -3,7 +3,7 @@
 
 # Every tracked file
 
-All **1,465** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,448** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
@@ -11,7 +11,7 @@ Split by area so you load one, not all of them.
 | Area | Files | Lines | Open |
 |---|---|---|---|
 | apps/api | 527 | 73,264 | [files/api.md](../files/api.md) |
-| apps/web | 283 | 40,750 | [files/web.md](../files/web.md) |
+| apps/web | 266 | 40,648 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 42 | 5,292 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 57 | 4,769 | [files/packages.md](../files/packages.md) |
@@ -40,7 +40,6 @@ name a new file: the convention is what makes it findable.
 | nest module | 45 |
 | script | 38 |
 | json | 29 |
-| loading | 28 |
 | prisma schema | 27 |
 | asset | 26 |
 | react | 22 |
@@ -50,6 +49,7 @@ name a new file: the convention is what makes it findable.
 | file | 13 |
 | yaml | 12 |
 | config | 11 |
+| loading | 11 |
 | registry | 7 |
 | scheduled job | 7 |
 | constants | 7 |

@@ -57,7 +57,6 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `RecipesPage` | default | :46 | Recipes — which raw materials go into a finished product, and the cost that rolls up to. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/[id]`
@@ -94,7 +93,6 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `RawMaterialsPage` | default | :41 | Raw materials — fabric, trim, packaging, consumables bought in to make finished products. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/[id]`
@@ -125,7 +123,6 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `AdminCategoriesPage` | default | :27 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/contacts`
@@ -157,7 +154,6 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `EmailAccountsPage` | default | :24 | The mailboxes outgoing mail can leave from. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]`
@@ -237,7 +233,6 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `CountsListPage` | default | :22 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/counts/[id]`
@@ -256,14 +251,12 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `ReorderSuggestionsPage` | default | :27 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `SlowMoversPage` | default | :25 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/leads`
@@ -325,7 +318,6 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `AdminPaymentsPage` | default | :30 | The money queue: bank transfers whose receipt a human has to check against the bank statement befor… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payroll/compensation`
@@ -350,7 +342,6 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `PayrollRunsPage` | default | :19 | WO-19.6 (docs/implementation/19-payroll.md) — every pay run, and the form to build a new one for a… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]`
@@ -388,7 +379,6 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `PurchaseOrdersPage` | default | :26 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]`
@@ -431,14 +421,12 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `TailorQueuePage` | default | :26 | The tailor queue. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/stitching/bookings`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `BookingsPage` | default | :23 | Bookings where the customer supplies the cloth. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/stitching/bookings/[id]`
@@ -457,7 +445,6 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `SuppliersListPage` | default | :19 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/suppliers/[id]`
@@ -470,14 +457,12 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `TaxAdminPage` | default | :36 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/trading-partners`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `TradingPartnersPage` | default | :17 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/trading-partners/[id]`
@@ -496,7 +481,6 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `TransfersPage` | default | :20 | Inter-branch and org-central stock transfers (RETAIL-ERP.md R4, WO-22.1/22.2/22.3, WO-23.3d). |
 
 ### `apps/web/src/app/(admin)/admin/(app)/transfers/[id]`
@@ -515,7 +499,6 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `AdminUsersPage` | default | :29 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/users/[id]`

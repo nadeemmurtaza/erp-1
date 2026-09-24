@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1465,
-    "lines": 222463,
+    "files": 1448,
+    "lines": 222361,
     "routes": 357,
     "controllers": 62,
     "models": 140,
@@ -12,7 +12,7 @@
     "migrations": 61,
     "events": 39,
     "permissions": 44,
-    "screens": 173,
+    "screens": 156,
     "crons": 9,
     "specs": 135,
     "designLaws": 150
@@ -1101,9 +1101,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 283,
-      "lines": 40750,
-      "bytes": 1487637,
+      "files": 266,
+      "lines": 40648,
+      "bytes": 1485155,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -24182,15 +24182,6 @@
     },
     {
       "app": "web",
-      "kind": "loading",
-      "url": "/admin/bom",
-      "file": "apps/web/src/app/(admin)/admin/(app)/bom/loading.tsx",
-      "client": false,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
       "kind": "page",
       "url": "/admin/bom",
       "file": "apps/web/src/app/(admin)/admin/(app)/bom/page.tsx",
@@ -24245,15 +24236,6 @@
     },
     {
       "app": "web",
-      "kind": "loading",
-      "url": "/admin/bom/raw-materials",
-      "file": "apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/loading.tsx",
-      "client": false,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
       "kind": "page",
       "url": "/admin/bom/raw-materials",
       "file": "apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/page.tsx",
@@ -24294,15 +24276,6 @@
       "url": "/admin/brands",
       "file": "apps/web/src/app/(admin)/admin/(app)/brands/page.tsx",
       "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "loading",
-      "url": "/admin/categories",
-      "file": "apps/web/src/app/(admin)/admin/(app)/categories/loading.tsx",
-      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -24357,15 +24330,6 @@
       "url": "/admin/designs/[id]",
       "file": "apps/web/src/app/(admin)/admin/(app)/designs/[id]/page.tsx",
       "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "loading",
-      "url": "/admin/email-accounts",
-      "file": "apps/web/src/app/(admin)/admin/(app)/email-accounts/loading.tsx",
-      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -24497,15 +24461,6 @@
     },
     {
       "app": "web",
-      "kind": "loading",
-      "url": "/admin/inventory/counts",
-      "file": "apps/web/src/app/(admin)/admin/(app)/inventory/counts/loading.tsx",
-      "client": false,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
       "kind": "page",
       "url": "/admin/inventory/counts",
       "file": "apps/web/src/app/(admin)/admin/(app)/inventory/counts/page.tsx",
@@ -24533,28 +24488,10 @@
     },
     {
       "app": "web",
-      "kind": "loading",
-      "url": "/admin/inventory/reorder",
-      "file": "apps/web/src/app/(admin)/admin/(app)/inventory/reorder/loading.tsx",
-      "client": false,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
       "kind": "page",
       "url": "/admin/inventory/reorder",
       "file": "apps/web/src/app/(admin)/admin/(app)/inventory/reorder/page.tsx",
       "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "loading",
-      "url": "/admin/inventory/slow-movers",
-      "file": "apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers/loading.tsx",
-      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -24668,15 +24605,6 @@
     },
     {
       "app": "web",
-      "kind": "loading",
-      "url": "/admin/payments",
-      "file": "apps/web/src/app/(admin)/admin/(app)/payments/loading.tsx",
-      "client": false,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
       "kind": "page",
       "url": "/admin/payments",
       "file": "apps/web/src/app/(admin)/admin/(app)/payments/page.tsx",
@@ -24708,15 +24636,6 @@
       "url": "/admin/payroll/me",
       "file": "apps/web/src/app/(admin)/admin/(app)/payroll/me/page.tsx",
       "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "loading",
-      "url": "/admin/payroll/runs",
-      "file": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/loading.tsx",
-      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -24785,15 +24704,6 @@
     },
     {
       "app": "web",
-      "kind": "loading",
-      "url": "/admin/purchase-orders",
-      "file": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/loading.tsx",
-      "client": false,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
       "kind": "page",
       "url": "/admin/purchase-orders",
       "file": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/page.tsx",
@@ -24857,28 +24767,10 @@
     },
     {
       "app": "web",
-      "kind": "loading",
-      "url": "/admin/stitching",
-      "file": "apps/web/src/app/(admin)/admin/(app)/stitching/loading.tsx",
-      "client": false,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
       "kind": "page",
       "url": "/admin/stitching",
       "file": "apps/web/src/app/(admin)/admin/(app)/stitching/page.tsx",
       "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "loading",
-      "url": "/admin/stitching/bookings",
-      "file": "apps/web/src/app/(admin)/admin/(app)/stitching/bookings/loading.tsx",
-      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -24911,15 +24803,6 @@
     },
     {
       "app": "web",
-      "kind": "loading",
-      "url": "/admin/suppliers",
-      "file": "apps/web/src/app/(admin)/admin/(app)/suppliers/loading.tsx",
-      "client": false,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
       "kind": "page",
       "url": "/admin/suppliers",
       "file": "apps/web/src/app/(admin)/admin/(app)/suppliers/page.tsx",
@@ -24938,28 +24821,10 @@
     },
     {
       "app": "web",
-      "kind": "loading",
-      "url": "/admin/tax",
-      "file": "apps/web/src/app/(admin)/admin/(app)/tax/loading.tsx",
-      "client": false,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
       "kind": "page",
       "url": "/admin/tax",
       "file": "apps/web/src/app/(admin)/admin/(app)/tax/page.tsx",
       "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "loading",
-      "url": "/admin/trading-partners",
-      "file": "apps/web/src/app/(admin)/admin/(app)/trading-partners/loading.tsx",
-      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -24992,15 +24857,6 @@
     },
     {
       "app": "web",
-      "kind": "loading",
-      "url": "/admin/transfers",
-      "file": "apps/web/src/app/(admin)/admin/(app)/transfers/loading.tsx",
-      "client": false,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
       "kind": "page",
       "url": "/admin/transfers",
       "file": "apps/web/src/app/(admin)/admin/(app)/transfers/page.tsx",
@@ -25023,15 +24879,6 @@
       "url": "/admin/transfers/new",
       "file": "apps/web/src/app/(admin)/admin/(app)/transfers/new/page.tsx",
       "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "loading",
-      "url": "/admin/users",
-      "file": "apps/web/src/app/(admin)/admin/(app)/users/loading.tsx",
-      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -38533,21 +38380,6 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(admin)/admin/(app)/bom/loading.tsx",
-      "area": "web",
-      "kind": "loading",
-      "lines": 6,
-      "bytes": 146,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "Loading",
-          "kind": "default",
-          "line": 3
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/new/page.tsx",
       "area": "web",
       "kind": "page",
@@ -38638,21 +38470,6 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/loading.tsx",
-      "area": "web",
-      "kind": "loading",
-      "lines": 6,
-      "bytes": 146,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "Loading",
-          "kind": "default",
-          "line": 3
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/page.tsx",
       "area": "web",
       "kind": "page",
@@ -38709,21 +38526,6 @@
           "name": "AdminBrandsPage",
           "kind": "default",
           "line": 35
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/app/(admin)/admin/(app)/categories/loading.tsx",
-      "area": "web",
-      "kind": "loading",
-      "lines": 6,
-      "bytes": 146,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "Loading",
-          "kind": "default",
-          "line": 3
         }
       ]
     },
@@ -38829,21 +38631,6 @@
           "name": "EmailAccountPage",
           "kind": "default",
           "line": 35
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/app/(admin)/admin/(app)/email-accounts/loading.tsx",
-      "area": "web",
-      "kind": "loading",
-      "lines": 6,
-      "bytes": 146,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "Loading",
-          "kind": "default",
-          "line": 3
         }
       ]
     },
@@ -39028,21 +38815,6 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(admin)/admin/(app)/inventory/counts/loading.tsx",
-      "area": "web",
-      "kind": "loading",
-      "lines": 6,
-      "bytes": 146,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "Loading",
-          "kind": "default",
-          "line": 3
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/app/(admin)/admin/(app)/inventory/counts/page.tsx",
       "area": "web",
       "kind": "page",
@@ -39103,21 +38875,6 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(admin)/admin/(app)/inventory/reorder/loading.tsx",
-      "area": "web",
-      "kind": "loading",
-      "lines": 6,
-      "bytes": 146,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "Loading",
-          "kind": "default",
-          "line": 3
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/app/(admin)/admin/(app)/inventory/reorder/page.tsx",
       "area": "web",
       "kind": "page",
@@ -39129,21 +38886,6 @@
           "name": "ReorderSuggestionsPage",
           "kind": "default",
           "line": 27
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers/loading.tsx",
-      "area": "web",
-      "kind": "loading",
-      "lines": 6,
-      "bytes": 146,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "Loading",
-          "kind": "default",
-          "line": 3
         }
       ]
     },
@@ -39358,21 +39100,6 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(admin)/admin/(app)/payments/loading.tsx",
-      "area": "web",
-      "kind": "loading",
-      "lines": 6,
-      "bytes": 146,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "Loading",
-          "kind": "default",
-          "line": 3
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/app/(admin)/admin/(app)/payments/page.tsx",
       "area": "web",
       "kind": "page",
@@ -39444,21 +39171,6 @@
           "name": "PayrollRunDetailPage",
           "kind": "default",
           "line": 24
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/loading.tsx",
-      "area": "web",
-      "kind": "loading",
-      "lines": 6,
-      "bytes": 146,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "Loading",
-          "kind": "default",
-          "line": 3
         }
       ]
     },
@@ -39583,21 +39295,6 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/loading.tsx",
-      "area": "web",
-      "kind": "loading",
-      "lines": 6,
-      "bytes": 146,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "Loading",
-          "kind": "default",
-          "line": 3
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/new/page.tsx",
       "area": "web",
       "kind": "page",
@@ -39688,21 +39385,6 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(admin)/admin/(app)/stitching/bookings/loading.tsx",
-      "area": "web",
-      "kind": "loading",
-      "lines": 6,
-      "bytes": 146,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "Loading",
-          "kind": "default",
-          "line": 3
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/app/(admin)/admin/(app)/stitching/bookings/page.tsx",
       "area": "web",
       "kind": "page",
@@ -39729,21 +39411,6 @@
           "name": "JobDetailPage",
           "kind": "default",
           "line": 27
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/app/(admin)/admin/(app)/stitching/loading.tsx",
-      "area": "web",
-      "kind": "loading",
-      "lines": 6,
-      "bytes": 146,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "Loading",
-          "kind": "default",
-          "line": 3
         }
       ]
     },
@@ -39778,21 +39445,6 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(admin)/admin/(app)/suppliers/loading.tsx",
-      "area": "web",
-      "kind": "loading",
-      "lines": 6,
-      "bytes": 146,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "Loading",
-          "kind": "default",
-          "line": 3
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/app/(admin)/admin/(app)/suppliers/page.tsx",
       "area": "web",
       "kind": "page",
@@ -39804,21 +39456,6 @@
           "name": "SuppliersListPage",
           "kind": "default",
           "line": 19
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/app/(admin)/admin/(app)/tax/loading.tsx",
-      "area": "web",
-      "kind": "loading",
-      "lines": 6,
-      "bytes": 146,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "Loading",
-          "kind": "default",
-          "line": 3
         }
       ]
     },
@@ -39849,21 +39486,6 @@
           "name": "TradingPartnerDetailPage",
           "kind": "default",
           "line": 16
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/app/(admin)/admin/(app)/trading-partners/loading.tsx",
-      "area": "web",
-      "kind": "loading",
-      "lines": 6,
-      "bytes": 146,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "Loading",
-          "kind": "default",
-          "line": 3
         }
       ]
     },
@@ -39913,21 +39535,6 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(admin)/admin/(app)/transfers/loading.tsx",
-      "area": "web",
-      "kind": "loading",
-      "lines": 6,
-      "bytes": 146,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "Loading",
-          "kind": "default",
-          "line": 3
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/app/(admin)/admin/(app)/transfers/new/page.tsx",
       "area": "web",
       "kind": "page",
@@ -39969,21 +39576,6 @@
           "name": "UserDetailPage",
           "kind": "default",
           "line": 15
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/app/(admin)/admin/(app)/users/loading.tsx",
-      "area": "web",
-      "kind": "loading",
-      "lines": 6,
-      "bytes": 146,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "Loading",
-          "kind": "default",
-          "line": 3
         }
       ]
     },

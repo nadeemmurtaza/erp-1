@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 283 tracked files in `apps/web`, by directory.
+All 266 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -104,11 +104,10 @@ All 283 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 182 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/bom` (2)
+### `apps/web/src/app/(admin)/admin/(app)/bom` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 247 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/[id]` (1)
@@ -141,11 +140,10 @@ All 283 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 190 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials` (2)
+### `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 330 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/[id]` (1)
@@ -172,11 +170,10 @@ All 283 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 273 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/categories` (2)
+### `apps/web/src/app/(admin)/admin/(app)/categories` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 309 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/contacts` (2)
@@ -204,11 +201,10 @@ All 283 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 458 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/email-accounts` (2)
+### `apps/web/src/app/(admin)/admin/(app)/email-accounts` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 118 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]` (1)
@@ -284,11 +280,10 @@ All 283 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 175 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/inventory/counts` (2)
+### `apps/web/src/app/(admin)/admin/(app)/inventory/counts` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 108 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/counts/[id]` (1)
@@ -303,18 +298,16 @@ All 283 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 190 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/inventory/reorder` (2)
+### `apps/web/src/app/(admin)/admin/(app)/inventory/reorder` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 244 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers` (2)
+### `apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 140 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/leads` (1)
@@ -372,11 +365,10 @@ All 283 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 183 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/payments` (2)
+### `apps/web/src/app/(admin)/admin/(app)/payments` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 155 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payroll/compensation` (1)
@@ -397,11 +389,10 @@ All 283 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 205 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/payroll/runs` (2)
+### `apps/web/src/app/(admin)/admin/(app)/payroll/runs` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 139 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]` (1)
@@ -435,11 +426,10 @@ All 283 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 23 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/purchase-orders` (2)
+### `apps/web/src/app/(admin)/admin/(app)/purchase-orders` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 136 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]` (1)
@@ -478,18 +468,16 @@ All 283 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 571 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/stitching` (2)
+### `apps/web/src/app/(admin)/admin/(app)/stitching` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 246 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/stitching/bookings` (2)
+### `apps/web/src/app/(admin)/admin/(app)/stitching/bookings` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 143 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/stitching/bookings/[id]` (1)
@@ -504,11 +492,10 @@ All 283 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 307 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/suppliers` (2)
+### `apps/web/src/app/(admin)/admin/(app)/suppliers` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 80 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/suppliers/[id]` (1)
@@ -517,18 +504,16 @@ All 283 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 186 | No clsx import needed |
 
-### `apps/web/src/app/(admin)/admin/(app)/tax` (2)
+### `apps/web/src/app/(admin)/admin/(app)/tax` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 379 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/trading-partners` (2)
+### `apps/web/src/app/(admin)/admin/(app)/trading-partners` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 106 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/trading-partners/[id]` (1)
@@ -543,11 +528,10 @@ All 283 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 90 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/transfers` (2)
+### `apps/web/src/app/(admin)/admin/(app)/transfers` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 118 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/transfers/[id]` (1)
@@ -562,11 +546,10 @@ All 283 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 241 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/users` (2)
+### `apps/web/src/app/(admin)/admin/(app)/users` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 246 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/users/[id]` (1)

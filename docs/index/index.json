@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1355,
-    "lines": 212001,
+    "files": 1373,
+    "lines": 213514,
     "routes": 357,
     "controllers": 62,
     "models": 140,
@@ -1107,9 +1107,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 303,
-      "lines": 47704,
-      "bytes": 2871377,
+      "files": 321,
+      "lines": 49217,
+      "bytes": 2950130,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -45785,6 +45785,168 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/74-hr-dashboard-financial-overview.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 116,
+      "bytes": 6010,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/75-managerial-todo-widget-coverage-note.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 54,
+      "bytes": 2438,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/76-pos-mobile-dashboard.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 109,
+      "bytes": 5554,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/77-sales-category-breakdown-coverage-note.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 52,
+      "bytes": 2382,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/78-hr-navigation-consolidation.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 138,
+      "bytes": 7616,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/79-employee-asset-management.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 183,
+      "bytes": 9082,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/80-employee-training-certification.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 161,
+      "bytes": 8408,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/81-transparent-flat-rate-pricing.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 55,
+      "bytes": 2582,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/82-tiered-capex-licensing.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 86,
+      "bytes": 4446,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/83-entry-level-pos-deployment.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 60,
+      "bytes": 2910,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/84-micro-saas-hr-per-user-pricing.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 48,
+      "bytes": 2048,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/85-ai-face-detection-proxy-attendance.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 51,
+      "bytes": 2371,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/86-ai-ml-edi-business-automation.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 51,
+      "bytes": 2369,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/87-corporate-attendance-automation.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 71,
+      "bytes": 3705,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/88-pral-fbr-pra-tax-compliance.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 69,
+      "bytes": 3299,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/89-rapid-onboarding-customizable-reports.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 68,
+      "bytes": 3279,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/90-automatic-backups-local-support.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 56,
+      "bytes": 2662,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/91-staff-portal-mobile-access.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 55,
+      "bytes": 2533,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
@@ -45824,8 +45986,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 240,
-      "bytes": 23045,
+      "lines": 270,
+      "bytes": 28104,
       "doc": "",
       "symbols": []
     },

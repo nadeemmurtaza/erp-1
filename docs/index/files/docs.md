@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 303 tracked files in `docs/*`, by directory.
+All 321 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -253,7 +253,7 @@ All 303 tracked files in `docs/*`, by directory.
 | `52g-generate-gap.md` | doc | 26 |  |
 | `52h-harden-gap.md` | doc | 40 |  |
 
-### `docs/implementation` (83)
+### `docs/implementation` (101)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -333,11 +333,29 @@ All 303 tracked files in `docs/*`, by directory.
 | `71-recipe-batch-traceability.md` | doc | 255 |  |
 | `72-fragmented-tool-consolidation-import.md` | doc | 173 |  |
 | `73-multi-entity-multi-company-configuration.md` | doc | 127 |  |
+| `74-hr-dashboard-financial-overview.md` | doc | 116 |  |
+| `75-managerial-todo-widget-coverage-note.md` | doc | 54 |  |
+| `76-pos-mobile-dashboard.md` | doc | 109 |  |
+| `77-sales-category-breakdown-coverage-note.md` | doc | 52 |  |
+| `78-hr-navigation-consolidation.md` | doc | 138 |  |
+| `79-employee-asset-management.md` | doc | 183 |  |
+| `80-employee-training-certification.md` | doc | 161 |  |
+| `81-transparent-flat-rate-pricing.md` | doc | 55 |  |
+| `82-tiered-capex-licensing.md` | doc | 86 |  |
+| `83-entry-level-pos-deployment.md` | doc | 60 |  |
+| `84-micro-saas-hr-per-user-pricing.md` | doc | 48 |  |
+| `85-ai-face-detection-proxy-attendance.md` | doc | 51 |  |
+| `86-ai-ml-edi-business-automation.md` | doc | 51 |  |
+| `87-corporate-attendance-automation.md` | doc | 71 |  |
+| `88-pral-fbr-pra-tax-compliance.md` | doc | 69 |  |
+| `89-rapid-onboarding-customizable-reports.md` | doc | 68 |  |
+| `90-automatic-backups-local-support.md` | doc | 56 |  |
+| `91-staff-portal-mobile-access.md` | doc | 55 |  |
 | `DECISIONS.md` | doc | 1768 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 240 |  |
+| `README.md` | doc | 270 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 

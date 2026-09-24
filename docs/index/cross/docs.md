@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**323** markdown documents. These explain **why**; this index only says **where**.
+**341** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2585,6 +2585,156 @@ _no second-level headings_
 - Acceptance  <sub>:112</sub>
 - Out of scope  <sub>:120</sub>
 
+### `docs/implementation/74-hr-dashboard-financial-overview.md`  <sub>116 lines</sub>
+
+- 1. The four figures, mapped onto `PayRunStatus` and the current period  <sub>:11</sub>
+- 2. "Specifically for taxes and insurance" is a breakdown, not a bespoke split  <sub>:35</sub>
+- Scope lenses  <sub>:49</sub>
+- Work orders  <sub>:93</sub>
+- Acceptance  <sub>:102</sub>
+- Out of scope  <sub>:111</sub>
+
+### `docs/implementation/75-managerial-todo-widget-coverage-note.md`  <sub>54 lines</sub>
+
+- 1. What already exists  <sub>:14</sub>
+- Scope lenses  <sub>:32</sub>
+- Work orders  <sub>:38</sub>
+- Acceptance  <sub>:45</sub>
+- Out of scope  <sub>:50</sub>
+
+### `docs/implementation/76-pos-mobile-dashboard.md`  <sub>109 lines</sub>
+
+- 1. One read, reusing `AnalyticsService.summary()`'s own figures, scoped to the till's own location  <sub>:17</sub>
+- 2. Doc 31's own hardware/PWA foundation is where this screen lives  <sub>:37</sub>
+- Scope lenses  <sub>:47</sub>
+- Work orders  <sub>:84</sub>
+- Acceptance  <sub>:95</sub>
+- Out of scope  <sub>:104</sub>
+
+### `docs/implementation/77-sales-category-breakdown-coverage-note.md`  <sub>52 lines</sub>
+
+- What already exists  <sub>:17</sub>
+- Scope lenses  <sub>:30</sub>
+- Work orders  <sub>:36</sub>
+- Acceptance  <sub>:43</sub>
+- Out of scope  <sub>:48</sub>
+
+### `docs/implementation/78-hr-navigation-consolidation.md`  <sub>138 lines</sub>
+
+- 1. One `hr` nav section, grouping what already exists  <sub>:32</sub>
+- 2. "No dead end" — a tab never ships before its screen does  <sub>:64</sub>
+- Scope lenses  <sub>:76</sub>
+- Work orders  <sub>:108</sub>
+- Acceptance  <sub>:122</sub>
+- Out of scope  <sub>:131</sub>
+
+### `docs/implementation/79-employee-asset-management.md`  <sub>183 lines</sub>
+
+- 1. An asset is a trackable item; an assignment is who has it and since when  <sub>:9</sub>
+- 2. An employee's exit is the one write path that must never be optional  <sub>:59</sub>
+- Scope lenses  <sub>:74</sub>
+- Work orders  <sub>:154</sub>
+- Acceptance  <sub>:169</sub>
+- Out of scope  <sub>:178</sub>
+
+### `docs/implementation/80-employee-training-certification.md`  <sub>161 lines</sub>
+
+- 1. A training course is a catalogue entry; a completion is a record against it  <sub>:11</sub>
+- 2. Expiring certifications register against doc 54's watcher — never a second scheduler  <sub>:61</sub>
+- Scope lenses  <sub>:69</sub>
+- Work orders  <sub>:131</sub>
+- Acceptance  <sub>:146</sub>
+- Out of scope  <sub>:155</sub>
+
+### `docs/implementation/81-transparent-flat-rate-pricing.md`  <sub>55 lines</sub>
+
+- What already exists, and what was checked to confirm the claim is true  <sub>:15</sub>
+- Scope lenses  <sub>:33</sub>
+- Work orders  <sub>:39</sub>
+- Acceptance  <sub>:45</sub>
+- Out of scope  <sub>:51</sub>
+
+### `docs/implementation/82-tiered-capex-licensing.md`  <sub>86 lines</sub>
+
+- The one genuinely open question: is a Basic-tier deployment actually smaller?  <sub>:24</sub>
+- Scope lenses  <sub>:58</sub>
+- Work orders  <sub>:64</sub>
+- Acceptance  <sub>:72</sub>
+- Out of scope  <sub>:79</sub>
+
+### `docs/implementation/83-entry-level-pos-deployment.md`  <sub>60 lines</sub>
+
+- What already makes "entry-level" real, not aspirational  <sub>:12</sub>
+- Scope lenses  <sub>:36</sub>
+- Work orders  <sub>:43</sub>
+- Acceptance  <sub>:49</sub>
+- Out of scope  <sub>:56</sub>
+
+### `docs/implementation/84-micro-saas-hr-per-user-pricing.md`  <sub>48 lines</sub>
+
+- What already exists  <sub>:15</sub>
+- Scope lenses  <sub>:23</sub>
+- Work orders  <sub>:29</sub>
+- Acceptance  <sub>:37</sub>
+- Out of scope  <sub>:44</sub>
+
+### `docs/implementation/85-ai-face-detection-proxy-attendance.md`  <sub>51 lines</sub>
+
+- What already answers each named pain point  <sub>:13</sub>
+- Scope lenses  <sub>:31</sub>
+- Work orders  <sub>:36</sub>
+- Acceptance  <sub>:42</sub>
+- Out of scope  <sub>:47</sub>
+
+### `docs/implementation/86-ai-ml-edi-business-automation.md`  <sub>51 lines</sub>
+
+- Scope lenses  <sub>:27</sub>
+- Work orders  <sub>:33</sub>
+- Acceptance  <sub>:42</sub>
+- Out of scope  <sub>:47</sub>
+
+### `docs/implementation/87-corporate-attendance-automation.md`  <sub>71 lines</sub>
+
+- What this means concretely  <sub>:21</sub>
+- Scope lenses  <sub>:40</sub>
+- Work orders  <sub>:47</sub>
+- Acceptance  <sub>:57</sub>
+- Out of scope  <sub>:65</sub>
+
+### `docs/implementation/88-pral-fbr-pra-tax-compliance.md`  <sub>69 lines</sub>
+
+- What doc 15 already specifies, restated rather than re-derived  <sub>:18</sub>
+- Scope lenses  <sub>:40</sub>
+- Work orders  <sub>:46</sub>
+- Acceptance  <sub>:56</sub>
+- Out of scope  <sub>:64</sub>
+
+### `docs/implementation/89-rapid-onboarding-customizable-reports.md`  <sub>68 lines</sub>
+
+- 1. "Easy setup in minutes" — doc 51's own words, verbatim  <sub>:7</sub>
+- 2. "Customizable cloud-based reports" — already eight, with date-range filtering  <sub>:17</sub>
+- Scope lenses  <sub>:38</sub>
+- Work orders  <sub>:44</sub>
+- Acceptance  <sub>:54</sub>
+- Out of scope  <sub>:62</sub>
+
+### `docs/implementation/90-automatic-backups-local-support.md`  <sub>56 lines</sub>
+
+- 1. Automatic cloud backups — `deploy/backup.sh`, already real, already restore-tested  <sub>:8</sub>
+- 2. "Local support you can trust" is a support-organization commitment, named honestly as out of scope  <sub>:20</sub>
+- Scope lenses  <sub>:32</sub>
+- Work orders  <sub>:38</sub>
+- Acceptance  <sub>:44</sub>
+- Out of scope  <sub>:50</sub>
+
+### `docs/implementation/91-staff-portal-mobile-access.md`  <sub>55 lines</sub>
+
+- What already exists, and what the two-name request risks if taken literally  <sub>:14</sub>
+- Scope lenses  <sub>:28</sub>
+- Work orders  <sub>:34</sub>
+- Acceptance  <sub>:41</sub>
+- Out of scope  <sub>:50</sub>
+
 ### `docs/implementation/DECISIONS.md`  <sub>1,768 lines</sub>
 
 - How to read this  <sub>:13</sub>
@@ -2652,15 +2802,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>240 lines</sub>
+### `docs/implementation/README.md`  <sub>270 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:110</sub>
-- The two module groups  <sub>:139</sub>
-- How a work order runs  <sub>:176</sub>
-- Known gaps not yet owned by a phase  <sub>:194</sub>
-- When a brief is wrong  <sub>:221</sub>
-- Scope, honestly  <sub>:234</sub>
+- Dependency order  <sub>:140</sub>
+- The two module groups  <sub>:169</sub>
+- How a work order runs  <sub>:206</sub>
+- Known gaps not yet owned by a phase  <sub>:224</sub>
+- When a brief is wrong  <sub>:251</sub>
+- Scope, honestly  <sub>:264</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

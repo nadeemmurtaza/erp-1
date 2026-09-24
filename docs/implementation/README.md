@@ -107,6 +107,36 @@ row today:
 | [`72-fragmented-tool-consolidation-import.md`](./72-fragmented-tool-consolidation-import.md) | Extends the existing `ProductImportService` CSV pattern (never rebuilt) to two more entities a spreadsheet-run business actually needs onboarded: contacts and expenses |
 | [`73-multi-entity-multi-company-configuration.md`](./73-multi-entity-multi-company-configuration.md) | Coverage note: `Organization`/`RetailBrand`/`Location` and `RETAIL-ERP.md`'s R14 editions already are this capability; names honestly that adding a second brand is a deployment-time operator action, not yet a self-service screen |
 
+**Numbers 74–91** cover granular dashboard widgets, pricing/licensing
+positioning, administrative automation claims, and localization/support
+infrastructure — the highest coverage-note ratio of any batch so far
+(eleven of eighteen), because most of these bullets restate a mechanism
+already built earlier in this same document set from a new marketing
+angle. Two genuinely new HR capabilities (Assets, Training) surfaced only
+because the nav-consolidation pass (doc 78) checked all twelve requested
+tabs against what actually exists:
+
+| File | What it is |
+|---|---|
+| [`74-hr-dashboard-financial-overview.md`](./74-hr-dashboard-financial-overview.md) | Paid This Month / Pending Salaries / Total Deductions / Net Payout — one aggregation over `PayRun`/`PayRunLine`, no new payroll fact |
+| [`75-managerial-todo-widget-coverage-note.md`](./75-managerial-todo-widget-coverage-note.md) | Coverage note: doc 44's action hub already is this widget, verbatim, down to its own worked examples |
+| [`76-pos-mobile-dashboard.md`](./76-pos-mobile-dashboard.md) | Low Stock / Total Customers / Daily Sales figures already exist in `AnalyticsService.summary()`; the missing piece is a screen inside `apps/pos` itself — a sixth route, not a new query |
+| [`77-sales-category-breakdown-coverage-note.md`](./77-sales-category-breakdown-coverage-note.md) | Coverage note: Apparel/Beverages/Medicine are `Category` rows, not a mechanism — doc 47's presets and doc 57's `productsCategories()` already serve any category name |
+| [`78-hr-navigation-consolidation.md`](./78-hr-navigation-consolidation.md) | Ten of twelve requested HR nav tabs already have a real backend with no nav entry; consolidates them under one `hr` section and names the two that don't exist yet |
+| [`79-employee-asset-management.md`](./79-employee-asset-management.md) | Genuinely new: no `Asset`/equipment-issuance model existed anywhere — `Asset` + `AssetAssignment`, gated into offboarding |
+| [`80-employee-training-certification.md`](./80-employee-training-certification.md) | Genuinely new: no training/certification-completion model existed — `TrainingCourse` + `TrainingCompletion`, registered against doc 54's existing expiry watcher |
+| [`81-transparent-flat-rate-pricing.md`](./81-transparent-flat-rate-pricing.md) | Coverage note: doc 50's `FLAT_MONTHLY` already is this; confirms no per-invoice/overage metering exists anywhere in the billing path |
+| [`82-tiered-capex-licensing.md`](./82-tiered-capex-licensing.md) | Coverage note: doc 50's `licenseDeploymentMode` (OFFLINE/ONLINE) + doc 48/39 + the `MODULES` allowlist already is Basic-vs-Standard; documents the module mapping rather than building a second runtime entitlement gate |
+| [`83-entry-level-pos-deployment.md`](./83-entry-level-pos-deployment.md) | Coverage note: the Solo edition (`RETAIL-ERP.md` R14) with a minimal `MODULES` allowlist already is this |
+| [`84-micro-saas-hr-per-user-pricing.md`](./84-micro-saas-hr-per-user-pricing.md) | Coverage note: doc 50's `PER_SEAT` shape already is this; only new content is an HR-only `MODULES` allowlist convention |
+| [`85-ai-face-detection-proxy-attendance.md`](./85-ai-face-detection-proxy-attendance.md) | Coverage note: the third citation this batch set of doc 30's `FaceMatchProvider`, from a third marketing phrasing |
+| [`86-ai-ml-edi-business-automation.md`](./86-ai-ml-edi-business-automation.md) | Coverage note: `AiProvider` (doc 09) and `EdiTranslator` (doc 18) already are the named extension points; "end-to-end automation" is the sum of every module already shipped, not a discrete capability |
+| [`87-corporate-attendance-automation.md`](./87-corporate-attendance-automation.md) | Coverage note that also flags a real risk: the mechanism is doc 22/30/43/59's own combination; a client-requested product *name* must resolve through `brand.ts`, never a hardcoded literal, per Law 1 |
+| [`88-pral-fbr-pra-tax-compliance.md`](./88-pral-fbr-pra-tax-compliance.md) | Coverage note: doc 15's `FiscalComplianceProvider` already generalizes over `authority: string`; a third/fourth authority is a new provider implementation, blocked on real requirements exactly as doc 15 already states for FBR/PRA |
+| [`89-rapid-onboarding-customizable-reports.md`](./89-rapid-onboarding-customizable-reports.md) | Coverage note: doc 51's "minutes" provisioning and `ReportsController`'s eight date-range-filterable exports already deliver this; names a general report-builder as real, distinct, unbuilt future work |
+| [`90-automatic-backups-local-support.md`](./90-automatic-backups-local-support.md) | Coverage note: `deploy/backup.sh` (doc 38) is real, restore-tested infrastructure; "local support you can trust" is named honestly as a business commitment, not a code capability |
+| [`91-staff-portal-mobile-access.md`](./91-staff-portal-mobile-access.md) | Coverage note that also flags a risk: doc 52's one responsive PWA already is both the "mobile app" and the "Staff Portal" — building a second, desktop-only surface would be a duplicate implementation |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

@@ -3,7 +3,7 @@
 
 # Module: `accounting`
 
-Pack **core** · enabled by the `MODULES` allowlist · 19 files
+Pack **core** · enabled by the `MODULES` allowlist · 17 files
 
 
 
@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 19 files
 
 Source: `apps/api/src/modules/accounting/`
 
-## Files (19 · 3,253 lines)
+## Files (17 · 3,119 lines)
 
 All paths relative to `apps/api/src/modules/accounting`.
 
@@ -20,8 +20,6 @@ All paths relative to `apps/api/src/modules/accounting`.
 | `accounting.module.ts` | nest module | 28 | 1 |  |
 | `accounting.service.spec.ts` | unit test | 92 | — |  |
 | `accounting.service.ts` | service | 279 | 4 |  |
-| `aging.spec.ts` | unit test | 75 | — |  |
-| `aging.ts` | module | 69 | 4 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control accoun… |
 | `chart-of-accounts.ts` | module | 67 | 2 | The minimal chart of accounts the posting rules (WO-19.2) resolve an `accountId` from by a stable `code` — seeded once… |
 | `consolidation.controller.ts` | controller | 38 | 1 | Consolidation at the org tier (RETAIL-ERP.md R17, WO-20.6) — see `ConsolidationService`'s own doc comment for what "eli… |
 | `consolidation.service.spec.ts` | unit test | 128 | — |  |
@@ -31,7 +29,7 @@ All paths relative to `apps/api/src/modules/accounting`.
 | `fiscal-periods.controller.ts` | controller | 74 | 1 | Fiscal year/period administration (RETAIL-ERP.md R15, WO-19.5). |
 | `fiscal-periods.service.spec.ts` | unit test | 312 | — |  |
 | `fiscal-periods.service.ts` | service | 196 | 1 | Opens, closes and locks fiscal periods (RETAIL-ERP.md R15, WO-19.5). |
-| `gl-reports.controller.ts` | controller | 67 | 1 | The general ledger's read side (RETAIL-ERP.md R15, WO-19.4) — every route a grouping over `JournalLine`, gated by `acco… |
+| `gl-reports.controller.ts` | controller | 77 | 1 | The general ledger's read side (RETAIL-ERP.md R15, WO-19.4) — every route a grouping over `JournalLine`, gated by `acco… |
 | `gl-reports.service.spec.ts` | unit test | 174 | — |  |
 | `gl-reports.service.ts` | service | 298 | 2 |  |
 | `posting-rules.subscriber.spec.ts` | unit test | 643 | — |  |
@@ -52,12 +50,12 @@ All paths relative to `apps/api/src/modules/accounting`.
 | GET | `/admin/accounting/fiscal-years` | `accounting.view` | `FiscalPeriodsController.listFiscalYears` :21 | List fiscal years |
 | POST | `/admin/accounting/fiscal-years` | `accounting.manage_periods` | `FiscalPeriodsController.createFiscalYear` :28 | Open a fiscal year |
 | POST | `/admin/accounting/fiscal-years/:id/close` | `accounting.manage_periods` | `FiscalPeriodsController.closeFiscalYear` :35 | Year-end close — zeros INCOME/EXPENSE into Retained Earnings, permanent |
-| GET | `/admin/accounting/reports/aged-payables` | `accounting.view` | `GlReportsController.agedPayables` :63 | Outstanding supplier balances as of a date, FIFO-aged the same way as receivables |
-| GET | `/admin/accounting/reports/aged-receivables` | `accounting.view` | `GlReportsController.agedReceivables` :57 | Outstanding customer balances as of a date, FIFO-aged into 0-30/31-60/61-90/91+ buckets |
-| GET | `/admin/accounting/reports/balance-sheet` | `accounting.view` | `GlReportsController.balanceSheet` :44 | Assets, liabilities and equity as of a date, plus unclosed retained earnings |
-| GET | `/admin/accounting/reports/cash-flow` | `accounting.view` | `GlReportsController.cashFlow` :50 | Net movement on every bank/cash account for a date range |
-| GET | `/admin/accounting/reports/profit-and-loss` | `accounting.view` | `GlReportsController.profitAndLoss` :37 | Income and expense for a date range, and the net |
-| GET | `/admin/accounting/reports/trial-balance` | `accounting.view` | `GlReportsController.trialBalance` :31 | Every account, cumulative debit/credit as of a date — SUM(debit) = SUM(credit) or somethi… |
+| GET | `/admin/accounting/reports/aged-payables` | `accounting.view` `finance.view` | `GlReportsController.agedPayables` :73 | Outstanding supplier balances as of a date, FIFO-aged the same way as receivables |
+| GET | `/admin/accounting/reports/aged-receivables` | `accounting.view` | `GlReportsController.agedReceivables` :66 | Outstanding customer balances as of a date, FIFO-aged into 0-30/31-60/61-90/91+ buckets |
+| GET | `/admin/accounting/reports/balance-sheet` | `accounting.view` | `GlReportsController.balanceSheet` :52 | Assets, liabilities and equity as of a date, plus unclosed retained earnings |
+| GET | `/admin/accounting/reports/cash-flow` | `accounting.view` `finance.view` | `GlReportsController.cashFlow` :59 | Net movement on every bank/cash account for a date range |
+| GET | `/admin/accounting/reports/profit-and-loss` | `accounting.view` `finance.view` | `GlReportsController.profitAndLoss` :45 | Income and expense for a date range, and the net |
+| GET | `/admin/accounting/reports/trial-balance` | `accounting.view` | `GlReportsController.trialBalance` :38 | Every account, cumulative debit/credit as of a date — SUM(debit) = SUM(credit) or somethi… |
 
 
 ## Domain events
@@ -124,6 +122,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 ## Reaches out to
 
 - core `auth`
+- core `common`
 - core `events`
 - core `prisma`
 - core `settings`
@@ -134,12 +133,11 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (6)
+## Tests (5)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `accounting.service.spec.ts` | 5 | AccountingService — WO-19.1 · postEntry |
-| `aging.spec.ts` | 7 | ageMovements |
 | `consolidation.service.spec.ts` | 7 | ConsolidationService — R17, WO-20.6 · groupProfitAndLoss · unmatchedIntercompany |
 | `fiscal-periods.service.spec.ts` | 24 | FiscalPeriodsService — WO-19.5 · createFiscalYear · createFiscalPeriod · closePeriod · reopenPeriod · lockPeriod · clos… |
 | `gl-reports.service.spec.ts` | 9 | GlReportsService — WO-19.4 · trialBalance · profitAndLoss · balanceSheet · cashFlow · agedReceivables · agedPayables |
@@ -155,10 +153,6 @@ check there before adding another.
 | `PostEntryInput` | interface | `accounting.service.ts:27` |  |
 | `JournalEntryWithLines` | type | `accounting.service.ts:37` |  |
 | `AccountingService` | class | `accounting.service.ts:48` | The general ledger's write side (RETAIL-ERP.md R15, WO-19.1). |
-| `AgingMovement` | interface | `aging.ts:19` | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a cont… |
-| `AgingBuckets` | interface | `aging.ts:25` |  |
-| `totalAgingBuckets` | function | `aging.ts:36` |  |
-| `ageMovements` | function | `aging.ts:42` |  |
 | `CHART_OF_ACCOUNTS` | const | `chart-of-accounts.ts:11` | The minimal chart of accounts the posting rules (WO-19.2) resolve an `accountId` from by a stable `code` — se… |
 | `ACCOUNT_CODE` | const | `chart-of-accounts.ts:47` | The codes above, named — so a posting rule never hand-types a magic string. |
 | `ConsolidationController` | class | `consolidation.controller.ts:21` | Consolidation at the org tier (RETAIL-ERP.md R17, WO-20.6) — see `ConsolidationService`'s own doc comment for… |
@@ -170,7 +164,7 @@ check there before adding another.
 | `DateRangeQueryDto` | class | `gl-reports.dto.ts:13` | A date range (P&L, cash flow) — both bounds inclusive of the whole day. |
 | `FiscalPeriodsController` | class | `fiscal-periods.controller.ts:15` | Fiscal year/period administration (RETAIL-ERP.md R15, WO-19.5). |
 | `FiscalPeriodsService` | class | `fiscal-periods.service.ts:29` | Opens, closes and locks fiscal periods (RETAIL-ERP.md R15, WO-19.5). |
-| `GlReportsController` | class | `gl-reports.controller.ts:26` | The general ledger's read side (RETAIL-ERP.md R15, WO-19.4) — every route a grouping over `JournalLine`, gate… |
+| `GlReportsController` | class | `gl-reports.controller.ts:33` | The general ledger's read side (RETAIL-ERP.md R15, WO-19.4) — every route a grouping over `JournalLine`, gate… |
 | `AccountBalance` | interface | `gl-reports.service.ts:7` |  |
 | `GlReportsService` | class | `gl-reports.service.ts:28` | The five reports R15 names as the payoff of a real ledger — "expenses, salaries, losses, profits, revenues an… |
 | `PostingRulesSubscriber` | class | `posting-rules.subscriber.ts:34` | Posting rules (RETAIL-ERP.md R15, WO-19.2) — the only place a sale, a receipt or a refund becomes a journal e… |

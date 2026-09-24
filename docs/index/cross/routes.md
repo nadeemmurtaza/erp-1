@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **375** endpoints across **65** controllers, with the access rule that actually guards each one.
+All **381** endpoints across **65** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -88,11 +88,11 @@ never authorization.
 | GET | `/admin/accounting/fiscal-years` | `accounting.view` | `FiscalPeriodsController.listFiscalYears` | List fiscal years |
 | POST | `/admin/accounting/fiscal-years` | `accounting.manage_periods` | `FiscalPeriodsController.createFiscalYear` | Open a fiscal year |
 | POST | `/admin/accounting/fiscal-years/:id/close` | `accounting.manage_periods` | `FiscalPeriodsController.closeFiscalYear` | Year-end close — zeros INCOME/EXPENSE into Retained Earnings, permanent |
-| GET | `/admin/accounting/reports/aged-payables` | `accounting.view` | `GlReportsController.agedPayables` | Outstanding supplier balances as of a date, FIFO-aged the same way as receivabl… |
+| GET | `/admin/accounting/reports/aged-payables` | `accounting.view` `finance.view` | `GlReportsController.agedPayables` | Outstanding supplier balances as of a date, FIFO-aged the same way as receivabl… |
 | GET | `/admin/accounting/reports/aged-receivables` | `accounting.view` | `GlReportsController.agedReceivables` | Outstanding customer balances as of a date, FIFO-aged into 0-30/31-60/61-90/91+… |
 | GET | `/admin/accounting/reports/balance-sheet` | `accounting.view` | `GlReportsController.balanceSheet` | Assets, liabilities and equity as of a date, plus unclosed retained earnings |
-| GET | `/admin/accounting/reports/cash-flow` | `accounting.view` | `GlReportsController.cashFlow` | Net movement on every bank/cash account for a date range |
-| GET | `/admin/accounting/reports/profit-and-loss` | `accounting.view` | `GlReportsController.profitAndLoss` | Income and expense for a date range, and the net |
+| GET | `/admin/accounting/reports/cash-flow` | `accounting.view` `finance.view` | `GlReportsController.cashFlow` | Net movement on every bank/cash account for a date range |
+| GET | `/admin/accounting/reports/profit-and-loss` | `accounting.view` `finance.view` | `GlReportsController.profitAndLoss` | Income and expense for a date range, and the net |
 | GET | `/admin/accounting/reports/trial-balance` | `accounting.view` | `GlReportsController.trialBalance` | Every account, cumulative debit/credit as of a date — SUM(debit) = SUM(credit)… |
 
 ### [`addresses`](../modules/addresses.md) (4)
@@ -301,7 +301,7 @@ never authorization.
 | GET | `/admin/crm/tags` | `crm.manage` | `CrmAdminController.listTags` |  |
 | POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` | Contact-form enquiry — becomes a lead in the CRM |
 
-### [`finance`](../modules/finance.md) (12)
+### [`finance`](../modules/finance.md) (14)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -317,6 +317,8 @@ never authorization.
 | GET | `/admin/finance/expenses/by-category` | `finance.view` | `FinanceController.byCategory` | Expense totals by category — share, period-over-period change, and share of rev… |
 | GET | `/admin/finance/expenses/summary` | `finance.view` | `FinanceController.summary` | Totals, per-category breakdown and a daily series |
 | GET | `/admin/finance/expenses/trend` | `finance.view` | `FinanceController.trend` | Expense totals over time, bucketed by day or month |
+| GET | `/admin/finance/margins` | `finance.view` | `FinanceController.margins` | Margin by product, category or variant (WO-4.3, 04-finance.md) |
+| GET | `/admin/finance/unit-economics` | `finance.view` | `FinanceController.unitEconomics` | Contribution per order, paginated, plus the average by product/category (WO-4.2) |
 
 ### [`identity-verification`](../modules/identity-verification.md) (4)
 
@@ -504,13 +506,17 @@ never authorization.
 | POST | `/admin/suppliers/:id/products` | `suppliers.manage` | `PurchasingController.addProduct` | Add a product to a supplier |
 | DELETE | `/admin/suppliers/:id/products/:variantId` | `suppliers.manage` | `PurchasingController.removeProduct` | Remove a product from a supplier |
 
-### [`reports`](../modules/reports.md) (8)
+### [`reports`](../modules/reports.md) (12)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/reports/export/expense-register` | `reports.view` | `ReportsController.exportExpenseRegister` | CSV: every expense in the date range (WO-4.6, 04-finance.md) |
 | GET | `/admin/reports/export/orders` | `reports.view` | `ReportsController.exportOrders` | CSV: one row per order placed in the date range |
+| GET | `/admin/reports/export/payables` | `reports.view` | `ReportsController.exportPayables` | CSV: outstanding supplier balances, aged (WO-4.6, 04-finance.md) |
+| GET | `/admin/reports/export/profit-and-loss` | `reports.view` | `ReportsController.exportProfitAndLoss` | CSV: P&L for the date range (WO-4.6, 04-finance.md) |
 | GET | `/admin/reports/export/purchases-by-supplier` | `reports.view` | `ReportsController.exportPurchasesBySupplier` | CSV: purchases by supplier |
 | GET | `/admin/reports/export/sales-by-day` | `reports.view` | `ReportsController.exportSalesByDay` | CSV: order count and revenue per day in the date range |
+| GET | `/admin/reports/export/sales-register` | `reports.view` | `ReportsController.exportSalesRegister` | CSV: every delivered order with revenue and COGS (WO-4.6, 04-finance.md) |
 | GET | `/admin/reports/export/slow-movers` | `reports.view` | `ReportsController.exportSlowMovers` | CSV: slow movers report |
 | GET | `/admin/reports/export/stitching-bookings` | `reports.view` | `ReportsController.exportStitchingBookings` | CSV: one row per bring-your-own-fabric booking in the date range |
 | GET | `/admin/reports/export/stock` | `reports.view` | `ReportsController.exportStock` | CSV: current stock, one row per product variant |

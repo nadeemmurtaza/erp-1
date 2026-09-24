@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-268 files · 41,728 lines
+272 files · 42,351 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -31,10 +31,10 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 76 | module |
-| `apps/web/src/app` | 135 | 25,554 | page, loading, layout, error |
-| `apps/web/src/components` | 72 | 11,644 | component, loading |
+| `apps/web/src/app` | 139 | 26,131 | page, loading, layout, error |
+| `apps/web/src/components` | 72 | 11,684 | component, loading |
 | `apps/web/src/config` | 3 | 106 | config |
-| `apps/web/src/constants` | 5 | 265 | constants |
+| `apps/web/src/constants` | 5 | 271 | constants |
 | `apps/web/src/hooks` | 3 | 72 | hook |
 | `apps/web/src/i18n` | 3 | 53 | module |
 | `apps/web/src/lib` | 8 | 753 | utility |
@@ -67,9 +67,9 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/src/types/api.ts` | 1,181 | types |  |
 | `apps/web/src/components/storefront/stitching-panel.tsx` | 969 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx` | 658 | page |  |
+| `apps/web/src/components/admin/nav-registry.ts` | 610 | component |  |
 | `apps/web/src/app/globals.css` | 603 | stylesheet |  |
 | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` | 571 | page |  |
-| `apps/web/src/components/admin/nav-registry.ts` | 570 | component |  |
 | `apps/web/src/components/admin/image-manager.tsx` | 543 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 534 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/page.tsx` | 523 | page |  |

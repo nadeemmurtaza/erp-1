@@ -14,6 +14,14 @@ export class ReportDateRangeQueryDto {
   to?: string;
 }
 
+/** A single as-of date (payables export) — everything posted on or before it. */
+export class AsOfReportQueryDto {
+  @ApiPropertyOptional({ example: '2026-03-31', description: 'Defaults to today.' })
+  @IsOptional()
+  @IsDateString()
+  asOf?: string;
+}
+
 export class StockReportQueryDto {
   @ApiPropertyOptional({
     description: "'true' to only include variants at or below their low-stock threshold",

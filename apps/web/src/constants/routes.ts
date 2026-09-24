@@ -71,6 +71,12 @@ export const ROUTES = {
     order: (id: string) => `/admin/orders/${id}`,
     payments: '/admin/payments',
 
+    finance: '/admin/finance',
+    financeMargins: '/admin/finance/margins',
+    financeCashFlow: '/admin/finance/cash-flow',
+    financeUnitEconomics: '/admin/finance/unit-economics',
+    financeExpenses: '/admin/finance/expenses',
+
     inventory: '/admin/inventory',
     inventoryCounts: '/admin/inventory/counts',
     inventoryReorder: '/admin/inventory/reorder',

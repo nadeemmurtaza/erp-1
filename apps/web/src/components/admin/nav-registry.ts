@@ -12,6 +12,7 @@ import {
   Settings,
   Factory,
   Wallet,
+  Landmark,
 } from 'lucide-react';
 
 export const ICON_MAP = {
@@ -25,6 +26,7 @@ export const ICON_MAP = {
   Settings,
   Factory,
   Wallet,
+  Landmark,
 } as const;
 
 export interface AdminNavGroup {
@@ -55,6 +57,11 @@ export const NAV_GROUPS: readonly AdminNavGroup[] = [
   { key: 'stock',     label: 'Stock',     icon: 'Boxes' },
   { key: 'manufacturing', label: 'Manufacturing', icon: 'Factory' },
   { key: 'payroll', label: 'Payroll', icon: 'Wallet' },
+  // Reinstated (WO-4.5, 04-finance.md) — removed in the eleven-to-eight-group
+  // cut above for having zero items, not for being wrong in principle. It
+  // now has six: P&L, expenses (+ its own two children), margins, cash flow,
+  // unit economics — a real destination again, not an empty heading.
+  { key: 'finance', label: 'Finance', icon: 'Landmark' },
   { key: 'insights',  label: 'Insights',  icon: 'BarChart3' },
   { key: 'settings',  label: 'Settings',  icon: 'Settings' },
 ] as const;
@@ -75,6 +82,7 @@ export interface AdminNavItem {
     | 'stock'
     | 'manufacturing'
     | 'payroll'
+    | 'finance'
     | 'insights'
     | 'settings';
   /** lucide-react icon name. */
@@ -202,11 +210,43 @@ export const ADMIN_NAV: AdminNavItem[] = [
     module: 'reports',
   },
   {
+    key: 'finance-pnl',
+    label: 'Profit & loss',
+    href: '/admin/finance',
+    permissions: ['finance.view'],
+    group: 'finance',
+    module: 'finance',
+  },
+  {
+    key: 'finance-margins',
+    label: 'Margins',
+    href: '/admin/finance/margins',
+    permissions: ['finance.view'],
+    group: 'finance',
+    module: 'finance',
+  },
+  {
+    key: 'finance-cash-flow',
+    label: 'Cash flow',
+    href: '/admin/finance/cash-flow',
+    permissions: ['finance.view'],
+    group: 'finance',
+    module: 'finance',
+  },
+  {
+    key: 'finance-unit-economics',
+    label: 'Unit economics',
+    href: '/admin/finance/unit-economics',
+    permissions: ['finance.view'],
+    group: 'finance',
+    module: 'finance',
+  },
+  {
     key: 'finance-expenses',
     label: 'Expenses',
     href: '/admin/finance/expenses',
     permissions: ['finance.view'],
-    group: 'insights',
+    group: 'finance',
     module: 'finance',
     children: [
       {
@@ -214,14 +254,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
         label: 'Analytics',
         href: '/admin/finance/expenses/analytics',
         permissions: ['finance.view'],
-        group: 'insights',
+        group: 'finance',
       },
       {
         key: 'finance-expense-categories',
         label: 'Categories',
         href: '/admin/finance/expenses/categories',
         permissions: ['finance.manage'],
-        group: 'insights',
+        group: 'finance',
       },
     ],
   },

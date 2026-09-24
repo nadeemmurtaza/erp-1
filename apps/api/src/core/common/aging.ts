@@ -14,6 +14,13 @@
  * per-payment-to-invoice matching yet, so FIFO is the standard, defensible
  * approximation every aging report without one uses. What remains
  * unconsumed on each origination ages from that origination's own date.
+ *
+ * Lives in core/common rather than the accounting module: WO-4.6's own CSV
+ * exports (apps/api/src/modules/reports/reports.service.ts) age the same
+ * ledger movements for a spreadsheet, and core is the one place any module
+ * may depend on (scripts/check-module-boundaries.mjs) — moved here rather
+ * than added to KNOWN_MODULE_COUPLINGS, which is reserved for same-
+ * transaction writes, not a shared read-only calculation.
  */
 
 export interface AgingMovement {

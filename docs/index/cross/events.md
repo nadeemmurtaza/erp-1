@@ -653,7 +653,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:394` | `accounting` |
 | `apps/api/src/modules/finance/finance.service.ts:252` | `finance` |
-| `apps/api/src/modules/finance/finance.service.ts:532` | `finance` |
+| `apps/api/src/modules/finance/finance.service.ts:645` | `finance` |
 
 
 **Subscribed by**

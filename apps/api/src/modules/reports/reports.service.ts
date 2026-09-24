@@ -3,6 +3,7 @@ import { getOrderCustomerName, getPersonFullName } from '@newax/shared';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
+import { ageMovements, totalAgingBuckets } from '../../core/common/aging';
 import {
   endOfShopDayFromKey,
   shopDayExpr,
@@ -373,6 +374,147 @@ export class ReportsService {
     ]);
 
     return { filename: `purchases-by-supplier_${range.fromLabel}_${range.toLabel}.csv`, header, rows };
+  }
+
+  /**
+   * WO-4.6's P&L export (04-finance.md), reading `JournalLine` directly —
+   * the identical rows `GlReportsService.profitAndLoss()` reads, just a
+   * second projection of them for a spreadsheet rather than a second
+   * computation of profit (that would be the "revenue reported N ways"
+   * hazard RETAIL-ERP.md R15 exists to prevent; grouping the same ledger
+   * rows two ways is not that — see GlReportsController's own comment on
+   * why the CSV lives here and the on-screen JSON lives in `accounting`).
+   */
+  async profitAndLossCsv(fromStr?: string, toStr?: string): Promise<CsvExport> {
+    const range = parseRange(fromStr, toStr, await this.timeZone());
+
+    const sums = await this.prisma.journalLine.groupBy({
+      by: ['accountId'],
+      where: { entry: { status: 'POSTED', date: { gte: range.from, lte: range.to } } },
+      _sum: { debitMinor: true, creditMinor: true },
+    });
+    const accounts = await this.prisma.account.findMany({
+      where: { id: { in: sums.map((s) => s.accountId) }, type: { in: ['INCOME', 'EXPENSE'] } },
+    });
+    const byId = new Map(accounts.map((a) => [a.id, a]));
+
+    const header = ['Period', 'Type', 'Code', 'Account', 'Amount (Rs)'];
+    const rows: CsvExport['rows'] = [];
+    let totalIncome = 0;
+    let totalExpense = 0;
+
+    for (const s of sums) {
+      const account = byId.get(s.accountId);
+      if (!account) continue;
+      const debit = s._sum.debitMinor ?? 0;
+      const credit = s._sum.creditMinor ?? 0;
+      const amount = account.type === 'INCOME' ? credit - debit : debit - credit;
+      if (account.type === 'INCOME') totalIncome += amount;
+      else totalExpense += amount;
+      rows.push([`${range.fromLabel} to ${range.toLabel}`, account.type, account.code, account.name, toRupees(amount)]);
+    }
+    rows.sort((a, b) => String(a[1]).localeCompare(String(b[1])) || String(a[2]).localeCompare(String(b[2])));
+    rows.push([`${range.fromLabel} to ${range.toLabel}`, 'NET', '', 'Net income', toRupees(totalIncome - totalExpense)]);
+
+    return { filename: `profit-and-loss_${range.fromLabel}_${range.toLabel}.csv`, header, rows };
+  }
+
+  /** WO-4.6's payables export — outstanding supplier balances, same aging as `GlReportsService.agedPayables()`. */
+  async payablesCsv(asOfStr?: string): Promise<CsvExport> {
+    const asOf = asOfStr ? new Date(asOfStr) : new Date();
+    if (Number.isNaN(asOf.getTime())) {
+      throw new BadRequestException('`asOf` must be a valid date (YYYY-MM-DD).');
+    }
+
+    const account = await this.prisma.account.findFirst({ where: { type: 'LIABILITY', isControl: true } });
+    const header = ['As Of', 'Supplier', 'Current (Rs)', '31-60 (Rs)', '61-90 (Rs)', '91+ (Rs)', 'Total (Rs)'];
+    if (!account) return { filename: `payables_${asOf.toISOString().slice(0, 10)}.csv`, header, rows: [] };
+
+    const lines = await this.prisma.journalLine.findMany({
+      where: { accountId: account.id, supplierId: { not: null }, entry: { status: 'POSTED', date: { lte: asOf } } },
+      select: { supplierId: true, debitMinor: true, creditMinor: true, entry: { select: { date: true } } },
+    });
+
+    const bySupplier = new Map<string, Array<{ date: Date; amountMinor: number }>>();
+    for (const line of lines) {
+      const amountMinor = line.creditMinor > 0 ? line.creditMinor : -line.debitMinor;
+      const list = bySupplier.get(line.supplierId!) ?? [];
+      list.push({ date: line.entry.date, amountMinor });
+      bySupplier.set(line.supplierId!, list);
+    }
+
+    const suppliers = await this.prisma.supplier.findMany({
+      where: { id: { in: [...bySupplier.keys()] } },
+      select: { id: true, name: true },
+    });
+    const nameById = new Map(suppliers.map((s) => [s.id, s.name]));
+
+    const rows: CsvExport['rows'] = [];
+    for (const [supplierId, movements] of bySupplier) {
+      const buckets = ageMovements(movements, asOf);
+      const total = totalAgingBuckets(buckets);
+      if (total === 0) continue;
+      rows.push([
+        asOf.toISOString().slice(0, 10),
+        nameById.get(supplierId) ?? '(unknown)',
+        toRupees(buckets.current),
+        toRupees(buckets.days31to60),
+        toRupees(buckets.days61to90),
+        toRupees(buckets.over90),
+        toRupees(total),
+      ]);
+    }
+    rows.sort((a, b) => Number(b[6]) - Number(a[6]));
+
+    return { filename: `payables_${asOf.toISOString().slice(0, 10)}.csv`, header, rows };
+  }
+
+  /** WO-4.6's expense register export — one row per expense in the range. */
+  async expenseRegisterCsv(fromStr?: string, toStr?: string): Promise<CsvExport> {
+    const range = parseRange(fromStr, toStr, await this.timeZone());
+
+    const expenses = await this.prisma.expense.findMany({
+      where: { incurredAt: { gte: range.from, lte: range.to } },
+      orderBy: { incurredAt: 'asc' },
+      include: { category: true },
+    });
+
+    const header = ['Date', 'Category', 'Direct', 'Description', 'Payee', 'Reference', 'Amount (Rs)'];
+    const rows = expenses.map((expense) => [
+      expense.incurredAt.toISOString().slice(0, 10),
+      expense.category.name,
+      expense.category.isDirect ? 'Yes' : 'No',
+      expense.description,
+      expense.payee ?? '',
+      expense.reference ?? '',
+      toRupees(expense.amount),
+    ]);
+
+    return { filename: `expense-register_${range.fromLabel}_${range.toLabel}.csv`, header, rows };
+  }
+
+  /** WO-4.6's sales register export — one row per delivered order, with revenue and COGS from `OrderEconomics`. */
+  async salesRegisterCsv(fromStr?: string, toStr?: string): Promise<CsvExport> {
+    const range = parseRange(fromStr, toStr, await this.timeZone());
+
+    const rows = await this.prisma.orderEconomics.findMany({
+      where: { computedAt: { gte: range.from, lte: range.to } },
+      orderBy: { computedAt: 'asc' },
+      include: { order: { select: { number: true, placedAt: true, status: true } } },
+    });
+
+    const header = ['Order', 'Placed', 'Status', 'Revenue (Rs)', 'COGS (Rs)', 'Gross Margin (Rs)', 'Contribution (Rs)'];
+    const csvRows = rows.map((row) => [
+      row.order.number,
+      row.order.placedAt.toISOString().slice(0, 10),
+      row.order.status,
+      toRupees(row.revenue),
+      toRupees(row.cogs),
+      toRupees(row.revenue - row.cogs),
+      toRupees(row.contribution),
+    ]);
+
+    return { filename: `sales-register_${range.fromLabel}_${range.toLabel}.csv`, header, rows: csvRows };
   }
 
   async stockLedgerCsv(fromStr?: string, toStr?: string): Promise<CsvExport> {

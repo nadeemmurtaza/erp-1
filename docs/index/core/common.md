@@ -3,21 +3,24 @@
 
 # Core: `common`
 
-Shared platform — available to every module, part of no feature · 4 files
+Shared platform — available to every module, part of no feature · 6 files
 
 
+> FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control account (Accounts Receivable or Accounts Payable), so it is unit-testable without a database.
 
 Source: `apps/api/src/core/common/`
 
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (4 · 302 lines)
+## Files (6 · 453 lines)
 
 All paths relative to `apps/api/src/core/common`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
+| `aging.spec.ts` | unit test | 75 | — |  |
+| `aging.ts` | module | 76 | 4 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control accoun… |
 | `cost-fields.ts` | module | 72 | 5 | The permission that gates visibility of cost / margin data. |
 | `pagination.dto.ts` | dto | 77 | 4 |  |
 | `all-exceptions.filter.ts` | module | 136 | 1 | Turns every thrown value into one predictable JSON shape, and translates Prisma's error codes into the right HTTP statu… |
@@ -49,6 +52,7 @@ _none_
 
 ## Reaches out to
 
+- core `common`
 - package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
@@ -56,15 +60,21 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (0)
+## Tests (1)
 
-_No spec files in this unit._
+| Spec | Cases | Covers |
+|---|---|---|
+| `aging.spec.ts` | 7 | ageMovements |
 
 
 ## Every export in this unit
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
+| `AgingMovement` | interface | `aging.ts:26` | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a cont… |
+| `AgingBuckets` | interface | `aging.ts:32` |  |
+| `totalAgingBuckets` | function | `aging.ts:43` |  |
+| `ageMovements` | function | `aging.ts:49` |  |
 | `VIEW_COST` | const | `cost-fields.ts:8` | The permission that gates visibility of cost / margin data. |
 | `stripProductCost` | function | `cost-fields.ts:18` | Strips costPrice from each variant in a product (or product list) when the caller lacks the VIEW_COST permiss… |
 | `stripProductListCost` | function | `cost-fields.ts:30` | Same as stripProductCost but for a paginated list { data: Product[] }. |

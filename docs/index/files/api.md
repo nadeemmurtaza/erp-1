@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 540 tracked files in `apps/api`, by directory.
+All 542 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -490,10 +490,12 @@ All 540 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `checkout-validator.registry.ts` | registry | 59 |  |
 
-### `apps/api/src/core/common` (2)
+### `apps/api/src/core/common` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `aging.spec.ts` | unit test | 75 |  |
+| `aging.ts` | module | 76 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control accoun… |
 | `cost-fields.ts` | module | 72 |  |
 | `sales-revenue.ts` | module | 17 |  |
 
@@ -669,15 +671,13 @@ All 540 tracked files in `apps/api`, by directory.
 | `module-packs.ts` | module | 84 | Which pack owns each feature module. |
 | `modules.registry.ts` | registry | 147 |  |
 
-### `apps/api/src/modules/accounting` (17)
+### `apps/api/src/modules/accounting` (15)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.module.ts` | nest module | 28 |  |
 | `accounting.service.spec.ts` | unit test | 92 |  |
 | `accounting.service.ts` | service | 279 |  |
-| `aging.spec.ts` | unit test | 75 |  |
-| `aging.ts` | module | 69 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control accoun… |
 | `chart-of-accounts.ts` | module | 67 |  |
 | `consolidation.controller.ts` | controller | 38 |  |
 | `consolidation.service.spec.ts` | unit test | 128 |  |
@@ -685,7 +685,7 @@ All 540 tracked files in `apps/api`, by directory.
 | `fiscal-periods.controller.ts` | controller | 74 |  |
 | `fiscal-periods.service.spec.ts` | unit test | 312 |  |
 | `fiscal-periods.service.ts` | service | 196 |  |
-| `gl-reports.controller.ts` | controller | 67 |  |
+| `gl-reports.controller.ts` | controller | 77 |  |
 | `gl-reports.service.spec.ts` | unit test | 174 |  |
 | `gl-reports.service.ts` | service | 298 |  |
 | `posting-rules.subscriber.spec.ts` | unit test | 643 |  |
@@ -840,19 +840,20 @@ All 540 tracked files in `apps/api`, by directory.
 | `email-inbox.service.ts` | service | 234 |  |
 | `mailbox-poller.cron.ts` | scheduled job | 133 |  |
 
-### `apps/api/src/modules/finance` (12)
+### `apps/api/src/modules/finance` (13)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `expense-replication.listener.spec.ts` | unit test | 61 |  |
 | `expense-replication.listener.ts` | event subscriber | 50 |  |
-| `finance.controller.ts` | controller | 112 |  |
+| `finance-margins.spec.ts` | unit test | 161 |  |
+| `finance.controller.ts` | controller | 133 |  |
 | `finance.cron.spec.ts` | unit test | 69 |  |
 | `finance.cron.ts` | scheduled job | 36 |  |
 | `finance.listener.spec.ts` | unit test | 48 |  |
 | `finance.listener.ts` | event subscriber | 27 |  |
 | `finance.module.ts` | nest module | 14 |  |
-| `finance.service.ts` | service | 562 |  |
+| `finance.service.ts` | service | 675 |  |
 | `finance.spec.ts` | unit test | 522 |  |
 | `order-economics.service.spec.ts` | unit test | 216 |  |
 | `order-economics.service.ts` | service | 137 |  |
@@ -862,7 +863,7 @@ All 540 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `expense-category.dto.ts` | dto | 35 |  |
-| `expense.dto.ts` | dto | 107 |  |
+| `expense.dto.ts` | dto | 130 |  |
 
 ### `apps/api/src/modules/identity-verification` (4)
 
@@ -1123,20 +1124,21 @@ All 540 tracked files in `apps/api`, by directory.
 | `supplier-bill.dto.ts` | dto | 67 |  |
 | `supplier.dto.ts` | dto | 104 |  |
 
-### `apps/api/src/modules/reports` (4)
+### `apps/api/src/modules/reports` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `csv.util.ts` | module | 15 | RFC 4180 field/row escaping for the three characters that break a bare CSV field (comma, quote, newline). |
-| `reports.controller.ts` | controller | 99 |  |
+| `reports-finance-exports.spec.ts` | unit test | 65 |  |
+| `reports.controller.ts` | controller | 135 |  |
 | `reports.module.ts` | nest module | 10 |  |
-| `reports.service.ts` | service | 509 |  |
+| `reports.service.ts` | service | 651 |  |
 
 ### `apps/api/src/modules/reports/dto` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `reports.dto.ts` | dto | 25 |  |
+| `reports.dto.ts` | dto | 33 |  |
 
 ### `apps/api/src/modules/settings` (3)
 

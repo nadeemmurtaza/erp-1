@@ -1864,17 +1864,17 @@ _no second-level headings_
 - WO-3.9 — Redirects  <sub>:521</sub>
 - Phase 3 exit criteria  <sub>:555</sub>
 
-### `docs/implementation/04-finance.md`  <sub>239 lines</sub>
+### `docs/implementation/04-finance.md`  <sub>291 lines</sub>
 
-- Scope decision, already taken  <sub>:6</sub>
-- Work orders  <sub>:16</sub>
-- WO-4.1 — Expenses  <sub>:32</sub>
-- WO-4.2 — Order economics  <sub>:108</sub>
-- WO-4.3 — The P&L report  <sub>:148</sub>
-- WO-4.4 — Cash flow  <sub>:187</sub>
-- WO-4.5 — Screens  <sub>:201</sub>
-- WO-4.6 — Month-end close and export  <sub>:221</sub>
-- Phase 4 exit criteria  <sub>:231</sub>
+- Scope decision, already taken  <sub>:53</sub>
+- Work orders  <sub>:68</sub>
+- WO-4.1 — Expenses  <sub>:84</sub>
+- WO-4.2 — Order economics  <sub>:160</sub>
+- WO-4.3 — The P&L report  <sub>:200</sub>
+- WO-4.4 — Cash flow  <sub>:239</sub>
+- WO-4.5 — Screens  <sub>:253</sub>
+- WO-4.6 — Month-end close and export  <sub>:273</sub>
+- Phase 4 exit criteria  <sub>:283</sub>
 
 ### `docs/implementation/05-promotions-giftcards.md`  <sub>320 lines</sub>
 

@@ -3,32 +3,37 @@
 
 # Module: `reports`
 
-Pack **core** · enabled by the `MODULES` allowlist · 5 files
+Pack **core** · enabled by the `MODULES` allowlist · 6 files
 
 
 
 Source: `apps/api/src/modules/reports/`
 
-## Files (5 · 658 lines)
+## Files (6 · 909 lines)
 
 All paths relative to `apps/api/src/modules/reports`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `csv.util.ts` | module | 15 | 2 | RFC 4180 field/row escaping for the three characters that break a bare CSV field (comma, quote, newline). |
-| `reports.dto.ts` | dto | 25 | 2 | Both bounds are calendar dates (YYYY-MM-DD), inclusive of the whole day. |
-| `reports.controller.ts` | controller | 99 | 1 |  |
+| `reports.dto.ts` | dto | 33 | 3 | Both bounds are calendar dates (YYYY-MM-DD), inclusive of the whole day. |
+| `reports-finance-exports.spec.ts` | unit test | 65 | — |  |
+| `reports.controller.ts` | controller | 135 | 1 |  |
 | `reports.module.ts` | nest module | 10 | 1 |  |
-| `reports.service.ts` | service | 509 | 2 | A CSV export ready to stream: a filename, a header row, and data rows in column order. |
+| `reports.service.ts` | service | 651 | 2 | A CSV export ready to stream: a filename, a header row, and data rows in column order. |
 
 
-## HTTP routes (8)
+## HTTP routes (12)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/reports/export/expense-register` | `reports.view` | `ReportsController.exportExpenseRegister` :107 | CSV: every expense in the date range (WO-4.6, 04-finance.md) |
 | GET | `/admin/reports/export/orders` | `reports.view` | `ReportsController.exportOrders` :18 | CSV: one row per order placed in the date range |
+| GET | `/admin/reports/export/payables` | `reports.view` | `ReportsController.exportPayables` :98 | CSV: outstanding supplier balances, aged (WO-4.6, 04-finance.md) |
+| GET | `/admin/reports/export/profit-and-loss` | `reports.view` | `ReportsController.exportProfitAndLoss` :89 | CSV: P&L for the date range (WO-4.6, 04-finance.md) |
 | GET | `/admin/reports/export/purchases-by-supplier` | `reports.view` | `ReportsController.exportPurchasesBySupplier` :63 | CSV: purchases by supplier |
 | GET | `/admin/reports/export/sales-by-day` | `reports.view` | `ReportsController.exportSalesByDay` :27 | CSV: order count and revenue per day in the date range |
+| GET | `/admin/reports/export/sales-register` | `reports.view` | `ReportsController.exportSalesRegister` :116 | CSV: every delivered order with revenue and COGS (WO-4.6, 04-finance.md) |
 | GET | `/admin/reports/export/slow-movers` | `reports.view` | `ReportsController.exportSlowMovers` :81 | CSV: slow movers report |
 | GET | `/admin/reports/export/stitching-bookings` | `reports.view` | `ReportsController.exportStitchingBookings` :36 | CSV: one row per bring-your-own-fabric booking in the date range |
 | GET | `/admin/reports/export/stock` | `reports.view` | `ReportsController.exportStock` :45 | CSV: current stock, one row per product variant |
@@ -64,6 +69,7 @@ _none_
 ## Reaches out to
 
 - core `auth`
+- core `common`
 - core `prisma`
 - core `settings`
 - core `time`
@@ -74,9 +80,11 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (0)
+## Tests (1)
 
-_No spec files in this unit._
+| Spec | Cases | Covers |
+|---|---|---|
+| `reports-finance-exports.spec.ts` | 4 | ReportsService finance exports |
 
 
 ## Every export in this unit
@@ -86,11 +94,12 @@ _No spec files in this unit._
 | `csvEscape` | function | `csv.util.ts:6` | RFC 4180 field/row escaping for the three characters that break a bare CSV field (comma, quote, newline). |
 | `csvRow` | function | `csv.util.ts:12` |  |
 | `ReportDateRangeQueryDto` | class | `reports.dto.ts:5` | Both bounds are calendar dates (YYYY-MM-DD), inclusive of the whole day. |
-| `StockReportQueryDto` | class | `reports.dto.ts:17` |  |
+| `AsOfReportQueryDto` | class | `reports.dto.ts:18` | A single as-of date (payables export) — everything posted on or before it. |
+| `StockReportQueryDto` | class | `reports.dto.ts:25` |  |
 | `ReportsController` | class | `reports.controller.ts:13` |  |
 | `ReportsModule` | class | `reports.module.ts:9` |  |
-| `CsvExport` | interface | `reports.service.ts:16` | A CSV export ready to stream: a filename, a header row, and data rows in column order. |
-| `ReportsService` | class | `reports.service.ts:35` |  |
+| `CsvExport` | interface | `reports.service.ts:17` | A CSV export ready to stream: a filename, a header row, and data rows in column order. |
+| `ReportsService` | class | `reports.service.ts:36` |  |
 
 
 ---

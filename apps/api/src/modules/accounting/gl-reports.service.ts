@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { AccountType } from '../../core/prisma/client';
 import { ACCOUNT_CODE } from './chart-of-accounts';
-import { ageMovements, type AgingBuckets } from './aging';
+import { ageMovements, type AgingBuckets } from '../../core/common/aging';
 
 export interface AccountBalance {
   accountId: string;

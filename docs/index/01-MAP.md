@@ -32,9 +32,9 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 540 | 74,909 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 392 | 59,162 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 268 | 41,728 | Next.js — admin console and customer storefront in one app |
+| `apps/api` | 542 | 75,495 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 392 | 59,214 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 272 | 42,351 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 36 | 26,925 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 21 | 8,549 | repository checks and generators (lint gates, this index) |
 | `apps/mobile` | 42 | 5,292 | Expo — customer mobile app |
@@ -66,7 +66,7 @@ Each is independent: no module imports another except through a named
 | [`cart`](modules/cart.md) | core | MODULES allowlist | 6 | 3 |
 | [`catalog`](modules/catalog.md) | core | MODULES allowlist | 43 | 21 |
 | [`crm`](modules/crm.md) | core | MODULES allowlist | 19 | 9 |
-| [`finance`](modules/finance.md) | core | MODULES allowlist | 12 | 3 |
+| [`finance`](modules/finance.md) | core | MODULES allowlist | 14 | 3 |
 | [`identity-verification`](modules/identity-verification.md) | core | MODULES allowlist | 4 | 1 |
 | [`inventory`](modules/inventory.md) | core | MODULES allowlist | 16 | 7 |
 | [`marketing`](modules/marketing.md) | core | MODULES allowlist | 2 | — |
@@ -79,7 +79,7 @@ Each is independent: no module imports another except through a named
 | [`pos`](modules/pos.md) | core | MODULES allowlist | 15 | 4 |
 | [`production`](modules/production.md) | core | MODULES allowlist | 9 | 4 |
 | [`purchasing`](modules/purchasing.md) | core | MODULES allowlist | 17 | 7 |
-| [`reports`](modules/reports.md) | core | MODULES allowlist | 8 | — |
+| [`reports`](modules/reports.md) | core | MODULES allowlist | 12 | — |
 | [`settings`](modules/settings.md) | core | always on | 6 | — |
 | [`stitching`](modules/stitching.md) | apparel | MODULES allowlist | 21 | 8 |
 | [`tax`](modules/tax.md) | core | MODULES allowlist | 8 | 2 |
@@ -99,7 +99,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`audit`](core/audit.md) | 2 |  |
 | [`auth`](core/auth.md) | 21 |  |
 | [`checkout`](core/checkout.md) | 1 |  |
-| [`common`](core/common.md) | 4 |  |
+| [`common`](core/common.md) | 6 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a cont… |
 | [`config`](core/config.md) | 6 |  |
 | [`events`](core/events.md) | 5 | The catalogue of domain events. |
 | [`extension-points`](core/extension-points.md) | 6 |  |

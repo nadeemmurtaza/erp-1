@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1472,
-    "lines": 226949,
-    "routes": 375,
+    "files": 1478,
+    "lines": 228210,
+    "routes": 381,
     "controllers": 65,
     "models": 146,
     "enums": 62,
     "migrations": 62,
     "events": 39,
     "permissions": 44,
-    "screens": 158,
+    "screens": 162,
     "crons": 9,
-    "specs": 138,
+    "specs": 140,
     "designLaws": 150
   },
   "designLaws": [
@@ -1083,9 +1083,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 540,
-      "lines": 74909,
-      "bytes": 2745482,
+      "files": 542,
+      "lines": 75495,
+      "bytes": 2768590,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1101,15 +1101,15 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 268,
-      "lines": 41728,
-      "bytes": 1523396,
+      "files": 272,
+      "lines": 42351,
+      "bytes": 1545379,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 392,
-      "lines": 59162,
-      "bytes": 3490732,
+      "lines": 59214,
+      "bytes": 3494086,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -1129,8 +1129,6 @@
         "apps/api/src/modules/accounting/accounting.module.ts",
         "apps/api/src/modules/accounting/accounting.service.spec.ts",
         "apps/api/src/modules/accounting/accounting.service.ts",
-        "apps/api/src/modules/accounting/aging.spec.ts",
-        "apps/api/src/modules/accounting/aging.ts",
         "apps/api/src/modules/accounting/chart-of-accounts.ts",
         "apps/api/src/modules/accounting/consolidation.controller.ts",
         "apps/api/src/modules/accounting/consolidation.service.spec.ts",
@@ -1296,6 +1294,7 @@
         "apps/api/src/modules/finance/dto/expense.dto.ts",
         "apps/api/src/modules/finance/expense-replication.listener.spec.ts",
         "apps/api/src/modules/finance/expense-replication.listener.ts",
+        "apps/api/src/modules/finance/finance-margins.spec.ts",
         "apps/api/src/modules/finance/finance.controller.ts",
         "apps/api/src/modules/finance/finance.cron.spec.ts",
         "apps/api/src/modules/finance/finance.cron.ts",
@@ -1307,7 +1306,7 @@
         "apps/api/src/modules/finance/order-economics.service.spec.ts",
         "apps/api/src/modules/finance/order-economics.service.ts"
       ],
-      "routes": 12,
+      "routes": 14,
       "page": "docs/index/modules/finance.md"
     },
     {
@@ -1572,11 +1571,12 @@
       "files": [
         "apps/api/src/modules/reports/csv.util.ts",
         "apps/api/src/modules/reports/dto/reports.dto.ts",
+        "apps/api/src/modules/reports/reports-finance-exports.spec.ts",
         "apps/api/src/modules/reports/reports.controller.ts",
         "apps/api/src/modules/reports/reports.module.ts",
         "apps/api/src/modules/reports/reports.service.ts"
       ],
-      "routes": 8,
+      "routes": 12,
       "page": "docs/index/modules/reports.md"
     },
     {
@@ -1751,6 +1751,8 @@
     {
       "name": "common",
       "files": [
+        "apps/api/src/core/common/aging.spec.ts",
+        "apps/api/src/core/common/aging.ts",
         "apps/api/src/core/common/cost-fields.ts",
         "apps/api/src/core/common/dto/pagination.dto.ts",
         "apps/api/src/core/common/filters/all-exceptions.filter.ts",
@@ -2132,10 +2134,11 @@
       "controller": "GlReportsController",
       "handler": "agedPayables",
       "file": "apps/api/src/modules/accounting/gl-reports.controller.ts",
-      "line": 63,
-      "access": "accounting.view",
+      "line": 73,
+      "access": "accounting.view | finance.view",
       "permissions": [
-        "accounting.view"
+        "accounting.view",
+        "finance.view"
       ],
       "public": false,
       "authOnly": false,
@@ -2148,7 +2151,7 @@
       "controller": "GlReportsController",
       "handler": "agedReceivables",
       "file": "apps/api/src/modules/accounting/gl-reports.controller.ts",
-      "line": 57,
+      "line": 66,
       "access": "accounting.view",
       "permissions": [
         "accounting.view"
@@ -2164,7 +2167,7 @@
       "controller": "GlReportsController",
       "handler": "balanceSheet",
       "file": "apps/api/src/modules/accounting/gl-reports.controller.ts",
-      "line": 44,
+      "line": 52,
       "access": "accounting.view",
       "permissions": [
         "accounting.view"
@@ -2180,10 +2183,11 @@
       "controller": "GlReportsController",
       "handler": "cashFlow",
       "file": "apps/api/src/modules/accounting/gl-reports.controller.ts",
-      "line": 50,
-      "access": "accounting.view",
+      "line": 59,
+      "access": "accounting.view | finance.view",
       "permissions": [
-        "accounting.view"
+        "accounting.view",
+        "finance.view"
       ],
       "public": false,
       "authOnly": false,
@@ -2196,10 +2200,11 @@
       "controller": "GlReportsController",
       "handler": "profitAndLoss",
       "file": "apps/api/src/modules/accounting/gl-reports.controller.ts",
-      "line": 37,
-      "access": "accounting.view",
+      "line": 45,
+      "access": "accounting.view | finance.view",
       "permissions": [
-        "accounting.view"
+        "accounting.view",
+        "finance.view"
       ],
       "public": false,
       "authOnly": false,
@@ -2212,7 +2217,7 @@
       "controller": "GlReportsController",
       "handler": "trialBalance",
       "file": "apps/api/src/modules/accounting/gl-reports.controller.ts",
-      "line": 31,
+      "line": 38,
       "access": "accounting.view",
       "permissions": [
         "accounting.view"
@@ -3908,7 +3913,7 @@
       "controller": "FinanceController",
       "handler": "listCategories",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 25,
+      "line": 32,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -3924,7 +3929,7 @@
       "controller": "FinanceController",
       "handler": "createCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 32,
+      "line": 39,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -3940,7 +3945,7 @@
       "controller": "FinanceController",
       "handler": "deleteCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 46,
+      "line": 53,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -3956,7 +3961,7 @@
       "controller": "FinanceController",
       "handler": "updateCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 39,
+      "line": 46,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -3972,7 +3977,7 @@
       "controller": "FinanceController",
       "handler": "listExpenses",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 54,
+      "line": 61,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -3988,7 +3993,7 @@
       "controller": "FinanceController",
       "handler": "createExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 82,
+      "line": 103,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4004,7 +4009,7 @@
       "controller": "FinanceController",
       "handler": "deleteExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 96,
+      "line": 117,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4020,7 +4025,7 @@
       "controller": "FinanceController",
       "handler": "updateExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 89,
+      "line": 110,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4036,7 +4041,7 @@
       "controller": "FinanceController",
       "handler": "uploadReceipt",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 107,
+      "line": 128,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4052,7 +4057,7 @@
       "controller": "FinanceController",
       "handler": "byCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 68,
+      "line": 75,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4068,7 +4073,7 @@
       "controller": "FinanceController",
       "handler": "summary",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 61,
+      "line": 68,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4084,7 +4089,7 @@
       "controller": "FinanceController",
       "handler": "trend",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 75,
+      "line": 82,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4092,6 +4097,38 @@
       "public": false,
       "authOnly": false,
       "summary": "Expense totals over time, bucketed by day or month"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/finance/margins",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "margins",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 89,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Margin by product, category or variant (WO-4.3, 04-finance.md)"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/finance/unit-economics",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "unitEconomics",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 96,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Contribution per order, paginated, plus the average by product/category (WO-4.2)"
     },
     {
       "method": "GET",
@@ -5519,6 +5556,22 @@
     },
     {
       "method": "GET",
+      "path": "/admin/reports/export/expense-register",
+      "module": "reports",
+      "controller": "ReportsController",
+      "handler": "exportExpenseRegister",
+      "file": "apps/api/src/modules/reports/reports.controller.ts",
+      "line": 107,
+      "access": "reports.view",
+      "permissions": [
+        "reports.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "CSV: every expense in the date range (WO-4.6, 04-finance.md)"
+    },
+    {
+      "method": "GET",
       "path": "/admin/reports/export/orders",
       "module": "reports",
       "controller": "ReportsController",
@@ -5532,6 +5585,38 @@
       "public": false,
       "authOnly": false,
       "summary": "CSV: one row per order placed in the date range"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/reports/export/payables",
+      "module": "reports",
+      "controller": "ReportsController",
+      "handler": "exportPayables",
+      "file": "apps/api/src/modules/reports/reports.controller.ts",
+      "line": 98,
+      "access": "reports.view",
+      "permissions": [
+        "reports.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "CSV: outstanding supplier balances, aged (WO-4.6, 04-finance.md)"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/reports/export/profit-and-loss",
+      "module": "reports",
+      "controller": "ReportsController",
+      "handler": "exportProfitAndLoss",
+      "file": "apps/api/src/modules/reports/reports.controller.ts",
+      "line": 89,
+      "access": "reports.view",
+      "permissions": [
+        "reports.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "CSV: P&L for the date range (WO-4.6, 04-finance.md)"
     },
     {
       "method": "GET",
@@ -5564,6 +5649,22 @@
       "public": false,
       "authOnly": false,
       "summary": "CSV: order count and revenue per day in the date range"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/reports/export/sales-register",
+      "module": "reports",
+      "controller": "ReportsController",
+      "handler": "exportSalesRegister",
+      "file": "apps/api/src/modules/reports/reports.controller.ts",
+      "line": 116,
+      "access": "reports.view",
+      "permissions": [
+        "reports.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "CSV: every delivered order with revenue and COGS (WO-4.6, 04-finance.md)"
     },
     {
       "method": "GET",
@@ -7828,9 +7929,13 @@
       "category": "Dashboard",
       "sensitivity": "low",
       "routes": [
+        "GET /admin/reports/export/expense-register",
         "GET /admin/reports/export/orders",
+        "GET /admin/reports/export/payables",
+        "GET /admin/reports/export/profit-and-loss",
         "GET /admin/reports/export/purchases-by-supplier",
         "GET /admin/reports/export/sales-by-day",
+        "GET /admin/reports/export/sales-register",
         "GET /admin/reports/export/slow-movers",
         "GET /admin/reports/export/stitching-bookings",
         "GET /admin/reports/export/stock",
@@ -8466,13 +8571,18 @@
       "category": "Finance",
       "sensitivity": "medium",
       "routes": [
+        "GET /admin/accounting/reports/aged-payables",
+        "GET /admin/accounting/reports/cash-flow",
+        "GET /admin/accounting/reports/profit-and-loss",
         "GET /admin/finance/expense-categories",
         "GET /admin/finance/expenses",
         "GET /admin/finance/expenses/by-category",
         "GET /admin/finance/expenses/summary",
-        "GET /admin/finance/expenses/trend"
+        "GET /admin/finance/expenses/trend",
+        "GET /admin/finance/margins",
+        "GET /admin/finance/unit-economics"
       ],
-      "uiSites": 2,
+      "uiSites": 6,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -9102,7 +9212,7 @@
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:394",
         "apps/api/src/modules/finance/finance.service.ts:252",
-        "apps/api/src/modules/finance/finance.service.ts:532"
+        "apps/api/src/modules/finance/finance.service.ts:645"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:392 onExpenseRecorded()",
@@ -25078,6 +25188,24 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/finance",
+      "file": "apps/web/src/app/(admin)/admin/(app)/finance/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/finance/cash-flow",
+      "file": "apps/web/src/app/(admin)/admin/(app)/finance/cash-flow/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/finance/expenses",
       "file": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/page.tsx",
       "client": true,
@@ -25098,6 +25226,24 @@
       "kind": "page",
       "url": "/admin/finance/expenses/categories",
       "file": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/finance/margins",
+      "file": "apps/web/src/app/(admin)/admin/(app)/finance/margins/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/finance/unit-economics",
+      "file": "apps/web/src/app/(admin)/admin/(app)/finance/unit-economics/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -26275,6 +26421,15 @@
       ]
     },
     {
+      "file": "apps/api/src/core/common/aging.spec.ts",
+      "module": "core/common",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "ageMovements"
+      ]
+    },
+    {
       "file": "apps/api/src/core/config/env.validation.spec.ts",
       "module": "core/config",
       "kind": "unit test",
@@ -26482,15 +26637,6 @@
       "describes": [
         "AccountingService — WO-19.1",
         "postEntry"
-      ]
-    },
-    {
-      "file": "apps/api/src/modules/accounting/aging.spec.ts",
-      "module": "accounting",
-      "kind": "unit test",
-      "cases": 7,
-      "describes": [
-        "ageMovements"
       ]
     },
     {
@@ -26764,6 +26910,17 @@
         "ExpenseReplicationListener — WO-23.3c/e, ADR-021",
         "onModuleInit",
         "onExpenseRecorded"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/finance/finance-margins.spec.ts",
+      "module": "finance",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "FinanceService margins and unit economics",
+        "marginBy",
+        "unitEconomics"
       ]
     },
     {
@@ -27171,6 +27328,15 @@
         "PurchasingService — supplier bills",
         "createSupplierBill",
         "recordSupplierBillPayment"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/reports/reports-finance-exports.spec.ts",
+      "module": "reports",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "ReportsService finance exports"
       ]
     },
     {
@@ -29593,6 +29759,45 @@
       ]
     },
     {
+      "path": "apps/api/src/core/common/aging.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 75,
+      "bytes": 2835,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/common/aging.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 76,
+      "bytes": 3050,
+      "doc": "FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control account (Accounts Receivable or Accounts Payable), so it is unit-testable without a database.",
+      "symbols": [
+        {
+          "name": "AgingMovement",
+          "kind": "interface",
+          "line": 26
+        },
+        {
+          "name": "AgingBuckets",
+          "kind": "interface",
+          "line": 32
+        },
+        {
+          "name": "totalAgingBuckets",
+          "kind": "function",
+          "line": 43
+        },
+        {
+          "name": "ageMovements",
+          "kind": "function",
+          "line": 49
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/common/cost-fields.ts",
       "area": "api",
       "kind": "module",
@@ -31540,45 +31745,6 @@
       ]
     },
     {
-      "path": "apps/api/src/modules/accounting/aging.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 75,
-      "bytes": 2819,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/accounting/aging.ts",
-      "area": "api",
-      "kind": "module",
-      "lines": 69,
-      "bytes": 2616,
-      "doc": "FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control account (Accounts Receivable or Accounts Payable), so it is unit-testable without a database.",
-      "symbols": [
-        {
-          "name": "AgingMovement",
-          "kind": "interface",
-          "line": 19
-        },
-        {
-          "name": "AgingBuckets",
-          "kind": "interface",
-          "line": 25
-        },
-        {
-          "name": "totalAgingBuckets",
-          "kind": "function",
-          "line": 36
-        },
-        {
-          "name": "ageMovements",
-          "kind": "function",
-          "line": 42
-        }
-      ]
-    },
-    {
       "path": "apps/api/src/modules/accounting/chart-of-accounts.ts",
       "area": "api",
       "kind": "module",
@@ -31725,14 +31891,14 @@
       "path": "apps/api/src/modules/accounting/gl-reports.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 67,
-      "bytes": 2774,
+      "lines": 77,
+      "bytes": 3389,
       "doc": "",
       "symbols": [
         {
           "name": "GlReportsController",
           "kind": "class",
-          "line": 26
+          "line": 33
         }
       ]
     },
@@ -31750,7 +31916,7 @@
       "area": "api",
       "kind": "service",
       "lines": 298,
-      "bytes": 12423,
+      "bytes": 12439,
       "doc": "",
       "symbols": [
         {
@@ -33326,8 +33492,8 @@
       "path": "apps/api/src/modules/finance/dto/expense.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 107,
-      "bytes": 2678,
+      "lines": 130,
+      "bytes": 3252,
       "doc": "",
       "symbols": [
         {
@@ -33349,6 +33515,16 @@
           "name": "ExpenseSummaryQueryDto",
           "kind": "class",
           "line": 96
+        },
+        {
+          "name": "MarginQueryDto",
+          "kind": "class",
+          "line": 108
+        },
+        {
+          "name": "UnitEconomicsQueryDto",
+          "kind": "class",
+          "line": 115
         }
       ]
     },
@@ -33377,17 +33553,26 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/finance/finance-margins.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 161,
+      "bytes": 5614,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/modules/finance/finance.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 112,
-      "bytes": 4354,
+      "lines": 133,
+      "bytes": 4969,
       "doc": "",
       "symbols": [
         {
           "name": "FinanceController",
           "kind": "class",
-          "line": 19
+          "line": 26
         }
       ]
     },
@@ -33458,8 +33643,8 @@
       "path": "apps/api/src/modules/finance/finance.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 562,
-      "bytes": 21972,
+      "lines": 675,
+      "bytes": 26450,
       "doc": "",
       "symbols": [
         {
@@ -35713,8 +35898,8 @@
       "path": "apps/api/src/modules/reports/dto/reports.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 25,
-      "bytes": 743,
+      "lines": 33,
+      "bytes": 1000,
       "doc": "",
       "symbols": [
         {
@@ -35723,18 +35908,32 @@
           "line": 5
         },
         {
+          "name": "AsOfReportQueryDto",
+          "kind": "class",
+          "line": 18
+        },
+        {
           "name": "StockReportQueryDto",
           "kind": "class",
-          "line": 17
+          "line": 25
         }
       ]
+    },
+    {
+      "path": "apps/api/src/modules/reports/reports-finance-exports.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 65,
+      "bytes": 2662,
+      "doc": "",
+      "symbols": []
     },
     {
       "path": "apps/api/src/modules/reports/reports.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 99,
-      "bytes": 3556,
+      "lines": 135,
+      "bytes": 4927,
       "doc": "",
       "symbols": [
         {
@@ -35763,19 +35962,19 @@
       "path": "apps/api/src/modules/reports/reports.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 509,
-      "bytes": 16543,
+      "lines": 651,
+      "bytes": 22999,
       "doc": "",
       "symbols": [
         {
           "name": "CsvExport",
           "kind": "interface",
-          "line": 16
+          "line": 17
         },
         {
           "name": "ReportsService",
           "kind": "class",
-          "line": 35
+          "line": 36
         }
       ]
     },
@@ -39669,6 +39868,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/finance/cash-flow/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 156,
+      "bytes": 5529,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FinanceCashFlowPage",
+          "kind": "default",
+          "line": 48
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/analytics/page.tsx",
       "area": "web",
       "kind": "page",
@@ -39710,6 +39924,51 @@
           "name": "ExpensesPage",
           "kind": "default",
           "line": 60
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/finance/margins/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 100,
+      "bytes": 3504,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FinanceMarginsPage",
+          "kind": "default",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/finance/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 221,
+      "bytes": 7889,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FinancePnlPage",
+          "kind": "default",
+          "line": 53
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/finance/unit-economics/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 100,
+      "bytes": 3705,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FinanceUnitEconomicsPage",
+          "kind": "default",
+          "line": 31
         }
       ]
     },
@@ -41635,44 +41894,44 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 570,
-      "bytes": 14610,
+      "lines": 610,
+      "bytes": 15732,
       "doc": "",
       "symbols": [
         {
           "name": "ICON_MAP",
           "kind": "const",
-          "line": 17
+          "line": 18
         },
         {
           "name": "AdminNavGroup",
           "kind": "interface",
-          "line": 30
+          "line": 32
         },
         {
           "name": "NAV_GROUPS",
           "kind": "const",
-          "line": 49
+          "line": 51
         },
         {
           "name": "AdminNavItem",
           "kind": "interface",
-          "line": 62
+          "line": 69
         },
         {
           "name": "ADMIN_NAV",
           "kind": "const",
-          "line": 100
+          "line": 108
         },
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 540
+          "line": 580
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 555
+          "line": 595
         }
       ]
     },
@@ -42823,8 +43082,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 138,
-      "bytes": 5393,
+      "lines": 144,
+      "bytes": 5627,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -46400,8 +46659,8 @@
       "path": "docs/implementation/04-finance.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 239,
-      "bytes": 8474,
+      "lines": 291,
+      "bytes": 11828,
       "doc": "",
       "symbols": []
     },

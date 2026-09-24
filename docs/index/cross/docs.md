@@ -2516,15 +2516,15 @@ _no second-level headings_
 - Acceptance  <sub>:164</sub>
 - Out of scope  <sub>:176</sub>
 
-### `docs/implementation/155-wallet-stored-value-merchant-escrow.md`  <sub>354 lines</sub>
+### `docs/implementation/155-wallet-stored-value-merchant-escrow.md`  <sub>355 lines</sub>
 
-- Read this section first — a real regulatory question, not an engineering one  <sub>:3</sub>
-- 1. One ledger primitive, never two competing ones  <sub>:37</sub>
-- 2. The customer side: ordinary stored value, the simpler and lower-risk half  <sub>:116</sub>
-- 3. The merchant side: the actual escrow mechanism, and where the regulatory question bites  <sub>:145</sub>
-- Scope lenses  <sub>:180</sub>
-- Work orders  <sub>:308</sub>
-- Acceptance  <sub>:332</sub>
+- Read this section first — the structure changed, and here is exactly why that matters  <sub>:3</sub>
+- 1. One wallet type now, not two — money never sits in a per-merchant balance  <sub>:50</sub>
+- 2. Checkout: reserve at order placement, redeem only at merchant confirmation  <sub>:116</sub>
+- 3. Merchant settlement — an ordinary trade payable, generalizing doc 145's own `SupplierBill`, never an escrow release  <sub>:143</sub>
+- Scope lenses  <sub>:197</sub>
+- Work orders  <sub>:307</sub>
+- Acceptance  <sub>:331</sub>
 - Out of scope  <sub>:346</sub>
 
 ### `docs/implementation/16-pbac-row-scoping.md`  <sub>184 lines</sub>

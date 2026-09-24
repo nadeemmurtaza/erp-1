@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 1437,
-    "lines": 221311,
+    "lines": 221312,
     "routes": 357,
     "controllers": 62,
     "models": 140,
@@ -1108,8 +1108,8 @@
     },
     "docs": {
       "files": 385,
-      "lines": 57014,
-      "bytes": 3372908,
+      "lines": 57015,
+      "bytes": 3372533,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -45743,8 +45743,8 @@
       "path": "docs/implementation/155-wallet-stored-value-merchant-escrow.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 354,
-      "bytes": 19694,
+      "lines": 355,
+      "bytes": 19378,
       "doc": "",
       "symbols": []
     },
@@ -46563,7 +46563,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 408,
-      "bytes": 51035,
+      "bytes": 50976,
       "doc": "",
       "symbols": []
     },

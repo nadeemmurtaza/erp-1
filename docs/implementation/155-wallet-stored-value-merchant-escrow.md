@@ -1,353 +1,354 @@
-# 155 — Wallet: one ledger primitive, two owners — customer stored value and merchant payout escrow
+# 155 — Wallet: Newax-issued store credit, settling merchants as an ordinary trade payable, never third-party fund custody
 
-## Read this section first — a real regulatory question, not an engineering one
+## Read this section first — the structure changed, and here is exactly why that matters
 
-Before any of this ships: **holding a customer's payment and later paying
-it out to an independent third-party merchant is, in Pakistan, very
-plausibly a regulated activity** — functionally the definition of a
-Payment System Operator / Payment Service Provider under SBP's PSO/PSP
-Rules, or an e-money-issuance question, depending on exact structure.
-This is the identical caution doc 15 already states for FBR's own
-invoice payload — "get the actual requirements from an accountant or the
-authority's own documentation before building" — applied here to a
-licensing question whose wrong answer is not a bug, it is Newax operating
-outside the law. **This document specifies the mechanism; it does not
-authorize going live with it.** Two real paths exist and the choice
-between them is a legal decision, not this document's to make:
+The original design (still visible in this document's own git history) had
+customers pay into a per-merchant *escrow* balance the platform held and
+later released to that specific merchant — functionally custody of a
+third party's money, which is why it opened with a hard block on going
+live before SBP-style licensing was resolved. **The owner revised the
+structure directly: customer payments settle into Newax's own bank
+account only, in exchange for Newax-issued store credit; a merchant is
+then paid what Newax owes them as an ordinary trade payable, not as a
+release of money that was always theirs.** This is a real, materially
+different, and commonly-used structure — it is closer to how a shopping
+mall's own gift card works (redeemable at any store in the network,
+issued and sold by the mall operator itself, with the mall settling each
+store separately out of its own funds) than to a marketplace escrow.
 
-1. **Newax becomes the fund custodian itself** — requires real
-   authorization from SBP (or a partnership/sponsorship arrangement with
-   an already-licensed bank or PSP that provides it), full compliance
-   obligations (safeguarding customer funds, reporting, capital
-   requirements) that are entirely outside this repository's own scope.
-2. **Route the hold-and-disburse function through an already-licensed
-   marketplace-payments intermediary** (the same problem Stripe
-   Connect/Adyen for Platforms exist to solve for exactly this reason —
-   a licensed party sits in the custody chain so the platform itself
-   never needs its own PSO/PSP license) — a real, credible, and likely
-   faster path to the same customer/merchant experience.
+**Why this genuinely reduces the specific risk named before:** the first
+transaction (customer buys credit, pays Newax) is an ordinary sale of a
+company-issued product — money customer pays *to* Newax *for* Newax's own
+credit, not money Newax holds *on behalf of* someone else. The second
+transaction (Newax pays a merchant what it owes them for redeemed
+credit) is an ordinary trade payable — the identical legal shape as
+`SupplierBill` (doc 145) paying any other vendor for goods received,
+already a normal, unregulated part of running a business. Neither leg,
+on its own, is "holding a third party's funds in trust for disbursement,"
+which was the specific activity that raised the PSO/PSP question.
 
-**WO-155.1, the schema and services below, ships as a build-ready design.
-No `WalletAccount` holds real customer money in production, and no
-payout releases to a real merchant bank account, until whichever path
-above is confirmed with actual counsel and reflected in a `DECISIONS.md`
-entry.** Everything else in this document is written so that decision
-can be made with a concrete design in hand, not made blind.
+**What does not disappear, and needs a lighter-touch confirmation rather
+than a full block:** (1) whether this credit is *closed-loop enough* —
+redeemable only within Newax's own merchant network, never convertible
+back to cash by the customer, never transferable between customers — to
+sit outside SBP's own definition of a regulated prepaid instrument (many
+frameworks, including SBP's, treat a genuinely closed-loop, non-cashable
+voucher differently from open-loop e-money, but "genuinely closed-loop"
+is a real design constraint this document must actually honor, not just
+assert); and (2) whether Newax's own relationship to each merchant is
+correctly documented (a merchant agreement stating Newax buys/facilitates
+on these terms) so the trade-payable characterization holds up, which
+also has its own tax/invoicing "who is the seller of record" question
+distinct from the payments question. **These are real but narrow
+questions a lawyer can confirm quickly against a concrete design — this
+document is written to make that confirmation fast, not to declare it
+already settled.** `DECISIONS.md` should still record the outcome before
+this handles real money, per this repository's own standing rule for a
+decision of this weight — a lighter WO-155.0 than before, not a removed
+one.
 
-## 1. One ledger primitive, never two competing ones
-
-A customer's stored-value balance and a merchant's held-then-released
-payout are the same underlying shape — an append-only ledger of credits
-and debits against an account, with a running balance never stored
-directly (always derived, so it can never drift) — the identical
-"append-only, derived balance" discipline this repository already applies
-to `AttendanceEvent`→`classifyDay()` and `StockMovement`→
-`VariantLocationStock`. One model serves both owners; nothing here is
-built twice.
+## 1. One wallet type now, not two — money never sits in a per-merchant balance
 
 ```prisma
-enum WalletOwnerType { CUSTOMER  MERCHANT }
 enum WalletEntryType {
-  TOPUP              // customer funds their own wallet (any tender, including card)
-  ORDER_PAYMENT       // a customer's order payment lands here before settlement
-  ORDER_PAYMENT_HOLD  // the merchant-side credit is HELD, not yet available
-  ORDER_PAYMENT_RELEASE // the hold above becomes available (release trigger fired)
-  SPEND               // a customer pays for an order FROM their own wallet balance
-  PAYOUT              // a merchant withdraws an available balance to their bank
-  PLATFORM_FEE        // doc 153's own transaction fee, netted at payout
-  REFUND              // reverses a prior ORDER_PAYMENT/SPEND
-  ADJUSTMENT          // a manual, always-approved, always-reasoned correction
+  PURCHASE             // customer buys credit — real money into Newax's own bank account, booked as deferred revenue
+  RESERVE              // credit earmarked against a specific order at checkout — not yet spent
+  REDEEM               // the earmark converts to an actual spend, exactly when the merchant confirms the order
+  RELEASE_RESERVATION  // the merchant does not confirm (rejects, expires) — the earmark returns to available, unspent
+  REFUND               // reverses a PURCHASE or a REDEEM
+  ADJUSTMENT           // a manual, always-approved, always-reasoned correction
 }
 
 model WalletAccount {
   id             String  @id @default(cuid())
   organizationId String
-  ownerType      WalletOwnerType
-  /// customerId (Party/Contact) when ownerType=CUSTOMER; the tenant's own
-  /// organizationId's own merchant record when ownerType=MERCHANT — never
-  /// the same id space, never confusable by type alone.
-  ownerId        String
+  customerId     String   // Party/Contact — the ONLY owner type now; no merchant-side wallet exists
   currency       String  @default("PKR")
   status         WalletAccountStatus @default(ACTIVE)
 
   entries WalletEntry[]
 
-  @@unique([organizationId, ownerType, ownerId])
+  @@unique([organizationId, customerId])
 }
 
 enum WalletAccountStatus { ACTIVE  FROZEN  CLOSED }
 
-/// Append-only. Never updated, never deleted — a correction is a new,
-/// opposite-signed entry, the identical "a record is never erased, only
-/// superseded" discipline every financial document in this repository
-/// already follows.
+/// Append-only, exactly as before — a correction is a new, opposite
+/// entry, never an edit.
 model WalletEntry {
-  id             String   @id @default(cuid())
-  accountId      String
-  type           WalletEntryType
-  amountMinor    Int      // always positive; direction is implied by `type`, never a signed amount a reader must interpret
-  /// HELD entries do not count toward the account's own AVAILABLE
-  /// balance until a matching ORDER_PAYMENT_RELEASE entry exists — the
-  /// entire escrow mechanism is this one distinction, never a second
-  /// status field on the account itself.
-  availability   WalletEntryAvailability @default(AVAILABLE)
-  orderId        String?
-  sourceRef      String   // the idempotency key — a Payment.id, a Refund.id, never a re-derived string
-  createdAt      DateTime @default(now())
+  id           String   @id @default(cuid())
+  accountId    String
+  type         WalletEntryType
+  amountMinor  Int      // always positive; direction implied by `type`
+  orderId      String?
+  sourceRef    String   // idempotency key — a Payment.id, an Order.id, never a re-derived string
+  createdAt    DateTime @default(now())
 
   account WalletAccount @relation(fields: [accountId], references: [id])
 
   @@unique([accountId, type, sourceRef])
   @@index([accountId, createdAt])
 }
-
-enum WalletEntryAvailability { AVAILABLE  HELD }
 ```
 
 ```ts
 async availableBalance(accountId: string): Promise<number> {
-  // Σ credits (AVAILABLE only) - Σ debits, for this account — computed
-  // from WalletEntry every time, never a stored, driftable column,
-  // identical to how VariantLocationStock is the sum of StockMovement
-  // rather than a maintained counter that could disagree with it.
+  // PURCHASE - RESERVE + RELEASE_RESERVATION - REFUND(on PURCHASE) ± ADJUSTMENT
+  // — REDEEM does not further reduce availableBalance beyond what its own
+  // RESERVE already did; it only converts an already-reserved amount from
+  // "earmarked" to "actually spent," which is exactly why REDEEM needs no
+  // separate availability flag the way the old design's HELD/AVAILABLE
+  // split did — a reservation already removed the amount from what a
+  // customer could double-spend.
 }
 ```
 
-## 2. The customer side: ordinary stored value, the simpler and lower-risk half
+`PURCHASE` is real money landing in Newax's own bank account through the
+existing `Payment` model, unchanged (`provider: 'jazzcash' | 'easypaisa' |
+'card' | ...` — any tender). It is booked in `accounting` as **deferred
+revenue** (a liability — Newax owes the customer either goods or a
+refund, not yet earned revenue), the identical accounting treatment any
+gift-card issuer already uses, converting to recognized revenue only as
+the customer's credit is actually redeemed — never recognized as Newax's
+own income at the moment of purchase, which would misstate Newax's own
+P&L for money it may still owe back.
+
+## 2. Checkout: reserve at order placement, redeem only at merchant confirmation
 
 ```ts
-async topUp(customerId: string, amountMinor: number, paymentId: string): Promise<void> {
-  // A real Payment (any tender, INCLUDING card) settles through the
-  // EXISTING payment path (payments.prisma, unchanged) — this creates
-  // exactly one WalletEntry { type: TOPUP, availability: AVAILABLE,
-  // sourceRef: paymentId }. @@unique([accountId, type, sourceRef])
-  // makes a retried top-up call a no-op, never a double credit.
-}
-
-async spendFromWallet(customerId: string, orderId: string, amountMinor: number): Promise<void> {
+async placeOrderWithWalletCredit(customerId: string, orderId: string, amountMinor: number): Promise<void> {
   // Refuses if availableBalance() < amountMinor — never an overdraft.
-  // Creates a SPEND entry; the order's own Payment row is created with
-  // provider: 'wallet', reusing the EXISTING Payment model, never a
-  // parallel payment-recording path.
+  // Creates a RESERVE entry. The customer's own available balance drops
+  // immediately (so they cannot spend the same credit twice on two
+  // orders), but nothing is yet owed to any merchant — this is still
+  // entirely Newax's own liability to the customer at this point.
+}
+
+async onMerchantConfirmed(orderId: string): Promise<void> {
+  // Converts the RESERVE into a REDEEM (same amount, sourceRef = orderId
+  // — @@unique prevents a double-redeem of one reservation). THIS is the
+  // exact moment named in the owner's own words: "deducted upon merchant
+  // confirmation." It ALSO creates the MerchantPayable (§3) — the two
+  // happen in one transaction, since a redeemed credit and a merchant's
+  // own earned payable are the same fact viewed from two sides.
+}
+
+async onMerchantDeclinedOrExpired(orderId: string): Promise<void> {
+  // Creates a RELEASE_RESERVATION for the same amount — the customer's
+  // own available balance is restored exactly as if the order had never
+  // been placed, since the merchant never actually earned anything.
 }
 ```
 
-A customer wallet is, deliberately, the lower-regulatory-risk half of
-this document: it is closer to a gift card / store-credit balance
-(already named as a real capability in doc 05) than to custody of a
-third party's funds — a customer spending their own pre-funded balance
-on their own future purchase does not raise the same licensing question
-as the platform holding one party's money to pay a *different* party.
-**doc 05's own "store credit" line item is this exact mechanism** —
-this document generalizes it into `WalletAccount`/`WalletEntry` rather
-than building store credit as a second, separate balance type later.
+## 3. Merchant settlement — an ordinary trade payable, generalizing doc 145's own `SupplierBill`, never an escrow release
 
-## 3. The merchant side: the actual escrow mechanism, and where the regulatory question bites
+```prisma
+// additive — invoicing.prisma or a new merchant-settlement.prisma
+enum MerchantPayableStatus { OPEN  SCHEDULED  PAID  DISPUTED }
+
+/// The exact mirror of doc 145's own AP side (SupplierBill) — a merchant
+/// selling through this platform is, for settlement purposes, a vendor
+/// Newax owes money to, never a party whose own money Newax was ever
+/// holding.
+model MerchantPayable {
+  id             String  @id @default(cuid())
+  organizationId String  // the MERCHANT's own tenant id — what Newax owes THIS merchant
+  orderId        String  @unique
+  grossMinor     Int     // the REDEEM amount from §2
+  platformFeeMinor Int   // doc 153's own transaction fee, computed at redemption
+  netPayableMinor  Int   // grossMinor - platformFeeMinor — what Newax actually owes
+  status         MerchantPayableStatus @default(OPEN)
+  scheduledPayoutAt DateTime?
+  paidAt         DateTime?
+
+  @@index([organizationId, status])
+}
+```
 
 ```ts
-async captureOrderPayment(orderId: string, amountMinor: number, merchantOrgId: string, paymentId: string): Promise<void> {
-  // One HELD entry on the merchant's own WalletAccount, sourceRef = paymentId.
-  await this.credit(merchantAccountId, 'ORDER_PAYMENT_HOLD', amountMinor, { orderId, sourceRef: paymentId, availability: 'HELD' });
+async createMerchantPayable(orderId: string, grossMinor: number, merchantOrgId: string): Promise<void> {
+  const feeMinor = Math.round(grossMinor * plan.transactionFeeBps / 10_000); // doc 153, netted here — unchanged intent
+  await this.merchantPayables.create({
+    organizationId: merchantOrgId, orderId, grossMinor,
+    platformFeeMinor: feeMinor, netPayableMinor: grossMinor - feeMinor,
+  });
 }
 
-async releaseToMerchant(orderId: string): Promise<void> {
-  const heldEntry = await this.findHeldEntry(orderId);
-  const feeMinor = Math.round(heldEntry.amountMinor * plan.transactionFeeBps / 10_000); // doc 153, netted here
-  await this.debit(merchantAccountId, 'PLATFORM_FEE', feeMinor, { orderId, sourceRef: `fee:${orderId}` });
-  await this.credit(merchantAccountId, 'ORDER_PAYMENT_RELEASE', heldEntry.amountMinor - feeMinor, { orderId, sourceRef: `release:${orderId}`, availability: 'AVAILABLE' });
-}
-
-async releaseTrigger(orderId: string): Promise<'MERCHANT_CONFIRMATION' | 'CUSTOMER_RECEIPT_CONFIRMATION'> {
-  const merchantVerified = await this.identityVerification.isApproved(merchantOwnerUserId); // doc 18's own IdentityVerification, unchanged, reused exactly
-  return merchantVerified ? 'MERCHANT_CONFIRMATION' : 'CUSTOMER_RECEIPT_CONFIRMATION';
+async schedulePayoutRun(merchantOrgId: string): Promise<Date> {
+  const verified = await this.identityVerification.isApproved(merchantOwnerUserId); // doc 18, unchanged
+  // Verified: the NEXT payout run (as soon as operationally possible —
+  // "a small merchant may need that money to fulfil it," the owner's own
+  // original reasoning, preserved exactly, just triggering a scheduled
+  // AP payment run instead of an instant wallet release.
+  // Unverified: held until the CUSTOMER's own doc 07 "confirm receipt"
+  // action fires, per the owner's own original fallback.
 }
 ```
 
-**The release trigger, exactly as specified**: a merchant whose own
-account-owner `User` has an `APPROVED` `IdentityVerification` row (doc
-18, unchanged, no new KYC mechanism built) releases funds the moment they
-confirm the order — "because a small merchant may need that money to
-fulfil it," in the owner's own words. A merchant with no `APPROVED`
-verification holds funds until the *customer* confirms receipt — the
-slower, safer default for an unvetted counterparty. Doc 153's own 1%
-transaction fee (`transactionFeeBps`) is netted out of the release
-amount, exactly as doc 153 itself named as the preferred collection path
-for any payment that passes through a wallet rather than settling as
-cash — **this document is the mechanism that makes that netting
-possible**, closing the gap doc 153 named honestly as unsolved for card
-tenders at the time it was written.
+This is doc 145's own `SupplierBill`/AP-aging mechanism, reused rather
+than reinvented — `MerchantPayable` is paid out through whatever batch
+payment-run mechanism this repository's own AP side already uses
+(a bank transfer batch, per doc 145's own aging/payment-terms design),
+never a real-time, per-order money movement. The owner's own original
+"verified merchants get paid faster" intent survives intact — it now
+controls *how soon a payable enters a payment run*, not *whether an
+escrow balance unlocks*.
 
 ## Scope lenses
 
-**The actor with three tables** — a `WalletAccount` with
-`ownerType: CUSTOMER` belongs to a `Party`/`Contact`; one with
-`ownerType: MERCHANT` belongs to an `Organization`/tenant — never a
-`User` directly in either case, and never confusable, since `ownerType`
-is a required, non-nullable discriminator on every row.
-**The principal with no permission key** — n/a: every wallet action is
-performed by an authenticated `Contact` (customer top-up/spend) or an
-authenticated `User` (merchant-side confirmation, staff-initiated
-adjustment).
+**The actor with three tables** — `WalletAccount.customerId` is a
+`Party`/`Contact`; `MerchantPayable.organizationId` is a merchant tenant,
+never a `User` in either case.
+**The principal with no permission key** — n/a: every action is by an
+authenticated `Contact` (purchase/spend) or `User` (payout-run
+processing, adjustment).
 **The grant that ends itself** — `WalletAccountStatus = FROZEN` stops all
-debits immediately (a fraud hold, a dispute); `CLOSED` is terminal, its
-own remaining `AVAILABLE` balance paid out or refunded before closure,
-never simply zeroed.
+new `RESERVE`s immediately; `MerchantPayableStatus = DISPUTED` pauses a
+specific payable's own inclusion in the next payout run without touching
+any other payable.
 **Whose rows, and which columns** — a customer sees only their own
-`WalletAccount`'s own entries; a merchant sees only their own; no shared
-visibility exists between the two ledgers beyond the `orderId` linking a
-specific `ORDER_PAYMENT`/`ORDER_PAYMENT_HOLD` pair, and even that link
-never exposes one party's own account balance to the other.
-**The threshold nobody approves alone** — a manual `ADJUSTMENT` entry
+wallet; a merchant sees only their own `MerchantPayable` rows, scoped by
+`organizationId` exactly like `SupplierBill` already is — no cross-
+visibility exists between a customer's wallet and any merchant's own
+payable rows beyond the `orderId` linking one `REDEEM` entry to one
+`MerchantPayable`.
+**The threshold nobody approves alone** — a manual wallet `ADJUSTMENT`
 above a configurable value requires `finance.wallets.adjust.approve`,
-distinct from `.adjust` — the identical amount-band-and-role split every
-other money-adjacent mechanism in this document set already requires; an
-early release override (releasing a `HELD` entry before its own trigger
-condition is actually met) is its own, even more tightly gated action,
-`finance.wallets.release.override`, logged with the specific reason.
-**The toxic pair** — the staff member who creates a manual `ADJUSTMENT`
-is never its own approver, identical to every other self-approval
-refusal in this document set (doc 63, 145, 149, 152).
-**Authority and blast radius** — who may change a merchant's own
-release-trigger eligibility (i.e., who decides a merchant counts as
-"verified") is never a manual override — it reads doc 18's own
-`IdentityVerification.status` directly, so the only way to change it is
-through doc 18's own real verification flow, never a `Setting` a support
-agent could flip to fast-track a merchant's own payouts.
-**Audience is a capability, not an address** — a merchant is notified the
-moment funds move from `HELD` to `AVAILABLE`, and a customer is notified
-on every `TOPUP`/`SPEND`, both through doc 24's own existing
-`NotificationsService`, resolved from the account owner's own contact
-record, never a hardcoded address.
-**Request or record** — `topUp()`/`spendFromWallet()` are REQUESTS
-(refusable — insufficient balance, a frozen account); once a
-`WalletEntry` is written, it is a RECORD, immutable, exactly like every
-other financial fact in this document set — a correction is always a new,
-opposite entry, never an edit.
-**The movement with no address** — n/a: a wallet entry carries no stock
-movement; every entry inherits its own account's `organizationId`, and
-an `orderId`-linked entry inherits that order's own `locationId` where
-relevant for reporting.
+distinct from `.adjust`, identical to the prior design; marking a
+`MerchantPayable` `DISPUTED` (pulling it from a payout run) requires
+`finance.merchant-payables.dispute`, logged with the specific reason.
+**The toxic pair** — the staff member creating a manual `ADJUSTMENT` or
+resolving a `DISPUTED` payable is never its own approver, identical to
+every other self-approval refusal in this document set.
+**Authority and blast radius** — who counts as "verified" for payout-run
+speed is never a manual override — it reads doc 18's own
+`IdentityVerification.status` directly, unchanged from the prior design's
+own answer to this exact lens.
+**Audience is a capability, not an address** — a customer is notified on
+every `PURCHASE`/`REDEEM`; a merchant is notified when a `MerchantPayable`
+is created and again when it's actually paid — both through doc 24's
+existing `NotificationsService`.
+**Request or record** — `placeOrderWithWalletCredit()` is a REQUEST
+(refusable — insufficient balance); once a `WalletEntry`/`MerchantPayable`
+is written, both are RECORDS, immutable — a correction is always a new
+entry or a status transition, never an edit to an existing row.
+**The movement with no address** — n/a: no stock movement; every entry/
+payable inherits its own account's/order's `organizationId`.
 **Four hours down** — a wallet-funded order placed during an outage
-degrades to the identical manual-fallback-then-reconciliation answer
-every other physical-event document in this set already gives — a
-till operator records the sale on paper, the wallet debit is entered
-once systems return, `sourceRef`'s own idempotency key preventing a
-double-debit if the same sale is somehow entered twice.
-**Click the number** — a wallet's own transaction history shows every
-entry, its type, its `orderId` link, and its availability state — never
-an opaque running total with no drill-down to what produced it.
-**The unwritten posting rule** — a `WalletEntry` is itself a sub-ledger,
-not the general ledger — `TOPUP`/`SPEND` still post through the existing
-`Payment`/`Order` posting rules unchanged; `PLATFORM_FEE` posts as
-Newax's own revenue in `apps/platform`'s own books (doc 153's own
-citation), keyed by `findPostedEntry('WalletFee', orderId)`, never a
-second, competing posting path.
-**Every column or none** — every `WalletEntry` sets `organizationId`
-(via its account) and, for a merchant account, whatever `retailBrandId`
-that merchant's own tenant record carries — never left undimensioned
-where a real dimension already exists.
-**The period that already moved** — n/a directly to the wallet ledger
-itself (it is not a GL, per "The unwritten posting rule" above); the
-fee's own GL posting follows the identical closed-period refusal every
-other posting in this document set already states.
-**The second legal entity** — a `MERCHANT` wallet is scoped to one
-tenant's own `organizationId`; two brands under one Organization-edition
-account each get their own wallet, never a shared balance, per doc 111's
-own cascade-without-merge answer.
-**Dry run before live** — `availableBalance()` is already a pure,
-side-effect-free read; a "what would this order's fee/net payout look
-like" preview calls the identical arithmetic `releaseToMerchant()` uses,
-with no write.
+degrades to the same manual-fallback-then-reconciliation answer every
+physical-event document in this set already gives, `sourceRef`'s own
+idempotency key preventing a double-entry on re-entry.
+**Click the number** — a merchant's own payout screen shows every
+`MerchantPayable`, its own `orderId`, gross/fee/net breakdown, and status
+— never an opaque lump-sum deposit with no per-order trace.
+**The unwritten posting rule** — `PURCHASE` posts Dr Cash/Bank, Cr
+Deferred Revenue (a liability); `REDEEM` posts Dr Deferred Revenue, Cr
+Recognized Revenue *and* Dr Cost of Goods Sold-equivalent/Cr Accounts
+Payable for the `MerchantPayable` amount — the identical
+`findPostedEntry(source, sourceRef)` idempotent-posting discipline every
+other document in this set already requires, applied to a two-sided
+entry (revenue recognition + a new payable) instead of one.
+**Every column or none** — every entry/payable sets `organizationId`
+(and, for `MerchantPayable`, whatever `retailBrandId` the merchant's own
+tenant record carries) — never undimensioned where a real dimension
+exists.
+**The period that already moved** — a `REDEEM`/`MerchantPayable` dated
+into a `CLOSED` fiscal period posts into the current open period instead,
+identical to every other posting rule's own answer.
+**The second legal entity** — a `MerchantPayable` is scoped to one
+merchant tenant's own `organizationId`; Newax's own deferred-revenue
+liability lives in Newax's own books (`apps/platform`), never mixed into
+any tenant's own chart of accounts.
+**Dry run before live** — `availableBalance()` and a payout-run preview
+(what would this run actually pay, to whom, net of fees) are both pure
+reads with no write, called before a real payment run executes.
 **Three silhouettes** — Solo/Chain: a single-tenant deployment has no
-"merchant wallet" to speak of at all (there is only one merchant — the
-deployment's own owner), so only the customer-side wallet is relevant.
-Organization/shared-hosting (doc 39): the merchant-side escrow becomes
-real, one `WalletAccount` per tenant, exactly the scale this mechanism
-exists for.
+"merchant payable to a different merchant" concern at all — this
+mechanism is meaningful only where Newax's own multi-tenant platform
+mediates payment between a customer and an independent merchant tenant
+(doc 39's own shared-hosting scale). Organization/shared-hosting: the
+real case this document exists for.
 **The absent collaborator** — with the wallet module off, every order
-settles through the existing direct payment path unchanged — this
-mechanism is entirely additive, never a required dependency of ordinary
-checkout.
+settles through the existing direct payment path (a merchant's own
+payment gateway account, untouched by any of this) — entirely additive.
 **The second copy of the write** — `@@unique([accountId, type,
-sourceRef])` is the entire idempotency guarantee: a retried top-up, a
-redelivered `OrderStatusChanged` event, a re-run release attempt — all
-become no-ops against an already-written entry, never a duplicate credit
-or debit.
-**The hundred-thousandth row** — `WalletEntry` is indexed by
-`[accountId, createdAt]`; volume is bounded by real transaction count,
-never unbounded, and `availableBalance()`'s own aggregation is exactly
-the shape doc 01's own weighted-average-cost computation already proves
-scales at this repository's real data volumes.
-**The reversal document** — a `REFUND` entry is the reversal document
-this lens requires: it names the specific `ORDER_PAYMENT`/`SPEND` entry
-it corrects via `sourceRef`, issuable for part of an order (a partial
-refund), never a blanket "zero this order's wallet activity" adjustment
-— the exact fix doc 24's own observed gap already named for
-`PaymentsService.refund()`, generalized here.
-**The undo fan-out** — reversing a `RELEASE` after a merchant has already
-withdrawn the funds to their own bank (a `PAYOUT` entry already exists)
-does not claw back real bank money automatically — it creates a negative
-balance the merchant owes back, surfaced to doc 145's own receivables/
-dunning mechanism (this same batch) rather than assumed automatically
-recoverable.
-**The version stamp** — a change to `transactionFeeBps` (doc 153) applies
-only to orders released after the change; an order already `HELD` under
-the old rate releases at the rate that was in effect when it was
-captured, never silently recalculated.
-**The erasure the ledger cannot obey** — `WalletAccount.ownerId`
-(customer side) holds a person; on that customer's deletion, follows the
-same basis every other financial record in this document set already
-states — retained as a financial record, pseudonymised where the basis
-allows, the balance itself never simply deleted while still non-zero.
-**The failure path** — a `releaseToMerchant()` call that fails partway
-(the fee-debit succeeds, the release-credit fails) is wrapped in one
-database transaction — both entries commit together or neither does,
-never a state where a merchant is charged the fee but never credited the
-release.
+sourceRef])` and `MerchantPayable.orderId @unique` are the entire
+idempotency guarantee — a retried purchase, a redelivered confirmation
+event, a re-run payout-scheduling call all become no-ops against an
+already-written row.
+**The hundred-thousandth row** — both tables indexed for their own real
+query patterns (`[accountId, createdAt]`, `[organizationId, status]`),
+bounded by real transaction volume, never unbounded.
+**The reversal document** — a `REFUND` entry reverses a `PURCHASE` (the
+customer gets real money back, reversing Newax's own deferred-revenue
+liability) or, if already `REDEEM`ed, requires a corresponding
+`CreditNote`-style correction against the `MerchantPayable` it already
+created (doc 145's own `CreditNote`/`DebitNote` mechanism, reused here
+rather than invented twice) — named explicitly rather than left
+implicit.
+**The undo fan-out** — reversing a `MerchantPayable` already `PAID` (real
+bank money already sent) does not claw back automatically — it creates a
+negative balance the merchant owes back, surfaced to doc 145's own
+receivables/dunning mechanism, identical to the prior design's own answer
+to this lens.
+**The version stamp** — a `transactionFeeBps` (doc 153) change applies
+only to payables created after the change; an already-`PAID` payable is
+never recalculated under a new rate.
+**The erasure the ledger cannot obey** — `WalletAccount.customerId` holds
+a person; on deletion, follows the same basis every other financial
+record in this document set states — retained as a financial record,
+pseudonymised where the basis allows, never deleted while a non-zero
+balance or an open `MerchantPayable` still references it.
+**The failure path** — `onMerchantConfirmed()`'s own two writes (the
+`REDEEM` entry and the `MerchantPayable` creation) are wrapped in one
+transaction — both commit or neither does, never a redeemed credit with
+no corresponding payable, or a payable with no corresponding redemption.
 
 ## Work orders
 
-**WO-155.0 (blocking, not engineering) — resolve the regulatory
-question** stated at the top of this document, with real counsel, before
-any of the following handles real customer money. Record the outcome as
-a `DECISIONS.md` entry.
+**WO-155.0 (a lighter confirmation, not a block)** — confirm with real
+counsel that (a) the store credit as designed is genuinely closed-loop
+(never cash-out-able, never customer-to-customer transferable) and (b)
+the merchant agreement correctly documents Newax's own buyer/facilitator
+role for the trade-payable characterization to hold, then record the
+outcome in `DECISIONS.md`.
 **WO-155.1 — schema**: `WalletAccount`, `WalletEntry`,
-`WalletOwnerType`, `WalletEntryType`, `WalletAccountStatus`,
-`WalletEntryAvailability`, forward-only migration.
-**WO-155.2 — `WalletService`**: `topUp()`, `spendFromWallet()`,
-`captureOrderPayment()`, `releaseToMerchant()`, `releaseTrigger()`
-(reading doc 18's `IdentityVerification` unchanged), `refund()`,
-`adjustment()` (with its own approval split).
-**WO-155.3 — wire `releaseTrigger()`'s two paths**: a merchant-confirms-
-order event (an existing or new order-acceptance action) for the
-verified path; the customer-portal's own "confirm receipt" action (doc
-07) for the unverified path.
+`WalletEntryType`, `WalletAccountStatus`, `MerchantPayable`,
+`MerchantPayableStatus`, forward-only migration.
+**WO-155.2 — `WalletService`**: `purchaseCredit()`,
+`placeOrderWithWalletCredit()`, `onMerchantConfirmed()`,
+`onMerchantDeclinedOrExpired()`, `refund()`, `adjustment()`.
+**WO-155.3 — `MerchantPayableService`**: `createMerchantPayable()`,
+`schedulePayoutRun()` (reading doc 18's `IdentityVerification` for
+timing, unchanged), `processPayoutRun()` reusing doc 145's own AP
+payment-run mechanism.
 **WO-155.4 — permissions**: `finance.wallets.adjust/.adjust.approve`,
-`finance.wallets.release.override`, seeded to real, narrow roles.
-**WO-155.5 — UI**: a customer-facing wallet balance/top-up/history
-screen (customer portal, doc 07); a merchant-facing payout dashboard
-(pending/held vs. available balance, payout history, the specific orders
-behind each figure per "Click the number" above).
+`finance.merchant-payables.dispute`, seeded to real, narrow roles.
+**WO-155.5 — UI**: a customer-facing wallet balance/purchase/history
+screen (doc 07); a merchant-facing payable/payout screen (doc 145's own
+supplier-bill-style screen, generalized).
 
 ## Acceptance
 
-- No real production wallet activity occurs before WO-155.0's own
-  regulatory decision is recorded in `DECISIONS.md`.
-- `availableBalance()` never counts a `HELD` entry, proven by a spec.
-- A merchant with an `APPROVED` `IdentityVerification` releases on their
-  own order confirmation; one without releases only on customer receipt
-  confirmation, proven by a spec exercising both paths.
-- `releaseToMerchant()`'s own fee-debit and release-credit either both
-  commit or neither does, proven by a spec that forces a mid-transaction
-  failure.
-- A retried `topUp()`/`captureOrderPayment()` call with the same
-  `sourceRef` produces no duplicate entry, proven by a spec.
+- `availableBalance()` correctly drops on `RESERVE`, is unaffected by
+  `REDEEM`, and is restored by `RELEASE_RESERVATION`, proven by a spec
+  covering all three transitions.
+- `onMerchantConfirmed()`'s own `REDEEM` entry and `MerchantPayable`
+  creation either both commit or neither does, proven by a spec forcing
+  a mid-transaction failure.
+- A verified merchant's `MerchantPayable` enters the next payout run
+  immediately on order confirmation; an unverified merchant's waits for
+  the customer's own receipt confirmation, proven by a spec exercising
+  both paths.
+- A retried `purchaseCredit()`/`onMerchantConfirmed()` call with the same
+  `sourceRef`/`orderId` produces no duplicate entry or payable.
 
 ## Out of scope
 
-Interest or any yield on a held/available wallet balance — a real
-regulatory and product question of its own (paying yield on customer
-funds is its own licensing conversation) not addressed here. Cross-
-wallet transfers (a customer sending balance to another customer, or a
-merchant to another merchant) — no named requirement for this exists;
-not built speculatively.
+Interest or yield on a wallet balance — its own separate regulatory
+question, not addressed here. Cross-wallet transfers between customers —
+would also work against the closed-loop, non-transferable characterization
+WO-155.0 depends on, so deliberately not built. Real-time, per-order
+merchant payout (paying a merchant the instant their payable is created)
+— named in §3 as a deliberate change from the prior design; settlement is
+batched through doc 145's own existing AP payment-run cadence.

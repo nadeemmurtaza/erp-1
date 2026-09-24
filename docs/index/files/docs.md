@@ -328,7 +328,7 @@ All 385 tracked files in `docs/*`, by directory.
 | `152-purchase-requisition.md` | doc | 190 |  |
 | `153-usage-based-pricing-model.md` | doc | 290 |  |
 | `154-three-headline-commercial-plans.md` | doc | 182 |  |
-| `155-wallet-stored-value-merchant-escrow.md` | doc | 354 |  |
+| `155-wallet-stored-value-merchant-escrow.md` | doc | 355 |  |
 | `16-pbac-row-scoping.md` | doc | 184 |  |
 | `17-inventory-locations.md` | doc | 254 |  |
 | `18-identity-verification.md` | doc | 143 |  |

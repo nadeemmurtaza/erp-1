@@ -7,6 +7,7 @@ import { CartModule } from './cart/cart.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { CrmModule } from './crm/crm.module';
 import { FinanceModule } from './finance/finance.module';
+import { GiftCardsModule } from './giftcards/giftcards.module';
 import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { MarketingModule } from './marketing/marketing.module';
@@ -18,6 +19,7 @@ import { PaymentsModule } from './payments/payments.module';
 import { PayrollModule } from './payroll/payroll.module';
 import { PosModule } from './pos/pos.module';
 import { ProductionModule } from './production/production.module';
+import { PromotionsModule } from './promotions/promotions.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
 import { ReportsModule } from './reports/reports.module';
 import { SettingsAdminModule } from './settings/settings-admin.module';
@@ -79,6 +81,14 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'tax', module: TaxModule },
   { name: 'finance', module: FinanceModule },
   { name: 'payroll', module: PayrollModule },
+  // Same allowlist tier as payments/finance (not offByDefault): checkout
+  // couples to both directly, in the same transaction as order creation
+  // (`orders -> promotions`, `orders -> giftcards` in KNOWN_MODULE_COUPLINGS)
+  // — see DECISIONS.md. "A shop may want one without the other" (WO-5's own
+  // words) is a DATA decision (no active Discount rows, no issued
+  // GiftCards), not a Nest-boot-time module toggle.
+  { name: 'promotions', module: PromotionsModule },
+  { name: 'giftcards', module: GiftCardsModule },
   { name: 'tracking', module: TrackingModule },
   // Off by default for every deployment today (WO-18.3) — a chain
   // deployment switches it on when it actually has branches or brands to

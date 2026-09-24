@@ -3,7 +3,7 @@
 
 # Migrations
 
-**62** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**63** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -95,6 +95,7 @@ nothing here fails a build.
 | 2026-09-23 | `add_payroll` | 39 | CREATE TYPE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX, ALTER TABLE | CompensationRate, LeaveAccrualRun, LeaveBalance, LeaveRequest, LeaveType, PayRun, PayRunAdjustment, PayRunLin… |
 | 2026-09-24 | `init` | 29 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | PlatformOpsClient, PlatformPlan, PlatformSubscription, PlatformTenant, PlatformUsageRecord, SupportAccessGran… |
 | 2026-09-24 | `add_option_templates_redirects_sku_seo` | 24 | ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, INSERT, CREATE INDEX | Category, OptionTemplate, OptionTemplateTranslation, OptionTemplateValue, OptionTemplateValueTranslation, Pro… |
+| 2026-09-24 | `add_promotions_giftcards_store_credit` | 31 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | Discount, GiftCard, GiftCardTransaction, OrderDiscount, PromoCode, StoreCreditTransaction, User |
 
 
 ---

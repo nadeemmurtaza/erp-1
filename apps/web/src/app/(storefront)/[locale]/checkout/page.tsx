@@ -31,6 +31,14 @@ interface CheckoutResponse {
   };
 }
 
+/** What POST /promotions/preview hands back — see promotions-public.controller.ts. */
+interface DiscountPreview {
+  linePerUnitDiscounts: Record<string, number>;
+  orderDiscount: number;
+  shippingDiscount: number;
+  applied: Array<{ discountId: string; name: string; type: string; amount: number }>;
+}
+
 /**
  * Checkout.
  *
@@ -64,6 +72,45 @@ export default function CheckoutPage() {
   });
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+
+  // Phase 5 (WO-5.3/5.4/5.5): promo code, gift card and store credit — all
+  // validated authoritatively at order placement; the promo preview here is
+  // purely a live estimate using the SAME evaluator the real checkout uses
+  // (House Rule 11), so it can never show a number the order disagrees with.
+  const [promoCode, setPromoCode] = useState('');
+  const [promoPreview, setPromoPreview] = useState<DiscountPreview | null>(null);
+  const [promoError, setPromoError] = useState<string | null>(null);
+  const [checkingPromo, setCheckingPromo] = useState(false);
+  const [giftCardCode, setGiftCardCode] = useState('');
+  const [giftCardAmount, setGiftCardAmount] = useState('');
+  const [storeCreditAmount, setStoreCreditAmount] = useState('');
+  const isSignedIn = Boolean(getCustomerToken());
+
+  async function checkPromoCode() {
+    if (!cart || !promoCode.trim()) return;
+    setCheckingPromo(true);
+    setPromoError(null);
+    try {
+      const preview = await request<DiscountPreview>('/promotions/preview', {
+        method: 'POST',
+        credentials: 'include',
+        body: {
+          lines: cart.items.map((line) => ({ id: line.id, productId: line.productId, unitPrice: line.unitPrice, quantity: line.quantity })),
+          // Shipping is priced by delivery city at placement (see the
+          // "shippingByCity" summary row below) — never estimated here, so a
+          // FREE_SHIPPING code's rupee value only shows at the real total.
+          shippingFee: 0,
+          promoCode: promoCode.trim(),
+        },
+      });
+      setPromoPreview(preview);
+    } catch (cause) {
+      setPromoPreview(null);
+      setPromoError(cause instanceof Error ? cause.message : t('promoInvalid'));
+    } finally {
+      setCheckingPromo(false);
+    }
+  }
 
   useEffect(() => {
     void request<PaymentMethod[]>('/payments/methods')
@@ -111,6 +158,10 @@ export default function CheckoutPage() {
           paymentMethod: method,
           email: form.email || undefined,
           note: form.note || undefined,
+          promoCode: promoPreview ? promoCode.trim() : undefined,
+          giftCardCode: giftCardCode.trim() || undefined,
+          giftCardAmount: giftCardCode.trim() && giftCardAmount ? Math.round(Number(giftCardAmount) * 100) : undefined,
+          storeCreditAmount: isSignedIn && storeCreditAmount ? Math.round(Number(storeCreditAmount) * 100) : undefined,
         },
       });
 
@@ -364,6 +415,71 @@ export default function CheckoutPage() {
             </Field>
           </section>
 
+          <section className="card space-y-4 p-4 sm:p-6">
+            <h2 className="text-base font-semibold text-neutral-900">{t('offersTitle')}</h2>
+
+            <Field label={t('promoCode')}>
+              <div className="flex gap-2">
+                <input
+                  value={promoCode}
+                  onChange={(event) => {
+                    setPromoCode(event.target.value);
+                    setPromoPreview(null);
+                    setPromoError(null);
+                  }}
+                  className="field-input flex-1"
+                  placeholder="EID2026"
+                />
+                <button
+                  type="button"
+                  onClick={() => void checkPromoCode()}
+                  disabled={checkingPromo || !promoCode.trim()}
+                  className="btn-secondary shrink-0"
+                >
+                  {checkingPromo ? t('checking') : t('apply')}
+                </button>
+              </div>
+              {promoError ? <p className="mt-1.5 text-xs text-red-600">{promoError}</p> : null}
+              {promoPreview && promoPreview.applied.length > 0 ? (
+                <p className="mt-1.5 text-xs text-feedback-positive">
+                  {t('promoApplied', { name: promoPreview.applied[0]!.name })}
+                </p>
+              ) : null}
+            </Field>
+
+            <Field label={t('giftCardCode')} hint={t('giftCardHint')}>
+              <div className="grid grid-cols-2 gap-2">
+                <input
+                  value={giftCardCode}
+                  onChange={(event) => setGiftCardCode(event.target.value)}
+                  className="field-input"
+                  placeholder="XXXX-XXXX-XXXX"
+                />
+                <input
+                  type="number"
+                  min={1}
+                  value={giftCardAmount}
+                  onChange={(event) => setGiftCardAmount(event.target.value)}
+                  className="field-input"
+                  placeholder={t('amountRs')}
+                />
+              </div>
+            </Field>
+
+            {isSignedIn ? (
+              <Field label={t('storeCredit')}>
+                <input
+                  type="number"
+                  min={1}
+                  value={storeCreditAmount}
+                  onChange={(event) => setStoreCreditAmount(event.target.value)}
+                  className="field-input"
+                  placeholder={t('amountRs')}
+                />
+              </Field>
+            ) : null}
+          </section>
+
           <section className="card p-4 sm:p-6">
             <h2 className="text-base font-semibold text-neutral-900">{t('summary')}</h2>
 
@@ -391,6 +507,21 @@ export default function CheckoutPage() {
                 <dt className="text-neutral-500">{t('goods')}</dt>
                 <dd className="text-neutral-900">{formatMoney(cart.totals.grandTotal, locale)}</dd>
               </div>
+              {promoPreview && promoPreview.applied.length > 0 ? (
+                <div className="flex justify-between">
+                  <dt className="text-neutral-500">{t('discount')}</dt>
+                  <dd className="text-feedback-positive">
+                    -{formatMoney(
+                      promoPreview.orderDiscount +
+                        Object.entries(promoPreview.linePerUnitDiscounts).reduce((sum, [lineId, perUnit]) => {
+                          const line = cart.items.find((candidate) => candidate.id === lineId);
+                          return sum + perUnit * (line?.quantity ?? 0);
+                        }, 0),
+                      locale,
+                    )}
+                  </dd>
+                </div>
+              ) : null}
               <div className="flex justify-between">
                 <dt className="text-neutral-500">{t('shipping')}</dt>
                 <dd className="text-neutral-400">{t('shippingByCity')}</dd>

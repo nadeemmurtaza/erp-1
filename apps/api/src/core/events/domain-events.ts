@@ -70,6 +70,9 @@ export const DomainEvent = {
   PayrollRunPosted: 'payroll.run_posted',
   /** PayRunService.postAdjustment() (docs/implementation/19-payroll.md WO-19.5) — the overpayment/correction reversal path, a distinct postable fact from the original run it corrects. */
   PayrollAdjustmentPosted: 'payroll.adjustment_posted',
+
+  /** OrdersService.place() (WO-5.3) — fires once a discount/promo code was actually applied to a placed order, for analytics. Never fires for a zero-discount order. */
+  DiscountRedeemed: 'promotions.discount_redeemed',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -344,6 +347,17 @@ export interface PayrollAdjustmentPostedPayload {
   postedAt: string;
 }
 
+export interface DiscountRedeemedPayload {
+  orderId: string;
+  orderNumber: string;
+  discountId: string | null;
+  promoCodeId: string | null;
+  name: string;
+  type: string;
+  /** Paisa this discount removed from the order. */
+  amount: number;
+}
+
 export interface EmailReplyReceivedPayload {
   inboundEmailId: string;
   emailAccountId: string;
@@ -397,4 +411,5 @@ export interface DomainEventPayloads {
   [DomainEvent.OrderEconomicsComputed]: OrderEconomicsComputedPayload;
   [DomainEvent.PayrollRunPosted]: PayrollRunPostedPayload;
   [DomainEvent.PayrollAdjustmentPosted]: PayrollAdjustmentPostedPayload;
+  [DomainEvent.DiscountRedeemed]: DiscountRedeemedPayload;
 }

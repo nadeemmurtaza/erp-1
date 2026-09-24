@@ -2,6 +2,33 @@
 
 **Read `00-HOUSE-RULES.md` first.** Depends on Phase 3.
 
+> **Status (2026-09-24): WO-5.1 through WO-5.6 built, verified against a
+> real database.** `promotions` (Discount/PromoCode/OrderDiscount) and
+> `giftcards` (GiftCard/GiftCardTransaction/StoreCreditTransaction) are new
+> core modules; `evaluateDiscounts` is pure and shared
+> (`packages/shared/src/discounts.ts`, 18 unit tests). Checkout
+> (`orders.service.ts`'s `place()`) evaluates and applies discounts, promo
+> codes, gift-card tender and store-credit tender inside the same
+> transaction as order creation — proven race-safe by
+> `test/promotions-checkout.e2e-spec.ts` against a real Postgres database,
+> not asserted by convention. Admin screens: `/admin/marketing/discounts`
+> (+ `/new`/`/[id]`, with the 30-day preview), `/admin/marketing/promo-codes`,
+> `/admin/customers/gift-cards` (+ `/[id]`), and `/admin/customers/[id]`
+> (store credit only — see below). Storefront checkout carries a promo-code
+> field with a live preview, a gift-card code+amount field, and (signed in)
+> a store-credit amount field. Permissions: `promotions.view`/`.manage`,
+> `giftcards.view`/`.manage` — four keys, not the two named below (see
+> `DECISIONS.md` ADR-028 §1 for why).
+>
+> **Two things this phase does NOT cover, on purpose:** selling a gift card
+> as a storefront product (`GiftCard.sourceOrderId` exists in the schema;
+> nothing writes to it yet — ADR-028 §6), and reversing a discount's usage
+> count or a redeemed gift card's balance when an order is later cancelled
+> or returned (Phase 6's own "afterlife" work, not yet built — ADR-028's
+> own Consequences). `/admin/customers/[id]` is scoped to store credit only,
+> not a general customer profile — no such screen exists elsewhere in this
+> codebase yet either (ADR-028 §7).
+
 ## Why now
 
 `Order` already has `orderDiscount` and `itemDiscountTotal`, and `OrderItem` has

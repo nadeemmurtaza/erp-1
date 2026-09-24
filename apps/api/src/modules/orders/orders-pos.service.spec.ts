@@ -12,6 +12,9 @@ import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.re
 import { InventoryService } from '../inventory/inventory.service';
 import { PaymentsService } from '../payments/payments.service';
 import { TaxService } from '../tax/tax.service';
+import { PromotionsService } from '../promotions/promotions.service';
+import { GiftCardsService } from '../giftcards/giftcards.service';
+import { StoreCreditService } from '../giftcards/store-credit.service';
 import { OrdersService } from './orders.service';
 
 /**
@@ -47,6 +50,12 @@ describe('OrdersService — placeFromPos (WO-21.3)', () => {
         { provide: PaymentsService, useValue: {} },
         { provide: CheckoutValidatorRegistry, useValue: { validateAll: jest.fn().mockResolvedValue([]) } },
         { provide: TaxService, useValue: {} },
+        // placeFromPos() (the only method this suite exercises) never
+        // touches discounts/gift cards/store credit — plain stubs, never
+        // called.
+        { provide: PromotionsService, useValue: {} },
+        { provide: GiftCardsService, useValue: {} },
+        { provide: StoreCreditService, useValue: {} },
       ],
     }).compile();
 

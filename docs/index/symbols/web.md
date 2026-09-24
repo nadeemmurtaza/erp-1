@@ -133,6 +133,24 @@ Every top-level export in `web`, with the line to open.
 | `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `AdminContactsPage` | default | :57 | Customers. |
 
+### `apps/web/src/app/(admin)/admin/(app)/customers/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `CustomerRecordPage` | default | :33 | The customer record — today, only what WO-5.5 needs: store-credit balance and ledger. |
+
+### `apps/web/src/app/(admin)/admin/(app)/customers/gift-cards`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `GiftCardsPage` | default | :30 | Gift cards — real money in hand. |
+
+### `apps/web/src/app/(admin)/admin/(app)/customers/gift-cards/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `GiftCardDetailPage` | default | :33 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/customers/insights`
 
 | File | Symbol | Kind | Line | Doc |
@@ -272,6 +290,30 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `MarketingAdminPage` | default | :17 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/marketing/discounts`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `DiscountsPage` | default | :44 | Discount rules — the ones that apply themselves. |
+
+### `apps/web/src/app/(admin)/admin/(app)/marketing/discounts/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `EditDiscountPage` | default | :9 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/marketing/discounts/new`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `NewDiscountPage` | default | :8 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/marketing/promo-codes`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `PromoCodesPage` | default | :31 | Promo codes — the same discount rules, plus a code the customer types. |
+
 ### `apps/web/src/app/(admin)/admin/(app)/o`
 
 | File | Symbol | Kind | Line | Doc |
@@ -313,7 +355,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminOrderDetailPage` | default | :103 |  |
+| `page.tsx` | `AdminOrderDetailPage` | default | :105 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/orders/insights`
 
@@ -633,7 +675,7 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `loading.tsx` | `Loading` | default | :1 |  |
-| `page.tsx` | `CheckoutPage` | default | :43 | Checkout. |
+| `page.tsx` | `CheckoutPage` | default | :51 | Checkout. |
 
 ### `apps/web/src/app/(storefront)/[locale]/forgot-password`
 
@@ -761,8 +803,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :49 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :62 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :100 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :540 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :555 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :566 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :581 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
@@ -778,6 +820,7 @@ Every top-level export in `web`, with the line to open.
 | `session.tsx` | `AdminSession` | interface | :12 | The signed-in staff member, plus the one way to check what they can do. |
 | `session.tsx` | `useAdminSession` | function | :31 | The signed-in staff member. |
 | `stage-badge.tsx` | `StageBadge` | function | :12 | The stage a job is at. |
+| `toast-stack.tsx` | `ToastStack` | function | :13 | The fixed top-right toast stack every `useToast()` caller renders. |
 
 ### `apps/web/src/components/admin/bom`
 
@@ -785,6 +828,16 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `cost-breakdown.tsx` | `CostBreakdown` | function | :36 | Per-component cost breakdown — a live recompute (GET .../cost), not the cached rolledUpUnitCost sho… |
 | `recipe-editor.tsx` | `RecipeEditor` | function | :55 | Create or edit a recipe. |
+
+### `apps/web/src/components/admin/marketing`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `discount-form.tsx` | `DiscountType` | type | :9 |  |
+| `discount-form.tsx` | `DiscountScope` | type | :10 |  |
+| `discount-form.tsx` | `DiscountFormValues` | interface | :12 |  |
+| `discount-form.tsx` | `EMPTY_DISCOUNT` | const | :35 |  |
+| `discount-form.tsx` | `DiscountForm` | function | :97 | The discount builder — one form, shared by "new" and "edit" (Law 5's own job is "define a discount… |
 
 ### `apps/web/src/components/common`
 
@@ -910,7 +963,7 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `downloads.ts` | `exportFilename` | function | :18 | `exportFilename('orders')` -> `yaseen-orders.csv` |
 | `payment-methods.ts` | `PAYMENT_PROVIDER_LABELS` | const | :15 | How a payment provider's key is written for staff. |
-| `payment-methods.ts` | `paymentProviderLabel` | function | :24 | Falls back to humanising the key, so a provider added later still reads. |
+| `payment-methods.ts` | `paymentProviderLabel` | function | :26 | Falls back to humanising the key, so a provider added later still reads. |
 | `permissions.ts` | `PERMISSION_CATALOG` `PERMISSION_KEYS` `PERMISSION_GROUPS` `ADMIN_LOCKED_PERMISSIONS` `ROLE_PERMISSION_SEED` `type PermissionKey` `type PermissionDefinition` `type PermissionGroup` `type PermissionSensitivity` | re-export |  | from `@newax/shared` |
 | `routes.ts` | `ROUTES` | const | :18 | Every internal path the app links to, in one place. |
 | `storage.ts` | `STORAGE_KEYS` | const | :22 |  |

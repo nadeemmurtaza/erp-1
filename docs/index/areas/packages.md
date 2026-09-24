@@ -3,7 +3,7 @@
 
 # packages/* — code shared across every surface
 
-61 files · 5,072 lines
+64 files · 5,679 lines
 
 
 Code shared across surfaces. `@newax/shared` is where House Rule 1 is enforced:
@@ -23,7 +23,7 @@ file may hard-code one.
 | `packages/pos-core` | 4 | 69 | script, json |
 | `packages/pos-core/src` | 9 | 412 | unit test, module |
 | `packages/shared` | 4 | 71 | script, json |
-| `packages/shared/src` | 40 | 4,419 | module, unit test |
+| `packages/shared/src` | 43 | 5,026 | module, unit test |
 
 
 ## Entry points
@@ -42,11 +42,13 @@ file may hard-code one.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `packages/shared/src/permissions.ts` | 530 | module | The permission catalog for PBAC (Permission-Based Access Control). |
+| `packages/shared/src/permissions.ts` | 561 | module | The permission catalog for PBAC (Permission-Based Access Control). |
 | `packages/shared/src/measurements/defaults.ts` | 448 | module |  |
 | `packages/shared/src/brand.ts` | 334 | module | THE BRAND FILE. |
+| `packages/shared/src/discounts.ts` | 322 | module | The discount rules engine. |
 | `packages/shared/src/pricing.spec.ts` | 307 | unit test |  |
 | `packages/shared/src/pricing.ts` | 275 | module | Order maths. |
+| `packages/shared/src/discounts.spec.ts` | 215 | unit test |  |
 | `packages/shared/src/http-client.ts` | 200 | module | The one HTTP layer for a signed-in browser client. |
 | `packages/shared/src/measurements/schema.spec.ts` | 166 | unit test |  |
 | `packages/shared/src/constants.ts` | 146 | module |  |
@@ -55,8 +57,6 @@ file may hard-code one.
 | `packages/shared/src/entities/product.ts` | 119 | module |  |
 | `packages/shared/src/enums.ts` | 104 | module | Enum values mirrored from the Prisma schema. |
 | `packages/shared/src/entities/person.ts` | 99 | module |  |
-| `packages/shared/src/fabric-estimate.ts` | 95 | module | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
-| `packages/shared/src/variant-matrix.ts` | 89 | module | The variant matrix builder's cross-product (WO-3.5, docs/implementation/03-variants-sku-s… |
 
 
 ---

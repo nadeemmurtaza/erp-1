@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1478,
-    "lines": 227265,
-    "routes": 375,
-    "controllers": 65,
-    "models": 146,
-    "enums": 62,
-    "migrations": 62,
-    "events": 39,
-    "permissions": 44,
-    "screens": 158,
-    "crons": 9,
-    "specs": 138,
+    "files": 1509,
+    "lines": 231836,
+    "routes": 394,
+    "controllers": 70,
+    "models": 152,
+    "enums": 65,
+    "migrations": 63,
+    "events": 40,
+    "permissions": 48,
+    "screens": 165,
+    "crons": 10,
+    "specs": 140,
     "designLaws": 150
   },
   "designLaws": [
@@ -1078,14 +1078,14 @@
     },
     "infra": {
       "files": 56,
-      "lines": 28195,
-      "bytes": 1105311,
+      "lines": 28208,
+      "bytes": 1106319,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 540,
-      "lines": 74909,
-      "bytes": 2745482,
+      "files": 559,
+      "lines": 77264,
+      "bytes": 2835172,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1101,21 +1101,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 268,
-      "lines": 41728,
-      "bytes": 1523396,
+      "files": 277,
+      "lines": 43165,
+      "bytes": 1574916,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 392,
-      "lines": 59162,
-      "bytes": 3490732,
+      "lines": 59321,
+      "bytes": 3500866,
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 61,
-      "lines": 5072,
-      "bytes": 166435,
+      "files": 64,
+      "lines": 5679,
+      "bytes": 192109,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -1309,6 +1309,24 @@
       ],
       "routes": 12,
       "page": "docs/index/modules/finance.md"
+    },
+    {
+      "name": "giftcards",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/giftcards/dto/gift-card.dto.ts",
+        "apps/api/src/modules/giftcards/dto/store-credit.dto.ts",
+        "apps/api/src/modules/giftcards/giftcards-account.controller.ts",
+        "apps/api/src/modules/giftcards/giftcards.controller.ts",
+        "apps/api/src/modules/giftcards/giftcards.module.ts",
+        "apps/api/src/modules/giftcards/giftcards.service.ts",
+        "apps/api/src/modules/giftcards/store-credit-reconcile.cron.ts",
+        "apps/api/src/modules/giftcards/store-credit.service.ts"
+      ],
+      "routes": 7,
+      "page": "docs/index/modules/giftcards.md"
     },
     {
       "name": "identity-verification",
@@ -1539,6 +1557,23 @@
       ],
       "routes": 9,
       "page": "docs/index/modules/production.md"
+    },
+    {
+      "name": "promotions",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/promotions/dto/discount.dto.ts",
+        "apps/api/src/modules/promotions/dto/preview-checkout.dto.ts",
+        "apps/api/src/modules/promotions/dto/promo-code.dto.ts",
+        "apps/api/src/modules/promotions/promotions-public.controller.ts",
+        "apps/api/src/modules/promotions/promotions.controller.ts",
+        "apps/api/src/modules/promotions/promotions.module.ts",
+        "apps/api/src/modules/promotions/promotions.service.ts"
+      ],
+      "routes": 12,
+      "page": "docs/index/modules/promotions.md"
     },
     {
       "name": "purchasing",
@@ -3727,6 +3762,38 @@
     },
     {
       "method": "GET",
+      "path": "/admin/customers/:userId/store-credit",
+      "module": "giftcards",
+      "controller": "StoreCreditController",
+      "handler": "ledger",
+      "file": "apps/api/src/modules/giftcards/giftcards.controller.ts",
+      "line": 52,
+      "access": "giftcards.view",
+      "permissions": [
+        "giftcards.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "A customer's store credit balance and ledger"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/customers/:userId/store-credit",
+      "module": "giftcards",
+      "controller": "StoreCreditController",
+      "handler": "issue",
+      "file": "apps/api/src/modules/giftcards/giftcards.controller.ts",
+      "line": 63,
+      "access": "giftcards.manage",
+      "permissions": [
+        "giftcards.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Issue goodwill store credit to a customer"
+    },
+    {
+      "method": "GET",
       "path": "/admin/email-accounts",
       "module": "core/notifications",
       "controller": "EmailAccountsAdminController",
@@ -4092,6 +4159,70 @@
       "public": false,
       "authOnly": false,
       "summary": "Expense totals over time, bucketed by day or month"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/gift-cards",
+      "module": "giftcards",
+      "controller": "GiftCardsController",
+      "handler": "list",
+      "file": "apps/api/src/modules/giftcards/giftcards.controller.ts",
+      "line": 18,
+      "access": "giftcards.view",
+      "permissions": [
+        "giftcards.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List gift cards, paginated"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/gift-cards",
+      "module": "giftcards",
+      "controller": "GiftCardsController",
+      "handler": "issue",
+      "file": "apps/api/src/modules/giftcards/giftcards.controller.ts",
+      "line": 32,
+      "access": "giftcards.manage",
+      "permissions": [
+        "giftcards.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Issue a gift card"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/gift-cards/:id",
+      "module": "giftcards",
+      "controller": "GiftCardsController",
+      "handler": "getById",
+      "file": "apps/api/src/modules/giftcards/giftcards.controller.ts",
+      "line": 25,
+      "access": "giftcards.view",
+      "permissions": [
+        "giftcards.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One gift card with its full ledger"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/gift-cards/:id/cancel",
+      "module": "giftcards",
+      "controller": "GiftCardsController",
+      "handler": "cancel",
+      "file": "apps/api/src/modules/giftcards/giftcards.controller.ts",
+      "line": 39,
+      "access": "giftcards.manage",
+      "permissions": [
+        "giftcards.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Cancel a gift card, forfeiting any remaining balance"
     },
     {
       "method": "GET",
@@ -5388,6 +5519,182 @@
       "public": false,
       "authOnly": false,
       "summary": "Release a work order, consuming its bill of materials"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/promotions/discounts",
+      "module": "promotions",
+      "controller": "PromotionsController",
+      "handler": "listDiscounts",
+      "file": "apps/api/src/modules/promotions/promotions.controller.ts",
+      "line": 16,
+      "access": "promotions.view",
+      "permissions": [
+        "promotions.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List discounts, paginated"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/promotions/discounts",
+      "module": "promotions",
+      "controller": "PromotionsController",
+      "handler": "createDiscount",
+      "file": "apps/api/src/modules/promotions/promotions.controller.ts",
+      "line": 30,
+      "access": "promotions.manage",
+      "permissions": [
+        "promotions.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create a discount"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/promotions/discounts/:id",
+      "module": "promotions",
+      "controller": "PromotionsController",
+      "handler": "deleteDiscount",
+      "file": "apps/api/src/modules/promotions/promotions.controller.ts",
+      "line": 51,
+      "access": "promotions.manage",
+      "permissions": [
+        "promotions.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Delete a discount"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/promotions/discounts/:id",
+      "module": "promotions",
+      "controller": "PromotionsController",
+      "handler": "getDiscount",
+      "file": "apps/api/src/modules/promotions/promotions.controller.ts",
+      "line": 23,
+      "access": "promotions.view",
+      "permissions": [
+        "promotions.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One discount"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/promotions/discounts/:id",
+      "module": "promotions",
+      "controller": "PromotionsController",
+      "handler": "updateDiscount",
+      "file": "apps/api/src/modules/promotions/promotions.controller.ts",
+      "line": 44,
+      "access": "promotions.manage",
+      "permissions": [
+        "promotions.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Edit a discount"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/promotions/discounts/preview",
+      "module": "promotions",
+      "controller": "PromotionsController",
+      "handler": "previewDiscount",
+      "file": "apps/api/src/modules/promotions/promotions.controller.ts",
+      "line": 37,
+      "access": "promotions.manage",
+      "permissions": [
+        "promotions.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "What this draft discount would have done to the last 30 days of real orders"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/promotions/promo-codes",
+      "module": "promotions",
+      "controller": "PromotionsController",
+      "handler": "listPromoCodes",
+      "file": "apps/api/src/modules/promotions/promotions.controller.ts",
+      "line": 59,
+      "access": "promotions.view",
+      "permissions": [
+        "promotions.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List promo codes, paginated"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/promotions/promo-codes",
+      "module": "promotions",
+      "controller": "PromotionsController",
+      "handler": "createPromoCode",
+      "file": "apps/api/src/modules/promotions/promotions.controller.ts",
+      "line": 66,
+      "access": "promotions.manage",
+      "permissions": [
+        "promotions.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create one promo code"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/promotions/promo-codes/:id",
+      "module": "promotions",
+      "controller": "PromotionsController",
+      "handler": "deletePromoCode",
+      "file": "apps/api/src/modules/promotions/promotions.controller.ts",
+      "line": 87,
+      "access": "promotions.manage",
+      "permissions": [
+        "promotions.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Delete a promo code"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/promotions/promo-codes/:id",
+      "module": "promotions",
+      "controller": "PromotionsController",
+      "handler": "updatePromoCode",
+      "file": "apps/api/src/modules/promotions/promotions.controller.ts",
+      "line": 80,
+      "access": "promotions.manage",
+      "permissions": [
+        "promotions.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Edit, activate or deactivate a promo code"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/promotions/promo-codes/bulk-generate",
+      "module": "promotions",
+      "controller": "PromotionsController",
+      "handler": "bulkGeneratePromoCodes",
+      "file": "apps/api/src/modules/promotions/promotions.controller.ts",
+      "line": 73,
+      "access": "promotions.manage",
+      "permissions": [
+        "promotions.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Generate N codes with a shared prefix for a campaign"
     },
     {
       "method": "GET",
@@ -7101,6 +7408,20 @@
     },
     {
       "method": "GET",
+      "path": "/gift-cards/:code/balance",
+      "module": "giftcards",
+      "controller": "GiftCardsAccountController",
+      "handler": "balance",
+      "file": "apps/api/src/modules/giftcards/giftcards-account.controller.ts",
+      "line": 23,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Check a gift card balance by code"
+    },
+    {
+      "method": "GET",
       "path": "/health",
       "module": "core/health",
       "controller": "HealthController",
@@ -7660,6 +7981,20 @@
       "public": true,
       "authOnly": false,
       "summary": "Payment methods currently accepted"
+    },
+    {
+      "method": "POST",
+      "path": "/promotions/preview",
+      "module": "promotions",
+      "controller": "PromotionsPublicController",
+      "handler": "preview",
+      "file": "apps/api/src/modules/promotions/promotions-public.controller.ts",
+      "line": 27,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Preview what discounts/a promo code would do to this cart"
     },
     {
       "method": "GET",
@@ -8705,6 +9040,78 @@
         "ADMIN"
       ],
       "inSeed": true
+    },
+    {
+      "key": "promotions.view",
+      "label": "View discounts, promo codes and their usage",
+      "category": "Marketing",
+      "sensitivity": "low",
+      "routes": [
+        "GET /admin/promotions/discounts",
+        "GET /admin/promotions/discounts/:id",
+        "GET /admin/promotions/promo-codes"
+      ],
+      "uiSites": 2,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "promotions.manage",
+      "label": "Create and edit discounts and promo codes",
+      "category": "Marketing",
+      "sensitivity": "medium",
+      "routes": [
+        "POST /admin/promotions/discounts",
+        "DELETE /admin/promotions/discounts/:id",
+        "PATCH /admin/promotions/discounts/:id",
+        "POST /admin/promotions/discounts/preview",
+        "POST /admin/promotions/promo-codes",
+        "DELETE /admin/promotions/promo-codes/:id",
+        "PATCH /admin/promotions/promo-codes/:id",
+        "POST /admin/promotions/promo-codes/bulk-generate"
+      ],
+      "uiSites": 0,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "giftcards.view",
+      "label": "View gift cards, their ledgers and store credit balances",
+      "category": "Marketing",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/customers/:userId/store-credit",
+        "GET /admin/gift-cards",
+        "GET /admin/gift-cards/:id"
+      ],
+      "uiSites": 2,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "giftcards.manage",
+      "label": "Issue, cancel and adjust gift cards and store credit — real money",
+      "category": "Marketing",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/customers/:userId/store-credit",
+        "POST /admin/gift-cards",
+        "PATCH /admin/gift-cards/:id/cancel"
+      ],
+      "uiSites": 0,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     }
   ],
   "events": [
@@ -8715,8 +9122,8 @@
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:50",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:157",
-        "apps/api/src/modules/orders/orders.service.ts:339",
-        "apps/api/src/modules/orders/orders.service.ts:542"
+        "apps/api/src/modules/orders/orders.service.ts:423",
+        "apps/api/src/modules/orders/orders.service.ts:626"
       ],
       "subscribers": [
         "apps/api/src/core/events/on-domain-event.decorator.ts:7 handle()",
@@ -8732,7 +9139,7 @@
       "name": "order.status_changed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/orders/orders.service.ts:716"
+        "apps/api/src/modules/orders/orders.service.ts:800"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
@@ -8746,7 +9153,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/finance/finance.listener.ts:9",
-        "apps/api/src/modules/orders/orders.service.ts:716"
+        "apps/api/src/modules/orders/orders.service.ts:800"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:71 onCancelled()",
@@ -8760,7 +9167,7 @@
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:117",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:154",
-        "apps/api/src/modules/orders/orders.service.ts:530",
+        "apps/api/src/modules/orders/orders.service.ts:614",
         "apps/api/src/modules/payments/payments.service.ts:188",
         "apps/api/src/modules/payments/payments.service.ts:257"
       ],
@@ -9141,6 +9548,15 @@
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:488 onPayrollAdjustmentPosted()"
       ]
+    },
+    {
+      "symbol": "DiscountRedeemed",
+      "name": "promotions.discount_redeemed",
+      "doc": "OrdersService.place() (WO-5.3) — fires once a discount/promo code was actually applied to a placed order, for analytics.",
+      "publishers": [
+        "apps/api/src/modules/promotions/promotions.service.ts:512"
+      ],
+      "subscribers": []
     }
   ],
   "models": [
@@ -9257,7 +9673,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 161,
+      "line": 167,
       "doc": "",
       "fields": [
         {
@@ -9448,7 +9864,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 439,
+      "line": 445,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -9509,7 +9925,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 251,
+      "line": 257,
       "doc": "",
       "fields": [
         {
@@ -11185,7 +11601,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 419,
+      "line": 425,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -11257,9 +11673,209 @@
       ]
     },
     {
+      "name": "Discount",
+      "file": "apps/api/prisma/schema/promotions.prisma",
+      "line": 25,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "type",
+          "type": "DiscountType",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "scope",
+          "type": "DiscountScope",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "value",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "maxDiscount",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "minSubtotal",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "minQuantity",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "productIds",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "categoryIds",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "customerSegmentId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "firstOrderOnly",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "buyQuantity",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "getQuantity",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "getDiscountBps",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startsAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "endsAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isStackable",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "priority",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "usageLimit",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "usageLimitPerUser",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "usageCount",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "codes",
+          "type": "PromoCode[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderLines",
+          "type": "OrderDiscount[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([isActive, startsAt, endsAt])"
+      ]
+    },
+    {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 206,
+      "line": 212,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -11445,7 +12061,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 147,
+      "line": 153,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -12210,6 +12826,233 @@
       ],
       "indexes": [
         "@@index([isActive, order])"
+      ]
+    },
+    {
+      "name": "GiftCard",
+      "file": "apps/api/prisma/schema/giftcards.prisma",
+      "line": 19,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "code",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "initialValue",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "balance",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "GiftCardStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "currency",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "purchasedByUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "recipientName",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "recipientEmail",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "recipientPhone",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "message",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sourceOrderId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "expiresAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "issuedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "purchasedBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "sourceOrder",
+          "type": "Order?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "transactions",
+          "type": "GiftCardTransaction[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([status])",
+        "@@index([purchasedByUserId])"
+      ]
+    },
+    {
+      "name": "GiftCardTransaction",
+      "file": "apps/api/prisma/schema/giftcards.prisma",
+      "line": 51,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "giftCardId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "delta",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "balanceAfter",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "actorId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "giftCard",
+          "type": "GiftCard",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "order",
+          "type": "Order?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([giftCardId, createdAt])",
+        "@@index([orderId])"
       ]
     },
     {
@@ -14775,6 +15618,34 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "orderDiscounts",
+          "type": "OrderDiscount[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "giftCardTransactions",
+          "type": "GiftCardTransaction[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "storeCreditTransactions",
+          "type": "StoreCreditTransaction[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "giftCardsSold",
+          "type": "GiftCard[]",
+          "id": false,
+          "unique": false,
+          "relation": true
         }
       ],
       "indexes": [
@@ -14784,6 +15655,87 @@
         "@@index([guestPhone])",
         "@@index([channel])",
         "@@index([shiftId])"
+      ]
+    },
+    {
+      "name": "OrderDiscount",
+      "file": "apps/api/prisma/schema/promotions.prisma",
+      "line": 93,
+      "doc": "Which discounts an order actually received, so it can explain itself.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "discountId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "promoCodeId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "type",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amount",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Order",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "discount",
+          "type": "Discount?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([orderId])"
       ]
     },
     {
@@ -14882,7 +15834,7 @@
     {
       "name": "OrderItem",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 110,
+      "line": 116,
       "doc": "",
       "fields": [
         {
@@ -15139,7 +16091,7 @@
     {
       "name": "OrderNumberCounter",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 254,
+      "line": 260,
       "doc": "Backing store for sequential per-year order numbers (YSN-2026-0001).",
       "fields": [
         {
@@ -15162,7 +16114,7 @@
     {
       "name": "OrderStatusEvent",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 191,
+      "line": 197,
       "doc": "",
       "fields": [
         {
@@ -15287,7 +16239,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 392,
+      "line": 398,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -15525,7 +16477,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 130,
+      "line": 136,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -16066,7 +17018,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 272,
+      "line": 278,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -17956,6 +18908,95 @@
       ]
     },
     {
+      "name": "PromoCode",
+      "file": "apps/api/prisma/schema/promotions.prisma",
+      "line": 69,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "discountId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "code",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "usageLimit",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "usageCount",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "restrictedToUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "expiresAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "batchId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "discount",
+          "type": "Discount",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([discountId])",
+        "@@index([batchId])"
+      ]
+    },
+    {
       "name": "PurchaseOrder",
       "file": "apps/api/prisma/schema/purchasing.prisma",
       "line": 97,
@@ -18533,7 +19574,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 109,
+      "line": 115,
       "doc": "",
       "fields": [
         {
@@ -18978,7 +20019,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 338,
+      "line": 344,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -19036,7 +20077,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 352,
+      "line": 358,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -19090,7 +20131,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 288,
+      "line": 294,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -19202,7 +20243,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 184,
+      "line": 190,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -19239,7 +20280,7 @@
     {
       "name": "Shipment",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 215,
+      "line": 221,
       "doc": "",
       "fields": [
         {
@@ -20652,6 +21693,95 @@
       ]
     },
     {
+      "name": "StoreCreditTransaction",
+      "file": "apps/api/prisma/schema/giftcards.prisma",
+      "line": 75,
+      "doc": "Same ledger shape, attached to a User rather than a code — refunds, RTO goodwill and service recovery all land here.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "delta",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "balanceAfter",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "actorId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "note",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "order",
+          "type": "Order?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([userId, createdAt])",
+        "@@index([orderId])"
+      ]
+    },
+    {
       "name": "Supplier",
       "file": "apps/api/prisma/schema/purchasing.prisma",
       "line": 1,
@@ -21997,6 +23127,27 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "storeCreditBalance",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "storeCreditTransactions",
+          "type": "StoreCreditTransaction[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "giftCardsPurchased",
+          "type": "GiftCard[]",
+          "id": false,
+          "unique": false,
+          "relation": true
         }
       ],
       "indexes": [
@@ -22007,7 +23158,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 309,
+      "line": 315,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -22068,7 +23219,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 367,
+      "line": 373,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -22506,7 +23657,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 407,
+      "line": 413,
       "values": [
         "IOS",
         "ANDROID",
@@ -22514,9 +23665,33 @@
       ]
     },
     {
+      "name": "DiscountScope",
+      "file": "apps/api/prisma/schema/promotions.prisma",
+      "line": 17,
+      "values": [
+        "ORDER",
+        "PRODUCT",
+        "CATEGORY",
+        "COLLECTION",
+        "SHIPPING"
+      ]
+    },
+    {
+      "name": "DiscountType",
+      "file": "apps/api/prisma/schema/promotions.prisma",
+      "line": 9,
+      "values": [
+        "PERCENTAGE",
+        "FIXED_AMOUNT",
+        "FREE_SHIPPING",
+        "BUY_X_GET_Y",
+        "TIERED"
+      ]
+    },
+    {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 195,
+      "line": 201,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -22543,6 +23718,17 @@
         "OPEN",
         "CLOSED",
         "LOCKED"
+      ]
+    },
+    {
+      "name": "GiftCardStatus",
+      "file": "apps/api/prisma/schema/giftcards.prisma",
+      "line": 12,
+      "values": [
+        "ACTIVE",
+        "REDEEMED",
+        "EXPIRED",
+        "CANCELLED"
       ]
     },
     {
@@ -22694,7 +23880,7 @@
     {
       "name": "OrderItemFulfillmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 99,
+      "line": 105,
       "values": [
         "READY",
         "AWAITING_STOCK",
@@ -22719,7 +23905,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 381,
+      "line": 387,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -22774,7 +23960,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 300,
+      "line": 306,
       "values": [
         "GRANT",
         "REVOKE"
@@ -22927,7 +24113,7 @@
     {
       "name": "ShipmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 206,
+      "line": 212,
       "values": [
         "PENDING",
         "DISPATCHED",
@@ -24229,6 +25415,29 @@
         "ProductVariant",
         "Redirect"
       ]
+    },
+    {
+      "folder": "20260924184848_add_promotions_giftcards_store_credit",
+      "file": "apps/api/prisma/schema/migrations/20260924184848_add_promotions_giftcards_store_credit/migration.sql",
+      "date": "2026-09-24",
+      "slug": "add_promotions_giftcards_store_credit",
+      "statements": 31,
+      "kinds": [
+        "CREATE TYPE",
+        "ALTER TABLE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "Discount",
+        "GiftCard",
+        "GiftCardTransaction",
+        "OrderDiscount",
+        "PromoCode",
+        "StoreCreditTransaction",
+        "User"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -25024,6 +26233,33 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/customers/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/customers/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/customers/gift-cards",
+      "file": "apps/web/src/app/(admin)/admin/(app)/customers/gift-cards/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/customers/gift-cards/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/customers/gift-cards/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/customers/insights",
       "file": "apps/web/src/app/(admin)/admin/(app)/customers/insights/page.tsx",
       "client": true,
@@ -25242,6 +26478,42 @@
       "kind": "page",
       "url": "/admin/marketing",
       "file": "apps/web/src/app/(admin)/admin/(app)/marketing/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/marketing/discounts",
+      "file": "apps/web/src/app/(admin)/admin/(app)/marketing/discounts/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/marketing/discounts/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/marketing/discounts/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/marketing/discounts/new",
+      "file": "apps/web/src/app/(admin)/admin/(app)/marketing/discounts/new/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/marketing/promo-codes",
+      "file": "apps/web/src/app/(admin)/admin/(app)/marketing/promo-codes/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -25696,6 +26968,13 @@
       "file": "apps/api/src/modules/finance/finance.cron.ts",
       "line": 27,
       "handler": "generateRecurringExpenses",
+      "doc": ""
+    },
+    {
+      "schedule": "0 3 * * *",
+      "file": "apps/api/src/modules/giftcards/store-credit-reconcile.cron.ts",
+      "line": 16,
+      "handler": "reconcile",
       "doc": ""
     },
     {
@@ -27447,6 +28726,19 @@
       ]
     },
     {
+      "file": "apps/api/test/promotions-checkout.e2e-spec.ts",
+      "module": "",
+      "kind": "e2e test",
+      "cases": 8,
+      "describes": [
+        "Promotions & gift cards at checkout (e2e)",
+        "automatic discounts",
+        "promo codes",
+        "gift cards",
+        "store credit"
+      ]
+    },
+    {
       "file": "apps/api/test/publish-gate.spec.ts",
       "module": "",
       "kind": "unit test",
@@ -27583,6 +28875,21 @@
       "cases": 3,
       "describes": [
         "computeTender"
+      ]
+    },
+    {
+      "file": "packages/shared/src/discounts.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 18,
+      "describes": [
+        "isDiscountEligible",
+        "evaluateDiscounts — PERCENTAGE, ORDER scope",
+        "evaluateDiscounts — PRODUCT scope",
+        "evaluateDiscounts — CATEGORY scope",
+        "evaluateDiscounts — FREE_SHIPPING",
+        "evaluateDiscounts — BUY_X_GET_Y",
+        "evaluateDiscounts — stacking"
       ]
     },
     {
@@ -27982,8 +29289,8 @@
       "path": ".env.branch.example",
       "area": "infra",
       "kind": "example",
-      "lines": 99,
-      "bytes": 5086,
+      "lines": 100,
+      "bytes": 5132,
       "doc": "",
       "symbols": []
     },
@@ -27992,7 +29299,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 141,
-      "bytes": 6941,
+      "bytes": 6962,
       "doc": "",
       "symbols": []
     },
@@ -28001,7 +29308,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 113,
-      "bytes": 5066,
+      "bytes": 5087,
       "doc": "",
       "symbols": []
     },
@@ -28330,8 +29637,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 451,
-      "bytes": 16952,
+      "lines": 457,
+      "bytes": 17387,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -28351,6 +29658,15 @@
       "lines": 133,
       "bytes": 5607,
       "doc": "Finance: operational expenses and per-order economics (RETAIL-ERP.md",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/giftcards.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 92,
+      "bytes": 3455,
+      "doc": "Phase 5 WO-5.4/5.5 (docs/implementation/05-promotions-giftcards.md).",
       "symbols": []
     },
     {
@@ -28939,6 +30255,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260924184848_add_promotions_giftcards_store_credit/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 194,
+      "bytes": 6961,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -28951,8 +30276,8 @@
       "path": "apps/api/prisma/schema/orders.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 258,
-      "bytes": 9984,
+      "lines": 264,
+      "bytes": 10414,
       "doc": "Orders and shipments.",
       "symbols": []
     },
@@ -29008,6 +30333,15 @@
       "lines": 96,
       "bytes": 3556,
       "doc": "Production: bills of materials and work orders for variants made in-house",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/promotions.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 111,
+      "bytes": 3582,
+      "doc": "Phase 5 WO-5.1/5.2/5.3 (docs/implementation/05-promotions-giftcards.md).",
       "symbols": []
     },
     {
@@ -29848,8 +31182,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 401,
-      "bytes": 14664,
+      "lines": 416,
+      "bytes": 15197,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -29860,162 +31194,167 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 75
+          "line": 78
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 77
+          "line": 80
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 90
+          "line": 93
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 98
+          "line": 101
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 106
+          "line": 109
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 126
+          "line": 129
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 132
+          "line": 135
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 139
+          "line": 142
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 146
+          "line": 149
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 150
+          "line": 153
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 156
+          "line": 159
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 162
+          "line": 165
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 169
+          "line": 172
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 177
+          "line": 180
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 188
+          "line": 191
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 195
+          "line": 198
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 204
+          "line": 207
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 212
+          "line": 215
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 220
+          "line": 223
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 225
+          "line": 228
         },
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 237
+          "line": 240
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 252
+          "line": 255
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 260
+          "line": 263
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 274
+          "line": 277
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 287
+          "line": 290
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 300
+          "line": 303
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 316
+          "line": 319
         },
         {
           "name": "PayrollRunPostedPayload",
           "kind": "interface",
-          "line": 324
+          "line": 327
         },
         {
           "name": "PayrollAdjustmentPostedPayload",
           "kind": "interface",
-          "line": 336
+          "line": 339
+        },
+        {
+          "name": "DiscountRedeemedPayload",
+          "kind": "interface",
+          "line": 350
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 347
+          "line": 361
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 354
+          "line": 368
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 360
+          "line": 374
         }
       ]
     },
@@ -33582,6 +34921,146 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/giftcards/dto/gift-card.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 56,
+      "bytes": 1237,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "IssueGiftCardDto",
+          "kind": "class",
+          "line": 7
+        },
+        {
+          "name": "GiftCardQueryDto",
+          "kind": "class",
+          "line": 39
+        },
+        {
+          "name": "RedeemGiftCardDto",
+          "kind": "class",
+          "line": 46
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/giftcards/dto/store-credit.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 21,
+      "bytes": 505,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "IssueStoreCreditDto",
+          "kind": "class",
+          "line": 6
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/giftcards/giftcards-account.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 27,
+      "bytes": 1055,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GiftCardsAccountController",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/giftcards/giftcards.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 67,
+      "bytes": 2573,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GiftCardsController",
+          "kind": "class",
+          "line": 12
+        },
+        {
+          "name": "StoreCreditController",
+          "kind": "class",
+          "line": 46
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/giftcards/giftcards.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 14,
+      "bytes": 659,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GiftCardsModule",
+          "kind": "class",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/giftcards/giftcards.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 158,
+      "bytes": 7010,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "maskGiftCardCode",
+          "kind": "function",
+          "line": 10
+        },
+        {
+          "name": "GiftCardsService",
+          "kind": "class",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/giftcards/store-credit-reconcile.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 26,
+      "bytes": 980,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "StoreCreditReconcileCron",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/giftcards/store-credit.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 133,
+      "bytes": 5797,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "StoreCreditService",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/identity-verification/dto/submit-otp.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -34142,8 +35621,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 84,
-      "bytes": 2715,
+      "lines": 86,
+      "bytes": 2758,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -34162,24 +35641,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 147,
-      "bytes": 7186,
+      "lines": 157,
+      "bytes": 7844,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 31
+          "line": 33
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 62
+          "line": 64
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 123
+          "line": 133
         }
       ]
     },
@@ -34211,8 +35690,8 @@
       "path": "apps/api/src/modules/orders/dto/order.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 145,
-      "bytes": 3312,
+      "lines": 167,
+      "bytes": 4022,
       "doc": "",
       "symbols": [
         {
@@ -34228,27 +35707,27 @@
         {
           "name": "TrackOrderDto",
           "kind": "class",
-          "line": 84
+          "line": 106
         },
         {
           "name": "ChangeOrderStatusDto",
           "kind": "class",
-          "line": 91
+          "line": 113
         },
         {
           "name": "AddShipmentDto",
           "kind": "class",
-          "line": 103
+          "line": 125
         },
         {
           "name": "AdminOrderQueryDto",
           "kind": "class",
-          "line": 123
+          "line": 145
         },
         {
           "name": "OrderHistoryQueryDto",
           "kind": "class",
-          "line": 130
+          "line": 152
         }
       ]
     },
@@ -34295,8 +35774,8 @@
       "path": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 233,
-      "bytes": 9479,
+      "lines": 242,
+      "bytes": 10016,
       "doc": "",
       "symbols": []
     },
@@ -34324,14 +35803,14 @@
       "path": "apps/api/src/modules/orders/orders.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 28,
-      "bytes": 1531,
+      "lines": 34,
+      "bytes": 1962,
       "doc": "",
       "symbols": [
         {
           "name": "OrdersModule",
           "kind": "class",
-          "line": 27
+          "line": 33
         }
       ]
     },
@@ -34339,24 +35818,24 @@
       "path": "apps/api/src/modules/orders/orders.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1114,
-      "bytes": 42332,
+      "lines": 1198,
+      "bytes": 46220,
       "doc": "",
       "symbols": [
         {
           "name": "PosSaleLineInput",
           "kind": "interface",
-          "line": 38
+          "line": 41
         },
         {
           "name": "PlaceFromPosInput",
           "kind": "interface",
-          "line": 43
+          "line": 46
         },
         {
           "name": "OrdersService",
           "kind": "class",
-          "line": 88
+          "line": 91
         }
       ]
     },
@@ -35520,6 +36999,156 @@
           "name": "WorkOrdersService",
           "kind": "class",
           "line": 42
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/promotions/dto/discount.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 151,
+      "bytes": 3292,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateDiscountDto",
+          "kind": "class",
+          "line": 20
+        },
+        {
+          "name": "UpdateDiscountDto",
+          "kind": "class",
+          "line": 139
+        },
+        {
+          "name": "DiscountQueryDto",
+          "kind": "class",
+          "line": 141
+        },
+        {
+          "name": "PreviewDiscountDto",
+          "kind": "class",
+          "line": 150
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/promotions/dto/preview-checkout.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 57,
+      "bytes": 1393,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PreviewCartLineDto",
+          "kind": "class",
+          "line": 5
+        },
+        {
+          "name": "PreviewCheckoutDto",
+          "kind": "class",
+          "line": 38
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/promotions/dto/promo-code.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 82,
+      "bytes": 1938,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreatePromoCodeDto",
+          "kind": "class",
+          "line": 5
+        },
+        {
+          "name": "UpdatePromoCodeDto",
+          "kind": "class",
+          "line": 34
+        },
+        {
+          "name": "BulkGeneratePromoCodesDto",
+          "kind": "class",
+          "line": 41
+        },
+        {
+          "name": "PromoCodeQueryDto",
+          "kind": "class",
+          "line": 71
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/promotions/promotions-public.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 49,
+      "bytes": 2089,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PromotionsPublicController",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/promotions/promotions.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 92,
+      "bytes": 3437,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PromotionsController",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/promotions/promotions.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 12,
+      "bytes": 420,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PromotionsModule",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/promotions/promotions.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 526,
+      "bytes": 21719,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CheckoutCartLine",
+          "kind": "interface",
+          "line": 33
+        },
+        {
+          "name": "CheckoutDiscountResult",
+          "kind": "interface",
+          "line": 41
+        },
+        {
+          "name": "PromotionsService",
+          "kind": "class",
+          "line": 48
         }
       ]
     },
@@ -36991,6 +38620,15 @@
       "kind": "e2e test",
       "lines": 164,
       "bytes": 5564,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/test/promotions-checkout.e2e-spec.ts",
+      "area": "api",
+      "kind": "e2e test",
+      "lines": 327,
+      "bytes": 13923,
       "doc": "",
       "symbols": []
     },
@@ -39207,8 +40845,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 405,
-      "bytes": 15792,
+      "lines": 416,
+      "bytes": 16234,
       "doc": "",
       "symbols": []
     },
@@ -39216,8 +40854,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 405,
-      "bytes": 21111,
+      "lines": 416,
+      "bytes": 21747,
       "doc": "",
       "symbols": []
     },
@@ -39633,6 +41271,51 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/customers/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 119,
+      "bytes": 4340,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CustomerRecordPage",
+          "kind": "default",
+          "line": 33
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/customers/gift-cards/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 114,
+      "bytes": 3667,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GiftCardDetailPage",
+          "kind": "default",
+          "line": 33
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/customers/gift-cards/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 129,
+      "bytes": 4645,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GiftCardsPage",
+          "kind": "default",
+          "line": 30
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/customers/insights/page.tsx",
       "area": "web",
       "kind": "page",
@@ -40008,6 +41691,51 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/marketing/discounts/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 42,
+      "bytes": 1414,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "EditDiscountPage",
+          "kind": "default",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/marketing/discounts/new/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 28,
+      "bytes": 863,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NewDiscountPage",
+          "kind": "default",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/marketing/discounts/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 161,
+      "bytes": 5316,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DiscountsPage",
+          "kind": "default",
+          "line": 44
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/marketing/page.tsx",
       "area": "web",
       "kind": "page",
@@ -40019,6 +41747,21 @@
           "name": "MarketingAdminPage",
           "kind": "default",
           "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/marketing/promo-codes/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 191,
+      "bytes": 6760,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PromoCodesPage",
+          "kind": "default",
+          "line": 31
         }
       ]
     },
@@ -40101,14 +41844,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 534,
-      "bytes": 19700,
+      "lines": 553,
+      "bytes": 20360,
       "doc": "",
       "symbols": [
         {
           "name": "AdminOrderDetailPage",
           "kind": "default",
-          "line": 103
+          "line": 105
         }
       ]
     },
@@ -41011,14 +42754,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/checkout/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 493,
-      "bytes": 17499,
+      "lines": 624,
+      "bytes": 23233,
       "doc": "",
       "symbols": [
         {
           "name": "CheckoutPage",
           "kind": "default",
-          "line": 43
+          "line": 51
         }
       ]
     },
@@ -41686,11 +43429,46 @@
       ]
     },
     {
+      "path": "apps/web/src/components/admin/marketing/discount-form.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 414,
+      "bytes": 14978,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DiscountType",
+          "kind": "type",
+          "line": 9
+        },
+        {
+          "name": "DiscountScope",
+          "kind": "type",
+          "line": 10
+        },
+        {
+          "name": "DiscountFormValues",
+          "kind": "interface",
+          "line": 12
+        },
+        {
+          "name": "EMPTY_DISCOUNT",
+          "kind": "const",
+          "line": 35
+        },
+        {
+          "name": "DiscountForm",
+          "kind": "function",
+          "line": 97
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 570,
-      "bytes": 14610,
+      "lines": 596,
+      "bytes": 15315,
       "doc": "",
       "symbols": [
         {
@@ -41721,12 +43499,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 540
+          "line": 566
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 555
+          "line": 581
         }
       ]
     },
@@ -41892,6 +43670,21 @@
           "name": "StageBadge",
           "kind": "function",
           "line": 12
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/toast-stack.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 39,
+      "bytes": 1302,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ToastStack",
+          "kind": "function",
+          "line": 13
         }
       ]
     },
@@ -42848,8 +44641,8 @@
       "path": "apps/web/src/constants/payment-methods.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 30,
-      "bytes": 1171,
+      "lines": 32,
+      "bytes": 1229,
       "doc": "How a payment provider's key is written for staff.",
       "symbols": [
         {
@@ -42860,7 +44653,7 @@
         {
           "name": "paymentProviderLabel",
           "kind": "function",
-          "line": 24
+          "line": 26
         }
       ]
     },
@@ -46463,8 +48256,8 @@
       "path": "docs/implementation/05-promotions-giftcards.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 320,
-      "bytes": 10237,
+      "lines": 347,
+      "bytes": 11985,
       "doc": "",
       "symbols": []
     },
@@ -47903,8 +49696,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 1962,
-      "bytes": 104605,
+      "lines": 2094,
+      "bytes": 112991,
       "doc": "",
       "symbols": []
     },
@@ -48418,6 +50211,75 @@
       ]
     },
     {
+      "path": "packages/shared/src/discounts.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 215,
+      "bytes": 9247,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/shared/src/discounts.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 322,
+      "bytes": 13985,
+      "doc": "The discount rules engine.",
+      "symbols": [
+        {
+          "name": "DiscountType",
+          "kind": "type",
+          "line": 11
+        },
+        {
+          "name": "DiscountScope",
+          "kind": "type",
+          "line": 12
+        },
+        {
+          "name": "DiscountRule",
+          "kind": "interface",
+          "line": 21
+        },
+        {
+          "name": "CartLineSnapshot",
+          "kind": "interface",
+          "line": 57
+        },
+        {
+          "name": "CartSnapshot",
+          "kind": "interface",
+          "line": 68
+        },
+        {
+          "name": "DiscountContext",
+          "kind": "interface",
+          "line": 74
+        },
+        {
+          "name": "AppliedDiscount",
+          "kind": "interface",
+          "line": 79
+        },
+        {
+          "name": "DiscountResult",
+          "kind": "interface",
+          "line": 87
+        },
+        {
+          "name": "isDiscountEligible",
+          "kind": "function",
+          "line": 121
+        },
+        {
+          "name": "evaluateDiscounts",
+          "kind": "function",
+          "line": 241
+        }
+      ]
+    },
+    {
       "path": "packages/shared/src/entities/address.spec.ts",
       "area": "packages",
       "kind": "unit test",
@@ -48901,11 +50763,26 @@
       ]
     },
     {
+      "path": "packages/shared/src/human-code.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 37,
+      "bytes": 1460,
+      "doc": "No O/0, no I/1/l — the ambiguous-character exclusion both PromoCode's bulk generation and GiftCard's own code need (05-promotions-giftcards.md WO-5.2/5.4), kept in one place so a future third caller never re-derives a s…",
+      "symbols": [
+        {
+          "name": "generateHumanCode",
+          "kind": "function",
+          "line": 30
+        }
+      ]
+    },
+    {
       "path": "packages/shared/src/index.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 21,
-      "bytes": 606,
+      "lines": 23,
+      "bytes": 665,
       "doc": "",
       "symbols": []
     },
@@ -49011,8 +50888,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 530,
-      "bytes": 16300,
+      "lines": 561,
+      "bytes": 17223,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -49033,47 +50910,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 284
+          "line": 308
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 286
+          "line": 310
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 296
+          "line": 320
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 303
+          "line": 327
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 426
+          "line": 450
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 517
+          "line": 548
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 522
+          "line": 553
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 523
+          "line": 554
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 526
+          "line": 557
         }
       ]
     },
@@ -49545,7 +51422,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 425,
-      "bytes": 20622,
+      "bytes": 20748,
       "doc": "",
       "symbols": [
         {
@@ -49631,8 +51508,8 @@
       "path": "scripts/check-module-boundaries.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 542,
-      "bytes": 22832,
+      "lines": 554,
+      "bytes": 23626,
       "doc": "",
       "symbols": []
     },

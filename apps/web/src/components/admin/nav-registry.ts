@@ -528,6 +528,32 @@ export const ADMIN_NAV: AdminNavItem[] = [
     // by what somebody came here to do.
     group: 'customers',
     module: 'marketing',
+    children: [
+      {
+        key: 'marketing-discounts',
+        label: 'Discounts',
+        href: '/admin/marketing/discounts',
+        permissions: ['promotions.view'],
+        group: 'customers',
+        module: 'promotions',
+      },
+      {
+        key: 'marketing-promo-codes',
+        label: 'Promo codes',
+        href: '/admin/marketing/promo-codes',
+        permissions: ['promotions.view'],
+        group: 'customers',
+        module: 'promotions',
+      },
+      {
+        key: 'marketing-gift-cards',
+        label: 'Gift cards',
+        href: '/admin/customers/gift-cards',
+        permissions: ['giftcards.view'],
+        group: 'customers',
+        module: 'giftcards',
+      },
+    ],
   },
 ];
 

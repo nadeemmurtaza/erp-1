@@ -18,6 +18,8 @@ export const PAYMENT_PROVIDER_LABELS: Record<string, string> = {
   jazzcash: 'JazzCash',
   easypaisa: 'Easypaisa',
   card: 'Card',
+  gift_card: 'Gift card',
+  store_credit: 'Store credit',
 };
 
 /** Falls back to humanising the key, so a provider added later still reads. */

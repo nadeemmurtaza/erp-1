@@ -87,6 +87,12 @@ model Order {
   convertedLeads Lead[]             @relation("LeadConvertedOrder")
   /// finance.prisma's OrderEconomics (WO-B.3) — null until DELIVERED.
   economics      OrderEconomics?
+  /// promotions.prisma's snapshot of every discount this order received (WO-5.3).
+  orderDiscounts OrderDiscount[]
+  /// giftcards.prisma — gift-card/store-credit tender applied to this order, and any gift card this order purchased (WO-5.4/5.5).
+  giftCardTransactions   GiftCardTransaction[]
+  storeCreditTransactions StoreCreditTransaction[]
+  giftCardsSold          GiftCard[]               @relation("GiftCardSourceOrder")
 
   @@index([status, placedAt])
   @@index([userId])

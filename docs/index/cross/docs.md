@@ -1884,17 +1884,17 @@ _no second-level headings_
 - WO-4.6 — Month-end close and export  <sub>:221</sub>
 - Phase 4 exit criteria  <sub>:231</sub>
 
-### `docs/implementation/05-promotions-giftcards.md`  <sub>320 lines</sub>
+### `docs/implementation/05-promotions-giftcards.md`  <sub>347 lines</sub>
 
-- Why now  <sub>:5</sub>
-- Work orders  <sub>:14</sub>
-- WO-5.1 — The rules engine  <sub>:31</sub>
-- WO-5.2 — Promo codes  <sub>:122</sub>
-- WO-5.3 — Checkout  <sub>:163</sub>
-- WO-5.4 — Gift cards  <sub>:196</sub>
-- WO-5.5 — Store credit  <sub>:267</sub>
-- WO-5.6 — Screens  <sub>:294</sub>
-- Phase 5 exit criteria  <sub>:310</sub>
+- Why now  <sub>:32</sub>
+- Work orders  <sub>:41</sub>
+- WO-5.1 — The rules engine  <sub>:58</sub>
+- WO-5.2 — Promo codes  <sub>:149</sub>
+- WO-5.3 — Checkout  <sub>:190</sub>
+- WO-5.4 — Gift cards  <sub>:223</sub>
+- WO-5.5 — Store credit  <sub>:294</sub>
+- WO-5.6 — Screens  <sub>:321</sub>
+- Phase 5 exit criteria  <sub>:337</sub>
 
 ### `docs/implementation/06-shipping-fulfilment-returns.md`  <sub>288 lines</sub>
 
@@ -3412,7 +3412,7 @@ _no second-level headings_
 - Acceptance  <sub>:48</sub>
 - Out of scope  <sub>:53</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>1,962 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>2,094 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3444,6 +3444,7 @@ _no second-level headings_
 - Decision: adopt a shared cross-tenant hosting tier via shared-infrastructure/isolated-data, not shared-schema multi-tenancy  <sub>:1692</sub>
 - ADR-026 — Seven heavier extensibility mechanisms adopted by explicit owner override: EAV, a metadata-rendering engine, BPMN, micro-frontends, a WASM sandbox, a service mesh, and a dedicated crypto microservice  <sub>:1769</sub>
 - ADR-027 — The three highest-risk items from ADR-026 withdrawn: no WASM sandbox, no service mesh, no dedicated crypto microservice  <sub>:1877</sub>
+- ADR-028 — WO-5 (Phase 5: discounts, promo codes, gift cards, store credit) built from zero — permission split, checkout coupling, tender-as-Payment-rows, and the evaluator's own rounding/scope choices  <sub>:1963</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

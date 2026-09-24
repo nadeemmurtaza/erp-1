@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **39** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **40** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -24,7 +24,7 @@ order" is a new file, not an edit to checkout.
 ## Attention list
 
 - Events **nothing publishes**: `crm.contact_upserted`, `crm.lead_created`
-- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`
+- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`, `promotions.discount_redeemed`
 
 ## Summary
 
@@ -69,6 +69,7 @@ order" is a new file, not an edit to checkout.
 | `finance.order_economics_computed` | `OrderEconomicsComputed` | `finance` | _none_ |
 | `payroll.run_posted` | `PayrollRunPosted` | `accounting`, `payroll` | `accounting` |
 | `payroll.adjustment_posted` | `PayrollAdjustmentPosted` | `accounting`, `payroll` | `accounting` |
+| `promotions.discount_redeemed` | `DiscountRedeemed` | `promotions` | _none_ |
 
 
 ## Detail
@@ -82,8 +83,8 @@ order" is a new file, not an edit to checkout.
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:50` | `accounting` |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:157` | `accounting` |
-| `apps/api/src/modules/orders/orders.service.ts:339` | `orders` |
-| `apps/api/src/modules/orders/orders.service.ts:542` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:423` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:626` | `orders` |
 
 
 **Subscribed by**
@@ -104,7 +105,7 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/orders/orders.service.ts:716` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:800` | `orders` |
 
 
 **Subscribed by**
@@ -123,7 +124,7 @@ order" is a new file, not an edit to checkout.
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/finance/finance.listener.ts:9` | `finance` |
-| `apps/api/src/modules/orders/orders.service.ts:716` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:800` | `orders` |
 
 
 **Subscribed by**
@@ -142,7 +143,7 @@ order" is a new file, not an edit to checkout.
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:117` | `accounting` |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:154` | `accounting` |
-| `apps/api/src/modules/orders/orders.service.ts:530` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:614` | `orders` |
 | `apps/api/src/modules/payments/payments.service.ts:188` | `payments` |
 | `apps/api/src/modules/payments/payments.service.ts:257` | `payments` |
 
@@ -713,6 +714,21 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Handler | Where | Module |
 |---|---|---|
 | `onPayrollAdjustmentPosted()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:488` | `accounting` |
+
+### `promotions.discount_redeemed`
+
+> OrdersService.place() (WO-5.3) — fires once a discount/promo code was actually applied to a placed order, for analytics.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/promotions/promotions.service.ts:512` | `promotions` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
 
 
 ---

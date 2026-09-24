@@ -262,7 +262,7 @@ All 392 tracked files in `docs/*`, by directory.
 | `02-admin-shell.md` | doc | 242 |  |
 | `03-variants-sku-seo.md` | doc | 566 |  |
 | `04-finance.md` | doc | 239 |  |
-| `05-promotions-giftcards.md` | doc | 320 |  |
+| `05-promotions-giftcards.md` | doc | 347 |  |
 | `06-shipping-fulfilment-returns.md` | doc | 288 |  |
 | `07-customer-portal.md` | doc | 186 |  |
 | `08-content-marketing-search.md` | doc | 138 |  |
@@ -422,7 +422,7 @@ All 392 tracked files in `docs/*`, by directory.
 | `97-realtime-validation-single-source-of-truth.md` | doc | 63 |  |
 | `98-contract-first-api-development.md` | doc | 80 |  |
 | `99-centralized-api-gateway.md` | doc | 60 |  |
-| `DECISIONS.md` | doc | 1962 |  |
+| `DECISIONS.md` | doc | 2094 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |

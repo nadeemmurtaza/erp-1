@@ -139,7 +139,7 @@ const BASELINE = [
   // token used to mark a control's edge IS a violation and is not covered
   // here. The checker cannot tell the two apart — that needs a render.
   { token: 'neutral-100', max: 39, reason: '1.23:1 — dividers and card outlines.' },
-  { token: 'neutral-200', max: 2, reason: '1.54:1 — a dropdown edge and a table rule.' },
+  { token: 'neutral-200', max: 1, reason: '1.54:1 — a dropdown edge. A second use (a table rule, in an admin toast) was retired when six duplicated toast blocks were pulled into components/admin/toast-stack.tsx.' },
   { token: 'neutral-800', max: 1, reason: '1.10:1 — the dark footer\'s top border.' },
   { token: 'neutral-300', max: 1, reason: '2.10:1 — a gallery thumbnail edge.' },
   { token: 'neutral-400', max: 1, reason: '2.99:1 on neutral-50 — a gallery placeholder (paired bg-neutral-50 text-neutral-400).' },

@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 10 files
 
 Source: `apps/api/src/modules/orders/`
 
-## Files (10 · 2,188 lines)
+## Files (10 · 2,309 lines)
 
 All paths relative to `apps/api/src/modules/orders`.
 
@@ -17,14 +17,14 @@ All paths relative to `apps/api/src/modules/orders`.
 |---|---|---|---|---|
 | `backorder.listener.spec.ts` | unit test | 84 | — |  |
 | `backorder.listener.ts` | event subscriber | 70 | 1 | Closes the backorder loop: whenever ANY stock arrives for a variant — a PO receipt, a completed WorkOrder, a manual adj… |
-| `order.dto.ts` | dto | 145 | 7 |  |
+| `order.dto.ts` | dto | 167 | 7 |  |
 | `notification.subscriber.ts` | event subscriber | 259 | 1 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 | — |  |
 | `order-replication.listener.ts` | event subscriber | 53 | 1 | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
-| `orders-pos.service.spec.ts` | unit test | 233 | — |  |
+| `orders-pos.service.spec.ts` | unit test | 242 | — |  |
 | `orders.controller.ts` | controller | 148 | 2 |  |
-| `orders.module.ts` | nest module | 28 | 1 |  |
-| `orders.service.ts` | service | 1114 | 3 |  |
+| `orders.module.ts` | nest module | 34 | 1 |  |
+| `orders.service.ts` | service | 1198 | 3 |  |
 
 
 ## HTTP routes (8)
@@ -47,10 +47,10 @@ All paths relative to `apps/api/src/modules/orders`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `OrderPlaced` | `order.placed` | `orders.service.ts:339`, `orders.service.ts:542` |
-| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:716` |
-| `OrderCancelled` | `order.cancelled` | `orders.service.ts:716` |
-| `PaymentSucceeded` | `payment.succeeded` | `orders.service.ts:530` |
+| `OrderPlaced` | `order.placed` | `orders.service.ts:423`, `orders.service.ts:626` |
+| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:800` |
+| `OrderCancelled` | `order.cancelled` | `orders.service.ts:800` |
+| `PaymentSucceeded` | `payment.succeeded` | `orders.service.ts:614` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -67,11 +67,11 @@ All paths relative to `apps/api/src/modules/orders`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Order` | 43 | :24 |  |
-| `OrderItem` | 35 | :110 |  |
-| `OrderNumberCounter` | 2 | :254 | Backing store for sequential per-year order numbers (YSN-2026-0001). |
-| `OrderStatusEvent` | 9 | :191 |  |
-| `Shipment` | 12 | :215 |  |
+| `Order` | 47 | :24 |  |
+| `OrderItem` | 35 | :116 |  |
+| `OrderNumberCounter` | 2 | :260 | Backing store for sequential per-year order numbers (YSN-2026-0001). |
+| `OrderStatusEvent` | 9 | :197 |  |
+| `Shipment` | 12 | :221 |  |
 
 
 Enums: `OrderChannel` (2) · `OrderItemFulfillmentStatus` (3) · `OrderStatus` (8) · `ShipmentStatus` (6)
@@ -84,7 +84,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 ## Nest wiring
 
 **`OrdersModule`** (`orders.module.ts`)
-- imports: `PaymentsModule`, `InventoryModule`, `TaxModule`
+- imports: `PaymentsModule`, `InventoryModule`, `TaxModule`, `PromotionsModule`, `GiftCardsModule`
 - controllers: `OrdersController`, `OrdersAdminController`
 - providers: `OrdersService`, `OrderNotificationSubscriber`, `BackorderListener`, `OrderReplicationListener`
 - exports: `OrdersService`
@@ -92,8 +92,10 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 ## Reaches out to
 
+- **module `giftcards`** ⚠ direct import
 - **module `inventory`** ⚠ direct import
 - **module `payments`** ⚠ direct import
+- **module `promotions`** ⚠ direct import
 - **module `tax`** ⚠ direct import
 - core `audit`
 - core `auth`
@@ -129,19 +131,19 @@ check there before adding another.
 | `BackorderListener` | class | `backorder.listener.ts:21` | Closes the backorder loop: whenever ANY stock arrives for a variant — a PO receipt, a completed WorkOrder, a… |
 | `ShippingAddressDto` | class | `order.dto.ts:17` |  |
 | `PlaceOrderDto` | class | `order.dto.ts:61` |  |
-| `TrackOrderDto` | class | `order.dto.ts:84` |  |
-| `ChangeOrderStatusDto` | class | `order.dto.ts:91` |  |
-| `AddShipmentDto` | class | `order.dto.ts:103` |  |
-| `AdminOrderQueryDto` | class | `order.dto.ts:123` |  |
-| `OrderHistoryQueryDto` | class | `order.dto.ts:130` |  |
+| `TrackOrderDto` | class | `order.dto.ts:106` |  |
+| `ChangeOrderStatusDto` | class | `order.dto.ts:113` |  |
+| `AddShipmentDto` | class | `order.dto.ts:125` |  |
+| `AdminOrderQueryDto` | class | `order.dto.ts:145` |  |
+| `OrderHistoryQueryDto` | class | `order.dto.ts:152` |  |
 | `OrderNotificationSubscriber` | class | `notification.subscriber.ts:53` |  |
 | `OrderReplicationListener` | class | `order-replication.listener.ts:30` | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
 | `OrdersController` | class | `orders.controller.ts:33` |  |
 | `OrdersAdminController` | class | `orders.controller.ts:88` |  |
-| `OrdersModule` | class | `orders.module.ts:27` |  |
-| `PosSaleLineInput` | interface | `orders.service.ts:38` |  |
-| `PlaceFromPosInput` | interface | `orders.service.ts:43` |  |
-| `OrdersService` | class | `orders.service.ts:88` |  |
+| `OrdersModule` | class | `orders.module.ts:33` |  |
+| `PosSaleLineInput` | interface | `orders.service.ts:41` |  |
+| `PlaceFromPosInput` | interface | `orders.service.ts:46` |  |
+| `OrdersService` | class | `orders.service.ts:91` |  |
 
 
 ---

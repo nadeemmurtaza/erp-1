@@ -79,6 +79,28 @@ export class PlaceOrderDto {
   @IsString()
   @MaxLength(500)
   note?: string;
+
+  @ApiPropertyOptional({ description: 'A promotions promo code — validated and applied server-side (WO-5.3).' })
+  @IsOptional()
+  @IsString()
+  promoCode?: string;
+
+  @ApiPropertyOptional({ description: 'A gift card code to apply as tender, after tax and shipping (WO-5.4).' })
+  @IsOptional()
+  @IsString()
+  giftCardCode?: string;
+
+  @ApiPropertyOptional({ description: 'Paisa of the gift card balance to apply. Required alongside giftCardCode.' })
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  giftCardAmount?: number;
+
+  @ApiPropertyOptional({ description: "Paisa of the signed-in customer's own store credit to apply as tender (WO-5.5)." })
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  storeCreditAmount?: number;
 }
 
 export class TrackOrderDto {

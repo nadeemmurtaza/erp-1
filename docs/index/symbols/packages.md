@@ -64,6 +64,16 @@ Every top-level export in `packages`, with the line to open.
 | `constants.ts` | `formatDateShort` | function | :109 | A chart axis tick — "7 Sept". |
 | `constants.ts` | `formatNumber` | function | :132 | A plain count, grouped for the locale — 6017 -> "6,017". |
 | `constants.ts` | `formatMoney` | function | :137 | Formats integer paisa as a display string, e.g. |
+| `discounts.ts` | `DiscountType` | type | :11 | The discount rules engine. |
+| `discounts.ts` | `DiscountScope` | type | :12 |  |
+| `discounts.ts` | `DiscountRule` | interface | :21 | A `Discount` row's shape, as `evaluateDiscounts` needs it — no id-only fields (createdAt, usageCoun… |
+| `discounts.ts` | `CartLineSnapshot` | interface | :57 |  |
+| `discounts.ts` | `CartSnapshot` | interface | :68 |  |
+| `discounts.ts` | `DiscountContext` | interface | :74 |  |
+| `discounts.ts` | `AppliedDiscount` | interface | :79 | One line actually recorded in `docs/implementation/05-promotions-giftcards.md`'s `OrderDiscount` sn… |
+| `discounts.ts` | `DiscountResult` | interface | :87 |  |
+| `discounts.ts` | `isDiscountEligible` | function | :121 | Whether the cart, as a whole, satisfies this discount's conditions. |
+| `discounts.ts` | `evaluateDiscounts` | function | :241 | Evaluates every ELIGIBLE discount against a cart and returns the combined result, per the stacking… |
 | `enums.ts` | `USER_ROLES` | const | :10 | Any change here must be made in apps/api/prisma/schema .prisma too; the `enums.spec.ts` test in app… |
 | `enums.ts` | `UserRole` | type | :11 |  |
 | `enums.ts` | `BACK_OFFICE_ROLES` | const | :14 | Roles allowed into /admin. |
@@ -96,9 +106,12 @@ Every top-level export in `packages`, with the line to open.
 | `http-client.ts` | `messageOf` | function | :84 | Pulls a human message out of whatever the API returned. |
 | `http-client.ts` | `request` | function | :116 | One request. |
 | `http-client.ts` | `requestWithRefresh` | function | :158 | Wraps `request` with a 401 retry. |
+| `human-code.ts` | `generateHumanCode` | function | :30 | A cryptographically random, human-readable code — never sequential. |
 | `index.ts` | `*` | re-export |  | from `./constants` |
+| `index.ts` | `*` | re-export |  | from `./discounts` |
 | `index.ts` | `*` | re-export |  | from `./enums` |
 | `index.ts` | `*` | re-export |  | from `./entities` |
+| `index.ts` | `*` | re-export |  | from `./human-code` |
 | `index.ts` | `*` | re-export |  | from `./fabric-estimate` |
 | `index.ts` | `*` | re-export |  | from `./permissions` |
 | `index.ts` | `*` | re-export |  | from `./phone` |
@@ -119,15 +132,15 @@ Every top-level export in `packages`, with the line to open.
 | `permissions.ts` | `PermissionSensitivity` | type | :36 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PermissionDefinition` | interface | :38 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PERMISSION_CATALOG` | const | :45 |  |
-| `permissions.ts` | `PermissionKey` | type | :284 |  |
-| `permissions.ts` | `PERMISSION_KEYS` | const | :286 |  |
-| `permissions.ts` | `PermissionGroup` | interface | :296 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
-| `permissions.ts` | `PERMISSION_GROUPS` | const | :303 |  |
-| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :426 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
-| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :517 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
-| `permissions.ts` | `PERMISSION_EFFECTS` | const | :522 |  |
-| `permissions.ts` | `PermissionEffect` | type | :523 |  |
-| `permissions.ts` | `PermissionOverride` | interface | :526 | One entry in a user's permission-override set (@see UserPermission). |
+| `permissions.ts` | `PermissionKey` | type | :308 |  |
+| `permissions.ts` | `PERMISSION_KEYS` | const | :310 |  |
+| `permissions.ts` | `PermissionGroup` | interface | :320 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
+| `permissions.ts` | `PERMISSION_GROUPS` | const | :327 |  |
+| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :450 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
+| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :548 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
+| `permissions.ts` | `PERMISSION_EFFECTS` | const | :553 |  |
+| `permissions.ts` | `PermissionEffect` | type | :554 |  |
+| `permissions.ts` | `PermissionOverride` | interface | :557 | One entry in a user's permission-override set (@see UserPermission). |
 | `phone.ts` | `NormalizedPhone` | interface | :21 |  |
 | `phone.ts` | `normalizePhone` | function | :29 |  |
 | `phone.ts` | `isValidPhone` | function | :64 |  |

@@ -13,7 +13,7 @@ All 56 tracked files in `scripts, CI, deployment and container configuration`, b
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `.dockerignore` | file | — |  |
-| `.env.branch.example` | example | 99 |  |
+| `.env.branch.example` | example | 100 |  |
 | `.env.example` | example | 141 |  |
 | `.env.production.example` | example | 113 |  |
 | `.gitignore` | file | 54 |  |
@@ -84,7 +84,7 @@ All 56 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check-env-templates.mjs` | script | 139 |  |
 | `check-frontend-secrets.mjs` | script | 137 |  |
 | `check-links.mjs` | script | 402 |  |
-| `check-module-boundaries.mjs` | script | 542 |  |
+| `check-module-boundaries.mjs` | script | 554 |  |
 | `check-overflow.mjs` | script | 644 |  |
 | `check-permission-checks.mjs` | script | 127 |  |
 | `check-rebrand.mjs` | script | 292 |  |

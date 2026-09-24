@@ -352,7 +352,18 @@
     "finalTotalNote": "The final total, including delivery, is confirmed on the next page.",
     "placeOrder": "Place order",
     "placing": "Placing your order…",
-    "failed": "We could not place the order. Please try again."
+    "failed": "We could not place the order. Please try again.",
+    "offersTitle": "Promo code, gift card & store credit",
+    "promoCode": "Promo code",
+    "apply": "Apply",
+    "checking": "Checking…",
+    "promoApplied": "\"{name}\" applied.",
+    "promoInvalid": "That code is not valid.",
+    "giftCardCode": "Gift card code",
+    "giftCardHint": "Enter how much of the card's balance to use.",
+    "amountRs": "Amount (Rs)",
+    "storeCredit": "Use store credit (Rs)",
+    "discount": "Discount"
   },
   "order": {
     "title": "Order",

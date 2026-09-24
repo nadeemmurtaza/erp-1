@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**409** markdown documents. These explain **why**; this index only says **where**.
+**412** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2586,6 +2586,41 @@ _no second-level headings_
 - Work orders  <sub>:157</sub>
 - When to actually build this  <sub>:176</sub>
 
+### `docs/implementation/160-dynamic-external-system-connectivity.md`  <sub>274 lines</sub>
+
+- What's genuinely missing, found by walking every category against what already exists  <sub>:17</sub>
+- 1. Per-merchant OAuth2 (authorization code) — the missing half of `ConnectorAuthMethod`  <sub>:34</sub>
+- 2. `PollConnector` — the scheduled-pull sibling doc 132's passive webhook receiver doesn't cover  <sub>:85</sub>
+- 3. `ExternalRecordLink` — one generic mapping table every stateful sync reuses  <sub>:121</sub>
+- 4. Where this leaves each category — configuration, not new code  <sub>:148</sub>
+- Scope lenses  <sub>:164</sub>
+- Work orders  <sub>:228</sub>
+- Acceptance  <sub>:245</sub>
+- Out of scope  <sub>:259</sub>
+
+### `docs/implementation/161-sso-identity-federation.md`  <sub>245 lines</sub>
+
+- What already exists, cited exactly  <sub>:13</sub>
+- 1. `SsoConnection` — one row per configured identity provider, per organization  <sub>:28</sub>
+- 2. The domain allowlist is not optional — the one control that makes everything else in this document safe  <sub>:73</sub>
+- 3. JIT provisioning — least privilege by default, never `UserRegistered`  <sub>:96</sub>
+- Scope lenses  <sub>:134</sub>
+- Work orders  <sub>:202</sub>
+- Acceptance  <sub>:223</sub>
+- Out of scope  <sub>:236</sub>
+
+### `docs/implementation/162-file-based-connector-integration.md`  <sub>271 lines</sub>
+
+- Why a file needs its own kind, not a template on the existing connectors  <sub>:13</sub>
+- 1. `FileConnector` — a scheduled or triggered file exchange, in or out  <sub>:26</sub>
+- 2. `FileFormatHandler` — one class per format family, resolved by `FileConnector.format`  <sub>:78</sub>
+- 3. Idempotent by checksum, never by filename or schedule alone  <sub>:101</sub>
+- 4. The two real use cases named in this request  <sub>:134</sub>
+- Scope lenses  <sub>:147</sub>
+- Work orders  <sub>:222</sub>
+- Acceptance  <sub>:249</sub>
+- Out of scope  <sub>:261</sub>
+
 ### `docs/implementation/17-inventory-locations.md`  <sub>254 lines</sub>
 
 - Why the aggregate write is one atomic statement  <sub>:26</sub>
@@ -3438,15 +3473,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>470 lines</sub>
+### `docs/implementation/README.md`  <sub>490 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:340</sub>
-- The two module groups  <sub>:369</sub>
-- How a work order runs  <sub>:406</sub>
-- Known gaps not yet owned by a phase  <sub>:424</sub>
-- When a brief is wrong  <sub>:451</sub>
-- Scope, honestly  <sub>:464</sub>
+- Dependency order  <sub>:360</sub>
+- The two module groups  <sub>:389</sub>
+- How a work order runs  <sub>:426</sub>
+- Known gaps not yet owned by a phase  <sub>:444</sub>
+- When a brief is wrong  <sub>:471</sub>
+- Scope, honestly  <sub>:484</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

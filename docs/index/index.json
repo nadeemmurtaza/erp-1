@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1469,
-    "lines": 226139,
+    "files": 1472,
+    "lines": 226949,
     "routes": 375,
     "controllers": 65,
     "models": 146,
@@ -1107,9 +1107,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 389,
-      "lines": 58352,
-      "bytes": 3446302,
+      "files": 392,
+      "lines": 59162,
+      "bytes": 3490732,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -47054,6 +47054,33 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/160-dynamic-external-system-connectivity.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 274,
+      "bytes": 14692,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/161-sso-identity-federation.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 245,
+      "bytes": 12772,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/162-file-based-connector-integration.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 271,
+      "bytes": 14246,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/17-inventory-locations.md",
       "area": "docs",
       "kind": "doc",
@@ -47858,8 +47885,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 470,
-      "bytes": 58430,
+      "lines": 490,
+      "bytes": 61150,
       "doc": "",
       "symbols": []
     },

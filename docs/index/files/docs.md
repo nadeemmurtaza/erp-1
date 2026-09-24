@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 384 tracked files in `docs/*`, by directory.
+All 385 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -253,7 +253,7 @@ All 384 tracked files in `docs/*`, by directory.
 | `52g-generate-gap.md` | doc | 26 |  |
 | `52h-harden-gap.md` | doc | 40 |  |
 
-### `docs/implementation` (164)
+### `docs/implementation` (165)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -328,6 +328,7 @@ All 384 tracked files in `docs/*`, by directory.
 | `152-purchase-requisition.md` | doc | 190 |  |
 | `153-usage-based-pricing-model.md` | doc | 290 |  |
 | `154-three-headline-commercial-plans.md` | doc | 182 |  |
+| `155-wallet-stored-value-merchant-escrow.md` | doc | 354 |  |
 | `16-pbac-row-scoping.md` | doc | 184 |  |
 | `17-inventory-locations.md` | doc | 254 |  |
 | `18-identity-verification.md` | doc | 143 |  |
@@ -418,7 +419,7 @@ All 384 tracked files in `docs/*`, by directory.
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 407 |  |
+| `README.md` | doc | 408 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 

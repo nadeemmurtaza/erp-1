@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**404** markdown documents. These explain **why**; this index only says **where**.
+**405** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2516,6 +2516,17 @@ _no second-level headings_
 - Acceptance  <sub>:164</sub>
 - Out of scope  <sub>:176</sub>
 
+### `docs/implementation/155-wallet-stored-value-merchant-escrow.md`  <sub>354 lines</sub>
+
+- Read this section first — a real regulatory question, not an engineering one  <sub>:3</sub>
+- 1. One ledger primitive, never two competing ones  <sub>:37</sub>
+- 2. The customer side: ordinary stored value, the simpler and lower-risk half  <sub>:116</sub>
+- 3. The merchant side: the actual escrow mechanism, and where the regulatory question bites  <sub>:145</sub>
+- Scope lenses  <sub>:180</sub>
+- Work orders  <sub>:308</sub>
+- Acceptance  <sub>:332</sub>
+- Out of scope  <sub>:346</sub>
+
 ### `docs/implementation/16-pbac-row-scoping.md`  <sub>184 lines</sub>
 
 - The good news: the convention already exists, once  <sub>:35</sub>
@@ -3377,15 +3388,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>407 lines</sub>
+### `docs/implementation/README.md`  <sub>408 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:277</sub>
-- The two module groups  <sub>:306</sub>
-- How a work order runs  <sub>:343</sub>
-- Known gaps not yet owned by a phase  <sub>:361</sub>
-- When a brief is wrong  <sub>:388</sub>
-- Scope, honestly  <sub>:401</sub>
+- Dependency order  <sub>:278</sub>
+- The two module groups  <sub>:307</sub>
+- How a work order runs  <sub>:344</sub>
+- Known gaps not yet owned by a phase  <sub>:362</sub>
+- When a brief is wrong  <sub>:389</sub>
+- Scope, honestly  <sub>:402</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

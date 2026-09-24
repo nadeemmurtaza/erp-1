@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1436,
-    "lines": 220956,
+    "files": 1437,
+    "lines": 221311,
     "routes": 357,
     "controllers": 62,
     "models": 140,
@@ -1107,9 +1107,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 384,
-      "lines": 56659,
-      "bytes": 3352350,
+      "files": 385,
+      "lines": 57014,
+      "bytes": 3372908,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -45740,6 +45740,15 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/155-wallet-stored-value-merchant-escrow.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 354,
+      "bytes": 19694,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/16-pbac-row-scoping.md",
       "area": "docs",
       "kind": "doc",
@@ -46553,8 +46562,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 407,
-      "bytes": 50171,
+      "lines": 408,
+      "bytes": 51035,
       "doc": "",
       "symbols": []
     },

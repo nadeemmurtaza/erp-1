@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**409** markdown documents. These explain **why**; this index only says **where**.
+**410** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2586,6 +2586,18 @@ _no second-level headings_
 - Work orders  <sub>:157</sub>
 - When to actually build this  <sub>:176</sub>
 
+### `docs/implementation/160-dynamic-external-system-connectivity.md`  <sub>274 lines</sub>
+
+- What's genuinely missing, found by walking every category against what already exists  <sub>:17</sub>
+- 1. Per-merchant OAuth2 (authorization code) — the missing half of `ConnectorAuthMethod`  <sub>:34</sub>
+- 2. `PollConnector` — the scheduled-pull sibling doc 132's passive webhook receiver doesn't cover  <sub>:85</sub>
+- 3. `ExternalRecordLink` — one generic mapping table every stateful sync reuses  <sub>:121</sub>
+- 4. Where this leaves each category — configuration, not new code  <sub>:148</sub>
+- Scope lenses  <sub>:164</sub>
+- Work orders  <sub>:228</sub>
+- Acceptance  <sub>:245</sub>
+- Out of scope  <sub>:259</sub>
+
 ### `docs/implementation/17-inventory-locations.md`  <sub>254 lines</sub>
 
 - Why the aggregate write is one atomic statement  <sub>:26</sub>
@@ -3438,15 +3450,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>470 lines</sub>
+### `docs/implementation/README.md`  <sub>481 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:340</sub>
-- The two module groups  <sub>:369</sub>
-- How a work order runs  <sub>:406</sub>
-- Known gaps not yet owned by a phase  <sub>:424</sub>
-- When a brief is wrong  <sub>:451</sub>
-- Scope, honestly  <sub>:464</sub>
+- Dependency order  <sub>:351</sub>
+- The two module groups  <sub>:380</sub>
+- How a work order runs  <sub>:417</sub>
+- Known gaps not yet owned by a phase  <sub>:435</sub>
+- When a brief is wrong  <sub>:462</sub>
+- Scope, honestly  <sub>:475</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

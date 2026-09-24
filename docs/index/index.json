@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1441,
-    "lines": 222612,
+    "files": 1442,
+    "lines": 222897,
     "routes": 357,
     "controllers": 62,
     "models": 140,
@@ -1107,9 +1107,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 389,
-      "lines": 58257,
-      "bytes": 3440395,
+      "files": 390,
+      "lines": 58542,
+      "bytes": 3456284,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -45794,6 +45794,15 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/160-dynamic-external-system-connectivity.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 274,
+      "bytes": 14692,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/17-inventory-locations.md",
       "area": "docs",
       "kind": "doc",
@@ -46598,8 +46607,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 470,
-      "bytes": 58430,
+      "lines": 481,
+      "bytes": 59627,
       "doc": "",
       "symbols": []
     },

@@ -63,6 +63,23 @@ list generalizes over — each checked against what already exists first:
 | [`48-native-desktop-deployment.md`](./48-native-desktop-deployment.md) | A desktop install as a real `RETAIL-ERP.md` node (embedded Postgres + unmodified `apps/api`) for businesses with no continuous connectivity at all, not a thicker PWA wrapper |
 | [`49-financial-institution-settlement-partnerships.md`](./49-financial-institution-settlement-partnerships.md) | The merchant-settlement mirror of `PaymentProvider`: did the bank/gateway's payout actually match what was owed, with a named, never-silent `SHORT` variance |
 
+**Numbers 50–58** cover commercial licensing, staff-facing granular
+features and dashboard widgets, again checked against existing coverage
+first — two are coverage notes, one unifies a pattern two earlier docs
+each separately deferred to "the other one":
+
+| File | What it is |
+|---|---|
+| [`50-commercial-pricing-licensing-models.md`](./50-commercial-pricing-licensing-models.md) | Extends doc 39's `PlatformPlan` (one flat-fee field) into three real commercial shapes: per-seat, flat-monthly, one-time licence — a billable seat count read across the isolation boundary, never stored across it |
+| [`51-free-demo-sandbox-onboarding.md`](./51-free-demo-sandbox-onboarding.md) | A trial is a `PlatformTenant` with an expiry, provisioned on identical infrastructure to a paying one — never a stripped-down demo that misrepresents what's being sold |
+| [`52-staff-self-service-mobile-app.md`](./52-staff-self-service-mobile-app.md) | An installable PWA (apps/pos's own proven pattern) over self-service routes already required to work at every width — clock-in, schedule, announcements — not a third native mobile stack |
+| [`53-new-hire-joiner-tracking.md`](./53-new-hire-joiner-tracking.md) | A recent-hires-vs-headcount tile, one query over doc 20/28's existing rows |
+| [`54-employee-document-lifecycle-alerts.md`](./54-employee-document-lifecycle-alerts.md) | The ONE nightly expiry watcher docs 27 and 28 each already named and deferred to each other — built once, both register into it |
+| [`55-anti-proxy-verification-coverage-note.md`](./55-anti-proxy-verification-coverage-note.md) | Already fully specified in doc 30's `FaceMatchProvider`/`FaceMatchVerification` — cited, not rebuilt |
+| [`56-overdue-invoices-counter.md`](./56-overdue-invoices-counter.md) | Computed at read time from doc 18's existing `Invoice.dueDate`/`status` — deliberately never a stored, driftable column |
+| [`57-multiday-category-velocity.md`](./57-multiday-category-velocity.md) | The per-category **daily** series `productsCategories()` doesn't produce today — reuses its exact filters, adds the missing dimension |
+| [`58-live-operational-feed.md`](./58-live-operational-feed.md) | A read-model over `Order`/`PurchaseOrder`/`Payment`, honestly polled rather than claiming push-based "real time" this repo has no infrastructure for yet |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

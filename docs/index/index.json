@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1331,
-    "lines": 208669,
+    "files": 1340,
+    "lines": 209902,
     "routes": 357,
     "controllers": 62,
     "models": 140,
@@ -1107,9 +1107,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 279,
-      "lines": 44372,
-      "bytes": 2691694,
+      "files": 288,
+      "lines": 45605,
+      "bytes": 2757011,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -45569,6 +45569,87 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/50-commercial-pricing-licensing-models.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 202,
+      "bytes": 10781,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/51-free-demo-sandbox-onboarding.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 176,
+      "bytes": 8791,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/52-staff-self-service-mobile-app.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 161,
+      "bytes": 8878,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/53-new-hire-joiner-tracking.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 104,
+      "bytes": 5218,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/54-employee-document-lifecycle-alerts.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 148,
+      "bytes": 7706,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/55-anti-proxy-verification-coverage-note.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 56,
+      "bytes": 2824,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/56-overdue-invoices-counter.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 111,
+      "bytes": 5614,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/57-multiday-category-velocity.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 117,
+      "bytes": 5772,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/58-live-operational-feed.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 141,
+      "bytes": 7387,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
@@ -45608,8 +45689,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 196,
-      "bytes": 16333,
+      "lines": 213,
+      "bytes": 18679,
       "doc": "",
       "symbols": []
     },

@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 279 tracked files in `docs/*`, by directory.
+All 288 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -253,7 +253,7 @@ All 279 tracked files in `docs/*`, by directory.
 | `52g-generate-gap.md` | doc | 26 |  |
 | `52h-harden-gap.md` | doc | 40 |  |
 
-### `docs/implementation` (59)
+### `docs/implementation` (68)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -309,11 +309,20 @@ All 279 tracked files in `docs/*`, by directory.
 | `47-preconfigured-sector-taxonomy.md` | doc | 154 |  |
 | `48-native-desktop-deployment.md` | doc | 184 |  |
 | `49-financial-institution-settlement-partnerships.md` | doc | 265 |  |
+| `50-commercial-pricing-licensing-models.md` | doc | 202 |  |
+| `51-free-demo-sandbox-onboarding.md` | doc | 176 |  |
+| `52-staff-self-service-mobile-app.md` | doc | 161 |  |
+| `53-new-hire-joiner-tracking.md` | doc | 104 |  |
+| `54-employee-document-lifecycle-alerts.md` | doc | 148 |  |
+| `55-anti-proxy-verification-coverage-note.md` | doc | 56 |  |
+| `56-overdue-invoices-counter.md` | doc | 111 |  |
+| `57-multiday-category-velocity.md` | doc | 117 |  |
+| `58-live-operational-feed.md` | doc | 141 |  |
 | `DECISIONS.md` | doc | 1768 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 196 |  |
+| `README.md` | doc | 213 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 

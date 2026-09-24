@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**299** markdown documents. These explain **why**; this index only says **where**.
+**308** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2377,6 +2377,85 @@ _no second-level headings_
 - Acceptance  <sub>:241</sub>
 - Out of scope  <sub>:254</sub>
 
+### `docs/implementation/50-commercial-pricing-licensing-models.md`  <sub>202 lines</sub>
+
+- 1. A pricing model is a shape, not a bigger integer  <sub>:12</sub>
+- 2. A seat is counted, not assumed  <sub>:45</sub>
+- 3. `ONE_TIME_LICENSE` still goes through provisioning — a capital sale is not a different product  <sub>:68</sub>
+- Scope lenses  <sub>:78</sub>
+- Work orders  <sub>:166</sub>
+- Acceptance  <sub>:180</sub>
+- Out of scope  <sub>:193</sub>
+
+### `docs/implementation/51-free-demo-sandbox-onboarding.md`  <sub>176 lines</sub>
+
+- 1. A trial is a tenant with an expiry, not a different kind of tenant  <sub>:12</sub>
+- 2. Conversion and expiry are both status transitions, never silent  <sub>:41</sub>
+- 3. Self-service signup is doc 34's own pattern, aimed outward for once  <sub>:55</sub>
+- Scope lenses  <sub>:66</sub>
+- Work orders  <sub>:136</sub>
+- Acceptance  <sub>:153</sub>
+- Out of scope  <sub>:168</sub>
+
+### `docs/implementation/52-staff-self-service-mobile-app.md`  <sub>161 lines</sub>
+
+- 1. Self-service becomes installable, the same way the till already is  <sub>:22</sub>
+- 2. Clock-in is a self-service `AttendanceEvent`, not a new attendance model  <sub>:34</sub>
+- 3. "My schedule" and "my announcements" are reads over existing rows  <sub>:50</sub>
+- Scope lenses  <sub>:60</sub>
+- Work orders  <sub>:122</sub>
+- Acceptance  <sub>:138</sub>
+- Out of scope  <sub>:152</sub>
+
+### `docs/implementation/53-new-hire-joiner-tracking.md`  <sub>104 lines</sub>
+
+- 1. "Recent" is a policy window, not a hardcoded number of days  <sub>:12</sub>
+- Scope lenses  <sub>:34</sub>
+- Work orders  <sub>:79</sub>
+- Acceptance  <sub>:86</sub>
+- Out of scope  <sub>:96</sub>
+
+### `docs/implementation/54-employee-document-lifecycle-alerts.md`  <sub>148 lines</sub>
+
+- 1. An expiring record is a registered source, not a hardcoded pair  <sub>:14</sub>
+- 2. One nightly run, one notification shape, both sources  <sub>:42</sub>
+- Scope lenses  <sub>:59</sub>
+- Work orders  <sub>:117</sub>
+- Acceptance  <sub>:130</sub>
+- Out of scope  <sub>:142</sub>
+
+### `docs/implementation/55-anti-proxy-verification-coverage-note.md`  <sub>56 lines</sub>
+
+- Where it already lives  <sub>:11</sub>
+- The one thing doc 30 leaves open, restated here for visibility  <sub>:32</sub>
+- Acceptance  <sub>:41</sub>
+- Out of scope  <sub>:48</sub>
+
+### `docs/implementation/56-overdue-invoices-counter.md`  <sub>111 lines</sub>
+
+- 1. Overdue is computed at read time, always  <sub>:11</sub>
+- Scope lenses  <sub>:34</sub>
+- Work orders  <sub>:81</sub>
+- Acceptance  <sub>:91</sub>
+- Out of scope  <sub>:102</sub>
+
+### `docs/implementation/57-multiday-category-velocity.md`  <sub>117 lines</sub>
+
+- 1. A velocity series is category × day, not category OR day  <sub>:14</sub>
+- Scope lenses  <sub>:42</sub>
+- Work orders  <sub>:86</sub>
+- Acceptance  <sub>:98</sub>
+- Out of scope  <sub>:110</sub>
+
+### `docs/implementation/58-live-operational-feed.md`  <sub>141 lines</sub>
+
+- 1. "Near-real-time," stated honestly, is short-interval polling  <sub>:15</sub>
+- 2. A feed entry is a normalized shape over three different sources  <sub>:28</sub>
+- Scope lenses  <sub>:54</sub>
+- Work orders  <sub>:111</sub>
+- Acceptance  <sub>:122</sub>
+- Out of scope  <sub>:133</sub>
+
 ### `docs/implementation/DECISIONS.md`  <sub>1,768 lines</sub>
 
 - How to read this  <sub>:13</sub>
@@ -2444,15 +2523,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>196 lines</sub>
+### `docs/implementation/README.md`  <sub>213 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:66</sub>
-- The two module groups  <sub>:95</sub>
-- How a work order runs  <sub>:132</sub>
-- Known gaps not yet owned by a phase  <sub>:150</sub>
-- When a brief is wrong  <sub>:177</sub>
-- Scope, honestly  <sub>:190</sub>
+- Dependency order  <sub>:83</sub>
+- The two module groups  <sub>:112</sub>
+- How a work order runs  <sub>:149</sub>
+- Known gaps not yet owned by a phase  <sub>:167</sub>
+- When a brief is wrong  <sub>:194</sub>
+- Scope, honestly  <sub>:207</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

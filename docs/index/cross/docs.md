@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**408** markdown documents. These explain **why**; this index only says **where**.
+**409** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2564,6 +2564,19 @@ _no second-level headings_
 - Acceptance  <sub>:280</sub>
 - Out of scope  <sub>:294</sub>
 
+### `docs/implementation/159-telephony-provider-integration.md`  <sub>288 lines</sub>
+
+- What's already built or specified — cited, not duplicated  <sub>:21</sub>
+- 1. `TelephonyProvider` — the same shape as every other extension point in this repository  <sub>:40</sub>
+- 2. `CallLog` — a record, never a request, the moment the call is over  <sub>:83</sub>
+- 3. Recording — reused storage, never a provider-hosted link left as the only copy  <sub>:122</sub>
+- 4. Configuration — the same allowlist shape `PAYMENT_PROVIDERS`/`NOTIFICATION_CHANNELS` already use  <sub>:143</sub>
+- 5. Where a call attaches to what already exists — never a second contact record, never a second ticket system  <sub>:155</sub>
+- Scope lenses  <sub>:168</sub>
+- Work orders  <sub>:244</sub>
+- Acceptance  <sub>:266</sub>
+- Out of scope  <sub>:278</sub>
+
 ### `docs/implementation/16-pbac-row-scoping.md`  <sub>184 lines</sub>
 
 - The good news: the convention already exists, once  <sub>:35</sub>
@@ -3425,15 +3438,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>458 lines</sub>
+### `docs/implementation/README.md`  <sub>470 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:328</sub>
-- The two module groups  <sub>:357</sub>
-- How a work order runs  <sub>:394</sub>
-- Known gaps not yet owned by a phase  <sub>:412</sub>
-- When a brief is wrong  <sub>:439</sub>
-- Scope, honestly  <sub>:452</sub>
+- Dependency order  <sub>:340</sub>
+- The two module groups  <sub>:369</sub>
+- How a work order runs  <sub>:406</sub>
+- Known gaps not yet owned by a phase  <sub>:424</sub>
+- When a brief is wrong  <sub>:451</sub>
+- Scope, honestly  <sub>:464</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

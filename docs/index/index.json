@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1440,
-    "lines": 222312,
+    "files": 1441,
+    "lines": 222612,
     "routes": 357,
     "controllers": 62,
     "models": 140,
@@ -1107,9 +1107,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 388,
-      "lines": 57957,
-      "bytes": 3424416,
+      "files": 389,
+      "lines": 58257,
+      "bytes": 3440395,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -45776,6 +45776,15 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/159-telephony-provider-integration.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 288,
+      "bytes": 14826,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/16-pbac-row-scoping.md",
       "area": "docs",
       "kind": "doc",
@@ -46589,8 +46598,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 458,
-      "bytes": 57277,
+      "lines": 470,
+      "bytes": 58430,
       "doc": "",
       "symbols": []
     },

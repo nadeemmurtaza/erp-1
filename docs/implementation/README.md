@@ -325,6 +325,18 @@ packs a new sector would add, confirmed by grep to be entirely unbuilt:
 |---|---|
 | [`158-serialized-unit-tracking.md`](./158-serialized-unit-tracking.md) | `SerializedUnit` — one row per physical unit, the sub-ledger pattern doc 32's `Lot` already proved, reused for the per-unit case; opt-in per variant (`tracksSerials`), attached to the unchanged `InventoryService.move()` via `stockMovementId`, never a second stock model. A return is refused unless the scanned serial was actually sold on that exact order — a direct instance of doc 156's own toxic-pair discipline. Strengthens doc 156 for free: a `StockVariance` on a serial-tracked unit can name the exact missing unit, not just the SKU |
 
+**Number 159** answers a request for "seamless," "maximum flexibility"
+integration with VoIP/call, SMS, WhatsApp and business-email providers.
+Three of the four are already answered by existing mechanisms, cited
+rather than rebuilt (doc 33's `NotificationChannel` for SMS/WhatsApp;
+`EmailChannel`'s own plain-SMTP design, confirmed provider-agnostic by
+reading the code, for business email). Voice calling had no extension
+point anywhere — confirmed by grep — and is the one genuinely new piece:
+
+| File | What it is |
+|---|---|
+| [`159-telephony-provider-integration.md`](./159-telephony-provider-integration.md) | `TelephonyProvider` — the identical provider-swap shape `PaymentProvider`/`NotificationChannel` already use, generalized over any VoIP/SIP/call-center vendor; `CallLog` as a RECORD once a provider webhook confirms a call happened, an unverified webhook refused outright per doc 155's own payment-callback discipline; recordings pulled into the existing `StorageService` rather than left as a provider-hosted link; click-to-call attaches to doc 06/64's existing `Contact`/`SupportTicket`, never a second contact or ticket system |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

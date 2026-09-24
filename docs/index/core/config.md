@@ -12,7 +12,7 @@ Source: `apps/api/src/core/config/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (6 · 552 lines)
+## Files (6 · 556 lines)
 
 All paths relative to `apps/api/src/core/config`.
 
@@ -21,7 +21,7 @@ All paths relative to `apps/api/src/core/config`.
 | `app-config.service.ts` | service | 68 | 1 | Typed accessor over ConfigService. |
 | `config.module.ts` | nest module | 23 | 1 |  |
 | `env.validation.spec.ts` | unit test | 154 | — |  |
-| `env.validation.ts` | config | 252 | 3 |  |
+| `env.validation.ts` | config | 256 | 3 |  |
 | `load-env.ts` | config | 14 | — |  |
 | `meta.controller.ts` | controller | 41 | 1 | What the frontend needs before it can decide what to show: which optional modules this deployment actually has switched… |
 
@@ -81,8 +81,8 @@ check there before adding another.
 | `AppConfigService` | class | `app-config.service.ts:11` | Typed accessor over ConfigService. |
 | `AppConfigModule` | class | `config.module.ts:22` |  |
 | `envSchema` | const | `env.validation.ts:30` |  |
-| `Env` | type | `env.validation.ts:147` |  |
-| `validateEnv` | function | `env.validation.ts:173` |  |
+| `Env` | type | `env.validation.ts:151` |  |
+| `validateEnv` | function | `env.validation.ts:177` |  |
 | `MetaController` | class | `meta.controller.ts:21` | What the frontend needs before it can decide what to show: which optional modules this deployment actually ha… |
 
 

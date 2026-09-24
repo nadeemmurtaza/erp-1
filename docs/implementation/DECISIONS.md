@@ -1959,3 +1959,295 @@ that time, not from a two-owner-decisions-old design.
 
 ### Status
 **Accepted.**
+
+## ADR-028 — WO-5 (Phase 5: discounts, promo codes, gift cards, store credit) built from zero — permission split, checkout coupling, tender-as-Payment-rows, and the evaluator's own rounding/scope choices
+
+### Context
+`docs/implementation/promotions-giftcards/05-promotions-giftcards.md` (WO-5.1 through WO-5.6) was
+entirely unbuilt — no `promotions`/`giftcards` module, no `Discount`/
+`PromoCode`/`GiftCard`/`StoreCreditTransaction` model, no `evaluateDiscounts`,
+no admin or storefront UI. Building the whole capability (per this file's own
+"Feature scope" section) required several judgment calls the source document
+leaves to the implementer.
+
+### Options Considered and Decisions
+
+1. **Permissions: `promotions.view`/`promotions.manage`,
+   `giftcards.view`/`giftcards.manage` — four keys, not the doc's literal two
+   (`promotions.manage`, `giftcards.manage`).** Every comparable module in
+   this codebase (`finance`, `bom`, `payroll`) splits a read-only `.view` from
+   a write `.manage` so a role can see without editing. Shipping only the two
+   write keys would leave no way to grant "can see discount performance" or
+   "can look up a gift card balance" without also granting the power to
+   create one — a real gap the PBAC model exists to avoid. `giftcards.manage`
+   is marked `high` sensitivity (creates real monetary liability); STAFF's
+   seed gets `promotions.view/manage` and `giftcards.view` but not
+   `giftcards.manage` (ADMIN-only), matching how `pos.manage` (high) stays
+   ADMIN-only while `pos.operate` (medium) does not.
+
+2. **`orders -> promotions` and `orders -> giftcards` join
+   `KNOWN_MODULE_COUPLINGS` as direct NestJS imports, not an extension
+   point.** Promo-code/discount usage-count increments and gift-card/store-
+   credit balance debits must commit in the SAME transaction as the order
+   that consumes them (WO-5's own exit criteria #2 and #3: a race must
+   roll back the whole order, not leave an order with no matching ledger
+   row). `StockIntakeRegistry`'s own doc comment says exactly this: an
+   extension point is for a best-effort write that "didn't happen yet" is
+   an acceptable state; a lost promo-code or gift-card race is not — same
+   reasoning already accepted for `orders -> inventory`/`orders -> payments`.
+
+3. **`promotions` and `giftcards` are regular core modules (not
+   `offByDefault`), expected in every deployment's `MODULES` allowlist —
+   not a toggle a shop switches on separately.** The doc's "a shop may want
+   one without the other" is satisfied at the DATA level (no `Discount` rows,
+   no issued `GiftCard`s — checkout behaves exactly as it does today) rather
+   than at Nest-boot time, because `OrdersModule` now hard-imports both
+   (per #2) — matching `payments`/`finance`'s own tier, not `pos`/`transfers`'s.
+
+4. **Gift card and store credit tender are each their own PAID `Payment`
+   row (`provider: 'gift_card'` / `'store_credit'`), not a discount and not
+   a new `Order` column.** The doc is explicit that "a gift card is NOT a
+   discount — it is tender." Modeling it as a same-order `Payment` row keeps
+   every existing consumer of `Order.payments` (the confirmation email, the
+   order detail screen, reconciliation) working unchanged, and reads exactly
+   like a split payment: `amount` covered by tender, the remainder charged to
+   whatever the customer actually chose. `orders.service.ts`'s `place()`
+   computes `remainingToPay` after each tender and still calls
+   `PaymentsService.createForOrder` for the rest — even at Rs 0 — rather than
+   special-casing "fully covered," so every order keeps exactly the payment
+   shape every other consumer already expects.
+
+5. **Evaluator rounding/scope choices, in `packages/shared/src/discounts.ts`**
+   (each documented in the file itself, restated here for the record):
+   - A `PERCENTAGE`/`TIERED` discount's `maxDiscount` cap on a PRODUCT/
+     CATEGORY/COLLECTION scope is applied as an EVEN PER-UNIT ceiling
+     (`floor(maxDiscount / matchingQuantity)`), not a lump sum split across
+     lines — the lump-sum split can only be expressed by rounding
+     `OrderItem.discountUnit` unevenly across one line's own quantity, which
+     would make two units on the same receipt line disagree with each other
+     for no reason a customer could be told.
+   - `TIERED` is evaluated identically to `PERCENTAGE`. The `Discount` model
+     (unchanged from the doc) has no tiers array — tiering emerges from
+     creating several `TIERED` discounts at different `minSubtotal`
+     thresholds and letting the existing "non-stackable: best for the
+     customer wins" rule pick the one that applies.
+   - `BUY_X_GET_Y`'s discounted units are taken cheapest-first across
+     matching lines and averaged evenly across whichever line they land in,
+     with the sub-paisa remainder folded into `orderDiscount` so the
+     discount's own total is always exact.
+   - `COLLECTION` scope reuses the same `productIds`/`categoryIds` match
+     arrays as `PRODUCT`/`CATEGORY` — the `Discount` model (unchanged from
+     the doc) has no separate collection-membership field, so the caller is
+     expected to resolve a collection's member ids before calling in, the
+     same way it already resolves a cart line's own `categoryIds`.
+   - The storefront's live preview (`/promotions/preview`, called from the
+     checkout page before an order exists) sends `categoryIds: []` for every
+     line, since `CartLine` (`apps/web/src/types/cart.ts`) carries no
+     category data — a `CATEGORY`-scope discount therefore may not show in
+     that live preview even though it will still apply correctly at the real
+     checkout, where `OrdersService.place()` resolves categories server-side
+     via `PromotionsService.categoryIdsByProduct()`. Shipping is previewed at
+     Rs 0 for the same reason the existing summary never estimates it
+     ("Added for your city" — resolved only at placement), so a
+     `FREE_SHIPPING` code's rupee value likewise only shows at the real total.
+
+6. **Selling a gift card as a checkout line item (the `sourceOrderId` field's
+   "when it was sold rather than issued by staff" case) is NOT built.**
+   `GiftCard.sourceOrderId` exists in the schema exactly as the doc specifies
+   it, but making a gift card a purchasable storefront product needs a new
+   product kind/checkout path — a separably larger piece of work the doc
+   itself only names in passing. Staff-issued gift cards (`POST
+   /admin/gift-cards`, `giftcards.manage`) are the complete, real, shipped
+   capability; self-serve gift-card purchase is out of scope here and not
+   silently stubbed.
+
+7. **`/admin/customers/[id]` ships as a page scoped ONLY to store-credit
+   balance and ledger, not a customer profile.** No customer-record admin
+   screen exists anywhere in this codebase today (confirmed by search before
+   building) — WO-5.6 names this exact route for store credit, and building
+   a fuller CRM profile page to go around it would be scope creep this work
+   order never asked for. A future customer-profile feature can absorb this
+   page's content rather than the reverse.
+
+### Consequences
+- `evaluateDiscounts` is pure, shared, and covers both the storefront
+  preview and the real checkout with one implementation (18 unit tests in
+  `discounts.spec.ts`), per WO-5's exit criterion #1.
+- Concurrency exit criteria #2 (a `usageLimit: 1` promo code redeemed by two
+  simultaneous checkouts succeeds exactly once) and #3 (a gift card cannot be
+  over-redeemed, and its ledger replays to the balance) are proven by a real
+  database transaction race in `test/promotions-checkout.e2e-spec.ts`, not
+  asserted by convention.
+- `Order.orderDiscount`/`itemDiscountTotal`/`OrderItem.discountUnit` are no
+  longer dead columns — `04-finance.md`'s own P&L and margin figures now see
+  real discount data for the first time.
+- Returns/refunds reversing a discount or a spent gift card are Phase 6's own
+  work (not yet built) — WO-5 issues store credit for a goodwill/refund
+  amount (`StoreCreditService.issueForOrder`) but does not itself reverse a
+  `Discount`'s usage count or restore a redeemed `GiftCard`'s balance on an
+  order that is later cancelled or returned; that reversal is the same
+  "afterlife" gap this file's own scope lenses ask every future work order to
+  close explicitly rather than assume.
+
+### Status
+**Accepted.**
+
+## ADR-029 — Third-party gift-card redemption at checkout (Giftkarta): a `PaymentProvider`, not a WO-5 tender field; code collected post-order; API contract unverified
+
+### Context
+A request came in for "third-party gift card integration" at checkout — a
+customer paying with a gift card issued by an outside network, distinct
+from this shop's own gift cards (`giftcards` module, WO-5,
+`05-promotions-giftcards.md`, ADR-028), which the shop itself issues and
+whose ledger it owns. The specific network named was "Giftkarta etc." — no
+verified public API reference for a service by that name was available
+when this was written.
+
+### Decisions
+
+1. **A third-party gift card is a `PaymentProvider`
+   (`apps/api/src/modules/payments/`), not another WO-5-style partial-tender
+   field on `PlaceOrderDto`.** WO-5's own gift card and store credit reduce
+   `remainingToPay` and still let the customer pick a real payment method for
+   whatever is left — that shape fits an asset THIS SHOP owns the ledger for.
+   A third-party network's card is, functionally, just another way to pay the
+   FULL amount — the same shape COD, bank transfer, JazzCash and Easypaisa
+   already are. Reusing that existing extension point (`payment-provider.ts`)
+   means the whole settlement lifecycle (PENDING → PAID/FAILED,
+   `PaymentSucceeded`/`PaymentFailed`, the `payments.approve` admin surface,
+   refunds) is inherited for free; a customer wanting to combine a
+   third-party card with another method for a shortfall is not supported —
+   exactly as COD/bank transfer/JazzCash don't support that combination
+   either, and the shop's OWN gift card/store credit remain the mechanism
+   for split tender (ADR-028).
+
+2. **The code is collected on a follow-up screen AFTER the order exists,
+   never inside `OrdersService.place()`'s own transaction.** A new
+   `PaymentProvider.requiresCode`/`redeemCode()` pair
+   (`payment-provider.ts`): `initiate()` makes no external call at all and
+   returns `PENDING` immediately; `PaymentsService.redeemGiftCardCode()`
+   (called from `POST /payments/:paymentId/redeem-gift-card`, `@Public()`,
+   matching `POST /payments/:paymentId/receipt`'s existing unauthenticated
+   unguessable-id precedent) validates and redeems the code strictly after
+   commit. This mirrors why JazzCash/Easypaisa's own `initiate()` never
+   calls their gateway either (only ever prepares a redirect) — a real,
+   non-reversible external debit inside a transaction that could still roll
+   back for an unrelated reason (a stock race, a promo redemption race) has
+   no local undo. `redeemGiftCardCode()` reuses `handleCallback()`'s exact
+   settlement shape (update the payment, confirm the order, publish the
+   matching event) rather than merging with it, since it is driven by a
+   customer-submitted code against one named payment, not an inbound
+   webhook matched by reference.
+
+3. **`GiftkartaProvider`'s exact wire format is an explicitly-labeled
+   placeholder, not verified vendor documentation.** Unlike
+   `JazzCashProvider`/`EasypaisaProvider`/`NidVerificationProvider` in the
+   same directory tree — each written against its partner's own published
+   API — no confirmed Giftkarta API reference existed when this was built.
+   The provider uses the conventions almost every stored-value REST API
+   shares (bearer API key, JSON body, a balance-check call, a redeem call
+   with an idempotency key) and says so in its own top-of-file comment:
+   every endpoint path and field name needs confirming against Giftkarta's
+   real API reference before a live card is ever redeemed against it. It
+   stays off (`GIFTKARTA_API_KEY`/`GIFTKARTA_API_BASE_URL` unset, `giftkarta`
+   absent from `PAYMENT_PROVIDERS`) the same way JazzCash/Easypaisa do.
+   Adding a second third-party network later is the same shape: implement
+   `PaymentProvider`, add it to `PaymentsService`'s constructor list, add its
+   key to the allowlist — nothing else changes (`payment-provider.ts`'s own
+   "Adding a provider" note, unchanged by this ADR).
+
+### Consequences
+- A failed redemption leaves the Payment `FAILED` and the order `PENDING` —
+  visible to staff exactly like a failed JazzCash/Easypaisa attempt already
+  is, with no new admin screen needed. The customer can retry with a
+  different code against the SAME payment (proven in
+  `test/giftkarta-checkout.e2e-spec.ts`); there is no attempt cap beyond the
+  endpoint's own throttle (10/min), since the risk is a mistyped code, not
+  an attack surface with money at stake on this shop's side.
+- The storefront's own follow-up screen
+  (`apps/web/.../checkout/page.tsx`) is the ONLY place today that collects
+  this code — the order-status page has no matching "finish paying" form,
+  the same pre-existing gap bank transfer's own receipt upload already has
+  (no storefront upload form exists for it either). A customer who leaves
+  before redeeming can still view their (unpaid) order, but cannot complete
+  the redemption from there without this gap being closed too — named here,
+  not silently left undiscoverable.
+- No refund path is built for Giftkarta specifically beyond
+  `PaymentsService.refund()`'s existing "staff records that money went back;
+  moving it is a manual step" behavior, identical to every other provider.
+
+### Status
+**Accepted.**
+
+## ADR-030 — `docs/implementation/`, `docs/erp-lenses/` and `docs/design/` reorganized into domain subfolders, filenames unchanged
+
+### Context
+The three largest documentation trees in this repository — 163 numbered
+implementation briefs, 195 scope-lens files, 16 design chapters — lived as
+flat directories. `docs/implementation/`'s own README explains that its
+numbering is chronological (the order requirements were found), not
+topical, so "where is the promotions brief" required scanning a 171-entry
+table rather than opening a folder. The owner asked for a domain-driven
+structure for every `.md` file in the repository.
+
+### Options Considered
+1. Leave the flat, numbered layout and rely on the README tables and
+   `docs/index/` for navigation.
+2. Domain subfolders, drop the numeric prefixes and rename by content.
+3. Domain subfolders, **keep every numbered filename exactly as it was**,
+   only the containing folder changes.
+4. Flat directory with domain-prefixed filenames, no new folders.
+
+### Decision
+Option 3, scoped exactly as the owner chose: `docs/implementation/` (163
+numbered briefs), `docs/erp-lenses/` (195 files), and `docs/design/` (16
+chapters) each gained domain subfolders; every filename — including the
+number — is byte-identical to before the move. `docs/implementation/`'s
+five meta/governance documents (`00-HOUSE-RULES.md`, `MULTI-SECTOR.md`,
+`RETAIL-ERP.md`, `ENTERPRISE-SCALE.md`, `DECISIONS.md`) and its `README.md`
+stayed at the tree's root — they are cross-cutting contracts CLAUDE.md
+itself cites by exact path, not domain briefs. `docs/erp-lenses/`'s
+underscore-prefixed process artifacts (agent drafts, judge outputs, the
+cluster/conflict analyses) moved into one `_meta/` folder rather than being
+sorted by domain, since they document the catalogue's own authoring
+process, not a business domain. Every markdown cross-reference and every
+code comment citing one of these paths was rewritten in the same change
+(`git mv` plus a scripted pass resolving each `.md` file's relative links
+against its own old and new location) — `pnpm check:links` and a
+471-link internal-cross-reference sweep both pass clean afterward, with the
+sole exception of eight links inside `docs/erp-lenses/_meta/` that were
+already unresolvable before this move (a pre-existing "root-style" link
+written without a leading `./`) and were deliberately left in the same
+broken shape rather than silently "fixed" as an unrelated change.
+
+### Reasoning
+Keeping the numeric prefix matters more than it looks: every prose
+cross-reference in this corpus ("doc 30", "WO-19.6", "doc 155's own words")
+cites a document **by number**, never by folder, so a domain move that
+preserved the filename left every one of those thousands of bare-number
+citations valid with zero edits — only the minority written as an actual
+markdown link or literal path needed rewriting. Dropping the numbers
+(option 2) would have broken that convention wholesale for no navigational
+gain. Domain folders were chosen per file's actual subject rather than the
+README's own chronological batches (a 92–143 "architecture audit" batch,
+for instance, split across `architecture-patterns/` and
+`integrations-connectivity/` by what each document is actually about), so
+the folder someone opens now answers "what is this about," while `docs/
+implementation/README.md`'s own table still answers "in what order was
+this decided."
+
+### Consequences
+- Every future reference to one of these documents should cite its full
+  path including the domain folder (or the bare number/filename, which
+  remains unambiguous) — a bare `docs/implementation/05-promotions-
+  giftcards.md` link now 404s; `docs/implementation/promotions-giftcards/
+  05-promotions-giftcards.md` is correct.
+- `pnpm index` regenerates `docs/index/` from the moved tree automatically;
+  nothing under `docs/index/` was hand-edited.
+- The eight pre-existing broken links named above are unchanged business as
+  usual — fixing them was out of scope for this move and is tracked here
+  only so a future reader does not mistake them for a defect this ADR
+  introduced.
+
+### Status
+**Accepted.**

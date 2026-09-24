@@ -3,7 +3,7 @@
 
 # Tests
 
-**143** spec files, **1,357** cases. What is already pinned down — and what is not.
+**146** spec files, **1,389** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -20,12 +20,14 @@ such exemption.
 
 - [`addresses`](../modules/addresses.md)
 - [`cart`](../modules/cart.md)
+- [`giftcards`](../modules/giftcards.md)
+- [`promotions`](../modules/promotions.md)
 - [`settings`](../modules/settings.md)
 - [`stitching`](../modules/stitching.md)
 - [`tax`](../modules/tax.md)
 - [`tracking`](../modules/tracking.md)
 
-## End-to-end (15)
+## End-to-end (17)
 
 Real HTTP against a real Postgres. These are the ones that catch a permission
 regression or an N+1.
@@ -41,15 +43,17 @@ regression or an N+1.
 | `apps/api/test/email-accounts-admin.e2e-spec.ts` | 13 | Admin email accounts (e2e) · connection tests (failure path — no live mailbox in this suite) |
 | `apps/api/test/email-inbox.e2e-spec.ts` | 7 | Email inbox (e2e) · ingestMessage · admin API |
 | `apps/api/test/email-templates-admin.e2e-spec.ts` | 4 | Admin email template catalog (e2e) |
+| `apps/api/test/giftkarta-checkout.e2e-spec.ts` | 6 | Giftkarta third-party gift card checkout (e2e) |
 | `apps/api/test/meta.e2e-spec.ts` | 2 | Meta (e2e) |
 | `apps/api/test/orders.e2e-spec.ts` | 33 | Orders (e2e) · payment methods · placing an order · stitched orders · bank transfer · order status · tracking · admin a… |
 | `apps/api/test/payments-gateway.e2e-spec.ts` | 4 | JazzCash checkout redirect (e2e) |
 | `apps/api/test/payments-refund.e2e-spec.ts` | 5 | Payment refunds (e2e) |
+| `apps/api/test/promotions-checkout.e2e-spec.ts` | 8 | Promotions & gift cards at checkout (e2e) · automatic discounts · promo codes · gift cards · store credit |
 | `apps/api/test/reports.e2e-spec.ts` | 2 | Reports and dashboard: stitching-booking revenue (e2e) |
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (128)
+## Unit and integration (129)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -167,6 +171,7 @@ regression or an N+1.
 | `packages/pos-core/src/outbox.spec.ts` | packages | 6 | outbox state machine |
 | `packages/pos-core/src/receipt.spec.ts` | packages | 2 | toReceipt |
 | `packages/pos-core/src/tender.spec.ts` | packages | 3 | computeTender |
+| `packages/shared/src/discounts.spec.ts` | packages | 18 | isDiscountEligible · evaluateDiscounts — PERCENTAGE, ORDER scope · evaluateDiscounts — PRODUCT scop… |
 | `packages/shared/src/entities/address.spec.ts` | packages | 3 | getFormattedAddress · getAddressCityProvince |
 | `packages/shared/src/entities/order.spec.ts` | packages | 8 | getOrderStatusLabel · getOrderCustomerName · getOrderDisplayTotal · getOrderItemCount |
 | `packages/shared/src/entities/person.spec.ts` | packages | 23 | getPersonFullName · getPersonInitials · getPersonDisplayLabel · getPersonEmail · getPersonFormatted… |

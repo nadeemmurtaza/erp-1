@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **419** endpoints across **70** controllers, with the access rule that actually guards each one.
+All **439** endpoints across **75** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 43** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 45** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -59,8 +59,10 @@ never authorization.
 | POST | `/orders` | `OrdersController.place` |
 | POST | `/orders/:number/track` | `OrdersController.track` |
 | POST | `/payments/:paymentId/receipt` | `PaymentsController.uploadReceipt` |
+| POST | `/payments/:paymentId/redeem-gift-card` | `PaymentsController.redeemGiftCard` |
 | POST | `/payments/callback/:provider` | `PaymentsController.callback` |
 | GET | `/payments/methods` | `PaymentsController.methods` |
+| POST | `/promotions/preview` | `PromotionsPublicController.preview` |
 | GET | `/replication/pull` | `ReplicationController.pull` |
 | POST | `/replication/push` | `ReplicationController.push` |
 | GET | `/shipping/quote` | `ShippingController.quote` |
@@ -365,6 +367,18 @@ never authorization.
 | GET | `/returns/reasons` | signed-in | `ReturnsController.listReasons` |  |
 | GET | `/shipping/quote` | **PUBLIC** | `ShippingController.quote` |  |
 
+### [`giftcards`](../modules/giftcards.md) (7)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/customers/:userId/store-credit` | `giftcards.view` | `StoreCreditController.ledger` | A customer's store credit balance and ledger |
+| POST | `/admin/customers/:userId/store-credit` | `giftcards.manage` | `StoreCreditController.issue` | Issue goodwill store credit to a customer |
+| GET | `/admin/gift-cards` | `giftcards.view` | `GiftCardsController.list` | List gift cards, paginated |
+| POST | `/admin/gift-cards` | `giftcards.manage` | `GiftCardsController.issue` | Issue a gift card |
+| GET | `/admin/gift-cards/:id` | `giftcards.view` | `GiftCardsController.getById` | One gift card with its full ledger |
+| PATCH | `/admin/gift-cards/:id/cancel` | `giftcards.manage` | `GiftCardsController.cancel` | Cancel a gift card, forfeiting any remaining balance |
+| GET | `/gift-cards/:code/balance` | signed-in | `GiftCardsAccountController.balance` | Check a gift card balance by code |
+
 ### [`identity-verification`](../modules/identity-verification.md) (4)
 
 | Method | Path | Access | Handler | Summary |
@@ -459,7 +473,7 @@ never authorization.
 | GET | `/admin/parties/:id` | `parties.manage` | `PartiesController.get` | Get a party |
 | GET | `/admin/parties/search` | `parties.manage` | `PartiesController.search` | Typeahead search for the counterparty picker |
 
-### [`payments`](../modules/payments.md) (6)
+### [`payments`](../modules/payments.md) (7)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -467,6 +481,7 @@ never authorization.
 | POST | `/admin/payments/:paymentId/refund` | `payments.approve` | `PaymentsAdminController.refund` | Mark a paid payment refunded (full or partial) |
 | GET | `/admin/payments/awaiting-approval` | `payments.approve` | `PaymentsAdminController.awaitingApproval` | Payments waiting on a human decision |
 | POST | `/payments/:paymentId/receipt` | **PUBLIC** | `PaymentsController.uploadReceipt` | Upload a bank-transfer receipt for staff to approve |
+| POST | `/payments/:paymentId/redeem-gift-card` | **PUBLIC** | `PaymentsController.redeemGiftCard` | Redeem a third-party gift card code against a payment awaiting one (Giftkarta e… |
 | POST | `/payments/callback/:provider` | **PUBLIC** | `PaymentsController.callback` | Gateway return URL — verifies and settles a payment |
 | GET | `/payments/methods` | **PUBLIC** | `PaymentsController.methods` | Payment methods currently accepted |
 
@@ -527,6 +542,23 @@ never authorization.
 | POST | `/admin/production/work-orders/:id/cancel` | `production.manage` | `WorkOrdersController.cancel` | Cancel a work order |
 | POST | `/admin/production/work-orders/:id/complete` | `production.manage` | `WorkOrdersController.complete` | Complete a work order, crediting finished stock |
 | POST | `/admin/production/work-orders/:id/release` | `production.manage` | `WorkOrdersController.release` | Release a work order, consuming its bill of materials |
+
+### [`promotions`](../modules/promotions.md) (12)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/promotions/discounts` | `promotions.view` | `PromotionsController.listDiscounts` | List discounts, paginated |
+| POST | `/admin/promotions/discounts` | `promotions.manage` | `PromotionsController.createDiscount` | Create a discount |
+| DELETE | `/admin/promotions/discounts/:id` | `promotions.manage` | `PromotionsController.deleteDiscount` | Delete a discount |
+| GET | `/admin/promotions/discounts/:id` | `promotions.view` | `PromotionsController.getDiscount` | One discount |
+| PATCH | `/admin/promotions/discounts/:id` | `promotions.manage` | `PromotionsController.updateDiscount` | Edit a discount |
+| POST | `/admin/promotions/discounts/preview` | `promotions.manage` | `PromotionsController.previewDiscount` | What this draft discount would have done to the last 30 days of real orders |
+| GET | `/admin/promotions/promo-codes` | `promotions.view` | `PromotionsController.listPromoCodes` | List promo codes, paginated |
+| POST | `/admin/promotions/promo-codes` | `promotions.manage` | `PromotionsController.createPromoCode` | Create one promo code |
+| DELETE | `/admin/promotions/promo-codes/:id` | `promotions.manage` | `PromotionsController.deletePromoCode` | Delete a promo code |
+| PATCH | `/admin/promotions/promo-codes/:id` | `promotions.manage` | `PromotionsController.updatePromoCode` | Edit, activate or deactivate a promo code |
+| POST | `/admin/promotions/promo-codes/bulk-generate` | `promotions.manage` | `PromotionsController.bulkGeneratePromoCodes` | Generate N codes with a shared prefix for a campaign |
+| POST | `/promotions/preview` | **PUBLIC** | `PromotionsPublicController.preview` | Preview what discounts/a promo code would do to this cart |
 
 ### [`purchasing`](../modules/purchasing.md) (17)
 

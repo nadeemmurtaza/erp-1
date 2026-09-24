@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **43** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **44** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -24,7 +24,7 @@ order" is a new file, not an edit to checkout.
 ## Attention list
 
 - Events **nothing publishes**: `crm.contact_upserted`, `crm.lead_created`
-- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`
+- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`, `promotions.discount_redeemed`
 
 ## Summary
 
@@ -73,6 +73,7 @@ order" is a new file, not an edit to checkout.
 | `fulfilment.shipment_rto` | `ShipmentReturnedToOrigin` | `fulfilment` | `crm`, `finance` |
 | `fulfilment.return_status_changed` | `ReturnRequestStatusChanged` | `fulfilment` | `fulfilment` |
 | `fulfilment.return_fully_refunded` | `ReturnRequestFullyRefunded` | `fulfilment` | `orders` |
+| `promotions.discount_redeemed` | `DiscountRedeemed` | `promotions` | _none_ |
 
 
 ## Detail
@@ -86,8 +87,8 @@ order" is a new file, not an edit to checkout.
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:50` | `accounting` |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:157` | `accounting` |
-| `apps/api/src/modules/orders/orders.service.ts:340` | `orders` |
-| `apps/api/src/modules/orders/orders.service.ts:543` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:424` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:627` | `orders` |
 
 
 **Subscribed by**
@@ -108,7 +109,7 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/orders/orders.service.ts:725` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:809` | `orders` |
 
 
 **Subscribed by**
@@ -127,7 +128,7 @@ order" is a new file, not an edit to checkout.
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/finance/finance.listener.ts:9` | `finance` |
-| `apps/api/src/modules/orders/orders.service.ts:725` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:809` | `orders` |
 
 
 **Subscribed by**
@@ -146,9 +147,10 @@ order" is a new file, not an edit to checkout.
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:117` | `accounting` |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:154` | `accounting` |
-| `apps/api/src/modules/orders/orders.service.ts:531` | `orders` |
-| `apps/api/src/modules/payments/payments.service.ts:188` | `payments` |
-| `apps/api/src/modules/payments/payments.service.ts:257` | `payments` |
+| `apps/api/src/modules/orders/orders.service.ts:615` | `orders` |
+| `apps/api/src/modules/payments/payments.service.ts:191` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:293` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:341` | `payments` |
 
 
 **Subscribed by**
@@ -165,7 +167,8 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/payments/payments.service.ts:188` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:191` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:293` | `payments` |
 
 
 **Subscribed by**
@@ -181,7 +184,7 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/payments/payments.service.ts:113` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:116` | `payments` |
 
 
 **Subscribed by**
@@ -195,7 +198,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/payments/payments.service.ts:316` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:400` | `payments` |
 
 
 **Subscribed by**
@@ -684,7 +687,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 ### `payroll.run_posted`
 
-> PayRunService.post() (docs/implementation/19-payroll.md WO-19.4) — the eighth posting rule; fires whether or not `accounting` is on, same idiom as ExpenseRecorded.
+> PayRunService.post() (docs/implementation/payroll/19-payroll.md WO-19.4) — the eighth posting rule; fires whether or not `accounting` is on, same idiom as ExpenseRecorded.
 
 **Published by**
 
@@ -702,7 +705,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 ### `payroll.adjustment_posted`
 
-> PayRunService.postAdjustment() (docs/implementation/19-payroll.md WO-19.5) — the overpayment/correction reversal path, a distinct postable fact from the original run it corrects.
+> PayRunService.postAdjustment() (docs/implementation/payroll/19-payroll.md WO-19.5) — the overpayment/correction reversal path, a distinct postable fact from the original run it corrects.
 
 **Published by**
 
@@ -789,6 +792,21 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Handler | Where | Module |
 |---|---|---|
 | `onReturnFullyRefunded()` | `apps/api/src/modules/orders/shipment-status.listener.ts:61` | `orders` |
+
+### `promotions.discount_redeemed`
+
+> OrdersService.place() (WO-5.3) — fires once a discount/promo code was actually applied to a placed order, for analytics.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/promotions/promotions.service.ts:512` | `promotions` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
 
 
 ---

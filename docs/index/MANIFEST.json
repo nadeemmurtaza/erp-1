@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "9effdef62f507430",
+  "contentHash": "11adf2a1375fcfdf",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -67,6 +67,7 @@
     "docs/index/data/crm.md",
     "docs/index/data/finance.md",
     "docs/index/data/fulfilment.md",
+    "docs/index/data/giftcards.md",
     "docs/index/data/identity-verification.md",
     "docs/index/data/inventory.md",
     "docs/index/data/invoicing.md",
@@ -79,6 +80,7 @@
     "docs/index/data/platform.md",
     "docs/index/data/pos.md",
     "docs/index/data/production.md",
+    "docs/index/data/promotions.md",
     "docs/index/data/purchasing.md",
     "docs/index/data/replication.md",
     "docs/index/data/stitching.md",
@@ -103,6 +105,7 @@
     "docs/index/modules/crm.md",
     "docs/index/modules/finance.md",
     "docs/index/modules/fulfilment.md",
+    "docs/index/modules/giftcards.md",
     "docs/index/modules/identity-verification.md",
     "docs/index/modules/inventory.md",
     "docs/index/modules/marketing.md",
@@ -114,6 +117,7 @@
     "docs/index/modules/payroll.md",
     "docs/index/modules/pos.md",
     "docs/index/modules/production.md",
+    "docs/index/modules/promotions.md",
     "docs/index/modules/purchasing.md",
     "docs/index/modules/reports.md",
     "docs/index/modules/settings.md",
@@ -132,18 +136,18 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 1516,
-    "lines": 233733,
-    "routes": 419,
-    "controllers": 70,
-    "models": 162,
-    "enums": 66,
-    "migrations": 63,
-    "events": 43,
-    "permissions": 46,
-    "screens": 172,
-    "crons": 10,
-    "specs": 143,
-    "designLaws": 150
+    "files": 1549,
+    "lines": 239114,
+    "routes": 439,
+    "controllers": 75,
+    "models": 168,
+    "enums": 69,
+    "migrations": 64,
+    "events": 44,
+    "permissions": 50,
+    "screens": 179,
+    "crons": 11,
+    "specs": 146,
+    "designLaws": 0
   }
 }

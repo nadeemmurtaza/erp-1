@@ -20,7 +20,7 @@ function displayName(u: { firstName: string | null; lastName: string | null; ema
 }
 
 /**
- * WO-19.6 (docs/implementation/19-payroll.md) — every employee's current
+ * WO-19.6 (docs/implementation/payroll/19-payroll.md) — every employee's current
  * compensation rate, with a detail dialog for the full rate history and
  * setting a new one.
  */

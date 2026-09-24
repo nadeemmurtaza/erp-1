@@ -10,7 +10,7 @@ import { PayrollService } from './payroll.service';
 import { PayRunService } from './pay-run.service';
 
 /**
- * WO-19.4 (docs/implementation/19-payroll.md) — pay-run build, approve,
+ * WO-19.4 (docs/implementation/payroll/19-payroll.md) — pay-run build, approve,
  * post. Real PrismaService/SettingsService against the seeded test
  * database, same idiom as ProductionService's own spec; AppConfigService
  * and EventBusService mocked the same way that spec mocks them.

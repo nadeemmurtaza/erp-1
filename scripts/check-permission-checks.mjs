@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * WO-2.8 (docs/implementation/02-admin-shell.md): a permission check in the
+ * WO-2.8 (docs/implementation/admin-platform/02-admin-shell.md): a permission check in the
  * admin UI goes through `useAdminSession().can(key)`, never a raw
  * `something.permissions.includes('literal-string')`.
  *

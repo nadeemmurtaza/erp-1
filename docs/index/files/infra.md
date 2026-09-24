@@ -13,9 +13,9 @@ All 56 tracked files in `scripts, CI, deployment and container configuration`, b
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `.dockerignore` | file | — |  |
-| `.env.branch.example` | example | 100 |  |
-| `.env.example` | example | 142 |  |
-| `.env.production.example` | example | 114 |  |
+| `.env.branch.example` | example | 101 |  |
+| `.env.example` | example | 147 |  |
+| `.env.production.example` | example | 119 |  |
 | `.gitignore` | file | 54 |  |
 | `Caddyfile` | file | 63 |  |
 | `cloudflare.json` | json | 22 |  |
@@ -84,7 +84,7 @@ All 56 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check-env-templates.mjs` | script | 139 |  |
 | `check-frontend-secrets.mjs` | script | 137 |  |
 | `check-links.mjs` | script | 402 |  |
-| `check-module-boundaries.mjs` | script | 555 |  |
+| `check-module-boundaries.mjs` | script | 567 |  |
 | `check-overflow.mjs` | script | 644 |  |
 | `check-permission-checks.mjs` | script | 127 |  |
 | `check-rebrand.mjs` | script | 292 |  |

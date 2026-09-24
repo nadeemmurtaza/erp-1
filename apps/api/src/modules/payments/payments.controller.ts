@@ -10,10 +10,17 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { IsInt, IsOptional, IsString, MaxLength, Min } from 'class-validator';
+import { Throttle } from '@nestjs/throttler';
+import { IsInt, IsNotEmpty, IsOptional, IsString, MaxLength, Min } from 'class-validator';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, Public, RequirePermission } from '../../core/auth/decorators';
 import { PaymentsService } from './payments.service';
+
+class RedeemGiftCardDto {
+  @IsString()
+  @IsNotEmpty()
+  code!: string;
+}
 
 class ApprovePaymentDto {
   @IsOptional()
@@ -79,6 +86,17 @@ export class PaymentsController {
       throw new BadRequestException('Choose a receipt image to upload.');
     }
     return this.payments.attachReceipt(paymentId, file);
+  }
+
+  @Public()
+  @Post(':paymentId/redeem-gift-card')
+  @ApiOperation({ summary: 'Redeem a third-party gift card code against a payment awaiting one (Giftkarta et al.)' })
+  // A code-guessing brute force against someone else's card is the real risk
+  // here (the same reasoning WO-5's own promo-code validate endpoint is
+  // throttled) — generous enough for a customer correcting a typo.
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
+  redeemGiftCard(@Param('paymentId') paymentId: string, @Body() dto: RedeemGiftCardDto) {
+    return this.payments.redeemGiftCardCode(paymentId, dto.code);
   }
 }
 

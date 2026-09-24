@@ -18,7 +18,7 @@ function displayName(u: { firstName: string | null; lastName: string | null; ema
 }
 
 /**
- * WO-19.6 (docs/implementation/19-payroll.md) — one pay run: every line,
+ * WO-19.6 (docs/implementation/payroll/19-payroll.md) — one pay run: every line,
  * the build/approve/post lifecycle, and posting an adjustment once POSTED.
  */
 export default function PayrollRunDetailPage({ params }: { params: Promise<{ id: string }> }) {

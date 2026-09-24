@@ -3,7 +3,7 @@
 
 # Screens
 
-All **172** routable files across the web app, the till and the mobile app.
+All **179** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (102)
+### admin (109)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -55,6 +55,9 @@ _none_
 | `/admin/categories` | page | client | `apps/web/src/app/(admin)/admin/(app)/categories/page.tsx` |
 | `/admin/contacts` | loading | server | `apps/web/src/app/(admin)/admin/(app)/contacts/loading.tsx` |
 | `/admin/contacts` | page | client | `apps/web/src/app/(admin)/admin/(app)/contacts/page.tsx` |
+| `/admin/customers/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/customers/[id]/page.tsx` |
+| `/admin/customers/gift-cards` | page | client | `apps/web/src/app/(admin)/admin/(app)/customers/gift-cards/page.tsx` |
+| `/admin/customers/gift-cards/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/customers/gift-cards/[id]/page.tsx` |
 | `/admin/customers/insights` | page | client | `apps/web/src/app/(admin)/admin/(app)/customers/insights/page.tsx` |
 | `/admin/designs` | page | client | `apps/web/src/app/(admin)/admin/(app)/designs/page.tsx` |
 | `/admin/designs/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/designs/[id]/page.tsx` |
@@ -90,6 +93,10 @@ _none_
 | `/admin/leads` | page | client | `apps/web/src/app/(admin)/admin/(app)/leads/page.tsx` |
 | `/admin/login` | page | client | `apps/web/src/app/(admin)/admin/login/page.tsx` |
 | `/admin/marketing` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/page.tsx` |
+| `/admin/marketing/discounts` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/discounts/page.tsx` |
+| `/admin/marketing/discounts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/discounts/[id]/page.tsx` |
+| `/admin/marketing/discounts/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/discounts/new/page.tsx` |
+| `/admin/marketing/promo-codes` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/promo-codes/page.tsx` |
 | `/admin/o` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/page.tsx` |
 | `/admin/o/[orgId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/page.tsx` |
 | `/admin/o/[orgId]/access` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/access/page.tsx` |

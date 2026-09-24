@@ -742,7 +742,7 @@ export interface WorkshopOutput {
   bottleneck: { stage: string; avgHours: number } | null;
 }
 
-// --- Payroll: compensation, leave, pay runs (docs/implementation/19-payroll.md) --
+// --- Payroll: compensation, leave, pay runs (docs/implementation/payroll/19-payroll.md) --
 
 export type CompensationBasis = 'MONTHLY' | 'HOURLY' | 'COMMISSION';
 

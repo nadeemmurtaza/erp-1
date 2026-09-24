@@ -74,6 +74,8 @@ export const MODULE_PACKS: Record<string, PackName> = {
   finance: 'core',
   fulfilment: 'core',
   payroll: 'core',
+  promotions: 'core',
+  giftcards: 'core',
   tracking: 'core',
   transfers: 'core',
   users: 'core',

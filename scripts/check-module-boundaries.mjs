@@ -182,6 +182,18 @@ const KNOWN_MODULE_COUPLINGS = new Set([
   // belongs to — same same-transaction reasoning as purchasing/production/
   // bom -> inventory above.
   'fulfilment -> inventory',
+  // orders.service.ts's place() validates a promo code and applies its
+  // discount, then — inside the SAME transaction as the order write —
+  // conditionally increments Discount/PromoCode.usageCount and writes the
+  // OrderDiscount snapshot (PromotionsService.redeemInTransaction). A lost
+  // race there must roll back the whole order (WO-5's exit criterion #2),
+  // the same same-transaction-write reasoning as orders -> inventory.
+  'orders -> promotions',
+  // orders.service.ts's place() debits a gift card / store credit tender
+  // inside the SAME transaction as the order write (GiftCardsService /
+  // StoreCreditService's own redeemInTransaction) — a lost race must roll
+  // back the whole order (WO-5's exit criterion #3), same reasoning again.
+  'orders -> giftcards',
 ]);
 
 function walk(dir) {

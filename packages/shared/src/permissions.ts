@@ -291,6 +291,30 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     category: 'Administration',
     sensitivity: 'medium',
   },
+  {
+    key: 'promotions.view',
+    label: 'View discounts, promo codes and their usage',
+    category: 'Marketing',
+    sensitivity: 'low',
+  },
+  {
+    key: 'promotions.manage',
+    label: 'Create and edit discounts and promo codes',
+    category: 'Marketing',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'giftcards.view',
+    label: 'View gift cards, their ledgers and store credit balances',
+    category: 'Marketing',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'giftcards.manage',
+    label: 'Issue, cancel and adjust gift cards and store credit — real money',
+    category: 'Marketing',
+    sensitivity: 'high',
+  },
 ] as const;
 
 export type PermissionKey = (typeof PERMISSION_CATALOG)[number]['key'];
@@ -388,8 +412,8 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'marketing',
     label: 'Marketing',
-    description: 'Automated marketing email.',
-    permissions: ['marketing.manage'],
+    description: 'Automated marketing email, discounts, promo codes, gift cards and store credit.',
+    permissions: ['marketing.manage', 'promotions.view', 'promotions.manage', 'giftcards.view', 'giftcards.manage'],
   },
   {
     key: 'tax',
@@ -475,6 +499,9 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'fulfilment.manage',
     'bom.view',
     'bom.produce',
+    'promotions.view',
+    'promotions.manage',
+    'giftcards.view',
   ],
   ADMIN: [
     'account.change_own_password',
@@ -522,6 +549,10 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'accounting.manage_periods',
     'pos.manage',
     'pos.operate',
+    'promotions.view',
+    'promotions.manage',
+    'giftcards.view',
+    'giftcards.manage',
   ],
 };
 

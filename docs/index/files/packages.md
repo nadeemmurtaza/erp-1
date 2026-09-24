@@ -3,7 +3,7 @@
 
 # Files — packages
 
-All 61 tracked files in `packages/*`, by directory.
+All 64 tracked files in `packages/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -49,19 +49,22 @@ All 61 tracked files in `packages/*`, by directory.
 | `package.json` | json | 37 |  |
 | `tsconfig.json` | json | 17 |  |
 
-### `packages/shared/src` (25)
+### `packages/shared/src` (28)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `brand.ts` | module | 334 | THE BRAND FILE. |
 | `constants.ts` | module | 146 |  |
+| `discounts.spec.ts` | unit test | 215 |  |
+| `discounts.ts` | module | 322 | The discount rules engine. |
 | `enums.ts` | module | 104 | Enum values mirrored from the Prisma schema. |
 | `fabric-estimate.spec.ts` | unit test | 79 | ((40 + 3) * 2 + (23 + 2)) / 36 = (86 + 25) / 36 = 3.0833... |
 | `fabric-estimate.ts` | module | 95 | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
 | `http-client.ts` | module | 200 | The one HTTP layer for a signed-in browser client. |
-| `index.ts` | module | 21 |  |
+| `human-code.ts` | module | 37 | No O/0, no I/1/l — the ambiguous-character exclusion both PromoCode's bulk generation and GiftCard's own code need (05-… |
+| `index.ts` | module | 23 |  |
 | `permissions.spec.ts` | unit test | 68 |  |
-| `permissions.ts` | module | 546 | The permission catalog for PBAC (Permission-Based Access Control). |
+| `permissions.ts` | module | 577 | The permission catalog for PBAC (Permission-Based Access Control). |
 | `phone.spec.ts` | unit test | 65 |  |
 | `phone.ts` | module | 82 |  |
 | `pricing.spec.ts` | unit test | 307 |  |
@@ -69,7 +72,7 @@ All 61 tracked files in `packages/*`, by directory.
 | `secret-crypto.spec.ts` | unit test | 36 |  |
 | `secret-crypto.ts` | module | 65 |  |
 | `sku.spec.ts` | unit test | 52 |  |
-| `sku.ts` | module | 80 | SKU generation (WO-3.3, docs/implementation/03-variants-sku-seo.md). |
+| `sku.ts` | module | 80 | SKU generation (WO-3.3, docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md). |
 | `slug.ts` | module | 44 | URL slugs. |
 | `theme-colors.ts` | module | 18 |  |
 | `theme-radii.ts` | module | 17 |  |
@@ -77,7 +80,7 @@ All 61 tracked files in `packages/*`, by directory.
 | `units.spec.ts` | unit test | 43 |  |
 | `units.ts` | module | 58 | Raw-material quantities. |
 | `variant-matrix.spec.ts` | unit test | 76 |  |
-| `variant-matrix.ts` | module | 89 | The variant matrix builder's cross-product (WO-3.5, docs/implementation/03-variants-sku-seo.md). |
+| `variant-matrix.ts` | module | 89 | The variant matrix builder's cross-product (WO-3.5, docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md… |
 
 ### `packages/shared/src/entities` (11)
 

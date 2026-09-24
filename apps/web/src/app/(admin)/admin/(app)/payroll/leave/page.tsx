@@ -18,7 +18,7 @@ function displayName(u?: { firstName: string | null; lastName: string | null; em
 }
 
 /**
- * WO-19.6 (docs/implementation/19-payroll.md) — every leave request across
+ * WO-19.6 (docs/implementation/payroll/19-payroll.md) — every leave request across
  * every employee, with approve/reject actions on PENDING ones.
  */
 export default function PayrollLeavePage() {

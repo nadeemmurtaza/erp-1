@@ -21,10 +21,10 @@ All paths relative to `apps/api/src/modules/payroll/dto`.
 | `pay-run.dto.ts` | dto | 19 | 1 |  |
 | `leave-accrual.cron.spec.ts` | unit test | 73 | — |  |
 | `leave-accrual.cron.ts` | scheduled job | 45 | 1 | WO-19.3's monthly accrual job. |
-| `leave.controller.ts` | controller | 81 | 1 | Leave types, balances and requests (docs/implementation/19-payroll.md WO-19.3). |
+| `leave.controller.ts` | controller | 81 | 1 | Leave types, balances and requests (docs/implementation/payroll/19-payroll.md WO-19.3). |
 | `leave.service.spec.ts` | unit test | 224 | — |  |
 | `leave.service.ts` | service | 175 | 3 | The days a leave request spans, Monday–Saturday counted, Sunday not — the "plain Mon–Sat week" fallback 19-payroll.md W… |
-| `pay-run.controller.ts` | controller | 73 | 1 | Pay-run build/approve/post (docs/implementation/19-payroll.md WO-19.4). |
+| `pay-run.controller.ts` | controller | 73 | 1 | Pay-run build/approve/post (docs/implementation/payroll/19-payroll.md WO-19.4). |
 | `pay-run.service.spec.ts` | unit test | 282 | — |  |
 | `pay-run.service.ts` | service | 254 | 2 |  |
 | `payroll.controller.ts` | controller | 78 | 1 | Compensation rates and the salary calculator (docs/implementation/ 19-payroll.md WO-19.2). |
@@ -143,13 +143,13 @@ check there before adding another.
 | `PostPayRunAdjustmentDto` | class | `pay-run-adjustment.dto.ts:6` |  |
 | `BuildPayRunDto` | class | `pay-run.dto.ts:6` |  |
 | `LeaveAccrualCron` | class | `leave-accrual.cron.ts:16` | WO-19.3's monthly accrual job. |
-| `LeaveController` | class | `leave.controller.ts:16` | Leave types, balances and requests (docs/implementation/19-payroll.md WO-19.3). |
+| `LeaveController` | class | `leave.controller.ts:16` | Leave types, balances and requests (docs/implementation/payroll/19-payroll.md WO-19.3). |
 | `countWorkingDays` | function | `leave.service.ts:12` | The days a leave request spans, Monday–Saturday counted, Sunday not — the "plain Mon–Sat week" fallback 19-pa… |
 | `accrualPeriodKey` | function | `leave.service.ts:25` | "2026-09" — the accrual period a date falls in. |
 | `LeaveService` | class | `leave.service.ts:30` |  |
-| `PayRunController` | class | `pay-run.controller.ts:17` | Pay-run build/approve/post (docs/implementation/19-payroll.md WO-19.4). |
+| `PayRunController` | class | `pay-run.controller.ts:17` | Pay-run build/approve/post (docs/implementation/payroll/19-payroll.md WO-19.4). |
 | `PayRunWithLines` | type | `pay-run.service.ts:17` |  |
-| `PayRunService` | class | `pay-run.service.ts:46` | Pay-run build, approve, post (docs/implementation/19-payroll.md WO-19.4). |
+| `PayRunService` | class | `pay-run.service.ts:46` | Pay-run build, approve, post (docs/implementation/payroll/19-payroll.md WO-19.4). |
 | `PayrollController` | class | `payroll.controller.ts:16` | Compensation rates and the salary calculator (docs/implementation/ 19-payroll.md WO-19.2). |
 | `PayrollModule` | class | `payroll.module.ts:22` |  |
 | `GrossCalculationInput` | interface | `payroll.service.ts:5` |  |

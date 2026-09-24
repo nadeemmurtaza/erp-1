@@ -5,7 +5,7 @@ session opened anywhere in this repo, which is the point: the rules used to
 live only in one person's private global config, so a teammate's agent, a
 cloud run or CI saw none of them.
 
-The long form is [`docs/implementation/00-HOUSE-RULES.md`](docs/implementation/00-HOUSE-RULES.md).
+The long form is [`docs/implementation/00-HOUSE-RULES.md`](./docs/implementation/00-HOUSE-RULES.md).
 That file is the contract; this one is the part you must not miss.
 
 ---
@@ -348,9 +348,9 @@ later under deadline.
 
 The catalogue — every lens with its repository evidence, worked example and done
 test, plus the surface-specific ones held back here, catalogue findability at
-10k+ products among them — is [`_index.md`](docs/erp-lenses/_index.md). Where two
+10k+ products among them — is [`_index.md`](docs/erp-lenses/_meta/_index.md). Where two
 lenses pull against each other the ruling is already written and numbered in
-[`_canonical-decisions.md`](docs/erp-lenses/_canonical-decisions.md); citing it is
+[`_canonical-decisions.md`](docs/erp-lenses/_meta/_canonical-decisions.md); citing it is
 an answer, deciding it privately inside a PR is not.
 
 ---
@@ -372,11 +372,11 @@ with a branch per client.
 > A location is a row. Keep each in its own kind of place.
 
 Hard rules, in full with reasoning in
-[`docs/implementation/ENTERPRISE-SCALE.md`](docs/implementation/ENTERPRISE-SCALE.md)
-and [`MULTI-SECTOR.md`](docs/implementation/MULTI-SECTOR.md). Multi-branch
+[`docs/implementation/ENTERPRISE-SCALE.md`](./docs/implementation/ENTERPRISE-SCALE.md)
+and [`MULTI-SECTOR.md`](./docs/implementation/MULTI-SECTOR.md). Multi-branch
 chains — a brand with several locations plus a website, offline POS, and
 inter-branch transfers — are architected in full in
-[`docs/implementation/RETAIL-ERP.md`](docs/implementation/RETAIL-ERP.md),
+[`docs/implementation/RETAIL-ERP.md`](./docs/implementation/RETAIL-ERP.md),
 which is the document of record where it and `ENTERPRISE-SCALE.md` overlap:
 
 - **One `main`, one `production`.** No per-sector, per-client branch. A
@@ -397,7 +397,7 @@ which is the document of record where it and `ENTERPRISE-SCALE.md` overlap:
 - **One deployment serves one brand**, resolved at build time. That is a
   deliberate boundary; do not build toward multi-brand speculatively. The one
   named exception is a hosting-provider control plane routing to many still
-  single-brand deployments — `docs/implementation/39-shared-cross-tenant-hosting-tier.md`,
+  single-brand deployments — `docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md`,
   adopted deliberately, never a default. It shares infrastructure, never a
   database, across tenants; inside any one tenant's deployment this rule is
   completely unchanged.
@@ -556,7 +556,7 @@ node scripts/check-rebrand.mjs --self-test  # proves the matcher still catches a
 ```
 
 Three more design checks run inside `pnpm lint`, from
-`docs/design/15-integrity.md`'s build order. Each carries a declared baseline
+`docs/design/process-governance/15-integrity.md`'s build order. Each carries a declared baseline
 of the debt it found on the day it was written — a count that may shrink and
 may not grow — and each has a `--self-test` that proves its own maths:
 

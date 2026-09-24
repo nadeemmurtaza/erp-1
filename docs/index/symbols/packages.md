@@ -64,6 +64,16 @@ Every top-level export in `packages`, with the line to open.
 | `constants.ts` | `formatDateShort` | function | :109 | A chart axis tick — "7 Sept". |
 | `constants.ts` | `formatNumber` | function | :132 | A plain count, grouped for the locale — 6017 -> "6,017". |
 | `constants.ts` | `formatMoney` | function | :137 | Formats integer paisa as a display string, e.g. |
+| `discounts.ts` | `DiscountType` | type | :11 | The discount rules engine. |
+| `discounts.ts` | `DiscountScope` | type | :12 |  |
+| `discounts.ts` | `DiscountRule` | interface | :21 | A `Discount` row's shape, as `evaluateDiscounts` needs it — no id-only fields (createdAt, usageCoun… |
+| `discounts.ts` | `CartLineSnapshot` | interface | :57 |  |
+| `discounts.ts` | `CartSnapshot` | interface | :68 |  |
+| `discounts.ts` | `DiscountContext` | interface | :74 |  |
+| `discounts.ts` | `AppliedDiscount` | interface | :79 | One line actually recorded in `docs/implementation/promotions-giftcards/05-promotions-giftcards.md`… |
+| `discounts.ts` | `DiscountResult` | interface | :87 |  |
+| `discounts.ts` | `isDiscountEligible` | function | :121 | Whether the cart, as a whole, satisfies this discount's conditions. |
+| `discounts.ts` | `evaluateDiscounts` | function | :241 | Evaluates every ELIGIBLE discount against a cart and returns the combined result, per the stacking… |
 | `enums.ts` | `USER_ROLES` | const | :10 | Any change here must be made in apps/api/prisma/schema .prisma too; the `enums.spec.ts` test in app… |
 | `enums.ts` | `UserRole` | type | :11 |  |
 | `enums.ts` | `BACK_OFFICE_ROLES` | const | :14 | Roles allowed into /admin. |
@@ -96,9 +106,12 @@ Every top-level export in `packages`, with the line to open.
 | `http-client.ts` | `messageOf` | function | :84 | Pulls a human message out of whatever the API returned. |
 | `http-client.ts` | `request` | function | :116 | One request. |
 | `http-client.ts` | `requestWithRefresh` | function | :158 | Wraps `request` with a 401 retry. |
+| `human-code.ts` | `generateHumanCode` | function | :30 | A cryptographically random, human-readable code — never sequential. |
 | `index.ts` | `*` | re-export |  | from `./constants` |
+| `index.ts` | `*` | re-export |  | from `./discounts` |
 | `index.ts` | `*` | re-export |  | from `./enums` |
 | `index.ts` | `*` | re-export |  | from `./entities` |
+| `index.ts` | `*` | re-export |  | from `./human-code` |
 | `index.ts` | `*` | re-export |  | from `./fabric-estimate` |
 | `index.ts` | `*` | re-export |  | from `./permissions` |
 | `index.ts` | `*` | re-export |  | from `./phone` |
@@ -119,15 +132,15 @@ Every top-level export in `packages`, with the line to open.
 | `permissions.ts` | `PermissionSensitivity` | type | :36 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PermissionDefinition` | interface | :38 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PERMISSION_CATALOG` | const | :45 |  |
-| `permissions.ts` | `PermissionKey` | type | :296 |  |
-| `permissions.ts` | `PERMISSION_KEYS` | const | :298 |  |
-| `permissions.ts` | `PermissionGroup` | interface | :308 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
-| `permissions.ts` | `PERMISSION_GROUPS` | const | :315 |  |
-| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :438 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
-| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :533 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
-| `permissions.ts` | `PERMISSION_EFFECTS` | const | :538 |  |
-| `permissions.ts` | `PermissionEffect` | type | :539 |  |
-| `permissions.ts` | `PermissionOverride` | interface | :542 | One entry in a user's permission-override set (@see UserPermission). |
+| `permissions.ts` | `PermissionKey` | type | :320 |  |
+| `permissions.ts` | `PERMISSION_KEYS` | const | :322 |  |
+| `permissions.ts` | `PermissionGroup` | interface | :332 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
+| `permissions.ts` | `PERMISSION_GROUPS` | const | :339 |  |
+| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :462 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
+| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :564 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
+| `permissions.ts` | `PERMISSION_EFFECTS` | const | :569 |  |
+| `permissions.ts` | `PermissionEffect` | type | :570 |  |
+| `permissions.ts` | `PermissionOverride` | interface | :573 | One entry in a user's permission-override set (@see UserPermission). |
 | `phone.ts` | `NormalizedPhone` | interface | :21 |  |
 | `phone.ts` | `normalizePhone` | function | :29 |  |
 | `phone.ts` | `isValidPhone` | function | :64 |  |
@@ -155,7 +168,7 @@ Every top-level export in `packages`, with the line to open.
 | `pricing.ts` | `weightedAverageCost` | function | :264 |  |
 | `secret-crypto.ts` | `encryptSecret` | function | :40 |  |
 | `secret-crypto.ts` | `decryptSecret` | function | :50 |  |
-| `sku.ts` | `SkuTemplateInput` | interface | :11 | SKU generation (WO-3.3, docs/implementation/03-variants-sku-seo.md). |
+| `sku.ts` | `SkuTemplateInput` | interface | :11 | SKU generation (WO-3.3, docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md). |
 | `sku.ts` | `generateSku` | function | :59 | Renders a SKU from the template, appending a zero-padded `{SEQ}` only when the un-numbered version… |
 | `slug.ts` | `slugify` | function | :6 | URL slugs. |
 | `slug.ts` | `slugifyWithFallback` | function | :28 | Slugifies, falling back to `<fallbackPrefix>-<random>` when nothing survives. |
@@ -173,7 +186,7 @@ Every top-level export in `packages`, with the line to open.
 | `units.ts` | `toBaseUnits` | function | :33 | A display quantity (12.5 gaz) to base units (12500), rounded to the nearest whole base unit — base… |
 | `units.ts` | `fromBaseUnits` | function | :38 | Base units (12500) back to a display quantity (12.5 gaz). |
 | `units.ts` | `formatQuantity` | function | :47 | "12.5 gaz" — only as many decimal places as `unitScale` actually implies (three for scale 1000, non… |
-| `variant-matrix.ts` | `OptionAxis` | interface | :6 | The variant matrix builder's cross-product (WO-3.5, docs/implementation/03-variants-sku-seo.md). |
+| `variant-matrix.ts` | `OptionAxis` | interface | :6 | The variant matrix builder's cross-product (WO-3.5, docs/implementation/catalog-variants-pricing/03… |
 | `variant-matrix.ts` | `VariantCombination` | interface | :13 |  |
 | `variant-matrix.ts` | `GenerateCombinationsResult` | interface | :18 |  |
 | `variant-matrix.ts` | `generateVariantCombinations` | function | :33 | The full cross-product of every axis's values. |

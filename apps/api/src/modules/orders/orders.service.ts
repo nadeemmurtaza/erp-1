@@ -33,6 +33,9 @@ import { Prisma, type OrderStatus } from '../../core/prisma/client';
 import { PaymentsService } from '../payments/payments.service';
 import { TaxService } from '../tax/tax.service';
 import { ShippingService } from '../fulfilment/shipping.service';
+import { PromotionsService } from '../promotions/promotions.service';
+import { GiftCardsService } from '../giftcards/giftcards.service';
+import { StoreCreditService } from '../giftcards/store-credit.service';
 import type { PlaceOrderDto } from './dto/order.dto';
 
 export interface PosSaleLineInput {
@@ -100,6 +103,9 @@ export class OrdersService {
     private readonly checkoutValidators: CheckoutValidatorRegistry,
     private readonly tax: TaxService,
     private readonly shipping: ShippingService,
+    private readonly promotions: PromotionsService,
+    private readonly giftCards: GiftCardsService,
+    private readonly storeCredit: StoreCreditService,
   ) {}
 
   /**
@@ -155,17 +161,42 @@ export class OrdersService {
 
     const goodsSubtotal = priced.totals.itemsSubtotal + priced.totals.stitchingSubtotal;
     const quote = await this.shipping.quote(dto.shippingAddress.city, goodsSubtotal);
-    const shippingFee = quote.fee;
+    const shippingFeeBeforeDiscount = quote.fee;
     const paymentFee = await this.payments.feeFor(dto.paymentMethod, goodsSubtotal);
 
+    // Phase 5 (WO-5.3): evaluate discounts/promo code against the SAME
+    // database-resolved lines the order is about to be built from — never
+    // the client's own numbers. Read-only; nothing is redeemed yet (that
+    // happens inside the transaction below, per PromotionsService's own
+    // note on why redemption has to be race-safe with order creation).
+    const categoryIdsByProduct = await this.promotions.categoryIdsByProduct(
+      [...new Set(priced.lines.map((line) => line.productId).filter((id): id is string => id !== null))],
+    );
+    const discountEvaluation = await this.promotions.evaluateForCheckout({
+      lines: priced.lines.map((line, index) => ({
+        id: String(index),
+        productId: line.productId,
+        categoryIds: line.productId ? categoryIdsByProduct.get(line.productId) ?? [] : [],
+        unitPrice: line.unitPrice,
+        quantity: line.quantity,
+      })),
+      shippingFee: shippingFeeBeforeDiscount,
+      userId: userId ?? null,
+      promoCode: dto.promoCode,
+    });
+    const { linePerUnitDiscounts, orderDiscount, shippingDiscount } = discountEvaluation.result;
+    const shippingFee = Math.max(0, shippingFeeBeforeDiscount - shippingDiscount);
+
     const totals = computeOrderTotals({
-      items: priced.lines.map((line) => ({
+      items: priced.lines.map((line, index) => ({
         unitPrice: line.unitPrice,
         quantity: line.quantity,
         stitchingFeePerUnit: line.stitchingFeeUnit,
+        discountPerUnit: linePerUnitDiscounts[String(index)] ?? 0,
       })),
       shippingFee,
       codFee: paymentFee,
+      orderDiscount,
       // Already correctly gated to EXCLUSIVE-mode-only inside priceCart()'s
       // own computeOrderTotals call -- reused here rather than re-derived,
       // per the rounding-trap discipline (one source of truth, never two).
@@ -232,7 +263,9 @@ export class OrdersService {
           shippingZone: quote.zoneKey,
           customerNote: dto.note ?? null,
           items: {
-            create: priced.lines.map((line) => ({
+            create: priced.lines.map((line, index) => {
+              const discountUnit = linePerUnitDiscounts[String(index)] ?? 0;
+              return {
               productId: line.productId,
               variantId: line.variantId,
               kind: line.kind,
@@ -245,7 +278,8 @@ export class OrdersService {
               unitCost: costMap.get(line.variantId) ?? 0,
               quantity: line.quantity,
               stitchingFeeUnit: line.stitchingFeeUnit,
-              lineTotal: line.lineTotal,
+              discountUnit,
+              lineTotal: line.lineTotal - discountUnit * line.quantity,
               taxAmount: line.taxAmount,
               taxRateBps: line.taxRateBps,
               stitchingServiceId: line.stitchingServiceId,
@@ -257,7 +291,8 @@ export class OrdersService {
               measurementValues: jsonOrNull(line.measurementValues),
               customDesignText: jsonOrNull(line.customDesignText),
               sizeToken: line.sizeToken,
-            })),
+              };
+            }),
           },
           statusEvents: {
             create: { toStatus: 'PENDING', note: 'Order placed' },
@@ -325,10 +360,59 @@ export class OrdersService {
         });
       }
 
+      await this.promotions.redeemInTransaction(tx, {
+        orderId: created.id,
+        orderNumber: created.number,
+        evaluation: discountEvaluation,
+      });
+
+      // Gift card / store credit tender (WO-5.4/5.5) — applied AFTER tax and
+      // shipping, against the final total, as real money already in hand
+      // rather than a discount. Each is its own PAID Payment row so the
+      // order's payment history shows exactly what covered it; whatever is
+      // left (which may be everything, or nothing) goes to the customer's
+      // chosen payment method below.
+      let remainingToPay = created.grandTotal;
+      if (dto.giftCardCode) {
+        const requested = Math.min(dto.giftCardAmount ?? 0, remainingToPay);
+        if (requested <= 0) {
+          throw new BadRequestException('Enter a gift card amount to apply.');
+        }
+        const giftCard = await this.giftCards.resolveForCheckout(dto.giftCardCode, requested);
+        await this.giftCards.redeemInTransaction(tx, {
+          giftCardId: giftCard.id,
+          amount: requested,
+          orderId: created.id,
+          actorId: userId ?? null,
+        });
+        await tx.payment.create({
+          data: { orderId: created.id, provider: 'gift_card', status: 'PAID', amount: requested, paidAt: new Date() },
+        });
+        remainingToPay -= requested;
+      }
+      if (dto.storeCreditAmount) {
+        if (!userId) {
+          throw new BadRequestException('Sign in to use store credit.');
+        }
+        const requested = Math.min(dto.storeCreditAmount, remainingToPay);
+        if (requested > 0) {
+          await this.storeCredit.redeemInTransaction(tx, {
+            userId,
+            amount: requested,
+            orderId: created.id,
+            actorId: userId,
+          });
+          await tx.payment.create({
+            data: { orderId: created.id, provider: 'store_credit', status: 'PAID', amount: requested, paidAt: new Date() },
+          });
+          remainingToPay -= requested;
+        }
+      }
+
       const payment = await this.payments.createForOrder(tx, dto.paymentMethod, {
         orderId: created.id,
         orderNumber: created.number,
-        amount: created.grandTotal,
+        amount: remainingToPay,
         customerName: dto.shippingAddress.fullName,
         customerPhone: phone,
         customerEmail: dto.email ?? null,

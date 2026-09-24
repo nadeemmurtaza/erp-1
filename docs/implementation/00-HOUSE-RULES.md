@@ -214,7 +214,7 @@ assertCanManage(actor, 'stitching.jobs', { ownerId: job.assignedTailorId });
 `assertCanManage()` (`apps/api/src/core/auth/ownership.guard.ts`) throws
 unless the actor holds `<capability>.manage_all`, or holds
 `<capability>.manage_own` and `entity.ownerId === actor.id`. See
-`docs/implementation/16-pbac-row-scoping.md` for the full design and where
+`docs/implementation/access-control-identity/16-pbac-row-scoping.md` for the full design and where
 `ownerId` lives on each entity.
 
 ### Rule 10 — Concurrency belongs in the UPDATE, not in a read-then-write

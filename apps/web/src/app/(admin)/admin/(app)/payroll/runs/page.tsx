@@ -13,7 +13,7 @@ import { StatusBadge } from '@/components/common/status-badge';
 import type { PayRun } from '@/types/api';
 
 /**
- * WO-19.6 (docs/implementation/19-payroll.md) — every pay run, and the form
+ * WO-19.6 (docs/implementation/payroll/19-payroll.md) — every pay run, and the form
  * to build a new one for a period.
  */
 export default function PayrollRunsPage() {

@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 282 tracked files in `apps/web`, by directory.
+All 291 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -25,8 +25,8 @@ All 282 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `en.json` | json | 429 |  |
-| `ur.json` | json | 429 |  |
+| `en.json` | json | 445 |  |
+| `ur.json` | json | 445 |  |
 
 ### `apps/web/public` (1)
 
@@ -182,6 +182,24 @@ All 282 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `loading.tsx` | loading | 6 |  |
 | `page.tsx` | page | 449 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/customers/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 119 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/customers/gift-cards` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 129 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/customers/gift-cards/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 114 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/customers/insights` (1)
 
@@ -382,6 +400,30 @@ All 282 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 182 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/marketing/discounts` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 161 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/marketing/discounts/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 42 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/marketing/discounts/new` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 28 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/marketing/promo-codes` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 191 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/o` (1)
 
 | File | Kind | Lines | Purpose |
@@ -423,7 +465,7 @@ All 282 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 537 |  |
+| `page.tsx` | page | 556 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/orders/insights` (1)
 
@@ -760,7 +802,7 @@ All 282 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `loading.tsx` | loading | 47 |  |
-| `page.tsx` | page | 493 |  |
+| `page.tsx` | page | 708 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/forgot-password` (1)
 
@@ -854,7 +896,7 @@ All 282 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `route.ts` | route handler | 17 |  |
 
-### `apps/web/src/components/admin` (18)
+### `apps/web/src/components/admin` (19)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -866,7 +908,7 @@ All 282 tracked files in `apps/web`, by directory.
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 543 |  |
-| `nav-registry.ts` | component | 668 |  |
+| `nav-registry.ts` | component | 694 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1410 |  |
@@ -876,6 +918,7 @@ All 282 tracked files in `apps/web`, by directory.
 | `scope-chips.tsx` | component | 71 |  |
 | `session.tsx` | component | 47 |  |
 | `stage-badge.tsx` | component | 15 |  |
+| `toast-stack.tsx` | component | 39 |  |
 
 ### `apps/web/src/components/admin/bom` (2)
 
@@ -883,6 +926,12 @@ All 282 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `cost-breakdown.tsx` | component | 121 |  |
 | `recipe-editor.tsx` | component | 363 |  |
+
+### `apps/web/src/components/admin/marketing` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `discount-form.tsx` | component | 414 |  |
 
 ### `apps/web/src/components/common` (3)
 
@@ -969,7 +1018,7 @@ All 282 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `downloads.ts` | constants | 21 |  |
-| `payment-methods.ts` | constants | 30 | How a payment provider's key is written for staff. |
+| `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 24 | Permission keys, re-exported from the shared catalogue. |
 | `routes.ts` | constants | 156 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 52 | Browser storage keys. |

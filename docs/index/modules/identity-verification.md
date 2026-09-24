@@ -7,7 +7,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 7 files
 
 
 
-**Registry note** (`modules.registry.ts`): Off by default — see docs/implementation/18-identity-verification.md.
+**Registry note** (`modules.registry.ts`): Off by default — see docs/implementation/access-control-identity/18-identity-verification.md.
 
 Source: `apps/api/src/modules/identity-verification/`
 

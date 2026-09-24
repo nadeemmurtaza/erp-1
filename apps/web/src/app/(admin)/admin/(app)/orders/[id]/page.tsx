@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { use, useCallback, useEffect, useState } from 'react';
 import { formatDate, formatDateTime, formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
@@ -65,6 +66,7 @@ interface OrderDetail {
   id: string;
   number: string;
   status: string;
+  userId: string | null;
   guestName: string | null;
   guestEmail: string | null;
   guestPhone: string | null;
@@ -234,7 +236,19 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
             <StatusBadge status={order.status} />
           </span>
         }
-        description={`${order.guestName ?? '—'} · ${order.guestPhone ?? '—'} · Placed ${formatDateTime(order.placedAt)}`}
+        description={
+          <>
+            {order.guestName ?? '—'} · {order.guestPhone ?? '—'} · Placed {formatDateTime(order.placedAt)}
+            {order.userId && can('giftcards.view') ? (
+              <>
+                {' · '}
+                <Link href={`/admin/customers/${order.userId}`} className="hover:underline">
+                  Store credit
+                </Link>
+              </>
+            ) : null}
+          </>
+        }
         action={
           <div className="flex flex-wrap justify-end gap-2">
             {forward.map((next) => (
@@ -284,7 +298,12 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                         {[item.variantLabel, item.sku].filter(Boolean).join(' · ')} × {item.quantity}
                       </p>
                     </div>
-                    <p className="shrink-0 text-sm font-medium text-neutral-900">{formatMoney(item.lineTotal)}</p>
+                    <div className="shrink-0 text-end">
+                      <p className="text-sm font-medium text-neutral-900">{formatMoney(item.lineTotal)}</p>
+                      {item.discountUnit > 0 ? (
+                        <p className="text-xs text-neutral-900/60">-{formatMoney(item.discountUnit)}/unit discount</p>
+                      ) : null}
+                    </div>
                   </div>
 
                   {item.stitchingServiceName ? (

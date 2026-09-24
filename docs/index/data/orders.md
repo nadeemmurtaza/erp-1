@@ -68,10 +68,14 @@ against a real database.
 | `convertedLeads` | `Lead[]` | relation | @relation("LeadConvertedOrder") |
 | `economics` | `OrderEconomics?` | optional |  |
 | `returnRequests` | `ReturnRequest[]` |  |  |
+| `orderDiscounts` | `OrderDiscount[]` |  |  |
+| `giftCardTransactions` | `GiftCardTransaction[]` |  |  |
+| `storeCreditTransactions` | `StoreCreditTransaction[]` |  |  |
+| `giftCardsSold` | `GiftCard[]` | relation | @relation("GiftCardSourceOrder") |
 
 Indexes: `@@index([status, placedAt])` · `@@index([userId])` · `@@index([contactId])` · `@@index([guestPhone])` · `@@index([channel])` · `@@index([shiftId])`
 
-### `OrderItem`  <sub>`apps/api/prisma/schema/orders.prisma:114`</sub>
+### `OrderItem`  <sub>`apps/api/prisma/schema/orders.prisma:120`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -115,7 +119,7 @@ Indexes: `@@index([status, placedAt])` · `@@index([userId])` · `@@index([conta
 
 Indexes: `@@index([orderId])` · `@@index([productId])`
 
-### `OrderNumberCounter`  <sub>`apps/api/prisma/schema/orders.prisma:291`</sub>
+### `OrderNumberCounter`  <sub>`apps/api/prisma/schema/orders.prisma:297`</sub>
 
 > Backing store for sequential per-year order numbers (YSN-2026-0001).
 
@@ -124,7 +128,7 @@ Indexes: `@@index([orderId])` · `@@index([productId])`
 | `year` | `Int` | id | @id |
 | `counter` | `Int` |  | @default(0) |
 
-### `OrderStatusEvent`  <sub>`apps/api/prisma/schema/orders.prisma:198`</sub>
+### `OrderStatusEvent`  <sub>`apps/api/prisma/schema/orders.prisma:204`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -140,7 +144,7 @@ Indexes: `@@index([orderId])` · `@@index([productId])`
 
 Indexes: `@@index([orderId, createdAt])`
 
-### `Shipment`  <sub>`apps/api/prisma/schema/orders.prisma:222`</sub>
+### `Shipment`  <sub>`apps/api/prisma/schema/orders.prisma:228`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -185,7 +189,7 @@ Indexes: `@@index([orderId])` · `@@index([trackingNumber])` · `@@index([status
 | `WEB` |  |
 | `POS` |  |
 
-### `OrderItemFulfillmentStatus`  <sub>`apps/api/prisma/schema/orders.prisma:103`</sub>
+### `OrderItemFulfillmentStatus`  <sub>`apps/api/prisma/schema/orders.prisma:109`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -208,7 +212,7 @@ Indexes: `@@index([orderId])` · `@@index([trackingNumber])` · `@@index([status
 | `CANCELLED` |  |
 | `RETURNED` |  |
 
-### `ShipmentStatus`  <sub>`apps/api/prisma/schema/orders.prisma:213`</sub>
+### `ShipmentStatus`  <sub>`apps/api/prisma/schema/orders.prisma:219`</sub>
 
 | Value | Meaning |
 |---|---|

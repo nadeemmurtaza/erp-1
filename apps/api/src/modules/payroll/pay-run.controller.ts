@@ -7,7 +7,7 @@ import { BuildPayRunDto } from './dto/pay-run.dto';
 import { PayRunService } from './pay-run.service';
 
 /**
- * Pay-run build/approve/post (docs/implementation/19-payroll.md WO-19.4).
+ * Pay-run build/approve/post (docs/implementation/payroll/19-payroll.md WO-19.4).
  * Every route here is cross-employee by nature, so all of them require
  * either payroll.view (reads) or payroll.manage (the lifecycle writes) —
  * no "own" variant, the way compensation and leave both have one.

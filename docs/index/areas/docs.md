@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-392 files · 59,261 lines
+392 files · 59,591 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -21,9 +21,93 @@ has a bug.
 | `docs` | 1 | 438 | doc |
 | `docs/brand` | 1 | 97 | doc |
 | `docs/brand/logo` | 6 | 0 | asset |
-| `docs/design` | 17 | 3,510 | doc |
-| `docs/erp-lenses` | 195 | 21,167 | doc |
-| `docs/implementation` | 172 | 34,049 | doc, file |
+| `docs/design` | 1 | 109 | doc |
+| `docs/design/accessibility` | 1 | 157 | doc |
+| `docs/design/components-states` | 2 | 254 | doc |
+| `docs/design/content` | 1 | 121 | doc |
+| `docs/design/foundations` | 1 | 175 | doc |
+| `docs/design/layout-composition` | 3 | 516 | doc |
+| `docs/design/motion` | 1 | 193 | doc |
+| `docs/design/principles-laws` | 2 | 933 | doc |
+| `docs/design/process-governance` | 5 | 1,052 | doc |
+| `docs/erp-lenses/_meta` | 32 | 7,258 | doc |
+| `docs/erp-lenses/approval-delegation` | 3 | 210 | doc |
+| `docs/erp-lenses/assets-facilities-maintenance` | 3 | 237 | doc |
+| `docs/erp-lenses/audit-evidence-hold` | 3 | 235 | doc |
+| `docs/erp-lenses/automation-and-ai-surface` | 3 | 268 | doc |
+| `docs/erp-lenses/channels-franchise-wholesale` | 3 | 332 | doc |
+| `docs/erp-lenses/cost-to-serve` | 3 | 265 | doc |
+| `docs/erp-lenses/costing-transfer-pricing` | 3 | 296 | doc |
+| `docs/erp-lenses/credit-receivables` | 3 | 246 | doc |
+| `docs/erp-lenses/day-two-operations` | 3 | 162 | doc |
+| `docs/erp-lenses/enablement-onboarding` | 3 | 276 | doc |
+| `docs/erp-lenses/extensibility-without-fork` | 3 | 314 | doc |
+| `docs/erp-lenses/findability-at-scale` | 3 | 315 | doc |
+| `docs/erp-lenses/fraud-insider-risk` | 3 | 264 | doc |
+| `docs/erp-lenses/gap-38` | 3 | 297 | doc |
+| `docs/erp-lenses/gap-39` | 3 | 247 | doc |
+| `docs/erp-lenses/gap-40` | 3 | 266 | doc |
+| `docs/erp-lenses/gap-41` | 3 | 216 | doc |
+| `docs/erp-lenses/gap-42` | 3 | 241 | doc |
+| `docs/erp-lenses/gap-43` | 3 | 294 | doc |
+| `docs/erp-lenses/gap-44` | 3 | 267 | doc |
+| `docs/erp-lenses/gap-45` | 3 | 311 | doc |
+| `docs/erp-lenses/gap-46` | 3 | 302 | doc |
+| `docs/erp-lenses/gap-47` | 3 | 266 | doc |
+| `docs/erp-lenses/gap-48` | 3 | 257 | doc |
+| `docs/erp-lenses/gap-49` | 3 | 269 | doc |
+| `docs/erp-lenses/gap-50` | 3 | 295 | doc |
+| `docs/erp-lenses/gap-51` | 3 | 282 | doc |
+| `docs/erp-lenses/gap-52` | 3 | 112 | doc |
+| `docs/erp-lenses/ground` | 7 | 670 | doc |
+| `docs/erp-lenses/identity-actor-types` | 3 | 246 | doc |
+| `docs/erp-lenses/internal-audit-controls-testing` | 3 | 265 | doc |
+| `docs/erp-lenses/loyalty-consent-data-rights` | 3 | 143 | doc |
+| `docs/erp-lenses/master-data-taxonomy` | 3 | 264 | doc |
+| `docs/erp-lenses/merchandising-assortment` | 3 | 253 | doc |
+| `docs/erp-lenses/migration-cutover-restatement` | 3 | 147 | doc |
+| `docs/erp-lenses/money-integrity-gl` | 3 | 268 | doc |
+| `docs/erp-lenses/omnichannel-parity` | 3 | 252 | doc |
+| `docs/erp-lenses/operator-hands` | 3 | 263 | doc |
+| `docs/erp-lenses/planning-replenishment` | 3 | 286 | doc |
+| `docs/erp-lenses/pricing-discount-governance` | 3 | 143 | doc |
+| `docs/erp-lenses/privacy-retention-residency` | 3 | 232 | doc |
+| `docs/erp-lenses/procurement-supplier-lifecycle` | 3 | 239 | doc |
+| `docs/erp-lenses/production-bom-subcontract` | 3 | 222 | doc |
+| `docs/erp-lenses/provenance-esg-statutory` | 3 | 245 | doc |
+| `docs/erp-lenses/risk-insurance-continuity` | 3 | 311 | doc |
+| `docs/erp-lenses/roles-ranks-orgchart` | 3 | 306 | doc |
+| `docs/erp-lenses/segregation-of-duties` | 3 | 248 | doc |
+| `docs/erp-lenses/service-cases-sla` | 3 | 264 | doc |
+| `docs/erp-lenses/tax-jurisdiction-invoice` | 3 | 302 | doc |
+| `docs/erp-lenses/time-periods-backdating` | 3 | 269 | doc |
+| `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
+| `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
+| `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
+| `docs/implementation` | 8 | 5,971 | doc, file |
+| `docs/implementation/access-control-identity` | 6 | 1,028 | doc |
+| `docs/implementation/admin-platform` | 5 | 2,472 | doc |
+| `docs/implementation/ai-layer` | 6 | 975 | doc |
+| `docs/implementation/analytics-reporting` | 5 | 480 | doc |
+| `docs/implementation/architecture-patterns` | 37 | 3,568 | doc |
+| `docs/implementation/attendance-workforce` | 8 | 1,010 | doc |
+| `docs/implementation/b2b-wholesale-multientity` | 4 | 540 | doc |
+| `docs/implementation/catalog-variants-pricing` | 3 | 904 | doc |
+| `docs/implementation/commercial-licensing-agency` | 14 | 2,339 | doc |
+| `docs/implementation/content-marketing-search` | 1 | 138 | doc |
+| `docs/implementation/customer-portal-loyalty` | 1 | 186 | doc |
+| `docs/implementation/finance-accounting` | 8 | 1,616 | doc |
+| `docs/implementation/hr-people-org` | 18 | 3,331 | doc |
+| `docs/implementation/integrations-connectivity` | 13 | 2,140 | doc |
+| `docs/implementation/inventory-purchasing` | 5 | 1,745 | doc |
+| `docs/implementation/lots-serials-traceability` | 3 | 805 | doc |
+| `docs/implementation/payroll` | 4 | 1,178 | doc |
+| `docs/implementation/pos-hardware` | 4 | 494 | doc |
+| `docs/implementation/promotions-giftcards` | 1 | 347 | doc |
+| `docs/implementation/resilience-scalability` | 8 | 1,276 | doc |
+| `docs/implementation/shipping-fulfilment-returns` | 1 | 335 | doc |
+| `docs/implementation/tasks-notifications-support` | 5 | 1,004 | doc |
+| `docs/implementation/tax-compliance` | 4 | 495 | doc |
 
 
 
@@ -32,21 +116,21 @@ has a bug.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `docs/implementation/DECISIONS.md` | 1,962 | doc |  |
-| `docs/implementation/10-admin-dashboard.md` | 1,843 | doc |  |
+| `docs/implementation/DECISIONS.md` | 2,254 | doc |  |
+| `docs/implementation/admin-platform/10-admin-dashboard.md` | 1,843 | doc |  |
 | `docs/implementation/RETAIL-ERP.md` | 1,099 | doc |  |
-| `docs/erp-lenses/_agent-cluster.md` | 944 | doc |  |
-| `docs/implementation/01-inventory-purchasing-cost.md` | 937 | doc |  |
-| `docs/design/10-laws.md` | 850 | doc |  |
-| `docs/erp-lenses/_canonical-decisions.md` | 828 | doc |  |
+| `docs/erp-lenses/_meta/_agent-cluster.md` | 944 | doc |  |
+| `docs/implementation/inventory-purchasing/01-inventory-purchasing-cost.md` | 937 | doc |  |
+| `docs/design/principles-laws/10-laws.md` | 850 | doc |  |
+| `docs/erp-lenses/_meta/_canonical-decisions.md` | 828 | doc |  |
 | `docs/implementation/MULTI-SECTOR.md` | 806 | doc |  |
-| `docs/erp-lenses/_cluster-analysis.md` | 675 | doc |  |
-| `docs/erp-lenses/_conflicts.md` | 645 | doc |  |
-| `docs/implementation/03-variants-sku-seo.md` | 566 | doc |  |
-| `docs/erp-lenses/_index.md` | 548 | doc |  |
+| `docs/erp-lenses/_meta/_cluster-analysis.md` | 675 | doc |  |
+| `docs/erp-lenses/_meta/_conflicts.md` | 645 | doc |  |
+| `docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md` | 566 | doc |  |
+| `docs/erp-lenses/_meta/_index.md` | 550 | doc |  |
 | `docs/implementation/WO-22-lens-workflow-results.md` | 539 | doc |  |
-| `docs/implementation/19-payroll.md` | 522 | doc |  |
-| `docs/implementation/00-HOUSE-RULES.md` | 496 | doc |  |
+| `docs/implementation/payroll/19-payroll.md` | 522 | doc |  |
+| `docs/implementation/README.md` | 499 | doc |  |
 
 
 ---

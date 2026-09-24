@@ -87,7 +87,7 @@ model User {
   bomRecipesCreated       BomRecipe[]              @relation("BomRecipeCreator")
   bomProductionRuns       BomProductionRun[]       @relation("BomProductionOperator")
   policyQuarantinesResolved PolicyQuarantine[]     @relation("PolicyQuarantineResolver")
-  /// Payroll (docs/implementation/19-payroll.md) — one User is both the
+  /// Payroll (docs/implementation/payroll/19-payroll.md) — one User is both the
   /// payee (compensationRates, leaveBalances, ...) and, for an ADMIN,
   /// possibly the actor who set a rate or decided a leave request; the two
   /// relation names below keep those two roles distinct on the same model.
@@ -104,6 +104,12 @@ model User {
   /// fulfilment.prisma (WO-6.4/6.6) — both core, same idiom as auditLogs above.
   manifestsCreated          Manifest[]
   returnRequests            ReturnRequest[]
+  /// giftcards.prisma (WO-5.5). SUM(StoreCreditTransaction.delta) — a cache,
+  /// never written outside StoreCreditService's own conditional update; the
+  /// ledger is the source of truth (see StoreCreditTransaction's own note).
+  storeCreditBalance        Int                     @default(0)
+  storeCreditTransactions   StoreCreditTransaction[]
+  giftCardsPurchased        GiftCard[]               @relation("GiftCardPurchaser")
 
   @@index([role])
   @@index([createdAt])

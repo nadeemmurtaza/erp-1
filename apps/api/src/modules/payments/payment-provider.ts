@@ -4,7 +4,10 @@
  * Cash on delivery and bank transfer are live. JazzCash and Easypaisa are
  * written against their hosted-checkout flow and stay dark until the merchant
  * credentials exist — switching one on is an entry in the PAYMENT_PROVIDERS
- * env allowlist, not a code change.
+ * env allowlist, not a code change. Giftkarta (a third-party gift-card
+ * network, providers/giftkarta.provider.ts) follows the same allowlist
+ * idiom, but with `requiresCode`/`redeemCode` instead of a redirect — see
+ * those fields' own doc comments.
  *
  * Adding a provider: implement this interface, add the class to
  * PaymentsService's constructor list, add its key to the allowlist. Nothing
@@ -62,6 +65,16 @@ export interface PaymentProvider {
   readonly descriptionEn: string;
   readonly descriptionUr: string;
   /**
+   * True for a provider that needs the customer to type something (a
+   * third-party gift card's own code) AFTER the order already exists, rather
+   * than at the moment they choose the method — the storefront shows a
+   * follow-up field and posts it to `POST /payments/:paymentId/redeem-gift-card`
+   * instead of expecting `initiate()` to have collected it. Omit (falsy) for
+   * every provider that needs nothing more, or that collects proof
+   * separately anyway (bank transfer's own receipt-upload screen).
+   */
+  readonly requiresCode?: boolean;
+  /**
    * Extra charge for using this method, in paisa — the COD collection fee.
    * Zero for everything else.
    */
@@ -69,4 +82,17 @@ export interface PaymentProvider {
   initiate(context: PaymentContext): Promise<PaymentInitiation>;
   /** Interprets a gateway callback. Providers with no callback may omit it. */
   handleCallback?(payload: Record<string, unknown>): Promise<PaymentCallbackResult>;
+  /**
+   * Validates and redeems a customer-submitted code against a
+   * `requiresCode` provider's own external system — a third-party gift
+   * card network, say. Called from `PaymentsService.redeemGiftCardCode()`
+   * strictly AFTER the order (and its PENDING payment row) already exist and
+   * are committed, never from inside the order-creation transaction: the
+   * external debit is a real, non-reversible side effect with no local
+   * rollback, the same reasoning `initiate()` never makes a live gateway
+   * call itself (JazzCash/Easypaisa only ever prepare a redirect; the actual
+   * settlement arrives later, via `handleCallback`). A provider that sets
+   * `requiresCode: true` must implement this.
+   */
+  redeemCode?(context: PaymentContext, code: string): Promise<PaymentCallbackResult>;
 }

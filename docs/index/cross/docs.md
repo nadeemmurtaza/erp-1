@@ -174,41 +174,22 @@ _no second-level headings_
 - Don't  <sub>:74</sub>
 - Still open  <sub>:83</sub>
 
-### `docs/design/00-principles.md`  <sub>83 lines</sub>
+### `docs/design/accessibility/07-accessibility.md`  <sub>157 lines</sub>
 
-- The constitution  <sub>:8</sub>
-- Design philosophy  <sub>:13</sub>
-- Product principles  <sub>:29</sub>
-- UX principles  <sub>:42</sub>
-- Visual principles  <sub>:56</sub>
-- Decision principles  <sub>:67</sub>
+- Why this is grouped with i18n  <sub>:15</sub>
+- The target  <sub>:22</sub>
+- Keyboard  <sub>:26</sub>
+- Focus  <sub>:42</sub>
+- Screen readers  <sub>:53</sub>
+- Contrast  <sub>:68</sub>
+- Touch targets  <sub>:90</sub>
+- Reduced motion  <sub>:100</sub>
+- Semantic structure  <sub>:109</sub>
+- Right-to-left  <sub>:116</sub>
+- Internationalisation beyond direction  <sub>:133</sub>
+- What would make this real  <sub>:140</sub>
 
-### `docs/design/01-foundations.md`  <sub>175 lines</sub>
-
-- Why tokens and not values  <sub>:12</sub>
-- Colour  <sub>:22</sub>
-- Typography  <sub>:36</sub>
-- Spacing — *unbuilt*  <sub>:49</sub>
-- Size — *unbuilt*  <sub>:71</sub>
-- Radius  <sub>:82</sub>
-- Shadow and elevation — *unbuilt*  <sub>:89</sub>
-- Z-index / layering — *unbuilt*  <sub>:101</sub>
-- Breakpoints  <sub>:121</sub>
-- Motion tokens — *unbuilt*  <sub>:132</sub>
-- Where tokens live  <sub>:165</sub>
-
-### `docs/design/02-layout.md`  <sub>121 lines</sub>
-
-- The page skeleton  <sub>:8</sub>
-- Grid  <sub>:21</sub>
-- Density  <sub>:35</sub>
-- The seven screens  <sub>:50</sub>
-- Reflow rules  <sub>:64</sub>
-- Multi-surface parity  <sub>:79</sub>
-- The POS is a different animal  <sub>:92</sub>
-- Verifying  <sub>:105</sub>
-
-### `docs/design/03-components.md`  <sub>113 lines</sub>
+### `docs/design/components-states/03-components.md`  <sub>113 lines</sub>
 
 - The ladder  <sub>:10</sub>
 - Primitives  <sub>:33</sub>
@@ -218,7 +199,7 @@ _no second-level headings_
 - Component contract  <sub>:92</sub>
 - What never gets hand-rolled  <sub>:107</sub>
 
-### `docs/design/04-states.md`  <sub>141 lines</sub>
+### `docs/design/components-states/04-states.md`  <sub>141 lines</sub>
 
 - The rule  <sub>:8</sub>
 - The state matrix  <sub>:14</sub>
@@ -232,7 +213,59 @@ _no second-level headings_
 - Notifications and system feedback  <sub>:119</sub>
 - Offline and degraded — the POS case  <sub>:127</sub>
 
-### `docs/design/05-motion.md`  <sub>193 lines</sub>
+### `docs/design/content/06-content.md`  <sub>121 lines</sub>
+
+- Voice  <sub>:10</sub>
+- Terminology — one word per concept  <sub>:29</sub>
+- Labels  <sub>:48</sub>
+- Microcopy  <sub>:58</sub>
+- Error messages  <sub>:66</sub>
+- Content hierarchy  <sub>:87</sub>
+- Localisation  <sub>:95</sub>
+- Verifying  <sub>:108</sub>
+
+### `docs/design/foundations/01-foundations.md`  <sub>175 lines</sub>
+
+- Why tokens and not values  <sub>:12</sub>
+- Colour  <sub>:22</sub>
+- Typography  <sub>:36</sub>
+- Spacing — *unbuilt*  <sub>:49</sub>
+- Size — *unbuilt*  <sub>:71</sub>
+- Radius  <sub>:82</sub>
+- Shadow and elevation — *unbuilt*  <sub>:89</sub>
+- Z-index / layering — *unbuilt*  <sub>:101</sub>
+- Breakpoints  <sub>:121</sub>
+- Motion tokens — *unbuilt*  <sub>:132</sub>
+- Where tokens live  <sub>:165</sub>
+
+### `docs/design/layout-composition/02-layout.md`  <sub>121 lines</sub>
+
+- The page skeleton  <sub>:8</sub>
+- Grid  <sub>:21</sub>
+- Density  <sub>:35</sub>
+- The seven screens  <sub>:50</sub>
+- Reflow rules  <sub>:64</sub>
+- Multi-surface parity  <sub>:79</sub>
+- The POS is a different animal  <sub>:92</sub>
+- Verifying  <sub>:105</sub>
+
+### `docs/design/layout-composition/13-composition.md`  <sub>197 lines</sub>
+
+- What is actually being shipped  <sub>:14</sub>
+- MOD · The laws  <sub>:38</sub>
+- Patterns  <sub>:148</sub>
+- What must be built  <sub>:179</sub>
+- Sources  <sub>:190</sub>
+
+### `docs/design/layout-composition/14-navigation.md`  <sub>198 lines</sub>
+
+- The scale problem  <sub>:13</sub>
+- NAV · The laws  <sub>:30</sub>
+- Patterns  <sub>:127</sub>
+- What must be built  <sub>:178</sub>
+- Sources  <sub>:191</sub>
+
+### `docs/design/motion/05-motion.md`  <sub>193 lines</sub>
 
 - The one test  <sub>:13</sub>
 - What motion may communicate  <sub>:28</sub>
@@ -248,51 +281,16 @@ _no second-level headings_
 - Rejection list  <sub>:172</sub>
 - Benchmark, not template  <sub>:183</sub>
 
-### `docs/design/06-content.md`  <sub>121 lines</sub>
+### `docs/design/principles-laws/00-principles.md`  <sub>83 lines</sub>
 
-- Voice  <sub>:10</sub>
-- Terminology — one word per concept  <sub>:29</sub>
-- Labels  <sub>:48</sub>
-- Microcopy  <sub>:58</sub>
-- Error messages  <sub>:66</sub>
-- Content hierarchy  <sub>:87</sub>
-- Localisation  <sub>:95</sub>
-- Verifying  <sub>:108</sub>
+- The constitution  <sub>:8</sub>
+- Design philosophy  <sub>:13</sub>
+- Product principles  <sub>:29</sub>
+- UX principles  <sub>:42</sub>
+- Visual principles  <sub>:56</sub>
+- Decision principles  <sub>:67</sub>
 
-### `docs/design/07-accessibility.md`  <sub>157 lines</sub>
-
-- Why this is grouped with i18n  <sub>:15</sub>
-- The target  <sub>:22</sub>
-- Keyboard  <sub>:26</sub>
-- Focus  <sub>:42</sub>
-- Screen readers  <sub>:53</sub>
-- Contrast  <sub>:68</sub>
-- Touch targets  <sub>:90</sub>
-- Reduced motion  <sub>:100</sub>
-- Semantic structure  <sub>:109</sub>
-- Right-to-left  <sub>:116</sub>
-- Internationalisation beyond direction  <sub>:133</sub>
-- What would make this real  <sub>:140</sub>
-
-### `docs/design/08-governance.md`  <sub>145 lines</sub>
-
-- Why a design system needs governance at all  <sub>:11</sub>
-- Naming  <sub>:19</sub>
-- What belongs in the system, and what does not  <sub>:40</sub>
-- Contribution  <sub>:60</sub>
-- Versioning  <sub>:81</sub>
-- Deprecation  <sub>:96</sub>
-- Change approval  <sub>:117</sub>
-- Keeping this system honest  <sub>:129</sub>
-
-### `docs/design/09-quality.md`  <sub>176 lines</sub>
-
-- The two columns  <sub>:12</sub>
-- Regression  <sub>:124</sub>
-- The honest gap, ranked  <sub>:142</sub>
-- Definition of done, for a screen  <sub>:165</sub>
-
-### `docs/design/10-laws.md`  <sub>850 lines</sub>
+### `docs/design/principles-laws/10-laws.md`  <sub>850 lines</sub>
 
 - Why a catalogue, and why rulings  <sub>:19</sub>
 - PER · Perception  <sub>:59</sub>
@@ -308,7 +306,25 @@ _no second-level headings_
 - What this chapter does not settle  <sub>:815</sub>
 - Sources  <sub>:830</sub>
 
-### `docs/design/11-workflow.md`  <sub>260 lines</sub>
+### `docs/design/process-governance/08-governance.md`  <sub>145 lines</sub>
+
+- Why a design system needs governance at all  <sub>:11</sub>
+- Naming  <sub>:19</sub>
+- What belongs in the system, and what does not  <sub>:40</sub>
+- Contribution  <sub>:60</sub>
+- Versioning  <sub>:81</sub>
+- Deprecation  <sub>:96</sub>
+- Change approval  <sub>:117</sub>
+- Keeping this system honest  <sub>:129</sub>
+
+### `docs/design/process-governance/09-quality.md`  <sub>176 lines</sub>
+
+- The two columns  <sub>:12</sub>
+- Regression  <sub>:124</sub>
+- The honest gap, ranked  <sub>:142</sub>
+- Definition of done, for a screen  <sub>:165</sub>
+
+### `docs/design/process-governance/11-workflow.md`  <sub>260 lines</sub>
 
 - The thing that actually goes wrong  <sub>:14</sub>
 - FLO · The laws  <sub>:33</sub>
@@ -316,7 +332,7 @@ _no second-level headings_
 - What must be built  <sub>:232</sub>
 - Sources  <sub>:251</sub>
 
-### `docs/design/12-permissions.md`  <sub>214 lines</sub>
+### `docs/design/process-governance/12-permissions.md`  <sub>214 lines</sub>
 
 - The problem, stated precisely  <sub>:13</sub>
 - PRM · The laws  <sub>:35</sub>
@@ -324,23 +340,7 @@ _no second-level headings_
 - What must be built  <sub>:189</sub>
 - Sources  <sub>:207</sub>
 
-### `docs/design/13-composition.md`  <sub>197 lines</sub>
-
-- What is actually being shipped  <sub>:14</sub>
-- MOD · The laws  <sub>:38</sub>
-- Patterns  <sub>:148</sub>
-- What must be built  <sub>:179</sub>
-- Sources  <sub>:190</sub>
-
-### `docs/design/14-navigation.md`  <sub>198 lines</sub>
-
-- The scale problem  <sub>:13</sub>
-- NAV · The laws  <sub>:30</sub>
-- Patterns  <sub>:127</sub>
-- What must be built  <sub>:178</sub>
-- Sources  <sub>:191</sub>
-
-### `docs/design/15-integrity.md`  <sub>257 lines</sub>
+### `docs/design/process-governance/15-integrity.md`  <sub>257 lines</sub>
 
 - Why this chapter is different  <sub>:17</sub>
 - ITG · The laws  <sub>:35</sub>
@@ -369,7 +369,7 @@ _no second-level headings_
 - Switching to a relay  <sub>:366</sub>
 - How it works  <sub>:381</sub>
 
-### `docs/erp-lenses/_agent-cluster.md`  <sub>944 lines</sub>
+### `docs/erp-lenses/_meta/_agent-cluster.md`  <sub>944 lines</sub>
 
 - Headline  <sub>:6</sub>
 - Duplicates  <sub>:236</sub>
@@ -377,7 +377,7 @@ _no second-level headings_
 - Cuts  <sub>:521</sub>
 - Catalogue Only  <sub>:528</sub>
 
-### `docs/erp-lenses/_agent-draft-auditor.md`  <sub>25 lines</sub>
+### `docs/erp-lenses/_meta/_agent-draft-auditor.md`  <sub>25 lines</sub>
 
 - Path  <sub>:6</sub>
 - Stance  <sub>:10</sub>
@@ -385,7 +385,7 @@ _no second-level headings_
 - Line Count  <sub>:18</sub>
 - Summary  <sub>:22</sub>
 
-### `docs/erp-lenses/_agent-draft-teacher.md`  <sub>35 lines</sub>
+### `docs/erp-lenses/_meta/_agent-draft-teacher.md`  <sub>35 lines</sub>
 
 - Path  <sub>:6</sub>
 - Stance  <sub>:10</sub>
@@ -393,7 +393,7 @@ _no second-level headings_
 - Line Count  <sub>:18</sub>
 - Summary  <sub>:22</sub>
 
-### `docs/erp-lenses/_agent-draft-terse.md`  <sub>37 lines</sub>
+### `docs/erp-lenses/_meta/_agent-draft-terse.md`  <sub>37 lines</sub>
 
 - Path  <sub>:6</sub>
 - Stance  <sub>:10</sub>
@@ -401,7 +401,7 @@ _no second-level headings_
 - Line Count  <sub>:18</sub>
 - Summary  <sub>:22</sub>
 
-### `docs/erp-lenses/_agent-final-writer.md`  <sub>70 lines</sub>
+### `docs/erp-lenses/_meta/_agent-final-writer.md`  <sub>70 lines</sub>
 
 - Index Path  <sub>:6</sub>
 - Section Path  <sub>:10</sub>
@@ -413,63 +413,63 @@ _no second-level headings_
 - Groups  <sub>:34</sub>
 - Notes  <sub>:43</sub>
 
-### `docs/erp-lenses/_agent-gap-departments.md`  <sub>46 lines</sub>
+### `docs/erp-lenses/_meta/_agent-gap-departments.md`  <sub>46 lines</sub>
 
 - Angle  <sub>:6</sub>
 - Verdict  <sub>:10</sub>
 - Gaps  <sub>:14</sub>
 
-### `docs/erp-lenses/_agent-gap-editions-and-volume.md`  <sub>28 lines</sub>
+### `docs/erp-lenses/_meta/_agent-gap-editions-and-volume.md`  <sub>28 lines</sub>
 
 - Angle  <sub>:6</sub>
 - Verdict  <sub>:10</sub>
 - Gaps  <sub>:14</sub>
 
-### `docs/erp-lenses/_agent-gap-innovation.md`  <sub>46 lines</sub>
+### `docs/erp-lenses/_meta/_agent-gap-innovation.md`  <sub>46 lines</sub>
 
 - Angle  <sub>:6</sub>
 - Verdict  <sub>:10</sub>
 - Gaps  <sub>:14</sub>
 
-### `docs/erp-lenses/_agent-gap-repo-blindspots.md`  <sub>22 lines</sub>
+### `docs/erp-lenses/_meta/_agent-gap-repo-blindspots.md`  <sub>22 lines</sub>
 
 - Angle  <sub>:6</sub>
 - Verdict  <sub>:10</sub>
 - Gaps  <sub>:14</sub>
 
-### `docs/erp-lenses/_agent-gap-roles-ranks.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/_meta/_agent-gap-roles-ranks.md`  <sub>40 lines</sub>
 
 - Angle  <sub>:6</sub>
 - Verdict  <sub>:10</sub>
 - Gaps  <sub>:14</sub>
 
-### `docs/erp-lenses/_agent-integrate.md`  <sub>20 lines</sub>
+### `docs/erp-lenses/_meta/_agent-integrate.md`  <sub>20 lines</sub>
 
 _no second-level headings_
 
-### `docs/erp-lenses/_agent-judge-auditor.md`  <sub>84 lines</sub>
+### `docs/erp-lenses/_meta/_agent-judge-auditor.md`  <sub>84 lines</sub>
 
 - Scores  <sub>:6</sub>
 - Winner  <sub>:62</sub>
 - Must Fix  <sub>:66</sub>
 
-### `docs/erp-lenses/_agent-judge-engineer.md`  <sub>76 lines</sub>
+### `docs/erp-lenses/_meta/_agent-judge-engineer.md`  <sub>76 lines</sub>
 
 - Winner  <sub>:6</sub>
 - Must Fix  <sub>:10</sub>
 - Scores  <sub>:20</sub>
 
-### `docs/erp-lenses/_agent-judge-owner.md`  <sub>76 lines</sub>
+### `docs/erp-lenses/_meta/_agent-judge-owner.md`  <sub>76 lines</sub>
 
 - Winner  <sub>:6</sub>
 - Must Fix  <sub>:10</sub>
 - Scores  <sub>:20</sub>
 
-### `docs/erp-lenses/_agent-manifest.md`  <sub>175 lines</sub>
+### `docs/erp-lenses/_meta/_agent-manifest.md`  <sub>175 lines</sub>
 
 _no second-level headings_
 
-### `docs/erp-lenses/_canonical-decisions.md`  <sub>828 lines</sub>
+### `docs/erp-lenses/_meta/_canonical-decisions.md`  <sub>828 lines</sub>
 
 - Ruling 1. The ledger wins. Erasure pseudonymises the reference; it does not touch the row  <sub>:26</sub>
 - Ruling 2. The classification decides, and it is fixed at design time  <sub>:55</sub>
@@ -495,11 +495,11 @@ _no second-level headings_
 - Group 6 — The afterlife  <sub>:690</sub>
 - Catalogue merges  <sub>:757</sub>
 
-### `docs/erp-lenses/_claude-md-feature-scope.md`  <sub>212 lines</sub>
+### `docs/erp-lenses/_meta/_claude-md-feature-scope.md`  <sub>212 lines</sub>
 
 - Feature scope: build the whole capability, not one slice of it  <sub>:1</sub>
 
-### `docs/erp-lenses/_cluster-analysis.md`  <sub>675 lines</sub>
+### `docs/erp-lenses/_meta/_cluster-analysis.md`  <sub>675 lines</sub>
 
 - The six groups, and the order they are in  <sub>:24</sub>
 - The duplicate map  <sub>:109</sub>
@@ -507,7 +507,7 @@ _no second-level headings_
 - The cut list  <sub>:568</sub>
 - The catalogue  <sub>:610</sub>
 
-### `docs/erp-lenses/_conflicts.md`  <sub>645 lines</sub>
+### `docs/erp-lenses/_meta/_conflicts.md`  <sub>645 lines</sub>
 
 - 1. Immutable evidence against the right to erasure  <sub>:37</sub>
 - 2. A branch that must keep trading offline against an approval before the act  <sub>:84</sub>
@@ -526,57 +526,57 @@ _no second-level headings_
 - 15. A rate snapshotted once against a consolidation that must re-rate the period  <sub>:565</sub>
 - 16. A control that needs two people against a roster that has one  <sub>:608</sub>
 
-### `docs/erp-lenses/_draft-auditor.md`  <sub>194 lines</sub>
+### `docs/erp-lenses/_meta/_draft-auditor.md`  <sub>194 lines</sub>
 
 - Feature scope: build the whole capability, not one slice of it  <sub>:6</sub>
 
-### `docs/erp-lenses/_draft-teacher.md`  <sub>194 lines</sub>
+### `docs/erp-lenses/_meta/_draft-teacher.md`  <sub>194 lines</sub>
 
 - Feature scope: build the whole capability, not one slice of it  <sub>:7</sub>
 
-### `docs/erp-lenses/_draft-terse.md`  <sub>194 lines</sub>
+### `docs/erp-lenses/_meta/_draft-terse.md`  <sub>194 lines</sub>
 
 - Feature scope: build the whole capability, not one slice of it  <sub>:6</sub>
 
-### `docs/erp-lenses/_gap-departments.md`  <sub>211 lines</sub>
+### `docs/erp-lenses/_meta/_gap-departments.md`  <sub>211 lines</sub>
 
 - Checked and found already covered  <sub>:16</sub>
 - Gaps  <sub>:74</sub>
 - Verdict  <sub>:198</sub>
 
-### `docs/erp-lenses/_gap-editions-and-volume.md`  <sub>217 lines</sub>
+### `docs/erp-lenses/_meta/_gap-editions-and-volume.md`  <sub>217 lines</sub>
 
 - What I checked and found already covered  <sub>:23</sub>
 - Gaps  <sub>:88</sub>
 - Verdict  <sub>:198</sub>
 
-### `docs/erp-lenses/_gap-innovation.md`  <sub>216 lines</sub>
+### `docs/erp-lenses/_meta/_gap-innovation.md`  <sub>216 lines</sub>
 
 - What I checked and found already covered  <sub>:18</sub>
 - The gaps  <sub>:51</sub>
 - Result  <sub>:208</sub>
 
-### `docs/erp-lenses/_gap-repo-blindspots.md`  <sub>108 lines</sub>
+### `docs/erp-lenses/_meta/_gap-repo-blindspots.md`  <sub>108 lines</sub>
 
 - What I checked and found already covered  <sub>:10</sub>
 - The gap  <sub>:51</sub>
 
-### `docs/erp-lenses/_gap-roles-ranks.md`  <sub>237 lines</sub>
+### `docs/erp-lenses/_meta/_gap-roles-ranks.md`  <sub>237 lines</sub>
 
 - Already covered — checked by name, not assumed  <sub>:15</sub>
 - Gaps  <sub>:50</sub>
 - Verdict  <sub>:224</sub>
 
-### `docs/erp-lenses/_index.md`  <sub>548 lines</sub>
+### `docs/erp-lenses/_meta/_index.md`  <sub>550 lines</sub>
 
-- How to run the pass  <sub>:14</sub>
-- How to read the table  <sub>:41</sub>
-- Promoted from the catalogue, after the fact  <sub>:57</sub>
-- The catalogue  <sub>:110</sub>
-- The six groups, and what each is for  <sub>:330</sub>
-- What this repository does not model yet  <sub>:366</sub>
+- How to run the pass  <sub>:15</sub>
+- How to read the table  <sub>:42</sub>
+- Promoted from the catalogue, after the fact  <sub>:59</sub>
+- The catalogue  <sub>:112</sub>
+- The six groups, and what each is for  <sub>:332</sub>
+- What this repository does not model yet  <sub>:368</sub>
 
-### `docs/erp-lenses/_integrate.md`  <sub>272 lines</sub>
+### `docs/erp-lenses/_meta/_integrate.md`  <sub>272 lines</sub>
 
 - What was promoted: nothing, in either pass  <sub>:16</sub>
 - What was demoted, and from where  <sub>:105</sub>
@@ -586,7 +586,7 @@ _no second-level headings_
 - The seven gaps that had no file, and now do  <sub>:245</sub>
 - What this merge did not do  <sub>:264</sub>
 
-### `docs/erp-lenses/_judge-auditor.md`  <sub>256 lines</sub>
+### `docs/erp-lenses/_meta/_judge-auditor.md`  <sub>256 lines</sub>
 
 - Who is judging, and against what  <sub>:7</sub>
 - Score table  <sub>:18</sub>
@@ -595,7 +595,7 @@ _no second-level headings_
 - What the winner must fix  <sub>:172</sub>
 - What to graft from the losers  <sub>:204</sub>
 
-### `docs/erp-lenses/_judge-engineer.md`  <sub>264 lines</sub>
+### `docs/erp-lenses/_meta/_judge-engineer.md`  <sub>264 lines</sub>
 
 - What I verified in the repository  <sub>:11</sub>
 - Score table  <sub>:52</sub>
@@ -603,7 +603,7 @@ _no second-level headings_
 - What the winner must fix  <sub>:194</sub>
 - Graft from the losers  <sub>:225</sub>
 
-### `docs/erp-lenses/_judge-owner.md`  <sub>261 lines</sub>
+### `docs/erp-lenses/_meta/_judge-owner.md`  <sub>261 lines</sub>
 
 - Who is judging  <sub>:3</sub>
 - What I verified before scoring fidelity  <sub>:17</sub>
@@ -612,7 +612,636 @@ _no second-level headings_
 - What the winner must fix  <sub>:187</sub>
 - What to graft from the losers  <sub>:216</sub>
 
-### `docs/erp-lenses/00-uagent.md`  <sub>299 lines</sub>
+### `docs/erp-lenses/approval-delegation/04-approval-delegation.md`  <sub>128 lines</sub>
+
+- Lens: The threshold nobody approves alone  <sub>:10</sub>
+- Lens: Acting cover has no clock  <sub>:48</sub>
+- Lens: The approval orphaned by a leaver  <sub>:81</sub>
+- Not modelled yet  <sub>:112</sub>
+
+### `docs/erp-lenses/approval-delegation/04g-generate-approval-delegation.md`  <sub>42 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/approval-delegation/04h-harden-approval-delegation.md`  <sub>40 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (0)  <sub>:32</sub>
+- Not modelled in this repo today  <sub>:37</sub>
+
+### `docs/erp-lenses/assets-facilities-maintenance/37-assets-facilities-maintenance.md`  <sub>153 lines</sub>
+
+- Lens: The register the ledger never sees  <sub>:10</sub>
+- Lens: Custody has no holder  <sub>:37</sub>
+- Lens: Downtime that outranks the sale  <sub>:62</sub>
+- Not modelled yet  <sub>:85</sub>
+- Hardening record  <sub>:98</sub>
+
+### `docs/erp-lenses/assets-facilities-maintenance/37g-generate-assets-facilities-maintenance.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/assets-facilities-maintenance/37h-harden-assets-facilities-maintenance.md`  <sub>43 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (2)  <sub>:32</sub>
+- Not modelled in this repo today  <sub>:37</sub>
+
+### `docs/erp-lenses/audit-evidence-hold/05-audit-evidence-hold.md`  <sub>159 lines</sub>
+
+- Lens: The trigger AuditLog doesn't have  <sub>:10</sub>
+- Lens: Who read it, not just who wrote it  <sub>:42</sub>
+- Lens: The hold that beats the delete button  <sub>:67</sub>
+- Not modelled yet  <sub>:93</sub>
+- Hardening record  <sub>:107</sub>
+
+### `docs/erp-lenses/audit-evidence-hold/05g-generate-audit-evidence-hold.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/audit-evidence-hold/05h-harden-audit-evidence-hold.md`  <sub>35 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (1)  <sub>:32</sub>
+
+### `docs/erp-lenses/automation-and-ai-surface/32-automation-and-ai-surface.md`  <sub>190 lines</sub>
+
+- Lens: The machine caller's own scope  <sub>:10</sub>
+- Lens: Quota has no owner  <sub>:50</sub>
+- Lens: Narrate, never post  <sub>:86</sub>
+- Not modelled yet  <sub>:121</sub>
+- Hardening record  <sub>:142</sub>
+
+### `docs/erp-lenses/automation-and-ai-surface/32g-generate-automation-and-ai-surface.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/automation-and-ai-surface/32h-harden-automation-and-ai-surface.md`  <sub>37 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (3)  <sub>:32</sub>
+
+### `docs/erp-lenses/channels-franchise-wholesale/19-channels-franchise-wholesale.md`  <sub>240 lines</sub>
+
+- Lens: Custody without ownership  <sub>:11</sub>
+- Lens: One price, however many doors  <sub>:45</sub>
+- Lens: The portal has no read scope  <sub>:77</sub>
+- Lens: The royalty has no revenue to read  <sub>:117</sub>
+- Not modelled yet  <sub>:152</sub>
+- Hardening record  <sub>:172</sub>
+
+### `docs/erp-lenses/channels-franchise-wholesale/19g-generate-channels-franchise-wholesale.md`  <sub>49 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:40</sub>
+
+### `docs/erp-lenses/channels-franchise-wholesale/19h-harden-channels-franchise-wholesale.md`  <sub>43 lines</sub>
+
+- Kept (4)  <sub>:7</sub>
+- Killed (0)  <sub>:33</sub>
+- Citations corrected (3)  <sub>:38</sub>
+
+### `docs/erp-lenses/cost-to-serve/29-cost-to-serve.md`  <sub>185 lines</sub>
+
+- Lens: The cost that multiplies by location  <sub>:10</sub>
+- Lens: The report that recomputes from scratch  <sub>:49</sub>
+- Lens: The write that doesn't chunk  <sub>:87</sub>
+- Not modelled yet  <sub>:126</sub>
+- Hardening record  <sub>:140</sub>
+
+### `docs/erp-lenses/cost-to-serve/29g-generate-cost-to-serve.md`  <sub>40 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/cost-to-serve/29h-harden-cost-to-serve.md`  <sub>40 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (0)  <sub>:32</sub>
+- Not modelled in this repo today  <sub>:37</sub>
+
+### `docs/erp-lenses/costing-transfer-pricing/10-costing-transfer-pricing.md`  <sub>218 lines</sub>
+
+- Lens: Transfer price fixed at cost  <sub>:12</sub>
+- Lens: Opt-in cost redaction  <sub>:51</sub>
+- Lens: The ledger's five unfilled columns  <sub>:90</sub>
+- Not modelled yet  <sub>:130</sub>
+- Hardening record  <sub>:146</sub>
+
+### `docs/erp-lenses/costing-transfer-pricing/10g-generate-costing-transfer-pricing.md`  <sub>42 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/costing-transfer-pricing/10h-harden-costing-transfer-pricing.md`  <sub>36 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (0)  <sub>:32</sub>
+
+### `docs/erp-lenses/credit-receivables/12-credit-receivables.md`  <sub>157 lines</sub>
+
+- Lens: The receipt that doesn't find its bill  <sub>:10</sub>
+- Lens: The status nobody checks  <sub>:42</sub>
+- Lens: One customer, two ledgers  <sub>:68</sub>
+- Not modelled yet  <sub>:97</sub>
+- Hardening record  <sub>:113</sub>
+
+### `docs/erp-lenses/credit-receivables/12g-generate-credit-receivables.md`  <sub>44 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/credit-receivables/12h-harden-credit-receivables.md`  <sub>45 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (1)  <sub>:32</sub>
+- Not modelled in this repo today  <sub>:36</sub>
+
+### `docs/erp-lenses/day-two-operations/26-day-two-operations.md`  <sub>78 lines</sub>
+
+- Lens: The number that pages, and the number that doesn't  <sub>:9</sub>
+- Lens: The stale clock nobody reads  <sub>:21</sub>
+- Lens: The operator's second door  <sub>:33</sub>
+- Not modelled yet  <sub>:45</sub>
+- Hardening record  <sub>:52</sub>
+
+### `docs/erp-lenses/day-two-operations/26g-generate-day-two-operations.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/day-two-operations/26h-harden-day-two-operations.md`  <sub>43 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (2)  <sub>:32</sub>
+- Not modelled in this repo today  <sub>:37</sub>
+
+### `docs/erp-lenses/enablement-onboarding/31-enablement-onboarding.md`  <sub>188 lines</sub>
+
+- Lens: The landing page assumes two roles  <sub>:11</sub>
+- Lens: Demo data has one persona  <sub>:39</sub>
+- Lens: Going live has no state  <sub>:69</sub>
+- Lens: Permission with no explanation  <sub>:99</sub>
+- Not modelled yet  <sub>:127</sub>
+- Hardening record  <sub>:142</sub>
+
+### `docs/erp-lenses/enablement-onboarding/31g-generate-enablement-onboarding.md`  <sub>47 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:40</sub>
+
+### `docs/erp-lenses/enablement-onboarding/31h-harden-enablement-onboarding.md`  <sub>41 lines</sub>
+
+- Kept (4)  <sub>:7</sub>
+- Killed (0)  <sub>:33</sub>
+- Citations corrected (1)  <sub>:38</sub>
+
+### `docs/erp-lenses/extensibility-without-fork/28-extensibility-without-fork.md`  <sub>233 lines</sub>
+
+- Lens: Five doors, one hallway  <sub>:11</sub>
+- Lens: The refusal that isn't graceful  <sub>:59</sub>
+- Lens: The field with no home  <sub>:102</sub>
+- Not modelled yet  <sub>:146</sub>
+- Hardening record  <sub>:161</sub>
+
+### `docs/erp-lenses/extensibility-without-fork/28g-generate-extensibility-without-fork.md`  <sub>40 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/extensibility-without-fork/28h-harden-extensibility-without-fork.md`  <sub>41 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (0)  <sub>:32</sub>
+- Not modelled in this repo today  <sub>:37</sub>
+
+### `docs/erp-lenses/findability-at-scale/22-findability-at-scale.md`  <sub>227 lines</sub>
+
+- Lens: The default is a scope, not a filter  <sub>:10</sub>
+- Lens: The view nobody can name back  <sub>:48</sub>
+- Lens: The selection that outlives the page  <sub>:79</sub>
+- Lens: The 21st row  <sub>:116</sub>
+- Not modelled yet  <sub>:153</sub>
+- Hardening record  <sub>:167</sub>
+
+### `docs/erp-lenses/findability-at-scale/22g-generate-findability-at-scale.md`  <sub>46 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:40</sub>
+
+### `docs/erp-lenses/findability-at-scale/22h-harden-findability-at-scale.md`  <sub>42 lines</sub>
+
+- Kept (4)  <sub>:7</sub>
+- Killed (0)  <sub>:33</sub>
+- Citations corrected (2)  <sub>:38</sub>
+
+### `docs/erp-lenses/fraud-insider-risk/24-fraud-insider-risk.md`  <sub>187 lines</sub>
+
+- Lens: The void that outruns the refund  <sub>:11</sub>
+- Lens: The write-off with no address  <sub>:46</sub>
+- Lens: The price nobody can point to  <sub>:80</sub>
+- Not modelled yet  <sub>:114</sub>
+- Hardening record  <sub>:129</sub>
+
+### `docs/erp-lenses/fraud-insider-risk/24g-generate-fraud-insider-risk.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/fraud-insider-risk/24h-harden-fraud-insider-risk.md`  <sub>36 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (2)  <sub>:32</sub>
+
+### `docs/erp-lenses/gap-38/38-gap-hr-payroll-no-posting-artifact-for-compe.md`  <sub>205 lines</sub>
+
+- Lens: The wage has no table  <sub>:11</sub>
+- Lens: The pay run is a document, not a report  <sub>:43</sub>
+- Lens: The overpayment has no way back  <sub>:82</sub>
+- Not modelled yet  <sub>:122</sub>
+- Hardening record  <sub>:137</sub>
+
+### `docs/erp-lenses/gap-38/38g-generate-gap.md`  <sub>42 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/gap-38/38h-harden-gap.md`  <sub>50 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+- Absences  <sub>:48</sub>
+
+### `docs/erp-lenses/gap-39/39-gap-facilities-asset-maintenance-file-37-has.md`  <sub>159 lines</sub>
+
+- Lens: The lease nobody renews  <sub>:12</sub>
+- Lens: The service that has no due date  <sub>:42</sub>
+- Not modelled yet  <sub>:71</sub>
+- Hardening record  <sub>:88</sub>
+
+### `docs/erp-lenses/gap-39/39g-generate-gap.md`  <sub>40 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/gap-39/39h-harden-gap.md`  <sub>48 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+- Absences  <sub>:46</sub>
+
+### `docs/erp-lenses/gap-40/40-gap-esg-the-file-s-title-promises-it-the-con.md`  <sub>177 lines</sub>
+
+- Lens: The metric with nowhere to live  <sub>:11</sub>
+- Lens: Whose shipment, whose emissions  <sub>:42</sub>
+- Lens: The disclosure period has no lock  <sub>:75</sub>
+- Not modelled yet  <sub>:107</sub>
+- Hardening record  <sub>:119</sub>
+
+### `docs/erp-lenses/gap-40/40g-generate-gap.md`  <sub>40 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/gap-40/40h-harden-gap.md`  <sub>49 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+- Absences  <sub>:47</sub>
+
+### `docs/erp-lenses/gap-41/41-gap-legal-no-table-for-the-agreement-itself-.md`  <sub>134 lines</sub>
+
+- Lens: The agreement is not the row it governs  <sub>:12</sub>
+- Lens: The renewal nobody is watching  <sub>:42</sub>
+- Not modelled yet  <sub>:69</sub>
+- Hardening record  <sub>:81</sub>
+
+### `docs/erp-lenses/gap-41/41g-generate-gap.md`  <sub>40 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/gap-41/41h-harden-gap.md`  <sub>42 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:32</sub>
+- Corrections  <sub>:38</sub>
+
+### `docs/erp-lenses/gap-42/42-gap-the-grant-with-no-ceiling-on-the-granter.md`  <sub>155 lines</sub>
+
+- Lens: The mint has no ceiling  <sub>:12</sub>
+- Lens: The un-grant checks less than the grant  <sub>:41</sub>
+- Lens: The grant nobody can trace back  <sub>:68</sub>
+- Not modelled yet  <sub>:94</sub>
+- Hardening record  <sub>:108</sub>
+
+### `docs/erp-lenses/gap-42/42g-generate-gap.md`  <sub>40 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/gap-42/42h-harden-gap.md`  <sub>46 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+
+### `docs/erp-lenses/gap-43/43-gap-rank-has-no-ladder-of-its-own-escalation.md`  <sub>208 lines</sub>
+
+- Lens: The manager column that doesn't exist  <sub>:11</sub>
+- Lens: The chain HR actually needs  <sub>:46</sub>
+- Lens: The ladder that must stay empty at Solo  <sub>:79</sub>
+- Not modelled yet  <sub>:110</sub>
+- Hardening record  <sub>:123</sub>
+
+### `docs/erp-lenses/gap-43/43g-generate-gap.md`  <sub>40 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/gap-43/43h-harden-gap.md`  <sub>46 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+
+### `docs/erp-lenses/gap-44/44-gap-no-composition-rule-for-a-person-holding.md`  <sub>187 lines</sub>
+
+- Lens: The union that outruns its parts  <sub>:11</sub>
+- Lens: Scope must gate the ceiling, not just widen it  <sub>:49</sub>
+- Lens: The act nobody can trace to its grant  <sub>:87</sub>
+- Not modelled yet  <sub>:120</sub>
+- Hardening record  <sub>:138</sub>
+
+### `docs/erp-lenses/gap-44/44g-generate-gap.md`  <sub>34 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+
+### `docs/erp-lenses/gap-44/44h-harden-gap.md`  <sub>46 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+
+### `docs/erp-lenses/gap-45/45-gap-the-catalogue-s-only-rank-lens-contradic.md`  <sub>220 lines</sub>
+
+- Lens: Rank's own table, or a fused column  <sub>:15</sub>
+- Lens: The number nobody can group by  <sub>:66</sub>
+- Lens: Escalation across roles needs a number, not a name  <sub>:107</sub>
+- Not modelled yet  <sub>:148</sub>
+- Hardening record  <sub>:164</sub>
+
+### `docs/erp-lenses/gap-45/45g-generate-gap.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/gap-45/45h-harden-gap.md`  <sub>50 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+- Absences  <sub>:48</sub>
+
+### `docs/erp-lenses/gap-46/46-gap-no-lens-asks-what-a-quorum-dual-custody-.md`  <sub>207 lines</sub>
+
+- Lens: The quorum of one  <sub>:12</sub>
+- Lens: The count nobody keeps  <sub>:58</sub>
+- Lens: The record that must outlive its own excuse  <sub>:99</sub>
+- Not modelled yet  <sub>:138</sub>
+- Hardening record  <sub>:151</sub>
+
+### `docs/erp-lenses/gap-46/46g-generate-gap.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/gap-46/46h-harden-gap.md`  <sub>54 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+- Absences  <sub>:47</sub>
+
+### `docs/erp-lenses/gap-47/47-gap-the-per-brand-currency-field-forces-the-.md`  <sub>179 lines</sub>
+
+- Lens: The rate the sale never asked for  <sub>:12</sub>
+- Lens: The rate has no source to resolve from  <sub>:50</sub>
+- Lens: Consolidation trusts a number it never checked  <sub>:88</sub>
+- Not modelled yet  <sub>:123</sub>
+- Hardening record  <sub>:137</sub>
+
+### `docs/erp-lenses/gap-47/47g-generate-gap.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/gap-47/47h-harden-gap.md`  <sub>46 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+
+### `docs/erp-lenses/gap-48/48-gap-group-currency-translation-for-consolida.md`  <sub>169 lines</sub>
+
+- Lens: The group presentation currency is not any brand's functional currency  <sub>:12</sub>
+- Lens: One rate model cannot serve both a flow account and a stock account  <sub>:45</sub>
+- Lens: The plug the balance trigger will not let through unnamed  <sub>:78</sub>
+- Not modelled yet  <sub>:109</sub>
+- Hardening record  <sub>:121</sub>
+
+### `docs/erp-lenses/gap-48/48g-generate-gap.md`  <sub>40 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/gap-48/48h-harden-gap.md`  <sub>48 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+- Absences  <sub>:44</sub>
+
+### `docs/erp-lenses/gap-49/49-gap-financial-close-as-a-managed-process-not.md`  <sub>175 lines</sub>
+
+- Lens: The close that has no task list  <sub>:11</sub>
+- Lens: The lock with one signer  <sub>:46</sub>
+- Lens: The close nobody can see happening  <sub>:84</sub>
+- Not modelled yet  <sub>:122</sub>
+- Hardening record  <sub>:140</sub>
+
+### `docs/erp-lenses/gap-49/49g-generate-gap.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/gap-49/49h-harden-gap.md`  <sub>53 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+- Absences  <sub>:48</sub>
+
+### `docs/erp-lenses/gap-50/50-gap-landed-cost-apportionment-and-its-timing.md`  <sub>206 lines</sub>
+
+- Lens: The apportionment basis nobody chose  <sub>:11</sub>
+- Lens: The bill that never reaches the shelf  <sub>:45</sub>
+- Lens: Inventory debited against stock that is already gone  <sub>:90</sub>
+- Not modelled yet  <sub>:135</sub>
+- Hardening record  <sub>:154</sub>
+
+### `docs/erp-lenses/gap-50/50g-generate-gap.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/gap-50/50h-harden-gap.md`  <sub>48 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+
+### `docs/erp-lenses/gap-51/51-gap-the-approval-that-stalls-without-a-leave.md`  <sub>195 lines</sub>
+
+- Lens: The clock nobody starts  <sub>:12</sub>
+- Lens: Store time is not the approver's time  <sub>:53</sub>
+- Lens: Acted on, not delivered  <sub>:86</sub>
+- Not modelled yet  <sub>:123</sub>
+- Hardening record  <sub>:141</sub>
+
+### `docs/erp-lenses/gap-51/51g-generate-gap.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/gap-51/51h-harden-gap.md`  <sub>46 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:40</sub>
+- Corrections  <sub>:42</sub>
+
+### `docs/erp-lenses/gap-52/52-gap-no-lens-classifies-a-new-table-s-replica.md`  <sub>46 lines</sub>
+
+- Lens: The registration that either exists or gets carved around  <sub>:5</sub>
+- Lens: The quarantine nobody opens  <sub>:17</sub>
+- Not modelled yet  <sub>:29</sub>
+- Hardening record  <sub>:34</sub>
+
+### `docs/erp-lenses/gap-52/52g-generate-gap.md`  <sub>26 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:22</sub>
+
+### `docs/erp-lenses/gap-52/52h-harden-gap.md`  <sub>40 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Kept  <sub>:14</sub>
+- Killed  <sub>:32</sub>
+- Corrections  <sub>:34</sub>
+
+### `docs/erp-lenses/ground/00-uagent.md`  <sub>299 lines</sub>
 
 - Topology and editions  <sub>:10</sub>
 - Identity, permissions and scope  <sub>:63</sub>
@@ -622,7 +1251,7 @@ _no second-level headings_
 - Surfaces and house rules  <sub>:233</sub>
 - What does not exist yet  <sub>:256</sub>
 
-### `docs/erp-lenses/00a-ground-topology.md`  <sub>57 lines</sub>
+### `docs/erp-lenses/ground/00a-ground-topology.md`  <sub>57 lines</sub>
 
 - Facts  <sub>:7</sub>
 - The five "where/which" concepts (all read from schema files)  <sub>:11</sub>
@@ -631,7 +1260,7 @@ _no second-level headings_
 - Where the code assumes one location / one brand  <sub>:39</sub>
 - Where a narrow build goes wrong here  <sub>:48</sub>
 
-### `docs/erp-lenses/00b-ground-identity.md`  <sub>83 lines</sub>
+### `docs/erp-lenses/ground/00b-ground-identity.md`  <sub>83 lines</sub>
 
 - Facts  <sub>:7</sub>
 - The catalog (packages/shared/src/permissions.ts, 450 lines)  <sub>:9</sub>
@@ -642,12 +1271,12 @@ _no second-level headings_
 - The seedPermissions/seedRoles trap  <sub>:65</sub>
 - Where a narrow build goes wrong here  <sub>:71</sub>
 
-### `docs/erp-lenses/00c-ground-money.md`  <sub>57 lines</sub>
+### `docs/erp-lenses/ground/00c-ground-money.md`  <sub>57 lines</sub>
 
 - Facts  <sub>:7</sub>
 - Where a narrow build goes wrong here  <sub>:47</sub>
 
-### `docs/erp-lenses/00d-ground-operations.md`  <sub>68 lines</sub>
+### `docs/erp-lenses/ground/00d-ground-operations.md`  <sub>68 lines</sub>
 
 - Facts  <sub>:7</sub>
 - The single writer, and its one deliberate twin  <sub>:11</sub>
@@ -659,12 +1288,12 @@ _no second-level headings_
 - Where 10k products × 100 locations strains  <sub>:43</sub>
 - Where a narrow build goes wrong here  <sub>:57</sub>
 
-### `docs/erp-lenses/00e-ground-platform.md`  <sub>44 lines</sub>
+### `docs/erp-lenses/ground/00e-ground-platform.md`  <sub>44 lines</sub>
 
 - Facts  <sub>:7</sub>
 - Where a narrow build goes wrong here  <sub>:33</sub>
 
-### `docs/erp-lenses/00f-ground-surfaces.md`  <sub>62 lines</sub>
+### `docs/erp-lenses/ground/00f-ground-surfaces.md`  <sub>62 lines</sub>
 
 - Facts  <sub>:7</sub>
 - CLAUDE.md voice and format (873 lines, root of repo)  <sub>:9</sub>
@@ -674,7 +1303,7 @@ _no second-level headings_
 - What does not exist (verified)  <sub>:44</sub>
 - Where a narrow build goes wrong here  <sub>:53</sub>
 
-### `docs/erp-lenses/01-identity-actor-types.md`  <sub>169 lines</sub>
+### `docs/erp-lenses/identity-actor-types/01-identity-actor-types.md`  <sub>169 lines</sub>
 
 - Lens: The actor with three tables  <sub>:11</sub>
 - Lens: The credential with no permission key  <sub>:47</sub>
@@ -682,469 +1311,41 @@ _no second-level headings_
 - Not modelled yet  <sub>:115</sub>
 - Hardening record  <sub>:127</sub>
 
-### `docs/erp-lenses/01g-generate-identity-actor-types.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/identity-actor-types/01g-generate-identity-actor-types.md`  <sub>41 lines</sub>
 
 - Domain  <sub>:6</sub>
 - File  <sub>:10</sub>
 - Lenses  <sub>:14</sub>
 - Absences  <sub>:34</sub>
 
-### `docs/erp-lenses/01h-harden-identity-actor-types.md`  <sub>36 lines</sub>
+### `docs/erp-lenses/identity-actor-types/01h-harden-identity-actor-types.md`  <sub>36 lines</sub>
 
 - Kept (3)  <sub>:7</sub>
 - Killed (0)  <sub>:27</sub>
 - Citations corrected (2)  <sub>:32</sub>
 
-### `docs/erp-lenses/02-roles-ranks-orgchart.md`  <sub>216 lines</sub>
+### `docs/erp-lenses/internal-audit-controls-testing/36-internal-audit-controls-testing.md`  <sub>188 lines</sub>
 
-- Lens: Rank is a ceiling, not a location  <sub>:11</sub>
-- Lens: Who may mint a role, and what a hundred of them costs  <sub>:41</sub>
-- Lens: The grant that never expires  <sub>:72</sub>
-- Lens: The actor with no role  <sub>:102</sub>
-- Not modelled yet  <sub>:133</sub>
-- Hardening record  <sub>:147</sub>
+- Lens: The control has no name, only the fact does  <sub>:11</sub>
+- Lens: Testing is a record, not a query  <sub>:45</sub>
+- Lens: The auditor's key is not a master key  <sub>:77</sub>
+- Not modelled yet  <sub>:113</sub>
+- Hardening record  <sub>:130</sub>
 
-### `docs/erp-lenses/02g-generate-roles-ranks-orgchart.md`  <sub>49 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:40</sub>
-
-### `docs/erp-lenses/02h-harden-roles-ranks-orgchart.md`  <sub>41 lines</sub>
-
-- Kept (4)  <sub>:7</sub>
-- Killed (0)  <sub>:33</sub>
-- Citations corrected (1)  <sub>:38</sub>
-
-### `docs/erp-lenses/03-segregation-of-duties.md`  <sub>171 lines</sub>
-
-- Lens: The conflict matrix has no home  <sub>:10</sub>
-- Lens: Detected at grant or at act  <sub>:41</sub>
-- Lens: Who counts the drawer they held  <sub>:78</sub>
-- Not modelled yet  <sub>:106</sub>
-- Hardening record  <sub>:121</sub>
-
-### `docs/erp-lenses/03g-generate-segregation-of-duties.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/internal-audit-controls-testing/36g-generate-internal-audit-controls-testing.md`  <sub>42 lines</sub>
 
 - Domain  <sub>:6</sub>
 - File  <sub>:10</sub>
 - Lenses  <sub>:14</sub>
 - Absences  <sub>:34</sub>
 
-### `docs/erp-lenses/03h-harden-segregation-of-duties.md`  <sub>36 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (2)  <sub>:32</sub>
-
-### `docs/erp-lenses/04-approval-delegation.md`  <sub>128 lines</sub>
-
-- Lens: The threshold nobody approves alone  <sub>:10</sub>
-- Lens: Acting cover has no clock  <sub>:48</sub>
-- Lens: The approval orphaned by a leaver  <sub>:81</sub>
-- Not modelled yet  <sub>:112</sub>
-
-### `docs/erp-lenses/04g-generate-approval-delegation.md`  <sub>42 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/04h-harden-approval-delegation.md`  <sub>40 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (0)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:37</sub>
-
-### `docs/erp-lenses/05-audit-evidence-hold.md`  <sub>159 lines</sub>
-
-- Lens: The trigger AuditLog doesn't have  <sub>:10</sub>
-- Lens: Who read it, not just who wrote it  <sub>:42</sub>
-- Lens: The hold that beats the delete button  <sub>:67</sub>
-- Not modelled yet  <sub>:93</sub>
-- Hardening record  <sub>:107</sub>
-
-### `docs/erp-lenses/05g-generate-audit-evidence-hold.md`  <sub>41 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/05h-harden-audit-evidence-hold.md`  <sub>35 lines</sub>
+### `docs/erp-lenses/internal-audit-controls-testing/36h-harden-internal-audit-controls-testing.md`  <sub>35 lines</sub>
 
 - Kept (3)  <sub>:7</sub>
 - Killed (0)  <sub>:27</sub>
 - Citations corrected (1)  <sub>:32</sub>
 
-### `docs/erp-lenses/06-workforce-shifts-jml.md`  <sub>169 lines</sub>
-
-- Lens: The leaver keeps the keys  <sub>:11</sub>
-- Lens: Branch means database, not location  <sub>:44</sub>
-- Lens: The column with no producer  <sub>:79</sub>
-- Not modelled yet  <sub>:111</sub>
-- Hardening record  <sub>:126</sub>
-
-### `docs/erp-lenses/06g-generate-workforce-shifts-jml.md`  <sub>42 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/06h-harden-workforce-shifts-jml.md`  <sub>35 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
-
-### `docs/erp-lenses/07-money-integrity-gl.md`  <sub>190 lines</sub>
-
-- Lens: The unwritten posting rule  <sub>:12</sub>
-- Lens: Every column or none  <sub>:51</sub>
-- Lens: The period that already moved  <sub>:86</sub>
-- Not modelled yet  <sub>:123</sub>
-- Hardening record  <sub>:140</sub>
-
-### `docs/erp-lenses/07g-generate-money-integrity-gl.md`  <sub>43 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/07h-harden-money-integrity-gl.md`  <sub>35 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
-
-### `docs/erp-lenses/08-tax-jurisdiction-invoice.md`  <sub>214 lines</sub>
-
-- Lens: One tax regime, many legal entities  <sub>:11</sub>
-- Lens: Number series, one legal entity at a time  <sub>:43</sub>
-- Lens: Tax point is not the GL date  <sub>:76</sub>
-- Lens: The credit note is a filed document, not a status flip  <sub>:103</sub>
-- Not modelled yet  <sub>:139</sub>
-- Hardening record  <sub>:153</sub>
-
-### `docs/erp-lenses/08g-generate-tax-jurisdiction-invoice.md`  <sub>47 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:40</sub>
-
-### `docs/erp-lenses/08h-harden-tax-jurisdiction-invoice.md`  <sub>41 lines</sub>
-
-- Kept (4)  <sub>:7</sub>
-- Killed (0)  <sub>:33</sub>
-- Citations corrected (1)  <sub>:38</sub>
-
-### `docs/erp-lenses/09-treasury-cash-reconciliation.md`  <sub>157 lines</sub>
-
-- Lens: One ledger line for every drawer and every bank  <sub>:10</sub>
-- Lens: The overshort that vanishes  <sub>:44</sub>
-- Lens: Reconciliation with nothing to reconcile against  <sub>:77</sub>
-- Not modelled yet  <sub>:107</sub>
-- Hardening record  <sub>:119</sub>
-
-### `docs/erp-lenses/09g-generate-treasury-cash-reconciliation.md`  <sub>41 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/09h-harden-treasury-cash-reconciliation.md`  <sub>39 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:36</sub>
-
-### `docs/erp-lenses/10-costing-transfer-pricing.md`  <sub>218 lines</sub>
-
-- Lens: Transfer price fixed at cost  <sub>:12</sub>
-- Lens: Opt-in cost redaction  <sub>:51</sub>
-- Lens: The ledger's five unfilled columns  <sub>:90</sub>
-- Not modelled yet  <sub>:130</sub>
-- Hardening record  <sub>:146</sub>
-
-### `docs/erp-lenses/10g-generate-costing-transfer-pricing.md`  <sub>42 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/10h-harden-costing-transfer-pricing.md`  <sub>36 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (0)  <sub>:32</sub>
-
-### `docs/erp-lenses/11-pricing-discount-governance.md`  <sub>66 lines</sub>
-
-- Lens: The price that wins  <sub>:11</sub>
-- Lens: The number the auditor cannot see  <sub>:23</sub>
-- Lens: The till has no floor  <sub>:35</sub>
-- Not modelled yet  <sub>:47</sub>
-- Hardening record  <sub>:55</sub>
-
-### `docs/erp-lenses/11g-generate-pricing-discount-governance.md`  <sub>42 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/11h-harden-pricing-discount-governance.md`  <sub>35 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
-
-### `docs/erp-lenses/12-credit-receivables.md`  <sub>157 lines</sub>
-
-- Lens: The receipt that doesn't find its bill  <sub>:10</sub>
-- Lens: The status nobody checks  <sub>:42</sub>
-- Lens: One customer, two ledgers  <sub>:68</sub>
-- Not modelled yet  <sub>:97</sub>
-- Hardening record  <sub>:113</sub>
-
-### `docs/erp-lenses/12g-generate-credit-receivables.md`  <sub>44 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/12h-harden-credit-receivables.md`  <sub>45 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:36</sub>
-
-### `docs/erp-lenses/13-procurement-supplier-lifecycle.md`  <sub>162 lines</sub>
-
-- Lens: The bill nobody checked  <sub>:10</sub>
-- Lens: Five commitments, one key  <sub>:50</sub>
-- Lens: A boolean is not a lifecycle  <sub>:86</sub>
-- Not modelled yet  <sub>:119</sub>
-- Hardening record  <sub>:131</sub>
-
-### `docs/erp-lenses/13g-generate-procurement-supplier-lifecycle.md`  <sub>40 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/13h-harden-procurement-supplier-lifecycle.md`  <sub>37 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (3)  <sub>:32</sub>
-
-### `docs/erp-lenses/14-planning-replenishment.md`  <sub>208 lines</sub>
-
-- Lens: The reorder point has no address  <sub>:10</sub>
-- Lens: Not enough to go around  <sub>:49</sub>
-- Lens: A forecast is not a commitment  <sub>:92</sub>
-- Not modelled yet  <sub>:138</sub>
-- Hardening record  <sub>:156</sub>
-
-### `docs/erp-lenses/14g-generate-planning-replenishment.md`  <sub>42 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/14h-harden-planning-replenishment.md`  <sub>36 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (2)  <sub>:32</sub>
-
-### `docs/erp-lenses/15-warehouse-logistics-fleet.md`  <sub>170 lines</sub>
-
-- Lens: Bins are not built, locations are the floor  <sub>:9</sub>
-- Lens: The handoff that has no signer  <sub>:38</sub>
-- Lens: Shortage with no reason, no evidence  <sub>:75</sub>
-- Not modelled yet  <sub>:111</sub>
-- Hardening record  <sub>:128</sub>
-
-### `docs/erp-lenses/15g-generate-warehouse-logistics-fleet.md`  <sub>42 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/15h-harden-warehouse-logistics-fleet.md`  <sub>36 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (2)  <sub>:32</sub>
-
-### `docs/erp-lenses/16-production-bom-subcontract.md`  <sub>149 lines</sub>
-
-- Lens: The cloth that leaves the building  <sub>:9</sub>
-- Lens: The scrap that has no reason code  <sub>:48</sub>
-- Not modelled yet  <sub>:86</sub>
-- Hardening record  <sub>:100</sub>
-
-### `docs/erp-lenses/16g-generate-production-bom-subcontract.md`  <sub>41 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/16h-harden-production-bom-subcontract.md`  <sub>32 lines</sub>
-
-- Kept (2)  <sub>:7</sub>
-- Killed (1)  <sub>:21</sub>
-- Citations corrected (1)  <sub>:25</sub>
-- Not modelled in this repo today  <sub>:29</sub>
-
-### `docs/erp-lenses/17-merchandising-assortment.md`  <sub>172 lines</sub>
-
-- Lens: Carried, not just in stock  <sub>:11</sub>
-- Lens: No such thing as a store grade  <sub>:44</sub>
-- Lens: The new store's first delivery  <sub>:76</sub>
-- Not modelled yet  <sub>:111</sub>
-- Hardening record  <sub>:125</sub>
-
-### `docs/erp-lenses/17g-generate-merchandising-assortment.md`  <sub>42 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/17h-harden-merchandising-assortment.md`  <sub>39 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:36</sub>
-
-### `docs/erp-lenses/18-master-data-taxonomy.md`  <sub>185 lines</sub>
-
-- Lens: The propose-up path that never opens  <sub>:10</sub>
-- Lens: The exact-string gate  <sub>:46</sub>
-- Lens: One column, one unit, forever  <sub>:80</sub>
-- Not modelled yet  <sub>:120</sub>
-- Hardening record  <sub>:133</sub>
-
-### `docs/erp-lenses/18g-generate-master-data-taxonomy.md`  <sub>42 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/18h-harden-master-data-taxonomy.md`  <sub>37 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (3)  <sub>:32</sub>
-
-### `docs/erp-lenses/19-channels-franchise-wholesale.md`  <sub>240 lines</sub>
-
-- Lens: Custody without ownership  <sub>:11</sub>
-- Lens: One price, however many doors  <sub>:45</sub>
-- Lens: The portal has no read scope  <sub>:77</sub>
-- Lens: The royalty has no revenue to read  <sub>:117</sub>
-- Not modelled yet  <sub>:152</sub>
-- Hardening record  <sub>:172</sub>
-
-### `docs/erp-lenses/19g-generate-channels-franchise-wholesale.md`  <sub>49 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:40</sub>
-
-### `docs/erp-lenses/19h-harden-channels-franchise-wholesale.md`  <sub>43 lines</sub>
-
-- Kept (4)  <sub>:7</sub>
-- Killed (0)  <sub>:33</sub>
-- Citations corrected (3)  <sub>:38</sub>
-
-### `docs/erp-lenses/20-service-cases-sla.md`  <sub>186 lines</sub>
-
-- Lens: The complaint that isn't a record  <sub>:12</sub>
-- Lens: Compensation authority is a boolean, not a ceiling  <sub>:47</sub>
-- Lens: One case ID, or five unrelated tables  <sub>:91</sub>
-- Not modelled yet  <sub>:126</sub>
-- Hardening record  <sub>:143</sub>
-
-### `docs/erp-lenses/20g-generate-service-cases-sla.md`  <sub>42 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/20h-harden-service-cases-sla.md`  <sub>36 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (2)  <sub>:32</sub>
-
-### `docs/erp-lenses/21-omnichannel-parity.md`  <sub>172 lines</sub>
-
-- Lens: The gate checked once, not per action  <sub>:11</sub>
-- Lens: The registry only one surface has  <sub>:41</sub>
-- Lens: The principal with no permission to check  <sub>:73</sub>
-- Not modelled yet  <sub>:106</sub>
-- Hardening record  <sub>:120</sub>
-
-### `docs/erp-lenses/21g-generate-omnichannel-parity.md`  <sub>41 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/21h-harden-omnichannel-parity.md`  <sub>39 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (1)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:36</sub>
-
-### `docs/erp-lenses/22-findability-at-scale.md`  <sub>227 lines</sub>
-
-- Lens: The default is a scope, not a filter  <sub>:10</sub>
-- Lens: The view nobody can name back  <sub>:48</sub>
-- Lens: The selection that outlives the page  <sub>:79</sub>
-- Lens: The 21st row  <sub>:116</sub>
-- Not modelled yet  <sub>:153</sub>
-- Hardening record  <sub>:167</sub>
-
-### `docs/erp-lenses/22g-generate-findability-at-scale.md`  <sub>46 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:40</sub>
-
-### `docs/erp-lenses/22h-harden-findability-at-scale.md`  <sub>42 lines</sub>
-
-- Kept (4)  <sub>:7</sub>
-- Killed (0)  <sub>:33</sub>
-- Citations corrected (2)  <sub>:38</sub>
-
-### `docs/erp-lenses/23-loyalty-consent-data-rights.md`  <sub>67 lines</sub>
+### `docs/erp-lenses/loyalty-consent-data-rights/23-loyalty-consent-data-rights.md`  <sub>67 lines</sub>
 
 - Lens: Consent is a matrix, not a switch  <sub>:10</sub>
 - Lens: The liability with no account  <sub>:22</sub>
@@ -1152,84 +1353,63 @@ _no second-level headings_
 - Not modelled yet  <sub>:46</sub>
 - Hardening record  <sub>:52</sub>
 
-### `docs/erp-lenses/23g-generate-loyalty-consent-data-rights.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/loyalty-consent-data-rights/23g-generate-loyalty-consent-data-rights.md`  <sub>40 lines</sub>
 
 - Domain  <sub>:6</sub>
 - File  <sub>:10</sub>
 - Lenses  <sub>:14</sub>
 - Absences  <sub>:34</sub>
 
-### `docs/erp-lenses/23h-harden-loyalty-consent-data-rights.md`  <sub>36 lines</sub>
+### `docs/erp-lenses/loyalty-consent-data-rights/23h-harden-loyalty-consent-data-rights.md`  <sub>36 lines</sub>
 
 - Kept (3)  <sub>:7</sub>
 - Killed (0)  <sub>:27</sub>
 - Citations corrected (2)  <sub>:32</sub>
 
-### `docs/erp-lenses/24-fraud-insider-risk.md`  <sub>187 lines</sub>
+### `docs/erp-lenses/master-data-taxonomy/18-master-data-taxonomy.md`  <sub>185 lines</sub>
 
-- Lens: The void that outruns the refund  <sub>:11</sub>
-- Lens: The write-off with no address  <sub>:46</sub>
-- Lens: The price nobody can point to  <sub>:80</sub>
-- Not modelled yet  <sub>:114</sub>
-- Hardening record  <sub>:129</sub>
+- Lens: The propose-up path that never opens  <sub>:10</sub>
+- Lens: The exact-string gate  <sub>:46</sub>
+- Lens: One column, one unit, forever  <sub>:80</sub>
+- Not modelled yet  <sub>:120</sub>
+- Hardening record  <sub>:133</sub>
 
-### `docs/erp-lenses/24g-generate-fraud-insider-risk.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/master-data-taxonomy/18g-generate-master-data-taxonomy.md`  <sub>42 lines</sub>
 
 - Domain  <sub>:6</sub>
 - File  <sub>:10</sub>
 - Lenses  <sub>:14</sub>
 - Absences  <sub>:34</sub>
 
-### `docs/erp-lenses/24h-harden-fraud-insider-risk.md`  <sub>36 lines</sub>
+### `docs/erp-lenses/master-data-taxonomy/18h-harden-master-data-taxonomy.md`  <sub>37 lines</sub>
 
 - Kept (3)  <sub>:7</sub>
 - Killed (0)  <sub>:27</sub>
-- Citations corrected (2)  <sub>:32</sub>
+- Citations corrected (3)  <sub>:32</sub>
 
-### `docs/erp-lenses/25-privacy-retention-residency.md`  <sub>155 lines</sub>
+### `docs/erp-lenses/merchandising-assortment/17-merchandising-assortment.md`  <sub>172 lines</sub>
 
-- Lens: The row the ledger will not let you touch  <sub>:10</sub>
-- Lens: The payload that already left  <sub>:39</sub>
-- Lens: The retention clock with no dial  <sub>:69</sub>
-- Not modelled yet  <sub>:95</sub>
-- Hardening record  <sub>:108</sub>
+- Lens: Carried, not just in stock  <sub>:11</sub>
+- Lens: No such thing as a store grade  <sub>:44</sub>
+- Lens: The new store's first delivery  <sub>:76</sub>
+- Not modelled yet  <sub>:111</sub>
+- Hardening record  <sub>:125</sub>
 
-### `docs/erp-lenses/25g-generate-privacy-retention-residency.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/merchandising-assortment/17g-generate-merchandising-assortment.md`  <sub>42 lines</sub>
 
 - Domain  <sub>:6</sub>
 - File  <sub>:10</sub>
 - Lenses  <sub>:14</sub>
 - Absences  <sub>:34</sub>
 
-### `docs/erp-lenses/25h-harden-privacy-retention-residency.md`  <sub>36 lines</sub>
+### `docs/erp-lenses/merchandising-assortment/17h-harden-merchandising-assortment.md`  <sub>39 lines</sub>
 
 - Kept (3)  <sub>:7</sub>
 - Killed (0)  <sub>:27</sub>
-- Citations corrected (2)  <sub>:32</sub>
+- Citations corrected (1)  <sub>:32</sub>
+- Not modelled in this repo today  <sub>:36</sub>
 
-### `docs/erp-lenses/26-day-two-operations.md`  <sub>78 lines</sub>
-
-- Lens: The number that pages, and the number that doesn't  <sub>:9</sub>
-- Lens: The stale clock nobody reads  <sub>:21</sub>
-- Lens: The operator's second door  <sub>:33</sub>
-- Not modelled yet  <sub>:45</sub>
-- Hardening record  <sub>:52</sub>
-
-### `docs/erp-lenses/26g-generate-day-two-operations.md`  <sub>41 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/26h-harden-day-two-operations.md`  <sub>43 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (2)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:37</sub>
-
-### `docs/erp-lenses/27-migration-cutover-restatement.md`  <sub>72 lines</sub>
+### `docs/erp-lenses/migration-cutover-restatement/27-migration-cutover-restatement.md`  <sub>72 lines</sub>
 
 - Lens: The ledger has no door for opening balances  <sub>:11</sub>
 - Lens: The crosswalk that doesn't exist  <sub>:23</sub>
@@ -1237,128 +1417,63 @@ _no second-level headings_
 - Not modelled yet  <sub>:47</sub>
 - Hardening record  <sub>:53</sub>
 
-### `docs/erp-lenses/27g-generate-migration-cutover-restatement.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/migration-cutover-restatement/27g-generate-migration-cutover-restatement.md`  <sub>40 lines</sub>
 
 - Domain  <sub>:6</sub>
 - File  <sub>:10</sub>
 - Lenses  <sub>:14</sub>
 - Absences  <sub>:34</sub>
 
-### `docs/erp-lenses/27h-harden-migration-cutover-restatement.md`  <sub>35 lines</sub>
+### `docs/erp-lenses/migration-cutover-restatement/27h-harden-migration-cutover-restatement.md`  <sub>35 lines</sub>
 
 - Kept (3)  <sub>:7</sub>
 - Killed (0)  <sub>:27</sub>
 - Citations corrected (1)  <sub>:32</sub>
 
-### `docs/erp-lenses/28-extensibility-without-fork.md`  <sub>233 lines</sub>
+### `docs/erp-lenses/money-integrity-gl/07-money-integrity-gl.md`  <sub>190 lines</sub>
 
-- Lens: Five doors, one hallway  <sub>:11</sub>
-- Lens: The refusal that isn't graceful  <sub>:59</sub>
-- Lens: The field with no home  <sub>:102</sub>
-- Not modelled yet  <sub>:146</sub>
-- Hardening record  <sub>:161</sub>
-
-### `docs/erp-lenses/28g-generate-extensibility-without-fork.md`  <sub>40 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/28h-harden-extensibility-without-fork.md`  <sub>41 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (0)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:37</sub>
-
-### `docs/erp-lenses/29-cost-to-serve.md`  <sub>185 lines</sub>
-
-- Lens: The cost that multiplies by location  <sub>:10</sub>
-- Lens: The report that recomputes from scratch  <sub>:49</sub>
-- Lens: The write that doesn't chunk  <sub>:87</sub>
-- Not modelled yet  <sub>:126</sub>
+- Lens: The unwritten posting rule  <sub>:12</sub>
+- Lens: Every column or none  <sub>:51</sub>
+- Lens: The period that already moved  <sub>:86</sub>
+- Not modelled yet  <sub>:123</sub>
 - Hardening record  <sub>:140</sub>
 
-### `docs/erp-lenses/29g-generate-cost-to-serve.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/money-integrity-gl/07g-generate-money-integrity-gl.md`  <sub>43 lines</sub>
 
 - Domain  <sub>:6</sub>
 - File  <sub>:10</sub>
 - Lenses  <sub>:14</sub>
 - Absences  <sub>:34</sub>
 
-### `docs/erp-lenses/29h-harden-cost-to-serve.md`  <sub>40 lines</sub>
-
-- Kept (3)  <sub>:7</sub>
-- Killed (0)  <sub>:27</sub>
-- Citations corrected (0)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:37</sub>
-
-### `docs/erp-lenses/30-time-periods-backdating.md`  <sub>193 lines</sub>
-
-- Lens: One clock, a hundred branches  <sub>:11</sub>
-- Lens: The calendar every brand shares  <sub>:46</sub>
-- Lens: The day with no name  <sub>:82</sub>
-- Not modelled yet  <sub>:116</sub>
-- Hardening record  <sub>:130</sub>
-
-### `docs/erp-lenses/30g-generate-time-periods-backdating.md`  <sub>41 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/30h-harden-time-periods-backdating.md`  <sub>35 lines</sub>
+### `docs/erp-lenses/money-integrity-gl/07h-harden-money-integrity-gl.md`  <sub>35 lines</sub>
 
 - Kept (3)  <sub>:7</sub>
 - Killed (0)  <sub>:27</sub>
 - Citations corrected (1)  <sub>:32</sub>
 
-### `docs/erp-lenses/31-enablement-onboarding.md`  <sub>188 lines</sub>
+### `docs/erp-lenses/omnichannel-parity/21-omnichannel-parity.md`  <sub>172 lines</sub>
 
-- Lens: The landing page assumes two roles  <sub>:11</sub>
-- Lens: Demo data has one persona  <sub>:39</sub>
-- Lens: Going live has no state  <sub>:69</sub>
-- Lens: Permission with no explanation  <sub>:99</sub>
-- Not modelled yet  <sub>:127</sub>
-- Hardening record  <sub>:142</sub>
+- Lens: The gate checked once, not per action  <sub>:11</sub>
+- Lens: The registry only one surface has  <sub>:41</sub>
+- Lens: The principal with no permission to check  <sub>:73</sub>
+- Not modelled yet  <sub>:106</sub>
+- Hardening record  <sub>:120</sub>
 
-### `docs/erp-lenses/31g-generate-enablement-onboarding.md`  <sub>47 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:40</sub>
-
-### `docs/erp-lenses/31h-harden-enablement-onboarding.md`  <sub>41 lines</sub>
-
-- Kept (4)  <sub>:7</sub>
-- Killed (0)  <sub>:33</sub>
-- Citations corrected (1)  <sub>:38</sub>
-
-### `docs/erp-lenses/32-automation-and-ai-surface.md`  <sub>190 lines</sub>
-
-- Lens: The machine caller's own scope  <sub>:10</sub>
-- Lens: Quota has no owner  <sub>:50</sub>
-- Lens: Narrate, never post  <sub>:86</sub>
-- Not modelled yet  <sub>:121</sub>
-- Hardening record  <sub>:142</sub>
-
-### `docs/erp-lenses/32g-generate-automation-and-ai-surface.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/omnichannel-parity/21g-generate-omnichannel-parity.md`  <sub>41 lines</sub>
 
 - Domain  <sub>:6</sub>
 - File  <sub>:10</sub>
 - Lenses  <sub>:14</sub>
 - Absences  <sub>:34</sub>
 
-### `docs/erp-lenses/32h-harden-automation-and-ai-surface.md`  <sub>37 lines</sub>
+### `docs/erp-lenses/omnichannel-parity/21h-harden-omnichannel-parity.md`  <sub>39 lines</sub>
 
 - Kept (3)  <sub>:7</sub>
 - Killed (0)  <sub>:27</sub>
-- Citations corrected (3)  <sub>:32</sub>
+- Citations corrected (1)  <sub>:32</sub>
+- Not modelled in this repo today  <sub>:36</sub>
 
-### `docs/erp-lenses/33-operator-hands.md`  <sub>187 lines</sub>
+### `docs/erp-lenses/operator-hands/33-operator-hands.md`  <sub>187 lines</sub>
 
 - Lens: The barcode that already decided  <sub>:11</sub>
 - Lens: Which writes get the queue  <sub>:44</sub>
@@ -1366,20 +1481,125 @@ _no second-level headings_
 - Not modelled yet  <sub>:127</sub>
 - Hardening record  <sub>:139</sub>
 
-### `docs/erp-lenses/33g-generate-operator-hands.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/operator-hands/33g-generate-operator-hands.md`  <sub>40 lines</sub>
 
 - Domain  <sub>:6</sub>
 - File  <sub>:10</sub>
 - Lenses  <sub>:14</sub>
 - Absences  <sub>:34</sub>
 
-### `docs/erp-lenses/33h-harden-operator-hands.md`  <sub>36 lines</sub>
+### `docs/erp-lenses/operator-hands/33h-harden-operator-hands.md`  <sub>36 lines</sub>
 
 - Kept (3)  <sub>:7</sub>
 - Killed (0)  <sub>:27</sub>
 - Citations corrected (0)  <sub>:32</sub>
 
-### `docs/erp-lenses/34-provenance-esg-statutory.md`  <sub>170 lines</sub>
+### `docs/erp-lenses/planning-replenishment/14-planning-replenishment.md`  <sub>208 lines</sub>
+
+- Lens: The reorder point has no address  <sub>:10</sub>
+- Lens: Not enough to go around  <sub>:49</sub>
+- Lens: A forecast is not a commitment  <sub>:92</sub>
+- Not modelled yet  <sub>:138</sub>
+- Hardening record  <sub>:156</sub>
+
+### `docs/erp-lenses/planning-replenishment/14g-generate-planning-replenishment.md`  <sub>42 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/planning-replenishment/14h-harden-planning-replenishment.md`  <sub>36 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (2)  <sub>:32</sub>
+
+### `docs/erp-lenses/pricing-discount-governance/11-pricing-discount-governance.md`  <sub>66 lines</sub>
+
+- Lens: The price that wins  <sub>:11</sub>
+- Lens: The number the auditor cannot see  <sub>:23</sub>
+- Lens: The till has no floor  <sub>:35</sub>
+- Not modelled yet  <sub>:47</sub>
+- Hardening record  <sub>:55</sub>
+
+### `docs/erp-lenses/pricing-discount-governance/11g-generate-pricing-discount-governance.md`  <sub>42 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/pricing-discount-governance/11h-harden-pricing-discount-governance.md`  <sub>35 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (1)  <sub>:32</sub>
+
+### `docs/erp-lenses/privacy-retention-residency/25-privacy-retention-residency.md`  <sub>155 lines</sub>
+
+- Lens: The row the ledger will not let you touch  <sub>:10</sub>
+- Lens: The payload that already left  <sub>:39</sub>
+- Lens: The retention clock with no dial  <sub>:69</sub>
+- Not modelled yet  <sub>:95</sub>
+- Hardening record  <sub>:108</sub>
+
+### `docs/erp-lenses/privacy-retention-residency/25g-generate-privacy-retention-residency.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/privacy-retention-residency/25h-harden-privacy-retention-residency.md`  <sub>36 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (2)  <sub>:32</sub>
+
+### `docs/erp-lenses/procurement-supplier-lifecycle/13-procurement-supplier-lifecycle.md`  <sub>162 lines</sub>
+
+- Lens: The bill nobody checked  <sub>:10</sub>
+- Lens: Five commitments, one key  <sub>:50</sub>
+- Lens: A boolean is not a lifecycle  <sub>:86</sub>
+- Not modelled yet  <sub>:119</sub>
+- Hardening record  <sub>:131</sub>
+
+### `docs/erp-lenses/procurement-supplier-lifecycle/13g-generate-procurement-supplier-lifecycle.md`  <sub>40 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/procurement-supplier-lifecycle/13h-harden-procurement-supplier-lifecycle.md`  <sub>37 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (3)  <sub>:32</sub>
+
+### `docs/erp-lenses/production-bom-subcontract/16-production-bom-subcontract.md`  <sub>149 lines</sub>
+
+- Lens: The cloth that leaves the building  <sub>:9</sub>
+- Lens: The scrap that has no reason code  <sub>:48</sub>
+- Not modelled yet  <sub>:86</sub>
+- Hardening record  <sub>:100</sub>
+
+### `docs/erp-lenses/production-bom-subcontract/16g-generate-production-bom-subcontract.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/production-bom-subcontract/16h-harden-production-bom-subcontract.md`  <sub>32 lines</sub>
+
+- Kept (2)  <sub>:7</sub>
+- Killed (1)  <sub>:21</sub>
+- Citations corrected (1)  <sub>:25</sub>
+- Not modelled in this repo today  <sub>:29</sub>
+
+### `docs/erp-lenses/provenance-esg-statutory/34-provenance-esg-statutory.md`  <sub>170 lines</sub>
 
 - Lens: Every unit, not the whole SKU  <sub>:10</sub>
 - Lens: The claim, not the supplier  <sub>:47</sub>
@@ -1387,20 +1607,20 @@ _no second-level headings_
 - Not modelled yet  <sub>:115</sub>
 - Hardening record  <sub>:126</sub>
 
-### `docs/erp-lenses/34g-generate-provenance-esg-statutory.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/provenance-esg-statutory/34g-generate-provenance-esg-statutory.md`  <sub>40 lines</sub>
 
 - Domain  <sub>:6</sub>
 - File  <sub>:10</sub>
 - Lenses  <sub>:14</sub>
 - Absences  <sub>:34</sub>
 
-### `docs/erp-lenses/34h-harden-provenance-esg-statutory.md`  <sub>35 lines</sub>
+### `docs/erp-lenses/provenance-esg-statutory/34h-harden-provenance-esg-statutory.md`  <sub>35 lines</sub>
 
 - Kept (3)  <sub>:7</sub>
 - Killed (0)  <sub>:27</sub>
 - Citations corrected (1)  <sub>:32</sub>
 
-### `docs/erp-lenses/35-risk-insurance-continuity.md`  <sub>215 lines</sub>
+### `docs/erp-lenses/risk-insurance-continuity/35-risk-insurance-continuity.md`  <sub>215 lines</sub>
 
 - Lens: The insured value nobody can total  <sub>:11</sub>
 - Lens: The claim's evidence pack, not just the claim  <sub>:39</sub>
@@ -1409,410 +1629,190 @@ _no second-level headings_
 - Not modelled yet  <sub>:134</sub>
 - Hardening record  <sub>:149</sub>
 
-### `docs/erp-lenses/35g-generate-risk-insurance-continuity.md`  <sub>48 lines</sub>
+### `docs/erp-lenses/risk-insurance-continuity/35g-generate-risk-insurance-continuity.md`  <sub>48 lines</sub>
 
 - Domain  <sub>:6</sub>
 - File  <sub>:10</sub>
 - Lenses  <sub>:14</sub>
 - Absences  <sub>:40</sub>
 
-### `docs/erp-lenses/35h-harden-risk-insurance-continuity.md`  <sub>48 lines</sub>
+### `docs/erp-lenses/risk-insurance-continuity/35h-harden-risk-insurance-continuity.md`  <sub>48 lines</sub>
 
 - Kept (4)  <sub>:7</sub>
 - Killed (0)  <sub>:33</sub>
 - Citations corrected (1)  <sub>:38</sub>
 - Not modelled in this repo today  <sub>:42</sub>
 
-### `docs/erp-lenses/36-internal-audit-controls-testing.md`  <sub>188 lines</sub>
+### `docs/erp-lenses/roles-ranks-orgchart/02-roles-ranks-orgchart.md`  <sub>216 lines</sub>
 
-- Lens: The control has no name, only the fact does  <sub>:11</sub>
-- Lens: Testing is a record, not a query  <sub>:45</sub>
-- Lens: The auditor's key is not a master key  <sub>:77</sub>
-- Not modelled yet  <sub>:113</sub>
-- Hardening record  <sub>:130</sub>
+- Lens: Rank is a ceiling, not a location  <sub>:11</sub>
+- Lens: Who may mint a role, and what a hundred of them costs  <sub>:41</sub>
+- Lens: The grant that never expires  <sub>:72</sub>
+- Lens: The actor with no role  <sub>:102</sub>
+- Not modelled yet  <sub>:133</sub>
+- Hardening record  <sub>:147</sub>
 
-### `docs/erp-lenses/36g-generate-internal-audit-controls-testing.md`  <sub>42 lines</sub>
+### `docs/erp-lenses/roles-ranks-orgchart/02g-generate-roles-ranks-orgchart.md`  <sub>49 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:40</sub>
+
+### `docs/erp-lenses/roles-ranks-orgchart/02h-harden-roles-ranks-orgchart.md`  <sub>41 lines</sub>
+
+- Kept (4)  <sub>:7</sub>
+- Killed (0)  <sub>:33</sub>
+- Citations corrected (1)  <sub>:38</sub>
+
+### `docs/erp-lenses/segregation-of-duties/03-segregation-of-duties.md`  <sub>171 lines</sub>
+
+- Lens: The conflict matrix has no home  <sub>:10</sub>
+- Lens: Detected at grant or at act  <sub>:41</sub>
+- Lens: Who counts the drawer they held  <sub>:78</sub>
+- Not modelled yet  <sub>:106</sub>
+- Hardening record  <sub>:121</sub>
+
+### `docs/erp-lenses/segregation-of-duties/03g-generate-segregation-of-duties.md`  <sub>41 lines</sub>
 
 - Domain  <sub>:6</sub>
 - File  <sub>:10</sub>
 - Lenses  <sub>:14</sub>
 - Absences  <sub>:34</sub>
 
-### `docs/erp-lenses/36h-harden-internal-audit-controls-testing.md`  <sub>35 lines</sub>
+### `docs/erp-lenses/segregation-of-duties/03h-harden-segregation-of-duties.md`  <sub>36 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (2)  <sub>:32</sub>
+
+### `docs/erp-lenses/service-cases-sla/20-service-cases-sla.md`  <sub>186 lines</sub>
+
+- Lens: The complaint that isn't a record  <sub>:12</sub>
+- Lens: Compensation authority is a boolean, not a ceiling  <sub>:47</sub>
+- Lens: One case ID, or five unrelated tables  <sub>:91</sub>
+- Not modelled yet  <sub>:126</sub>
+- Hardening record  <sub>:143</sub>
+
+### `docs/erp-lenses/service-cases-sla/20g-generate-service-cases-sla.md`  <sub>42 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/service-cases-sla/20h-harden-service-cases-sla.md`  <sub>36 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (2)  <sub>:32</sub>
+
+### `docs/erp-lenses/tax-jurisdiction-invoice/08-tax-jurisdiction-invoice.md`  <sub>214 lines</sub>
+
+- Lens: One tax regime, many legal entities  <sub>:11</sub>
+- Lens: Number series, one legal entity at a time  <sub>:43</sub>
+- Lens: Tax point is not the GL date  <sub>:76</sub>
+- Lens: The credit note is a filed document, not a status flip  <sub>:103</sub>
+- Not modelled yet  <sub>:139</sub>
+- Hardening record  <sub>:153</sub>
+
+### `docs/erp-lenses/tax-jurisdiction-invoice/08g-generate-tax-jurisdiction-invoice.md`  <sub>47 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:40</sub>
+
+### `docs/erp-lenses/tax-jurisdiction-invoice/08h-harden-tax-jurisdiction-invoice.md`  <sub>41 lines</sub>
+
+- Kept (4)  <sub>:7</sub>
+- Killed (0)  <sub>:33</sub>
+- Citations corrected (1)  <sub>:38</sub>
+
+### `docs/erp-lenses/time-periods-backdating/30-time-periods-backdating.md`  <sub>193 lines</sub>
+
+- Lens: One clock, a hundred branches  <sub>:11</sub>
+- Lens: The calendar every brand shares  <sub>:46</sub>
+- Lens: The day with no name  <sub>:82</sub>
+- Not modelled yet  <sub>:116</sub>
+- Hardening record  <sub>:130</sub>
+
+### `docs/erp-lenses/time-periods-backdating/30g-generate-time-periods-backdating.md`  <sub>41 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/time-periods-backdating/30h-harden-time-periods-backdating.md`  <sub>35 lines</sub>
 
 - Kept (3)  <sub>:7</sub>
 - Killed (0)  <sub>:27</sub>
 - Citations corrected (1)  <sub>:32</sub>
 
-### `docs/erp-lenses/37-assets-facilities-maintenance.md`  <sub>153 lines</sub>
+### `docs/erp-lenses/treasury-cash-reconciliation/09-treasury-cash-reconciliation.md`  <sub>157 lines</sub>
 
-- Lens: The register the ledger never sees  <sub>:10</sub>
-- Lens: Custody has no holder  <sub>:37</sub>
-- Lens: Downtime that outranks the sale  <sub>:62</sub>
-- Not modelled yet  <sub>:85</sub>
-- Hardening record  <sub>:98</sub>
+- Lens: One ledger line for every drawer and every bank  <sub>:10</sub>
+- Lens: The overshort that vanishes  <sub>:44</sub>
+- Lens: Reconciliation with nothing to reconcile against  <sub>:77</sub>
+- Not modelled yet  <sub>:107</sub>
+- Hardening record  <sub>:119</sub>
 
-### `docs/erp-lenses/37g-generate-assets-facilities-maintenance.md`  <sub>41 lines</sub>
+### `docs/erp-lenses/treasury-cash-reconciliation/09g-generate-treasury-cash-reconciliation.md`  <sub>41 lines</sub>
 
 - Domain  <sub>:6</sub>
 - File  <sub>:10</sub>
 - Lenses  <sub>:14</sub>
 - Absences  <sub>:34</sub>
 
-### `docs/erp-lenses/37h-harden-assets-facilities-maintenance.md`  <sub>43 lines</sub>
+### `docs/erp-lenses/treasury-cash-reconciliation/09h-harden-treasury-cash-reconciliation.md`  <sub>39 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (1)  <sub>:32</sub>
+- Not modelled in this repo today  <sub>:36</sub>
+
+### `docs/erp-lenses/warehouse-logistics-fleet/15-warehouse-logistics-fleet.md`  <sub>170 lines</sub>
+
+- Lens: Bins are not built, locations are the floor  <sub>:9</sub>
+- Lens: The handoff that has no signer  <sub>:38</sub>
+- Lens: Shortage with no reason, no evidence  <sub>:75</sub>
+- Not modelled yet  <sub>:111</sub>
+- Hardening record  <sub>:128</sub>
+
+### `docs/erp-lenses/warehouse-logistics-fleet/15g-generate-warehouse-logistics-fleet.md`  <sub>42 lines</sub>
+
+- Domain  <sub>:6</sub>
+- File  <sub>:10</sub>
+- Lenses  <sub>:14</sub>
+- Absences  <sub>:34</sub>
+
+### `docs/erp-lenses/warehouse-logistics-fleet/15h-harden-warehouse-logistics-fleet.md`  <sub>36 lines</sub>
 
 - Kept (3)  <sub>:7</sub>
 - Killed (0)  <sub>:27</sub>
 - Citations corrected (2)  <sub>:32</sub>
-- Not modelled in this repo today  <sub>:37</sub>
 
-### `docs/erp-lenses/38-gap-hr-payroll-no-posting-artifact-for-compe.md`  <sub>205 lines</sub>
+### `docs/erp-lenses/workforce-shifts-jml/06-workforce-shifts-jml.md`  <sub>169 lines</sub>
 
-- Lens: The wage has no table  <sub>:11</sub>
-- Lens: The pay run is a document, not a report  <sub>:43</sub>
-- Lens: The overpayment has no way back  <sub>:82</sub>
-- Not modelled yet  <sub>:122</sub>
-- Hardening record  <sub>:137</sub>
+- Lens: The leaver keeps the keys  <sub>:11</sub>
+- Lens: Branch means database, not location  <sub>:44</sub>
+- Lens: The column with no producer  <sub>:79</sub>
+- Not modelled yet  <sub>:111</sub>
+- Hardening record  <sub>:126</sub>
 
-### `docs/erp-lenses/38g-generate-gap.md`  <sub>42 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/38h-harden-gap.md`  <sub>50 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-- Absences  <sub>:48</sub>
-
-### `docs/erp-lenses/39-gap-facilities-asset-maintenance-file-37-has.md`  <sub>159 lines</sub>
-
-- Lens: The lease nobody renews  <sub>:12</sub>
-- Lens: The service that has no due date  <sub>:42</sub>
-- Not modelled yet  <sub>:71</sub>
-- Hardening record  <sub>:88</sub>
-
-### `docs/erp-lenses/39g-generate-gap.md`  <sub>40 lines</sub>
+### `docs/erp-lenses/workforce-shifts-jml/06g-generate-workforce-shifts-jml.md`  <sub>42 lines</sub>
 
 - Domain  <sub>:6</sub>
 - File  <sub>:10</sub>
 - Lenses  <sub>:14</sub>
 - Absences  <sub>:34</sub>
 
-### `docs/erp-lenses/39h-harden-gap.md`  <sub>48 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-- Absences  <sub>:46</sub>
-
-### `docs/erp-lenses/40-gap-esg-the-file-s-title-promises-it-the-con.md`  <sub>177 lines</sub>
-
-- Lens: The metric with nowhere to live  <sub>:11</sub>
-- Lens: Whose shipment, whose emissions  <sub>:42</sub>
-- Lens: The disclosure period has no lock  <sub>:75</sub>
-- Not modelled yet  <sub>:107</sub>
-- Hardening record  <sub>:119</sub>
-
-### `docs/erp-lenses/40g-generate-gap.md`  <sub>40 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/40h-harden-gap.md`  <sub>49 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-- Absences  <sub>:47</sub>
-
-### `docs/erp-lenses/41-gap-legal-no-table-for-the-agreement-itself-.md`  <sub>134 lines</sub>
-
-- Lens: The agreement is not the row it governs  <sub>:12</sub>
-- Lens: The renewal nobody is watching  <sub>:42</sub>
-- Not modelled yet  <sub>:69</sub>
-- Hardening record  <sub>:81</sub>
-
-### `docs/erp-lenses/41g-generate-gap.md`  <sub>40 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/41h-harden-gap.md`  <sub>42 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:32</sub>
-- Corrections  <sub>:38</sub>
-
-### `docs/erp-lenses/42-gap-the-grant-with-no-ceiling-on-the-granter.md`  <sub>155 lines</sub>
-
-- Lens: The mint has no ceiling  <sub>:12</sub>
-- Lens: The un-grant checks less than the grant  <sub>:41</sub>
-- Lens: The grant nobody can trace back  <sub>:68</sub>
-- Not modelled yet  <sub>:94</sub>
-- Hardening record  <sub>:108</sub>
-
-### `docs/erp-lenses/42g-generate-gap.md`  <sub>40 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/42h-harden-gap.md`  <sub>46 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-
-### `docs/erp-lenses/43-gap-rank-has-no-ladder-of-its-own-escalation.md`  <sub>208 lines</sub>
-
-- Lens: The manager column that doesn't exist  <sub>:11</sub>
-- Lens: The chain HR actually needs  <sub>:46</sub>
-- Lens: The ladder that must stay empty at Solo  <sub>:79</sub>
-- Not modelled yet  <sub>:110</sub>
-- Hardening record  <sub>:123</sub>
-
-### `docs/erp-lenses/43g-generate-gap.md`  <sub>40 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/43h-harden-gap.md`  <sub>46 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-
-### `docs/erp-lenses/44-gap-no-composition-rule-for-a-person-holding.md`  <sub>187 lines</sub>
-
-- Lens: The union that outruns its parts  <sub>:11</sub>
-- Lens: Scope must gate the ceiling, not just widen it  <sub>:49</sub>
-- Lens: The act nobody can trace to its grant  <sub>:87</sub>
-- Not modelled yet  <sub>:120</sub>
-- Hardening record  <sub>:138</sub>
-
-### `docs/erp-lenses/44g-generate-gap.md`  <sub>34 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-
-### `docs/erp-lenses/44h-harden-gap.md`  <sub>46 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-
-### `docs/erp-lenses/45-gap-the-catalogue-s-only-rank-lens-contradic.md`  <sub>220 lines</sub>
-
-- Lens: Rank's own table, or a fused column  <sub>:15</sub>
-- Lens: The number nobody can group by  <sub>:66</sub>
-- Lens: Escalation across roles needs a number, not a name  <sub>:107</sub>
-- Not modelled yet  <sub>:148</sub>
-- Hardening record  <sub>:164</sub>
-
-### `docs/erp-lenses/45g-generate-gap.md`  <sub>41 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/45h-harden-gap.md`  <sub>50 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-- Absences  <sub>:48</sub>
-
-### `docs/erp-lenses/46-gap-no-lens-asks-what-a-quorum-dual-custody-.md`  <sub>207 lines</sub>
-
-- Lens: The quorum of one  <sub>:12</sub>
-- Lens: The count nobody keeps  <sub>:58</sub>
-- Lens: The record that must outlive its own excuse  <sub>:99</sub>
-- Not modelled yet  <sub>:138</sub>
-- Hardening record  <sub>:151</sub>
-
-### `docs/erp-lenses/46g-generate-gap.md`  <sub>41 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/46h-harden-gap.md`  <sub>54 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-- Absences  <sub>:47</sub>
-
-### `docs/erp-lenses/47-gap-the-per-brand-currency-field-forces-the-.md`  <sub>179 lines</sub>
-
-- Lens: The rate the sale never asked for  <sub>:12</sub>
-- Lens: The rate has no source to resolve from  <sub>:50</sub>
-- Lens: Consolidation trusts a number it never checked  <sub>:88</sub>
-- Not modelled yet  <sub>:123</sub>
-- Hardening record  <sub>:137</sub>
-
-### `docs/erp-lenses/47g-generate-gap.md`  <sub>41 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/47h-harden-gap.md`  <sub>46 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-
-### `docs/erp-lenses/48-gap-group-currency-translation-for-consolida.md`  <sub>169 lines</sub>
-
-- Lens: The group presentation currency is not any brand's functional currency  <sub>:12</sub>
-- Lens: One rate model cannot serve both a flow account and a stock account  <sub>:45</sub>
-- Lens: The plug the balance trigger will not let through unnamed  <sub>:78</sub>
-- Not modelled yet  <sub>:109</sub>
-- Hardening record  <sub>:121</sub>
-
-### `docs/erp-lenses/48g-generate-gap.md`  <sub>40 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/48h-harden-gap.md`  <sub>48 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-- Absences  <sub>:44</sub>
-
-### `docs/erp-lenses/49-gap-financial-close-as-a-managed-process-not.md`  <sub>175 lines</sub>
-
-- Lens: The close that has no task list  <sub>:11</sub>
-- Lens: The lock with one signer  <sub>:46</sub>
-- Lens: The close nobody can see happening  <sub>:84</sub>
-- Not modelled yet  <sub>:122</sub>
-- Hardening record  <sub>:140</sub>
-
-### `docs/erp-lenses/49g-generate-gap.md`  <sub>41 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/49h-harden-gap.md`  <sub>53 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-- Absences  <sub>:48</sub>
-
-### `docs/erp-lenses/50-gap-landed-cost-apportionment-and-its-timing.md`  <sub>206 lines</sub>
-
-- Lens: The apportionment basis nobody chose  <sub>:11</sub>
-- Lens: The bill that never reaches the shelf  <sub>:45</sub>
-- Lens: Inventory debited against stock that is already gone  <sub>:90</sub>
-- Not modelled yet  <sub>:135</sub>
-- Hardening record  <sub>:154</sub>
-
-### `docs/erp-lenses/50g-generate-gap.md`  <sub>41 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/50h-harden-gap.md`  <sub>48 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-
-### `docs/erp-lenses/51-gap-the-approval-that-stalls-without-a-leave.md`  <sub>195 lines</sub>
-
-- Lens: The clock nobody starts  <sub>:12</sub>
-- Lens: Store time is not the approver's time  <sub>:53</sub>
-- Lens: Acted on, not delivered  <sub>:86</sub>
-- Not modelled yet  <sub>:123</sub>
-- Hardening record  <sub>:141</sub>
-
-### `docs/erp-lenses/51g-generate-gap.md`  <sub>41 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:34</sub>
-
-### `docs/erp-lenses/51h-harden-gap.md`  <sub>46 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:40</sub>
-- Corrections  <sub>:42</sub>
-
-### `docs/erp-lenses/52-gap-no-lens-classifies-a-new-table-s-replica.md`  <sub>46 lines</sub>
-
-- Lens: The registration that either exists or gets carved around  <sub>:5</sub>
-- Lens: The quarantine nobody opens  <sub>:17</sub>
-- Not modelled yet  <sub>:29</sub>
-- Hardening record  <sub>:34</sub>
-
-### `docs/erp-lenses/52g-generate-gap.md`  <sub>26 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Lenses  <sub>:14</sub>
-- Absences  <sub>:22</sub>
-
-### `docs/erp-lenses/52h-harden-gap.md`  <sub>40 lines</sub>
-
-- Domain  <sub>:6</sub>
-- File  <sub>:10</sub>
-- Kept  <sub>:14</sub>
-- Killed  <sub>:32</sub>
-- Corrections  <sub>:34</sub>
+### `docs/erp-lenses/workforce-shifts-jml/06h-harden-workforce-shifts-jml.md`  <sub>35 lines</sub>
+
+- Kept (3)  <sub>:7</sub>
+- Killed (0)  <sub>:27</sub>
+- Citations corrected (1)  <sub>:32</sub>
 
 ### `docs/implementation/00-HOUSE-RULES.md`  <sub>496 lines</sub>
 
@@ -1826,23 +1826,65 @@ _no second-level headings_
 - 7. Commit and PR conventions  <sub>:387</sub>
 - 8. Interface rules  <sub>:440</sub>
 
-### `docs/implementation/01-inventory-purchasing-cost.md`  <sub>937 lines</sub>
+### `docs/implementation/access-control-identity/125-zero-trust-networking.md`  <sub>85 lines</sub>
 
-- Why this phase is first  <sub>:18</sub>
-- What Phase 1 delivers  <sub>:32</sub>
-- Work orders  <sub>:42</sub>
-- WO-1.1 — Nav foundation  <sub>:60</sub>
-- WO-1.2 — The unified stock ledger  <sub>:149</sub>
-- WO-1.3 — Cost price and COGS  <sub>:318</sub>
-- WO-1.4 — Suppliers  <sub>:382</sub>
-- WO-1.5 — Purchase orders, goods receipts, and cost  <sub>:460</sub>
-- WO-1.6 — Reorder, low stock and slow movers  <sub>:710</sub>
-- WO-1.7 — Stock counts  <sub>:786</sub>
-- WO-1.8 — Admin screens  <sub>:866</sub>
-- WO-1.9 — Reports  <sub>:905</sub>
-- Phase 1 exit criteria  <sub>:922</sub>
+- Where zero-trust's actual principle already holds  <sub>:23</sub>
+- Why a service mesh is not the right implementation of this principle here  <sub>:47</sub>
+- Scope lenses  <sub>:60</sub>
+- Work orders  <sub>:66</sub>
+- Acceptance  <sub>:74</sub>
+- Out of scope  <sub>:80</sub>
 
-### `docs/implementation/02-admin-shell.md`  <sub>242 lines</sub>
+### `docs/implementation/access-control-identity/126-pluggable-cryptography.md`  <sub>137 lines</sub>
+
+- The two mechanisms, checked individually  <sub>:21</sub>
+- Why a full "dedicated security service" is oversized for what this actually needs  <sub>:35</sub>
+- The narrow, correct answer: a versioned hashing/encryption interface, in-process  <sub>:44</sub>
+- Scope lenses  <sub>:72</sub>
+- Work orders  <sub>:110</sub>
+- Acceptance  <sub>:121</sub>
+- Out of scope  <sub>:128</sub>
+
+### `docs/implementation/access-control-identity/16-pbac-row-scoping.md`  <sub>184 lines</sub>
+
+- The good news: the convention already exists, once  <sub>:35</sub>
+- Why this is scoped rather than built now  <sub>:57</sub>
+- The design  <sub>:68</sub>
+- Explicitly out of scope for this doc  <sub>:145</sub>
+- Work orders  <sub>:157</sub>
+- When to actually build this  <sub>:176</sub>
+
+### `docs/implementation/access-control-identity/161-sso-identity-federation.md`  <sub>245 lines</sub>
+
+- What already exists, cited exactly  <sub>:13</sub>
+- 1. `SsoConnection` — one row per configured identity provider, per organization  <sub>:28</sub>
+- 2. The domain allowlist is not optional — the one control that makes everything else in this document safe  <sub>:73</sub>
+- 3. JIT provisioning — least privilege by default, never `UserRegistered`  <sub>:96</sub>
+- Scope lenses  <sub>:134</sub>
+- Work orders  <sub>:202</sub>
+- Acceptance  <sub>:223</sub>
+- Out of scope  <sub>:236</sub>
+
+### `docs/implementation/access-control-identity/18-identity-verification.md`  <sub>149 lines</sub>
+
+- What this is  <sub>:19</sub>
+- Design  <sub>:31</sub>
+- What's built  <sub>:89</sub>
+- Explicitly out of scope for this module  <sub>:115</sub>
+- Local setup  <sub>:137</sub>
+
+### `docs/implementation/access-control-identity/21-access-over-the-org-tree.md`  <sub>228 lines</sub>
+
+- Two sources of access, and only one of them is remembered  <sub>:11</sub>
+- The ceiling on the granter  <sub>:70</sub>
+- Resolution order  <sub>:94</sub>
+- What a department sees  <sub>:114</sub>
+- Scope lenses  <sub>:127</sub>
+- Work orders  <sub>:191</sub>
+- Acceptance  <sub>:206</sub>
+- Out of scope  <sub>:222</sub>
+
+### `docs/implementation/admin-platform/02-admin-shell.md`  <sub>242 lines</sub>
 
 - Why  <sub>:5</sub>
 - Rules for this phase  <sub>:24</sub>
@@ -1857,103 +1899,7 @@ _no second-level headings_
 - WO-2.8 — Permission-check cleanup  <sub>:211</sub>
 - Phase 2 exit criteria  <sub>:233</sub>
 
-### `docs/implementation/03-variants-sku-seo.md`  <sub>566 lines</sub>
-
-- Why  <sub>:127</sub>
-- Work orders  <sub>:161</sub>
-- WO-3.1 — The option model  <sub>:177</sub>
-- WO-3.2 — Switch readers, then retire the columns  <sub>:311</sub>
-- WO-3.3 — SKU templates and barcodes  <sub>:330</sub>
-- WO-3.4 — The sectioned product editor  <sub>:360</sub>
-- WO-3.5 — The variant matrix builder  <sub>:392</sub>
-- WO-3.6 — Media with enforced alt text  <sub>:416</sub>
-- WO-3.7 — The SEO section and the publish gate  <sub>:440</sub>
-- WO-3.8 — Storefront SEO  <sub>:484</sub>
-- WO-3.9 — Redirects  <sub>:521</sub>
-- Phase 3 exit criteria  <sub>:555</sub>
-
-### `docs/implementation/04-finance.md`  <sub>291 lines</sub>
-
-- Scope decision, already taken  <sub>:53</sub>
-- Work orders  <sub>:68</sub>
-- WO-4.1 — Expenses  <sub>:84</sub>
-- WO-4.2 — Order economics  <sub>:160</sub>
-- WO-4.3 — The P&L report  <sub>:200</sub>
-- WO-4.4 — Cash flow  <sub>:239</sub>
-- WO-4.5 — Screens  <sub>:253</sub>
-- WO-4.6 — Month-end close and export  <sub>:273</sub>
-- Phase 4 exit criteria  <sub>:283</sub>
-
-### `docs/implementation/05-promotions-giftcards.md`  <sub>320 lines</sub>
-
-- Why now  <sub>:5</sub>
-- Work orders  <sub>:14</sub>
-- WO-5.1 — The rules engine  <sub>:31</sub>
-- WO-5.2 — Promo codes  <sub>:122</sub>
-- WO-5.3 — Checkout  <sub>:163</sub>
-- WO-5.4 — Gift cards  <sub>:196</sub>
-- WO-5.5 — Store credit  <sub>:267</sub>
-- WO-5.6 — Screens  <sub>:294</sub>
-- Phase 5 exit criteria  <sub>:310</sub>
-
-### `docs/implementation/06-shipping-fulfilment-returns.md`  <sub>335 lines</sub>
-
-- Why  <sub>:52</sub>
-- Work orders  <sub>:72</sub>
-- WO-6.1 — Shipping as a module  <sub>:87</sub>
-- WO-6.2 — The `CourierProvider` interface  <sub>:151</sub>
-- WO-6.3 — Real couriers  <sub>:182</sub>
-- WO-6.4 — Shipment lifecycle  <sub>:198</sub>
-- WO-6.5 — Tracking automation  <sub>:214</sub>
-- WO-6.6 — Returns and RMA  <sub>:231</sub>
-- WO-6.7 — RTO  <sub>:300</sub>
-- WO-6.8 — Screens  <sub>:315</sub>
-- Phase 6 exit criteria  <sub>:325</sub>
-
-### `docs/implementation/07-customer-portal.md`  <sub>186 lines</sub>
-
-- Why  <sub>:5</sub>
-- Work orders  <sub>:21</sub>
-- WO-7.1 — Portal shell  <sub>:37</sub>
-- WO-7.2 — Orders  <sub>:52</sub>
-- WO-7.3 — Self-service returns  <sub>:66</sub>
-- WO-7.4 — Credit and gift cards  <sub>:78</sub>
-- WO-7.5 — Reviews and Q&A  <sub>:89</sub>
-- WO-7.6 — Wishlist and back-in-stock  <sub>:128</sub>
-- WO-7.7 — Loyalty and referrals  <sub>:145</sub>
-- WO-7.8 — Notification preferences  <sub>:160</sub>
-- WO-7.9 — Mobile parity  <sub>:169</sub>
-- Phase 7 exit criteria  <sub>:178</sub>
-
-### `docs/implementation/08-content-marketing-search.md`  <sub>138 lines</sub>
-
-- Why  <sub>:5</sub>
-- Work orders  <sub>:13</sub>
-- WO-8.1 — CMS  <sub>:26</sub>
-- WO-8.2 — Collections and merchandising  <sub>:46</sub>
-- WO-8.3 — Search  <sub>:61</sub>
-- WO-8.4 — Campaigns and broadcasts  <sub>:85</sub>
-- WO-8.5 — Abandoned cart recovery  <sub>:104</sub>
-- WO-8.6 — On-site messaging  <sub>:120</sub>
-- Phase 8 exit criteria  <sub>:129</sub>
-
-### `docs/implementation/09-ai-layer.md`  <sub>221 lines</sub>
-
-- The two rules that govern this entire phase  <sub>:5</sub>
-- Work orders, in payoff order  <sub>:36</sub>
-- WO-9.1 — Alt text and SEO copy  <sub>:53</sub>
-- WO-9.2 — Size recommendation  <sub>:74</sub>
-- WO-9.3 — Demand forecasting  <sub>:95</sub>
-- WO-9.4 — COD risk scoring  <sub>:113</sub>
-- WO-9.5 — Semantic and visual search  <sub>:133</sub>
-- WO-9.6 — Recommendations  <sub>:149</sub>
-- WO-9.7 — WhatsApp assistant  <sub>:163</sub>
-- WO-9.8 — Markdown suggestions  <sub>:180</sub>
-- WO-9.9 — Review summarisation  <sub>:191</sub>
-- WO-9.10 — Bulk-import cleanup  <sub>:200</sub>
-- Phase 9 exit criteria  <sub>:210</sub>
-
-### `docs/implementation/10-admin-dashboard.md`  <sub>1,843 lines</sub>
+### `docs/implementation/admin-platform/10-admin-dashboard.md`  <sub>1,843 lines</sub>
 
 - Why  <sub>:9</sub>
 - What Phase 10 delivers  <sub>:31</sub>
@@ -1973,157 +1919,48 @@ _no second-level headings_
 - Migration safety register  <sub>:1754</sub>
 - Phase 10 definition of done  <sub>:1798</sub>
 
-### `docs/implementation/100-event-driven-architecture.md`  <sub>75 lines</sub>
+### `docs/implementation/admin-platform/44-manager-action-hub.md`  <sub>160 lines</sub>
 
-- What already exists, mapped onto the bullet's own example  <sub>:17</sub>
-- Scope lenses  <sub>:49</sub>
-- Work orders  <sub>:55</sub>
-- Acceptance  <sub>:62</sub>
-- Out of scope  <sub>:67</sub>
+- 1. An action item is a shape every contributing module already produces  <sub>:13</sub>
+- 2. Sources register, they are not hardcoded  <sub>:34</sub>
+- Scope lenses  <sub>:56</sub>
+- Work orders  <sub>:116</sub>
+- Acceptance  <sub>:135</sub>
+- Out of scope  <sub>:150</sub>
 
-### `docs/implementation/101-agnostic-notification-webhooks.md`  <sub>71 lines</sub>
+### `docs/implementation/admin-platform/72-fragmented-tool-consolidation-import.md`  <sub>173 lines</sub>
 
-- What already exists, per channel  <sub>:11</sub>
-- "Triggering webhooks" — the delivery mechanism doc 33 already names  <sub>:29</sub>
-- Scope lenses  <sub>:45</sub>
-- Work orders  <sub>:50</sub>
-- Acceptance  <sub>:57</sub>
-- Out of scope  <sub>:65</sub>
+- 1. The pattern, generalized just enough to name its second and third users  <sub>:23</sub>
+- Scope lenses  <sub>:57</sub>
+- Work orders  <sub>:135</sub>
+- Acceptance  <sub>:151</sub>
+- Out of scope  <sub>:163</sub>
 
-### `docs/implementation/102-hyperautomation-workflow-integration.md`  <sub>70 lines</sub>
+### `docs/implementation/admin-platform/75-managerial-todo-widget-coverage-note.md`  <sub>54 lines</sub>
 
-- What doc 36 already specifies, restated rather than re-derived  <sub>:15</sub>
-- Scope lenses  <sub>:41</sub>
-- Work orders  <sub>:48</sub>
-- Acceptance  <sub>:57</sub>
-- Out of scope  <sub>:63</sub>
-
-### `docs/implementation/103-semantic-data-contracts.md`  <sub>69 lines</sub>
-
-- What already enforces this, at two layers  <sub>:15</sub>
-- Scope lenses  <sub>:41</sub>
-- Work orders  <sub>:48</sub>
-- Acceptance  <sub>:54</sub>
-- Out of scope  <sub>:60</sub>
-
-### `docs/implementation/104-jsonb-eav-extensibility.md`  <sub>159 lines</sub>
-
-- 1. `CustomFieldDefinition` + a JSONB overlay column, one per entity that needs it — never one universal EAV table  <sub>:30</sub>
-- 2. Why this stays narrow, deliberately  <sub>:67</sub>
-- Scope lenses  <sub>:89</sub>
-- Work orders  <sub>:131</sub>
-- Acceptance  <sub>:144</sub>
-- Out of scope  <sub>:153</sub>
-
-### `docs/implementation/105-metadata-driven-ui-rendering.md`  <sub>101 lines</sub>
-
-- What doc 104 already needs, and this document supplies  <sub>:21</sub>
-- Why a general metadata-driven UI engine is not this repository's architecture, and should not become it  <sub>:43</sub>
-- Scope lenses  <sub>:71</sub>
-- Work orders  <sub>:77</sub>
-- Acceptance  <sub>:84</sub>
-- Out of scope  <sub>:94</sub>
-
-### `docs/implementation/106-finite-state-machines-registry.md`  <sub>98 lines</sub>
-
-- What already exists, cited rather than re-derived  <sub>:18</sub>
-- The one real improvement: a read-only cross-module registry, never a runtime-editable one  <sub>:41</sub>
-- Scope lenses  <sub>:71</sub>
-- Work orders  <sub>:77</sub>
-- Acceptance  <sub>:85</sub>
-- Out of scope  <sub>:93</sub>
-
-### `docs/implementation/107-visual-bpmn-workflow-modeling.md`  <sub>77 lines</sub>
-
-- Why this remains declined, restated once more for this specific framing  <sub>:22</sub>
-- What already answers the bullet's own three named use cases  <sub>:41</sub>
-- Scope lenses  <sub>:53</sub>
-- Work orders  <sub>:59</sub>
-- Acceptance  <sub>:67</sub>
-- Out of scope  <sub>:72</sub>
-
-### `docs/implementation/108-event-triggered-side-effects.md`  <sub>61 lines</sub>
-
-- The mapping, stated once  <sub>:18</sub>
+- 1. What already exists  <sub>:14</sub>
 - Scope lenses  <sub>:32</sub>
-- Work orders  <sub>:37</sub>
+- Work orders  <sub>:38</sub>
 - Acceptance  <sub>:45</sub>
-- Out of scope  <sub>:53</sub>
+- Out of scope  <sub>:50</sub>
 
-### `docs/implementation/109-immutable-event-ledger.md`  <sub>98 lines</sub>
+### `docs/implementation/ai-layer/09-ai-layer.md`  <sub>221 lines</sub>
 
-- What already exists: a real, append-only audit trail  <sub>:14</sub>
-- Why full event sourcing (state derived by replaying events) is not adopted here, stated plainly  <sub>:37</sub>
-- Scope lenses  <sub>:69</sub>
-- Work orders  <sub>:75</sub>
-- Acceptance  <sub>:83</sub>
-- Out of scope  <sub>:91</sub>
+- The two rules that govern this entire phase  <sub>:5</sub>
+- Work orders, in payoff order  <sub>:36</sub>
+- WO-9.1 — Alt text and SEO copy  <sub>:53</sub>
+- WO-9.2 — Size recommendation  <sub>:74</sub>
+- WO-9.3 — Demand forecasting  <sub>:95</sub>
+- WO-9.4 — COD risk scoring  <sub>:113</sub>
+- WO-9.5 — Semantic and visual search  <sub>:133</sub>
+- WO-9.6 — Recommendations  <sub>:149</sub>
+- WO-9.7 — WhatsApp assistant  <sub>:163</sub>
+- WO-9.8 — Markdown suggestions  <sub>:180</sub>
+- WO-9.9 — Review summarisation  <sub>:191</sub>
+- WO-9.10 — Bulk-import cleanup  <sub>:200</sub>
+- Phase 9 exit criteria  <sub>:210</sub>
 
-### `docs/implementation/11-client-handover-model.md`  <sub>121 lines</sub>
-
-- 1. The Business Goals  <sub>:3</sub>
-- 2. The Rejected Approaches  <sub>:12</sub>
-- 3. The Solution: The "Blueprint & Extractor" Model  <sub>:22</sub>
-- 4. Customization & Upgradability (Engine vs. Glass)  <sub>:64</sub>
-- 5. Hosting Contracts & Infrastructure as a Service (IaaS)  <sub>:89</sub>
-- 6. The API Layer (Dynamic NestJS Separation)  <sub>:109</sub>
-
-### `docs/implementation/110-cqrs-read-write-separation.md`  <sub>93 lines</sub>
-
-- What already exists: precomputed read-optimized projections, without a second database  <sub>:16</sub>
-- The bullet's own example, named honestly  <sub>:33</sub>
-- When literal CQRS (a separate read-side store) would become the right call  <sub>:49</sub>
-- Scope lenses  <sub>:66</sub>
-- Work orders  <sub>:72</sub>
-- Acceptance  <sub>:79</sub>
-- Out of scope  <sub>:85</sub>
-
-### `docs/implementation/111-hierarchical-entity-isolation.md`  <sub>68 lines</sub>
-
-- What already exists, mapped onto the bullet's own three-tier example  <sub>:13</sub>
-- The cascade-with-override mechanism, already built, not hypothetical  <sub>:27</sub>
-- Scope lenses  <sub>:40</sub>
-- Work orders  <sub>:47</sub>
-- Acceptance  <sub>:57</sub>
-- Out of scope  <sub>:63</sub>
-
-### `docs/implementation/112-pluggable-fiscal-engines.md`  <sub>51 lines</sub>
-
-- What already exists  <sub>:14</sub>
-- Scope lenses  <sub>:30</sub>
-- Work orders  <sub>:35</sub>
-- Acceptance  <sub>:41</sub>
-- Out of scope  <sub>:46</sub>
-
-### `docs/implementation/113-micro-frontend-embedding.md`  <sub>114 lines</sub>
-
-- Why full micro-frontend architecture is declined here  <sub>:22</sub>
-- What the bullet's own concrete example actually needs: an embed, not a framework  <sub>:39</sub>
-- Scope lenses  <sub>:58</sub>
-- Work orders  <sub>:95</sub>
-- Acceptance  <sub>:103</sub>
-- Out of scope  <sub>:109</sub>
-
-### `docs/implementation/114-sandboxed-scripting-runtime.md`  <sub>119 lines</sub>
-
-- What the bullet's own two examples actually need  <sub>:27</sub>
-- The recommended mechanism: a restricted expression evaluator, never arbitrary code  <sub>:42</sub>
-- Why this stays a recommendation, not a build order, until a real case names it  <sub>:70</sub>
-- Scope lenses  <sub>:83</sub>
-- Work orders  <sub>:95</sub>
-- Acceptance  <sub>:100</sub>
-- Out of scope  <sub>:109</sub>
-
-### `docs/implementation/115-hexagonal-architecture-ports-adapters.md`  <sub>69 lines</sub>
-
-- The mapping, made explicit  <sub>:17</sub>
-- What this document adds: naming, not architecture  <sub>:34</sub>
-- Scope lenses  <sub>:45</sub>
-- Work orders  <sub>:52</sub>
-- Acceptance  <sub>:57</sub>
-- Out of scope  <sub>:64</sub>
-
-### `docs/implementation/116-agentic-integration-mcp.md`  <sub>161 lines</sub>
+### `docs/implementation/ai-layer/116-agentic-integration-mcp.md`  <sub>161 lines</sub>
 
 - 1. An MCP tool adapter, calling the identical service an HTTP controller already calls  <sub>:17</sub>
 - 2. SSE for long-running tasks — the existing outbox pattern, exposed as a stream, not a new delivery mechanism  <sub>:49</sub>
@@ -2133,52 +1970,7 @@ _no second-level headings_
 - Acceptance  <sub>:147</sub>
 - Out of scope  <sub>:154</sub>
 
-### `docs/implementation/117-event-driven-choreography-immutability.md`  <sub>82 lines</sub>
-
-- What already exists: choreography and immutability  <sub>:15</sub>
-- Why idempotency here is domain-keyed, not generic event-ID deduplication  <sub>:26</sub>
-- Scope lenses  <sub>:56</sub>
-- Work orders  <sub>:63</sub>
-- Acceptance  <sub>:69</sub>
-- Out of scope  <sub>:75</sub>
-
-### `docs/implementation/118-headless-composable-api-capabilities.md`  <sub>87 lines</sub>
-
-- What already answers each clause  <sub>:13</sub>
-- The one thing this document adds: naming the risk of "acting on behalf of a human"  <sub>:41</sub>
-- Scope lenses  <sub>:57</sub>
-- Work orders  <sub>:65</sub>
-- Acceptance  <sub>:74</sub>
-- Out of scope  <sub>:80</sub>
-
-### `docs/implementation/119-containerized-workload-portability.md`  <sub>69 lines</sub>
-
-- The strongest evidence for "no core rewrites": doc 48 already exists  <sub>:12</sub>
-- What portability already covers, and the one thing it does not claim  <sub>:27</sub>
-- Scope lenses  <sub>:47</sub>
-- Work orders  <sub>:52</sub>
-- Acceptance  <sub>:57</sub>
-- Out of scope  <sub>:63</sub>
-
-### `docs/implementation/12-extractor-script-spec.md`  <sub>59 lines</sub>
-
-- Phase 1: Initialization & Validation  <sub>:6</sub>
-- Phase 2: The Engine Extraction (Backend)  <sub>:15</sub>
-- Phase 3: AST Modification (Bulletproof TypeScript)  <sub>:23</sub>
-- Phase 4: The Glass Protection (Frontend Boundaries)  <sub>:32</sub>
-- Phase 5: IaaS & Environment Scaffolding  <sub>:40</sub>
-- Phase 6: CI/CD & Database Cleanup  <sub>:45</sub>
-- Phase 7: Delivery & Pull Request  <sub>:53</sub>
-
-### `docs/implementation/120-decoupled-integration-engines.md`  <sub>48 lines</sub>
-
-- Why `OutboundConnector` already isolates this repository from a third party's own breaking changes  <sub>:12</sub>
-- Scope lenses  <sub>:27</sub>
-- Work orders  <sub>:32</sub>
-- Acceptance  <sub>:37</sub>
-- Out of scope  <sub>:42</sub>
-
-### `docs/implementation/121-vector-multimodel-databases.md`  <sub>52 lines</sub>
+### `docs/implementation/ai-layer/121-vector-multimodel-databases.md`  <sub>52 lines</sub>
 
 - What already exists  <sub>:18</sub>
 - Scope lenses  <sub>:31</sub>
@@ -2186,131 +1978,7 @@ _no second-level headings_
 - Acceptance  <sub>:43</sub>
 - Out of scope  <sub>:48</sub>
 
-### `docs/implementation/122-data-lake-cold-storage-architecture.md`  <sub>75 lines</sub>
-
-- Why this is premature today, stated with evidence rather than assumed  <sub>:16</sub>
-- The concrete trigger that would make this worth building  <sub>:33</sub>
-- Scope lenses  <sub>:50</sub>
-- Work orders  <sub>:56</sub>
-- Acceptance  <sub>:63</sub>
-- Out of scope  <sub>:70</sub>
-
-### `docs/implementation/123-automated-degradation-resilience.md`  <sub>73 lines</sub>
-
-- The evidence, collected from this session's own documents  <sub>:16</sub>
-- "A localized fallback state" — this repository's own name for it  <sub>:38</sub>
-- Scope lenses  <sub>:47</sub>
-- Work orders  <sub>:53</sub>
-- Acceptance  <sub>:58</sub>
-- Out of scope  <sub>:67</sub>
-
-### `docs/implementation/124-infrastructure-as-code.md`  <sub>64 lines</sub>
-
-- What already exists, version-controlled, in this repository  <sub>:9</sub>
-- The honest gap: no declarative infrastructure-provisioning tool  <sub>:22</sub>
-- Scope lenses  <sub>:35</sub>
-- Work orders  <sub>:41</sub>
-- Acceptance  <sub>:51</sub>
-- Out of scope  <sub>:59</sub>
-
-### `docs/implementation/125-zero-trust-networking.md`  <sub>85 lines</sub>
-
-- Where zero-trust's actual principle already holds  <sub>:23</sub>
-- Why a service mesh is not the right implementation of this principle here  <sub>:47</sub>
-- Scope lenses  <sub>:60</sub>
-- Work orders  <sub>:66</sub>
-- Acceptance  <sub>:74</sub>
-- Out of scope  <sub>:80</sub>
-
-### `docs/implementation/126-pluggable-cryptography.md`  <sub>137 lines</sub>
-
-- The two mechanisms, checked individually  <sub>:21</sub>
-- Why a full "dedicated security service" is oversized for what this actually needs  <sub>:35</sub>
-- The narrow, correct answer: a versioned hashing/encryption interface, in-process  <sub>:44</sub>
-- Scope lenses  <sub>:72</sub>
-- Work orders  <sub>:110</sub>
-- Acceptance  <sub>:121</sub>
-- Out of scope  <sub>:128</sub>
-
-### `docs/implementation/127-policy-as-data-completeness-sweep.md`  <sub>76 lines</sub>
-
-- 1. The sweep, as a repeatable script, not a one-time manual pass  <sub>:12</sub>
-- 2. What "converted" means, and what legitimately stays a constant  <sub>:27</sub>
-- Scope lenses  <sub>:42</sub>
-- Work orders  <sub>:50</sub>
-- Acceptance  <sub>:60</sub>
-- Out of scope  <sub>:69</sub>
-
-### `docs/implementation/128-extension-point-coverage-audit.md`  <sub>143 lines</sub>
-
-- What was checked, and what was found missing  <sub>:12</sub>
-- 1. `IdentityProvider` — a login method port, alongside the existing password path  <sub>:32</sub>
-- 2. `ShippingCarrier` — a rate/label/tracking port, alongside `Shipment.cost`  <sub>:51</sub>
-- Scope lenses  <sub>:67</sub>
-- Work orders  <sub>:121</sub>
-- Acceptance  <sub>:130</sub>
-- Out of scope  <sub>:137</sub>
-
-### `docs/implementation/129-channel-abstraction-audit.md`  <sub>87 lines</sub>
-
-- What the audit checked, and what it found  <sub>:12</sub>
-- The one real fix: an optional correlation token, additive, not disruptive  <sub>:42</sub>
-- Scope lenses  <sub>:60</sub>
-- Work orders  <sub>:67</sub>
-- Acceptance  <sub>:73</sub>
-- Out of scope  <sub>:81</sub>
-
-### `docs/implementation/13-email-service-plan.md`  <sub>32 lines</sub>
-
-- 1. The Technology Stack  <sub>:5</sub>
-- 2. The Client Experience  <sub>:10</sub>
-- 3. Strict DNS Requirements (Crucial for Independence)  <sub>:14</sub>
-- 4. Application Architecture (How the API sends emails)  <sub>:23</sub>
-- 5. The Ultimate Agency Flex (Future API Integration)  <sub>:29</sub>
-
-### `docs/implementation/130-machine-readable-capability-manifest.md`  <sub>110 lines</sub>
-
-- 1. The manifest, generated from live registrations, never hand-maintained  <sub>:14</sub>
-- 2. Who reads this, and why it matters for the future you're actually worried about  <sub>:40</sub>
-- Scope lenses  <sub>:53</sub>
-- Work orders  <sub>:86</sub>
-- Acceptance  <sub>:96</sub>
-- Out of scope  <sub>:103</sub>
-
-### `docs/implementation/131-versioned-domain-events.md`  <sub>70 lines</sub>
-
-- The convention: additive by default, a new event name when a break is unavoidable  <sub>:11</sub>
-- Scope lenses  <sub>:41</sub>
-- Work orders  <sub>:47</sub>
-- Acceptance  <sub>:58</sub>
-- Out of scope  <sub>:64</sub>
-
-### `docs/implementation/132-generic-inbound-webhook-receiver.md`  <sub>164 lines</sub>
-
-- 1. A registered inbound endpoint, mapped by template onto a domain event — the mirror of `OutboundConnector`  <sub>:13</sub>
-- Scope lenses  <sub>:70</sub>
-- Work orders  <sub>:141</sub>
-- Acceptance  <sub>:150</sub>
-- Out of scope  <sub>:158</sub>
-
-### `docs/implementation/133-reusable-dry-run-harness.md`  <sub>59 lines</sub>
-
-- The convention: every policy-as-data mechanism exposes a pure `preview()` alongside its `apply()`  <sub>:11</sub>
-- Scope lenses  <sub>:32</sub>
-- Work orders  <sub>:39</sub>
-- Acceptance  <sub>:47</sub>
-- Out of scope  <sub>:54</sub>
-
-### `docs/implementation/134-hexagonal-purity-ci-check.md`  <sub>71 lines</sub>
-
-- 1. The specific violation this check catches  <sub>:11</sub>
-- 2. Why this is worth building even though the audit found zero violations today  <sub>:33</sub>
-- Scope lenses  <sub>:45</sub>
-- Work orders  <sub>:50</sub>
-- Acceptance  <sub>:59</sub>
-- Out of scope  <sub>:68</sub>
-
-### `docs/implementation/135-intent-router-voice-video-agent.md`  <sub>136 lines</sub>
+### `docs/implementation/ai-layer/135-intent-router-voice-video-agent.md`  <sub>136 lines</sub>
 
 - 1. An `Intent` is the one shape every future modality converges on  <sub>:11</sub>
 - 2. What changes when tomorrow's paradigm arrives, and what does not  <sub>:43</sub>
@@ -2319,522 +1987,7 @@ _no second-level headings_
 - Acceptance  <sub>:120</sub>
 - Out of scope  <sub>:129</sub>
 
-### `docs/implementation/136-database-cache-portability-audit.md`  <sub>72 lines</sub>
-
-- What was checked  <sub>:12</sub>
-- What a future cache substitution would need, named honestly  <sub>:29</sub>
-- Scope lenses  <sub>:44</sub>
-- Work orders  <sub>:51</sub>
-- Acceptance  <sub>:60</sub>
-- Out of scope  <sub>:65</sub>
-
-### `docs/implementation/137-payment-method-resilience-audit.md`  <sub>75 lines</sub>
-
-- What was checked, against three plausible near-future payment shapes  <sub>:9</sub>
-- The actual finding: no gap, and why  <sub>:35</sub>
-- Scope lenses  <sub>:49</sub>
-- Work orders  <sub>:55</sub>
-- Acceptance  <sub>:59</sub>
-- Out of scope  <sub>:69</sub>
-
-### `docs/implementation/138-technology-substitution-playbook.md`  <sub>70 lines</sub>
-
-- The playbook, one entry per core dependency  <sub>:11</sub>
-- Why this is worth writing down explicitly, even where the answer is short  <sub>:38</sub>
-- Scope lenses  <sub>:49</sub>
-- Work orders  <sub>:54</sub>
-- Acceptance  <sub>:62</sub>
-- Out of scope  <sub>:67</sub>
-
-### `docs/implementation/139-second-front-door-websocket-gateway.md`  <sub>106 lines</sub>
-
-- 1. A second transport, the identical authorization and service layer  <sub>:11</sub>
-- Scope lenses  <sub>:40</sub>
-- Work orders  <sub>:84</sub>
-- Acceptance  <sub>:92</sub>
-- Out of scope  <sub>:100</sub>
-
-### `docs/implementation/14-managed-services-module.md`  <sub>270 lines</sub>
-
-- Why this is two modules, not one  <sub>:15</sub>
-- The load-bearing scope decision: where usage numbers actually come from  <sub>:33</sub>
-- Master side: the `agency` module  <sub>:58</sub>
-- Client side: the `managed-services` module  <sub>:181</sub>
-- Security notes  <sub>:205</sub>
-- Explicitly out of scope for v1  <sub>:221</sub>
-- Work orders  <sub>:234</sub>
-- When to actually build this  <sub>:261</sub>
-
-### `docs/implementation/140-general-eav-extensibility-model.md`  <sub>148 lines</sub>
-
-- 1. A true EAV model: any entity, any attribute, no code-known list  <sub>:13</sub>
-- 2. The mitigations doc 104 named as the real risk, applied rather than removed  <sub>:44</sub>
-- Scope lenses  <sub>:71</sub>
-- Work orders  <sub>:125</sub>
-- Acceptance  <sub>:132</sub>
-- Out of scope  <sub>:142</sub>
-
-### `docs/implementation/141-general-metadata-driven-ui-engine.md`  <sub>147 lines</sub>
-
-- 1. A metadata payload describes a form; the renderer is built from the same primitives every hand-authored screen already uses  <sub>:13</sub>
-- 2. The mandatory guardrail, stated once so it cannot be silently dropped under time pressure  <sub>:44</sub>
-- 3. Where this engine is used, and where it deliberately is not  <sub>:61</sub>
-- Scope lenses  <sub>:76</sub>
-- Work orders  <sub>:115</sub>
-- Acceptance  <sub>:128</sub>
-- Out of scope  <sub>:141</sub>
-
-### `docs/implementation/142-bpmn-visual-workflow-engine.md`  <sub>109 lines</sub>
-
-- 1. BPMN as a view over `ApprovalChain`, not a competing engine  <sub>:13</sub>
-- 2. What this buys, and what it deliberately still refuses  <sub>:44</sub>
-- Scope lenses  <sub>:62</sub>
-- Work orders  <sub>:77</sub>
-- Acceptance  <sub>:90</sub>
-- Out of scope  <sub>:101</sub>
-
-### `docs/implementation/143-micro-frontend-architecture.md`  <sub>160 lines</sub>
-
-- 1. Module federation as an addition, not a rewrite  <sub>:18</sub>
-- 2. What doc 93's own reasoning still governs, and what this document adds on top  <sub>:52</sub>
-- Scope lenses  <sub>:83</sub>
-- Work orders  <sub>:133</sub>
-- Acceptance  <sub>:143</sub>
-- Out of scope  <sub>:153</sub>
-
-### `docs/implementation/144-supply-chain-resilience-planning-engine.md`  <sub>345 lines</sub>
-
-- 1. R20 — the dependency graph is a projection, never a second model  <sub>:20</sub>
-- 2. R21 — shocks and propagation, arithmetic over the graph, never inference  <sub>:52</sub>
-- 3. R22 — one ranking formula, actions generated from the graph, never invented  <sub>:89</sub>
-- 4. R23 — GenAI narrates, cites, never computes  <sub>:116</sub>
-- 5. R24 — liquidity is a ledger query plus a schedule, not a new forecast model  <sub>:137</sub>
-- 6. R25 — lead time as a distribution, backfilled from history already in the database  <sub>:155</sub>
-- 7. R26 — online stock is the sum of branch allotments, no separate reservation ledger  <sub>:188</sub>
-- Scope lenses  <sub>:210</sub>
-- Work orders  <sub>:302</sub>
-- Acceptance  <sub>:323</sub>
-- Out of scope  <sub>:338</sub>
-
-### `docs/implementation/145-receivables-credit-limits-dunning.md`  <sub>285 lines</sub>
-
-- 1. `CreditNote`/`DebitNote` — the two documents R18's own diagram already names  <sub>:13</sub>
-- 2. Credit limits — a policy row, checked at the one place a sale can be refused for it  <sub>:66</sub>
-- 3. Dunning — a scheduled reminder sequence, reusing the existing notification and expiry-watcher mechanisms, never a new scheduler  <sub>:102</sub>
-- 4. Customer statements — a read-model over rows that already exist  <sub>:133</sub>
-- Scope lenses  <sub>:148</sub>
-- Work orders  <sub>:250</sub>
-- Acceptance  <sub>:266</sub>
-- Out of scope  <sub>:278</sub>
-
-### `docs/implementation/146-wholesale-tiered-pricing.md`  <sub>182 lines</sub>
-
-- 1. Price resolution becomes a chain, never a second hardcoded fallback  <sub>:13</sub>
-- Scope lenses  <sub>:79</sub>
-- Work orders  <sub>:148</sub>
-- Acceptance  <sub>:165</sub>
-- Out of scope  <sub>:175</sub>
-
-### `docs/implementation/147-fixed-asset-depreciation.md`  <sub>210 lines</sub>
-
-- 1. A depreciation schedule, computed once at acquisition, posted periodically  <sub>:11</sub>
-- 2. Posting is a cron, through the identical `findPostedEntry()` idempotency key every other posting rule already uses  <sub>:55</sub>
-- 3. Write-off and disposal reuse doc 79's own `AssetStatus`, closing the schedule rather than deleting it  <sub>:81</sub>
-- Scope lenses  <sub>:94</sub>
-- Work orders  <sub>:175</sub>
-- Acceptance  <sub>:191</sub>
-- Out of scope  <sub>:202</sub>
-
-### `docs/implementation/148-external-customer-support-portal.md`  <sub>176 lines</sub>
-
-- 1. A customer ticket, keyed to a `Contact`/`Party`, never a `User`  <sub>:13</sub>
-- 2. The trust boundary this document exists to get right  <sub>:64</sub>
-- Scope lenses  <sub>:85</sub>
-- Work orders  <sub>:143</sub>
-- Acceptance  <sub>:161</sub>
-- Out of scope  <sub>:170</sub>
-
-### `docs/implementation/149-b2b-accounts-approvals-sector-packs.md`  <sub>163 lines</sub>
-
-- 1. `accounts` — an order settles against credit terms instead of an immediate tender  <sub>:17</sub>
-- 2. `approvals` — a buyer-side purchase-approval gate before an order commits  <sub>:39</sub>
-- Scope lenses  <sub>:61</sub>
-- Work orders  <sub>:132</sub>
-- Acceptance  <sub>:146</sub>
-- Out of scope  <sub>:155</sub>
-
-### `docs/implementation/15-tax-module.md`  <sub>232 lines</sub>
-
-- The design decision this doc locks in  <sub>:16</sub>
-- Schema — new module `tax`  <sub>:24</sub>
-- The pricing math — and where the rounding trap is  <sub>:86</sub>
-- Checkout integration  <sub>:122</sub>
-- What this doc deliberately does not specify  <sub>:132</sub>
-- Work orders  <sub>:196</sub>
-- When to actually build this  <sub>:225</sub>
-
-### `docs/implementation/150-product-kitting-bundles.md`  <sub>184 lines</sub>
-
-- 1. A bundle is a sellable shell over existing variants, never a new physical item  <sub>:16</sub>
-- 2. Selling a bundle decrements every component, atomically, through the one existing writer  <sub>:44</sub>
-- 3. Bundle "stock" is computed, never stored — the same discipline R26 already establishes for online allotment  <sub>:73</sub>
-- Scope lenses  <sub>:84</sub>
-- Work orders  <sub>:151</sub>
-- Acceptance  <sub>:167</sub>
-- Out of scope  <sub>:177</sub>
-
-### `docs/implementation/151-layby-installment-sales.md`  <sub>201 lines</sub>
-
-- 1. A layby/instalment plan is a schedule of expected payments against one order, fulfilment gated on completion  <sub>:14</sub>
-- 2. Fulfilment gating is the one real difference between LAYBY and INSTALMENT, and the one place this touches the order lifecycle  <sub>:59</sub>
-- Scope lenses  <sub>:82</sub>
-- Work orders  <sub>:169</sub>
-- Acceptance  <sub>:184</sub>
-- Out of scope  <sub>:194</sub>
-
-### `docs/implementation/152-purchase-requisition.md`  <sub>190 lines</sub>
-
-- 1. A requisition is a request to buy; a PO is the resulting commitment — never the same row wearing two hats  <sub>:15</sub>
-- 2. Approval reuses doc 63's own generic chain, never a bespoke requisition-approval mechanism  <sub>:45</sub>
-- Scope lenses  <sub>:67</sub>
-- Work orders  <sub>:157</sub>
-- Acceptance  <sub>:172</sub>
-- Out of scope  <sub>:182</sub>
-
-### `docs/implementation/153-usage-based-pricing-model.md`  <sub>290 lines</sub>
-
-- What changed from the original proposal, and why  <sub>:13</sub>
-- 1. `PlatformPlan` gains `USAGE_BASED`, alongside doc 50's existing three shapes  <sub>:41</sub>
-- 2. Metering is event-driven, reusing this repository's own transactional outbox — never a slow end-of-month aggregate scan  <sub>:69</sub>
-- 3. Collection: COD and cash have no settlement to net against — this is doc 145's own mechanism, one level up  <sub>:117</sub>
-- 4. A graduated rate, so growth is rewarded rather than punished forever  <sub>:145</sub>
-- Scope lenses  <sub>:156</sub>
-- Work orders  <sub>:247</sub>
-- Acceptance  <sub>:267</sub>
-- Out of scope  <sub>:281</sub>
-
-### `docs/implementation/154-three-headline-commercial-plans.md`  <sub>182 lines</sub>
-
-- 1. The three headline plans, each an existing `PricingModel` under a customer-facing name  <sub>:14</sub>
-- 2. Why these three specific shapes cover the real span of a merchant's own risk appetite  <sub>:29</sub>
-- 3. The pricing screen itself — a customer-facing surface that doesn't exist yet  <sub>:43</sub>
-- 4. Selecting a plan routes to the identical provisioning path every plan already uses  <sub>:86</sub>
-- Scope lenses  <sub>:97</sub>
-- Work orders  <sub>:148</sub>
-- Acceptance  <sub>:164</sub>
-- Out of scope  <sub>:176</sub>
-
-### `docs/implementation/155-wallet-stored-value-merchant-escrow.md`  <sub>355 lines</sub>
-
-- Read this section first — the structure changed, and here is exactly why that matters  <sub>:3</sub>
-- 1. One wallet type now, not two — money never sits in a per-merchant balance  <sub>:50</sub>
-- 2. Checkout: reserve at order placement, redeem only at merchant confirmation  <sub>:116</sub>
-- 3. Merchant settlement — an ordinary trade payable, generalizing doc 145's own `SupplierBill`, never an escrow release  <sub>:143</sub>
-- Scope lenses  <sub>:197</sub>
-- Work orders  <sub>:307</sub>
-- Acceptance  <sub>:331</sub>
-- Out of scope  <sub>:346</sub>
-
-### `docs/implementation/156-single-employee-branch-loss-prevention.md`  <sub>287 lines</sub>
-
-- What already exists, cited rather than re-specified  <sub>:15</sub>
-- The three real gaps found, checked against the actual code  <sub>:39</sub>
-- 1. Link a variance to the shift that had custody — accountability, not just detection  <sub>:66</sub>
-- 2. Close the self-resolution gap — the toxic pair this repository already refuses everywhere else  <sub>:94</sub>
-- 3. Unpredictable spot-checks — shrinking the window from a month to days, and removing the "safe day"  <sub>:117</sub>
-- 4. Camera-count vs. transaction-count — a real, new correlation this repository's own existing pieces already make possible  <sub>:150</sub>
-- Scope lenses  <sub>:171</sub>
-- Work orders  <sub>:242</sub>
-- Acceptance  <sub>:262</sub>
-- Out of scope  <sub>:275</sub>
-
-### `docs/implementation/157-client-request-idempotency-keys.md`  <sub>276 lines</sub>
-
-- What already exists — and exactly why it can't cover this case  <sub>:10</sub>
-- The mechanism: a client-supplied key, checked before the write ever runs  <sub>:35</sub>
-- 1. Named allowlist, not a global behaviour change  <sub>:132</sub>
-- 2. The offline case is the sharpest version of the same problem  <sub>:151</sub>
-- 3. Cleanup — a key only needs to live as long as a client might retry  <sub>:164</sub>
-- Scope lenses  <sub>:184</sub>
-- Work orders  <sub>:241</sub>
-- Acceptance  <sub>:254</sub>
-- Out of scope  <sub>:266</sub>
-
-### `docs/implementation/158-serialized-unit-tracking.md`  <sub>305 lines</sub>
-
-- Why this is a real gap, not a smaller version of `lots`  <sub>:15</sub>
-- 1. `SerializedUnit` — a sub-ledger under the existing stock row, never a second stock model  <sub>:29</sub>
-- 2. Capture points — three, and only three, moments a serial is ever written  <sub>:88</sub>
-- 3. `getUnitHistory()` — the warranty and authenticity lookup this data makes possible  <sub>:144</sub>
-- 4. Strengthens doc 156 for free — a variance can now name the exact unit, not just the SKU  <sub>:168</sub>
-- Scope lenses  <sub>:185</sub>
-- Work orders  <sub>:263</sub>
-- Acceptance  <sub>:280</sub>
-- Out of scope  <sub>:294</sub>
-
-### `docs/implementation/159-telephony-provider-integration.md`  <sub>288 lines</sub>
-
-- What's already built or specified — cited, not duplicated  <sub>:21</sub>
-- 1. `TelephonyProvider` — the same shape as every other extension point in this repository  <sub>:40</sub>
-- 2. `CallLog` — a record, never a request, the moment the call is over  <sub>:83</sub>
-- 3. Recording — reused storage, never a provider-hosted link left as the only copy  <sub>:122</sub>
-- 4. Configuration — the same allowlist shape `PAYMENT_PROVIDERS`/`NOTIFICATION_CHANNELS` already use  <sub>:143</sub>
-- 5. Where a call attaches to what already exists — never a second contact record, never a second ticket system  <sub>:155</sub>
-- Scope lenses  <sub>:168</sub>
-- Work orders  <sub>:244</sub>
-- Acceptance  <sub>:266</sub>
-- Out of scope  <sub>:278</sub>
-
-### `docs/implementation/16-pbac-row-scoping.md`  <sub>184 lines</sub>
-
-- The good news: the convention already exists, once  <sub>:35</sub>
-- Why this is scoped rather than built now  <sub>:57</sub>
-- The design  <sub>:68</sub>
-- Explicitly out of scope for this doc  <sub>:145</sub>
-- Work orders  <sub>:157</sub>
-- When to actually build this  <sub>:176</sub>
-
-### `docs/implementation/160-dynamic-external-system-connectivity.md`  <sub>274 lines</sub>
-
-- What's genuinely missing, found by walking every category against what already exists  <sub>:17</sub>
-- 1. Per-merchant OAuth2 (authorization code) — the missing half of `ConnectorAuthMethod`  <sub>:34</sub>
-- 2. `PollConnector` — the scheduled-pull sibling doc 132's passive webhook receiver doesn't cover  <sub>:85</sub>
-- 3. `ExternalRecordLink` — one generic mapping table every stateful sync reuses  <sub>:121</sub>
-- 4. Where this leaves each category — configuration, not new code  <sub>:148</sub>
-- Scope lenses  <sub>:164</sub>
-- Work orders  <sub>:228</sub>
-- Acceptance  <sub>:245</sub>
-- Out of scope  <sub>:259</sub>
-
-### `docs/implementation/161-sso-identity-federation.md`  <sub>245 lines</sub>
-
-- What already exists, cited exactly  <sub>:13</sub>
-- 1. `SsoConnection` — one row per configured identity provider, per organization  <sub>:28</sub>
-- 2. The domain allowlist is not optional — the one control that makes everything else in this document safe  <sub>:73</sub>
-- 3. JIT provisioning — least privilege by default, never `UserRegistered`  <sub>:96</sub>
-- Scope lenses  <sub>:134</sub>
-- Work orders  <sub>:202</sub>
-- Acceptance  <sub>:223</sub>
-- Out of scope  <sub>:236</sub>
-
-### `docs/implementation/162-file-based-connector-integration.md`  <sub>271 lines</sub>
-
-- Why a file needs its own kind, not a template on the existing connectors  <sub>:13</sub>
-- 1. `FileConnector` — a scheduled or triggered file exchange, in or out  <sub>:26</sub>
-- 2. `FileFormatHandler` — one class per format family, resolved by `FileConnector.format`  <sub>:78</sub>
-- 3. Idempotent by checksum, never by filename or schedule alone  <sub>:101</sub>
-- 4. The two real use cases named in this request  <sub>:134</sub>
-- Scope lenses  <sub>:147</sub>
-- Work orders  <sub>:222</sub>
-- Acceptance  <sub>:249</sub>
-- Out of scope  <sub>:261</sub>
-
-### `docs/implementation/17-inventory-locations.md`  <sub>254 lines</sub>
-
-- Why the aggregate write is one atomic statement  <sub>:26</sub>
-- Why this is the risky one, specifically  <sub>:42</sub>
-- The design: additive first, single-location behavior byte-identical  <sub>:57</sub>
-- What every existing caller needs  <sub>:175</sub>
-- Explicitly out of scope for this doc  <sub>:184</sub>
-- Work orders  <sub>:197</sub>
-- Why one snippet in this doc was wrong  <sub>:239</sub>
-- When to actually build this  <sub>:247</sub>
-
-### `docs/implementation/18-identity-verification.md`  <sub>149 lines</sub>
-
-- What this is  <sub>:19</sub>
-- Design  <sub>:31</sub>
-- What's built  <sub>:89</sub>
-- Explicitly out of scope for this module  <sub>:115</sub>
-- Local setup  <sub>:137</sub>
-
-### `docs/implementation/18-trading-partner-network.md`  <sub>87 lines</sub>
-
-- Work orders  <sub>:24</sub>
-- Out of scope (for now)  <sub>:80</sub>
-
-### `docs/implementation/19-org-structure-offices-departments.md`  <sub>250 lines</sub>
-
-- Two hierarchies that look like one  <sub>:15</sub>
-- The design: `OrgUnit`, orthogonal to `Node`  <sub>:38</sub>
-- Scope lenses  <sub>:149</sub>
-- Work orders  <sub>:205</sub>
-- Acceptance  <sub>:225</sub>
-- Out of scope for this document  <sub>:239</sub>
-- Decision to record  <sub>:245</sub>
-
-### `docs/implementation/19-payroll.md`  <sub>522 lines</sub>
-
-- Scope decision, taken with the owner  <sub>:14</sub>
-- Why `User`, not a new `Employee` table  <sub>:44</sub>
-- Permissions  <sub>:57</sub>
-- Work orders  <sub>:89</sub>
-- WO-19.1 — Schema, module skeleton, permissions, chart-of-accounts  <sub>:103</sub>
-- WO-19.2 — Compensation rates and the salary calculator  <sub>:345</sub>
-- WO-19.3 — Leave types, balances, accrual and requests  <sub>:388</sub>
-- WO-19.4 — Pay-run build, approve, post — and GL posting  <sub>:417</sub>
-- WO-19.5 — Overpayment adjustments  <sub>:450</sub>
-- WO-19.6 — Admin screens, nav, self-service  <sub>:470</sub>
-- WO-19.7 — Tests and full verification  <sub>:500</sub>
-- Not modelled in this phase (named, not silently dropped)  <sub>:511</sub>
-
-### `docs/implementation/20-people-positions-ranks.md`  <sub>239 lines</sub>
-
-- Three things that are not each other  <sub>:9</sub>
-- Schema — `hr.prisma`  <sub>:27</sub>
-- Scope lenses  <sub>:149</sub>
-- Work orders  <sub>:207</sub>
-- Acceptance  <sub>:222</sub>
-- Out of scope  <sub>:233</sub>
-
-### `docs/implementation/21-access-over-the-org-tree.md`  <sub>228 lines</sub>
-
-- Two sources of access, and only one of them is remembered  <sub>:11</sub>
-- The ceiling on the granter  <sub>:70</sub>
-- Resolution order  <sub>:94</sub>
-- What a department sees  <sub>:114</sub>
-- Scope lenses  <sub>:127</sub>
-- Work orders  <sub>:191</sub>
-- Acceptance  <sub>:206</sub>
-- Out of scope  <sub>:222</sub>
-
-### `docs/implementation/22-attendance-shifts-leave.md`  <sub>230 lines</sub>
-
-- The unconditional path  <sub>:13</sub>
-- Schema — append to `hr.prisma`  <sub>:31</sub>
-- The working day is not a date  <sub>:126</sub>
-- Scope lenses  <sub>:135</sub>
-- Work orders  <sub>:204</sub>
-- Acceptance  <sub>:216</sub>
-- Out of scope  <sub>:226</sub>
-
-### `docs/implementation/23-tasks-allotment-tracking.md`  <sub>221 lines</sub>
-
-- 1. Work is assigned to a post, and optionally to a person  <sub>:10</sub>
-- 2. Status is a small enum plus a per-client workflow, not a string  <sub>:22</sub>
-- 3. A transition is an event, not an overwrite  <sub>:35</sub>
-- Schema — `tasks.prisma`  <sub>:41</sub>
-- Reassignment when someone leaves  <sub>:123</sub>
-- Scope lenses  <sub>:131</sub>
-- Work orders  <sub>:188</sub>
-- Acceptance  <sub>:203</sub>
-- Out of scope  <sub>:215</sub>
-
-### `docs/implementation/24-internal-notifications-meetings-escalation.md`  <sub>225 lines</sub>
-
-- The new part: an audience is a query over the org tree  <sub>:15</sub>
-- Meetings are a notification that expects an answer  <sub>:48</sub>
-- Escalation: the timer that makes a stalled approval visible  <sub>:94</sub>
-- Scope lenses  <sub>:128</sub>
-- Work orders  <sub>:192</sub>
-- Acceptance  <sub>:207</sub>
-- Out of scope  <sub>:220</sub>
-
-### `docs/implementation/25-advance-salary-and-payroll-posting.md`  <sub>266 lines</sub>
-
-- The chart does not have the accounts  <sub>:13</sub>
-- The posting rules, written out  <sub>:31</sub>
-- Schema — append to `hr.prisma`  <sub>:60</sub>
-- Who may approve, and how much  <sub>:119</sub>
-- Scope lenses  <sub>:142</sub>
-- Work orders  <sub>:223</sub>
-- Acceptance  <sub>:238</sub>
-- Out of scope, and the gap this leaves open  <sub>:254</sub>
-
-### `docs/implementation/26-performance-reviews.md`  <sub>247 lines</sub>
-
-- 1. A review is a document with a cycle, not a number with a date  <sub>:13</sub>
-- 2. Signals feed a review; they never become one automatically  <sub>:22</sub>
-- Schema — append to `hr.prisma`  <sub>:33</sub>
-- Scope lenses  <sub>:131</sub>
-- Work orders  <sub>:212</sub>
-- Acceptance  <sub>:228</sub>
-- Out of scope  <sub>:239</sub>
-
-### `docs/implementation/27-training-skill-development.md`  <sub>246 lines</sub>
-
-- 1. A skill is a row a `Position` can require, not a line in a résumé  <sub>:10</sub>
-- 2. A course produces a certification event, not a status flag  <sub>:20</sub>
-- Schema — append to `hr.prisma`  <sub>:30</sub>
-- Scope lenses  <sub>:129</sub>
-- Work orders  <sub>:211</sub>
-- Acceptance  <sub>:225</sub>
-- Out of scope  <sub>:238</sub>
-
-### `docs/implementation/28-recruitment-onboarding-document-vault.md`  <sub>335 lines</sub>
-
-- 1. A candidate is not an `Employee` until an offer is accepted  <sub>:12</sub>
-- 2. A document is a fact with a retention basis, not a file with a name  <sub>:22</sub>
-- Schema — append to `hr.prisma`  <sub>:32</sub>
-- Scope lenses  <sub>:187</sub>
-- Work orders  <sub>:290</sub>
-- Acceptance  <sub>:312</sub>
-- Out of scope  <sub>:325</sub>
-
-### `docs/implementation/29-company-asset-tracking.md`  <sub>262 lines</sub>
-
-- 1. An asset is a serialized thing with one current holder and a full history  <sub>:13</sub>
-- 2. Damage, loss and write-off are asset *events*, not deletions  <sub>:21</sub>
-- Schema — new `assets.prisma`  <sub>:29</sub>
-- Scope lenses  <sub>:113</sub>
-- Work orders  <sub>:223</sub>
-- Acceptance  <sub>:240</sub>
-- Out of scope  <sub>:253</sub>
-
-### `docs/implementation/30-field-attendance-biometric-geofencing.md`  <sub>289 lines</sub>
-
-- 1. CCTV face-match is a verification signal attached to a punch, never the punch itself  <sub>:13</sub>
-- 2. A geofence violation is a new exception reason, never a refusal  <sub>:34</sub>
-- 3. Field staff have no fixed branch, so the roster changes shape, not the rule  <sub>:45</sub>
-- Schema — append to `hr.prisma`  <sub>:56</sub>
-- Extension point  <sub>:137</sub>
-- Scope lenses  <sub>:155</sub>
-- Work orders  <sub>:244</sub>
-- Acceptance  <sub>:265</sub>
-- Out of scope  <sub>:280</sub>
-
-### `docs/implementation/31-sector-pos-hardware-integration.md`  <sub>244 lines</sub>
-
-- What each requested sector actually needs, checked against what exists  <sub>:13</sub>
-- 1. Hardware is an extension point, not a browser API call sprinkled through the till UI  <sub>:24</sub>
-- 2. A line can carry a modifier set and a quantity source other than "typed"  <sub>:68</sub>
-- 3. Order type decides whether a sale can be parked, not whether it exists  <sub>:106</sub>
-- Scope lenses  <sub>:139</sub>
-- Work orders  <sub>:205</sub>
-- Acceptance  <sub>:224</sub>
-- Out of scope  <sub>:237</sub>
-
-### `docs/implementation/32-lots-batch-expiry-fefo.md`  <sub>245 lines</sub>
-
-- 1. A lot is a sub-ledger under the existing stock row, never a second stock model  <sub>:18</sub>
-- 2. Allocation is FEFO by default, and it is the one writer  <sub>:82</sub>
-- 3. A recall query is a read path this ledger makes possible, not a new model  <sub>:98</sub>
-- Scope lenses  <sub>:113</sub>
-- Work orders  <sub>:201</sub>
-- Acceptance  <sub>:222</sub>
-- Out of scope  <sub>:236</sub>
-
-### `docs/implementation/33-sms-whatsapp-channels.md`  <sub>249 lines</sub>
-
-- 1. Two channels, one interface, no caller changes  <sub>:19</sub>
-- 2. The provider is a second, smaller extension point underneath the channel  <sub>:48</sub>
-- Schema — new `outbound-messaging.prisma`  <sub>:75</sub>
-- Scope lenses  <sub>:122</sub>
-- Work orders  <sub>:208</sub>
-- Acceptance  <sub>:226</sub>
-- Out of scope  <sub>:241</sub>
-
-### `docs/implementation/34-partner-developer-api-access.md`  <sub>235 lines</sub>
-
-- 1. An API key is a principal with a scope, never a `User` in disguise  <sub>:13</sub>
-- 2. Scoped read/write, never a bypass of tenant or branch isolation  <sub>:73</sub>
-- 3. Rate limiting protects the platform; scoping protects the data  <sub>:82</sub>
-- Scope lenses  <sub>:91</sub>
-- Work orders  <sub>:194</sub>
-- Acceptance  <sub>:212</sub>
-- Out of scope  <sub>:225</sub>
-
-### `docs/implementation/35-scalable-rag-document-retrieval.md`  <sub>354 lines</sub>
+### `docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md`  <sub>354 lines</sub>
 
 - Scoping the claim before designing against it  <sub>:11</sub>
 - 1. A document is ingested once and produces chunks, never re-parsed per query  <sub>:38</sub>
@@ -2848,39 +2001,589 @@ _no second-level headings_
 - Acceptance  <sub>:326</sub>
 - Out of scope  <sub>:342</sub>
 
-### `docs/implementation/36-universal-connectivity-integration-framework.md`  <sub>264 lines</sub>
+### `docs/implementation/ai-layer/86-ai-ml-edi-business-automation.md`  <sub>51 lines</sub>
 
-- The pattern, named once so it stops being reinvented per module  <sub>:14</sub>
-- 1. The generic outbound connector: HTTP, templated, retried, never bespoke code per target  <sub>:33</sub>
-- 2. OAuth2 client-credentials, because a static key is not always an option  <sub>:100</sub>
-- 3. Inbound stays doc 34's territory; this document is the outbound mirror  <sub>:117</sub>
-- Scope lenses  <sub>:128</sub>
-- Work orders  <sub>:225</sub>
-- Acceptance  <sub>:241</sub>
-- Out of scope  <sub>:253</sub>
+- Scope lenses  <sub>:27</sub>
+- Work orders  <sub>:33</sub>
+- Acceptance  <sub>:42</sub>
+- Out of scope  <sub>:47</sub>
 
-### `docs/implementation/37-scalability-future-upgrades.md`  <sub>247 lines</sub>
+### `docs/implementation/analytics-reporting/45-order-count-tracking-coverage-note.md`  <sub>63 lines</sub>
 
-- What already exists, referenced rather than repeated  <sub>:15</sub>
-- What is genuinely missing  <sub>:29</sub>
-- Scope lenses  <sub>:127</sub>
-- Work orders  <sub>:203</sub>
-- Acceptance  <sub>:218</sub>
-- Out of scope  <sub>:235</sub>
+- Where it already lives  <sub>:9</sub>
+- The one real gap, scoped narrowly  <sub>:42</sub>
+- Acceptance  <sub>:50</sub>
+- Out of scope  <sub>:59</sub>
 
-### `docs/implementation/38-resilience-engineering.md`  <sub>238 lines</sub>
+### `docs/implementation/analytics-reporting/57-multiday-category-velocity.md`  <sub>117 lines</sub>
 
-- 1. The degradation matrix: what actually happens when each dependency is down  <sub>:15</sub>
-- 2. Circuit breakers, generalized from the one pattern the outbox already proves  <sub>:39</sub>
-- 3. SLOs and error budgets for the paths that actually matter  <sub>:64</sub>
-- 4. Disaster recovery, naming the numbers `deploy/backup.sh` already earns  <sub>:85</sub>
-- 5. Contract tests: the module-boundary guarantee, extended to behavior  <sub>:105</sub>
-- Scope lenses  <sub>:118</sub>
-- Work orders  <sub>:188</sub>
-- Acceptance  <sub>:209</sub>
-- Out of scope  <sub>:224</sub>
+- 1. A velocity series is category × day, not category OR day  <sub>:14</sub>
+- Scope lenses  <sub>:42</sub>
+- Work orders  <sub>:86</sub>
+- Acceptance  <sub>:98</sub>
+- Out of scope  <sub>:110</sub>
 
-### `docs/implementation/39-shared-cross-tenant-hosting-tier.md`  <sub>367 lines</sub>
+### `docs/implementation/analytics-reporting/58-live-operational-feed.md`  <sub>141 lines</sub>
+
+- 1. "Near-real-time," stated honestly, is short-interval polling  <sub>:15</sub>
+- 2. A feed entry is a normalized shape over three different sources  <sub>:28</sub>
+- Scope lenses  <sub>:54</sub>
+- Work orders  <sub>:111</sub>
+- Acceptance  <sub>:122</sub>
+- Out of scope  <sub>:133</sub>
+
+### `docs/implementation/analytics-reporting/69-order-lifecycle-status-dashboard.md`  <sub>107 lines</sub>
+
+- 1. A status breakdown is a single `GROUP BY`, mapped to the promotional list's own three buckets  <sub>:14</sub>
+- Scope lenses  <sub>:41</sub>
+- Work orders  <sub>:81</sub>
+- Acceptance  <sub>:92</sub>
+- Out of scope  <sub>:101</sub>
+
+### `docs/implementation/analytics-reporting/77-sales-category-breakdown-coverage-note.md`  <sub>52 lines</sub>
+
+- What already exists  <sub>:17</sub>
+- Scope lenses  <sub>:30</sub>
+- Work orders  <sub>:36</sub>
+- Acceptance  <sub>:43</sub>
+- Out of scope  <sub>:48</sub>
+
+### `docs/implementation/architecture-patterns/100-event-driven-architecture.md`  <sub>75 lines</sub>
+
+- What already exists, mapped onto the bullet's own example  <sub>:17</sub>
+- Scope lenses  <sub>:49</sub>
+- Work orders  <sub>:55</sub>
+- Acceptance  <sub>:62</sub>
+- Out of scope  <sub>:67</sub>
+
+### `docs/implementation/architecture-patterns/103-semantic-data-contracts.md`  <sub>69 lines</sub>
+
+- What already enforces this, at two layers  <sub>:15</sub>
+- Scope lenses  <sub>:41</sub>
+- Work orders  <sub>:48</sub>
+- Acceptance  <sub>:54</sub>
+- Out of scope  <sub>:60</sub>
+
+### `docs/implementation/architecture-patterns/104-jsonb-eav-extensibility.md`  <sub>159 lines</sub>
+
+- 1. `CustomFieldDefinition` + a JSONB overlay column, one per entity that needs it — never one universal EAV table  <sub>:30</sub>
+- 2. Why this stays narrow, deliberately  <sub>:67</sub>
+- Scope lenses  <sub>:89</sub>
+- Work orders  <sub>:131</sub>
+- Acceptance  <sub>:144</sub>
+- Out of scope  <sub>:153</sub>
+
+### `docs/implementation/architecture-patterns/105-metadata-driven-ui-rendering.md`  <sub>101 lines</sub>
+
+- What doc 104 already needs, and this document supplies  <sub>:21</sub>
+- Why a general metadata-driven UI engine is not this repository's architecture, and should not become it  <sub>:43</sub>
+- Scope lenses  <sub>:71</sub>
+- Work orders  <sub>:77</sub>
+- Acceptance  <sub>:84</sub>
+- Out of scope  <sub>:94</sub>
+
+### `docs/implementation/architecture-patterns/106-finite-state-machines-registry.md`  <sub>98 lines</sub>
+
+- What already exists, cited rather than re-derived  <sub>:18</sub>
+- The one real improvement: a read-only cross-module registry, never a runtime-editable one  <sub>:41</sub>
+- Scope lenses  <sub>:71</sub>
+- Work orders  <sub>:77</sub>
+- Acceptance  <sub>:85</sub>
+- Out of scope  <sub>:93</sub>
+
+### `docs/implementation/architecture-patterns/107-visual-bpmn-workflow-modeling.md`  <sub>77 lines</sub>
+
+- Why this remains declined, restated once more for this specific framing  <sub>:22</sub>
+- What already answers the bullet's own three named use cases  <sub>:41</sub>
+- Scope lenses  <sub>:53</sub>
+- Work orders  <sub>:59</sub>
+- Acceptance  <sub>:67</sub>
+- Out of scope  <sub>:72</sub>
+
+### `docs/implementation/architecture-patterns/108-event-triggered-side-effects.md`  <sub>61 lines</sub>
+
+- The mapping, stated once  <sub>:18</sub>
+- Scope lenses  <sub>:32</sub>
+- Work orders  <sub>:37</sub>
+- Acceptance  <sub>:45</sub>
+- Out of scope  <sub>:53</sub>
+
+### `docs/implementation/architecture-patterns/109-immutable-event-ledger.md`  <sub>98 lines</sub>
+
+- What already exists: a real, append-only audit trail  <sub>:14</sub>
+- Why full event sourcing (state derived by replaying events) is not adopted here, stated plainly  <sub>:37</sub>
+- Scope lenses  <sub>:69</sub>
+- Work orders  <sub>:75</sub>
+- Acceptance  <sub>:83</sub>
+- Out of scope  <sub>:91</sub>
+
+### `docs/implementation/architecture-patterns/110-cqrs-read-write-separation.md`  <sub>93 lines</sub>
+
+- What already exists: precomputed read-optimized projections, without a second database  <sub>:16</sub>
+- The bullet's own example, named honestly  <sub>:33</sub>
+- When literal CQRS (a separate read-side store) would become the right call  <sub>:49</sub>
+- Scope lenses  <sub>:66</sub>
+- Work orders  <sub>:72</sub>
+- Acceptance  <sub>:79</sub>
+- Out of scope  <sub>:85</sub>
+
+### `docs/implementation/architecture-patterns/113-micro-frontend-embedding.md`  <sub>114 lines</sub>
+
+- Why full micro-frontend architecture is declined here  <sub>:22</sub>
+- What the bullet's own concrete example actually needs: an embed, not a framework  <sub>:39</sub>
+- Scope lenses  <sub>:58</sub>
+- Work orders  <sub>:95</sub>
+- Acceptance  <sub>:103</sub>
+- Out of scope  <sub>:109</sub>
+
+### `docs/implementation/architecture-patterns/114-sandboxed-scripting-runtime.md`  <sub>119 lines</sub>
+
+- What the bullet's own two examples actually need  <sub>:27</sub>
+- The recommended mechanism: a restricted expression evaluator, never arbitrary code  <sub>:42</sub>
+- Why this stays a recommendation, not a build order, until a real case names it  <sub>:70</sub>
+- Scope lenses  <sub>:83</sub>
+- Work orders  <sub>:95</sub>
+- Acceptance  <sub>:100</sub>
+- Out of scope  <sub>:109</sub>
+
+### `docs/implementation/architecture-patterns/115-hexagonal-architecture-ports-adapters.md`  <sub>69 lines</sub>
+
+- The mapping, made explicit  <sub>:17</sub>
+- What this document adds: naming, not architecture  <sub>:34</sub>
+- Scope lenses  <sub>:45</sub>
+- Work orders  <sub>:52</sub>
+- Acceptance  <sub>:57</sub>
+- Out of scope  <sub>:64</sub>
+
+### `docs/implementation/architecture-patterns/117-event-driven-choreography-immutability.md`  <sub>82 lines</sub>
+
+- What already exists: choreography and immutability  <sub>:15</sub>
+- Why idempotency here is domain-keyed, not generic event-ID deduplication  <sub>:26</sub>
+- Scope lenses  <sub>:56</sub>
+- Work orders  <sub>:63</sub>
+- Acceptance  <sub>:69</sub>
+- Out of scope  <sub>:75</sub>
+
+### `docs/implementation/architecture-patterns/118-headless-composable-api-capabilities.md`  <sub>87 lines</sub>
+
+- What already answers each clause  <sub>:13</sub>
+- The one thing this document adds: naming the risk of "acting on behalf of a human"  <sub>:41</sub>
+- Scope lenses  <sub>:57</sub>
+- Work orders  <sub>:65</sub>
+- Acceptance  <sub>:74</sub>
+- Out of scope  <sub>:80</sub>
+
+### `docs/implementation/architecture-patterns/122-data-lake-cold-storage-architecture.md`  <sub>75 lines</sub>
+
+- Why this is premature today, stated with evidence rather than assumed  <sub>:16</sub>
+- The concrete trigger that would make this worth building  <sub>:33</sub>
+- Scope lenses  <sub>:50</sub>
+- Work orders  <sub>:56</sub>
+- Acceptance  <sub>:63</sub>
+- Out of scope  <sub>:70</sub>
+
+### `docs/implementation/architecture-patterns/127-policy-as-data-completeness-sweep.md`  <sub>76 lines</sub>
+
+- 1. The sweep, as a repeatable script, not a one-time manual pass  <sub>:12</sub>
+- 2. What "converted" means, and what legitimately stays a constant  <sub>:27</sub>
+- Scope lenses  <sub>:42</sub>
+- Work orders  <sub>:50</sub>
+- Acceptance  <sub>:60</sub>
+- Out of scope  <sub>:69</sub>
+
+### `docs/implementation/architecture-patterns/128-extension-point-coverage-audit.md`  <sub>143 lines</sub>
+
+- What was checked, and what was found missing  <sub>:12</sub>
+- 1. `IdentityProvider` — a login method port, alongside the existing password path  <sub>:32</sub>
+- 2. `ShippingCarrier` — a rate/label/tracking port, alongside `Shipment.cost`  <sub>:51</sub>
+- Scope lenses  <sub>:67</sub>
+- Work orders  <sub>:121</sub>
+- Acceptance  <sub>:130</sub>
+- Out of scope  <sub>:137</sub>
+
+### `docs/implementation/architecture-patterns/130-machine-readable-capability-manifest.md`  <sub>110 lines</sub>
+
+- 1. The manifest, generated from live registrations, never hand-maintained  <sub>:14</sub>
+- 2. Who reads this, and why it matters for the future you're actually worried about  <sub>:40</sub>
+- Scope lenses  <sub>:53</sub>
+- Work orders  <sub>:86</sub>
+- Acceptance  <sub>:96</sub>
+- Out of scope  <sub>:103</sub>
+
+### `docs/implementation/architecture-patterns/131-versioned-domain-events.md`  <sub>70 lines</sub>
+
+- The convention: additive by default, a new event name when a break is unavoidable  <sub>:11</sub>
+- Scope lenses  <sub>:41</sub>
+- Work orders  <sub>:47</sub>
+- Acceptance  <sub>:58</sub>
+- Out of scope  <sub>:64</sub>
+
+### `docs/implementation/architecture-patterns/133-reusable-dry-run-harness.md`  <sub>59 lines</sub>
+
+- The convention: every policy-as-data mechanism exposes a pure `preview()` alongside its `apply()`  <sub>:11</sub>
+- Scope lenses  <sub>:32</sub>
+- Work orders  <sub>:39</sub>
+- Acceptance  <sub>:47</sub>
+- Out of scope  <sub>:54</sub>
+
+### `docs/implementation/architecture-patterns/134-hexagonal-purity-ci-check.md`  <sub>71 lines</sub>
+
+- 1. The specific violation this check catches  <sub>:11</sub>
+- 2. Why this is worth building even though the audit found zero violations today  <sub>:33</sub>
+- Scope lenses  <sub>:45</sub>
+- Work orders  <sub>:50</sub>
+- Acceptance  <sub>:59</sub>
+- Out of scope  <sub>:68</sub>
+
+### `docs/implementation/architecture-patterns/136-database-cache-portability-audit.md`  <sub>72 lines</sub>
+
+- What was checked  <sub>:12</sub>
+- What a future cache substitution would need, named honestly  <sub>:29</sub>
+- Scope lenses  <sub>:44</sub>
+- Work orders  <sub>:51</sub>
+- Acceptance  <sub>:60</sub>
+- Out of scope  <sub>:65</sub>
+
+### `docs/implementation/architecture-patterns/138-technology-substitution-playbook.md`  <sub>70 lines</sub>
+
+- The playbook, one entry per core dependency  <sub>:11</sub>
+- Why this is worth writing down explicitly, even where the answer is short  <sub>:38</sub>
+- Scope lenses  <sub>:49</sub>
+- Work orders  <sub>:54</sub>
+- Acceptance  <sub>:62</sub>
+- Out of scope  <sub>:67</sub>
+
+### `docs/implementation/architecture-patterns/139-second-front-door-websocket-gateway.md`  <sub>106 lines</sub>
+
+- 1. A second transport, the identical authorization and service layer  <sub>:11</sub>
+- Scope lenses  <sub>:40</sub>
+- Work orders  <sub>:84</sub>
+- Acceptance  <sub>:92</sub>
+- Out of scope  <sub>:100</sub>
+
+### `docs/implementation/architecture-patterns/140-general-eav-extensibility-model.md`  <sub>148 lines</sub>
+
+- 1. A true EAV model: any entity, any attribute, no code-known list  <sub>:13</sub>
+- 2. The mitigations doc 104 named as the real risk, applied rather than removed  <sub>:44</sub>
+- Scope lenses  <sub>:71</sub>
+- Work orders  <sub>:125</sub>
+- Acceptance  <sub>:132</sub>
+- Out of scope  <sub>:142</sub>
+
+### `docs/implementation/architecture-patterns/141-general-metadata-driven-ui-engine.md`  <sub>147 lines</sub>
+
+- 1. A metadata payload describes a form; the renderer is built from the same primitives every hand-authored screen already uses  <sub>:13</sub>
+- 2. The mandatory guardrail, stated once so it cannot be silently dropped under time pressure  <sub>:44</sub>
+- 3. Where this engine is used, and where it deliberately is not  <sub>:61</sub>
+- Scope lenses  <sub>:76</sub>
+- Work orders  <sub>:115</sub>
+- Acceptance  <sub>:128</sub>
+- Out of scope  <sub>:141</sub>
+
+### `docs/implementation/architecture-patterns/142-bpmn-visual-workflow-engine.md`  <sub>109 lines</sub>
+
+- 1. BPMN as a view over `ApprovalChain`, not a competing engine  <sub>:13</sub>
+- 2. What this buys, and what it deliberately still refuses  <sub>:44</sub>
+- Scope lenses  <sub>:62</sub>
+- Work orders  <sub>:77</sub>
+- Acceptance  <sub>:90</sub>
+- Out of scope  <sub>:101</sub>
+
+### `docs/implementation/architecture-patterns/143-micro-frontend-architecture.md`  <sub>160 lines</sub>
+
+- 1. Module federation as an addition, not a rewrite  <sub>:18</sub>
+- 2. What doc 93's own reasoning still governs, and what this document adds on top  <sub>:52</sub>
+- Scope lenses  <sub>:83</sub>
+- Work orders  <sub>:133</sub>
+- Acceptance  <sub>:143</sub>
+- Out of scope  <sub>:153</sub>
+
+### `docs/implementation/architecture-patterns/157-client-request-idempotency-keys.md`  <sub>276 lines</sub>
+
+- What already exists — and exactly why it can't cover this case  <sub>:10</sub>
+- The mechanism: a client-supplied key, checked before the write ever runs  <sub>:35</sub>
+- 1. Named allowlist, not a global behaviour change  <sub>:132</sub>
+- 2. The offline case is the sharpest version of the same problem  <sub>:151</sub>
+- 3. Cleanup — a key only needs to live as long as a client might retry  <sub>:164</sub>
+- Scope lenses  <sub>:184</sub>
+- Work orders  <sub>:241</sub>
+- Acceptance  <sub>:254</sub>
+- Out of scope  <sub>:266</sub>
+
+### `docs/implementation/architecture-patterns/92-microservices-module-decoupling.md`  <sub>89 lines</sub>
+
+- 1. What the bullet actually wants, and what already delivers it  <sub>:16</sub>
+- 2. Why literal microservices would be the wrong trade here, not just an unbuilt feature  <sub>:39</sub>
+- Scope lenses  <sub>:61</sub>
+- Work orders  <sub>:68</sub>
+- Acceptance  <sub>:77</sub>
+- Out of scope  <sub>:83</sub>
+
+### `docs/implementation/architecture-patterns/93-headless-frontend-architecture.md`  <sub>66 lines</sub>
+
+- What already exists  <sub>:10</sub>
+- The one correction: framework choice is fixed, not "any"  <sub>:27</sub>
+- Scope lenses  <sub>:42</sub>
+- Work orders  <sub>:48</sub>
+- Acceptance  <sub>:56</sub>
+- Out of scope  <sub>:61</sub>
+
+### `docs/implementation/architecture-patterns/94-cloud-native-container-scalability.md`  <sub>70 lines</sub>
+
+- What already exists  <sub>:14</sub>
+- The honest gap: "automatically... based on demand spikes" is not autoscaling  <sub>:27</sub>
+- Scope lenses  <sub>:43</sub>
+- Work orders  <sub>:49</sub>
+- Acceptance  <sub>:57</sub>
+- Out of scope  <sub>:64</sub>
+
+### `docs/implementation/architecture-patterns/95-externalized-rule-logic.md`  <sub>78 lines</sub>
+
+- What is already externalized, named one by one, per the bullet's own three examples  <sub>:15</sub>
+- Why a single generic rules engine is the wrong abstraction here  <sub>:32</sub>
+- Scope lenses  <sub>:48</sub>
+- Work orders  <sub>:54</sub>
+- Acceptance  <sub>:63</sub>
+- Out of scope  <sub>:71</sub>
+
+### `docs/implementation/architecture-patterns/96-version-controlled-policy-execution.md`  <sub>68 lines</sub>
+
+- What already delivers "no engineering deployment" today  <sub>:13</sub>
+- The one honest, already-named gap: a visual chain *designer*  <sub>:29</sub>
+- Scope lenses  <sub>:43</sub>
+- Work orders  <sub>:48</sub>
+- Acceptance  <sub>:56</sub>
+- Out of scope  <sub>:63</sub>
+
+### `docs/implementation/architecture-patterns/97-realtime-validation-single-source-of-truth.md`  <sub>63 lines</sub>
+
+- The three layers already doing this  <sub>:11</sub>
+- Scope lenses  <sub>:37</sub>
+- Work orders  <sub>:44</sub>
+- Acceptance  <sub>:49</sub>
+- Out of scope  <sub>:55</sub>
+
+### `docs/implementation/architecture-patterns/98-contract-first-api-development.md`  <sub>80 lines</sub>
+
+- What already makes the interface stable, without contract-first sequencing  <sub>:16</sub>
+- The one honest gap: no automated contract-diff / backward-compatibility check  <sub>:39</sub>
+- Scope lenses  <sub>:50</sub>
+- Work orders  <sub>:55</sub>
+- Acceptance  <sub>:65</sub>
+- Out of scope  <sub>:73</sub>
+
+### `docs/implementation/architecture-patterns/99-centralized-api-gateway.md`  <sub>60 lines</sub>
+
+- What each named responsibility already maps to  <sub>:21</sub>
+- Scope lenses  <sub>:31</sub>
+- Work orders  <sub>:38</sub>
+- Acceptance  <sub>:48</sub>
+- Out of scope  <sub>:53</sub>
+
+### `docs/implementation/attendance-workforce/22-attendance-shifts-leave.md`  <sub>230 lines</sub>
+
+- The unconditional path  <sub>:13</sub>
+- Schema — append to `hr.prisma`  <sub>:31</sub>
+- The working day is not a date  <sub>:126</sub>
+- Scope lenses  <sub>:135</sub>
+- Work orders  <sub>:204</sub>
+- Acceptance  <sub>:216</sub>
+- Out of scope  <sub>:226</sub>
+
+### `docs/implementation/attendance-workforce/30-field-attendance-biometric-geofencing.md`  <sub>289 lines</sub>
+
+- 1. CCTV face-match is a verification signal attached to a punch, never the punch itself  <sub>:13</sub>
+- 2. A geofence violation is a new exception reason, never a refusal  <sub>:34</sub>
+- 3. Field staff have no fixed branch, so the roster changes shape, not the rule  <sub>:45</sub>
+- Schema — append to `hr.prisma`  <sub>:56</sub>
+- Extension point  <sub>:137</sub>
+- Scope lenses  <sub>:155</sub>
+- Work orders  <sub>:244</sub>
+- Acceptance  <sub>:265</sub>
+- Out of scope  <sub>:280</sub>
+
+### `docs/implementation/attendance-workforce/43-visual-attendance-heatmap.md`  <sub>132 lines</sub>
+
+- 1. A day's attendance state is a pure classification, not a stored column  <sub>:11</sub>
+- 2. The grid is a density map over a org-unit or a roster, one month at a time  <sub>:30</sub>
+- Scope lenses  <sub>:53</sub>
+- Work orders  <sub>:103</sub>
+- Acceptance  <sub>:113</sub>
+- Out of scope  <sub>:125</sub>
+
+### `docs/implementation/attendance-workforce/55-anti-proxy-verification-coverage-note.md`  <sub>56 lines</sub>
+
+- Where it already lives  <sub>:11</sub>
+- The one thing doc 30 leaves open, restated here for visibility  <sub>:32</sub>
+- Acceptance  <sub>:41</sub>
+- Out of scope  <sub>:48</sub>
+
+### `docs/implementation/attendance-workforce/59-workforce-attendance-ratios.md`  <sub>92 lines</sub>
+
+- 1. A ratio is one query over `classifyDay()`'s own output  <sub>:11</sub>
+- Scope lenses  <sub>:31</sub>
+- Work orders  <sub>:69</sub>
+- Acceptance  <sub>:77</sub>
+- Out of scope  <sub>:87</sub>
+
+### `docs/implementation/attendance-workforce/65-cctv-camera-repurposing.md`  <sub>89 lines</sub>
+
+- 1. What "repurposing" concretely means here  <sub>:27</sub>
+- Scope lenses  <sub>:49</sub>
+- Work orders  <sub>:61</sub>
+- Acceptance  <sub>:75</sub>
+- Out of scope  <sub>:83</sub>
+
+### `docs/implementation/attendance-workforce/85-ai-face-detection-proxy-attendance.md`  <sub>51 lines</sub>
+
+- What already answers each named pain point  <sub>:13</sub>
+- Scope lenses  <sub>:31</sub>
+- Work orders  <sub>:36</sub>
+- Acceptance  <sub>:42</sub>
+- Out of scope  <sub>:47</sub>
+
+### `docs/implementation/attendance-workforce/87-corporate-attendance-automation.md`  <sub>71 lines</sub>
+
+- What this means concretely  <sub>:21</sub>
+- Scope lenses  <sub>:40</sub>
+- Work orders  <sub>:47</sub>
+- Acceptance  <sub>:57</sub>
+- Out of scope  <sub>:65</sub>
+
+### `docs/implementation/b2b-wholesale-multientity/111-hierarchical-entity-isolation.md`  <sub>68 lines</sub>
+
+- What already exists, mapped onto the bullet's own three-tier example  <sub>:13</sub>
+- The cascade-with-override mechanism, already built, not hypothetical  <sub>:27</sub>
+- Scope lenses  <sub>:40</sub>
+- Work orders  <sub>:47</sub>
+- Acceptance  <sub>:57</sub>
+- Out of scope  <sub>:63</sub>
+
+### `docs/implementation/b2b-wholesale-multientity/146-wholesale-tiered-pricing.md`  <sub>182 lines</sub>
+
+- 1. Price resolution becomes a chain, never a second hardcoded fallback  <sub>:13</sub>
+- Scope lenses  <sub>:79</sub>
+- Work orders  <sub>:148</sub>
+- Acceptance  <sub>:165</sub>
+- Out of scope  <sub>:175</sub>
+
+### `docs/implementation/b2b-wholesale-multientity/149-b2b-accounts-approvals-sector-packs.md`  <sub>163 lines</sub>
+
+- 1. `accounts` — an order settles against credit terms instead of an immediate tender  <sub>:17</sub>
+- 2. `approvals` — a buyer-side purchase-approval gate before an order commits  <sub>:39</sub>
+- Scope lenses  <sub>:61</sub>
+- Work orders  <sub>:132</sub>
+- Acceptance  <sub>:146</sub>
+- Out of scope  <sub>:155</sub>
+
+### `docs/implementation/b2b-wholesale-multientity/73-multi-entity-multi-company-configuration.md`  <sub>127 lines</sub>
+
+- 1. What already exists, in the promotional list's own words  <sub>:21</sub>
+- 2. The one honest gap: brand/branch creation is an admin operation today, not self-service onboarding  <sub>:30</sub>
+- Scope lenses  <sub>:51</sub>
+- Work orders  <sub>:102</sub>
+- Acceptance  <sub>:112</sub>
+- Out of scope  <sub>:120</sub>
+
+### `docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md`  <sub>566 lines</sub>
+
+- Why  <sub>:127</sub>
+- Work orders  <sub>:161</sub>
+- WO-3.1 — The option model  <sub>:177</sub>
+- WO-3.2 — Switch readers, then retire the columns  <sub>:311</sub>
+- WO-3.3 — SKU templates and barcodes  <sub>:330</sub>
+- WO-3.4 — The sectioned product editor  <sub>:360</sub>
+- WO-3.5 — The variant matrix builder  <sub>:392</sub>
+- WO-3.6 — Media with enforced alt text  <sub>:416</sub>
+- WO-3.7 — The SEO section and the publish gate  <sub>:440</sub>
+- WO-3.8 — Storefront SEO  <sub>:484</sub>
+- WO-3.9 — Redirects  <sub>:521</sub>
+- Phase 3 exit criteria  <sub>:555</sub>
+
+### `docs/implementation/catalog-variants-pricing/150-product-kitting-bundles.md`  <sub>184 lines</sub>
+
+- 1. A bundle is a sellable shell over existing variants, never a new physical item  <sub>:16</sub>
+- 2. Selling a bundle decrements every component, atomically, through the one existing writer  <sub>:44</sub>
+- 3. Bundle "stock" is computed, never stored — the same discipline R26 already establishes for online allotment  <sub>:73</sub>
+- Scope lenses  <sub>:84</sub>
+- Work orders  <sub>:151</sub>
+- Acceptance  <sub>:167</sub>
+- Out of scope  <sub>:177</sub>
+
+### `docs/implementation/catalog-variants-pricing/47-preconfigured-sector-taxonomy.md`  <sub>154 lines</sub>
+
+- 1. A taxonomy preset is a named, versioned tree template  <sub>:20</sub>
+- 2. Applying a preset is one action, and it is undoable the honest way  <sub>:44</sub>
+- Scope lenses  <sub>:69</sub>
+- Work orders  <sub>:123</sub>
+- Acceptance  <sub>:136</sub>
+- Out of scope  <sub>:146</sub>
+
+### `docs/implementation/commercial-licensing-agency/11-client-handover-model.md`  <sub>121 lines</sub>
+
+- 1. The Business Goals  <sub>:3</sub>
+- 2. The Rejected Approaches  <sub>:12</sub>
+- 3. The Solution: The "Blueprint & Extractor" Model  <sub>:22</sub>
+- 4. Customization & Upgradability (Engine vs. Glass)  <sub>:64</sub>
+- 5. Hosting Contracts & Infrastructure as a Service (IaaS)  <sub>:89</sub>
+- 6. The API Layer (Dynamic NestJS Separation)  <sub>:109</sub>
+
+### `docs/implementation/commercial-licensing-agency/12-extractor-script-spec.md`  <sub>59 lines</sub>
+
+- Phase 1: Initialization & Validation  <sub>:6</sub>
+- Phase 2: The Engine Extraction (Backend)  <sub>:15</sub>
+- Phase 3: AST Modification (Bulletproof TypeScript)  <sub>:23</sub>
+- Phase 4: The Glass Protection (Frontend Boundaries)  <sub>:32</sub>
+- Phase 5: IaaS & Environment Scaffolding  <sub>:40</sub>
+- Phase 6: CI/CD & Database Cleanup  <sub>:45</sub>
+- Phase 7: Delivery & Pull Request  <sub>:53</sub>
+
+### `docs/implementation/commercial-licensing-agency/14-managed-services-module.md`  <sub>270 lines</sub>
+
+- Why this is two modules, not one  <sub>:15</sub>
+- The load-bearing scope decision: where usage numbers actually come from  <sub>:33</sub>
+- Master side: the `agency` module  <sub>:58</sub>
+- Client side: the `managed-services` module  <sub>:181</sub>
+- Security notes  <sub>:205</sub>
+- Explicitly out of scope for v1  <sub>:221</sub>
+- Work orders  <sub>:234</sub>
+- When to actually build this  <sub>:261</sub>
+
+### `docs/implementation/commercial-licensing-agency/153-usage-based-pricing-model.md`  <sub>290 lines</sub>
+
+- What changed from the original proposal, and why  <sub>:13</sub>
+- 1. `PlatformPlan` gains `USAGE_BASED`, alongside doc 50's existing three shapes  <sub>:41</sub>
+- 2. Metering is event-driven, reusing this repository's own transactional outbox — never a slow end-of-month aggregate scan  <sub>:69</sub>
+- 3. Collection: COD and cash have no settlement to net against — this is doc 145's own mechanism, one level up  <sub>:117</sub>
+- 4. A graduated rate, so growth is rewarded rather than punished forever  <sub>:145</sub>
+- Scope lenses  <sub>:156</sub>
+- Work orders  <sub>:247</sub>
+- Acceptance  <sub>:267</sub>
+- Out of scope  <sub>:281</sub>
+
+### `docs/implementation/commercial-licensing-agency/154-three-headline-commercial-plans.md`  <sub>182 lines</sub>
+
+- 1. The three headline plans, each an existing `PricingModel` under a customer-facing name  <sub>:14</sub>
+- 2. Why these three specific shapes cover the real span of a merchant's own risk appetite  <sub>:29</sub>
+- 3. The pricing screen itself — a customer-facing surface that doesn't exist yet  <sub>:43</sub>
+- 4. Selecting a plan routes to the identical provisioning path every plan already uses  <sub>:86</sub>
+- Scope lenses  <sub>:97</sub>
+- Work orders  <sub>:148</sub>
+- Acceptance  <sub>:164</sub>
+- Out of scope  <sub>:176</sub>
+
+### `docs/implementation/commercial-licensing-agency/155-wallet-stored-value-merchant-escrow.md`  <sub>355 lines</sub>
+
+- Read this section first — the structure changed, and here is exactly why that matters  <sub>:3</sub>
+- 1. One wallet type now, not two — money never sits in a per-merchant balance  <sub>:50</sub>
+- 2. Checkout: reserve at order placement, redeem only at merchant confirmation  <sub>:116</sub>
+- 3. Merchant settlement — an ordinary trade payable, generalizing doc 145's own `SupplierBill`, never an escrow release  <sub>:143</sub>
+- Scope lenses  <sub>:197</sub>
+- Work orders  <sub>:307</sub>
+- Acceptance  <sub>:331</sub>
+- Out of scope  <sub>:346</sub>
+
+### `docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md`  <sub>367 lines</sub>
 
 - The one design decision that makes this safe: shared compute, never shared data  <sub>:14</sub>
 - 1. A tenant is a provisioned instance, not a row in a shared table  <sub>:45</sub>
@@ -2892,99 +2595,7 @@ _no second-level headings_
 - Acceptance  <sub>:338</sub>
 - Out of scope  <sub>:355</sub>
 
-### `docs/implementation/40-itemized-payroll-deductions.md`  <sub>238 lines</sub>
-
-- 1. A deduction type is a row, not a hardcoded tax bracket  <sub>:21</sub>
-- 2. A penalty is a request; a statutory tax and an insurance premium are policy, applied automatically  <sub>:78</sub>
-- Scope lenses  <sub>:101</sub>
-- Work orders  <sub>:196</sub>
-- Acceptance  <sub>:215</sub>
-- Out of scope  <sub>:229</sub>
-
-### `docs/implementation/41-pending-vs-disbursed-payroll-tracking.md`  <sub>152 lines</sub>
-
-- 1. A pay run is disbursed once the bank confirms it, not once it is posted  <sub>:15</sub>
-- 2. Pending versus disbursed is a query over existing rows, not a new table  <sub>:46</sub>
-- Scope lenses  <sub>:68</sub>
-- Work orders  <sub>:124</sub>
-- Acceptance  <sub>:135</sub>
-- Out of scope  <sub>:145</sub>
-
-### `docs/implementation/42-timesheet-approval-chains.md`  <sub>235 lines</sub>
-
-- 1. A timesheet is a document with entries, a status, and a chain  <sub>:21</sub>
-- 2. The chain length is policy, not a hardcoded number of levels  <sub>:92</sub>
-- 3. Approval feeds payroll as a signal, never a silent override  <sub>:103</sub>
-- Scope lenses  <sub>:112</sub>
-- Work orders  <sub>:195</sub>
-- Acceptance  <sub>:213</sub>
-- Out of scope  <sub>:226</sub>
-
-### `docs/implementation/43-visual-attendance-heatmap.md`  <sub>132 lines</sub>
-
-- 1. A day's attendance state is a pure classification, not a stored column  <sub>:11</sub>
-- 2. The grid is a density map over a org-unit or a roster, one month at a time  <sub>:30</sub>
-- Scope lenses  <sub>:53</sub>
-- Work orders  <sub>:103</sub>
-- Acceptance  <sub>:113</sub>
-- Out of scope  <sub>:125</sub>
-
-### `docs/implementation/44-manager-action-hub.md`  <sub>160 lines</sub>
-
-- 1. An action item is a shape every contributing module already produces  <sub>:13</sub>
-- 2. Sources register, they are not hardcoded  <sub>:34</sub>
-- Scope lenses  <sub>:56</sub>
-- Work orders  <sub>:116</sub>
-- Acceptance  <sub>:135</sub>
-- Out of scope  <sub>:150</sub>
-
-### `docs/implementation/45-order-count-tracking-coverage-note.md`  <sub>63 lines</sub>
-
-- Where it already lives  <sub>:9</sub>
-- The one real gap, scoped narrowly  <sub>:42</sub>
-- Acceptance  <sub>:50</sub>
-- Out of scope  <sub>:59</sub>
-
-### `docs/implementation/46-fbr-verification-qr-codes.md`  <sub>143 lines</sub>
-
-- The QR code cannot be built before doc 15's provider is  <sub>:12</sub>
-- 1. A receipt renders a QR code only once a fiscal reference actually exists  <sub>:24</sub>
-- 2. Printing does not wait on the fiscal authority  <sub>:50</sub>
-- Scope lenses  <sub>:67</sub>
-- Work orders  <sub>:113</sub>
-- Acceptance  <sub>:124</sub>
-- Out of scope  <sub>:136</sub>
-
-### `docs/implementation/47-preconfigured-sector-taxonomy.md`  <sub>154 lines</sub>
-
-- 1. A taxonomy preset is a named, versioned tree template  <sub>:20</sub>
-- 2. Applying a preset is one action, and it is undoable the honest way  <sub>:44</sub>
-- Scope lenses  <sub>:69</sub>
-- Work orders  <sub>:123</sub>
-- Acceptance  <sub>:136</sub>
-- Out of scope  <sub>:146</sub>
-
-### `docs/implementation/48-native-desktop-deployment.md`  <sub>184 lines</sub>
-
-- The decision this document does not make casually  <sub>:14</sub>
-- 1. A desktop install is a node, exactly as a branch already is  <sub>:37</sub>
-- 2. What packaging actually adds, beyond "it's Electron now"  <sub>:56</sub>
-- Scope lenses  <sub>:76</sub>
-- Work orders  <sub>:142</sub>
-- Acceptance  <sub>:161</sub>
-- Out of scope  <sub>:176</sub>
-
-### `docs/implementation/49-financial-institution-settlement-partnerships.md`  <sub>265 lines</sub>
-
-- 1. A settlement batch is a reconciliation target, not a payment record  <sub>:14</sub>
-- 2. A `FinancialInstitutionConnector` is doc 36's own pattern, applied to settlement  <sub>:76</sub>
-- 3. A shortfall is a named variance, never a silent write-off  <sub>:96</sub>
-- Scope lenses  <sub>:107</sub>
-- Work orders  <sub>:219</sub>
-- Acceptance  <sub>:241</sub>
-- Out of scope  <sub>:254</sub>
-
-### `docs/implementation/50-commercial-pricing-licensing-models.md`  <sub>202 lines</sub>
+### `docs/implementation/commercial-licensing-agency/50-commercial-pricing-licensing-models.md`  <sub>202 lines</sub>
 
 - 1. A pricing model is a shape, not a bigger integer  <sub>:12</sub>
 - 2. A seat is counted, not assumed  <sub>:45</sub>
@@ -2994,7 +2605,7 @@ _no second-level headings_
 - Acceptance  <sub>:180</sub>
 - Out of scope  <sub>:193</sub>
 
-### `docs/implementation/51-free-demo-sandbox-onboarding.md`  <sub>176 lines</sub>
+### `docs/implementation/commercial-licensing-agency/51-free-demo-sandbox-onboarding.md`  <sub>176 lines</sub>
 
 - 1. A trial is a tenant with an expiry, not a different kind of tenant  <sub>:12</sub>
 - 2. Conversion and expiry are both status transitions, never silent  <sub>:41</sub>
@@ -3004,256 +2615,7 @@ _no second-level headings_
 - Acceptance  <sub>:153</sub>
 - Out of scope  <sub>:168</sub>
 
-### `docs/implementation/52-staff-self-service-mobile-app.md`  <sub>161 lines</sub>
-
-- 1. Self-service becomes installable, the same way the till already is  <sub>:22</sub>
-- 2. Clock-in is a self-service `AttendanceEvent`, not a new attendance model  <sub>:34</sub>
-- 3. "My schedule" and "my announcements" are reads over existing rows  <sub>:50</sub>
-- Scope lenses  <sub>:60</sub>
-- Work orders  <sub>:122</sub>
-- Acceptance  <sub>:138</sub>
-- Out of scope  <sub>:152</sub>
-
-### `docs/implementation/53-new-hire-joiner-tracking.md`  <sub>104 lines</sub>
-
-- 1. "Recent" is a policy window, not a hardcoded number of days  <sub>:12</sub>
-- Scope lenses  <sub>:34</sub>
-- Work orders  <sub>:79</sub>
-- Acceptance  <sub>:86</sub>
-- Out of scope  <sub>:96</sub>
-
-### `docs/implementation/54-employee-document-lifecycle-alerts.md`  <sub>148 lines</sub>
-
-- 1. An expiring record is a registered source, not a hardcoded pair  <sub>:14</sub>
-- 2. One nightly run, one notification shape, both sources  <sub>:42</sub>
-- Scope lenses  <sub>:59</sub>
-- Work orders  <sub>:117</sub>
-- Acceptance  <sub>:130</sub>
-- Out of scope  <sub>:142</sub>
-
-### `docs/implementation/55-anti-proxy-verification-coverage-note.md`  <sub>56 lines</sub>
-
-- Where it already lives  <sub>:11</sub>
-- The one thing doc 30 leaves open, restated here for visibility  <sub>:32</sub>
-- Acceptance  <sub>:41</sub>
-- Out of scope  <sub>:48</sub>
-
-### `docs/implementation/56-overdue-invoices-counter.md`  <sub>111 lines</sub>
-
-- 1. Overdue is computed at read time, always  <sub>:11</sub>
-- Scope lenses  <sub>:34</sub>
-- Work orders  <sub>:81</sub>
-- Acceptance  <sub>:91</sub>
-- Out of scope  <sub>:102</sub>
-
-### `docs/implementation/57-multiday-category-velocity.md`  <sub>117 lines</sub>
-
-- 1. A velocity series is category × day, not category OR day  <sub>:14</sub>
-- Scope lenses  <sub>:42</sub>
-- Work orders  <sub>:86</sub>
-- Acceptance  <sub>:98</sub>
-- Out of scope  <sub>:110</sub>
-
-### `docs/implementation/58-live-operational-feed.md`  <sub>141 lines</sub>
-
-- 1. "Near-real-time," stated honestly, is short-interval polling  <sub>:15</sub>
-- 2. A feed entry is a normalized shape over three different sources  <sub>:28</sub>
-- Scope lenses  <sub>:54</sub>
-- Work orders  <sub>:111</sub>
-- Acceptance  <sub>:122</sub>
-- Out of scope  <sub>:133</sub>
-
-### `docs/implementation/59-workforce-attendance-ratios.md`  <sub>92 lines</sub>
-
-- 1. A ratio is one query over `classifyDay()`'s own output  <sub>:11</sub>
-- Scope lenses  <sub>:31</sub>
-- Work orders  <sub>:69</sub>
-- Acceptance  <sub>:77</sub>
-- Out of scope  <sub>:87</sub>
-
-### `docs/implementation/60-headcount-growth-metrics.md`  <sub>102 lines</sub>
-
-- 1. Net growth is joiners minus leavers, per month, from rows doc 20 already writes  <sub>:12</sub>
-- Scope lenses  <sub>:38</sub>
-- Work orders  <sub>:78</sub>
-- Acceptance  <sub>:87</sub>
-- Out of scope  <sub>:97</sub>
-
-### `docs/implementation/61-policy-communications-bulletin.md`  <sub>194 lines</sub>
-
-- 1. A `Bulletin` is a record; `NotificationsService` announces it, never replaces it  <sub>:14</sub>
-- 2. Publishing a bulletin fires doc 24's own notification, once  <sub>:66</sub>
-- Scope lenses  <sub>:84</sub>
-- Work orders  <sub>:159</sub>
-- Acceptance  <sub>:175</sub>
-- Out of scope  <sub>:187</sub>
-
-### `docs/implementation/62-document-expiration-compliance.md`  <sub>121 lines</sub>
-
-- 1. What already exists  <sub>:13</sub>
-- 2. The one real gap: document *type* is data, not a fixed list  <sub>:24</sub>
-- Scope lenses  <sub>:59</sub>
-- Work orders  <sub>:95</sub>
-- Acceptance  <sub>:107</sub>
-- Out of scope  <sub>:115</sub>
-
-### `docs/implementation/63-multi-tier-approval-hierarchies.md`  <sub>228 lines</sub>
-
-- 1. The chain, extracted once, referenced by subject type  <sub>:14</sub>
-- 2. `ApprovalService` is the one writer; each subject module calls it, never re-implements it  <sub>:59</sub>
-- Scope lenses  <sub>:92</sub>
-- Work orders  <sub>:191</sub>
-- Acceptance  <sub>:211</sub>
-- Out of scope  <sub>:222</sub>
-
-### `docs/implementation/64-help-desk-support-ticketing.md`  <sub>188 lines</sub>
-
-- 1. A ticket is a record of a request, with an ordered reply thread  <sub>:13</sub>
-- 2. Assignment and status transitions reuse the org tree, not a new team model  <sub>:55</sub>
-- Scope lenses  <sub>:75</sub>
-- Work orders  <sub>:153</sub>
-- Acceptance  <sub>:169</sub>
-- Out of scope  <sub>:178</sub>
-
-### `docs/implementation/65-cctv-camera-repurposing.md`  <sub>89 lines</sub>
-
-- 1. What "repurposing" concretely means here  <sub>:27</sub>
-- Scope lenses  <sub>:49</sub>
-- Work orders  <sub>:61</sub>
-- Acceptance  <sub>:75</sub>
-- Out of scope  <sub>:83</sub>
-
-### `docs/implementation/66-multi-form-factor-pos.md`  <sub>78 lines</sub>
-
-- 1. What already covers this, and what a gap would actually look like  <sub>:15</sub>
-- Scope lenses  <sub>:42</sub>
-- Work orders  <sub>:53</sub>
-- Acceptance  <sub>:63</sub>
-- Out of scope  <sub>:72</sub>
-
-### `docs/implementation/67-secure-cash-drawer-triggering.md`  <sub>63 lines</sub>
-
-- 1. What "exclusively with completed cash transactions" already means here  <sub>:15</sub>
-- Scope lenses  <sub>:35</sub>
-- Work orders  <sub>:43</sub>
-- Acceptance  <sub>:50</sub>
-- Out of scope  <sub>:58</sub>
-
-### `docs/implementation/68-realtime-gross-profit.md`  <sub>178 lines</sub>
-
-- 1. The fix is one more publish, at the point POS already knows it happened  <sub>:26</sub>
-- 2. "Per transaction and per day" is then a read over rows that now exist  <sub>:48</sub>
-- Scope lenses  <sub>:70</sub>
-- Work orders  <sub>:135</sub>
-- Acceptance  <sub>:156</sub>
-- Out of scope  <sub>:169</sub>
-
-### `docs/implementation/69-order-lifecycle-status-dashboard.md`  <sub>107 lines</sub>
-
-- 1. A status breakdown is a single `GROUP BY`, mapped to the promotional list's own three buckets  <sub>:14</sub>
-- Scope lenses  <sub>:41</sub>
-- Work orders  <sub>:81</sub>
-- Acceptance  <sub>:92</sub>
-- Out of scope  <sub>:101</sub>
-
-### `docs/implementation/70-realtime-stock-depletion.md`  <sub>77 lines</sub>
-
-- 1. Why "reflecting across both POS tills and back-office" needs no extra work  <sub>:20</sub>
-- 2. Barcode scanning is a POS hardware input, not a stock-deduction mechanism of its own  <sub>:33</sub>
-- Scope lenses  <sub>:44</sub>
-- Work orders  <sub>:55</sub>
-- Acceptance  <sub>:62</sub>
-- Out of scope  <sub>:73</sub>
-
-### `docs/implementation/71-recipe-batch-traceability.md`  <sub>255 lines</sub>
-
-- 1. Consumption draws from specific input lots; production creates one output lot  <sub>:21</sub>
-- 2. The write happens inside `production.service.ts`'s own existing transaction, never a second write path  <sub>:73</sub>
-- 3. Genealogy is then a graph walk over rows that now exist  <sub>:103</sub>
-- Scope lenses  <sub>:128</sub>
-- Work orders  <sub>:220</sub>
-- Acceptance  <sub>:233</sub>
-- Out of scope  <sub>:248</sub>
-
-### `docs/implementation/72-fragmented-tool-consolidation-import.md`  <sub>173 lines</sub>
-
-- 1. The pattern, generalized just enough to name its second and third users  <sub>:23</sub>
-- Scope lenses  <sub>:57</sub>
-- Work orders  <sub>:135</sub>
-- Acceptance  <sub>:151</sub>
-- Out of scope  <sub>:163</sub>
-
-### `docs/implementation/73-multi-entity-multi-company-configuration.md`  <sub>127 lines</sub>
-
-- 1. What already exists, in the promotional list's own words  <sub>:21</sub>
-- 2. The one honest gap: brand/branch creation is an admin operation today, not self-service onboarding  <sub>:30</sub>
-- Scope lenses  <sub>:51</sub>
-- Work orders  <sub>:102</sub>
-- Acceptance  <sub>:112</sub>
-- Out of scope  <sub>:120</sub>
-
-### `docs/implementation/74-hr-dashboard-financial-overview.md`  <sub>116 lines</sub>
-
-- 1. The four figures, mapped onto `PayRunStatus` and the current period  <sub>:11</sub>
-- 2. "Specifically for taxes and insurance" is a breakdown, not a bespoke split  <sub>:35</sub>
-- Scope lenses  <sub>:49</sub>
-- Work orders  <sub>:93</sub>
-- Acceptance  <sub>:102</sub>
-- Out of scope  <sub>:111</sub>
-
-### `docs/implementation/75-managerial-todo-widget-coverage-note.md`  <sub>54 lines</sub>
-
-- 1. What already exists  <sub>:14</sub>
-- Scope lenses  <sub>:32</sub>
-- Work orders  <sub>:38</sub>
-- Acceptance  <sub>:45</sub>
-- Out of scope  <sub>:50</sub>
-
-### `docs/implementation/76-pos-mobile-dashboard.md`  <sub>109 lines</sub>
-
-- 1. One read, reusing `AnalyticsService.summary()`'s own figures, scoped to the till's own location  <sub>:17</sub>
-- 2. Doc 31's own hardware/PWA foundation is where this screen lives  <sub>:37</sub>
-- Scope lenses  <sub>:47</sub>
-- Work orders  <sub>:84</sub>
-- Acceptance  <sub>:95</sub>
-- Out of scope  <sub>:104</sub>
-
-### `docs/implementation/77-sales-category-breakdown-coverage-note.md`  <sub>52 lines</sub>
-
-- What already exists  <sub>:17</sub>
-- Scope lenses  <sub>:30</sub>
-- Work orders  <sub>:36</sub>
-- Acceptance  <sub>:43</sub>
-- Out of scope  <sub>:48</sub>
-
-### `docs/implementation/78-hr-navigation-consolidation.md`  <sub>138 lines</sub>
-
-- 1. One `hr` nav section, grouping what already exists  <sub>:32</sub>
-- 2. "No dead end" — a tab never ships before its screen does  <sub>:64</sub>
-- Scope lenses  <sub>:76</sub>
-- Work orders  <sub>:108</sub>
-- Acceptance  <sub>:122</sub>
-- Out of scope  <sub>:131</sub>
-
-### `docs/implementation/79-employee-asset-management.md`  <sub>183 lines</sub>
-
-- 1. An asset is a trackable item; an assignment is who has it and since when  <sub>:9</sub>
-- 2. An employee's exit is the one write path that must never be optional  <sub>:59</sub>
-- Scope lenses  <sub>:74</sub>
-- Work orders  <sub>:154</sub>
-- Acceptance  <sub>:169</sub>
-- Out of scope  <sub>:178</sub>
-
-### `docs/implementation/80-employee-training-certification.md`  <sub>161 lines</sub>
-
-- 1. A training course is a catalogue entry; a completion is a record against it  <sub>:11</sub>
-- 2. Expiring certifications register against doc 54's watcher — never a second scheduler  <sub>:61</sub>
-- Scope lenses  <sub>:69</sub>
-- Work orders  <sub>:131</sub>
-- Acceptance  <sub>:146</sub>
-- Out of scope  <sub>:155</sub>
-
-### `docs/implementation/81-transparent-flat-rate-pricing.md`  <sub>55 lines</sub>
+### `docs/implementation/commercial-licensing-agency/81-transparent-flat-rate-pricing.md`  <sub>55 lines</sub>
 
 - What already exists, and what was checked to confirm the claim is true  <sub>:15</sub>
 - Scope lenses  <sub>:33</sub>
@@ -3261,7 +2623,7 @@ _no second-level headings_
 - Acceptance  <sub>:45</sub>
 - Out of scope  <sub>:51</sub>
 
-### `docs/implementation/82-tiered-capex-licensing.md`  <sub>86 lines</sub>
+### `docs/implementation/commercial-licensing-agency/82-tiered-capex-licensing.md`  <sub>86 lines</sub>
 
 - The one genuinely open question: is a Basic-tier deployment actually smaller?  <sub>:24</sub>
 - Scope lenses  <sub>:58</sub>
@@ -3269,7 +2631,7 @@ _no second-level headings_
 - Acceptance  <sub>:72</sub>
 - Out of scope  <sub>:79</sub>
 
-### `docs/implementation/83-entry-level-pos-deployment.md`  <sub>60 lines</sub>
+### `docs/implementation/commercial-licensing-agency/83-entry-level-pos-deployment.md`  <sub>60 lines</sub>
 
 - What already makes "entry-level" real, not aspirational  <sub>:12</sub>
 - Scope lenses  <sub>:36</sub>
@@ -3277,7 +2639,7 @@ _no second-level headings_
 - Acceptance  <sub>:49</sub>
 - Out of scope  <sub>:56</sub>
 
-### `docs/implementation/84-micro-saas-hr-per-user-pricing.md`  <sub>48 lines</sub>
+### `docs/implementation/commercial-licensing-agency/84-micro-saas-hr-per-user-pricing.md`  <sub>48 lines</sub>
 
 - What already exists  <sub>:15</sub>
 - Scope lenses  <sub>:23</sub>
@@ -3285,38 +2647,7 @@ _no second-level headings_
 - Acceptance  <sub>:37</sub>
 - Out of scope  <sub>:44</sub>
 
-### `docs/implementation/85-ai-face-detection-proxy-attendance.md`  <sub>51 lines</sub>
-
-- What already answers each named pain point  <sub>:13</sub>
-- Scope lenses  <sub>:31</sub>
-- Work orders  <sub>:36</sub>
-- Acceptance  <sub>:42</sub>
-- Out of scope  <sub>:47</sub>
-
-### `docs/implementation/86-ai-ml-edi-business-automation.md`  <sub>51 lines</sub>
-
-- Scope lenses  <sub>:27</sub>
-- Work orders  <sub>:33</sub>
-- Acceptance  <sub>:42</sub>
-- Out of scope  <sub>:47</sub>
-
-### `docs/implementation/87-corporate-attendance-automation.md`  <sub>71 lines</sub>
-
-- What this means concretely  <sub>:21</sub>
-- Scope lenses  <sub>:40</sub>
-- Work orders  <sub>:47</sub>
-- Acceptance  <sub>:57</sub>
-- Out of scope  <sub>:65</sub>
-
-### `docs/implementation/88-pral-fbr-pra-tax-compliance.md`  <sub>69 lines</sub>
-
-- What doc 15 already specifies, restated rather than re-derived  <sub>:18</sub>
-- Scope lenses  <sub>:40</sub>
-- Work orders  <sub>:46</sub>
-- Acceptance  <sub>:56</sub>
-- Out of scope  <sub>:64</sub>
-
-### `docs/implementation/89-rapid-onboarding-customizable-reports.md`  <sub>68 lines</sub>
+### `docs/implementation/commercial-licensing-agency/89-rapid-onboarding-customizable-reports.md`  <sub>68 lines</sub>
 
 - 1. "Easy setup in minutes" — doc 51's own words, verbatim  <sub>:7</sub>
 - 2. "Customizable cloud-based reports" — already eight, with date-range filtering  <sub>:17</sub>
@@ -3325,94 +2656,34 @@ _no second-level headings_
 - Acceptance  <sub>:54</sub>
 - Out of scope  <sub>:62</sub>
 
-### `docs/implementation/90-automatic-backups-local-support.md`  <sub>56 lines</sub>
+### `docs/implementation/content-marketing-search/08-content-marketing-search.md`  <sub>138 lines</sub>
 
-- 1. Automatic cloud backups — `deploy/backup.sh`, already real, already restore-tested  <sub>:8</sub>
-- 2. "Local support you can trust" is a support-organization commitment, named honestly as out of scope  <sub>:20</sub>
-- Scope lenses  <sub>:32</sub>
-- Work orders  <sub>:38</sub>
-- Acceptance  <sub>:44</sub>
-- Out of scope  <sub>:50</sub>
+- Why  <sub>:5</sub>
+- Work orders  <sub>:13</sub>
+- WO-8.1 — CMS  <sub>:26</sub>
+- WO-8.2 — Collections and merchandising  <sub>:46</sub>
+- WO-8.3 — Search  <sub>:61</sub>
+- WO-8.4 — Campaigns and broadcasts  <sub>:85</sub>
+- WO-8.5 — Abandoned cart recovery  <sub>:104</sub>
+- WO-8.6 — On-site messaging  <sub>:120</sub>
+- Phase 8 exit criteria  <sub>:129</sub>
 
-### `docs/implementation/91-staff-portal-mobile-access.md`  <sub>55 lines</sub>
+### `docs/implementation/customer-portal-loyalty/07-customer-portal.md`  <sub>186 lines</sub>
 
-- What already exists, and what the two-name request risks if taken literally  <sub>:14</sub>
-- Scope lenses  <sub>:28</sub>
-- Work orders  <sub>:34</sub>
-- Acceptance  <sub>:41</sub>
-- Out of scope  <sub>:50</sub>
+- Why  <sub>:5</sub>
+- Work orders  <sub>:21</sub>
+- WO-7.1 — Portal shell  <sub>:37</sub>
+- WO-7.2 — Orders  <sub>:52</sub>
+- WO-7.3 — Self-service returns  <sub>:66</sub>
+- WO-7.4 — Credit and gift cards  <sub>:78</sub>
+- WO-7.5 — Reviews and Q&A  <sub>:89</sub>
+- WO-7.6 — Wishlist and back-in-stock  <sub>:128</sub>
+- WO-7.7 — Loyalty and referrals  <sub>:145</sub>
+- WO-7.8 — Notification preferences  <sub>:160</sub>
+- WO-7.9 — Mobile parity  <sub>:169</sub>
+- Phase 7 exit criteria  <sub>:178</sub>
 
-### `docs/implementation/92-microservices-module-decoupling.md`  <sub>89 lines</sub>
-
-- 1. What the bullet actually wants, and what already delivers it  <sub>:16</sub>
-- 2. Why literal microservices would be the wrong trade here, not just an unbuilt feature  <sub>:39</sub>
-- Scope lenses  <sub>:61</sub>
-- Work orders  <sub>:68</sub>
-- Acceptance  <sub>:77</sub>
-- Out of scope  <sub>:83</sub>
-
-### `docs/implementation/93-headless-frontend-architecture.md`  <sub>66 lines</sub>
-
-- What already exists  <sub>:10</sub>
-- The one correction: framework choice is fixed, not "any"  <sub>:27</sub>
-- Scope lenses  <sub>:42</sub>
-- Work orders  <sub>:48</sub>
-- Acceptance  <sub>:56</sub>
-- Out of scope  <sub>:61</sub>
-
-### `docs/implementation/94-cloud-native-container-scalability.md`  <sub>70 lines</sub>
-
-- What already exists  <sub>:14</sub>
-- The honest gap: "automatically... based on demand spikes" is not autoscaling  <sub>:27</sub>
-- Scope lenses  <sub>:43</sub>
-- Work orders  <sub>:49</sub>
-- Acceptance  <sub>:57</sub>
-- Out of scope  <sub>:64</sub>
-
-### `docs/implementation/95-externalized-rule-logic.md`  <sub>78 lines</sub>
-
-- What is already externalized, named one by one, per the bullet's own three examples  <sub>:15</sub>
-- Why a single generic rules engine is the wrong abstraction here  <sub>:32</sub>
-- Scope lenses  <sub>:48</sub>
-- Work orders  <sub>:54</sub>
-- Acceptance  <sub>:63</sub>
-- Out of scope  <sub>:71</sub>
-
-### `docs/implementation/96-version-controlled-policy-execution.md`  <sub>68 lines</sub>
-
-- What already delivers "no engineering deployment" today  <sub>:13</sub>
-- The one honest, already-named gap: a visual chain *designer*  <sub>:29</sub>
-- Scope lenses  <sub>:43</sub>
-- Work orders  <sub>:48</sub>
-- Acceptance  <sub>:56</sub>
-- Out of scope  <sub>:63</sub>
-
-### `docs/implementation/97-realtime-validation-single-source-of-truth.md`  <sub>63 lines</sub>
-
-- The three layers already doing this  <sub>:11</sub>
-- Scope lenses  <sub>:37</sub>
-- Work orders  <sub>:44</sub>
-- Acceptance  <sub>:49</sub>
-- Out of scope  <sub>:55</sub>
-
-### `docs/implementation/98-contract-first-api-development.md`  <sub>80 lines</sub>
-
-- What already makes the interface stable, without contract-first sequencing  <sub>:16</sub>
-- The one honest gap: no automated contract-diff / backward-compatibility check  <sub>:39</sub>
-- Scope lenses  <sub>:50</sub>
-- Work orders  <sub>:55</sub>
-- Acceptance  <sub>:65</sub>
-- Out of scope  <sub>:73</sub>
-
-### `docs/implementation/99-centralized-api-gateway.md`  <sub>60 lines</sub>
-
-- What each named responsibility already maps to  <sub>:21</sub>
-- Scope lenses  <sub>:31</sub>
-- Work orders  <sub>:38</sub>
-- Acceptance  <sub>:48</sub>
-- Out of scope  <sub>:53</sub>
-
-### `docs/implementation/DECISIONS.md`  <sub>1,962 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>2,254 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3444,6 +2715,9 @@ _no second-level headings_
 - Decision: adopt a shared cross-tenant hosting tier via shared-infrastructure/isolated-data, not shared-schema multi-tenancy  <sub>:1692</sub>
 - ADR-026 — Seven heavier extensibility mechanisms adopted by explicit owner override: EAV, a metadata-rendering engine, BPMN, micro-frontends, a WASM sandbox, a service mesh, and a dedicated crypto microservice  <sub>:1769</sub>
 - ADR-027 — The three highest-risk items from ADR-026 withdrawn: no WASM sandbox, no service mesh, no dedicated crypto microservice  <sub>:1877</sub>
+- ADR-028 — WO-5 (Phase 5: discounts, promo codes, gift cards, store credit) built from zero — permission split, checkout coupling, tender-as-Payment-rows, and the evaluator's own rounding/scope choices  <sub>:1963</sub>
+- ADR-029 — Third-party gift-card redemption at checkout (Giftkarta): a `PaymentProvider`, not a WO-5 tender field; code collected post-order; API contract unverified  <sub>:2095</sub>
+- ADR-030 — `docs/implementation/`, `docs/erp-lenses/` and `docs/design/` reorganized into domain subfolders, filenames unchanged  <sub>:2182</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3454,6 +2728,463 @@ _no second-level headings_
 - D — Data rules  <sub>:182</sub>
 - P — Permission rules  <sub>:203</sub>
 - What is actually enforced today  <sub>:217</sub>
+
+### `docs/implementation/finance-accounting/04-finance.md`  <sub>291 lines</sub>
+
+- Scope decision, already taken  <sub>:53</sub>
+- Work orders  <sub>:68</sub>
+- WO-4.1 — Expenses  <sub>:84</sub>
+- WO-4.2 — Order economics  <sub>:160</sub>
+- WO-4.3 — The P&L report  <sub>:200</sub>
+- WO-4.4 — Cash flow  <sub>:239</sub>
+- WO-4.5 — Screens  <sub>:253</sub>
+- WO-4.6 — Month-end close and export  <sub>:273</sub>
+- Phase 4 exit criteria  <sub>:283</sub>
+
+### `docs/implementation/finance-accounting/137-payment-method-resilience-audit.md`  <sub>75 lines</sub>
+
+- What was checked, against three plausible near-future payment shapes  <sub>:9</sub>
+- The actual finding: no gap, and why  <sub>:35</sub>
+- Scope lenses  <sub>:49</sub>
+- Work orders  <sub>:55</sub>
+- Acceptance  <sub>:59</sub>
+- Out of scope  <sub>:69</sub>
+
+### `docs/implementation/finance-accounting/145-receivables-credit-limits-dunning.md`  <sub>285 lines</sub>
+
+- 1. `CreditNote`/`DebitNote` — the two documents R18's own diagram already names  <sub>:13</sub>
+- 2. Credit limits — a policy row, checked at the one place a sale can be refused for it  <sub>:66</sub>
+- 3. Dunning — a scheduled reminder sequence, reusing the existing notification and expiry-watcher mechanisms, never a new scheduler  <sub>:102</sub>
+- 4. Customer statements — a read-model over rows that already exist  <sub>:133</sub>
+- Scope lenses  <sub>:148</sub>
+- Work orders  <sub>:250</sub>
+- Acceptance  <sub>:266</sub>
+- Out of scope  <sub>:278</sub>
+
+### `docs/implementation/finance-accounting/147-fixed-asset-depreciation.md`  <sub>210 lines</sub>
+
+- 1. A depreciation schedule, computed once at acquisition, posted periodically  <sub>:11</sub>
+- 2. Posting is a cron, through the identical `findPostedEntry()` idempotency key every other posting rule already uses  <sub>:55</sub>
+- 3. Write-off and disposal reuse doc 79's own `AssetStatus`, closing the schedule rather than deleting it  <sub>:81</sub>
+- Scope lenses  <sub>:94</sub>
+- Work orders  <sub>:175</sub>
+- Acceptance  <sub>:191</sub>
+- Out of scope  <sub>:202</sub>
+
+### `docs/implementation/finance-accounting/151-layby-installment-sales.md`  <sub>201 lines</sub>
+
+- 1. A layby/instalment plan is a schedule of expected payments against one order, fulfilment gated on completion  <sub>:14</sub>
+- 2. Fulfilment gating is the one real difference between LAYBY and INSTALMENT, and the one place this touches the order lifecycle  <sub>:59</sub>
+- Scope lenses  <sub>:82</sub>
+- Work orders  <sub>:169</sub>
+- Acceptance  <sub>:184</sub>
+- Out of scope  <sub>:194</sub>
+
+### `docs/implementation/finance-accounting/49-financial-institution-settlement-partnerships.md`  <sub>265 lines</sub>
+
+- 1. A settlement batch is a reconciliation target, not a payment record  <sub>:14</sub>
+- 2. A `FinancialInstitutionConnector` is doc 36's own pattern, applied to settlement  <sub>:76</sub>
+- 3. A shortfall is a named variance, never a silent write-off  <sub>:96</sub>
+- Scope lenses  <sub>:107</sub>
+- Work orders  <sub>:219</sub>
+- Acceptance  <sub>:241</sub>
+- Out of scope  <sub>:254</sub>
+
+### `docs/implementation/finance-accounting/56-overdue-invoices-counter.md`  <sub>111 lines</sub>
+
+- 1. Overdue is computed at read time, always  <sub>:11</sub>
+- Scope lenses  <sub>:34</sub>
+- Work orders  <sub>:81</sub>
+- Acceptance  <sub>:91</sub>
+- Out of scope  <sub>:102</sub>
+
+### `docs/implementation/finance-accounting/68-realtime-gross-profit.md`  <sub>178 lines</sub>
+
+- 1. The fix is one more publish, at the point POS already knows it happened  <sub>:26</sub>
+- 2. "Per transaction and per day" is then a read over rows that now exist  <sub>:48</sub>
+- Scope lenses  <sub>:70</sub>
+- Work orders  <sub>:135</sub>
+- Acceptance  <sub>:156</sub>
+- Out of scope  <sub>:169</sub>
+
+### `docs/implementation/hr-people-org/19-org-structure-offices-departments.md`  <sub>250 lines</sub>
+
+- Two hierarchies that look like one  <sub>:15</sub>
+- The design: `OrgUnit`, orthogonal to `Node`  <sub>:38</sub>
+- Scope lenses  <sub>:149</sub>
+- Work orders  <sub>:205</sub>
+- Acceptance  <sub>:225</sub>
+- Out of scope for this document  <sub>:239</sub>
+- Decision to record  <sub>:245</sub>
+
+### `docs/implementation/hr-people-org/20-people-positions-ranks.md`  <sub>239 lines</sub>
+
+- Three things that are not each other  <sub>:9</sub>
+- Schema — `hr.prisma`  <sub>:27</sub>
+- Scope lenses  <sub>:149</sub>
+- Work orders  <sub>:207</sub>
+- Acceptance  <sub>:222</sub>
+- Out of scope  <sub>:233</sub>
+
+### `docs/implementation/hr-people-org/26-performance-reviews.md`  <sub>247 lines</sub>
+
+- 1. A review is a document with a cycle, not a number with a date  <sub>:13</sub>
+- 2. Signals feed a review; they never become one automatically  <sub>:22</sub>
+- Schema — append to `hr.prisma`  <sub>:33</sub>
+- Scope lenses  <sub>:131</sub>
+- Work orders  <sub>:212</sub>
+- Acceptance  <sub>:228</sub>
+- Out of scope  <sub>:239</sub>
+
+### `docs/implementation/hr-people-org/27-training-skill-development.md`  <sub>246 lines</sub>
+
+- 1. A skill is a row a `Position` can require, not a line in a résumé  <sub>:10</sub>
+- 2. A course produces a certification event, not a status flag  <sub>:20</sub>
+- Schema — append to `hr.prisma`  <sub>:30</sub>
+- Scope lenses  <sub>:129</sub>
+- Work orders  <sub>:211</sub>
+- Acceptance  <sub>:225</sub>
+- Out of scope  <sub>:238</sub>
+
+### `docs/implementation/hr-people-org/28-recruitment-onboarding-document-vault.md`  <sub>335 lines</sub>
+
+- 1. A candidate is not an `Employee` until an offer is accepted  <sub>:12</sub>
+- 2. A document is a fact with a retention basis, not a file with a name  <sub>:22</sub>
+- Schema — append to `hr.prisma`  <sub>:32</sub>
+- Scope lenses  <sub>:187</sub>
+- Work orders  <sub>:290</sub>
+- Acceptance  <sub>:312</sub>
+- Out of scope  <sub>:325</sub>
+
+### `docs/implementation/hr-people-org/29-company-asset-tracking.md`  <sub>262 lines</sub>
+
+- 1. An asset is a serialized thing with one current holder and a full history  <sub>:13</sub>
+- 2. Damage, loss and write-off are asset *events*, not deletions  <sub>:21</sub>
+- Schema — new `assets.prisma`  <sub>:29</sub>
+- Scope lenses  <sub>:113</sub>
+- Work orders  <sub>:223</sub>
+- Acceptance  <sub>:240</sub>
+- Out of scope  <sub>:253</sub>
+
+### `docs/implementation/hr-people-org/42-timesheet-approval-chains.md`  <sub>235 lines</sub>
+
+- 1. A timesheet is a document with entries, a status, and a chain  <sub>:21</sub>
+- 2. The chain length is policy, not a hardcoded number of levels  <sub>:92</sub>
+- 3. Approval feeds payroll as a signal, never a silent override  <sub>:103</sub>
+- Scope lenses  <sub>:112</sub>
+- Work orders  <sub>:195</sub>
+- Acceptance  <sub>:213</sub>
+- Out of scope  <sub>:226</sub>
+
+### `docs/implementation/hr-people-org/52-staff-self-service-mobile-app.md`  <sub>161 lines</sub>
+
+- 1. Self-service becomes installable, the same way the till already is  <sub>:22</sub>
+- 2. Clock-in is a self-service `AttendanceEvent`, not a new attendance model  <sub>:34</sub>
+- 3. "My schedule" and "my announcements" are reads over existing rows  <sub>:50</sub>
+- Scope lenses  <sub>:60</sub>
+- Work orders  <sub>:122</sub>
+- Acceptance  <sub>:138</sub>
+- Out of scope  <sub>:152</sub>
+
+### `docs/implementation/hr-people-org/53-new-hire-joiner-tracking.md`  <sub>104 lines</sub>
+
+- 1. "Recent" is a policy window, not a hardcoded number of days  <sub>:12</sub>
+- Scope lenses  <sub>:34</sub>
+- Work orders  <sub>:79</sub>
+- Acceptance  <sub>:86</sub>
+- Out of scope  <sub>:96</sub>
+
+### `docs/implementation/hr-people-org/54-employee-document-lifecycle-alerts.md`  <sub>148 lines</sub>
+
+- 1. An expiring record is a registered source, not a hardcoded pair  <sub>:14</sub>
+- 2. One nightly run, one notification shape, both sources  <sub>:42</sub>
+- Scope lenses  <sub>:59</sub>
+- Work orders  <sub>:117</sub>
+- Acceptance  <sub>:130</sub>
+- Out of scope  <sub>:142</sub>
+
+### `docs/implementation/hr-people-org/60-headcount-growth-metrics.md`  <sub>102 lines</sub>
+
+- 1. Net growth is joiners minus leavers, per month, from rows doc 20 already writes  <sub>:12</sub>
+- Scope lenses  <sub>:38</sub>
+- Work orders  <sub>:78</sub>
+- Acceptance  <sub>:87</sub>
+- Out of scope  <sub>:97</sub>
+
+### `docs/implementation/hr-people-org/62-document-expiration-compliance.md`  <sub>121 lines</sub>
+
+- 1. What already exists  <sub>:13</sub>
+- 2. The one real gap: document *type* is data, not a fixed list  <sub>:24</sub>
+- Scope lenses  <sub>:59</sub>
+- Work orders  <sub>:95</sub>
+- Acceptance  <sub>:107</sub>
+- Out of scope  <sub>:115</sub>
+
+### `docs/implementation/hr-people-org/63-multi-tier-approval-hierarchies.md`  <sub>228 lines</sub>
+
+- 1. The chain, extracted once, referenced by subject type  <sub>:14</sub>
+- 2. `ApprovalService` is the one writer; each subject module calls it, never re-implements it  <sub>:59</sub>
+- Scope lenses  <sub>:92</sub>
+- Work orders  <sub>:191</sub>
+- Acceptance  <sub>:211</sub>
+- Out of scope  <sub>:222</sub>
+
+### `docs/implementation/hr-people-org/74-hr-dashboard-financial-overview.md`  <sub>116 lines</sub>
+
+- 1. The four figures, mapped onto `PayRunStatus` and the current period  <sub>:11</sub>
+- 2. "Specifically for taxes and insurance" is a breakdown, not a bespoke split  <sub>:35</sub>
+- Scope lenses  <sub>:49</sub>
+- Work orders  <sub>:93</sub>
+- Acceptance  <sub>:102</sub>
+- Out of scope  <sub>:111</sub>
+
+### `docs/implementation/hr-people-org/78-hr-navigation-consolidation.md`  <sub>138 lines</sub>
+
+- 1. One `hr` nav section, grouping what already exists  <sub>:32</sub>
+- 2. "No dead end" — a tab never ships before its screen does  <sub>:64</sub>
+- Scope lenses  <sub>:76</sub>
+- Work orders  <sub>:108</sub>
+- Acceptance  <sub>:122</sub>
+- Out of scope  <sub>:131</sub>
+
+### `docs/implementation/hr-people-org/79-employee-asset-management.md`  <sub>183 lines</sub>
+
+- 1. An asset is a trackable item; an assignment is who has it and since when  <sub>:9</sub>
+- 2. An employee's exit is the one write path that must never be optional  <sub>:59</sub>
+- Scope lenses  <sub>:74</sub>
+- Work orders  <sub>:154</sub>
+- Acceptance  <sub>:169</sub>
+- Out of scope  <sub>:178</sub>
+
+### `docs/implementation/hr-people-org/80-employee-training-certification.md`  <sub>161 lines</sub>
+
+- 1. A training course is a catalogue entry; a completion is a record against it  <sub>:11</sub>
+- 2. Expiring certifications register against doc 54's watcher — never a second scheduler  <sub>:61</sub>
+- Scope lenses  <sub>:69</sub>
+- Work orders  <sub>:131</sub>
+- Acceptance  <sub>:146</sub>
+- Out of scope  <sub>:155</sub>
+
+### `docs/implementation/hr-people-org/91-staff-portal-mobile-access.md`  <sub>55 lines</sub>
+
+- What already exists, and what the two-name request risks if taken literally  <sub>:14</sub>
+- Scope lenses  <sub>:28</sub>
+- Work orders  <sub>:34</sub>
+- Acceptance  <sub>:41</sub>
+- Out of scope  <sub>:50</sub>
+
+### `docs/implementation/integrations-connectivity/101-agnostic-notification-webhooks.md`  <sub>71 lines</sub>
+
+- What already exists, per channel  <sub>:11</sub>
+- "Triggering webhooks" — the delivery mechanism doc 33 already names  <sub>:29</sub>
+- Scope lenses  <sub>:45</sub>
+- Work orders  <sub>:50</sub>
+- Acceptance  <sub>:57</sub>
+- Out of scope  <sub>:65</sub>
+
+### `docs/implementation/integrations-connectivity/102-hyperautomation-workflow-integration.md`  <sub>70 lines</sub>
+
+- What doc 36 already specifies, restated rather than re-derived  <sub>:15</sub>
+- Scope lenses  <sub>:41</sub>
+- Work orders  <sub>:48</sub>
+- Acceptance  <sub>:57</sub>
+- Out of scope  <sub>:63</sub>
+
+### `docs/implementation/integrations-connectivity/120-decoupled-integration-engines.md`  <sub>48 lines</sub>
+
+- Why `OutboundConnector` already isolates this repository from a third party's own breaking changes  <sub>:12</sub>
+- Scope lenses  <sub>:27</sub>
+- Work orders  <sub>:32</sub>
+- Acceptance  <sub>:37</sub>
+- Out of scope  <sub>:42</sub>
+
+### `docs/implementation/integrations-connectivity/129-channel-abstraction-audit.md`  <sub>87 lines</sub>
+
+- What the audit checked, and what it found  <sub>:12</sub>
+- The one real fix: an optional correlation token, additive, not disruptive  <sub>:42</sub>
+- Scope lenses  <sub>:60</sub>
+- Work orders  <sub>:67</sub>
+- Acceptance  <sub>:73</sub>
+- Out of scope  <sub>:81</sub>
+
+### `docs/implementation/integrations-connectivity/13-email-service-plan.md`  <sub>32 lines</sub>
+
+- 1. The Technology Stack  <sub>:5</sub>
+- 2. The Client Experience  <sub>:10</sub>
+- 3. Strict DNS Requirements (Crucial for Independence)  <sub>:14</sub>
+- 4. Application Architecture (How the API sends emails)  <sub>:23</sub>
+- 5. The Ultimate Agency Flex (Future API Integration)  <sub>:29</sub>
+
+### `docs/implementation/integrations-connectivity/132-generic-inbound-webhook-receiver.md`  <sub>164 lines</sub>
+
+- 1. A registered inbound endpoint, mapped by template onto a domain event — the mirror of `OutboundConnector`  <sub>:13</sub>
+- Scope lenses  <sub>:70</sub>
+- Work orders  <sub>:141</sub>
+- Acceptance  <sub>:150</sub>
+- Out of scope  <sub>:158</sub>
+
+### `docs/implementation/integrations-connectivity/159-telephony-provider-integration.md`  <sub>288 lines</sub>
+
+- What's already built or specified — cited, not duplicated  <sub>:21</sub>
+- 1. `TelephonyProvider` — the same shape as every other extension point in this repository  <sub>:40</sub>
+- 2. `CallLog` — a record, never a request, the moment the call is over  <sub>:83</sub>
+- 3. Recording — reused storage, never a provider-hosted link left as the only copy  <sub>:122</sub>
+- 4. Configuration — the same allowlist shape `PAYMENT_PROVIDERS`/`NOTIFICATION_CHANNELS` already use  <sub>:143</sub>
+- 5. Where a call attaches to what already exists — never a second contact record, never a second ticket system  <sub>:155</sub>
+- Scope lenses  <sub>:168</sub>
+- Work orders  <sub>:244</sub>
+- Acceptance  <sub>:266</sub>
+- Out of scope  <sub>:278</sub>
+
+### `docs/implementation/integrations-connectivity/160-dynamic-external-system-connectivity.md`  <sub>274 lines</sub>
+
+- What's genuinely missing, found by walking every category against what already exists  <sub>:17</sub>
+- 1. Per-merchant OAuth2 (authorization code) — the missing half of `ConnectorAuthMethod`  <sub>:34</sub>
+- 2. `PollConnector` — the scheduled-pull sibling doc 132's passive webhook receiver doesn't cover  <sub>:85</sub>
+- 3. `ExternalRecordLink` — one generic mapping table every stateful sync reuses  <sub>:121</sub>
+- 4. Where this leaves each category — configuration, not new code  <sub>:148</sub>
+- Scope lenses  <sub>:164</sub>
+- Work orders  <sub>:228</sub>
+- Acceptance  <sub>:245</sub>
+- Out of scope  <sub>:259</sub>
+
+### `docs/implementation/integrations-connectivity/162-file-based-connector-integration.md`  <sub>271 lines</sub>
+
+- Why a file needs its own kind, not a template on the existing connectors  <sub>:13</sub>
+- 1. `FileConnector` — a scheduled or triggered file exchange, in or out  <sub>:26</sub>
+- 2. `FileFormatHandler` — one class per format family, resolved by `FileConnector.format`  <sub>:78</sub>
+- 3. Idempotent by checksum, never by filename or schedule alone  <sub>:101</sub>
+- 4. The two real use cases named in this request  <sub>:134</sub>
+- Scope lenses  <sub>:147</sub>
+- Work orders  <sub>:222</sub>
+- Acceptance  <sub>:249</sub>
+- Out of scope  <sub>:261</sub>
+
+### `docs/implementation/integrations-connectivity/18-trading-partner-network.md`  <sub>87 lines</sub>
+
+- Work orders  <sub>:24</sub>
+- Out of scope (for now)  <sub>:80</sub>
+
+### `docs/implementation/integrations-connectivity/33-sms-whatsapp-channels.md`  <sub>249 lines</sub>
+
+- 1. Two channels, one interface, no caller changes  <sub>:19</sub>
+- 2. The provider is a second, smaller extension point underneath the channel  <sub>:48</sub>
+- Schema — new `outbound-messaging.prisma`  <sub>:75</sub>
+- Scope lenses  <sub>:122</sub>
+- Work orders  <sub>:208</sub>
+- Acceptance  <sub>:226</sub>
+- Out of scope  <sub>:241</sub>
+
+### `docs/implementation/integrations-connectivity/34-partner-developer-api-access.md`  <sub>235 lines</sub>
+
+- 1. An API key is a principal with a scope, never a `User` in disguise  <sub>:13</sub>
+- 2. Scoped read/write, never a bypass of tenant or branch isolation  <sub>:73</sub>
+- 3. Rate limiting protects the platform; scoping protects the data  <sub>:82</sub>
+- Scope lenses  <sub>:91</sub>
+- Work orders  <sub>:194</sub>
+- Acceptance  <sub>:212</sub>
+- Out of scope  <sub>:225</sub>
+
+### `docs/implementation/integrations-connectivity/36-universal-connectivity-integration-framework.md`  <sub>264 lines</sub>
+
+- The pattern, named once so it stops being reinvented per module  <sub>:14</sub>
+- 1. The generic outbound connector: HTTP, templated, retried, never bespoke code per target  <sub>:33</sub>
+- 2. OAuth2 client-credentials, because a static key is not always an option  <sub>:100</sub>
+- 3. Inbound stays doc 34's territory; this document is the outbound mirror  <sub>:117</sub>
+- Scope lenses  <sub>:128</sub>
+- Work orders  <sub>:225</sub>
+- Acceptance  <sub>:241</sub>
+- Out of scope  <sub>:253</sub>
+
+### `docs/implementation/inventory-purchasing/01-inventory-purchasing-cost.md`  <sub>937 lines</sub>
+
+- Why this phase is first  <sub>:18</sub>
+- What Phase 1 delivers  <sub>:32</sub>
+- Work orders  <sub>:42</sub>
+- WO-1.1 — Nav foundation  <sub>:60</sub>
+- WO-1.2 — The unified stock ledger  <sub>:149</sub>
+- WO-1.3 — Cost price and COGS  <sub>:318</sub>
+- WO-1.4 — Suppliers  <sub>:382</sub>
+- WO-1.5 — Purchase orders, goods receipts, and cost  <sub>:460</sub>
+- WO-1.6 — Reorder, low stock and slow movers  <sub>:710</sub>
+- WO-1.7 — Stock counts  <sub>:786</sub>
+- WO-1.8 — Admin screens  <sub>:866</sub>
+- WO-1.9 — Reports  <sub>:905</sub>
+- Phase 1 exit criteria  <sub>:922</sub>
+
+### `docs/implementation/inventory-purchasing/152-purchase-requisition.md`  <sub>190 lines</sub>
+
+- 1. A requisition is a request to buy; a PO is the resulting commitment — never the same row wearing two hats  <sub>:15</sub>
+- 2. Approval reuses doc 63's own generic chain, never a bespoke requisition-approval mechanism  <sub>:45</sub>
+- Scope lenses  <sub>:67</sub>
+- Work orders  <sub>:157</sub>
+- Acceptance  <sub>:172</sub>
+- Out of scope  <sub>:182</sub>
+
+### `docs/implementation/inventory-purchasing/156-single-employee-branch-loss-prevention.md`  <sub>287 lines</sub>
+
+- What already exists, cited rather than re-specified  <sub>:15</sub>
+- The three real gaps found, checked against the actual code  <sub>:39</sub>
+- 1. Link a variance to the shift that had custody — accountability, not just detection  <sub>:66</sub>
+- 2. Close the self-resolution gap — the toxic pair this repository already refuses everywhere else  <sub>:94</sub>
+- 3. Unpredictable spot-checks — shrinking the window from a month to days, and removing the "safe day"  <sub>:117</sub>
+- 4. Camera-count vs. transaction-count — a real, new correlation this repository's own existing pieces already make possible  <sub>:150</sub>
+- Scope lenses  <sub>:171</sub>
+- Work orders  <sub>:242</sub>
+- Acceptance  <sub>:262</sub>
+- Out of scope  <sub>:275</sub>
+
+### `docs/implementation/inventory-purchasing/17-inventory-locations.md`  <sub>254 lines</sub>
+
+- Why the aggregate write is one atomic statement  <sub>:26</sub>
+- Why this is the risky one, specifically  <sub>:42</sub>
+- The design: additive first, single-location behavior byte-identical  <sub>:57</sub>
+- What every existing caller needs  <sub>:175</sub>
+- Explicitly out of scope for this doc  <sub>:184</sub>
+- Work orders  <sub>:197</sub>
+- Why one snippet in this doc was wrong  <sub>:239</sub>
+- When to actually build this  <sub>:247</sub>
+
+### `docs/implementation/inventory-purchasing/70-realtime-stock-depletion.md`  <sub>77 lines</sub>
+
+- 1. Why "reflecting across both POS tills and back-office" needs no extra work  <sub>:20</sub>
+- 2. Barcode scanning is a POS hardware input, not a stock-deduction mechanism of its own  <sub>:33</sub>
+- Scope lenses  <sub>:44</sub>
+- Work orders  <sub>:55</sub>
+- Acceptance  <sub>:62</sub>
+- Out of scope  <sub>:73</sub>
+
+### `docs/implementation/lots-serials-traceability/158-serialized-unit-tracking.md`  <sub>305 lines</sub>
+
+- Why this is a real gap, not a smaller version of `lots`  <sub>:15</sub>
+- 1. `SerializedUnit` — a sub-ledger under the existing stock row, never a second stock model  <sub>:29</sub>
+- 2. Capture points — three, and only three, moments a serial is ever written  <sub>:88</sub>
+- 3. `getUnitHistory()` — the warranty and authenticity lookup this data makes possible  <sub>:144</sub>
+- 4. Strengthens doc 156 for free — a variance can now name the exact unit, not just the SKU  <sub>:168</sub>
+- Scope lenses  <sub>:185</sub>
+- Work orders  <sub>:263</sub>
+- Acceptance  <sub>:280</sub>
+- Out of scope  <sub>:294</sub>
+
+### `docs/implementation/lots-serials-traceability/32-lots-batch-expiry-fefo.md`  <sub>245 lines</sub>
+
+- 1. A lot is a sub-ledger under the existing stock row, never a second stock model  <sub>:18</sub>
+- 2. Allocation is FEFO by default, and it is the one writer  <sub>:82</sub>
+- 3. A recall query is a read path this ledger makes possible, not a new model  <sub>:98</sub>
+- Scope lenses  <sub>:113</sub>
+- Work orders  <sub>:201</sub>
+- Acceptance  <sub>:222</sub>
+- Out of scope  <sub>:236</sub>
+
+### `docs/implementation/lots-serials-traceability/71-recipe-batch-traceability.md`  <sub>255 lines</sub>
+
+- 1. Consumption draws from specific input lots; production creates one output lot  <sub>:21</sub>
+- 2. The write happens inside `production.service.ts`'s own existing transaction, never a second write path  <sub>:73</sub>
+- 3. Genealogy is then a graph walk over rows that now exist  <sub>:103</sub>
+- Scope lenses  <sub>:128</sub>
+- Work orders  <sub>:220</sub>
+- Acceptance  <sub>:233</sub>
+- Out of scope  <sub>:248</sub>
 
 ### `docs/implementation/MULTI-SECTOR.md`  <sub>806 lines</sub>
 
@@ -3481,15 +3212,188 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>490 lines</sub>
+### `docs/implementation/payroll/19-payroll.md`  <sub>522 lines</sub>
 
-- Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:360</sub>
-- The two module groups  <sub>:389</sub>
-- How a work order runs  <sub>:426</sub>
-- Known gaps not yet owned by a phase  <sub>:444</sub>
-- When a brief is wrong  <sub>:471</sub>
-- Scope, honestly  <sub>:484</sub>
+- Scope decision, taken with the owner  <sub>:14</sub>
+- Why `User`, not a new `Employee` table  <sub>:44</sub>
+- Permissions  <sub>:57</sub>
+- Work orders  <sub>:89</sub>
+- WO-19.1 — Schema, module skeleton, permissions, chart-of-accounts  <sub>:103</sub>
+- WO-19.2 — Compensation rates and the salary calculator  <sub>:345</sub>
+- WO-19.3 — Leave types, balances, accrual and requests  <sub>:388</sub>
+- WO-19.4 — Pay-run build, approve, post — and GL posting  <sub>:417</sub>
+- WO-19.5 — Overpayment adjustments  <sub>:450</sub>
+- WO-19.6 — Admin screens, nav, self-service  <sub>:470</sub>
+- WO-19.7 — Tests and full verification  <sub>:500</sub>
+- Not modelled in this phase (named, not silently dropped)  <sub>:511</sub>
+
+### `docs/implementation/payroll/25-advance-salary-and-payroll-posting.md`  <sub>266 lines</sub>
+
+- The chart does not have the accounts  <sub>:13</sub>
+- The posting rules, written out  <sub>:31</sub>
+- Schema — append to `hr.prisma`  <sub>:60</sub>
+- Who may approve, and how much  <sub>:119</sub>
+- Scope lenses  <sub>:142</sub>
+- Work orders  <sub>:223</sub>
+- Acceptance  <sub>:238</sub>
+- Out of scope, and the gap this leaves open  <sub>:254</sub>
+
+### `docs/implementation/payroll/40-itemized-payroll-deductions.md`  <sub>238 lines</sub>
+
+- 1. A deduction type is a row, not a hardcoded tax bracket  <sub>:21</sub>
+- 2. A penalty is a request; a statutory tax and an insurance premium are policy, applied automatically  <sub>:78</sub>
+- Scope lenses  <sub>:101</sub>
+- Work orders  <sub>:196</sub>
+- Acceptance  <sub>:215</sub>
+- Out of scope  <sub>:229</sub>
+
+### `docs/implementation/payroll/41-pending-vs-disbursed-payroll-tracking.md`  <sub>152 lines</sub>
+
+- 1. A pay run is disbursed once the bank confirms it, not once it is posted  <sub>:15</sub>
+- 2. Pending versus disbursed is a query over existing rows, not a new table  <sub>:46</sub>
+- Scope lenses  <sub>:68</sub>
+- Work orders  <sub>:124</sub>
+- Acceptance  <sub>:135</sub>
+- Out of scope  <sub>:145</sub>
+
+### `docs/implementation/pos-hardware/31-sector-pos-hardware-integration.md`  <sub>244 lines</sub>
+
+- What each requested sector actually needs, checked against what exists  <sub>:13</sub>
+- 1. Hardware is an extension point, not a browser API call sprinkled through the till UI  <sub>:24</sub>
+- 2. A line can carry a modifier set and a quantity source other than "typed"  <sub>:68</sub>
+- 3. Order type decides whether a sale can be parked, not whether it exists  <sub>:106</sub>
+- Scope lenses  <sub>:139</sub>
+- Work orders  <sub>:205</sub>
+- Acceptance  <sub>:224</sub>
+- Out of scope  <sub>:237</sub>
+
+### `docs/implementation/pos-hardware/66-multi-form-factor-pos.md`  <sub>78 lines</sub>
+
+- 1. What already covers this, and what a gap would actually look like  <sub>:15</sub>
+- Scope lenses  <sub>:42</sub>
+- Work orders  <sub>:53</sub>
+- Acceptance  <sub>:63</sub>
+- Out of scope  <sub>:72</sub>
+
+### `docs/implementation/pos-hardware/67-secure-cash-drawer-triggering.md`  <sub>63 lines</sub>
+
+- 1. What "exclusively with completed cash transactions" already means here  <sub>:15</sub>
+- Scope lenses  <sub>:35</sub>
+- Work orders  <sub>:43</sub>
+- Acceptance  <sub>:50</sub>
+- Out of scope  <sub>:58</sub>
+
+### `docs/implementation/pos-hardware/76-pos-mobile-dashboard.md`  <sub>109 lines</sub>
+
+- 1. One read, reusing `AnalyticsService.summary()`'s own figures, scoped to the till's own location  <sub>:17</sub>
+- 2. Doc 31's own hardware/PWA foundation is where this screen lives  <sub>:37</sub>
+- Scope lenses  <sub>:47</sub>
+- Work orders  <sub>:84</sub>
+- Acceptance  <sub>:95</sub>
+- Out of scope  <sub>:104</sub>
+
+### `docs/implementation/promotions-giftcards/05-promotions-giftcards.md`  <sub>347 lines</sub>
+
+- Why now  <sub>:32</sub>
+- Work orders  <sub>:41</sub>
+- WO-5.1 — The rules engine  <sub>:58</sub>
+- WO-5.2 — Promo codes  <sub>:149</sub>
+- WO-5.3 — Checkout  <sub>:190</sub>
+- WO-5.4 — Gift cards  <sub>:223</sub>
+- WO-5.5 — Store credit  <sub>:294</sub>
+- WO-5.6 — Screens  <sub>:321</sub>
+- Phase 5 exit criteria  <sub>:337</sub>
+
+### `docs/implementation/README.md`  <sub>499 lines</sub>
+
+- Read in this order  <sub>:16</sub>
+- Dependency order  <sub>:369</sub>
+- The two module groups  <sub>:398</sub>
+- How a work order runs  <sub>:435</sub>
+- Known gaps not yet owned by a phase  <sub>:453</sub>
+- When a brief is wrong  <sub>:480</sub>
+- Scope, honestly  <sub>:493</sub>
+
+### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
+
+- The strongest evidence for "no core rewrites": doc 48 already exists  <sub>:12</sub>
+- What portability already covers, and the one thing it does not claim  <sub>:27</sub>
+- Scope lenses  <sub>:47</sub>
+- Work orders  <sub>:52</sub>
+- Acceptance  <sub>:57</sub>
+- Out of scope  <sub>:63</sub>
+
+### `docs/implementation/resilience-scalability/123-automated-degradation-resilience.md`  <sub>73 lines</sub>
+
+- The evidence, collected from this session's own documents  <sub>:16</sub>
+- "A localized fallback state" — this repository's own name for it  <sub>:38</sub>
+- Scope lenses  <sub>:47</sub>
+- Work orders  <sub>:53</sub>
+- Acceptance  <sub>:58</sub>
+- Out of scope  <sub>:67</sub>
+
+### `docs/implementation/resilience-scalability/124-infrastructure-as-code.md`  <sub>64 lines</sub>
+
+- What already exists, version-controlled, in this repository  <sub>:9</sub>
+- The honest gap: no declarative infrastructure-provisioning tool  <sub>:22</sub>
+- Scope lenses  <sub>:35</sub>
+- Work orders  <sub>:41</sub>
+- Acceptance  <sub>:51</sub>
+- Out of scope  <sub>:59</sub>
+
+### `docs/implementation/resilience-scalability/144-supply-chain-resilience-planning-engine.md`  <sub>345 lines</sub>
+
+- 1. R20 — the dependency graph is a projection, never a second model  <sub>:20</sub>
+- 2. R21 — shocks and propagation, arithmetic over the graph, never inference  <sub>:52</sub>
+- 3. R22 — one ranking formula, actions generated from the graph, never invented  <sub>:89</sub>
+- 4. R23 — GenAI narrates, cites, never computes  <sub>:116</sub>
+- 5. R24 — liquidity is a ledger query plus a schedule, not a new forecast model  <sub>:137</sub>
+- 6. R25 — lead time as a distribution, backfilled from history already in the database  <sub>:155</sub>
+- 7. R26 — online stock is the sum of branch allotments, no separate reservation ledger  <sub>:188</sub>
+- Scope lenses  <sub>:210</sub>
+- Work orders  <sub>:302</sub>
+- Acceptance  <sub>:323</sub>
+- Out of scope  <sub>:338</sub>
+
+### `docs/implementation/resilience-scalability/37-scalability-future-upgrades.md`  <sub>247 lines</sub>
+
+- What already exists, referenced rather than repeated  <sub>:15</sub>
+- What is genuinely missing  <sub>:29</sub>
+- Scope lenses  <sub>:127</sub>
+- Work orders  <sub>:203</sub>
+- Acceptance  <sub>:218</sub>
+- Out of scope  <sub>:235</sub>
+
+### `docs/implementation/resilience-scalability/38-resilience-engineering.md`  <sub>238 lines</sub>
+
+- 1. The degradation matrix: what actually happens when each dependency is down  <sub>:15</sub>
+- 2. Circuit breakers, generalized from the one pattern the outbox already proves  <sub>:39</sub>
+- 3. SLOs and error budgets for the paths that actually matter  <sub>:64</sub>
+- 4. Disaster recovery, naming the numbers `deploy/backup.sh` already earns  <sub>:85</sub>
+- 5. Contract tests: the module-boundary guarantee, extended to behavior  <sub>:105</sub>
+- Scope lenses  <sub>:118</sub>
+- Work orders  <sub>:188</sub>
+- Acceptance  <sub>:209</sub>
+- Out of scope  <sub>:224</sub>
+
+### `docs/implementation/resilience-scalability/48-native-desktop-deployment.md`  <sub>184 lines</sub>
+
+- The decision this document does not make casually  <sub>:14</sub>
+- 1. A desktop install is a node, exactly as a branch already is  <sub>:37</sub>
+- 2. What packaging actually adds, beyond "it's Electron now"  <sub>:56</sub>
+- Scope lenses  <sub>:76</sub>
+- Work orders  <sub>:142</sub>
+- Acceptance  <sub>:161</sub>
+- Out of scope  <sub>:176</sub>
+
+### `docs/implementation/resilience-scalability/90-automatic-backups-local-support.md`  <sub>56 lines</sub>
+
+- 1. Automatic cloud backups — `deploy/backup.sh`, already real, already restore-tested  <sub>:8</sub>
+- 2. "Local support you can trust" is a support-organization commitment, named honestly as out of scope  <sub>:20</sub>
+- Scope lenses  <sub>:32</sub>
+- Work orders  <sub>:38</sub>
+- Acceptance  <sub>:44</sub>
+- Out of scope  <sub>:50</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 
@@ -3503,6 +3407,105 @@ _no second-level headings_
 - Part 7 — Roadmap  <sub>:865</sub>
 - Part 8 — The briefs this spawns  <sub>:946</sub>
 - Acceptance  <sub>:1006</sub>
+
+### `docs/implementation/shipping-fulfilment-returns/06-shipping-fulfilment-returns.md`  <sub>335 lines</sub>
+
+- Why  <sub>:52</sub>
+- Work orders  <sub>:72</sub>
+- WO-6.1 — Shipping as a module  <sub>:87</sub>
+- WO-6.2 — The `CourierProvider` interface  <sub>:151</sub>
+- WO-6.3 — Real couriers  <sub>:182</sub>
+- WO-6.4 — Shipment lifecycle  <sub>:198</sub>
+- WO-6.5 — Tracking automation  <sub>:214</sub>
+- WO-6.6 — Returns and RMA  <sub>:231</sub>
+- WO-6.7 — RTO  <sub>:300</sub>
+- WO-6.8 — Screens  <sub>:315</sub>
+- Phase 6 exit criteria  <sub>:325</sub>
+
+### `docs/implementation/tasks-notifications-support/148-external-customer-support-portal.md`  <sub>176 lines</sub>
+
+- 1. A customer ticket, keyed to a `Contact`/`Party`, never a `User`  <sub>:13</sub>
+- 2. The trust boundary this document exists to get right  <sub>:64</sub>
+- Scope lenses  <sub>:85</sub>
+- Work orders  <sub>:143</sub>
+- Acceptance  <sub>:161</sub>
+- Out of scope  <sub>:170</sub>
+
+### `docs/implementation/tasks-notifications-support/23-tasks-allotment-tracking.md`  <sub>221 lines</sub>
+
+- 1. Work is assigned to a post, and optionally to a person  <sub>:10</sub>
+- 2. Status is a small enum plus a per-client workflow, not a string  <sub>:22</sub>
+- 3. A transition is an event, not an overwrite  <sub>:35</sub>
+- Schema — `tasks.prisma`  <sub>:41</sub>
+- Reassignment when someone leaves  <sub>:123</sub>
+- Scope lenses  <sub>:131</sub>
+- Work orders  <sub>:188</sub>
+- Acceptance  <sub>:203</sub>
+- Out of scope  <sub>:215</sub>
+
+### `docs/implementation/tasks-notifications-support/24-internal-notifications-meetings-escalation.md`  <sub>225 lines</sub>
+
+- The new part: an audience is a query over the org tree  <sub>:15</sub>
+- Meetings are a notification that expects an answer  <sub>:48</sub>
+- Escalation: the timer that makes a stalled approval visible  <sub>:94</sub>
+- Scope lenses  <sub>:128</sub>
+- Work orders  <sub>:192</sub>
+- Acceptance  <sub>:207</sub>
+- Out of scope  <sub>:220</sub>
+
+### `docs/implementation/tasks-notifications-support/61-policy-communications-bulletin.md`  <sub>194 lines</sub>
+
+- 1. A `Bulletin` is a record; `NotificationsService` announces it, never replaces it  <sub>:14</sub>
+- 2. Publishing a bulletin fires doc 24's own notification, once  <sub>:66</sub>
+- Scope lenses  <sub>:84</sub>
+- Work orders  <sub>:159</sub>
+- Acceptance  <sub>:175</sub>
+- Out of scope  <sub>:187</sub>
+
+### `docs/implementation/tasks-notifications-support/64-help-desk-support-ticketing.md`  <sub>188 lines</sub>
+
+- 1. A ticket is a record of a request, with an ordered reply thread  <sub>:13</sub>
+- 2. Assignment and status transitions reuse the org tree, not a new team model  <sub>:55</sub>
+- Scope lenses  <sub>:75</sub>
+- Work orders  <sub>:153</sub>
+- Acceptance  <sub>:169</sub>
+- Out of scope  <sub>:178</sub>
+
+### `docs/implementation/tax-compliance/112-pluggable-fiscal-engines.md`  <sub>51 lines</sub>
+
+- What already exists  <sub>:14</sub>
+- Scope lenses  <sub>:30</sub>
+- Work orders  <sub>:35</sub>
+- Acceptance  <sub>:41</sub>
+- Out of scope  <sub>:46</sub>
+
+### `docs/implementation/tax-compliance/15-tax-module.md`  <sub>232 lines</sub>
+
+- The design decision this doc locks in  <sub>:16</sub>
+- Schema — new module `tax`  <sub>:24</sub>
+- The pricing math — and where the rounding trap is  <sub>:86</sub>
+- Checkout integration  <sub>:122</sub>
+- What this doc deliberately does not specify  <sub>:132</sub>
+- Work orders  <sub>:196</sub>
+- When to actually build this  <sub>:225</sub>
+
+### `docs/implementation/tax-compliance/46-fbr-verification-qr-codes.md`  <sub>143 lines</sub>
+
+- The QR code cannot be built before doc 15's provider is  <sub>:12</sub>
+- 1. A receipt renders a QR code only once a fiscal reference actually exists  <sub>:24</sub>
+- 2. Printing does not wait on the fiscal authority  <sub>:50</sub>
+- Scope lenses  <sub>:67</sub>
+- Work orders  <sub>:113</sub>
+- Acceptance  <sub>:124</sub>
+- Out of scope  <sub>:136</sub>
+
+### `docs/implementation/tax-compliance/88-pral-fbr-pra-tax-compliance.md`  <sub>69 lines</sub>
+
+- What doc 15 already specifies, restated rather than re-derived  <sub>:18</sub>
+- Scope lenses  <sub>:40</sub>
+- Work orders  <sub>:46</sub>
+- Acceptance  <sub>:56</sub>
+- Out of scope  <sub>:64</sub>
 
 ### `docs/implementation/WO-22-lens-workflow-results.md`  <sub>539 lines</sub>
 

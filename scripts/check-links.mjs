@@ -20,7 +20,7 @@
  * path assembled at runtime from a variable it cannot evaluate, a link
  * rendered only under a condition, and whether a reachable screen is
  * reachable *by the person looking at it* — that last one is PRM-3 and needs
- * both a render and a capability fixture (docs/design/15-integrity.md,
+ * both a render and a capability fixture (docs/design/process-governance/15-integrity.md,
  * checks 6 and 9). Neither exists yet.
  *
  * Run by `pnpm lint` and by CI. `--self-test` proves the matcher against
@@ -84,7 +84,7 @@ export function routeUrl(rel, appDir) {
 /**
  * Every `page.tsx` / `route.ts` under one app's router, as `{url, file}`.
  *
- * Extracted so a render harness (docs/design/15-integrity.md checks 6-10,
+ * Extracted so a render harness (docs/design/process-governance/15-integrity.md checks 6-10,
  * `scripts/check-overflow.mjs` is the first) can ask "what exists" without
  * re-walking the app router a second way — this is already the canonical
  * walk, and the whole point of ITG-2's own reasoning (no duplicate
@@ -391,7 +391,7 @@ function main() {
   }
   console.error(
     `A link that does not resolve is a dead end (ITG-1); a screen nothing links to is\n` +
-    `unshipped, whatever its state of completion (NAV-6). See docs/design/15-integrity.md.\n\n` +
+    `unshipped, whatever its state of completion (NAV-6). See docs/design/process-governance/15-integrity.md.\n\n` +
     `A route the framework reaches on its own, or one linked from outside this codebase,\n` +
     `belongs in REACHABLE_WITHOUT_A_LINK in this file, with the reason.\n`,
   );

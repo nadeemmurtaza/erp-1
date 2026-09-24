@@ -3,7 +3,7 @@
 
 # Components
 
-All **76** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **78** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 125 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 132 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 4 |  |
 
 ### `apps/pos/src/components` (2)
@@ -41,7 +41,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `receipt-view.tsx` | `ReceiptView` | server | 1 |  |
 | `service-worker-registration.tsx` | `ServiceWorkerRegistration` | client | 1 |  |
 
-### `apps/web/src/components/admin` (17)
+### `apps/web/src/components/admin` (18)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
@@ -62,6 +62,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `scope-chips.tsx` | `ScopeChip` `ScopeChips` | client | 2 |  |
 | `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 36 |  |
 | `stage-badge.tsx` | `StageBadge` | server | 3 |  |
+| `toast-stack.tsx` | `ToastStack` | client | 6 |  |
 
 ### `apps/web/src/components/admin/bom` (2)
 
@@ -69,6 +70,12 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `cost-breakdown.tsx` | `CostBreakdown` | client | 1 |  |
 | `recipe-editor.tsx` | `RecipeEditor` | client | 2 |  |
+
+### `apps/web/src/components/admin/marketing` (1)
+
+| Component file | Exports | Client? | Imported by | Purpose |
+|---|---|---|---|---|
+| `discount-form.tsx` | `DiscountType` `DiscountScope` `DiscountFormValues` `EMPTY_DISCOUNT` `DiscountForm` | client | 2 |  |
 
 ### `apps/web/src/components/common` (3)
 

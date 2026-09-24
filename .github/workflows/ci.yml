@@ -93,7 +93,7 @@ jobs:
       - name: Build
         run: pnpm build
 
-  # docs/design/15-integrity.md's build order, check 6 (ITG-4): every route
+  # docs/design/process-governance/15-integrity.md's build order, check 6 (ITG-4): every route
   # at every one of Law 4's seven widths, no horizontal overflow. It needs a
   # running api + web + pos, a browser, and real sign-ins — slow enough that
   # the chapter itself says it "belong[s] in CI as their own job", not inside

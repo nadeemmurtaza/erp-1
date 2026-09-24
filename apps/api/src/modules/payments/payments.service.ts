@@ -15,8 +15,9 @@ import type { Prisma } from '../../core/prisma/client';
 import { BankTransferProvider } from './providers/bank-transfer.provider';
 import { CodProvider } from './providers/cod.provider';
 import { EasypaisaProvider } from './providers/easypaisa.provider';
+import { GiftkartaProvider } from './providers/giftkarta.provider';
 import { JazzCashProvider } from './providers/jazzcash.provider';
-import type { PaymentContext, PaymentProvider } from './payment-provider';
+import type { PaymentCallbackResult, PaymentContext, PaymentProvider } from './payment-provider';
 
 /**
  * Payments, behind one interface.
@@ -39,8 +40,9 @@ export class PaymentsService {
     bankTransfer: BankTransferProvider,
     jazzCash: JazzCashProvider,
     easypaisa: EasypaisaProvider,
+    giftkarta: GiftkartaProvider,
   ) {
-    for (const provider of [cod, bankTransfer, jazzCash, easypaisa]) {
+    for (const provider of [cod, bankTransfer, jazzCash, easypaisa, giftkarta]) {
       if (config.isPaymentProviderEnabled(provider.key)) {
         this.providers.set(provider.key, provider);
       }
@@ -63,6 +65,7 @@ export class PaymentsService {
         descriptionEn: provider.descriptionEn,
         descriptionUr: provider.descriptionUr,
         fee: await provider.feeFor(0),
+        requiresCode: provider.requiresCode ?? false,
       })),
     );
   }
@@ -223,6 +226,87 @@ export class PaymentsService {
       where: { id: paymentId },
       data: { receiptUrl: stored.url, status: 'AWAITING_APPROVAL' },
     });
+  }
+
+  /**
+   * A customer submitting a third-party gift card's own code — Giftkarta's
+   * `requiresCode` flow (payment-provider.ts's own doc comment on
+   * `redeemCode`). Deliberately outside any transaction until the provider
+   * has answered: the external redeem call is a real, non-reversible side
+   * effect Postgres cannot roll back, so it must never sit inside a wider
+   * transaction that could still fail for an unrelated reason. Same
+   * settlement shape as handleCallback() above (update the payment, confirm
+   * the order, publish the matching event) — kept separate rather than
+   * merged with it because this is driven by a customer-submitted code
+   * against ONE named payment, not an inbound webhook matched by reference.
+   */
+  async redeemGiftCardCode(paymentId: string, code: string) {
+    const payment = await this.prisma.payment.findUnique({
+      where: { id: paymentId },
+      include: { order: { select: { id: true, number: true, guestName: true, guestPhone: true, guestEmail: true } } },
+    });
+    if (!payment) throw new NotFoundException('That payment no longer exists.');
+
+    const provider = this.get(payment.provider);
+    if (!provider.requiresCode || !provider.redeemCode) {
+      throw new BadRequestException(`${provider.key} does not take a gift card code.`);
+    }
+
+    // Idempotent the same way attachReceipt/approve already are: a retried
+    // submission (a flaky connection, the customer double-tapping) against an
+    // already-settled payment changes nothing.
+    if (payment.status === 'PAID') {
+      return { orderId: payment.orderId, orderNumber: payment.order.number, status: payment.status };
+    }
+
+    const context: PaymentContext = {
+      orderId: payment.order.id,
+      orderNumber: payment.order.number,
+      amount: payment.amount,
+      customerName: payment.order.guestName ?? '',
+      customerPhone: payment.order.guestPhone,
+      customerEmail: payment.order.guestEmail,
+    };
+
+    const result: PaymentCallbackResult = await provider.redeemCode(context, code);
+
+    await this.prisma.$transaction(async (tx) => {
+      await tx.payment.update({
+        where: { id: payment.id },
+        data: {
+          status: result.status,
+          providerRef: result.providerRef ?? null,
+          failureReason: result.failureReason ?? null,
+          paidAt: result.status === 'PAID' ? new Date() : null,
+          meta: result.raw as Prisma.InputJsonValue,
+        },
+      });
+
+      if (result.status === 'PAID') {
+        await tx.order.update({
+          where: { id: payment.orderId },
+          data: { status: 'CONFIRMED', confirmedAt: new Date() },
+        });
+      }
+
+      await this.events.publish(
+        result.status === 'PAID' ? DomainEvent.PaymentSucceeded : DomainEvent.PaymentFailed,
+        {
+          paymentId: payment.id,
+          orderId: payment.orderId,
+          provider: provider.key,
+          amount: payment.amount,
+          status: result.status,
+        },
+        tx,
+      );
+    });
+
+    if (result.status === 'FAILED') {
+      throw new BadRequestException(result.failureReason ?? 'That gift card could not be redeemed.');
+    }
+
+    return { orderId: payment.orderId, orderNumber: payment.order.number, status: result.status };
   }
 
   /** Staff confirming a bank transfer, or cash collected on delivery. */

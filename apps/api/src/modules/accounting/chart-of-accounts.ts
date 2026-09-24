@@ -36,7 +36,7 @@ export const CHART_OF_ACCOUNTS: ReadonlyArray<{
   { code: '5150', name: 'Direct Expenses', type: 'EXPENSE' },
   { code: '5200', name: 'Operating Expenses', type: 'EXPENSE' },
   { code: '5900', name: 'Realised FX Loss', type: 'EXPENSE' },
-  // Payroll (docs/implementation/19-payroll.md WO-19.4) — the payroll
+  // Payroll (docs/implementation/payroll/19-payroll.md WO-19.4) — the payroll
   // additions this file's own comment above already named as coming.
   { code: '1300', name: 'Employee Advances', type: 'ASSET' },
   { code: '2300', name: 'Salaries Payable', type: 'LIABILITY' },

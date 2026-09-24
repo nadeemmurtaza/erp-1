@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**289** markdown documents. These explain **why**; this index only says **where**.
+**299** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2285,6 +2285,98 @@ _no second-level headings_
 - Acceptance  <sub>:338</sub>
 - Out of scope  <sub>:355</sub>
 
+### `docs/implementation/40-itemized-payroll-deductions.md`  <sub>238 lines</sub>
+
+- 1. A deduction type is a row, not a hardcoded tax bracket  <sub>:21</sub>
+- 2. A penalty is a request; a statutory tax and an insurance premium are policy, applied automatically  <sub>:78</sub>
+- Scope lenses  <sub>:101</sub>
+- Work orders  <sub>:196</sub>
+- Acceptance  <sub>:215</sub>
+- Out of scope  <sub>:229</sub>
+
+### `docs/implementation/41-pending-vs-disbursed-payroll-tracking.md`  <sub>152 lines</sub>
+
+- 1. A pay run is disbursed once the bank confirms it, not once it is posted  <sub>:15</sub>
+- 2. Pending versus disbursed is a query over existing rows, not a new table  <sub>:46</sub>
+- Scope lenses  <sub>:68</sub>
+- Work orders  <sub>:124</sub>
+- Acceptance  <sub>:135</sub>
+- Out of scope  <sub>:145</sub>
+
+### `docs/implementation/42-timesheet-approval-chains.md`  <sub>235 lines</sub>
+
+- 1. A timesheet is a document with entries, a status, and a chain  <sub>:21</sub>
+- 2. The chain length is policy, not a hardcoded number of levels  <sub>:92</sub>
+- 3. Approval feeds payroll as a signal, never a silent override  <sub>:103</sub>
+- Scope lenses  <sub>:112</sub>
+- Work orders  <sub>:195</sub>
+- Acceptance  <sub>:213</sub>
+- Out of scope  <sub>:226</sub>
+
+### `docs/implementation/43-visual-attendance-heatmap.md`  <sub>132 lines</sub>
+
+- 1. A day's attendance state is a pure classification, not a stored column  <sub>:11</sub>
+- 2. The grid is a density map over a org-unit or a roster, one month at a time  <sub>:30</sub>
+- Scope lenses  <sub>:53</sub>
+- Work orders  <sub>:103</sub>
+- Acceptance  <sub>:113</sub>
+- Out of scope  <sub>:125</sub>
+
+### `docs/implementation/44-manager-action-hub.md`  <sub>160 lines</sub>
+
+- 1. An action item is a shape every contributing module already produces  <sub>:13</sub>
+- 2. Sources register, they are not hardcoded  <sub>:34</sub>
+- Scope lenses  <sub>:56</sub>
+- Work orders  <sub>:116</sub>
+- Acceptance  <sub>:135</sub>
+- Out of scope  <sub>:150</sub>
+
+### `docs/implementation/45-order-count-tracking-coverage-note.md`  <sub>63 lines</sub>
+
+- Where it already lives  <sub>:9</sub>
+- The one real gap, scoped narrowly  <sub>:42</sub>
+- Acceptance  <sub>:50</sub>
+- Out of scope  <sub>:59</sub>
+
+### `docs/implementation/46-fbr-verification-qr-codes.md`  <sub>143 lines</sub>
+
+- The QR code cannot be built before doc 15's provider is  <sub>:12</sub>
+- 1. A receipt renders a QR code only once a fiscal reference actually exists  <sub>:24</sub>
+- 2. Printing does not wait on the fiscal authority  <sub>:50</sub>
+- Scope lenses  <sub>:67</sub>
+- Work orders  <sub>:113</sub>
+- Acceptance  <sub>:124</sub>
+- Out of scope  <sub>:136</sub>
+
+### `docs/implementation/47-preconfigured-sector-taxonomy.md`  <sub>154 lines</sub>
+
+- 1. A taxonomy preset is a named, versioned tree template  <sub>:20</sub>
+- 2. Applying a preset is one action, and it is undoable the honest way  <sub>:44</sub>
+- Scope lenses  <sub>:69</sub>
+- Work orders  <sub>:123</sub>
+- Acceptance  <sub>:136</sub>
+- Out of scope  <sub>:146</sub>
+
+### `docs/implementation/48-native-desktop-deployment.md`  <sub>184 lines</sub>
+
+- The decision this document does not make casually  <sub>:14</sub>
+- 1. A desktop install is a node, exactly as a branch already is  <sub>:37</sub>
+- 2. What packaging actually adds, beyond "it's Electron now"  <sub>:56</sub>
+- Scope lenses  <sub>:76</sub>
+- Work orders  <sub>:142</sub>
+- Acceptance  <sub>:161</sub>
+- Out of scope  <sub>:176</sub>
+
+### `docs/implementation/49-financial-institution-settlement-partnerships.md`  <sub>265 lines</sub>
+
+- 1. A settlement batch is a reconciliation target, not a payment record  <sub>:14</sub>
+- 2. A `FinancialInstitutionConnector` is doc 36's own pattern, applied to settlement  <sub>:76</sub>
+- 3. A shortfall is a named variance, never a silent write-off  <sub>:96</sub>
+- Scope lenses  <sub>:107</sub>
+- Work orders  <sub>:219</sub>
+- Acceptance  <sub>:241</sub>
+- Out of scope  <sub>:254</sub>
+
 ### `docs/implementation/DECISIONS.md`  <sub>1,768 lines</sub>
 
 - How to read this  <sub>:13</sub>
@@ -2352,15 +2444,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>180 lines</sub>
+### `docs/implementation/README.md`  <sub>196 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:50</sub>
-- The two module groups  <sub>:79</sub>
-- How a work order runs  <sub>:116</sub>
-- Known gaps not yet owned by a phase  <sub>:134</sub>
-- When a brief is wrong  <sub>:161</sub>
-- Scope, honestly  <sub>:174</sub>
+- Dependency order  <sub>:66</sub>
+- The two module groups  <sub>:95</sub>
+- How a work order runs  <sub>:132</sub>
+- Known gaps not yet owned by a phase  <sub>:150</sub>
+- When a brief is wrong  <sub>:177</sub>
+- Scope, honestly  <sub>:190</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

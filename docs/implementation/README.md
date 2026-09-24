@@ -47,6 +47,22 @@ are built, the rest are specified but not yet built as of this table.
 | [`38-resilience-engineering.md`](./38-resilience-engineering.md) | A degradation matrix synthesizing every module's own "four hours down"/"absent collaborator" answers into one table, circuit breakers generalized from the outbox's existing backoff, SLOs/error budgets on the three paths that matter, and real DR numbers on top of `deploy/backup.sh` |
 | [`39-shared-cross-tenant-hosting-tier.md`](./39-shared-cross-tenant-hosting-tier.md) | Exercises the trigger `ENTERPRISE-SCALE.md`'s Br1 already named and deferred: a hosting control plane sharing infrastructure across tenants while every tenant keeps its own isolated database — see `DECISIONS.md`'s entry on why shared-schema multi-tenancy was rejected |
 
+**Numbers 40–49** fill in the granular micro-features a high-level feature
+list generalizes over — each checked against what already exists first:
+
+| File | What it is |
+|---|---|
+| [`40-itemized-payroll-deductions.md`](./40-itemized-payroll-deductions.md) | Promotes `PayRunLine.deductions: Json` (doc 19's own deliberate placeholder) into real `DeductionType`/`PayRunLineDeduction` rows — statutory tax, insurance, penalties — while advance-salary recovery stays doc 25's own, unmerged |
+| [`41-pending-vs-disbursed-payroll-tracking.md`](./41-pending-vs-disbursed-payroll-tracking.md) | Adds the one status this repo is missing between "posted" and "paid" (`PayRunStatus.DISBURSED`) — the pending/disbursed dashboard is then a query, not a new table |
+| [`42-timesheet-approval-chains.md`](./42-timesheet-approval-chains.md) | The "real timesheet... capability" doc 19 named as future work: submission, multi-level approval over doc 20's `Position`/rank chain, feeding payroll's hourly calculation |
+| [`43-visual-attendance-heatmap.md`](./43-visual-attendance-heatmap.md) | A pure, no-new-write calendar-grid read over doc 22's own `AttendanceEvent` data |
+| [`44-manager-action-hub.md`](./44-manager-action-hub.md) | One aggregated approvals/to-do queue over registered, optional sources (leave, timesheets, advances, expiring documents) — never a second way to act on any of them |
+| [`45-order-count-tracking-coverage-note.md`](./45-order-count-tracking-coverage-note.md) | Order-count tracking is already built (`AnalyticsService.summary()` et al.) — cited with exact line references; the one real gap (`totalUnits`) is a one-line addition |
+| [`46-fbr-verification-qr-codes.md`](./46-fbr-verification-qr-codes.md) | Prints doc 15's fiscal reference as a QR on the till receipt (doc 31) once one actually exists — never a fabricated payload before doc 15's provider is real |
+| [`47-preconfigured-sector-taxonomy.md`](./47-preconfigured-sector-taxonomy.md) | Starter `Category` trees per vertical as seed data an admin applies once — data, not a module, per `MULTI-SECTOR.md`'s own ruling |
+| [`48-native-desktop-deployment.md`](./48-native-desktop-deployment.md) | A desktop install as a real `RETAIL-ERP.md` node (embedded Postgres + unmodified `apps/api`) for businesses with no continuous connectivity at all, not a thicker PWA wrapper |
+| [`49-financial-institution-settlement-partnerships.md`](./49-financial-institution-settlement-partnerships.md) | The merchant-settlement mirror of `PaymentProvider`: did the bank/gateway's payout actually match what was owed, with a named, never-silent `SHORT` variance |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

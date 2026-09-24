@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 269 tracked files in `docs/*`, by directory.
+All 279 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -253,7 +253,7 @@ All 269 tracked files in `docs/*`, by directory.
 | `52g-generate-gap.md` | doc | 26 |  |
 | `52h-harden-gap.md` | doc | 40 |  |
 
-### `docs/implementation` (49)
+### `docs/implementation` (59)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -299,11 +299,21 @@ All 269 tracked files in `docs/*`, by directory.
 | `37-scalability-future-upgrades.md` | doc | 247 |  |
 | `38-resilience-engineering.md` | doc | 238 |  |
 | `39-shared-cross-tenant-hosting-tier.md` | doc | 367 |  |
+| `40-itemized-payroll-deductions.md` | doc | 238 |  |
+| `41-pending-vs-disbursed-payroll-tracking.md` | doc | 152 |  |
+| `42-timesheet-approval-chains.md` | doc | 235 |  |
+| `43-visual-attendance-heatmap.md` | doc | 132 |  |
+| `44-manager-action-hub.md` | doc | 160 |  |
+| `45-order-count-tracking-coverage-note.md` | doc | 63 |  |
+| `46-fbr-verification-qr-codes.md` | doc | 143 |  |
+| `47-preconfigured-sector-taxonomy.md` | doc | 154 |  |
+| `48-native-desktop-deployment.md` | doc | 184 |  |
+| `49-financial-institution-settlement-partnerships.md` | doc | 265 |  |
 | `DECISIONS.md` | doc | 1768 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 180 |  |
+| `README.md` | doc | 196 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 

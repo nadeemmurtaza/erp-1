@@ -333,10 +333,10 @@ All 387 tracked files in `docs/*`, by directory.
 | `157-client-request-idempotency-keys.md` | doc | 276 |  |
 | `16-pbac-row-scoping.md` | doc | 184 |  |
 | `17-inventory-locations.md` | doc | 254 |  |
-| `18-identity-verification.md` | doc | 143 |  |
-| `18-trading-partner-network.md` | doc | 81 |  |
-| `19-org-structure-offices-departments.md` | doc | 244 |  |
-| `19-payroll.md` | doc | 516 |  |
+| `18-identity-verification.md` | doc | 149 |  |
+| `18-trading-partner-network.md` | doc | 87 |  |
+| `19-org-structure-offices-departments.md` | doc | 250 |  |
+| `19-payroll.md` | doc | 522 |  |
 | `20-people-positions-ranks.md` | doc | 239 |  |
 | `21-access-over-the-org-tree.md` | doc | 228 |  |
 | `22-attendance-shifts-leave.md` | doc | 230 |  |
@@ -421,7 +421,7 @@ All 387 tracked files in `docs/*`, by directory.
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 432 |  |
+| `README.md` | doc | 449 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 

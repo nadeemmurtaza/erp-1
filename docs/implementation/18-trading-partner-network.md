@@ -1,5 +1,11 @@
 # 18 — Trading Partner Network
 
+> **Number collision:** this repository has two documents numbered 18 —
+> this one and [`18-identity-verification.md`](./18-identity-verification.md).
+> Neither is a duplicate or an error to merge; they predate a consistent
+> numbering pass and were never renumbered. Cite this document by its full
+> filename, never as bare "doc 18" — see `README.md`.
+
 **Problem:** manufacturer, supplier, distributor, wholesaler and retailer
 each re-key the same document. A PO one business sends is retyped as a
 sales order by the next, whose invoice is retyped again as a bill by the

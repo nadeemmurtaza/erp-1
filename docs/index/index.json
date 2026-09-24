@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 1439,
-    "lines": 221957,
+    "lines": 221998,
     "routes": 357,
     "controllers": 62,
     "models": 140,
@@ -1108,8 +1108,8 @@
     },
     "docs": {
       "files": 387,
-      "lines": 57602,
-      "bytes": 3403283,
+      "lines": 57643,
+      "bytes": 3407794,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -45788,8 +45788,8 @@
       "path": "docs/implementation/18-identity-verification.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 143,
-      "bytes": 7617,
+      "lines": 149,
+      "bytes": 7979,
       "doc": "",
       "symbols": []
     },
@@ -45797,8 +45797,8 @@
       "path": "docs/implementation/18-trading-partner-network.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 81,
-      "bytes": 4554,
+      "lines": 87,
+      "bytes": 4912,
       "doc": "",
       "symbols": []
     },
@@ -45806,8 +45806,8 @@
       "path": "docs/implementation/19-org-structure-offices-departments.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 244,
-      "bytes": 12484,
+      "lines": 250,
+      "bytes": 12814,
       "doc": "",
       "symbols": []
     },
@@ -45815,8 +45815,8 @@
       "path": "docs/implementation/19-payroll.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 516,
-      "bytes": 23587,
+      "lines": 522,
+      "bytes": 23969,
       "doc": "",
       "symbols": []
     },
@@ -46580,8 +46580,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 432,
-      "bytes": 53258,
+      "lines": 449,
+      "bytes": 56337,
       "doc": "",
       "symbols": []
     },

@@ -1,5 +1,11 @@
 # 19 — Offices and departments: one org tree, not a third enum
 
+> **Number collision:** this repository has two documents numbered 19 —
+> this one and [`19-payroll.md`](./19-payroll.md). Neither is a duplicate
+> or an error to merge; they predate a consistent numbering pass and were
+> never renumbered. Cite this document by its full filename, never as bare
+> "doc 19" — see `README.md`.
+
 A corporate group asks for a head office, four regional offices, and departments
 inside each of them — finance, HR, procurement, operations — with sub-teams
 inside the larger ones. The obvious move is to add `OFFICE` and `DEPARTMENT` to

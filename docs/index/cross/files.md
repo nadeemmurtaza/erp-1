@@ -3,21 +3,21 @@
 
 # Every tracked file
 
-All **1,281** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,321** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 529 | 73,347 | [files/api.md](../files/api.md) |
+| apps/api | 527 | 73,255 | [files/api.md](../files/api.md) |
 | apps/web | 258 | 40,371 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 42 | 5,292 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 55 | 4,667 | [files/packages.md](../files/packages.md) |
+| packages/* | 57 | 4,769 | [files/packages.md](../files/packages.md) |
 | docs/* | 269 | 42,630 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 55 | 27,846 | [files/infra.md](../files/infra.md) |
-| repository root files | 42 | 9,054 | [files/root.md](../files/root.md) |
+| scripts, CI, deployment and container configuration | 55 | 28,068 | [files/infra.md](../files/infra.md) |
+| repository root files | 82 | 10,659 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -29,26 +29,26 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 288 |
-| unit test | 115 |
+| unit test | 120 |
 | page | 114 |
-| module | 88 |
-| service | 78 |
+| module | 99 |
+| service | 82 |
 | component | 73 |
-| migration | 60 |
-| dto | 60 |
-| controller | 54 |
-| nest module | 41 |
-| script | 35 |
+| dto | 62 |
+| migration | 61 |
+| controller | 55 |
+| nest module | 45 |
+| script | 37 |
+| json | 29 |
+| prisma schema | 27 |
 | asset | 26 |
-| json | 25 |
-| prisma schema | 25 |
 | react | 22 |
 | event subscriber | 21 |
 | utility | 21 |
 | e2e test | 15 |
 | file | 13 |
 | yaml | 12 |
-| config | 9 |
+| config | 11 |
 | registry | 7 |
 | scheduled job | 7 |
 | constants | 7 |
@@ -56,15 +56,15 @@ name a new file: the convention is what makes it findable.
 | layout | 6 |
 | hook | 5 |
 | types | 5 |
+| toml | 4 |
 | not-found | 4 |
 | example | 3 |
-| toml | 3 |
+| guard | 3 |
 | channel | 3 |
 | driver | 3 |
 | error | 3 |
 | sh | 3 |
 | timer | 3 |
-| guard | 2 |
 | global-error | 2 |
 | stylesheet | 2 |
 | route handler | 2 |

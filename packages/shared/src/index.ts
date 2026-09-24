@@ -5,6 +5,7 @@ export * from './fabric-estimate';
 export * from './permissions';
 export * from './phone';
 export * from './pricing';
+export * from './secret-crypto';
 export * from './slug';
 export * from './brand';
 export * from './http-client';

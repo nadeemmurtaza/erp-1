@@ -36,7 +36,7 @@ model TradingPartner {
   kind TradingPartnerKind
 
   outboundBaseUrl         String?
-  /// AES-256-GCM via core/security/secret-crypto.ts — never stored plain,
+  /// AES-256-GCM via @newax/shared's secret-crypto.ts — never stored plain,
   /// same as an email account's SMTP password.
   outboundApiKeyEncrypted String?
 

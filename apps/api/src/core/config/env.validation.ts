@@ -46,7 +46,7 @@ export const envSchema = z.object({
 
   /**
    * AES-256-GCM key for secrets stored in the database — today, an
-   * EmailAccount's SMTP/IMAP passwords (core/security/secret-crypto.ts).
+   * EmailAccount's SMTP/IMAP passwords (`@newax/shared`'s secret-crypto).
    * Exactly 32 bytes, distinct from the JWT secrets: rotating one must never
    * silently break the other. Generate with:
    *   openssl rand -base64 24 | head -c 32

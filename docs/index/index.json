@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1281,
-    "lines": 205081,
+    "files": 1321,
+    "lines": 206918,
     "routes": 357,
     "controllers": 62,
-    "models": 133,
-    "enums": 58,
-    "migrations": 60,
+    "models": 140,
+    "enums": 62,
+    "migrations": 61,
     "events": 39,
     "permissions": 44,
     "screens": 152,
     "crons": 9,
-    "specs": 130,
+    "specs": 135,
     "designLaws": 150
   },
   "designLaws": [
@@ -1071,21 +1071,21 @@
   ],
   "areas": {
     "root": {
-      "files": 42,
-      "lines": 9054,
-      "bytes": 652803,
+      "files": 82,
+      "lines": 10659,
+      "bytes": 712036,
       "label": "repository root files"
     },
     "infra": {
       "files": 55,
-      "lines": 27846,
-      "bytes": 1092337,
+      "lines": 28068,
+      "bytes": 1100222,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 529,
-      "lines": 73347,
-      "bytes": 2688312,
+      "files": 527,
+      "lines": 73255,
+      "bytes": 2684594,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1113,9 +1113,9 @@
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 55,
-      "lines": 4667,
-      "bytes": 151329,
+      "files": 57,
+      "lines": 4769,
+      "bytes": 155577,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -1856,8 +1856,6 @@
       "name": "security",
       "files": [
         "apps/api/src/core/security/api-token.ts",
-        "apps/api/src/core/security/secret-crypto.spec.ts",
-        "apps/api/src/core/security/secret-crypto.ts",
         "apps/api/src/core/security/unsubscribe-token.spec.ts",
         "apps/api/src/core/security/unsubscribe-token.ts"
       ],
@@ -15590,6 +15588,389 @@
       "indexes": []
     },
     {
+      "name": "PlatformOpsClient",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 136,
+      "doc": "A key-hash principal for internal hosting-ops tooling calling this control plane — the same shape TradingPartner/PosTerminal/Node already use in the tenant-side schema, scoped here to platform.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "keyHash",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "scopes",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "OpsClientStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lastUsedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "revokedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([status])"
+      ]
+    },
+    {
+      "name": "PlatformPlan",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 46,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "editionCap",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "monthlyPriceMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "includedResourceTier",
+          "type": "ResourceTier",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenants",
+          "type": "PlatformTenant[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "subscriptions",
+          "type": "PlatformSubscription[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "name": "PlatformSubscription",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 64,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "planId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startedOn",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "endedOn",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "SubscriptionStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "plan",
+          "type": "PlatformPlan",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([tenantId, status])"
+      ]
+    },
+    {
+      "name": "PlatformTenant",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 23,
+      "doc": "One row per hosted client.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "slug",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "customDomain",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "legalName",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "TenantStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "planId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "deploymentRef",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "resourceTier",
+          "type": "ResourceTier",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "suspendedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "suspendedReason",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "deprovisionedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "plan",
+          "type": "PlatformPlan",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "subscriptions",
+          "type": "PlatformSubscription[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "usageRecords",
+          "type": "PlatformUsageRecord[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "supportAccessGrants",
+          "type": "SupportAccessGrant[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "deploymentCredential",
+          "type": "TenantDeploymentCredential?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([status])"
+      ]
+    },
+    {
+      "name": "PlatformUsageRecord",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 80,
+      "doc": "Metered usage a tenant's own deployment reports about itself — never a source of business truth, only what feeds an invoice line.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "metric",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "windowStart",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "value",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([tenantId, metric, windowStart])",
+        "@@index([tenantId, windowStart])"
+      ]
+    },
+    {
       "name": "PolicyQuarantine",
       "file": "apps/api/prisma/schema/replication.prisma",
       "line": 149,
@@ -20003,6 +20384,87 @@
       ]
     },
     {
+      "name": "SupportAccessGrant",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 95,
+      "doc": "The one deliberately time-boxed door into a tenant's isolated deployment — doc 39 §3.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "grantedToUserId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedByUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startsAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "expiresAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "revokedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "accessedAt",
+          "type": "DateTime[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([tenantId, expiresAt])"
+      ]
+    },
+    {
       "name": "Tag",
       "file": "apps/api/prisma/schema/crm.prisma",
       "line": 207,
@@ -20244,6 +20706,57 @@
       "indexes": [
         "@@index([taxClassId, effectiveAt])"
       ]
+    },
+    {
+      "name": "TenantDeploymentCredential",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 116,
+      "doc": "The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GCM, PLATFORM_ENCRYPTION_KEY) connection string, one row per tenant, never a plaintext column and never returned…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "connectionStringEncrypted",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rotatedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": []
     },
     {
       "name": "TradingPartner",
@@ -21461,6 +21974,15 @@
       ]
     },
     {
+      "name": "OpsClientStatus",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 126,
+      "values": [
+        "ACTIVE",
+        "REVOKED"
+      ]
+    },
+    {
       "name": "OptionDisplay",
       "file": "apps/api/prisma/schema/catalog.prisma",
       "line": 287,
@@ -21684,6 +22206,16 @@
       ]
     },
     {
+      "name": "ResourceTier",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 14,
+      "values": [
+        "STANDARD",
+        "PLUS",
+        "DEDICATED"
+      ]
+    },
+    {
       "name": "ScopeLevel",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 18,
@@ -21804,6 +22336,16 @@
       ]
     },
     {
+      "name": "SubscriptionStatus",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 58,
+      "values": [
+        "ACTIVE",
+        "PAST_DUE",
+        "CANCELLED"
+      ]
+    },
+    {
       "name": "SupplierBillStatus",
       "file": "apps/api/prisma/schema/purchasing.prisma",
       "line": 204,
@@ -21811,6 +22353,17 @@
         "UNPAID",
         "PARTIAL",
         "PAID"
+      ]
+    },
+    {
+      "name": "TenantStatus",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 7,
+      "values": [
+        "PROVISIONING",
+        "ACTIVE",
+        "SUSPENDED",
+        "DEPROVISIONED"
       ]
     },
     {
@@ -22937,6 +23490,29 @@
         "PayRunAdjustment",
         "PayRunLine",
         "PayRunNumberCounter"
+      ]
+    },
+    {
+      "folder": "20260924010600_init",
+      "file": "apps/platform/prisma/schema/migrations/20260924010600_init/migration.sql",
+      "date": "2026-09-24",
+      "slug": "init",
+      "statements": 29,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "PlatformOpsClient",
+        "PlatformPlan",
+        "PlatformSubscription",
+        "PlatformTenant",
+        "PlatformUsageRecord",
+        "SupportAccessGrant",
+        "TenantDeploymentCredential"
       ]
     }
   ],
@@ -24510,6 +25086,66 @@
       "cmd": "jest --passWithNoTests"
     },
     {
+      "pkg": "@newax/platform",
+      "file": "apps/platform/package.json",
+      "name": "build",
+      "cmd": "nest build"
+    },
+    {
+      "pkg": "@newax/platform",
+      "file": "apps/platform/package.json",
+      "name": "dev",
+      "cmd": "nest start --watch"
+    },
+    {
+      "pkg": "@newax/platform",
+      "file": "apps/platform/package.json",
+      "name": "start",
+      "cmd": "node dist/main.js"
+    },
+    {
+      "pkg": "@newax/platform",
+      "file": "apps/platform/package.json",
+      "name": "typecheck",
+      "cmd": "tsc -p tsconfig.json --noEmit"
+    },
+    {
+      "pkg": "@newax/platform",
+      "file": "apps/platform/package.json",
+      "name": "lint",
+      "cmd": "eslint src"
+    },
+    {
+      "pkg": "@newax/platform",
+      "file": "apps/platform/package.json",
+      "name": "test",
+      "cmd": "jest --passWithNoTests"
+    },
+    {
+      "pkg": "@newax/platform",
+      "file": "apps/platform/package.json",
+      "name": "db:generate",
+      "cmd": "prisma generate"
+    },
+    {
+      "pkg": "@newax/platform",
+      "file": "apps/platform/package.json",
+      "name": "db:migrate",
+      "cmd": "prisma migrate dev"
+    },
+    {
+      "pkg": "@newax/platform",
+      "file": "apps/platform/package.json",
+      "name": "db:deploy",
+      "cmd": "prisma migrate deploy"
+    },
+    {
+      "pkg": "@newax/platform",
+      "file": "apps/platform/package.json",
+      "name": "db:reset",
+      "cmd": "prisma migrate reset --force"
+    },
+    {
       "pkg": "@newax/pos",
       "file": "apps/pos/package.json",
       "name": "dev",
@@ -25013,15 +25649,6 @@
       "cases": 5,
       "describes": [
         "ReplicationRegistry — WO-20.1"
-      ]
-    },
-    {
-      "file": "apps/api/src/core/security/secret-crypto.spec.ts",
-      "module": "core/security",
-      "kind": "unit test",
-      "cases": 5,
-      "describes": [
-        "secret-crypto"
       ]
     },
     {
@@ -26100,6 +26727,51 @@
       ]
     },
     {
+      "file": "apps/platform/src/core/security/ops-auth.guard.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "OpsAuthGuard"
+      ]
+    },
+    {
+      "file": "apps/platform/src/core/security/ops-key.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "ops-key"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/tenants/postgres-database.provisioner.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "PostgresDatabaseProvisioner"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/tenants/provisioning.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "ProvisioningService"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/tenants/tenants.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "TenantsService"
+      ]
+    },
+    {
       "file": "packages/pos-core/src/basket.spec.ts",
       "module": "",
       "kind": "unit test",
@@ -26259,6 +26931,15 @@
         "allocateLandedCost",
         "weightedAverageCost",
         "convertToBase"
+      ]
+    },
+    {
+      "file": "packages/shared/src/secret-crypto.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "secret-crypto"
       ]
     },
     {
@@ -26512,8 +27193,8 @@
       "path": ".env.example",
       "area": "infra",
       "kind": "example",
-      "lines": 125,
-      "bytes": 5924,
+      "lines": 141,
+      "bytes": 6941,
       "doc": "",
       "symbols": []
     },
@@ -26584,8 +27265,8 @@
       "path": ".gitignore",
       "area": "infra",
       "kind": "file",
-      "lines": 53,
-      "bytes": 1013,
+      "lines": 54,
+      "bytes": 1042,
       "doc": "",
       "symbols": []
     },
@@ -26804,7 +27485,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 451,
-      "bytes": 16950,
+      "bytes": 16952,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -27524,7 +28205,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 95,
-      "bytes": 3949,
+      "bytes": 3951,
       "doc": "The trading-partner network (18-trading-partner-network.md, WO-18) — lets",
       "symbols": []
     },
@@ -28249,7 +28930,7 @@
       "area": "api",
       "kind": "config",
       "lines": 250,
-      "bytes": 10633,
+      "bytes": 10634,
       "doc": "",
       "symbols": [
         {
@@ -28777,7 +29458,7 @@
       "area": "api",
       "kind": "service",
       "lines": 389,
-      "bytes": 13521,
+      "bytes": 13506,
       "doc": "",
       "symbols": [
         {
@@ -29601,35 +30282,6 @@
           "name": "hashApiKey",
           "kind": "function",
           "line": 14
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/core/security/secret-crypto.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 36,
-      "bytes": 1416,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/core/security/secret-crypto.ts",
-      "area": "api",
-      "kind": "module",
-      "lines": 56,
-      "bytes": 2247,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "encryptSecret",
-          "kind": "function",
-          "line": 31
-        },
-        {
-          "name": "decryptSecret",
-          "kind": "function",
-          "line": 41
         }
       ]
     },
@@ -34865,7 +35517,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 385,
-      "bytes": 15617,
+      "bytes": 15613,
       "doc": "",
       "symbols": []
     },
@@ -34874,7 +35526,7 @@
       "area": "api",
       "kind": "service",
       "lines": 299,
-      "bytes": 11025,
+      "bytes": 11005,
       "doc": "",
       "symbols": [
         {
@@ -35190,7 +35842,7 @@
       "area": "api",
       "kind": "e2e test",
       "lines": 342,
-      "bytes": 12482,
+      "bytes": 12461,
       "doc": "",
       "symbols": []
     },
@@ -36301,6 +36953,521 @@
       "kind": "json",
       "lines": 21,
       "bytes": 484,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/eslint.config.mjs",
+      "area": "root",
+      "kind": "script",
+      "lines": 22,
+      "bytes": 531,
+      "doc": "Nest resolves constructor parameter types at runtime through decorator",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/jest.config.js",
+      "area": "root",
+      "kind": "script",
+      "lines": 17,
+      "bytes": 478,
+      "doc": "@type {import('jest').Config}",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/nest-cli.json",
+      "area": "root",
+      "kind": "json",
+      "lines": 18,
+      "bytes": 369,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/package.json",
+      "area": "root",
+      "kind": "json",
+      "lines": 51,
+      "bytes": 1371,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/prisma.config.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 10,
+      "bytes": 218,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/prisma/schema/migrations/20260924010600_init/migration.sql",
+      "area": "root",
+      "kind": "migration",
+      "lines": 166,
+      "bytes": 5980,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/prisma/schema/migrations/migration_lock.toml",
+      "area": "root",
+      "kind": "toml",
+      "lines": 4,
+      "bytes": 128,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/prisma/schema/platform.prisma",
+      "area": "root",
+      "kind": "prisma schema",
+      "lines": 148,
+      "bytes": 4689,
+      "doc": "WO-39.1 (docs/implementation/39-shared-cross-tenant-hosting-tier.md) — the",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/prisma/schema/schema.prisma",
+      "area": "root",
+      "kind": "prisma schema",
+      "lines": 19,
+      "bytes": 666,
+      "doc": "Datasource and generator only — the control plane's OWN database, never a",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/app.module.ts",
+      "area": "root",
+      "kind": "nest module",
+      "lines": 10,
+      "bytes": 329,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AppModule",
+          "kind": "class",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/core/config/app-config.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 25,
+      "bytes": 682,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AppConfigService",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/core/config/config.module.ts",
+      "area": "root",
+      "kind": "nest module",
+      "lines": 20,
+      "bytes": 527,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AppConfigModule",
+          "kind": "class",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/core/config/env.validation.ts",
+      "area": "root",
+      "kind": "config",
+      "lines": 59,
+      "bytes": 2588,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "envSchema",
+          "kind": "const",
+          "line": 14
+        },
+        {
+          "name": "PlatformEnv",
+          "kind": "type",
+          "line": 50
+        },
+        {
+          "name": "validatePlatformEnv",
+          "kind": "function",
+          "line": 52
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/core/config/load-env.ts",
+      "area": "root",
+      "kind": "config",
+      "lines": 13,
+      "bytes": 525,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/core/prisma/client.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 6,
+      "bytes": 173,
+      "doc": "Single import point for the generated Prisma client (control-plane database only — see prisma/schema/schema.prisma).",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/core/prisma/prisma.module.ts",
+      "area": "root",
+      "kind": "nest module",
+      "lines": 10,
+      "bytes": 210,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PrismaModule",
+          "kind": "class",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/core/prisma/prisma.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 23,
+      "bytes": 669,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PrismaService",
+          "kind": "class",
+          "line": 5
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/core/security/decorators.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 12,
+      "bytes": 460,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OPS_PERMISSIONS_KEY",
+          "kind": "const",
+          "line": 4
+        },
+        {
+          "name": "RequireOpsPermission",
+          "kind": "const",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/core/security/ops-auth.guard.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 86,
+      "bytes": 3469,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/core/security/ops-auth.guard.ts",
+      "area": "root",
+      "kind": "guard",
+      "lines": 61,
+      "bytes": 2455,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RequestWithOpsClient",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "OpsAuthGuard",
+          "kind": "class",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/core/security/ops-key.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 25,
+      "bytes": 796,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/core/security/ops-key.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 21,
+      "bytes": 964,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "generateOpsKey",
+          "kind": "function",
+          "line": 14
+        },
+        {
+          "name": "hashOpsKey",
+          "kind": "function",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/core/security/ops-permissions.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 21,
+      "bytes": 869,
+      "doc": "The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permissions.ts`, which is apps/api's tenant-facing PBAC catalog, seeded against that app's own User/Role/RolePermission tables.",
+      "symbols": [
+        {
+          "name": "PLATFORM_PERMISSIONS",
+          "kind": "const",
+          "line": 12
+        },
+        {
+          "name": "PlatformPermission",
+          "kind": "type",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/main.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 34,
+      "bytes": 1040,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/tenants/deployment-provisioner.token.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 3,
+      "bytes": 153,
+      "doc": "DI token for the `DeploymentProvisioner` extension point (see that file).",
+      "symbols": [
+        {
+          "name": "DEPLOYMENT_PROVISIONER",
+          "kind": "const",
+          "line": 2
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/tenants/deployment-provisioner.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 39,
+      "bytes": 1503,
+      "doc": "Extension point: how a tenant's isolated deployment actually gets created — doc 39 §\"What this tier owes every tenant\", and the same `StorageDriver`/`PaymentProvider` shape every other integration point in this reposito…",
+      "symbols": [
+        {
+          "name": "DeploymentProvisioner",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "ProvisioningError",
+          "kind": "class",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/tenants/dto/provision-tenant.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 34,
+      "bytes": 865,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProvisionTenantDto",
+          "kind": "class",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/tenants/dto/suspend-tenant.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 8,
+      "bytes": 139,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SuspendTenantDto",
+          "kind": "class",
+          "line": 3
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/tenants/postgres-database.provisioner.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 74,
+      "bytes": 3070,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/tenants/postgres-database.provisioner.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 117,
+      "bytes": 5223,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PostgresDatabaseProvisioner",
+          "kind": "class",
+          "line": 28
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/tenants/provisioning.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 132,
+      "bytes": 6372,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/tenants/provisioning.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 124,
+      "bytes": 5335,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProvisioningService",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/tenants/resource-tier.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 2,
+      "bytes": 74,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RESOURCE_TIERS",
+          "kind": "const",
+          "line": 1
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/tenants/tenants.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 56,
+      "bytes": 1761,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TenantsController",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/tenants/tenants.module.ts",
+      "area": "root",
+      "kind": "nest module",
+      "lines": 18,
+      "bytes": 640,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TenantsModule",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/tenants/tenants.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 49,
+      "bytes": 1675,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/tenants/tenants.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 43,
+      "bytes": 1565,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TenantsService",
+          "kind": "class",
+          "line": 6
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/test/setup-env.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 8,
+      "bytes": 296,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/tsconfig.build.json",
+      "area": "root",
+      "kind": "json",
+      "lines": 5,
+      "bytes": 98,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/tsconfig.json",
+      "area": "root",
+      "kind": "json",
+      "lines": 12,
+      "bytes": 278,
       "doc": "",
       "symbols": []
     },
@@ -45306,8 +46473,8 @@
       "path": "packages/shared/src/index.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 18,
-      "bytes": 516,
+      "lines": 19,
+      "bytes": 549,
       "doc": "",
       "symbols": []
     },
@@ -45643,6 +46810,35 @@
       ]
     },
     {
+      "path": "packages/shared/src/secret-crypto.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 36,
+      "bytes": 1416,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/shared/src/secret-crypto.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 65,
+      "bytes": 2799,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "encryptSecret",
+          "kind": "function",
+          "line": 40
+        },
+        {
+          "name": "decryptSecret",
+          "kind": "function",
+          "line": 50
+        }
+      ]
+    },
+    {
       "path": "packages/shared/src/slug.ts",
       "area": "packages",
       "kind": "module",
@@ -45794,8 +46990,8 @@
       "path": "pnpm-lock.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 17512,
-      "bytes": 645552,
+      "lines": 17711,
+      "bytes": 652209,
       "doc": "",
       "symbols": []
     },
@@ -46282,8 +47478,8 @@
       "path": "turbo.json",
       "area": "infra",
       "kind": "json",
-      "lines": 49,
-      "bytes": 1115,
+      "lines": 55,
+      "bytes": 1297,
       "doc": "",
       "symbols": []
     },

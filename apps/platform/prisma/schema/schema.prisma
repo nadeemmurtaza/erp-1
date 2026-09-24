@@ -1,0 +1,18 @@
+// Datasource and generator only — the control plane's OWN database, never a
+// tenant's. Models live in platform.prisma.
+//
+// See docs/implementation/39-shared-cross-tenant-hosting-tier.md and the
+// DECISIONS.md entry on shared-infrastructure/isolated-data: this schema
+// deliberately has no relation to any tenant's own Prisma schema
+// (apps/api/prisma/schema/), because the two must never share a database.
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../../src/generated/prisma"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("PLATFORM_DATABASE_URL")
+}

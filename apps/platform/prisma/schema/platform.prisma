@@ -1,0 +1,147 @@
+// WO-39.1 (docs/implementation/39-shared-cross-tenant-hosting-tier.md) — the
+// control-plane schema. Every model here is provisioning/billing/support
+// metadata ABOUT tenants; none of them ever holds a tenant's own business
+// data, which stays in that tenant's own, completely separate database
+// (apps/api's schema, one instance per tenant).
+
+enum TenantStatus {
+  PROVISIONING
+  ACTIVE
+  SUSPENDED
+  DEPROVISIONED
+}
+
+enum ResourceTier {
+  STANDARD
+  PLUS
+  DEDICATED
+}
+
+/// One row per hosted client. `deploymentRef` is a pointer into
+/// TenantDeploymentCredential below, never the connection string itself —
+/// doc 39 §1's own distinction between a pointer and a credential.
+model PlatformTenant {
+  id              String       @id @default(cuid())
+  slug            String       @unique
+  customDomain    String?      @unique
+  legalName       String
+  status          TenantStatus @default(PROVISIONING)
+  planId          String
+  deploymentRef   String?      @unique
+  resourceTier    ResourceTier @default(STANDARD)
+  createdAt       DateTime     @default(now())
+  suspendedAt     DateTime?
+  suspendedReason String?
+  deprovisionedAt DateTime?
+
+  plan               PlatformPlan          @relation(fields: [planId], references: [id])
+  subscriptions      PlatformSubscription[]
+  usageRecords       PlatformUsageRecord[]
+  supportAccessGrants SupportAccessGrant[]
+  deploymentCredential TenantDeploymentCredential?
+
+  @@index([status])
+}
+
+model PlatformPlan {
+  id                   String       @id @default(cuid())
+  key                  String       @unique
+  editionCap           String
+  monthlyPriceMinor    Int
+  includedResourceTier ResourceTier
+  isActive             Boolean      @default(true)
+
+  tenants       PlatformTenant[]
+  subscriptions PlatformSubscription[]
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+}
+
+model PlatformSubscription {
+  id        String             @id @default(cuid())
+  tenantId  String
+  planId    String
+  startedOn DateTime           @default(now())
+  endedOn   DateTime?
+  status    SubscriptionStatus @default(ACTIVE)
+
+  tenant PlatformTenant @relation(fields: [tenantId], references: [id])
+  plan   PlatformPlan   @relation(fields: [planId], references: [id])
+
+  @@index([tenantId, status])
+}
+
+/// Metered usage a tenant's own deployment reports about itself — never a
+/// source of business truth, only what feeds an invoice line.
+model PlatformUsageRecord {
+  id          String   @id @default(cuid())
+  tenantId    String
+  metric      String
+  windowStart DateTime
+  value       Float
+
+  tenant PlatformTenant @relation(fields: [tenantId], references: [id])
+
+  @@unique([tenantId, metric, windowStart])
+  @@index([tenantId, windowStart])
+}
+
+/// The one deliberately time-boxed door into a tenant's isolated deployment
+/// — doc 39 §3. Every grant expires; every actual use is logged.
+model SupportAccessGrant {
+  id               String    @id @default(cuid())
+  tenantId         String
+  grantedToUserId  String
+  reason           String
+  approvedByUserId String?
+  startsAt         DateTime  @default(now())
+  expiresAt        DateTime
+  revokedAt        DateTime?
+  accessedAt       DateTime[]
+
+  tenant PlatformTenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId, expiresAt])
+}
+
+/// The secrets-manager role doc 39 §1 names but leaves unspecified: an
+/// encrypted (AES-256-GCM, PLATFORM_ENCRYPTION_KEY) connection string, one
+/// row per tenant, never a plaintext column and never returned by any read
+/// endpoint. `PlatformTenant.deploymentRef` is the id of this row, not its
+/// contents.
+model TenantDeploymentCredential {
+  id                     String   @id @default(cuid())
+  tenantId               String   @unique
+  connectionStringEncrypted String
+  createdAt              DateTime @default(now())
+  rotatedAt              DateTime?
+
+  tenant PlatformTenant @relation(fields: [tenantId], references: [id])
+}
+
+enum OpsClientStatus {
+  ACTIVE
+  REVOKED
+}
+
+/// A key-hash principal for internal hosting-ops tooling calling this
+/// control plane — the same shape TradingPartner/PosTerminal/Node already
+/// use in the tenant-side schema, scoped here to platform.* capabilities.
+/// Deliberately not a staff login/session system: that belongs to a later
+/// admin-console work order (doc 39 WO-39.8), not WO-39.1/39.2.
+model PlatformOpsClient {
+  id            String          @id @default(cuid())
+  label         String
+  keyHash       String          @unique
+  scopes        String[]
+  status        OpsClientStatus @default(ACTIVE)
+  createdAt     DateTime        @default(now())
+  lastUsedAt    DateTime?
+  revokedAt     DateTime?
+
+  @@index([status])
+}

@@ -201,7 +201,7 @@ enum EmailAccountPurpose {
 /// A connected mailbox: SMTP to send, optionally IMAP to receive. Multiple
 /// accounts may share a purpose (e.g. two marketing senders); the one with
 /// isDefault wins, then the most recently updated. Secrets are stored as
-/// AES-256-GCM ciphertext (core/security/secret-crypto.ts) — never plaintext,
+/// AES-256-GCM ciphertext (@newax/shared's secret-crypto.ts) — never plaintext,
 /// never returned by the API once saved.
 model EmailAccount {
   id        String              @id @default(cuid())

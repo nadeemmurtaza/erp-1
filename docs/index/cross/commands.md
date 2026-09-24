@@ -3,7 +3,7 @@
 
 # Commands
 
-Every script in every `package.json` (**72**), plus the repository's own check scripts.
+Every script in every `package.json` (**82**), plus the repository's own check scripts.
 
 
 ## The one you run before a PR
@@ -54,6 +54,21 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 | `web` | `expo start --web` |
 | `typecheck` | `tsc --noEmit` |
 | `test` | `jest --passWithNoTests` |
+
+### `@newax/platform`  <sub>`apps/platform/package.json`</sub>
+
+| Script | Runs |
+|---|---|
+| `build` | `nest build` |
+| `dev` | `nest start --watch` |
+| `start` | `node dist/main.js` |
+| `typecheck` | `tsc -p tsconfig.json --noEmit` |
+| `lint` | `eslint src` |
+| `test` | `jest --passWithNoTests` |
+| `db:generate` | `prisma generate` |
+| `db:migrate` | `prisma migrate dev` |
+| `db:deploy` | `prisma migrate deploy` |
+| `db:reset` | `prisma migrate reset --force` |
 
 ### `@newax/pos`  <sub>`apps/pos/package.json`</sub>
 

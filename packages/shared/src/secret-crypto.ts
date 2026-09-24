@@ -1,16 +1,25 @@
 import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
 
 /**
- * Encrypts a third-party secret (an SMTP/IMAP password today) for storage in
- * the database.
+ * Encrypts a third-party secret (an SMTP/IMAP password, a tenant database
+ * connection string) for storage in a database.
+ *
+ * Lives in `@newax/shared` per House Rule 11 ("if a rule needs to be
+ * enforced in two places, it moves here") — the API's own credential
+ * storage (`tradingpartners`, `email-accounts`) and the platform control
+ * plane's tenant-deployment credentials (`39-shared-cross-tenant-hosting-tier.md`)
+ * both need the identical algorithm, and a second, independently
+ * maintained AES-GCM implementation is exactly the kind of drift a
+ * security-critical primitive must never have.
  *
  * AES-256-GCM: authenticated encryption, so a tampered ciphertext fails to
  * decrypt rather than silently returning garbage that gets handed to a mail
- * server as a password. The key comes from APP_ENCRYPTION_KEY — never
- * derived from a JWT secret, so rotating one never silently breaks the
- * other. A fresh random IV per call means encrypting the same password
- * twice never produces the same ciphertext, so two accounts sharing a
- * password don't leak that fact from the stored bytes.
+ * server (or a database driver) as a credential. The key comes from each
+ * caller's own encryption-key env var — never derived from a JWT secret, so
+ * rotating one never silently breaks the other. A fresh random IV per call
+ * means encrypting the same secret twice never produces the same
+ * ciphertext, so two rows sharing a secret don't leak that fact from the
+ * stored bytes.
  *
  * Output is `iv:authTag:ciphertext`, each base64url — one string, safe to
  * store in a single text column.
@@ -22,7 +31,7 @@ function loadKey(rawKey: string): Buffer {
   const key = Buffer.from(rawKey, 'utf8');
   if (key.length !== 32) {
     throw new Error(
-      `APP_ENCRYPTION_KEY must be exactly 32 bytes (got ${key.length}). Generate one with: openssl rand -base64 24 | head -c 32`,
+      `Encryption key must be exactly 32 bytes (got ${key.length}). Generate one with: openssl rand -base64 24 | head -c 32`,
     );
   }
   return key;

@@ -101,6 +101,7 @@ Every top-level export in `packages`, with the line to open.
 | `index.ts` | `*` | re-export |  | from `./permissions` |
 | `index.ts` | `*` | re-export |  | from `./phone` |
 | `index.ts` | `*` | re-export |  | from `./pricing` |
+| `index.ts` | `*` | re-export |  | from `./secret-crypto` |
 | `index.ts` | `*` | re-export |  | from `./slug` |
 | `index.ts` | `*` | re-export |  | from `./brand` |
 | `index.ts` | `*` | re-export |  | from `./http-client` |
@@ -148,6 +149,8 @@ Every top-level export in `packages`, with the line to open.
 | `pricing.ts` | `allocateLandedCost` | function | :205 |  |
 | `pricing.ts` | `convertToBase` | function | :260 | Converts a minor-unit amount in a foreign currency to the deployment's own base currency, given a s… |
 | `pricing.ts` | `weightedAverageCost` | function | :264 |  |
+| `secret-crypto.ts` | `encryptSecret` | function | :40 |  |
+| `secret-crypto.ts` | `decryptSecret` | function | :50 |  |
 | `slug.ts` | `slugify` | function | :6 | URL slugs. |
 | `slug.ts` | `slugifyWithFallback` | function | :28 | Slugifies, falling back to `<fallbackPrefix>-<random>` when nothing survives. |
 | `slug.ts` | `uniqueSlug` | function | :34 | Appends a numeric suffix until the slug is not in `taken`. |

@@ -14,9 +14,9 @@ All 55 tracked files in `scripts, CI, deployment and container configuration`, b
 |---|---|---|---|
 | `.dockerignore` | file | — |  |
 | `.env.branch.example` | example | 99 |  |
-| `.env.example` | example | 125 |  |
+| `.env.example` | example | 141 |  |
 | `.env.production.example` | example | 113 |  |
-| `.gitignore` | file | 53 |  |
+| `.gitignore` | file | 54 |  |
 | `Caddyfile` | file | 63 |  |
 | `cloudflare.json` | json | 22 |  |
 | `docker-compose.branch.yml` | yaml | 98 |  |
@@ -28,9 +28,9 @@ All 55 tracked files in `scripts, CI, deployment and container configuration`, b
 | `docker-stack.prod.yml` | yaml | 88 |  |
 | `docker-stack.staging.yml` | yaml | 88 |  |
 | `package.json` | json | 58 |  |
-| `pnpm-lock.yaml` | yaml | 17512 |  |
+| `pnpm-lock.yaml` | yaml | 17711 |  |
 | `pnpm-workspace.yaml` | yaml | 12 |  |
-| `turbo.json` | json | 49 |  |
+| `turbo.json` | json | 55 |  |
 | `wrangler.toml` | toml | 17 |  |
 
 ### `.github` (1)

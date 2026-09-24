@@ -3,7 +3,7 @@
 
 # Files — root
 
-All 42 tracked files in `repository root files`, by directory.
+All 82 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -89,6 +89,101 @@ All 42 tracked files in `repository root files`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `guidelines.md` | doc | 80 |  |
+
+### `apps/platform` (7)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `eslint.config.mjs` | script | 22 | Nest resolves constructor parameter types at runtime through decorator |
+| `jest.config.js` | script | 17 | @type {import('jest').Config} |
+| `nest-cli.json` | json | 18 |  |
+| `package.json` | json | 51 |  |
+| `prisma.config.ts` | module | 10 |  |
+| `tsconfig.build.json` | json | 5 |  |
+| `tsconfig.json` | json | 12 |  |
+
+### `apps/platform/prisma/schema` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `platform.prisma` | prisma schema | 148 | WO-39.1 (docs/implementation/39-shared-cross-tenant-hosting-tier.md) — the |
+| `schema.prisma` | prisma schema | 19 | Datasource and generator only — the control plane's OWN database, never a |
+
+### `apps/platform/prisma/schema/migrations` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration_lock.toml` | toml | 4 |  |
+
+### `apps/platform/prisma/schema/migrations/20260924010600_init` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 166 |  |
+
+### `apps/platform/src` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `app.module.ts` | nest module | 10 |  |
+| `main.ts` | module | 34 |  |
+
+### `apps/platform/src/core/config` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `app-config.service.ts` | service | 25 |  |
+| `config.module.ts` | nest module | 20 |  |
+| `env.validation.ts` | config | 59 |  |
+| `load-env.ts` | config | 13 |  |
+
+### `apps/platform/src/core/prisma` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `client.ts` | module | 6 | Single import point for the generated Prisma client (control-plane database only — see prisma/schema/schema.prisma). |
+| `prisma.module.ts` | nest module | 10 |  |
+| `prisma.service.ts` | service | 23 |  |
+
+### `apps/platform/src/core/security` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `decorators.ts` | module | 12 |  |
+| `ops-auth.guard.spec.ts` | unit test | 86 |  |
+| `ops-auth.guard.ts` | guard | 61 |  |
+| `ops-key.spec.ts` | unit test | 25 |  |
+| `ops-key.ts` | module | 21 |  |
+| `ops-permissions.ts` | module | 21 | The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permissions.ts`, which is apps… |
+
+### `apps/platform/src/modules/tenants` (11)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `deployment-provisioner.token.ts` | module | 3 | DI token for the `DeploymentProvisioner` extension point (see that file). |
+| `deployment-provisioner.ts` | module | 39 | Extension point: how a tenant's isolated deployment actually gets created — doc 39 §"What this tier owes every tenant",… |
+| `postgres-database.provisioner.spec.ts` | unit test | 74 |  |
+| `postgres-database.provisioner.ts` | module | 117 |  |
+| `provisioning.service.spec.ts` | unit test | 132 |  |
+| `provisioning.service.ts` | service | 124 |  |
+| `resource-tier.ts` | module | 2 |  |
+| `tenants.controller.ts` | controller | 56 |  |
+| `tenants.module.ts` | nest module | 18 |  |
+| `tenants.service.spec.ts` | unit test | 49 |  |
+| `tenants.service.ts` | service | 43 |  |
+
+### `apps/platform/src/modules/tenants/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `provision-tenant.dto.ts` | dto | 34 |  |
+| `suspend-tenant.dto.ts` | dto | 8 |  |
+
+### `apps/platform/test` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `setup-env.ts` | module | 8 |  |
 
 
 ---

@@ -3,7 +3,7 @@
 
 # Data model
 
-All **133** Prisma models and **58** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **140** Prisma models and **62** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -41,6 +41,7 @@ against a real database.
 | [`parties.prisma`](../data/parties.md) | 2 | 1 | [`parties`](../modules/parties.md) | Party, PartyRoleAssignment |
 | [`payments.prisma`](../data/payments.md) | 1 | 1 | [`payments`](../modules/payments.md) | Payment |
 | [`payroll.prisma`](../data/payroll.md) | 9 | 5 | [`payroll`](../modules/payroll.md) | CompensationRate, LeaveAccrualRun, LeaveBalance, LeaveRequest, LeaveType, PayRun, PayRunAdjustment, PayRunLine, PayRunNumberCount… |
+| [`platform.prisma`](../data/platform.md) | 7 | 4 | core platform | PlatformOpsClient, PlatformPlan, PlatformSubscription, PlatformTenant, PlatformUsageRecord, SupportAccessGrant, TenantDeploymentC… |
 | [`pos.prisma`](../data/pos.md) | 4 | 3 | [`pos`](../modules/pos.md) | CashMovement, PosReceipt, PosShift, PosTerminal |
 | [`production.prisma`](../data/production.md) | 4 | 2 | [`production`](../modules/production.md) | BillOfMaterial, BillOfMaterialLine, WorkOrder, WorkOrderNumberCounter |
 | [`purchasing.prisma`](../data/purchasing.md) | 7 | 2 | [`purchasing`](../modules/purchasing.md) | GoodsReceipt, GoodsReceiptItem, PurchaseOrder, PurchaseOrderItem, Supplier, SupplierBill, SupplierProduct |
@@ -127,6 +128,11 @@ against a real database.
 | [`PayRunLine`](../data/payroll.md#payrunline) | `payroll` | 13 | 3 | id | One line per employee per run. |
 | [`PayRunNumberCounter`](../data/payroll.md#payrunnumbercounter) | `payroll` | 2 | 0 | year | The eighth document-number counter (document-prefix.ts), same INSERT ... |
 | [`Permission`](../data/core.md#permission) | `core` | 8 | 0 | id | A single grantable capability, e.g. |
+| [`PlatformOpsClient`](../data/platform.md#platformopsclient) | `platform` | 8 | 0 | id | A key-hash principal for internal hosting-ops tooling calling this control plane — the sa… |
+| [`PlatformPlan`](../data/platform.md#platformplan) | `platform` | 8 | 0 | id |  |
+| [`PlatformSubscription`](../data/platform.md#platformsubscription) | `platform` | 8 | 2 | id |  |
+| [`PlatformTenant`](../data/platform.md#platformtenant) | `platform` | 17 | 1 | id | One row per hosted client. |
+| [`PlatformUsageRecord`](../data/platform.md#platformusagerecord) | `platform` | 6 | 1 | id | Metered usage a tenant's own deployment reports about itself — never a source of business… |
 | [`PolicyQuarantine`](../data/replication.md#policyquarantine) | `replication` | 14 | 1 | id | R9's OTHER quarantine — "a fact arriving in violation is accepted and quarantined for rev… |
 | [`PosReceipt`](../data/pos.md#posreceipt) | `pos` | 5 | 0 | id | One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService… |
 | [`PosShift`](../data/pos.md#posshift) | `pos` | 11 | 1 | id | One cashier's stretch at one terminal, opened with a cash float and closed with a physica… |
@@ -175,10 +181,12 @@ against a real database.
 | [`Supplier`](../data/purchasing.md#supplier) | `purchasing` | 27 | 3 | id |  |
 | [`SupplierBill`](../data/purchasing.md#supplierbill) | `purchasing` | 18 | 2 | id |  |
 | [`SupplierProduct`](../data/purchasing.md#supplierproduct) | `purchasing` | 10 | 2 | id | What a given supplier charges for a given variant, and under what terms. |
+| [`SupportAccessGrant`](../data/platform.md#supportaccessgrant) | `platform` | 10 | 1 | id | The one deliberately time-boxed door into a tenant's isolated deployment — doc 39 §3. |
 | [`Tag`](../data/crm.md#tag) | `crm` | 5 | 0 | id |  |
 | [`TailorProfile`](../data/stitching.md#tailorprofile) | `stitching` | 9 | 0 | id |  |
 | [`TaxClass`](../data/tax.md#taxclass) | `tax` | 8 | 0 | id | Tax: rate/class definitions and the pricing-mode setting. |
 | [`TaxRate`](../data/tax.md#taxrate) | `tax` | 7 | 1 | id | One row per rate that has ever applied to a class. |
+| [`TenantDeploymentCredential`](../data/platform.md#tenantdeploymentcredential) | `platform` | 6 | 1 | id | The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GC… |
 | [`TradingPartner`](../data/trading-partners.md#tradingpartner) | `trading-partners` | 15 | 0 | id | The business on the other end of a document exchange. |
 | [`TransferNumberCounter`](../data/transfers.md#transfernumbercounter) | `transfers` | 2 | 0 | year | Same shape as OrderNumberCounter (orders.prisma) — an `INSERT ... |
 | [`User`](../data/core.md#user) | `core` | 58 | 21 | id |  |
@@ -215,6 +223,7 @@ against a real database.
 | [`MeasurementUnit`](../data/measurements.md#measurementunit) | `measurements` | `INCH` `CM` |
 | [`NodeRole`](../data/organization.md#noderole) | `organization` | `BRANCH` `BRAND` |
 | [`NodeStatus`](../data/organization.md#nodestatus) | `organization` | `ACTIVE` `SUSPENDED` |
+| [`OpsClientStatus`](../data/platform.md#opsclientstatus) | `platform` | `ACTIVE` `REVOKED` |
 | [`OptionDisplay`](../data/catalog.md#optiondisplay) | `catalog` | `BUTTON` `DROPDOWN` `SWATCH` `TEXT` |
 | [`OrderChannel`](../data/orders.md#orderchannel) | `orders` | `WEB` `POS` |
 | [`OrderItemFulfillmentStatus`](../data/orders.md#orderitemfulfillmentstatus) | `orders` | `READY` `AWAITING_STOCK` `AWAITING_PRODUCTION` |
@@ -236,6 +245,7 @@ against a real database.
 | [`ReplicationDirection`](../data/replication.md#replicationdirection) | `replication` | `UP` `DOWN` |
 | [`ReplicationOp`](../data/replication.md#replicationop) | `replication` | `UPSERT` `DELETE` |
 | [`ReplicationQuarantineStatus`](../data/replication.md#replicationquarantinestatus) | `replication` | `OPEN` `RESOLVED` |
+| [`ResourceTier`](../data/platform.md#resourcetier) | `platform` | `STANDARD` `PLUS` `DEDICATED` |
 | [`ScopeLevel`](../data/core.md#scopelevel) | `core` | `ORG` `BRAND` `BRANCH` |
 | [`SettlementMode`](../data/transfers.md#settlementmode) | `transfers` | `NONE` `INTERNAL_PL` `INVOICED` |
 | [`ShipmentStatus`](../data/orders.md#shipmentstatus) | `orders` | `PENDING` `DISPATCHED` `IN_TRANSIT` `DELIVERED` `RETURNED` `LOST` |
@@ -246,7 +256,9 @@ against a real database.
 | [`StockMovementReason`](../data/inventory.md#stockmovementreason) | `inventory` | `PURCHASE_RECEIPT` `SALE` `CANCELLATION` `RETURN` `ADJUSTMENT` `DAMAGE` `COUNT` `WRITE_OFF` `PRODUCTION_CONSUMPTION` `PRODUCTION_RECEIPT` `POS_SALE`… |
 | [`StockTransferStatus`](../data/transfers.md#stocktransferstatus) | `transfers` | `IN_TRANSIT` `RECEIVED` `CANCELLED` |
 | [`StockVarianceStatus`](../data/inventory.md#stockvariancestatus) | `inventory` | `OPEN` `RESOLVED` |
+| [`SubscriptionStatus`](../data/platform.md#subscriptionstatus) | `platform` | `ACTIVE` `PAST_DUE` `CANCELLED` |
 | [`SupplierBillStatus`](../data/purchasing.md#supplierbillstatus) | `purchasing` | `UNPAID` `PARTIAL` `PAID` |
+| [`TenantStatus`](../data/platform.md#tenantstatus) | `platform` | `PROVISIONING` `ACTIVE` `SUSPENDED` `DEPROVISIONED` |
 | [`TradingPartnerKind`](../data/trading-partners.md#tradingpartnerkind) | `trading-partners` | `SUPPLIER` `CUSTOMER` `BOTH` |
 | [`TradingPartnerStatus`](../data/trading-partners.md#tradingpartnerstatus) | `trading-partners` | `PENDING` `ACTIVE` `SUSPENDED` |
 | [`UserRole`](../data/core.md#userrole) | `core` | `CUSTOMER` `STAFF` `TAILOR` `ADMIN` |

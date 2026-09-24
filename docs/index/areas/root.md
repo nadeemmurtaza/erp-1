@@ -3,13 +3,14 @@
 
 # repository root files
 
-42 files · 9,054 lines
+82 files · 10,659 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
 
 ## Go deeper
 
+- **Every exported symbol here:** [symbols/root.md](../symbols/root.md)
 - **Every file here:** [files/root.md](../files/root.md)
 
 ## Directory breakdown
@@ -24,8 +25,19 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `.cursor/rules` | 1 | 0 | mdc |
 | `.githooks` | 2 | 0 | file |
 | `.junie` | 1 | 80 | doc |
+| `apps/platform` | 7 | 135 | script, json, module |
+| `apps/platform/prisma` | 4 | 337 | migration, toml, prisma schema |
+| `apps/platform/src` | 28 | 1,125 | nest module, service, config, module |
+| `apps/platform/test` | 1 | 8 | module |
 
 
+## Entry points
+
+| File | Kind | Purpose |
+|---|---|---|
+| `apps/platform/package.json` | json |  |
+| `apps/platform/src/app.module.ts` | nest module |  |
+| `apps/platform/src/main.ts` | module |  |
 
 
 ## Largest files (where the weight is)
@@ -36,17 +48,17 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `CLAUDE.md` | 920 | doc |  |
 | `DEPLOYMENT.md` | 492 | doc |  |
 | `README.md` | 349 | doc |  |
+| `apps/platform/prisma/schema/migrations/20260924010600_init/migration.sql` | 166 | migration |  |
 | `.claude/rules/ui.md` | 151 | doc |  |
+| `apps/platform/prisma/schema/platform.prisma` | 148 | prisma schema | WO-39.1 (docs/implementation/39-shared-cross-tenant-hosting-tier.md) — the |
 | `.claude/rules/design.md` | 136 | doc |  |
+| `apps/platform/src/modules/tenants/provisioning.service.spec.ts` | 132 | unit test |  |
 | `CONTRIBUTING.md` | 127 | doc |  |
+| `apps/platform/src/modules/tenants/provisioning.service.ts` | 124 | service |  |
+| `apps/platform/src/modules/tenants/postgres-database.provisioner.ts` | 117 | module |  |
+| `apps/platform/src/core/security/ops-auth.guard.spec.ts` | 86 | unit test |  |
 | `.claude/hooks/suggest-model.sh` | 85 | hook |  |
 | `.junie/guidelines.md` | 80 | doc |  |
-| `AGENTS.md` | 80 | doc |  |
-| `GEMINI.md` | 80 | doc |  |
-| `.claude/hooks/session-start.sh` | 54 | hook |  |
-| `.claude/agents/architect.md` | 48 | doc |  |
-| `.claude/agents/schema.md` | 46 | doc |  |
-| `.claude/agents/security.md` | 46 | doc |  |
 
 
 ---

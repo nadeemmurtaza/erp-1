@@ -1,7 +1,7 @@
 import { BadRequestException, ForbiddenException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { hashApiKey } from '../../core/security/api-token';
-import { encryptSecret } from '../../core/security/secret-crypto';
+import { encryptSecret } from '@newax/shared';
 import { TradingPartnersService } from './trading-partners.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { AppConfigService } from '../../core/config/app-config.service';
@@ -126,7 +126,7 @@ describe('TradingPartnersService', () => {
       const call = prisma.tradingPartner.update.mock.calls[0][0];
       expect(call.data.outboundApiKeyEncrypted).not.toBe('their-real-secret-key');
       expect(call.data.outboundApiKeyEncrypted).not.toContain('their-real-secret-key');
-      // iv:authTag:ciphertext — see secret-crypto.ts
+      // iv:authTag:ciphertext — see @newax/shared's secret-crypto.ts
       expect(call.data.outboundApiKeyEncrypted.split(':')).toHaveLength(3);
     });
 

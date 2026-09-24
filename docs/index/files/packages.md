@@ -3,7 +3,7 @@
 
 # Files — packages
 
-All 55 tracked files in `packages/*`, by directory.
+All 57 tracked files in `packages/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -49,7 +49,7 @@ All 55 tracked files in `packages/*`, by directory.
 | `package.json` | json | 37 |  |
 | `tsconfig.json` | json | 17 |  |
 
-### `packages/shared/src` (19)
+### `packages/shared/src` (21)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -59,13 +59,15 @@ All 55 tracked files in `packages/*`, by directory.
 | `fabric-estimate.spec.ts` | unit test | 79 | ((40 + 3) * 2 + (23 + 2)) / 36 = (86 + 25) / 36 = 3.0833... |
 | `fabric-estimate.ts` | module | 95 | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
 | `http-client.ts` | module | 200 | The one HTTP layer for a signed-in browser client. |
-| `index.ts` | module | 18 |  |
+| `index.ts` | module | 19 |  |
 | `permissions.spec.ts` | unit test | 68 |  |
 | `permissions.ts` | module | 530 | The permission catalog for PBAC (Permission-Based Access Control). |
 | `phone.spec.ts` | unit test | 65 |  |
 | `phone.ts` | module | 82 |  |
 | `pricing.spec.ts` | unit test | 307 |  |
 | `pricing.ts` | module | 275 | Order maths. |
+| `secret-crypto.spec.ts` | unit test | 36 |  |
+| `secret-crypto.ts` | module | 65 |  |
 | `slug.ts` | module | 44 | URL slugs. |
 | `theme-colors.ts` | module | 18 |  |
 | `theme-radii.ts` | module | 17 |  |

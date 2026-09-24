@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 529 tracked files in `apps/api`, by directory.
+All 527 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -616,13 +616,11 @@ All 529 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `push-replication.dto.ts` | dto | 48 |  |
 
-### `apps/api/src/core/security` (5)
+### `apps/api/src/core/security` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `api-token.ts` | module | 17 |  |
-| `secret-crypto.spec.ts` | unit test | 36 |  |
-| `secret-crypto.ts` | module | 56 |  |
 | `unsubscribe-token.spec.ts` | unit test | 35 |  |
 | `unsubscribe-token.ts` | module | 24 |  |
 

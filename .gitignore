@@ -26,6 +26,7 @@ pnpm-debug.log*
 
 # Prisma generated client
 apps/api/src/generated/
+apps/platform/src/generated/
 packages/shared/src/api/generated/
 
 # Local service data

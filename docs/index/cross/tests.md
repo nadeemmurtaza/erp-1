@@ -3,7 +3,7 @@
 
 # Tests
 
-**130** spec files, **1,284** cases. What is already pinned down — and what is not.
+**135** spec files, **1,310** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -50,7 +50,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (115)
+## Unit and integration (120)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -73,7 +73,6 @@ regression or an N+1.
 | `apps/api/src/core/replication/replication-sync.agent.spec.ts` | core/replication | 14 | ReplicationSyncAgent — WO-20.2 / WO-20.5 · tick · pushFacts · pullPolicy |
 | `apps/api/src/core/replication/replication.controller.spec.ts` | core/replication | 7 | ReplicationController — WO-20.2 · push · pull |
 | `apps/api/src/core/replication/replication.registry.spec.ts` | core/replication | 5 | ReplicationRegistry — WO-20.1 |
-| `apps/api/src/core/security/secret-crypto.spec.ts` | core/security | 5 | secret-crypto |
 | `apps/api/src/core/security/unsubscribe-token.spec.ts` | core/security | 6 | unsubscribeToken / isValidUnsubscribeToken |
 | `apps/api/src/core/settings/document-number.spec.ts` | core/settings | 5 | documentNumber |
 | `apps/api/src/core/storage/storage.service.spec.ts` | core/storage | 11 | StorageService.putImage · StorageService.putDocument |
@@ -154,6 +153,11 @@ regression or an N+1.
 | `apps/mobile/src/api/__tests__/client.spec.ts` | mobile | 4 | toQuery |
 | `apps/mobile/src/components/__tests__/measurement-form.spec.ts` | mobile | 7 | reading measurements off the form |
 | `apps/mobile/src/i18n/__tests__/messages.spec.ts` | mobile | 3 | the message catalogue |
+| `apps/platform/src/core/security/ops-auth.guard.spec.ts` | root | 6 | OpsAuthGuard |
+| `apps/platform/src/core/security/ops-key.spec.ts` | root | 4 | ops-key |
+| `apps/platform/src/modules/tenants/postgres-database.provisioner.spec.ts` | root | 6 | PostgresDatabaseProvisioner |
+| `apps/platform/src/modules/tenants/provisioning.service.spec.ts` | root | 7 | ProvisioningService |
+| `apps/platform/src/modules/tenants/tenants.service.spec.ts` | root | 3 | TenantsService |
 | `packages/pos-core/src/basket.spec.ts` | packages | 9 | basket |
 | `packages/pos-core/src/outbox.spec.ts` | packages | 6 | outbox state machine |
 | `packages/pos-core/src/receipt.spec.ts` | packages | 2 | toReceipt |
@@ -168,6 +172,7 @@ regression or an N+1.
 | `packages/shared/src/permissions.spec.ts` | packages | 8 | PERMISSION_CATALOG · PERMISSION_GROUPS — the role-creation wizard\ |
 | `packages/shared/src/phone.spec.ts` | packages | 7 | normalizePkPhone · normalizeEmail |
 | `packages/shared/src/pricing.spec.ts` | packages | 35 | computeStitchingFee · computeLineItem · lineMargin · computeOrderTotals · taxExclusive · taxInclusi… |
+| `packages/shared/src/secret-crypto.spec.ts` | packages | 5 | secret-crypto |
 | `packages/shared/src/units.spec.ts` | packages | 7 | toBaseUnits · fromBaseUnits · formatQuantity |
 
 

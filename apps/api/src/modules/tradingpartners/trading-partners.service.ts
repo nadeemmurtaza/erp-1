@@ -1,7 +1,7 @@
 import { BadRequestException, ForbiddenException, Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { generateApiKey, hashApiKey } from '../../core/security/api-token';
-import { decryptSecret, encryptSecret } from '../../core/security/secret-crypto';
+import { decryptSecret, encryptSecret } from '@newax/shared';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { TradingPartner } from '../../core/prisma/client';
 import { CreateTradingPartnerDto, PartyRoleNameDto, UpdateTradingPartnerDto } from './dto/trading-partner.dto';

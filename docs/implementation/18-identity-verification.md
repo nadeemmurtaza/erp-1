@@ -1,5 +1,11 @@
 # 18 — Identity verification via nID
 
+> **Number collision:** this repository has two documents numbered 18 —
+> this one and [`18-trading-partner-network.md`](./18-trading-partner-network.md).
+> Neither is a duplicate or an error to merge; they predate a consistent
+> numbering pass and were never renumbered. Cite this document by its full
+> filename, never as bare "doc 18" — see `README.md`.
+
 **Read `00-HOUSE-RULES.md` first.**
 
 > **Status: built, off by default (2026-09-17).** The `identity-verification`

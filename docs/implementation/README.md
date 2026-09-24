@@ -21,14 +21,31 @@ who has not seen this codebase before.
 | [`09-ai-layer.md`](./09-ai-layer.md) | Alt text and SEO generation, size recommendation, forecasting, COD risk, semantic search, WhatsApp assistant |
 | [`10-admin-dashboard.md`](./10-admin-dashboard.md) | The admin master dashboard rebuild: registry-driven card grid, the analytics page tree, the `finance` module (expenses, order economics) and the `bom` module (raw materials, recipes, production runs) |
 
-**Numbers 11–25** cover, in order: client handover, the extractor script,
-email service, managed services, `tax`, PBAC row-scoping, inventory
-locations, identity verification, the trading-partner network, org
-structure (offices/departments), payroll, people/positions/ranks, access
-over the org tree, attendance/shifts/leave, task tracking, internal
-notifications, and advance salary/payroll posting. See each file's own
-header for status; `payroll` (19) and `tax`/`identity-verification` (15, 18)
-are built, the rest are specified but not yet built as of this table.
+**Numbers 11–25** cover client handover through advance salary. Two number
+collisions predate this table and are called out inline rather than hidden:
+**18** and **19** are each claimed by two unrelated documents, and both are
+cited elsewhere in this corpus by bare number — always cite the full
+filename for these four, never "doc 18" or "doc 19" alone.
+
+| File | What it is |
+|---|---|
+| [`11-client-handover-model.md`](./11-client-handover-model.md) | The two-track agency model — a Master Blueprint repo vs. per-client distribution — and how one codebase serves both |
+| [`12-extractor-script-spec.md`](./12-extractor-script-spec.md) | `scripts/sync-client.mjs` — generating and upgrading stripped-down client repos from the Master Blueprint, no regex, no overwriting client customizations |
+| [`13-email-service-plan.md`](./13-email-service-plan.md) | Self-hosted, white-labeled email infrastructure on a Coolify VPS, replacing third-party mail services |
+| [`14-managed-services-module.md`](./14-managed-services-module.md) | Agency billing/hosting dashboard over doc 11's client model — status: scoped, not built |
+| [`15-tax-module.md`](./15-tax-module.md) | Tax rates and calculation, `tax.enabled` off-by-default gate — **built**, WO-15.1–15.4 |
+| [`16-pbac-row-scoping.md`](./16-pbac-row-scoping.md) | `assertCanManage()` row-level permission scoping — **built**, WO-16.1/16.2 |
+| [`17-inventory-locations.md`](./17-inventory-locations.md) | The stock `Location` dimension over Phase 1's stock ledger, without weakening its concurrency guarantee |
+| [`18-identity-verification.md`](./18-identity-verification.md) | NID/NADRA identity verification (`IdentityVerification`) — **built, off by default**. **Shares number 18 with `18-trading-partner-network.md` below** — cite the full filename |
+| [`18-trading-partner-network.md`](./18-trading-partner-network.md) | `TradingPartner`/canonical-JSON EDI network so a PO or invoice isn't re-keyed at each hop — **built**, WO-18.1–18.3. **Shares number 18 with `18-identity-verification.md` above** — cite the full filename |
+| [`19-payroll.md`](./19-payroll.md) | Compensation, leave balances, pay runs — **built**, WO-19.1–19.7. **Shares number 19 with `19-org-structure-offices-departments.md` below** — cite the full filename |
+| [`19-org-structure-offices-departments.md`](./19-org-structure-offices-departments.md) | One org tree (`OrgUnit`), not a second `OFFICE`/`DEPARTMENT` enum. **Shares number 19 with `19-payroll.md` above** — cite the full filename |
+| [`20-people-positions-ranks.md`](./20-people-positions-ranks.md) | The employee record, `Position`, and the rank ladder — everything after this needs all three |
+| [`21-access-over-the-org-tree.md`](./21-access-over-the-org-tree.md) | Who may see and do what, scoped to an office or department in the org tree, extending the existing `PermissionsGuard` |
+| [`22-attendance-shifts-leave.md`](./22-attendance-shifts-leave.md) | Attendance as a record, not a request — shifts and leave, the first "the system does not get a vote" module |
+| [`23-tasks-allotment-tracking.md`](./23-tasks-allotment-tracking.md) | Task assignment, status and tracking that survives a person leaving the org |
+| [`24-internal-notifications-meetings-escalation.md`](./24-internal-notifications-meetings-escalation.md) | Meetings and escalation over the existing `NotificationChannel` interface |
+| [`25-advance-salary-and-payroll-posting.md`](./25-advance-salary-and-payroll-posting.md) | An advance against salary is a loan to the employee, never a wage payment — the GL posting that keeps that distinction |
 
 | File | What it is |
 |---|---|
@@ -298,6 +315,27 @@ dedupe of any kind:
 | File | What it is |
 |---|---|
 | [`157-client-request-idempotency-keys.md`](./157-client-request-idempotency-keys.md) | A client-supplied `Idempotency-Key` header + `IdempotencyKey` table, checked before a guarded route's handler ever runs; the `@@unique([organizationId, scope, key])` constraint is the actual race guard, a failed request deletes its own row so it stays retryable, and a nightly purge keeps the table small. Opt-in per route (`orders.create`, POS sale creation, doc 155's wallet purchase) via one decorator, never a global `POST` behaviour change; doubles as the fix for doc 48's offline-sync-replay risk once the client generates the key at the moment of the original action |
+
+**Number 158** answers a direct request for a serial-numbering system.
+`MULTI-SECTOR.md` already names this exact gap and leaves it unbuilt —
+"electronics adds `serials` and `warranty`" is listed among the future
+packs a new sector would add, confirmed by grep to be entirely unbuilt:
+
+| File | What it is |
+|---|---|
+| [`158-serialized-unit-tracking.md`](./158-serialized-unit-tracking.md) | `SerializedUnit` — one row per physical unit, the sub-ledger pattern doc 32's `Lot` already proved, reused for the per-unit case; opt-in per variant (`tracksSerials`), attached to the unchanged `InventoryService.move()` via `stockMovementId`, never a second stock model. A return is refused unless the scanned serial was actually sold on that exact order — a direct instance of doc 156's own toxic-pair discipline. Strengthens doc 156 for free: a `StockVariance` on a serial-tracked unit can name the exact missing unit, not just the SKU |
+
+**Number 159** answers a request for "seamless," "maximum flexibility"
+integration with VoIP/call, SMS, WhatsApp and business-email providers.
+Three of the four are already answered by existing mechanisms, cited
+rather than rebuilt (doc 33's `NotificationChannel` for SMS/WhatsApp;
+`EmailChannel`'s own plain-SMTP design, confirmed provider-agnostic by
+reading the code, for business email). Voice calling had no extension
+point anywhere — confirmed by grep — and is the one genuinely new piece:
+
+| File | What it is |
+|---|---|
+| [`159-telephony-provider-integration.md`](./159-telephony-provider-integration.md) | `TelephonyProvider` — the identical provider-swap shape `PaymentProvider`/`NotificationChannel` already use, generalized over any VoIP/SIP/call-center vendor; `CallLog` as a RECORD once a provider webhook confirms a call happened, an unverified webhook refused outright per doc 155's own payment-callback discipline; recordings pulled into the existing `StorageService` rather than left as a provider-hosted link; click-to-call attaches to doc 06/64's existing `Contact`/`SupportTicket`, never a second contact or ticket system |
 
 ## Dependency order
 

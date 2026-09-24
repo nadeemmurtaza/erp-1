@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**407** markdown documents. These explain **why**; this index only says **where**.
+**409** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2552,6 +2552,31 @@ _no second-level headings_
 - Acceptance  <sub>:254</sub>
 - Out of scope  <sub>:266</sub>
 
+### `docs/implementation/158-serialized-unit-tracking.md`  <sub>305 lines</sub>
+
+- Why this is a real gap, not a smaller version of `lots`  <sub>:15</sub>
+- 1. `SerializedUnit` — a sub-ledger under the existing stock row, never a second stock model  <sub>:29</sub>
+- 2. Capture points — three, and only three, moments a serial is ever written  <sub>:88</sub>
+- 3. `getUnitHistory()` — the warranty and authenticity lookup this data makes possible  <sub>:144</sub>
+- 4. Strengthens doc 156 for free — a variance can now name the exact unit, not just the SKU  <sub>:168</sub>
+- Scope lenses  <sub>:185</sub>
+- Work orders  <sub>:263</sub>
+- Acceptance  <sub>:280</sub>
+- Out of scope  <sub>:294</sub>
+
+### `docs/implementation/159-telephony-provider-integration.md`  <sub>288 lines</sub>
+
+- What's already built or specified — cited, not duplicated  <sub>:21</sub>
+- 1. `TelephonyProvider` — the same shape as every other extension point in this repository  <sub>:40</sub>
+- 2. `CallLog` — a record, never a request, the moment the call is over  <sub>:83</sub>
+- 3. Recording — reused storage, never a provider-hosted link left as the only copy  <sub>:122</sub>
+- 4. Configuration — the same allowlist shape `PAYMENT_PROVIDERS`/`NOTIFICATION_CHANNELS` already use  <sub>:143</sub>
+- 5. Where a call attaches to what already exists — never a second contact record, never a second ticket system  <sub>:155</sub>
+- Scope lenses  <sub>:168</sub>
+- Work orders  <sub>:244</sub>
+- Acceptance  <sub>:266</sub>
+- Out of scope  <sub>:278</sub>
+
 ### `docs/implementation/16-pbac-row-scoping.md`  <sub>184 lines</sub>
 
 - The good news: the convention already exists, once  <sub>:35</sub>
@@ -2572,43 +2597,43 @@ _no second-level headings_
 - Why one snippet in this doc was wrong  <sub>:239</sub>
 - When to actually build this  <sub>:247</sub>
 
-### `docs/implementation/18-identity-verification.md`  <sub>143 lines</sub>
+### `docs/implementation/18-identity-verification.md`  <sub>149 lines</sub>
 
-- What this is  <sub>:13</sub>
-- Design  <sub>:25</sub>
-- What's built  <sub>:83</sub>
-- Explicitly out of scope for this module  <sub>:109</sub>
-- Local setup  <sub>:131</sub>
+- What this is  <sub>:19</sub>
+- Design  <sub>:31</sub>
+- What's built  <sub>:89</sub>
+- Explicitly out of scope for this module  <sub>:115</sub>
+- Local setup  <sub>:137</sub>
 
-### `docs/implementation/18-trading-partner-network.md`  <sub>81 lines</sub>
+### `docs/implementation/18-trading-partner-network.md`  <sub>87 lines</sub>
 
-- Work orders  <sub>:18</sub>
-- Out of scope (for now)  <sub>:74</sub>
+- Work orders  <sub>:24</sub>
+- Out of scope (for now)  <sub>:80</sub>
 
-### `docs/implementation/19-org-structure-offices-departments.md`  <sub>244 lines</sub>
+### `docs/implementation/19-org-structure-offices-departments.md`  <sub>250 lines</sub>
 
-- Two hierarchies that look like one  <sub>:9</sub>
-- The design: `OrgUnit`, orthogonal to `Node`  <sub>:32</sub>
-- Scope lenses  <sub>:143</sub>
-- Work orders  <sub>:199</sub>
-- Acceptance  <sub>:219</sub>
-- Out of scope for this document  <sub>:233</sub>
-- Decision to record  <sub>:239</sub>
+- Two hierarchies that look like one  <sub>:15</sub>
+- The design: `OrgUnit`, orthogonal to `Node`  <sub>:38</sub>
+- Scope lenses  <sub>:149</sub>
+- Work orders  <sub>:205</sub>
+- Acceptance  <sub>:225</sub>
+- Out of scope for this document  <sub>:239</sub>
+- Decision to record  <sub>:245</sub>
 
-### `docs/implementation/19-payroll.md`  <sub>516 lines</sub>
+### `docs/implementation/19-payroll.md`  <sub>522 lines</sub>
 
-- Scope decision, taken with the owner  <sub>:8</sub>
-- Why `User`, not a new `Employee` table  <sub>:38</sub>
-- Permissions  <sub>:51</sub>
-- Work orders  <sub>:83</sub>
-- WO-19.1 — Schema, module skeleton, permissions, chart-of-accounts  <sub>:97</sub>
-- WO-19.2 — Compensation rates and the salary calculator  <sub>:339</sub>
-- WO-19.3 — Leave types, balances, accrual and requests  <sub>:382</sub>
-- WO-19.4 — Pay-run build, approve, post — and GL posting  <sub>:411</sub>
-- WO-19.5 — Overpayment adjustments  <sub>:444</sub>
-- WO-19.6 — Admin screens, nav, self-service  <sub>:464</sub>
-- WO-19.7 — Tests and full verification  <sub>:494</sub>
-- Not modelled in this phase (named, not silently dropped)  <sub>:505</sub>
+- Scope decision, taken with the owner  <sub>:14</sub>
+- Why `User`, not a new `Employee` table  <sub>:44</sub>
+- Permissions  <sub>:57</sub>
+- Work orders  <sub>:89</sub>
+- WO-19.1 — Schema, module skeleton, permissions, chart-of-accounts  <sub>:103</sub>
+- WO-19.2 — Compensation rates and the salary calculator  <sub>:345</sub>
+- WO-19.3 — Leave types, balances, accrual and requests  <sub>:388</sub>
+- WO-19.4 — Pay-run build, approve, post — and GL posting  <sub>:417</sub>
+- WO-19.5 — Overpayment adjustments  <sub>:450</sub>
+- WO-19.6 — Admin screens, nav, self-service  <sub>:470</sub>
+- WO-19.7 — Tests and full verification  <sub>:500</sub>
+- Not modelled in this phase (named, not silently dropped)  <sub>:511</sub>
 
 ### `docs/implementation/20-people-positions-ranks.md`  <sub>239 lines</sub>
 
@@ -3413,15 +3438,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>432 lines</sub>
+### `docs/implementation/README.md`  <sub>470 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:302</sub>
-- The two module groups  <sub>:331</sub>
-- How a work order runs  <sub>:368</sub>
-- Known gaps not yet owned by a phase  <sub>:386</sub>
-- When a brief is wrong  <sub>:413</sub>
-- Scope, honestly  <sub>:426</sub>
+- Dependency order  <sub>:340</sub>
+- The two module groups  <sub>:369</sub>
+- How a work order runs  <sub>:406</sub>
+- Known gaps not yet owned by a phase  <sub>:424</sub>
+- When a brief is wrong  <sub>:451</sub>
+- Scope, honestly  <sub>:464</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

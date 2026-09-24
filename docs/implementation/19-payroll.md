@@ -1,5 +1,11 @@
 # Phase 19 — Payroll: compensation, leave balance and pay runs
 
+> **Number collision:** this repository has two documents numbered 19 —
+> this one and [`19-org-structure-offices-departments.md`](./19-org-structure-offices-departments.md).
+> Neither is a duplicate or an error to merge; they predate a consistent
+> numbering pass and were never renumbered. Cite this document by its full
+> filename, never as bare "doc 19" — see `README.md`.
+
 **Read `00-HOUSE-RULES.md` first.** This is the document of record for the
 gap `docs/erp-lenses/38-gap-hr-payroll-no-posting-artifact-for-compe.md`
 names: no wage table, no pay-run document, no reversal path for money

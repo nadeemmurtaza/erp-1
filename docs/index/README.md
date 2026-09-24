@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **1,340 files / 209,902 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **1,355 files / 212,001 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -57,10 +57,10 @@ single fact — the page is the right tool when you need the shape of something.
 | “What command do I run?” | [cross/commands.md](cross/commands.md) | ~1.8k | every script in every package.json (82) |
 | “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | ~2.7k | 61 migrations, newest last |
 | “What is already tested?” | [cross/tests.md](cross/tests.md) | ~5.3k | 135 spec files → what each one pins down |
-| “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~25.6k | every document of record, with its outline |
+| “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~27.0k | every document of record, with its outline |
 | “What is in this one module?” | [modules/](modules) | — | one page per API feature module (28) |
 | “What does this file export?” | [symbols/](symbols) | — | every exported symbol in the repo, with line numbers |
-| “I need a machine-readable form.” | [index.json](index.json) | ~312.4k | the whole index as JSON — grep or jq it |
+| “I need a machine-readable form.” | [index.json](index.json) | ~313.3k | the whole index as JSON — grep or jq it |
 
 
 ## The levels
@@ -123,7 +123,7 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 | apps/pos | 31 | 1,874 | [pos](areas/pos.md) |
 | apps/mobile | 42 | 5,292 | [mobile](areas/mobile.md) |
 | packages/* | 57 | 4,769 | [packages](areas/packages.md) |
-| docs/* | 288 | 45,605 | [docs](areas/docs.md) |
+| docs/* | 303 | 47,704 | [docs](areas/docs.md) |
 | scripts, CI, deployment and container configuration | 55 | 28,068 | [infra](areas/infra.md) |
 | repository root files | 82 | 10,659 | [root](areas/root.md) |
 

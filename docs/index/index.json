@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1340,
-    "lines": 209902,
+    "files": 1355,
+    "lines": 212001,
     "routes": 357,
     "controllers": 62,
     "models": 140,
@@ -1107,9 +1107,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 288,
-      "lines": 45605,
-      "bytes": 2757011,
+      "files": 303,
+      "lines": 47704,
+      "bytes": 2871377,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -45650,6 +45650,141 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/59-workforce-attendance-ratios.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 92,
+      "bytes": 4412,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/60-headcount-growth-metrics.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 102,
+      "bytes": 4852,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/61-policy-communications-bulletin.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 194,
+      "bytes": 9862,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/62-document-expiration-compliance.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 121,
+      "bytes": 6244,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/63-multi-tier-approval-hierarchies.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 228,
+      "bytes": 12567,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/64-help-desk-support-ticketing.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 188,
+      "bytes": 9583,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/65-cctv-camera-repurposing.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 89,
+      "bytes": 4459,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/66-multi-form-factor-pos.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 78,
+      "bytes": 4140,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/67-secure-cash-drawer-triggering.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 63,
+      "bytes": 3231,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/68-realtime-gross-profit.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 178,
+      "bytes": 10045,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/69-order-lifecycle-status-dashboard.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 107,
+      "bytes": 5532,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/70-realtime-stock-depletion.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 77,
+      "bytes": 4058,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/71-recipe-batch-traceability.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 255,
+      "bytes": 13664,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/72-fragmented-tool-consolidation-import.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 173,
+      "bytes": 9752,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/73-multi-entity-multi-company-configuration.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 127,
+      "bytes": 7599,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
@@ -45689,8 +45824,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 213,
-      "bytes": 18679,
+      "lines": 240,
+      "bytes": 23045,
       "doc": "",
       "symbols": []
     },

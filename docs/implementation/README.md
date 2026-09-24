@@ -80,6 +80,33 @@ each separately deferred to "the other one":
 | [`57-multiday-category-velocity.md`](./57-multiday-category-velocity.md) | The per-category **daily** series `productsCategories()` doesn't produce today — reuses its exact filters, adds the missing dimension |
 | [`58-live-operational-feed.md`](./58-live-operational-feed.md) | A read-model over `Order`/`PurchaseOrder`/`Payment`, honestly polled rather than claiming push-based "real time" this repo has no infrastructure for yet |
 
+**Numbers 59–73** cover workforce analytics/admin, hardware repurposing,
+granular financial/operational analytics, and industry-specific process
+automation — five are coverage notes citing exact existing mechanisms
+(doc 30, doc 31 ×2, doc 39/`RETAIL-ERP.md` R14, core architecture), one
+generalizes a chain-approval pattern into a reusable mechanism, and one
+(doc 68) traces a real, previously-undiscovered bug: POS sales never fire
+the event that computes `OrderEconomics`, so till sales get no gross-profit
+row today:
+
+| File | What it is |
+|---|---|
+| [`59-workforce-attendance-ratios.md`](./59-workforce-attendance-ratios.md) | Present/on-leave/absent as a percentage of headcount — one aggregation over doc 43's existing `classifyDay()`, never a second classification scheme |
+| [`60-headcount-growth-metrics.md`](./60-headcount-growth-metrics.md) | The month-over-month joiner/leaver trend doc 53 explicitly named and deferred — built here from the identical `joinedOn`/`leftOn` columns |
+| [`61-policy-communications-bulletin.md`](./61-policy-communications-bulletin.md) | A persistent, browsable `Bulletin` record with acknowledgement tracking — doc 24 is delivery only, never a bulletin board; this is the missing record, doc 24 fires the ping |
+| [`62-document-expiration-compliance.md`](./62-document-expiration-compliance.md) | Coverage note: doc 54's `ExpiringRecordSource` + doc 28's `EmployeeDocument` already deliver this; the one real work order opens `type` from a closed enum to a data-driven `DocumentType` row |
+| [`63-multi-tier-approval-hierarchies.md`](./63-multi-tier-approval-hierarchies.md) | Generalizes doc 42's `TimesheetApproval` into one `ApprovalChain`/`ApprovalStep` mechanism keyed by subject type, upgrading `LeaveRequest`'s single `decidedById` into a real chain |
+| [`64-help-desk-support-ticketing.md`](./64-help-desk-support-ticketing.md) | A genuinely new internal support-ticket module — no prior ticketing/lifecycle mechanism existed anywhere in this repository |
+| [`65-cctv-camera-repurposing.md`](./65-cctv-camera-repurposing.md) | Coverage note: doc 30's `FaceMatchProvider` already takes a vendor-agnostic `imageRef`, never a proprietary appliance handle — an existing camera is already a valid frame source |
+| [`66-multi-form-factor-pos.md`](./66-multi-form-factor-pos.md) | Coverage note: Law 4's seven screens + the 48×48 POS touch-target rule already bind `apps/pos`; the one open question is whether `check:overflow`'s sweep already covers it |
+| [`67-secure-cash-drawer-triggering.md`](./67-secure-cash-drawer-triggering.md) | Coverage note: doc 31's own words already specify "once, per completed cash tender — never on a card tender, never twice" |
+| [`68-realtime-gross-profit.md`](./68-realtime-gross-profit.md) | Traces a real bug: POS sales are created directly at `DELIVERED` and never publish `OrderStatusChanged`, so `FinanceListener` never computes their `OrderEconomics` row — the fix is one missing event publish, not a new profit engine |
+| [`69-order-lifecycle-status-dashboard.md`](./69-order-lifecycle-status-dashboard.md) | A Pending/Completed/Voided count tile — a genuine small gap; a `GROUP BY` over `Order.status`, mapped to three display buckets |
+| [`70-realtime-stock-depletion.md`](./70-realtime-stock-depletion.md) | Coverage note: `InventoryService.postUnconditional()` already deducts stock in the same transaction as a POS sale — "one writer per invariant" already is the real-time mechanism |
+| [`71-recipe-batch-traceability.md`](./71-recipe-batch-traceability.md) | Connects `bom`'s `BomProductionRun`/`BomProductionLine` (confirmed to have zero relationship to lots today) to doc 32's `Lot`/`LotAllocation` for full input-to-output batch genealogy |
+| [`72-fragmented-tool-consolidation-import.md`](./72-fragmented-tool-consolidation-import.md) | Extends the existing `ProductImportService` CSV pattern (never rebuilt) to two more entities a spreadsheet-run business actually needs onboarded: contacts and expenses |
+| [`73-multi-entity-multi-company-configuration.md`](./73-multi-entity-multi-company-configuration.md) | Coverage note: `Organization`/`RetailBrand`/`Location` and `RETAIL-ERP.md`'s R14 editions already are this capability; names honestly that adding a second brand is a deployment-time operator action, not yet a self-service screen |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

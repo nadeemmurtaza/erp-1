@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**308** markdown documents. These explain **why**; this index only says **where**.
+**323** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2456,6 +2456,135 @@ _no second-level headings_
 - Acceptance  <sub>:122</sub>
 - Out of scope  <sub>:133</sub>
 
+### `docs/implementation/59-workforce-attendance-ratios.md`  <sub>92 lines</sub>
+
+- 1. A ratio is one query over `classifyDay()`'s own output  <sub>:11</sub>
+- Scope lenses  <sub>:31</sub>
+- Work orders  <sub>:69</sub>
+- Acceptance  <sub>:77</sub>
+- Out of scope  <sub>:87</sub>
+
+### `docs/implementation/60-headcount-growth-metrics.md`  <sub>102 lines</sub>
+
+- 1. Net growth is joiners minus leavers, per month, from rows doc 20 already writes  <sub>:12</sub>
+- Scope lenses  <sub>:38</sub>
+- Work orders  <sub>:78</sub>
+- Acceptance  <sub>:87</sub>
+- Out of scope  <sub>:97</sub>
+
+### `docs/implementation/61-policy-communications-bulletin.md`  <sub>194 lines</sub>
+
+- 1. A `Bulletin` is a record; `NotificationsService` announces it, never replaces it  <sub>:14</sub>
+- 2. Publishing a bulletin fires doc 24's own notification, once  <sub>:66</sub>
+- Scope lenses  <sub>:84</sub>
+- Work orders  <sub>:159</sub>
+- Acceptance  <sub>:175</sub>
+- Out of scope  <sub>:187</sub>
+
+### `docs/implementation/62-document-expiration-compliance.md`  <sub>121 lines</sub>
+
+- 1. What already exists  <sub>:13</sub>
+- 2. The one real gap: document *type* is data, not a fixed list  <sub>:24</sub>
+- Scope lenses  <sub>:59</sub>
+- Work orders  <sub>:95</sub>
+- Acceptance  <sub>:107</sub>
+- Out of scope  <sub>:115</sub>
+
+### `docs/implementation/63-multi-tier-approval-hierarchies.md`  <sub>228 lines</sub>
+
+- 1. The chain, extracted once, referenced by subject type  <sub>:14</sub>
+- 2. `ApprovalService` is the one writer; each subject module calls it, never re-implements it  <sub>:59</sub>
+- Scope lenses  <sub>:92</sub>
+- Work orders  <sub>:191</sub>
+- Acceptance  <sub>:211</sub>
+- Out of scope  <sub>:222</sub>
+
+### `docs/implementation/64-help-desk-support-ticketing.md`  <sub>188 lines</sub>
+
+- 1. A ticket is a record of a request, with an ordered reply thread  <sub>:13</sub>
+- 2. Assignment and status transitions reuse the org tree, not a new team model  <sub>:55</sub>
+- Scope lenses  <sub>:75</sub>
+- Work orders  <sub>:153</sub>
+- Acceptance  <sub>:169</sub>
+- Out of scope  <sub>:178</sub>
+
+### `docs/implementation/65-cctv-camera-repurposing.md`  <sub>89 lines</sub>
+
+- 1. What "repurposing" concretely means here  <sub>:27</sub>
+- Scope lenses  <sub>:49</sub>
+- Work orders  <sub>:61</sub>
+- Acceptance  <sub>:75</sub>
+- Out of scope  <sub>:83</sub>
+
+### `docs/implementation/66-multi-form-factor-pos.md`  <sub>78 lines</sub>
+
+- 1. What already covers this, and what a gap would actually look like  <sub>:15</sub>
+- Scope lenses  <sub>:42</sub>
+- Work orders  <sub>:53</sub>
+- Acceptance  <sub>:63</sub>
+- Out of scope  <sub>:72</sub>
+
+### `docs/implementation/67-secure-cash-drawer-triggering.md`  <sub>63 lines</sub>
+
+- 1. What "exclusively with completed cash transactions" already means here  <sub>:15</sub>
+- Scope lenses  <sub>:35</sub>
+- Work orders  <sub>:43</sub>
+- Acceptance  <sub>:50</sub>
+- Out of scope  <sub>:58</sub>
+
+### `docs/implementation/68-realtime-gross-profit.md`  <sub>178 lines</sub>
+
+- 1. The fix is one more publish, at the point POS already knows it happened  <sub>:26</sub>
+- 2. "Per transaction and per day" is then a read over rows that now exist  <sub>:48</sub>
+- Scope lenses  <sub>:70</sub>
+- Work orders  <sub>:135</sub>
+- Acceptance  <sub>:156</sub>
+- Out of scope  <sub>:169</sub>
+
+### `docs/implementation/69-order-lifecycle-status-dashboard.md`  <sub>107 lines</sub>
+
+- 1. A status breakdown is a single `GROUP BY`, mapped to the promotional list's own three buckets  <sub>:14</sub>
+- Scope lenses  <sub>:41</sub>
+- Work orders  <sub>:81</sub>
+- Acceptance  <sub>:92</sub>
+- Out of scope  <sub>:101</sub>
+
+### `docs/implementation/70-realtime-stock-depletion.md`  <sub>77 lines</sub>
+
+- 1. Why "reflecting across both POS tills and back-office" needs no extra work  <sub>:20</sub>
+- 2. Barcode scanning is a POS hardware input, not a stock-deduction mechanism of its own  <sub>:33</sub>
+- Scope lenses  <sub>:44</sub>
+- Work orders  <sub>:55</sub>
+- Acceptance  <sub>:62</sub>
+- Out of scope  <sub>:73</sub>
+
+### `docs/implementation/71-recipe-batch-traceability.md`  <sub>255 lines</sub>
+
+- 1. Consumption draws from specific input lots; production creates one output lot  <sub>:21</sub>
+- 2. The write happens inside `production.service.ts`'s own existing transaction, never a second write path  <sub>:73</sub>
+- 3. Genealogy is then a graph walk over rows that now exist  <sub>:103</sub>
+- Scope lenses  <sub>:128</sub>
+- Work orders  <sub>:220</sub>
+- Acceptance  <sub>:233</sub>
+- Out of scope  <sub>:248</sub>
+
+### `docs/implementation/72-fragmented-tool-consolidation-import.md`  <sub>173 lines</sub>
+
+- 1. The pattern, generalized just enough to name its second and third users  <sub>:23</sub>
+- Scope lenses  <sub>:57</sub>
+- Work orders  <sub>:135</sub>
+- Acceptance  <sub>:151</sub>
+- Out of scope  <sub>:163</sub>
+
+### `docs/implementation/73-multi-entity-multi-company-configuration.md`  <sub>127 lines</sub>
+
+- 1. What already exists, in the promotional list's own words  <sub>:21</sub>
+- 2. The one honest gap: brand/branch creation is an admin operation today, not self-service onboarding  <sub>:30</sub>
+- Scope lenses  <sub>:51</sub>
+- Work orders  <sub>:102</sub>
+- Acceptance  <sub>:112</sub>
+- Out of scope  <sub>:120</sub>
+
 ### `docs/implementation/DECISIONS.md`  <sub>1,768 lines</sub>
 
 - How to read this  <sub>:13</sub>
@@ -2523,15 +2652,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>213 lines</sub>
+### `docs/implementation/README.md`  <sub>240 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:83</sub>
-- The two module groups  <sub>:112</sub>
-- How a work order runs  <sub>:149</sub>
-- Known gaps not yet owned by a phase  <sub>:167</sub>
-- When a brief is wrong  <sub>:194</sub>
-- Scope, honestly  <sub>:207</sub>
+- Dependency order  <sub>:110</sub>
+- The two module groups  <sub>:139</sub>
+- How a work order runs  <sub>:176</sub>
+- Known gaps not yet owned by a phase  <sub>:194</sub>
+- When a brief is wrong  <sub>:221</sub>
+- Scope, honestly  <sub>:234</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

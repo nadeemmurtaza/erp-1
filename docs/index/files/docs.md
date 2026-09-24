@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 288 tracked files in `docs/*`, by directory.
+All 303 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -253,7 +253,7 @@ All 288 tracked files in `docs/*`, by directory.
 | `52g-generate-gap.md` | doc | 26 |  |
 | `52h-harden-gap.md` | doc | 40 |  |
 
-### `docs/implementation` (68)
+### `docs/implementation` (83)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -318,11 +318,26 @@ All 288 tracked files in `docs/*`, by directory.
 | `56-overdue-invoices-counter.md` | doc | 111 |  |
 | `57-multiday-category-velocity.md` | doc | 117 |  |
 | `58-live-operational-feed.md` | doc | 141 |  |
+| `59-workforce-attendance-ratios.md` | doc | 92 |  |
+| `60-headcount-growth-metrics.md` | doc | 102 |  |
+| `61-policy-communications-bulletin.md` | doc | 194 |  |
+| `62-document-expiration-compliance.md` | doc | 121 |  |
+| `63-multi-tier-approval-hierarchies.md` | doc | 228 |  |
+| `64-help-desk-support-ticketing.md` | doc | 188 |  |
+| `65-cctv-camera-repurposing.md` | doc | 89 |  |
+| `66-multi-form-factor-pos.md` | doc | 78 |  |
+| `67-secure-cash-drawer-triggering.md` | doc | 63 |  |
+| `68-realtime-gross-profit.md` | doc | 178 |  |
+| `69-order-lifecycle-status-dashboard.md` | doc | 107 |  |
+| `70-realtime-stock-depletion.md` | doc | 77 |  |
+| `71-recipe-batch-traceability.md` | doc | 255 |  |
+| `72-fragmented-tool-consolidation-import.md` | doc | 173 |  |
+| `73-multi-entity-multi-company-configuration.md` | doc | 127 |  |
 | `DECISIONS.md` | doc | 1768 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 213 |  |
+| `README.md` | doc | 240 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 

@@ -162,6 +162,44 @@ onto a mechanism already specified earlier in this document set:
 | [`102-hyperautomation-workflow-integration.md`](./102-hyperautomation-workflow-integration.md) | Coverage note: doc 36's `OutboundConnector` schema literally uses `"Zapier webhook"` as its own worked example — n8n is the identical class of target, already served by the same generic, template-driven connector |
 | [`103-semantic-data-contracts.md`](./103-semantic-data-contracts.md) | Coverage note: doc 18's canonical-JSON/`EdiTranslator` boundary already exists specifically to prevent trading-partner vendor lock-in; the internal DTO layer delivers the identical principle between modules |
 
+**Numbers 104–126** cover a second, larger wave of generic enterprise-
+architecture buzzwords (EAV, FSM/BPMN, event sourcing/CQRS, hexagonal
+architecture, agentic/MCP integration, zero-trust, pluggable crypto) —
+23 documents for the largest single batch so far. As with 92–103, several
+of these bullets ask for architecture this repository's own `CLAUDE.md`
+deliberately did not choose; those documents state the trade plainly
+(and, where a real evidence-backed alternative already exists, cite it)
+rather than building against a settled decision. A few bullets named
+features or examples with no basis anywhere in this codebase (a "3D
+globe," a MongoDB geospatial index) — those are named honestly as
+fictional rather than silently built or silently ignored:
+
+| File | What it is |
+|---|---|
+| [`104-jsonb-eav-extensibility.md`](./104-jsonb-eav-extensibility.md) | Declines a general EAV model as unindexable/unreviewable; scopes the real need (a client adds a custom field) as a bounded, per-entity JSONB overlay with a code-known entity list |
+| [`105-metadata-driven-ui-rendering.md`](./105-metadata-driven-ui-rendering.md) | Declines a general metadata-driven rendering engine (it would rebuild the design system's own enforcement inside an interpreter); builds only the narrow form-section renderer doc 104's custom fields actually need |
+| [`106-finite-state-machines-registry.md`](./106-finite-state-machines-registry.md) | `ALLOWED_TRANSITIONS` (orders.service.ts) already is this; declines making transition tables administrator-editable, since they are structural invariants other code depends on, not policy |
+| [`107-visual-bpmn-workflow-modeling.md`](./107-visual-bpmn-workflow-modeling.md) | Declined for a third time in this document set — doc 63 and doc 96 already named and deferred a visual chain designer; BPMN doesn't change that answer |
+| [`108-event-triggered-side-effects.md`](./108-event-triggered-side-effects.md) | The "Fulfillment Complete → 3PL webhook" example is doc 36's `OutboundConnector` subscribed to the existing `OrderStatusChanged` event — no new mechanism |
+| [`109-immutable-event-ledger.md`](./109-immutable-event-ledger.md) | `AuditLog` + the domain-event catalogue already deliver a real, append-only audit trail; full event sourcing (state derived by replaying events) is named as a deliberate, larger commitment not made here |
+| [`110-cqrs-read-write-separation.md`](./110-cqrs-read-write-separation.md) | `OrderEconomics`/`VariantSalesStat`-style same-database projections already deliver CQRS's actual benefit; states plainly that the bullet's own "3D globe"/MongoDB example describes a feature that does not exist in this product |
+| [`111-hierarchical-entity-isolation.md`](./111-hierarchical-entity-isolation.md) | Coverage note: `Organization`→`RetailBrand`→`Location` (doc 73) plus `BrandPolicy`'s existing cascade-with-override already is the Holding-Company→Subsidiary→Franchise model |
+| [`112-pluggable-fiscal-engines.md`](./112-pluggable-fiscal-engines.md) | Coverage note: a fourth citation of doc 15's `FiscalComplianceProvider` |
+| [`113-micro-frontend-embedding.md`](./113-micro-frontend-embedding.md) | Declines full micro-frontend/module-federation architecture (doc 93's reasoning, restated); scopes the bullet's own real example (embedding a third-party dashboard) as a narrow, scoped iframe/embed-token pattern |
+| [`114-sandboxed-scripting-runtime.md`](./114-sandboxed-scripting-runtime.md) | Declines a general WASM/scripting sandbox as oversized attack surface; recommends a restricted expression evaluator for the bullet's own named examples (commission/shipping formulas), deferred until a real requirement exists and routed through the `security` subagent when it does |
+| [`115-hexagonal-architecture-ports-adapters.md`](./115-hexagonal-architecture-ports-adapters.md) | Names the existing correspondence: every `*Provider`/`*Driver`/`*Channel` extension point already is a Port; every implementation already is an Adapter |
+| [`116-agentic-integration-mcp.md`](./116-agentic-integration-mcp.md) | Scopes a real MCP tool-adapter pattern reusing existing services/`PermissionsGuard`/`ApiClient` unchanged — a fourth adapter kind over services that already exist, not a new capability surface; deferred until a real AI-agent integration names its tools |
+| [`117-event-driven-choreography-immutability.md`](./117-event-driven-choreography-immutability.md) | Choreography and immutability are already real (doc 100/109); explains why idempotency here keys off real business invariants (`orderId`, unique constraints) rather than a generic processed-event-ID ledger |
+| [`118-headless-composable-api-capabilities.md`](./118-headless-composable-api-capabilities.md) | Ties doc 93/98/99/115/116 together; names the one real open question doc 116 doesn't answer — an agent acting *as* a specific human user, not under its own scoped permissions — as deliberately unbuilt |
+| [`119-containerized-workload-portability.md`](./119-containerized-workload-portability.md) | Strengthens doc 94 with doc 48's own strongest evidence: the identical, unmodified `apps/api` already runs both containerized and as an offline desktop node |
+| [`120-decoupled-integration-engines.md`](./120-decoupled-integration-engines.md) | A third citation of doc 36; explains specifically why `payloadTemplate` isolates this repository from a vendor's own breaking API changes |
+| [`121-vector-multimodel-databases.md`](./121-vector-multimodel-databases.md) | Coverage note: doc 35's `VectorStore` extension point already is this |
+| [`122-data-lake-cold-storage-architecture.md`](./122-data-lake-cold-storage-architecture.md) | Named premature at this repository's current documented scale; states a concrete, measurable trigger condition for when to revisit rather than a vague "not needed yet" |
+| [`123-automated-degradation-resilience.md`](./123-automated-degradation-resilience.md) | Collects the evidence that "The absent collaborator" — already a mandatory scope lens in every document this repository requires — is actually followed, across five cited examples |
+| [`124-infrastructure-as-code.md`](./124-infrastructure-as-code.md) | Version-controlled deploy scripts and compose files are real; names honestly that no declarative provisioning tool (Terraform/Pulumi) exists |
+| [`125-zero-trust-networking.md`](./125-zero-trust-networking.md) | Separates the principle (already real, at the one HTTP boundary that exists) from the mesh it's usually built for (not applicable — there are no internal microservices to secure between, per doc 92) |
+| [`126-pluggable-cryptography.md`](./126-pluggable-cryptography.md) | Declines a dedicated crypto microservice; scopes a real, narrow, in-process `PasswordHasher` interface for rotation-on-next-login, deferred until a real reason to move off bcrypt exists |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

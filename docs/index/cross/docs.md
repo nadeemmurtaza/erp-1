@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**353** markdown documents. These explain **why**; this index only says **where**.
+**376** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -1998,6 +1998,59 @@ _no second-level headings_
 - Acceptance  <sub>:54</sub>
 - Out of scope  <sub>:60</sub>
 
+### `docs/implementation/104-jsonb-eav-extensibility.md`  <sub>149 lines</sub>
+
+- 1. `CustomFieldDefinition` + a JSONB overlay column, one per entity that needs it — never one universal EAV table  <sub>:20</sub>
+- 2. Why this stays narrow, deliberately  <sub>:57</sub>
+- Scope lenses  <sub>:79</sub>
+- Work orders  <sub>:121</sub>
+- Acceptance  <sub>:134</sub>
+- Out of scope  <sub>:143</sub>
+
+### `docs/implementation/105-metadata-driven-ui-rendering.md`  <sub>94 lines</sub>
+
+- What doc 104 already needs, and this document supplies  <sub>:14</sub>
+- Why a general metadata-driven UI engine is not this repository's architecture, and should not become it  <sub>:36</sub>
+- Scope lenses  <sub>:64</sub>
+- Work orders  <sub>:70</sub>
+- Acceptance  <sub>:77</sub>
+- Out of scope  <sub>:87</sub>
+
+### `docs/implementation/106-finite-state-machines-registry.md`  <sub>98 lines</sub>
+
+- What already exists, cited rather than re-derived  <sub>:18</sub>
+- The one real improvement: a read-only cross-module registry, never a runtime-editable one  <sub>:41</sub>
+- Scope lenses  <sub>:71</sub>
+- Work orders  <sub>:77</sub>
+- Acceptance  <sub>:85</sub>
+- Out of scope  <sub>:93</sub>
+
+### `docs/implementation/107-visual-bpmn-workflow-modeling.md`  <sub>69 lines</sub>
+
+- Why this remains declined, restated once more for this specific framing  <sub>:14</sub>
+- What already answers the bullet's own three named use cases  <sub>:33</sub>
+- Scope lenses  <sub>:45</sub>
+- Work orders  <sub>:51</sub>
+- Acceptance  <sub>:59</sub>
+- Out of scope  <sub>:64</sub>
+
+### `docs/implementation/108-event-triggered-side-effects.md`  <sub>61 lines</sub>
+
+- The mapping, stated once  <sub>:18</sub>
+- Scope lenses  <sub>:32</sub>
+- Work orders  <sub>:37</sub>
+- Acceptance  <sub>:45</sub>
+- Out of scope  <sub>:53</sub>
+
+### `docs/implementation/109-immutable-event-ledger.md`  <sub>98 lines</sub>
+
+- What already exists: a real, append-only audit trail  <sub>:14</sub>
+- Why full event sourcing (state derived by replaying events) is not adopted here, stated plainly  <sub>:37</sub>
+- Scope lenses  <sub>:69</sub>
+- Work orders  <sub>:75</sub>
+- Acceptance  <sub>:83</sub>
+- Out of scope  <sub>:91</sub>
+
 ### `docs/implementation/11-client-handover-model.md`  <sub>121 lines</sub>
 
 - 1. The Business Goals  <sub>:3</sub>
@@ -2006,6 +2059,98 @@ _no second-level headings_
 - 4. Customization & Upgradability (Engine vs. Glass)  <sub>:64</sub>
 - 5. Hosting Contracts & Infrastructure as a Service (IaaS)  <sub>:89</sub>
 - 6. The API Layer (Dynamic NestJS Separation)  <sub>:109</sub>
+
+### `docs/implementation/110-cqrs-read-write-separation.md`  <sub>93 lines</sub>
+
+- What already exists: precomputed read-optimized projections, without a second database  <sub>:16</sub>
+- The bullet's own example, named honestly  <sub>:33</sub>
+- When literal CQRS (a separate read-side store) would become the right call  <sub>:49</sub>
+- Scope lenses  <sub>:66</sub>
+- Work orders  <sub>:72</sub>
+- Acceptance  <sub>:79</sub>
+- Out of scope  <sub>:85</sub>
+
+### `docs/implementation/111-hierarchical-entity-isolation.md`  <sub>68 lines</sub>
+
+- What already exists, mapped onto the bullet's own three-tier example  <sub>:13</sub>
+- The cascade-with-override mechanism, already built, not hypothetical  <sub>:27</sub>
+- Scope lenses  <sub>:40</sub>
+- Work orders  <sub>:47</sub>
+- Acceptance  <sub>:57</sub>
+- Out of scope  <sub>:63</sub>
+
+### `docs/implementation/112-pluggable-fiscal-engines.md`  <sub>51 lines</sub>
+
+- What already exists  <sub>:14</sub>
+- Scope lenses  <sub>:30</sub>
+- Work orders  <sub>:35</sub>
+- Acceptance  <sub>:41</sub>
+- Out of scope  <sub>:46</sub>
+
+### `docs/implementation/113-micro-frontend-embedding.md`  <sub>107 lines</sub>
+
+- Why full micro-frontend architecture is declined here  <sub>:15</sub>
+- What the bullet's own concrete example actually needs: an embed, not a framework  <sub>:32</sub>
+- Scope lenses  <sub>:51</sub>
+- Work orders  <sub>:88</sub>
+- Acceptance  <sub>:96</sub>
+- Out of scope  <sub>:102</sub>
+
+### `docs/implementation/114-sandboxed-scripting-runtime.md`  <sub>109 lines</sub>
+
+- What the bullet's own two examples actually need  <sub>:17</sub>
+- The recommended mechanism: a restricted expression evaluator, never arbitrary code  <sub>:32</sub>
+- Why this stays a recommendation, not a build order, until a real case names it  <sub>:60</sub>
+- Scope lenses  <sub>:73</sub>
+- Work orders  <sub>:85</sub>
+- Acceptance  <sub>:90</sub>
+- Out of scope  <sub>:99</sub>
+
+### `docs/implementation/115-hexagonal-architecture-ports-adapters.md`  <sub>69 lines</sub>
+
+- The mapping, made explicit  <sub>:17</sub>
+- What this document adds: naming, not architecture  <sub>:34</sub>
+- Scope lenses  <sub>:45</sub>
+- Work orders  <sub>:52</sub>
+- Acceptance  <sub>:57</sub>
+- Out of scope  <sub>:64</sub>
+
+### `docs/implementation/116-agentic-integration-mcp.md`  <sub>161 lines</sub>
+
+- 1. An MCP tool adapter, calling the identical service an HTTP controller already calls  <sub>:17</sub>
+- 2. SSE for long-running tasks — the existing outbox pattern, exposed as a stream, not a new delivery mechanism  <sub>:49</sub>
+- 3. "Stateless and replaceable... isolating the LLM runtime... on the client side"  <sub>:64</sub>
+- Scope lenses  <sub>:74</sub>
+- Work orders  <sub>:138</sub>
+- Acceptance  <sub>:147</sub>
+- Out of scope  <sub>:154</sub>
+
+### `docs/implementation/117-event-driven-choreography-immutability.md`  <sub>82 lines</sub>
+
+- What already exists: choreography and immutability  <sub>:15</sub>
+- Why idempotency here is domain-keyed, not generic event-ID deduplication  <sub>:26</sub>
+- Scope lenses  <sub>:56</sub>
+- Work orders  <sub>:63</sub>
+- Acceptance  <sub>:69</sub>
+- Out of scope  <sub>:75</sub>
+
+### `docs/implementation/118-headless-composable-api-capabilities.md`  <sub>87 lines</sub>
+
+- What already answers each clause  <sub>:13</sub>
+- The one thing this document adds: naming the risk of "acting on behalf of a human"  <sub>:41</sub>
+- Scope lenses  <sub>:57</sub>
+- Work orders  <sub>:65</sub>
+- Acceptance  <sub>:74</sub>
+- Out of scope  <sub>:80</sub>
+
+### `docs/implementation/119-containerized-workload-portability.md`  <sub>69 lines</sub>
+
+- The strongest evidence for "no core rewrites": doc 48 already exists  <sub>:12</sub>
+- What portability already covers, and the one thing it does not claim  <sub>:27</sub>
+- Scope lenses  <sub>:47</sub>
+- Work orders  <sub>:52</sub>
+- Acceptance  <sub>:57</sub>
+- Out of scope  <sub>:63</sub>
 
 ### `docs/implementation/12-extractor-script-spec.md`  <sub>59 lines</sub>
 
@@ -2016,6 +2161,68 @@ _no second-level headings_
 - Phase 5: IaaS & Environment Scaffolding  <sub>:40</sub>
 - Phase 6: CI/CD & Database Cleanup  <sub>:45</sub>
 - Phase 7: Delivery & Pull Request  <sub>:53</sub>
+
+### `docs/implementation/120-decoupled-integration-engines.md`  <sub>48 lines</sub>
+
+- Why `OutboundConnector` already isolates this repository from a third party's own breaking changes  <sub>:12</sub>
+- Scope lenses  <sub>:27</sub>
+- Work orders  <sub>:32</sub>
+- Acceptance  <sub>:37</sub>
+- Out of scope  <sub>:42</sub>
+
+### `docs/implementation/121-vector-multimodel-databases.md`  <sub>52 lines</sub>
+
+- What already exists  <sub>:18</sub>
+- Scope lenses  <sub>:31</sub>
+- Work orders  <sub>:36</sub>
+- Acceptance  <sub>:43</sub>
+- Out of scope  <sub>:48</sub>
+
+### `docs/implementation/122-data-lake-cold-storage-architecture.md`  <sub>75 lines</sub>
+
+- Why this is premature today, stated with evidence rather than assumed  <sub>:16</sub>
+- The concrete trigger that would make this worth building  <sub>:33</sub>
+- Scope lenses  <sub>:50</sub>
+- Work orders  <sub>:56</sub>
+- Acceptance  <sub>:63</sub>
+- Out of scope  <sub>:70</sub>
+
+### `docs/implementation/123-automated-degradation-resilience.md`  <sub>73 lines</sub>
+
+- The evidence, collected from this session's own documents  <sub>:16</sub>
+- "A localized fallback state" — this repository's own name for it  <sub>:38</sub>
+- Scope lenses  <sub>:47</sub>
+- Work orders  <sub>:53</sub>
+- Acceptance  <sub>:58</sub>
+- Out of scope  <sub>:67</sub>
+
+### `docs/implementation/124-infrastructure-as-code.md`  <sub>64 lines</sub>
+
+- What already exists, version-controlled, in this repository  <sub>:9</sub>
+- The honest gap: no declarative infrastructure-provisioning tool  <sub>:22</sub>
+- Scope lenses  <sub>:35</sub>
+- Work orders  <sub>:41</sub>
+- Acceptance  <sub>:51</sub>
+- Out of scope  <sub>:59</sub>
+
+### `docs/implementation/125-zero-trust-networking.md`  <sub>76 lines</sub>
+
+- Where zero-trust's actual principle already holds  <sub>:14</sub>
+- Why a service mesh is not the right implementation of this principle here  <sub>:38</sub>
+- Scope lenses  <sub>:51</sub>
+- Work orders  <sub>:57</sub>
+- Acceptance  <sub>:65</sub>
+- Out of scope  <sub>:71</sub>
+
+### `docs/implementation/126-pluggable-cryptography.md`  <sub>128 lines</sub>
+
+- The two mechanisms, checked individually  <sub>:12</sub>
+- Why a full "dedicated security service" is oversized for what this actually needs  <sub>:26</sub>
+- The narrow, correct answer: a versioned hashing/encryption interface, in-process  <sub>:35</sub>
+- Scope lenses  <sub>:63</sub>
+- Work orders  <sub>:101</sub>
+- Acceptance  <sub>:112</sub>
+- Out of scope  <sub>:119</sub>
 
 ### `docs/implementation/13-email-service-plan.md`  <sub>32 lines</sub>
 
@@ -2905,15 +3112,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>295 lines</sub>
+### `docs/implementation/README.md`  <sub>333 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:165</sub>
-- The two module groups  <sub>:194</sub>
-- How a work order runs  <sub>:231</sub>
-- Known gaps not yet owned by a phase  <sub>:249</sub>
-- When a brief is wrong  <sub>:276</sub>
-- Scope, honestly  <sub>:289</sub>
+- Dependency order  <sub>:203</sub>
+- The two module groups  <sub>:232</sub>
+- How a work order runs  <sub>:269</sub>
+- Known gaps not yet owned by a phase  <sub>:287</sub>
+- When a brief is wrong  <sub>:314</sub>
+- Scope, honestly  <sub>:327</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

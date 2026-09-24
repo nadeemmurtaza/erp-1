@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 333 tracked files in `docs/*`, by directory.
+All 356 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -253,7 +253,7 @@ All 333 tracked files in `docs/*`, by directory.
 | `52g-generate-gap.md` | doc | 26 |  |
 | `52h-harden-gap.md` | doc | 40 |  |
 
-### `docs/implementation` (113)
+### `docs/implementation` (136)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -272,8 +272,31 @@ All 333 tracked files in `docs/*`, by directory.
 | `101-agnostic-notification-webhooks.md` | doc | 71 |  |
 | `102-hyperautomation-workflow-integration.md` | doc | 70 |  |
 | `103-semantic-data-contracts.md` | doc | 69 |  |
+| `104-jsonb-eav-extensibility.md` | doc | 149 |  |
+| `105-metadata-driven-ui-rendering.md` | doc | 94 |  |
+| `106-finite-state-machines-registry.md` | doc | 98 |  |
+| `107-visual-bpmn-workflow-modeling.md` | doc | 69 |  |
+| `108-event-triggered-side-effects.md` | doc | 61 |  |
+| `109-immutable-event-ledger.md` | doc | 98 |  |
 | `11-client-handover-model.md` | doc | 121 |  |
+| `110-cqrs-read-write-separation.md` | doc | 93 |  |
+| `111-hierarchical-entity-isolation.md` | doc | 68 |  |
+| `112-pluggable-fiscal-engines.md` | doc | 51 |  |
+| `113-micro-frontend-embedding.md` | doc | 107 |  |
+| `114-sandboxed-scripting-runtime.md` | doc | 109 |  |
+| `115-hexagonal-architecture-ports-adapters.md` | doc | 69 |  |
+| `116-agentic-integration-mcp.md` | doc | 161 |  |
+| `117-event-driven-choreography-immutability.md` | doc | 82 |  |
+| `118-headless-composable-api-capabilities.md` | doc | 87 |  |
+| `119-containerized-workload-portability.md` | doc | 69 |  |
 | `12-extractor-script-spec.md` | doc | 59 |  |
+| `120-decoupled-integration-engines.md` | doc | 48 |  |
+| `121-vector-multimodel-databases.md` | doc | 52 |  |
+| `122-data-lake-cold-storage-architecture.md` | doc | 75 |  |
+| `123-automated-degradation-resilience.md` | doc | 73 |  |
+| `124-infrastructure-as-code.md` | doc | 64 |  |
+| `125-zero-trust-networking.md` | doc | 76 |  |
+| `126-pluggable-cryptography.md` | doc | 128 |  |
 | `13-email-service-plan.md` | doc | 32 |  |
 | `14-managed-services-module.md` | doc | 270 |  |
 | `15-tax-module.md` | doc | 232 |  |
@@ -367,7 +390,7 @@ All 333 tracked files in `docs/*`, by directory.
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 295 |  |
+| `README.md` | doc | 333 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 

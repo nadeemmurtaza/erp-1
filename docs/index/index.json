@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1385,
-    "lines": 214398,
+    "files": 1408,
+    "lines": 216417,
     "routes": 357,
     "controllers": 62,
     "models": 140,
@@ -1107,9 +1107,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 333,
-      "lines": 50101,
-      "bytes": 2999618,
+      "files": 356,
+      "lines": 52120,
+      "bytes": 3109327,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -45236,6 +45236,60 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/104-jsonb-eav-extensibility.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 149,
+      "bytes": 8004,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/105-metadata-driven-ui-rendering.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 94,
+      "bytes": 4695,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/106-finite-state-machines-registry.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 98,
+      "bytes": 4652,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/107-visual-bpmn-workflow-modeling.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 69,
+      "bytes": 3435,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/108-event-triggered-side-effects.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 61,
+      "bytes": 2765,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/109-immutable-event-ledger.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 98,
+      "bytes": 5449,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/11-client-handover-model.md",
       "area": "docs",
       "kind": "doc",
@@ -45245,11 +45299,164 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/110-cqrs-read-write-separation.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 93,
+      "bytes": 5019,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/111-hierarchical-entity-isolation.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 68,
+      "bytes": 3431,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/112-pluggable-fiscal-engines.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 51,
+      "bytes": 2196,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/113-micro-frontend-embedding.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 107,
+      "bytes": 5813,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/114-sandboxed-scripting-runtime.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 109,
+      "bytes": 5561,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/115-hexagonal-architecture-ports-adapters.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 69,
+      "bytes": 4271,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/116-agentic-integration-mcp.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 161,
+      "bytes": 8853,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/117-event-driven-choreography-immutability.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 82,
+      "bytes": 4329,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/118-headless-composable-api-capabilities.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 87,
+      "bytes": 4553,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/119-containerized-workload-portability.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 69,
+      "bytes": 3430,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/12-extractor-script-spec.md",
       "area": "docs",
       "kind": "doc",
       "lines": 59,
       "bytes": 4640,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/120-decoupled-integration-engines.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 48,
+      "bytes": 2269,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/121-vector-multimodel-databases.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 52,
+      "bytes": 2312,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/122-data-lake-cold-storage-architecture.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 75,
+      "bytes": 3949,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/123-automated-degradation-resilience.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 73,
+      "bytes": 4019,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/124-infrastructure-as-code.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 64,
+      "bytes": 3071,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/125-zero-trust-networking.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 76,
+      "bytes": 3887,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/126-pluggable-cryptography.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 128,
+      "bytes": 6854,
       "doc": "",
       "symbols": []
     },
@@ -46094,8 +46301,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 295,
-      "bytes": 32443,
+      "lines": 333,
+      "bytes": 39335,
       "doc": "",
       "symbols": []
     },

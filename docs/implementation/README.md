@@ -348,6 +348,15 @@ missing, general-purpose pieces — not eight vendor-specific ones:
 |---|---|
 | [`160-dynamic-external-system-connectivity.md`](./160-dynamic-external-system-connectivity.md) | Three additions completing doc 36/132's own connectivity system: `OAUTH2_AUTHORIZATION_CODE` + `OAuthConnection` for per-merchant "Connect your account" flows (QuickBooks, Google, Shopify); `PollConnector` as the scheduled-pull sibling to doc 132's passive webhook receiver (marketplace order feeds, bank statement APIs); `ExternalRecordLink` as one generic our-entity↔their-id mapping table every stateful sync reuses, reusing doc 157's own idempotency discipline against an external system's own records. Hardware integration stays correctly separate (doc 31); a file/SFTP connector kind is named honestly as unbuilt, not stubbed speculatively |
 
+**Numbers 161–162** are the two follow-ups the owner picked from doc
+160's own "what's next" survey — SSO and the file/SFTP connector kind
+doc 160 itself named and deliberately left unbuilt:
+
+| File | What it is |
+|---|---|
+| [`161-sso-identity-federation.md`](./161-sso-identity-federation.md) | The full, security-reviewed design behind doc 128's own `IdentityProvider` sketch: `SsoConnection` per organization, a mandatory email-domain allowlist checked *before* any user lookup (the one control that makes account linking safe), JIT provisioning via the existing `assignByNameIfExists()` pattern self-registration already uses — deliberately never publishing `UserRegistered`, since that event's own CRM subscriber would wrongly create a customer contact for a staff login |
+| [`162-file-based-connector-integration.md`](./162-file-based-connector-integration.md) | The fourth connector shape doc 160 named and left out: `FileConnector` (SFTP, scheduled or event-triggered) + `FileFormatHandler` (one parser/generator class per format family — MT940/CAMT.053/CSV/fixed-width — never one per bank), idempotent by file checksum (doc 157's own discipline applied to a file instead of a request). Reuses `PayrollRunPosted` to trigger a bank disbursement file and doc 04's existing ledger for statement reconciliation — no second bookkeeping system. Names the one new dependency (an SFTP client) explicitly, per `.claude/rules/dependencies.md`'s own required template, for the owner's approval before install |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

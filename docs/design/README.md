@@ -25,22 +25,22 @@ repeated here. This system is the long form around them, not a second copy —
 
 | # | Chapter | Governs | Enforced today |
 |---|---|---|---|
-| 00 | [Principles](00-principles.md) | how a design decision is made at all | by review |
-| 01 | [Foundations](01-foundations.md) | the token layer: colour, type, space, size, radius, shadow, z, motion | colour/radius/type partly; **the rest is unbuilt** |
-| 02 | [Layout & responsive](02-layout.md) | grid, density, the seven screens, reflow | breakpoints in `tailwind.config.ts` |
-| 03 | [Components](03-components.md) | primitives → components → patterns → templates | `.claude/rules/ui.md` + review |
-| 04 | [States & behaviour](04-states.md) | every state an element can be in, and what each one promises | partly, by `EmptyState`/`Loading` |
-| 05 | [Motion](05-motion.md) | the motion language, its tokens, and the quality bar | **unbuilt** — see the chapter |
-| 06 | [Content](06-content.md) | voice, terminology, labels, microcopy, error text | `messages/*.json` only |
-| 07 | [Accessibility & i18n](07-accessibility.md) | keyboard, screen readers, focus, contrast, targets, reduced motion, **RTL** | **not enforced at all** |
-| 08 | [Governance](08-governance.md) | naming, contribution, versioning, deprecation | `check-rules.mjs` for the rule layer |
-| 09 | [Quality gates](09-quality.md) | what must be true before a screen ships, and which of it is automated | `pnpm check` covers part |
-| 10 | [The law catalogue](10-laws.md) | 87 borrowed laws — perception, cognition, action, heuristics, type, colour, space, motion, a11y, i18n — each with its **ruling here** | rulings bind on review |
-| 11 | [Workflow](11-workflow.md) | 100-step processes, approvals, state machines, drafts, dead ends | **unbuilt** as a system |
-| 12 | [Permissions](12-permissions.md) | designing one page for thousands of permissions and 250+ roles | server-side enforcement only |
-| 13 | [Composition](13-composition.md) | shipping shop-only through shop+CRM+ERP+multi-branch from one codebase | API side checked; **UI side not** |
-| 14 | [Navigation](14-navigation.md) | hundreds of departments in one information space | **unmeasured** |
-| 15 | [Integrity](15-integrity.md) | dead ends, broken links and images, overflow — the mechanical risks | **specified, not built** |
+| 00 | [Principles](./principles-laws/00-principles.md) | how a design decision is made at all | by review |
+| 01 | [Foundations](./foundations/01-foundations.md) | the token layer: colour, type, space, size, radius, shadow, z, motion | colour/radius/type partly; **the rest is unbuilt** |
+| 02 | [Layout & responsive](./layout-composition/02-layout.md) | grid, density, the seven screens, reflow | breakpoints in `tailwind.config.ts` |
+| 03 | [Components](./components-states/03-components.md) | primitives → components → patterns → templates | `.claude/rules/ui.md` + review |
+| 04 | [States & behaviour](./components-states/04-states.md) | every state an element can be in, and what each one promises | partly, by `EmptyState`/`Loading` |
+| 05 | [Motion](./motion/05-motion.md) | the motion language, its tokens, and the quality bar | **unbuilt** — see the chapter |
+| 06 | [Content](./content/06-content.md) | voice, terminology, labels, microcopy, error text | `messages/*.json` only |
+| 07 | [Accessibility & i18n](./accessibility/07-accessibility.md) | keyboard, screen readers, focus, contrast, targets, reduced motion, **RTL** | **not enforced at all** |
+| 08 | [Governance](./process-governance/08-governance.md) | naming, contribution, versioning, deprecation | `check-rules.mjs` for the rule layer |
+| 09 | [Quality gates](./process-governance/09-quality.md) | what must be true before a screen ships, and which of it is automated | `pnpm check` covers part |
+| 10 | [The law catalogue](./principles-laws/10-laws.md) | 87 borrowed laws — perception, cognition, action, heuristics, type, colour, space, motion, a11y, i18n — each with its **ruling here** | rulings bind on review |
+| 11 | [Workflow](./process-governance/11-workflow.md) | 100-step processes, approvals, state machines, drafts, dead ends | **unbuilt** as a system |
+| 12 | [Permissions](./process-governance/12-permissions.md) | designing one page for thousands of permissions and 250+ roles | server-side enforcement only |
+| 13 | [Composition](./layout-composition/13-composition.md) | shipping shop-only through shop+CRM+ERP+multi-branch from one codebase | API side checked; **UI side not** |
+| 14 | [Navigation](./layout-composition/14-navigation.md) | hundreds of departments in one information space | **unmeasured** |
+| 15 | [Integrity](./process-governance/15-integrity.md) | dead ends, broken links and images, overflow — the mechanical risks | **specified, not built** |
 
 ## How to use it
 
@@ -64,14 +64,14 @@ pnpm idx rule <text>        # search the binding rules, scoped or not
 
 | Prefix | Family | Chapter |
 |---|---|---|
-| `PER` `COG` `ACT` `HEU` | perception, cognition, action, Nielsen's ten | [10](10-laws.md) |
-| `TYP` `COL` `SPA` `MOT` | type, colour, space and ratio, motion | [10](10-laws.md) |
-| `ACC` `GLO` | accessibility, globalization | [10](10-laws.md) |
-| `FLO` | workflow | [11](11-workflow.md) |
-| `PRM` | permissions | [12](12-permissions.md) |
-| `MOD` | composition and modularity | [13](13-composition.md) |
-| `NAV` | navigation and information architecture | [14](14-navigation.md) |
-| `ITG` | integrity — the machine-checkable failures | [15](15-integrity.md) |
+| `PER` `COG` `ACT` `HEU` | perception, cognition, action, Nielsen's ten | [10](./principles-laws/10-laws.md) |
+| `TYP` `COL` `SPA` `MOT` | type, colour, space and ratio, motion | [10](./principles-laws/10-laws.md) |
+| `ACC` `GLO` | accessibility, globalization | [10](./principles-laws/10-laws.md) |
+| `FLO` | workflow | [11](./process-governance/11-workflow.md) |
+| `PRM` | permissions | [12](./process-governance/12-permissions.md) |
+| `MOD` | composition and modularity | [13](./layout-composition/13-composition.md) |
+| `NAV` | navigation and information architecture | [14](./layout-composition/14-navigation.md) |
+| `ITG` | integrity — the machine-checkable failures | [15](./process-governance/15-integrity.md) |
 
 ## An honest statement of maturity
 

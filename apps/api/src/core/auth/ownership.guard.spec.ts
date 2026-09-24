@@ -3,7 +3,7 @@ import { assertCanManage } from './ownership.guard';
 
 /**
  * The single reference implementation for every "my rows only" check in the
- * codebase — see MULTI-SECTOR.md B5 / docs/implementation/16-pbac-row-scoping.md.
+ * codebase — see MULTI-SECTOR.md B5 / docs/implementation/access-control-identity/16-pbac-row-scoping.md.
  */
 describe('assertCanManage', () => {
   const actor = (permissions: string[]) => ({ id: 'user-1', permissions });

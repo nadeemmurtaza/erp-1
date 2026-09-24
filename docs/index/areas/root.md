@@ -50,7 +50,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `README.md` | 349 | doc |  |
 | `apps/platform/prisma/schema/migrations/20260924010600_init/migration.sql` | 166 | migration |  |
 | `.claude/rules/ui.md` | 151 | doc |  |
-| `apps/platform/prisma/schema/platform.prisma` | 148 | prisma schema | WO-39.1 (docs/implementation/39-shared-cross-tenant-hosting-tier.md) — the |
+| `apps/platform/prisma/schema/platform.prisma` | 148 | prisma schema | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-t… |
 | `PRD.md` | 137 | doc |  |
 | `.claude/rules/design.md` | 136 | doc |  |
 | `apps/platform/src/modules/tenants/provisioning.service.spec.ts` | 132 | unit test |  |

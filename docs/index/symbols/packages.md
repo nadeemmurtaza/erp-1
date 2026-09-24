@@ -70,7 +70,7 @@ Every top-level export in `packages`, with the line to open.
 | `discounts.ts` | `CartLineSnapshot` | interface | :57 |  |
 | `discounts.ts` | `CartSnapshot` | interface | :68 |  |
 | `discounts.ts` | `DiscountContext` | interface | :74 |  |
-| `discounts.ts` | `AppliedDiscount` | interface | :79 | One line actually recorded in `docs/implementation/05-promotions-giftcards.md`'s `OrderDiscount` sn… |
+| `discounts.ts` | `AppliedDiscount` | interface | :79 | One line actually recorded in `docs/implementation/promotions-giftcards/05-promotions-giftcards.md`… |
 | `discounts.ts` | `DiscountResult` | interface | :87 |  |
 | `discounts.ts` | `isDiscountEligible` | function | :121 | Whether the cart, as a whole, satisfies this discount's conditions. |
 | `discounts.ts` | `evaluateDiscounts` | function | :241 | Evaluates every ELIGIBLE discount against a cart and returns the combined result, per the stacking… |
@@ -168,7 +168,7 @@ Every top-level export in `packages`, with the line to open.
 | `pricing.ts` | `weightedAverageCost` | function | :264 |  |
 | `secret-crypto.ts` | `encryptSecret` | function | :40 |  |
 | `secret-crypto.ts` | `decryptSecret` | function | :50 |  |
-| `sku.ts` | `SkuTemplateInput` | interface | :11 | SKU generation (WO-3.3, docs/implementation/03-variants-sku-seo.md). |
+| `sku.ts` | `SkuTemplateInput` | interface | :11 | SKU generation (WO-3.3, docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md). |
 | `sku.ts` | `generateSku` | function | :59 | Renders a SKU from the template, appending a zero-padded `{SEQ}` only when the un-numbered version… |
 | `slug.ts` | `slugify` | function | :6 | URL slugs. |
 | `slug.ts` | `slugifyWithFallback` | function | :28 | Slugifies, falling back to `<fallbackPrefix>-<random>` when nothing survives. |
@@ -186,7 +186,7 @@ Every top-level export in `packages`, with the line to open.
 | `units.ts` | `toBaseUnits` | function | :33 | A display quantity (12.5 gaz) to base units (12500), rounded to the nearest whole base unit — base… |
 | `units.ts` | `fromBaseUnits` | function | :38 | Base units (12500) back to a display quantity (12.5 gaz). |
 | `units.ts` | `formatQuantity` | function | :47 | "12.5 gaz" — only as many decimal places as `unitScale` actually implies (three for scale 1000, non… |
-| `variant-matrix.ts` | `OptionAxis` | interface | :6 | The variant matrix builder's cross-product (WO-3.5, docs/implementation/03-variants-sku-seo.md). |
+| `variant-matrix.ts` | `OptionAxis` | interface | :6 | The variant matrix builder's cross-product (WO-3.5, docs/implementation/catalog-variants-pricing/03… |
 | `variant-matrix.ts` | `VariantCombination` | interface | :13 |  |
 | `variant-matrix.ts` | `GenerateCombinationsResult` | interface | :18 |  |
 | `variant-matrix.ts` | `generateVariantCombinations` | function | :33 | The full cross-product of every axis's values. |

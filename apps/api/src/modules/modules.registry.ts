@@ -101,7 +101,7 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // posting rules (WO-19.2/19.3) reach `orders`/`payments`/`purchasing` only
   // through domain events, never a service import.
   { name: 'accounting', module: AccountingModule, offByDefault: true },
-  // Off by default — see docs/implementation/18-identity-verification.md.
+  // Off by default — see docs/implementation/access-control-identity/18-identity-verification.md.
   // Add 'identity-verification' to MODULES once NID_API_URL/NID_API_KEY/
   // NID_WEBHOOK_SECRET are set.
   { name: 'identity-verification', module: IdentityVerificationModule, offByDefault: true },

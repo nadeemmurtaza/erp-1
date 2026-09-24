@@ -47,7 +47,7 @@ assumed:
 | **HR / payroll admin** | Attendance, leave, payroll, org structure, without a second, disconnected HR system |
 | **Warehouse / inventory staff** | Accurate stock, purchasing, transfers, cycle counts, serial/lot tracking where the sector needs it |
 | **Customer** | A storefront and self-service portal — cart through checkout through return — that never stalls mid-transaction for a missing integration |
-| **Trading partner** (supplier, distributor, wholesaler) | EDI-style document exchange without re-keying a PO as a sales order as an invoice at every hop (`docs/implementation/18-trading-partner-network.md`) |
+| **Trading partner** (supplier, distributor, wholesaler) | EDI-style document exchange without re-keying a PO as a sales order as an invoice at every hop (`docs/implementation/integrations-connectivity/18-trading-partner-network.md`) |
 | **Platform operator (Newax)** | Multi-tenant hosting, commercial licensing, usage metering, and the ability to serve every actor above without a bespoke build per client |
 
 ## Product pillars

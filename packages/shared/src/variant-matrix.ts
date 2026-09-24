@@ -1,6 +1,6 @@
 /**
  * The variant matrix builder's cross-product (WO-3.5,
- * docs/implementation/03-variants-sku-seo.md). Pure so the editor can
+ * docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md). Pure so the editor can
  * generate and preview the matrix client-side before anything is saved.
  */
 export interface OptionAxis {

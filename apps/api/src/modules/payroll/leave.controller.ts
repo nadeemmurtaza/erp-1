@@ -7,7 +7,7 @@ import { DecideLeaveDto, RequestLeaveDto } from './dto/leave.dto';
 import { LeaveService } from './leave.service';
 
 /**
- * Leave types, balances and requests (docs/implementation/19-payroll.md
+ * Leave types, balances and requests (docs/implementation/payroll/19-payroll.md
  * WO-19.3). "Own record" routes act on @CurrentUser() only, same shape as
  * PayrollController's compensation/me.
  */

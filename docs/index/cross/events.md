@@ -683,7 +683,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 ### `payroll.run_posted`
 
-> PayRunService.post() (docs/implementation/19-payroll.md WO-19.4) — the eighth posting rule; fires whether or not `accounting` is on, same idiom as ExpenseRecorded.
+> PayRunService.post() (docs/implementation/payroll/19-payroll.md WO-19.4) — the eighth posting rule; fires whether or not `accounting` is on, same idiom as ExpenseRecorded.
 
 **Published by**
 
@@ -701,7 +701,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 ### `payroll.adjustment_posted`
 
-> PayRunService.postAdjustment() (docs/implementation/19-payroll.md WO-19.5) — the overpayment/correction reversal path, a distinct postable fact from the original run it corrects.
+> PayRunService.postAdjustment() (docs/implementation/payroll/19-payroll.md WO-19.5) — the overpayment/correction reversal path, a distinct postable fact from the original run it corrects.
 
 **Published by**
 

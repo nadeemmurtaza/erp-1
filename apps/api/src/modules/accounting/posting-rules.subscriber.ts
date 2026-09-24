@@ -425,7 +425,7 @@ export class PostingRulesSubscriber {
   }
 
   /**
-   * The eighth posting rule — docs/implementation/19-payroll.md WO-19.4,
+   * The eighth posting rule — docs/implementation/payroll/19-payroll.md WO-19.4,
    * closing the gap docs/erp-lenses/38-gap-hr-payroll-no-posting-artifact-
    * for-compe.md names ("PayrollPosted" among five unbuilt journals). One
    * JournalEntry per PayRun, sourceRef = payRun.id, guarded by

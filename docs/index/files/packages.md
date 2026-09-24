@@ -72,7 +72,7 @@ All 64 tracked files in `packages/*`, by directory.
 | `secret-crypto.spec.ts` | unit test | 36 |  |
 | `secret-crypto.ts` | module | 65 |  |
 | `sku.spec.ts` | unit test | 52 |  |
-| `sku.ts` | module | 80 | SKU generation (WO-3.3, docs/implementation/03-variants-sku-seo.md). |
+| `sku.ts` | module | 80 | SKU generation (WO-3.3, docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md). |
 | `slug.ts` | module | 44 | URL slugs. |
 | `theme-colors.ts` | module | 18 |  |
 | `theme-radii.ts` | module | 17 |  |
@@ -80,7 +80,7 @@ All 64 tracked files in `packages/*`, by directory.
 | `units.spec.ts` | unit test | 43 |  |
 | `units.ts` | module | 58 | Raw-material quantities. |
 | `variant-matrix.spec.ts` | unit test | 76 |  |
-| `variant-matrix.ts` | module | 89 | The variant matrix builder's cross-product (WO-3.5, docs/implementation/03-variants-sku-seo.md). |
+| `variant-matrix.ts` | module | 89 | The variant matrix builder's cross-product (WO-3.5, docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md… |
 
 ### `packages/shared/src/entities` (11)
 

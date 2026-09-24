@@ -2,13 +2,13 @@
 /**
  * Enforces COL-3 — text and meaningful boundaries meet their contrast floor.
  *
- * `docs/design/15-integrity.md` ranks this first of the ten integrity checks,
+ * `docs/design/process-governance/15-integrity.md` ranks this first of the ten integrity checks,
  * for one reason: it is the only one that needs neither a browser nor a
  * running app. A contrast ratio is arithmetic over two colours, and both
  * colours are already in this repository. Everything else in that build order
  * has to render something; this just has to read.
  *
- * WCAG 2.2 AA, which docs/design/07-accessibility.md sets as the floor:
+ * WCAG 2.2 AA, which docs/design/accessibility/07-accessibility.md sets as the floor:
  *
  *   4.5:1  body text (under 24px, or under 19px bold)
  *   3:1    large text, and the boundary of a control or meaningful graphic
@@ -391,7 +391,7 @@ function main() {
       console.log(
         `  ⚠ ${notable.size} token(s), ${total} use(s), clear the floor on some painted surface but NOT on\n` +
         `    the body surface (\`${bodySurface}\`), which is where most text lands. Not enforced — proving it\n` +
-        `    needs a render (docs/design/15-integrity.md, check 6). Worth a look:`,
+        `    needs a render (docs/design/process-governance/15-integrity.md, check 6). Worth a look:`,
       );
       for (const [token, v] of [...notable.entries()].sort((a, b) => b[1].count - a[1].count)) {
         console.log(`      \`${token}\`  ${v.ratio.toFixed(2)}:1 on ${bodySurface} (floor ${v.floor})  ×${v.count}  e.g. ${v.sample[0]}`);
@@ -413,7 +413,7 @@ function main() {
   }
   console.error(
     `Text needs ${FLOOR.text}:1; large text and a meaningful boundary need ${FLOOR.boundary}:1\n` +
-    `(docs/design/10-laws.md COL-3, docs/design/07-accessibility.md).\n\n` +
+    `(docs/design/principles-laws/10-laws.md COL-3, docs/design/accessibility/07-accessibility.md).\n\n` +
     `Use a tone that meets the floor, or — if this colour genuinely carries no\n` +
     `meaning a user must perceive — say so by adding it to BASELINE in this file,\n` +
     `with the reason. A baseline entry is debt that is written down, not a pass.\n`,

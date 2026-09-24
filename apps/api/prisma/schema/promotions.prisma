@@ -1,4 +1,4 @@
-// Phase 5 WO-5.1/5.2/5.3 (docs/implementation/05-promotions-giftcards.md).
+// Phase 5 WO-5.1/5.2/5.3 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md).
 //
 // Two things people conflate, kept distinct: an automatic Discount applies
 // itself when its conditions match; a PromoCode is the same Discount rule

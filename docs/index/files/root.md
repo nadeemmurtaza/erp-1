@@ -112,7 +112,7 @@ All 88 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `platform.prisma` | prisma schema | 148 | WO-39.1 (docs/implementation/39-shared-cross-tenant-hosting-tier.md) — the |
+| `platform.prisma` | prisma schema | 148 | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the |
 | `schema.prisma` | prisma schema | 19 | Datasource and generator only — the control plane's OWN database, never a |
 
 ### `apps/platform/prisma/schema/migrations` (1)

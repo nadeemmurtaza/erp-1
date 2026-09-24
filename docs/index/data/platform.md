@@ -166,7 +166,7 @@ Indexes: `@@index([tenantId, expiresAt])`
 
 ### `TenantStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:7`</sub>
 
-> WO-39.1 (docs/implementation/39-shared-cross-tenant-hosting-tier.md) — the control-plane schema.
+> WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the control-plane schema.
 
 | Value | Meaning |
 |---|---|

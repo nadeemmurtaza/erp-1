@@ -185,7 +185,7 @@ Indexes: `@@unique([payRunId, userId])`
 
 ### `CompensationBasis`  <sub>`apps/api/prisma/schema/payroll.prisma:11`</sub>
 
-> Payroll: compensation rates, leave balances and pay runs (docs/implementation/19-payroll.md, closing the gap docs/erp-lenses/38-gap-hr-payroll-no-posting-artifact-for-compe.md names).
+> Payroll: compensation rates, leave balances and pay runs (docs/implementation/payroll/19-payroll.md, closing the gap docs/erp-lenses/gap-38/38-gap-hr-payroll-no-posting-artifact-for-compe.md names).
 
 | Value | Meaning |
 |---|---|

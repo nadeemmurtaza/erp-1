@@ -3,7 +3,7 @@
  * servers) and drives it with a real browser — the shared infrastructure
  * every render-based integrity check needs.
  *
- * `docs/design/15-integrity.md`'s build order calls checks 6 through 10 "a
+ * `docs/design/process-governance/15-integrity.md`'s build order calls checks 6 through 10 "a
  * capability in their own right — a render harness, a route inventory, a
  * module matrix and a capability fixture set." This is that harness.
  * `scripts/check-overflow.mjs` (ITG-4, check 6) is its first user; checks 7
@@ -36,7 +36,7 @@ import { chromium } from 'playwright';
 /* ── the seven widths ─────────────────────────────────────────────────── */
 
 /**
- * Law 4's own numbers, read from `CLAUDE.md` / `docs/design/02-layout.md`,
+ * Law 4's own numbers, read from `CLAUDE.md` / `docs/design/layout-composition/02-layout.md`,
  * NOT from `apps/web/tailwind.config.ts`.
  *
  * They disagree, and it is worth saying so here rather than silently

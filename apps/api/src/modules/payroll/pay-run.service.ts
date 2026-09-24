@@ -35,7 +35,7 @@ async function nextPayRunNumber(
 }
 
 /**
- * Pay-run build, approve, post (docs/implementation/19-payroll.md WO-19.4).
+ * Pay-run build, approve, post (docs/implementation/payroll/19-payroll.md WO-19.4).
  * The pay run itself is deliberately agnostic to whether `accounting` is
  * enabled — post() always transitions the document and fires
  * PayrollRunPosted; the GL side is an additive posting rule in

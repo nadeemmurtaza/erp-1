@@ -9,7 +9,7 @@ import { PrismaService } from '../src/core/prisma/prisma.service';
 import { setVariantStock } from './support/stock';
 
 /**
- * Phase 5 (docs/implementation/05-promotions-giftcards.md) checkout
+ * Phase 5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md) checkout
  * integration — discounts, promo codes, gift cards and store credit applied
  * against a REAL checkout, not a mocked OrdersService. The exit criteria this
  * proves: #2 (a usageLimit:1 code redeemed by two simultaneous checkouts

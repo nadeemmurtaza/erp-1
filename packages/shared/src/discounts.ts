@@ -4,7 +4,7 @@
  * the storefront to preview a discount before the order is placed; if the
  * two ever disagree, a customer sees one price and is charged another).
  *
- * See docs/implementation/05-promotions-giftcards.md WO-5.1 for the model
+ * See docs/implementation/promotions-giftcards/05-promotions-giftcards.md WO-5.1 for the model
  * this evaluates and the stacking rules below.
  */
 
@@ -75,7 +75,7 @@ export interface DiscountContext {
   isFirstOrder: boolean;
 }
 
-/** One line actually recorded in `docs/implementation/05-promotions-giftcards.md`'s `OrderDiscount` snapshot. */
+/** One line actually recorded in `docs/implementation/promotions-giftcards/05-promotions-giftcards.md`'s `OrderDiscount` snapshot. */
 export interface AppliedDiscount {
   discountId: string;
   name: string;

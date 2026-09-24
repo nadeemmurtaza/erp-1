@@ -1,4 +1,4 @@
-// Phase 5 WO-5.4/5.5 (docs/implementation/05-promotions-giftcards.md).
+// Phase 5 WO-5.4/5.5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md).
 //
 // Same ledger discipline as the stock ledger (Phase 1): balance is DERIVED,
 // never edited directly, every change is a row, and redemption is a

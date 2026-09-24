@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "2a6ee81aed07133d",
+  "contentHash": "68a31c2a94f5d754",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -135,7 +135,7 @@
   ],
   "totals": {
     "files": 1511,
-    "lines": 232561,
+    "lines": 232645,
     "routes": 395,
     "controllers": 70,
     "models": 152,
@@ -146,6 +146,6 @@
     "screens": 165,
     "crons": 10,
     "specs": 141,
-    "designLaws": 150
+    "designLaws": 0
   }
 }

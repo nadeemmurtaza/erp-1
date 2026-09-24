@@ -4,7 +4,7 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { PayrollService } from './payroll.service';
 
 /**
- * WO-19.2 (docs/implementation/19-payroll.md) — compensation rates and the
+ * WO-19.2 (docs/implementation/payroll/19-payroll.md) — compensation rates and the
  * salary calculator. Real PrismaService against the seeded test database,
  * same idiom as the rest of this session's service specs.
  */

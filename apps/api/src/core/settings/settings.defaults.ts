@@ -50,7 +50,7 @@ export interface DocumentPrefixes {
   interBranchInvoice: string;
   /** BomProductionRun (WO-C.3) — node-prefixed like the rest. */
   productionRun: string;
-  /** PayRun (docs/implementation/19-payroll.md WO-19.4) — node-prefixed like the rest. */
+  /** PayRun (docs/implementation/payroll/19-payroll.md WO-19.4) — node-prefixed like the rest. */
   payRun: string;
 }
 

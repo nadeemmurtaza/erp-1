@@ -88,7 +88,7 @@ Indexes: `@@index([userId, createdAt])` · `@@index([orderId])`
 
 ### `GiftCardStatus`  <sub>`apps/api/prisma/schema/giftcards.prisma:12`</sub>
 
-> Phase 5 WO-5.4/5.5 (docs/implementation/05-promotions-giftcards.md).
+> Phase 5 WO-5.4/5.5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md).
 
 | Value | Meaning |
 |---|---|

@@ -4,7 +4,7 @@
 // below is WO-B.3.
 //
 // Deliberately NOT double-entry. If you find yourself wanting a JournalEntry
-// model, stop - see docs/implementation/04-finance.md. The GL posting this
+// model, stop - see docs/implementation/finance-accounting/04-finance.md. The GL posting this
 // tranche adds (posting-rules.subscriber.ts's onExpenseRecorded) is a
 // DERIVED journal entry keyed off (source, sourceRef) — Expense itself never
 // gains a status column for it, matching how OrderPlaced/PaymentSucceeded

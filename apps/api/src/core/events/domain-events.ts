@@ -66,9 +66,9 @@ export const DomainEvent = {
   /** OrderEconomicsService's own derived-row write (WO-23.1's WO-B.3) — not a GL posting, just notice that a fresh contribution-per-order figure exists. */
   OrderEconomicsComputed: 'finance.order_economics_computed',
 
-  /** PayRunService.post() (docs/implementation/19-payroll.md WO-19.4) — the eighth posting rule; fires whether or not `accounting` is on, same idiom as ExpenseRecorded. */
+  /** PayRunService.post() (docs/implementation/payroll/19-payroll.md WO-19.4) — the eighth posting rule; fires whether or not `accounting` is on, same idiom as ExpenseRecorded. */
   PayrollRunPosted: 'payroll.run_posted',
-  /** PayRunService.postAdjustment() (docs/implementation/19-payroll.md WO-19.5) — the overpayment/correction reversal path, a distinct postable fact from the original run it corrects. */
+  /** PayRunService.postAdjustment() (docs/implementation/payroll/19-payroll.md WO-19.5) — the overpayment/correction reversal path, a distinct postable fact from the original run it corrects. */
   PayrollAdjustmentPosted: 'payroll.adjustment_posted',
 
   /** OrdersService.place() (WO-5.3) — fires once a discount/promo code was actually applied to a placed order, for analytics. Never fires for a zero-discount order. */

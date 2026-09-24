@@ -4,7 +4,7 @@
  * Every route under `(app)` inherited the SAME group-level `loading.tsx` —
  * shaped like the dashboard — so a table page like Orders flashed four stat
  * cards and a two-column grid before rendering a filter bar and a table.
- * WO-2.7 (docs/implementation/02-admin-shell.md): a route's own skeleton
+ * WO-2.7 (docs/implementation/admin-platform/02-admin-shell.md): a route's own skeleton
  * describes the layout that actually arrives. This is that shape for the
  * one layout most admin routes share — `PageHeader` + `FilterBar` + a table
  * — parameterized on how many filters and columns the real page has, so

@@ -4,7 +4,7 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { countWorkingDays, LeaveService } from './leave.service';
 
 /**
- * WO-19.3 (docs/implementation/19-payroll.md) — leave types, balances,
+ * WO-19.3 (docs/implementation/payroll/19-payroll.md) — leave types, balances,
  * accrual and requests. Real PrismaService against the seeded test
  * database, same idiom as the rest of this session's service specs.
  */

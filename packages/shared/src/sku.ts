@@ -1,5 +1,5 @@
 /**
- * SKU generation (WO-3.3, docs/implementation/03-variants-sku-seo.md). A pure
+ * SKU generation (WO-3.3, docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md). A pure
  * function so the admin editor can preview a SKU live, in the browser,
  * without a round trip — the API calls the same function server-side before
  * it ever writes a row.

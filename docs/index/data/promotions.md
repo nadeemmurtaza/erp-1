@@ -106,7 +106,7 @@ Indexes: `@@index([discountId])` · `@@index([batchId])`
 
 ### `DiscountType`  <sub>`apps/api/prisma/schema/promotions.prisma:9`</sub>
 
-> Phase 5 WO-5.1/5.2/5.3 (docs/implementation/05-promotions-giftcards.md).
+> Phase 5 WO-5.1/5.2/5.3 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md).
 
 | Value | Meaning |
 |---|---|

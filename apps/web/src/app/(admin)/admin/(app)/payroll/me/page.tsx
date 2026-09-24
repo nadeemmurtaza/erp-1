@@ -10,7 +10,7 @@ import { StatusBadge } from '@/components/common/status-badge';
 import type { EmployeeCompensation, EmployeeLeave, LeaveType } from '@/types/api';
 
 /**
- * WO-19.6 (docs/implementation/19-payroll.md) — self-service: the signed-in
+ * WO-19.6 (docs/implementation/payroll/19-payroll.md) — self-service: the signed-in
  * user's own compensation history, leave balance, and a form to request
  * time off. Reachable for STAFF/TAILOR who hold no other payroll
  * permission (payroll.view_own only).

@@ -2,7 +2,7 @@
 /**
  * Enforces ITG-4 — nothing overflows at any of Law 4's seven widths.
  *
- * `docs/design/15-integrity.md` names this check 6, the first of the ten
+ * `docs/design/process-governance/15-integrity.md` names this check 6, the first of the ten
  * that needs a running app rather than static analysis, and ranks it above
  * checks 7-10 because they all build on the same render harness
  * (`scripts/lib/render-harness.mjs`) this one establishes.
@@ -631,7 +631,7 @@ function report(results, skipped) {
       '\nLaw 4: none of the seven widths may waste space or overflow it. The usual\n' +
         'causes: a fixed pixel width, an unbreakable string (a SKU, an IBAN, a long\n' +
         'email), a table with no scroll container, or min-width on a grid child.\n' +
-        'See docs/design/15-integrity.md ITG-4 and docs/design/02-layout.md.\n',
+        'See docs/design/process-governance/15-integrity.md ITG-4 and docs/design/layout-composition/02-layout.md.\n',
     );
   }
   process.exit(1);

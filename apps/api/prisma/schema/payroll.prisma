@@ -1,6 +1,6 @@
 // Payroll: compensation rates, leave balances and pay runs
-// (docs/implementation/19-payroll.md, closing the gap
-// docs/erp-lenses/38-gap-hr-payroll-no-posting-artifact-for-compe.md names).
+// (docs/implementation/payroll/19-payroll.md, closing the gap
+// docs/erp-lenses/gap-38/38-gap-hr-payroll-no-posting-artifact-for-compe.md names).
 //
 // Every actor here is a User — same idiom as Expense.createdById,
 // BomRecipe.createdById, StockCount creator/assignee. GL posting

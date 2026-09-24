@@ -373,31 +373,31 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `PayrollCompensationPage` | default | :27 | WO-19.6 (docs/implementation/19-payroll.md) — every employee's current compensation rate, with a de… |
+| `page.tsx` | `PayrollCompensationPage` | default | :27 | WO-19.6 (docs/implementation/payroll/19-payroll.md) — every employee's current compensation rate, w… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payroll/leave`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `PayrollLeavePage` | default | :24 | WO-19.6 (docs/implementation/19-payroll.md) — every leave request across every employee, with appro… |
+| `page.tsx` | `PayrollLeavePage` | default | :24 | WO-19.6 (docs/implementation/payroll/19-payroll.md) — every leave request across every employee, wi… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payroll/me`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `MyPayPage` | default | :18 | WO-19.6 (docs/implementation/19-payroll.md) — self-service: the signed-in user's own compensation h… |
+| `page.tsx` | `MyPayPage` | default | :18 | WO-19.6 (docs/implementation/payroll/19-payroll.md) — self-service: the signed-in user's own compen… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payroll/runs`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `PayrollRunsPage` | default | :19 | WO-19.6 (docs/implementation/19-payroll.md) — every pay run, and the form to build a new one for a… |
+| `page.tsx` | `PayrollRunsPage` | default | :19 | WO-19.6 (docs/implementation/payroll/19-payroll.md) — every pay run, and the form to build a new on… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `PayrollRunDetailPage` | default | :24 | WO-19.6 (docs/implementation/19-payroll.md) — one pay run: every line, the build/approve/post lifec… |
+| `page.tsx` | `PayrollRunDetailPage` | default | :24 | WO-19.6 (docs/implementation/payroll/19-payroll.md) — one pay run: every line, the build/approve/po… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/products`
 
@@ -1111,7 +1111,7 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `WorkshopStageRow` | interface | :725 | --- WO-D.6: workshop output -------------------------------------------------- |
 | `api.ts` | `WorkshopTailorRow` | interface | :731 |  |
 | `api.ts` | `WorkshopOutput` | interface | :738 |  |
-| `api.ts` | `CompensationBasis` | type | :747 | --- Payroll: compensation, leave, pay runs (docs/implementation/19-payroll.md) -- |
+| `api.ts` | `CompensationBasis` | type | :747 | --- Payroll: compensation, leave, pay runs (docs/implementation/payroll/19-payroll.md) -- |
 | `api.ts` | `CompensationRate` | interface | :749 |  |
 | `api.ts` | `EmployeeCompensation` | interface | :760 |  |
 | `api.ts` | `GrossPreview` | interface | :765 |  |

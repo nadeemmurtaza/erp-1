@@ -67,7 +67,7 @@ Every top-level export in `infra`, with the line to open.
 | `model-routing.mjs` | `cacheTtlFor` | const | :359 |  |
 | `model-routing.mjs` | `MODEL_ORDER` | const | :361 |  |
 | `model-routing.mjs` | `EFFORT_ORDER` | const | :362 |  |
-| `render-harness.mjs` | `WIDTHS` | const | :59 | Law 4's own numbers, read from `CLAUDE.md` / `docs/design/02-layout.md`, NOT from `apps/web/tailwin… |
+| `render-harness.mjs` | `WIDTHS` | const | :59 | Law 4's own numbers, read from `CLAUDE.md` / `docs/design/layout-composition/02-layout.md`, NOT fro… |
 | `render-harness.mjs` | `spawnServer` | function | :100 | Spawn a long-running server process. |
 | `render-harness.mjs` | `login` | function | :148 | `POST /auth/login` against a running API. |
 | `render-harness.mjs` | `authedContext` | function | :174 | A browser context pre-authenticated for one app's storage convention. |

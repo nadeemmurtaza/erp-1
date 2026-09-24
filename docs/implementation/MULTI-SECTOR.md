@@ -641,7 +641,7 @@ level. `size`/`color`/`colorHex` are untouched and still what every reader
 uses — the rest of Phase 3 (WO-3.2's reader switch, which needs a real
 production soak first; SKU templates; the sectioned editor; the SEO publish
 gate; storefront JSON-LD/sitemap/hreflang; redirects) is unbuilt. See
-[`03-variants-sku-seo.md`](./03-variants-sku-seo.md) — do not read "B2 done"
+[`03-variants-sku-seo.md`](./catalog-variants-pricing/03-variants-sku-seo.md) — do not read "B2 done"
 as "Phase 3 done."
 
 ### B3 — there is no checkout veto hook
@@ -657,7 +657,7 @@ to `orders.service.ts`.
 **Done as of 2026-09-03.** Was surfaced by B2B ("tax exemption") but was not
 a B2B-only feature — a Pakistani shop charging GST needed it regardless of
 sectors, and this was arguably the largest single gap the exercise found.
-See [`15-tax-module.md`](./15-tax-module.md) — a `tax` module with a
+See [`15-tax-module.md`](./tax-compliance/15-tax-module.md) — a `tax` module with a
 selectable inclusive/exclusive pricing mode, `tax.enabled=false` the
 ship-safe default, `/admin/tax` for classes and rates.
 
@@ -673,7 +673,7 @@ for stitching jobs is now `assertCanManage()`
 with `jobs.service.ts` migrated onto it as the reference call site. Multi-seller
 (C2C, B2B2C) still cannot be built until a second call site (`Product.sellerId`,
 list-endpoint row filtering) actually exists — that remains the real, structural
-price of a marketplace. See [`16-pbac-row-scoping.md`](./16-pbac-row-scoping.md).
+price of a marketplace. See [`16-pbac-row-scoping.md`](./access-control-identity/16-pbac-row-scoping.md).
 
 ### B6 — stock has no location dimension
 
@@ -685,7 +685,7 @@ as scoped, with the one unavoidable invasive change (redefining what
 deployment today, which has exactly one `MAIN` location. Multi-location admin
 UI, fulfilment routing and per-location pricing/reorder points remain
 unbuilt, waiting on an actual second location or O2O plan. See
-[`17-inventory-locations.md`](./17-inventory-locations.md), including a note
+[`17-inventory-locations.md`](./inventory-purchasing/17-inventory-locations.md), including a note
 on a real concurrency bug the doc's own reference snippet had (a two-step
 aggregate-then-write race across two locations of one variant), caught only
 by writing the concurrent-locations test the doc's acceptance criteria
@@ -760,12 +760,12 @@ guard) are done; the rest of B5 (an actual marketplace) is scoped in doc 16
 but not built. Updated sequencing:
 
 1. ~~B1 `ProductKind`, B3 checkout hook.~~ **Done.**
-2. ~~B4 `tax`~~ ([`15-tax-module.md`](./15-tax-module.md)). **Done** —
+2. ~~B4 `tax`~~ ([`15-tax-module.md`](./tax-compliance/15-tax-module.md)). **Done** —
    `tax.enabled=false` by default, `/admin/tax` for classes/rates and the
    inclusive/exclusive toggle. WO-15.5 (FBR-specific invoice fields) still
    waits on real compliance requirements.
 2b. ~~B2 `ProductOption`/`ProductOptionValue`~~
-   ([`03-variants-sku-seo.md`](./03-variants-sku-seo.md) WO-3.1). **Done** —
+   ([`03-variants-sku-seo.md`](./catalog-variants-pricing/03-variants-sku-seo.md) WO-3.1). **Done** —
    the actual hard-block on electronics is gone at the schema level.
    WO-3.2's reader switch (and everything after it in Phase 3) still needs
    a real production dual-write soak before it can move, per that doc.
@@ -780,11 +780,11 @@ but not built. Updated sequencing:
 7. **Everything else, on demand.** `quotes`/`agreements`/`receivables` when a
    tender is actually in play; `sellers`/`payouts`/`commissions` only if a
    marketplace is genuinely wanted — the `assertCanManage()` guard is ready
-   ([`16-pbac-row-scoping.md`](./16-pbac-row-scoping.md)), but `Product.sellerId`
+   ([`16-pbac-row-scoping.md`](./access-control-identity/16-pbac-row-scoping.md)), but `Product.sellerId`
    and row-filtered list endpoints remain the most expensive item here;
    `fulfilment` (routing an order to the nearest location with stock) when a
    physical second location or O2O is real — the location dimension itself
-   ([`17-inventory-locations.md`](./17-inventory-locations.md)) no longer
+   ([`17-inventory-locations.md`](./inventory-purchasing/17-inventory-locations.md)) no longer
    blocks that, it's built and dormant behind the single `MAIN` location.
 
 **May never be needed:** `submissions`, `storefronts`, `credentials`,

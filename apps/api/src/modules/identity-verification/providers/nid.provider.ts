@@ -29,7 +29,7 @@ interface NidWebhookPayload {
  * (github.com/nadeemmurtaza/nID) over its external REST API — exactly as any
  * third-party tenant of nID would, with no shared code or database. This
  * shop is nID's tenant #1; NID_API_KEY is the tenant API key nID issues for
- * this shop's account there. See docs/implementation/18-identity-verification.md.
+ * this shop's account there. See docs/implementation/access-control-identity/18-identity-verification.md.
  *
  * Stays effectively off until NID_API_URL/NID_API_KEY are set — start()
  * throws if called unconfigured, same as JazzCashProvider.initiate().

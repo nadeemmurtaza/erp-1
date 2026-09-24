@@ -720,7 +720,7 @@ All 392 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `04-finance.md` | doc | 239 |  |
+| `04-finance.md` | doc | 291 |  |
 | `137-payment-method-resilience-audit.md` | doc | 75 |  |
 | `145-receivables-credit-limits-dunning.md` | doc | 285 |  |
 | `147-fixed-asset-depreciation.md` | doc | 210 |  |

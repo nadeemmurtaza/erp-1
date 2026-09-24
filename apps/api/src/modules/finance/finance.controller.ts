@@ -4,7 +4,14 @@ import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
 import { FinanceService } from './finance.service';
 import { CreateExpenseCategoryDto, UpdateExpenseCategoryDto } from './dto/expense-category.dto';
-import { CreateExpenseDto, ExpenseQueryDto, ExpenseSummaryQueryDto, UpdateExpenseDto } from './dto/expense.dto';
+import {
+  CreateExpenseDto,
+  ExpenseQueryDto,
+  ExpenseSummaryQueryDto,
+  MarginQueryDto,
+  UnitEconomicsQueryDto,
+  UpdateExpenseDto,
+} from './dto/expense.dto';
 
 /** Uploaded file as Multer hands it over — same shape catalog-admin.controller.ts uses. */
 interface UploadedReceipt {
@@ -74,6 +81,20 @@ export class FinanceController {
   @ApiOperation({ summary: 'Expense totals over time, bucketed by day or month' })
   async trend(@Query() query: ExpenseSummaryQueryDto) {
     return this.finance.trend(query);
+  }
+
+  @Get('margins')
+  @RequirePermission('finance.view')
+  @ApiOperation({ summary: 'Margin by product, category or variant (WO-4.3, 04-finance.md)' })
+  async margins(@Query() query: MarginQueryDto) {
+    return this.finance.marginBy(query.groupBy ?? 'product', query);
+  }
+
+  @Get('unit-economics')
+  @RequirePermission('finance.view')
+  @ApiOperation({ summary: 'Contribution per order, paginated, plus the average by product/category (WO-4.2)' })
+  async unitEconomics(@Query() query: UnitEconomicsQueryDto) {
+    return this.finance.unitEconomics(query);
   }
 
   @Post('expenses')

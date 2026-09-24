@@ -33,7 +33,7 @@ the *catalogue*, not any particular deployment's grants.
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
 | `analytics.view` | View dashboard analytics | low | 19 | 9 | STAFF, ADMIN |
-| `reports.view` | Export CSV reports | low | 7 | 2 | STAFF, ADMIN |
+| `reports.view` | Export CSV reports | low | 11 | 2 | STAFF, ADMIN |
 | `organization.view` | View the organization/brand/branch dashboard | low | 5 | 1 | STAFF, ADMIN |
 | `organization.manage` | Grant and revoke who is a brand or branch admin | high | 10 | 3 | ADMIN |
 | `accounting.view` | View the general ledger and its reports (trial balance, P&L, balance sheet, cas… | medium | 10 | — | ADMIN |
@@ -108,7 +108,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `finance.view` | View expenses and finance reports | medium | 5 | 2 | STAFF, ADMIN |
+| `finance.view` | View expenses and finance reports | medium | 10 | 6 | STAFF, ADMIN |
 | `finance.manage` | Record and edit expenses | medium | 7 | 1 | ADMIN |
 
 ### Manufacturing

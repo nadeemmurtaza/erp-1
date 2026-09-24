@@ -1,5 +1,5 @@
 import { ApiPropertyOptional, PartialType } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { IsBoolean, IsIn, IsInt, IsISO8601, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
 import { PaginationQueryDto } from '../../../core/common/dto/pagination.dto';
 
@@ -103,4 +103,27 @@ export class ExpenseSummaryQueryDto {
   @IsISO8601()
   @IsOptional()
   to?: string;
+}
+
+export class MarginQueryDto extends ExpenseSummaryQueryDto {
+  @ApiPropertyOptional({ enum: ['product', 'category', 'variant'], default: 'product' })
+  @IsOptional()
+  @IsIn(['product', 'category', 'variant'])
+  groupBy?: 'product' | 'category' | 'variant';
+}
+
+export class UnitEconomicsQueryDto extends ExpenseSummaryQueryDto {
+  @ApiPropertyOptional({ default: 1 })
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  page?: number;
+
+  @ApiPropertyOptional({ default: 25 })
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  pageSize?: number;
 }

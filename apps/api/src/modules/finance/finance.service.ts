@@ -480,6 +480,119 @@ export class FinanceService {
   }
 
   /**
+   * WO-4.2/4.3's "the number the shop actually needs" (04-finance.md) —
+   * margin by product, category or variant. Sourced from `OrderItem`'s own
+   * snapshot fields (`lineTotal`, `unitCost`, `quantity`), scoped to orders
+   * that have a non-zero-revenue `OrderEconomics` row — a returned order
+   * zeroes `OrderEconomics.revenue`/`cogs` (WO-4.2's own "reverses both,
+   * never revenue alone" rule), so excluding it here means a return's items
+   * never contribute a phantom margin. Deliberately NOT sourced from the
+   * general ledger (RETAIL-ERP.md R15) — the GL posts one aggregate line per
+   * order, not a per-product/variant breakdown, which is exactly the
+   * granularity `OrderEconomics` and `OrderItem` exist to keep.
+   */
+  async marginBy(groupBy: 'product' | 'category' | 'variant', query: ExpenseSummaryQueryDto) {
+    const { from, to } = this.resolveWindow(query, 365);
+
+    const economics = await this.prisma.orderEconomics.findMany({
+      where: { computedAt: { gte: from, lte: to }, revenue: { gt: 0 } },
+      select: { orderId: true },
+    });
+    const orderIds = economics.map((e) => e.orderId);
+    if (orderIds.length === 0) return { groupBy, rows: [] };
+
+    const items = await this.prisma.orderItem.findMany({
+      where: { orderId: { in: orderIds } },
+      select: {
+        productId: true,
+        variantId: true,
+        nameEn: true,
+        variantLabel: true,
+        lineTotal: true,
+        unitCost: true,
+        quantity: true,
+        product: { select: { categoryId: true, category: { select: { translations: { where: { locale: 'en' }, take: 1 } } } } },
+      },
+    });
+
+    const rows = new Map<string, { key: string; label: string; revenue: number; cogs: number; quantity: number }>();
+    for (const item of items) {
+      const key =
+        groupBy === 'variant' ? (item.variantId ?? `product:${item.productId}`)
+        : groupBy === 'product' ? (item.productId ?? 'unknown')
+        : (item.product?.categoryId ?? 'uncategorised');
+      const label =
+        groupBy === 'variant' ? `${item.nameEn}${item.variantLabel ? ` / ${item.variantLabel}` : ''}`
+        : groupBy === 'product' ? item.nameEn
+        : item.product?.category?.translations[0]?.name ?? 'Uncategorised';
+
+      const entry = rows.get(key) ?? { key, label, revenue: 0, cogs: 0, quantity: 0 };
+      entry.revenue += item.lineTotal;
+      entry.cogs += item.unitCost * item.quantity;
+      entry.quantity += item.quantity;
+      rows.set(key, entry);
+    }
+
+    return {
+      groupBy,
+      rows: [...rows.values()]
+        .map((row) => ({
+          ...row,
+          marginAmount: row.revenue - row.cogs,
+          marginPercent: row.revenue > 0 ? Math.round(((row.revenue - row.cogs) / row.revenue) * 1000) / 10 : 0,
+        }))
+        .sort((a, b) => a.marginAmount - b.marginAmount),
+    };
+  }
+
+  /**
+   * WO-4.2's own unit economics: contribution per order, paginated, plus the
+   * average by product/category "on top of this table" the doc asks for.
+   */
+  async unitEconomics(query: ExpenseSummaryQueryDto & { page?: number; pageSize?: number }) {
+    const { from, to } = this.resolveWindow(query, 90);
+    const page = query.page ?? 1;
+    const pageSize = Math.min(query.pageSize ?? 25, 100);
+
+    const [rows, total, aggregate] = await Promise.all([
+      this.prisma.orderEconomics.findMany({
+        where: { computedAt: { gte: from, lte: to } },
+        orderBy: { computedAt: 'desc' },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        include: { order: { select: { number: true, placedAt: true, status: true } } },
+      }),
+      this.prisma.orderEconomics.count({ where: { computedAt: { gte: from, lte: to } } }),
+      this.prisma.orderEconomics.aggregate({
+        where: { computedAt: { gte: from, lte: to } },
+        _avg: { contribution: true, revenue: true },
+        _count: true,
+      }),
+    ]);
+
+    return {
+      ...paginated(
+        rows.map((row) => ({
+          orderId: row.orderId,
+          orderNumber: row.order.number,
+          placedAt: row.order.placedAt,
+          status: row.order.status,
+          revenue: row.revenue,
+          cogs: row.cogs,
+          contribution: row.contribution,
+        })),
+        total,
+        { page, pageSize },
+      ),
+      averages: {
+        contribution: Math.round(aggregate._avg.contribution ?? 0),
+        revenue: Math.round(aggregate._avg.revenue ?? 0),
+        orderCount: aggregate._count,
+      },
+    };
+  }
+
+  /**
    * WO-B.2's daily job: for every recurring TEMPLATE (recurrence != NONE,
    * recurringFromId null — a generated instance is created with recurrence
    * forced to NONE below precisely so it never becomes a template itself),

@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 277 tracked files in `apps/web`, by directory.
+All 281 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -237,6 +237,18 @@ All 277 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 197 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/finance` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 221 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/finance/cash-flow` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 156 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/finance/expenses` (1)
 
 | File | Kind | Lines | Purpose |
@@ -254,6 +266,18 @@ All 277 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 214 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/finance/margins` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 100 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/finance/unit-economics` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 100 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/garments` (1)
 
@@ -824,7 +848,7 @@ All 277 tracked files in `apps/web`, by directory.
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 543 |  |
-| `nav-registry.ts` | component | 596 |  |
+| `nav-registry.ts` | component | 636 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1410 |  |
@@ -936,7 +960,7 @@ All 277 tracked files in `apps/web`, by directory.
 | `downloads.ts` | constants | 21 |  |
 | `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 24 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 138 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 144 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 52 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)

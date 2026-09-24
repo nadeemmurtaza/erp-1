@@ -3,7 +3,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
 import { RequirePermission } from '../../core/auth/decorators';
 import { csvRow } from './csv.util';
-import { ReportDateRangeQueryDto, StockReportQueryDto } from './dto/reports.dto';
+import { AsOfReportQueryDto, ReportDateRangeQueryDto, StockReportQueryDto } from './dto/reports.dto';
 import type { CsvExport } from './reports.service';
 import { ReportsService } from './reports.service';
 
@@ -82,6 +82,42 @@ export class ReportsController {
     @Res() response: Response,
   ): Promise<void> {
     this.stream(response, await this.reports.slowMoversCsv());
+  }
+
+  @Get('export/profit-and-loss')
+  @ApiOperation({ summary: 'CSV: P&L for the date range (WO-4.6, 04-finance.md)' })
+  async exportProfitAndLoss(
+    @Query() query: ReportDateRangeQueryDto,
+    @Res() response: Response,
+  ): Promise<void> {
+    this.stream(response, await this.reports.profitAndLossCsv(query.from, query.to));
+  }
+
+  @Get('export/payables')
+  @ApiOperation({ summary: 'CSV: outstanding supplier balances, aged (WO-4.6, 04-finance.md)' })
+  async exportPayables(
+    @Query() query: AsOfReportQueryDto,
+    @Res() response: Response,
+  ): Promise<void> {
+    this.stream(response, await this.reports.payablesCsv(query.asOf));
+  }
+
+  @Get('export/expense-register')
+  @ApiOperation({ summary: 'CSV: every expense in the date range (WO-4.6, 04-finance.md)' })
+  async exportExpenseRegister(
+    @Query() query: ReportDateRangeQueryDto,
+    @Res() response: Response,
+  ): Promise<void> {
+    this.stream(response, await this.reports.expenseRegisterCsv(query.from, query.to));
+  }
+
+  @Get('export/sales-register')
+  @ApiOperation({ summary: 'CSV: every delivered order with revenue and COGS (WO-4.6, 04-finance.md)' })
+  async exportSalesRegister(
+    @Query() query: ReportDateRangeQueryDto,
+    @Res() response: Response,
+  ): Promise<void> {
+    this.stream(response, await this.reports.salesRegisterCsv(query.from, query.to));
   }
 
   /** Writes the CSV a row at a time so a large export streams rather than buffering in memory. */

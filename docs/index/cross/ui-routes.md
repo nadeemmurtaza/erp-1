@@ -3,7 +3,7 @@
 
 # Screens
 
-All **165** routable files across the web app, the till and the mobile app.
+All **169** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (98)
+### admin (102)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -64,9 +64,13 @@ _none_
 | `/admin/email-accounts` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-accounts/page.tsx` |
 | `/admin/email-accounts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx` |
 | `/admin/email-templates` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-templates/page.tsx` |
+| `/admin/finance` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/page.tsx` |
+| `/admin/finance/cash-flow` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/cash-flow/page.tsx` |
 | `/admin/finance/expenses` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/expenses/page.tsx` |
 | `/admin/finance/expenses/analytics` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/expenses/analytics/page.tsx` |
 | `/admin/finance/expenses/categories` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories/page.tsx` |
+| `/admin/finance/margins` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/margins/page.tsx` |
+| `/admin/finance/unit-economics` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/unit-economics/page.tsx` |
 | `/admin/garments` | page | client | `apps/web/src/app/(admin)/admin/(app)/garments/page.tsx` |
 | `/admin/garments/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/garments/[id]/page.tsx` |
 | `/admin/import` | page | client | `apps/web/src/app/(admin)/admin/(app)/import/page.tsx` |

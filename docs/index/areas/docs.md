@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-392 files · 59,492 lines
+392 files · 59,544 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -96,7 +96,7 @@ has a bug.
 | `docs/implementation/commercial-licensing-agency` | 14 | 2,339 | doc |
 | `docs/implementation/content-marketing-search` | 1 | 138 | doc |
 | `docs/implementation/customer-portal-loyalty` | 1 | 186 | doc |
-| `docs/implementation/finance-accounting` | 8 | 1,564 | doc |
+| `docs/implementation/finance-accounting` | 8 | 1,616 | doc |
 | `docs/implementation/hr-people-org` | 18 | 3,331 | doc |
 | `docs/implementation/integrations-connectivity` | 13 | 2,140 | doc |
 | `docs/implementation/inventory-purchasing` | 5 | 1,745 | doc |

@@ -19,6 +19,13 @@ function parseRange(from?: string, to?: string): { from: Date; to: Date } {
  * a grouping over `JournalLine`, gated by `accounting.view` rather than
  * `reports.view`: this is the ledger itself, not a CSV export of another
  * module's tables (that stays `ReportsController`, `admin/reports`).
+ *
+ * Three routes — profit-and-loss, cash-flow, aged-payables — additionally
+ * accept `finance.view` (WO-4.5, 04-finance.md): these three back the
+ * Finance section's own P&L/cash-flow screens, which STAFF (finance.view,
+ * no accounting.view) reads per that doc's own permission model. The other
+ * three (trial-balance, balance-sheet, aged-receivables) stay
+ * `accounting.view`-only — raw ledger detail nobody outside Admin asked for.
  */
 @ApiTags('admin/accounting/reports')
 @Controller('admin/accounting/reports')
@@ -33,6 +40,7 @@ export class GlReportsController {
   }
 
   @Get('profit-and-loss')
+  @RequirePermission('accounting.view', 'finance.view')
   @ApiOperation({ summary: 'Income and expense for a date range, and the net' })
   async profitAndLoss(@Query() query: DateRangeQueryDto) {
     const { from, to } = parseRange(query.from, query.to);
@@ -46,6 +54,7 @@ export class GlReportsController {
   }
 
   @Get('cash-flow')
+  @RequirePermission('accounting.view', 'finance.view')
   @ApiOperation({ summary: 'Net movement on every bank/cash account for a date range' })
   async cashFlow(@Query() query: DateRangeQueryDto) {
     const { from, to } = parseRange(query.from, query.to);
@@ -59,6 +68,7 @@ export class GlReportsController {
   }
 
   @Get('aged-payables')
+  @RequirePermission('accounting.view', 'finance.view')
   @ApiOperation({ summary: 'Outstanding supplier balances as of a date, FIFO-aged the same way as receivables' })
   async agedPayables(@Query() query: AsOfQueryDto) {
     return this.reports.agedPayables(parseAsOf(query.asOf));

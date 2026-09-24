@@ -187,6 +187,18 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `EmailTemplatesPage` | default | :26 | Every email template registered in EMAIL_TEMPLATES, with what actually sends each one — and a live… |
 
+### `apps/web/src/app/(admin)/admin/(app)/finance`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `FinancePnlPage` | default | :53 | WO-4.3's P&L (04-finance.md) — a UI over the general ledger's own `profitAndLoss()` (RETAIL-ERP.md… |
+
+### `apps/web/src/app/(admin)/admin/(app)/finance/cash-flow`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `FinanceCashFlowPage` | default | :48 | WO-4.4's cash flow + payables ageing (04-finance.md) — a UI over the general ledger's own `cashFlow… |
+
 ### `apps/web/src/app/(admin)/admin/(app)/finance/expenses`
 
 | File | Symbol | Kind | Line | Doc |
@@ -204,6 +216,18 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `ExpenseCategoriesPage` | default | :24 | Expense categories — one page, one job (Law 5): decide what an expense can be classified as, and wh… |
+
+### `apps/web/src/app/(admin)/admin/(app)/finance/margins`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `FinanceMarginsPage` | default | :27 | WO-4.3's "bottom and top products by margin" (04-finance.md) — sourced from OrderItem/OrderEconomic… |
+
+### `apps/web/src/app/(admin)/admin/(app)/finance/unit-economics`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `FinanceUnitEconomicsPage` | default | :31 | WO-4.2's own unit economics (04-finance.md) — "this Rs 3,499 kurta earns Rs 1,180 after courier, ga… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/garments`
 
@@ -798,13 +822,13 @@ Every top-level export in `web`, with the line to open.
 | `image-manager.tsx` | `ImageStager` | function | :344 | Photo picker for a product that does not have an id yet — new-product creation, where `ImageManager… |
 | `image-manager.tsx` | `StagedImageUploadResult` | interface | :492 |  |
 | `image-manager.tsx` | `uploadStagedImages` | function | :510 | Uploads every staged image to a now-existing product, in order (the first upload becomes the thumbn… |
-| `nav-registry.ts` | `ICON_MAP` | const | :17 |  |
-| `nav-registry.ts` | `AdminNavGroup` | interface | :30 |  |
-| `nav-registry.ts` | `NAV_GROUPS` | const | :49 | Sidebar order is THIS ARRAY's order. |
-| `nav-registry.ts` | `AdminNavItem` | interface | :62 |  |
-| `nav-registry.ts` | `ADMIN_NAV` | const | :100 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :566 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :581 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `ICON_MAP` | const | :18 |  |
+| `nav-registry.ts` | `AdminNavGroup` | interface | :32 |  |
+| `nav-registry.ts` | `NAV_GROUPS` | const | :51 | Sidebar order is THIS ARRAY's order. |
+| `nav-registry.ts` | `AdminNavItem` | interface | :69 |  |
+| `nav-registry.ts` | `ADMIN_NAV` | const | :108 | The admin navigation, as data. |
+| `nav-registry.ts` | `landingFor` | function | :606 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :621 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |

@@ -3,6 +3,53 @@
 **Read `00-HOUSE-RULES.md` first.** Hard dependency on Phase 1 — without
 `ProductVariant.costPrice` and `OrderItem.unitCost` every number here is fiction.
 
+> **Status (2026-09-24): built, on top of a later architectural decision this
+> doc's own "Scope decision" section (below) did not anticipate. Read
+> `RETAIL-ERP.md` R15 before touching WO-4.3/4.4/4.6 — it changes where the
+> P&L, cash flow and month-end close actually come from.**
+>
+> `Expense`/`ExpenseCategory` (WO-4.1) and `OrderEconomics` (WO-4.2) are
+> built exactly as this doc specifies — recurring expenses, receipts,
+> categories, and per-order contribution — kept unchanged by R15. But R15
+> (written after this doc, by Phase 19/22's `accounting` module) supersedes
+> this doc's own "sum-the-tables P&L" for WO-4.3/4.4/4.6: a real
+> double-entry general ledger (`Account`/`JournalEntry`/`JournalLine`/
+> `FiscalPeriod`) now exists, `Expense` already posts to it
+> (`ExpenseRecorded` -> `posting-rules.subscriber.ts`), and
+> `GlReportsService` already implements P&L, cash flow and aged payables as
+> queries over `JournalLine` — built by that other phase, with zero admin
+> UI, before this doc's own WO-4.3/4.4 were built at all.
+>
+> Building this doc's P&L/cash-flow logic as originally specified — summing
+> `Expense`/`OrderEconomics` rows a second time — would have produced a
+> second, independently-computed profit number next to the ledger's own,
+> with nothing forcing them to agree: exactly the "revenue reported N ways
+> with no stated authority" hazard `CLAUDE.md`'s own money scope lens warns
+> about, and worse here than a gap, since two disagreeing numbers are worse
+> than one nobody can drill into.
+>
+> What actually shipped: WO-4.3 (P&L) and WO-4.4 (cash flow, payables
+> ageing) are thin admin UI over the existing `GlReportsService` — no new
+> profit computation. WO-4.6's exports (`admin/reports/export/profit-and-
+> loss`, `.../payables`) read the identical `JournalLine` rows for a CSV
+> projection, which is not the same hazard (one source table, two
+> projections of it, not two competing computations) — see
+> `ReportsService.profitAndLossCsv`'s own comment. WO-4.6's "close" is the
+> ledger's own `FiscalPeriod` open/close/reopen/lock, which already existed
+> with a full API and, as of this pass, still has no dedicated admin
+> screen — named here as a real, remaining gap, not silently dropped: it
+> touches fiscal-year management (creating years, matching a period to a
+> date) that goes beyond this doc's own six-screen WO-4.5 list. WO-4.2's
+> own margin-by-product/category and unit-economics-per-order are new
+> (`FinanceService.marginBy`/`unitEconomics`), sourced from `OrderItem`/
+> `OrderEconomics` — never the ledger, which posts one aggregate line per
+> order, not a per-product breakdown. A permission gap was fixed along the
+> way: the GL's reports were `accounting.view`-only (ADMIN), but this doc's
+> own model is `finance.view` (ADMIN + STAFF) — `profit-and-loss`/
+> `cash-flow`/`aged-payables` now additionally accept `finance.view`; the
+> ledger's raw detail (trial balance, balance sheet, aged receivables,
+> consolidation) stays `accounting.view`-only.
+
 ## Scope decision, already taken
 
 **Operational P&L, not double-entry.** No chart of accounts, no journals, no
@@ -12,6 +59,11 @@ and exports cleanly to CSV/XLSX for whoever does the real accounting.
 If you find yourself wanting a `JournalEntry` model, stop — that is the decision
 being deliberately deferred, and building half a ledger is worse than building
 none.
+
+**Superseded for WO-4.3/4.4/4.6 by `RETAIL-ERP.md` R15** (see the status note
+above) — a `JournalEntry` model was built anyway, by a later phase that did not
+revisit this section. `Expense`/`OrderEconomics` (WO-4.1/4.2) stand as specified;
+the P&L/cash-flow/close read from the ledger instead of summing these tables.
 
 ## Work orders
 

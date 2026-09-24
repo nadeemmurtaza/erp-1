@@ -3,7 +3,7 @@
 
 # Tests
 
-**141** spec files, **1,364** cases. What is already pinned down — and what is not.
+**143** spec files, **1,372** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -22,7 +22,6 @@ such exemption.
 - [`cart`](../modules/cart.md)
 - [`giftcards`](../modules/giftcards.md)
 - [`promotions`](../modules/promotions.md)
-- [`reports`](../modules/reports.md)
 - [`settings`](../modules/settings.md)
 - [`stitching`](../modules/stitching.md)
 - [`tax`](../modules/tax.md)
@@ -54,7 +53,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (124)
+## Unit and integration (126)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -63,6 +62,7 @@ regression or an N+1.
 | `apps/api/src/core/auth/permissions.service.spec.ts` | core/auth | 6 | PermissionsResolverService.resolveForUser |
 | `apps/api/src/core/auth/roles.service.spec.ts` | core/auth | 18 | RolesService · create · update / delete — the locked-permission orphan guard · assertLockedKeysStil… |
 | `apps/api/src/core/auth/scope.guard.spec.ts` | core/auth | 20 | resolveScope · assertCanManageAtScope · scopeFilterFor |
+| `apps/api/src/core/common/aging.spec.ts` | core/common | 7 | ageMovements |
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 20 | validateEnv |
 | `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |
 | `apps/api/src/core/notifications/email.channel.spec.ts` | core/notifications | 2 | isDeliverable |
@@ -83,7 +83,6 @@ regression or an N+1.
 | `apps/api/src/core/time/metric-window.spec.ts` | core/time | 9 | weekKeyOf · monthKeyOf · bucketKeyOf · rollUpDays |
 | `apps/api/src/core/time/shop-time.spec.ts` | core/time | 16 | shopDayKey · startOfShopDay · startOfShopDaysAgo · shopDayKeys · shopDayExpr · assertIanaTimeZone |
 | `apps/api/src/modules/accounting/accounting.service.spec.ts` | accounting | 5 | AccountingService — WO-19.1 · postEntry |
-| `apps/api/src/modules/accounting/aging.spec.ts` | accounting | 7 | ageMovements |
 | `apps/api/src/modules/accounting/consolidation.service.spec.ts` | accounting | 7 | ConsolidationService — R17, WO-20.6 · groupProfitAndLoss · unmatchedIntercompany |
 | `apps/api/src/modules/accounting/fiscal-periods.service.spec.ts` | accounting | 24 | FiscalPeriodsService — WO-19.5 · createFiscalYear · createFiscalPeriod · closePeriod · reopenPeriod… |
 | `apps/api/src/modules/accounting/gl-reports.service.spec.ts` | accounting | 9 | GlReportsService — WO-19.4 · trialBalance · profitAndLoss · balanceSheet · cashFlow · agedReceivabl… |
@@ -106,6 +105,7 @@ regression or an N+1.
 | `apps/api/src/modules/catalog/product-replication.listener.spec.ts` | catalog | 7 | ProductReplicationListener — WO-20.3 · onModuleInit · onProductPublished · onProductPriceChanged ·… |
 | `apps/api/src/modules/crm/email-inbox/email-inbox.service.spec.ts` | crm | 7 | EmailInboxService · reply |
 | `apps/api/src/modules/finance/expense-replication.listener.spec.ts` | finance | 3 | ExpenseReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onExpenseRecorded |
+| `apps/api/src/modules/finance/finance-margins.spec.ts` | finance | 4 | FinanceService margins and unit economics · marginBy · unitEconomics |
 | `apps/api/src/modules/finance/finance.cron.spec.ts` | finance | 3 | FinanceCron |
 | `apps/api/src/modules/finance/finance.listener.spec.ts` | finance | 2 | FinanceListener |
 | `apps/api/src/modules/finance/finance.spec.ts` | finance | 26 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4… |
@@ -143,6 +143,7 @@ regression or an N+1.
 | `apps/api/src/modules/purchasing/purchasing.spec.ts` | purchasing | 10 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR… |
 | `apps/api/src/modules/purchasing/reorder.listener.spec.ts` | purchasing | 5 | PurchasingReorderListener |
 | `apps/api/src/modules/purchasing/supplier-bill.spec.ts` | purchasing | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
+| `apps/api/src/modules/reports/reports-finance-exports.spec.ts` | reports | 4 | ReportsService finance exports |
 | `apps/api/src/modules/tradingpartners/invoice.service.spec.ts` | tradingpartners | 4 | InvoiceService · issue · findOne |
 | `apps/api/src/modules/tradingpartners/offer.service.spec.ts` | tradingpartners | 3 | OfferService · publish |
 | `apps/api/src/modules/tradingpartners/product-alerts.listener.spec.ts` | tradingpartners | 4 | ProductAlertsListener |

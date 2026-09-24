@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1373,
-    "lines": 213514,
+    "files": 1385,
+    "lines": 214398,
     "routes": 357,
     "controllers": 62,
     "models": 140,
@@ -1107,9 +1107,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 321,
-      "lines": 49217,
-      "bytes": 2950130,
+      "files": 333,
+      "lines": 50101,
+      "bytes": 2999618,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -45200,6 +45200,42 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/100-event-driven-architecture.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 75,
+      "bytes": 4058,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/101-agnostic-notification-webhooks.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 71,
+      "bytes": 3539,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/102-hyperautomation-workflow-integration.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 70,
+      "bytes": 3533,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/103-semantic-data-contracts.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 69,
+      "bytes": 3620,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/11-client-handover-model.md",
       "area": "docs",
       "kind": "doc",
@@ -45947,6 +45983,78 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/92-microservices-module-decoupling.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 89,
+      "bytes": 5471,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/93-headless-frontend-architecture.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 66,
+      "bytes": 3171,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/94-cloud-native-container-scalability.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 70,
+      "bytes": 3335,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/95-externalized-rule-logic.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 78,
+      "bytes": 4366,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/96-version-controlled-policy-execution.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 68,
+      "bytes": 3494,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/97-realtime-validation-single-source-of-truth.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 63,
+      "bytes": 3154,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/98-contract-first-api-development.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 80,
+      "bytes": 4228,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/99-centralized-api-gateway.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 60,
+      "bytes": 3180,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
@@ -45986,8 +46094,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 270,
-      "bytes": 28104,
+      "lines": 295,
+      "bytes": 32443,
       "doc": "",
       "symbols": []
     },

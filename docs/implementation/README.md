@@ -137,6 +137,31 @@ tabs against what actually exists:
 | [`90-automatic-backups-local-support.md`](./90-automatic-backups-local-support.md) | Coverage note: `deploy/backup.sh` (doc 38) is real, restore-tested infrastructure; "local support you can trust" is named honestly as a business commitment, not a code capability |
 | [`91-staff-portal-mobile-access.md`](./91-staff-portal-mobile-access.md) | Coverage note that also flags a risk: doc 52's one responsive PWA already is both the "mobile app" and the "Staff Portal" — building a second, desktop-only surface would be a duplicate implementation |
 
+**Numbers 92–103** cover a generic enterprise-architecture buzzword list
+(MACH, a business-rules engine, API-first integration, omnichannel
+automation) rather than product features. Several of these bullets
+describe an architecture this repository's own `CLAUDE.md` explicitly and
+deliberately did **not** choose (a literal microservices mesh, a separate
+API-gateway process, a generic rules engine) — those documents state the
+decision plainly, citing `CLAUDE.md`/`ENTERPRISE-SCALE.md` verbatim,
+rather than building against it. Every other bullet in this batch maps
+onto a mechanism already specified earlier in this document set:
+
+| File | What it is |
+|---|---|
+| [`92-microservices-module-decoupling.md`](./92-microservices-module-decoupling.md) | Not built: `CLAUDE.md`'s own words, "a deliberate modular monolith... not a microservice mesh, that choice is already made and is not reopened." Names the module-independence mechanism that delivers the actual outcome (independent upgrade/scale/replace) without the microservices cost |
+| [`93-headless-frontend-architecture.md`](./93-headless-frontend-architecture.md) | Coverage note: four separate frontends (`apps/web`, `apps/pos`, `apps/mobile`, doc 52's staff PWA) already draw from one versioned API; the one correction is that the frontend framework is fixed (Next.js/React), never "any framework" |
+| [`94-cloud-native-container-scalability.md`](./94-cloud-native-container-scalability.md) | Coverage note: Dockerfiles and five compose files already exist; names "automatic provisioning on demand spikes" honestly as unbuilt autoscaling, distinct from containerization itself |
+| [`95-externalized-rule-logic.md`](./95-externalized-rule-logic.md) | Not built as a generic engine: tax rates, pricing tiers, and every named "operational policy" are already externalized as data rows (`TaxRate`, `PlatformPlan`, `LeaveType`, `DeductionType`, `ApprovalChain`) — a single generic rule-evaluation engine is named as the wrong abstraction for shapes this stable |
+| [`96-version-controlled-policy-execution.md`](./96-version-controlled-policy-execution.md) | Coverage note: `TaxRate`'s effective-dating and doc 63's tier-count-as-policy-row already deliver no-deploy policy changes; a visual chain *designer* is doc 63's own already-named, still-deferred boundary |
+| [`97-realtime-validation-single-source-of-truth.md`](./97-realtime-validation-single-source-of-truth.md) | Coverage note: the global `ValidationPipe`/`PermissionsGuard`, House Rule 10's predicate-on-write, and snapshot-at-write-time already deliver this at three layers — never a separate validation service |
+| [`98-contract-first-api-development.md`](./98-contract-first-api-development.md) | Names the honest distinction: this repository is code-first (OpenAPI generated from `@nestjs/swagger` decorators), not contract-first by sequence; names one real gap doc 38 doesn't cover — no automated HTTP-contract-diff check |
+| [`99-centralized-api-gateway.md`](./99-centralized-api-gateway.md) | Coverage note: `CLAUDE.md`'s own "API Gateway → the single NestJS entrypoint's own hardening... Not a separate gateway process," quoted verbatim |
+| [`100-event-driven-architecture.md`](./100-event-driven-architecture.md) | Coverage note: the transactional outbox (`EventBusService`/`OutboxDispatcher`), already `CLAUDE.md`'s own "Stable & reliable" pillar, cited by name across ten-plus documents this session |
+| [`101-agnostic-notification-webhooks.md`](./101-agnostic-notification-webhooks.md) | Self-hosted email already ships (`EmailChannel`'s own raw SMTP); SMS/WhatsApp are doc 33's own fully-specified, not-yet-built `NotificationChannel` implementations, blocked on picking a real gateway provider |
+| [`102-hyperautomation-workflow-integration.md`](./102-hyperautomation-workflow-integration.md) | Coverage note: doc 36's `OutboundConnector` schema literally uses `"Zapier webhook"` as its own worked example — n8n is the identical class of target, already served by the same generic, template-driven connector |
+| [`103-semantic-data-contracts.md`](./103-semantic-data-contracts.md) | Coverage note: doc 18's canonical-JSON/`EdiTranslator` boundary already exists specifically to prevent trading-partner vendor lock-in; the internal DTO layer delivers the identical principle between modules |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

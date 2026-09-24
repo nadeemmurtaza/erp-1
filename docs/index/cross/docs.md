@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**341** markdown documents. These explain **why**; this index only says **where**.
+**353** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -1965,6 +1965,39 @@ _no second-level headings_
 - Migration safety register  <sub>:1754</sub>
 - Phase 10 definition of done  <sub>:1798</sub>
 
+### `docs/implementation/100-event-driven-architecture.md`  <sub>75 lines</sub>
+
+- What already exists, mapped onto the bullet's own example  <sub>:17</sub>
+- Scope lenses  <sub>:49</sub>
+- Work orders  <sub>:55</sub>
+- Acceptance  <sub>:62</sub>
+- Out of scope  <sub>:67</sub>
+
+### `docs/implementation/101-agnostic-notification-webhooks.md`  <sub>71 lines</sub>
+
+- What already exists, per channel  <sub>:11</sub>
+- "Triggering webhooks" — the delivery mechanism doc 33 already names  <sub>:29</sub>
+- Scope lenses  <sub>:45</sub>
+- Work orders  <sub>:50</sub>
+- Acceptance  <sub>:57</sub>
+- Out of scope  <sub>:65</sub>
+
+### `docs/implementation/102-hyperautomation-workflow-integration.md`  <sub>70 lines</sub>
+
+- What doc 36 already specifies, restated rather than re-derived  <sub>:15</sub>
+- Scope lenses  <sub>:41</sub>
+- Work orders  <sub>:48</sub>
+- Acceptance  <sub>:57</sub>
+- Out of scope  <sub>:63</sub>
+
+### `docs/implementation/103-semantic-data-contracts.md`  <sub>69 lines</sub>
+
+- What already enforces this, at two layers  <sub>:15</sub>
+- Scope lenses  <sub>:41</sub>
+- Work orders  <sub>:48</sub>
+- Acceptance  <sub>:54</sub>
+- Out of scope  <sub>:60</sub>
+
 ### `docs/implementation/11-client-handover-model.md`  <sub>121 lines</sub>
 
 - 1. The Business Goals  <sub>:3</sub>
@@ -2735,6 +2768,76 @@ _no second-level headings_
 - Acceptance  <sub>:41</sub>
 - Out of scope  <sub>:50</sub>
 
+### `docs/implementation/92-microservices-module-decoupling.md`  <sub>89 lines</sub>
+
+- 1. What the bullet actually wants, and what already delivers it  <sub>:16</sub>
+- 2. Why literal microservices would be the wrong trade here, not just an unbuilt feature  <sub>:39</sub>
+- Scope lenses  <sub>:61</sub>
+- Work orders  <sub>:68</sub>
+- Acceptance  <sub>:77</sub>
+- Out of scope  <sub>:83</sub>
+
+### `docs/implementation/93-headless-frontend-architecture.md`  <sub>66 lines</sub>
+
+- What already exists  <sub>:10</sub>
+- The one correction: framework choice is fixed, not "any"  <sub>:27</sub>
+- Scope lenses  <sub>:42</sub>
+- Work orders  <sub>:48</sub>
+- Acceptance  <sub>:56</sub>
+- Out of scope  <sub>:61</sub>
+
+### `docs/implementation/94-cloud-native-container-scalability.md`  <sub>70 lines</sub>
+
+- What already exists  <sub>:14</sub>
+- The honest gap: "automatically... based on demand spikes" is not autoscaling  <sub>:27</sub>
+- Scope lenses  <sub>:43</sub>
+- Work orders  <sub>:49</sub>
+- Acceptance  <sub>:57</sub>
+- Out of scope  <sub>:64</sub>
+
+### `docs/implementation/95-externalized-rule-logic.md`  <sub>78 lines</sub>
+
+- What is already externalized, named one by one, per the bullet's own three examples  <sub>:15</sub>
+- Why a single generic rules engine is the wrong abstraction here  <sub>:32</sub>
+- Scope lenses  <sub>:48</sub>
+- Work orders  <sub>:54</sub>
+- Acceptance  <sub>:63</sub>
+- Out of scope  <sub>:71</sub>
+
+### `docs/implementation/96-version-controlled-policy-execution.md`  <sub>68 lines</sub>
+
+- What already delivers "no engineering deployment" today  <sub>:13</sub>
+- The one honest, already-named gap: a visual chain *designer*  <sub>:29</sub>
+- Scope lenses  <sub>:43</sub>
+- Work orders  <sub>:48</sub>
+- Acceptance  <sub>:56</sub>
+- Out of scope  <sub>:63</sub>
+
+### `docs/implementation/97-realtime-validation-single-source-of-truth.md`  <sub>63 lines</sub>
+
+- The three layers already doing this  <sub>:11</sub>
+- Scope lenses  <sub>:37</sub>
+- Work orders  <sub>:44</sub>
+- Acceptance  <sub>:49</sub>
+- Out of scope  <sub>:55</sub>
+
+### `docs/implementation/98-contract-first-api-development.md`  <sub>80 lines</sub>
+
+- What already makes the interface stable, without contract-first sequencing  <sub>:16</sub>
+- The one honest gap: no automated contract-diff / backward-compatibility check  <sub>:39</sub>
+- Scope lenses  <sub>:50</sub>
+- Work orders  <sub>:55</sub>
+- Acceptance  <sub>:65</sub>
+- Out of scope  <sub>:73</sub>
+
+### `docs/implementation/99-centralized-api-gateway.md`  <sub>60 lines</sub>
+
+- What each named responsibility already maps to  <sub>:21</sub>
+- Scope lenses  <sub>:31</sub>
+- Work orders  <sub>:38</sub>
+- Acceptance  <sub>:48</sub>
+- Out of scope  <sub>:53</sub>
+
 ### `docs/implementation/DECISIONS.md`  <sub>1,768 lines</sub>
 
 - How to read this  <sub>:13</sub>
@@ -2802,15 +2905,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>270 lines</sub>
+### `docs/implementation/README.md`  <sub>295 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:140</sub>
-- The two module groups  <sub>:169</sub>
-- How a work order runs  <sub>:206</sub>
-- Known gaps not yet owned by a phase  <sub>:224</sub>
-- When a brief is wrong  <sub>:251</sub>
-- Scope, honestly  <sub>:264</sub>
+- Dependency order  <sub>:165</sub>
+- The two module groups  <sub>:194</sub>
+- How a work order runs  <sub>:231</sub>
+- Known gaps not yet owned by a phase  <sub>:249</sub>
+- When a brief is wrong  <sub>:276</sub>
+- Scope, honestly  <sub>:289</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

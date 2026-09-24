@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 321 tracked files in `docs/*`, by directory.
+All 333 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -253,7 +253,7 @@ All 321 tracked files in `docs/*`, by directory.
 | `52g-generate-gap.md` | doc | 26 |  |
 | `52h-harden-gap.md` | doc | 40 |  |
 
-### `docs/implementation` (101)
+### `docs/implementation` (113)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -268,6 +268,10 @@ All 321 tracked files in `docs/*`, by directory.
 | `08-content-marketing-search.md` | doc | 138 |  |
 | `09-ai-layer.md` | doc | 221 |  |
 | `10-admin-dashboard.md` | doc | 1843 |  |
+| `100-event-driven-architecture.md` | doc | 75 |  |
+| `101-agnostic-notification-webhooks.md` | doc | 71 |  |
+| `102-hyperautomation-workflow-integration.md` | doc | 70 |  |
+| `103-semantic-data-contracts.md` | doc | 69 |  |
 | `11-client-handover-model.md` | doc | 121 |  |
 | `12-extractor-script-spec.md` | doc | 59 |  |
 | `13-email-service-plan.md` | doc | 32 |  |
@@ -351,11 +355,19 @@ All 321 tracked files in `docs/*`, by directory.
 | `89-rapid-onboarding-customizable-reports.md` | doc | 68 |  |
 | `90-automatic-backups-local-support.md` | doc | 56 |  |
 | `91-staff-portal-mobile-access.md` | doc | 55 |  |
+| `92-microservices-module-decoupling.md` | doc | 89 |  |
+| `93-headless-frontend-architecture.md` | doc | 66 |  |
+| `94-cloud-native-container-scalability.md` | doc | 70 |  |
+| `95-externalized-rule-logic.md` | doc | 78 |  |
+| `96-version-controlled-policy-execution.md` | doc | 68 |  |
+| `97-realtime-validation-single-source-of-truth.md` | doc | 63 |  |
+| `98-contract-first-api-development.md` | doc | 80 |  |
+| `99-centralized-api-gateway.md` | doc | 60 |  |
 | `DECISIONS.md` | doc | 1768 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 270 |  |
+| `README.md` | doc | 295 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 

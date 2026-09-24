@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**405** markdown documents. These explain **why**; this index only says **where**.
+**406** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2527,6 +2527,19 @@ _no second-level headings_
 - Acceptance  <sub>:331</sub>
 - Out of scope  <sub>:346</sub>
 
+### `docs/implementation/156-single-employee-branch-loss-prevention.md`  <sub>287 lines</sub>
+
+- What already exists, cited rather than re-specified  <sub>:15</sub>
+- The three real gaps found, checked against the actual code  <sub>:39</sub>
+- 1. Link a variance to the shift that had custody — accountability, not just detection  <sub>:66</sub>
+- 2. Close the self-resolution gap — the toxic pair this repository already refuses everywhere else  <sub>:94</sub>
+- 3. Unpredictable spot-checks — shrinking the window from a month to days, and removing the "safe day"  <sub>:117</sub>
+- 4. Camera-count vs. transaction-count — a real, new correlation this repository's own existing pieces already make possible  <sub>:150</sub>
+- Scope lenses  <sub>:171</sub>
+- Work orders  <sub>:242</sub>
+- Acceptance  <sub>:262</sub>
+- Out of scope  <sub>:275</sub>
+
 ### `docs/implementation/16-pbac-row-scoping.md`  <sub>184 lines</sub>
 
 - The good news: the convention already exists, once  <sub>:35</sub>
@@ -3388,15 +3401,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>408 lines</sub>
+### `docs/implementation/README.md`  <sub>420 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:278</sub>
-- The two module groups  <sub>:307</sub>
-- How a work order runs  <sub>:344</sub>
-- Known gaps not yet owned by a phase  <sub>:362</sub>
-- When a brief is wrong  <sub>:389</sub>
-- Scope, honestly  <sub>:402</sub>
+- Dependency order  <sub>:290</sub>
+- The two module groups  <sub>:319</sub>
+- How a work order runs  <sub>:356</sub>
+- Known gaps not yet owned by a phase  <sub>:374</sub>
+- When a brief is wrong  <sub>:401</sub>
+- Scope, honestly  <sub>:414</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

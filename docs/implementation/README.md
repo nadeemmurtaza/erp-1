@@ -275,6 +275,18 @@ idea and one hard dependency on doc 68's own fix:
 | [`154-three-headline-commercial-plans.md`](./154-three-headline-commercial-plans.md) | Pure packaging, no new `PricingModel`: exactly three customer-facing plans (Lifetime License / Per Month / Pay As You Grow) mapped onto doc 50/153's own existing `ONE_TIME_LICENSE`/`FLAT_MONTHLY`/`USAGE_BASED` rows via one new `isHeadline` flag; `PER_SEAT` stays fully available, reachable through a "talk to us" link, never shown as a fourth tile |
 | [`155-wallet-stored-value-merchant-escrow.md`](./155-wallet-stored-value-merchant-escrow.md) | Revised from an escrow design to Newax-issued store credit (a customer buys credit, paid into Newax's own bank account, booked as deferred revenue) plus ordinary trade-payable merchant settlement generalizing doc 145's own `SupplierBill`/AP — a materially lower-risk structure than the original, still with a lighter, named WO-155.0 confirmation (closed-loop characterization, the merchant-agreement basis) rather than a full block. Credit is reserved at checkout and deducted ("redeemed") exactly at merchant confirmation, per the owner's own words; doc 18's existing `IdentityVerification` still controls payout-run speed, not an escrow release; doc 153's own 1% fee nets out of each `MerchantPayable` |
 
+**Number 156** answers a direct fraud-prevention question: a single-
+employee branch can sell stock with no record, or substitute/steal
+product, and the owner has no way to know. Honest up front that no
+software prevents a lone, unsupervised employee with physical custody
+from doing this — the document builds only what's real: faster
+detection, attributable accountability, and a closed self-dealing gap
+found by reading the actual code, never a "fraud-proof" claim:
+
+| File | What it is |
+|---|---|
+| [`156-single-employee-branch-loss-prevention.md`](./156-single-employee-branch-loss-prevention.md) | Links `StockVariance` to the `PosShift` that had custody when it occurred; closes a real, confirmed gap in `StockVarianceService.resolve()` where the same employee could cause and write off their own shrinkage; adds unpredictable small spot-checks over the existing `StockCount` mechanism instead of only infrequent, predictable full counts; and a camera-foot-traffic-vs-POS-transaction-count correlation report over doc 30's existing camera integration, named explicitly as a signal for a human to review, never an automated accusation |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

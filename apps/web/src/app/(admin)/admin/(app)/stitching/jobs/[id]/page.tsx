@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { use, useCallback, useEffect, useMemo, useState } from 'react';
+import { use, useCallback, useEffect, useState } from 'react';
 import { formatDate, formatDateTime, nextStage, previousStage } from '@newax/shared';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import {
   fieldLabel,
   jobCustomer,
@@ -33,8 +34,8 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  const permissions = useMemo(() => getStoredUser()?.permissions ?? [], []);
-  const canAssign = permissions.includes('stitching.jobs.assign');
+  const { can } = useAdminSession();
+  const canAssign = can('stitching.jobs.assign');
 
   const load = useCallback(async () => {
     setError(null);

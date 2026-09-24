@@ -3,7 +3,7 @@
 
 # Components
 
-All **72** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **76** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 99 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 109 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 4 |  |
 
 ### `apps/pos/src/components` (2)
@@ -60,7 +60,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `role-wizard.tsx` | `RoleWizard` | client | 1 |  |
 | `sales-chart.tsx` | `SalesChart` | client | 1 |  |
 | `scope-chips.tsx` | `ScopeChip` `ScopeChips` | client | 2 |  |
-| `session.tsx` | `AdminSessionProvider` `useAdminSession` | client | 9 |  |
+| `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 34 |  |
 | `stage-badge.tsx` | `StageBadge` | server | 3 |  |
 
 ### `apps/web/src/components/admin/bom` (2)
@@ -120,19 +120,23 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `stitching-panel.tsx` | `StitchingSelection` `CartStitchingRequest` `StitchingPanel` `prepareStitching` | client | 1 |  |
 | `stitching-timeline.tsx` | `TimelineEvent` `StitchingTimeline` | client | 2 |  |
 
-### `apps/web/src/components/ui` (12)
+### `apps/web/src/components/ui` (16)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `badge.tsx` | `BadgeTone` `Badge` | server | 21 |  |
-| `button.tsx` | `ButtonProps` `Button` | server | 1 |  |
+| `button.tsx` | `ButtonProps` `Button` | server | 2 |  |
+| `confirm-dialog.tsx` | `ConfirmDialog` | client | 1 |  |
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 1 |  |
-| `dialog.tsx` | `Dialog` | client | 1 |  |
+| `dialog.tsx` | `Dialog` | client | 3 |  |
 | `disclosure.tsx` | `Disclosure` | client | 1 |  |
 | `empty-state.tsx` | `EmptyState` | server | 1 |  |
+| `filter-bar.tsx` | `FilterDef` `FilterBar` `useFilterParam` `useSetFilterParam` `useFilterPage` `useSetFilterPage` | client | 1 |  |
+| `list-page-skeleton.tsx` | `ListPageSkeleton` | server | 1 | The shape of a list page, before the list page. |
 | `loading.tsx` | `Loading` | server | 1 |  |
 | `metric-strip.tsx` | `MetricItem` `MetricStrip` | client | 1 |  |
 | `page-header.tsx` | `PageHeader` | server | 1 |  |
+| `pagination.tsx` | `PaginationMeta` `Pagination` | server | 1 |  |
 | `section-rail.tsx` | `RailSection` `SectionRail` | client | 1 |  |
 | `section.tsx` | `Section` | server | 4 |  |
 | `tabs.tsx` | `TabItem` `Tabs` | client | 1 |  |

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { adminFetch } from '@/lib/admin-client';
 import { formatMoney } from '@newax/shared';
 import { PartyPicker } from '@/components/admin/party-picker';
-import { Loading } from '@/components/ui';
+import { DataTable, Loading } from '@/components/ui';
 
 interface SupplierProduct {
   id: string;
@@ -167,53 +167,62 @@ export default function NewPurchaseOrderPage() {
                   Add items from the catalogue.
                 </div>
               ) : (
-                <table className="table-flat">
-                  <thead>
-                    <tr>
-                      <th>Item</th>
-                      <th className="text-end">Qty</th>
-                      <th className="text-end">Cost (paisa)</th>
-                      <th className="text-end">Line Total</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-neutral-100">
-                    {lines.map((line, i) => (
-                      <tr key={line.variantId}>
-                        <td>
+                <DataTable
+                  rows={lines}
+                  rowKey={(line) => line.variantId}
+                  columns={[
+                    {
+                      header: 'Item',
+                      cell: (line) => (
+                        <>
                           <div className="font-medium text-neutral-900">{line.name}</div>
                           <div className="text-xs text-neutral-900/60">{line.sku}</div>
-                        </td>
-                        <td className="text-end">
-                          <input 
-                            type="number" 
-                            min="1" 
-                            className="field-input w-20 text-end"
-                            value={line.qty}
-                            onChange={(e) => updateLine(i, 'qty', parseInt(e.target.value) || 0)}
-                          />
-                        </td>
-                        <td className="text-end">
-                          <input 
-                            type="number" 
-                            min="0" 
-                            className="field-input w-24 text-end"
-                            value={line.cost}
-                            onChange={(e) => updateLine(i, 'cost', parseInt(e.target.value) || 0)}
-                          />
-                        </td>
-                        <td className="text-end font-medium">
-                          {formatMoney(line.qty * line.cost)}
-                        </td>
-                        <td className="text-end">
-                          <button onClick={() => removeLine(i)} className="text-red-600 hover:underline text-xs">
-                            Remove
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                        </>
+                      ),
+                    },
+                    {
+                      header: 'Qty',
+                      align: 'end',
+                      cell: (line, i) => (
+                        <input
+                          type="number"
+                          min="1"
+                          className="field-input w-20 text-end"
+                          value={line.qty}
+                          onChange={(e) => updateLine(i, 'qty', parseInt(e.target.value) || 0)}
+                        />
+                      ),
+                    },
+                    {
+                      header: 'Cost (paisa)',
+                      align: 'end',
+                      cell: (line, i) => (
+                        <input
+                          type="number"
+                          min="0"
+                          className="field-input w-24 text-end"
+                          value={line.cost}
+                          onChange={(e) => updateLine(i, 'cost', parseInt(e.target.value) || 0)}
+                        />
+                      ),
+                    },
+                    {
+                      header: 'Line Total',
+                      align: 'end',
+                      numeric: true,
+                      cell: (line) => <span className="font-medium">{formatMoney(line.qty * line.cost)}</span>,
+                    },
+                    {
+                      header: '',
+                      align: 'end',
+                      cell: (_line, i) => (
+                        <button onClick={() => removeLine(i)} className="text-red-600 hover:underline text-xs">
+                          Remove
+                        </button>
+                      ),
+                    },
+                  ]}
+                />
               )}
             </div>
 

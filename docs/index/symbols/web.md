@@ -39,31 +39,31 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `layout.tsx` | `AdminAppLayout` | default | :12 | Wraps every signed-in back-office page in the shell. |
 | `loading.tsx` | `Loading` | default | :13 | The shape of the dashboard, before the dashboard. |
-| `page.tsx` | `AdminDashboardPage` | default | :52 |  |
+| `page.tsx` | `AdminDashboardPage` | default | :53 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/account`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminAccountPage` | default | :6 |  |
+| `page.tsx` | `AdminAccountPage` | default | :7 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `BrandDashboardPage` | default | :123 | The brand-level dashboard (RETAIL-ERP.md R19) — branch chips over that brand's combined figures. |
+| `page.tsx` | `BrandDashboardPage` | default | :124 | The brand-level dashboard (RETAIL-ERP.md R19) — branch chips over that brand's combined figures. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `RecipesPage` | default | :45 | Recipes — which raw materials go into a finished product, and the cost that rolls up to. |
+| `page.tsx` | `RecipesPage` | default | :46 | Recipes — which raw materials go into a finished product, and the cost that rolls up to. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/[id]`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `RecipeDetailPage` | default | :25 |  |
+| `page.tsx` | `RecipeDetailPage` | default | :26 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/new`
 
@@ -75,7 +75,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `ProductionRunsPage` | default | :23 | Production runs — ledger history, never deleted. |
+| `page.tsx` | `ProductionRunsPage` | default | :24 | Production runs — ledger history, never deleted. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/production/[id]`
 
@@ -93,25 +93,25 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `RawMaterialsPage` | default | :40 | Raw materials — fabric, trim, packaging, consumables bought in to make finished products. |
+| `page.tsx` | `RawMaterialsPage` | default | :41 | Raw materials — fabric, trim, packaging, consumables bought in to make finished products. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/[id]`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `RawMaterialDetailPage` | default | :40 |  |
+| `page.tsx` | `RawMaterialDetailPage` | default | :41 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/raw-usage`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `RawUsagePage` | default | :33 | Raw-material consumption over time — the "did this actually get used" question a production run's o… |
+| `page.tsx` | `RawUsagePage` | default | :34 | Raw-material consumption over time — the "did this actually get used" question a production run's o… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/br/[branchId]`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `BranchDashboardPage` | default | :17 | The branch-level dashboard (RETAIL-ERP.md R19) — the leaf. |
+| `page.tsx` | `BranchDashboardPage` | default | :18 | The branch-level dashboard (RETAIL-ERP.md R19) — the leaf. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/brands`
 
@@ -129,7 +129,8 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminContactsPage` | default | :52 | Customers. |
+| `loading.tsx` | `Loading` | default | :3 |  |
+| `page.tsx` | `AdminContactsPage` | default | :57 | Customers. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/customers/insights`
 
@@ -189,7 +190,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminGarmentsPage` | default | :25 | Every garment the tailor can be asked for. |
+| `page.tsx` | `AdminGarmentsPage` | default | :24 | Every garment the tailor can be asked for. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/garments/[id]`
 
@@ -201,13 +202,13 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminImportPage` | default | :16 | Bulk catalogue upload. |
+| `page.tsx` | `AdminImportPage` | default | :17 | Bulk catalogue upload. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inbox`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminInboxPage` | default | :27 | Support Inbox. |
+| `page.tsx` | `AdminInboxPage` | default | :35 | Support Inbox. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/insights`
 
@@ -219,7 +220,8 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminInventoryPage` | default | :50 |  |
+| `loading.tsx` | `Loading` | default | :3 |  |
+| `page.tsx` | `AdminInventoryPage` | default | :59 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/[variantId]/chain`
 
@@ -231,31 +233,31 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `CountsListPage` | default | :21 |  |
+| `page.tsx` | `CountsListPage` | default | :22 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/counts/[id]`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `CountSheetPage` | default | :29 |  |
+| `page.tsx` | `CountSheetPage` | default | :31 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/insights`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `InventoryInsightsPage` | default | :20 | WO-D.4 (10-admin-dashboard.md Track D) — what stock on hand is worth, and how it's moving. |
+| `page.tsx` | `InventoryInsightsPage` | default | :21 | WO-D.4 (10-admin-dashboard.md Track D) — what stock on hand is worth, and how it's moving. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/reorder`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `ReorderSuggestionsPage` | default | :36 |  |
+| `page.tsx` | `ReorderSuggestionsPage` | default | :27 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `SlowMoversPage` | default | :32 |  |
+| `page.tsx` | `SlowMoversPage` | default | :25 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/leads`
 
@@ -291,19 +293,20 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `PolicyQuarantinePage` | default | :17 | R9's quarantine (WO-23.3c/e) — a fact that applied but whose own `scopeLevel` disagreed with the `B… |
+| `page.tsx` | `PolicyQuarantinePage` | default | :18 | R9's quarantine (WO-23.3c/e) — a fact that applied but whose own `scopeLevel` disagreed with the `B… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/orders`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminOrdersPage` | default | :39 |  |
+| `loading.tsx` | `Loading` | default | :3 |  |
+| `page.tsx` | `AdminOrdersPage` | default | :48 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/orders/[id]`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminOrderDetailPage` | default | :102 |  |
+| `page.tsx` | `AdminOrderDetailPage` | default | :103 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/orders/insights`
 
@@ -339,19 +342,20 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `PayrollRunsPage` | default | :18 | WO-19.6 (docs/implementation/19-payroll.md) — every pay run, and the form to build a new one for a… |
+| `page.tsx` | `PayrollRunsPage` | default | :19 | WO-19.6 (docs/implementation/19-payroll.md) — every pay run, and the form to build a new one for a… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `PayrollRunDetailPage` | default | :23 | WO-19.6 (docs/implementation/19-payroll.md) — one pay run: every line, the build/approve/post lifec… |
+| `page.tsx` | `PayrollRunDetailPage` | default | :24 | WO-19.6 (docs/implementation/19-payroll.md) — one pay run: every line, the build/approve/post lifec… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/products`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminProductsPage` | default | :24 |  |
+| `loading.tsx` | `Loading` | default | :3 |  |
+| `page.tsx` | `AdminProductsPage` | default | :25 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/products/[id]`
 
@@ -375,19 +379,19 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `PurchaseOrdersPage` | default | :29 |  |
+| `page.tsx` | `PurchaseOrdersPage` | default | :26 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `PurchaseOrderDetailPage` | default | :40 |  |
+| `page.tsx` | `PurchaseOrderDetailPage` | default | :41 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/receive`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `ReceiveGoodsPage` | default | :27 |  |
+| `page.tsx` | `ReceiveGoodsPage` | default | :28 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/purchase-orders/new`
 
@@ -405,7 +409,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminReportsPage` | default | :74 |  |
+| `page.tsx` | `AdminReportsPage` | default | :75 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/settings`
 
@@ -417,7 +421,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `TailorQueuePage` | default | :25 | The tailor queue. |
+| `page.tsx` | `TailorQueuePage` | default | :26 | The tailor queue. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/stitching/bookings`
 
@@ -435,7 +439,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `JobDetailPage` | default | :26 | One job: the tailor's worksheet. |
+| `page.tsx` | `JobDetailPage` | default | :27 | One job: the tailor's worksheet. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/suppliers`
 
@@ -459,7 +463,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `TradingPartnersPage` | default | :25 |  |
+| `page.tsx` | `TradingPartnersPage` | default | :17 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/trading-partners/[id]`
 
@@ -483,7 +487,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `TransferDetailPage` | default | :17 | One transfer — its lines, where it stands, and the one action that matters while `IN_TRANSIT`: rece… |
+| `page.tsx` | `TransferDetailPage` | default | :18 | One transfer — its lines, where it stands, and the one action that matters while `IN_TRANSIT`: rece… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/transfers/new`
 
@@ -495,7 +499,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminUsersPage` | default | :28 |  |
+| `page.tsx` | `AdminUsersPage` | default | :29 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/users/[id]`
 
@@ -757,8 +761,9 @@ Every top-level export in `web`, with the line to open.
 | `sales-chart.tsx` | `SalesChart` | function | :36 |  |
 | `scope-chips.tsx` | `ScopeChip` | interface | :6 |  |
 | `scope-chips.tsx` | `ScopeChips` | function | :27 | The scope switcher for the three-level admin shell (RETAIL-ERP.md R19, WO-18.5) — brand chips over… |
-| `session.tsx` | `AdminSessionProvider` | const | :8 |  |
-| `session.tsx` | `useAdminSession` | function | :18 | The signed-in staff member. |
+| `session.tsx` | `AdminSessionProvider` | const | :9 |  |
+| `session.tsx` | `AdminSession` | interface | :12 | The signed-in staff member, plus the one way to check what they can do. |
+| `session.tsx` | `useAdminSession` | function | :31 | The signed-in staff member. |
 | `stage-badge.tsx` | `StageBadge` | function | :12 | The stage a job is at. |
 
 ### `apps/web/src/components/admin/bom`
@@ -835,11 +840,18 @@ Every top-level export in `web`, with the line to open.
 | `badge.tsx` | `Badge` | function | :24 |  |
 | `button.tsx` | `ButtonProps` | interface | :26 |  |
 | `button.tsx` | `Button` | function | :34 |  |
+| `confirm-dialog.tsx` | `ConfirmDialog` | function | :30 | The one way a destructive action gets confirmed. |
 | `data-table.tsx` | `DataTableColumn` | interface | :29 | The admin's one table. |
-| `data-table.tsx` | `DataTable` | function | :58 |  |
+| `data-table.tsx` | `DataTable` | function | :77 |  |
 | `dialog.tsx` | `Dialog` | function | :27 | A modal dialog, with the behaviour every modal is supposed to have. |
 | `disclosure.tsx` | `Disclosure` | function | :24 | Advanced options, folded away until asked for. |
 | `empty-state.tsx` | `EmptyState` | function | :17 | What a list shows when it has nothing in it. |
+| `filter-bar.tsx` | `FilterDef` | type | :26 | The filter row every list page hand-rolled with its own `useState`, so a refresh lost the filter, a… |
+| `filter-bar.tsx` | `FilterBar` | function | :36 |  |
+| `filter-bar.tsx` | `useFilterParam` | function | :141 | Reads one filter's current value from the URL — the page's half of the contract, so its fetch effec… |
+| `filter-bar.tsx` | `useSetFilterParam` | function | :151 | Writes one filter param directly, for a control `FilterBar`'s three types don't cover — a segmented… |
+| `filter-bar.tsx` | `useFilterPage` | function | :170 | The page number, from the same URL — `Pagination`'s `onChange` writes it back with `setFilterPage`,… |
+| `filter-bar.tsx` | `useSetFilterPage` | function | :176 |  |
 | `index.ts` | `PageHeader` | re-export |  | from `./page-header` |
 | `index.ts` | `Section` | re-export |  | from `./section` |
 | `index.ts` | `Disclosure` | re-export |  | from `./disclosure` |
@@ -849,13 +861,20 @@ Every top-level export in `web`, with the line to open.
 | `index.ts` | `EmptyState` | re-export |  | from `./empty-state` |
 | `index.ts` | `MetricStrip` `type MetricItem` | re-export |  | from `./metric-strip` |
 | `index.ts` | `Badge` `type BadgeTone` | re-export |  | from `./badge` |
+| `index.ts` | `Pagination` `type PaginationMeta` | re-export |  | from `./pagination` |
 | `index.ts` | `Button` `type ButtonProps` | re-export |  | from `./button` |
 | `index.ts` | `Dialog` | re-export |  | from `./dialog` |
+| `index.ts` | `ConfirmDialog` | re-export |  | from `./confirm-dialog` |
 | `index.ts` | `Loading` | re-export |  | from `./loading` |
+| `index.ts` | `ListPageSkeleton` | re-export |  | from `./list-page-skeleton` |
+| `index.ts` | `FilterBar` `useFilterParam` `useSetFilterParam` `useFilterPage` `useSetFilterPage` `type FilterDef` | re-export |  | from `./filter-bar` |
+| `list-page-skeleton.tsx` | `ListPageSkeleton` | function | :20 | The shape of a list page, before the list page. |
 | `loading.tsx` | `Loading` | function | :18 | The "still fetching" line. |
 | `metric-strip.tsx` | `MetricItem` | interface | :6 |  |
 | `metric-strip.tsx` | `MetricStrip` | function | :47 | A row of figures with no boxes in it, and a drawer underneath. |
 | `page-header.tsx` | `PageHeader` | function | :21 | The top of every page: context, title, one line of explanation, and the one primary action. |
+| `pagination.tsx` | `PaginationMeta` | interface | :15 | The prev/next/page-count block, written out by hand at the foot of every paged list — eight times,… |
+| `pagination.tsx` | `Pagination` | function | :23 |  |
 | `section-rail.tsx` | `RailSection` | interface | :6 |  |
 | `section-rail.tsx` | `SectionRail` | function | :36 | A long object page with a rail to jump around it. |
 | `section.tsx` | `Section` | function | :19 | A titled region of a page, with no box around it. |

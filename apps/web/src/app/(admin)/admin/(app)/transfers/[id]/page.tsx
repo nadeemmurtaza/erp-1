@@ -2,10 +2,11 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import { formatDateTime, formatMoney } from '@newax/shared';
-import type { Location, StockTransfer } from '@/types/api';
-import { Loading, PageHeader, Section } from '@/components/ui';
+import type { Location, StockTransfer, StockTransferLine } from '@/types/api';
+import { DataTable, Loading, PageHeader, Section } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 
 /**
@@ -21,8 +22,9 @@ export default function TransferDetailPage() {
   const [overrides, setOverrides] = useState<Record<string, number>>({});
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { can } = useAdminSession();
 
-  const canManage = getStoredUser()?.permissions.includes('transfers.manage') ?? false;
+  const canManage = can('transfers.manage');
 
   const load = useCallback(async () => {
     try {
@@ -79,45 +81,60 @@ export default function TransferDetailPage() {
       />
 
       <Section title="Lines">
-        <table className="table-flat">
-          <thead>
-            <tr>
-              <th>Variant</th>
-              <th className="text-end">Dispatched</th>
-              <th className="text-end">Received</th>
-              {transfer.status === 'IN_TRANSIT' && canManage ? <th className="text-end">Receive as</th> : null}
-              <th className="text-end">Unit cost</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-neutral-100">
-            {transfer.lines.map((line) => (
-              <tr key={line.id}>
-                <td className="font-medium text-neutral-900">{line.variantId}</td>
-                <td className="text-end">{line.quantityDispatched}</td>
-                <td className="text-end">{line.quantityReceived}</td>
-                {transfer.status === 'IN_TRANSIT' && canManage ? (
-                  <td className="text-end">
-                    <input
-                      type="number"
-                      min={0}
-                      max={line.quantityDispatched}
-                      className="field-input w-20 text-end"
-                      placeholder={String(line.quantityDispatched)}
-                      value={overrides[line.id] ?? ''}
-                      onChange={(event) =>
-                        setOverrides({
-                          ...overrides,
-                          [line.id]: event.target.value === '' ? line.quantityDispatched : parseInt(event.target.value, 10),
-                        })
-                      }
-                    />
-                  </td>
-                ) : null}
-                <td className="text-end text-neutral-900/70">{line.unitCost !== null ? formatMoney(line.unitCost) : '—'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <DataTable
+          rows={transfer.lines}
+          rowKey={(line) => line.id}
+          columns={[
+            {
+              header: 'Variant',
+              className: 'font-medium text-neutral-900',
+              cell: (line) => line.variantId,
+            },
+            {
+              header: 'Dispatched',
+              align: 'end',
+              cell: (line) => line.quantityDispatched,
+            },
+            {
+              header: 'Received',
+              align: 'end',
+              cell: (line) => line.quantityReceived,
+            },
+            ...(transfer.status === 'IN_TRANSIT' && canManage
+              ? [
+                  {
+                    header: 'Receive as',
+                    align: 'end' as const,
+                    cell: (line: StockTransferLine) => (
+                      <input
+                        type="number"
+                        min={0}
+                        max={line.quantityDispatched}
+                        className="field-input w-20 text-end"
+                        placeholder={String(line.quantityDispatched)}
+                        value={overrides[line.id] ?? ''}
+                        onChange={(event) =>
+                          setOverrides({
+                            ...overrides,
+                            [line.id]:
+                              event.target.value === ''
+                                ? line.quantityDispatched
+                                : parseInt(event.target.value, 10),
+                          })
+                        }
+                      />
+                    ),
+                  },
+                ]
+              : []),
+            {
+              header: 'Unit cost',
+              align: 'end',
+              muted: true,
+              cell: (line) => (line.unitCost !== null ? formatMoney(line.unitCost) : '—'),
+            },
+          ]}
+        />
       </Section>
 
       <Section title="Settlement">

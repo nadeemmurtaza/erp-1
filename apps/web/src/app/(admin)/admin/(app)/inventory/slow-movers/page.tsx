@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import { formatMoney } from '@newax/shared';
-import { Loading } from '@/components/ui';
+import { DataTable } from '@/components/ui';
 
 interface InventoryVariant {
   id: string;
@@ -21,17 +22,9 @@ interface InventoryVariant {
   product: { id: string; name: string };
 }
 
-function Th({ children, className }: { children: React.ReactNode; className?: string }) {
-  return (
-    <th className={cn('px-3 py-3 text-start font-medium text-neutral-900/70', className)}>
-      {children}
-    </th>
-  );
-}
-
 export default function SlowMoversPage() {
-  const user = getStoredUser();
-  const canViewCost = user?.permissions.includes('inventory.view_cost');
+  const { can } = useAdminSession();
+  const canViewCost = can('inventory.view_cost');
 
   const [variants, setVariants] = useState<InventoryVariant[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -85,65 +78,61 @@ export default function SlowMoversPage() {
       ) : null}
 
       <div className="overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="table-flat">
-            <thead className="whitespace-nowrap">
-              <tr>
-                <Th>Product</Th>
-                <Th>SKU</Th>
-                <Th className="text-end">Stock</Th>
-                <Th className="text-end">Days of Cover</Th>
-                <Th className="text-end">Age (Days)</Th>
-                {canViewCost && (
-                  <Th className="text-end">Value at Risk</Th>
-                )}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-neutral-100">
-              {busy && !variants ? (
-                <tr>
-                  <td colSpan={canViewCost ? 6 : 5} className="p-8 text-center">
-                    <Loading className="p-0" />
-                  </td>
-                </tr>
-              ) : filtered.length === 0 ? (
-                <tr>
-                  <td colSpan={canViewCost ? 6 : 5} className="p-8 text-center text-neutral-900/60">
-                    No slow movers found for this bucket.
-                  </td>
-                </tr>
-              ) : (
-                filtered.map((variant) => (
-                  <tr key={variant.id} className="hover:bg-neutral-50/50">
-                    <td>
-                      <div className="font-medium text-neutral-900">{variant.product.name}</div>
-                      <div className="text-xs text-neutral-900/60">
-                        {[variant.size, variant.color].filter(Boolean).join(' / ')}
-                      </div>
-                    </td>
-                    <td className="text-neutral-900/80">{variant.sku}</td>
-                    <td className="text-end font-medium">
-                      {variant.stock}
-                    </td>
-                    <td className="text-end text-neutral-900/60">
-                      {variant.salesStat?.daysOfCover !== undefined && variant.salesStat?.daysOfCover !== null 
-                        ? Math.round(variant.salesStat.daysOfCover)
-                        : '—'}
-                    </td>
-                    <td className="text-end text-amber-600 font-medium">
-                      {variant.salesStat?.ageDays ?? '—'}
-                    </td>
-                    {canViewCost && (
-                      <td className="text-end font-medium text-red-600">
-                        {formatMoney(variant.stock * variant.costPrice)}
-                      </td>
-                    )}
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        <DataTable
+          rows={filtered}
+          loading={busy && !variants}
+          emptyLabel="No slow movers found for this bucket."
+          rowKey={(variant) => variant.id}
+          columns={[
+            {
+              header: 'Product',
+              cell: (variant) => (
+                <>
+                  <div className="font-medium text-neutral-900">{variant.product.name}</div>
+                  <div className="text-xs text-neutral-900/60">
+                    {[variant.size, variant.color].filter(Boolean).join(' / ')}
+                  </div>
+                </>
+              ),
+            },
+            { header: 'SKU', cell: (variant) => variant.sku, className: 'text-neutral-900/80' },
+            {
+              header: 'Stock',
+              align: 'end',
+              numeric: true,
+              cell: (variant) => variant.stock,
+              className: 'font-medium',
+            },
+            {
+              header: 'Days of Cover',
+              align: 'end',
+              numeric: true,
+              cell: (variant) =>
+                variant.salesStat?.daysOfCover !== undefined && variant.salesStat?.daysOfCover !== null
+                  ? Math.round(variant.salesStat.daysOfCover)
+                  : '—',
+              className: 'text-neutral-900/60',
+            },
+            {
+              header: 'Age (Days)',
+              align: 'end',
+              numeric: true,
+              cell: (variant) => variant.salesStat?.ageDays ?? '—',
+              className: 'text-amber-600 font-medium',
+            },
+            ...(canViewCost
+              ? [
+                  {
+                    header: 'Value at Risk',
+                    align: 'end' as const,
+                    numeric: true,
+                    cell: (variant: InventoryVariant) => formatMoney(variant.stock * variant.costPrice),
+                    className: 'font-medium text-red-600',
+                  },
+                ]
+              : []),
+          ]}
+        />
       </div>
     </>
   );

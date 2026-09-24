@@ -4,6 +4,7 @@ import { useEffect, useState, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { adminFetch } from '@/lib/admin-client';
 import type { Location } from '@/types/api';
+import { DataTable } from '@/components/ui';
 
 interface PurchaseOrder {
   id: string;
@@ -102,57 +103,69 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
       {error ? <p role="alert" className="notice notice-error mb-4">{error}</p> : null}
 
       <div className="card overflow-hidden mb-6">
-        <div className="overflow-x-auto">
-          <table className="table-flat">
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>SKU</th>
-                <th className="text-end">Ordered</th>
-                <th className="text-end">Previously Received</th>
-                <th className="text-end">Receiving Now</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-neutral-100">
-              {po.items.map(item => {
+        <DataTable
+          rows={po.items}
+          rowKey={(item) => item.id}
+          emptyLabel="No order lines."
+          columns={[
+            {
+              header: 'Item',
+              cell: (item) => (
+                <>
+                  <div className="font-medium text-neutral-900">
+                    {item.variant.product.translations[0]?.name || 'Unknown'}
+                  </div>
+                  <div className="text-xs text-neutral-900/60">
+                    {[item.variant.size, item.variant.color].filter(Boolean).join(' / ')}
+                  </div>
+                </>
+              ),
+            },
+            { header: 'SKU', cell: (item) => item.variant.sku, muted: true },
+            {
+              header: 'Ordered',
+              align: 'end',
+              numeric: true,
+              cell: (item) => <span className="font-medium">{item.quantityOrdered}</span>,
+            },
+            {
+              header: 'Previously Received',
+              align: 'end',
+              numeric: true,
+              muted: true,
+              cell: (item) => item.quantityReceived,
+            },
+            {
+              header: 'Receiving Now',
+              align: 'end',
+              cell: (item) => {
                 const remaining = Math.max(0, item.quantityOrdered - item.quantityReceived);
                 return (
-                  <tr key={item.id} className="hover:bg-neutral-50/50">
-                    <td>
-                      <div className="font-medium text-neutral-900">
-                        {item.variant.product.translations[0]?.name || 'Unknown'}
-                      </div>
-                      <div className="text-xs text-neutral-900/60">
-                        {[item.variant.size, item.variant.color].filter(Boolean).join(' / ')}
-                      </div>
-                    </td>
-                    <td className="text-neutral-900/80">{item.variant.sku}</td>
-                    <td className="text-end font-medium">{item.quantityOrdered}</td>
-                    <td className="text-end text-neutral-900/60">{item.quantityReceived}</td>
-                    <td className="text-end">
-                      <input 
-                        type="number" 
-                        min="0"
-                        className="field-input w-24 text-end font-medium"
-                        value={receiveQtys[item.id] || 0}
-                        onChange={(e) => setReceiveQtys({ ...receiveQtys, [item.id]: parseInt(e.target.value) || 0 })}
-                      />
-                      {remaining > 0 && receiveQtys[item.id] !== remaining && (
-                        <button
-                          type="button"
-                          className="mt-1 cursor-pointer text-xs text-neutral-900/60 hover:underline"
-                          onClick={() => setReceiveQtys({ ...receiveQtys, [item.id]: remaining })}
-                        >
-                          Max: {remaining}
-                        </button>
-                      )}
-                    </td>
-                  </tr>
+                  <>
+                    <input
+                      type="number"
+                      min="0"
+                      className="field-input w-24 text-end font-medium"
+                      value={receiveQtys[item.id] || 0}
+                      onChange={(e) =>
+                        setReceiveQtys({ ...receiveQtys, [item.id]: parseInt(e.target.value) || 0 })
+                      }
+                    />
+                    {remaining > 0 && receiveQtys[item.id] !== remaining && (
+                      <button
+                        type="button"
+                        className="mt-1 cursor-pointer text-xs text-neutral-900/60 hover:underline"
+                        onClick={() => setReceiveQtys({ ...receiveQtys, [item.id]: remaining })}
+                      >
+                        Max: {remaining}
+                      </button>
+                    )}
+                  </>
                 );
-              })}
-            </tbody>
-          </table>
-        </div>
+              },
+            },
+          ]}
+        />
       </div>
 
       <div className="card p-6 max-w-2xl">

@@ -4,7 +4,8 @@ import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { formatDate } from '@newax/shared';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/utils/cn';
 import { DataTable, EmptyState, PageHeader } from '@/components/ui';
@@ -18,7 +19,8 @@ import type { PayRun } from '@/types/api';
 export default function PayrollRunsPage() {
   const router = useRouter();
   const { toasts, add: addToast, remove: removeToast } = useToast();
-  const canManage = getStoredUser()?.permissions.includes('payroll.manage') ?? false;
+  const { can } = useAdminSession();
+  const canManage = can('payroll.manage');
 
   const [runs, setRuns] = useState<PayRun[] | null>(null);
   const [busy, setBusy] = useState(true);

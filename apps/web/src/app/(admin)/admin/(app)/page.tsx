@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { formatDate, formatMoney, formatNumber, toMajor } from '@newax/shared';
 import { SalesChart } from '@/components/admin/sales-chart';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import type { VisitorAnalytics } from '@/types/api';
 import { ROUTES } from '@/constants/routes';
-import { Disclosure, Loading, MetricStrip, PageHeader, Section } from '@/components/ui';
+import { DataTable, Disclosure, Loading, MetricStrip, PageHeader, Section } from '@/components/ui';
 import { RangePicker, type RangeDays } from '@/components/admin/range-picker';
 import { useEnabledModules } from '@/components/admin/deployment-modules';
 import { isModuleEnabled } from '@/utils/module-gate';
@@ -51,6 +52,7 @@ interface TradingPartnerSummary {
 
 export default function AdminDashboardPage() {
   const router = useRouter();
+  const { can } = useAdminSession();
   const enabledModules = useEnabledModules();
   const trackingOn = isModuleEnabled('tracking', enabledModules);
   const crmOn = isModuleEnabled('crm', enabledModules);
@@ -70,7 +72,7 @@ export default function AdminDashboardPage() {
 
   // No analytics.view permission means no dashboard to read — the analytics
   // endpoints below would just 403 — so send them to the queue instead.
-  const lacksDashboard = !getStoredUser()?.permissions.includes('analytics.view');
+  const lacksDashboard = !can('analytics.view');
 
   useEffect(() => {
     if (lacksDashboard) router.replace('/admin/stitching');
@@ -250,32 +252,27 @@ export default function AdminDashboardPage() {
 
                 <Disclosure label="Revenue as a table" className="mt-4">
                   <div className="max-h-64 overflow-auto">
-                    <table className="table-flat">
-                      <thead>
-                        <tr>
-                          <th scope="col">Date</th>
-                          <th scope="col" className="text-end">
-                            Orders
-                          </th>
-                          <th scope="col" className="text-end">
-                            Revenue
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {[...data.salesSeries].reverse().map((point) => (
-                          <tr key={point.date}>
-                            <td className="text-neutral-900/70">{point.date}</td>
-                            <td className="text-end tabular-nums text-neutral-900/70">
-                              {point.orders}
-                            </td>
-                            <td className="text-end tabular-nums text-neutral-900">
-                              {formatNumber(toMajor(point.revenue))}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                    <DataTable
+                      rows={[...data.salesSeries].reverse()}
+                      rowKey={(point) => point.date}
+                      emptyLabel="No sales in this window."
+                      columns={[
+                        { header: 'Date', cell: (point) => point.date, muted: true },
+                        {
+                          header: 'Orders',
+                          align: 'end',
+                          numeric: true,
+                          cell: (point) => point.orders,
+                          muted: true,
+                        },
+                        {
+                          header: 'Revenue',
+                          align: 'end',
+                          numeric: true,
+                          cell: (point) => formatNumber(toMajor(point.revenue)),
+                        },
+                      ]}
+                    />
                   </div>
                 </Disclosure>
               </>

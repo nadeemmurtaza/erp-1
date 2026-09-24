@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { formatDateTime } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
-import type { AuditLogEntry, AuditLogPage, RoleSummary } from '@/types/api';
-import { Loading, PageHeader, Tabs } from '@/components/ui';
+import type { AuditLogPage, RoleSummary } from '@/types/api';
+import { DataTable, Loading, PageHeader, Pagination, Tabs } from '@/components/ui';
 import { RoleWizard } from '@/components/admin/role-wizard';
 import { useEnabledModules } from '@/components/admin/deployment-modules';
 import { isModuleEnabled } from '@/utils/module-gate';
@@ -124,54 +124,58 @@ export default function AdminSettingsPage() {
               </button>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="table-flat">
-                <thead>
-                  <tr>
-                    <th>Role</th>
-                    <th className="text-end">Permissions</th>
-                    <th className="text-end">Holders</th>
-                    <th />
-                  </tr>
-                </thead>
-                <tbody>
-                  {roles.length === 0 ? (
-                    <tr>
-                      <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/60">
-                        No roles yet.
-                      </td>
-                    </tr>
-                  ) : (
-                    roles.map((role) => (
-                      <tr key={role.id}>
-                        <td>
-                          <button
-                            type="button"
-                            onClick={() => setWizardTarget(role)}
-                            className="font-medium text-accent-hover"
-                          >
-                            {role.name}
-                          </button>
-                          {role.description ? (
-                            <p className="text-xs text-neutral-900/60">{role.description}</p>
-                          ) : null}
-                        </td>
-                        <td className="text-end tabular-nums text-neutral-900/70">{role.permissions.length}</td>
-                        <td className="text-end tabular-nums text-neutral-900/70">{role.userCount}</td>
-                        <td className="text-end">
-                          <button
-                            type="button"
-                            onClick={() => void deleteRole(role)}
-                            className="btn-text text-feedback-negative"
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+            <div className="overflow-hidden">
+              <DataTable
+                rows={roles}
+                emptyLabel="No roles yet."
+                rowKey={(role) => role.id}
+                columns={[
+                  {
+                    header: 'Role',
+                    cell: (role) => (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => setWizardTarget(role)}
+                          className="font-medium text-accent-hover"
+                        >
+                          {role.name}
+                        </button>
+                        {role.description ? (
+                          <p className="text-xs text-neutral-900/60">{role.description}</p>
+                        ) : null}
+                      </>
+                    ),
+                  },
+                  {
+                    header: 'Permissions',
+                    align: 'end',
+                    numeric: true,
+                    cell: (role) => role.permissions.length,
+                    muted: true,
+                  },
+                  {
+                    header: 'Holders',
+                    align: 'end',
+                    numeric: true,
+                    cell: (role) => role.userCount,
+                    muted: true,
+                  },
+                  {
+                    header: '',
+                    align: 'end',
+                    cell: (role) => (
+                      <button
+                        type="button"
+                        onClick={() => void deleteRole(role)}
+                        className="btn-text text-feedback-negative"
+                      >
+                        Delete
+                      </button>
+                    ),
+                  },
+                ]}
+              />
             </div>
           </div>
         )}
@@ -249,61 +253,49 @@ export default function AdminSettingsPage() {
         ) : null}
 
         <div className="overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="table-flat">
-              <thead>
-                <tr>
-                  <Th>When</Th>
-                  <Th>Actor</Th>
-                  <Th>Action</Th>
-                  <Th>Entity</Th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-neutral-100">
-                {!audit ? (
-                  <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center">
-                    <Loading className="p-0" />
-                  </td>
-                  </tr>
-                ) : audit.entries.length === 0 ? (
-                  <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/60">
-                      No matching entries.
-                    </td>
-                  </tr>
-                ) : (
-                  audit.entries.map((entry) => <AuditRow key={entry.id} entry={entry} />)
-                )}
-              </tbody>
-            </table>
-          </div>
+          <DataTable
+            rows={audit?.entries}
+            loading={!audit}
+            emptyLabel="No matching entries."
+            rowKey={(entry) => entry.id}
+            columns={[
+              { header: 'When', cell: (entry) => formatDateTime(entry.createdAt), muted: true },
+              {
+                header: 'Actor',
+                cell: (entry) =>
+                  entry.actor
+                    ? [entry.actor.firstName, entry.actor.lastName].filter(Boolean).join(' ') ||
+                      entry.actor.email
+                    : '—',
+              },
+              { header: 'Action', cell: (entry) => entry.action, className: 'font-mono text-neutral-900/80' },
+              {
+                header: 'Entity',
+                cell: (entry) => (
+                  <>
+                    {entry.entity}
+                    {entry.entityId ? (
+                      <span className="text-xs text-neutral-900/60"> · {entry.entityId}</span>
+                    ) : null}
+                  </>
+                ),
+                muted: true,
+              },
+            ]}
+          />
 
-          {audit && audit.total > audit.perPage ? (
-            <div className="flex items-center justify-between border-t border-neutral-100 px-4 py-3 text-sm text-neutral-900/60">
-              <span>
-                {(audit.page - 1) * audit.perPage + 1}–
-                {Math.min(audit.page * audit.perPage, audit.total)} of {audit.total}
-              </span>
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  disabled={audit.page <= 1}
-                  onClick={() => setAuditPage((page) => Math.max(1, page - 1))}
-                  className="btn-ghost disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  Previous
-                </button>
-                <button
-                  type="button"
-                  disabled={audit.page * audit.perPage >= audit.total}
-                  onClick={() => setAuditPage((page) => page + 1)}
-                  className="btn-ghost disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  Next
-                </button>
-              </div>
-            </div>
+          {audit ? (
+            <Pagination
+              meta={{
+                page: audit.page,
+                totalPages: Math.max(1, Math.ceil(audit.total / audit.perPage)),
+                total: audit.total,
+                hasNext: audit.page * audit.perPage < audit.total,
+                hasPrevious: audit.page > 1,
+              }}
+              onChange={setAuditPage}
+              itemLabel="entries"
+            />
           ) : null}
         </div>
       </section>
@@ -576,28 +568,3 @@ function MediaSettings() {
   );
 }
 
-function Th({ children }: { children: React.ReactNode }) {
-  return (
-    <th>
-      {children}
-    </th>
-  );
-}
-
-function AuditRow({ entry }: { entry: AuditLogEntry }) {
-  const actorName = entry.actor
-    ? [entry.actor.firstName, entry.actor.lastName].filter(Boolean).join(' ') || entry.actor.email
-    : '—';
-
-  return (
-    <tr className="hover:bg-neutral-50">
-      <td className="text-neutral-900/70">{formatDateTime(entry.createdAt)}</td>
-      <td className="text-neutral-900">{actorName}</td>
-      <td className="font-mono text-neutral-900/80">{entry.action}</td>
-      <td className="text-neutral-900/70">
-        {entry.entity}
-        {entry.entityId ? <span className="text-xs text-neutral-900/60"> · {entry.entityId}</span> : null}
-      </td>
-    </tr>
-  );
-}

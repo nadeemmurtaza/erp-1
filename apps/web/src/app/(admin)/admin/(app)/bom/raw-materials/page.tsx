@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { formatMoney, formatQuantity, UNIT_LABELS, type RawMaterialUnit } from '@newax/shared';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/utils/cn';
 import { DataTable, PageHeader } from '@/components/ui';
@@ -39,7 +40,8 @@ interface RawMaterial {
  */
 export default function RawMaterialsPage() {
   const { toasts, add: addToast, remove: removeToast } = useToast();
-  const canManage = getStoredUser()?.permissions.includes('bom.manage') ?? false;
+  const { can } = useAdminSession();
+  const canManage = can('bom.manage');
 
   const [materials, setMaterials] = useState<PaginatedResponse<RawMaterial> | null>(null);
   const [busy, setBusy] = useState(true);

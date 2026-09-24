@@ -3,7 +3,7 @@
 import { use, useCallback, useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import type { AdminGarmentSizeChartRow } from '@/types/api';
-import { Loading, PageHeader, SectionRail } from '@/components/ui';
+import { DataTable, Loading, PageHeader, SectionRail } from '@/components/ui';
 import {
   SIZE_TOKENS,
   emptySizeChart,
@@ -441,41 +441,33 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
                   </p>
                 ) : (
                   <>
-                    <div className="overflow-x-auto">
-                      <table className="table-flat">
-                        <thead>
-                          <tr>
-                            <th scope="col">Size</th>
-                            {activeFields.map((field) => (
-                              <th key={field.id} scope="col">
-                                {field.labelEn} ({field.unit === 'INCH' ? 'in' : 'cm'})
-                              </th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {SIZE_TOKENS.map((sizeToken) => (
-                            <tr key={sizeToken}>
-                              <td className="font-medium text-neutral-900/70">{sizeToken}</td>
-                              {activeFields.map((field) => (
-                                <td key={field.id}>
-                                  <input
-                                    type="number"
-                                    step="0.25"
-                                    aria-label={`${sizeToken} ${field.labelEn}`}
-                                    value={sizeChart[sizeToken][field.key] ?? ''}
-                                    onChange={(event) =>
-                                      patchSizeCell(sizeToken, field.key, event.target.value)
-                                    }
-                                    className="field-input py-1 text-sm"
-                                  />
-                                </td>
-                              ))}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                    <DataTable<SizeToken>
+                      rows={[...SIZE_TOKENS]}
+                      rowKey={(sizeToken) => sizeToken}
+                      columns={[
+                        {
+                          header: 'Size',
+                          cell: (sizeToken) => (
+                            <span className="font-medium text-neutral-900/70">{sizeToken}</span>
+                          ),
+                        },
+                        ...activeFields.map((field) => ({
+                          header: `${field.labelEn} (${field.unit === 'INCH' ? 'in' : 'cm'})`,
+                          cell: (sizeToken: SizeToken) => (
+                            <input
+                              type="number"
+                              step="0.25"
+                              aria-label={`${sizeToken} ${field.labelEn}`}
+                              value={sizeChart[sizeToken][field.key] ?? ''}
+                              onChange={(event) =>
+                                patchSizeCell(sizeToken, field.key, event.target.value)
+                              }
+                              className="field-input py-1 text-sm"
+                            />
+                          ),
+                        })),
+                      ]}
+                    />
 
                     <button type="submit" disabled={sizeBusy} className="btn-secondary mt-4">
                       {sizeBusy ? 'Saving…' : 'Save sizes'}

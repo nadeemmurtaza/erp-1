@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-258 files · 40,371 lines
+266 files · 40,648 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -31,8 +31,8 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 19 | module |
-| `apps/web/src/app` | 129 | 25,290 | page, layout, loading, error |
-| `apps/web/src/components` | 68 | 10,684 | component, loading |
+| `apps/web/src/app` | 133 | 25,057 | page, loading, layout, error |
+| `apps/web/src/components` | 72 | 11,194 | component, loading |
 | `apps/web/src/config` | 3 | 106 | config |
 | `apps/web/src/constants` | 5 | 263 | constants |
 | `apps/web/src/hooks` | 3 | 72 | hook |
@@ -67,17 +67,17 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/src/components/admin/product-form.tsx` | 1,034 | component |  |
 | `apps/web/src/components/storefront/stitching-panel.tsx` | 969 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx` | 658 | page |  |
-| `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` | 604 | page |  |
 | `apps/web/src/app/globals.css` | 603 | stylesheet |  |
+| `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` | 571 | page |  |
 | `apps/web/src/components/admin/nav-registry.ts` | 554 | component |  |
-| `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 532 | page |  |
-| `apps/web/src/app/(admin)/admin/(app)/page.tsx` | 526 | page |  |
-| `apps/web/src/app/(admin)/admin/(app)/contacts/page.tsx` | 513 | page |  |
-| `apps/web/src/app/(admin)/admin/(app)/garments/[id]/page.tsx` | 512 | page |  |
+| `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 534 | page |  |
+| `apps/web/src/app/(admin)/admin/(app)/page.tsx` | 523 | page |  |
+| `apps/web/src/app/(admin)/admin/(app)/garments/[id]/page.tsx` | 504 | page |  |
 | `apps/web/src/app/(storefront)/[locale]/checkout/page.tsx` | 493 | page |  |
 | `apps/web/src/components/admin/image-manager.tsx` | 485 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/finance/expenses/page.tsx` | 470 | page |  |
 | `apps/web/src/components/admin/admin-shell.tsx` | 469 | component |  |
+| `apps/web/src/app/(admin)/admin/(app)/designs/[id]/page.tsx` | 458 | page |  |
 
 
 ---

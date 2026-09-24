@@ -3,7 +3,7 @@
 
 # Repository index — orientation
 
-This repository is **1,442 files / 222,897 lines** across four apps and
+This repository is **1,451 files / 223,301 lines** across four apps and
 three packages. A generated index of it lives in `docs/index/` and is kept in
 step with every commit by `.githooks/pre-commit`.
 
@@ -33,7 +33,7 @@ Machine-readable: `docs/index/index.json`.
 
 At a glance: 28 API feature modules · 357 HTTP routes ·
 140 tables · 39 domain events ·
-44 permissions · 152 screens ·
+44 permissions · 156 screens ·
 135 spec files.
 
 `docs/index/` is **generated** — never edit it by hand; run `pnpm index`.

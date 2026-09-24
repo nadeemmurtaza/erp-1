@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-55 files · 28,068 lines
+56 files · 28,195 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -25,7 +25,7 @@ on them.
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 17 | 6,816 | script, py |
+| `scripts` | 18 | 6,943 | script, py |
 | `scripts/lib` | 3 | 1,606 | utility |
 
 

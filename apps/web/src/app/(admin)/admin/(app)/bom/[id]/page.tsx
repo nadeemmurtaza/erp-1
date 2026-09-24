@@ -1,13 +1,14 @@
 'use client';
 
 import { use, useEffect, useState } from 'react';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/utils/cn';
-import { PageHeader } from '@/components/ui';
+import { ConfirmDialog, PageHeader } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import { RecipeEditor } from '@/components/admin/bom/recipe-editor';
 import { CostBreakdown } from '@/components/admin/bom/cost-breakdown';
+import { useAdminSession } from '@/components/admin/session';
 
 interface RecipeSummary {
   id: string;
@@ -25,14 +26,16 @@ interface Availability {
 export default function RecipeDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { toasts, add: addToast, remove: removeToast } = useToast();
-  const canManage = getStoredUser()?.permissions.includes('bom.manage') ?? false;
-  const canViewCost = getStoredUser()?.permissions.includes('inventory.view_cost') ?? false;
+  const { can } = useAdminSession();
+  const canManage = can('bom.manage');
+  const canViewCost = can('inventory.view_cost');
 
   const [recipe, setRecipe] = useState<RecipeSummary | null>(null);
   const [availability, setAvailability] = useState<Availability | null>(null);
   const [busy, setBusy] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [statusChanging, setStatusChanging] = useState(false);
+  const [confirmingArchive, setConfirmingArchive] = useState(false);
 
   function load() {
     Promise.all([
@@ -63,7 +66,6 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
   }
 
   async function archive() {
-    if (!confirm('Archive this recipe?')) return;
     setStatusChanging(true);
     try {
       await adminFetch(`/admin/bom/recipes/${id}/archive`, { method: 'POST' });
@@ -73,6 +75,7 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
       addToast(cause instanceof Error ? cause.message : 'Could not archive the recipe', 'error');
     } finally {
       setStatusChanging(false);
+      setConfirmingArchive(false);
     }
   }
 
@@ -126,7 +129,7 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
                 </button>
               ) : null}
               {recipe.status !== 'ARCHIVED' ? (
-                <button type="button" onClick={() => void archive()} disabled={statusChanging} className="btn-ghost text-red-700">
+                <button type="button" onClick={() => setConfirmingArchive(true)} disabled={statusChanging} className="btn-ghost text-red-700">
                   Archive
                 </button>
               ) : null}
@@ -171,6 +174,16 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
 
       <h2 className="mb-3 text-lg font-medium text-neutral-900">Edit recipe</h2>
       <RecipeEditor recipeId={id} />
+
+      <ConfirmDialog
+        open={confirmingArchive}
+        onClose={() => setConfirmingArchive(false)}
+        onConfirm={archive}
+        title="Archive this recipe?"
+        description="It stops appearing as an option for new production runs. Past runs are unaffected."
+        confirmLabel="Archive"
+        busy={statusChanging}
+      />
     </>
   );
 }

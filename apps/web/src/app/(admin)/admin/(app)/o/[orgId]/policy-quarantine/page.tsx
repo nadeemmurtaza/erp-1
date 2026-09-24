@@ -1,7 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import type { MyScope, PolicyQuarantineEntry } from '@/types/api';
 import { formatDateTime } from '@newax/shared';
 import { EmptyState, Loading, PageHeader } from '@/components/ui';
@@ -21,7 +22,8 @@ export default function PolicyQuarantinePage() {
   const [resolvingId, setResolvingId] = useState<string | null>(null);
   const [notes, setNotes] = useState<Record<string, string>>({});
 
-  const canManage = getStoredUser()?.permissions.includes('organization.manage') ?? false;
+  const { can } = useAdminSession();
+  const canManage = can('organization.manage');
 
   const load = useCallback(async () => {
     try {

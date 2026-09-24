@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import type { AdminScopeWithHolder, AdminUser, MyScope } from '@/types/api';
-import { PageHeader, EmptyState, Loading } from '@/components/ui';
+import { PageHeader, DataTable, Loading } from '@/components/ui';
 
 type Level = 'ORG' | 'BRAND' | 'BRANCH';
 
@@ -111,42 +111,43 @@ export default function AdminScopesPage() {
       ) : null}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_22rem]">
-        <div className="overflow-x-auto">
-          {grants.length === 0 ? (
-            <EmptyState title="No admin scope granted yet" description="Every deployment starts with none — grant the first one." />
-          ) : (
-            <table className="table-flat">
-              <thead>
-                <tr>
-                  <th>Admin</th>
-                  <th>Scope</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-neutral-100">
-                {grants.map((row) => (
-                  <tr key={row.id}>
-                    <td>
-                      <span className="font-medium text-neutral-900">{holderName(row.user)}</span>
-                      <p className="text-xs text-neutral-900/60">{row.user.email}</p>
-                    </td>
-                    <td className="text-neutral-900/70">
-                      {row.level === 'ORG' && 'Super admin — every brand and branch'}
-                      {row.level === 'BRAND' && `Brand admin — ${brandName(row.retailBrandId)}`}
-                      {row.level === 'BRANCH' &&
-                        `Branch admin — ${branchLabel(row.branchNodeId)} (${brandName(row.retailBrandId)})`}
-                    </td>
-                    <td className="text-end">
-                      <button type="button" onClick={() => revoke(row.id)} className="btn-text text-feedback-negative">
-                        Revoke
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </div>
+        <DataTable
+          rows={grants}
+          rowKey={(row) => row.id}
+          emptyLabel="No admin scope granted yet. Every deployment starts with none — grant the first one."
+          columns={[
+            {
+              header: 'Admin',
+              cell: (row) => (
+                <>
+                  <span className="font-medium text-neutral-900">{holderName(row.user)}</span>
+                  <p className="text-xs text-neutral-900/60">{row.user.email}</p>
+                </>
+              ),
+            },
+            {
+              header: 'Scope',
+              muted: true,
+              cell: (row) => (
+                <>
+                  {row.level === 'ORG' && 'Super admin — every brand and branch'}
+                  {row.level === 'BRAND' && `Brand admin — ${brandName(row.retailBrandId)}`}
+                  {row.level === 'BRANCH' &&
+                    `Branch admin — ${branchLabel(row.branchNodeId)} (${brandName(row.retailBrandId)})`}
+                </>
+              ),
+            },
+            {
+              header: '',
+              align: 'end',
+              cell: (row) => (
+                <button type="button" onClick={() => revoke(row.id)} className="btn-text text-feedback-negative">
+                  Revoke
+                </button>
+              ),
+            },
+          ]}
+        />
 
         <form onSubmit={grant} className="space-y-4">
           <h2 className="eyebrow">Grant scope</h2>

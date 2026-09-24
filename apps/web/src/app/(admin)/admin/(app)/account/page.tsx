@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 
 export default function AdminAccountPage() {
-  const user = getStoredUser();
-  const canChangePassword = user?.permissions.includes('account.change_own_password') ?? false;
+  const { can, ...user } = useAdminSession();
+  const canChangePassword = can('account.change_own_password');
 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');

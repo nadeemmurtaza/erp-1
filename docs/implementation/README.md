@@ -287,6 +287,18 @@ found by reading the actual code, never a "fraud-proof" claim:
 |---|---|
 | [`156-single-employee-branch-loss-prevention.md`](./156-single-employee-branch-loss-prevention.md) | Links `StockVariance` to the `PosShift` that had custody when it occurred; closes a real, confirmed gap in `StockVarianceService.resolve()` where the same employee could cause and write off their own shrinkage; adds unpredictable small spot-checks over the existing `StockCount` mechanism instead of only infrequent, predictable full counts; and a camera-foot-traffic-vs-POS-transaction-count correlation report over doc 30's existing camera integration, named explicitly as a signal for a human to review, never an automated accusation |
 
+**Number 157** answers the owner's own follow-up on preventing a
+"double transaction": doc 117 already specifies this repository's real
+idempotency strategy for internal event handlers (domain keys on an
+already-existing row), but that mechanism structurally cannot protect
+the one moment there is no existing row yet — creating a brand new
+order. Confirmed by code read that `POST /orders` has no client-supplied
+dedupe of any kind:
+
+| File | What it is |
+|---|---|
+| [`157-client-request-idempotency-keys.md`](./157-client-request-idempotency-keys.md) | A client-supplied `Idempotency-Key` header + `IdempotencyKey` table, checked before a guarded route's handler ever runs; the `@@unique([organizationId, scope, key])` constraint is the actual race guard, a failed request deletes its own row so it stays retryable, and a nightly purge keeps the table small. Opt-in per route (`orders.create`, POS sale creation, doc 155's wallet purchase) via one decorator, never a global `POST` behaviour change; doubles as the fix for doc 48's offline-sync-replay risk once the client generates the key at the moment of the original action |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

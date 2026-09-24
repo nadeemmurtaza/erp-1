@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**406** markdown documents. These explain **why**; this index only says **where**.
+**407** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2540,6 +2540,18 @@ _no second-level headings_
 - Acceptance  <sub>:262</sub>
 - Out of scope  <sub>:275</sub>
 
+### `docs/implementation/157-client-request-idempotency-keys.md`  <sub>276 lines</sub>
+
+- What already exists — and exactly why it can't cover this case  <sub>:10</sub>
+- The mechanism: a client-supplied key, checked before the write ever runs  <sub>:35</sub>
+- 1. Named allowlist, not a global behaviour change  <sub>:132</sub>
+- 2. The offline case is the sharpest version of the same problem  <sub>:151</sub>
+- 3. Cleanup — a key only needs to live as long as a client might retry  <sub>:164</sub>
+- Scope lenses  <sub>:184</sub>
+- Work orders  <sub>:241</sub>
+- Acceptance  <sub>:254</sub>
+- Out of scope  <sub>:266</sub>
+
 ### `docs/implementation/16-pbac-row-scoping.md`  <sub>184 lines</sub>
 
 - The good news: the convention already exists, once  <sub>:35</sub>
@@ -3401,15 +3413,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>420 lines</sub>
+### `docs/implementation/README.md`  <sub>432 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:290</sub>
-- The two module groups  <sub>:319</sub>
-- How a work order runs  <sub>:356</sub>
-- Known gaps not yet owned by a phase  <sub>:374</sub>
-- When a brief is wrong  <sub>:401</sub>
-- Scope, honestly  <sub>:414</sub>
+- Dependency order  <sub>:302</sub>
+- The two module groups  <sub>:331</sub>
+- How a work order runs  <sub>:368</sub>
+- Known gaps not yet owned by a phase  <sub>:386</sub>
+- When a brief is wrong  <sub>:413</sub>
+- Scope, honestly  <sub>:426</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

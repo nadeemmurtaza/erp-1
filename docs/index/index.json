@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1439,
-    "lines": 221998,
+    "files": 1440,
+    "lines": 222312,
     "routes": 357,
     "controllers": 62,
     "models": 140,
@@ -1107,9 +1107,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 387,
-      "lines": 57643,
-      "bytes": 3407794,
+      "files": 388,
+      "lines": 57957,
+      "bytes": 3424416,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -45767,6 +45767,15 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/158-serialized-unit-tracking.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 305,
+      "bytes": 15682,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/16-pbac-row-scoping.md",
       "area": "docs",
       "kind": "doc",
@@ -46580,8 +46589,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 449,
-      "bytes": 56337,
+      "lines": 458,
+      "bytes": 57277,
       "doc": "",
       "symbols": []
     },

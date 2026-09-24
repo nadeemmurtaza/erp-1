@@ -316,6 +316,15 @@ dedupe of any kind:
 |---|---|
 | [`157-client-request-idempotency-keys.md`](./157-client-request-idempotency-keys.md) | A client-supplied `Idempotency-Key` header + `IdempotencyKey` table, checked before a guarded route's handler ever runs; the `@@unique([organizationId, scope, key])` constraint is the actual race guard, a failed request deletes its own row so it stays retryable, and a nightly purge keeps the table small. Opt-in per route (`orders.create`, POS sale creation, doc 155's wallet purchase) via one decorator, never a global `POST` behaviour change; doubles as the fix for doc 48's offline-sync-replay risk once the client generates the key at the moment of the original action |
 
+**Number 158** answers a direct request for a serial-numbering system.
+`MULTI-SECTOR.md` already names this exact gap and leaves it unbuilt —
+"electronics adds `serials` and `warranty`" is listed among the future
+packs a new sector would add, confirmed by grep to be entirely unbuilt:
+
+| File | What it is |
+|---|---|
+| [`158-serialized-unit-tracking.md`](./158-serialized-unit-tracking.md) | `SerializedUnit` — one row per physical unit, the sub-ledger pattern doc 32's `Lot` already proved, reused for the per-unit case; opt-in per variant (`tracksSerials`), attached to the unchanged `InventoryService.move()` via `stockMovementId`, never a second stock model. A return is refused unless the scanned serial was actually sold on that exact order — a direct instance of doc 156's own toxic-pair discipline. Strengthens doc 156 for free: a `StockVariance` on a serial-tracked unit can name the exact missing unit, not just the SKU |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

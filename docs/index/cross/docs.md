@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**407** markdown documents. These explain **why**; this index only says **where**.
+**408** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2552,6 +2552,18 @@ _no second-level headings_
 - Acceptance  <sub>:254</sub>
 - Out of scope  <sub>:266</sub>
 
+### `docs/implementation/158-serialized-unit-tracking.md`  <sub>305 lines</sub>
+
+- Why this is a real gap, not a smaller version of `lots`  <sub>:15</sub>
+- 1. `SerializedUnit` — a sub-ledger under the existing stock row, never a second stock model  <sub>:29</sub>
+- 2. Capture points — three, and only three, moments a serial is ever written  <sub>:88</sub>
+- 3. `getUnitHistory()` — the warranty and authenticity lookup this data makes possible  <sub>:144</sub>
+- 4. Strengthens doc 156 for free — a variance can now name the exact unit, not just the SKU  <sub>:168</sub>
+- Scope lenses  <sub>:185</sub>
+- Work orders  <sub>:263</sub>
+- Acceptance  <sub>:280</sub>
+- Out of scope  <sub>:294</sub>
+
 ### `docs/implementation/16-pbac-row-scoping.md`  <sub>184 lines</sub>
 
 - The good news: the convention already exists, once  <sub>:35</sub>
@@ -3413,15 +3425,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>449 lines</sub>
+### `docs/implementation/README.md`  <sub>458 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:319</sub>
-- The two module groups  <sub>:348</sub>
-- How a work order runs  <sub>:385</sub>
-- Known gaps not yet owned by a phase  <sub>:403</sub>
-- When a brief is wrong  <sub>:430</sub>
-- Scope, honestly  <sub>:443</sub>
+- Dependency order  <sub>:328</sub>
+- The two module groups  <sub>:357</sub>
+- How a work order runs  <sub>:394</sub>
+- Known gaps not yet owned by a phase  <sub>:412</sub>
+- When a brief is wrong  <sub>:439</sub>
+- Scope, honestly  <sub>:452</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

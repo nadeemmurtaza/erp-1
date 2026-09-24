@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**412** markdown documents. These explain **why**; this index only says **where**.
+**418** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -121,6 +121,10 @@ _no second-level headings_
 - Three rules about the index  <sub>:55</sub>
 - Commands  <sub>:67</sub>
 
+### `Architecture.md`  <sub>32 lines</sub>
+
+_no second-level headings_
+
 ### `CLAUDE.md`  <sub>978 lines</sub>
 
 - The seven laws  <sub>:13</sub>
@@ -156,6 +160,10 @@ _no second-level headings_
 - 11. Automatic restart at boot  <sub>:423</sub>
 - 12. Resource limits and connection pooling  <sub>:441</sub>
 - 13. Troubleshooting  <sub>:474</sub>
+
+### `Design.md`  <sub>41 lines</sub>
+
+_no second-level headings_
 
 ### `docs/brand/README.md`  <sub>97 lines</sub>
 
@@ -3524,6 +3532,26 @@ _no second-level headings_
 - Three rules about the index  <sub>:55</sub>
 - Commands  <sub>:67</sub>
 
+### `Memory.md`  <sub>28 lines</sub>
+
+_no second-level headings_
+
+### `Phases.md`  <sub>48 lines</sub>
+
+_no second-level headings_
+
+### `PRD.md`  <sub>137 lines</sub>
+
+- Vision  <sub>:9</sub>
+- Problem statement  <sub>:22</sub>
+- Target users  <sub>:36</sub>
+- Product pillars  <sub>:53</sub>
+- Scope  <sub>:76</sub>
+- Editions and commercial model  <sub>:96</sub>
+- Current state  <sub>:108</sub>
+- Success metrics  <sub>:119</sub>
+- References  <sub>:131</sub>
+
 ### `README.md`  <sub>349 lines</sub>
 
 - Read this before touching anything  <sub>:12</sub>
@@ -3535,6 +3563,10 @@ _no second-level headings_
 - Commands  <sub>:309</sub>
 - Where the project is going  <sub>:323</sub>
 - Repository layout  <sub>:337</sub>
+
+### `Rules.md`  <sub>30 lines</sub>
+
+_no second-level headings_
 
 
 ---

@@ -3,7 +3,7 @@
 
 # repository root files
 
-82 files · 10,717 lines
+88 files · 11,033 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -17,7 +17,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 16 | 8,015 | file, doc, txt, script |
+| `.` | 22 | 8,331 | file, doc, txt, script |
 | `.claude` | 2 | 49 | json |
 | `.claude/agents` | 8 | 341 | doc |
 | `.claude/hooks` | 2 | 139 | hook |
@@ -51,6 +51,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `apps/platform/prisma/schema/migrations/20260924010600_init/migration.sql` | 166 | migration |  |
 | `.claude/rules/ui.md` | 151 | doc |  |
 | `apps/platform/prisma/schema/platform.prisma` | 148 | prisma schema | WO-39.1 (docs/implementation/39-shared-cross-tenant-hosting-tier.md) — the |
+| `PRD.md` | 137 | doc |  |
 | `.claude/rules/design.md` | 136 | doc |  |
 | `apps/platform/src/modules/tenants/provisioning.service.spec.ts` | 132 | unit test |  |
 | `CONTRIBUTING.md` | 127 | doc |  |
@@ -58,7 +59,6 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `apps/platform/src/modules/tenants/postgres-database.provisioner.ts` | 117 | module |  |
 | `apps/platform/src/core/security/ops-auth.guard.spec.ts` | 86 | unit test |  |
 | `.claude/hooks/suggest-model.sh` | 85 | hook |  |
-| `.junie/guidelines.md` | 80 | doc |  |
 
 
 ---

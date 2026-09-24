@@ -23,6 +23,9 @@ enum ProductStatus {
 model Category {
   id        String   @id @default(cuid())
   slug      String   @unique
+  /// Short SKU-template code, e.g. "LWN". Uppercase, slug-derived by default,
+  /// editable. WO-3.3, 03-variants-sku-seo.md.
+  code      String?
   parentId  String?
   imageUrl  String?
   order     Int      @default(0)
@@ -103,6 +106,18 @@ model Product {
   season  String? // summer, winter, festive
   tags    String[] @default([])
 
+  /// Per-product SKU-template code, e.g. "3PC-EMB". Defaults from the slug,
+  /// editable. WO-3.3, 03-variants-sku-seo.md.
+  code String?
+
+  /// SEO section, WO-3.7. `false` (default) means indexable — most products
+  /// never need to touch this.
+  noindex Boolean @default(false)
+  /// Rare override for a canonical URL other than this product's own page
+  /// (e.g. a duplicate listing that should point elsewhere). Null (the
+  /// common case) means "canonical to self", computed at render time.
+  canonicalOverride String?
+
   /// UNSTITCHED only: how many pieces the fabric contains (1/2/3-piece) and
   /// how many metres, both shown on the product page.
   pieceCount   Int?
@@ -155,6 +170,9 @@ model ProductTranslation {
   careInstructions String?
   metaTitle        String?
   metaDescription  String?
+  /// The term the SEO checklist scores this locale's copy against — never
+  /// shown to a customer. WO-3.7, 03-variants-sku-seo.md.
+  focusKeyword     String?
 
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
@@ -187,6 +205,9 @@ model ProductVariant {
   preferredSupplier   Supplier? @relation("PreferredSupplier", fields: [preferredSupplierId], references: [id], onDelete: SetNull)
   lastReceivedAt      DateTime?
   barcode             String?   @unique
+  /// True once a human has hand-edited this SKU — the generator then never
+  /// silently rewrites it again. WO-3.3, 03-variants-sku-seo.md.
+  skuIsManual         Boolean   @default(false)
 
   /// True when this variant is made in-house from a BillOfMaterial (production
   /// module) rather than bought in from preferredSupplier. A variant is one or
@@ -263,15 +284,32 @@ model ProductImage {
   productId String
   variantId String?
   url       String
+  /// Deprecated by `translations` (WO-3.6, 03-variants-sku-seo.md) — alt text
+  /// is customer-facing (House Rule 6) so it needs one row per locale.
+  /// Additive only: kept, unwritten, so nothing that still reads it breaks.
   alt       String?
   order     Int      @default(0)
   isPrimary Boolean  @default(false)
   createdAt DateTime @default(now())
 
-  product Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
-  variant ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  product      Product                   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variant      ProductVariant?           @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  translations ProductImageTranslation[]
 
   @@index([productId, order])
+}
+
+/// Alt text per locale. A filename is not a description in any language, so
+/// this starts empty rather than lying — see the migration's backfill.
+model ProductImageTranslation {
+  id      String @id @default(cuid())
+  imageId String
+  locale  String
+  alt     String
+
+  image ProductImage @relation(fields: [imageId], references: [id], onDelete: Cascade)
+
+  @@unique([imageId, locale])
 }
 
 /// Which garments a given unstitched fabric can be made into.
@@ -367,4 +405,79 @@ model ProductVariantOptionValue {
 
   @@id([variantId, optionId])
   @@index([valueId])
+}
+
+/// Store-level, reusable option axis — "Size: XS/S/M/L/XL/XXL" typed once
+/// under Catalogue -> Options & attributes instead of on every product. A
+/// product instantiates from a template by copying its values into its own
+/// ProductOption/ProductOptionValue rows; editing the template afterwards
+/// never silently changes a live product. WO-3.1, 03-variants-sku-seo.md.
+model OptionTemplate {
+  id        String        @id @default(cuid())
+  key       String        @unique
+  display   OptionDisplay @default(BUTTON)
+  order     Int           @default(0)
+  createdAt DateTime      @default(now())
+
+  translations OptionTemplateTranslation[]
+  values       OptionTemplateValue[]
+
+  @@index([order])
+}
+
+model OptionTemplateTranslation {
+  id         String @id @default(cuid())
+  templateId String
+  locale     String
+  label      String
+
+  template OptionTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@unique([templateId, locale])
+}
+
+model OptionTemplateValue {
+  id         String  @id @default(cuid())
+  templateId String
+  key        String
+  swatchHex  String?
+  swatchUrl  String?
+  order      Int     @default(0)
+
+  template     OptionTemplate                    @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  translations OptionTemplateValueTranslation[]
+
+  @@unique([templateId, key])
+  @@index([templateId, order])
+}
+
+model OptionTemplateValueTranslation {
+  id      String @id @default(cuid())
+  valueId String
+  locale  String
+  label   String
+
+  value OptionTemplateValue @relation(fields: [valueId], references: [id], onDelete: Cascade)
+
+  @@unique([valueId, locale])
+}
+
+/// A storefront path that now 301s somewhere else — created automatically
+/// when a live product/category slug changes, or entered by hand (including
+/// a CSV import when migrating an old site). WO-3.9, 03-variants-sku-seo.md.
+model Redirect {
+  id        String   @id @default(cuid())
+  /// Path only, no host, no locale prefix: "/product/old-slug". The locale
+  /// segment is stripped before lookup and reapplied to `toPath` on 301,
+  /// since a slug is shared across locales (Product.slug is not per-locale).
+  fromPath  String   @unique
+  toPath    String
+  /// 301 permanent or 302 temporary.
+  statusCode  Int      @default(301)
+  /// True when created automatically by a slug change.
+  isAutomatic Boolean  @default(false)
+  hitCount    Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([isAutomatic])
 }

@@ -8,9 +8,15 @@ import { adminFetch } from '@/lib/admin-client';
 interface ProductImageRow {
   id: string;
   url: string;
+  /** Deprecated (WO-3.6) — kept only as a pre-migration fallback; `translations` is authoritative. */
   alt: string | null;
+  translations?: Array<{ locale: string; alt: string }>;
   order: number;
   isPrimary: boolean;
+}
+
+function altFor(image: ProductImageRow, locale: string): string {
+  return image.translations?.find((t) => t.locale === locale)?.alt ?? (locale === 'en' ? image.alt ?? '' : '');
 }
 
 /** What makes alt text worth writing, shown once above the grid rather than repeated per image. */
@@ -82,12 +88,24 @@ export function ImageManager({
     }
   }
 
-  async function saveAlt(id: string, alt: string) {
+  async function saveAlt(id: string, alt: string, locale: string) {
     const previous = images;
-    setImages((current) => current.map((image) => (image.id === id ? { ...image, alt } : image)));
+    setImages((current) =>
+      current.map((image) =>
+        image.id === id
+          ? {
+              ...image,
+              translations: [
+                ...(image.translations ?? []).filter((t) => t.locale !== locale),
+                { locale, alt },
+              ],
+            }
+          : image,
+      ),
+    );
 
     try {
-      await adminFetch(`/admin/catalog/images/${id}`, { method: 'PATCH', body: { alt } });
+      await adminFetch(`/admin/catalog/images/${id}`, { method: 'PATCH', body: { alt, locale } });
     } catch (cause) {
       setImages(previous);
       setError(cause instanceof Error ? cause.message : 'Could not save the alt text');
@@ -155,7 +173,7 @@ export function ImageManager({
               <div className="relative aspect-[3/4] bg-white">
                 <Image
                   src={image.url}
-                  alt={image.alt ?? ''}
+                  alt={altFor(image, 'en')}
                   fill
                   sizes="150px"
                   className="object-cover"
@@ -189,11 +207,19 @@ export function ImageManager({
                 </button>
               </div>
 
-              <div className="px-1.5 pb-1.5">
+              <div className="space-y-1 px-1.5 pb-1.5">
                 <AltTextField
-                  key={image.id}
-                  value={image.alt ?? ''}
-                  onSave={(alt) => void saveAlt(image.id, alt)}
+                  key={`${image.id}-en`}
+                  value={altFor(image, 'en')}
+                  placeholder={ALT_TEXT_PLACEHOLDER}
+                  onSave={(alt) => void saveAlt(image.id, alt, 'en')}
+                />
+                <AltTextField
+                  key={`${image.id}-ur`}
+                  value={altFor(image, 'ur')}
+                  placeholder="اردو متن (اختیاری)"
+                  dir="rtl"
+                  onSave={(alt) => void saveAlt(image.id, alt, 'ur')}
                 />
               </div>
             </li>
@@ -229,19 +255,33 @@ export function ImageManager({
  * re-render mid-edit, but resets if the image's saved value changes under it
  * (e.g. a rollback after a failed save elsewhere).
  */
-function AltTextField({ value, onSave }: { value: string; onSave: (value: string) => void }) {
+function AltTextField({
+  value,
+  onSave,
+  placeholder = ALT_TEXT_PLACEHOLDER,
+  dir,
+}: {
+  value: string;
+  onSave: (value: string) => void;
+  placeholder?: string;
+  dir?: 'rtl';
+}) {
   const [draft, setDraft] = useState(value);
 
   return (
     <input
       type="text"
       value={draft}
-      placeholder={ALT_TEXT_PLACEHOLDER}
+      placeholder={placeholder}
+      dir={dir}
       onChange={(event) => setDraft(event.target.value)}
       onBlur={() => {
         if (draft !== value) onSave(draft);
       }}
-      className="w-full rounded border border-neutral-100 px-1.5 py-1 text-[11px] text-neutral-900 placeholder:text-neutral-900/60 focus:border-accent focus:outline-none"
+      className={cn(
+        'w-full rounded border border-neutral-100 px-1.5 py-1 text-[11px] text-neutral-900 placeholder:text-neutral-900/60 focus:border-accent focus:outline-none',
+        dir === 'rtl' && 'font-urdu',
+      )}
     />
   );
 }
@@ -283,6 +323,7 @@ export interface StagedImage {
   file: File;
   previewUrl: string;
   alt: string;
+  altUr: string;
 }
 
 function newLocalId(): string {
@@ -326,6 +367,7 @@ export function ImageStager({
       file,
       previewUrl: URL.createObjectURL(file),
       alt: '',
+      altUr: '',
     }));
     onChange([...images, ...added]);
   }
@@ -336,8 +378,8 @@ export function ImageStager({
     onChange(images.filter((image) => image.localId !== localId));
   }
 
-  function setAlt(localId: string, alt: string) {
-    onChange(images.map((image) => (image.localId === localId ? { ...image, alt } : image)));
+  function setAlt(localId: string, patch: Partial<Pick<StagedImage, 'alt' | 'altUr'>>) {
+    onChange(images.map((image) => (image.localId === localId ? { ...image, ...patch } : image)));
   }
 
   function move(index: number, direction: -1 | 1) {
@@ -401,13 +443,21 @@ export function ImageStager({
                   </button>
                 </div>
 
-                <div className="px-1.5 pb-1.5">
+                <div className="space-y-1 px-1.5 pb-1.5">
                   <input
                     type="text"
                     value={image.alt}
                     placeholder={ALT_TEXT_PLACEHOLDER}
-                    onChange={(event) => setAlt(image.localId, event.target.value)}
+                    onChange={(event) => setAlt(image.localId, { alt: event.target.value })}
                     className="w-full rounded border border-neutral-100 px-1.5 py-1 text-[11px] text-neutral-900 placeholder:text-neutral-900/60 focus:border-accent focus:outline-none"
+                  />
+                  <input
+                    type="text"
+                    value={image.altUr}
+                    placeholder="اردو متن (اختیاری)"
+                    dir="rtl"
+                    onChange={(event) => setAlt(image.localId, { altUr: event.target.value })}
+                    className="w-full rounded border border-neutral-100 px-1.5 py-1 text-[11px] text-neutral-900 font-urdu placeholder:text-neutral-900/60 focus:border-accent focus:outline-none"
                   />
                 </div>
               </li>
@@ -470,10 +520,18 @@ export async function uploadStagedImages(
       formData.append('file', image.file);
       if (image.alt.trim()) formData.append('alt', image.alt.trim());
 
-      await adminFetch(`/admin/catalog/products/${productId}/images`, {
+      const created = await adminFetch<{ id: string }>(`/admin/catalog/products/${productId}/images`, {
         method: 'POST',
         formData,
       });
+
+      if (image.altUr.trim()) {
+        await adminFetch(`/admin/catalog/images/${created.id}`, {
+          method: 'PATCH',
+          body: { alt: image.altUr.trim(), locale: 'ur' },
+        });
+      }
+
       uploaded += 1;
     } catch (cause) {
       firstError ??= cause instanceof Error ? cause.message : 'Upload failed';

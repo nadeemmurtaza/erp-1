@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 527 tracked files in `apps/api`, by directory.
+All 540 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -28,7 +28,7 @@ All 527 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `backfill-parties.ts` | module | 69 |  |
-| `backfill-product-options.ts` | module | 170 |  |
+| `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3030 |  |
 
 ### `apps/api/prisma/schema` (25)
@@ -38,7 +38,7 @@ All 527 tracked files in `apps/api`, by directory.
 | `accounting.prisma` | prisma schema | 222 | The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a |
 | `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
 | `cart.prisma` | prisma schema | 73 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
-| `catalog.prisma` | prisma schema | 371 | Catalog: categories, products, variants, images. |
+| `catalog.prisma` | prisma schema | 484 | Catalog: categories, products, variants, images. |
 | `core.prisma` | prisma schema | 451 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 239 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
@@ -427,6 +427,12 @@ All 527 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 221 |  |
 
+### `apps/api/prisma/schema/migrations/20260924171933_add_option_templates_redirects_sku_seo` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 149 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -631,9 +637,9 @@ All 527 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 46 |  |
-| `settings.defaults.ts` | module | 302 |  |
+| `settings.defaults.ts` | module | 318 |  |
 | `settings.module.ts` | nest module | 10 |  |
-| `settings.service.ts` | service | 103 |  |
+| `settings.service.ts` | service | 112 |  |
 
 ### `apps/api/src/core/storage` (7)
 
@@ -773,30 +779,41 @@ All 527 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `cart.dto.ts` | dto | 131 |  |
 
-### `apps/api/src/modules/catalog` (11)
+### `apps/api/src/modules/catalog` (20)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `brand-admin.service.ts` | service | 170 |  |
-| `catalog-admin.controller.ts` | controller | 260 |  |
+| `catalog-admin.controller.ts` | controller | 284 |  |
+| `catalog-options-admin.controller.ts` | controller | 105 |  |
 | `catalog.controller.ts` | controller | 51 |  |
-| `catalog.module.ts` | nest module | 35 |  |
-| `catalog.service.ts` | service | 353 |  |
+| `catalog.module.ts` | nest module | 51 |  |
+| `catalog.service.ts` | service | 365 |  |
 | `category-admin.service.ts` | service | 192 |  |
+| `option-template-admin.service.ts` | service | 125 |  |
 | `product-admin.service.spec.ts` | unit test | 109 |  |
-| `product-admin.service.ts` | service | 631 |  |
+| `product-admin.service.ts` | service | 737 |  |
 | `product-import.service.ts` | service | 476 |  |
+| `product-option-admin.service.ts` | service | 248 |  |
 | `product-replication.listener.spec.ts` | unit test | 120 |  |
 | `product-replication.listener.ts` | event subscriber | 77 |  |
+| `publish-gate.ts` | module | 84 |  |
+| `redirect-admin.controller.ts` | controller | 78 |  |
+| `redirect-guard.ts` | module | 48 | WO-3.9 (03-variants-sku-seo.md) — the loop/chain guard, as a pure function so it can be dry-run and unit tested without… |
+| `redirect.service.ts` | service | 159 |  |
+| `seo-health.service.ts` | service | 64 |  |
+| `sync-option-model.ts` | module | 168 |  |
 
-### `apps/api/src/modules/catalog/dto` (4)
+### `apps/api/src/modules/catalog/dto` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `brand.dto.ts` | dto | 63 |  |
 | `category.dto.ts` | dto | 68 |  |
+| `option.dto.ts` | dto | 103 |  |
 | `product-query.dto.ts` | dto | 88 |  |
-| `product.dto.ts` | dto | 253 |  |
+| `product.dto.ts` | dto | 319 |  |
+| `redirect.dto.ts` | dto | 23 |  |
 
 ### `apps/api/src/modules/crm` (4)
 
@@ -1246,7 +1263,7 @@ All 527 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `user.dto.ts` | dto | 122 |  |
 
-### `apps/api/test` (18)
+### `apps/api/test` (19)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1254,7 +1271,7 @@ All 527 tracked files in `apps/api`, by directory.
 | `auth.e2e-spec.ts` | e2e test | 198 |  |
 | `backfill-product-options.spec.ts` | unit test | 114 |  |
 | `cart.e2e-spec.ts` | e2e test | 800 |  |
-| `catalog.e2e-spec.ts` | e2e test | 407 |  |
+| `catalog.e2e-spec.ts` | e2e test | 411 |  |
 | `crm.e2e-spec.ts` | e2e test | 489 |  |
 | `devices.e2e-spec.ts` | e2e test | 150 |  |
 | `email-accounts-admin.e2e-spec.ts` | e2e test | 342 |  |
@@ -1265,6 +1282,7 @@ All 527 tracked files in `apps/api`, by directory.
 | `orders.e2e-spec.ts` | e2e test | 950 |  |
 | `payments-gateway.e2e-spec.ts` | e2e test | 214 |  |
 | `payments-refund.e2e-spec.ts` | e2e test | 164 |  |
+| `publish-gate.spec.ts` | unit test | 69 |  |
 | `reports.e2e-spec.ts` | e2e test | 189 |  |
 | `setup-env.ts` | module | 11 | Same ordering rule as src/core/config/load-env.ts: the environment must be |
 | `stitching.e2e-spec.ts` | e2e test | 590 |  |

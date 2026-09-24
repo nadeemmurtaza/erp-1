@@ -3,31 +3,126 @@
 **Read `00-HOUSE-RULES.md` first.** Depends on Phase 2 (shared primitives) and
 WO-1.3 (cost price, barcode).
 
-> **Status: WO-3.1 built (2026-09-03) — the actual B2 blocker, no further.**
-> The option data model (`ProductOption`/`ProductOptionValue`/
-> `ProductVariantOptionValue`, bilingual, `OptionDisplay`, swatch fields) and
-> a backfill script (`prisma/backfill-product-options.ts`, `pnpm
-> db:backfill-options`) exist and are verified — every product with a
-> `size`/`color` value now has the matching join rows and a
-> `ProductVariant.label` identical to what `orders.service.ts` already
-> produces for `OrderItem.variantLabel`. `size`/`color`/`colorHex` are
-> untouched, per expand/contract (00-HOUSE-RULES.md §4) — nothing reads the
-> new model yet. WO-3.2 (switch every reader, then drop the old columns)
-> stays undone on purpose: it requires the dual-write step to soak in real
-> production traffic for at least a week before the read-switch, which a
-> single session cannot manufacture. WO-3.3–3.9 (SKU templates, the
-> sectioned editor, enforced alt text, the SEO publish gate, storefront
-> JSON-LD/sitemap/hreflang, redirects) remain fully unbuilt — this is by far
-> the largest of the "not yet built" items in `MULTI-SECTOR.md` and should
-> not be read as done because WO-3.1 is.
+> **Status (2026-09-24): WO-3.1, 3.3, 3.6, 3.7, 3.8 and 3.9 built and
+> verified; WO-3.2 replaced by a config flag instead of a wall-clock soak;
+> WO-3.4/3.5 partially built. This status was independently re-audited
+> against the running code before this pass, not trusted from its own prior
+> claim — the previous version of this note (below, kept for the record) was
+> itself wrong in both directions: it undersold WO-3.6 and WO-3.8, which a
+> different, unrelated pass had already substantially built without updating
+> this file, and it did not flag that WO-3.1's own "store-level option
+> library" (`OptionTemplate`) was missing. Both lessons apply going forward:
+> verify a doc's own status against the code, and update this file in the
+> same pass that changes the code it describes.**
 >
-> One correction to this doc while building WO-3.1: `catalog.prisma` already
-> had a `ProductOption`/`ProductOptionValue` pair from an earlier, unrelated,
+> **WO-3.1 — complete**, including the `OptionTemplate`/`OptionTemplateValue`
+> library the original pass skipped. `size`/`color`/`colorHex` remain
+> untouched, per expand/contract (00-HOUSE-RULES.md §4).
+>
+> **WO-3.2 — dual-write shipped, unconditional; the read-switch is a config
+> flag, not a soak timer.** `syncOptionModel` (moved from the old
+> `prisma/backfill-product-options.ts` into `src/modules/catalog/` so
+> product-admin.service.ts can call it) now runs inside every product
+> create/update transaction — every write derives `ProductOption`/
+> `ProductOptionValue` from `size`/`color` unconditionally, not just once.
+> The doc's own gate — "soak in real production traffic for at least a
+> week" — cannot ever be satisfied here: `CLAUDE.md`'s Deployment section
+> states this repository has no live deployment, so there is no real traffic
+> to soak with, ever. Rather than leave WO-3.2 permanently blocked on an
+> impossible precondition, the Setting `catalog.use_option_model_reads`
+> (default `false`) replaces the wall-clock gate with an owner's explicit
+> decision — same safety property (a human decides the option model is
+> trustworthy before anything reads from it), reachable on infrastructure
+> that will never generate the traffic the original gate asked for. Nothing
+> reads from the option model yet; flipping the flag and wiring the read
+> paths (storefront product page, cart, admin lists, CSV export, and
+> `apps/mobile` — which the original doc already warned is easy to forget)
+> is follow-up work for whoever holds that flag.
+>
+> **WO-3.3 (SKU templates/barcodes) — built.** `packages/shared/src/sku.ts`
+> (`generateSku`, pure, unit-tested), `Category.code`/`Product.code`,
+> `ProductVariant.skuIsManual`, `Setting['catalog.sku_template']`. Generation
+> is client-side (the product editor's own "regenerate" button); no barcode
+> print sheet.
+>
+> **WO-3.4/3.5 (editor, matrix builder) — partially built.** The existing
+> `Wizard`-based editor gained a real SEO step and an Options & attributes
+> section (add a custom option, or instantiate an `OptionTemplate`, per
+> product) rather than a ground-up rewrite into the doc's exact 11-tab
+> layout — the existing wizard already satisfies the section-per-task intent
+> without gambling a regression on a working, tested flow. Two of the
+> doc's own eleven sections are deliberately out of scope, named rather than
+> silently dropped: **Shipping** (weight/dimensions/`shippingClassId`) is
+> `docs/implementation/06-shipping-fulfilment-returns.md`'s own stated
+> scope (`Product.shippingClassId`, line ~100) — building it here would
+> preempt that not-yet-executed work order; **Related** (cross-sell/upsell)
+> is not part of this doc's own Phase 3 exit criteria and has no existing
+> architectural placeholder anywhere in the corpus, so it is left as a
+> future work order rather than smuggled in. The variant list still edits
+> flat SKU/size/colour rows (now with barcode/cost/reorder fields folded
+> into a per-row disclosure) rather than a generative cross-product matrix —
+> `generateVariantCombinations`/`newCombinationsOnly`/`removedCombinations`
+> exist in `packages/shared/src/variant-matrix.ts`, pure and unit-tested, but
+> are not yet wired into the editor UI. A variant's `optionValueKeys` (which
+> attaches it to a custom, non-size/colour option value) is accepted by the
+> API but has no picker in the row editor yet.
+>
+> **WO-3.6 (media, alt text) — complete.** `ProductImageTranslation`
+> (per-locale alt, migration backfills from the pre-existing column,
+> skipping anything filename-shaped), bilingual inputs in `ImageManager`/
+> `ImageStager`. Drag-and-drop reorder was not added — the existing
+> move-left/right buttons already satisfy the doc's own requirement to keep
+> a phone/keyboard path, and drag-and-drop was one of two options the doc
+> offered, not a strict requirement.
+>
+> **WO-3.7 (SEO section, publish gate) — complete.** The gate
+> (`publish-gate.ts`, pure, unit-tested) enforces on the transition into
+> `ACTIVE` only — a create-as-Active call has no images yet in this editor's
+> own two-step upload flow, so gating `create()` itself would make
+> create-as-Active structurally impossible; an already-`ACTIVE` product is
+> grandfathered, exactly as the doc specifies. Catalogue -> SEO & redirects'
+> Health tab is the SEO health list.
+>
+> **WO-3.8 (storefront SEO) — complete**, and less of it needed building
+> than this doc's own "Why" section claimed: `hreflang`, canonical URLs,
+> `Product` JSON-LD with variant offers, `BreadcrumbList`, `Organization`
+> JSON-LD, `sitemap.ts` and `robots.ts` already existed before this pass,
+> contradicting the doc's own claims that they didn't — built by earlier,
+> unrelated work that never updated this file. What was actually missing
+> and is now built: `generateMetadata` now prefers `metaTitle`/
+> `metaDescription`/`noindex`/`canonicalOverride` over the raw name and
+> description, and `Store` (a `LocalBusiness` subtype) + `WebSite` +
+> `SearchAction` JSON-LD were added to the storefront layout.
+>
+> **WO-3.9 (redirects) — complete.** `Redirect` table, the loop/chain guard
+> (`redirect-guard.ts`, pure, unit-tested), automatic creation on a live
+> product's slug change, `apps/web/src/middleware.ts` serving 301s before
+> the locale matcher (cached, best-effort, never blocks navigation if the
+> API is unreachable), and Catalogue -> SEO & redirects' Redirects tab.
+>
+> <details><summary>Previous status note (2026-09-03), superseded above</summary>
+>
+> WO-3.1 built — the actual B2 blocker, no further. The option data model
+> (`ProductOption`/`ProductOptionValue`/`ProductVariantOptionValue`,
+> bilingual, `OptionDisplay`, swatch fields) and a backfill script existed
+> and were verified — every product with a `size`/`color` value had the
+> matching join rows and a `ProductVariant.label` identical to what
+> `orders.service.ts` already produces for `OrderItem.variantLabel`.
+> `size`/`color`/`colorHex` were untouched, per expand/contract
+> (00-HOUSE-RULES.md §4) — nothing read the new model yet. WO-3.2 was
+> described as stuck pending a week of real production traffic. WO-3.3–3.9
+> were described as fully unbuilt. As the note above explains, WO-3.6 and
+> WO-3.8 were not actually unbuilt even at the time this was written — they
+> just were not reflected here.
+>
+> One correction recorded at the time: `catalog.prisma` already had a
+> `ProductOption`/`ProductOptionValue` pair from an earlier, unrelated,
 > completely unused attempt (single-locale `name`/`value` strings, no swatch
-> fields, an implicit many-to-many with no per-axis uniqueness — a variant
-> could have carried two "Colour" values with nothing stopping it). Verified
+> fields, an implicit many-to-many with no per-axis uniqueness). Verified
 > zero rows and zero application-code references before replacing it
 > wholesale with this doc's actual schema.
+>
+> </details>
 
 ## Why
 

@@ -298,6 +298,22 @@ export const ADMIN_NAV: AdminNavItem[] = [
     module: 'catalog',
   },
   {
+    key: 'option-templates',
+    label: 'Options & attributes',
+    href: '/admin/options',
+    permissions: ['catalog.manage'],
+    group: 'catalogue',
+    module: 'catalog',
+  },
+  {
+    key: 'seo',
+    label: 'SEO & redirects',
+    href: '/admin/seo',
+    permissions: ['catalog.manage'],
+    group: 'catalogue',
+    module: 'catalog',
+  },
+  {
     key: 'garments',
     label: 'Garments & measurements',
     href: '/admin/garments',

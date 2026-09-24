@@ -3,7 +3,7 @@
 
 # Files — packages
 
-All 57 tracked files in `packages/*`, by directory.
+All 61 tracked files in `packages/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -49,17 +49,17 @@ All 57 tracked files in `packages/*`, by directory.
 | `package.json` | json | 37 |  |
 | `tsconfig.json` | json | 17 |  |
 
-### `packages/shared/src` (21)
+### `packages/shared/src` (25)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `brand.ts` | module | 334 | THE BRAND FILE. |
 | `constants.ts` | module | 146 |  |
-| `enums.ts` | module | 100 | Enum values mirrored from the Prisma schema. |
+| `enums.ts` | module | 104 | Enum values mirrored from the Prisma schema. |
 | `fabric-estimate.spec.ts` | unit test | 79 | ((40 + 3) * 2 + (23 + 2)) / 36 = (86 + 25) / 36 = 3.0833... |
 | `fabric-estimate.ts` | module | 95 | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
 | `http-client.ts` | module | 200 | The one HTTP layer for a signed-in browser client. |
-| `index.ts` | module | 19 |  |
+| `index.ts` | module | 21 |  |
 | `permissions.spec.ts` | unit test | 68 |  |
 | `permissions.ts` | module | 530 | The permission catalog for PBAC (Permission-Based Access Control). |
 | `phone.spec.ts` | unit test | 65 |  |
@@ -68,12 +68,16 @@ All 57 tracked files in `packages/*`, by directory.
 | `pricing.ts` | module | 275 | Order maths. |
 | `secret-crypto.spec.ts` | unit test | 36 |  |
 | `secret-crypto.ts` | module | 65 |  |
+| `sku.spec.ts` | unit test | 52 |  |
+| `sku.ts` | module | 80 | SKU generation (WO-3.3, docs/implementation/03-variants-sku-seo.md). |
 | `slug.ts` | module | 44 | URL slugs. |
 | `theme-colors.ts` | module | 18 |  |
 | `theme-radii.ts` | module | 17 |  |
 | `theme-type.ts` | module | 42 |  |
 | `units.spec.ts` | unit test | 43 |  |
 | `units.ts` | module | 58 | Raw-material quantities. |
+| `variant-matrix.spec.ts` | unit test | 76 |  |
+| `variant-matrix.ts` | module | 89 | The variant matrix builder's cross-product (WO-3.5, docs/implementation/03-variants-sku-seo.md). |
 
 ### `packages/shared/src/entities` (11)
 

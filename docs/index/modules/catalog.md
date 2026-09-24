@@ -3,63 +3,92 @@
 
 # Module: `catalog`
 
-Pack **core** · enabled by the `MODULES` allowlist · 15 files
+Pack **core** · enabled by the `MODULES` allowlist · 26 files
 
 
 
 Source: `apps/api/src/modules/catalog/`
 
-## Files (15 · 2,946 lines)
+## Files (26 · 4,375 lines)
 
 All paths relative to `apps/api/src/modules/catalog`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `brand-admin.service.ts` | service | 170 | 1 | The managed list of brands. |
-| `catalog-admin.controller.ts` | controller | 260 | 1 |  |
+| `catalog-admin.controller.ts` | controller | 284 | 1 |  |
+| `catalog-options-admin.controller.ts` | controller | 105 | 1 | WO-3.1 (03-variants-sku-seo.md) — the store-level option library and each product's own option axes. |
 | `catalog.controller.ts` | controller | 51 | 1 |  |
-| `catalog.module.ts` | nest module | 35 | 1 |  |
-| `catalog.service.ts` | service | 353 | 3 | A product flattened into one locale, ready for the storefront. |
+| `catalog.module.ts` | nest module | 51 | 1 |  |
+| `catalog.service.ts` | service | 365 | 3 | A product flattened into one locale, ready for the storefront. |
 | `category-admin.service.ts` | service | 192 | 1 |  |
 | `brand.dto.ts` | dto | 63 | 2 |  |
 | `category.dto.ts` | dto | 68 | 2 |  |
+| `option.dto.ts` | dto | 103 | 6 |  |
 | `product-query.dto.ts` | dto | 88 | 3 |  |
-| `product.dto.ts` | dto | 253 | 4 |  |
+| `product.dto.ts` | dto | 319 | 4 |  |
+| `redirect.dto.ts` | dto | 23 | 1 |  |
+| `option-template-admin.service.ts` | service | 125 | 1 | WO-3.1's store-level option library (03-variants-sku-seo.md) — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue -> Op… |
 | `product-admin.service.spec.ts` | unit test | 109 | — |  |
-| `product-admin.service.ts` | service | 631 | 4 | Product and service management for the dashboard. |
+| `product-admin.service.ts` | service | 737 | 4 | Product and service management for the dashboard. |
 | `product-import.service.ts` | service | 476 | 3 |  |
+| `product-option-admin.service.ts` | service | 248 | 1 | A product's own option axes (WO-3.1, 03-variants-sku-seo.md) — the part of the variant matrix builder that lets a bouti… |
 | `product-replication.listener.spec.ts` | unit test | 120 | — |  |
 | `product-replication.listener.ts` | event subscriber | 77 | 1 | WO-20.3's first real POLICY entity — "product" and "price" are both named in R2's own examples. |
+| `publish-gate.ts` | module | 84 | 6 | WO-3.7's publish gate (03-variants-sku-seo.md) — a pure function so it can be dry-run against every product for the SEO… |
+| `redirect-admin.controller.ts` | controller | 78 | 2 | WO-3.9 (03-variants-sku-seo.md) — Catalogue -> SEO & redirects. |
+| `redirect-guard.ts` | module | 48 | 3 | WO-3.9 (03-variants-sku-seo.md) — the loop/chain guard, as a pure function so it can be dry-run and unit tested without… |
+| `redirect.service.ts` | service | 159 | 1 | WO-3.9 (03-variants-sku-seo.md) — the redirect table. |
+| `seo-health.service.ts` | service | 64 | 1 | WO-3.7's "Catalogue -> SEO health" (03-variants-sku-seo.md) — every product scored against the publish gate, worst firs… |
+| `sync-option-model.ts` | module | 168 | 1 | WO-3.1 (03-variants-sku-seo.md, Blocker B2) — derives the ProductOption/ProductOptionValue/ProductVariantOptionValue mo… |
 
 
-## HTTP routes (25)
+## HTTP routes (43)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/catalog/brands` | `catalog.manage` | `CatalogAdminController.listBrands` :203 |  |
-| POST | `/admin/catalog/brands` | `catalog.manage` | `CatalogAdminController.createBrand` :208 |  |
-| DELETE | `/admin/catalog/brands/:id` | `catalog.manage` | `CatalogAdminController.deleteBrand` :223 |  |
-| PATCH | `/admin/catalog/brands/:id` | `catalog.manage` | `CatalogAdminController.updateBrand` :213 |  |
-| GET | `/admin/catalog/categories` | `catalog.manage` | `CatalogAdminController.listCategories` :176 |  |
-| POST | `/admin/catalog/categories` | `catalog.manage` | `CatalogAdminController.createCategory` :181 |  |
-| DELETE | `/admin/catalog/categories/:id` | `catalog.manage` | `CatalogAdminController.deleteCategory` :196 |  |
-| PATCH | `/admin/catalog/categories/:id` | `catalog.manage` | `CatalogAdminController.updateCategory` :186 |  |
-| DELETE | `/admin/catalog/images/:imageId` | `catalog.manage` | `CatalogAdminController.deleteImage` :157 |  |
-| PATCH | `/admin/catalog/images/:imageId` | `catalog.manage` | `CatalogAdminController.updateImage` :147 | Edit an image's alt text |
-| POST | `/admin/catalog/import` | `catalog.manage` | `CatalogAdminController.import` :250 | Bulk create or update products from a CSV file |
-| GET | `/admin/catalog/import/template` | `catalog.manage` | `CatalogAdminController.importTemplate` :236 | Download the CSV template for bulk product upload |
-| GET | `/admin/catalog/products` | `catalog.manage` | `CatalogAdminController.listProducts` :79 | All products, including drafts and archived ones |
-| POST | `/admin/catalog/products` | `catalog.manage` | `CatalogAdminController.createProduct` :93 | Add a product, fabric or stitching service |
-| DELETE | `/admin/catalog/products/:id` | `catalog.manage` | `CatalogAdminController.archiveProduct` :108 | Archive a product (never hard-deleted — orders cite it) |
-| GET | `/admin/catalog/products/:id` | `catalog.manage` | `CatalogAdminController.getProduct` :87 |  |
-| PATCH | `/admin/catalog/products/:id` | `catalog.manage` | `CatalogAdminController.updateProduct` :98 |  |
-| POST | `/admin/catalog/products/:id/images` | `catalog.manage` | `CatalogAdminController.addImage` :127 | Upload a product image |
-| PATCH | `/admin/catalog/products/:id/images/order` | `catalog.manage` | `CatalogAdminController.reorderImages` :141 | Reorder images; the first becomes the thumbnail |
-| PATCH | `/admin/catalog/variants/:variantId/stock` | `catalog.manage` | `CatalogAdminController.updateStock` :165 | Set the stock level of one variant |
+| GET | `/admin/catalog/brands` | `catalog.manage` | `CatalogAdminController.listBrands` :227 |  |
+| POST | `/admin/catalog/brands` | `catalog.manage` | `CatalogAdminController.createBrand` :232 |  |
+| DELETE | `/admin/catalog/brands/:id` | `catalog.manage` | `CatalogAdminController.deleteBrand` :247 |  |
+| PATCH | `/admin/catalog/brands/:id` | `catalog.manage` | `CatalogAdminController.updateBrand` :237 |  |
+| GET | `/admin/catalog/categories` | `catalog.manage` | `CatalogAdminController.listCategories` :200 |  |
+| POST | `/admin/catalog/categories` | `catalog.manage` | `CatalogAdminController.createCategory` :205 |  |
+| DELETE | `/admin/catalog/categories/:id` | `catalog.manage` | `CatalogAdminController.deleteCategory` :220 |  |
+| PATCH | `/admin/catalog/categories/:id` | `catalog.manage` | `CatalogAdminController.updateCategory` :210 |  |
+| DELETE | `/admin/catalog/images/:imageId` | `catalog.manage` | `CatalogAdminController.deleteImage` :181 |  |
+| PATCH | `/admin/catalog/images/:imageId` | `catalog.manage` | `CatalogAdminController.updateImage` :171 | Edit an image's alt text |
+| POST | `/admin/catalog/import` | `catalog.manage` | `CatalogAdminController.import` :274 | Bulk create or update products from a CSV file |
+| GET | `/admin/catalog/import/template` | `catalog.manage` | `CatalogAdminController.importTemplate` :260 | Download the CSV template for bulk product upload |
+| DELETE | `/admin/catalog/option-template-values/:valueId` | `catalog.manage` | `CatalogOptionsAdminController.deleteTemplateValue` :47 | Remove a template value |
+| GET | `/admin/catalog/option-templates` | `catalog.manage` | `CatalogOptionsAdminController.listTemplates` :25 | Store-level reusable option axes (Catalogue -> Options & attributes) |
+| POST | `/admin/catalog/option-templates` | `catalog.manage` | `CatalogOptionsAdminController.createTemplate` :31 | Create a reusable option template |
+| DELETE | `/admin/catalog/option-templates/:templateId` | `catalog.manage` | `CatalogOptionsAdminController.deleteTemplate` :53 | Delete a template |
+| POST | `/admin/catalog/option-templates/:templateId/values` | `catalog.manage` | `CatalogOptionsAdminController.addTemplateValue` :37 | Add a value to a template |
+| DELETE | `/admin/catalog/option-values/:valueId` | `catalog.manage` | `CatalogOptionsAdminController.deleteProductOptionValue` :95 | Remove a value — refused while a variant still uses it |
+| DELETE | `/admin/catalog/options/:optionId` | `catalog.manage` | `CatalogOptionsAdminController.deleteProductOption` :101 | Remove an option axis — refused while any of its values is in use |
+| POST | `/admin/catalog/options/:optionId/values` | `catalog.manage` | `CatalogOptionsAdminController.addProductOptionValue` :85 | Add a value to a product's option |
+| GET | `/admin/catalog/products` | `catalog.manage` | `CatalogAdminController.listProducts` :91 | All products, including drafts and archived ones |
+| POST | `/admin/catalog/products` | `catalog.manage` | `CatalogAdminController.createProduct` :117 | Add a product, fabric or stitching service |
+| DELETE | `/admin/catalog/products/:id` | `catalog.manage` | `CatalogAdminController.archiveProduct` :132 | Archive a product (never hard-deleted — orders cite it) |
+| GET | `/admin/catalog/products/:id` | `catalog.manage` | `CatalogAdminController.getProduct` :111 |  |
+| PATCH | `/admin/catalog/products/:id` | `catalog.manage` | `CatalogAdminController.updateProduct` :122 |  |
+| POST | `/admin/catalog/products/:id/images` | `catalog.manage` | `CatalogAdminController.addImage` :151 | Upload a product image |
+| PATCH | `/admin/catalog/products/:id/images/order` | `catalog.manage` | `CatalogAdminController.reorderImages` :165 | Reorder images; the first becomes the thumbnail |
+| GET | `/admin/catalog/products/:id/publish-gate` | `catalog.manage` | `CatalogAdminController.publishGate` :106 | A product's own completeness against the publish gate |
+| GET | `/admin/catalog/products/:productId/options` | `catalog.manage` | `CatalogOptionsAdminController.listProductOptions` :59 | A product's own option axes and values |
+| POST | `/admin/catalog/products/:productId/options` | `catalog.manage` | `CatalogOptionsAdminController.createProductOption` :65 | Add a custom option axis to a product |
+| POST | `/admin/catalog/products/:productId/options/instantiate` | `catalog.manage` | `CatalogOptionsAdminController.instantiate` :75 | Copy a store-level template onto this product |
+| GET | `/admin/catalog/products/seo-health` | `catalog.manage` | `CatalogAdminController.seoHealthList` :100 | Every product failing the SEO publish gate, worst first |
+| GET | `/admin/catalog/redirects` | `catalog.manage` | `RedirectAdminController.list` :30 | Every redirect, newest first |
+| POST | `/admin/catalog/redirects` | `catalog.manage` | `RedirectAdminController.create` :36 | Add a manual redirect |
+| DELETE | `/admin/catalog/redirects/:id` | `catalog.manage` | `RedirectAdminController.delete` :55 | Remove a redirect |
+| POST | `/admin/catalog/redirects/import` | `catalog.manage` | `RedirectAdminController.importCsv` :45 | Bulk-import redirects from a CSV (from_path,to_path[,status_code]) |
+| PATCH | `/admin/catalog/variants/:variantId/stock` | `catalog.manage` | `CatalogAdminController.updateStock` :189 | Set the stock level of one variant |
 | GET | `/catalog/categories` | **PUBLIC** | `CatalogController.categories` :16 | Category tree in one locale |
 | GET | `/catalog/facets` | **PUBLIC** | `CatalogController.facets` :28 | Available fabrics, seasons, piece counts and price range |
 | GET | `/catalog/products` | **PUBLIC** | `CatalogController.products` :22 | Browse active products with filters and paging |
 | GET | `/catalog/products/:slug` | **PUBLIC** | `CatalogController.product` :43 | One product by slug |
+| GET | `/catalog/redirects/lookup` | **PUBLIC** | `RedirectLookupController.lookup` :74 | Whether a path now redirects somewhere else |
 | GET | `/catalog/stitching-services` | **PUBLIC** | `CatalogController.stitchingServices` :34 | Stitching services, optionally for one garment type |
 
 
@@ -69,8 +98,8 @@ All paths relative to `apps/api/src/modules/catalog`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `ProductPublished` | `catalog.product_published` | `product-admin.service.ts:171` |
-| `ProductPriceChanged` | `catalog.product_price_changed` | `product-admin.service.ts:291` |
+| `ProductPublished` | `catalog.product_published` | `product-admin.service.ts:197` |
+| `ProductPriceChanged` | `catalog.product_price_changed` | `product-admin.service.ts:349` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -85,21 +114,27 @@ All paths relative to `apps/api/src/modules/catalog`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Brand` | 9 | :46 | A label a product is sold under. |
-| `BrandTranslation` | 6 | :65 | House Rule 6: a customer-facing name is a translation row, not a column. |
-| `Category` | 12 | :23 |  |
-| `CategoryTranslation` | 6 | :77 |  |
-| `Product` | 31 | :89 |  |
-| `ProductGarmentType` | 3 | :278 | Which garments a given unstitched fabric can be made into. |
-| `ProductImage` | 10 | :261 |  |
-| `ProductOption` | 9 | :299 | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
-| `ProductOptionTranslation` | 5 | :316 |  |
-| `ProductOptionValue` | 9 | :328 | A specific value on an option axis: "M", "Ferozi", "128GB". |
-| `ProductOptionValueTranslation` | 5 | :346 |  |
-| `ProductTranslation` | 9 | :149 |  |
-| `ProductVariant` | 44 | :165 |  |
-| `ProductVariantOptionValue` | 5 | :360 | The join that DEFINES a variant: one row per option axis per variant. |
-| `StockAdjustment` | 10 | :243 | One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without an audit table bolted… |
+| `Brand` | 9 | :49 | A label a product is sold under. |
+| `BrandTranslation` | 6 | :68 | House Rule 6: a customer-facing name is a translation row, not a column. |
+| `Category` | 13 | :23 |  |
+| `CategoryTranslation` | 6 | :80 |  |
+| `OptionTemplate` | 7 | :415 | Store-level, reusable option axis — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue -> Options & attribute… |
+| `OptionTemplateTranslation` | 5 | :428 |  |
+| `OptionTemplateValue` | 8 | :439 |  |
+| `OptionTemplateValueTranslation` | 5 | :454 |  |
+| `Product` | 34 | :92 |  |
+| `ProductGarmentType` | 3 | :316 | Which garments a given unstitched fabric can be made into. |
+| `ProductImage` | 11 | :282 |  |
+| `ProductImageTranslation` | 5 | :304 | Alt text per locale. |
+| `ProductOption` | 9 | :337 | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
+| `ProductOptionTranslation` | 5 | :354 |  |
+| `ProductOptionValue` | 9 | :366 | A specific value on an option axis: "M", "Ferozi", "128GB". |
+| `ProductOptionValueTranslation` | 5 | :384 |  |
+| `ProductTranslation` | 10 | :164 |  |
+| `ProductVariant` | 45 | :183 |  |
+| `ProductVariantOptionValue` | 5 | :398 | The join that DEFINES a variant: one row per option axis per variant. |
+| `Redirect` | 7 | :468 | A storefront path that now 301s somewhere else — created automatically when a live product/category slug chan… |
+| `StockAdjustment` | 10 | :264 | One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without an audit table bolted… |
 
 
 Enums: `OptionDisplay` (4) · `ProductKind` (6) · `ProductStatus` (3)
@@ -113,8 +148,8 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 **`CatalogModule`** (`catalog.module.ts`)
 - imports: `InventoryModule`
-- controllers: `CatalogController`, `CatalogAdminController`
-- providers: `CatalogService`, `ProductAdminService`, `CategoryAdminService`, `BrandAdminService`, `ProductImportService`, `ProductReplicationListener`
+- controllers: `CatalogController`, `CatalogAdminController`, `CatalogOptionsAdminController`, `RedirectAdminController`, `RedirectLookupController`
+- providers: `CatalogService`, `ProductAdminService`, `CategoryAdminService`, `BrandAdminService`, `ProductImportService`, `ProductReplicationListener`, `OptionTemplateAdminService`, `ProductOptionAdminService`, `RedirectService`, `SeoHealthService`
 - exports: `CatalogService`
 
 
@@ -149,32 +184,56 @@ check there before adding another.
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
 | `BrandAdminService` | class | `brand-admin.service.ts:16` | The managed list of brands. |
-| `CatalogAdminController` | class | `catalog-admin.controller.ts:67` |  |
+| `CatalogAdminController` | class | `catalog-admin.controller.ts:78` |  |
+| `CatalogOptionsAdminController` | class | `catalog-options-admin.controller.ts:17` | WO-3.1 (03-variants-sku-seo.md) — the store-level option library and each product's own option axes. |
 | `CatalogController` | class | `catalog.controller.ts:11` |  |
-| `CatalogModule` | class | `catalog.module.ts:34` |  |
+| `CatalogModule` | class | `catalog.module.ts:50` |  |
 | `LocalisedProduct` | interface | `catalog.service.ts:9` | A product flattened into one locale, ready for the storefront. |
-| `CatalogService` | class | `catalog.service.ts:62` | Storefront reads. |
-| `localise` | function | `catalog.service.ts:252` |  |
+| `CatalogService` | class | `catalog.service.ts:68` | Storefront reads. |
+| `localise` | function | `catalog.service.ts:258` |  |
 | `CategoryAdminService` | class | `category-admin.service.ts:8` |  |
 | `BrandTranslationDto` | class | `brand.dto.ts:16` |  |
 | `UpsertBrandDto` | class | `brand.dto.ts:34` |  |
 | `CategoryTranslationDto` | class | `category.dto.ts:16` |  |
 | `UpsertCategoryDto` | class | `category.dto.ts:34` |  |
+| `OptionValueTranslationDto` | class | `option.dto.ts:16` |  |
+| `UpsertOptionValueDto` | class | `option.dto.ts:27` |  |
+| `OptionTranslationDto` | class | `option.dto.ts:56` |  |
+| `CreateProductOptionDto` | class | `option.dto.ts:58` |  |
+| `CreateOptionTemplateDto` | class | `option.dto.ts:89` |  |
+| `InstantiateTemplateDto` | class | `option.dto.ts:91` |  |
 | `PRODUCT_SORTS` | const | `product-query.dto.ts:16` |  |
 | `ProductQueryDto` | class | `product-query.dto.ts:25` | Storefront listing filters. |
 | `AdminProductQueryDto` | class | `product-query.dto.ts:77` | Admin listing filters — adds status, which the storefront never sees. |
 | `ProductTranslationDto` | class | `product.dto.ts:20` |  |
-| `ProductVariantDto` | class | `product.dto.ts:56` |  |
-| `CreateProductDto` | class | `product.dto.ts:115` |  |
-| `UpdateProductDto` | class | `product.dto.ts:234` |  |
-| `ProductAdminService` | class | `product-admin.service.ts:30` | Product and service management for the dashboard. |
-| `assertKindRules` | function | `product-admin.service.ts:538` | The rules that distinguish the three product kinds. |
-| `assertUniqueSkus` | function | `product-admin.service.ts:584` | Catches the two ways a hand-typed variant list contradicts itself before either reaches the database: the sam… |
-| `toAdminView` | function | `product-admin.service.ts:617` | Admin view: both locales side by side, plus stock roll-ups for the table. |
+| `ProductVariantDto` | class | `product.dto.ts:62` |  |
+| `CreateProductDto` | class | `product.dto.ts:164` |  |
+| `UpdateProductDto` | class | `product.dto.ts:300` |  |
+| `CreateRedirectDto` | class | `redirect.dto.ts:4` |  |
+| `OptionTemplateAdminService` | class | `option-template-admin.service.ts:19` | WO-3.1's store-level option library (03-variants-sku-seo.md) — "Size: XS/S/M/L/XL/XXL" typed once under Catal… |
+| `ProductAdminService` | class | `product-admin.service.ts:35` | Product and service management for the dashboard. |
+| `assertKindRules` | function | `product-admin.service.ts:618` | The rules that distinguish the three product kinds. |
+| `assertUniqueSkus` | function | `product-admin.service.ts:664` | Catches the two ways a hand-typed variant list contradicts itself before either reaches the database: the sam… |
+| `toAdminView` | function | `product-admin.service.ts:723` | Admin view: both locales side by side, plus stock roll-ups for the table. |
 | `ImportRowResult` | interface | `product-import.service.ts:17` |  |
 | `ImportSummary` | interface | `product-import.service.ts:24` |  |
 | `ProductImportService` | class | `product-import.service.ts:70` | Bulk load of an existing catalogue from a spreadsheet. |
+| `ProductOptionAdminService` | class | `product-option-admin.service.ts:19` | A product's own option axes (WO-3.1, 03-variants-sku-seo.md) — the part of the variant matrix builder that le… |
 | `ProductReplicationListener` | class | `product-replication.listener.ts:35` | WO-20.3's first real POLICY entity — "product" and "price" are both named in R2's own examples. |
+| `PublishGateImage` | interface | `publish-gate.ts:11` | WO-3.7's publish gate (03-variants-sku-seo.md) — a pure function so it can be dry-run against every product f… |
+| `PublishGateVariant` | interface | `publish-gate.ts:17` |  |
+| `PublishGateTranslation` | interface | `publish-gate.ts:24` |  |
+| `PublishGateInput` | interface | `publish-gate.ts:30` |  |
+| `PublishGateResult` | interface | `publish-gate.ts:36` |  |
+| `checkPublishGate` | function | `publish-gate.ts:41` |  |
+| `RedirectAdminController` | class | `redirect-admin.controller.ts:25` | WO-3.9 (03-variants-sku-seo.md) — Catalogue -> SEO & redirects. |
+| `RedirectLookupController` | class | `redirect-admin.controller.ts:69` | Public, unauthenticated lookup for the storefront's own middleware (apps/web/src/middleware.ts) — a redirect… |
+| `RedirectRow` | interface | `redirect-guard.ts:10` | WO-3.9 (03-variants-sku-seo.md) — the loop/chain guard, as a pure function so it can be dry-run and unit test… |
+| `ChainGuardResult` | interface | `redirect-guard.ts:15` |  |
+| `checkRedirectChain` | function | `redirect-guard.ts:22` |  |
+| `RedirectService` | class | `redirect.service.ts:15` | WO-3.9 (03-variants-sku-seo.md) — the redirect table. |
+| `SeoHealthService` | class | `seo-health.service.ts:14` | WO-3.7's "Catalogue -> SEO health" (03-variants-sku-seo.md) — every product scored against the publish gate,… |
+| `syncOptionModel` | function | `sync-option-model.ts:33` | WO-3.1 (03-variants-sku-seo.md, Blocker B2) — derives the ProductOption/ProductOptionValue/ProductVariantOpti… |
 
 
 ---

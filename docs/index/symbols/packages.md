@@ -71,20 +71,22 @@ Every top-level export in `packages`, with the line to open.
 | `enums.ts` | `ProductKind` | type | :31 |  |
 | `enums.ts` | `PRODUCT_STATUSES` | const | :33 |  |
 | `enums.ts` | `ProductStatus` | type | :34 |  |
-| `enums.ts` | `ORDER_STATUSES` | const | :36 |  |
-| `enums.ts` | `OrderStatus` | type | :46 |  |
-| `enums.ts` | `PAYMENT_STATUSES` | const | :48 |  |
-| `enums.ts` | `PaymentStatus` | type | :56 |  |
-| `enums.ts` | `STITCHING_STAGES` | const | :58 |  |
-| `enums.ts` | `StitchingStage` | type | :66 |  |
-| `enums.ts` | `LEAD_STATUSES` | const | :68 |  |
-| `enums.ts` | `LeadStatus` | type | :69 |  |
-| `enums.ts` | `INTERACTION_KINDS` | const | :71 |  |
-| `enums.ts` | `InteractionKind` | type | :80 |  |
-| `enums.ts` | `MEASUREMENT_UNITS` | const | :82 |  |
-| `enums.ts` | `MeasurementUnit` | type | :83 |  |
-| `enums.ts` | `nextStage` | function | :89 | Stage order is a straight line: a job may only advance to the next stage, or be sent back one stage… |
-| `enums.ts` | `previousStage` | function | :96 |  |
+| `enums.ts` | `OPTION_DISPLAYS` | const | :37 | Matches the Prisma `OptionDisplay` enum in catalog.prisma (WO-3.1). |
+| `enums.ts` | `OptionDisplay` | type | :38 | Matches the Prisma `OptionDisplay` enum in catalog.prisma (WO-3.1). |
+| `enums.ts` | `ORDER_STATUSES` | const | :40 | Matches the Prisma `OptionDisplay` enum in catalog.prisma (WO-3.1). |
+| `enums.ts` | `OrderStatus` | type | :50 |  |
+| `enums.ts` | `PAYMENT_STATUSES` | const | :52 |  |
+| `enums.ts` | `PaymentStatus` | type | :60 |  |
+| `enums.ts` | `STITCHING_STAGES` | const | :62 |  |
+| `enums.ts` | `StitchingStage` | type | :70 |  |
+| `enums.ts` | `LEAD_STATUSES` | const | :72 |  |
+| `enums.ts` | `LeadStatus` | type | :73 |  |
+| `enums.ts` | `INTERACTION_KINDS` | const | :75 |  |
+| `enums.ts` | `InteractionKind` | type | :84 |  |
+| `enums.ts` | `MEASUREMENT_UNITS` | const | :86 |  |
+| `enums.ts` | `MeasurementUnit` | type | :87 |  |
+| `enums.ts` | `nextStage` | function | :93 | Stage order is a straight line: a job may only advance to the next stage, or be sent back one stage… |
+| `enums.ts` | `previousStage` | function | :100 |  |
 | `fabric-estimate.ts` | `FabricEstimateInput` | interface | :10 | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
 | `fabric-estimate.ts` | `FabricEstimateResult` | interface | :25 |  |
 | `fabric-estimate.ts` | `computeFabricEstimate` | function | :42 |  |
@@ -103,6 +105,8 @@ Every top-level export in `packages`, with the line to open.
 | `index.ts` | `*` | re-export |  | from `./pricing` |
 | `index.ts` | `*` | re-export |  | from `./secret-crypto` |
 | `index.ts` | `*` | re-export |  | from `./slug` |
+| `index.ts` | `*` | re-export |  | from `./sku` |
+| `index.ts` | `*` | re-export |  | from `./variant-matrix` |
 | `index.ts` | `*` | re-export |  | from `./brand` |
 | `index.ts` | `*` | re-export |  | from `./http-client` |
 | `index.ts` | `*` | re-export |  | from `./theme-colors` |
@@ -151,6 +155,8 @@ Every top-level export in `packages`, with the line to open.
 | `pricing.ts` | `weightedAverageCost` | function | :264 |  |
 | `secret-crypto.ts` | `encryptSecret` | function | :40 |  |
 | `secret-crypto.ts` | `decryptSecret` | function | :50 |  |
+| `sku.ts` | `SkuTemplateInput` | interface | :11 | SKU generation (WO-3.3, docs/implementation/03-variants-sku-seo.md). |
+| `sku.ts` | `generateSku` | function | :59 | Renders a SKU from the template, appending a zero-padded `{SEQ}` only when the un-numbered version… |
 | `slug.ts` | `slugify` | function | :6 | URL slugs. |
 | `slug.ts` | `slugifyWithFallback` | function | :28 | Slugifies, falling back to `<fallbackPrefix>-<random>` when nothing survives. |
 | `slug.ts` | `uniqueSlug` | function | :34 | Appends a numeric suffix until the slug is not in `taken`. |
@@ -167,6 +173,12 @@ Every top-level export in `packages`, with the line to open.
 | `units.ts` | `toBaseUnits` | function | :33 | A display quantity (12.5 gaz) to base units (12500), rounded to the nearest whole base unit — base… |
 | `units.ts` | `fromBaseUnits` | function | :38 | Base units (12500) back to a display quantity (12.5 gaz). |
 | `units.ts` | `formatQuantity` | function | :47 | "12.5 gaz" — only as many decimal places as `unitScale` actually implies (three for scale 1000, non… |
+| `variant-matrix.ts` | `OptionAxis` | interface | :6 | The variant matrix builder's cross-product (WO-3.5, docs/implementation/03-variants-sku-seo.md). |
+| `variant-matrix.ts` | `VariantCombination` | interface | :13 |  |
+| `variant-matrix.ts` | `GenerateCombinationsResult` | interface | :18 |  |
+| `variant-matrix.ts` | `generateVariantCombinations` | function | :33 | The full cross-product of every axis's values. |
+| `variant-matrix.ts` | `newCombinationsOnly` | function | :73 | Combinations in `all` that are not already in `existing` — so adding one new value to an option gen… |
+| `variant-matrix.ts` | `removedCombinations` | function | :82 | Combinations in `existing` that no longer appear in `all` — candidates to deactivate, never delete. |
 
 ### `packages/shared/src/entities`
 

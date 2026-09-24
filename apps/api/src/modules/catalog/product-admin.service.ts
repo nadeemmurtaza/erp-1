@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { DEFAULT_LOCALE, slugifyWithFallback, uniqueSlug } from '@newax/shared';
+import { DEFAULT_LOCALE, LOCALES, slugifyWithFallback, uniqueSlug } from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { DomainEvent } from '../../core/events/domain-events';
 import { EventBusService } from '../../core/events/event-bus.service';
@@ -10,13 +10,18 @@ import type { Prisma, ProductKind } from '../../core/prisma/client';
 import { paginated } from '../../core/common/dto/pagination.dto';
 import type { AdminProductQueryDto } from './dto/product-query.dto';
 import type { CreateProductDto, UpdateProductDto } from './dto/product.dto';
+import { syncOptionModel } from './sync-option-model';
+import { RedirectService } from './redirect.service';
+import { ProductOptionAdminService } from './product-option-admin.service';
+import { checkPublishGate, type PublishGateInput } from './publish-gate';
 
 const adminInclude = {
   translations: true,
-  images: { orderBy: [{ isPrimary: 'desc' }, { order: 'asc' }] },
+  images: { orderBy: [{ isPrimary: 'desc' }, { order: 'asc' }], include: { translations: true } },
   variants: { orderBy: { order: 'asc' } },
   category: { include: { translations: true } },
-    garmentTypes: true,
+  garmentTypes: true,
+  options: { include: { translations: true, values: { include: { translations: true } } }, orderBy: { order: 'asc' } },
 } satisfies Prisma.ProductInclude;
 
 /**
@@ -34,6 +39,8 @@ export class ProductAdminService {
     private readonly storage: StorageService,
     private readonly inventory: InventoryService,
     private readonly events: EventBusService,
+    private readonly redirects: RedirectService,
+    private readonly productOptions: ProductOptionAdminService,
   ) {}
 
   async list(query: AdminProductQueryDto) {
@@ -108,6 +115,9 @@ export class ProductAdminService {
           featuredRank: dto.featuredRank ?? 0,
           isConsumable: dto.isConsumable ?? false,
           publishedAt: dto.status === 'ACTIVE' ? new Date() : null,
+          code: dto.code?.trim().toUpperCase() || slug.toUpperCase().replace(/-/g, '').slice(0, 12),
+          noindex: dto.noindex ?? false,
+          canonicalOverride: dto.canonicalOverride?.trim() || null,
           translations: {
             create: dto.translations.map((translation) => ({
               locale: translation.locale,
@@ -116,6 +126,7 @@ export class ProductAdminService {
               careInstructions: translation.careInstructions?.trim() || null,
               metaTitle: translation.metaTitle?.trim() || null,
               metaDescription: translation.metaDescription?.trim() || null,
+              focusKeyword: translation.focusKeyword?.trim() || null,
             })),
           },
           variants: {
@@ -129,6 +140,12 @@ export class ProductAdminService {
               lowStockThreshold: variant.lowStockThreshold ?? 3,
               isActive: variant.isActive ?? true,
               order: variant.order ?? index,
+              skuIsManual: variant.skuIsManual ?? false,
+              barcode: variant.barcode?.trim() || null,
+              costPrice: variant.costPrice ?? 0,
+              reorderPoint: variant.reorderPoint ?? null,
+              reorderQuantity: variant.reorderQuantity ?? null,
+              preferredSupplierId: variant.preferredSupplierId || null,
             })),
           },
           ...((dto.kind === 'UNSTITCHED' || dto.kind === 'STITCHED') && dto.garmentTypeIds?.length
@@ -145,8 +162,8 @@ export class ProductAdminService {
       const locationId = await this.inventory.defaultLocationId(tx);
       for (const [index, variant] of (dto.variants ?? []).entries()) {
         const requestedStock = variant.stock ?? 0;
+        const createdVariant = product.variants[index];
         if (requestedStock !== 0) {
-          const createdVariant = product.variants[index];
           await this.inventory.move({
             variantId: createdVariant.id,
             locationId,
@@ -156,7 +173,16 @@ export class ProductAdminService {
             note: 'Product created',
           }, tx);
         }
+        if (variant.optionValueKeys?.length) {
+          await this.productOptions.syncVariantOptionValues(tx, product.id, createdVariant.id, variant.optionValueKeys);
+        }
       }
+
+      // WO-3.2 dual-write: every write that touches size/color also derives
+      // ProductOption/ProductOptionValue from it, unconditionally — see
+      // sync-option-model.ts's own doc comment for why this never conflicts
+      // with a custom axis written above via syncVariantOptionValues.
+      await syncOptionModel(tx, { productIds: [product.id] });
 
       await this.audit.record({
         actorId,
@@ -217,6 +243,9 @@ export class ProductAdminService {
       data.stitchingAvailable = kind === 'UNSTITCHED' && dto.stitchingAvailable;
     }
     if (dto.slug) data.slug = dto.slug;
+    if (dto.code !== undefined) data.code = dto.code?.trim().toUpperCase() || null;
+    if (dto.noindex !== undefined) data.noindex = dto.noindex;
+    if (dto.canonicalOverride !== undefined) data.canonicalOverride = dto.canonicalOverride?.trim() || null;
 
     if (dto.categoryId !== undefined) {
       data.category = dto.categoryId
@@ -231,6 +260,8 @@ export class ProductAdminService {
       // Stamp the first publish so listings can sort by "new in".
       if (dto.status === 'ACTIVE' && !existing.publishedAt) data.publishedAt = new Date();
     }
+
+    const enteringActive = dto.status === 'ACTIVE' && existing.status !== 'ACTIVE';
 
     const product = await this.prisma.$transaction(async (tx) => {
       await tx.product.update({ where: { id }, data });
@@ -247,6 +278,7 @@ export class ProductAdminService {
               careInstructions: translation.careInstructions?.trim() || null,
               metaTitle: translation.metaTitle?.trim() || null,
               metaDescription: translation.metaDescription?.trim() || null,
+              focusKeyword: translation.focusKeyword?.trim() || null,
             },
             update: {
               name: translation.name.trim(),
@@ -254,6 +286,7 @@ export class ProductAdminService {
               careInstructions: translation.careInstructions?.trim() || null,
               metaTitle: translation.metaTitle?.trim() || null,
               metaDescription: translation.metaDescription?.trim() || null,
+              focusKeyword: translation.focusKeyword?.trim() || null,
             },
           });
         }
@@ -262,6 +295,9 @@ export class ProductAdminService {
       if (dto.variants) {
         await this.syncVariants(actorId, tx, id, dto.variants, existing.variants);
       }
+
+      // WO-3.2 dual-write, unconditional (see create()'s own comment).
+      await syncOptionModel(tx, { productIds: [id] });
 
       if (dto.garmentTypeIds && (kind === 'UNSTITCHED' || kind === 'STITCHED')) {
         await tx.productGarmentType.deleteMany({ where: { productId: id } });
@@ -276,7 +312,29 @@ export class ProductAdminService {
         }
       }
 
-      return tx.product.findUniqueOrThrow({ where: { id }, include: adminInclude });
+      // WO-3.9 — a live product's slug changing 301s the old URL, so a link
+      // or a search-engine ranking is never silently broken. A DRAFT slug
+      // change creates nothing (doc's own instruction).
+      if (dto.slug && dto.slug !== existing.slug && existing.status === 'ACTIVE') {
+        await this.redirects.recordSlugChange(tx, 'product', existing.slug, dto.slug);
+      }
+
+      const refreshed = await tx.product.findUniqueOrThrow({ where: { id }, include: adminInclude });
+
+      // WO-3.7's publish gate — enforced only on the transition INTO ACTIVE.
+      // An already-ACTIVE product is grandfathered (never deactivated
+      // retroactively); its own gaps surface through the SEO health list
+      // instead of blocking an unrelated save.
+      if (enteringActive) {
+        const gate = checkPublishGate(toPublishGateInput(refreshed));
+        if (!gate.passed) {
+          throw new BadRequestException(
+            `Cannot publish — ${gate.failures.join(' ')}`,
+          );
+        }
+      }
+
+      return refreshed;
     });
 
     await this.audit.record({
@@ -323,11 +381,19 @@ export class ProductAdminService {
     );
   }
 
+  /** The editor sidebar's live completeness indicator — same gate, never blocking here. */
+  async checkPublishGate(id: string) {
+    const product = await this.prisma.product.findUnique({ where: { id }, include: adminInclude });
+    if (!product) throw new NotFoundException('That product no longer exists.');
+    return checkPublishGate(toPublishGateInput(product));
+  }
+
   async addImage(
     actorId: string,
     productId: string,
     file: { buffer: Buffer; originalname: string; mimetype: string },
     alt?: string,
+    locale: string = DEFAULT_LOCALE,
   ) {
     const product = await this.prisma.product.findUnique({
       where: { id: productId },
@@ -346,11 +412,14 @@ export class ProductAdminService {
       data: {
         productId,
         url: stored.url,
-        alt: alt?.trim() || null,
         order: product.images.length,
         // The first image uploaded becomes the listing thumbnail.
         isPrimary: product.images.length === 0,
+        // WO-3.6: alt text is per locale now (translations), never the
+        // legacy `alt` column — see the migration's own doc comment.
+        translations: alt?.trim() ? { create: [{ locale, alt: alt.trim() }] } : undefined,
       },
+      include: { translations: true },
     });
 
     await this.audit.record({
@@ -393,13 +462,14 @@ export class ProductAdminService {
    * filename is not a description of what's in the photo. Editable after
    * the fact, so staff can fix it without re-uploading.
    */
-  async updateImageAlt(actorId: string, imageId: string, alt: string) {
+  async updateImageAlt(actorId: string, imageId: string, alt: string, locale: string = DEFAULT_LOCALE) {
     const image = await this.prisma.productImage.findUnique({ where: { id: imageId } });
     if (!image) throw new NotFoundException('That image no longer exists.');
 
-    const updated = await this.prisma.productImage.update({
-      where: { id: imageId },
-      data: { alt: alt.trim() || null },
+    const updated = await this.prisma.productImageTranslation.upsert({
+      where: { imageId_locale: { imageId, locale } },
+      create: { imageId, locale, alt: alt.trim() },
+      update: { alt: alt.trim() },
     });
 
     await this.audit.record({
@@ -407,7 +477,7 @@ export class ProductAdminService {
       action: 'product.image_alt_updated',
       entity: 'Product',
       entityId: image.productId,
-      data: { imageId },
+      data: { imageId, locale },
     });
 
     return updated;
@@ -483,6 +553,12 @@ export class ProductAdminService {
         lowStockThreshold: variant.lowStockThreshold ?? 3,
         isActive: variant.isActive ?? true,
         order: variant.order ?? index,
+        skuIsManual: variant.skuIsManual ?? false,
+        barcode: variant.barcode?.trim() || null,
+        costPrice: variant.costPrice ?? 0,
+        reorderPoint: variant.reorderPoint ?? null,
+        reorderQuantity: variant.reorderQuantity ?? null,
+        preferredSupplierId: variant.preferredSupplierId || null,
       };
 
       const requestedStock = variant.stock ?? 0;
@@ -508,6 +584,10 @@ export class ProductAdminService {
           actorId,
           note: 'Product admin form save',
         }, tx);
+      }
+
+      if (variant.optionValueKeys?.length) {
+        await this.productOptions.syncVariantOptionValues(tx, productId, pvId, variant.optionValueKeys);
       }
     }
   }
@@ -612,6 +692,32 @@ function normaliseTag(value: string | null | undefined): string | null {
 }
 
 type AdminProduct = Prisma.ProductGetPayload<{ include: typeof adminInclude }>;
+
+/** Maps the admin-shaped product into the publish gate's own input shape (WO-3.7). */
+function toPublishGateInput(product: AdminProduct): PublishGateInput {
+  return {
+    translations: product.translations.map((t) => ({
+      locale: t.locale,
+      metaTitle: t.metaTitle,
+      metaDescription: t.metaDescription,
+    })),
+    images: product.images.map((image) => ({
+      isPrimary: image.isPrimary,
+      altByLocale: Object.fromEntries(
+        LOCALES.map((locale) => [
+          locale,
+          image.translations.find((t) => t.locale === locale)?.alt ?? (locale === DEFAULT_LOCALE ? image.alt : null),
+        ]),
+      ),
+    })),
+    variants: product.variants.map((v) => ({
+      isActive: v.isActive,
+      sku: v.sku,
+      price: v.priceOverride ?? product.basePrice,
+      costPrice: v.costPrice,
+    })),
+  };
+}
 
 /** Admin view: both locales side by side, plus stock roll-ups for the table. */
 export function toAdminView(product: AdminProduct) {

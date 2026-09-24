@@ -23,6 +23,12 @@ export interface LocalisedProduct {
   fabricMeters: number | null;
   stitchingAvailable: boolean;
   images: Array<{ url: string; alt: string | null; isPrimary: boolean }>;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  /** SEO section (WO-3.7). `false` almost always — a page a merchant deliberately excludes from search. */
+  noindex: boolean;
+  /** Rare override for a canonical URL other than this product's own page. Null means "canonical to self". */
+  canonicalOverride: string | null;
   variants: Array<{
     id: string;
     sku: string;
@@ -45,7 +51,7 @@ export interface LocalisedProduct {
 
 const productInclude = {
   translations: true,
-  images: { orderBy: [{ isPrimary: 'desc' }, { order: 'asc' }] },
+  images: { orderBy: [{ isPrimary: 'desc' }, { order: 'asc' }], include: { translations: true } },
   variants: { where: { isActive: true }, orderBy: { order: 'asc' } },
   category: { include: { translations: true } },
   brand: { include: { translations: true } },
@@ -313,9 +319,15 @@ export async function localise(
     stitchingAvailable: product.stitchingAvailable,
     images: product.images.map((image) => ({
       url: image.url,
-      alt: image.alt,
+      // Bilingual alt text (WO-3.6) with the pre-migration column as a
+      // fallback for an image whose locale row a human has not filled in yet.
+      alt: pickTranslation(image.translations, locale)?.alt ?? image.alt,
       isPrimary: image.isPrimary,
     })),
+    metaTitle: translation?.metaTitle ?? null,
+    metaDescription: translation?.metaDescription ?? null,
+    noindex: product.noindex,
+    canonicalOverride: product.canonicalOverride,
     variants,
     category: product.category
       ? {

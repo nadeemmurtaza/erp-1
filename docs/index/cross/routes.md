@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **357** endpoints across **62** controllers, with the access rule that actually guards each one.
+All **375** endpoints across **65** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 41** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 42** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -45,6 +45,7 @@ never authorization.
 | GET | `/catalog/facets` | `CatalogController.facets` |
 | GET | `/catalog/products` | `CatalogController.products` |
 | GET | `/catalog/products/:slug` | `CatalogController.product` |
+| GET | `/catalog/redirects/lookup` | `RedirectLookupController.lookup` |
 | GET | `/catalog/stitching-services` | `CatalogController.stitchingServices` |
 | POST | `/crm/enquiries` | `CrmPublicController.createEnquiry` |
 | POST | `/email/unsubscribe` | `UnsubscribeController.unsubscribe` |
@@ -163,7 +164,7 @@ never authorization.
 | PATCH | `/cart/items/:itemId` | **PUBLIC** | `CartController.updateItem` | Change quantity, or attach measurements |
 | POST | `/cart/merge` | **PUBLIC** | `CartController.merge` | Fold a guest cart into the signed-in account |
 
-### [`catalog`](../modules/catalog.md) (25)
+### [`catalog`](../modules/catalog.md) (43)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -179,6 +180,14 @@ never authorization.
 | PATCH | `/admin/catalog/images/:imageId` | `catalog.manage` | `CatalogAdminController.updateImage` | Edit an image's alt text |
 | POST | `/admin/catalog/import` | `catalog.manage` | `CatalogAdminController.import` | Bulk create or update products from a CSV file |
 | GET | `/admin/catalog/import/template` | `catalog.manage` | `CatalogAdminController.importTemplate` | Download the CSV template for bulk product upload |
+| DELETE | `/admin/catalog/option-template-values/:valueId` | `catalog.manage` | `CatalogOptionsAdminController.deleteTemplateValue` | Remove a template value |
+| GET | `/admin/catalog/option-templates` | `catalog.manage` | `CatalogOptionsAdminController.listTemplates` | Store-level reusable option axes (Catalogue -> Options & attributes) |
+| POST | `/admin/catalog/option-templates` | `catalog.manage` | `CatalogOptionsAdminController.createTemplate` | Create a reusable option template |
+| DELETE | `/admin/catalog/option-templates/:templateId` | `catalog.manage` | `CatalogOptionsAdminController.deleteTemplate` | Delete a template |
+| POST | `/admin/catalog/option-templates/:templateId/values` | `catalog.manage` | `CatalogOptionsAdminController.addTemplateValue` | Add a value to a template |
+| DELETE | `/admin/catalog/option-values/:valueId` | `catalog.manage` | `CatalogOptionsAdminController.deleteProductOptionValue` | Remove a value — refused while a variant still uses it |
+| DELETE | `/admin/catalog/options/:optionId` | `catalog.manage` | `CatalogOptionsAdminController.deleteProductOption` | Remove an option axis — refused while any of its values is in use |
+| POST | `/admin/catalog/options/:optionId/values` | `catalog.manage` | `CatalogOptionsAdminController.addProductOptionValue` | Add a value to a product's option |
 | GET | `/admin/catalog/products` | `catalog.manage` | `CatalogAdminController.listProducts` | All products, including drafts and archived ones |
 | POST | `/admin/catalog/products` | `catalog.manage` | `CatalogAdminController.createProduct` | Add a product, fabric or stitching service |
 | DELETE | `/admin/catalog/products/:id` | `catalog.manage` | `CatalogAdminController.archiveProduct` | Archive a product (never hard-deleted — orders cite it) |
@@ -186,11 +195,21 @@ never authorization.
 | PATCH | `/admin/catalog/products/:id` | `catalog.manage` | `CatalogAdminController.updateProduct` |  |
 | POST | `/admin/catalog/products/:id/images` | `catalog.manage` | `CatalogAdminController.addImage` | Upload a product image |
 | PATCH | `/admin/catalog/products/:id/images/order` | `catalog.manage` | `CatalogAdminController.reorderImages` | Reorder images; the first becomes the thumbnail |
+| GET | `/admin/catalog/products/:id/publish-gate` | `catalog.manage` | `CatalogAdminController.publishGate` | A product's own completeness against the publish gate |
+| GET | `/admin/catalog/products/:productId/options` | `catalog.manage` | `CatalogOptionsAdminController.listProductOptions` | A product's own option axes and values |
+| POST | `/admin/catalog/products/:productId/options` | `catalog.manage` | `CatalogOptionsAdminController.createProductOption` | Add a custom option axis to a product |
+| POST | `/admin/catalog/products/:productId/options/instantiate` | `catalog.manage` | `CatalogOptionsAdminController.instantiate` | Copy a store-level template onto this product |
+| GET | `/admin/catalog/products/seo-health` | `catalog.manage` | `CatalogAdminController.seoHealthList` | Every product failing the SEO publish gate, worst first |
+| GET | `/admin/catalog/redirects` | `catalog.manage` | `RedirectAdminController.list` | Every redirect, newest first |
+| POST | `/admin/catalog/redirects` | `catalog.manage` | `RedirectAdminController.create` | Add a manual redirect |
+| DELETE | `/admin/catalog/redirects/:id` | `catalog.manage` | `RedirectAdminController.delete` | Remove a redirect |
+| POST | `/admin/catalog/redirects/import` | `catalog.manage` | `RedirectAdminController.importCsv` | Bulk-import redirects from a CSV (from_path,to_path[,status_code]) |
 | PATCH | `/admin/catalog/variants/:variantId/stock` | `catalog.manage` | `CatalogAdminController.updateStock` | Set the stock level of one variant |
 | GET | `/catalog/categories` | **PUBLIC** | `CatalogController.categories` | Category tree in one locale |
 | GET | `/catalog/facets` | **PUBLIC** | `CatalogController.facets` | Available fabrics, seasons, piece counts and price range |
 | GET | `/catalog/products` | **PUBLIC** | `CatalogController.products` | Browse active products with filters and paging |
 | GET | `/catalog/products/:slug` | **PUBLIC** | `CatalogController.product` | One product by slug |
+| GET | `/catalog/redirects/lookup` | **PUBLIC** | `RedirectLookupController.lookup` | Whether a path now redirects somewhere else |
 | GET | `/catalog/stitching-services` | **PUBLIC** | `CatalogController.stitchingServices` | Stitching services, optionally for one garment type |
 
 ### [`core/auth`](../core/auth.md) (15)

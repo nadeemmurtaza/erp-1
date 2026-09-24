@@ -1849,20 +1849,20 @@ _no second-level headings_
 - WO-2.8 — Permission-check cleanup  <sub>:211</sub>
 - Phase 2 exit criteria  <sub>:233</sub>
 
-### `docs/implementation/03-variants-sku-seo.md`  <sub>471 lines</sub>
+### `docs/implementation/03-variants-sku-seo.md`  <sub>566 lines</sub>
 
-- Why  <sub>:32</sub>
-- Work orders  <sub>:66</sub>
-- WO-3.1 — The option model  <sub>:82</sub>
-- WO-3.2 — Switch readers, then retire the columns  <sub>:216</sub>
-- WO-3.3 — SKU templates and barcodes  <sub>:235</sub>
-- WO-3.4 — The sectioned product editor  <sub>:265</sub>
-- WO-3.5 — The variant matrix builder  <sub>:297</sub>
-- WO-3.6 — Media with enforced alt text  <sub>:321</sub>
-- WO-3.7 — The SEO section and the publish gate  <sub>:345</sub>
-- WO-3.8 — Storefront SEO  <sub>:389</sub>
-- WO-3.9 — Redirects  <sub>:426</sub>
-- Phase 3 exit criteria  <sub>:460</sub>
+- Why  <sub>:127</sub>
+- Work orders  <sub>:161</sub>
+- WO-3.1 — The option model  <sub>:177</sub>
+- WO-3.2 — Switch readers, then retire the columns  <sub>:311</sub>
+- WO-3.3 — SKU templates and barcodes  <sub>:330</sub>
+- WO-3.4 — The sectioned product editor  <sub>:360</sub>
+- WO-3.5 — The variant matrix builder  <sub>:392</sub>
+- WO-3.6 — Media with enforced alt text  <sub>:416</sub>
+- WO-3.7 — The SEO section and the publish gate  <sub>:440</sub>
+- WO-3.8 — Storefront SEO  <sub>:484</sub>
+- WO-3.9 — Redirects  <sub>:521</sub>
+- Phase 3 exit criteria  <sub>:555</sub>
 
 ### `docs/implementation/04-finance.md`  <sub>239 lines</sub>
 

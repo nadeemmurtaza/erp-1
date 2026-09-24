@@ -379,7 +379,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/catalog/product-admin.service.ts:171` | `catalog` |
+| `apps/api/src/modules/catalog/product-admin.service.ts:197` | `catalog` |
 
 
 **Subscribed by**
@@ -397,7 +397,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/catalog/product-admin.service.ts:291` | `catalog` |
+| `apps/api/src/modules/catalog/product-admin.service.ts:349` | `catalog` |
 
 
 **Subscribed by**

@@ -3,7 +3,7 @@
 
 # Schema: `catalog.prisma`
 
-15 models · 3 enums. Owned by module [`catalog`](../modules/catalog.md).
+21 models · 3 enums. Owned by module [`catalog`](../modules/catalog.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `Brand`  <sub>`apps/api/prisma/schema/catalog.prisma:46`</sub>
+### `Brand`  <sub>`apps/api/prisma/schema/catalog.prisma:49`</sub>
 
 > A label a product is sold under.
 
@@ -38,7 +38,7 @@ against a real database.
 
 Indexes: `@@index([isActive])`
 
-### `BrandTranslation`  <sub>`apps/api/prisma/schema/catalog.prisma:65`</sub>
+### `BrandTranslation`  <sub>`apps/api/prisma/schema/catalog.prisma:68`</sub>
 
 > House Rule 6: a customer-facing name is a translation row, not a column.
 
@@ -59,6 +59,7 @@ Indexes: `@@unique([brandId, locale])`
 |---|---|---|---|
 | `id` | `String` | id | @id @default(cuid()) |
 | `slug` | `String` | unique | @unique |
+| `code` | `String?` | optional |  |
 | `parentId` | `String?` | optional |  |
 | `imageUrl` | `String?` | optional |  |
 | `order` | `Int` |  | @default(0) |
@@ -72,7 +73,7 @@ Indexes: `@@unique([brandId, locale])`
 
 Indexes: `@@index([parentId])` · `@@index([isActive])`
 
-### `CategoryTranslation`  <sub>`apps/api/prisma/schema/catalog.prisma:77`</sub>
+### `CategoryTranslation`  <sub>`apps/api/prisma/schema/catalog.prisma:80`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -85,7 +86,62 @@ Indexes: `@@index([parentId])` · `@@index([isActive])`
 
 Indexes: `@@unique([categoryId, locale])`
 
-### `Product`  <sub>`apps/api/prisma/schema/catalog.prisma:89`</sub>
+### `OptionTemplate`  <sub>`apps/api/prisma/schema/catalog.prisma:415`</sub>
+
+> Store-level, reusable option axis — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue -> Options & attributes instead of on every product.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `key` | `String` | unique | @unique |
+| `display` | `OptionDisplay` |  | @default(BUTTON) |
+| `order` | `Int` |  | @default(0) |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `translations` | `OptionTemplateTranslation[]` |  |  |
+| `values` | `OptionTemplateValue[]` |  |  |
+
+Indexes: `@@index([order])`
+
+### `OptionTemplateTranslation`  <sub>`apps/api/prisma/schema/catalog.prisma:428`</sub>
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `templateId` | `String` |  |  |
+| `locale` | `String` |  |  |
+| `label` | `String` |  |  |
+| `template` | `OptionTemplate` | relation | @relation(fields: [templateId], references: [id], onDelete: Cascade) |
+
+Indexes: `@@unique([templateId, locale])`
+
+### `OptionTemplateValue`  <sub>`apps/api/prisma/schema/catalog.prisma:439`</sub>
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `templateId` | `String` |  |  |
+| `key` | `String` |  |  |
+| `swatchHex` | `String?` | optional |  |
+| `swatchUrl` | `String?` | optional |  |
+| `order` | `Int` |  | @default(0) |
+| `template` | `OptionTemplate` | relation | @relation(fields: [templateId], references: [id], onDelete: Cascade) |
+| `translations` | `OptionTemplateValueTranslation[]` |  |  |
+
+Indexes: `@@unique([templateId, key])` · `@@index([templateId, order])`
+
+### `OptionTemplateValueTranslation`  <sub>`apps/api/prisma/schema/catalog.prisma:454`</sub>
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `valueId` | `String` |  |  |
+| `locale` | `String` |  |  |
+| `label` | `String` |  |  |
+| `value` | `OptionTemplateValue` | relation | @relation(fields: [valueId], references: [id], onDelete: Cascade) |
+
+Indexes: `@@unique([valueId, locale])`
+
+### `Product`  <sub>`apps/api/prisma/schema/catalog.prisma:92`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -100,6 +156,9 @@ Indexes: `@@unique([categoryId, locale])`
 | `fabric` | `String?` | optional | lawn, chiffon, khaddar, linen… |
 | `season` | `String?` | optional | summer, winter, festive |
 | `tags` | `String[]` |  | @default([]) |
+| `code` | `String?` | optional |  |
+| `noindex` | `Boolean` |  | @default(false) |
+| `canonicalOverride` | `String?` | optional |  |
 | `pieceCount` | `Int?` | optional |  |
 | `fabricMeters` | `Float?` | optional |  |
 | `stitchingAvailable` | `Boolean` |  | @default(false) |
@@ -123,7 +182,7 @@ Indexes: `@@unique([categoryId, locale])`
 
 Indexes: `@@index([status, kind])` · `@@index([categoryId])` · `@@index([featuredRank])` · `@@index([createdAt])`
 
-### `ProductGarmentType`  <sub>`apps/api/prisma/schema/catalog.prisma:278`</sub>
+### `ProductGarmentType`  <sub>`apps/api/prisma/schema/catalog.prisma:316`</sub>
 
 > Which garments a given unstitched fabric can be made into.
 
@@ -135,7 +194,7 @@ Indexes: `@@index([status, kind])` · `@@index([categoryId])` · `@@index([featu
 
 Indexes: `@@id([productId, garmentTypeId])`
 
-### `ProductImage`  <sub>`apps/api/prisma/schema/catalog.prisma:261`</sub>
+### `ProductImage`  <sub>`apps/api/prisma/schema/catalog.prisma:282`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -149,10 +208,25 @@ Indexes: `@@id([productId, garmentTypeId])`
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `product` | `Product` | relation | @relation(fields: [productId], references: [id], onDelete: Cascade) |
 | `variant` | `ProductVariant?` | relation, optional | @relation(fields: [variantId], references: [id], onDelete: SetNull) |
+| `translations` | `ProductImageTranslation[]` |  |  |
 
 Indexes: `@@index([productId, order])`
 
-### `ProductOption`  <sub>`apps/api/prisma/schema/catalog.prisma:299`</sub>
+### `ProductImageTranslation`  <sub>`apps/api/prisma/schema/catalog.prisma:304`</sub>
+
+> Alt text per locale.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `imageId` | `String` |  |  |
+| `locale` | `String` |  |  |
+| `alt` | `String` |  |  |
+| `image` | `ProductImage` | relation | @relation(fields: [imageId], references: [id], onDelete: Cascade) |
+
+Indexes: `@@unique([imageId, locale])`
+
+### `ProductOption`  <sub>`apps/api/prisma/schema/catalog.prisma:337`</sub>
 
 > A dynamic option axis a product varies along: "Size", "Colour", "Storage".
 
@@ -170,7 +244,7 @@ Indexes: `@@index([productId, order])`
 
 Indexes: `@@unique([productId, key])` · `@@index([productId, order])`
 
-### `ProductOptionTranslation`  <sub>`apps/api/prisma/schema/catalog.prisma:316`</sub>
+### `ProductOptionTranslation`  <sub>`apps/api/prisma/schema/catalog.prisma:354`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -182,7 +256,7 @@ Indexes: `@@unique([productId, key])` · `@@index([productId, order])`
 
 Indexes: `@@unique([optionId, locale])`
 
-### `ProductOptionValue`  <sub>`apps/api/prisma/schema/catalog.prisma:328`</sub>
+### `ProductOptionValue`  <sub>`apps/api/prisma/schema/catalog.prisma:366`</sub>
 
 > A specific value on an option axis: "M", "Ferozi", "128GB".
 
@@ -200,7 +274,7 @@ Indexes: `@@unique([optionId, locale])`
 
 Indexes: `@@unique([optionId, key])` · `@@index([optionId, order])`
 
-### `ProductOptionValueTranslation`  <sub>`apps/api/prisma/schema/catalog.prisma:346`</sub>
+### `ProductOptionValueTranslation`  <sub>`apps/api/prisma/schema/catalog.prisma:384`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -212,7 +286,7 @@ Indexes: `@@unique([optionId, key])` · `@@index([optionId, order])`
 
 Indexes: `@@unique([valueId, locale])`
 
-### `ProductTranslation`  <sub>`apps/api/prisma/schema/catalog.prisma:149`</sub>
+### `ProductTranslation`  <sub>`apps/api/prisma/schema/catalog.prisma:164`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -224,11 +298,12 @@ Indexes: `@@unique([valueId, locale])`
 | `careInstructions` | `String?` | optional |  |
 | `metaTitle` | `String?` | optional |  |
 | `metaDescription` | `String?` | optional |  |
+| `focusKeyword` | `String?` | optional |  |
 | `product` | `Product` | relation | @relation(fields: [productId], references: [id], onDelete: Cascade) |
 
 Indexes: `@@unique([productId, locale])` · `@@index([name])`
 
-### `ProductVariant`  <sub>`apps/api/prisma/schema/catalog.prisma:165`</sub>
+### `ProductVariant`  <sub>`apps/api/prisma/schema/catalog.prisma:183`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -250,6 +325,7 @@ Indexes: `@@unique([productId, locale])` · `@@index([name])`
 | `preferredSupplier` | `Supplier?` | relation, optional | @relation("PreferredSupplier", fields: [preferredSupplierId], references: [id], onDelete:… |
 | `lastReceivedAt` | `DateTime?` | optional |  |
 | `barcode` | `String?` | unique, optional | @unique |
+| `skuIsManual` | `Boolean` |  | @default(false) |
 | `producedInHouse` | `Boolean` |  | @default(false) |
 | `taxClassId` | `String?` | optional |  |
 | `taxClass` | `TaxClass?` | relation, optional | @relation(fields: [taxClassId], references: [id], onDelete: SetNull) |
@@ -279,7 +355,7 @@ Indexes: `@@unique([productId, locale])` · `@@index([name])`
 
 Indexes: `@@index([productId])` · `@@index([stock])`
 
-### `ProductVariantOptionValue`  <sub>`apps/api/prisma/schema/catalog.prisma:360`</sub>
+### `ProductVariantOptionValue`  <sub>`apps/api/prisma/schema/catalog.prisma:398`</sub>
 
 > The join that DEFINES a variant: one row per option axis per variant.
 
@@ -293,7 +369,23 @@ Indexes: `@@index([productId])` · `@@index([stock])`
 
 Indexes: `@@id([variantId, optionId])` · `@@index([valueId])`
 
-### `StockAdjustment`  <sub>`apps/api/prisma/schema/catalog.prisma:243`</sub>
+### `Redirect`  <sub>`apps/api/prisma/schema/catalog.prisma:468`</sub>
+
+> A storefront path that now 301s somewhere else — created automatically when a live product/category slug changes, or entered by hand (including a CSV import when migrating an old site).
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `fromPath` | `String` | unique | @unique |
+| `toPath` | `String` |  |  |
+| `statusCode` | `Int` |  | @default(301) |
+| `isAutomatic` | `Boolean` |  | @default(false) |
+| `hitCount` | `Int` |  | @default(0) |
+| `createdAt` | `DateTime` |  | @default(now()) |
+
+Indexes: `@@index([isAutomatic])`
+
+### `StockAdjustment`  <sub>`apps/api/prisma/schema/catalog.prisma:264`</sub>
 
 > One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without an audit table bolted on after the fact.
 
@@ -315,7 +407,7 @@ Indexes: `@@index([variantId, createdAt])`
 
 ## Enums
 
-### `OptionDisplay`  <sub>`apps/api/prisma/schema/catalog.prisma:287`</sub>
+### `OptionDisplay`  <sub>`apps/api/prisma/schema/catalog.prisma:325`</sub>
 
 | Value | Meaning |
 |---|---|

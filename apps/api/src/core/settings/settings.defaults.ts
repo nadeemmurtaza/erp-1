@@ -156,6 +156,19 @@ export const SettingKey = {
   BomRawMaterialCategorySlug: 'bom.raw_material_category_slug',
   /** Basis points of expected wastage assumed on a recipe with no line-level override (WO-C.2). 0 until a recipe says otherwise. */
   BomDefaultWastageBps: 'bom.default_wastage_bps',
+  /** `{CAT}`/`{PRODUCT}`/`{OPT}`/`{SEQ}` template read by packages/shared's generateSku() (WO-3.3). */
+  CatalogSkuTemplate: 'catalog.sku_template',
+  /**
+   * WO-3.2's cutover switch (03-variants-sku-seo.md), replacing the doc's own
+   * "soak for a week of real traffic" gate — this repo's own deployment has
+   * no live traffic to ever soak with (CLAUDE.md's Deployment section), so a
+   * wall-clock timer could never fire. Every variant write already
+   * dual-writes ProductOption/ProductOptionValue alongside size/color
+   * (additive, always on); this flag is the human decision that the option
+   * model is trustworthy enough to read from. False until an owner flips it
+   * — reads keep coming from size/color/colorHex exactly as before either way.
+   */
+  CatalogUseOptionModelReads: 'catalog.use_option_model_reads',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -298,4 +311,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
 
   [SettingKey.BomRawMaterialCategorySlug]: 'raw-materials',
   [SettingKey.BomDefaultWastageBps]: 0,
+
+  [SettingKey.CatalogSkuTemplate]: '{CAT}-{PRODUCT}-{OPT}-{SEQ}',
+  [SettingKey.CatalogUseOptionModelReads]: false,
 };

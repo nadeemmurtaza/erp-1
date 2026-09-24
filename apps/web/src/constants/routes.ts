@@ -63,6 +63,8 @@ export const ROUTES = {
     productInsights: '/admin/products/insights',
     categories: '/admin/categories',
     brands: '/admin/brands',
+    optionTemplates: '/admin/options',
+    seo: '/admin/seo',
     import: '/admin/import',
 
     orders: '/admin/orders',

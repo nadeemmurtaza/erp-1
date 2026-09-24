@@ -51,6 +51,12 @@ export class ProductTranslationDto {
   @IsString()
   @MaxLength(180)
   metaDescription?: string;
+
+  @ApiPropertyOptional({ description: 'The SEO checklist scores this locale against this term — never shown to a customer.' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(80)
+  focusKeyword?: string;
 }
 
 export class ProductVariantDto {
@@ -110,6 +116,49 @@ export class ProductVariantDto {
   @IsOptional()
   @IsInt()
   order?: number;
+
+  @ApiPropertyOptional({ description: 'True once a human has hand-edited this SKU — the generator never rewrites it again.', default: false })
+  @IsOptional()
+  @IsBoolean()
+  skuIsManual?: boolean;
+
+  @ApiPropertyOptional({ example: '4901234567894', description: 'EAN-13/UPC-A when it looks like one' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(32)
+  barcode?: string;
+
+  @ApiPropertyOptional({ description: 'Weighted-average cost in paisa; 0 means never received against a PO.' })
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  costPrice?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  reorderPoint?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  reorderQuantity?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  preferredSupplierId?: string;
+
+  @ApiPropertyOptional({
+    type: [String],
+    description: 'Option value keys this variant is defined by, in option order, e.g. ["m", "blu"]. Drives ProductOption/ProductOptionValue (WO-3.1/3.2) alongside size/color.',
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  optionValueKeys?: string[];
 }
 
 export class CreateProductDto {
@@ -216,6 +265,23 @@ export class CreateProductDto {
   @IsOptional()
   @IsInt()
   featuredRank?: number;
+
+  @ApiPropertyOptional({ description: 'SKU-template product code; defaults from the slug' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(20)
+  code?: string;
+
+  @ApiPropertyOptional({ default: false })
+  @IsOptional()
+  @IsBoolean()
+  noindex?: boolean;
+
+  @ApiPropertyOptional({ description: 'Rare override for a canonical URL other than this product\'s own page' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(300)
+  canonicalOverride?: string;
 
   @ApiProperty({ type: [ProductTranslationDto], description: 'At least the English row' })
   @IsArray()

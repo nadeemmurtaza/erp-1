@@ -37,19 +37,30 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!product) return {};
 
   const path = `/product/${slug}`;
+  // WO-3.7/3.8: a merchant-authored title/description beats the raw name and
+  // body copy whenever one has actually been written for this locale.
+  const title = product.metaTitle || product.name;
+  const description = product.metaDescription || product.description || undefined;
 
   return {
-    title: product.name,
-    description: product.description ?? undefined,
+    title,
+    description,
     alternates: {
-      canonical: canonicalUrl(path, locale),
+      canonical: product.canonicalOverride || canonicalUrl(path, locale),
       languages: alternateLanguages(path),
     },
     openGraph: {
-      title: product.name,
-      description: product.description ?? undefined,
+      title,
+      description,
       images: product.images[0] ? [{ url: product.images[0].url }] : undefined,
     },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: product.images[0] ? [product.images[0].url] : undefined,
+    },
+    robots: product.noindex ? { index: false, follow: true } : undefined,
   };
 }
 

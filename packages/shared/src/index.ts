@@ -7,6 +7,8 @@ export * from './phone';
 export * from './pricing';
 export * from './secret-crypto';
 export * from './slug';
+export * from './sku';
+export * from './variant-matrix';
 export * from './brand';
 export * from './http-client';
 export * from './theme-colors';

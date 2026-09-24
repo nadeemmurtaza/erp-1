@@ -87,6 +87,47 @@ function organizationJsonLd() {
   };
 }
 
+/**
+ * `Store` — a `LocalBusiness` subtype, the specific one that actually
+ * describes a retail storefront rather than the generic organization
+ * identity above. WO-3.8, 03-variants-sku-seo.md.
+ */
+function storeJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Store',
+    name: businessProfile.name,
+    url: SITE_URL,
+    telephone: businessProfile.phone,
+    email: businessProfile.email,
+    priceRange: businessProfile.currency?.symbol ? `${businessProfile.currency.symbol}${businessProfile.currency.symbol}` : undefined,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: businessProfile.address,
+      addressLocality: businessProfile.city,
+      addressCountry: BRAND.locale.countryCode,
+    },
+  };
+}
+
+/** `WebSite` + a `SearchAction` pointing at the shop's own search, so a search-savvy crawler can offer a sitelinks search box. */
+function websiteJsonLd(locale: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: businessProfile.name,
+    url: SITE_URL,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${SITE_URL}/${locale}/shop?q={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  };
+}
+
 export default async function LocaleLayout({
   children,
   params,
@@ -116,6 +157,8 @@ export default async function LocaleLayout({
         suppressHydrationWarning
       >
         <JsonLd data={organizationJsonLd()} />
+        <JsonLd data={storeJsonLd()} />
+        <JsonLd data={websiteJsonLd(locale)} />
         <SmoothScroller>
           <StorefrontProviders locale={locale} messages={messages}>
             <AnalyticsBeacon />

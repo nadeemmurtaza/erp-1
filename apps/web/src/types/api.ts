@@ -56,6 +56,10 @@ export interface StorefrontProduct {
   fabricMeters: number | null;
   stitchingAvailable: boolean;
   images: ProductImage[];
+  metaTitle: string | null;
+  metaDescription: string | null;
+  noindex: boolean;
+  canonicalOverride: string | null;
   variants: ProductVariant[];
   category: { id: string; slug: string; name: string } | null;
   /** UNSTITCHED only: the garments this fabric can be made into. */
@@ -107,6 +111,7 @@ export interface AdminTranslation {
   careInstructions: string | null;
   metaTitle: string | null;
   metaDescription: string | null;
+  focusKeyword: string | null;
 }
 
 export interface AdminVariant {
@@ -120,6 +125,12 @@ export interface AdminVariant {
   lowStockThreshold: number;
   isActive: boolean;
   order: number;
+  skuIsManual: boolean;
+  barcode: string | null;
+  costPrice: number;
+  reorderPoint: number | null;
+  reorderQuantity: number | null;
+  preferredSupplierId: string | null;
 }
 
 export interface AdminProduct {
@@ -143,11 +154,22 @@ export interface AdminProduct {
   featuredRank: number;
   translations: AdminTranslation[];
   variants: AdminVariant[];
-  images: Array<{ id: string; url: string; alt: string | null; order: number; isPrimary: boolean }>;
+  images: Array<{
+    id: string;
+    url: string;
+    alt: string | null;
+    translations: Array<{ locale: string; alt: string }>;
+    order: number;
+    isPrimary: boolean;
+  }>;
   category: { id: string; slug: string } | null;
   totalStock: number;
   lowStockVariants: number;
   updatedAt: string;
+  code: string | null;
+  noindex: boolean;
+  canonicalOverride: string | null;
+  options: AdminProductOption[];
 }
 
 export interface AdminCategory {
@@ -169,6 +191,58 @@ export interface AdminBrand {
   isActive: boolean;
   translations: Array<{ locale: Locale; name: string; description: string | null }>;
   _count?: { products: number };
+}
+
+export interface OptionValueTranslation {
+  locale: Locale;
+  label: string;
+}
+
+export interface AdminOptionTemplateValue {
+  id: string;
+  key: string;
+  swatchHex: string | null;
+  swatchUrl: string | null;
+  order: number;
+  translations: OptionValueTranslation[];
+}
+
+export interface AdminOptionTemplate {
+  id: string;
+  key: string;
+  display: 'BUTTON' | 'DROPDOWN' | 'SWATCH' | 'TEXT';
+  order: number;
+  translations: OptionValueTranslation[];
+  values: AdminOptionTemplateValue[];
+}
+
+export interface AdminProductOption {
+  id: string;
+  productId: string;
+  key: string;
+  display: 'BUTTON' | 'DROPDOWN' | 'SWATCH' | 'TEXT';
+  order: number;
+  translations: OptionValueTranslation[];
+  values: AdminOptionTemplateValue[];
+}
+
+export interface AdminRedirect {
+  id: string;
+  fromPath: string;
+  toPath: string;
+  statusCode: number;
+  isAutomatic: boolean;
+  hitCount: number;
+  createdAt: string;
+}
+
+export interface SeoHealthRow {
+  id: string;
+  slug: string;
+  status: 'DRAFT' | 'ACTIVE' | 'ARCHIVED';
+  name: string;
+  passed: boolean;
+  failures: string[];
 }
 
 export interface MeasurementFieldRow {

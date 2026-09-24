@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1450,
-    "lines": 223016,
-    "routes": 357,
-    "controllers": 62,
-    "models": 140,
+    "files": 1469,
+    "lines": 226139,
+    "routes": 375,
+    "controllers": 65,
+    "models": 146,
     "enums": 62,
-    "migrations": 61,
+    "migrations": 62,
     "events": 39,
     "permissions": 44,
-    "screens": 156,
+    "screens": 158,
     "crons": 9,
-    "specs": 135,
+    "specs": 138,
     "designLaws": 150
   },
   "designLaws": [
@@ -1083,9 +1083,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 527,
-      "lines": 73264,
-      "bytes": 2685227,
+      "files": 540,
+      "lines": 74909,
+      "bytes": 2745482,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1101,21 +1101,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 266,
-      "lines": 40648,
-      "bytes": 1485155,
+      "files": 268,
+      "lines": 41728,
+      "bytes": 1523396,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 389,
-      "lines": 58257,
-      "bytes": 3440395,
+      "lines": 58352,
+      "bytes": 3446302,
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 57,
-      "lines": 4769,
-      "bytes": 155577,
+      "files": 61,
+      "lines": 5072,
+      "bytes": 166435,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -1238,21 +1238,32 @@
       "files": [
         "apps/api/src/modules/catalog/brand-admin.service.ts",
         "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+        "apps/api/src/modules/catalog/catalog-options-admin.controller.ts",
         "apps/api/src/modules/catalog/catalog.controller.ts",
         "apps/api/src/modules/catalog/catalog.module.ts",
         "apps/api/src/modules/catalog/catalog.service.ts",
         "apps/api/src/modules/catalog/category-admin.service.ts",
         "apps/api/src/modules/catalog/dto/brand.dto.ts",
         "apps/api/src/modules/catalog/dto/category.dto.ts",
+        "apps/api/src/modules/catalog/dto/option.dto.ts",
         "apps/api/src/modules/catalog/dto/product-query.dto.ts",
         "apps/api/src/modules/catalog/dto/product.dto.ts",
+        "apps/api/src/modules/catalog/dto/redirect.dto.ts",
+        "apps/api/src/modules/catalog/option-template-admin.service.ts",
         "apps/api/src/modules/catalog/product-admin.service.spec.ts",
         "apps/api/src/modules/catalog/product-admin.service.ts",
         "apps/api/src/modules/catalog/product-import.service.ts",
+        "apps/api/src/modules/catalog/product-option-admin.service.ts",
         "apps/api/src/modules/catalog/product-replication.listener.spec.ts",
-        "apps/api/src/modules/catalog/product-replication.listener.ts"
+        "apps/api/src/modules/catalog/product-replication.listener.ts",
+        "apps/api/src/modules/catalog/publish-gate.ts",
+        "apps/api/src/modules/catalog/redirect-admin.controller.ts",
+        "apps/api/src/modules/catalog/redirect-guard.ts",
+        "apps/api/src/modules/catalog/redirect.service.ts",
+        "apps/api/src/modules/catalog/seo-health.service.ts",
+        "apps/api/src/modules/catalog/sync-option-model.ts"
       ],
-      "routes": 25,
+      "routes": 43,
       "page": "docs/index/modules/catalog.md"
     },
     {
@@ -2841,7 +2852,7 @@
       "controller": "CatalogAdminController",
       "handler": "listBrands",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 203,
+      "line": 227,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -2857,7 +2868,7 @@
       "controller": "CatalogAdminController",
       "handler": "createBrand",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 208,
+      "line": 232,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -2873,7 +2884,7 @@
       "controller": "CatalogAdminController",
       "handler": "deleteBrand",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 223,
+      "line": 247,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -2889,7 +2900,7 @@
       "controller": "CatalogAdminController",
       "handler": "updateBrand",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 213,
+      "line": 237,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -2905,7 +2916,7 @@
       "controller": "CatalogAdminController",
       "handler": "listCategories",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 176,
+      "line": 200,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -2921,7 +2932,7 @@
       "controller": "CatalogAdminController",
       "handler": "createCategory",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 181,
+      "line": 205,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -2937,7 +2948,7 @@
       "controller": "CatalogAdminController",
       "handler": "deleteCategory",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 196,
+      "line": 220,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -2953,7 +2964,7 @@
       "controller": "CatalogAdminController",
       "handler": "updateCategory",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 186,
+      "line": 210,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -2969,7 +2980,7 @@
       "controller": "CatalogAdminController",
       "handler": "deleteImage",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 157,
+      "line": 181,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -2985,7 +2996,7 @@
       "controller": "CatalogAdminController",
       "handler": "updateImage",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 147,
+      "line": 171,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3001,7 +3012,7 @@
       "controller": "CatalogAdminController",
       "handler": "import",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 250,
+      "line": 274,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3017,7 +3028,7 @@
       "controller": "CatalogAdminController",
       "handler": "importTemplate",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 236,
+      "line": 260,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3027,13 +3038,141 @@
       "summary": "Download the CSV template for bulk product upload"
     },
     {
+      "method": "DELETE",
+      "path": "/admin/catalog/option-template-values/:valueId",
+      "module": "catalog",
+      "controller": "CatalogOptionsAdminController",
+      "handler": "deleteTemplateValue",
+      "file": "apps/api/src/modules/catalog/catalog-options-admin.controller.ts",
+      "line": 47,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Remove a template value"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/catalog/option-templates",
+      "module": "catalog",
+      "controller": "CatalogOptionsAdminController",
+      "handler": "listTemplates",
+      "file": "apps/api/src/modules/catalog/catalog-options-admin.controller.ts",
+      "line": 25,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Store-level reusable option axes (Catalogue -> Options & attributes)"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/option-templates",
+      "module": "catalog",
+      "controller": "CatalogOptionsAdminController",
+      "handler": "createTemplate",
+      "file": "apps/api/src/modules/catalog/catalog-options-admin.controller.ts",
+      "line": 31,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create a reusable option template"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/catalog/option-templates/:templateId",
+      "module": "catalog",
+      "controller": "CatalogOptionsAdminController",
+      "handler": "deleteTemplate",
+      "file": "apps/api/src/modules/catalog/catalog-options-admin.controller.ts",
+      "line": 53,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Delete a template"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/option-templates/:templateId/values",
+      "module": "catalog",
+      "controller": "CatalogOptionsAdminController",
+      "handler": "addTemplateValue",
+      "file": "apps/api/src/modules/catalog/catalog-options-admin.controller.ts",
+      "line": 37,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Add a value to a template"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/catalog/option-values/:valueId",
+      "module": "catalog",
+      "controller": "CatalogOptionsAdminController",
+      "handler": "deleteProductOptionValue",
+      "file": "apps/api/src/modules/catalog/catalog-options-admin.controller.ts",
+      "line": 95,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Remove a value — refused while a variant still uses it"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/catalog/options/:optionId",
+      "module": "catalog",
+      "controller": "CatalogOptionsAdminController",
+      "handler": "deleteProductOption",
+      "file": "apps/api/src/modules/catalog/catalog-options-admin.controller.ts",
+      "line": 101,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Remove an option axis — refused while any of its values is in use"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/options/:optionId/values",
+      "module": "catalog",
+      "controller": "CatalogOptionsAdminController",
+      "handler": "addProductOptionValue",
+      "file": "apps/api/src/modules/catalog/catalog-options-admin.controller.ts",
+      "line": 85,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Add a value to a product's option"
+    },
+    {
       "method": "GET",
       "path": "/admin/catalog/products",
       "module": "catalog",
       "controller": "CatalogAdminController",
       "handler": "listProducts",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 79,
+      "line": 91,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3049,7 +3188,7 @@
       "controller": "CatalogAdminController",
       "handler": "createProduct",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 93,
+      "line": 117,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3065,7 +3204,7 @@
       "controller": "CatalogAdminController",
       "handler": "archiveProduct",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 108,
+      "line": 132,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3081,7 +3220,7 @@
       "controller": "CatalogAdminController",
       "handler": "getProduct",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 87,
+      "line": 111,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3097,7 +3236,7 @@
       "controller": "CatalogAdminController",
       "handler": "updateProduct",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 98,
+      "line": 122,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3113,7 +3252,7 @@
       "controller": "CatalogAdminController",
       "handler": "addImage",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 127,
+      "line": 151,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3129,7 +3268,7 @@
       "controller": "CatalogAdminController",
       "handler": "reorderImages",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 141,
+      "line": 165,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3139,13 +3278,157 @@
       "summary": "Reorder images; the first becomes the thumbnail"
     },
     {
+      "method": "GET",
+      "path": "/admin/catalog/products/:id/publish-gate",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "publishGate",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 106,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "A product's own completeness against the publish gate"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/catalog/products/:productId/options",
+      "module": "catalog",
+      "controller": "CatalogOptionsAdminController",
+      "handler": "listProductOptions",
+      "file": "apps/api/src/modules/catalog/catalog-options-admin.controller.ts",
+      "line": 59,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "A product's own option axes and values"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/products/:productId/options",
+      "module": "catalog",
+      "controller": "CatalogOptionsAdminController",
+      "handler": "createProductOption",
+      "file": "apps/api/src/modules/catalog/catalog-options-admin.controller.ts",
+      "line": 65,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Add a custom option axis to a product"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/products/:productId/options/instantiate",
+      "module": "catalog",
+      "controller": "CatalogOptionsAdminController",
+      "handler": "instantiate",
+      "file": "apps/api/src/modules/catalog/catalog-options-admin.controller.ts",
+      "line": 75,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Copy a store-level template onto this product"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/catalog/products/seo-health",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "seoHealthList",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 100,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every product failing the SEO publish gate, worst first"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/catalog/redirects",
+      "module": "catalog",
+      "controller": "RedirectAdminController",
+      "handler": "list",
+      "file": "apps/api/src/modules/catalog/redirect-admin.controller.ts",
+      "line": 30,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every redirect, newest first"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/redirects",
+      "module": "catalog",
+      "controller": "RedirectAdminController",
+      "handler": "create",
+      "file": "apps/api/src/modules/catalog/redirect-admin.controller.ts",
+      "line": 36,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Add a manual redirect"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/catalog/redirects/:id",
+      "module": "catalog",
+      "controller": "RedirectAdminController",
+      "handler": "delete",
+      "file": "apps/api/src/modules/catalog/redirect-admin.controller.ts",
+      "line": 55,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Remove a redirect"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/redirects/import",
+      "module": "catalog",
+      "controller": "RedirectAdminController",
+      "handler": "importCsv",
+      "file": "apps/api/src/modules/catalog/redirect-admin.controller.ts",
+      "line": 45,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Bulk-import redirects from a CSV (from_path,to_path[,status_code])"
+    },
+    {
       "method": "PATCH",
       "path": "/admin/catalog/variants/:variantId/stock",
       "module": "catalog",
       "controller": "CatalogAdminController",
       "handler": "updateStock",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 165,
+      "line": 189,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -6748,6 +7031,20 @@
     },
     {
       "method": "GET",
+      "path": "/catalog/redirects/lookup",
+      "module": "catalog",
+      "controller": "RedirectLookupController",
+      "handler": "lookup",
+      "file": "apps/api/src/modules/catalog/redirect-admin.controller.ts",
+      "line": 74,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Whether a path now redirects somewhere else"
+    },
+    {
+      "method": "GET",
       "path": "/catalog/stitching-services",
       "module": "catalog",
       "controller": "CatalogController",
@@ -7898,6 +8195,14 @@
         "PATCH /admin/catalog/images/:imageId",
         "POST /admin/catalog/import",
         "GET /admin/catalog/import/template",
+        "DELETE /admin/catalog/option-template-values/:valueId",
+        "GET /admin/catalog/option-templates",
+        "POST /admin/catalog/option-templates",
+        "DELETE /admin/catalog/option-templates/:templateId",
+        "POST /admin/catalog/option-templates/:templateId/values",
+        "DELETE /admin/catalog/option-values/:valueId",
+        "DELETE /admin/catalog/options/:optionId",
+        "POST /admin/catalog/options/:optionId/values",
         "GET /admin/catalog/products",
         "POST /admin/catalog/products",
         "DELETE /admin/catalog/products/:id",
@@ -7905,9 +8210,18 @@
         "PATCH /admin/catalog/products/:id",
         "POST /admin/catalog/products/:id/images",
         "PATCH /admin/catalog/products/:id/images/order",
+        "GET /admin/catalog/products/:id/publish-gate",
+        "GET /admin/catalog/products/:productId/options",
+        "POST /admin/catalog/products/:productId/options",
+        "POST /admin/catalog/products/:productId/options/instantiate",
+        "GET /admin/catalog/products/seo-health",
+        "GET /admin/catalog/redirects",
+        "POST /admin/catalog/redirects",
+        "DELETE /admin/catalog/redirects/:id",
+        "POST /admin/catalog/redirects/import",
         "PATCH /admin/catalog/variants/:variantId/stock"
       ],
-      "uiSites": 4,
+      "uiSites": 6,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -7944,7 +8258,7 @@
       "routes": [
         "GET /admin/reports/export/stock-valuation"
       ],
-      "uiSites": 7,
+      "uiSites": 8,
       "roles": [
         "ADMIN"
       ],
@@ -8606,7 +8920,7 @@
       "name": "catalog.product_published",
       "doc": "Fires once, the moment a product's status first becomes ACTIVE — never again on a later re-save.",
       "publishers": [
-        "apps/api/src/modules/catalog/product-admin.service.ts:171"
+        "apps/api/src/modules/catalog/product-admin.service.ts:197"
       ],
       "subscribers": [
         "apps/api/src/modules/catalog/product-replication.listener.ts:50 onProductPublished()",
@@ -8618,7 +8932,7 @@
       "name": "catalog.product_price_changed",
       "doc": "Fires only when basePrice actually changes value, never on an unrelated field edit.",
       "publishers": [
-        "apps/api/src/modules/catalog/product-admin.service.ts:291"
+        "apps/api/src/modules/catalog/product-admin.service.ts:349"
       ],
       "subscribers": [
         "apps/api/src/modules/catalog/product-replication.listener.ts:55 onProductPriceChanged()",
@@ -9854,7 +10168,7 @@
     {
       "name": "Brand",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 46,
+      "line": 49,
       "doc": "A label a product is sold under.",
       "fields": [
         {
@@ -9993,7 +10307,7 @@
     {
       "name": "BrandTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 65,
+      "line": 68,
       "doc": "House Rule 6: a customer-facing name is a translation row, not a column.",
       "fields": [
         {
@@ -10396,6 +10710,13 @@
           "relation": false
         },
         {
+          "name": "code",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "parentId",
           "type": "String?",
           "id": false,
@@ -10474,7 +10795,7 @@
     {
       "name": "CategoryTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 77,
+      "line": 80,
       "doc": "",
       "fields": [
         {
@@ -13929,6 +14250,226 @@
       ]
     },
     {
+      "name": "OptionTemplate",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 415,
+      "doc": "Store-level, reusable option axis — \"Size: XS/S/M/L/XL/XXL\" typed once under Catalogue -> Options & attributes instead of on every product.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "display",
+          "type": "OptionDisplay",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "translations",
+          "type": "OptionTemplateTranslation[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "values",
+          "type": "OptionTemplateValue[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([order])"
+      ]
+    },
+    {
+      "name": "OptionTemplateTranslation",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 428,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "templateId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "template",
+          "type": "OptionTemplate",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([templateId, locale])"
+      ]
+    },
+    {
+      "name": "OptionTemplateValue",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 439,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "templateId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "swatchHex",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "swatchUrl",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "template",
+          "type": "OptionTemplate",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "translations",
+          "type": "OptionTemplateValueTranslation[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@unique([templateId, key])",
+        "@@index([templateId, order])"
+      ]
+    },
+    {
+      "name": "OptionTemplateValueTranslation",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 454,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "valueId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "value",
+          "type": "OptionTemplateValue",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([valueId, locale])"
+      ]
+    },
+    {
       "name": "Order",
       "file": "apps/api/prisma/schema/orders.prisma",
       "line": 24,
@@ -16301,7 +16842,7 @@
     {
       "name": "Product",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 89,
+      "line": 92,
       "doc": "",
       "fields": [
         {
@@ -16377,6 +16918,27 @@
         {
           "name": "tags",
           "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "code",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "noindex",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "canonicalOverride",
+          "type": "String?",
           "id": false,
           "unique": false,
           "relation": false
@@ -16532,7 +17094,7 @@
     {
       "name": "ProductGarmentType",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 278,
+      "line": 316,
       "doc": "Which garments a given unstitched fabric can be made into.",
       "fields": [
         {
@@ -16564,7 +17126,7 @@
     {
       "name": "ProductImage",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 261,
+      "line": 282,
       "doc": "",
       "fields": [
         {
@@ -16636,6 +17198,13 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "translations",
+          "type": "ProductImageTranslation[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -16643,9 +17212,55 @@
       ]
     },
     {
+      "name": "ProductImageTranslation",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 304,
+      "doc": "Alt text per locale.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "imageId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "alt",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "image",
+          "type": "ProductImage",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([imageId, locale])"
+      ]
+    },
+    {
       "name": "ProductOption",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 299,
+      "line": 337,
       "doc": "A dynamic option axis a product varies along: \"Size\", \"Colour\", \"Storage\".",
       "fields": [
         {
@@ -16720,7 +17335,7 @@
     {
       "name": "ProductOptionTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 316,
+      "line": 354,
       "doc": "",
       "fields": [
         {
@@ -16766,7 +17381,7 @@
     {
       "name": "ProductOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 328,
+      "line": 366,
       "doc": "A specific value on an option axis: \"M\", \"Ferozi\", \"128GB\".",
       "fields": [
         {
@@ -16841,7 +17456,7 @@
     {
       "name": "ProductOptionValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 346,
+      "line": 384,
       "doc": "",
       "fields": [
         {
@@ -16887,7 +17502,7 @@
     {
       "name": "ProductTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 149,
+      "line": 164,
       "doc": "",
       "fields": [
         {
@@ -16947,6 +17562,13 @@
           "relation": false
         },
         {
+          "name": "focusKeyword",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "product",
           "type": "Product",
           "id": false,
@@ -16962,7 +17584,7 @@
     {
       "name": "ProductVariant",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 165,
+      "line": 183,
       "doc": "",
       "fields": [
         {
@@ -17089,6 +17711,13 @@
           "type": "String?",
           "id": false,
           "unique": true,
+          "relation": false
+        },
+        {
+          "name": "skuIsManual",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
           "relation": false
         },
         {
@@ -17282,7 +17911,7 @@
     {
       "name": "ProductVariantOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 360,
+      "line": 398,
       "doc": "The join that DEFINES a variant: one row per option axis per variant.",
       "fields": [
         {
@@ -17839,6 +18468,66 @@
       "indexes": [
         "@@index([isActive, kind])",
         "@@index([name])"
+      ]
+    },
+    {
+      "name": "Redirect",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 468,
+      "doc": "A storefront path that now 301s somewhere else — created automatically when a live product/category slug changes, or entered by hand (including a CSV import when migrating an old site).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "fromPath",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "toPath",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "statusCode",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isAutomatic",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "hitCount",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([isAutomatic])"
       ]
     },
     {
@@ -19271,7 +19960,7 @@
     {
       "name": "StockAdjustment",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 243,
+      "line": 264,
       "doc": "One entry per change to ProductVariant.stock, so \"why is stock 4\" has an answer without an audit table bolted on after the fact.",
       "fields": [
         {
@@ -21985,7 +22674,7 @@
     {
       "name": "OptionDisplay",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 287,
+      "line": 325,
       "values": [
         "BUTTON",
         "DROPDOWN",
@@ -23514,6 +24203,32 @@
         "SupportAccessGrant",
         "TenantDeploymentCredential"
       ]
+    },
+    {
+      "folder": "20260924171933_add_option_templates_redirects_sku_seo",
+      "file": "apps/api/prisma/schema/migrations/20260924171933_add_option_templates_redirects_sku_seo/migration.sql",
+      "date": "2026-09-24",
+      "slug": "add_option_templates_redirects_sku_seo",
+      "statements": 24,
+      "kinds": [
+        "ALTER TABLE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "INSERT",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "Category",
+        "OptionTemplate",
+        "OptionTemplateTranslation",
+        "OptionTemplateValue",
+        "OptionTemplateValueTranslation",
+        "Product",
+        "ProductImageTranslation",
+        "ProductTranslation",
+        "ProductVariant",
+        "Redirect"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -24569,6 +25284,15 @@
     },
     {
       "app": "web",
+      "kind": "page",
+      "url": "/admin/options",
+      "file": "apps/web/src/app/(admin)/admin/(app)/options/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
       "kind": "loading",
       "url": "/admin/orders",
       "file": "apps/web/src/app/(admin)/admin/(app)/orders/loading.tsx",
@@ -24752,6 +25476,15 @@
       "kind": "page",
       "url": "/admin/reports",
       "file": "apps/web/src/app/(admin)/admin/(app)/reports/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/seo",
+      "file": "apps/web/src/app/(admin)/admin/(app)/seo/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -26714,6 +27447,15 @@
       ]
     },
     {
+      "file": "apps/api/test/publish-gate.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "checkPublishGate"
+      ]
+    },
+    {
       "file": "apps/api/test/reports.e2e-spec.ts",
       "module": "",
       "kind": "e2e test",
@@ -26979,6 +27721,15 @@
       ]
     },
     {
+      "file": "packages/shared/src/sku.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "generateSku"
+      ]
+    },
+    {
       "file": "packages/shared/src/units.spec.ts",
       "module": "",
       "kind": "unit test",
@@ -26987,6 +27738,17 @@
         "toBaseUnits",
         "fromBaseUnits",
         "formatQuantity"
+      ]
+    },
+    {
+      "file": "packages/shared/src/variant-matrix.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "generateVariantCombinations",
+        "newCombinationsOnly",
+        "removedCombinations"
       ]
     }
   ],
@@ -27469,16 +28231,10 @@
       "path": "apps/api/prisma/backfill-product-options.ts",
       "area": "api",
       "kind": "module",
-      "lines": 170,
-      "bytes": 5709,
+      "lines": 26,
+      "bytes": 1001,
       "doc": "",
-      "symbols": [
-        {
-          "name": "backfillProductOptions",
-          "kind": "function",
-          "line": 24
-        }
-      ]
+      "symbols": []
     },
     {
       "path": "apps/api/prisma/schema/accounting.prisma",
@@ -27511,8 +28267,8 @@
       "path": "apps/api/prisma/schema/catalog.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 371,
-      "bytes": 13092,
+      "lines": 484,
+      "bytes": 17313,
       "doc": "Catalog: categories, products, variants, images.",
       "symbols": []
     },
@@ -28116,6 +28872,15 @@
       "kind": "migration",
       "lines": 221,
       "bytes": 8399,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260924171933_add_option_templates_redirects_sku_seo/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 149,
+      "bytes": 5705,
       "doc": "",
       "symbols": []
     },
@@ -30398,8 +31163,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 302,
-      "bytes": 12812,
+      "lines": 318,
+      "bytes": 13765,
       "doc": "",
       "symbols": [
         {
@@ -30440,12 +31205,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 161
+          "line": 174
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 163
+          "line": 176
         }
       ]
     },
@@ -30468,8 +31233,8 @@
       "path": "apps/api/src/core/settings/settings.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 103,
-      "bytes": 3534,
+      "lines": 112,
+      "bytes": 3893,
       "doc": "",
       "symbols": [
         {
@@ -31844,14 +32609,29 @@
       "path": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 260,
-      "bytes": 7687,
+      "lines": 284,
+      "bytes": 8415,
       "doc": "",
       "symbols": [
         {
           "name": "CatalogAdminController",
           "kind": "class",
-          "line": 67
+          "line": 78
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/catalog/catalog-options-admin.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 105,
+      "bytes": 4231,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CatalogOptionsAdminController",
+          "kind": "class",
+          "line": 17
         }
       ]
     },
@@ -31874,14 +32654,14 @@
       "path": "apps/api/src/modules/catalog/catalog.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 35,
-      "bytes": 1615,
+      "lines": 51,
+      "bytes": 2274,
       "doc": "",
       "symbols": [
         {
           "name": "CatalogModule",
           "kind": "class",
-          "line": 34
+          "line": 50
         }
       ]
     },
@@ -31889,8 +32669,8 @@
       "path": "apps/api/src/modules/catalog/catalog.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 353,
-      "bytes": 11827,
+      "lines": 365,
+      "bytes": 12588,
       "doc": "",
       "symbols": [
         {
@@ -31901,12 +32681,12 @@
         {
           "name": "CatalogService",
           "kind": "class",
-          "line": 62
+          "line": 68
         },
         {
           "name": "localise",
           "kind": "function",
-          "line": 252
+          "line": 258
         }
       ]
     },
@@ -31966,6 +32746,46 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/catalog/dto/option.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 103,
+      "bytes": 2424,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OptionValueTranslationDto",
+          "kind": "class",
+          "line": 16
+        },
+        {
+          "name": "UpsertOptionValueDto",
+          "kind": "class",
+          "line": 27
+        },
+        {
+          "name": "OptionTranslationDto",
+          "kind": "class",
+          "line": 56
+        },
+        {
+          "name": "CreateProductOptionDto",
+          "kind": "class",
+          "line": 58
+        },
+        {
+          "name": "CreateOptionTemplateDto",
+          "kind": "class",
+          "line": 89
+        },
+        {
+          "name": "InstantiateTemplateDto",
+          "kind": "class",
+          "line": 91
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/catalog/dto/product-query.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -31994,8 +32814,8 @@
       "path": "apps/api/src/modules/catalog/dto/product.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 253,
-      "bytes": 5648,
+      "lines": 319,
+      "bytes": 7425,
       "doc": "",
       "symbols": [
         {
@@ -32006,17 +32826,47 @@
         {
           "name": "ProductVariantDto",
           "kind": "class",
-          "line": 56
+          "line": 62
         },
         {
           "name": "CreateProductDto",
           "kind": "class",
-          "line": 115
+          "line": 164
         },
         {
           "name": "UpdateProductDto",
           "kind": "class",
-          "line": 234
+          "line": 300
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/catalog/dto/redirect.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 23,
+      "bytes": 561,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateRedirectDto",
+          "kind": "class",
+          "line": 4
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/catalog/option-template-admin.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 125,
+      "bytes": 4401,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OptionTemplateAdminService",
+          "kind": "class",
+          "line": 19
         }
       ]
     },
@@ -32033,29 +32883,29 @@
       "path": "apps/api/src/modules/catalog/product-admin.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 631,
-      "bytes": 22643,
+      "lines": 737,
+      "bytes": 28015,
       "doc": "",
       "symbols": [
         {
           "name": "ProductAdminService",
           "kind": "class",
-          "line": 30
+          "line": 35
         },
         {
           "name": "assertKindRules",
           "kind": "function",
-          "line": 538
+          "line": 618
         },
         {
           "name": "assertUniqueSkus",
           "kind": "function",
-          "line": 584
+          "line": 664
         },
         {
           "name": "toAdminView",
           "kind": "function",
-          "line": 617
+          "line": 723
         }
       ]
     },
@@ -32085,6 +32935,21 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/catalog/product-option-admin.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 248,
+      "bytes": 9448,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProductOptionAdminService",
+          "kind": "class",
+          "line": 19
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/catalog/product-replication.listener.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -32105,6 +32970,136 @@
           "name": "ProductReplicationListener",
           "kind": "class",
           "line": 35
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/catalog/publish-gate.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 84,
+      "bytes": 2741,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PublishGateImage",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "PublishGateVariant",
+          "kind": "interface",
+          "line": 17
+        },
+        {
+          "name": "PublishGateTranslation",
+          "kind": "interface",
+          "line": 24
+        },
+        {
+          "name": "PublishGateInput",
+          "kind": "interface",
+          "line": 30
+        },
+        {
+          "name": "PublishGateResult",
+          "kind": "interface",
+          "line": 36
+        },
+        {
+          "name": "checkPublishGate",
+          "kind": "function",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/catalog/redirect-admin.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 78,
+      "bytes": 2500,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RedirectAdminController",
+          "kind": "class",
+          "line": 25
+        },
+        {
+          "name": "RedirectLookupController",
+          "kind": "class",
+          "line": 69
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/catalog/redirect-guard.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 48,
+      "bytes": 1503,
+      "doc": "WO-3.9 (03-variants-sku-seo.md) — the loop/chain guard, as a pure function so it can be dry-run and unit tested without a database.",
+      "symbols": [
+        {
+          "name": "RedirectRow",
+          "kind": "interface",
+          "line": 10
+        },
+        {
+          "name": "ChainGuardResult",
+          "kind": "interface",
+          "line": 15
+        },
+        {
+          "name": "checkRedirectChain",
+          "kind": "function",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/catalog/redirect.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 159,
+      "bytes": 5560,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RedirectService",
+          "kind": "class",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/catalog/seo-health.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 64,
+      "bytes": 2209,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SeoHealthService",
+          "kind": "class",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/catalog/sync-option-model.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 168,
+      "bytes": 6076,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "syncOptionModel",
+          "kind": "function",
+          "line": 33
         }
       ]
     },
@@ -35850,8 +36845,8 @@
       "path": "apps/api/test/catalog.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
-      "lines": 407,
-      "bytes": 13979,
+      "lines": 411,
+      "bytes": 14193,
       "doc": "",
       "symbols": []
     },
@@ -35942,6 +36937,15 @@
       "kind": "e2e test",
       "lines": 164,
       "bytes": 5564,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/test/publish-gate.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 69,
+      "bytes": 2560,
       "doc": "",
       "symbols": []
     },
@@ -39025,6 +40029,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/options/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 226,
+      "bytes": 7908,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OptionTemplatesPage",
+          "kind": "default",
+          "line": 27
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -39351,6 +40370,21 @@
           "name": "AdminReportsPage",
           "kind": "default",
           "line": 75
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/seo/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 217,
+      "bytes": 7165,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SeoPage",
+          "kind": "default",
+          "line": 11
         }
       ]
     },
@@ -39968,8 +41002,8 @@
       "path": "apps/web/src/app/(storefront)/[locale]/layout.tsx",
       "area": "web",
       "kind": "layout",
-      "lines": 139,
-      "bytes": 5071,
+      "lines": 182,
+      "bytes": 6468,
       "doc": "",
       "symbols": [
         {
@@ -39980,7 +41014,7 @@
         {
           "name": "LocaleLayout",
           "kind": "default",
-          "line": 90
+          "line": 131
         }
       ]
     },
@@ -40093,8 +41127,8 @@
       "path": "apps/web/src/app/(storefront)/[locale]/product/[slug]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 373,
-      "bytes": 14321,
+      "lines": 384,
+      "bytes": 14771,
       "doc": "",
       "symbols": [
         {
@@ -40110,7 +41144,7 @@
         {
           "name": "ProductPage",
           "kind": "default",
-          "line": 111
+          "line": 122
         }
       ]
     },
@@ -40566,34 +41600,34 @@
       "path": "apps/web/src/components/admin/image-manager.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 485,
-      "bytes": 16686,
+      "lines": 543,
+      "bytes": 18669,
       "doc": "",
       "symbols": [
         {
           "name": "ImageManager",
           "kind": "function",
-          "line": 33
+          "line": 39
         },
         {
           "name": "StagedImage",
           "kind": "interface",
-          "line": 281
+          "line": 321
         },
         {
           "name": "ImageStager",
           "kind": "function",
-          "line": 303
+          "line": 344
         },
         {
           "name": "StagedImageUploadResult",
           "kind": "interface",
-          "line": 442
+          "line": 492
         },
         {
           "name": "uploadStagedImages",
           "kind": "function",
-          "line": 460
+          "line": 510
         }
       ]
     },
@@ -40601,8 +41635,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 554,
-      "bytes": 14262,
+      "lines": 570,
+      "bytes": 14610,
       "doc": "",
       "symbols": [
         {
@@ -40633,12 +41667,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 524
+          "line": 540
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 539
+          "line": 555
         }
       ]
     },
@@ -40681,14 +41715,14 @@
       "path": "apps/web/src/components/admin/product-form.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 1034,
-      "bytes": 37328,
+      "lines": 1410,
+      "bytes": 52429,
       "doc": "",
       "symbols": [
         {
           "name": "ProductForm",
           "kind": "function",
-          "line": 55
+          "line": 79
         }
       ]
     },
@@ -41789,8 +42823,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 136,
-      "bytes": 5331,
+      "lines": 138,
+      "bytes": 5393,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -42181,14 +43215,19 @@
       "path": "apps/web/src/middleware.ts",
       "area": "web",
       "kind": "module",
-      "lines": 19,
-      "bytes": 835,
+      "lines": 76,
+      "bytes": 3071,
       "doc": "",
       "symbols": [
         {
+          "name": "middleware",
+          "kind": "default",
+          "line": 50
+        },
+        {
           "name": "config",
           "kind": "const",
-          "line": 6
+          "line": 63
         }
       ]
     },
@@ -42226,8 +43265,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1107,
-      "bytes": 28780,
+      "lines": 1181,
+      "bytes": 30371,
       "doc": "",
       "symbols": [
         {
@@ -42253,532 +43292,562 @@
         {
           "name": "CategoryNode",
           "kind": "interface",
-          "line": 69
+          "line": 73
         },
         {
           "name": "CatalogFacets",
           "kind": "interface",
-          "line": 79
+          "line": 83
         },
         {
           "name": "ProductListQuery",
           "kind": "interface",
-          "line": 86
+          "line": 90
         },
         {
           "name": "AdminTranslation",
           "kind": "interface",
-          "line": 103
+          "line": 107
         },
         {
           "name": "AdminVariant",
           "kind": "interface",
-          "line": 112
+          "line": 117
         },
         {
           "name": "AdminProduct",
           "kind": "interface",
-          "line": 125
+          "line": 136
         },
         {
           "name": "AdminCategory",
           "kind": "interface",
-          "line": 153
+          "line": 175
         },
         {
           "name": "AdminBrand",
           "kind": "interface",
-          "line": 164
+          "line": 186
+        },
+        {
+          "name": "OptionValueTranslation",
+          "kind": "interface",
+          "line": 196
+        },
+        {
+          "name": "AdminOptionTemplateValue",
+          "kind": "interface",
+          "line": 201
+        },
+        {
+          "name": "AdminOptionTemplate",
+          "kind": "interface",
+          "line": 210
+        },
+        {
+          "name": "AdminProductOption",
+          "kind": "interface",
+          "line": 219
+        },
+        {
+          "name": "AdminRedirect",
+          "kind": "interface",
+          "line": 229
+        },
+        {
+          "name": "SeoHealthRow",
+          "kind": "interface",
+          "line": 239
         },
         {
           "name": "MeasurementFieldRow",
           "kind": "interface",
-          "line": 174
+          "line": 248
         },
         {
           "name": "GarmentType",
           "kind": "interface",
-          "line": 189
+          "line": 263
         },
         {
           "name": "AdminGarmentSizeChartRow",
           "kind": "interface",
-          "line": 209
+          "line": 283
         },
         {
           "name": "StitchingDesignArea",
           "kind": "type",
-          "line": 218
+          "line": 292
         },
         {
           "name": "AdminStitchingOption",
           "kind": "interface",
-          "line": 231
+          "line": 305
         },
         {
           "name": "AdminStitchingOptionGroup",
           "kind": "interface",
-          "line": 244
+          "line": 318
         },
         {
           "name": "ImportRowResult",
           "kind": "interface",
-          "line": 264
+          "line": 338
         },
         {
           "name": "ImportSummary",
           "kind": "interface",
-          "line": 271
+          "line": 345
         },
         {
           "name": "AuthUser",
           "kind": "interface",
-          "line": 279
+          "line": 353
         },
         {
           "name": "AuthResult",
           "kind": "interface",
-          "line": 297
+          "line": 371
         },
         {
           "name": "DeploymentMeta",
           "kind": "interface",
-          "line": 305
+          "line": 379
         },
         {
           "name": "RetailBrandSummary",
           "kind": "interface",
-          "line": 315
+          "line": 389
         },
         {
           "name": "OrgNodeSummary",
           "kind": "interface",
-          "line": 324
+          "line": 398
         },
         {
           "name": "MyScope",
           "kind": "interface",
-          "line": 335
+          "line": 409
         },
         {
           "name": "AdminScopeWithHolder",
           "kind": "interface",
-          "line": 350
+          "line": 424
         },
         {
           "name": "PolicyQuarantineEntry",
           "kind": "interface",
-          "line": 365
+          "line": 439
         },
         {
           "name": "GrantScopeInput",
           "kind": "interface",
-          "line": 381
+          "line": 455
         },
         {
           "name": "BrandPolicy",
           "kind": "interface",
-          "line": 394
+          "line": 468
         },
         {
           "name": "UpdateBrandPolicyInput",
           "kind": "interface",
-          "line": 401
+          "line": 475
         },
         {
           "name": "Location",
           "kind": "interface",
-          "line": 410
+          "line": 484
         },
         {
           "name": "StockAdjustment",
           "kind": "interface",
-          "line": 420
+          "line": 494
         },
         {
           "name": "InventoryVariantRow",
           "kind": "interface",
-          "line": 432
+          "line": 506
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 445
+          "line": 519
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 451
+          "line": 525
         },
         {
           "name": "VisitorFunnel",
           "kind": "interface",
-          "line": 462
+          "line": 536
         },
         {
           "name": "TrafficSourceRow",
           "kind": "interface",
-          "line": 469
+          "line": 543
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 475
+          "line": 549
         },
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 484
+          "line": 558
         },
         {
           "name": "OrderAgeingBucket",
           "kind": "interface",
-          "line": 492
+          "line": 566
         },
         {
           "name": "OrdersOverview",
           "kind": "interface",
-          "line": 497
+          "line": 571
         },
         {
           "name": "OrderTransitionTiming",
           "kind": "interface",
-          "line": 504
+          "line": 578
         },
         {
           "name": "OrdersFulfilment",
           "kind": "interface",
-          "line": 512
+          "line": 586
         },
         {
           "name": "PurchasingSpend",
           "kind": "interface",
-          "line": 518
+          "line": 592
         },
         {
           "name": "PurchasingSupplierRow",
           "kind": "interface",
-          "line": 524
+          "line": 598
         },
         {
           "name": "PurchasingSuppliers",
           "kind": "interface",
-          "line": 534
+          "line": 608
         },
         {
           "name": "ProductTopSellerRow",
           "kind": "interface",
-          "line": 540
+          "line": 614
         },
         {
           "name": "ProductsTopSellers",
           "kind": "interface",
-          "line": 552
+          "line": 626
         },
         {
           "name": "ProductSlowSellerRow",
           "kind": "interface",
-          "line": 556
+          "line": 630
         },
         {
           "name": "ProductsSlowSellers",
           "kind": "interface",
-          "line": 565
+          "line": 639
         },
         {
           "name": "ProductCategoryRow",
           "kind": "interface",
-          "line": 569
+          "line": 643
         },
         {
           "name": "ProductsCategories",
           "kind": "interface",
-          "line": 578
+          "line": 652
         },
         {
           "name": "InventoryValuation",
           "kind": "interface",
-          "line": 585
+          "line": 659
         },
         {
           "name": "StockMovementReasonRow",
           "kind": "interface",
-          "line": 592
+          "line": 666
         },
         {
           "name": "InventoryMovementRow",
           "kind": "interface",
-          "line": 599
+          "line": 673
         },
         {
           "name": "InventoryMovements",
           "kind": "interface",
-          "line": 609
+          "line": 683
         },
         {
           "name": "CustomersOverview",
           "kind": "interface",
-          "line": 617
+          "line": 691
         },
         {
           "name": "CustomerCohort",
           "kind": "interface",
-          "line": 624
+          "line": 698
         },
         {
           "name": "CustomersRetention",
           "kind": "interface",
-          "line": 630
+          "line": 704
         },
         {
           "name": "CustomerTopRow",
           "kind": "interface",
-          "line": 635
+          "line": 709
         },
         {
           "name": "CustomersTop",
           "kind": "interface",
-          "line": 645
+          "line": 719
         },
         {
           "name": "WorkshopStageRow",
           "kind": "interface",
-          "line": 651
+          "line": 725
         },
         {
           "name": "WorkshopTailorRow",
           "kind": "interface",
-          "line": 657
+          "line": 731
         },
         {
           "name": "WorkshopOutput",
           "kind": "interface",
-          "line": 664
+          "line": 738
         },
         {
           "name": "CompensationBasis",
           "kind": "type",
-          "line": 673
+          "line": 747
         },
         {
           "name": "CompensationRate",
           "kind": "interface",
-          "line": 675
+          "line": 749
         },
         {
           "name": "EmployeeCompensation",
           "kind": "interface",
-          "line": 686
+          "line": 760
         },
         {
           "name": "GrossPreview",
           "kind": "interface",
-          "line": 691
+          "line": 765
         },
         {
           "name": "LeaveKind",
           "kind": "type",
-          "line": 697
+          "line": 771
         },
         {
           "name": "LeaveType",
           "kind": "interface",
-          "line": 699
+          "line": 773
         },
         {
           "name": "LeaveBalance",
           "kind": "interface",
-          "line": 708
+          "line": 782
         },
         {
           "name": "LeaveRequestStatus",
           "kind": "type",
-          "line": 717
+          "line": 791
         },
         {
           "name": "LeaveRequest",
           "kind": "interface",
-          "line": 719
+          "line": 793
         },
         {
           "name": "EmployeeLeave",
           "kind": "interface",
-          "line": 736
+          "line": 810
         },
         {
           "name": "PayRunStatus",
           "kind": "type",
-          "line": 741
+          "line": 815
         },
         {
           "name": "PayRunLine",
           "kind": "interface",
-          "line": 743
+          "line": 817
         },
         {
           "name": "PayRunAdjustmentReason",
           "kind": "type",
-          "line": 757
+          "line": 831
         },
         {
           "name": "PayRunAdjustment",
           "kind": "interface",
-          "line": 759
+          "line": 833
         },
         {
           "name": "PayRun",
           "kind": "interface",
-          "line": 770
+          "line": 844
         },
         {
           "name": "PayRunWithLines",
           "kind": "interface",
-          "line": 785
+          "line": 859
         },
         {
           "name": "EmailAccountPurpose",
           "kind": "type",
-          "line": 792
+          "line": 866
         },
         {
           "name": "EmailAccount",
           "kind": "interface",
-          "line": 794
+          "line": 868
         },
         {
           "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 819
+          "line": 893
         },
         {
           "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 827
+          "line": 901
         },
         {
           "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 835
+          "line": 909
         },
         {
           "name": "InboundEmail",
           "kind": "interface",
-          "line": 842
+          "line": 916
         },
         {
           "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 859
+          "line": 933
         },
         {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 866
+          "line": 940
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 878
+          "line": 952
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 887
+          "line": 961
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 889
+          "line": 963
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 901
+          "line": 975
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 907
+          "line": 981
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 914
+          "line": 988
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 919
+          "line": 993
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 931
+          "line": 1005
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 940
+          "line": 1014
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 947
+          "line": 1021
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 961
+          "line": 1035
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 972
+          "line": 1046
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 976
+          "line": 1050
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 985
+          "line": 1059
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 993
+          "line": 1067
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 1022
+          "line": 1096
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 1054
+          "line": 1128
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 1069
+          "line": 1143
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 1078
+          "line": 1152
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 1087
+          "line": 1161
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 1103
+          "line": 1177
         }
       ]
     },
@@ -45322,8 +46391,8 @@
       "path": "docs/implementation/03-variants-sku-seo.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 471,
-      "bytes": 20708,
+      "lines": 566,
+      "bytes": 26615,
       "doc": "",
       "symbols": []
     },
@@ -47555,8 +48624,8 @@
       "path": "packages/shared/src/enums.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 100,
-      "bytes": 2955,
+      "lines": 104,
+      "bytes": 3175,
       "doc": "Enum values mirrored from the Prisma schema.",
       "symbols": [
         {
@@ -47595,74 +48664,84 @@
           "line": 34
         },
         {
+          "name": "OPTION_DISPLAYS",
+          "kind": "const",
+          "line": 37
+        },
+        {
+          "name": "OptionDisplay",
+          "kind": "type",
+          "line": 38
+        },
+        {
           "name": "ORDER_STATUSES",
           "kind": "const",
-          "line": 36
+          "line": 40
         },
         {
           "name": "OrderStatus",
           "kind": "type",
-          "line": 46
+          "line": 50
         },
         {
           "name": "PAYMENT_STATUSES",
           "kind": "const",
-          "line": 48
+          "line": 52
         },
         {
           "name": "PaymentStatus",
           "kind": "type",
-          "line": 56
+          "line": 60
         },
         {
           "name": "STITCHING_STAGES",
           "kind": "const",
-          "line": 58
+          "line": 62
         },
         {
           "name": "StitchingStage",
           "kind": "type",
-          "line": 66
+          "line": 70
         },
         {
           "name": "LEAD_STATUSES",
           "kind": "const",
-          "line": 68
+          "line": 72
         },
         {
           "name": "LeadStatus",
           "kind": "type",
-          "line": 69
+          "line": 73
         },
         {
           "name": "INTERACTION_KINDS",
           "kind": "const",
-          "line": 71
+          "line": 75
         },
         {
           "name": "InteractionKind",
           "kind": "type",
-          "line": 80
+          "line": 84
         },
         {
           "name": "MEASUREMENT_UNITS",
           "kind": "const",
-          "line": 82
+          "line": 86
         },
         {
           "name": "MeasurementUnit",
           "kind": "type",
-          "line": 83
+          "line": 87
         },
         {
           "name": "nextStage",
           "kind": "function",
-          "line": 89
+          "line": 93
         },
         {
           "name": "previousStage",
           "kind": "function",
-          "line": 96
+          "line": 100
         }
       ]
     },
@@ -47744,8 +48823,8 @@
       "path": "packages/shared/src/index.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 19,
-      "bytes": 549,
+      "lines": 21,
+      "bytes": 606,
       "doc": "",
       "symbols": []
     },
@@ -48110,6 +49189,35 @@
       ]
     },
     {
+      "path": "packages/shared/src/sku.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 52,
+      "bytes": 2009,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/shared/src/sku.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 80,
+      "bytes": 2793,
+      "doc": "SKU generation (WO-3.3, docs/implementation/03-variants-sku-seo.md).",
+      "symbols": [
+        {
+          "name": "SkuTemplateInput",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "generateSku",
+          "kind": "function",
+          "line": 59
+        }
+      ]
+    },
+    {
       "path": "packages/shared/src/slug.ts",
       "area": "packages",
       "kind": "module",
@@ -48245,6 +49353,55 @@
           "name": "formatQuantity",
           "kind": "function",
           "line": 47
+        }
+      ]
+    },
+    {
+      "path": "packages/shared/src/variant-matrix.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 76,
+      "bytes": 2970,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/shared/src/variant-matrix.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 89,
+      "bytes": 2809,
+      "doc": "The variant matrix builder's cross-product (WO-3.5, docs/implementation/03-variants-sku-seo.md).",
+      "symbols": [
+        {
+          "name": "OptionAxis",
+          "kind": "interface",
+          "line": 6
+        },
+        {
+          "name": "VariantCombination",
+          "kind": "interface",
+          "line": 13
+        },
+        {
+          "name": "GenerateCombinationsResult",
+          "kind": "interface",
+          "line": 18
+        },
+        {
+          "name": "generateVariantCombinations",
+          "kind": "function",
+          "line": 33
+        },
+        {
+          "name": "newCombinationsOnly",
+          "kind": "function",
+          "line": 73
+        },
+        {
+          "name": "removedCombinations",
+          "kind": "function",
+          "line": 82
         }
       ]
     },

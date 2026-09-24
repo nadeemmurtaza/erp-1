@@ -3,7 +3,7 @@
 
 # packages/* — code shared across every surface
 
-57 files · 4,769 lines
+61 files · 5,072 lines
 
 
 Code shared across surfaces. `@newax/shared` is where House Rule 1 is enforced:
@@ -23,7 +23,7 @@ file may hard-code one.
 | `packages/pos-core` | 4 | 69 | script, json |
 | `packages/pos-core/src` | 9 | 412 | unit test, module |
 | `packages/shared` | 4 | 71 | script, json |
-| `packages/shared/src` | 36 | 4,116 | module, unit test |
+| `packages/shared/src` | 40 | 4,419 | module, unit test |
 
 
 ## Entry points
@@ -53,10 +53,10 @@ file may hard-code one.
 | `packages/shared/src/entities/product.spec.ts` | 145 | unit test |  |
 | `packages/shared/src/entities/person.spec.ts` | 124 | unit test |  |
 | `packages/shared/src/entities/product.ts` | 119 | module |  |
-| `packages/shared/src/enums.ts` | 100 | module | Enum values mirrored from the Prisma schema. |
+| `packages/shared/src/enums.ts` | 104 | module | Enum values mirrored from the Prisma schema. |
 | `packages/shared/src/entities/person.ts` | 99 | module |  |
 | `packages/shared/src/fabric-estimate.ts` | 95 | module | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
-| `packages/pos-core/src/outbox.ts` | 84 | module | The offline sale outbox — a pure state machine, no I/O (RETAIL-ERP.md's own `packages/pos… |
+| `packages/shared/src/variant-matrix.ts` | 89 | module | The variant matrix builder's cross-product (WO-3.5, docs/implementation/03-variants-sku-s… |
 
 
 ---

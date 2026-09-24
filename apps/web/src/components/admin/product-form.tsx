@@ -1,15 +1,19 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { PRODUCT_KINDS, PRODUCT_STATUSES, formatMoney, toMajor, toMinor } from '@newax/shared';
+import { PRODUCT_KINDS, PRODUCT_STATUSES, generateSku, formatMoney, toMajor, toMinor } from '@newax/shared';
 import { Wizard, type WizardStep } from '@/components/common/wizard';
+import { Disclosure } from '@/components/ui';
 import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import type {
   AdminBrand,
   AdminCategory,
   AdminProduct,
+  AdminProductOption,
+  AdminOptionTemplate,
   AdminVariant,
   GarmentType,
 } from '@/types/api';
@@ -33,7 +37,27 @@ interface VariantDraft {
   stock: string;
   priceOverride: string;
   isActive: boolean;
+  skuIsManual: boolean;
+  barcode: string;
+  costPrice: string;
+  reorderPoint: string;
+  reorderQuantity: string;
 }
+
+const BLANK_VARIANT: VariantDraft = {
+  sku: '',
+  size: '',
+  color: '',
+  colorHex: '',
+  stock: '0',
+  priceOverride: '',
+  isActive: true,
+  skuIsManual: false,
+  barcode: '',
+  costPrice: '',
+  reorderPoint: '',
+  reorderQuantity: '',
+};
 
 interface ProductFormProps {
   product?: AdminProduct;
@@ -66,6 +90,24 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
 
   const englishTranslation = product?.translations.find((t) => t.locale === 'en');
   const urduTranslation = product?.translations.find((t) => t.locale === 'ur');
+
+  // WO-3.1's option axes — only meaningful once the product has an id, same
+  // constraint as Images. Loaded once here rather than duplicated per step.
+  const [options, setOptions] = useState<AdminProductOption[]>(product?.options ?? []);
+  const [templates, setTemplates] = useState<AdminOptionTemplate[]>([]);
+
+  useEffect(() => {
+    adminFetch<AdminOptionTemplate[]>('/admin/catalog/option-templates').then(setTemplates).catch(() => undefined);
+  }, []);
+
+  const reloadOptions = useCallback(async () => {
+    if (!effectiveProduct) return;
+    try {
+      setOptions(await adminFetch<AdminProductOption[]>(`/admin/catalog/products/${effectiveProduct.id}/options`));
+    } catch {
+      // Non-fatal — the section just shows what it last had.
+    }
+  }, [effectiveProduct]);
 
   const [kind, setKind] = useState(product?.kind ?? 'UNSTITCHED');
   const [status, setStatus] = useState(product?.status ?? 'DRAFT');
@@ -103,10 +145,24 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
   const [careEn, setCareEn] = useState(englishTranslation?.careInstructions ?? '');
   const [careUr, setCareUr] = useState(urduTranslation?.careInstructions ?? '');
 
+  // WO-3.7 — the SEO section. Meta fields per locale, plus the two toggles
+  // that only ever apply site-wide-rarely, so they live here rather than
+  // getting their own step.
+  const [metaTitleEn, setMetaTitleEn] = useState(englishTranslation?.metaTitle ?? '');
+  const [metaTitleUr, setMetaTitleUr] = useState(urduTranslation?.metaTitle ?? '');
+  const [metaDescriptionEn, setMetaDescriptionEn] = useState(englishTranslation?.metaDescription ?? '');
+  const [metaDescriptionUr, setMetaDescriptionUr] = useState(urduTranslation?.metaDescription ?? '');
+  const [focusKeywordEn, setFocusKeywordEn] = useState(englishTranslation?.focusKeyword ?? '');
+  const [focusKeywordUr, setFocusKeywordUr] = useState(urduTranslation?.focusKeyword ?? '');
+  const [noindex, setNoindex] = useState(product?.noindex ?? false);
+  const [canonicalOverride, setCanonicalOverride] = useState(product?.canonicalOverride ?? '');
+  const [code, setCode] = useState(product?.code ?? '');
+
+  const { can } = useAdminSession();
+  const canViewCost = can('inventory.view_cost');
+
   const [variants, setVariants] = useState<VariantDraft[]>(
-    product?.variants.length
-      ? product.variants.map(toDraft)
-      : [{ sku: '', size: '', color: '', colorHex: '', stock: '0', priceOverride: '', isActive: true }],
+    product?.variants.length ? product.variants.map(toDraft) : [{ ...BLANK_VARIANT }],
   );
 
   const [error, setError] = useState<string | null>(null);
@@ -179,12 +235,18 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
         // garments' size charts this ready-to-wear product should show.
         garmentTypeIds: isUnstitched || kind === 'STITCHED' ? garmentTypeIds : undefined,
         garmentTypeId: isService ? serviceGarmentId : undefined,
+        code: code.trim() || undefined,
+        noindex,
+        canonicalOverride: canonicalOverride.trim() || undefined,
         translations: [
           {
             locale: 'en' as const,
             name: nameEn.trim(),
             description: descriptionEn.trim() || undefined,
             careInstructions: careEn.trim() || undefined,
+            metaTitle: metaTitleEn.trim() || undefined,
+            metaDescription: metaDescriptionEn.trim() || undefined,
+            focusKeyword: focusKeywordEn.trim() || undefined,
           },
           ...(nameUr.trim()
             ? [
@@ -193,6 +255,9 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
                   name: nameUr.trim(),
                   description: descriptionUr.trim() || undefined,
                   careInstructions: careUr.trim() || undefined,
+                  metaTitle: metaTitleUr.trim() || undefined,
+                  metaDescription: metaDescriptionUr.trim() || undefined,
+                  focusKeyword: focusKeywordUr.trim() || undefined,
                 },
               ]
             : []),
@@ -211,6 +276,11 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
               : undefined,
             isActive: variant.isActive,
             order: index,
+            skuIsManual: variant.skuIsManual,
+            barcode: variant.barcode.trim() || undefined,
+            costPrice: variant.costPrice ? toMinor(Number(variant.costPrice)) : undefined,
+            reorderPoint: variant.reorderPoint ? Number(variant.reorderPoint) : undefined,
+            reorderQuantity: variant.reorderQuantity ? Number(variant.reorderQuantity) : undefined,
           })),
       };
 
@@ -702,6 +772,102 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
     ),
   };
 
+  const seoStep: WizardStep = {
+    id: 'seo',
+    label: 'SEO',
+    isValid: true,
+    content: (
+      <Section
+        title="SEO"
+        description="Left blank, the storefront falls back to the name and description above. WO-3.7's publish gate needs both filled in before this product can go Active."
+      >
+        <div className="grid gap-4 fold:grid-cols-2">
+          <div className="space-y-4">
+            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-900/60">English</p>
+            <Field label="Meta title" hint={`${metaTitleEn.length}/70`}>
+              <input
+                value={metaTitleEn}
+                onChange={(event) => setMetaTitleEn(event.target.value)}
+                maxLength={70}
+                className="field-input"
+              />
+            </Field>
+            <Field label="Meta description" hint={`${metaDescriptionEn.length}/180`}>
+              <textarea
+                value={metaDescriptionEn}
+                onChange={(event) => setMetaDescriptionEn(event.target.value)}
+                maxLength={180}
+                rows={3}
+                className="field-input"
+              />
+            </Field>
+            <Field label="Focus keyword" hint="Internal only — never shown to a customer">
+              <input
+                value={focusKeywordEn}
+                onChange={(event) => setFocusKeywordEn(event.target.value)}
+                className="field-input"
+              />
+            </Field>
+          </div>
+
+          <div className="space-y-4" dir="rtl">
+            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-900/60" dir="ltr">
+              Urdu
+            </p>
+            <Field label="میٹا عنوان" dir="rtl">
+              <input
+                value={metaTitleUr}
+                onChange={(event) => setMetaTitleUr(event.target.value)}
+                maxLength={70}
+                className="field-input font-urdu"
+              />
+            </Field>
+            <Field label="میٹا تفصیل" dir="rtl">
+              <textarea
+                value={metaDescriptionUr}
+                onChange={(event) => setMetaDescriptionUr(event.target.value)}
+                maxLength={180}
+                rows={3}
+                className="field-input font-urdu"
+              />
+            </Field>
+            <Field label="اہم لفظ" dir="rtl">
+              <input
+                value={focusKeywordUr}
+                onChange={(event) => setFocusKeywordUr(event.target.value)}
+                className="field-input font-urdu"
+              />
+            </Field>
+          </div>
+        </div>
+
+        <Disclosure label="Advanced (code, canonical, noindex)">
+          <div className="grid gap-4 pt-2 sm:grid-cols-2">
+            <Field label="SKU-template code" hint="Defaults from the slug if left blank">
+              <input value={code} onChange={(event) => setCode(event.target.value)} className="field-input" />
+            </Field>
+            <Field label="Canonical URL override" hint="Rare — leave blank unless this page duplicates another">
+              <input
+                value={canonicalOverride}
+                onChange={(event) => setCanonicalOverride(event.target.value)}
+                className="field-input"
+              />
+            </Field>
+          </div>
+          <label className="mt-4 flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={noindex}
+              onChange={(event) => setNoindex(event.target.checked)}
+              className="field-check"
+            />
+            Hide from search engines (noindex)
+          </label>
+        </Disclosure>
+      </Section>
+    ),
+  };
+
   const variantsStep: WizardStep = {
     id: 'variants',
     label: 'Variants',
@@ -711,6 +877,19 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
         title="Variants"
         description="One row per size/colour. Every row needs a unique SKU; a removed row is deactivated, not deleted, so past orders stay intact."
       >
+        {effectiveProduct ? (
+          <OptionsManager
+            productId={effectiveProduct.id}
+            options={options}
+            templates={templates}
+            onChange={reloadOptions}
+          />
+        ) : (
+          <p className="mb-4 rounded-md bg-neutral-50 px-3 py-2 text-xs text-neutral-900/60">
+            Custom options (beyond size/colour) can be added once this product is created.
+          </p>
+        )}
+
         <div className="space-y-3">
           {variants.map((variant, index) => {
             const duplicateSku = variantIssues.duplicateSkus.has(index);
@@ -725,13 +904,37 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
               )}
             >
               <div>
-                <LabelledInput
-                  label="SKU"
-                  value={variant.sku}
-                  onChange={(value) => updateVariant(setVariants, index, { sku: value })}
-                  placeholder="LWN-3PC-BLU-M"
-                  invalid={duplicateSku}
-                />
+                <div className="flex items-end gap-1">
+                  <div className="flex-1">
+                    <LabelledInput
+                      label="SKU"
+                      value={variant.sku}
+                      onChange={(value) =>
+                        updateVariant(setVariants, index, { sku: value, skuIsManual: true })
+                      }
+                      placeholder="LWN-3PC-BLU-M"
+                      invalid={duplicateSku}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    title="Generate from product code, size and colour"
+                    onClick={() => {
+                      const generated = generateSku(
+                        {
+                          template: '{PRODUCT}-{OPT}-{SEQ}',
+                          productCode: code || nameEn || 'ITEM',
+                          optionValueKeys: [variant.size, variant.color].filter(Boolean),
+                        },
+                        variants.map((v) => v.sku).filter((sku) => sku !== variant.sku),
+                      );
+                      updateVariant(setVariants, index, { sku: generated, skuIsManual: false });
+                    }}
+                    className="mb-0.5 rounded px-1.5 py-1.5 text-xs text-neutral-900/60 hover:bg-neutral-100"
+                  >
+                    ⟳
+                  </button>
+                </div>
                 {duplicateSku ? (
                   <p className="mt-1 text-xs text-red-700">Used by another variant below.</p>
                 ) : null}
@@ -794,6 +997,40 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
                   Remove
                 </button>
               </div>
+
+              <div className="sm:col-span-6">
+                <Disclosure label="Barcode, cost & reorder">
+                  <div className="grid gap-3 pt-2 sm:grid-cols-4">
+                    <LabelledInput
+                      label="Barcode"
+                      value={variant.barcode}
+                      onChange={(value) => updateVariant(setVariants, index, { barcode: value })}
+                      placeholder="EAN-13 / UPC-A"
+                    />
+                    {canViewCost ? (
+                      <LabelledInput
+                        label="Cost price (Rs)"
+                        type="number"
+                        value={variant.costPrice}
+                        onChange={(value) => updateVariant(setVariants, index, { costPrice: value })}
+                        placeholder="0"
+                      />
+                    ) : null}
+                    <LabelledInput
+                      label="Reorder point"
+                      type="number"
+                      value={variant.reorderPoint}
+                      onChange={(value) => updateVariant(setVariants, index, { reorderPoint: value })}
+                    />
+                    <LabelledInput
+                      label="Reorder quantity"
+                      type="number"
+                      value={variant.reorderQuantity}
+                      onChange={(value) => updateVariant(setVariants, index, { reorderQuantity: value })}
+                    />
+                  </div>
+                </Disclosure>
+              </div>
             </div>
             );
           })}
@@ -801,12 +1038,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
 
         <button
           type="button"
-          onClick={() =>
-            setVariants((current) => [
-              ...current,
-              { sku: '', size: '', color: '', colorHex: '', stock: '0', priceOverride: '', isActive: true },
-            ])
-          }
+          onClick={() => setVariants((current) => [...current, { ...BLANK_VARIANT }])}
           className="btn-secondary mt-3"
         >
           Add variant
@@ -845,6 +1077,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
     tagsStep,
     variantsStep,
     imagesStep,
+    seoStep,
   ];
 
   return (
@@ -896,6 +1129,11 @@ function toDraft(variant: AdminVariant): VariantDraft {
     stock: String(variant.stock),
     priceOverride: variant.priceOverride ? String(toMajor(variant.priceOverride)) : '',
     isActive: variant.isActive,
+    skuIsManual: variant.skuIsManual,
+    barcode: variant.barcode ?? '',
+    costPrice: variant.costPrice ? String(toMajor(variant.costPrice)) : '',
+    reorderPoint: variant.reorderPoint !== null ? String(variant.reorderPoint) : '',
+    reorderQuantity: variant.reorderQuantity !== null ? String(variant.reorderQuantity) : '',
   };
 }
 
@@ -1029,5 +1267,143 @@ function LabelledInput({
         )}
       />
     </label>
+  );
+}
+
+/**
+ * WO-3.1's own promise: a boutique adds a custom option ("Sleeve length")
+ * from here, no migration and no developer. Values attach to variants
+ * through ProductVariantOptionValue once the storefront read-switch
+ * (`catalog.use_option_model_reads`, WO-3.2) is flipped — until then this
+ * still records the data correctly, it just is not yet the storefront's
+ * source of truth for a non-size/colour axis.
+ */
+function OptionsManager({
+  productId,
+  options,
+  templates,
+  onChange,
+}: {
+  productId: string;
+  options: AdminProductOption[];
+  templates: AdminOptionTemplate[];
+  onChange: () => void;
+}) {
+  const [labelEn, setLabelEn] = useState('');
+  const [values, setValues] = useState('');
+  const [templateId, setTemplateId] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function addCustom(event: React.FormEvent) {
+    event.preventDefault();
+    if (!labelEn.trim()) return;
+    setBusy(true);
+    setError(null);
+
+    const valueList = values
+      .split(',')
+      .map((value) => value.trim())
+      .filter(Boolean);
+
+    try {
+      await adminFetch(`/admin/catalog/products/${productId}/options`, {
+        method: 'POST',
+        body: {
+          key: labelEn.trim().toLowerCase().replace(/\s+/g, '_'),
+          translations: [{ locale: 'en', label: labelEn.trim() }],
+          values: valueList.map((value) => ({
+            key: value.toLowerCase().replace(/\s+/g, '_'),
+            translations: [{ locale: 'en', label: value }],
+          })),
+        },
+      });
+      setLabelEn('');
+      setValues('');
+      onChange();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not add this option');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function instantiate() {
+    if (!templateId) return;
+    setBusy(true);
+    setError(null);
+    try {
+      await adminFetch(`/admin/catalog/products/${productId}/options/instantiate`, {
+        method: 'POST',
+        body: { templateId },
+      });
+      setTemplateId('');
+      onChange();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not add this template');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="mb-5 rounded-md bg-neutral-50 p-3">
+      <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
+        Options & attributes
+      </h3>
+
+      {options.length > 0 ? (
+        <ul className="mt-2 flex flex-wrap gap-2">
+          {options.map((option) => (
+            <li key={option.id} className="rounded bg-white px-2 py-1 text-xs">
+              <span className="font-medium">
+                {option.translations.find((t) => t.locale === 'en')?.label ?? option.key}
+              </span>
+              :{' '}
+              {option.values
+                .map((value) => value.translations.find((t) => t.locale === 'en')?.label ?? value.key)
+                .join(', ') || '—'}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="mt-2 text-xs text-neutral-900/60">No custom options yet — this product uses size/colour only.</p>
+      )}
+
+      {error ? <p className="mt-2 text-xs text-red-700">{error}</p> : null}
+
+      <div className="mt-3 flex flex-wrap items-end gap-2">
+        {templates.length > 0 ? (
+          <div className="flex items-end gap-1.5">
+            <label className="block">
+              <span className="mb-1 block text-xs text-neutral-900/60">From template</span>
+              <select
+                value={templateId}
+                onChange={(event) => setTemplateId(event.target.value)}
+                className="field-input py-1.5 text-sm"
+              >
+                <option value="">Choose…</option>
+                {templates.map((template) => (
+                  <option key={template.id} value={template.id}>
+                    {template.translations.find((t) => t.locale === 'en')?.label ?? template.key}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <button type="button" disabled={busy || !templateId} onClick={() => void instantiate()} className="btn-secondary py-1.5 text-xs">
+              Add
+            </button>
+          </div>
+        ) : null}
+
+        <form onSubmit={addCustom} className="flex items-end gap-1.5">
+          <LabelledInput label="Custom option" value={labelEn} onChange={setLabelEn} placeholder="Sleeve length" />
+          <LabelledInput label="Values" value={values} onChange={setValues} placeholder="Short, Long" />
+          <button type="submit" disabled={busy || !labelEn.trim()} className="btn-secondary py-1.5 text-xs">
+            Add
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }

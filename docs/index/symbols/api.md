@@ -20,7 +20,6 @@ root, Prisma tooling, and the e2e suite.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `backfill-parties.ts` | `backfillParties` | function | :15 | One-shot backfill: creates the permanent Party profile (parties.prisma) for every pre-existing Supp… |
-| `backfill-product-options.ts` | `backfillProductOptions` | function | :24 | WO-3.1 (03-variants-sku-seo.md, Blocker B2) — one-shot backfill from the legacy size/color/colorHex… |
 
 ### `apps/api/src`
 

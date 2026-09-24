@@ -33,6 +33,10 @@ export type ProductKind = (typeof PRODUCT_KINDS)[number];
 export const PRODUCT_STATUSES = ['DRAFT', 'ACTIVE', 'ARCHIVED'] as const;
 export type ProductStatus = (typeof PRODUCT_STATUSES)[number];
 
+/** Matches the Prisma `OptionDisplay` enum in catalog.prisma (WO-3.1). */
+export const OPTION_DISPLAYS = ['BUTTON', 'DROPDOWN', 'SWATCH', 'TEXT'] as const;
+export type OptionDisplay = (typeof OPTION_DISPLAYS)[number];
+
 export const ORDER_STATUSES = [
   'PENDING',
   'CONFIRMED',

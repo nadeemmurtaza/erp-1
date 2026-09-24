@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-527 files · 73,264 lines
+540 files · 74,909 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -28,12 +28,12 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
 | `apps/api` | 10 | 832 | file, script, json, module |
-| `apps/api/prisma` | 3 | 3,269 | module |
-| `apps/api/prisma/schema` | 86 | 8,359 | prisma schema, migration, toml |
+| `apps/api/prisma` | 3 | 3,125 | module |
+| `apps/api/prisma/schema` | 87 | 8,621 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 131 | nest module, module |
-| `apps/api/src/core` | 112 | 11,884 | nest module, service, module, controller |
-| `apps/api/src/modules` | 295 | 42,710 | nest module, unit test, service, module |
-| `apps/api/test` | 18 | 6,036 | e2e test, unit test, module |
+| `apps/api/src/core` | 112 | 11,909 | nest module, service, module, controller |
+| `apps/api/src/modules` | 306 | 44,139 | nest module, unit test, service, module |
+| `apps/api/test` | 19 | 6,109 | e2e test, unit test, module |
 | `apps/api/test/support` | 1 | 43 | module |
 
 
@@ -58,10 +58,10 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | `apps/api/test/orders.e2e-spec.ts` | 950 | e2e test |  |
 | `apps/api/src/modules/transfers/transfers.service.spec.ts` | 818 | unit test |  |
 | `apps/api/test/cart.e2e-spec.ts` | 800 | e2e test |  |
+| `apps/api/src/modules/catalog/product-admin.service.ts` | 737 | service |  |
 | `apps/api/src/modules/cart/cart.service.ts` | 678 | service |  |
 | `apps/api/src/modules/purchasing/purchasing.service.ts` | 657 | service |  |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | 643 | unit test |  |
-| `apps/api/src/modules/catalog/product-admin.service.ts` | 631 | service |  |
 | `apps/api/test/stitching.e2e-spec.ts` | 590 | e2e test |  |
 | `apps/api/src/modules/inventory/inventory.service.ts` | 582 | service |  |
 | `apps/api/test/email-channel.behavior.spec.ts` | 580 | unit test | Behavior tests for the email notification channel. |

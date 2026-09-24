@@ -16,7 +16,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiOperation, ApiPropertyOptional, ApiTags } from '@nestjs/swagger';
 import { IsArray, IsInt, IsOptional, IsString, Min } from 'class-validator';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
@@ -28,6 +28,7 @@ import { UpsertCategoryDto } from './dto/category.dto';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { ProductAdminService } from './product-admin.service';
 import { ProductImportService } from './product-import.service';
+import { SeoHealthService } from './seo-health.service';
 import { stripProductCost, stripProductListCost } from '../../core/common/cost-fields';
 
 class ReorderImagesDto {
@@ -46,11 +47,21 @@ class AddImageDto {
   @IsOptional()
   @IsString()
   alt?: string;
+
+  @ApiPropertyOptional({ default: 'en' })
+  @IsOptional()
+  @IsString()
+  locale?: string;
 }
 
 class UpdateImageDto {
   @IsString()
   alt!: string;
+
+  @ApiPropertyOptional({ default: 'en' })
+  @IsOptional()
+  @IsString()
+  locale?: string;
 }
 
 /** Uploaded file as Multer hands it over. */
@@ -70,6 +81,7 @@ export class CatalogAdminController {
     private readonly categories: CategoryAdminService,
     private readonly brands: BrandAdminService,
     private readonly importer: ProductImportService,
+    private readonly seoHealth: SeoHealthService,
   ) {}
 
   // --- Products and services ------------------------------------------------
@@ -81,6 +93,18 @@ export class CatalogAdminController {
     @Query() query: AdminProductQueryDto,
   ) {
     return stripProductListCost(await this.products.list(query), user);
+  }
+
+  @Get('products/seo-health')
+  @ApiOperation({ summary: 'Every product failing the SEO publish gate, worst first' })
+  seoHealthList() {
+    return this.seoHealth.list();
+  }
+
+  @Get('products/:id/publish-gate')
+  @ApiOperation({ summary: "A product's own completeness against the publish gate" })
+  publishGate(@Param('id') id: string) {
+    return this.products.checkPublishGate(id);
   }
 
   @Get('products/:id')
@@ -133,7 +157,7 @@ export class CatalogAdminController {
     if (!file) {
       throw new BadRequestException('Choose an image file to upload.');
     }
-    return this.products.addImage(user.id, id, file, dto.alt);
+    return this.products.addImage(user.id, id, file, dto.alt, dto.locale);
   }
 
   @Patch('products/:id/images/order')
@@ -149,7 +173,7 @@ export class CatalogAdminController {
     @Param('imageId') imageId: string,
     @Body() dto: UpdateImageDto,
   ) {
-    return this.products.updateImageAlt(user.id, imageId, dto.alt);
+    return this.products.updateImageAlt(user.id, imageId, dto.alt, dto.locale);
   }
 
   @Delete('images/:imageId')

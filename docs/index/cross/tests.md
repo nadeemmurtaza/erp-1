@@ -3,7 +3,7 @@
 
 # Tests
 
-**135** spec files, **1,310** cases. What is already pinned down — and what is not.
+**138** spec files, **1,332** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -50,7 +50,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (120)
+## Unit and integration (123)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -150,6 +150,7 @@ regression or an N+1.
 | `apps/api/src/modules/users/users-admin.service.spec.ts` | users | 3 | UsersAdminService.create — role selection at creation time |
 | `apps/api/test/backfill-product-options.spec.ts` | api | 4 | backfillProductOptions |
 | `apps/api/test/email-channel.behavior.spec.ts` | api | 33 | env.validation — email cross-field check · isDeliverable · EmailChannel — interface contract · Emai… |
+| `apps/api/test/publish-gate.spec.ts` | api | 8 | checkPublishGate |
 | `apps/mobile/src/api/__tests__/client.spec.ts` | mobile | 4 | toQuery |
 | `apps/mobile/src/components/__tests__/measurement-form.spec.ts` | mobile | 7 | reading measurements off the form |
 | `apps/mobile/src/i18n/__tests__/messages.spec.ts` | mobile | 3 | the message catalogue |
@@ -173,7 +174,9 @@ regression or an N+1.
 | `packages/shared/src/phone.spec.ts` | packages | 7 | normalizePkPhone · normalizeEmail |
 | `packages/shared/src/pricing.spec.ts` | packages | 35 | computeStitchingFee · computeLineItem · lineMargin · computeOrderTotals · taxExclusive · taxInclusi… |
 | `packages/shared/src/secret-crypto.spec.ts` | packages | 5 | secret-crypto |
+| `packages/shared/src/sku.spec.ts` | packages | 7 | generateSku |
 | `packages/shared/src/units.spec.ts` | packages | 7 | toBaseUnits · fromBaseUnits · formatQuantity |
+| `packages/shared/src/variant-matrix.spec.ts` | packages | 7 | generateVariantCombinations · newCombinationsOnly · removedCombinations |
 
 
 ---

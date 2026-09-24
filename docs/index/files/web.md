@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 266 tracked files in `apps/web`, by directory.
+All 268 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -63,7 +63,7 @@ All 266 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `middleware.ts` | module | 19 |  |
+| `middleware.ts` | module | 76 |  |
 
 ### `apps/web/src/app` (6)
 
@@ -346,6 +346,12 @@ All 266 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 131 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/options` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 226 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/orders` (2)
 
 | File | Kind | Lines | Purpose |
@@ -462,6 +468,12 @@ All 266 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 422 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/seo` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 217 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/settings` (1)
 
 | File | Kind | Lines | Purpose |
@@ -575,7 +587,7 @@ All 266 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `error.tsx` | error | 62 |  |
-| `layout.tsx` | layout | 139 |  |
+| `layout.tsx` | layout | 182 |  |
 | `loading.tsx` | loading | 66 |  |
 | `not-found.tsx` | not-found | 37 |  |
 | `page.tsx` | page | 239 |  |
@@ -689,7 +701,7 @@ All 266 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `loading.tsx` | loading | 79 |  |
-| `page.tsx` | page | 373 |  |
+| `page.tsx` | page | 384 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/register` (1)
 
@@ -769,11 +781,11 @@ All 266 tracked files in `apps/web`, by directory.
 | `donut-chart.tsx` | component | 136 |  |
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
-| `image-manager.tsx` | component | 485 |  |
-| `nav-registry.ts` | component | 554 |  |
+| `image-manager.tsx` | component | 543 |  |
+| `nav-registry.ts` | component | 570 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
-| `product-form.tsx` | component | 1034 |  |
+| `product-form.tsx` | component | 1410 |  |
 | `range-picker.tsx` | component | 58 |  |
 | `role-wizard.tsx` | component | 359 |  |
 | `sales-chart.tsx` | component | 242 |  |
@@ -875,7 +887,7 @@ All 266 tracked files in `apps/web`, by directory.
 | `downloads.ts` | constants | 21 |  |
 | `payment-methods.ts` | constants | 30 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 24 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 136 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 138 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 52 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)
@@ -918,7 +930,7 @@ All 266 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 1107 |  |
+| `api.ts` | types | 1181 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

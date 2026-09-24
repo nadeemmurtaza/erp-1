@@ -99,4 +99,13 @@ export class SettingsService implements OnModuleInit {
   async getCodFee(): Promise<number> {
     return this.get<number>(SettingKey.CodFee);
   }
+
+  async getCatalogSkuTemplate(): Promise<string> {
+    return this.get<string>(SettingKey.CatalogSkuTemplate);
+  }
+
+  /** WO-3.2's cutover switch — see the setting's own doc comment for why this exists instead of a soak timer. */
+  async getUseOptionModelReads(): Promise<boolean> {
+    return this.get<boolean>(SettingKey.CatalogUseOptionModelReads);
+  }
 }

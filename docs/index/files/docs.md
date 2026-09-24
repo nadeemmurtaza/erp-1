@@ -260,7 +260,7 @@ All 389 tracked files in `docs/*`, by directory.
 | `00-HOUSE-RULES.md` | doc | 496 |  |
 | `01-inventory-purchasing-cost.md` | doc | 937 |  |
 | `02-admin-shell.md` | doc | 242 |  |
-| `03-variants-sku-seo.md` | doc | 471 |  |
+| `03-variants-sku-seo.md` | doc | 566 |  |
 | `04-finance.md` | doc | 239 |  |
 | `05-promotions-giftcards.md` | doc | 320 |  |
 | `06-shipping-fulfilment-returns.md` | doc | 288 |  |

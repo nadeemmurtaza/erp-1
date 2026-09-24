@@ -1,12 +1,18 @@
 import { Module } from '@nestjs/common';
 import { CatalogAdminController } from './catalog-admin.controller';
+import { CatalogOptionsAdminController } from './catalog-options-admin.controller';
+import { RedirectAdminController, RedirectLookupController } from './redirect-admin.controller';
 import { CatalogController } from './catalog.controller';
 import { CatalogService } from './catalog.service';
 import { BrandAdminService } from './brand-admin.service';
 import { CategoryAdminService } from './category-admin.service';
+import { OptionTemplateAdminService } from './option-template-admin.service';
+import { ProductOptionAdminService } from './product-option-admin.service';
 import { ProductAdminService } from './product-admin.service';
 import { ProductImportService } from './product-import.service';
 import { ProductReplicationListener } from './product-replication.listener';
+import { RedirectService } from './redirect.service';
+import { SeoHealthService } from './seo-health.service';
 import { InventoryModule } from '../inventory/inventory.module';
 
 // InventoryModule stays imported for ProductAdminService, which writes stock
@@ -19,7 +25,13 @@ import { InventoryModule } from '../inventory/inventory.module';
 // instead (core/extension-points/stock-intake.registry.ts).
 @Module({
   imports: [InventoryModule],
-  controllers: [CatalogController, CatalogAdminController],
+  controllers: [
+    CatalogController,
+    CatalogAdminController,
+    CatalogOptionsAdminController,
+    RedirectAdminController,
+    RedirectLookupController,
+  ],
   providers: [
     CatalogService,
     ProductAdminService,
@@ -27,6 +39,10 @@ import { InventoryModule } from '../inventory/inventory.module';
     BrandAdminService,
     ProductImportService,
     ProductReplicationListener,
+    OptionTemplateAdminService,
+    ProductOptionAdminService,
+    RedirectService,
+    SeoHealthService,
   ],
   // Exported for cart/orders, which need to price a variant and check stock.
   exports: [CatalogService],

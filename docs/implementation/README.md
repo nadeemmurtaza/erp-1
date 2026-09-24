@@ -198,7 +198,7 @@ fictional rather than silently built or silently ignored:
 | [`123-automated-degradation-resilience.md`](./123-automated-degradation-resilience.md) | Collects the evidence that "The absent collaborator" — already a mandatory scope lens in every document this repository requires — is actually followed, across five cited examples |
 | [`124-infrastructure-as-code.md`](./124-infrastructure-as-code.md) | Version-controlled deploy scripts and compose files are real; names honestly that no declarative provisioning tool (Terraform/Pulumi) exists |
 | [`125-zero-trust-networking.md`](./125-zero-trust-networking.md) | Separates the principle (already real, at the one HTTP boundary that exists) from the mesh it's usually built for (not applicable — there are no internal microservices to secure between, per doc 92) |
-| [`126-pluggable-cryptography.md`](./126-pluggable-cryptography.md) | Declines a dedicated crypto microservice; scopes a real, narrow, in-process `PasswordHasher` interface for rotation-on-next-login, deferred until a real reason to move off bcrypt exists — **superseded in part, see doc 146 and ADR-026** |
+| [`126-pluggable-cryptography.md`](./126-pluggable-cryptography.md) | Declines a dedicated crypto microservice; scopes a real, narrow, in-process `PasswordHasher` interface for rotation-on-next-login, deferred until a real reason to move off bcrypt exists — this remains the standing position; see ADR-027 |
 
 **Numbers 127–139** answer two direct questions the owner asked after
 reviewing the 92–126 batches' own pushback: concrete features to increase
@@ -226,15 +226,18 @@ anywhere:
 | [`138-technology-substitution-playbook.md`](./138-technology-substitution-playbook.md) | One short, honest swap-path note per core dependency not already behind a provider interface (Postgres, the outbox, the runtime) |
 | [`139-second-front-door-websocket-gateway.md`](./139-second-front-door-websocket-gateway.md) | A second real transport (WebSocket/SSE) for session-oriented agent/voice callers specifically, sharing the identical `PermissionsGuard`/service layer — never a general real-time replacement of the REST API |
 
-**Numbers 140–146** are **ADR-026** (`DECISIONS.md`): after two rounds of
+**Numbers 140–143** are **ADR-026** (`DECISIONS.md`): after two rounds of
 engineering pushback (docs 92–126), the owner reviewed the reasoning
-twice and explicitly instructed that all seven declined mechanisms be
-built anyway, for near-term flexibility. Each is built narrowed by the
-exact guardrail its own predecessor document identified as the real risk
-— never the maximal, riskiest form of each mechanism — and the three
-highest-risk items (140 is lower-risk; 144–146 specifically) are flagged
-for the `security` subagent's own review before any production traffic
-depends on them:
+twice and explicitly instructed that seven declined mechanisms be built
+anyway, for near-term flexibility, each narrowed by the exact guardrail
+its own predecessor document identified as the real risk. **Three of the
+original seven — a general WASM sandbox, a service mesh, and a dedicated
+crypto microservice — were withdrawn and deleted by the owner's own
+follow-up decision, recorded as ADR-027, after reconsidering the actual
+security exposure each one carried.** Docs 114, 125, and 126 each state
+that their own original recommendation is this repository's current,
+standing position again, with a pointer to ADR-027 for the history. Only
+the four lower-risk items remain built:
 
 | File | What it is |
 |---|---|
@@ -242,9 +245,6 @@ depends on them:
 | [`141-general-metadata-driven-ui-engine.md`](./141-general-metadata-driven-ui-engine.md) | A general form-metadata renderer, with doc 105's own named risk (a second, uninspected component library) closed by a mandatory, CI-enforced rule: the renderer may only ever compose `@newax/shared`'s own primitives |
 | [`142-bpmn-visual-workflow-engine.md`](./142-bpmn-visual-workflow-engine.md) | A BPMN diagram editor that compiles into doc 63's own `ApprovalChain`/`ApprovalStep` rows — a visual authoring layer, never a second execution runtime; an unsupported BPMN construct is rejected at compile time, not silently ignored |
 | [`143-micro-frontend-architecture.md`](./143-micro-frontend-architecture.md) | Module federation added as an opt-in, per-fragment layer alongside doc 93's single-app convention, with a mandatory design-law compliance attestation at registration and a `SUSPENDED` kill switch |
-| [`144-wasm-sandboxed-scripting-runtime.md`](./144-wasm-sandboxed-scripting-runtime.md) | A general WASM sandbox specified with no ambient authority, hard fuel/memory/time limits, no network egress, and a mandatory human-reviewed approval gate before any formula executes against real data — **blocked on `security` subagent review before production use** |
-| [`145-service-mesh-architecture.md`](./145-service-mesh-architecture.md) | Names the one real multi-service boundary this deployment has (`apps/api` ↔ `apps/platform`) and scopes mTLS to exactly that, rather than mesh-everywhere with nothing else to mesh between — **flagged for `security` subagent review** |
-| [`146-dedicated-cryptography-microservice.md`](./146-dedicated-cryptography-microservice.md) | A second, network-isolated implementation of doc 126's own `PasswordHasher`/`SecretCipher` interfaces, for deployments with a genuine physical-isolation requirement — opt-in, never the default, fails closed — **flagged for `security` subagent review** |
 
 ## Dependency order
 

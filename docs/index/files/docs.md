@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 376 tracked files in `docs/*`, by directory.
+All 373 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -253,7 +253,7 @@ All 376 tracked files in `docs/*`, by directory.
 | `52g-generate-gap.md` | doc | 26 |  |
 | `52h-harden-gap.md` | doc | 40 |  |
 
-### `docs/implementation` (156)
+### `docs/implementation` (153)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -295,8 +295,8 @@ All 376 tracked files in `docs/*`, by directory.
 | `122-data-lake-cold-storage-architecture.md` | doc | 75 |  |
 | `123-automated-degradation-resilience.md` | doc | 73 |  |
 | `124-infrastructure-as-code.md` | doc | 64 |  |
-| `125-zero-trust-networking.md` | doc | 84 |  |
-| `126-pluggable-cryptography.md` | doc | 138 |  |
+| `125-zero-trust-networking.md` | doc | 85 |  |
+| `126-pluggable-cryptography.md` | doc | 137 |  |
 | `127-policy-as-data-completeness-sweep.md` | doc | 76 |  |
 | `128-extension-point-coverage-audit.md` | doc | 143 |  |
 | `129-channel-abstraction-audit.md` | doc | 87 |  |
@@ -316,9 +316,6 @@ All 376 tracked files in `docs/*`, by directory.
 | `141-general-metadata-driven-ui-engine.md` | doc | 147 |  |
 | `142-bpmn-visual-workflow-engine.md` | doc | 109 |  |
 | `143-micro-frontend-architecture.md` | doc | 160 |  |
-| `144-wasm-sandboxed-scripting-runtime.md` | doc | 225 |  |
-| `145-service-mesh-architecture.md` | doc | 131 |  |
-| `146-dedicated-cryptography-microservice.md` | doc | 154 |  |
 | `15-tax-module.md` | doc | 232 |  |
 | `16-pbac-row-scoping.md` | doc | 184 |  |
 | `17-inventory-locations.md` | doc | 254 |  |
@@ -406,7 +403,7 @@ All 376 tracked files in `docs/*`, by directory.
 | `97-realtime-validation-single-source-of-truth.md` | doc | 63 |  |
 | `98-contract-first-api-development.md` | doc | 80 |  |
 | `99-centralized-api-gateway.md` | doc | 60 |  |
-| `DECISIONS.md` | doc | 1873 |  |
+| `DECISIONS.md` | doc | 1962 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |

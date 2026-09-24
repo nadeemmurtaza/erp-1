@@ -1,14 +1,14 @@
 # 114 — Custom formulas: a restricted expression evaluator, not arbitrary sandboxed code execution
 
-> **Superseded.** Per **ADR-026** (`DECISIONS.md`), the owner explicitly
-> instructed that a general WASM sandbox be built anyway. See **doc 144**,
-> which specifies it with this document's own named risks (ambient
-> authority, unbounded resource use, sandbox escape) turned into
-> mandatory, non-negotiable design requirements, and gated on the
-> `security` subagent's own review before any production use — this
-> document's own recommendation remains the correct default for the two
-> named examples (commission/shipping formulas) and doc 144 cites it
-> directly as its own starting point.
+> **Status: this document's own recommendation stands, again.** Per
+> **ADR-026** (`DECISIONS.md`), the owner briefly instructed that a
+> general WASM sandbox be built anyway (specified as doc 144). Per
+> **ADR-027**, the owner reviewed the actual security exposure a general
+> code-execution sandbox carries and reversed that instruction — doc 144
+> is withdrawn and deleted. This document's own recommendation (a
+> restricted expression evaluator, no ambient authority, no general code
+> execution) is this repository's own current, standing answer for the
+> two named examples (commission/shipping formulas).
 
 "Provide a secure WebAssembly (Wasm) or embedded execution environment
 that allows implementation partners to write custom calculation formulas

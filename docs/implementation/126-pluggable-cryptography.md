@@ -1,14 +1,13 @@
 # 126 — Cryptographic agility: today a fixed, correct default; a real, narrow gap for the one algorithm this repository would actually need to rotate
 
-> **Superseded in part.** Per **ADR-026** (`DECISIONS.md`), the owner
-> explicitly instructed that a dedicated crypto microservice be built
-> anyway. See **doc 146**, which implements it as a *second*
-> implementation of this document's own `PasswordHasher`/`SecretCipher`
-> interfaces — an optional, physically-isolated deployment topology,
-> never the default — gated on the `security` subagent's own review
-> before production use. This document's own in-process interface remains
-> the default implementation and the actual source of the rotation
-> agility either form provides.
+> **Status: this document's own recommendation stands, again.** Per
+> **ADR-026** (`DECISIONS.md`), the owner briefly instructed that a
+> dedicated crypto microservice be built anyway (specified as doc 146).
+> Per **ADR-027**, the owner reviewed the actual security exposure a
+> separate, network-reachable crypto service adds and reversed that
+> instruction — doc 146 is withdrawn and deleted. This document's own
+> in-process `PasswordHasher` interface is this repository's own current,
+> standing mechanism for cryptographic agility.
 
 "Abstract encryption protocols away from the application layer into a
 dedicated security service. This allows security teams to rapidly swap

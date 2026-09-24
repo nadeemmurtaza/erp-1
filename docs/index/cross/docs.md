@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**396** markdown documents. These explain **why**; this index only says **where**.
+**393** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2205,24 +2205,24 @@ _no second-level headings_
 - Acceptance  <sub>:51</sub>
 - Out of scope  <sub>:59</sub>
 
-### `docs/implementation/125-zero-trust-networking.md`  <sub>84 lines</sub>
+### `docs/implementation/125-zero-trust-networking.md`  <sub>85 lines</sub>
 
-- Where zero-trust's actual principle already holds  <sub>:22</sub>
-- Why a service mesh is not the right implementation of this principle here  <sub>:46</sub>
-- Scope lenses  <sub>:59</sub>
-- Work orders  <sub>:65</sub>
-- Acceptance  <sub>:73</sub>
-- Out of scope  <sub>:79</sub>
+- Where zero-trust's actual principle already holds  <sub>:23</sub>
+- Why a service mesh is not the right implementation of this principle here  <sub>:47</sub>
+- Scope lenses  <sub>:60</sub>
+- Work orders  <sub>:66</sub>
+- Acceptance  <sub>:74</sub>
+- Out of scope  <sub>:80</sub>
 
-### `docs/implementation/126-pluggable-cryptography.md`  <sub>138 lines</sub>
+### `docs/implementation/126-pluggable-cryptography.md`  <sub>137 lines</sub>
 
-- The two mechanisms, checked individually  <sub>:22</sub>
-- Why a full "dedicated security service" is oversized for what this actually needs  <sub>:36</sub>
-- The narrow, correct answer: a versioned hashing/encryption interface, in-process  <sub>:45</sub>
-- Scope lenses  <sub>:73</sub>
-- Work orders  <sub>:111</sub>
-- Acceptance  <sub>:122</sub>
-- Out of scope  <sub>:129</sub>
+- The two mechanisms, checked individually  <sub>:21</sub>
+- Why a full "dedicated security service" is oversized for what this actually needs  <sub>:35</sub>
+- The narrow, correct answer: a versioned hashing/encryption interface, in-process  <sub>:44</sub>
+- Scope lenses  <sub>:72</sub>
+- Work orders  <sub>:110</sub>
+- Acceptance  <sub>:121</sub>
+- Out of scope  <sub>:128</sub>
 
 ### `docs/implementation/127-policy-as-data-completeness-sweep.md`  <sub>76 lines</sub>
 
@@ -2393,34 +2393,6 @@ _no second-level headings_
 - Work orders  <sub>:133</sub>
 - Acceptance  <sub>:143</sub>
 - Out of scope  <sub>:153</sub>
-
-### `docs/implementation/144-wasm-sandboxed-scripting-runtime.md`  <sub>225 lines</sub>
-
-- 1. What "sandboxed" must mean here, stated as non-negotiable requirements  <sub>:19</sub>
-- 2. The schema and execution boundary  <sub>:53</sub>
-- 3. The mandatory review gate, stated as this document's own central requirement  <sub>:96</sub>
-- Scope lenses  <sub>:109</sub>
-- Work orders  <sub>:187</sub>
-- Acceptance  <sub>:202</sub>
-- Out of scope  <sub>:214</sub>
-
-### `docs/implementation/145-service-mesh-architecture.md`  <sub>131 lines</sub>
-
-- 1. Where a mesh has something real to secure, named honestly  <sub>:15</sub>
-- 2. The mesh, scoped to that one boundary  <sub>:37</sub>
-- Scope lenses  <sub>:62</sub>
-- Work orders  <sub>:106</sub>
-- Acceptance  <sub>:116</sub>
-- Out of scope  <sub>:125</sub>
-
-### `docs/implementation/146-dedicated-cryptography-microservice.md`  <sub>154 lines</sub>
-
-- 1. The service, behind the identical interface doc 126 already defined  <sub>:17</sub>
-- 2. Why this stays a deployment *option*, not the default  <sub>:52</sub>
-- Scope lenses  <sub>:80</sub>
-- Work orders  <sub>:123</sub>
-- Acceptance  <sub>:136</sub>
-- Out of scope  <sub>:148</sub>
 
 ### `docs/implementation/15-tax-module.md`  <sub>232 lines</sub>
 
@@ -3224,7 +3196,7 @@ _no second-level headings_
 - Acceptance  <sub>:48</sub>
 - Out of scope  <sub>:53</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>1,873 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>1,962 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3255,6 +3227,7 @@ _no second-level headings_
 - Decision: doc 22's leave schema is struck in favour of payroll's (WO-19.3)  <sub>:1641</sub>
 - Decision: adopt a shared cross-tenant hosting tier via shared-infrastructure/isolated-data, not shared-schema multi-tenancy  <sub>:1692</sub>
 - ADR-026 — Seven heavier extensibility mechanisms adopted by explicit owner override: EAV, a metadata-rendering engine, BPMN, micro-frontends, a WASM sandbox, a service mesh, and a dedicated crypto microservice  <sub>:1769</sub>
+- ADR-027 — The three highest-risk items from ADR-026 withdrawn: no WASM sandbox, no service mesh, no dedicated crypto microservice  <sub>:1877</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

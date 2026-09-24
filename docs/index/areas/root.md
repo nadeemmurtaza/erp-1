@@ -3,7 +3,7 @@
 
 # repository root files
 
-82 files · 10,699 lines
+82 files · 10,717 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -17,7 +17,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 16 | 7,997 | file, doc, txt, script |
+| `.` | 16 | 8,015 | file, doc, txt, script |
 | `.claude` | 2 | 49 | json |
 | `.claude/agents` | 8 | 341 | doc |
 | `.claude/hooks` | 2 | 139 | hook |
@@ -45,7 +45,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `yaseen-backup-before-reset.sql` | 5,870 | sql |  |
-| `CLAUDE.md` | 960 | doc |  |
+| `CLAUDE.md` | 978 | doc |  |
 | `DEPLOYMENT.md` | 492 | doc |  |
 | `README.md` | 349 | doc |  |
 | `apps/platform/prisma/schema/migrations/20260924010600_init/migration.sql` | 166 | migration |  |

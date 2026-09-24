@@ -866,8 +866,26 @@ by name, even mid-task, even when the reasoning feels obvious ("this is
 clearly orphaned," "this test data isn't real," "this branch is already
 merged").
 
-Two narrow carve-outs, so the rule stays enforceable rather than
-theoretical, not loopholes to reason a real deletion through:
+**Branches are named explicitly because the owner named them explicitly:
+no branch is ever deleted — locally or on `origin` — without the
+owner's own explicit, per-branch confirmation, and `main` most of all,
+in any case, with no carve-out and no exception below reaching it.**
+`main` is never deleted, never force-pushed over, never reset, and never
+replaced wholesale, full stop — not for cleanup, not because it's "just
+a disconnected clone with no live deployment" (this file's own Deployment
+section), not because every commit on some other branch is already an
+ancestor of it, not for any reason that has not been confirmed by the
+owner in so many words for that exact operation on that exact branch. A
+non-`main` branch is barely looser: deleting even one already-merged
+branch requires the owner to confirm that specific branch by name — a
+general "clean up the merged branches" instruction is not, by itself,
+that confirmation, because it does not name which branches. Keep any
+work stashed, mirrored, or moved aside rather than assuming a branch
+that looks fully merged is safe to remove.
+
+Two further narrow carve-outs, so the rest of the rule stays enforceable
+rather than theoretical, not loopholes to reason a real deletion
+through — and neither one reaches a branch, per the paragraph above:
 
 - **Ephemeral, mechanically regenerable artifacts with no informational
   content of their own** — a build cache, `node_modules`, a file under

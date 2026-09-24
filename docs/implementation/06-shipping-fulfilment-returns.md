@@ -2,6 +2,53 @@
 
 **Read `00-HOUSE-RULES.md` first.** Depends on Phase 1.
 
+> **Status (2026-09-24): built.** New core module `fulfilment`
+> (`apps/api/src/modules/fulfilment/`) — shipping zones/rates/methods/classes
+> as real tables (WO-6.1), the `CourierProvider` interface with only
+> `manual` implemented (WO-6.2 — WO-6.3's own text says build the one the
+> shop uses and no more; there is no real courier account here to integrate
+> against), the shipment lifecycle with manifests and `ShipmentEvent`
+> (WO-6.4), a 30-minute `FulfilmentCron` poll that skips `manual` shipments
+> entirely since `ManualCourierProvider.track()` has nothing to ask —
+> staff record a manual shipment's status by hand from `/admin/fulfilment/
+> shipments` instead (WO-6.5), returns/RMA with seeded reason codes and an
+> inspection step that restocks a saleable item or writes off a damaged one
+> (WO-6.6), RTO detection and its own dashboard by city/product/order value
+> (WO-6.7), and the admin + storefront screens WO-6.8 names.
+>
+> **A real, deliberate limit on WO-6.6's REFUND path, not a bug:**
+> `ReturnsService.resolve()` only permits `resolution: 'REFUND'` when the
+> return covers the order's entire returnable quantity. Why: `accounting`'s
+> `posting-rules.subscriber.ts#onPaymentRefunded()` has no partial-refund
+> support today — its own comment says a full reversal of the sale "is the
+> correct read of today's domain model, not an approximation of one that
+> isn't built." Wiring a partial return into that path would silently
+> reverse a whole order's revenue and COGS for one returned item among
+> several. A partial return resolves as EXCHANGE, STORE_CREDIT or REPAIR
+> instead (STORE_CREDIT is recorded as a resolution only — real issuance and
+> redemption depend on Phase 5, `05-promotions-giftcards.md`, unbuilt).
+> Building a correct proportional GL reversal is real, separable work,
+> named here rather than attempted as a drive-by fix inside this pass.
+>
+> **Order.status and ReturnRequest.status are deliberately independent.**
+> A return does not move the order out of `DELIVERED` — `Order.status` has
+> no partial-return state, and a return can cover one item out of several.
+> The one exception: a full-order return resolved `REFUND` publishes
+> `DomainEvent.ReturnRequestFullyRefunded`, which `orders/shipment-status.
+> listener.ts` (living in `orders`, not `fulfilment` — INDEPENDENCE,
+> MULTI-SECTOR.md) turns into `changeStatus(..., 'RETURNED', {
+> skipStockRelease: true })`, reusing the existing restock/notification/
+> OrderEconomics-reversal machinery without double-restocking what
+> `inspect()` already moved.
+>
+> **Named gaps:** no pagination yet on the shipments/manifests/returns list
+> endpoints (WO-6.8's own screens render fine at today's scale; the
+> performance rule's own pagination requirement is not yet met at volume).
+> No admin-initiated return (only the customer's own `POST /returns`) — a
+> phone-in return needs a staff-facing "create on behalf of" endpoint, not
+> built. No label upload wiring (`CourierProvider.label()` exists on the
+> interface; no enabled provider returns one to upload).
+
 ## Why
 
 Three gaps, all of which cost real money in Pakistan:

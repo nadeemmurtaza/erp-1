@@ -87,6 +87,10 @@ model Order {
   convertedLeads Lead[]             @relation("LeadConvertedOrder")
   /// finance.prisma's OrderEconomics (WO-B.3) — null until DELIVERED.
   economics      OrderEconomics?
+  /// fulfilment.prisma's ReturnRequest (WO-6.6) — independent of
+  /// Order.status; see ReturnRequest's own doc comment for why a return
+  /// does not by itself move the order out of DELIVERED.
+  returnRequests ReturnRequest[]
 
   @@index([status, placedAt])
   @@index([userId])
@@ -176,6 +180,9 @@ model OrderItem {
   product          Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
   variant          ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
   stitchingService Product?        @relation("OrderItemStitchingService", fields: [stitchingServiceId], references: [id], onDelete: SetNull)
+  /// fulfilment.prisma (WO-6.4/6.6) — both core, same as economics above.
+  shipmentItems      ShipmentItem[]
+  returnRequestItems ReturnRequestItem[]
   // No `stitchingJob` relation field here on purpose (B7, MULTI-SECTOR.md):
   // core must never type-reference an apparel-pack model, or core.prisma
   // cannot compile without the apparel schema present — which breaks any
@@ -215,7 +222,10 @@ enum ShipmentStatus {
 model Shipment {
   id             String         @id @default(cuid())
   orderId        String
-  /// Courier provider key: "manual", "tcs", "leopards".
+  /// Courier provider key: "manual", "tcs", "leopards" — matches a live
+  /// CourierProvider.key (fulfilment/courier-provider.ts), never trusted
+  /// beyond that: booking goes through the provider the key names, not a
+  /// courier-specific branch anywhere in this module.
   courier        String         @default("manual")
   trackingNumber String?
   trackingUrl    String?
@@ -226,10 +236,37 @@ model Shipment {
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
 
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  /// WO-6.4's own extension fields (fulfilment module — Shipment itself
+  /// stays here because orders already owns its lifecycle columns).
+  methodId       String?
+  weightGrams    Int?
+  packageCount   Int       @default(1)
+  labelUrl       String?
+  manifestId     String?
+  /// Courier-specific detail (label payload, webhook body) that doesn't earn
+  /// its own column — never read for logic, only shown to support.
+  meta           Json?
+  /// Set the moment this shipment is recognised as a return-to-origin
+  /// (WO-6.7) — a courier-initiated RETURNED with no matching customer
+  /// ReturnRequest, as opposed to one raised through the returns flow.
+  isRto          Boolean   @default(false)
+  rtoAt          DateTime?
+  failedAttempts Int       @default(0)
+  /// FulfilmentCron's own bookkeeping: when this shipment was last polled,
+  /// so a consignment that hasn't moved in days is not hit every 30 minutes
+  /// forever (WO-6.5's own backoff rule) — see FulfilmentCron.pollActive().
+  lastPolledAt   DateTime?
+
+  order    Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  method   ShippingMethod? @relation(fields: [methodId], references: [id], onDelete: SetNull)
+  manifest Manifest?       @relation(fields: [manifestId], references: [id], onDelete: SetNull)
+  items    ShipmentItem[]
+  events   ShipmentEvent[]
 
   @@index([orderId])
   @@index([trackingNumber])
+  @@index([status])
+  @@index([manifestId])
 }
 
 /// Backing store for sequential per-year order numbers (YSN-2026-0001). One

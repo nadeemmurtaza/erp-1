@@ -34,6 +34,7 @@ import { STORAGE_KEYS } from '@/constants/storage';
 export default function OrderPage({ params }: { params: Promise<{ number: string }> }) {
   const { number } = use(params);
   const t = useTranslations('order');
+  const tReturns = useTranslations('returns');
   const locale = useLocale() as Locale;
   const statusLabel = useOrderStatusLabel();
   const searchParams = useSearchParams();
@@ -161,6 +162,14 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
           </Link>
         }
       />
+
+      {order.status === 'DELIVERED' ? (
+        <p className="mb-6">
+          <Link href={ROUTES.storefront.accountReturnNew(order.number)} className="btn-text">
+            {tReturns('requestAction')}
+          </Link>
+        </p>
+      ) : null}
 
       {bankAccounts.length > 0 ? (
         <Section title={t('bankTransfer')} description={t('bankTransferBody')}>

@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 116 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 125 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 4 |  |
 
 ### `apps/pos/src/components` (2)
@@ -60,7 +60,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `role-wizard.tsx` | `RoleWizard` | client | 1 |  |
 | `sales-chart.tsx` | `SalesChart` | client | 1 |  |
 | `scope-chips.tsx` | `ScopeChip` `ScopeChips` | client | 2 |  |
-| `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 35 |  |
+| `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 36 |  |
 | `stage-badge.tsx` | `StageBadge` | server | 3 |  |
 
 ### `apps/web/src/components/admin/bom` (2)
@@ -74,7 +74,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 16 |  |
+| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 23 |  |
 | `toast-container.tsx` | `ToastContainer` | client | 0 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | client | 4 |  |
 
@@ -95,7 +95,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `cart-badge.tsx` | `CartBadge` | client | 1 |  |
 | `cart-provider.tsx` | `CartProvider` `useCart` | client | 7 |  |
 | `customer-nav.tsx` | `CustomerNav` | client | 1 |  |
-| `customer-session.tsx` | `CustomerSessionProvider` `useCustomerSession` | client | 8 |  |
+| `customer-session.tsx` | `CustomerSessionProvider` `useCustomerSession` | client | 9 |  |
 | `filter-panel.tsx` | `FilterPanel` | client | 1 |  |
 | `footer.tsx` | `Footer` | server | 1 |  |
 | `grid-toggle-wrapper.tsx` | `GridToggleWrapper` | client | 1 |  |
@@ -124,7 +124,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `badge.tsx` | `BadgeTone` `Badge` | server | 21 |  |
+| `badge.tsx` | `BadgeTone` `Badge` | server | 28 |  |
 | `button.tsx` | `ButtonProps` `Button` | server | 2 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 1 |  |
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 1 |  |

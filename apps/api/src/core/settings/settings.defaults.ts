@@ -9,17 +9,6 @@ import { BRAND, toMinor } from '@newax/shared';
  * SettingsService.get(). Never read a business rule from a constant.
  */
 
-export interface ShippingZone {
-  key: string;
-  labelEn: string;
-  labelUr: string;
-  /** Cities matched case-insensitively; the catch-all zone has an empty list. */
-  cities: string[];
-  fee: number;
-  freeAbove: number;
-  etaDays: [number, number];
-}
-
 export interface StoreSettings {
   nameEn: string;
   nameUr: string;
@@ -52,6 +41,10 @@ export interface DocumentPrefixes {
   productionRun: string;
   /** PayRun (docs/implementation/19-payroll.md WO-19.4) — node-prefixed like the rest. */
   payRun: string;
+  /** ReturnRequest (WO-6.6, 06-shipping-fulfilment-returns.md) — node-prefixed like the rest. */
+  returnRequest: string;
+  /** Manifest (WO-6.4) — node-prefixed like the rest. */
+  manifest: string;
 }
 
 export interface DocumentSettings {
@@ -79,7 +72,6 @@ export const SettingKey = {
   Store: 'store',
   /** IANA zone the shop trades in. Decides where a calendar day begins. */
   StoreTimezone: 'store.timezone',
-  ShippingZones: 'shipping.zones',
   CodFee: 'checkout.cod_fee',
   CodEnabled: 'checkout.cod_enabled',
   MinOrderValue: 'checkout.min_order_value',
@@ -195,36 +187,6 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
    */
   [SettingKey.StoreTimezone]: BRAND.locale.timeZone,
 
-  [SettingKey.ShippingZones]: [
-    {
-      key: 'karachi',
-      labelEn: 'Karachi',
-      labelUr: 'کراچی',
-      cities: ['karachi'],
-      fee: toMinor(150),
-      freeAbove: toMinor(3000),
-      etaDays: [1, 2],
-    },
-    {
-      key: 'punjab',
-      labelEn: 'Punjab & Islamabad',
-      labelUr: 'پنجاب و اسلام آباد',
-      cities: ['lahore', 'islamabad', 'rawalpindi', 'faisalabad', 'multan', 'gujranwala'],
-      fee: toMinor(200),
-      freeAbove: toMinor(4000),
-      etaDays: [2, 4],
-    },
-    {
-      key: 'rest_of_pakistan',
-      labelEn: 'Rest of Pakistan',
-      labelUr: 'باقی پاکستان',
-      cities: [],
-      fee: toMinor(250),
-      freeAbove: toMinor(5000),
-      etaDays: [3, 6],
-    },
-  ] satisfies ShippingZone[],
-
   /** Charged on top when the customer pays cash on delivery. */
   [SettingKey.CodFee]: toMinor(100),
   [SettingKey.CodEnabled]: true,
@@ -273,6 +235,8 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
       interBranchInvoice: 'IBI',
       productionRun: 'PR',
       payRun: 'PAY',
+      returnRequest: 'RMA',
+      manifest: 'MFT',
     },
   } satisfies DocumentSettings,
 

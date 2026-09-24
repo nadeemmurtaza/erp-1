@@ -3,7 +3,7 @@
 
 # Screens
 
-All **162** routable files across the web app, the till and the mobile app.
+All **172** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (95)
+### admin (102)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -68,6 +68,12 @@ _none_
 | `/admin/finance/expenses/categories` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories/page.tsx` |
 | `/admin/finance/margins` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/margins/page.tsx` |
 | `/admin/finance/unit-economics` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/unit-economics/page.tsx` |
+| `/admin/fulfilment/manifests` | page | client | `apps/web/src/app/(admin)/admin/(app)/fulfilment/manifests/page.tsx` |
+| `/admin/fulfilment/returns` | page | client | `apps/web/src/app/(admin)/admin/(app)/fulfilment/returns/page.tsx` |
+| `/admin/fulfilment/returns/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/fulfilment/returns/[id]/page.tsx` |
+| `/admin/fulfilment/rto` | page | client | `apps/web/src/app/(admin)/admin/(app)/fulfilment/rto/page.tsx` |
+| `/admin/fulfilment/shipments` | page | client | `apps/web/src/app/(admin)/admin/(app)/fulfilment/shipments/page.tsx` |
+| `/admin/fulfilment/tracking` | page | client | `apps/web/src/app/(admin)/admin/(app)/fulfilment/tracking/page.tsx` |
 | `/admin/garments` | page | client | `apps/web/src/app/(admin)/admin/(app)/garments/page.tsx` |
 | `/admin/garments/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/garments/[id]/page.tsx` |
 | `/admin/import` | page | client | `apps/web/src/app/(admin)/admin/(app)/import/page.tsx` |
@@ -112,6 +118,7 @@ _none_
 | `/admin/reports` | page | client | `apps/web/src/app/(admin)/admin/(app)/reports/page.tsx` |
 | `/admin/seo` | page | client | `apps/web/src/app/(admin)/admin/(app)/seo/page.tsx` |
 | `/admin/settings` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` |
+| `/admin/settings/shipping` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/shipping/page.tsx` |
 | `/admin/stitching` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/page.tsx` |
 | `/admin/stitching/bookings` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/bookings/page.tsx` |
 | `/admin/stitching/bookings/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/bookings/[id]/page.tsx` |
@@ -166,7 +173,7 @@ _none_
 | `/terminal` | page | client | `apps/pos/src/app/terminal/page.tsx` |
 | `/till` | page | client | `apps/pos/src/app/till/page.tsx` |
 
-### storefront (36)
+### storefront (39)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -180,6 +187,9 @@ _none_
 | `/[locale]/account` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/page.tsx` |
 | `/[locale]/account/addresses` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/addresses/page.tsx` |
 | `/[locale]/account/measurements` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/measurements/page.tsx` |
+| `/[locale]/account/returns` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/page.tsx` |
+| `/[locale]/account/returns/[id]` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/[id]/page.tsx` |
+| `/[locale]/account/returns/new` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/new/page.tsx` |
 | `/[locale]/cart` | loading | server | `apps/web/src/app/(storefront)/[locale]/cart/loading.tsx` |
 | `/[locale]/cart` | page | client | `apps/web/src/app/(storefront)/[locale]/cart/page.tsx` |
 | `/[locale]/checkout` | loading | server | `apps/web/src/app/(storefront)/[locale]/checkout/loading.tsx` |

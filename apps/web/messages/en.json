@@ -7,6 +7,7 @@
       "addresses": "Addresses",
       "measurements": "Measurements",
       "orders": "Orders",
+      "returns": "Returns",
       "wishlist": "Wishlist"
     },
     "profile": {
@@ -400,5 +401,28 @@
     "intro": "We are a premium clothing brand dedicated to blending high-quality fabrics with seamless, personalized custom tailoring.",
     "problem": "Finding a reliable tailor can often be a frustrating experience filled with delays, sizing errors, and multiple trips to the shop. We started {brand} to take the hassle entirely out of the equation. We source the finest unstitched fabrics and offer a bespoke, in-house tailoring service right on our website.",
     "how": "Simply choose your favorite fabric, input your exact measurements online, and let our master tailors craft a beautiful, ready-to-wear outfit perfectly fitted to you, delivered straight to your doorstep."
+  },
+  "returns": {
+    "title": "Returns",
+    "requestAction": "Request a return",
+    "myReturns": "My returns",
+    "noReturns": "You have no return requests yet.",
+    "selectItems": "Select the items you'd like to return",
+    "quantity": "Quantity",
+    "reason": "Reason",
+    "note": "Anything else we should know? (optional)",
+    "submit": "Submit return request",
+    "submitted": "Your return request has been submitted.",
+    "backToOrder": "Back to order",
+    "status": {
+      "REQUESTED": "Requested",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected",
+      "IN_TRANSIT": "On its way to us",
+      "RECEIVED": "Received",
+      "INSPECTED": "Being reviewed",
+      "REFUNDED": "Refunded",
+      "CLOSED": "Closed"
+    }
   }
 }

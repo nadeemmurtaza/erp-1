@@ -1896,19 +1896,19 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:294</sub>
 - Phase 5 exit criteria  <sub>:310</sub>
 
-### `docs/implementation/06-shipping-fulfilment-returns.md`  <sub>288 lines</sub>
+### `docs/implementation/06-shipping-fulfilment-returns.md`  <sub>335 lines</sub>
 
-- Why  <sub>:5</sub>
-- Work orders  <sub>:25</sub>
-- WO-6.1 — Shipping as a module  <sub>:40</sub>
-- WO-6.2 — The `CourierProvider` interface  <sub>:104</sub>
-- WO-6.3 — Real couriers  <sub>:135</sub>
-- WO-6.4 — Shipment lifecycle  <sub>:151</sub>
-- WO-6.5 — Tracking automation  <sub>:167</sub>
-- WO-6.6 — Returns and RMA  <sub>:184</sub>
-- WO-6.7 — RTO  <sub>:253</sub>
-- WO-6.8 — Screens  <sub>:268</sub>
-- Phase 6 exit criteria  <sub>:278</sub>
+- Why  <sub>:52</sub>
+- Work orders  <sub>:72</sub>
+- WO-6.1 — Shipping as a module  <sub>:87</sub>
+- WO-6.2 — The `CourierProvider` interface  <sub>:151</sub>
+- WO-6.3 — Real couriers  <sub>:182</sub>
+- WO-6.4 — Shipment lifecycle  <sub>:198</sub>
+- WO-6.5 — Tracking automation  <sub>:214</sub>
+- WO-6.6 — Returns and RMA  <sub>:231</sub>
+- WO-6.7 — RTO  <sub>:300</sub>
+- WO-6.8 — Screens  <sub>:315</sub>
+- Phase 6 exit criteria  <sub>:325</sub>
 
 ### `docs/implementation/07-customer-portal.md`  <sub>186 lines</sub>
 

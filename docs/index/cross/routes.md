@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **381** endpoints across **65** controllers, with the access rule that actually guards each one.
+All **419** endpoints across **70** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 42** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 43** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -63,6 +63,7 @@ never authorization.
 | GET | `/payments/methods` | `PaymentsController.methods` |
 | GET | `/replication/pull` | `ReplicationController.pull` |
 | POST | `/replication/push` | `ReplicationController.push` |
+| GET | `/shipping/quote` | `ShippingController.quote` |
 | POST | `/stitching/bookings` | `StitchingController.book` |
 | POST | `/stitching/bookings/:number/track` | `StitchingController.track` |
 | GET | `/stitching/garments` | `StitchingController.garments` |
@@ -320,6 +321,50 @@ never authorization.
 | GET | `/admin/finance/margins` | `finance.view` | `FinanceController.margins` | Margin by product, category or variant (WO-4.3, 04-finance.md) |
 | GET | `/admin/finance/unit-economics` | `finance.view` | `FinanceController.unitEconomics` | Contribution per order, paginated, plus the average by product/category (WO-4.2) |
 
+### [`fulfilment`](../modules/fulfilment.md) (39)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/fulfilment/couriers` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.listCouriers` |  |
+| GET | `/admin/fulfilment/manifests` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.listManifests` |  |
+| POST | `/admin/fulfilment/manifests` | `fulfilment.manage` | `FulfilmentAdminController.createManifest` |  |
+| POST | `/admin/fulfilment/manifests/:id/dispatch` | `fulfilment.manage` | `FulfilmentAdminController.dispatchManifest` |  |
+| POST | `/admin/fulfilment/manifests/:id/shipments` | `fulfilment.manage` | `FulfilmentAdminController.addToManifest` |  |
+| GET | `/admin/fulfilment/returns` | `fulfilment.view` `fulfilment.manage` | `ReturnsAdminController.list` |  |
+| GET | `/admin/fulfilment/returns/:id` | `fulfilment.view` `fulfilment.manage` | `ReturnsAdminController.get` |  |
+| POST | `/admin/fulfilment/returns/:id/approve` | `fulfilment.manage` | `ReturnsAdminController.approve` |  |
+| POST | `/admin/fulfilment/returns/:id/in-transit` | `fulfilment.manage` | `ReturnsAdminController.markInTransit` |  |
+| POST | `/admin/fulfilment/returns/:id/inspect` | `fulfilment.manage` | `ReturnsAdminController.inspect` |  |
+| POST | `/admin/fulfilment/returns/:id/received` | `fulfilment.manage` | `ReturnsAdminController.markReceived` |  |
+| POST | `/admin/fulfilment/returns/:id/reject` | `fulfilment.manage` | `ReturnsAdminController.reject` |  |
+| POST | `/admin/fulfilment/returns/:id/resolve` | `fulfilment.manage` | `ReturnsAdminController.resolve` |  |
+| GET | `/admin/fulfilment/returns/reasons` | `fulfilment.view` `fulfilment.manage` | `ReturnsAdminController.listReasons` |  |
+| POST | `/admin/fulfilment/returns/reasons` | `fulfilment.manage` | `ReturnsAdminController.createReason` |  |
+| GET | `/admin/fulfilment/rto` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.rtoStats` |  |
+| GET | `/admin/fulfilment/shipments` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.listShipments` |  |
+| POST | `/admin/fulfilment/shipments` | `fulfilment.manage` | `FulfilmentAdminController.createShipment` |  |
+| GET | `/admin/fulfilment/shipments/:id` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.getShipment` |  |
+| POST | `/admin/fulfilment/shipments/:id/status` | `fulfilment.manage` | `FulfilmentAdminController.recordStatus` |  |
+| GET | `/admin/settings/shipping/classes` | `fulfilment.view` `fulfilment.manage` | `ShippingAdminController.listClasses` |  |
+| POST | `/admin/settings/shipping/classes` | `fulfilment.manage` | `ShippingAdminController.createClass` |  |
+| PATCH | `/admin/settings/shipping/classes/:id` | `fulfilment.manage` | `ShippingAdminController.updateClass` |  |
+| GET | `/admin/settings/shipping/methods` | `fulfilment.view` `fulfilment.manage` | `ShippingAdminController.listMethods` |  |
+| POST | `/admin/settings/shipping/methods` | `fulfilment.manage` | `ShippingAdminController.createMethod` |  |
+| PATCH | `/admin/settings/shipping/methods/:id` | `fulfilment.manage` | `ShippingAdminController.updateMethod` |  |
+| GET | `/admin/settings/shipping/rates` | `fulfilment.view` `fulfilment.manage` | `ShippingAdminController.listRates` |  |
+| POST | `/admin/settings/shipping/rates` | `fulfilment.manage` | `ShippingAdminController.createRate` |  |
+| DELETE | `/admin/settings/shipping/rates/:id` | `fulfilment.manage` | `ShippingAdminController.deleteRate` |  |
+| PATCH | `/admin/settings/shipping/rates/:id` | `fulfilment.manage` | `ShippingAdminController.updateRate` |  |
+| GET | `/admin/settings/shipping/zones` | `fulfilment.view` `fulfilment.manage` | `ShippingAdminController.listZones` |  |
+| POST | `/admin/settings/shipping/zones` | `fulfilment.manage` | `ShippingAdminController.createZone` |  |
+| PATCH | `/admin/settings/shipping/zones/:id` | `fulfilment.manage` | `ShippingAdminController.updateZone` |  |
+| POST | `/returns` | signed-in | `ReturnsController.create` |  |
+| GET | `/returns/:id` | signed-in | `ReturnsController.get` |  |
+| POST | `/returns/:id/photos` | signed-in | `ReturnsController.uploadPhoto` |  |
+| GET | `/returns/mine` | signed-in | `ReturnsController.mine` | The signed-in customer's own return requests |
+| GET | `/returns/reasons` | signed-in | `ReturnsController.listReasons` |  |
+| GET | `/shipping/quote` | **PUBLIC** | `ShippingController.quote` |  |
+
 ### [`identity-verification`](../modules/identity-verification.md) (4)
 
 | Method | Path | Access | Handler | Summary |
@@ -374,13 +419,12 @@ never authorization.
 | GET | `/measurements/profiles/:id` | signed-in | `MeasurementsController.getProfile` |  |
 | PATCH | `/measurements/profiles/:id` | signed-in | `MeasurementsController.updateProfile` |  |
 
-### [`orders`](../modules/orders.md) (8)
+### [`orders`](../modules/orders.md) (7)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/orders` | `orders.manage` | `OrdersAdminController.list` | All orders, filterable by status |
 | GET | `/admin/orders/:id` | `orders.manage` | `OrdersAdminController.get` |  |
-| POST | `/admin/orders/:id/shipments` | `orders.manage` | `OrdersAdminController.addShipment` | Record a dispatch and its tracking number |
 | POST | `/admin/orders/:id/status` | `orders.manage` | `OrdersAdminController.changeStatus` | Move the order along; cancelling restores stock |
 | POST | `/orders` | **PUBLIC** | `OrdersController.place` | Place the order in the current cart |
 | GET | `/orders/:number` | signed-in | `OrdersController.get` | One order, for its owner |

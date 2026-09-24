@@ -34,6 +34,7 @@ const TABS: Tab[] = [
   { href: ROUTES.storefront.accountAddresses, key: 'addresses' },
   { href: ROUTES.storefront.accountMeasurements, key: 'measurements' },
   { href: ROUTES.storefront.orders, key: 'orders' },
+  { href: ROUTES.storefront.accountReturns, key: 'returns' },
   { href: ROUTES.storefront.wishlist, key: 'wishlist' },
 ];
 

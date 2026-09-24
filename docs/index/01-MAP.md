@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 542 | 75,495 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 392 | 59,214 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 272 | 42,351 | Next.js — admin console and customer storefront in one app |
-| `(root)` | 42 | 27,241 | workspace manifests, docker compose/stack files, env templates |
-| `scripts` | 21 | 8,549 | repository checks and generators (lint gates, this index) |
+| `apps/api` | 564 | 79,164 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 392 | 59,261 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 282 | 43,810 | Next.js — admin console and customer storefront in one app |
+| `(root)` | 42 | 27,244 | workspace manifests, docker compose/stack files, env templates |
+| `scripts` | 21 | 8,562 | repository checks and generators (lint gates, this index) |
 | `apps/mobile` | 42 | 5,292 | Expo — customer mobile app |
-| `packages/shared` | 44 | 4,490 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 44 | 4,506 | brand, money, permissions, measurements, entities |
 | `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
 | `apps/platform` | 40 | 1,605 |  |
 | `.claude` | 22 | 1,017 |  |
@@ -67,11 +67,12 @@ Each is independent: no module imports another except through a named
 | [`catalog`](modules/catalog.md) | core | MODULES allowlist | 43 | 21 |
 | [`crm`](modules/crm.md) | core | MODULES allowlist | 19 | 9 |
 | [`finance`](modules/finance.md) | core | MODULES allowlist | 14 | 3 |
+| [`fulfilment`](modules/fulfilment.md) | core | MODULES allowlist | 39 | 16 |
 | [`identity-verification`](modules/identity-verification.md) | core | MODULES allowlist | 4 | 1 |
 | [`inventory`](modules/inventory.md) | core | MODULES allowlist | 16 | 7 |
 | [`marketing`](modules/marketing.md) | core | MODULES allowlist | 2 | — |
 | [`measurements`](modules/measurements.md) | apparel | MODULES allowlist | 12 | 4 |
-| [`orders`](modules/orders.md) | core | MODULES allowlist | 8 | 5 |
+| [`orders`](modules/orders.md) | core | MODULES allowlist | 7 | 5 |
 | [`organization`](modules/organization.md) | core | MODULES allowlist | 15 | 5 |
 | [`parties`](modules/parties.md) | core | MODULES allowlist | 3 | 2 |
 | [`payments`](modules/payments.md) | core | MODULES allowlist | 6 | 1 |

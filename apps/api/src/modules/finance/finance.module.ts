@@ -5,9 +5,17 @@ import { FinanceCron } from './finance.cron';
 import { FinanceListener } from './finance.listener';
 import { OrderEconomicsService } from './order-economics.service';
 import { ExpenseReplicationListener } from './expense-replication.listener';
+import { RtoExpenseListener } from './rto-expense.listener';
 
 @Module({
   controllers: [FinanceController],
-  providers: [FinanceService, FinanceCron, FinanceListener, OrderEconomicsService, ExpenseReplicationListener],
+  providers: [
+    FinanceService,
+    FinanceCron,
+    FinanceListener,
+    OrderEconomicsService,
+    ExpenseReplicationListener,
+    RtoExpenseListener,
+  ],
 })
 export class FinanceModule {}

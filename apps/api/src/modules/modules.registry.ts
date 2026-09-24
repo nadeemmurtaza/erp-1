@@ -7,6 +7,7 @@ import { CartModule } from './cart/cart.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { CrmModule } from './crm/crm.module';
 import { FinanceModule } from './finance/finance.module';
+import { FulfilmentModule } from './fulfilment/fulfilment.module';
 import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { MarketingModule } from './marketing/marketing.module';
@@ -78,6 +79,11 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'reports', module: ReportsModule },
   { name: 'tax', module: TaxModule },
   { name: 'finance', module: FinanceModule },
+  // Hard-imported by orders.module.ts directly (same reasoning as tax
+  // above — checkout always needs ShippingService.quote()), but still
+  // listed here so its own admin routes/nav follow the allowlist like
+  // every other module's.
+  { name: 'fulfilment', module: FulfilmentModule },
   { name: 'payroll', module: PayrollModule },
   { name: 'tracking', module: TrackingModule },
   // Off by default for every deployment today (WO-18.3) — a chain

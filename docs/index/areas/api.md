@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-542 files · 75,495 lines
+564 files · 79,164 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -16,7 +16,7 @@ Structure: `src/core/` is the shared platform every deployment runs;
 
 ## Go deeper
 
-- **Feature modules (L2):** [`accounting`](../modules/accounting.md) · [`addresses`](../modules/addresses.md) · [`analytics`](../modules/analytics.md) · [`bom`](../modules/bom.md) · [`cart`](../modules/cart.md) · [`catalog`](../modules/catalog.md) · [`crm`](../modules/crm.md) · [`finance`](../modules/finance.md) · [`identity-verification`](../modules/identity-verification.md) · [`inventory`](../modules/inventory.md) · [`marketing`](../modules/marketing.md) · [`measurements`](../modules/measurements.md) · [`orders`](../modules/orders.md) · [`organization`](../modules/organization.md) · [`parties`](../modules/parties.md) · [`payments`](../modules/payments.md) · [`payroll`](../modules/payroll.md) · [`pos`](../modules/pos.md) · [`production`](../modules/production.md) · [`purchasing`](../modules/purchasing.md) · [`reports`](../modules/reports.md) · [`settings`](../modules/settings.md) · [`stitching`](../modules/stitching.md) · [`tax`](../modules/tax.md) · [`tracking`](../modules/tracking.md) · [`tradingpartners`](../modules/tradingpartners.md) · [`transfers`](../modules/transfers.md) · [`users`](../modules/users.md)
+- **Feature modules (L2):** [`accounting`](../modules/accounting.md) · [`addresses`](../modules/addresses.md) · [`analytics`](../modules/analytics.md) · [`bom`](../modules/bom.md) · [`cart`](../modules/cart.md) · [`catalog`](../modules/catalog.md) · [`crm`](../modules/crm.md) · [`finance`](../modules/finance.md) · [`fulfilment`](../modules/fulfilment.md) · [`identity-verification`](../modules/identity-verification.md) · [`inventory`](../modules/inventory.md) · [`marketing`](../modules/marketing.md) · [`measurements`](../modules/measurements.md) · [`orders`](../modules/orders.md) · [`organization`](../modules/organization.md) · [`parties`](../modules/parties.md) · [`payments`](../modules/payments.md) · [`payroll`](../modules/payroll.md) · [`pos`](../modules/pos.md) · [`production`](../modules/production.md) · [`purchasing`](../modules/purchasing.md) · [`reports`](../modules/reports.md) · [`settings`](../modules/settings.md) · [`stitching`](../modules/stitching.md) · [`tax`](../modules/tax.md) · [`tracking`](../modules/tracking.md) · [`tradingpartners`](../modules/tradingpartners.md) · [`transfers`](../modules/transfers.md) · [`users`](../modules/users.md)
 - **Core subsystems (L2):** [`audit`](../core/audit.md) · [`auth`](../core/auth.md) · [`checkout`](../core/checkout.md) · [`common`](../core/common.md) · [`config`](../core/config.md) · [`events`](../core/events.md) · [`extension-points`](../core/extension-points.md) · [`health`](../core/health.md) · [`notifications`](../core/notifications.md) · [`prisma`](../core/prisma.md) · [`replication`](../core/replication.md) · [`security`](../core/security.md) · [`settings`](../core/settings.md) · [`storage`](../core/storage.md) · [`time`](../core/time.md)
 - **Every route:** [cross/routes.md](../cross/routes.md)
 - **Every table:** [cross/data-model.md](../cross/data-model.md)
@@ -28,11 +28,11 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
 | `apps/api` | 10 | 832 | file, script, json, module |
-| `apps/api/prisma` | 3 | 3,125 | module |
-| `apps/api/prisma/schema` | 87 | 8,621 | prisma schema, migration, toml |
+| `apps/api/prisma` | 3 | 3,163 | module |
+| `apps/api/prisma/schema` | 89 | 9,338 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 131 | nest module, module |
-| `apps/api/src/core` | 114 | 12,060 | nest module, service, module, controller |
-| `apps/api/src/modules` | 306 | 44,574 | nest module, unit test, service, module |
+| `apps/api/src/core` | 114 | 12,054 | nest module, service, module, controller |
+| `apps/api/src/modules` | 326 | 47,494 | nest module, unit test, service, module |
 | `apps/api/test` | 19 | 6,109 | e2e test, unit test, module |
 | `apps/api/test/support` | 1 | 43 | module |
 
@@ -50,9 +50,9 @@ Structure: `src/core/` is the shared platform every deployment runs;
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `apps/api/prisma/seed.ts` | 3,030 | module |  |
+| `apps/api/prisma/seed.ts` | 3,068 | module |  |
 | `apps/api/src/modules/analytics/analytics.service.ts` | 2,018 | service |  |
-| `apps/api/src/modules/orders/orders.service.ts` | 1,114 | service |  |
+| `apps/api/src/modules/orders/orders.service.ts` | 1,096 | service |  |
 | `apps/api/prisma/schema/migrations/20260816133646_init/migration.sql` | 1,076 | migration |  |
 | `apps/api/src/core/notifications/email/templates.ts` | 1,005 | module |  |
 | `apps/api/test/orders.e2e-spec.ts` | 950 | e2e test |  |

@@ -263,7 +263,7 @@ All 392 tracked files in `docs/*`, by directory.
 | `03-variants-sku-seo.md` | doc | 566 |  |
 | `04-finance.md` | doc | 291 |  |
 | `05-promotions-giftcards.md` | doc | 320 |  |
-| `06-shipping-fulfilment-returns.md` | doc | 288 |  |
+| `06-shipping-fulfilment-returns.md` | doc | 335 |  |
 | `07-customer-portal.md` | doc | 186 |  |
 | `08-content-marketing-search.md` | doc | 138 |  |
 | `09-ai-layer.md` | doc | 221 |  |

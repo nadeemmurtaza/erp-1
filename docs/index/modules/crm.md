@@ -3,20 +3,20 @@
 
 # Module: `crm`
 
-Pack **core** · enabled by the `MODULES` allowlist · 10 files
+Pack **core** · enabled by the `MODULES` allowlist · 11 files
 
 
 
 Source: `apps/api/src/modules/crm/`
 
-## Files (10 · 1,618 lines)
+## Files (11 · 1,652 lines)
 
 All paths relative to `apps/api/src/modules/crm`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `crm.controller.ts` | controller | 199 | 2 |  |
-| `crm.module.ts` | nest module | 15 | 1 |  |
+| `crm.module.ts` | nest module | 16 | 1 |  |
 | `crm.service.ts` | service | 526 | 2 |  |
 | `crm.dto.ts` | dto | 195 | 7 |  |
 | `email-inbox.admin.controller.ts` | controller | 57 | 1 | Support Inbox — replies to order/support mail that the mailbox poller pulled from a connected mailbox. |
@@ -25,6 +25,7 @@ All paths relative to `apps/api/src/modules/crm`.
 | `email-inbox.service.ts` | service | 234 | 2 |  |
 | `mailbox-poller.cron.ts` | scheduled job | 133 | 1 | Logs into every connected mailbox with IMAP configured and pulls unseen mail — a customer's reply to an order or suppor… |
 | `order.subscriber.ts` | event subscriber | 87 | 1 | Keeps customer records in step with orders. |
+| `rto-contact.listener.ts` | event subscriber | 33 | 1 | WO-6.7 — "Increment an RTO counter on the customer's Contact record." Same rollup idiom as the CRM's own order.placed s… |
 
 
 ## HTTP routes (19)
@@ -68,21 +69,22 @@ All paths relative to `apps/api/src/modules/crm`.
 | `OrderPlaced` | `order.placed` | `order.subscriber.ts:27` → `onOrderPlaced()` |
 | `OrderStatusChanged` | `order.status_changed` | `order.subscriber.ts:66` → `onStatusChanged()` |
 | `OrderCancelled` | `order.cancelled` | `order.subscriber.ts:71` → `onCancelled()` |
+| `ShipmentReturnedToOrigin` | `fulfilment.shipment_rto` | `rto-contact.listener.ts:19` → `onShipmentReturnedToOrigin()` |
 
 
 ## Tables it owns (`crm.prisma`)
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Contact` | 28 | :16 |  |
-| `ContactTag` | 4 | :216 |  |
-| `FollowUpTask` | 13 | :187 |  |
-| `InboundEmail` | 17 | :142 | A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-inbox) — a customer's… |
-| `InboundEmailReply` | 7 | :174 | A staff reply sent from the Support Inbox, over the SAME connected mailbox the original message arrived at (n… |
-| `Interaction` | 11 | :116 |  |
-| `Lead` | 21 | :75 | An enquiry that is not yet an order: a stitching quote request, a WhatsApp message logged by staff, a contact… |
-| `Segment` | 8 | :228 | A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — stored as a filter definition and ex… |
-| `Tag` | 5 | :207 |  |
+| `Contact` | 29 | :16 |  |
+| `ContactTag` | 4 | :220 |  |
+| `FollowUpTask` | 13 | :191 |  |
+| `InboundEmail` | 17 | :146 | A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-inbox) — a customer's… |
+| `InboundEmailReply` | 7 | :178 | A staff reply sent from the Support Inbox, over the SAME connected mailbox the original message arrived at (n… |
+| `Interaction` | 11 | :120 |  |
+| `Lead` | 21 | :79 | An enquiry that is not yet an order: a stitching quote request, a WhatsApp message logged by staff, a contact… |
+| `Segment` | 8 | :232 | A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — stored as a filter definition and ex… |
+| `Tag` | 5 | :211 |  |
 
 
 Enums: `ContactStatus` (5) · `InteractionKind` (7) · `LeadStatus` (5)
@@ -97,7 +99,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`CrmModule`** (`crm.module.ts`)
 - imports: —
 - controllers: `CrmPublicController`, `CrmAdminController`, `EmailInboxAdminController`
-- providers: `CrmService`, `CrmOrderSubscriber`, `EmailInboxService`, `MailboxPollerCron`
+- providers: `CrmService`, `CrmOrderSubscriber`, `EmailInboxService`, `MailboxPollerCron`, `RtoContactListener`
 - exports: `CrmService`
 
 
@@ -129,7 +131,7 @@ check there before adding another.
 |---|---|---|---|
 | `CrmPublicController` | class | `crm.controller.ts:33` |  |
 | `CrmAdminController` | class | `crm.controller.ts:47` |  |
-| `CrmModule` | class | `crm.module.ts:14` |  |
+| `CrmModule` | class | `crm.module.ts:15` |  |
 | `UpsertContactInput` | interface | `crm.service.ts:8` |  |
 | `CrmService` | class | `crm.service.ts:31` | Customer records. |
 | `ContactQueryDto` | class | `crm.dto.ts:18` |  |
@@ -147,6 +149,7 @@ check there before adding another.
 | `EmailInboxService` | class | `email-inbox.service.ts:46` | Support Inbox: messages the mailbox poller (mailbox-poller.cron.ts) pulled from a connected mailbox, plus the… |
 | `MailboxPollerCron` | class | `mailbox-poller.cron.ts:23` | Logs into every connected mailbox with IMAP configured and pulls unseen mail — a customer's reply to an order… |
 | `CrmOrderSubscriber` | class | `order.subscriber.ts:19` | Keeps customer records in step with orders. |
+| `RtoContactListener` | class | `rto-contact.listener.ts:14` | WO-6.7 — "Increment an RTO counter on the customer's Contact record." Same rollup idiom as the CRM's own orde… |
 
 
 ---

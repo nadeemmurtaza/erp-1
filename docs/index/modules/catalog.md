@@ -118,23 +118,23 @@ All paths relative to `apps/api/src/modules/catalog`.
 | `BrandTranslation` | 6 | :68 | House Rule 6: a customer-facing name is a translation row, not a column. |
 | `Category` | 13 | :23 |  |
 | `CategoryTranslation` | 6 | :80 |  |
-| `OptionTemplate` | 7 | :415 | Store-level, reusable option axis — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue -> Options & attribute… |
-| `OptionTemplateTranslation` | 5 | :428 |  |
-| `OptionTemplateValue` | 8 | :439 |  |
-| `OptionTemplateValueTranslation` | 5 | :454 |  |
-| `Product` | 34 | :92 |  |
-| `ProductGarmentType` | 3 | :316 | Which garments a given unstitched fabric can be made into. |
-| `ProductImage` | 11 | :282 |  |
-| `ProductImageTranslation` | 5 | :304 | Alt text per locale. |
-| `ProductOption` | 9 | :337 | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
-| `ProductOptionTranslation` | 5 | :354 |  |
-| `ProductOptionValue` | 9 | :366 | A specific value on an option axis: "M", "Ferozi", "128GB". |
-| `ProductOptionValueTranslation` | 5 | :384 |  |
-| `ProductTranslation` | 10 | :164 |  |
-| `ProductVariant` | 45 | :183 |  |
-| `ProductVariantOptionValue` | 5 | :398 | The join that DEFINES a variant: one row per option axis per variant. |
-| `Redirect` | 7 | :468 | A storefront path that now 301s somewhere else — created automatically when a live product/category slug chan… |
-| `StockAdjustment` | 10 | :264 | One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without an audit table bolted… |
+| `OptionTemplate` | 7 | :422 | Store-level, reusable option axis — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue -> Options & attribute… |
+| `OptionTemplateTranslation` | 5 | :435 |  |
+| `OptionTemplateValue` | 8 | :446 |  |
+| `OptionTemplateValueTranslation` | 5 | :461 |  |
+| `Product` | 36 | :92 |  |
+| `ProductGarmentType` | 3 | :323 | Which garments a given unstitched fabric can be made into. |
+| `ProductImage` | 11 | :289 |  |
+| `ProductImageTranslation` | 5 | :311 | Alt text per locale. |
+| `ProductOption` | 9 | :344 | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
+| `ProductOptionTranslation` | 5 | :361 |  |
+| `ProductOptionValue` | 9 | :373 | A specific value on an option axis: "M", "Ferozi", "128GB". |
+| `ProductOptionValueTranslation` | 5 | :391 |  |
+| `ProductTranslation` | 10 | :171 |  |
+| `ProductVariant` | 45 | :190 |  |
+| `ProductVariantOptionValue` | 5 | :405 | The join that DEFINES a variant: one row per option axis per variant. |
+| `Redirect` | 7 | :475 | A storefront path that now 301s somewhere else — created automatically when a live product/category slug chan… |
+| `StockAdjustment` | 10 | :271 | One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without an audit table bolted… |
 
 
 Enums: `OptionDisplay` (4) · `ProductKind` (6) · `ProductStatus` (3)

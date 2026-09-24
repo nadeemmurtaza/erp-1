@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 272 tracked files in `apps/web`, by directory.
+All 282 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -25,8 +25,8 @@ All 272 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `en.json` | json | 405 |  |
-| `ur.json` | json | 405 |  |
+| `en.json` | json | 429 |  |
+| `ur.json` | json | 429 |  |
 
 ### `apps/web/public` (1)
 
@@ -261,6 +261,42 @@ All 272 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 100 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/fulfilment/manifests` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 105 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/fulfilment/returns` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 76 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/fulfilment/returns/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 196 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/fulfilment/rto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 124 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/fulfilment/shipments` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 136 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/fulfilment/tracking` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 89 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/garments` (1)
 
 | File | Kind | Lines | Purpose |
@@ -387,7 +423,7 @@ All 272 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 534 |  |
+| `page.tsx` | page | 537 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/orders/insights` (1)
 
@@ -503,6 +539,12 @@ All 272 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 571 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/settings/shipping` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 244 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/stitching` (1)
 
@@ -640,6 +682,24 @@ All 272 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 258 |  |
 
+### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 68 |  |
+
+### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 78 |  |
+
+### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/new` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 166 |  |
+
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/orders` (1)
 
 | File | Kind | Lines | Purpose |
@@ -650,7 +710,7 @@ All 272 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 360 |  |
+| `page.tsx` | page | 369 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/wishlist` (1)
 
@@ -806,7 +866,7 @@ All 272 tracked files in `apps/web`, by directory.
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 543 |  |
-| `nav-registry.ts` | component | 610 |  |
+| `nav-registry.ts` | component | 668 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1410 |  |
@@ -836,7 +896,7 @@ All 272 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `dashboard-nav.tsx` | component | 67 |  |
+| `dashboard-nav.tsx` | component | 68 |  |
 
 ### `apps/web/src/components/storefront` (31)
 
@@ -911,7 +971,7 @@ All 272 tracked files in `apps/web`, by directory.
 | `downloads.ts` | constants | 21 |  |
 | `payment-methods.ts` | constants | 30 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 24 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 144 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 156 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 52 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)
@@ -939,7 +999,7 @@ All 272 tracked files in `apps/web`, by directory.
 | `api-client.ts` | utility | 41 | The one HTTP layer. |
 | `api.ts` | utility | 65 |  |
 | `cart-client.ts` | utility | 85 |  |
-| `customer-client.ts` | utility | 196 |  |
+| `customer-client.ts` | utility | 217 |  |
 | `download-csv.ts` | utility | 36 |  |
 | `wishlist.ts` | utility | 96 |  |
 
@@ -954,7 +1014,7 @@ All 272 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 1181 |  |
+| `api.ts` | types | 1206 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

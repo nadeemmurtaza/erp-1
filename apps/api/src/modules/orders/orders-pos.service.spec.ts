@@ -12,6 +12,7 @@ import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.re
 import { InventoryService } from '../inventory/inventory.service';
 import { PaymentsService } from '../payments/payments.service';
 import { TaxService } from '../tax/tax.service';
+import { ShippingService } from '../fulfilment/shipping.service';
 import { OrdersService } from './orders.service';
 
 /**
@@ -47,6 +48,7 @@ describe('OrdersService — placeFromPos (WO-21.3)', () => {
         { provide: PaymentsService, useValue: {} },
         { provide: CheckoutValidatorRegistry, useValue: { validateAll: jest.fn().mockResolvedValue([]) } },
         { provide: TaxService, useValue: {} },
+        { provide: ShippingService, useValue: {} },
       ],
     }).compile();
 

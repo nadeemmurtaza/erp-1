@@ -11,7 +11,6 @@ import {
 import {
   computeLineItem,
   computeOrderTotals,
-  computeShippingFee,
   DEFAULT_LOCALE,
   getVariantDisplayLabel,
   normalizePkPhone,
@@ -33,6 +32,7 @@ import { paginated } from '../../core/common/dto/pagination.dto';
 import { Prisma, type OrderStatus } from '../../core/prisma/client';
 import { PaymentsService } from '../payments/payments.service';
 import { TaxService } from '../tax/tax.service';
+import { ShippingService } from '../fulfilment/shipping.service';
 import type { PlaceOrderDto } from './dto/order.dto';
 
 export interface PosSaleLineInput {
@@ -99,6 +99,7 @@ export class OrdersService {
     private readonly enrichment: EntityEnrichmentRegistry,
     private readonly checkoutValidators: CheckoutValidatorRegistry,
     private readonly tax: TaxService,
+    private readonly shipping: ShippingService,
   ) {}
 
   /**
@@ -152,9 +153,9 @@ export class OrdersService {
     // Re-price from the database. The client sends no amounts at all.
     const priced = await this.priceCart(cart, locale);
 
-    const zone = await this.settings.resolveShippingZone(dto.shippingAddress.city);
     const goodsSubtotal = priced.totals.itemsSubtotal + priced.totals.stitchingSubtotal;
-    const shippingFee = computeShippingFee(goodsSubtotal, zone);
+    const quote = await this.shipping.quote(dto.shippingAddress.city, goodsSubtotal);
+    const shippingFee = quote.fee;
     const paymentFee = await this.payments.feeFor(dto.paymentMethod, goodsSubtotal);
 
     const totals = computeOrderTotals({
@@ -228,7 +229,7 @@ export class OrdersService {
           codFee: totals.codFee,
           taxAmount: totals.taxAmount,
           grandTotal: totals.grandTotal,
-          shippingZone: zone.key,
+          shippingZone: quote.zoneKey,
           customerNote: dto.note ?? null,
           items: {
             create: priced.lines.map((line) => ({
@@ -656,10 +657,18 @@ export class OrdersService {
    * cancelled stock back.
    */
   async changeStatus(
-    actorId: string,
+    actorId: string | null,
     orderId: string,
     toStatus: OrderStatus,
     note?: string,
+    /**
+     * skipStockRelease: the caller already moved stock itself (WO-6.6's
+     * returns.service.ts#inspect(), which restocks a saleable item or writes
+     * off a damaged one item-by-item, in contrast to this method's own
+     * blanket "restock everything with reason RETURN"). Every existing
+     * caller omits this — behaviour is byte-identical to before WO-6.
+     */
+    options?: { skipStockRelease?: boolean },
   ) {
     const order = await this.prisma.order.findUnique({
       where: { id: orderId },
@@ -695,7 +704,7 @@ export class OrdersService {
       // sale by placeFromPos(), WO-21.3) rather than always the default one.
       // A web order has no locationId, so it still falls back to the default
       // — exactly today's behavior, unchanged for every order this doesn't apply to.
-      if (toStatus === 'CANCELLED' || toStatus === 'RETURNED') {
+      if ((toStatus === 'CANCELLED' || toStatus === 'RETURNED') && !options?.skipStockRelease) {
         const moveReason = toStatus === 'CANCELLED' ? 'CANCELLATION' : 'RETURN';
         const locationId = order.locationId ?? (await this.inventory.defaultLocationId(tx));
         await this.inventory.moveMany(
@@ -734,33 +743,6 @@ export class OrdersService {
     });
 
     return this.adminGet(orderId);
-  }
-
-  async addShipment(
-    actorId: string,
-    orderId: string,
-    input: { courier: string; trackingNumber?: string; trackingUrl?: string },
-  ) {
-    const shipment = await this.prisma.shipment.create({
-      data: {
-        orderId,
-        courier: input.courier,
-        trackingNumber: input.trackingNumber ?? null,
-        trackingUrl: input.trackingUrl ?? null,
-        status: 'DISPATCHED',
-        dispatchedAt: new Date(),
-      },
-    });
-
-    await this.audit.record({
-      actorId,
-      action: 'order.shipment_added',
-      entity: 'Order',
-      entityId: orderId,
-      data: { courier: input.courier, trackingNumber: input.trackingNumber },
-    });
-
-    return shipment;
   }
 
   // --- internals -----------------------------------------------------------

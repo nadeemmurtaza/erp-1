@@ -2,7 +2,7 @@
 
 import { API_URL } from './api';
 import { request, requestWithRefresh } from './api-client';
-import type { AuthResult, AuthUser, CustomerOrder } from '@/types/api';
+import type { AuthResult, AuthUser, CustomerOrder, CustomerReturnReason, CustomerReturnRequest } from '@/types/api';
 import { STORAGE_KEYS } from '@/constants/storage';
 
 const ACCESS_KEY = STORAGE_KEYS.customer.access;
@@ -136,6 +136,27 @@ export async function trackOrder(number: string, phone: string): Promise<Custome
     credentials: 'include',
     fallbackMessage: 'That number does not match this order',
   });
+}
+
+/** WO-6.6 — the customer's own side of returns/RMA. */
+export async function listReturnReasons(): Promise<CustomerReturnReason[]> {
+  return customerFetch<CustomerReturnReason[]>('/returns/reasons');
+}
+
+export async function listMyReturns(): Promise<CustomerReturnRequest[]> {
+  return customerFetch<CustomerReturnRequest[]>('/returns/mine');
+}
+
+export async function getMyReturn(id: string): Promise<CustomerReturnRequest> {
+  return customerFetch<CustomerReturnRequest>(`/returns/${id}`);
+}
+
+export async function createReturnRequest(input: {
+  orderNumber: string;
+  customerNote?: string;
+  items: Array<{ orderItemId: string; reasonId: string; quantity: number }>;
+}): Promise<CustomerReturnRequest> {
+  return customerFetch<CustomerReturnRequest>('/returns', { method: 'POST', body: input });
 }
 
 /**

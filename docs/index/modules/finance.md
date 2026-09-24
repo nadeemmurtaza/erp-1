@@ -3,13 +3,13 @@
 
 # Module: `finance`
 
-Pack **core** · enabled by the `MODULES` allowlist · 15 files
+Pack **core** · enabled by the `MODULES` allowlist · 16 files
 
 
 
 Source: `apps/api/src/modules/finance/`
 
-## Files (15 · 2,314 lines)
+## Files (16 · 2,369 lines)
 
 All paths relative to `apps/api/src/modules/finance/dto`.
 
@@ -25,11 +25,12 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 | `finance.cron.ts` | scheduled job | 36 | 1 | WO-B.2's recurring-expense job. |
 | `finance.listener.spec.ts` | unit test | 48 | — |  |
 | `finance.listener.ts` | event subscriber | 27 | 1 | WO-23.1's WO-B.3: compute OrderEconomics on DELIVERED, recompute on RETURNED. |
-| `finance.module.ts` | nest module | 14 | 1 |  |
+| `finance.module.ts` | nest module | 22 | 1 |  |
 | `finance.service.ts` | service | 675 | 6 |  |
 | `finance.spec.ts` | unit test | 522 | — |  |
 | `order-economics.service.spec.ts` | unit test | 216 | — |  |
 | `order-economics.service.ts` | service | 137 | 1 | WO-23.1's WO-B.3: contribution per order. |
+| `rto-expense.listener.ts` | event subscriber | 47 | 1 | WO-6.7 — "Record the RTO cost (both legs of courier charge) as a direct cost." Posted as an Expense against the existin… |
 
 
 ## HTTP routes (14)
@@ -69,6 +70,7 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 |---|---|---|
 | `OrderStatusChanged` | `order.status_changed` | `finance.listener.ts:18` → `onOrderStatusChanged()` |
 | `ExpenseRecorded` | `finance.expense_recorded` | `expense-replication.listener.ts:38` → `onExpenseRecorded()` |
+| `ShipmentReturnedToOrigin` | `fulfilment.shipment_rto` | `rto-expense.listener.ts:25` → `onShipmentReturnedToOrigin()` |
 
 
 ## Tables it owns (`finance.prisma`)
@@ -98,7 +100,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`FinanceModule`** (`finance.module.ts`)
 - imports: —
 - controllers: `FinanceController`
-- providers: `FinanceService`, `FinanceCron`, `FinanceListener`, `OrderEconomicsService`, `ExpenseReplicationListener`
+- providers: `FinanceService`, `FinanceCron`, `FinanceListener`, `OrderEconomicsService`, `ExpenseReplicationListener`, `RtoExpenseListener`
 - exports: —
 
 
@@ -146,7 +148,7 @@ check there before adding another.
 | `FinanceController` | class | `finance.controller.ts:26` |  |
 | `FinanceCron` | class | `finance.cron.ts:19` | WO-B.2's recurring-expense job. |
 | `FinanceListener` | class | `finance.listener.ts:15` | WO-23.1's WO-B.3: compute OrderEconomics on DELIVERED, recompute on RETURNED. |
-| `FinanceModule` | class | `finance.module.ts:13` |  |
+| `FinanceModule` | class | `finance.module.ts:21` |  |
 | `ExpenseSummary` | interface | `finance.service.ts:55` |  |
 | `ExpenseByCategoryRow` | interface | `finance.service.ts:69` |  |
 | `ExpenseByCategoryResult` | interface | `finance.service.ts:87` |  |
@@ -154,6 +156,7 @@ check there before adding another.
 | `ExpenseTrendResult` | interface | `finance.service.ts:108` |  |
 | `FinanceService` | class | `finance.service.ts:125` | Finance: operational expenses (RETAIL-ERP.md Tranche 6, WO-23.1 — building `10-admin-dashboard.md` WO-B.1 as… |
 | `OrderEconomicsService` | class | `order-economics.service.ts:40` | WO-23.1's WO-B.3: contribution per order. |
+| `RtoExpenseListener` | class | `rto-expense.listener.ts:17` | WO-6.7 — "Record the RTO cost (both legs of courier charge) as a direct cost." Posted as an Expense against t… |
 
 
 ---

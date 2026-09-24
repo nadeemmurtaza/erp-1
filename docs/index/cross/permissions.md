@@ -3,7 +3,7 @@
 
 # Permissions
 
-All **44** permissions in `PERMISSION_CATALOG`, mapped to the routes that enforce them, the UI that checks them, and the seed that grants them.
+All **46** permissions in `PERMISSION_CATALOG`, mapped to the routes that enforce them, the UI that checks them, and the seed that grants them.
 
 
 Catalogue: `packages/shared/src/permissions.ts` ·
@@ -48,7 +48,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `orders.manage` | Manage orders and shipments | medium | 12 | 1 | STAFF, ADMIN |
+| `orders.manage` | Manage orders and shipments | medium | 11 | 1 | STAFF, ADMIN |
 | `pos.manage` | Register till terminals and issue their device credentials | high | 6 | — | ADMIN |
 | `pos.operate` | Open and close till shifts, and record cash movements | medium | 9 | 1 | STAFF, ADMIN |
 | `payments.approve` | Approve bank-transfer payments | high | 3 | 2 | STAFF, ADMIN |
@@ -111,6 +111,13 @@ the *catalogue*, not any particular deployment's grants.
 | `finance.view` | View expenses and finance reports | medium | 10 | 6 | STAFF, ADMIN |
 | `finance.manage` | Record and edit expenses | medium | 7 | 1 | ADMIN |
 
+### Fulfilment
+
+| Key | Label | Risk | API routes | UI sites | Roles granted at seed |
+|---|---|---|---|---|---|
+| `fulfilment.view` | View shipments, manifests, RTO and returns | low | 12 | 5 | STAFF, ADMIN |
+| `fulfilment.manage` | Book, track and manifest shipments; decide returns | medium | 33 | 6 | STAFF, ADMIN |
+
 ### Manufacturing
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
@@ -140,8 +147,8 @@ their own `UserPermission` GRANT/REVOKE overrides applied on top
 |---|---|---|
 | `CUSTOMER` | 1 | `account.change_own_password` |
 | `TAILOR` | 5 | `account.change_own_password` `payroll.view_own` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_own` |
-| `STAFF` | 28 | `account.change_own_password` `payroll.view_own` `analytics.view` `reports.view` `organization.view` `crm.manage` `orders.manage` `payments.approve` `pos.operate` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `bom.view` `bom.produce` |
-| `ADMIN` | 43 | `account.change_own_password` `payroll.view_own` `payroll.view` `payroll.manage` `analytics.view` `reports.view` `organization.view` `organization.manage` `accounting.view` `crm.manage` `orders.manage` `payments.approve` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.view_cost` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.manage` `bom.view` `bom.manage` `bom.produce` `settings.manage` `roles.manage_permissions` `audit.view` `users.manage` `tax.manage` `marketing.manage` `accounting.manage_periods` `pos.manage` `pos.operate` |
+| `STAFF` | 30 | `account.change_own_password` `payroll.view_own` `analytics.view` `reports.view` `organization.view` `crm.manage` `orders.manage` `payments.approve` `pos.operate` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.produce` |
+| `ADMIN` | 45 | `account.change_own_password` `payroll.view_own` `payroll.view` `payroll.manage` `analytics.view` `reports.view` `organization.view` `organization.manage` `accounting.view` `crm.manage` `orders.manage` `payments.approve` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.view_cost` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.manage` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.manage` `bom.produce` `settings.manage` `roles.manage_permissions` `audit.view` `users.manage` `tax.manage` `marketing.manage` `accounting.manage_periods` `pos.manage` `pos.operate` |
 
 
 ## Admin nav → permission

@@ -211,6 +211,42 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `FinanceUnitEconomicsPage` | default | :31 | WO-4.2's own unit economics (04-finance.md) — "this Rs 3,499 kurta earns Rs 1,180 after courier, ga… |
 
+### `apps/web/src/app/(admin)/admin/(app)/fulfilment/manifests`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `ManifestsPage` | default | :20 | WO-6.8's `/admin/fulfilment/manifests` — a day's pickup, grouped by courier. |
+
+### `apps/web/src/app/(admin)/admin/(app)/fulfilment/returns`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `ReturnsPage` | default | :21 | WO-6.8's `/admin/sales/returns` — folded into the "orders" nav group (the doc's own "Sales" group n… |
+
+### `apps/web/src/app/(admin)/admin/(app)/fulfilment/returns/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `ReturnDetailPage` | default | :33 | WO-6.8's own "inspection sheet" — the packing-and-inspection screen the doc says gets used on a pho… |
+
+### `apps/web/src/app/(admin)/admin/(app)/fulfilment/rto`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `RtoRatePage` | default | :36 | WO-6.7's own dashboard requirement — "the input to which cities to require advance payment from, an… |
+
+### `apps/web/src/app/(admin)/admin/(app)/fulfilment/shipments`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `ShipmentsPage` | default | :34 | WO-6.8's `/admin/fulfilment/shipments` — every shipment, with a manual status update for `manual`-c… |
+
+### `apps/web/src/app/(admin)/admin/(app)/fulfilment/tracking`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `TrackingPage` | default | :27 | WO-6.8's `/admin/fulfilment/tracking` — every shipment still moving, with how long it's been since… |
+
 ### `apps/web/src/app/(admin)/admin/(app)/garments`
 
 | File | Symbol | Kind | Line | Doc |
@@ -454,6 +490,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `AdminSettingsPage` | default | :15 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/settings/shipping`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `ShippingSettingsPage` | default | :40 | WO-6.8's `/admin/settings/shipping` — zones, rates, methods, classes. |
+
 ### `apps/web/src/app/(admin)/admin/(app)/stitching`
 
 | File | Symbol | Kind | Line | Doc |
@@ -592,6 +634,24 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `AccountMeasurementsPage` | default | :20 |  |
+
+### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `MyReturnsPage` | default | :15 | WO-6.6 — the customer's own returns, mirroring orders/page.tsx's shape. |
+
+### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `MyReturnDetailPage` | default | :13 |  |
+
+### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/new`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `NewReturnRequestPage` | default | :19 | WO-6.6 — the customer's own side of the return-item portal CLAUDE.md's own feature-scope example na… |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/orders`
 
@@ -780,13 +840,13 @@ Every top-level export in `web`, with the line to open.
 | `image-manager.tsx` | `ImageStager` | function | :344 | Photo picker for a product that does not have an id yet — new-product creation, where `ImageManager… |
 | `image-manager.tsx` | `StagedImageUploadResult` | interface | :492 |  |
 | `image-manager.tsx` | `uploadStagedImages` | function | :510 | Uploads every staged image to a now-existing product, in order (the first upload becomes the thumbn… |
-| `nav-registry.ts` | `ICON_MAP` | const | :18 |  |
-| `nav-registry.ts` | `AdminNavGroup` | interface | :32 |  |
-| `nav-registry.ts` | `NAV_GROUPS` | const | :51 | Sidebar order is THIS ARRAY's order. |
-| `nav-registry.ts` | `AdminNavItem` | interface | :69 |  |
-| `nav-registry.ts` | `ADMIN_NAV` | const | :108 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :580 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :595 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `ICON_MAP` | const | :19 |  |
+| `nav-registry.ts` | `AdminNavGroup` | interface | :34 |  |
+| `nav-registry.ts` | `NAV_GROUPS` | const | :53 | Sidebar order is THIS ARRAY's order. |
+| `nav-registry.ts` | `AdminNavItem` | interface | :76 |  |
+| `nav-registry.ts` | `ADMIN_NAV` | const | :116 | The admin navigation, as data. |
+| `nav-registry.ts` | `landingFor` | function | :638 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :653 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
@@ -824,7 +884,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `dashboard-nav.tsx` | `DashboardNav` | function | :40 |  |
+| `dashboard-nav.tsx` | `DashboardNav` | function | :41 |  |
 
 ### `apps/web/src/components/storefront`
 
@@ -994,7 +1054,11 @@ Every top-level export in `web`, with the line to open.
 | `customer-client.ts` | `logoutCustomer` | function | :108 |  |
 | `customer-client.ts` | `getMyOrder` | function | :128 | One order, for whoever is allowed to see it. |
 | `customer-client.ts` | `trackOrder` | function | :132 |  |
-| `customer-client.ts` | `customerFetch` | function | :173 | Authenticated fetch for a signed-in customer's own data — addresses, measurement profiles, order hi… |
+| `customer-client.ts` | `listReturnReasons` | function | :142 | WO-6.6 — the customer's own side of returns/RMA. |
+| `customer-client.ts` | `listMyReturns` | function | :146 |  |
+| `customer-client.ts` | `getMyReturn` | function | :150 |  |
+| `customer-client.ts` | `createReturnRequest` | function | :154 |  |
+| `customer-client.ts` | `customerFetch` | function | :194 | Authenticated fetch for a signed-in customer's own data — addresses, measurement profiles, order hi… |
 | `download-csv.ts` | `downloadCsv` | function | :17 | Pull a CSV from an admin endpoint and hand it to the browser. |
 | `wishlist.ts` | `toggleWishlist` | function | :65 |  |
 | `wishlist.ts` | `WishlistState` | interface | :79 |  |
@@ -1122,11 +1186,13 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `StitchingTimelineEvent` | interface | :1059 | One move along a garment's workshop timeline. |
 | `api.ts` | `CustomerOrderItem` | interface | :1067 |  |
 | `api.ts` | `CustomerOrder` | interface | :1096 | One order as its buyer sees it — signed in, or tracked with a phone number. |
-| `api.ts` | `PaginatedResult` | interface | :1128 |  |
-| `api.ts` | `StockTransferLine` | interface | :1143 | --- Transfers (RETAIL-ERP.md R4, WO-22.1/22.2/22.3, WO-23.3d) --------------- `transfers` module is… |
-| `api.ts` | `InterBranchInvoice` | interface | :1152 |  |
-| `api.ts` | `StockTransfer` | interface | :1161 |  |
-| `api.ts` | `StockTransferListResult` | interface | :1177 |  |
+| `api.ts` | `CustomerReturnReason` | interface | :1129 | WO-6.6's seeded, editable reason list — never free text. |
+| `api.ts` | `CustomerReturnRequest` | interface | :1135 |  |
+| `api.ts` | `PaginatedResult` | interface | :1153 |  |
+| `api.ts` | `StockTransferLine` | interface | :1168 | --- Transfers (RETAIL-ERP.md R4, WO-22.1/22.2/22.3, WO-23.3d) --------------- `transfers` module is… |
+| `api.ts` | `InterBranchInvoice` | interface | :1177 |  |
+| `api.ts` | `StockTransfer` | interface | :1186 |  |
+| `api.ts` | `StockTransferListResult` | interface | :1202 |  |
 | `cart.ts` | `CartStitching` | interface | :5 | Shapes returned by the cart endpoints. |
 | `cart.ts` | `CartLine` | interface | :18 |  |
 | `cart.ts` | `Cart` | interface | :37 |  |

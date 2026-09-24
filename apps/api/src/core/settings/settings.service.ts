@@ -1,7 +1,7 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import type { Prisma } from '../prisma/client';
-import { DEFAULT_SETTINGS, SettingKey, type ShippingZone } from './settings.defaults';
+import { DEFAULT_SETTINGS, SettingKey } from './settings.defaults';
 
 const CACHE_TTL_MS = 30_000;
 
@@ -68,33 +68,6 @@ export class SettingsService implements OnModuleInit {
   }
 
   // --- Typed helpers for the settings the checkout path needs ---------------
-
-  async getShippingZones(): Promise<ShippingZone[]> {
-    return this.get<ShippingZone[]>(SettingKey.ShippingZones);
-  }
-
-  /**
-   * Resolves a delivery city to its zone, falling back to the catch-all zone
-   * (the one with no cities listed) and finally to the last zone defined.
-   */
-  async resolveShippingZone(city: string): Promise<ShippingZone> {
-    const zones = await this.getShippingZones();
-    const needle = city.trim().toLowerCase();
-
-    const matched = zones.find((zone) =>
-      zone.cities.some((candidate) => candidate.toLowerCase() === needle),
-    );
-    if (matched) return matched;
-
-    const fallback = zones.find((zone) => zone.cities.length === 0);
-    if (fallback) return fallback;
-
-    const last = zones[zones.length - 1];
-    if (!last) {
-      throw new Error('No shipping zones are configured');
-    }
-    return last;
-  }
 
   async getCodFee(): Promise<number> {
     return this.get<number>(SettingKey.CodFee);

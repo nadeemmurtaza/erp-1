@@ -147,9 +147,12 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
 
     setBusy(true);
     try {
-      await adminFetch(`/admin/orders/${id}/shipments`, {
+      // WO-6.4 — shipment booking moved to the fulfilment module; this
+      // quick action still lives here since the order is already in
+      // context, same UX as before.
+      await adminFetch(`/admin/fulfilment/shipments`, {
         method: 'POST',
-        body: { courier, trackingNumber },
+        body: { orderId: id, courier, trackingNumber },
       });
       await load();
     } catch (cause) {

@@ -41,6 +41,10 @@ export const ROUTES = {
     accountMeasurements: '/account/measurements',
     orders: '/orders',
     order: (number: string) => `/orders/${number}`,
+    /** The customer's own return requests — distinct from the static /returns policy page below. */
+    accountReturns: '/account/returns',
+    accountReturnNew: (orderNumber: string) => `/account/returns/new?number=${encodeURIComponent(orderNumber)}`,
+    accountReturn: (id: string) => `/account/returns/${id}`,
 
     // Static content pages.
     contact: '/contact',
@@ -70,6 +74,14 @@ export const ROUTES = {
     orders: '/admin/orders',
     order: (id: string) => `/admin/orders/${id}`,
     payments: '/admin/payments',
+
+    shipments: '/admin/fulfilment/shipments',
+    manifests: '/admin/fulfilment/manifests',
+    tracking: '/admin/fulfilment/tracking',
+    rto: '/admin/fulfilment/rto',
+    returns: '/admin/fulfilment/returns',
+    return: (id: string) => `/admin/fulfilment/returns/${id}`,
+    shippingSettings: '/admin/settings/shipping',
 
     finance: '/admin/finance',
     financeMargins: '/admin/finance/margins',

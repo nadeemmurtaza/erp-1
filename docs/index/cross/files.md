@@ -3,20 +3,20 @@
 
 # Every tracked file
 
-All **1,484** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,516** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 542 | 75,495 | [files/api.md](../files/api.md) |
-| apps/web | 272 | 42,351 | [files/web.md](../files/web.md) |
+| apps/api | 564 | 79,164 | [files/api.md](../files/api.md) |
+| apps/web | 282 | 43,810 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 42 | 5,292 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 61 | 5,072 | [files/packages.md](../files/packages.md) |
-| docs/* | 392 | 59,214 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 56 | 28,195 | [files/infra.md](../files/infra.md) |
+| packages/* | 61 | 5,088 | [files/packages.md](../files/packages.md) |
+| docs/* | 392 | 59,261 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 56 | 28,211 | [files/infra.md](../files/infra.md) |
 | repository root files | 88 | 11,033 | [files/root.md](../files/root.md) |
 
 
@@ -29,29 +29,29 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 417 |
-| unit test | 125 |
-| page | 120 |
-| module | 104 |
-| service | 86 |
+| page | 130 |
+| unit test | 128 |
+| module | 106 |
+| service | 89 |
 | component | 77 |
-| dto | 64 |
-| migration | 62 |
-| controller | 57 |
-| nest module | 45 |
+| dto | 67 |
+| migration | 63 |
+| controller | 60 |
+| nest module | 46 |
 | script | 38 |
 | json | 29 |
-| prisma schema | 27 |
+| prisma schema | 28 |
 | asset | 26 |
+| event subscriber | 25 |
 | react | 22 |
-| event subscriber | 21 |
 | utility | 21 |
 | e2e test | 15 |
 | file | 13 |
 | yaml | 12 |
 | config | 11 |
 | loading | 11 |
+| scheduled job | 8 |
 | registry | 7 |
-| scheduled job | 7 |
 | constants | 7 |
 | layout | 6 |
 | hook | 5 |

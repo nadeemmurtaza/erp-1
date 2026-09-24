@@ -42,4 +42,6 @@ const FALLBACK: DocumentPrefixes = {
   interBranchInvoice: 'IBI',
   productionRun: 'PR',
   payRun: 'PAY',
+  returnRequest: 'RMA',
+  manifest: 'MFT',
 };

@@ -61,7 +61,7 @@ All 61 tracked files in `packages/*`, by directory.
 | `http-client.ts` | module | 200 | The one HTTP layer for a signed-in browser client. |
 | `index.ts` | module | 21 |  |
 | `permissions.spec.ts` | unit test | 68 |  |
-| `permissions.ts` | module | 530 | The permission catalog for PBAC (Permission-Based Access Control). |
+| `permissions.ts` | module | 546 | The permission catalog for PBAC (Permission-Based Access Control). |
 | `phone.spec.ts` | unit test | 65 |  |
 | `phone.ts` | module | 82 |  |
 | `pricing.spec.ts` | unit test | 307 |  |

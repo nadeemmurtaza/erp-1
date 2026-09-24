@@ -135,6 +135,11 @@ model Product {
   /// STITCHING_SERVICE only: which garment this service stitches.
   garmentTypeId String?
 
+  /// WO-6.1's own closing line — a per-product handling fee added at
+  /// checkout on top of the zone/method rate. Null (the default) costs
+  /// nothing extra to pack.
+  shippingClassId String?
+
   /// Sort weight for merchandising; higher floats to the top of listings.
   featuredRank Int       @default(0)
   publishedAt  DateTime?
@@ -143,6 +148,8 @@ model Product {
 
   category            Category?            @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   brand               Brand?               @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  /// fulfilment.prisma (WO-6.1) — both core, same idiom as category/brand above.
+  shippingClass        ShippingClass?       @relation(fields: [shippingClassId], references: [id], onDelete: SetNull)
   translations        ProductTranslation[]
   variants            ProductVariant[]
   options             ProductOption[]

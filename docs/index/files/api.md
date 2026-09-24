@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 542 tracked files in `apps/api`, by directory.
+All 564 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -29,24 +29,25 @@ All 542 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `backfill-parties.ts` | module | 69 |  |
 | `backfill-product-options.ts` | module | 26 |  |
-| `seed.ts` | module | 3030 |  |
+| `seed.ts` | module | 3068 |  |
 
-### `apps/api/prisma/schema` (25)
+### `apps/api/prisma/schema` (26)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.prisma` | prisma schema | 222 | The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a |
 | `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
 | `cart.prisma` | prisma schema | 73 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
-| `catalog.prisma` | prisma schema | 484 | Catalog: categories, products, variants, images. |
-| `core.prisma` | prisma schema | 451 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
-| `crm.prisma` | prisma schema | 239 | CRM: one customer record, whatever door the customer came in through. |
+| `catalog.prisma` | prisma schema | 491 | Catalog: categories, products, variants, images. |
+| `core.prisma` | prisma schema | 454 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `crm.prisma` | prisma schema | 243 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
+| `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
 | `identity-verification.prisma` | prisma schema | 40 | / Tracks a User's identity verification against nID (Newax's external |
 | `inventory.prisma` | prisma schema | 236 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
 | `invoicing.prisma` | prisma schema | 88 | Trading-partner invoices and quotes (WO-18.3's remaining "forth" |
 | `measurements.prisma` | prisma schema | 107 | Measurements: garment types, their measurement fields, and saved customer |
-| `orders.prisma` | prisma schema | 258 | Orders and shipments. |
+| `orders.prisma` | prisma schema | 295 | Orders and shipments. |
 | `organization.prisma` | prisma schema | 182 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
 | `parties.prisma` | prisma schema | 52 | Parties: the permanent counterparty profile. One canonical record per |
 | `payments.prisma` | prisma schema | 48 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
@@ -433,6 +434,12 @@ All 542 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 149 |  |
 
+### `apps/api/prisma/schema/migrations/20260924220000_add_fulfilment_shipping_returns` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 390 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -515,10 +522,10 @@ All 542 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `app-config.service.ts` | service | 64 |  |
+| `app-config.service.ts` | service | 68 |  |
 | `config.module.ts` | nest module | 23 |  |
 | `env.validation.spec.ts` | unit test | 154 |  |
-| `env.validation.ts` | config | 250 |  |
+| `env.validation.ts` | config | 252 |  |
 | `load-env.ts` | config | 14 |  |
 | `meta.controller.ts` | controller | 41 |  |
 
@@ -526,7 +533,7 @@ All 542 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 401 | The catalogue of domain events. |
+| `domain-events.ts` | module | 450 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
@@ -638,10 +645,10 @@ All 542 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
-| `document-prefix.ts` | module | 46 |  |
-| `settings.defaults.ts` | module | 318 |  |
+| `document-prefix.ts` | module | 48 |  |
+| `settings.defaults.ts` | module | 282 |  |
 | `settings.module.ts` | nest module | 10 |  |
-| `settings.service.ts` | service | 112 |  |
+| `settings.service.ts` | service | 85 |  |
 
 ### `apps/api/src/core/storage` (7)
 
@@ -668,8 +675,8 @@ All 542 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 84 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 147 |  |
+| `module-packs.ts` | module | 85 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 153 |  |
 
 ### `apps/api/src/modules/accounting` (15)
 
@@ -815,14 +822,15 @@ All 542 tracked files in `apps/api`, by directory.
 | `product.dto.ts` | dto | 319 |  |
 | `redirect.dto.ts` | dto | 23 |  |
 
-### `apps/api/src/modules/crm` (4)
+### `apps/api/src/modules/crm` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `crm.controller.ts` | controller | 199 |  |
-| `crm.module.ts` | nest module | 15 |  |
+| `crm.module.ts` | nest module | 16 |  |
 | `crm.service.ts` | service | 526 |  |
 | `order.subscriber.ts` | event subscriber | 87 |  |
+| `rto-contact.listener.ts` | event subscriber | 33 |  |
 
 ### `apps/api/src/modules/crm/dto` (1)
 
@@ -840,7 +848,7 @@ All 542 tracked files in `apps/api`, by directory.
 | `email-inbox.service.ts` | service | 234 |  |
 | `mailbox-poller.cron.ts` | scheduled job | 133 |  |
 
-### `apps/api/src/modules/finance` (13)
+### `apps/api/src/modules/finance` (14)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -852,11 +860,12 @@ All 542 tracked files in `apps/api`, by directory.
 | `finance.cron.ts` | scheduled job | 36 |  |
 | `finance.listener.spec.ts` | unit test | 48 |  |
 | `finance.listener.ts` | event subscriber | 27 |  |
-| `finance.module.ts` | nest module | 14 |  |
+| `finance.module.ts` | nest module | 22 |  |
 | `finance.service.ts` | service | 675 |  |
 | `finance.spec.ts` | unit test | 522 |  |
 | `order-economics.service.spec.ts` | unit test | 216 |  |
 | `order-economics.service.ts` | service | 137 |  |
+| `rto-expense.listener.ts` | event subscriber | 47 |  |
 
 ### `apps/api/src/modules/finance/dto` (2)
 
@@ -864,6 +873,38 @@ All 542 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `expense-category.dto.ts` | dto | 35 |  |
 | `expense.dto.ts` | dto | 130 |  |
+
+### `apps/api/src/modules/fulfilment` (13)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `courier-provider.ts` | module | 59 | Extension point: courier providers. |
+| `fulfilment.controller.ts` | controller | 92 |  |
+| `fulfilment.cron.ts` | scheduled job | 80 |  |
+| `fulfilment.module.ts` | nest module | 44 |  |
+| `fulfilment.service.ts` | service | 470 |  |
+| `fulfilment.spec.ts` | unit test | 125 |  |
+| `return-notification.subscriber.ts` | event subscriber | 69 |  |
+| `returns.controller.ts` | controller | 155 |  |
+| `returns.service.ts` | service | 382 |  |
+| `returns.spec.ts` | unit test | 178 |  |
+| `shipping-migration.spec.ts` | unit test | 90 |  |
+| `shipping.controller.ts` | controller | 114 |  |
+| `shipping.service.ts` | service | 328 |  |
+
+### `apps/api/src/modules/fulfilment/dto` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `fulfilment.dto.ts` | dto | 93 |  |
+| `returns.dto.ts` | dto | 124 |  |
+| `shipping.dto.ts` | dto | 331 |  |
+
+### `apps/api/src/modules/fulfilment/providers` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `manual.provider.ts` | module | 49 |  |
 
 ### `apps/api/src/modules/identity-verification` (4)
 
@@ -945,7 +986,7 @@ All 542 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `measurements.dto.ts` | dto | 236 |  |
 
-### `apps/api/src/modules/orders` (9)
+### `apps/api/src/modules/orders` (10)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -954,16 +995,17 @@ All 542 tracked files in `apps/api`, by directory.
 | `notification.subscriber.ts` | event subscriber | 259 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 |  |
 | `order-replication.listener.ts` | event subscriber | 53 |  |
-| `orders-pos.service.spec.ts` | unit test | 233 |  |
-| `orders.controller.ts` | controller | 148 |  |
-| `orders.module.ts` | nest module | 28 |  |
-| `orders.service.ts` | service | 1114 |  |
+| `orders-pos.service.spec.ts` | unit test | 235 |  |
+| `orders.controller.ts` | controller | 134 |  |
+| `orders.module.ts` | nest module | 39 |  |
+| `orders.service.ts` | service | 1096 |  |
+| `shipment-status.listener.ts` | event subscriber | 80 |  |
 
 ### `apps/api/src/modules/orders/dto` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `order.dto.ts` | dto | 145 |  |
+| `order.dto.ts` | dto | 125 |  |
 
 ### `apps/api/src/modules/organization` (6)
 

@@ -101,6 +101,9 @@ model User {
   payRunLines               PayRunLine[]
   payRunAdjustments         PayRunAdjustment[]
   payRunAdjustmentsCreated  PayRunAdjustment[]      @relation("PayRunAdjustmentCreator")
+  /// fulfilment.prisma (WO-6.4/6.6) — both core, same idiom as auditLogs above.
+  manifestsCreated          Manifest[]
+  returnRequests            ReturnRequest[]
 
   @@index([role])
   @@index([createdAt])

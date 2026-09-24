@@ -162,6 +162,7 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 | `scripts/check-links.mjs` | 402 |  |
 | `scripts/check-module-boundaries.mjs` | 542 |  |
 | `scripts/check-overflow.mjs` | 644 |  |
+| `scripts/check-permission-checks.mjs` | 127 |  |
 | `scripts/check-rebrand.mjs` | 292 |  |
 | `scripts/check-route-permissions.mjs` | 136 |  |
 | `scripts/check-rules.mjs` | 148 |  |

@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { formatMoney } from '@newax/shared';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
 import { downloadCsv } from '@/lib/download-csv';
-import { Loading, MetricStrip, PageHeader, SectionRail } from '@/components/ui';
+import { DataTable, Loading, MetricStrip, PageHeader, SectionRail } from '@/components/ui';
 import { RangePicker, type RangeDays } from '@/components/admin/range-picker';
 import { paymentProviderLabel } from '@/constants/payment-methods';
 import { exportFilename } from '@/constants/downloads';
 import type { PermissionKey } from '@/constants/permissions';
+import { useAdminSession } from '@/components/admin/session';
 
 interface StitchingAnalytics {
   topGarments: Array<{ key: string; label: string; jobs: number; revenue: number }>;
@@ -72,7 +73,7 @@ const EXPORTS: Array<{
 ];
 
 export default function AdminReportsPage() {
-  const user = getStoredUser();
+  const { can } = useAdminSession();
   const [days, setDays] = useState<RangeDays>(30);
   const [stitching, setStitching] = useState<StitchingAnalytics | null>(null);
   const [extended, setExtended] = useState<ExtendedAnalytics | null>(null);
@@ -141,9 +142,7 @@ export default function AdminReportsPage() {
   }
 
   const { cartAbandonment, returnRate } = extended;
-  const exports = EXPORTS.filter(
-    (row) => !row.permission || user?.permissions.includes(row.permission),
-  );
+  const exports = EXPORTS.filter((row) => !row.permission || can(row.permission));
 
   return (
     <>
@@ -268,30 +267,30 @@ export default function AdminReportsPage() {
                   emptyLabel="No payments recorded in this window."
                 >
                   <div className="max-h-64 overflow-auto">
-                    <table className="table-flat">
-                      <thead>
-                        <tr>
-                          <th scope="col">Provider</th>
-                          <th scope="col" className="text-end">
-                            Count
-                          </th>
-                          <th scope="col" className="text-end">
-                            Amount
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {extended.paymentMethodSplit.map((row) => (
-                          <tr key={paymentProviderLabel(row.provider)}>
-                            <td className="text-neutral-900/70">{paymentProviderLabel(row.provider)}</td>
-                            <td className="text-end tabular-nums text-neutral-900/70">{row.count}</td>
-                            <td className="text-end tabular-nums text-neutral-900">
-                              {formatMoney(row.amount)}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                    <DataTable
+                      rows={extended.paymentMethodSplit}
+                      rowKey={(row) => paymentProviderLabel(row.provider)}
+                      columns={[
+                        {
+                          header: 'Provider',
+                          cell: (row) => paymentProviderLabel(row.provider),
+                          muted: true,
+                        },
+                        {
+                          header: 'Count',
+                          align: 'end',
+                          numeric: true,
+                          muted: true,
+                          cell: (row) => row.count,
+                        },
+                        {
+                          header: 'Amount',
+                          align: 'end',
+                          numeric: true,
+                          cell: (row) => formatMoney(row.amount),
+                        },
+                      ]}
+                    />
                   </div>
                 </Panel>
               </div>

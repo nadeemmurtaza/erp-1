@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { Fragment, type ReactNode } from 'react';
 import { cn } from '@/utils/cn';
 
 /**
@@ -53,6 +53,25 @@ interface DataTableProps<Row> {
   /** Highlights the row on hover — only set it where the row is clickable. */
   onRowClick?: (row: Row) => void;
   className?: string;
+  /**
+   * Renders a full-width row beneath a row, when `isRowExpanded` says so —
+   * inventory's movement ledger, opened per variant without leaving the list.
+   * The expanded state itself stays the caller's (usually "which row's id
+   * matches"), same as `onRowClick` — this component renders, it does not
+   * own what "expanded" means.
+   */
+  expandedContent?: (row: Row) => ReactNode;
+  isRowExpanded?: (row: Row) => boolean;
+  /** Persistent highlight — a master/detail list's currently-open row. */
+  isRowSelected?: (row: Row) => boolean;
+  /**
+   * Rows are naturally grouped (e.g. a permission matrix grouped by
+   * category) — a spanning header row renders whenever this key changes
+   * between consecutive rows. Rows must already be sorted by group; this
+   * does not sort or bucket them itself.
+   */
+  groupBy?: (row: Row) => string;
+  renderGroupHeader?: (groupKey: string) => ReactNode;
 }
 
 export function DataTable<Row>({
@@ -64,6 +83,11 @@ export function DataTable<Row>({
   emptyLabel = 'Nothing here yet.',
   onRowClick,
   className,
+  expandedContent,
+  isRowExpanded,
+  isRowSelected,
+  groupBy,
+  renderGroupHeader,
 }: DataTableProps<Row>) {
   // `loading` wins when the caller passes it. Treating a null `rows` as
   // "still loading" unconditionally would strand the table on "Loading…"
@@ -106,31 +130,58 @@ export function DataTable<Row>({
               </td>
             </tr>
           ) : (
-            (rows ?? []).map((row, index) => (
-              <tr
-                key={rowKey(row, index)}
-                onClick={onRowClick ? () => onRowClick(row) : undefined}
-                className={cn(
-                  'transition-colors',
-                  onRowClick ? 'cursor-pointer hover:bg-neutral-50' : 'hover:bg-neutral-50/50',
-                )}
-              >
-                {columns.map((column, i) => (
-                  <td
-                    key={i}
-                    className={cn(
-                      'px-3 py-3',
-                      column.align === 'end' ? 'text-end' : 'text-start',
-                      column.numeric && 'tabular-nums',
-                      column.muted && 'text-neutral-900/70',
-                      column.className,
-                    )}
-                  >
-                    {column.cell(row, index)}
-                  </td>
-                ))}
-              </tr>
-            ))
+            (() => {
+              let previousGroup: string | undefined;
+              return (rows ?? []).map((row, index) => {
+                const expanded = isRowExpanded?.(row) ?? false;
+                const selected = isRowSelected?.(row) ?? false;
+                const group = groupBy?.(row);
+                const showGroupHeader = group !== undefined && group !== previousGroup;
+                previousGroup = group;
+
+                return (
+                  <Fragment key={rowKey(row, index)}>
+                    {showGroupHeader && renderGroupHeader ? (
+                      <tr>
+                        <td colSpan={columns.length} className="bg-neutral-50 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
+                          {renderGroupHeader(group)}
+                        </td>
+                      </tr>
+                    ) : null}
+                    <tr
+                      onClick={onRowClick ? () => onRowClick(row) : undefined}
+                      className={cn(
+                        'transition-colors',
+                        onRowClick ? 'cursor-pointer hover:bg-neutral-50' : 'hover:bg-neutral-50/50',
+                        selected && 'bg-neutral-50',
+                      )}
+                    >
+                      {columns.map((column, i) => (
+                        <td
+                          key={i}
+                          className={cn(
+                            'px-3 py-3',
+                            column.align === 'end' ? 'text-end' : 'text-start',
+                            column.numeric && 'tabular-nums',
+                            column.muted && 'text-neutral-900/70',
+                            column.className,
+                          )}
+                        >
+                          {column.cell(row, index)}
+                        </td>
+                      ))}
+                    </tr>
+                    {expanded && expandedContent ? (
+                      <tr className="bg-neutral-50">
+                        <td colSpan={columns.length} className="px-4 py-4">
+                          {expandedContent(row)}
+                        </td>
+                      </tr>
+                    ) : null}
+                  </Fragment>
+                );
+              });
+            })()
           )}
         </tbody>
       </table>

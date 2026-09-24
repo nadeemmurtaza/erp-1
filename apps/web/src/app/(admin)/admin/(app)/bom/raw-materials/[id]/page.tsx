@@ -3,10 +3,11 @@
 import { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { formatDateTime, formatMoney, formatQuantity, UNIT_LABELS, type RawMaterialUnit } from '@newax/shared';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/utils/cn';
-import { DataTable, MetricStrip, PageHeader } from '@/components/ui';
+import { ConfirmDialog, DataTable, MetricStrip, PageHeader } from '@/components/ui';
 
 const RAW_MATERIAL_KINDS = ['fabric', 'trim', 'packaging', 'consumable'] as const;
 type RawMaterialKind = (typeof RAW_MATERIAL_KINDS)[number];
@@ -41,7 +42,8 @@ export default function RawMaterialDetailPage({ params }: { params: Promise<{ id
   const { id } = use(params);
   const router = useRouter();
   const { toasts, add: addToast, remove: removeToast } = useToast();
-  const canManage = getStoredUser()?.permissions.includes('bom.manage') ?? false;
+  const { can } = useAdminSession();
+  const canManage = can('bom.manage');
 
   const [material, setMaterial] = useState<RawMaterialDetail | null>(null);
   const [busy, setBusy] = useState(true);
@@ -52,6 +54,7 @@ export default function RawMaterialDetailPage({ params }: { params: Promise<{ id
   const [notes, setNotes] = useState('');
   const [saving, setSaving] = useState(false);
   const [deactivating, setDeactivating] = useState(false);
+  const [confirmingDeactivate, setConfirmingDeactivate] = useState(false);
 
   function load() {
     adminFetch<RawMaterialDetail>(`/admin/bom/raw-materials/${id}`)
@@ -85,7 +88,7 @@ export default function RawMaterialDetailPage({ params }: { params: Promise<{ id
   }
 
   async function deactivate() {
-    if (!material || !confirm(`Deactivate "${material.name}"? It stays in stock history but can no longer be purchased or used.`)) return;
+    if (!material) return;
     setDeactivating(true);
     try {
       await adminFetch(`/admin/bom/raw-materials/${id}/deactivate`, { method: 'POST' });
@@ -94,6 +97,7 @@ export default function RawMaterialDetailPage({ params }: { params: Promise<{ id
     } catch (cause) {
       addToast(cause instanceof Error ? cause.message : 'Could not deactivate', 'error');
       setDeactivating(false);
+      setConfirmingDeactivate(false);
     }
   }
 
@@ -139,7 +143,7 @@ export default function RawMaterialDetailPage({ params }: { params: Promise<{ id
         description={`${material.sku} · ${material.isActive ? 'Active' : 'Inactive'}`}
         action={
           canManage && material.isActive ? (
-            <button type="button" onClick={() => void deactivate()} disabled={deactivating} className="btn-ghost text-red-700">
+            <button type="button" onClick={() => setConfirmingDeactivate(true)} disabled={deactivating} className="btn-ghost text-red-700">
               {deactivating ? 'Deactivating…' : 'Deactivate'}
             </button>
           ) : undefined
@@ -261,6 +265,16 @@ export default function RawMaterialDetailPage({ params }: { params: Promise<{ id
           ]}
         />
       </div>
+
+      <ConfirmDialog
+        open={confirmingDeactivate}
+        onClose={() => setConfirmingDeactivate(false)}
+        onConfirm={deactivate}
+        title={`Deactivate "${material.name}"?`}
+        description="It stays in stock history but can no longer be purchased or used."
+        confirmLabel="Deactivate"
+        busy={deactivating}
+      />
     </>
   );
 }

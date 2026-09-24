@@ -2,9 +2,11 @@
 
 import { use, useCallback, useEffect, useRef, useState } from 'react';
 import { cn } from '@/utils/cn';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
+import { ConfirmDialog, DataTable } from '@/components/ui';
+import { useAdminSession } from '@/components/admin/session';
 
 interface CountLine {
   id: string;
@@ -28,7 +30,7 @@ interface StockCount {
 
 export default function CountSheetPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const user = getStoredUser();
+  const { can } = useAdminSession();
   const router = useRouter();
   const { toasts, add: addToast, remove: removeToast } = useToast();
 
@@ -36,6 +38,8 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(true);
   const [barcode, setBarcode] = useState('');
+  const [confirmingComplete, setConfirmingComplete] = useState(false);
+  const [completing, setCompleting] = useState(false);
   
   // For focusing the scanner input
   const inputRef = useRef<HTMLInputElement>(null);
@@ -55,7 +59,7 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
     load();
   }, [load]);
 
-  if (!user?.permissions.includes('inventory.count')) {
+  if (!can('inventory.count')) {
     return <p role="alert" className="notice notice-error">
         Permission denied: requires inventory.count
       </p>;
@@ -92,13 +96,15 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
   };
 
   const handleComplete = async () => {
-    if (!confirm('Are you sure you want to complete this count? Any uncounted items will be ignored.')) return;
+    setCompleting(true);
     try {
       await adminFetch(`/admin/inventory/counts/${id}/complete`, { method: 'POST' });
       addToast('Count completed successfully', 'success');
       router.push('/admin/inventory/counts');
     } catch (cause) {
       addToast(cause instanceof Error ? cause.message : 'Could not complete this count', 'error');
+      setCompleting(false);
+      setConfirmingComplete(false);
     }
   };
 
@@ -140,7 +146,7 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
             </button>
           )}
           {count.status === 'IN_PROGRESS' && (
-            <button type="button" className="btn-secondary" onClick={handleComplete}>
+            <button type="button" className="btn-secondary" onClick={() => setConfirmingComplete(true)}>
               Complete Count
             </button>
           )}
@@ -170,54 +176,74 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
         </div>
       )}
 
-      <div className="card overflow-x-auto">
-        <table className="w-full text-left text-sm">
-          <thead>
-            <tr className="border-b border-neutral-100">
-              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">SKU</th>
-              <th className="px-4 py-2 font-semibold text-neutral-900/60 uppercase text-xs">Product</th>
-              <th className="px-4 py-2 text-right font-semibold text-neutral-900/60 uppercase text-xs">Expected</th>
-              <th className="px-4 py-2 text-right font-semibold text-neutral-900/60 uppercase text-xs">Counted</th>
-              <th className="px-4 py-2 text-right font-semibold text-neutral-900/60 uppercase text-xs">Variance</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-neutral-100">
-            {count.lines.length === 0 && (
-              <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-neutral-900/60">
-                  {count.status === 'DRAFT' ? 'Lines will be generated when count is started.' : 'No items found.'}
-                </td>
-              </tr>
-            )}
-            {count.lines.map((line) => {
-              const variance = line.counted !== null && line.expected !== null 
-                ? line.counted - line.expected 
-                : null;
-                
-              return (
-                <tr key={line.id} className="hover:bg-neutral-50">
-                  <td className="px-4 py-3 font-medium text-neutral-900">{line.variant.sku}</td>
-                  <td className="px-4 py-3 text-neutral-900/70">
-                    {line.variant.product.translations[0]?.name ?? 'Unknown'}
-                  </td>
-                  <td className="px-4 py-3 text-right text-neutral-900/70 tabular-nums">
-                    {line.expected ?? '-'}
-                  </td>
-                  <td className="px-4 py-3 text-right font-medium text-neutral-900 tabular-nums">
-                    {line.counted ?? '-'}
-                  </td>
-                  <td className={cn(
-                    'px-4 py-3 text-right tabular-nums font-medium',
-                    variance === null || variance === 0 ? 'text-neutral-900/60' : variance > 0 ? 'text-green-600' : 'text-red-600'
-                  )}>
+      <div className="card overflow-hidden">
+        <DataTable
+          rows={count.lines}
+          rowKey={(line) => line.id}
+          emptyLabel={
+            count.status === 'DRAFT' ? 'Lines will be generated when count is started.' : 'No items found.'
+          }
+          columns={[
+            {
+              header: 'SKU',
+              cell: (line) => line.variant.sku,
+              className: 'font-medium text-neutral-900',
+            },
+            {
+              header: 'Product',
+              cell: (line) => line.variant.product.translations[0]?.name ?? 'Unknown',
+              muted: true,
+            },
+            {
+              header: 'Expected',
+              align: 'end',
+              numeric: true,
+              cell: (line) => line.expected ?? '-',
+              muted: true,
+            },
+            {
+              header: 'Counted',
+              align: 'end',
+              numeric: true,
+              cell: (line) => line.counted ?? '-',
+              className: 'font-medium text-neutral-900',
+            },
+            {
+              header: 'Variance',
+              align: 'end',
+              numeric: true,
+              cell: (line) => {
+                const variance =
+                  line.counted !== null && line.expected !== null ? line.counted - line.expected : null;
+                return (
+                  <span
+                    className={cn(
+                      'font-medium',
+                      variance === null || variance === 0
+                        ? 'text-neutral-900/60'
+                        : variance > 0
+                          ? 'text-green-600'
+                          : 'text-red-600',
+                    )}
+                  >
                     {variance === null ? '-' : variance > 0 ? `+${variance}` : variance}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                  </span>
+                );
+              },
+            },
+          ]}
+        />
       </div>
+
+      <ConfirmDialog
+        open={confirmingComplete}
+        onClose={() => setConfirmingComplete(false)}
+        onConfirm={handleComplete}
+        title="Complete this count?"
+        description="Any line left uncounted is ignored, and the count can no longer be edited or re-posted."
+        confirmLabel="Complete"
+        busy={completing}
+      />
     </>
   );
 }

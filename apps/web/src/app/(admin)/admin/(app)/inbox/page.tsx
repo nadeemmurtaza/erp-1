@@ -6,7 +6,15 @@ import { adminFetch } from '@/lib/admin-client';
 import type { InboundEmail, PaginatedResponse } from '@/types/api';
 import { formatDateTime } from '@newax/shared';
 
-import { Loading } from '@/components/ui';
+import {
+  DataTable,
+  FilterBar,
+  Pagination,
+  useFilterPage,
+  useFilterParam,
+  useSetFilterPage,
+  useSetFilterParam,
+} from '@/components/ui';
 type LinkFilter = 'all' | 'unlinked' | 'linked';
 
 interface ContactOption {
@@ -26,12 +34,16 @@ interface ContactOption {
  */
 export default function AdminInboxPage() {
   const [messages, setMessages] = useState<PaginatedResponse<InboundEmail> | null>(null);
-  const [filter, setFilter] = useState<LinkFilter>('unlinked');
-  const [page, setPage] = useState(1);
+  const [busy, setBusy] = useState(true);
+  const filter = useFilterParam('filter', 'unlinked') as LinkFilter;
+  const setFilterParam = useSetFilterParam('filter');
+  const page = useFilterPage();
+  const setPage = useSetFilterPage();
   const [selected, setSelected] = useState<InboundEmail | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
+    setBusy(true);
     setError(null);
     try {
       const linked = filter === 'all' ? undefined : filter === 'linked';
@@ -42,6 +54,8 @@ export default function AdminInboxPage() {
       );
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not load the inbox');
+    } finally {
+      setBusy(false);
     }
   }, [filter, page]);
 
@@ -91,24 +105,26 @@ export default function AdminInboxPage() {
         </p>
       </div>
 
-      <div className="card mb-4 flex gap-2 p-3">
-        {(['unlinked', 'linked', 'all'] as const).map((option) => (
-          <button
-            key={option}
-            type="button"
-            onClick={() => {
-              setPage(1);
-              setFilter(option);
-            }}
-            className={cn(
-              'rounded-md px-3 py-1.5 text-sm capitalize',
-              filter === option ? 'bg-accent-hover text-white' : 'text-neutral-900/60 hover:bg-neutral-50',
-            )}
-          >
-            {option === 'unlinked' ? 'Needs linking' : option}
-          </button>
-        ))}
-      </div>
+      <FilterBar
+        filters={[]}
+        trailing={
+          <div className="flex gap-2">
+            {(['unlinked', 'linked', 'all'] as const).map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setFilterParam(option === 'unlinked' ? null : option)}
+                className={cn(
+                  'rounded-md px-3 py-1.5 text-sm capitalize',
+                  filter === option ? 'bg-accent-hover text-white' : 'text-neutral-900/60 hover:bg-neutral-50',
+                )}
+              >
+                {option === 'unlinked' ? 'Needs linking' : option}
+              </button>
+            ))}
+          </div>
+        }
+      />
 
       {error ? (
         <p role="alert" className="notice notice-error mb-4">
@@ -118,85 +134,50 @@ export default function AdminInboxPage() {
 
       <div className="grid gap-6 lg:grid-cols-[1fr_28rem]">
         <div className="overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="table-flat">
-              <thead>
-                <tr>
-                  <Th>From</Th>
-                  <Th>Subject</Th>
-                  <Th>Mailbox</Th>
-                  <Th>Received</Th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-neutral-100">
-                {!messages ? (
-                  <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center">
-                    <Loading className="p-0" />
-                  </td>
-                  </tr>
-                ) : messages.data.length === 0 ? (
-                  <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/60">
-                      Nothing here.
-                    </td>
-                  </tr>
-                ) : (
-                  messages.data.map((message) => (
-                    <tr
-                      key={message.id}
-                      onClick={() => void open(message.id)}
-                      className={cn(
-                        'cursor-pointer hover:bg-neutral-50',
-                        selected?.id === message.id && 'bg-neutral-50',
-                      )}
-                    >
-                      <td>
-                        <p className="font-medium text-neutral-900">{message.fromName || message.fromAddress}</p>
-                        <p className="text-xs text-neutral-900/60">{message.fromAddress}</p>
-                      </td>
-                      <td className="text-neutral-900/80">
-                        {message.subject || '(no subject)'}
-                        {message._count.replies > 0 ? (
-                          <span className="ms-2 rounded bg-neutral-50 px-2 py-0.5 text-xs font-medium text-accent-hover">
-                            Replied
-                          </span>
-                        ) : null}
-                      </td>
-                      <td className="text-neutral-900/60">{message.emailAccount.label}</td>
-                      <td className="text-neutral-900/60">
-                        {formatDateTime(message.receivedAt)}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+          <DataTable
+            rows={messages?.data}
+            loading={busy && !messages}
+            emptyLabel="Nothing here."
+            rowKey={(message) => message.id}
+            onRowClick={(message) => void open(message.id)}
+            isRowSelected={(message) => selected?.id === message.id}
+            columns={[
+              {
+                header: 'From',
+                cell: (message) => (
+                  <>
+                    <p className="font-medium text-neutral-900">{message.fromName || message.fromAddress}</p>
+                    <p className="text-xs text-neutral-900/60">{message.fromAddress}</p>
+                  </>
+                ),
+              },
+              {
+                header: 'Subject',
+                cell: (message) => (
+                  <>
+                    {message.subject || '(no subject)'}
+                    {message._count.replies > 0 ? (
+                      <span className="ms-2 rounded bg-neutral-50 px-2 py-0.5 text-xs font-medium text-accent-hover">
+                        Replied
+                      </span>
+                    ) : null}
+                  </>
+                ),
+              },
+              {
+                header: 'Mailbox',
+                muted: true,
+                cell: (message) => message.emailAccount.label,
+              },
+              {
+                header: 'Received',
+                muted: true,
+                cell: (message) => formatDateTime(message.receivedAt),
+              },
+            ]}
+          />
 
-          {messages && messages.meta.totalPages > 1 ? (
-            <div className="flex items-center justify-between border-t border-neutral-100 px-4 py-3 text-sm">
-              <button
-                type="button"
-                className="btn-ghost"
-                disabled={!messages.meta.hasPrevious}
-                onClick={() => setPage((current) => current - 1)}
-              >
-                Previous
-              </button>
-              <span className="text-neutral-900/60">
-                Page {messages.meta.page} of {messages.meta.totalPages} · {messages.meta.total} messages
-              </span>
-              <button
-                type="button"
-                className="btn-ghost"
-                disabled={!messages.meta.hasNext}
-                onClick={() => setPage((current) => current + 1)}
-              >
-                Next
-              </button>
-            </div>
-          ) : null}
+          {messages ? <Pagination meta={messages.meta} onChange={setPage} itemLabel="messages" /> : null}
         </div>
 
         <aside className="card h-fit p-4 lg:sticky lg:top-4">
@@ -359,15 +340,5 @@ function MessageDetailPanel({
         )}
       </div>
     </div>
-  );
-}
-
-function Th({ children }: { children: React.ReactNode }) {
-  return (
-    <th scope="col"
-      className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60"
-    >
-      {children}
-    </th>
   );
 }

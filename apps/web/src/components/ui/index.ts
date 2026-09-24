@@ -20,8 +20,19 @@ export { DataTable, type DataTableColumn } from './data-table';
 export { EmptyState } from './empty-state';
 export { MetricStrip, type MetricItem } from './metric-strip';
 export { Badge, type BadgeTone } from './badge';
+export { Pagination, type PaginationMeta } from './pagination';
 
 // Controls and feedback
 export { Button, type ButtonProps } from './button';
 export { Dialog } from './dialog';
+export { ConfirmDialog } from './confirm-dialog';
 export { Loading } from './loading';
+export { ListPageSkeleton } from './list-page-skeleton';
+export {
+  FilterBar,
+  useFilterParam,
+  useSetFilterParam,
+  useFilterPage,
+  useSetFilterPage,
+  type FilterDef,
+} from './filter-bar';

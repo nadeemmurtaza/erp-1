@@ -3,7 +3,7 @@
 
 # Files — infra
 
-All 55 tracked files in `scripts, CI, deployment and container configuration`, by directory.
+All 56 tracked files in `scripts, CI, deployment and container configuration`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -73,7 +73,7 @@ All 55 tracked files in `scripts, CI, deployment and container configuration`, b
 | `yaseen-disk-alert.timer` | timer | — |  |
 | `yaseen.service` | service | — |  |
 
-### `scripts` (17)
+### `scripts` (18)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -86,6 +86,7 @@ All 55 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check-links.mjs` | script | 402 |  |
 | `check-module-boundaries.mjs` | script | 542 |  |
 | `check-overflow.mjs` | script | 644 |  |
+| `check-permission-checks.mjs` | script | 127 |  |
 | `check-rebrand.mjs` | script | 292 |  |
 | `check-route-permissions.mjs` | script | 136 |  |
 | `check-rules.mjs` | script | 148 |  |

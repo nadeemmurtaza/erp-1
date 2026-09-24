@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import type { ImportSummary } from '@/types/api';
 import { exportFilename } from '@/constants/downloads';
+import { DataTable } from '@/components/ui';
 
 /**
  * Bulk catalogue upload.
@@ -123,45 +124,39 @@ export default function AdminImportPage() {
             <Count label="Skipped" value={summary.skipped} tone={summary.skipped ? 'bad' : undefined} />
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-neutral-50">
-                <tr>
-                  <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
-                    Row
-                  </th>
-                  <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
-                    SKU
-                  </th>
-                  <th className="px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60">
-                    Result
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-neutral-100">
-                {summary.results.map((result) => (
-                  <tr key={`${result.row}-${result.sku}`}>
-                    <td className="px-4 py-2 tabular-nums text-neutral-900/60">{result.row}</td>
-                    <td className="px-4 py-2 font-mono text-xs text-neutral-900">{result.sku || '—'}</td>
-                    <td className="px-4 py-2">
-                      <span
-                        className={
-                          result.action === 'skipped'
-                            ? 'font-medium text-red-700'
-                            : 'text-accent-hover'
-                        }
-                      >
-                        {result.action}
-                      </span>
-                      {result.message ? (
-                        <span className="text-neutral-900/60"> — {result.message}</span>
-                      ) : null}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <DataTable
+            rows={summary.results}
+            rowKey={(result) => `${result.row}-${result.sku}`}
+            columns={[
+              {
+                header: 'Row',
+                muted: true,
+                numeric: true,
+                cell: (result) => result.row,
+              },
+              {
+                header: 'SKU',
+                cell: (result) => (
+                  <span className="font-mono text-xs text-neutral-900">{result.sku || '—'}</span>
+                ),
+              },
+              {
+                header: 'Result',
+                cell: (result) => (
+                  <>
+                    <span
+                      className={
+                        result.action === 'skipped' ? 'font-medium text-red-700' : 'text-accent-hover'
+                      }
+                    >
+                      {result.action}
+                    </span>
+                    {result.message ? <span className="text-neutral-900/60"> — {result.message}</span> : null}
+                  </>
+                ),
+              },
+            ]}
+          />
         </section>
       ) : null}
     </>

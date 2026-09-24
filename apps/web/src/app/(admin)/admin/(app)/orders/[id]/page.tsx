@@ -2,7 +2,8 @@
 
 import { use, useCallback, useEffect, useState } from 'react';
 import { formatDate, formatDateTime, formatMoney } from '@newax/shared';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import { Disclosure, Loading, PageHeader } from '@/components/ui';
 import { StatusBadge, statusLabel } from '@/components/common/status-badge';
 import { paymentProviderLabel } from '@/constants/payment-methods';
@@ -104,7 +105,8 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(true);
-  const canApprovePayments = getStoredUser()?.permissions.includes('payments.approve') ?? false;
+  const { can } = useAdminSession();
+  const canApprovePayments = can('payments.approve');
 
   const load = useCallback(async () => {
     setError(null);

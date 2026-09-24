@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import clsx from 'clsx';
 import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-client';
+import { DataTable } from '@/components/ui';
 
 interface TradingPartnerListRow {
   id: string;
@@ -12,14 +12,6 @@ interface TradingPartnerListRow {
   outboundBaseUrl: string | null;
   status: 'PENDING' | 'ACTIVE' | 'SUSPENDED';
   _count: { suppliers: number };
-}
-
-function Th({ children, className }: { children: React.ReactNode; className?: string }) {
-  return (
-    <th className={clsx('px-3 py-3 text-start font-medium text-neutral-900/70', className)}>
-      {children}
-    </th>
-  );
 }
 
 export default function TradingPartnersPage() {
@@ -57,61 +49,56 @@ export default function TradingPartnersPage() {
       ) : null}
 
       <div className="card overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="whitespace-nowrap border-b border-neutral-200 bg-neutral-50">
-              <tr>
-                <Th>Name</Th>
-                <Th>Kind</Th>
-                <Th>Status</Th>
-                <Th>Outbound URL</Th>
-                <Th className="text-end">Linked suppliers</Th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-neutral-100">
-              {busy && !partners ? (
-                <tr>
-                  <td colSpan={5} className="p-8 text-center text-neutral-900/60">
-                    Loading...
-                  </td>
-                </tr>
-              ) : partners?.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="p-8 text-center text-neutral-900/60">
-                    No trading partners yet.
-                  </td>
-                </tr>
-              ) : (
-                partners?.map((partner) => (
-                  <tr key={partner.id} className="hover:bg-neutral-50/50">
-                    <td className="px-3 py-3 font-medium">
-                      <Link href={`/admin/trading-partners/${partner.id}`} className="text-accent hover:underline">
-                        {partner.name}
-                      </Link>
-                    </td>
-                    <td className="px-3 py-3 text-neutral-900/80">{partner.kind}</td>
-                    <td className="px-3 py-3">
-                      <span
-                        className={clsx(
-                          'rounded px-2 py-0.5 text-xs font-medium',
-                          partner.status === 'ACTIVE'
-                            ? 'bg-green-100 text-green-800'
-                            : partner.status === 'SUSPENDED'
-                              ? 'bg-red-100 text-red-800'
-                              : 'bg-neutral-200 text-neutral-900/80',
-                        )}
-                      >
-                        {partner.status}
-                      </span>
-                    </td>
-                    <td className="px-3 py-3 text-neutral-900/60">{partner.outboundBaseUrl || '—'}</td>
-                    <td className="px-3 py-3 text-end text-neutral-900/60">{partner._count.suppliers}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        <DataTable
+          rows={partners}
+          loading={busy && !partners}
+          loadingLabel="Loading..."
+          emptyLabel="No trading partners yet."
+          rowKey={(partner) => partner.id}
+          columns={[
+            {
+              header: 'Name',
+              cell: (partner) => (
+                <Link href={`/admin/trading-partners/${partner.id}`} className="text-accent hover:underline">
+                  {partner.name}
+                </Link>
+              ),
+              className: 'font-medium',
+            },
+            {
+              header: 'Kind',
+              muted: true,
+              cell: (partner) => partner.kind,
+            },
+            {
+              header: 'Status',
+              cell: (partner) => (
+                <span
+                  className={
+                    partner.status === 'ACTIVE'
+                      ? 'rounded px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800'
+                      : partner.status === 'SUSPENDED'
+                        ? 'rounded px-2 py-0.5 text-xs font-medium bg-red-100 text-red-800'
+                        : 'rounded px-2 py-0.5 text-xs font-medium bg-neutral-200 text-neutral-900/80'
+                  }
+                >
+                  {partner.status}
+                </span>
+              ),
+            },
+            {
+              header: 'Outbound URL',
+              muted: true,
+              cell: (partner) => partner.outboundBaseUrl || '—',
+            },
+            {
+              header: 'Linked suppliers',
+              align: 'end',
+              muted: true,
+              cell: (partner) => partner._count.suppliers,
+            },
+          ]}
+        />
       </div>
     </>
   );

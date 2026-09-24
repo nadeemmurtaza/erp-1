@@ -2,7 +2,8 @@
 
 import { use, useCallback, useEffect, useState } from 'react';
 import { formatDate, formatMoney } from '@newax/shared';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/utils/cn';
 import { DataTable, Dialog, Loading, MetricStrip, PageHeader } from '@/components/ui';
@@ -23,7 +24,8 @@ function displayName(u: { firstName: string | null; lastName: string | null; ema
 export default function PayrollRunDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { toasts, add: addToast, remove: removeToast } = useToast();
-  const canManage = getStoredUser()?.permissions.includes('payroll.manage') ?? false;
+  const { can } = useAdminSession();
+  const canManage = can('payroll.manage');
 
   const [run, setRun] = useState<PayRunWithLines | null>(null);
   const [error, setError] = useState<string | null>(null);

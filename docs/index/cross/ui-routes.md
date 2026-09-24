@@ -3,7 +3,7 @@
 
 # Screens
 
-All **152** routable files across the web app, the till and the mobile app.
+All **173** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (85)
+### admin (106)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -41,22 +41,27 @@ _none_
 | `/admin` | page | client | `apps/web/src/app/(admin)/admin/(app)/page.tsx` |
 | `/admin/account` | page | client | `apps/web/src/app/(admin)/admin/(app)/account/page.tsx` |
 | `/admin/b/[brandId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx` |
+| `/admin/bom` | loading | server | `apps/web/src/app/(admin)/admin/(app)/bom/loading.tsx` |
 | `/admin/bom` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/page.tsx` |
 | `/admin/bom/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/[id]/page.tsx` |
 | `/admin/bom/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/new/page.tsx` |
 | `/admin/bom/production` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/production/page.tsx` |
 | `/admin/bom/production/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/production/[id]/page.tsx` |
 | `/admin/bom/production/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/production/new/page.tsx` |
+| `/admin/bom/raw-materials` | loading | server | `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/loading.tsx` |
 | `/admin/bom/raw-materials` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/page.tsx` |
 | `/admin/bom/raw-materials/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/[id]/page.tsx` |
 | `/admin/bom/raw-usage` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/raw-usage/page.tsx` |
 | `/admin/br/[branchId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/br/[branchId]/page.tsx` |
 | `/admin/brands` | page | client | `apps/web/src/app/(admin)/admin/(app)/brands/page.tsx` |
+| `/admin/categories` | loading | server | `apps/web/src/app/(admin)/admin/(app)/categories/loading.tsx` |
 | `/admin/categories` | page | client | `apps/web/src/app/(admin)/admin/(app)/categories/page.tsx` |
+| `/admin/contacts` | loading | server | `apps/web/src/app/(admin)/admin/(app)/contacts/loading.tsx` |
 | `/admin/contacts` | page | client | `apps/web/src/app/(admin)/admin/(app)/contacts/page.tsx` |
 | `/admin/customers/insights` | page | client | `apps/web/src/app/(admin)/admin/(app)/customers/insights/page.tsx` |
 | `/admin/designs` | page | client | `apps/web/src/app/(admin)/admin/(app)/designs/page.tsx` |
 | `/admin/designs/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/designs/[id]/page.tsx` |
+| `/admin/email-accounts` | loading | server | `apps/web/src/app/(admin)/admin/(app)/email-accounts/loading.tsx` |
 | `/admin/email-accounts` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-accounts/page.tsx` |
 | `/admin/email-accounts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx` |
 | `/admin/email-templates` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-templates/page.tsx` |
@@ -68,12 +73,16 @@ _none_
 | `/admin/import` | page | client | `apps/web/src/app/(admin)/admin/(app)/import/page.tsx` |
 | `/admin/inbox` | page | client | `apps/web/src/app/(admin)/admin/(app)/inbox/page.tsx` |
 | `/admin/insights` | page | client | `apps/web/src/app/(admin)/admin/(app)/insights/page.tsx` |
+| `/admin/inventory` | loading | server | `apps/web/src/app/(admin)/admin/(app)/inventory/loading.tsx` |
 | `/admin/inventory` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/page.tsx` |
 | `/admin/inventory/[variantId]/chain` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/[variantId]/chain/page.tsx` |
+| `/admin/inventory/counts` | loading | server | `apps/web/src/app/(admin)/admin/(app)/inventory/counts/loading.tsx` |
 | `/admin/inventory/counts` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/counts/page.tsx` |
 | `/admin/inventory/counts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/counts/[id]/page.tsx` |
 | `/admin/inventory/insights` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/insights/page.tsx` |
+| `/admin/inventory/reorder` | loading | server | `apps/web/src/app/(admin)/admin/(app)/inventory/reorder/loading.tsx` |
 | `/admin/inventory/reorder` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/reorder/page.tsx` |
+| `/admin/inventory/slow-movers` | loading | server | `apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers/loading.tsx` |
 | `/admin/inventory/slow-movers` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers/page.tsx` |
 | `/admin/leads` | page | client | `apps/web/src/app/(admin)/admin/(app)/leads/page.tsx` |
 | `/admin/login` | page | client | `apps/web/src/app/(admin)/admin/login/page.tsx` |
@@ -82,19 +91,24 @@ _none_
 | `/admin/o/[orgId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/page.tsx` |
 | `/admin/o/[orgId]/access` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/access/page.tsx` |
 | `/admin/o/[orgId]/policy-quarantine` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/policy-quarantine/page.tsx` |
+| `/admin/orders` | loading | server | `apps/web/src/app/(admin)/admin/(app)/orders/loading.tsx` |
 | `/admin/orders` | page | client | `apps/web/src/app/(admin)/admin/(app)/orders/page.tsx` |
 | `/admin/orders/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` |
 | `/admin/orders/insights` | page | client | `apps/web/src/app/(admin)/admin/(app)/orders/insights/page.tsx` |
+| `/admin/payments` | loading | server | `apps/web/src/app/(admin)/admin/(app)/payments/loading.tsx` |
 | `/admin/payments` | page | client | `apps/web/src/app/(admin)/admin/(app)/payments/page.tsx` |
 | `/admin/payroll/compensation` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/compensation/page.tsx` |
 | `/admin/payroll/leave` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/leave/page.tsx` |
 | `/admin/payroll/me` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/me/page.tsx` |
+| `/admin/payroll/runs` | loading | server | `apps/web/src/app/(admin)/admin/(app)/payroll/runs/loading.tsx` |
 | `/admin/payroll/runs` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/runs/page.tsx` |
 | `/admin/payroll/runs/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]/page.tsx` |
+| `/admin/products` | loading | server | `apps/web/src/app/(admin)/admin/(app)/products/loading.tsx` |
 | `/admin/products` | page | client | `apps/web/src/app/(admin)/admin/(app)/products/page.tsx` |
 | `/admin/products/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/products/[id]/page.tsx` |
 | `/admin/products/insights` | page | client | `apps/web/src/app/(admin)/admin/(app)/products/insights/page.tsx` |
 | `/admin/products/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/products/new/page.tsx` |
+| `/admin/purchase-orders` | loading | server | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/loading.tsx` |
 | `/admin/purchase-orders` | page | client | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/page.tsx` |
 | `/admin/purchase-orders/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/page.tsx` |
 | `/admin/purchase-orders/[id]/receive` | page | client | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/receive/page.tsx` |
@@ -102,19 +116,26 @@ _none_
 | `/admin/purchase-orders/spend` | page | client | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/spend/page.tsx` |
 | `/admin/reports` | page | client | `apps/web/src/app/(admin)/admin/(app)/reports/page.tsx` |
 | `/admin/settings` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` |
+| `/admin/stitching` | loading | server | `apps/web/src/app/(admin)/admin/(app)/stitching/loading.tsx` |
 | `/admin/stitching` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/page.tsx` |
+| `/admin/stitching/bookings` | loading | server | `apps/web/src/app/(admin)/admin/(app)/stitching/bookings/loading.tsx` |
 | `/admin/stitching/bookings` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/bookings/page.tsx` |
 | `/admin/stitching/bookings/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/bookings/[id]/page.tsx` |
 | `/admin/stitching/jobs/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/jobs/[id]/page.tsx` |
+| `/admin/suppliers` | loading | server | `apps/web/src/app/(admin)/admin/(app)/suppliers/loading.tsx` |
 | `/admin/suppliers` | page | client | `apps/web/src/app/(admin)/admin/(app)/suppliers/page.tsx` |
 | `/admin/suppliers/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/suppliers/[id]/page.tsx` |
+| `/admin/tax` | loading | server | `apps/web/src/app/(admin)/admin/(app)/tax/loading.tsx` |
 | `/admin/tax` | page | client | `apps/web/src/app/(admin)/admin/(app)/tax/page.tsx` |
+| `/admin/trading-partners` | loading | server | `apps/web/src/app/(admin)/admin/(app)/trading-partners/loading.tsx` |
 | `/admin/trading-partners` | page | client | `apps/web/src/app/(admin)/admin/(app)/trading-partners/page.tsx` |
 | `/admin/trading-partners/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/trading-partners/[id]/page.tsx` |
 | `/admin/trading-partners/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/trading-partners/new/page.tsx` |
+| `/admin/transfers` | loading | server | `apps/web/src/app/(admin)/admin/(app)/transfers/loading.tsx` |
 | `/admin/transfers` | page | client | `apps/web/src/app/(admin)/admin/(app)/transfers/page.tsx` |
 | `/admin/transfers/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/transfers/[id]/page.tsx` |
 | `/admin/transfers/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/transfers/new/page.tsx` |
+| `/admin/users` | loading | server | `apps/web/src/app/(admin)/admin/(app)/users/loading.tsx` |
 | `/admin/users` | page | client | `apps/web/src/app/(admin)/admin/(app)/users/page.tsx` |
 | `/admin/users/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/users/[id]/page.tsx` |
 | `/admin/workshop/insights` | page | client | `apps/web/src/app/(admin)/admin/(app)/workshop/insights/page.tsx` |

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-client';
 import { formatDate, formatMoney } from '@newax/shared';
 import { ROUTES } from '@/constants/routes';
-import { Loading } from '@/components/ui';
+import { DataTable, FilterBar, useFilterParam } from '@/components/ui';
 
 interface PurchaseOrderListRow {
   id: string;
@@ -18,26 +18,23 @@ interface PurchaseOrderListRow {
   supplier: { id: string; name: string };
 }
 
-function Th({ children, className }: { children: React.ReactNode; className?: string }) {
-  return (
-    <th className={cn('px-3 py-3 text-start font-medium text-neutral-900/70', className)}>
-      {children}
-    </th>
-  );
-}
+const STATUS_OPTIONS = ['DRAFT', 'SENT', 'PARTIAL', 'RECEIVED', 'CANCELLED'].map((value) => ({
+  value,
+  label: value,
+}));
 
 export default function PurchaseOrdersPage() {
   const [pos, setPos] = useState<PurchaseOrderListRow[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(true);
-  
-  const [statusFilter, setStatusFilter] = useState<string>('');
+
+  const statusFilter = useFilterParam('status');
 
   useEffect(() => {
     setBusy(true);
     setError(null);
     adminFetch<{ data: PurchaseOrderListRow[] }>('/admin/purchase-orders', {
-      query: { status: statusFilter || undefined }
+      query: { status: statusFilter || undefined },
     })
       .then((res) => setPos(res.data))
       .catch((cause) => setError(cause instanceof Error ? cause.message : 'Could not load purchase orders'))
@@ -66,25 +63,11 @@ export default function PurchaseOrdersPage() {
         </div>
       </div>
 
-      <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-neutral-100 pb-4">
-        <span id="po-status-filter-label" className="text-sm font-medium text-neutral-900/70">
-          Filter by status:
-        </span>
-        <div role="group" aria-labelledby="po-status-filter-label" className="flex flex-wrap gap-2">
-          {['', 'DRAFT', 'SENT', 'PARTIAL', 'RECEIVED', 'CANCELLED'].map((s) => (
-            <button
-              key={s}
-              onClick={() => setStatusFilter(s)}
-              className={cn(
-                'px-3 py-1 rounded text-sm',
-                statusFilter === s ? 'bg-neutral-100 text-accent-hover font-medium' : 'bg-white text-neutral-900/70 hover:bg-neutral-100'
-              )}
-            >
-              {s === '' ? 'All' : s}
-            </button>
-          ))}
-        </div>
-      </div>
+      <FilterBar
+        filters={[
+          { key: 'status', type: 'select', placeholder: 'All statuses', options: STATUS_OPTIONS },
+        ]}
+      />
 
       {error ? (
         <p role="alert" className="notice notice-error mb-4">
@@ -93,67 +76,59 @@ export default function PurchaseOrdersPage() {
       ) : null}
 
       <div className="overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="table-flat">
-            <thead className="whitespace-nowrap">
-              <tr>
-                <Th>PO Number</Th>
-                <Th>Supplier</Th>
-                <Th>Status</Th>
-                <Th>Date</Th>
-                <Th>Expected</Th>
-                <Th className="text-end">Total</Th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-neutral-100">
-              {busy && !pos ? (
-                <tr>
-                  <td colSpan={6} className="p-8 text-center">
-                    <Loading className="p-0" />
-                  </td>
-                </tr>
-              ) : pos?.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="p-8 text-center text-neutral-900/60">
-                    No purchase orders found.
-                  </td>
-                </tr>
-              ) : (
-                pos?.map((po) => (
-                  <tr key={po.id} className="hover:bg-neutral-50/50">
-                    <td className="font-medium">
-                      <Link href={`/admin/purchase-orders/${po.id}`} className="text-accent-hover hover:underline">
-                        {po.number}
-                      </Link>
-                    </td>
-                    <td className="text-neutral-900/80">{po.supplier.name}</td>
-                    <td>
-                      <span className={cn(
-                        'px-2 py-0.5 rounded text-xs font-medium',
-                        po.status === 'DRAFT' ? 'bg-neutral-100 text-neutral-900/80' :
-                        po.status === 'SENT' ? 'bg-blue-100 text-blue-800' :
-                        po.status === 'PARTIAL' ? 'bg-amber-100 text-amber-800' :
-                        po.status === 'RECEIVED' ? 'bg-green-100 text-green-800' :
-                        'bg-red-100 text-red-800'
-                      )}>
-                        {po.status}
-                      </span>
-                    </td>
-                    <td className="text-neutral-900/60">
-                      {formatDate(po.createdAt)}
-                    </td>
-                    <td className="text-neutral-900/60">
-                      {po.expectedAt ? formatDate(po.expectedAt) : '—'}
-                    </td>
-                    <td className="text-end font-medium text-neutral-900/80">
-                      {formatMoney(po.total)}
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        <DataTable
+          rows={pos}
+          loading={busy && !pos}
+          emptyLabel="No purchase orders found."
+          rowKey={(po) => po.id}
+          columns={[
+            {
+              header: 'PO Number',
+              cell: (po) => (
+                <Link
+                  href={`/admin/purchase-orders/${po.id}`}
+                  className="font-medium text-accent-hover hover:underline"
+                >
+                  {po.number}
+                </Link>
+              ),
+            },
+            { header: 'Supplier', cell: (po) => po.supplier.name, muted: true },
+            {
+              header: 'Status',
+              cell: (po) => (
+                <span
+                  className={cn(
+                    'px-2 py-0.5 rounded text-xs font-medium',
+                    po.status === 'DRAFT'
+                      ? 'bg-neutral-100 text-neutral-900/80'
+                      : po.status === 'SENT'
+                        ? 'bg-blue-100 text-blue-800'
+                        : po.status === 'PARTIAL'
+                          ? 'bg-amber-100 text-amber-800'
+                          : po.status === 'RECEIVED'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800',
+                  )}
+                >
+                  {po.status}
+                </span>
+              ),
+            },
+            { header: 'Date', cell: (po) => formatDate(po.createdAt), muted: true },
+            {
+              header: 'Expected',
+              cell: (po) => (po.expectedAt ? formatDate(po.expectedAt) : '—'),
+              muted: true,
+            },
+            {
+              header: 'Total',
+              align: 'end',
+              numeric: true,
+              cell: (po) => formatMoney(po.total),
+            },
+          ]}
+        />
       </div>
     </>
   );

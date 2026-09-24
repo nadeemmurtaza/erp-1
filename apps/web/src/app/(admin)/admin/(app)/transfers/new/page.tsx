@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { adminFetch } from '@/lib/admin-client';
 import { ROUTES } from '@/constants/routes';
 import type { InventoryVariantRow, Location } from '@/types/api';
-import { PageHeader, Section } from '@/components/ui';
+import { DataTable, PageHeader, Section } from '@/components/ui';
 
 interface Line {
   variantId: string;
@@ -182,39 +182,43 @@ export default function NewTransferPage() {
         {lines.length === 0 ? (
           <p className="text-sm text-neutral-900/60">No lines yet.</p>
         ) : (
-          <table className="table-flat">
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th className="text-end">Quantity</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-neutral-100">
-              {lines.map((line) => (
-                <tr key={line.variantId}>
-                  <td>
+          <DataTable
+            rows={lines}
+            rowKey={(line) => line.variantId}
+            columns={[
+              {
+                header: 'Item',
+                cell: (line) => (
+                  <>
                     <div className="font-medium text-neutral-900">{line.label}</div>
                     <div className="text-xs text-neutral-900/60">{line.sku}</div>
-                  </td>
-                  <td className="text-end">
-                    <input
-                      type="number"
-                      min={1}
-                      className="field-input w-20 text-end"
-                      value={line.quantity}
-                      onChange={(event) => updateQuantity(line.variantId, parseInt(event.target.value, 10) || 1)}
-                    />
-                  </td>
-                  <td className="text-end">
-                    <button type="button" onClick={() => removeLine(line.variantId)} className="btn-text text-feedback-negative">
-                      Remove
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </>
+                ),
+              },
+              {
+                header: 'Quantity',
+                align: 'end',
+                cell: (line) => (
+                  <input
+                    type="number"
+                    min={1}
+                    className="field-input w-20 text-end"
+                    value={line.quantity}
+                    onChange={(event) => updateQuantity(line.variantId, parseInt(event.target.value, 10) || 1)}
+                  />
+                ),
+              },
+              {
+                header: '',
+                align: 'end',
+                cell: (line) => (
+                  <button type="button" onClick={() => removeLine(line.variantId)} className="btn-text text-feedback-negative">
+                    Remove
+                  </button>
+                ),
+              },
+            ]}
+          />
         )}
       </Section>
 

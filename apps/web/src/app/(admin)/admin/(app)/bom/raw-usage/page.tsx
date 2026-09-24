@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { formatMoney, formatQuantity, type RawMaterialUnit } from '@newax/shared';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import { DataTable, EmptyState, PageHeader } from '@/components/ui';
 
 const RAW_MATERIAL_KINDS = ['fabric', 'trim', 'packaging', 'consumable'] as const;
@@ -31,7 +32,8 @@ interface RawUsageResult {
  * not the unbuilt Track A report registry).
  */
 export default function RawUsagePage() {
-  const canViewCost = getStoredUser()?.permissions.includes('inventory.view_cost') ?? false;
+  const { can } = useAdminSession();
+  const canViewCost = can('inventory.view_cost');
 
   const [result, setResult] = useState<RawUsageResult | null>(null);
   const [busy, setBusy] = useState(true);

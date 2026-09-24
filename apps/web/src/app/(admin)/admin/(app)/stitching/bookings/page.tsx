@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { formatDate, formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
-import { Loading } from '@/components/ui';
+import { DataTable, FilterBar, useFilterParam } from '@/components/ui';
 import {
   BOOKING_STATUS_LABELS,
   type StitchingBooking,
@@ -22,7 +22,7 @@ const STATUSES = Object.keys(BOOKING_STATUS_LABELS) as StitchingOrderStatus[];
  */
 export default function BookingsPage() {
   const [bookings, setBookings] = useState<StitchingBooking[] | null>(null);
-  const [status, setStatus] = useState<StitchingOrderStatus | ''>('');
+  const status = useFilterParam('status') as StitchingOrderStatus | '';
   const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
@@ -50,21 +50,19 @@ export default function BookingsPage() {
         that is what releases the garments to the workshop.
       </p>
 
-      <div className="mb-6 flex flex-wrap gap-3 border-b border-neutral-100 pb-4">
-        <select
-          value={status}
-          onChange={(event) => setStatus(event.target.value as StitchingOrderStatus | '')}
-          className="field-input w-auto"
-          aria-label="Status"
-        >
-          <option value="">All statuses</option>
-          {STATUSES.map((option) => (
-            <option key={option} value={option}>
-              {BOOKING_STATUS_LABELS[option]}
-            </option>
-          ))}
-        </select>
-      </div>
+      <FilterBar
+        filters={[
+          {
+            key: 'status',
+            type: 'select',
+            placeholder: 'All statuses',
+            options: STATUSES.map((option) => ({
+              value: option,
+              label: BOOKING_STATUS_LABELS[option],
+            })),
+          },
+        ]}
+      />
 
       {error ? (
         <p role="alert" className="notice notice-error mb-4">
@@ -73,94 +71,72 @@ export default function BookingsPage() {
       ) : null}
 
       <div className="overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="table-flat">
-            <thead>
-              <tr>
-                <Th>Booking</Th>
-                <Th>Customer</Th>
-                <Th>Garments</Th>
-                <Th>Status</Th>
-                <Th>Fabric</Th>
-                <Th className="text-end">Quote</Th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-neutral-100">
-              {!bookings ? (
-                <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center">
-                    <Loading className="p-0" />
-                  </td>
-                </tr>
-              ) : bookings.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-neutral-900/60">
-                    No bookings yet.
-                  </td>
-                </tr>
-              ) : (
-                bookings.map((booking) => (
-                  <tr key={booking.id} className="hover:bg-neutral-50">
-                    <td>
-                      <Link
-                        href={`/admin/stitching/bookings/${booking.id}`}
-                        className="font-medium text-neutral-900 hover:text-accent-hover"
-                      >
-                        {booking.number}
-                      </Link>
-                      <p className="text-xs text-neutral-900/60">
-                        {formatDate(booking.createdAt)}
-                      </p>
-                    </td>
-                    <td>
-                      <p className="text-neutral-900">{booking.guestName ?? '—'}</p>
-                      <p className="text-xs text-neutral-900/60">{booking.guestPhone}</p>
-                    </td>
-                    <td className="text-neutral-900/70">
-                      {booking.jobs.map((job) => job.garmentType.labelEn).join(', ')}
-                    </td>
-                    <td>
-                      <span
-                        className={cn(
-                          'rounded px-2 py-0.5 text-xs font-medium',
-                          booking.status === 'CANCELLED'
-                            ? 'bg-red-50 text-red-700'
-                            : booking.status === 'AWAITING_FABRIC'
-                              ? 'bg-white text-neutral-900/60'
-                              : 'bg-neutral-50 text-accent-hover',
-                        )}
-                      >
-                        {BOOKING_STATUS_LABELS[booking.status]}
-                      </span>
-                    </td>
-                    <td className="text-neutral-900/70">
-                      {booking.fabricReceivedAt
-                        ? formatDate(booking.fabricReceivedAt)
-                        : 'Not yet in'}
-                    </td>
-                    <td className="text-end tabular-nums text-neutral-900">
-                      {booking.quotedFee === null ? '—' : formatMoney(booking.quotedFee)}
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        <DataTable
+          rows={bookings}
+          loading={!bookings}
+          emptyLabel="No bookings yet."
+          rowKey={(booking) => booking.id}
+          columns={[
+            {
+              header: 'Booking',
+              cell: (booking) => (
+                <>
+                  <Link
+                    href={`/admin/stitching/bookings/${booking.id}`}
+                    className="font-medium text-neutral-900 hover:text-accent-hover"
+                  >
+                    {booking.number}
+                  </Link>
+                  <p className="text-xs text-neutral-900/60">{formatDate(booking.createdAt)}</p>
+                </>
+              ),
+            },
+            {
+              header: 'Customer',
+              cell: (booking) => (
+                <>
+                  <p className="text-neutral-900">{booking.guestName ?? '—'}</p>
+                  <p className="text-xs text-neutral-900/60">{booking.guestPhone}</p>
+                </>
+              ),
+            },
+            {
+              header: 'Garments',
+              muted: true,
+              cell: (booking) => booking.jobs.map((job) => job.garmentType.labelEn).join(', '),
+            },
+            {
+              header: 'Status',
+              cell: (booking) => (
+                <span
+                  className={cn(
+                    'rounded px-2 py-0.5 text-xs font-medium',
+                    booking.status === 'CANCELLED'
+                      ? 'bg-red-50 text-red-700'
+                      : booking.status === 'AWAITING_FABRIC'
+                        ? 'bg-white text-neutral-900/60'
+                        : 'bg-neutral-50 text-accent-hover',
+                  )}
+                >
+                  {BOOKING_STATUS_LABELS[booking.status]}
+                </span>
+              ),
+            },
+            {
+              header: 'Fabric',
+              muted: true,
+              cell: (booking) =>
+                booking.fabricReceivedAt ? formatDate(booking.fabricReceivedAt) : 'Not yet in',
+            },
+            {
+              header: 'Quote',
+              align: 'end',
+              numeric: true,
+              cell: (booking) => (booking.quotedFee === null ? '—' : formatMoney(booking.quotedFee)),
+            },
+          ]}
+        />
       </div>
     </>
-  );
-}
-
-function Th({ children, className }: { children?: React.ReactNode; className?: string }) {
-  return (
-    <th scope="col"
-      className={cn(
-        'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60',
-        className,
-      )}
-    >
-      {children}
-    </th>
   );
 }

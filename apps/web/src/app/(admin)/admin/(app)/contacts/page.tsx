@@ -1,15 +1,20 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { cn } from '@/utils/cn';
 import { formatDate, formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { downloadCsv } from '@/lib/download-csv';
 import { ROUTES } from '@/constants/routes';
 import type { PaginatedResponse } from '@/types/api';
-import { Loading } from '@/components/ui';
+import {
+  DataTable,
+  FilterBar,
+  Pagination,
+  useFilterPage,
+  useFilterParam,
+  useSetFilterPage,
+} from '@/components/ui';
 import { exportFilename } from '@/constants/downloads';
 
 const STATUSES = ['LEAD', 'ACTIVE', 'REPEAT', 'DORMANT', 'BLOCKED'] as const;
@@ -54,15 +59,15 @@ export default function AdminContactsPage() {
   // "somewhere useful" (the Track D shared acceptance criterion) since
   // customers have no standalone detail route — a contact opens as a
   // selection within this list, so the list itself has to be reachable
-  // pre-searched.
-  const initialQuery = useSearchParams().get('q') ?? '';
-
+  // pre-searched. Now two-way: `q` lives in the URL, so this list is
+  // shareable and bookmarkable filtered, not just linkable from one report.
   const [contacts, setContacts] = useState<PaginatedResponse<Contact> | null>(null);
   const [selected, setSelected] = useState<ContactDetail | null>(null);
-  const [q, setQ] = useState(initialQuery);
-  const [status, setStatus] = useState('');
-  const [minOrders, setMinOrders] = useState('');
-  const [page, setPage] = useState(1);
+  const q = useFilterParam('q');
+  const status = useFilterParam('status');
+  const minOrders = useFilterParam('minOrders');
+  const page = useFilterPage();
+  const setPage = useSetFilterPage();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -88,8 +93,8 @@ export default function AdminContactsPage() {
   }, [q, status, minOrders, page]);
 
   useEffect(() => {
-    const timer = setTimeout(load, 250);
-    return () => clearTimeout(timer);
+    // FilterBar debounces the search box before it touches the URL.
+    load();
   }, [load]);
 
   async function open(id: string) {
@@ -179,46 +184,30 @@ export default function AdminContactsPage() {
         </div>
       </div>
 
-      <div className="mb-6 flex flex-wrap gap-3 border-b border-neutral-100 pb-4">
-        <input
-          type="search"
-          placeholder="Name, phone or email"
-          value={q}
-          onChange={(event) => {
-            setPage(1);
-            setQ(event.target.value);
-          }}
-          className="field-input max-w-xs"
-        />
-        <select
-          value={status}
-          onChange={(event) => {
-            setPage(1);
-            setStatus(event.target.value);
-          }}
-          className="field-input w-auto"
-        >
-          <option value="">All customers</option>
-          {STATUSES.map((option) => (
-            <option key={option} value={option}>
-              {option.charAt(0) + option.slice(1).toLowerCase()}
-            </option>
-          ))}
-        </select>
-        <select
-          value={minOrders}
-          onChange={(event) => {
-            setPage(1);
-            setMinOrders(event.target.value);
-          }}
-          className="field-input w-auto"
-        >
-          <option value="">Any number of orders</option>
-          <option value="1">Has ordered</option>
-          <option value="2">Repeat buyers</option>
-          <option value="5">5 or more orders</option>
-        </select>
-      </div>
+      <FilterBar
+        filters={[
+          { key: 'q', type: 'search', placeholder: 'Name, phone or email' },
+          {
+            key: 'status',
+            type: 'select',
+            placeholder: 'All customers',
+            options: STATUSES.map((option) => ({
+              value: option,
+              label: option.charAt(0) + option.slice(1).toLowerCase(),
+            })),
+          },
+          {
+            key: 'minOrders',
+            type: 'select',
+            placeholder: 'Any number of orders',
+            options: [
+              { value: '1', label: 'Has ordered' },
+              { value: '2', label: 'Repeat buyers' },
+              { value: '5', label: '5 or more orders' },
+            ],
+          },
+        ]}
+      />
 
       {error ? (
         <p role="alert" className="notice notice-error mb-4">
@@ -228,100 +217,60 @@ export default function AdminContactsPage() {
 
       <div className="grid gap-6 lg:grid-cols-[1fr_24rem]">
         <div className="overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="table-flat">
-              <thead>
-                <tr>
-                  <Th>Customer</Th>
-                  <Th className="text-end">Orders</Th>
-                  <Th className="text-end">Lifetime value</Th>
-                  <Th>Last order</Th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-neutral-100">
-                {!contacts ? (
-                  <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center">
-                    <Loading className="p-0" />
-                  </td>
-                  </tr>
-                ) : contacts.data.length === 0 ? (
-                  <tr>
-                    <td colSpan={4} className="px-4 py-8 text-center text-neutral-900/60">
-                      No customers match those filters.
-                    </td>
-                  </tr>
-                ) : (
-                  contacts.data.map((contact) => (
-                    <tr
-                      key={contact.id}
-                      onClick={() => void open(contact.id)}
-                      className={cn(
-                        'cursor-pointer hover:bg-neutral-50',
-                        selected?.id === contact.id && 'bg-neutral-50',
-                      )}
-                    >
-                      <td>
-                        <p className="font-medium text-neutral-900">{contact.name}</p>
-                        <p className="text-xs text-neutral-900/60">
-                          {contact.phoneE164 ?? contact.email ?? '—'}
-                          {contact.city ? ` · ${contact.city}` : ''}
-                        </p>
-                        {contact.tags.length > 0 ? (
-                          <p className="mt-1 flex flex-wrap gap-1">
-                            {contact.tags.map((link) => (
-                              <span
-                                key={link.tag.id}
-                                className="rounded bg-white px-1.5 py-0.5 text-[10px] text-neutral-900/60"
-                              >
-                                {link.tag.name}
-                              </span>
-                            ))}
-                          </p>
-                        ) : null}
-                      </td>
-                      <td className="text-end tabular-nums text-neutral-900/70">
-                        {contact.orderCount}
-                      </td>
-                      <td className="text-end tabular-nums text-neutral-900">
-                        {formatMoney(contact.lifetimeValue)}
-                      </td>
-                      <td className="text-neutral-900/60">
-                        {contact.lastOrderAt
-                          ? formatDate(contact.lastOrderAt)
-                          : '—'}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+          <DataTable
+            rows={contacts?.data ?? null}
+            loading={!contacts}
+            emptyLabel="No customers match those filters."
+            rowKey={(contact) => contact.id}
+            onRowClick={(contact) => void open(contact.id)}
+            isRowSelected={(contact) => selected?.id === contact.id}
+            columns={[
+              {
+                header: 'Customer',
+                cell: (contact) => (
+                  <>
+                    <p className="font-medium text-neutral-900">{contact.name}</p>
+                    <p className="text-xs text-neutral-900/60">
+                      {contact.phoneE164 ?? contact.email ?? '—'}
+                      {contact.city ? ` · ${contact.city}` : ''}
+                    </p>
+                    {contact.tags.length > 0 ? (
+                      <p className="mt-1 flex flex-wrap gap-1">
+                        {contact.tags.map((link) => (
+                          <span
+                            key={link.tag.id}
+                            className="rounded bg-white px-1.5 py-0.5 text-[10px] text-neutral-900/60"
+                          >
+                            {link.tag.name}
+                          </span>
+                        ))}
+                      </p>
+                    ) : null}
+                  </>
+                ),
+              },
+              {
+                header: 'Orders',
+                align: 'end',
+                numeric: true,
+                cell: (contact) => contact.orderCount,
+                muted: true,
+              },
+              {
+                header: 'Lifetime value',
+                align: 'end',
+                numeric: true,
+                cell: (contact) => formatMoney(contact.lifetimeValue),
+              },
+              {
+                header: 'Last order',
+                cell: (contact) => (contact.lastOrderAt ? formatDate(contact.lastOrderAt) : '—'),
+                muted: true,
+              },
+            ]}
+          />
 
-          {contacts && contacts.meta.totalPages > 1 ? (
-            <div className="flex items-center justify-between border-t border-neutral-100 px-4 py-3 text-sm">
-              <button
-                type="button"
-                className="btn-ghost"
-                disabled={!contacts.meta.hasPrevious}
-                onClick={() => setPage((current) => current - 1)}
-              >
-                Previous
-              </button>
-              <span className="text-neutral-900/60">
-                Page {contacts.meta.page} of {contacts.meta.totalPages} ·{' '}
-                {contacts.meta.total} customers
-              </span>
-              <button
-                type="button"
-                className="btn-ghost"
-                disabled={!contacts.meta.hasNext}
-                onClick={() => setPage((current) => current + 1)}
-              >
-                Next
-              </button>
-            </div>
-          ) : null}
+          {contacts ? <Pagination meta={contacts.meta} onChange={setPage} itemLabel="customers" /> : null}
         </div>
 
         <aside className="card h-fit p-4 lg:sticky lg:top-4">
@@ -489,19 +438,6 @@ function Metric({ label, value }: { label: string; value: string }) {
       <dt className="text-[10px] uppercase tracking-wide text-neutral-900/60">{label}</dt>
       <dd className="text-sm font-semibold text-neutral-900">{value}</dd>
     </div>
-  );
-}
-
-function Th({ children, className }: { children: React.ReactNode; className?: string }) {
-  return (
-    <th scope="col"
-      className={cn(
-        'px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-neutral-900/60',
-        className,
-      )}
-    >
-      {children}
-    </th>
   );
 }
 

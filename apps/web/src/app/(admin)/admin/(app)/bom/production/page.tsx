@@ -3,9 +3,10 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { formatDateTime, formatMoney } from '@newax/shared';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
 import { DataTable, PageHeader } from '@/components/ui';
 import type { PaginatedResponse } from '@/types/api';
+import { useAdminSession } from '@/components/admin/session';
 
 interface ProductionRunRow {
   id: string;
@@ -21,7 +22,8 @@ interface ProductionRunRow {
 
 /** Production runs — ledger history, never deleted. */
 export default function ProductionRunsPage() {
-  const canProduce = getStoredUser()?.permissions.includes('bom.produce') ?? false;
+  const { can } = useAdminSession();
+  const canProduce = can('bom.produce');
 
   const [rows, setRows] = useState<PaginatedResponse<ProductionRunRow> | null>(null);
   const [busy, setBusy] = useState(true);

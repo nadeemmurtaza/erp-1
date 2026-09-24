@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1439,
-    "lines": 221957,
+    "files": 1465,
+    "lines": 222463,
     "routes": 357,
     "controllers": 62,
     "models": 140,
@@ -12,7 +12,7 @@
     "migrations": 61,
     "events": 39,
     "permissions": 44,
-    "screens": 152,
+    "screens": 173,
     "crons": 9,
     "specs": 135,
     "designLaws": 150
@@ -1077,9 +1077,9 @@
       "label": "repository root files"
     },
     "infra": {
-      "files": 55,
-      "lines": 28068,
-      "bytes": 1100222,
+      "files": 56,
+      "lines": 28195,
+      "bytes": 1105311,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -1101,9 +1101,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 258,
-      "lines": 40371,
-      "bytes": 1489386,
+      "files": 283,
+      "lines": 40750,
+      "bytes": 1487637,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -24182,6 +24182,15 @@
     },
     {
       "app": "web",
+      "kind": "loading",
+      "url": "/admin/bom",
+      "file": "apps/web/src/app/(admin)/admin/(app)/bom/loading.tsx",
+      "client": false,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
       "kind": "page",
       "url": "/admin/bom",
       "file": "apps/web/src/app/(admin)/admin/(app)/bom/page.tsx",
@@ -24236,6 +24245,15 @@
     },
     {
       "app": "web",
+      "kind": "loading",
+      "url": "/admin/bom/raw-materials",
+      "file": "apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/loading.tsx",
+      "client": false,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
       "kind": "page",
       "url": "/admin/bom/raw-materials",
       "file": "apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/page.tsx",
@@ -24281,10 +24299,28 @@
     },
     {
       "app": "web",
+      "kind": "loading",
+      "url": "/admin/categories",
+      "file": "apps/web/src/app/(admin)/admin/(app)/categories/loading.tsx",
+      "client": false,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
       "kind": "page",
       "url": "/admin/categories",
       "file": "apps/web/src/app/(admin)/admin/(app)/categories/page.tsx",
       "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "loading",
+      "url": "/admin/contacts",
+      "file": "apps/web/src/app/(admin)/admin/(app)/contacts/loading.tsx",
+      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -24321,6 +24357,15 @@
       "url": "/admin/designs/[id]",
       "file": "apps/web/src/app/(admin)/admin/(app)/designs/[id]/page.tsx",
       "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "loading",
+      "url": "/admin/email-accounts",
+      "file": "apps/web/src/app/(admin)/admin/(app)/email-accounts/loading.tsx",
+      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -24425,6 +24470,15 @@
     },
     {
       "app": "web",
+      "kind": "loading",
+      "url": "/admin/inventory",
+      "file": "apps/web/src/app/(admin)/admin/(app)/inventory/loading.tsx",
+      "client": false,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
       "kind": "page",
       "url": "/admin/inventory",
       "file": "apps/web/src/app/(admin)/admin/(app)/inventory/page.tsx",
@@ -24438,6 +24492,15 @@
       "url": "/admin/inventory/[variantId]/chain",
       "file": "apps/web/src/app/(admin)/admin/(app)/inventory/[variantId]/chain/page.tsx",
       "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "loading",
+      "url": "/admin/inventory/counts",
+      "file": "apps/web/src/app/(admin)/admin/(app)/inventory/counts/loading.tsx",
+      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -24470,10 +24533,28 @@
     },
     {
       "app": "web",
+      "kind": "loading",
+      "url": "/admin/inventory/reorder",
+      "file": "apps/web/src/app/(admin)/admin/(app)/inventory/reorder/loading.tsx",
+      "client": false,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
       "kind": "page",
       "url": "/admin/inventory/reorder",
       "file": "apps/web/src/app/(admin)/admin/(app)/inventory/reorder/page.tsx",
       "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "loading",
+      "url": "/admin/inventory/slow-movers",
+      "file": "apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers/loading.tsx",
+      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -24551,6 +24632,15 @@
     },
     {
       "app": "web",
+      "kind": "loading",
+      "url": "/admin/orders",
+      "file": "apps/web/src/app/(admin)/admin/(app)/orders/loading.tsx",
+      "client": false,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
       "kind": "page",
       "url": "/admin/orders",
       "file": "apps/web/src/app/(admin)/admin/(app)/orders/page.tsx",
@@ -24573,6 +24663,15 @@
       "url": "/admin/orders/insights",
       "file": "apps/web/src/app/(admin)/admin/(app)/orders/insights/page.tsx",
       "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "loading",
+      "url": "/admin/payments",
+      "file": "apps/web/src/app/(admin)/admin/(app)/payments/loading.tsx",
+      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -24614,6 +24713,15 @@
     },
     {
       "app": "web",
+      "kind": "loading",
+      "url": "/admin/payroll/runs",
+      "file": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/loading.tsx",
+      "client": false,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
       "kind": "page",
       "url": "/admin/payroll/runs",
       "file": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/page.tsx",
@@ -24627,6 +24735,15 @@
       "url": "/admin/payroll/runs/[id]",
       "file": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]/page.tsx",
       "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "loading",
+      "url": "/admin/products",
+      "file": "apps/web/src/app/(admin)/admin/(app)/products/loading.tsx",
+      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -24663,6 +24780,15 @@
       "url": "/admin/products/new",
       "file": "apps/web/src/app/(admin)/admin/(app)/products/new/page.tsx",
       "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "loading",
+      "url": "/admin/purchase-orders",
+      "file": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/loading.tsx",
+      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -24731,10 +24857,28 @@
     },
     {
       "app": "web",
+      "kind": "loading",
+      "url": "/admin/stitching",
+      "file": "apps/web/src/app/(admin)/admin/(app)/stitching/loading.tsx",
+      "client": false,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
       "kind": "page",
       "url": "/admin/stitching",
       "file": "apps/web/src/app/(admin)/admin/(app)/stitching/page.tsx",
       "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "loading",
+      "url": "/admin/stitching/bookings",
+      "file": "apps/web/src/app/(admin)/admin/(app)/stitching/bookings/loading.tsx",
+      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -24767,6 +24911,15 @@
     },
     {
       "app": "web",
+      "kind": "loading",
+      "url": "/admin/suppliers",
+      "file": "apps/web/src/app/(admin)/admin/(app)/suppliers/loading.tsx",
+      "client": false,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
       "kind": "page",
       "url": "/admin/suppliers",
       "file": "apps/web/src/app/(admin)/admin/(app)/suppliers/page.tsx",
@@ -24785,10 +24938,28 @@
     },
     {
       "app": "web",
+      "kind": "loading",
+      "url": "/admin/tax",
+      "file": "apps/web/src/app/(admin)/admin/(app)/tax/loading.tsx",
+      "client": false,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
       "kind": "page",
       "url": "/admin/tax",
       "file": "apps/web/src/app/(admin)/admin/(app)/tax/page.tsx",
       "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "loading",
+      "url": "/admin/trading-partners",
+      "file": "apps/web/src/app/(admin)/admin/(app)/trading-partners/loading.tsx",
+      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -24821,6 +24992,15 @@
     },
     {
       "app": "web",
+      "kind": "loading",
+      "url": "/admin/transfers",
+      "file": "apps/web/src/app/(admin)/admin/(app)/transfers/loading.tsx",
+      "client": false,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
       "kind": "page",
       "url": "/admin/transfers",
       "file": "apps/web/src/app/(admin)/admin/(app)/transfers/page.tsx",
@@ -24843,6 +25023,15 @@
       "url": "/admin/transfers/new",
       "file": "apps/web/src/app/(admin)/admin/(app)/transfers/new/page.tsx",
       "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "loading",
+      "url": "/admin/users",
+      "file": "apps/web/src/app/(admin)/admin/(app)/users/loading.tsx",
+      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -25239,7 +25428,7 @@
       "pkg": "yaseenecom",
       "file": "package.json",
       "name": "lint",
-      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-rules.mjs"
+      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -38302,14 +38491,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/account/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 93,
-      "bytes": 3094,
+      "lines": 94,
+      "bytes": 3123,
       "doc": "",
       "symbols": [
         {
           "name": "AdminAccountPage",
           "kind": "default",
-          "line": 6
+          "line": 7
         }
       ]
     },
@@ -38317,14 +38506,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 180,
-      "bytes": 6247,
+      "lines": 182,
+      "bytes": 6288,
       "doc": "",
       "symbols": [
         {
           "name": "BrandDashboardPage",
           "kind": "default",
-          "line": 123
+          "line": 124
         }
       ]
     },
@@ -38332,14 +38521,29 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 177,
-      "bytes": 5921,
+      "lines": 190,
+      "bytes": 6347,
       "doc": "",
       "symbols": [
         {
           "name": "RecipeDetailPage",
           "kind": "default",
-          "line": 25
+          "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/bom/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
         }
       ]
     },
@@ -38362,14 +38566,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 245,
-      "bytes": 7910,
+      "lines": 247,
+      "bytes": 7908,
       "doc": "",
       "symbols": [
         {
           "name": "RecipesPage",
           "kind": "default",
-          "line": 45
+          "line": 46
         }
       ]
     },
@@ -38407,14 +38611,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/production/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 131,
-      "bytes": 4092,
+      "lines": 133,
+      "bytes": 4133,
       "doc": "",
       "symbols": [
         {
           "name": "ProductionRunsPage",
           "kind": "default",
-          "line": 23
+          "line": 24
         }
       ]
     },
@@ -38422,14 +38626,29 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 267,
-      "bytes": 8759,
+      "lines": 281,
+      "bytes": 9180,
       "doc": "",
       "symbols": [
         {
           "name": "RawMaterialDetailPage",
           "kind": "default",
-          "line": 40
+          "line": 41
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
         }
       ]
     },
@@ -38437,14 +38656,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 328,
-      "bytes": 10898,
+      "lines": 330,
+      "bytes": 10939,
       "doc": "",
       "symbols": [
         {
           "name": "RawMaterialsPage",
           "kind": "default",
-          "line": 40
+          "line": 41
         }
       ]
     },
@@ -38452,14 +38671,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/raw-usage/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 137,
-      "bytes": 4588,
+      "lines": 139,
+      "bytes": 4629,
       "doc": "",
       "symbols": [
         {
           "name": "RawUsagePage",
           "kind": "default",
-          "line": 33
+          "line": 34
         }
       ]
     },
@@ -38467,14 +38686,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/br/[branchId]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 111,
-      "bytes": 3648,
+      "lines": 113,
+      "bytes": 3689,
       "doc": "",
       "symbols": [
         {
           "name": "BranchDashboardPage",
           "kind": "default",
-          "line": 17
+          "line": 18
         }
       ]
     },
@@ -38494,6 +38713,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/categories/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/categories/page.tsx",
       "area": "web",
       "kind": "page",
@@ -38509,17 +38743,32 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/contacts/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/contacts/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 513,
-      "bytes": 17413,
+      "lines": 449,
+      "bytes": 14878,
       "doc": "",
       "symbols": [
         {
           "name": "AdminContactsPage",
           "kind": "default",
-          "line": 52
+          "line": 57
         }
       ]
     },
@@ -38584,11 +38833,26 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/email-accounts/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/email-accounts/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 121,
-      "bytes": 4312,
+      "lines": 118,
+      "bytes": 3816,
       "doc": "",
       "symbols": [
         {
@@ -38662,8 +38926,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/garments/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 512,
-      "bytes": 19983,
+      "lines": 504,
+      "bytes": 19558,
       "doc": "",
       "symbols": [
         {
@@ -38677,14 +38941,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/garments/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 125,
-      "bytes": 4825,
+      "lines": 124,
+      "bytes": 4288,
       "doc": "",
       "symbols": [
         {
           "name": "AdminGarmentsPage",
           "kind": "default",
-          "line": 25
+          "line": 24
         }
       ]
     },
@@ -38692,14 +38956,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/import/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 197,
-      "bytes": 7324,
+      "lines": 192,
+      "bytes": 6698,
       "doc": "",
       "symbols": [
         {
           "name": "AdminImportPage",
           "kind": "default",
-          "line": 16
+          "line": 17
         }
       ]
     },
@@ -38707,14 +38971,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/inbox/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 374,
-      "bytes": 12957,
+      "lines": 345,
+      "bytes": 11514,
       "doc": "",
       "symbols": [
         {
           "name": "AdminInboxPage",
           "kind": "default",
-          "line": 27
+          "line": 35
         }
       ]
     },
@@ -38752,14 +39016,29 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/inventory/counts/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 224,
-      "bytes": 8698,
+      "lines": 250,
+      "bytes": 8696,
       "doc": "",
       "symbols": [
         {
           "name": "CountSheetPage",
           "kind": "default",
-          "line": 29
+          "line": 31
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/inventory/counts/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
         }
       ]
     },
@@ -38767,14 +39046,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/inventory/counts/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 121,
-      "bytes": 4602,
+      "lines": 108,
+      "bytes": 3621,
       "doc": "",
       "symbols": [
         {
           "name": "CountsListPage",
           "kind": "default",
-          "line": 21
+          "line": 22
         }
       ]
     },
@@ -38782,14 +39061,29 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/inventory/insights/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 188,
-      "bytes": 7875,
+      "lines": 190,
+      "bytes": 7873,
       "doc": "",
       "symbols": [
         {
           "name": "InventoryInsightsPage",
           "kind": "default",
-          "line": 20
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/inventory/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
         }
       ]
     },
@@ -38797,14 +39091,29 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/inventory/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 310,
-      "bytes": 12560,
+      "lines": 312,
+      "bytes": 10138,
       "doc": "",
       "symbols": [
         {
           "name": "AdminInventoryPage",
           "kind": "default",
-          "line": 50
+          "line": 59
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/inventory/reorder/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
         }
       ]
     },
@@ -38812,14 +39121,29 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/inventory/reorder/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 240,
-      "bytes": 8559,
+      "lines": 244,
+      "bytes": 7816,
       "doc": "",
       "symbols": [
         {
           "name": "ReorderSuggestionsPage",
           "kind": "default",
-          "line": 36
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
         }
       ]
     },
@@ -38827,14 +39151,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 151,
-      "bytes": 5400,
+      "lines": 140,
+      "bytes": 4631,
       "doc": "",
       "symbols": [
         {
           "name": "SlowMoversPage",
           "kind": "default",
-          "line": 32
+          "line": 25
         }
       ]
     },
@@ -38902,8 +39226,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/o/[orgId]/access/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 248,
-      "bytes": 8860,
+      "lines": 249,
+      "bytes": 8593,
       "doc": "",
       "symbols": [
         {
@@ -38932,14 +39256,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/o/[orgId]/policy-quarantine/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 129,
-      "bytes": 4816,
+      "lines": 131,
+      "bytes": 4857,
       "doc": "",
       "symbols": [
         {
           "name": "PolicyQuarantinePage",
           "kind": "default",
-          "line": 17
+          "line": 18
         }
       ]
     },
@@ -38962,14 +39286,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 532,
-      "bytes": 19659,
+      "lines": 534,
+      "bytes": 19700,
       "doc": "",
       "symbols": [
         {
           "name": "AdminOrderDetailPage",
           "kind": "default",
-          "line": 102
+          "line": 103
         }
       ]
     },
@@ -38989,17 +39313,32 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/orders/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/orders/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 308,
-      "bytes": 10632,
+      "lines": 252,
+      "bytes": 8257,
       "doc": "",
       "symbols": [
         {
           "name": "AdminOrdersPage",
           "kind": "default",
-          "line": 39
+          "line": 48
         }
       ]
     },
@@ -39007,14 +39346,29 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 526,
-      "bytes": 20672,
+      "lines": 523,
+      "bytes": 20446,
       "doc": "",
       "symbols": [
         {
           "name": "AdminDashboardPage",
           "kind": "default",
-          "line": 52
+          "line": 53
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/payments/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
         }
       ]
     },
@@ -39082,14 +39436,29 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 262,
-      "bytes": 9608,
+      "lines": 264,
+      "bytes": 9649,
       "doc": "",
       "symbols": [
         {
           "name": "PayrollRunDetailPage",
           "kind": "default",
-          "line": 23
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
         }
       ]
     },
@@ -39097,14 +39466,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 137,
-      "bytes": 4796,
+      "lines": 139,
+      "bytes": 4837,
       "doc": "",
       "symbols": [
         {
           "name": "PayrollRunsPage",
           "kind": "default",
-          "line": 18
+          "line": 19
         }
       ]
     },
@@ -39139,6 +39508,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/products/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/products/new/page.tsx",
       "area": "web",
       "kind": "page",
@@ -39157,14 +39541,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/products/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 240,
-      "bytes": 8441,
+      "lines": 173,
+      "bytes": 6106,
       "doc": "",
       "symbols": [
         {
           "name": "AdminProductsPage",
           "kind": "default",
-          "line": 24
+          "line": 25
         }
       ]
     },
@@ -39172,14 +39556,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 186,
-      "bytes": 7129,
+      "lines": 200,
+      "bytes": 7253,
       "doc": "",
       "symbols": [
         {
           "name": "PurchaseOrderDetailPage",
           "kind": "default",
-          "line": 40
+          "line": 41
         }
       ]
     },
@@ -39187,14 +39571,29 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/receive/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 214,
-      "bytes": 7735,
+      "lines": 227,
+      "bytes": 7718,
       "doc": "",
       "symbols": [
         {
           "name": "ReceiveGoodsPage",
           "kind": "default",
-          "line": 27
+          "line": 28
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
         }
       ]
     },
@@ -39202,8 +39601,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/new/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 306,
-      "bytes": 11410,
+      "lines": 315,
+      "bytes": 11482,
       "doc": "",
       "symbols": [
         {
@@ -39217,14 +39616,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 161,
-      "bytes": 5821,
+      "lines": 136,
+      "bytes": 4315,
       "doc": "",
       "symbols": [
         {
           "name": "PurchaseOrdersPage",
           "kind": "default",
-          "line": 29
+          "line": 26
         }
       ]
     },
@@ -39247,14 +39646,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/reports/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 423,
-      "bytes": 15132,
+      "lines": 422,
+      "bytes": 14973,
       "doc": "",
       "symbols": [
         {
           "name": "AdminReportsPage",
           "kind": "default",
-          "line": 74
+          "line": 75
         }
       ]
     },
@@ -39262,8 +39661,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/settings/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 604,
-      "bytes": 21265,
+      "lines": 571,
+      "bytes": 19680,
       "doc": "",
       "symbols": [
         {
@@ -39289,11 +39688,26 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/stitching/bookings/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/stitching/bookings/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 167,
-      "bytes": 5830,
+      "lines": 143,
+      "bytes": 4529,
       "doc": "",
       "symbols": [
         {
@@ -39307,14 +39721,29 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/stitching/jobs/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 306,
-      "bytes": 10804,
+      "lines": 307,
+      "bytes": 10785,
       "doc": "",
       "symbols": [
         {
           "name": "JobDetailPage",
           "kind": "default",
-          "line": 26
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/stitching/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
         }
       ]
     },
@@ -39322,14 +39751,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/stitching/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 283,
-      "bytes": 10092,
+      "lines": 246,
+      "bytes": 8463,
       "doc": "",
       "symbols": [
         {
           "name": "TailorQueuePage",
           "kind": "default",
-          "line": 25
+          "line": 26
         }
       ]
     },
@@ -39349,6 +39778,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/suppliers/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/suppliers/page.tsx",
       "area": "web",
       "kind": "page",
@@ -39364,11 +39808,26 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/tax/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/tax/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 369,
-      "bytes": 13709,
+      "lines": 379,
+      "bytes": 13492,
       "doc": "",
       "symbols": [
         {
@@ -39394,6 +39853,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/trading-partners/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/trading-partners/new/page.tsx",
       "area": "web",
       "kind": "page",
@@ -39412,14 +39886,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/trading-partners/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 119,
-      "bytes": 4343,
+      "lines": 106,
+      "bytes": 3430,
       "doc": "",
       "symbols": [
         {
           "name": "TradingPartnersPage",
           "kind": "default",
-          "line": 25
+          "line": 17
         }
       ]
     },
@@ -39427,14 +39901,29 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/transfers/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 163,
-      "bytes": 6335,
+      "lines": 180,
+      "bytes": 6518,
       "doc": "",
       "symbols": [
         {
           "name": "TransferDetailPage",
           "kind": "default",
-          "line": 17
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/transfers/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
         }
       ]
     },
@@ -39442,8 +39931,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/transfers/new/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 237,
-      "bytes": 8314,
+      "lines": 241,
+      "bytes": 8274,
       "doc": "",
       "symbols": [
         {
@@ -39484,17 +39973,32 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/users/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/users/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 261,
-      "bytes": 8687,
+      "lines": 246,
+      "bytes": 8005,
       "doc": "",
       "symbols": [
         {
           "name": "AdminUsersPage",
           "kind": "default",
-          "line": 28
+          "line": 29
         }
       ]
     },
@@ -40675,19 +41179,24 @@
       "path": "apps/web/src/components/admin/session.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 25,
-      "bytes": 727,
+      "lines": 47,
+      "bytes": 1650,
       "doc": "",
       "symbols": [
         {
           "name": "AdminSessionProvider",
           "kind": "const",
-          "line": 8
+          "line": 9
+        },
+        {
+          "name": "AdminSession",
+          "kind": "interface",
+          "line": 12
         },
         {
           "name": "useAdminSession",
           "kind": "function",
-          "line": 18
+          "line": 31
         }
       ]
     },
@@ -41317,11 +41826,26 @@
       ]
     },
     {
+      "path": "apps/web/src/components/ui/confirm-dialog.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 103,
+      "bytes": 3229,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ConfirmDialog",
+          "kind": "function",
+          "line": 30
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/ui/data-table.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 140,
-      "bytes": 4880,
+      "lines": 191,
+      "bytes": 7275,
       "doc": "",
       "symbols": [
         {
@@ -41332,7 +41856,7 @@
         {
           "name": "DataTable",
           "kind": "function",
-          "line": 58
+          "line": 77
         }
       ]
     },
@@ -41382,13 +41906,68 @@
       ]
     },
     {
+      "path": "apps/web/src/components/ui/filter-bar.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 191,
+      "bytes": 6747,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FilterDef",
+          "kind": "type",
+          "line": 26
+        },
+        {
+          "name": "FilterBar",
+          "kind": "function",
+          "line": 36
+        },
+        {
+          "name": "useFilterParam",
+          "kind": "function",
+          "line": 141
+        },
+        {
+          "name": "useSetFilterParam",
+          "kind": "function",
+          "line": 151
+        },
+        {
+          "name": "useFilterPage",
+          "kind": "function",
+          "line": 170
+        },
+        {
+          "name": "useSetFilterPage",
+          "kind": "function",
+          "line": 176
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/ui/index.ts",
       "area": "web",
       "kind": "component",
-      "lines": 28,
-      "bytes": 1019,
+      "lines": 39,
+      "bytes": 1329,
       "doc": "Design-system primitives.",
       "symbols": []
+    },
+    {
+      "path": "apps/web/src/components/ui/list-page-skeleton.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 66,
+      "bytes": 2389,
+      "doc": "The shape of a list page, before the list page.",
+      "symbols": [
+        {
+          "name": "ListPageSkeleton",
+          "kind": "function",
+          "line": 20
+        }
+      ]
     },
     {
       "path": "apps/web/src/components/ui/loading.tsx",
@@ -41437,6 +42016,26 @@
           "name": "PageHeader",
           "kind": "function",
           "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/ui/pagination.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 66,
+      "bytes": 1822,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PaginationMeta",
+          "kind": "interface",
+          "line": 15
+        },
+        {
+          "name": "Pagination",
+          "kind": "function",
+          "line": 23
         }
       ]
     },
@@ -46635,7 +47234,7 @@
       "area": "infra",
       "kind": "json",
       "lines": 58,
-      "bytes": 2257,
+      "bytes": 2301,
       "doc": "",
       "symbols": []
     },
@@ -48195,6 +48794,15 @@
       "kind": "script",
       "lines": 644,
       "bytes": 31761,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "scripts/check-permission-checks.mjs",
+      "area": "infra",
+      "kind": "script",
+      "lines": 127,
+      "bytes": 5045,
       "doc": "",
       "symbols": []
     },

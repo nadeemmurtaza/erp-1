@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
 import type { MyScope } from '@/types/api';
 import { Loading, PageHeader, Section } from '@/components/ui';
+import { useAdminSession } from '@/components/admin/session';
 
 /**
  * The branch-level dashboard (RETAIL-ERP.md R19) — the leaf. No chips: this
@@ -19,8 +20,9 @@ export default function BranchDashboardPage() {
   const [scope, setScope] = useState<MyScope | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [savingBrand, setSavingBrand] = useState(false);
+  const { can } = useAdminSession();
 
-  const canManage = getStoredUser()?.permissions.includes('organization.manage') ?? false;
+  const canManage = can('organization.manage');
 
   const load = useCallback(async () => {
     try {

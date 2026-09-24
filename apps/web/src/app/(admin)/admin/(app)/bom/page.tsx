@@ -3,10 +3,11 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { formatDate, formatMoney } from '@newax/shared';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
 import { DataTable, MetricStrip, PageHeader } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import type { PaginatedResponse } from '@/types/api';
+import { useAdminSession } from '@/components/admin/session';
 
 type BomStatus = 'DRAFT' | 'ACTIVE' | 'ARCHIVED';
 type RecipeFilter = 'all' | 'active' | 'missing' | 'incomplete-cost';
@@ -43,8 +44,9 @@ interface MissingSummary {
  * doesn't, and one that exists but whose cost cannot be trusted yet.
  */
 export default function RecipesPage() {
-  const canManage = getStoredUser()?.permissions.includes('bom.manage') ?? false;
-  const canViewCost = getStoredUser()?.permissions.includes('inventory.view_cost') ?? false;
+  const { can } = useAdminSession();
+  const canManage = can('bom.manage');
+  const canViewCost = can('inventory.view_cost');
 
   const [rows, setRows] = useState<PaginatedResponse<RecipeRow | MissingRow> | null>(null);
   const [summary, setSummary] = useState<MissingSummary | null>(null);

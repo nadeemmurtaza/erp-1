@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { formatMoney } from '@newax/shared';
-import { adminFetch, getStoredUser } from '@/lib/admin-client';
+import { adminFetch } from '@/lib/admin-client';
+import { useAdminSession } from '@/components/admin/session';
 import type { InventoryMovements, InventoryValuation } from '@/types/api';
 import { DataTable, EmptyState, Loading, MetricStrip, PageHeader, Section, Tabs } from '@/components/ui';
 
@@ -18,8 +19,9 @@ import { DataTable, EmptyState, Loading, MetricStrip, PageHeader, Section, Tabs 
  * each tab fetches (and explains its absence) independently, per PRM-2.
  */
 export default function InventoryInsightsPage() {
-  const canViewValuation = getStoredUser()?.permissions.includes('inventory.view_cost') ?? false;
-  const canViewMovements = getStoredUser()?.permissions.includes('inventory.manage') ?? false;
+  const { can } = useAdminSession();
+  const canViewValuation = can('inventory.view_cost');
+  const canViewMovements = can('inventory.manage');
 
   const [valuation, setValuation] = useState<InventoryValuation | null>(null);
   const [movements, setMovements] = useState<InventoryMovements | null>(null);

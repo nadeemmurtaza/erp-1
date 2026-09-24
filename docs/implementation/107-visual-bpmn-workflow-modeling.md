@@ -1,5 +1,13 @@
 # 107 — Visual BPMN workflow design: doc 63's and doc 96's own already-declined scope, restated for a third time
 
+> **Superseded.** Per **ADR-026** (`DECISIONS.md`), the owner reviewed
+> this document's reasoning (and doc 63/96's) and explicitly instructed
+> that a BPMN engine be built anyway, a fourth time. See **doc 142**,
+> which builds it as a visual authoring layer compiling into doc 63's own
+> `ApprovalChain`/`ApprovalStep` rows — never a second execution runtime —
+> keeping this document's own "two mechanisms for one job" risk closed by
+> construction rather than by declining to build.
+
 "Allow non-technical operational managers to redraw approval workflows,
 document routing, and decision logic using a low-code drag-and-drop
 interface" is the same capability doc 63 ("Out of scope: a visual chain-

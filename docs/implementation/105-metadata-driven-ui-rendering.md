@@ -1,5 +1,12 @@
 # 105 — Metadata-driven forms: the narrow case doc 104 already needs, not a general UI engine
 
+> **Superseded in part.** Per **ADR-026** (`DECISIONS.md`), the owner
+> explicitly instructed that a general metadata-driven rendering engine
+> be built anyway. See **doc 141**, which builds it with this document's
+> own named risk (a second, uninspected component library) made a
+> mandatory, enforced guardrail rather than removed. This document's own
+> narrow renderer for doc 104's custom fields remains live and unchanged.
+
 "Decouple frontend views from fixed data models. The UI dynamically
 renders forms and data tables based on JSON metadata payloads from the
 server. If a new compliance law dictates a mandatory data field, updating

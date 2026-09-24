@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**376** markdown documents. These explain **why**; this index only says **where**.
+**396** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -1998,23 +1998,23 @@ _no second-level headings_
 - Acceptance  <sub>:54</sub>
 - Out of scope  <sub>:60</sub>
 
-### `docs/implementation/104-jsonb-eav-extensibility.md`  <sub>149 lines</sub>
+### `docs/implementation/104-jsonb-eav-extensibility.md`  <sub>159 lines</sub>
 
-- 1. `CustomFieldDefinition` + a JSONB overlay column, one per entity that needs it — never one universal EAV table  <sub>:20</sub>
-- 2. Why this stays narrow, deliberately  <sub>:57</sub>
-- Scope lenses  <sub>:79</sub>
-- Work orders  <sub>:121</sub>
-- Acceptance  <sub>:134</sub>
-- Out of scope  <sub>:143</sub>
+- 1. `CustomFieldDefinition` + a JSONB overlay column, one per entity that needs it — never one universal EAV table  <sub>:30</sub>
+- 2. Why this stays narrow, deliberately  <sub>:67</sub>
+- Scope lenses  <sub>:89</sub>
+- Work orders  <sub>:131</sub>
+- Acceptance  <sub>:144</sub>
+- Out of scope  <sub>:153</sub>
 
-### `docs/implementation/105-metadata-driven-ui-rendering.md`  <sub>94 lines</sub>
+### `docs/implementation/105-metadata-driven-ui-rendering.md`  <sub>101 lines</sub>
 
-- What doc 104 already needs, and this document supplies  <sub>:14</sub>
-- Why a general metadata-driven UI engine is not this repository's architecture, and should not become it  <sub>:36</sub>
-- Scope lenses  <sub>:64</sub>
-- Work orders  <sub>:70</sub>
-- Acceptance  <sub>:77</sub>
-- Out of scope  <sub>:87</sub>
+- What doc 104 already needs, and this document supplies  <sub>:21</sub>
+- Why a general metadata-driven UI engine is not this repository's architecture, and should not become it  <sub>:43</sub>
+- Scope lenses  <sub>:71</sub>
+- Work orders  <sub>:77</sub>
+- Acceptance  <sub>:84</sub>
+- Out of scope  <sub>:94</sub>
 
 ### `docs/implementation/106-finite-state-machines-registry.md`  <sub>98 lines</sub>
 
@@ -2025,14 +2025,14 @@ _no second-level headings_
 - Acceptance  <sub>:85</sub>
 - Out of scope  <sub>:93</sub>
 
-### `docs/implementation/107-visual-bpmn-workflow-modeling.md`  <sub>69 lines</sub>
+### `docs/implementation/107-visual-bpmn-workflow-modeling.md`  <sub>77 lines</sub>
 
-- Why this remains declined, restated once more for this specific framing  <sub>:14</sub>
-- What already answers the bullet's own three named use cases  <sub>:33</sub>
-- Scope lenses  <sub>:45</sub>
-- Work orders  <sub>:51</sub>
-- Acceptance  <sub>:59</sub>
-- Out of scope  <sub>:64</sub>
+- Why this remains declined, restated once more for this specific framing  <sub>:22</sub>
+- What already answers the bullet's own three named use cases  <sub>:41</sub>
+- Scope lenses  <sub>:53</sub>
+- Work orders  <sub>:59</sub>
+- Acceptance  <sub>:67</sub>
+- Out of scope  <sub>:72</sub>
 
 ### `docs/implementation/108-event-triggered-side-effects.md`  <sub>61 lines</sub>
 
@@ -2087,24 +2087,24 @@ _no second-level headings_
 - Acceptance  <sub>:41</sub>
 - Out of scope  <sub>:46</sub>
 
-### `docs/implementation/113-micro-frontend-embedding.md`  <sub>107 lines</sub>
+### `docs/implementation/113-micro-frontend-embedding.md`  <sub>114 lines</sub>
 
-- Why full micro-frontend architecture is declined here  <sub>:15</sub>
-- What the bullet's own concrete example actually needs: an embed, not a framework  <sub>:32</sub>
-- Scope lenses  <sub>:51</sub>
-- Work orders  <sub>:88</sub>
-- Acceptance  <sub>:96</sub>
-- Out of scope  <sub>:102</sub>
+- Why full micro-frontend architecture is declined here  <sub>:22</sub>
+- What the bullet's own concrete example actually needs: an embed, not a framework  <sub>:39</sub>
+- Scope lenses  <sub>:58</sub>
+- Work orders  <sub>:95</sub>
+- Acceptance  <sub>:103</sub>
+- Out of scope  <sub>:109</sub>
 
-### `docs/implementation/114-sandboxed-scripting-runtime.md`  <sub>109 lines</sub>
+### `docs/implementation/114-sandboxed-scripting-runtime.md`  <sub>119 lines</sub>
 
-- What the bullet's own two examples actually need  <sub>:17</sub>
-- The recommended mechanism: a restricted expression evaluator, never arbitrary code  <sub>:32</sub>
-- Why this stays a recommendation, not a build order, until a real case names it  <sub>:60</sub>
-- Scope lenses  <sub>:73</sub>
-- Work orders  <sub>:85</sub>
-- Acceptance  <sub>:90</sub>
-- Out of scope  <sub>:99</sub>
+- What the bullet's own two examples actually need  <sub>:27</sub>
+- The recommended mechanism: a restricted expression evaluator, never arbitrary code  <sub>:42</sub>
+- Why this stays a recommendation, not a build order, until a real case names it  <sub>:70</sub>
+- Scope lenses  <sub>:83</sub>
+- Work orders  <sub>:95</sub>
+- Acceptance  <sub>:100</sub>
+- Out of scope  <sub>:109</sub>
 
 ### `docs/implementation/115-hexagonal-architecture-ports-adapters.md`  <sub>69 lines</sub>
 
@@ -2205,24 +2205,52 @@ _no second-level headings_
 - Acceptance  <sub>:51</sub>
 - Out of scope  <sub>:59</sub>
 
-### `docs/implementation/125-zero-trust-networking.md`  <sub>76 lines</sub>
+### `docs/implementation/125-zero-trust-networking.md`  <sub>84 lines</sub>
 
-- Where zero-trust's actual principle already holds  <sub>:14</sub>
-- Why a service mesh is not the right implementation of this principle here  <sub>:38</sub>
-- Scope lenses  <sub>:51</sub>
-- Work orders  <sub>:57</sub>
-- Acceptance  <sub>:65</sub>
-- Out of scope  <sub>:71</sub>
+- Where zero-trust's actual principle already holds  <sub>:22</sub>
+- Why a service mesh is not the right implementation of this principle here  <sub>:46</sub>
+- Scope lenses  <sub>:59</sub>
+- Work orders  <sub>:65</sub>
+- Acceptance  <sub>:73</sub>
+- Out of scope  <sub>:79</sub>
 
-### `docs/implementation/126-pluggable-cryptography.md`  <sub>128 lines</sub>
+### `docs/implementation/126-pluggable-cryptography.md`  <sub>138 lines</sub>
 
-- The two mechanisms, checked individually  <sub>:12</sub>
-- Why a full "dedicated security service" is oversized for what this actually needs  <sub>:26</sub>
-- The narrow, correct answer: a versioned hashing/encryption interface, in-process  <sub>:35</sub>
-- Scope lenses  <sub>:63</sub>
-- Work orders  <sub>:101</sub>
-- Acceptance  <sub>:112</sub>
-- Out of scope  <sub>:119</sub>
+- The two mechanisms, checked individually  <sub>:22</sub>
+- Why a full "dedicated security service" is oversized for what this actually needs  <sub>:36</sub>
+- The narrow, correct answer: a versioned hashing/encryption interface, in-process  <sub>:45</sub>
+- Scope lenses  <sub>:73</sub>
+- Work orders  <sub>:111</sub>
+- Acceptance  <sub>:122</sub>
+- Out of scope  <sub>:129</sub>
+
+### `docs/implementation/127-policy-as-data-completeness-sweep.md`  <sub>76 lines</sub>
+
+- 1. The sweep, as a repeatable script, not a one-time manual pass  <sub>:12</sub>
+- 2. What "converted" means, and what legitimately stays a constant  <sub>:27</sub>
+- Scope lenses  <sub>:42</sub>
+- Work orders  <sub>:50</sub>
+- Acceptance  <sub>:60</sub>
+- Out of scope  <sub>:69</sub>
+
+### `docs/implementation/128-extension-point-coverage-audit.md`  <sub>143 lines</sub>
+
+- What was checked, and what was found missing  <sub>:12</sub>
+- 1. `IdentityProvider` — a login method port, alongside the existing password path  <sub>:32</sub>
+- 2. `ShippingCarrier` — a rate/label/tracking port, alongside `Shipment.cost`  <sub>:51</sub>
+- Scope lenses  <sub>:67</sub>
+- Work orders  <sub>:121</sub>
+- Acceptance  <sub>:130</sub>
+- Out of scope  <sub>:137</sub>
+
+### `docs/implementation/129-channel-abstraction-audit.md`  <sub>87 lines</sub>
+
+- What the audit checked, and what it found  <sub>:12</sub>
+- The one real fix: an optional correlation token, additive, not disruptive  <sub>:42</sub>
+- Scope lenses  <sub>:60</sub>
+- Work orders  <sub>:67</sub>
+- Acceptance  <sub>:73</sub>
+- Out of scope  <sub>:81</sub>
 
 ### `docs/implementation/13-email-service-plan.md`  <sub>32 lines</sub>
 
@@ -2231,6 +2259,92 @@ _no second-level headings_
 - 3. Strict DNS Requirements (Crucial for Independence)  <sub>:14</sub>
 - 4. Application Architecture (How the API sends emails)  <sub>:23</sub>
 - 5. The Ultimate Agency Flex (Future API Integration)  <sub>:29</sub>
+
+### `docs/implementation/130-machine-readable-capability-manifest.md`  <sub>110 lines</sub>
+
+- 1. The manifest, generated from live registrations, never hand-maintained  <sub>:14</sub>
+- 2. Who reads this, and why it matters for the future you're actually worried about  <sub>:40</sub>
+- Scope lenses  <sub>:53</sub>
+- Work orders  <sub>:86</sub>
+- Acceptance  <sub>:96</sub>
+- Out of scope  <sub>:103</sub>
+
+### `docs/implementation/131-versioned-domain-events.md`  <sub>70 lines</sub>
+
+- The convention: additive by default, a new event name when a break is unavoidable  <sub>:11</sub>
+- Scope lenses  <sub>:41</sub>
+- Work orders  <sub>:47</sub>
+- Acceptance  <sub>:58</sub>
+- Out of scope  <sub>:64</sub>
+
+### `docs/implementation/132-generic-inbound-webhook-receiver.md`  <sub>164 lines</sub>
+
+- 1. A registered inbound endpoint, mapped by template onto a domain event — the mirror of `OutboundConnector`  <sub>:13</sub>
+- Scope lenses  <sub>:70</sub>
+- Work orders  <sub>:141</sub>
+- Acceptance  <sub>:150</sub>
+- Out of scope  <sub>:158</sub>
+
+### `docs/implementation/133-reusable-dry-run-harness.md`  <sub>59 lines</sub>
+
+- The convention: every policy-as-data mechanism exposes a pure `preview()` alongside its `apply()`  <sub>:11</sub>
+- Scope lenses  <sub>:32</sub>
+- Work orders  <sub>:39</sub>
+- Acceptance  <sub>:47</sub>
+- Out of scope  <sub>:54</sub>
+
+### `docs/implementation/134-hexagonal-purity-ci-check.md`  <sub>71 lines</sub>
+
+- 1. The specific violation this check catches  <sub>:11</sub>
+- 2. Why this is worth building even though the audit found zero violations today  <sub>:33</sub>
+- Scope lenses  <sub>:45</sub>
+- Work orders  <sub>:50</sub>
+- Acceptance  <sub>:59</sub>
+- Out of scope  <sub>:68</sub>
+
+### `docs/implementation/135-intent-router-voice-video-agent.md`  <sub>136 lines</sub>
+
+- 1. An `Intent` is the one shape every future modality converges on  <sub>:11</sub>
+- 2. What changes when tomorrow's paradigm arrives, and what does not  <sub>:43</sub>
+- Scope lenses  <sub>:57</sub>
+- Work orders  <sub>:109</sub>
+- Acceptance  <sub>:120</sub>
+- Out of scope  <sub>:129</sub>
+
+### `docs/implementation/136-database-cache-portability-audit.md`  <sub>72 lines</sub>
+
+- What was checked  <sub>:12</sub>
+- What a future cache substitution would need, named honestly  <sub>:29</sub>
+- Scope lenses  <sub>:44</sub>
+- Work orders  <sub>:51</sub>
+- Acceptance  <sub>:60</sub>
+- Out of scope  <sub>:65</sub>
+
+### `docs/implementation/137-payment-method-resilience-audit.md`  <sub>75 lines</sub>
+
+- What was checked, against three plausible near-future payment shapes  <sub>:9</sub>
+- The actual finding: no gap, and why  <sub>:35</sub>
+- Scope lenses  <sub>:49</sub>
+- Work orders  <sub>:55</sub>
+- Acceptance  <sub>:59</sub>
+- Out of scope  <sub>:69</sub>
+
+### `docs/implementation/138-technology-substitution-playbook.md`  <sub>70 lines</sub>
+
+- The playbook, one entry per core dependency  <sub>:11</sub>
+- Why this is worth writing down explicitly, even where the answer is short  <sub>:38</sub>
+- Scope lenses  <sub>:49</sub>
+- Work orders  <sub>:54</sub>
+- Acceptance  <sub>:62</sub>
+- Out of scope  <sub>:67</sub>
+
+### `docs/implementation/139-second-front-door-websocket-gateway.md`  <sub>106 lines</sub>
+
+- 1. A second transport, the identical authorization and service layer  <sub>:11</sub>
+- Scope lenses  <sub>:40</sub>
+- Work orders  <sub>:84</sub>
+- Acceptance  <sub>:92</sub>
+- Out of scope  <sub>:100</sub>
 
 ### `docs/implementation/14-managed-services-module.md`  <sub>270 lines</sub>
 
@@ -2242,6 +2356,71 @@ _no second-level headings_
 - Explicitly out of scope for v1  <sub>:221</sub>
 - Work orders  <sub>:234</sub>
 - When to actually build this  <sub>:261</sub>
+
+### `docs/implementation/140-general-eav-extensibility-model.md`  <sub>148 lines</sub>
+
+- 1. A true EAV model: any entity, any attribute, no code-known list  <sub>:13</sub>
+- 2. The mitigations doc 104 named as the real risk, applied rather than removed  <sub>:44</sub>
+- Scope lenses  <sub>:71</sub>
+- Work orders  <sub>:125</sub>
+- Acceptance  <sub>:132</sub>
+- Out of scope  <sub>:142</sub>
+
+### `docs/implementation/141-general-metadata-driven-ui-engine.md`  <sub>147 lines</sub>
+
+- 1. A metadata payload describes a form; the renderer is built from the same primitives every hand-authored screen already uses  <sub>:13</sub>
+- 2. The mandatory guardrail, stated once so it cannot be silently dropped under time pressure  <sub>:44</sub>
+- 3. Where this engine is used, and where it deliberately is not  <sub>:61</sub>
+- Scope lenses  <sub>:76</sub>
+- Work orders  <sub>:115</sub>
+- Acceptance  <sub>:128</sub>
+- Out of scope  <sub>:141</sub>
+
+### `docs/implementation/142-bpmn-visual-workflow-engine.md`  <sub>109 lines</sub>
+
+- 1. BPMN as a view over `ApprovalChain`, not a competing engine  <sub>:13</sub>
+- 2. What this buys, and what it deliberately still refuses  <sub>:44</sub>
+- Scope lenses  <sub>:62</sub>
+- Work orders  <sub>:77</sub>
+- Acceptance  <sub>:90</sub>
+- Out of scope  <sub>:101</sub>
+
+### `docs/implementation/143-micro-frontend-architecture.md`  <sub>160 lines</sub>
+
+- 1. Module federation as an addition, not a rewrite  <sub>:18</sub>
+- 2. What doc 93's own reasoning still governs, and what this document adds on top  <sub>:52</sub>
+- Scope lenses  <sub>:83</sub>
+- Work orders  <sub>:133</sub>
+- Acceptance  <sub>:143</sub>
+- Out of scope  <sub>:153</sub>
+
+### `docs/implementation/144-wasm-sandboxed-scripting-runtime.md`  <sub>225 lines</sub>
+
+- 1. What "sandboxed" must mean here, stated as non-negotiable requirements  <sub>:19</sub>
+- 2. The schema and execution boundary  <sub>:53</sub>
+- 3. The mandatory review gate, stated as this document's own central requirement  <sub>:96</sub>
+- Scope lenses  <sub>:109</sub>
+- Work orders  <sub>:187</sub>
+- Acceptance  <sub>:202</sub>
+- Out of scope  <sub>:214</sub>
+
+### `docs/implementation/145-service-mesh-architecture.md`  <sub>131 lines</sub>
+
+- 1. Where a mesh has something real to secure, named honestly  <sub>:15</sub>
+- 2. The mesh, scoped to that one boundary  <sub>:37</sub>
+- Scope lenses  <sub>:62</sub>
+- Work orders  <sub>:106</sub>
+- Acceptance  <sub>:116</sub>
+- Out of scope  <sub>:125</sub>
+
+### `docs/implementation/146-dedicated-cryptography-microservice.md`  <sub>154 lines</sub>
+
+- 1. The service, behind the identical interface doc 126 already defined  <sub>:17</sub>
+- 2. Why this stays a deployment *option*, not the default  <sub>:52</sub>
+- Scope lenses  <sub>:80</sub>
+- Work orders  <sub>:123</sub>
+- Acceptance  <sub>:136</sub>
+- Out of scope  <sub>:148</sub>
 
 ### `docs/implementation/15-tax-module.md`  <sub>232 lines</sub>
 
@@ -3045,7 +3224,7 @@ _no second-level headings_
 - Acceptance  <sub>:48</sub>
 - Out of scope  <sub>:53</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>1,768 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>1,873 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3075,6 +3254,7 @@ _no second-level headings_
 - ADR-025 — WO-E.2 is not executed: its own prerequisites (WO-A.1, WO-A.2) were never built, and building them now would be the same speculative-infrastructure trap ADR-019 already rejected  <sub>:1518</sub>
 - Decision: doc 22's leave schema is struck in favour of payroll's (WO-19.3)  <sub>:1641</sub>
 - Decision: adopt a shared cross-tenant hosting tier via shared-infrastructure/isolated-data, not shared-schema multi-tenancy  <sub>:1692</sub>
+- ADR-026 — Seven heavier extensibility mechanisms adopted by explicit owner override: EAV, a metadata-rendering engine, BPMN, micro-frontends, a WASM sandbox, a service mesh, and a dedicated crypto microservice  <sub>:1769</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3112,15 +3292,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>333 lines</sub>
+### `docs/implementation/README.md`  <sub>379 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:203</sub>
-- The two module groups  <sub>:232</sub>
-- How a work order runs  <sub>:269</sub>
-- Known gaps not yet owned by a phase  <sub>:287</sub>
-- When a brief is wrong  <sub>:314</sub>
-- Scope, honestly  <sub>:327</sub>
+- Dependency order  <sub>:249</sub>
+- The two module groups  <sub>:278</sub>
+- How a work order runs  <sub>:315</sub>
+- Known gaps not yet owned by a phase  <sub>:333</sub>
+- When a brief is wrong  <sub>:360</sub>
+- Scope, honestly  <sub>:373</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

@@ -1,5 +1,12 @@
 # 113 — Embedding a third-party dashboard: a narrow iframe pattern, not a micro-frontend architecture
 
+> **Superseded in part.** Per **ADR-026** (`DECISIONS.md`), the owner
+> explicitly instructed that full micro-frontend/module-federation
+> architecture be built anyway. See **doc 143**, which adds it as an
+> opt-in, per-fragment composition layer alongside — not replacing — doc
+> 93's single-app convention and this document's own embed-token design,
+> which it reuses directly.
+
 "Break the monolithic web application into distinct, independently
 deployable UI fragments. Specialized third-party tools, such as an
 AI-based predictive analytics dashboard, can be seamlessly embedded

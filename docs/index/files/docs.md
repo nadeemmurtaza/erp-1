@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 356 tracked files in `docs/*`, by directory.
+All 376 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -253,7 +253,7 @@ All 356 tracked files in `docs/*`, by directory.
 | `52g-generate-gap.md` | doc | 26 |  |
 | `52h-harden-gap.md` | doc | 40 |  |
 
-### `docs/implementation` (136)
+### `docs/implementation` (156)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -272,18 +272,18 @@ All 356 tracked files in `docs/*`, by directory.
 | `101-agnostic-notification-webhooks.md` | doc | 71 |  |
 | `102-hyperautomation-workflow-integration.md` | doc | 70 |  |
 | `103-semantic-data-contracts.md` | doc | 69 |  |
-| `104-jsonb-eav-extensibility.md` | doc | 149 |  |
-| `105-metadata-driven-ui-rendering.md` | doc | 94 |  |
+| `104-jsonb-eav-extensibility.md` | doc | 159 |  |
+| `105-metadata-driven-ui-rendering.md` | doc | 101 |  |
 | `106-finite-state-machines-registry.md` | doc | 98 |  |
-| `107-visual-bpmn-workflow-modeling.md` | doc | 69 |  |
+| `107-visual-bpmn-workflow-modeling.md` | doc | 77 |  |
 | `108-event-triggered-side-effects.md` | doc | 61 |  |
 | `109-immutable-event-ledger.md` | doc | 98 |  |
 | `11-client-handover-model.md` | doc | 121 |  |
 | `110-cqrs-read-write-separation.md` | doc | 93 |  |
 | `111-hierarchical-entity-isolation.md` | doc | 68 |  |
 | `112-pluggable-fiscal-engines.md` | doc | 51 |  |
-| `113-micro-frontend-embedding.md` | doc | 107 |  |
-| `114-sandboxed-scripting-runtime.md` | doc | 109 |  |
+| `113-micro-frontend-embedding.md` | doc | 114 |  |
+| `114-sandboxed-scripting-runtime.md` | doc | 119 |  |
 | `115-hexagonal-architecture-ports-adapters.md` | doc | 69 |  |
 | `116-agentic-integration-mcp.md` | doc | 161 |  |
 | `117-event-driven-choreography-immutability.md` | doc | 82 |  |
@@ -295,10 +295,30 @@ All 356 tracked files in `docs/*`, by directory.
 | `122-data-lake-cold-storage-architecture.md` | doc | 75 |  |
 | `123-automated-degradation-resilience.md` | doc | 73 |  |
 | `124-infrastructure-as-code.md` | doc | 64 |  |
-| `125-zero-trust-networking.md` | doc | 76 |  |
-| `126-pluggable-cryptography.md` | doc | 128 |  |
+| `125-zero-trust-networking.md` | doc | 84 |  |
+| `126-pluggable-cryptography.md` | doc | 138 |  |
+| `127-policy-as-data-completeness-sweep.md` | doc | 76 |  |
+| `128-extension-point-coverage-audit.md` | doc | 143 |  |
+| `129-channel-abstraction-audit.md` | doc | 87 |  |
 | `13-email-service-plan.md` | doc | 32 |  |
+| `130-machine-readable-capability-manifest.md` | doc | 110 |  |
+| `131-versioned-domain-events.md` | doc | 70 |  |
+| `132-generic-inbound-webhook-receiver.md` | doc | 164 |  |
+| `133-reusable-dry-run-harness.md` | doc | 59 |  |
+| `134-hexagonal-purity-ci-check.md` | doc | 71 |  |
+| `135-intent-router-voice-video-agent.md` | doc | 136 |  |
+| `136-database-cache-portability-audit.md` | doc | 72 |  |
+| `137-payment-method-resilience-audit.md` | doc | 75 |  |
+| `138-technology-substitution-playbook.md` | doc | 70 |  |
+| `139-second-front-door-websocket-gateway.md` | doc | 106 |  |
 | `14-managed-services-module.md` | doc | 270 |  |
+| `140-general-eav-extensibility-model.md` | doc | 148 |  |
+| `141-general-metadata-driven-ui-engine.md` | doc | 147 |  |
+| `142-bpmn-visual-workflow-engine.md` | doc | 109 |  |
+| `143-micro-frontend-architecture.md` | doc | 160 |  |
+| `144-wasm-sandboxed-scripting-runtime.md` | doc | 225 |  |
+| `145-service-mesh-architecture.md` | doc | 131 |  |
+| `146-dedicated-cryptography-microservice.md` | doc | 154 |  |
 | `15-tax-module.md` | doc | 232 |  |
 | `16-pbac-row-scoping.md` | doc | 184 |  |
 | `17-inventory-locations.md` | doc | 254 |  |
@@ -386,11 +406,11 @@ All 356 tracked files in `docs/*`, by directory.
 | `97-realtime-validation-single-source-of-truth.md` | doc | 63 |  |
 | `98-contract-first-api-development.md` | doc | 80 |  |
 | `99-centralized-api-gateway.md` | doc | 60 |  |
-| `DECISIONS.md` | doc | 1768 |  |
+| `DECISIONS.md` | doc | 1873 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 333 |  |
+| `README.md` | doc | 379 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 

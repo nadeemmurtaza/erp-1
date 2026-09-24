@@ -1,5 +1,13 @@
 # 125 — Zero-trust: the principle already holds; the mesh it's usually built for doesn't exist here
 
+> **Superseded in part.** Per **ADR-026** (`DECISIONS.md`), the owner
+> explicitly instructed that a service mesh be built anyway. See
+> **doc 145**, which names the one real multi-service boundary this
+> deployment actually has (`apps/api` ↔ `apps/platform`) and scopes mesh-
+> grade mTLS to exactly that, rather than to internal module calls that
+> remain, as this document states, in-process function calls with nothing
+> to mesh between.
+
 "Enforce strict, continuous identity verification for every internal
 microservice interaction. This prevents a breach in a newly adopted,
 highly experimental third-party tool from traversing your internal

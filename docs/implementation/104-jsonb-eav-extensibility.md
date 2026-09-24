@@ -1,5 +1,15 @@
 # 104 — Custom fields: a narrow, bounded JSONB overlay, never a general EAV model
 
+> **Superseded in part.** This document's own engineering recommendation
+> (a bounded, code-known overlay, never a general EAV model) stands as
+> written and remains in production use for the entities it already
+> covers. Per **ADR-026** (`DECISIONS.md`), the owner explicitly instructed
+> that the general EAV form be built anyway, for near-term flexibility —
+> see **doc 140**, which builds it as an *additional*, coexisting
+> mechanism rather than a replacement of this one. Both are live; this
+> document's own reasoning for keeping this overlay bounded is unchanged
+> and doc 140 cites it directly.
+
 "Store custom attributes in flexible, schemaless database columns... This
 allows administrators to add new business fields (e.g., a 'Carbon
 Footprint' metric for suppliers) at runtime without requiring hardcoded

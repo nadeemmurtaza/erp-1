@@ -44,11 +44,20 @@ describe('AnalyticsService — WO-D.3 products top/slow-sellers, categories', ()
     return `d3-spec-${Date.now()}-${seq}`;
   }
 
+  /**
+   * Exact `n * 24h` before now, never a calendar-date subtraction pinned to
+   * a fixed clock time. `productsSlowSellers()` derives `daysSinceLastSale`
+   * as `Math.floor((now - lastSoldAt) / 86_400_000)` — a pure duration, not
+   * a calendar-day difference — so anchoring this fixture to a fixed
+   * wall-clock hour (the previous version pinned to 12:00 UTC) made the
+   * test's `n` and the service's floor() disagree whenever the suite ran
+   * before that hour: the elapsed duration would be a few hours short of a
+   * full `n` days and floor to `n - 1`. Exact millisecond subtraction keeps
+   * the two computations in agreement regardless of what time of day the
+   * suite runs.
+   */
   function daysAgo(n: number): Date {
-    const date = new Date();
-    date.setUTCDate(date.getUTCDate() - n);
-    date.setUTCHours(12, 0, 0, 0);
-    return date;
+    return new Date(Date.now() - n * 86_400_000);
   }
 
   async function makeProduct(categoryId?: string) {

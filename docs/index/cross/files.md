@@ -10,7 +10,7 @@ Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 527 | 73,255 | [files/api.md](../files/api.md) |
+| apps/api | 527 | 73,264 | [files/api.md](../files/api.md) |
 | apps/web | 258 | 40,371 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 42 | 5,292 | [files/mobile.md](../files/mobile.md) |

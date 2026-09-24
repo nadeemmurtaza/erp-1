@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 1321,
-    "lines": 206918,
+    "lines": 206927,
     "routes": 357,
     "controllers": 62,
     "models": 140,
@@ -1084,8 +1084,8 @@
     },
     "api": {
       "files": 527,
-      "lines": 73255,
-      "bytes": 2684594,
+      "lines": 73264,
+      "bytes": 2685227,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -31123,8 +31123,8 @@
       "path": "apps/api/src/modules/analytics/analytics.products.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 251,
-      "bytes": 9795,
+      "lines": 260,
+      "bytes": 10428,
       "doc": "",
       "symbols": []
     },

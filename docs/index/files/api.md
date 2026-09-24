@@ -716,7 +716,7 @@ All 527 tracked files in `apps/api`, by directory.
 | `analytics.inventory.spec.ts` | unit test | 194 |  |
 | `analytics.module.ts` | nest module | 11 |  |
 | `analytics.orders.spec.ts` | unit test | 199 |  |
-| `analytics.products.spec.ts` | unit test | 251 |  |
+| `analytics.products.spec.ts` | unit test | 260 |  |
 | `analytics.purchasing.spec.ts` | unit test | 329 |  |
 | `analytics.service.ts` | service | 2018 |  |
 | `analytics.workshop.spec.ts` | unit test | 180 |  |

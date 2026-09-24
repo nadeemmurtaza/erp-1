@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**403** markdown documents. These explain **why**; this index only says **where**.
+**404** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2505,6 +2505,17 @@ _no second-level headings_
 - Acceptance  <sub>:267</sub>
 - Out of scope  <sub>:281</sub>
 
+### `docs/implementation/154-three-headline-commercial-plans.md`  <sub>182 lines</sub>
+
+- 1. The three headline plans, each an existing `PricingModel` under a customer-facing name  <sub>:14</sub>
+- 2. Why these three specific shapes cover the real span of a merchant's own risk appetite  <sub>:29</sub>
+- 3. The pricing screen itself — a customer-facing surface that doesn't exist yet  <sub>:43</sub>
+- 4. Selecting a plan routes to the identical provisioning path every plan already uses  <sub>:86</sub>
+- Scope lenses  <sub>:97</sub>
+- Work orders  <sub>:148</sub>
+- Acceptance  <sub>:164</sub>
+- Out of scope  <sub>:176</sub>
+
 ### `docs/implementation/16-pbac-row-scoping.md`  <sub>184 lines</sub>
 
 - The good news: the convention already exists, once  <sub>:35</sub>
@@ -3366,15 +3377,15 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/README.md`  <sub>406 lines</sub>
+### `docs/implementation/README.md`  <sub>407 lines</sub>
 
 - Read in this order  <sub>:7</sub>
-- Dependency order  <sub>:276</sub>
-- The two module groups  <sub>:305</sub>
-- How a work order runs  <sub>:342</sub>
-- Known gaps not yet owned by a phase  <sub>:360</sub>
-- When a brief is wrong  <sub>:387</sub>
-- Scope, honestly  <sub>:400</sub>
+- Dependency order  <sub>:277</sub>
+- The two module groups  <sub>:306</sub>
+- How a work order runs  <sub>:343</sub>
+- Known gaps not yet owned by a phase  <sub>:361</sub>
+- When a brief is wrong  <sub>:388</sub>
+- Scope, honestly  <sub>:401</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

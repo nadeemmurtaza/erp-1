@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1435,
-    "lines": 220773,
+    "files": 1436,
+    "lines": 220956,
     "routes": 357,
     "controllers": 62,
     "models": 140,
@@ -1107,9 +1107,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 383,
-      "lines": 56476,
-      "bytes": 3341854,
+      "files": 384,
+      "lines": 56659,
+      "bytes": 3352350,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -45731,6 +45731,15 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/154-three-headline-commercial-plans.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 182,
+      "bytes": 10057,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/16-pbac-row-scoping.md",
       "area": "docs",
       "kind": "doc",
@@ -46544,8 +46553,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 406,
-      "bytes": 49732,
+      "lines": 407,
+      "bytes": 50171,
       "doc": "",
       "symbols": []
     },

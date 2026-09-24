@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **394** endpoints across **70** controllers, with the access rule that actually guards each one.
+All **395** endpoints across **70** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 43** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 44** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -59,6 +59,7 @@ never authorization.
 | POST | `/orders` | `OrdersController.place` |
 | POST | `/orders/:number/track` | `OrdersController.track` |
 | POST | `/payments/:paymentId/receipt` | `PaymentsController.uploadReceipt` |
+| POST | `/payments/:paymentId/redeem-gift-card` | `PaymentsController.redeemGiftCard` |
 | POST | `/payments/callback/:provider` | `PaymentsController.callback` |
 | GET | `/payments/methods` | `PaymentsController.methods` |
 | POST | `/promotions/preview` | `PromotionsPublicController.preview` |
@@ -426,7 +427,7 @@ never authorization.
 | GET | `/admin/parties/:id` | `parties.manage` | `PartiesController.get` | Get a party |
 | GET | `/admin/parties/search` | `parties.manage` | `PartiesController.search` | Typeahead search for the counterparty picker |
 
-### [`payments`](../modules/payments.md) (6)
+### [`payments`](../modules/payments.md) (7)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -434,6 +435,7 @@ never authorization.
 | POST | `/admin/payments/:paymentId/refund` | `payments.approve` | `PaymentsAdminController.refund` | Mark a paid payment refunded (full or partial) |
 | GET | `/admin/payments/awaiting-approval` | `payments.approve` | `PaymentsAdminController.awaitingApproval` | Payments waiting on a human decision |
 | POST | `/payments/:paymentId/receipt` | **PUBLIC** | `PaymentsController.uploadReceipt` | Upload a bank-transfer receipt for staff to approve |
+| POST | `/payments/:paymentId/redeem-gift-card` | **PUBLIC** | `PaymentsController.redeemGiftCard` | Redeem a third-party gift card code against a payment awaiting one (Giftkarta e… |
 | POST | `/payments/callback/:provider` | **PUBLIC** | `PaymentsController.callback` | Gateway return URL — verifies and settles a payment |
 | GET | `/payments/methods` | **PUBLIC** | `PaymentsController.methods` | Payment methods currently accepted |
 

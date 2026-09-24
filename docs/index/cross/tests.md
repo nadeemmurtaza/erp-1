@@ -3,7 +3,7 @@
 
 # Tests
 
-**140** spec files, **1,358** cases. What is already pinned down — and what is not.
+**141** spec files, **1,364** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -28,7 +28,7 @@ such exemption.
 - [`tax`](../modules/tax.md)
 - [`tracking`](../modules/tracking.md)
 
-## End-to-end (16)
+## End-to-end (17)
 
 Real HTTP against a real Postgres. These are the ones that catch a permission
 regression or an N+1.
@@ -44,6 +44,7 @@ regression or an N+1.
 | `apps/api/test/email-accounts-admin.e2e-spec.ts` | 13 | Admin email accounts (e2e) · connection tests (failure path — no live mailbox in this suite) |
 | `apps/api/test/email-inbox.e2e-spec.ts` | 7 | Email inbox (e2e) · ingestMessage · admin API |
 | `apps/api/test/email-templates-admin.e2e-spec.ts` | 4 | Admin email template catalog (e2e) |
+| `apps/api/test/giftkarta-checkout.e2e-spec.ts` | 6 | Giftkarta third-party gift card checkout (e2e) |
 | `apps/api/test/meta.e2e-spec.ts` | 2 | Meta (e2e) |
 | `apps/api/test/orders.e2e-spec.ts` | 33 | Orders (e2e) · payment methods · placing an order · stitched orders · bank transfer · order status · tracking · admin a… |
 | `apps/api/test/payments-gateway.e2e-spec.ts` | 4 | JazzCash checkout redirect (e2e) |

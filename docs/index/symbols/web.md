@@ -675,7 +675,7 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `loading.tsx` | `Loading` | default | :1 |  |
-| `page.tsx` | `CheckoutPage` | default | :51 | Checkout. |
+| `page.tsx` | `CheckoutPage` | default | :54 | Checkout. |
 
 ### `apps/web/src/app/(storefront)/[locale]/forgot-password`
 

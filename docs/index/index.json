@@ -3,9 +3,9 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1509,
-    "lines": 231836,
-    "routes": 394,
+    "files": 1511,
+    "lines": 232561,
+    "routes": 395,
     "controllers": 70,
     "models": 152,
     "enums": 65,
@@ -14,7 +14,7 @@
     "permissions": 48,
     "screens": 165,
     "crons": 10,
-    "specs": 140,
+    "specs": 141,
     "designLaws": 150
   },
   "designLaws": [
@@ -1078,14 +1078,14 @@
     },
     "infra": {
       "files": 56,
-      "lines": 28208,
-      "bytes": 1106319,
+      "lines": 28218,
+      "bytes": 1106723,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 559,
-      "lines": 77264,
-      "bytes": 2835172,
+      "files": 561,
+      "lines": 77798,
+      "bytes": 2858276,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1102,14 +1102,14 @@
     },
     "web": {
       "files": 277,
-      "lines": 43165,
-      "bytes": 1574916,
+      "lines": 43259,
+      "bytes": 1579621,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 392,
-      "lines": 59321,
-      "bytes": 3500866,
+      "lines": 59408,
+      "bytes": 3506197,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -1476,9 +1476,10 @@
         "apps/api/src/modules/payments/providers/callback-verification.spec.ts",
         "apps/api/src/modules/payments/providers/cod.provider.ts",
         "apps/api/src/modules/payments/providers/easypaisa.provider.ts",
+        "apps/api/src/modules/payments/providers/giftkarta.provider.ts",
         "apps/api/src/modules/payments/providers/jazzcash.provider.ts"
       ],
-      "routes": 6,
+      "routes": 7,
       "page": "docs/index/modules/payments.md"
     },
     {
@@ -4791,7 +4792,7 @@
       "controller": "PaymentsAdminController",
       "handler": "approve",
       "file": "apps/api/src/modules/payments/payments.controller.ts",
-      "line": 99,
+      "line": 117,
       "access": "payments.approve",
       "permissions": [
         "payments.approve"
@@ -4807,7 +4808,7 @@
       "controller": "PaymentsAdminController",
       "handler": "refund",
       "file": "apps/api/src/modules/payments/payments.controller.ts",
-      "line": 109,
+      "line": 127,
       "access": "payments.approve",
       "permissions": [
         "payments.approve"
@@ -4823,7 +4824,7 @@
       "controller": "PaymentsAdminController",
       "handler": "awaitingApproval",
       "file": "apps/api/src/modules/payments/payments.controller.ts",
-      "line": 93,
+      "line": 111,
       "access": "payments.approve",
       "permissions": [
         "payments.approve"
@@ -7947,7 +7948,7 @@
       "controller": "PaymentsController",
       "handler": "uploadReceipt",
       "file": "apps/api/src/modules/payments/payments.controller.ts",
-      "line": 74,
+      "line": 81,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -7956,12 +7957,26 @@
     },
     {
       "method": "POST",
+      "path": "/payments/:paymentId/redeem-gift-card",
+      "module": "payments",
+      "controller": "PaymentsController",
+      "handler": "redeemGiftCard",
+      "file": "apps/api/src/modules/payments/payments.controller.ts",
+      "line": 98,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Redeem a third-party gift card code against a payment awaiting one (Giftkarta et al.)"
+    },
+    {
+      "method": "POST",
       "path": "/payments/callback/:provider",
       "module": "payments",
       "controller": "PaymentsController",
       "handler": "callback",
       "file": "apps/api/src/modules/payments/payments.controller.ts",
-      "line": 59,
+      "line": 66,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -7975,7 +7990,7 @@
       "controller": "PaymentsController",
       "handler": "methods",
       "file": "apps/api/src/modules/payments/payments.controller.ts",
-      "line": 52,
+      "line": 59,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -9168,8 +9183,9 @@
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:117",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:154",
         "apps/api/src/modules/orders/orders.service.ts:614",
-        "apps/api/src/modules/payments/payments.service.ts:188",
-        "apps/api/src/modules/payments/payments.service.ts:257"
+        "apps/api/src/modules/payments/payments.service.ts:191",
+        "apps/api/src/modules/payments/payments.service.ts:293",
+        "apps/api/src/modules/payments/payments.service.ts:341"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:115 onPaymentSucceeded()",
@@ -9181,7 +9197,8 @@
       "name": "payment.failed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/payments/payments.service.ts:188"
+        "apps/api/src/modules/payments/payments.service.ts:191",
+        "apps/api/src/modules/payments/payments.service.ts:293"
       ],
       "subscribers": [
         "apps/api/src/modules/payments/notification.subscriber.ts:79 onPaymentFailed()"
@@ -9192,7 +9209,7 @@
       "name": "payment.awaiting_approval",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/payments/payments.service.ts:113"
+        "apps/api/src/modules/payments/payments.service.ts:116"
       ],
       "subscribers": []
     },
@@ -9201,7 +9218,7 @@
       "name": "payment.refunded",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/payments/payments.service.ts:316"
+        "apps/api/src/modules/payments/payments.service.ts:400"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:152 onPaymentRefunded()",
@@ -28682,6 +28699,15 @@
       ]
     },
     {
+      "file": "apps/api/test/giftkarta-checkout.e2e-spec.ts",
+      "module": "",
+      "kind": "e2e test",
+      "cases": 6,
+      "describes": [
+        "Giftkarta third-party gift card checkout (e2e)"
+      ]
+    },
+    {
       "file": "apps/api/test/meta.e2e-spec.ts",
       "module": "",
       "kind": "e2e test",
@@ -29298,8 +29324,8 @@
       "path": ".env.example",
       "area": "infra",
       "kind": "example",
-      "lines": 141,
-      "bytes": 6962,
+      "lines": 146,
+      "bytes": 7164,
       "doc": "",
       "symbols": []
     },
@@ -29307,8 +29333,8 @@
       "path": ".env.production.example",
       "area": "infra",
       "kind": "example",
-      "lines": 113,
-      "bytes": 5087,
+      "lines": 118,
+      "bytes": 5289,
       "doc": "",
       "symbols": []
     },
@@ -31118,8 +31144,8 @@
       "path": "apps/api/src/core/config/env.validation.ts",
       "area": "api",
       "kind": "config",
-      "lines": 250,
-      "bytes": 10634,
+      "lines": 254,
+      "bytes": 10978,
       "doc": "",
       "symbols": [
         {
@@ -31130,12 +31156,12 @@
         {
           "name": "Env",
           "kind": "type",
-          "line": 145
+          "line": 149
         },
         {
           "name": "validateEnv",
           "kind": "function",
-          "line": 171
+          "line": 175
         }
       ]
     },
@@ -36135,29 +36161,29 @@
       "path": "apps/api/src/modules/payments/payment-provider.ts",
       "area": "api",
       "kind": "module",
-      "lines": 73,
-      "bytes": 2650,
+      "lines": 99,
+      "bytes": 4242,
       "doc": "Extension point: payment providers.",
       "symbols": [
         {
           "name": "PaymentContext",
           "kind": "interface",
-          "line": 13
+          "line": 16
         },
         {
           "name": "PaymentInitiation",
           "kind": "interface",
-          "line": 23
+          "line": 26
         },
         {
           "name": "PaymentCallbackResult",
           "kind": "interface",
-          "line": 37
+          "line": 40
         },
         {
           "name": "PaymentProvider",
           "kind": "interface",
-          "line": 56
+          "line": 59
         }
       ]
     },
@@ -36165,19 +36191,19 @@
       "path": "apps/api/src/modules/payments/payments.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 117,
-      "bytes": 3186,
+      "lines": 135,
+      "bytes": 3924,
       "doc": "",
       "symbols": [
         {
           "name": "PaymentsController",
           "kind": "class",
-          "line": 46
+          "line": 53
         },
         {
           "name": "PaymentsAdminController",
           "kind": "class",
-          "line": 88
+          "line": 106
         }
       ]
     },
@@ -36185,14 +36211,14 @@
       "path": "apps/api/src/modules/payments/payments.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 24,
-      "bytes": 900,
+      "lines": 26,
+      "bytes": 991,
       "doc": "",
       "symbols": [
         {
           "name": "PaymentsModule",
           "kind": "class",
-          "line": 23
+          "line": 25
         }
       ]
     },
@@ -36200,14 +36226,14 @@
       "path": "apps/api/src/modules/payments/payments.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 353,
-      "bytes": 11829,
+      "lines": 437,
+      "bytes": 15273,
       "doc": "",
       "symbols": [
         {
           "name": "PaymentsService",
           "kind": "class",
-          "line": 28
+          "line": 29
         }
       ]
     },
@@ -36262,6 +36288,21 @@
           "name": "EasypaisaProvider",
           "kind": "class",
           "line": 27
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payments/providers/giftkarta.provider.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 185,
+      "bytes": 7719,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GiftkartaProvider",
+          "kind": "class",
+          "line": 51
         }
       ]
     },
@@ -38588,6 +38629,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/test/giftkarta-checkout.e2e-spec.ts",
+      "area": "api",
+      "kind": "e2e test",
+      "lines": 215,
+      "bytes": 9176,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/test/meta.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
@@ -40845,8 +40895,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 416,
-      "bytes": 16234,
+      "lines": 421,
+      "bytes": 16619,
       "doc": "",
       "symbols": []
     },
@@ -40854,8 +40904,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 416,
-      "bytes": 21747,
+      "lines": 421,
+      "bytes": 22341,
       "doc": "",
       "symbols": []
     },
@@ -42754,14 +42804,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/checkout/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 624,
-      "bytes": 23233,
+      "lines": 708,
+      "bytes": 26959,
       "doc": "",
       "symbols": [
         {
           "name": "CheckoutPage",
           "kind": "default",
-          "line": 51
+          "line": 54
         }
       ]
     },
@@ -49696,8 +49746,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 2094,
-      "bytes": 112991,
+      "lines": 2181,
+      "bytes": 118322,
       "doc": "",
       "symbols": []
     },

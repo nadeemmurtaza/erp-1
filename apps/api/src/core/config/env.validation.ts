@@ -102,6 +102,10 @@ export const envSchema = z.object({
   EASYPAISA_RETURN_URL: z.string().optional(),
   EASYPAISA_SANDBOX: bool('true'),
 
+  /** Giftkarta — a third-party gift-card network redeemable at checkout (GiftkartaProvider). No verified API reference was available when this was written; confirm the base URL and every field name against Giftkarta's own docs before enabling. */
+  GIFTKARTA_API_BASE_URL: z.string().optional(),
+  GIFTKARTA_API_KEY: z.string().optional(),
+
   // nID (github.com/nadeemmurtaza/nID) — this shop's identity-verification
   // tenant credentials. Optional at the env-schema level, same as the
   // payment-gateway secrets above: the identity-verification module has to

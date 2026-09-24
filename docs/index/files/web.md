@@ -25,8 +25,8 @@ All 277 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `en.json` | json | 416 |  |
-| `ur.json` | json | 416 |  |
+| `en.json` | json | 421 |  |
+| `ur.json` | json | 421 |  |
 
 ### `apps/web/public` (1)
 
@@ -718,7 +718,7 @@ All 277 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `loading.tsx` | loading | 47 |  |
-| `page.tsx` | page | 624 |  |
+| `page.tsx` | page | 708 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/forgot-password` (1)
 

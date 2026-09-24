@@ -363,7 +363,12 @@
     "giftCardHint": "Enter how much of the card's balance to use.",
     "amountRs": "Amount (Rs)",
     "storeCredit": "Use store credit (Rs)",
-    "discount": "Discount"
+    "discount": "Discount",
+    "giftCardRedeemTitle": "One more step",
+    "giftCardRedeemBody": "Order {orderNumber} is placed. Enter your gift card code to complete payment.",
+    "giftCardRedeemSubmit": "Redeem and complete order",
+    "giftCardRedeemLater": "I'll do this later — take me to my order",
+    "giftCardRedeemFailed": "We could not redeem that gift card. Please check the code and try again."
   },
   "order": {
     "title": "Order",

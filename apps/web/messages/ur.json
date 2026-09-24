@@ -363,7 +363,12 @@
     "giftCardHint": "کارڈ کے بیلنس میں سے استعمال ہونے والی رقم درج کریں۔",
     "amountRs": "رقم (روپے)",
     "storeCredit": "اسٹور کریڈٹ استعمال کریں (روپے)",
-    "discount": "رعایت"
+    "discount": "رعایت",
+    "giftCardRedeemTitle": "ایک اور مرحلہ",
+    "giftCardRedeemBody": "آرڈر {orderNumber} دیا جا چکا ہے۔ ادائیگی مکمل کرنے کے لیے اپنا گفٹ کارڈ کوڈ درج کریں۔",
+    "giftCardRedeemSubmit": "کوڈ استعمال کریں اور آرڈر مکمل کریں",
+    "giftCardRedeemLater": "بعد میں کروں گا — میرے آرڈر پر لے جائیں",
+    "giftCardRedeemFailed": "یہ گفٹ کارڈ استعمال نہیں ہو سکا۔ براہ کرم کوڈ چیک کریں اور دوبارہ کوشش کریں۔"
   },
   "order": {
     "title": "آرڈر",

@@ -5,6 +5,7 @@ import { PaymentsService } from './payments.service';
 import { BankTransferProvider } from './providers/bank-transfer.provider';
 import { CodProvider } from './providers/cod.provider';
 import { EasypaisaProvider } from './providers/easypaisa.provider';
+import { GiftkartaProvider } from './providers/giftkarta.provider';
 import { JazzCashProvider } from './providers/jazzcash.provider';
 
 @Module({
@@ -15,6 +16,7 @@ import { JazzCashProvider } from './providers/jazzcash.provider';
     BankTransferProvider,
     JazzCashProvider,
     EasypaisaProvider,
+    GiftkartaProvider,
     PaymentNotificationSubscriber,
   ],
   // Exported for the orders module, which creates the payment with the order.

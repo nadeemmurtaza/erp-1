@@ -20,12 +20,15 @@ interface PaymentMethod {
   descriptionEn: string;
   descriptionUr: string;
   fee: number;
+  /** True for a third-party gift-card network (Giftkarta) — the code is collected AFTER the order exists, not here. */
+  requiresCode: boolean;
 }
 
 /** What POST /orders hands back. Only the parts this page acts on. */
 interface CheckoutResponse {
   number: string;
   payment?: {
+    paymentId?: string;
     redirectUrl?: string;
     meta?: { fields?: Record<string, string> };
   };
@@ -85,6 +88,34 @@ export default function CheckoutPage() {
   const [giftCardAmount, setGiftCardAmount] = useState('');
   const [storeCreditAmount, setStoreCreditAmount] = useState('');
   const isSignedIn = Boolean(getCustomerToken());
+
+  // A third-party gift card network (Giftkarta et al. — PaymentProvider's own
+  // `requiresCode`): the order already exists once we get here, PENDING on
+  // this one payment, and this is the follow-up screen that redeems it —
+  // never collected earlier, since the redemption itself is a real external
+  // debit that must never run inside the order-creation transaction.
+  const [pendingGiftCardPayment, setPendingGiftCardPayment] = useState<{ paymentId: string; orderNumber: string } | null>(null);
+  const [networkGiftCardCode, setNetworkGiftCardCode] = useState('');
+  const [redeemingNetworkCard, setRedeemingNetworkCard] = useState(false);
+  const [networkGiftCardError, setNetworkGiftCardError] = useState<string | null>(null);
+
+  async function redeemNetworkGiftCard() {
+    if (!pendingGiftCardPayment || !networkGiftCardCode.trim()) return;
+    setRedeemingNetworkCard(true);
+    setNetworkGiftCardError(null);
+    try {
+      await request(`/payments/${pendingGiftCardPayment.paymentId}/redeem-gift-card`, {
+        method: 'POST',
+        body: { code: networkGiftCardCode.trim() },
+        fallbackMessage: t('giftCardRedeemFailed'),
+      });
+      window.location.href = `/${locale}${ROUTES.storefront.order(pendingGiftCardPayment.orderNumber)}?placed=1`;
+    } catch (cause) {
+      setNetworkGiftCardError(cause instanceof Error ? cause.message : t('giftCardRedeemFailed'));
+    } finally {
+      setRedeemingNetworkCard(false);
+    }
+  }
 
   async function checkPromoCode() {
     if (!cart || !promoCode.trim()) return;
@@ -182,6 +213,16 @@ export default function CheckoutPage() {
         return;
       }
 
+      const chosenMethod = methods.find((candidate) => candidate.key === method);
+      if (chosenMethod?.requiresCode && payload.payment?.paymentId) {
+        // Giftkarta et al.: the order exists, but this one payment stays
+        // PENDING until the code below redeems it — no full navigation yet,
+        // so a mistyped code can be corrected without losing the order.
+        setPendingGiftCardPayment({ paymentId: payload.payment.paymentId, orderNumber: payload.number });
+        setBusy(false);
+        return;
+      }
+
       // Cash on delivery / bank transfer: nothing more to collect now. A
       // full navigation, so the cart provider reloads and shows it emptied.
       window.location.href = `/${locale}${ROUTES.storefront.order(payload.number)}?placed=1`;
@@ -189,6 +230,49 @@ export default function CheckoutPage() {
       setError(cause instanceof Error ? cause.message : t('failed'));
       setBusy(false);
     }
+  }
+
+  if (pendingGiftCardPayment) {
+    return (
+      <div className="container-page pt-16 font-display md:pb-16">
+        <h1 className="text-2xl font-semibold text-neutral-900">{t('giftCardRedeemTitle')}</h1>
+        <p className="mt-2 max-w-md text-sm text-neutral-500">
+          {t('giftCardRedeemBody', { orderNumber: pendingGiftCardPayment.orderNumber })}
+        </p>
+
+        <section className="card mt-6 max-w-md p-4 sm:p-6">
+          <Field label={t('giftCardCode')}>
+            <input
+              value={networkGiftCardCode}
+              onChange={(event) => setNetworkGiftCardCode(event.target.value)}
+              placeholder="XXXX-XXXX-XXXX"
+              className="field-input"
+            />
+          </Field>
+          {networkGiftCardError ? (
+            <p role="alert" className="notice notice-error mt-3 whitespace-pre-line">
+              {networkGiftCardError}
+            </p>
+          ) : null}
+          <button
+            type="button"
+            onClick={() => void redeemNetworkGiftCard()}
+            disabled={redeemingNetworkCard || !networkGiftCardCode.trim()}
+            className="btn-primary mt-4 w-full"
+          >
+            {redeemingNetworkCard ? t('checking') : t('giftCardRedeemSubmit')}
+          </button>
+        </section>
+
+        <button
+          type="button"
+          onClick={() => router.push(ROUTES.storefront.order(pendingGiftCardPayment.orderNumber))}
+          className="btn-text mt-4 text-sm"
+        >
+          {t('giftCardRedeemLater')}
+        </button>
+      </div>
+    );
   }
 
   if (loading) {

@@ -3412,7 +3412,7 @@ _no second-level headings_
 - Acceptance  <sub>:48</sub>
 - Out of scope  <sub>:53</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>2,094 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>2,181 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3445,6 +3445,7 @@ _no second-level headings_
 - ADR-026 — Seven heavier extensibility mechanisms adopted by explicit owner override: EAV, a metadata-rendering engine, BPMN, micro-frontends, a WASM sandbox, a service mesh, and a dedicated crypto microservice  <sub>:1769</sub>
 - ADR-027 — The three highest-risk items from ADR-026 withdrawn: no WASM sandbox, no service mesh, no dedicated crypto microservice  <sub>:1877</sub>
 - ADR-028 — WO-5 (Phase 5: discounts, promo codes, gift cards, store credit) built from zero — permission split, checkout coupling, tender-as-Payment-rows, and the evaluator's own rounding/scope choices  <sub>:1963</sub>
+- ADR-029 — Third-party gift-card redemption at checkout (Giftkarta): a `PaymentProvider`, not a WO-5 tender field; code collected post-order; API contract unverified  <sub>:2095</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

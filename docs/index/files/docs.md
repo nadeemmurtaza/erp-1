@@ -422,7 +422,7 @@ All 392 tracked files in `docs/*`, by directory.
 | `97-realtime-validation-single-source-of-truth.md` | doc | 63 |  |
 | `98-contract-first-api-development.md` | doc | 80 |  |
 | `99-centralized-api-gateway.md` | doc | 60 |  |
-| `DECISIONS.md` | doc | 2094 |  |
+| `DECISIONS.md` | doc | 2181 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |

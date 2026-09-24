@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 559 tracked files in `apps/api`, by directory.
+All 561 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -524,7 +524,7 @@ All 559 tracked files in `apps/api`, by directory.
 | `app-config.service.ts` | service | 64 |  |
 | `config.module.ts` | nest module | 23 |  |
 | `env.validation.spec.ts` | unit test | 154 |  |
-| `env.validation.ts` | config | 250 |  |
+| `env.validation.ts` | config | 254 |  |
 | `load-env.ts` | config | 14 |  |
 | `meta.controller.ts` | controller | 41 |  |
 
@@ -1033,12 +1033,12 @@ All 559 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `notification.subscriber.ts` | event subscriber | 168 |  |
-| `payment-provider.ts` | module | 73 | Extension point: payment providers. |
-| `payments.controller.ts` | controller | 117 |  |
-| `payments.module.ts` | nest module | 24 |  |
-| `payments.service.ts` | service | 353 |  |
+| `payment-provider.ts` | module | 99 | Extension point: payment providers. |
+| `payments.controller.ts` | controller | 135 |  |
+| `payments.module.ts` | nest module | 26 |  |
+| `payments.service.ts` | service | 437 |  |
 
-### `apps/api/src/modules/payments/providers` (5)
+### `apps/api/src/modules/payments/providers` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1046,6 +1046,7 @@ All 559 tracked files in `apps/api`, by directory.
 | `callback-verification.spec.ts` | unit test | 159 |  |
 | `cod.provider.ts` | module | 41 |  |
 | `easypaisa.provider.ts` | module | 184 |  |
+| `giftkarta.provider.ts` | module | 185 |  |
 | `jazzcash.provider.ts` | module | 184 |  |
 
 ### `apps/api/src/modules/payroll` (12)
@@ -1306,7 +1307,7 @@ All 559 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `user.dto.ts` | dto | 122 |  |
 
-### `apps/api/test` (20)
+### `apps/api/test` (21)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1321,6 +1322,7 @@ All 559 tracked files in `apps/api`, by directory.
 | `email-channel.behavior.spec.ts` | unit test | 580 | Behavior tests for the email notification channel. |
 | `email-inbox.e2e-spec.ts` | e2e test | 225 |  |
 | `email-templates-admin.e2e-spec.ts` | e2e test | 86 |  |
+| `giftkarta-checkout.e2e-spec.ts` | e2e test | 215 |  |
 | `meta.e2e-spec.ts` | e2e test | 65 |  |
 | `orders.e2e-spec.ts` | e2e test | 950 |  |
 | `payments-gateway.e2e-spec.ts` | e2e test | 214 |  |

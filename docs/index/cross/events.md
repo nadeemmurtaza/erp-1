@@ -144,8 +144,9 @@ order" is a new file, not an edit to checkout.
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:117` | `accounting` |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:154` | `accounting` |
 | `apps/api/src/modules/orders/orders.service.ts:614` | `orders` |
-| `apps/api/src/modules/payments/payments.service.ts:188` | `payments` |
-| `apps/api/src/modules/payments/payments.service.ts:257` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:191` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:293` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:341` | `payments` |
 
 
 **Subscribed by**
@@ -162,7 +163,8 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/payments/payments.service.ts:188` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:191` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:293` | `payments` |
 
 
 **Subscribed by**
@@ -178,7 +180,7 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/payments/payments.service.ts:113` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:116` | `payments` |
 
 
 **Subscribed by**
@@ -192,7 +194,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/payments/payments.service.ts:316` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:400` | `payments` |
 
 
 **Subscribed by**

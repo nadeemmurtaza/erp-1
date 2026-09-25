@@ -210,6 +210,9 @@ export const ROUTES = {
     emailAccounts: '/admin/email-accounts',
     /** `new` is a real id here: the editor route handles creating and editing. */
     emailAccount: (id: string) => `/admin/email-accounts/${id}`,
+    /** doc 14 — invisible unless this deployment's `managed-services` module
+     *  is on (an agency-managed delivery only; gated in nav-registry.ts). */
+    managedServices: '/admin/managed-services',
 
     /**
      * The three-level admin shell (RETAIL-ERP.md R19, WO-18.5) — invisible

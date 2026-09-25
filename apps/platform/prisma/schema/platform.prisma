@@ -74,6 +74,38 @@ model PlatformTenant {
   /// with `dataDeletedAt: null` still has a live, recoverable database.
   dataDeletedAt   DateTime?
 
+  /// doc 14 (commercial-licensing-agency/14-managed-services-module.md) —
+  /// the agency-hosted "managed services" tier reuses THIS row rather than
+  /// a second `AgencyClient` table (see DECISIONS.md ADR-039): a
+  /// self-hosted client has no `PlatformTenant` row at all, so
+  /// "SELF_HOSTED vs MANAGED" is a fact about whether this row exists, not
+  /// a stored enum. The four fields below are the only genuinely new state
+  /// doc 14 needs; everything else it asked for (status, which database)
+  /// already lives above.
+  ///
+  /// The mail domain this tenant's transactional mail sends from on the
+  /// agency's own shared Stalwart instance (docs/email.md) — null until an
+  /// agency-managed client's mailbox is actually provisioned there.
+  mailDomain      String?
+  /// SHA-256(pepper + key) of the `AGENCY_API_KEY` `scripts/sync-client.mjs`
+  /// generates for this client's extracted `managed-services` module (doc
+  /// 12's own extractor). The plaintext key is never stored here — see
+  /// `agency-key.ts`. Null until `AgencyClientsService.register()` runs;
+  /// that nullability IS "has this tenant been onboarded to the agency
+  /// managed-services dashboard yet", read by every nightly-snapshot and
+  /// reporting-API query below as the "is this an agency client" predicate.
+  apiKeyHash      String?  @unique
+  /// Null until `apiKeyHash` is first set; refreshed on every rotation.
+  /// There is no endpoint that recovers the plaintext key — only rotates
+  /// the hash (doc 14's own security note).
+  apiKeyRotatedAt DateTime?
+  /// Set once at onboarding (`AgencyClientsService.register()`), read by
+  /// `AgencyStripeChargeCron` to decide whether an issued `PlatformInvoice`
+  /// gets a real Stripe charge, and by the webhook to resolve which tenant
+  /// an incoming Stripe event is about.
+  stripeCustomerId     String?  @unique
+  stripeSubscriptionId String?  @unique
+
   plan               PlatformPlan          @relation(fields: [planId], references: [id])
   subscriptions      PlatformSubscription[]
   usageRecords       PlatformUsageRecord[]
@@ -87,6 +119,7 @@ model PlatformTenant {
   usageMeters         UsageMeter[]
   meteredOrderFees    MeteredOrderFee[]
   usageMeteringCursor UsageMeteringCursor?
+  agencyUsageSnapshots AgencyUsageSnapshot[]
 
   @@index([status])
   @@index([status, trialExpiresAt])
@@ -428,6 +461,26 @@ model PlatformInvoice {
   /// reminder, not a multi-stage escalation ladder; see ADR-037).
   dunningReminderSentAt DateTime?
 
+  /// doc 14 / ADR-039 — real money collection for an agency-managed
+  /// tenant's own hosting invoice, bridged onto this ALREADY-authoritative
+  /// row rather than a second "local invoice cache" table (doc 14's own
+  /// words) that would compete with it. Null for any invoice whose tenant
+  /// has no `stripeCustomerId` (self-hosted-adjacent or pre-Stripe-linkage
+  /// tenants) — `AgencyStripeChargeCron` is the only writer, and only
+  /// picks up rows where this is still null on a Stripe-linked tenant, so
+  /// a redelivered/rerun sweep never double-charges the same invoice
+  /// (doc's own "second copy of the write").
+  stripeInvoiceId       String?    @unique
+  /// The Stripe-hosted invoice page — what `GET /agency/clients/me/invoices`
+  /// links to; never a PDF this control plane generates itself.
+  stripeHostedInvoiceUrl String?
+  stripePaymentStatus   StripeInvoicePaymentStatus?
+  /// Set when a `invoice.payment_failed` webhook lands for this invoice —
+  /// distinct from `dunningReminderSentAt` (this control plane's own
+  /// unpaid-ISSUED-invoice reminder), which fires independent of whether a
+  /// Stripe charge was ever attempted.
+  stripePaymentFailedAt DateTime?
+
   tenant      PlatformTenant          @relation(fields: [tenantId], references: [id])
   plan        PlatformPlan            @relation(fields: [planId], references: [id])
   creditNotes PlatformInvoiceCreditNote[]
@@ -663,4 +716,51 @@ model PlatformRateCardChangeRequest {
 
   @@index([planId])
   @@index([status])
+}
+
+// ---------------------------------------------------------------------------
+// doc 14 (commercial-licensing-agency/14-managed-services-module.md), ADR-039
+// — the agency's own managed-services billing/hosting dashboard. See the
+// `PlatformTenant`/`PlatformInvoice` doc comments above for why this reuses
+// those rows instead of a parallel `AgencyClient` registry and a parallel
+// invoice cache. `AgencyUsageSnapshot` below is the one genuinely new table
+// doc 14 needs — no existing equivalent anywhere in this schema.
+// ---------------------------------------------------------------------------
+
+enum StripeInvoicePaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+/// One row per agency-managed tenant per calendar day — a cache, not a
+/// source of truth, safe to delete and recompute (same discipline as
+/// `VariantSalesStat` on the tenant side). `AgencyUsageCron` is the only
+/// writer, upserting on `(tenantId, snapshotDate)` so a job rerun on the
+/// same day is a no-op, never a second row (doc 14's own acceptance
+/// criterion: "the nightly job run twice in one day produces one snapshot
+/// per tenant, not two").
+model AgencyUsageSnapshot {
+  id             String   @id @default(cuid())
+  tenantId       String
+  /// The UTC calendar day this snapshot represents — truncated to
+  /// midnight, distinct from `capturedAt` (when the job actually ran),
+  /// which is what the unique constraint below is keyed on.
+  snapshotDate   DateTime
+  capturedAt     DateTime @default(now())
+  /// `pg_database_size()` against the tenant's own isolated database, read
+  /// through the same connection-per-call mechanism `SeatCounterService`
+  /// already uses — never a second, pooled connection to a tenant's data.
+  databaseBytes  BigInt
+  /// Null when `PlatformTenant.mailDomain` is unset, or when Stalwart's
+  /// admin API could not be reached that night — "the absent collaborator"
+  /// lens: the database-size half of this row is still recorded even when
+  /// the mail half is not.
+  emailsSent30d  Int?
+  activeUsers30d Int
+
+  tenant PlatformTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, snapshotDate])
+  @@index([tenantId, snapshotDate])
 }

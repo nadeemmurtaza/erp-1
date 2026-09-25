@@ -99,7 +99,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `settings.manage` | Access the Settings screen | critical | 16 | 3 | ADMIN |
+| `settings.manage` | Access the Settings screen | critical | 18 | 4 | ADMIN |
 | `tax.manage` | Manage tax classes, rates and the pricing mode | medium | 8 | 1 | ADMIN |
 | `marketing.manage` | Turn on automated marketing email and set its timing | low | 3 | 1 | ADMIN |
 | `roles.manage_permissions` | Edit each role's granted permissions | critical | 4 | — | ADMIN |

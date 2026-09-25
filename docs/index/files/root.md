@@ -3,7 +3,7 @@
 
 # Files — root
 
-All 163 tracked files in `repository root files`, by directory.
+All 187 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -103,7 +103,7 @@ All 163 tracked files in `repository root files`, by directory.
 | `eslint.config.mjs` | script | 22 | Nest resolves constructor parameter types at runtime through decorator |
 | `jest.config.js` | script | 17 | @type {import('jest').Config} |
 | `nest-cli.json` | json | 23 |  |
-| `package.json` | json | 55 |  |
+| `package.json` | json | 56 |  |
 | `prisma.config.ts` | module | 10 |  |
 | `tsconfig.build.json` | json | 5 |  |
 | `tsconfig.json` | json | 22 |  |
@@ -112,7 +112,7 @@ All 163 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `platform.prisma` | prisma schema | 667 | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the |
+| `platform.prisma` | prisma schema | 767 | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the |
 | `schema.prisma` | prisma schema | 19 | Datasource and generator only — the control plane's OWN database, never a |
 
 ### `apps/platform/prisma/schema/migrations` (1)
@@ -151,12 +151,18 @@ All 163 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 126 |  |
 
+### `apps/platform/prisma/schema/migrations/20260925093000_wo14_agency_managed_services` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 56 |  |
+
 ### `apps/platform/src` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `app.module.ts` | nest module | 44 |  |
-| `main.ts` | module | 48 |  |
+| `app.module.ts` | nest module | 46 |  |
+| `main.ts` | module | 52 |  |
 
 ### `apps/platform/src/core/config` (4)
 
@@ -164,7 +170,7 @@ All 163 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `app-config.service.ts` | service | 25 |  |
 | `config.module.ts` | nest module | 20 |  |
-| `env.validation.ts` | config | 148 |  |
+| `env.validation.ts` | config | 194 |  |
 | `load-env.ts` | config | 13 |  |
 
 ### `apps/platform/src/core/notifications` (2)
@@ -191,7 +197,7 @@ All 163 tracked files in `repository root files`, by directory.
 | `ops-auth.guard.ts` | guard | 61 |  |
 | `ops-key.spec.ts` | unit test | 25 |  |
 | `ops-key.ts` | module | 21 |  |
-| `ops-permissions.ts` | module | 35 | The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permissions.ts`, which is apps… |
+| `ops-permissions.ts` | module | 45 | The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permissions.ts`, which is apps… |
 
 ### `apps/platform/src/core/tenant-credentials` (2)
 
@@ -199,6 +205,39 @@ All 163 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `tenant-credential-resolver.module.ts` | nest module | 10 |  |
 | `tenant-credential-resolver.service.ts` | service | 30 |  |
+
+### `apps/platform/src/modules/agency` (22)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `agency-api-key.guard.spec.ts` | unit test | 80 |  |
+| `agency-api-key.guard.ts` | guard | 58 |  |
+| `agency-clients.controller.ts` | controller | 45 |  |
+| `agency-clients.service.spec.ts` | unit test | 72 |  |
+| `agency-clients.service.ts` | service | 108 |  |
+| `agency-cross-tenant.integration.spec.ts` | unit test | 155 |  |
+| `agency-key-throttler.guard.ts` | guard | 28 |  |
+| `agency-key.spec.ts` | unit test | 25 |  |
+| `agency-key.ts` | module | 28 |  |
+| `agency-reporting.controller.ts` | controller | 36 |  |
+| `agency-reporting.service.spec.ts` | unit test | 52 |  |
+| `agency-reporting.service.ts` | service | 64 |  |
+| `agency-stripe-charge.cron.ts` | scheduled job | 45 |  |
+| `agency-stripe-webhook.controller.ts` | controller | 30 |  |
+| `agency-stripe.service.spec.ts` | unit test | 146 |  |
+| `agency-stripe.service.ts` | service | 180 |  |
+| `agency-usage.cron.ts` | scheduled job | 38 |  |
+| `agency-usage.service.spec.ts` | unit test | 120 |  |
+| `agency-usage.service.ts` | service | 118 |  |
+| `agency.module.ts` | nest module | 46 |  |
+| `decorators.ts` | module | 12 |  |
+| `stalwart-admin.client.ts` | module | 54 |  |
+
+### `apps/platform/src/modules/agency/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `register-agency-client.dto.ts` | dto | 29 |  |
 
 ### `apps/platform/src/modules/billing` (22)
 
@@ -354,7 +393,7 @@ All 163 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `setup-env.ts` | module | 9 |  |
+| `setup-env.ts` | module | 10 |  |
 
 
 ---

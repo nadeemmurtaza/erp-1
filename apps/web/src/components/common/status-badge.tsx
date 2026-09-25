@@ -33,6 +33,11 @@ const TONES: Record<string, BadgeTone> = {
   ARCHIVED: 'danger',
   LOST: 'danger',
   REJECTED: 'danger',
+  // doc 14 (managed-services) — a hosting/agency tenant TenantStatus that
+  // ended badly; suspension is reversible (a status flip, not a delete)
+  // but still reads as "attention needed", same tone as PAST_DUE elsewhere.
+  SUSPENDED: 'danger',
+  DEPROVISIONED: 'danger',
   // Ended well
   DELIVERED: 'success',
   ACTIVE: 'success',
@@ -63,6 +68,12 @@ const TONES: Record<string, BadgeTone> = {
   DRAFT: 'neutral',
   RECEIVED: 'neutral',
   NEW: 'neutral',
+  // doc 14 — a hosting tenant not yet live, or a corrected (not failed)
+  // invoice: CREDITED already has a real charge, `PlatformInvoiceCreditNote`
+  // just adjusted it, so this is informational, never a red state.
+  PROVISIONING: 'neutral',
+  TRIAL: 'info',
+  CREDITED: 'info',
   // A deliberate skip, not a failure — CampaignRecipientStatus (WO-8.4)
   SKIPPED_OPT_OUT: 'neutral',
   SKIPPED_NO_CONTACT: 'neutral',

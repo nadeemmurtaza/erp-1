@@ -47,6 +47,11 @@ export const CHART_OF_ACCOUNTS: ReadonlyArray<{
   // recognised as income at PURCHASE; converts to SALES_REVENUE only as
   // credit is actually REDEEMed (posting-rules.subscriber.ts, once written).
   { code: '2400', name: 'Deferred Revenue — Wallet Credit', type: 'LIABILITY' },
+  // Receivables (145-receivables-credit-limits-dunning.md, WO-145.2) — the
+  // two accounts a CreditNote/DebitNote need that this chart lacked, named
+  // by that doc's own "Every column or none" lens.
+  { code: '4200', name: 'Sales Returns & Allowances', type: 'INCOME' },
+  { code: '5400', name: 'Purchase Returns & Allowances', type: 'EXPENSE' },
 ];
 
 /** The codes above, named — so a posting rule never hand-types a magic string. */
@@ -70,4 +75,6 @@ export const ACCOUNT_CODE = {
   SALARIES_PAYABLE: '2300',
   SALARIES_WAGES_EXPENSE: '5300',
   DEFERRED_REVENUE_WALLET: '2400',
+  SALES_RETURNS: '4200',
+  PURCHASE_RETURNS: '5400',
 } as const;

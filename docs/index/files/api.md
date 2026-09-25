@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 769 tracked files in `apps/api`, by directory.
+All 784 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,7 +31,7 @@ All 769 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3068 |  |
 
-### `apps/api/prisma/schema` (39)
+### `apps/api/prisma/schema` (40)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -63,6 +63,7 @@ All 769 tracked files in `apps/api`, by directory.
 | `production.prisma` | prisma schema | 96 | Production: bills of materials and work orders for variants made in-house |
 | `promotions.prisma` | prisma schema | 113 | Phase 5 WO-5.1/5.2/5.3 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
 | `purchasing.prisma` | prisma schema | 303 |  |
+| `receivables.prisma` | prisma schema | 142 | Receivables: CreditNote/DebitNote, customer credit limits, and dunning — |
 | `replication.prisma` | prisma schema | 185 | The replication engine (RETAIL-ERP.md Part 6, WO-20.1: "log, cursors, |
 | `reviews.prisma` | prisma schema | 79 | Phase 7 WO-7.5 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `schema.prisma` | prisma schema | 32 | Datasource and generator only. Models live in one file per module — |
@@ -507,6 +508,12 @@ All 769 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 127 |  |
 
+### `apps/api/prisma/schema/migrations/20260925190000_add_receivables_credit_notes_dunning` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 105 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -641,7 +648,7 @@ All 769 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 562 | The catalogue of domain events. |
+| `domain-events.ts` | module | 608 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
@@ -767,8 +774,8 @@ All 769 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
-| `document-prefix.ts` | module | 48 |  |
-| `settings.defaults.ts` | module | 416 |  |
+| `document-prefix.ts` | module | 50 |  |
+| `settings.defaults.ts` | module | 426 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 85 |  |
 
@@ -797,8 +804,8 @@ All 769 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 97 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 196 |  |
+| `module-packs.ts` | module | 98 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 204 |  |
 
 ### `apps/api/src/modules/accounting` (17)
 
@@ -807,7 +814,7 @@ All 769 tracked files in `apps/api`, by directory.
 | `accounting.module.ts` | nest module | 30 |  |
 | `accounting.service.spec.ts` | unit test | 92 |  |
 | `accounting.service.ts` | service | 279 |  |
-| `chart-of-accounts.ts` | module | 74 |  |
+| `chart-of-accounts.ts` | module | 81 |  |
 | `consolidation.controller.ts` | controller | 38 |  |
 | `consolidation.service.spec.ts` | unit test | 128 |  |
 | `consolidation.service.ts` | service | 132 |  |
@@ -817,8 +824,8 @@ All 769 tracked files in `apps/api`, by directory.
 | `gl-reports.controller.ts` | controller | 77 |  |
 | `gl-reports.service.spec.ts` | unit test | 174 |  |
 | `gl-reports.service.ts` | service | 298 |  |
-| `posting-rules.subscriber.spec.ts` | unit test | 643 |  |
-| `posting-rules.subscriber.ts` | event subscriber | 519 |  |
+| `posting-rules.subscriber.spec.ts` | unit test | 746 |  |
+| `posting-rules.subscriber.ts` | event subscriber | 613 |  |
 | `wallet-posting-rules.subscriber.spec.ts` | unit test | 140 |  |
 | `wallet-posting-rules.subscriber.ts` | event subscriber | 135 |  |
 
@@ -1473,6 +1480,29 @@ All 769 tracked files in `apps/api`, by directory.
 | `requisition.dto.ts` | dto | 50 |  |
 | `supplier-bill.dto.ts` | dto | 67 |  |
 | `supplier.dto.ts` | dto | 104 |  |
+
+### `apps/api/src/modules/receivables` (12)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `credit-notes.service.ts` | service | 188 |  |
+| `credit-terms.service.ts` | service | 165 |  |
+| `debit-notes.service.ts` | service | 130 |  |
+| `dunning.cron.spec.ts` | unit test | 120 |  |
+| `dunning.cron.ts` | scheduled job | 113 |  |
+| `dunning.service.spec.ts` | unit test | 70 |  |
+| `dunning.service.ts` | service | 48 |  |
+| `receivables.controller.ts` | controller | 200 |  |
+| `receivables.integration.spec.ts` | unit test | 317 |  |
+| `receivables.module.ts` | nest module | 31 |  |
+| `statements.service.spec.ts` | unit test | 63 |  |
+| `statements.service.ts` | service | 102 |  |
+
+### `apps/api/src/modules/receivables/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `receivables.dto.ts` | dto | 94 |  |
 
 ### `apps/api/src/modules/recommendations` (6)
 

@@ -563,7 +563,7 @@ All 392 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 3140 |  |
+| `DECISIONS.md` | doc | 3266 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -722,7 +722,7 @@ All 392 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `04-finance.md` | doc | 304 |  |
 | `137-payment-method-resilience-audit.md` | doc | 75 |  |
-| `145-receivables-credit-limits-dunning.md` | doc | 285 |  |
+| `145-receivables-credit-limits-dunning.md` | doc | 358 |  |
 | `147-fixed-asset-depreciation.md` | doc | 210 |  |
 | `151-layby-installment-sales.md` | doc | 201 |  |
 | `49-financial-institution-settlement-partnerships.md` | doc | 265 |  |

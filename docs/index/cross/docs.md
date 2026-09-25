@@ -2684,7 +2684,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>3,140 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>3,266 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2724,6 +2724,7 @@ _no second-level headings_
 - ADR-032 — Phase 10 Track A built end-to-end (WO-A.1–A.5), superseding ADR-019/ADR-025; Tracks D and B wired into the registry; WO-E.2 executed  <sub>:2559</sub>
 - ADR-033 — `admin-platform` docs 02/44/72/75 completed; doc 75's own claims corrected after they were found false against the running code  <sub>:2762</sub>
 - ADR-034 — The wallet module (doc 155) built in full, shipped module-off and checkout-disconnected pending WO-155.0's own legal confirmation  <sub>:2941</sub>
+- ADR-035 — WO-145 (receivables: CreditNote/DebitNote, credit limits, dunning) keys the customer to `Contact`, not R18's own `Invoice`; ships undimensioned like its siblings; dunning gets its own cron, not doc 54's unbuilt registry  <sub>:3143</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -2756,16 +2757,16 @@ _no second-level headings_
 - Acceptance  <sub>:59</sub>
 - Out of scope  <sub>:69</sub>
 
-### `docs/implementation/finance-accounting/145-receivables-credit-limits-dunning.md`  <sub>285 lines</sub>
+### `docs/implementation/finance-accounting/145-receivables-credit-limits-dunning.md`  <sub>358 lines</sub>
 
-- 1. `CreditNote`/`DebitNote` — the two documents R18's own diagram already names  <sub>:13</sub>
-- 2. Credit limits — a policy row, checked at the one place a sale can be refused for it  <sub>:66</sub>
-- 3. Dunning — a scheduled reminder sequence, reusing the existing notification and expiry-watcher mechanisms, never a new scheduler  <sub>:102</sub>
-- 4. Customer statements — a read-model over rows that already exist  <sub>:133</sub>
-- Scope lenses  <sub>:148</sub>
-- Work orders  <sub>:250</sub>
-- Acceptance  <sub>:266</sub>
-- Out of scope  <sub>:278</sub>
+- 1. `CreditNote`/`DebitNote` — the two documents R18's own diagram already names  <sub>:86</sub>
+- 2. Credit limits — a policy row, checked at the one place a sale can be refused for it  <sub>:139</sub>
+- 3. Dunning — a scheduled reminder sequence, reusing the existing notification and expiry-watcher mechanisms, never a new scheduler  <sub>:175</sub>
+- 4. Customer statements — a read-model over rows that already exist  <sub>:206</sub>
+- Scope lenses  <sub>:221</sub>
+- Work orders  <sub>:323</sub>
+- Acceptance  <sub>:339</sub>
+- Out of scope  <sub>:351</sub>
 
 ### `docs/implementation/finance-accounting/147-fixed-asset-depreciation.md`  <sub>210 lines</sub>
 

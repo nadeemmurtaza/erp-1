@@ -23,6 +23,8 @@ const ACCOUNT_ID: Record<string, string> = {
   [ACCOUNT_CODE.SALARIES_WAGES_EXPENSE]: 'acc-salaries-expense',
   [ACCOUNT_CODE.SALARIES_PAYABLE]: 'acc-salaries-payable',
   [ACCOUNT_CODE.EMPLOYEE_ADVANCES]: 'acc-advances',
+  [ACCOUNT_CODE.SALES_RETURNS]: 'acc-sales-returns',
+  [ACCOUNT_CODE.PURCHASE_RETURNS]: 'acc-purchase-returns',
 };
 
 describe('PostingRulesSubscriber — WO-19.2', () => {
@@ -637,6 +639,107 @@ describe('PostingRulesSubscriber — WO-19.2', () => {
       await subscriber.onPayrollAdjustmentPosted(payload);
 
       expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+  });
+
+  // 145-receivables-credit-limits-dunning.md (WO-145.2)
+  describe('onCreditNoteIssued', () => {
+    const payload = {
+      creditNoteId: 'cn1',
+      customerId: 'contact1',
+      orderId: 'order1',
+      amountMinor: 500,
+      issuedAt: '2026-02-01T00:00:00.000Z',
+    };
+
+    it('Dr Sales Returns / Cr Accounts Receivable, tagged with the customer', async () => {
+      await subscriber.onCreditNoteIssued(payload);
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          source: DomainEvent.CreditNoteIssued,
+          sourceRef: 'cn1',
+          lines: [
+            { accountId: 'acc-sales-returns', debitMinor: 500 },
+            { accountId: 'acc-ar', creditMinor: 500, contactId: 'contact1' },
+          ],
+        }),
+      );
+    });
+
+    it('is idempotent — does nothing once already posted (outbox redelivery)', async () => {
+      accounting.findPostedEntry.mockResolvedValue({ id: 'already-there' });
+
+      await subscriber.onCreditNoteIssued(payload);
+
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+
+    it('never posts a zero or negative amount', async () => {
+      await subscriber.onCreditNoteIssued({ ...payload, amountMinor: 0 });
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('onCreditNoteVoided', () => {
+    it('reverses the CreditNoteIssued entry', async () => {
+      accounting.findPostedEntry.mockResolvedValue({ id: 'entry-cn1' });
+
+      await subscriber.onCreditNoteVoided({ creditNoteId: 'cn1' });
+
+      expect(accounting.findPostedEntry).toHaveBeenCalledWith(DomainEvent.CreditNoteIssued, 'cn1');
+      expect(accounting.reverseEntry).toHaveBeenCalledWith('entry-cn1', expect.stringContaining('cn1'));
+    });
+
+    it('does nothing when no posted entry exists (accounting was off when it issued)', async () => {
+      accounting.findPostedEntry.mockResolvedValue(null);
+
+      await subscriber.onCreditNoteVoided({ creditNoteId: 'cn1' });
+
+      expect(accounting.reverseEntry).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('onDebitNoteIssued', () => {
+    const payload = {
+      debitNoteId: 'dn1',
+      supplierId: 'supplier1',
+      supplierBillId: 'bill1',
+      amountMinor: 300,
+      issuedAt: '2026-02-01T00:00:00.000Z',
+    };
+
+    it('Dr Accounts Payable / Cr Purchase Returns, tagged with the supplier', async () => {
+      await subscriber.onDebitNoteIssued(payload);
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          source: DomainEvent.DebitNoteIssued,
+          sourceRef: 'dn1',
+          lines: [
+            { accountId: 'acc-ap', debitMinor: 300, supplierId: 'supplier1' },
+            { accountId: 'acc-purchase-returns', creditMinor: 300 },
+          ],
+        }),
+      );
+    });
+
+    it('is idempotent — does nothing once already posted', async () => {
+      accounting.findPostedEntry.mockResolvedValue({ id: 'already-there' });
+
+      await subscriber.onDebitNoteIssued(payload);
+
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('onDebitNoteVoided', () => {
+    it('reverses the DebitNoteIssued entry', async () => {
+      accounting.findPostedEntry.mockResolvedValue({ id: 'entry-dn1' });
+
+      await subscriber.onDebitNoteVoided({ debitNoteId: 'dn1' });
+
+      expect(accounting.reverseEntry).toHaveBeenCalledWith('entry-dn1', expect.stringContaining('dn1'));
     });
   });
 });

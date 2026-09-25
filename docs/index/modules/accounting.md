@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 19 files
 
 Source: `apps/api/src/modules/accounting/`
 
-## Files (19 · 3,403 lines)
+## Files (19 · 3,607 lines)
 
 All paths relative to `apps/api/src/modules/accounting`.
 
@@ -20,7 +20,7 @@ All paths relative to `apps/api/src/modules/accounting`.
 | `accounting.module.ts` | nest module | 30 | 1 |  |
 | `accounting.service.spec.ts` | unit test | 92 | — |  |
 | `accounting.service.ts` | service | 279 | 4 |  |
-| `chart-of-accounts.ts` | module | 74 | 2 | The minimal chart of accounts the posting rules (WO-19.2) resolve an `accountId` from by a stable `code` — seeded once… |
+| `chart-of-accounts.ts` | module | 81 | 2 | The minimal chart of accounts the posting rules (WO-19.2) resolve an `accountId` from by a stable `code` — seeded once… |
 | `consolidation.controller.ts` | controller | 38 | 1 | Consolidation at the org tier (RETAIL-ERP.md R17, WO-20.6) — see `ConsolidationService`'s own doc comment for what "eli… |
 | `consolidation.service.spec.ts` | unit test | 128 | — |  |
 | `consolidation.service.ts` | service | 132 | 2 |  |
@@ -32,8 +32,8 @@ All paths relative to `apps/api/src/modules/accounting`.
 | `gl-reports.controller.ts` | controller | 77 | 1 | The general ledger's read side (RETAIL-ERP.md R15, WO-19.4) — every route a grouping over `JournalLine`, gated by `acco… |
 | `gl-reports.service.spec.ts` | unit test | 174 | — |  |
 | `gl-reports.service.ts` | service | 298 | 2 |  |
-| `posting-rules.subscriber.spec.ts` | unit test | 643 | — |  |
-| `posting-rules.subscriber.ts` | event subscriber | 519 | 1 | Posting rules (RETAIL-ERP.md R15, WO-19.2) — the only place a sale, a receipt or a refund becomes a journal entry. |
+| `posting-rules.subscriber.spec.ts` | unit test | 746 | — |  |
+| `posting-rules.subscriber.ts` | event subscriber | 613 | 1 | Posting rules (RETAIL-ERP.md R15, WO-19.2) — the only place a sale, a receipt or a refund becomes a journal entry. |
 | `wallet-posting-rules.subscriber.spec.ts` | unit test | 140 | — |  |
 | `wallet-posting-rules.subscriber.ts` | event subscriber | 135 | 1 | doc 155 §3's own "unwritten posting rule" — the same idempotent, event-subscriber posting pattern `posting-rules.subscr… |
 
@@ -66,37 +66,43 @@ All paths relative to `apps/api/src/modules/accounting`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `OrderPlaced` | `order.placed` | `posting-rules.subscriber.ts:50`, `posting-rules.subscriber.ts:157` |
-| `PaymentSucceeded` | `payment.succeeded` | `posting-rules.subscriber.ts:117`, `posting-rules.subscriber.ts:154` |
-| `StockVarianceRecorded` | `inventory.stock_variance_recorded` | `posting-rules.subscriber.ts:281` |
-| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `posting-rules.subscriber.ts:178` |
-| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `posting-rules.subscriber.ts:228` |
-| `InterBranchTransferInvoiced` | `transfers.inter_branch_invoiced` | `posting-rules.subscriber.ts:334` |
-| `ExpenseRecorded` | `finance.expense_recorded` | `posting-rules.subscriber.ts:394` |
-| `PayrollRunPosted` | `payroll.run_posted` | `posting-rules.subscriber.ts:439` |
-| `PayrollAdjustmentPosted` | `payroll.adjustment_posted` | `posting-rules.subscriber.ts:490` |
+| `OrderPlaced` | `order.placed` | `posting-rules.subscriber.ts:54`, `posting-rules.subscriber.ts:161` |
+| `PaymentSucceeded` | `payment.succeeded` | `posting-rules.subscriber.ts:121`, `posting-rules.subscriber.ts:158` |
+| `StockVarianceRecorded` | `inventory.stock_variance_recorded` | `posting-rules.subscriber.ts:285` |
+| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `posting-rules.subscriber.ts:182` |
+| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `posting-rules.subscriber.ts:232` |
+| `InterBranchTransferInvoiced` | `transfers.inter_branch_invoiced` | `posting-rules.subscriber.ts:338` |
+| `ExpenseRecorded` | `finance.expense_recorded` | `posting-rules.subscriber.ts:398` |
+| `PayrollRunPosted` | `payroll.run_posted` | `posting-rules.subscriber.ts:443` |
+| `PayrollAdjustmentPosted` | `payroll.adjustment_posted` | `posting-rules.subscriber.ts:494` |
 | `WalletCreditPurchased` | `wallet.credit_purchased` | `wallet-posting-rules.subscriber.ts:30`, `wallet-posting-rules.subscriber.ts:125` |
 | `WalletCreditRedeemed` | `wallet.credit_redeemed` | `wallet-posting-rules.subscriber.ts:64` |
 | `MerchantPayableCreated` | `wallet.merchant_payable_created` | `wallet-posting-rules.subscriber.ts:100`, `wallet-posting-rules.subscriber.ts:103` |
+| `CreditNoteIssued` | `receivables.credit_note_issued` | `posting-rules.subscriber.ts:533`, `posting-rules.subscriber.ts:560` |
+| `DebitNoteIssued` | `receivables.debit_note_issued` | `posting-rules.subscriber.ts:579`, `posting-rules.subscriber.ts:605` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
 
 | Event | Name | Handler |
 |---|---|---|
-| `OrderPlaced` | `order.placed` | `posting-rules.subscriber.ts:48` → `onOrderPlaced()` |
-| `PaymentSucceeded` | `payment.succeeded` | `posting-rules.subscriber.ts:115` → `onPaymentSucceeded()` |
-| `PaymentRefunded` | `payment.refunded` | `posting-rules.subscriber.ts:152` → `onPaymentRefunded()` |
-| `StockVarianceRecorded` | `inventory.stock_variance_recorded` | `posting-rules.subscriber.ts:279` → `onStockVarianceRecorded()` |
-| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `posting-rules.subscriber.ts:176` → `onSupplierBillRaised()` |
-| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `posting-rules.subscriber.ts:226` → `onSupplierBillPaid()` |
-| `InterBranchTransferInvoiced` | `transfers.inter_branch_invoiced` | `posting-rules.subscriber.ts:332` → `onInterBranchTransferInvoiced()` |
-| `ExpenseRecorded` | `finance.expense_recorded` | `posting-rules.subscriber.ts:392` → `onExpenseRecorded()` |
-| `PayrollRunPosted` | `payroll.run_posted` | `posting-rules.subscriber.ts:437` → `onPayrollRunPosted()` |
-| `PayrollAdjustmentPosted` | `payroll.adjustment_posted` | `posting-rules.subscriber.ts:488` → `onPayrollAdjustmentPosted()` |
+| `OrderPlaced` | `order.placed` | `posting-rules.subscriber.ts:52` → `onOrderPlaced()` |
+| `PaymentSucceeded` | `payment.succeeded` | `posting-rules.subscriber.ts:119` → `onPaymentSucceeded()` |
+| `PaymentRefunded` | `payment.refunded` | `posting-rules.subscriber.ts:156` → `onPaymentRefunded()` |
+| `StockVarianceRecorded` | `inventory.stock_variance_recorded` | `posting-rules.subscriber.ts:283` → `onStockVarianceRecorded()` |
+| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `posting-rules.subscriber.ts:180` → `onSupplierBillRaised()` |
+| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `posting-rules.subscriber.ts:230` → `onSupplierBillPaid()` |
+| `InterBranchTransferInvoiced` | `transfers.inter_branch_invoiced` | `posting-rules.subscriber.ts:336` → `onInterBranchTransferInvoiced()` |
+| `ExpenseRecorded` | `finance.expense_recorded` | `posting-rules.subscriber.ts:396` → `onExpenseRecorded()` |
+| `PayrollRunPosted` | `payroll.run_posted` | `posting-rules.subscriber.ts:441` → `onPayrollRunPosted()` |
+| `PayrollAdjustmentPosted` | `payroll.adjustment_posted` | `posting-rules.subscriber.ts:492` → `onPayrollAdjustmentPosted()` |
 | `WalletCreditPurchased` | `wallet.credit_purchased` | `wallet-posting-rules.subscriber.ts:28` → `onWalletCreditPurchased()` |
 | `WalletCreditRedeemed` | `wallet.credit_redeemed` | `wallet-posting-rules.subscriber.ts:62` → `onWalletCreditRedeemed()` |
 | `WalletCreditRefunded` | `wallet.credit_refunded` | `wallet-posting-rules.subscriber.ts:121` → `onWalletCreditRefunded()` |
+| `CreditNoteIssued` | `receivables.credit_note_issued` | `posting-rules.subscriber.ts:531` → `onCreditNoteIssued()` |
+| `CreditNoteVoided` | `receivables.credit_note_voided` | `posting-rules.subscriber.ts:558` → `onCreditNoteVoided()` |
+| `DebitNoteIssued` | `receivables.debit_note_issued` | `posting-rules.subscriber.ts:577` → `onDebitNoteIssued()` |
+| `DebitNoteVoided` | `receivables.debit_note_voided` | `posting-rules.subscriber.ts:603` → `onDebitNoteVoided()` |
 
 
 ## Tables it owns (`accounting.prisma`)
@@ -149,7 +155,7 @@ check there before adding another.
 | `consolidation.service.spec.ts` | 7 | ConsolidationService — R17, WO-20.6 · groupProfitAndLoss · unmatchedIntercompany |
 | `fiscal-periods.service.spec.ts` | 24 | FiscalPeriodsService — WO-19.5 · createFiscalYear · createFiscalPeriod · closePeriod · reopenPeriod · lockPeriod · clos… |
 | `gl-reports.service.spec.ts` | 9 | GlReportsService — WO-19.4 · trialBalance · profitAndLoss · balanceSheet · cashFlow · agedReceivables · agedPayables |
-| `posting-rules.subscriber.spec.ts` | 40 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSupplierBillRaised — WO-1… |
+| `posting-rules.subscriber.spec.ts` | 48 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSupplierBillRaised — WO-1… |
 | `wallet-posting-rules.subscriber.spec.ts` | 7 | WalletPostingRulesSubscriber — doc 155 §3 · onWalletCreditPurchased · onWalletCreditRedeemed · onWalletCreditRefunded |
 
 
@@ -163,7 +169,7 @@ check there before adding another.
 | `JournalEntryWithLines` | type | `accounting.service.ts:37` |  |
 | `AccountingService` | class | `accounting.service.ts:48` | The general ledger's write side (RETAIL-ERP.md R15, WO-19.1). |
 | `CHART_OF_ACCOUNTS` | const | `chart-of-accounts.ts:11` | The minimal chart of accounts the posting rules (WO-19.2) resolve an `accountId` from by a stable `code` — se… |
-| `ACCOUNT_CODE` | const | `chart-of-accounts.ts:53` | The codes above, named — so a posting rule never hand-types a magic string. |
+| `ACCOUNT_CODE` | const | `chart-of-accounts.ts:58` | The codes above, named — so a posting rule never hand-types a magic string. |
 | `ConsolidationController` | class | `consolidation.controller.ts:21` | Consolidation at the org tier (RETAIL-ERP.md R17, WO-20.6) — see `ConsolidationService`'s own doc comment for… |
 | `IntercompanyPair` | interface | `consolidation.service.ts:4` |  |
 | `ConsolidationService` | class | `consolidation.service.ts:41` | Consolidation at the org tier (RETAIL-ERP.md R17, WO-20.6) — "if brand A transfers goods to brand B at a tran… |
@@ -176,7 +182,7 @@ check there before adding another.
 | `GlReportsController` | class | `gl-reports.controller.ts:33` | The general ledger's read side (RETAIL-ERP.md R15, WO-19.4) — every route a grouping over `JournalLine`, gate… |
 | `AccountBalance` | interface | `gl-reports.service.ts:7` |  |
 | `GlReportsService` | class | `gl-reports.service.ts:28` | The five reports R15 names as the payoff of a real ledger — "expenses, salaries, losses, profits, revenues an… |
-| `PostingRulesSubscriber` | class | `posting-rules.subscriber.ts:34` | Posting rules (RETAIL-ERP.md R15, WO-19.2) — the only place a sale, a receipt or a refund becomes a journal e… |
+| `PostingRulesSubscriber` | class | `posting-rules.subscriber.ts:38` | Posting rules (RETAIL-ERP.md R15, WO-19.2) — the only place a sale, a receipt or a refund becomes a journal e… |
 | `WalletPostingRulesSubscriber` | class | `wallet-posting-rules.subscriber.ts:22` | doc 155 §3's own "unwritten posting rule" — the same idempotent, event-subscriber posting pattern `posting-ru… |
 
 

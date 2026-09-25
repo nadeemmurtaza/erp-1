@@ -105,6 +105,17 @@ export const DomainEvent = {
   MerchantPayableCreated: 'wallet.merchant_payable_created',
   /** MerchantPayableService.processPayoutRun() — notifications.ts (WO-155.5) subscribes for the merchant payout receipt. */
   MerchantPayablePaid: 'wallet.merchant_payable_paid',
+
+  /** 145-receivables-credit-limits-dunning.md (WO-145.2) — CreditNotesService.issue(). posting-rules.subscriber.ts's own handler posts Dr Sales Returns / Cr Accounts Receivable through findPostedEntry(source, creditNoteId), never a second posting mechanism. */
+  CreditNoteIssued: 'receivables.credit_note_issued',
+  /** CreditNotesService.void() on an already-ISSUED note — reverses the posted entry via AccountingService.reverseEntry(), never a second, opposite-signed posting. */
+  CreditNoteVoided: 'receivables.credit_note_voided',
+  /** DebitNotesService.issue() — the AP-side mirror of CreditNoteIssued. */
+  DebitNoteIssued: 'receivables.debit_note_issued',
+  /** DebitNotesService.void() on an already-ISSUED note. */
+  DebitNoteVoided: 'receivables.debit_note_voided',
+  /** CreditTermsService.setTerm() the moment isOnHold turns true — "Audience is a capability" lens: resolves its recipients from finance.credit-terms.manage, never a hardcoded address. */
+  CreditHoldApplied: 'receivables.credit_hold_applied',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -558,4 +569,39 @@ export interface DomainEventPayloads {
   [DomainEvent.WalletCreditRefunded]: WalletCreditRefundedPayload;
   [DomainEvent.MerchantPayableCreated]: MerchantPayableCreatedPayload;
   [DomainEvent.MerchantPayablePaid]: MerchantPayablePaidPayload;
+  [DomainEvent.CreditNoteIssued]: CreditNoteIssuedPayload;
+  [DomainEvent.CreditNoteVoided]: CreditNoteVoidedPayload;
+  [DomainEvent.DebitNoteIssued]: DebitNoteIssuedPayload;
+  [DomainEvent.DebitNoteVoided]: DebitNoteVoidedPayload;
+  [DomainEvent.CreditHoldApplied]: CreditHoldAppliedPayload;
+}
+
+export interface CreditNoteIssuedPayload {
+  creditNoteId: string;
+  customerId: string;
+  orderId: string | null;
+  amountMinor: number;
+  /** ISO — the note's own issuedAt, so a late post still resolves the currently open period (R15), never issuedAt's own period. */
+  issuedAt: string;
+}
+
+export interface CreditNoteVoidedPayload {
+  creditNoteId: string;
+}
+
+export interface DebitNoteIssuedPayload {
+  debitNoteId: string;
+  supplierId: string;
+  supplierBillId: string | null;
+  amountMinor: number;
+  issuedAt: string;
+}
+
+export interface DebitNoteVoidedPayload {
+  debitNoteId: string;
+}
+
+export interface CreditHoldAppliedPayload {
+  customerId: string;
+  appliedByUserId: string;
 }

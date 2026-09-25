@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **53** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **58** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -24,7 +24,7 @@ order" is a new file, not an edit to checkout.
 ## Attention list
 
 - Events **nothing publishes**: `crm.contact_upserted`, `crm.lead_created`
-- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `purchasing.requisition_created`, `purchasing.requisition_converted`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`, `promotions.discount_redeemed`, `wallet.merchant_payable_created`, `wallet.merchant_payable_paid`
+- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `purchasing.requisition_created`, `purchasing.requisition_converted`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`, `promotions.discount_redeemed`, `wallet.merchant_payable_created`, `wallet.merchant_payable_paid`, `receivables.credit_hold_applied`
 
 ## Summary
 
@@ -83,6 +83,11 @@ order" is a new file, not an edit to checkout.
 | `wallet.credit_refunded` | `WalletCreditRefunded` | `wallet` | `accounting` |
 | `wallet.merchant_payable_created` | `MerchantPayableCreated` | `accounting`, `wallet` | _none_ |
 | `wallet.merchant_payable_paid` | `MerchantPayablePaid` | `wallet` | _none_ |
+| `receivables.credit_note_issued` | `CreditNoteIssued` | `accounting`, `receivables` | `accounting` |
+| `receivables.credit_note_voided` | `CreditNoteVoided` | `receivables` | `accounting` |
+| `receivables.debit_note_issued` | `DebitNoteIssued` | `accounting`, `receivables` | `accounting` |
+| `receivables.debit_note_voided` | `DebitNoteVoided` | `receivables` | `accounting` |
+| `receivables.credit_hold_applied` | `CreditHoldApplied` | `receivables` | _none_ |
 
 
 ## Detail
@@ -94,8 +99,8 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:50` | `accounting` |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:157` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:54` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:161` | `accounting` |
 | `apps/api/src/modules/orders/orders.service.ts:449` | `orders` |
 | `apps/api/src/modules/orders/orders.service.ts:652` | `orders` |
 
@@ -105,7 +110,7 @@ order" is a new file, not an edit to checkout.
 | Handler | Where | Module |
 |---|---|---|
 | `handle()` | `apps/api/src/core/events/on-domain-event.decorator.ts:7` | core/`events` |
-| `onOrderPlaced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:48` | `accounting` |
+| `onOrderPlaced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:52` | `accounting` |
 | `onOrderPlaced()` | `apps/api/src/modules/crm/order.subscriber.ts:27` | `crm` |
 | `onOrderPlaced()` | `apps/api/src/modules/orders/notification.subscriber.ts:70` | `orders` |
 | `onOrderPlaced()` | `apps/api/src/modules/orders/order-replication.listener.ts:48` | `orders` |
@@ -156,8 +161,8 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:117` | `accounting` |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:154` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:121` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:158` | `accounting` |
 | `apps/api/src/modules/orders/orders.service.ts:640` | `orders` |
 | `apps/api/src/modules/payments/payments.service.ts:191` | `payments` |
 | `apps/api/src/modules/payments/payments.service.ts:293` | `payments` |
@@ -168,7 +173,7 @@ order" is a new file, not an edit to checkout.
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPaymentSucceeded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:115` | `accounting` |
+| `onPaymentSucceeded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:119` | `accounting` |
 | `onPaymentSucceeded()` | `apps/api/src/modules/payments/notification.subscriber.ts:34` | `payments` |
 
 ### `payment.failed`
@@ -216,7 +221,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPaymentRefunded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:152` | `accounting` |
+| `onPaymentRefunded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:156` | `accounting` |
 | `onPaymentRefunded()` | `apps/api/src/modules/payments/notification.subscriber.ts:118` | `payments` |
 
 ### `stitching.job_created`
@@ -470,7 +475,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:281` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:285` | `accounting` |
 | `apps/api/src/modules/inventory/inventory.service.ts:371` | `inventory` |
 
 
@@ -478,7 +483,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onStockVarianceRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:279` | `accounting` |
+| `onStockVarianceRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:283` | `accounting` |
 
 ### `purchasing.goods_received`
 
@@ -549,7 +554,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:178` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:182` | `accounting` |
 | `apps/api/src/modules/purchasing/purchasing.service.ts:592` | `purchasing` |
 
 
@@ -557,7 +562,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSupplierBillRaised()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:176` | `accounting` |
+| `onSupplierBillRaised()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:180` | `accounting` |
 
 ### `purchasing.supplier_bill_paid`
 
@@ -566,7 +571,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:228` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:232` | `accounting` |
 | `apps/api/src/modules/purchasing/purchasing.service.ts:656` | `purchasing` |
 
 
@@ -574,7 +579,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSupplierBillPaid()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:226` | `accounting` |
+| `onSupplierBillPaid()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:230` | `accounting` |
 
 ### `transfers.inter_branch_invoiced`
 
@@ -584,7 +589,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:334` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:338` | `accounting` |
 | `apps/api/src/modules/transfers/transfers.service.ts:300` | `transfers` |
 
 
@@ -592,7 +597,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onInterBranchTransferInvoiced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:332` | `accounting` |
+| `onInterBranchTransferInvoiced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:336` | `accounting` |
 
 ### `analytics.supplier_digest_ready`
 
@@ -717,7 +722,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:394` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:398` | `accounting` |
 | `apps/api/src/modules/finance/finance.service.ts:252` | `finance` |
 | `apps/api/src/modules/finance/finance.service.ts:645` | `finance` |
 
@@ -726,7 +731,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onExpenseRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:392` | `accounting` |
+| `onExpenseRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:396` | `accounting` |
 | `onExpenseRecorded()` | `apps/api/src/modules/finance/expense-replication.listener.ts:38` | `finance` |
 
 ### `finance.order_economics_computed`
@@ -752,7 +757,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:439` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:443` | `accounting` |
 | `apps/api/src/modules/payroll/pay-run.service.ts:186` | `payroll` |
 
 
@@ -760,7 +765,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPayrollRunPosted()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:437` | `accounting` |
+| `onPayrollRunPosted()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:441` | `accounting` |
 
 ### `payroll.adjustment_posted`
 
@@ -770,7 +775,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:490` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:494` | `accounting` |
 | `apps/api/src/modules/payroll/pay-run.service.ts:237` | `payroll` |
 
 
@@ -778,7 +783,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPayrollAdjustmentPosted()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:488` | `accounting` |
+| `onPayrollAdjustmentPosted()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:492` | `accounting` |
 
 ### `fulfilment.shipment_status_changed`
 
@@ -968,6 +973,93 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/wallet/merchant-payable.service.ts:149` | `wallet` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
+
+### `receivables.credit_note_issued`
+
+> 145-receivables-credit-limits-dunning.md (WO-145.2) — CreditNotesService.issue().
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:533` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:560` | `accounting` |
+| `apps/api/src/modules/receivables/credit-notes.service.ts:130` | `receivables` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onCreditNoteIssued()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:531` | `accounting` |
+
+### `receivables.credit_note_voided`
+
+> CreditNotesService.void() on an already-ISSUED note — reverses the posted entry via AccountingService.reverseEntry(), never a second, opposite-signed posting.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/receivables/credit-notes.service.ts:181` | `receivables` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onCreditNoteVoided()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:558` | `accounting` |
+
+### `receivables.debit_note_issued`
+
+> DebitNotesService.issue() — the AP-side mirror of CreditNoteIssued.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:579` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:605` | `accounting` |
+| `apps/api/src/modules/receivables/debit-notes.service.ts:93` | `receivables` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onDebitNoteIssued()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:577` | `accounting` |
+
+### `receivables.debit_note_voided`
+
+> DebitNotesService.void() on an already-ISSUED note.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/receivables/debit-notes.service.ts:123` | `receivables` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onDebitNoteVoided()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:603` | `accounting` |
+
+### `receivables.credit_hold_applied`
+
+> CreditTermsService.setTerm() the moment isOnHold turns true — "Audience is a capability" lens: resolves its recipients from finance.credit-terms.manage, never a hardcoded address.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/receivables/credit-terms.service.ts:86` | `receivables` |
 
 
 **Subscribed by**

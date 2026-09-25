@@ -3,7 +3,7 @@
 
 # Screens
 
-All **215** routable files across the web app, the till and the mobile app.
+All **224** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (127)
+### admin (136)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -64,11 +64,19 @@ _none_
 | `/admin/contacts` | page | client | `apps/web/src/app/(admin)/admin/(app)/contacts/page.tsx` |
 | `/admin/contacts/import` | page | server | `apps/web/src/app/(admin)/admin/(app)/contacts/import/page.tsx` |
 | `/admin/content` | page | client | `apps/web/src/app/(admin)/admin/(app)/content/page.tsx` |
+| `/admin/credit-notes` | page | client | `apps/web/src/app/(admin)/admin/(app)/credit-notes/page.tsx` |
+| `/admin/credit-notes/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/credit-notes/[id]/page.tsx` |
+| `/admin/credit-notes/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/credit-notes/new/page.tsx` |
+| `/admin/credit-terms` | page | client | `apps/web/src/app/(admin)/admin/(app)/credit-terms/page.tsx` |
 | `/admin/customers/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/customers/[id]/page.tsx` |
 | `/admin/customers/gift-cards` | page | client | `apps/web/src/app/(admin)/admin/(app)/customers/gift-cards/page.tsx` |
 | `/admin/customers/gift-cards/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/customers/gift-cards/[id]/page.tsx` |
+| `/admin/debit-notes` | page | client | `apps/web/src/app/(admin)/admin/(app)/debit-notes/page.tsx` |
+| `/admin/debit-notes/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/debit-notes/[id]/page.tsx` |
+| `/admin/debit-notes/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/debit-notes/new/page.tsx` |
 | `/admin/designs` | page | client | `apps/web/src/app/(admin)/admin/(app)/designs/page.tsx` |
 | `/admin/designs/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/designs/[id]/page.tsx` |
+| `/admin/dunning-policy` | page | client | `apps/web/src/app/(admin)/admin/(app)/dunning-policy/page.tsx` |
 | `/admin/email-accounts` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-accounts/page.tsx` |
 | `/admin/email-accounts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx` |
 | `/admin/email-templates` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-templates/page.tsx` |
@@ -144,6 +152,7 @@ _none_
 | `/admin/seo` | page | client | `apps/web/src/app/(admin)/admin/(app)/seo/page.tsx` |
 | `/admin/settings` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` |
 | `/admin/settings/shipping` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/shipping/page.tsx` |
+| `/admin/statements` | page | client | `apps/web/src/app/(admin)/admin/(app)/statements/page.tsx` |
 | `/admin/stitching` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/page.tsx` |
 | `/admin/stitching/bookings` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/bookings/page.tsx` |
 | `/admin/stitching/bookings/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/bookings/[id]/page.tsx` |

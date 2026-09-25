@@ -1,5 +1,78 @@
 # 145 — R18's own receivables scope: credit limits, dunning, statements, and the missing `CreditNote`/`DebitNote`
 
+> **Status: shipped (2026-09-25), WO-145.1–145.6.** `CreditNote`/`DebitNote`/
+> `CustomerCreditTerm`/`DunningPolicy`/`DunningEvent` exist
+> (`apps/api/prisma/schema/receivables.prisma`, migration
+> `20260925170000_add_receivables_credit_notes_dunning`), served by
+> `CreditNotesService`/`DebitNotesService`/`CreditTermsService`/
+> `DunningService`/`DunningCron`/`StatementsService`
+> (`apps/api/src/modules/receivables/`), a new `receivables` module (on by
+> default — `apps/api/src/modules/modules.registry.ts`,
+> `module-packs.ts: 'core'`). Posting goes through the existing
+> `AccountingService.postEntry()`/`findPostedEntry()` idempotent-posting key
+> via two new domain events (`CreditNoteIssued`/`DebitNoteIssued`, plus their
+> `Voided` counterparts for reversal), handled by new methods on the
+> existing `posting-rules.subscriber.ts` — never a second posting mechanism,
+> never a direct import of `AccountingModule`. Two new chart-of-accounts
+> entries (`Sales Returns & Allowances` 4200, `Purchase Returns &
+> Allowances` 5400). UI at `/admin/credit-notes` (+ `/new`, `/[id]`),
+> `/admin/debit-notes` (+ `/new`, `/[id]`), `/admin/credit-terms`,
+> `/admin/dunning-policy`, `/admin/statements`, all reachable from the
+> Finance nav group. Permissions `finance.credit-notes.create/.approve`,
+> `finance.debit-notes.manage`, `finance.credit-terms.manage` are seeded to
+> STAFF (create-level) and ADMIN (all four) — `packages/shared/src/
+> permissions.ts`'s `ROLE_PERMISSION_SEED`.
+>
+> **Three deliberate deviations from this doc's own literal text**, each
+> because the thing the doc names to reuse either does not exist in this
+> codebase or is the wrong entity once checked against what is actually
+> built — verified by search before writing any of this, the same rigor
+> WO-152's own two documented deviations used:
+>
+> 1. **`CreditNote.customerId`/`DunningEvent`'s implied recipient key to
+>    `Contact.id`, not `Invoice`'s own `tradingPartnerId`.** R18 pairs
+>    `CreditNote` with `Invoice`, but this codebase's actual `Invoice`
+>    (`invoicing.prisma`) is a bounded, `tradingpartners`-scoped MVP that is
+>    **never posted to the general ledger** and carries no
+>    `organizationId`/`retailBrandId` of its own (its own file header says
+>    so explicitly). The real, already-working AR ledger
+>    (`accounting/aging.ts`, `gl-reports.service.ts`'s `agedReceivables()`)
+>    keys off `Contact`/`Order`, not `Invoice`. Every model here keys
+>    `customerId` to `Contact.id` and the document it credits to `Order.id`
+>    (`orderId`, not `invoiceId`) — the only choice that makes Acceptance
+>    criterion #1 ("reconciling against `accounting/aging.ts`'s own bucket
+>    totals") true by construction rather than aspirational.
+>    `DebitNote.supplierId`/`supplierBillId` needed no such change — they
+>    already matched `SupplierBill`/`agedPayables()` exactly as sketched.
+> 2. **No `organizationId`/`retailBrandId`/`branchNodeId`/`costCentreId`
+>    columns on `CreditNote`/`DebitNote`/`CustomerCreditTerm`.** Checked
+>    against every sibling document these two correct — `Order`, `Invoice`,
+>    `PurchaseOrder`, `SupplierBill` — none of them carry those columns
+>    either; only `JournalLine` does, set once, at post time, by
+>    `PostingRulesSubscriber`, exactly where every other document's posting
+>    already sets them. Declaring these two documents undimensioned, like
+>    their siblings, is CLAUDE.md's "Every column or none" lens answered
+>    honestly rather than a column nothing else sets.
+> 3. **Dunning has its own dedicated `DunningCron`, not doc 54's
+>    `ExpiringRecordSource` registry.** Doc 54
+>    (`docs/implementation/hr-people-org/54-employee-document-lifecycle-
+>    alerts.md`) is itself unshipped — no `ExpiringRecordSource` type,
+>    registry or nightly watcher exists anywhere in `apps/api/src` today
+>    (verified by search). Building that generic registry here would be
+>    unrequested, separately-scoped doc-54 work; a dedicated cron following
+>    this codebase's own actual convention (one cron per module —
+>    `purchasing.cron.ts`, `cod-risk.cron.ts`, `inventory.cron.ts`, none of
+>    which share a registry either) is the smaller, honest choice.
+>
+> One item from this doc's own **Out of scope** section was left exactly
+> where the doc put it: automated credit-limit adjustment based on payment
+> history. `CustomerCreditTerm.creditLimitMinor`/`isOnHold` are manually set
+> only, per "the threshold nobody approves alone" applied to the limit's own
+> value, exactly as the doc asks.
+>
+> This brief is kept as the design record and the acceptance criteria to
+> re-verify against, not as a to-do list.
+
 `RETAIL-ERP.md`'s R18 names the `invoicing` module's own scope in full:
 "`Invoice` + `InvoiceLine`, `CreditNote`, payment terms, and `receivables`
 (aging, credit limits, statements, dunning)." Checked against the actual

@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **606** endpoints across **109** controllers, with the access rule that actually guards each one.
+All **626** endpoints across **114** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -756,6 +756,31 @@ never authorization.
 | GET | `/admin/suppliers/:id/products` | `suppliers.manage` | `PurchasingController.getProducts` | Get products for a supplier |
 | POST | `/admin/suppliers/:id/products` | `suppliers.manage` | `PurchasingController.addProduct` | Add a product to a supplier |
 | DELETE | `/admin/suppliers/:id/products/:variantId` | `suppliers.manage` | `PurchasingController.removeProduct` | Remove a product from a supplier |
+
+### [`receivables`](../modules/receivables.md) (20)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/credit-notes` | `finance.view` | `CreditNotesController.findAll` | List credit notes |
+| POST | `/admin/credit-notes` | `finance.credit-notes.create` | `CreditNotesController.create` | Draft a credit note against a customer, optionally citing the order it credits |
+| GET | `/admin/credit-notes/:id` | `finance.view` | `CreditNotesController.findOne` | Get a credit note |
+| POST | `/admin/credit-notes/:id/apply` | `finance.credit-notes.create` | `CreditNotesController.apply` | Apply an ISSUED credit note to a different open order than the one it originall… |
+| POST | `/admin/credit-notes/:id/approve` | `finance.credit-notes.approve` | `CreditNotesController.approve` | Approve a credit note above the approval threshold — never its own creator |
+| POST | `/admin/credit-notes/:id/issue` | `finance.credit-notes.create` | `CreditNotesController.issue` | Issue a DRAFT credit note — posts the ledger entry; above the threshold, requir… |
+| POST | `/admin/credit-notes/:id/void` | `finance.credit-notes.approve` | `CreditNotesController.voidNote` | Void a credit note — reverses its posted ledger entry, never deletes the record |
+| GET | `/admin/credit-terms` | `finance.view` | `CreditTermsController.findAll` | List customers with a credit term set — optionally only those on hold |
+| GET | `/admin/credit-terms/:customerId` | `finance.view` | `CreditTermsController.findOne` | A customer's own credit term, or null if none is set |
+| PUT | `/admin/credit-terms/:customerId` | `finance.credit-terms.manage` | `CreditTermsController.set` | Set a customer's credit limit, payment terms, and hold |
+| POST | `/admin/credit-terms/check` | `finance.view` | `CreditTermsController.check` | Preview whether an order of this amount would clear the customer's credit limit… |
+| GET | `/admin/debit-notes` | `finance.view` | `DebitNotesController.findAll` | List debit notes |
+| POST | `/admin/debit-notes` | `finance.debit-notes.manage` | `DebitNotesController.create` | Draft a debit note against a supplier, optionally citing the bill it corrects |
+| GET | `/admin/debit-notes/:id` | `finance.view` | `DebitNotesController.findOne` | Get a debit note |
+| POST | `/admin/debit-notes/:id/issue` | `finance.debit-notes.manage` | `DebitNotesController.issue` | Issue a DRAFT debit note — posts the ledger entry |
+| POST | `/admin/debit-notes/:id/void` | `finance.debit-notes.manage` | `DebitNotesController.voidNote` | Void a debit note — reverses its posted ledger entry |
+| GET | `/admin/dunning/events` | `finance.view` | `DunningController.listEvents` | Dunning steps already sent for one order |
+| GET | `/admin/dunning/policy` | `finance.view` | `DunningController.getPolicy` | The current dunning policy — days-overdue steps and which template fires at each |
+| PUT | `/admin/dunning/policy` | `finance.credit-terms.manage` | `DunningController.setPolicy` | Replace the dunning policy's steps |
+| GET | `/admin/statements/:customerId` | `finance.view` | `StatementsController.statement` | A customer's statement of account over a period — invoices, payments and credit… |
 
 ### [`recommendations`](../modules/recommendations.md) (7)
 

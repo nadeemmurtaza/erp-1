@@ -44,4 +44,6 @@ const FALLBACK: DocumentPrefixes = {
   payRun: 'PAY',
   returnRequest: 'RMA',
   manifest: 'MFT',
+  creditNote: 'CN',
+  debitNote: 'DN',
 };

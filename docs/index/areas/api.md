@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-769 files · 106,270 lines
+784 files · 108,429 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -16,7 +16,7 @@ Structure: `src/core/` is the shared platform every deployment runs;
 
 ## Go deeper
 
-- **Feature modules (L2):** [`accounting`](../modules/accounting.md) · [`addresses`](../modules/addresses.md) · [`analytics`](../modules/analytics.md) · [`bom`](../modules/bom.md) · [`cart`](../modules/cart.md) · [`catalog`](../modules/catalog.md) · [`collections`](../modules/collections.md) · [`content`](../modules/content.md) · [`crm`](../modules/crm.md) · [`finance`](../modules/finance.md) · [`fulfilment`](../modules/fulfilment.md) · [`giftcards`](../modules/giftcards.md) · [`identity-verification`](../modules/identity-verification.md) · [`inventory`](../modules/inventory.md) · [`loyalty`](../modules/loyalty.md) · [`marketing`](../modules/marketing.md) · [`measurements`](../modules/measurements.md) · [`notification-preferences`](../modules/notification-preferences.md) · [`onsitemessages`](../modules/onsitemessages.md) · [`orders`](../modules/orders.md) · [`organization`](../modules/organization.md) · [`parties`](../modules/parties.md) · [`payments`](../modules/payments.md) · [`payroll`](../modules/payroll.md) · [`pos`](../modules/pos.md) · [`production`](../modules/production.md) · [`promotions`](../modules/promotions.md) · [`purchasing`](../modules/purchasing.md) · [`recommendations`](../modules/recommendations.md) · [`reports`](../modules/reports.md) · [`reviews`](../modules/reviews.md) · [`search`](../modules/search.md) · [`settings`](../modules/settings.md) · [`stitching`](../modules/stitching.md) · [`tax`](../modules/tax.md) · [`tracking`](../modules/tracking.md) · [`tradingpartners`](../modules/tradingpartners.md) · [`transfers`](../modules/transfers.md) · [`users`](../modules/users.md) · [`wallet`](../modules/wallet.md) · [`wishlist`](../modules/wishlist.md)
+- **Feature modules (L2):** [`accounting`](../modules/accounting.md) · [`addresses`](../modules/addresses.md) · [`analytics`](../modules/analytics.md) · [`bom`](../modules/bom.md) · [`cart`](../modules/cart.md) · [`catalog`](../modules/catalog.md) · [`collections`](../modules/collections.md) · [`content`](../modules/content.md) · [`crm`](../modules/crm.md) · [`finance`](../modules/finance.md) · [`fulfilment`](../modules/fulfilment.md) · [`giftcards`](../modules/giftcards.md) · [`identity-verification`](../modules/identity-verification.md) · [`inventory`](../modules/inventory.md) · [`loyalty`](../modules/loyalty.md) · [`marketing`](../modules/marketing.md) · [`measurements`](../modules/measurements.md) · [`notification-preferences`](../modules/notification-preferences.md) · [`onsitemessages`](../modules/onsitemessages.md) · [`orders`](../modules/orders.md) · [`organization`](../modules/organization.md) · [`parties`](../modules/parties.md) · [`payments`](../modules/payments.md) · [`payroll`](../modules/payroll.md) · [`pos`](../modules/pos.md) · [`production`](../modules/production.md) · [`promotions`](../modules/promotions.md) · [`purchasing`](../modules/purchasing.md) · [`receivables`](../modules/receivables.md) · [`recommendations`](../modules/recommendations.md) · [`reports`](../modules/reports.md) · [`reviews`](../modules/reviews.md) · [`search`](../modules/search.md) · [`settings`](../modules/settings.md) · [`stitching`](../modules/stitching.md) · [`tax`](../modules/tax.md) · [`tracking`](../modules/tracking.md) · [`tradingpartners`](../modules/tradingpartners.md) · [`transfers`](../modules/transfers.md) · [`users`](../modules/users.md) · [`wallet`](../modules/wallet.md) · [`wishlist`](../modules/wishlist.md)
 - **Core subsystems (L2):** [`action-hub`](../core/action-hub.md) · [`ai`](../core/ai.md) · [`approvals`](../core/approvals.md) · [`audit`](../core/audit.md) · [`auth`](../core/auth.md) · [`checkout`](../core/checkout.md) · [`common`](../core/common.md) · [`config`](../core/config.md) · [`crm`](../core/crm.md) · [`events`](../core/events.md) · [`extension-points`](../core/extension-points.md) · [`health`](../core/health.md) · [`metrics`](../core/metrics.md) · [`notifications`](../core/notifications.md) · [`prisma`](../core/prisma.md) · [`replication`](../core/replication.md) · [`security`](../core/security.md) · [`settings`](../core/settings.md) · [`storage`](../core/storage.md) · [`time`](../core/time.md)
 - **Every route:** [cross/routes.md](../cross/routes.md)
 - **Every table:** [cross/data-model.md](../cross/data-model.md)
@@ -29,10 +29,10 @@ Structure: `src/core/` is the shared platform every deployment runs;
 |---|---|---|---|
 | `apps/api` | 10 | 842 | file, script, json, module |
 | `apps/api/prisma` | 3 | 3,163 | module |
-| `apps/api/prisma/schema` | 111 | 12,574 | prisma schema, migration, toml |
+| `apps/api/prisma/schema` | 113 | 12,821 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 131 | nest module, module |
-| `apps/api/src/core` | 139 | 14,896 | unit test, service, module, controller |
-| `apps/api/src/modules` | 481 | 67,727 | nest module, unit test, service, module |
+| `apps/api/src/core` | 139 | 14,954 | unit test, service, module, controller |
+| `apps/api/src/modules` | 494 | 69,581 | nest module, unit test, service, module |
 | `apps/api/test` | 22 | 6,894 | e2e test, unit test, module |
 | `apps/api/test/support` | 1 | 43 | module |
 
@@ -58,13 +58,13 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | `apps/api/test/orders.e2e-spec.ts` | 950 | e2e test |  |
 | `apps/api/src/modules/transfers/transfers.service.spec.ts` | 818 | unit test |  |
 | `apps/api/test/cart.e2e-spec.ts` | 800 | e2e test |  |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | 746 | unit test |  |
 | `apps/api/src/modules/catalog/product-admin.service.ts` | 739 | service |  |
 | `apps/api/src/modules/cart/cart.service.ts` | 704 | service |  |
 | `apps/api/prisma/schema/catalog.prisma` | 693 | prisma schema | Catalog: categories, products, variants, images. |
 | `apps/api/src/modules/finance/finance.service.ts` | 675 | service |  |
 | `apps/api/src/modules/purchasing/purchasing.service.ts` | 673 | service |  |
 | `apps/api/src/modules/reports/reports.service.ts` | 651 | service |  |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | 643 | unit test |  |
 
 
 ---

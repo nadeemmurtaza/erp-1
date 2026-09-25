@@ -8,6 +8,23 @@
 > zero-trust principle already holds at the one boundary that exists;
 > there is no internal microservice mesh to secure) is this repository's
 > own current, standing position.
+>
+> **Re-verified (2026-09-25), one correction.** `JwtAuthGuard`/
+> `PermissionsGuard` (`apps/api/src/core/auth/guards.ts`) do enforce every
+> request exactly as claimed — confirmed against the running code, not
+> assumed. But doc 36 (`36-universal-connectivity-integration-framework.md`)
+> and doc 113 (`113-micro-frontend-embedding.md`) are themselves still
+> unbuilt design documents — `grep`ing for `OutboundConnector`/an
+> embed-token mechanism in `apps/api/src` returns nothing. Citing them as
+> already-existing scoped-credential mechanisms was inaccurate. The real,
+> already-built examples of the identical principle (a third party gets a
+> narrow, encrypted, revocable credential, never network-level access) are
+> `TradingPartner.outboundApiKeyEncrypted` (`tradingpartners.prisma`,
+> encrypted via `secret-crypto.ts`, scoped to one outbound URL) and this
+> folder's own doc 163's personal API keys (scoped, live-capped, revocable
+> per key). This document's central claim is unaffected — it rests on
+> `JwtAuthGuard`/`PermissionsGuard`, which are real and verified — only the
+> illustrative examples change.
 
 "Enforce strict, continuous identity verification for every internal
 microservice interaction. This prevents a breach in a newly adopted,

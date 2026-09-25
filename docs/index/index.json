@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2009,
-    "lines": 306188,
+    "lines": 306205,
     "routes": 660,
     "controllers": 121,
     "models": 244,
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 394,
-      "lines": 63263,
-      "bytes": 3758938,
+      "lines": 63280,
+      "bytes": 3760065,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -71690,8 +71690,8 @@
       "path": "docs/implementation/access-control-identity/125-zero-trust-networking.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 85,
-      "bytes": 4422,
+      "lines": 102,
+      "bytes": 5549,
       "doc": "",
       "symbols": []
     },

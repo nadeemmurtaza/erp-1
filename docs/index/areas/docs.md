@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-394 files · 63,263 lines
+394 files · 63,280 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -85,7 +85,7 @@ has a bug.
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
 | `docs/implementation` | 8 | 7,715 | doc, file |
-| `docs/implementation/access-control-identity` | 7 | 1,653 | doc |
+| `docs/implementation/access-control-identity` | 7 | 1,670 | doc |
 | `docs/implementation/admin-platform` | 5 | 2,553 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
 | `docs/implementation/analytics-reporting` | 5 | 480 | doc |

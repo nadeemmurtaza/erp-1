@@ -1827,14 +1827,14 @@ _no second-level headings_
 - 7. Commit and PR conventions  <sub>:387</sub>
 - 8. Interface rules  <sub>:440</sub>
 
-### `docs/implementation/access-control-identity/125-zero-trust-networking.md`  <sub>85 lines</sub>
+### `docs/implementation/access-control-identity/125-zero-trust-networking.md`  <sub>102 lines</sub>
 
-- Where zero-trust's actual principle already holds  <sub>:23</sub>
-- Why a service mesh is not the right implementation of this principle here  <sub>:47</sub>
-- Scope lenses  <sub>:60</sub>
-- Work orders  <sub>:66</sub>
-- Acceptance  <sub>:74</sub>
-- Out of scope  <sub>:80</sub>
+- Where zero-trust's actual principle already holds  <sub>:40</sub>
+- Why a service mesh is not the right implementation of this principle here  <sub>:64</sub>
+- Scope lenses  <sub>:77</sub>
+- Work orders  <sub>:83</sub>
+- Acceptance  <sub>:91</sub>
+- Out of scope  <sub>:97</sub>
 
 ### `docs/implementation/access-control-identity/126-pluggable-cryptography.md`  <sub>137 lines</sub>
 

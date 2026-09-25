@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 682 tracked files in `apps/api`, by directory.
+All 698 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,22 +31,23 @@ All 682 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3068 |  |
 
-### `apps/api/prisma/schema` (37)
+### `apps/api/prisma/schema` (38)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.prisma` | prisma schema | 222 | The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a |
+| `approvals.prisma` | prisma schema | 60 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
 | `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
-| `catalog.prisma` | prisma schema | 691 | Catalog: categories, products, variants, images. |
+| `catalog.prisma` | prisma schema | 693 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
-| `core.prisma` | prisma schema | 526 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `core.prisma` | prisma schema | 528 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
 | `giftcards.prisma` | prisma schema | 92 | Phase 5 WO-5.4/5.5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
 | `identity-verification.prisma` | prisma schema | 40 | / Tracks a User's identity verification against nID (Newax's external |
-| `inventory.prisma` | prisma schema | 291 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
+| `inventory.prisma` | prisma schema | 369 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
 | `invoicing.prisma` | prisma schema | 88 | Trading-partner invoices and quotes (WO-18.3's remaining "forth" |
 | `loyalty.prisma` | prisma schema | 85 | Phase 7 WO-7.7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `marketing.prisma` | prisma schema | 87 | Campaigns and broadcasts. WO-8.4, |
@@ -58,10 +59,10 @@ All 682 tracked files in `apps/api`, by directory.
 | `parties.prisma` | prisma schema | 52 | Parties: the permanent counterparty profile. One canonical record per |
 | `payments.prisma` | prisma schema | 48 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
 | `payroll.prisma` | prisma schema | 229 | Payroll: compensation rates, leave balances and pay runs |
-| `pos.prisma` | prisma schema | 136 | The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's |
+| `pos.prisma` | prisma schema | 139 | The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's |
 | `production.prisma` | prisma schema | 96 | Production: bills of materials and work orders for variants made in-house |
 | `promotions.prisma` | prisma schema | 113 | Phase 5 WO-5.1/5.2/5.3 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
-| `purchasing.prisma` | prisma schema | 248 |  |
+| `purchasing.prisma` | prisma schema | 303 |  |
 | `replication.prisma` | prisma schema | 185 | The replication engine (RETAIL-ERP.md Part 6, WO-20.1: "log, cursors, |
 | `reviews.prisma` | prisma schema | 73 | Phase 7 WO-7.5 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `schema.prisma` | prisma schema | 32 | Datasource and generator only. Models live in one file per module — |
@@ -481,6 +482,12 @@ All 682 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 21 |  |
 
+### `apps/api/prisma/schema/migrations/20260925160000_add_requisitions_approvals_and_loss_prevention` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 206 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -492,7 +499,7 @@ All 682 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `core.module.ts` | nest module | 41 |  |
+| `core.module.ts` | nest module | 43 |  |
 
 ### `apps/api/src/core/ai` (4)
 
@@ -509,6 +516,14 @@ All 682 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `anthropic.provider.ts` | module | 143 |  |
 | `openai.provider.ts` | module | 115 |  |
+
+### `apps/api/src/core/approvals` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `approval.service.spec.ts` | unit test | 138 |  |
+| `approval.service.ts` | service | 143 |  |
+| `approvals.module.ts` | nest module | 10 |  |
 
 ### `apps/api/src/core/audit` (2)
 
@@ -597,21 +612,22 @@ All 682 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 483 | The catalogue of domain events. |
+| `domain-events.ts` | module | 499 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
 | `outbox.dispatcher.ts` | dispatcher | 120 |  |
 
-### `apps/api/src/core/extension-points` (6)
+### `apps/api/src/core/extension-points` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `branch-policy.registry.spec.ts` | unit test | 44 |  |
 | `branch-policy.registry.ts` | registry | 68 |  |
+| `camera-people-count.registry.ts` | registry | 34 |  |
 | `cart-line-validator.registry.ts` | registry | 64 |  |
 | `entity-enrichment.registry.ts` | registry | 45 |  |
-| `extension-points.module.ts` | nest module | 36 |  |
+| `extension-points.module.ts` | nest module | 39 |  |
 | `stock-intake.registry.ts` | registry | 71 |  |
 
 ### `apps/api/src/core/health` (2)
@@ -1057,24 +1073,30 @@ All 682 tracked files in `apps/api`, by directory.
 | `nid-callback-verification.spec.ts` | unit test | 123 |  |
 | `nid.provider.ts` | module | 176 |  |
 
-### `apps/api/src/modules/inventory` (14)
+### `apps/api/src/modules/inventory` (20)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `inventory.controller.ts` | controller | 76 |  |
-| `inventory.cron.spec.ts` | unit test | 100 |  |
-| `inventory.cron.ts` | scheduled job | 170 |  |
+| `inventory.cron.spec.ts` | unit test | 137 |  |
+| `inventory.cron.ts` | scheduled job | 186 |  |
 | `inventory.listener.spec.ts` | unit test | 70 |  |
 | `inventory.listener.ts` | event subscriber | 61 |  |
-| `inventory.module.ts` | nest module | 18 |  |
-| `inventory.service.spec.ts` | unit test | 442 |  |
-| `inventory.service.ts` | service | 590 |  |
+| `inventory.module.ts` | nest module | 37 |  |
+| `inventory.service.spec.ts` | unit test | 499 |  |
+| `inventory.service.ts` | service | 601 |  |
+| `spot-check.controller.ts` | controller | 68 |  |
+| `spot-check.service.spec.ts` | unit test | 150 |  |
+| `spot-check.service.ts` | service | 228 |  |
 | `stock-count.controller.ts` | controller | 62 | JwtAuthGuard is registered globally (see core/auth/decorators.ts), so a |
 | `stock-count.service.spec.ts` | unit test | 95 |  |
 | `stock-count.service.ts` | service | 233 |  |
-| `stock-variance.controller.ts` | controller | 30 |  |
-| `stock-variance.service.spec.ts` | unit test | 59 |  |
-| `stock-variance.service.ts` | service | 39 |  |
+| `stock-variance.controller.ts` | controller | 36 |  |
+| `stock-variance.service.spec.ts` | unit test | 109 |  |
+| `stock-variance.service.ts` | service | 70 |  |
+| `suspicious-traffic.controller.ts` | controller | 18 |  |
+| `suspicious-traffic.service.spec.ts` | unit test | 69 |  |
+| `suspicious-traffic.service.ts` | service | 59 |  |
 
 ### `apps/api/src/modules/inventory/dto` (2)
 
@@ -1348,7 +1370,7 @@ All 682 tracked files in `apps/api`, by directory.
 | `preview-checkout.dto.ts` | dto | 57 |  |
 | `promo-code.dto.ts` | dto | 82 |  |
 
-### `apps/api/src/modules/purchasing` (11)
+### `apps/api/src/modules/purchasing` (14)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1357,18 +1379,22 @@ All 682 tracked files in `apps/api`, by directory.
 | `purchasing.controller.ts` | controller | 151 |  |
 | `purchasing.cron.spec.ts` | unit test | 144 |  |
 | `purchasing.cron.ts` | scheduled job | 118 |  |
-| `purchasing.module.ts` | nest module | 19 |  |
-| `purchasing.service.ts` | service | 664 |  |
+| `purchasing.module.ts` | nest module | 21 |  |
+| `purchasing.service.ts` | service | 673 |  |
 | `purchasing.spec.ts` | unit test | 233 |  |
 | `reorder.listener.spec.ts` | unit test | 146 |  |
 | `reorder.listener.ts` | event subscriber | 83 |  |
+| `requisition.controller.ts` | controller | 63 |  |
+| `requisition.service.spec.ts` | unit test | 203 |  |
+| `requisition.service.ts` | service | 201 |  |
 | `supplier-bill.spec.ts` | unit test | 230 |  |
 
-### `apps/api/src/modules/purchasing/dto` (3)
+### `apps/api/src/modules/purchasing/dto` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `purchase-order.dto.ts` | dto | 104 |  |
+| `requisition.dto.ts` | dto | 50 |  |
 | `supplier-bill.dto.ts` | dto | 67 |  |
 | `supplier.dto.ts` | dto | 104 |  |
 

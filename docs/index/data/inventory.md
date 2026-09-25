@@ -3,7 +3,7 @@
 
 # Schema: `inventory.prisma`
 
-9 models · 5 enums. Owned by module [`inventory`](../modules/inventory.md).
+12 models · 6 enums. Owned by module [`inventory`](../modules/inventory.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -41,10 +41,12 @@ against a real database.
 | `movements` | `StockMovement[]` |  |  |
 | `workOrders` | `WorkOrder[]` |  |  |
 | `variances` | `StockVariance[]` |  |  |
+| `spotCheckPolicies` | `SpotCheckPolicy[]` |  |  |
+| `spotChecks` | `SpotCheck[]` |  |  |
 
 Indexes: `@@index([isActive])` · `@@index([retailBrandId])`
 
-### `MarkdownSuggestion`  <sub>`apps/api/prisma/schema/inventory.prisma:225`</sub>
+### `MarkdownSuggestion`  <sub>`apps/api/prisma/schema/inventory.prisma:303`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -63,7 +65,60 @@ Indexes: `@@index([isActive])` · `@@index([retailBrandId])`
 
 Indexes: `@@index([variantId, status])` · `@@index([status, createdAt])`
 
-### `StockCount`  <sub>`apps/api/prisma/schema/inventory.prisma:251`</sub>
+### `SpotCheck`  <sub>`apps/api/prisma/schema/inventory.prisma:199`</sub>
+
+> A small, unscheduled StockCount-like sheet — a handful of SKUs, never the whole shop, completable in minutes on the POS/mobile device.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `policyId` | `String` |  |  |
+| `locationId` | `String` |  |  |
+| `status` | `SpotCheckStatus` |  | @default(PENDING) |
+| `scheduledFor` | `DateTime` |  |  |
+| `startedAt` | `DateTime?` | optional |  |
+| `completedAt` | `DateTime?` | optional |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `policy` | `SpotCheckPolicy` | relation | @relation(fields: [policyId], references: [id]) |
+| `location` | `Location` | relation | @relation(fields: [locationId], references: [id]) |
+| `lines` | `SpotCheckLine[]` |  |  |
+
+Indexes: `@@index([locationId, status])` · `@@index([policyId, scheduledFor])`
+
+### `SpotCheckLine`  <sub>`apps/api/prisma/schema/inventory.prisma:217`</sub>
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `spotCheckId` | `String` |  |  |
+| `variantId` | `String` |  |  |
+| `expected` | `Int` |  |  |
+| `counted` | `Int?` | optional |  |
+| `variance` | `Int?` | optional |  |
+| `spotCheck` | `SpotCheck` | relation | @relation(fields: [spotCheckId], references: [id], onDelete: Cascade) |
+| `variant` | `ProductVariant` | relation | @relation(fields: [variantId], references: [id], onDelete: Restrict) |
+
+Indexes: `@@unique([spotCheckId, variantId])`
+
+### `SpotCheckPolicy`  <sub>`apps/api/prisma/schema/inventory.prisma:172`</sub>
+
+> 156-single-employee-branch-loss-prevention.md §3.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `locationId` | `String?` | optional |  |
+| `minSkusPerCheck` | `Int` |  | @default(5) |
+| `frequencyDays` | `Int` |  | @default(3) |
+| `isActive` | `Boolean` |  | @default(true) |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `updatedAt` | `DateTime` |  | @updatedAt |
+| `location` | `Location?` | relation, optional | @relation(fields: [locationId], references: [id], onDelete: Cascade) |
+| `checks` | `SpotCheck[]` |  |  |
+
+Indexes: `@@index([locationId, isActive])`
+
+### `StockCount`  <sub>`apps/api/prisma/schema/inventory.prisma:329`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -84,7 +139,7 @@ Indexes: `@@index([variantId, status])` · `@@index([status, createdAt])`
 
 Indexes: `@@index([status])`
 
-### `StockCountLine`  <sub>`apps/api/prisma/schema/inventory.prisma:274`</sub>
+### `StockCountLine`  <sub>`apps/api/prisma/schema/inventory.prisma:352`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -123,7 +178,7 @@ Indexes: `@@unique([stockCountId, variantId])`
 
 Indexes: `@@index([variantId, createdAt])` · `@@index([reason, createdAt])` · `@@index([refType, refId])` · `@@index([locationId])`
 
-### `StockVariance`  <sub>`apps/api/prisma/schema/inventory.prisma:132`</sub>
+### `StockVariance`  <sub>`apps/api/prisma/schema/inventory.prisma:134`</sub>
 
 > One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale that already happened is never rejected by sync).
 
@@ -140,13 +195,15 @@ Indexes: `@@index([variantId, createdAt])` · `@@index([reason, createdAt])` · 
 | `resolvedByUserId` | `String?` | optional |  |
 | `resolvedAt` | `DateTime?` | optional |  |
 | `resolutionNote` | `String?` | optional |  |
+| `posShiftId` | `String?` | optional |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `variant` | `ProductVariant` | relation | @relation(fields: [variantId], references: [id], onDelete: Cascade) |
 | `location` | `Location` | relation | @relation(fields: [locationId], references: [id], onDelete: Cascade) |
+| `posShift` | `PosShift?` | relation, optional | @relation(fields: [posShiftId], references: [id], onDelete: SetNull) |
 
-Indexes: `@@index([status])` · `@@index([variantId])` · `@@index([locationId])`
+Indexes: `@@index([status])` · `@@index([variantId])` · `@@index([locationId])` · `@@index([posShiftId])`
 
-### `VariantForecast`  <sub>`apps/api/prisma/schema/inventory.prisma:197`</sub>
+### `VariantForecast`  <sub>`apps/api/prisma/schema/inventory.prisma:275`</sub>
 
 > WO-9.3 (09-ai-layer.md).
 
@@ -160,7 +217,7 @@ Indexes: `@@index([status])` · `@@index([variantId])` · `@@index([locationId])
 | `computedAt` | `DateTime` |  | @default(now()) |
 | `variant` | `ProductVariant` | relation | @relation(fields: [variantId], references: [id], onDelete: Cascade) |
 
-### `VariantLocationStock`  <sub>`apps/api/prisma/schema/inventory.prisma:161`</sub>
+### `VariantLocationStock`  <sub>`apps/api/prisma/schema/inventory.prisma:239`</sub>
 
 > Stock, per variant, per location.
 
@@ -175,7 +232,7 @@ Indexes: `@@index([status])` · `@@index([variantId])` · `@@index([locationId])
 
 Indexes: `@@id([variantId, locationId])`
 
-### `VariantSalesStat`  <sub>`apps/api/prisma/schema/inventory.prisma:174`</sub>
+### `VariantSalesStat`  <sub>`apps/api/prisma/schema/inventory.prisma:252`</sub>
 
 > CACHE: variantId as primary key.
 
@@ -207,7 +264,7 @@ Indexes: `@@id([variantId, locationId])`
 | `IN_TRANSIT` |  |
 | `PRODUCTION` |  |
 
-### `MarkdownSuggestionStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:219`</sub>
+### `MarkdownSuggestionStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:297`</sub>
 
 > WO-9.8.
 
@@ -217,7 +274,16 @@ Indexes: `@@id([variantId, locationId])`
 | `CREATED` |  |
 | `DISMISSED` |  |
 
-### `StockCountStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:244`</sub>
+### `SpotCheckStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:190`</sub>
+
+| Value | Meaning |
+|---|---|
+| `PENDING` |  |
+| `IN_PROGRESS` |  |
+| `COMPLETED` |  |
+| `CANCELLED` |  |
+
+### `StockCountStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:322`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -247,7 +313,7 @@ Indexes: `@@id([variantId, locationId])`
 | `TRANSFER_OUT` | WO-22.1: leaving a location (source on dispatch, or the in-transit bucket returning to source on cancel) |
 | `TRANSFER_IN` | WO-22.1: arriving at a location (the in-transit bucket on dispatch, or the destination/source on receive/canc… |
 
-### `StockVarianceStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:120`</sub>
+### `StockVarianceStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:122`</sub>
 
 | Value | Meaning |
 |---|---|

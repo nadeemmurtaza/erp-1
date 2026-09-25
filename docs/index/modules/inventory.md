@@ -3,13 +3,13 @@
 
 # Module: `inventory`
 
-Pack **core** · enabled by the `MODULES` allowlist · 16 files
+Pack **core** · enabled by the `MODULES` allowlist · 22 files
 
 
 
 Source: `apps/api/src/modules/inventory/`
 
-## Files (16 · 2,085 lines)
+## Files (22 · 2,904 lines)
 
 All paths relative to `apps/api/src/modules/inventory/dto`.
 
@@ -18,22 +18,28 @@ All paths relative to `apps/api/src/modules/inventory/dto`.
 | `inventory.dto.ts` | dto | 31 | 3 | Mirrors StockAdjustment.reason — kept as a union so the admin form has a fixed list. |
 | `stock-variance.dto.ts` | dto | 9 | 1 |  |
 | `inventory.controller.ts` | controller | 76 | 1 |  |
-| `inventory.cron.spec.ts` | unit test | 100 | — |  |
-| `inventory.cron.ts` | scheduled job | 170 | 1 |  |
+| `inventory.cron.spec.ts` | unit test | 137 | — |  |
+| `inventory.cron.ts` | scheduled job | 186 | 1 |  |
 | `inventory.listener.spec.ts` | unit test | 70 | — |  |
 | `inventory.listener.ts` | event subscriber | 61 | 1 |  |
-| `inventory.module.ts` | nest module | 18 | 1 |  |
-| `inventory.service.spec.ts` | unit test | 442 | — |  |
-| `inventory.service.ts` | service | 590 | 3 |  |
+| `inventory.module.ts` | nest module | 37 | 1 |  |
+| `inventory.service.spec.ts` | unit test | 499 | — |  |
+| `inventory.service.ts` | service | 601 | 3 |  |
+| `spot-check.controller.ts` | controller | 68 | 2 |  |
+| `spot-check.service.spec.ts` | unit test | 150 | — |  |
+| `spot-check.service.ts` | service | 228 | 2 |  |
 | `stock-count.controller.ts` | controller | 62 | 1 | JwtAuthGuard is registered globally (see core/auth/decorators.ts), so a |
 | `stock-count.service.spec.ts` | unit test | 95 | — |  |
 | `stock-count.service.ts` | service | 233 | 1 |  |
-| `stock-variance.controller.ts` | controller | 30 | 1 |  |
-| `stock-variance.service.spec.ts` | unit test | 59 | — |  |
-| `stock-variance.service.ts` | service | 39 | 1 | The oversell exception queue (RETAIL-ERP.md R5) — one row per StockMovement that InventoryService.postUnconditional() l… |
+| `stock-variance.controller.ts` | controller | 36 | 1 |  |
+| `stock-variance.service.spec.ts` | unit test | 109 | — |  |
+| `stock-variance.service.ts` | service | 70 | 1 | The oversell exception queue (RETAIL-ERP.md R5) — one row per StockMovement that InventoryService.postUnconditional() l… |
+| `suspicious-traffic.controller.ts` | controller | 18 | 1 |  |
+| `suspicious-traffic.service.spec.ts` | unit test | 69 | — |  |
+| `suspicious-traffic.service.ts` | service | 59 | 2 |  |
 
 
-## HTTP routes (16)
+## HTTP routes (26)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -51,8 +57,18 @@ All paths relative to `apps/api/src/modules/inventory/dto`.
 | GET | `/admin/inventory/locations` | `inventory.manage` | `InventoryAdminController.locations` :35 | Every real, active location — never an in-transit bucket (WO-22.1) |
 | GET | `/admin/inventory/reorder` | `inventory.manage` | `InventoryAdminController.reorder` :23 | Reorder suggestions based on reorderPoint |
 | GET | `/admin/inventory/slow-movers` | `inventory.manage` | `InventoryAdminController.slowMovers` :29 | Variants with zero sales in the slow mover window |
+| GET | `/admin/inventory/spot-check-policies` | `inventory.spot_checks.manage` | `SpotCheckPolicyController.list` :15 |  |
+| POST | `/admin/inventory/spot-check-policies` | `inventory.spot_checks.manage` | `SpotCheckPolicyController.create` :21 |  |
+| PATCH | `/admin/inventory/spot-check-policies/:id` | `inventory.spot_checks.manage` | `SpotCheckPolicyController.update` :27 |  |
+| GET | `/admin/inventory/spot-checks` | `inventory.count` | `SpotCheckController.findAll` :40 |  |
+| GET | `/admin/inventory/spot-checks/:id` | `inventory.count` | `SpotCheckController.findOne` :46 |  |
+| POST | `/admin/inventory/spot-checks/:id/complete` | `inventory.count` | `SpotCheckController.complete` :64 |  |
+| POST | `/admin/inventory/spot-checks/:id/scan` | `inventory.count` | `SpotCheckController.scan` :58 |  |
+| POST | `/admin/inventory/spot-checks/:id/start` | `inventory.count` | `SpotCheckController.start` :52 |  |
+| GET | `/admin/inventory/suspicious-traffic` | `analytics.view` | `SuspiciousTrafficController.report` :13 |  |
 | GET | `/admin/inventory/variances` | `inventory.manage` | `StockVarianceController.listOpen` :16 | Open oversells — postUnconditional() drove a location negative |
-| POST | `/admin/inventory/variances/:id/resolve` | `inventory.manage` | `StockVarianceController.resolve` :22 | Acknowledge a variance — never reverses the shrinkage journal it already posted |
+| POST | `/admin/inventory/variances/:id/resolve` | `inventory.manage` | `StockVarianceController.resolve` :28 | Acknowledge a variance — never reverses the shrinkage journal it already posted |
+| GET | `/admin/inventory/variances/by-shift` | `inventory.manage` | `StockVarianceController.listByShift` :22 | Variance history attributed to the shift that had custody — 156-loss-prevention.md |
 
 
 ## Domain events
@@ -61,10 +77,10 @@ All paths relative to `apps/api/src/modules/inventory/dto`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `ProductLowStock` | `catalog.product_low_stock` | `inventory.service.ts:374` |
-| `ProductReorderPointReached` | `catalog.product_reorder_point_reached` | `inventory.service.ts:392` |
-| `StockReplenished` | `inventory.stock_replenished` | `inventory.service.ts:409` |
-| `StockVarianceRecorded` | `inventory.stock_variance_recorded` | `inventory.service.ts:360` |
+| `ProductLowStock` | `catalog.product_low_stock` | `inventory.service.ts:385` |
+| `ProductReorderPointReached` | `catalog.product_reorder_point_reached` | `inventory.service.ts:403` |
+| `StockReplenished` | `inventory.stock_replenished` | `inventory.service.ts:420` |
+| `StockVarianceRecorded` | `inventory.stock_variance_recorded` | `inventory.service.ts:371` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -78,18 +94,21 @@ All paths relative to `apps/api/src/modules/inventory/dto`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Location` | 15 | :81 | A place stock physically lives. |
-| `MarkdownSuggestion` | 12 | :225 |  |
-| `StockCount` | 14 | :251 |  |
-| `StockCountLine` | 10 | :274 |  |
+| `Location` | 17 | :81 | A place stock physically lives. |
+| `MarkdownSuggestion` | 12 | :303 |  |
+| `SpotCheck` | 11 | :199 | A small, unscheduled StockCount-like sheet — a handful of SKUs, never the whole shop, completable in minutes… |
+| `SpotCheckLine` | 8 | :217 |  |
+| `SpotCheckPolicy` | 9 | :172 | 156-single-employee-branch-loss-prevention.md §3. |
+| `StockCount` | 14 | :329 |  |
+| `StockCountLine` | 10 | :352 |  |
 | `StockMovement` | 15 | :22 |  |
-| `StockVariance` | 14 | :132 | One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale that already happened i… |
-| `VariantForecast` | 7 | :197 | WO-9.3 (09-ai-layer.md). |
-| `VariantLocationStock` | 6 | :161 | Stock, per variant, per location. |
-| `VariantSalesStat` | 11 | :174 | CACHE: variantId as primary key. |
+| `StockVariance` | 16 | :134 | One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale that already happened i… |
+| `VariantForecast` | 7 | :275 | WO-9.3 (09-ai-layer.md). |
+| `VariantLocationStock` | 6 | :239 | Stock, per variant, per location. |
+| `VariantSalesStat` | 11 | :252 | CACHE: variantId as primary key. |
 
 
-Enums: `LocationType` (4) · `MarkdownSuggestionStatus` (3) · `StockCountStatus` (4) · `StockMovementReason` (14) · `StockVarianceStatus` (2)
+Enums: `LocationType` (4) · `MarkdownSuggestionStatus` (3) · `SpotCheckStatus` (4) · `StockCountStatus` (4) · `StockMovementReason` (14) · `StockVarianceStatus` (2)
 
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 
@@ -98,15 +117,16 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 | Schedule | Handler | Where | What it does |
 |---|---|---|---|
-| `0 2 * * *` | `computeNightlyStats()` | `inventory.cron.ts:17` |  |
+| `0 * * * *` | `maybeTriggerSpotCheck()` | `inventory.cron.ts:23` | 156-single-employee-branch-loss-prevention.md §3. |
+| `0 2 * * *` | `computeNightlyStats()` | `inventory.cron.ts:33` |  |
 
 
 ## Nest wiring
 
 **`InventoryModule`** (`inventory.module.ts`)
 - imports: —
-- controllers: `InventoryAdminController`, `StockCountController`, `StockVarianceController`
-- providers: `InventoryService`, `InventoryCron`, `InventoryListener`, `StockCountService`, `StockVarianceService`
+- controllers: `InventoryAdminController`, `StockCountController`, `StockVarianceController`, `SpotCheckController`, `SpotCheckPolicyController`, `SuspiciousTrafficController`
+- providers: `InventoryService`, `InventoryCron`, `InventoryListener`, `StockCountService`, `StockVarianceService`, `SpotCheckService`, `SuspiciousTrafficService`
 - exports: `InventoryService`
 
 
@@ -127,15 +147,17 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (5)
+## Tests (7)
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `inventory.cron.spec.ts` | 2 | InventoryCron |
+| `inventory.cron.spec.ts` | 5 | InventoryCron · maybeTriggerSpotCheck — 156-single-employee-branch-loss-prevention.md |
 | `inventory.listener.spec.ts` | 1 | InventoryListener |
-| `inventory.service.spec.ts` | 14 | InventoryService — locations (B6) · InventoryService — postUnconditional (R5 oversell) · InventoryService — reorder poi… |
+| `inventory.service.spec.ts` | 16 | InventoryService — locations (B6) · InventoryService — postUnconditional (R5 oversell) · shift attribution (156-single-… |
+| `spot-check.service.spec.ts` | 10 | SpotCheckService — 156-single-employee-branch-loss-prevention.md §3 · dueForRandomCheck — the unpredictability rule · m… |
 | `stock-count.service.spec.ts` | 1 | StockCountService |
-| `stock-variance.service.spec.ts` | 4 | StockVarianceService — WO-21.3 · resolve |
+| `stock-variance.service.spec.ts` | 9 | StockVarianceService — WO-21.3 · resolve · listByShift |
+| `suspicious-traffic.service.spec.ts` | 5 | SuspiciousTrafficService — 156-single-employee-branch-loss-prevention.md §4 |
 
 
 ## Every export in this unit
@@ -147,16 +169,23 @@ check there before adding another.
 | `AdjustStockDto` | class | `inventory.dto.ts:15` |  |
 | `ResolveStockVarianceDto` | class | `stock-variance.dto.ts:3` |  |
 | `InventoryAdminController` | class | `inventory.controller.ts:12` |  |
-| `InventoryCron` | class | `inventory.cron.ts:9` |  |
+| `InventoryCron` | class | `inventory.cron.ts:10` |  |
 | `InventoryListener` | class | `inventory.listener.ts:10` |  |
-| `InventoryModule` | class | `inventory.module.ts:17` |  |
+| `InventoryModule` | class | `inventory.module.ts:36` |  |
 | `StockMoveInput` | interface | `inventory.service.ts:21` |  |
 | `InsufficientStockError` | class | `inventory.service.ts:38` |  |
 | `InventoryService` | class | `inventory.service.ts:59` | Stock levels and their audit trail. |
+| `SpotCheckPolicyController` | class | `spot-check.controller.ts:10` |  |
+| `SpotCheckController` | class | `spot-check.controller.ts:35` | Counting itself is a front-line task — gated the same as a stock count. |
+| `CreateSpotCheckPolicyInput` | interface | `spot-check.service.ts:8` |  |
+| `SpotCheckService` | class | `spot-check.service.ts:21` | 156-single-employee-branch-loss-prevention.md §3. |
 | `StockCountController` | class | `stock-count.controller.ts:10` |  |
 | `StockCountService` | class | `stock-count.service.ts:33` |  |
 | `StockVarianceController` | class | `stock-variance.controller.ts:11` |  |
 | `StockVarianceService` | class | `stock-variance.service.ts:13` | The oversell exception queue (RETAIL-ERP.md R5) — one row per StockMovement that InventoryService.postUncondi… |
+| `SuspiciousTrafficController` | class | `suspicious-traffic.controller.ts:8` |  |
+| `SuspiciousTrafficReport` | interface | `suspicious-traffic.service.ts:5` |  |
+| `SuspiciousTrafficService` | class | `suspicious-traffic.service.ts:23` | 156-single-employee-branch-loss-prevention.md §4. |
 
 
 ---

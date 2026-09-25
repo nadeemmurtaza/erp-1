@@ -77,8 +77,11 @@ model PosShift {
   openedAt DateTime       @default(now())
   closedAt DateTime?
 
-  terminal      PosTerminal    @relation(fields: [terminalId], references: [id], onDelete: Restrict)
-  cashMovements CashMovement[]
+  terminal       PosTerminal     @relation(fields: [terminalId], references: [id], onDelete: Restrict)
+  cashMovements  CashMovement[]
+  /// 156-single-employee-branch-loss-prevention.md — variances attributed to
+  /// this shift's own custody window.
+  stockVariances StockVariance[]
 
   @@index([terminalId])
   @@index([status])

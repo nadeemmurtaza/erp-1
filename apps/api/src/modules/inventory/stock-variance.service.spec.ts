@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { StockVarianceService } from './stock-variance.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 
@@ -9,6 +9,7 @@ describe('StockVarianceService — WO-21.3', () => {
   beforeEach(() => {
     prisma = {
       stockVariance: { findMany: jest.fn(), findUnique: jest.fn(), update: jest.fn() },
+      posShift: { findUniqueOrThrow: jest.fn() },
     };
     service = new StockVarianceService(prisma as PrismaService);
   });
@@ -53,6 +54,55 @@ describe('StockVarianceService — WO-21.3', () => {
       await service.resolve('v1', 'u2');
 
       expect(prisma.stockVariance.update).toHaveBeenCalledTimes(1);
+    });
+
+    // 156-single-employee-branch-loss-prevention.md §2 — the toxic-pair
+    // refusal: the employee whose shift is linked to a variance can never
+    // resolve it themselves, whether they opened or closed that shift.
+    it('refuses when the resolver is the shift OPENER', async () => {
+      prisma.stockVariance.findUnique.mockResolvedValue({ id: 'v1', status: 'OPEN', posShiftId: 's1' });
+      prisma.posShift.findUniqueOrThrow.mockResolvedValue({ id: 's1', openedByUserId: 'u1', closedByUserId: null });
+
+      await expect(service.resolve('v1', 'u1')).rejects.toBeInstanceOf(ForbiddenException);
+      expect(prisma.stockVariance.update).not.toHaveBeenCalled();
+    });
+
+    it('refuses when the resolver is the shift CLOSER', async () => {
+      prisma.stockVariance.findUnique.mockResolvedValue({ id: 'v1', status: 'OPEN', posShiftId: 's1' });
+      prisma.posShift.findUniqueOrThrow.mockResolvedValue({ id: 's1', openedByUserId: 'u1', closedByUserId: 'u2' });
+
+      await expect(service.resolve('v1', 'u2')).rejects.toBeInstanceOf(ForbiddenException);
+      expect(prisma.stockVariance.update).not.toHaveBeenCalled();
+    });
+
+    it('allows a third party to resolve a variance linked to someone else\'s shift', async () => {
+      prisma.stockVariance.findUnique.mockResolvedValue({ id: 'v1', status: 'OPEN', posShiftId: 's1' });
+      prisma.posShift.findUniqueOrThrow.mockResolvedValue({ id: 's1', openedByUserId: 'u1', closedByUserId: 'u1' });
+      prisma.stockVariance.update.mockResolvedValue({ id: 'v1', status: 'RESOLVED' });
+
+      await service.resolve('v1', 'manager1');
+
+      expect(prisma.stockVariance.update).toHaveBeenCalledTimes(1);
+    });
+
+    it('needs no shift check at all when the variance was never attributed to one', async () => {
+      prisma.stockVariance.findUnique.mockResolvedValue({ id: 'v1', status: 'OPEN', posShiftId: null });
+      prisma.stockVariance.update.mockResolvedValue({ id: 'v1', status: 'RESOLVED' });
+
+      await service.resolve('v1', 'u1');
+
+      expect(prisma.posShift.findUniqueOrThrow).not.toHaveBeenCalled();
+      expect(prisma.stockVariance.update).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('listByShift', () => {
+    it('only returns variances that were attributed to a shift', async () => {
+      await service.listByShift('loc1');
+
+      expect(prisma.stockVariance.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { locationId: 'loc1', posShiftId: { not: null } } }),
+      );
     });
   });
 });

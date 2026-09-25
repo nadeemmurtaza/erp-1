@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
@@ -15,6 +15,12 @@ export class StockVarianceController {
   @ApiOperation({ summary: 'Open oversells — postUnconditional() drove a location negative' })
   listOpen() {
     return this.variances.listOpen();
+  }
+
+  @Get('by-shift')
+  @ApiOperation({ summary: 'Variance history attributed to the shift that had custody — 156-loss-prevention.md' })
+  listByShift(@Query('locationId') locationId?: string) {
+    return this.variances.listByShift(locationId);
   }
 
   @Post(':id/resolve')

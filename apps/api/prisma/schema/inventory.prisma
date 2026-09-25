@@ -107,11 +107,13 @@ model Location {
   address       Json?
   createdAt     DateTime @default(now())
 
-  retailBrand RetailBrand?           @relation(fields: [retailBrandId], references: [id], onDelete: SetNull)
-  stocks      VariantLocationStock[]
-  movements   StockMovement[]
-  workOrders  WorkOrder[]
-  variances   StockVariance[]
+  retailBrand       RetailBrand?           @relation(fields: [retailBrandId], references: [id], onDelete: SetNull)
+  stocks            VariantLocationStock[]
+  movements         StockMovement[]
+  workOrders        WorkOrder[]
+  variances         StockVariance[]
+  spotCheckPolicies SpotCheckPolicy[]
+  spotChecks        SpotCheck[]
 
   @@index([isActive])
   @@index([retailBrandId])
@@ -144,14 +146,90 @@ model StockVariance {
   resolvedAt       DateTime?
   resolutionNote   String?
 
+  /// 156-single-employee-branch-loss-prevention.md. The OPEN PosShift at
+  /// this location when this variance's own underlying movement happened —
+  /// resolved once, inside the same transaction as the variance itself,
+  /// never reassigned after the fact. Null when no shift was open (a
+  /// non-POS location, or a variance predating this column).
+  posShiftId String?
+
   createdAt DateTime @default(now())
 
   variant  ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
   location Location       @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  posShift PosShift?      @relation(fields: [posShiftId], references: [id], onDelete: SetNull)
 
   @@index([status])
   @@index([variantId])
   @@index([locationId])
+  @@index([posShiftId])
+}
+
+/// 156-single-employee-branch-loss-prevention.md §3. An expected cadence for
+/// unpredictable spot counts at a location — never a fixed schedule
+/// ("we always count on the 1st"), the exact predictability this document
+/// names as the weaker alternative.
+model SpotCheckPolicy {
+  id              String   @id @default(cuid())
+  /// Null = applies to every location with no more specific policy.
+  locationId      String?
+  minSkusPerCheck Int      @default(5)
+  /// An EXPECTED cadence in days, not a fixed schedule — InventoryCron rolls
+  /// a randomized due-check within this window.
+  frequencyDays   Int      @default(3)
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  location Location?   @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  checks   SpotCheck[]
+
+  @@index([locationId, isActive])
+}
+
+enum SpotCheckStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+/// A small, unscheduled StockCount-like sheet — a handful of SKUs, never the
+/// whole shop, completable in minutes on the POS/mobile device.
+model SpotCheck {
+  id           String          @id @default(cuid())
+  policyId     String
+  locationId   String
+  status       SpotCheckStatus @default(PENDING)
+  scheduledFor DateTime
+  startedAt    DateTime?
+  completedAt  DateTime?
+  createdAt    DateTime        @default(now())
+
+  policy   SpotCheckPolicy @relation(fields: [policyId], references: [id])
+  location Location        @relation(fields: [locationId], references: [id])
+  lines    SpotCheckLine[]
+
+  @@index([locationId, status])
+  @@index([policyId, scheduledFor])
+}
+
+model SpotCheckLine {
+  id          String @id @default(cuid())
+  spotCheckId String
+  variantId   String
+  /// System stock at the moment the check was scheduled — frozen, the same
+  /// "expected is frozen at start" discipline WO-1.7's StockCountLine
+  /// already established.
+  expected    Int
+  counted     Int?
+  /// counted - expected, written when the check completes.
+  variance    Int?
+
+  spotCheck SpotCheck      @relation(fields: [spotCheckId], references: [id], onDelete: Cascade)
+  variant   ProductVariant @relation(fields: [variantId], references: [id], onDelete: Restrict)
+
+  @@unique([spotCheckId, variantId])
 }
 
 /// Stock, per variant, per location. The thing InventoryService.move() writes
@@ -223,17 +301,17 @@ enum MarkdownSuggestionStatus {
 }
 
 model MarkdownSuggestion {
-  id                    String                   @id @default(cuid())
-  variantId             String
-  discountId            String?
-  suggestedBps          Int
-  estimatedClearancePct Float
+  id                     String                   @id @default(cuid())
+  variantId              String
+  discountId             String?
+  suggestedBps           Int
+  estimatedClearancePct  Float
   estimatedClearanceDays Int
-  marginBeforePaisa     Int
-  marginAfterPaisa      Int
-  status                MarkdownSuggestionStatus @default(PENDING)
-  createdAt             DateTime                 @default(now())
-  resolvedAt            DateTime?
+  marginBeforePaisa      Int
+  marginAfterPaisa       Int
+  status                 MarkdownSuggestionStatus @default(PENDING)
+  createdAt              DateTime                 @default(now())
+  resolvedAt             DateTime?
 
   variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
 

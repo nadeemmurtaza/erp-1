@@ -54,6 +54,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `AiAdminPage` | default | :29 | WO-9.1's review queue plus the AI foundation's own status and budget (09-ai-layer.md). |
 
+### `apps/web/src/app/(admin)/admin/(app)/analytics/suspicious-traffic`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `SuspiciousTrafficPage` | default | :16 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]`
 
 | File | Symbol | Kind | Line | Doc |
@@ -368,6 +374,24 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `SlowMoversPage` | default | :25 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `SpotChecksPage` | default | :28 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `SpotCheckDetailPage` | default | :17 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/inventory/variances/by-shift`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `VariancesByShiftPage` | default | :20 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/wishlisted`
 
 | File | Symbol | Kind | Line | Doc |
@@ -567,6 +591,24 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `AdminReportsPage` | default | :75 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/requisitions`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `RequisitionsPage` | default | :21 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/requisitions/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `RequisitionDetailPage` | default | :24 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/requisitions/new`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `NewRequisitionPage` | default | :27 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/reviews`
 
@@ -1021,8 +1063,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :53 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :76 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :116 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :743 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :758 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :773 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :788 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |

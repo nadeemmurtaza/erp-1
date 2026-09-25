@@ -116,6 +116,17 @@ export const ROUTES = {
     suppliers: '/admin/suppliers',
     supplier: (id: string) => `/admin/suppliers/${id}`,
 
+    /** 152-purchase-requisition.md. A request to buy, distinct from the PO it may become. */
+    requisitions: '/admin/requisitions',
+    requisitionNew: '/admin/requisitions/new',
+    requisition: (id: string) => `/admin/requisitions/${id}`,
+
+    /** 156-single-employee-branch-loss-prevention.md. */
+    inventoryVariancesByShift: '/admin/inventory/variances/by-shift',
+    spotChecks: '/admin/inventory/spot-checks',
+    spotCheck: (id: string) => `/admin/inventory/spot-checks/${id}`,
+    suspiciousTraffic: '/admin/analytics/suspicious-traffic',
+
     /** Inter-branch and org-central stock transfers (RETAIL-ERP.md R4, WO-22.1/22.2/22.3, WO-23.3d). Off by default — `transfers` module. */
     transfers: '/admin/transfers',
     transferNew: '/admin/transfers/new',

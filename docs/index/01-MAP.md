@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 682 | 94,071 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 392 | 59,940 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 316 | 50,323 | Next.js — admin console and customer storefront in one app |
+| `apps/api` | 698 | 96,170 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 392 | 59,993 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 323 | 51,399 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 27,374 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 21 | 8,579 | repository checks and generators (lint gates, this index) |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
-| `packages/shared` | 57 | 6,364 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 57 | 6,392 | brand, money, permissions, measurements, entities |
 | `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
 | `apps/platform` | 40 | 1,615 |  |
 | `.claude` | 22 | 1,017 |  |
@@ -72,7 +72,7 @@ Each is independent: no module imports another except through a named
 | [`fulfilment`](modules/fulfilment.md) | core | MODULES allowlist | 39 | 16 |
 | [`giftcards`](modules/giftcards.md) | core | MODULES allowlist | 10 | 3 |
 | [`identity-verification`](modules/identity-verification.md) | core | MODULES allowlist | 4 | 1 |
-| [`inventory`](modules/inventory.md) | core | MODULES allowlist | 16 | 9 |
+| [`inventory`](modules/inventory.md) | core | MODULES allowlist | 26 | 12 |
 | [`loyalty`](modules/loyalty.md) | core | MODULES allowlist | 11 | 3 |
 | [`marketing`](modules/marketing.md) | core | MODULES allowlist | 11 | 3 |
 | [`measurements`](modules/measurements.md) | apparel | MODULES allowlist | 13 | 4 |
@@ -86,7 +86,7 @@ Each is independent: no module imports another except through a named
 | [`pos`](modules/pos.md) | core | MODULES allowlist | 15 | 4 |
 | [`production`](modules/production.md) | core | MODULES allowlist | 9 | 4 |
 | [`promotions`](modules/promotions.md) | core | MODULES allowlist | 12 | 3 |
-| [`purchasing`](modules/purchasing.md) | core | MODULES allowlist | 17 | 7 |
+| [`purchasing`](modules/purchasing.md) | core | MODULES allowlist | 24 | 9 |
 | [`reports`](modules/reports.md) | core | MODULES allowlist | 12 | — |
 | [`reviews`](modules/reviews.md) | core | MODULES allowlist | 6 | 2 |
 | [`search`](modules/search.md) | core | MODULES allowlist | 5 | 2 |
@@ -108,6 +108,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | Subsystem | Files | What it owns |
 |---|---|---|
 | [`ai`](core/ai.md) | 6 | Extension point: AI providers (Phase 9, 09-ai-layer.md, House Rule 8 — same idiom as PaymentProvider and Stor… |
+| [`approvals`](core/approvals.md) | 3 |  |
 | [`audit`](core/audit.md) | 2 |  |
 | [`auth`](core/auth.md) | 21 |  |
 | [`checkout`](core/checkout.md) | 1 |  |
@@ -115,7 +116,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`config`](core/config.md) | 6 |  |
 | [`crm`](core/crm.md) | 1 |  |
 | [`events`](core/events.md) | 5 | The catalogue of domain events. |
-| [`extension-points`](core/extension-points.md) | 6 |  |
+| [`extension-points`](core/extension-points.md) | 7 |  |
 | [`health`](core/health.md) | 2 |  |
 | [`notifications`](core/notifications.md) | 22 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |
 | [`prisma`](core/prisma.md) | 4 | Single import point for the generated Prisma client. |

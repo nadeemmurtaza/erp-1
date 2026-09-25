@@ -3,12 +3,14 @@ import { InventoryCron } from './inventory.cron';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
+import { SpotCheckService } from './spot-check.service';
 import { Logger } from '@nestjs/common';
 
 describe('InventoryCron', () => {
   let cron: InventoryCron;
   let prisma: any;
   let settings: any;
+  let spotChecks: any;
 
   beforeEach(async () => {
     prisma = {
@@ -24,11 +26,16 @@ describe('InventoryCron', () => {
       get: jest.fn(),
     };
 
+    spotChecks = {
+      maybeTriggerDueChecks: jest.fn().mockResolvedValue([]),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         InventoryCron,
         { provide: PrismaService, useValue: prisma },
         { provide: SettingsService, useValue: settings },
+        { provide: SpotCheckService, useValue: spotChecks },
       ],
     }).compile();
 
@@ -95,5 +102,35 @@ describe('InventoryCron', () => {
         create: expect.objectContaining({ isSlowMover: false, isDeadStock: false }),
       })
     );
+  });
+
+  describe('maybeTriggerSpotCheck — 156-single-employee-branch-loss-prevention.md', () => {
+    it('delegates to SpotCheckService and logs how many were created', async () => {
+      spotChecks.maybeTriggerDueChecks.mockResolvedValue(['sc1', 'sc2']);
+      const logSpy = jest.spyOn(Logger.prototype, 'log').mockImplementation(() => {});
+
+      await cron.maybeTriggerSpotCheck();
+
+      expect(spotChecks.maybeTriggerDueChecks).toHaveBeenCalledTimes(1);
+      expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('2'));
+    });
+
+    it('logs nothing when nothing was due', async () => {
+      spotChecks.maybeTriggerDueChecks.mockResolvedValue([]);
+      const logSpy = jest.spyOn(Logger.prototype, 'log').mockImplementation(() => {});
+      logSpy.mockClear(); // spyOn on an already-spied prototype method keeps prior tests' call history
+
+      await cron.maybeTriggerSpotCheck();
+
+      expect(logSpy).not.toHaveBeenCalled();
+    });
+
+    it('a failure for the whole pass is caught and logged, never thrown — one bad tick must not crash the scheduler', async () => {
+      spotChecks.maybeTriggerDueChecks.mockRejectedValue(new Error('db unavailable'));
+      const errorSpy = jest.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
+
+      await expect(cron.maybeTriggerSpotCheck()).resolves.toBeUndefined();
+      expect(errorSpy).toHaveBeenCalled();
+    });
   });
 });

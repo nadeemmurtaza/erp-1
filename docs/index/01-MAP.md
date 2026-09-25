@@ -32,9 +32,9 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 665 | 91,536 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 669 | 92,474 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `docs` | 392 | 59,940 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 315 | 49,810 | Next.js — admin console and customer storefront in one app |
+| `apps/web` | 316 | 50,169 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 27,374 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 21 | 8,579 | repository checks and generators (lint gates, this index) |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
@@ -64,7 +64,7 @@ Each is independent: no module imports another except through a named
 | [`analytics`](modules/analytics.md) | core | MODULES allowlist | 19 | — |
 | [`bom`](modules/bom.md) | core | MODULES allowlist | 20 | 5 |
 | [`cart`](modules/cart.md) | core | MODULES allowlist | 8 | 3 |
-| [`catalog`](modules/catalog.md) | core | MODULES allowlist | 43 | 27 |
+| [`catalog`](modules/catalog.md) | core | MODULES allowlist | 49 | 27 |
 | [`collections`](modules/collections.md) | core | MODULES allowlist | 10 | — |
 | [`content`](modules/content.md) | core | MODULES allowlist | 24 | 8 |
 | [`crm`](modules/crm.md) | core | MODULES allowlist | 26 | 9 |
@@ -90,7 +90,7 @@ Each is independent: no module imports another except through a named
 | [`reports`](modules/reports.md) | core | MODULES allowlist | 12 | — |
 | [`reviews`](modules/reviews.md) | core | MODULES allowlist | 6 | 2 |
 | [`search`](modules/search.md) | core | MODULES allowlist | 5 | 2 |
-| [`settings`](modules/settings.md) | core | always on | 6 | — |
+| [`settings`](modules/settings.md) | core | always on | 8 | — |
 | [`stitching`](modules/stitching.md) | apparel | MODULES allowlist | 21 | 8 |
 | [`tax`](modules/tax.md) | core | MODULES allowlist | 8 | 2 |
 | [`tracking`](modules/tracking.md) | core | MODULES allowlist | 1 | — |

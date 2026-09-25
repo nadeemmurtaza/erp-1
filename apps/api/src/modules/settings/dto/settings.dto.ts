@@ -6,7 +6,9 @@ import {
   IsDateString,
   IsIn,
   IsInt,
+  IsNumber,
   IsOptional,
+  IsPositive,
   IsString,
   MaxLength,
   Min,
@@ -68,6 +70,23 @@ class DocumentPrefixesDto {
   @ApiPropertyOptional({ example: 'SC' }) @IsOptional() @IsString() @MaxLength(8) stockCount?: string;
   @ApiPropertyOptional({ example: 'INV' }) @IsOptional() @IsString() @MaxLength(8) invoice?: string;
   @ApiPropertyOptional({ example: 'QTE' }) @IsOptional() @IsString() @MaxLength(8) quote?: string;
+}
+
+export class UpdateAiSettingsDto {
+  @ApiPropertyOptional({
+    description: 'Monthly AI spend cap, in paisa. null means uncapped — every AI call still gets logged either way.',
+    nullable: true,
+  })
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  monthlyBudgetPaisa?: number | null;
+
+  @ApiPropertyOptional({ description: 'USD-to-PKR rate used to estimate cost from a provider\'s per-token USD pricing.' })
+  @IsOptional()
+  @IsNumber()
+  @IsPositive()
+  usdToPkrRate?: number;
 }
 
 export class UpdateDocumentSettingsDto {

@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { AiSuggestionsController } from './ai-suggestions.controller';
+import { AiSuggestionsService } from './ai-suggestions.service';
 import { CatalogAdminController } from './catalog-admin.controller';
 import { CatalogOptionsAdminController } from './catalog-options-admin.controller';
 import { RedirectAdminController, RedirectLookupController } from './redirect-admin.controller';
@@ -31,6 +33,7 @@ import { InventoryModule } from '../inventory/inventory.module';
     CatalogOptionsAdminController,
     RedirectAdminController,
     RedirectLookupController,
+    AiSuggestionsController,
   ],
   providers: [
     CatalogService,
@@ -43,6 +46,7 @@ import { InventoryModule } from '../inventory/inventory.module';
     ProductOptionAdminService,
     RedirectService,
     SeoHealthService,
+    AiSuggestionsService,
   ],
   // Exported for cart/orders, which need to price a variant and check stock.
   exports: [CatalogService],

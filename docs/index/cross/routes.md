@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **536** endpoints across **94** controllers, with the access rule that actually guards each one.
+All **544** endpoints across **95** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -187,10 +187,16 @@ never authorization.
 | POST | `/cart/merge` | **PUBLIC** | `CartController.merge` | Fold a guest cart into the signed-in account |
 | POST | `/cart/reorder/:orderNumber` | **PUBLIC** | `CartController.reorderFromOrder` | Add every still-available line from a past order to the cart |
 
-### [`catalog`](../modules/catalog.md) (43)
+### [`catalog`](../modules/catalog.md) (49)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/catalog/ai-suggestions` | `ai.view` `ai.manage` | `AiSuggestionsController.list` | The AI draft review queue |
+| POST | `/admin/catalog/ai-suggestions/:id/approve` | `ai.manage` | `AiSuggestionsController.approve` | Apply a draft to the live product and mark it approved |
+| POST | `/admin/catalog/ai-suggestions/:id/reject` | `ai.manage` | `AiSuggestionsController.reject` | Discard a draft without applying it |
+| POST | `/admin/catalog/ai-suggestions/approve-bulk` | `ai.manage` | `AiSuggestionsController.approveBulk` | Approve several drafts at once |
+| POST | `/admin/catalog/ai-suggestions/generate-bulk` | `ai.manage` | `AiSuggestionsController.generateBulk` | Draft for every product failing the SEO publish gate (Catalogue -> SEO health) |
+| POST | `/admin/catalog/ai-suggestions/generate/:productId` | `ai.manage` | `AiSuggestionsController.generate` | Draft alt text and SEO copy for one product, for every gap it currently has |
 | GET | `/admin/catalog/brands` | `catalog.manage` | `CatalogAdminController.listBrands` |  |
 | POST | `/admin/catalog/brands` | `catalog.manage` | `CatalogAdminController.createBrand` |  |
 | DELETE | `/admin/catalog/brands/:id` | `catalog.manage` | `CatalogAdminController.deleteBrand` |  |
@@ -741,10 +747,12 @@ never authorization.
 | GET | `/admin/search/zero-results` | `search.view` `search.manage` | `SearchAdminController.zeroResults` |  |
 | GET | `/search` | **PUBLIC** | `SearchController.search` |  |
 
-### [`settings`](../modules/settings.md) (6)
+### [`settings`](../modules/settings.md) (8)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/settings/ai` | `ai.view` `ai.manage` | `SettingsAdminController.getAi` | Which AI providers/capabilities are on, this month's spend, and the budget cap |
+| PUT | `/admin/settings/ai` | `ai.manage` | `SettingsAdminController.updateAi` | Set the monthly AI budget cap and the USD-to-PKR rate used to estimate cost |
 | GET | `/admin/settings/audit-log` | `audit.view` | `SettingsAdminController.listAuditLog` | The audit trail, newest first, filterable by entity/actor/date |
 | GET | `/admin/settings/documents` | `settings.manage` | `SettingsAdminController.getDocuments` | Document branding and number prefixes |
 | PUT | `/admin/settings/documents` | `settings.manage` | `SettingsAdminController.updateDocuments` | Set the document logo and number prefixes |

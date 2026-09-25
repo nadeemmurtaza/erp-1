@@ -22,7 +22,7 @@ the *catalogue*, not any particular deployment's grants.
 | `Roles granted at seed` = none | `ROLE_PERMISSION_SEED` gives it to no role, so no live user holds it unless an admin grants it by hand — the `seedPermissions()` vs `seedRoles()` trap CLAUDE.md names |
 | `UI call sites` = — | nothing in the admin UI gates on it; if a screen needs it, the screen is missing |
 
-- Permissions enforcing **no route**: **4** — `stitching.jobs.manage_own`, `stitching.jobs.manage_all`, `ai.view`, `ai.manage`
+- Permissions enforcing **no route**: **2** — `stitching.jobs.manage_own`, `stitching.jobs.manage_all`
 - Permissions **no seeded role grants**: **0**
 - Keys required by a route but **not in the catalogue**: **0**
 
@@ -103,8 +103,8 @@ the *catalogue*, not any particular deployment's grants.
 | `audit.view` | View the audit log | medium | 1 | — | ADMIN |
 | `users.manage` | Create and manage back-office user accounts | high | 8 | 1 | ADMIN |
 | `accounting.manage_periods` | Open, close and lock fiscal periods — locking is irreversible | medium | 6 | — | ADMIN |
-| `ai.view` | View AI usage, cost and the review queue for AI-generated drafts | low | **0 — enforces nothing** | — | STAFF, ADMIN |
-| `ai.manage` | Configure AI providers and the monthly budget, and approve or reject AI-generat… | medium | **0 — enforces nothing** | — | STAFF, ADMIN |
+| `ai.view` | View AI usage, cost and the review queue for AI-generated drafts | low | 2 | 2 | STAFF, ADMIN |
+| `ai.manage` | Configure AI providers and the monthly budget, and approve or reject AI-generat… | medium | 8 | 3 | STAFF, ADMIN |
 
 ### Finance
 

@@ -633,6 +633,13 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'settings',
   },
   {
+    key: 'ai',
+    label: 'AI',
+    href: '/admin/ai',
+    permissions: ['ai.view', 'ai.manage'],
+    group: 'settings',
+  },
+  {
     key: 'marketing',
     label: 'Marketing',
     href: '/admin/marketing',

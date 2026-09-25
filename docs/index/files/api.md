@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 665 tracked files in `apps/api`, by directory.
+All 669 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -848,15 +848,18 @@ All 665 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `cart.dto.ts` | dto | 150 |  |
 
-### `apps/api/src/modules/catalog` (20)
+### `apps/api/src/modules/catalog` (23)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `ai-suggestions.controller.ts` | controller | 79 |  |
+| `ai-suggestions.service.spec.ts` | unit test | 314 |  |
+| `ai-suggestions.service.ts` | service | 352 |  |
 | `brand-admin.service.ts` | service | 170 |  |
 | `catalog-admin.controller.ts` | controller | 284 |  |
 | `catalog-options-admin.controller.ts` | controller | 105 |  |
 | `catalog.controller.ts` | controller | 51 |  |
-| `catalog.module.ts` | nest module | 51 |  |
+| `catalog.module.ts` | nest module | 55 |  |
 | `catalog.service.ts` | service | 379 |  |
 | `category-admin.service.ts` | service | 192 |  |
 | `option-template-admin.service.ts` | service | 125 |  |
@@ -1399,19 +1402,20 @@ All 665 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `search.dto.ts` | dto | 85 |  |
 
-### `apps/api/src/modules/settings` (3)
+### `apps/api/src/modules/settings` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `settings-admin.controller.ts` | controller | 61 |  |
+| `settings-admin.controller.ts` | controller | 80 |  |
 | `settings-admin.module.ts` | nest module | 10 |  |
-| `settings-admin.service.ts` | service | 117 |  |
+| `settings-admin.service.spec.ts` | unit test | 107 |  |
+| `settings-admin.service.ts` | service | 161 |  |
 
 ### `apps/api/src/modules/settings/dto` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `settings.dto.ts` | dto | 94 |  |
+| `settings.dto.ts` | dto | 113 |  |
 
 ### `apps/api/src/modules/stitching` (7)
 

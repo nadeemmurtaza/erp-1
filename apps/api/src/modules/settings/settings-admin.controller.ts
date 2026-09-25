@@ -1,7 +1,12 @@
 import { Body, Controller, Get, Put, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { RequirePermission } from '../../core/auth/decorators';
-import { AuditLogQueryDto, UpdateDocumentSettingsDto, UpdateMediaSettingsDto } from './dto/settings.dto';
+import {
+  AuditLogQueryDto,
+  UpdateAiSettingsDto,
+  UpdateDocumentSettingsDto,
+  UpdateMediaSettingsDto,
+} from './dto/settings.dto';
 import { SettingsAdminService } from './settings-admin.service';
 
 @ApiTags('admin/settings')
@@ -35,6 +40,20 @@ export class SettingsAdminController {
   @ApiOperation({ summary: 'Set the document logo and number prefixes' })
   async updateDocuments(@Body() dto: UpdateDocumentSettingsDto) {
     return this.settings.updateDocuments(dto);
+  }
+
+  @Get('ai')
+  @RequirePermission('ai.view', 'ai.manage')
+  @ApiOperation({ summary: 'Which AI providers/capabilities are on, this month\'s spend, and the budget cap' })
+  async getAi() {
+    return this.settings.getAi();
+  }
+
+  @Put('ai')
+  @RequirePermission('ai.manage')
+  @ApiOperation({ summary: 'Set the monthly AI budget cap and the USD-to-PKR rate used to estimate cost' })
+  async updateAi(@Body() dto: UpdateAiSettingsDto) {
+    return this.settings.updateAi(dto);
   }
 
   @Get('permissions')

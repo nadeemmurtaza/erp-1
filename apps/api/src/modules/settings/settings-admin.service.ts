@@ -5,6 +5,8 @@ import {
   type DocumentSettings,
 } from '../../core/settings/settings.defaults';
 import { Injectable } from '@nestjs/common';
+import { AiService } from '../../core/ai/ai.service';
+import { AppConfigService } from '../../core/config/app-config.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { Prisma } from '../../core/prisma/client';
 
@@ -28,6 +30,8 @@ export class SettingsAdminService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly settings: SettingsService,
+    private readonly config: AppConfigService,
+    private readonly ai: AiService,
   ) {}
 
   /**
@@ -76,6 +80,46 @@ export class SettingsAdminService {
     };
     await this.settings.set(SettingKey.Documents, next);
     return next;
+  }
+
+  /**
+   * House Rule 8's "isAvailable() before rendering an AI-powered button at
+   * all" — the /admin/ai screen (and every future AI-powered admin screen)
+   * reads this once rather than each hand-rolling its own availability
+   * check. Provider identity is env-configured (AI_PROVIDERS), same as
+   * PAYMENT_PROVIDERS elsewhere — this is a read-only status, not a toggle.
+   */
+  async getAi() {
+    const [monthlyBudgetPaisa, usdToPkrRate, monthToDateSpendPaisa] = await Promise.all([
+      this.settings.get<number | null>(SettingKey.AiMonthlyBudgetPaisa),
+      this.settings.get<number>(SettingKey.AiUsdToPkrRate),
+      this.ai.monthToDateSpendPaisa(),
+    ]);
+
+    return {
+      providers: {
+        anthropic: this.config.isAiProviderEnabled('anthropic'),
+        openai: this.config.isAiProviderEnabled('openai'),
+      },
+      capabilities: {
+        complete: this.ai.isAvailable('complete'),
+        embed: this.ai.isAvailable('embed'),
+        vision: this.ai.isAvailable('vision'),
+      },
+      monthlyBudgetPaisa: monthlyBudgetPaisa ?? null,
+      usdToPkrRate,
+      monthToDateSpendPaisa,
+    };
+  }
+
+  async updateAi(patch: { monthlyBudgetPaisa?: number | null; usdToPkrRate?: number }) {
+    if (patch.monthlyBudgetPaisa !== undefined) {
+      await this.settings.set(SettingKey.AiMonthlyBudgetPaisa, patch.monthlyBudgetPaisa);
+    }
+    if (patch.usdToPkrRate !== undefined) {
+      await this.settings.set(SettingKey.AiUsdToPkrRate, patch.usdToPkrRate);
+    }
+    return this.getAi();
   }
 
   listPermissions() {

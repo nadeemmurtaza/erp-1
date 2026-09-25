@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-client';
 import { DataTable, ConfirmDialog, Tabs, Badge } from '@/components/ui';
+import { useAdminSession } from '@/components/admin/session';
 import { formatDateTime } from '@newax/shared';
 import type { AdminRedirect, SeoHealthRow } from '@/types/api';
 
@@ -28,6 +29,7 @@ export default function SeoPage() {
 }
 
 function SeoHealthTab() {
+  const { can } = useAdminSession();
   const [rows, setRows] = useState<SeoHealthRow[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,6 +45,15 @@ function SeoHealthTab() {
   return (
     <div className="pt-4">
       {error ? <p className="notice notice-error mb-4">{error}</p> : null}
+      {rows && rows.length > 0 && (can('ai.view') || can('ai.manage')) ? (
+        <p className="notice notice-info mb-4">
+          AI can draft alt text, meta copy and descriptions for this backlog as reviewable suggestions.{' '}
+          <Link href="/admin/ai" className="font-medium underline">
+            Generate and review in AI
+          </Link>
+          .
+        </p>
+      ) : null}
       <DataTable
         rows={rows}
         loading={rows === null}

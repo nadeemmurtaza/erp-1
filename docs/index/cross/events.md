@@ -424,6 +424,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
+| `apps/api/src/modules/catalog/ai-suggestions.service.ts:296` | `catalog` |
 | `apps/api/src/modules/catalog/product-admin.service.ts:207` | `catalog` |
 | `apps/api/src/modules/catalog/product-admin.service.ts:358` | `catalog` |
 

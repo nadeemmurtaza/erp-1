@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1664,
-    "lines": 255452,
-    "routes": 536,
-    "controllers": 94,
+    "files": 1669,
+    "lines": 256749,
+    "routes": 544,
+    "controllers": 95,
     "models": 203,
     "enums": 88,
     "migrations": 67,
     "events": 45,
     "permissions": 65,
-    "screens": 206,
+    "screens": 207,
     "crons": 13,
-    "specs": 156,
+    "specs": 158,
     "designLaws": 0
   },
   "designLaws": [],
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 665,
-      "lines": 91536,
-      "bytes": 3361358,
+      "files": 669,
+      "lines": 92474,
+      "bytes": 3397666,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,9 +50,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 315,
-      "lines": 49810,
-      "bytes": 1813817,
+      "files": 316,
+      "lines": 50169,
+      "bytes": 1826223,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -185,6 +185,9 @@
       "alwaysOn": false,
       "inRegistry": true,
       "files": [
+        "apps/api/src/modules/catalog/ai-suggestions.controller.ts",
+        "apps/api/src/modules/catalog/ai-suggestions.service.spec.ts",
+        "apps/api/src/modules/catalog/ai-suggestions.service.ts",
         "apps/api/src/modules/catalog/brand-admin.service.ts",
         "apps/api/src/modules/catalog/catalog-admin.controller.ts",
         "apps/api/src/modules/catalog/catalog-options-admin.controller.ts",
@@ -212,7 +215,7 @@
         "apps/api/src/modules/catalog/seo-health.service.ts",
         "apps/api/src/modules/catalog/sync-option-model.ts"
       ],
-      "routes": 43,
+      "routes": 49,
       "page": "docs/index/modules/catalog.md"
     },
     {
@@ -724,9 +727,10 @@
         "apps/api/src/modules/settings/dto/settings.dto.ts",
         "apps/api/src/modules/settings/settings-admin.controller.ts",
         "apps/api/src/modules/settings/settings-admin.module.ts",
+        "apps/api/src/modules/settings/settings-admin.service.spec.ts",
         "apps/api/src/modules/settings/settings-admin.service.ts"
       ],
-      "routes": 6,
+      "routes": 8,
       "page": "docs/index/modules/settings.md"
     },
     {
@@ -2121,6 +2125,103 @@
       "public": false,
       "authOnly": false,
       "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/catalog/ai-suggestions",
+      "module": "catalog",
+      "controller": "AiSuggestionsController",
+      "handler": "list",
+      "file": "apps/api/src/modules/catalog/ai-suggestions.controller.ts",
+      "line": 40,
+      "access": "ai.view | ai.manage",
+      "permissions": [
+        "ai.view",
+        "ai.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The AI draft review queue"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/ai-suggestions/:id/approve",
+      "module": "catalog",
+      "controller": "AiSuggestionsController",
+      "handler": "approve",
+      "file": "apps/api/src/modules/catalog/ai-suggestions.controller.ts",
+      "line": 61,
+      "access": "ai.manage",
+      "permissions": [
+        "ai.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Apply a draft to the live product and mark it approved"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/ai-suggestions/:id/reject",
+      "module": "catalog",
+      "controller": "AiSuggestionsController",
+      "handler": "reject",
+      "file": "apps/api/src/modules/catalog/ai-suggestions.controller.ts",
+      "line": 68,
+      "access": "ai.manage",
+      "permissions": [
+        "ai.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Discard a draft without applying it"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/ai-suggestions/approve-bulk",
+      "module": "catalog",
+      "controller": "AiSuggestionsController",
+      "handler": "approveBulk",
+      "file": "apps/api/src/modules/catalog/ai-suggestions.controller.ts",
+      "line": 75,
+      "access": "ai.manage",
+      "permissions": [
+        "ai.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Approve several drafts at once"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/ai-suggestions/generate-bulk",
+      "module": "catalog",
+      "controller": "AiSuggestionsController",
+      "handler": "generateBulk",
+      "file": "apps/api/src/modules/catalog/ai-suggestions.controller.ts",
+      "line": 54,
+      "access": "ai.manage",
+      "permissions": [
+        "ai.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Draft for every product failing the SEO publish gate (Catalogue -> SEO health)"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/ai-suggestions/generate/:productId",
+      "module": "catalog",
+      "controller": "AiSuggestionsController",
+      "handler": "generate",
+      "file": "apps/api/src/modules/catalog/ai-suggestions.controller.ts",
+      "line": 47,
+      "access": "ai.manage",
+      "permissions": [
+        "ai.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Draft alt text and SEO copy for one product, for every gap it currently has"
     },
     {
       "method": "GET",
@@ -6514,12 +6615,45 @@
     },
     {
       "method": "GET",
+      "path": "/admin/settings/ai",
+      "module": "settings",
+      "controller": "SettingsAdminController",
+      "handler": "getAi",
+      "file": "apps/api/src/modules/settings/settings-admin.controller.ts",
+      "line": 48,
+      "access": "ai.view | ai.manage",
+      "permissions": [
+        "ai.view",
+        "ai.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Which AI providers/capabilities are on, this month's spend, and the budget cap"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/settings/ai",
+      "module": "settings",
+      "controller": "SettingsAdminController",
+      "handler": "updateAi",
+      "file": "apps/api/src/modules/settings/settings-admin.controller.ts",
+      "line": 55,
+      "access": "ai.manage",
+      "permissions": [
+        "ai.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Set the monthly AI budget cap and the USD-to-PKR rate used to estimate cost"
+    },
+    {
+      "method": "GET",
       "path": "/admin/settings/audit-log",
       "module": "settings",
       "controller": "SettingsAdminController",
       "handler": "listAuditLog",
       "file": "apps/api/src/modules/settings/settings-admin.controller.ts",
-      "line": 50,
+      "line": 69,
       "access": "audit.view",
       "permissions": [
         "audit.view"
@@ -6535,7 +6669,7 @@
       "controller": "SettingsAdminController",
       "handler": "getDocuments",
       "file": "apps/api/src/modules/settings/settings-admin.controller.ts",
-      "line": 29,
+      "line": 34,
       "access": "settings.manage",
       "permissions": [
         "settings.manage"
@@ -6551,7 +6685,7 @@
       "controller": "SettingsAdminController",
       "handler": "updateDocuments",
       "file": "apps/api/src/modules/settings/settings-admin.controller.ts",
-      "line": 36,
+      "line": 41,
       "access": "settings.manage",
       "permissions": [
         "settings.manage"
@@ -6567,7 +6701,7 @@
       "controller": "SettingsAdminController",
       "handler": "getMedia",
       "file": "apps/api/src/modules/settings/settings-admin.controller.ts",
-      "line": 15,
+      "line": 20,
       "access": "settings.manage",
       "permissions": [
         "settings.manage"
@@ -6583,7 +6717,7 @@
       "controller": "SettingsAdminController",
       "handler": "updateMedia",
       "file": "apps/api/src/modules/settings/settings-admin.controller.ts",
-      "line": 22,
+      "line": 27,
       "access": "settings.manage",
       "permissions": [
         "settings.manage"
@@ -6599,7 +6733,7 @@
       "controller": "SettingsAdminController",
       "handler": "listPermissions",
       "file": "apps/api/src/modules/settings/settings-admin.controller.ts",
-      "line": 43,
+      "line": 62,
       "access": "settings.manage",
       "permissions": [
         "settings.manage"
@@ -10808,8 +10942,11 @@
       "label": "View AI usage, cost and the review queue for AI-generated drafts",
       "category": "Administration",
       "sensitivity": "low",
-      "routes": [],
-      "uiSites": 0,
+      "routes": [
+        "GET /admin/catalog/ai-suggestions",
+        "GET /admin/settings/ai"
+      ],
+      "uiSites": 2,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -10821,8 +10958,17 @@
       "label": "Configure AI providers and the monthly budget, and approve or reject AI-generated drafts",
       "category": "Administration",
       "sensitivity": "medium",
-      "routes": [],
-      "uiSites": 0,
+      "routes": [
+        "GET /admin/catalog/ai-suggestions",
+        "POST /admin/catalog/ai-suggestions/:id/approve",
+        "POST /admin/catalog/ai-suggestions/:id/reject",
+        "POST /admin/catalog/ai-suggestions/approve-bulk",
+        "POST /admin/catalog/ai-suggestions/generate-bulk",
+        "POST /admin/catalog/ai-suggestions/generate/:productId",
+        "GET /admin/settings/ai",
+        "PUT /admin/settings/ai"
+      ],
+      "uiSites": 3,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -11070,6 +11216,7 @@
       "name": "catalog.product_changed",
       "doc": "WO-8.3 — fires on every create()/update(), unconditionally: search.reindexProduct's own trigger, since a name, description, tag, category or brand edit all change what a product should match on, not…",
       "publishers": [
+        "apps/api/src/modules/catalog/ai-suggestions.service.ts:296",
         "apps/api/src/modules/catalog/product-admin.service.ts:207",
         "apps/api/src/modules/catalog/product-admin.service.ts:358"
       ],
@@ -32521,6 +32668,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/ai",
+      "file": "apps/web/src/app/(admin)/admin/(app)/ai/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/b/[brandId]",
       "file": "apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx",
       "client": true,
@@ -34659,6 +34815,21 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/catalog/ai-suggestions.service.spec.ts",
+      "module": "catalog",
+      "kind": "unit test",
+      "cases": 16,
+      "describes": [
+        "AiSuggestionsService",
+        "generateForProduct",
+        "generateBulk",
+        "listQueue",
+        "approve",
+        "reject",
+        "approveBulk"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/catalog/product-admin.service.spec.ts",
       "module": "catalog",
       "kind": "unit test",
@@ -35222,6 +35393,17 @@
       "cases": 6,
       "describes": [
         "SearchService"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/settings/settings-admin.service.spec.ts",
+      "module": "settings",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "SettingsAdminService — AI settings",
+        "getAi",
+        "updateAi"
       ]
     },
     {
@@ -41131,6 +41313,45 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/catalog/ai-suggestions.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 79,
+      "bytes": 3051,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AiSuggestionsController",
+          "kind": "class",
+          "line": 34
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/catalog/ai-suggestions.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 314,
+      "bytes": 12326,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/catalog/ai-suggestions.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 352,
+      "bytes": 13870,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AiSuggestionsService",
+          "kind": "class",
+          "line": 115
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/catalog/brand-admin.service.ts",
       "area": "api",
       "kind": "service",
@@ -41194,14 +41415,14 @@
       "path": "apps/api/src/modules/catalog/catalog.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 51,
-      "bytes": 2274,
+      "lines": 55,
+      "bytes": 2465,
       "doc": "",
       "symbols": [
         {
           "name": "CatalogModule",
           "kind": "class",
-          "line": 50
+          "line": 54
         }
       ]
     },
@@ -45926,24 +46147,29 @@
       "path": "apps/api/src/modules/settings/dto/settings.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 94,
-      "bytes": 2824,
+      "lines": 113,
+      "bytes": 3328,
       "doc": "",
       "symbols": [
         {
           "name": "AuditLogQueryDto",
           "kind": "class",
-          "line": 16
+          "line": 18
         },
         {
           "name": "UpdateMediaSettingsDto",
           "kind": "class",
-          "line": 52
+          "line": 54
+        },
+        {
+          "name": "UpdateAiSettingsDto",
+          "kind": "class",
+          "line": 75
         },
         {
           "name": "UpdateDocumentSettingsDto",
           "kind": "class",
-          "line": 73
+          "line": 92
         }
       ]
     },
@@ -45951,14 +46177,14 @@
       "path": "apps/api/src/modules/settings/settings-admin.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 61,
-      "bytes": 2132,
+      "lines": 80,
+      "bytes": 2642,
       "doc": "",
       "symbols": [
         {
           "name": "SettingsAdminController",
           "kind": "class",
-          "line": 9
+          "line": 14
         }
       ]
     },
@@ -45978,22 +46204,31 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/settings/settings-admin.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 107,
+      "bytes": 4121,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/modules/settings/settings-admin.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 117,
-      "bytes": 3971,
+      "lines": 161,
+      "bytes": 5706,
       "doc": "",
       "symbols": [
         {
           "name": "AuditLogQuery",
           "kind": "interface",
-          "line": 11
+          "line": 13
         },
         {
           "name": "SettingsAdminService",
           "kind": "class",
-          "line": 27
+          "line": 29
         }
       ]
     },
@@ -49944,6 +50179,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/ai/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 316,
+      "bytes": 11049,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AiAdminPage",
+          "kind": "default",
+          "line": 29
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -51372,14 +51622,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/seo/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 217,
-      "bytes": 7165,
+      "lines": 228,
+      "bytes": 7661,
       "doc": "",
       "symbols": [
         {
           "name": "SeoPage",
           "kind": "default",
-          "line": 11
+          "line": 12
         }
       ]
     },
@@ -52915,8 +53165,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 766,
-      "bytes": 20054,
+      "lines": 773,
+      "bytes": 20184,
       "doc": "",
       "symbols": [
         {
@@ -52947,12 +53197,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 736
+          "line": 743
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 751
+          "line": 758
         }
       ]
     },
@@ -54675,8 +54925,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1251,
-      "bytes": 32227,
+      "lines": 1276,
+      "bytes": 32958,
       "doc": "",
       "symbols": [
         {
@@ -54770,524 +55020,544 @@
           "line": 242
         },
         {
+          "name": "AiSuggestionKind",
+          "kind": "type",
+          "line": 251
+        },
+        {
+          "name": "AiSuggestionStatus",
+          "kind": "type",
+          "line": 252
+        },
+        {
+          "name": "AiSuggestion",
+          "kind": "interface",
+          "line": 254
+        },
+        {
+          "name": "AiStatus",
+          "kind": "interface",
+          "line": 268
+        },
+        {
           "name": "MeasurementFieldRow",
           "kind": "interface",
-          "line": 251
+          "line": 276
         },
         {
           "name": "GarmentType",
           "kind": "interface",
-          "line": 266
+          "line": 291
         },
         {
           "name": "AdminGarmentSizeChartRow",
           "kind": "interface",
-          "line": 286
+          "line": 311
         },
         {
           "name": "StitchingDesignArea",
           "kind": "type",
-          "line": 295
+          "line": 320
         },
         {
           "name": "AdminStitchingOption",
           "kind": "interface",
-          "line": 308
+          "line": 333
         },
         {
           "name": "AdminStitchingOptionGroup",
           "kind": "interface",
-          "line": 321
+          "line": 346
         },
         {
           "name": "ImportRowResult",
           "kind": "interface",
-          "line": 341
+          "line": 366
         },
         {
           "name": "ImportSummary",
           "kind": "interface",
-          "line": 348
+          "line": 373
         },
         {
           "name": "AuthUser",
           "kind": "interface",
-          "line": 356
+          "line": 381
         },
         {
           "name": "AuthResult",
           "kind": "interface",
-          "line": 374
+          "line": 399
         },
         {
           "name": "DeploymentMeta",
           "kind": "interface",
-          "line": 382
+          "line": 407
         },
         {
           "name": "RetailBrandSummary",
           "kind": "interface",
-          "line": 392
+          "line": 417
         },
         {
           "name": "OrgNodeSummary",
           "kind": "interface",
-          "line": 401
+          "line": 426
         },
         {
           "name": "MyScope",
           "kind": "interface",
-          "line": 412
+          "line": 437
         },
         {
           "name": "AdminScopeWithHolder",
           "kind": "interface",
-          "line": 427
+          "line": 452
         },
         {
           "name": "PolicyQuarantineEntry",
           "kind": "interface",
-          "line": 442
+          "line": 467
         },
         {
           "name": "GrantScopeInput",
           "kind": "interface",
-          "line": 458
+          "line": 483
         },
         {
           "name": "BrandPolicy",
           "kind": "interface",
-          "line": 471
+          "line": 496
         },
         {
           "name": "UpdateBrandPolicyInput",
           "kind": "interface",
-          "line": 478
+          "line": 503
         },
         {
           "name": "Location",
           "kind": "interface",
-          "line": 487
+          "line": 512
         },
         {
           "name": "StockAdjustment",
           "kind": "interface",
-          "line": 497
+          "line": 522
         },
         {
           "name": "InventoryVariantRow",
           "kind": "interface",
-          "line": 509
+          "line": 534
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 522
+          "line": 547
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 528
+          "line": 553
         },
         {
           "name": "VisitorFunnel",
           "kind": "interface",
-          "line": 539
+          "line": 564
         },
         {
           "name": "TrafficSourceRow",
           "kind": "interface",
-          "line": 546
+          "line": 571
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 552
+          "line": 577
         },
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 561
+          "line": 586
         },
         {
           "name": "OrderAgeingBucket",
           "kind": "interface",
-          "line": 569
+          "line": 594
         },
         {
           "name": "OrdersOverview",
           "kind": "interface",
-          "line": 574
+          "line": 599
         },
         {
           "name": "OrderTransitionTiming",
           "kind": "interface",
-          "line": 581
+          "line": 606
         },
         {
           "name": "OrdersFulfilment",
           "kind": "interface",
-          "line": 589
+          "line": 614
         },
         {
           "name": "PurchasingSpend",
           "kind": "interface",
-          "line": 595
+          "line": 620
         },
         {
           "name": "PurchasingSupplierRow",
           "kind": "interface",
-          "line": 601
+          "line": 626
         },
         {
           "name": "PurchasingSuppliers",
           "kind": "interface",
-          "line": 611
+          "line": 636
         },
         {
           "name": "ProductTopSellerRow",
           "kind": "interface",
-          "line": 617
+          "line": 642
         },
         {
           "name": "ProductsTopSellers",
           "kind": "interface",
-          "line": 629
+          "line": 654
         },
         {
           "name": "ProductSlowSellerRow",
           "kind": "interface",
-          "line": 633
+          "line": 658
         },
         {
           "name": "ProductsSlowSellers",
           "kind": "interface",
-          "line": 642
+          "line": 667
         },
         {
           "name": "ProductCategoryRow",
           "kind": "interface",
-          "line": 646
+          "line": 671
         },
         {
           "name": "ProductsCategories",
           "kind": "interface",
-          "line": 655
+          "line": 680
         },
         {
           "name": "InventoryValuation",
           "kind": "interface",
-          "line": 662
+          "line": 687
         },
         {
           "name": "StockMovementReasonRow",
           "kind": "interface",
-          "line": 669
+          "line": 694
         },
         {
           "name": "InventoryMovementRow",
           "kind": "interface",
-          "line": 676
+          "line": 701
         },
         {
           "name": "InventoryMovements",
           "kind": "interface",
-          "line": 686
+          "line": 711
         },
         {
           "name": "CustomersOverview",
           "kind": "interface",
-          "line": 694
+          "line": 719
         },
         {
           "name": "CustomerCohort",
           "kind": "interface",
-          "line": 701
+          "line": 726
         },
         {
           "name": "CustomersRetention",
           "kind": "interface",
-          "line": 707
+          "line": 732
         },
         {
           "name": "CustomerTopRow",
           "kind": "interface",
-          "line": 712
+          "line": 737
         },
         {
           "name": "CustomersTop",
           "kind": "interface",
-          "line": 722
+          "line": 747
         },
         {
           "name": "WorkshopStageRow",
           "kind": "interface",
-          "line": 728
+          "line": 753
         },
         {
           "name": "WorkshopTailorRow",
           "kind": "interface",
-          "line": 734
+          "line": 759
         },
         {
           "name": "WorkshopOutput",
           "kind": "interface",
-          "line": 741
+          "line": 766
         },
         {
           "name": "CompensationBasis",
           "kind": "type",
-          "line": 750
+          "line": 775
         },
         {
           "name": "CompensationRate",
           "kind": "interface",
-          "line": 752
+          "line": 777
         },
         {
           "name": "EmployeeCompensation",
           "kind": "interface",
-          "line": 763
+          "line": 788
         },
         {
           "name": "GrossPreview",
           "kind": "interface",
-          "line": 768
+          "line": 793
         },
         {
           "name": "LeaveKind",
           "kind": "type",
-          "line": 774
+          "line": 799
         },
         {
           "name": "LeaveType",
           "kind": "interface",
-          "line": 776
+          "line": 801
         },
         {
           "name": "LeaveBalance",
           "kind": "interface",
-          "line": 785
+          "line": 810
         },
         {
           "name": "LeaveRequestStatus",
           "kind": "type",
-          "line": 794
+          "line": 819
         },
         {
           "name": "LeaveRequest",
           "kind": "interface",
-          "line": 796
+          "line": 821
         },
         {
           "name": "EmployeeLeave",
           "kind": "interface",
-          "line": 813
+          "line": 838
         },
         {
           "name": "PayRunStatus",
           "kind": "type",
-          "line": 818
+          "line": 843
         },
         {
           "name": "PayRunLine",
           "kind": "interface",
-          "line": 820
+          "line": 845
         },
         {
           "name": "PayRunAdjustmentReason",
           "kind": "type",
-          "line": 834
+          "line": 859
         },
         {
           "name": "PayRunAdjustment",
           "kind": "interface",
-          "line": 836
+          "line": 861
         },
         {
           "name": "PayRun",
           "kind": "interface",
-          "line": 847
+          "line": 872
         },
         {
           "name": "PayRunWithLines",
           "kind": "interface",
-          "line": 862
+          "line": 887
         },
         {
           "name": "EmailAccountPurpose",
           "kind": "type",
-          "line": 869
+          "line": 894
         },
         {
           "name": "EmailAccount",
           "kind": "interface",
-          "line": 871
+          "line": 896
         },
         {
           "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 896
+          "line": 921
         },
         {
           "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 904
+          "line": 929
         },
         {
           "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 912
+          "line": 937
         },
         {
           "name": "InboundEmail",
           "kind": "interface",
-          "line": 919
+          "line": 944
         },
         {
           "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 936
+          "line": 961
         },
         {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 943
+          "line": 968
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 955
+          "line": 980
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 964
+          "line": 989
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 966
+          "line": 991
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 978
+          "line": 1003
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 984
+          "line": 1009
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 991
+          "line": 1016
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 996
+          "line": 1021
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 1008
+          "line": 1033
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 1017
+          "line": 1042
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 1024
+          "line": 1049
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 1038
+          "line": 1063
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 1049
+          "line": 1074
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 1053
+          "line": 1078
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 1062
+          "line": 1087
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 1070
+          "line": 1095
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 1101
+          "line": 1126
         },
         {
           "name": "CustomerReturnReason",
           "kind": "interface",
-          "line": 1134
+          "line": 1159
         },
         {
           "name": "CustomerReturnRequest",
           "kind": "interface",
-          "line": 1140
+          "line": 1165
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 1158
+          "line": 1183
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 1173
+          "line": 1198
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 1182
+          "line": 1207
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 1191
+          "line": 1216
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 1207
+          "line": 1232
         },
         {
           "name": "CmsBanner",
           "kind": "interface",
-          "line": 1214
+          "line": 1239
         },
         {
           "name": "CmsPage",
           "kind": "interface",
-          "line": 1222
+          "line": 1247
         },
         {
           "name": "CmsPost",
           "kind": "interface",
-          "line": 1229
+          "line": 1254
         },
         {
           "name": "CmsMenuLink",
           "kind": "interface",
-          "line": 1245
+          "line": 1270
         }
       ]
     },

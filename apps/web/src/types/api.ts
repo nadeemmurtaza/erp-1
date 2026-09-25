@@ -248,6 +248,31 @@ export interface SeoHealthRow {
   failures: string[];
 }
 
+export type AiSuggestionKind = 'ALT_TEXT' | 'META_TITLE' | 'META_DESCRIPTION' | 'DESCRIPTION' | 'CARE_INSTRUCTIONS';
+export type AiSuggestionStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+
+export interface AiSuggestion {
+  id: string;
+  productId: string;
+  productName: string;
+  productSlug: string;
+  imageUrl: string | null;
+  kind: AiSuggestionKind;
+  locale: string;
+  suggestedText: string;
+  status: AiSuggestionStatus;
+  createdAt: string;
+  reviewedAt: string | null;
+}
+
+export interface AiStatus {
+  providers: { anthropic: boolean; openai: boolean };
+  capabilities: { complete: boolean; embed: boolean; vision: boolean };
+  monthlyBudgetPaisa: number | null;
+  usdToPkrRate: number;
+  monthToDateSpendPaisa: number;
+}
+
 export interface MeasurementFieldRow {
   id: string;
   key: string;

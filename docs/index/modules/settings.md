@@ -3,7 +3,7 @@
 
 # Module: `settings`
 
-Pack **core** · always on · 4 files
+Pack **core** · always on · 5 files
 
 
 
@@ -11,28 +11,31 @@ Pack **core** · always on · 4 files
 
 Source: `apps/api/src/modules/settings/`
 
-## Files (4 · 282 lines)
+## Files (5 · 471 lines)
 
 All paths relative to `apps/api/src/modules/settings/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `settings.dto.ts` | dto | 94 | 3 |  |
-| `settings-admin.controller.ts` | controller | 61 | 1 |  |
+| `settings.dto.ts` | dto | 113 | 4 |  |
+| `settings-admin.controller.ts` | controller | 80 | 1 |  |
 | `settings-admin.module.ts` | nest module | 10 | 1 |  |
-| `settings-admin.service.ts` | service | 117 | 2 |  |
+| `settings-admin.service.spec.ts` | unit test | 107 | — |  |
+| `settings-admin.service.ts` | service | 161 | 2 |  |
 
 
-## HTTP routes (6)
+## HTTP routes (8)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/settings/audit-log` | `audit.view` | `SettingsAdminController.listAuditLog` :50 | The audit trail, newest first, filterable by entity/actor/date |
-| GET | `/admin/settings/documents` | `settings.manage` | `SettingsAdminController.getDocuments` :29 | Document branding and number prefixes |
-| PUT | `/admin/settings/documents` | `settings.manage` | `SettingsAdminController.updateDocuments` :36 | Set the document logo and number prefixes |
-| GET | `/admin/settings/media` | `settings.manage` | `SettingsAdminController.getMedia` :15 | How uploaded images are stored |
-| PUT | `/admin/settings/media` | `settings.manage` | `SettingsAdminController.updateMedia` :22 | Turn WebP conversion on or off for new uploads |
-| GET | `/admin/settings/permissions` | `settings.manage` | `SettingsAdminController.listPermissions` :43 | The full permission catalog, grouped by category |
+| GET | `/admin/settings/ai` | `ai.view` `ai.manage` | `SettingsAdminController.getAi` :48 | Which AI providers/capabilities are on, this month's spend, and the budget cap |
+| PUT | `/admin/settings/ai` | `ai.manage` | `SettingsAdminController.updateAi` :55 | Set the monthly AI budget cap and the USD-to-PKR rate used to estimate cost |
+| GET | `/admin/settings/audit-log` | `audit.view` | `SettingsAdminController.listAuditLog` :69 | The audit trail, newest first, filterable by entity/actor/date |
+| GET | `/admin/settings/documents` | `settings.manage` | `SettingsAdminController.getDocuments` :34 | Document branding and number prefixes |
+| PUT | `/admin/settings/documents` | `settings.manage` | `SettingsAdminController.updateDocuments` :41 | Set the document logo and number prefixes |
+| GET | `/admin/settings/media` | `settings.manage` | `SettingsAdminController.getMedia` :20 | How uploaded images are stored |
+| PUT | `/admin/settings/media` | `settings.manage` | `SettingsAdminController.updateMedia` :27 | Turn WebP conversion on or off for new uploads |
+| GET | `/admin/settings/permissions` | `settings.manage` | `SettingsAdminController.listPermissions` :62 | The full permission catalog, grouped by category |
 
 
 ## Domain events
@@ -62,7 +65,9 @@ _none_
 
 ## Reaches out to
 
+- core `ai`
 - core `auth`
+- core `config`
 - core `prisma`
 - core `settings`
 - package `@newax/shared`
@@ -72,22 +77,25 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (0)
+## Tests (1)
 
-_No spec files in this unit._
+| Spec | Cases | Covers |
+|---|---|---|
+| `settings-admin.service.spec.ts` | 6 | SettingsAdminService — AI settings · getAi · updateAi |
 
 
 ## Every export in this unit
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `AuditLogQueryDto` | class | `settings.dto.ts:16` |  |
-| `UpdateMediaSettingsDto` | class | `settings.dto.ts:52` |  |
-| `UpdateDocumentSettingsDto` | class | `settings.dto.ts:73` |  |
-| `SettingsAdminController` | class | `settings-admin.controller.ts:9` |  |
+| `AuditLogQueryDto` | class | `settings.dto.ts:18` |  |
+| `UpdateMediaSettingsDto` | class | `settings.dto.ts:54` |  |
+| `UpdateAiSettingsDto` | class | `settings.dto.ts:75` |  |
+| `UpdateDocumentSettingsDto` | class | `settings.dto.ts:92` |  |
+| `SettingsAdminController` | class | `settings-admin.controller.ts:14` |  |
 | `SettingsAdminModule` | class | `settings-admin.module.ts:9` |  |
-| `AuditLogQuery` | interface | `settings-admin.service.ts:11` |  |
-| `SettingsAdminService` | class | `settings-admin.service.ts:27` | Backs the /admin/settings screen: the permission catalog, each role's current grants (editable here — the who… |
+| `AuditLogQuery` | interface | `settings-admin.service.ts:13` |  |
+| `SettingsAdminService` | class | `settings-admin.service.ts:29` | Backs the /admin/settings screen: the permission catalog, each role's current grants (editable here — the who… |
 
 
 ---

@@ -3,7 +3,7 @@
 
 # Tests
 
-**156** spec files, **1,459** cases. What is already pinned down — and what is not.
+**158** spec files, **1,481** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -24,7 +24,6 @@ such exemption.
 - [`notification-preferences`](../modules/notification-preferences.md)
 - [`promotions`](../modules/promotions.md)
 - [`reviews`](../modules/reviews.md)
-- [`settings`](../modules/settings.md)
 - [`stitching`](../modules/stitching.md)
 - [`tax`](../modules/tax.md)
 - [`tracking`](../modules/tracking.md)
@@ -57,7 +56,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (138)
+## Unit and integration (140)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -107,6 +106,7 @@ regression or an N+1.
 | `apps/api/src/modules/bom/cost-rollup.spec.ts` | bom | 7 | computeRecipeCost |
 | `apps/api/src/modules/bom/production.service.spec.ts` | bom | 12 | ProductionService · consuming raw stock and producing finished stock · scopeLevel/originNodeId/loca… |
 | `apps/api/src/modules/cart/cart.guest-contact.spec.ts` | cart | 4 | CartService.updateGuestContact |
+| `apps/api/src/modules/catalog/ai-suggestions.service.spec.ts` | catalog | 16 | AiSuggestionsService · generateForProduct · generateBulk · listQueue · approve · reject · approveBu… |
 | `apps/api/src/modules/catalog/product-admin.service.spec.ts` | catalog | 13 | assertKindRules · assertUniqueSkus |
 | `apps/api/src/modules/catalog/product-replication.listener.spec.ts` | catalog | 7 | ProductReplicationListener — WO-20.3 · onModuleInit · onProductPublished · onProductPriceChanged ·… |
 | `apps/api/src/modules/collections/collections.service.spec.ts` | collections | 6 | CollectionsService |
@@ -160,6 +160,7 @@ regression or an N+1.
 | `apps/api/src/modules/purchasing/supplier-bill.spec.ts` | purchasing | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
 | `apps/api/src/modules/reports/reports-finance-exports.spec.ts` | reports | 4 | ReportsService finance exports |
 | `apps/api/src/modules/search/search.service.spec.ts` | search | 6 | SearchService |
+| `apps/api/src/modules/settings/settings-admin.service.spec.ts` | settings | 6 | SettingsAdminService — AI settings · getAi · updateAi |
 | `apps/api/src/modules/tradingpartners/invoice.service.spec.ts` | tradingpartners | 4 | InvoiceService · issue · findOne |
 | `apps/api/src/modules/tradingpartners/offer.service.spec.ts` | tradingpartners | 3 | OfferService · publish |
 | `apps/api/src/modules/tradingpartners/product-alerts.listener.spec.ts` | tradingpartners | 4 | ProductAlertsListener |

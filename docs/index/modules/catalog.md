@@ -3,23 +3,26 @@
 
 # Module: `catalog`
 
-Pack **core** · enabled by the `MODULES` allowlist · 26 files
+Pack **core** · enabled by the `MODULES` allowlist · 29 files
 
 
 
 Source: `apps/api/src/modules/catalog/`
 
-## Files (26 · 4,391 lines)
+## Files (29 · 5,140 lines)
 
 All paths relative to `apps/api/src/modules/catalog`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
+| `ai-suggestions.controller.ts` | controller | 79 | 1 | WO-9.1's review queue (09-ai-layer.md): every AI-drafted alt text, meta title/description, product description and care… |
+| `ai-suggestions.service.spec.ts` | unit test | 314 | — |  |
+| `ai-suggestions.service.ts` | service | 352 | 1 | WO-9.1 (09-ai-layer.md) — alt text and SEO copy as human-confirmed drafts. |
 | `brand-admin.service.ts` | service | 170 | 1 | The managed list of brands. |
 | `catalog-admin.controller.ts` | controller | 284 | 1 |  |
 | `catalog-options-admin.controller.ts` | controller | 105 | 1 | WO-3.1 (03-variants-sku-seo.md) — the store-level option library and each product's own option axes. |
 | `catalog.controller.ts` | controller | 51 | 1 |  |
-| `catalog.module.ts` | nest module | 51 | 1 |  |
+| `catalog.module.ts` | nest module | 55 | 1 |  |
 | `catalog.service.ts` | service | 379 | 3 | A product flattened into one locale, ready for the storefront. |
 | `category-admin.service.ts` | service | 192 | 1 |  |
 | `brand.dto.ts` | dto | 63 | 2 |  |
@@ -43,10 +46,16 @@ All paths relative to `apps/api/src/modules/catalog`.
 | `sync-option-model.ts` | module | 168 | 1 | WO-3.1 (03-variants-sku-seo.md, Blocker B2) — derives the ProductOption/ProductOptionValue/ProductVariantOptionValue mo… |
 
 
-## HTTP routes (43)
+## HTTP routes (49)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/catalog/ai-suggestions` | `ai.view` `ai.manage` | `AiSuggestionsController.list` :40 | The AI draft review queue |
+| POST | `/admin/catalog/ai-suggestions/:id/approve` | `ai.manage` | `AiSuggestionsController.approve` :61 | Apply a draft to the live product and mark it approved |
+| POST | `/admin/catalog/ai-suggestions/:id/reject` | `ai.manage` | `AiSuggestionsController.reject` :68 | Discard a draft without applying it |
+| POST | `/admin/catalog/ai-suggestions/approve-bulk` | `ai.manage` | `AiSuggestionsController.approveBulk` :75 | Approve several drafts at once |
+| POST | `/admin/catalog/ai-suggestions/generate-bulk` | `ai.manage` | `AiSuggestionsController.generateBulk` :54 | Draft for every product failing the SEO publish gate (Catalogue -> SEO health) |
+| POST | `/admin/catalog/ai-suggestions/generate/:productId` | `ai.manage` | `AiSuggestionsController.generate` :47 | Draft alt text and SEO copy for one product, for every gap it currently has |
 | GET | `/admin/catalog/brands` | `catalog.manage` | `CatalogAdminController.listBrands` :227 |  |
 | POST | `/admin/catalog/brands` | `catalog.manage` | `CatalogAdminController.createBrand` :232 |  |
 | DELETE | `/admin/catalog/brands/:id` | `catalog.manage` | `CatalogAdminController.deleteBrand` :247 |  |
@@ -100,7 +109,7 @@ All paths relative to `apps/api/src/modules/catalog`.
 |---|---|---|
 | `ProductPublished` | `catalog.product_published` | `product-admin.service.ts:197` |
 | `ProductPriceChanged` | `catalog.product_price_changed` | `product-admin.service.ts:350` |
-| `ProductChanged` | `catalog.product_changed` | `product-admin.service.ts:207`, `product-admin.service.ts:358` |
+| `ProductChanged` | `catalog.product_changed` | `ai-suggestions.service.ts:296`, `product-admin.service.ts:207`, `product-admin.service.ts:358` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -155,14 +164,15 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 **`CatalogModule`** (`catalog.module.ts`)
 - imports: `InventoryModule`
-- controllers: `CatalogController`, `CatalogAdminController`, `CatalogOptionsAdminController`, `RedirectAdminController`, `RedirectLookupController`
-- providers: `CatalogService`, `ProductAdminService`, `CategoryAdminService`, `BrandAdminService`, `ProductImportService`, `ProductReplicationListener`, `OptionTemplateAdminService`, `ProductOptionAdminService`, `RedirectService`, `SeoHealthService`
+- controllers: `CatalogController`, `CatalogAdminController`, `CatalogOptionsAdminController`, `RedirectAdminController`, `RedirectLookupController`, `AiSuggestionsController`
+- providers: `CatalogService`, `ProductAdminService`, `CategoryAdminService`, `BrandAdminService`, `ProductImportService`, `ProductReplicationListener`, `OptionTemplateAdminService`, `ProductOptionAdminService`, `RedirectService`, `SeoHealthService`, `AiSuggestionsService`
 - exports: `CatalogService`
 
 
 ## Reaches out to
 
 - **module `inventory`** ⚠ direct import
+- core `ai`
 - core `audit`
 - core `auth`
 - core `common`
@@ -178,10 +188,11 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (2)
+## Tests (3)
 
 | Spec | Cases | Covers |
 |---|---|---|
+| `ai-suggestions.service.spec.ts` | 16 | AiSuggestionsService · generateForProduct · generateBulk · listQueue · approve · reject · approveBulk |
 | `product-admin.service.spec.ts` | 13 | assertKindRules · assertUniqueSkus |
 | `product-replication.listener.spec.ts` | 7 | ProductReplicationListener — WO-20.3 · onModuleInit · onProductPublished · onProductPriceChanged · applyIncoming (via t… |
 
@@ -190,11 +201,13 @@ check there before adding another.
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
+| `AiSuggestionsController` | class | `ai-suggestions.controller.ts:34` | WO-9.1's review queue (09-ai-layer.md): every AI-drafted alt text, meta title/description, product descriptio… |
+| `AiSuggestionsService` | class | `ai-suggestions.service.ts:115` | WO-9.1 (09-ai-layer.md) — alt text and SEO copy as human-confirmed drafts. |
 | `BrandAdminService` | class | `brand-admin.service.ts:16` | The managed list of brands. |
 | `CatalogAdminController` | class | `catalog-admin.controller.ts:78` |  |
 | `CatalogOptionsAdminController` | class | `catalog-options-admin.controller.ts:17` | WO-3.1 (03-variants-sku-seo.md) — the store-level option library and each product's own option axes. |
 | `CatalogController` | class | `catalog.controller.ts:11` |  |
-| `CatalogModule` | class | `catalog.module.ts:50` |  |
+| `CatalogModule` | class | `catalog.module.ts:54` |  |
 | `LocalisedProduct` | interface | `catalog.service.ts:9` | A product flattened into one locale, ready for the storefront. |
 | `CatalogService` | class | `catalog.service.ts:71` | Storefront reads. |
 | `localise` | function | `catalog.service.ts:261` |  |

@@ -3,26 +3,26 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1948,
-    "lines": 298619,
+    "files": 1960,
+    "lines": 300620,
     "routes": 646,
     "controllers": 118,
-    "models": 233,
-    "enums": 107,
-    "migrations": 79,
-    "events": 59,
+    "models": 237,
+    "enums": 108,
+    "migrations": 80,
+    "events": 60,
     "permissions": 79,
     "screens": 231,
     "crons": 19,
-    "specs": 226,
+    "specs": 230,
     "designLaws": 0
   },
   "designLaws": [],
   "areas": {
     "root": {
-      "files": 152,
-      "lines": 15337,
-      "bytes": 945198,
+      "files": 163,
+      "lines": 17028,
+      "bytes": 1025919,
       "label": "repository root files"
     },
     "infra": {
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 815,
-      "lines": 115115,
-      "bytes": 4355186,
+      "files": 816,
+      "lines": 115260,
+      "bytes": 4360825,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 394,
-      "lines": 62587,
-      "bytes": 3716514,
+      "lines": 62752,
+      "bytes": 3726753,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -1185,6 +1185,7 @@
         "apps/api/src/core/notifications/notification-channel.ts",
         "apps/api/src/core/notifications/notification-preferences.service.ts",
         "apps/api/src/core/notifications/notifications.module.ts",
+        "apps/api/src/core/notifications/notifications.service.spec.ts",
         "apps/api/src/core/notifications/notifications.service.ts",
         "apps/api/src/core/notifications/sms.channel.ts",
         "apps/api/src/core/notifications/unsubscribe.controller.ts",
@@ -13705,6 +13706,15 @@
         "apps/api/src/modules/receivables/credit-terms.service.ts:86"
       ],
       "subscribers": []
+    },
+    {
+      "symbol": "NotificationSent",
+      "name": "notification.sent",
+      "doc": "NotificationsService.send() (doc 153, commercial-licensing-agency/ 153-usage-based-pricing-model.md, WO-153.2) — fires once per logical message, at the SAME consolidated call site every channel (emai…",
+      "publishers": [
+        "apps/api/src/core/notifications/notifications.service.ts:73"
+      ],
+      "subscribers": []
     }
   ],
   "models": [
@@ -21658,6 +21668,88 @@
       ]
     },
     {
+      "name": "MeteredOrderFee",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 587,
+      "doc": "Doc 153's own \"the reversal document, not the reversal flag\" — one row per order actually metered for the transaction fee, naming the specific order and the exact amount metered for it, so a later `R…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "feeMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodStart",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodEnd",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "meteredAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reversedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reversalCreditNoteId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([tenantId, orderId])",
+        "@@index([tenantId, periodStart])"
+      ]
+    },
+    {
       "name": "NewsletterSubscriber",
       "file": "apps/api/prisma/schema/onsite-messaging.prisma",
       "line": 62,
@@ -24353,7 +24445,7 @@
     {
       "name": "PlatformCustomQuote",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 412,
+      "line": 468,
       "doc": "WO-50.4 — a custom quote's discount is checked against PLATFORM_QUOTE_DISCOUNT_APPROVAL_THRESHOLD_PCT at request time; above it the quote is PENDING until an ops principal OTHER than the requester ap…",
       "fields": [
         {
@@ -24477,7 +24569,7 @@
     {
       "name": "PlatformInvoice",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 345,
+      "line": 378,
       "doc": "",
       "fields": [
         {
@@ -24558,6 +24650,27 @@
           "relation": false
         },
         {
+          "name": "transactionFeeMinorSnapshot",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "usageRateCardSnapshot",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "usageLinesSnapshot",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "amountMinor",
           "type": "Int",
           "id": false,
@@ -24586,6 +24699,20 @@
           "relation": false
         },
         {
+          "name": "dueAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "dunningReminderSentAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "tenant",
           "type": "PlatformTenant",
           "id": false,
@@ -24609,13 +24736,14 @@
       ],
       "indexes": [
         "@@unique([tenantId, periodStart, periodEnd])",
-        "@@index([tenantId, issuedAt])"
+        "@@index([tenantId, issuedAt])",
+        "@@index([status, dueAt])"
       ]
     },
     {
       "name": "PlatformInvoiceCreditNote",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 388,
+      "line": 444,
       "doc": "A billing dispute is resolved here, against the specific invoice — never an edited invoice line (doc 50's own \"the reversal document\" lens).",
       "fields": [
         {
@@ -24675,7 +24803,7 @@
     {
       "name": "PlatformOpsClient",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 213,
+      "line": 246,
       "doc": "A key-hash principal for internal hosting-ops tooling calling this control plane — the same shape TradingPartner/PosTerminal/Node already use in the tenant-side schema, scoped here to platform.",
       "fields": [
         {
@@ -24742,7 +24870,7 @@
     {
       "name": "PlatformPlan",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 99,
+      "line": 110,
       "doc": "",
       "fields": [
         {
@@ -24816,6 +24944,27 @@
           "relation": false
         },
         {
+          "name": "transactionFeeBps",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "usageRateCardMinor",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "includedAllowances",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "tenants",
           "type": "PlatformTenant[]",
           "id": false,
@@ -24842,14 +24991,138 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "rateCardChangeRequests",
+          "type": "PlatformRateCardChangeRequest[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": []
     },
     {
+      "name": "PlatformRateCardChangeRequest",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 643,
+      "doc": "doc 153's own \"the threshold nobody approves alone\" / \"authority and blast radius\" lenses, resolved with the identical create/approve split `PlatformCustomQuote` (doc 50 §4) already established: a ra…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "planId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "proposedTransactionFeeBps",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "proposedUsageRateCardMinor",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "proposedIncludedAllowances",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requiresApproval",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "RateCardChangeStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requestedByOpsClientId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedByOpsClientId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rejectedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rejectionReason",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "appliedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "plan",
+          "type": "PlatformPlan",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([planId])",
+        "@@index([status])"
+      ]
+    },
+    {
       "name": "PlatformSubscription",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 134,
+      "line": 167,
       "doc": "",
       "fields": [
         {
@@ -25114,6 +25387,27 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "usageMeters",
+          "type": "UsageMeter[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "meteredOrderFees",
+          "type": "MeteredOrderFee[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "usageMeteringCursor",
+          "type": "UsageMeteringCursor?",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -25125,7 +25419,7 @@
     {
       "name": "PlatformUsageRecord",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 150,
+      "line": 183,
       "doc": "Metered usage a tenant's own deployment reports about itself — never a source of business truth, only what feeds an invoice line.",
       "fields": [
         {
@@ -28296,7 +28590,7 @@
     {
       "name": "ResourceQuotaAlert",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 259,
+      "line": 292,
       "doc": "One row per (tenant, metric, window) that crossed its tier's quota threshold — the record ResourceQuotaAlertCron writes and the tenant's own billing contact / hosting-ops digest is generated from.",
       "fields": [
         {
@@ -28378,7 +28672,7 @@
     {
       "name": "ResourceTierQuota",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 234,
+      "line": 267,
       "doc": "--------------------------------------------------------------------------- WO-39.6 — resource quotas + alerting (application layer only; which orchestrator actually enforces a quota is named out of…",
       "fields": [
         {
@@ -30190,7 +30484,7 @@
     {
       "name": "SignupVerification",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 447,
+      "line": 503,
       "doc": "A signup request is held here, unprovisioned, until its email link is followed — doc 51 §3: the public form is a thin request, never a direct call into ProvisioningService.",
       "fields": [
         {
@@ -32345,7 +32639,7 @@
     {
       "name": "SupportAccessGrant",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 165,
+      "line": 198,
       "doc": "The one deliberately time-boxed door into a tenant's isolated deployment — doc 39 §3.",
       "fields": [
         {
@@ -32676,7 +32970,7 @@
     {
       "name": "TenantDataExport",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 303,
+      "line": 336,
       "doc": "",
       "fields": [
         {
@@ -32778,7 +33072,7 @@
     {
       "name": "TenantDeploymentCredential",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 193,
+      "line": 226,
       "doc": "The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GCM, PLATFORM_ENCRYPTION_KEY) connection string, one row per tenant, never a plaintext column and never returned…",
       "fields": [
         {
@@ -32968,7 +33262,7 @@
     {
       "name": "TrialExtension",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 465,
+      "line": 521,
       "doc": "WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpiresAt` forward; every extension is recorded here so \"extended more than once\" is a query, not a memory.",
       "fields": [
         {
@@ -33031,6 +33325,125 @@
       "indexes": [
         "@@index([tenantId, createdAt])"
       ]
+    },
+    {
+      "name": "UsageMeter",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 554,
+      "doc": "One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` increments off a tenant's own transactional outbox (`transaction_fee_minor`, `messages_sent`) or sets to the late…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "metric",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodStart",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodEnd",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "quantity",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([tenantId, metric, periodStart])",
+        "@@index([tenantId, periodStart])"
+      ]
+    },
+    {
+      "name": "UsageMeteringCursor",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 618,
+      "doc": "The per-tenant high-water mark `UsageMeteringService.pollTenant()` advances after each batch — so a poll reads only the outbox rows it has not already applied, rather than rescanning the whole table…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "lastEventId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lastEventCreatedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": []
     },
     {
       "name": "User",
@@ -34960,7 +35373,7 @@
     {
       "name": "InvoiceStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 340,
+      "line": 373,
       "values": [
         "ISSUED",
         "CREDITED"
@@ -35133,7 +35546,7 @@
     {
       "name": "OpsClientStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 203,
+      "line": 236,
       "values": [
         "ACTIVE",
         "REVOKED"
@@ -35270,11 +35683,12 @@
     {
       "name": "PricingModel",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 93,
+      "line": 96,
       "values": [
         "PER_SEAT",
         "FLAT_MONTHLY",
-        "ONE_TIME_LICENSE"
+        "ONE_TIME_LICENSE",
+        "USAGE_BASED"
       ]
     },
     {
@@ -35336,11 +35750,22 @@
     {
       "name": "QuoteStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 401,
+      "line": 457,
       "values": [
         "PENDING",
         "APPROVED",
         "REJECTED"
+      ]
+    },
+    {
+      "name": "RateCardChangeStatus",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 628,
+      "values": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED",
+        "APPLIED"
       ]
     },
     {
@@ -35595,7 +36020,7 @@
     {
       "name": "SubscriptionStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 128,
+      "line": 161,
       "values": [
         "ACTIVE",
         "PAST_DUE",
@@ -35615,7 +36040,7 @@
     {
       "name": "TenantExportStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 283,
+      "line": 316,
       "values": [
         "PENDING",
         "RUNNING",
@@ -35626,7 +36051,7 @@
     {
       "name": "TenantExportTrigger",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 290,
+      "line": 323,
       "values": [
         "MANUAL",
         "DEPROVISION"
@@ -37070,6 +37495,29 @@
         "PlatformTenant",
         "SignupVerification",
         "TrialExtension"
+      ]
+    },
+    {
+      "folder": "20260925091000_wo153_usage_based_pricing",
+      "file": "apps/platform/prisma/schema/migrations/20260925091000_wo153_usage_based_pricing/migration.sql",
+      "date": "2026-09-25",
+      "slug": "wo153_usage_based_pricing",
+      "statements": 27,
+      "kinds": [
+        "ALTER TYPE",
+        "ALTER TABLE",
+        "CREATE INDEX",
+        "CREATE TABLE",
+        "CREATE TYPE",
+        "CREATE UNIQUE INDEX"
+      ],
+      "tables": [
+        "MeteredOrderFee",
+        "PlatformInvoice",
+        "PlatformPlan",
+        "PlatformRateCardChangeRequest",
+        "UsageMeter",
+        "UsageMeteringCursor"
       ]
     },
     {
@@ -40205,6 +40653,15 @@
       ]
     },
     {
+      "file": "apps/api/src/core/notifications/notifications.service.spec.ts",
+      "module": "core/notifications",
+      "kind": "unit test",
+      "cases": 2,
+      "describes": [
+        "NotificationsService"
+      ]
+    },
+    {
       "file": "apps/api/src/core/prisma/enums.spec.ts",
       "module": "core/prisma",
       "kind": "unit test",
@@ -42074,16 +42531,26 @@
       ]
     },
     {
+      "file": "apps/platform/src/modules/billing/billing-period.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 2,
+      "describes": [
+        "currentCalendarMonthPeriod"
+      ]
+    },
+    {
       "file": "apps/platform/src/modules/billing/billing.service.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 9,
+      "cases": 15,
       "describes": [
         "BillingService",
         "issueInvoiceForPeriod",
         "runBillingForPeriod",
         "issueCreditNote",
-        "previewInvoice"
+        "previewInvoice",
+        "USAGE_BASED (doc 153)"
       ]
     },
     {
@@ -42101,9 +42568,21 @@
       "file": "apps/platform/src/modules/billing/plans.service.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 5,
+      "cases": 7,
       "describes": [
         "PlansService"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/billing/rate-card.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "RateCardService",
+        "proposeChange",
+        "approve",
+        "apply"
       ]
     },
     {
@@ -42113,6 +42592,18 @@
       "cases": 3,
       "describes": [
         "SeatCounterService"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/billing/usage-metering.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 11,
+      "describes": [
+        "UsageMeteringService",
+        "pollTenant",
+        "snapshotAllowances",
+        "getMetersForPeriod"
       ]
     },
     {
@@ -45423,8 +45914,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 624,
-      "bytes": 24723,
+      "lines": 654,
+      "bytes": 26325,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -45435,262 +45926,267 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 123
+          "line": 141
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 125
+          "line": 143
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 138
+          "line": 156
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 146
+          "line": 164
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 154
+          "line": 172
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 174
+          "line": 192
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 180
+          "line": 198
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 187
+          "line": 205
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 194
+          "line": 212
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 198
+          "line": 216
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 204
+          "line": 222
         },
         {
           "name": "ApiKeyIssuedPayload",
           "kind": "interface",
-          "line": 215
+          "line": 233
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 223
+          "line": 241
         },
         {
           "name": "ShipmentStatusChangedPayload",
           "kind": "interface",
-          "line": 230
+          "line": 248
         },
         {
           "name": "ShipmentReturnedToOriginPayload",
           "kind": "interface",
-          "line": 240
+          "line": 258
         },
         {
           "name": "ReturnRequestStatusChangedPayload",
           "kind": "interface",
-          "line": 249
+          "line": 267
         },
         {
           "name": "ReturnRequestFullyRefundedPayload",
           "kind": "interface",
-          "line": 258
+          "line": 276
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 266
+          "line": 284
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 274
+          "line": 292
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 285
+          "line": 303
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 292
+          "line": 310
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 301
+          "line": 319
         },
         {
           "name": "ProductChangedPayload",
           "kind": "interface",
-          "line": 309
+          "line": 327
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 314
+          "line": 332
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 322
+          "line": 340
         },
         {
           "name": "RequisitionCreatedPayload",
           "kind": "interface",
-          "line": 327
+          "line": 345
         },
         {
           "name": "RequisitionConvertedPayload",
           "kind": "interface",
-          "line": 333
+          "line": 351
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 339
+          "line": 357
         },
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 351
+          "line": 369
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 366
+          "line": 384
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 374
+          "line": 392
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 388
+          "line": 406
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 401
+          "line": 419
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 414
+          "line": 432
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 430
+          "line": 448
         },
         {
           "name": "PayrollRunPostedPayload",
           "kind": "interface",
-          "line": 438
+          "line": 456
         },
         {
           "name": "PayrollAdjustmentPostedPayload",
           "kind": "interface",
-          "line": 450
+          "line": 468
         },
         {
           "name": "DiscountRedeemedPayload",
           "kind": "interface",
-          "line": 461
+          "line": 479
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 472
+          "line": 490
         },
         {
           "name": "ReviewModeratedPayload",
           "kind": "interface",
-          "line": 479
+          "line": 497
         },
         {
           "name": "WalletCreditPurchasedPayload",
           "kind": "interface",
-          "line": 485
+          "line": 503
         },
         {
           "name": "WalletCreditRedeemedPayload",
           "kind": "interface",
-          "line": 493
+          "line": 511
         },
         {
           "name": "WalletCreditRefundedPayload",
           "kind": "interface",
-          "line": 502
+          "line": 520
         },
         {
           "name": "MerchantPayableCreatedPayload",
           "kind": "interface",
-          "line": 513
+          "line": 531
         },
         {
           "name": "MerchantPayablePaidPayload",
           "kind": "interface",
-          "line": 520
+          "line": 538
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 527
+          "line": 545
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 533
+          "line": 551
         },
         {
           "name": "CreditNoteIssuedPayload",
           "kind": "interface",
-          "line": 595
+          "line": 614
         },
         {
           "name": "CreditNoteVoidedPayload",
           "kind": "interface",
-          "line": 604
+          "line": 623
         },
         {
           "name": "DebitNoteIssuedPayload",
           "kind": "interface",
-          "line": 608
+          "line": 627
         },
         {
           "name": "DebitNoteVoidedPayload",
           "kind": "interface",
-          "line": 616
+          "line": 635
         },
         {
           "name": "CreditHoldAppliedPayload",
           "kind": "interface",
-          "line": 620
+          "line": 639
+        },
+        {
+          "name": "NotificationSentPayload",
+          "kind": "interface",
+          "line": 644
         }
       ]
     },
@@ -46576,17 +47072,26 @@
       ]
     },
     {
+      "path": "apps/api/src/core/notifications/notifications.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 98,
+      "bytes": 3199,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/core/notifications/notifications.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 63,
-      "bytes": 2039,
+      "lines": 80,
+      "bytes": 2877,
       "doc": "",
       "symbols": [
         {
           "name": "NotificationsService",
           "kind": "class",
-          "line": 17
+          "line": 19
         }
       ]
     },
@@ -57861,6 +58366,15 @@
       "symbols": []
     },
     {
+      "path": "apps/platform/prisma/schema/migrations/20260925091000_wo153_usage_based_pricing/migration.sql",
+      "area": "root",
+      "kind": "migration",
+      "lines": 126,
+      "bytes": 5905,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/platform/prisma/schema/migrations/migration_lock.toml",
       "area": "root",
       "kind": "toml",
@@ -57873,8 +58387,8 @@
       "path": "apps/platform/prisma/schema/platform.prisma",
       "area": "root",
       "kind": "prisma schema",
-      "lines": 478,
-      "bytes": 19309,
+      "lines": 667,
+      "bytes": 28878,
       "doc": "WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the",
       "symbols": []
     },
@@ -57936,8 +58450,8 @@
       "path": "apps/platform/src/core/config/env.validation.ts",
       "area": "root",
       "kind": "config",
-      "lines": 130,
-      "bytes": 6606,
+      "lines": 148,
+      "bytes": 7485,
       "doc": "",
       "symbols": [
         {
@@ -57948,12 +58462,12 @@
         {
           "name": "PlatformEnv",
           "kind": "type",
-          "line": 121
+          "line": 139
         },
         {
           "name": "validatePlatformEnv",
           "kind": "function",
-          "line": 123
+          "line": 141
         }
       ]
     },
@@ -58122,8 +58636,8 @@
       "path": "apps/platform/src/core/security/ops-permissions.ts",
       "area": "root",
       "kind": "module",
-      "lines": 26,
-      "bytes": 1153,
+      "lines": 35,
+      "bytes": 1625,
       "doc": "The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permissions.ts`, which is apps/api's tenant-facing PBAC catalog, seeded against that app's own User/Role/RolePermission tables.",
       "symbols": [
         {
@@ -58134,7 +58648,7 @@
         {
           "name": "PlatformPermission",
           "kind": "type",
-          "line": 25
+          "line": 34
         }
       ]
     },
@@ -58178,17 +58692,46 @@
       "symbols": []
     },
     {
+      "path": "apps/platform/src/modules/billing/billing-period.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 18,
+      "bytes": 761,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/billing/billing-period.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 18,
+      "bytes": 692,
+      "doc": "The one place a calendar-month billing period is computed from \"now\" — shared by `BillingCron` (doc 50 §3) and `UsageMeteringCron` (doc 153 §2) so the two never compute period boundaries by two slightly different routes.",
+      "symbols": [
+        {
+          "name": "BillingPeriod",
+          "kind": "interface",
+          "line": 8
+        },
+        {
+          "name": "currentCalendarMonthPeriod",
+          "kind": "function",
+          "line": 13
+        }
+      ]
+    },
+    {
       "path": "apps/platform/src/modules/billing/billing.controller.ts",
       "area": "root",
       "kind": "controller",
-      "lines": 34,
-      "bytes": 1402,
+      "lines": 48,
+      "bytes": 2089,
       "doc": "",
       "symbols": [
         {
           "name": "BillingController",
           "kind": "class",
-          "line": 10
+          "line": 11
         }
       ]
     },
@@ -58196,14 +58739,14 @@
       "path": "apps/platform/src/modules/billing/billing.cron.ts",
       "area": "root",
       "kind": "scheduled job",
-      "lines": 26,
-      "bytes": 1235,
+      "lines": 25,
+      "bytes": 1161,
       "doc": "",
       "symbols": [
         {
           "name": "BillingCron",
           "kind": "class",
-          "line": 11
+          "line": 12
         }
       ]
     },
@@ -58211,14 +58754,14 @@
       "path": "apps/platform/src/modules/billing/billing.module.ts",
       "area": "root",
       "kind": "nest module",
-      "lines": 17,
-      "bytes": 789,
+      "lines": 32,
+      "bytes": 1268,
       "doc": "",
       "symbols": [
         {
           "name": "BillingModule",
           "kind": "class",
-          "line": 16
+          "line": 31
         }
       ]
     },
@@ -58226,8 +58769,8 @@
       "path": "apps/platform/src/modules/billing/billing.service.spec.ts",
       "area": "root",
       "kind": "unit test",
-      "lines": 189,
-      "bytes": 8835,
+      "lines": 285,
+      "bytes": 13599,
       "doc": "",
       "symbols": []
     },
@@ -58235,19 +58778,29 @@
       "path": "apps/platform/src/modules/billing/billing.service.ts",
       "area": "root",
       "kind": "service",
-      "lines": 196,
-      "bytes": 8168,
+      "lines": 275,
+      "bytes": 11901,
       "doc": "",
       "symbols": [
         {
+          "name": "UsageLine",
+          "kind": "interface",
+          "line": 12
+        },
+        {
+          "name": "UsageBreakdown",
+          "kind": "interface",
+          "line": 20
+        },
+        {
           "name": "InvoicePreview",
           "kind": "interface",
-          "line": 7
+          "line": 25
         },
         {
           "name": "BillingService",
           "kind": "class",
-          "line": 26
+          "line": 45
         }
       ]
     },
@@ -58299,8 +58852,8 @@
       "path": "apps/platform/src/modules/billing/dto/create-plan.dto.ts",
       "area": "root",
       "kind": "dto",
-      "lines": 50,
-      "bytes": 1287,
+      "lines": 64,
+      "bytes": 1579,
       "doc": "",
       "symbols": [
         {
@@ -58331,6 +58884,26 @@
       ]
     },
     {
+      "path": "apps/platform/src/modules/billing/dto/rate-card.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 27,
+      "bytes": 753,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProposeRateCardChangeDto",
+          "kind": "class",
+          "line": 7
+        },
+        {
+          "name": "RejectRateCardChangeDto",
+          "kind": "class",
+          "line": 22
+        }
+      ]
+    },
+    {
       "path": "apps/platform/src/modules/billing/dto/request-quote.dto.ts",
       "area": "root",
       "kind": "dto",
@@ -58347,6 +58920,21 @@
           "name": "RejectQuoteDto",
           "kind": "class",
           "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/invoice-dunning.cron.ts",
+      "area": "root",
+      "kind": "scheduled job",
+      "lines": 52,
+      "bytes": 2129,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "InvoiceDunningCron",
+          "kind": "class",
+          "line": 18
         }
       ]
     },
@@ -58369,8 +58957,8 @@
       "path": "apps/platform/src/modules/billing/plans.service.spec.ts",
       "area": "root",
       "kind": "unit test",
-      "lines": 61,
-      "bytes": 2765,
+      "lines": 88,
+      "bytes": 3857,
       "doc": "",
       "symbols": []
     },
@@ -58378,14 +58966,58 @@
       "path": "apps/platform/src/modules/billing/plans.service.ts",
       "area": "root",
       "kind": "service",
-      "lines": 42,
-      "bytes": 1998,
+      "lines": 48,
+      "bytes": 2489,
       "doc": "",
       "symbols": [
         {
           "name": "PlansService",
           "kind": "class",
           "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/rate-card.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 53,
+      "bytes": 1825,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RateCardController",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/rate-card.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 127,
+      "bytes": 5356,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/billing/rate-card.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 141,
+      "bytes": 6804,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProposeRateCardChangeInput",
+          "kind": "interface",
+          "line": 6
+        },
+        {
+          "name": "RateCardService",
+          "kind": "class",
+          "line": 30
         }
       ]
     },
@@ -58410,6 +59042,50 @@
           "name": "SeatCounterService",
           "kind": "class",
           "line": 37
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/usage-metering.cron.ts",
+      "area": "root",
+      "kind": "scheduled job",
+      "lines": 60,
+      "bytes": 2351,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UsageMeteringCron",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/usage-metering.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 285,
+      "bytes": 12416,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/billing/usage-metering.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 318,
+      "bytes": 13965,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PollResult",
+          "kind": "interface",
+          "line": 48
+        },
+        {
+          "name": "UsageMeteringService",
+          "kind": "class",
+          "line": 55
         }
       ]
     },
@@ -59118,7 +59794,7 @@
       "area": "root",
       "kind": "html",
       "lines": 0,
-      "bytes": 17427,
+      "bytes": 22807,
       "doc": "",
       "symbols": []
     },
@@ -69056,8 +69732,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 3447,
-      "bytes": 195781,
+      "lines": 3604,
+      "bytes": 205495,
       "doc": "",
       "symbols": []
     },
@@ -69821,8 +70497,8 @@
       "path": "docs/implementation/commercial-licensing-agency/153-usage-based-pricing-model.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 290,
-      "bytes": 15871,
+      "lines": 298,
+      "bytes": 16396,
       "doc": "",
       "symbols": []
     },

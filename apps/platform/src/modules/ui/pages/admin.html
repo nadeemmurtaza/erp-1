@@ -56,6 +56,8 @@
   <button data-tab="quotes">Custom quotes</button>
   <button data-tab="support">Support access</button>
   <button data-tab="quotas">Resource quotas</button>
+  <button data-tab="usage">Usage</button>
+  <button data-tab="rate-cards">Rate cards</button>
 </nav>
 
 <main>
@@ -73,11 +75,13 @@
           <option value="FLAT_MONTHLY">FLAT_MONTHLY</option>
           <option value="PER_SEAT">PER_SEAT</option>
           <option value="ONE_TIME_LICENSE">ONE_TIME_LICENSE</option>
+          <option value="USAGE_BASED">USAGE_BASED</option>
         </select>
       </label>
       <label id="field-monthly">Monthly price (minor) <input name="monthlyPriceMinor" type="number" value="0" /></label>
       <label id="field-seat" style="display:none">Per-seat price (minor) <input name="perSeatPriceMinor" type="number" /></label>
       <label id="field-once" style="display:none">One-time price (minor) <input name="oneTimeLicenseMinor" type="number" /></label>
+      <label id="field-usage" style="display:none">Transaction fee (bps) <input name="transactionFeeBps" type="number" placeholder="100 = 1%" /></label>
       <button class="btn primary" type="submit">Create plan</button>
     </form>
     <div id="plans-table"></div>
@@ -112,6 +116,27 @@
     <h2>Resource tier quotas</h2>
     <p class="hint">Per-tier limits; an alert fires once usage crosses the warn threshold, before the hard cap.</p>
     <div id="quotas-table"></div>
+  </section>
+
+  <section id="tab-usage">
+    <h2>Usage this month — doc 153</h2>
+    <p class="hint">A USAGE_BASED tenant's transaction fee, message usage and any allowance overage, computed live from the same meters the eventual invoice reads — enter a tenant id.</p>
+    <div class="row-actions" style="margin-bottom:14px">
+      <input id="usage-tenant-id" placeholder="tenant id" style="width:220px" />
+      <button class="btn primary" id="usage-load">Load this month</button>
+    </div>
+    <div id="usage-result"></div>
+  </section>
+
+  <section id="tab-rate-cards">
+    <h2>Rate-card changes</h2>
+    <p class="hint">A change above the configured threshold, or any change to the messages/allowance rate card, needs a second approver — never the person who proposed it.</p>
+    <form class="inline" id="rate-card-form">
+      <label>Plan id <input name="planId" required placeholder="plan id" style="width:180px" /></label>
+      <label>New transaction fee (bps) <input name="transactionFeeBps" type="number" placeholder="leave blank to keep" /></label>
+      <button class="btn primary" type="submit">Propose change</button>
+    </form>
+    <div id="rate-cards-table"></div>
   </section>
 </main>
 
@@ -158,7 +183,10 @@
       if (!plans.length) { el.innerHTML = '<p class="empty">No plans yet — create one above.</p>'; return; }
       el.innerHTML = '<table><thead><tr><th>Key</th><th>Edition</th><th>Tier</th><th>Model</th><th>Price</th><th>Active</th></tr></thead><tbody>' +
         plans.map((p) => '<tr><td>' + esc(p.key) + '</td><td>' + esc(p.editionCap) + '</td><td>' + esc(p.includedResourceTier) + '</td><td>' + badge(p.pricingModel) + '</td><td>' +
-          (p.pricingModel === 'PER_SEAT' ? p.perSeatPriceMinor + '/seat' : p.pricingModel === 'ONE_TIME_LICENSE' ? p.oneTimeLicenseMinor + ' once (' + esc(p.licenseDeploymentMode) + ')' : p.monthlyPriceMinor + '/mo') +
+          (p.pricingModel === 'PER_SEAT' ? p.perSeatPriceMinor + '/seat'
+            : p.pricingModel === 'ONE_TIME_LICENSE' ? p.oneTimeLicenseMinor + ' once (' + esc(p.licenseDeploymentMode) + ')'
+            : p.pricingModel === 'USAGE_BASED' ? p.transactionFeeBps + ' bps/sale'
+            : p.monthlyPriceMinor + '/mo') +
           '</td><td>' + (p.isActive ? 'yes' : 'no') + '</td></tr>').join('') + '</tbody></table>';
     } catch (error) { el.innerHTML = '<p class="err">' + esc(error.message) + '</p>'; }
   }
@@ -175,6 +203,7 @@
       ...(pricingModel === 'FLAT_MONTHLY' ? { monthlyPriceMinor: Number(form.get('monthlyPriceMinor') || 0) } : {}),
       ...(pricingModel === 'PER_SEAT' ? { perSeatPriceMinor: Number(form.get('perSeatPriceMinor') || 0) } : {}),
       ...(pricingModel === 'ONE_TIME_LICENSE' ? { oneTimeLicenseMinor: Number(form.get('oneTimeLicenseMinor') || 0), licenseDeploymentMode: 'ONLINE' } : {}),
+      ...(pricingModel === 'USAGE_BASED' ? { transactionFeeBps: Number(form.get('transactionFeeBps') || 0) } : {}),
     };
     try {
       await api('plans', { method: 'POST', body: JSON.stringify(payload) });
@@ -187,6 +216,7 @@
     document.getElementById('field-monthly').style.display = e.target.value === 'FLAT_MONTHLY' ? '' : 'none';
     document.getElementById('field-seat').style.display = e.target.value === 'PER_SEAT' ? '' : 'none';
     document.getElementById('field-once').style.display = e.target.value === 'ONE_TIME_LICENSE' ? '' : 'none';
+    document.getElementById('field-usage').style.display = e.target.value === 'USAGE_BASED' ? '' : 'none';
   });
 
   async function loadTenants() {
@@ -271,7 +301,62 @@
     } catch (error) { el.innerHTML = '<p class="err">' + esc(error.message) + '</p>'; }
   }
 
-  function loadAll() { loadPlans(); loadTenants(); loadTrials(); loadQuotes(); loadQuotas(); }
+  document.getElementById('usage-load').addEventListener('click', async () => {
+    const tenantId = document.getElementById('usage-tenant-id').value.trim();
+    const el = document.getElementById('usage-result');
+    if (!tenantId) return;
+    el.innerHTML = 'Loading…';
+    try {
+      const preview = await api('billing/tenant/' + tenantId + '/usage-this-month');
+      if (preview.pricingModel !== 'USAGE_BASED') {
+        el.innerHTML = '<p class="empty">This tenant is on ' + esc(preview.pricingModel) + ', not USAGE_BASED — nothing metered.</p>';
+        return;
+      }
+      const lines = (preview.usageBreakdown && preview.usageBreakdown.lines) || [];
+      el.innerHTML = '<table><thead><tr><th>Line</th><th>Quantity</th><th>Rate / allowance</th><th>Amount (minor)</th></tr></thead><tbody>' +
+        '<tr><td>Transaction fee</td><td>—</td><td>—</td><td>' + (preview.usageBreakdown ? preview.usageBreakdown.transactionFeeMinor : 0) + '</td></tr>' +
+        lines.map((l) => '<tr><td>' + esc(l.metric) + '</td><td>' + l.quantity + '</td><td>' + (l.allowance != null ? 'allowance ' + l.allowance : (l.rateMinorPerUnit || 0) + '/unit') + '</td><td>' + l.amountMinor + '</td></tr>').join('') +
+        '</tbody></table><p class="hint">Total so far: ' + preview.amountMinor + ' minor — computed ' + esc(preview.computedAt) + '.</p>';
+    } catch (error) { el.innerHTML = '<p class="err">' + esc(error.message) + '</p>'; }
+  });
+
+  async function loadRateCards() {
+    const el = document.getElementById('rate-cards-table');
+    el.innerHTML = 'Loading…';
+    try {
+      const requests = await api('rate-card-changes/pending');
+      if (!requests.length) { el.innerHTML = '<p class="empty">No rate-card changes awaiting approval.</p>'; return; }
+      el.innerHTML = '<table><thead><tr><th>Plan</th><th>Proposed fee (bps)</th><th>Requested by</th><th>Actions</th></tr></thead><tbody>' +
+        requests.map((r) => '<tr><td>' + esc(r.planId) + '</td><td>' + (r.proposedTransactionFeeBps ?? '—') + '</td><td>' + esc(r.requestedByOpsClientId) + '</td><td class="row-actions">' +
+          '<button class="btn primary" onclick="approveRateCard(\'' + r.id + '\')">Approve</button>' +
+          '<button class="btn danger" onclick="rejectRateCard(\'' + r.id + '\')">Reject</button>' +
+          '</td></tr>').join('') + '</tbody></table>';
+    } catch (error) { el.innerHTML = '<p class="err">' + esc(error.message) + '</p>'; }
+  }
+  window.approveRateCard = async (id) => {
+    try {
+      await api('rate-card-changes/' + id + '/approve', { method: 'PATCH' });
+      await api('rate-card-changes/' + id + '/apply', { method: 'PATCH' });
+    } catch (error) { alert(error.message); }
+    loadRateCards();
+    loadPlans();
+  };
+  window.rejectRateCard = async (id) => { const reason = prompt('Reason for rejecting?'); if (!reason) return; await api('rate-card-changes/' + id + '/reject', { method: 'PATCH', body: JSON.stringify({ reason }) }).catch((e) => alert(e.message)); loadRateCards(); };
+
+  document.getElementById('rate-card-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = new FormData(e.target);
+    const planId = form.get('planId');
+    const feeRaw = form.get('transactionFeeBps');
+    const payload = feeRaw ? { transactionFeeBps: Number(feeRaw) } : {};
+    try {
+      await api('rate-card-changes/plan/' + planId, { method: 'POST', body: JSON.stringify(payload) });
+      e.target.reset();
+      loadRateCards();
+    } catch (error) { alert(error.message); }
+  });
+
+  function loadAll() { loadPlans(); loadTenants(); loadTrials(); loadQuotes(); loadQuotas(); loadRateCards(); }
   loadAll();
 </script>
 </body>

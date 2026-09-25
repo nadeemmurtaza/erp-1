@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 815 tracked files in `apps/api`, by directory.
+All 816 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -687,7 +687,7 @@ All 815 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 624 | The catalogue of domain events. |
+| `domain-events.ts` | module | 654 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
@@ -723,7 +723,7 @@ All 815 tracked files in `apps/api`, by directory.
 | `metric-registry.service.ts` | service | 137 |  |
 | `metrics.module.ts` | nest module | 18 |  |
 
-### `apps/api/src/core/notifications` (13)
+### `apps/api/src/core/notifications` (14)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -735,7 +735,8 @@ All 815 tracked files in `apps/api`, by directory.
 | `notification-channel.ts` | module | 38 | Extension point: outbound customer messaging. |
 | `notification-preferences.service.ts` | service | 71 |  |
 | `notifications.module.ts` | nest module | 36 |  |
-| `notifications.service.ts` | service | 63 |  |
+| `notifications.service.spec.ts` | unit test | 98 |  |
+| `notifications.service.ts` | service | 80 |  |
 | `sms.channel.ts` | channel | 48 |  |
 | `unsubscribe.controller.ts` | controller | 41 |  |
 | `unsubscribe.dto.ts` | dto | 15 |  |

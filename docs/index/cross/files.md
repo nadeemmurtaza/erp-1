@@ -3,21 +3,21 @@
 
 # Every tracked file
 
-All **1,948** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,960** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 815 | 115,115 | [files/api.md](../files/api.md) |
+| apps/api | 816 | 115,260 | [files/api.md](../files/api.md) |
 | apps/web | 372 | 59,386 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 78 | 7,811 | [files/packages.md](../files/packages.md) |
-| docs/* | 394 | 62,587 | [files/docs.md](../files/docs.md) |
+| docs/* | 394 | 62,752 | [files/docs.md](../files/docs.md) |
 | scripts, CI, deployment and container configuration | 57 | 29,609 | [files/infra.md](../files/infra.md) |
-| repository root files | 152 | 15,337 | [files/root.md](../files/root.md) |
+| repository root files | 163 | 17,028 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -29,14 +29,14 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 419 |
-| unit test | 207 |
+| unit test | 211 |
 | page | 182 |
-| service | 145 |
-| module | 139 |
+| service | 147 |
+| module | 140 |
 | component | 112 |
-| controller | 104 |
-| dto | 99 |
-| migration | 79 |
+| controller | 105 |
+| dto | 100 |
+| migration | 80 |
 | nest module | 73 |
 | prisma schema | 43 |
 | script | 39 |
@@ -44,8 +44,8 @@ name a new file: the convention is what makes it findable.
 | json | 29 |
 | react | 29 |
 | asset | 26 |
+| scheduled job | 23 |
 | utility | 22 |
-| scheduled job | 21 |
 | e2e test | 19 |
 | file | 13 |
 | yaml | 12 |

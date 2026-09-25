@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { BillingService } from './billing.service';
+import { currentCalendarMonthPeriod } from './billing-period';
 
 /** WO-50.3's own scheduled run — calendar-month billing periods. Running
  *  daily (rather than only on the 1st) is deliberate: `issueInvoiceForPeriod`
@@ -15,9 +16,7 @@ export class BillingCron {
 
   @Cron(CronExpression.EVERY_DAY_AT_4AM)
   async run(): Promise<void> {
-    const now = new Date();
-    const periodStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
-    const periodEnd = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1));
+    const { periodStart, periodEnd } = currentCalendarMonthPeriod();
 
     const { issued, skipped } = await this.billing.runBillingForPeriod(periodStart, periodEnd);
     if (issued > 0 || skipped > 0) this.logger.log(`Billing sweep for ${periodStart.toISOString().slice(0, 7)}: issued ${issued}, skipped/deferred ${skipped}`);

@@ -2563,17 +2563,17 @@ _no second-level headings_
 - Work orders  <sub>:236</sub>
 - When to actually build this  <sub>:263</sub>
 
-### `docs/implementation/commercial-licensing-agency/153-usage-based-pricing-model.md`  <sub>290 lines</sub>
+### `docs/implementation/commercial-licensing-agency/153-usage-based-pricing-model.md`  <sub>298 lines</sub>
 
-- What changed from the original proposal, and why  <sub>:13</sub>
-- 1. `PlatformPlan` gains `USAGE_BASED`, alongside doc 50's existing three shapes  <sub>:41</sub>
-- 2. Metering is event-driven, reusing this repository's own transactional outbox — never a slow end-of-month aggregate scan  <sub>:69</sub>
-- 3. Collection: COD and cash have no settlement to net against — this is doc 145's own mechanism, one level up  <sub>:117</sub>
-- 4. A graduated rate, so growth is rewarded rather than punished forever  <sub>:145</sub>
-- Scope lenses  <sub>:156</sub>
-- Work orders  <sub>:247</sub>
-- Acceptance  <sub>:267</sub>
-- Out of scope  <sub>:281</sub>
+- What changed from the original proposal, and why  <sub>:21</sub>
+- 1. `PlatformPlan` gains `USAGE_BASED`, alongside doc 50's existing three shapes  <sub>:49</sub>
+- 2. Metering is event-driven, reusing this repository's own transactional outbox — never a slow end-of-month aggregate scan  <sub>:77</sub>
+- 3. Collection: COD and cash have no settlement to net against — this is doc 145's own mechanism, one level up  <sub>:125</sub>
+- 4. A graduated rate, so growth is rewarded rather than punished forever  <sub>:153</sub>
+- Scope lenses  <sub>:164</sub>
+- Work orders  <sub>:255</sub>
+- Acceptance  <sub>:275</sub>
+- Out of scope  <sub>:289</sub>
 
 ### `docs/implementation/commercial-licensing-agency/154-three-headline-commercial-plans.md`  <sub>182 lines</sub>
 
@@ -2697,7 +2697,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>3,447 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>3,604 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2740,6 +2740,7 @@ _no second-level headings_
 - ADR-036 — WO-145 (receivables: CreditNote/DebitNote, credit limits, dunning) keys the customer to `Contact`, not R18's own `Invoice`; ships undimensioned like its siblings; dunning gets its own cron, not doc 54's unbuilt registry  <sub>:3143</sub>
 - ADR-035 — Phase 8 (content, marketing and search) audited and confirmed built; the ranking rule's missing availability tier fixed; the phantom "Phase 8 status note" several files already cited now exists  <sub>:3269</sub>
 - ADR-037 — Personal API keys: a user-bound token capped live by its owner, an explicit non-delegatable list, and no service account yet  <sub>:3374</sub>
+- ADR-038 — Doc 153 (usage-based pricing): metering reads a tenant's own transactional outbox through `apps/platform`'s existing connection-per-call mechanism, never a new tenant→platform push credential; dunning reuses doc 145's shape only, not its code  <sub>:3450</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

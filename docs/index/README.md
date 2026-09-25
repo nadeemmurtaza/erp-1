@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **1,948 files / 298,619 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **1,960 files / 300,620 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -48,19 +48,19 @@ single fact — the page is the right tool when you need the shape of something.
 |---|---|---|---|
 | “Where is the endpoint for X?” | [cross/routes.md](cross/routes.md) | ~27.3k | all 646 HTTP routes, with the permission that guards each |
 | “What permission do I need / who has it?” | [cross/permissions.md](cross/permissions.md) | ~4.0k | all 79 permissions → routes, UI call sites, seed |
-| “Which table/column holds X?” | [cross/data-model.md](cross/data-model.md) | ~13.8k | all 233 Prisma models and 107 enums, field by field |
-| “How do modules talk to each other?” | [cross/events.md](cross/events.md) | ~9.2k | all 59 domain events → publishers and subscribers |
+| “Which table/column holds X?” | [cross/data-model.md](cross/data-model.md) | ~14.1k | all 237 Prisma models and 108 enums, field by field |
+| “How do modules talk to each other?” | [cross/events.md](cross/events.md) | ~9.3k | all 60 domain events → publishers and subscribers |
 | “What screen serves this URL?” | [cross/ui-routes.md](cross/ui-routes.md) | ~6.8k | all 231 screens across web, POS and mobile |
 | “Is there already a component for this?” | [cross/components.md](cross/components.md) | ~2.7k | shared primitives and every component, with usage counts |
 | “How should this look / behave / read?” | [cross/design-system.md](cross/design-system.md) | ~850 | the 0 design chapters, and the measured state of the code they govern |
 | “What runs on a schedule?” | [cross/jobs.md](cross/jobs.md) | ~895 | 19 cron jobs and the background dispatchers |
 | “What command do I run?” | [cross/commands.md](cross/commands.md) | ~1.8k | every script in every package.json (82) |
-| “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | ~3.6k | 79 migrations, newest last |
-| “What is already tested?” | [cross/tests.md](cross/tests.md) | ~8.9k | 226 spec files → what each one pins down |
-| “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~39.8k | every document of record, with its outline |
+| “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | ~3.7k | 80 migrations, newest last |
+| “What is already tested?” | [cross/tests.md](cross/tests.md) | ~9.0k | 230 spec files → what each one pins down |
+| “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~39.9k | every document of record, with its outline |
 | “What is in this one module?” | [modules/](modules) | — | one page per API feature module (43) |
 | “What does this file export?” | [symbols/](symbols) | — | every exported symbol in the repo, with line numbers |
-| “I need a machine-readable form.” | [index.json](index.json) | ~489.6k | the whole index as JSON — grep or jq it |
+| “I need a machine-readable form.” | [index.json](index.json) | ~494.2k | the whole index as JSON — grep or jq it |
 
 
 ## The levels
@@ -118,14 +118,14 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 
 | Area | Files | Lines | L1 page |
 |---|---|---|---|
-| apps/api | 815 | 115,115 | [api](areas/api.md) |
+| apps/api | 816 | 115,260 | [api](areas/api.md) |
 | apps/web | 372 | 59,386 | [web](areas/web.md) |
 | apps/pos | 31 | 1,874 | [pos](areas/pos.md) |
 | apps/mobile | 49 | 6,900 | [mobile](areas/mobile.md) |
 | packages/* | 78 | 7,811 | [packages](areas/packages.md) |
-| docs/* | 394 | 62,587 | [docs](areas/docs.md) |
+| docs/* | 394 | 62,752 | [docs](areas/docs.md) |
 | scripts, CI, deployment and container configuration | 57 | 29,609 | [infra](areas/infra.md) |
-| repository root files | 152 | 15,337 | [root](areas/root.md) |
+| repository root files | 163 | 17,028 | [root](areas/root.md) |
 
 Every tracked file is accounted for: see
 [`cross/files.md`](cross/files.md) for the complete

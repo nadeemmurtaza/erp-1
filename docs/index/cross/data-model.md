@@ -3,7 +3,7 @@
 
 # Data model
 
-All **233** Prisma models and **107** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **237** Prisma models and **108** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -50,7 +50,7 @@ against a real database.
 | [`parties.prisma`](../data/parties.md) | 2 | 1 | [`parties`](../modules/parties.md) | Party, PartyRoleAssignment |
 | [`payments.prisma`](../data/payments.md) | 1 | 1 | [`payments`](../modules/payments.md) | Payment |
 | [`payroll.prisma`](../data/payroll.md) | 9 | 5 | [`payroll`](../modules/payroll.md) | CompensationRate, LeaveAccrualRun, LeaveBalance, LeaveRequest, LeaveType, PayRun, PayRunAdjustment, PayRunLine, PayRunNumberCount… |
-| [`platform.prisma`](../data/platform.md) | 15 | 9 | core platform | PlatformCustomQuote, PlatformInvoice, PlatformInvoiceCreditNote, PlatformOpsClient, PlatformPlan, PlatformSubscription, PlatformT… |
+| [`platform.prisma`](../data/platform.md) | 19 | 10 | core platform | MeteredOrderFee, PlatformCustomQuote, PlatformInvoice, PlatformInvoiceCreditNote, PlatformOpsClient, PlatformPlan, PlatformRateCa… |
 | [`pos.prisma`](../data/pos.md) | 4 | 3 | [`pos`](../modules/pos.md) | CashMovement, PosReceipt, PosShift, PosTerminal |
 | [`production.prisma`](../data/production.md) | 4 | 2 | [`production`](../modules/production.md) | BillOfMaterial, BillOfMaterialLine, WorkOrder, WorkOrderNumberCounter |
 | [`promotions.prisma`](../data/promotions.md) | 3 | 2 | [`promotions`](../modules/promotions.md) | Discount, OrderDiscount, PromoCode |
@@ -161,6 +161,7 @@ against a real database.
 | [`MenuItem`](../data/content.md#menuitem) | `content` | 11 | 2 | id | A tree per named slot (`menuKey`: "footer_help", "footer_about", …) — see MENU_KEYS in pa… |
 | [`MenuItemTranslation`](../data/content.md#menuitemtranslation) | `content` | 5 | 1 | id |  |
 | [`MerchantPayable`](../data/wallet.md#merchantpayable) | `wallet` | 15 | 0 | id | The exact mirror of doc 145's own AP side (`SupplierBill`) — a merchant selling through t… |
+| [`MeteredOrderFee`](../data/platform.md#meteredorderfee) | `platform` | 10 | 1 | id | Doc 153's own "the reversal document, not the reversal flag" — one row per order actually… |
 | [`NewsletterSubscriber`](../data/onsite-messaging.md#newslettersubscriber) | `onsite-messaging` | 6 | 0 | id | A distinct, lightweight capture list — not folded into Contact. |
 | [`Node`](../data/organization.md#node) | `organization` | 13 | 1 | id | A child node this deployment knows about — a brand's branches, or an organization's brand… |
 | [`NotificationPreference`](../data/notification-preferences.md#notificationpreference) | `notification-preferences` | 8 | 1 | id |  |
@@ -192,12 +193,13 @@ against a real database.
 | [`Permission`](../data/core.md#permission) | `core` | 8 | 0 | id | A single grantable capability, e.g. |
 | [`PhoneOptOut`](../data/marketing.md#phoneoptout) | `marketing` | 2 | 0 | phoneE164 | The phone-number equivalent of User.marketingEmailOptOut's unsubscribe link. |
 | [`PlatformCustomQuote`](../data/platform.md#platformcustomquote) | `platform` | 16 | 2 | id | WO-50.4 — a custom quote's discount is checked against PLATFORM_QUOTE_DISCOUNT_APPROVAL_T… |
-| [`PlatformInvoice`](../data/platform.md#platforminvoice) | `platform` | 18 | 2 | id |  |
+| [`PlatformInvoice`](../data/platform.md#platforminvoice) | `platform` | 23 | 2 | id |  |
 | [`PlatformInvoiceCreditNote`](../data/platform.md#platforminvoicecreditnote) | `platform` | 7 | 1 | id | A billing dispute is resolved here, against the specific invoice — never an edited invoic… |
 | [`PlatformOpsClient`](../data/platform.md#platformopsclient) | `platform` | 8 | 0 | id | A key-hash principal for internal hosting-ops tooling calling this control plane — the sa… |
-| [`PlatformPlan`](../data/platform.md#platformplan) | `platform` | 14 | 0 | id |  |
+| [`PlatformPlan`](../data/platform.md#platformplan) | `platform` | 18 | 0 | id |  |
+| [`PlatformRateCardChangeRequest`](../data/platform.md#platformratecardchangerequest) | `platform` | 15 | 1 | id | doc 153's own "the threshold nobody approves alone" / "authority and blast radius" lenses… |
 | [`PlatformSubscription`](../data/platform.md#platformsubscription) | `platform` | 8 | 2 | id |  |
-| [`PlatformTenant`](../data/platform.md#platformtenant) | `platform` | 28 | 1 | id | One row per hosted client. |
+| [`PlatformTenant`](../data/platform.md#platformtenant) | `platform` | 31 | 1 | id | One row per hosted client. |
 | [`PlatformUsageRecord`](../data/platform.md#platformusagerecord) | `platform` | 6 | 1 | id | Metered usage a tenant's own deployment reports about itself — never a source of business… |
 | [`PolicyQuarantine`](../data/replication.md#policyquarantine) | `replication` | 14 | 1 | id | R9's OTHER quarantine — "a fact arriving in violation is accepted and quarantined for rev… |
 | [`PosReceipt`](../data/pos.md#posreceipt) | `pos` | 5 | 0 | id | One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService… |
@@ -291,6 +293,8 @@ against a real database.
 | [`TradingPartner`](../data/trading-partners.md#tradingpartner) | `trading-partners` | 15 | 0 | id | The business on the other end of a document exchange. |
 | [`TransferNumberCounter`](../data/transfers.md#transfernumbercounter) | `transfers` | 2 | 0 | year | Same shape as OrderNumberCounter (orders.prisma) — an `INSERT ... |
 | [`TrialExtension`](../data/platform.md#trialextension) | `platform` | 8 | 1 | id | WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpi… |
+| [`UsageMeter`](../data/platform.md#usagemeter) | `platform` | 8 | 1 | id | One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` inc… |
+| [`UsageMeteringCursor`](../data/platform.md#usagemeteringcursor) | `platform` | 6 | 1 | id | The per-tenant high-water mark `UsageMeteringService.pollTenant()` advances after each ba… |
 | [`User`](../data/core.md#user) | `core` | 83 | 31 | id |  |
 | [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | A per-user adjustment layered on top of their role's grants: GRANT adds a permission thei… |
 | [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | Which `Role` rows a user holds. |
@@ -375,13 +379,14 @@ against a real database.
 | [`PermissionEffect`](../data/core.md#permissioneffect) | `core` | `GRANT` `REVOKE` |
 | [`PosShiftStatus`](../data/pos.md#posshiftstatus) | `pos` | `OPEN` `CLOSED` |
 | [`PosTerminalStatus`](../data/pos.md#posterminalstatus) | `pos` | `PENDING` `ACTIVE` `SUSPENDED` |
-| [`PricingModel`](../data/platform.md#pricingmodel) | `platform` | `PER_SEAT` `FLAT_MONTHLY` `ONE_TIME_LICENSE` |
+| [`PricingModel`](../data/platform.md#pricingmodel) | `platform` | `PER_SEAT` `FLAT_MONTHLY` `ONE_TIME_LICENSE` `USAGE_BASED` |
 | [`ProductCrossSellKind`](../data/catalog.md#productcrosssellkind) | `catalog` | `MANUAL` `CO_OCCURRENCE` `EMBEDDING` |
 | [`ProductKind`](../data/catalog.md#productkind) | `catalog` | `GOODS` `SERVICE` `DIGITAL` `STITCHED` `UNSTITCHED` `STITCHING_SERVICE` |
 | [`ProductStatus`](../data/catalog.md#productstatus) | `catalog` | `DRAFT` `ACTIVE` `ARCHIVED` |
 | [`PurchaseOrderStatus`](../data/purchasing.md#purchaseorderstatus) | `purchasing` | `DRAFT` `SENT` `PARTIAL` `RECEIVED` `CANCELLED` |
 | [`QuoteStatus`](../data/invoicing.md#quotestatus) | `invoicing` | `SENT` `ACCEPTED` `REJECTED` `EXPIRED` |
 | [`QuoteStatus`](../data/platform.md#quotestatus) | `platform` | `PENDING` `APPROVED` `REJECTED` |
+| [`RateCardChangeStatus`](../data/platform.md#ratecardchangestatus) | `platform` | `PENDING` `APPROVED` `REJECTED` `APPLIED` |
 | [`RawMaterialUnit`](../data/bom.md#rawmaterialunit) | `bom` | `GAZ` `METRE` `PIECE` `SPOOL` `GRAM` `MILLILITRE` |
 | [`ReplicationClass`](../data/replication.md#replicationclass) | `replication` | `FACT` `POLICY` |
 | [`ReplicationDirection`](../data/replication.md#replicationdirection) | `replication` | `UP` `DOWN` |

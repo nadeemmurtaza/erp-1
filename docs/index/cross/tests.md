@@ -3,7 +3,7 @@
 
 # Tests
 
-**226** spec files, **2,227** cases. What is already pinned down — and what is not.
+**230** spec files, **2,259** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -56,7 +56,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (207)
+## Unit and integration (211)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -79,6 +79,7 @@ regression or an N+1.
 | `apps/api/src/core/metrics/metric-registry.service.spec.ts` | core/metrics | 15 | MetricRegistryService · register · collect — permission gating · collect — failure isolation · coll… |
 | `apps/api/src/core/notifications/email.channel.spec.ts` | core/notifications | 2 | isDeliverable |
 | `apps/api/src/core/notifications/email/templates.spec.ts` | core/notifications | 29 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment re… |
+| `apps/api/src/core/notifications/notifications.service.spec.ts` | core/notifications | 2 | NotificationsService |
 | `apps/api/src/core/prisma/enums.spec.ts` | core/prisma | 0 | shared enums stay in sync with the Prisma schema |
 | `apps/api/src/core/replication/node-credential.service.spec.ts` | core/replication | 5 | NodeCredentialService — WO-20.2 |
 | `apps/api/src/core/replication/policy-quarantine.service.spec.ts` | core/replication | 4 | PolicyQuarantineService — WO-23.3c/e, RETAIL-ERP.md R9, ADR-023 · resolve |
@@ -228,10 +229,13 @@ regression or an N+1.
 | `apps/mobile/src/i18n/__tests__/messages.spec.ts` | mobile | 3 | the message catalogue |
 | `apps/platform/src/core/security/ops-auth.guard.spec.ts` | root | 6 | OpsAuthGuard |
 | `apps/platform/src/core/security/ops-key.spec.ts` | root | 4 | ops-key |
-| `apps/platform/src/modules/billing/billing.service.spec.ts` | root | 9 | BillingService · issueInvoiceForPeriod · runBillingForPeriod · issueCreditNote · previewInvoice |
+| `apps/platform/src/modules/billing/billing-period.spec.ts` | root | 2 | currentCalendarMonthPeriod |
+| `apps/platform/src/modules/billing/billing.service.spec.ts` | root | 15 | BillingService · issueInvoiceForPeriod · runBillingForPeriod · issueCreditNote · previewInvoice · U… |
 | `apps/platform/src/modules/billing/custom-quote.service.spec.ts` | root | 6 | CustomQuoteService · requestQuote · approve |
-| `apps/platform/src/modules/billing/plans.service.spec.ts` | root | 5 | PlansService |
+| `apps/platform/src/modules/billing/plans.service.spec.ts` | root | 7 | PlansService |
+| `apps/platform/src/modules/billing/rate-card.service.spec.ts` | root | 9 | RateCardService · proposeChange · approve · apply |
 | `apps/platform/src/modules/billing/seat-counter.service.spec.ts` | root | 3 | SeatCounterService |
+| `apps/platform/src/modules/billing/usage-metering.service.spec.ts` | root | 11 | UsageMeteringService · pollTenant · snapshotAllowances · getMetersForPeriod |
 | `apps/platform/src/modules/resource-quotas/resource-quotas.service.spec.ts` | root | 4 | ResourceQuotasService · upsertQuota |
 | `apps/platform/src/modules/routing/hostname-resolver.service.spec.ts` | root | 8 | HostnameResolverService |
 | `apps/platform/src/modules/support-access/support-access.service.spec.ts` | root | 14 | SupportAccessService · issue · approve · recordAccess · markExpiredInert · findByTicketReference |

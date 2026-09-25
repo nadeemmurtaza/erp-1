@@ -19,6 +19,15 @@ export const PLATFORM_PERMISSIONS = [
   'platform.support.grant_access',
   'platform.support.approve_dedicated_access',
   'platform.billing.manage',
+  /**
+   * doc 153 WO-153.4 — approving a rate-card change on a live USAGE_BASED
+   * plan above `PLATFORM_RATE_CARD_APPROVAL_THRESHOLD_BPS`. Deliberately
+   * narrower than `platform.billing.manage` (which can propose a change,
+   * issue invoices, credit-note one) so proposing and approving a rate
+   * change are two different keys, matching doc 145's own credit-limit
+   * create/approve split and doc 50's own custom-quote one.
+   */
+  'platform.billing.approve',
   'platform.trials.extend',
 ] as const;
 

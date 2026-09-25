@@ -3,7 +3,7 @@
 
 # Tests
 
-**189** spec files, **1,752** cases. What is already pinned down — and what is not.
+**205** spec files, **1,878** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -55,7 +55,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (171)
+## Unit and integration (187)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -122,6 +122,9 @@ regression or an N+1.
 | `apps/api/src/modules/crm/email-inbox/email-inbox.service.spec.ts` | crm | 7 | EmailInboxService · reply |
 | `apps/api/src/modules/crm/rfm-scoring.cron.spec.ts` | crm | 1 | RfmScoringCron |
 | `apps/api/src/modules/crm/segments.service.spec.ts` | crm | 4 | SegmentsService |
+| `apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.controller.spec.ts` | crm | 4 | WhatsAppWebhookController |
+| `apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.service.spec.ts` | crm | 18 | WhatsAppAssistantService · verifyWebhookSignature · handleInbound — identity · handleInbound — idem… |
+| `apps/api/src/modules/crm/whatsapp-assistant/whatsapp-copy.spec.ts` | crm | 5 | whatsapp-copy · detectWhatsAppLocale · whatsAppAssistantCopy |
 | `apps/api/src/modules/finance/expense-import.service.spec.ts` | finance | 5 | ExpenseImportService |
 | `apps/api/src/modules/finance/expense-replication.listener.spec.ts` | finance | 3 | ExpenseReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onExpenseRecorded |
 | `apps/api/src/modules/finance/finance-margins.spec.ts` | finance | 4 | FinanceService margins and unit economics · marginBy · unitEconomics |
@@ -134,10 +137,11 @@ regression or an N+1.
 | `apps/api/src/modules/fulfilment/returns.spec.ts` | fulfilment | 4 | ReturnsService |
 | `apps/api/src/modules/fulfilment/shipping-migration.spec.ts` | fulfilment | 9 | ShippingService — migrated zones produce the old fees · computeRateFee — pure logic |
 | `apps/api/src/modules/identity-verification/providers/nid-callback-verification.spec.ts` | identity-verification | 6 | nID webhook signature verification |
-| `apps/api/src/modules/inventory/inventory.cron.spec.ts` | inventory | 5 | InventoryCron · maybeTriggerSpotCheck — 156-single-employee-branch-loss-prevention.md |
+| `apps/api/src/modules/inventory/inventory.cron.spec.ts` | inventory | 10 | InventoryCron · WO-9.8 — markdown suggestions · maybeTriggerSpotCheck — 156-single-employee-branch-… |
 | `apps/api/src/modules/inventory/inventory.listener.spec.ts` | inventory | 1 | InventoryListener |
 | `apps/api/src/modules/inventory/inventory.metrics.spec.ts` | inventory | 4 | InventoryMetricsProvider · InventoryValuationMetricsProvider |
 | `apps/api/src/modules/inventory/inventory.service.spec.ts` | inventory | 16 | InventoryService — locations (B6) · InventoryService — postUnconditional (R5 oversell) · shift attr… |
+| `apps/api/src/modules/inventory/markdown-suggestions.service.spec.ts` | inventory | 10 | MarkdownSuggestionsService · list · activate · dismiss |
 | `apps/api/src/modules/inventory/spot-check.service.spec.ts` | inventory | 10 | SpotCheckService — 156-single-employee-branch-loss-prevention.md §3 · dueForRandomCheck — the unpre… |
 | `apps/api/src/modules/inventory/stock-count.service.spec.ts` | inventory | 1 | StockCountService |
 | `apps/api/src/modules/inventory/stock-variance.service.spec.ts` | inventory | 9 | StockVarianceService — WO-21.3 · resolve · listByShift |
@@ -204,9 +208,20 @@ regression or an N+1.
 | `apps/mobile/src/i18n/__tests__/messages.spec.ts` | mobile | 3 | the message catalogue |
 | `apps/platform/src/core/security/ops-auth.guard.spec.ts` | root | 6 | OpsAuthGuard |
 | `apps/platform/src/core/security/ops-key.spec.ts` | root | 4 | ops-key |
+| `apps/platform/src/modules/billing/billing.service.spec.ts` | root | 9 | BillingService · issueInvoiceForPeriod · runBillingForPeriod · issueCreditNote · previewInvoice |
+| `apps/platform/src/modules/billing/custom-quote.service.spec.ts` | root | 6 | CustomQuoteService · requestQuote · approve |
+| `apps/platform/src/modules/billing/plans.service.spec.ts` | root | 5 | PlansService |
+| `apps/platform/src/modules/billing/seat-counter.service.spec.ts` | root | 3 | SeatCounterService |
+| `apps/platform/src/modules/resource-quotas/resource-quotas.service.spec.ts` | root | 4 | ResourceQuotasService · upsertQuota |
+| `apps/platform/src/modules/routing/hostname-resolver.service.spec.ts` | root | 8 | HostnameResolverService |
+| `apps/platform/src/modules/support-access/support-access.service.spec.ts` | root | 14 | SupportAccessService · issue · approve · recordAccess · markExpiredInert · findByTicketReference |
+| `apps/platform/src/modules/tenant-data/tenant-export.service.spec.ts` | root | 4 | TenantExportService |
+| `apps/platform/src/modules/tenant-data/tenant-retention.service.spec.ts` | root | 4 | TenantRetentionService |
 | `apps/platform/src/modules/tenants/postgres-database.provisioner.spec.ts` | root | 6 | PostgresDatabaseProvisioner |
-| `apps/platform/src/modules/tenants/provisioning.service.spec.ts` | root | 7 | ProvisioningService |
+| `apps/platform/src/modules/tenants/provisioning.service.spec.ts` | root | 9 | ProvisioningService · deprovisionTenant |
 | `apps/platform/src/modules/tenants/tenants.service.spec.ts` | root | 3 | TenantsService |
+| `apps/platform/src/modules/trials/signup.service.spec.ts` | root | 7 | SignupService · requestSignup · verifyAndProvision |
+| `apps/platform/src/modules/trials/trials.service.spec.ts` | root | 8 | TrialsService · extend · convert · expireToSuspended · listExtendedMoreThanOnce |
 | `apps/web/src/components/admin/analytics/resolve-path.spec.ts` | web | 13 | resolvePath · interpolateHref |
 | `packages/pos-core/src/basket.spec.ts` | packages | 9 | basket |
 | `packages/pos-core/src/outbox.spec.ts` | packages | 6 | outbox state machine |
@@ -221,6 +236,7 @@ regression or an N+1.
 | `packages/shared/src/entities/product.spec.ts` | packages | 22 | getProductName / getProductDescription · getProductPrimaryImage · getVariantDisplayLabel · getVaria… |
 | `packages/shared/src/entities/supplier.spec.ts` | packages | 7 | getSupplierContactLabel · getSupplierFormattedLocation · getSupplierLeadTimeDays · getSupplierName |
 | `packages/shared/src/fabric-estimate.spec.ts` | packages | 10 | computeFabricEstimate |
+| `packages/shared/src/markdown-suggestion.spec.ts` | packages | 10 | computeMarkdownSuggestion |
 | `packages/shared/src/measurements/schema.spec.ts` | packages | 21 | default garment definitions · validateMeasurements · convertMeasurement · kameez definition |
 | `packages/shared/src/measurements/size-recommendation.spec.ts` | packages | 11 | recommendSize |
 | `packages/shared/src/permissions.spec.ts` | packages | 8 | PERMISSION_CATALOG · PERMISSION_GROUPS — the role-creation wizard\ |

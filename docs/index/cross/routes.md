@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **580** endpoints across **103** controllers, with the access rule that actually guards each one.
+All **588** endpoints across **106** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 68** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 69** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -96,6 +96,7 @@ never authorization.
 | POST | `/track/event` | `TrackingController.track` |
 | POST | `/trading-partners/accept` | `TradingPartnerPortalController.accept` |
 | GET | `/trading-partners/stock` | `TradingPartnerPortalController.stock` |
+| POST | `/whatsapp/webhook` | `WhatsAppWebhookController.webhook` |
 
 
 ## By module
@@ -366,7 +367,7 @@ never authorization.
 |---|---|---|---|---|
 | GET | `/files/*path` | **PUBLIC** | `FilesController.serve` |  |
 
-### [`crm`](../modules/crm.md) (28)
+### [`crm`](../modules/crm.md) (33)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -397,7 +398,12 @@ never authorization.
 | GET | `/admin/crm/segments/:id/members` | `crm.manage` | `SegmentsAdminController.members` |  |
 | POST | `/admin/crm/segments/preview` | `crm.manage` | `SegmentsAdminController.preview` |  |
 | GET | `/admin/crm/tags` | `crm.manage` | `CrmAdminController.listTags` |  |
+| GET | `/admin/crm/whatsapp/conversations` | `crm.manage` | `WhatsAppAssistantAdminController.list` | WhatsApp conversations, most recently active first |
+| GET | `/admin/crm/whatsapp/conversations/:id` | `crm.manage` | `WhatsAppAssistantAdminController.get` |  |
+| POST | `/admin/crm/whatsapp/conversations/:id/reopen` | `crm.manage` | `WhatsAppAssistantAdminController.reopen` | Let the assistant resume answering this conversation |
+| POST | `/admin/crm/whatsapp/conversations/:id/reply` | `crm.manage` | `WhatsAppAssistantAdminController.reply` | Staff reply — hands the conversation off if it was not already |
 | POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` | Contact-form enquiry — becomes a lead in the CRM |
+| POST | `/whatsapp/webhook` | **PUBLIC** | `WhatsAppWebhookController.webhook` | Inbound WhatsApp message (signature-verified, not session-authenticated) |
 
 ### [`finance`](../modules/finance.md) (16)
 
@@ -488,7 +494,7 @@ never authorization.
 | POST | `/identity-verification/start` | signed-in | `IdentityVerificationController.start` | Start (or restart, after a rejection/expiry) identity verification |
 | POST | `/identity-verification/webhook` | **PUBLIC** | `IdentityVerificationController.webhook` | nID verification-result callback (signature-verified, not session-authenticated) |
 
-### [`inventory`](../modules/inventory.md) (26)
+### [`inventory`](../modules/inventory.md) (29)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -504,6 +510,9 @@ never authorization.
 | POST | `/admin/inventory/counts/:id/scan` | `inventory.count` | `StockCountController.scan` |  |
 | POST | `/admin/inventory/counts/:id/start` | `inventory.count` | `StockCountController.start` |  |
 | GET | `/admin/inventory/locations` | `inventory.manage` | `InventoryAdminController.locations` | Every real, active location — never an in-transit bucket (WO-22.1) |
+| GET | `/admin/inventory/markdown-suggestions` | `inventory.manage` | `MarkdownSuggestionsController.list` | The markdown review queue |
+| POST | `/admin/inventory/markdown-suggestions/:id/activate` | `inventory.manage` | `MarkdownSuggestionsController.activate` | Create the suggested discount (product-wide) and close this suggestion |
+| POST | `/admin/inventory/markdown-suggestions/:id/dismiss` | `inventory.manage` | `MarkdownSuggestionsController.dismiss` | Close this suggestion without creating a discount |
 | GET | `/admin/inventory/reorder` | `inventory.manage` | `InventoryAdminController.reorder` | Reorder suggestions based on reorderPoint |
 | GET | `/admin/inventory/slow-movers` | `inventory.manage` | `InventoryAdminController.slowMovers` | Variants with zero sales in the slow mover window |
 | GET | `/admin/inventory/spot-check-policies` | `inventory.spot_checks.manage` | `SpotCheckPolicyController.list` |  |

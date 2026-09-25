@@ -33,6 +33,11 @@ packages/shared/src/api/generated/
 .data/
 uploads/
 
+# WO-39.7 — TenantExportRunner's local-filesystem export archives
+# (PLATFORM_EXPORT_STORAGE_DIR's own default). Never committed: these are
+# pg_dump output of a tenant's own isolated database, generated at runtime.
+apps/platform/exports/
+
 # Playwright
 test-results/
 playwright-report/
@@ -55,3 +60,8 @@ yaseen-backup-before-reset.sql
 # Claude Code agent worktrees — isolated checkouts for background subagents,
 # machine-local scratch state, never shared or committed.
 .claude/worktrees/
+
+# scripts/sync-client.mjs's own scratch working directory — a client
+# repository built and committed here, never part of the Blueprint's own
+# history. See docs/implementation/commercial-licensing-agency/12-extractor-script-spec.md.
+.client-build/

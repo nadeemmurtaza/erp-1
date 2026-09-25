@@ -32,15 +32,15 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 736 | 101,410 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 392 | 60,607 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 350 | 53,152 | Next.js — admin console and customer storefront in one app |
-| `(root)` | 42 | 28,069 | workspace manifests, docker compose/stack files, env templates |
-| `scripts` | 22 | 8,651 | repository checks and generators (lint gates, this index) |
+| `apps/api` | 748 | 103,017 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 392 | 60,864 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 350 | 53,683 | Next.js — admin console and customer storefront in one app |
+| `(root)` | 42 | 28,096 | workspace manifests, docker compose/stack files, env templates |
+| `scripts` | 22 | 9,108 | repository checks and generators (lint gates, this index) |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
-| `packages/shared` | 57 | 6,414 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 59 | 6,586 | brand, money, permissions, measurements, entities |
+| `apps/platform` | 104 | 5,880 |  |
 | `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
-| `apps/platform` | 40 | 1,615 |  |
 | `.claude` | 22 | 1,017 |  |
 | `packages/pos-core` | 13 | 481 | basket, tender, receipt and outbox maths, UI-free |
 | `deploy` | 12 | 401 | systemd units, backup and alert scripts, mail configuration |
@@ -67,12 +67,12 @@ Each is independent: no module imports another except through a named
 | [`catalog`](modules/catalog.md) | core | MODULES allowlist | 49 | 27 |
 | [`collections`](modules/collections.md) | core | MODULES allowlist | 10 | — |
 | [`content`](modules/content.md) | core | MODULES allowlist | 24 | 8 |
-| [`crm`](modules/crm.md) | core | MODULES allowlist | 28 | 9 |
+| [`crm`](modules/crm.md) | core | MODULES allowlist | 33 | 9 |
 | [`finance`](modules/finance.md) | core | MODULES allowlist | 16 | 3 |
 | [`fulfilment`](modules/fulfilment.md) | core | MODULES allowlist | 39 | 16 |
 | [`giftcards`](modules/giftcards.md) | core | MODULES allowlist | 10 | 3 |
 | [`identity-verification`](modules/identity-verification.md) | core | MODULES allowlist | 4 | 1 |
-| [`inventory`](modules/inventory.md) | core | MODULES allowlist | 26 | 12 |
+| [`inventory`](modules/inventory.md) | core | MODULES allowlist | 29 | 12 |
 | [`loyalty`](modules/loyalty.md) | core | MODULES allowlist | 11 | 3 |
 | [`marketing`](modules/marketing.md) | core | MODULES allowlist | 11 | 3 |
 | [`measurements`](modules/measurements.md) | apparel | MODULES allowlist | 13 | 4 |

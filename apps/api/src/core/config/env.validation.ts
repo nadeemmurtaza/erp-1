@@ -165,6 +165,14 @@ export const envSchema = z.object({
   WHATSAPP_API_URL: z.string().optional(),
   WHATSAPP_API_TOKEN: z.string().optional(),
   WHATSAPP_FROM_NUMBER: z.string().optional(),
+  /**
+   * Verifies inbound WhatsApp webhooks (WO-9.7, 09-ai-layer.md) — same
+   * fail-closed idiom as NID_WEBHOOK_SECRET: with nothing set, every
+   * signature would be keyed on the empty string, which anyone could
+   * reproduce, so WhatsAppAssistantService rejects every inbound message
+   * until this is set rather than waving them through unverified.
+   */
+  WHATSAPP_WEBHOOK_SECRET: z.string().optional(),
   SMS_API_URL: z.string().optional(),
   SMS_API_TOKEN: z.string().optional(),
   SMS_FROM_NUMBER: z.string().optional(),

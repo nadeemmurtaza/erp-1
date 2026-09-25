@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Start your trial</title>
+<style>
+  :root { color-scheme: light dark; --fg: #17181c; --bg: #ffffff; --muted: #5b6068; --border: #d7d9dd; --accent: #2f5fe0; --danger: #b3261e; --ok: #1c7a3d; }
+  @media (prefers-color-scheme: dark) { :root { --fg: #f2f3f5; --bg: #121317; --muted: #a2a7b0; --border: #33363d; --accent: #7ea1ff; --danger: #ff8f87; --ok: #6fd897; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 420px; margin: 0 auto; padding: 48px 16px; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  p.lede { color: var(--muted); margin: 0 0 28px; }
+  label { display: block; font-size: 13px; font-weight: 600; margin: 16px 0 6px; }
+  input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--fg); font-size: 15px; }
+  input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  small.hint { display: block; color: var(--muted); margin-top: 4px; }
+  button { width: 100%; margin-top: 24px; padding: 12px; border: none; border-radius: 8px; background: var(--accent); color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; }
+  button:disabled { opacity: 0.6; cursor: default; }
+  .msg { margin-top: 20px; padding: 12px 14px; border-radius: 8px; font-size: 14px; display: none; }
+  .msg.error { display: block; background: color-mix(in srgb, var(--danger) 12%, transparent); color: var(--danger); }
+  .msg.ok { display: block; background: color-mix(in srgb, var(--ok) 12%, transparent); color: var(--ok); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Start your free trial</h1>
+  <p class="lede">A real, working sandbox — no card, no sales call. We'll email you a verification link.</p>
+
+  <form id="signup-form">
+    <label for="email">Work email</label>
+    <input id="email" name="email" type="email" required autocomplete="email" />
+
+    <label for="legalName">Business name</label>
+    <input id="legalName" name="legalName" type="text" required maxlength="200" />
+
+    <label for="slug">Choose your subdomain</label>
+    <input id="slug" name="slug" type="text" required pattern="[a-z0-9][a-z0-9-]*[a-z0-9]" placeholder="acme" />
+    <small class="hint" id="slug-hint">yoursubdomain.platform-domain</small>
+
+    <input type="hidden" id="planKey" name="planKey" value="" />
+    <label for="planKeyVisible">Plan</label>
+    <input id="planKeyVisible" name="planKeyVisible" type="text" required placeholder="e.g. solo-shared" />
+
+    <button type="submit" id="submit-btn">Send verification link</button>
+  </form>
+
+  <div class="msg" id="msg" role="status"></div>
+</main>
+
+<script>
+  // This page is served at /{apiPrefix}/ui/signup — the API itself lives
+  // one level up, at /{apiPrefix}/. Computed from the current path rather
+  // than a hardcoded prefix, so a rebrand or a changed PLATFORM_API_PREFIX
+  // never requires editing this file.
+  const apiBase = window.location.pathname.replace(/\/ui\/[^/]*$/, '/');
+  const form = document.getElementById('signup-form');
+  const msg = document.getElementById('msg');
+  const submitBtn = document.getElementById('submit-btn');
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    submitBtn.disabled = true;
+    msg.className = 'msg';
+    msg.textContent = '';
+
+    const payload = {
+      email: document.getElementById('email').value.trim(),
+      legalName: document.getElementById('legalName').value.trim(),
+      slug: document.getElementById('slug').value.trim().toLowerCase(),
+      planKey: document.getElementById('planKeyVisible').value.trim(),
+    };
+
+    try {
+      const response = await fetch(apiBase + 'signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) {
+        const body = await response.json().catch(() => ({}));
+        throw new Error(body.message || 'Something went wrong — please try again.');
+      }
+      msg.className = 'msg ok';
+      msg.textContent = "Check your inbox — we've sent a verification link to " + payload.email + '.';
+      form.reset();
+    } catch (error) {
+      msg.className = 'msg error';
+      msg.textContent = Array.isArray(error.message) ? error.message.join(' ') : (error.message || 'Something went wrong — please try again.');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>

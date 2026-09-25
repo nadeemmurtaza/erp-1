@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 9 files
 
 Source: `apps/api/src/modules/search/`
 
-## Files (9 · 1,045 lines)
+## Files (9 · 1,066 lines)
 
 All paths relative to `apps/api/src/modules/search/dto`.
 
@@ -22,7 +22,7 @@ All paths relative to `apps/api/src/modules/search/dto`.
 | `search-reindex.listener.ts` | event subscriber | 33 | 1 | Lives in `search` (the reacting module), subscribing to an event `catalog` publishes — catalog never imports SearchServ… |
 | `search.controller.ts` | controller | 73 | 2 |  |
 | `search.module.ts` | nest module | 13 | 1 |  |
-| `search.service.spec.ts` | unit test | 310 | — |  |
+| `search.service.spec.ts` | unit test | 331 | — |  |
 | `search.service.ts` | service | 419 | 1 | WO-8.3. |
 
 

@@ -61,7 +61,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `scope-chips.tsx` | `ScopeChip` `ScopeChips` | client | 2 |  |
 | `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 41 |  |
 | `stage-badge.tsx` | `StageBadge` | server | 3 |  |
-| `toast-stack.tsx` | `ToastStack` | client | 15 |  |
+| `toast-stack.tsx` | `ToastStack` | client | 16 |  |
 
 ### `apps/web/src/components/admin/analytics` (1)
 

@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-392 files · 60,607 lines
+392 files · 60,864 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -93,7 +93,7 @@ has a bug.
 | `docs/implementation/attendance-workforce` | 8 | 1,010 | doc |
 | `docs/implementation/b2b-wholesale-multientity` | 4 | 540 | doc |
 | `docs/implementation/catalog-variants-pricing` | 3 | 904 | doc |
-| `docs/implementation/commercial-licensing-agency` | 14 | 2,339 | doc |
+| `docs/implementation/commercial-licensing-agency` | 14 | 2,596 | doc |
 | `docs/implementation/content-marketing-search` | 1 | 160 | doc |
 | `docs/implementation/customer-portal-loyalty` | 1 | 233 | doc |
 | `docs/implementation/finance-accounting` | 8 | 1,642 | doc |

@@ -30,6 +30,6 @@ import { WhatsAppChannel } from './whatsapp.channel';
     EmailAccountsService,
     NotificationPreferencesService,
   ],
-  exports: [NotificationsService, EmailAccountsService, EmailChannel, NotificationPreferencesService],
+  exports: [NotificationsService, EmailAccountsService, EmailChannel, WhatsAppChannel, NotificationPreferencesService],
 })
 export class NotificationsModule {}

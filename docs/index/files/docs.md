@@ -689,15 +689,15 @@ All 392 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `11-client-handover-model.md` | doc | 121 |  |
-| `12-extractor-script-spec.md` | doc | 59 |  |
-| `14-managed-services-module.md` | doc | 270 |  |
+| `11-client-handover-model.md` | doc | 131 |  |
+| `12-extractor-script-spec.md` | doc | 164 |  |
+| `14-managed-services-module.md` | doc | 272 |  |
 | `153-usage-based-pricing-model.md` | doc | 290 |  |
 | `154-three-headline-commercial-plans.md` | doc | 182 |  |
 | `155-wallet-stored-value-merchant-escrow.md` | doc | 355 |  |
-| `39-shared-cross-tenant-hosting-tier.md` | doc | 367 |  |
-| `50-commercial-pricing-licensing-models.md` | doc | 202 |  |
-| `51-free-demo-sandbox-onboarding.md` | doc | 176 |  |
+| `39-shared-cross-tenant-hosting-tier.md` | doc | 417 |  |
+| `50-commercial-pricing-licensing-models.md` | doc | 243 |  |
+| `51-free-demo-sandbox-onboarding.md` | doc | 225 |  |
 | `81-transparent-flat-rate-pricing.md` | doc | 55 |  |
 | `82-tiered-capex-licensing.md` | doc | 86 |  |
 | `83-entry-level-pos-deployment.md` | doc | 60 |  |

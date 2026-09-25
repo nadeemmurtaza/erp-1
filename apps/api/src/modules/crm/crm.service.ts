@@ -95,6 +95,18 @@ export class CrmService {
   }
 
   /**
+   * The contact a phone number belongs to, if any — read-only for the same
+   * reason as findContactByEmail: WhatsAppAssistantService (WO-9.7) verifies
+   * identity against whatever is already on file, it never manufactures one
+   * from an unrecognised number just because it texted in.
+   */
+  async findContactByPhone(phone: string): Promise<Contact | null> {
+    const normalized = normalizePkPhone(phone).e164;
+    if (!normalized) return null;
+    return this.prisma.contact.findFirst({ where: { phoneE164: normalized } });
+  }
+
+  /**
    * Recomputes a contact's order rollups from their orders.
    *
    * Deliberately a recomputation rather than an increment: outbox delivery is
@@ -246,6 +258,24 @@ export class CrmService {
           take: 50,
           include: {
             actor: { select: { id: true, firstName: true, lastName: true } },
+          },
+        },
+        // WO-9.7 — kept separate from `interactions` (see
+        // whatsapp-assistant.prisma's own comment: a WhatsApp exchange is a
+        // back-and-forth of individually AI-or-human-attributed messages,
+        // not a single logged event), but still surfaced here so it never
+        // reads as an island on the customer's own record. Message bodies
+        // stay in the Support Inbox itself — this is a summary, not a
+        // second transcript view.
+        whatsAppConversations: {
+          orderBy: { startedAt: 'desc' },
+          take: 5,
+          select: {
+            id: true,
+            startedAt: true,
+            lastMessageAt: true,
+            handedOffToHuman: true,
+            _count: { select: { messages: true } },
           },
         },
         followUps: {

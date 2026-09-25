@@ -173,7 +173,7 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `loading.tsx` | `Loading` | default | :3 |  |
-| `page.tsx` | `AdminContactsPage` | default | :57 | Customers. |
+| `page.tsx` | `AdminContactsPage` | default | :65 | Customers. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/contacts/import`
 
@@ -335,7 +335,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminInboxPage` | default | :35 | Support Inbox. |
+| `page.tsx` | `AdminInboxPage` | default | :40 | Support Inbox. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory`
 
@@ -372,7 +372,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `SlowMoversPage` | default | :25 |  |
+| `page.tsx` | `SlowMoversPage` | default | :28 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks`
 
@@ -1486,40 +1486,44 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `RenderedEmailPreview` | interface | :964 |  |
 | `api.ts` | `InboundEmailReply` | interface | :972 | --- Support inbox (IMAP replies) -------------------------------------------- |
 | `api.ts` | `InboundEmail` | interface | :979 |  |
-| `api.ts` | `PermissionDefinition` | interface | :996 |  |
-| `api.ts` | `AuditLogEntry` | interface | :1003 |  |
-| `api.ts` | `AuditLogPage` | interface | :1015 |  |
-| `api.ts` | `BackOfficeRole` | type | :1024 | --- Back-office user management --------------------------------------------- |
-| `api.ts` | `AdminUser` | interface | :1026 |  |
-| `api.ts` | `PermissionOverride` | interface | :1038 |  |
-| `api.ts` | `HeldRole` | interface | :1044 | A custom Role (owner's request) this user holds, with its own permission set inline. |
-| `api.ts` | `UserRoleConflicts` | interface | :1051 | Non-blocking advisories — see RolesService.conflictsForUser() on the API. |
-| `api.ts` | `AdminUserDetail` | interface | :1056 |  |
-| `api.ts` | `RoleSummary` | interface | :1068 | --- Custom roles (owner's request) ----------------------------------------- GET/POST/PATCH/DELETE… |
-| `api.ts` | `RoleWriteResult` | interface | :1077 | POST/PATCH /admin/roles response — `duplicateOfRoleName` is a suggestion, never a block. |
-| `api.ts` | `CustomerAddress` | interface | :1084 | --- Customer account portal -------------------------------------------------- |
-| `api.ts` | `MeasurementProfile` | interface | :1098 |  |
-| `api.ts` | `MeasurementProfileDetail` | interface | :1109 |  |
-| `api.ts` | `CustomerOrderSummary` | interface | :1113 |  |
-| `api.ts` | `StitchingTimelineEvent` | interface | :1122 | One move along a garment's workshop timeline. |
-| `api.ts` | `CustomerOrderItem` | interface | :1130 |  |
-| `api.ts` | `CustomerOrder` | interface | :1161 | One order as its buyer sees it — signed in, or tracked with a phone number. |
-| `api.ts` | `CustomerReturnReason` | interface | :1194 | WO-6.6's seeded, editable reason list — never free text. |
-| `api.ts` | `CustomerReturnRequest` | interface | :1200 |  |
-| `api.ts` | `PaginatedResult` | interface | :1218 |  |
-| `api.ts` | `StockTransferLine` | interface | :1233 | --- Transfers (RETAIL-ERP.md R4, WO-22.1/22.2/22.3, WO-23.3d) --------------- `transfers` module is… |
-| `api.ts` | `InterBranchInvoice` | interface | :1242 |  |
-| `api.ts` | `StockTransfer` | interface | :1251 |  |
-| `api.ts` | `StockTransferListResult` | interface | :1267 |  |
-| `api.ts` | `CmsBanner` | interface | :1274 | --- Content (WO-8.1) ------------------------------------------------------- |
-| `api.ts` | `CmsPage` | interface | :1282 |  |
-| `api.ts` | `CmsPost` | interface | :1289 |  |
-| `api.ts` | `DashboardCardsResponse` | interface | :1306 | `GET /admin/analytics/cards` (10-admin-dashboard.md D2, WO-A.4). |
-| `api.ts` | `ActionItem` | interface | :1320 | `GET /admin/action-hub` (admin-platform/44-manager-action-hub.md D2). |
-| `api.ts` | `ActionHubResponse` | interface | :1331 |  |
-| `api.ts` | `CmsMenuLink` | interface | :1337 |  |
-| `api.ts` | `ProductCrossSellKind` | type | :1345 | ProductCrossSell.kind (WO-9.6) — "MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read t… |
-| `api.ts` | `ProductCrossSellRow` | interface | :1347 | ProductCrossSell.kind (WO-9.6) — "MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read t… |
+| `api.ts` | `WhatsAppMessage` | interface | :996 |  |
+| `api.ts` | `WhatsAppConversation` | interface | :1004 |  |
+| `api.ts` | `PermissionDefinition` | interface | :1019 |  |
+| `api.ts` | `AuditLogEntry` | interface | :1026 |  |
+| `api.ts` | `AuditLogPage` | interface | :1038 |  |
+| `api.ts` | `BackOfficeRole` | type | :1047 | --- Back-office user management --------------------------------------------- |
+| `api.ts` | `AdminUser` | interface | :1049 |  |
+| `api.ts` | `PermissionOverride` | interface | :1061 |  |
+| `api.ts` | `HeldRole` | interface | :1067 | A custom Role (owner's request) this user holds, with its own permission set inline. |
+| `api.ts` | `UserRoleConflicts` | interface | :1074 | Non-blocking advisories — see RolesService.conflictsForUser() on the API. |
+| `api.ts` | `AdminUserDetail` | interface | :1079 |  |
+| `api.ts` | `RoleSummary` | interface | :1091 | --- Custom roles (owner's request) ----------------------------------------- GET/POST/PATCH/DELETE… |
+| `api.ts` | `RoleWriteResult` | interface | :1100 | POST/PATCH /admin/roles response — `duplicateOfRoleName` is a suggestion, never a block. |
+| `api.ts` | `CustomerAddress` | interface | :1107 | --- Customer account portal -------------------------------------------------- |
+| `api.ts` | `MeasurementProfile` | interface | :1121 |  |
+| `api.ts` | `MeasurementProfileDetail` | interface | :1132 |  |
+| `api.ts` | `CustomerOrderSummary` | interface | :1136 |  |
+| `api.ts` | `StitchingTimelineEvent` | interface | :1145 | One move along a garment's workshop timeline. |
+| `api.ts` | `CustomerOrderItem` | interface | :1153 |  |
+| `api.ts` | `CustomerOrder` | interface | :1184 | One order as its buyer sees it — signed in, or tracked with a phone number. |
+| `api.ts` | `CustomerReturnReason` | interface | :1217 | WO-6.6's seeded, editable reason list — never free text. |
+| `api.ts` | `CustomerReturnRequest` | interface | :1223 |  |
+| `api.ts` | `PaginatedResult` | interface | :1241 |  |
+| `api.ts` | `StockTransferLine` | interface | :1256 | --- Transfers (RETAIL-ERP.md R4, WO-22.1/22.2/22.3, WO-23.3d) --------------- `transfers` module is… |
+| `api.ts` | `InterBranchInvoice` | interface | :1265 |  |
+| `api.ts` | `StockTransfer` | interface | :1274 |  |
+| `api.ts` | `StockTransferListResult` | interface | :1290 |  |
+| `api.ts` | `CmsBanner` | interface | :1297 | --- Content (WO-8.1) ------------------------------------------------------- |
+| `api.ts` | `CmsPage` | interface | :1305 |  |
+| `api.ts` | `CmsPost` | interface | :1312 |  |
+| `api.ts` | `DashboardCardsResponse` | interface | :1329 | `GET /admin/analytics/cards` (10-admin-dashboard.md D2, WO-A.4). |
+| `api.ts` | `ActionItem` | interface | :1343 | `GET /admin/action-hub` (admin-platform/44-manager-action-hub.md D2). |
+| `api.ts` | `ActionHubResponse` | interface | :1354 |  |
+| `api.ts` | `CmsMenuLink` | interface | :1360 |  |
+| `api.ts` | `ProductCrossSellKind` | type | :1368 | ProductCrossSell.kind (WO-9.6) — "MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read t… |
+| `api.ts` | `ProductCrossSellRow` | interface | :1370 | ProductCrossSell.kind (WO-9.6) — "MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read t… |
+| `api.ts` | `MarkdownSuggestionStatus` | type | :1377 |  |
+| `api.ts` | `MarkdownSuggestion` | interface | :1379 |  |
 | `cart.ts` | `CartStitching` | interface | :5 | Shapes returned by the cart endpoints. |
 | `cart.ts` | `CartLine` | interface | :18 |  |
 | `cart.ts` | `Cart` | interface | :37 |  |

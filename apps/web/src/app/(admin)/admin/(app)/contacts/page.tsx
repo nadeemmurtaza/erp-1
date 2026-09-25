@@ -43,6 +43,14 @@ interface ContactDetail extends Contact {
     occurredAt: string;
     actor: { firstName: string | null } | null;
   }>;
+  /** WO-9.7 — kept separate from `interactions` (see whatsapp-assistant.prisma's own comment); a summary only, the full transcript lives in the Support Inbox. */
+  whatsAppConversations: Array<{
+    id: string;
+    startedAt: string;
+    lastMessageAt: string;
+    handedOffToHuman: boolean;
+    _count: { messages: number };
+  }>;
   followUps: Array<{ id: string; note: string; dueAt: string; isDone: boolean }>;
 }
 
@@ -411,6 +419,32 @@ function ContactDetailPanel({
           </ul>
         )}
       </div>
+
+      {contact.whatsAppConversations.length > 0 ? (
+        <div className="mt-4 border-t border-neutral-100 pt-4">
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/60">WhatsApp</h3>
+          <ul className="mt-2 space-y-1 text-sm">
+            {contact.whatsAppConversations.map((conversation) => (
+              <li key={conversation.id}>
+                <Link
+                  href={`${ROUTES.admin.inbox}?channel=whatsapp&conversationId=${conversation.id}`}
+                  className="flex items-center justify-between gap-2 rounded px-1 py-0.5 hover:bg-neutral-50"
+                >
+                  <span className="text-neutral-900/70">
+                    {conversation._count.messages} message{conversation._count.messages === 1 ? '' : 's'}
+                    {conversation.handedOffToHuman ? (
+                      <span className="ms-2 rounded bg-amber-50 px-1.5 py-0.5 text-xs font-medium text-amber-700">
+                        Waiting on you
+                      </span>
+                    ) : null}
+                  </span>
+                  <span className="text-xs text-neutral-900/60">{formatDate(conversation.lastMessageAt)}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
 
       <div className="mt-4 border-t border-neutral-100 pt-4">
         <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-900/60">Timeline</h3>

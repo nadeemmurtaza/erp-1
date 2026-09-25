@@ -4,6 +4,8 @@ import { InventoryService } from './inventory.service';
 import { InventoryCron } from './inventory.cron';
 import { InventoryListener } from './inventory.listener';
 import { InventoryMetricsProvider, InventoryValuationMetricsProvider } from './inventory.metrics';
+import { MarkdownSuggestionsController } from './markdown-suggestions.controller';
+import { MarkdownSuggestionsService } from './markdown-suggestions.service';
 
 import { StockCountController } from './stock-count.controller';
 import { StockCountService } from './stock-count.service';
@@ -22,6 +24,7 @@ import { SuspiciousTrafficService } from './suspicious-traffic.service';
     SpotCheckController,
     SpotCheckPolicyController,
     SuspiciousTrafficController,
+    MarkdownSuggestionsController,
   ],
   providers: [
     InventoryService,
@@ -33,6 +36,7 @@ import { SuspiciousTrafficService } from './suspicious-traffic.service';
     InventoryValuationMetricsProvider,
     SpotCheckService,
     SuspiciousTrafficService,
+    MarkdownSuggestionsService,
   ],
   exports: [InventoryService],
 })

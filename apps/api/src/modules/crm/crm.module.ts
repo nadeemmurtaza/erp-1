@@ -10,9 +10,18 @@ import { RfmScoringCron } from './rfm-scoring.cron';
 import { RtoContactListener } from './rto-contact.listener';
 import { SegmentsAdminController } from './segments.controller';
 import { SegmentsService } from './segments.service';
+import { WhatsAppAssistantAdminController, WhatsAppWebhookController } from './whatsapp-assistant/whatsapp-assistant.controller';
+import { WhatsAppAssistantService } from './whatsapp-assistant/whatsapp-assistant.service';
 
 @Module({
-  controllers: [CrmPublicController, CrmAdminController, EmailInboxAdminController, SegmentsAdminController],
+  controllers: [
+    CrmPublicController,
+    CrmAdminController,
+    EmailInboxAdminController,
+    SegmentsAdminController,
+    WhatsAppWebhookController,
+    WhatsAppAssistantAdminController,
+  ],
   providers: [
     CrmService,
     ContactImportService,
@@ -22,6 +31,7 @@ import { SegmentsService } from './segments.service';
     RtoContactListener,
     SegmentsService,
     RfmScoringCron,
+    WhatsAppAssistantService,
   ],
   exports: [CrmService, SegmentsService],
 })

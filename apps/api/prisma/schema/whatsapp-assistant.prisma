@@ -47,6 +47,12 @@ model WhatsAppMessage {
   /// false for the handoff notice, an AUTO_CONFIRM/CONFIRMATION_CALL system
   /// reply, or anything a staff member typed.
   aiGenerated    Boolean                  @default(false)
+  /// The gateway's own id for this INBOUND message (WhatsApp Cloud API's
+  /// `messages[].id`, or whichever id the configured gateway assigns) —
+  /// makes a redelivered webhook a no-op instead of a duplicate log entry,
+  /// same idiom as InboundEmail's own (emailAccountId, messageId) key. Null
+  /// for every OUTBOUND message this shop sends, which has no such id.
+  externalMessageId String?               @unique
   createdAt      DateTime                 @default(now())
 
   conversation WhatsAppConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)

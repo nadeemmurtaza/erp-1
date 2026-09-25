@@ -1,7 +1,10 @@
 import { ConflictException, Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { encryptSecret, decryptSecret } from '@newax/shared/secret-crypto';
+import { encryptSecret } from '@newax/shared/secret-crypto';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { TenantCredentialResolverService } from '../../core/tenant-credentials/tenant-credential-resolver.service';
+import { TenantExportService } from '../tenant-data/tenant-export.service';
+import { HostnameResolverService } from '../routing/hostname-resolver.service';
 import type { PlatformTenant } from '../../core/prisma/client';
 import type { ProvisionTenantDto } from './dto/provision-tenant.dto';
 import { DEPLOYMENT_PROVISIONER } from './deployment-provisioner.token';
@@ -24,6 +27,9 @@ export class ProvisioningService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly config: AppConfigService,
+    private readonly credentials: TenantCredentialResolverService,
+    private readonly exports: TenantExportService,
+    private readonly hostnameResolver: HostnameResolverService,
     @Inject(DEPLOYMENT_PROVISIONER) private readonly provisioner: DeploymentProvisioner,
   ) {}
 
@@ -35,8 +41,8 @@ export class ProvisioningService {
   async provisionTenant(dto: ProvisionTenantDto): Promise<PlatformTenant> {
     const existing = await this.prisma.platformTenant.findUnique({ where: { slug: dto.slug } });
 
-    if (existing?.status === 'ACTIVE') {
-      this.logger.log(`Tenant ${dto.slug} already ACTIVE — idempotent no-op`);
+    if (existing?.status === 'ACTIVE' || existing?.status === 'TRIAL') {
+      this.logger.log(`Tenant ${dto.slug} already ${existing.status} — idempotent no-op`);
       return existing;
     }
     if (existing?.status === 'SUSPENDED' || existing?.status === 'DEPROVISIONED') {
@@ -57,6 +63,7 @@ export class ProvisioningService {
           planId: plan.id,
           resourceTier: dto.resourceTier ?? plan.includedResourceTier,
           customDomain: dto.customDomain,
+          billingContactEmail: dto.billingContactEmail,
         },
       }));
 
@@ -90,10 +97,17 @@ export class ProvisioningService {
         },
       }));
 
-    return this.prisma.platformTenant.update({
+    const isTrial = !!dto.trialDays;
+    const activated = await this.prisma.platformTenant.update({
       where: { id: tenant.id },
-      data: { status: 'ACTIVE', deploymentRef: credential.id },
+      data: {
+        status: isTrial ? 'TRIAL' : 'ACTIVE',
+        deploymentRef: credential.id,
+        ...(isTrial ? { trialExpiresAt: new Date(Date.now() + dto.trialDays! * 24 * 60 * 60 * 1000) } : {}),
+      },
     });
+    this.hostnameResolver.invalidate(this.hostnameResolver.subdomainFor(activated.slug), activated.customDomain);
+    return activated;
   }
 
   /**
@@ -102,22 +116,49 @@ export class ProvisioningService {
    * support-access flow, doc 39 §3), never returned by any read endpoint.
    */
   async resolveConnectionString(tenantId: string): Promise<string> {
-    const credential = await this.prisma.tenantDeploymentCredential.findUnique({ where: { tenantId } });
-    if (!credential) throw new NotFoundException(`No deployment credential for tenant ${tenantId}`);
-    return decryptSecret(credential.connectionStringEncrypted, this.config.get('PLATFORM_ENCRYPTION_KEY'));
+    return this.credentials.resolveConnectionString(tenantId);
   }
 
   /**
    * Marks a tenant DEPROVISIONED. Deliberately does NOT drop the isolated
-   * database or call `provisioner.deprovision()` — doc 39 WO-39.7 owns the
-   * export-then-retention-window-then-delete sequence; calling that here
-   * would delete a paying customer's data with no export step, which is
-   * exactly the "undo fan-out" doc 39 names and refuses to leave implicit.
+   * database or call `provisioner.deprovision()` directly — WO-39.7 owns
+   * the export-then-retention-window-then-delete sequence
+   * (`TenantRetentionCron`); doing that here would delete a paying
+   * customer's data with no export step, which is exactly the "undo
+   * fan-out" doc 39 names and refuses to leave implicit.
+   *
+   * What DOES happen here, synchronously: `retentionExpiresAt` is set
+   * (shorter for a TRIAL tenant per doc 51 §"the hundred-thousandth row"),
+   * and an automatic export fires — doc 39 §4's own "automatic
+   * export-and-notify on cancellation." The status transition itself is
+   * committed first; an export failure is logged and left for a retried
+   * manual export (WO-39.7's own endpoint), never allowed to undo the
+   * DEPROVISIONED transition that already happened.
    */
   async deprovisionTenant(id: string): Promise<PlatformTenant> {
-    return this.prisma.platformTenant.update({
+    const before = await this.prisma.platformTenant.findUniqueOrThrow({ where: { id } });
+    const retentionDays =
+      before.status === 'TRIAL'
+        ? this.config.get('PLATFORM_RETENTION_DAYS_TRIAL')
+        : this.config.get('PLATFORM_RETENTION_DAYS_DEFAULT');
+
+    const tenant = await this.prisma.platformTenant.update({
       where: { id },
-      data: { status: 'DEPROVISIONED', deprovisionedAt: new Date() },
+      data: {
+        status: 'DEPROVISIONED',
+        deprovisionedAt: new Date(),
+        retentionExpiresAt: new Date(Date.now() + retentionDays * 24 * 60 * 60 * 1000),
+      },
     });
+
+    this.hostnameResolver.invalidate(this.hostnameResolver.subdomainFor(tenant.slug), tenant.customDomain);
+
+    try {
+      await this.exports.requestExport(id, 'DEPROVISION');
+    } catch (error) {
+      this.logger.error(`Automatic export-on-deprovision failed for tenant ${id} — retryable via the export endpoint`, error);
+    }
+
+    return tenant;
   }
 }

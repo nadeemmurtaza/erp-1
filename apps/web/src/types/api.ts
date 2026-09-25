@@ -993,6 +993,29 @@ export interface InboundEmail {
   replies?: InboundEmailReply[];
 }
 
+export interface WhatsAppMessage {
+  id: string;
+  direction: 'INBOUND' | 'OUTBOUND';
+  body: string;
+  aiGenerated: boolean;
+  createdAt: string;
+}
+
+export interface WhatsAppConversation {
+  id: string;
+  contactId: string;
+  phoneE164: string;
+  startedAt: string;
+  lastMessageAt: string;
+  handedOffToHuman: boolean;
+  handoffReason: string | null;
+  handedOffAt: string | null;
+  contact: { id: string; name: string; phoneE164: string | null };
+  _count: { messages: number };
+  /** Only present on the single-conversation GET, not the list. */
+  messages?: WhatsAppMessage[];
+}
+
 export interface PermissionDefinition {
   id: string;
   key: string;
@@ -1349,4 +1372,28 @@ export interface ProductCrossSellRow {
   kind: ProductCrossSellKind;
   order: number;
   relatedProduct: { id: string; slug: string; name: string };
+}
+
+export type MarkdownSuggestionStatus = 'PENDING' | 'CREATED' | 'DISMISSED';
+
+export interface MarkdownSuggestion {
+  id: string;
+  variantId: string;
+  discountId: string | null;
+  suggestedBps: number;
+  estimatedClearancePct: number;
+  estimatedClearanceDays: number;
+  marginBeforePaisa: number;
+  marginAfterPaisa: number;
+  status: MarkdownSuggestionStatus;
+  createdAt: string;
+  resolvedAt: string | null;
+  variant: {
+    id: string;
+    sku: string;
+    size: string | null;
+    color: string | null;
+    stock: number;
+    product: { id: string; slug: string; translations: Array<{ name: string }> };
+  };
 }

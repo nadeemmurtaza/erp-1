@@ -126,6 +126,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `AdminCategoriesPage` | default | :27 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/collections`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `CollectionsAdminPage` | default | :140 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/contacts`
 
 | File | Symbol | Kind | Line | Doc |
@@ -782,6 +788,14 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `loading.tsx` | `Loading` | default | :1 |  |
 | `page.tsx` | `CheckoutPage` | default | :54 | Checkout. |
+
+### `apps/web/src/app/(storefront)/[locale]/collections/[slug]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `revalidate` | const | :9 |  |
+| `page.tsx` | `generateMetadata` | function | :36 |  |
+| `page.tsx` | `CollectionPage` | default | :50 | WO-8.2 — a curated or rule-based collection page. |
 
 ### `apps/web/src/app/(storefront)/[locale]/forgot-password`
 

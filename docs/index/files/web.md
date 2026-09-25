@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 296 tracked files in `apps/web`, by directory.
+All 298 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -175,6 +175,12 @@ All 296 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 309 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/collections` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 208 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/contacts` (2)
 
@@ -821,6 +827,12 @@ All 296 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `loading.tsx` | loading | 47 |  |
 | `page.tsx` | page | 708 |  |
+
+### `apps/web/src/app/(storefront)/[locale]/collections/[slug]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 86 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/forgot-password` (1)
 

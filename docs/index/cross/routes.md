@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **463** endpoints across **77** controllers, with the access rule that actually guards each one.
+All **473** endpoints across **79** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 51** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 53** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -47,6 +47,8 @@ never authorization.
 | GET | `/catalog/products/:slug` | `CatalogController.product` |
 | GET | `/catalog/redirects/lookup` | `RedirectLookupController.lookup` |
 | GET | `/catalog/stitching-services` | `CatalogController.stitchingServices` |
+| GET | `/collections` | `CollectionsController.list` |
+| GET | `/collections/:slug` | `CollectionsController.get` |
 | GET | `/content/banners` | `ContentController.listBanners` |
 | GET | `/content/menu/:menuKey` | `ContentController.getMenu` |
 | GET | `/content/pages` | `ContentController.listPageSlugs` |
@@ -220,6 +222,21 @@ never authorization.
 | GET | `/catalog/products/:slug` | **PUBLIC** | `CatalogController.product` | One product by slug |
 | GET | `/catalog/redirects/lookup` | **PUBLIC** | `RedirectLookupController.lookup` | Whether a path now redirects somewhere else |
 | GET | `/catalog/stitching-services` | **PUBLIC** | `CatalogController.stitchingServices` | Stitching services, optionally for one garment type |
+
+### [`collections`](../modules/collections.md) (10)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/collections` | `collections.view` `collections.manage` | `CollectionsAdminController.list` |  |
+| POST | `/admin/collections` | `collections.manage` | `CollectionsAdminController.create` |  |
+| DELETE | `/admin/collections/:id` | `collections.manage` | `CollectionsAdminController.remove` |  |
+| GET | `/admin/collections/:id` | `collections.view` `collections.manage` | `CollectionsAdminController.get` |  |
+| PATCH | `/admin/collections/:id` | `collections.manage` | `CollectionsAdminController.update` |  |
+| POST | `/admin/collections/:id/products` | `collections.manage` | `CollectionsAdminController.addProduct` |  |
+| DELETE | `/admin/collections/:id/products/:productId` | `collections.manage` | `CollectionsAdminController.removeProduct` |  |
+| PATCH | `/admin/collections/:id/products/reorder` | `collections.manage` | `CollectionsAdminController.reorder` |  |
+| GET | `/collections` | **PUBLIC** | `CollectionsController.list` |  |
+| GET | `/collections/:slug` | **PUBLIC** | `CollectionsController.get` |  |
 
 ### [`content`](../modules/content.md) (24)
 

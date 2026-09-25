@@ -3,7 +3,7 @@
 
 # Screens
 
-All **183** routable files across the web app, the till and the mobile app.
+All **185** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (110)
+### admin (111)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -53,6 +53,7 @@ _none_
 | `/admin/br/[branchId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/br/[branchId]/page.tsx` |
 | `/admin/brands` | page | client | `apps/web/src/app/(admin)/admin/(app)/brands/page.tsx` |
 | `/admin/categories` | page | client | `apps/web/src/app/(admin)/admin/(app)/categories/page.tsx` |
+| `/admin/collections` | page | client | `apps/web/src/app/(admin)/admin/(app)/collections/page.tsx` |
 | `/admin/contacts` | loading | server | `apps/web/src/app/(admin)/admin/(app)/contacts/loading.tsx` |
 | `/admin/contacts` | page | client | `apps/web/src/app/(admin)/admin/(app)/contacts/page.tsx` |
 | `/admin/content` | page | client | `apps/web/src/app/(admin)/admin/(app)/content/page.tsx` |
@@ -181,7 +182,7 @@ _none_
 | `/terminal` | page | client | `apps/pos/src/app/terminal/page.tsx` |
 | `/till` | page | client | `apps/pos/src/app/till/page.tsx` |
 
-### storefront (42)
+### storefront (43)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -204,6 +205,7 @@ _none_
 | `/[locale]/cart` | page | client | `apps/web/src/app/(storefront)/[locale]/cart/page.tsx` |
 | `/[locale]/checkout` | loading | server | `apps/web/src/app/(storefront)/[locale]/checkout/loading.tsx` |
 | `/[locale]/checkout` | page | client | `apps/web/src/app/(storefront)/[locale]/checkout/page.tsx` |
+| `/[locale]/collections/[slug]` | page | server | `apps/web/src/app/(storefront)/[locale]/collections/[slug]/page.tsx` |
 | `/[locale]/contact` | page | server | `apps/web/src/app/(storefront)/[locale]/(static)/contact/page.tsx` |
 | `/[locale]/forgot-password` | page | client | `apps/web/src/app/(storefront)/[locale]/forgot-password/page.tsx` |
 | `/[locale]/login` | page | client | `apps/web/src/app/(storefront)/[locale]/login/page.tsx` |

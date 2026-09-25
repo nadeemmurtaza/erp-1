@@ -5,6 +5,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
 import { BomModule } from './bom/bom.module';
 import { CartModule } from './cart/cart.module';
 import { CatalogModule } from './catalog/catalog.module';
+import { CollectionsModule } from './collections/collections.module';
 import { ContentModule } from './content/content.module';
 import { CrmModule } from './crm/crm.module';
 import { FinanceModule } from './finance/finance.module';
@@ -66,6 +67,7 @@ export interface FeatureModuleEntry {
 export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'catalog', module: CatalogModule },
   { name: 'content', module: ContentModule },
+  { name: 'collections', module: CollectionsModule },
   { name: 'measurements', module: MeasurementsModule },
   { name: 'cart', module: CartModule },
   { name: 'stitching', module: StitchingModule },

@@ -32,9 +32,9 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 596 | 84,311 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 602 | 85,002 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `docs` | 392 | 59,591 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 296 | 46,362 | Next.js — admin console and customer storefront in one app |
+| `apps/web` | 298 | 46,656 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 27,354 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 21 | 8,574 | repository checks and generators (lint gates, this index) |
 | `packages/shared` | 50 | 5,321 | brand, money, permissions, measurements, entities |
@@ -65,6 +65,7 @@ Each is independent: no module imports another except through a named
 | [`bom`](modules/bom.md) | core | MODULES allowlist | 20 | 5 |
 | [`cart`](modules/cart.md) | core | MODULES allowlist | 6 | 3 |
 | [`catalog`](modules/catalog.md) | core | MODULES allowlist | 43 | 24 |
+| [`collections`](modules/collections.md) | core | MODULES allowlist | 10 | — |
 | [`content`](modules/content.md) | core | MODULES allowlist | 24 | 8 |
 | [`crm`](modules/crm.md) | core | MODULES allowlist | 19 | 9 |
 | [`finance`](modules/finance.md) | core | MODULES allowlist | 14 | 3 |

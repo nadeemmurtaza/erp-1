@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "c408cb3246d5bcfc",
+  "contentHash": "fa8079a01cefa04f",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -106,6 +106,7 @@
     "docs/index/modules/bom.md",
     "docs/index/modules/cart.md",
     "docs/index/modules/catalog.md",
+    "docs/index/modules/collections.md",
     "docs/index/modules/content.md",
     "docs/index/modules/crm.md",
     "docs/index/modules/finance.md",
@@ -141,18 +142,18 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 1568,
-    "lines": 242699,
-    "routes": 463,
-    "controllers": 77,
+    "files": 1576,
+    "lines": 243684,
+    "routes": 473,
+    "controllers": 79,
     "models": 187,
     "enums": 76,
     "migrations": 65,
     "events": 44,
     "permissions": 60,
-    "screens": 183,
+    "screens": 185,
     "crons": 11,
-    "specs": 147,
+    "specs": 148,
     "designLaws": 0
   }
 }

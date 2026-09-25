@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 596 tracked files in `apps/api`, by directory.
+All 602 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -693,8 +693,8 @@ All 596 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 88 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 165 |  |
+| `module-packs.ts` | module | 89 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 167 |  |
 
 ### `apps/api/src/modules/accounting` (15)
 
@@ -839,6 +839,22 @@ All 596 tracked files in `apps/api`, by directory.
 | `product-query.dto.ts` | dto | 88 |  |
 | `product.dto.ts` | dto | 319 |  |
 | `redirect.dto.ts` | dto | 23 |  |
+
+### `apps/api/src/modules/collections` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `collection-rule-engine.ts` | module | 56 |  |
+| `collections.controller.ts` | controller | 97 |  |
+| `collections.module.ts` | nest module | 11 |  |
+| `collections.service.spec.ts` | unit test | 139 |  |
+| `collections.service.ts` | service | 259 |  |
+
+### `apps/api/src/modules/collections/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `collections.dto.ts` | dto | 126 |  |
 
 ### `apps/api/src/modules/content` (5)
 

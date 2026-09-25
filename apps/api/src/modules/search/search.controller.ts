@@ -1,8 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { isLocale } from '@newax/shared';
 import { CurrentUser, Public, RequirePermission } from '../../core/auth/decorators';
 import { SearchService } from './search.service';
 import { CreateSynonymDto, SearchQueryDto } from './dto/search.dto';
+
+/** Uploaded file as Multer hands it over. */
+interface UploadedImage {
+  buffer: Buffer;
+  originalname: string;
+  mimetype: string;
+  size: number;
+}
 
 @ApiTags('search')
 @Controller('search')
@@ -13,6 +23,21 @@ export class SearchController {
   @Get()
   search(@Query() query: SearchQueryDto, @CurrentUser('id') userId?: string) {
     return this.searchService.search(query, userId ?? null);
+  }
+
+  @Post('by-image')
+  @ApiOperation({ summary: 'WO-9.5 — upload a photo, find the nearest products' })
+  @ApiBody({ schema: { type: 'object', properties: { file: { type: 'string', format: 'binary' } } } })
+  @UseInterceptors(FileInterceptor('file'))
+  searchByImage(
+    @UploadedFile() file: UploadedImage | undefined,
+    @Query('locale') locale: string | undefined,
+    @CurrentUser('id') userId?: string,
+  ) {
+    if (!file) {
+      throw new BadRequestException('Choose a photo to upload.');
+    }
+    return this.searchService.searchByImage(file, locale && isLocale(locale) ? locale : 'en', userId ?? null);
   }
 }
 

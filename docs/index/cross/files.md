@@ -3,15 +3,15 @@
 
 # Every tracked file
 
-All **1,688** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,692** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 682 | 94,071 | [files/api.md](../files/api.md) |
-| apps/web | 316 | 50,323 | [files/web.md](../files/web.md) |
+| apps/api | 685 | 94,553 | [files/api.md](../files/api.md) |
+| apps/web | 317 | 50,446 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 74 | 6,946 | [files/packages.md](../files/packages.md) |
@@ -30,11 +30,11 @@ name a new file: the convention is what makes it findable.
 |---|---|
 | doc | 417 |
 | page | 158 |
-| unit test | 150 |
+| unit test | 152 |
 | module | 122 |
 | service | 108 |
+| component | 83 |
 | dto | 82 |
-| component | 82 |
 | controller | 79 |
 | migration | 68 |
 | nest module | 57 |
@@ -47,8 +47,8 @@ name a new file: the convention is what makes it findable.
 | utility | 22 |
 | e2e test | 18 |
 | file | 13 |
+| scheduled job | 13 |
 | yaml | 12 |
-| scheduled job | 12 |
 | config | 11 |
 | loading | 11 |
 | registry | 7 |

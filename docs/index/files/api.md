@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 682 tracked files in `apps/api`, by directory.
+All 685 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -713,7 +713,7 @@ All 682 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 48 |  |
-| `settings.defaults.ts` | module | 367 |  |
+| `settings.defaults.ts` | module | 370 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 85 |  |
 
@@ -1404,15 +1404,18 @@ All 682 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `review.dto.ts` | dto | 67 |  |
 
-### `apps/api/src/modules/search` (5)
+### `apps/api/src/modules/search` (8)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `search-reindex.listener.ts` | event subscriber | 28 |  |
-| `search.controller.ts` | controller | 48 |  |
-| `search.module.ts` | nest module | 12 |  |
-| `search.service.spec.ts` | unit test | 118 |  |
-| `search.service.ts` | service | 241 |  |
+| `search-embedding.cron.spec.ts` | unit test | 44 |  |
+| `search-embedding.cron.ts` | scheduled job | 34 |  |
+| `search-reindex.listener.spec.ts` | unit test | 34 |  |
+| `search-reindex.listener.ts` | event subscriber | 33 |  |
+| `search.controller.ts` | controller | 73 |  |
+| `search.module.ts` | nest module | 13 |  |
+| `search.service.spec.ts` | unit test | 294 |  |
+| `search.service.ts` | service | 401 |  |
 
 ### `apps/api/src/modules/search/dto` (1)
 

@@ -3,35 +3,39 @@
 
 # Module: `search`
 
-Pack **core** · enabled by the `MODULES` allowlist · 6 files
+Pack **core** · enabled by the `MODULES` allowlist · 9 files
 
 
 
 Source: `apps/api/src/modules/search/`
 
-## Files (6 · 532 lines)
+## Files (9 · 1,011 lines)
 
 All paths relative to `apps/api/src/modules/search/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `search.dto.ts` | dto | 85 | 2 |  |
-| `search-reindex.listener.ts` | event subscriber | 28 | 1 | Lives in `search` (the reacting module), subscribing to an event `catalog` publishes — catalog never imports SearchServ… |
-| `search.controller.ts` | controller | 48 | 2 |  |
-| `search.module.ts` | nest module | 12 | 1 |  |
-| `search.service.spec.ts` | unit test | 118 | — |  |
-| `search.service.ts` | service | 241 | 1 | WO-8.3. |
+| `search-embedding.cron.spec.ts` | unit test | 44 | — |  |
+| `search-embedding.cron.ts` | scheduled job | 34 | 1 | WO-9.5 (09-ai-layer.md) — "Re-embed on product change, in the background, batched." SearchReindexListener only nulls a… |
+| `search-reindex.listener.spec.ts` | unit test | 34 | — |  |
+| `search-reindex.listener.ts` | event subscriber | 33 | 1 | Lives in `search` (the reacting module), subscribing to an event `catalog` publishes — catalog never imports SearchServ… |
+| `search.controller.ts` | controller | 73 | 2 |  |
+| `search.module.ts` | nest module | 13 | 1 |  |
+| `search.service.spec.ts` | unit test | 294 | — |  |
+| `search.service.ts` | service | 401 | 1 | WO-8.3. |
 
 
-## HTTP routes (5)
+## HTTP routes (6)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/search/synonyms` | `search.view` `search.manage` | `SearchAdminController.listSynonyms` :26 |  |
-| POST | `/admin/search/synonyms` | `search.manage` | `SearchAdminController.createSynonym` :32 |  |
-| DELETE | `/admin/search/synonyms/:id` | `search.manage` | `SearchAdminController.deleteSynonym` :38 |  |
-| GET | `/admin/search/zero-results` | `search.view` `search.manage` | `SearchAdminController.zeroResults` :44 |  |
-| GET | `/search` | **PUBLIC** | `SearchController.search` :14 |  |
+| GET | `/admin/search/synonyms` | `search.view` `search.manage` | `SearchAdminController.listSynonyms` :51 |  |
+| POST | `/admin/search/synonyms` | `search.manage` | `SearchAdminController.createSynonym` :57 |  |
+| DELETE | `/admin/search/synonyms/:id` | `search.manage` | `SearchAdminController.deleteSynonym` :63 |  |
+| GET | `/admin/search/zero-results` | `search.view` `search.manage` | `SearchAdminController.zeroResults` :69 |  |
+| GET | `/search` | **PUBLIC** | `SearchController.search` :24 |  |
+| POST | `/search/by-image` | **PUBLIC** | `SearchController.searchByImage` :32 | WO-9.5 — upload a photo, find the nearest products |
 
 
 ## Domain events
@@ -59,6 +63,11 @@ _none_
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 
+## Scheduled work
+
+| Schedule | Handler | Where | What it does |
+|---|---|---|---|
+| `*/10 * * * *` | `embedPending()` | `search-embedding.cron.ts:25` |  |
 
 
 ## Nest wiring
@@ -66,15 +75,18 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`SearchModule`** (`search.module.ts`)
 - imports: —
 - controllers: `SearchController`, `SearchAdminController`
-- providers: `SearchService`, `SearchReindexListener`
+- providers: `SearchService`, `SearchReindexListener`, `SearchEmbeddingCron`
 - exports: `SearchService`
 
 
 ## Reaches out to
 
+- core `ai`
 - core `auth`
 - core `events`
 - core `prisma`
+- core `settings`
+- core `storage`
 - package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
@@ -82,11 +94,13 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (3)
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `search.service.spec.ts` | 6 | SearchService |
+| `search-embedding.cron.spec.ts` | 2 | SearchEmbeddingCron |
+| `search-reindex.listener.spec.ts` | 2 | SearchReindexListener |
+| `search.service.spec.ts` | 14 | SearchService · SearchService — WO-9.5 semantic and visual search · embedPendingTranslations · searchByImage |
 
 
 ## Every export in this unit
@@ -95,11 +109,12 @@ check there before adding another.
 |---|---|---|---|
 | `SearchQueryDto` | class | `search.dto.ts:6` |  |
 | `CreateSynonymDto` | class | `search.dto.ts:72` |  |
+| `SearchEmbeddingCron` | class | `search-embedding.cron.ts:17` | WO-9.5 (09-ai-layer.md) — "Re-embed on product change, in the background, batched." SearchReindexListener onl… |
 | `SearchReindexListener` | class | `search-reindex.listener.ts:12` | Lives in `search` (the reacting module), subscribing to an event `catalog` publishes — catalog never imports… |
-| `SearchController` | class | `search.controller.ts:10` |  |
-| `SearchAdminController` | class | `search.controller.ts:21` |  |
-| `SearchModule` | class | `search.module.ts:11` |  |
-| `SearchService` | class | `search.service.ts:30` | WO-8.3. |
+| `SearchController` | class | `search.controller.ts:20` |  |
+| `SearchAdminController` | class | `search.controller.ts:46` |  |
+| `SearchModule` | class | `search.module.ts:12` |  |
+| `SearchService` | class | `search.service.ts:55` | WO-8.3. |
 
 
 ---

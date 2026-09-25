@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { BRAND } from '@newax/shared';
 import { ROUTES } from '@/constants/routes';
+import { VisualSearchButton } from './visual-search-button';
 
 /**
  * An order number, as this shop stamps them: YSN-2026-0001.
@@ -99,6 +100,8 @@ export function SearchBox() {
           className="min-w-0 flex-1 border-0 bg-transparent text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-0"
         />
       </form>
+
+      <VisualSearchButton />
 
       <button
         type="button"

@@ -211,6 +211,8 @@ export const SettingKey = {
    * Editable without a deploy because the real rate moves.
    */
   AiUsdToPkrRate: 'ai.usd_to_pkr_rate',
+  /** WO-9.5 (09-ai-layer.md) — "re-embed... in the background, batched". How many ProductTranslation rows SearchEmbeddingCron embeds per 10-minute tick — bounds one edit spree's worth of AI cost/rate-limit exposure to a single run. */
+  SearchEmbeddingBatchSize: 'search.embedding_batch_size',
 
   /**
    * WO-9.2 (09-ai-layer.md) — "a garment where 40% say too small gets its
@@ -354,6 +356,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
 
   [SettingKey.AiMonthlyBudgetPaisa]: null as number | null,
   [SettingKey.AiUsdToPkrRate]: 280,
+  [SettingKey.SearchEmbeddingBatchSize]: 20,
 
   [SettingKey.SizeBiasShiftThresholdPct]: 40,
   [SettingKey.SizeBiasMinSampleSize]: 5,

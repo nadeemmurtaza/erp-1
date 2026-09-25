@@ -16,7 +16,7 @@ All 57 tracked files in `scripts, CI, deployment and container configuration`, b
 | `.env.branch.example` | example | 101 |  |
 | `.env.example` | example | 159 |  |
 | `.env.production.example` | example | 127 |  |
-| `.gitignore` | file | 54 |  |
+| `.gitignore` | file | 59 |  |
 | `Caddyfile` | file | 63 |  |
 | `cloudflare.json` | json | 22 |  |
 | `docker-compose.branch.yml` | yaml | 98 |  |
@@ -95,7 +95,7 @@ All 57 tracked files in `scripts, CI, deployment and container configuration`, b
 | `idx.mjs` | script | 486 |  |
 | `install-git-hooks.mjs` | script | 94 |  |
 | `nested-borders.py` | py | — |  |
-| `sync-client.mjs` | script | 243 | scripts/sync-client.mjs |
+| `sync-client.mjs` | script | 700 | scripts/sync-client.mjs — the Extractor. |
 
 ### `scripts/lib` (3)
 

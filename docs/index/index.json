@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 1760,
-    "lines": 269054,
+    "lines": 269633,
     "routes": 575,
     "controllers": 102,
     "models": 211,
@@ -27,8 +27,8 @@
     },
     "infra": {
       "files": 57,
-      "lines": 29121,
-      "bytes": 1137660,
+      "lines": 29583,
+      "bytes": 1164746,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 392,
-      "lines": 60222,
-      "bytes": 3568475,
+      "lines": 60339,
+      "bytes": 3576458,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -38073,8 +38073,8 @@
       "path": ".gitignore",
       "area": "infra",
       "kind": "file",
-      "lines": 54,
-      "bytes": 1042,
+      "lines": 59,
+      "bytes": 1294,
       "doc": "",
       "symbols": []
     },
@@ -62017,8 +62017,8 @@
       "path": "docs/implementation/commercial-licensing-agency/11-client-handover-model.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 121,
-      "bytes": 9828,
+      "lines": 131,
+      "bytes": 10446,
       "doc": "",
       "symbols": []
     },
@@ -62026,8 +62026,8 @@
       "path": "docs/implementation/commercial-licensing-agency/12-extractor-script-spec.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 59,
-      "bytes": 4640,
+      "lines": 164,
+      "bytes": 11893,
       "doc": "",
       "symbols": []
     },
@@ -62035,8 +62035,8 @@
       "path": "docs/implementation/commercial-licensing-agency/14-managed-services-module.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 270,
-      "bytes": 12669,
+      "lines": 272,
+      "bytes": 12781,
       "doc": "",
       "symbols": []
     },
@@ -65228,9 +65228,9 @@
       "path": "scripts/sync-client.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 243,
-      "bytes": 10333,
-      "doc": "scripts/sync-client.mjs",
+      "lines": 700,
+      "bytes": 37167,
+      "doc": "scripts/sync-client.mjs — the Extractor.",
       "symbols": []
     },
     {

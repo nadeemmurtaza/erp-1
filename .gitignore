@@ -51,3 +51,8 @@ yaseen-backup-before-reset.sql
 
 # Worktree metadata from an external tool — machine-local, never shared.
 .freebuff/
+
+# scripts/sync-client.mjs's own scratch working directory — a client
+# repository built and committed here, never part of the Blueprint's own
+# history. See docs/implementation/commercial-licensing-agency/12-extractor-script-spec.md.
+.client-build/

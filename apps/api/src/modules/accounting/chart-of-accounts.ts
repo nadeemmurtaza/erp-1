@@ -41,6 +41,12 @@ export const CHART_OF_ACCOUNTS: ReadonlyArray<{
   { code: '1300', name: 'Employee Advances', type: 'ASSET' },
   { code: '2300', name: 'Salaries Payable', type: 'LIABILITY' },
   { code: '5300', name: 'Salaries & Wages Expense', type: 'EXPENSE' },
+  // Wallet (doc 155, WO-155.2 — module ships off by default, see
+  // DECISIONS.md) — what Newax owes a customer for store credit not yet
+  // redeemed, the identical treatment any gift-card issuer uses. Never
+  // recognised as income at PURCHASE; converts to SALES_REVENUE only as
+  // credit is actually REDEEMed (posting-rules.subscriber.ts, once written).
+  { code: '2400', name: 'Deferred Revenue — Wallet Credit', type: 'LIABILITY' },
 ];
 
 /** The codes above, named — so a posting rule never hand-types a magic string. */
@@ -63,4 +69,5 @@ export const ACCOUNT_CODE = {
   EMPLOYEE_ADVANCES: '1300',
   SALARIES_PAYABLE: '2300',
   SALARIES_WAGES_EXPENSE: '5300',
+  DEFERRED_REVENUE_WALLET: '2400',
 } as const;

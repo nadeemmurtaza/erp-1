@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-345 files · 52,684 lines
+349 files · 53,372 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -26,15 +26,15 @@ through `@newax/shared`'s `BRAND`.
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
 | `apps/web` | 9 | 410 | file, script, json, module |
-| `apps/web/messages` | 2 | 1,214 | json |
+| `apps/web/messages` | 2 | 1,246 | json |
 | `apps/web/public` | 1 | 0 | asset |
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 76 | module |
-| `apps/web/src/app` | 178 | 31,353 | page, loading, layout, error |
-| `apps/web/src/components` | 104 | 15,877 | component, unit test, loading |
+| `apps/web/src/app` | 182 | 31,958 | page, loading, layout, error |
+| `apps/web/src/components` | 104 | 15,921 | component, unit test, loading |
 | `apps/web/src/config` | 3 | 106 | config |
-| `apps/web/src/constants` | 5 | 339 | constants |
+| `apps/web/src/constants` | 5 | 346 | constants |
 | `apps/web/src/hooks` | 3 | 72 | hook |
 | `apps/web/src/i18n` | 3 | 53 | module |
 | `apps/web/src/lib` | 9 | 1,043 | utility |
@@ -67,13 +67,13 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/src/components/admin/product-form.tsx` | 1,434 | component |  |
 | `apps/web/src/types/api.ts` | 1,314 | types |  |
 | `apps/web/src/components/storefront/stitching-panel.tsx` | 969 | component |  |
-| `apps/web/src/components/admin/nav-registry.ts` | 805 | component |  |
+| `apps/web/src/components/admin/nav-registry.ts` | 824 | component |  |
 | `apps/web/src/app/(storefront)/[locale]/checkout/page.tsx` | 743 | page |  |
 | `apps/web/src/components/admin/dashboard/card-registry.ts` | 705 | component |  |
 | `apps/web/src/components/admin/analytics/report-registry.ts` | 660 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx` | 658 | page |  |
-| `apps/web/messages/en.json` | 607 | json |  |
-| `apps/web/messages/ur.json` | 607 | json |  |
+| `apps/web/messages/en.json` | 623 | json |  |
+| `apps/web/messages/ur.json` | 623 | json |  |
 | `apps/web/src/app/globals.css` | 603 | stylesheet |  |
 | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` | 571 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 565 | page |  |

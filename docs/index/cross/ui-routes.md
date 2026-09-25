@@ -3,7 +3,7 @@
 
 # Screens
 
-All **208** routable files across the web app, the till and the mobile app.
+All **212** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (121)
+### admin (124)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -106,6 +106,8 @@ _none_
 | `/admin/marketing/discounts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/discounts/[id]/page.tsx` |
 | `/admin/marketing/discounts/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/discounts/new/page.tsx` |
 | `/admin/marketing/promo-codes` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/promo-codes/page.tsx` |
+| `/admin/merchant-payables` | page | client | `apps/web/src/app/(admin)/admin/(app)/merchant-payables/page.tsx` |
+| `/admin/merchant-payables/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/merchant-payables/[id]/page.tsx` |
 | `/admin/o` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/page.tsx` |
 | `/admin/o/[orgId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/page.tsx` |
 | `/admin/o/[orgId]/access` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/access/page.tsx` |
@@ -154,6 +156,7 @@ _none_
 | `/admin/transfers/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/transfers/new/page.tsx` |
 | `/admin/users` | page | client | `apps/web/src/app/(admin)/admin/(app)/users/page.tsx` |
 | `/admin/users/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/users/[id]/page.tsx` |
+| `/admin/wallet` | page | client | `apps/web/src/app/(admin)/admin/(app)/wallet/page.tsx` |
 
 ### mobile (22)
 
@@ -199,7 +202,7 @@ _none_
 | `/terminal` | page | client | `apps/pos/src/app/terminal/page.tsx` |
 | `/till` | page | client | `apps/pos/src/app/till/page.tsx` |
 
-### storefront (49)
+### storefront (50)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -221,6 +224,7 @@ _none_
 | `/[locale]/account/returns/[id]` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/[id]/page.tsx` |
 | `/[locale]/account/returns/new` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/new/page.tsx` |
 | `/[locale]/account/reviews` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/reviews/page.tsx` |
+| `/[locale]/account/wallet` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/wallet/page.tsx` |
 | `/[locale]/blog` | page | server | `apps/web/src/app/(storefront)/[locale]/blog/page.tsx` |
 | `/[locale]/blog/[slug]` | page | server | `apps/web/src/app/(storefront)/[locale]/blog/[slug]/page.tsx` |
 | `/[locale]/cart` | loading | server | `apps/web/src/app/(storefront)/[locale]/cart/loading.tsx` |

@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 724 tracked files in `apps/api`, by directory.
+All 740 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,17 +31,17 @@ All 724 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3068 |  |
 
-### `apps/api/prisma/schema` (38)
+### `apps/api/prisma/schema` (39)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.prisma` | prisma schema | 222 | The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a |
-| `approvals.prisma` | prisma schema | 60 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
+| `approvals.prisma` | prisma schema | 63 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
 | `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
 | `catalog.prisma` | prisma schema | 693 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
-| `core.prisma` | prisma schema | 528 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `core.prisma` | prisma schema | 534 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
@@ -71,6 +71,7 @@ All 724 tracked files in `apps/api`, by directory.
 | `tax.prisma` | prisma schema | 38 | Tax: rate/class definitions and the pricing-mode setting. Universal |
 | `trading-partners.prisma` | prisma schema | 95 | The trading-partner network (18-trading-partner-network.md, WO-18) — lets |
 | `transfers.prisma` | prisma schema | 167 | Inter-branch stock transfers (RETAIL-ERP.md R4, Tranche 5). Off by default |
+| `wallet.prisma` | prisma schema | 185 | 155-wallet-stored-value-merchant-escrow.md |
 | `whatsapp-assistant.prisma` | prisma schema | 56 | WO-9.7, docs/implementation/ai-layer/09-ai-layer.md. |
 | `wishlist.prisma` | prisma schema | 44 | Phase 7 WO-7.6 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 
@@ -488,6 +489,12 @@ All 724 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 206 |  |
 
+### `apps/api/prisma/schema/migrations/20260925170000_add_wallet_merchant_payable` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 127 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -612,13 +619,13 @@ All 724 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 499 | The catalogue of domain events. |
+| `domain-events.ts` | module | 562 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
 | `outbox.dispatcher.ts` | dispatcher | 120 |  |
 
-### `apps/api/src/core/extension-points` (7)
+### `apps/api/src/core/extension-points` (8)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -627,7 +634,8 @@ All 724 tracked files in `apps/api`, by directory.
 | `camera-people-count.registry.ts` | registry | 34 |  |
 | `cart-line-validator.registry.ts` | registry | 64 |  |
 | `entity-enrichment.registry.ts` | registry | 45 |  |
-| `extension-points.module.ts` | nest module | 39 |  |
+| `extension-points.module.ts` | nest module | 42 |  |
+| `identity-verification-status.registry.ts` | registry | 36 |  |
 | `stock-intake.registry.ts` | registry | 71 |  |
 
 ### `apps/api/src/core/health` (2)
@@ -738,7 +746,7 @@ All 724 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 48 |  |
-| `settings.defaults.ts` | module | 384 |  |
+| `settings.defaults.ts` | module | 399 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 85 |  |
 
@@ -767,17 +775,17 @@ All 724 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 96 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 188 |  |
+| `module-packs.ts` | module | 97 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 196 |  |
 
-### `apps/api/src/modules/accounting` (15)
+### `apps/api/src/modules/accounting` (17)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `accounting.module.ts` | nest module | 28 |  |
+| `accounting.module.ts` | nest module | 30 |  |
 | `accounting.service.spec.ts` | unit test | 92 |  |
 | `accounting.service.ts` | service | 279 |  |
-| `chart-of-accounts.ts` | module | 67 |  |
+| `chart-of-accounts.ts` | module | 74 |  |
 | `consolidation.controller.ts` | controller | 38 |  |
 | `consolidation.service.spec.ts` | unit test | 128 |  |
 | `consolidation.service.ts` | service | 132 |  |
@@ -789,6 +797,8 @@ All 724 tracked files in `apps/api`, by directory.
 | `gl-reports.service.ts` | service | 298 |  |
 | `posting-rules.subscriber.spec.ts` | unit test | 643 |  |
 | `posting-rules.subscriber.ts` | event subscriber | 519 |  |
+| `wallet-posting-rules.subscriber.spec.ts` | unit test | 140 |  |
+| `wallet-posting-rules.subscriber.ts` | event subscriber | 135 |  |
 
 ### `apps/api/src/modules/accounting/dto` (2)
 
@@ -1075,7 +1085,7 @@ All 724 tracked files in `apps/api`, by directory.
 | `identity-verification-provider.ts` | module | 76 | Extension point: identity-verification providers. |
 | `identity-verification.controller.ts` | controller | 51 |  |
 | `identity-verification.module.ts` | nest module | 11 |  |
-| `identity-verification.service.ts` | service | 149 |  |
+| `identity-verification.service.ts` | service | 170 |  |
 
 ### `apps/api/src/modules/identity-verification/dto` (1)
 
@@ -1612,6 +1622,27 @@ All 724 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `user.dto.ts` | dto | 122 |  |
+
+### `apps/api/src/modules/wallet` (10)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `merchant-payable.controller.ts` | controller | 73 |  |
+| `merchant-payable.service.spec.ts` | unit test | 203 |  |
+| `merchant-payable.service.ts` | service | 237 |  |
+| `wallet-account.controller.ts` | controller | 39 |  |
+| `wallet-admin.controller.ts` | controller | 72 |  |
+| `wallet-credit-note.port.spec.ts` | unit test | 50 |  |
+| `wallet-credit-note.port.ts` | module | 110 |  |
+| `wallet.module.ts` | nest module | 41 |  |
+| `wallet.service.spec.ts` | unit test | 426 |  |
+| `wallet.service.ts` | service | 538 |  |
+
+### `apps/api/src/modules/wallet/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `wallet.dto.ts` | dto | 87 |  |
 
 ### `apps/api/src/modules/wishlist` (5)
 

@@ -235,6 +235,15 @@ export const SettingKey = {
   AnalyticsDefaultRangeDays: 'analytics.default_range_days',
   /** The bucket WO-B.5's sales/purchases/expenses comparison chart opens in. */
   AnalyticsComparisonBucket: 'analytics.comparison_bucket',
+  /**
+   * doc 155 (WO-155.2) — a manual wallet ADJUSTMENT at or above this value
+   * (paisa) cannot be self-serve: `WalletService.adjustment()` opens a
+   * `WalletAdjustmentRequest` instead of writing the `WalletEntry`
+   * directly, requiring a second, different holder of
+   * `finance.wallets.adjust.approve` to decide it ("the threshold nobody
+   * approves alone" lens). Module ships off by default — see DECISIONS.md.
+   */
+  WalletAdjustmentApprovalThresholdMinor: 'finance.wallet_adjustment_approval_threshold_minor',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -380,4 +389,10 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.AnalyticsDashboardCacheSeconds]: 60,
   [SettingKey.AnalyticsDefaultRangeDays]: 30,
   [SettingKey.AnalyticsComparisonBucket]: 'day',
+
+  // 50,000 PKR minor units (paisa) — a deliberately conservative default a
+  // deployment tunes once it has real adjustment volume to judge by; "it is
+  // tunable," the same posture CodRiskConfirmationCallThreshold above
+  // already takes for a threshold nobody should hardcode into a deploy.
+  [SettingKey.WalletAdjustmentApprovalThresholdMinor]: 5_000_000,
 };

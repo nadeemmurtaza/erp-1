@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1760,
-    "lines": 269054,
-    "routes": 575,
-    "controllers": 102,
-    "models": 211,
-    "enums": 93,
-    "migrations": 69,
-    "events": 48,
-    "permissions": 68,
-    "screens": 208,
+    "files": 1780,
+    "lines": 272624,
+    "routes": 592,
+    "controllers": 105,
+    "models": 215,
+    "enums": 97,
+    "migrations": 70,
+    "events": 53,
+    "permissions": 71,
+    "screens": 212,
     "crons": 17,
-    "specs": 184,
+    "specs": 188,
     "designLaws": 0
   },
   "designLaws": [],
@@ -28,13 +28,13 @@
     "infra": {
       "files": 57,
       "lines": 29121,
-      "bytes": 1137660,
+      "bytes": 1137681,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 724,
-      "lines": 100225,
-      "bytes": 3727544,
+      "files": 740,
+      "lines": 102853,
+      "bytes": 3846535,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 345,
-      "lines": 52684,
-      "bytes": 1909987,
+      "files": 349,
+      "lines": 53372,
+      "bytes": 1935615,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 392,
-      "lines": 60222,
-      "bytes": 3568475,
+      "lines": 60454,
+      "bytes": 3582442,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 74,
-      "lines": 6985,
-      "bytes": 240976,
+      "lines": 7007,
+      "bytes": 241758,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -91,7 +91,9 @@
         "apps/api/src/modules/accounting/gl-reports.service.spec.ts",
         "apps/api/src/modules/accounting/gl-reports.service.ts",
         "apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts",
+        "apps/api/src/modules/accounting/wallet-posting-rules.subscriber.spec.ts",
+        "apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts"
       ],
       "routes": 16,
       "page": "docs/index/modules/accounting.md"
@@ -898,6 +900,27 @@
       "page": "docs/index/modules/users.md"
     },
     {
+      "name": "wallet",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/wallet/dto/wallet.dto.ts",
+        "apps/api/src/modules/wallet/merchant-payable.controller.ts",
+        "apps/api/src/modules/wallet/merchant-payable.service.spec.ts",
+        "apps/api/src/modules/wallet/merchant-payable.service.ts",
+        "apps/api/src/modules/wallet/wallet-account.controller.ts",
+        "apps/api/src/modules/wallet/wallet-admin.controller.ts",
+        "apps/api/src/modules/wallet/wallet-credit-note.port.spec.ts",
+        "apps/api/src/modules/wallet/wallet-credit-note.port.ts",
+        "apps/api/src/modules/wallet/wallet.module.ts",
+        "apps/api/src/modules/wallet/wallet.service.spec.ts",
+        "apps/api/src/modules/wallet/wallet.service.ts"
+      ],
+      "routes": 17,
+      "page": "docs/index/modules/wallet.md"
+    },
+    {
       "name": "wishlist",
       "pack": "core",
       "alwaysOn": false,
@@ -1030,6 +1053,7 @@
         "apps/api/src/core/extension-points/cart-line-validator.registry.ts",
         "apps/api/src/core/extension-points/entity-enrichment.registry.ts",
         "apps/api/src/core/extension-points/extension-points.module.ts",
+        "apps/api/src/core/extension-points/identity-verification-status.registry.ts",
         "apps/api/src/core/extension-points/stock-intake.registry.ts"
       ],
       "page": "docs/index/core/extension-points.md"
@@ -5339,6 +5363,118 @@
     },
     {
       "method": "GET",
+      "path": "/admin/merchant-payables/:id",
+      "module": "wallet",
+      "controller": "MerchantPayableController",
+      "handler": "findOne",
+      "file": "apps/api/src/modules/wallet/merchant-payable.controller.ts",
+      "line": 34,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One merchant payable"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/merchant-payables/:id/dispute",
+      "module": "wallet",
+      "controller": "MerchantPayableController",
+      "handler": "dispute",
+      "file": "apps/api/src/modules/wallet/merchant-payable.controller.ts",
+      "line": 62,
+      "access": "finance.merchant-payables.dispute",
+      "permissions": [
+        "finance.merchant-payables.dispute"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Pull one payable from the next payout run, with a reason"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/merchant-payables/:id/resolve-dispute",
+      "module": "wallet",
+      "controller": "MerchantPayableController",
+      "handler": "resolveDispute",
+      "file": "apps/api/src/modules/wallet/merchant-payable.controller.ts",
+      "line": 69,
+      "access": "finance.merchant-payables.dispute",
+      "permissions": [
+        "finance.merchant-payables.dispute"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Resolve a disputed payable — never its own disputer"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/merchant-payables/organizations/:organizationId",
+      "module": "wallet",
+      "controller": "MerchantPayableController",
+      "handler": "findForMerchant",
+      "file": "apps/api/src/modules/wallet/merchant-payable.controller.ts",
+      "line": 23,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "A merchant's own payables — every orderId, gross/fee/net, status"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/merchant-payables/organizations/:organizationId/payout-preview",
+      "module": "wallet",
+      "controller": "MerchantPayableController",
+      "handler": "preview",
+      "file": "apps/api/src/modules/wallet/merchant-payable.controller.ts",
+      "line": 41,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Dry run — what the next payout run would actually pay, with no write"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/merchant-payables/organizations/:organizationId/process-payout",
+      "module": "wallet",
+      "controller": "MerchantPayableController",
+      "handler": "processPayout",
+      "file": "apps/api/src/modules/wallet/merchant-payable.controller.ts",
+      "line": 55,
+      "access": "finance.manage",
+      "permissions": [
+        "finance.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Pay every SCHEDULED payable for this merchant — a real bank transfer batch, never per-order"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/merchant-payables/organizations/:organizationId/schedule-payout",
+      "module": "wallet",
+      "controller": "MerchantPayableController",
+      "handler": "schedule",
+      "file": "apps/api/src/modules/wallet/merchant-payable.controller.ts",
+      "line": 48,
+      "access": "finance.manage",
+      "permissions": [
+        "finance.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Schedule OPEN payables into the next payout run — verified merchants immediately, unverified ones wait for delivery confirmation"
+    },
+    {
+      "method": "GET",
       "path": "/admin/offers",
       "module": "tradingpartners",
       "controller": "OffersController",
@@ -8373,6 +8509,118 @@
       "summary": "Assign a custom Role to this user (owner's request — a user may hold several)"
     },
     {
+      "method": "POST",
+      "path": "/admin/wallet/accounts/:accountId/adjustments",
+      "module": "wallet",
+      "controller": "WalletAdminController",
+      "handler": "adjust",
+      "file": "apps/api/src/modules/wallet/wallet-admin.controller.ts",
+      "line": 40,
+      "access": "finance.wallets.adjust",
+      "permissions": [
+        "finance.wallets.adjust"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Issue a manual wallet correction — auto-committed below threshold, otherwise opens an approval request"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/wallet/accounts/:accountId/ledger",
+      "module": "wallet",
+      "controller": "WalletAdminController",
+      "handler": "ledger",
+      "file": "apps/api/src/modules/wallet/wallet-admin.controller.ts",
+      "line": 29,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "A wallet account's balance and full ledger"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/wallet/accounts/:accountId/status",
+      "module": "wallet",
+      "controller": "WalletAdminController",
+      "handler": "setStatus",
+      "file": "apps/api/src/modules/wallet/wallet-admin.controller.ts",
+      "line": 54,
+      "access": "finance.wallets.adjust.approve",
+      "permissions": [
+        "finance.wallets.adjust.approve"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Freeze, close or reactivate a wallet — a higher bar than a routine adjustment"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/wallet/adjustment-requests/:requestId/decide",
+      "module": "wallet",
+      "controller": "WalletAdminController",
+      "handler": "decideAdjustment",
+      "file": "apps/api/src/modules/wallet/wallet-admin.controller.ts",
+      "line": 47,
+      "access": "finance.wallets.adjust.approve",
+      "permissions": [
+        "finance.wallets.adjust.approve"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Approve or reject an above-threshold adjustment — never its own requester"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/wallet/customers/:customerId",
+      "module": "wallet",
+      "controller": "WalletAdminController",
+      "handler": "findAccount",
+      "file": "apps/api/src/modules/wallet/wallet-admin.controller.ts",
+      "line": 22,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "A customer's own wallet account — the id a staff screen starts from"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/wallet/customers/:customerId/refund/purchase",
+      "module": "wallet",
+      "controller": "WalletAdminController",
+      "handler": "refundPurchase",
+      "file": "apps/api/src/modules/wallet/wallet-admin.controller.ts",
+      "line": 61,
+      "access": "finance.wallets.adjust",
+      "permissions": [
+        "finance.wallets.adjust"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Refund an unredeemed wallet purchase"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/wallet/orders/:orderId/refund/redeemed",
+      "module": "wallet",
+      "controller": "WalletAdminController",
+      "handler": "refundRedeemedOrder",
+      "file": "apps/api/src/modules/wallet/wallet-admin.controller.ts",
+      "line": 68,
+      "access": "finance.wallets.adjust",
+      "permissions": [
+        "finance.wallets.adjust"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Refund an order already redeemed from a customer's wallet — corrects the merchant's own payable, never the customer's balance directly"
+    },
+    {
       "method": "GET",
       "path": "/admin/wishlist/out-of-stock-report",
       "module": "wishlist",
@@ -10116,6 +10364,48 @@
     },
     {
       "method": "GET",
+      "path": "/wallet",
+      "module": "wallet",
+      "controller": "WalletAccountController",
+      "handler": "balance",
+      "file": "apps/api/src/modules/wallet/wallet-account.controller.ts",
+      "line": 23,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "My wallet balance"
+    },
+    {
+      "method": "GET",
+      "path": "/wallet/ledger",
+      "module": "wallet",
+      "controller": "WalletAccountController",
+      "handler": "ledger",
+      "file": "apps/api/src/modules/wallet/wallet-account.controller.ts",
+      "line": 29,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "My wallet history"
+    },
+    {
+      "method": "POST",
+      "path": "/wallet/purchase",
+      "module": "wallet",
+      "controller": "WalletAccountController",
+      "handler": "purchase",
+      "file": "apps/api/src/modules/wallet/wallet-account.controller.ts",
+      "line": 35,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Buy wallet credit — settles into an existing Payment, never a new tender of its own"
+    },
+    {
+      "method": "GET",
       "path": "/wishlist",
       "module": "wishlist",
       "controller": "WishlistController",
@@ -10935,9 +11225,14 @@
         "GET /admin/finance/expenses/summary",
         "GET /admin/finance/expenses/trend",
         "GET /admin/finance/margins",
-        "GET /admin/finance/unit-economics"
+        "GET /admin/finance/unit-economics",
+        "GET /admin/merchant-payables/:id",
+        "GET /admin/merchant-payables/organizations/:organizationId",
+        "GET /admin/merchant-payables/organizations/:organizationId/payout-preview",
+        "GET /admin/wallet/accounts/:accountId/ledger",
+        "GET /admin/wallet/customers/:customerId"
       ],
-      "uiSites": 16,
+      "uiSites": 18,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -10956,9 +11251,58 @@
         "POST /admin/finance/expenses",
         "DELETE /admin/finance/expenses/:id",
         "PATCH /admin/finance/expenses/:id",
-        "POST /admin/finance/expenses/:id/receipt"
+        "POST /admin/finance/expenses/:id/receipt",
+        "POST /admin/merchant-payables/organizations/:organizationId/process-payout",
+        "POST /admin/merchant-payables/organizations/:organizationId/schedule-payout"
       ],
       "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "finance.wallets.adjust",
+      "label": "Issue a manual wallet balance correction, below the auto-approval threshold",
+      "category": "Finance",
+      "sensitivity": "medium",
+      "routes": [
+        "POST /admin/wallet/accounts/:accountId/adjustments",
+        "POST /admin/wallet/customers/:customerId/refund/purchase",
+        "POST /admin/wallet/orders/:orderId/refund/redeemed"
+      ],
+      "uiSites": 0,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "finance.wallets.adjust.approve",
+      "label": "Approve a wallet adjustment at or above the auto-approval threshold — never the requester's own",
+      "category": "Finance",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/wallet/accounts/:accountId/status",
+        "POST /admin/wallet/adjustment-requests/:requestId/decide"
+      ],
+      "uiSites": 0,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "finance.merchant-payables.dispute",
+      "label": "Mark a merchant payable disputed (pulls it from the next payout run) or resolve one — never one they disputed themselves",
+      "category": "Finance",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/merchant-payables/:id/dispute",
+        "POST /admin/merchant-payables/:id/resolve-dispute"
+      ],
+      "uiSites": 0,
       "roles": [
         "ADMIN"
       ],
@@ -12003,7 +12347,7 @@
       "name": "identity_verification.approved",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/identity-verification/identity-verification.service.ts:138"
+        "apps/api/src/modules/identity-verification/identity-verification.service.ts:159"
       ],
       "subscribers": []
     },
@@ -12012,7 +12356,7 @@
       "name": "identity_verification.rejected",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/identity-verification/identity-verification.service.ts:139"
+        "apps/api/src/modules/identity-verification/identity-verification.service.ts:160"
       ],
       "subscribers": []
     },
@@ -12021,7 +12365,7 @@
       "name": "identity_verification.expired",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/identity-verification/identity-verification.service.ts:140"
+        "apps/api/src/modules/identity-verification/identity-verification.service.ts:161"
       ],
       "subscribers": []
     },
@@ -12140,6 +12484,64 @@
       "subscribers": [
         "apps/api/src/modules/measurements/size-bias.listener.ts:21 onReviewModerated()"
       ]
+    },
+    {
+      "symbol": "WalletCreditPurchased",
+      "name": "wallet.credit_purchased",
+      "doc": "doc 155 (WO-155.2) — WalletService.purchaseCredit(): real money landed in Newax's own bank account.",
+      "publishers": [
+        "apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:30",
+        "apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:125",
+        "apps/api/src/modules/wallet/wallet.service.ts:139"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:28 onWalletCreditPurchased()"
+      ]
+    },
+    {
+      "symbol": "WalletCreditRedeemed",
+      "name": "wallet.credit_redeemed",
+      "doc": "WalletService.onMerchantConfirmed() — the RESERVE became a REDEEM; MerchantPayable was created in the same transaction (§3's own \"one transaction\" rule).",
+      "publishers": [
+        "apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:64",
+        "apps/api/src/modules/wallet/wallet.service.ts:251"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:62 onWalletCreditRedeemed()"
+      ]
+    },
+    {
+      "symbol": "WalletCreditRefunded",
+      "name": "wallet.credit_refunded",
+      "doc": "WalletService.refund() — reverses a PURCHASE (not yet redeemed) or a REDEEM (already redeemed, see refund()'s own CreditNote-port comment).",
+      "publishers": [
+        "apps/api/src/modules/wallet/wallet.service.ts:338",
+        "apps/api/src/modules/wallet/wallet.service.ts:376"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:121 onWalletCreditRefunded()"
+      ]
+    },
+    {
+      "symbol": "MerchantPayableCreated",
+      "name": "wallet.merchant_payable_created",
+      "doc": "MerchantPayableService.createMerchantPayable() — notifications.ts (WO-155.5) subscribes for the merchant receipt.",
+      "publishers": [
+        "apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:100",
+        "apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:103",
+        "apps/api/src/modules/wallet/merchant-payable.service.ts:66",
+        "apps/api/src/modules/wallet/wallet.service.ts:263"
+      ],
+      "subscribers": []
+    },
+    {
+      "symbol": "MerchantPayablePaid",
+      "name": "wallet.merchant_payable_paid",
+      "doc": "MerchantPayableService.processPayoutRun() — notifications.ts (WO-155.5) subscribes for the merchant payout receipt.",
+      "publishers": [
+        "apps/api/src/modules/wallet/merchant-payable.service.ts:149"
+      ],
+      "subscribers": []
     }
   ],
   "models": [
@@ -12256,7 +12658,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 191,
+      "line": 197,
       "doc": "",
       "fields": [
         {
@@ -12447,7 +12849,7 @@
     {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 508,
+      "line": 514,
       "doc": "",
       "fields": [
         {
@@ -12536,7 +12938,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 469,
+      "line": 475,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -12597,7 +12999,7 @@
     {
       "name": "ApprovalChain",
       "file": "apps/api/prisma/schema/approvals.prisma",
-      "line": 26,
+      "line": 29,
       "doc": "",
       "fields": [
         {
@@ -12665,7 +13067,7 @@
     {
       "name": "ApprovalStep",
       "file": "apps/api/prisma/schema/approvals.prisma",
-      "line": 41,
+      "line": 44,
       "doc": "",
       "fields": [
         {
@@ -12754,7 +13156,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 281,
+      "line": 287,
       "doc": "",
       "fields": [
         {
@@ -15346,7 +15748,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 449,
+      "line": 455,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -15620,7 +16022,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 236,
+      "line": 242,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -15806,7 +16208,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 177,
+      "line": 183,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -19143,6 +19545,122 @@
       ]
     },
     {
+      "name": "MerchantPayable",
+      "file": "apps/api/prisma/schema/wallet.prisma",
+      "line": 161,
+      "doc": "The exact mirror of doc 145's own AP side (`SupplierBill`) — a merchant selling through this platform is, for settlement purposes, a vendor Newax owes money to, never a party whose own money Newax wa…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "organizationId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "grossMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "platformFeeMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "netPayableMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "MerchantPayableStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "scheduledPayoutAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "paidAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "disputedByUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "disputeReason",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedByUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([organizationId, status])"
+      ]
+    },
+    {
       "name": "NewsletterSubscriber",
       "file": "apps/api/prisma/schema/onsite-messaging.prisma",
       "line": 62,
@@ -20822,7 +21340,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 422,
+      "line": 428,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -21209,7 +21727,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 160,
+      "line": 166,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -21750,7 +22268,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 302,
+      "line": 308,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -24942,7 +25460,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 139,
+      "line": 145,
       "doc": "",
       "fields": [
         {
@@ -25920,7 +26438,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 368,
+      "line": 374,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -25978,7 +26496,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 382,
+      "line": 388,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -26032,7 +26550,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 318,
+      "line": 324,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -26259,7 +26777,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 214,
+      "line": 220,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -30144,6 +30662,13 @@
           "relation": true
         },
         {
+          "name": "walletAccount",
+          "type": "WalletAccount?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "reviews",
           "type": "Review[]",
           "id": false,
@@ -30215,7 +30740,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 339,
+      "line": 345,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -30276,7 +30801,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 397,
+      "line": 403,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -30524,6 +31049,250 @@
         }
       ],
       "indexes": []
+    },
+    {
+      "name": "WalletAccount",
+      "file": "apps/api/prisma/schema/wallet.prisma",
+      "line": 53,
+      "doc": "One wallet per customer — the ONLY owner type (§1: no merchant-side wallet exists; a merchant's own money position is `MerchantPayable` below, an ordinary payable, never a balance).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "organizationId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "customerId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "currency",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "WalletAccountStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "customer",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "entries",
+          "type": "WalletEntry[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "adjustmentRequests",
+          "type": "WalletAdjustmentRequest[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([organizationId])"
+      ]
+    },
+    {
+      "name": "WalletAdjustmentRequest",
+      "file": "apps/api/prisma/schema/wallet.prisma",
+      "line": 126,
+      "doc": "The \"threshold nobody approves alone\" lens's own artifact: an ADJUSTMENT above `SettingKey.WalletAdjustmentApprovalThresholdMinor` is a REQUEST (refusable) until a *different holder of `finance.walle…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "accountId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requestedByUserId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "WalletAdjustmentRequestStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "walletEntryId",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "decidedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "account",
+          "type": "WalletAccount",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([accountId, status])"
+      ]
+    },
+    {
+      "name": "WalletEntry",
+      "file": "apps/api/prisma/schema/wallet.prisma",
+      "line": 83,
+      "doc": "Append-only, exactly as the doc requires — a correction is a new, opposite entry, never an edit.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "accountId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "type",
+          "type": "WalletEntryType",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sourceRef",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "actorId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "account",
+          "type": "WalletAccount",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([accountId, type, sourceRef])",
+        "@@index([accountId, createdAt])"
+      ]
     },
     {
       "name": "WhatsAppConversation",
@@ -30939,7 +31708,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 502,
+      "line": 508,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -30949,7 +31718,7 @@
     {
       "name": "AiFeature",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 487,
+      "line": 493,
       "values": [
         "ALT_TEXT",
         "SEO_COPY",
@@ -30990,7 +31759,7 @@
     {
       "name": "ApprovalChainStatus",
       "file": "apps/api/prisma/schema/approvals.prisma",
-      "line": 13,
+      "line": 16,
       "values": [
         "PENDING",
         "APPROVED",
@@ -31000,7 +31769,7 @@
     {
       "name": "ApprovalStepStatus",
       "file": "apps/api/prisma/schema/approvals.prisma",
-      "line": 19,
+      "line": 22,
       "values": [
         "PENDING",
         "APPROVED",
@@ -31011,9 +31780,10 @@
     {
       "name": "ApprovalSubjectType",
       "file": "apps/api/prisma/schema/approvals.prisma",
-      "line": 9,
+      "line": 10,
       "values": [
-        "PURCHASE_REQUISITION"
+        "PURCHASE_REQUISITION",
+        "WALLET_ADJUSTMENT"
       ]
     },
     {
@@ -31132,7 +31902,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 437,
+      "line": 443,
       "values": [
         "IOS",
         "ANDROID",
@@ -31166,7 +31936,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 225,
+      "line": 231,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -31336,6 +32106,17 @@
       ]
     },
     {
+      "name": "MerchantPayableStatus",
+      "file": "apps/api/prisma/schema/wallet.prisma",
+      "line": 146,
+      "values": [
+        "OPEN",
+        "SCHEDULED",
+        "PAID",
+        "DISPUTED"
+      ]
+    },
+    {
       "name": "NodeRole",
       "file": "apps/api/prisma/schema/organization.prisma",
       "line": 123,
@@ -31452,7 +32233,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 411,
+      "line": 417,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -31507,7 +32288,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 330,
+      "line": 336,
       "values": [
         "GRANT",
         "REVOKE"
@@ -31897,6 +32678,39 @@
         "STAFF",
         "TAILOR",
         "ADMIN"
+      ]
+    },
+    {
+      "name": "WalletAccountStatus",
+      "file": "apps/api/prisma/schema/wallet.prisma",
+      "line": 32,
+      "values": [
+        "ACTIVE",
+        "FROZEN",
+        "CLOSED"
+      ]
+    },
+    {
+      "name": "WalletAdjustmentRequestStatus",
+      "file": "apps/api/prisma/schema/wallet.prisma",
+      "line": 108,
+      "values": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED"
+      ]
+    },
+    {
+      "name": "WalletEntryType",
+      "file": "apps/api/prisma/schema/wallet.prisma",
+      "line": 23,
+      "values": [
+        "PURCHASE",
+        "RESERVE",
+        "REDEEM",
+        "RELEASE_RESERVATION",
+        "REFUND",
+        "ADJUSTMENT"
       ]
     },
     {
@@ -33241,6 +34055,27 @@
         "SpotCheckPolicy",
         "StockVariance"
       ]
+    },
+    {
+      "folder": "20260925170000_add_wallet_merchant_payable",
+      "file": "apps/api/prisma/schema/migrations/20260925170000_add_wallet_merchant_payable/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_wallet_merchant_payable",
+      "statements": 20,
+      "kinds": [
+        "CREATE TYPE",
+        "ALTER TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "MerchantPayable",
+        "WalletAccount",
+        "WalletAdjustmentRequest",
+        "WalletEntry"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -33732,6 +34567,15 @@
       "kind": "page",
       "url": "/[locale]/account/reviews",
       "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/reviews/page.tsx",
+      "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/[locale]/account/wallet",
+      "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/wallet/page.tsx",
       "client": true,
       "surface": "storefront",
       "doc": ""
@@ -34675,6 +35519,24 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/merchant-payables",
+      "file": "apps/web/src/app/(admin)/admin/(app)/merchant-payables/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/merchant-payables/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/merchant-payables/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/o",
       "file": "apps/web/src/app/(admin)/admin/(app)/o/page.tsx",
       "client": true,
@@ -35100,6 +35962,15 @@
       "kind": "page",
       "url": "/admin/users/[id]",
       "file": "apps/web/src/app/(admin)/admin/(app)/users/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/wallet",
+      "file": "apps/web/src/app/(admin)/admin/(app)/wallet/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -36121,6 +36992,18 @@
         "onExpenseRecorded — WO-23.1",
         "onPayrollRunPosted — WO-19.4",
         "onPayrollAdjustmentPosted — WO-19.5"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/accounting/wallet-posting-rules.subscriber.spec.ts",
+      "module": "accounting",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "WalletPostingRulesSubscriber — doc 155 §3",
+        "onWalletCreditPurchased",
+        "onWalletCreditRedeemed",
+        "onWalletCreditRefunded"
       ]
     },
     {
@@ -37195,6 +38078,49 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/wallet/merchant-payable.service.spec.ts",
+      "module": "wallet",
+      "kind": "unit test",
+      "cases": 16,
+      "describes": [
+        "MerchantPayableService — 155-wallet-stored-value-merchant-escrow.md §3",
+        "createMerchantPayable",
+        "schedulePayoutRun — verified vs unverified timing",
+        "processPayoutRun",
+        "dispute / resolveDispute — the toxic pair",
+        "findOne",
+        "previewPayoutRun — dry run before live"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/wallet/wallet-credit-note.port.spec.ts",
+      "module": "wallet",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "MerchantPayableAdjustmentCreditNoteService — the interim default, pending doc 145"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/wallet/wallet.service.spec.ts",
+      "module": "wallet",
+      "kind": "unit test",
+      "cases": 34,
+      "describes": [
+        "WalletService — 155-wallet-stored-value-merchant-escrow.md",
+        "availableBalance — the three transitions",
+        "purchaseCredit",
+        "placeOrderWithWalletCredit",
+        "onMerchantConfirmed — the atomic two-write",
+        "onMerchantDeclinedOrExpired",
+        "adjustment — the threshold nobody approves alone",
+        "decideAdjustment — the toxic pair",
+        "refund",
+        "findAccountByCustomer",
+        "setAccountStatus"
+      ]
+    },
+    {
       "file": "apps/api/test/accounting.e2e-spec.ts",
       "module": "",
       "kind": "e2e test",
@@ -37993,7 +38919,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5289,
+      "bytes": 5296,
       "doc": "",
       "symbols": []
     },
@@ -38002,7 +38928,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 159,
-      "bytes": 7802,
+      "bytes": 7809,
       "doc": "",
       "symbols": []
     },
@@ -38011,7 +38937,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 127,
-      "bytes": 5662,
+      "bytes": 5669,
       "doc": "",
       "symbols": []
     },
@@ -38313,8 +39239,8 @@
       "path": "apps/api/prisma/schema/approvals.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 60,
-      "bytes": 1883,
+      "lines": 63,
+      "bytes": 2043,
       "doc": "Approvals: one generic, subject-agnostic approval chain, referenced by a",
       "symbols": []
     },
@@ -38358,8 +39284,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 528,
-      "bytes": 20255,
+      "lines": 534,
+      "bytes": 20575,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -39066,6 +39992,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260925170000_add_wallet_merchant_payable/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 127,
+      "bytes": 4756,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -39243,6 +40178,15 @@
       "lines": 167,
       "bytes": 7333,
       "doc": "Inter-branch stock transfers (RETAIL-ERP.md R4, Tranche 5). Off by default",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/wallet.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 185,
+      "bytes": 8074,
+      "doc": "155-wallet-stored-value-merchant-escrow.md",
       "symbols": []
     },
     {
@@ -40269,8 +41213,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 499,
-      "bytes": 19326,
+      "lines": 562,
+      "bytes": 22001,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -40281,207 +41225,232 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 94
+          "line": 110
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 96
+          "line": 112
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 109
+          "line": 125
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 117
+          "line": 133
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 125
+          "line": 141
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 145
+          "line": 161
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 151
+          "line": 167
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 158
+          "line": 174
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 165
+          "line": 181
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 169
+          "line": 185
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 175
+          "line": 191
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 181
+          "line": 197
         },
         {
           "name": "ShipmentStatusChangedPayload",
           "kind": "interface",
-          "line": 188
+          "line": 204
         },
         {
           "name": "ShipmentReturnedToOriginPayload",
           "kind": "interface",
-          "line": 198
+          "line": 214
         },
         {
           "name": "ReturnRequestStatusChangedPayload",
           "kind": "interface",
-          "line": 207
+          "line": 223
         },
         {
           "name": "ReturnRequestFullyRefundedPayload",
           "kind": "interface",
-          "line": 216
+          "line": 232
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 224
+          "line": 240
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 232
+          "line": 248
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 243
+          "line": 259
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 250
+          "line": 266
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 259
+          "line": 275
         },
         {
           "name": "ProductChangedPayload",
           "kind": "interface",
-          "line": 267
+          "line": 283
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 272
+          "line": 288
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 280
+          "line": 296
         },
         {
           "name": "RequisitionCreatedPayload",
           "kind": "interface",
-          "line": 285
+          "line": 301
         },
         {
           "name": "RequisitionConvertedPayload",
           "kind": "interface",
-          "line": 291
+          "line": 307
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 297
+          "line": 313
         },
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 309
+          "line": 325
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 324
+          "line": 340
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 332
+          "line": 348
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 346
+          "line": 362
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 359
+          "line": 375
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 372
+          "line": 388
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 388
+          "line": 404
         },
         {
           "name": "PayrollRunPostedPayload",
           "kind": "interface",
-          "line": 396
+          "line": 412
         },
         {
           "name": "PayrollAdjustmentPostedPayload",
           "kind": "interface",
-          "line": 408
+          "line": 424
         },
         {
           "name": "DiscountRedeemedPayload",
           "kind": "interface",
-          "line": 419
+          "line": 435
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 430
+          "line": 446
         },
         {
           "name": "ReviewModeratedPayload",
           "kind": "interface",
-          "line": 437
+          "line": 453
+        },
+        {
+          "name": "WalletCreditPurchasedPayload",
+          "kind": "interface",
+          "line": 459
+        },
+        {
+          "name": "WalletCreditRedeemedPayload",
+          "kind": "interface",
+          "line": 467
+        },
+        {
+          "name": "WalletCreditRefundedPayload",
+          "kind": "interface",
+          "line": 476
+        },
+        {
+          "name": "MerchantPayableCreatedPayload",
+          "kind": "interface",
+          "line": 487
+        },
+        {
+          "name": "MerchantPayablePaidPayload",
+          "kind": "interface",
+          "line": 494
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 443
+          "line": 501
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 449
+          "line": 507
         }
       ]
     },
@@ -40643,14 +41612,34 @@
       "path": "apps/api/src/core/extension-points/extension-points.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 39,
-      "bytes": 1499,
+      "lines": 42,
+      "bytes": 1673,
       "doc": "",
       "symbols": [
         {
           "name": "ExtensionPointsModule",
           "kind": "class",
-          "line": 38
+          "line": 41
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/extension-points/identity-verification-status.registry.ts",
+      "area": "api",
+      "kind": "registry",
+      "lines": 36,
+      "bytes": 1434,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "IdentityVerificationStatusProvider",
+          "kind": "interface",
+          "line": 3
+        },
+        {
+          "name": "IdentityVerificationStatusRegistry",
+          "kind": "class",
+          "line": 24
         }
       ]
     },
@@ -41822,8 +42811,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 384,
-      "bytes": 19718,
+      "lines": 399,
+      "bytes": 20617,
       "doc": "",
       "symbols": [
         {
@@ -41859,12 +42848,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 240
+          "line": 249
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 242
+          "line": 251
         }
       ]
     },
@@ -42153,14 +43142,14 @@
       "path": "apps/api/src/modules/accounting/accounting.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 28,
-      "bytes": 1473,
+      "lines": 30,
+      "bytes": 1671,
       "doc": "",
       "symbols": [
         {
           "name": "AccountingModule",
           "kind": "class",
-          "line": 27
+          "line": 29
         }
       ]
     },
@@ -42207,8 +43196,8 @@
       "path": "apps/api/src/modules/accounting/chart-of-accounts.ts",
       "area": "api",
       "kind": "module",
-      "lines": 67,
-      "bytes": 3125,
+      "lines": 74,
+      "bytes": 3609,
       "doc": "",
       "symbols": [
         {
@@ -42219,7 +43208,7 @@
         {
           "name": "ACCOUNT_CODE",
           "kind": "const",
-          "line": 47
+          "line": 53
         }
       ]
     },
@@ -42411,6 +43400,30 @@
           "name": "PostingRulesSubscriber",
           "kind": "class",
           "line": 34
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/accounting/wallet-posting-rules.subscriber.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 140,
+      "bytes": 5205,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 135,
+      "bytes": 6036,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WalletPostingRulesSubscriber",
+          "kind": "class",
+          "line": 22
         }
       ]
     },
@@ -45367,14 +46380,14 @@
       "path": "apps/api/src/modules/identity-verification/identity-verification.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 149,
-      "bytes": 5555,
+      "lines": 170,
+      "bytes": 6476,
       "doc": "",
       "symbols": [
         {
           "name": "IdentityVerificationService",
           "kind": "class",
-          "line": 9
+          "line": 10
         }
       ]
     },
@@ -46227,8 +47240,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 96,
-      "bytes": 2989,
+      "lines": 97,
+      "bytes": 3007,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -46247,24 +47260,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 188,
-      "bytes": 9866,
+      "lines": 196,
+      "bytes": 10380,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 43
+          "line": 44
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 74
+          "line": 75
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 164
+          "line": 172
         }
       ]
     },
@@ -49777,6 +50790,213 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/wallet/dto/wallet.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 87,
+      "bytes": 2080,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PurchaseCreditDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "WalletAdjustmentDto",
+          "kind": "class",
+          "line": 16
+        },
+        {
+          "name": "DecideAdjustmentDto",
+          "kind": "class",
+          "line": 27
+        },
+        {
+          "name": "SetWalletAccountStatusDto",
+          "kind": "class",
+          "line": 38
+        },
+        {
+          "name": "RefundPurchaseDto",
+          "kind": "class",
+          "line": 44
+        },
+        {
+          "name": "RefundRedeemedOrderDto",
+          "kind": "class",
+          "line": 56
+        },
+        {
+          "name": "DisputeMerchantPayableDto",
+          "kind": "class",
+          "line": 68
+        },
+        {
+          "name": "ResolveMerchantPayableDisputeDto",
+          "kind": "class",
+          "line": 75
+        },
+        {
+          "name": "SchedulePayoutRunDto",
+          "kind": "class",
+          "line": 81
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/wallet/merchant-payable.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 73,
+      "bytes": 3610,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MerchantPayableController",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/wallet/merchant-payable.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 203,
+      "bytes": 9457,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/wallet/merchant-payable.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 237,
+      "bytes": 10783,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MerchantPayableService",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/wallet/wallet-account.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 39,
+      "bytes": 1592,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WalletAccountController",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/wallet/wallet-admin.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 72,
+      "bytes": 3931,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WalletAdminController",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/wallet/wallet-credit-note.port.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 50,
+      "bytes": 2747,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/wallet/wallet-credit-note.port.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 110,
+      "bytes": 4801,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreditNoteInput",
+          "kind": "interface",
+          "line": 6
+        },
+        {
+          "name": "CreditNoteResult",
+          "kind": "interface",
+          "line": 14
+        },
+        {
+          "name": "CreditNoteService",
+          "kind": "interface",
+          "line": 38
+        },
+        {
+          "name": "CREDIT_NOTE_SERVICE",
+          "kind": "const",
+          "line": 45
+        },
+        {
+          "name": "MerchantPayableAdjustmentCreditNoteService",
+          "kind": "class",
+          "line": 48
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/wallet/wallet.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 41,
+      "bytes": 2135,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WalletModule",
+          "kind": "class",
+          "line": 40
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/wallet/wallet.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 426,
+      "bytes": 22054,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/wallet/wallet.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 538,
+      "bytes": 23933,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WalletService",
+          "kind": "class",
+          "line": 26
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/wishlist/back-in-stock.listener.ts",
       "area": "api",
       "kind": "event subscriber",
@@ -52571,8 +53791,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 607,
-      "bytes": 24097,
+      "lines": 623,
+      "bytes": 24656,
       "doc": "",
       "symbols": []
     },
@@ -52580,8 +53800,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 607,
-      "bytes": 33004,
+      "lines": 623,
+      "bytes": 33756,
       "doc": "",
       "symbols": []
     },
@@ -53777,6 +54997,36 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/merchant-payables/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 158,
+      "bytes": 5754,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MerchantPayableDetailPage",
+          "kind": "default",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/merchant-payables/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 183,
+      "bytes": 7149,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MerchantPayablesPage",
+          "kind": "default",
+          "line": 32
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/o/[orgId]/access/page.tsx",
       "area": "web",
       "kind": "page",
@@ -54512,6 +55762,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/wallet/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 191,
+      "bytes": 7056,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WalletAdminPage",
+          "kind": "default",
+          "line": 33
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/error.tsx",
       "area": "web",
       "kind": "error",
@@ -54738,6 +56003,21 @@
           "name": "MyReviewsPage",
           "kind": "default",
           "line": 23
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/wallet/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 73,
+      "bytes": 2317,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WalletPage",
+          "kind": "default",
+          "line": 24
         }
       ]
     },
@@ -56296,8 +57576,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 805,
-      "bytes": 21197,
+      "lines": 824,
+      "bytes": 21778,
       "doc": "",
       "symbols": [
         {
@@ -56328,12 +57608,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 775
+          "line": 794
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 790
+          "line": 809
         }
       ]
     },
@@ -56566,14 +57846,14 @@
       "path": "apps/web/src/components/dashboard/dashboard-nav.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 73,
-      "bytes": 2611,
+      "lines": 98,
+      "bytes": 3707,
       "doc": "",
       "symbols": [
         {
           "name": "DashboardNav",
           "kind": "function",
-          "line": 46
+          "line": 53
         }
       ]
     },
@@ -57579,8 +58859,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 201,
-      "bytes": 8581,
+      "lines": 208,
+      "bytes": 8945,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -61288,8 +62568,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 2761,
-      "bytes": 154821,
+      "lines": 2963,
+      "bytes": 166851,
       "doc": "",
       "symbols": []
     },
@@ -62062,8 +63342,8 @@
       "path": "docs/implementation/commercial-licensing-agency/155-wallet-stored-value-merchant-escrow.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 355,
-      "bytes": 19378,
+      "lines": 385,
+      "bytes": 21315,
       "doc": "",
       "symbols": []
     },
@@ -64223,8 +65503,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 755,
-      "bytes": 22370,
+      "lines": 777,
+      "bytes": 23152,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -64245,47 +65525,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 428
+          "line": 446
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 430
+          "line": 448
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 440
+          "line": 458
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 447
+          "line": 465
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 608
+          "line": 626
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 742
+          "line": 764
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 747
+          "line": 769
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 748
+          "line": 770
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 751
+          "line": 773
         }
       ]
     },

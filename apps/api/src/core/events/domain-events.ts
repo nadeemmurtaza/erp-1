@@ -89,6 +89,22 @@ export const DomainEvent = {
 
   /** ReviewsService.moderate() (WO-7.5) — fires on every moderation decision, PUBLISHED or REJECTED alike, so a subscriber that only cares about the current published set (e.g. measurements/size-bias.listener.ts, WO-9.2) always recomputes against live data rather than trusting the direction of this one transition. */
   ReviewModerated: 'reviews.review_moderated',
+
+  /**
+   * doc 155 (WO-155.2) — WalletService.purchaseCredit(): real money landed
+   * in Newax's own bank account. posting-rules.subscriber.ts (accounting,
+   * off by default) is the intended posting-rule subscriber once written;
+   * notifications.ts (WO-155.5) subscribes for the customer receipt.
+   */
+  WalletCreditPurchased: 'wallet.credit_purchased',
+  /** WalletService.onMerchantConfirmed() — the RESERVE became a REDEEM; MerchantPayable was created in the same transaction (§3's own "one transaction" rule). */
+  WalletCreditRedeemed: 'wallet.credit_redeemed',
+  /** WalletService.refund() — reverses a PURCHASE (not yet redeemed) or a REDEEM (already redeemed, see refund()'s own CreditNote-port comment). */
+  WalletCreditRefunded: 'wallet.credit_refunded',
+  /** MerchantPayableService.createMerchantPayable() — notifications.ts (WO-155.5) subscribes for the merchant receipt. */
+  MerchantPayableCreated: 'wallet.merchant_payable_created',
+  /** MerchantPayableService.processPayoutRun() — notifications.ts (WO-155.5) subscribes for the merchant payout receipt. */
+  MerchantPayablePaid: 'wallet.merchant_payable_paid',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -440,6 +456,48 @@ export interface ReviewModeratedPayload {
   status: 'PUBLISHED' | 'REJECTED';
 }
 
+export interface WalletCreditPurchasedPayload {
+  walletAccountId: string;
+  customerId: string;
+  paymentId: string;
+  amountMinor: number;
+  currency: string;
+}
+
+export interface WalletCreditRedeemedPayload {
+  walletAccountId: string;
+  customerId: string;
+  orderId: string;
+  amountMinor: number;
+  merchantPayableId: string;
+  merchantOrganizationId: string;
+}
+
+export interface WalletCreditRefundedPayload {
+  walletAccountId: string;
+  customerId: string;
+  /** Whether the reversed fact was a PURCHASE (not yet redeemed) or a REDEEM (already redeemed — the merchant's own payable needed its own correction too). */
+  reversalOf: 'PURCHASE' | 'REDEEM';
+  orderId: string | null;
+  /** Set only when reversalOf === 'PURCHASE' — the original PURCHASE's own sourceRef, for the posting rule to find the entry to reverse. */
+  paymentId: string | null;
+  amountMinor: number;
+}
+
+export interface MerchantPayableCreatedPayload {
+  merchantPayableId: string;
+  organizationId: string;
+  orderId: string;
+  netPayableMinor: number;
+}
+
+export interface MerchantPayablePaidPayload {
+  merchantPayableId: string;
+  organizationId: string;
+  netPayableMinor: number;
+  paidAt: string;
+}
+
 export interface IdentityVerificationPayload {
   userId: string;
   /** The VerificationMethodProvider key nID resolved the case with, e.g. "otp_sms". */
@@ -495,4 +553,9 @@ export interface DomainEventPayloads {
   [DomainEvent.ReturnRequestFullyRefunded]: ReturnRequestFullyRefundedPayload;
   [DomainEvent.DiscountRedeemed]: DiscountRedeemedPayload;
   [DomainEvent.ReviewModerated]: ReviewModeratedPayload;
+  [DomainEvent.WalletCreditPurchased]: WalletCreditPurchasedPayload;
+  [DomainEvent.WalletCreditRedeemed]: WalletCreditRedeemedPayload;
+  [DomainEvent.WalletCreditRefunded]: WalletCreditRefundedPayload;
+  [DomainEvent.MerchantPayableCreated]: MerchantPayableCreatedPayload;
+  [DomainEvent.MerchantPayablePaid]: MerchantPayablePaidPayload;
 }

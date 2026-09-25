@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "a173376b0f7cc7ef",
+  "contentHash": "68a740f04d616620",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -99,6 +99,7 @@
     "docs/index/data/tax.md",
     "docs/index/data/trading-partners.md",
     "docs/index/data/transfers.md",
+    "docs/index/data/wallet.md",
     "docs/index/data/whatsapp-assistant.md",
     "docs/index/data/wishlist.md",
     "docs/index/files/api.md",
@@ -149,6 +150,7 @@
     "docs/index/modules/tradingpartners.md",
     "docs/index/modules/transfers.md",
     "docs/index/modules/users.md",
+    "docs/index/modules/wallet.md",
     "docs/index/modules/wishlist.md",
     "docs/index/symbols/api.md",
     "docs/index/symbols/infra.md",
@@ -159,18 +161,18 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 1760,
-    "lines": 269054,
-    "routes": 575,
-    "controllers": 102,
-    "models": 211,
-    "enums": 93,
-    "migrations": 69,
-    "events": 48,
-    "permissions": 68,
-    "screens": 208,
+    "files": 1780,
+    "lines": 272624,
+    "routes": 592,
+    "controllers": 105,
+    "models": 215,
+    "enums": 97,
+    "migrations": 70,
+    "events": 53,
+    "permissions": 71,
+    "screens": 212,
     "crons": 17,
-    "specs": 184,
+    "specs": 188,
     "designLaws": 0
   }
 }

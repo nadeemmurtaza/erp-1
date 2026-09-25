@@ -428,6 +428,18 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `PromoCodesPage` | default | :31 | Promo codes — the same discount rules, plus a code the customer types. |
 
+### `apps/web/src/app/(admin)/admin/(app)/merchant-payables`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `MerchantPayablesPage` | default | :32 | doc 155 §3 (WO-155.5) — a merchant's own payables, generalizing doc 145's own supplier-bill-style s… |
+
+### `apps/web/src/app/(admin)/admin/(app)/merchant-payables/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `MerchantPayableDetailPage` | default | :27 | doc 155 §3 — one payable's own gross/fee/net breakdown, status, and the dispute/resolve actions `fi… |
+
 ### `apps/web/src/app/(admin)/admin/(app)/o`
 
 | File | Symbol | Kind | Line | Doc |
@@ -706,6 +718,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `UserDetailPage` | default | :15 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/wallet`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `WalletAdminPage` | default | :33 | doc 155 (WO-155.5) — a customer's wallet balance and full ledger, plus the manual-adjustment and fr… |
+
 ### `apps/web/src/app/(admin)/admin/login`
 
 | File | Symbol | Kind | Line | Doc |
@@ -796,6 +814,12 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `MyReviewsPage` | default | :23 | WO-7.5 — what a customer has said about what they bought. |
+
+### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/wallet`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `WalletPage` | default | :24 | doc 155 (WO-155.5) — the customer's own wallet balance and history. |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/orders`
 
@@ -1024,8 +1048,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :55 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :78 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :118 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :775 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :790 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :794 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :809 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
@@ -1159,7 +1183,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `dashboard-nav.tsx` | `DashboardNav` | function | :46 |  |
+| `dashboard-nav.tsx` | `DashboardNav` | function | :53 |  |
 
 ### `apps/web/src/components/storefront`
 

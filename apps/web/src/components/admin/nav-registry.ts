@@ -325,6 +325,25 @@ export const ADMIN_NAV: AdminNavItem[] = [
       },
     ],
   },
+  {
+    // doc 155 — off by default (`wallet` module); see DECISIONS.md. Wallet
+    // balances/adjustments and merchant payables are two different screens
+    // (Law 5: one main job each) sharing this one nav entry's own group.
+    key: 'wallet-accounts',
+    label: 'Wallets',
+    href: '/admin/wallet',
+    permissions: ['finance.view'],
+    group: 'finance',
+    module: 'wallet',
+  },
+  {
+    key: 'merchant-payables',
+    label: 'Merchant payables',
+    href: '/admin/merchant-payables',
+    permissions: ['finance.view'],
+    group: 'finance',
+    module: 'wallet',
+  },
 
   // Group: Workshop
   {

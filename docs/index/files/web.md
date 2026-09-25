@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 345 tracked files in `apps/web`, by directory.
+All 349 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -26,8 +26,8 @@ All 345 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `en.json` | json | 607 |  |
-| `ur.json` | json | 607 |  |
+| `en.json` | json | 623 |  |
+| `ur.json` | json | 623 |  |
 
 ### `apps/web/public` (1)
 
@@ -479,6 +479,18 @@ All 345 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 191 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/merchant-payables` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 183 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/merchant-payables/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 158 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/o` (1)
 
 | File | Kind | Lines | Purpose |
@@ -757,6 +769,12 @@ All 345 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 454 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/wallet` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 191 |  |
+
 ### `apps/web/src/app/(admin)/admin/login` (1)
 
 | File | Kind | Lines | Purpose |
@@ -844,6 +862,12 @@ All 345 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 66 |  |
+
+### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/wallet` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 73 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/orders` (1)
 
@@ -1040,7 +1064,7 @@ All 345 tracked files in `apps/web`, by directory.
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 543 |  |
-| `nav-registry.ts` | component | 805 |  |
+| `nav-registry.ts` | component | 824 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1434 |  |
@@ -1122,7 +1146,7 @@ All 345 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `dashboard-nav.tsx` | component | 73 |  |
+| `dashboard-nav.tsx` | component | 98 |  |
 
 ### `apps/web/src/components/storefront` (37)
 
@@ -1203,7 +1227,7 @@ All 345 tracked files in `apps/web`, by directory.
 | `downloads.ts` | constants | 21 |  |
 | `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 24 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 201 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 208 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 61 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)

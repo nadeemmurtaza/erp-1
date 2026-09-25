@@ -3,7 +3,7 @@
 
 # Tests
 
-**184** spec files, **1,726** cases. What is already pinned down — and what is not.
+**188** spec files, **1,786** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -55,7 +55,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (166)
+## Unit and integration (170)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -93,6 +93,7 @@ regression or an N+1.
 | `apps/api/src/modules/accounting/fiscal-periods.service.spec.ts` | accounting | 24 | FiscalPeriodsService — WO-19.5 · createFiscalYear · createFiscalPeriod · closePeriod · reopenPeriod… |
 | `apps/api/src/modules/accounting/gl-reports.service.spec.ts` | accounting | 9 | GlReportsService — WO-19.4 · trialBalance · profitAndLoss · balanceSheet · cashFlow · agedReceivabl… |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | accounting | 40 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSuppl… |
+| `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.spec.ts` | accounting | 7 | WalletPostingRulesSubscriber — doc 155 §3 · onWalletCreditPurchased · onWalletCreditRedeemed · onWa… |
 | `apps/api/src/modules/analytics/analytics.comparison.spec.ts` | analytics | 8 | AnalyticsService.comparison |
 | `apps/api/src/modules/analytics/analytics.customers.spec.ts` | analytics | 7 | AnalyticsService — WO-D.5 customers overview/retention/top · customersOverview · customersRetention… |
 | `apps/api/src/modules/analytics/analytics.inventory.spec.ts` | analytics | 9 | AnalyticsService — WO-D.4 inventory valuation/movements · inventoryValuation · inventoryMovements |
@@ -191,6 +192,9 @@ regression or an N+1.
 | `apps/api/src/modules/tradingpartners/trading-partners.service.spec.ts` | tradingpartners | 32 | TradingPartnersService · create · findOne / update / remove — the not-found guard · rotateInboundKe… |
 | `apps/api/src/modules/transfers/transfers.service.spec.ts` | transfers | 25 | TransfersService · dispatch/receive/cancel (WO-22.1) · brand-policy gating (WO-22.2) · settlement m… |
 | `apps/api/src/modules/users/users-admin.service.spec.ts` | users | 3 | UsersAdminService.create — role selection at creation time |
+| `apps/api/src/modules/wallet/merchant-payable.service.spec.ts` | wallet | 16 | MerchantPayableService — 155-wallet-stored-value-merchant-escrow.md §3 · createMerchantPayable · sc… |
+| `apps/api/src/modules/wallet/wallet-credit-note.port.spec.ts` | wallet | 3 | MerchantPayableAdjustmentCreditNoteService — the interim default, pending doc 145 |
+| `apps/api/src/modules/wallet/wallet.service.spec.ts` | wallet | 34 | WalletService — 155-wallet-stored-value-merchant-escrow.md · availableBalance — the three transitio… |
 | `apps/api/test/backfill-product-options.spec.ts` | api | 4 | backfillProductOptions |
 | `apps/api/test/email-channel.behavior.spec.ts` | api | 33 | env.validation — email cross-field check · isDeliverable · EmailChannel — interface contract · Emai… |
 | `apps/api/test/publish-gate.spec.ts` | api | 8 | checkPublishGate |

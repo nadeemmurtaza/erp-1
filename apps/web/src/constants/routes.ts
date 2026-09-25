@@ -44,6 +44,8 @@ export const ROUTES = {
     accountReviews: '/account/reviews',
     accountCredit: '/account/credit',
     accountLoyalty: '/account/loyalty',
+    /** doc 155 — off by default (module: 'wallet'); see dashboard-nav.tsx's own module gate. */
+    accountWallet: '/account/wallet',
     accountNotifications: '/account/notifications',
     orders: '/orders',
     order: (number: string) => `/orders/${number}`,
@@ -140,6 +142,11 @@ export const ROUTES = {
     transfers: '/admin/transfers',
     transferNew: '/admin/transfers/new',
     transfer: (id: string) => `/admin/transfers/${id}`,
+
+    /** doc 155 — off by default (`wallet` module); see DECISIONS.md. */
+    wallets: '/admin/wallet',
+    merchantPayables: '/admin/merchant-payables',
+    merchantPayable: (id: string) => `/admin/merchant-payables/${id}`,
 
     stitching: '/admin/stitching',
     stitchingBookings: '/admin/stitching/bookings',

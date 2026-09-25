@@ -2572,16 +2572,16 @@ _no second-level headings_
 - Acceptance  <sub>:164</sub>
 - Out of scope  <sub>:176</sub>
 
-### `docs/implementation/commercial-licensing-agency/155-wallet-stored-value-merchant-escrow.md`  <sub>355 lines</sub>
+### `docs/implementation/commercial-licensing-agency/155-wallet-stored-value-merchant-escrow.md`  <sub>385 lines</sub>
 
-- Read this section first — the structure changed, and here is exactly why that matters  <sub>:3</sub>
-- 1. One wallet type now, not two — money never sits in a per-merchant balance  <sub>:50</sub>
-- 2. Checkout: reserve at order placement, redeem only at merchant confirmation  <sub>:116</sub>
-- 3. Merchant settlement — an ordinary trade payable, generalizing doc 145's own `SupplierBill`, never an escrow release  <sub>:143</sub>
-- Scope lenses  <sub>:197</sub>
-- Work orders  <sub>:307</sub>
-- Acceptance  <sub>:331</sub>
-- Out of scope  <sub>:346</sub>
+- Read this section first — the structure changed, and here is exactly why that matters  <sub>:33</sub>
+- 1. One wallet type now, not two — money never sits in a per-merchant balance  <sub>:80</sub>
+- 2. Checkout: reserve at order placement, redeem only at merchant confirmation  <sub>:146</sub>
+- 3. Merchant settlement — an ordinary trade payable, generalizing doc 145's own `SupplierBill`, never an escrow release  <sub>:173</sub>
+- Scope lenses  <sub>:227</sub>
+- Work orders  <sub>:337</sub>
+- Acceptance  <sub>:361</sub>
+- Out of scope  <sub>:376</sub>
 
 ### `docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md`  <sub>367 lines</sub>
 
@@ -2683,7 +2683,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>2,761 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>2,963 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2721,6 +2721,7 @@ _no second-level headings_
 - ADR-031 — WO-7 (Phase 7: customer portal, reviews, wishlist, returns, loyalty, mobile parity) built against a missing Phase 6 — tracking/invoice/returns scope narrowed, loyalty math, self-referral guard limits, WO-7.9 mobile parity  <sub>:2255</sub>
 - ADR-031 §9 — WO-7.3's returns module retired in favour of Phase 6's WO-6.6, discovered at merge time  <sub>:2420</sub>
 - ADR-032 — Phase 10 Track A built end-to-end (WO-A.1–A.5), superseding ADR-019/ADR-025; Tracks D and B wired into the registry; WO-E.2 executed  <sub>:2559</sub>
+- ADR-033 — The wallet module (doc 155) built in full, shipped module-off and checkout-disconnected pending WO-155.0's own legal confirmation  <sub>:2764</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

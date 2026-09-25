@@ -3,11 +3,14 @@
 // doc 63's own shape (docs/implementation/hr-people-org/63-multi-tier-approval-hierarchies.md).
 // Built here scoped to what WO-152 (purchase requisitions) actually needs;
 // ApprovalSubjectType is deliberately a plain enum, extended by adding a
-// value, not a plugin registry — no second consumer exists yet to justify
-// that abstraction (no speculative functionality, CLAUDE.md).
+// value, not a plugin registry — WALLET_ADJUSTMENT (doc 155, WO-155.2) is
+// its second consumer, added the same way: a new enum value, never a
+// bespoke chain (no speculative functionality, CLAUDE.md).
 
 enum ApprovalSubjectType {
   PURCHASE_REQUISITION
+  /// doc 155 (WO-155.2) — an above-threshold WalletAdjustmentRequest.
+  WALLET_ADJUSTMENT
 }
 
 enum ApprovalChainStatus {

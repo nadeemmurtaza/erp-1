@@ -22,7 +22,7 @@ the *catalogue*, not any particular deployment's grants.
 | `Roles granted at seed` = none | `ROLE_PERMISSION_SEED` gives it to no role, so no live user holds it unless an admin grants it by hand — the `seedPermissions()` vs `seedRoles()` trap CLAUDE.md names |
 | `UI call sites` = — | nothing in the admin UI gates on it; if a screen needs it, the screen is missing |
 
-- Permissions enforcing **no route**: **8** — `stitching.jobs.manage_own`, `stitching.jobs.manage_all`, `search.view`, `search.manage`, `campaigns.view`, `campaigns.manage`, `onsitemessages.view`, `onsitemessages.manage`
+- Permissions enforcing **no route**: **6** — `stitching.jobs.manage_own`, `stitching.jobs.manage_all`, `campaigns.view`, `campaigns.manage`, `onsitemessages.view`, `onsitemessages.manage`
 - Permissions **no seeded role grants**: **0**
 - Keys required by a route but **not in the catalogue**: **0**
 
@@ -146,8 +146,8 @@ the *catalogue*, not any particular deployment's grants.
 | `content.manage` | Publish pages and posts, and edit banners and menus | medium | 18 | 1 | STAFF, ADMIN |
 | `collections.view` | View collections and their membership | low | 2 | 1 | STAFF, ADMIN |
 | `collections.manage` | Create and curate collections | medium | 8 | 1 | STAFF, ADMIN |
-| `search.view` | View the zero-result search report | low | **0 — enforces nothing** | 1 | STAFF, ADMIN |
-| `search.manage` | Edit search synonyms | low | **0 — enforces nothing** | 1 | STAFF, ADMIN |
+| `search.view` | View the zero-result search report | low | 2 | 1 | STAFF, ADMIN |
+| `search.manage` | Edit search synonyms | low | 4 | 1 | STAFF, ADMIN |
 | `campaigns.view` | View campaigns and their send/open/click stats | low | **0 — enforces nothing** | 1 | STAFF, ADMIN |
 | `campaigns.manage` | Create, schedule and send campaigns to a customer segment | high | **0 — enforces nothing** | 1 | ADMIN |
 | `onsitemessages.view` | View on-site announcement bars, popups and newsletter capture | low | **0 — enforces nothing** | 1 | STAFF, ADMIN |

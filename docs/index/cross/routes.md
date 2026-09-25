@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **473** endpoints across **79** controllers, with the access rule that actually guards each one.
+All **478** endpoints across **81** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 53** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 54** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -73,6 +73,7 @@ never authorization.
 | POST | `/promotions/preview` | `PromotionsPublicController.preview` |
 | GET | `/replication/pull` | `ReplicationController.pull` |
 | POST | `/replication/push` | `ReplicationController.push` |
+| GET | `/search` | `SearchController.search` |
 | GET | `/shipping/quote` | `ShippingController.quote` |
 | POST | `/stitching/bookings` | `StitchingController.book` |
 | POST | `/stitching/bookings/:number/track` | `StitchingController.track` |
@@ -650,6 +651,16 @@ never authorization.
 | GET | `/admin/reports/export/stock` | `reports.view` | `ReportsController.exportStock` | CSV: current stock, one row per product variant |
 | GET | `/admin/reports/export/stock-ledger` | `reports.view` | `ReportsController.exportStockLedger` | CSV: stock movement ledger |
 | GET | `/admin/reports/export/stock-valuation` | `inventory.view_cost` | `ReportsController.exportStockValuation` | CSV: stock valuation, one row per variant |
+
+### [`search`](../modules/search.md) (5)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/search/synonyms` | `search.view` `search.manage` | `SearchAdminController.listSynonyms` |  |
+| POST | `/admin/search/synonyms` | `search.manage` | `SearchAdminController.createSynonym` |  |
+| DELETE | `/admin/search/synonyms/:id` | `search.manage` | `SearchAdminController.deleteSynonym` |  |
+| GET | `/admin/search/zero-results` | `search.view` `search.manage` | `SearchAdminController.zeroResults` |  |
+| GET | `/search` | **PUBLIC** | `SearchController.search` |  |
 
 ### [`settings`](../modules/settings.md) (6)
 

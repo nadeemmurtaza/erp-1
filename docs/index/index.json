@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1576,
-    "lines": 243684,
-    "routes": 473,
-    "controllers": 79,
+    "files": 1583,
+    "lines": 244424,
+    "routes": 478,
+    "controllers": 81,
     "models": 187,
     "enums": 76,
     "migrations": 65,
-    "events": 44,
+    "events": 45,
     "permissions": 60,
-    "screens": 185,
+    "screens": 186,
     "crons": 11,
-    "specs": 148,
+    "specs": 149,
     "designLaws": 0
   },
   "designLaws": [],
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 602,
-      "lines": 85002,
-      "bytes": 3106876,
+      "files": 608,
+      "lines": 85547,
+      "bytes": 3128195,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,9 +50,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 298,
-      "lines": 46656,
-      "bytes": 1700733,
+      "files": 299,
+      "lines": 46851,
+      "bytes": 1707517,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -625,6 +625,22 @@
       ],
       "routes": 12,
       "page": "docs/index/modules/reports.md"
+    },
+    {
+      "name": "search",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/search/dto/search.dto.ts",
+        "apps/api/src/modules/search/search-reindex.listener.ts",
+        "apps/api/src/modules/search/search.controller.ts",
+        "apps/api/src/modules/search/search.module.ts",
+        "apps/api/src/modules/search/search.service.spec.ts",
+        "apps/api/src/modules/search/search.service.ts"
+      ],
+      "routes": 5,
+      "page": "docs/index/modules/search.md"
     },
     {
       "name": "settings",
@@ -5867,6 +5883,72 @@
     },
     {
       "method": "GET",
+      "path": "/admin/search/synonyms",
+      "module": "search",
+      "controller": "SearchAdminController",
+      "handler": "listSynonyms",
+      "file": "apps/api/src/modules/search/search.controller.ts",
+      "line": 26,
+      "access": "search.view | search.manage",
+      "permissions": [
+        "search.view",
+        "search.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/search/synonyms",
+      "module": "search",
+      "controller": "SearchAdminController",
+      "handler": "createSynonym",
+      "file": "apps/api/src/modules/search/search.controller.ts",
+      "line": 32,
+      "access": "search.manage",
+      "permissions": [
+        "search.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/search/synonyms/:id",
+      "module": "search",
+      "controller": "SearchAdminController",
+      "handler": "deleteSynonym",
+      "file": "apps/api/src/modules/search/search.controller.ts",
+      "line": 38,
+      "access": "search.manage",
+      "permissions": [
+        "search.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/search/zero-results",
+      "module": "search",
+      "controller": "SearchAdminController",
+      "handler": "zeroResults",
+      "file": "apps/api/src/modules/search/search.controller.ts",
+      "line": 44,
+      "access": "search.view | search.manage",
+      "permissions": [
+        "search.view",
+        "search.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
       "path": "/admin/settings/audit-log",
       "module": "settings",
       "controller": "SettingsAdminController",
@@ -8283,6 +8365,20 @@
     },
     {
       "method": "GET",
+      "path": "/search",
+      "module": "search",
+      "controller": "SearchController",
+      "handler": "search",
+      "file": "apps/api/src/modules/search/search.controller.ts",
+      "line": 14,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
       "path": "/shipping/quote",
       "module": "fulfilment",
       "controller": "ShippingController",
@@ -9560,7 +9656,10 @@
       "label": "View the zero-result search report",
       "category": "Marketing",
       "sensitivity": "low",
-      "routes": [],
+      "routes": [
+        "GET /admin/search/synonyms",
+        "GET /admin/search/zero-results"
+      ],
       "uiSites": 1,
       "roles": [
         "STAFF",
@@ -9573,7 +9672,12 @@
       "label": "Edit search synonyms",
       "category": "Marketing",
       "sensitivity": "low",
-      "routes": [],
+      "routes": [
+        "GET /admin/search/synonyms",
+        "POST /admin/search/synonyms",
+        "DELETE /admin/search/synonyms/:id",
+        "GET /admin/search/zero-results"
+      ],
       "uiSites": 1,
       "roles": [
         "STAFF",
@@ -9860,11 +9964,23 @@
       "name": "catalog.product_price_changed",
       "doc": "Fires only when basePrice actually changes value, never on an unrelated field edit.",
       "publishers": [
-        "apps/api/src/modules/catalog/product-admin.service.ts:349"
+        "apps/api/src/modules/catalog/product-admin.service.ts:350"
       ],
       "subscribers": [
         "apps/api/src/modules/catalog/product-replication.listener.ts:55 onProductPriceChanged()",
         "apps/api/src/modules/tradingpartners/product-alerts.listener.ts:31 onProductPriceChanged()"
+      ]
+    },
+    {
+      "symbol": "ProductChanged",
+      "name": "catalog.product_changed",
+      "doc": "WO-8.3 — fires on every create()/update(), unconditionally: search.reindexProduct's own trigger, since a name, description, tag, category or brand edit all change what a product should match on, not…",
+      "publishers": [
+        "apps/api/src/modules/catalog/product-admin.service.ts:207",
+        "apps/api/src/modules/catalog/product-admin.service.ts:358"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/search/search-reindex.listener.ts:17 onProductChanged()"
       ]
     },
     {
@@ -30379,6 +30495,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/search",
+      "file": "apps/web/src/app/(admin)/admin/(app)/search/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/seo",
       "file": "apps/web/src/app/(admin)/admin/(app)/seo/page.tsx",
       "client": true,
@@ -32159,6 +32284,15 @@
       "cases": 4,
       "describes": [
         "ReportsService finance exports"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/search/search.service.spec.ts",
+      "module": "search",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "SearchService"
       ]
     },
     {
@@ -35002,8 +35136,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 465,
-      "bytes": 17715,
+      "lines": 473,
+      "bytes": 18287,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -35014,187 +35148,192 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 87
+          "line": 89
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 89
+          "line": 91
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 102
+          "line": 104
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 110
+          "line": 112
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 118
+          "line": 120
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 138
+          "line": 140
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 144
+          "line": 146
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 151
+          "line": 153
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 158
+          "line": 160
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 162
+          "line": 164
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 168
+          "line": 170
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 174
+          "line": 176
         },
         {
           "name": "ShipmentStatusChangedPayload",
           "kind": "interface",
-          "line": 181
+          "line": 183
         },
         {
           "name": "ShipmentReturnedToOriginPayload",
           "kind": "interface",
-          "line": 191
+          "line": 193
         },
         {
           "name": "ReturnRequestStatusChangedPayload",
           "kind": "interface",
-          "line": 200
+          "line": 202
         },
         {
           "name": "ReturnRequestFullyRefundedPayload",
           "kind": "interface",
-          "line": 209
+          "line": 211
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 217
+          "line": 219
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 225
+          "line": 227
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 236
+          "line": 238
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 243
+          "line": 245
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 252
+          "line": 254
+        },
+        {
+          "name": "ProductChangedPayload",
+          "kind": "interface",
+          "line": 262
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 260
+          "line": 267
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 268
+          "line": 275
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 273
+          "line": 280
         },
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 285
+          "line": 292
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 300
+          "line": 307
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 308
+          "line": 315
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 322
+          "line": 329
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 335
+          "line": 342
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 348
+          "line": 355
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 364
+          "line": 371
         },
         {
           "name": "PayrollRunPostedPayload",
           "kind": "interface",
-          "line": 372
+          "line": 379
         },
         {
           "name": "PayrollAdjustmentPostedPayload",
           "kind": "interface",
-          "line": 384
+          "line": 391
         },
         {
           "name": "DiscountRedeemedPayload",
           "kind": "interface",
-          "line": 395
+          "line": 402
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 406
+          "line": 413
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 413
+          "line": 420
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 419
+          "line": 426
         }
       ]
     },
@@ -38072,8 +38211,8 @@
       "path": "apps/api/src/modules/catalog/product-admin.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 737,
-      "bytes": 28015,
+      "lines": 739,
+      "bytes": 28193,
       "doc": "",
       "symbols": [
         {
@@ -38084,17 +38223,17 @@
         {
           "name": "assertKindRules",
           "kind": "function",
-          "line": 618
+          "line": 620
         },
         {
           "name": "assertUniqueSkus",
           "kind": "function",
-          "line": 664
+          "line": 666
         },
         {
           "name": "toAdminView",
           "kind": "function",
-          "line": 723
+          "line": 725
         }
       ]
     },
@@ -40076,8 +40215,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 89,
-      "bytes": 2822,
+      "lines": 90,
+      "bytes": 2840,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -40096,24 +40235,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 167,
-      "bytes": 8457,
+      "lines": 169,
+      "bytes": 8556,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 36
+          "line": 37
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 67
+          "line": 68
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 143
+          "line": 145
         }
       ]
     },
@@ -41953,6 +42092,100 @@
           "name": "ReportsService",
           "kind": "class",
           "line": 36
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/search/dto/search.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 85,
+      "bytes": 1685,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SearchQueryDto",
+          "kind": "class",
+          "line": 6
+        },
+        {
+          "name": "CreateSynonymDto",
+          "kind": "class",
+          "line": 72
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/search/search-reindex.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 28,
+      "bytes": 1031,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SearchReindexListener",
+          "kind": "class",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/search/search.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 48,
+      "bytes": 1453,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SearchController",
+          "kind": "class",
+          "line": 10
+        },
+        {
+          "name": "SearchAdminController",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/search/search.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 12,
+      "bytes": 419,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SearchModule",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/search/search.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 118,
+      "bytes": 4600,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/search/search.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 241,
+      "bytes": 11264,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SearchService",
+          "kind": "class",
+          "line": 30
         }
       ]
     },
@@ -46854,6 +47087,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/search/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 140,
+      "bytes": 4697,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SearchAdminPage",
+          "kind": "default",
+          "line": 22
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/seo/page.tsx",
       "area": "web",
       "kind": "page",
@@ -49725,8 +49973,8 @@
       "path": "apps/web/src/lib/api.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 97,
-      "bytes": 3282,
+      "lines": 152,
+      "bytes": 5369,
       "doc": "",
       "symbols": [
         {
@@ -49737,52 +49985,52 @@
         {
           "name": "getProducts",
           "kind": "function",
-          "line": 43
+          "line": 61
         },
         {
           "name": "getProduct",
           "kind": "function",
-          "line": 49
+          "line": 104
         },
         {
           "name": "getCategories",
           "kind": "function",
-          "line": 53
+          "line": 108
         },
         {
           "name": "getFacets",
           "kind": "function",
-          "line": 57
+          "line": 112
         },
         {
           "name": "getStitchingServices",
           "kind": "function",
-          "line": 61
+          "line": 116
         },
         {
           "name": "getBanners",
           "kind": "function",
-          "line": 73
+          "line": 128
         },
         {
           "name": "getPage",
           "kind": "function",
-          "line": 77
+          "line": 132
         },
         {
           "name": "getPosts",
           "kind": "function",
-          "line": 81
+          "line": 136
         },
         {
           "name": "getPost",
           "kind": "function",
-          "line": 89
+          "line": 144
         },
         {
           "name": "getMenu",
           "kind": "function",
-          "line": 94
+          "line": 149
         }
       ]
     },

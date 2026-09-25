@@ -37,6 +37,8 @@ export const DomainEvent = {
   ProductPublished: 'catalog.product_published',
   /** Fires only when basePrice actually changes value, never on an unrelated field edit. */
   ProductPriceChanged: 'catalog.product_price_changed',
+  /** WO-8.3 — fires on every create()/update(), unconditionally: search.reindexProduct's own trigger, since a name, description, tag, category or brand edit all change what a product should match on, not just its status or price. */
+  ProductChanged: 'catalog.product_changed',
   /** Any positive-delta stock movement — the one signal that can unblock a waiting order line, whatever replenished the stock. */
   StockReplenished: 'inventory.stock_replenished',
   /** InventoryService.postUnconditional() drove a location negative (RETAIL-ERP.md R5) — never fired by move(). */
@@ -256,6 +258,11 @@ export interface ProductPublishedPayload {
   basePriceMinor: number;
 }
 
+/** WO-8.3 — deliberately just the id: the listener re-reads the current row rather than trusting a payload snapshot that could already be stale by the time it runs. */
+export interface ProductChangedPayload {
+  productId: string;
+}
+
 /** Never a cost price or margin — this leaves the platform to whoever is listening. */
 export interface ProductPriceChangedPayload {
   productId: string;
@@ -437,6 +444,7 @@ export interface DomainEventPayloads {
   [DomainEvent.ProductReorderPointReached]: ProductReorderPointReachedPayload;
   [DomainEvent.ProductPublished]: ProductPublishedPayload;
   [DomainEvent.ProductPriceChanged]: ProductPriceChangedPayload;
+  [DomainEvent.ProductChanged]: ProductChangedPayload;
   [DomainEvent.StockReplenished]: StockReplenishedPayload;
   [DomainEvent.StockVarianceRecorded]: StockVarianceRecordedPayload;
   [DomainEvent.GoodsReceived]: GoodsReceivedPayload;

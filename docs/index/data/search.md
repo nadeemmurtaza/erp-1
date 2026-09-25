@@ -3,7 +3,7 @@
 
 # Schema: `search.prisma`
 
-2 models · 0 enums. Owned by the core platform.
+2 models · 0 enums. Owned by module [`search`](../modules/search.md).
 
 
 Three rules govern every table here — from the schema's own comments and

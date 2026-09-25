@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 26 files
 
 Source: `apps/api/src/modules/catalog/`
 
-## Files (26 · 4,375 lines)
+## Files (26 · 4,377 lines)
 
 All paths relative to `apps/api/src/modules/catalog`.
 
@@ -30,7 +30,7 @@ All paths relative to `apps/api/src/modules/catalog`.
 | `redirect.dto.ts` | dto | 23 | 1 |  |
 | `option-template-admin.service.ts` | service | 125 | 1 | WO-3.1's store-level option library (03-variants-sku-seo.md) — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue -> Op… |
 | `product-admin.service.spec.ts` | unit test | 109 | — |  |
-| `product-admin.service.ts` | service | 737 | 4 | Product and service management for the dashboard. |
+| `product-admin.service.ts` | service | 739 | 4 | Product and service management for the dashboard. |
 | `product-import.service.ts` | service | 476 | 3 |  |
 | `product-option-admin.service.ts` | service | 248 | 1 | A product's own option axes (WO-3.1, 03-variants-sku-seo.md) — the part of the variant matrix builder that lets a bouti… |
 | `product-replication.listener.spec.ts` | unit test | 120 | — |  |
@@ -99,7 +99,8 @@ All paths relative to `apps/api/src/modules/catalog`.
 | Event | Name | Published at |
 |---|---|---|
 | `ProductPublished` | `catalog.product_published` | `product-admin.service.ts:197` |
-| `ProductPriceChanged` | `catalog.product_price_changed` | `product-admin.service.ts:349` |
+| `ProductPriceChanged` | `catalog.product_price_changed` | `product-admin.service.ts:350` |
+| `ProductChanged` | `catalog.product_changed` | `product-admin.service.ts:207`, `product-admin.service.ts:358` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -215,9 +216,9 @@ check there before adding another.
 | `CreateRedirectDto` | class | `redirect.dto.ts:4` |  |
 | `OptionTemplateAdminService` | class | `option-template-admin.service.ts:19` | WO-3.1's store-level option library (03-variants-sku-seo.md) — "Size: XS/S/M/L/XL/XXL" typed once under Catal… |
 | `ProductAdminService` | class | `product-admin.service.ts:35` | Product and service management for the dashboard. |
-| `assertKindRules` | function | `product-admin.service.ts:618` | The rules that distinguish the three product kinds. |
-| `assertUniqueSkus` | function | `product-admin.service.ts:664` | Catches the two ways a hand-typed variant list contradicts itself before either reaches the database: the sam… |
-| `toAdminView` | function | `product-admin.service.ts:723` | Admin view: both locales side by side, plus stock roll-ups for the table. |
+| `assertKindRules` | function | `product-admin.service.ts:620` | The rules that distinguish the three product kinds. |
+| `assertUniqueSkus` | function | `product-admin.service.ts:666` | Catches the two ways a hand-typed variant list contradicts itself before either reaches the database: the sam… |
+| `toAdminView` | function | `product-admin.service.ts:725` | Admin view: both locales side by side, plus stock roll-ups for the table. |
 | `ImportRowResult` | interface | `product-import.service.ts:17` |  |
 | `ImportSummary` | interface | `product-import.service.ts:24` |  |
 | `ProductImportService` | class | `product-import.service.ts:70` | Bulk load of an existing catalogue from a spreadsheet. |

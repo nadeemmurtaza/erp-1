@@ -9,7 +9,7 @@ Every top-level export in `api`, with the line to open.
 Per-module and per-core-subsystem symbols live on their own L2 pages, so they
 are not repeated here — one list, one place to be wrong:
 
-- Modules: [`accounting`](../modules/accounting.md) · [`addresses`](../modules/addresses.md) · [`analytics`](../modules/analytics.md) · [`bom`](../modules/bom.md) · [`cart`](../modules/cart.md) · [`catalog`](../modules/catalog.md) · [`collections`](../modules/collections.md) · [`content`](../modules/content.md) · [`crm`](../modules/crm.md) · [`finance`](../modules/finance.md) · [`fulfilment`](../modules/fulfilment.md) · [`giftcards`](../modules/giftcards.md) · [`identity-verification`](../modules/identity-verification.md) · [`inventory`](../modules/inventory.md) · [`marketing`](../modules/marketing.md) · [`measurements`](../modules/measurements.md) · [`orders`](../modules/orders.md) · [`organization`](../modules/organization.md) · [`parties`](../modules/parties.md) · [`payments`](../modules/payments.md) · [`payroll`](../modules/payroll.md) · [`pos`](../modules/pos.md) · [`production`](../modules/production.md) · [`promotions`](../modules/promotions.md) · [`purchasing`](../modules/purchasing.md) · [`reports`](../modules/reports.md) · [`settings`](../modules/settings.md) · [`stitching`](../modules/stitching.md) · [`tax`](../modules/tax.md) · [`tracking`](../modules/tracking.md) · [`tradingpartners`](../modules/tradingpartners.md) · [`transfers`](../modules/transfers.md) · [`users`](../modules/users.md)
+- Modules: [`accounting`](../modules/accounting.md) · [`addresses`](../modules/addresses.md) · [`analytics`](../modules/analytics.md) · [`bom`](../modules/bom.md) · [`cart`](../modules/cart.md) · [`catalog`](../modules/catalog.md) · [`collections`](../modules/collections.md) · [`content`](../modules/content.md) · [`crm`](../modules/crm.md) · [`finance`](../modules/finance.md) · [`fulfilment`](../modules/fulfilment.md) · [`giftcards`](../modules/giftcards.md) · [`identity-verification`](../modules/identity-verification.md) · [`inventory`](../modules/inventory.md) · [`marketing`](../modules/marketing.md) · [`measurements`](../modules/measurements.md) · [`orders`](../modules/orders.md) · [`organization`](../modules/organization.md) · [`parties`](../modules/parties.md) · [`payments`](../modules/payments.md) · [`payroll`](../modules/payroll.md) · [`pos`](../modules/pos.md) · [`production`](../modules/production.md) · [`promotions`](../modules/promotions.md) · [`purchasing`](../modules/purchasing.md) · [`reports`](../modules/reports.md) · [`search`](../modules/search.md) · [`settings`](../modules/settings.md) · [`stitching`](../modules/stitching.md) · [`tax`](../modules/tax.md) · [`tracking`](../modules/tracking.md) · [`tradingpartners`](../modules/tradingpartners.md) · [`transfers`](../modules/transfers.md) · [`users`](../modules/users.md)
 - Core: [`audit`](../core/audit.md) · [`auth`](../core/auth.md) · [`checkout`](../core/checkout.md) · [`common`](../core/common.md) · [`config`](../core/config.md) · [`events`](../core/events.md) · [`extension-points`](../core/extension-points.md) · [`health`](../core/health.md) · [`notifications`](../core/notifications.md) · [`prisma`](../core/prisma.md) · [`replication`](../core/replication.md) · [`security`](../core/security.md) · [`settings`](../core/settings.md) · [`storage`](../core/storage.md) · [`time`](../core/time.md)
 
 Below: everything in `apps/api` that no module or core page owns — the app
@@ -39,9 +39,9 @@ root, Prisma tooling, and the e2e suite.
 |---|---|---|---|---|
 | `module-packs.ts` | `PackName` | type | :40 | The sector packs. |
 | `module-packs.ts` | `MODULE_PACKS` | const | :50 |  |
-| `modules.registry.ts` | `FeatureModuleEntry` | interface | :36 |  |
-| `modules.registry.ts` | `FEATURE_MODULES` | const | :67 | The registry of feature modules. |
-| `modules.registry.ts` | `FeatureModulesModule` | class | :143 | Composes the enabled modules into one import. |
+| `modules.registry.ts` | `FeatureModuleEntry` | interface | :37 |  |
+| `modules.registry.ts` | `FEATURE_MODULES` | const | :68 | The registry of feature modules. |
+| `modules.registry.ts` | `FeatureModulesModule` | class | :145 | Composes the enabled modules into one import. |
 
 ### `apps/api/test/support`
 

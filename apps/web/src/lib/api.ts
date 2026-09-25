@@ -40,10 +40,65 @@ export async function apiFetch<T>(path: string, options: FetchOptions = {}): Pro
 
 // --- Storefront endpoints ---------------------------------------------------
 
-export function getProducts(
+interface SearchApiResult {
+  data: { slug: string }[];
+  meta: { page: number; pageSize: number; total: number; totalPages: number };
+}
+
+/**
+ * A term with only the filters /search's SearchQueryDto actually supports
+ * (single category/fabric/season, not FilterPanel's multi-select arrays) —
+ * the common case of "just typed something into the search box". Multi-
+ * select fabric/season, kind, or pieceCount alongside a term falls back to
+ * catalog's own `contains` filter rather than silently dropping filters
+ * /search cannot express; unifying that is a named follow-on (Phase 8
+ * status note), not something to fake here.
+ */
+function canRouteThroughSearch(query: ProductListQuery): boolean {
+  return Boolean(query.q?.trim()) && !query.kind && !query.pieceCount?.length && (query.fabric?.length ?? 0) <= 1 && (query.season?.length ?? 0) <= 1;
+}
+
+export async function getProducts(
   query: ProductListQuery,
 ): Promise<PaginatedResponse<StorefrontProduct>> {
-  return apiFetch(`/catalog/products${toSearchParams(query as Record<string, unknown>)}`);
+  if (!canRouteThroughSearch(query)) {
+    return apiFetch(`/catalog/products${toSearchParams(query as Record<string, unknown>)}`);
+  }
+
+  // WO-8.3 — a real search term routes through full-text search (ranking,
+  // synonym expansion, trigram typo tolerance) instead of catalog's own
+  // `contains` filter, which stays the fallback above for callers /search
+  // cannot fully express. Facet count badges in FilterPanel are a named
+  // follow-on (Phase 8 status note); this wires the ranking itself, the
+  // exit criterion's substance.
+  const searchResult = await apiFetch<SearchApiResult>(
+    `/search${toSearchParams({
+      q: query.q,
+      locale: query.locale,
+      category: query.category,
+      fabric: query.fabric?.[0],
+      season: query.season?.[0],
+      minPrice: query.minPrice,
+      maxPrice: query.maxPrice,
+      page: query.page,
+      pageSize: query.pageSize,
+    })}`,
+  );
+
+  const products = (
+    await Promise.all(
+      searchResult.data.map((hit) => getProduct(hit.slug, query.locale ?? 'en').catch(() => null)),
+    )
+  ).filter((p): p is StorefrontProduct => p !== null);
+
+  return {
+    data: products,
+    meta: {
+      ...searchResult.meta,
+      hasNext: searchResult.meta.page < searchResult.meta.totalPages,
+      hasPrevious: searchResult.meta.page > 1,
+    },
+  };
 }
 
 export function getProduct(slug: string, locale: string): Promise<StorefrontProduct> {

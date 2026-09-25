@@ -532,6 +532,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `AdminReportsPage` | default | :75 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/search`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `SearchAdminPage` | default | :22 | WO-8.3 — synonym editing and the zero-result report ("the single most useful merchandising report t… |
+
 ### `apps/web/src/app/(admin)/admin/(app)/seo`
 
 | File | Symbol | Kind | Line | Doc |
@@ -1129,16 +1135,16 @@ Every top-level export in `web`, with the line to open.
 | `api-client.ts` | `request` | function | :25 |  |
 | `api-client.ts` | `requestWithRefresh` | function | :29 |  |
 | `api.ts` | `apiFetch` | function | :36 | Storefront fetch. |
-| `api.ts` | `getProducts` | function | :43 | --- Storefront endpoints --------------------------------------------------- |
-| `api.ts` | `getProduct` | function | :49 |  |
-| `api.ts` | `getCategories` | function | :53 |  |
-| `api.ts` | `getFacets` | function | :57 |  |
-| `api.ts` | `getStitchingServices` | function | :61 |  |
-| `api.ts` | `getBanners` | function | :73 | Active banners for one placement — see BANNER_PLACEMENTS in @newax/shared. |
-| `api.ts` | `getPage` | function | :77 |  |
-| `api.ts` | `getPosts` | function | :81 |  |
-| `api.ts` | `getPost` | function | :89 |  |
-| `api.ts` | `getMenu` | function | :94 | A named footer menu slot — see MENU_KEYS in @newax/shared. |
+| `api.ts` | `getProducts` | function | :61 |  |
+| `api.ts` | `getProduct` | function | :104 |  |
+| `api.ts` | `getCategories` | function | :108 |  |
+| `api.ts` | `getFacets` | function | :112 |  |
+| `api.ts` | `getStitchingServices` | function | :116 |  |
+| `api.ts` | `getBanners` | function | :128 | Active banners for one placement — see BANNER_PLACEMENTS in @newax/shared. |
+| `api.ts` | `getPage` | function | :132 |  |
+| `api.ts` | `getPosts` | function | :136 |  |
+| `api.ts` | `getPost` | function | :144 |  |
+| `api.ts` | `getMenu` | function | :149 | A named footer menu slot — see MENU_KEYS in @newax/shared. |
 | `cart-client.ts` | `getCustomerToken` | function | :19 |  |
 | `cart-client.ts` | `fetchCart` | function | :46 |  |
 | `cart-client.ts` | `AddToCartInput` | interface | :50 |  |

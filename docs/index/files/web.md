@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 298 tracked files in `apps/web`, by directory.
+All 299 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -582,6 +582,12 @@ All 298 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 422 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/search` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 140 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/seo` (1)
 
 | File | Kind | Lines | Purpose |
@@ -1083,7 +1089,7 @@ All 298 tracked files in `apps/web`, by directory.
 | `admin-client.ts` | utility | 143 |  |
 | `analytics-client.ts` | utility | 91 |  |
 | `api-client.ts` | utility | 41 | The one HTTP layer. |
-| `api.ts` | utility | 97 |  |
+| `api.ts` | utility | 152 |  |
 | `cart-client.ts` | utility | 85 |  |
 | `customer-client.ts` | utility | 217 |  |
 | `download-csv.ts` | utility | 36 |  |

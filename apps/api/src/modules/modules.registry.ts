@@ -25,6 +25,7 @@ import { ProductionModule } from './production/production.module';
 import { PromotionsModule } from './promotions/promotions.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
 import { ReportsModule } from './reports/reports.module';
+import { SearchModule } from './search/search.module';
 import { SettingsAdminModule } from './settings/settings-admin.module';
 import { StitchingModule } from './stitching/stitching.module';
 import { TaxModule } from './tax/tax.module';
@@ -68,6 +69,7 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'catalog', module: CatalogModule },
   { name: 'content', module: ContentModule },
   { name: 'collections', module: CollectionsModule },
+  { name: 'search', module: SearchModule },
   { name: 'measurements', module: MeasurementsModule },
   { name: 'cart', module: CartModule },
   { name: 'stitching', module: StitchingModule },

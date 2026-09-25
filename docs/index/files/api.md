@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 602 tracked files in `apps/api`, by directory.
+All 608 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -551,7 +551,7 @@ All 602 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 465 | The catalogue of domain events. |
+| `domain-events.ts` | module | 473 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
@@ -693,8 +693,8 @@ All 602 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 89 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 167 |  |
+| `module-packs.ts` | module | 90 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 169 |  |
 
 ### `apps/api/src/modules/accounting` (15)
 
@@ -817,7 +817,7 @@ All 602 tracked files in `apps/api`, by directory.
 | `category-admin.service.ts` | service | 192 |  |
 | `option-template-admin.service.ts` | service | 125 |  |
 | `product-admin.service.spec.ts` | unit test | 109 |  |
-| `product-admin.service.ts` | service | 737 |  |
+| `product-admin.service.ts` | service | 739 |  |
 | `product-import.service.ts` | service | 476 |  |
 | `product-option-admin.service.ts` | service | 248 |  |
 | `product-replication.listener.spec.ts` | unit test | 120 |  |
@@ -1267,6 +1267,22 @@ All 602 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `reports.dto.ts` | dto | 33 |  |
+
+### `apps/api/src/modules/search` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `search-reindex.listener.ts` | event subscriber | 28 |  |
+| `search.controller.ts` | controller | 48 |  |
+| `search.module.ts` | nest module | 12 |  |
+| `search.service.spec.ts` | unit test | 118 |  |
+| `search.service.ts` | service | 241 |  |
+
+### `apps/api/src/modules/search/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `search.dto.ts` | dto | 85 |  |
 
 ### `apps/api/src/modules/settings` (3)
 

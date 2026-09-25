@@ -32,9 +32,9 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 602 | 85,002 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 608 | 85,547 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `docs` | 392 | 59,591 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 298 | 46,656 | Next.js — admin console and customer storefront in one app |
+| `apps/web` | 299 | 46,851 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 27,354 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 21 | 8,574 | repository checks and generators (lint gates, this index) |
 | `packages/shared` | 50 | 5,321 | brand, money, permissions, measurements, entities |
@@ -85,6 +85,7 @@ Each is independent: no module imports another except through a named
 | [`promotions`](modules/promotions.md) | core | MODULES allowlist | 12 | 3 |
 | [`purchasing`](modules/purchasing.md) | core | MODULES allowlist | 17 | 7 |
 | [`reports`](modules/reports.md) | core | MODULES allowlist | 12 | — |
+| [`search`](modules/search.md) | core | MODULES allowlist | 5 | 2 |
 | [`settings`](modules/settings.md) | core | always on | 6 | — |
 | [`stitching`](modules/stitching.md) | apparel | MODULES allowlist | 21 | 8 |
 | [`tax`](modules/tax.md) | core | MODULES allowlist | 8 | 2 |

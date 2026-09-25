@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **44** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **45** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -50,6 +50,7 @@ order" is a new file, not an edit to checkout.
 | `catalog.product_reorder_point_reached` | `ProductReorderPointReached` | `inventory` | `production`, `purchasing` |
 | `catalog.product_published` | `ProductPublished` | `catalog` | `catalog`, `tradingpartners` |
 | `catalog.product_price_changed` | `ProductPriceChanged` | `catalog` | `catalog`, `tradingpartners` |
+| `catalog.product_changed` | `ProductChanged` | `catalog` | `search` |
 | `inventory.stock_replenished` | `StockReplenished` | `inventory` | `orders` |
 | `inventory.stock_variance_recorded` | `StockVarianceRecorded` | `accounting`, `inventory` | `accounting` |
 | `purchasing.goods_received` | `GoodsReceived` | `purchasing` | `bom`, `purchasing` |
@@ -404,7 +405,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/catalog/product-admin.service.ts:349` | `catalog` |
+| `apps/api/src/modules/catalog/product-admin.service.ts:350` | `catalog` |
 
 
 **Subscribed by**
@@ -413,6 +414,24 @@ _Nothing subscribes. Publishing it is a no-op today._
 |---|---|---|
 | `onProductPriceChanged()` | `apps/api/src/modules/catalog/product-replication.listener.ts:55` | `catalog` |
 | `onProductPriceChanged()` | `apps/api/src/modules/tradingpartners/product-alerts.listener.ts:31` | `tradingpartners` |
+
+### `catalog.product_changed`
+
+> WO-8.3 — fires on every create()/update(), unconditionally: search.reindexProduct's own trigger, since a name, description, tag, category or brand edit all change what a product should match on, not…
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/catalog/product-admin.service.ts:207` | `catalog` |
+| `apps/api/src/modules/catalog/product-admin.service.ts:358` | `catalog` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onProductChanged()` | `apps/api/src/modules/search/search-reindex.listener.ts:17` | `search` |
 
 ### `inventory.stock_replenished`
 

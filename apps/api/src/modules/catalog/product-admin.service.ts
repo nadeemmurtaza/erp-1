@@ -204,6 +204,7 @@ export class ProductAdminService {
           tx,
         );
       }
+      await this.events.publish(DomainEvent.ProductChanged, { productId: product.id }, tx);
 
       return toAdminView(await tx.product.findUniqueOrThrow({ where: { id: product.id }, include: adminInclude }));
     });
@@ -354,6 +355,7 @@ export class ProductAdminService {
         newPriceMinor: dto.basePrice,
       });
     }
+    await this.events.publish(DomainEvent.ProductChanged, { productId: product.id });
 
     return toAdminView(product);
   }

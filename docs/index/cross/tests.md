@@ -3,7 +3,7 @@
 
 # Tests
 
-**184** spec files, **1,726** cases. What is already pinned down — and what is not.
+**188** spec files, **1,756** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -55,7 +55,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (166)
+## Unit and integration (170)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -92,7 +92,7 @@ regression or an N+1.
 | `apps/api/src/modules/accounting/consolidation.service.spec.ts` | accounting | 7 | ConsolidationService — R17, WO-20.6 · groupProfitAndLoss · unmatchedIntercompany |
 | `apps/api/src/modules/accounting/fiscal-periods.service.spec.ts` | accounting | 24 | FiscalPeriodsService — WO-19.5 · createFiscalYear · createFiscalPeriod · closePeriod · reopenPeriod… |
 | `apps/api/src/modules/accounting/gl-reports.service.spec.ts` | accounting | 9 | GlReportsService — WO-19.4 · trialBalance · profitAndLoss · balanceSheet · cashFlow · agedReceivabl… |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | accounting | 40 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSuppl… |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | accounting | 48 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSuppl… |
 | `apps/api/src/modules/analytics/analytics.comparison.spec.ts` | analytics | 8 | AnalyticsService.comparison |
 | `apps/api/src/modules/analytics/analytics.customers.spec.ts` | analytics | 7 | AnalyticsService — WO-D.5 customers overview/retention/top · customersOverview · customersRetention… |
 | `apps/api/src/modules/analytics/analytics.inventory.spec.ts` | analytics | 9 | AnalyticsService — WO-D.4 inventory valuation/movements · inventoryValuation · inventoryMovements |
@@ -174,6 +174,10 @@ regression or an N+1.
 | `apps/api/src/modules/purchasing/reorder.listener.spec.ts` | purchasing | 9 | PurchasingReorderListener |
 | `apps/api/src/modules/purchasing/requisition.service.spec.ts` | purchasing | 13 | RequisitionService — 152-purchase-requisition.md · create · approve / reject — the toxic-pair refus… |
 | `apps/api/src/modules/purchasing/supplier-bill.spec.ts` | purchasing | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
+| `apps/api/src/modules/receivables/dunning.cron.spec.ts` | receivables | 6 | DunningCron — WO-145.4 |
+| `apps/api/src/modules/receivables/dunning.service.spec.ts` | receivables | 6 | DunningService — WO-145.4 |
+| `apps/api/src/modules/receivables/receivables.integration.spec.ts` | receivables | 7 | Receivables — CreditNote/DebitNote posting and credit checks (WO-145) |
+| `apps/api/src/modules/receivables/statements.service.spec.ts` | receivables | 3 | StatementsService — WO-145.5 |
 | `apps/api/src/modules/recommendations/recommendations.cron.spec.ts` | recommendations | 6 | RecommendationsCron |
 | `apps/api/src/modules/recommendations/recommendations.service.spec.ts` | recommendations | 14 | RecommendationsService · relatedFor · frequentlyBoughtWith · manual cross-sell curation (admin) · p… |
 | `apps/api/src/modules/reports/reports-finance-exports.spec.ts` | reports | 4 | ReportsService finance exports |

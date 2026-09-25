@@ -181,6 +181,30 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `ContentAdminPage` | default | :285 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/credit-notes`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `CreditNotesPage` | default | :23 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/credit-notes/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `CreditNoteDetailPage` | default | :27 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/credit-notes/new`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `NewCreditNotePage` | default | :16 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/credit-terms`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `CreditTermsPage` | default | :23 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/customers/[id]`
 
 | File | Symbol | Kind | Line | Doc |
@@ -199,6 +223,24 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `GiftCardDetailPage` | default | :33 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/debit-notes`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `DebitNotesPage` | default | :23 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/debit-notes/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `DebitNoteDetailPage` | default | :24 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/debit-notes/new`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `NewDebitNotePage` | default | :10 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/designs`
 
 | File | Symbol | Kind | Line | Doc |
@@ -210,6 +252,12 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `AdminDesignPage` | default | :30 | One style question, and the answers a customer can give it. |
+
+### `apps/web/src/app/(admin)/admin/(app)/dunning-policy`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `DunningPolicyPage` | default | :17 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/email-accounts`
 
@@ -615,6 +663,12 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `ShippingSettingsPage` | default | :40 | WO-6.8's `/admin/settings/shipping` — zones, rates, methods, classes. |
+
+### `apps/web/src/app/(admin)/admin/(app)/statements`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `StatementsPage` | default | :31 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/stitching`
 
@@ -1024,8 +1078,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :55 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :78 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :118 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :775 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :790 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :815 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :830 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
@@ -1149,8 +1203,8 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `status-badge.tsx` | `statusLabel` | function | :68 | `READY_TO_SHIP` -> `Ready to ship`. |
-| `status-badge.tsx` | `StatusBadge` | function | :72 |  |
+| `status-badge.tsx` | `statusLabel` | function | :72 | `READY_TO_SHIP` -> `Ready to ship`. |
+| `status-badge.tsx` | `StatusBadge` | function | :76 |  |
 | `toast-container.tsx` | `ToastContainer` | function | :11 |  |
 | `wizard.tsx` | `WizardStep` | interface | :6 |  |
 | `wizard.tsx` | `Wizard` | function | :36 | A form split into small, single-purpose steps instead of one long page. |

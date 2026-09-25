@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1760,
-    "lines": 269054,
-    "routes": 575,
-    "controllers": 102,
-    "models": 211,
-    "enums": 93,
-    "migrations": 69,
-    "events": 48,
-    "permissions": 68,
-    "screens": 208,
-    "crons": 17,
-    "specs": 184,
+    "files": 1784,
+    "lines": 272810,
+    "routes": 595,
+    "controllers": 107,
+    "models": 216,
+    "enums": 94,
+    "migrations": 70,
+    "events": 53,
+    "permissions": 72,
+    "screens": 217,
+    "crons": 18,
+    "specs": 188,
     "designLaws": 0
   },
   "designLaws": [],
@@ -28,13 +28,13 @@
     "infra": {
       "files": 57,
       "lines": 29121,
-      "bytes": 1137660,
+      "bytes": 1137696,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 724,
-      "lines": 100225,
-      "bytes": 3727544,
+      "files": 739,
+      "lines": 102384,
+      "bytes": 3817597,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 345,
-      "lines": 52684,
-      "bytes": 1909987,
+      "files": 354,
+      "lines": 54048,
+      "bytes": 1955863,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 392,
-      "lines": 60222,
-      "bytes": 3568475,
+      "lines": 60419,
+      "bytes": 3580585,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 74,
-      "lines": 6985,
-      "bytes": 240976,
+      "lines": 7021,
+      "bytes": 242136,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -702,6 +702,29 @@
       ],
       "routes": 24,
       "page": "docs/index/modules/purchasing.md"
+    },
+    {
+      "name": "receivables",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/receivables/credit-notes.service.ts",
+        "apps/api/src/modules/receivables/credit-terms.service.ts",
+        "apps/api/src/modules/receivables/debit-notes.service.ts",
+        "apps/api/src/modules/receivables/dto/receivables.dto.ts",
+        "apps/api/src/modules/receivables/dunning.cron.spec.ts",
+        "apps/api/src/modules/receivables/dunning.cron.ts",
+        "apps/api/src/modules/receivables/dunning.service.spec.ts",
+        "apps/api/src/modules/receivables/dunning.service.ts",
+        "apps/api/src/modules/receivables/receivables.controller.ts",
+        "apps/api/src/modules/receivables/receivables.integration.spec.ts",
+        "apps/api/src/modules/receivables/receivables.module.ts",
+        "apps/api/src/modules/receivables/statements.service.spec.ts",
+        "apps/api/src/modules/receivables/statements.service.ts"
+      ],
+      "routes": 20,
+      "page": "docs/index/modules/receivables.md"
     },
     {
       "name": "recommendations",
@@ -3458,6 +3481,182 @@
       "summary": ""
     },
     {
+      "method": "GET",
+      "path": "/admin/credit-notes",
+      "module": "receivables",
+      "controller": "CreditNotesController",
+      "handler": "findAll",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 29,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List credit notes"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/credit-notes",
+      "module": "receivables",
+      "controller": "CreditNotesController",
+      "handler": "create",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 43,
+      "access": "finance.credit-notes.create",
+      "permissions": [
+        "finance.credit-notes.create"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Draft a credit note against a customer, optionally citing the order it credits"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/credit-notes/:id",
+      "module": "receivables",
+      "controller": "CreditNotesController",
+      "handler": "findOne",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 36,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Get a credit note"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/credit-notes/:id/apply",
+      "module": "receivables",
+      "controller": "CreditNotesController",
+      "handler": "apply",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 64,
+      "access": "finance.credit-notes.create",
+      "permissions": [
+        "finance.credit-notes.create"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Apply an ISSUED credit note to a different open order than the one it originally cited"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/credit-notes/:id/approve",
+      "module": "receivables",
+      "controller": "CreditNotesController",
+      "handler": "approve",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 50,
+      "access": "finance.credit-notes.approve",
+      "permissions": [
+        "finance.credit-notes.approve"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Approve a credit note above the approval threshold — never its own creator"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/credit-notes/:id/issue",
+      "module": "receivables",
+      "controller": "CreditNotesController",
+      "handler": "issue",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 57,
+      "access": "finance.credit-notes.create",
+      "permissions": [
+        "finance.credit-notes.create"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Issue a DRAFT credit note — posts the ledger entry; above the threshold, requires a prior approval"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/credit-notes/:id/void",
+      "module": "receivables",
+      "controller": "CreditNotesController",
+      "handler": "voidNote",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 71,
+      "access": "finance.credit-notes.approve",
+      "permissions": [
+        "finance.credit-notes.approve"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Void a credit note — reverses its posted ledger entry, never deletes the record"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/credit-terms",
+      "module": "receivables",
+      "controller": "CreditTermsController",
+      "handler": "findAll",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 125,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List customers with a credit term set — optionally only those on hold"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/credit-terms/:customerId",
+      "module": "receivables",
+      "controller": "CreditTermsController",
+      "handler": "findOne",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 132,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "A customer's own credit term, or null if none is set"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/credit-terms/:customerId",
+      "module": "receivables",
+      "controller": "CreditTermsController",
+      "handler": "set",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 139,
+      "access": "finance.credit-terms.manage",
+      "permissions": [
+        "finance.credit-terms.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Set a customer's credit limit, payment terms, and hold"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/credit-terms/check",
+      "module": "receivables",
+      "controller": "CreditTermsController",
+      "handler": "check",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 146,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Preview whether an order of this amount would clear the customer's credit limit — a pure read, nothing is written"
+    },
+    {
       "method": "POST",
       "path": "/admin/crm/backfill",
       "module": "crm",
@@ -3888,6 +4087,134 @@
       "public": false,
       "authOnly": false,
       "summary": "Issue goodwill store credit to a customer"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/debit-notes",
+      "module": "receivables",
+      "controller": "DebitNotesController",
+      "handler": "findAll",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 84,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List debit notes"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/debit-notes",
+      "module": "receivables",
+      "controller": "DebitNotesController",
+      "handler": "create",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 98,
+      "access": "finance.debit-notes.manage",
+      "permissions": [
+        "finance.debit-notes.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Draft a debit note against a supplier, optionally citing the bill it corrects"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/debit-notes/:id",
+      "module": "receivables",
+      "controller": "DebitNotesController",
+      "handler": "findOne",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 91,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Get a debit note"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/debit-notes/:id/issue",
+      "module": "receivables",
+      "controller": "DebitNotesController",
+      "handler": "issue",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 105,
+      "access": "finance.debit-notes.manage",
+      "permissions": [
+        "finance.debit-notes.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Issue a DRAFT debit note — posts the ledger entry"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/debit-notes/:id/void",
+      "module": "receivables",
+      "controller": "DebitNotesController",
+      "handler": "voidNote",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 112,
+      "access": "finance.debit-notes.manage",
+      "permissions": [
+        "finance.debit-notes.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Void a debit note — reverses its posted ledger entry"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/dunning/events",
+      "module": "receivables",
+      "controller": "DunningController",
+      "handler": "listEvents",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 174,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Dunning steps already sent for one order"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/dunning/policy",
+      "module": "receivables",
+      "controller": "DunningController",
+      "handler": "getPolicy",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 160,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The current dunning policy — days-overdue steps and which template fires at each"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/dunning/policy",
+      "module": "receivables",
+      "controller": "DunningController",
+      "handler": "setPolicy",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 167,
+      "access": "finance.credit-terms.manage",
+      "permissions": [
+        "finance.credit-terms.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Replace the dunning policy's steps"
     },
     {
       "method": "GET",
@@ -7446,6 +7773,22 @@
     },
     {
       "method": "GET",
+      "path": "/admin/statements/:customerId",
+      "module": "receivables",
+      "controller": "StatementsController",
+      "handler": "statement",
+      "file": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "line": 187,
+      "access": "finance.view",
+      "permissions": [
+        "finance.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "A customer's statement of account over a period — invoices, payments and credit notes, chronologically"
+    },
+    {
+      "method": "GET",
       "path": "/admin/stitching/bookings",
       "module": "stitching",
       "controller": "StitchingAdminController",
@@ -10929,15 +11272,25 @@
         "GET /admin/accounting/reports/aged-payables",
         "GET /admin/accounting/reports/cash-flow",
         "GET /admin/accounting/reports/profit-and-loss",
+        "GET /admin/credit-notes",
+        "GET /admin/credit-notes/:id",
+        "GET /admin/credit-terms",
+        "GET /admin/credit-terms/:customerId",
+        "POST /admin/credit-terms/check",
+        "GET /admin/debit-notes",
+        "GET /admin/debit-notes/:id",
+        "GET /admin/dunning/events",
+        "GET /admin/dunning/policy",
         "GET /admin/finance/expense-categories",
         "GET /admin/finance/expenses",
         "GET /admin/finance/expenses/by-category",
         "GET /admin/finance/expenses/summary",
         "GET /admin/finance/expenses/trend",
         "GET /admin/finance/margins",
-        "GET /admin/finance/unit-economics"
+        "GET /admin/finance/unit-economics",
+        "GET /admin/statements/:customerId"
       ],
-      "uiSites": 16,
+      "uiSites": 21,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -10959,6 +11312,70 @@
         "POST /admin/finance/expenses/:id/receipt"
       ],
       "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "finance.credit-notes.create",
+      "label": "Issue a credit note, and apply it to an invoice",
+      "category": "Finance",
+      "sensitivity": "medium",
+      "routes": [
+        "POST /admin/credit-notes",
+        "POST /admin/credit-notes/:id/apply",
+        "POST /admin/credit-notes/:id/issue"
+      ],
+      "uiSites": 0,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "finance.credit-notes.approve",
+      "label": "Approve a credit note above the approval threshold, and void one",
+      "category": "Finance",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/credit-notes/:id/approve",
+        "POST /admin/credit-notes/:id/void"
+      ],
+      "uiSites": 0,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "finance.debit-notes.manage",
+      "label": "Issue and void debit notes against a supplier",
+      "category": "Finance",
+      "sensitivity": "medium",
+      "routes": [
+        "POST /admin/debit-notes",
+        "POST /admin/debit-notes/:id/issue",
+        "POST /admin/debit-notes/:id/void"
+      ],
+      "uiSites": 0,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "finance.credit-terms.manage",
+      "label": "Set a customer's credit limit and payment terms, apply a credit hold, and edit the dunning policy",
+      "category": "Finance",
+      "sensitivity": "high",
+      "routes": [
+        "PUT /admin/credit-terms/:customerId",
+        "PUT /admin/dunning/policy"
+      ],
+      "uiSites": 0,
       "roles": [
         "ADMIN"
       ],
@@ -11608,14 +12025,14 @@
       "name": "order.placed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:50",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:157",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:54",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:161",
         "apps/api/src/modules/orders/orders.service.ts:449",
         "apps/api/src/modules/orders/orders.service.ts:652"
       ],
       "subscribers": [
         "apps/api/src/core/events/on-domain-event.decorator.ts:7 handle()",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:48 onOrderPlaced()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:52 onOrderPlaced()",
         "apps/api/src/modules/crm/order.subscriber.ts:27 onOrderPlaced()",
         "apps/api/src/modules/orders/notification.subscriber.ts:70 onOrderPlaced()",
         "apps/api/src/modules/orders/order-replication.listener.ts:48 onOrderPlaced()",
@@ -11654,15 +12071,15 @@
       "name": "payment.succeeded",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:117",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:154",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:121",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:158",
         "apps/api/src/modules/orders/orders.service.ts:640",
         "apps/api/src/modules/payments/payments.service.ts:191",
         "apps/api/src/modules/payments/payments.service.ts:293",
         "apps/api/src/modules/payments/payments.service.ts:341"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:115 onPaymentSucceeded()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:119 onPaymentSucceeded()",
         "apps/api/src/modules/payments/notification.subscriber.ts:34 onPaymentSucceeded()"
       ]
     },
@@ -11695,7 +12112,7 @@
         "apps/api/src/modules/payments/payments.service.ts:400"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:152 onPaymentRefunded()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:156 onPaymentRefunded()",
         "apps/api/src/modules/payments/notification.subscriber.ts:118 onPaymentRefunded()"
       ]
     },
@@ -11867,11 +12284,11 @@
       "name": "inventory.stock_variance_recorded",
       "doc": "InventoryService.postUnconditional() drove a location negative (RETAIL-ERP.md R5) — never fired by move().",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:281",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:285",
         "apps/api/src/modules/inventory/inventory.service.ts:371"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:279 onStockVarianceRecorded()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:283 onStockVarianceRecorded()"
       ]
     },
     {
@@ -11920,11 +12337,11 @@
       "name": "purchasing.supplier_bill_raised",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:178",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:182",
         "apps/api/src/modules/purchasing/purchasing.service.ts:592"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:176 onSupplierBillRaised()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:180 onSupplierBillRaised()"
       ]
     },
     {
@@ -11932,11 +12349,11 @@
       "name": "purchasing.supplier_bill_paid",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:228",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:232",
         "apps/api/src/modules/purchasing/purchasing.service.ts:656"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:226 onSupplierBillPaid()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:230 onSupplierBillPaid()"
       ]
     },
     {
@@ -11944,11 +12361,11 @@
       "name": "transfers.inter_branch_invoiced",
       "doc": "An InterBranchInvoice was raised — TransfersService.receive() on an INVOICED transfer (R12/R17, WO-22.3).",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:334",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:338",
         "apps/api/src/modules/transfers/transfers.service.ts:300"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:332 onInterBranchTransferInvoiced()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:336 onInterBranchTransferInvoiced()"
       ]
     },
     {
@@ -12030,12 +12447,12 @@
       "name": "finance.expense_recorded",
       "doc": "FinanceService.create() (WO-23.1) — fires whether or not `accounting` is on; posting-rules.subscriber.ts is the only subscriber today.",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:394",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:398",
         "apps/api/src/modules/finance/finance.service.ts:252",
         "apps/api/src/modules/finance/finance.service.ts:645"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:392 onExpenseRecorded()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:396 onExpenseRecorded()",
         "apps/api/src/modules/finance/expense-replication.listener.ts:38 onExpenseRecorded()"
       ]
     },
@@ -12053,11 +12470,11 @@
       "name": "payroll.run_posted",
       "doc": "PayRunService.post() (docs/implementation/payroll/19-payroll.md WO-19.4) — the eighth posting rule; fires whether or not `accounting` is on, same idiom as ExpenseRecorded.",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:439",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:443",
         "apps/api/src/modules/payroll/pay-run.service.ts:186"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:437 onPayrollRunPosted()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:441 onPayrollRunPosted()"
       ]
     },
     {
@@ -12065,11 +12482,11 @@
       "name": "payroll.adjustment_posted",
       "doc": "PayRunService.postAdjustment() (docs/implementation/payroll/19-payroll.md WO-19.5) — the overpayment/correction reversal path, a distinct postable fact from the original run it corrects.",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:490",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:494",
         "apps/api/src/modules/payroll/pay-run.service.ts:237"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:488 onPayrollAdjustmentPosted()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:492 onPayrollAdjustmentPosted()"
       ]
     },
     {
@@ -12140,6 +12557,63 @@
       "subscribers": [
         "apps/api/src/modules/measurements/size-bias.listener.ts:21 onReviewModerated()"
       ]
+    },
+    {
+      "symbol": "CreditNoteIssued",
+      "name": "receivables.credit_note_issued",
+      "doc": "145-receivables-credit-limits-dunning.md (WO-145.2) — CreditNotesService.issue().",
+      "publishers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:533",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:560",
+        "apps/api/src/modules/receivables/credit-notes.service.ts:130"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:531 onCreditNoteIssued()"
+      ]
+    },
+    {
+      "symbol": "CreditNoteVoided",
+      "name": "receivables.credit_note_voided",
+      "doc": "CreditNotesService.void() on an already-ISSUED note — reverses the posted entry via AccountingService.reverseEntry(), never a second, opposite-signed posting.",
+      "publishers": [
+        "apps/api/src/modules/receivables/credit-notes.service.ts:181"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:558 onCreditNoteVoided()"
+      ]
+    },
+    {
+      "symbol": "DebitNoteIssued",
+      "name": "receivables.debit_note_issued",
+      "doc": "DebitNotesService.issue() — the AP-side mirror of CreditNoteIssued.",
+      "publishers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:579",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:605",
+        "apps/api/src/modules/receivables/debit-notes.service.ts:93"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:577 onDebitNoteIssued()"
+      ]
+    },
+    {
+      "symbol": "DebitNoteVoided",
+      "name": "receivables.debit_note_voided",
+      "doc": "DebitNotesService.void() on an already-ISSUED note.",
+      "publishers": [
+        "apps/api/src/modules/receivables/debit-notes.service.ts:123"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:603 onDebitNoteVoided()"
+      ]
+    },
+    {
+      "symbol": "CreditHoldApplied",
+      "name": "receivables.credit_hold_applied",
+      "doc": "CreditTermsService.setTerm() the moment isOnHold turns true — \"Audience is a capability\" lens: resolves its recipients from finance.credit-terms.manage, never a hardcoded address.",
+      "publishers": [
+        "apps/api/src/modules/receivables/credit-terms.service.ts:86"
+      ],
+      "subscribers": []
     }
   ],
   "models": [
@@ -15344,6 +15818,271 @@
       ]
     },
     {
+      "name": "CreditNote",
+      "file": "apps/api/prisma/schema/receivables.prisma",
+      "line": 47,
+      "doc": "Reduces what a customer owes — a return, a pricing correction, a goodwill credit.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "number",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "customerId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "appliedToOrderId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "CreditDebitNoteStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdById",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "issuedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "voidedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([customerId, status])",
+        "@@index([orderId])"
+      ]
+    },
+    {
+      "name": "CustomerCreditTerm",
+      "file": "apps/api/prisma/schema/receivables.prisma",
+      "line": 99,
+      "doc": "A policy row, checked at the one place a sale can be refused for it — never inferred, always a deliberate manual value.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "customerId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "creditLimitMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "paymentTermDays",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isOnHold",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([isOnHold])"
+      ]
+    },
+    {
+      "name": "DebitNote",
+      "file": "apps/api/prisma/schema/receivables.prisma",
+      "line": 80,
+      "doc": "The mirror on the supplier side of the ledger — reduces what this organization owes a supplier (a return, an overcharge correction).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "number",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "supplierId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "supplierBillId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "CreditDebitNoteStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdById",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "issuedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "voidedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([supplierId, status])"
+      ]
+    },
+    {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 449,
@@ -15616,6 +16355,83 @@
       "indexes": [
         "@@index([isActive, startsAt, endsAt])"
       ]
+    },
+    {
+      "name": "DunningEvent",
+      "file": "apps/api/prisma/schema/receivables.prisma",
+      "line": 133,
+      "doc": "One row per (order, step) a dunning notice has actually gone out for — the idempotency guard that stops the nightly sweep from re-sending a step already sent, the same discipline every other register…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "stepIndex",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sentAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@unique([orderId, stepIndex])",
+        "@@index([orderId])"
+      ]
+    },
+    {
+      "name": "DunningPolicy",
+      "file": "apps/api/prisma/schema/receivables.prisma",
+      "line": 120,
+      "doc": "Days-overdue thresholds and which template fires at each — a client-editable policy row, the identical \"rows over enums\" discipline every other policy in this repository already follows.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "stepsJson",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
     },
     {
       "name": "EmailAccount",
@@ -31130,6 +31946,17 @@
       ]
     },
     {
+      "name": "CreditDebitNoteStatus",
+      "file": "apps/api/prisma/schema/receivables.prisma",
+      "line": 35,
+      "values": [
+        "DRAFT",
+        "ISSUED",
+        "APPLIED",
+        "VOID"
+      ]
+    },
+    {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 437,
@@ -33241,6 +34068,26 @@
         "SpotCheckPolicy",
         "StockVariance"
       ]
+    },
+    {
+      "folder": "20260925170000_add_receivables_credit_notes_dunning",
+      "file": "apps/api/prisma/schema/migrations/20260925170000_add_receivables_credit_notes_dunning/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_receivables_credit_notes_dunning",
+      "statements": 15,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "CreditNote",
+        "CustomerCreditTerm",
+        "DebitNote",
+        "DunningEvent",
+        "DunningPolicy"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -34288,6 +35135,42 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/credit-notes",
+      "file": "apps/web/src/app/(admin)/admin/(app)/credit-notes/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/credit-notes/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/credit-notes/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/credit-notes/new",
+      "file": "apps/web/src/app/(admin)/admin/(app)/credit-notes/new/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/credit-terms",
+      "file": "apps/web/src/app/(admin)/admin/(app)/credit-terms/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/customers/[id]",
       "file": "apps/web/src/app/(admin)/admin/(app)/customers/[id]/page.tsx",
       "client": true,
@@ -34315,6 +35198,33 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/debit-notes",
+      "file": "apps/web/src/app/(admin)/admin/(app)/debit-notes/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/debit-notes/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/debit-notes/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/debit-notes/new",
+      "file": "apps/web/src/app/(admin)/admin/(app)/debit-notes/new/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/designs",
       "file": "apps/web/src/app/(admin)/admin/(app)/designs/page.tsx",
       "client": true,
@@ -34326,6 +35236,15 @@
       "kind": "page",
       "url": "/admin/designs/[id]",
       "file": "apps/web/src/app/(admin)/admin/(app)/designs/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/dunning-policy",
+      "file": "apps/web/src/app/(admin)/admin/(app)/dunning-policy/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -34972,6 +35891,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/statements",
+      "file": "apps/web/src/app/(admin)/admin/(app)/statements/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/stitching",
       "file": "apps/web/src/app/(admin)/admin/(app)/stitching/page.tsx",
       "client": true,
@@ -35228,6 +36156,13 @@
       "file": "apps/api/src/modules/purchasing/purchasing.cron.ts",
       "line": 36,
       "handler": "sweepReorderCandidates",
+      "doc": ""
+    },
+    {
+      "schedule": "0 4 * * *",
+      "file": "apps/api/src/modules/receivables/dunning.cron.ts",
+      "line": 44,
+      "handler": "sweep",
       "doc": ""
     },
     {
@@ -36108,7 +37043,7 @@
       "file": "apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts",
       "module": "accounting",
       "kind": "unit test",
-      "cases": 40,
+      "cases": 48,
       "describes": [
         "PostingRulesSubscriber — WO-19.2",
         "onOrderPlaced",
@@ -36120,7 +37055,11 @@
         "onInterBranchTransferInvoiced — WO-22.3",
         "onExpenseRecorded — WO-23.1",
         "onPayrollRunPosted — WO-19.4",
-        "onPayrollAdjustmentPosted — WO-19.5"
+        "onPayrollAdjustmentPosted — WO-19.5",
+        "onCreditNoteIssued",
+        "onCreditNoteVoided",
+        "onDebitNoteIssued",
+        "onDebitNoteVoided"
       ]
     },
     {
@@ -37012,6 +37951,42 @@
         "PurchasingService — supplier bills",
         "createSupplierBill",
         "recordSupplierBillPayment"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/receivables/dunning.cron.spec.ts",
+      "module": "receivables",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "DunningCron — WO-145.4"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/receivables/dunning.service.spec.ts",
+      "module": "receivables",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "DunningService — WO-145.4"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/receivables/receivables.integration.spec.ts",
+      "module": "receivables",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "Receivables — CreditNote/DebitNote posting and credit checks (WO-145)"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/receivables/statements.service.spec.ts",
+      "module": "receivables",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "StatementsService — WO-145.5"
       ]
     },
     {
@@ -37993,7 +38968,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5289,
+      "bytes": 5301,
       "doc": "",
       "symbols": []
     },
@@ -38002,7 +38977,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 159,
-      "bytes": 7802,
+      "bytes": 7814,
       "doc": "",
       "symbols": []
     },
@@ -38011,7 +38986,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 127,
-      "bytes": 5662,
+      "bytes": 5674,
       "doc": "",
       "symbols": []
     },
@@ -39066,6 +40041,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260925170000_add_receivables_credit_notes_dunning/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 105,
+      "bytes": 3214,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -39171,6 +40155,15 @@
       "lines": 303,
       "bytes": 12379,
       "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/receivables.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 142,
+      "bytes": 6349,
+      "doc": "Receivables: CreditNote/DebitNote, customer credit limits, and dunning —",
       "symbols": []
     },
     {
@@ -40269,8 +41262,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 499,
-      "bytes": 19326,
+      "lines": 545,
+      "bytes": 21348,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -40281,207 +41274,232 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 94
+          "line": 105
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 96
+          "line": 107
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 109
+          "line": 120
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 117
+          "line": 128
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 125
+          "line": 136
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 145
+          "line": 156
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 151
+          "line": 162
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 158
+          "line": 169
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 165
+          "line": 176
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 169
+          "line": 180
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 175
+          "line": 186
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 181
+          "line": 192
         },
         {
           "name": "ShipmentStatusChangedPayload",
           "kind": "interface",
-          "line": 188
+          "line": 199
         },
         {
           "name": "ShipmentReturnedToOriginPayload",
           "kind": "interface",
-          "line": 198
+          "line": 209
         },
         {
           "name": "ReturnRequestStatusChangedPayload",
           "kind": "interface",
-          "line": 207
+          "line": 218
         },
         {
           "name": "ReturnRequestFullyRefundedPayload",
           "kind": "interface",
-          "line": 216
+          "line": 227
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 224
+          "line": 235
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 232
+          "line": 243
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 243
+          "line": 254
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 250
+          "line": 261
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 259
+          "line": 270
         },
         {
           "name": "ProductChangedPayload",
           "kind": "interface",
-          "line": 267
+          "line": 278
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 272
+          "line": 283
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 280
+          "line": 291
         },
         {
           "name": "RequisitionCreatedPayload",
           "kind": "interface",
-          "line": 285
+          "line": 296
         },
         {
           "name": "RequisitionConvertedPayload",
           "kind": "interface",
-          "line": 291
+          "line": 302
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 297
+          "line": 308
         },
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 309
+          "line": 320
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 324
+          "line": 335
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 332
+          "line": 343
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 346
+          "line": 357
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 359
+          "line": 370
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 372
+          "line": 383
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 388
+          "line": 399
         },
         {
           "name": "PayrollRunPostedPayload",
           "kind": "interface",
-          "line": 396
+          "line": 407
         },
         {
           "name": "PayrollAdjustmentPostedPayload",
           "kind": "interface",
-          "line": 408
+          "line": 419
         },
         {
           "name": "DiscountRedeemedPayload",
           "kind": "interface",
-          "line": 419
+          "line": 430
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 430
+          "line": 441
         },
         {
           "name": "ReviewModeratedPayload",
           "kind": "interface",
-          "line": 437
+          "line": 448
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 443
+          "line": 454
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 449
+          "line": 460
+        },
+        {
+          "name": "CreditNoteIssuedPayload",
+          "kind": "interface",
+          "line": 516
+        },
+        {
+          "name": "CreditNoteVoidedPayload",
+          "kind": "interface",
+          "line": 525
+        },
+        {
+          "name": "DebitNoteIssuedPayload",
+          "kind": "interface",
+          "line": 529
+        },
+        {
+          "name": "DebitNoteVoidedPayload",
+          "kind": "interface",
+          "line": 537
+        },
+        {
+          "name": "CreditHoldAppliedPayload",
+          "kind": "interface",
+          "line": 541
         }
       ]
     },
@@ -41807,8 +42825,8 @@
       "path": "apps/api/src/core/settings/document-prefix.ts",
       "area": "api",
       "kind": "module",
-      "lines": 48,
-      "bytes": 1732,
+      "lines": 50,
+      "bytes": 1771,
       "doc": "",
       "symbols": [
         {
@@ -41822,8 +42840,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 384,
-      "bytes": 19718,
+      "lines": 394,
+      "bytes": 20458,
       "doc": "",
       "symbols": [
         {
@@ -41844,27 +42862,27 @@
         {
           "name": "DocumentSettings",
           "kind": "interface",
-          "line": 50
+          "line": 54
         },
         {
           "name": "FinanceGatewayFeeBpsSettings",
           "kind": "interface",
-          "line": 64
+          "line": 68
         },
         {
           "name": "SettingKey",
           "kind": "const",
-          "line": 71
+          "line": 75
         },
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 240
+          "line": 246
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 242
+          "line": 248
         }
       ]
     },
@@ -42207,8 +43225,8 @@
       "path": "apps/api/src/modules/accounting/chart-of-accounts.ts",
       "area": "api",
       "kind": "module",
-      "lines": 67,
-      "bytes": 3125,
+      "lines": 74,
+      "bytes": 3532,
       "doc": "",
       "symbols": [
         {
@@ -42219,7 +43237,7 @@
         {
           "name": "ACCOUNT_CODE",
           "kind": "const",
-          "line": 47
+          "line": 52
         }
       ]
     },
@@ -42394,8 +43412,8 @@
       "path": "apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 643,
-      "bytes": 23071,
+      "lines": 746,
+      "bytes": 26632,
       "doc": "",
       "symbols": []
     },
@@ -42403,14 +43421,14 @@
       "path": "apps/api/src/modules/accounting/posting-rules.subscriber.ts",
       "area": "api",
       "kind": "event subscriber",
-      "lines": 519,
-      "bytes": 22799,
+      "lines": 613,
+      "bytes": 27561,
       "doc": "",
       "symbols": [
         {
           "name": "PostingRulesSubscriber",
           "kind": "class",
-          "line": 34
+          "line": 38
         }
       ]
     },
@@ -46227,8 +47245,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 96,
-      "bytes": 2989,
+      "lines": 97,
+      "bytes": 3012,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -46247,24 +47265,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 188,
-      "bytes": 9866,
+      "lines": 196,
+      "bytes": 10452,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 43
+          "line": 44
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 74
+          "line": 75
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 164
+          "line": 172
         }
       ]
     },
@@ -48297,6 +49315,252 @@
       "bytes": 8558,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/receivables/credit-notes.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 188,
+      "bytes": 7901,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreditNotesService",
+          "kind": "class",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/receivables/credit-terms.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 165,
+      "bytes": 6991,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreditAvailability",
+          "kind": "interface",
+          "line": 10
+        },
+        {
+          "name": "CreditTermsService",
+          "kind": "class",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/receivables/debit-notes.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 130,
+      "bytes": 4941,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DebitNotesService",
+          "kind": "class",
+          "line": 40
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/receivables/dto/receivables.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 94,
+      "bytes": 1469,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateCreditNoteDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "VoidNoteDto",
+          "kind": "class",
+          "line": 22
+        },
+        {
+          "name": "ApplyCreditNoteDto",
+          "kind": "class",
+          "line": 28
+        },
+        {
+          "name": "CreateDebitNoteDto",
+          "kind": "class",
+          "line": 34
+        },
+        {
+          "name": "SetCreditTermDto",
+          "kind": "class",
+          "line": 52
+        },
+        {
+          "name": "CheckCreditAvailableDto",
+          "kind": "class",
+          "line": 67
+        },
+        {
+          "name": "DunningStepDto",
+          "kind": "class",
+          "line": 77
+        },
+        {
+          "name": "SetDunningPolicyDto",
+          "kind": "class",
+          "line": 87
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/receivables/dunning.cron.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 120,
+      "bytes": 5510,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/receivables/dunning.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 113,
+      "bytes": 4753,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DunningCron",
+          "kind": "class",
+          "line": 35
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/receivables/dunning.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 70,
+      "bytes": 2834,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/receivables/dunning.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 48,
+      "bytes": 1954,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DunningStep",
+          "kind": "interface",
+          "line": 7
+        },
+        {
+          "name": "DunningService",
+          "kind": "class",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/receivables/receivables.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 200,
+      "bytes": 8051,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreditNotesController",
+          "kind": "class",
+          "line": 23
+        },
+        {
+          "name": "DebitNotesController",
+          "kind": "class",
+          "line": 78
+        },
+        {
+          "name": "CreditTermsController",
+          "kind": "class",
+          "line": 119
+        },
+        {
+          "name": "DunningController",
+          "kind": "class",
+          "line": 154
+        },
+        {
+          "name": "StatementsController",
+          "kind": "class",
+          "line": 181
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/receivables/receivables.integration.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 317,
+      "bytes": 15473,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/receivables/receivables.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 31,
+      "bytes": 1365,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReceivablesModule",
+          "kind": "class",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/receivables/statements.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 63,
+      "bytes": 3003,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/receivables/statements.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 102,
+      "bytes": 4105,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "StatementLine",
+          "kind": "interface",
+          "line": 4
+        },
+        {
+          "name": "CustomerStatement",
+          "kind": "interface",
+          "line": 12
+        },
+        {
+          "name": "StatementsService",
+          "kind": "class",
+          "line": 41
+        }
+      ]
     },
     {
       "path": "apps/api/src/modules/recommendations/dto/recommendations.dto.ts",
@@ -53117,6 +54381,66 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/credit-notes/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 198,
+      "bytes": 6778,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreditNoteDetailPage",
+          "kind": "default",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/credit-notes/new/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 169,
+      "bytes": 5443,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NewCreditNotePage",
+          "kind": "default",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/credit-notes/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 95,
+      "bytes": 3230,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreditNotesPage",
+          "kind": "default",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/credit-terms/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 209,
+      "bytes": 7114,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreditTermsPage",
+          "kind": "default",
+          "line": 23
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/customers/[id]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -53162,6 +54486,51 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/debit-notes/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 144,
+      "bytes": 4600,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DebitNoteDetailPage",
+          "kind": "default",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/debit-notes/new/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 110,
+      "bytes": 3612,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NewDebitNotePage",
+          "kind": "default",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/debit-notes/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 95,
+      "bytes": 3208,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DebitNotesPage",
+          "kind": "default",
+          "line": 23
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/designs/[id]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -53188,6 +54557,21 @@
           "name": "AdminDesignsPage",
           "kind": "default",
           "line": 37
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/dunning-policy/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 118,
+      "bytes": 4117,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DunningPolicyPage",
+          "kind": "default",
+          "line": 17
         }
       ]
     },
@@ -54283,6 +55667,21 @@
           "name": "ShippingSettingsPage",
           "kind": "default",
           "line": 40
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/statements/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 171,
+      "bytes": 6129,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "StatementsPage",
+          "kind": "default",
+          "line": 31
         }
       ]
     },
@@ -56296,8 +57695,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 805,
-      "bytes": 21197,
+      "lines": 845,
+      "bytes": 22248,
       "doc": "",
       "symbols": [
         {
@@ -56328,12 +57727,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 775
+          "line": 815
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 790
+          "line": 830
         }
       ]
     },
@@ -56511,19 +57910,19 @@
       "path": "apps/web/src/components/common/status-badge.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 75,
-      "bytes": 2793,
+      "lines": 79,
+      "bytes": 2924,
       "doc": "",
       "symbols": [
         {
           "name": "statusLabel",
           "kind": "function",
-          "line": 68
+          "line": 72
         },
         {
           "name": "StatusBadge",
           "kind": "function",
-          "line": 72
+          "line": 76
         }
       ]
     },
@@ -57579,8 +58978,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 201,
-      "bytes": 8581,
+      "lines": 212,
+      "bytes": 9044,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -61288,8 +62687,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 2761,
-      "bytes": 154821,
+      "lines": 2885,
+      "bytes": 162241,
       "doc": "",
       "symbols": []
     },
@@ -62179,8 +63578,8 @@
       "path": "docs/implementation/finance-accounting/145-receivables-credit-limits-dunning.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 285,
-      "bytes": 14267,
+      "lines": 358,
+      "bytes": 18957,
       "doc": "",
       "symbols": []
     },
@@ -64223,8 +65622,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 755,
-      "bytes": 22370,
+      "lines": 791,
+      "bytes": 23530,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -64245,47 +65644,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 428
+          "line": 452
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 430
+          "line": 454
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 440
+          "line": 464
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 447
+          "line": 471
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 608
+          "line": 638
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 742
+          "line": 778
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 747
+          "line": 783
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 748
+          "line": 784
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 751
+          "line": 787
         }
       ]
     },

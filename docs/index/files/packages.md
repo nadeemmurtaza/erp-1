@@ -71,7 +71,7 @@ All 74 tracked files in `packages/*`, by directory.
 | `index.ts` | module | 40 |  |
 | `onsite-messaging.ts` | module | 33 | On-site messaging kinds and popup triggers (WO-8.6), mirroring `OnsiteMessageKind`/`OnsitePopupTrigger` in apps/api/pri… |
 | `permissions.spec.ts` | unit test | 68 |  |
-| `permissions.ts` | module | 755 | The permission catalog for PBAC (Permission-Based Access Control). |
+| `permissions.ts` | module | 791 | The permission catalog for PBAC (Permission-Based Access Control). |
 | `phone.spec.ts` | unit test | 65 |  |
 | `phone.ts` | module | 82 |  |
 | `pricing.spec.ts` | unit test | 307 |  |

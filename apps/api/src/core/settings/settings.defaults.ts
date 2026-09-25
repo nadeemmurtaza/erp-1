@@ -45,6 +45,10 @@ export interface DocumentPrefixes {
   returnRequest: string;
   /** Manifest (WO-6.4) — node-prefixed like the rest. */
   manifest: string;
+  /** CreditNote (145-receivables-credit-limits-dunning.md, WO-145.1) — node-prefixed like the rest. */
+  creditNote: string;
+  /** DebitNote — node-prefixed like the rest. */
+  debitNote: string;
 }
 
 export interface DocumentSettings {
@@ -235,6 +239,8 @@ export const SettingKey = {
   AnalyticsDefaultRangeDays: 'analytics.default_range_days',
   /** The bucket WO-B.5's sales/purchases/expenses comparison chart opens in. */
   AnalyticsComparisonBucket: 'analytics.comparison_bucket',
+  /** 145-receivables-credit-limits-dunning.md (WO-145.2) — "a configurable value threshold": a CreditNote at or below this issues straight through; above it needs finance.credit-notes.approve first, by someone other than its own creator. */
+  FinanceCreditNoteApprovalThresholdMinor: 'finance.credit_note_approval_threshold_minor',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -311,6 +317,8 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
       payRun: 'PAY',
       returnRequest: 'RMA',
       manifest: 'MFT',
+      creditNote: 'CN',
+      debitNote: 'DN',
     },
   } satisfies DocumentSettings,
 
@@ -345,6 +353,8 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   } satisfies FinanceGatewayFeeBpsSettings,
   [SettingKey.PayrollAccrualRunDay]: 1,
   [SettingKey.PayrollAccrualRunHour]: 4,
+  /** Rs. 50,000 — a reasonable default for a shop that has never set its own. */
+  [SettingKey.FinanceCreditNoteApprovalThresholdMinor]: toMinor(50_000),
 
   [SettingKey.MarketingAutomationEnabled]: false,
   [SettingKey.MarketingAbandonedCartFirstTouchHours]: 1,

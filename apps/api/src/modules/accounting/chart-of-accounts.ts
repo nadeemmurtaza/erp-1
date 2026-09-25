@@ -41,6 +41,11 @@ export const CHART_OF_ACCOUNTS: ReadonlyArray<{
   { code: '1300', name: 'Employee Advances', type: 'ASSET' },
   { code: '2300', name: 'Salaries Payable', type: 'LIABILITY' },
   { code: '5300', name: 'Salaries & Wages Expense', type: 'EXPENSE' },
+  // Receivables (145-receivables-credit-limits-dunning.md, WO-145.2) — the
+  // two accounts a CreditNote/DebitNote need that this chart lacked, named
+  // by that doc's own "Every column or none" lens.
+  { code: '4200', name: 'Sales Returns & Allowances', type: 'INCOME' },
+  { code: '5400', name: 'Purchase Returns & Allowances', type: 'EXPENSE' },
 ];
 
 /** The codes above, named — so a posting rule never hand-types a magic string. */
@@ -63,4 +68,6 @@ export const ACCOUNT_CODE = {
   EMPLOYEE_ADVANCES: '1300',
   SALARIES_PAYABLE: '2300',
   SALARIES_WAGES_EXPENSE: '5300',
+  SALES_RETURNS: '4200',
+  PURCHASE_RETURNS: '5400',
 } as const;

@@ -325,6 +325,46 @@ export const ADMIN_NAV: AdminNavItem[] = [
       },
     ],
   },
+  {
+    key: 'credit-notes',
+    label: 'Credit Notes',
+    href: '/admin/credit-notes',
+    permissions: ['finance.view', 'finance.credit-notes.create', 'finance.credit-notes.approve'],
+    group: 'finance',
+    module: 'receivables',
+  },
+  {
+    key: 'debit-notes',
+    label: 'Debit Notes',
+    href: '/admin/debit-notes',
+    permissions: ['finance.view', 'finance.debit-notes.manage'],
+    group: 'finance',
+    module: 'receivables',
+  },
+  {
+    key: 'credit-terms',
+    label: 'Credit Terms',
+    href: '/admin/credit-terms',
+    permissions: ['finance.view', 'finance.credit-terms.manage'],
+    group: 'finance',
+    module: 'receivables',
+  },
+  {
+    key: 'dunning-policy',
+    label: 'Dunning Policy',
+    href: '/admin/dunning-policy',
+    permissions: ['finance.view', 'finance.credit-terms.manage'],
+    group: 'finance',
+    module: 'receivables',
+  },
+  {
+    key: 'statements',
+    label: 'Customer Statements',
+    href: '/admin/statements',
+    permissions: ['finance.view'],
+    group: 'finance',
+    module: 'receivables',
+  },
 
   // Group: Workshop
   {

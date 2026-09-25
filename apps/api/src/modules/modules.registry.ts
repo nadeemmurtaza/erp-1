@@ -27,6 +27,7 @@ import { PosModule } from './pos/pos.module';
 import { ProductionModule } from './production/production.module';
 import { PromotionsModule } from './promotions/promotions.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
+import { ReceivablesModule } from './receivables/receivables.module';
 import { RecommendationsModule } from './recommendations/recommendations.module';
 import { ReportsModule } from './reports/reports.module';
 import { ReviewsModule } from './reviews/reviews.module';
@@ -94,6 +95,13 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'reports', module: ReportsModule },
   { name: 'tax', module: TaxModule },
   { name: 'finance', module: FinanceModule },
+  // 145-receivables-credit-limits-dunning.md — CreditNote/DebitNote, customer
+  // credit limits/holds and dunning. Posts through domain events only
+  // (CreditNoteIssued/DebitNoteIssued -> posting-rules.subscriber.ts), so it
+  // never imports AccountingModule directly; with `accounting` off, notes and
+  // credit terms still work as records, they just post nothing (same "absent
+  // collaborator" shape as every other event-only coupling in this file).
+  { name: 'receivables', module: ReceivablesModule },
   // Hard-imported by orders.module.ts directly (same reasoning as tax
   // above — checkout always needs ShippingService.quote()), but still
   // listed here so its own admin routes/nav follow the allowlist like

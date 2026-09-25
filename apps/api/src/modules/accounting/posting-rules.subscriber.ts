@@ -13,6 +13,10 @@ import {
   type ExpenseRecordedPayload,
   type PayrollRunPostedPayload,
   type PayrollAdjustmentPostedPayload,
+  type CreditNoteIssuedPayload,
+  type CreditNoteVoidedPayload,
+  type DebitNoteIssuedPayload,
+  type DebitNoteVoidedPayload,
 } from '../../core/events/domain-events';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { AccountingService, type PostLineInput } from './accounting.service';
@@ -514,5 +518,95 @@ export class PostingRulesSubscriber {
         { accountId: payableAccount, creditMinor: payload.amountMinor },
       ],
     });
+  }
+
+  /**
+   * 145-receivables-credit-limits-dunning.md (WO-145.2) — Dr Sales Returns
+   * & Allowances · Cr Accounts Receivable, tagged with `contactId` exactly
+   * as `onOrderPlaced` tags the ORIGINAL sale — so `gl-reports.service.ts`'s
+   * `agedReceivables()` FIFO-ages this customer's balance down by exactly
+   * this amount without any change to that report at all (this doc's own
+   * Acceptance criterion #1).
+   */
+  @OnDomainEvent(DomainEvent.CreditNoteIssued)
+  async onCreditNoteIssued(payload: CreditNoteIssuedPayload): Promise<void> {
+    const source = DomainEvent.CreditNoteIssued;
+    if (await this.accounting.findPostedEntry(source, payload.creditNoteId)) return;
+    if (payload.amountMinor <= 0) return;
+
+    const accountId = await this.accounting.accountIdsByCode([ACCOUNT_CODE.SALES_RETURNS, ACCOUNT_CODE.ACCOUNTS_RECEIVABLE]);
+    const salesReturns = accountId.get(ACCOUNT_CODE.SALES_RETURNS);
+    const ar = accountId.get(ACCOUNT_CODE.ACCOUNTS_RECEIVABLE);
+    if (!salesReturns || !ar) {
+      this.logger.error(`Chart of accounts is missing Sales Returns or Accounts Receivable — cannot post credit note ${payload.creditNoteId}.`);
+      return;
+    }
+
+    await this.accounting.postEntry({
+      date: new Date(payload.issuedAt),
+      source,
+      sourceRef: payload.creditNoteId,
+      memo: `Credit note${payload.orderId ? ` — order ${payload.orderId}` : ''}`,
+      lines: [
+        { accountId: salesReturns, debitMinor: payload.amountMinor },
+        { accountId: ar, creditMinor: payload.amountMinor, contactId: payload.customerId },
+      ],
+    });
+  }
+
+  /** Reverses the CreditNoteIssued entry in full — CreditNotesService.void() only ever reaches an ISSUED (fully-posted) note, never a partial one; a partial reversal is issuing a second, smaller CreditNote instead (this doc's own "reversal document, not reversal flag" lens). */
+  @OnDomainEvent(DomainEvent.CreditNoteVoided)
+  async onCreditNoteVoided(payload: CreditNoteVoidedPayload): Promise<void> {
+    const entry = await this.accounting.findPostedEntry(DomainEvent.CreditNoteIssued, payload.creditNoteId);
+    if (!entry) {
+      this.logger.warn(`CreditNoteVoided fired for ${payload.creditNoteId}, but no POSTED entry exists for it — nothing to reverse (accounting was off when it issued, or it was never posted).`);
+      return;
+    }
+    await this.accounting.reverseEntry(entry.id, `Void — credit note ${payload.creditNoteId}`);
+  }
+
+  /**
+   * Dr Accounts Payable · Cr Purchase Returns & Allowances, tagged with
+   * `supplierId` exactly as `onSupplierBillRaised` tags the original bill —
+   * `agedPayables()` ages this supplier's balance down the same way. Always
+   * the "this reduces what we owe" direction (a return or an overcharge
+   * correction) — the doc's own "increases OR decreases" bidirectional
+   * case is out of scope for this build's posting rule; see the doc's own
+   * shipped-status note.
+   */
+  @OnDomainEvent(DomainEvent.DebitNoteIssued)
+  async onDebitNoteIssued(payload: DebitNoteIssuedPayload): Promise<void> {
+    const source = DomainEvent.DebitNoteIssued;
+    if (await this.accounting.findPostedEntry(source, payload.debitNoteId)) return;
+    if (payload.amountMinor <= 0) return;
+
+    const accountId = await this.accounting.accountIdsByCode([ACCOUNT_CODE.ACCOUNTS_PAYABLE, ACCOUNT_CODE.PURCHASE_RETURNS]);
+    const ap = accountId.get(ACCOUNT_CODE.ACCOUNTS_PAYABLE);
+    const purchaseReturns = accountId.get(ACCOUNT_CODE.PURCHASE_RETURNS);
+    if (!ap || !purchaseReturns) {
+      this.logger.error(`Chart of accounts is missing Accounts Payable or Purchase Returns — cannot post debit note ${payload.debitNoteId}.`);
+      return;
+    }
+
+    await this.accounting.postEntry({
+      date: new Date(payload.issuedAt),
+      source,
+      sourceRef: payload.debitNoteId,
+      memo: `Debit note${payload.supplierBillId ? ` — bill ${payload.supplierBillId}` : ''}`,
+      lines: [
+        { accountId: ap, debitMinor: payload.amountMinor, supplierId: payload.supplierId },
+        { accountId: purchaseReturns, creditMinor: payload.amountMinor },
+      ],
+    });
+  }
+
+  @OnDomainEvent(DomainEvent.DebitNoteVoided)
+  async onDebitNoteVoided(payload: DebitNoteVoidedPayload): Promise<void> {
+    const entry = await this.accounting.findPostedEntry(DomainEvent.DebitNoteIssued, payload.debitNoteId);
+    if (!entry) {
+      this.logger.warn(`DebitNoteVoided fired for ${payload.debitNoteId}, but no POSTED entry exists for it — nothing to reverse.`);
+      return;
+    }
+    await this.accounting.reverseEntry(entry.id, `Void — debit note ${payload.debitNoteId}`);
   }
 }

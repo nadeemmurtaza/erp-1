@@ -46,6 +46,10 @@ const TONES: Record<string, BadgeTone> = {
   SENT: 'success',
   OPENED: 'success',
   CLICKED: 'success',
+  // CreditDebitNoteStatus (145-receivables-credit-limits-dunning.md)
+  ISSUED: 'success',
+  APPLIED: 'success',
+  VOID: 'danger',
   // Waiting on someone
   PENDING: 'warning',
   AWAITING_APPROVAL: 'warning',

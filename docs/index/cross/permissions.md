@@ -3,7 +3,7 @@
 
 # Permissions
 
-All **68** permissions in `PERMISSION_CATALOG`, mapped to the routes that enforce them, the UI that checks them, and the seed that grants them.
+All **72** permissions in `PERMISSION_CATALOG`, mapped to the routes that enforce them, the UI that checks them, and the seed that grants them.
 
 
 Catalogue: `packages/shared/src/permissions.ts` ·
@@ -113,8 +113,12 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `finance.view` | View expenses and finance reports | medium | 10 | 16 | STAFF, ADMIN |
+| `finance.view` | View expenses and finance reports | medium | 20 | 21 | STAFF, ADMIN |
 | `finance.manage` | Record and edit expenses | medium | 7 | 1 | ADMIN |
+| `finance.credit-notes.create` | Issue a credit note, and apply it to an invoice | medium | 3 | — | STAFF, ADMIN |
+| `finance.credit-notes.approve` | Approve a credit note above the approval threshold, and void one | high | 2 | — | ADMIN |
+| `finance.debit-notes.manage` | Issue and void debit notes against a supplier | medium | 3 | — | STAFF, ADMIN |
+| `finance.credit-terms.manage` | Set a customer's credit limit and payment terms, apply a credit hold, and edit… | high | 2 | — | ADMIN |
 
 ### Fulfilment
 
@@ -174,8 +178,8 @@ their own `UserPermission` GRANT/REVOKE overrides applied on top
 |---|---|---|
 | `CUSTOMER` | 1 | `account.change_own_password` |
 | `TAILOR` | 5 | `account.change_own_password` `payroll.view_own` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_own` |
-| `STAFF` | 47 | `account.change_own_password` `payroll.view_own` `analytics.view` `reports.view` `organization.view` `crm.manage` `orders.manage` `payments.approve` `pos.operate` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `purchasing.requisitions.create` `production.manage` `production.view_chain` `parties.manage` `finance.view` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.produce` `promotions.view` `promotions.manage` `giftcards.view` `content.view` `content.manage` `collections.view` `collections.manage` `search.view` `search.manage` `campaigns.view` `onsitemessages.view` `onsitemessages.manage` `reviews.moderate` `loyalty.view` `ai.view` `ai.manage` |
-| `ADMIN` | 67 | `account.change_own_password` `payroll.view_own` `payroll.view` `payroll.manage` `analytics.view` `reports.view` `organization.view` `organization.manage` `accounting.view` `crm.manage` `orders.manage` `payments.approve` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.view_cost` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `purchasing.requisitions.create` `purchasing.requisitions.approve` `inventory.spot_checks.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.manage` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.manage` `bom.produce` `settings.manage` `roles.manage_permissions` `audit.view` `users.manage` `tax.manage` `marketing.manage` `accounting.manage_periods` `pos.manage` `pos.operate` `promotions.view` `promotions.manage` `giftcards.view` `giftcards.manage` `content.view` `content.manage` `collections.view` `collections.manage` `search.view` `search.manage` `campaigns.view` `campaigns.manage` `onsitemessages.view` `onsitemessages.manage` `reviews.moderate` `loyalty.view` `loyalty.manage` `ai.view` `ai.manage` |
+| `STAFF` | 49 | `account.change_own_password` `payroll.view_own` `analytics.view` `reports.view` `organization.view` `crm.manage` `orders.manage` `payments.approve` `pos.operate` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `purchasing.requisitions.create` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.credit-notes.create` `finance.debit-notes.manage` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.produce` `promotions.view` `promotions.manage` `giftcards.view` `content.view` `content.manage` `collections.view` `collections.manage` `search.view` `search.manage` `campaigns.view` `onsitemessages.view` `onsitemessages.manage` `reviews.moderate` `loyalty.view` `ai.view` `ai.manage` |
+| `ADMIN` | 71 | `account.change_own_password` `payroll.view_own` `payroll.view` `payroll.manage` `analytics.view` `reports.view` `organization.view` `organization.manage` `accounting.view` `crm.manage` `orders.manage` `payments.approve` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.view_cost` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `purchasing.requisitions.create` `purchasing.requisitions.approve` `inventory.spot_checks.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.manage` `finance.credit-notes.create` `finance.credit-notes.approve` `finance.debit-notes.manage` `finance.credit-terms.manage` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.manage` `bom.produce` `settings.manage` `roles.manage_permissions` `audit.view` `users.manage` `tax.manage` `marketing.manage` `accounting.manage_periods` `pos.manage` `pos.operate` `promotions.view` `promotions.manage` `giftcards.view` `giftcards.manage` `content.view` `content.manage` `collections.view` `collections.manage` `search.view` `search.manage` `campaigns.view` `campaigns.manage` `onsitemessages.view` `onsitemessages.manage` `reviews.moderate` `loyalty.view` `loyalty.manage` `ai.view` `ai.manage` |
 
 
 ## Admin nav → permission

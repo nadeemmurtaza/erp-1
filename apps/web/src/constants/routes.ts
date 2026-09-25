@@ -103,6 +103,17 @@ export const ROUTES = {
     financeUnitEconomics: '/admin/finance/unit-economics',
     financeExpenses: '/admin/finance/expenses',
 
+    /** 145-receivables-credit-limits-dunning.md. */
+    creditNotes: '/admin/credit-notes',
+    creditNoteNew: '/admin/credit-notes/new',
+    creditNote: (id: string) => `/admin/credit-notes/${id}`,
+    debitNotes: '/admin/debit-notes',
+    debitNoteNew: '/admin/debit-notes/new',
+    debitNote: (id: string) => `/admin/debit-notes/${id}`,
+    creditTerms: '/admin/credit-terms',
+    dunningPolicy: '/admin/dunning-policy',
+    statements: '/admin/statements',
+
     bom: '/admin/bom',
 
     /** The card registry's own detail tree (10-admin-dashboard.md D3) — one catch-all route, 25 config objects, not 25 hand-rolled pages. */

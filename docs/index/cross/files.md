@@ -3,19 +3,19 @@
 
 # Every tracked file
 
-All **1,760** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,784** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 724 | 100,225 | [files/api.md](../files/api.md) |
-| apps/web | 345 | 52,684 | [files/web.md](../files/web.md) |
+| apps/api | 739 | 102,384 | [files/api.md](../files/api.md) |
+| apps/web | 354 | 54,048 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 74 | 6,985 | [files/packages.md](../files/packages.md) |
-| docs/* | 392 | 60,222 | [files/docs.md](../files/docs.md) |
+| packages/* | 74 | 7,021 | [files/packages.md](../files/packages.md) |
+| docs/* | 392 | 60,419 | [files/docs.md](../files/docs.md) |
 | scripts, CI, deployment and container configuration | 57 | 29,121 | [files/infra.md](../files/infra.md) |
 | repository root files | 88 | 11,043 | [files/root.md](../files/root.md) |
 
@@ -29,16 +29,16 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 417 |
-| unit test | 166 |
-| page | 159 |
+| unit test | 170 |
+| page | 168 |
 | module | 128 |
-| service | 114 |
+| service | 119 |
 | component | 108 |
-| dto | 85 |
-| controller | 83 |
-| migration | 69 |
-| nest module | 60 |
-| prisma schema | 40 |
+| dto | 86 |
+| controller | 84 |
+| migration | 70 |
+| nest module | 61 |
+| prisma schema | 41 |
 | script | 39 |
 | json | 29 |
 | event subscriber | 29 |
@@ -46,7 +46,7 @@ name a new file: the convention is what makes it findable.
 | asset | 26 |
 | utility | 22 |
 | e2e test | 18 |
-| scheduled job | 14 |
+| scheduled job | 15 |
 | file | 13 |
 | yaml | 12 |
 | config | 11 |

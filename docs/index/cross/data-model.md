@@ -3,7 +3,7 @@
 
 # Data model
 
-All **211** Prisma models and **93** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **216** Prisma models and **94** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -54,6 +54,7 @@ against a real database.
 | [`production.prisma`](../data/production.md) | 4 | 2 | [`production`](../modules/production.md) | BillOfMaterial, BillOfMaterialLine, WorkOrder, WorkOrderNumberCounter |
 | [`promotions.prisma`](../data/promotions.md) | 3 | 2 | [`promotions`](../modules/promotions.md) | Discount, OrderDiscount, PromoCode |
 | [`purchasing.prisma`](../data/purchasing.md) | 9 | 3 | [`purchasing`](../modules/purchasing.md) | GoodsReceipt, GoodsReceiptItem, PurchaseOrder, PurchaseOrderItem, PurchaseRequisition, RequisitionLine, Supplier, SupplierBill, S… |
+| [`receivables.prisma`](../data/receivables.md) | 5 | 1 | [`receivables`](../modules/receivables.md) | CreditNote, CustomerCreditTerm, DebitNote, DunningEvent, DunningPolicy |
 | [`replication.prisma`](../data/replication.md) | 5 | 4 | core platform | PolicyQuarantine, ReplicationCursor, ReplicationQuarantine, ReplicationRecord, ReplicationSequenceCounter |
 | [`reviews.prisma`](../data/reviews.md) | 2 | 1 | [`reviews`](../modules/reviews.md) | ProductReviewSummary, Review |
 | [`search.prisma`](../data/search.md) | 2 | 0 | [`search`](../modules/search.md) | SearchQueryLog, SearchSynonym |
@@ -106,8 +107,13 @@ against a real database.
 | [`CompensationRate`](../data/payroll.md#compensationrate) | `payroll` | 11 | 2 | id | One row per rate change, never updated in place — effectiveFrom is what lets a pay-run bu… |
 | [`Contact`](../data/crm.md#contact) | `crm` | 36 | 2 | id |  |
 | [`ContactTag`](../data/crm.md#contacttag) | `crm` | 4 | 2 | — |  |
+| [`CreditNote`](../data/receivables.md#creditnote) | `receivables` | 14 | 0 | id | Reduces what a customer owes — a return, a pricing correction, a goodwill credit. |
+| [`CustomerCreditTerm`](../data/receivables.md#customercreditterm) | `receivables` | 7 | 0 | id | A policy row, checked at the one place a sale can be refused for it — never inferred, alw… |
+| [`DebitNote`](../data/receivables.md#debitnote) | `receivables` | 12 | 0 | id | The mirror on the supplier side of the ledger — reduces what this organization owes a sup… |
 | [`DeviceToken`](../data/core.md#devicetoken) | `core` | 9 | 1 | id | A push notification target: one installation of the mobile app. |
 | [`Discount`](../data/promotions.md#discount) | `promotions` | 27 | 0 | id |  |
+| [`DunningEvent`](../data/receivables.md#dunningevent) | `receivables` | 4 | 0 | id | One row per (order, step) a dunning notice has actually gone out for — the idempotency gu… |
+| [`DunningPolicy`](../data/receivables.md#dunningpolicy) | `receivables` | 4 | 0 | id | Days-overdue thresholds and which template fires at each — a client-editable policy row,… |
 | [`EmailAccount`](../data/core.md#emailaccount) | `core` | 25 | 0 | id | A connected mailbox: SMTP to send, optionally IMAP to receive. |
 | [`EmailVerificationToken`](../data/core.md#emailverificationtoken) | `core` | 7 | 1 | id | A one-time token mailed to confirm an email address. |
 | [`Expense`](../data/finance.md#expense) | `finance` | 24 | 5 | id |  |
@@ -305,6 +311,7 @@ against a real database.
 | [`CompensationBasis`](../data/payroll.md#compensationbasis) | `payroll` | `MONTHLY` `HOURLY` `COMMISSION` |
 | [`ContactStatus`](../data/crm.md#contactstatus) | `crm` | `LEAD` `ACTIVE` `REPEAT` `DORMANT` `BLOCKED` |
 | [`ContentStatus`](../data/content.md#contentstatus) | `content` | `DRAFT` `PUBLISHED` `ARCHIVED` |
+| [`CreditDebitNoteStatus`](../data/receivables.md#creditdebitnotestatus) | `receivables` | `DRAFT` `ISSUED` `APPLIED` `VOID` |
 | [`DevicePlatform`](../data/core.md#deviceplatform) | `core` | `IOS` `ANDROID` `WEB` |
 | [`DiscountScope`](../data/promotions.md#discountscope) | `promotions` | `ORDER` `PRODUCT` `CATEGORY` `COLLECTION` `SHIPPING` |
 | [`DiscountType`](../data/promotions.md#discounttype) | `promotions` | `PERCENTAGE` `FIXED_AMOUNT` `FREE_SHIPPING` `BUY_X_GET_Y` `TIERED` |

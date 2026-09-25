@@ -3,7 +3,7 @@
 
 # Module: `reviews`
 
-Pack **core** · enabled by the `MODULES` allowlist · 5 files
+Pack **core** · enabled by the `MODULES` allowlist · 6 files
 
 
 
@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 5 files
 
 Source: `apps/api/src/modules/reviews/`
 
-## Files (5 · 274 lines)
+## Files (6 · 353 lines)
 
 All paths relative to `apps/api/src/modules/reviews/dto`.
 
@@ -21,7 +21,8 @@ All paths relative to `apps/api/src/modules/reviews/dto`.
 | `reviews-public.controller.ts` | controller | 44 | 1 |  |
 | `reviews.controller.ts` | controller | 26 | 1 | Staff moderation — every review starts PENDING and is spam-prone by design (WO-7.5). |
 | `reviews.module.ts` | nest module | 12 | 1 |  |
-| `reviews.service.ts` | service | 125 | 1 |  |
+| `reviews.service.spec.ts` | unit test | 68 | — |  |
+| `reviews.service.ts` | service | 136 | 1 |  |
 
 
 ## HTTP routes (6)
@@ -40,7 +41,9 @@ All paths relative to `apps/api/src/modules/reviews/dto`.
 
 **Publishes** — written to the outbox inside the same transaction as the state change:
 
-_none_
+| Event | Name | Published at |
+|---|---|---|
+| `ReviewModerated` | `reviews.review_moderated` | `reviews.service.ts:127` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -76,6 +79,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 - core `auth`
 - core `common`
+- core `events`
 - core `prisma`
 - core `settings`
 
@@ -84,9 +88,11 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (0)
+## Tests (1)
 
-_No spec files in this unit._
+| Spec | Cases | Covers |
+|---|---|---|
+| `reviews.service.spec.ts` | 3 | ReviewsService — moderate |
 
 
 ## Every export in this unit
@@ -99,7 +105,7 @@ _No spec files in this unit._
 | `ReviewsPublicController` | class | `reviews-public.controller.ts:11` |  |
 | `ReviewsController` | class | `reviews.controller.ts:11` | Staff moderation — every review starts PENDING and is spam-prone by design (WO-7.5). |
 | `ReviewsModule` | class | `reviews.module.ts:11` |  |
-| `ReviewsService` | class | `reviews.service.ts:10` |  |
+| `ReviewsService` | class | `reviews.service.ts:12` |  |
 
 
 ---

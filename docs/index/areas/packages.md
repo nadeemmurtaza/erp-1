@@ -3,7 +3,7 @@
 
 # packages/* — code shared across every surface
 
-68 files · 5,991 lines
+70 files · 6,283 lines
 
 
 Code shared across surfaces. `@newax/shared` is where House Rule 1 is enforced:
@@ -23,7 +23,7 @@ file may hard-code one.
 | `packages/pos-core` | 4 | 69 | script, json |
 | `packages/pos-core/src` | 9 | 412 | unit test, module |
 | `packages/shared` | 4 | 75 | script, json |
-| `packages/shared/src` | 47 | 5,334 | module, unit test |
+| `packages/shared/src` | 49 | 5,626 | module, unit test |
 
 
 ## Entry points
@@ -51,12 +51,12 @@ file may hard-code one.
 | `packages/shared/src/discounts.spec.ts` | 215 | unit test |  |
 | `packages/shared/src/http-client.ts` | 200 | module | The one HTTP layer for a signed-in browser client. |
 | `packages/shared/src/measurements/schema.spec.ts` | 166 | unit test |  |
+| `packages/shared/src/measurements/size-recommendation.spec.ts` | 155 | unit test |  |
 | `packages/shared/src/constants.ts` | 146 | module |  |
 | `packages/shared/src/entities/product.spec.ts` | 145 | unit test |  |
+| `packages/shared/src/measurements/size-recommendation.ts` | 132 | module |  |
 | `packages/shared/src/entities/person.spec.ts` | 124 | unit test |  |
 | `packages/shared/src/entities/product.ts` | 119 | module |  |
-| `packages/shared/src/enums.ts` | 104 | module | Enum values mirrored from the Prisma schema. |
-| `packages/shared/src/entities/person.ts` | 99 | module |  |
 
 
 ---

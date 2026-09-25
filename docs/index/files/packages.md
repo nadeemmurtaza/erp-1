@@ -3,7 +3,7 @@
 
 # Files — packages
 
-All 68 tracked files in `packages/*`, by directory.
+All 70 tracked files in `packages/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -64,7 +64,7 @@ All 68 tracked files in `packages/*`, by directory.
 | `fabric-estimate.ts` | module | 95 | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
 | `http-client.ts` | module | 200 | The one HTTP layer for a signed-in browser client. |
 | `human-code.ts` | module | 37 | No O/0, no I/1/l — the ambiguous-character exclusion both PromoCode's bulk generation and GiftCard's own code need (05-… |
-| `index.ts` | module | 37 |  |
+| `index.ts` | module | 38 |  |
 | `onsite-messaging.ts` | module | 33 | On-site messaging kinds and popup triggers (WO-8.6), mirroring `OnsiteMessageKind`/`OnsitePopupTrigger` in apps/api/pri… |
 | `permissions.spec.ts` | unit test | 68 |  |
 | `permissions.ts` | module | 727 | The permission catalog for PBAC (Permission-Based Access Control). |
@@ -102,14 +102,16 @@ All 68 tracked files in `packages/*`, by directory.
 | `supplier.spec.ts` | unit test | 45 |  |
 | `supplier.ts` | module | 44 | Organization-shaped data in this system today is vendor-side: `Supplier`. |
 
-### `packages/shared/src/measurements` (4)
+### `packages/shared/src/measurements` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `defaults.ts` | module | 448 |  |
 | `schema.spec.ts` | unit test | 166 |  |
 | `schema.ts` | module | 78 |  |
-| `types.ts` | module | 42 |  |
+| `size-recommendation.spec.ts` | unit test | 155 |  |
+| `size-recommendation.ts` | module | 132 |  |
+| `types.ts` | module | 46 |  |
 
 
 ---

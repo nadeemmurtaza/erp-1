@@ -1,11 +1,13 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { formatMoney, type Locale } from '@newax/shared';
 import { useRouter } from '@/i18n/navigation';
-import type { StorefrontProduct } from '@/types/api';
+import { request as apiRequest } from '@/lib/api-client';
+import { getCustomerToken } from '@/lib/cart-client';
+import type { SizeRecommendation, StorefrontProduct } from '@/types/api';
 import { Price } from './price';
 import { useCart } from './cart-provider';
 import { StitchingPanel, type StitchingSelection } from './stitching-panel';
@@ -84,6 +86,32 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
   const [stitching, setStitching] = useState<StitchingSelection | null>(null);
   const [busy, setBusy] = useState(false);
   const [added, setAdded] = useState(false);
+  const [sizeRecommendation, setSizeRecommendation] = useState<SizeRecommendation | null>(null);
+
+  // Arithmetic against the customer's saved measurements (WO-9.2), not an AI
+  // call — works identically whether or not any AI provider is configured.
+  // Silently absent for a guest, a product with no garment size chart, or a
+  // customer with no saved profile yet; the size row still works without it.
+  useEffect(() => {
+    if (sizes.length <= 1) return;
+    const token = getCustomerToken();
+    if (!token) return;
+
+    let cancelled = false;
+    void apiRequest<SizeRecommendation | null>(`/measurements/size-recommendation/${product.id}`, {
+      query: { locale },
+      headers: { Authorization: `Bearer ${token}` },
+      credentials: 'include',
+    })
+      .then((result) => {
+        if (!cancelled) setSizeRecommendation(result);
+      })
+      .catch(() => undefined);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [product.id, locale, sizes.length]);
 
   const selected =
     product.variants.find(
@@ -185,6 +213,11 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
           options={sizes}
           value={size}
           onChange={setSize}
+          hint={
+            sizeRecommendation && sizes.includes(sizeRecommendation.recommendedSize) ? (
+              <SizeRecommendationHint recommendation={sizeRecommendation} onUse={setSize} />
+            ) : null
+          }
           // Sits on the Size row itself rather than up beside the price: a
           // shopper wants the chart at the moment they are choosing between
           // S/M/L, not before they have got there. Renders nothing when the
@@ -305,18 +338,22 @@ function SizeRow({
   options,
   value,
   onChange,
+  hint,
   action,
 }: {
   label: string;
   options: string[];
   value: string | null;
   onChange: (next: string) => void;
+  /** The measurement-based recommendation, shown above the chips — the question it answers ("which of these is me?") precedes picking one. */
+  hint?: React.ReactNode;
   /** Optional control shown under the chips — the size-chart link. */
   action?: React.ReactNode;
 }) {
   return (
     <fieldset className="w-full">
       <legend className="mb-1.5 text-sm font-medium text-neutral-900">{label}</legend>
+      {hint ? <div className="mb-2">{hint}</div> : null}
       <div className="flex flex-wrap gap-2">
         {options.map((option) => (
           <button
@@ -429,4 +466,43 @@ function PlusIcon() {
 
 function unique(values: Array<string | null>): string[] {
   return [...new Set(values.filter((value): value is string => Boolean(value)))];
+}
+
+/**
+ * "Based on your measurements, take M" (WO-9.2). The API returns structured
+ * signals (shiftedForFit, unavailableFallback), never English prose, so the
+ * sentence is composed here through next-intl — this line reads correctly in
+ * Urdu, not just English.
+ */
+function SizeRecommendationHint({
+  recommendation,
+  onUse,
+}: {
+  recommendation: SizeRecommendation;
+  onUse: (size: string) => void;
+}) {
+  const t = useTranslations('product');
+
+  return (
+    <div className="rounded-xl bg-neutral-50 px-3 py-2 text-sm">
+      <p className="text-neutral-900">
+        {t('sizeRecommendation', { size: recommendation.recommendedSize })}{' '}
+        <button
+          type="button"
+          onClick={() => onUse(recommendation.recommendedSize)}
+          className="font-medium underline transition-colors hover:text-neutral-600"
+        >
+          {t('sizeRecommendationUse')}
+        </button>
+      </p>
+      {recommendation.shiftedForFit ? (
+        <p className="mt-0.5 text-xs text-neutral-500">
+          {t(recommendation.shiftedForFit === 'up' ? 'sizeRecommendationShiftedUp' : 'sizeRecommendationShiftedDown')}
+        </p>
+      ) : null}
+      {recommendation.unavailableFallback ? (
+        <p className="mt-0.5 text-xs text-neutral-500">{t('sizeRecommendationUnavailable')}</p>
+      ) : null}
+    </div>
+  );
 }

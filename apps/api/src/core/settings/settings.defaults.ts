@@ -201,6 +201,18 @@ export const SettingKey = {
    * Editable without a deploy because the real rate moves.
    */
   AiUsdToPkrRate: 'ai.usd_to_pkr_rate',
+
+  /**
+   * WO-9.2 (09-ai-layer.md) — "a garment where 40% say too small gets its
+   * recommendation shifted up a size." Below this share for both too-small
+   * and too-large, ProductSizeBias.shift stays 0 (arithmetic match only).
+   */
+  SizeBiasShiftThresholdPct: 'measurements.size_bias_shift_threshold_pct',
+  /**
+   * Minimum combined review + return-reason sample before a shift is ever
+   * applied — two disappointed customers should not move a recommendation.
+   */
+  SizeBiasMinSampleSize: 'measurements.size_bias_min_sample_size',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -327,6 +339,9 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
 
   [SettingKey.AiMonthlyBudgetPaisa]: null as number | null,
   [SettingKey.AiUsdToPkrRate]: 280,
+
+  [SettingKey.SizeBiasShiftThresholdPct]: 40,
+  [SettingKey.SizeBiasMinSampleSize]: 5,
 
   [SettingKey.BomRawMaterialCategorySlug]: 'raw-materials',
   [SettingKey.BomDefaultWastageBps]: 0,

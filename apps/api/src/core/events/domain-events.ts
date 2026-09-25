@@ -84,6 +84,9 @@ export const DomainEvent = {
 
   /** OrdersService.place() (WO-5.3) — fires once a discount/promo code was actually applied to a placed order, for analytics. Never fires for a zero-discount order. */
   DiscountRedeemed: 'promotions.discount_redeemed',
+
+  /** ReviewsService.moderate() (WO-7.5) — fires on every moderation decision, PUBLISHED or REJECTED alike, so a subscriber that only cares about the current published set (e.g. measurements/size-bias.listener.ts, WO-9.2) always recomputes against live data rather than trusting the direction of this one transition. */
+  ReviewModerated: 'reviews.review_moderated',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -417,6 +420,12 @@ export interface EmailReplyReceivedPayload {
   fromAddress: string;
 }
 
+export interface ReviewModeratedPayload {
+  reviewId: string;
+  productId: string;
+  status: 'PUBLISHED' | 'REJECTED';
+}
+
 export interface IdentityVerificationPayload {
   userId: string;
   /** The VerificationMethodProvider key nID resolved the case with, e.g. "otp_sms". */
@@ -469,4 +478,5 @@ export interface DomainEventPayloads {
   [DomainEvent.ReturnRequestStatusChanged]: ReturnRequestStatusChangedPayload;
   [DomainEvent.ReturnRequestFullyRefunded]: ReturnRequestFullyRefundedPayload;
   [DomainEvent.DiscountRedeemed]: DiscountRedeemedPayload;
+  [DomainEvent.ReviewModerated]: ReviewModeratedPayload;
 }

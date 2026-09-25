@@ -25,8 +25,8 @@ All 316 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `en.json` | json | 591 |  |
-| `ur.json` | json | 591 |  |
+| `en.json` | json | 596 |  |
+| `ur.json` | json | 596 |  |
 
 ### `apps/web/public` (1)
 
@@ -1100,7 +1100,7 @@ All 316 tracked files in `apps/web`, by directory.
 | `price.tsx` | component | 39 |  |
 | `product-card.tsx` | component | 239 |  |
 | `product-gallery.tsx` | component | 137 |  |
-| `product-purchase.tsx` | component | 433 |  |
+| `product-purchase.tsx` | component | 509 |  |
 | `product-reviews.tsx` | component | 134 |  |
 | `products-grid.tsx` | component | 70 |  |
 | `quick-view-modal.tsx` | component | 79 |  |
@@ -1193,7 +1193,7 @@ All 316 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 1276 |  |
+| `api.ts` | types | 1288 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

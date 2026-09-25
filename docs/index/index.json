@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1669,
-    "lines": 256749,
-    "routes": 544,
+    "files": 1678,
+    "lines": 257879,
+    "routes": 545,
     "controllers": 95,
     "models": 203,
     "enums": 88,
     "migrations": 67,
-    "events": 45,
+    "events": 46,
     "permissions": 65,
     "screens": 207,
     "crons": 13,
-    "specs": 158,
+    "specs": 163,
     "designLaws": 0
   },
   "designLaws": [],
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 669,
-      "lines": 92474,
-      "bytes": 3397666,
+      "files": 676,
+      "lines": 93214,
+      "bytes": 3426030,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -51,8 +51,8 @@
     },
     "web": {
       "files": 316,
-      "lines": 50169,
-      "bytes": 1826223,
+      "lines": 50267,
+      "bytes": 1830812,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -62,9 +62,9 @@
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 68,
-      "lines": 5991,
-      "bytes": 202184,
+      "files": 70,
+      "lines": 6283,
+      "bytes": 213244,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -440,9 +440,15 @@
         "apps/api/src/modules/measurements/measurements-admin.service.ts",
         "apps/api/src/modules/measurements/measurements.controller.ts",
         "apps/api/src/modules/measurements/measurements.module.ts",
-        "apps/api/src/modules/measurements/measurements.service.ts"
+        "apps/api/src/modules/measurements/measurements.service.ts",
+        "apps/api/src/modules/measurements/size-bias.listener.spec.ts",
+        "apps/api/src/modules/measurements/size-bias.listener.ts",
+        "apps/api/src/modules/measurements/size-bias.service.spec.ts",
+        "apps/api/src/modules/measurements/size-bias.service.ts",
+        "apps/api/src/modules/measurements/size-recommendation.service.spec.ts",
+        "apps/api/src/modules/measurements/size-recommendation.service.ts"
       ],
-      "routes": 12,
+      "routes": 13,
       "page": "docs/index/modules/measurements.md"
     },
     {
@@ -697,6 +703,7 @@
         "apps/api/src/modules/reviews/reviews-public.controller.ts",
         "apps/api/src/modules/reviews/reviews.controller.ts",
         "apps/api/src/modules/reviews/reviews.module.ts",
+        "apps/api/src/modules/reviews/reviews.service.spec.ts",
         "apps/api/src/modules/reviews/reviews.service.ts"
       ],
       "routes": 6,
@@ -4886,7 +4893,7 @@
       "controller": "MeasurementsAdminController",
       "handler": "list",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 98,
+      "line": 122,
       "access": "measurements.manage_blueprints",
       "permissions": [
         "measurements.manage_blueprints"
@@ -4902,7 +4909,7 @@
       "controller": "MeasurementsAdminController",
       "handler": "create",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 104,
+      "line": 128,
       "access": "measurements.manage_blueprints",
       "permissions": [
         "measurements.manage_blueprints"
@@ -4918,7 +4925,7 @@
       "controller": "MeasurementsAdminController",
       "handler": "deactivate",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 120,
+      "line": 144,
       "access": "measurements.manage_blueprints",
       "permissions": [
         "measurements.manage_blueprints"
@@ -4934,7 +4941,7 @@
       "controller": "MeasurementsAdminController",
       "handler": "update",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 110,
+      "line": 134,
       "access": "measurements.manage_blueprints",
       "permissions": [
         "measurements.manage_blueprints"
@@ -4950,7 +4957,7 @@
       "controller": "MeasurementsAdminController",
       "handler": "replaceSizeChart",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 128,
+      "line": 152,
       "access": "measurements.manage_blueprints",
       "permissions": [
         "measurements.manage_blueprints"
@@ -8719,7 +8726,7 @@
       "controller": "MeasurementsController",
       "handler": "listGarmentTypes",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 35,
+      "line": 40,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -8733,7 +8740,7 @@
       "controller": "MeasurementsController",
       "handler": "getGarmentType",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 42,
+      "line": 47,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -8747,7 +8754,7 @@
       "controller": "MeasurementsController",
       "handler": "listProfiles",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 49,
+      "line": 54,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -8761,7 +8768,7 @@
       "controller": "MeasurementsController",
       "handler": "createProfile",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 62,
+      "line": 67,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -8775,7 +8782,7 @@
       "controller": "MeasurementsController",
       "handler": "deleteProfile",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 82,
+      "line": 87,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -8789,7 +8796,7 @@
       "controller": "MeasurementsController",
       "handler": "getProfile",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 55,
+      "line": 60,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -8803,12 +8810,26 @@
       "controller": "MeasurementsController",
       "handler": "updateProfile",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 71,
+      "line": 76,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
       "authOnly": true,
       "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/measurements/size-recommendation/:productId",
+      "module": "measurements",
+      "controller": "MeasurementsController",
+      "handler": "sizeRecommendation",
+      "file": "apps/api/src/modules/measurements/measurements.controller.ts",
+      "line": 101,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Based on the signed-in customer's saved measurements, the size this product's own chart suggests"
     },
     {
       "method": "GET",
@@ -11462,7 +11483,8 @@
         "apps/api/src/modules/fulfilment/returns.service.ts:284"
       ],
       "subscribers": [
-        "apps/api/src/modules/fulfilment/return-notification.subscriber.ts:24 onStatusChanged()"
+        "apps/api/src/modules/fulfilment/return-notification.subscriber.ts:24 onStatusChanged()",
+        "apps/api/src/modules/measurements/size-bias.listener.ts:33 onReturnRequestStatusChanged()"
       ]
     },
     {
@@ -11484,6 +11506,17 @@
         "apps/api/src/modules/promotions/promotions.service.ts:512"
       ],
       "subscribers": []
+    },
+    {
+      "symbol": "ReviewModerated",
+      "name": "reviews.review_moderated",
+      "doc": "ReviewsService.moderate() (WO-7.5) — fires on every moderation decision, PUBLISHED or REJECTED alike, so a subscriber that only cares about the current published set (e.g.",
+      "publishers": [
+        "apps/api/src/modules/reviews/reviews.service.ts:127"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/measurements/size-bias.listener.ts:21 onReviewModerated()"
+      ]
     }
   ],
   "models": [
@@ -35083,6 +35116,35 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/measurements/size-bias.listener.spec.ts",
+      "module": "measurements",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "SizeBiasListener",
+        "onReviewModerated",
+        "onReturnRequestStatusChanged"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/measurements/size-bias.service.spec.ts",
+      "module": "measurements",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "SizeBiasService"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/measurements/size-recommendation.service.spec.ts",
+      "module": "measurements",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "SizeRecommendationService"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/onsitemessages/onsite-messages.service.spec.ts",
       "module": "onsitemessages",
       "kind": "unit test",
@@ -35384,6 +35446,15 @@
       "cases": 4,
       "describes": [
         "ReportsService finance exports"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/reviews/reviews.service.spec.ts",
+      "module": "reviews",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "ReviewsService — moderate"
       ]
     },
     {
@@ -35951,6 +36022,15 @@
         "validateMeasurements",
         "convertMeasurement",
         "kameez definition"
+      ]
+    },
+    {
+      "file": "packages/shared/src/measurements/size-recommendation.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 11,
+      "describes": [
+        "recommendSize"
       ]
     },
     {
@@ -38446,8 +38526,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 473,
-      "bytes": 18287,
+      "lines": 483,
+      "bytes": 18836,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -38458,192 +38538,197 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 89
+          "line": 92
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 91
+          "line": 94
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 104
+          "line": 107
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 112
+          "line": 115
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 120
+          "line": 123
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 140
+          "line": 143
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 146
+          "line": 149
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 153
+          "line": 156
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 160
+          "line": 163
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 164
+          "line": 167
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 170
+          "line": 173
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 176
+          "line": 179
         },
         {
           "name": "ShipmentStatusChangedPayload",
           "kind": "interface",
-          "line": 183
+          "line": 186
         },
         {
           "name": "ShipmentReturnedToOriginPayload",
           "kind": "interface",
-          "line": 193
+          "line": 196
         },
         {
           "name": "ReturnRequestStatusChangedPayload",
           "kind": "interface",
-          "line": 202
+          "line": 205
         },
         {
           "name": "ReturnRequestFullyRefundedPayload",
           "kind": "interface",
-          "line": 211
+          "line": 214
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 219
+          "line": 222
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 227
+          "line": 230
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 238
+          "line": 241
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 245
+          "line": 248
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 254
+          "line": 257
         },
         {
           "name": "ProductChangedPayload",
           "kind": "interface",
-          "line": 262
+          "line": 265
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 267
+          "line": 270
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 275
+          "line": 278
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 280
+          "line": 283
         },
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 292
+          "line": 295
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 307
+          "line": 310
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 315
+          "line": 318
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 329
+          "line": 332
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 342
+          "line": 345
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 355
+          "line": 358
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 371
+          "line": 374
         },
         {
           "name": "PayrollRunPostedPayload",
           "kind": "interface",
-          "line": 379
+          "line": 382
         },
         {
           "name": "PayrollAdjustmentPostedPayload",
           "kind": "interface",
-          "line": 391
+          "line": 394
         },
         {
           "name": "DiscountRedeemedPayload",
           "kind": "interface",
-          "line": 402
+          "line": 405
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 413
+          "line": 416
+        },
+        {
+          "name": "ReviewModeratedPayload",
+          "kind": "interface",
+          "line": 423
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 420
+          "line": 429
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 426
+          "line": 435
         }
       ]
     },
@@ -39895,8 +39980,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 337,
-      "bytes": 16417,
+      "lines": 352,
+      "bytes": 17053,
       "doc": "",
       "symbols": [
         {
@@ -39932,12 +40017,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 206
+          "line": 218
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 208
+          "line": 220
         }
       ]
     },
@@ -43821,44 +43906,34 @@
       "path": "apps/api/src/modules/measurements/dto/measurements.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 236,
-      "bytes": 5039,
+      "lines": 233,
+      "bytes": 4899,
       "doc": "",
       "symbols": [
         {
           "name": "CreateMeasurementProfileDto",
           "kind": "class",
-          "line": 19
+          "line": 20
         },
         {
           "name": "UpdateMeasurementProfileDto",
           "kind": "class",
-          "line": 50
+          "line": 51
         },
         {
           "name": "MeasurementFieldDto",
           "kind": "class",
-          "line": 74
+          "line": 75
         },
         {
           "name": "UpsertGarmentTypeDto",
           "kind": "class",
-          "line": 136
-        },
-        {
-          "name": "GARMENT_SIZE_TOKENS",
-          "kind": "const",
-          "line": 220
-        },
-        {
-          "name": "GarmentSizeToken",
-          "kind": "type",
-          "line": 221
+          "line": 137
         },
         {
           "name": "GarmentSizeChartRowDto",
           "kind": "class",
-          "line": 223
+          "line": 220
         }
       ]
     },
@@ -43876,7 +43951,7 @@
       "area": "api",
       "kind": "service",
       "lines": 283,
-      "bytes": 9581,
+      "bytes": 9576,
       "doc": "",
       "symbols": [
         {
@@ -43890,19 +43965,19 @@
       "path": "apps/api/src/modules/measurements/measurements.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 137,
-      "bytes": 4255,
+      "lines": 161,
+      "bytes": 5356,
       "doc": "",
       "symbols": [
         {
           "name": "MeasurementsController",
           "kind": "class",
-          "line": 29
+          "line": 31
         },
         {
           "name": "MeasurementsAdminController",
           "kind": "class",
-          "line": 90
+          "line": 114
         }
       ]
     },
@@ -43910,14 +43985,14 @@
       "path": "apps/api/src/modules/measurements/measurements.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 16,
-      "bytes": 571,
+      "lines": 19,
+      "bytes": 820,
       "doc": "",
       "symbols": [
         {
           "name": "MeasurementsModule",
           "kind": "class",
-          "line": 15
+          "line": 18
         }
       ]
     },
@@ -43938,6 +44013,83 @@
           "name": "toFieldDefs",
           "kind": "function",
           "line": 188
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/measurements/size-bias.listener.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 96,
+      "bytes": 3338,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/measurements/size-bias.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 55,
+      "bytes": 2266,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SizeBiasListener",
+          "kind": "class",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/measurements/size-bias.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 122,
+      "bytes": 4403,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/measurements/size-bias.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 100,
+      "bytes": 3984,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SizeBiasService",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/measurements/size-recommendation.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 143,
+      "bytes": 5528,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/measurements/size-recommendation.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 96,
+      "bytes": 3567,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SizeRecommendationResponse",
+          "kind": "interface",
+          "line": 6
+        },
+        {
+          "name": "SizeRecommendationService",
+          "kind": "class",
+          "line": 26
         }
       ]
     },
@@ -46035,17 +46187,26 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/reviews/reviews.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 68,
+      "bytes": 2512,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/modules/reviews/reviews.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 125,
-      "bytes": 4899,
+      "lines": 136,
+      "bytes": 5275,
       "doc": "",
       "symbols": [
         {
           "name": "ReviewsService",
           "kind": "class",
-          "line": 10
+          "line": 12
         }
       ]
     },
@@ -49978,8 +50139,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 591,
-      "bytes": 22936,
+      "lines": 596,
+      "bytes": 23395,
       "doc": "",
       "symbols": []
     },
@@ -49987,8 +50148,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 591,
-      "bytes": 31202,
+      "lines": 596,
+      "bytes": 31966,
       "doc": "",
       "symbols": []
     },
@@ -53815,19 +53976,19 @@
       "path": "apps/web/src/components/storefront/product-purchase.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 433,
-      "bytes": 14987,
+      "lines": 509,
+      "bytes": 17917,
       "doc": "",
       "symbols": [
         {
           "name": "FabricNeedRow",
           "kind": "interface",
-          "line": 21
+          "line": 23
         },
         {
           "name": "ProductPurchase",
           "kind": "function",
-          "line": 55
+          "line": 57
         }
       ]
     },
@@ -54925,8 +55086,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1276,
-      "bytes": 32958,
+      "lines": 1288,
+      "bytes": 33394,
       "doc": "",
       "symbols": [
         {
@@ -55055,509 +55216,514 @@
           "line": 311
         },
         {
+          "name": "SizeRecommendation",
+          "kind": "interface",
+          "line": 320
+        },
+        {
           "name": "StitchingDesignArea",
           "kind": "type",
-          "line": 320
+          "line": 332
         },
         {
           "name": "AdminStitchingOption",
           "kind": "interface",
-          "line": 333
+          "line": 345
         },
         {
           "name": "AdminStitchingOptionGroup",
           "kind": "interface",
-          "line": 346
+          "line": 358
         },
         {
           "name": "ImportRowResult",
           "kind": "interface",
-          "line": 366
+          "line": 378
         },
         {
           "name": "ImportSummary",
           "kind": "interface",
-          "line": 373
+          "line": 385
         },
         {
           "name": "AuthUser",
           "kind": "interface",
-          "line": 381
+          "line": 393
         },
         {
           "name": "AuthResult",
           "kind": "interface",
-          "line": 399
+          "line": 411
         },
         {
           "name": "DeploymentMeta",
           "kind": "interface",
-          "line": 407
+          "line": 419
         },
         {
           "name": "RetailBrandSummary",
           "kind": "interface",
-          "line": 417
+          "line": 429
         },
         {
           "name": "OrgNodeSummary",
           "kind": "interface",
-          "line": 426
+          "line": 438
         },
         {
           "name": "MyScope",
           "kind": "interface",
-          "line": 437
+          "line": 449
         },
         {
           "name": "AdminScopeWithHolder",
           "kind": "interface",
-          "line": 452
+          "line": 464
         },
         {
           "name": "PolicyQuarantineEntry",
           "kind": "interface",
-          "line": 467
+          "line": 479
         },
         {
           "name": "GrantScopeInput",
           "kind": "interface",
-          "line": 483
+          "line": 495
         },
         {
           "name": "BrandPolicy",
           "kind": "interface",
-          "line": 496
+          "line": 508
         },
         {
           "name": "UpdateBrandPolicyInput",
           "kind": "interface",
-          "line": 503
+          "line": 515
         },
         {
           "name": "Location",
           "kind": "interface",
-          "line": 512
+          "line": 524
         },
         {
           "name": "StockAdjustment",
           "kind": "interface",
-          "line": 522
+          "line": 534
         },
         {
           "name": "InventoryVariantRow",
           "kind": "interface",
-          "line": 534
+          "line": 546
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 547
+          "line": 559
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 553
+          "line": 565
         },
         {
           "name": "VisitorFunnel",
           "kind": "interface",
-          "line": 564
+          "line": 576
         },
         {
           "name": "TrafficSourceRow",
           "kind": "interface",
-          "line": 571
+          "line": 583
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 577
+          "line": 589
         },
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 586
+          "line": 598
         },
         {
           "name": "OrderAgeingBucket",
           "kind": "interface",
-          "line": 594
+          "line": 606
         },
         {
           "name": "OrdersOverview",
           "kind": "interface",
-          "line": 599
+          "line": 611
         },
         {
           "name": "OrderTransitionTiming",
           "kind": "interface",
-          "line": 606
+          "line": 618
         },
         {
           "name": "OrdersFulfilment",
           "kind": "interface",
-          "line": 614
+          "line": 626
         },
         {
           "name": "PurchasingSpend",
           "kind": "interface",
-          "line": 620
+          "line": 632
         },
         {
           "name": "PurchasingSupplierRow",
           "kind": "interface",
-          "line": 626
+          "line": 638
         },
         {
           "name": "PurchasingSuppliers",
           "kind": "interface",
-          "line": 636
+          "line": 648
         },
         {
           "name": "ProductTopSellerRow",
           "kind": "interface",
-          "line": 642
+          "line": 654
         },
         {
           "name": "ProductsTopSellers",
           "kind": "interface",
-          "line": 654
+          "line": 666
         },
         {
           "name": "ProductSlowSellerRow",
           "kind": "interface",
-          "line": 658
+          "line": 670
         },
         {
           "name": "ProductsSlowSellers",
           "kind": "interface",
-          "line": 667
+          "line": 679
         },
         {
           "name": "ProductCategoryRow",
           "kind": "interface",
-          "line": 671
+          "line": 683
         },
         {
           "name": "ProductsCategories",
           "kind": "interface",
-          "line": 680
+          "line": 692
         },
         {
           "name": "InventoryValuation",
           "kind": "interface",
-          "line": 687
+          "line": 699
         },
         {
           "name": "StockMovementReasonRow",
           "kind": "interface",
-          "line": 694
+          "line": 706
         },
         {
           "name": "InventoryMovementRow",
           "kind": "interface",
-          "line": 701
+          "line": 713
         },
         {
           "name": "InventoryMovements",
           "kind": "interface",
-          "line": 711
+          "line": 723
         },
         {
           "name": "CustomersOverview",
           "kind": "interface",
-          "line": 719
+          "line": 731
         },
         {
           "name": "CustomerCohort",
           "kind": "interface",
-          "line": 726
+          "line": 738
         },
         {
           "name": "CustomersRetention",
           "kind": "interface",
-          "line": 732
+          "line": 744
         },
         {
           "name": "CustomerTopRow",
           "kind": "interface",
-          "line": 737
+          "line": 749
         },
         {
           "name": "CustomersTop",
           "kind": "interface",
-          "line": 747
+          "line": 759
         },
         {
           "name": "WorkshopStageRow",
           "kind": "interface",
-          "line": 753
+          "line": 765
         },
         {
           "name": "WorkshopTailorRow",
           "kind": "interface",
-          "line": 759
+          "line": 771
         },
         {
           "name": "WorkshopOutput",
           "kind": "interface",
-          "line": 766
+          "line": 778
         },
         {
           "name": "CompensationBasis",
           "kind": "type",
-          "line": 775
+          "line": 787
         },
         {
           "name": "CompensationRate",
           "kind": "interface",
-          "line": 777
+          "line": 789
         },
         {
           "name": "EmployeeCompensation",
           "kind": "interface",
-          "line": 788
+          "line": 800
         },
         {
           "name": "GrossPreview",
           "kind": "interface",
-          "line": 793
+          "line": 805
         },
         {
           "name": "LeaveKind",
           "kind": "type",
-          "line": 799
+          "line": 811
         },
         {
           "name": "LeaveType",
           "kind": "interface",
-          "line": 801
+          "line": 813
         },
         {
           "name": "LeaveBalance",
           "kind": "interface",
-          "line": 810
+          "line": 822
         },
         {
           "name": "LeaveRequestStatus",
           "kind": "type",
-          "line": 819
+          "line": 831
         },
         {
           "name": "LeaveRequest",
           "kind": "interface",
-          "line": 821
+          "line": 833
         },
         {
           "name": "EmployeeLeave",
           "kind": "interface",
-          "line": 838
+          "line": 850
         },
         {
           "name": "PayRunStatus",
           "kind": "type",
-          "line": 843
+          "line": 855
         },
         {
           "name": "PayRunLine",
           "kind": "interface",
-          "line": 845
+          "line": 857
         },
         {
           "name": "PayRunAdjustmentReason",
           "kind": "type",
-          "line": 859
+          "line": 871
         },
         {
           "name": "PayRunAdjustment",
           "kind": "interface",
-          "line": 861
+          "line": 873
         },
         {
           "name": "PayRun",
           "kind": "interface",
-          "line": 872
+          "line": 884
         },
         {
           "name": "PayRunWithLines",
           "kind": "interface",
-          "line": 887
+          "line": 899
         },
         {
           "name": "EmailAccountPurpose",
           "kind": "type",
-          "line": 894
+          "line": 906
         },
         {
           "name": "EmailAccount",
           "kind": "interface",
-          "line": 896
+          "line": 908
         },
         {
           "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 921
+          "line": 933
         },
         {
           "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 929
+          "line": 941
         },
         {
           "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 937
+          "line": 949
         },
         {
           "name": "InboundEmail",
           "kind": "interface",
-          "line": 944
+          "line": 956
         },
         {
           "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 961
+          "line": 973
         },
         {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 968
+          "line": 980
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 980
+          "line": 992
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 989
+          "line": 1001
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 991
+          "line": 1003
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1003
+          "line": 1015
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 1009
+          "line": 1021
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 1016
+          "line": 1028
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 1021
+          "line": 1033
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 1033
+          "line": 1045
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 1042
+          "line": 1054
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 1049
+          "line": 1061
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 1063
+          "line": 1075
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 1074
+          "line": 1086
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 1078
+          "line": 1090
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 1087
+          "line": 1099
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 1095
+          "line": 1107
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 1126
+          "line": 1138
         },
         {
           "name": "CustomerReturnReason",
           "kind": "interface",
-          "line": 1159
+          "line": 1171
         },
         {
           "name": "CustomerReturnRequest",
           "kind": "interface",
-          "line": 1165
+          "line": 1177
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 1183
+          "line": 1195
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 1198
+          "line": 1210
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 1207
+          "line": 1219
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 1216
+          "line": 1228
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 1232
+          "line": 1244
         },
         {
           "name": "CmsBanner",
           "kind": "interface",
-          "line": 1239
+          "line": 1251
         },
         {
           "name": "CmsPage",
           "kind": "interface",
-          "line": 1247
+          "line": 1259
         },
         {
           "name": "CmsPost",
           "kind": "interface",
-          "line": 1254
+          "line": 1266
         },
         {
           "name": "CmsMenuLink",
           "kind": "interface",
-          "line": 1270
+          "line": 1282
         }
       ]
     },
@@ -60709,8 +60875,8 @@
       "path": "packages/shared/src/index.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 37,
-      "bytes": 1566,
+      "lines": 38,
+      "bytes": 1618,
       "doc": "",
       "symbols": []
     },
@@ -60779,11 +60945,55 @@
       ]
     },
     {
+      "path": "packages/shared/src/measurements/size-recommendation.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 155,
+      "bytes": 5003,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/shared/src/measurements/size-recommendation.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 132,
+      "bytes": 5781,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SizeChartRow",
+          "kind": "interface",
+          "line": 13
+        },
+        {
+          "name": "SizeConfidence",
+          "kind": "type",
+          "line": 19
+        },
+        {
+          "name": "SizeRecommendation",
+          "kind": "interface",
+          "line": 21
+        },
+        {
+          "name": "RecommendSizeInput",
+          "kind": "interface",
+          "line": 37
+        },
+        {
+          "name": "recommendSize",
+          "kind": "function",
+          "line": 90
+        }
+      ]
+    },
+    {
       "path": "packages/shared/src/measurements/types.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 42,
-      "bytes": 1352,
+      "lines": 46,
+      "bytes": 1576,
       "doc": "",
       "symbols": [
         {
@@ -60800,6 +61010,16 @@
           "name": "MeasurementValues",
           "kind": "type",
           "line": 41
+        },
+        {
+          "name": "GARMENT_SIZE_TOKENS",
+          "kind": "const",
+          "line": 44
+        },
+        {
+          "name": "GarmentSizeToken",
+          "kind": "type",
+          "line": 45
         }
       ]
     },

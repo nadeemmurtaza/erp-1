@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **544** endpoints across **95** controllers, with the access rule that actually guards each one.
+All **545** endpoints across **95** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 63** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 64** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -68,6 +68,7 @@ never authorization.
 | GET | `/loyalty/tiers` | `LoyaltyController.tiers` |
 | GET | `/measurements/garment-types` | `MeasurementsController.listGarmentTypes` |
 | GET | `/measurements/garment-types/:idOrKey` | `MeasurementsController.getGarmentType` |
+| GET | `/measurements/size-recommendation/:productId` | `MeasurementsController.sizeRecommendation` |
 | GET | `/meta` | `MetaController.get` |
 | GET | `/onsite-messages/active` | `OnsiteMessagesController.active` |
 | POST | `/onsite-messages/newsletter` | `OnsiteMessagesController.subscribe` |
@@ -521,7 +522,7 @@ never authorization.
 | GET | `/campaigns/r/:recipientId/click` | **PUBLIC** | `CampaignTrackingController.click` | `url` is attacker-controlled input inside a link this codebase itself emails ou… |
 | GET | `/campaigns/r/:recipientId/open.gif` | **PUBLIC** | `CampaignTrackingController.open` |  |
 
-### [`measurements`](../modules/measurements.md) (12)
+### [`measurements`](../modules/measurements.md) (13)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -537,6 +538,7 @@ never authorization.
 | DELETE | `/measurements/profiles/:id` | signed-in | `MeasurementsController.deleteProfile` |  |
 | GET | `/measurements/profiles/:id` | signed-in | `MeasurementsController.getProfile` |  |
 | PATCH | `/measurements/profiles/:id` | signed-in | `MeasurementsController.updateProfile` |  |
+| GET | `/measurements/size-recommendation/:productId` | **PUBLIC** | `MeasurementsController.sizeRecommendation` | Based on the signed-in customer's saved measurements, the size this product's o… |
 
 ### [`notification-preferences`](../modules/notification-preferences.md) (2)
 

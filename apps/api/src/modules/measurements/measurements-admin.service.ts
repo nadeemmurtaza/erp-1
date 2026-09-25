@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { slugify } from '@newax/shared';
+import { GARMENT_SIZE_TOKENS, slugify } from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import type { MeasurementField, Prisma } from '../../core/prisma/client';
 import { PrismaService } from '../../core/prisma/prisma.service';
-import { GARMENT_SIZE_TOKENS, type GarmentSizeChartRowDto, type UpsertGarmentTypeDto } from './dto/measurements.dto';
+import type { GarmentSizeChartRowDto, UpsertGarmentTypeDto } from './dto/measurements.dto';
 
 /**
  * Dashboard management of garment types and their measurement fields.

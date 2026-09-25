@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **45** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **46** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -72,9 +72,10 @@ order" is a new file, not an edit to checkout.
 | `payroll.adjustment_posted` | `PayrollAdjustmentPosted` | `accounting`, `payroll` | `accounting` |
 | `fulfilment.shipment_status_changed` | `ShipmentStatusChanged` | `fulfilment` | `orders` |
 | `fulfilment.shipment_rto` | `ShipmentReturnedToOrigin` | `fulfilment` | `crm`, `finance` |
-| `fulfilment.return_status_changed` | `ReturnRequestStatusChanged` | `fulfilment` | `fulfilment` |
+| `fulfilment.return_status_changed` | `ReturnRequestStatusChanged` | `fulfilment` | `fulfilment`, `measurements` |
 | `fulfilment.return_fully_refunded` | `ReturnRequestFullyRefunded` | `fulfilment` | `orders` |
 | `promotions.discount_redeemed` | `DiscountRedeemed` | `promotions` | _none_ |
+| `reviews.review_moderated` | `ReviewModerated` | `reviews` | `measurements` |
 
 
 ## Detail
@@ -797,6 +798,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Handler | Where | Module |
 |---|---|---|
 | `onStatusChanged()` | `apps/api/src/modules/fulfilment/return-notification.subscriber.ts:24` | `fulfilment` |
+| `onReturnRequestStatusChanged()` | `apps/api/src/modules/measurements/size-bias.listener.ts:33` | `measurements` |
 
 ### `fulfilment.return_fully_refunded`
 
@@ -829,6 +831,23 @@ _Nothing subscribes. Publishing it is a no-op today._
 **Subscribed by**
 
 _Nothing subscribes. Publishing it is a no-op today._
+
+### `reviews.review_moderated`
+
+> ReviewsService.moderate() (WO-7.5) — fires on every moderation decision, PUBLISHED or REJECTED alike, so a subscriber that only cares about the current published set (e.g.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/reviews/reviews.service.ts:127` | `reviews` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onReviewModerated()` | `apps/api/src/modules/measurements/size-bias.listener.ts:21` | `measurements` |
 
 
 ---

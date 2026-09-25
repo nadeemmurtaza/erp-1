@@ -141,6 +141,7 @@ Every top-level export in `packages`, with the line to open.
 | `index.ts` | `*` | re-export |  | from `./measurements/types` |
 | `index.ts` | `*` | re-export |  | from `./measurements/schema` |
 | `index.ts` | `*` | re-export |  | from `./measurements/defaults` |
+| `index.ts` | `*` | re-export |  | from `./measurements/size-recommendation` |
 | `onsite-messaging.ts` | `ONSITE_MESSAGE_KINDS` | const | :9 | On-site messaging kinds and popup triggers (WO-8.6), mirroring `OnsiteMessageKind`/`OnsitePopupTrig… |
 | `onsite-messaging.ts` | `OnsiteMessageKind` | type | :16 |  |
 | `onsite-messaging.ts` | `ONSITE_POPUP_TRIGGERS` | const | :18 |  |
@@ -269,9 +270,16 @@ Every top-level export in `packages`, with the line to open.
 | `schema.ts` | `MeasurementValidationResult` | interface | :40 |  |
 | `schema.ts` | `validateMeasurements` | function | :47 | Validates raw input against a garment's fields, returning readable errors. |
 | `schema.ts` | `convertMeasurement` | function | :69 | Converts a value between inches and centimetres, rounded to 0.25 steps. |
+| `size-recommendation.ts` | `SizeChartRow` | interface | :13 | WO-9.2 (09-ai-layer.md) — "start without a model." Pure arithmetic: nearest size by measurement dis… |
+| `size-recommendation.ts` | `SizeConfidence` | type | :19 |  |
+| `size-recommendation.ts` | `SizeRecommendation` | interface | :21 |  |
+| `size-recommendation.ts` | `RecommendSizeInput` | interface | :37 |  |
+| `size-recommendation.ts` | `recommendSize` | function | :90 |  |
 | `types.ts` | `MeasurementFieldDef` | interface | :10 | A single measurement a tailor needs, e.g. |
 | `types.ts` | `GarmentTypeDef` | interface | :31 |  |
 | `types.ts` | `MeasurementValues` | type | :41 | A filled-in set of measurements: field key -> value in that field's unit. |
+| `types.ts` | `GARMENT_SIZE_TOKENS` | const | :44 | The RTW size tokens a garment's size chart offers, XS through XXL. |
+| `types.ts` | `GarmentSizeToken` | type | :45 | The RTW size tokens a garment's size chart offers, XS through XXL. |
 
 
 ---

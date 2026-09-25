@@ -3,7 +3,7 @@
 
 # Tests
 
-**158** spec files, **1,481** cases. What is already pinned down — and what is not.
+**163** spec files, **1,514** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -23,7 +23,6 @@ such exemption.
 - [`loyalty`](../modules/loyalty.md)
 - [`notification-preferences`](../modules/notification-preferences.md)
 - [`promotions`](../modules/promotions.md)
-- [`reviews`](../modules/reviews.md)
 - [`stitching`](../modules/stitching.md)
 - [`tax`](../modules/tax.md)
 - [`tracking`](../modules/tracking.md)
@@ -56,7 +55,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (140)
+## Unit and integration (145)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -132,6 +131,9 @@ regression or an N+1.
 | `apps/api/src/modules/marketing/campaigns.service.spec.ts` | marketing | 4 | CampaignsService |
 | `apps/api/src/modules/marketing/marketing-automation.cron.spec.ts` | marketing | 19 | MarketingAutomationCron · sendAbandonedCartReminders · sendAbandonedCartFirstTouch · sendAbandonedC… |
 | `apps/api/src/modules/measurements/garment-fields-seed.spec.ts` | measurements | 1 | seeded measurement fields satisfy MeasurementFieldDto |
+| `apps/api/src/modules/measurements/size-bias.listener.spec.ts` | measurements | 5 | SizeBiasListener · onReviewModerated · onReturnRequestStatusChanged |
+| `apps/api/src/modules/measurements/size-bias.service.spec.ts` | measurements | 6 | SizeBiasService |
+| `apps/api/src/modules/measurements/size-recommendation.service.spec.ts` | measurements | 8 | SizeRecommendationService |
 | `apps/api/src/modules/onsitemessages/onsite-messages.service.spec.ts` | onsitemessages | 8 | OnsiteMessagesService |
 | `apps/api/src/modules/orders/backorder.listener.spec.ts` | orders | 4 | BackorderListener |
 | `apps/api/src/modules/orders/order-replication.listener.spec.ts` | orders | 3 | OrderReplicationListener — WO-20.4 · onModuleInit · onOrderPlaced |
@@ -159,6 +161,7 @@ regression or an N+1.
 | `apps/api/src/modules/purchasing/reorder.listener.spec.ts` | purchasing | 5 | PurchasingReorderListener |
 | `apps/api/src/modules/purchasing/supplier-bill.spec.ts` | purchasing | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
 | `apps/api/src/modules/reports/reports-finance-exports.spec.ts` | reports | 4 | ReportsService finance exports |
+| `apps/api/src/modules/reviews/reviews.service.spec.ts` | reviews | 3 | ReviewsService — moderate |
 | `apps/api/src/modules/search/search.service.spec.ts` | search | 6 | SearchService |
 | `apps/api/src/modules/settings/settings-admin.service.spec.ts` | settings | 6 | SettingsAdminService — AI settings · getAi · updateAi |
 | `apps/api/src/modules/tradingpartners/invoice.service.spec.ts` | tradingpartners | 4 | InvoiceService · issue · findOne |
@@ -193,6 +196,7 @@ regression or an N+1.
 | `packages/shared/src/entities/supplier.spec.ts` | packages | 7 | getSupplierContactLabel · getSupplierFormattedLocation · getSupplierLeadTimeDays · getSupplierName |
 | `packages/shared/src/fabric-estimate.spec.ts` | packages | 10 | computeFabricEstimate |
 | `packages/shared/src/measurements/schema.spec.ts` | packages | 21 | default garment definitions · validateMeasurements · convertMeasurement · kameez definition |
+| `packages/shared/src/measurements/size-recommendation.spec.ts` | packages | 11 | recommendSize |
 | `packages/shared/src/permissions.spec.ts` | packages | 8 | PERMISSION_CATALOG · PERMISSION_GROUPS — the role-creation wizard\ |
 | `packages/shared/src/phone.spec.ts` | packages | 7 | normalizePkPhone · normalizeEmail |
 | `packages/shared/src/pricing.spec.ts` | packages | 35 | computeStitchingFee · computeLineItem · lineMargin · computeOrderTotals · taxExclusive · taxInclusi… |

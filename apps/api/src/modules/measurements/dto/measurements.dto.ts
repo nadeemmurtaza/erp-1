@@ -15,6 +15,7 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
+import { GARMENT_SIZE_TOKENS, type GarmentSizeToken } from '@newax/shared';
 
 export class CreateMeasurementProfileDto {
   @ApiProperty({ example: 'Ammi – kameez' })
@@ -215,10 +216,6 @@ export class UpsertGarmentTypeDto {
   @MaxLength(60, { each: true })
   aliasesUr?: string[];
 }
-
-/** The RTW size tokens the size chart offers, XS through XXL. */
-export const GARMENT_SIZE_TOKENS = ['XS', 'S', 'M', 'L', 'XL', 'XXL'] as const;
-export type GarmentSizeToken = (typeof GARMENT_SIZE_TOKENS)[number];
 
 export class GarmentSizeChartRowDto {
   @ApiProperty({ enum: GARMENT_SIZE_TOKENS })

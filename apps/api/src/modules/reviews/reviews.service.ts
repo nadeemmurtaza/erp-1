@@ -3,6 +3,8 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { paginated, type PaginatedResult } from '../../core/common/dto/pagination.dto';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
+import { DomainEvent } from '../../core/events/domain-events';
+import { EventBusService } from '../../core/events/event-bus.service';
 import type { Review } from '../../core/prisma/client';
 import type { CreateReviewDto, ModerateReviewDto, ReviewQueryDto } from './dto/review.dto';
 
@@ -11,6 +13,7 @@ export class ReviewsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly settings: SettingsService,
+    private readonly events: EventBusService,
   ) {}
 
   /** Published reviews for a product's own page — the only ones a shopper ever sees. */
@@ -116,9 +119,17 @@ export class ReviewsService {
   async moderate(id: string, dto: ModerateReviewDto): Promise<Review> {
     const review = await this.prisma.review.findUnique({ where: { id } });
     if (!review) throw new NotFoundException('Review not found.');
-    return this.prisma.review.update({
+    const updated = await this.prisma.review.update({
       where: { id },
       data: { status: dto.status, staffReply: dto.staffReply ?? review.staffReply },
     });
+
+    await this.events.publish(DomainEvent.ReviewModerated, {
+      reviewId: updated.id,
+      productId: updated.productId,
+      status: dto.status,
+    });
+
+    return updated;
   }
 }

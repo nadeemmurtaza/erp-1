@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 669 | 92,474 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 676 | 93,214 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `docs` | 392 | 59,940 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 316 | 50,169 | Next.js — admin console and customer storefront in one app |
+| `apps/web` | 316 | 50,267 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 27,374 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 21 | 8,579 | repository checks and generators (lint gates, this index) |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
-| `packages/shared` | 51 | 5,409 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 53 | 5,701 | brand, money, permissions, measurements, entities |
 | `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
 | `apps/platform` | 40 | 1,615 |  |
 | `.claude` | 22 | 1,017 |  |
@@ -75,7 +75,7 @@ Each is independent: no module imports another except through a named
 | [`inventory`](modules/inventory.md) | core | MODULES allowlist | 16 | 9 |
 | [`loyalty`](modules/loyalty.md) | core | MODULES allowlist | 11 | 3 |
 | [`marketing`](modules/marketing.md) | core | MODULES allowlist | 11 | 3 |
-| [`measurements`](modules/measurements.md) | apparel | MODULES allowlist | 12 | 4 |
+| [`measurements`](modules/measurements.md) | apparel | MODULES allowlist | 13 | 4 |
 | [`notification-preferences`](modules/notification-preferences.md) | core | MODULES allowlist | 2 | 1 |
 | [`onsitemessages`](modules/onsitemessages.md) | core | MODULES allowlist | 10 | — |
 | [`orders`](modules/orders.md) | core | MODULES allowlist | 7 | 5 |

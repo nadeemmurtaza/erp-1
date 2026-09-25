@@ -316,6 +316,18 @@ export interface AdminGarmentSizeChartRow {
   order: number;
 }
 
+/** WO-9.2 — "Based on your measurements, take M." Arithmetic, not AI; null whenever nothing can be recommended (guest, no saved profile, no size chart). */
+export interface SizeRecommendation {
+  garmentTypeId: string;
+  garmentTypeLabel: string;
+  profileId: string;
+  recommendedSize: string;
+  matchedSize: string;
+  confidence: 'high' | 'medium' | 'low';
+  shiftedForFit: 'up' | 'down' | null;
+  unavailableFallback: boolean;
+}
+
 /** The garment region a design option group belongs to. Null groups are ungrouped. */
 export type StitchingDesignArea =
   | 'neck'

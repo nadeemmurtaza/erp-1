@@ -13,6 +13,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { LOCALES, type Locale } from '@newax/shared';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { AuthenticatedOnly, CurrentUser, Public, RequirePermission } from '../../core/auth/decorators';
 import {
@@ -23,11 +24,15 @@ import {
 } from './dto/measurements.dto';
 import { MeasurementsAdminService } from './measurements-admin.service';
 import { MeasurementsService } from './measurements.service';
+import { SizeRecommendationService } from './size-recommendation.service';
 
 @ApiTags('measurements')
 @Controller('measurements')
 export class MeasurementsController {
-  constructor(private readonly measurements: MeasurementsService) {}
+  constructor(
+    private readonly measurements: MeasurementsService,
+    private readonly sizeRecommendationService: SizeRecommendationService,
+  ) {}
 
   @Public()
   @Get('garment-types')
@@ -81,6 +86,25 @@ export class MeasurementsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   deleteProfile(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
     return this.measurements.deleteProfile(user.id, id);
+  }
+
+  /**
+   * WO-9.2 — null (not a 404) whenever nothing can be recommended: a guest,
+   * no saved profile for any garment this product is made of, or no size
+   * chart at all. The storefront simply shows nothing in that case; this is
+   * arithmetic, not an AI call, so it works identically with AI_PROVIDERS
+   * empty.
+   */
+  @Public()
+  @Get('size-recommendation/:productId')
+  @ApiOperation({ summary: "Based on the signed-in customer's saved measurements, the size this product's own chart suggests" })
+  sizeRecommendation(
+    @CurrentUser() user: AuthenticatedUser | undefined,
+    @Param('productId') productId: string,
+    @Query('locale') locale?: string,
+  ) {
+    const resolvedLocale: Locale = LOCALES.includes(locale as Locale) ? (locale as Locale) : 'en';
+    return this.sizeRecommendationService.recommendForProduct(user?.id ?? null, productId, resolvedLocale);
   }
 }
 

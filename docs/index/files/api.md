@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 669 tracked files in `apps/api`, by directory.
+All 676 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -590,7 +590,7 @@ All 669 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 473 | The catalogue of domain events. |
+| `domain-events.ts` | module | 483 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
@@ -706,7 +706,7 @@ All 669 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 48 |  |
-| `settings.defaults.ts` | module | 337 |  |
+| `settings.defaults.ts` | module | 352 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 85 |  |
 
@@ -1113,21 +1113,27 @@ All 669 tracked files in `apps/api`, by directory.
 | `campaign.dto.ts` | dto | 49 |  |
 | `marketing-settings.dto.ts` | dto | 38 |  |
 
-### `apps/api/src/modules/measurements` (5)
+### `apps/api/src/modules/measurements` (11)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `garment-fields-seed.spec.ts` | unit test | 64 |  |
 | `measurements-admin.service.ts` | service | 283 |  |
-| `measurements.controller.ts` | controller | 137 |  |
-| `measurements.module.ts` | nest module | 16 |  |
+| `measurements.controller.ts` | controller | 161 |  |
+| `measurements.module.ts` | nest module | 19 |  |
 | `measurements.service.ts` | service | 204 |  |
+| `size-bias.listener.spec.ts` | unit test | 96 |  |
+| `size-bias.listener.ts` | event subscriber | 55 |  |
+| `size-bias.service.spec.ts` | unit test | 122 |  |
+| `size-bias.service.ts` | service | 100 |  |
+| `size-recommendation.service.spec.ts` | unit test | 143 |  |
+| `size-recommendation.service.ts` | service | 96 |  |
 
 ### `apps/api/src/modules/measurements/dto` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `measurements.dto.ts` | dto | 236 |  |
+| `measurements.dto.ts` | dto | 233 |  |
 
 ### `apps/api/src/modules/notification-preferences` (2)
 
@@ -1371,14 +1377,15 @@ All 669 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `reports.dto.ts` | dto | 33 |  |
 
-### `apps/api/src/modules/reviews` (4)
+### `apps/api/src/modules/reviews` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `reviews-public.controller.ts` | controller | 44 |  |
 | `reviews.controller.ts` | controller | 26 |  |
 | `reviews.module.ts` | nest module | 12 |  |
-| `reviews.service.ts` | service | 125 |  |
+| `reviews.service.spec.ts` | unit test | 68 |  |
+| `reviews.service.ts` | service | 136 |  |
 
 ### `apps/api/src/modules/reviews/dto` (1)
 

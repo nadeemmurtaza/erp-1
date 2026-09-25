@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 11 files
 
 Source: `apps/api/src/modules/marketing/`
 
-## Files (11 · 1,372 lines)
+## Files (11 · 1,683 lines)
 
 All paths relative to `apps/api/src/modules/marketing`.
 
@@ -21,14 +21,14 @@ All paths relative to `apps/api/src/modules/marketing`.
 | `campaigns.service.ts` | service | 263 | 1 | WO-8.4. |
 | `campaign.dto.ts` | dto | 49 | 3 |  |
 | `marketing-settings.dto.ts` | dto | 38 | 1 |  |
-| `marketing-automation.cron.spec.ts` | unit test | 299 | — |  |
-| `marketing-automation.cron.ts` | scheduled job | 347 | 1 | Lifecycle marketing email: the automation gap that used to sit behind every marketing template's `trigger: 'manual'` no… |
+| `marketing-automation.cron.spec.ts` | unit test | 399 | — |  |
+| `marketing-automation.cron.ts` | scheduled job | 543 | 1 | Lifecycle marketing email/SMS/WhatsApp: the automation gap that used to sit behind every marketing template's `trigger:… |
 | `marketing-settings.service.ts` | service | 71 | 2 |  |
-| `marketing.controller.ts` | controller | 26 | 1 |  |
+| `marketing.controller.ts` | controller | 41 | 1 |  |
 | `marketing.module.ts` | nest module | 14 | 1 |  |
 
 
-## HTTP routes (10)
+## HTTP routes (11)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -38,8 +38,9 @@ All paths relative to `apps/api/src/modules/marketing`.
 | PATCH | `/admin/campaigns/:id` | `campaigns.manage` | `CampaignsAdminController.update` :39 |  |
 | POST | `/admin/campaigns/:id/cancel` | `campaigns.manage` | `CampaignsAdminController.cancel` :51 |  |
 | POST | `/admin/campaigns/:id/schedule` | `campaigns.manage` | `CampaignsAdminController.schedule` :45 |  |
-| GET | `/admin/marketing/settings` | `marketing.manage` | `MarketingController.getSettings` :15 | Automation on/off and its timing thresholds |
-| PUT | `/admin/marketing/settings` | `marketing.manage` | `MarketingController.updateSettings` :22 | Turn automation on/off and/or change its timing |
+| GET | `/admin/marketing/recovered-revenue` | `marketing.manage` | `MarketingController.recoveredRevenue` :36 |  |
+| GET | `/admin/marketing/settings` | `marketing.manage` | `MarketingController.getSettings` :19 | Automation on/off and its timing thresholds |
+| PUT | `/admin/marketing/settings` | `marketing.manage` | `MarketingController.updateSettings` :26 | Turn automation on/off and/or change its timing |
 | GET | `/campaigns/r/:recipientId/click` | **PUBLIC** | `CampaignTrackingController.click` :82 | `url` is attacker-controlled input inside a link this codebase itself emails out, so an o… |
 | GET | `/campaigns/r/:recipientId/open.gif` | **PUBLIC** | `CampaignTrackingController.open` :67 |  |
 
@@ -75,7 +76,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 | Schedule | Handler | Where | What it does |
 |---|---|---|---|
 | `EVERY_MINUTE` | `run()` | `campaign-dispatch.cron.ts:23` |  |
-| `0 3 * * *` | `run()` | `marketing-automation.cron.ts:65` |  |
+| `0 3 * * *` | `run()` | `marketing-automation.cron.ts:72` |  |
 
 
 ## Nest wiring
@@ -108,7 +109,7 @@ check there before adding another.
 | Spec | Cases | Covers |
 |---|---|---|
 | `campaigns.service.spec.ts` | 4 | CampaignsService |
-| `marketing-automation.cron.spec.ts` | 13 | MarketingAutomationCron · sendAbandonedCartReminders · sendAbandonedCartIncentives · sendReviewRequests · sendReplenish… |
+| `marketing-automation.cron.spec.ts` | 19 | MarketingAutomationCron · sendAbandonedCartReminders · sendAbandonedCartFirstTouch · sendAbandonedCartIncentives · send… |
 
 
 ## Every export in this unit
@@ -123,10 +124,10 @@ check there before adding another.
 | `UpdateCampaignDto` | class | `campaign.dto.ts:26` |  |
 | `ScheduleCampaignDto` | class | `campaign.dto.ts:43` |  |
 | `UpdateMarketingSettingsDto` | class | `marketing-settings.dto.ts:4` |  |
-| `MarketingAutomationCron` | class | `marketing-automation.cron.ts:55` | Lifecycle marketing email: the automation gap that used to sit behind every marketing template's `trigger: 'm… |
+| `MarketingAutomationCron` | class | `marketing-automation.cron.ts:62` | Lifecycle marketing email/SMS/WhatsApp: the automation gap that used to sit behind every marketing template's… |
 | `MarketingSettings` | interface | `marketing-settings.service.ts:6` |  |
 | `MarketingSettingsService` | class | `marketing-settings.service.ts:15` |  |
-| `MarketingController` | class | `marketing.controller.ts:9` |  |
+| `MarketingController` | class | `marketing.controller.ts:10` |  |
 | `MarketingModule` | class | `marketing.module.ts:13` |  |
 
 

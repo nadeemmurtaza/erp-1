@@ -23,7 +23,7 @@ import {
 } from '../../core/auth/auth.constants';
 import { CurrentUser, Public } from '../../core/auth/decorators';
 import { CartService, type CartView } from './cart.service';
-import { AddCartItemDto, MergeCartDto, UpdateCartItemDto } from './dto/cart.dto';
+import { AddCartItemDto, MergeCartDto, UpdateCartItemDto, UpdateGuestContactDto } from './dto/cart.dto';
 
 const CART_COOKIE_MAX_AGE_MS = 30 * 86_400_000;
 
@@ -91,6 +91,25 @@ export class CartController {
       tokenFrom(request),
       user?.id,
       itemId,
+      dto,
+      toLocale(locale),
+    );
+    this.setCookie(response, cart.token);
+    return cart;
+  }
+
+  @Patch('guest-contact')
+  @ApiOperation({ summary: 'WO-8.5 — capture a guest phone + marketing consent before checkout completes' })
+  async updateGuestContact(
+    @Req() request: Request,
+    @Res({ passthrough: true }) response: Response,
+    @CurrentUser() user: AuthenticatedUser | undefined,
+    @Body() dto: UpdateGuestContactDto,
+    @Query('locale') locale?: string,
+  ): Promise<CartView> {
+    const cart = await this.cart.updateGuestContact(
+      tokenFrom(request),
+      user?.id,
       dto,
       toLocale(locale),
     );

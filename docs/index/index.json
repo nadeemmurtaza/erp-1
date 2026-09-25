@@ -3,9 +3,9 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1599,
-    "lines": 246046,
-    "routes": 493,
+    "files": 1600,
+    "lines": 246613,
+    "routes": 495,
     "controllers": 84,
     "models": 187,
     "enums": 76,
@@ -14,7 +14,7 @@
     "permissions": 60,
     "screens": 188,
     "crons": 13,
-    "specs": 152,
+    "specs": 153,
     "designLaws": 0
   },
   "designLaws": [],
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 622,
-      "lines": 86729,
-      "bytes": 3172649,
+      "files": 623,
+      "lines": 87245,
+      "bytes": 3194990,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -51,8 +51,8 @@
     },
     "web": {
       "files": 301,
-      "lines": 47271,
-      "bytes": 1720808,
+      "lines": 47322,
+      "bytes": 1723164,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -170,11 +170,12 @@
       "inRegistry": true,
       "files": [
         "apps/api/src/modules/cart/cart.controller.ts",
+        "apps/api/src/modules/cart/cart.guest-contact.spec.ts",
         "apps/api/src/modules/cart/cart.module.ts",
         "apps/api/src/modules/cart/cart.service.ts",
         "apps/api/src/modules/cart/dto/cart.dto.ts"
       ],
-      "routes": 6,
+      "routes": 7,
       "page": "docs/index/modules/cart.md"
     },
     {
@@ -404,7 +405,7 @@
         "apps/api/src/modules/marketing/marketing.controller.ts",
         "apps/api/src/modules/marketing/marketing.module.ts"
       ],
-      "routes": 10,
+      "routes": 11,
       "page": "docs/index/modules/marketing.md"
     },
     {
@@ -4577,12 +4578,28 @@
     },
     {
       "method": "GET",
+      "path": "/admin/marketing/recovered-revenue",
+      "module": "marketing",
+      "controller": "MarketingController",
+      "handler": "recoveredRevenue",
+      "file": "apps/api/src/modules/marketing/marketing.controller.ts",
+      "line": 36,
+      "access": "marketing.manage",
+      "permissions": [
+        "marketing.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
       "path": "/admin/marketing/settings",
       "module": "marketing",
       "controller": "MarketingController",
       "handler": "getSettings",
       "file": "apps/api/src/modules/marketing/marketing.controller.ts",
-      "line": 15,
+      "line": 19,
       "access": "marketing.manage",
       "permissions": [
         "marketing.manage"
@@ -4598,7 +4615,7 @@
       "controller": "MarketingController",
       "handler": "updateSettings",
       "file": "apps/api/src/modules/marketing/marketing.controller.ts",
-      "line": 22,
+      "line": 26,
       "access": "marketing.manage",
       "permissions": [
         "marketing.manage"
@@ -7604,7 +7621,7 @@
       "controller": "CartController",
       "handler": "clear",
       "file": "apps/api/src/modules/cart/cart.controller.ts",
-      "line": 123,
+      "line": 142,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -7624,6 +7641,20 @@
       "public": true,
       "authOnly": false,
       "summary": "The current cart, priced fresh from the database"
+    },
+    {
+      "method": "PATCH",
+      "path": "/cart/guest-contact",
+      "module": "cart",
+      "controller": "CartController",
+      "handler": "updateGuestContact",
+      "file": "apps/api/src/modules/cart/cart.controller.ts",
+      "line": 103,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "WO-8.5 — capture a guest phone + marketing consent before checkout completes"
     },
     {
       "method": "POST",
@@ -7646,7 +7677,7 @@
       "controller": "CartController",
       "handler": "removeItem",
       "file": "apps/api/src/modules/cart/cart.controller.ts",
-      "line": 103,
+      "line": 122,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -7674,7 +7705,7 @@
       "controller": "CartController",
       "handler": "merge",
       "file": "apps/api/src/modules/cart/cart.controller.ts",
-      "line": 136,
+      "line": 155,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -9674,6 +9705,7 @@
       "category": "Administration",
       "sensitivity": "low",
       "routes": [
+        "GET /admin/marketing/recovered-revenue",
         "GET /admin/marketing/settings",
         "PUT /admin/marketing/settings"
       ],
@@ -10020,8 +10052,8 @@
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:50",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:157",
-        "apps/api/src/modules/orders/orders.service.ts:424",
-        "apps/api/src/modules/orders/orders.service.ts:627"
+        "apps/api/src/modules/orders/orders.service.ts:428",
+        "apps/api/src/modules/orders/orders.service.ts:631"
       ],
       "subscribers": [
         "apps/api/src/core/events/on-domain-event.decorator.ts:7 handle()",
@@ -10037,7 +10069,7 @@
       "name": "order.status_changed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/orders/orders.service.ts:809"
+        "apps/api/src/modules/orders/orders.service.ts:813"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
@@ -10051,7 +10083,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/finance/finance.listener.ts:9",
-        "apps/api/src/modules/orders/orders.service.ts:809"
+        "apps/api/src/modules/orders/orders.service.ts:813"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:71 onCancelled()",
@@ -10065,7 +10097,7 @@
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:117",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:154",
-        "apps/api/src/modules/orders/orders.service.ts:615",
+        "apps/api/src/modules/orders/orders.service.ts:619",
         "apps/api/src/modules/payments/payments.service.ts:191",
         "apps/api/src/modules/payments/payments.service.ts:293",
         "apps/api/src/modules/payments/payments.service.ts:341"
@@ -31059,7 +31091,7 @@
     {
       "schedule": "0 3 * * *",
       "file": "apps/api/src/modules/marketing/marketing-automation.cron.ts",
-      "line": 65,
+      "line": 72,
       "handler": "run",
       "doc": ""
     },
@@ -32074,6 +32106,15 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/cart/cart.guest-contact.spec.ts",
+      "module": "cart",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "CartService.updateGuestContact"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/catalog/product-admin.service.spec.ts",
       "module": "catalog",
       "kind": "unit test",
@@ -32306,10 +32347,11 @@
       "file": "apps/api/src/modules/marketing/marketing-automation.cron.spec.ts",
       "module": "marketing",
       "kind": "unit test",
-      "cases": 13,
+      "cases": 19,
       "describes": [
         "MarketingAutomationCron",
         "sendAbandonedCartReminders",
+        "sendAbandonedCartFirstTouch",
         "sendAbandonedCartIncentives",
         "sendReviewRequests",
         "sendReplenishmentReminders",
@@ -36048,8 +36090,8 @@
       "path": "apps/api/src/core/notifications/email/catalog.ts",
       "area": "api",
       "kind": "module",
-      "lines": 342,
-      "bytes": 13231,
+      "lines": 355,
+      "bytes": 14175,
       "doc": "Everything the admin \"manage templates\" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which category it belongs to, whether something in the codebase actually sends it automatically (and what), and…",
       "symbols": [
         {
@@ -36070,7 +36112,7 @@
         {
           "name": "purposeForTemplate",
           "kind": "function",
-          "line": 338
+          "line": 351
         }
       ]
     },
@@ -36078,8 +36120,8 @@
       "path": "apps/api/src/core/notifications/email/copy.ts",
       "area": "api",
       "kind": "module",
-      "lines": 557,
-      "bytes": 23098,
+      "lines": 570,
+      "bytes": 23739,
       "doc": "",
       "symbols": [
         {
@@ -36090,7 +36132,7 @@
         {
           "name": "copyFor",
           "kind": "function",
-          "line": 554
+          "line": 567
         }
       ]
     },
@@ -36227,8 +36269,8 @@
       "path": "apps/api/src/core/notifications/email/templates.ts",
       "area": "api",
       "kind": "module",
-      "lines": 1005,
-      "bytes": 28286,
+      "lines": 1039,
+      "bytes": 29346,
       "doc": "",
       "symbols": [
         {
@@ -36329,12 +36371,12 @@
         {
           "name": "EMAIL_TEMPLATES",
           "kind": "const",
-          "line": 873
+          "line": 902
         },
         {
           "name": "renderEmail",
           "kind": "function",
-          "line": 995
+          "line": 1029
         }
       ]
     },
@@ -38216,8 +38258,8 @@
       "path": "apps/api/src/modules/cart/cart.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 179,
-      "bytes": 5136,
+      "lines": 198,
+      "bytes": 5765,
       "doc": "",
       "symbols": [
         {
@@ -38226,6 +38268,15 @@
           "line": 41
         }
       ]
+    },
+    {
+      "path": "apps/api/src/modules/cart/cart.guest-contact.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 77,
+      "bytes": 3061,
+      "doc": "",
+      "symbols": []
     },
     {
       "path": "apps/api/src/modules/cart/cart.module.ts",
@@ -38246,24 +38297,24 @@
       "path": "apps/api/src/modules/cart/cart.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 678,
-      "bytes": 23732,
+      "lines": 704,
+      "bytes": 24792,
       "doc": "",
       "symbols": [
         {
           "name": "CartLineView",
           "kind": "interface",
-          "line": 45
+          "line": 46
         },
         {
           "name": "CartView",
           "kind": "interface",
-          "line": 87
+          "line": 88
         },
         {
           "name": "CartService",
           "kind": "class",
-          "line": 110
+          "line": 111
         }
       ]
     },
@@ -38271,29 +38322,34 @@
       "path": "apps/api/src/modules/cart/dto/cart.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 131,
-      "bytes": 3266,
+      "lines": 150,
+      "bytes": 3845,
       "doc": "",
       "symbols": [
         {
           "name": "StitchingRequestDto",
           "kind": "class",
-          "line": 21
+          "line": 22
         },
         {
           "name": "AddCartItemDto",
           "kind": "class",
-          "line": 88
+          "line": 89
         },
         {
           "name": "UpdateCartItemDto",
           "kind": "class",
-          "line": 111
+          "line": 112
         },
         {
           "name": "MergeCartDto",
           "kind": "class",
-          "line": 125
+          "line": 126
+        },
+        {
+          "name": "UpdateGuestContactDto",
+          "kind": "class",
+          "line": 140
         }
       ]
     },
@@ -40568,8 +40624,8 @@
       "path": "apps/api/src/modules/marketing/marketing-automation.cron.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 299,
-      "bytes": 10368,
+      "lines": 399,
+      "bytes": 15321,
       "doc": "",
       "symbols": []
     },
@@ -40577,14 +40633,14 @@
       "path": "apps/api/src/modules/marketing/marketing-automation.cron.ts",
       "area": "api",
       "kind": "scheduled job",
-      "lines": 347,
-      "bytes": 12541,
+      "lines": 543,
+      "bytes": 21110,
       "doc": "",
       "symbols": [
         {
           "name": "MarketingAutomationCron",
           "kind": "class",
-          "line": 55
+          "line": 62
         }
       ]
     },
@@ -40612,14 +40668,14 @@
       "path": "apps/api/src/modules/marketing/marketing.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 26,
-      "bytes": 964,
+      "lines": 41,
+      "bytes": 1567,
       "doc": "",
       "symbols": [
         {
           "name": "MarketingController",
           "kind": "class",
-          "line": 9
+          "line": 10
         }
       ]
     },
@@ -40958,8 +41014,8 @@
       "path": "apps/api/src/modules/orders/orders.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1180,
-      "bytes": 46062,
+      "lines": 1184,
+      "bytes": 46304,
       "doc": "",
       "symbols": [
         {
@@ -46132,8 +46188,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 445,
-      "bytes": 17395,
+      "lines": 446,
+      "bytes": 17471,
       "doc": "",
       "symbols": []
     },
@@ -46141,8 +46197,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 445,
-      "bytes": 23444,
+      "lines": 446,
+      "bytes": 23589,
       "doc": "",
       "symbols": []
     },
@@ -48376,8 +48432,8 @@
       "path": "apps/web/src/app/(storefront)/[locale]/checkout/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 708,
-      "bytes": 26959,
+      "lines": 743,
+      "bytes": 28566,
       "doc": "",
       "symbols": [
         {
@@ -50619,8 +50675,8 @@
       "path": "apps/web/src/lib/cart-client.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 85,
-      "bytes": 2810,
+      "lines": 99,
+      "bytes": 3338,
       "doc": "",
       "symbols": [
         {
@@ -50652,6 +50708,11 @@
           "name": "removeCartItem",
           "kind": "function",
           "line": 82
+        },
+        {
+          "name": "updateGuestContact",
+          "kind": "function",
+          "line": 92
         }
       ]
     },

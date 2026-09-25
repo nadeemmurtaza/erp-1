@@ -340,6 +340,7 @@
     "postalCode": "Postal code (optional)",
     "email": "Email (optional)",
     "emailHint": "We'll send the order confirmation here.",
+    "marketingConsent": "Send me offers and order updates on WhatsApp/SMS",
     "payment": "Payment",
     "reviewStep": "Review",
     "note": "Delivery note",

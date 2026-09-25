@@ -9,7 +9,7 @@ import { useCart } from '@/components/storefront/cart-provider';
 import { useRouter } from '@/i18n/navigation';
 import { trackEvent } from '@/lib/analytics-client';
 import { request } from '@/lib/api-client';
-import { getCustomerToken } from '@/lib/cart-client';
+import { getCustomerToken, updateGuestContact } from '@/lib/cart-client';
 import { ROUTES } from '@/constants/routes';
 import { STORAGE_KEYS } from '@/constants/storage';
 
@@ -72,6 +72,10 @@ export default function CheckoutPage() {
     province: BRAND.locale.regions[0] as string,
     postalCode: '',
     note: '',
+    // WO-8.5 — a guest who opts in gets abandoned-cart recovery on
+    // WhatsApp/SMS, not just email; a signed-in customer's account already
+    // covers this and never sees the checkbox.
+    marketingConsent: false,
   });
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -88,6 +92,18 @@ export default function CheckoutPage() {
   const [giftCardAmount, setGiftCardAmount] = useState('');
   const [storeCreditAmount, setStoreCreditAmount] = useState('');
   const isSignedIn = Boolean(getCustomerToken());
+
+  /**
+   * WO-8.5 — stamps the guest's phone + consent onto the cart as soon as it
+   * looks real, well before the order exists, so an abandoned cart is still
+   * recoverable. Best-effort: a failure here must never block checkout, so
+   * it's silently swallowed rather than surfaced as a form error.
+   */
+  function syncGuestContact(phone: string, marketingConsent: boolean): void {
+    if (isSignedIn) return;
+    if (phone.replace(/\D/g, '').length < 10) return;
+    updateGuestContact(phone, marketingConsent, locale).catch(() => {});
+  }
 
   // A third-party gift card network (Giftkarta et al. — PaymentProvider's own
   // `requiresCode`): the order already exists once we get here, PENDING on
@@ -340,6 +356,7 @@ export default function CheckoutPage() {
               <input
                 value={form.phone}
                 onChange={(event) => setForm({ ...form, phone: event.target.value })}
+                onBlur={(event) => syncGuestContact(event.target.value, form.marketingConsent)}
                 required
                 inputMode="tel"
                 autoComplete="tel"
@@ -347,6 +364,24 @@ export default function CheckoutPage() {
                 className="field-input"
               />
             </Field>
+
+            {!isSignedIn && (
+              <div className="sm:col-span-2">
+                <label className="flex items-start gap-2 text-sm text-neutral-900/70">
+                  <input
+                    type="checkbox"
+                    checked={form.marketingConsent}
+                    onChange={(event) => {
+                      const marketingConsent = event.target.checked;
+                      setForm({ ...form, marketingConsent });
+                      syncGuestContact(form.phone, marketingConsent);
+                    }}
+                    className="field-check mt-0.5"
+                  />
+                  {t('marketingConsent')}
+                </label>
+              </div>
+            )}
 
             <div className="sm:col-span-2">
               <Field label={t('address')} required>

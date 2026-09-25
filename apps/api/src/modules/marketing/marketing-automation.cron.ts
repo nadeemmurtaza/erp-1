@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
-import { DEFAULT_LOCALE, formatMoney, isLocale, pickTranslation, type Locale } from '@newax/shared';
+import { DEFAULT_LOCALE, formatMoney, generateHumanCode, isLocale, pickTranslation, type Locale } from '@newax/shared';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { NotificationsService } from '../../core/notifications/notifications.service';
 import type {
@@ -35,16 +35,23 @@ const cartMarketingInclude = {
 
 type CartForMarketing = Prisma.CartGetPayload<{ include: typeof cartMarketingInclude }>;
 
+type CartTemplate =
+  | 'marketing.abandoned_cart_first_touch'
+  | 'marketing.abandoned_cart_reminder'
+  | 'marketing.abandoned_cart_incentive';
+
 /**
- * Lifecycle marketing email: the automation gap that used to sit behind
- * every marketing template's `trigger: 'manual'` note in email/catalog.ts.
+ * Lifecycle marketing email/SMS/WhatsApp: the automation gap that used to sit
+ * behind every marketing template's `trigger: 'manual'` note in
+ * email/catalog.ts.
  *
- * Scoped to LOGGED-IN customers only, across all three sends below. A guest
- * checkout has no account to record consent (marketingEmailOptOut) or an
- * unsubscribe token against, and a guest cart has no email at all until
- * checkout — sending marketing mail to either would mean no working opt-out,
- * which this codebase will not do. Covering guests needs its own consent
- * capture built first, not a shortcut taken here.
+ * WO-8.5 closed three gaps the doc's own audit found: a two-step sequence
+ * where the doc wants 1h/24h/72h (firstTouch is the new stage), guest carts
+ * excluded entirely (a guest with a phone AND marketing consent captured at
+ * checkout — Cart.guestPhone/guestMarketingConsentAt — now gets the same
+ * three-stage sequence over WhatsApp/SMS instead of email), and the
+ * incentive stage going out with no real discount code (it now mints a
+ * genuine single-use PromoCode).
  *
  * Runs nightly; every threshold below is a Setting an owner edits from
  * /admin/marketing, and the whole thing no-ops while
@@ -67,46 +74,57 @@ export class MarketingAutomationCron {
     const enabled = await this.settings.get<boolean>(SettingKey.MarketingAutomationEnabled);
     if (!enabled) return;
 
-    const [reminders, incentives, reviews, replenishments] = await Promise.all([
+    const [firstTouches, reminders, incentives, reviews, replenishments] = await Promise.all([
+      this.sendAbandonedCartFirstTouch(),
       this.sendAbandonedCartReminders(),
       this.sendAbandonedCartIncentives(),
       this.sendReviewRequests(),
       this.sendReplenishmentReminders(),
     ]);
 
-    const total = reminders + incentives + reviews + replenishments;
+    const total = firstTouches + reminders + incentives + reviews + replenishments;
     if (total > 0) {
       this.logger.log(
-        `Marketing automation: ${reminders} cart reminder(s), ${incentives} cart incentive(s), ` +
+        `Marketing automation: ${firstTouches} cart first-touch(es), ${reminders} cart reminder(s), ${incentives} cart incentive(s), ` +
           `${reviews} review request(s), ${replenishments} replenishment reminder(s)`,
       );
     }
+  }
+
+  /** WO-8.5's own stage 1 of the doc's 1h/24h/72h sequence — a soft nudge, never an incentive. */
+  async sendAbandonedCartFirstTouch(): Promise<number> {
+    const hours = await this.settings.get<number>(SettingKey.MarketingAbandonedCartFirstTouchHours);
+    const cutoff = new Date(Date.now() - hours * HOUR_MS);
+
+    const carts = await this.abandonedCandidates({ firstTouchSentAt: null, updatedAt: { lte: cutoff } });
+
+    let sent = 0;
+    for (const cart of carts) {
+      try {
+        const didSend = await this.sendCartTouch(cart, 'marketing.abandoned_cart_first_touch');
+        if (didSend) {
+          await this.prisma.cart.update({ where: { id: cart.id }, data: { firstTouchSentAt: new Date() } });
+          sent += 1;
+        }
+      } catch (error) {
+        this.logger.error(`abandoned-cart first touch failed for cart ${cart.id}: ${describe(error)}`);
+      }
+    }
+    return sent;
   }
 
   async sendAbandonedCartReminders(): Promise<number> {
     const hours = await this.settings.get<number>(SettingKey.MarketingAbandonedCartReminderHours);
     const cutoff = new Date(Date.now() - hours * HOUR_MS);
 
-    const carts = await this.prisma.cart.findMany({
-      where: {
-        userId: { not: null },
-        reminderSentAt: null,
-        updatedAt: { lte: cutoff },
-        items: { some: {} },
-        user: { marketingEmailOptOut: false },
-      },
-      include: cartMarketingInclude,
-    });
+    const carts = await this.abandonedCandidates({ reminderSentAt: null, firstTouchSentAt: { not: null, lte: cutoff } });
 
     let sent = 0;
     for (const cart of carts) {
       try {
-        const didSend = await this.sendCartEmail(cart, 'marketing.abandoned_cart_reminder');
+        const didSend = await this.sendCartTouch(cart, 'marketing.abandoned_cart_reminder');
         if (didSend) {
-          await this.prisma.cart.update({
-            where: { id: cart.id },
-            data: { reminderSentAt: new Date() },
-          });
+          await this.prisma.cart.update({ where: { id: cart.id }, data: { reminderSentAt: new Date() } });
           sent += 1;
         }
       } catch (error) {
@@ -120,25 +138,17 @@ export class MarketingAutomationCron {
     const hours = await this.settings.get<number>(SettingKey.MarketingAbandonedCartIncentiveHours);
     const cutoff = new Date(Date.now() - hours * HOUR_MS);
 
-    const carts = await this.prisma.cart.findMany({
-      where: {
-        userId: { not: null },
-        reminderSentAt: { not: null, lte: cutoff },
-        incentiveSentAt: null,
-        items: { some: {} },
-        user: { marketingEmailOptOut: false },
-      },
-      include: cartMarketingInclude,
-    });
+    const carts = await this.abandonedCandidates({ incentiveSentAt: null, reminderSentAt: { not: null, lte: cutoff } });
 
     let sent = 0;
     for (const cart of carts) {
       try {
-        const didSend = await this.sendCartEmail(cart, 'marketing.abandoned_cart_incentive');
+        const discount = await this.mintRecoveryCode(cart);
+        const didSend = await this.sendCartTouch(cart, 'marketing.abandoned_cart_incentive', discount ?? undefined);
         if (didSend) {
           await this.prisma.cart.update({
             where: { id: cart.id },
-            data: { incentiveSentAt: new Date() },
+            data: { incentiveSentAt: new Date(), incentivePromoCodeId: discount?.promoCodeId },
           });
           sent += 1;
         }
@@ -147,6 +157,93 @@ export class MarketingAutomationCron {
       }
     }
     return sent;
+  }
+
+  /**
+   * Every stage's candidate set: a logged-in user (opted in) OR a guest with
+   * a phone AND marketing consent captured at checkout — the doc's own two
+   * routes to "an identifiable customer". `stageFilter` adds that stage's own
+   * dedup/timing condition on top.
+   */
+  private async abandonedCandidates(stageFilter: Prisma.CartWhereInput): Promise<CartForMarketing[]> {
+    return this.prisma.cart.findMany({
+      where: {
+        items: { some: {} },
+        ...stageFilter,
+        OR: [
+          { userId: { not: null }, user: { marketingEmailOptOut: false } },
+          { userId: null, guestPhone: { not: null }, guestMarketingConsentAt: { not: null } },
+        ],
+      },
+      include: cartMarketingInclude,
+    });
+  }
+
+  /**
+   * Lazily creates (once) the system Discount every incentive-stage PromoCode
+   * is minted against, remembering its id in Settings so the SAME Discount
+   * row is reused forever after — an owner can still edit its rate from
+   * Marketing → Discounts, this is only how the cron finds it again.
+   */
+  private async recoveryDiscountId(): Promise<string> {
+    const existingId = await this.settings.get<string | null>(SettingKey.MarketingAbandonedCartDiscountId);
+    if (existingId) {
+      const existing = await this.prisma.discount.findUnique({ where: { id: existingId } });
+      if (existing) return existing.id;
+    }
+
+    const bps = await this.settings.get<number>(SettingKey.MarketingAbandonedCartDiscountBps);
+    const maxOff = await this.settings.get<number | null>(SettingKey.MarketingAbandonedCartDiscountMaxOff);
+    const discount = await this.prisma.discount.create({
+      data: {
+        name: 'Abandoned cart recovery',
+        type: 'PERCENTAGE',
+        scope: 'ORDER',
+        value: bps,
+        maxDiscount: maxOff ?? undefined,
+        isActive: true,
+        isStackable: false,
+      },
+    });
+    await this.settings.set(SettingKey.MarketingAbandonedCartDiscountId, discount.id);
+    return discount.id;
+  }
+
+  /**
+   * A single-use PromoCode for this specific cart. Not routed through
+   * PromotionsService — a scheduled job minting a resource is not the same-
+   * transaction-write case KNOWN_MODULE_COUPLINGS exists for, so this reads/
+   * writes promotions' own tables directly via Prisma, same as
+   * SearchService/CollectionsService read catalog's Product elsewhere in
+   * Phase 8. generateHumanCode's 8-character unambiguous alphabet makes a
+   * collision vanishingly rare (promotions.service.ts's own reasoning); one
+   * failed attempt is logged and simply skips the discount for this cart
+   * tonight rather than retrying and risking a duplicate send.
+   */
+  private async mintRecoveryCode(
+    cart: CartForMarketing,
+  ): Promise<{ code: string; label: string; promoCodeId: string } | null> {
+    try {
+      const discountId = await this.recoveryDiscountId();
+      const validDays = await this.settings.get<number>(SettingKey.MarketingAbandonedCartDiscountValidDays);
+      const bps = await this.settings.get<number>(SettingKey.MarketingAbandonedCartDiscountBps);
+      const code = generateHumanCode(8);
+
+      const promoCode = await this.prisma.promoCode.create({
+        data: {
+          discountId,
+          code,
+          usageLimit: 1,
+          restrictedToUserId: cart.userId ?? undefined,
+          expiresAt: new Date(Date.now() + validDays * DAY_MS),
+        },
+      });
+
+      return { code: promoCode.code, label: `${Math.round(bps / 100)}% off`, promoCodeId: promoCode.id };
+    } catch (error) {
+      this.logger.error(`failed to mint a recovery code for cart ${cart.id}: ${describe(error)}`);
+      return null;
+    }
   }
 
   async sendReviewRequests(): Promise<number> {
@@ -276,15 +373,79 @@ export class MarketingAutomationCron {
     return sent;
   }
 
-  /** False when the cart has no user email to send to — the caller does not record a send. */
+  /**
+   * False when there is nowhere to actually send this — the caller does not
+   * record a send in that case. A logged-in cart sends email (unchanged
+   * behaviour); a guest cart with a consented phone sends WhatsApp/SMS
+   * instead (WO-8.5), checked against PhoneOptOut since consent can be
+   * withdrawn independently of the checkout-time flag.
+   */
+  private async sendCartTouch(
+    cart: CartForMarketing,
+    template: CartTemplate,
+    discount?: { code: string; label: string },
+  ): Promise<boolean> {
+    if (cart.userId) return this.sendCartEmail(cart, template, discount);
+    if (cart.guestPhone) return this.sendCartPhoneMessage(cart, template, discount);
+    return false;
+  }
+
   private async sendCartEmail(
     cart: CartForMarketing,
-    template: 'marketing.abandoned_cart_reminder' | 'marketing.abandoned_cart_incentive',
+    template: CartTemplate,
+    discount?: { code: string; label: string },
   ): Promise<boolean> {
     if (!cart.user?.email || !cart.userId) return false;
 
     const locale = await this.localeFor(cart.userId);
-    const items: OrderEmailItem[] = cart.items.map((item) => {
+    await this.notifications.send({
+      template,
+      recipient: { name: cart.user.firstName, email: cart.user.email, userId: cart.userId, locale },
+      subject: 'Still thinking it over?',
+      body: 'You left something in your cart.',
+      data: {
+        items: this.cartItemsForEmail(cart, locale),
+        cartUrl: `${this.storefrontUrl()}/${locale}/cart`,
+        discountCode: discount?.code,
+        discountLabel: discount?.label,
+        unsubscribeUrl: this.unsubscribeUrl(cart.userId, locale),
+      },
+    });
+    return true;
+  }
+
+  /** No account, so no unsubscribe token and no locale preference on record — English, and an unsubscribe reachable by replying STOP (the gateway's own convention) rather than a signed link. */
+  private async sendCartPhoneMessage(
+    cart: CartForMarketing,
+    template: CartTemplate,
+    discount?: { code: string; label: string },
+  ): Promise<boolean> {
+    if (!cart.guestPhone) return false;
+    const optedOut = await this.prisma.phoneOptOut.findUnique({ where: { phoneE164: cart.guestPhone } });
+    if (optedOut) return false;
+
+    const locale: Locale = DEFAULT_LOCALE;
+    const cartUrl = `${this.storefrontUrl()}/${locale}/cart`;
+    const itemNames = this.cartItemsForEmail(cart, locale)
+      .map((item) => item.name)
+      .join(', ');
+
+    const body = discount?.code
+      ? `You left ${itemNames} in your cart. Use code ${discount.code} for ${discount.label}: ${cartUrl}`
+      : `You left ${itemNames} in your cart: ${cartUrl}`;
+
+    await this.notifications.send({
+      template,
+      recipient: { phone: cart.guestPhone, locale },
+      subject: 'Still in your cart',
+      body,
+      data: { cartUrl, discountCode: discount?.code, discountLabel: discount?.label },
+    });
+    return true;
+  }
+
+  private cartItemsForEmail(cart: CartForMarketing, locale: Locale): OrderEmailItem[] {
+    return cart.items.map((item) => {
       const name =
         pickTranslation(item.product.translations, locale)?.name ??
         item.product.translations[0]?.name ??
@@ -298,19 +459,54 @@ export class MarketingAutomationCron {
         lineTotal: unitPrice * item.quantity,
       };
     });
+  }
 
-    await this.notifications.send({
-      template,
-      recipient: { name: cart.user.firstName, email: cart.user.email, userId: cart.userId, locale },
-      subject: 'Still thinking it over?',
-      body: 'You left something in your cart.',
-      data: {
-        items,
-        cartUrl: `${this.storefrontUrl()}/${locale}/cart`,
-        unsubscribeUrl: this.unsubscribeUrl(cart.userId, locale),
+  /**
+   * WO-8.5's own "the one marketing number that is unambiguous" — every
+   * order whose sourceCart (orders.service.ts's place(), set at checkout)
+   * had a marketing touch before it was placed. Grouped by which stage did
+   * the work, so an owner can see whether the free nudge or the paid
+   * incentive is actually earning its keep.
+   */
+  async recoveredRevenueReport(since: Date): Promise<{
+    firstTouch: { orders: number; revenue: number };
+    reminder: { orders: number; revenue: number };
+    incentive: { orders: number; revenue: number };
+  }> {
+    const orders = await this.prisma.order.findMany({
+      where: { sourceCartId: { not: null }, placedAt: { gte: since } },
+      select: {
+        grandTotal: true,
+        placedAt: true,
+        sourceCart: { select: { firstTouchSentAt: true, reminderSentAt: true, incentiveSentAt: true } },
       },
     });
-    return true;
+
+    const totals = {
+      firstTouch: { orders: 0, revenue: 0 },
+      reminder: { orders: 0, revenue: 0 },
+      incentive: { orders: 0, revenue: 0 },
+    };
+
+    for (const order of orders) {
+      const cart = order.sourceCart;
+      if (!cart) continue;
+      // Attribute to the LATEST stage that actually fired before this order
+      // was placed — an order recovered after the incentive email is an
+      // incentive-recovered order, not also a first-touch one.
+      if (cart.incentiveSentAt && cart.incentiveSentAt <= order.placedAt) {
+        totals.incentive.orders += 1;
+        totals.incentive.revenue += order.grandTotal;
+      } else if (cart.reminderSentAt && cart.reminderSentAt <= order.placedAt) {
+        totals.reminder.orders += 1;
+        totals.reminder.revenue += order.grandTotal;
+      } else if (cart.firstTouchSentAt && cart.firstTouchSentAt <= order.placedAt) {
+        totals.firstTouch.orders += 1;
+        totals.firstTouch.revenue += order.grandTotal;
+      }
+    }
+
+    return totals;
   }
 
   private storefrontUrl(): string {

@@ -251,6 +251,10 @@ export class OrdersService {
           guestName: dto.shippingAddress.fullName,
           guestEmail: dto.email ?? null,
           guestPhone: phone,
+          // WO-8.5 — recovered-revenue attribution: whether a marketing touch
+          // (firstTouchSentAt/reminderSentAt/incentiveSentAt) fired on this
+          // exact cart before this order existed.
+          sourceCartId: cart.id,
           shippingAddress: { ...dto.shippingAddress, phone } as Prisma.InputJsonValue,
           itemsSubtotal: totals.itemsSubtotal,
           stitchingSubtotal: totals.stitchingSubtotal,

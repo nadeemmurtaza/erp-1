@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 622 tracked files in `apps/api`, by directory.
+All 623 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -602,12 +602,12 @@ All 622 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `catalog.ts` | module | 342 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which catego… |
-| `copy.ts` | module | 557 |  |
+| `catalog.ts` | module | 355 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which catego… |
+| `copy.ts` | module | 570 |  |
 | `email-templates.admin.controller.ts` | controller | 59 |  |
 | `html.ts` | module | 414 |  |
 | `templates.spec.ts` | unit test | 365 |  |
-| `templates.ts` | module | 1005 |  |
+| `templates.ts` | module | 1039 |  |
 
 ### `apps/api/src/core/notifications/email-accounts` (3)
 
@@ -798,19 +798,20 @@ All 622 tracked files in `apps/api`, by directory.
 | `raw-usage.dto.ts` | dto | 30 |  |
 | `recipe.dto.ts` | dto | 113 |  |
 
-### `apps/api/src/modules/cart` (3)
+### `apps/api/src/modules/cart` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `cart.controller.ts` | controller | 179 |  |
+| `cart.controller.ts` | controller | 198 |  |
+| `cart.guest-contact.spec.ts` | unit test | 77 |  |
 | `cart.module.ts` | nest module | 17 | Measurements typed straight into the stitching panel are validated |
-| `cart.service.ts` | service | 678 |  |
+| `cart.service.ts` | service | 704 |  |
 
 ### `apps/api/src/modules/cart/dto` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `cart.dto.ts` | dto | 131 |  |
+| `cart.dto.ts` | dto | 150 |  |
 
 ### `apps/api/src/modules/catalog` (20)
 
@@ -1044,10 +1045,10 @@ All 622 tracked files in `apps/api`, by directory.
 | `campaigns.controller.ts` | controller | 105 |  |
 | `campaigns.service.spec.ts` | unit test | 126 |  |
 | `campaigns.service.ts` | service | 263 |  |
-| `marketing-automation.cron.spec.ts` | unit test | 299 |  |
-| `marketing-automation.cron.ts` | scheduled job | 347 |  |
+| `marketing-automation.cron.spec.ts` | unit test | 399 |  |
+| `marketing-automation.cron.ts` | scheduled job | 543 |  |
 | `marketing-settings.service.ts` | service | 71 |  |
-| `marketing.controller.ts` | controller | 26 |  |
+| `marketing.controller.ts` | controller | 41 |  |
 | `marketing.module.ts` | nest module | 14 |  |
 
 ### `apps/api/src/modules/marketing/dto` (2)
@@ -1085,7 +1086,7 @@ All 622 tracked files in `apps/api`, by directory.
 | `orders-pos.service.spec.ts` | unit test | 244 |  |
 | `orders.controller.ts` | controller | 134 |  |
 | `orders.module.ts` | nest module | 46 |  |
-| `orders.service.ts` | service | 1180 |  |
+| `orders.service.ts` | service | 1184 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 |  |
 
 ### `apps/api/src/modules/orders/dto` (1)

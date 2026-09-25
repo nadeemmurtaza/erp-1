@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **493** endpoints across **84** controllers, with the access rule that actually guards each one.
+All **495** endpoints across **84** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 56** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 57** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -39,6 +39,7 @@ never authorization.
 | GET | `/campaigns/r/:recipientId/open.gif` | `CampaignTrackingController.open` |
 | DELETE | `/cart` | `CartController.clear` |
 | GET | `/cart` | `CartController.get` |
+| PATCH | `/cart/guest-contact` | `CartController.updateGuestContact` |
 | POST | `/cart/items` | `CartController.addItem` |
 | DELETE | `/cart/items/:itemId` | `CartController.removeItem` |
 | PATCH | `/cart/items/:itemId` | `CartController.updateItem` |
@@ -167,12 +168,13 @@ never authorization.
 | GET | `/admin/bom/recipes/:id/cost` | `bom.view` | `BomController.recipeCost` | Per-component cost breakdown, recomputed live |
 | POST | `/admin/bom/recipes/:id/seed-cost-price` | `bom.manage` | `BomController.seedCostPrice` | Backfill costPrice = rolledUpUnitCost for a variant manufactured before BOM exi… |
 
-### [`cart`](../modules/cart.md) (6)
+### [`cart`](../modules/cart.md) (7)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | DELETE | `/cart` | **PUBLIC** | `CartController.clear` | Empty the cart |
 | GET | `/cart` | **PUBLIC** | `CartController.get` | The current cart, priced fresh from the database |
+| PATCH | `/cart/guest-contact` | **PUBLIC** | `CartController.updateGuestContact` | WO-8.5 — capture a guest phone + marketing consent before checkout completes |
 | POST | `/cart/items` | **PUBLIC** | `CartController.addItem` | Add an item, optionally with stitching |
 | DELETE | `/cart/items/:itemId` | **PUBLIC** | `CartController.removeItem` | Remove a line |
 | PATCH | `/cart/items/:itemId` | **PUBLIC** | `CartController.updateItem` | Change quantity, or attach measurements |
@@ -471,7 +473,7 @@ never authorization.
 | GET | `/admin/inventory/variances` | `inventory.manage` | `StockVarianceController.listOpen` | Open oversells — postUnconditional() drove a location negative |
 | POST | `/admin/inventory/variances/:id/resolve` | `inventory.manage` | `StockVarianceController.resolve` | Acknowledge a variance — never reverses the shrinkage journal it already posted |
 
-### [`marketing`](../modules/marketing.md) (10)
+### [`marketing`](../modules/marketing.md) (11)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -481,6 +483,7 @@ never authorization.
 | PATCH | `/admin/campaigns/:id` | `campaigns.manage` | `CampaignsAdminController.update` |  |
 | POST | `/admin/campaigns/:id/cancel` | `campaigns.manage` | `CampaignsAdminController.cancel` |  |
 | POST | `/admin/campaigns/:id/schedule` | `campaigns.manage` | `CampaignsAdminController.schedule` |  |
+| GET | `/admin/marketing/recovered-revenue` | `marketing.manage` | `MarketingController.recoveredRevenue` |  |
 | GET | `/admin/marketing/settings` | `marketing.manage` | `MarketingController.getSettings` | Automation on/off and its timing thresholds |
 | PUT | `/admin/marketing/settings` | `marketing.manage` | `MarketingController.updateSettings` | Turn automation on/off and/or change its timing |
 | GET | `/campaigns/r/:recipientId/click` | **PUBLIC** | `CampaignTrackingController.click` | `url` is attacker-controlled input inside a link this codebase itself emails ou… |

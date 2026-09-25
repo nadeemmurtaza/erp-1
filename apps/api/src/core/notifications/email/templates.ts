@@ -580,6 +580,35 @@ function productGrid(products: MarketingProduct[]): LineItem[] {
   }));
 }
 
+/** WO-8.5's own first stage of the doc's 1h/24h/72h sequence — a soft nudge, no incentive. */
+function renderAbandonedCartFirstTouch(
+  data: AbandonedCartEmailData,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    heading(t.marketing.abandonedCartFirstTouch.heading, locale),
+    paragraph(t.marketing.abandonedCartFirstTouch.intro, locale),
+    button(t.marketing.abandonedCartFirstTouch.cta, data.cartUrl, locale),
+    itemsTable(productGrid(data.items), locale),
+    footerLink(t.marketing.unsubscribeLine, t.marketing.unsubscribeCta, data.unsubscribeUrl, locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return {
+    subject: t.marketing.abandonedCartFirstTouch.subject,
+    html,
+    text: htmlToText(html),
+  };
+}
+
 function renderAbandonedCartReminder(
   data: AbandonedCartEmailData,
   locale: Locale,
@@ -930,6 +959,11 @@ export const EMAIL_TEMPLATES: Record<
     ctx: EmailContext,
   ) => RenderedEmail,
   'user.email_verification': renderEmailVerification as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'marketing.abandoned_cart_first_touch': renderAbandonedCartFirstTouch as (
     data: never,
     locale: Locale,
     ctx: EmailContext,

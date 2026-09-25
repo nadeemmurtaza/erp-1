@@ -3,35 +3,37 @@
 
 # Module: `cart`
 
-Pack **core** · enabled by the `MODULES` allowlist · 4 files
+Pack **core** · enabled by the `MODULES` allowlist · 5 files
 
 
 > Measurements typed straight into the stitching panel are validated
 
 Source: `apps/api/src/modules/cart/`
 
-## Files (4 · 1,005 lines)
+## Files (5 · 1,146 lines)
 
 All paths relative to `apps/api/src/modules/cart`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `cart.controller.ts` | controller | 179 | 1 | Cart endpoints. |
+| `cart.controller.ts` | controller | 198 | 1 | Cart endpoints. |
+| `cart.guest-contact.spec.ts` | unit test | 77 | — |  |
 | `cart.module.ts` | nest module | 17 | 1 | Measurements typed straight into the stitching panel are validated |
-| `cart.service.ts` | service | 678 | 3 |  |
-| `cart.dto.ts` | dto | 131 | 4 |  |
+| `cart.service.ts` | service | 704 | 3 |  |
+| `cart.dto.ts` | dto | 150 | 5 |  |
 
 
-## HTTP routes (6)
+## HTTP routes (7)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| DELETE | `/cart` | **PUBLIC** | `CartController.clear` :123 | Empty the cart |
+| DELETE | `/cart` | **PUBLIC** | `CartController.clear` :142 | Empty the cart |
 | GET | `/cart` | **PUBLIC** | `CartController.get` :46 | The current cart, priced fresh from the database |
+| PATCH | `/cart/guest-contact` | **PUBLIC** | `CartController.updateGuestContact` :103 | WO-8.5 — capture a guest phone + marketing consent before checkout completes |
 | POST | `/cart/items` | **PUBLIC** | `CartController.addItem` :63 | Add an item, optionally with stitching |
-| DELETE | `/cart/items/:itemId` | **PUBLIC** | `CartController.removeItem` :103 | Remove a line |
+| DELETE | `/cart/items/:itemId` | **PUBLIC** | `CartController.removeItem` :122 | Remove a line |
 | PATCH | `/cart/items/:itemId` | **PUBLIC** | `CartController.updateItem` :82 | Change quantity, or attach measurements |
-| POST | `/cart/merge` | **PUBLIC** | `CartController.merge` :136 | Fold a guest cart into the signed-in account |
+| POST | `/cart/merge` | **PUBLIC** | `CartController.merge` :155 | Fold a guest cart into the signed-in account |
 
 
 ## Domain events
@@ -82,9 +84,11 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (0)
+## Tests (1)
 
-_No spec files in this unit._
+| Spec | Cases | Covers |
+|---|---|---|
+| `cart.guest-contact.spec.ts` | 4 | CartService.updateGuestContact |
 
 
 ## Every export in this unit
@@ -93,13 +97,14 @@ _No spec files in this unit._
 |---|---|---|---|
 | `CartController` | class | `cart.controller.ts:41` | Cart endpoints. |
 | `CartModule` | class | `cart.module.ts:16` |  |
-| `CartLineView` | interface | `cart.service.ts:45` |  |
-| `CartView` | interface | `cart.service.ts:87` |  |
-| `CartService` | class | `cart.service.ts:110` | The cart, including the stitching add-on. |
-| `StitchingRequestDto` | class | `cart.dto.ts:21` |  |
-| `AddCartItemDto` | class | `cart.dto.ts:88` |  |
-| `UpdateCartItemDto` | class | `cart.dto.ts:111` |  |
-| `MergeCartDto` | class | `cart.dto.ts:125` |  |
+| `CartLineView` | interface | `cart.service.ts:46` |  |
+| `CartView` | interface | `cart.service.ts:88` |  |
+| `CartService` | class | `cart.service.ts:111` | The cart, including the stitching add-on. |
+| `StitchingRequestDto` | class | `cart.dto.ts:22` |  |
+| `AddCartItemDto` | class | `cart.dto.ts:89` |  |
+| `UpdateCartItemDto` | class | `cart.dto.ts:112` |  |
+| `MergeCartDto` | class | `cart.dto.ts:126` |  |
+| `UpdateGuestContactDto` | class | `cart.dto.ts:140` | WO-8.5 — captured as soon as a guest types a phone number at checkout (before placing the order), so an aband… |
 
 
 ---

@@ -10,6 +10,7 @@ import {
   computeOrderTotals,
   DEFAULT_LOCALE,
   getVariantDisplayLabel,
+  normalizePhone,
   pickTranslation,
   stitchingFeeFor,
   type Locale,
@@ -20,7 +21,7 @@ import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { Prisma } from '../../core/prisma/client';
 import { CartLineValidatorRegistry } from '../../core/extension-points/cart-line-validator.registry';
-import type { AddCartItemDto, UpdateCartItemDto } from './dto/cart.dto';
+import type { AddCartItemDto, UpdateCartItemDto, UpdateGuestContactDto } from './dto/cart.dto';
 
 /** Guest carts live for a month; long enough to come back after payday. */
 const CART_TTL_DAYS = 30;
@@ -272,6 +273,31 @@ export class CartService {
   ): Promise<CartView> {
     const cart = await this.resolveCart(token, userId);
     await this.prisma.cartItem.deleteMany({ where: { cartId: cart.id } });
+    return this.toView(await this.reload(cart.id), locale);
+  }
+
+  /**
+   * WO-8.5 — captured the moment a guest types a phone at checkout, before
+   * the order exists, so MarketingAutomationCron's abandoned-cart sequence
+   * has somewhere to reach them if they never complete it. A no-op for a
+   * signed-in cart: that customer's own account email already covers this.
+   */
+  async updateGuestContact(
+    token: string | undefined,
+    userId: string | undefined,
+    dto: UpdateGuestContactDto,
+    locale: Locale = DEFAULT_LOCALE,
+  ): Promise<CartView> {
+    const cart = await this.resolveCart(token, userId);
+    if (cart.userId) return this.toView(await this.reload(cart.id), locale);
+
+    const { e164 } = normalizePhone(dto.phone);
+    if (!e164) throw new BadRequestException('That does not look like a valid phone number.');
+
+    await this.prisma.cart.update({
+      where: { id: cart.id },
+      data: { guestPhone: e164, guestMarketingConsentAt: dto.marketingConsent ? new Date() : null },
+    });
     return this.toView(await this.reload(cart.id), locale);
   }
 

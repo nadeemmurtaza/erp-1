@@ -3,7 +3,7 @@
 
 # Tests
 
-**152** spec files, **1,419** cases. What is already pinned down — and what is not.
+**153** spec files, **1,429** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -19,7 +19,6 @@ such exemption.
 ## API modules with no spec file
 
 - [`addresses`](../modules/addresses.md)
-- [`cart`](../modules/cart.md)
 - [`giftcards`](../modules/giftcards.md)
 - [`promotions`](../modules/promotions.md)
 - [`settings`](../modules/settings.md)
@@ -53,7 +52,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (135)
+## Unit and integration (136)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -101,6 +100,7 @@ regression or an N+1.
 | `apps/api/src/modules/bom/bom.spec.ts` | bom | 21 | bom module — raw materials · resolveCategoryId · create · unitScale immutability · deactivate · lis… |
 | `apps/api/src/modules/bom/cost-rollup.spec.ts` | bom | 7 | computeRecipeCost |
 | `apps/api/src/modules/bom/production.service.spec.ts` | bom | 12 | ProductionService · consuming raw stock and producing finished stock · scopeLevel/originNodeId/loca… |
+| `apps/api/src/modules/cart/cart.guest-contact.spec.ts` | cart | 4 | CartService.updateGuestContact |
 | `apps/api/src/modules/catalog/product-admin.service.spec.ts` | catalog | 13 | assertKindRules · assertUniqueSkus |
 | `apps/api/src/modules/catalog/product-replication.listener.spec.ts` | catalog | 7 | ProductReplicationListener — WO-20.3 · onModuleInit · onProductPublished · onProductPriceChanged ·… |
 | `apps/api/src/modules/collections/collections.service.spec.ts` | collections | 6 | CollectionsService |
@@ -124,7 +124,7 @@ regression or an N+1.
 | `apps/api/src/modules/inventory/stock-count.service.spec.ts` | inventory | 1 | StockCountService |
 | `apps/api/src/modules/inventory/stock-variance.service.spec.ts` | inventory | 4 | StockVarianceService — WO-21.3 · resolve |
 | `apps/api/src/modules/marketing/campaigns.service.spec.ts` | marketing | 4 | CampaignsService |
-| `apps/api/src/modules/marketing/marketing-automation.cron.spec.ts` | marketing | 13 | MarketingAutomationCron · sendAbandonedCartReminders · sendAbandonedCartIncentives · sendReviewRequ… |
+| `apps/api/src/modules/marketing/marketing-automation.cron.spec.ts` | marketing | 19 | MarketingAutomationCron · sendAbandonedCartReminders · sendAbandonedCartFirstTouch · sendAbandonedC… |
 | `apps/api/src/modules/measurements/garment-fields-seed.spec.ts` | measurements | 1 | seeded measurement fields satisfy MeasurementFieldDto |
 | `apps/api/src/modules/orders/backorder.listener.spec.ts` | orders | 4 | BackorderListener |
 | `apps/api/src/modules/orders/order-replication.listener.spec.ts` | orders | 3 | OrderReplicationListener — WO-20.4 · onModuleInit · onOrderPlaced |

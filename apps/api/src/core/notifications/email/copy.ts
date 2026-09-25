@@ -93,6 +93,7 @@ export interface EmailCopy {
   /** Default call-to-action for marketing mail with no order or reset link to point at. */
   shopNow: string;
   marketing: {
+    abandonedCartFirstTouch: { subject: string; heading: string; intro: string; cta: string };
     abandonedCartReminder: { subject: string; heading: string; intro: string; cta: string };
     abandonedCartIncentive: {
       subject: string;
@@ -280,6 +281,12 @@ const en: EmailCopy = {
   },
   shopNow: 'Shop now',
   marketing: {
+    abandonedCartFirstTouch: {
+      subject: 'Still in your cart',
+      heading: 'You left this behind',
+      intro: 'Just a quick nudge — these items are still saved in your cart.',
+      cta: 'View your cart',
+    },
     abandonedCartReminder: {
       subject: 'You left something in your cart',
       heading: 'Still thinking it over?',
@@ -472,6 +479,12 @@ const ur: EmailCopy = {
   },
   shopNow: 'ابھی خریداری کریں',
   marketing: {
+    abandonedCartFirstTouch: {
+      subject: 'ابھی تک آپ کے کارٹ میں',
+      heading: 'آپ یہ چھوڑ گئے',
+      intro: 'بس ایک مختصر یاد دہانی — یہ اشیاء ابھی تک آپ کے کارٹ میں محفوظ ہیں۔',
+      cta: 'اپنا کارٹ دیکھیں',
+    },
     abandonedCartReminder: {
       subject: 'آپ نے اپنے کارٹ میں کچھ چھوڑ دیا',
       heading: 'ابھی تک سوچ رہے ہیں؟',

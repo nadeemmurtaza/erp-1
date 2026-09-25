@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 11 files
 
 Source: `apps/api/src/modules/orders/`
 
-## Files (11 · 2,351 lines)
+## Files (11 · 2,355 lines)
 
 All paths relative to `apps/api/src/modules/orders`.
 
@@ -24,7 +24,7 @@ All paths relative to `apps/api/src/modules/orders`.
 | `orders-pos.service.spec.ts` | unit test | 244 | — |  |
 | `orders.controller.ts` | controller | 134 | 2 |  |
 | `orders.module.ts` | nest module | 46 | 1 |  |
-| `orders.service.ts` | service | 1180 | 3 |  |
+| `orders.service.ts` | service | 1184 | 3 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 | 1 | The ONLY place a fulfilment-module event ever reaches Order.status. |
 
 
@@ -47,10 +47,10 @@ All paths relative to `apps/api/src/modules/orders`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `OrderPlaced` | `order.placed` | `orders.service.ts:424`, `orders.service.ts:627` |
-| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:809` |
-| `OrderCancelled` | `order.cancelled` | `orders.service.ts:809` |
-| `PaymentSucceeded` | `payment.succeeded` | `orders.service.ts:615` |
+| `OrderPlaced` | `order.placed` | `orders.service.ts:428`, `orders.service.ts:631` |
+| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:813` |
+| `OrderCancelled` | `order.cancelled` | `orders.service.ts:813` |
+| `PaymentSucceeded` | `payment.succeeded` | `orders.service.ts:619` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:

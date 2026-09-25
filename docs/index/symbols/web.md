@@ -1163,6 +1163,7 @@ Every top-level export in `web`, with the line to open.
 | `cart-client.ts` | `addToCart` | function | :66 |  |
 | `cart-client.ts` | `updateCartItem` | function | :74 |  |
 | `cart-client.ts` | `removeCartItem` | function | :82 |  |
+| `cart-client.ts` | `updateGuestContact` | function | :92 | WO-8.5 — captures a guest's phone and marketing consent onto the cart as soon as they're typed at c… |
 | `customer-client.ts` | `getCustomerToken` | function | :12 |  |
 | `customer-client.ts` | `getStoredCustomerUser` | function | :16 |  |
 | `customer-client.ts` | `clearCustomerSession` | function | :34 |  |

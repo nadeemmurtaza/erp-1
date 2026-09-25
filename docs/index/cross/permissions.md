@@ -98,7 +98,7 @@ the *catalogue*, not any particular deployment's grants.
 |---|---|---|---|---|---|
 | `settings.manage` | Access the Settings screen | critical | 16 | 3 | ADMIN |
 | `tax.manage` | Manage tax classes, rates and the pricing mode | medium | 8 | 1 | ADMIN |
-| `marketing.manage` | Turn on automated marketing email and set its timing | low | 2 | 1 | ADMIN |
+| `marketing.manage` | Turn on automated marketing email and set its timing | low | 3 | 1 | ADMIN |
 | `roles.manage_permissions` | Edit each role's granted permissions | critical | 4 | — | ADMIN |
 | `audit.view` | View the audit log | medium | 1 | — | ADMIN |
 | `users.manage` | Create and manage back-office user accounts | high | 8 | 1 | ADMIN |

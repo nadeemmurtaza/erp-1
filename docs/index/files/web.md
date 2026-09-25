@@ -25,8 +25,8 @@ All 301 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `en.json` | json | 445 |  |
-| `ur.json` | json | 445 |  |
+| `en.json` | json | 446 |  |
+| `ur.json` | json | 446 |  |
 
 ### `apps/web/public` (1)
 
@@ -844,7 +844,7 @@ All 301 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `loading.tsx` | loading | 47 |  |
-| `page.tsx` | page | 708 |  |
+| `page.tsx` | page | 743 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/collections/[slug]` (1)
 
@@ -1102,7 +1102,7 @@ All 301 tracked files in `apps/web`, by directory.
 | `analytics-client.ts` | utility | 91 |  |
 | `api-client.ts` | utility | 41 | The one HTTP layer. |
 | `api.ts` | utility | 152 |  |
-| `cart-client.ts` | utility | 85 |  |
+| `cart-client.ts` | utility | 99 |  |
 | `customer-client.ts` | utility | 217 |  |
 | `download-csv.ts` | utility | 36 |  |
 | `wishlist.ts` | utility | 96 |  |

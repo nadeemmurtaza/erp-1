@@ -3,6 +3,7 @@ import { Type } from 'class-transformer';
 import {
   ArrayMaxSize,
   IsArray,
+  IsBoolean,
   IsIn,
   IsInt,
   IsNotEmpty,
@@ -127,4 +128,22 @@ export class MergeCartDto {
   @IsString()
   @IsNotEmpty()
   token!: string;
+}
+
+/**
+ * WO-8.5 — captured as soon as a guest types a phone number at checkout
+ * (before placing the order), so an abandoned cart has something to reach.
+ * `marketingConsent: false` clears any previously given consent — a
+ * customer un-ticking the box mid-checkout must actually withdraw it, not
+ * leave the old value standing.
+ */
+export class UpdateGuestContactDto {
+  @ApiProperty({ description: 'Any phone format normalizePhone() accepts' })
+  @IsString()
+  @IsNotEmpty()
+  phone!: string;
+
+  @ApiProperty()
+  @IsBoolean()
+  marketingConsent!: boolean;
 }

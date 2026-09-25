@@ -1,8 +1,26 @@
 import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { AppConfigService } from '../../core/config/app-config.service';
 import { PlatformNotificationsService } from '../../core/notifications/notifications.service';
 import { SeatCounterService } from './seat-counter.service';
+import { UsageMeteringService } from './usage-metering.service';
 import type { PlatformInvoice, PlatformPlan, PlatformTenant } from '../../core/prisma/client';
+
+/** doc 153's own "click the number": one line per metered dimension this
+ *  charge actually included, each traceable back to its own UsageMeter
+ *  metric — never an opaque total. */
+export interface UsageLine {
+  metric: string;
+  quantity: number;
+  rateMinorPerUnit?: number;
+  allowance?: number;
+  amountMinor: number;
+}
+
+export interface UsageBreakdown {
+  transactionFeeMinor: number;
+  lines: UsageLine[];
+}
 
 export interface InvoicePreview {
   tenantId: string;
@@ -12,6 +30,7 @@ export interface InvoicePreview {
   seatCount: number | null;
   amountMinor: number;
   computedAt: Date;
+  usageBreakdown?: UsageBreakdown;
 }
 
 /**
@@ -30,31 +49,37 @@ export class BillingService {
     private readonly prisma: PrismaService,
     private readonly seatCounter: SeatCounterService,
     private readonly notifications: PlatformNotificationsService,
+    private readonly usageMetering: UsageMeteringService,
+    private readonly config: AppConfigService,
   ) {}
 
   /** Doc 50's own "dry run before live": computes what a tenant's next
    *  invoice would be, with no write — the same pricing logic
-   *  `issueInvoiceForPeriod` uses, called read-only. */
+   *  `issueInvoiceForPeriod` uses, called read-only. For USAGE_BASED this
+   *  reads the SAME `UsageMeter` rows the real invoice reads (doc 153's
+   *  own acceptance criterion: preview and invoice must agree exactly). */
   async previewInvoice(tenantId: string, periodStart: Date, periodEnd: Date): Promise<InvoicePreview> {
     const tenant = await this.prisma.platformTenant.findUnique({ where: { id: tenantId }, include: { plan: true } });
     if (!tenant) throw new NotFoundException(`No tenant with id ${tenantId}`);
 
-    const { amountMinor, seatCount } = await this.computeCharge(tenant, tenant.plan);
+    const charge = await this.computeCharge(tenant, tenant.plan, periodStart);
     return {
       tenantId,
       pricingModel: tenant.plan.pricingModel,
       periodStart,
       periodEnd,
-      seatCount,
-      amountMinor,
+      seatCount: charge.seatCount,
+      amountMinor: charge.amountMinor,
       computedAt: new Date(),
+      usageBreakdown: charge.usageBreakdown,
     };
   }
 
   private async computeCharge(
     tenant: PlatformTenant,
     plan: PlatformPlan,
-  ): Promise<{ amountMinor: number; seatCount: number | null }> {
+    periodStart: Date,
+  ): Promise<{ amountMinor: number; seatCount: number | null; usageBreakdown?: UsageBreakdown }> {
     switch (plan.pricingModel) {
       case 'PER_SEAT': {
         if (plan.perSeatPriceMinor == null) {
@@ -69,10 +94,55 @@ export class BillingService {
         }
         return { amountMinor: plan.oneTimeLicenseMinor, seatCount: null };
       }
+      case 'USAGE_BASED': {
+        const usageBreakdown = await this.computeUsageBreakdown(tenant.id, plan, periodStart);
+        const linesTotal = usageBreakdown.lines.reduce((sum, line) => sum + line.amountMinor, 0);
+        return { amountMinor: usageBreakdown.transactionFeeMinor + linesTotal, seatCount: null, usageBreakdown };
+      }
       case 'FLAT_MONTHLY':
       default:
         return { amountMinor: plan.monthlyPriceMinor, seatCount: null };
     }
+  }
+
+  /** doc 153 §1 — the transaction fee (read directly off the meter, no
+   *  further math) plus a line per per-unit rate-card metric plus a line
+   *  per allowance dimension crossed. Reads `UsageMeter` only — never
+   *  touches a tenant's own database, and never writes anything itself
+   *  (this IS the "dry run" function every caller, live or preview, shares). */
+  private async computeUsageBreakdown(tenantId: string, plan: PlatformPlan, periodStart: Date): Promise<UsageBreakdown> {
+    const meters = await this.usageMetering.getMetersForPeriod(tenantId, periodStart);
+    const transactionFeeMinor = meters.get('transaction_fee_minor') ?? 0;
+
+    const rateCard = (plan.usageRateCardMinor as Record<string, number> | null) ?? {};
+    const allowances = (plan.includedAllowances as Record<string, number> | null) ?? {};
+    const lines: UsageLine[] = [];
+
+    const messagesSent = meters.get('messages_sent') ?? 0;
+    const messagesRateMinor = rateCard.messages_sent ?? 0;
+    if (messagesSent > 0 || messagesRateMinor > 0) {
+      lines.push({
+        metric: 'messages_sent',
+        quantity: messagesSent,
+        rateMinorPerUnit: messagesRateMinor,
+        amountMinor: messagesSent * messagesRateMinor,
+      });
+    }
+
+    for (const [dimension, allowance] of Object.entries(allowances)) {
+      const observed = meters.get(`${dimension}_count`) ?? 0;
+      if (observed > allowance) {
+        const overFeeMinor = rateCard[`${dimension}_over_limit`] ?? 0;
+        lines.push({
+          metric: `${dimension}_count`,
+          quantity: observed,
+          allowance,
+          amountMinor: overFeeMinor,
+        });
+      }
+    }
+
+    return { transactionFeeMinor, lines };
   }
 
   /**
@@ -101,9 +171,9 @@ export class BillingService {
       if (everBilled) return null; // already billed once, ever — never a second charge
     }
 
-    let charge: { amountMinor: number; seatCount: number | null };
+    let charge: { amountMinor: number; seatCount: number | null; usageBreakdown?: UsageBreakdown };
     try {
-      charge = await this.computeCharge(tenant, plan);
+      charge = await this.computeCharge(tenant, plan, periodStart);
     } catch (error) {
       // "Four hours down": a seat-count read that cannot reach a tenant's
       // database defers THAT tenant's invoice to the next run, never
@@ -118,6 +188,8 @@ export class BillingService {
       orderBy: { startedOn: 'desc' },
     });
 
+    const dueAt = new Date(computedAt.getTime() + this.config.get('PLATFORM_INVOICE_NET_TERMS_DAYS') * 86_400_000);
+
     const invoice = await this.prisma.platformInvoice.create({
       data: {
         tenantId,
@@ -131,7 +203,14 @@ export class BillingService {
         seatPriceMinorSnapshot: plan.pricingModel === 'PER_SEAT' ? plan.perSeatPriceMinor : null,
         flatPriceMinorSnapshot: plan.pricingModel === 'FLAT_MONTHLY' ? plan.monthlyPriceMinor : null,
         oneTimePriceMinorSnapshot: plan.pricingModel === 'ONE_TIME_LICENSE' ? plan.oneTimeLicenseMinor : null,
+        transactionFeeMinorSnapshot: plan.pricingModel === 'USAGE_BASED' ? charge.usageBreakdown!.transactionFeeMinor : null,
+        usageRateCardSnapshot:
+          plan.pricingModel === 'USAGE_BASED'
+            ? { transactionFeeBps: plan.transactionFeeBps, usageRateCardMinor: plan.usageRateCardMinor, includedAllowances: plan.includedAllowances }
+            : undefined,
+        usageLinesSnapshot: plan.pricingModel === 'USAGE_BASED' ? (charge.usageBreakdown!.lines as unknown as object) : undefined,
         computedAt,
+        dueAt,
       },
     });
 

@@ -3,7 +3,7 @@
 
 # Files — root
 
-All 152 tracked files in `repository root files`, by directory.
+All 163 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -112,7 +112,7 @@ All 152 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `platform.prisma` | prisma schema | 478 | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the |
+| `platform.prisma` | prisma schema | 667 | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the |
 | `schema.prisma` | prisma schema | 19 | Datasource and generator only — the control plane's OWN database, never a |
 
 ### `apps/platform/prisma/schema/migrations` (1)
@@ -145,6 +145,12 @@ All 152 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 60 |  |
 
+### `apps/platform/prisma/schema/migrations/20260925091000_wo153_usage_based_pricing` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 126 |  |
+
 ### `apps/platform/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -158,7 +164,7 @@ All 152 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `app-config.service.ts` | service | 25 |  |
 | `config.module.ts` | nest module | 20 |  |
-| `env.validation.ts` | config | 130 |  |
+| `env.validation.ts` | config | 148 |  |
 | `load-env.ts` | config | 13 |  |
 
 ### `apps/platform/src/core/notifications` (2)
@@ -185,7 +191,7 @@ All 152 tracked files in `repository root files`, by directory.
 | `ops-auth.guard.ts` | guard | 61 |  |
 | `ops-key.spec.ts` | unit test | 25 |  |
 | `ops-key.ts` | module | 21 |  |
-| `ops-permissions.ts` | module | 26 | The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permissions.ts`, which is apps… |
+| `ops-permissions.ts` | module | 35 | The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permissions.ts`, which is apps… |
 
 ### `apps/platform/src/core/tenant-credentials` (2)
 
@@ -194,30 +200,40 @@ All 152 tracked files in `repository root files`, by directory.
 | `tenant-credential-resolver.module.ts` | nest module | 10 |  |
 | `tenant-credential-resolver.service.ts` | service | 30 |  |
 
-### `apps/platform/src/modules/billing` (13)
+### `apps/platform/src/modules/billing` (22)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `billing.controller.ts` | controller | 34 |  |
-| `billing.cron.ts` | scheduled job | 26 |  |
-| `billing.module.ts` | nest module | 17 |  |
-| `billing.service.spec.ts` | unit test | 189 |  |
-| `billing.service.ts` | service | 196 |  |
+| `billing-period.spec.ts` | unit test | 18 |  |
+| `billing-period.ts` | module | 18 | The one place a calendar-month billing period is computed from "now" — shared by `BillingCron` (doc 50 §3) and `UsageMe… |
+| `billing.controller.ts` | controller | 48 |  |
+| `billing.cron.ts` | scheduled job | 25 |  |
+| `billing.module.ts` | nest module | 32 |  |
+| `billing.service.spec.ts` | unit test | 285 |  |
+| `billing.service.ts` | service | 275 |  |
 | `custom-quote.controller.ts` | controller | 39 |  |
 | `custom-quote.service.spec.ts` | unit test | 86 |  |
 | `custom-quote.service.ts` | service | 94 |  |
+| `invoice-dunning.cron.ts` | scheduled job | 52 |  |
 | `plans.controller.ts` | controller | 23 |  |
-| `plans.service.spec.ts` | unit test | 61 |  |
-| `plans.service.ts` | service | 42 |  |
+| `plans.service.spec.ts` | unit test | 88 |  |
+| `plans.service.ts` | service | 48 |  |
+| `rate-card.controller.ts` | controller | 53 |  |
+| `rate-card.service.spec.ts` | unit test | 127 |  |
+| `rate-card.service.ts` | service | 141 |  |
 | `seat-counter.service.spec.ts` | unit test | 60 |  |
 | `seat-counter.service.ts` | service | 62 |  |
+| `usage-metering.cron.ts` | scheduled job | 60 |  |
+| `usage-metering.service.spec.ts` | unit test | 285 |  |
+| `usage-metering.service.ts` | service | 318 |  |
 
-### `apps/platform/src/modules/billing/dto` (3)
+### `apps/platform/src/modules/billing/dto` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `create-plan.dto.ts` | dto | 50 |  |
+| `create-plan.dto.ts` | dto | 64 |  |
 | `credit-note.dto.ts` | dto | 20 |  |
+| `rate-card.dto.ts` | dto | 27 |  |
 | `request-quote.dto.ts` | dto | 26 |  |
 
 ### `apps/platform/src/modules/resource-quotas` (5)

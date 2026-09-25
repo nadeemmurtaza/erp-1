@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **58** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **59** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -24,7 +24,7 @@ order" is a new file, not an edit to checkout.
 ## Attention list
 
 - Events **nothing publishes**: `crm.contact_upserted`, `crm.lead_created`
-- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `purchasing.requisition_created`, `purchasing.requisition_converted`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`, `promotions.discount_redeemed`, `wallet.merchant_payable_created`, `wallet.merchant_payable_paid`, `receivables.credit_hold_applied`
+- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `purchasing.requisition_created`, `purchasing.requisition_converted`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`, `promotions.discount_redeemed`, `wallet.merchant_payable_created`, `wallet.merchant_payable_paid`, `receivables.credit_hold_applied`, `notification.sent`
 
 ## Summary
 
@@ -88,6 +88,7 @@ order" is a new file, not an edit to checkout.
 | `receivables.debit_note_issued` | `DebitNoteIssued` | `accounting`, `receivables` | `accounting` |
 | `receivables.debit_note_voided` | `DebitNoteVoided` | `receivables` | `accounting` |
 | `receivables.credit_hold_applied` | `CreditHoldApplied` | `receivables` | _none_ |
+| `notification.sent` | `NotificationSent` | core/`notifications` | _none_ |
 
 
 ## Detail
@@ -1060,6 +1061,21 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/receivables/credit-terms.service.ts:86` | `receivables` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
+
+### `notification.sent`
+
+> NotificationsService.send() (doc 153, commercial-licensing-agency/ 153-usage-based-pricing-model.md, WO-153.2) — fires once per logical message, at the SAME consolidated call site every channel (emai…
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/core/notifications/notifications.service.ts:73` | core/`notifications` |
 
 
 **Subscribed by**

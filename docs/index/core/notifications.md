@@ -3,7 +3,7 @@
 
 # Core: `notifications`
 
-Shared platform — available to every module, part of no feature · 22 files
+Shared platform — available to every module, part of no feature · 23 files
 
 
 > Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which category it belongs to, whether something in the codebase actually sends it automatically (and what), and…
@@ -13,7 +13,7 @@ Source: `apps/api/src/core/notifications/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (22 · 4,445 lines)
+## Files (23 · 4,560 lines)
 
 All paths relative to `apps/api/src/core/notifications`.
 
@@ -36,7 +36,8 @@ All paths relative to `apps/api/src/core/notifications`.
 | `notification-channel.ts` | module | 38 | 3 | Extension point: outbound customer messaging. |
 | `notification-preferences.service.ts` | service | 71 | 2 |  |
 | `notifications.module.ts` | nest module | 36 | 1 |  |
-| `notifications.service.ts` | service | 63 | 1 | Fans a message out to every enabled channel that can reach the recipient. |
+| `notifications.service.spec.ts` | unit test | 98 | — |  |
+| `notifications.service.ts` | service | 80 | 1 | Fans a message out to every enabled channel that can reach the recipient. |
 | `sms.channel.ts` | channel | 48 | 1 | Same generic gateway contract and honesty as whatsapp.channel.ts — see its header comment. |
 | `unsubscribe.controller.ts` | controller | 41 | 1 | The link every automated marketing send carries (see MarketingAutomationCron, modules/marketing). |
 | `unsubscribe.dto.ts` | dto | 15 | 1 |  |
@@ -67,7 +68,9 @@ All paths relative to `apps/api/src/core/notifications`.
 
 **Publishes** — written to the outbox inside the same transaction as the state change:
 
-_none_
+| Event | Name | Published at |
+|---|---|---|
+| `NotificationSent` | `notification.sent` | `notifications.service.ts:73` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -98,12 +101,13 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (2)
+## Tests (3)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `email.channel.spec.ts` | 2 | isDeliverable |
 | `templates.spec.ts` | 27 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment refunded email · accou… |
+| `notifications.service.spec.ts` | 2 | NotificationsService |
 
 
 ## Every export in this unit
@@ -184,7 +188,7 @@ check there before adding another.
 | `PreferenceCell` | interface | `notification-preferences.service.ts:7` |  |
 | `NotificationPreferencesService` | class | `notification-preferences.service.ts:21` | WO-7.8. |
 | `NotificationsModule` | class | `notifications.module.ts:35` |  |
-| `NotificationsService` | class | `notifications.service.ts:17` | Fans a message out to every enabled channel that can reach the recipient. |
+| `NotificationsService` | class | `notifications.service.ts:19` | Fans a message out to every enabled channel that can reach the recipient. |
 | `SmsChannel` | class | `sms.channel.ts:7` | Same generic gateway contract and honesty as whatsapp.channel.ts — see its header comment. |
 | `UnsubscribeController` | class | `unsubscribe.controller.ts:17` | The link every automated marketing send carries (see MarketingAutomationCron, modules/marketing). |
 | `UnsubscribeDto` | class | `unsubscribe.dto.ts:4` |  |

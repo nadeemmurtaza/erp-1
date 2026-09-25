@@ -21,8 +21,8 @@ Every top-level export in `root`, with the line to open.
 | `app-config.service.ts` | `AppConfigService` | class | :10 | Typed accessor over ConfigService — one place an env var name is spelled out, mirroring apps/api's… |
 | `config.module.ts` | `AppConfigModule` | class | :19 |  |
 | `env.validation.ts` | `envSchema` | const | :14 |  |
-| `env.validation.ts` | `PlatformEnv` | type | :121 |  |
-| `env.validation.ts` | `validatePlatformEnv` | function | :123 |  |
+| `env.validation.ts` | `PlatformEnv` | type | :139 |  |
+| `env.validation.ts` | `validatePlatformEnv` | function | :141 |  |
 
 ### `apps/platform/src/core/notifications`
 
@@ -51,7 +51,7 @@ Every top-level export in `root`, with the line to open.
 | `ops-key.ts` | `generateOpsKey` | function | :14 | A bearer credential for internal hosting-ops tooling calling the control plane — same shape as apps… |
 | `ops-key.ts` | `hashOpsKey` | function | :18 |  |
 | `ops-permissions.ts` | `PLATFORM_PERMISSIONS` | const | :16 | The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permission… |
-| `ops-permissions.ts` | `PlatformPermission` | type | :25 |  |
+| `ops-permissions.ts` | `PlatformPermission` | type | :34 |  |
 
 ### `apps/platform/src/core/tenant-credentials`
 
@@ -64,17 +64,28 @@ Every top-level export in `root`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `billing.controller.ts` | `BillingController` | class | :10 |  |
-| `billing.cron.ts` | `BillingCron` | class | :11 | WO-50.3's own scheduled run — calendar-month billing periods. |
-| `billing.module.ts` | `BillingModule` | class | :16 |  |
-| `billing.service.ts` | `InvoicePreview` | interface | :7 |  |
-| `billing.service.ts` | `BillingService` | class | :26 | WO-50.3 — the billing job. |
+| `billing-period.ts` | `BillingPeriod` | interface | :8 | The one place a calendar-month billing period is computed from "now" — shared by `BillingCron` (doc… |
+| `billing-period.ts` | `currentCalendarMonthPeriod` | function | :13 |  |
+| `billing.controller.ts` | `BillingController` | class | :11 |  |
+| `billing.cron.ts` | `BillingCron` | class | :12 | WO-50.3's own scheduled run — calendar-month billing periods. |
+| `billing.module.ts` | `BillingModule` | class | :31 |  |
+| `billing.service.ts` | `UsageLine` | interface | :12 | doc 153's own "click the number": one line per metered dimension this charge actually included, eac… |
+| `billing.service.ts` | `UsageBreakdown` | interface | :20 |  |
+| `billing.service.ts` | `InvoicePreview` | interface | :25 |  |
+| `billing.service.ts` | `BillingService` | class | :45 | WO-50.3 — the billing job. |
 | `custom-quote.controller.ts` | `CustomQuoteController` | class | :11 |  |
 | `custom-quote.service.ts` | `RequestQuoteInput` | interface | :6 |  |
 | `custom-quote.service.ts` | `CustomQuoteService` | class | :21 | WO-50.4 — the custom-quote/discount-approval flow. |
+| `invoice-dunning.cron.ts` | `InvoiceDunningCron` | class | :18 | doc 153 §3 — "this pricing model is, structurally, the platform's own accounts-receivable problem",… |
 | `plans.controller.ts` | `PlansController` | class | :10 |  |
 | `plans.service.ts` | `PlansService` | class | :9 | WO-50.1/50.5 — the plan catalogue itself: create and list, each of the three pricing shapes validat… |
+| `rate-card.controller.ts` | `RateCardController` | class | :10 |  |
+| `rate-card.service.ts` | `ProposeRateCardChangeInput` | interface | :6 |  |
+| `rate-card.service.ts` | `RateCardService` | class | :30 | doc 153 WO-153.4 — the same create/approve split doc 50 §4 already established for a custom-quote d… |
 | `seat-counter.service.ts` | `SeatCounterService` | class | :37 | WO-50.2 — `countBillableSeats()`. |
+| `usage-metering.cron.ts` | `UsageMeteringCron` | class | :20 | doc 153 §2/WO-153.2's own sweep. |
+| `usage-metering.service.ts` | `PollResult` | interface | :48 |  |
+| `usage-metering.service.ts` | `UsageMeteringService` | class | :55 |  |
 
 ### `apps/platform/src/modules/billing/dto`
 
@@ -83,6 +94,8 @@ Every top-level export in `root`, with the line to open.
 | `create-plan.dto.ts` | `CreatePlanDto` | class | :12 | WO-50.1/50.5 — doc 50 §1's own three shapes, one set of fields each meaningful only for its own `pr… |
 | `credit-note.dto.ts` | `IssueCreditNoteDto` | class | :3 |  |
 | `credit-note.dto.ts` | `PreviewInvoiceDto` | class | :13 |  |
+| `rate-card.dto.ts` | `ProposeRateCardChangeDto` | class | :7 | doc 153 WO-153.4 — a proposed change to a USAGE_BASED plan's own rate card. |
+| `rate-card.dto.ts` | `RejectRateCardChangeDto` | class | :22 |  |
 | `request-quote.dto.ts` | `RequestQuoteDto` | class | :3 |  |
 | `request-quote.dto.ts` | `RejectQuoteDto` | class | :21 |  |
 

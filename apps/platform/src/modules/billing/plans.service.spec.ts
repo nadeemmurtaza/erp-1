@@ -57,4 +57,31 @@ describe('PlansService', () => {
       data: expect.objectContaining({ monthlyPriceMinor: 0, perSeatPriceMinor: 500, oneTimeLicenseMinor: null }),
     });
   });
+
+  it('requires transactionFeeBps for USAGE_BASED', async () => {
+    prisma.platformPlan.findUnique.mockResolvedValue(null);
+    await expect(
+      service.create({ key: 'usage', editionCap: 'CHAIN', includedResourceTier: 'PLUS', pricingModel: 'USAGE_BASED' }),
+    ).rejects.toThrow(BadRequestException);
+  });
+
+  it('creates a USAGE_BASED plan with only its own fields set', async () => {
+    prisma.platformPlan.findUnique.mockResolvedValue(null);
+    prisma.platformPlan.create.mockResolvedValue({ id: 'p1' });
+
+    await service.create({
+      key: 'usage', editionCap: 'CHAIN', includedResourceTier: 'PLUS', pricingModel: 'USAGE_BASED',
+      transactionFeeBps: 100, usageRateCardMinor: { messages_sent: 100 }, includedAllowances: { products: 1000 },
+    });
+
+    expect(prisma.platformPlan.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        transactionFeeBps: 100,
+        usageRateCardMinor: { messages_sent: 100 },
+        includedAllowances: { products: 1000 },
+        perSeatPriceMinor: null,
+        oneTimeLicenseMinor: null,
+      }),
+    });
+  });
 });

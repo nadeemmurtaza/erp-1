@@ -116,6 +116,24 @@ export const envSchema = z.object({
    *  unbounded: a caller cannot set `expiresAt` further out than this many
    *  hours from issuance, whatever value they request. */
   PLATFORM_SUPPORT_GRANT_MAX_HOURS: z.coerce.number().int().min(1).default(72),
+
+  /**
+   * doc 153 WO-153.4 — the same create/approve split doc 50 §4 already
+   * established for a custom-quote discount, applied here to a rate-card
+   * change on a live USAGE_BASED plan: a proposed `transactionFeeBps`
+   * change larger than this many basis points away from the plan's
+   * current value needs a second approver, never the ops client who
+   * proposed it. A business policy number, resolved through config, never
+   * a literal in `RateCardService`.
+   */
+  PLATFORM_RATE_CARD_APPROVAL_THRESHOLD_BPS: z.coerce.number().int().min(0).default(50),
+
+  /**
+   * doc 153 §3 — how many days after issuance a `PlatformInvoice` is due;
+   * set on every invoice at issue time regardless of pricing model. Feeds
+   * `PlatformInvoiceDunningCron`'s own single-reminder sweep.
+   */
+  PLATFORM_INVOICE_NET_TERMS_DAYS: z.coerce.number().int().min(1).default(15),
 });
 
 export type PlatformEnv = z.infer<typeof envSchema>;

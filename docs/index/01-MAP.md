@@ -32,14 +32,14 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 786 | 109,302 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 392 | 61,297 | documents of record — implementation plans, house rules, brand |
+| `apps/api` | 787 | 109,447 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 392 | 61,454 | documents of record — implementation plans, house rules, brand |
 | `apps/web` | 363 | 55,980 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 28,096 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 22 | 9,108 | repository checks and generators (lint gates, this index) |
+| `apps/platform` | 115 | 7,571 |  |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
 | `packages/shared` | 59 | 6,647 | brand, money, permissions, measurements, entities |
-| `apps/platform` | 104 | 5,880 |  |
 | `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
 | `.claude` | 22 | 1,017 |  |
 | `packages/pos-core` | 13 | 481 | basket, tender, receipt and outbox maths, UI-free |
@@ -123,7 +123,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`extension-points`](core/extension-points.md) | 8 |  |
 | [`health`](core/health.md) | 2 |  |
 | [`metrics`](core/metrics.md) | 4 |  |
-| [`notifications`](core/notifications.md) | 22 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |
+| [`notifications`](core/notifications.md) | 23 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |
 | [`prisma`](core/prisma.md) | 4 | Single import point for the generated Prisma client. |
 | [`replication`](core/replication.md) | 21 |  |
 | [`security`](core/security.md) | 3 |  |

@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 1760,
-    "lines": 269112,
+    "lines": 269116,
     "routes": 575,
     "controllers": 102,
     "models": 211,
@@ -27,8 +27,8 @@
     },
     "infra": {
       "files": 57,
-      "lines": 29121,
-      "bytes": 1137660,
+      "lines": 29125,
+      "bytes": 1137817,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -38074,8 +38074,8 @@
       "path": ".gitignore",
       "area": "infra",
       "kind": "file",
-      "lines": 54,
-      "bytes": 1042,
+      "lines": 58,
+      "bytes": 1199,
       "doc": "",
       "symbols": []
     },

@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 1737,
-    "lines": 265819,
+    "lines": 265803,
     "routes": 558,
     "controllers": 98,
     "models": 204,
@@ -27,8 +27,8 @@
     },
     "infra": {
       "files": 57,
-      "lines": 29137,
-      "bytes": 1138492,
+      "lines": 29121,
+      "bytes": 1137660,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -63192,8 +63192,8 @@
       "path": "pnpm-lock.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 18517,
-      "bytes": 678893,
+      "lines": 18501,
+      "bytes": 678061,
       "doc": "",
       "symbols": []
     },

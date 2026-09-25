@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **556** endpoints across **96** controllers, with the access rule that actually guards each one.
+All **580** endpoints across **103** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 65** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 68** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -49,6 +49,9 @@ never authorization.
 | GET | `/catalog/facets` | `CatalogController.facets` |
 | GET | `/catalog/products` | `CatalogController.products` |
 | GET | `/catalog/products/:slug` | `CatalogController.product` |
+| GET | `/catalog/products/:slug/frequently-bought-together` | `RecommendationsController.frequentlyBoughtTogether` |
+| GET | `/catalog/products/:slug/related` | `RecommendationsController.related` |
+| GET | `/catalog/recommendations/personalized` | `PersonalizedRecommendationsController.personalized` |
 | GET | `/catalog/redirects/lookup` | `RedirectLookupController.lookup` |
 | GET | `/catalog/stitching-services` | `CatalogController.stitchingServices` |
 | GET | `/collections` | `CollectionsController.list` |
@@ -485,7 +488,7 @@ never authorization.
 | POST | `/identity-verification/start` | signed-in | `IdentityVerificationController.start` | Start (or restart, after a rejection/expiry) identity verification |
 | POST | `/identity-verification/webhook` | **PUBLIC** | `IdentityVerificationController.webhook` | nID verification-result callback (signature-verified, not session-authenticated) |
 
-### [`inventory`](../modules/inventory.md) (16)
+### [`inventory`](../modules/inventory.md) (26)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -503,8 +506,18 @@ never authorization.
 | GET | `/admin/inventory/locations` | `inventory.manage` | `InventoryAdminController.locations` | Every real, active location — never an in-transit bucket (WO-22.1) |
 | GET | `/admin/inventory/reorder` | `inventory.manage` | `InventoryAdminController.reorder` | Reorder suggestions based on reorderPoint |
 | GET | `/admin/inventory/slow-movers` | `inventory.manage` | `InventoryAdminController.slowMovers` | Variants with zero sales in the slow mover window |
+| GET | `/admin/inventory/spot-check-policies` | `inventory.spot_checks.manage` | `SpotCheckPolicyController.list` |  |
+| POST | `/admin/inventory/spot-check-policies` | `inventory.spot_checks.manage` | `SpotCheckPolicyController.create` |  |
+| PATCH | `/admin/inventory/spot-check-policies/:id` | `inventory.spot_checks.manage` | `SpotCheckPolicyController.update` |  |
+| GET | `/admin/inventory/spot-checks` | `inventory.count` | `SpotCheckController.findAll` |  |
+| GET | `/admin/inventory/spot-checks/:id` | `inventory.count` | `SpotCheckController.findOne` |  |
+| POST | `/admin/inventory/spot-checks/:id/complete` | `inventory.count` | `SpotCheckController.complete` |  |
+| POST | `/admin/inventory/spot-checks/:id/scan` | `inventory.count` | `SpotCheckController.scan` |  |
+| POST | `/admin/inventory/spot-checks/:id/start` | `inventory.count` | `SpotCheckController.start` |  |
+| GET | `/admin/inventory/suspicious-traffic` | `analytics.view` | `SuspiciousTrafficController.report` |  |
 | GET | `/admin/inventory/variances` | `inventory.manage` | `StockVarianceController.listOpen` | Open oversells — postUnconditional() drove a location negative |
 | POST | `/admin/inventory/variances/:id/resolve` | `inventory.manage` | `StockVarianceController.resolve` | Acknowledge a variance — never reverses the shrinkage journal it already posted |
+| GET | `/admin/inventory/variances/by-shift` | `inventory.manage` | `StockVarianceController.listByShift` | Variance history attributed to the shift that had custody — 156-loss-prevention… |
 
 ### [`loyalty`](../modules/loyalty.md) (11)
 
@@ -705,7 +718,7 @@ never authorization.
 | POST | `/admin/promotions/promo-codes/bulk-generate` | `promotions.manage` | `PromotionsController.bulkGeneratePromoCodes` | Generate N codes with a shared prefix for a campaign |
 | POST | `/promotions/preview` | **PUBLIC** | `PromotionsPublicController.preview` | Preview what discounts/a promo code would do to this cart |
 
-### [`purchasing`](../modules/purchasing.md) (17)
+### [`purchasing`](../modules/purchasing.md) (24)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -714,6 +727,13 @@ never authorization.
 | GET | `/admin/purchase-orders/:id` | `purchasing.manage` | `PurchaseOrderAdminController.findOne` | Get a purchase order |
 | POST | `/admin/purchase-orders/:id/receive` | `purchasing.manage` | `PurchaseOrderAdminController.receiveGoods` | Receive goods against a purchase order |
 | POST | `/admin/purchase-orders/:id/send` | `purchasing.manage` | `PurchaseOrderAdminController.markSent` | Mark a purchase order as sent |
+| GET | `/admin/requisitions` | `purchasing.requisitions.approve` | `RequisitionController.findAll` | List requisitions — the review queue for whoever can approve them |
+| POST | `/admin/requisitions` | `purchasing.requisitions.create` | `RequisitionController.create` | Request a purchase — any staff member, not necessarily one who can raise a PO |
+| GET | `/admin/requisitions/:id` | `purchasing.requisitions.create` | `RequisitionController.findOne` | Get a requisition |
+| POST | `/admin/requisitions/:id/approve` | `purchasing.requisitions.approve` | `RequisitionController.approve` | Approve a requisition — never its own requester |
+| POST | `/admin/requisitions/:id/convert` | `purchasing.manage` | `RequisitionController.convert` | Convert an approved requisition into a real purchase order — a separate, explic… |
+| POST | `/admin/requisitions/:id/reject` | `purchasing.requisitions.approve` | `RequisitionController.reject` | Reject a requisition — terminal; the requester raises a new one, never reopens… |
+| GET | `/admin/requisitions/mine` | `purchasing.requisitions.create` | `RequisitionController.findMine` | The current user's own requisitions |
 | GET | `/admin/supplier-bills` | `purchasing.manage` | `SupplierBillAdminController.findAll` | List supplier bills, optionally filtered by supplier |
 | POST | `/admin/supplier-bills` | `purchasing.manage` | `SupplierBillAdminController.create` | Raise a bill against a supplier — distinct from the goods receipt it may relate… |
 | GET | `/admin/supplier-bills/:id` | `purchasing.manage` | `SupplierBillAdminController.findOne` | Get a supplier bill |
@@ -726,6 +746,18 @@ never authorization.
 | GET | `/admin/suppliers/:id/products` | `suppliers.manage` | `PurchasingController.getProducts` | Get products for a supplier |
 | POST | `/admin/suppliers/:id/products` | `suppliers.manage` | `PurchasingController.addProduct` | Add a product to a supplier |
 | DELETE | `/admin/suppliers/:id/products/:variantId` | `suppliers.manage` | `PurchasingController.removeProduct` | Remove a product from a supplier |
+
+### [`recommendations`](../modules/recommendations.md) (7)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/catalog/products/:id/cross-sells` | `catalog.manage` | `CrossSellAdminController.list` | WO-9.6 — every cross-sell for this product, manual and algorithmic alike |
+| POST | `/admin/catalog/products/:id/cross-sells` | `catalog.manage` | `CrossSellAdminController.add` | WO-9.6 — add (or promote to) a manual cross-sell — "a merchandiser's curated pa… |
+| DELETE | `/admin/catalog/products/:id/cross-sells/:relatedProductId` | `catalog.manage` | `CrossSellAdminController.remove` | WO-9.6 — remove a cross-sell (manual or algorithmic) |
+| PATCH | `/admin/catalog/products/:id/cross-sells/order` | `catalog.manage` | `CrossSellAdminController.reorder` | WO-9.6 — reorder this product's manual cross-sells |
+| GET | `/catalog/products/:slug/frequently-bought-together` | **PUBLIC** | `RecommendationsController.frequentlyBoughtTogether` | WO-9.6 — co-occurrence only, for the bundle widget |
+| GET | `/catalog/products/:slug/related` | **PUBLIC** | `RecommendationsController.related` | WO-9.6 — related products / "complete the look" (manual > co-occurrence > embed… |
+| GET | `/catalog/recommendations/personalized` | **PUBLIC** | `PersonalizedRecommendationsController.personalized` | WO-9.6 — "personalised homepage from browse... history", by anonymous session id |
 
 ### [`reports`](../modules/reports.md) (12)
 

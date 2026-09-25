@@ -3,7 +3,7 @@
 
 # Components
 
-All **100** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **103** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 168 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 175 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 4 |  |
 
 ### `apps/pos/src/components` (2)
@@ -41,18 +41,19 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `receipt-view.tsx` | `ReceiptView` | server | 1 |  |
 | `service-worker-registration.tsx` | `ServiceWorkerRegistration` | client | 1 |  |
 
-### `apps/web/src/components/admin` (16)
+### `apps/web/src/components/admin` (17)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `admin-shell.tsx` | `AdminShell` | client | 1 |  |
 | `command-palette.tsx` | `CommandPalette` | client | 1 |  |
+| `cross-sell-manager.tsx` | `CrossSellManager` | client | 1 |  |
 | `csv-import-card.tsx` | `CsvImportCard` | client | 2 |  |
 | `deployment-modules.tsx` | `EnabledModulesProvider` `useEnabledModules` | client | 5 |  |
 | `funnel-chart.tsx` | `FunnelStage` `FunnelChart` | client | 1 |  |
 | `gauge-chart.tsx` | `GaugeChart` | client | 2 |  |
 | `image-manager.tsx` | `ImageManager` `StagedImage` `ImageStager` `StagedImageUploadResult` `uploadStagedImages` | client | 1 |  |
-| `party-picker.tsx` | `PartySearchResult` `PartyPicker` | client | 1 |  |
+| `party-picker.tsx` | `PartySearchResult` `PartyPicker` | client | 2 |  |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | client | 2 |  |
 | `product-form.tsx` | `ProductForm` | client | 1 |  |
 | `range-picker.tsx` | `RANGES` `DASHBOARD_RANGES` `RangeDays` `RangePicker` | client | 3 |  |
@@ -119,7 +120,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 25 |  |
+| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 30 |  |
 | `toast-container.tsx` | `ToastContainer` | client | 0 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | client | 4 |  |
 
@@ -129,21 +130,22 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `dashboard-nav.tsx` | `DashboardNav` | client | 1 |  |
 
-### `apps/web/src/components/storefront` (35)
+### `apps/web/src/components/storefront` (37)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `analytics-beacon.tsx` | `AnalyticsBeacon` | client | 1 |  |
-| `animated-section.tsx` | `AnimatedSection` | client | 3 |  |
+| `animated-section.tsx` | `AnimatedSection` | client | 4 |  |
 | `auth-page.tsx` | `AuthPage` | server | 4 |  |
 | `block-renderer.tsx` | `BlockRenderer` | server | 2 |  |
 | `bottom-nav.tsx` | `BottomNav` | client | 1 |  |
 | `cart-badge.tsx` | `CartBadge` | client | 1 |  |
-| `cart-provider.tsx` | `CartProvider` `useCart` | client | 7 |  |
+| `cart-provider.tsx` | `CartProvider` `useCart` | client | 8 |  |
 | `customer-nav.tsx` | `CustomerNav` | client | 1 |  |
 | `customer-session.tsx` | `CustomerSessionProvider` `useCustomerSession` | client | 11 |  |
 | `filter-panel.tsx` | `FilterPanel` | client | 1 |  |
 | `footer.tsx` | `Footer` | server | 1 |  |
+| `frequently-bought-together.tsx` | `FrequentlyBoughtTogether` | client | 1 |  |
 | `grid-toggle-wrapper.tsx` | `GridToggleWrapper` | client | 1 |  |
 | `grid-toggle.tsx` | `GridToggle` | client | 1 |  |
 | `header.tsx` | `Header` | client | 2 |  |
@@ -153,8 +155,9 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `logo.tsx` | `Logo` | server | 2 | The "yaseen" wordmark, traced from the brand's source artwork into a single vector path. |
 | `mobile-nav.tsx` | `MobileNav` | client | 1 |  |
 | `onsite-messages.tsx` | `OnsiteMessages` | client | 1 |  |
+| `personalized-recommendations.tsx` | `PersonalizedRecommendations` | client | 1 |  |
 | `price.tsx` | `Price` | server | 3 |  |
-| `product-card.tsx` | `ProductCard` | client | 5 |  |
+| `product-card.tsx` | `ProductCard` | client | 7 |  |
 | `product-gallery.tsx` | `ProductGallery` | client | 1 |  |
 | `product-purchase.tsx` | `FabricNeedRow` `ProductPurchase` | client | 1 |  |
 | `product-reviews.tsx` | `ProductReviews` | client | 1 |  |
@@ -173,7 +176,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `badge.tsx` | `BadgeTone` `Badge` | server | 30 |  |
+| `badge.tsx` | `BadgeTone` `Badge` | server | 35 |  |
 | `button.tsx` | `ButtonProps` `Button` | server | 3 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 1 |  |
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 7 |  |
@@ -187,7 +190,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `page-header.tsx` | `PageHeader` | server | 1 |  |
 | `pagination.tsx` | `PaginationMeta` `Pagination` | server | 1 |  |
 | `section-rail.tsx` | `RailSection` `SectionRail` | client | 1 |  |
-| `section.tsx` | `Section` | server | 4 |  |
+| `section.tsx` | `Section` | server | 5 |  |
 | `tabs.tsx` | `TabItem` `Tabs` | client | 1 |  |
 
 

@@ -2,13 +2,21 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { computeFabricEstimate, type Locale } from '@newax/shared';
+import { FrequentlyBoughtTogether } from '@/components/storefront/frequently-bought-together';
 import { JsonLd } from '@/components/storefront/json-ld';
+import { ProductCard } from '@/components/storefront/product-card';
 import { ProductGallery } from '@/components/storefront/product-gallery';
 import { ProductPurchase, type FabricNeedRow } from '@/components/storefront/product-purchase';
 import { ProductReviews } from '@/components/storefront/product-reviews';
 import { businessProfile } from '@/config/business-profile';
 import { Link } from '@/i18n/navigation';
-import { ApiError, getProduct, getStitchingServices } from '@/lib/api';
+import {
+  ApiError,
+  getFrequentlyBoughtTogether,
+  getProduct,
+  getRelatedProducts,
+  getStitchingServices,
+} from '@/lib/api';
 import { request } from '@/lib/api-client';
 import type { StorefrontProduct } from '@/types/api';
 import type { StitchingGarment } from '@/types/cart';
@@ -155,11 +163,15 @@ export default async function ProductPage({ params }: PageProps) {
   // garmentTypes (they use the single serviceGarment field instead).
   const needsSizeChart = product.garmentTypes.length > 0;
 
-  const [services, allStitchingGarments] = await Promise.all([
+  const [services, allStitchingGarments, related, frequentlyBoughtTogether] = await Promise.all([
     product.stitchingAvailable
       ? stitchingServicesFor(product.garmentTypes.map((garment) => garment.key), locale)
       : Promise.resolve([]),
     needsSizeChart ? fetchStitchingGarments() : Promise.resolve([]),
+    // WO-9.6 — best-effort: a recommendations hiccup must never break the
+    // product page itself.
+    getRelatedProducts(slug, locale).catch(() => ({ products: [], hasManualCuration: false })),
+    getFrequentlyBoughtTogether(slug, locale).catch(() => []),
   ]);
 
   // Narrow the full garment catalogue down to just the ones attached to this
@@ -274,6 +286,23 @@ export default async function ProductPage({ params }: PageProps) {
           ) : null}
         </div>
       </div>
+
+      {frequentlyBoughtTogether.length > 0 ? (
+        <FrequentlyBoughtTogether anchor={product} items={frequentlyBoughtTogether} />
+      ) : null}
+
+      {related.products.length > 0 ? (
+        <section className="mt-12 border-t border-neutral-100 pt-8">
+          <h2 className="font-display text-xl font-semibold text-neutral-900">
+            {related.hasManualCuration ? t('completeTheLook') : t('youMayAlsoLike')}
+          </h2>
+          <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
+            {related.products.map((item) => (
+              <ProductCard key={item.id} product={item} locale={locale as Locale} />
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <ProductReviews productId={product.id} />
     </div>

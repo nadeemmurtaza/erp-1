@@ -2803,14 +2803,14 @@ _no second-level headings_
 - Acceptance  <sub>:91</sub>
 - Out of scope  <sub>:102</sub>
 
-### `docs/implementation/finance-accounting/68-realtime-gross-profit.md`  <sub>178 lines</sub>
+### `docs/implementation/finance-accounting/68-realtime-gross-profit.md`  <sub>191 lines</sub>
 
-- 1. The fix is one more publish, at the point POS already knows it happened  <sub>:26</sub>
-- 2. "Per transaction and per day" is then a read over rows that now exist  <sub>:48</sub>
-- Scope lenses  <sub>:70</sub>
-- Work orders  <sub>:135</sub>
-- Acceptance  <sub>:156</sub>
-- Out of scope  <sub>:169</sub>
+- 1. The fix is one more publish, at the point POS already knows it happened  <sub>:39</sub>
+- 2. "Per transaction and per day" is then a read over rows that now exist  <sub>:61</sub>
+- Scope lenses  <sub>:83</sub>
+- Work orders  <sub>:148</sub>
+- Acceptance  <sub>:169</sub>
+- Out of scope  <sub>:182</sub>
 
 ### `docs/implementation/hr-people-org/19-org-structure-offices-departments.md`  <sub>250 lines</sub>
 
@@ -3117,27 +3117,27 @@ _no second-level headings_
 - WO-1.9 — Reports  <sub>:905</sub>
 - Phase 1 exit criteria  <sub>:922</sub>
 
-### `docs/implementation/inventory-purchasing/152-purchase-requisition.md`  <sub>190 lines</sub>
+### `docs/implementation/inventory-purchasing/152-purchase-requisition.md`  <sub>222 lines</sub>
 
-- 1. A requisition is a request to buy; a PO is the resulting commitment — never the same row wearing two hats  <sub>:15</sub>
-- 2. Approval reuses doc 63's own generic chain, never a bespoke requisition-approval mechanism  <sub>:45</sub>
-- Scope lenses  <sub>:67</sub>
-- Work orders  <sub>:157</sub>
-- Acceptance  <sub>:172</sub>
-- Out of scope  <sub>:182</sub>
+- 1. A requisition is a request to buy; a PO is the resulting commitment — never the same row wearing two hats  <sub>:47</sub>
+- 2. Approval reuses doc 63's own generic chain, never a bespoke requisition-approval mechanism  <sub>:77</sub>
+- Scope lenses  <sub>:99</sub>
+- Work orders  <sub>:189</sub>
+- Acceptance  <sub>:204</sub>
+- Out of scope  <sub>:214</sub>
 
-### `docs/implementation/inventory-purchasing/156-single-employee-branch-loss-prevention.md`  <sub>287 lines</sub>
+### `docs/implementation/inventory-purchasing/156-single-employee-branch-loss-prevention.md`  <sub>308 lines</sub>
 
-- What already exists, cited rather than re-specified  <sub>:15</sub>
-- The three real gaps found, checked against the actual code  <sub>:39</sub>
-- 1. Link a variance to the shift that had custody — accountability, not just detection  <sub>:66</sub>
-- 2. Close the self-resolution gap — the toxic pair this repository already refuses everywhere else  <sub>:94</sub>
-- 3. Unpredictable spot-checks — shrinking the window from a month to days, and removing the "safe day"  <sub>:117</sub>
-- 4. Camera-count vs. transaction-count — a real, new correlation this repository's own existing pieces already make possible  <sub>:150</sub>
-- Scope lenses  <sub>:171</sub>
-- Work orders  <sub>:242</sub>
-- Acceptance  <sub>:262</sub>
-- Out of scope  <sub>:275</sub>
+- What already exists, cited rather than re-specified  <sub>:36</sub>
+- The three real gaps found, checked against the actual code  <sub>:60</sub>
+- 1. Link a variance to the shift that had custody — accountability, not just detection  <sub>:87</sub>
+- 2. Close the self-resolution gap — the toxic pair this repository already refuses everywhere else  <sub>:115</sub>
+- 3. Unpredictable spot-checks — shrinking the window from a month to days, and removing the "safe day"  <sub>:138</sub>
+- 4. Camera-count vs. transaction-count — a real, new correlation this repository's own existing pieces already make possible  <sub>:171</sub>
+- Scope lenses  <sub>:192</sub>
+- Work orders  <sub>:263</sub>
+- Acceptance  <sub>:283</sub>
+- Out of scope  <sub>:296</sub>
 
 ### `docs/implementation/inventory-purchasing/17-inventory-locations.md`  <sub>254 lines</sub>
 

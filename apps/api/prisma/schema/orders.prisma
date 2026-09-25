@@ -100,14 +100,14 @@ model Order {
   /// WO-9.4 — computed synchronously at place(), COD orders only (a paid
   /// order has already cleared, RTO risk does not apply). Null for every
   /// non-COD order, and for a COD order placed before this existed.
-  codRiskScore       Int?
-  codRiskAction      CodRiskAction?
-  codRiskComputedAt  DateTime?
+  codRiskScore      Int?
+  codRiskAction     CodRiskAction?
+  codRiskComputedAt DateTime?
   /// The single dominant reason CodRiskService picked codRiskAction — "start
   /// with a transparent rule-based score. It is explainable to staff" (the
   /// doc's own words). Staff-facing only, same as VariantForecast.reasonEn
   /// (WO-9.3); never shown to the customer.
-  codRiskReasonEn    String?
+  codRiskReasonEn   String?
 
   user                    User?                    @relation(fields: [userId], references: [id], onDelete: SetNull)
   contact                 Contact?                 @relation(fields: [contactId], references: [id], onDelete: SetNull)

@@ -3,7 +3,7 @@
 
 # Tests
 
-**183** spec files, **1,681** cases. What is already pinned down — and what is not.
+**189** spec files, **1,751** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -55,12 +55,13 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (165)
+## Unit and integration (171)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
 | `apps/api/src/core/action-hub/action-hub-registry.service.spec.ts` | core/action-hub | 6 | ActionHubRegistryService |
 | `apps/api/src/core/ai/ai.service.spec.ts` | core/ai | 16 | AiService · isAvailable · no provider configured · complete · embed · underBudget · monthToDateSpen… |
+| `apps/api/src/core/approvals/approval.service.spec.ts` | core/approvals | 11 | ApprovalService — 63-multi-tier-approval-hierarchies.md, scoped to PURCHASE_REQUISITION · start · d… |
 | `apps/api/src/core/auth/auth.service.spec.ts` | core/auth | 2 | parseDuration |
 | `apps/api/src/core/auth/ownership.guard.spec.ts` | core/auth | 5 | assertCanManage |
 | `apps/api/src/core/auth/permissions.service.spec.ts` | core/auth | 6 | PermissionsResolverService.resolveForUser |
@@ -133,12 +134,14 @@ regression or an N+1.
 | `apps/api/src/modules/fulfilment/returns.spec.ts` | fulfilment | 4 | ReturnsService |
 | `apps/api/src/modules/fulfilment/shipping-migration.spec.ts` | fulfilment | 9 | ShippingService — migrated zones produce the old fees · computeRateFee — pure logic |
 | `apps/api/src/modules/identity-verification/providers/nid-callback-verification.spec.ts` | identity-verification | 6 | nID webhook signature verification |
-| `apps/api/src/modules/inventory/inventory.cron.spec.ts` | inventory | 2 | InventoryCron |
+| `apps/api/src/modules/inventory/inventory.cron.spec.ts` | inventory | 5 | InventoryCron · maybeTriggerSpotCheck — 156-single-employee-branch-loss-prevention.md |
 | `apps/api/src/modules/inventory/inventory.listener.spec.ts` | inventory | 1 | InventoryListener |
 | `apps/api/src/modules/inventory/inventory.metrics.spec.ts` | inventory | 4 | InventoryMetricsProvider · InventoryValuationMetricsProvider |
-| `apps/api/src/modules/inventory/inventory.service.spec.ts` | inventory | 14 | InventoryService — locations (B6) · InventoryService — postUnconditional (R5 oversell) · InventoryS… |
+| `apps/api/src/modules/inventory/inventory.service.spec.ts` | inventory | 16 | InventoryService — locations (B6) · InventoryService — postUnconditional (R5 oversell) · shift attr… |
+| `apps/api/src/modules/inventory/spot-check.service.spec.ts` | inventory | 10 | SpotCheckService — 156-single-employee-branch-loss-prevention.md §3 · dueForRandomCheck — the unpre… |
 | `apps/api/src/modules/inventory/stock-count.service.spec.ts` | inventory | 1 | StockCountService |
-| `apps/api/src/modules/inventory/stock-variance.service.spec.ts` | inventory | 4 | StockVarianceService — WO-21.3 · resolve |
+| `apps/api/src/modules/inventory/stock-variance.service.spec.ts` | inventory | 9 | StockVarianceService — WO-21.3 · resolve · listByShift |
+| `apps/api/src/modules/inventory/suspicious-traffic.service.spec.ts` | inventory | 5 | SuspiciousTrafficService — 156-single-employee-branch-loss-prevention.md §4 |
 | `apps/api/src/modules/marketing/campaigns.service.spec.ts` | marketing | 4 | CampaignsService |
 | `apps/api/src/modules/marketing/marketing-automation.cron.spec.ts` | marketing | 19 | MarketingAutomationCron · sendAbandonedCartReminders · sendAbandonedCartFirstTouch · sendAbandonedC… |
 | `apps/api/src/modules/measurements/garment-fields-seed.spec.ts` | measurements | 1 | seeded measurement fields satisfy MeasurementFieldDto |
@@ -150,7 +153,7 @@ regression or an N+1.
 | `apps/api/src/modules/orders/cod-risk.cron.spec.ts` | orders | 4 | CodRiskCron |
 | `apps/api/src/modules/orders/cod-risk.service.spec.ts` | orders | 7 | CodRiskService |
 | `apps/api/src/modules/orders/order-replication.listener.spec.ts` | orders | 3 | OrderReplicationListener — WO-20.4 · onModuleInit · onOrderPlaced |
-| `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 6 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ |
+| `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 7 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ |
 | `apps/api/src/modules/organization/nodes.service.spec.ts` | organization | 9 | NodesService · rotateInboundKey |
 | `apps/api/src/modules/organization/organization.service.spec.ts` | organization | 51 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setI… |
 | `apps/api/src/modules/parties/parties.service.spec.ts` | parties | 7 | PartiesService · get · dedupeCandidate · findOrCreateForRole · search |
@@ -174,7 +177,10 @@ regression or an N+1.
 | `apps/api/src/modules/purchasing/purchasing.metrics.spec.ts` | purchasing | 4 | PurchasingMetricsProvider · PurchasingSpendMetricsProvider |
 | `apps/api/src/modules/purchasing/purchasing.spec.ts` | purchasing | 10 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR… |
 | `apps/api/src/modules/purchasing/reorder.listener.spec.ts` | purchasing | 9 | PurchasingReorderListener |
+| `apps/api/src/modules/purchasing/requisition.service.spec.ts` | purchasing | 13 | RequisitionService — 152-purchase-requisition.md · create · approve / reject — the toxic-pair refus… |
 | `apps/api/src/modules/purchasing/supplier-bill.spec.ts` | purchasing | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
+| `apps/api/src/modules/recommendations/recommendations.cron.spec.ts` | recommendations | 6 | RecommendationsCron |
+| `apps/api/src/modules/recommendations/recommendations.service.spec.ts` | recommendations | 14 | RecommendationsService · relatedFor · frequentlyBoughtWith · manual cross-sell curation (admin) · p… |
 | `apps/api/src/modules/reports/reports-finance-exports.spec.ts` | reports | 4 | ReportsService finance exports |
 | `apps/api/src/modules/reviews/reviews.service.spec.ts` | reviews | 3 | ReviewsService — moderate |
 | `apps/api/src/modules/search/search-embedding.cron.spec.ts` | search | 2 | SearchEmbeddingCron |

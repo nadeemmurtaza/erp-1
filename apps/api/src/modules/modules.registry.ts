@@ -27,6 +27,7 @@ import { PosModule } from './pos/pos.module';
 import { ProductionModule } from './production/production.module';
 import { PromotionsModule } from './promotions/promotions.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
+import { RecommendationsModule } from './recommendations/recommendations.module';
 import { ReportsModule } from './reports/reports.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { SearchModule } from './search/search.module';
@@ -114,6 +115,10 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'reviews', module: ReviewsModule },
   { name: 'wishlist', module: WishlistModule },
   { name: 'loyalty', module: LoyaltyModule },
+  // WO-9.6 (09-ai-layer.md) — reads ProductTranslation.embedding (WO-9.5)
+  // and OrderItem directly via Prisma, never a service import, same
+  // INDEPENDENCE pattern as every other cross-module read in this codebase.
+  { name: 'recommendations', module: RecommendationsModule },
   { name: 'notification-preferences', module: NotificationPreferencesModule },
   { name: 'tracking', module: TrackingModule },
   // Off by default for every deployment today (WO-18.3) — a chain

@@ -66,6 +66,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `AnalyticsReportPage` | default | :16 | One catch-all route for every analytics detail page (10-admin-dashboard.md D3) — the slug is looked… |
 
+### `apps/web/src/app/(admin)/admin/(app)/analytics/suspicious-traffic`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `SuspiciousTrafficPage` | default | :16 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]`
 
 | File | Symbol | Kind | Line | Doc |
@@ -368,6 +374,24 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `SlowMoversPage` | default | :25 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `SpotChecksPage` | default | :28 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `SpotCheckDetailPage` | default | :17 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/inventory/variances/by-shift`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `VariancesByShiftPage` | default | :20 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/wishlisted`
 
 | File | Symbol | Kind | Line | Doc |
@@ -556,6 +580,24 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `AdminReportsPage` | default | :75 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/requisitions`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `RequisitionsPage` | default | :21 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/requisitions/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `RequisitionDetailPage` | default | :24 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/requisitions/new`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `NewRequisitionPage` | default | :27 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/reviews`
 
 | File | Symbol | Kind | Line | Doc |
@@ -697,9 +739,9 @@ Every top-level export in `web`, with the line to open.
 | `layout.tsx` | `LocaleLayout` | default | :133 |  |
 | `loading.tsx` | `Loading` | default | :1 |  |
 | `not-found.tsx` | `StorefrontNotFound` | default | :12 | Storefront 404. |
-| `page.tsx` | `revalidate` | const | :12 |  |
-| `page.tsx` | `generateMetadata` | function | :14 |  |
-| `page.tsx` | `HomePage` | default | :32 |  |
+| `page.tsx` | `revalidate` | const | :13 |  |
+| `page.tsx` | `generateMetadata` | function | :15 |  |
+| `page.tsx` | `HomePage` | default | :33 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)`
 
@@ -901,9 +943,9 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `loading.tsx` | `Loading` | default | :1 |  |
-| `page.tsx` | `revalidate` | const | :19 |  |
-| `page.tsx` | `generateMetadata` | function | :34 |  |
-| `page.tsx` | `ProductPage` | default | :134 |  |
+| `page.tsx` | `revalidate` | const | :27 |  |
+| `page.tsx` | `generateMetadata` | function | :42 |  |
+| `page.tsx` | `ProductPage` | default | :142 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/register`
 
@@ -984,6 +1026,7 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `admin-shell.tsx` | `AdminShell` | function | :34 | The back office frame: role guard, sidebar and header. |
 | `command-palette.tsx` | `CommandPalette` | function | :97 |  |
+| `cross-sell-manager.tsx` | `CrossSellManager` | function | :22 | WO-9.6 (09-ai-layer.md) — "always leave the manual override in place": a merchandiser's own picks (… |
 | `csv-import-card.tsx` | `CsvImportCard` | function | :29 | Shared upload/preview/commit card for the CSV importers (admin-platform/72-fragmented-tool-consolid… |
 | `deployment-modules.tsx` | `EnabledModulesProvider` | const | :7 |  |
 | `deployment-modules.tsx` | `useEnabledModules` | function | :18 | Which API modules `GET /meta` reported for this deployment — the same value `AdminShell` already fe… |
@@ -1000,12 +1043,12 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :55 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :78 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :118 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :752 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :767 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :782 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :797 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
-| `product-form.tsx` | `ProductForm` | function | :79 | One editor for all three product kinds. |
+| `product-form.tsx` | `ProductForm` | function | :80 | One editor for all three product kinds. |
 | `range-picker.tsx` | `RANGES` | const | :6 | The windows every analytics screen offers. |
 | `range-picker.tsx` | `DASHBOARD_RANGES` | const | :8 | The dashboard's own fourth option (10-admin-dashboard.md WO-A.4) — a year view nothing else here ne… |
 | `range-picker.tsx` | `RangeDays` | type | :9 | The dashboard's own fourth option (10-admin-dashboard.md WO-A.4) — a year view nothing else here ne… |
@@ -1155,6 +1198,7 @@ Every top-level export in `web`, with the line to open.
 | `customer-session.tsx` | `useCustomerSession` | function | :33 |  |
 | `filter-panel.tsx` | `FilterPanel` | function | :21 | Filters are held in the URL rather than component state, so a filtered listing is shareable, surviv… |
 | `footer.tsx` | `Footer` | function | :24 |  |
+| `frequently-bought-together.tsx` | `FrequentlyBoughtTogether` | function | :29 | WO-9.6 — "Frequently bought together — co-occurrence in OrderItem, no AI needed at all." A distinct… |
 | `grid-toggle-wrapper.tsx` | `GridToggleWrapper` | function | :10 |  |
 | `grid-toggle.tsx` | `GridToggle` | function | :16 |  |
 | `header.tsx` | `Header` | function | :38 |  |
@@ -1164,6 +1208,7 @@ Every top-level export in `web`, with the line to open.
 | `logo.tsx` | `Logo` | function | :24 |  |
 | `mobile-nav.tsx` | `MobileNav` | function | :17 |  |
 | `onsite-messages.tsx` | `OnsiteMessages` | function | :37 | WO-8.6 — the storefront half of on-site messaging. |
+| `personalized-recommendations.tsx` | `PersonalizedRecommendations` | function | :28 | WO-9.6 (09-ai-layer.md) — "Personalised homepage from browse... |
 | `price.tsx` | `Price` | function | :25 | Renders a price. |
 | `product-card.tsx` | `ProductCard` | function | :22 |  |
 | `product-gallery.tsx` | `ProductGallery` | function | :21 |  |
@@ -1289,14 +1334,16 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `apiFetch` | function | :36 | Storefront fetch. |
 | `api.ts` | `getProducts` | function | :61 |  |
 | `api.ts` | `getProduct` | function | :119 |  |
-| `api.ts` | `getCategories` | function | :123 |  |
-| `api.ts` | `getFacets` | function | :127 |  |
-| `api.ts` | `getStitchingServices` | function | :131 |  |
-| `api.ts` | `getBanners` | function | :143 | Active banners for one placement — see BANNER_PLACEMENTS in @newax/shared. |
-| `api.ts` | `getPage` | function | :147 |  |
-| `api.ts` | `getPosts` | function | :151 |  |
-| `api.ts` | `getPost` | function | :159 |  |
-| `api.ts` | `getMenu` | function | :164 | A named footer menu slot — see MENU_KEYS in @newax/shared. |
+| `api.ts` | `getRelatedProducts` | function | :138 | WO-9.6 — manual cross-sell links first, then co-occurrence, then embedding similarity; hasManualCur… |
+| `api.ts` | `getFrequentlyBoughtTogether` | function | :149 | WO-9.6 — co-occurrence only ("customers who bought this also bought…"), for the bundle widget. |
+| `api.ts` | `getCategories` | function | :156 |  |
+| `api.ts` | `getFacets` | function | :160 |  |
+| `api.ts` | `getStitchingServices` | function | :164 |  |
+| `api.ts` | `getBanners` | function | :176 | Active banners for one placement — see BANNER_PLACEMENTS in @newax/shared. |
+| `api.ts` | `getPage` | function | :180 |  |
+| `api.ts` | `getPosts` | function | :184 |  |
+| `api.ts` | `getPost` | function | :192 |  |
+| `api.ts` | `getMenu` | function | :197 | A named footer menu slot — see MENU_KEYS in @newax/shared. |
 | `cart-client.ts` | `getCustomerToken` | function | :19 |  |
 | `cart-client.ts` | `fetchCart` | function | :46 |  |
 | `cart-client.ts` | `AddToCartInput` | interface | :50 |  |
@@ -1471,6 +1518,8 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `ActionItem` | interface | :1320 | `GET /admin/action-hub` (admin-platform/44-manager-action-hub.md D2). |
 | `api.ts` | `ActionHubResponse` | interface | :1331 |  |
 | `api.ts` | `CmsMenuLink` | interface | :1337 |  |
+| `api.ts` | `ProductCrossSellKind` | type | :1345 | ProductCrossSell.kind (WO-9.6) — "MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read t… |
+| `api.ts` | `ProductCrossSellRow` | interface | :1347 | ProductCrossSell.kind (WO-9.6) — "MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read t… |
 | `cart.ts` | `CartStitching` | interface | :5 | Shapes returned by the cart endpoints. |
 | `cart.ts` | `CartLine` | interface | :18 |  |
 | `cart.ts` | `Cart` | interface | :37 |  |

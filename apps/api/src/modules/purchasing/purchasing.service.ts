@@ -241,7 +241,14 @@ export class PurchasingService {
     return { deleted: true };
   }
 
-  async createPurchaseOrder(dto: CreatePurchaseOrderDto, userId: string) {
+  /**
+   * `tx` lets a caller that already opened its own transaction (e.g.
+   * RequisitionService.convertToPurchaseOrder(), which must create this PO
+   * and claim the requisition atomically — "the second copy of the write"
+   * lens) compose into it instead of opening a second, unrelated one.
+   * Without one, this method opens its own, exactly as before.
+   */
+  async createPurchaseOrder(dto: CreatePurchaseOrderDto, userId: string, tx?: Prisma.TransactionClient) {
     const scopeLevel = dto.scopeLevel ?? 'BRAND';
     if (scopeLevel === 'BRANCH' && !(await this.branchPolicy.allowsBranchLocalPurchasing(userId))) {
       throw new ForbiddenException(
@@ -249,15 +256,15 @@ export class PurchasingService {
       );
     }
 
-    return this.prisma.$transaction(async (tx) => {
-      const number = await nextPONumber(tx, this.settingsService, this.config);
+    const run = async (t: Prisma.TransactionClient) => {
+      const number = await nextPONumber(t, this.settingsService, this.config);
       const subtotal = dto.items.reduce((sum, item) => sum + (item.quantityOrdered * item.unitCost), 0);
       const freightCost = dto.freightCost ?? 0;
       const dutyCost = dto.dutyCost ?? 0;
       const otherCost = dto.otherCost ?? 0;
       const total = subtotal + freightCost + dutyCost + otherCost;
 
-      return tx.purchaseOrder.create({
+      return t.purchaseOrder.create({
         data: {
           number,
           supplierId: dto.supplierId,
@@ -283,7 +290,9 @@ export class PurchasingService {
           },
         },
       });
-    });
+    };
+
+    return tx ? run(tx) : this.prisma.$transaction(run);
   }
 
   async markPurchaseOrderSent(id: string) {

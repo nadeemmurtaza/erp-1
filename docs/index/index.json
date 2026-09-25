@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1744,
-    "lines": 266208,
-    "routes": 556,
-    "controllers": 96,
-    "models": 204,
-    "enums": 88,
-    "migrations": 68,
-    "events": 46,
-    "permissions": 65,
-    "screens": 204,
-    "crons": 15,
-    "specs": 183,
+    "files": 1777,
+    "lines": 270948,
+    "routes": 580,
+    "controllers": 103,
+    "models": 211,
+    "enums": 93,
+    "migrations": 69,
+    "events": 48,
+    "permissions": 68,
+    "screens": 211,
+    "crons": 17,
+    "specs": 189,
     "designLaws": 0
   },
   "designLaws": [],
@@ -27,14 +27,14 @@
     },
     "infra": {
       "files": 57,
-      "lines": 29137,
-      "bytes": 1138444,
+      "lines": 29125,
+      "bytes": 1137817,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 713,
-      "lines": 98393,
-      "bytes": 3648453,
+      "files": 736,
+      "lines": 101376,
+      "bytes": 3772604,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 340,
-      "lines": 51477,
-      "bytes": 1866440,
+      "files": 350,
+      "lines": 53152,
+      "bytes": 1926206,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 392,
-      "lines": 60416,
-      "bytes": 3580601,
+      "lines": 60482,
+      "bytes": 3584674,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 74,
-      "lines": 6968,
-      "bytes": 240654,
+      "lines": 6996,
+      "bytes": 241471,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -397,14 +397,20 @@
         "apps/api/src/modules/inventory/inventory.module.ts",
         "apps/api/src/modules/inventory/inventory.service.spec.ts",
         "apps/api/src/modules/inventory/inventory.service.ts",
+        "apps/api/src/modules/inventory/spot-check.controller.ts",
+        "apps/api/src/modules/inventory/spot-check.service.spec.ts",
+        "apps/api/src/modules/inventory/spot-check.service.ts",
         "apps/api/src/modules/inventory/stock-count.controller.ts",
         "apps/api/src/modules/inventory/stock-count.service.spec.ts",
         "apps/api/src/modules/inventory/stock-count.service.ts",
         "apps/api/src/modules/inventory/stock-variance.controller.ts",
         "apps/api/src/modules/inventory/stock-variance.service.spec.ts",
-        "apps/api/src/modules/inventory/stock-variance.service.ts"
+        "apps/api/src/modules/inventory/stock-variance.service.ts",
+        "apps/api/src/modules/inventory/suspicious-traffic.controller.ts",
+        "apps/api/src/modules/inventory/suspicious-traffic.service.spec.ts",
+        "apps/api/src/modules/inventory/suspicious-traffic.service.ts"
       ],
-      "routes": 16,
+      "routes": 26,
       "page": "docs/index/modules/inventory.md"
     },
     {
@@ -681,6 +687,7 @@
       "inRegistry": true,
       "files": [
         "apps/api/src/modules/purchasing/dto/purchase-order.dto.ts",
+        "apps/api/src/modules/purchasing/dto/requisition.dto.ts",
         "apps/api/src/modules/purchasing/dto/supplier-bill.dto.ts",
         "apps/api/src/modules/purchasing/dto/supplier.dto.ts",
         "apps/api/src/modules/purchasing/goods-receipt-replication.listener.spec.ts",
@@ -695,10 +702,30 @@
         "apps/api/src/modules/purchasing/purchasing.spec.ts",
         "apps/api/src/modules/purchasing/reorder.listener.spec.ts",
         "apps/api/src/modules/purchasing/reorder.listener.ts",
+        "apps/api/src/modules/purchasing/requisition.controller.ts",
+        "apps/api/src/modules/purchasing/requisition.service.spec.ts",
+        "apps/api/src/modules/purchasing/requisition.service.ts",
         "apps/api/src/modules/purchasing/supplier-bill.spec.ts"
       ],
-      "routes": 17,
+      "routes": 24,
       "page": "docs/index/modules/purchasing.md"
+    },
+    {
+      "name": "recommendations",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/recommendations/dto/recommendations.dto.ts",
+        "apps/api/src/modules/recommendations/recommendations.controller.ts",
+        "apps/api/src/modules/recommendations/recommendations.cron.spec.ts",
+        "apps/api/src/modules/recommendations/recommendations.cron.ts",
+        "apps/api/src/modules/recommendations/recommendations.module.ts",
+        "apps/api/src/modules/recommendations/recommendations.service.spec.ts",
+        "apps/api/src/modules/recommendations/recommendations.service.ts"
+      ],
+      "routes": 7,
+      "page": "docs/index/modules/recommendations.md"
     },
     {
       "name": "reports",
@@ -919,6 +946,15 @@
       "page": "docs/index/core/ai.md"
     },
     {
+      "name": "approvals",
+      "files": [
+        "apps/api/src/core/approvals/approval.service.spec.ts",
+        "apps/api/src/core/approvals/approval.service.ts",
+        "apps/api/src/core/approvals/approvals.module.ts"
+      ],
+      "page": "docs/index/core/approvals.md"
+    },
+    {
       "name": "audit",
       "files": [
         "apps/api/src/core/audit/audit.module.ts",
@@ -1008,6 +1044,7 @@
       "files": [
         "apps/api/src/core/extension-points/branch-policy.registry.spec.ts",
         "apps/api/src/core/extension-points/branch-policy.registry.ts",
+        "apps/api/src/core/extension-points/camera-people-count.registry.ts",
         "apps/api/src/core/extension-points/cart-line-validator.registry.ts",
         "apps/api/src/core/extension-points/entity-enrichment.registry.ts",
         "apps/api/src/core/extension-points/extension-points.module.ts",
@@ -2773,6 +2810,70 @@
       "public": false,
       "authOnly": false,
       "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/catalog/products/:id/cross-sells",
+      "module": "recommendations",
+      "controller": "CrossSellAdminController",
+      "handler": "list",
+      "file": "apps/api/src/modules/recommendations/recommendations.controller.ts",
+      "line": 47,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "WO-9.6 — every cross-sell for this product, manual and algorithmic alike"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/products/:id/cross-sells",
+      "module": "recommendations",
+      "controller": "CrossSellAdminController",
+      "handler": "add",
+      "file": "apps/api/src/modules/recommendations/recommendations.controller.ts",
+      "line": 53,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "WO-9.6 — add (or promote to) a manual cross-sell — \"a merchandiser's curated pairing beats the algorithm\""
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/catalog/products/:id/cross-sells/:relatedProductId",
+      "module": "recommendations",
+      "controller": "CrossSellAdminController",
+      "handler": "remove",
+      "file": "apps/api/src/modules/recommendations/recommendations.controller.ts",
+      "line": 65,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "WO-9.6 — remove a cross-sell (manual or algorithmic)"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/catalog/products/:id/cross-sells/order",
+      "module": "recommendations",
+      "controller": "CrossSellAdminController",
+      "handler": "reorder",
+      "file": "apps/api/src/modules/recommendations/recommendations.controller.ts",
+      "line": 59,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "WO-9.6 — reorder this product's manual cross-sells"
     },
     {
       "method": "POST",
@@ -4904,6 +5005,150 @@
     },
     {
       "method": "GET",
+      "path": "/admin/inventory/spot-check-policies",
+      "module": "inventory",
+      "controller": "SpotCheckPolicyController",
+      "handler": "list",
+      "file": "apps/api/src/modules/inventory/spot-check.controller.ts",
+      "line": 15,
+      "access": "inventory.spot_checks.manage",
+      "permissions": [
+        "inventory.spot_checks.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/inventory/spot-check-policies",
+      "module": "inventory",
+      "controller": "SpotCheckPolicyController",
+      "handler": "create",
+      "file": "apps/api/src/modules/inventory/spot-check.controller.ts",
+      "line": 21,
+      "access": "inventory.spot_checks.manage",
+      "permissions": [
+        "inventory.spot_checks.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/inventory/spot-check-policies/:id",
+      "module": "inventory",
+      "controller": "SpotCheckPolicyController",
+      "handler": "update",
+      "file": "apps/api/src/modules/inventory/spot-check.controller.ts",
+      "line": 27,
+      "access": "inventory.spot_checks.manage",
+      "permissions": [
+        "inventory.spot_checks.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/inventory/spot-checks",
+      "module": "inventory",
+      "controller": "SpotCheckController",
+      "handler": "findAll",
+      "file": "apps/api/src/modules/inventory/spot-check.controller.ts",
+      "line": 40,
+      "access": "inventory.count",
+      "permissions": [
+        "inventory.count"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/inventory/spot-checks/:id",
+      "module": "inventory",
+      "controller": "SpotCheckController",
+      "handler": "findOne",
+      "file": "apps/api/src/modules/inventory/spot-check.controller.ts",
+      "line": 46,
+      "access": "inventory.count",
+      "permissions": [
+        "inventory.count"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/inventory/spot-checks/:id/complete",
+      "module": "inventory",
+      "controller": "SpotCheckController",
+      "handler": "complete",
+      "file": "apps/api/src/modules/inventory/spot-check.controller.ts",
+      "line": 64,
+      "access": "inventory.count",
+      "permissions": [
+        "inventory.count"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/inventory/spot-checks/:id/scan",
+      "module": "inventory",
+      "controller": "SpotCheckController",
+      "handler": "scan",
+      "file": "apps/api/src/modules/inventory/spot-check.controller.ts",
+      "line": 58,
+      "access": "inventory.count",
+      "permissions": [
+        "inventory.count"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/inventory/spot-checks/:id/start",
+      "module": "inventory",
+      "controller": "SpotCheckController",
+      "handler": "start",
+      "file": "apps/api/src/modules/inventory/spot-check.controller.ts",
+      "line": 52,
+      "access": "inventory.count",
+      "permissions": [
+        "inventory.count"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/inventory/suspicious-traffic",
+      "module": "inventory",
+      "controller": "SuspiciousTrafficController",
+      "handler": "report",
+      "file": "apps/api/src/modules/inventory/suspicious-traffic.controller.ts",
+      "line": 13,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
       "path": "/admin/inventory/variances",
       "module": "inventory",
       "controller": "StockVarianceController",
@@ -4925,7 +5170,7 @@
       "controller": "StockVarianceController",
       "handler": "resolve",
       "file": "apps/api/src/modules/inventory/stock-variance.controller.ts",
-      "line": 22,
+      "line": 28,
       "access": "inventory.manage",
       "permissions": [
         "inventory.manage"
@@ -4933,6 +5178,22 @@
       "public": false,
       "authOnly": false,
       "summary": "Acknowledge a variance — never reverses the shrinkage journal it already posted"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/inventory/variances/by-shift",
+      "module": "inventory",
+      "controller": "StockVarianceController",
+      "handler": "listByShift",
+      "file": "apps/api/src/modules/inventory/stock-variance.controller.ts",
+      "line": 22,
+      "access": "inventory.manage",
+      "permissions": [
+        "inventory.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Variance history attributed to the shift that had custody — 156-loss-prevention.md"
     },
     {
       "method": "GET",
@@ -6665,6 +6926,118 @@
       "public": false,
       "authOnly": false,
       "summary": "CSV: stock valuation, one row per variant"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/requisitions",
+      "module": "purchasing",
+      "controller": "RequisitionController",
+      "handler": "findAll",
+      "file": "apps/api/src/modules/purchasing/requisition.controller.ts",
+      "line": 17,
+      "access": "purchasing.requisitions.approve",
+      "permissions": [
+        "purchasing.requisitions.approve"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List requisitions — the review queue for whoever can approve them"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/requisitions",
+      "module": "purchasing",
+      "controller": "RequisitionController",
+      "handler": "create",
+      "file": "apps/api/src/modules/purchasing/requisition.controller.ts",
+      "line": 38,
+      "access": "purchasing.requisitions.create",
+      "permissions": [
+        "purchasing.requisitions.create"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Request a purchase — any staff member, not necessarily one who can raise a PO"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/requisitions/:id",
+      "module": "purchasing",
+      "controller": "RequisitionController",
+      "handler": "findOne",
+      "file": "apps/api/src/modules/purchasing/requisition.controller.ts",
+      "line": 31,
+      "access": "purchasing.requisitions.create",
+      "permissions": [
+        "purchasing.requisitions.create"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Get a requisition"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/requisitions/:id/approve",
+      "module": "purchasing",
+      "controller": "RequisitionController",
+      "handler": "approve",
+      "file": "apps/api/src/modules/purchasing/requisition.controller.ts",
+      "line": 45,
+      "access": "purchasing.requisitions.approve",
+      "permissions": [
+        "purchasing.requisitions.approve"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Approve a requisition — never its own requester"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/requisitions/:id/convert",
+      "module": "purchasing",
+      "controller": "RequisitionController",
+      "handler": "convert",
+      "file": "apps/api/src/modules/purchasing/requisition.controller.ts",
+      "line": 59,
+      "access": "purchasing.manage",
+      "permissions": [
+        "purchasing.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Convert an approved requisition into a real purchase order — a separate, explicit action"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/requisitions/:id/reject",
+      "module": "purchasing",
+      "controller": "RequisitionController",
+      "handler": "reject",
+      "file": "apps/api/src/modules/purchasing/requisition.controller.ts",
+      "line": 52,
+      "access": "purchasing.requisitions.approve",
+      "permissions": [
+        "purchasing.requisitions.approve"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Reject a requisition — terminal; the requester raises a new one, never reopens this"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/requisitions/mine",
+      "module": "purchasing",
+      "controller": "RequisitionController",
+      "handler": "findMine",
+      "file": "apps/api/src/modules/purchasing/requisition.controller.ts",
+      "line": 24,
+      "access": "purchasing.requisitions.create",
+      "permissions": [
+        "purchasing.requisitions.create"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The current user's own requisitions"
     },
     {
       "method": "GET",
@@ -8509,6 +8882,48 @@
     },
     {
       "method": "GET",
+      "path": "/catalog/products/:slug/frequently-bought-together",
+      "module": "recommendations",
+      "controller": "RecommendationsController",
+      "handler": "frequentlyBoughtTogether",
+      "file": "apps/api/src/modules/recommendations/recommendations.controller.ts",
+      "line": 21,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "WO-9.6 — co-occurrence only, for the bundle widget"
+    },
+    {
+      "method": "GET",
+      "path": "/catalog/products/:slug/related",
+      "module": "recommendations",
+      "controller": "RecommendationsController",
+      "handler": "related",
+      "file": "apps/api/src/modules/recommendations/recommendations.controller.ts",
+      "line": 15,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "WO-9.6 — related products / \"complete the look\" (manual > co-occurrence > embedding)"
+    },
+    {
+      "method": "GET",
+      "path": "/catalog/recommendations/personalized",
+      "module": "recommendations",
+      "controller": "PersonalizedRecommendationsController",
+      "handler": "personalized",
+      "file": "apps/api/src/modules/recommendations/recommendations.controller.ts",
+      "line": 34,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "WO-9.6 — \"personalised homepage from browse... history\", by anonymous session id"
+    },
+    {
+      "method": "GET",
       "path": "/catalog/redirects/lookup",
       "module": "catalog",
       "controller": "RedirectLookupController",
@@ -9886,9 +10301,10 @@
         "GET /admin/analytics/stitching",
         "GET /admin/analytics/visitors",
         "GET /admin/analytics/workshop/output",
+        "GET /admin/inventory/suspicious-traffic",
         "GET /admin/wishlist/out-of-stock-report"
       ],
-      "uiSites": 10,
+      "uiSites": 11,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -10293,6 +10709,10 @@
         "DELETE /admin/catalog/products/:id",
         "GET /admin/catalog/products/:id",
         "PATCH /admin/catalog/products/:id",
+        "GET /admin/catalog/products/:id/cross-sells",
+        "POST /admin/catalog/products/:id/cross-sells",
+        "DELETE /admin/catalog/products/:id/cross-sells/:relatedProductId",
+        "PATCH /admin/catalog/products/:id/cross-sells/order",
         "POST /admin/catalog/products/:id/images",
         "PATCH /admin/catalog/products/:id/images/order",
         "GET /admin/catalog/products/:id/publish-gate",
@@ -10326,9 +10746,10 @@
         "GET /admin/inventory/reorder",
         "GET /admin/inventory/slow-movers",
         "GET /admin/inventory/variances",
-        "POST /admin/inventory/variances/:id/resolve"
+        "POST /admin/inventory/variances/:id/resolve",
+        "GET /admin/inventory/variances/by-shift"
       ],
-      "uiSites": 11,
+      "uiSites": 12,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -10361,9 +10782,14 @@
         "POST /admin/inventory/counts/:id/complete",
         "POST /admin/inventory/counts/:id/lines/:variantId",
         "POST /admin/inventory/counts/:id/scan",
-        "POST /admin/inventory/counts/:id/start"
+        "POST /admin/inventory/counts/:id/start",
+        "GET /admin/inventory/spot-checks",
+        "GET /admin/inventory/spot-checks/:id",
+        "POST /admin/inventory/spot-checks/:id/complete",
+        "POST /admin/inventory/spot-checks/:id/scan",
+        "POST /admin/inventory/spot-checks/:id/start"
       ],
-      "uiSites": 3,
+      "uiSites": 4,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -10441,6 +10867,7 @@
         "GET /admin/purchase-orders/:id",
         "POST /admin/purchase-orders/:id/receive",
         "POST /admin/purchase-orders/:id/send",
+        "POST /admin/requisitions/:id/convert",
         "GET /admin/supplier-bills",
         "POST /admin/supplier-bills",
         "GET /admin/supplier-bills/:id",
@@ -10457,6 +10884,55 @@
       "uiSites": 10,
       "roles": [
         "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "purchasing.requisitions.create",
+      "label": "Request a purchase (not necessarily raise the PO)",
+      "category": "Purchasing",
+      "sensitivity": "low",
+      "routes": [
+        "POST /admin/requisitions",
+        "GET /admin/requisitions/:id",
+        "GET /admin/requisitions/mine"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "purchasing.requisitions.approve",
+      "label": "Approve or reject purchase requisitions",
+      "category": "Purchasing",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/requisitions",
+        "POST /admin/requisitions/:id/approve",
+        "POST /admin/requisitions/:id/reject"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "inventory.spot_checks.manage",
+      "label": "Configure unpredictable spot-check policies",
+      "category": "Catalogue",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/inventory/spot-check-policies",
+        "POST /admin/inventory/spot-check-policies",
+        "PATCH /admin/inventory/spot-check-policies/:id"
+      ],
+      "uiSites": 1,
+      "roles": [
         "ADMIN"
       ],
       "inSeed": true
@@ -11254,7 +11730,8 @@
       "name": "order.status_changed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/orders/orders.service.ts:836"
+        "apps/api/src/modules/orders/orders.service.ts:675",
+        "apps/api/src/modules/orders/orders.service.ts:855"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
@@ -11269,7 +11746,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/finance/finance.listener.ts:9",
-        "apps/api/src/modules/orders/orders.service.ts:836"
+        "apps/api/src/modules/orders/orders.service.ts:855"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:71 onCancelled()",
@@ -11422,7 +11899,7 @@
       "name": "catalog.product_low_stock",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:374"
+        "apps/api/src/modules/inventory/inventory.service.ts:385"
       ],
       "subscribers": [
         "apps/api/src/modules/inventory/inventory.listener.ts:19 handleLowStock()"
@@ -11433,7 +11910,7 @@
       "name": "catalog.product_reorder_point_reached",
       "doc": "Distinct from ProductLowStock: fires against reorderPoint, drives auto-replenishment (PO or WorkOrder).",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:392"
+        "apps/api/src/modules/inventory/inventory.service.ts:403"
       ],
       "subscribers": [
         "apps/api/src/modules/production/reorder-work-order.listener.ts:19 onReorderPointReached()",
@@ -11482,7 +11959,7 @@
       "name": "inventory.stock_replenished",
       "doc": "Any positive-delta stock movement — the one signal that can unblock a waiting order line, whatever replenished the stock.",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:409"
+        "apps/api/src/modules/inventory/inventory.service.ts:420"
       ],
       "subscribers": [
         "apps/api/src/modules/orders/backorder.listener.ts:29 onStockReplenished()",
@@ -11495,7 +11972,7 @@
       "doc": "InventoryService.postUnconditional() drove a location negative (RETAIL-ERP.md R5) — never fired by move().",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:281",
-        "apps/api/src/modules/inventory/inventory.service.ts:360"
+        "apps/api/src/modules/inventory/inventory.service.ts:371"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:279 onStockVarianceRecorded()"
@@ -11506,12 +11983,30 @@
       "name": "purchasing.goods_received",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/purchasing/purchasing.service.ts:432"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:441"
       ],
       "subscribers": [
         "apps/api/src/modules/bom/bom.listener.ts:22 recomputeAffectedRecipes()",
         "apps/api/src/modules/purchasing/goods-receipt-replication.listener.ts:70 onGoodsReceived()"
       ]
+    },
+    {
+      "symbol": "RequisitionCreated",
+      "name": "purchasing.requisition_created",
+      "doc": "",
+      "publishers": [
+        "apps/api/src/modules/purchasing/requisition.service.ts:59"
+      ],
+      "subscribers": []
+    },
+    {
+      "symbol": "RequisitionConverted",
+      "name": "purchasing.requisition_converted",
+      "doc": "",
+      "publishers": [
+        "apps/api/src/modules/purchasing/requisition.service.ts:192"
+      ],
+      "subscribers": []
     },
     {
       "symbol": "BomProductionCompleted",
@@ -11530,7 +12025,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:178",
-        "apps/api/src/modules/purchasing/purchasing.service.ts:583"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:592"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:176 onSupplierBillRaised()"
@@ -11542,7 +12037,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:228",
-        "apps/api/src/modules/purchasing/purchasing.service.ts:647"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:656"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:226 onSupplierBillPaid()"
@@ -11865,7 +12360,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 189,
+      "line": 191,
       "doc": "",
       "fields": [
         {
@@ -12056,7 +12551,7 @@
     {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 506,
+      "line": 508,
       "doc": "",
       "fields": [
         {
@@ -12145,7 +12640,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 467,
+      "line": 469,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -12204,9 +12699,166 @@
       ]
     },
     {
+      "name": "ApprovalChain",
+      "file": "apps/api/prisma/schema/approvals.prisma",
+      "line": 26,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "subjectType",
+          "type": "ApprovalSubjectType",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "subjectId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "currentStep",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "ApprovalChainStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "steps",
+          "type": "ApprovalStep[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@unique([subjectType, subjectId])",
+        "@@index([subjectType, status])"
+      ]
+    },
+    {
+      "name": "ApprovalStep",
+      "file": "apps/api/prisma/schema/approvals.prisma",
+      "line": 41,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "chainId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "stepOrder",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approverRoleId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approverUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "ApprovalStepStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "decidedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "decidedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "comment",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "chain",
+          "type": "ApprovalChain",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "decidedBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([chainId, stepOrder])",
+        "@@index([approverUserId, status])"
+      ]
+    },
+    {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 279,
+      "line": 281,
       "doc": "",
       "fields": [
         {
@@ -13942,7 +14594,7 @@
     {
       "name": "CashMovement",
       "file": "apps/api/prisma/schema/pos.prisma",
-      "line": 105,
+      "line": 108,
       "doc": "One physical cash movement at the drawer during a shift — always a positive `amountMinor`; `type` says which direction.",
       "fields": [
         {
@@ -14209,7 +14861,7 @@
     {
       "name": "Collection",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 550,
+      "line": 552,
       "doc": "",
       "fields": [
         {
@@ -14290,7 +14942,7 @@
     {
       "name": "CollectionProduct",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 590,
+      "line": 592,
       "doc": "Manual membership and manual sort order.",
       "fields": [
         {
@@ -14337,7 +14989,7 @@
     {
       "name": "CollectionTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 573,
+      "line": 575,
       "doc": "",
       "fields": [
         {
@@ -14798,7 +15450,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 447,
+      "line": 449,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -15072,7 +15724,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 234,
+      "line": 236,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -15258,7 +15910,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 175,
+      "line": 177,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -16255,7 +16907,7 @@
     {
       "name": "GoodsReceipt",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 159,
+      "line": 163,
       "doc": "",
       "fields": [
         {
@@ -16365,7 +17017,7 @@
     {
       "name": "GoodsReceiptItem",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 187,
+      "line": 191,
       "doc": "",
       "fields": [
         {
@@ -17926,6 +18578,20 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "spotCheckPolicies",
+          "type": "SpotCheckPolicy[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "spotChecks",
+          "type": "SpotCheck[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -18161,7 +18827,7 @@
     {
       "name": "MarkdownSuggestion",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 225,
+      "line": 303,
       "doc": "",
       "fields": [
         {
@@ -19037,7 +19703,7 @@
     {
       "name": "OptionTemplate",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 461,
+      "line": 463,
       "doc": "Store-level, reusable option axis — \"Size: XS/S/M/L/XL/XXL\" typed once under Catalogue -> Options & attributes instead of on every product.",
       "fields": [
         {
@@ -19097,7 +19763,7 @@
     {
       "name": "OptionTemplateTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 474,
+      "line": 476,
       "doc": "",
       "fields": [
         {
@@ -19143,7 +19809,7 @@
     {
       "name": "OptionTemplateValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 485,
+      "line": 487,
       "doc": "",
       "fields": [
         {
@@ -19211,7 +19877,7 @@
     {
       "name": "OptionTemplateValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 500,
+      "line": 502,
       "doc": "",
       "fields": [
         {
@@ -20260,7 +20926,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 420,
+      "line": 422,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -20647,7 +21313,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 158,
+      "line": 160,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -21188,7 +21854,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 300,
+      "line": 302,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -21770,7 +22436,7 @@
     {
       "name": "PosReceipt",
       "file": "apps/api/prisma/schema/pos.prisma",
-      "line": 127,
+      "line": 130,
       "doc": "One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService.placeFromPos() succeeds, best-effort and outside that call's own transaction, the same \"not core to the sale'…",
       "fields": [
         {
@@ -21892,6 +22558,13 @@
         {
           "name": "cashMovements",
           "type": "CashMovement[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "stockVariances",
+          "type": "StockVariance[]",
           "id": false,
           "unique": false,
           "relation": false
@@ -22309,7 +22982,7 @@
     {
       "name": "ProductAiSuggestion",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 626,
+      "line": 628,
       "doc": "WO-9.1.",
       "fields": [
         {
@@ -22405,7 +23078,7 @@
     {
       "name": "ProductCrossSell",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 677,
+      "line": 679,
       "doc": "",
       "fields": [
         {
@@ -22473,7 +23146,7 @@
     {
       "name": "ProductGarmentType",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 362,
+      "line": 364,
       "doc": "Which garments a given unstitched fabric can be made into.",
       "fields": [
         {
@@ -22505,7 +23178,7 @@
     {
       "name": "ProductImage",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 327,
+      "line": 329,
       "doc": "",
       "fields": [
         {
@@ -22600,7 +23273,7 @@
     {
       "name": "ProductImageTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 350,
+      "line": 352,
       "doc": "Alt text per locale.",
       "fields": [
         {
@@ -22646,7 +23319,7 @@
     {
       "name": "ProductOption",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 383,
+      "line": 385,
       "doc": "A dynamic option axis a product varies along: \"Size\", \"Colour\", \"Storage\".",
       "fields": [
         {
@@ -22721,7 +23394,7 @@
     {
       "name": "ProductOptionTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 400,
+      "line": 402,
       "doc": "",
       "fields": [
         {
@@ -22767,7 +23440,7 @@
     {
       "name": "ProductOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 412,
+      "line": 414,
       "doc": "A specific value on an option axis: \"M\", \"Ferozi\", \"128GB\".",
       "fields": [
         {
@@ -22842,7 +23515,7 @@
     {
       "name": "ProductOptionValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 430,
+      "line": 432,
       "doc": "",
       "fields": [
         {
@@ -22953,7 +23626,7 @@
     {
       "name": "ProductSizeBias",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 649,
+      "line": 651,
       "doc": "WO-9.2.",
       "fields": [
         {
@@ -23412,6 +24085,20 @@
           "relation": false
         },
         {
+          "name": "requisitionLines",
+          "type": "RequisitionLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "spotCheckLines",
+          "type": "SpotCheckLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "billOfMaterial",
           "type": "BillOfMaterial?",
           "id": false,
@@ -23469,7 +24156,7 @@
     {
       "name": "ProductVariantOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 444,
+      "line": 446,
       "doc": "The join that DEFINES a variant: one row per option axis per variant.",
       "fields": [
         {
@@ -23789,6 +24476,13 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "sourceRequisition",
+          "type": "PurchaseRequisition?",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -23800,7 +24494,7 @@
     {
       "name": "PurchaseOrderItem",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 141,
+      "line": 145,
       "doc": "",
       "fields": [
         {
@@ -23884,6 +24578,103 @@
       "indexes": [
         "@@index([purchaseOrderId])",
         "@@index([variantId])"
+      ]
+    },
+    {
+      "name": "PurchaseRequisition",
+      "file": "apps/api/prisma/schema/purchasing.prisma",
+      "line": 264,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requestedById",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locationId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "justification",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "RequisitionApprovalStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "convertedPurchaseOrderId",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "rejectionNote",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requestedBy",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "convertedPurchaseOrder",
+          "type": "PurchaseOrder?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "lines",
+          "type": "RequisitionLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([status, createdAt])",
+        "@@index([requestedById, createdAt])",
+        "@@index([locationId])"
       ]
     },
     {
@@ -24127,7 +24918,7 @@
     {
       "name": "Redirect",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 514,
+      "line": 516,
       "doc": "A storefront path that now 301s somewhere else — created automatically when a live product/category slug changes, or entered by hand (including a CSV import when migrating an old site).",
       "fields": [
         {
@@ -24255,7 +25046,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 137,
+      "line": 139,
       "doc": "",
       "fields": [
         {
@@ -24579,6 +25370,67 @@
         }
       ],
       "indexes": []
+    },
+    {
+      "name": "RequisitionLine",
+      "file": "apps/api/prisma/schema/purchasing.prisma",
+      "line": 288,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requisitionId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "quantity",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "estimatedUnitCostMinor",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requisition",
+          "type": "PurchaseRequisition",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "variant",
+          "type": "ProductVariant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([requisitionId])",
+        "@@index([variantId])"
+      ]
     },
     {
       "name": "RetailBrand",
@@ -25172,7 +26024,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 366,
+      "line": 368,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -25230,7 +26082,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 380,
+      "line": 382,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -25284,7 +26136,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 316,
+      "line": 318,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -25511,7 +26363,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 212,
+      "line": 214,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -26333,6 +27185,236 @@
       ]
     },
     {
+      "name": "SpotCheck",
+      "file": "apps/api/prisma/schema/inventory.prisma",
+      "line": 199,
+      "doc": "A small, unscheduled StockCount-like sheet — a handful of SKUs, never the whole shop, completable in minutes on the POS/mobile device.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "policyId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locationId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "SpotCheckStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "scheduledFor",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "completedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "policy",
+          "type": "SpotCheckPolicy",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "location",
+          "type": "Location",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "lines",
+          "type": "SpotCheckLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([locationId, status])",
+        "@@index([policyId, scheduledFor])"
+      ]
+    },
+    {
+      "name": "SpotCheckLine",
+      "file": "apps/api/prisma/schema/inventory.prisma",
+      "line": 217,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "spotCheckId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "expected",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "counted",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variance",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "spotCheck",
+          "type": "SpotCheck",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "variant",
+          "type": "ProductVariant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([spotCheckId, variantId])"
+      ]
+    },
+    {
+      "name": "SpotCheckPolicy",
+      "file": "apps/api/prisma/schema/inventory.prisma",
+      "line": 172,
+      "doc": "156-single-employee-branch-loss-prevention.md §3.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locationId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "minSkusPerCheck",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "frequencyDays",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "location",
+          "type": "Location?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "checks",
+          "type": "SpotCheck[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([locationId, isActive])"
+      ]
+    },
+    {
       "name": "StitchingJob",
       "file": "apps/api/prisma/schema/stitching.prisma",
       "line": 116,
@@ -26960,7 +28042,7 @@
     {
       "name": "StockAdjustment",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 309,
+      "line": 311,
       "doc": "One entry per change to ProductVariant.stock, so \"why is stock 4\" has an answer without an audit table bolted on after the fact.",
       "fields": [
         {
@@ -27041,7 +28123,7 @@
     {
       "name": "StockCount",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 251,
+      "line": 329,
       "doc": "",
       "fields": [
         {
@@ -27150,7 +28232,7 @@
     {
       "name": "StockCountLine",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 274,
+      "line": 352,
       "doc": "",
       "fields": [
         {
@@ -27543,7 +28625,7 @@
     {
       "name": "StockVariance",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 132,
+      "line": 134,
       "doc": "One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale that already happened is never rejected by sync).",
       "fields": [
         {
@@ -27624,6 +28706,13 @@
           "relation": false
         },
         {
+          "name": "posShiftId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "createdAt",
           "type": "DateTime",
           "id": false,
@@ -27643,12 +28732,20 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "posShift",
+          "type": "PosShift?",
+          "id": false,
+          "unique": false,
+          "relation": true
         }
       ],
       "indexes": [
         "@@index([status])",
         "@@index([variantId])",
-        "@@index([locationId])"
+        "@@index([locationId])",
+        "@@index([posShiftId])"
       ]
     },
     {
@@ -27944,7 +29041,7 @@
     {
       "name": "SupplierBill",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 210,
+      "line": 214,
       "doc": "",
       "fields": [
         {
@@ -28969,6 +30066,20 @@
           "relation": true
         },
         {
+          "name": "requisitionsRequested",
+          "type": "PurchaseRequisition[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "approvalStepsDecided",
+          "type": "ApprovalStep[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
           "name": "stockCountsCreated",
           "type": "StockCount[]",
           "id": false,
@@ -29208,7 +30319,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 337,
+      "line": 339,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -29269,7 +30380,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 395,
+      "line": 397,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -29324,7 +30435,7 @@
     {
       "name": "VariantForecast",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 197,
+      "line": 275,
       "doc": "WO-9.3 (09-ai-layer.md).",
       "fields": [
         {
@@ -29382,7 +30493,7 @@
     {
       "name": "VariantLocationStock",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 161,
+      "line": 239,
       "doc": "Stock, per variant, per location.",
       "fields": [
         {
@@ -29435,7 +30546,7 @@
     {
       "name": "VariantSalesStat",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 174,
+      "line": 252,
       "doc": "CACHE: variantId as primary key.",
       "fields": [
         {
@@ -29932,7 +31043,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 500,
+      "line": 502,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -29942,7 +31053,7 @@
     {
       "name": "AiFeature",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 485,
+      "line": 487,
       "values": [
         "ALT_TEXT",
         "SEO_COPY",
@@ -29961,7 +31072,7 @@
     {
       "name": "AiSuggestionKind",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 608,
+      "line": 610,
       "values": [
         "ALT_TEXT",
         "META_TITLE",
@@ -29973,11 +31084,40 @@
     {
       "name": "AiSuggestionStatus",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 616,
+      "line": 618,
       "values": [
         "PENDING",
         "APPROVED",
         "REJECTED"
+      ]
+    },
+    {
+      "name": "ApprovalChainStatus",
+      "file": "apps/api/prisma/schema/approvals.prisma",
+      "line": 13,
+      "values": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED"
+      ]
+    },
+    {
+      "name": "ApprovalStepStatus",
+      "file": "apps/api/prisma/schema/approvals.prisma",
+      "line": 19,
+      "values": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED",
+        "SKIPPED"
+      ]
+    },
+    {
+      "name": "ApprovalSubjectType",
+      "file": "apps/api/prisma/schema/approvals.prisma",
+      "line": 9,
+      "values": [
+        "PURCHASE_REQUISITION"
       ]
     },
     {
@@ -30029,7 +31169,7 @@
     {
       "name": "CashMovementType",
       "file": "apps/api/prisma/schema/pos.prisma",
-      "line": 87,
+      "line": 90,
       "values": [
         "OPENING_FLOAT",
         "CASH_IN",
@@ -30051,7 +31191,7 @@
     {
       "name": "CollectionSortStrategy",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 539,
+      "line": 541,
       "values": [
         "MANUAL",
         "BEST_SELLING",
@@ -30096,7 +31236,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 435,
+      "line": 437,
       "values": [
         "IOS",
         "ANDROID",
@@ -30130,7 +31270,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 223,
+      "line": 225,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -30283,7 +31423,7 @@
     {
       "name": "MarkdownSuggestionStatus",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 219,
+      "line": 297,
       "values": [
         "PENDING",
         "CREATED",
@@ -30371,7 +31511,7 @@
     {
       "name": "OptionDisplay",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 371,
+      "line": 373,
       "values": [
         "BUTTON",
         "DROPDOWN",
@@ -30416,7 +31556,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 409,
+      "line": 411,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -30471,7 +31611,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 328,
+      "line": 330,
       "values": [
         "GRANT",
         "REVOKE"
@@ -30499,7 +31639,7 @@
     {
       "name": "ProductCrossSellKind",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 671,
+      "line": 673,
       "values": [
         "MANUAL",
         "CO_OCCURRENCE",
@@ -30602,6 +31742,17 @@
       ]
     },
     {
+      "name": "RequisitionApprovalStatus",
+      "file": "apps/api/prisma/schema/purchasing.prisma",
+      "line": 257,
+      "values": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED",
+        "CONVERTED"
+      ]
+    },
+    {
       "name": "ResourceTier",
       "file": "apps/platform/prisma/schema/platform.prisma",
       "line": 14,
@@ -30693,6 +31844,17 @@
       ]
     },
     {
+      "name": "SpotCheckStatus",
+      "file": "apps/api/prisma/schema/inventory.prisma",
+      "line": 190,
+      "values": [
+        "PENDING",
+        "IN_PROGRESS",
+        "COMPLETED",
+        "CANCELLED"
+      ]
+    },
+    {
       "name": "StitchingOrderStatus",
       "file": "apps/api/prisma/schema/stitching.prisma",
       "line": 62,
@@ -30731,7 +31893,7 @@
     {
       "name": "StockCountStatus",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 244,
+      "line": 322,
       "values": [
         "DRAFT",
         "IN_PROGRESS",
@@ -30773,7 +31935,7 @@
     {
       "name": "StockVarianceStatus",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 120,
+      "line": 122,
       "values": [
         "OPEN",
         "RESOLVED"
@@ -30792,7 +31954,7 @@
     {
       "name": "SupplierBillStatus",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 204,
+      "line": 208,
       "values": [
         "UNPAID",
         "PARTIAL",
@@ -32159,6 +33321,30 @@
         "CityCodRiskStat",
         "Order"
       ]
+    },
+    {
+      "folder": "20260925160000_add_requisitions_approvals_and_loss_prevention",
+      "file": "apps/api/prisma/schema/migrations/20260925160000_add_requisitions_approvals_and_loss_prevention/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_requisitions_approvals_and_loss_prevention",
+      "statements": 40,
+      "kinds": [
+        "CREATE TYPE",
+        "ALTER TABLE",
+        "CREATE TABLE",
+        "CREATE INDEX",
+        "CREATE UNIQUE INDEX"
+      ],
+      "tables": [
+        "ApprovalChain",
+        "ApprovalStep",
+        "PurchaseRequisition",
+        "RequisitionLine",
+        "SpotCheck",
+        "SpotCheckLine",
+        "SpotCheckPolicy",
+        "StockVariance"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -33026,6 +34212,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/analytics/suspicious-traffic",
+      "file": "apps/web/src/app/(admin)/admin/(app)/analytics/suspicious-traffic/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/b/[brandId]",
       "file": "apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx",
       "client": true,
@@ -33494,6 +34689,33 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/inventory/spot-checks",
+      "file": "apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/inventory/spot-checks/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/inventory/variances/by-shift",
+      "file": "apps/web/src/app/(admin)/admin/(app)/inventory/variances/by-shift/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/inventory/wishlisted",
       "file": "apps/web/src/app/(admin)/admin/(app)/inventory/wishlisted/page.tsx",
       "client": true,
@@ -33800,6 +35022,33 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/requisitions",
+      "file": "apps/web/src/app/(admin)/admin/(app)/requisitions/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/requisitions/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/requisitions/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/requisitions/new",
+      "file": "apps/web/src/app/(admin)/admin/(app)/requisitions/new/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/reviews",
       "file": "apps/web/src/app/(admin)/admin/(app)/reviews/page.tsx",
       "client": true,
@@ -34064,9 +35313,16 @@
       "doc": ""
     },
     {
+      "schedule": "0 * * * *",
+      "file": "apps/api/src/modules/inventory/inventory.cron.ts",
+      "line": 23,
+      "handler": "maybeTriggerSpotCheck",
+      "doc": "156-single-employee-branch-loss-prevention.md §3."
+    },
+    {
       "schedule": "0 2 * * *",
       "file": "apps/api/src/modules/inventory/inventory.cron.ts",
-      "line": 17,
+      "line": 33,
       "handler": "computeNightlyStats",
       "doc": ""
     },
@@ -34103,6 +35359,13 @@
       "file": "apps/api/src/modules/purchasing/purchasing.cron.ts",
       "line": 36,
       "handler": "sweepReorderCandidates",
+      "doc": ""
+    },
+    {
+      "schedule": "0 4 * * *",
+      "file": "apps/api/src/modules/recommendations/recommendations.cron.ts",
+      "line": 30,
+      "handler": "recompute",
       "doc": ""
     },
     {
@@ -34630,6 +35893,17 @@
         "embed",
         "underBudget",
         "monthToDateSpendPaisa"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/approvals/approval.service.spec.ts",
+      "module": "core/approvals",
+      "kind": "unit test",
+      "cases": 11,
+      "describes": [
+        "ApprovalService — 63-multi-tier-approval-hierarchies.md, scoped to PURCHASE_REQUISITION",
+        "start",
+        "decide"
       ]
     },
     {
@@ -35431,9 +36705,10 @@
       "file": "apps/api/src/modules/inventory/inventory.cron.spec.ts",
       "module": "inventory",
       "kind": "unit test",
-      "cases": 2,
+      "cases": 5,
       "describes": [
-        "InventoryCron"
+        "InventoryCron",
+        "maybeTriggerSpotCheck — 156-single-employee-branch-loss-prevention.md"
       ]
     },
     {
@@ -35459,12 +36734,25 @@
       "file": "apps/api/src/modules/inventory/inventory.service.spec.ts",
       "module": "inventory",
       "kind": "unit test",
-      "cases": 14,
+      "cases": 16,
       "describes": [
         "InventoryService — locations (B6)",
         "InventoryService — postUnconditional (R5 oversell)",
+        "shift attribution (156-single-employee-branch-loss-prevention.md)",
         "InventoryService — reorder point and replenishment events",
         "InventoryService — getChainStatus"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/inventory/spot-check.service.spec.ts",
+      "module": "inventory",
+      "kind": "unit test",
+      "cases": 10,
+      "describes": [
+        "SpotCheckService — 156-single-employee-branch-loss-prevention.md §3",
+        "dueForRandomCheck — the unpredictability rule",
+        "maybeTriggerDueChecks — idempotency",
+        "complete — posts variance against CURRENT stock, never "
       ]
     },
     {
@@ -35480,10 +36768,20 @@
       "file": "apps/api/src/modules/inventory/stock-variance.service.spec.ts",
       "module": "inventory",
       "kind": "unit test",
-      "cases": 4,
+      "cases": 9,
       "describes": [
         "StockVarianceService — WO-21.3",
-        "resolve"
+        "resolve",
+        "listByShift"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/inventory/suspicious-traffic.service.spec.ts",
+      "module": "inventory",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "SuspiciousTrafficService — 156-single-employee-branch-loss-prevention.md §4"
       ]
     },
     {
@@ -35599,7 +36897,7 @@
       "file": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "module": "orders",
       "kind": "unit test",
-      "cases": 6,
+      "cases": 7,
       "describes": [
         "OrdersService — placeFromPos (WO-21.3)",
         "changeStatus — return releases stock to the order\\"
@@ -35870,6 +37168,18 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/purchasing/requisition.service.spec.ts",
+      "module": "purchasing",
+      "kind": "unit test",
+      "cases": 13,
+      "describes": [
+        "RequisitionService — 152-purchase-requisition.md",
+        "create",
+        "approve / reject — the toxic-pair refusal",
+        "convertToPurchaseOrder"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/purchasing/supplier-bill.spec.ts",
       "module": "purchasing",
       "kind": "unit test",
@@ -35878,6 +37188,28 @@
         "PurchasingService — supplier bills",
         "createSupplierBill",
         "recordSupplierBillPayment"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/recommendations/recommendations.cron.spec.ts",
+      "module": "recommendations",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "RecommendationsCron"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/recommendations/recommendations.service.spec.ts",
+      "module": "recommendations",
+      "kind": "unit test",
+      "cases": 14,
+      "describes": [
+        "RecommendationsService",
+        "relatedFor",
+        "frequentlyBoughtWith",
+        "manual cross-sell curation (admin)",
+        "personalizedFor"
       ]
     },
     {
@@ -36837,7 +38169,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5273,
+      "bytes": 5289,
       "doc": "",
       "symbols": []
     },
@@ -36846,7 +38178,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 159,
-      "bytes": 7786,
+      "bytes": 7802,
       "doc": "",
       "symbols": []
     },
@@ -36855,7 +38187,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 127,
-      "bytes": 5646,
+      "bytes": 5662,
       "doc": "",
       "symbols": []
     },
@@ -36917,8 +38249,8 @@
       "path": ".gitignore",
       "area": "infra",
       "kind": "file",
-      "lines": 54,
-      "bytes": 1042,
+      "lines": 58,
+      "bytes": 1199,
       "doc": "",
       "symbols": []
     },
@@ -37154,6 +38486,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/approvals.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 60,
+      "bytes": 1883,
+      "doc": "Approvals: one generic, subject-agnostic approval chain, referenced by a",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/bom.prisma",
       "area": "api",
       "kind": "prisma schema",
@@ -37175,8 +38516,8 @@
       "path": "apps/api/prisma/schema/catalog.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 691,
-      "bytes": 26198,
+      "lines": 693,
+      "bytes": 26272,
       "doc": "Catalog: categories, products, variants, images.",
       "symbols": []
     },
@@ -37193,8 +38534,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 526,
-      "bytes": 20082,
+      "lines": 528,
+      "bytes": 20255,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -37203,7 +38544,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 269,
-      "bytes": 9810,
+      "bytes": 9861,
       "doc": "CRM: one customer record, whatever door the customer came in through.",
       "symbols": []
     },
@@ -37247,8 +38588,8 @@
       "path": "apps/api/prisma/schema/inventory.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 291,
-      "bytes": 11764,
+      "lines": 369,
+      "bytes": 14673,
       "doc": "Inventory: the stock ledger. Every change to ProductVariant.stock has",
       "symbols": []
     },
@@ -37892,6 +39233,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260925160000_add_requisitions_approvals_and_loss_prevention/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 206,
+      "bytes": 8082,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -37923,7 +39273,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 358,
-      "bytes": 15241,
+      "bytes": 15237,
       "doc": "Orders and shipments.",
       "symbols": []
     },
@@ -37967,8 +39317,8 @@
       "path": "apps/api/prisma/schema/pos.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 136,
-      "bytes": 5517,
+      "lines": 139,
+      "bytes": 5672,
       "doc": "The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's",
       "symbols": []
     },
@@ -37994,8 +39344,8 @@
       "path": "apps/api/prisma/schema/purchasing.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 248,
-      "bytes": 9929,
+      "lines": 303,
+      "bytes": 12379,
       "doc": "",
       "symbols": []
     },
@@ -38076,7 +39426,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 56,
-      "bytes": 2323,
+      "bytes": 2320,
       "doc": "WO-9.7, docs/implementation/ai-layer/09-ai-layer.md.",
       "symbols": []
     },
@@ -38302,6 +39652,55 @@
           "name": "OpenAiProvider",
           "kind": "class",
           "line": 35
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/approvals/approval.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 138,
+      "bytes": 6015,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/approvals/approval.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 143,
+      "bytes": 5334,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ApprovalStepInput",
+          "kind": "interface",
+          "line": 5
+        },
+        {
+          "name": "ApprovalDecision",
+          "kind": "type",
+          "line": 14
+        },
+        {
+          "name": "ApprovalService",
+          "kind": "class",
+          "line": 31
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/approvals/approvals.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 10,
+      "bytes": 221,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ApprovalsModule",
+          "kind": "class",
+          "line": 9
         }
       ]
     },
@@ -39090,14 +40489,14 @@
       "path": "apps/api/src/core/core.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 45,
-      "bytes": 1553,
+      "lines": 47,
+      "bytes": 1638,
       "doc": "",
       "symbols": [
         {
           "name": "CoreModule",
           "kind": "class",
-          "line": 44
+          "line": 46
         }
       ]
     },
@@ -39120,8 +40519,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 483,
-      "bytes": 18836,
+      "lines": 499,
+      "bytes": 19326,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -39132,197 +40531,207 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 92
+          "line": 94
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 94
+          "line": 96
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 107
+          "line": 109
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 115
+          "line": 117
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 123
+          "line": 125
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 143
+          "line": 145
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 149
+          "line": 151
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 156
+          "line": 158
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 163
+          "line": 165
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 167
+          "line": 169
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 173
+          "line": 175
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 179
+          "line": 181
         },
         {
           "name": "ShipmentStatusChangedPayload",
           "kind": "interface",
-          "line": 186
+          "line": 188
         },
         {
           "name": "ShipmentReturnedToOriginPayload",
           "kind": "interface",
-          "line": 196
+          "line": 198
         },
         {
           "name": "ReturnRequestStatusChangedPayload",
           "kind": "interface",
-          "line": 205
+          "line": 207
         },
         {
           "name": "ReturnRequestFullyRefundedPayload",
           "kind": "interface",
-          "line": 214
+          "line": 216
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 222
+          "line": 224
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 230
+          "line": 232
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 241
+          "line": 243
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 248
+          "line": 250
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 257
+          "line": 259
         },
         {
           "name": "ProductChangedPayload",
           "kind": "interface",
-          "line": 265
+          "line": 267
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 270
+          "line": 272
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 278
+          "line": 280
+        },
+        {
+          "name": "RequisitionCreatedPayload",
+          "kind": "interface",
+          "line": 285
+        },
+        {
+          "name": "RequisitionConvertedPayload",
+          "kind": "interface",
+          "line": 291
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 283
+          "line": 297
         },
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 295
+          "line": 309
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 310
+          "line": 324
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 318
+          "line": 332
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 332
+          "line": 346
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 345
+          "line": 359
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 358
+          "line": 372
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 374
+          "line": 388
         },
         {
           "name": "PayrollRunPostedPayload",
           "kind": "interface",
-          "line": 382
+          "line": 396
         },
         {
           "name": "PayrollAdjustmentPostedPayload",
           "kind": "interface",
-          "line": 394
+          "line": 408
         },
         {
           "name": "DiscountRedeemedPayload",
           "kind": "interface",
-          "line": 405
+          "line": 419
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 416
+          "line": 430
         },
         {
           "name": "ReviewModeratedPayload",
           "kind": "interface",
-          "line": 423
+          "line": 437
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 429
+          "line": 443
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 435
+          "line": 449
         }
       ]
     },
@@ -39421,6 +40830,26 @@
       ]
     },
     {
+      "path": "apps/api/src/core/extension-points/camera-people-count.registry.ts",
+      "area": "api",
+      "kind": "registry",
+      "lines": 34,
+      "bytes": 1415,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CameraPeopleCountProvider",
+          "kind": "interface",
+          "line": 3
+        },
+        {
+          "name": "CameraPeopleCountRegistry",
+          "kind": "class",
+          "line": 22
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/extension-points/cart-line-validator.registry.ts",
       "area": "api",
       "kind": "registry",
@@ -39464,14 +40893,14 @@
       "path": "apps/api/src/core/extension-points/extension-points.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 36,
-      "bytes": 1361,
+      "lines": 39,
+      "bytes": 1499,
       "doc": "",
       "symbols": [
         {
           "name": "ExtensionPointsModule",
           "kind": "class",
-          "line": 35
+          "line": 38
         }
       ]
     },
@@ -44359,8 +45788,8 @@
       "path": "apps/api/src/modules/inventory/inventory.cron.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 100,
-      "bytes": 3662,
+      "lines": 137,
+      "bytes": 5286,
       "doc": "",
       "symbols": []
     },
@@ -44368,14 +45797,14 @@
       "path": "apps/api/src/modules/inventory/inventory.cron.ts",
       "area": "api",
       "kind": "scheduled job",
-      "lines": 170,
-      "bytes": 5910,
+      "lines": 186,
+      "bytes": 6666,
       "doc": "",
       "symbols": [
         {
           "name": "InventoryCron",
           "kind": "class",
-          "line": 9
+          "line": 10
         }
       ]
     },
@@ -44436,14 +45865,14 @@
       "path": "apps/api/src/modules/inventory/inventory.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 27,
-      "bytes": 1001,
+      "lines": 40,
+      "bytes": 1458,
       "doc": "",
       "symbols": [
         {
           "name": "InventoryModule",
           "kind": "class",
-          "line": 26
+          "line": 39
         }
       ]
     },
@@ -44451,8 +45880,8 @@
       "path": "apps/api/src/modules/inventory/inventory.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 442,
-      "bytes": 18798,
+      "lines": 499,
+      "bytes": 21171,
       "doc": "",
       "symbols": []
     },
@@ -44460,8 +45889,8 @@
       "path": "apps/api/src/modules/inventory/inventory.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 590,
-      "bytes": 22699,
+      "lines": 601,
+      "bytes": 23286,
       "doc": "",
       "symbols": [
         {
@@ -44478,6 +45907,55 @@
           "name": "InventoryService",
           "kind": "class",
           "line": 59
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/inventory/spot-check.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 68,
+      "bytes": 2202,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SpotCheckPolicyController",
+          "kind": "class",
+          "line": 10
+        },
+        {
+          "name": "SpotCheckController",
+          "kind": "class",
+          "line": 35
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/inventory/spot-check.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 150,
+      "bytes": 7063,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/inventory/spot-check.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 228,
+      "bytes": 9601,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateSpotCheckPolicyInput",
+          "kind": "interface",
+          "line": 8
+        },
+        {
+          "name": "SpotCheckService",
+          "kind": "class",
+          "line": 21
         }
       ]
     },
@@ -44524,8 +46002,8 @@
       "path": "apps/api/src/modules/inventory/stock-variance.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 30,
-      "bytes": 1148,
+      "lines": 36,
+      "bytes": 1405,
       "doc": "",
       "symbols": [
         {
@@ -44539,8 +46017,8 @@
       "path": "apps/api/src/modules/inventory/stock-variance.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 59,
-      "bytes": 2106,
+      "lines": 109,
+      "bytes": 4675,
       "doc": "",
       "symbols": []
     },
@@ -44548,14 +46026,58 @@
       "path": "apps/api/src/modules/inventory/stock-variance.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 39,
-      "bytes": 1527,
+      "lines": 70,
+      "bytes": 2991,
       "doc": "",
       "symbols": [
         {
           "name": "StockVarianceService",
           "kind": "class",
           "line": 13
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/inventory/suspicious-traffic.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 18,
+      "bytes": 770,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SuspiciousTrafficController",
+          "kind": "class",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/inventory/suspicious-traffic.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 69,
+      "bytes": 3060,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/inventory/suspicious-traffic.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 59,
+      "bytes": 2287,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SuspiciousTrafficReport",
+          "kind": "interface",
+          "line": 5
+        },
+        {
+          "name": "SuspiciousTrafficService",
+          "kind": "class",
+          "line": 23
         }
       ]
     },
@@ -45032,8 +46554,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 95,
-      "bytes": 2962,
+      "lines": 96,
+      "bytes": 2989,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -45052,24 +46574,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 183,
-      "bytes": 9499,
+      "lines": 188,
+      "bytes": 9866,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 42
+          "line": 43
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 73
+          "line": 74
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 159
+          "line": 164
         }
       ]
     },
@@ -45377,8 +46899,8 @@
       "path": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 249,
-      "bytes": 10438,
+      "lines": 275,
+      "bytes": 11697,
       "doc": "",
       "symbols": []
     },
@@ -45421,8 +46943,8 @@
       "path": "apps/api/src/modules/orders/orders.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1207,
-      "bytes": 47335,
+      "lines": 1226,
+      "bytes": 48135,
       "doc": "",
       "symbols": [
         {
@@ -46840,6 +48362,36 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/purchasing/dto/requisition.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 50,
+      "bytes": 1213,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateRequisitionLineDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "CreateRequisitionDto",
+          "kind": "class",
+          "line": 19
+        },
+        {
+          "name": "DecideRequisitionDto",
+          "kind": "class",
+          "line": 35
+        },
+        {
+          "name": "ConvertRequisitionDto",
+          "kind": "class",
+          "line": 41
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/purchasing/dto/supplier-bill.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -46990,14 +48542,14 @@
       "path": "apps/api/src/modules/purchasing/purchasing.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 27,
-      "bytes": 1155,
+      "lines": 30,
+      "bytes": 1348,
       "doc": "",
       "symbols": [
         {
           "name": "PurchasingModule",
           "kind": "class",
-          "line": 26
+          "line": 29
         }
       ]
     },
@@ -47005,8 +48557,8 @@
       "path": "apps/api/src/modules/purchasing/purchasing.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 664,
-      "bytes": 24814,
+      "lines": 673,
+      "bytes": 25275,
       "doc": "",
       "symbols": [
         {
@@ -47050,6 +48602,45 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/purchasing/requisition.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 63,
+      "bytes": 2952,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RequisitionController",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/purchasing/requisition.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 203,
+      "bytes": 9428,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/purchasing/requisition.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 201,
+      "bytes": 8280,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RequisitionService",
+          "kind": "class",
+          "line": 23
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/purchasing/supplier-bill.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -47057,6 +48648,119 @@
       "bytes": 8558,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/recommendations/dto/recommendations.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 17,
+      "bytes": 585,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AddCrossSellDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "ReorderCrossSellsDto",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/recommendations/recommendations.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 69,
+      "bytes": 2928,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RecommendationsController",
+          "kind": "class",
+          "line": 10
+        },
+        {
+          "name": "PersonalizedRecommendationsController",
+          "kind": "class",
+          "line": 29
+        },
+        {
+          "name": "CrossSellAdminController",
+          "kind": "class",
+          "line": 42
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/recommendations/recommendations.cron.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 177,
+      "bytes": 6849,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/recommendations/recommendations.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 148,
+      "bytes": 7058,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RecommendationsCron",
+          "kind": "class",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/recommendations/recommendations.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 16,
+      "bytes": 575,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RecommendationsModule",
+          "kind": "class",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/recommendations/recommendations.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 228,
+      "bytes": 8690,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/recommendations/recommendations.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 183,
+      "bytes": 7948,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RelatedProductsResult",
+          "kind": "interface",
+          "line": 18
+        },
+        {
+          "name": "RecommendationsService",
+          "kind": "class",
+          "line": 32
+        }
+      ]
     },
     {
       "path": "apps/api/src/modules/reports/csv.util.ts",
@@ -51218,8 +52922,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 600,
-      "bytes": 23668,
+      "lines": 607,
+      "bytes": 24097,
       "doc": "",
       "symbols": []
     },
@@ -51227,8 +52931,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 600,
-      "bytes": 32405,
+      "lines": 607,
+      "bytes": 33004,
       "doc": "",
       "symbols": []
     },
@@ -51460,6 +53164,21 @@
           "name": "AnalyticsIndexPage",
           "kind": "default",
           "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/analytics/suspicious-traffic/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 103,
+      "bytes": 3750,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SuspiciousTrafficPage",
+          "kind": "default",
+          "line": 16
         }
       ]
     },
@@ -52244,6 +53963,51 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 137,
+      "bytes": 4467,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SpotCheckDetailPage",
+          "kind": "default",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 173,
+      "bytes": 6203,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SpotChecksPage",
+          "kind": "default",
+          "line": 28
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/inventory/variances/by-shift/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 103,
+      "bytes": 3611,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "VariancesByShiftPage",
+          "kind": "default",
+          "line": 20
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/inventory/wishlisted/page.tsx",
       "area": "web",
       "kind": "page",
@@ -52780,6 +54544,51 @@
           "name": "AdminReportsPage",
           "kind": "default",
           "line": 75
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/requisitions/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 187,
+      "bytes": 6661,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RequisitionDetailPage",
+          "kind": "default",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/requisitions/new/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 240,
+      "bytes": 7948,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NewRequisitionPage",
+          "kind": "default",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/requisitions/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 92,
+      "bytes": 3216,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RequisitionsPage",
+          "kind": "default",
+          "line": 21
         }
       ]
     },
@@ -53732,24 +55541,24 @@
       "path": "apps/web/src/app/(storefront)/[locale]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 262,
-      "bytes": 11243,
+      "lines": 265,
+      "bytes": 11382,
       "doc": "",
       "symbols": [
         {
           "name": "revalidate",
           "kind": "const",
-          "line": 12
+          "line": 13
         },
         {
           "name": "generateMetadata",
           "kind": "function",
-          "line": 14
+          "line": 15
         },
         {
           "name": "HomePage",
           "kind": "default",
-          "line": 32
+          "line": 33
         }
       ]
     },
@@ -53817,24 +55626,24 @@
       "path": "apps/web/src/app/(storefront)/[locale]/product/[slug]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 398,
-      "bytes": 15408,
+      "lines": 427,
+      "bytes": 16673,
       "doc": "",
       "symbols": [
         {
           "name": "revalidate",
           "kind": "const",
-          "line": 19
+          "line": 27
         },
         {
           "name": "generateMetadata",
           "kind": "function",
-          "line": 34
+          "line": 42
         },
         {
           "name": "ProductPage",
           "kind": "default",
-          "line": 134
+          "line": 142
         }
       ]
     },
@@ -54605,6 +56414,21 @@
       ]
     },
     {
+      "path": "apps/web/src/components/admin/cross-sell-manager.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 256,
+      "bytes": 9117,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CrossSellManager",
+          "kind": "function",
+          "line": 22
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/admin/csv-import-card.tsx",
       "area": "web",
       "kind": "component",
@@ -54898,8 +56722,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 782,
-      "bytes": 20423,
+      "lines": 812,
+      "bytes": 21345,
       "doc": "",
       "symbols": [
         {
@@ -54930,12 +56754,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 752
+          "line": 782
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 767
+          "line": 797
         }
       ]
     },
@@ -54978,14 +56802,14 @@
       "path": "apps/web/src/components/admin/product-form.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 1410,
-      "bytes": 52429,
+      "lines": 1434,
+      "bytes": 53335,
       "doc": "",
       "symbols": [
         {
           "name": "ProductForm",
           "kind": "function",
-          "line": 79
+          "line": 80
         }
       ]
     },
@@ -55355,6 +57179,21 @@
       ]
     },
     {
+      "path": "apps/web/src/components/storefront/frequently-bought-together.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 149,
+      "bytes": 5282,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FrequentlyBoughtTogether",
+          "kind": "function",
+          "line": 29
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/storefront/grid-toggle-wrapper.tsx",
       "area": "web",
       "kind": "component",
@@ -55486,6 +57325,21 @@
           "name": "OnsiteMessages",
           "kind": "function",
           "line": 37
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/storefront/personalized-recommendations.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 81,
+      "bytes": 2921,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PersonalizedRecommendations",
+          "kind": "function",
+          "line": 28
         }
       ]
     },
@@ -56151,8 +58005,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 196,
-      "bytes": 8483,
+      "lines": 207,
+      "bytes": 9036,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -56348,8 +58202,8 @@
       "path": "apps/web/src/lib/api.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 167,
-      "bytes": 6023,
+      "lines": 200,
+      "bytes": 7443,
       "doc": "",
       "symbols": [
         {
@@ -56368,44 +58222,54 @@
           "line": 119
         },
         {
+          "name": "getRelatedProducts",
+          "kind": "function",
+          "line": 138
+        },
+        {
+          "name": "getFrequentlyBoughtTogether",
+          "kind": "function",
+          "line": 149
+        },
+        {
           "name": "getCategories",
           "kind": "function",
-          "line": 123
+          "line": 156
         },
         {
           "name": "getFacets",
           "kind": "function",
-          "line": 127
+          "line": 160
         },
         {
           "name": "getStitchingServices",
           "kind": "function",
-          "line": 131
+          "line": 164
         },
         {
           "name": "getBanners",
           "kind": "function",
-          "line": 143
+          "line": 176
         },
         {
           "name": "getPage",
           "kind": "function",
-          "line": 147
+          "line": 180
         },
         {
           "name": "getPosts",
           "kind": "function",
-          "line": 151
+          "line": 184
         },
         {
           "name": "getPost",
           "kind": "function",
-          "line": 159
+          "line": 192
         },
         {
           "name": "getMenu",
           "kind": "function",
-          "line": 164
+          "line": 197
         }
       ]
     },
@@ -56663,8 +58527,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1343,
-      "bytes": 35189,
+      "lines": 1353,
+      "bytes": 35546,
       "doc": "",
       "symbols": [
         {
@@ -57326,6 +59190,16 @@
           "name": "CmsMenuLink",
           "kind": "interface",
           "line": 1337
+        },
+        {
+          "name": "ProductCrossSellKind",
+          "kind": "type",
+          "line": 1345
+        },
+        {
+          "name": "ProductCrossSellRow",
+          "kind": "interface",
+          "line": 1347
         }
       ]
     },
@@ -60796,8 +62670,8 @@
       "path": "docs/implementation/finance-accounting/68-realtime-gross-profit.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 178,
-      "bytes": 10045,
+      "lines": 191,
+      "bytes": 10831,
       "doc": "",
       "symbols": []
     },
@@ -61093,8 +62967,8 @@
       "path": "docs/implementation/inventory-purchasing/152-purchase-requisition.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 190,
-      "bytes": 10314,
+      "lines": 222,
+      "bytes": 12265,
       "doc": "",
       "symbols": []
     },
@@ -61102,8 +62976,8 @@
       "path": "docs/implementation/inventory-purchasing/156-single-employee-branch-loss-prevention.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 287,
-      "bytes": 14896,
+      "lines": 308,
+      "bytes": 16232,
       "doc": "",
       "symbols": []
     },
@@ -62800,8 +64674,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 727,
-      "bytes": 21553,
+      "lines": 755,
+      "bytes": 22370,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -62822,47 +64696,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 410
+          "line": 428
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 412
+          "line": 430
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 422
+          "line": 440
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 429
+          "line": 447
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 584
+          "line": 608
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 714
+          "line": 742
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 719
+          "line": 747
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 720
+          "line": 748
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 723
+          "line": 751
         }
       ]
     },
@@ -63308,8 +65182,8 @@
       "path": "pnpm-lock.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 18517,
-      "bytes": 678893,
+      "lines": 18501,
+      "bytes": 678061,
       "doc": "",
       "symbols": []
     },

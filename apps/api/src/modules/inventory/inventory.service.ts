@@ -346,6 +346,16 @@ export class InventoryService implements OnModuleInit {
     });
 
     if (overshootQty !== null) {
+      // 156-single-employee-branch-loss-prevention.md §1: attribute the
+      // variance to whichever shift had custody, in the SAME transaction as
+      // the variance itself — written once, never reassigned after the
+      // fact. Null when no shift was open (a non-POS location).
+      const openShift = await tx.posShift.findFirst({
+        where: { terminal: { locationId: input.locationId }, status: 'OPEN', openedAt: { lte: movement.createdAt } },
+        orderBy: { openedAt: 'desc' },
+        select: { id: true },
+      });
+
       const variance = await tx.stockVariance.create({
         data: {
           variantId: input.variantId,
@@ -354,6 +364,7 @@ export class InventoryService implements OnModuleInit {
           stockMovementId: movement.id,
           refType: input.refType ?? null,
           refId: input.refId ?? null,
+          posShiftId: openShift?.id ?? null,
         },
       });
       await this.events.publish(

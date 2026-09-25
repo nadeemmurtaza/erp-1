@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **46** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **48** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -24,7 +24,7 @@ order" is a new file, not an edit to checkout.
 ## Attention list
 
 - Events **nothing publishes**: `crm.contact_upserted`, `crm.lead_created`
-- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`, `promotions.discount_redeemed`
+- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `purchasing.requisition_created`, `purchasing.requisition_converted`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`, `promotions.discount_redeemed`
 
 ## Summary
 
@@ -54,6 +54,8 @@ order" is a new file, not an edit to checkout.
 | `inventory.stock_replenished` | `StockReplenished` | `inventory` | `orders`, `wishlist` |
 | `inventory.stock_variance_recorded` | `StockVarianceRecorded` | `accounting`, `inventory` | `accounting` |
 | `purchasing.goods_received` | `GoodsReceived` | `purchasing` | `bom`, `purchasing` |
+| `purchasing.requisition_created` | `RequisitionCreated` | `purchasing` | _none_ |
+| `purchasing.requisition_converted` | `RequisitionConverted` | `purchasing` | _none_ |
 | `bom.production_completed` | `BomProductionCompleted` | `bom` | `bom` |
 | `purchasing.supplier_bill_raised` | `SupplierBillRaised` | `accounting`, `purchasing` | `accounting` |
 | `purchasing.supplier_bill_paid` | `SupplierBillPaid` | `accounting`, `purchasing` | `accounting` |
@@ -111,7 +113,8 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/orders/orders.service.ts:836` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:675` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:855` | `orders` |
 
 
 **Subscribed by**
@@ -131,7 +134,7 @@ order" is a new file, not an edit to checkout.
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/finance/finance.listener.ts:9` | `finance` |
-| `apps/api/src/modules/orders/orders.service.ts:836` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:855` | `orders` |
 
 
 **Subscribed by**
@@ -354,7 +357,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:374` | `inventory` |
+| `apps/api/src/modules/inventory/inventory.service.ts:385` | `inventory` |
 
 
 **Subscribed by**
@@ -371,7 +374,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:392` | `inventory` |
+| `apps/api/src/modules/inventory/inventory.service.ts:403` | `inventory` |
 
 
 **Subscribed by**
@@ -444,7 +447,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:409` | `inventory` |
+| `apps/api/src/modules/inventory/inventory.service.ts:420` | `inventory` |
 
 
 **Subscribed by**
@@ -463,7 +466,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:281` | `accounting` |
-| `apps/api/src/modules/inventory/inventory.service.ts:360` | `inventory` |
+| `apps/api/src/modules/inventory/inventory.service.ts:371` | `inventory` |
 
 
 **Subscribed by**
@@ -479,7 +482,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/purchasing/purchasing.service.ts:432` | `purchasing` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:441` | `purchasing` |
 
 
 **Subscribed by**
@@ -488,6 +491,34 @@ _Nothing subscribes. Publishing it is a no-op today._
 |---|---|---|
 | `recomputeAffectedRecipes()` | `apps/api/src/modules/bom/bom.listener.ts:22` | `bom` |
 | `onGoodsReceived()` | `apps/api/src/modules/purchasing/goods-receipt-replication.listener.ts:70` | `purchasing` |
+
+### `purchasing.requisition_created`
+
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/purchasing/requisition.service.ts:59` | `purchasing` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
+
+### `purchasing.requisition_converted`
+
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/purchasing/requisition.service.ts:192` | `purchasing` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
 
 ### `bom.production_completed`
 
@@ -514,7 +545,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:178` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:583` | `purchasing` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:592` | `purchasing` |
 
 
 **Subscribed by**
@@ -531,7 +562,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:228` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:647` | `purchasing` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:656` | `purchasing` |
 
 
 **Subscribed by**

@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "45743e7d76e90ba6",
+  "contentHash": "18be4a588a9ab0f2",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -32,6 +32,7 @@
     "docs/index/areas/web.md",
     "docs/index/core/action-hub.md",
     "docs/index/core/ai.md",
+    "docs/index/core/approvals.md",
     "docs/index/core/audit.md",
     "docs/index/core/auth.md",
     "docs/index/core/checkout.md",
@@ -64,6 +65,7 @@
     "docs/index/cross/tests.md",
     "docs/index/cross/ui-routes.md",
     "docs/index/data/accounting.md",
+    "docs/index/data/approvals.md",
     "docs/index/data/bom.md",
     "docs/index/data/cart.md",
     "docs/index/data/catalog.md",
@@ -137,6 +139,7 @@
     "docs/index/modules/production.md",
     "docs/index/modules/promotions.md",
     "docs/index/modules/purchasing.md",
+    "docs/index/modules/recommendations.md",
     "docs/index/modules/reports.md",
     "docs/index/modules/reviews.md",
     "docs/index/modules/search.md",
@@ -157,18 +160,18 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 1744,
-    "lines": 266208,
-    "routes": 556,
-    "controllers": 96,
-    "models": 204,
-    "enums": 88,
-    "migrations": 68,
-    "events": 46,
-    "permissions": 65,
-    "screens": 204,
-    "crons": 15,
-    "specs": 183,
+    "files": 1777,
+    "lines": 270948,
+    "routes": 580,
+    "controllers": 103,
+    "models": 211,
+    "enums": 93,
+    "migrations": 69,
+    "events": 48,
+    "permissions": 68,
+    "screens": 211,
+    "crons": 17,
+    "specs": 189,
     "designLaws": 0
   }
 }

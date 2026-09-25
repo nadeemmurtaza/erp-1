@@ -1,5 +1,37 @@
 # 152 — Purchase requisition: an internal "I need to buy X" step, distinct from approving the PO itself
 
+> **Status: shipped (2026-09-25), WO-152.1–152.4.** `PurchaseRequisition`/
+> `RequisitionLine` exist (`apps/api/prisma/schema/purchasing.prisma`),
+> served by `RequisitionService`/`RequisitionController`
+> (`apps/api/src/modules/purchasing/requisition.{service,controller}.ts`),
+> with UI at `/admin/requisitions`, `/admin/requisitions/new` and
+> `/admin/requisitions/[id]`. Two deviations from this doc's own sketch,
+> both because the "existing" mechanisms it names to reuse did not exist
+> in the codebase when this was built, verified by search before writing
+> any of it:
+>
+> 1. **Doc 63's `ApprovalChain`/`ApprovalService` did not exist** — nor did
+>    doc 42's `TimesheetApproval` it was meant to generalize from. Rather
+>    than build a bespoke requisition-only approval mechanism (which this
+>    doc explicitly forbids) or silently widen scope into doc 42/63's own
+>    unrequested HR work, a minimal, genuinely generic `ApprovalChain`/
+>    `ApprovalStep` + `ApprovalService` was built
+>    (`apps/api/src/core/approvals/`, `apps/api/prisma/schema/approvals.prisma`),
+>    scoped to what `PURCHASE_REQUISITION` needs today. `ApprovalSubjectType`
+>    is a plain enum with one value — extending it for doc 149's `B2B_ORDER`
+>    or doc 63's own HR chains later is adding a value and a thin wrapper
+>    service, not rearchitecting. Retrofitting the existing bespoke
+>    `TimesheetApproval` onto this mechanism was **not** done — that is
+>    doc 63's own separate, unrequested scope.
+> 2. **`purchasing.orders.create` (named in this doc's own scope lenses)
+>    does not exist as a permission key in this codebase** — the real,
+>    already-seeded equivalent is `purchasing.manage`. `convertToPurchaseOrder()`
+>    is gated on `purchasing.manage`, unchanged from what already gates
+>    raising a PO directly.
+>
+> This brief is kept as the design record and the acceptance criteria to
+> re-verify against, not as a to-do list.
+
 Checked against `purchasing.prisma`: no `Requisition`/`PurchaseRequisition`
 model exists (the one `Requisition` hit anywhere in this schema is doc
 28's own `JobRequisition`, an unrelated HR concept). Today, a

@@ -56,8 +56,8 @@ Counted at index time by `scripts/build-index.mjs`, not typed by hand.
 | Tailwind `transition-*` classes | 87 | the actual motion surface today — utility classes, not a token |
 | CSS `@keyframes` | 1 | named animations |
 | `prefers-reduced-motion` blocks | 2 | chapter 05 and 07 both require this on every motion |
-| `aria-*` attributes | 182 | written by hand; **no accessibility lint runs** |
-| `role=` attributes | 174 |  |
+| `aria-*` attributes | 185 | written by hand; **no accessibility lint runs** |
+| `role=` attributes | 186 |  |
 | RTL / `dir` references | 39 | Urdu ships; chapter 07 says this is scattered, not systematic |
 | Inline `style={{` | 22 | CLAUDE.md lists the legitimate exceptions — data-driven widths and colours, and the two pre-stylesheet pages |
 

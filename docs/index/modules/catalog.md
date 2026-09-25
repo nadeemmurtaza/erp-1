@@ -129,29 +129,29 @@ All paths relative to `apps/api/src/modules/catalog`.
 | `BrandTranslation` | 6 | :68 | House Rule 6: a customer-facing name is a translation row, not a column. |
 | `Category` | 13 | :23 |  |
 | `CategoryTranslation` | 6 | :80 |  |
-| `Collection` | 10 | :550 |  |
-| `CollectionProduct` | 5 | :590 | Manual membership and manual sort order. |
-| `CollectionTranslation` | 8 | :573 |  |
-| `OptionTemplate` | 7 | :461 | Store-level, reusable option axis — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue -> Options & attribute… |
-| `OptionTemplateTranslation` | 5 | :474 |  |
-| `OptionTemplateValue` | 8 | :485 |  |
-| `OptionTemplateValueTranslation` | 5 | :500 |  |
+| `Collection` | 10 | :552 |  |
+| `CollectionProduct` | 5 | :592 | Manual membership and manual sort order. |
+| `CollectionTranslation` | 8 | :575 |  |
+| `OptionTemplate` | 7 | :463 | Store-level, reusable option axis — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue -> Options & attribute… |
+| `OptionTemplateTranslation` | 5 | :476 |  |
+| `OptionTemplateValue` | 8 | :487 |  |
+| `OptionTemplateValueTranslation` | 5 | :502 |  |
 | `Product` | 44 | :92 |  |
-| `ProductAiSuggestion` | 12 | :626 | WO-9.1. |
-| `ProductCrossSell` | 8 | :677 |  |
-| `ProductGarmentType` | 3 | :362 | Which garments a given unstitched fabric can be made into. |
-| `ProductImage` | 12 | :327 |  |
-| `ProductImageTranslation` | 5 | :350 | Alt text per locale. |
-| `ProductOption` | 9 | :383 | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
-| `ProductOptionTranslation` | 5 | :400 |  |
-| `ProductOptionValue` | 9 | :412 | A specific value on an option axis: "M", "Ferozi", "128GB". |
-| `ProductOptionValueTranslation` | 5 | :430 |  |
-| `ProductSizeBias` | 8 | :649 | WO-9.2. |
+| `ProductAiSuggestion` | 12 | :628 | WO-9.1. |
+| `ProductCrossSell` | 8 | :679 |  |
+| `ProductGarmentType` | 3 | :364 | Which garments a given unstitched fabric can be made into. |
+| `ProductImage` | 12 | :329 |  |
+| `ProductImageTranslation` | 5 | :352 | Alt text per locale. |
+| `ProductOption` | 9 | :385 | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
+| `ProductOptionTranslation` | 5 | :402 |  |
+| `ProductOptionValue` | 9 | :414 | A specific value on an option axis: "M", "Ferozi", "128GB". |
+| `ProductOptionValueTranslation` | 5 | :432 |  |
+| `ProductSizeBias` | 8 | :651 | WO-9.2. |
 | `ProductTranslation` | 12 | :184 |  |
-| `ProductVariant` | 49 | :222 |  |
-| `ProductVariantOptionValue` | 5 | :444 | The join that DEFINES a variant: one row per option axis per variant. |
-| `Redirect` | 7 | :514 | A storefront path that now 301s somewhere else — created automatically when a live product/category slug chan… |
-| `StockAdjustment` | 10 | :309 | One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without an audit table bolted… |
+| `ProductVariant` | 51 | :222 |  |
+| `ProductVariantOptionValue` | 5 | :446 | The join that DEFINES a variant: one row per option axis per variant. |
+| `Redirect` | 7 | :516 | A storefront path that now 301s somewhere else — created automatically when a live product/category slug chan… |
+| `StockAdjustment` | 10 | :311 | One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without an audit table bolted… |
 
 
 Enums: `AiSuggestionKind` (5) · `AiSuggestionStatus` (3) · `CollectionSortStrategy` (6) · `OptionDisplay` (4) · `ProductCrossSellKind` (3) · `ProductKind` (6) · `ProductStatus` (3)

@@ -727,7 +727,7 @@ All 392 tracked files in `docs/*`, by directory.
 | `151-layby-installment-sales.md` | doc | 201 |  |
 | `49-financial-institution-settlement-partnerships.md` | doc | 265 |  |
 | `56-overdue-invoices-counter.md` | doc | 111 |  |
-| `68-realtime-gross-profit.md` | doc | 178 |  |
+| `68-realtime-gross-profit.md` | doc | 191 |  |
 
 ### `docs/implementation/hr-people-org` (18)
 
@@ -775,8 +775,8 @@ All 392 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `01-inventory-purchasing-cost.md` | doc | 937 |  |
-| `152-purchase-requisition.md` | doc | 190 |  |
-| `156-single-employee-branch-loss-prevention.md` | doc | 287 |  |
+| `152-purchase-requisition.md` | doc | 222 |  |
+| `156-single-employee-branch-loss-prevention.md` | doc | 308 |  |
 | `17-inventory-locations.md` | doc | 254 |  |
 | `70-realtime-stock-depletion.md` | doc | 77 |  |
 

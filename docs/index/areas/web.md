@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-340 files · 51,477 lines
+350 files · 53,152 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -26,20 +26,20 @@ through `@newax/shared`'s `BRAND`.
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
 | `apps/web` | 9 | 410 | file, script, json, module |
-| `apps/web/messages` | 2 | 1,200 | json |
+| `apps/web/messages` | 2 | 1,214 | json |
 | `apps/web/public` | 1 | 0 | asset |
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 76 | module |
-| `apps/web/src/app` | 174 | 30,423 | page, loading, layout, error |
-| `apps/web/src/components` | 103 | 15,623 | component, unit test, loading |
+| `apps/web/src/app` | 181 | 31,490 | page, loading, layout, error |
+| `apps/web/src/components` | 106 | 16,163 | component, unit test, loading |
 | `apps/web/src/config` | 3 | 106 | config |
-| `apps/web/src/constants` | 5 | 334 | constants |
+| `apps/web/src/constants` | 5 | 345 | constants |
 | `apps/web/src/hooks` | 3 | 72 | hook |
 | `apps/web/src/i18n` | 3 | 53 | module |
-| `apps/web/src/lib` | 9 | 1,010 | utility |
+| `apps/web/src/lib` | 9 | 1,043 | utility |
 | `apps/web/src/providers` | 2 | 82 | react |
-| `apps/web/src/types` | 5 | 1,667 | types |
+| `apps/web/src/types` | 5 | 1,677 | types |
 | `apps/web/src/utils` | 5 | 306 | utility |
 
 
@@ -64,17 +64,17 @@ through `@newax/shared`'s `BRAND`.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `apps/web/src/components/admin/product-form.tsx` | 1,410 | component |  |
-| `apps/web/src/types/api.ts` | 1,343 | types |  |
+| `apps/web/src/components/admin/product-form.tsx` | 1,434 | component |  |
+| `apps/web/src/types/api.ts` | 1,353 | types |  |
 | `apps/web/src/components/storefront/stitching-panel.tsx` | 969 | component |  |
-| `apps/web/src/components/admin/nav-registry.ts` | 782 | component |  |
+| `apps/web/src/components/admin/nav-registry.ts` | 812 | component |  |
 | `apps/web/src/app/(storefront)/[locale]/checkout/page.tsx` | 743 | page |  |
 | `apps/web/src/components/admin/dashboard/card-registry.ts` | 705 | component |  |
 | `apps/web/src/components/admin/analytics/report-registry.ts` | 660 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx` | 658 | page |  |
+| `apps/web/messages/en.json` | 607 | json |  |
+| `apps/web/messages/ur.json` | 607 | json |  |
 | `apps/web/src/app/globals.css` | 603 | stylesheet |  |
-| `apps/web/messages/en.json` | 600 | json |  |
-| `apps/web/messages/ur.json` | 600 | json |  |
 | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` | 571 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 565 | page |  |
 | `apps/web/src/components/admin/image-manager.tsx` | 543 | component |  |

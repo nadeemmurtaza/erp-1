@@ -3,7 +3,7 @@
 
 # Core: `extension-points`
 
-Shared platform — available to every module, part of no feature · 6 files
+Shared platform — available to every module, part of no feature · 7 files
 
 
 
@@ -12,7 +12,7 @@ Source: `apps/api/src/core/extension-points/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (6 · 328 lines)
+## Files (7 · 365 lines)
 
 All paths relative to `apps/api/src/core/extension-points`.
 
@@ -20,9 +20,10 @@ All paths relative to `apps/api/src/core/extension-points`.
 |---|---|---|---|---|
 | `branch-policy.registry.spec.ts` | unit test | 44 | — |  |
 | `branch-policy.registry.ts` | registry | 68 | 2 |  |
+| `camera-people-count.registry.ts` | registry | 34 | 2 |  |
 | `cart-line-validator.registry.ts` | registry | 64 | 2 | What a validator is: given a garment's field definitions and the values a customer supplied, either return the values i… |
 | `entity-enrichment.registry.ts` | registry | 45 | 2 | Lets a pack attach its own data onto a core entity's API response without core ever importing the pack, or even knowing… |
-| `extension-points.module.ts` | nest module | 36 | 1 |  |
+| `extension-points.module.ts` | nest module | 39 | 1 |  |
 | `stock-intake.registry.ts` | registry | 71 | 3 |  |
 
 
@@ -52,8 +53,8 @@ _none_
 **`ExtensionPointsModule`** (`extension-points.module.ts`)
 - imports: —
 - controllers: —
-- providers: `EntityEnrichmentRegistry`, `CheckoutValidatorRegistry`, `CartLineValidatorRegistry`, `StockIntakeRegistry`, `BranchPolicyRegistry`
-- exports: `EntityEnrichmentRegistry`, `CheckoutValidatorRegistry`, `CartLineValidatorRegistry`, `StockIntakeRegistry`, `BranchPolicyRegistry`
+- providers: `EntityEnrichmentRegistry`, `CheckoutValidatorRegistry`, `CartLineValidatorRegistry`, `StockIntakeRegistry`, `BranchPolicyRegistry`, `CameraPeopleCountRegistry`
+- exports: `EntityEnrichmentRegistry`, `CheckoutValidatorRegistry`, `CartLineValidatorRegistry`, `StockIntakeRegistry`, `BranchPolicyRegistry`, `CameraPeopleCountRegistry`
 
 
 
@@ -71,11 +72,13 @@ _none_
 |---|---|---|---|
 | `BranchPolicyHandler` | interface | `branch-policy.registry.ts:3` |  |
 | `BranchPolicyRegistry` | class | `branch-policy.registry.ts:41` | Lets `purchasing` (always-on) ask "is this user's branch allowed to purchase locally?" without importing `org… |
+| `CameraPeopleCountProvider` | interface | `camera-people-count.registry.ts:3` |  |
+| `CameraPeopleCountRegistry` | class | `camera-people-count.registry.ts:22` | 156-single-employee-branch-loss-prevention.md §4. |
 | `CartLineValidator` | type | `cart-line-validator.registry.ts:30` | What a validator is: given a garment's field definitions and the values a customer supplied, either return th… |
 | `CartLineValidatorRegistry` | class | `cart-line-validator.registry.ts:36` |  |
 | `EntityEnricher` | interface | `entity-enrichment.registry.ts:19` | Lets a pack attach its own data onto a core entity's API response without core ever importing the pack, or ev… |
 | `EntityEnrichmentRegistry` | class | `entity-enrichment.registry.ts:24` |  |
-| `ExtensionPointsModule` | class | `extension-points.module.ts:35` |  |
+| `ExtensionPointsModule` | class | `extension-points.module.ts:38` |  |
 | `StockIntakeMove` | interface | `stock-intake.registry.ts:4` |  |
 | `StockIntakeHandler` | interface | `stock-intake.registry.ts:15` |  |
 | `StockIntakeRegistry` | class | `stock-intake.registry.ts:52` | Lets a module record a stock movement — set a newly-imported product's opening stock, say — without importing… |

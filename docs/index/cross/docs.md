@@ -81,7 +81,7 @@ _no second-level headings_
 
 - Performance engineering  <sub>:13</sub>
 
-### `.claude/rules/security.md`  <sub>46 lines</sub>
+### `.claude/rules/security.md`  <sub>49 lines</sub>
 
 - Security engineering  <sub>:12</sub>
 - Personal API keys  <sub>:24</sub>

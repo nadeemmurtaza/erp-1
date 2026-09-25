@@ -264,7 +264,7 @@ export class UsersAdminService {
       // is re-intersected with its owner's live permissions on every
       // request, so it already shrinks with the demotion.
       if (dto.isActive === false) {
-        apiKeysRevoked = await this.apiKeys.revokeAllForUserInTransaction(tx, targetId, actorId);
+        apiKeysRevoked = await this.apiKeys.revokeAllForUserInTransaction(tx, targetId, actorId, 'OWNER_DEACTIVATED');
       }
 
       return updated;
@@ -283,23 +283,26 @@ export class UsersAdminService {
 
   async resetPassword(actorId: string, targetId: string, newPassword: string): Promise<void> {
     await this.findBackOfficeUser(targetId);
+    const passwordHash = await hashPassword(newPassword);
 
-    await this.prisma.$transaction([
-      this.prisma.user.update({
-        where: { id: targetId },
-        data: { passwordHash: await hashPassword(newPassword) },
-      }),
-      this.prisma.refreshToken.updateMany({
+    const apiKeysRevoked = await this.prisma.$transaction(async (tx) => {
+      await tx.user.update({ where: { id: targetId }, data: { passwordHash } });
+      await tx.refreshToken.updateMany({
         where: { userId: targetId, revokedAt: null },
         data: { revokedAt: new Date() },
-      }),
-    ]);
+      });
+      // The route promises to "sign them out everywhere" — a personal API key
+      // minted moments before this reset (by whoever had the compromised
+      // session) is exactly the standing access that promise exists to close.
+      return this.apiKeys.revokeAllForUserInTransaction(tx, targetId, actorId, 'ADMINISTRATOR');
+    });
 
     await this.audit.record({
       actorId,
       action: 'user.password_reset',
       entity: 'User',
       entityId: targetId,
+      data: { apiKeysRevoked },
     });
   }
 

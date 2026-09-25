@@ -291,11 +291,17 @@ describe('Personal API keys (e2e)', () => {
   });
 
   describe('oversight (users.manage) and deactivation', () => {
-    it('lets a users.manage holder list every key — metadata only — and nobody else', async () => {
+    it('lets a users.manage holder list every key — metadata only, never the customer\'s data — and nobody else', async () => {
       const response = await api().get(`/api/v1/admin/api-keys?q=${suffix}&pageSize=50`).set(bearer(adminToken)).expect(200);
 
-      const owners = response.body.data.map((item: { owner: { email: string } }) => item.owner.email);
-      expect(owners).toEqual(expect.arrayContaining([staffEmail, customerEmail]));
+      const staffRow = response.body.data.find((item: { owner: { email: string | null } }) => item.owner.email === staffEmail);
+      expect(staffRow).toBeDefined();
+
+      const customerRow = response.body.data.find(
+        (item: { surface: string; customerScopes: string[] }) => item.surface === 'STOREFRONT',
+      );
+      expect(customerRow).toBeDefined();
+      expect(customerRow.owner).toMatchObject({ email: null, phone: null, firstName: null, lastName: null });
       for (const item of response.body.data) expect(item).not.toHaveProperty('keyHash');
 
       await api().get('/api/v1/admin/api-keys').set(bearer(staffToken)).expect(403);

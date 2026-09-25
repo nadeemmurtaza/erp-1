@@ -464,23 +464,30 @@ export class ApiKeysService {
 
   /**
    * Revokes every key a person still holds, inside the caller's transaction —
-   * `UsersAdminService.update()` calls it in the same transaction that sets
-   * `isActive = false` (canonical ruling 6: deactivation removes authority
-   * synchronously). Expired-but-unrevoked keys are revoked too, so
-   * reactivating the account can never revive any of them, and each gets its
-   * own evidence-class audit row. Idempotent: a second call finds nothing.
+   * `UsersAdminService.update()` calls it (reason `OWNER_DEACTIVATED`) in the
+   * same transaction that sets `isActive = false` (canonical ruling 6:
+   * deactivation removes authority synchronously). `UsersAdminService
+   * .resetPassword()` calls it too (reason `ADMINISTRATOR`): its own route
+   * summary promises to "sign them out everywhere", and a key minted moments
+   * before an admin-forced reset is exactly the standing access that promise
+   * is meant to close — the account's own compromised session already had
+   * every permission needed to mint one. Expired-but-unrevoked keys are
+   * revoked too, so reactivating the account can never revive any of them,
+   * and each gets its own evidence-class audit row. Idempotent: a second call
+   * finds nothing.
    */
   async revokeAllForUserInTransaction(
     tx: Prisma.TransactionClient,
     userId: string,
     actorId: string,
+    reason: ApiKeyRevocationReason,
     now: Date = new Date(),
   ): Promise<number> {
     // One statement, returning exactly the rows it revoked — so the audit
     // names those and no others, even if the owner revoked one a moment ago.
     const revoked = await tx.apiKey.updateManyAndReturn({
       where: { userId, revokedAt: null },
-      data: { revokedAt: now, revokedReason: 'OWNER_DEACTIVATED', revokedById: actorId },
+      data: { revokedAt: now, revokedReason: reason, revokedById: actorId },
       select: { id: true, surface: true, lastFour: true },
     });
     if (revoked.length === 0) return 0;
@@ -493,12 +500,12 @@ export class ApiKeysService {
           action: 'api_key.revoked',
           entity: 'ApiKey',
           entityId: key.id,
-          data: { ownerId: userId, reason: 'OWNER_DEACTIVATED', surface: key.surface, lastFour: key.lastFour },
+          data: { ownerId: userId, reason, surface: key.surface, lastFour: key.lastFour },
         }),
       ),
     );
 
-    this.logger.log(`Revoked ${revoked.length} API key(s) of deactivated user ${userId}`);
+    this.logger.log(`Revoked ${revoked.length} API key(s) of user ${userId} (${reason})`);
     return revoked.length;
   }
 
@@ -638,8 +645,20 @@ export class ApiKeysService {
     };
   }
 
+  /**
+   * `users.manage` oversight is "a small, protective widening — revoke and
+   * read metadata, never a secret and never the customer's data"
+   * (163-personal-api-keys.md §5). A STOREFRONT key's owner is a customer, so
+   * only `id`/`role`/`isActive` cross that boundary — an ADMIN key's owner is
+   * back-office staff, whose directory details a `users.manage` holder can
+   * already see everywhere else in the admin.
+   */
   private toOversightView(row: KeyRowWithOwner, now: Date): ApiKeyOversightView {
-    return { ...this.baseView(row, statusOf(row, now)), owner: row.user };
+    const owner =
+      row.surface === 'STOREFRONT'
+        ? { id: row.user.id, email: null, phone: null, firstName: null, lastName: null, role: row.user.role, isActive: row.user.isActive }
+        : row.user;
+    return { ...this.baseView(row, statusOf(row, now)), owner };
   }
 
   private baseView(row: KeyRow, status: ApiKeyStatus): Omit<ApiKeyView, 'effectiveScopes' | 'pausedScopes'> {

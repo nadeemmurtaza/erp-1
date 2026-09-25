@@ -3,7 +3,7 @@
 
 # Tests
 
-**224** spec files, **2,172** cases. What is already pinned down — and what is not.
+**224** spec files, **2,178** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -65,7 +65,7 @@ regression or an N+1.
 | `apps/api/src/core/approvals/approval.service.spec.ts` | core/approvals | 11 | ApprovalService — 63-multi-tier-approval-hierarchies.md, scoped to PURCHASE_REQUISITION · start · d… |
 | `apps/api/src/core/auth/api-keys/api-key-access.spec.ts` | core/auth | 16 | decideApiKeyAccess — an ADMIN key · decideApiKeyAccess — a STOREFRONT key · readRouteRequirements —… |
 | `apps/api/src/core/auth/api-keys/api-key-auth.service.spec.ts` | core/auth | 20 | ApiKeyAuthService.authenticate · a key never exceeds its owner · refusals — each a 401 that says wh… |
-| `apps/api/src/core/auth/api-keys/api-keys.service.spec.ts` | core/auth | 36 | ApiKeysService · create · refuses what a key may never carry · listMine — what each key can do righ… |
+| `apps/api/src/core/auth/api-keys/api-keys.service.spec.ts` | core/auth | 39 | ApiKeysService · create · refuses what a key may never carry · listMine — what each key can do righ… |
 | `apps/api/src/core/auth/auth.service.spec.ts` | core/auth | 2 | parseDuration |
 | `apps/api/src/core/auth/guards.spec.ts` | core/auth | 19 | JwtAuthGuard · a session JWT — the path is unchanged · a personal API key · PermissionsGuard · a se… |
 | `apps/api/src/core/auth/ownership.guard.spec.ts` | core/auth | 5 | assertCanManage |
@@ -212,7 +212,7 @@ regression or an N+1.
 | `apps/api/src/modules/tradingpartners/trading-partner-portal.controller.spec.ts` | tradingpartners | 6 | TradingPartnerPortalController · accept |
 | `apps/api/src/modules/tradingpartners/trading-partners.service.spec.ts` | tradingpartners | 32 | TradingPartnersService · create · findOne / update / remove — the not-found guard · rotateInboundKe… |
 | `apps/api/src/modules/transfers/transfers.service.spec.ts` | transfers | 25 | TransfersService · dispatch/receive/cancel (WO-22.1) · brand-policy gating (WO-22.2) · settlement m… |
-| `apps/api/src/modules/users/users-admin.service.spec.ts` | users | 7 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivatio… |
+| `apps/api/src/modules/users/users-admin.service.spec.ts` | users | 10 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivatio… |
 | `apps/api/src/modules/wallet/merchant-payable.service.spec.ts` | wallet | 16 | MerchantPayableService — 155-wallet-stored-value-merchant-escrow.md §3 · createMerchantPayable · sc… |
 | `apps/api/src/modules/wallet/wallet-credit-note.port.spec.ts` | wallet | 3 | MerchantPayableAdjustmentCreditNoteService — the interim default, pending doc 145 |
 | `apps/api/src/modules/wallet/wallet.service.spec.ts` | wallet | 34 | WalletService — 155-wallet-stored-value-merchant-escrow.md · availableBalance — the three transitio… |

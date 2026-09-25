@@ -28,9 +28,12 @@ instead of a session. Both guards fail closed: a key reaches a route only when
 the route names a capability of the key's own surface — `@RequirePermission`
 for an admin key, `@CustomerScope` for a storefront key.
 
-- **A route that issues, rotates or installs a credential, or changes an
-  account's sign-in identity, carries `@SessionOnly()`** — whatever permission
-  gates it. A key must never mint something that outlives it.
+- **A route that issues, rotates or installs a credential, redirects where an
+  already-stored one is sent, or changes an account's sign-in identity,
+  carries `@SessionOnly()`** — whatever permission gates it. A key must never
+  mint something that outlives it, and must never repoint a credential it
+  didn't mint (e.g. a trading partner's `outboundBaseUrl` — changing where a
+  decrypted secret gets POSTed is exfiltration by another name).
   `session-only-routes.spec.ts` pins the ones that exist.
 - **A customer self-service route an integration should reach gets
   `@CustomerScope('<resource>:read|write')`** from `CUSTOMER_SCOPE_CATALOG`.

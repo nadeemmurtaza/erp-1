@@ -139,12 +139,14 @@ export default function ApiKeysOversightPage() {
             cell: (key) => (
               <>
                 <span className="font-medium text-neutral-900">
-                  {[key.owner.firstName, key.owner.lastName].filter(Boolean).join(' ') ||
-                    key.owner.email ||
-                    key.owner.phone}
+                  {key.surface === 'STOREFRONT'
+                    ? 'A customer'
+                    : [key.owner.firstName, key.owner.lastName].filter(Boolean).join(' ') ||
+                      key.owner.email ||
+                      key.owner.phone}
                 </span>
                 <p className="text-xs text-neutral-900/60">
-                  {key.owner.email ?? key.owner.phone}
+                  {key.surface === 'STOREFRONT' ? 'Contact details not shown here' : (key.owner.email ?? key.owner.phone)}
                   {key.owner.isActive ? '' : ' · deactivated'}
                 </p>
               </>
@@ -215,7 +217,7 @@ export default function ApiKeysOversightPage() {
         title={revoking ? `Revoke "${revoking.name}"?` : 'Revoke this key?'}
         description={
           revoking
-            ? `It belongs to ${revoking.owner.email ?? revoking.owner.phone ?? 'this account'}. Anything using it is refused from its very next request, and it cannot be undone — the owner can create a new key.`
+            ? `It belongs to ${revoking.surface === 'STOREFRONT' ? 'a customer' : (revoking.owner.email ?? revoking.owner.phone ?? 'this account')}. Anything using it is refused from its very next request, and it cannot be undone — the owner can create a new key.`
             : ''
         }
         confirmLabel="Revoke key"

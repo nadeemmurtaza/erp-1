@@ -72,7 +72,7 @@ All 152 tracked files in `repository root files`, by directory.
 | `dependencies.md` | doc | 23 |  |
 | `design.md` | doc | 136 |  |
 | `performance.md` | doc | 42 |  |
-| `security.md` | doc | 46 |  |
+| `security.md` | doc | 49 |  |
 | `services.md` | doc | 31 |  |
 | `testing.md` | doc | 20 |  |
 | `ui.md` | doc | 151 |  |

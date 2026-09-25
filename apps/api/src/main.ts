@@ -25,6 +25,18 @@ async function bootstrap(): Promise<void> {
   const config = app.get(AppConfigService);
   const logger = new Logger('Bootstrap');
 
+  // Every deployment topology (Coolify/Traefik today, the legacy Caddyfile
+  // before it — see DEPLOYMENT.md) puts exactly one reverse proxy directly in
+  // front of this container, with no port published to the internet. Without
+  // this, Express's `req.ip` is the proxy's own address for every request, so
+  // ThrottlerGuard and ApiKeyAuthService's lockout (core/auth/api-keys/api-
+  // key-auth.service.ts) both collapse every client into one shared bucket —
+  // 20 bad requests from anywhere locks out every other client for a minute.
+  // `1` trusts exactly that one hop, so Express reads the real client address
+  // Traefik/Caddy appended to X-Forwarded-For — never `true`, which would
+  // trust the whole client-supplied header and let an attacker spoof any IP.
+  app.set('trust proxy', 1);
+
   app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
   app.use(cookieParser());
 

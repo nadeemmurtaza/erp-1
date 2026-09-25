@@ -10,14 +10,14 @@ Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 801 | 113,035 | [files/api.md](../files/api.md) |
-| apps/web | 367 | 57,479 | [files/web.md](../files/web.md) |
+| apps/api | 801 | 113,191 | [files/api.md](../files/api.md) |
+| apps/web | 367 | 57,481 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 78 | 7,775 | [files/packages.md](../files/packages.md) |
 | docs/* | 393 | 62,132 | [files/docs.md](../files/docs.md) |
 | scripts, CI, deployment and container configuration | 57 | 29,609 | [files/infra.md](../files/infra.md) |
-| repository root files | 152 | 15,334 | [files/root.md](../files/root.md) |
+| repository root files | 152 | 15,337 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains

@@ -525,7 +525,7 @@ All 801 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `app.module.ts` | nest module | 30 |  |
-| `main.ts` | module | 101 | Must come before AppModule: the module registry reads MODULES from the |
+| `main.ts` | module | 113 | Must come before AppModule: the module registry reads MODULES from the |
 
 ### `apps/api/src/core` (1)
 
@@ -609,8 +609,8 @@ All 801 tracked files in `apps/api`, by directory.
 | `api-key-auth.service.ts` | service | 192 |  |
 | `api-keys-admin.controller.ts` | controller | 41 |  |
 | `api-keys.controller.ts` | controller | 67 |  |
-| `api-keys.service.spec.ts` | unit test | 505 |  |
-| `api-keys.service.ts` | service | 693 |  |
+| `api-keys.service.spec.ts` | unit test | 546 |  |
+| `api-keys.service.ts` | service | 712 |  |
 
 ### `apps/api/src/core/auth/api-keys/dto` (1)
 
@@ -1684,7 +1684,7 @@ All 801 tracked files in `apps/api`, by directory.
 | `supplier-digest.listener.ts` | event subscriber | 35 |  |
 | `trading-partner-portal.controller.spec.ts` | unit test | 63 |  |
 | `trading-partner-portal.controller.ts` | controller | 46 |  |
-| `trading-partners.controller.ts` | controller | 71 |  |
+| `trading-partners.controller.ts` | controller | 79 |  |
 | `trading-partners.module.ts` | nest module | 53 |  |
 | `trading-partners.service.spec.ts` | unit test | 385 |  |
 | `trading-partners.service.ts` | service | 299 |  |
@@ -1721,8 +1721,8 @@ All 801 tracked files in `apps/api`, by directory.
 | `security-notification.subscriber.ts` | event subscriber | 152 |  |
 | `users-admin.controller.ts` | controller | 87 |  |
 | `users-admin.module.ts` | nest module | 12 |  |
-| `users-admin.service.spec.ts` | unit test | 157 |  |
-| `users-admin.service.ts` | service | 353 |  |
+| `users-admin.service.spec.ts` | unit test | 223 |  |
+| `users-admin.service.ts` | service | 356 |  |
 
 ### `apps/api/src/modules/users/dto` (1)
 
@@ -1772,7 +1772,7 @@ All 801 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.e2e-spec.ts` | e2e test | 462 | The general ledger's invariants (RETAIL-ERP.md R15, WO-19.1), proven against a real database rather than a mocked Prism… |
-| `api-keys.e2e-spec.ts` | e2e test | 356 |  |
+| `api-keys.e2e-spec.ts` | e2e test | 362 |  |
 | `auth.e2e-spec.ts` | e2e test | 198 |  |
 | `backfill-product-options.spec.ts` | unit test | 114 |  |
 | `cart.e2e-spec.ts` | e2e test | 800 |  |
@@ -1793,7 +1793,7 @@ All 801 tracked files in `apps/api`, by directory.
 | `promotions-checkout.e2e-spec.ts` | e2e test | 327 |  |
 | `publish-gate.spec.ts` | unit test | 69 |  |
 | `reports.e2e-spec.ts` | e2e test | 189 |  |
-| `session-only-routes.spec.ts` | unit test | 65 |  |
+| `session-only-routes.spec.ts` | unit test | 66 |  |
 | `setup-env.ts` | module | 11 | Same ordering rule as src/core/config/load-env.ts: the environment must be |
 | `stitching.e2e-spec.ts` | e2e test | 590 |  |
 

@@ -851,7 +851,7 @@ All 367 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 227 |  |
+| `page.tsx` | page | 229 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/wallet` (1)
 

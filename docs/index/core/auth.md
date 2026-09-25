@@ -12,7 +12,7 @@ Source: `apps/api/src/core/auth/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (31 · 4,712 lines)
+## Files (31 · 4,772 lines)
 
 All paths relative to `apps/api/src/core/auth/api-keys`.
 
@@ -24,8 +24,8 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 | `api-key-auth.service.ts` | service | 192 | 5 | `lastUsedAt` is stamped at most this often per key — a key making 300 requests a minute writes it once. |
 | `api-keys-admin.controller.ts` | controller | 41 | 1 | Oversight of every account's personal API keys — read and revoke only (163-personal-api-keys.md §5). |
 | `api-keys.controller.ts` | controller | 67 | 1 | A signed-in person managing their own personal API keys, on either surface (163-personal-api-keys.md §5). |
-| `api-keys.service.spec.ts` | unit test | 505 | — |  |
-| `api-keys.service.ts` | service | 693 | 9 |  |
+| `api-keys.service.spec.ts` | unit test | 546 | — |  |
+| `api-keys.service.ts` | service | 712 | 9 |  |
 | `api-key.dto.ts` | dto | 114 | 5 | Shape and bounds only. |
 | `auth.constants.ts` | module | 99 | 13 |  |
 | `auth.controller.ts` | controller | 202 | 1 |  |
@@ -125,7 +125,7 @@ check there before adding another.
 |---|---|---|
 | `api-key-access.spec.ts` | 16 | decideApiKeyAccess — an ADMIN key · decideApiKeyAccess — a STOREFRONT key · readRouteRequirements — the handler overrid… |
 | `api-key-auth.service.spec.ts` | 20 | ApiKeyAuthService.authenticate · a key never exceeds its owner · refusals — each a 401 that says why · failed attempts… |
-| `api-keys.service.spec.ts` | 36 | ApiKeysService · create · refuses what a key may never carry · listMine — what each key can do right now · update · rot… |
+| `api-keys.service.spec.ts` | 39 | ApiKeysService · create · refuses what a key may never carry · listMine — what each key can do right now · update · rot… |
 | `auth.service.spec.ts` | 2 | parseDuration |
 | `guards.spec.ts` | 19 | JwtAuthGuard · a session JWT — the path is unchanged · a personal API key · PermissionsGuard · a session — unchanged ·… |
 | `ownership.guard.spec.ts` | 5 | assertCanManage |

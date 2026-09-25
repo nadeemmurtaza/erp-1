@@ -28,6 +28,7 @@ const SESSION_ONLY_ROUTES: Array<[Controller, string, string]> = [
   [TradingPartnersController, 'rotateInboundKey', 'mints a tp_ credential'],
   [TradingPartnersController, 'invite', 'mints a tpi_ invite credential'],
   [TradingPartnersController, 'setOutboundApiKey', 'installs a credential'],
+  [TradingPartnersController, 'update', 'can redirect a stored credential via outboundBaseUrl'],
   [OrganizationController, 'rotateNodeInboundKey', 'mints a replication credential'],
   [PosTerminalsController, 'rotateDeviceKey', 'mints a till device credential'],
   [UsersAdminController, 'create', 'issues a password'],

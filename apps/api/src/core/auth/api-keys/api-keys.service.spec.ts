@@ -471,6 +471,33 @@ describe('ApiKeysService', () => {
       expect(query.select).not.toHaveProperty('keyHash');
       expect(page.data[0].owner).toEqual(owner);
     });
+
+    it("redacts a STOREFRONT key's owner PII — oversight is metadata only, never the customer's data (163-personal-api-keys.md §5)", async () => {
+      prisma.apiKey.findMany.mockResolvedValue([{ ...row({ surface: 'STOREFRONT' }), user: owner }]);
+      prisma.apiKey.count.mockResolvedValue(1);
+
+      const page = await service.listAll(session, { page: 1, pageSize: 10 });
+
+      expect(page.data[0].owner).toEqual({
+        id: owner.id,
+        email: null,
+        phone: null,
+        firstName: null,
+        lastName: null,
+        role: owner.role,
+        isActive: owner.isActive,
+      });
+    });
+
+    it("keeps an ADMIN key owner's directory details — they're back-office staff, not customer data", async () => {
+      const staff = { ...owner, id: 'staff-1', role: 'STAFF' };
+      prisma.apiKey.findMany.mockResolvedValue([{ ...row({ surface: 'ADMIN' }), user: staff }]);
+      prisma.apiKey.count.mockResolvedValue(1);
+
+      const page = await service.listAll(session, { page: 1, pageSize: 10 });
+
+      expect(page.data[0].owner).toEqual(staff);
+    });
   });
 
   describe('revokeAllForUserInTransaction — the deactivation path', () => {
@@ -480,7 +507,7 @@ describe('ApiKeysService', () => {
         { id: 'k2', surface: 'STOREFRONT', lastFour: 'bbbb' },
       ]);
 
-      const count = await service.revokeAllForUserInTransaction(prisma, 'owner-1', 'admin-1');
+      const count = await service.revokeAllForUserInTransaction(prisma, 'owner-1', 'admin-1', 'OWNER_DEACTIVATED');
 
       expect(count).toBe(2);
       expect(prisma.apiKey.updateManyAndReturn).toHaveBeenCalledWith(
@@ -497,8 +524,22 @@ describe('ApiKeysService', () => {
     it('is a no-op for an owner with no live keys', async () => {
       prisma.apiKey.updateManyAndReturn.mockResolvedValue([]);
 
-      await expect(service.revokeAllForUserInTransaction(prisma, 'owner-1', 'admin-1')).resolves.toBe(0);
+      await expect(
+        service.revokeAllForUserInTransaction(prisma, 'owner-1', 'admin-1', 'OWNER_DEACTIVATED'),
+      ).resolves.toBe(0);
       expect(audit.recordEvidence).not.toHaveBeenCalled();
+    });
+
+    it("revokes with reason ADMINISTRATOR for a password reset — a reset that leaves a key isn't really a reset", async () => {
+      prisma.apiKey.updateManyAndReturn.mockResolvedValue([{ id: 'k1', surface: 'ADMIN', lastFour: 'aaaa' }]);
+
+      await service.revokeAllForUserInTransaction(prisma, 'owner-1', 'admin-1', 'ADMINISTRATOR');
+
+      expect(prisma.apiKey.updateManyAndReturn).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ revokedReason: 'ADMINISTRATOR' }) }),
+      );
+      const entries = audit.recordEvidence.mock.calls[0][1];
+      expect(entries[0].data.reason).toBe('ADMINISTRATOR');
     });
   });
 });

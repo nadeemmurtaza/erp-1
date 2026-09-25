@@ -126,7 +126,7 @@ describe('UsersAdminService.update — deactivation ends every personal API key 
   it("revokes the deactivated user's API keys inside the same transaction that sets isActive = false", async () => {
     await service.update('admin1', 'u2', { isActive: false });
 
-    expect(apiKeys.revokeAllForUserInTransaction).toHaveBeenCalledWith(tx, 'u2', 'admin1');
+    expect(apiKeys.revokeAllForUserInTransaction).toHaveBeenCalledWith(tx, 'u2', 'admin1', 'OWNER_DEACTIVATED');
     expect(tx.user.update).toHaveBeenCalledWith(expect.objectContaining({ data: { isActive: false } }));
     expect(audit.record).toHaveBeenCalledWith(
       expect.objectContaining({ action: 'user.updated', data: expect.objectContaining({ apiKeysRevoked: 3 }) }),
@@ -152,5 +152,71 @@ describe('UsersAdminService.update — deactivation ends every personal API key 
 
     await expect(service.update('admin1', 'u2', { isActive: false })).rejects.toThrow('audit write failed');
     expect(audit.record).not.toHaveBeenCalled();
+  });
+});
+
+describe('UsersAdminService.resetPassword — "sign them out everywhere" means keys too', () => {
+  let service: UsersAdminService;
+  let prisma: any;
+  let tx: any;
+  let apiKeys: any;
+  let audit: any;
+
+  const target = { id: 'u3', role: 'STAFF', isActive: true };
+
+  beforeEach(async () => {
+    tx = {
+      user: { update: jest.fn().mockResolvedValue({ ...target }) },
+      refreshToken: { updateMany: jest.fn().mockResolvedValue({ count: 2 }) },
+    };
+    prisma = {
+      user: { findUnique: jest.fn().mockResolvedValue(target) },
+      $transaction: jest.fn(async (work: (client: unknown) => unknown) => work(tx)),
+    };
+    apiKeys = { revokeAllForUserInTransaction: jest.fn().mockResolvedValue(1) };
+    audit = { record: jest.fn().mockResolvedValue(undefined) };
+
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        UsersAdminService,
+        { provide: PrismaService, useValue: prisma },
+        { provide: PermissionsResolverService, useValue: { resolveForUser: jest.fn() } },
+        { provide: RolesService, useValue: {} },
+        { provide: AuditService, useValue: audit },
+        { provide: ApiKeysService, useValue: apiKeys },
+      ],
+    }).compile();
+
+    service = module.get<UsersAdminService>(UsersAdminService);
+  });
+
+  it('revokes every personal API key of the target user in the same transaction as the password change', async () => {
+    await service.resetPassword('admin1', 'u3', 'a-new-strong-password');
+
+    expect(apiKeys.revokeAllForUserInTransaction).toHaveBeenCalledWith(tx, 'u3', 'admin1', 'ADMINISTRATOR');
+    expect(tx.user.update).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { id: 'u3' }, data: expect.objectContaining({ passwordHash: expect.any(String) }) }),
+    );
+    expect(tx.refreshToken.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { userId: 'u3', revokedAt: null } }),
+    );
+    expect(audit.record).toHaveBeenCalledWith(
+      expect.objectContaining({ action: 'user.password_reset', data: expect.objectContaining({ apiKeysRevoked: 1 }) }),
+    );
+  });
+
+  it('fails the whole reset if revoking the keys fails — a reset that leaves a key standing is not a real reset', async () => {
+    apiKeys.revokeAllForUserInTransaction.mockRejectedValueOnce(new Error('revoke failed'));
+
+    await expect(service.resetPassword('admin1', 'u3', 'a-new-strong-password')).rejects.toThrow('revoke failed');
+    expect(audit.record).not.toHaveBeenCalled();
+  });
+
+  it('throws for a target that is not a back-office user', async () => {
+    prisma.user.findUnique.mockResolvedValueOnce(null);
+
+    await expect(service.resetPassword('admin1', 'missing', 'a-new-strong-password')).rejects.toThrow(
+      NotFoundException,
+    );
   });
 });

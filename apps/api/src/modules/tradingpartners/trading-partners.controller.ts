@@ -6,9 +6,16 @@ import { CreateTradingPartnerDto, SetOutboundApiKeyDto, UpdateTradingPartnerDto 
 
 /**
  * `purchasing.manage` may be put in a personal API key (purchase-order sync
- * is a legitimate integration), so the three routes that issue or install a
- * credential are `@SessionOnly()` instead: a key must never mint a
- * trading-partner credential that outlives it (163-personal-api-keys.md §2).
+ * is a legitimate integration), so every route that issues, installs, or can
+ * redirect a credential is `@SessionOnly()` instead: a key must never mint a
+ * trading-partner credential that outlives it, and must never repoint where
+ * an already-stored one gets sent (163-personal-api-keys.md §2). `update()`
+ * is in that second group — it writes `outboundBaseUrl`, and
+ * `pushOutbound()` (trading-partners.service.ts) decrypts and POSTs the
+ * stored `outboundApiKeyEncrypted` to exactly that URL, so an API key able to
+ * change it could redirect the partner's real credential to itself. `status`
+ * (re-enabling a suspended partner's inbound key) sits on the same route, so
+ * it gets the same guard rather than splitting the endpoint.
  */
 @ApiTags('Trading Partners')
 @Controller('admin/trading-partners')
@@ -35,6 +42,7 @@ export class TradingPartnersController {
   }
 
   @Patch(':id')
+  @SessionOnly()
   @ApiOperation({ summary: 'Update a trading partner' })
   async update(@Param('id') id: string, @Body() dto: UpdateTradingPartnerDto) {
     return this.tradingPartners.update(id, dto);

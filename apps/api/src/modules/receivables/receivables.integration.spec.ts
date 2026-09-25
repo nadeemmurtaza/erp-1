@@ -121,7 +121,15 @@ describe('Receivables — CreditNote/DebitNote posting and credit checks (WO-145
         fiscalYearId,
         name: 'WO145-OPEN',
         startsOn: runStartedAt,
-        endsOn: new Date(runStartedAt.getTime() + 100 * 365 * 24 * 60 * 60 * 1000),
+        // Matches the fiscal year's own 1-year span, not the 100-year window
+        // this line used to carry: a shared `newax_dev` still holds every
+        // run's rows (see the afterAll fix below for why that assumption was
+        // wrong), and a 100-year `endsOn` "contains" almost any future test
+        // date — it collided with accounting.e2e-spec.ts's own WO-19.5 suite,
+        // which deliberately posts dates 5 years out, by satisfying
+        // resolveOpenPeriod()'s CONTAINING branch before that suite's own
+        // period ever got a chance to.
+        endsOn: fy.endsOn,
         status: 'OPEN',
       },
     });
@@ -149,14 +157,23 @@ describe('Receivables — CreditNote/DebitNote posting and credit checks (WO-145
 
   afterAll(async () => {
     // JournalEntry rows are immutable by design (a DB trigger refuses
-    // DELETE, matching the ledger's own append-only guarantee) — this test
-    // database is this session's own dedicated, disposable database
-    // (newax_test_145), so leaving them is correct, not a leak.
+    // DELETE, matching the ledger's own append-only guarantee), and that
+    // immutability is exactly why this FiscalPeriod can't be deleted either
+    // (JournalEntry.periodId is onDelete: Restrict) — this suite runs
+    // against the SAME shared `newax_dev` every other test uses (Jest's
+    // test/setup-env.ts loads .env.test's DATABASE_URL ahead of any local
+    // override), not a disposable per-session database, so an OPEN period
+    // left behind here outlives this run and can win resolveOpenPeriod()'s
+    // "most recently opened" fallback — or, as happened with this period's
+    // old 100-year endsOn, its CONTAINING branch — for every later run of
+    // any other accounting test. Closing it (never deleting — the same rule
+    // this comment just described) retires it from that fallback for good.
     await prisma.creditNote.deleteMany({ where: { customerId: contactId } });
     await prisma.debitNote.deleteMany({ where: { supplierId } });
     await prisma.customerCreditTerm.deleteMany({ where: { customerId: contactId } });
     await prisma.supplier.delete({ where: { id: supplierId } });
     await prisma.contact.delete({ where: { id: contactId } });
+    await prisma.fiscalPeriod.update({ where: { id: openPeriodId }, data: { status: 'CLOSED' } }).catch(() => undefined);
     await prisma.$disconnect();
   });
 

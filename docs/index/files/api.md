@@ -1493,7 +1493,7 @@ All 784 tracked files in `apps/api`, by directory.
 | `dunning.service.spec.ts` | unit test | 70 |  |
 | `dunning.service.ts` | service | 48 |  |
 | `receivables.controller.ts` | controller | 200 |  |
-| `receivables.integration.spec.ts` | unit test | 317 |  |
+| `receivables.integration.spec.ts` | unit test | 334 |  |
 | `receivables.module.ts` | nest module | 31 |  |
 | `statements.service.spec.ts` | unit test | 63 |  |
 | `statements.service.ts` | service | 102 |  |

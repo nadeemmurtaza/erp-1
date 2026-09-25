@@ -4,18 +4,29 @@ import { Throttle } from '@nestjs/throttler';
 import { AuthenticatedOnly, CurrentUser, Public } from '../../core/auth/decorators';
 import { PaginationQueryDto } from '../../core/common/dto/pagination.dto';
 import { ReviewsService } from './reviews.service';
+import { ReviewSummaryService } from './review-summary.service';
 import { CreateReviewDto } from './dto/review.dto';
 
 @ApiTags('reviews')
 @Controller()
 export class ReviewsPublicController {
-  constructor(private readonly reviews: ReviewsService) {}
+  constructor(
+    private readonly reviews: ReviewsService,
+    private readonly summaries: ReviewSummaryService,
+  ) {}
 
   @Get('products/:productId/reviews')
   @Public()
   @ApiOperation({ summary: "A product's published reviews" })
   async listForProduct(@Param('productId') productId: string, @Query() query: PaginationQueryDto) {
     return this.reviews.listPublished(productId, { skip: query.skip, take: query.take });
+  }
+
+  @Get('products/:productId/reviews/summary')
+  @Public()
+  @ApiOperation({ summary: 'WO-9.9 — the cached AI review summary, or null until enough reviews exist' })
+  async summary(@Param('productId') productId: string) {
+    return this.summaries.getSummary(productId);
   }
 
   @Get('reviews/mine')

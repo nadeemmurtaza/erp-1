@@ -31,7 +31,7 @@ export const DASHBOARD_GROUPS = [
 export type DashboardGroupKey = (typeof DASHBOARD_GROUPS)[number]['key'];
 
 /** Matches `MetricValue.unit` 1:1, plus the client-only rendering choices `unit` alone can't express (a raw 0-100 percent vs. bps, a text-only card). */
-export type ValueFormat = 'money' | 'integer' | 'percent' | 'percent-bps' | 'days' | 'text';
+export type ValueFormat = 'money' | 'integer' | 'percent' | 'percent-bps' | 'days' | 'rating' | 'text';
 
 export interface DashboardCard {
   /** Stable; also the deep-link fragment. */

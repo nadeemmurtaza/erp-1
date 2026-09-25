@@ -28,6 +28,7 @@ against a real database.
 |---|---|---|---|
 | `productId` | `String` | id | @id |
 | `summaryText` | `String` |  |  |
+| `summaryTextUr` | `String?` | optional |  |
 | `fitSignal` | `String?` | optional |  |
 | `qualitySignal` | `String?` | optional |  |
 | `commonComplaints` | `Json?` | optional |  |

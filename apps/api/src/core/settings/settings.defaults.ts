@@ -232,6 +232,13 @@ export const SettingKey = {
    */
   SizeBiasMinSampleSize: 'measurements.size_bias_min_sample_size',
   /**
+   * WO-9.9 (09-ai-layer.md) — ProductReviewSummary's own doc comment:
+   * "regenerated ... when PUBLISHED review count crosses the next multiple
+   * of a threshold Setting." A product with 23 published reviews and this
+   * set to 10 last regenerated at 20 and will next regenerate at 30.
+   */
+  ReviewSummaryThreshold: 'reviews.summary_threshold',
+  /**
    * WO-A.3 (10-admin-dashboard.md D2) — how long `MetricRegistryService`
    * caches a computed metric batch, keyed on (from, to, bucket, sorted
    * permission fingerprint, sorted wanted keys). Zero disables the cache.
@@ -379,6 +386,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
 
   [SettingKey.SizeBiasShiftThresholdPct]: 40,
   [SettingKey.SizeBiasMinSampleSize]: 5,
+  [SettingKey.ReviewSummaryThreshold]: 10,
 
   [SettingKey.BomRawMaterialCategorySlug]: 'raw-materials',
   [SettingKey.BomDefaultWastageBps]: 0,

@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import type { PermissionKey } from '@newax/shared';
 import { PrismaService } from '../../core/prisma/prisma.service';
-import type { OrderStatus, Prisma } from '../../core/prisma/client';
+import { Prisma } from '../../core/prisma/client';
+import type { OrderStatus } from '../../core/prisma/client';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { AppConfigService } from '../../core/config/app-config.service';
@@ -156,6 +157,16 @@ export interface PurchasingSupplierRow {
   avgLeadDays: number | null;
   /** Share of the whole list's received spend, basis points. */
   share: number;
+  /**
+   * WO-9.9 (09-ai-layer.md) — "gives merchandising a quality signal per
+   * supplier": the average PUBLISHED Review.rating across every product this
+   * supplier supplies (SupplierProduct), all-time — not windowed by `days`,
+   * since a product's build quality doesn't reset every reporting period.
+   * Null when none of this supplier's products has a published review yet.
+   */
+  avgProductRating: number | null;
+  /** How many published reviews the average above is built from — so a 5.0 from 2 reviews reads differently than a 4.6 from 400. */
+  productReviewCount: number;
 }
 
 export interface PurchasingSuppliers {
@@ -1562,6 +1573,27 @@ export class AnalyticsService {
     const totalSpend = spendRows.reduce((sum, row) => sum + Number(row.spend), 0);
     const now = new Date();
 
+    // WO-9.9 — all-time, not windowed by `days` (see PurchasingSupplierRow's
+    // own doc comment); DISTINCT ON collapses a supplier supplying several
+    // variants of the same product to one row per (supplier, product) so a
+    // multi-size product isn't weighted several times in the average.
+    const qualityRows = await this.prisma.$queryRaw<
+      Array<{ supplierId: string; avgRating: number | null; reviewCount: bigint }>
+    >(Prisma.sql`
+      SELECT "supplierId", AVG(rating)::float AS "avgRating", COUNT(*) AS "reviewCount"
+      FROM (
+        SELECT DISTINCT sp."supplierId", r.id, r.rating
+        FROM "SupplierProduct" sp
+        JOIN "ProductVariant" pv ON pv.id = sp."variantId"
+        JOIN "Review" r ON r."productId" = pv."productId" AND r.status = 'PUBLISHED'
+        WHERE sp."supplierId" IN (${Prisma.join(spendRows.map((row) => row.supplierId))})
+      ) per_review
+      GROUP BY "supplierId"
+    `);
+    const qualityBySupplier = new Map(
+      qualityRows.map((row) => [row.supplierId, { avgRating: row.avgRating, reviewCount: Number(row.reviewCount) }]),
+    );
+
     // Bounded to the suppliers the ranking above already selected — not an
     // unbounded scan of every supplier's every PO.
     const suppliers = await this.prisma.supplier.findMany({
@@ -1619,6 +1651,7 @@ export class AnalyticsService {
       rows: spendRows.map((row) => {
         const spend = Number(row.spend);
         const timing = timingBySupplier.get(row.supplierId);
+        const quality = qualityBySupplier.get(row.supplierId);
         return {
           supplierId: row.supplierId,
           name: row.name,
@@ -1627,6 +1660,8 @@ export class AnalyticsService {
           onTimeRateBps: timing?.onTimeRateBps ?? null,
           avgLeadDays: timing?.avgLeadDays ?? null,
           share: totalSpend > 0 ? Math.round((spend / totalSpend) * 10_000) : 0,
+          avgProductRating: quality ? round1(quality.avgRating ?? 0) : null,
+          productReviewCount: quality?.reviewCount ?? 0,
         };
       }),
     };

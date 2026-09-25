@@ -666,6 +666,9 @@ export interface PurchasingSupplierRow {
   onTimeRateBps: number | null;
   avgLeadDays: number | null;
   share: number;
+  /** WO-9.9 — average PUBLISHED Review.rating across every product this supplier supplies, all-time. Null with no reviews yet. */
+  avgProductRating: number | null;
+  productReviewCount: number;
 }
 
 export interface PurchasingSuppliers {

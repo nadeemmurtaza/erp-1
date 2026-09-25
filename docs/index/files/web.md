@@ -1075,7 +1075,7 @@ All 350 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `analytics-detail-page.tsx` | component | 149 |  |
-| `report-registry.ts` | component | 660 |  |
+| `report-registry.ts` | component | 662 |  |
 | `resolve-path.spec.ts` | unit test | 67 |  |
 | `resolve-path.ts` | component | 48 | The declarative glue every report block reads through (10-admin-dashboard.md D3): a block config names a dot-path into… |
 
@@ -1088,7 +1088,7 @@ All 350 tracked files in `apps/web`, by directory.
 | `kpis-block.tsx` | component | 26 |  |
 | `ranking-block.tsx` | component | 32 |  |
 | `share-block.tsx` | component | 32 |  |
-| `table-block.tsx` | component | 35 |  |
+| `table-block.tsx` | component | 40 |  |
 | `timeseries-block.tsx` | component | 24 |  |
 
 ### `apps/web/src/components/admin/bom` (2)
@@ -1120,7 +1120,7 @@ All 350 tracked files in `apps/web`, by directory.
 | `card-group.tsx` | component | 121 |  |
 | `card-registry.ts` | component | 705 |  |
 | `comparison-panel.tsx` | component | 46 |  |
-| `metric-card.tsx` | component | 138 |  |
+| `metric-card.tsx` | component | 140 |  |
 | `needs-attention-strip.tsx` | component | 74 |  |
 | `use-dashboard-metrics.ts` | component | 71 |  |
 
@@ -1174,7 +1174,7 @@ All 350 tracked files in `apps/web`, by directory.
 | `product-card.tsx` | component | 239 |  |
 | `product-gallery.tsx` | component | 137 |  |
 | `product-purchase.tsx` | component | 509 |  |
-| `product-reviews.tsx` | component | 134 |  |
+| `product-reviews.tsx` | component | 154 |  |
 | `products-grid.tsx` | component | 70 |  |
 | `quick-view-modal.tsx` | component | 79 |  |
 | `search-box.tsx` | component | 134 |  |
@@ -1267,7 +1267,7 @@ All 350 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 1400 |  |
+| `api.ts` | types | 1403 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

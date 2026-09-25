@@ -36,6 +36,8 @@ describe('AnalyticsService — WO-D.2 purchasing spend/suppliers', () => {
     await prisma.goodsReceipt.deleteMany({ where: { purchaseOrder: { number: { startsWith: 'd2-spec-' } } } });
     await prisma.purchaseOrderItem.deleteMany({ where: { purchaseOrder: { number: { startsWith: 'd2-spec-' } } } });
     await prisma.purchaseOrder.deleteMany({ where: { number: { startsWith: 'd2-spec-' } } });
+    await prisma.supplierProduct.deleteMany({ where: { variant: { sku: { startsWith: 'd2-spec-' } } } });
+    await prisma.review.deleteMany({ where: { product: { slug: { startsWith: 'd2-spec-' } } } });
     await prisma.productVariant.deleteMany({ where: { sku: { startsWith: 'd2-spec-' } } });
     await prisma.product.deleteMany({ where: { slug: { startsWith: 'd2-spec-' } } });
     await prisma.supplier.deleteMany({ where: { name: { startsWith: 'd2-spec ' } } });
@@ -135,6 +137,14 @@ describe('AnalyticsService — WO-D.2 purchasing spend/suppliers', () => {
         issuedAt: opts.issuedAt ?? new Date(),
       },
     });
+  }
+
+  async function makeSupplierProduct(supplierId: string, variantId: string) {
+    return prisma.supplierProduct.create({ data: { supplierId, variantId } });
+  }
+
+  async function makeReview(productId: string, rating: number) {
+    return prisma.review.create({ data: { productId, rating, status: 'PUBLISHED' } });
   }
 
   describe('purchasingSpend', () => {
@@ -325,6 +335,50 @@ describe('AnalyticsService — WO-D.2 purchasing spend/suppliers', () => {
       await expect(service.purchasingSuppliers(1)).resolves.toEqual(
         expect.objectContaining({ rows: expect.any(Array) }),
       );
+    });
+
+    describe('WO-9.9 — avgProductRating / productReviewCount', () => {
+      it('averages PUBLISHED review ratings across every product this supplier supplies', async () => {
+        const supplier = await makeSupplier();
+        const variant = await makeVariant();
+        await makeSupplierProduct(supplier.id, variant.id);
+        await makePO({ supplierId: supplier.id, variantId: variant.id, quantity: 1, unitCost: 100, sentAt: daysAgo(1), receivedAt: daysAgo(1) });
+        await makeReview(variant.productId, 5);
+        await makeReview(variant.productId, 3);
+
+        const result = await service.purchasingSuppliers(30);
+        const row = result.rows.find((r) => r.supplierId === supplier.id);
+
+        expect(row?.avgProductRating).toBe(4);
+        expect(row?.productReviewCount).toBe(2);
+      });
+
+      it('ignores a review with no PUBLISHED status', async () => {
+        const supplier = await makeSupplier();
+        const variant = await makeVariant();
+        await makeSupplierProduct(supplier.id, variant.id);
+        await makePO({ supplierId: supplier.id, variantId: variant.id, quantity: 1, unitCost: 100, sentAt: daysAgo(1), receivedAt: daysAgo(1) });
+        await prisma.review.create({ data: { productId: variant.productId, rating: 1, status: 'PENDING' } });
+
+        const result = await service.purchasingSuppliers(30);
+        const row = result.rows.find((r) => r.supplierId === supplier.id);
+
+        expect(row?.avgProductRating).toBeNull();
+        expect(row?.productReviewCount).toBe(0);
+      });
+
+      it('is null with a review count of 0 when this supplier has no reviewed products', async () => {
+        const supplier = await makeSupplier();
+        const variant = await makeVariant();
+        await makeSupplierProduct(supplier.id, variant.id);
+        await makePO({ supplierId: supplier.id, variantId: variant.id, quantity: 1, unitCost: 100, sentAt: daysAgo(1), receivedAt: daysAgo(1) });
+
+        const result = await service.purchasingSuppliers(30);
+        const row = result.rows.find((r) => r.supplierId === supplier.id);
+
+        expect(row?.avgProductRating).toBeNull();
+        expect(row?.productReviewCount).toBe(0);
+      });
     });
   });
 });

@@ -21,10 +21,15 @@ export function TableBlock({ config, data }: { config: TableBlockConfig; data: u
         columns={config.columns.map((column) => ({
           header: column.header,
           align: column.align === 'right' ? 'end' : 'start',
-          numeric: column.format === 'integer' || column.format === 'money' || column.format === 'days' || column.format === 'percent' || column.format === 'percent-bps',
+          numeric: column.format === 'integer' || column.format === 'money' || column.format === 'days' || column.format === 'percent' || column.format === 'percent-bps' || column.format === 'rating',
           cell: (row: Record<string, unknown>) => {
             const value = resolvePath(row, column.key);
-            const text = column.format === 'text' ? String(value ?? '—') : formatValue(column.format, Number(value ?? 0));
+            const text =
+              column.format === 'text'
+                ? String(value ?? '—')
+                : value === null || value === undefined
+                  ? '—'
+                  : formatValue(column.format, Number(value));
             return column.href ? <Link href={interpolateHref(column.href, row)}>{text}</Link> : text;
           },
         }))}

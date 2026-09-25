@@ -3,7 +3,7 @@
 
 # Tests
 
-**194** spec files, **1,803** cases. What is already pinned down — and what is not.
+**196** spec files, **1,828** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -55,7 +55,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (176)
+## Unit and integration (178)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -100,7 +100,7 @@ regression or an N+1.
 | `apps/api/src/modules/analytics/analytics.metrics.spec.ts` | analytics | 14 | SalesMetricsProvider · SalesCostMetricsProvider · OrdersMetricsProvider · ProductsMetricsProvider ·… |
 | `apps/api/src/modules/analytics/analytics.orders.spec.ts` | analytics | 8 | AnalyticsService — WO-D.1 orders overview/fulfilment · ordersOverview · ordersFulfilment |
 | `apps/api/src/modules/analytics/analytics.products.spec.ts` | analytics | 9 | AnalyticsService — WO-D.3 products top/slow-sellers, categories · productsTopSellers · productsSlow… |
-| `apps/api/src/modules/analytics/analytics.purchasing.spec.ts` | analytics | 10 | AnalyticsService — WO-D.2 purchasing spend/suppliers · purchasingSpend · purchasingSuppliers |
+| `apps/api/src/modules/analytics/analytics.purchasing.spec.ts` | analytics | 13 | AnalyticsService — WO-D.2 purchasing spend/suppliers · purchasingSpend · purchasingSuppliers · WO-9… |
 | `apps/api/src/modules/analytics/analytics.sales.spec.ts` | analytics | 6 | AnalyticsService — WO-A.5 sales revenue/aov/profit/funnel · salesRevenue · salesAov · salesProfit ·… |
 | `apps/api/src/modules/analytics/analytics.workshop.spec.ts` | analytics | 7 | AnalyticsService — WO-D.6 workshop output · series · byStage · byTailor |
 | `apps/api/src/modules/analytics/supply-chain-digest.cron.spec.ts` | analytics | 11 | SupplyChainDigestCron · sendSupplierDigests · sendSupplierScorecards · sendDemandAlerts |
@@ -150,7 +150,7 @@ regression or an N+1.
 | `apps/api/src/modules/marketing/marketing-automation.cron.spec.ts` | marketing | 19 | MarketingAutomationCron · sendAbandonedCartReminders · sendAbandonedCartFirstTouch · sendAbandonedC… |
 | `apps/api/src/modules/measurements/garment-fields-seed.spec.ts` | measurements | 1 | seeded measurement fields satisfy MeasurementFieldDto |
 | `apps/api/src/modules/measurements/size-bias.listener.spec.ts` | measurements | 5 | SizeBiasListener · onReviewModerated · onReturnRequestStatusChanged |
-| `apps/api/src/modules/measurements/size-bias.service.spec.ts` | measurements | 6 | SizeBiasService |
+| `apps/api/src/modules/measurements/size-bias.service.spec.ts` | measurements | 10 | SizeBiasService · WO-9.9 — ProductReviewSummary.fitSignal corroboration |
 | `apps/api/src/modules/measurements/size-recommendation.service.spec.ts` | measurements | 8 | SizeRecommendationService |
 | `apps/api/src/modules/onsitemessages/onsite-messages.service.spec.ts` | onsitemessages | 8 | OnsiteMessagesService |
 | `apps/api/src/modules/orders/backorder.listener.spec.ts` | orders | 4 | BackorderListener |
@@ -186,6 +186,8 @@ regression or an N+1.
 | `apps/api/src/modules/recommendations/recommendations.cron.spec.ts` | recommendations | 6 | RecommendationsCron |
 | `apps/api/src/modules/recommendations/recommendations.service.spec.ts` | recommendations | 14 | RecommendationsService · relatedFor · frequentlyBoughtWith · manual cross-sell curation (admin) · p… |
 | `apps/api/src/modules/reports/reports-finance-exports.spec.ts` | reports | 4 | ReportsService finance exports |
+| `apps/api/src/modules/reviews/review-summary.listener.spec.ts` | reviews | 3 | ReviewSummaryListener |
+| `apps/api/src/modules/reviews/review-summary.service.spec.ts` | reviews | 15 | ReviewSummaryService · maybeRegenerate — threshold gating · regeneration — degradation and validati… |
 | `apps/api/src/modules/reviews/reviews.service.spec.ts` | reviews | 3 | ReviewsService — moderate |
 | `apps/api/src/modules/search/search-embedding.cron.spec.ts` | search | 2 | SearchEmbeddingCron |
 | `apps/api/src/modules/search/search-reindex.listener.spec.ts` | search | 2 | SearchReindexListener |

@@ -21,6 +21,8 @@ export function formatValue(format: ValueFormat, value: number, label?: string):
       return `${(value / 100).toFixed(1)}%`;
     case 'days':
       return `${value} ${value === 1 ? 'day' : 'days'}`;
+    case 'rating':
+      return `${value.toFixed(1)} ★`;
     case 'text':
       return label ?? '—';
     case 'integer':

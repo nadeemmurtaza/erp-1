@@ -12,8 +12,10 @@ const FIT_RETURN_REASON_KEYS = ['too_small', 'too_large'] as const;
  * compute ProductSizeBias.shift." Corroborated by return reasons ONLY when a
  * shop has actually created a ReturnReasonCode row keyed exactly `too_small`
  * or `too_large` (fulfilment/returns.service.ts's `reasons` are free-text,
- * admin-defined — this never pattern-matches an arbitrary label). Reads
- * Review and ReturnRequestItem directly via Prisma rather than importing
+ * admin-defined — this never pattern-matches an arbitrary label), and by
+ * WO-9.9's ProductReviewSummary.fitSignal when the structured tally alone is
+ * too thin to decide. Reads Review, ReturnRequestItem and
+ * ProductReviewSummary directly via Prisma rather than importing
  * ReviewsService/ReturnsService — a read across modules, not the
  * same-transaction write KNOWN_MODULE_COUPLINGS exists for.
  */
@@ -70,6 +72,19 @@ export class SizeBiasService {
     if (sampleSize >= minSampleSize) {
       if (pct(tooSmall) >= thresholdPct) shift = 1;
       else if (pct(tooLarge) >= thresholdPct) shift = -1;
+    } else {
+      // WO-9.9 (09-ai-layer.md) — "fitSignal feeds WO-9.2's size
+      // recommendation as a corroborating input alongside the raw
+      // fitFeedback aggregation" (ProductReviewSummary's own doc comment).
+      // Only consulted when the structured tally alone isn't enough to
+      // decide — it never overrides a decision the real counts already
+      // made, it only covers the gap while they're too thin to trust.
+      const summary = await this.prisma.productReviewSummary.findUnique({
+        where: { productId },
+        select: { fitSignal: true },
+      });
+      if (summary?.fitSignal === 'too_small') shift = 1;
+      else if (summary?.fitSignal === 'too_large') shift = -1;
     }
 
     await this.prisma.productSizeBias.upsert({

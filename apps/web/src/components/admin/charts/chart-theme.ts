@@ -17,7 +17,7 @@ import { THEME_COLORS, toMajor } from '@newax/shared';
  * chart wrapper needs it to know how to format a value, and `card-registry`
  * (A.4) is a consumer of the charts folder, not the other way round.
  */
-export type ValueFormat = 'money' | 'integer' | 'percent' | 'percent-bps' | 'days' | 'text';
+export type ValueFormat = 'money' | 'integer' | 'percent' | 'percent-bps' | 'days' | 'rating' | 'text';
 
 export const CHART_PALETTE: readonly string[] = THEME_COLORS.chart;
 export const GRID = THEME_COLORS.neutral[100];

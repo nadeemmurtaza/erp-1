@@ -62,6 +62,12 @@ model Review {
 model ProductReviewSummary {
   productId               String   @id
   summaryText             String
+  /// House Rule 1 — this line is shown on the storefront to any visitor,
+  /// same as every other customer-facing string, so it is generated in both
+  /// languages in the one AI call rather than shipped English-only. Null
+  /// only if that generation failed while `summaryText` itself succeeded;
+  /// the storefront falls back to English rather than showing nothing.
+  summaryTextUr           String?
   fitSignal               String?
   qualitySignal           String?
   commonComplaints        Json?

@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 17 files
 
 Source: `apps/api/src/modules/analytics/`
 
-## Files (17 · 5,677 lines)
+## Files (17 · 5,766 lines)
 
 All paths relative to `apps/api/src/modules/analytics`.
 
@@ -24,9 +24,9 @@ All paths relative to `apps/api/src/modules/analytics`.
 | `analytics.module.ts` | nest module | 30 | 1 |  |
 | `analytics.orders.spec.ts` | unit test | 201 | — |  |
 | `analytics.products.spec.ts` | unit test | 262 | — |  |
-| `analytics.purchasing.spec.ts` | unit test | 331 | — |  |
+| `analytics.purchasing.spec.ts` | unit test | 385 | — |  |
 | `analytics.sales.spec.ts` | unit test | 151 | — |  |
-| `analytics.service.ts` | service | 2375 | 37 |  |
+| `analytics.service.ts` | service | 2410 | 37 |  |
 | `analytics.workshop.spec.ts` | unit test | 182 | — |  |
 | `analytics.dto.ts` | dto | 10 | 1 |  |
 | `cards.dto.ts` | dto | 44 | 2 | `GET /admin/analytics/cards` (10-admin-dashboard.md D2, WO-A.4). |
@@ -126,7 +126,7 @@ check there before adding another.
 | `analytics.metrics.spec.ts` | 14 | SalesMetricsProvider · SalesCostMetricsProvider · OrdersMetricsProvider · ProductsMetricsProvider · CustomersMetricsPro… |
 | `analytics.orders.spec.ts` | 8 | AnalyticsService — WO-D.1 orders overview/fulfilment · ordersOverview · ordersFulfilment |
 | `analytics.products.spec.ts` | 9 | AnalyticsService — WO-D.3 products top/slow-sellers, categories · productsTopSellers · productsSlowSellers · productsCa… |
-| `analytics.purchasing.spec.ts` | 10 | AnalyticsService — WO-D.2 purchasing spend/suppliers · purchasingSpend · purchasingSuppliers |
+| `analytics.purchasing.spec.ts` | 13 | AnalyticsService — WO-D.2 purchasing spend/suppliers · purchasingSpend · purchasingSuppliers · WO-9.9 — avgProductRatin… |
 | `analytics.sales.spec.ts` | 6 | AnalyticsService — WO-A.5 sales revenue/aov/profit/funnel · salesRevenue · salesAov · salesProfit · salesFunnel |
 | `analytics.workshop.spec.ts` | 7 | AnalyticsService — WO-D.6 workshop output · series · byStage · byTailor |
 | `supply-chain-digest.cron.spec.ts` | 11 | SupplyChainDigestCron · sendSupplierDigests · sendSupplierScorecards · sendDemandAlerts |
@@ -145,43 +145,43 @@ check there before adding another.
 | `WorkshopMetricsProvider` | class | `analytics.metrics.ts:374` |  |
 | `WorkshopStaffMetricsProvider` | class | `analytics.metrics.ts:430` | `workshop.staff_accounts` alone — needs `users.manage`, stricter than the rest of this group. |
 | `AnalyticsModule` | class | `analytics.module.ts:29` |  |
-| `MonthlyTarget` | interface | `analytics.service.ts:23` |  |
-| `SalesRevenueReport` | interface | `analytics.service.ts:30` |  |
-| `SalesAovReport` | interface | `analytics.service.ts:37` |  |
-| `SalesProfitReport` | interface | `analytics.service.ts:43` |  |
-| `SalesFunnelReport` | interface | `analytics.service.ts:49` |  |
-| `DashboardSummary` | interface | `analytics.service.ts:56` |  |
-| `StitchingAnalytics` | interface | `analytics.service.ts:76` |  |
-| `ExtendedAnalytics` | interface | `analytics.service.ts:85` |  |
-| `OrderAgeingBucket` | interface | `analytics.service.ts:106` |  |
-| `OrdersOverview` | interface | `analytics.service.ts:111` |  |
-| `OrderTransitionTiming` | interface | `analytics.service.ts:120` |  |
-| `OrdersFulfilment` | interface | `analytics.service.ts:128` |  |
-| `PurchasingSpend` | interface | `analytics.service.ts:133` |  |
-| `PurchasingSupplierRow` | interface | `analytics.service.ts:148` |  |
-| `PurchasingSuppliers` | interface | `analytics.service.ts:161` |  |
-| `ProductTopSellerRow` | interface | `analytics.service.ts:165` |  |
-| `ProductsTopSellers` | interface | `analytics.service.ts:177` |  |
-| `ProductSlowSellerRow` | interface | `analytics.service.ts:181` |  |
-| `ProductsSlowSellers` | interface | `analytics.service.ts:190` |  |
-| `ProductCategoryRow` | interface | `analytics.service.ts:194` |  |
-| `ProductsCategories` | interface | `analytics.service.ts:205` |  |
-| `InventoryValuation` | interface | `analytics.service.ts:210` |  |
-| `StockMovementReasonRow` | interface | `analytics.service.ts:223` |  |
-| `InventoryMovementRow` | interface | `analytics.service.ts:230` |  |
-| `InventoryMovements` | interface | `analytics.service.ts:240` |  |
-| `CustomersOverview` | interface | `analytics.service.ts:246` |  |
-| `CustomerCohort` | interface | `analytics.service.ts:253` |  |
-| `CustomersRetention` | interface | `analytics.service.ts:261` |  |
-| `CustomerTopRow` | interface | `analytics.service.ts:266` |  |
-| `CustomersTop` | interface | `analytics.service.ts:276` |  |
-| `WorkshopStageRow` | interface | `analytics.service.ts:280` |  |
-| `WorkshopTailorRow` | interface | `analytics.service.ts:286` |  |
-| `WorkshopOutput` | interface | `analytics.service.ts:293` |  |
-| `ComparisonBucket` | interface | `analytics.service.ts:300` |  |
-| `ComparisonAnalytics` | interface | `analytics.service.ts:310` |  |
-| `VisitorAnalytics` | interface | `analytics.service.ts:325` |  |
-| `AnalyticsService` | class | `analytics.service.ts:347` | Dashboard numbers. |
+| `MonthlyTarget` | interface | `analytics.service.ts:24` |  |
+| `SalesRevenueReport` | interface | `analytics.service.ts:31` |  |
+| `SalesAovReport` | interface | `analytics.service.ts:38` |  |
+| `SalesProfitReport` | interface | `analytics.service.ts:44` |  |
+| `SalesFunnelReport` | interface | `analytics.service.ts:50` |  |
+| `DashboardSummary` | interface | `analytics.service.ts:57` |  |
+| `StitchingAnalytics` | interface | `analytics.service.ts:77` |  |
+| `ExtendedAnalytics` | interface | `analytics.service.ts:86` |  |
+| `OrderAgeingBucket` | interface | `analytics.service.ts:107` |  |
+| `OrdersOverview` | interface | `analytics.service.ts:112` |  |
+| `OrderTransitionTiming` | interface | `analytics.service.ts:121` |  |
+| `OrdersFulfilment` | interface | `analytics.service.ts:129` |  |
+| `PurchasingSpend` | interface | `analytics.service.ts:134` |  |
+| `PurchasingSupplierRow` | interface | `analytics.service.ts:149` |  |
+| `PurchasingSuppliers` | interface | `analytics.service.ts:172` |  |
+| `ProductTopSellerRow` | interface | `analytics.service.ts:176` |  |
+| `ProductsTopSellers` | interface | `analytics.service.ts:188` |  |
+| `ProductSlowSellerRow` | interface | `analytics.service.ts:192` |  |
+| `ProductsSlowSellers` | interface | `analytics.service.ts:201` |  |
+| `ProductCategoryRow` | interface | `analytics.service.ts:205` |  |
+| `ProductsCategories` | interface | `analytics.service.ts:216` |  |
+| `InventoryValuation` | interface | `analytics.service.ts:221` |  |
+| `StockMovementReasonRow` | interface | `analytics.service.ts:234` |  |
+| `InventoryMovementRow` | interface | `analytics.service.ts:241` |  |
+| `InventoryMovements` | interface | `analytics.service.ts:251` |  |
+| `CustomersOverview` | interface | `analytics.service.ts:257` |  |
+| `CustomerCohort` | interface | `analytics.service.ts:264` |  |
+| `CustomersRetention` | interface | `analytics.service.ts:272` |  |
+| `CustomerTopRow` | interface | `analytics.service.ts:277` |  |
+| `CustomersTop` | interface | `analytics.service.ts:287` |  |
+| `WorkshopStageRow` | interface | `analytics.service.ts:291` |  |
+| `WorkshopTailorRow` | interface | `analytics.service.ts:297` |  |
+| `WorkshopOutput` | interface | `analytics.service.ts:304` |  |
+| `ComparisonBucket` | interface | `analytics.service.ts:311` |  |
+| `ComparisonAnalytics` | interface | `analytics.service.ts:321` |  |
+| `VisitorAnalytics` | interface | `analytics.service.ts:336` |  |
+| `AnalyticsService` | class | `analytics.service.ts:358` | Dashboard numbers. |
 | `SetMonthlyTargetDto` | class | `analytics.dto.ts:4` |  |
 | `DashboardCardsQueryDto` | class | `cards.dto.ts:7` | `GET /admin/analytics/cards` (10-admin-dashboard.md D2, WO-A.4). |
 | `DashboardCardsResponse` | interface | `cards.dto.ts:33` | The response shape D2 pins — every key the caller may see AND whose module is enabled. |

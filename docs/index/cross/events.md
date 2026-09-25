@@ -77,7 +77,7 @@ order" is a new file, not an edit to checkout.
 | `fulfilment.return_status_changed` | `ReturnRequestStatusChanged` | `fulfilment` | `fulfilment`, `measurements` |
 | `fulfilment.return_fully_refunded` | `ReturnRequestFullyRefunded` | `fulfilment` | `orders` |
 | `promotions.discount_redeemed` | `DiscountRedeemed` | `promotions` | _none_ |
-| `reviews.review_moderated` | `ReviewModerated` | `reviews` | `measurements` |
+| `reviews.review_moderated` | `ReviewModerated` | `reviews` | `measurements`, `reviews` |
 
 
 ## Detail
@@ -879,6 +879,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Handler | Where | Module |
 |---|---|---|
 | `onReviewModerated()` | `apps/api/src/modules/measurements/size-bias.listener.ts:21` | `measurements` |
+| `onReviewModerated()` | `apps/api/src/modules/reviews/review-summary.listener.ts:13` | `reviews` |
 
 
 ---

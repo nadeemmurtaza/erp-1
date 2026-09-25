@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 748 tracked files in `apps/api`, by directory.
+All 753 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -64,7 +64,7 @@ All 748 tracked files in `apps/api`, by directory.
 | `promotions.prisma` | prisma schema | 113 | Phase 5 WO-5.1/5.2/5.3 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
 | `purchasing.prisma` | prisma schema | 303 |  |
 | `replication.prisma` | prisma schema | 185 | The replication engine (RETAIL-ERP.md Part 6, WO-20.1: "log, cursors, |
-| `reviews.prisma` | prisma schema | 73 | Phase 7 WO-7.5 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
+| `reviews.prisma` | prisma schema | 79 | Phase 7 WO-7.5 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `schema.prisma` | prisma schema | 32 | Datasource and generator only. Models live in one file per module — |
 | `search.prisma` | prisma schema | 40 | Search. WO-8.3, |
 | `stitching.prisma` | prisma schema | 202 | Stitching: the style options a customer picks, standalone stitching orders |
@@ -494,6 +494,12 @@ All 748 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 8 |  |
 
+### `apps/api/prisma/schema/migrations/20260925170000_add_review_summary_urdu` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 5 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -754,7 +760,7 @@ All 748 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 48 |  |
-| `settings.defaults.ts` | module | 393 |  |
+| `settings.defaults.ts` | module | 401 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 85 |  |
 
@@ -840,9 +846,9 @@ All 748 tracked files in `apps/api`, by directory.
 | `analytics.module.ts` | nest module | 30 |  |
 | `analytics.orders.spec.ts` | unit test | 201 |  |
 | `analytics.products.spec.ts` | unit test | 262 |  |
-| `analytics.purchasing.spec.ts` | unit test | 331 |  |
+| `analytics.purchasing.spec.ts` | unit test | 385 |  |
 | `analytics.sales.spec.ts` | unit test | 151 |  |
-| `analytics.service.ts` | service | 2375 |  |
+| `analytics.service.ts` | service | 2410 |  |
 | `analytics.workshop.spec.ts` | unit test | 182 |  |
 | `supply-chain-digest.cron.spec.ts` | unit test | 254 |  |
 | `supply-chain-digest.cron.ts` | scheduled job | 257 |  |
@@ -1209,8 +1215,8 @@ All 748 tracked files in `apps/api`, by directory.
 | `measurements.service.ts` | service | 204 |  |
 | `size-bias.listener.spec.ts` | unit test | 96 |  |
 | `size-bias.listener.ts` | event subscriber | 55 |  |
-| `size-bias.service.spec.ts` | unit test | 122 |  |
-| `size-bias.service.ts` | service | 100 |  |
+| `size-bias.service.spec.ts` | unit test | 172 |  |
+| `size-bias.service.ts` | service | 115 |  |
 | `size-recommendation.service.spec.ts` | unit test | 143 |  |
 | `size-recommendation.service.ts` | service | 96 |  |
 
@@ -1491,13 +1497,17 @@ All 748 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `reports.dto.ts` | dto | 33 |  |
 
-### `apps/api/src/modules/reviews` (5)
+### `apps/api/src/modules/reviews` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `reviews-public.controller.ts` | controller | 44 |  |
+| `review-summary.listener.spec.ts` | unit test | 36 |  |
+| `review-summary.listener.ts` | event subscriber | 26 |  |
+| `review-summary.service.spec.ts` | unit test | 244 |  |
+| `review-summary.service.ts` | service | 188 |  |
+| `reviews-public.controller.ts` | controller | 55 |  |
 | `reviews.controller.ts` | controller | 26 |  |
-| `reviews.module.ts` | nest module | 12 |  |
+| `reviews.module.ts` | nest module | 14 |  |
 | `reviews.service.spec.ts` | unit test | 68 |  |
 | `reviews.service.ts` | service | 136 |  |
 

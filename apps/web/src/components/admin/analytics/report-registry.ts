@@ -301,6 +301,8 @@ export const REPORT_REGISTRY: readonly AnalyticsReport[] = [
           { key: 'onTimeRateBps', header: 'On-time rate', format: 'percent-bps', align: 'right' },
           { key: 'avgLeadDays', header: 'Avg. lead time', format: 'days', align: 'right' },
           { key: 'share', header: 'Share of spend', format: 'percent-bps', align: 'right' },
+          { key: 'avgProductRating', header: 'Product rating', format: 'rating', align: 'right' },
+          { key: 'productReviewCount', header: 'Reviews', format: 'integer', align: 'right' },
         ],
       },
     ],

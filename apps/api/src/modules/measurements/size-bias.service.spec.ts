@@ -15,6 +15,7 @@ describe('SizeBiasService', () => {
       returnRequestItem: { groupBy: jest.fn().mockResolvedValue([]) },
       returnReasonCode: { findMany: jest.fn().mockResolvedValue([]) },
       productSizeBias: { upsert: jest.fn().mockResolvedValue({}) },
+      productReviewSummary: { findUnique: jest.fn().mockResolvedValue(null) },
     };
 
     settings = {
@@ -83,6 +84,55 @@ describe('SizeBiasService', () => {
     expect(prisma.productSizeBias.upsert).toHaveBeenCalledWith(
       expect.objectContaining({ create: expect.objectContaining({ sampleSize: 3, shift: 0 }) }),
     );
+  });
+
+  describe('WO-9.9 — ProductReviewSummary.fitSignal corroboration', () => {
+    it('falls back to fitSignal when the structured sample is below the minimum', async () => {
+      prisma.review.groupBy.mockResolvedValue([{ fitFeedback: 'too_small', _count: { _all: 2 } }]);
+      prisma.productReviewSummary.findUnique.mockResolvedValue({ fitSignal: 'too_small' });
+
+      await service.recompute('prod1');
+
+      expect(prisma.productSizeBias.upsert).toHaveBeenCalledWith(
+        expect.objectContaining({ create: expect.objectContaining({ sampleSize: 2, shift: 1 }) }),
+      );
+    });
+
+    it('applies a too_large fitSignal the same way', async () => {
+      prisma.productReviewSummary.findUnique.mockResolvedValue({ fitSignal: 'too_large' });
+
+      await service.recompute('prod1');
+
+      expect(prisma.productSizeBias.upsert).toHaveBeenCalledWith(
+        expect.objectContaining({ create: expect.objectContaining({ shift: -1 }) }),
+      );
+    });
+
+    it('never consults fitSignal once the structured sample alone is enough to decide', async () => {
+      prisma.review.groupBy.mockResolvedValue([
+        { fitFeedback: 'too_small', _count: { _all: 5 } },
+        { fitFeedback: 'true_to_size', _count: { _all: 5 } },
+      ]);
+      // A contradicting AI signal must never override a decision the real counts already made.
+      prisma.productReviewSummary.findUnique.mockResolvedValue({ fitSignal: 'too_large' });
+
+      await service.recompute('prod1');
+
+      expect(prisma.productReviewSummary.findUnique).not.toHaveBeenCalled();
+      expect(prisma.productSizeBias.upsert).toHaveBeenCalledWith(
+        expect.objectContaining({ create: expect.objectContaining({ shift: 1 }) }),
+      );
+    });
+
+    it('stays at shift 0 when there is no cached summary yet', async () => {
+      prisma.productReviewSummary.findUnique.mockResolvedValue(null);
+
+      await service.recompute('prod1');
+
+      expect(prisma.productSizeBias.upsert).toHaveBeenCalledWith(
+        expect.objectContaining({ create: expect.objectContaining({ shift: 0 }) }),
+      );
+    });
   });
 
   it('folds in return-reason counts keyed exactly too_small/too_large, ignoring other reason keys', async () => {

@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **588** endpoints across **106** controllers, with the access rule that actually guards each one.
+All **589** endpoints across **106** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 69** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 70** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -82,6 +82,7 @@ never authorization.
 | POST | `/payments/callback/:provider` | `PaymentsController.callback` |
 | GET | `/payments/methods` | `PaymentsController.methods` |
 | GET | `/products/:productId/reviews` | `ReviewsPublicController.listForProduct` |
+| GET | `/products/:productId/reviews/summary` | `ReviewsPublicController.summary` |
 | POST | `/promotions/preview` | `PromotionsPublicController.preview` |
 | GET | `/replication/pull` | `ReplicationController.pull` |
 | POST | `/replication/push` | `ReplicationController.push` |
@@ -785,13 +786,14 @@ never authorization.
 | GET | `/admin/reports/export/stock-ledger` | `reports.view` | `ReportsController.exportStockLedger` | CSV: stock movement ledger |
 | GET | `/admin/reports/export/stock-valuation` | `inventory.view_cost` | `ReportsController.exportStockValuation` | CSV: stock valuation, one row per variant |
 
-### [`reviews`](../modules/reviews.md) (6)
+### [`reviews`](../modules/reviews.md) (7)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/reviews` | `reviews.moderate` | `ReviewsController.list` | List reviews for moderation |
 | PATCH | `/admin/reviews/:id` | `reviews.moderate` | `ReviewsController.moderate` | Publish, reject, or reply to a review |
 | GET | `/products/:productId/reviews` | **PUBLIC** | `ReviewsPublicController.listForProduct` | A product's published reviews |
+| GET | `/products/:productId/reviews/summary` | **PUBLIC** | `ReviewsPublicController.summary` | WO-9.9 — the cached AI review summary, or null until enough reviews exist |
 | POST | `/reviews` | signed-in | `ReviewsPublicController.create` | Submit a review — goes to PENDING, moderated before it shows |
 | POST | `/reviews/:id/helpful` | **PUBLIC** | `ReviewsPublicController.markHelpful` | Mark a review helpful |
 | GET | `/reviews/mine` | signed-in | `ReviewsPublicController.mine` | My own reviews, any status |

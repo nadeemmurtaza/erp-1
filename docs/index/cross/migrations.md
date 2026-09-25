@@ -3,7 +3,7 @@
 
 # Migrations
 
-**70** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**71** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -103,6 +103,7 @@ nothing here fails a build.
 | 2026-09-25 | `add_cod_risk_reason_and_city_stats` | 3 | ALTER TABLE, CREATE TABLE | CityCodRiskStat, Order |
 | 2026-09-25 | `add_requisitions_approvals_and_loss_prevention` | 40 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX | ApprovalChain, ApprovalStep, PurchaseRequisition, RequisitionLine, SpotCheck, SpotCheckLine, SpotCheckPolicy,… |
 | 2026-09-25 | `add_whatsapp_message_external_id` | 2 | ALTER TABLE, CREATE UNIQUE INDEX | WhatsAppMessage |
+| 2026-09-25 | `add_review_summary_urdu` | 1 | ALTER TABLE | ProductReviewSummary |
 
 
 ---

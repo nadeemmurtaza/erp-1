@@ -196,7 +196,7 @@ against a real database.
 | [`ProductOptionTranslation`](../data/catalog.md#productoptiontranslation) | `catalog` | 5 | 1 | id |  |
 | [`ProductOptionValue`](../data/catalog.md#productoptionvalue) | `catalog` | 9 | 1 | id | A specific value on an option axis: "M", "Ferozi", "128GB". |
 | [`ProductOptionValueTranslation`](../data/catalog.md#productoptionvaluetranslation) | `catalog` | 5 | 1 | id |  |
-| [`ProductReviewSummary`](../data/reviews.md#productreviewsummary) | `reviews` | 8 | 1 | productId | WO-9.9 (09-ai-layer.md). |
+| [`ProductReviewSummary`](../data/reviews.md#productreviewsummary) | `reviews` | 9 | 1 | productId | WO-9.9 (09-ai-layer.md). |
 | [`ProductSizeBias`](../data/catalog.md#productsizebias) | `catalog` | 8 | 1 | productId | WO-9.2. |
 | [`ProductTranslation`](../data/catalog.md#producttranslation) | `catalog` | 12 | 1 | id |  |
 | [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 51 | 5 | id |  |

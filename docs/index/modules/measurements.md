@@ -9,7 +9,7 @@ Pack **apparel** · enabled by the `MODULES` allowlist · 12 files
 
 Source: `apps/api/src/modules/measurements/`
 
-## Files (12 · 1,576 lines)
+## Files (12 · 1,641 lines)
 
 All paths relative to `apps/api/src/modules/measurements/dto`.
 
@@ -23,8 +23,8 @@ All paths relative to `apps/api/src/modules/measurements/dto`.
 | `measurements.service.ts` | service | 204 | 2 | Garment types, their measurement fields, and customers' saved profiles. |
 | `size-bias.listener.spec.ts` | unit test | 96 | — |  |
 | `size-bias.listener.ts` | event subscriber | 55 | 1 | Reacts to signals ProductSizeBias is built from — lives in `measurements` (the reacting module), subscribing to events… |
-| `size-bias.service.spec.ts` | unit test | 122 | — |  |
-| `size-bias.service.ts` | service | 100 | 1 | WO-9.2 (09-ai-layer.md) — "aggregate Review.fitFeedback per product to compute ProductSizeBias.shift." Corroborated by… |
+| `size-bias.service.spec.ts` | unit test | 172 | — |  |
+| `size-bias.service.ts` | service | 115 | 1 | WO-9.2 (09-ai-layer.md) — "aggregate Review.fitFeedback per product to compute ProductSizeBias.shift." Corroborated by… |
 | `size-recommendation.service.spec.ts` | unit test | 143 | — |  |
 | `size-recommendation.service.ts` | service | 96 | 2 |  |
 
@@ -110,7 +110,7 @@ check there before adding another.
 |---|---|---|
 | `garment-fields-seed.spec.ts` | 1 | seeded measurement fields satisfy MeasurementFieldDto |
 | `size-bias.listener.spec.ts` | 5 | SizeBiasListener · onReviewModerated · onReturnRequestStatusChanged |
-| `size-bias.service.spec.ts` | 6 | SizeBiasService |
+| `size-bias.service.spec.ts` | 10 | SizeBiasService · WO-9.9 — ProductReviewSummary.fitSignal corroboration |
 | `size-recommendation.service.spec.ts` | 8 | SizeRecommendationService |
 
 
@@ -130,7 +130,7 @@ check there before adding another.
 | `MeasurementsService` | class | `measurements.service.ts:25` | Garment types, their measurement fields, and customers' saved profiles. |
 | `toFieldDefs` | function | `measurements.service.ts:188` | Prisma rows -> the plain definitions @newax/shared validates against. |
 | `SizeBiasListener` | class | `size-bias.listener.ts:13` | Reacts to signals ProductSizeBias is built from — lives in `measurements` (the reacting module), subscribing… |
-| `SizeBiasService` | class | `size-bias.service.ts:21` | WO-9.2 (09-ai-layer.md) — "aggregate Review.fitFeedback per product to compute ProductSizeBias.shift." Corrob… |
+| `SizeBiasService` | class | `size-bias.service.ts:23` | WO-9.2 (09-ai-layer.md) — "aggregate Review.fitFeedback per product to compute ProductSizeBias.shift." Corrob… |
 | `SizeRecommendationResponse` | interface | `size-recommendation.service.ts:6` |  |
 | `SizeRecommendationService` | class | `size-recommendation.service.ts:26` | WO-9.2 (09-ai-layer.md) — "Based on your measurements, take M." Reads Product/ProductVariant/ProductGarmentTy… |
 

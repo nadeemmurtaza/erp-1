@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { formatDate } from '@newax/shared';
 import { customerFetch, getCustomerToken } from '@/lib/customer-client';
 import { request } from '@/lib/api-client';
@@ -19,10 +19,18 @@ interface ReviewView {
   createdAt: string;
 }
 
+/** WO-9.9 (09-ai-layer.md) — "'Most customers say it runs small' above the review list." */
+interface ReviewSummaryView {
+  summaryText: string;
+  summaryTextUr: string | null;
+}
+
 /** WO-7.5 — reviews and Q&A, on the product's own page. */
 export function ProductReviews({ productId }: { productId: string }) {
   const t = useTranslations('product.reviews');
+  const locale = useLocale();
   const [reviews, setReviews] = useState<ReviewView[]>([]);
+  const [summary, setSummary] = useState<ReviewSummaryView | null>(null);
   const [rating, setRating] = useState(5);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -34,6 +42,12 @@ export function ProductReviews({ productId }: { productId: string }) {
     request<{ data: ReviewView[] }>(`/products/${productId}/reviews`, { query: { page: 1, pageSize: 20 } })
       .then((res) => setReviews(res.data))
       .catch(() => setReviews([]));
+  }, [productId]);
+
+  useEffect(() => {
+    request<ReviewSummaryView | null>(`/products/${productId}/reviews/summary`)
+      .then(setSummary)
+      .catch(() => setSummary(null));
   }, [productId]);
 
   async function submit(event: React.FormEvent) {
@@ -63,6 +77,12 @@ export function ProductReviews({ productId }: { productId: string }) {
 
   return (
     <Section title={t('title')} className="mt-6 border-t border-neutral-100 pt-6">
+      {summary ? (
+        <p className="mb-4 text-sm font-medium text-neutral-900">
+          {locale === 'ur' ? (summary.summaryTextUr ?? summary.summaryText) : summary.summaryText}
+        </p>
+      ) : null}
+
       {reviews.length === 0 ? (
         <p className="text-sm text-neutral-500">{t('empty')}</p>
       ) : (

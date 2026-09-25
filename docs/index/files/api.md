@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 563 tracked files in `apps/api`, by directory.
+All 598 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,23 +31,25 @@ All 563 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3030 |  |
 
-### `apps/api/prisma/schema` (27)
+### `apps/api/prisma/schema` (32)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.prisma` | prisma schema | 222 | The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a |
 | `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
 | `cart.prisma` | prisma schema | 73 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
-| `catalog.prisma` | prisma schema | 484 | Catalog: categories, products, variants, images. |
-| `core.prisma` | prisma schema | 457 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `catalog.prisma` | prisma schema | 490 | Catalog: categories, products, variants, images. |
+| `core.prisma` | prisma schema | 474 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 239 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `giftcards.prisma` | prisma schema | 92 | Phase 5 WO-5.4/5.5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
 | `identity-verification.prisma` | prisma schema | 40 | / Tracks a User's identity verification against nID (Newax's external |
 | `inventory.prisma` | prisma schema | 236 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
 | `invoicing.prisma` | prisma schema | 88 | Trading-partner invoices and quotes (WO-18.3's remaining "forth" |
+| `loyalty.prisma` | prisma schema | 85 | Phase 7 WO-7.7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `measurements.prisma` | prisma schema | 107 | Measurements: garment types, their measurement fields, and saved customer |
-| `orders.prisma` | prisma schema | 264 | Orders and shipments. |
+| `notification-preferences.prisma` | prisma schema | 51 | Phase 7 WO-7.8 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
+| `orders.prisma` | prisma schema | 271 | Orders and shipments. |
 | `organization.prisma` | prisma schema | 182 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
 | `parties.prisma` | prisma schema | 52 | Parties: the permanent counterparty profile. One canonical record per |
 | `payments.prisma` | prisma schema | 48 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
@@ -57,11 +59,14 @@ All 563 tracked files in `apps/api`, by directory.
 | `promotions.prisma` | prisma schema | 111 | Phase 5 WO-5.1/5.2/5.3 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
 | `purchasing.prisma` | prisma schema | 248 |  |
 | `replication.prisma` | prisma schema | 185 | The replication engine (RETAIL-ERP.md Part 6, WO-20.1: "log, cursors, |
+| `returns.prisma` | prisma schema | 80 | Phase 7 WO-7.3 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
+| `reviews.prisma` | prisma schema | 56 | Phase 7 WO-7.5 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `schema.prisma` | prisma schema | 20 | Datasource and generator only. Models live in one file per module — |
 | `stitching.prisma` | prisma schema | 202 | Stitching: the style options a customer picks, standalone stitching orders |
 | `tax.prisma` | prisma schema | 38 | Tax: rate/class definitions and the pricing-mode setting. Universal |
 | `trading-partners.prisma` | prisma schema | 95 | The trading-partner network (18-trading-partner-network.md, WO-18) — lets |
 | `transfers.prisma` | prisma schema | 167 | Inter-branch stock transfers (RETAIL-ERP.md R4, Tranche 5). Off by default |
+| `wishlist.prisma` | prisma schema | 44 | Phase 7 WO-7.6 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 
 ### `apps/api/prisma/schema/migrations` (1)
 
@@ -441,6 +446,12 @@ All 563 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 194 |  |
 
+### `apps/api/prisma/schema/migrations/20260924190000_add_customer_portal_reviews_wishlist_returns_loyalty` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 267 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -558,7 +569,7 @@ All 563 tracked files in `apps/api`, by directory.
 | `health.controller.ts` | controller | 52 |  |
 | `health.module.ts` | nest module | 6 |  |
 
-### `apps/api/src/core/notifications` (10)
+### `apps/api/src/core/notifications` (11)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -568,7 +579,8 @@ All 563 tracked files in `apps/api`, by directory.
 | `expo-push.channel.ts` | channel | 89 |  |
 | `log.channel.ts` | channel | 26 |  |
 | `notification-channel.ts` | module | 38 | Extension point: outbound customer messaging. |
-| `notifications.module.ts` | nest module | 30 |  |
+| `notification-preferences.service.ts` | service | 71 |  |
+| `notifications.module.ts` | nest module | 32 |  |
 | `notifications.service.ts` | service | 59 |  |
 | `unsubscribe.controller.ts` | controller | 41 |  |
 | `unsubscribe.dto.ts` | dto | 15 |  |
@@ -647,7 +659,7 @@ All 563 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 46 |  |
-| `settings.defaults.ts` | module | 318 |  |
+| `settings.defaults.ts` | module | 335 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 112 |  |
 
@@ -676,8 +688,8 @@ All 563 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 86 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 157 |  |
+| `module-packs.ts` | module | 91 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 171 |  |
 
 ### `apps/api/src/modules/accounting` (15)
 
@@ -773,13 +785,14 @@ All 563 tracked files in `apps/api`, by directory.
 | `raw-usage.dto.ts` | dto | 30 |  |
 | `recipe.dto.ts` | dto | 113 |  |
 
-### `apps/api/src/modules/cart` (3)
+### `apps/api/src/modules/cart` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `cart.controller.ts` | controller | 179 |  |
-| `cart.module.ts` | nest module | 17 | Measurements typed straight into the stitching panel are validated |
+| `cart.controller.ts` | controller | 198 |  |
+| `cart.module.ts` | nest module | 18 |  |
 | `cart.service.ts` | service | 678 |  |
+| `reorder.service.ts` | service | 69 |  |
 
 ### `apps/api/src/modules/cart/dto` (1)
 
@@ -796,7 +809,7 @@ All 563 tracked files in `apps/api`, by directory.
 | `catalog-options-admin.controller.ts` | controller | 105 |  |
 | `catalog.controller.ts` | controller | 51 |  |
 | `catalog.module.ts` | nest module | 51 |  |
-| `catalog.service.ts` | service | 365 |  |
+| `catalog.service.ts` | service | 379 |  |
 | `category-admin.service.ts` | service | 192 |  |
 | `option-template-admin.service.ts` | service | 125 |  |
 | `product-admin.service.spec.ts` | unit test | 109 |  |
@@ -873,22 +886,23 @@ All 563 tracked files in `apps/api`, by directory.
 | `expense-category.dto.ts` | dto | 35 |  |
 | `expense.dto.ts` | dto | 130 |  |
 
-### `apps/api/src/modules/giftcards` (6)
+### `apps/api/src/modules/giftcards` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `giftcards-account.controller.ts` | controller | 27 |  |
+| `giftcards-account.controller.ts` | controller | 36 |  |
 | `giftcards.controller.ts` | controller | 67 |  |
-| `giftcards.module.ts` | nest module | 14 |  |
-| `giftcards.service.ts` | service | 158 |  |
+| `giftcards.module.ts` | nest module | 15 |  |
+| `giftcards.service.ts` | service | 202 |  |
+| `store-credit-account.controller.ts` | controller | 26 |  |
 | `store-credit-reconcile.cron.ts` | scheduled job | 26 |  |
-| `store-credit.service.ts` | service | 133 |  |
+| `store-credit.service.ts` | service | 162 |  |
 
 ### `apps/api/src/modules/giftcards/dto` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `gift-card.dto.ts` | dto | 56 |  |
+| `gift-card.dto.ts` | dto | 62 |  |
 | `store-credit.dto.ts` | dto | 21 |  |
 
 ### `apps/api/src/modules/identity-verification` (4)
@@ -939,6 +953,22 @@ All 563 tracked files in `apps/api`, by directory.
 | `inventory.dto.ts` | dto | 31 |  |
 | `stock-variance.dto.ts` | dto | 9 |  |
 
+### `apps/api/src/modules/loyalty` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `loyalty-admin.controller.ts` | controller | 46 |  |
+| `loyalty-order.listener.ts` | event subscriber | 45 |  |
+| `loyalty.controller.ts` | controller | 63 |  |
+| `loyalty.module.ts` | nest module | 15 |  |
+| `loyalty.service.ts` | service | 255 |  |
+
+### `apps/api/src/modules/loyalty/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `loyalty.dto.ts` | dto | 52 |  |
+
 ### `apps/api/src/modules/marketing` (5)
 
 | File | Kind | Lines | Purpose |
@@ -970,6 +1000,19 @@ All 563 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `measurements.dto.ts` | dto | 236 |  |
+
+### `apps/api/src/modules/notification-preferences` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `notification-preferences.controller.ts` | controller | 29 |  |
+| `notification-preferences.module.ts` | nest module | 18 |  |
+
+### `apps/api/src/modules/notification-preferences/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `notification-preference.dto.ts` | dto | 31 |  |
 
 ### `apps/api/src/modules/orders` (9)
 
@@ -1184,6 +1227,36 @@ All 563 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `reports.dto.ts` | dto | 33 |  |
 
+### `apps/api/src/modules/returns` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `returns-account.controller.ts` | controller | 38 |  |
+| `returns.controller.ts` | controller | 33 |  |
+| `returns.module.ts` | nest module | 12 |  |
+| `returns.service.ts` | service | 150 |  |
+
+### `apps/api/src/modules/returns/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `return-request.dto.ts` | dto | 81 |  |
+
+### `apps/api/src/modules/reviews` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `reviews-public.controller.ts` | controller | 44 |  |
+| `reviews.controller.ts` | controller | 26 |  |
+| `reviews.module.ts` | nest module | 12 |  |
+| `reviews.service.ts` | service | 125 |  |
+
+### `apps/api/src/modules/reviews/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `review.dto.ts` | dto | 67 |  |
+
 ### `apps/api/src/modules/settings` (3)
 
 | File | Kind | Lines | Purpose |
@@ -1309,7 +1382,23 @@ All 563 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `user.dto.ts` | dto | 122 |  |
 
-### `apps/api/test` (21)
+### `apps/api/src/modules/wishlist` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `back-in-stock.listener.ts` | event subscriber | 76 |  |
+| `wishlist-admin.controller.ts` | controller | 19 |  |
+| `wishlist.controller.ts` | controller | 58 |  |
+| `wishlist.module.ts` | nest module | 13 |  |
+| `wishlist.service.ts` | service | 179 |  |
+
+### `apps/api/src/modules/wishlist/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `wishlist.dto.ts` | dto | 30 |  |
+
+### `apps/api/test` (22)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1319,6 +1408,7 @@ All 563 tracked files in `apps/api`, by directory.
 | `cart.e2e-spec.ts` | e2e test | 800 |  |
 | `catalog.e2e-spec.ts` | e2e test | 411 |  |
 | `crm.e2e-spec.ts` | e2e test | 489 |  |
+| `customer-portal.e2e-spec.ts` | e2e test | 301 |  |
 | `devices.e2e-spec.ts` | e2e test | 150 |  |
 | `email-accounts-admin.e2e-spec.ts` | e2e test | 342 |  |
 | `email-channel.behavior.spec.ts` | unit test | 580 | Behavior tests for the email notification channel. |

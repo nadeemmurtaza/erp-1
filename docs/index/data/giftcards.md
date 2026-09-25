@@ -73,7 +73,7 @@ Indexes: `@@index([giftCardId, createdAt])` · `@@index([orderId])`
 | `userId` | `String` |  |  |
 | `delta` | `Int` |  |  |
 | `balanceAfter` | `Int` |  |  |
-| `reason` | `String` |  | "refund" \| "goodwill" \| "redeem" \| "expire" \| "adjust" |
+| `reason` | `String` |  | "refund" \| "goodwill" \| "redeem" \| "expire" \| "adjust" \| "referral" (WO-7.7) |
 | `orderId` | `String?` | optional |  |
 | `actorId` | `String?` | optional |  |
 | `note` | `String?` | optional |  |

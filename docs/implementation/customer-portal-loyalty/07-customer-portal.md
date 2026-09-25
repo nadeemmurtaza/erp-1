@@ -2,6 +2,44 @@
 
 **Read `00-HOUSE-RULES.md` first.** Depends on Phases 5 and 6.
 
+> **Status (2026-09-25): WO-7.1 through WO-7.8 built, verified against a
+> real database — WO-7.9 not started.** Five new core modules —
+> `reviews`, `wishlist`, `returns`, `loyalty`, `notification-preferences`
+> (the last's service lives in `core/notifications/` since every other
+> module needs to read it) — plus store-credit/gift-card redemption added
+> to the existing `giftcards` module. `test/customer-portal.e2e-spec.ts`
+> covers verified-purchase reviews, return eligibility/quantity guards and
+> the decision flow, loyalty earn/reverse/redeem, wishlist migration
+> idempotency, and back-in-stock fire-once — all against a real Postgres
+> database with the outbox drained, not asserted by convention. Storefront:
+> `/account` grew a shared shell and six new pages (`orders/[number]` grew
+> reorder/invoice/return actions; `returns/new`, `loyalty`, `notifications`
+> are new), a real product-reviews section with JSON-LD, and a server-side
+> wishlist replacing the old `localStorage`-only one (migrates on first
+> sign-in). Admin: `/admin/reviews`, `/admin/returns`, `/admin/loyalty`,
+> `/admin/inventory/wishlisted`. Permissions: `reviews.moderate`,
+> `returns.view`/`.manage`, `loyalty.view`/`.manage` — seeded to
+> `ROLE_PERMISSION_SEED` **and** backfilled as real `RoleGrant` rows on the
+> dev DB, not left as the `seedPermissions()`-vs-`seedRoles()` gap this file
+> warns about elsewhere (see ADR-031 §2).
+>
+> **Three things this phase narrows on purpose, each because a dependency
+> genuinely isn't there yet, not as an oversight — see ADR-031:** WO-7.2's
+> order-tracking timeline reuses the existing `OrderStatusEvent` history
+> instead of a dedicated shipment-event model, because Phase 6
+> (fulfilment/shipping) doesn't exist in this codebase yet (§1). The order
+> invoice is a browser `window.print()` page with `print:` Tailwind
+> variants, not a server-generated PDF — there is no PDF-generation
+> dependency anywhere in this codebase to build on, and adding one needs
+> its own justification under `.claude/rules/dependencies.md` (§3).
+> WO-7.3's returns are customer-request-and-staff-decision only: approving
+> a return does not yet automatically restock or refund, because the
+> refund-issuance and stock-reversal paths are Phase 6's own "afterlife"
+> work (§1). **WO-7.9 (mobile parity in `apps/mobile`) has not been
+> started** — it is a separate, non-trivial body of work in a different
+> app and is being sequenced as its own follow-up rather than attempted
+> inside this pass.
+
 ## Why
 
 Everything built in Phases 1-6 lives in the back office. If the customer never

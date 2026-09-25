@@ -181,6 +181,11 @@ const KNOWN_MODULE_COUPLINGS = new Set([
   // StoreCreditService's own redeemInTransaction) — a lost race must roll
   // back the whole order (WO-5's exit criterion #3), same reasoning again.
   'orders -> giftcards',
+  // loyalty.service.ts's redeem() debits loyalty points and credits store
+  // credit (StoreCreditService.creditInTransaction) inside one transaction —
+  // Phase 7 WO-7.7's own words, "reusing the Phase 5 ledger rather than
+  // inventing a second balance." A lost race must roll back both sides.
+  'loyalty -> giftcards',
 ]);
 
 function walk(dir) {

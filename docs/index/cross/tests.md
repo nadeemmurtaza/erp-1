@@ -3,7 +3,7 @@
 
 # Tests
 
-**143** spec files, **1,372** cases. What is already pinned down — and what is not.
+**144** spec files, **1,380** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -21,13 +21,18 @@ such exemption.
 - [`addresses`](../modules/addresses.md)
 - [`cart`](../modules/cart.md)
 - [`giftcards`](../modules/giftcards.md)
+- [`loyalty`](../modules/loyalty.md)
+- [`notification-preferences`](../modules/notification-preferences.md)
 - [`promotions`](../modules/promotions.md)
+- [`returns`](../modules/returns.md)
+- [`reviews`](../modules/reviews.md)
 - [`settings`](../modules/settings.md)
 - [`stitching`](../modules/stitching.md)
 - [`tax`](../modules/tax.md)
 - [`tracking`](../modules/tracking.md)
+- [`wishlist`](../modules/wishlist.md)
 
-## End-to-end (17)
+## End-to-end (18)
 
 Real HTTP against a real Postgres. These are the ones that catch a permission
 regression or an N+1.
@@ -39,6 +44,7 @@ regression or an N+1.
 | `apps/api/test/cart.e2e-spec.ts` | 28 | Cart (e2e) · guest cart · stitching add-on · inline measurements · pricing without a service product · custom design te… |
 | `apps/api/test/catalog.e2e-spec.ts` | 26 | Catalog (e2e) · health · authentication · storefront · admin access control · creating a product · measurement profiles… |
 | `apps/api/test/crm.e2e-spec.ts` | 19 | CRM (e2e) · contacts from orders · contact records · leads · dashboard · backfill |
+| `apps/api/test/customer-portal.e2e-spec.ts` | 8 | Customer portal (e2e) · reviews · returns · loyalty · wishlist and back-in-stock |
 | `apps/api/test/devices.e2e-spec.ts` | 8 | Device registration (e2e) |
 | `apps/api/test/email-accounts-admin.e2e-spec.ts` | 13 | Admin email accounts (e2e) · connection tests (failure path — no live mailbox in this suite) |
 | `apps/api/test/email-inbox.e2e-spec.ts` | 7 | Email inbox (e2e) · ingestMessage · admin API |

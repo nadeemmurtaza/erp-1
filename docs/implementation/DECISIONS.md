@@ -2251,3 +2251,136 @@ this decided."
 
 ### Status
 **Accepted.**
+
+## ADR-031 — WO-7 (Phase 7: customer portal, reviews, wishlist, returns, loyalty) built against a missing Phase 6 — tracking/invoice/returns scope narrowed, loyalty math, self-referral guard limits, WO-7.9 deferred
+
+### Context
+`docs/implementation/customer-portal-loyalty/07-customer-portal.md` (WO-7.1
+through WO-7.9) names Phase 6 as a dependency for WO-7.2 (order tracking,
+reorder, invoices) and WO-7.3 (self-service returns). Phase 6
+(fulfilment/shipping) does not exist anywhere in this codebase — no
+shipment, carrier, or tracking-event model, no fulfilment queue. Building
+the whole capability per this file's "Feature scope" section required
+deciding what to build against a dependency that is not there, rather than
+either blocking on it or silently inventing Phase 6 inside this work order.
+
+### Options Considered and Decisions
+
+1. **WO-7.2's tracking timeline reuses the existing `OrderStatusEvent`
+   history instead of a new `ShipmentEvent`/carrier model.** Building a real
+   shipment model is Phase 6's own job — a fulfilment queue, carrier
+   integration, and label/tracking-number lifecycle are separably large
+   pieces of work this order only touches in passing ("the other side of
+   the same transaction" lens: the operator-facing fulfilment queue this
+   would need doesn't exist to feed it). `OrderStatusEvent` already records
+   every state transition an order goes through server-side today
+   (`PENDING` → `PAID` → ... → `DELIVERED`), so the customer-facing timeline
+   renders that real history rather than fabricating carrier-style
+   milestones the system has no way to populate honestly. When Phase 6
+   ships a real shipment/tracking model, this timeline is the one place
+   that needs to switch its data source — not rebuilt from scratch.
+
+2. **Reviews/returns/loyalty permission keys were backfilled as real
+   `RoleGrant` rows on the dev database, not left as `Permission` rows with
+   no live grant.** This codebase carries a known, tracked two-layer gap
+   (`CLAUDE.md`'s own "Feature scope" section names it explicitly):
+   `seedPermissions()` is additive and always runs, but `seedRoles()` (the
+   backfill from the legacy `RolePermission` enum table into the real
+   `Role`/`RoleGrant` system) is strictly one-time and no-ops once any
+   `Role` row exists — which this long-lived scratch/dev database already
+   has. Adding `reviews.moderate`, `returns.view`/`.manage`,
+   `loyalty.view`/`.manage` to `ROLE_PERMISSION_SEED` and re-running the
+   seed therefore populated `RolePermission` but granted nothing to a real
+   `User` through `UserRoleAssignment`. A one-off script
+   (`apps/api/prisma/_scratch-backfill-role-grants.ts`, run once against
+   this dev database and then deleted — not committed, since it fixes a
+   local database's state, not the codebase) mirrored `seedRoles()`'s own
+   backfill logic scoped to just these five keys, so ADMIN/STAFF actually
+   hold the grant a real login checks, matching this file's own
+   "reachable... every permission seeded through to a real grant" rule
+   rather than repeating the exact gap it names as a trap.
+
+3. **The order invoice is a browser `window.print()` page with Tailwind
+   `print:` variants, not a server-rendered PDF.** There is no PDF-
+   generation library anywhere in this codebase's dependency tree today.
+   `.claude/rules/dependencies.md` requires checking the stdlib, the
+   framework, and existing utilities before adding a dependency, and
+   requires justification for a new one — a one-off "print this order" page
+   is fully served by the browser's own print-to-PDF path with print-
+   specific CSS (hiding nav/chrome, forcing the receipt-style layout),
+   which every modern browser already provides for free. Adding a PDF
+   library for a single invoice screen would be exactly the unjustified
+   dependency this codebase's own rule warns against; the browser-print
+   approach is revisited if a future work order needs invoices generated
+   server-side (emailed, bulk-exported) rather than viewed and printed by
+   the customer themselves.
+
+4. **WO-7.3's returns are customer-request-and-staff-decision only — no
+   automatic refund issuance or stock restock on approval.** `PaymentsService.refund()`
+   and `InventoryService.move()` both already exist and are called
+   elsewhere in this codebase, but wiring "return approved" to
+   automatically reverse the sale (issue the refund, restock the returned
+   variant) is exactly the kind of same-transaction afterlife work Phase 6
+   is named to own — the doc's own dependency line says so. What WO-7.3
+   ships is the complete transaction as far as this phase's dependency
+   allows: a customer can request a return against an eligible, delivered
+   order (with a quantity guard against the item's own order quantity), see
+   its status, and staff can approve or reject it with a reason, generating
+   the record and audit trail a future Phase 6 refund/restock step will
+   consume as its input — not a return flow that silently claims to
+   refund when it does not.
+
+5. **Loyalty earn/redemption math**: points accrue as a flat rate off the
+   order subtotal at the moment the order is marked `DELIVERED` (not at
+   placement, so a cancelled or returned order before delivery earns
+   nothing and needs no reversal path), and are reversible exactly once,
+   guarded by the same `rewardedAt IS NULL` conditional-update idiom this
+   codebase already uses for backorder/stock idempotency — a second
+   `DELIVERED` event or a retried outbox delivery cannot double-award.
+   Redemption debits a customer's points balance inside the same
+   transaction as the store-credit issuance it produces (via
+   `StoreCreditService.creditInTransaction()`, new in this work order),
+   guarded by a `balance >= amount` conditional `updateMany` rather than a
+   read-then-write, so two simultaneous redemption requests cannot both
+   succeed against the same balance.
+
+6. **Referral self-referral guard is a same-account/same-order check only —
+   it does not attempt device fingerprinting or IP-based fraud detection.**
+   This codebase has no device-fingerprinting or fraud-scoring
+   infrastructure anywhere, and building one is a separably large piece of
+   work no part of this doc names. The guard blocks the mechanically
+   detectable case (a referral code redeemed against the referrer's own
+   account, or the same order id credited twice) rather than silently
+   claiming to prevent all abuse; a determined bad actor using two real
+   accounts is a known, named limitation, not a gap discovered later.
+
+7. **WO-7.9 (mobile app parity) is deferred, not attempted, in this pass.**
+   `apps/mobile` is a separate application with its own build, its own
+   component library, and no existing precedent in this session for
+   porting a storefront capability into it. Attempting it inside the same
+   pass as five new backend modules and twelve new/rewritten web pages
+   would risk a shallow, unverified port of all of WO-7.1 through 7.8 at
+   once rather than a properly scoped mobile work order on its own. This
+   mirrors this same body of work's own precedent of sequencing genuinely
+   separable pieces (Giftkarta after WO-5) rather than folding them in
+   silently.
+
+### Consequences
+- The tracking timeline, invoice, and returns flow are each real, working,
+  and honestly scoped to what Phase 6's absence allows — none of them
+  fabricate data the system cannot back.
+- The two-layer permission-seeding gap is closed for this work order's five
+  keys on the dev database specifically; it remains a standing trap for the
+  NEXT work order to add a permission key against a long-lived database,
+  and is not fixed at the seed-script level by this ADR (that would be a
+  separate, larger change to `seedRoles()`'s own one-time-ness, out of
+  scope here).
+- When Phase 6 ships, WO-7.2's tracking timeline and WO-7.3's return
+  approval both have a named, single integration point to pick up real
+  shipment events and real refund/restock automation, rather than needing
+  a rewrite.
+- WO-7.9 remains fully unstarted and is the natural next step; it is not
+  silently considered "done" by this phase's completion.
+
+### Status
+**Accepted.**

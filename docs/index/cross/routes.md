@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **401** endpoints across **70** controllers, with the access rule that actually guards each one.
+All **439** endpoints across **80** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 44** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 48** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -41,6 +41,7 @@ never authorization.
 | DELETE | `/cart/items/:itemId` | `CartController.removeItem` |
 | PATCH | `/cart/items/:itemId` | `CartController.updateItem` |
 | POST | `/cart/merge` | `CartController.merge` |
+| POST | `/cart/reorder/:orderNumber` | `CartController.reorderFromOrder` |
 | GET | `/catalog/categories` | `CatalogController.categories` |
 | GET | `/catalog/facets` | `CatalogController.facets` |
 | GET | `/catalog/products` | `CatalogController.products` |
@@ -53,6 +54,7 @@ never authorization.
 | GET | `/health` | `HealthController.live` |
 | GET | `/health/ready` | `HealthController.ready` |
 | POST | `/identity-verification/webhook` | `IdentityVerificationController.webhook` |
+| GET | `/loyalty/tiers` | `LoyaltyController.tiers` |
 | GET | `/measurements/garment-types` | `MeasurementsController.listGarmentTypes` |
 | GET | `/measurements/garment-types/:idOrKey` | `MeasurementsController.getGarmentType` |
 | GET | `/meta` | `MetaController.get` |
@@ -62,9 +64,11 @@ never authorization.
 | POST | `/payments/:paymentId/redeem-gift-card` | `PaymentsController.redeemGiftCard` |
 | POST | `/payments/callback/:provider` | `PaymentsController.callback` |
 | GET | `/payments/methods` | `PaymentsController.methods` |
+| GET | `/products/:productId/reviews` | `ReviewsPublicController.listForProduct` |
 | POST | `/promotions/preview` | `PromotionsPublicController.preview` |
 | GET | `/replication/pull` | `ReplicationController.pull` |
 | POST | `/replication/push` | `ReplicationController.push` |
+| POST | `/reviews/:id/helpful` | `ReviewsPublicController.markHelpful` |
 | POST | `/stitching/bookings` | `StitchingController.book` |
 | POST | `/stitching/bookings/:number/track` | `StitchingController.track` |
 | GET | `/stitching/garments` | `StitchingController.garments` |
@@ -155,7 +159,7 @@ never authorization.
 | GET | `/admin/bom/recipes/:id/cost` | `bom.view` | `BomController.recipeCost` | Per-component cost breakdown, recomputed live |
 | POST | `/admin/bom/recipes/:id/seed-cost-price` | `bom.manage` | `BomController.seedCostPrice` | Backfill costPrice = rolledUpUnitCost for a variant manufactured before BOM exi… |
 
-### [`cart`](../modules/cart.md) (6)
+### [`cart`](../modules/cart.md) (7)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -165,6 +169,7 @@ never authorization.
 | DELETE | `/cart/items/:itemId` | **PUBLIC** | `CartController.removeItem` | Remove a line |
 | PATCH | `/cart/items/:itemId` | **PUBLIC** | `CartController.updateItem` | Change quantity, or attach measurements |
 | POST | `/cart/merge` | **PUBLIC** | `CartController.merge` | Fold a guest cart into the signed-in account |
+| POST | `/cart/reorder/:orderNumber` | **PUBLIC** | `CartController.reorderFromOrder` | Add every still-available line from a past order to the cart |
 
 ### [`catalog`](../modules/catalog.md) (43)
 
@@ -322,7 +327,7 @@ never authorization.
 | GET | `/admin/finance/margins` | `finance.view` | `FinanceController.margins` | Margin by product, category or variant (WO-4.3, 04-finance.md) |
 | GET | `/admin/finance/unit-economics` | `finance.view` | `FinanceController.unitEconomics` | Contribution per order, paginated, plus the average by product/category (WO-4.2) |
 
-### [`giftcards`](../modules/giftcards.md) (7)
+### [`giftcards`](../modules/giftcards.md) (10)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -333,6 +338,9 @@ never authorization.
 | GET | `/admin/gift-cards/:id` | `giftcards.view` | `GiftCardsController.getById` | One gift card with its full ledger |
 | PATCH | `/admin/gift-cards/:id/cancel` | `giftcards.manage` | `GiftCardsController.cancel` | Cancel a gift card, forfeiting any remaining balance |
 | GET | `/gift-cards/:code/balance` | signed-in | `GiftCardsAccountController.balance` | Check a gift card balance by code |
+| POST | `/gift-cards/redeem-into-account` | signed-in | `GiftCardsAccountController.redeemIntoAccount` | Redeem a gift card's full balance into my store credit |
+| GET | `/store-credit` | signed-in | `StoreCreditAccountController.balance` | My store credit balance |
+| GET | `/store-credit/ledger` | signed-in | `StoreCreditAccountController.ledger` | My store credit history |
 
 ### [`identity-verification`](../modules/identity-verification.md) (4)
 
@@ -364,6 +372,22 @@ never authorization.
 | GET | `/admin/inventory/variances` | `inventory.manage` | `StockVarianceController.listOpen` | Open oversells — postUnconditional() drove a location negative |
 | POST | `/admin/inventory/variances/:id/resolve` | `inventory.manage` | `StockVarianceController.resolve` | Acknowledge a variance — never reverses the shrinkage journal it already posted |
 
+### [`loyalty`](../modules/loyalty.md) (11)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/loyalty/customers/:userId` | `loyalty.view` | `LoyaltyAdminController.customerBalance` | A customer's own loyalty balance and ledger |
+| POST | `/admin/loyalty/customers/:userId/adjust` | `loyalty.manage` | `LoyaltyAdminController.adjust` | Manually adjust a customer's points |
+| POST | `/admin/loyalty/tiers` | `loyalty.manage` | `LoyaltyAdminController.createTier` | Create a loyalty tier |
+| PATCH | `/admin/loyalty/tiers/:id` | `loyalty.manage` | `LoyaltyAdminController.updateTier` | Edit a loyalty tier |
+| GET | `/loyalty` | signed-in | `LoyaltyController.balance` | My points balance, tier and trailing 12-month spend |
+| GET | `/loyalty/ledger` | signed-in | `LoyaltyController.ledger` | My points history |
+| POST | `/loyalty/redeem` | signed-in | `LoyaltyController.redeem` | Convert points to store credit |
+| GET | `/loyalty/referral-code` | signed-in | `LoyaltyController.myReferralCode` | My own referral code (generated on first request) |
+| POST | `/loyalty/referral/apply` | signed-in | `LoyaltyController.applyReferralCode` | Apply a friend's referral code to my account |
+| GET | `/loyalty/referrals` | signed-in | `LoyaltyController.myReferrals` | Customers I have referred |
+| GET | `/loyalty/tiers` | **PUBLIC** | `LoyaltyController.tiers` | Loyalty tiers and their benefits |
+
 ### [`marketing`](../modules/marketing.md) (2)
 
 | Method | Path | Access | Handler | Summary |
@@ -387,6 +411,13 @@ never authorization.
 | DELETE | `/measurements/profiles/:id` | signed-in | `MeasurementsController.deleteProfile` |  |
 | GET | `/measurements/profiles/:id` | signed-in | `MeasurementsController.getProfile` |  |
 | PATCH | `/measurements/profiles/:id` | signed-in | `MeasurementsController.updateProfile` |  |
+
+### [`notification-preferences`](../modules/notification-preferences.md) (2)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/notification-preferences` | signed-in | `NotificationPreferencesController.list` | My notification preferences, per channel and category |
+| PUT | `/notification-preferences` | signed-in | `NotificationPreferencesController.update` | Update one or more preference cells |
 
 ### [`orders`](../modules/orders.md) (8)
 
@@ -555,6 +586,29 @@ never authorization.
 | GET | `/admin/reports/export/stock-ledger` | `reports.view` | `ReportsController.exportStockLedger` | CSV: stock movement ledger |
 | GET | `/admin/reports/export/stock-valuation` | `inventory.view_cost` | `ReportsController.exportStockValuation` | CSV: stock valuation, one row per variant |
 
+### [`returns`](../modules/returns.md) (7)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/returns` | `returns.view` | `ReturnsController.list` | List self-service return requests |
+| PATCH | `/admin/returns/:id/decide` | `returns.manage` | `ReturnsController.decide` | Approve or reject a return request |
+| POST | `/admin/returns/:id/mark-refunded` | `returns.manage` | `ReturnsController.markRefunded` | Close out an approved return once the refund is actually done |
+| GET | `/returns` | signed-in | `ReturnsAccountController.mine` | My return requests |
+| POST | `/returns` | signed-in | `ReturnsAccountController.create` | Open a self-service return |
+| GET | `/returns/:id` | signed-in | `ReturnsAccountController.getOne` | One of my return requests |
+| GET | `/returns/eligibility/:orderNumber` | signed-in | `ReturnsAccountController.eligibility` | Can this order still be returned? |
+
+### [`reviews`](../modules/reviews.md) (6)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/reviews` | `reviews.moderate` | `ReviewsController.list` | List reviews for moderation |
+| PATCH | `/admin/reviews/:id` | `reviews.moderate` | `ReviewsController.moderate` | Publish, reject, or reply to a review |
+| GET | `/products/:productId/reviews` | **PUBLIC** | `ReviewsPublicController.listForProduct` | A product's published reviews |
+| POST | `/reviews` | signed-in | `ReviewsPublicController.create` | Submit a review — goes to PENDING, moderated before it shows |
+| POST | `/reviews/:id/helpful` | **PUBLIC** | `ReviewsPublicController.markHelpful` | Mark a review helpful |
+| GET | `/reviews/mine` | signed-in | `ReviewsPublicController.mine` | My own reviews, any status |
+
 ### [`settings`](../modules/settings.md) (6)
 
 | Method | Path | Access | Handler | Summary |
@@ -656,6 +710,19 @@ never authorization.
 | POST | `/admin/users/:id/reset-password` | `users.manage` | `UsersAdminController.resetPassword` | Set a user's password directly and sign them out everywhere |
 | DELETE | `/admin/users/:id/roles/:roleId` | `users.manage` | `UsersAdminController.unassignRole` | Remove a Role from this user |
 | POST | `/admin/users/:id/roles/:roleId` | `users.manage` | `UsersAdminController.assignRole` | Assign a custom Role to this user (owner's request — a user may hold several) |
+
+### [`wishlist`](../modules/wishlist.md) (8)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/wishlist/out-of-stock-report` | `analytics.view` | `WishlistAdminController.report` | Wishlisted products that are currently out of stock, most-wanted first |
+| GET | `/back-in-stock` | signed-in | `WishlistController.myAlerts` | My back-in-stock alerts |
+| POST | `/back-in-stock` | signed-in | `WishlistController.requestAlert` | Ask to be notified when a variant is back in stock |
+| DELETE | `/back-in-stock/:variantId` | signed-in | `WishlistController.cancelAlert` | Cancel a back-in-stock alert |
+| GET | `/wishlist` | signed-in | `WishlistController.list` | My saved items |
+| POST | `/wishlist` | signed-in | `WishlistController.add` | Save an item |
+| DELETE | `/wishlist/:id` | signed-in | `WishlistController.remove` | Remove a saved item |
+| POST | `/wishlist/migrate` | signed-in | `WishlistController.migrate` | Migrate a localStorage wishlist on first sign-in |
 
 
 ---

@@ -169,6 +169,16 @@ export const SettingKey = {
    * — reads keep coming from size/color/colorHex exactly as before either way.
    */
   CatalogUseOptionModelReads: 'catalog.use_option_model_reads',
+  /** Days after DELIVERED a customer may still open a self-service return (WO-7.3). */
+  ReturnsWindowDays: 'returns.window_days',
+  /** Only a verified purchaser may leave a review, off means anyone signed in may (WO-7.5). */
+  ReviewsVerifiedPurchaseOnly: 'reviews.verified_purchase_only',
+  /** Loyalty earn rate on DELIVERED, as basis points of rupees spent (WO-7.7) — 100 bps = 1% = 1 point per Rs. 100. */
+  LoyaltyPointsPerRupeeBps: 'loyalty.points_per_rupee_bps',
+  /** How many points one rupee of store credit costs on redemption (WO-7.7) — e.g. 10 means 10 points = Rs. 1. */
+  LoyaltyRedemptionPointsPerRupee: 'loyalty.redemption_points_per_rupee',
+  /** Store credit, in paisa, both sides of a referral receive once the referee's first order is DELIVERED (WO-7.7). */
+  LoyaltyReferralRewardAmount: 'loyalty.referral_reward_amount',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -308,6 +318,13 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.MarketingAbandonedCartIncentiveHours]: 72,
   [SettingKey.MarketingReviewRequestDays]: 7,
   [SettingKey.MarketingReplenishmentReminderDays]: 30,
+
+  [SettingKey.ReturnsWindowDays]: 7,
+  [SettingKey.ReviewsVerifiedPurchaseOnly]: true,
+  /** 100 bps = 1% = 1 point earned per Rs. 100 spent. */
+  [SettingKey.LoyaltyPointsPerRupeeBps]: 100,
+  [SettingKey.LoyaltyRedemptionPointsPerRupee]: 10,
+  [SettingKey.LoyaltyReferralRewardAmount]: toMinor(200),
 
   [SettingKey.BomRawMaterialCategorySlug]: 'raw-materials',
   [SettingKey.BomDefaultWastageBps]: 0,

@@ -303,6 +303,36 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     category: 'Marketing',
     sensitivity: 'high',
   },
+  {
+    key: 'reviews.moderate',
+    label: 'Approve, reject and reply to customer product reviews',
+    category: 'Marketing',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'returns.view',
+    label: 'View customer self-service return requests',
+    category: 'Sales',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'returns.manage',
+    label: 'Approve or reject a customer return request',
+    category: 'Sales',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'loyalty.view',
+    label: 'View loyalty point balances, tiers and referrals',
+    category: 'Marketing',
+    sensitivity: 'low',
+  },
+  {
+    key: 'loyalty.manage',
+    label: 'Adjust a customer\'s loyalty points and configure tiers — real money once redeemed',
+    category: 'Marketing',
+    sensitivity: 'high',
+  },
 ] as const;
 
 export type PermissionKey = (typeof PERMISSION_CATALOG)[number]['key'];
@@ -353,7 +383,7 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     key: 'sales',
     label: 'Sales & payments',
     description: 'Order fulfilment, approving a bank-transfer payment, running a till shift, and registering terminals.',
-    permissions: ['orders.manage', 'payments.approve', 'pos.manage', 'pos.operate'],
+    permissions: ['orders.manage', 'payments.approve', 'pos.manage', 'pos.operate', 'returns.view', 'returns.manage'],
   },
   {
     key: 'tailor-queue',
@@ -401,7 +431,16 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     key: 'marketing',
     label: 'Marketing',
     description: 'Automated marketing email, discounts, promo codes, gift cards and store credit.',
-    permissions: ['marketing.manage', 'promotions.view', 'promotions.manage', 'giftcards.view', 'giftcards.manage'],
+    permissions: [
+      'marketing.manage',
+      'promotions.view',
+      'promotions.manage',
+      'giftcards.view',
+      'giftcards.manage',
+      'reviews.moderate',
+      'loyalty.view',
+      'loyalty.manage',
+    ],
   },
   {
     key: 'tax',
@@ -488,6 +527,10 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'promotions.view',
     'promotions.manage',
     'giftcards.view',
+    'reviews.moderate',
+    'returns.view',
+    'returns.manage',
+    'loyalty.view',
   ],
   ADMIN: [
     'account.change_own_password',
@@ -537,6 +580,11 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'promotions.manage',
     'giftcards.view',
     'giftcards.manage',
+    'reviews.moderate',
+    'returns.view',
+    'returns.manage',
+    'loyalty.view',
+    'loyalty.manage',
   ],
 };
 

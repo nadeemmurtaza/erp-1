@@ -84,7 +84,7 @@ All 56 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check-env-templates.mjs` | script | 139 |  |
 | `check-frontend-secrets.mjs` | script | 137 |  |
 | `check-links.mjs` | script | 402 |  |
-| `check-module-boundaries.mjs` | script | 554 |  |
+| `check-module-boundaries.mjs` | script | 559 |  |
 | `check-overflow.mjs` | script | 644 |  |
 | `check-permission-checks.mjs` | script | 127 |  |
 | `check-rebrand.mjs` | script | 292 |  |

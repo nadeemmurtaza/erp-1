@@ -3,20 +3,20 @@
 
 # Every tracked file
 
-All **1,517** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,564** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 563 | 78,384 | [files/api.md](../files/api.md) |
-| apps/web | 281 | 43,882 | [files/web.md](../files/web.md) |
+| apps/api | 598 | 81,142 | [files/api.md](../files/api.md) |
+| apps/web | 293 | 46,032 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 42 | 5,292 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 64 | 5,679 | [files/packages.md](../files/packages.md) |
-| docs/* | 392 | 59,544 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 56 | 28,218 | [files/infra.md](../files/infra.md) |
+| packages/* | 64 | 5,727 | [files/packages.md](../files/packages.md) |
+| docs/* | 392 | 59,715 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 56 | 28,223 | [files/infra.md](../files/infra.md) |
 | repository root files | 88 | 11,033 | [files/root.md](../files/root.md) |
 
 
@@ -29,23 +29,23 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 417 |
-| page | 127 |
+| page | 138 |
 | unit test | 126 |
 | module | 107 |
-| service | 89 |
-| component | 79 |
-| dto | 69 |
-| migration | 63 |
-| controller | 61 |
-| nest module | 47 |
+| service | 95 |
+| component | 80 |
+| dto | 74 |
+| controller | 71 |
+| migration | 64 |
+| nest module | 52 |
 | script | 38 |
+| prisma schema | 34 |
 | json | 29 |
-| prisma schema | 29 |
 | asset | 26 |
+| event subscriber | 23 |
 | react | 22 |
-| event subscriber | 21 |
 | utility | 21 |
-| e2e test | 17 |
+| e2e test | 18 |
 | file | 13 |
 | yaml | 12 |
 | config | 11 |

@@ -4,6 +4,7 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { paginated, type PaginatedResult } from '../../core/common/dto/pagination.dto';
 import { type PrismaLike } from '../../core/events/event-bus.service';
 import { Prisma, type GiftCard, type GiftCardTransaction } from '../../core/prisma/client';
+import { StoreCreditService } from './store-credit.service';
 import type { GiftCardQueryDto, IssueGiftCardDto } from './dto/gift-card.dto';
 
 /** Never log or display a full code — WO-5.4's own security note. */
@@ -19,7 +20,10 @@ function generateCode(): string {
 export class GiftCardsService {
   private readonly logger = new Logger(GiftCardsService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly storeCredit: StoreCreditService,
+  ) {}
 
   async issue(dto: IssueGiftCardDto, actorId: string | null): Promise<GiftCard> {
     for (let attempt = 0; attempt < 5; attempt++) {
@@ -152,6 +156,46 @@ export class GiftCardsService {
         orderId: input.orderId,
         actorId: input.actorId,
       },
+    });
+  }
+
+  /**
+   * WO-7.4: converts an entire gift card's remaining balance into the
+   * signed-in customer's store credit, so they never have to re-enter the
+   * code at checkout. Same race-proof conditional update as
+   * `redeemInTransaction` — a lost race against a simultaneous checkout
+   * redemption of the same code gets `count: 0` and refuses cleanly rather
+   * than crediting stale balance.
+   */
+  async redeemIntoAccount(userId: string, code: string): Promise<{ credited: number }> {
+    const trimmed = code.trim().toUpperCase();
+    return this.prisma.$transaction(async (tx) => {
+      const giftCard = await tx.giftCard.findUnique({ where: { code: trimmed } });
+      if (!giftCard || giftCard.status !== 'ACTIVE') throw new BadRequestException('That gift card is not valid.');
+      if (giftCard.expiresAt && giftCard.expiresAt < new Date()) throw new BadRequestException('That gift card has expired.');
+      if (giftCard.balance <= 0) throw new BadRequestException('That gift card has no remaining balance.');
+
+      const amount = giftCard.balance;
+      const updated = await tx.giftCard.updateMany({
+        where: { id: giftCard.id, status: 'ACTIVE', balance: amount },
+        data: { balance: 0, status: 'REDEEMED' },
+      });
+      if (updated.count === 0) {
+        throw new BadRequestException('That gift card was just used elsewhere — check its balance and try again.');
+      }
+
+      await tx.giftCardTransaction.create({
+        data: { giftCardId: giftCard.id, delta: -amount, balanceAfter: 0, reason: 'redeem', actorId: userId },
+      });
+      await this.storeCredit.creditInTransaction(tx, {
+        userId,
+        amount,
+        reason: 'redeem',
+        actorId: userId,
+        note: `Gift card ${maskGiftCardCode(trimmed)} redeemed into account`,
+      });
+
+      return { credited: amount };
     });
   }
 }

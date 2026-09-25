@@ -3,7 +3,7 @@
 
 # Core: `notifications`
 
-Shared platform — available to every module, part of no feature · 19 files
+Shared platform — available to every module, part of no feature · 20 files
 
 
 > Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which category it belongs to, whether something in the codebase actually sends it automatically (and what), and…
@@ -13,7 +13,7 @@ Source: `apps/api/src/core/notifications/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (19 · 4,193 lines)
+## Files (20 · 4,266 lines)
 
 All paths relative to `apps/api/src/core/notifications`.
 
@@ -34,7 +34,8 @@ All paths relative to `apps/api/src/core/notifications`.
 | `expo-push.channel.ts` | channel | 89 | 1 | Push notifications to the mobile app, through Expo's push service. |
 | `log.channel.ts` | channel | 26 | 1 | Writes notifications to the application log instead of sending them. |
 | `notification-channel.ts` | module | 38 | 3 | Extension point: outbound customer messaging. |
-| `notifications.module.ts` | nest module | 30 | 1 |  |
+| `notification-preferences.service.ts` | service | 71 | 2 |  |
+| `notifications.module.ts` | nest module | 32 | 1 |  |
 | `notifications.service.ts` | service | 59 | 1 | Fans a message out to every enabled channel that can reach the recipient. |
 | `unsubscribe.controller.ts` | controller | 41 | 1 | The link every automated marketing send carries (see MarketingAutomationCron, modules/marketing). |
 | `unsubscribe.dto.ts` | dto | 15 | 1 |  |
@@ -81,8 +82,8 @@ _none_
 **`NotificationsModule`** (`notifications.module.ts`)
 - imports: —
 - controllers: `DevicesController`, `EmailTemplatesAdminController`, `EmailAccountsAdminController`, `UnsubscribeController`
-- providers: `LogNotificationChannel`, `ExpoPushChannel`, `EmailChannel`, `NotificationsService`, `EmailAccountsService`
-- exports: `NotificationsService`, `EmailAccountsService`, `EmailChannel`
+- providers: `LogNotificationChannel`, `ExpoPushChannel`, `EmailChannel`, `NotificationsService`, `EmailAccountsService`, `NotificationPreferencesService`
+- exports: `NotificationsService`, `EmailAccountsService`, `EmailChannel`, `NotificationPreferencesService`
 
 
 ## Reaches out to
@@ -177,7 +178,9 @@ check there before adding another.
 | `NotificationRecipient` | interface | `notification-channel.ts:9` | Extension point: outbound customer messaging. |
 | `NotificationMessage` | interface | `notification-channel.ts:23` |  |
 | `NotificationChannel` | interface | `notification-channel.ts:32` |  |
-| `NotificationsModule` | class | `notifications.module.ts:29` |  |
+| `PreferenceCell` | interface | `notification-preferences.service.ts:7` |  |
+| `NotificationPreferencesService` | class | `notification-preferences.service.ts:21` | WO-7.8. |
+| `NotificationsModule` | class | `notifications.module.ts:31` |  |
 | `NotificationsService` | class | `notifications.service.ts:15` | Fans a message out to every enabled channel that can reach the recipient. |
 | `UnsubscribeController` | class | `unsubscribe.controller.ts:17` | The link every automated marketing send carries (see MarketingAutomationCron, modules/marketing). |
 | `UnsubscribeDto` | class | `unsubscribe.dto.ts:4` |  |

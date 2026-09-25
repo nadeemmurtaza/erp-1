@@ -1,29 +1,31 @@
 'use client';
 
-import { useSyncExternalStore } from 'react';
+import { useEffect, useSyncExternalStore } from 'react';
+import { useCustomerSession } from '@/components/storefront/customer-session';
+import { customerFetch } from '@/lib/customer-client';
 import { STORAGE_KEYS } from '@/constants/storage';
 
 /**
- * Client-only "saved items" wishlist, persisted to this browser's
- * localStorage. There is no server-side wishlist model for this store (no
- * Prisma model backs it), so this is a per-browser convenience only — it
- * does not sync across devices or accounts, and is lost if the customer
- * clears site data or switches browsers.
- *
- * State is held in a module-level store (mirroring how CartProvider keeps
- * one live cart for the whole storefront) rather than React context, so any
- * component can call useWishlist() directly — heart buttons on a product
- * card and a saved-items page both read the same ids and stay in sync
- * without needing a provider wrapped around the tree.
+ * Phase 7 WO-7.6: the wishlist moved server-side
+ * (`docs/implementation/customer-portal-loyalty/07-customer-portal.md`).
+ * Signed-out browsing still uses this exact localStorage store it always
+ * has — a shopper can save items before creating an account — and the
+ * moment a session appears, `useWishlist()` migrates whatever was saved
+ * (`POST /wishlist/migrate`) and clears local storage, then reads/writes the
+ * server from then on. Every consumer (`ProductCard`'s heart button,
+ * `BottomNav`'s badge, the wishlist page) keeps calling the exact same
+ * `useWishlist()` shape as before — only what backs it changed.
  */
 
 const STORAGE_KEY = STORAGE_KEYS.wishlist;
 
-let ids: string[] = [];
-let hydrated = false;
-const listeners = new Set<() => void>();
+// --- local (signed-out) store — unchanged from the original implementation ---
 
-function readStorage(): string[] {
+let localIds: string[] = [];
+let localHydrated = false;
+const localListeners = new Set<() => void>();
+
+function readLocalStorage(): string[] {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     return raw ? (JSON.parse(raw) as string[]) : [];
@@ -32,48 +34,124 @@ function readStorage(): string[] {
   }
 }
 
-// Runs once, on first subscribe/read in the browser. Before this, `ids`
-// stays `[]` — which is also what the server snapshot always returns, so
-// hydration has nothing to reconcile until this fires.
-function hydrate(): void {
-  if (hydrated || typeof window === 'undefined') return;
-  hydrated = true;
-  ids = readStorage();
+function hydrateLocal(): void {
+  if (localHydrated || typeof window === 'undefined') return;
+  localHydrated = true;
+  localIds = readLocalStorage();
 }
 
-function notify(): void {
-  for (const listener of listeners) listener();
+function notifyLocal(): void {
+  for (const listener of localListeners) listener();
 }
 
-function subscribe(listener: () => void): () => void {
-  hydrate();
-  listeners.add(listener);
-  return () => listeners.delete(listener);
+function subscribeLocal(listener: () => void): () => void {
+  hydrateLocal();
+  localListeners.add(listener);
+  return () => localListeners.delete(listener);
 }
 
-function getSnapshot(): string[] {
-  hydrate();
-  return ids;
+function getLocalSnapshot(): string[] {
+  hydrateLocal();
+  return localIds;
 }
 
-// Always `[]` — there is no window to read on the server, and this must
-// return a stable reference across calls for useSyncExternalStore.
-function getServerSnapshot(): string[] {
-  return ids;
+function getServerSnapshotForLocal(): string[] {
+  return localIds;
 }
 
 export function toggleWishlist(productId: string): void {
-  hydrate();
-  ids = ids.includes(productId) ? ids.filter((id) => id !== productId) : [...ids, productId];
+  hydrateLocal();
+  localIds = localIds.includes(productId) ? localIds.filter((id) => id !== productId) : [...localIds, productId];
 
   try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(localIds));
   } catch {
     // Storage can be unavailable (private browsing, quota) — in-memory
     // state still updates so the UI stays correct for this page load.
   }
 
-  notify();
+  notifyLocal();
+}
+
+function clearLocalWishlist(): void {
+  localIds = [];
+  try {
+    window.localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // Ignore — nothing else depends on the key actually being gone.
+  }
+  notifyLocal();
+}
+
+// --- server (signed-in) store ---
+
+interface ServerItem {
+  id: string;
+  productId: string;
+}
+
+let serverItems: ServerItem[] | null = null;
+let serverLoadedForUserId: string | null = null;
+let migratedForUserId: string | null = null;
+const serverListeners = new Set<() => void>();
+
+function notifyServer(): void {
+  for (const listener of serverListeners) listener();
+}
+
+function subscribeServer(listener: () => void): () => void {
+  serverListeners.add(listener);
+  return () => serverListeners.delete(listener);
+}
+
+function getServerIdsSnapshot(): string[] {
+  return serverItems ? serverItems.map((item) => item.productId) : [];
+}
+
+async function ensureServerWishlist(userId: string): Promise<void> {
+  if (serverLoadedForUserId === userId) return;
+
+  // First load for this signed-in session: migrate whatever the browser had
+  // saved before this sign-in, then clear it, per WO-7.6's own words.
+  if (migratedForUserId !== userId) {
+    migratedForUserId = userId;
+    hydrateLocal();
+    if (localIds.length > 0) {
+      try {
+        await customerFetch('/wishlist/migrate', { method: 'POST', body: { productIds: localIds } });
+      } catch {
+        // A failed migration leaves localStorage untouched — the next sign-in
+        // (or a page refresh) tries again rather than silently losing it.
+        migratedForUserId = null;
+      }
+      if (migratedForUserId === userId) clearLocalWishlist();
+    }
+  }
+
+  const items = await customerFetch<Array<{ id: string; productId: string }>>('/wishlist');
+  serverItems = items.map((item) => ({ id: item.id, productId: item.productId }));
+  serverLoadedForUserId = userId;
+  notifyServer();
+}
+
+async function toggleServerWishlist(userId: string, productId: string): Promise<void> {
+  const existing = serverItems?.find((item) => item.productId === productId);
+  if (existing) {
+    serverItems = serverItems!.filter((item) => item.id !== existing.id);
+    notifyServer();
+    await customerFetch(`/wishlist/${existing.id}`, { method: 'DELETE' }).catch(() => {
+      // Best-effort revert on failure — the next load re-syncs regardless.
+      ensureServerWishlist(userId);
+    });
+    return;
+  }
+
+  const created = await customerFetch<{ id: string; productId: string }>('/wishlist', {
+    method: 'POST',
+    body: { productId },
+  });
+  serverItems = [...(serverItems ?? []), { id: created.id, productId: created.productId }];
+  notifyServer();
 }
 
 export interface WishlistState {
@@ -84,12 +162,30 @@ export interface WishlistState {
 }
 
 export function useWishlist(): WishlistState {
-  const snapshot = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const { user } = useCustomerSession();
+
+  const localSnapshot = useSyncExternalStore(subscribeLocal, getLocalSnapshot, getServerSnapshotForLocal);
+  const serverSnapshot = useSyncExternalStore(subscribeServer, getServerIdsSnapshot, getServerIdsSnapshot);
+
+  useEffect(() => {
+    if (user) ensureServerWishlist(user.id).catch(() => undefined);
+  }, [user]);
+
+  if (user) {
+    return {
+      ids: serverSnapshot,
+      isSaved: (productId) => serverSnapshot.includes(productId),
+      toggle: (productId) => {
+        toggleServerWishlist(user.id, productId).catch(() => undefined);
+      },
+      count: serverSnapshot.length,
+    };
+  }
 
   return {
-    ids: snapshot,
-    isSaved: (productId) => snapshot.includes(productId),
+    ids: localSnapshot,
+    isSaved: (productId) => localSnapshot.includes(productId),
     toggle: toggleWishlist,
-    count: snapshot.length,
+    count: localSnapshot.length,
   };
 }

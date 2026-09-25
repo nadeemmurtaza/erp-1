@@ -37,10 +37,17 @@ export const ROUTES = {
     unsubscribe: '/unsubscribe',
 
     account: '/account',
+    accountOverview: '/account/overview',
     accountAddresses: '/account/addresses',
     accountMeasurements: '/account/measurements',
+    accountReturns: '/account/returns',
+    accountReviews: '/account/reviews',
+    accountCredit: '/account/credit',
+    accountLoyalty: '/account/loyalty',
+    accountNotifications: '/account/notifications',
     orders: '/orders',
     order: (number: string) => `/orders/${number}`,
+    orderInvoice: (number: string) => `/orders/${number}/invoice`,
 
     // Static content pages.
     contact: '/contact',

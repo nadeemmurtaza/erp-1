@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 26 files
 
 Source: `apps/api/src/modules/catalog/`
 
-## Files (26 · 4,375 lines)
+## Files (26 · 4,389 lines)
 
 All paths relative to `apps/api/src/modules/catalog`.
 
@@ -20,7 +20,7 @@ All paths relative to `apps/api/src/modules/catalog`.
 | `catalog-options-admin.controller.ts` | controller | 105 | 1 | WO-3.1 (03-variants-sku-seo.md) — the store-level option library and each product's own option axes. |
 | `catalog.controller.ts` | controller | 51 | 1 |  |
 | `catalog.module.ts` | nest module | 51 | 1 |  |
-| `catalog.service.ts` | service | 365 | 3 | A product flattened into one locale, ready for the storefront. |
+| `catalog.service.ts` | service | 379 | 3 | A product flattened into one locale, ready for the storefront. |
 | `category-admin.service.ts` | service | 192 | 1 |  |
 | `brand.dto.ts` | dto | 63 | 2 |  |
 | `category.dto.ts` | dto | 68 | 2 |  |
@@ -118,23 +118,23 @@ All paths relative to `apps/api/src/modules/catalog`.
 | `BrandTranslation` | 6 | :68 | House Rule 6: a customer-facing name is a translation row, not a column. |
 | `Category` | 13 | :23 |  |
 | `CategoryTranslation` | 6 | :80 |  |
-| `OptionTemplate` | 7 | :415 | Store-level, reusable option axis — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue -> Options & attribute… |
-| `OptionTemplateTranslation` | 5 | :428 |  |
-| `OptionTemplateValue` | 8 | :439 |  |
-| `OptionTemplateValueTranslation` | 5 | :454 |  |
-| `Product` | 34 | :92 |  |
-| `ProductGarmentType` | 3 | :316 | Which garments a given unstitched fabric can be made into. |
-| `ProductImage` | 11 | :282 |  |
-| `ProductImageTranslation` | 5 | :304 | Alt text per locale. |
-| `ProductOption` | 9 | :337 | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
-| `ProductOptionTranslation` | 5 | :354 |  |
-| `ProductOptionValue` | 9 | :366 | A specific value on an option axis: "M", "Ferozi", "128GB". |
-| `ProductOptionValueTranslation` | 5 | :384 |  |
-| `ProductTranslation` | 10 | :164 |  |
-| `ProductVariant` | 45 | :183 |  |
-| `ProductVariantOptionValue` | 5 | :398 | The join that DEFINES a variant: one row per option axis per variant. |
-| `Redirect` | 7 | :468 | A storefront path that now 301s somewhere else — created automatically when a live product/category slug chan… |
-| `StockAdjustment` | 10 | :264 | One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without an audit table bolted… |
+| `OptionTemplate` | 7 | :421 | Store-level, reusable option axis — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue -> Options & attribute… |
+| `OptionTemplateTranslation` | 5 | :434 |  |
+| `OptionTemplateValue` | 8 | :445 |  |
+| `OptionTemplateValueTranslation` | 5 | :460 |  |
+| `Product` | 36 | :92 |  |
+| `ProductGarmentType` | 3 | :322 | Which garments a given unstitched fabric can be made into. |
+| `ProductImage` | 11 | :288 |  |
+| `ProductImageTranslation` | 5 | :310 | Alt text per locale. |
+| `ProductOption` | 9 | :343 | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
+| `ProductOptionTranslation` | 5 | :360 |  |
+| `ProductOptionValue` | 9 | :372 | A specific value on an option axis: "M", "Ferozi", "128GB". |
+| `ProductOptionValueTranslation` | 5 | :390 |  |
+| `ProductTranslation` | 10 | :167 |  |
+| `ProductVariant` | 47 | :186 |  |
+| `ProductVariantOptionValue` | 5 | :404 | The join that DEFINES a variant: one row per option axis per variant. |
+| `Redirect` | 7 | :474 | A storefront path that now 301s somewhere else — created automatically when a live product/category slug chan… |
+| `StockAdjustment` | 10 | :270 | One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without an audit table bolted… |
 
 
 Enums: `OptionDisplay` (4) · `ProductKind` (6) · `ProductStatus` (3)
@@ -189,8 +189,8 @@ check there before adding another.
 | `CatalogController` | class | `catalog.controller.ts:11` |  |
 | `CatalogModule` | class | `catalog.module.ts:50` |  |
 | `LocalisedProduct` | interface | `catalog.service.ts:9` | A product flattened into one locale, ready for the storefront. |
-| `CatalogService` | class | `catalog.service.ts:68` | Storefront reads. |
-| `localise` | function | `catalog.service.ts:258` |  |
+| `CatalogService` | class | `catalog.service.ts:71` | Storefront reads. |
+| `localise` | function | `catalog.service.ts:261` |  |
 | `CategoryAdminService` | class | `category-admin.service.ts:8` |  |
 | `BrandTranslationDto` | class | `brand.dto.ts:16` |  |
 | `UpsertBrandDto` | class | `brand.dto.ts:34` |  |

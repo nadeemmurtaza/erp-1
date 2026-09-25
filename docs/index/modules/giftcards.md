@@ -3,29 +3,30 @@
 
 # Module: `giftcards`
 
-Pack **core** · enabled by the `MODULES` allowlist · 8 files
+Pack **core** · enabled by the `MODULES` allowlist · 9 files
 
 
 
 Source: `apps/api/src/modules/giftcards/`
 
-## Files (8 · 502 lines)
+## Files (9 · 617 lines)
 
 All paths relative to `apps/api/src/modules/giftcards/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `gift-card.dto.ts` | dto | 56 | 3 |  |
+| `gift-card.dto.ts` | dto | 62 | 4 |  |
 | `store-credit.dto.ts` | dto | 21 | 1 |  |
-| `giftcards-account.controller.ts` | controller | 27 | 1 | WO-5.4's own security note: "The lookup endpoint is rate-limited and authenticated. |
+| `giftcards-account.controller.ts` | controller | 36 | 1 | WO-5.4's own security note: "The lookup endpoint is rate-limited and authenticated. |
 | `giftcards.controller.ts` | controller | 67 | 2 |  |
-| `giftcards.module.ts` | nest module | 14 | 1 |  |
-| `giftcards.service.ts` | service | 158 | 2 | Never log or display a full code — WO-5.4's own security note. |
+| `giftcards.module.ts` | nest module | 15 | 1 |  |
+| `giftcards.service.ts` | service | 202 | 2 | Never log or display a full code — WO-5.4's own security note. |
+| `store-credit-account.controller.ts` | controller | 26 | 1 | WO-7.4 — the customer's own balance and full transaction history. |
 | `store-credit-reconcile.cron.ts` | scheduled job | 26 | 1 | Nightly integrity check for the `User.storeCreditBalance` cache (WO-5.5's own "if you cache it, add a reconciliation ch… |
-| `store-credit.service.ts` | service | 133 | 1 | Store credit: the same ledger shape as GiftCard, attached to a User rather than a code (WO-5.5). |
+| `store-credit.service.ts` | service | 162 | 1 | Store credit: the same ledger shape as GiftCard, attached to a User rather than a code (WO-5.5). |
 
 
-## HTTP routes (7)
+## HTTP routes (10)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -35,7 +36,10 @@ All paths relative to `apps/api/src/modules/giftcards/dto`.
 | POST | `/admin/gift-cards` | `giftcards.manage` | `GiftCardsController.issue` :32 | Issue a gift card |
 | GET | `/admin/gift-cards/:id` | `giftcards.view` | `GiftCardsController.getById` :25 | One gift card with its full ledger |
 | PATCH | `/admin/gift-cards/:id/cancel` | `giftcards.manage` | `GiftCardsController.cancel` :39 | Cancel a gift card, forfeiting any remaining balance |
-| GET | `/gift-cards/:code/balance` | signed-in | `GiftCardsAccountController.balance` :23 | Check a gift card balance by code |
+| GET | `/gift-cards/:code/balance` | signed-in | `GiftCardsAccountController.balance` :24 | Check a gift card balance by code |
+| POST | `/gift-cards/redeem-into-account` | signed-in | `GiftCardsAccountController.redeemIntoAccount` :32 | Redeem a gift card's full balance into my store credit |
+| GET | `/store-credit` | signed-in | `StoreCreditAccountController.balance` :16 | My store credit balance |
+| GET | `/store-credit/ledger` | signed-in | `StoreCreditAccountController.ledger` :22 | My store credit history |
 
 
 ## Domain events
@@ -75,7 +79,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 **`GiftCardsModule`** (`giftcards.module.ts`)
 - imports: —
-- controllers: `GiftCardsController`, `StoreCreditController`, `GiftCardsAccountController`
+- controllers: `GiftCardsController`, `StoreCreditController`, `GiftCardsAccountController`, `StoreCreditAccountController`
 - providers: `GiftCardsService`, `StoreCreditService`, `StoreCreditReconcileCron`
 - exports: `GiftCardsService`, `StoreCreditService`
 
@@ -105,13 +109,15 @@ _No spec files in this unit._
 | `IssueGiftCardDto` | class | `gift-card.dto.ts:7` |  |
 | `GiftCardQueryDto` | class | `gift-card.dto.ts:39` |  |
 | `RedeemGiftCardDto` | class | `gift-card.dto.ts:46` |  |
+| `RedeemGiftCardIntoAccountDto` | class | `gift-card.dto.ts:57` |  |
 | `IssueStoreCreditDto` | class | `store-credit.dto.ts:6` |  |
-| `GiftCardsAccountController` | class | `giftcards-account.controller.ts:17` | WO-5.4's own security note: "The lookup endpoint is rate-limited and authenticated. |
+| `GiftCardsAccountController` | class | `giftcards-account.controller.ts:18` | WO-5.4's own security note: "The lookup endpoint is rate-limited and authenticated. |
 | `GiftCardsController` | class | `giftcards.controller.ts:12` |  |
 | `StoreCreditController` | class | `giftcards.controller.ts:46` |  |
-| `GiftCardsModule` | class | `giftcards.module.ts:13` |  |
-| `maskGiftCardCode` | function | `giftcards.service.ts:10` | Never log or display a full code — WO-5.4's own security note. |
-| `GiftCardsService` | class | `giftcards.service.ts:19` |  |
+| `GiftCardsModule` | class | `giftcards.module.ts:14` |  |
+| `maskGiftCardCode` | function | `giftcards.service.ts:11` | Never log or display a full code — WO-5.4's own security note. |
+| `GiftCardsService` | class | `giftcards.service.ts:20` |  |
+| `StoreCreditAccountController` | class | `store-credit-account.controller.ts:11` | WO-7.4 — the customer's own balance and full transaction history. |
 | `StoreCreditReconcileCron` | class | `store-credit-reconcile.cron.ts:11` | Nightly integrity check for the `User.storeCreditBalance` cache (WO-5.5's own "if you cache it, add a reconci… |
 | `StoreCreditService` | class | `store-credit.service.ts:18` | Store credit: the same ledger shape as GiftCard, attached to a User rather than a code (WO-5.5). |
 

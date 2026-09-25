@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CartController } from './cart.controller';
 import { CartService } from './cart.service';
+import { ReorderService } from './reorder.service';
 
 @Module({
   // Measurements typed straight into the stitching panel are validated
@@ -9,7 +10,7 @@ import { CartService } from './cart.service';
   // other core provider, so it needs no entry here.
   imports: [],
   controllers: [CartController],
-  providers: [CartService],
+  providers: [CartService, ReorderService],
   // Exported for the orders module, which turns a priced cart into an order.
   exports: [CartService],
 })

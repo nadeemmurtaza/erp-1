@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-56 files · 28,218 lines
+56 files · 28,223 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -25,7 +25,7 @@ on them.
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 18 | 6,955 | script, py |
+| `scripts` | 18 | 6,960 | script, py |
 | `scripts/lib` | 3 | 1,606 | utility |
 
 
@@ -44,7 +44,7 @@ on them.
 | `scripts/build-index.mjs` | 2,511 | script |  |
 | `scripts/lib/index-scan.mjs` | 906 | utility | Scanners for the repository index. |
 | `scripts/check-overflow.mjs` | 644 | script |  |
-| `scripts/check-module-boundaries.mjs` | 554 | script |  |
+| `scripts/check-module-boundaries.mjs` | 559 | script |  |
 | `scripts/idx.mjs` | 486 | script |  |
 | `scripts/check-contrast.mjs` | 425 | script |  |
 | `scripts/check-links.mjs` | 402 | script |  |

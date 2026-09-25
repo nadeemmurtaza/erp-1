@@ -33,8 +33,8 @@ model CompensationRate {
   createdById   String?
   createdAt     DateTime          @default(now())
 
-  user      User         @relation(fields: [userId], references: [id])
-  createdBy User?        @relation("CompensationRateCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  user        User         @relation(fields: [userId], references: [id])
+  createdBy   User?        @relation("CompensationRateCreator", fields: [createdById], references: [id], onDelete: SetNull)
   payRunLines PayRunLine[]
 
   @@index([userId, effectiveFrom])
@@ -57,9 +57,9 @@ model LeaveType {
   accrualDaysPerRun Float     @default(0)
   isActive          Boolean   @default(true)
 
-  balances     LeaveBalance[]
-  requests     LeaveRequest[]
-  accrualRuns  LeaveAccrualRun[]
+  balances    LeaveBalance[]
+  requests    LeaveRequest[]
+  accrualRuns LeaveAccrualRun[]
 }
 
 /// One row per user per leave type — the running balance a request debits
@@ -164,25 +164,25 @@ model PayRun {
 /// at build time and frozen — re-running the builder on a DRAFT run
 /// replaces its lines; nothing recomputes a line silently after APPROVED.
 model PayRunLine {
-  id                  String @id @default(cuid())
-  payRunId            String
-  userId              String
+  id                 String @id @default(cuid())
+  payRunId           String
+  userId             String
   /// The CompensationRate row this line's gross was computed from —
   /// traceable, not a copied scalar with no source.
-  compensationRateId  String
-  grossMinor          Int
+  compensationRateId String
+  grossMinor         Int
   /// Days of UNPAID leave in this period, and the paisa deducted for them —
   /// both zero for someone who took none.
-  unpaidLeaveDays     Float  @default(0)
-  unpaidLeaveMinor    Int    @default(0)
+  unpaidLeaveDays    Float  @default(0)
+  unpaidLeaveMinor   Int    @default(0)
   /// Itemised statutory deductions, e.g. [{"code":"TAX","amountMinor":...}].
   /// Sums to deductionsMinor; not its own table yet (19.1's note in
   /// 19-payroll.md) because no jurisdiction-specific rule has been
   /// requested — a JSON line-item bag is honest about that, a hardcoded tax
   /// bracket would not be.
-  deductions      Json
-  deductionsMinor Int @default(0)
-  netMinor        Int
+  deductions         Json
+  deductionsMinor    Int    @default(0)
+  netMinor           Int
 
   payRun           PayRun           @relation(fields: [payRunId], references: [id])
   user             User             @relation(fields: [userId], references: [id])

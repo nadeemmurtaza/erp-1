@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1517,
-    "lines": 233906,
-    "routes": 401,
-    "controllers": 70,
-    "models": 152,
-    "enums": 65,
-    "migrations": 63,
+    "files": 1564,
+    "lines": 239038,
+    "routes": 439,
+    "controllers": 80,
+    "models": 161,
+    "enums": 71,
+    "migrations": 64,
     "events": 40,
-    "permissions": 48,
-    "screens": 169,
+    "permissions": 53,
+    "screens": 180,
     "crons": 10,
-    "specs": 143,
+    "specs": 144,
     "designLaws": 0
   },
   "designLaws": [],
@@ -27,14 +27,14 @@
     },
     "infra": {
       "files": 56,
-      "lines": 28218,
-      "bytes": 1106991,
+      "lines": 28223,
+      "bytes": 1107492,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 563,
-      "lines": 78384,
-      "bytes": 2881696,
+      "files": 598,
+      "lines": 81142,
+      "bytes": 2991427,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 281,
-      "lines": 43882,
-      "bytes": 1601701,
+      "files": 293,
+      "lines": 46032,
+      "bytes": 1680994,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 392,
-      "lines": 59544,
-      "bytes": 3525076,
+      "lines": 59715,
+      "bytes": 3535842,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 64,
-      "lines": 5679,
-      "bytes": 192201,
+      "lines": 5727,
+      "bytes": 193318,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -172,9 +172,10 @@
         "apps/api/src/modules/cart/cart.controller.ts",
         "apps/api/src/modules/cart/cart.module.ts",
         "apps/api/src/modules/cart/cart.service.ts",
-        "apps/api/src/modules/cart/dto/cart.dto.ts"
+        "apps/api/src/modules/cart/dto/cart.dto.ts",
+        "apps/api/src/modules/cart/reorder.service.ts"
       ],
-      "routes": 6,
+      "routes": 7,
       "page": "docs/index/modules/cart.md"
     },
     {
@@ -270,10 +271,11 @@
         "apps/api/src/modules/giftcards/giftcards.controller.ts",
         "apps/api/src/modules/giftcards/giftcards.module.ts",
         "apps/api/src/modules/giftcards/giftcards.service.ts",
+        "apps/api/src/modules/giftcards/store-credit-account.controller.ts",
         "apps/api/src/modules/giftcards/store-credit-reconcile.cron.ts",
         "apps/api/src/modules/giftcards/store-credit.service.ts"
       ],
-      "routes": 7,
+      "routes": 10,
       "page": "docs/index/modules/giftcards.md"
     },
     {
@@ -320,6 +322,22 @@
       "page": "docs/index/modules/inventory.md"
     },
     {
+      "name": "loyalty",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/loyalty/dto/loyalty.dto.ts",
+        "apps/api/src/modules/loyalty/loyalty-admin.controller.ts",
+        "apps/api/src/modules/loyalty/loyalty-order.listener.ts",
+        "apps/api/src/modules/loyalty/loyalty.controller.ts",
+        "apps/api/src/modules/loyalty/loyalty.module.ts",
+        "apps/api/src/modules/loyalty/loyalty.service.ts"
+      ],
+      "routes": 11,
+      "page": "docs/index/modules/loyalty.md"
+    },
+    {
       "name": "marketing",
       "pack": "core",
       "alwaysOn": false,
@@ -350,6 +368,19 @@
       ],
       "routes": 12,
       "page": "docs/index/modules/measurements.md"
+    },
+    {
+      "name": "notification-preferences",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/notification-preferences/dto/notification-preference.dto.ts",
+        "apps/api/src/modules/notification-preferences/notification-preferences.controller.ts",
+        "apps/api/src/modules/notification-preferences/notification-preferences.module.ts"
+      ],
+      "routes": 2,
+      "page": "docs/index/modules/notification-preferences.md"
     },
     {
       "name": "orders",
@@ -565,6 +596,36 @@
       "page": "docs/index/modules/reports.md"
     },
     {
+      "name": "returns",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/returns/dto/return-request.dto.ts",
+        "apps/api/src/modules/returns/returns-account.controller.ts",
+        "apps/api/src/modules/returns/returns.controller.ts",
+        "apps/api/src/modules/returns/returns.module.ts",
+        "apps/api/src/modules/returns/returns.service.ts"
+      ],
+      "routes": 7,
+      "page": "docs/index/modules/returns.md"
+    },
+    {
+      "name": "reviews",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/reviews/dto/review.dto.ts",
+        "apps/api/src/modules/reviews/reviews-public.controller.ts",
+        "apps/api/src/modules/reviews/reviews.controller.ts",
+        "apps/api/src/modules/reviews/reviews.module.ts",
+        "apps/api/src/modules/reviews/reviews.service.ts"
+      ],
+      "routes": 6,
+      "page": "docs/index/modules/reviews.md"
+    },
+    {
       "name": "settings",
       "pack": "core",
       "alwaysOn": true,
@@ -688,6 +749,22 @@
       ],
       "routes": 8,
       "page": "docs/index/modules/users.md"
+    },
+    {
+      "name": "wishlist",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/wishlist/back-in-stock.listener.ts",
+        "apps/api/src/modules/wishlist/dto/wishlist.dto.ts",
+        "apps/api/src/modules/wishlist/wishlist-admin.controller.ts",
+        "apps/api/src/modules/wishlist/wishlist.controller.ts",
+        "apps/api/src/modules/wishlist/wishlist.module.ts",
+        "apps/api/src/modules/wishlist/wishlist.service.ts"
+      ],
+      "routes": 8,
+      "page": "docs/index/modules/wishlist.md"
     }
   ],
   "apiCore": [
@@ -806,6 +883,7 @@
         "apps/api/src/core/notifications/expo-push.channel.ts",
         "apps/api/src/core/notifications/log.channel.ts",
         "apps/api/src/core/notifications/notification-channel.ts",
+        "apps/api/src/core/notifications/notification-preferences.service.ts",
         "apps/api/src/core/notifications/notifications.module.ts",
         "apps/api/src/core/notifications/notifications.service.ts",
         "apps/api/src/core/notifications/unsubscribe.controller.ts",
@@ -3517,6 +3595,70 @@
     },
     {
       "method": "GET",
+      "path": "/admin/loyalty/customers/:userId",
+      "module": "loyalty",
+      "controller": "LoyaltyAdminController",
+      "handler": "customerBalance",
+      "file": "apps/api/src/modules/loyalty/loyalty-admin.controller.ts",
+      "line": 16,
+      "access": "loyalty.view",
+      "permissions": [
+        "loyalty.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "A customer's own loyalty balance and ledger"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/loyalty/customers/:userId/adjust",
+      "module": "loyalty",
+      "controller": "LoyaltyAdminController",
+      "handler": "adjust",
+      "file": "apps/api/src/modules/loyalty/loyalty-admin.controller.ts",
+      "line": 27,
+      "access": "loyalty.manage",
+      "permissions": [
+        "loyalty.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Manually adjust a customer's points"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/loyalty/tiers",
+      "module": "loyalty",
+      "controller": "LoyaltyAdminController",
+      "handler": "createTier",
+      "file": "apps/api/src/modules/loyalty/loyalty-admin.controller.ts",
+      "line": 35,
+      "access": "loyalty.manage",
+      "permissions": [
+        "loyalty.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create a loyalty tier"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/loyalty/tiers/:id",
+      "module": "loyalty",
+      "controller": "LoyaltyAdminController",
+      "handler": "updateTier",
+      "file": "apps/api/src/modules/loyalty/loyalty-admin.controller.ts",
+      "line": 42,
+      "access": "loyalty.manage",
+      "permissions": [
+        "loyalty.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Edit a loyalty tier"
+    },
+    {
+      "method": "GET",
       "path": "/admin/marketing/settings",
       "module": "marketing",
       "controller": "MarketingController",
@@ -5005,6 +5147,86 @@
     },
     {
       "method": "GET",
+      "path": "/admin/returns",
+      "module": "returns",
+      "controller": "ReturnsController",
+      "handler": "list",
+      "file": "apps/api/src/modules/returns/returns.controller.ts",
+      "line": 15,
+      "access": "returns.view",
+      "permissions": [
+        "returns.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List self-service return requests"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/returns/:id/decide",
+      "module": "returns",
+      "controller": "ReturnsController",
+      "handler": "decide",
+      "file": "apps/api/src/modules/returns/returns.controller.ts",
+      "line": 22,
+      "access": "returns.manage",
+      "permissions": [
+        "returns.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Approve or reject a return request"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/returns/:id/mark-refunded",
+      "module": "returns",
+      "controller": "ReturnsController",
+      "handler": "markRefunded",
+      "file": "apps/api/src/modules/returns/returns.controller.ts",
+      "line": 29,
+      "access": "returns.manage",
+      "permissions": [
+        "returns.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Close out an approved return once the refund is actually done"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/reviews",
+      "module": "reviews",
+      "controller": "ReviewsController",
+      "handler": "list",
+      "file": "apps/api/src/modules/reviews/reviews.controller.ts",
+      "line": 16,
+      "access": "reviews.moderate",
+      "permissions": [
+        "reviews.moderate"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List reviews for moderation"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/reviews/:id",
+      "module": "reviews",
+      "controller": "ReviewsController",
+      "handler": "moderate",
+      "file": "apps/api/src/modules/reviews/reviews.controller.ts",
+      "line": 22,
+      "access": "reviews.moderate",
+      "permissions": [
+        "reviews.moderate"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Publish, reject, or reply to a review"
+    },
+    {
+      "method": "GET",
       "path": "/admin/roles",
       "module": "core/auth",
       "controller": "RolesController",
@@ -6092,6 +6314,22 @@
       "summary": "Assign a custom Role to this user (owner's request — a user may hold several)"
     },
     {
+      "method": "GET",
+      "path": "/admin/wishlist/out-of-stock-report",
+      "module": "wishlist",
+      "controller": "WishlistAdminController",
+      "handler": "report",
+      "file": "apps/api/src/modules/wishlist/wishlist-admin.controller.ts",
+      "line": 15,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Wishlisted products that are currently out of stock, most-wanted first"
+    },
+    {
       "method": "POST",
       "path": "/auth/change-password",
       "module": "core/auth",
@@ -6248,13 +6486,55 @@
       "summary": "Confirm an email address using a verification link token"
     },
     {
+      "method": "GET",
+      "path": "/back-in-stock",
+      "module": "wishlist",
+      "controller": "WishlistController",
+      "handler": "myAlerts",
+      "file": "apps/api/src/modules/wishlist/wishlist.controller.ts",
+      "line": 41,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "My back-in-stock alerts"
+    },
+    {
+      "method": "POST",
+      "path": "/back-in-stock",
+      "module": "wishlist",
+      "controller": "WishlistController",
+      "handler": "requestAlert",
+      "file": "apps/api/src/modules/wishlist/wishlist.controller.ts",
+      "line": 47,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Ask to be notified when a variant is back in stock"
+    },
+    {
+      "method": "DELETE",
+      "path": "/back-in-stock/:variantId",
+      "module": "wishlist",
+      "controller": "WishlistController",
+      "handler": "cancelAlert",
+      "file": "apps/api/src/modules/wishlist/wishlist.controller.ts",
+      "line": 53,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Cancel a back-in-stock alert"
+    },
+    {
       "method": "DELETE",
       "path": "/cart",
       "module": "cart",
       "controller": "CartController",
       "handler": "clear",
       "file": "apps/api/src/modules/cart/cart.controller.ts",
-      "line": 123,
+      "line": 142,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -6268,7 +6548,7 @@
       "controller": "CartController",
       "handler": "get",
       "file": "apps/api/src/modules/cart/cart.controller.ts",
-      "line": 46,
+      "line": 65,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -6282,7 +6562,7 @@
       "controller": "CartController",
       "handler": "addItem",
       "file": "apps/api/src/modules/cart/cart.controller.ts",
-      "line": 63,
+      "line": 82,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -6296,7 +6576,7 @@
       "controller": "CartController",
       "handler": "removeItem",
       "file": "apps/api/src/modules/cart/cart.controller.ts",
-      "line": 103,
+      "line": 122,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -6310,7 +6590,7 @@
       "controller": "CartController",
       "handler": "updateItem",
       "file": "apps/api/src/modules/cart/cart.controller.ts",
-      "line": 82,
+      "line": 101,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -6324,12 +6604,26 @@
       "controller": "CartController",
       "handler": "merge",
       "file": "apps/api/src/modules/cart/cart.controller.ts",
-      "line": 136,
+      "line": 155,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
       "authOnly": false,
       "summary": "Fold a guest cart into the signed-in account"
+    },
+    {
+      "method": "POST",
+      "path": "/cart/reorder/:orderNumber",
+      "module": "cart",
+      "controller": "CartController",
+      "handler": "reorderFromOrder",
+      "file": "apps/api/src/modules/cart/cart.controller.ts",
+      "line": 52,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": true,
+      "summary": "Add every still-available line from a past order to the cart"
     },
     {
       "method": "GET",
@@ -6464,12 +6758,26 @@
       "controller": "GiftCardsAccountController",
       "handler": "balance",
       "file": "apps/api/src/modules/giftcards/giftcards-account.controller.ts",
-      "line": 23,
+      "line": 24,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
       "authOnly": true,
       "summary": "Check a gift card balance by code"
+    },
+    {
+      "method": "POST",
+      "path": "/gift-cards/redeem-into-account",
+      "module": "giftcards",
+      "controller": "GiftCardsAccountController",
+      "handler": "redeemIntoAccount",
+      "file": "apps/api/src/modules/giftcards/giftcards-account.controller.ts",
+      "line": 32,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Redeem a gift card's full balance into my store credit"
     },
     {
       "method": "GET",
@@ -6554,6 +6862,104 @@
       "public": true,
       "authOnly": false,
       "summary": "nID verification-result callback (signature-verified, not session-authenticated)"
+    },
+    {
+      "method": "GET",
+      "path": "/loyalty",
+      "module": "loyalty",
+      "controller": "LoyaltyController",
+      "handler": "balance",
+      "file": "apps/api/src/modules/loyalty/loyalty.controller.ts",
+      "line": 24,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "My points balance, tier and trailing 12-month spend"
+    },
+    {
+      "method": "GET",
+      "path": "/loyalty/ledger",
+      "module": "loyalty",
+      "controller": "LoyaltyController",
+      "handler": "ledger",
+      "file": "apps/api/src/modules/loyalty/loyalty.controller.ts",
+      "line": 31,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "My points history"
+    },
+    {
+      "method": "POST",
+      "path": "/loyalty/redeem",
+      "module": "loyalty",
+      "controller": "LoyaltyController",
+      "handler": "redeem",
+      "file": "apps/api/src/modules/loyalty/loyalty.controller.ts",
+      "line": 38,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Convert points to store credit"
+    },
+    {
+      "method": "GET",
+      "path": "/loyalty/referral-code",
+      "module": "loyalty",
+      "controller": "LoyaltyController",
+      "handler": "myReferralCode",
+      "file": "apps/api/src/modules/loyalty/loyalty.controller.ts",
+      "line": 45,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "My own referral code (generated on first request)"
+    },
+    {
+      "method": "POST",
+      "path": "/loyalty/referral/apply",
+      "module": "loyalty",
+      "controller": "LoyaltyController",
+      "handler": "applyReferralCode",
+      "file": "apps/api/src/modules/loyalty/loyalty.controller.ts",
+      "line": 59,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Apply a friend's referral code to my account"
+    },
+    {
+      "method": "GET",
+      "path": "/loyalty/referrals",
+      "module": "loyalty",
+      "controller": "LoyaltyController",
+      "handler": "myReferrals",
+      "file": "apps/api/src/modules/loyalty/loyalty.controller.ts",
+      "line": 52,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Customers I have referred"
+    },
+    {
+      "method": "GET",
+      "path": "/loyalty/tiers",
+      "module": "loyalty",
+      "controller": "LoyaltyController",
+      "handler": "tiers",
+      "file": "apps/api/src/modules/loyalty/loyalty.controller.ts",
+      "line": 17,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Loyalty tiers and their benefits"
     },
     {
       "method": "POST",
@@ -6694,6 +7100,34 @@
       "public": true,
       "authOnly": false,
       "summary": "Which optional modules and sector packs this deployment has enabled"
+    },
+    {
+      "method": "GET",
+      "path": "/notification-preferences",
+      "module": "notification-preferences",
+      "controller": "NotificationPreferencesController",
+      "handler": "list",
+      "file": "apps/api/src/modules/notification-preferences/notification-preferences.controller.ts",
+      "line": 19,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "My notification preferences, per channel and category"
+    },
+    {
+      "method": "PUT",
+      "path": "/notification-preferences",
+      "module": "notification-preferences",
+      "controller": "NotificationPreferencesController",
+      "handler": "update",
+      "file": "apps/api/src/modules/notification-preferences/notification-preferences.controller.ts",
+      "line": 25,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Update one or more preference cells"
     },
     {
       "method": "POST",
@@ -7048,6 +7482,20 @@
       "summary": "Payment methods currently accepted"
     },
     {
+      "method": "GET",
+      "path": "/products/:productId/reviews",
+      "module": "reviews",
+      "controller": "ReviewsPublicController",
+      "handler": "listForProduct",
+      "file": "apps/api/src/modules/reviews/reviews-public.controller.ts",
+      "line": 17,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "A product's published reviews"
+    },
+    {
       "method": "POST",
       "path": "/promotions/preview",
       "module": "promotions",
@@ -7088,6 +7536,104 @@
       "public": true,
       "authOnly": false,
       "summary": "A child's own FACT records, pushed up"
+    },
+    {
+      "method": "GET",
+      "path": "/returns",
+      "module": "returns",
+      "controller": "ReturnsAccountController",
+      "handler": "mine",
+      "file": "apps/api/src/modules/returns/returns-account.controller.ts",
+      "line": 22,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "My return requests"
+    },
+    {
+      "method": "POST",
+      "path": "/returns",
+      "module": "returns",
+      "controller": "ReturnsAccountController",
+      "handler": "create",
+      "file": "apps/api/src/modules/returns/returns-account.controller.ts",
+      "line": 34,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Open a self-service return"
+    },
+    {
+      "method": "GET",
+      "path": "/returns/:id",
+      "module": "returns",
+      "controller": "ReturnsAccountController",
+      "handler": "getOne",
+      "file": "apps/api/src/modules/returns/returns-account.controller.ts",
+      "line": 28,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "One of my return requests"
+    },
+    {
+      "method": "GET",
+      "path": "/returns/eligibility/:orderNumber",
+      "module": "returns",
+      "controller": "ReturnsAccountController",
+      "handler": "eligibility",
+      "file": "apps/api/src/modules/returns/returns-account.controller.ts",
+      "line": 16,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Can this order still be returned?"
+    },
+    {
+      "method": "POST",
+      "path": "/reviews",
+      "module": "reviews",
+      "controller": "ReviewsPublicController",
+      "handler": "create",
+      "file": "apps/api/src/modules/reviews/reviews-public.controller.ts",
+      "line": 32,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Submit a review — goes to PENDING, moderated before it shows"
+    },
+    {
+      "method": "POST",
+      "path": "/reviews/:id/helpful",
+      "module": "reviews",
+      "controller": "ReviewsPublicController",
+      "handler": "markHelpful",
+      "file": "apps/api/src/modules/reviews/reviews-public.controller.ts",
+      "line": 40,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Mark a review helpful"
+    },
+    {
+      "method": "GET",
+      "path": "/reviews/mine",
+      "module": "reviews",
+      "controller": "ReviewsPublicController",
+      "handler": "mine",
+      "file": "apps/api/src/modules/reviews/reviews-public.controller.ts",
+      "line": 24,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "My own reviews, any status"
     },
     {
       "method": "POST",
@@ -7146,6 +7692,34 @@
       "summary": "Style options for a garment, with their price deltas"
     },
     {
+      "method": "GET",
+      "path": "/store-credit",
+      "module": "giftcards",
+      "controller": "StoreCreditAccountController",
+      "handler": "balance",
+      "file": "apps/api/src/modules/giftcards/store-credit-account.controller.ts",
+      "line": 16,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "My store credit balance"
+    },
+    {
+      "method": "GET",
+      "path": "/store-credit/ledger",
+      "module": "giftcards",
+      "controller": "StoreCreditAccountController",
+      "handler": "ledger",
+      "file": "apps/api/src/modules/giftcards/store-credit-account.controller.ts",
+      "line": 22,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "My store credit history"
+    },
+    {
       "method": "POST",
       "path": "/track/event",
       "module": "tracking",
@@ -7186,6 +7760,62 @@
       "public": true,
       "authOnly": false,
       "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/wishlist",
+      "module": "wishlist",
+      "controller": "WishlistController",
+      "handler": "list",
+      "file": "apps/api/src/modules/wishlist/wishlist.controller.ts",
+      "line": 16,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "My saved items"
+    },
+    {
+      "method": "POST",
+      "path": "/wishlist",
+      "module": "wishlist",
+      "controller": "WishlistController",
+      "handler": "add",
+      "file": "apps/api/src/modules/wishlist/wishlist.controller.ts",
+      "line": 22,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Save an item"
+    },
+    {
+      "method": "DELETE",
+      "path": "/wishlist/:id",
+      "module": "wishlist",
+      "controller": "WishlistController",
+      "handler": "remove",
+      "file": "apps/api/src/modules/wishlist/wishlist.controller.ts",
+      "line": 28,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Remove a saved item"
+    },
+    {
+      "method": "POST",
+      "path": "/wishlist/migrate",
+      "module": "wishlist",
+      "controller": "WishlistController",
+      "handler": "migrate",
+      "file": "apps/api/src/modules/wishlist/wishlist.controller.ts",
+      "line": 35,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Migrate a localStorage wishlist on first sign-in"
     }
   ],
   "permissions": [
@@ -7213,9 +7843,10 @@
         "GET /admin/analytics/purchasing/suppliers",
         "GET /admin/analytics/stitching",
         "GET /admin/analytics/visitors",
-        "GET /admin/analytics/workshop/output"
+        "GET /admin/analytics/workshop/output",
+        "GET /admin/wishlist/out-of-stock-report"
       ],
-      "uiSites": 9,
+      "uiSites": 10,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -8186,6 +8817,84 @@
         "ADMIN"
       ],
       "inSeed": true
+    },
+    {
+      "key": "reviews.moderate",
+      "label": "Approve, reject and reply to customer product reviews",
+      "category": "Marketing",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/reviews",
+        "PATCH /admin/reviews/:id"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "returns.view",
+      "label": "View customer self-service return requests",
+      "category": "Sales",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/returns"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "returns.manage",
+      "label": "Approve or reject a customer return request",
+      "category": "Sales",
+      "sensitivity": "medium",
+      "routes": [
+        "PATCH /admin/returns/:id/decide",
+        "POST /admin/returns/:id/mark-refunded"
+      ],
+      "uiSites": 0,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "loyalty.view",
+      "label": "View loyalty point balances, tiers and referrals",
+      "category": "Marketing",
+      "sensitivity": "low",
+      "routes": [
+        "GET /admin/loyalty/customers/:userId"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "loyalty.manage",
+      "label": "Adjust a customer's loyalty points and configure tiers — real money once redeemed",
+      "category": "Marketing",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/loyalty/customers/:userId/adjust",
+        "POST /admin/loyalty/tiers",
+        "PATCH /admin/loyalty/tiers/:id"
+      ],
+      "uiSites": 0,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     }
   ],
   "events": [
@@ -8218,6 +8927,7 @@
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
         "apps/api/src/modules/finance/finance.listener.ts:18 onOrderStatusChanged()",
+        "apps/api/src/modules/loyalty/loyalty-order.listener.ts:24 onOrderStatusChanged()",
         "apps/api/src/modules/orders/notification.subscriber.ts:166 onStatusChanged()"
       ]
     },
@@ -8430,7 +9140,8 @@
         "apps/api/src/modules/inventory/inventory.service.ts:402"
       ],
       "subscribers": [
-        "apps/api/src/modules/orders/backorder.listener.ts:29 onStockReplenished()"
+        "apps/api/src/modules/orders/backorder.listener.ts:29 onStockReplenished()",
+        "apps/api/src/modules/wishlist/back-in-stock.listener.ts:31 onStockReplenished()"
       ]
     },
     {
@@ -8749,7 +9460,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 167,
+      "line": 184,
       "doc": "",
       "fields": [
         {
@@ -8940,7 +9651,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 445,
+      "line": 462,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -9001,7 +9712,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 257,
+      "line": 274,
       "doc": "",
       "fields": [
         {
@@ -9072,6 +9783,60 @@
         "@@index([entity, entityId])",
         "@@index([actorId])",
         "@@index([createdAt])"
+      ]
+    },
+    {
+      "name": "BackInStockRequest",
+      "file": "apps/api/prisma/schema/wishlist.prisma",
+      "line": 32,
+      "doc": "One row per customer waiting on one variant.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "variant",
+          "type": "ProductVariant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([userId, variantId])",
+        "@@index([variantId])"
       ]
     },
     {
@@ -10677,7 +11442,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 425,
+      "line": 442,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -10951,7 +11716,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 212,
+      "line": 229,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -11137,7 +11902,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 153,
+      "line": 170,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -13813,6 +14578,134 @@
       ]
     },
     {
+      "name": "LoyaltyTier",
+      "file": "apps/api/prisma/schema/loyalty.prisma",
+      "line": 52,
+      "doc": "Trailing-12-month spend bands.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "minSpend",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "benefitDescriptionEn",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "benefitDescriptionUr",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sortOrder",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([minSpend])"
+      ]
+    },
+    {
+      "name": "LoyaltyTransaction",
+      "file": "apps/api/prisma/schema/loyalty.prisma",
+      "line": 29,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "type",
+          "type": "LoyaltyTransactionType",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "points",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "note",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "order",
+          "type": "Order?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([orderId, type])",
+        "@@index([userId, createdAt])"
+      ]
+    },
+    {
       "name": "MeasurementField",
       "file": "apps/api/prisma/schema/measurements.prisma",
       "line": 50,
@@ -14109,6 +15002,74 @@
       ]
     },
     {
+      "name": "NotificationPreference",
+      "file": "apps/api/prisma/schema/notification-preferences.prisma",
+      "line": 36,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "channel",
+          "type": "NotificationPreferenceChannel",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "category",
+          "type": "NotificationPreferenceCategory",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "enabled",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([userId, channel, category])",
+        "@@index([userId])"
+      ]
+    },
+    {
       "name": "Offer",
       "file": "apps/api/prisma/schema/trading-partners.prisma",
       "line": 84,
@@ -14171,7 +15132,7 @@
     {
       "name": "OptionTemplate",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 415,
+      "line": 421,
       "doc": "Store-level, reusable option axis — \"Size: XS/S/M/L/XL/XXL\" typed once under Catalogue -> Options & attributes instead of on every product.",
       "fields": [
         {
@@ -14231,7 +15192,7 @@
     {
       "name": "OptionTemplateTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 428,
+      "line": 434,
       "doc": "",
       "fields": [
         {
@@ -14277,7 +15238,7 @@
     {
       "name": "OptionTemplateValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 439,
+      "line": 445,
       "doc": "",
       "fields": [
         {
@@ -14345,7 +15306,7 @@
     {
       "name": "OptionTemplateValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 454,
+      "line": 460,
       "doc": "",
       "fields": [
         {
@@ -14722,6 +15683,20 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "returnRequests",
+          "type": "ReturnRequest[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "loyaltyTransactions",
+          "type": "LoyaltyTransaction[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -14910,7 +15885,7 @@
     {
       "name": "OrderItem",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 116,
+      "line": 119,
       "doc": "",
       "fields": [
         {
@@ -15157,6 +16132,20 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "review",
+          "type": "Review?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "returnRequestLines",
+          "type": "ReturnRequestLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -15167,7 +16156,7 @@
     {
       "name": "OrderNumberCounter",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 260,
+      "line": 267,
       "doc": "Backing store for sequential per-year order numbers (YSN-2026-0001).",
       "fields": [
         {
@@ -15190,7 +16179,7 @@
     {
       "name": "OrderStatusEvent",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 197,
+      "line": 204,
       "doc": "",
       "fields": [
         {
@@ -15315,7 +16304,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 398,
+      "line": 415,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -15553,7 +16542,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 136,
+      "line": 153,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -16094,7 +17083,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 278,
+      "line": 295,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -17110,6 +18099,20 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "reviews",
+          "type": "Review[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "wishlistItems",
+          "type": "WishlistItem[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -17122,7 +18125,7 @@
     {
       "name": "ProductGarmentType",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 316,
+      "line": 322,
       "doc": "Which garments a given unstitched fabric can be made into.",
       "fields": [
         {
@@ -17154,7 +18157,7 @@
     {
       "name": "ProductImage",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 282,
+      "line": 288,
       "doc": "",
       "fields": [
         {
@@ -17242,7 +18245,7 @@
     {
       "name": "ProductImageTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 304,
+      "line": 310,
       "doc": "Alt text per locale.",
       "fields": [
         {
@@ -17288,7 +18291,7 @@
     {
       "name": "ProductOption",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 337,
+      "line": 343,
       "doc": "A dynamic option axis a product varies along: \"Size\", \"Colour\", \"Storage\".",
       "fields": [
         {
@@ -17363,7 +18366,7 @@
     {
       "name": "ProductOptionTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 354,
+      "line": 360,
       "doc": "",
       "fields": [
         {
@@ -17409,7 +18412,7 @@
     {
       "name": "ProductOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 366,
+      "line": 372,
       "doc": "A specific value on an option axis: \"M\", \"Ferozi\", \"128GB\".",
       "fields": [
         {
@@ -17484,7 +18487,7 @@
     {
       "name": "ProductOptionValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 384,
+      "line": 390,
       "doc": "",
       "fields": [
         {
@@ -17530,7 +18533,7 @@
     {
       "name": "ProductTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 164,
+      "line": 167,
       "doc": "",
       "fields": [
         {
@@ -17612,7 +18615,7 @@
     {
       "name": "ProductVariant",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 183,
+      "line": 186,
       "doc": "",
       "fields": [
         {
@@ -17929,6 +18932,20 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "wishlistItems",
+          "type": "WishlistItem[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "backInStockRequests",
+          "type": "BackInStockRequest[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -17939,7 +18956,7 @@
     {
       "name": "ProductVariantOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 398,
+      "line": 404,
       "doc": "The join that DEFINES a variant: one row per option axis per variant.",
       "fields": [
         {
@@ -18590,7 +19607,7 @@
     {
       "name": "Redirect",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 468,
+      "line": 474,
       "doc": "A storefront path that now 301s somewhere else — created automatically when a live product/category slug changes, or entered by hand (including a CSV import when migrating an old site).",
       "fields": [
         {
@@ -18648,9 +19665,77 @@
       ]
     },
     {
+      "name": "Referral",
+      "file": "apps/api/prisma/schema/loyalty.prisma",
+      "line": 71,
+      "doc": "One referee can be referred exactly once (`@@unique([refereeId])`) — the actual guard against a customer collecting the same referral reward twice by re-entering a code.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "referrerId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "refereeId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "code",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rewardedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "referrer",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "referee",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([refereeId])",
+        "@@index([referrerId])"
+      ]
+    },
+    {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 115,
+      "line": 132,
       "doc": "",
       "fields": [
         {
@@ -19093,9 +20178,319 @@
       ]
     },
     {
+      "name": "ReturnRequest",
+      "file": "apps/api/prisma/schema/returns.prisma",
+      "line": 39,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reasonCode",
+          "type": "ReturnReasonCode",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "note",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "photoUrls",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "ReturnRequestStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "decidedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "decidedByUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "decisionNote",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Order",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "decidedBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "lines",
+          "type": "ReturnRequestLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([orderId])",
+        "@@index([userId, createdAt])",
+        "@@index([status])"
+      ]
+    },
+    {
+      "name": "ReturnRequestLine",
+      "file": "apps/api/prisma/schema/returns.prisma",
+      "line": 69,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "returnRequestId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderItemId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "quantity",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "returnRequest",
+          "type": "ReturnRequest",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "orderItem",
+          "type": "OrderItem",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([returnRequestId, orderItemId])"
+      ]
+    },
+    {
+      "name": "Review",
+      "file": "apps/api/prisma/schema/reviews.prisma",
+      "line": 20,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "productId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderItemId",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "rating",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "title",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "body",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "photoUrls",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "ReviewStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "fitFeedback",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "helpfulCount",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "staffReply",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "product",
+          "type": "Product",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "user",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "orderItem",
+          "type": "OrderItem?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([productId, userId])",
+        "@@index([productId, status, createdAt])",
+        "@@index([userId])"
+      ]
+    },
+    {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 344,
+      "line": 361,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -19153,7 +20548,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 358,
+      "line": 375,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -19207,7 +20602,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 294,
+      "line": 311,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -19319,7 +20714,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 190,
+      "line": 207,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -19356,7 +20751,7 @@
     {
       "name": "Shipment",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 221,
+      "line": 228,
       "doc": "",
       "fields": [
         {
@@ -20077,7 +21472,7 @@
     {
       "name": "StockAdjustment",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 264,
+      "line": 270,
       "doc": "One entry per change to ProductVariant.stock, so \"why is stock 4\" has an answer without an audit table bolted on after the fact.",
       "fields": [
         {
@@ -22224,6 +23619,83 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "reviews",
+          "type": "Review[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "wishlistItems",
+          "type": "WishlistItem[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "backInStockRequests",
+          "type": "BackInStockRequest[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "returnRequests",
+          "type": "ReturnRequest[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "returnRequestsDecided",
+          "type": "ReturnRequest[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "loyaltyPoints",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "loyaltyTransactions",
+          "type": "LoyaltyTransaction[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "referralCode",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "referralsMade",
+          "type": "Referral[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "referredBy",
+          "type": "Referral?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "notificationPreferences",
+          "type": "NotificationPreference[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -22234,7 +23706,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 315,
+      "line": 332,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -22295,7 +23767,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 373,
+      "line": 390,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -22485,6 +23957,75 @@
         }
       ],
       "indexes": []
+    },
+    {
+      "name": "WishlistItem",
+      "file": "apps/api/prisma/schema/wishlist.prisma",
+      "line": 9,
+      "doc": "Phase 7 WO-7.6 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "productId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variantId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "product",
+          "type": "Product",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "variant",
+          "type": "ProductVariant?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([userId, productId, variantId])",
+        "@@index([userId, createdAt])",
+        "@@index([productId])"
+      ]
     },
     {
       "name": "WorkOrder",
@@ -22733,7 +24274,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 413,
+      "line": 430,
       "values": [
         "IOS",
         "ANDROID",
@@ -22767,7 +24308,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 201,
+      "line": 218,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -22898,6 +24439,17 @@
       ]
     },
     {
+      "name": "LoyaltyTransactionType",
+      "file": "apps/api/prisma/schema/loyalty.prisma",
+      "line": 19,
+      "values": [
+        "EARNED",
+        "REDEEMED",
+        "REVERSED",
+        "ADJUSTED"
+      ]
+    },
+    {
       "name": "MeasurementUnit",
       "file": "apps/api/prisma/schema/measurements.prisma",
       "line": 9,
@@ -22925,6 +24477,27 @@
       ]
     },
     {
+      "name": "NotificationPreferenceCategory",
+      "file": "apps/api/prisma/schema/notification-preferences.prisma",
+      "line": 30,
+      "values": [
+        "STITCHING_PROGRESS",
+        "MARKETING",
+        "BACK_IN_STOCK"
+      ]
+    },
+    {
+      "name": "NotificationPreferenceChannel",
+      "file": "apps/api/prisma/schema/notification-preferences.prisma",
+      "line": 23,
+      "values": [
+        "EMAIL",
+        "SMS",
+        "WHATSAPP",
+        "PUSH"
+      ]
+    },
+    {
       "name": "OpsClientStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
       "line": 126,
@@ -22936,7 +24509,7 @@
     {
       "name": "OptionDisplay",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 325,
+      "line": 331,
       "values": [
         "BUTTON",
         "DROPDOWN",
@@ -22956,7 +24529,7 @@
     {
       "name": "OrderItemFulfillmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 105,
+      "line": 108,
       "values": [
         "READY",
         "AWAITING_STOCK",
@@ -22981,7 +24554,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 387,
+      "line": 404,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -23036,7 +24609,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 306,
+      "line": 323,
       "values": [
         "GRANT",
         "REVOKE"
@@ -23167,6 +24740,40 @@
       ]
     },
     {
+      "name": "ReturnReasonCode",
+      "file": "apps/api/prisma/schema/returns.prisma",
+      "line": 21,
+      "values": [
+        "DEFECTIVE",
+        "WRONG_ITEM",
+        "DAMAGED_IN_TRANSIT",
+        "SIZE_FIT_ISSUE",
+        "CHANGED_MIND",
+        "OTHER"
+      ]
+    },
+    {
+      "name": "ReturnRequestStatus",
+      "file": "apps/api/prisma/schema/returns.prisma",
+      "line": 30,
+      "values": [
+        "REQUESTED",
+        "APPROVED",
+        "REJECTED",
+        "REFUNDED"
+      ]
+    },
+    {
+      "name": "ReviewStatus",
+      "file": "apps/api/prisma/schema/reviews.prisma",
+      "line": 14,
+      "values": [
+        "PENDING",
+        "PUBLISHED",
+        "REJECTED"
+      ]
+    },
+    {
       "name": "ScopeLevel",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 18,
@@ -23189,7 +24796,7 @@
     {
       "name": "ShipmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 212,
+      "line": 219,
       "values": [
         "PENDING",
         "DISPATCHED",
@@ -24514,6 +26121,33 @@
         "StoreCreditTransaction",
         "User"
       ]
+    },
+    {
+      "folder": "20260924190000_add_customer_portal_reviews_wishlist_returns_loyalty",
+      "file": "apps/api/prisma/schema/migrations/20260924190000_add_customer_portal_reviews_wishlist_returns_loyalty/migration.sql",
+      "date": "2026-09-24",
+      "slug": "add_customer_portal_reviews_wishlist_returns_loyalty",
+      "statements": 56,
+      "kinds": [
+        "CREATE TYPE",
+        "ALTER TABLE",
+        "CREATE TABLE",
+        "CREATE INDEX",
+        "CREATE UNIQUE INDEX",
+        "INSERT"
+      ],
+      "tables": [
+        "BackInStockRequest",
+        "LoyaltyTier",
+        "LoyaltyTransaction",
+        "NotificationPreference",
+        "Referral",
+        "ReturnRequest",
+        "ReturnRequestLine",
+        "Review",
+        "User",
+        "WishlistItem"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -24868,8 +26502,62 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/[locale]/account/credit",
+      "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/credit/page.tsx",
+      "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/[locale]/account/loyalty",
+      "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/loyalty/page.tsx",
+      "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/[locale]/account/measurements",
       "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/measurements/page.tsx",
+      "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/[locale]/account/notifications",
+      "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/notifications/page.tsx",
+      "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/[locale]/account/overview",
+      "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/overview/page.tsx",
+      "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/[locale]/account/returns",
+      "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/page.tsx",
+      "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/[locale]/account/reviews",
+      "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/reviews/page.tsx",
       "client": true,
       "surface": "storefront",
       "doc": ""
@@ -24951,6 +26639,15 @@
       "kind": "page",
       "url": "/[locale]/orders/[number]",
       "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/page.tsx",
+      "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/[locale]/orders/[number]/invoice",
+      "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/invoice/page.tsx",
       "client": true,
       "surface": "storefront",
       "doc": ""
@@ -25570,6 +27267,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/inventory/wishlisted",
+      "file": "apps/web/src/app/(admin)/admin/(app)/inventory/wishlisted/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/leads",
       "file": "apps/web/src/app/(admin)/admin/(app)/leads/page.tsx",
       "client": true,
@@ -25581,6 +27287,15 @@
       "kind": "page",
       "url": "/admin/login",
       "file": "apps/web/src/app/(admin)/admin/login/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/loyalty",
+      "file": "apps/web/src/app/(admin)/admin/(app)/loyalty/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -25860,6 +27575,24 @@
       "kind": "page",
       "url": "/admin/reports",
       "file": "apps/web/src/app/(admin)/admin/(app)/reports/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/returns",
+      "file": "apps/web/src/app/(admin)/admin/(app)/returns/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/reviews",
+      "file": "apps/web/src/app/(admin)/admin/(app)/reviews/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -27762,6 +29495,19 @@
       ]
     },
     {
+      "file": "apps/api/test/customer-portal.e2e-spec.ts",
+      "module": "",
+      "kind": "e2e test",
+      "cases": 8,
+      "describes": [
+        "Customer portal (e2e)",
+        "reviews",
+        "returns",
+        "loyalty",
+        "wishlist and back-in-stock"
+      ]
+    },
+    {
       "file": "apps/api/test/devices.e2e-spec.ts",
       "module": "",
       "kind": "e2e test",
@@ -28431,7 +30177,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 100,
-      "bytes": 5132,
+      "bytes": 5190,
       "doc": "",
       "symbols": []
     },
@@ -28440,7 +30186,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 146,
-      "bytes": 7164,
+      "bytes": 7222,
       "doc": "",
       "symbols": []
     },
@@ -28449,7 +30195,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 118,
-      "bytes": 5289,
+      "bytes": 5347,
       "doc": "",
       "symbols": []
     },
@@ -28752,7 +30498,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 228,
-      "bytes": 8832,
+      "bytes": 8880,
       "doc": "BOM: which raw materials go into a finished product, how much of each, and",
       "symbols": []
     },
@@ -28769,8 +30515,8 @@
       "path": "apps/api/prisma/schema/catalog.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 484,
-      "bytes": 17313,
+      "lines": 490,
+      "bytes": 17674,
       "doc": "Catalog: categories, products, variants, images.",
       "symbols": []
     },
@@ -28778,8 +30524,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 457,
-      "bytes": 17395,
+      "lines": 474,
+      "bytes": 18496,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -28797,7 +30543,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 133,
-      "bytes": 5626,
+      "bytes": 5692,
       "doc": "Finance: operational expenses and per-order economics (RETAIL-ERP.md",
       "symbols": []
     },
@@ -28806,7 +30552,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 92,
-      "bytes": 3476,
+      "bytes": 3516,
       "doc": "Phase 5 WO-5.4/5.5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md).",
       "symbols": []
     },
@@ -28835,6 +30581,15 @@
       "lines": 88,
       "bytes": 2706,
       "doc": "Trading-partner invoices and quotes (WO-18.3's remaining \"forth\"",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/loyalty.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 85,
+      "bytes": 3399,
+      "doc": "Phase 7 WO-7.7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).",
       "symbols": []
     },
     {
@@ -29405,6 +31160,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260924190000_add_customer_portal_reviews_wishlist_returns_loyalty/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 267,
+      "bytes": 10461,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -29414,11 +31178,20 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/notification-preferences.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 51,
+      "bytes": 1994,
+      "doc": "Phase 7 WO-7.8 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/orders.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 264,
-      "bytes": 10414,
+      "lines": 271,
+      "bytes": 10841,
       "doc": "Orders and shipments.",
       "symbols": []
     },
@@ -29454,7 +31227,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 229,
-      "bytes": 8393,
+      "bytes": 8399,
       "doc": "Payroll: compensation rates, leave balances and pay runs",
       "symbols": []
     },
@@ -29481,7 +31254,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 111,
-      "bytes": 3603,
+      "bytes": 3726,
       "doc": "Phase 5 WO-5.1/5.2/5.3 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md).",
       "symbols": []
     },
@@ -29490,7 +31263,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 248,
-      "bytes": 9927,
+      "bytes": 9929,
       "doc": "",
       "symbols": []
     },
@@ -29501,6 +31274,24 @@
       "lines": 185,
       "bytes": 8373,
       "doc": "The replication engine (RETAIL-ERP.md Part 6, WO-20.1: \"log, cursors,",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/returns.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 80,
+      "bytes": 2985,
+      "doc": "Phase 7 WO-7.3 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/reviews.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 56,
+      "bytes": 1979,
+      "doc": "Phase 7 WO-7.5 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).",
       "symbols": []
     },
     {
@@ -29546,6 +31337,15 @@
       "lines": 167,
       "bytes": 7333,
       "doc": "Inter-branch stock transfers (RETAIL-ERP.md R4, Tranche 5). Off by default",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/wishlist.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 44,
+      "bytes": 1882,
+      "doc": "Phase 7 WO-7.6 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).",
       "symbols": []
     },
     {
@@ -31246,17 +33046,37 @@
       ]
     },
     {
+      "path": "apps/api/src/core/notifications/notification-preferences.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 71,
+      "bytes": 3064,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PreferenceCell",
+          "kind": "interface",
+          "line": 7
+        },
+        {
+          "name": "NotificationPreferencesService",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/notifications/notifications.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 30,
-      "bytes": 1074,
+      "lines": 32,
+      "bytes": 1227,
       "doc": "",
       "symbols": [
         {
           "name": "NotificationsModule",
           "kind": "class",
-          "line": 29
+          "line": 31
         }
       ]
     },
@@ -31736,8 +33556,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 318,
-      "bytes": 13773,
+      "lines": 335,
+      "bytes": 14926,
       "doc": "",
       "symbols": [
         {
@@ -31778,12 +33598,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 174
+          "line": 184
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 176
+          "line": 186
         }
       ]
     },
@@ -33043,14 +34863,14 @@
       "path": "apps/api/src/modules/cart/cart.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 179,
-      "bytes": 5136,
+      "lines": 198,
+      "bytes": 5873,
       "doc": "",
       "symbols": [
         {
           "name": "CartController",
           "kind": "class",
-          "line": 41
+          "line": 42
         }
       ]
     },
@@ -33058,14 +34878,14 @@
       "path": "apps/api/src/modules/cart/cart.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 17,
-      "bytes": 642,
-      "doc": "Measurements typed straight into the stitching panel are validated",
+      "lines": 18,
+      "bytes": 710,
+      "doc": "",
       "symbols": [
         {
           "name": "CartModule",
           "kind": "class",
-          "line": 16
+          "line": 17
         }
       ]
     },
@@ -33121,6 +34941,26 @@
           "name": "MergeCartDto",
           "kind": "class",
           "line": 125
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/cart/reorder.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 69,
+      "bytes": 2577,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReorderResult",
+          "kind": "interface",
+          "line": 8
+        },
+        {
+          "name": "ReorderService",
+          "kind": "class",
+          "line": 31
         }
       ]
     },
@@ -33203,8 +35043,8 @@
       "path": "apps/api/src/modules/catalog/catalog.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 365,
-      "bytes": 12588,
+      "lines": 379,
+      "bytes": 13365,
       "doc": "",
       "symbols": [
         {
@@ -33215,12 +35055,12 @@
         {
           "name": "CatalogService",
           "kind": "class",
-          "line": 68
+          "line": 71
         },
         {
           "name": "localise",
           "kind": "function",
-          "line": 258
+          "line": 261
         }
       ]
     },
@@ -34084,8 +35924,8 @@
       "path": "apps/api/src/modules/giftcards/dto/gift-card.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 56,
-      "bytes": 1237,
+      "lines": 62,
+      "bytes": 1340,
       "doc": "",
       "symbols": [
         {
@@ -34102,6 +35942,11 @@
           "name": "RedeemGiftCardDto",
           "kind": "class",
           "line": 46
+        },
+        {
+          "name": "RedeemGiftCardIntoAccountDto",
+          "kind": "class",
+          "line": 57
         }
       ]
     },
@@ -34124,14 +35969,14 @@
       "path": "apps/api/src/modules/giftcards/giftcards-account.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 27,
-      "bytes": 1055,
+      "lines": 36,
+      "bytes": 1575,
       "doc": "",
       "symbols": [
         {
           "name": "GiftCardsAccountController",
           "kind": "class",
-          "line": 17
+          "line": 18
         }
       ]
     },
@@ -34159,14 +36004,14 @@
       "path": "apps/api/src/modules/giftcards/giftcards.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 14,
-      "bytes": 659,
+      "lines": 15,
+      "bytes": 771,
       "doc": "",
       "symbols": [
         {
           "name": "GiftCardsModule",
           "kind": "class",
-          "line": 13
+          "line": 14
         }
       ]
     },
@@ -34174,19 +36019,34 @@
       "path": "apps/api/src/modules/giftcards/giftcards.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 158,
-      "bytes": 7010,
+      "lines": 202,
+      "bytes": 8985,
       "doc": "",
       "symbols": [
         {
           "name": "maskGiftCardCode",
           "kind": "function",
-          "line": 10
+          "line": 11
         },
         {
           "name": "GiftCardsService",
           "kind": "class",
-          "line": 19
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/giftcards/store-credit-account.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 26,
+      "bytes": 1047,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "StoreCreditAccountController",
+          "kind": "class",
+          "line": 11
         }
       ]
     },
@@ -34209,8 +36069,8 @@
       "path": "apps/api/src/modules/giftcards/store-credit.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 133,
-      "bytes": 5797,
+      "lines": 162,
+      "bytes": 6874,
       "doc": "",
       "symbols": [
         {
@@ -34565,6 +36425,111 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/loyalty/dto/loyalty.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 52,
+      "bytes": 929,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RedeemPointsDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "AdjustLoyaltyPointsDto",
+          "kind": "class",
+          "line": 11
+        },
+        {
+          "name": "UpsertLoyaltyTierDto",
+          "kind": "class",
+          "line": 22
+        },
+        {
+          "name": "ApplyReferralCodeDto",
+          "kind": "class",
+          "line": 47
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/loyalty/loyalty-admin.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 46,
+      "bytes": 1809,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LoyaltyAdminController",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/loyalty/loyalty-order.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 45,
+      "bytes": 1753,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LoyaltyOrderListener",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/loyalty/loyalty.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 63,
+      "bytes": 2267,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LoyaltyController",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/loyalty/loyalty.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 15,
+      "bytes": 566,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LoyaltyModule",
+          "kind": "class",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/loyalty/loyalty.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 255,
+      "bytes": 11598,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LoyaltyService",
+          "kind": "class",
+          "line": 23
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/marketing/dto/marketing-settings.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -34781,8 +36746,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 86,
-      "bytes": 2758,
+      "lines": 91,
+      "bytes": 2873,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -34801,24 +36766,74 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 157,
-      "bytes": 7868,
+      "lines": 171,
+      "bytes": 8775,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 33
+          "line": 38
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 64
+          "line": 69
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 133
+          "line": 147
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/notification-preferences/dto/notification-preference.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 31,
+      "bytes": 959,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NotificationPreferenceCellDto",
+          "kind": "class",
+          "line": 8
+        },
+        {
+          "name": "UpdateNotificationPreferencesDto",
+          "kind": "class",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/notification-preferences/notification-preferences.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 29,
+      "bytes": 1207,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NotificationPreferencesController",
+          "kind": "class",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/notification-preferences/notification-preferences.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 18,
+      "bytes": 796,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NotificationPreferencesModule",
+          "kind": "class",
+          "line": 17
         }
       ]
     },
@@ -36652,6 +38667,181 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/returns/dto/return-request.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 81,
+      "bytes": 1929,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReturnRequestLineDto",
+          "kind": "class",
+          "line": 21
+        },
+        {
+          "name": "CreateReturnRequestDto",
+          "kind": "class",
+          "line": 32
+        },
+        {
+          "name": "DecideReturnRequestDto",
+          "kind": "class",
+          "line": 64
+        },
+        {
+          "name": "ReturnRequestQueryDto",
+          "kind": "class",
+          "line": 75
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/returns/returns-account.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 38,
+      "bytes": 1390,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReturnsAccountController",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/returns/returns.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 33,
+      "bytes": 1275,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReturnsController",
+          "kind": "class",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/returns/returns.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 12,
+      "bytes": 390,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReturnsModule",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/returns/returns.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 150,
+      "bytes": 6619,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReturnsService",
+          "kind": "class",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/reviews/dto/review.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 67,
+      "bytes": 1572,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateReviewDto",
+          "kind": "class",
+          "line": 8
+        },
+        {
+          "name": "ModerateReviewDto",
+          "kind": "class",
+          "line": 44
+        },
+        {
+          "name": "ReviewQueryDto",
+          "kind": "class",
+          "line": 56
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/reviews/reviews-public.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 44,
+      "bytes": 1653,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReviewsPublicController",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/reviews/reviews.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 26,
+      "bytes": 978,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReviewsController",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/reviews/reviews.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 12,
+      "bytes": 387,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReviewsModule",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/reviews/reviews.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 125,
+      "bytes": 4899,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReviewsService",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/settings/dto/settings.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -37678,6 +39868,111 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/wishlist/back-in-stock.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 76,
+      "bytes": 3478,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BackInStockListener",
+          "kind": "class",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/wishlist/dto/wishlist.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 30,
+      "bytes": 701,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AddWishlistItemDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "MigrateWishlistDto",
+          "kind": "class",
+          "line": 16
+        },
+        {
+          "name": "BackInStockRequestDto",
+          "kind": "class",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/wishlist/wishlist-admin.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 19,
+      "bytes": 722,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WishlistAdminController",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/wishlist/wishlist.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 58,
+      "bytes": 2207,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WishlistController",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/wishlist/wishlist.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 13,
+      "bytes": 480,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WishlistModule",
+          "kind": "class",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/wishlist/wishlist.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 179,
+      "bytes": 6834,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WishlistItemView",
+          "kind": "interface",
+          "line": 5
+        },
+        {
+          "name": "WishlistService",
+          "kind": "class",
+          "line": 52
+        }
+      ]
+    },
+    {
       "path": "apps/api/test/accounting.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
@@ -37728,6 +40023,15 @@
       "kind": "e2e test",
       "lines": 489,
       "bytes": 17519,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/test/customer-portal.e2e-spec.ts",
+      "area": "api",
+      "kind": "e2e test",
+      "lines": 301,
+      "bytes": 13074,
       "doc": "",
       "symbols": []
     },
@@ -40043,8 +42347,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 421,
-      "bytes": 16619,
+      "lines": 590,
+      "bytes": 23133,
       "doc": "",
       "symbols": []
     },
@@ -40052,8 +42356,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 421,
-      "bytes": 22341,
+      "lines": 590,
+      "bytes": 31331,
       "doc": "",
       "symbols": []
     },
@@ -40904,6 +43208,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/inventory/wishlisted/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 42,
+      "bytes": 1260,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WishlistedOutOfStockPage",
+          "kind": "default",
+          "line": 14
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/layout.tsx",
       "area": "web",
       "kind": "layout",
@@ -40945,6 +43264,21 @@
           "name": "Loading",
           "kind": "default",
           "line": 13
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/loyalty/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 116,
+      "bytes": 3822,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LoyaltyAdminPage",
+          "kind": "default",
+          "line": 19
         }
       ]
     },
@@ -41429,6 +43763,36 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/returns/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 138,
+      "bytes": 5118,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReturnsAdminPage",
+          "kind": "default",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/reviews/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 120,
+      "bytes": 4113,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReviewsAdminPage",
+          "kind": "default",
+          "line": 23
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/seo/page.tsx",
       "area": "web",
       "kind": "page",
@@ -41779,6 +44143,36 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/credit/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 116,
+      "bytes": 3868,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreditPage",
+          "kind": "default",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/loyalty/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 198,
+      "bytes": 6720,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LoyaltyPage",
+          "kind": "default",
+          "line": 31
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/measurements/page.tsx",
       "area": "web",
       "kind": "page",
@@ -41790,6 +44184,36 @@
           "name": "AccountMeasurementsPage",
           "kind": "default",
           "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/notifications/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 105,
+      "bytes": 3368,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NotificationPreferencesPage",
+          "kind": "default",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/overview/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 123,
+      "bytes": 4434,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AccountOverviewPage",
+          "kind": "default",
+          "line": 28
         }
       ]
     },
@@ -41809,6 +44233,36 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 240,
+      "bytes": 8757,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReturnsPage",
+          "kind": "default",
+          "line": 46
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/reviews/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 66,
+      "bytes": 2215,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MyReviewsPage",
+          "kind": "default",
+          "line": 23
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/layout.tsx",
       "area": "web",
       "kind": "layout",
@@ -41824,11 +44278,26 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/invoice/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 149,
+      "bytes": 6114,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "InvoicePage",
+          "kind": "default",
+          "line": 22
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 360,
-      "bytes": 13528,
+      "lines": 406,
+      "bytes": 15238,
       "doc": "",
       "symbols": [
         {
@@ -41857,14 +44326,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/wishlist/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 117,
-      "bytes": 4176,
+      "lines": 176,
+      "bytes": 5498,
       "doc": "",
       "symbols": [
         {
           "name": "WishlistPage",
           "kind": "default",
-          "line": 30
+          "line": 154
         }
       ]
     },
@@ -42182,24 +44651,24 @@
       "path": "apps/web/src/app/(storefront)/[locale]/product/[slug]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 384,
-      "bytes": 14771,
+      "lines": 398,
+      "bytes": 15408,
       "doc": "",
       "symbols": [
         {
           "name": "revalidate",
           "kind": "const",
-          "line": 18
+          "line": 19
         },
         {
           "name": "generateMetadata",
           "kind": "function",
-          "line": 33
+          "line": 34
         },
         {
           "name": "ProductPage",
           "kind": "default",
-          "line": 122
+          "line": 134
         }
       ]
     },
@@ -42725,8 +45194,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 636,
-      "bytes": 16437,
+      "lines": 668,
+      "bytes": 17280,
       "doc": "",
       "symbols": [
         {
@@ -42757,12 +45226,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 606
+          "line": 638
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 621
+          "line": 653
         }
       ]
     },
@@ -43005,14 +45474,14 @@
       "path": "apps/web/src/components/dashboard/dashboard-nav.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 67,
-      "bytes": 2227,
+      "lines": 73,
+      "bytes": 2611,
       "doc": "",
       "symbols": [
         {
           "name": "DashboardNav",
           "kind": "function",
-          "line": 40
+          "line": 46
         }
       ]
     },
@@ -43358,6 +45827,21 @@
           "name": "ProductPurchase",
           "kind": "function",
           "line": 55
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/storefront/product-reviews.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 134,
+      "bytes": 5367,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProductReviews",
+          "kind": "function",
+          "line": 23
         }
       ]
     },
@@ -43928,8 +46412,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 144,
-      "bytes": 5627,
+      "lines": 151,
+      "bytes": 5946,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -44295,24 +46779,24 @@
       "path": "apps/web/src/lib/wishlist.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 96,
-      "bytes": 2804,
+      "lines": 192,
+      "bytes": 5970,
       "doc": "",
       "symbols": [
         {
           "name": "toggleWishlist",
           "kind": "function",
-          "line": 65
+          "line": 62
         },
         {
           "name": "WishlistState",
           "kind": "interface",
-          "line": 79
+          "line": 157
         },
         {
           "name": "useWishlist",
           "kind": "function",
-          "line": 86
+          "line": 164
         }
       ]
     },
@@ -44370,8 +46854,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1181,
-      "bytes": 30379,
+      "lines": 1186,
+      "bytes": 30631,
       "doc": "",
       "symbols": [
         {
@@ -44397,562 +46881,562 @@
         {
           "name": "CategoryNode",
           "kind": "interface",
-          "line": 73
+          "line": 76
         },
         {
           "name": "CatalogFacets",
           "kind": "interface",
-          "line": 83
+          "line": 86
         },
         {
           "name": "ProductListQuery",
           "kind": "interface",
-          "line": 90
+          "line": 93
         },
         {
           "name": "AdminTranslation",
           "kind": "interface",
-          "line": 107
+          "line": 110
         },
         {
           "name": "AdminVariant",
           "kind": "interface",
-          "line": 117
+          "line": 120
         },
         {
           "name": "AdminProduct",
           "kind": "interface",
-          "line": 136
+          "line": 139
         },
         {
           "name": "AdminCategory",
           "kind": "interface",
-          "line": 175
+          "line": 178
         },
         {
           "name": "AdminBrand",
           "kind": "interface",
-          "line": 186
+          "line": 189
         },
         {
           "name": "OptionValueTranslation",
           "kind": "interface",
-          "line": 196
+          "line": 199
         },
         {
           "name": "AdminOptionTemplateValue",
           "kind": "interface",
-          "line": 201
+          "line": 204
         },
         {
           "name": "AdminOptionTemplate",
           "kind": "interface",
-          "line": 210
+          "line": 213
         },
         {
           "name": "AdminProductOption",
           "kind": "interface",
-          "line": 219
+          "line": 222
         },
         {
           "name": "AdminRedirect",
           "kind": "interface",
-          "line": 229
+          "line": 232
         },
         {
           "name": "SeoHealthRow",
           "kind": "interface",
-          "line": 239
+          "line": 242
         },
         {
           "name": "MeasurementFieldRow",
           "kind": "interface",
-          "line": 248
+          "line": 251
         },
         {
           "name": "GarmentType",
           "kind": "interface",
-          "line": 263
+          "line": 266
         },
         {
           "name": "AdminGarmentSizeChartRow",
           "kind": "interface",
-          "line": 283
+          "line": 286
         },
         {
           "name": "StitchingDesignArea",
           "kind": "type",
-          "line": 292
+          "line": 295
         },
         {
           "name": "AdminStitchingOption",
           "kind": "interface",
-          "line": 305
+          "line": 308
         },
         {
           "name": "AdminStitchingOptionGroup",
           "kind": "interface",
-          "line": 318
+          "line": 321
         },
         {
           "name": "ImportRowResult",
           "kind": "interface",
-          "line": 338
+          "line": 341
         },
         {
           "name": "ImportSummary",
           "kind": "interface",
-          "line": 345
+          "line": 348
         },
         {
           "name": "AuthUser",
           "kind": "interface",
-          "line": 353
+          "line": 356
         },
         {
           "name": "AuthResult",
           "kind": "interface",
-          "line": 371
+          "line": 374
         },
         {
           "name": "DeploymentMeta",
           "kind": "interface",
-          "line": 379
+          "line": 382
         },
         {
           "name": "RetailBrandSummary",
           "kind": "interface",
-          "line": 389
+          "line": 392
         },
         {
           "name": "OrgNodeSummary",
           "kind": "interface",
-          "line": 398
+          "line": 401
         },
         {
           "name": "MyScope",
           "kind": "interface",
-          "line": 409
+          "line": 412
         },
         {
           "name": "AdminScopeWithHolder",
           "kind": "interface",
-          "line": 424
+          "line": 427
         },
         {
           "name": "PolicyQuarantineEntry",
           "kind": "interface",
-          "line": 439
+          "line": 442
         },
         {
           "name": "GrantScopeInput",
           "kind": "interface",
-          "line": 455
+          "line": 458
         },
         {
           "name": "BrandPolicy",
           "kind": "interface",
-          "line": 468
+          "line": 471
         },
         {
           "name": "UpdateBrandPolicyInput",
           "kind": "interface",
-          "line": 475
+          "line": 478
         },
         {
           "name": "Location",
           "kind": "interface",
-          "line": 484
+          "line": 487
         },
         {
           "name": "StockAdjustment",
           "kind": "interface",
-          "line": 494
+          "line": 497
         },
         {
           "name": "InventoryVariantRow",
           "kind": "interface",
-          "line": 506
+          "line": 509
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 519
+          "line": 522
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 525
+          "line": 528
         },
         {
           "name": "VisitorFunnel",
           "kind": "interface",
-          "line": 536
+          "line": 539
         },
         {
           "name": "TrafficSourceRow",
           "kind": "interface",
-          "line": 543
+          "line": 546
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 549
+          "line": 552
         },
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 558
+          "line": 561
         },
         {
           "name": "OrderAgeingBucket",
           "kind": "interface",
-          "line": 566
+          "line": 569
         },
         {
           "name": "OrdersOverview",
           "kind": "interface",
-          "line": 571
+          "line": 574
         },
         {
           "name": "OrderTransitionTiming",
           "kind": "interface",
-          "line": 578
+          "line": 581
         },
         {
           "name": "OrdersFulfilment",
           "kind": "interface",
-          "line": 586
+          "line": 589
         },
         {
           "name": "PurchasingSpend",
           "kind": "interface",
-          "line": 592
+          "line": 595
         },
         {
           "name": "PurchasingSupplierRow",
           "kind": "interface",
-          "line": 598
+          "line": 601
         },
         {
           "name": "PurchasingSuppliers",
           "kind": "interface",
-          "line": 608
+          "line": 611
         },
         {
           "name": "ProductTopSellerRow",
           "kind": "interface",
-          "line": 614
+          "line": 617
         },
         {
           "name": "ProductsTopSellers",
           "kind": "interface",
-          "line": 626
+          "line": 629
         },
         {
           "name": "ProductSlowSellerRow",
           "kind": "interface",
-          "line": 630
+          "line": 633
         },
         {
           "name": "ProductsSlowSellers",
           "kind": "interface",
-          "line": 639
+          "line": 642
         },
         {
           "name": "ProductCategoryRow",
           "kind": "interface",
-          "line": 643
+          "line": 646
         },
         {
           "name": "ProductsCategories",
           "kind": "interface",
-          "line": 652
+          "line": 655
         },
         {
           "name": "InventoryValuation",
           "kind": "interface",
-          "line": 659
+          "line": 662
         },
         {
           "name": "StockMovementReasonRow",
           "kind": "interface",
-          "line": 666
+          "line": 669
         },
         {
           "name": "InventoryMovementRow",
           "kind": "interface",
-          "line": 673
+          "line": 676
         },
         {
           "name": "InventoryMovements",
           "kind": "interface",
-          "line": 683
+          "line": 686
         },
         {
           "name": "CustomersOverview",
           "kind": "interface",
-          "line": 691
+          "line": 694
         },
         {
           "name": "CustomerCohort",
           "kind": "interface",
-          "line": 698
+          "line": 701
         },
         {
           "name": "CustomersRetention",
           "kind": "interface",
-          "line": 704
+          "line": 707
         },
         {
           "name": "CustomerTopRow",
           "kind": "interface",
-          "line": 709
+          "line": 712
         },
         {
           "name": "CustomersTop",
           "kind": "interface",
-          "line": 719
+          "line": 722
         },
         {
           "name": "WorkshopStageRow",
           "kind": "interface",
-          "line": 725
+          "line": 728
         },
         {
           "name": "WorkshopTailorRow",
           "kind": "interface",
-          "line": 731
+          "line": 734
         },
         {
           "name": "WorkshopOutput",
           "kind": "interface",
-          "line": 738
+          "line": 741
         },
         {
           "name": "CompensationBasis",
           "kind": "type",
-          "line": 747
+          "line": 750
         },
         {
           "name": "CompensationRate",
           "kind": "interface",
-          "line": 749
+          "line": 752
         },
         {
           "name": "EmployeeCompensation",
           "kind": "interface",
-          "line": 760
+          "line": 763
         },
         {
           "name": "GrossPreview",
           "kind": "interface",
-          "line": 765
+          "line": 768
         },
         {
           "name": "LeaveKind",
           "kind": "type",
-          "line": 771
+          "line": 774
         },
         {
           "name": "LeaveType",
           "kind": "interface",
-          "line": 773
+          "line": 776
         },
         {
           "name": "LeaveBalance",
           "kind": "interface",
-          "line": 782
+          "line": 785
         },
         {
           "name": "LeaveRequestStatus",
           "kind": "type",
-          "line": 791
+          "line": 794
         },
         {
           "name": "LeaveRequest",
           "kind": "interface",
-          "line": 793
+          "line": 796
         },
         {
           "name": "EmployeeLeave",
           "kind": "interface",
-          "line": 810
+          "line": 813
         },
         {
           "name": "PayRunStatus",
           "kind": "type",
-          "line": 815
+          "line": 818
         },
         {
           "name": "PayRunLine",
           "kind": "interface",
-          "line": 817
+          "line": 820
         },
         {
           "name": "PayRunAdjustmentReason",
           "kind": "type",
-          "line": 831
+          "line": 834
         },
         {
           "name": "PayRunAdjustment",
           "kind": "interface",
-          "line": 833
+          "line": 836
         },
         {
           "name": "PayRun",
           "kind": "interface",
-          "line": 844
+          "line": 847
         },
         {
           "name": "PayRunWithLines",
           "kind": "interface",
-          "line": 859
+          "line": 862
         },
         {
           "name": "EmailAccountPurpose",
           "kind": "type",
-          "line": 866
+          "line": 869
         },
         {
           "name": "EmailAccount",
           "kind": "interface",
-          "line": 868
+          "line": 871
         },
         {
           "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 893
+          "line": 896
         },
         {
           "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 901
+          "line": 904
         },
         {
           "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 909
+          "line": 912
         },
         {
           "name": "InboundEmail",
           "kind": "interface",
-          "line": 916
+          "line": 919
         },
         {
           "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 933
+          "line": 936
         },
         {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 940
+          "line": 943
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 952
+          "line": 955
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 961
+          "line": 964
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 963
+          "line": 966
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 975
+          "line": 978
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 981
+          "line": 984
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 988
+          "line": 991
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 993
+          "line": 996
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 1005
+          "line": 1008
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 1014
+          "line": 1017
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 1021
+          "line": 1024
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 1035
+          "line": 1038
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 1046
+          "line": 1049
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 1050
+          "line": 1053
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 1059
+          "line": 1062
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 1067
+          "line": 1070
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 1096
+          "line": 1101
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 1128
+          "line": 1133
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 1143
+          "line": 1148
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 1152
+          "line": 1157
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 1161
+          "line": 1166
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 1177
+          "line": 1182
         }
       ]
     },
@@ -47478,8 +49962,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 2254,
-      "bytes": 122498,
+      "lines": 2387,
+      "bytes": 130736,
       "doc": "",
       "symbols": []
     },
@@ -48342,8 +50826,8 @@
       "path": "docs/implementation/customer-portal-loyalty/07-customer-portal.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 186,
-      "bytes": 7300,
+      "lines": 224,
+      "bytes": 9828,
       "doc": "",
       "symbols": []
     },
@@ -50146,8 +52630,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 561,
-      "bytes": 17223,
+      "lines": 609,
+      "bytes": 18340,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -50168,47 +52652,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 308
+          "line": 338
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 310
+          "line": 340
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 320
+          "line": 350
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 327
+          "line": 357
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 450
+          "line": 489
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 548
+          "line": 596
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 553
+          "line": 601
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 554
+          "line": 602
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 557
+          "line": 605
         }
       ]
     },
@@ -50766,8 +53250,8 @@
       "path": "scripts/check-module-boundaries.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 554,
-      "bytes": 23626,
+      "lines": 559,
+      "bytes": 23953,
       "doc": "",
       "symbols": []
     },

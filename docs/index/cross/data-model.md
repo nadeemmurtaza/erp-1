@@ -3,7 +3,7 @@
 
 # Data model
 
-All **152** Prisma models and **65** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **161** Prisma models and **71** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -36,7 +36,9 @@ against a real database.
 | [`identity-verification.prisma`](../data/identity-verification.md) | 1 | 1 | [`identity-verification`](../modules/identity-verification.md) | IdentityVerification |
 | [`inventory.prisma`](../data/inventory.md) | 7 | 4 | [`inventory`](../modules/inventory.md) | Location, StockCount, StockCountLine, StockMovement, StockVariance, VariantLocationStock, VariantSalesStat |
 | [`invoicing.prisma`](../data/invoicing.md) | 4 | 2 | core platform | Invoice, InvoiceLine, Quote, QuoteLine |
+| [`loyalty.prisma`](../data/loyalty.md) | 3 | 1 | [`loyalty`](../modules/loyalty.md) | LoyaltyTier, LoyaltyTransaction, Referral |
 | [`measurements.prisma`](../data/measurements.md) | 4 | 1 | [`measurements`](../modules/measurements.md) | GarmentSizeChart, GarmentType, MeasurementField, MeasurementProfile |
+| [`notification-preferences.prisma`](../data/notification-preferences.md) | 1 | 2 | [`notification-preferences`](../modules/notification-preferences.md) | NotificationPreference |
 | [`orders.prisma`](../data/orders.md) | 5 | 4 | [`orders`](../modules/orders.md) | Order, OrderItem, OrderNumberCounter, OrderStatusEvent, Shipment |
 | [`organization.prisma`](../data/organization.md) | 5 | 3 | [`organization`](../modules/organization.md) | AdminScope, BrandPolicy, Node, Organization, RetailBrand |
 | [`parties.prisma`](../data/parties.md) | 2 | 1 | [`parties`](../modules/parties.md) | Party, PartyRoleAssignment |
@@ -48,10 +50,13 @@ against a real database.
 | [`promotions.prisma`](../data/promotions.md) | 3 | 2 | [`promotions`](../modules/promotions.md) | Discount, OrderDiscount, PromoCode |
 | [`purchasing.prisma`](../data/purchasing.md) | 7 | 2 | [`purchasing`](../modules/purchasing.md) | GoodsReceipt, GoodsReceiptItem, PurchaseOrder, PurchaseOrderItem, Supplier, SupplierBill, SupplierProduct |
 | [`replication.prisma`](../data/replication.md) | 5 | 4 | core platform | PolicyQuarantine, ReplicationCursor, ReplicationQuarantine, ReplicationRecord, ReplicationSequenceCounter |
+| [`returns.prisma`](../data/returns.md) | 2 | 2 | [`returns`](../modules/returns.md) | ReturnRequest, ReturnRequestLine |
+| [`reviews.prisma`](../data/reviews.md) | 1 | 1 | [`reviews`](../modules/reviews.md) | Review |
 | [`stitching.prisma`](../data/stitching.md) | 8 | 3 | [`stitching`](../modules/stitching.md) | StitchingJob, StitchingJobEvent, StitchingJobNumberCounter, StitchingOption, StitchingOptionGroup, StitchingOrder, StitchingOrder… |
 | [`tax.prisma`](../data/tax.md) | 2 | 0 | [`tax`](../modules/tax.md) | TaxClass, TaxRate |
 | [`trading-partners.prisma`](../data/trading-partners.md) | 2 | 2 | core platform | Offer, TradingPartner |
 | [`transfers.prisma`](../data/transfers.md) | 5 | 2 | [`transfers`](../modules/transfers.md) | InterBranchInvoice, InterBranchInvoiceNumberCounter, StockTransfer, StockTransferLine, TransferNumberCounter |
+| [`wishlist.prisma`](../data/wishlist.md) | 2 | 0 | [`wishlist`](../modules/wishlist.md) | BackInStockRequest, WishlistItem |
 
 
 ## Every model
@@ -63,6 +68,7 @@ against a real database.
 | [`AdminScope`](../data/organization.md#adminscope) | `organization` | 9 | 3 | id | What a user's admin access is scoped to (R10) — never a role check (House Rule 9 forbids… |
 | [`AnalyticsEvent`](../data/core.md#analyticsevent) | `core` | 7 | 0 | id | Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started. |
 | [`AuditLog`](../data/core.md#auditlog) | `core` | 9 | 1 | id |  |
+| [`BackInStockRequest`](../data/wishlist.md#backinstockrequest) | `wishlist` | 6 | 2 | id | One row per customer waiting on one variant. |
 | [`BillOfMaterial`](../data/production.md#billofmaterial) | `production` | 8 | 1 | id | One recipe per produced variant: how many of each component variant it takes to make one… |
 | [`BillOfMaterialLine`](../data/production.md#billofmaterialline) | `production` | 6 | 2 | id |  |
 | [`BomComponent`](../data/bom.md#bomcomponent) | `bom` | 10 | 2 | id |  |
@@ -113,18 +119,21 @@ against a real database.
 | [`LeaveRequest`](../data/payroll.md#leaverequest) | `payroll` | 15 | 3 | id |  |
 | [`LeaveType`](../data/payroll.md#leavetype) | `payroll` | 9 | 0 | id |  |
 | [`Location`](../data/inventory.md#location) | `inventory` | 15 | 1 | id | A place stock physically lives. |
+| [`LoyaltyTier`](../data/loyalty.md#loyaltytier) | `loyalty` | 6 | 0 | id | Trailing-12-month spend bands. |
+| [`LoyaltyTransaction`](../data/loyalty.md#loyaltytransaction) | `loyalty` | 9 | 2 | id |  |
 | [`MeasurementField`](../data/measurements.md#measurementfield) | `measurements` | 14 | 1 | id |  |
 | [`MeasurementProfile`](../data/measurements.md#measurementprofile) | `measurements` | 10 | 1 | id | A saved set of measurements: "Ammi – kameez", "Self – shalwar". |
 | [`Node`](../data/organization.md#node) | `organization` | 13 | 1 | id | A child node this deployment knows about — a brand's branches, or an organization's brand… |
+| [`NotificationPreference`](../data/notification-preferences.md#notificationpreference) | `notification-preferences` | 8 | 1 | id |  |
 | [`Offer`](../data/trading-partners.md#offer) | `trading-partners` | 7 | 0 | id | A marketing push to the retail end of the chain (WO-18.3's third "forth" document, alongs… |
 | [`OptionTemplate`](../data/catalog.md#optiontemplate) | `catalog` | 7 | 0 | id | Store-level, reusable option axis — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue ->… |
 | [`OptionTemplateTranslation`](../data/catalog.md#optiontemplatetranslation) | `catalog` | 5 | 1 | id |  |
 | [`OptionTemplateValue`](../data/catalog.md#optiontemplatevalue) | `catalog` | 8 | 1 | id |  |
 | [`OptionTemplateValueTranslation`](../data/catalog.md#optiontemplatevaluetranslation) | `catalog` | 5 | 1 | id |  |
-| [`Order`](../data/orders.md#order) | `orders` | 47 | 4 | id |  |
+| [`Order`](../data/orders.md#order) | `orders` | 49 | 4 | id |  |
 | [`OrderDiscount`](../data/promotions.md#orderdiscount) | `promotions` | 10 | 2 | id | Which discounts an order actually received, so it can explain itself. |
 | [`OrderEconomics`](../data/finance.md#ordereconomics) | `finance` | 12 | 1 | orderId | One row per order, written when it reaches DELIVERED and recomputed if it is later RETURN… |
-| [`OrderItem`](../data/orders.md#orderitem) | `orders` | 35 | 4 | id |  |
+| [`OrderItem`](../data/orders.md#orderitem) | `orders` | 37 | 4 | id |  |
 | [`OrderNumberCounter`](../data/orders.md#ordernumbercounter) | `orders` | 2 | 0 | year | Backing store for sequential per-year order numbers (YSN-2026-0001). |
 | [`OrderStatusEvent`](../data/orders.md#orderstatusevent) | `orders` | 9 | 2 | id |  |
 | [`Organization`](../data/organization.md#organization) | `organization` | 6 | 0 | id | The top tier — the owner's group, run by a super admin from one dashboard (Part 1). |
@@ -147,7 +156,7 @@ against a real database.
 | [`PosReceipt`](../data/pos.md#posreceipt) | `pos` | 5 | 0 | id | One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService… |
 | [`PosShift`](../data/pos.md#posshift) | `pos` | 11 | 1 | id | One cashier's stretch at one terminal, opened with a cash float and closed with a physica… |
 | [`PosTerminal`](../data/pos.md#posterminal) | `pos` | 10 | 0 | id | A physical till. |
-| [`Product`](../data/catalog.md#product) | `catalog` | 34 | 4 | id |  |
+| [`Product`](../data/catalog.md#product) | `catalog` | 36 | 4 | id |  |
 | [`ProductGarmentType`](../data/catalog.md#productgarmenttype) | `catalog` | 3 | 1 | — | Which garments a given unstitched fabric can be made into. |
 | [`ProductImage`](../data/catalog.md#productimage) | `catalog` | 11 | 2 | id |  |
 | [`ProductImageTranslation`](../data/catalog.md#productimagetranslation) | `catalog` | 5 | 1 | id | Alt text per locale. |
@@ -156,7 +165,7 @@ against a real database.
 | [`ProductOptionValue`](../data/catalog.md#productoptionvalue) | `catalog` | 9 | 1 | id | A specific value on an option axis: "M", "Ferozi", "128GB". |
 | [`ProductOptionValueTranslation`](../data/catalog.md#productoptionvaluetranslation) | `catalog` | 5 | 1 | id |  |
 | [`ProductTranslation`](../data/catalog.md#producttranslation) | `catalog` | 10 | 1 | id |  |
-| [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 45 | 5 | id |  |
+| [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 47 | 5 | id |  |
 | [`ProductVariantOptionValue`](../data/catalog.md#productvariantoptionvalue) | `catalog` | 5 | 2 | — | The join that DEFINES a variant: one row per option axis per variant. |
 | [`PromoCode`](../data/promotions.md#promocode) | `promotions` | 11 | 1 | id |  |
 | [`PurchaseOrder`](../data/purchasing.md#purchaseorder) | `purchasing` | 25 | 2 | id |  |
@@ -165,12 +174,16 @@ against a real database.
 | [`QuoteLine`](../data/invoicing.md#quoteline) | `invoicing` | 7 | 1 | id |  |
 | [`RawMaterial`](../data/bom.md#rawmaterial) | `bom` | 13 | 1 | id |  |
 | [`Redirect`](../data/catalog.md#redirect) | `catalog` | 7 | 0 | id | A storefront path that now 301s somewhere else — created automatically when a live produc… |
+| [`Referral`](../data/loyalty.md#referral) | `loyalty` | 8 | 2 | id | One referee can be referred exactly once (`@@unique([refereeId])`) — the actual guard aga… |
 | [`RefreshToken`](../data/core.md#refreshtoken) | `core` | 9 | 1 | id |  |
 | [`ReplicationCursor`](../data/replication.md#replicationcursor) | `replication` | 4 | 0 | — | "The highest sequence I've already synced with this peer, in this direction" — read and a… |
 | [`ReplicationQuarantine`](../data/replication.md#replicationquarantine) | `replication` | 12 | 0 | id | Where an incoming record lands when it fails to apply — never dropped, never retried fore… |
 | [`ReplicationRecord`](../data/replication.md#replicationrecord) | `replication` | 12 | 0 | id | The log. |
 | [`ReplicationSequenceCounter`](../data/replication.md#replicationsequencecounter) | `replication` | 2 | 0 | nodeId | This node's own per-origin sequence counter — `originNodeId` is always this node's own `N… |
 | [`RetailBrand`](../data/organization.md#retailbrand) | `organization` | 15 | 3 | id | A retail brand — the business entity a branch belongs to. |
+| [`ReturnRequest`](../data/returns.md#returnrequest) | `returns` | 16 | 3 | id |  |
+| [`ReturnRequestLine`](../data/returns.md#returnrequestline) | `returns` | 6 | 2 | id |  |
+| [`Review`](../data/reviews.md#review) | `reviews` | 17 | 3 | id |  |
 | [`Role`](../data/core.md#role) | `core` | 7 | 0 | id | A named, reusable bundle of permissions a super admin defines — "roles are data, not code… |
 | [`RoleGrant`](../data/core.md#rolegrant) | `core` | 6 | 2 | id | Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermis… |
 | [`RolePermission`](../data/core.md#rolepermission) | `core` | 5 | 1 | id | Which roles currently hold a given permission. |
@@ -203,11 +216,12 @@ against a real database.
 | [`TenantDeploymentCredential`](../data/platform.md#tenantdeploymentcredential) | `platform` | 6 | 1 | id | The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GC… |
 | [`TradingPartner`](../data/trading-partners.md#tradingpartner) | `trading-partners` | 15 | 0 | id | The business on the other end of a document exchange. |
 | [`TransferNumberCounter`](../data/transfers.md#transfernumbercounter) | `transfers` | 2 | 0 | year | Same shape as OrderNumberCounter (orders.prisma) — an `INSERT ... |
-| [`User`](../data/core.md#user) | `core` | 61 | 22 | id |  |
+| [`User`](../data/core.md#user) | `core` | 72 | 25 | id |  |
 | [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | A per-user adjustment layered on top of their role's grants: GRANT adds a permission thei… |
 | [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | Which `Role` rows a user holds. |
 | [`VariantLocationStock`](../data/inventory.md#variantlocationstock) | `inventory` | 6 | 2 | — | Stock, per variant, per location. |
 | [`VariantSalesStat`](../data/inventory.md#variantsalesstat) | `inventory` | 11 | 1 | variantId | CACHE: variantId as primary key. |
+| [`WishlistItem`](../data/wishlist.md#wishlistitem) | `wishlist` | 8 | 3 | id | Phase 7 WO-7.6 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | [`WorkOrder`](../data/production.md#workorder) | `production` | 20 | 3 | id | The in-house "make this" ledger entry. |
 | [`WorkOrderNumberCounter`](../data/production.md#workordernumbercounter) | `production` | 2 | 0 | year | Same shape as PurchaseOrder's OrderNumberCounter-style tables: one row per year, incremen… |
 
@@ -237,9 +251,12 @@ against a real database.
 | [`LeaveKind`](../data/payroll.md#leavekind) | `payroll` | `ANNUAL` `SICK` `UNPAID` `OTHER` |
 | [`LeaveRequestStatus`](../data/payroll.md#leaverequeststatus) | `payroll` | `PENDING` `APPROVED` `REJECTED` `CANCELLED` |
 | [`LocationType`](../data/inventory.md#locationtype) | `inventory` | `STORE` `WAREHOUSE` `IN_TRANSIT` `PRODUCTION` |
+| [`LoyaltyTransactionType`](../data/loyalty.md#loyaltytransactiontype) | `loyalty` | `EARNED` `REDEEMED` `REVERSED` `ADJUSTED` |
 | [`MeasurementUnit`](../data/measurements.md#measurementunit) | `measurements` | `INCH` `CM` |
 | [`NodeRole`](../data/organization.md#noderole) | `organization` | `BRANCH` `BRAND` |
 | [`NodeStatus`](../data/organization.md#nodestatus) | `organization` | `ACTIVE` `SUSPENDED` |
+| [`NotificationPreferenceCategory`](../data/notification-preferences.md#notificationpreferencecategory) | `notification-preferences` | `STITCHING_PROGRESS` `MARKETING` `BACK_IN_STOCK` |
+| [`NotificationPreferenceChannel`](../data/notification-preferences.md#notificationpreferencechannel) | `notification-preferences` | `EMAIL` `SMS` `WHATSAPP` `PUSH` |
 | [`OpsClientStatus`](../data/platform.md#opsclientstatus) | `platform` | `ACTIVE` `REVOKED` |
 | [`OptionDisplay`](../data/catalog.md#optiondisplay) | `catalog` | `BUTTON` `DROPDOWN` `SWATCH` `TEXT` |
 | [`OrderChannel`](../data/orders.md#orderchannel) | `orders` | `WEB` `POS` |
@@ -263,6 +280,9 @@ against a real database.
 | [`ReplicationOp`](../data/replication.md#replicationop) | `replication` | `UPSERT` `DELETE` |
 | [`ReplicationQuarantineStatus`](../data/replication.md#replicationquarantinestatus) | `replication` | `OPEN` `RESOLVED` |
 | [`ResourceTier`](../data/platform.md#resourcetier) | `platform` | `STANDARD` `PLUS` `DEDICATED` |
+| [`ReturnReasonCode`](../data/returns.md#returnreasoncode) | `returns` | `DEFECTIVE` `WRONG_ITEM` `DAMAGED_IN_TRANSIT` `SIZE_FIT_ISSUE` `CHANGED_MIND` `OTHER` |
+| [`ReturnRequestStatus`](../data/returns.md#returnrequeststatus) | `returns` | `REQUESTED` `APPROVED` `REJECTED` `REFUNDED` |
+| [`ReviewStatus`](../data/reviews.md#reviewstatus) | `reviews` | `PENDING` `PUBLISHED` `REJECTED` |
 | [`ScopeLevel`](../data/core.md#scopelevel) | `core` | `ORG` `BRAND` `BRANCH` |
 | [`SettlementMode`](../data/transfers.md#settlementmode) | `transfers` | `NONE` `INTERNAL_PL` `INVOICED` |
 | [`ShipmentStatus`](../data/orders.md#shipmentstatus) | `orders` | `PENDING` `DISPATCHED` `IN_TRANSIT` `DELIVERED` `RETURNED` `LOST` |

@@ -3,7 +3,7 @@
 
 # Screens
 
-All **169** routable files across the web app, the till and the mobile app.
+All **180** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (102)
+### admin (106)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -84,8 +84,10 @@ _none_
 | `/admin/inventory/insights` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/insights/page.tsx` |
 | `/admin/inventory/reorder` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/reorder/page.tsx` |
 | `/admin/inventory/slow-movers` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers/page.tsx` |
+| `/admin/inventory/wishlisted` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/wishlisted/page.tsx` |
 | `/admin/leads` | page | client | `apps/web/src/app/(admin)/admin/(app)/leads/page.tsx` |
 | `/admin/login` | page | client | `apps/web/src/app/(admin)/admin/login/page.tsx` |
+| `/admin/loyalty` | page | client | `apps/web/src/app/(admin)/admin/(app)/loyalty/page.tsx` |
 | `/admin/marketing` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/page.tsx` |
 | `/admin/marketing/discounts` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/discounts/page.tsx` |
 | `/admin/marketing/discounts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/discounts/[id]/page.tsx` |
@@ -117,6 +119,8 @@ _none_
 | `/admin/purchase-orders/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/new/page.tsx` |
 | `/admin/purchase-orders/spend` | page | client | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/spend/page.tsx` |
 | `/admin/reports` | page | client | `apps/web/src/app/(admin)/admin/(app)/reports/page.tsx` |
+| `/admin/returns` | page | client | `apps/web/src/app/(admin)/admin/(app)/returns/page.tsx` |
+| `/admin/reviews` | page | client | `apps/web/src/app/(admin)/admin/(app)/reviews/page.tsx` |
 | `/admin/seo` | page | client | `apps/web/src/app/(admin)/admin/(app)/seo/page.tsx` |
 | `/admin/settings` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` |
 | `/admin/stitching` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/page.tsx` |
@@ -173,7 +177,7 @@ _none_
 | `/terminal` | page | client | `apps/pos/src/app/terminal/page.tsx` |
 | `/till` | page | client | `apps/pos/src/app/till/page.tsx` |
 
-### storefront (36)
+### storefront (43)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -186,7 +190,13 @@ _none_
 | `/[locale]` | page | server | `apps/web/src/app/(storefront)/[locale]/page.tsx` |
 | `/[locale]/account` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/page.tsx` |
 | `/[locale]/account/addresses` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/addresses/page.tsx` |
+| `/[locale]/account/credit` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/credit/page.tsx` |
+| `/[locale]/account/loyalty` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/loyalty/page.tsx` |
 | `/[locale]/account/measurements` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/measurements/page.tsx` |
+| `/[locale]/account/notifications` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/notifications/page.tsx` |
+| `/[locale]/account/overview` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/overview/page.tsx` |
+| `/[locale]/account/returns` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/page.tsx` |
+| `/[locale]/account/reviews` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/reviews/page.tsx` |
 | `/[locale]/cart` | loading | server | `apps/web/src/app/(storefront)/[locale]/cart/loading.tsx` |
 | `/[locale]/cart` | page | client | `apps/web/src/app/(storefront)/[locale]/cart/page.tsx` |
 | `/[locale]/checkout` | loading | server | `apps/web/src/app/(storefront)/[locale]/checkout/loading.tsx` |
@@ -196,6 +206,7 @@ _none_
 | `/[locale]/login` | page | client | `apps/web/src/app/(storefront)/[locale]/login/page.tsx` |
 | `/[locale]/orders` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/page.tsx` |
 | `/[locale]/orders/[number]` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/page.tsx` |
+| `/[locale]/orders/[number]/invoice` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/invoice/page.tsx` |
 | `/[locale]/privacy` | page | server | `apps/web/src/app/(storefront)/[locale]/privacy/page.tsx` |
 | `/[locale]/product/[slug]` | loading | server | `apps/web/src/app/(storefront)/[locale]/product/[slug]/loading.tsx` |
 | `/[locale]/product/[slug]` | page | server | `apps/web/src/app/(storefront)/[locale]/product/[slug]/page.tsx` |

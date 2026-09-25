@@ -112,7 +112,7 @@ model PurchaseOrder {
   /// today," and every deployment shipped so far is exactly one brand. A
   /// request, not itself a FACT (R2 names "goods receipt", not "purchase
   /// order") — ReplicationRegistry registers GoodsReceipt, not this model.
-  scopeLevel ScopeLevel @default(BRAND)
+  scopeLevel   ScopeLevel @default(BRAND)
   /// This node's own identifier (AppConfigService.nodeId) at the moment the
   /// PO was created — a bare string, never a Node row FK (a branch has no
   /// Node row for itself). Null for a PO raised before this column existed.

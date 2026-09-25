@@ -112,7 +112,7 @@ model Product {
 
   /// SEO section, WO-3.7. `false` (default) means indexable — most products
   /// never need to touch this.
-  noindex Boolean @default(false)
+  noindex           Boolean @default(false)
   /// Rare override for a canonical URL other than this product's own page
   /// (e.g. a duplicate listing that should point elsewhere). Null (the
   /// common case) means "canonical to self", computed at render time.
@@ -154,6 +154,9 @@ model Product {
   /// Carts/orders where this product was chosen as the stitching service.
   cartItemsAsService  CartItem[]           @relation("CartItemStitchingService")
   orderItemsAsService OrderItem[]          @relation("OrderItemStitchingService")
+  /// Phase 7 WO-7.5 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
+  reviews             Review[]
+  wishlistItems       WishlistItem[]
 
   @@index([status, kind])
   @@index([categoryId])
@@ -226,11 +229,11 @@ model ProductVariant {
 
   /// bom.prisma's RawMaterial (WO-C.1) — set only when this variant IS a raw
   /// material, not one built from them.
-  rawMaterial RawMaterial?
+  rawMaterial  RawMaterial?
   /// bom.prisma's BomRecipe (WO-C.2) — set only when this variant IS BUILT
   /// FROM raw materials. A variant is at most one of rawMaterial/bomRecipe,
   /// enforced in recipe.service.ts (no nesting in v1).
-  bomRecipe   BomRecipe?
+  bomRecipe    BomRecipe?
   /// Every BomProductionRun that has credited this variant's stock (WO-C.3).
   producedRuns BomProductionRun[] @relation("BomProducedVariant")
 
@@ -238,22 +241,25 @@ model ProductVariant {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  product            Product                     @relation(fields: [productId], references: [id], onDelete: Cascade)
-  images             ProductImage[]
-  cartItems          CartItem[]
-  optionValues       ProductVariantOptionValue[]
-  orderItems         OrderItem[]
-  supplierProducts   SupplierProduct[]
-  stockAdjustments   StockAdjustment[]
-  stockMovements     StockMovement[]
-  locationStocks     VariantLocationStock[]
-  stockVariances     StockVariance[]
-  purchaseOrderItems PurchaseOrderItem[]
-  goodsReceiptItems  GoodsReceiptItem[]
-  stockCountLines    StockCountLine[]
-  billOfMaterial     BillOfMaterial?
-  bomComponentOf     BillOfMaterialLine[]        @relation("BomComponent")
-  workOrders         WorkOrder[]
+  product             Product                     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  images              ProductImage[]
+  cartItems           CartItem[]
+  optionValues        ProductVariantOptionValue[]
+  orderItems          OrderItem[]
+  supplierProducts    SupplierProduct[]
+  stockAdjustments    StockAdjustment[]
+  stockMovements      StockMovement[]
+  locationStocks      VariantLocationStock[]
+  stockVariances      StockVariance[]
+  purchaseOrderItems  PurchaseOrderItem[]
+  goodsReceiptItems   GoodsReceiptItem[]
+  stockCountLines     StockCountLine[]
+  billOfMaterial      BillOfMaterial?
+  bomComponentOf      BillOfMaterialLine[]        @relation("BomComponent")
+  workOrders          WorkOrder[]
+  /// Phase 7 WO-7.6 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
+  wishlistItems       WishlistItem[]
+  backInStockRequests BackInStockRequest[]
 
   @@index([productId])
   @@index([stock])
@@ -444,7 +450,7 @@ model OptionTemplateValue {
   swatchUrl  String?
   order      Int     @default(0)
 
-  template     OptionTemplate                    @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  template     OptionTemplate                   @relation(fields: [templateId], references: [id], onDelete: Cascade)
   translations OptionTemplateValueTranslation[]
 
   @@unique([templateId, key])
@@ -466,12 +472,12 @@ model OptionTemplateValueTranslation {
 /// when a live product/category slug changes, or entered by hand (including
 /// a CSV import when migrating an old site). WO-3.9, 03-variants-sku-seo.md.
 model Redirect {
-  id        String   @id @default(cuid())
+  id          String   @id @default(cuid())
   /// Path only, no host, no locale prefix: "/product/old-slug". The locale
   /// segment is stripped before lookup and reapplied to `toPath` on 301,
   /// since a slug is shared across locales (Product.slug is not per-locale).
-  fromPath  String   @unique
-  toPath    String
+  fromPath    String   @unique
+  toPath      String
   /// 301 permanent or 302 temporary.
   statusCode  Int      @default(301)
   /// True when created automatically by a slug change.

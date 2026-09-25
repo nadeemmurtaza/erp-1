@@ -10,8 +10,10 @@ import { FinanceModule } from './finance/finance.module';
 import { GiftCardsModule } from './giftcards/giftcards.module';
 import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
 import { InventoryModule } from './inventory/inventory.module';
+import { LoyaltyModule } from './loyalty/loyalty.module';
 import { MarketingModule } from './marketing/marketing.module';
 import { MeasurementsModule } from './measurements/measurements.module';
+import { NotificationPreferencesModule } from './notification-preferences/notification-preferences.module';
 import { OrdersModule } from './orders/orders.module';
 import { OrganizationModule } from './organization/organization.module';
 import { PartiesModule } from './parties/parties.module';
@@ -22,6 +24,8 @@ import { ProductionModule } from './production/production.module';
 import { PromotionsModule } from './promotions/promotions.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
 import { ReportsModule } from './reports/reports.module';
+import { ReturnsModule } from './returns/returns.module';
+import { ReviewsModule } from './reviews/reviews.module';
 import { SettingsAdminModule } from './settings/settings-admin.module';
 import { StitchingModule } from './stitching/stitching.module';
 import { TaxModule } from './tax/tax.module';
@@ -29,6 +33,7 @@ import { TrackingModule } from './tracking/tracking.module';
 import { TradingPartnersModule } from './tradingpartners/trading-partners.module';
 import { TransfersModule } from './transfers/transfers.module';
 import { UsersAdminModule } from './users/users-admin.module';
+import { WishlistModule } from './wishlist/wishlist.module';
 
 export interface FeatureModuleEntry {
   /** Matches an entry in the MODULES env allowlist. */
@@ -89,6 +94,15 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // GiftCards), not a Nest-boot-time module toggle.
   { name: 'promotions', module: PromotionsModule },
   { name: 'giftcards', module: GiftCardsModule },
+  // Phase 7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md)
+  // — same allowlist tier as the rest of the customer-facing core: nothing
+  // else imports these directly except `loyalty -> giftcards`
+  // (KNOWN_MODULE_COUPLINGS, the points-redemption same-transaction write).
+  { name: 'reviews', module: ReviewsModule },
+  { name: 'wishlist', module: WishlistModule },
+  { name: 'returns', module: ReturnsModule },
+  { name: 'loyalty', module: LoyaltyModule },
+  { name: 'notification-preferences', module: NotificationPreferencesModule },
   { name: 'tracking', module: TrackingModule },
   // Off by default for every deployment today (WO-18.3) — a chain
   // deployment switches it on when it actually has branches or brands to

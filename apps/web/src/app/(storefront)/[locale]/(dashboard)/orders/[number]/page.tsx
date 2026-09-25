@@ -4,9 +4,9 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { use, useCallback, useEffect, useState } from 'react';
 import { formatDate, formatDateTime, formatMoney, type Locale } from '@newax/shared';
-import { Link } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import { StitchingTimeline } from '@/components/storefront/stitching-timeline';
-import { getCustomerToken, getMyOrder, trackOrder } from '@/lib/customer-client';
+import { customerFetch, getCustomerToken, getMyOrder, trackOrder } from '@/lib/customer-client';
 import { StatusBadge } from '@/components/common/status-badge';
 import { useOrderStatusLabel } from '@/hooks/use-order-status-label';
 import { Disclosure, Loading, PageHeader, Section } from '@/components/ui';
@@ -36,6 +36,7 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
   const t = useTranslations('order');
   const locale = useLocale() as Locale;
   const statusLabel = useOrderStatusLabel();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const justPlaced = searchParams.get('placed') === '1';
   // Set by checkout/callback/[provider]/route.ts after a JazzCash/Easypaisa
@@ -47,6 +48,8 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
   const [phone, setPhone] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [reordering, setReordering] = useState(false);
+  const [reorderMessage, setReorderMessage] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     if (getCustomerToken()) {
@@ -89,6 +92,26 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
       sessionStorage.setItem(STORAGE_KEYS.guestOrder(number), phone);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : t('trackFailed'));
+    }
+  }
+
+  async function reorder() {
+    setReordering(true);
+    setReorderMessage(null);
+    try {
+      const result = await customerFetch<{ addedCount: number; unavailable: string[] }>(
+        `/cart/reorder/${number}`,
+        { method: 'POST' },
+      );
+      if (result.unavailable.length > 0) {
+        setReorderMessage(t('reorderPartial', { names: result.unavailable.join(', ') }));
+      } else {
+        router.push(ROUTES.storefront.cart);
+      }
+    } catch {
+      setReorderMessage(t('reorderFailed'));
+    } finally {
+      setReordering(false);
     }
   }
 
@@ -156,11 +179,34 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
           date: formatDate(order.placedAt, locale),
         })}
         action={
-          <Link href={ROUTES.storefront.shop} className="btn-secondary">
-            {t('continueShopping')}
-          </Link>
+          <div className="flex flex-wrap gap-2">
+            {getCustomerToken() ? (
+              <button type="button" onClick={reorder} disabled={reordering} className="btn-secondary">
+                {reordering ? t('reordering') : t('reorder')}
+              </button>
+            ) : null}
+            {getCustomerToken() ? (
+              <Link href={ROUTES.storefront.orderInvoice(order.number)} className="btn-secondary">
+                {t('downloadInvoice')}
+              </Link>
+            ) : null}
+            {getCustomerToken() && order.status === 'DELIVERED' ? (
+              <Link href={`${ROUTES.storefront.accountReturns}?order=${order.number}`} className="btn-secondary">
+                {t('requestReturn')}
+              </Link>
+            ) : null}
+            <Link href={ROUTES.storefront.shop} className="btn-secondary">
+              {t('continueShopping')}
+            </Link>
+          </div>
         }
       />
+
+      {reorderMessage ? (
+        <p role="alert" className="mb-4 text-sm text-neutral-900/70">
+          {reorderMessage}
+        </p>
+      ) : null}
 
       {bankAccounts.length > 0 ? (
         <Section title={t('bankTransfer')} description={t('bankTransferBody')}>

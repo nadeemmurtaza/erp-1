@@ -31,7 +31,7 @@ order" is a new file, not an edit to checkout.
 | Event | Symbol | Published by | Subscribed by |
 |---|---|---|---|
 | `order.placed` | `OrderPlaced` | `accounting`, `orders` | core/`events`, `accounting`, `crm`, `orders`, `stitching` |
-| `order.status_changed` | `OrderStatusChanged` | `orders` | `crm`, `finance`, `orders` |
+| `order.status_changed` | `OrderStatusChanged` | `orders` | `crm`, `finance`, `loyalty`, `orders` |
 | `order.cancelled` | `OrderCancelled` | `finance`, `orders` | `crm`, `orders` |
 | `payment.succeeded` | `PaymentSucceeded` | `accounting`, `orders`, `payments` | `accounting`, `payments` |
 | `payment.failed` | `PaymentFailed` | `payments` | `payments` |
@@ -50,7 +50,7 @@ order" is a new file, not an edit to checkout.
 | `catalog.product_reorder_point_reached` | `ProductReorderPointReached` | `inventory` | `production`, `purchasing` |
 | `catalog.product_published` | `ProductPublished` | `catalog` | `catalog`, `tradingpartners` |
 | `catalog.product_price_changed` | `ProductPriceChanged` | `catalog` | `catalog`, `tradingpartners` |
-| `inventory.stock_replenished` | `StockReplenished` | `inventory` | `orders` |
+| `inventory.stock_replenished` | `StockReplenished` | `inventory` | `orders`, `wishlist` |
 | `inventory.stock_variance_recorded` | `StockVarianceRecorded` | `accounting`, `inventory` | `accounting` |
 | `purchasing.goods_received` | `GoodsReceived` | `purchasing` | `bom`, `purchasing` |
 | `bom.production_completed` | `BomProductionCompleted` | `bom` | `bom` |
@@ -114,6 +114,7 @@ order" is a new file, not an edit to checkout.
 |---|---|---|
 | `onStatusChanged()` | `apps/api/src/modules/crm/order.subscriber.ts:66` | `crm` |
 | `onOrderStatusChanged()` | `apps/api/src/modules/finance/finance.listener.ts:18` | `finance` |
+| `onOrderStatusChanged()` | `apps/api/src/modules/loyalty/loyalty-order.listener.ts:24` | `loyalty` |
 | `onStatusChanged()` | `apps/api/src/modules/orders/notification.subscriber.ts:166` | `orders` |
 
 ### `order.cancelled`
@@ -426,6 +427,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Handler | Where | Module |
 |---|---|---|
 | `onStockReplenished()` | `apps/api/src/modules/orders/backorder.listener.ts:29` | `orders` |
+| `onStockReplenished()` | `apps/api/src/modules/wishlist/back-in-stock.listener.ts:31` | `wishlist` |
 
 ### `inventory.stock_variance_recorded`
 

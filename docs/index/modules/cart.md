@@ -3,35 +3,36 @@
 
 # Module: `cart`
 
-Pack **core** · enabled by the `MODULES` allowlist · 4 files
+Pack **core** · enabled by the `MODULES` allowlist · 5 files
 
 
-> Measurements typed straight into the stitching panel are validated
 
 Source: `apps/api/src/modules/cart/`
 
-## Files (4 · 1,005 lines)
+## Files (5 · 1,094 lines)
 
 All paths relative to `apps/api/src/modules/cart`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `cart.controller.ts` | controller | 179 | 1 | Cart endpoints. |
-| `cart.module.ts` | nest module | 17 | 1 | Measurements typed straight into the stitching panel are validated |
+| `cart.controller.ts` | controller | 198 | 1 | Cart endpoints. |
+| `cart.module.ts` | nest module | 18 | 1 |  |
 | `cart.service.ts` | service | 678 | 3 |  |
 | `cart.dto.ts` | dto | 131 | 4 |  |
+| `reorder.service.ts` | service | 69 | 2 |  |
 
 
-## HTTP routes (6)
+## HTTP routes (7)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| DELETE | `/cart` | **PUBLIC** | `CartController.clear` :123 | Empty the cart |
-| GET | `/cart` | **PUBLIC** | `CartController.get` :46 | The current cart, priced fresh from the database |
-| POST | `/cart/items` | **PUBLIC** | `CartController.addItem` :63 | Add an item, optionally with stitching |
-| DELETE | `/cart/items/:itemId` | **PUBLIC** | `CartController.removeItem` :103 | Remove a line |
-| PATCH | `/cart/items/:itemId` | **PUBLIC** | `CartController.updateItem` :82 | Change quantity, or attach measurements |
-| POST | `/cart/merge` | **PUBLIC** | `CartController.merge` :136 | Fold a guest cart into the signed-in account |
+| DELETE | `/cart` | **PUBLIC** | `CartController.clear` :142 | Empty the cart |
+| GET | `/cart` | **PUBLIC** | `CartController.get` :65 | The current cart, priced fresh from the database |
+| POST | `/cart/items` | **PUBLIC** | `CartController.addItem` :82 | Add an item, optionally with stitching |
+| DELETE | `/cart/items/:itemId` | **PUBLIC** | `CartController.removeItem` :122 | Remove a line |
+| PATCH | `/cart/items/:itemId` | **PUBLIC** | `CartController.updateItem` :101 | Change quantity, or attach measurements |
+| POST | `/cart/merge` | **PUBLIC** | `CartController.merge` :155 | Fold a guest cart into the signed-in account |
+| POST | `/cart/reorder/:orderNumber` | **PUBLIC** | `CartController.reorderFromOrder` :52 | Add every still-available line from a past order to the cart |
 
 
 ## Domain events
@@ -65,7 +66,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`CartModule`** (`cart.module.ts`)
 - imports: —
 - controllers: `CartController`
-- providers: `CartService`
+- providers: `CartService`, `ReorderService`
 - exports: `CartService`
 
 
@@ -91,8 +92,8 @@ _No spec files in this unit._
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `CartController` | class | `cart.controller.ts:41` | Cart endpoints. |
-| `CartModule` | class | `cart.module.ts:16` |  |
+| `CartController` | class | `cart.controller.ts:42` | Cart endpoints. |
+| `CartModule` | class | `cart.module.ts:17` |  |
 | `CartLineView` | interface | `cart.service.ts:45` |  |
 | `CartView` | interface | `cart.service.ts:87` |  |
 | `CartService` | class | `cart.service.ts:110` | The cart, including the stitching add-on. |
@@ -100,6 +101,8 @@ _No spec files in this unit._
 | `AddCartItemDto` | class | `cart.dto.ts:88` |  |
 | `UpdateCartItemDto` | class | `cart.dto.ts:111` |  |
 | `MergeCartDto` | class | `cart.dto.ts:125` |  |
+| `ReorderResult` | interface | `reorder.service.ts:8` |  |
+| `ReorderService` | class | `reorder.service.ts:31` | WO-7.2 (docs/implementation/customer-portal-loyalty/07-customer-portal.md): "one tap adds every still-availab… |
 
 
 ---

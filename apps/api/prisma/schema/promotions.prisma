@@ -23,10 +23,10 @@ enum DiscountScope {
 }
 
 model Discount {
-  id   String       @id @default(cuid())
-  name String // staff-facing, not translated
-  type DiscountType
-  scope DiscountScope @default(ORDER)
+  id          String        @id @default(cuid())
+  name        String // staff-facing, not translated
+  type        DiscountType
+  scope       DiscountScope @default(ORDER)
   /// PERCENTAGE/TIERED: basis points (1000 = 10%). FIXED_AMOUNT: paisa. Unused by FREE_SHIPPING/BUY_X_GET_Y.
   value       Int
   /// Cap on a PERCENTAGE/TIERED discount, in paisa. Null = uncapped.
@@ -45,13 +45,13 @@ model Discount {
   getQuantity    Int?
   getDiscountBps Int? // 10000 = free
 
-  startsAt DateTime?
-  endsAt   DateTime?
-  isActive Boolean   @default(true)
+  startsAt    DateTime?
+  endsAt      DateTime?
+  isActive    Boolean   @default(true)
   /// Can this combine with other discounts?
-  isStackable Boolean @default(false)
+  isStackable Boolean   @default(false)
   /// Lower runs first when several stackable discounts apply.
-  priority    Int     @default(0)
+  priority    Int       @default(0)
 
   usageLimit        Int? // total redemptions across all customers
   usageLimitPerUser Int?
@@ -67,19 +67,19 @@ model Discount {
 }
 
 model PromoCode {
-  id         String  @id @default(cuid())
-  discountId String
+  id                 String    @id @default(cuid())
+  discountId         String
   /// Stored UPPERCASE and compared uppercase. Customers type in any case.
-  code       String  @unique
-  isActive   Boolean @default(true)
-  usageLimit Int?
-  usageCount Int     @default(0)
+  code               String    @unique
+  isActive           Boolean   @default(true)
+  usageLimit         Int?
+  usageCount         Int       @default(0)
   /// Single-customer code, e.g. a service-recovery gesture.
   restrictedToUserId String?
-  expiresAt  DateTime?
+  expiresAt          DateTime?
   /// Set when this code came from a bulk generation run.
-  batchId    String?
-  createdAt  DateTime @default(now())
+  batchId            String?
+  createdAt          DateTime  @default(now())
 
   discount Discount @relation(fields: [discountId], references: [id], onDelete: Cascade)
 
@@ -91,7 +91,7 @@ model PromoCode {
 /// Snapshot rule (House Rule 7): name/type/amount are copied, never joined —
 /// the Discount may be edited or deleted after the order that used it.
 model OrderDiscount {
-  id          String  @id @default(cuid())
+  id          String   @id @default(cuid())
   orderId     String
   discountId  String?
   promoCodeId String?

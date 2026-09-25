@@ -47,6 +47,9 @@ export interface LocalisedProduct {
   inStock: boolean;
   /** Cheapest variant price, which is what a listing card should show. */
   fromPrice: number;
+  /** Phase 7 WO-7.5 — only populated on a single product's detail fetch, null on every list row. */
+  reviewCount: number | null;
+  averageRating: number | null;
 }
 
 const productInclude = {
@@ -98,7 +101,7 @@ export class CatalogService {
     if (!product) {
       throw new NotFoundException(`No product at "${slug}".`);
     }
-    return await localise(this.prisma, product, locale);
+    return await localise(this.prisma, product, locale, { includeRating: true });
   }
 
   /**
@@ -259,6 +262,7 @@ export async function localise(
   prisma: PrismaService,
   product: ProductWithRelations,
   locale: Locale,
+  options?: { includeRating?: boolean },
 ): Promise<LocalisedProduct> {
   const translation = pickTranslation(product.translations, locale);
   const categoryTranslation = product.category
@@ -301,6 +305,14 @@ export async function localise(
       }
     : null;
 
+  // Phase 7 WO-7.5's own JSON-LD requirement. Only fetched for a single
+  // product's detail page (`includeRating`) — folding this into every list
+  // row would be an aggregate query per row, exactly the N+1 shape
+  // `.claude/rules/performance.md` calls a defect.
+  const rating = options?.includeRating
+    ? await prisma.review.aggregate({ where: { productId: product.id, status: 'PUBLISHED' }, _count: true, _avg: { rating: true } })
+    : null;
+
   return {
     id: product.id,
     slug: product.slug,
@@ -340,6 +352,8 @@ export async function localise(
     serviceGarment,
     inStock: variants.some((variant) => variant.inStock),
     fromPrice: prices.length > 0 ? Math.min(...prices) : product.basePrice,
+    reviewCount: rating?._count ?? null,
+    averageRating: rating?._avg.rating ?? null,
   };
 }
 

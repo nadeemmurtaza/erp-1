@@ -6,6 +6,7 @@ import { EmailChannel } from './email.channel';
 import { EmailTemplatesAdminController } from './email/email-templates.admin.controller';
 import { ExpoPushChannel } from './expo-push.channel';
 import { LogNotificationChannel } from './log.channel';
+import { NotificationPreferencesService } from './notification-preferences.service';
 import { NotificationsService } from './notifications.service';
 import { UnsubscribeController } from './unsubscribe.controller';
 
@@ -23,7 +24,8 @@ import { UnsubscribeController } from './unsubscribe.controller';
     EmailChannel,
     NotificationsService,
     EmailAccountsService,
+    NotificationPreferencesService,
   ],
-  exports: [NotificationsService, EmailAccountsService, EmailChannel],
+  exports: [NotificationsService, EmailAccountsService, EmailChannel, NotificationPreferencesService],
 })
 export class NotificationsModule {}

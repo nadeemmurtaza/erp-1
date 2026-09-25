@@ -78,21 +78,24 @@ model Order {
   /// every DELIVERED order past the threshold on every run.
   reviewRequestSentAt DateTime?
 
-  user           User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
-  contact        Contact?           @relation(fields: [contactId], references: [id], onDelete: SetNull)
-  items          OrderItem[]
-  payments       Payment[]
-  shipments      Shipment[]
-  statusEvents   OrderStatusEvent[]
-  convertedLeads Lead[]             @relation("LeadConvertedOrder")
+  user                    User?                    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  contact                 Contact?                 @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  items                   OrderItem[]
+  payments                Payment[]
+  shipments               Shipment[]
+  statusEvents            OrderStatusEvent[]
+  convertedLeads          Lead[]                   @relation("LeadConvertedOrder")
   /// finance.prisma's OrderEconomics (WO-B.3) — null until DELIVERED.
-  economics      OrderEconomics?
+  economics               OrderEconomics?
   /// promotions.prisma's snapshot of every discount this order received (WO-5.3).
-  orderDiscounts OrderDiscount[]
+  orderDiscounts          OrderDiscount[]
   /// giftcards.prisma — gift-card/store-credit tender applied to this order, and any gift card this order purchased (WO-5.4/5.5).
-  giftCardTransactions   GiftCardTransaction[]
+  giftCardTransactions    GiftCardTransaction[]
   storeCreditTransactions StoreCreditTransaction[]
-  giftCardsSold          GiftCard[]               @relation("GiftCardSourceOrder")
+  giftCardsSold           GiftCard[]               @relation("GiftCardSourceOrder")
+  /// Phase 7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
+  returnRequests          ReturnRequest[]
+  loyaltyTransactions     LoyaltyTransaction[]
 
   @@index([status, placedAt])
   @@index([userId])
@@ -189,6 +192,10 @@ model OrderItem {
   // plain `orderItemId` scalar column pointing here instead of a Prisma
   // relation; the join happens in application code
   // (EntityEnrichmentRegistry, or StitchingJobsService.attachOrderContext).
+
+  /// Phase 7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
+  review             Review?
+  returnRequestLines ReturnRequestLine[]
 
   @@index([orderId])
   @@index([productId])

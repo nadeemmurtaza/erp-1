@@ -263,6 +263,8 @@ export const SettingKey = {
   WalletAdjustmentApprovalThresholdMinor: 'finance.wallet_adjustment_approval_threshold_minor',
   /** 145-receivables-credit-limits-dunning.md (WO-145.2) — "a configurable value threshold": a CreditNote at or below this issues straight through; above it needs finance.credit-notes.approve first, by someone other than its own creator. */
   FinanceCreditNoteApprovalThresholdMinor: 'finance.credit_note_approval_threshold_minor',
+  /** 151-layby-installment-sales.md (WO-151.4) — whether cancelling a LAYBY plan that already took a deposit forfeits it (true) or refunds it through the existing Payment refund path (false, the default: no client policy stated yet, so nothing is kept without being asked for). A per-client, per-jurisdiction policy value, never a hardcoded rule. */
+  PosInstalmentForfeitDepositOnCancel: 'pos.instalment_forfeit_deposit_on_cancel',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -380,6 +382,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.PayrollAccrualRunHour]: 4,
   /** Rs. 50,000 — a reasonable default for a shop that has never set its own. */
   [SettingKey.FinanceCreditNoteApprovalThresholdMinor]: toMinor(50_000),
+  [SettingKey.PosInstalmentForfeitDepositOnCancel]: false,
 
   [SettingKey.MarketingAutomationEnabled]: false,
   [SettingKey.MarketingAbandonedCartFirstTouchHours]: 1,

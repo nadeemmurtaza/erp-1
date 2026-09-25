@@ -74,11 +74,19 @@ export interface PosSaleLine {
   quantity: number;
 }
 
+/** finance-accounting/151-layby-installment-sales.md — requested at the point of sale. */
+export interface PosInstalmentPlanRequest {
+  type: 'LAYBY' | 'INSTALMENT';
+  depositMinor: number;
+  schedule: { dueDate: string; amountMinor: number }[];
+}
+
 export interface PosSaleRequest {
   lines: PosSaleLine[];
   customerName?: string;
   customerPhone?: string;
   customerEmail?: string;
+  instalmentPlan?: PosInstalmentPlanRequest;
 }
 
 export interface PosReceiptData {

@@ -634,7 +634,7 @@ All 372 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 565 |  |
+| `page.tsx` | page | 774 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payments` (1)
 

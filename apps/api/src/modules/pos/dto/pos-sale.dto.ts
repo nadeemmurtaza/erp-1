@@ -1,6 +1,54 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { ArrayMinSize, IsArray, IsEmail, IsInt, IsNotEmpty, IsOptional, IsString, Min, ValidateNested } from 'class-validator';
+import {
+  ArrayMinSize,
+  IsArray,
+  IsDateString,
+  IsEmail,
+  IsIn,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Min,
+  ValidateNested,
+} from 'class-validator';
+
+const INSTALMENT_PLAN_TYPES = ['LAYBY', 'INSTALMENT'] as const;
+
+export class InstalmentScheduleLineDto {
+  @ApiProperty()
+  @IsDateString()
+  dueDate!: string;
+
+  @ApiProperty()
+  @IsInt()
+  @Min(1)
+  amountMinor!: number;
+}
+
+/**
+ * finance-accounting/151-layby-installment-sales.md — requested at the
+ * point of sale, alongside the ordinary line list. Omit entirely for an
+ * ordinary immediate-tender-in-full sale, today's exact behaviour.
+ */
+export class PosInstalmentPlanDto {
+  @ApiProperty({ enum: INSTALMENT_PLAN_TYPES })
+  @IsIn(INSTALMENT_PLAN_TYPES)
+  type!: (typeof INSTALMENT_PLAN_TYPES)[number];
+
+  @ApiProperty()
+  @IsInt()
+  @Min(0)
+  depositMinor!: number;
+
+  @ApiProperty({ type: [InstalmentScheduleLineDto] })
+  @IsArray()
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  @Type(() => InstalmentScheduleLineDto)
+  schedule!: InstalmentScheduleLineDto[];
+}
 
 export class PosSaleLineDto {
   @ApiProperty()
@@ -36,4 +84,10 @@ export class CreatePosSaleDto {
   @IsOptional()
   @IsEmail()
   customerEmail?: string;
+
+  @ApiPropertyOptional({ type: PosInstalmentPlanDto })
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => PosInstalmentPlanDto)
+  instalmentPlan?: PosInstalmentPlanDto;
 }

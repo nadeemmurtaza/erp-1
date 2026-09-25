@@ -2793,14 +2793,14 @@ _no second-level headings_
 - Acceptance  <sub>:240</sub>
 - Out of scope  <sub>:251</sub>
 
-### `docs/implementation/finance-accounting/151-layby-installment-sales.md`  <sub>201 lines</sub>
+### `docs/implementation/finance-accounting/151-layby-installment-sales.md`  <sub>253 lines</sub>
 
-- 1. A layby/instalment plan is a schedule of expected payments against one order, fulfilment gated on completion  <sub>:14</sub>
-- 2. Fulfilment gating is the one real difference between LAYBY and INSTALMENT, and the one place this touches the order lifecycle  <sub>:59</sub>
-- Scope lenses  <sub>:82</sub>
-- Work orders  <sub>:169</sub>
-- Acceptance  <sub>:184</sub>
-- Out of scope  <sub>:194</sub>
+- 1. A layby/instalment plan is a schedule of expected payments against one order, fulfilment gated on completion  <sub>:66</sub>
+- 2. Fulfilment gating is the one real difference between LAYBY and INSTALMENT, and the one place this touches the order lifecycle  <sub>:111</sub>
+- Scope lenses  <sub>:134</sub>
+- Work orders  <sub>:221</sub>
+- Acceptance  <sub>:236</sub>
+- Out of scope  <sub>:246</sub>
 
 ### `docs/implementation/finance-accounting/49-financial-institution-settlement-partnerships.md`  <sub>265 lines</sub>
 

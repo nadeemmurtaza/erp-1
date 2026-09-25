@@ -3,7 +3,7 @@
 
 # Tests
 
-**230** spec files, **2,259** cases. What is already pinned down — and what is not.
+**231** spec files, **2,280** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -56,7 +56,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (211)
+## Unit and integration (212)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -166,8 +166,9 @@ regression or an N+1.
 | `apps/api/src/modules/orders/backorder.listener.spec.ts` | orders | 4 | BackorderListener |
 | `apps/api/src/modules/orders/cod-risk.cron.spec.ts` | orders | 4 | CodRiskCron |
 | `apps/api/src/modules/orders/cod-risk.service.spec.ts` | orders | 7 | CodRiskService |
+| `apps/api/src/modules/orders/instalment-plan.service.spec.ts` | orders | 16 | InstalmentPlanService · recordInstalmentPayment · cancel · markDefaulted |
 | `apps/api/src/modules/orders/order-replication.listener.spec.ts` | orders | 3 | OrderReplicationListener — WO-20.4 · onModuleInit · onOrderPlaced |
-| `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 7 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ |
+| `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 12 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ · place… |
 | `apps/api/src/modules/organization/nodes.service.spec.ts` | organization | 9 | NodesService · rotateInboundKey |
 | `apps/api/src/modules/organization/organization.service.spec.ts` | organization | 51 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setI… |
 | `apps/api/src/modules/parties/parties.service.spec.ts` | parties | 7 | PartiesService · get · dedupeCandidate · findOrCreateForRole · search |

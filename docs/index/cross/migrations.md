@@ -3,7 +3,7 @@
 
 # Migrations
 
-**80** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**82** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -113,6 +113,8 @@ nothing here fails a build.
 | 2026-09-25 | `add_receivables_credit_notes_dunning` | 15 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | CreditNote, CustomerCreditTerm, DebitNote, DunningEvent, DunningPolicy |
 | 2026-09-25 | `add_hr_assets` | 12 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | Asset, AssetAssignment |
 | 2026-09-25 | `add_asset_depreciation` | 10 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | AssetDepreciationPosting, AssetDepreciationSchedule |
+| 2026-09-25 | `add_instalment_plans` | 14 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | InstalmentPayment, InstalmentPlan, InstalmentScheduleLine |
+| 2026-09-25 | `add_instalment_payment_is_deposit` | 1 | ALTER TABLE | InstalmentPayment |
 
 
 ---

@@ -11,13 +11,13 @@ Pack **core** · enabled by the `MODULES` allowlist · 19 files
 
 Source: `apps/api/src/modules/pos/`
 
-## Files (19 · 1,384 lines)
+## Files (19 · 1,448 lines)
 
 All paths relative to `apps/api/src/modules/pos/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `pos-sale.dto.ts` | dto | 40 | 2 |  |
+| `pos-sale.dto.ts` | dto | 94 | 4 |  |
 | `pos-shift.dto.ts` | dto | 44 | 4 |  |
 | `pos-terminal.dto.ts` | dto | 27 | 2 |  |
 | `pos-catalog.controller.ts` | controller | 26 | 1 |  |
@@ -26,9 +26,9 @@ All paths relative to `apps/api/src/modules/pos/dto`.
 | `pos-receipts.controller.ts` | controller | 24 | 1 |  |
 | `pos-receipts.service.spec.ts` | unit test | 110 | — |  |
 | `pos-receipts.service.ts` | service | 94 | 2 |  |
-| `pos-sales.controller.ts` | controller | 24 | 1 |  |
+| `pos-sales.controller.ts` | controller | 30 | 1 |  |
 | `pos-sales.service.spec.ts` | unit test | 79 | — |  |
-| `pos-sales.service.ts` | service | 59 | 1 | The till's own half of the `pos -> orders` hand-off (RETAIL-ERP.md R11): resolves which terminal/location a shift belon… |
+| `pos-sales.service.ts` | service | 63 | 1 | The till's own half of the `pos -> orders` hand-off (RETAIL-ERP.md R11): resolves which terminal/location a shift belon… |
 | `pos-shifts.controller.ts` | controller | 55 | 1 | Shift and cash-drawer operations (WO-21.2) — day-to-day cashier work, so gated by `pos.operate` (medium sensitivity, ha… |
 | `pos-shifts.service.spec.ts` | unit test | 177 | — |  |
 | `pos-shifts.service.ts` | service | 139 | 2 |  |
@@ -125,8 +125,10 @@ check there before adding another.
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `PosSaleLineDto` | class | `pos-sale.dto.ts:5` |  |
-| `CreatePosSaleDto` | class | `pos-sale.dto.ts:17` |  |
+| `InstalmentScheduleLineDto` | class | `pos-sale.dto.ts:19` |  |
+| `PosInstalmentPlanDto` | class | `pos-sale.dto.ts:35` | finance-accounting/151-layby-installment-sales.md — requested at the point of sale, alongside the ordinary li… |
+| `PosSaleLineDto` | class | `pos-sale.dto.ts:53` |  |
+| `CreatePosSaleDto` | class | `pos-sale.dto.ts:65` |  |
 | `CashMovementTypeDto` | type | `pos-shift.dto.ts:5` |  |
 | `OpenShiftDto` | class | `pos-shift.dto.ts:7` |  |
 | `CloseShiftDto` | class | `pos-shift.dto.ts:19` |  |

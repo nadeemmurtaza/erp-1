@@ -80,6 +80,18 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'medium',
   },
   {
+    key: 'pos.instalments.cancel',
+    label: 'Cancel a layby/instalment plan — may forfeit or refund its deposit, per policy',
+    category: 'Sales',
+    sensitivity: 'high',
+  },
+  {
+    key: 'pos.instalments.default',
+    label: 'Mark a layby/instalment plan defaulted — writes off the unpaid balance',
+    category: 'Sales',
+    sensitivity: 'high',
+  },
+  {
     key: 'payments.approve',
     label: 'Approve bank-transfer payments',
     category: 'Sales',
@@ -539,7 +551,7 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     key: 'sales',
     label: 'Sales & payments',
     description: 'Order fulfilment, approving a bank-transfer payment, running a till shift, and registering terminals.',
-    permissions: ['orders.manage', 'payments.approve', 'pos.manage', 'pos.operate'],
+    permissions: ['orders.manage', 'payments.approve', 'pos.manage', 'pos.operate', 'pos.instalments.cancel', 'pos.instalments.default'],
   },
   {
     key: 'fulfilment',
@@ -809,6 +821,8 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'accounting.manage_periods',
     'pos.manage',
     'pos.operate',
+    'pos.instalments.cancel',
+    'pos.instalments.default',
     'promotions.view',
     'promotions.manage',
     'giftcards.view',

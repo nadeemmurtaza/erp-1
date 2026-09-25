@@ -103,8 +103,8 @@ order" is a new file, not an edit to checkout.
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:54` | `accounting` |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:161` | `accounting` |
-| `apps/api/src/modules/orders/orders.service.ts:449` | `orders` |
-| `apps/api/src/modules/orders/orders.service.ts:652` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:463` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:721` | `orders` |
 
 
 **Subscribed by**
@@ -125,8 +125,8 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/orders/orders.service.ts:675` | `orders` |
-| `apps/api/src/modules/orders/orders.service.ts:855` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:748` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:929` | `orders` |
 
 
 **Subscribed by**
@@ -146,7 +146,7 @@ order" is a new file, not an edit to checkout.
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/finance/finance.listener.ts:9` | `finance` |
-| `apps/api/src/modules/orders/orders.service.ts:855` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:929` | `orders` |
 
 
 **Subscribed by**
@@ -165,7 +165,8 @@ order" is a new file, not an edit to checkout.
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:121` | `accounting` |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:158` | `accounting` |
-| `apps/api/src/modules/orders/orders.service.ts:640` | `orders` |
+| `apps/api/src/modules/orders/instalment-plan.service.ts:90` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:692` | `orders` |
 | `apps/api/src/modules/payments/payments.service.ts:191` | `payments` |
 | `apps/api/src/modules/payments/payments.service.ts:293` | `payments` |
 | `apps/api/src/modules/payments/payments.service.ts:341` | `payments` |

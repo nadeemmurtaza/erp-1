@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1960,
-    "lines": 300620,
-    "routes": 646,
-    "controllers": 118,
-    "models": 237,
-    "enums": 108,
-    "migrations": 80,
+    "files": 1967,
+    "lines": 301993,
+    "routes": 650,
+    "controllers": 119,
+    "models": 240,
+    "enums": 110,
+    "migrations": 82,
     "events": 60,
-    "permissions": 79,
+    "permissions": 81,
     "screens": 231,
     "crons": 19,
-    "specs": 230,
+    "specs": 231,
     "designLaws": 0
   },
   "designLaws": [],
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 816,
-      "lines": 115260,
-      "bytes": 4360825,
+      "files": 823,
+      "lines": 116232,
+      "bytes": 4401193,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -45,26 +45,26 @@
     },
     "pos": {
       "files": 31,
-      "lines": 1874,
-      "bytes": 62523,
+      "lines": 2000,
+      "bytes": 68220,
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
       "files": 372,
-      "lines": 59386,
-      "bytes": 2140583,
+      "lines": 59595,
+      "bytes": 2147525,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 394,
-      "lines": 62752,
-      "bytes": 3726753,
+      "lines": 62804,
+      "bytes": 3730025,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 78,
-      "lines": 7811,
-      "bytes": 275689,
+      "lines": 7825,
+      "bytes": 276170,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -547,7 +547,11 @@
         "apps/api/src/modules/orders/cod-risk.cron.ts",
         "apps/api/src/modules/orders/cod-risk.service.spec.ts",
         "apps/api/src/modules/orders/cod-risk.service.ts",
+        "apps/api/src/modules/orders/dto/instalment-plan.dto.ts",
         "apps/api/src/modules/orders/dto/order.dto.ts",
+        "apps/api/src/modules/orders/instalment-plan.controller.ts",
+        "apps/api/src/modules/orders/instalment-plan.service.spec.ts",
+        "apps/api/src/modules/orders/instalment-plan.service.ts",
         "apps/api/src/modules/orders/notification.subscriber.ts",
         "apps/api/src/modules/orders/order-replication.listener.spec.ts",
         "apps/api/src/modules/orders/order-replication.listener.ts",
@@ -557,7 +561,7 @@
         "apps/api/src/modules/orders/orders.service.ts",
         "apps/api/src/modules/orders/shipment-status.listener.ts"
       ],
-      "routes": 7,
+      "routes": 11,
       "page": "docs/index/modules/orders.md"
     },
     {
@@ -6512,6 +6516,70 @@
       "summary": "Move the order along; cancelling restores stock"
     },
     {
+      "method": "GET",
+      "path": "/admin/orders/:orderId/instalments",
+      "module": "orders",
+      "controller": "InstalmentPlanController",
+      "handler": "get",
+      "file": "apps/api/src/modules/orders/instalment-plan.controller.ts",
+      "line": 23,
+      "access": "pos.operate",
+      "permissions": [
+        "pos.operate"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "An order's instalment plan, its schedule, and every payment received so far"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/orders/:orderId/instalments/cancel",
+      "module": "orders",
+      "controller": "InstalmentPlanController",
+      "handler": "cancel",
+      "file": "apps/api/src/modules/orders/instalment-plan.controller.ts",
+      "line": 41,
+      "access": "pos.instalments.cancel",
+      "permissions": [
+        "pos.instalments.cancel"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Cancel an active plan — refunds or forfeits the deposit per the configured policy"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/orders/:orderId/instalments/default",
+      "module": "orders",
+      "controller": "InstalmentPlanController",
+      "handler": "markDefaulted",
+      "file": "apps/api/src/modules/orders/instalment-plan.controller.ts",
+      "line": 48,
+      "access": "pos.instalments.default",
+      "permissions": [
+        "pos.instalments.default"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Mark an active plan defaulted — writes off the unpaid balance"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/orders/:orderId/instalments/payments",
+      "module": "orders",
+      "controller": "InstalmentPlanController",
+      "handler": "recordPayment",
+      "file": "apps/api/src/modules/orders/instalment-plan.controller.ts",
+      "line": 30,
+      "access": "pos.operate",
+      "permissions": [
+        "pos.operate"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Record one instalment payment against the plan"
+    },
+    {
       "method": "POST",
       "path": "/admin/parties",
       "module": "parties",
@@ -11629,6 +11697,8 @@
       "category": "Sales",
       "sensitivity": "medium",
       "routes": [
+        "GET /admin/orders/:orderId/instalments",
+        "POST /admin/orders/:orderId/instalments/payments",
         "GET /admin/pos/products/search",
         "GET /admin/pos/receipts/:orderId",
         "POST /admin/pos/receipts/:orderId/print",
@@ -11639,9 +11709,37 @@
         "GET /admin/pos/shifts/:id/z-report",
         "POST /admin/pos/shifts/open"
       ],
-      "uiSites": 1,
+      "uiSites": 2,
       "roles": [
         "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "pos.instalments.cancel",
+      "label": "Cancel a layby/instalment plan — may forfeit or refund its deposit, per policy",
+      "category": "Sales",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/orders/:orderId/instalments/cancel"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "pos.instalments.default",
+      "label": "Mark a layby/instalment plan defaulted — writes off the unpaid balance",
+      "category": "Sales",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/orders/:orderId/instalments/default"
+      ],
+      "uiSites": 1,
+      "roles": [
         "ADMIN"
       ],
       "inSeed": true
@@ -13047,8 +13145,8 @@
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:54",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:161",
-        "apps/api/src/modules/orders/orders.service.ts:449",
-        "apps/api/src/modules/orders/orders.service.ts:652"
+        "apps/api/src/modules/orders/orders.service.ts:463",
+        "apps/api/src/modules/orders/orders.service.ts:721"
       ],
       "subscribers": [
         "apps/api/src/core/events/on-domain-event.decorator.ts:7 handle()",
@@ -13064,8 +13162,8 @@
       "name": "order.status_changed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/orders/orders.service.ts:675",
-        "apps/api/src/modules/orders/orders.service.ts:855"
+        "apps/api/src/modules/orders/orders.service.ts:748",
+        "apps/api/src/modules/orders/orders.service.ts:929"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
@@ -13080,7 +13178,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/finance/finance.listener.ts:9",
-        "apps/api/src/modules/orders/orders.service.ts:855"
+        "apps/api/src/modules/orders/orders.service.ts:929"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:71 onCancelled()",
@@ -13094,7 +13192,8 @@
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:121",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:158",
-        "apps/api/src/modules/orders/orders.service.ts:640",
+        "apps/api/src/modules/orders/instalment-plan.service.ts:90",
+        "apps/api/src/modules/orders/orders.service.ts:692",
         "apps/api/src/modules/payments/payments.service.ts:191",
         "apps/api/src/modules/payments/payments.service.ts:293",
         "apps/api/src/modules/payments/payments.service.ts:341"
@@ -16780,7 +16879,7 @@
     {
       "name": "CityCodRiskStat",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 326,
+      "line": 329,
       "doc": "WO-9.4 (09-ai-layer.md) — nightly-cached inputs to CodRiskService's \"city RTO rate\" and \"order value versus the city's average\" signals.",
       "fields": [
         {
@@ -19684,6 +19783,207 @@
       ],
       "indexes": [
         "@@index([inboundEmailId, sentAt])"
+      ]
+    },
+    {
+      "name": "InstalmentPayment",
+      "file": "apps/api/prisma/schema/instalments.prisma",
+      "line": 61,
+      "doc": "One row per actual payment received — never assumed to match the schedule exactly; a customer paying early, late, or a different amount than scheduled is normal, and the schedule is a plan, not a con…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "planId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "paymentId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "receivedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isDeposit",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "plan",
+          "type": "InstalmentPlan",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "payment",
+          "type": "Payment",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([planId])"
+      ]
+    },
+    {
+      "name": "InstalmentPlan",
+      "file": "apps/api/prisma/schema/instalments.prisma",
+      "line": 24,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "type",
+          "type": "InstalmentPlanType",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "totalMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "depositMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "InstalmentPlanStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "cancelledAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "defaultedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Order",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "schedule",
+          "type": "InstalmentScheduleLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payments",
+          "type": "InstalmentPayment[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([status])"
+      ]
+    },
+    {
+      "name": "InstalmentScheduleLine",
+      "file": "apps/api/prisma/schema/instalments.prisma",
+      "line": 45,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "planId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "dueDate",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "plan",
+          "type": "InstalmentPlan",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([planId, dueDate])"
       ]
     },
     {
@@ -22801,6 +23101,13 @@
           "relation": false
         },
         {
+          "name": "instalmentPlan",
+          "type": "InstalmentPlan?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "giftCardsSold",
           "type": "GiftCard[]",
           "id": false,
@@ -23003,7 +23310,7 @@
     {
       "name": "OrderItem",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 156,
+      "line": 159,
       "doc": "",
       "fields": [
         {
@@ -23281,7 +23588,7 @@
     {
       "name": "OrderNumberCounter",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 354,
+      "line": 357,
       "doc": "Backing store for sequential per-year order numbers (YSN-2026-0001).",
       "fields": [
         {
@@ -23304,7 +23611,7 @@
     {
       "name": "OrderStatusEvent",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 243,
+      "line": 246,
       "doc": "",
       "fields": [
         {
@@ -24012,6 +24319,13 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "instalmentPayment",
+          "type": "InstalmentPayment?",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -29697,7 +30011,7 @@
     {
       "name": "Shipment",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 267,
+      "line": 270,
       "doc": "",
       "fields": [
         {
@@ -35347,6 +35661,26 @@
       ]
     },
     {
+      "name": "InstalmentPlanStatus",
+      "file": "apps/api/prisma/schema/instalments.prisma",
+      "line": 17,
+      "values": [
+        "ACTIVE",
+        "COMPLETED",
+        "DEFAULTED",
+        "CANCELLED"
+      ]
+    },
+    {
+      "name": "InstalmentPlanType",
+      "file": "apps/api/prisma/schema/instalments.prisma",
+      "line": 12,
+      "values": [
+        "LAYBY",
+        "INSTALMENT"
+      ]
+    },
+    {
       "name": "InteractionKind",
       "file": "apps/api/prisma/schema/crm.prisma",
       "line": 132,
@@ -35575,7 +35909,7 @@
     {
       "name": "OrderItemFulfillmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 145,
+      "line": 148,
       "values": [
         "READY",
         "AWAITING_STOCK",
@@ -35898,7 +36232,7 @@
     {
       "name": "ShipmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 258,
+      "line": 261,
       "values": [
         "PENDING",
         "DISPATCHED",
@@ -37678,6 +38012,38 @@
       "tables": [
         "AssetDepreciationPosting",
         "AssetDepreciationSchedule"
+      ]
+    },
+    {
+      "folder": "20260925220000_add_instalment_plans",
+      "file": "apps/api/prisma/schema/migrations/20260925220000_add_instalment_plans/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_instalment_plans",
+      "statements": 14,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "InstalmentPayment",
+        "InstalmentPlan",
+        "InstalmentScheduleLine"
+      ]
+    },
+    {
+      "folder": "20260925223000_add_instalment_payment_is_deposit",
+      "file": "apps/api/prisma/schema/migrations/20260925223000_add_instalment_payment_is_deposit/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_instalment_payment_is_deposit",
+      "statements": 1,
+      "kinds": [
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "InstalmentPayment"
       ]
     }
   ],
@@ -41622,6 +41988,18 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/orders/instalment-plan.service.spec.ts",
+      "module": "orders",
+      "kind": "unit test",
+      "cases": 16,
+      "describes": [
+        "InstalmentPlanService",
+        "recordInstalmentPayment",
+        "cancel",
+        "markDefaulted"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/orders/order-replication.listener.spec.ts",
       "module": "orders",
       "kind": "unit test",
@@ -41636,10 +42014,11 @@
       "file": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "module": "orders",
       "kind": "unit test",
-      "cases": 7,
+      "cases": 12,
       "describes": [
         "OrdersService — placeFromPos (WO-21.3)",
-        "changeStatus — return releases stock to the order\\"
+        "changeStatus — return releases stock to the order\\",
+        "placeFromPos — instalmentPlan (WO-151.3)"
       ]
     },
     {
@@ -43648,6 +44027,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/instalments.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 76,
+      "bytes": 2864,
+      "doc": "Layby and instalment sales (finance-accounting/151-layby-installment-sales.md)",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/inventory.prisma",
       "area": "api",
       "kind": "prisma schema",
@@ -44368,6 +44756,24 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260925220000_add_instalment_plans/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 74,
+      "bytes": 2777,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260925223000_add_instalment_payment_is_deposit/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 9,
+      "bytes": 446,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -44398,8 +44804,8 @@
       "path": "apps/api/prisma/schema/orders.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 358,
-      "bytes": 15237,
+      "lines": 361,
+      "bytes": 15421,
       "doc": "Orders and shipments.",
       "symbols": []
     },
@@ -44425,8 +44831,8 @@
       "path": "apps/api/prisma/schema/payments.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 48,
-      "bytes": 1418,
+      "lines": 51,
+      "bytes": 1592,
       "doc": "Payments. `provider` is a plain string key, not an enum, so a new gateway is",
       "symbols": []
     },
@@ -47586,8 +47992,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 426,
-      "bytes": 22941,
+      "lines": 429,
+      "bytes": 23436,
       "doc": "",
       "symbols": [
         {
@@ -47623,12 +48029,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 268
+          "line": 270
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 270
+          "line": 272
         }
       ]
     },
@@ -52788,6 +53194,21 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/orders/dto/instalment-plan.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 16,
+      "bytes": 379,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RecordInstalmentPaymentDto",
+          "kind": "class",
+          "line": 4
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/orders/dto/order.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -52824,6 +53245,45 @@
           "name": "OrderHistoryQueryDto",
           "kind": "class",
           "line": 137
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orders/instalment-plan.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 52,
+      "bytes": 2270,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "InstalmentPlanController",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orders/instalment-plan.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 239,
+      "bytes": 10355,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/orders/instalment-plan.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 228,
+      "bytes": 9718,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "InstalmentPlanService",
+          "kind": "class",
+          "line": 22
         }
       ]
     },
@@ -52870,8 +53330,8 @@
       "path": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 275,
-      "bytes": 11697,
+      "lines": 403,
+      "bytes": 17367,
       "doc": "",
       "symbols": []
     },
@@ -52899,14 +53359,14 @@
       "path": "apps/api/src/modules/orders/orders.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 50,
-      "bytes": 2549,
+      "lines": 53,
+      "bytes": 2742,
       "doc": "",
       "symbols": [
         {
           "name": "OrdersModule",
           "kind": "class",
-          "line": 49
+          "line": 52
         }
       ]
     },
@@ -52914,8 +53374,8 @@
       "path": "apps/api/src/modules/orders/orders.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1226,
-      "bytes": 48135,
+      "lines": 1300,
+      "bytes": 51573,
       "doc": "",
       "symbols": [
         {
@@ -52924,14 +53384,19 @@
           "line": 41
         },
         {
+          "name": "PlaceFromPosInstalmentInput",
+          "kind": "interface",
+          "line": 53
+        },
+        {
           "name": "PlaceFromPosInput",
           "kind": "interface",
-          "line": 46
+          "line": 59
         },
         {
           "name": "OrdersService",
           "kind": "class",
-          "line": 92
+          "line": 106
         }
       ]
     },
@@ -53685,19 +54150,29 @@
       "path": "apps/api/src/modules/pos/dto/pos-sale.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 40,
-      "bytes": 945,
+      "lines": 94,
+      "bytes": 2042,
       "doc": "",
       "symbols": [
         {
+          "name": "InstalmentScheduleLineDto",
+          "kind": "class",
+          "line": 19
+        },
+        {
+          "name": "PosInstalmentPlanDto",
+          "kind": "class",
+          "line": 35
+        },
+        {
           "name": "PosSaleLineDto",
           "kind": "class",
-          "line": 5
+          "line": 53
         },
         {
           "name": "CreatePosSaleDto",
           "kind": "class",
-          "line": 17
+          "line": 65
         }
       ]
     },
@@ -53843,8 +54318,8 @@
       "path": "apps/api/src/modules/pos/pos-sales.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 24,
-      "bytes": 1004,
+      "lines": 30,
+      "bytes": 1069,
       "doc": "",
       "symbols": [
         {
@@ -53867,8 +54342,8 @@
       "path": "apps/api/src/modules/pos/pos-sales.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 59,
-      "bytes": 2188,
+      "lines": 63,
+      "bytes": 2431,
       "doc": "",
       "symbols": [
         {
@@ -60130,14 +60605,14 @@
       "path": "apps/pos/src/app/till/page.tsx",
       "area": "pos",
       "kind": "page",
-      "lines": 288,
-      "bytes": 11055,
+      "lines": 406,
+      "bytes": 16455,
       "doc": "",
       "symbols": [
         {
           "name": "TillPage",
           "kind": "default",
-          "line": 25
+          "line": 42
         }
       ]
     },
@@ -60325,8 +60800,8 @@
       "path": "apps/pos/src/lib/pos-client.ts",
       "area": "pos",
       "kind": "utility",
-      "lines": 195,
-      "bytes": 5489,
+      "lines": 203,
+      "bytes": 5786,
       "doc": "",
       "symbols": [
         {
@@ -60370,99 +60845,104 @@
           "line": 72
         },
         {
-          "name": "PosSaleRequest",
+          "name": "PosInstalmentPlanRequest",
           "kind": "interface",
-          "line": 77
+          "line": 78
         },
         {
-          "name": "PosReceiptData",
+          "name": "PosSaleRequest",
           "kind": "interface",
           "line": 84
         },
         {
+          "name": "PosReceiptData",
+          "kind": "interface",
+          "line": 92
+        },
+        {
           "name": "AdminOrderSummary",
           "kind": "interface",
-          "line": 99
+          "line": 107
         },
         {
           "name": "AdminOrderPayment",
           "kind": "interface",
-          "line": 109
+          "line": 117
         },
         {
           "name": "AdminOrderDetail",
           "kind": "interface",
-          "line": 116
+          "line": 124
         },
         {
           "name": "listTerminals",
           "kind": "function",
-          "line": 127
+          "line": 135
         },
         {
           "name": "searchProducts",
           "kind": "function",
-          "line": 131
+          "line": 139
         },
         {
           "name": "openShift",
           "kind": "function",
-          "line": 135
+          "line": 143
         },
         {
           "name": "closeShift",
           "kind": "function",
-          "line": 139
+          "line": 147
         },
         {
           "name": "xReport",
           "kind": "function",
-          "line": 143
+          "line": 151
         },
         {
           "name": "zReport",
           "kind": "function",
-          "line": 147
+          "line": 155
         },
         {
           "name": "recordCashMovement",
           "kind": "function",
-          "line": 151
+          "line": 159
         },
         {
           "name": "sell",
           "kind": "function",
-          "line": 160
+          "line": 168
         },
         {
           "name": "getReceipt",
           "kind": "function",
-          "line": 164
+          "line": 172
         },
         {
           "name": "printReceipt",
           "kind": "function",
-          "line": 169
+          "line": 177
         },
         {
           "name": "searchOrders",
           "kind": "function",
-          "line": 180
+          "line": 188
         },
         {
           "name": "getOrder",
           "kind": "function",
-          "line": 184
+          "line": 192
         },
         {
           "name": "returnOrder",
           "kind": "function",
-          "line": 188
+          "line": 196
         },
         {
           "name": "refundPayment",
           "kind": "function",
-          "line": 192
+          "line": 200
         }
       ]
     },
@@ -62084,8 +62564,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 565,
-      "bytes": 21023,
+      "lines": 774,
+      "bytes": 27965,
       "doc": "",
       "symbols": [
         {
@@ -70650,8 +71130,8 @@
       "path": "docs/implementation/finance-accounting/151-layby-installment-sales.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 201,
-      "bytes": 10575,
+      "lines": 253,
+      "bytes": 13847,
       "doc": "",
       "symbols": []
     },
@@ -72873,8 +73353,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 852,
-      "bytes": 25593,
+      "lines": 866,
+      "bytes": 26074,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -72895,47 +73375,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 494
+          "line": 506
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 496
+          "line": 508
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 506
+          "line": 518
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 513
+          "line": 525
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 691
+          "line": 703
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 839
+          "line": 853
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 844
+          "line": 858
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 845
+          "line": 859
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 848
+          "line": 862
         }
       ]
     },

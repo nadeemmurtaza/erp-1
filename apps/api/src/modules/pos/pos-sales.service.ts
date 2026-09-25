@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, Logger, NotFoundException } from '@nes
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { OrdersService } from '../orders/orders.service';
 import { PosReceiptsService } from './pos-receipts.service';
-import type { PosSaleLineDto } from './dto/pos-sale.dto';
+import type { PosInstalmentPlanDto, PosSaleLineDto } from './dto/pos-sale.dto';
 
 /**
  * The till's own half of the `pos -> orders` hand-off (RETAIL-ERP.md R11):
@@ -26,6 +26,7 @@ export class PosSalesService {
     cashierUserId: string,
     lines: PosSaleLineDto[],
     customer: { customerName?: string; customerPhone?: string; customerEmail?: string },
+    instalmentPlan?: PosInstalmentPlanDto,
   ) {
     const shift = await this.prisma.posShift.findUnique({
       where: { id: shiftId },
@@ -43,6 +44,9 @@ export class PosSalesService {
       cashierUserId,
       lines,
       ...customer,
+      instalmentPlan: instalmentPlan
+        ? { ...instalmentPlan, schedule: instalmentPlan.schedule.map((l) => ({ ...l, dueDate: new Date(l.dueDate) })) }
+        : undefined,
     });
 
     // Best-effort, outside the sale's own transaction (WO-21.5) — a receipt

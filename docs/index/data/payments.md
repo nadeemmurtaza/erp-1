@@ -43,6 +43,7 @@ against a real database.
 | `updatedAt` | `DateTime` |  | @updatedAt |
 | `order` | `Order` | relation | @relation(fields: [orderId], references: [id], onDelete: Cascade) |
 | `approvedBy` | `User?` | relation, optional | @relation("PaymentApprover", fields: [approvedById], references: [id], onDelete: SetNull) |
+| `instalmentPayment` | `InstalmentPayment?` | optional |  |
 
 Indexes: `@@index([orderId])` · `@@index([status])` · `@@index([provider, status])`
 

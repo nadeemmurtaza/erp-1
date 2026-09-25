@@ -128,6 +128,9 @@ model Order {
   /// giftcards.prisma — gift-card/store-credit tender applied to this order, and any gift card this order purchased (WO-5.4/5.5).
   giftCardTransactions    GiftCardTransaction[]
   storeCreditTransactions StoreCreditTransaction[]
+  /// instalments.prisma (finance-accounting/151-layby-installment-sales.md)
+  /// — null for every ordinary immediate-tender-in-full sale.
+  instalmentPlan          InstalmentPlan?
   giftCardsSold           GiftCard[]               @relation("GiftCardSourceOrder")
   /// Phase 7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
   loyaltyTransactions     LoyaltyTransaction[]

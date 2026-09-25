@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-816 files · 115,260 lines
+823 files · 116,232 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -29,10 +29,10 @@ Structure: `src/core/` is the shared platform every deployment runs;
 |---|---|---|---|
 | `apps/api` | 10 | 842 | file, script, json, module |
 | `apps/api/prisma` | 3 | 3,163 | module |
-| `apps/api/prisma/schema` | 117 | 13,290 | prisma schema, migration, toml |
+| `apps/api/prisma/schema` | 120 | 13,455 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 143 | nest module, module |
-| `apps/api/src/core` | 151 | 17,849 | unit test, service, module, controller |
-| `apps/api/src/modules` | 506 | 72,328 | nest module, unit test, service, controller |
+| `apps/api/src/core` | 151 | 17,852 | unit test, service, module, controller |
+| `apps/api/src/modules` | 510 | 73,132 | nest module, unit test, service, controller |
 | `apps/api/test` | 25 | 7,564 | e2e test, unit test, module |
 | `apps/api/test/support` | 2 | 81 | module |
 
@@ -52,7 +52,7 @@ Structure: `src/core/` is the shared platform every deployment runs;
 |---|---|---|---|
 | `apps/api/prisma/seed.ts` | 3,068 | module |  |
 | `apps/api/src/modules/analytics/analytics.service.ts` | 2,410 | service |  |
-| `apps/api/src/modules/orders/orders.service.ts` | 1,226 | service |  |
+| `apps/api/src/modules/orders/orders.service.ts` | 1,300 | service |  |
 | `apps/api/src/core/notifications/email/templates.ts` | 1,091 | module |  |
 | `apps/api/prisma/schema/migrations/20260816133646_init/migration.sql` | 1,076 | migration |  |
 | `apps/api/test/orders.e2e-spec.ts` | 950 | e2e test |  |

@@ -725,7 +725,7 @@ All 394 tracked files in `docs/*`, by directory.
 | `137-payment-method-resilience-audit.md` | doc | 75 |  |
 | `145-receivables-credit-limits-dunning.md` | doc | 358 |  |
 | `147-fixed-asset-depreciation.md` | doc | 259 |  |
-| `151-layby-installment-sales.md` | doc | 201 |  |
+| `151-layby-installment-sales.md` | doc | 253 |  |
 | `49-financial-institution-settlement-partnerships.md` | doc | 265 |  |
 | `56-overdue-invoices-counter.md` | doc | 111 |  |
 | `68-realtime-gross-profit.md` | doc | 213 |  |

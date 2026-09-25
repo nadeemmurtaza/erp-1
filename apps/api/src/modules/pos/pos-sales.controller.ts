@@ -14,10 +14,16 @@ export class PosSalesController {
   @Post(':id/sales')
   @ApiOperation({ summary: 'Ring up a sale against an open shift — posts stock and a paid cash Order' })
   async sell(@Param('id') shiftId: string, @Body() dto: CreatePosSaleDto, @CurrentUser() user: AuthenticatedUser) {
-    return this.sales.sell(shiftId, user.id, dto.lines, {
-      customerName: dto.customerName,
-      customerPhone: dto.customerPhone,
-      customerEmail: dto.customerEmail,
-    });
+    return this.sales.sell(
+      shiftId,
+      user.id,
+      dto.lines,
+      {
+        customerName: dto.customerName,
+        customerPhone: dto.customerPhone,
+        customerEmail: dto.customerEmail,
+      },
+      dto.instalmentPlan,
+    );
   }
 }

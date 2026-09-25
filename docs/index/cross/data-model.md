@@ -3,7 +3,7 @@
 
 # Data model
 
-All **237** Prisma models and **108** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **240** Prisma models and **110** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -38,6 +38,7 @@ against a real database.
 | [`giftcards.prisma`](../data/giftcards.md) | 3 | 1 | [`giftcards`](../modules/giftcards.md) | GiftCard, GiftCardTransaction, StoreCreditTransaction |
 | [`hr.prisma`](../data/hr.md) | 2 | 1 | [`hr`](../modules/hr.md) | Asset, AssetAssignment |
 | [`identity-verification.prisma`](../data/identity-verification.md) | 1 | 1 | [`identity-verification`](../modules/identity-verification.md) | IdentityVerification |
+| [`instalments.prisma`](../data/instalments.md) | 3 | 2 | core platform | InstalmentPayment, InstalmentPlan, InstalmentScheduleLine |
 | [`inventory.prisma`](../data/inventory.md) | 12 | 6 | [`inventory`](../modules/inventory.md) | Location, MarkdownSuggestion, SpotCheck, SpotCheckLine, SpotCheckPolicy, StockCount, StockCountLine, StockMovement, StockVariance… |
 | [`invoicing.prisma`](../data/invoicing.md) | 4 | 2 | core platform | Invoice, InvoiceLine, Quote, QuoteLine |
 | [`loyalty.prisma`](../data/loyalty.md) | 3 | 1 | [`loyalty`](../modules/loyalty.md) | LoyaltyTier, LoyaltyTransaction, Referral |
@@ -137,6 +138,9 @@ against a real database.
 | [`IdentityVerification`](../data/identity-verification.md#identityverification) | `identity-verification` | 12 | 1 | id |  |
 | [`InboundEmail`](../data/crm.md#inboundemail) | `crm` | 17 | 3 | id | A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-i… |
 | [`InboundEmailReply`](../data/crm.md#inboundemailreply) | `crm` | 7 | 2 | id | A staff reply sent from the Support Inbox, over the SAME connected mailbox the original m… |
+| [`InstalmentPayment`](../data/instalments.md#instalmentpayment) | `instalments` | 7 | 2 | id | One row per actual payment received — never assumed to match the schedule exactly; a cust… |
+| [`InstalmentPlan`](../data/instalments.md#instalmentplan) | `instalments` | 12 | 1 | id |  |
+| [`InstalmentScheduleLine`](../data/instalments.md#instalmentscheduleline) | `instalments` | 5 | 1 | id |  |
 | [`Interaction`](../data/crm.md#interaction) | `crm` | 11 | 3 | id |  |
 | [`InterBranchInvoice`](../data/transfers.md#interbranchinvoice) | `transfers` | 9 | 1 | id | R12/R17's settlement document for an INVOICED transfer (WO-22.3) — the `transfers` module… |
 | [`InterBranchInvoiceNumberCounter`](../data/transfers.md#interbranchinvoicenumbercounter) | `transfers` | 2 | 0 | year | Same shape as TransferNumberCounter, one counter per InterBranchInvoice rather than shari… |
@@ -172,7 +176,7 @@ against a real database.
 | [`OptionTemplateTranslation`](../data/catalog.md#optiontemplatetranslation) | `catalog` | 5 | 1 | id |  |
 | [`OptionTemplateValue`](../data/catalog.md#optiontemplatevalue) | `catalog` | 8 | 1 | id |  |
 | [`OptionTemplateValueTranslation`](../data/catalog.md#optiontemplatevaluetranslation) | `catalog` | 5 | 1 | id |  |
-| [`Order`](../data/orders.md#order) | `orders` | 55 | 5 | id |  |
+| [`Order`](../data/orders.md#order) | `orders` | 56 | 5 | id |  |
 | [`OrderDiscount`](../data/promotions.md#orderdiscount) | `promotions` | 10 | 2 | id | Which discounts an order actually received, so it can explain itself. |
 | [`OrderEconomics`](../data/finance.md#ordereconomics) | `finance` | 12 | 1 | orderId | One row per order, written when it reaches DELIVERED and recomputed if it is later RETURN… |
 | [`OrderItem`](../data/orders.md#orderitem) | `orders` | 38 | 4 | id |  |
@@ -185,7 +189,7 @@ against a real database.
 | [`Party`](../data/parties.md#party) | `parties` | 16 | 0 | id |  |
 | [`PartyRoleAssignment`](../data/parties.md#partyroleassignment) | `parties` | 4 | 1 | id |  |
 | [`PasswordResetToken`](../data/core.md#passwordresettoken) | `core` | 7 | 1 | id | A one-time token mailed to reset a forgotten password. |
-| [`Payment`](../data/payments.md#payment) | `payments` | 19 | 2 | id |  |
+| [`Payment`](../data/payments.md#payment) | `payments` | 20 | 2 | id |  |
 | [`PayRun`](../data/payroll.md#payrun) | `payroll` | 16 | 2 | id | The pay-run document (erp-lenses/38: "the pay run is a document, not a report"). |
 | [`PayRunAdjustment`](../data/payroll.md#payrunadjustment) | `payroll` | 11 | 3 | id | erp-lenses/38's "the overpayment has no way back": a line-level correction keyed to the o… |
 | [`PayRunLine`](../data/payroll.md#payrunline) | `payroll` | 13 | 3 | id | One line per employee per run. |
@@ -347,6 +351,8 @@ against a real database.
 | [`FiscalPeriodStatus`](../data/accounting.md#fiscalperiodstatus) | `accounting` | `OPEN` `CLOSED` `LOCKED` |
 | [`GiftCardStatus`](../data/giftcards.md#giftcardstatus) | `giftcards` | `ACTIVE` `REDEEMED` `EXPIRED` `CANCELLED` |
 | [`IdentityVerificationStatus`](../data/identity-verification.md#identityverificationstatus) | `identity-verification` | `NOT_STARTED` `PENDING` `APPROVED` `REJECTED` `EXPIRED` |
+| [`InstalmentPlanStatus`](../data/instalments.md#instalmentplanstatus) | `instalments` | `ACTIVE` `COMPLETED` `DEFAULTED` `CANCELLED` |
+| [`InstalmentPlanType`](../data/instalments.md#instalmentplantype) | `instalments` | `LAYBY` `INSTALMENT` |
 | [`InteractionKind`](../data/crm.md#interactionkind) | `crm` | `CALL` `WHATSAPP` `EMAIL` `SMS` `VISIT` `NOTE` `COMPLAINT` |
 | [`InvoiceStatus`](../data/invoicing.md#invoicestatus) | `invoicing` | `ISSUED` `PAID` `VOID` |
 | [`InvoiceStatus`](../data/platform.md#invoicestatus) | `platform` | `ISSUED` `CREDITED` |

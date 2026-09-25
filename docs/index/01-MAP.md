@@ -32,15 +32,15 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 816 | 115,260 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 394 | 62,752 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 372 | 59,386 | Next.js — admin console and customer storefront in one app |
+| `apps/api` | 823 | 116,232 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 394 | 62,804 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 372 | 59,595 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 28,096 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 22 | 9,108 | repository checks and generators (lint gates, this index) |
 | `apps/platform` | 115 | 7,571 |  |
-| `packages/shared` | 61 | 7,229 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 61 | 7,243 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
-| `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
+| `apps/pos` | 31 | 2,000 | Next.js PWA — offline-first point of sale |
 | `.claude` | 22 | 1,046 |  |
 | `packages/pos-core` | 13 | 481 | basket, tender, receipt and outbox maths, UI-free |
 | `deploy` | 12 | 401 | systemd units, backup and alert scripts, mail configuration |
@@ -79,7 +79,7 @@ Each is independent: no module imports another except through a named
 | [`measurements`](modules/measurements.md) | apparel | MODULES allowlist | 13 | 4 |
 | [`notification-preferences`](modules/notification-preferences.md) | core | MODULES allowlist | 2 | 1 |
 | [`onsitemessages`](modules/onsitemessages.md) | core | MODULES allowlist | 10 | — |
-| [`orders`](modules/orders.md) | core | MODULES allowlist | 7 | 6 |
+| [`orders`](modules/orders.md) | core | MODULES allowlist | 11 | 6 |
 | [`organization`](modules/organization.md) | core | MODULES allowlist | 15 | 5 |
 | [`parties`](modules/parties.md) | core | MODULES allowlist | 3 | 2 |
 | [`payments`](modules/payments.md) | core | MODULES allowlist | 7 | 1 |

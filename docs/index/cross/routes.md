@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **646** endpoints across **118** controllers, with the access rule that actually guards each one.
+All **650** endpoints across **119** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -625,13 +625,17 @@ never authorization.
 | GET | `/onsite-messages/active` | **PUBLIC** | `OnsiteMessagesController.active` |  |
 | POST | `/onsite-messages/newsletter` | **PUBLIC** | `OnsiteMessagesController.subscribe` |  |
 
-### [`orders`](../modules/orders.md) (7)
+### [`orders`](../modules/orders.md) (11)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/orders` | `orders.manage` | `OrdersAdminController.list` | All orders, filterable by status |
 | GET | `/admin/orders/:id` | `orders.manage` | `OrdersAdminController.get` |  |
 | POST | `/admin/orders/:id/status` | `orders.manage` | `OrdersAdminController.changeStatus` | Move the order along; cancelling restores stock |
+| GET | `/admin/orders/:orderId/instalments` | `pos.operate` | `InstalmentPlanController.get` | An order's instalment plan, its schedule, and every payment received so far |
+| POST | `/admin/orders/:orderId/instalments/cancel` | `pos.instalments.cancel` | `InstalmentPlanController.cancel` | Cancel an active plan — refunds or forfeits the deposit per the configured poli… |
+| POST | `/admin/orders/:orderId/instalments/default` | `pos.instalments.default` | `InstalmentPlanController.markDefaulted` | Mark an active plan defaulted — writes off the unpaid balance |
+| POST | `/admin/orders/:orderId/instalments/payments` | `pos.operate` | `InstalmentPlanController.recordPayment` | Record one instalment payment against the plan |
 | POST | `/orders` | **PUBLIC** | `OrdersController.place` | Place the order in the current cart |
 | GET | `/orders/:number` | signed-in | `OrdersController.get` | One order, for its owner |
 | POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` |  |

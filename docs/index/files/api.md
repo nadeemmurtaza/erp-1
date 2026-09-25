@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 816 tracked files in `apps/api`, by directory.
+All 823 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,7 +31,7 @@ All 816 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3068 |  |
 
-### `apps/api/prisma/schema` (41)
+### `apps/api/prisma/schema` (42)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -48,6 +48,7 @@ All 816 tracked files in `apps/api`, by directory.
 | `giftcards.prisma` | prisma schema | 92 | Phase 5 WO-5.4/5.5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
 | `hr.prisma` | prisma schema | 69 | Employee assets: which physical equipment (laptop, phone, uniform) is |
 | `identity-verification.prisma` | prisma schema | 40 | / Tracks a User's identity verification against nID (Newax's external |
+| `instalments.prisma` | prisma schema | 76 | Layby and instalment sales (finance-accounting/151-layby-installment-sales.md) |
 | `inventory.prisma` | prisma schema | 369 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
 | `invoicing.prisma` | prisma schema | 88 | Trading-partner invoices and quotes (WO-18.3's remaining "forth" |
 | `loyalty.prisma` | prisma schema | 85 | Phase 7 WO-7.7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
@@ -55,10 +56,10 @@ All 816 tracked files in `apps/api`, by directory.
 | `measurements.prisma` | prisma schema | 107 | Measurements: garment types, their measurement fields, and saved customer |
 | `notification-preferences.prisma` | prisma schema | 51 | Phase 7 WO-7.8 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `onsite-messaging.prisma` | prisma schema | 72 | On-site messaging. WO-8.6, |
-| `orders.prisma` | prisma schema | 358 | Orders and shipments. |
+| `orders.prisma` | prisma schema | 361 | Orders and shipments. |
 | `organization.prisma` | prisma schema | 182 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
 | `parties.prisma` | prisma schema | 52 | Parties: the permanent counterparty profile. One canonical record per |
-| `payments.prisma` | prisma schema | 48 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
+| `payments.prisma` | prisma schema | 51 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
 | `payroll.prisma` | prisma schema | 229 | Payroll: compensation rates, leave balances and pay runs |
 | `pos.prisma` | prisma schema | 139 | The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's |
 | `production.prisma` | prisma schema | 96 | Production: bills of materials and work orders for variants made in-house |
@@ -533,6 +534,18 @@ All 816 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 59 |  |
 
+### `apps/api/prisma/schema/migrations/20260925220000_add_instalment_plans` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 74 |  |
+
+### `apps/api/prisma/schema/migrations/20260925223000_add_instalment_payment_is_deposit` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 9 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -816,7 +829,7 @@ All 816 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 50 |  |
-| `settings.defaults.ts` | module | 426 |  |
+| `settings.defaults.ts` | module | 429 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 85 |  |
 
@@ -1334,7 +1347,7 @@ All 816 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `onsite-message.dto.ts` | dto | 155 |  |
 
-### `apps/api/src/modules/orders` (14)
+### `apps/api/src/modules/orders` (17)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1344,19 +1357,23 @@ All 816 tracked files in `apps/api`, by directory.
 | `cod-risk.cron.ts` | scheduled job | 82 |  |
 | `cod-risk.service.spec.ts` | unit test | 105 |  |
 | `cod-risk.service.ts` | service | 86 |  |
+| `instalment-plan.controller.ts` | controller | 52 |  |
+| `instalment-plan.service.spec.ts` | unit test | 239 |  |
+| `instalment-plan.service.ts` | service | 228 |  |
 | `notification.subscriber.ts` | event subscriber | 259 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 |  |
 | `order-replication.listener.ts` | event subscriber | 53 |  |
-| `orders-pos.service.spec.ts` | unit test | 275 |  |
+| `orders-pos.service.spec.ts` | unit test | 403 |  |
 | `orders.controller.ts` | controller | 145 |  |
-| `orders.module.ts` | nest module | 50 |  |
-| `orders.service.ts` | service | 1226 |  |
+| `orders.module.ts` | nest module | 53 |  |
+| `orders.service.ts` | service | 1300 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 |  |
 
-### `apps/api/src/modules/orders/dto` (1)
+### `apps/api/src/modules/orders/dto` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `instalment-plan.dto.ts` | dto | 16 |  |
 | `order.dto.ts` | dto | 152 |  |
 
 ### `apps/api/src/modules/organization` (6)
@@ -1456,9 +1473,9 @@ All 816 tracked files in `apps/api`, by directory.
 | `pos-receipts.controller.ts` | controller | 24 |  |
 | `pos-receipts.service.spec.ts` | unit test | 110 |  |
 | `pos-receipts.service.ts` | service | 94 |  |
-| `pos-sales.controller.ts` | controller | 24 |  |
+| `pos-sales.controller.ts` | controller | 30 |  |
 | `pos-sales.service.spec.ts` | unit test | 79 |  |
-| `pos-sales.service.ts` | service | 59 |  |
+| `pos-sales.service.ts` | service | 63 |  |
 | `pos-shifts.controller.ts` | controller | 55 |  |
 | `pos-shifts.service.spec.ts` | unit test | 177 |  |
 | `pos-shifts.service.ts` | service | 139 |  |
@@ -1471,7 +1488,7 @@ All 816 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `pos-sale.dto.ts` | dto | 40 |  |
+| `pos-sale.dto.ts` | dto | 94 |  |
 | `pos-shift.dto.ts` | dto | 44 |  |
 | `pos-terminal.dto.ts` | dto | 27 |  |
 

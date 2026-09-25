@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `CityCodRiskStat`  <sub>`apps/api/prisma/schema/orders.prisma:326`</sub>
+### `CityCodRiskStat`  <sub>`apps/api/prisma/schema/orders.prisma:329`</sub>
 
 > WO-9.4 (09-ai-layer.md) — nightly-cached inputs to CodRiskService's "city RTO rate" and "order value versus the city's average" signals.
 
@@ -89,12 +89,13 @@ against a real database.
 | `orderDiscounts` | `OrderDiscount[]` |  |  |
 | `giftCardTransactions` | `GiftCardTransaction[]` |  |  |
 | `storeCreditTransactions` | `StoreCreditTransaction[]` |  |  |
+| `instalmentPlan` | `InstalmentPlan?` | optional |  |
 | `giftCardsSold` | `GiftCard[]` | relation | @relation("GiftCardSourceOrder") |
 | `loyaltyTransactions` | `LoyaltyTransaction[]` |  |  |
 
 Indexes: `@@index([status, placedAt])` · `@@index([userId])` · `@@index([contactId])` · `@@index([guestPhone])` · `@@index([channel])` · `@@index([shiftId])` · `@@index([sourceCartId])` · `@@index([codRiskAction, placedAt])`
 
-### `OrderItem`  <sub>`apps/api/prisma/schema/orders.prisma:156`</sub>
+### `OrderItem`  <sub>`apps/api/prisma/schema/orders.prisma:159`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -139,7 +140,7 @@ Indexes: `@@index([status, placedAt])` · `@@index([userId])` · `@@index([conta
 
 Indexes: `@@index([orderId])` · `@@index([productId])`
 
-### `OrderNumberCounter`  <sub>`apps/api/prisma/schema/orders.prisma:354`</sub>
+### `OrderNumberCounter`  <sub>`apps/api/prisma/schema/orders.prisma:357`</sub>
 
 > Backing store for sequential per-year order numbers (YSN-2026-0001).
 
@@ -148,7 +149,7 @@ Indexes: `@@index([orderId])` · `@@index([productId])`
 | `year` | `Int` | id | @id |
 | `counter` | `Int` |  | @default(0) |
 
-### `OrderStatusEvent`  <sub>`apps/api/prisma/schema/orders.prisma:243`</sub>
+### `OrderStatusEvent`  <sub>`apps/api/prisma/schema/orders.prisma:246`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -164,7 +165,7 @@ Indexes: `@@index([orderId])` · `@@index([productId])`
 
 Indexes: `@@index([orderId, createdAt])`
 
-### `Shipment`  <sub>`apps/api/prisma/schema/orders.prisma:267`</sub>
+### `Shipment`  <sub>`apps/api/prisma/schema/orders.prisma:270`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -219,7 +220,7 @@ Indexes: `@@index([orderId])` · `@@index([trackingNumber])` · `@@index([status
 | `WEB` |  |
 | `POS` |  |
 
-### `OrderItemFulfillmentStatus`  <sub>`apps/api/prisma/schema/orders.prisma:145`</sub>
+### `OrderItemFulfillmentStatus`  <sub>`apps/api/prisma/schema/orders.prisma:148`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -242,7 +243,7 @@ Indexes: `@@index([orderId])` · `@@index([trackingNumber])` · `@@index([status
 | `CANCELLED` |  |
 | `RETURNED` |  |
 
-### `ShipmentStatus`  <sub>`apps/api/prisma/schema/orders.prisma:258`</sub>
+### `ShipmentStatus`  <sub>`apps/api/prisma/schema/orders.prisma:261`</sub>
 
 | Value | Meaning |
 |---|---|

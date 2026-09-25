@@ -40,6 +40,9 @@ model Payment {
 
   order      Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
   approvedBy User? @relation("PaymentApprover", fields: [approvedById], references: [id], onDelete: SetNull)
+  /// instalments.prisma — set only for a payment that is a deposit or a
+  /// scheduled instalment against a layby/instalment plan.
+  instalmentPayment InstalmentPayment?
 
   @@index([orderId])
   @@index([status])

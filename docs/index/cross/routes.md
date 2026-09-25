@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **580** endpoints across **104** controllers, with the access rule that actually guards each one.
+All **585** endpoints across **105** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -296,6 +296,12 @@ never authorization.
 | GET | `/content/posts` | **PUBLIC** | `ContentController.listPosts` |  |
 | GET | `/content/posts/:slug` | **PUBLIC** | `ContentController.getPost` |  |
 
+### [`core/action-hub`](../core/action-hub.md) (1)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/action-hub` | `analytics.view` | `ActionHubController.collect` | Every action item pending on the caller, merged from every registered source |
+
 ### [`core/auth`](../core/auth.md) (15)
 
 | Method | Path | Access | Handler | Summary |
@@ -361,7 +367,7 @@ never authorization.
 |---|---|---|---|---|
 | GET | `/files/*path` | **PUBLIC** | `FilesController.serve` |  |
 
-### [`crm`](../modules/crm.md) (31)
+### [`crm`](../modules/crm.md) (33)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -372,6 +378,8 @@ never authorization.
 | POST | `/admin/crm/contacts/:id/tags` | `crm.manage` | `CrmAdminController.tagContact` | Tag a contact — repeat buyer, bridal, wholesale… |
 | DELETE | `/admin/crm/contacts/:id/tags/:tagId` | `crm.manage` | `CrmAdminController.untagContact` |  |
 | GET | `/admin/crm/contacts/export` | `crm.manage` | `CrmAdminController.exportContacts` |  |
+| POST | `/admin/crm/contacts/import` | `crm.manage` | `CrmAdminController.importContacts` | Bulk create or update contacts from a CSV file |
+| GET | `/admin/crm/contacts/import/template` | `crm.manage` | `CrmAdminController.contactImportTemplate` | Download the CSV template for bulk contact upload |
 | POST | `/admin/crm/follow-ups` | `crm.manage` | `CrmAdminController.addFollowUp` | Schedule a follow-up |
 | POST | `/admin/crm/follow-ups/:id/done` | `crm.manage` | `CrmAdminController.completeFollowUp` |  |
 | GET | `/admin/crm/follow-ups/due` | `crm.manage` | `CrmAdminController.dueFollowUps` | Follow-ups due today or overdue |
@@ -397,7 +405,7 @@ never authorization.
 | POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` | Contact-form enquiry — becomes a lead in the CRM |
 | POST | `/whatsapp/webhook` | **PUBLIC** | `WhatsAppWebhookController.webhook` | Inbound WhatsApp message (signature-verified, not session-authenticated) |
 
-### [`finance`](../modules/finance.md) (14)
+### [`finance`](../modules/finance.md) (16)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -411,6 +419,8 @@ never authorization.
 | PATCH | `/admin/finance/expenses/:id` | `finance.manage` | `FinanceController.updateExpense` | Edit an expense |
 | POST | `/admin/finance/expenses/:id/receipt` | `finance.manage` | `FinanceController.uploadReceipt` | Attach a receipt image or PDF to an expense |
 | GET | `/admin/finance/expenses/by-category` | `finance.view` | `FinanceController.byCategory` | Expense totals by category — share, period-over-period change, and share of rev… |
+| POST | `/admin/finance/expenses/import` | `finance.manage` | `FinanceController.importExpenses` | Bulk record expenses from a CSV file (a paper expense log) |
+| GET | `/admin/finance/expenses/import/template` | `finance.manage` | `FinanceController.expenseImportTemplate` | Download the CSV template for bulk expense upload |
 | GET | `/admin/finance/expenses/summary` | `finance.view` | `FinanceController.summary` | Totals, per-category breakdown and a daily series |
 | GET | `/admin/finance/expenses/trend` | `finance.view` | `FinanceController.trend` | Expense totals over time, bucketed by day or month |
 | GET | `/admin/finance/margins` | `finance.view` | `FinanceController.margins` | Margin by product, category or variant (WO-4.3, 04-finance.md) |

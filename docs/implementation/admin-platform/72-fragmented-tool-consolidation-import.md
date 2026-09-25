@@ -1,5 +1,16 @@
 # 72 — CSV onboarding: one real pattern already exists, extend it, don't re-invent it
 
+> **Status (2026-09-25): Built, with two named deviations.** WO-72.1
+> (`ContactImportService`), WO-72.2 (`ExpenseImportService`), WO-72.3
+> (dry-run on all three importers + shared `IMPORT_ROW_CAP`) and WO-72.4
+> (upload/preview/commit UI on the contacts and expenses lists) are all
+> built and tested. Two deviations from this brief's own text, both
+> documented in `DECISIONS.md`: the contacts CSV column is `city`, not
+> `address` (`Contact` has no `address` field); the closed-fiscal-period
+> acceptance criterion is not enforced for imported expenses, because no
+> write path in this codebase enforces it today (a manually entered
+> expense dated into a CLOSED period is not refused either — see the ADR).
+
 "Purpose-built migration architecture... to replace disconnected
 spreadsheets (Excel), manual paper logs, and informal chat messaging
 (WhatsApp) with a centralized ledger" is broad promotional language for a

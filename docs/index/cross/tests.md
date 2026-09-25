@@ -3,7 +3,7 @@
 
 # Tests
 
-**187** spec files, **1,754** cases. What is already pinned down — and what is not.
+**192** spec files, **1,778** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -55,10 +55,11 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (169)
+## Unit and integration (174)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
+| `apps/api/src/core/action-hub/action-hub-registry.service.spec.ts` | core/action-hub | 6 | ActionHubRegistryService |
 | `apps/api/src/core/ai/ai.service.spec.ts` | core/ai | 16 | AiService · isAvailable · no provider configured · complete · embed · underBudget · monthToDateSpen… |
 | `apps/api/src/core/approvals/approval.service.spec.ts` | core/approvals | 11 | ApprovalService — 63-multi-tier-approval-hierarchies.md, scoped to PURCHASE_REQUISITION · start · d… |
 | `apps/api/src/core/auth/auth.service.spec.ts` | core/auth | 2 | parseDuration |
@@ -113,15 +114,18 @@ regression or an N+1.
 | `apps/api/src/modules/cart/cart.guest-contact.spec.ts` | cart | 4 | CartService.updateGuestContact |
 | `apps/api/src/modules/catalog/ai-suggestions.service.spec.ts` | catalog | 16 | AiSuggestionsService · generateForProduct · generateBulk · listQueue · approve · reject · approveBu… |
 | `apps/api/src/modules/catalog/product-admin.service.spec.ts` | catalog | 13 | assertKindRules · assertUniqueSkus |
+| `apps/api/src/modules/catalog/product-import.service.spec.ts` | catalog | 3 | ProductImportService — dry run |
 | `apps/api/src/modules/catalog/product-replication.listener.spec.ts` | catalog | 7 | ProductReplicationListener — WO-20.3 · onModuleInit · onProductPublished · onProductPriceChanged ·… |
 | `apps/api/src/modules/collections/collections.service.spec.ts` | collections | 6 | CollectionsService |
 | `apps/api/src/modules/content/content.service.spec.ts` | content | 9 | ContentService · pages · banners · menu items |
+| `apps/api/src/modules/crm/contact-import.service.spec.ts` | crm | 5 | ContactImportService |
 | `apps/api/src/modules/crm/email-inbox/email-inbox.service.spec.ts` | crm | 7 | EmailInboxService · reply |
 | `apps/api/src/modules/crm/rfm-scoring.cron.spec.ts` | crm | 1 | RfmScoringCron |
 | `apps/api/src/modules/crm/segments.service.spec.ts` | crm | 4 | SegmentsService |
 | `apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.controller.spec.ts` | crm | 4 | WhatsAppWebhookController |
 | `apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.service.spec.ts` | crm | 18 | WhatsAppAssistantService · verifyWebhookSignature · handleInbound — identity · handleInbound — idem… |
 | `apps/api/src/modules/crm/whatsapp-assistant/whatsapp-copy.spec.ts` | crm | 5 | whatsapp-copy · detectWhatsAppLocale · whatsAppAssistantCopy |
+| `apps/api/src/modules/finance/expense-import.service.spec.ts` | finance | 5 | ExpenseImportService |
 | `apps/api/src/modules/finance/expense-replication.listener.spec.ts` | finance | 3 | ExpenseReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onExpenseRecorded |
 | `apps/api/src/modules/finance/finance-margins.spec.ts` | finance | 4 | FinanceService margins and unit economics · marginBy · unitEconomics |
 | `apps/api/src/modules/finance/finance.cron.spec.ts` | finance | 3 | FinanceCron |
@@ -158,6 +162,7 @@ regression or an N+1.
 | `apps/api/src/modules/parties/parties.service.spec.ts` | parties | 7 | PartiesService · get · dedupeCandidate · findOrCreateForRole · search |
 | `apps/api/src/modules/payments/providers/callback-verification.spec.ts` | payments | 8 | Easypaisa callback verification · JazzCash callback verification |
 | `apps/api/src/modules/payroll/leave-accrual.cron.spec.ts` | payroll | 3 | LeaveAccrualCron |
+| `apps/api/src/modules/payroll/leave-request-action.source.spec.ts` | payroll | 5 | LeaveRequestActionSource |
 | `apps/api/src/modules/payroll/leave.service.spec.ts` | payroll | 16 | LeaveService · countWorkingDays · requestLeave / cancel · decide · accrue |
 | `apps/api/src/modules/payroll/pay-run.service.spec.ts` | payroll | 15 | PayRunService · build · approve / post lifecycle · postAdjustment — WO-19.5 |
 | `apps/api/src/modules/payroll/payroll.service.spec.ts` | payroll | 15 | PayrollService · setCompensationRate · calculateGross — MONTHLY · calculateGross — HOURLY / COMMISS… |

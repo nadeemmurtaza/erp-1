@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 732 tracked files in `apps/api`, by directory.
+All 744 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -505,7 +505,17 @@ All 732 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `core.module.ts` | nest module | 45 |  |
+| `core.module.ts` | nest module | 47 |  |
+
+### `apps/api/src/core/action-hub` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `action-hub-registry.service.spec.ts` | unit test | 82 |  |
+| `action-hub-registry.service.ts` | service | 66 |  |
+| `action-hub-source.ts` | module | 52 |  |
+| `action-hub.controller.ts` | controller | 26 |  |
+| `action-hub.module.ts` | nest module | 19 |  |
 
 ### `apps/api/src/core/ai` (4)
 
@@ -892,7 +902,7 @@ All 732 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `cart.dto.ts` | dto | 150 |  |
 
-### `apps/api/src/modules/catalog` (23)
+### `apps/api/src/modules/catalog` (24)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -900,7 +910,7 @@ All 732 tracked files in `apps/api`, by directory.
 | `ai-suggestions.service.spec.ts` | unit test | 314 |  |
 | `ai-suggestions.service.ts` | service | 352 |  |
 | `brand-admin.service.ts` | service | 170 |  |
-| `catalog-admin.controller.ts` | controller | 284 |  |
+| `catalog-admin.controller.ts` | controller | 285 |  |
 | `catalog-options-admin.controller.ts` | controller | 105 |  |
 | `catalog.controller.ts` | controller | 51 |  |
 | `catalog.module.ts` | nest module | 55 |  |
@@ -909,7 +919,8 @@ All 732 tracked files in `apps/api`, by directory.
 | `option-template-admin.service.ts` | service | 125 |  |
 | `product-admin.service.spec.ts` | unit test | 109 |  |
 | `product-admin.service.ts` | service | 739 |  |
-| `product-import.service.ts` | service | 476 |  |
+| `product-import.service.spec.ts` | unit test | 77 |  |
+| `product-import.service.ts` | service | 509 |  |
 | `product-option-admin.service.ts` | service | 248 |  |
 | `product-replication.listener.spec.ts` | unit test | 120 |  |
 | `product-replication.listener.ts` | event subscriber | 77 |  |
@@ -963,12 +974,14 @@ All 732 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `content.dto.ts` | dto | 398 |  |
 
-### `apps/api/src/modules/crm` (10)
+### `apps/api/src/modules/crm` (12)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `crm.controller.ts` | controller | 199 |  |
-| `crm.module.ts` | nest module | 37 |  |
+| `contact-import.service.spec.ts` | unit test | 81 |  |
+| `contact-import.service.ts` | service | 187 |  |
+| `crm.controller.ts` | controller | 238 |  |
+| `crm.module.ts` | nest module | 39 |  |
 | `crm.service.ts` | service | 556 |  |
 | `order.subscriber.ts` | event subscriber | 87 |  |
 | `rfm-scoring.cron.spec.ts` | unit test | 44 |  |
@@ -1007,21 +1020,23 @@ All 732 tracked files in `apps/api`, by directory.
 | `whatsapp-copy.spec.ts` | unit test | 31 |  |
 | `whatsapp-copy.ts` | module | 48 |  |
 
-### `apps/api/src/modules/finance` (16)
+### `apps/api/src/modules/finance` (18)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `expense-import.service.spec.ts` | unit test | 75 |  |
+| `expense-import.service.ts` | service | 179 |  |
 | `expense-replication.listener.spec.ts` | unit test | 61 |  |
 | `expense-replication.listener.ts` | event subscriber | 50 |  |
 | `finance-margins.spec.ts` | unit test | 161 |  |
-| `finance.controller.ts` | controller | 133 |  |
+| `finance.controller.ts` | controller | 176 |  |
 | `finance.cron.spec.ts` | unit test | 69 |  |
 | `finance.cron.ts` | scheduled job | 36 |  |
 | `finance.listener.spec.ts` | unit test | 48 |  |
 | `finance.listener.ts` | event subscriber | 27 |  |
 | `finance.metrics.spec.ts` | unit test | 63 |  |
 | `finance.metrics.ts` | module | 125 |  |
-| `finance.module.ts` | nest module | 24 |  |
+| `finance.module.ts` | nest module | 26 |  |
 | `finance.service.ts` | service | 675 |  |
 | `finance.spec.ts` | unit test | 522 |  |
 | `order-economics.service.spec.ts` | unit test | 216 |  |
@@ -1313,12 +1328,14 @@ All 732 tracked files in `apps/api`, by directory.
 | `giftkarta.provider.ts` | module | 185 |  |
 | `jazzcash.provider.ts` | module | 184 |  |
 
-### `apps/api/src/modules/payroll` (12)
+### `apps/api/src/modules/payroll` (14)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `leave-accrual.cron.spec.ts` | unit test | 73 |  |
 | `leave-accrual.cron.ts` | scheduled job | 45 |  |
+| `leave-request-action.source.spec.ts` | unit test | 84 |  |
+| `leave-request-action.source.ts` | module | 55 |  |
 | `leave.controller.ts` | controller | 81 |  |
 | `leave.service.spec.ts` | unit test | 224 |  |
 | `leave.service.ts` | service | 175 |  |
@@ -1326,7 +1343,7 @@ All 732 tracked files in `apps/api`, by directory.
 | `pay-run.service.spec.ts` | unit test | 282 |  |
 | `pay-run.service.ts` | service | 254 |  |
 | `payroll.controller.ts` | controller | 78 |  |
-| `payroll.module.ts` | nest module | 23 |  |
+| `payroll.module.ts` | nest module | 24 |  |
 | `payroll.service.spec.ts` | unit test | 182 |  |
 | `payroll.service.ts` | service | 159 |  |
 

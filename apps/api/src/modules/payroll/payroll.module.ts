@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { LeaveAccrualCron } from './leave-accrual.cron';
 import { LeaveController } from './leave.controller';
 import { LeaveService } from './leave.service';
+import { LeaveRequestActionSource } from './leave-request-action.source';
 import { PayRunController } from './pay-run.controller';
 import { PayRunService } from './pay-run.service';
 import { PayrollController } from './payroll.controller';
@@ -16,7 +17,7 @@ import { PayrollService } from './payroll.service';
  */
 @Module({
   controllers: [PayrollController, LeaveController, PayRunController],
-  providers: [PayrollService, LeaveService, LeaveAccrualCron, PayRunService],
+  providers: [PayrollService, LeaveService, LeaveAccrualCron, PayRunService, LeaveRequestActionSource],
   exports: [PayrollService, LeaveService, PayRunService],
 })
 export class PayrollModule {}

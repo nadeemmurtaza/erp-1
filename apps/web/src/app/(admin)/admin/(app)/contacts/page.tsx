@@ -186,6 +186,9 @@ export default function AdminContactsPage() {
           <Link href={ROUTES.admin.customerInsights} className="btn-secondary">
             Insights
           </Link>
+          <Link href={ROUTES.admin.contactsImport} className="btn-secondary">
+            Import
+          </Link>
           <button type="button" onClick={() => void exportCsv()} disabled={busy} className="btn-secondary">
             Export this list
           </button>

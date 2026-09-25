@@ -3,7 +3,7 @@
 
 # Components
 
-All **101** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **103** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 171 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 175 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 4 |  |
 
 ### `apps/pos/src/components` (2)
@@ -41,13 +41,14 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `receipt-view.tsx` | `ReceiptView` | server | 1 |  |
 | `service-worker-registration.tsx` | `ServiceWorkerRegistration` | client | 1 |  |
 
-### `apps/web/src/components/admin` (16)
+### `apps/web/src/components/admin` (17)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `admin-shell.tsx` | `AdminShell` | client | 1 |  |
 | `command-palette.tsx` | `CommandPalette` | client | 1 |  |
 | `cross-sell-manager.tsx` | `CrossSellManager` | client | 1 |  |
+| `csv-import-card.tsx` | `CsvImportCard` | client | 2 |  |
 | `deployment-modules.tsx` | `EnabledModulesProvider` `useEnabledModules` | client | 5 |  |
 | `funnel-chart.tsx` | `FunnelStage` `FunnelChart` | client | 1 |  |
 | `gauge-chart.tsx` | `GaugeChart` | client | 2 |  |
@@ -99,10 +100,11 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `sparkline-chart.tsx` | `SparklineChart` | client | 1 |  |
 | `time-series-chart.tsx` | `TimeSeriesSeriesDef` `TimeSeriesChart` | client | 1 |  |
 
-### `apps/web/src/components/admin/dashboard` (4)
+### `apps/web/src/components/admin/dashboard` (5)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
+| `action-hub-widget.tsx` | `ActionHubWidget` | client | 1 |  |
 | `card-group.tsx` | `CardGroup` | client | 1 |  |
 | `comparison-panel.tsx` | `ComparisonPanel` | client | 1 |  |
 | `metric-card.tsx` | `MetricCardData` `formatValue` `MetricCard` `MetricCardWithSparkline` | client | 4 |  |

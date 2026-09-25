@@ -73,6 +73,8 @@ export const ROUTES = {
     dashboard: '/admin',
     account: '/admin/account',
     login: '/admin/login',
+    /** The manager action hub's overflow screen (admin-platform/44-manager-action-hub.md WO-44.4). */
+    myActions: '/admin/my-actions',
 
     products: '/admin/products',
     productNew: '/admin/products/new',
@@ -102,6 +104,8 @@ export const ROUTES = {
     financeCashFlow: '/admin/finance/cash-flow',
     financeUnitEconomics: '/admin/finance/unit-economics',
     financeExpenses: '/admin/finance/expenses',
+    /** Bulk expense onboarding (admin-platform/72-fragmented-tool-consolidation-import.md WO-72.4). */
+    financeExpensesImport: '/admin/finance/expenses/import',
 
     bom: '/admin/bom',
 
@@ -154,6 +158,8 @@ export const ROUTES = {
 
     contacts: '/admin/contacts',
     contactSearch: (q: string) => `/admin/contacts?q=${encodeURIComponent(q)}`,
+    /** Bulk customer onboarding (admin-platform/72-fragmented-tool-consolidation-import.md WO-72.4). */
+    contactsImport: '/admin/contacts/import',
     /** Retired hand-built page (WO-D.5/E.2) — now the analytics report. */
     customerInsights: '/admin/analytics/customers/overview',
     leads: '/admin/leads',

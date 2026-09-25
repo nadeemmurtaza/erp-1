@@ -1,6 +1,7 @@
 'use client';
 
 import { use, useCallback, useEffect, useState } from 'react';
+import { toMajor, toMinor } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import type { AdminGarmentSizeChartRow } from '@/types/api';
 import { DataTable, Loading, PageHeader, SectionRail } from '@/components/ui';
@@ -67,7 +68,7 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
 
       setLabelEn(found.labelEn);
       setLabelUr(found.labelUr);
-      setStitchingPrice(String(found.stitchingPrice / 100));
+      setStitchingPrice(String(toMajor(found.stitchingPrice)));
       setStitchingEnabled(found.stitchingEnabled);
       setBaseFabricGaz(found.baseFabricGaz === null ? '' : String(found.baseFabricGaz));
       setAliasesEn(found.aliasesEn.join(', '));
@@ -99,7 +100,7 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
           key: garment.key,
           labelEn: labelEn.trim(),
           labelUr: labelUr.trim(),
-          stitchingPrice: Math.round(Number(stitchingPrice || 0) * 100),
+          stitchingPrice: toMinor(Number(stitchingPrice || 0)),
           stitchingEnabled,
           baseFabricGaz: baseFabricGaz.trim() === '' ? undefined : Number(baseFabricGaz),
           aliasesEn: splitAliases(aliasesEn),

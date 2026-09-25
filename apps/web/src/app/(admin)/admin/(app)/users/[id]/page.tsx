@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, use, useCallback, useEffect, useMemo, useState } from 'react';
+import { use, useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { adminFetch, getStoredUser } from '@/lib/admin-client';
 import type {
@@ -10,7 +10,7 @@ import type {
   PermissionOverride,
   RoleSummary,
 } from '@/types/api';
-import { Loading } from '@/components/ui';
+import { DataTable, Loading } from '@/components/ui';
 
 export default function UserDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -84,14 +84,17 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
     return set;
   }, [roleDefaults, overrides]);
 
-  const categories = useMemo(() => {
+  // Grouped by category, and made contiguous by category (DataTable's
+  // `groupBy` renders a header whenever the key changes between
+  // consecutive rows, so a permission's category must not skip around).
+  const groupedPermissions = useMemo(() => {
     const seen = new Map<string, PermissionDefinition[]>();
     for (const permission of permissions) {
       const list = seen.get(permission.category) ?? [];
       list.push(permission);
       seen.set(permission.category, list);
     }
-    return [...seen.entries()];
+    return [...seen.values()].flat();
   }, [permissions]);
 
   function toggle(key: string) {
@@ -404,49 +407,49 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
           </button>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="table-flat">
-            <tbody className="divide-y divide-neutral-100">
-              {categories.map(([category, items]) => (
-                <Fragment key={category}>
-                  <tr className="bg-neutral-50/60">
-                    <td colSpan={3} className="px-4 py-1.5 text-xs font-semibold text-neutral-900/60">
-                      {category}
-                    </td>
-                  </tr>
-                  {items.map((permission) => {
-                    const overrideEffect = overrideByKey.get(permission.key);
-                    return (
-                      <tr key={permission.id}>
-                        <td className="w-10 py-2.5 text-center">
-                          <input
-                            type="checkbox"
-                            checked={effective.has(permission.key)}
-                            onChange={() => toggle(permission.key)}
-                            className="field-check"
-                          />
-                        </td>
-                        <td className="py-2.5">
-                          <span className="text-neutral-900">{permission.label}</span>
-                          <p className="text-xs text-neutral-900/60">{permission.key}</p>
-                        </td>
-                        <td className="py-2.5 text-end">
-                          {overrideEffect === 'GRANT' ? (
-                            <span className="font-medium text-green-700">granted (override)</span>
-                          ) : overrideEffect === 'REVOKE' ? (
-                            <span className="font-medium text-red-700">revoked (override)</span>
-                          ) : (
-                            <span className="text-neutral-900/60">role default</span>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </Fragment>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <DataTable
+          rows={groupedPermissions}
+          rowKey={(permission) => permission.id}
+          groupBy={(permission) => permission.category}
+          renderGroupHeader={(category) => category}
+          columns={[
+            {
+              header: '',
+              className: 'w-10 text-center',
+              cell: (permission) => (
+                <input
+                  type="checkbox"
+                  checked={effective.has(permission.key)}
+                  onChange={() => toggle(permission.key)}
+                  className="field-check"
+                />
+              ),
+            },
+            {
+              header: 'Permission',
+              cell: (permission) => (
+                <>
+                  <span className="text-neutral-900">{permission.label}</span>
+                  <p className="text-xs text-neutral-900/60">{permission.key}</p>
+                </>
+              ),
+            },
+            {
+              header: 'Status',
+              align: 'end',
+              cell: (permission) => {
+                const overrideEffect = overrideByKey.get(permission.key);
+                return overrideEffect === 'GRANT' ? (
+                  <span className="font-medium text-green-700">granted (override)</span>
+                ) : overrideEffect === 'REVOKE' ? (
+                  <span className="font-medium text-red-700">revoked (override)</span>
+                ) : (
+                  <span className="text-neutral-900/60">role default</span>
+                );
+              },
+            },
+          ]}
+        />
       </div>
     </>
   );

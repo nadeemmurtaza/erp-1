@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { formatDate, formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
+import { ROUTES } from '@/constants/routes';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/utils/cn';
 import { DataTable, MetricStrip, PageHeader } from '@/components/ui';
@@ -221,6 +222,9 @@ export default function ExpensesPage() {
             </Link>
             <Link href="/admin/finance/expenses/categories" className="btn-secondary">
               Categories
+            </Link>
+            <Link href={ROUTES.admin.financeExpensesImport} className="btn-secondary">
+              Import
             </Link>
           </div>
         }

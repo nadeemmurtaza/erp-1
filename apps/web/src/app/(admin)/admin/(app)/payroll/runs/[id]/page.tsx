@@ -1,7 +1,7 @@
 'use client';
 
 import { use, useCallback, useEffect, useState } from 'react';
-import { formatDate, formatMoney } from '@newax/shared';
+import { formatDate, formatMoney, toMinor } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { useAdminSession } from '@/components/admin/session';
 import { useToast } from '@/hooks/use-toast';
@@ -86,7 +86,7 @@ export default function PayrollRunDetailPage({ params }: { params: Promise<{ id:
         body: {
           userId: adjustUserId,
           reason: adjustReason,
-          amountMinor: Math.round(Number(adjustAmount) * 100),
+          amountMinor: toMinor(Number(adjustAmount)),
           note: adjustNote,
         },
       });

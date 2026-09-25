@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ContactImportService } from './contact-import.service';
 import { CrmAdminController, CrmPublicController } from './crm.controller';
 import { CrmService } from './crm.service';
 import { CrmOrderSubscriber } from './order.subscriber';
@@ -23,6 +24,7 @@ import { WhatsAppAssistantService } from './whatsapp-assistant/whatsapp-assistan
   ],
   providers: [
     CrmService,
+    ContactImportService,
     CrmOrderSubscriber,
     EmailInboxService,
     MailboxPollerCron,

@@ -3,20 +3,22 @@
 
 # Module: `crm`
 
-Pack **core** · enabled by the `MODULES` allowlist · 24 files
+Pack **core** · enabled by the `MODULES` allowlist · 26 files
 
 
 
 Source: `apps/api/src/modules/crm/`
 
-## Files (24 · 3,070 lines)
+## Files (26 · 3,379 lines)
 
 All paths relative to `apps/api/src/modules/crm`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `crm.controller.ts` | controller | 199 | 2 |  |
-| `crm.module.ts` | nest module | 37 | 1 |  |
+| `contact-import.service.spec.ts` | unit test | 81 | — |  |
+| `contact-import.service.ts` | service | 187 | 3 |  |
+| `crm.controller.ts` | controller | 238 | 2 |  |
+| `crm.module.ts` | nest module | 39 | 1 |  |
 | `crm.service.ts` | service | 556 | 2 |  |
 | `crm.dto.ts` | dto | 195 | 7 |  |
 | `segment.dto.ts` | dto | 42 | 3 |  |
@@ -41,27 +43,29 @@ All paths relative to `apps/api/src/modules/crm`.
 | `whatsapp-copy.ts` | module | 48 | 3 | The assistant's own fixed sentences — the ones sent instead of the model's words whenever this shop cannot safely answe… |
 
 
-## HTTP routes (31)
+## HTTP routes (33)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| POST | `/admin/crm/backfill` | `crm.manage` | `CrmAdminController.backfill` :151 |  |
-| GET | `/admin/crm/contacts` | `crm.manage` | `CrmAdminController.listContacts` :54 | Customers, filterable and searchable |
-| GET | `/admin/crm/contacts/:id` | `crm.manage` | `CrmAdminController.getContact` :117 |  |
-| PATCH | `/admin/crm/contacts/:id` | `crm.manage` | `CrmAdminController.updateContact` :122 |  |
-| POST | `/admin/crm/contacts/:id/tags` | `crm.manage` | `CrmAdminController.tagContact` :132 | Tag a contact — repeat buyer, bridal, wholesale… |
-| DELETE | `/admin/crm/contacts/:id/tags/:tagId` | `crm.manage` | `CrmAdminController.untagContact` :138 |  |
-| GET | `/admin/crm/contacts/export` | `crm.manage` | `CrmAdminController.exportContacts` :77 |  |
-| POST | `/admin/crm/follow-ups` | `crm.manage` | `CrmAdminController.addFollowUp` :168 | Schedule a follow-up |
-| POST | `/admin/crm/follow-ups/:id/done` | `crm.manage` | `CrmAdminController.completeFollowUp` :173 |  |
-| GET | `/admin/crm/follow-ups/due` | `crm.manage` | `CrmAdminController.dueFollowUps` :179 | Follow-ups due today or overdue |
+| POST | `/admin/crm/backfill` | `crm.manage` | `CrmAdminController.backfill` :164 |  |
+| GET | `/admin/crm/contacts` | `crm.manage` | `CrmAdminController.listContacts` :67 | Customers, filterable and searchable |
+| GET | `/admin/crm/contacts/:id` | `crm.manage` | `CrmAdminController.getContact` :130 |  |
+| PATCH | `/admin/crm/contacts/:id` | `crm.manage` | `CrmAdminController.updateContact` :135 |  |
+| POST | `/admin/crm/contacts/:id/tags` | `crm.manage` | `CrmAdminController.tagContact` :145 | Tag a contact — repeat buyer, bridal, wholesale… |
+| DELETE | `/admin/crm/contacts/:id/tags/:tagId` | `crm.manage` | `CrmAdminController.untagContact` :151 |  |
+| GET | `/admin/crm/contacts/export` | `crm.manage` | `CrmAdminController.exportContacts` :90 |  |
+| POST | `/admin/crm/contacts/import` | `crm.manage` | `CrmAdminController.importContacts` :227 | Bulk create or update contacts from a CSV file |
+| GET | `/admin/crm/contacts/import/template` | `crm.manage` | `CrmAdminController.contactImportTemplate` :218 | Download the CSV template for bulk contact upload |
+| POST | `/admin/crm/follow-ups` | `crm.manage` | `CrmAdminController.addFollowUp` :181 | Schedule a follow-up |
+| POST | `/admin/crm/follow-ups/:id/done` | `crm.manage` | `CrmAdminController.completeFollowUp` :186 |  |
+| GET | `/admin/crm/follow-ups/due` | `crm.manage` | `CrmAdminController.dueFollowUps` :192 | Follow-ups due today or overdue |
 | GET | `/admin/crm/inbox` | `crm.manage` | `EmailInboxAdminController.list` :22 | Messages pulled from connected mailboxes, newest first |
 | GET | `/admin/crm/inbox/:id` | `crm.manage` | `EmailInboxAdminController.get` :33 |  |
 | POST | `/admin/crm/inbox/:id/link` | `crm.manage` | `EmailInboxAdminController.link` :39 | Link an unrecognised sender to a contact |
 | POST | `/admin/crm/inbox/:id/reply` | `crm.manage` | `EmailInboxAdminController.reply` :49 | Reply from the same mailbox the message arrived at |
-| POST | `/admin/crm/interactions` | `crm.manage` | `CrmAdminController.addInteraction` :159 | Log a call, WhatsApp message, visit or complaint |
-| GET | `/admin/crm/leads` | `crm.manage` | `CrmAdminController.listLeads` :186 |  |
-| PATCH | `/admin/crm/leads/:id` | `crm.manage` | `CrmAdminController.updateLead` :191 |  |
+| POST | `/admin/crm/interactions` | `crm.manage` | `CrmAdminController.addInteraction` :172 | Log a call, WhatsApp message, visit or complaint |
+| GET | `/admin/crm/leads` | `crm.manage` | `CrmAdminController.listLeads` :199 |  |
+| PATCH | `/admin/crm/leads/:id` | `crm.manage` | `CrmAdminController.updateLead` :204 |  |
 | GET | `/admin/crm/segments` | `crm.manage` | `SegmentsAdminController.list` :14 |  |
 | POST | `/admin/crm/segments` | `crm.manage` | `SegmentsAdminController.create` :24 |  |
 | DELETE | `/admin/crm/segments/:id` | `crm.manage` | `SegmentsAdminController.remove` :34 |  |
@@ -69,12 +73,12 @@ All paths relative to `apps/api/src/modules/crm`.
 | PATCH | `/admin/crm/segments/:id` | `crm.manage` | `SegmentsAdminController.update` :29 |  |
 | GET | `/admin/crm/segments/:id/members` | `crm.manage` | `SegmentsAdminController.members` :39 |  |
 | POST | `/admin/crm/segments/preview` | `crm.manage` | `SegmentsAdminController.preview` :44 |  |
-| GET | `/admin/crm/tags` | `crm.manage` | `CrmAdminController.listTags` :143 |  |
+| GET | `/admin/crm/tags` | `crm.manage` | `CrmAdminController.listTags` :156 |  |
 | GET | `/admin/crm/whatsapp/conversations` | `crm.manage` | `WhatsAppAssistantAdminController.list` :79 | WhatsApp conversations, most recently active first |
 | GET | `/admin/crm/whatsapp/conversations/:id` | `crm.manage` | `WhatsAppAssistantAdminController.get` :90 |  |
 | POST | `/admin/crm/whatsapp/conversations/:id/reopen` | `crm.manage` | `WhatsAppAssistantAdminController.reopen` :102 | Let the assistant resume answering this conversation |
 | POST | `/admin/crm/whatsapp/conversations/:id/reply` | `crm.manage` | `WhatsAppAssistantAdminController.reply` :96 | Staff reply — hands the conversation off if it was not already |
-| POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` :39 | Contact-form enquiry — becomes a lead in the CRM |
+| POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` :44 | Contact-form enquiry — becomes a lead in the CRM |
 | POST | `/whatsapp/webhook` | **PUBLIC** | `WhatsAppWebhookController.webhook` :34 | Inbound WhatsApp message (signature-verified, not session-authenticated) |
 
 
@@ -129,7 +133,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`CrmModule`** (`crm.module.ts`)
 - imports: —
 - controllers: `CrmPublicController`, `CrmAdminController`, `EmailInboxAdminController`, `SegmentsAdminController`, `WhatsAppWebhookController`, `WhatsAppAssistantAdminController`
-- providers: `CrmService`, `CrmOrderSubscriber`, `EmailInboxService`, `MailboxPollerCron`, `RtoContactListener`, `SegmentsService`, `RfmScoringCron`, `WhatsAppAssistantService`
+- providers: `CrmService`, `ContactImportService`, `CrmOrderSubscriber`, `EmailInboxService`, `MailboxPollerCron`, `RtoContactListener`, `SegmentsService`, `RfmScoringCron`, `WhatsAppAssistantService`
 - exports: `CrmService`, `SegmentsService`
 
 
@@ -151,10 +155,11 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (6)
+## Tests (7)
 
 | Spec | Cases | Covers |
 |---|---|---|
+| `contact-import.service.spec.ts` | 5 | ContactImportService |
 | `email-inbox.service.spec.ts` | 7 | EmailInboxService · reply |
 | `rfm-scoring.cron.spec.ts` | 1 | RfmScoringCron |
 | `segments.service.spec.ts` | 4 | SegmentsService |
@@ -167,9 +172,12 @@ check there before adding another.
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `CrmPublicController` | class | `crm.controller.ts:33` |  |
-| `CrmAdminController` | class | `crm.controller.ts:47` |  |
-| `CrmModule` | class | `crm.module.ts:36` |  |
+| `ImportRowResult` | interface | `contact-import.service.ts:9` |  |
+| `ImportSummary` | interface | `contact-import.service.ts:16` |  |
+| `ContactImportService` | class | `contact-import.service.ts:45` | CSV onboarding for the customer book (admin-platform/72-fragmented-tool-consolidation-import.md WO-72.1) — th… |
+| `CrmPublicController` | class | `crm.controller.ts:38` |  |
+| `CrmAdminController` | class | `crm.controller.ts:57` |  |
+| `CrmModule` | class | `crm.module.ts:38` |  |
 | `UpsertContactInput` | interface | `crm.service.ts:8` |  |
 | `CrmService` | class | `crm.service.ts:31` | Customer records. |
 | `ContactQueryDto` | class | `crm.dto.ts:18` |  |

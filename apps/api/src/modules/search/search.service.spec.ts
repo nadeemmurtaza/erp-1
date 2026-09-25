@@ -33,7 +33,7 @@ describe('SearchService', () => {
     return `search-test-${Date.now()}-${seq}`;
   }
 
-  async function makeProduct(name: string, description: string, basePrice = 1000) {
+  async function makeProduct(name: string, description: string, basePrice = 1000, stock?: number) {
     const slug = tag();
     const product = await prisma.product.create({
       data: {
@@ -43,6 +43,9 @@ describe('SearchService', () => {
         categoryId,
         basePrice,
         translations: { create: [{ locale: 'en', name, description }] },
+        ...(stock !== undefined
+          ? { variants: { create: [{ sku: tag(), stock, isActive: true }] } }
+          : {}),
       },
     });
     await service.reindexProduct(product.id);
@@ -109,6 +112,40 @@ describe('SearchService', () => {
 
     const log = await prisma.searchQueryLog.findFirst({ where: { term: `nonexistent-${marker}` } });
     expect(log?.resultCount).toBe(0);
+  });
+
+  it('boosts an in-stock product above an out-of-stock one when browsing with no search term (WO-8.3 ranking rule)', async () => {
+    // No `q` means no rank tier at all, so a category filter scoped to a
+    // fresh category isolates exactly these two candidates — the only
+    // deterministic way to observe the availability tier on its own,
+    // since a ranked (term) search's RRF position scores never tie two
+    // candidates exactly, however identical their underlying ts_rank.
+    const marker = tag();
+    const category = await prisma.category.create({
+      data: { slug: tag(), translations: { create: [{ locale: 'en', name: `Cat ${marker}` }] } },
+    });
+    const outOfStock = await prisma.product.create({
+      data: {
+        slug: tag(),
+        kind: 'GOODS',
+        status: 'ACTIVE',
+        categoryId: category.id,
+        basePrice: 1000,
+        translations: { create: [{ locale: 'en', name: `Out of stock ${marker}` }] },
+      },
+    });
+    const inStock = await makeProduct(`In stock ${marker}`, '', 1000, 5);
+    await prisma.product.update({ where: { id: inStock.id }, data: { categoryId: category.id } });
+
+    const result = await service.search({ locale: 'en', category: category.id }, null);
+    const outIndex = result.data.findIndex((hit) => hit.id === outOfStock.id);
+    const inIndex = result.data.findIndex((hit) => hit.id === inStock.id);
+    expect(inIndex).toBeGreaterThanOrEqual(0);
+    expect(outIndex).toBeGreaterThanOrEqual(0);
+    expect(inIndex).toBeLessThan(outIndex);
+
+    await prisma.product.deleteMany({ where: { id: { in: [outOfStock.id, inStock.id] } } });
+    await prisma.category.delete({ where: { id: category.id } });
   });
 
   it('a price facet excludes its own filter but respects others', async () => {

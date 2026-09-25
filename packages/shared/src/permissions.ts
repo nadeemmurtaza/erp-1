@@ -606,13 +606,16 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'finance',
     label: 'Finance',
-    description: 'Record and edit operational expenses; issue credit/debit notes; set customer credit limits and the dunning policy.',
+    description: 'Record and edit operational expenses; issue credit/debit notes; set customer credit limits and the dunning policy; wallet adjustments and merchant-payable disputes.',
     permissions: [
       'finance.manage',
       'finance.credit-notes.create',
       'finance.credit-notes.approve',
       'finance.debit-notes.manage',
       'finance.credit-terms.manage',
+      'finance.wallets.adjust',
+      'finance.wallets.adjust.approve',
+      'finance.merchant-payables.dispute',
     ],
   },
   {

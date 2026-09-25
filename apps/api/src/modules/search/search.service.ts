@@ -41,7 +41,16 @@ const productInclude = {
   images: { where: { isPrimary: true }, take: 1 },
   brand: { include: { translations: true } },
   category: { include: { translations: true } },
+  // Selected only for the availability tier in sortHits() below — never
+  // rendered (toHit() doesn't read it) — so this stays a cheap projection,
+  // not a full variant fetch.
+  variants: { select: { stock: true, isActive: true } },
 } satisfies Prisma.ProductInclude;
+
+/** The doc's own definition of "in stock" (WO-8.3) — identical to buildWhere()'s `inStock` filter. */
+function isInStock(product: { variants: { stock: number; isActive: boolean }[] }): boolean {
+  return product.variants.some((v) => v.isActive && v.stock > 0);
+}
 
 /**
  * WO-8.3. Postgres full-text search, not Elasticsearch — the doc's own
@@ -133,9 +142,18 @@ export class SearchService {
       this.computeFacets(query, rankById ? [...rankById.keys()] : null),
     ]);
 
-    const sorted = rankById
-      ? [...products].sort((a, b) => (rankById!.get(b.id) ?? 0) - (rankById!.get(a.id) ?? 0))
-      : [...products].sort((a, b) => b.featuredRank - a.featuredRank);
+    // The doc's own ranking rule (WO-8.3): text relevance, then availability,
+    // then featuredRank — never one tier replacing another, each a
+    // tie-breaker for the one before it.
+    const sorted = [...products].sort((a, b) => {
+      if (rankById) {
+        const rankDiff = (rankById.get(b.id) ?? 0) - (rankById.get(a.id) ?? 0);
+        if (rankDiff !== 0) return rankDiff;
+      }
+      const stockDiff = Number(isInStock(b)) - Number(isInStock(a));
+      if (stockDiff !== 0) return stockDiff;
+      return b.featuredRank - a.featuredRank;
+    });
     const page_ = sorted.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
 
     await this.prisma.searchQueryLog.create({

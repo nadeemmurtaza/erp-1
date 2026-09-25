@@ -176,11 +176,11 @@ Every top-level export in `packages`, with the line to open.
 | `permissions.ts` | `PERMISSION_KEYS` | const | :472 |  |
 | `permissions.ts` | `PermissionGroup` | interface | :482 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
 | `permissions.ts` | `PERMISSION_GROUPS` | const | :489 |  |
-| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :656 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
-| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :800 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
-| `permissions.ts` | `PERMISSION_EFFECTS` | const | :805 |  |
-| `permissions.ts` | `PermissionEffect` | type | :806 |  |
-| `permissions.ts` | `PermissionOverride` | interface | :809 | One entry in a user's permission-override set (@see UserPermission). |
+| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :659 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
+| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :803 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
+| `permissions.ts` | `PERMISSION_EFFECTS` | const | :808 |  |
+| `permissions.ts` | `PermissionEffect` | type | :809 |  |
+| `permissions.ts` | `PermissionOverride` | interface | :812 | One entry in a user's permission-override set (@see UserPermission). |
 | `phone.ts` | `NormalizedPhone` | interface | :21 |  |
 | `phone.ts` | `normalizePhone` | function | :29 |  |
 | `phone.ts` | `isValidPhone` | function | :64 |  |

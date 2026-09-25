@@ -428,7 +428,7 @@ All 363 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 192 |  |
+| `page.tsx` | page | 367 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inbox` (1)
 
@@ -1345,7 +1345,7 @@ All 363 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 1403 |  |
+| `api.ts` | types | 1441 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

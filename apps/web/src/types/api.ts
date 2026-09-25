@@ -1334,3 +1334,27 @@ export interface ProductCrossSellRow {
   order: number;
   relatedProduct: { id: string; slug: string; name: string };
 }
+
+export type MarkdownSuggestionStatus = 'PENDING' | 'CREATED' | 'DISMISSED';
+
+export interface MarkdownSuggestion {
+  id: string;
+  variantId: string;
+  discountId: string | null;
+  suggestedBps: number;
+  estimatedClearancePct: number;
+  estimatedClearanceDays: number;
+  marginBeforePaisa: number;
+  marginAfterPaisa: number;
+  status: MarkdownSuggestionStatus;
+  createdAt: string;
+  resolvedAt: string | null;
+  variant: {
+    id: string;
+    sku: string;
+    size: string | null;
+    color: string | null;
+    stock: number;
+    product: { id: string; slug: string; translations: Array<{ name: string }> };
+  };
+}

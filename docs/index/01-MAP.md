@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 732 | 101,344 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 736 | 101,856 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `docs` | 392 | 60,235 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 345 | 53,021 | Next.js — admin console and customer storefront in one app |
+| `apps/web` | 345 | 53,215 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 28,074 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 22 | 8,651 | repository checks and generators (lint gates, this index) |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
-| `packages/shared` | 57 | 6,403 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 59 | 6,575 | brand, money, permissions, measurements, entities |
 | `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
 | `apps/platform` | 40 | 1,615 |  |
 | `.claude` | 22 | 1,017 |  |
@@ -72,7 +72,7 @@ Each is independent: no module imports another except through a named
 | [`fulfilment`](modules/fulfilment.md) | core | MODULES allowlist | 39 | 16 |
 | [`giftcards`](modules/giftcards.md) | core | MODULES allowlist | 10 | 3 |
 | [`identity-verification`](modules/identity-verification.md) | core | MODULES allowlist | 4 | 1 |
-| [`inventory`](modules/inventory.md) | core | MODULES allowlist | 26 | 12 |
+| [`inventory`](modules/inventory.md) | core | MODULES allowlist | 29 | 12 |
 | [`loyalty`](modules/loyalty.md) | core | MODULES allowlist | 11 | 3 |
 | [`marketing`](modules/marketing.md) | core | MODULES allowlist | 11 | 3 |
 | [`measurements`](modules/measurements.md) | apparel | MODULES allowlist | 13 | 4 |

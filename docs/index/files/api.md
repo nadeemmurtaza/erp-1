@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 732 tracked files in `apps/api`, by directory.
+All 736 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -744,7 +744,7 @@ All 732 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 48 |  |
-| `settings.defaults.ts` | module | 384 |  |
+| `settings.defaults.ts` | module | 393 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 85 |  |
 
@@ -1108,20 +1108,23 @@ All 732 tracked files in `apps/api`, by directory.
 | `nid-callback-verification.spec.ts` | unit test | 123 |  |
 | `nid.provider.ts` | module | 176 |  |
 
-### `apps/api/src/modules/inventory` (22)
+### `apps/api/src/modules/inventory` (25)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `inventory.controller.ts` | controller | 76 |  |
-| `inventory.cron.spec.ts` | unit test | 137 |  |
-| `inventory.cron.ts` | scheduled job | 186 |  |
+| `inventory.cron.spec.ts` | unit test | 275 |  |
+| `inventory.cron.ts` | scheduled job | 221 |  |
 | `inventory.listener.spec.ts` | unit test | 70 |  |
 | `inventory.listener.ts` | event subscriber | 61 |  |
 | `inventory.metrics.spec.ts` | unit test | 70 |  |
 | `inventory.metrics.ts` | module | 135 |  |
-| `inventory.module.ts` | nest module | 40 |  |
+| `inventory.module.ts` | nest module | 44 |  |
 | `inventory.service.spec.ts` | unit test | 499 |  |
 | `inventory.service.ts` | service | 601 |  |
+| `markdown-suggestions.controller.ts` | controller | 37 |  |
+| `markdown-suggestions.service.spec.ts` | unit test | 160 |  |
+| `markdown-suggestions.service.ts` | service | 116 |  |
 | `spot-check.controller.ts` | controller | 68 |  |
 | `spot-check.service.spec.ts` | unit test | 150 |  |
 | `spot-check.service.ts` | service | 228 |  |
@@ -1135,11 +1138,12 @@ All 732 tracked files in `apps/api`, by directory.
 | `suspicious-traffic.service.spec.ts` | unit test | 69 |  |
 | `suspicious-traffic.service.ts` | service | 59 |  |
 
-### `apps/api/src/modules/inventory/dto` (2)
+### `apps/api/src/modules/inventory/dto` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `inventory.dto.ts` | dto | 31 |  |
+| `markdown-suggestion.dto.ts` | dto | 13 |  |
 | `stock-variance.dto.ts` | dto | 9 |  |
 
 ### `apps/api/src/modules/loyalty` (5)

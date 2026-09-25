@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **580** endpoints across **104** controllers, with the access rule that actually guards each one.
+All **583** endpoints across **105** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -484,7 +484,7 @@ never authorization.
 | POST | `/identity-verification/start` | signed-in | `IdentityVerificationController.start` | Start (or restart, after a rejection/expiry) identity verification |
 | POST | `/identity-verification/webhook` | **PUBLIC** | `IdentityVerificationController.webhook` | nID verification-result callback (signature-verified, not session-authenticated) |
 
-### [`inventory`](../modules/inventory.md) (26)
+### [`inventory`](../modules/inventory.md) (29)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -500,6 +500,9 @@ never authorization.
 | POST | `/admin/inventory/counts/:id/scan` | `inventory.count` | `StockCountController.scan` |  |
 | POST | `/admin/inventory/counts/:id/start` | `inventory.count` | `StockCountController.start` |  |
 | GET | `/admin/inventory/locations` | `inventory.manage` | `InventoryAdminController.locations` | Every real, active location — never an in-transit bucket (WO-22.1) |
+| GET | `/admin/inventory/markdown-suggestions` | `inventory.manage` | `MarkdownSuggestionsController.list` | The markdown review queue |
+| POST | `/admin/inventory/markdown-suggestions/:id/activate` | `inventory.manage` | `MarkdownSuggestionsController.activate` | Create the suggested discount (product-wide) and close this suggestion |
+| POST | `/admin/inventory/markdown-suggestions/:id/dismiss` | `inventory.manage` | `MarkdownSuggestionsController.dismiss` | Close this suggestion without creating a discount |
 | GET | `/admin/inventory/reorder` | `inventory.manage` | `InventoryAdminController.reorder` | Reorder suggestions based on reorderPoint |
 | GET | `/admin/inventory/slow-movers` | `inventory.manage` | `InventoryAdminController.slowMovers` | Variants with zero sales in the slow mover window |
 | GET | `/admin/inventory/spot-check-policies` | `inventory.spot_checks.manage` | `SpotCheckPolicyController.list` |  |

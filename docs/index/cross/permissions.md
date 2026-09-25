@@ -72,7 +72,7 @@ the *catalogue*, not any particular deployment's grants.
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
 | `catalog.manage` | Manage products, categories and import | medium | 41 | 17 | STAFF, ADMIN |
-| `inventory.manage` | Adjust and view stock levels | medium | 9 | 12 | STAFF, ADMIN |
+| `inventory.manage` | Adjust and view stock levels | medium | 12 | 12 | STAFF, ADMIN |
 | `inventory.view_cost` | See cost prices and margins | medium | 1 | 15 | ADMIN |
 | `inventory.count` | Run stock counts | low | 12 | 4 | STAFF, ADMIN |
 | `transfers.manage` | Dispatch, receive and cancel inter-branch stock transfers | medium | 5 | 2 | STAFF, ADMIN |

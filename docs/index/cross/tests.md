@@ -3,7 +3,7 @@
 
 # Tests
 
-**187** spec files, **1,754** cases. What is already pinned down — and what is not.
+**189** spec files, **1,779** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -55,7 +55,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (169)
+## Unit and integration (171)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -133,10 +133,11 @@ regression or an N+1.
 | `apps/api/src/modules/fulfilment/returns.spec.ts` | fulfilment | 4 | ReturnsService |
 | `apps/api/src/modules/fulfilment/shipping-migration.spec.ts` | fulfilment | 9 | ShippingService — migrated zones produce the old fees · computeRateFee — pure logic |
 | `apps/api/src/modules/identity-verification/providers/nid-callback-verification.spec.ts` | identity-verification | 6 | nID webhook signature verification |
-| `apps/api/src/modules/inventory/inventory.cron.spec.ts` | inventory | 5 | InventoryCron · maybeTriggerSpotCheck — 156-single-employee-branch-loss-prevention.md |
+| `apps/api/src/modules/inventory/inventory.cron.spec.ts` | inventory | 10 | InventoryCron · WO-9.8 — markdown suggestions · maybeTriggerSpotCheck — 156-single-employee-branch-… |
 | `apps/api/src/modules/inventory/inventory.listener.spec.ts` | inventory | 1 | InventoryListener |
 | `apps/api/src/modules/inventory/inventory.metrics.spec.ts` | inventory | 4 | InventoryMetricsProvider · InventoryValuationMetricsProvider |
 | `apps/api/src/modules/inventory/inventory.service.spec.ts` | inventory | 16 | InventoryService — locations (B6) · InventoryService — postUnconditional (R5 oversell) · shift attr… |
+| `apps/api/src/modules/inventory/markdown-suggestions.service.spec.ts` | inventory | 10 | MarkdownSuggestionsService · list · activate · dismiss |
 | `apps/api/src/modules/inventory/spot-check.service.spec.ts` | inventory | 10 | SpotCheckService — 156-single-employee-branch-loss-prevention.md §3 · dueForRandomCheck — the unpre… |
 | `apps/api/src/modules/inventory/stock-count.service.spec.ts` | inventory | 1 | StockCountService |
 | `apps/api/src/modules/inventory/stock-variance.service.spec.ts` | inventory | 9 | StockVarianceService — WO-21.3 · resolve · listByShift |
@@ -219,6 +220,7 @@ regression or an N+1.
 | `packages/shared/src/entities/product.spec.ts` | packages | 22 | getProductName / getProductDescription · getProductPrimaryImage · getVariantDisplayLabel · getVaria… |
 | `packages/shared/src/entities/supplier.spec.ts` | packages | 7 | getSupplierContactLabel · getSupplierFormattedLocation · getSupplierLeadTimeDays · getSupplierName |
 | `packages/shared/src/fabric-estimate.spec.ts` | packages | 10 | computeFabricEstimate |
+| `packages/shared/src/markdown-suggestion.spec.ts` | packages | 10 | computeMarkdownSuggestion |
 | `packages/shared/src/measurements/schema.spec.ts` | packages | 21 | default garment definitions · validateMeasurements · convertMeasurement · kameez definition |
 | `packages/shared/src/measurements/size-recommendation.spec.ts` | packages | 11 | recommendSize |
 | `packages/shared/src/permissions.spec.ts` | packages | 8 | PERMISSION_CATALOG · PERMISSION_GROUPS — the role-creation wizard\ |

@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-345 files · 53,021 lines
+345 files · 53,215 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -31,7 +31,7 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 76 | module |
-| `apps/web/src/app` | 178 | 31,667 | page, loading, layout, error |
+| `apps/web/src/app` | 178 | 31,837 | page, loading, layout, error |
 | `apps/web/src/components` | 104 | 15,877 | component, unit test, loading |
 | `apps/web/src/config` | 3 | 106 | config |
 | `apps/web/src/constants` | 5 | 339 | constants |
@@ -39,7 +39,7 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/src/i18n` | 3 | 53 | module |
 | `apps/web/src/lib` | 9 | 1,043 | utility |
 | `apps/web/src/providers` | 2 | 82 | react |
-| `apps/web/src/types` | 5 | 1,661 | types |
+| `apps/web/src/types` | 5 | 1,685 | types |
 | `apps/web/src/utils` | 5 | 306 | utility |
 
 
@@ -65,7 +65,7 @@ through `@newax/shared`'s `BRAND`.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `apps/web/src/components/admin/product-form.tsx` | 1,434 | component |  |
-| `apps/web/src/types/api.ts` | 1,337 | types |  |
+| `apps/web/src/types/api.ts` | 1,361 | types |  |
 | `apps/web/src/components/storefront/stitching-panel.tsx` | 969 | component |  |
 | `apps/web/src/components/admin/nav-registry.ts` | 805 | component |  |
 | `apps/web/src/app/(storefront)/[locale]/checkout/page.tsx` | 743 | page |  |

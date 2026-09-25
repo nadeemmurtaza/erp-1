@@ -3,10 +3,10 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1768,
-    "lines": 270532,
-    "routes": 580,
-    "controllers": 104,
+    "files": 1774,
+    "lines": 271410,
+    "routes": 583,
+    "controllers": 105,
     "models": 211,
     "enums": 93,
     "migrations": 70,
@@ -14,7 +14,7 @@
     "permissions": 68,
     "screens": 208,
     "crons": 17,
-    "specs": 187,
+    "specs": 189,
     "designLaws": 0
   },
   "designLaws": [],
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 732,
-      "lines": 101344,
-      "bytes": 3774496,
+      "files": 736,
+      "lines": 101856,
+      "bytes": 3794842,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -51,8 +51,8 @@
     },
     "web": {
       "files": 345,
-      "lines": 53021,
-      "bytes": 1922107,
+      "lines": 53215,
+      "bytes": 1928780,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -62,9 +62,9 @@
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 74,
-      "lines": 6985,
-      "bytes": 240976,
+      "files": 76,
+      "lines": 7157,
+      "bytes": 249147,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -388,6 +388,7 @@
       "inRegistry": true,
       "files": [
         "apps/api/src/modules/inventory/dto/inventory.dto.ts",
+        "apps/api/src/modules/inventory/dto/markdown-suggestion.dto.ts",
         "apps/api/src/modules/inventory/dto/stock-variance.dto.ts",
         "apps/api/src/modules/inventory/inventory.controller.ts",
         "apps/api/src/modules/inventory/inventory.cron.spec.ts",
@@ -399,6 +400,9 @@
         "apps/api/src/modules/inventory/inventory.module.ts",
         "apps/api/src/modules/inventory/inventory.service.spec.ts",
         "apps/api/src/modules/inventory/inventory.service.ts",
+        "apps/api/src/modules/inventory/markdown-suggestions.controller.ts",
+        "apps/api/src/modules/inventory/markdown-suggestions.service.spec.ts",
+        "apps/api/src/modules/inventory/markdown-suggestions.service.ts",
         "apps/api/src/modules/inventory/spot-check.controller.ts",
         "apps/api/src/modules/inventory/spot-check.service.spec.ts",
         "apps/api/src/modules/inventory/spot-check.service.ts",
@@ -412,7 +416,7 @@
         "apps/api/src/modules/inventory/suspicious-traffic.service.spec.ts",
         "apps/api/src/modules/inventory/suspicious-traffic.service.ts"
       ],
-      "routes": 26,
+      "routes": 29,
       "page": "docs/index/modules/inventory.md"
     },
     {
@@ -4943,6 +4947,54 @@
       "public": false,
       "authOnly": false,
       "summary": "Every real, active location — never an in-transit bucket (WO-22.1)"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/inventory/markdown-suggestions",
+      "module": "inventory",
+      "controller": "MarkdownSuggestionsController",
+      "handler": "list",
+      "file": "apps/api/src/modules/inventory/markdown-suggestions.controller.ts",
+      "line": 21,
+      "access": "inventory.manage",
+      "permissions": [
+        "inventory.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The markdown review queue"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/inventory/markdown-suggestions/:id/activate",
+      "module": "inventory",
+      "controller": "MarkdownSuggestionsController",
+      "handler": "activate",
+      "file": "apps/api/src/modules/inventory/markdown-suggestions.controller.ts",
+      "line": 27,
+      "access": "inventory.manage",
+      "permissions": [
+        "inventory.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create the suggested discount (product-wide) and close this suggestion"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/inventory/markdown-suggestions/:id/dismiss",
+      "module": "inventory",
+      "controller": "MarkdownSuggestionsController",
+      "handler": "dismiss",
+      "file": "apps/api/src/modules/inventory/markdown-suggestions.controller.ts",
+      "line": 33,
+      "access": "inventory.manage",
+      "permissions": [
+        "inventory.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Close this suggestion without creating a discount"
     },
     {
       "method": "GET",
@@ -10731,6 +10783,9 @@
         "POST /admin/inventory/:variantId/adjust",
         "GET /admin/inventory/:variantId/history",
         "GET /admin/inventory/locations",
+        "GET /admin/inventory/markdown-suggestions",
+        "POST /admin/inventory/markdown-suggestions/:id/activate",
+        "POST /admin/inventory/markdown-suggestions/:id/dismiss",
         "GET /admin/inventory/reorder",
         "GET /admin/inventory/slow-movers",
         "GET /admin/inventory/variances",
@@ -36687,9 +36742,10 @@
       "file": "apps/api/src/modules/inventory/inventory.cron.spec.ts",
       "module": "inventory",
       "kind": "unit test",
-      "cases": 5,
+      "cases": 10,
       "describes": [
         "InventoryCron",
+        "WO-9.8 — markdown suggestions",
         "maybeTriggerSpotCheck — 156-single-employee-branch-loss-prevention.md"
       ]
     },
@@ -36723,6 +36779,18 @@
         "shift attribution (156-single-employee-branch-loss-prevention.md)",
         "InventoryService — reorder point and replenishment events",
         "InventoryService — getChainStatus"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/inventory/markdown-suggestions.service.spec.ts",
+      "module": "inventory",
+      "kind": "unit test",
+      "cases": 10,
+      "describes": [
+        "MarkdownSuggestionsService",
+        "list",
+        "activate",
+        "dismiss"
       ]
     },
     {
@@ -37807,6 +37875,15 @@
       "cases": 10,
       "describes": [
         "computeFabricEstimate"
+      ]
+    },
+    {
+      "file": "packages/shared/src/markdown-suggestion.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 10,
+      "describes": [
+        "computeMarkdownSuggestion"
       ]
     },
     {
@@ -41980,8 +42057,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 384,
-      "bytes": 19718,
+      "lines": 393,
+      "bytes": 20898,
       "doc": "",
       "symbols": [
         {
@@ -42017,12 +42094,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 240
+          "line": 246
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 242
+          "line": 248
         }
       ]
     },
@@ -45698,6 +45775,21 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/inventory/dto/markdown-suggestion.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 13,
+      "bytes": 462,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MarkdownSuggestionQueryDto",
+          "kind": "class",
+          "line": 7
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/inventory/dto/stock-variance.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -45731,8 +45823,8 @@
       "path": "apps/api/src/modules/inventory/inventory.cron.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 137,
-      "bytes": 5286,
+      "lines": 275,
+      "bytes": 10740,
       "doc": "",
       "symbols": []
     },
@@ -45740,8 +45832,8 @@
       "path": "apps/api/src/modules/inventory/inventory.cron.ts",
       "area": "api",
       "kind": "scheduled job",
-      "lines": 186,
-      "bytes": 6666,
+      "lines": 221,
+      "bytes": 8315,
       "doc": "",
       "symbols": [
         {
@@ -45808,14 +45900,14 @@
       "path": "apps/api/src/modules/inventory/inventory.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 40,
-      "bytes": 1458,
+      "lines": 44,
+      "bytes": 1685,
       "doc": "",
       "symbols": [
         {
           "name": "InventoryModule",
           "kind": "class",
-          "line": 39
+          "line": 43
         }
       ]
     },
@@ -45850,6 +45942,45 @@
           "name": "InventoryService",
           "kind": "class",
           "line": 59
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/inventory/markdown-suggestions.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 37,
+      "bytes": 1524,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MarkdownSuggestionsController",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/inventory/markdown-suggestions.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 160,
+      "bytes": 6027,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/inventory/markdown-suggestions.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 116,
+      "bytes": 3823,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MarkdownSuggestionsService",
+          "kind": "class",
+          "line": 38
         }
       ]
     },
@@ -53840,14 +53971,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 140,
-      "bytes": 4631,
+      "lines": 310,
+      "bytes": 10685,
       "doc": "",
       "symbols": [
         {
           "name": "SlowMoversPage",
           "kind": "default",
-          "line": 25
+          "line": 28
         }
       ]
     },
@@ -58371,8 +58502,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1337,
-      "bytes": 35033,
+      "lines": 1361,
+      "bytes": 35652,
       "doc": "",
       "symbols": [
         {
@@ -59034,6 +59165,16 @@
           "name": "ProductCrossSellRow",
           "kind": "interface",
           "line": 1331
+        },
+        {
+          "name": "MarkdownSuggestionStatus",
+          "kind": "type",
+          "line": 1338
+        },
+        {
+          "name": "MarkdownSuggestion",
+          "kind": "interface",
+          "line": 1340
         }
       ]
     },
@@ -64307,10 +64448,44 @@
       "path": "packages/shared/src/index.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 40,
-      "bytes": 1681,
+      "lines": 41,
+      "bytes": 1720,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "packages/shared/src/markdown-suggestion.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 86,
+      "bytes": 3852,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/shared/src/markdown-suggestion.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 85,
+      "bytes": 4280,
+      "doc": "WO-9.8 (09-ai-layer.md) — \"recommend the discount that clears [ageing stock] at the least margin loss, showing the trade-off explicitly.\" No model: a fixed ladder of candidate discounts, each scored against a transparen…",
+      "symbols": [
+        {
+          "name": "MarkdownSuggestionInput",
+          "kind": "interface",
+          "line": 22
+        },
+        {
+          "name": "MarkdownSuggestionResult",
+          "kind": "interface",
+          "line": 36
+        },
+        {
+          "name": "computeMarkdownSuggestion",
+          "kind": "function",
+          "line": 51
+        }
+      ]
     },
     {
       "path": "packages/shared/src/measurements/defaults.ts",

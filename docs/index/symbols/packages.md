@@ -141,6 +141,7 @@ Every top-level export in `packages`, with the line to open.
 | `index.ts` | `*` | re-export |  | from `./entities` |
 | `index.ts` | `*` | re-export |  | from `./human-code` |
 | `index.ts` | `*` | re-export |  | from `./fabric-estimate` |
+| `index.ts` | `*` | re-export |  | from `./markdown-suggestion` |
 | `index.ts` | `*` | re-export |  | from `./onsite-messaging` |
 | `index.ts` | `*` | re-export |  | from `./permissions` |
 | `index.ts` | `*` | re-export |  | from `./phone` |
@@ -159,6 +160,9 @@ Every top-level export in `packages`, with the line to open.
 | `index.ts` | `*` | re-export |  | from `./measurements/schema` |
 | `index.ts` | `*` | re-export |  | from `./measurements/defaults` |
 | `index.ts` | `*` | re-export |  | from `./measurements/size-recommendation` |
+| `markdown-suggestion.ts` | `MarkdownSuggestionInput` | interface | :22 |  |
+| `markdown-suggestion.ts` | `MarkdownSuggestionResult` | interface | :36 |  |
+| `markdown-suggestion.ts` | `computeMarkdownSuggestion` | function | :51 | Null when there is no honest basis for a suggestion at all: no stock to clear, or no real cost (cos… |
 | `onsite-messaging.ts` | `ONSITE_MESSAGE_KINDS` | const | :9 | On-site messaging kinds and popup triggers (WO-8.6), mirroring `OnsiteMessageKind`/`OnsitePopupTrig… |
 | `onsite-messaging.ts` | `OnsiteMessageKind` | type | :16 |  |
 | `onsite-messaging.ts` | `ONSITE_POPUP_TRIGGERS` | const | :18 |  |

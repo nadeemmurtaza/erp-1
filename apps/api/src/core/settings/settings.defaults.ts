@@ -122,6 +122,12 @@ export const SettingKey = {
   CodRiskConfirmationCallThreshold: 'orders.cod_risk_confirmation_call_threshold',
   /** A COD order's risk score at or above this gets REQUIRE_ADVANCE_PAYMENT instead of CONFIRMATION_CALL. */
   CodRiskAdvancePaymentThreshold: 'orders.cod_risk_advance_payment_threshold',
+  /** WO-9.8 (09-ai-layer.md) — assumed clearance-velocity multiplier per 10 percentage points of markdown, compounding (e.g. 1.4 at 20% off means ~1.96x the baseline daily sell-through). This is a stated assumption, not an observed fact — genuinely tunable per shop, since a fast-fashion item and a bespoke one respond to a discount very differently. */
+  MarkdownVelocityMultiplierPer10Pct: 'inventory.markdown_velocity_multiplier_per_10pct',
+  /** The 30-day clearance percentage MarkdownSuggestionsCron treats as "enough" — it recommends the shallowest candidate discount that reaches this, "least margin loss" (the doc's own words) rather than always maxing out. */
+  MarkdownTargetClearancePct: 'inventory.markdown_target_clearance_pct',
+  /** Floor on the discounted price's own margin, in basis points of that price — 0 means never suggest selling at or below cost. A candidate discount below this floor is never offered, whatever clearance it would reach. */
+  MarkdownMinMarginBps: 'inventory.markdown_min_margin_bps',
   /** Off until an owner turns it on — every order's tax is zero either way. */
   TaxEnabled: 'tax.enabled',
   /** 'INCLUSIVE' (unitPrice already contains tax) or 'EXCLUSIVE' (tax is added at checkout). */
@@ -331,6 +337,9 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.CodRiskMinCityOrders]: 10,
   [SettingKey.CodRiskConfirmationCallThreshold]: 35,
   [SettingKey.CodRiskAdvancePaymentThreshold]: 65,
+  [SettingKey.MarkdownVelocityMultiplierPer10Pct]: 1.4,
+  [SettingKey.MarkdownTargetClearancePct]: 60,
+  [SettingKey.MarkdownMinMarginBps]: 0,
 
   [SettingKey.TaxEnabled]: false,
   [SettingKey.TaxPricingMode]: 'EXCLUSIVE',

@@ -3,7 +3,7 @@ import { Cron } from '@nestjs/schedule';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
-import { computeDemandForecast, resolveLeadTimeDays } from '@newax/shared';
+import { computeDemandForecast, computeMarkdownSuggestion, resolveLeadTimeDays } from '@newax/shared';
 import { SpotCheckService } from './spot-check.service';
 
 @Injectable()
@@ -37,6 +37,9 @@ export class InventoryCron {
     const slowMoverDays = await this.settings.get<number>(SettingKey.InventorySlowMoverDays);
     const deadStockDays = await this.settings.get<number>(SettingKey.InventoryDeadStockDays);
     const minLastYearUnits = await this.settings.get<number>(SettingKey.DemandForecastMinLastYearUnits);
+    const markdownVelocityMultiplier = await this.settings.get<number>(SettingKey.MarkdownVelocityMultiplierPer10Pct);
+    const markdownTargetClearancePct = await this.settings.get<number>(SettingKey.MarkdownTargetClearancePct);
+    const markdownMinMarginBps = await this.settings.get<number>(SettingKey.MarkdownMinMarginBps);
 
     const variants = await this.prisma.productVariant.findMany({
       where: { isActive: true },
@@ -45,6 +48,9 @@ export class InventoryCron {
         stock: true,
         createdAt: true,
         preferredSupplierId: true,
+        priceOverride: true,
+        costPrice: true,
+        product: { select: { basePrice: true } },
       }
     });
 
@@ -173,6 +179,35 @@ export class InventoryCron {
         create: { variantId: variant.id, ...forecast, computedAt: now },
         update: { ...forecast, computedAt: now },
       });
+
+      // 3. WO-9.8 (09-ai-layer.md) — markdown suggestions, only for stock
+      // this same pass just flagged ageing, and only when one isn't already
+      // sitting in the review queue (never re-drafts a genuine duplicate,
+      // same idiom as AiSuggestionsService's own generateForProduct()).
+      if (isSlowMover || isDeadStock) {
+        const alreadyPending = await this.prisma.markdownSuggestion.findFirst({
+          where: { variantId: variant.id, status: 'PENDING' },
+          select: { id: true },
+        });
+
+        if (!alreadyPending) {
+          const suggestion = computeMarkdownSuggestion({
+            stock: variant.stock,
+            costPricePaisa: variant.costPrice,
+            currentPricePaisa: variant.priceOverride ?? variant.product.basePrice,
+            units90,
+            velocityMultiplierPer10Pct: markdownVelocityMultiplier,
+            targetClearancePct: markdownTargetClearancePct,
+            minMarginBps: markdownMinMarginBps,
+          });
+
+          if (suggestion) {
+            await this.prisma.markdownSuggestion.create({
+              data: { variantId: variant.id, ...suggestion },
+            });
+          }
+        }
+      }
     }
 
     // Reorder-PO drafting moved to purchasing.cron.ts (PurchasingCron) —

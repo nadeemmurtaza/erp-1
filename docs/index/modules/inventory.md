@@ -3,30 +3,34 @@
 
 # Module: `inventory`
 
-Pack **core** · enabled by the `MODULES` allowlist · 24 files
+Pack **core** · enabled by the `MODULES` allowlist · 28 files
 
 
 
 Source: `apps/api/src/modules/inventory/`
 
-## Files (24 · 3,112 lines)
+## Files (28 · 3,615 lines)
 
 All paths relative to `apps/api/src/modules/inventory/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `inventory.dto.ts` | dto | 31 | 3 | Mirrors StockAdjustment.reason — kept as a union so the admin form has a fixed list. |
+| `markdown-suggestion.dto.ts` | dto | 13 | 1 |  |
 | `stock-variance.dto.ts` | dto | 9 | 1 |  |
 | `inventory.controller.ts` | controller | 76 | 1 |  |
-| `inventory.cron.spec.ts` | unit test | 137 | — |  |
-| `inventory.cron.ts` | scheduled job | 186 | 1 |  |
+| `inventory.cron.spec.ts` | unit test | 275 | — |  |
+| `inventory.cron.ts` | scheduled job | 221 | 1 |  |
 | `inventory.listener.spec.ts` | unit test | 70 | — |  |
 | `inventory.listener.ts` | event subscriber | 61 | 1 |  |
 | `inventory.metrics.spec.ts` | unit test | 70 | — |  |
 | `inventory.metrics.ts` | module | 135 | 2 | The Inventory group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4). |
-| `inventory.module.ts` | nest module | 40 | 1 |  |
+| `inventory.module.ts` | nest module | 44 | 1 |  |
 | `inventory.service.spec.ts` | unit test | 499 | — |  |
 | `inventory.service.ts` | service | 601 | 3 |  |
+| `markdown-suggestions.controller.ts` | controller | 37 | 1 | WO-9.8's review queue — "a person activates it" (the doc's own words): nothing here ever creates or changes a Discount… |
+| `markdown-suggestions.service.spec.ts` | unit test | 160 | — |  |
+| `markdown-suggestions.service.ts` | service | 116 | 1 | WO-9.8 (09-ai-layer.md) — the review queue MarkdownSuggestionsCron (via InventoryCron's own nightly pass) fills. |
 | `spot-check.controller.ts` | controller | 68 | 2 |  |
 | `spot-check.service.spec.ts` | unit test | 150 | — |  |
 | `spot-check.service.ts` | service | 228 | 2 |  |
@@ -41,7 +45,7 @@ All paths relative to `apps/api/src/modules/inventory/dto`.
 | `suspicious-traffic.service.ts` | service | 59 | 2 |  |
 
 
-## HTTP routes (26)
+## HTTP routes (29)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -57,6 +61,9 @@ All paths relative to `apps/api/src/modules/inventory/dto`.
 | POST | `/admin/inventory/counts/:id/scan` | `inventory.count` | `StockCountController.scan` :42 |  |
 | POST | `/admin/inventory/counts/:id/start` | `inventory.count` | `StockCountController.start` :36 |  |
 | GET | `/admin/inventory/locations` | `inventory.manage` | `InventoryAdminController.locations` :35 | Every real, active location — never an in-transit bucket (WO-22.1) |
+| GET | `/admin/inventory/markdown-suggestions` | `inventory.manage` | `MarkdownSuggestionsController.list` :21 | The markdown review queue |
+| POST | `/admin/inventory/markdown-suggestions/:id/activate` | `inventory.manage` | `MarkdownSuggestionsController.activate` :27 | Create the suggested discount (product-wide) and close this suggestion |
+| POST | `/admin/inventory/markdown-suggestions/:id/dismiss` | `inventory.manage` | `MarkdownSuggestionsController.dismiss` :33 | Close this suggestion without creating a discount |
 | GET | `/admin/inventory/reorder` | `inventory.manage` | `InventoryAdminController.reorder` :23 | Reorder suggestions based on reorderPoint |
 | GET | `/admin/inventory/slow-movers` | `inventory.manage` | `InventoryAdminController.slowMovers` :29 | Variants with zero sales in the slow mover window |
 | GET | `/admin/inventory/spot-check-policies` | `inventory.spot_checks.manage` | `SpotCheckPolicyController.list` :15 |  |
@@ -127,8 +134,8 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 **`InventoryModule`** (`inventory.module.ts`)
 - imports: —
-- controllers: `InventoryAdminController`, `StockCountController`, `StockVarianceController`, `SpotCheckController`, `SpotCheckPolicyController`, `SuspiciousTrafficController`
-- providers: `InventoryService`, `InventoryCron`, `InventoryListener`, `StockCountService`, `StockVarianceService`, `InventoryMetricsProvider`, `InventoryValuationMetricsProvider`, `SpotCheckService`, `SuspiciousTrafficService`
+- controllers: `InventoryAdminController`, `StockCountController`, `StockVarianceController`, `SpotCheckController`, `SpotCheckPolicyController`, `SuspiciousTrafficController`, `MarkdownSuggestionsController`
+- providers: `InventoryService`, `InventoryCron`, `InventoryListener`, `StockCountService`, `StockVarianceService`, `InventoryMetricsProvider`, `InventoryValuationMetricsProvider`, `SpotCheckService`, `SuspiciousTrafficService`, `MarkdownSuggestionsService`
 - exports: `InventoryService`
 
 
@@ -150,14 +157,15 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (8)
+## Tests (9)
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `inventory.cron.spec.ts` | 5 | InventoryCron · maybeTriggerSpotCheck — 156-single-employee-branch-loss-prevention.md |
+| `inventory.cron.spec.ts` | 10 | InventoryCron · WO-9.8 — markdown suggestions · maybeTriggerSpotCheck — 156-single-employee-branch-loss-prevention.md |
 | `inventory.listener.spec.ts` | 1 | InventoryListener |
 | `inventory.metrics.spec.ts` | 4 | InventoryMetricsProvider · InventoryValuationMetricsProvider |
 | `inventory.service.spec.ts` | 16 | InventoryService — locations (B6) · InventoryService — postUnconditional (R5 oversell) · shift attribution (156-single-… |
+| `markdown-suggestions.service.spec.ts` | 10 | MarkdownSuggestionsService · list · activate · dismiss |
 | `spot-check.service.spec.ts` | 10 | SpotCheckService — 156-single-employee-branch-loss-prevention.md §3 · dueForRandomCheck — the unpredictability rule · m… |
 | `stock-count.service.spec.ts` | 1 | StockCountService |
 | `stock-variance.service.spec.ts` | 9 | StockVarianceService — WO-21.3 · resolve · listByShift |
@@ -171,16 +179,19 @@ check there before adding another.
 | `STOCK_ADJUSTMENT_REASONS` | const | `inventory.dto.ts:5` | Mirrors StockAdjustment.reason — kept as a union so the admin form has a fixed list. |
 | `StockAdjustmentReason` | type | `inventory.dto.ts:13` |  |
 | `AdjustStockDto` | class | `inventory.dto.ts:15` |  |
+| `MarkdownSuggestionQueryDto` | class | `markdown-suggestion.dto.ts:7` |  |
 | `ResolveStockVarianceDto` | class | `stock-variance.dto.ts:3` |  |
 | `InventoryAdminController` | class | `inventory.controller.ts:12` |  |
 | `InventoryCron` | class | `inventory.cron.ts:10` |  |
 | `InventoryListener` | class | `inventory.listener.ts:10` |  |
 | `InventoryMetricsProvider` | class | `inventory.metrics.ts:24` | The Inventory group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4). |
 | `InventoryValuationMetricsProvider` | class | `inventory.metrics.ts:106` | `inventory.valuation` alone — see the class doc above for why it is split out. |
-| `InventoryModule` | class | `inventory.module.ts:39` |  |
+| `InventoryModule` | class | `inventory.module.ts:43` |  |
 | `StockMoveInput` | interface | `inventory.service.ts:21` |  |
 | `InsufficientStockError` | class | `inventory.service.ts:38` |  |
 | `InventoryService` | class | `inventory.service.ts:59` | Stock levels and their audit trail. |
+| `MarkdownSuggestionsController` | class | `markdown-suggestions.controller.ts:16` | WO-9.8's review queue — "a person activates it" (the doc's own words): nothing here ever creates or changes a… |
+| `MarkdownSuggestionsService` | class | `markdown-suggestions.service.ts:38` | WO-9.8 (09-ai-layer.md) — the review queue MarkdownSuggestionsCron (via InventoryCron's own nightly pass) fil… |
 | `SpotCheckPolicyController` | class | `spot-check.controller.ts:10` |  |
 | `SpotCheckController` | class | `spot-check.controller.ts:35` | Counting itself is a front-line task — gated the same as a stock count. |
 | `CreateSpotCheckPolicyInput` | interface | `spot-check.service.ts:8` |  |

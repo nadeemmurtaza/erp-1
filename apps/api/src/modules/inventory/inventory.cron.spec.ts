@@ -18,6 +18,7 @@ describe('InventoryCron', () => {
       stockMovement: { findMany: jest.fn(), findFirst: jest.fn() },
       variantSalesStat: { upsert: jest.fn() },
       variantForecast: { upsert: jest.fn() },
+      markdownSuggestion: { findFirst: jest.fn().mockResolvedValue(null), create: jest.fn() },
       supplier: { findMany: jest.fn().mockResolvedValue([]) },
       supplierProduct: { findMany: jest.fn().mockResolvedValue([]) },
     };
@@ -102,6 +103,143 @@ describe('InventoryCron', () => {
         create: expect.objectContaining({ isSlowMover: false, isDeadStock: false }),
       })
     );
+  });
+
+  describe('WO-9.8 — markdown suggestions', () => {
+    function markdownSettings(overrides: Record<string, unknown> = {}) {
+      return async (key: any) => {
+        const values: Record<string, unknown> = {
+          [SettingKey.InventorySlowMoverDays]: 60,
+          [SettingKey.InventoryDeadStockDays]: 180,
+          [SettingKey.DemandForecastMinLastYearUnits]: 5,
+          [SettingKey.MarkdownVelocityMultiplierPer10Pct]: 1.4,
+          [SettingKey.MarkdownTargetClearancePct]: 60,
+          [SettingKey.MarkdownMinMarginBps]: 0,
+          ...overrides,
+        };
+        return values[key] ?? null;
+      };
+    }
+
+    const OLD_SALE = new Date(Date.now() - 100 * 24 * 60 * 60 * 1000);
+
+    it('creates a suggestion for a slow-moving variant with a known cost and price', async () => {
+      settings.get.mockImplementation(markdownSettings());
+      prisma.productVariant.findMany.mockResolvedValue([
+        {
+          id: 'v1',
+          stock: 2,
+          createdAt: OLD_SALE,
+          priceOverride: null,
+          costPrice: 100000,
+          product: { basePrice: 200000 },
+        },
+      ]);
+      // 9 units sold 80 days ago: inside the 90-day window (units90 = 9,
+      // used as the markdown baseline rate) but 80 days since the last sale
+      // clears the 60-day slow-mover threshold, so this variant qualifies.
+      prisma.stockMovement.findMany.mockResolvedValue([
+        { delta: -9, createdAt: new Date(Date.now() - 80 * 24 * 60 * 60 * 1000) },
+      ]);
+      prisma.stockMovement.findFirst.mockResolvedValue({ createdAt: OLD_SALE });
+
+      await cron.computeNightlyStats();
+
+      expect(prisma.markdownSuggestion.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({ variantId: 'v1', suggestedBps: expect.any(Number) }),
+        }),
+      );
+    });
+
+    it('never creates a second suggestion while one is already pending', async () => {
+      settings.get.mockImplementation(markdownSettings());
+      prisma.markdownSuggestion.findFirst.mockResolvedValue({ id: 'existing' });
+      prisma.productVariant.findMany.mockResolvedValue([
+        {
+          id: 'v1',
+          stock: 2,
+          createdAt: OLD_SALE,
+          priceOverride: null,
+          costPrice: 100000,
+          product: { basePrice: 200000 },
+        },
+      ]);
+      prisma.stockMovement.findMany.mockResolvedValue([
+        { delta: -9, createdAt: new Date(Date.now() - 80 * 24 * 60 * 60 * 1000) },
+      ]);
+      prisma.stockMovement.findFirst.mockResolvedValue({ createdAt: OLD_SALE });
+
+      await cron.computeNightlyStats();
+
+      expect(prisma.markdownSuggestion.create).not.toHaveBeenCalled();
+    });
+
+    it('creates nothing for a variant with an unknown cost (0 = never received against a PO)', async () => {
+      settings.get.mockImplementation(markdownSettings());
+      prisma.productVariant.findMany.mockResolvedValue([
+        {
+          id: 'v1',
+          stock: 2,
+          createdAt: OLD_SALE,
+          priceOverride: null,
+          costPrice: 0,
+          product: { basePrice: 200000 },
+        },
+      ]);
+      prisma.stockMovement.findMany.mockResolvedValue([
+        { delta: -9, createdAt: new Date(Date.now() - 80 * 24 * 60 * 60 * 1000) },
+      ]);
+      prisma.stockMovement.findFirst.mockResolvedValue({ createdAt: OLD_SALE });
+
+      await cron.computeNightlyStats();
+
+      expect(prisma.markdownSuggestion.create).not.toHaveBeenCalled();
+    });
+
+    it('never even looks up a pending suggestion for a variant that is not ageing', async () => {
+      settings.get.mockImplementation(markdownSettings());
+      const recent = new Date();
+      prisma.productVariant.findMany.mockResolvedValue([
+        { id: 'v1', stock: 10, createdAt: recent, priceOverride: null, costPrice: 100000, product: { basePrice: 200000 } },
+      ]);
+      // Sold 2 days ago — nowhere near slow-mover/dead-stock territory.
+      prisma.stockMovement.findMany.mockResolvedValue([
+        { delta: -2, createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000) },
+      ]);
+      prisma.stockMovement.findFirst.mockResolvedValue(null);
+
+      await cron.computeNightlyStats();
+
+      expect(prisma.markdownSuggestion.findFirst).not.toHaveBeenCalled();
+      expect(prisma.markdownSuggestion.create).not.toHaveBeenCalled();
+    });
+
+    it('uses priceOverride instead of the product base price when set', async () => {
+      settings.get.mockImplementation(markdownSettings());
+      prisma.productVariant.findMany.mockResolvedValue([
+        {
+          id: 'v1',
+          stock: 2,
+          createdAt: OLD_SALE,
+          priceOverride: 150000,
+          costPrice: 100000,
+          product: { basePrice: 500000 },
+        },
+      ]);
+      prisma.stockMovement.findMany.mockResolvedValue([
+        { delta: -9, createdAt: new Date(Date.now() - 80 * 24 * 60 * 60 * 1000) },
+      ]);
+      prisma.stockMovement.findFirst.mockResolvedValue({ createdAt: OLD_SALE });
+
+      await cron.computeNightlyStats();
+
+      // marginBeforePaisa = currentPrice - costPrice = 150000 - 100000 = 50000,
+      // which only matches if priceOverride (not the 500000 base price) was used.
+      expect(prisma.markdownSuggestion.create).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ marginBeforePaisa: 50000 }) }),
+      );
+    });
   });
 
   describe('maybeTriggerSpotCheck — 156-single-employee-branch-loss-prevention.md', () => {

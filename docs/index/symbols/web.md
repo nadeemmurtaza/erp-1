@@ -360,7 +360,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `SlowMoversPage` | default | :25 |  |
+| `page.tsx` | `SlowMoversPage` | default | :28 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks`
 
@@ -1498,6 +1498,8 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `CmsMenuLink` | interface | :1321 |  |
 | `api.ts` | `ProductCrossSellKind` | type | :1329 | ProductCrossSell.kind (WO-9.6) — "MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read t… |
 | `api.ts` | `ProductCrossSellRow` | interface | :1331 | ProductCrossSell.kind (WO-9.6) — "MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read t… |
+| `api.ts` | `MarkdownSuggestionStatus` | type | :1338 |  |
+| `api.ts` | `MarkdownSuggestion` | interface | :1340 |  |
 | `cart.ts` | `CartStitching` | interface | :5 | Shapes returned by the cart endpoints. |
 | `cart.ts` | `CartLine` | interface | :18 |  |
 | `cart.ts` | `Cart` | interface | :37 |  |

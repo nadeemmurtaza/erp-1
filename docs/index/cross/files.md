@@ -3,21 +3,21 @@
 
 # Every tracked file
 
-All **1,967** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,997** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 823 | 116,232 | [files/api.md](../files/api.md) |
-| apps/web | 372 | 59,595 | [files/web.md](../files/web.md) |
+| apps/api | 827 | 116,414 | [files/api.md](../files/api.md) |
+| apps/web | 373 | 59,808 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 2,000 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 78 | 7,825 | [files/packages.md](../files/packages.md) |
-| docs/* | 394 | 62,804 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 57 | 29,609 | [files/infra.md](../files/infra.md) |
-| repository root files | 163 | 17,028 | [files/root.md](../files/root.md) |
+| packages/* | 79 | 7,909 | [files/packages.md](../files/packages.md) |
+| docs/* | 394 | 63,011 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 57 | 29,638 | [files/infra.md](../files/infra.md) |
+| repository root files | 187 | 18,817 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -29,22 +29,22 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 419 |
-| unit test | 212 |
-| page | 182 |
-| service | 148 |
-| module | 140 |
+| unit test | 221 |
+| page | 183 |
+| service | 153 |
+| module | 143 |
 | component | 112 |
-| controller | 106 |
-| dto | 101 |
-| migration | 82 |
-| nest module | 73 |
+| controller | 110 |
+| dto | 102 |
+| migration | 83 |
+| nest module | 75 |
 | prisma schema | 44 |
 | script | 39 |
 | event subscriber | 31 |
 | json | 29 |
 | react | 29 |
 | asset | 26 |
-| scheduled job | 23 |
+| scheduled job | 25 |
 | utility | 22 |
 | e2e test | 19 |
 | file | 13 |
@@ -55,12 +55,12 @@ name a new file: the convention is what makes it findable.
 | constants | 7 |
 | layout | 6 |
 | hook | 5 |
+| guard | 5 |
 | channel | 5 |
 | types | 5 |
 | toml | 4 |
 | not-found | 4 |
 | example | 3 |
-| guard | 3 |
 | driver | 3 |
 | html | 3 |
 | error | 3 |

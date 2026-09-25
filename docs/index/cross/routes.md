@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **650** endpoints across **119** controllers, with the access rule that actually guards each one.
+All **652** endpoints across **120** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -568,6 +568,13 @@ never authorization.
 | POST | `/loyalty/referral/apply` | signed-in | `LoyaltyController.applyReferralCode` | Apply a friend's referral code to my account |
 | GET | `/loyalty/referrals` | signed-in | `LoyaltyController.myReferrals` | Customers I have referred |
 | GET | `/loyalty/tiers` | **PUBLIC** | `LoyaltyController.tiers` | Loyalty tiers and their benefits |
+
+### [`managed-services`](../modules/managed-services.md) (2)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/managed-services/invoices` | `settings.manage` | `ManagedServicesController.invoices` |  |
+| GET | `/managed-services/usage` | `settings.manage` | `ManagedServicesController.usage` |  |
 
 ### [`marketing`](../modules/marketing.md) (11)
 

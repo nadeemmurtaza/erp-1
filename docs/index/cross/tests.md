@@ -3,7 +3,7 @@
 
 # Tests
 
-**231** spec files, **2,280** cases. What is already pinned down — and what is not.
+**240** spec files, **2,334** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -56,7 +56,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (212)
+## Unit and integration (221)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -156,6 +156,7 @@ regression or an N+1.
 | `apps/api/src/modules/inventory/stock-count.service.spec.ts` | inventory | 1 | StockCountService |
 | `apps/api/src/modules/inventory/stock-variance.service.spec.ts` | inventory | 9 | StockVarianceService — WO-21.3 · resolve · listByShift |
 | `apps/api/src/modules/inventory/suspicious-traffic.service.spec.ts` | inventory | 5 | SuspiciousTrafficService — 156-single-employee-branch-loss-prevention.md §4 |
+| `apps/api/src/modules/managed-services/managed-services.service.spec.ts` | managed-services | 5 | ManagedServicesService |
 | `apps/api/src/modules/marketing/campaigns.service.spec.ts` | marketing | 4 | CampaignsService |
 | `apps/api/src/modules/marketing/marketing-automation.cron.spec.ts` | marketing | 19 | MarketingAutomationCron · sendAbandonedCartReminders · sendAbandonedCartFirstTouch · sendAbandonedC… |
 | `apps/api/src/modules/measurements/garment-fields-seed.spec.ts` | measurements | 1 | seeded measurement fields satisfy MeasurementFieldDto |
@@ -230,6 +231,13 @@ regression or an N+1.
 | `apps/mobile/src/i18n/__tests__/messages.spec.ts` | mobile | 3 | the message catalogue |
 | `apps/platform/src/core/security/ops-auth.guard.spec.ts` | root | 6 | OpsAuthGuard |
 | `apps/platform/src/core/security/ops-key.spec.ts` | root | 4 | ops-key |
+| `apps/platform/src/modules/agency/agency-api-key.guard.spec.ts` | root | 5 | AgencyApiKeyGuard |
+| `apps/platform/src/modules/agency/agency-clients.service.spec.ts` | root | 6 | AgencyClientsService · list · register · rotateKey |
+| `apps/platform/src/modules/agency/agency-cross-tenant.integration.spec.ts` | root | 5 |  |
+| `apps/platform/src/modules/agency/agency-key.spec.ts` | root | 4 | agency-key |
+| `apps/platform/src/modules/agency/agency-reporting.service.spec.ts` | root | 4 | AgencyReportingService |
+| `apps/platform/src/modules/agency/agency-stripe.service.spec.ts` | root | 10 | AgencyStripeService · chargeInvoice · handleWebhookEvent |
+| `apps/platform/src/modules/agency/agency-usage.service.spec.ts` | root | 7 | AgencyUsageService · listRegisteredTenantIds · captureSnapshotForTenant |
 | `apps/platform/src/modules/billing/billing-period.spec.ts` | root | 2 | currentCalendarMonthPeriod |
 | `apps/platform/src/modules/billing/billing.service.spec.ts` | root | 15 | BillingService · issueInvoiceForPeriod · runBillingForPeriod · issueCreditNote · previewInvoice · U… |
 | `apps/platform/src/modules/billing/custom-quote.service.spec.ts` | root | 6 | CustomQuoteService · requestQuote · approve |
@@ -254,6 +262,7 @@ regression or an N+1.
 | `packages/pos-core/src/tender.spec.ts` | packages | 3 | computeTender |
 | `packages/shared/src/api-keys.spec.ts` | packages | 34 | NON_DELEGATABLE_PERMISSIONS · effectiveApiKeyPermissions — a key never exceeds its owner · refuseAp… |
 | `packages/shared/src/cod-risk.spec.ts` | packages | 19 | computeCodRiskScore |
+| `packages/shared/src/constants.spec.ts` | packages | 8 | formatMoneyIn · formatBytes |
 | `packages/shared/src/demand-forecast.spec.ts` | packages | 17 | computeDemandForecast · suggestReorderQuantity · resolveLeadTimeDays |
 | `packages/shared/src/discounts.spec.ts` | packages | 18 | isDiscountEligible · evaluateDiscounts — PERCENTAGE, ORDER scope · evaluateDiscounts — PRODUCT scop… |
 | `packages/shared/src/entities/address.spec.ts` | packages | 3 | getFormattedAddress · getAddressCityProvince |

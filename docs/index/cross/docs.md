@@ -2552,16 +2552,16 @@ _no second-level headings_
 - Phase 6: CI/CD & Database Cleanup  <sub>:150</sub>
 - Phase 7: Delivery & Pull Request  <sub>:158</sub>
 
-### `docs/implementation/commercial-licensing-agency/14-managed-services-module.md`  <sub>272 lines</sub>
+### `docs/implementation/commercial-licensing-agency/14-managed-services-module.md`  <sub>299 lines</sub>
 
-- Why this is two modules, not one  <sub>:17</sub>
-- The load-bearing scope decision: where usage numbers actually come from  <sub>:35</sub>
-- Master side: the `agency` module  <sub>:60</sub>
-- Client side: the `managed-services` module  <sub>:183</sub>
-- Security notes  <sub>:207</sub>
-- Explicitly out of scope for v1  <sub>:223</sub>
-- Work orders  <sub>:236</sub>
-- When to actually build this  <sub>:263</sub>
+- Why this is two modules, not one  <sub>:22</sub>
+- The load-bearing scope decision: where usage numbers actually come from  <sub>:40</sub>
+- Master side: the `agency` module  <sub>:65</sub>
+- Client side: the `managed-services` module  <sub>:188</sub>
+- Security notes  <sub>:212</sub>
+- Explicitly out of scope for v1  <sub>:228</sub>
+- Work orders  <sub>:241</sub>
+- When to actually build this  <sub>:285</sub>
 
 ### `docs/implementation/commercial-licensing-agency/153-usage-based-pricing-model.md`  <sub>298 lines</sub>
 
@@ -2697,7 +2697,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>3,604 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>3,784 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2741,6 +2741,7 @@ _no second-level headings_
 - ADR-035 — Phase 8 (content, marketing and search) audited and confirmed built; the ranking rule's missing availability tier fixed; the phantom "Phase 8 status note" several files already cited now exists  <sub>:3269</sub>
 - ADR-037 — Personal API keys: a user-bound token capped live by its owner, an explicit non-delegatable list, and no service account yet  <sub>:3374</sub>
 - ADR-038 — Doc 153 (usage-based pricing): metering reads a tenant's own transactional outbox through `apps/platform`'s existing connection-per-call mechanism, never a new tenant→platform push credential; dunning reuses doc 145's shape only, not its code  <sub>:3450</sub>
+- ADR-039 — Doc 14 (managed services) built in full, overriding its own "not now": `PlatformTenant`/`PlatformInvoice` extended rather than a parallel `AgencyClient` registry and invoice cache, real Stripe collection bridged in decoupled from `BillingService`  <sub>:3607</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

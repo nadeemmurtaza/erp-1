@@ -15,6 +15,7 @@ import { HrModule } from './hr/hr.module';
 import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { LoyaltyModule } from './loyalty/loyalty.module';
+import { ManagedServicesModule } from './managed-services/managed-services.module';
 import { MarketingModule } from './marketing/marketing.module';
 import { MeasurementsModule } from './measurements/measurements.module';
 import { NotificationPreferencesModule } from './notification-preferences/notification-preferences.module';
@@ -167,6 +168,13 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // see wallet.module.ts's own header comment for exactly what "off"
   // means here.
   { name: 'wallet', module: WalletModule, offByDefault: true },
+  // Off by default for EVERY deployment, always — doc 14
+  // (commercial-licensing-agency/14-managed-services-module.md). Requested
+  // only for an agency-managed delivery via `scripts/sync-client.mjs
+  // --modules=...,managed-services`; never present in a self-hosted
+  // client's own `.env.example`/MODULES allowlist (that structural
+  // absence is doc 14's own "impossible for self-hosted clients" point).
+  { name: 'managed-services', module: ManagedServicesModule, offByDefault: true },
   // Account administration — not togglable business features.
   { name: 'settings', module: SettingsAdminModule, alwaysOn: true },
   { name: 'users', module: UsersAdminModule, alwaysOn: true },

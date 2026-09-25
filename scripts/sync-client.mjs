@@ -575,6 +575,7 @@ function buildEnvExample(modules) {
       if (dropUnless(p, 'PAYMENT_PROVIDERS', 'payments')) return false;
       if (dropUnless(p, 'GIFTKARTA_', 'giftcards')) return false;
       if (dropUnless(p, 'NID_', 'identity-verification')) return false;
+    if (dropUnless(p, 'AGENCY_API_URL', 'managed-services')) return false;
       return true;
     })
     .map((p) => {

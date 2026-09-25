@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 823 tracked files in `apps/api`, by directory.
+All 827 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -686,7 +686,7 @@ All 823 tracked files in `apps/api`, by directory.
 | `app-config.service.ts` | service | 72 |  |
 | `config.module.ts` | nest module | 23 |  |
 | `env.validation.spec.ts` | unit test | 154 |  |
-| `env.validation.ts` | config | 330 |  |
+| `env.validation.ts` | config | 341 |  |
 | `load-env.ts` | config | 14 |  |
 | `meta.controller.ts` | controller | 41 |  |
 
@@ -858,8 +858,8 @@ All 823 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 99 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 208 |  |
+| `module-packs.ts` | module | 105 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 216 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -1275,6 +1275,15 @@ All 823 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `loyalty.dto.ts` | dto | 52 |  |
+
+### `apps/api/src/modules/managed-services` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `managed-services.controller.ts` | controller | 25 |  |
+| `managed-services.module.ts` | nest module | 19 |  |
+| `managed-services.service.spec.ts` | unit test | 56 |  |
+| `managed-services.service.ts` | service | 57 |  |
 
 ### `apps/api/src/modules/marketing` (9)
 

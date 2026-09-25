@@ -128,6 +128,17 @@ export const envSchema = z.object({
   /** Verifies inbound webhooks from nID — see providers/nid.provider.ts. */
   NID_WEBHOOK_SECRET: z.string().optional(),
 
+  // Managed services (docs/implementation/commercial-licensing-agency/
+  // 14-managed-services-module.md) — the agency-hosted billing/hosting
+  // dashboard. Both optional at the env-schema level, same reasoning as
+  // NID_API_URL/_KEY above: the `managed-services` module also has to be
+  // in MODULES, and `ManagedServicesService` throws at call time (not
+  // boot time) if these are missing while it's enabled. Never set for a
+  // self-hosted delivery — `scripts/sync-client.mjs` never generates
+  // AGENCY_API_KEY unless `managed-services` was requested.
+  AGENCY_API_URL: z.string().optional(),
+  AGENCY_API_KEY: z.string().optional(),
+
   // Outbound email. Plain SMTP on purpose: the mail server is ours (see
   // docker-compose.mail.yml), and if its reputation ever disappoints, pointing
   // these four values at a relay is the whole migration — no code changes.

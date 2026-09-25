@@ -14,7 +14,7 @@ All 57 tracked files in `scripts, CI, deployment and container configuration`, b
 |---|---|---|---|
 | `.dockerignore` | file | — |  |
 | `.env.branch.example` | example | 101 |  |
-| `.env.example` | example | 162 |  |
+| `.env.example` | example | 174 |  |
 | `.env.production.example` | example | 129 |  |
 | `.gitignore` | file | 68 |  |
 | `Caddyfile` | file | 63 |  |
@@ -28,7 +28,7 @@ All 57 tracked files in `scripts, CI, deployment and container configuration`, b
 | `docker-stack.prod.yml` | yaml | 88 |  |
 | `docker-stack.staging.yml` | yaml | 88 |  |
 | `package.json` | json | 58 |  |
-| `pnpm-lock.yaml` | yaml | 18513 |  |
+| `pnpm-lock.yaml` | yaml | 18529 |  |
 | `pnpm-workspace.yaml` | yaml | 12 |  |
 | `turbo.json` | json | 55 |  |
 | `wrangler.toml` | toml | 17 |  |
@@ -95,7 +95,7 @@ All 57 tracked files in `scripts, CI, deployment and container configuration`, b
 | `idx.mjs` | script | 486 |  |
 | `install-git-hooks.mjs` | script | 94 |  |
 | `nested-borders.py` | py | — |  |
-| `sync-client.mjs` | script | 700 | scripts/sync-client.mjs — the Extractor. |
+| `sync-client.mjs` | script | 701 | scripts/sync-client.mjs — the Extractor. |
 
 ### `scripts/lib` (3)
 

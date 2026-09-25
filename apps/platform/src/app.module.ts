@@ -12,6 +12,7 @@ import { ResourceQuotasModule } from './modules/resource-quotas/resource-quotas.
 import { BillingModule } from './modules/billing/billing.module';
 import { TrialsModule } from './modules/trials/trials.module';
 import { UiModule } from './modules/ui/ui.module';
+import { AgencyModule } from './modules/agency/agency.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { UiModule } from './modules/ui/ui.module';
     BillingModule,
     TrialsModule,
     UiModule,
+    AgencyModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

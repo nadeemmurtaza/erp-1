@@ -21,7 +21,11 @@ import { AppConfigService } from './core/config/app-config.service';
 };
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule, { bufferLogs: false });
+  // rawBody: true makes `req.rawBody` available alongside the parsed JSON
+  // body — doc 14's Stripe webhook signature is over the exact bytes
+  // Stripe sent, not the parsed body (same reasoning as apps/api's own
+  // main.ts, for the identical nID-webhook-style signature check).
+  const app = await NestFactory.create(AppModule, { bufferLogs: false, rawBody: true });
   const config = app.get(AppConfigService);
   const logger = new Logger('Bootstrap');
 

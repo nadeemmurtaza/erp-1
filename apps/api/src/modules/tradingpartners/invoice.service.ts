@@ -6,7 +6,7 @@ import { documentPrefix } from '../../core/settings/document-prefix';
 import { documentNumber, documentNumberPrefix } from '../../core/settings/document-number';
 import { Prisma } from '../../core/prisma/client';
 import { TradingPartnersService } from './trading-partners.service';
-import { CreateInvoiceDto } from './dto/invoice.dto';
+import { CreateInvoiceDto, InvoiceQueryDto } from './dto/invoice.dto';
 import { BRAND } from '@newax/shared';
 
 const INVOICE_NUMBER_LOCK_NAMESPACE = 8_241_130;
@@ -104,13 +104,35 @@ export class InvoiceService {
     return invoice;
   }
 
-  async findAll() {
-    return this.prisma.invoice.findMany({ orderBy: { createdAt: 'desc' }, include: { lines: true } });
+  async findAll(query: InvoiceQueryDto = {}) {
+    return this.prisma.invoice.findMany({
+      where: query.overdue ? { status: 'ISSUED', dueDate: { lt: new Date() } } : undefined,
+      orderBy: { createdAt: 'desc' },
+      include: { lines: true },
+    });
   }
 
   async findOne(id: string) {
     const invoice = await this.prisma.invoice.findUnique({ where: { id }, include: { lines: true } });
     if (!invoice) throw new NotFoundException('Invoice not found');
     return invoice;
+  }
+
+  /**
+   * WO-56.1 (56-overdue-invoices-counter.md). Computed at read time, always
+   * — "overdue" is never its own stored column, since storing it would
+   * drift the moment a day passes with no write to update it.
+   */
+  async overdueInvoicesSummary(): Promise<{ count: number; totalMinor: number; oldestDueDate: Date | null }> {
+    const overdue = await this.prisma.invoice.findMany({
+      where: { status: 'ISSUED', dueDate: { lt: new Date() } },
+      select: { totalMinor: true, dueDate: true },
+      orderBy: { dueDate: 'asc' },
+    });
+    return {
+      count: overdue.length,
+      totalMinor: overdue.reduce((sum, i) => sum + i.totalMinor, 0),
+      oldestDueDate: overdue[0]?.dueDate ?? null,
+    };
   }
 }

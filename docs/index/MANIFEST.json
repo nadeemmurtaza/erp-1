@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "0be3ae929a1fecef",
+  "contentHash": "f8856e503c5a76ff",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -75,6 +75,7 @@
     "docs/index/data/finance.md",
     "docs/index/data/fulfilment.md",
     "docs/index/data/giftcards.md",
+    "docs/index/data/hr.md",
     "docs/index/data/identity-verification.md",
     "docs/index/data/inventory.md",
     "docs/index/data/invoicing.md",
@@ -125,6 +126,7 @@
     "docs/index/modules/finance.md",
     "docs/index/modules/fulfilment.md",
     "docs/index/modules/giftcards.md",
+    "docs/index/modules/hr.md",
     "docs/index/modules/identity-verification.md",
     "docs/index/modules/inventory.md",
     "docs/index/modules/loyalty.md",
@@ -164,18 +166,18 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 1928,
-    "lines": 294299,
-    "routes": 634,
-    "controllers": 116,
-    "models": 229,
-    "enums": 105,
-    "migrations": 77,
+    "files": 1948,
+    "lines": 298619,
+    "routes": 646,
+    "controllers": 118,
+    "models": 233,
+    "enums": 107,
+    "migrations": 79,
     "events": 59,
-    "permissions": 75,
-    "screens": 227,
-    "crons": 18,
-    "specs": 224,
+    "permissions": 79,
+    "screens": 231,
+    "crons": 19,
+    "specs": 226,
     "designLaws": 0
   }
 }

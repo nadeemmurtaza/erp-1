@@ -1,0 +1,68 @@
+// Employee assets: which physical equipment (laptop, phone, uniform) is
+// issued to which employee, and whether it came back
+// (docs/implementation/hr-people-org/79-employee-asset-management.md).
+//
+// Every actor here is a User — this codebase never built the doc's own
+// separate Employee model (payroll.prisma made the same call first, for the
+// same reason: "one User is both the payee and, for an ADMIN, the actor who
+// acts on someone else's record"). No organizationId: this repository scopes
+// a deployment to one brand at build time (CLAUDE.md's own axis rules), and
+// no other model in this schema carries a literal organizationId column
+// either — the same single-tenant idiom CompensationRate/LeaveBalance/etc.
+// already use.
+
+enum AssetStatus {
+  AVAILABLE
+  ASSIGNED
+  RETIRED
+  LOST
+}
+
+model Asset {
+  id                String      @id @default(cuid())
+  /// The physical tag/serial a staff member reads off the item.
+  assetTag          String      @unique
+  /// Free text/data-driven, never a closed enum — "laptop", "phone",
+  /// "uniform", "vehicle" and whatever a client adds later, unconstrained.
+  category          String
+  description       String
+  /// Paisa. Optional — not every asset has a tracked purchase cost.
+  purchaseCostMinor Int?
+  purchasedOn       DateTime?
+  status            AssetStatus @default(AVAILABLE)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  assignments        AssetAssignment[]
+  /// finance-accounting/147-fixed-asset-depreciation.md — at most one
+  /// active schedule, per that document's own @@unique.
+  depreciationSchedule AssetDepreciationSchedule?
+
+  @@index([status])
+}
+
+/// One row per issue/return cycle — an asset's full custody history, never
+/// overwritten. The same "history table, not a mutable current-holder
+/// column" discipline StockMovement already establishes for stock:
+/// `returnedAt IS NULL` is the one query answering "who currently has this,"
+/// never a separate currentHolderId column on Asset that could drift from
+/// the assignment history.
+model AssetAssignment {
+  id           String    @id @default(cuid())
+  assetId      String
+  userId       String
+  issuedAt     DateTime  @default(now())
+  issuedById   String
+  returnedAt   DateTime?
+  returnedById String?
+  /// Free-text note at return ("scratched screen"), never required.
+  condition    String?
+
+  asset      Asset  @relation(fields: [assetId], references: [id])
+  user       User   @relation("AssetAssignmentHolder", fields: [userId], references: [id])
+  issuedBy   User   @relation("AssetAssignmentIssuer", fields: [issuedById], references: [id])
+  returnedBy User?  @relation("AssetAssignmentReturner", fields: [returnedById], references: [id], onDelete: SetNull)
+
+  @@index([assetId])
+  @@index([userId, returnedAt])
+}

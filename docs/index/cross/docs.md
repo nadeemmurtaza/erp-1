@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**419** markdown documents. These explain **why**; this index only says **where**.
+**420** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2751,17 +2751,16 @@ _no second-level headings_
 - P — Permission rules  <sub>:203</sub>
 - What is actually enforced today  <sub>:217</sub>
 
-### `docs/implementation/finance-accounting/04-finance.md`  <sub>304 lines</sub>
+### `docs/implementation/finance-accounting/04-finance.md`  <sub>321 lines</sub>
 
-- Scope decision, already taken  <sub>:53</sub>
-- Work orders  <sub>:68</sub>
-- WO-4.1 — Expenses  <sub>:84</sub>
-- WO-4.2 — Order economics  <sub>:160</sub>
-- WO-4.3 — The P&L report  <sub>:200</sub>
-- WO-4.4 — Cash flow  <sub>:239</sub>
-- WO-4.5 — Screens  <sub>:253</sub>
-- WO-4.6 — Month-end close and export  <sub>:286</sub>
-- Phase 4 exit criteria  <sub>:296</sub>
+- Work orders  <sub>:85</sub>
+- WO-4.1 — Expenses  <sub>:101</sub>
+- WO-4.2 — Order economics  <sub>:177</sub>
+- WO-4.3 — The P&L report  <sub>:217</sub>
+- WO-4.4 — Cash flow  <sub>:256</sub>
+- WO-4.5 — Screens  <sub>:270</sub>
+- WO-4.6 — Month-end close and export  <sub>:303</sub>
+- Phase 4 exit criteria  <sub>:313</sub>
 
 ### `docs/implementation/finance-accounting/137-payment-method-resilience-audit.md`  <sub>75 lines</sub>
 
@@ -2783,15 +2782,15 @@ _no second-level headings_
 - Acceptance  <sub>:339</sub>
 - Out of scope  <sub>:351</sub>
 
-### `docs/implementation/finance-accounting/147-fixed-asset-depreciation.md`  <sub>210 lines</sub>
+### `docs/implementation/finance-accounting/147-fixed-asset-depreciation.md`  <sub>259 lines</sub>
 
-- 1. A depreciation schedule, computed once at acquisition, posted periodically  <sub>:11</sub>
-- 2. Posting is a cron, through the identical `findPostedEntry()` idempotency key every other posting rule already uses  <sub>:55</sub>
-- 3. Write-off and disposal reuse doc 79's own `AssetStatus`, closing the schedule rather than deleting it  <sub>:81</sub>
-- Scope lenses  <sub>:94</sub>
-- Work orders  <sub>:175</sub>
-- Acceptance  <sub>:191</sub>
-- Out of scope  <sub>:202</sub>
+- 1. A depreciation schedule, computed once at acquisition, posted periodically  <sub>:60</sub>
+- 2. Posting is a cron, through the identical `findPostedEntry()` idempotency key every other posting rule already uses  <sub>:104</sub>
+- 3. Write-off and disposal reuse doc 79's own `AssetStatus`, closing the schedule rather than deleting it  <sub>:130</sub>
+- Scope lenses  <sub>:143</sub>
+- Work orders  <sub>:224</sub>
+- Acceptance  <sub>:240</sub>
+- Out of scope  <sub>:251</sub>
 
 ### `docs/implementation/finance-accounting/151-layby-installment-sales.md`  <sub>201 lines</sub>
 
@@ -2820,14 +2819,25 @@ _no second-level headings_
 - Acceptance  <sub>:91</sub>
 - Out of scope  <sub>:102</sub>
 
-### `docs/implementation/finance-accounting/68-realtime-gross-profit.md`  <sub>191 lines</sub>
+### `docs/implementation/finance-accounting/68-realtime-gross-profit.md`  <sub>213 lines</sub>
 
-- 1. The fix is one more publish, at the point POS already knows it happened  <sub>:39</sub>
-- 2. "Per transaction and per day" is then a read over rows that now exist  <sub>:61</sub>
-- Scope lenses  <sub>:83</sub>
-- Work orders  <sub>:148</sub>
-- Acceptance  <sub>:169</sub>
-- Out of scope  <sub>:182</sub>
+- 1. The fix is one more publish, at the point POS already knows it happened  <sub>:61</sub>
+- 2. "Per transaction and per day" is then a read over rows that now exist  <sub>:83</sub>
+- Scope lenses  <sub>:105</sub>
+- Work orders  <sub>:170</sub>
+- Acceptance  <sub>:191</sub>
+- Out of scope  <sub>:204</sub>
+
+### `docs/implementation/hr-people-org/164-department-permission-role-duty-control.md`  <sub>327 lines</sub>
+
+- What already exists and is not redesigned here  <sub>:11</sub>
+- The three genuine gaps  <sub>:34</sub>
+- Design: two new models, no change to docs 19/20/21/23's own schemas  <sub>:59</sub>
+- Scope lenses  <sub>:144</sub>
+- Work orders  <sub>:245</sub>
+- Acceptance  <sub>:288</sub>
+- Out of scope  <sub>:309</sub>
+- Decision to record  <sub>:319</sub>
 
 ### `docs/implementation/hr-people-org/19-org-structure-offices-departments.md`  <sub>250 lines</sub>
 
@@ -2969,14 +2979,14 @@ _no second-level headings_
 - Acceptance  <sub>:122</sub>
 - Out of scope  <sub>:131</sub>
 
-### `docs/implementation/hr-people-org/79-employee-asset-management.md`  <sub>183 lines</sub>
+### `docs/implementation/hr-people-org/79-employee-asset-management.md`  <sub>222 lines</sub>
 
-- 1. An asset is a trackable item; an assignment is who has it and since when  <sub>:9</sub>
-- 2. An employee's exit is the one write path that must never be optional  <sub>:59</sub>
-- Scope lenses  <sub>:74</sub>
-- Work orders  <sub>:154</sub>
-- Acceptance  <sub>:169</sub>
-- Out of scope  <sub>:178</sub>
+- 1. An asset is a trackable item; an assignment is who has it and since when  <sub>:48</sub>
+- 2. An employee's exit is the one write path that must never be optional  <sub>:98</sub>
+- Scope lenses  <sub>:113</sub>
+- Work orders  <sub>:193</sub>
+- Acceptance  <sub>:208</sub>
+- Out of scope  <sub>:217</sub>
 
 ### `docs/implementation/hr-people-org/80-employee-training-certification.md`  <sub>161 lines</sub>
 
@@ -3327,15 +3337,15 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>500 lines</sub>
+### `docs/implementation/README.md`  <sub>501 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:370</sub>
-- The two module groups  <sub>:399</sub>
-- How a work order runs  <sub>:436</sub>
-- Known gaps not yet owned by a phase  <sub>:454</sub>
-- When a brief is wrong  <sub>:481</sub>
-- Scope, honestly  <sub>:494</sub>
+- Dependency order  <sub>:371</sub>
+- The two module groups  <sub>:400</sub>
+- How a work order runs  <sub>:437</sub>
+- Known gaps not yet owned by a phase  <sub>:455</sub>
+- When a brief is wrong  <sub>:482</sub>
+- Scope, honestly  <sub>:495</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
 

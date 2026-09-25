@@ -212,4 +212,86 @@ describe('OrderEconomicsService', () => {
     await expect(service.computeForOrder('does-not-exist', false)).resolves.toBeUndefined();
     expect(events.publish).not.toHaveBeenCalled();
   });
+
+  describe('grossProfitToday — WO-68.2/68.4 (68-realtime-gross-profit.md)', () => {
+    it('includes every channel — a POS sale (DELIVERED at creation) reads back exactly what OrderEconomics already computed for it', async () => {
+      const posOrder = await makeOrder({
+        itemsSubtotal: 3_000,
+        grandTotal: 3_000,
+        items: [{ unitCost: 1_000, quantity: 1 }],
+      });
+      await service.computeForOrder(posOrder.id, false);
+      const stored = await prisma.orderEconomics.findUniqueOrThrow({ where: { orderId: posOrder.id } });
+
+      const result = await service.grossProfitToday();
+      const line = result.transactions.find((t) => t.orderId === posOrder.id);
+
+      expect(line).toBeDefined();
+      expect(line!.revenue).toBe(stored.revenue);
+      expect(line!.cogs).toBe(stored.cogs);
+      expect(line!.contribution).toBe(stored.contribution);
+      expect(line!.marginBps).toBe(Math.round((stored.contribution / stored.revenue) * 10_000));
+    });
+
+    it("day total's revenue, summed over all channels, matches an independent aggregate over the same Order rows (Acceptance)", async () => {
+      const a = await makeOrder({ itemsSubtotal: 2_000, grandTotal: 2_000, items: [{ unitCost: 500, quantity: 1 }] });
+      const b = await makeOrder({ itemsSubtotal: 4_000, grandTotal: 4_000, items: [{ unitCost: 1_000, quantity: 1 }] });
+      await service.computeForOrder(a.id, false);
+      await service.computeForOrder(b.id, false);
+
+      const result = await service.grossProfitToday();
+      const ours = result.transactions.filter((t) => t.orderId === a.id || t.orderId === b.id);
+      const independentRevenue = ours.reduce((sum, t) => sum + t.revenue, 0);
+
+      // The identical shop-day/void-status query AnalyticsService.summary()'s
+      // own `today` aggregate runs directly against Order.grandTotal.
+      const independentAggregate = await prisma.order.aggregate({
+        where: { id: { in: [a.id, b.id] }, status: { notIn: ['CANCELLED', 'RETURNED'] } },
+        _sum: { grandTotal: true },
+      });
+
+      expect(independentRevenue).toBe(2_000 + 4_000);
+      expect(independentAggregate._sum.grandTotal).toBe(2_000 + 4_000);
+      expect(result.dayTotal.revenue).toBe(independentAggregate._sum.grandTotal);
+    });
+
+    it('a returned order zeroes its own revenue/cogs/contribution through the same RETURNED path, unchanged', async () => {
+      const order = await makeOrder({ itemsSubtotal: 5_000, grandTotal: 5_000, items: [{ unitCost: 1_000, quantity: 1 }] });
+      await service.computeForOrder(order.id, false);
+      await prisma.order.update({ where: { id: order.id }, data: { status: 'RETURNED' } });
+      await service.computeForOrder(order.id, true);
+
+      const result = await service.grossProfitToday();
+      // RETURNED is a void status — excluded from the read entirely, not
+      // merely zeroed within it.
+      expect(result.transactions.some((t) => t.orderId === order.id)).toBe(false);
+    });
+
+    it('marginBps is 0, never NaN or Infinity, when revenue is 0', async () => {
+      const order = await makeOrder({ itemsSubtotal: 0, grandTotal: 0, items: [{ unitCost: 0, quantity: 1 }] });
+      await service.computeForOrder(order.id, false);
+
+      const result = await service.grossProfitToday();
+      const line = result.transactions.find((t) => t.orderId === order.id);
+      expect(line!.marginBps).toBe(0);
+    });
+
+    it('filters by locationId when given', async () => {
+      const elsewhere = await prisma.order.create({
+        data: {
+          number: orderNumber(),
+          status: 'DELIVERED',
+          shippingAddress: {},
+          locationId: 'loc-does-not-exist',
+          itemsSubtotal: 1_000,
+          grandTotal: 1_000,
+          items: { create: [{ kind: 'GOODS', nameEn: 'Test item', unitPrice: 1_000, unitCost: 100, quantity: 1, lineTotal: 1_000 }] },
+        },
+      });
+      await service.computeForOrder(elsewhere.id, false);
+
+      const result = await service.grossProfitToday('a-different-location');
+      expect(result.transactions.some((t) => t.orderId === elsewhere.id)).toBe(false);
+    });
+  });
 });

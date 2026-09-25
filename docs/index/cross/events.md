@@ -761,7 +761,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/finance/order-economics.service.ts:127` | `finance` |
+| `apps/api/src/modules/finance/order-economics.service.ts:143` | `finance` |
 
 
 **Subscribed by**

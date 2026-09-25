@@ -279,6 +279,18 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'high',
   },
   {
+    key: 'finance.assets.depreciate',
+    label: 'Put a company asset on a depreciation schedule — a real accounting-policy decision',
+    category: 'Finance',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'finance.assets.dispose',
+    label: 'Dispose an asset — posts a real loss/gain to the ledger',
+    category: 'Finance',
+    sensitivity: 'high',
+  },
+  {
     key: 'fulfilment.view',
     label: 'View shipments, manifests, RTO and returns',
     category: 'Fulfilment',
@@ -324,6 +336,18 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     key: 'payroll.manage',
     label: 'Set compensation rates, decide leave requests, and build, approve and post pay runs',
     category: 'Payroll',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'hr.assets.manage',
+    label: 'Issue and return company equipment (laptops, phones, uniforms) to staff',
+    category: 'Human Resources',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'hr.assets.writeoff',
+    label: 'Mark an asset retired or lost — a real cost, separate from day-to-day issue/return',
+    category: 'Human Resources',
     sensitivity: 'medium',
   },
   {
@@ -616,6 +640,8 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
       'finance.wallets.adjust',
       'finance.wallets.adjust.approve',
       'finance.merchant-payables.dispute',
+      'finance.assets.depreciate',
+      'finance.assets.dispose',
     ],
   },
   {
@@ -629,6 +655,12 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     label: 'Payroll',
     description: "Compensation rates, leave requests, and pay runs — everyone's own view is separate, granted alongside every seeded role.",
     permissions: ['payroll.view', 'payroll.manage'],
+  },
+  {
+    key: 'hr',
+    label: 'Human resources',
+    description: 'Which physical equipment is issued to which employee.',
+    permissions: ['hr.assets.manage', 'hr.assets.writeoff'],
   },
   {
     key: 'system-admin',
@@ -722,6 +754,8 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'payroll.view_own',
     'payroll.view',
     'payroll.manage',
+    'hr.assets.manage',
+    'hr.assets.writeoff',
     'analytics.view',
     'reports.view',
     'organization.view',
@@ -759,6 +793,8 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'finance.credit-notes.approve',
     'finance.debit-notes.manage',
     'finance.credit-terms.manage',
+    'finance.assets.depreciate',
+    'finance.assets.dispose',
     'fulfilment.view',
     'fulfilment.manage',
     'bom.view',

@@ -3,7 +3,7 @@
 
 # Permissions
 
-All **75** permissions in `PERMISSION_CATALOG`, mapped to the routes that enforce them, the UI that checks them, and the seed that grants them.
+All **79** permissions in `PERMISSION_CATALOG`, mapped to the routes that enforce them, the UI that checks them, and the seed that grants them.
 
 
 Catalogue: `packages/shared/src/permissions.ts` ·
@@ -36,7 +36,7 @@ the *catalogue*, not any particular deployment's grants.
 | `reports.view` | Export CSV reports | low | 11 | 2 | STAFF, ADMIN |
 | `organization.view` | View the organization/brand/branch dashboard | low | 5 | 1 | STAFF, ADMIN |
 | `organization.manage` | Grant and revoke who is a brand or branch admin | high | 10 | 3 | ADMIN |
-| `accounting.view` | View the general ledger and its reports (trial balance, P&L, balance sheet, cas… | medium | 10 | — | ADMIN |
+| `accounting.view` | View the general ledger and its reports (trial balance, P&L, balance sheet, cas… | medium | 10 | 1 | ADMIN |
 
 ### Customers
 
@@ -48,7 +48,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `orders.manage` | Manage orders and shipments | medium | 11 | 1 | STAFF, ADMIN |
+| `orders.manage` | Manage orders and shipments | medium | 12 | 2 | STAFF, ADMIN |
 | `pos.manage` | Register till terminals and issue their device credentials | high | 6 | — | ADMIN |
 | `pos.operate` | Open and close till shifts, and record cash movements | medium | 9 | 1 | STAFF, ADMIN |
 | `payments.approve` | Approve bank-transfer payments | high | 3 | 2 | STAFF, ADMIN |
@@ -73,7 +73,7 @@ the *catalogue*, not any particular deployment's grants.
 |---|---|---|---|---|---|
 | `catalog.manage` | Manage products, categories and import | medium | 42 | 17 | STAFF, ADMIN |
 | `inventory.manage` | Adjust and view stock levels | medium | 12 | 12 | STAFF, ADMIN |
-| `inventory.view_cost` | See cost prices and margins | medium | 1 | 15 | ADMIN |
+| `inventory.view_cost` | See cost prices and margins | medium | 2 | 15 | ADMIN |
 | `inventory.count` | Run stock counts | low | 12 | 4 | STAFF, ADMIN |
 | `transfers.manage` | Dispatch, receive and cancel inter-branch stock transfers | medium | 5 | 2 | STAFF, ADMIN |
 | `measurements.manage_blueprints` | Manage garment types, measurement fields and size charts | low | 5 | 1 | STAFF, ADMIN |
@@ -105,7 +105,7 @@ the *catalogue*, not any particular deployment's grants.
 | `roles.manage_permissions` | Edit each role's granted permissions | critical | 4 | — | ADMIN |
 | `audit.view` | View the audit log | medium | 1 | — | ADMIN |
 | `users.manage` | Create and manage back-office user accounts | high | 10 | 3 | ADMIN |
-| `accounting.manage_periods` | Open, close and lock fiscal periods — locking is irreversible | medium | 6 | — | ADMIN |
+| `accounting.manage_periods` | Open, close and lock fiscal periods — locking is irreversible | medium | 6 | 1 | ADMIN |
 | `ai.view` | View AI usage, cost and the review queue for AI-generated drafts | low | 2 | 2 | STAFF, ADMIN |
 | `ai.manage` | Configure AI providers and the monthly budget, and approve or reject AI-generat… | medium | 8 | 3 | STAFF, ADMIN |
 
@@ -122,6 +122,8 @@ the *catalogue*, not any particular deployment's grants.
 | `finance.credit-notes.approve` | Approve a credit note above the approval threshold, and void one | high | 2 | — | ADMIN |
 | `finance.debit-notes.manage` | Issue and void debit notes against a supplier | medium | 3 | — | STAFF, ADMIN |
 | `finance.credit-terms.manage` | Set a customer's credit limit and payment terms, apply a credit hold, and edit… | high | 2 | — | ADMIN |
+| `finance.assets.depreciate` | Put a company asset on a depreciation schedule — a real accounting-policy decis… | medium | 2 | 1 | ADMIN |
+| `finance.assets.dispose` | Dispose an asset — posts a real loss/gain to the ledger | high | 1 | 1 | ADMIN |
 
 ### Fulfilment
 
@@ -145,6 +147,13 @@ the *catalogue*, not any particular deployment's grants.
 | `payroll.view_own` | View their own compensation, leave balance and payslips | low | 5 | 1 | TAILOR, STAFF, ADMIN |
 | `payroll.view` | View every employee's compensation, leave and pay-run data | medium | 7 | 3 | ADMIN |
 | `payroll.manage` | Set compensation rates, decide leave requests, and build, approve and post pay… | medium | 7 | 2 | ADMIN |
+
+### Human Resources
+
+| Key | Label | Risk | API routes | UI sites | Roles granted at seed |
+|---|---|---|---|---|---|
+| `hr.assets.manage` | Issue and return company equipment (laptops, phones, uniforms) to staff | medium | 6 | 3 | ADMIN |
+| `hr.assets.writeoff` | Mark an asset retired or lost — a real cost, separate from day-to-day issue/ret… | medium | 1 | 1 | ADMIN |
 
 ### Marketing
 
@@ -182,7 +191,7 @@ their own `UserPermission` GRANT/REVOKE overrides applied on top
 | `CUSTOMER` | 1 | `account.change_own_password` |
 | `TAILOR` | 5 | `account.change_own_password` `payroll.view_own` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_own` |
 | `STAFF` | 50 | `account.change_own_password` `payroll.view_own` `analytics.view` `reports.view` `organization.view` `crm.manage` `orders.manage` `payments.approve` `pos.operate` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `purchasing.requisitions.create` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.wallets.adjust` `finance.credit-notes.create` `finance.debit-notes.manage` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.produce` `promotions.view` `promotions.manage` `giftcards.view` `content.view` `content.manage` `collections.view` `collections.manage` `search.view` `search.manage` `campaigns.view` `onsitemessages.view` `onsitemessages.manage` `reviews.moderate` `loyalty.view` `ai.view` `ai.manage` |
-| `ADMIN` | 74 | `account.change_own_password` `payroll.view_own` `payroll.view` `payroll.manage` `analytics.view` `reports.view` `organization.view` `organization.manage` `accounting.view` `crm.manage` `orders.manage` `payments.approve` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.view_cost` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `purchasing.requisitions.create` `purchasing.requisitions.approve` `inventory.spot_checks.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.manage` `finance.wallets.adjust` `finance.wallets.adjust.approve` `finance.merchant-payables.dispute` `finance.credit-notes.create` `finance.credit-notes.approve` `finance.debit-notes.manage` `finance.credit-terms.manage` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.manage` `bom.produce` `settings.manage` `roles.manage_permissions` `audit.view` `users.manage` `tax.manage` `marketing.manage` `accounting.manage_periods` `pos.manage` `pos.operate` `promotions.view` `promotions.manage` `giftcards.view` `giftcards.manage` `content.view` `content.manage` `collections.view` `collections.manage` `search.view` `search.manage` `campaigns.view` `campaigns.manage` `onsitemessages.view` `onsitemessages.manage` `reviews.moderate` `loyalty.view` `loyalty.manage` `ai.view` `ai.manage` |
+| `ADMIN` | 78 | `account.change_own_password` `payroll.view_own` `payroll.view` `payroll.manage` `hr.assets.manage` `hr.assets.writeoff` `analytics.view` `reports.view` `organization.view` `organization.manage` `accounting.view` `crm.manage` `orders.manage` `payments.approve` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.view_cost` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `purchasing.requisitions.create` `purchasing.requisitions.approve` `inventory.spot_checks.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.manage` `finance.wallets.adjust` `finance.wallets.adjust.approve` `finance.merchant-payables.dispute` `finance.credit-notes.create` `finance.credit-notes.approve` `finance.debit-notes.manage` `finance.credit-terms.manage` `finance.assets.depreciate` `finance.assets.dispose` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.manage` `bom.produce` `settings.manage` `roles.manage_permissions` `audit.view` `users.manage` `tax.manage` `marketing.manage` `accounting.manage_periods` `pos.manage` `pos.operate` `promotions.view` `promotions.manage` `giftcards.view` `giftcards.manage` `content.view` `content.manage` `collections.view` `collections.manage` `search.view` `search.manage` `campaigns.view` `campaigns.manage` `onsitemessages.view` `onsitemessages.manage` `reviews.moderate` `loyalty.view` `loyalty.manage` `ai.view` `ai.manage` |
 
 
 ## Admin nav → permission

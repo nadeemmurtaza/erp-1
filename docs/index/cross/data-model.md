@@ -3,7 +3,7 @@
 
 # Data model
 
-All **229** Prisma models and **105** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **233** Prisma models and **107** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -25,7 +25,7 @@ against a real database.
 
 | Schema | Models | Enums | Owner | Contains |
 |---|---|---|---|---|
-| [`accounting.prisma`](../data/accounting.md) | 6 | 3 | [`accounting`](../modules/accounting.md) | Account, FiscalPeriod, FiscalYear, JournalEntry, JournalEntryNumberCounter, JournalLine |
+| [`accounting.prisma`](../data/accounting.md) | 8 | 4 | [`accounting`](../modules/accounting.md) | Account, AssetDepreciationPosting, AssetDepreciationSchedule, FiscalPeriod, FiscalYear, JournalEntry, JournalEntryNumberCounter,… |
 | [`approvals.prisma`](../data/approvals.md) | 2 | 3 | core platform | ApprovalChain, ApprovalStep |
 | [`bom.prisma`](../data/bom.md) | 5 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomProductionLine, BomProductionRun, BomRecipe, RawMaterial |
 | [`cart.prisma`](../data/cart.md) | 3 | 0 | [`cart`](../modules/cart.md) | Cart, CartItem, CartItemStitchingOption |
@@ -36,6 +36,7 @@ against a real database.
 | [`finance.prisma`](../data/finance.md) | 3 | 1 | [`finance`](../modules/finance.md) | Expense, ExpenseCategory, OrderEconomics |
 | [`fulfilment.prisma`](../data/fulfilment.md) | 16 | 4 | [`fulfilment`](../modules/fulfilment.md) | Manifest, ManifestNumberCounter, ReturnReasonCode, ReturnReasonTranslation, ReturnRequest, ReturnRequestItem, ReturnRequestNumber… |
 | [`giftcards.prisma`](../data/giftcards.md) | 3 | 1 | [`giftcards`](../modules/giftcards.md) | GiftCard, GiftCardTransaction, StoreCreditTransaction |
+| [`hr.prisma`](../data/hr.md) | 2 | 1 | [`hr`](../modules/hr.md) | Asset, AssetAssignment |
 | [`identity-verification.prisma`](../data/identity-verification.md) | 1 | 1 | [`identity-verification`](../modules/identity-verification.md) | IdentityVerification |
 | [`inventory.prisma`](../data/inventory.md) | 12 | 6 | [`inventory`](../modules/inventory.md) | Location, MarkdownSuggestion, SpotCheck, SpotCheckLine, SpotCheckPolicy, StockCount, StockCountLine, StockMovement, StockVariance… |
 | [`invoicing.prisma`](../data/invoicing.md) | 4 | 2 | core platform | Invoice, InvoiceLine, Quote, QuoteLine |
@@ -79,6 +80,10 @@ against a real database.
 | [`ApiKey`](../data/core.md#apikey) | `core` | 18 | 2 | id | A personal API key: a credential that acts as `user`, never as anyone more powerful. |
 | [`ApprovalChain`](../data/approvals.md#approvalchain) | `approvals` | 8 | 0 | id |  |
 | [`ApprovalStep`](../data/approvals.md#approvalstep) | `approvals` | 11 | 2 | id |  |
+| [`Asset`](../data/hr.md#asset) | `hr` | 11 | 0 | id |  |
+| [`AssetAssignment`](../data/hr.md#assetassignment) | `hr` | 12 | 4 | id | One row per issue/return cycle — an asset's full custody history, never overwritten. |
+| [`AssetDepreciationPosting`](../data/accounting.md#assetdepreciationposting) | `accounting` | 7 | 1 | id | One row per period posted — the same "snapshot at write time, never re-derived" disciplin… |
+| [`AssetDepreciationSchedule`](../data/accounting.md#assetdepreciationschedule) | `accounting` | 14 | 2 | id |  |
 | [`AuditLog`](../data/core.md#auditlog) | `core` | 9 | 1 | id |  |
 | [`BackInStockRequest`](../data/wishlist.md#backinstockrequest) | `wishlist` | 6 | 2 | id | One row per customer waiting on one variant. |
 | [`Banner`](../data/content.md#banner) | `content` | 11 | 0 | id |  |
@@ -286,7 +291,7 @@ against a real database.
 | [`TradingPartner`](../data/trading-partners.md#tradingpartner) | `trading-partners` | 15 | 0 | id | The business on the other end of a document exchange. |
 | [`TransferNumberCounter`](../data/transfers.md#transfernumbercounter) | `transfers` | 2 | 0 | year | Same shape as OrderNumberCounter (orders.prisma) — an `INSERT ... |
 | [`TrialExtension`](../data/platform.md#trialextension) | `platform` | 8 | 1 | id | WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpi… |
-| [`User`](../data/core.md#user) | `core` | 79 | 28 | id |  |
+| [`User`](../data/core.md#user) | `core` | 83 | 31 | id |  |
 | [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | A per-user adjustment layered on top of their role's grants: GRANT adds a permission thei… |
 | [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | Which `Role` rows a user holds. |
 | [`VariantForecast`](../data/inventory.md#variantforecast) | `inventory` | 7 | 1 | variantId | WO-9.3 (09-ai-layer.md). |
@@ -317,6 +322,7 @@ against a real database.
 | [`ApprovalChainStatus`](../data/approvals.md#approvalchainstatus) | `approvals` | `PENDING` `APPROVED` `REJECTED` |
 | [`ApprovalStepStatus`](../data/approvals.md#approvalstepstatus) | `approvals` | `PENDING` `APPROVED` `REJECTED` `SKIPPED` |
 | [`ApprovalSubjectType`](../data/approvals.md#approvalsubjecttype) | `approvals` | `PURCHASE_REQUISITION` `WALLET_ADJUSTMENT` |
+| [`AssetStatus`](../data/hr.md#assetstatus) | `hr` | `AVAILABLE` `ASSIGNED` `RETIRED` `LOST` |
 | [`BomStatus`](../data/bom.md#bomstatus) | `bom` | `DRAFT` `ACTIVE` `ARCHIVED` |
 | [`CampaignChannel`](../data/marketing.md#campaignchannel) | `marketing` | `EMAIL` `SMS` `WHATSAPP` |
 | [`CampaignRecipientStatus`](../data/marketing.md#campaignrecipientstatus) | `marketing` | `PENDING` `SENT` `SKIPPED_OPT_OUT` `SKIPPED_NO_CONTACT` `FAILED` `OPENED` `CLICKED` |
@@ -328,6 +334,7 @@ against a real database.
 | [`ContactStatus`](../data/crm.md#contactstatus) | `crm` | `LEAD` `ACTIVE` `REPEAT` `DORMANT` `BLOCKED` |
 | [`ContentStatus`](../data/content.md#contentstatus) | `content` | `DRAFT` `PUBLISHED` `ARCHIVED` |
 | [`CreditDebitNoteStatus`](../data/receivables.md#creditdebitnotestatus) | `receivables` | `DRAFT` `ISSUED` `APPLIED` `VOID` |
+| [`DepreciationMethod`](../data/accounting.md#depreciationmethod) | `accounting` | `STRAIGHT_LINE` `DECLINING_BALANCE` |
 | [`DevicePlatform`](../data/core.md#deviceplatform) | `core` | `IOS` `ANDROID` `WEB` |
 | [`DiscountScope`](../data/promotions.md#discountscope) | `promotions` | `ORDER` `PRODUCT` `CATEGORY` `COLLECTION` `SHIPPING` |
 | [`DiscountType`](../data/promotions.md#discounttype) | `promotions` | `PERCENTAGE` `FIXED_AMOUNT` `FREE_SHIPPING` `BUY_X_GET_Y` `TIERED` |

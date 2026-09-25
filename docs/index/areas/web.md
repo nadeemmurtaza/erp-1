@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-367 files · 57,481 lines
+372 files · 59,386 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -31,10 +31,10 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 76 | module |
-| `apps/web/src/app` | 197 | 35,251 | page, loading, layout, error |
-| `apps/web/src/components` | 107 | 16,408 | component, unit test, loading |
+| `apps/web/src/app` | 201 | 37,023 | page, loading, layout, error |
+| `apps/web/src/components` | 108 | 16,533 | component, unit test, loading |
 | `apps/web/src/config` | 3 | 106 | config |
-| `apps/web/src/constants` | 5 | 383 | constants |
+| `apps/web/src/constants` | 5 | 391 | constants |
 | `apps/web/src/hooks` | 3 | 72 | hook |
 | `apps/web/src/i18n` | 3 | 53 | module |
 | `apps/web/src/lib` | 9 | 1,043 | utility |
@@ -67,7 +67,8 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/src/types/api.ts` | 1,494 | types |  |
 | `apps/web/src/components/admin/product-form.tsx` | 1,434 | component |  |
 | `apps/web/src/components/storefront/stitching-panel.tsx` | 969 | component |  |
-| `apps/web/src/components/admin/nav-registry.ts` | 892 | component |  |
+| `apps/web/src/components/admin/nav-registry.ts` | 922 | component |  |
+| `apps/web/src/app/(admin)/admin/(app)/hr/assets/[id]/page.tsx` | 853 | page |  |
 | `apps/web/src/app/(storefront)/[locale]/checkout/page.tsx` | 743 | page |  |
 | `apps/web/src/components/admin/dashboard/card-registry.ts` | 705 | component |  |
 | `apps/web/messages/en.json` | 679 | json |  |
@@ -78,7 +79,6 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/src/app/globals.css` | 603 | stylesheet |  |
 | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` | 571 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 565 | page |  |
-| `apps/web/src/components/admin/image-manager.tsx` | 543 | component |  |
 
 
 ---

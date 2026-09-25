@@ -3,7 +3,7 @@
 
 # Migrations
 
-**77** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**79** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -110,6 +110,8 @@ nothing here fails a build.
 | 2026-09-25 | `add_review_summary_urdu` | 1 | ALTER TABLE | ProductReviewSummary |
 | 2026-09-25 | `add_wallet_merchant_payable` | 20 | CREATE TYPE, ALTER TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | MerchantPayable, WalletAccount, WalletAdjustmentRequest, WalletEntry |
 | 2026-09-25 | `add_receivables_credit_notes_dunning` | 15 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | CreditNote, CustomerCreditTerm, DebitNote, DunningEvent, DunningPolicy |
+| 2026-09-25 | `add_hr_assets` | 12 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | Asset, AssetAssignment |
+| 2026-09-25 | `add_asset_depreciation` | 10 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | AssetDepreciationPosting, AssetDepreciationSchedule |
 
 
 ---

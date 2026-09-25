@@ -113,6 +113,9 @@ export const ROUTES = {
     /** Bulk expense onboarding (admin-platform/72-fragmented-tool-consolidation-import.md WO-72.4). */
     financeExpensesImport: '/admin/finance/expenses/import',
 
+    /** 04-finance.md WO-4.6. */
+    fiscalPeriods: '/admin/accounting/fiscal-periods',
+
     /** 145-receivables-credit-limits-dunning.md. */
     creditNotes: '/admin/credit-notes',
     creditNoteNew: '/admin/credit-notes/new',
@@ -145,6 +148,11 @@ export const ROUTES = {
     purchasingSpend: '/admin/analytics/purchasing/spend',
     suppliers: '/admin/suppliers',
     supplier: (id: string) => `/admin/suppliers/${id}`,
+    tradingPartners: '/admin/trading-partners',
+    tradingPartner: (id: string) => `/admin/trading-partners/${id}`,
+    /** 56-overdue-invoices-counter.md WO-56.2 — invoices issued to trading partners. */
+    invoices: '/admin/invoices',
+    invoicesOverdue: '/admin/invoices?overdue=true',
 
     /** 152-purchase-requisition.md. A request to buy, distinct from the PO it may become. */
     requisitions: '/admin/requisitions',

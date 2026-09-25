@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1928,
-    "lines": 294299,
-    "routes": 634,
-    "controllers": 116,
-    "models": 229,
-    "enums": 105,
-    "migrations": 77,
+    "files": 1948,
+    "lines": 298619,
+    "routes": 646,
+    "controllers": 118,
+    "models": 233,
+    "enums": 107,
+    "migrations": 79,
     "events": 59,
-    "permissions": 75,
-    "screens": 227,
-    "crons": 18,
-    "specs": 224,
+    "permissions": 79,
+    "screens": 231,
+    "crons": 19,
+    "specs": 226,
     "designLaws": 0
   },
   "designLaws": [],
@@ -28,13 +28,13 @@
     "infra": {
       "files": 57,
       "lines": 29609,
-      "bytes": 1166001,
+      "bytes": 1166010,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 801,
-      "lines": 113191,
-      "bytes": 4277503,
+      "files": 815,
+      "lines": 115115,
+      "bytes": 4355186,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 367,
-      "lines": 57481,
-      "bytes": 2080186,
+      "files": 372,
+      "lines": 59386,
+      "bytes": 2140583,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 393,
-      "lines": 62132,
-      "bytes": 3688705,
+      "files": 394,
+      "lines": 62587,
+      "bytes": 3716514,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 78,
-      "lines": 7775,
-      "bytes": 274573,
+      "lines": 7811,
+      "bytes": 275689,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -78,10 +78,15 @@
         "apps/api/src/modules/accounting/accounting.module.ts",
         "apps/api/src/modules/accounting/accounting.service.spec.ts",
         "apps/api/src/modules/accounting/accounting.service.ts",
+        "apps/api/src/modules/accounting/asset-depreciation.controller.ts",
+        "apps/api/src/modules/accounting/asset-depreciation.cron.ts",
+        "apps/api/src/modules/accounting/asset-depreciation.service.spec.ts",
+        "apps/api/src/modules/accounting/asset-depreciation.service.ts",
         "apps/api/src/modules/accounting/chart-of-accounts.ts",
         "apps/api/src/modules/accounting/consolidation.controller.ts",
         "apps/api/src/modules/accounting/consolidation.service.spec.ts",
         "apps/api/src/modules/accounting/consolidation.service.ts",
+        "apps/api/src/modules/accounting/dto/asset-depreciation.dto.ts",
         "apps/api/src/modules/accounting/dto/fiscal-period.dto.ts",
         "apps/api/src/modules/accounting/dto/gl-reports.dto.ts",
         "apps/api/src/modules/accounting/fiscal-periods.controller.ts",
@@ -95,7 +100,7 @@
         "apps/api/src/modules/accounting/wallet-posting-rules.subscriber.spec.ts",
         "apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts"
       ],
-      "routes": 16,
+      "routes": 19,
       "page": "docs/index/modules/accounting.md"
     },
     {
@@ -324,7 +329,7 @@
         "apps/api/src/modules/finance/order-economics.service.ts",
         "apps/api/src/modules/finance/rto-expense.listener.ts"
       ],
-      "routes": 16,
+      "routes": 17,
       "page": "docs/index/modules/finance.md"
     },
     {
@@ -372,6 +377,21 @@
       ],
       "routes": 10,
       "page": "docs/index/modules/giftcards.md"
+    },
+    {
+      "name": "hr",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/hr/assets.controller.ts",
+        "apps/api/src/modules/hr/assets.service.spec.ts",
+        "apps/api/src/modules/hr/assets.service.ts",
+        "apps/api/src/modules/hr/dto/asset.dto.ts",
+        "apps/api/src/modules/hr/hr.module.ts"
+      ],
+      "routes": 7,
+      "page": "docs/index/modules/hr.md"
     },
     {
       "name": "identity-verification",
@@ -911,7 +931,7 @@
         "apps/api/src/modules/tradingpartners/trading-partners.service.spec.ts",
         "apps/api/src/modules/tradingpartners/trading-partners.service.ts"
       ],
-      "routes": 18,
+      "routes": 19,
       "page": "docs/index/modules/tradingpartners.md"
     },
     {
@@ -1119,6 +1139,7 @@
         "apps/api/src/core/extension-points/branch-policy.registry.ts",
         "apps/api/src/core/extension-points/camera-people-count.registry.ts",
         "apps/api/src/core/extension-points/cart-line-validator.registry.ts",
+        "apps/api/src/core/extension-points/employee-offboarding.registry.ts",
         "apps/api/src/core/extension-points/entity-enrichment.registry.ts",
         "apps/api/src/core/extension-points/extension-points.module.ts",
         "apps/api/src/core/extension-points/identity-verification-status.registry.ts",
@@ -1310,6 +1331,54 @@
       "public": false,
       "authOnly": true,
       "summary": "Edit a saved address"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/accounting/assets/:assetId/depreciation-schedule",
+      "module": "accounting",
+      "controller": "AssetDepreciationController",
+      "handler": "getSchedule",
+      "file": "apps/api/src/modules/accounting/asset-depreciation.controller.ts",
+      "line": 21,
+      "access": "finance.assets.depreciate",
+      "permissions": [
+        "finance.assets.depreciate"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "An asset's depreciation schedule and every period posted so far"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/accounting/assets/:assetId/depreciation-schedule",
+      "module": "accounting",
+      "controller": "AssetDepreciationController",
+      "handler": "createSchedule",
+      "file": "apps/api/src/modules/accounting/asset-depreciation.controller.ts",
+      "line": 30,
+      "access": "finance.assets.depreciate",
+      "permissions": [
+        "finance.assets.depreciate"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Put an asset on a monthly depreciation schedule"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/accounting/assets/:assetId/dispose",
+      "module": "accounting",
+      "controller": "AssetDepreciationController",
+      "handler": "dispose",
+      "file": "apps/api/src/modules/accounting/asset-depreciation.controller.ts",
+      "line": 41,
+      "access": "finance.assets.dispose",
+      "permissions": [
+        "finance.assets.dispose"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Dispose an asset — posts the remaining book value as a loss and any sale proceeds as a gain"
     },
     {
       "method": "GET",
@@ -4628,7 +4697,7 @@
       "controller": "FinanceController",
       "handler": "listCategories",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 49,
+      "line": 60,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4644,7 +4713,7 @@
       "controller": "FinanceController",
       "handler": "createCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 56,
+      "line": 67,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4660,7 +4729,7 @@
       "controller": "FinanceController",
       "handler": "deleteCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 70,
+      "line": 81,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4676,7 +4745,7 @@
       "controller": "FinanceController",
       "handler": "updateCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 63,
+      "line": 74,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4692,7 +4761,7 @@
       "controller": "FinanceController",
       "handler": "listExpenses",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 78,
+      "line": 89,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4708,7 +4777,7 @@
       "controller": "FinanceController",
       "handler": "createExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 120,
+      "line": 131,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4724,7 +4793,7 @@
       "controller": "FinanceController",
       "handler": "deleteExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 134,
+      "line": 145,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4740,7 +4809,7 @@
       "controller": "FinanceController",
       "handler": "updateExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 127,
+      "line": 138,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4756,7 +4825,7 @@
       "controller": "FinanceController",
       "handler": "uploadReceipt",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 145,
+      "line": 156,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4772,7 +4841,7 @@
       "controller": "FinanceController",
       "handler": "byCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 92,
+      "line": 103,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4788,7 +4857,7 @@
       "controller": "FinanceController",
       "handler": "importExpenses",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 167,
+      "line": 178,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4804,7 +4873,7 @@
       "controller": "FinanceController",
       "handler": "expenseImportTemplate",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 157,
+      "line": 168,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4820,7 +4889,7 @@
       "controller": "FinanceController",
       "handler": "summary",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 85,
+      "line": 96,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4836,7 +4905,7 @@
       "controller": "FinanceController",
       "handler": "trend",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 99,
+      "line": 110,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4847,12 +4916,28 @@
     },
     {
       "method": "GET",
+      "path": "/admin/finance/gross-profit-today",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "grossProfitToday",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 53,
+      "access": "inventory.view_cost",
+      "permissions": [
+        "inventory.view_cost"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Per-transaction and day-total gross profit for orders placed today, every channel"
+    },
+    {
+      "method": "GET",
       "path": "/admin/finance/margins",
       "module": "finance",
       "controller": "FinanceController",
       "handler": "margins",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 106,
+      "line": 117,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4868,7 +4953,7 @@
       "controller": "FinanceController",
       "handler": "unitEconomics",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 113,
+      "line": 124,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -5268,6 +5353,118 @@
       "public": false,
       "authOnly": false,
       "summary": "Cancel a gift card, forfeiting any remaining balance"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/hr/assets",
+      "module": "hr",
+      "controller": "AssetsController",
+      "handler": "list",
+      "file": "apps/api/src/modules/hr/assets.controller.ts",
+      "line": 23,
+      "access": "hr.assets.manage",
+      "permissions": [
+        "hr.assets.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List assets, optionally filtered by status"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/hr/assets",
+      "module": "hr",
+      "controller": "AssetsController",
+      "handler": "create",
+      "file": "apps/api/src/modules/hr/assets.controller.ts",
+      "line": 37,
+      "access": "hr.assets.manage",
+      "permissions": [
+        "hr.assets.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Register a new asset"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/hr/assets/:id",
+      "module": "hr",
+      "controller": "AssetsController",
+      "handler": "get",
+      "file": "apps/api/src/modules/hr/assets.controller.ts",
+      "line": 30,
+      "access": "hr.assets.manage",
+      "permissions": [
+        "hr.assets.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One asset's detail and full assignment history"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/hr/assets/:id/issue",
+      "module": "hr",
+      "controller": "AssetsController",
+      "handler": "issue",
+      "file": "apps/api/src/modules/hr/assets.controller.ts",
+      "line": 44,
+      "access": "hr.assets.manage",
+      "permissions": [
+        "hr.assets.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Issue an AVAILABLE asset to an employee"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/hr/assets/:id/write-off",
+      "module": "hr",
+      "controller": "AssetsController",
+      "handler": "writeOff",
+      "file": "apps/api/src/modules/hr/assets.controller.ts",
+      "line": 62,
+      "access": "hr.assets.writeoff",
+      "permissions": [
+        "hr.assets.writeoff"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Mark an asset RETIRED or LOST"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/hr/assets/assignments/:assignmentId/return",
+      "module": "hr",
+      "controller": "AssetsController",
+      "handler": "returnAsset",
+      "file": "apps/api/src/modules/hr/assets.controller.ts",
+      "line": 51,
+      "access": "hr.assets.manage",
+      "permissions": [
+        "hr.assets.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Return an issued asset"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/hr/assets/employees/:userId/unreturned",
+      "module": "hr",
+      "controller": "AssetsController",
+      "handler": "unreturnedFor",
+      "file": "apps/api/src/modules/hr/assets.controller.ts",
+      "line": 69,
+      "access": "hr.assets.manage",
+      "permissions": [
+        "hr.assets.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "An employee's unreturned assets — the offboarding gate's own check"
     },
     {
       "method": "GET",
@@ -5756,7 +5953,7 @@
       "controller": "InvoicesController",
       "handler": "issue",
       "file": "apps/api/src/modules/tradingpartners/invoices.controller.ts",
-      "line": 27,
+      "line": 33,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -5772,7 +5969,7 @@
       "controller": "InvoicesController",
       "handler": "findOne",
       "file": "apps/api/src/modules/tradingpartners/invoices.controller.ts",
-      "line": 21,
+      "line": 27,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -5780,6 +5977,22 @@
       "public": false,
       "authOnly": false,
       "summary": "Get an invoice"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/invoices/overdue-summary",
+      "module": "tradingpartners",
+      "controller": "InvoicesController",
+      "handler": "overdueSummary",
+      "file": "apps/api/src/modules/tradingpartners/invoices.controller.ts",
+      "line": 21,
+      "access": "orders.manage",
+      "permissions": [
+        "orders.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Count, total and oldest due date of ISSUED invoices past their due date"
     },
     {
       "method": "GET",
@@ -11313,7 +11526,7 @@
         "GET /admin/accounting/reports/profit-and-loss",
         "GET /admin/accounting/reports/trial-balance"
       ],
-      "uiSites": 0,
+      "uiSites": 1,
       "roles": [
         "ADMIN"
       ],
@@ -11373,6 +11586,7 @@
         "GET /admin/invoices",
         "POST /admin/invoices",
         "GET /admin/invoices/:id",
+        "GET /admin/invoices/overdue-summary",
         "GET /admin/offers",
         "POST /admin/offers",
         "GET /admin/orders",
@@ -11382,7 +11596,7 @@
         "POST /admin/quotes",
         "GET /admin/quotes/:id"
       ],
-      "uiSites": 1,
+      "uiSites": 2,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -11688,6 +11902,7 @@
       "category": "Catalogue",
       "sensitivity": "medium",
       "routes": [
+        "GET /admin/finance/gross-profit-today",
         "GET /admin/reports/export/stock-valuation"
       ],
       "uiSites": 15,
@@ -12122,6 +12337,35 @@
       "inSeed": true
     },
     {
+      "key": "finance.assets.depreciate",
+      "label": "Put a company asset on a depreciation schedule — a real accounting-policy decision",
+      "category": "Finance",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/accounting/assets/:assetId/depreciation-schedule",
+        "POST /admin/accounting/assets/:assetId/depreciation-schedule"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "finance.assets.dispose",
+      "label": "Dispose an asset — posts a real loss/gain to the ledger",
+      "category": "Finance",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/accounting/assets/:assetId/dispose"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
       "key": "fulfilment.view",
       "label": "View shipments, manifests, RTO and returns",
       "category": "Fulfilment",
@@ -12316,6 +12560,39 @@
       "inSeed": true
     },
     {
+      "key": "hr.assets.manage",
+      "label": "Issue and return company equipment (laptops, phones, uniforms) to staff",
+      "category": "Human Resources",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/hr/assets",
+        "POST /admin/hr/assets",
+        "GET /admin/hr/assets/:id",
+        "POST /admin/hr/assets/:id/issue",
+        "POST /admin/hr/assets/assignments/:assignmentId/return",
+        "GET /admin/hr/assets/employees/:userId/unreturned"
+      ],
+      "uiSites": 3,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "hr.assets.writeoff",
+      "label": "Mark an asset retired or lost — a real cost, separate from day-to-day issue/return",
+      "category": "Human Resources",
+      "sensitivity": "medium",
+      "routes": [
+        "POST /admin/hr/assets/:id/write-off"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
       "key": "marketing.manage",
       "label": "Turn on automated marketing email and set its timing",
       "category": "Administration",
@@ -12398,7 +12675,7 @@
         "POST /admin/accounting/fiscal-years",
         "POST /admin/accounting/fiscal-years/:id/close"
       ],
-      "uiSites": 0,
+      "uiSites": 1,
       "roles": [
         "ADMIN"
       ],
@@ -13216,7 +13493,7 @@
       "name": "finance.order_economics_computed",
       "doc": "OrderEconomicsService's own derived-row write (WO-23.1's WO-B.3) — not a GL posting, just notice that a fresh contribution-per-order figure exists.",
       "publishers": [
-        "apps/api/src/modules/finance/order-economics.service.ts:127"
+        "apps/api/src/modules/finance/order-economics.service.ts:143"
       ],
       "subscribers": []
     },
@@ -13544,7 +13821,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 283,
+      "line": 293,
       "doc": "",
       "fields": [
         {
@@ -13735,7 +14012,7 @@
     {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 600,
+      "line": 610,
       "doc": "",
       "fields": [
         {
@@ -13824,7 +14101,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 561,
+      "line": 571,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -13885,7 +14162,7 @@
     {
       "name": "ApiKey",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 233,
+      "line": 243,
       "doc": "A personal API key: a credential that acts as `user`, never as anyone more powerful.",
       "fields": [
         {
@@ -14178,9 +14455,363 @@
       ]
     },
     {
+      "name": "Asset",
+      "file": "apps/api/prisma/schema/hr.prisma",
+      "line": 21,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "assetTag",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "category",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "purchaseCostMinor",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "purchasedOn",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "AssetStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "assignments",
+          "type": "AssetAssignment[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "depreciationSchedule",
+          "type": "AssetDepreciationSchedule?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([status])"
+      ]
+    },
+    {
+      "name": "AssetAssignment",
+      "file": "apps/api/prisma/schema/hr.prisma",
+      "line": 50,
+      "doc": "One row per issue/return cycle — an asset's full custody history, never overwritten.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "assetId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "issuedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "issuedById",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "returnedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "returnedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "condition",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "asset",
+          "type": "Asset",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "issuedBy",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "returnedBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([assetId])",
+        "@@index([userId, returnedAt])"
+      ]
+    },
+    {
+      "name": "AssetDepreciationPosting",
+      "file": "apps/api/prisma/schema/accounting.prisma",
+      "line": 272,
+      "doc": "One row per period posted — the same \"snapshot at write time, never re-derived\" discipline PayRunLine/OrderEconomics already establish.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "scheduleId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodStart",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodEnd",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "postedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "schedule",
+          "type": "AssetDepreciationSchedule",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([scheduleId, periodStart])",
+        "@@index([scheduleId])"
+      ]
+    },
+    {
+      "name": "AssetDepreciationSchedule",
+      "file": "apps/api/prisma/schema/accounting.prisma",
+      "line": 236,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "assetId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "method",
+          "type": "DepreciationMethod",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "acquisitionCostMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "salvageValueMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "usefulLifeMonths",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "decliningRateBps",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startDate",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdById",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "closedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "asset",
+          "type": "Asset",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "createdBy",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "postings",
+          "type": "AssetDepreciationPosting[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([closedAt])"
+      ]
+    },
+    {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 373,
+      "line": 383,
       "doc": "",
       "fields": [
         {
@@ -17037,7 +17668,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 541,
+      "line": 551,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -17388,7 +18019,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 328,
+      "line": 338,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -17574,7 +18205,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 189,
+      "line": 199,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -22706,7 +23337,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 514,
+      "line": 524,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -23093,7 +23724,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 172,
+      "line": 182,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -23634,7 +24265,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 394,
+      "line": 404,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -27276,7 +27907,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 151,
+      "line": 161,
       "doc": "",
       "fields": [
         {
@@ -28396,7 +29027,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 460,
+      "line": 470,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -28454,7 +29085,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 474,
+      "line": 484,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -28508,7 +29139,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 410,
+      "line": 420,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -28735,7 +29366,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 306,
+      "line": 316,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -32842,6 +33473,34 @@
           "relation": true
         },
         {
+          "name": "assetAssignments",
+          "type": "AssetAssignment[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "assetAssignmentsIssued",
+          "type": "AssetAssignment[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "assetAssignmentsReturned",
+          "type": "AssetAssignment[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "assetDepreciationSchedulesCreated",
+          "type": "AssetDepreciationSchedule[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "manifestsCreated",
           "type": "Manifest[]",
           "id": false,
@@ -32969,7 +33628,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 431,
+      "line": 441,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -33030,7 +33689,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 489,
+      "line": 499,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -33944,7 +34603,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 594,
+      "line": 604,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -33954,7 +34613,7 @@
     {
       "name": "AiFeature",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 579,
+      "line": 589,
       "values": [
         "ALT_TEXT",
         "SEO_COPY",
@@ -33995,7 +34654,7 @@
     {
       "name": "ApiKeyRevocationReason",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 214,
+      "line": 224,
       "values": [
         "OWNER",
         "ADMINISTRATOR",
@@ -34005,7 +34664,7 @@
     {
       "name": "ApiKeySurface",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 207,
+      "line": 217,
       "values": [
         "ADMIN",
         "STOREFRONT"
@@ -34039,6 +34698,17 @@
       "values": [
         "PURCHASE_REQUISITION",
         "WALLET_ADJUSTMENT"
+      ]
+    },
+    {
+      "name": "AssetStatus",
+      "file": "apps/api/prisma/schema/hr.prisma",
+      "line": 14,
+      "values": [
+        "AVAILABLE",
+        "ASSIGNED",
+        "RETIRED",
+        "LOST"
       ]
     },
     {
@@ -34166,9 +34836,18 @@
       ]
     },
     {
+      "name": "DepreciationMethod",
+      "file": "apps/api/prisma/schema/accounting.prisma",
+      "line": 231,
+      "values": [
+        "STRAIGHT_LINE",
+        "DECLINING_BALANCE"
+      ]
+    },
+    {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 529,
+      "line": 539,
       "values": [
         "IOS",
         "ANDROID",
@@ -34202,7 +34881,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 317,
+      "line": 327,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -34508,7 +35187,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 503,
+      "line": 513,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -34563,7 +35242,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 422,
+      "line": 432,
       "values": [
         "GRANT",
         "REVOKE"
@@ -36516,6 +37195,42 @@
         "DunningEvent",
         "DunningPolicy"
       ]
+    },
+    {
+      "folder": "20260925200000_add_hr_assets",
+      "file": "apps/api/prisma/schema/migrations/20260925200000_add_hr_assets/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_hr_assets",
+      "statements": 12,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "Asset",
+        "AssetAssignment"
+      ]
+    },
+    {
+      "folder": "20260925210000_add_asset_depreciation",
+      "file": "apps/api/prisma/schema/migrations/20260925210000_add_asset_depreciation/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_asset_depreciation",
+      "statements": 10,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "AssetDepreciationPosting",
+        "AssetDepreciationSchedule"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -37414,6 +38129,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/accounting/fiscal-periods",
+      "file": "apps/web/src/app/(admin)/admin/(app)/accounting/fiscal-periods/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/ai",
       "file": "apps/web/src/app/(admin)/admin/(app)/ai/page.tsx",
       "client": true,
@@ -37909,6 +38633,24 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/hr/assets",
+      "file": "apps/web/src/app/(admin)/admin/(app)/hr/assets/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/hr/assets/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/hr/assets/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/import",
       "file": "apps/web/src/app/(admin)/admin/(app)/import/page.tsx",
       "client": true,
@@ -38019,6 +38761,15 @@
       "kind": "page",
       "url": "/admin/inventory/wishlisted",
       "file": "apps/web/src/app/(admin)/admin/(app)/inventory/wishlisted/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/invoices",
+      "file": "apps/web/src/app/(admin)/admin/(app)/invoices/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -38602,6 +39353,13 @@
   ],
   "nav": [],
   "crons": [
+    {
+      "schedule": "0 2 1 * *",
+      "file": "apps/api/src/modules/accounting/asset-depreciation.cron.ts",
+      "line": 18,
+      "handler": "run",
+      "doc": ""
+    },
     {
       "schedule": "0 1 * * *",
       "file": "apps/api/src/modules/analytics/supply-chain-digest.cron.ts",
@@ -39613,6 +40371,20 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/accounting/asset-depreciation.service.spec.ts",
+      "module": "accounting",
+      "kind": "unit test",
+      "cases": 24,
+      "describes": [
+        "monthlyDepreciation — pure",
+        "date helpers",
+        "AssetDepreciationService",
+        "createSchedule",
+        "postMonthlyDepreciation — WO-147.3 acceptance: a re-run posts nothing further",
+        "disposeAsset"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/accounting/consolidation.service.spec.ts",
       "module": "accounting",
       "kind": "unit test",
@@ -40139,9 +40911,10 @@
       "file": "apps/api/src/modules/finance/order-economics.service.spec.ts",
       "module": "finance",
       "kind": "unit test",
-      "cases": 8,
+      "cases": 13,
       "describes": [
-        "OrderEconomicsService"
+        "OrderEconomicsService",
+        "grossProfitToday — WO-68.2/68.4 (68-realtime-gross-profit.md)"
       ]
     },
     {
@@ -40170,6 +40943,21 @@
       "describes": [
         "ShippingService — migrated zones produce the old fees",
         "computeRateFee — pure logic"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/hr/assets.service.spec.ts",
+      "module": "hr",
+      "kind": "unit test",
+      "cases": 14,
+      "describes": [
+        "AssetsService",
+        "createAsset",
+        "issue — WO-79 acceptance: an already-ASSIGNED asset cannot be issued again",
+        "returnAsset",
+        "writeOff",
+        "unreturnedAssetsFor — the offboarding gate’s own check",
+        "EmployeeOffboardingRegistry — WO-79.4, the offboarding gate"
       ]
     },
     {
@@ -40826,11 +41614,13 @@
       "file": "apps/api/src/modules/tradingpartners/invoice.service.spec.ts",
       "module": "tradingpartners",
       "kind": "unit test",
-      "cases": 4,
+      "cases": 8,
       "describes": [
         "InvoiceService",
         "issue",
-        "findOne"
+        "findOne",
+        "overdueInvoicesSummary — WO-56.1",
+        "findAll — overdue filter"
       ]
     },
     {
@@ -40916,7 +41706,7 @@
       "file": "apps/api/src/modules/users/users-admin.service.spec.ts",
       "module": "users",
       "kind": "unit test",
-      "cases": 10,
+      "cases": 12,
       "describes": [
         "UsersAdminService.create — role selection at creation time",
         "UsersAdminService.update — deactivation ends every personal API key (canonical ruling 6)",
@@ -41942,7 +42732,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5308,
+      "bytes": 5311,
       "doc": "",
       "symbols": []
     },
@@ -41951,7 +42741,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 162,
-      "bytes": 7976,
+      "bytes": 7979,
       "doc": "",
       "symbols": []
     },
@@ -41960,7 +42750,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5753,
+      "bytes": 5756,
       "doc": "",
       "symbols": []
     },
@@ -42253,8 +43043,8 @@
       "path": "apps/api/prisma/schema/accounting.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 222,
-      "bytes": 9701,
+      "lines": 285,
+      "bytes": 12311,
       "doc": "The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a",
       "symbols": []
     },
@@ -42307,8 +43097,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 620,
-      "bytes": 24835,
+      "lines": 630,
+      "bytes": 25629,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -42346,6 +43136,15 @@
       "lines": 92,
       "bytes": 3516,
       "doc": "Phase 5 WO-5.4/5.5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md).",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/hr.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 69,
+      "bytes": 2845,
+      "doc": "Employee assets: which physical equipment (laptop, phone, uniform) is",
       "symbols": []
     },
     {
@@ -43056,6 +43855,24 @@
       "kind": "migration",
       "lines": 105,
       "bytes": 3214,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260925200000_add_hr_assets/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 62,
+      "bytes": 2356,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260925210000_add_asset_depreciation/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 59,
+      "bytes": 2467,
       "doc": "",
       "symbols": []
     },
@@ -45012,6 +45829,31 @@
       ]
     },
     {
+      "path": "apps/api/src/core/extension-points/employee-offboarding.registry.ts",
+      "area": "api",
+      "kind": "registry",
+      "lines": 39,
+      "bytes": 1419,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UnreturnedAsset",
+          "kind": "interface",
+          "line": 3
+        },
+        {
+          "name": "EmployeeOffboardingHandler",
+          "kind": "interface",
+          "line": 8
+        },
+        {
+          "name": "EmployeeOffboardingRegistry",
+          "kind": "class",
+          "line": 26
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/extension-points/entity-enrichment.registry.ts",
       "area": "api",
       "kind": "registry",
@@ -45035,14 +45877,14 @@
       "path": "apps/api/src/core/extension-points/extension-points.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 42,
-      "bytes": 1673,
+      "lines": 45,
+      "bytes": 1847,
       "doc": "",
       "symbols": [
         {
           "name": "ExtensionPointsModule",
           "kind": "class",
-          "line": 41
+          "line": 44
         }
       ]
     },
@@ -46570,14 +47412,14 @@
       "path": "apps/api/src/modules/accounting/accounting.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 30,
-      "bytes": 1671,
+      "lines": 46,
+      "bytes": 2348,
       "doc": "",
       "symbols": [
         {
           "name": "AccountingModule",
           "kind": "class",
-          "line": 29
+          "line": 45
         }
       ]
     },
@@ -46621,11 +47463,95 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/accounting/asset-depreciation.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 50,
+      "bytes": 2243,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AssetDepreciationController",
+          "kind": "class",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/accounting/asset-depreciation.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 24,
+      "bytes": 965,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AssetDepreciationCron",
+          "kind": "class",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/accounting/asset-depreciation.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 376,
+      "bytes": 14888,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/accounting/asset-depreciation.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 295,
+      "bytes": 11791,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "monthKey",
+          "kind": "function",
+          "line": 9
+        },
+        {
+          "name": "startOfMonthUTC",
+          "kind": "function",
+          "line": 13
+        },
+        {
+          "name": "endOfMonthUTC",
+          "kind": "function",
+          "line": 17
+        },
+        {
+          "name": "monthsBetweenUTC",
+          "kind": "function",
+          "line": 22
+        },
+        {
+          "name": "DepreciationInput",
+          "kind": "interface",
+          "line": 26
+        },
+        {
+          "name": "monthlyDepreciation",
+          "kind": "function",
+          "line": 46
+        },
+        {
+          "name": "AssetDepreciationService",
+          "kind": "class",
+          "line": 77
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/accounting/chart-of-accounts.ts",
       "area": "api",
       "kind": "module",
-      "lines": 81,
-      "bytes": 4016,
+      "lines": 104,
+      "bytes": 5505,
       "doc": "",
       "symbols": [
         {
@@ -46636,7 +47562,7 @@
         {
           "name": "ACCOUNT_CODE",
           "kind": "const",
-          "line": 58
+          "line": 77
         }
       ]
     },
@@ -46679,6 +47605,26 @@
         },
         {
           "name": "ConsolidationService",
+          "kind": "class",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/accounting/dto/asset-depreciation.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 53,
+      "bytes": 1098,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateDepreciationScheduleDto",
+          "kind": "class",
+          "line": 6
+        },
+        {
+          "name": "DisposeAssetDto",
           "kind": "class",
           "line": 41
         }
@@ -49289,14 +50235,14 @@
       "path": "apps/api/src/modules/finance/finance.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 176,
-      "bytes": 6289,
+      "lines": 187,
+      "bytes": 6819,
       "doc": "",
       "symbols": [
         {
           "name": "FinanceController",
           "kind": "class",
-          "line": 40
+          "line": 41
         }
       ]
     },
@@ -49440,8 +50386,8 @@
       "path": "apps/api/src/modules/finance/order-economics.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 216,
-      "bytes": 8712,
+      "lines": 298,
+      "bytes": 12835,
       "doc": "",
       "symbols": []
     },
@@ -49449,14 +50395,24 @@
       "path": "apps/api/src/modules/finance/order-economics.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 137,
-      "bytes": 5060,
+      "lines": 205,
+      "bytes": 7491,
       "doc": "",
       "symbols": [
         {
+          "name": "GrossProfitTransaction",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "GrossProfitToday",
+          "kind": "interface",
+          "line": 20
+        },
+        {
           "name": "OrderEconomicsService",
           "kind": "class",
-          "line": 40
+          "line": 56
         }
       ]
     },
@@ -49984,6 +50940,90 @@
           "name": "StoreCreditService",
           "kind": "class",
           "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/hr/assets.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 73,
+      "bytes": 2899,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AssetsController",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/hr/assets.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 211,
+      "bytes": 8203,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/hr/assets.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 149,
+      "bytes": 6164,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AssetsService",
+          "kind": "class",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/hr/dto/asset.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 49,
+      "bytes": 973,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateAssetDto",
+          "kind": "class",
+          "line": 6
+        },
+        {
+          "name": "IssueAssetDto",
+          "kind": "class",
+          "line": 31
+        },
+        {
+          "name": "ReturnAssetDto",
+          "kind": "class",
+          "line": 37
+        },
+        {
+          "name": "WriteOffAssetDto",
+          "kind": "class",
+          "line": 44
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/hr/hr.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 16,
+      "bytes": 448,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "HrModule",
+          "kind": "class",
+          "line": 15
         }
       ]
     },
@@ -50980,8 +52020,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 98,
-      "bytes": 3030,
+      "lines": 99,
+      "bytes": 3044,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -51000,24 +52040,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 204,
-      "bytes": 10966,
+      "lines": 208,
+      "bytes": 11161,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 45
+          "line": 46
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 76
+          "line": 77
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 180
+          "line": 184
         }
       ]
     },
@@ -54265,19 +55305,24 @@
       "path": "apps/api/src/modules/tradingpartners/dto/invoice.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 67,
-      "bytes": 1222,
+      "lines": 77,
+      "bytes": 1601,
       "doc": "",
       "symbols": [
         {
           "name": "InvoiceLineDto",
           "kind": "class",
-          "line": 16
+          "line": 17
         },
         {
           "name": "CreateInvoiceDto",
           "kind": "class",
-          "line": 38
+          "line": 39
+        },
+        {
+          "name": "InvoiceQueryDto",
+          "kind": "class",
+          "line": 69
         }
       ]
     },
@@ -54370,8 +55415,8 @@
       "path": "apps/api/src/modules/tradingpartners/invoice.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 106,
-      "bytes": 4095,
+      "lines": 150,
+      "bytes": 6256,
       "doc": "",
       "symbols": []
     },
@@ -54379,8 +55424,8 @@
       "path": "apps/api/src/modules/tradingpartners/invoice.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 117,
-      "bytes": 4551,
+      "lines": 139,
+      "bytes": 5429,
       "doc": "",
       "symbols": [
         {
@@ -54394,8 +55439,8 @@
       "path": "apps/api/src/modules/tradingpartners/invoices.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 31,
-      "bytes": 1001,
+      "lines": 37,
+      "bytes": 1274,
       "doc": "",
       "symbols": [
         {
@@ -54827,8 +55872,8 @@
       "path": "apps/api/src/modules/users/users-admin.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 223,
-      "bytes": 9051,
+      "lines": 242,
+      "bytes": 10234,
       "doc": "",
       "symbols": []
     },
@@ -54836,14 +55881,14 @@
       "path": "apps/api/src/modules/users/users-admin.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 356,
-      "bytes": 11747,
+      "lines": 373,
+      "bytes": 12760,
       "doc": "",
       "symbols": [
         {
           "name": "UsersAdminService",
           "kind": "class",
-          "line": 25
+          "line": 26
         }
       ]
     },
@@ -59010,6 +60055,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/accounting/fiscal-periods/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 545,
+      "bytes": 17389,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FiscalPeriodsPage",
+          "kind": "default",
+          "line": 36
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/ai/page.tsx",
       "area": "web",
       "kind": "page",
@@ -59835,6 +60895,36 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/hr/assets/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 853,
+      "bytes": 26262,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AssetDetailPage",
+          "kind": "default",
+          "line": 50
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/hr/assets/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 227,
+      "bytes": 7231,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AssetsPage",
+          "kind": "default",
+          "line": 34
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/import/page.tsx",
       "area": "web",
       "kind": "page",
@@ -60026,6 +61116,21 @@
           "name": "WishlistedOutOfStockPage",
           "kind": "default",
           "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/invoices/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 119,
+      "bytes": 3812,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "InvoicesPage",
+          "kind": "default",
+          "line": 27
         }
       ]
     },
@@ -60348,14 +61453,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 102,
-      "bytes": 3790,
+      "lines": 104,
+      "bytes": 3920,
       "doc": "",
       "symbols": [
         {
           "name": "AdminDashboardPage",
           "kind": "default",
-          "line": 30
+          "line": 31
         }
       ]
     },
@@ -60873,14 +61978,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/trading-partners/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 106,
-      "bytes": 3430,
+      "lines": 132,
+      "bytes": 4499,
       "doc": "",
       "symbols": [
         {
           "name": "TradingPartnersPage",
           "kind": "default",
-          "line": 17
+          "line": 25
         }
       ]
     },
@@ -62641,6 +63746,21 @@
       ]
     },
     {
+      "path": "apps/web/src/components/admin/dashboard/gross-profit-today-widget.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 95,
+      "bytes": 3197,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GrossProfitTodayWidget",
+          "kind": "function",
+          "line": 33
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/admin/dashboard/metric-card.tsx",
       "area": "web",
       "kind": "component",
@@ -62834,8 +63954,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 892,
-      "bytes": 23711,
+      "lines": 922,
+      "bytes": 24635,
       "doc": "",
       "symbols": [
         {
@@ -62866,12 +63986,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 862
+          "line": 892
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 877
+          "line": 907
         }
       ]
     },
@@ -64132,8 +65252,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 231,
-      "bytes": 10223,
+      "lines": 239,
+      "bytes": 10606,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -67972,8 +69092,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 500,
-      "bytes": 65845,
+      "lines": 501,
+      "bytes": 66529,
       "doc": "",
       "symbols": []
     },
@@ -68818,8 +69938,8 @@
       "path": "docs/implementation/finance-accounting/04-finance.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 304,
-      "bytes": 12670,
+      "lines": 321,
+      "bytes": 13847,
       "doc": "",
       "symbols": []
     },
@@ -68845,8 +69965,8 @@
       "path": "docs/implementation/finance-accounting/147-fixed-asset-depreciation.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 210,
-      "bytes": 10340,
+      "lines": 259,
+      "bytes": 13611,
       "doc": "",
       "symbols": []
     },
@@ -68881,8 +70001,17 @@
       "path": "docs/implementation/finance-accounting/68-realtime-gross-profit.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 191,
-      "bytes": 10831,
+      "lines": 213,
+      "bytes": 12294,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/hr-people-org/164-department-permission-role-duty-control.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 327,
+      "bytes": 18720,
       "doc": "",
       "symbols": []
     },
@@ -69025,8 +70154,8 @@
       "path": "docs/implementation/hr-people-org/79-employee-asset-management.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 183,
-      "bytes": 9082,
+      "lines": 222,
+      "bytes": 11576,
       "doc": "",
       "symbols": []
     },
@@ -71068,8 +72197,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 816,
-      "bytes": 24477,
+      "lines": 852,
+      "bytes": 25593,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -71090,47 +72219,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 470
+          "line": 494
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 472
+          "line": 496
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 482
+          "line": 506
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 489
+          "line": 513
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 659
+          "line": 691
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 803
+          "line": 839
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 808
+          "line": 844
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 809
+          "line": 845
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 812
+          "line": 848
         }
       ]
     },

@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { RequirePermission } from '../../core/auth/decorators';
 import { InvoiceService } from './invoice.service';
-import { CreateInvoiceDto } from './dto/invoice.dto';
+import { CreateInvoiceDto, InvoiceQueryDto } from './dto/invoice.dto';
 
 @ApiTags('Trading Partner Invoices')
 @Controller('admin/invoices')
@@ -12,8 +12,14 @@ export class InvoicesController {
 
   @Get()
   @ApiOperation({ summary: 'List invoices issued to trading partners' })
-  async findAll() {
-    return { data: await this.invoices.findAll() };
+  async findAll(@Query() query: InvoiceQueryDto) {
+    return { data: await this.invoices.findAll(query) };
+  }
+
+  @Get('overdue-summary')
+  @ApiOperation({ summary: 'Count, total and oldest due date of ISSUED invoices past their due date' })
+  async overdueSummary() {
+    return this.invoices.overdueInvoicesSummary();
   }
 
   @Get(':id')

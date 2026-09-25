@@ -3,7 +3,7 @@
 
 # Module: `accounting`
 
-Pack **core** · enabled by the `MODULES` allowlist · 19 files
+Pack **core** · enabled by the `MODULES` allowlist · 24 files
 
 
 
@@ -11,19 +11,24 @@ Pack **core** · enabled by the `MODULES` allowlist · 19 files
 
 Source: `apps/api/src/modules/accounting/`
 
-## Files (19 · 3,607 lines)
+## Files (24 · 4,444 lines)
 
 All paths relative to `apps/api/src/modules/accounting`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `accounting.module.ts` | nest module | 30 | 1 |  |
+| `accounting.module.ts` | nest module | 46 | 1 |  |
 | `accounting.service.spec.ts` | unit test | 92 | — |  |
 | `accounting.service.ts` | service | 279 | 4 |  |
-| `chart-of-accounts.ts` | module | 81 | 2 | The minimal chart of accounts the posting rules (WO-19.2) resolve an `accountId` from by a stable `code` — seeded once… |
+| `asset-depreciation.controller.ts` | controller | 50 | 1 | 147-fixed-asset-depreciation.md — reads sit behind `finance.assets. |
+| `asset-depreciation.cron.ts` | scheduled job | 24 | 1 | 147-fixed-asset-depreciation.md WO-147.3 — first of each month, posting every active schedule's depreciation for the mo… |
+| `asset-depreciation.service.spec.ts` | unit test | 376 | — |  |
+| `asset-depreciation.service.ts` | service | 295 | 7 | "2026-09" — the calendar month a date falls in, UTC. |
+| `chart-of-accounts.ts` | module | 104 | 2 | The minimal chart of accounts the posting rules (WO-19.2) resolve an `accountId` from by a stable `code` — seeded once… |
 | `consolidation.controller.ts` | controller | 38 | 1 | Consolidation at the org tier (RETAIL-ERP.md R17, WO-20.6) — see `ConsolidationService`'s own doc comment for what "eli… |
 | `consolidation.service.spec.ts` | unit test | 128 | — |  |
 | `consolidation.service.ts` | service | 132 | 2 |  |
+| `asset-depreciation.dto.ts` | dto | 53 | 2 |  |
 | `fiscal-period.dto.ts` | dto | 38 | 2 |  |
 | `gl-reports.dto.ts` | dto | 24 | 2 | As-of a single date (trial balance, balance sheet, aged AR/AP) — everything POSTED on or before it. |
 | `fiscal-periods.controller.ts` | controller | 74 | 1 | Fiscal year/period administration (RETAIL-ERP.md R15, WO-19.5). |
@@ -38,10 +43,13 @@ All paths relative to `apps/api/src/modules/accounting`.
 | `wallet-posting-rules.subscriber.ts` | event subscriber | 135 | 1 | doc 155 §3's own "unwritten posting rule" — the same idempotent, event-subscriber posting pattern `posting-rules.subscr… |
 
 
-## HTTP routes (16)
+## HTTP routes (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/accounting/assets/:assetId/depreciation-schedule` | `finance.assets.depreciate` | `AssetDepreciationController.getSchedule` :21 | An asset's depreciation schedule and every period posted so far |
+| POST | `/admin/accounting/assets/:assetId/depreciation-schedule` | `finance.assets.depreciate` | `AssetDepreciationController.createSchedule` :30 | Put an asset on a monthly depreciation schedule |
+| POST | `/admin/accounting/assets/:assetId/dispose` | `finance.assets.dispose` | `AssetDepreciationController.dispose` :41 | Dispose an asset — posts the remaining book value as a loss and any sale proceeds as a ga… |
 | GET | `/admin/accounting/consolidation/profit-and-loss` | `accounting.view` | `ConsolidationController.groupProfitAndLoss` :26 | Group P&L across every brand, with matched intercompany pairs eliminated |
 | GET | `/admin/accounting/consolidation/unmatched-intercompany` | `accounting.view` | `ConsolidationController.unmatchedIntercompany` :33 | Brand pairs whose intercompany volume did not net to zero — the exception report R17 asks… |
 | GET | `/admin/accounting/fiscal-periods` | `accounting.view` | `FiscalPeriodsController.listPeriods` :42 | List fiscal periods, optionally filtered by fiscal year |
@@ -110,6 +118,8 @@ All paths relative to `apps/api/src/modules/accounting`.
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
 | `Account` | 14 | :33 | The chart of accounts. |
+| `AssetDepreciationPosting` | 7 | :272 | One row per period posted — the same "snapshot at write time, never re-derived" discipline PayRunLine/OrderEc… |
+| `AssetDepreciationSchedule` | 14 | :236 |  |
 | `FiscalPeriod` | 10 | :91 | What a `JournalEntry` posts into. |
 | `FiscalYear` | 7 | :57 | A trading year. |
 | `JournalEntry` | 14 | :120 | One fact, posted as a balanced set of `JournalLine` rows. |
@@ -117,19 +127,24 @@ All paths relative to `apps/api/src/modules/accounting`.
 | `JournalLine` | 17 | :162 | One debit or credit. |
 
 
-Enums: `AccountType` (5) · `FiscalPeriodStatus` (3) · `JournalEntryStatus` (2)
+Enums: `AccountType` (5) · `DepreciationMethod` (2) · `FiscalPeriodStatus` (3) · `JournalEntryStatus` (2)
 
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 
+## Scheduled work
+
+| Schedule | Handler | Where | What it does |
+|---|---|---|---|
+| `0 2 1 * *` | `run()` | `asset-depreciation.cron.ts:18` |  |
 
 
 ## Nest wiring
 
 **`AccountingModule`** (`accounting.module.ts`)
 - imports: —
-- controllers: `GlReportsController`, `FiscalPeriodsController`, `ConsolidationController`
-- providers: `AccountingService`, `PostingRulesSubscriber`, `WalletPostingRulesSubscriber`, `GlReportsService`, `FiscalPeriodsService`, `ConsolidationService`
+- controllers: `GlReportsController`, `FiscalPeriodsController`, `ConsolidationController`, `AssetDepreciationController`
+- providers: `AccountingService`, `PostingRulesSubscriber`, `WalletPostingRulesSubscriber`, `GlReportsService`, `FiscalPeriodsService`, `ConsolidationService`, `AssetDepreciationService`, `AssetDepreciationCron`
 - exports: `AccountingService`
 
 
@@ -147,11 +162,12 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (6)
+## Tests (7)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `accounting.service.spec.ts` | 5 | AccountingService — WO-19.1 · postEntry |
+| `asset-depreciation.service.spec.ts` | 24 | monthlyDepreciation — pure · date helpers · AssetDepreciationService · createSchedule · postMonthlyDepreciation — WO-14… |
 | `consolidation.service.spec.ts` | 7 | ConsolidationService — R17, WO-20.6 · groupProfitAndLoss · unmatchedIntercompany |
 | `fiscal-periods.service.spec.ts` | 24 | FiscalPeriodsService — WO-19.5 · createFiscalYear · createFiscalPeriod · closePeriod · reopenPeriod · lockPeriod · clos… |
 | `gl-reports.service.spec.ts` | 9 | GlReportsService — WO-19.4 · trialBalance · profitAndLoss · balanceSheet · cashFlow · agedReceivables · agedPayables |
@@ -163,16 +179,27 @@ check there before adding another.
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `AccountingModule` | class | `accounting.module.ts:29` |  |
+| `AccountingModule` | class | `accounting.module.ts:45` |  |
 | `PostLineInput` | interface | `accounting.service.ts:8` |  |
 | `PostEntryInput` | interface | `accounting.service.ts:27` |  |
 | `JournalEntryWithLines` | type | `accounting.service.ts:37` |  |
 | `AccountingService` | class | `accounting.service.ts:48` | The general ledger's write side (RETAIL-ERP.md R15, WO-19.1). |
+| `AssetDepreciationController` | class | `asset-depreciation.controller.ts:15` | 147-fixed-asset-depreciation.md — reads sit behind `finance.assets. |
+| `AssetDepreciationCron` | class | `asset-depreciation.cron.ts:13` | 147-fixed-asset-depreciation.md WO-147.3 — first of each month, posting every active schedule's depreciation… |
+| `monthKey` | function | `asset-depreciation.service.ts:9` | "2026-09" — the calendar month a date falls in, UTC. |
+| `startOfMonthUTC` | function | `asset-depreciation.service.ts:13` |  |
+| `endOfMonthUTC` | function | `asset-depreciation.service.ts:17` |  |
+| `monthsBetweenUTC` | function | `asset-depreciation.service.ts:22` | Whole calendar months between two UTC month-starts — 0 for the same month. |
+| `DepreciationInput` | interface | `asset-depreciation.service.ts:26` |  |
+| `monthlyDepreciation` | function | `asset-depreciation.service.ts:46` | Pure: schedule + how many months have already elapsed since `startDate` + how much has already been posted, i… |
+| `AssetDepreciationService` | class | `asset-depreciation.service.ts:77` | Book depreciation for hr.prisma's `Asset` (finance-accounting/147-fixed-asset-depreciation.md) — doc 79's own… |
 | `CHART_OF_ACCOUNTS` | const | `chart-of-accounts.ts:11` | The minimal chart of accounts the posting rules (WO-19.2) resolve an `accountId` from by a stable `code` — se… |
-| `ACCOUNT_CODE` | const | `chart-of-accounts.ts:58` | The codes above, named — so a posting rule never hand-types a magic string. |
+| `ACCOUNT_CODE` | const | `chart-of-accounts.ts:77` | The codes above, named — so a posting rule never hand-types a magic string. |
 | `ConsolidationController` | class | `consolidation.controller.ts:21` | Consolidation at the org tier (RETAIL-ERP.md R17, WO-20.6) — see `ConsolidationService`'s own doc comment for… |
 | `IntercompanyPair` | interface | `consolidation.service.ts:4` |  |
 | `ConsolidationService` | class | `consolidation.service.ts:41` | Consolidation at the org tier (RETAIL-ERP.md R17, WO-20.6) — "if brand A transfers goods to brand B at a tran… |
+| `CreateDepreciationScheduleDto` | class | `asset-depreciation.dto.ts:6` |  |
+| `DisposeAssetDto` | class | `asset-depreciation.dto.ts:41` |  |
 | `CreateFiscalYearDto` | class | `fiscal-period.dto.ts:4` |  |
 | `CreateFiscalPeriodDto` | class | `fiscal-period.dto.ts:19` |  |
 | `AsOfQueryDto` | class | `gl-reports.dto.ts:5` | As-of a single date (trial balance, balance sheet, aged AR/AP) — everything POSTED on or before it. |

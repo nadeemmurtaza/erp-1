@@ -3,7 +3,7 @@
 
 # Tests
 
-**224** spec files, **2,178** cases. What is already pinned down — and what is not.
+**226** spec files, **2,227** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -56,7 +56,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (205)
+## Unit and integration (207)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -95,6 +95,7 @@ regression or an N+1.
 | `apps/api/src/core/time/metric-window.spec.ts` | core/time | 18 | weekKeyOf · monthKeyOf · bucketKeyOf · rollUpDays · previousWindow |
 | `apps/api/src/core/time/shop-time.spec.ts` | core/time | 19 | shopDayKey · startOfShopDay · startOfShopDaysAgo · shopDayKeys · shopDayExpr · shopLocalHour · asse… |
 | `apps/api/src/modules/accounting/accounting.service.spec.ts` | accounting | 5 | AccountingService — WO-19.1 · postEntry |
+| `apps/api/src/modules/accounting/asset-depreciation.service.spec.ts` | accounting | 24 | monthlyDepreciation — pure · date helpers · AssetDepreciationService · createSchedule · postMonthly… |
 | `apps/api/src/modules/accounting/consolidation.service.spec.ts` | accounting | 7 | ConsolidationService — R17, WO-20.6 · groupProfitAndLoss · unmatchedIntercompany |
 | `apps/api/src/modules/accounting/fiscal-periods.service.spec.ts` | accounting | 24 | FiscalPeriodsService — WO-19.5 · createFiscalYear · createFiscalPeriod · closePeriod · reopenPeriod… |
 | `apps/api/src/modules/accounting/gl-reports.service.spec.ts` | accounting | 9 | GlReportsService — WO-19.4 · trialBalance · profitAndLoss · balanceSheet · cashFlow · agedReceivabl… |
@@ -139,10 +140,11 @@ regression or an N+1.
 | `apps/api/src/modules/finance/finance.listener.spec.ts` | finance | 2 | FinanceListener |
 | `apps/api/src/modules/finance/finance.metrics.spec.ts` | finance | 2 | FinanceMetricsProvider |
 | `apps/api/src/modules/finance/finance.spec.ts` | finance | 26 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4… |
-| `apps/api/src/modules/finance/order-economics.service.spec.ts` | finance | 8 | OrderEconomicsService |
+| `apps/api/src/modules/finance/order-economics.service.spec.ts` | finance | 13 | OrderEconomicsService · grossProfitToday — WO-68.2/68.4 (68-realtime-gross-profit.md) |
 | `apps/api/src/modules/fulfilment/fulfilment.spec.ts` | fulfilment | 4 | FulfilmentService.applyStatusChange |
 | `apps/api/src/modules/fulfilment/returns.spec.ts` | fulfilment | 4 | ReturnsService |
 | `apps/api/src/modules/fulfilment/shipping-migration.spec.ts` | fulfilment | 9 | ShippingService — migrated zones produce the old fees · computeRateFee — pure logic |
+| `apps/api/src/modules/hr/assets.service.spec.ts` | hr | 14 | AssetsService · createAsset · issue — WO-79 acceptance: an already-ASSIGNED asset cannot be issued… |
 | `apps/api/src/modules/identity-verification/providers/nid-callback-verification.spec.ts` | identity-verification | 6 | nID webhook signature verification |
 | `apps/api/src/modules/inventory/inventory.cron.spec.ts` | inventory | 10 | InventoryCron · WO-9.8 — markdown suggestions · maybeTriggerSpotCheck — 156-single-employee-branch-… |
 | `apps/api/src/modules/inventory/inventory.listener.spec.ts` | inventory | 1 | InventoryListener |
@@ -204,7 +206,7 @@ regression or an N+1.
 | `apps/api/src/modules/search/search-reindex.listener.spec.ts` | search | 2 | SearchReindexListener |
 | `apps/api/src/modules/search/search.service.spec.ts` | search | 15 | SearchService · SearchService — WO-9.5 semantic and visual search · embedPendingTranslations · sear… |
 | `apps/api/src/modules/settings/settings-admin.service.spec.ts` | settings | 6 | SettingsAdminService — AI settings · getAi · updateAi |
-| `apps/api/src/modules/tradingpartners/invoice.service.spec.ts` | tradingpartners | 4 | InvoiceService · issue · findOne |
+| `apps/api/src/modules/tradingpartners/invoice.service.spec.ts` | tradingpartners | 8 | InvoiceService · issue · findOne · overdueInvoicesSummary — WO-56.1 · findAll — overdue filter |
 | `apps/api/src/modules/tradingpartners/offer.service.spec.ts` | tradingpartners | 3 | OfferService · publish |
 | `apps/api/src/modules/tradingpartners/product-alerts.listener.spec.ts` | tradingpartners | 4 | ProductAlertsListener |
 | `apps/api/src/modules/tradingpartners/quote.service.spec.ts` | tradingpartners | 4 | QuoteService · send · findOne |
@@ -212,7 +214,7 @@ regression or an N+1.
 | `apps/api/src/modules/tradingpartners/trading-partner-portal.controller.spec.ts` | tradingpartners | 6 | TradingPartnerPortalController · accept |
 | `apps/api/src/modules/tradingpartners/trading-partners.service.spec.ts` | tradingpartners | 32 | TradingPartnersService · create · findOne / update / remove — the not-found guard · rotateInboundKe… |
 | `apps/api/src/modules/transfers/transfers.service.spec.ts` | transfers | 25 | TransfersService · dispatch/receive/cancel (WO-22.1) · brand-policy gating (WO-22.2) · settlement m… |
-| `apps/api/src/modules/users/users-admin.service.spec.ts` | users | 10 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivatio… |
+| `apps/api/src/modules/users/users-admin.service.spec.ts` | users | 12 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivatio… |
 | `apps/api/src/modules/wallet/merchant-payable.service.spec.ts` | wallet | 16 | MerchantPayableService — 155-wallet-stored-value-merchant-escrow.md §3 · createMerchantPayable · sc… |
 | `apps/api/src/modules/wallet/wallet-credit-note.port.spec.ts` | wallet | 3 | MerchantPayableAdjustmentCreditNoteService — the interim default, pending doc 145 |
 | `apps/api/src/modules/wallet/wallet.service.spec.ts` | wallet | 34 | WalletService — 155-wallet-stored-value-merchant-escrow.md · availableBalance — the three transitio… |

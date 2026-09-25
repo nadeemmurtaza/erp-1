@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 367 tracked files in `apps/web`, by directory.
+All 372 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -91,7 +91,7 @@ All 367 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `layout.tsx` | layout | 15 |  |
 | `loading.tsx` | loading | 59 | The shape of the dashboard, before the dashboard. |
-| `page.tsx` | page | 102 |  |
+| `page.tsx` | page | 104 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/account` (1)
 
@@ -104,6 +104,12 @@ All 367 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 484 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/accounting/fiscal-periods` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 545 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/ai` (1)
 
@@ -430,6 +436,18 @@ All 367 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 505 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/hr/assets` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 227 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/hr/assets/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 853 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/import` (1)
 
 | File | Kind | Lines | Purpose |
@@ -502,6 +520,12 @@ All 367 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 42 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/invoices` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 119 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/leads` (1)
 
@@ -803,7 +827,7 @@ All 367 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 106 |  |
+| `page.tsx` | page | 132 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/trading-partners/[id]` (1)
 
@@ -1155,7 +1179,7 @@ All 367 tracked files in `apps/web`, by directory.
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 543 |  |
-| `nav-registry.ts` | component | 892 |  |
+| `nav-registry.ts` | component | 922 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1434 |  |
@@ -1208,7 +1232,7 @@ All 367 tracked files in `apps/web`, by directory.
 | `sparkline-chart.tsx` | component | 39 |  |
 | `time-series-chart.tsx` | component | 149 |  |
 
-### `apps/web/src/components/admin/dashboard` (7)
+### `apps/web/src/components/admin/dashboard` (8)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1216,6 +1240,7 @@ All 367 tracked files in `apps/web`, by directory.
 | `card-group.tsx` | component | 121 |  |
 | `card-registry.ts` | component | 705 |  |
 | `comparison-panel.tsx` | component | 46 |  |
+| `gross-profit-today-widget.tsx` | component | 95 |  |
 | `metric-card.tsx` | component | 140 |  |
 | `needs-attention-strip.tsx` | component | 74 |  |
 | `use-dashboard-metrics.ts` | component | 71 |  |
@@ -1320,7 +1345,7 @@ All 367 tracked files in `apps/web`, by directory.
 | `downloads.ts` | constants | 21 |  |
 | `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 38 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 231 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 239 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 61 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)

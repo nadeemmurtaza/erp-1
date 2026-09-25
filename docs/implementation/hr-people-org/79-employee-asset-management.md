@@ -6,6 +6,45 @@ answers "which laptop, phone, or uniform did we hand to which employee,
 and did they return it when they left." This is a real, previously-
 unaddressed gap, narrow enough to scope directly.
 
+> **Status (2026-09-25): built, WO-79.1–79.5, with one deviation from this
+> doc's own schema.** This document was written assuming a separate
+> `Employee` model (per its own "doc 20" reference); no such model exists
+> anywhere in this codebase — `payroll.prisma` already made the same call
+> doc 20 would have, months earlier: "every actor is a `User`." `Asset`/
+> `AssetAssignment` (`apps/api/prisma/schema/hr.prisma`,
+> `AssetAssignment.userId` → `User`, not `Employee.employeeId`) follow that
+> existing precedent rather than fragmenting a second employee concept;
+> `AssetsService` (`apps/api/src/modules/hr/`) implements `issue()`/
+> `returnAsset()`/`writeOff()`/`unreturnedAssetsFor()` exactly as specified,
+> proven by 12 specs (`assets.service.spec.ts`) including the two named
+> acceptance criteria (an already-`ASSIGNED` asset refuses a second issue;
+> a written-off asset stops blocking its holder's offboarding). WO-79.3's
+> `hr.assets.manage`/`hr.assets.writeoff` are seeded to `ADMIN`.
+>
+> **WO-79.4's offboarding gate** does not wire into a checklist screen —
+> none exists anywhere in this codebase, built or speced, for this document
+> to gain an item on (searched: no hit for "offboard" outside this
+> document and other still-unbuilt HR docs). The real, already-existing
+> offboarding action is `UsersAdminService.update()` setting
+> `isActive: false` (`users-admin.service.ts`) — the same write that
+> already revokes a deactivated person's sessions and API keys in one
+> transaction. That call now also refuses when `AssetsService.
+> unreturnedAssetsFor()` reports an open assignment, named in the error.
+> The two modules stay decoupled per this codebase's own module-boundary
+> rule (`users` and `hr` are both core; neither may import the other): a
+> new `EmployeeOffboardingRegistry` extension point
+> (`apps/api/src/core/extension-points/`), the same seam
+> `BranchPolicyRegistry`/`StockIntakeRegistry` already establish for two
+> core modules, carries the check — answering `[]` (no block) when `hr` is
+> off, so this is purely additive.
+>
+> **WO-79.5's UI** ships as `/admin/hr/assets` (list, filterable by status,
+> register-asset dialog) and `/admin/hr/assets/[id]` (full chronological
+> assignment history, issue/return/write-off actions), under the existing
+> "Payroll" nav group — doc 78's own separate "hr" nav group was never
+> built either, so this joins the closest real HR-ish group rather than
+> inventing a second one for a single screen.
+
 ## 1. An asset is a trackable item; an assignment is who has it and since when
 
 ```prisma

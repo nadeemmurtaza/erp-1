@@ -40,7 +40,7 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `layout.tsx` | `AdminAppLayout` | default | :12 | Wraps every signed-in back-office page in the shell. |
 | `loading.tsx` | `Loading` | default | :14 | The shape of the dashboard, before the dashboard. |
-| `page.tsx` | `AdminDashboardPage` | default | :30 | The dashboard, rebuilt as a grouped card grid driven entirely by data (10-admin-dashboard.md WO-A.4… |
+| `page.tsx` | `AdminDashboardPage` | default | :31 | The dashboard, rebuilt as a grouped card grid driven entirely by data (10-admin-dashboard.md WO-A.4… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/account`
 
@@ -53,6 +53,12 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `MyApiKeysPage` | default | :35 | My API keys — a staff member gives a script, an integration or an AI agent a slice of their own adm… |
+
+### `apps/web/src/app/(admin)/admin/(app)/accounting/fiscal-periods`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `FiscalPeriodsPage` | default | :36 | 04-finance.md WO-4.6 — the ledger's own `FiscalPeriod` open/close/reopen/ lock already had a full A… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/ai`
 
@@ -379,6 +385,18 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `AdminGarmentPage` | default | :35 | One garment: what it is called, what it costs, and what the tailor measures. |
 
+### `apps/web/src/app/(admin)/admin/(app)/hr/assets`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `AssetsPage` | default | :34 | hr-people-org/79-employee-asset-management.md WO-79.5 — which physical equipment the shop owns. |
+
+### `apps/web/src/app/(admin)/admin/(app)/hr/assets/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `AssetDetailPage` | default | :50 | hr-people-org/79-employee-asset-management.md WO-79.5 — one asset's full custody history, chronolog… |
+
 ### `apps/web/src/app/(admin)/admin/(app)/import`
 
 | File | Symbol | Kind | Line | Doc |
@@ -451,6 +469,12 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `WishlistedOutOfStockPage` | default | :14 | WO-7.6's staff value: what customers want and can't have — feeds Phase 1's reorder suggestions. |
+
+### `apps/web/src/app/(admin)/admin/(app)/invoices`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `InvoicesPage` | default | :27 | Invoices issued to trading partners (doc 18) — the "detail on click" screen the overdue-invoices ti… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/leads`
 
@@ -752,7 +776,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `TradingPartnersPage` | default | :17 |  |
+| `page.tsx` | `TradingPartnersPage` | default | :25 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/trading-partners/[id]`
 
@@ -1139,8 +1163,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :55 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :78 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :118 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :862 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :877 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :892 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :907 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
@@ -1243,6 +1267,7 @@ Every top-level export in `web`, with the line to open.
 | `card-registry.ts` | `DASHBOARD_CARDS` | const | :55 |  |
 | `card-registry.ts` | `cardsFor` | function | :702 | The visible cards for a caller: any card whose `module` (when set) is enabled. |
 | `comparison-panel.tsx` | `ComparisonPanel` | function | :20 | The one comparative chart the owner asked for by name (Phase 10's own "Why"), filling the empty slo… |
+| `gross-profit-today-widget.tsx` | `GrossProfitTodayWidget` | function | :33 | WO-68.3 (68-realtime-gross-profit.md) — a new card on the existing dashboard, not a new page. |
 | `metric-card.tsx` | `MetricCardData` | interface | :8 |  |
 | `metric-card.tsx` | `formatValue` | function | :14 |  |
 | `metric-card.tsx` | `MetricCard` | function | :49 | The whole dashboard card grid boils down to this one component (10-admin-dashboard.md D1) — every c… |

@@ -109,6 +109,16 @@ model User {
   payRunLines               PayRunLine[]
   payRunAdjustments         PayRunAdjustment[]
   payRunAdjustmentsCreated  PayRunAdjustment[]       @relation("PayRunAdjustmentCreator")
+  /// hr.prisma (hr-people-org/79-employee-asset-management.md) — one User is
+  /// both a possible asset holder and, for an ADMIN, the actor who issued or
+  /// took back someone else's asset; three relation names for three distinct
+  /// roles on the same model, same idiom as the payroll block above.
+  assetAssignments          AssetAssignment[]        @relation("AssetAssignmentHolder")
+  assetAssignmentsIssued    AssetAssignment[]        @relation("AssetAssignmentIssuer")
+  assetAssignmentsReturned  AssetAssignment[]        @relation("AssetAssignmentReturner")
+  /// accounting.prisma (finance-accounting/147-fixed-asset-depreciation.md)
+  /// — who set up a depreciation schedule, a real accounting-policy decision.
+  assetDepreciationSchedulesCreated AssetDepreciationSchedule[]
   /// fulfilment.prisma (WO-6.4/6.6) — both core, same idiom as auditLogs above.
   manifestsCreated          Manifest[]
   returnRequests            ReturnRequest[]

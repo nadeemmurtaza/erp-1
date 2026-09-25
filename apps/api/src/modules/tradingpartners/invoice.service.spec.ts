@@ -102,4 +102,48 @@ describe('InvoiceService', () => {
       await expect(service.findOne('missing')).rejects.toBeInstanceOf(NotFoundException);
     });
   });
+
+  describe('overdueInvoicesSummary — WO-56.1', () => {
+    it('matches an independent count/total/oldest-date computed separately over the same rows (Acceptance)', async () => {
+      // Already in the order the real query's own `orderBy: { dueDate: 'asc' }`
+      // would return — the service trusts that ordering, it does not re-sort.
+      const rows = [
+        { totalMinor: 2500, dueDate: new Date('2026-01-05') },
+        { totalMinor: 1000, dueDate: new Date('2026-01-10') },
+      ];
+      prisma.invoice.findMany.mockResolvedValue(rows);
+
+      const result = await service.overdueInvoicesSummary();
+
+      expect(prisma.invoice.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { status: 'ISSUED', dueDate: { lt: expect.any(Date) } } }),
+      );
+      const independentCount = rows.length;
+      const independentTotal = rows.reduce((sum, r) => sum + r.totalMinor, 0);
+      const independentOldest = rows.map((r) => r.dueDate).sort((a, b) => a.getTime() - b.getTime())[0];
+      expect(result).toEqual({ count: independentCount, totalMinor: independentTotal, oldestDueDate: independentOldest });
+    });
+
+    it('reports zero count, zero total and a null oldest date when nothing is overdue', async () => {
+      prisma.invoice.findMany.mockResolvedValue([]);
+      const result = await service.overdueInvoicesSummary();
+      expect(result).toEqual({ count: 0, totalMinor: 0, oldestDueDate: null });
+    });
+  });
+
+  describe('findAll — overdue filter', () => {
+    it('filters to ISSUED invoices past their due date when overdue is requested', async () => {
+      prisma.invoice.findMany.mockResolvedValue([]);
+      await service.findAll({ overdue: true });
+      expect(prisma.invoice.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { status: 'ISSUED', dueDate: { lt: expect.any(Date) } } }),
+      );
+    });
+
+    it('applies no filter when overdue is not requested', async () => {
+      prisma.invoice.findMany.mockResolvedValue([]);
+      await service.findAll();
+      expect(prisma.invoice.findMany).toHaveBeenCalledWith(expect.objectContaining({ where: undefined }));
+    });
+  });
 });

@@ -333,6 +333,16 @@ export const ADMIN_NAV: AdminNavItem[] = [
     ],
   },
   {
+    // 04-finance.md WO-4.6 — the ledger's own fiscal calendar. `accounting`
+    // is core (always on), so this carries no `module` entry, matching
+    // `finance-pnl` above.
+    key: 'fiscal-periods',
+    label: 'Fiscal periods',
+    href: '/admin/accounting/fiscal-periods',
+    permissions: ['accounting.view'],
+    group: 'finance',
+  },
+  {
     // doc 155 — off by default (`wallet` module); see DECISIONS.md. Wallet
     // balances/adjustments and merchant payables are two different screens
     // (Law 5: one main job each) sharing this one nav entry's own group.
@@ -616,6 +626,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'stock',
     module: 'tradingpartners',
   },
+  {
+    key: 'invoices',
+    label: 'Invoices',
+    href: '/admin/invoices',
+    permissions: ['orders.manage'],
+    group: 'stock',
+    module: 'tradingpartners',
+  },
 
   // Group: Manufacturing
   {
@@ -683,6 +701,18 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['payroll.view_own'],
     group: 'payroll',
     module: 'payroll',
+  },
+  {
+    // hr-people-org/79-employee-asset-management.md — no separate "hr" nav
+    // group exists (this codebase's HR-ish entries live under "Payroll"),
+    // so this joins them here rather than inventing a second group for one
+    // screen.
+    key: 'hr-assets',
+    label: 'Assets',
+    href: '/admin/hr/assets',
+    permissions: ['hr.assets.manage'],
+    group: 'payroll',
+    module: 'hr',
   },
 
   // Group: Settings

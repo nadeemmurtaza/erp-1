@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 393 tracked files in `docs/*`, by directory.
+All 394 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -567,7 +567,7 @@ All 393 tracked files in `docs/*`, by directory.
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 500 |  |
+| `README.md` | doc | 501 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 
@@ -721,19 +721,20 @@ All 393 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `04-finance.md` | doc | 304 |  |
+| `04-finance.md` | doc | 321 |  |
 | `137-payment-method-resilience-audit.md` | doc | 75 |  |
 | `145-receivables-credit-limits-dunning.md` | doc | 358 |  |
-| `147-fixed-asset-depreciation.md` | doc | 210 |  |
+| `147-fixed-asset-depreciation.md` | doc | 259 |  |
 | `151-layby-installment-sales.md` | doc | 201 |  |
 | `49-financial-institution-settlement-partnerships.md` | doc | 265 |  |
 | `56-overdue-invoices-counter.md` | doc | 111 |  |
-| `68-realtime-gross-profit.md` | doc | 191 |  |
+| `68-realtime-gross-profit.md` | doc | 213 |  |
 
-### `docs/implementation/hr-people-org` (18)
+### `docs/implementation/hr-people-org` (19)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `164-department-permission-role-duty-control.md` | doc | 327 |  |
 | `19-org-structure-offices-departments.md` | doc | 250 |  |
 | `20-people-positions-ranks.md` | doc | 239 |  |
 | `26-performance-reviews.md` | doc | 247 |  |
@@ -749,7 +750,7 @@ All 393 tracked files in `docs/*`, by directory.
 | `63-multi-tier-approval-hierarchies.md` | doc | 228 |  |
 | `74-hr-dashboard-financial-overview.md` | doc | 116 |  |
 | `78-hr-navigation-consolidation.md` | doc | 138 |  |
-| `79-employee-asset-management.md` | doc | 183 |  |
+| `79-employee-asset-management.md` | doc | 222 |  |
 | `80-employee-training-certification.md` | doc | 161 |  |
 | `91-staff-portal-mobile-access.md` | doc | 55 |  |
 

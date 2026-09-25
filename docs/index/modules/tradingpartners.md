@@ -9,19 +9,19 @@ Pack **core** · enabled by the `MODULES` allowlist · 23 files
 
 Source: `apps/api/src/modules/tradingpartners/`
 
-## Files (23 · 1,964 lines)
+## Files (23 · 2,046 lines)
 
 All paths relative to `apps/api/src/modules/tradingpartners/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `invoice.dto.ts` | dto | 67 | 2 |  |
+| `invoice.dto.ts` | dto | 77 | 3 |  |
 | `offer.dto.ts` | dto | 25 | 1 |  |
 | `quote.dto.ts` | dto | 56 | 2 |  |
 | `trading-partner.dto.ts` | dto | 55 | 8 |  |
-| `invoice.service.spec.ts` | unit test | 106 | — |  |
-| `invoice.service.ts` | service | 117 | 1 | The "forth" direction's billing document (WO-18.3) — issuing one auto- pushes it to the linked TradingPartner immediate… |
-| `invoices.controller.ts` | controller | 31 | 1 |  |
+| `invoice.service.spec.ts` | unit test | 150 | — |  |
+| `invoice.service.ts` | service | 139 | 1 | The "forth" direction's billing document (WO-18.3) — issuing one auto- pushes it to the linked TradingPartner immediate… |
+| `invoices.controller.ts` | controller | 37 | 1 |  |
 | `offer.service.spec.ts` | unit test | 73 | — |  |
 | `offer.service.ts` | service | 53 | 1 | The "forth" direction's marketing push (WO-18.3) — the same broadcast shape as `ProductAlertsListener`, fanned out to e… |
 | `offers.controller.ts` | controller | 25 | 1 |  |
@@ -40,13 +40,14 @@ All paths relative to `apps/api/src/modules/tradingpartners/dto`.
 | `trading-partners.service.ts` | service | 299 | 1 | `TradingPartner` CRUD, credential issuance (WO-18.1), inbound authentication (WO-18.2) and outbound delivery (WO-18.3)… |
 
 
-## HTTP routes (18)
+## HTTP routes (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/invoices` | `orders.manage` | `InvoicesController.findAll` :15 | List invoices issued to trading partners |
-| POST | `/admin/invoices` | `orders.manage` | `InvoicesController.issue` :27 | Issue an invoice — auto-pushed to the trading partner immediately |
-| GET | `/admin/invoices/:id` | `orders.manage` | `InvoicesController.findOne` :21 | Get an invoice |
+| POST | `/admin/invoices` | `orders.manage` | `InvoicesController.issue` :33 | Issue an invoice — auto-pushed to the trading partner immediately |
+| GET | `/admin/invoices/:id` | `orders.manage` | `InvoicesController.findOne` :27 | Get an invoice |
+| GET | `/admin/invoices/overdue-summary` | `orders.manage` | `InvoicesController.overdueSummary` :21 | Count, total and oldest due date of ISSUED invoices past their due date |
 | GET | `/admin/offers` | `orders.manage` | `OffersController.findAll` :15 | List offers broadcast to trading partners |
 | POST | `/admin/offers` | `orders.manage` | `OffersController.publish` :21 | Publish an offer — broadcast to every connected CUSTOMER/BOTH trading partner |
 | GET | `/admin/quotes` | `orders.manage` | `QuotesController.findAll` :15 | List quotes sent to trading partners |
@@ -113,7 +114,7 @@ check there before adding another.
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `invoice.service.spec.ts` | 4 | InvoiceService · issue · findOne |
+| `invoice.service.spec.ts` | 8 | InvoiceService · issue · findOne · overdueInvoicesSummary — WO-56.1 · findAll — overdue filter |
 | `offer.service.spec.ts` | 3 | OfferService · publish |
 | `product-alerts.listener.spec.ts` | 4 | ProductAlertsListener |
 | `quote.service.spec.ts` | 4 | QuoteService · send · findOne |
@@ -126,8 +127,9 @@ check there before adding another.
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `InvoiceLineDto` | class | `invoice.dto.ts:16` |  |
-| `CreateInvoiceDto` | class | `invoice.dto.ts:38` |  |
+| `InvoiceLineDto` | class | `invoice.dto.ts:17` |  |
+| `CreateInvoiceDto` | class | `invoice.dto.ts:39` |  |
+| `InvoiceQueryDto` | class | `invoice.dto.ts:69` |  |
 | `CreateOfferDto` | class | `offer.dto.ts:4` |  |
 | `QuoteLineDto` | class | `quote.dto.ts:16` |  |
 | `CreateQuoteDto` | class | `quote.dto.ts:38` |  |

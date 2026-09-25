@@ -9,7 +9,7 @@ Pack **core** · always on · 7 files
 
 Source: `apps/api/src/modules/users/`
 
-## Files (7 · 995 lines)
+## Files (7 · 1,031 lines)
 
 All paths relative to `apps/api/src/modules/users/dto`.
 
@@ -20,8 +20,8 @@ All paths relative to `apps/api/src/modules/users/dto`.
 | `security-notification.subscriber.ts` | event subscriber | 152 | 1 | Account-security mail: a changed password, a reset link, a verification link. |
 | `users-admin.controller.ts` | controller | 87 | 1 |  |
 | `users-admin.module.ts` | nest module | 12 | 1 |  |
-| `users-admin.service.spec.ts` | unit test | 223 | — |  |
-| `users-admin.service.ts` | service | 356 | 1 |  |
+| `users-admin.service.spec.ts` | unit test | 242 | — |  |
+| `users-admin.service.ts` | service | 373 | 1 |  |
 
 
 ## HTTP routes (8)
@@ -74,6 +74,7 @@ _none_
 - core `audit`
 - core `auth`
 - core `events`
+- core `extension-points`
 - core `notifications`
 - core `prisma`
 - package `@newax/shared`
@@ -87,7 +88,7 @@ check there before adding another.
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `users-admin.service.spec.ts` | 10 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivation ends every persona… |
+| `users-admin.service.spec.ts` | 12 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivation ends every persona… |
 
 
 ## Every export in this unit
@@ -105,7 +106,7 @@ check there before adding another.
 | `SecurityNotificationSubscriber` | class | `security-notification.subscriber.ts:27` | Account-security mail: a changed password, a reset link, a verification link. |
 | `UsersAdminController` | class | `users-admin.controller.ts:11` |  |
 | `UsersAdminModule` | class | `users-admin.module.ts:11` |  |
-| `UsersAdminService` | class | `users-admin.service.ts:25` |  |
+| `UsersAdminService` | class | `users-admin.service.ts:26` |  |
 
 
 ---

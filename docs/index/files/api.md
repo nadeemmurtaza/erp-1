@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 801 tracked files in `apps/api`, by directory.
+All 815 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,21 +31,22 @@ All 801 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3068 |  |
 
-### `apps/api/prisma/schema` (40)
+### `apps/api/prisma/schema` (41)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `accounting.prisma` | prisma schema | 222 | The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a |
+| `accounting.prisma` | prisma schema | 285 | The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a |
 | `approvals.prisma` | prisma schema | 63 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
 | `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
 | `catalog.prisma` | prisma schema | 693 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
-| `core.prisma` | prisma schema | 620 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `core.prisma` | prisma schema | 630 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
 | `giftcards.prisma` | prisma schema | 92 | Phase 5 WO-5.4/5.5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
+| `hr.prisma` | prisma schema | 69 | Employee assets: which physical equipment (laptop, phone, uniform) is |
 | `identity-verification.prisma` | prisma schema | 40 | / Tracks a User's identity verification against nID (Newax's external |
 | `inventory.prisma` | prisma schema | 369 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
 | `invoicing.prisma` | prisma schema | 88 | Trading-partner invoices and quotes (WO-18.3's remaining "forth" |
@@ -520,6 +521,18 @@ All 801 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 105 |  |
 
+### `apps/api/prisma/schema/migrations/20260925200000_add_hr_assets` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 62 |  |
+
+### `apps/api/prisma/schema/migrations/20260925210000_add_asset_depreciation` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 59 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -680,7 +693,7 @@ All 801 tracked files in `apps/api`, by directory.
 | `on-domain-event.decorator.ts` | module | 16 |  |
 | `outbox.dispatcher.ts` | dispatcher | 120 |  |
 
-### `apps/api/src/core/extension-points` (8)
+### `apps/api/src/core/extension-points` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -688,8 +701,9 @@ All 801 tracked files in `apps/api`, by directory.
 | `branch-policy.registry.ts` | registry | 68 |  |
 | `camera-people-count.registry.ts` | registry | 34 |  |
 | `cart-line-validator.registry.ts` | registry | 64 |  |
+| `employee-offboarding.registry.ts` | registry | 39 |  |
 | `entity-enrichment.registry.ts` | registry | 45 |  |
-| `extension-points.module.ts` | nest module | 42 |  |
+| `extension-points.module.ts` | nest module | 45 |  |
 | `identity-verification-status.registry.ts` | registry | 36 |  |
 | `stock-intake.registry.ts` | registry | 71 |  |
 
@@ -830,17 +844,21 @@ All 801 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 98 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 204 |  |
+| `module-packs.ts` | module | 99 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 208 |  |
 
-### `apps/api/src/modules/accounting` (17)
+### `apps/api/src/modules/accounting` (21)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `accounting.module.ts` | nest module | 30 |  |
+| `accounting.module.ts` | nest module | 46 |  |
 | `accounting.service.spec.ts` | unit test | 92 |  |
 | `accounting.service.ts` | service | 279 |  |
-| `chart-of-accounts.ts` | module | 81 |  |
+| `asset-depreciation.controller.ts` | controller | 50 |  |
+| `asset-depreciation.cron.ts` | scheduled job | 24 |  |
+| `asset-depreciation.service.spec.ts` | unit test | 376 |  |
+| `asset-depreciation.service.ts` | service | 295 |  |
+| `chart-of-accounts.ts` | module | 104 |  |
 | `consolidation.controller.ts` | controller | 38 |  |
 | `consolidation.service.spec.ts` | unit test | 128 |  |
 | `consolidation.service.ts` | service | 132 |  |
@@ -855,10 +873,11 @@ All 801 tracked files in `apps/api`, by directory.
 | `wallet-posting-rules.subscriber.spec.ts` | unit test | 140 |  |
 | `wallet-posting-rules.subscriber.ts` | event subscriber | 135 |  |
 
-### `apps/api/src/modules/accounting/dto` (2)
+### `apps/api/src/modules/accounting/dto` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `asset-depreciation.dto.ts` | dto | 53 |  |
 | `fiscal-period.dto.ts` | dto | 38 |  |
 | `gl-reports.dto.ts` | dto | 24 |  |
 
@@ -1080,7 +1099,7 @@ All 801 tracked files in `apps/api`, by directory.
 | `expense-replication.listener.spec.ts` | unit test | 61 |  |
 | `expense-replication.listener.ts` | event subscriber | 50 |  |
 | `finance-margins.spec.ts` | unit test | 161 |  |
-| `finance.controller.ts` | controller | 176 |  |
+| `finance.controller.ts` | controller | 187 |  |
 | `finance.cron.spec.ts` | unit test | 69 |  |
 | `finance.cron.ts` | scheduled job | 36 |  |
 | `finance.listener.spec.ts` | unit test | 48 |  |
@@ -1090,8 +1109,8 @@ All 801 tracked files in `apps/api`, by directory.
 | `finance.module.ts` | nest module | 26 |  |
 | `finance.service.ts` | service | 675 |  |
 | `finance.spec.ts` | unit test | 522 |  |
-| `order-economics.service.spec.ts` | unit test | 216 |  |
-| `order-economics.service.ts` | service | 137 |  |
+| `order-economics.service.spec.ts` | unit test | 298 |  |
+| `order-economics.service.ts` | service | 205 |  |
 | `rto-expense.listener.ts` | event subscriber | 47 |  |
 
 ### `apps/api/src/modules/finance/dto` (2)
@@ -1151,6 +1170,21 @@ All 801 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `gift-card.dto.ts` | dto | 62 |  |
 | `store-credit.dto.ts` | dto | 21 |  |
+
+### `apps/api/src/modules/hr` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `assets.controller.ts` | controller | 73 |  |
+| `assets.service.spec.ts` | unit test | 211 |  |
+| `assets.service.ts` | service | 149 |  |
+| `hr.module.ts` | nest module | 16 |  |
+
+### `apps/api/src/modules/hr/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `asset.dto.ts` | dto | 49 |  |
 
 ### `apps/api/src/modules/identity-verification` (4)
 
@@ -1669,9 +1703,9 @@ All 801 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `invoice.service.spec.ts` | unit test | 106 |  |
-| `invoice.service.ts` | service | 117 |  |
-| `invoices.controller.ts` | controller | 31 |  |
+| `invoice.service.spec.ts` | unit test | 150 |  |
+| `invoice.service.ts` | service | 139 |  |
+| `invoices.controller.ts` | controller | 37 |  |
 | `offer.service.spec.ts` | unit test | 73 |  |
 | `offer.service.ts` | service | 53 |  |
 | `offers.controller.ts` | controller | 25 |  |
@@ -1693,7 +1727,7 @@ All 801 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `invoice.dto.ts` | dto | 67 |  |
+| `invoice.dto.ts` | dto | 77 |  |
 | `offer.dto.ts` | dto | 25 |  |
 | `quote.dto.ts` | dto | 56 |  |
 | `trading-partner.dto.ts` | dto | 55 |  |
@@ -1721,8 +1755,8 @@ All 801 tracked files in `apps/api`, by directory.
 | `security-notification.subscriber.ts` | event subscriber | 152 |  |
 | `users-admin.controller.ts` | controller | 87 |  |
 | `users-admin.module.ts` | nest module | 12 |  |
-| `users-admin.service.spec.ts` | unit test | 223 |  |
-| `users-admin.service.ts` | service | 356 |  |
+| `users-admin.service.spec.ts` | unit test | 242 |  |
+| `users-admin.service.ts` | service | 373 |  |
 
 ### `apps/api/src/modules/users/dto` (1)
 

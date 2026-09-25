@@ -5,6 +5,7 @@ import { ApiKeysService } from '../../core/auth/api-keys/api-keys.service';
 import { hashPassword } from '../../core/auth/password.util';
 import { PermissionsResolverService } from '../../core/auth/permissions.service';
 import { RolesService } from '../../core/auth/roles.service';
+import { EmployeeOffboardingRegistry } from '../../core/extension-points/employee-offboarding.registry';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { UserRole } from '../../core/prisma/client';
 import type {
@@ -29,6 +30,7 @@ export class UsersAdminService {
     private readonly roles: RolesService,
     private readonly audit: AuditService,
     private readonly apiKeys: ApiKeysService,
+    private readonly offboarding: EmployeeOffboardingRegistry,
   ) {}
 
   list() {
@@ -182,6 +184,21 @@ export class UsersAdminService {
     }
 
     const existing = await this.findBackOfficeUser(targetId);
+
+    // hr-people-org/79-employee-asset-management.md WO-79.4 — a REQUEST that
+    // can be refused, never a silently-skippable step: deactivating someone
+    // who still holds company equipment is blocked until it is returned or
+    // written off. EmployeeOffboardingRegistry answers [] when `hr` is not
+    // enabled for this deployment, so this never blocks a deployment that
+    // never opted into asset tracking in the first place.
+    if (dto.isActive === false && existing.isActive) {
+      const unreturned = await this.offboarding.unreturnedAssetsFor(targetId);
+      if (unreturned.length > 0) {
+        throw new BadRequestException(
+          `Cannot deactivate — this person still holds: ${unreturned.map((a) => `${a.category} (${a.assetTag})`).join(', ')}. Return or write off each asset first.`,
+        );
+      }
+    }
 
     const data: {
       firstName?: string | null;

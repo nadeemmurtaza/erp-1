@@ -3,7 +3,7 @@
 
 # Data model
 
-All **219** Prisma models and **98** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **223** Prisma models and **102** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -61,6 +61,7 @@ against a real database.
 | [`tax.prisma`](../data/tax.md) | 2 | 0 | [`tax`](../modules/tax.md) | TaxClass, TaxRate |
 | [`trading-partners.prisma`](../data/trading-partners.md) | 2 | 2 | core platform | Offer, TradingPartner |
 | [`transfers.prisma`](../data/transfers.md) | 5 | 2 | [`transfers`](../modules/transfers.md) | InterBranchInvoice, InterBranchInvoiceNumberCounter, StockTransfer, StockTransferLine, TransferNumberCounter |
+| [`wallet.prisma`](../data/wallet.md) | 4 | 4 | [`wallet`](../modules/wallet.md) | MerchantPayable, WalletAccount, WalletAdjustmentRequest, WalletEntry |
 | [`whatsapp-assistant.prisma`](../data/whatsapp-assistant.md) | 2 | 1 | core platform | WhatsAppConversation, WhatsAppMessage |
 | [`wishlist.prisma`](../data/wishlist.md) | 2 | 0 | [`wishlist`](../modules/wishlist.md) | BackInStockRequest, WishlistItem |
 
@@ -147,6 +148,7 @@ against a real database.
 | [`MeasurementProfile`](../data/measurements.md#measurementprofile) | `measurements` | 10 | 1 | id | A saved set of measurements: "Ammi – kameez", "Self – shalwar". |
 | [`MenuItem`](../data/content.md#menuitem) | `content` | 11 | 2 | id | A tree per named slot (`menuKey`: "footer_help", "footer_about", …) — see MENU_KEYS in pa… |
 | [`MenuItemTranslation`](../data/content.md#menuitemtranslation) | `content` | 5 | 1 | id |  |
+| [`MerchantPayable`](../data/wallet.md#merchantpayable) | `wallet` | 15 | 0 | id | The exact mirror of doc 145's own AP side (`SupplierBill`) — a merchant selling through t… |
 | [`NewsletterSubscriber`](../data/onsite-messaging.md#newslettersubscriber) | `onsite-messaging` | 6 | 0 | id | A distinct, lightweight capture list — not folded into Contact. |
 | [`Node`](../data/organization.md#node) | `organization` | 13 | 1 | id | A child node this deployment knows about — a brand's branches, or an organization's brand… |
 | [`NotificationPreference`](../data/notification-preferences.md#notificationpreference) | `notification-preferences` | 8 | 1 | id |  |
@@ -277,12 +279,15 @@ against a real database.
 | [`TradingPartner`](../data/trading-partners.md#tradingpartner) | `trading-partners` | 15 | 0 | id | The business on the other end of a document exchange. |
 | [`TransferNumberCounter`](../data/transfers.md#transfernumbercounter) | `transfers` | 2 | 0 | year | Same shape as OrderNumberCounter (orders.prisma) — an `INSERT ... |
 | [`TrialExtension`](../data/platform.md#trialextension) | `platform` | 8 | 1 | id | WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpi… |
-| [`User`](../data/core.md#user) | `core` | 76 | 26 | id |  |
+| [`User`](../data/core.md#user) | `core` | 77 | 26 | id |  |
 | [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | A per-user adjustment layered on top of their role's grants: GRANT adds a permission thei… |
 | [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | Which `Role` rows a user holds. |
 | [`VariantForecast`](../data/inventory.md#variantforecast) | `inventory` | 7 | 1 | variantId | WO-9.3 (09-ai-layer.md). |
 | [`VariantLocationStock`](../data/inventory.md#variantlocationstock) | `inventory` | 6 | 2 | — | Stock, per variant, per location. |
 | [`VariantSalesStat`](../data/inventory.md#variantsalesstat) | `inventory` | 11 | 1 | variantId | CACHE: variantId as primary key. |
+| [`WalletAccount`](../data/wallet.md#walletaccount) | `wallet` | 10 | 1 | id | One wallet per customer — the ONLY owner type (§1: no merchant-side wallet exists; a merc… |
+| [`WalletAdjustmentRequest`](../data/wallet.md#walletadjustmentrequest) | `wallet` | 10 | 1 | id | The "threshold nobody approves alone" lens's own artifact: an ADJUSTMENT above `SettingKe… |
+| [`WalletEntry`](../data/wallet.md#walletentry) | `wallet` | 10 | 1 | id | Append-only, exactly as the doc requires — a correction is a new, opposite entry, never a… |
 | [`WhatsAppConversation`](../data/whatsapp-assistant.md#whatsappconversation) | `whatsapp-assistant` | 10 | 1 | id | Set once identity is verified (the inbound phone number matches this Contact's own phoneE… |
 | [`WhatsAppMessage`](../data/whatsapp-assistant.md#whatsappmessage) | `whatsapp-assistant` | 8 | 1 | id |  |
 | [`WishlistItem`](../data/wishlist.md#wishlistitem) | `wishlist` | 8 | 3 | id | Phase 7 WO-7.6 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
@@ -302,7 +307,7 @@ against a real database.
 | [`AiSuggestionStatus`](../data/catalog.md#aisuggestionstatus) | `catalog` | `PENDING` `APPROVED` `REJECTED` |
 | [`ApprovalChainStatus`](../data/approvals.md#approvalchainstatus) | `approvals` | `PENDING` `APPROVED` `REJECTED` |
 | [`ApprovalStepStatus`](../data/approvals.md#approvalstepstatus) | `approvals` | `PENDING` `APPROVED` `REJECTED` `SKIPPED` |
-| [`ApprovalSubjectType`](../data/approvals.md#approvalsubjecttype) | `approvals` | `PURCHASE_REQUISITION` |
+| [`ApprovalSubjectType`](../data/approvals.md#approvalsubjecttype) | `approvals` | `PURCHASE_REQUISITION` `WALLET_ADJUSTMENT` |
 | [`BomStatus`](../data/bom.md#bomstatus) | `bom` | `DRAFT` `ACTIVE` `ARCHIVED` |
 | [`CampaignChannel`](../data/marketing.md#campaignchannel) | `marketing` | `EMAIL` `SMS` `WHATSAPP` |
 | [`CampaignRecipientStatus`](../data/marketing.md#campaignrecipientstatus) | `marketing` | `PENDING` `SENT` `SKIPPED_OPT_OUT` `SKIPPED_NO_CONTACT` `FAILED` `OPENED` `CLICKED` |
@@ -333,6 +338,7 @@ against a real database.
 | [`ManifestStatus`](../data/fulfilment.md#manifeststatus) | `fulfilment` | `OPEN` `DISPATCHED` |
 | [`MarkdownSuggestionStatus`](../data/inventory.md#markdownsuggestionstatus) | `inventory` | `PENDING` `CREATED` `DISMISSED` |
 | [`MeasurementUnit`](../data/measurements.md#measurementunit) | `measurements` | `INCH` `CM` |
+| [`MerchantPayableStatus`](../data/wallet.md#merchantpayablestatus) | `wallet` | `OPEN` `SCHEDULED` `PAID` `DISPUTED` |
 | [`NodeRole`](../data/organization.md#noderole) | `organization` | `BRANCH` `BRAND` |
 | [`NodeStatus`](../data/organization.md#nodestatus) | `organization` | `ACTIVE` `SUSPENDED` |
 | [`NotificationPreferenceCategory`](../data/notification-preferences.md#notificationpreferencecategory) | `notification-preferences` | `STITCHING_PROGRESS` `MARKETING` `BACK_IN_STOCK` |
@@ -389,6 +395,9 @@ against a real database.
 | [`TradingPartnerKind`](../data/trading-partners.md#tradingpartnerkind) | `trading-partners` | `SUPPLIER` `CUSTOMER` `BOTH` |
 | [`TradingPartnerStatus`](../data/trading-partners.md#tradingpartnerstatus) | `trading-partners` | `PENDING` `ACTIVE` `SUSPENDED` |
 | [`UserRole`](../data/core.md#userrole) | `core` | `CUSTOMER` `STAFF` `TAILOR` `ADMIN` |
+| [`WalletAccountStatus`](../data/wallet.md#walletaccountstatus) | `wallet` | `ACTIVE` `FROZEN` `CLOSED` |
+| [`WalletAdjustmentRequestStatus`](../data/wallet.md#walletadjustmentrequeststatus) | `wallet` | `PENDING` `APPROVED` `REJECTED` |
+| [`WalletEntryType`](../data/wallet.md#walletentrytype) | `wallet` | `PURCHASE` `RESERVE` `REDEEM` `RELEASE_RESERVATION` `REFUND` `ADJUSTMENT` |
 | [`WhatsAppMessageDirection`](../data/whatsapp-assistant.md#whatsappmessagedirection) | `whatsapp-assistant` | `INBOUND` `OUTBOUND` |
 | [`WorkOrderSource`](../data/production.md#workordersource) | `production` | `REORDER` `ORDER_CASCADE` `MANUAL` |
 | [`WorkOrderStatus`](../data/production.md#workorderstatus) | `production` | `DRAFT` `RELEASED` `COMPLETED` `CANCELLED` |

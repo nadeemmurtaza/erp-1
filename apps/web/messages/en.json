@@ -13,6 +13,7 @@
       "reviews": "Reviews",
       "credit": "Credit & Gift Cards",
       "loyalty": "Loyalty",
+      "wallet": "Wallet",
       "notifications": "Notifications"
     },
     "profile": {
@@ -106,6 +107,21 @@
       "checkBalance": "Check a gift card balance",
       "check": "Check",
       "checking": "Checking…"
+    },
+    "wallet": {
+      "title": "Wallet",
+      "body": "Newax-issued store credit — buy it once, spend it with any merchant on the platform.",
+      "balance": "Wallet balance",
+      "history": "Transaction history",
+      "empty": "No wallet transactions yet.",
+      "entryType": {
+        "PURCHASE": "Credit purchased",
+        "RESERVE": "Held for an order",
+        "REDEEM": "Spent",
+        "RELEASE_RESERVATION": "Returned to your balance",
+        "REFUND": "Refunded",
+        "ADJUSTMENT": "Correction"
+      }
     },
     "loyalty": {
       "title": "Loyalty",

@@ -117,6 +117,12 @@ model User {
   storeCreditTransactions   StoreCreditTransaction[]
   giftCardsPurchased        GiftCard[]               @relation("GiftCardPurchaser")
 
+  /// wallet.prisma (doc 155) — 1:1, distinct from storeCreditBalance above:
+  /// a Wallet is Newax-issued PURCHASED credit with its own RESERVE/REDEEM
+  /// lifecycle, never the goodwill/refund ledger StoreCreditTransaction is.
+  /// Module ships off by default — see DECISIONS.md.
+  walletAccount WalletAccount?
+
   /// Phase 7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
   reviews                 Review[]
   wishlistItems           WishlistItem[]

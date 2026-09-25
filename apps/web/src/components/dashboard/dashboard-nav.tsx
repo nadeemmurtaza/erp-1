@@ -1,9 +1,12 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/utils/cn';
 import { Link, usePathname } from '@/i18n/navigation';
 import { ROUTES } from '@/constants/routes';
+import { request } from '@/lib/api-client';
+import { isModuleEnabled } from '@/utils/module-gate';
 
 /**
  * The shopper's section nav.
@@ -27,6 +30,8 @@ interface Tab {
    * them.
    */
   exact?: boolean;
+  /** API module that owns this tab. Hidden when the module is off in MODULES — see @/utils/module-gate. */
+  module?: string;
 }
 
 const TABS: Tab[] = [
@@ -39,6 +44,8 @@ const TABS: Tab[] = [
   { href: ROUTES.storefront.accountReviews, key: 'reviews' },
   { href: ROUTES.storefront.accountCredit, key: 'credit' },
   { href: ROUTES.storefront.accountLoyalty, key: 'loyalty' },
+  // doc 155 — off by default (`wallet` module); see DECISIONS.md.
+  { href: ROUTES.storefront.accountWallet, key: 'wallet', module: 'wallet' },
   { href: ROUTES.storefront.accountNotifications, key: 'notifications' },
   { href: ROUTES.storefront.account, key: 'profile', exact: true },
 ];
@@ -46,10 +53,28 @@ const TABS: Tab[] = [
 export function DashboardNav() {
   const pathname = usePathname();
   const t = useTranslations('account.nav');
+  // `undefined` (not fetched yet) fails open, matching the admin shell's
+  // own choice (utils/module-gate.ts) — a module-tagged tab shows until
+  // /meta resolves, rather than the whole nav flickering empty on load.
+  const [enabledModules, setEnabledModules] = useState<readonly string[] | undefined>(undefined);
+
+  useEffect(() => {
+    let cancelled = false;
+    request<{ modules: string[] }>('/meta')
+      .then((meta) => {
+        if (!cancelled) setEnabledModules(meta.modules);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const tabs = TABS.filter((tab) => isModuleEnabled(tab.module, enabledModules));
 
   return (
     <nav aria-label={t('label')} className="mb-6 flex flex-wrap gap-1 border-b border-neutral-100">
-      {TABS.map((tab) => {
+      {tabs.map((tab) => {
         const isActive = tab.exact ? pathname === tab.href : pathname.startsWith(tab.href);
         return (
           <Link

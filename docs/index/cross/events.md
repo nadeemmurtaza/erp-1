@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **48** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **53** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -24,7 +24,7 @@ order" is a new file, not an edit to checkout.
 ## Attention list
 
 - Events **nothing publishes**: `crm.contact_upserted`, `crm.lead_created`
-- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `purchasing.requisition_created`, `purchasing.requisition_converted`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`, `promotions.discount_redeemed`
+- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `purchasing.requisition_created`, `purchasing.requisition_converted`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`, `promotions.discount_redeemed`, `wallet.merchant_payable_created`, `wallet.merchant_payable_paid`
 
 ## Summary
 
@@ -78,6 +78,11 @@ order" is a new file, not an edit to checkout.
 | `fulfilment.return_fully_refunded` | `ReturnRequestFullyRefunded` | `fulfilment` | `orders` |
 | `promotions.discount_redeemed` | `DiscountRedeemed` | `promotions` | _none_ |
 | `reviews.review_moderated` | `ReviewModerated` | `reviews` | `measurements`, `reviews` |
+| `wallet.credit_purchased` | `WalletCreditPurchased` | `accounting`, `wallet` | `accounting` |
+| `wallet.credit_redeemed` | `WalletCreditRedeemed` | `accounting`, `wallet` | `accounting` |
+| `wallet.credit_refunded` | `WalletCreditRefunded` | `wallet` | `accounting` |
+| `wallet.merchant_payable_created` | `MerchantPayableCreated` | `accounting`, `wallet` | _none_ |
+| `wallet.merchant_payable_paid` | `MerchantPayablePaid` | `wallet` | _none_ |
 
 
 ## Detail
@@ -669,7 +674,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/identity-verification/identity-verification.service.ts:138` | `identity-verification` |
+| `apps/api/src/modules/identity-verification/identity-verification.service.ts:159` | `identity-verification` |
 
 
 **Subscribed by**
@@ -683,7 +688,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/identity-verification/identity-verification.service.ts:139` | `identity-verification` |
+| `apps/api/src/modules/identity-verification/identity-verification.service.ts:160` | `identity-verification` |
 
 
 **Subscribed by**
@@ -697,7 +702,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/identity-verification/identity-verification.service.ts:140` | `identity-verification` |
+| `apps/api/src/modules/identity-verification/identity-verification.service.ts:161` | `identity-verification` |
 
 
 **Subscribed by**
@@ -880,6 +885,94 @@ _Nothing subscribes. Publishing it is a no-op today._
 |---|---|---|
 | `onReviewModerated()` | `apps/api/src/modules/measurements/size-bias.listener.ts:21` | `measurements` |
 | `onReviewModerated()` | `apps/api/src/modules/reviews/review-summary.listener.ts:13` | `reviews` |
+
+### `wallet.credit_purchased`
+
+> doc 155 (WO-155.2) — WalletService.purchaseCredit(): real money landed in Newax's own bank account.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:30` | `accounting` |
+| `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:125` | `accounting` |
+| `apps/api/src/modules/wallet/wallet.service.ts:139` | `wallet` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onWalletCreditPurchased()` | `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:28` | `accounting` |
+
+### `wallet.credit_redeemed`
+
+> WalletService.onMerchantConfirmed() — the RESERVE became a REDEEM; MerchantPayable was created in the same transaction (§3's own "one transaction" rule).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:64` | `accounting` |
+| `apps/api/src/modules/wallet/wallet.service.ts:251` | `wallet` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onWalletCreditRedeemed()` | `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:62` | `accounting` |
+
+### `wallet.credit_refunded`
+
+> WalletService.refund() — reverses a PURCHASE (not yet redeemed) or a REDEEM (already redeemed, see refund()'s own CreditNote-port comment).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/wallet/wallet.service.ts:338` | `wallet` |
+| `apps/api/src/modules/wallet/wallet.service.ts:376` | `wallet` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onWalletCreditRefunded()` | `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:121` | `accounting` |
+
+### `wallet.merchant_payable_created`
+
+> MerchantPayableService.createMerchantPayable() — notifications.ts (WO-155.5) subscribes for the merchant receipt.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:100` | `accounting` |
+| `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts:103` | `accounting` |
+| `apps/api/src/modules/wallet/merchant-payable.service.ts:66` | `wallet` |
+| `apps/api/src/modules/wallet/wallet.service.ts:263` | `wallet` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
+
+### `wallet.merchant_payable_paid`
+
+> MerchantPayableService.processPayoutRun() — notifications.ts (WO-155.5) subscribes for the merchant payout receipt.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/wallet/merchant-payable.service.ts:149` | `wallet` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
 
 
 ---

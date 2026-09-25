@@ -692,7 +692,7 @@ All 392 tracked files in `docs/*`, by directory.
 | `11-client-handover-model.md` | doc | 131 |  |
 | `12-extractor-script-spec.md` | doc | 164 |  |
 | `14-managed-services-module.md` | doc | 272 |  |
-| `153-usage-based-pricing-model.md` | doc | 290 |  |
+| `153-usage-based-pricing-model.md` | doc | 298 |  |
 | `154-three-headline-commercial-plans.md` | doc | 182 |  |
 | `155-wallet-stored-value-merchant-escrow.md` | doc | 385 |  |
 | `39-shared-cross-tenant-hosting-tier.md` | doc | 417 |  |

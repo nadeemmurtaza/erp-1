@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 1918,
-    "lines": 289492,
+    "lines": 289500,
     "routes": 627,
     "controllers": 114,
     "models": 232,
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 392,
-      "lines": 61454,
-      "bytes": 3644927,
+      "lines": 61462,
+      "bytes": 3645452,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -68522,8 +68522,8 @@
       "path": "docs/implementation/commercial-licensing-agency/153-usage-based-pricing-model.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 290,
-      "bytes": 15871,
+      "lines": 298,
+      "bytes": 16396,
       "doc": "",
       "symbols": []
     },

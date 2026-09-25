@@ -1,5 +1,13 @@
 # 153 — A fourth `PricingModel`: usage-based, anchored on a transaction fee, never a pile of per-unit meters
 
+> **Status: shipped (2026-09-25), WO-153.1–153.5.** `PlatformPlan.USAGE_BASED`,
+> `UsageMeter`/`MeteredOrderFee`/`UsageMeteringCursor`, the transaction-fee and
+> messages-sent metering (read from a tenant's own transactional outbox, not a
+> new push credential), the rate-card create/approve split, and the "this
+> month so far" preview/admin UI are all built in `apps/platform`. See
+> `docs/implementation/DECISIONS.md`'s ADR-038 for the metering architecture
+> and the deliberately minimal dunning slice actually built.
+
 The owner's own starting proposal — a per-feature usage charge (per
 product/month, per user/month, per email/month, "and so on for all other
 features") plus 1% of every sale including COD and every payment method

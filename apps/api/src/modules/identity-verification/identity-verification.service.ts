@@ -1,12 +1,13 @@
-import { BadRequestException, ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { AuditService } from '../../core/audit/audit.service';
 import { DomainEvent } from '../../core/events/domain-events';
 import { EventBusService } from '../../core/events/event-bus.service';
+import { IdentityVerificationStatusRegistry } from '../../core/extension-points/identity-verification-status.registry';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { NidVerificationProvider } from './providers/nid.provider';
 
 @Injectable()
-export class IdentityVerificationService {
+export class IdentityVerificationService implements OnModuleInit {
   private readonly logger = new Logger(IdentityVerificationService.name);
 
   constructor(
@@ -14,7 +15,27 @@ export class IdentityVerificationService {
     private readonly events: EventBusService,
     private readonly audit: AuditService,
     private readonly provider: NidVerificationProvider,
+    private readonly statusRegistry: IdentityVerificationStatusRegistry,
   ) {}
+
+  /**
+   * Registers this module's own answer to "is this user verified?" — see
+   * IdentityVerificationStatusRegistry's own doc. Runs only when this
+   * module is enabled in MODULES; `doc 155`'s WalletModule (also off by
+   * default) reads through the registry rather than importing this module
+   * directly, so both can be switched on independently.
+   */
+  onModuleInit(): void {
+    this.statusRegistry.register({
+      isApproved: async (userId: string) => {
+        const record = await this.prisma.identityVerification.findUnique({
+          where: { userId },
+          select: { status: true },
+        });
+        return record?.status === 'APPROVED';
+      },
+    });
+  }
 
   /** Starts a new verification, or restarts one after REJECTED/EXPIRED. */
   async start(userId: string): Promise<{ status: string }> {

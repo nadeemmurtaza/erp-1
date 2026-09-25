@@ -1,5 +1,35 @@
 # 155 — Wallet: Newax-issued store credit, settling merchants as an ordinary trade payable, never third-party fund custody
 
+> **Status: shipped (2026-09-25), WO-155.1–155.5. WO-155.0 remains an open
+> item — see DECISIONS.md.** Schema (`apps/api/prisma/schema/wallet.prisma`,
+> additive — `invoicing.prisma` untouched, since doc 145's own `CreditNote`/
+> `DebitNote` was being built in that same file by a different agent in
+> parallel), `WalletService`/`MerchantPayableService`
+> (`apps/api/src/modules/wallet/`), permissions
+> (`finance.wallets.adjust`/`.adjust.approve`,
+> `finance.merchant-payables.dispute`, seeded to `STAFF`/`ADMIN`), full
+> spec coverage (`wallet.service.spec.ts`, `merchant-payable.service.spec.ts`,
+> `wallet-credit-note.port.spec.ts`,
+> `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.spec.ts`),
+> and UI (`/account/wallet`, `/admin/wallet`, `/admin/merchant-payables`)
+> all exist and are tested. **Shipped module-off**: `wallet` is registered
+> in `modules.registry.ts` with `offByDefault: true` and is in no
+> deployment's `MODULES` — WO-155.0's own legal confirmation (closed-loop
+> design, merchant-agreement characterisation) has not been recorded, per
+> the owner's own explicit instruction not to make this live without it.
+> `WalletService.placeOrderWithWalletCredit()` is built and directly
+> tested but is **not** wired into `orders`/`cart`'s live checkout path —
+> the connection point is named in the service's own header comment, for
+> a human to wire once WO-155.0 clears. §3's REDEEM-branch refund
+> correction runs against a `CreditNoteService` port
+> (`wallet-credit-note.port.ts`) bound to a real, tested interim
+> implementation (`MerchantPayableAdjustmentCreditNoteService`) rather
+> than doc 145's own `CreditNote` model, which did not exist in
+> `invoicing.prisma` when this was built — rebind it once doc 145 ships.
+> See `docs/implementation/DECISIONS.md`'s ADR-034 for the full record,
+> including every deliberate deviation from this document's own literal
+> Prisma snippets.
+
 ## Read this section first — the structure changed, and here is exactly why that matters
 
 The original design (still visible in this document's own git history) had

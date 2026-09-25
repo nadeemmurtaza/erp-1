@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **590** endpoints across **106** controllers, with the access rule that actually guards each one.
+All **607** endpoints across **109** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -913,6 +913,28 @@ never authorization.
 | POST | `/admin/users/:id/reset-password` | `users.manage` | `UsersAdminController.resetPassword` | Set a user's password directly and sign them out everywhere |
 | DELETE | `/admin/users/:id/roles/:roleId` | `users.manage` | `UsersAdminController.unassignRole` | Remove a Role from this user |
 | POST | `/admin/users/:id/roles/:roleId` | `users.manage` | `UsersAdminController.assignRole` | Assign a custom Role to this user (owner's request — a user may hold several) |
+
+### [`wallet`](../modules/wallet.md) (17)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/merchant-payables/:id` | `finance.view` | `MerchantPayableController.findOne` | One merchant payable |
+| POST | `/admin/merchant-payables/:id/dispute` | `finance.merchant-payables.dispute` | `MerchantPayableController.dispute` | Pull one payable from the next payout run, with a reason |
+| POST | `/admin/merchant-payables/:id/resolve-dispute` | `finance.merchant-payables.dispute` | `MerchantPayableController.resolveDispute` | Resolve a disputed payable — never its own disputer |
+| GET | `/admin/merchant-payables/organizations/:organizationId` | `finance.view` | `MerchantPayableController.findForMerchant` | A merchant's own payables — every orderId, gross/fee/net, status |
+| GET | `/admin/merchant-payables/organizations/:organizationId/payout-preview` | `finance.view` | `MerchantPayableController.preview` | Dry run — what the next payout run would actually pay, with no write |
+| POST | `/admin/merchant-payables/organizations/:organizationId/process-payout` | `finance.manage` | `MerchantPayableController.processPayout` | Pay every SCHEDULED payable for this merchant — a real bank transfer batch, nev… |
+| POST | `/admin/merchant-payables/organizations/:organizationId/schedule-payout` | `finance.manage` | `MerchantPayableController.schedule` | Schedule OPEN payables into the next payout run — verified merchants immediatel… |
+| POST | `/admin/wallet/accounts/:accountId/adjustments` | `finance.wallets.adjust` | `WalletAdminController.adjust` | Issue a manual wallet correction — auto-committed below threshold, otherwise op… |
+| GET | `/admin/wallet/accounts/:accountId/ledger` | `finance.view` | `WalletAdminController.ledger` | A wallet account's balance and full ledger |
+| POST | `/admin/wallet/accounts/:accountId/status` | `finance.wallets.adjust.approve` | `WalletAdminController.setStatus` | Freeze, close or reactivate a wallet — a higher bar than a routine adjustment |
+| POST | `/admin/wallet/adjustment-requests/:requestId/decide` | `finance.wallets.adjust.approve` | `WalletAdminController.decideAdjustment` | Approve or reject an above-threshold adjustment — never its own requester |
+| GET | `/admin/wallet/customers/:customerId` | `finance.view` | `WalletAdminController.findAccount` | A customer's own wallet account — the id a staff screen starts from |
+| POST | `/admin/wallet/customers/:customerId/refund/purchase` | `finance.wallets.adjust` | `WalletAdminController.refundPurchase` | Refund an unredeemed wallet purchase |
+| POST | `/admin/wallet/orders/:orderId/refund/redeemed` | `finance.wallets.adjust` | `WalletAdminController.refundRedeemedOrder` | Refund an order already redeemed from a customer's wallet — corrects the mercha… |
+| GET | `/wallet` | signed-in | `WalletAccountController.balance` | My wallet balance |
+| GET | `/wallet/ledger` | signed-in | `WalletAccountController.ledger` | My wallet history |
+| POST | `/wallet/purchase` | signed-in | `WalletAccountController.purchase` | Buy wallet credit — settles into an existing Payment, never a new tender of its… |
 
 ### [`wishlist`](../modules/wishlist.md) (8)
 

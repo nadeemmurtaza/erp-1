@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `ApprovalChain`  <sub>`apps/api/prisma/schema/approvals.prisma:26`</sub>
+### `ApprovalChain`  <sub>`apps/api/prisma/schema/approvals.prisma:29`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -35,7 +35,7 @@ against a real database.
 
 Indexes: `@@unique([subjectType, subjectId])` · `@@index([subjectType, status])`
 
-### `ApprovalStep`  <sub>`apps/api/prisma/schema/approvals.prisma:41`</sub>
+### `ApprovalStep`  <sub>`apps/api/prisma/schema/approvals.prisma:44`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -56,7 +56,7 @@ Indexes: `@@unique([chainId, stepOrder])` · `@@index([approverUserId, status])`
 
 ## Enums
 
-### `ApprovalChainStatus`  <sub>`apps/api/prisma/schema/approvals.prisma:13`</sub>
+### `ApprovalChainStatus`  <sub>`apps/api/prisma/schema/approvals.prisma:16`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -64,7 +64,7 @@ Indexes: `@@unique([chainId, stepOrder])` · `@@index([approverUserId, status])`
 | `APPROVED` |  |
 | `REJECTED` |  |
 
-### `ApprovalStepStatus`  <sub>`apps/api/prisma/schema/approvals.prisma:19`</sub>
+### `ApprovalStepStatus`  <sub>`apps/api/prisma/schema/approvals.prisma:22`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -73,13 +73,14 @@ Indexes: `@@unique([chainId, stepOrder])` · `@@index([approverUserId, status])`
 | `REJECTED` |  |
 | `SKIPPED` |  |
 
-### `ApprovalSubjectType`  <sub>`apps/api/prisma/schema/approvals.prisma:9`</sub>
+### `ApprovalSubjectType`  <sub>`apps/api/prisma/schema/approvals.prisma:10`</sub>
 
 > Approvals: one generic, subject-agnostic approval chain, referenced by a (subjectType, subjectId) pair rather than a bespoke chain per feature — doc 63's own shape (docs/implementation/hr-people-org/…
 
 | Value | Meaning |
 |---|---|
 | `PURCHASE_REQUISITION` |  |
+| `WALLET_ADJUSTMENT` |  |
 
 
 ---

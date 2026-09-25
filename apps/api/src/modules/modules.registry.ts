@@ -38,6 +38,7 @@ import { TrackingModule } from './tracking/tracking.module';
 import { TradingPartnersModule } from './tradingpartners/trading-partners.module';
 import { TransfersModule } from './transfers/transfers.module';
 import { UsersAdminModule } from './users/users-admin.module';
+import { WalletModule } from './wallet/wallet.module';
 import { WishlistModule } from './wishlist/wishlist.module';
 
 export interface FeatureModuleEntry {
@@ -147,6 +148,13 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // (R4's own note), settlement modes and InterBranchInvoice (R12) are
   // WO-22.2/22.3's, not this module's.
   { name: 'transfers', module: TransfersModule, offByDefault: true },
+  // Off by default — WO-155.0 (docs/implementation/commercial-licensing-agency/
+  // 155-wallet-stored-value-merchant-escrow.md) has not yet had its own
+  // legal confirmation recorded (DECISIONS.md). Built in full — schema,
+  // both services, tests, UI — and not wired into the live checkout path;
+  // see wallet.module.ts's own header comment for exactly what "off"
+  // means here.
+  { name: 'wallet', module: WalletModule, offByDefault: true },
   // Account administration — not togglable business features.
   { name: 'settings', module: SettingsAdminModule, alwaysOn: true },
   { name: 'users', module: UsersAdminModule, alwaysOn: true },

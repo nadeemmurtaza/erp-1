@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 755 | 104,443 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 392 | 60,739 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 350 | 53,928 | Next.js — admin console and customer storefront in one app |
+| `apps/api` | 771 | 107,071 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 392 | 60,971 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 354 | 54,616 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 28,096 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 22 | 9,108 | repository checks and generators (lint gates, this index) |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
-| `packages/shared` | 59 | 6,586 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 59 | 6,608 | brand, money, permissions, measurements, entities |
 | `apps/platform` | 104 | 5,880 |  |
 | `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
 | `.claude` | 22 | 1,017 |  |
@@ -98,6 +98,7 @@ Each is independent: no module imports another except through a named
 | [`tradingpartners`](modules/tradingpartners.md) | core | MODULES allowlist | 18 | — |
 | [`transfers`](modules/transfers.md) | core | MODULES allowlist | 5 | 5 |
 | [`users`](modules/users.md) | core | always on | 8 | — |
+| [`wallet`](modules/wallet.md) | core | MODULES allowlist | 17 | 4 |
 | [`wishlist`](modules/wishlist.md) | core | MODULES allowlist | 8 | 2 |
 
 
@@ -118,7 +119,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`config`](core/config.md) | 6 |  |
 | [`crm`](core/crm.md) | 1 |  |
 | [`events`](core/events.md) | 5 | The catalogue of domain events. |
-| [`extension-points`](core/extension-points.md) | 7 |  |
+| [`extension-points`](core/extension-points.md) | 8 |  |
 | [`health`](core/health.md) | 2 |  |
 | [`metrics`](core/metrics.md) | 4 |  |
 | [`notifications`](core/notifications.md) | 22 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |

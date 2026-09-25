@@ -563,7 +563,7 @@ All 392 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 2938 |  |
+| `DECISIONS.md` | doc | 3140 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -694,7 +694,7 @@ All 392 tracked files in `docs/*`, by directory.
 | `14-managed-services-module.md` | doc | 272 |  |
 | `153-usage-based-pricing-model.md` | doc | 290 |  |
 | `154-three-headline-commercial-plans.md` | doc | 182 |  |
-| `155-wallet-stored-value-merchant-escrow.md` | doc | 355 |  |
+| `155-wallet-stored-value-merchant-escrow.md` | doc | 385 |  |
 | `39-shared-cross-tenant-hosting-tier.md` | doc | 417 |  |
 | `50-commercial-pricing-licensing-models.md` | doc | 243 |  |
 | `51-free-demo-sandbox-onboarding.md` | doc | 225 |  |

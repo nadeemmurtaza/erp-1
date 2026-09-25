@@ -4,6 +4,7 @@ import { EntityEnrichmentRegistry } from './entity-enrichment.registry';
 import { StockIntakeRegistry } from './stock-intake.registry';
 import { BranchPolicyRegistry } from './branch-policy.registry';
 import { CameraPeopleCountRegistry } from './camera-people-count.registry';
+import { IdentityVerificationStatusRegistry } from './identity-verification-status.registry';
 import { CheckoutValidatorRegistry } from '../checkout/checkout-validator.registry';
 
 /**
@@ -25,6 +26,7 @@ import { CheckoutValidatorRegistry } from '../checkout/checkout-validator.regist
     StockIntakeRegistry,
     BranchPolicyRegistry,
     CameraPeopleCountRegistry,
+    IdentityVerificationStatusRegistry,
   ],
   exports: [
     EntityEnrichmentRegistry,
@@ -33,6 +35,7 @@ import { CheckoutValidatorRegistry } from '../checkout/checkout-validator.regist
     StockIntakeRegistry,
     BranchPolicyRegistry,
     CameraPeopleCountRegistry,
+    IdentityVerificationStatusRegistry,
   ],
 })
 export class ExtensionPointsModule {}

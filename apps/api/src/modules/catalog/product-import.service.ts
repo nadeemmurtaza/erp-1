@@ -30,7 +30,8 @@ export interface ImportSummary {
   results: ImportRowResult[];
 }
 
-const COLUMNS = [
+/** Exported for ImportAssistantService (WO-9.10) — the one canonical list, never duplicated. */
+export const COLUMNS = [
   'sku',
   'kind',
   'status',
@@ -54,8 +55,8 @@ const COLUMNS = [
   'tags',
 ] as const;
 
-type Column = (typeof COLUMNS)[number];
-type Row = Partial<Record<Column, string>>;
+export type Column = (typeof COLUMNS)[number];
+export type Row = Partial<Record<Column, string>>;
 
 /**
  * Bulk load of an existing catalogue from a spreadsheet.

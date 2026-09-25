@@ -26,6 +26,7 @@ import { AdminProductQueryDto } from './dto/product-query.dto';
 import { UpsertBrandDto } from './dto/brand.dto';
 import { UpsertCategoryDto } from './dto/category.dto';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
+import { ImportAssistantService } from './import-assistant.service';
 import { ProductAdminService } from './product-admin.service';
 import { ProductImportService } from './product-import.service';
 import { SeoHealthService } from './seo-health.service';
@@ -81,6 +82,7 @@ export class CatalogAdminController {
     private readonly categories: CategoryAdminService,
     private readonly brands: BrandAdminService,
     private readonly importer: ProductImportService,
+    private readonly importAssistant: ImportAssistantService,
     private readonly seoHealth: SeoHealthService,
   ) {}
 
@@ -259,6 +261,23 @@ export class CatalogAdminController {
   @ApiOperation({ summary: 'Download the CSV template for bulk product upload' })
   importTemplate(): string {
     return this.importer.template();
+  }
+
+  @Post('import/assist')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: { file: { type: 'string', format: 'binary' } },
+    },
+  })
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({ summary: 'WO-9.10 — AI-suggested column mapping, value cleanup, duplicates, categories and translations; nothing is written' })
+  assistImport(@UploadedFile() file: UploadedImage | undefined) {
+    if (!file) {
+      throw new BadRequestException('Choose a CSV file to upload.');
+    }
+    return this.importAssistant.assist(file.buffer);
   }
 
   @Post('import')

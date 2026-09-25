@@ -392,6 +392,44 @@ export interface ImportSummary {
   results: ImportRowResult[];
 }
 
+/** WO-9.10 (09-ai-layer.md) — every suggestion here is reviewed and accepted or ignored by hand; nothing is written by `assist()` itself. */
+export interface ColumnMappingSuggestion {
+  header: string;
+  column: string | null;
+}
+
+export interface ValueNormalizationSuggestion {
+  column: string;
+  raw: string;
+  suggested: string;
+}
+
+export interface DuplicateFlag {
+  rows: number[];
+  nameEn: string[];
+  reason: string;
+}
+
+export interface CategorySuggestion {
+  row: number;
+  suggestedCategorySlug: string;
+}
+
+export interface TranslationSuggestion {
+  row: number;
+  field: 'name_ur' | 'description_ur';
+  suggestedText: string;
+}
+
+export interface ImportAssistanceResult {
+  headersAlreadyMatch: boolean;
+  columnMapping: ColumnMappingSuggestion[];
+  valueSuggestions: ValueNormalizationSuggestion[];
+  duplicateFlags: DuplicateFlag[];
+  categorySuggestions: CategorySuggestion[];
+  translationSuggestions: TranslationSuggestion[];
+}
+
 /**
  * The generic shape `ContactImportService`/`ExpenseImportService` share
  * (admin-platform/72-fragmented-tool-consolidation-import.md) — `key` names

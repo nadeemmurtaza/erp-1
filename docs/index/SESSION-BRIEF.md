@@ -3,7 +3,7 @@
 
 # Repository index — orientation
 
-This repository is **1,880 files / 282,710 lines** across four apps and
+This repository is **1,882 files / 283,724 lines** across four apps and
 three packages. A generated index of it lives in `docs/index/` and is kept in
 step with every commit by `.githooks/pre-commit`.
 
@@ -31,10 +31,10 @@ Start at **`docs/index/README.md`** (routing table) or
 **`docs/index/01-MAP.md`** (the whole repo on one screen).
 Machine-readable: `docs/index/index.json`.
 
-At a glance: 41 API feature modules · 606 HTTP routes ·
+At a glance: 41 API feature modules · 607 HTTP routes ·
 223 tables · 53 domain events ·
 71 permissions · 215 screens ·
-211 spec files.
+212 spec files.
 
 `docs/index/` is **generated** — never edit it by hand; run `pnpm index`.
 `CLAUDE.md` and `docs/implementation/` remain binding over anything here: the

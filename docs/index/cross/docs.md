@@ -2520,35 +2520,35 @@ _no second-level headings_
 - Acceptance  <sub>:136</sub>
 - Out of scope  <sub>:146</sub>
 
-### `docs/implementation/commercial-licensing-agency/11-client-handover-model.md`  <sub>121 lines</sub>
+### `docs/implementation/commercial-licensing-agency/11-client-handover-model.md`  <sub>131 lines</sub>
 
-- 1. The Business Goals  <sub>:3</sub>
-- 2. The Rejected Approaches  <sub>:12</sub>
-- 3. The Solution: The "Blueprint & Extractor" Model  <sub>:22</sub>
-- 4. Customization & Upgradability (Engine vs. Glass)  <sub>:64</sub>
-- 5. Hosting Contracts & Infrastructure as a Service (IaaS)  <sub>:89</sub>
-- 6. The API Layer (Dynamic NestJS Separation)  <sub>:109</sub>
+- 1. The Business Goals  <sub>:13</sub>
+- 2. The Rejected Approaches  <sub>:22</sub>
+- 3. The Solution: The "Blueprint & Extractor" Model  <sub>:32</sub>
+- 4. Customization & Upgradability (Engine vs. Glass)  <sub>:74</sub>
+- 5. Hosting Contracts & Infrastructure as a Service (IaaS)  <sub>:99</sub>
+- 6. The API Layer (Dynamic NestJS Separation)  <sub>:119</sub>
 
-### `docs/implementation/commercial-licensing-agency/12-extractor-script-spec.md`  <sub>59 lines</sub>
+### `docs/implementation/commercial-licensing-agency/12-extractor-script-spec.md`  <sub>164 lines</sub>
 
-- Phase 1: Initialization & Validation  <sub>:6</sub>
-- Phase 2: The Engine Extraction (Backend)  <sub>:15</sub>
-- Phase 3: AST Modification (Bulletproof TypeScript)  <sub>:23</sub>
-- Phase 4: The Glass Protection (Frontend Boundaries)  <sub>:32</sub>
-- Phase 5: IaaS & Environment Scaffolding  <sub>:40</sub>
-- Phase 6: CI/CD & Database Cleanup  <sub>:45</sub>
-- Phase 7: Delivery & Pull Request  <sub>:53</sub>
+- Phase 1: Initialization & Validation  <sub>:111</sub>
+- Phase 2: The Engine Extraction (Backend)  <sub>:120</sub>
+- Phase 3: AST Modification (Bulletproof TypeScript)  <sub>:128</sub>
+- Phase 4: The Glass Protection (Frontend Boundaries)  <sub>:137</sub>
+- Phase 5: IaaS & Environment Scaffolding  <sub>:145</sub>
+- Phase 6: CI/CD & Database Cleanup  <sub>:150</sub>
+- Phase 7: Delivery & Pull Request  <sub>:158</sub>
 
-### `docs/implementation/commercial-licensing-agency/14-managed-services-module.md`  <sub>270 lines</sub>
+### `docs/implementation/commercial-licensing-agency/14-managed-services-module.md`  <sub>272 lines</sub>
 
-- Why this is two modules, not one  <sub>:15</sub>
-- The load-bearing scope decision: where usage numbers actually come from  <sub>:33</sub>
-- Master side: the `agency` module  <sub>:58</sub>
-- Client side: the `managed-services` module  <sub>:181</sub>
-- Security notes  <sub>:205</sub>
-- Explicitly out of scope for v1  <sub>:221</sub>
-- Work orders  <sub>:234</sub>
-- When to actually build this  <sub>:261</sub>
+- Why this is two modules, not one  <sub>:17</sub>
+- The load-bearing scope decision: where usage numbers actually come from  <sub>:35</sub>
+- Master side: the `agency` module  <sub>:60</sub>
+- Client side: the `managed-services` module  <sub>:183</sub>
+- Security notes  <sub>:207</sub>
+- Explicitly out of scope for v1  <sub>:223</sub>
+- Work orders  <sub>:236</sub>
+- When to actually build this  <sub>:263</sub>
 
 ### `docs/implementation/commercial-licensing-agency/153-usage-based-pricing-model.md`  <sub>290 lines</sub>
 

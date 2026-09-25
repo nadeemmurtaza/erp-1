@@ -6,11 +6,13 @@
 > `12-extractor-script-spec.md` both name a `managed-services` module as the
 > reason an agency-managed client pays monthly instead of self-hosting. It
 > does not exist — no module folder, no Master-Platform-side API, no
-> registry. `scripts/sync-client.mjs` currently only generates an
-> `AGENCY_API_KEY` and prints a reminder to register it somewhere; there is
-> nowhere to register it yet. This brief exists so that work has a shape
-> before the first agency-managed client is sold, not because it should be
-> built now — see "When to actually build this" at the end.
+> registry. `scripts/sync-client.mjs` (now fully built per
+> `12-extractor-script-spec.md`'s own status note) still only generates an
+> `AGENCY_API_KEY` when `managed-services` is requested, and still only
+> prints a reminder to register it — there is nowhere to register it yet.
+> This brief exists so that work has a shape before the first agency-managed
+> client is sold, not because it should be built now — see "When to
+> actually build this" at the end.
 
 ## Why this is two modules, not one
 

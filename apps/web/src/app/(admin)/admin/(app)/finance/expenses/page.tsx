@@ -216,7 +216,7 @@ export default function ExpensesPage() {
         description="What the shop spends, grouped by category and gross-profit line."
         action={
           <div className="flex gap-2">
-            <Link href="/admin/finance/expenses/analytics" className="btn-secondary">
+            <Link href="/admin/analytics/expenses/by-category" className="btn-secondary">
               Analytics
             </Link>
             <Link href="/admin/finance/expenses/categories" className="btn-secondary">

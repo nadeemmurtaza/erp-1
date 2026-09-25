@@ -77,7 +77,8 @@ export const ROUTES = {
     products: '/admin/products',
     productNew: '/admin/products/new',
     product: (id: string) => `/admin/products/${id}`,
-    productInsights: '/admin/products/insights',
+    /** Retired hand-built page (10-admin-dashboard.md WO-D.3/E.2) — now the analytics report of the same data. */
+    productInsights: '/admin/analytics/products/top-sellers',
     categories: '/admin/categories',
     brands: '/admin/brands',
     optionTemplates: '/admin/options',
@@ -102,17 +103,25 @@ export const ROUTES = {
     financeUnitEconomics: '/admin/finance/unit-economics',
     financeExpenses: '/admin/finance/expenses',
 
+    bom: '/admin/bom',
+
+    /** The card registry's own detail tree (10-admin-dashboard.md D3) — one catch-all route, 25 config objects, not 25 hand-rolled pages. */
+    analytics: '/admin/analytics',
+    analyticsReport: (slug: string) => `/admin/analytics/${slug}`,
+
     inventory: '/admin/inventory',
     inventoryCounts: '/admin/inventory/counts',
     inventoryReorder: '/admin/inventory/reorder',
     inventorySlowMovers: '/admin/inventory/slow-movers',
-    inventoryInsights: '/admin/inventory/insights',
+    /** Retired hand-built page (WO-D.4/E.2) — now the analytics report. */
+    inventoryInsights: '/admin/analytics/inventory/valuation',
 
     purchaseOrders: '/admin/purchase-orders',
     purchaseOrderNew: '/admin/purchase-orders/new',
     purchaseOrder: (id: string) => `/admin/purchase-orders/${id}`,
     purchaseOrderReceive: (id: string) => `/admin/purchase-orders/${id}/receive`,
-    purchasingSpend: '/admin/purchase-orders/spend',
+    /** Retired hand-built page (WO-D.2/E.2) — now the analytics report. */
+    purchasingSpend: '/admin/analytics/purchasing/spend',
     suppliers: '/admin/suppliers',
     supplier: (id: string) => `/admin/suppliers/${id}`,
 
@@ -125,7 +134,8 @@ export const ROUTES = {
     stitchingBookings: '/admin/stitching/bookings',
     stitchingBooking: (id: string) => `/admin/stitching/bookings/${id}`,
     stitchingJob: (id: string) => `/admin/stitching/jobs/${id}`,
-    workshopInsights: '/admin/workshop/insights',
+    /** Retired hand-built page (WO-D.6/E.2) — now the analytics report. */
+    workshopInsights: '/admin/analytics/workshop/output',
     garments: '/admin/garments',
     garment: (id: string) => `/admin/garments/${id}`,
     designs: '/admin/designs',
@@ -133,7 +143,8 @@ export const ROUTES = {
 
     contacts: '/admin/contacts',
     contactSearch: (q: string) => `/admin/contacts?q=${encodeURIComponent(q)}`,
-    customerInsights: '/admin/customers/insights',
+    /** Retired hand-built page (WO-D.5/E.2) — now the analytics report. */
+    customerInsights: '/admin/analytics/customers/overview',
     leads: '/admin/leads',
     inbox: '/admin/inbox',
     marketing: '/admin/marketing',
@@ -145,8 +156,10 @@ export const ROUTES = {
     campaign: (id: string) => `/admin/campaigns/${id}`,
     segments: '/admin/segments',
     onsiteMessages: '/admin/onsite-messages',
-    insights: '/admin/insights',
-    orderInsights: '/admin/orders/insights',
+/** Retired hand-built tabbed page (E.2) — now the analytics report index. */
+    insights: '/admin/analytics',
+    /** Retired hand-built page (WO-D.1/E.2) — now the analytics report. */
+    orderInsights: '/admin/analytics/orders/overview',
     reports: '/admin/reports',
     tax: '/admin/tax',
     settings: '/admin/settings',

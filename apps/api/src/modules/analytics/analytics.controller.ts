@@ -5,6 +5,7 @@ import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { AnalyticsService } from './analytics.service';
 import type { MetricBucket } from '../../core/time/metric-window';
 import { SetMonthlyTargetDto } from './dto/analytics.dto';
+import { DashboardCardsQueryDto } from './dto/cards.dto';
 
 const METRIC_BUCKETS: MetricBucket[] = ['day', 'week', 'month'];
 
@@ -13,6 +14,43 @@ const METRIC_BUCKETS: MetricBucket[] = ['day', 'week', 'month'];
 @RequirePermission('analytics.view')
 export class AnalyticsController {
   constructor(private readonly analytics: AnalyticsService) {}
+
+  @Get('cards')
+  @ApiOperation({ summary: 'Every dashboard card, batched by provider (D2) — one request per range change' })
+  cards(@Query() query: DashboardCardsQueryDto, @CurrentUser() user: AuthenticatedUser) {
+    const groups = query.groups ? query.groups.split(',').filter(Boolean) : [];
+    const series = query.series ? query.series.split(',').filter(Boolean) : [];
+    return this.analytics.cards(query.days, groups, series, query.bucket ?? 'day', user.permissions);
+  }
+
+  @Get('sales/revenue')
+  @ApiOperation({ summary: 'Revenue, AOV, channel split and progress against the monthly target' })
+  salesRevenue(@Query('days', new DefaultValuePipe(30), ParseIntPipe) days: number) {
+    return this.analytics.salesRevenue(Math.min(Math.max(days, 7), 365));
+  }
+
+  @Get('sales/aov')
+  @ApiOperation({ summary: 'Average order value, its median and basket size, plus the value distribution' })
+  salesAov(@Query('days', new DefaultValuePipe(30), ParseIntPipe) days: number) {
+    return this.analytics.salesAov(Math.min(Math.max(days, 7), 365));
+  }
+
+  @Get('sales/profit')
+  @ApiOperation({ summary: 'Direct gross profit — revenue less unit cost — overall and by product' })
+  salesProfit(@Query('days', new DefaultValuePipe(30), ParseIntPipe) days: number, @CurrentUser() user: AuthenticatedUser) {
+    // Every figure this report returns IS cost data — same hard,
+    // whole-endpoint gate as inventoryValuation() above.
+    if (!user.permissions.includes('inventory.view_cost')) {
+      throw new ForbiddenException('You do not have access to profit figures.');
+    }
+    return this.analytics.salesProfit(Math.min(Math.max(days, 7), 365));
+  }
+
+  @Get('sales/funnel')
+  @ApiOperation({ summary: 'View-to-purchase funnel, conversion rate, abandoned carts and traffic sources' })
+  salesFunnel(@Query('days', new DefaultValuePipe(30), ParseIntPipe) days: number) {
+    return this.analytics.salesFunnel(Math.min(Math.max(days, 7), 365));
+  }
 
   @Get('dashboard')
   @ApiOperation({ summary: 'Everything the dashboard shows, in one request' })

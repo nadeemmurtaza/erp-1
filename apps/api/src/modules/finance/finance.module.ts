@@ -6,6 +6,7 @@ import { FinanceListener } from './finance.listener';
 import { OrderEconomicsService } from './order-economics.service';
 import { ExpenseReplicationListener } from './expense-replication.listener';
 import { RtoExpenseListener } from './rto-expense.listener';
+import { FinanceMetricsProvider } from './finance.metrics';
 
 @Module({
   controllers: [FinanceController],
@@ -16,6 +17,7 @@ import { RtoExpenseListener } from './rto-expense.listener';
     OrderEconomicsService,
     ExpenseReplicationListener,
     RtoExpenseListener,
+    FinanceMetricsProvider,
   ],
 })
 export class FinanceModule {}

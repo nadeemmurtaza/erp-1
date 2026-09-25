@@ -3,20 +3,20 @@
 
 # Every tracked file
 
-All **1,678** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,713** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 676 | 93,214 | [files/api.md](../files/api.md) |
-| apps/web | 316 | 50,267 | [files/web.md](../files/web.md) |
+| apps/api | 692 | 95,948 | [files/api.md](../files/api.md) |
+| apps/web | 334 | 50,830 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 70 | 6,283 | [files/packages.md](../files/packages.md) |
-| docs/* | 392 | 59,940 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 56 | 28,358 | [files/infra.md](../files/infra.md) |
+| packages/* | 70 | 6,294 | [files/packages.md](../files/packages.md) |
+| docs/* | 392 | 60,169 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 57 | 29,137 | [files/infra.md](../files/infra.md) |
 | repository root files | 88 | 11,043 | [files/root.md](../files/root.md) |
 
 
@@ -29,17 +29,17 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 417 |
-| page | 158 |
-| unit test | 145 |
-| module | 120 |
-| service | 107 |
-| dto | 82 |
-| component | 82 |
+| unit test | 153 |
+| page | 152 |
+| module | 126 |
+| service | 108 |
+| component | 104 |
+| dto | 83 |
 | controller | 79 |
 | migration | 67 |
-| nest module | 57 |
+| nest module | 58 |
+| script | 39 |
 | prisma schema | 39 |
-| script | 38 |
 | json | 29 |
 | event subscriber | 29 |
 | react | 29 |
@@ -74,6 +74,7 @@ name a new file: the convention is what makes it findable.
 | auth strategy | 1 |
 | dispatcher | 1 |
 | agent | 1 |
+| mts | 1 |
 | py | 1 |
 
 

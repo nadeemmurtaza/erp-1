@@ -44,8 +44,8 @@ Every top-level export in `packages`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `brand.ts` | `BRAND` | const | :321 | --------------------------------------------------------------------------- |
-| `brand.ts` | `Brand` | type | :333 |  |
+| `brand.ts` | `BRAND` | const | :332 | --------------------------------------------------------------------------- |
+| `brand.ts` | `Brand` | type | :344 |  |
 | `collection-rules.ts` | `CollectionRuleCondition` | interface | :7 | The rule shape `Collection.rule` (catalog.prisma, WO-8.2) holds when a collection is rule-based rat… |
 | `collection-rules.ts` | `CollectionRule` | interface | :13 |  |
 | `constants.ts` | `LOCALES` | const | :3 | Locales the storefront ships in. |

@@ -3,13 +3,13 @@
 
 # Module: `inventory`
 
-Pack **core** · enabled by the `MODULES` allowlist · 16 files
+Pack **core** · enabled by the `MODULES` allowlist · 18 files
 
 
 
 Source: `apps/api/src/modules/inventory/`
 
-## Files (16 · 2,026 lines)
+## Files (18 · 2,240 lines)
 
 All paths relative to `apps/api/src/modules/inventory/dto`.
 
@@ -22,7 +22,9 @@ All paths relative to `apps/api/src/modules/inventory/dto`.
 | `inventory.cron.ts` | scheduled job | 124 | 1 |  |
 | `inventory.listener.spec.ts` | unit test | 70 | — |  |
 | `inventory.listener.ts` | event subscriber | 61 | 1 |  |
-| `inventory.module.ts` | nest module | 18 | 1 |  |
+| `inventory.metrics.spec.ts` | unit test | 70 | — |  |
+| `inventory.metrics.ts` | module | 135 | 2 | The Inventory group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4). |
+| `inventory.module.ts` | nest module | 27 | 1 |  |
 | `inventory.service.spec.ts` | unit test | 442 | — |  |
 | `inventory.service.ts` | service | 582 | 3 |  |
 | `stock-count.controller.ts` | controller | 62 | 1 | JwtAuthGuard is registered globally (see core/auth/decorators.ts), so a |
@@ -106,7 +108,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`InventoryModule`** (`inventory.module.ts`)
 - imports: —
 - controllers: `InventoryAdminController`, `StockCountController`, `StockVarianceController`
-- providers: `InventoryService`, `InventoryCron`, `InventoryListener`, `StockCountService`, `StockVarianceService`
+- providers: `InventoryService`, `InventoryCron`, `InventoryListener`, `StockCountService`, `StockVarianceService`, `InventoryMetricsProvider`, `InventoryValuationMetricsProvider`
 - exports: `InventoryService`
 
 
@@ -117,6 +119,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `config`
 - core `events`
 - core `extension-points`
+- core `metrics`
 - core `notifications`
 - core `prisma`
 - core `settings`
@@ -127,12 +130,13 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (5)
+## Tests (6)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `inventory.cron.spec.ts` | 2 | InventoryCron |
 | `inventory.listener.spec.ts` | 1 | InventoryListener |
+| `inventory.metrics.spec.ts` | 4 | InventoryMetricsProvider · InventoryValuationMetricsProvider |
 | `inventory.service.spec.ts` | 14 | InventoryService — locations (B6) · InventoryService — postUnconditional (R5 oversell) · InventoryService — reorder poi… |
 | `stock-count.service.spec.ts` | 1 | StockCountService |
 | `stock-variance.service.spec.ts` | 4 | StockVarianceService — WO-21.3 · resolve |
@@ -149,7 +153,9 @@ check there before adding another.
 | `InventoryAdminController` | class | `inventory.controller.ts:12` |  |
 | `InventoryCron` | class | `inventory.cron.ts:8` |  |
 | `InventoryListener` | class | `inventory.listener.ts:10` |  |
-| `InventoryModule` | class | `inventory.module.ts:17` |  |
+| `InventoryMetricsProvider` | class | `inventory.metrics.ts:24` | The Inventory group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4). |
+| `InventoryValuationMetricsProvider` | class | `inventory.metrics.ts:106` | `inventory.valuation` alone — see the class doc above for why it is split out. |
+| `InventoryModule` | class | `inventory.module.ts:26` |  |
 | `StockMoveInput` | interface | `inventory.service.ts:20` |  |
 | `InsufficientStockError` | class | `inventory.service.ts:37` |  |
 | `InventoryService` | class | `inventory.service.ts:58` | Stock levels and their audit trail. |

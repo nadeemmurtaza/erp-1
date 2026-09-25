@@ -8,6 +8,7 @@ import { ProductionService } from './production.service';
 import { RawMaterialService } from './raw-material.service';
 import { RecipeService } from './recipe.service';
 import { BomProductionReplicationListener } from './bom-production-replication.listener';
+import { BomCardsMetricsProvider, BomValueMetricsProvider } from './bom-cards.metrics';
 
 @Module({
   imports: [InventoryModule],
@@ -20,6 +21,8 @@ import { BomProductionReplicationListener } from './bom-production-replication.l
     ProductionService,
     BomMetricsService,
     BomProductionReplicationListener,
+    BomCardsMetricsProvider,
+    BomValueMetricsProvider,
   ],
 })
 export class BomModule {}

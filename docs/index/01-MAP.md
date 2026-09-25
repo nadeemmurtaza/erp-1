@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 676 | 93,214 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 392 | 59,940 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 316 | 50,267 | Next.js — admin console and customer storefront in one app |
-| `(root)` | 42 | 27,374 | workspace manifests, docker compose/stack files, env templates |
-| `scripts` | 21 | 8,579 | repository checks and generators (lint gates, this index) |
+| `apps/api` | 692 | 95,948 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 392 | 60,169 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 334 | 50,830 | Next.js — admin console and customer storefront in one app |
+| `(root)` | 42 | 28,081 | workspace manifests, docker compose/stack files, env templates |
+| `scripts` | 22 | 8,651 | repository checks and generators (lint gates, this index) |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
-| `packages/shared` | 53 | 5,701 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 53 | 5,712 | brand, money, permissions, measurements, entities |
 | `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
 | `apps/platform` | 40 | 1,615 |  |
 | `.claude` | 22 | 1,017 |  |
@@ -61,7 +61,7 @@ Each is independent: no module imports another except through a named
 |---|---|---|---|---|
 | [`accounting`](modules/accounting.md) | core | MODULES allowlist | 16 | 6 |
 | [`addresses`](modules/addresses.md) | core | always on | 4 | — |
-| [`analytics`](modules/analytics.md) | core | MODULES allowlist | 19 | — |
+| [`analytics`](modules/analytics.md) | core | MODULES allowlist | 24 | — |
 | [`bom`](modules/bom.md) | core | MODULES allowlist | 20 | 5 |
 | [`cart`](modules/cart.md) | core | MODULES allowlist | 8 | 3 |
 | [`catalog`](modules/catalog.md) | core | MODULES allowlist | 49 | 27 |
@@ -117,6 +117,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`events`](core/events.md) | 5 | The catalogue of domain events. |
 | [`extension-points`](core/extension-points.md) | 6 |  |
 | [`health`](core/health.md) | 2 |  |
+| [`metrics`](core/metrics.md) | 4 |  |
 | [`notifications`](core/notifications.md) | 22 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |
 | [`prisma`](core/prisma.md) | 4 | Single import point for the generated Prisma client. |
 | [`replication`](core/replication.md) | 21 |  |

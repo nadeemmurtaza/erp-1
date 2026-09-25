@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 15 files
 
 Source: `apps/api/src/modules/orders/`
 
-## Files (15 · 2,758 lines)
+## Files (15 · 2,803 lines)
 
 All paths relative to `apps/api/src/modules/orders`.
 
@@ -25,10 +25,10 @@ All paths relative to `apps/api/src/modules/orders`.
 | `notification.subscriber.ts` | event subscriber | 259 | 1 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 | — |  |
 | `order-replication.listener.ts` | event subscriber | 53 | 1 | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
-| `orders-pos.service.spec.ts` | unit test | 249 | — |  |
+| `orders-pos.service.spec.ts` | unit test | 275 | — |  |
 | `orders.controller.ts` | controller | 143 | 2 |  |
 | `orders.module.ts` | nest module | 50 | 1 |  |
-| `orders.service.ts` | service | 1207 | 3 |  |
+| `orders.service.ts` | service | 1226 | 3 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 | 1 | The ONLY place a fulfilment-module event ever reaches Order.status. |
 
 
@@ -52,8 +52,8 @@ All paths relative to `apps/api/src/modules/orders`.
 | Event | Name | Published at |
 |---|---|---|
 | `OrderPlaced` | `order.placed` | `orders.service.ts:449`, `orders.service.ts:652` |
-| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:836` |
-| `OrderCancelled` | `order.cancelled` | `orders.service.ts:836` |
+| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:675`, `orders.service.ts:855` |
+| `OrderCancelled` | `order.cancelled` | `orders.service.ts:855` |
 | `PaymentSucceeded` | `payment.succeeded` | `orders.service.ts:640` |
 
 
@@ -137,7 +137,7 @@ check there before adding another.
 | `cod-risk.cron.spec.ts` | 4 | CodRiskCron |
 | `cod-risk.service.spec.ts` | 7 | CodRiskService |
 | `order-replication.listener.spec.ts` | 3 | OrderReplicationListener — WO-20.4 · onModuleInit · onOrderPlaced |
-| `orders-pos.service.spec.ts` | 6 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ |
+| `orders-pos.service.spec.ts` | 7 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ |
 
 
 ## Every export in this unit

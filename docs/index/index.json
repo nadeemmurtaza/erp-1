@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 1768,
-    "lines": 270470,
+    "lines": 270532,
     "routes": 580,
     "controllers": 104,
     "models": 211,
@@ -27,14 +27,14 @@
     },
     "infra": {
       "files": 57,
-      "lines": 29126,
-      "bytes": 1137887,
+      "lines": 29130,
+      "bytes": 1138044,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
       "files": 732,
-      "lines": 101299,
-      "bytes": 3772437,
+      "lines": 101344,
+      "bytes": 3774496,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 392,
-      "lines": 60222,
-      "bytes": 3568475,
+      "lines": 60235,
+      "bytes": 3569261,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -11716,7 +11716,8 @@
       "name": "order.status_changed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/orders/orders.service.ts:836"
+        "apps/api/src/modules/orders/orders.service.ts:675",
+        "apps/api/src/modules/orders/orders.service.ts:855"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
@@ -11731,7 +11732,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/finance/finance.listener.ts:9",
-        "apps/api/src/modules/orders/orders.service.ts:836"
+        "apps/api/src/modules/orders/orders.service.ts:855"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:71 onCancelled()",
@@ -36878,7 +36879,7 @@
       "file": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "module": "orders",
       "kind": "unit test",
-      "cases": 6,
+      "cases": 7,
       "describes": [
         "OrdersService — placeFromPos (WO-21.3)",
         "changeStatus — return releases stock to the order\\"
@@ -38221,8 +38222,8 @@
       "path": ".gitignore",
       "area": "infra",
       "kind": "file",
-      "lines": 54,
-      "bytes": 1042,
+      "lines": 58,
+      "bytes": 1199,
       "doc": "",
       "symbols": []
     },
@@ -46841,8 +46842,8 @@
       "path": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 249,
-      "bytes": 10438,
+      "lines": 275,
+      "bytes": 11697,
       "doc": "",
       "symbols": []
     },
@@ -46885,8 +46886,8 @@
       "path": "apps/api/src/modules/orders/orders.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1207,
-      "bytes": 47335,
+      "lines": 1226,
+      "bytes": 48135,
       "doc": "",
       "symbols": [
         {
@@ -62503,8 +62504,8 @@
       "path": "docs/implementation/finance-accounting/68-realtime-gross-profit.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 178,
-      "bytes": 10045,
+      "lines": 191,
+      "bytes": 10831,
       "doc": "",
       "symbols": []
     },

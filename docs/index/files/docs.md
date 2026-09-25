@@ -727,7 +727,7 @@ All 392 tracked files in `docs/*`, by directory.
 | `151-layby-installment-sales.md` | doc | 201 |  |
 | `49-financial-institution-settlement-partnerships.md` | doc | 265 |  |
 | `56-overdue-invoices-counter.md` | doc | 111 |  |
-| `68-realtime-gross-profit.md` | doc | 178 |  |
+| `68-realtime-gross-profit.md` | doc | 191 |  |
 
 ### `docs/implementation/hr-people-org` (18)
 

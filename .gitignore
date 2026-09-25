@@ -51,3 +51,7 @@ yaseen-backup-before-reset.sql
 
 # Worktree metadata from an external tool — machine-local, never shared.
 .freebuff/
+
+# Claude Code agent worktrees — isolated checkouts for background subagents,
+# machine-local scratch state, never shared or committed.
+.claude/worktrees/

@@ -1,5 +1,18 @@
 # 68 — Instant gross profit: OrderEconomics exists, but never fires for POS
 
+> **Status: shipped (2026-09-25), WO-68.1.** `placeFromPos()`
+> (`apps/api/src/modules/orders/orders.service.ts`) now publishes
+> `DomainEvent.OrderStatusChanged` with `fromStatus: null, toStatus:
+> 'DELIVERED'` inside the same transaction as order creation, immediately
+> after `OrderPlaced`. `fromStatus` is `null` rather than a prior status
+> since the order never existed at any other status — every subscriber
+> (`FinanceListener`, `loyalty-order.listener.ts`,
+> `orders/notification.subscriber.ts`) already keys off `toStatus` alone,
+> confirmed by reading all four subscribers before writing the fix. Proven
+> by a spec asserting the exact `OutboxEvent` row
+> (`orders-pos.service.spec.ts`). This was the explicit, named prerequisite
+> for doc 153's transaction-fee metering.
+
 `OrderEconomics` (`apps/api/prisma/schema/finance.prisma`, lines 102-132)
 already stores exactly what "instant gross margin and net profit
 calculation per transaction" needs — `revenue`, `cogs`, `contribution` —

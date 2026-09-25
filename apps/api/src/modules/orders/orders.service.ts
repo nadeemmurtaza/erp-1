@@ -664,6 +664,25 @@ export class OrdersService {
         tx,
       );
 
+      // 68-realtime-gross-profit.md: a POS sale is created straight at
+      // DELIVERED and, until this line, never published this event at all —
+      // FinanceListener's OrderEconomics, loyalty's earn-on-DELIVERED, and
+      // notification.subscriber.ts's delivery email all silently never fired
+      // for a till sale. fromStatus is null (not a transition — the order
+      // never existed at any other status), which every subscriber already
+      // tolerates since each keys off toStatus alone.
+      await this.events.publish(
+        DomainEvent.OrderStatusChanged,
+        {
+          orderId: created.id,
+          orderNumber: created.number,
+          fromStatus: null,
+          toStatus: 'DELIVERED',
+          actorId: input.cashierUserId,
+        },
+        tx,
+      );
+
       return { ...created, payment };
     });
 

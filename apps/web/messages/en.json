@@ -441,5 +441,14 @@
       "REFUNDED": "Refunded",
       "CLOSED": "Closed"
     }
+  },
+  "onsiteMessages": {
+    "close": "Close",
+    "accept": "Accept",
+    "defaultTitle": "Offer",
+    "emailPlaceholder": "Email address",
+    "subscribe": "Subscribe",
+    "subscribing": "Subscribing…",
+    "subscribed": "You're subscribed."
   }
 }

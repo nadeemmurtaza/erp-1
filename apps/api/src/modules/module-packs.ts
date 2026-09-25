@@ -62,6 +62,7 @@ export const MODULE_PACKS: Record<string, PackName> = {
   'identity-verification': 'core',
   inventory: 'core',
   marketing: 'core',
+  onsitemessages: 'core',
   orders: 'core',
   organization: 'core',
   parties: 'core',

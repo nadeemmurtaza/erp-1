@@ -32,15 +32,15 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 623 | 87,245 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 628 | 87,875 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `docs` | 392 | 59,591 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 301 | 47,322 | Next.js — admin console and customer storefront in one app |
+| `apps/web` | 305 | 48,119 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 27,374 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 21 | 8,574 | repository checks and generators (lint gates, this index) |
-| `packages/shared` | 50 | 5,321 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 51 | 5,361 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 42 | 5,292 | Expo — customer mobile app |
 | `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
-| `apps/platform` | 40 | 1,605 |  |
+| `apps/platform` | 40 | 1,615 |  |
 | `.claude` | 22 | 1,017 |  |
 | `packages/pos-core` | 13 | 481 | basket, tender, receipt and outbox maths, UI-free |
 | `deploy` | 12 | 401 | systemd units, backup and alert scripts, mail configuration |
@@ -75,6 +75,7 @@ Each is independent: no module imports another except through a named
 | [`inventory`](modules/inventory.md) | core | MODULES allowlist | 16 | 7 |
 | [`marketing`](modules/marketing.md) | core | MODULES allowlist | 11 | 3 |
 | [`measurements`](modules/measurements.md) | apparel | MODULES allowlist | 12 | 4 |
+| [`onsitemessages`](modules/onsitemessages.md) | core | MODULES allowlist | 10 | — |
 | [`orders`](modules/orders.md) | core | MODULES allowlist | 7 | 5 |
 | [`organization`](modules/organization.md) | core | MODULES allowlist | 15 | 5 |
 | [`parties`](modules/parties.md) | core | MODULES allowlist | 3 | 2 |

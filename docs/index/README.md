@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **1,600 files / 246,613 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **1,610 files / 248,090 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -46,21 +46,21 @@ single fact — the page is the right tool when you need the shape of something.
 
 | Your question | Open this | Cost | What it gives you |
 |---|---|---|---|
-| “Where is the endpoint for X?” | [cross/routes.md](cross/routes.md) | ~20.5k | all 495 HTTP routes, with the permission that guards each |
+| “Where is the endpoint for X?” | [cross/routes.md](cross/routes.md) | ~20.9k | all 505 HTTP routes, with the permission that guards each |
 | “What permission do I need / who has it?” | [cross/permissions.md](cross/permissions.md) | ~3.2k | all 60 permissions → routes, UI call sites, seed |
 | “Which table/column holds X?” | [cross/data-model.md](cross/data-model.md) | ~10.6k | all 187 Prisma models and 76 enums, field by field |
 | “How do modules talk to each other?” | [cross/events.md](cross/events.md) | ~6.8k | all 45 domain events → publishers and subscribers |
-| “What screen serves this URL?” | [cross/ui-routes.md](cross/ui-routes.md) | ~5.5k | all 188 screens across web, POS and mobile |
+| “What screen serves this URL?” | [cross/ui-routes.md](cross/ui-routes.md) | ~5.6k | all 190 screens across web, POS and mobile |
 | “Is there already a component for this?” | [cross/components.md](cross/components.md) | ~2.1k | shared primitives and every component, with usage counts |
 | “How should this look / behave / read?” | [cross/design-system.md](cross/design-system.md) | ~850 | the 0 design chapters, and the measured state of the code they govern |
 | “What runs on a schedule?” | [cross/jobs.md](cross/jobs.md) | ~699 | 13 cron jobs and the background dispatchers |
 | “What command do I run?” | [cross/commands.md](cross/commands.md) | ~1.8k | every script in every package.json (82) |
 | “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | ~3.0k | 65 migrations, newest last |
-| “What is already tested?” | [cross/tests.md](cross/tests.md) | ~5.9k | 153 spec files → what each one pins down |
+| “What is already tested?” | [cross/tests.md](cross/tests.md) | ~5.9k | 154 spec files → what each one pins down |
 | “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~39.1k | every document of record, with its outline |
-| “What is in this one module?” | [modules/](modules) | — | one page per API feature module (34) |
+| “What is in this one module?” | [modules/](modules) | — | one page per API feature module (35) |
 | “What does this file export?” | [symbols/](symbols) | — | every exported symbol in the repo, with line numbers |
-| “I need a machine-readable form.” | [index.json](index.json) | ~382.6k | the whole index as JSON — grep or jq it |
+| “I need a machine-readable form.” | [index.json](index.json) | ~385.6k | the whole index as JSON — grep or jq it |
 
 
 ## The levels
@@ -118,14 +118,14 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 
 | Area | Files | Lines | L1 page |
 |---|---|---|---|
-| apps/api | 623 | 87,245 | [api](areas/api.md) |
-| apps/web | 301 | 47,322 | [web](areas/web.md) |
+| apps/api | 628 | 87,875 | [api](areas/api.md) |
+| apps/web | 305 | 48,119 | [web](areas/web.md) |
 | apps/pos | 31 | 1,874 | [pos](areas/pos.md) |
 | apps/mobile | 42 | 5,292 | [mobile](areas/mobile.md) |
-| packages/* | 67 | 5,903 | [packages](areas/packages.md) |
+| packages/* | 68 | 5,943 | [packages](areas/packages.md) |
 | docs/* | 392 | 59,591 | [docs](areas/docs.md) |
 | scripts, CI, deployment and container configuration | 56 | 28,353 | [infra](areas/infra.md) |
-| repository root files | 88 | 11,033 | [root](areas/root.md) |
+| repository root files | 88 | 11,043 | [root](areas/root.md) |
 
 Every tracked file is accounted for: see
 [`cross/files.md`](cross/files.md) for the complete

@@ -441,5 +441,14 @@
       "REFUNDED": "رقم واپس کر دی گئی",
       "CLOSED": "بند"
     }
+  },
+  "onsiteMessages": {
+    "close": "بند کریں",
+    "accept": "قبول کریں",
+    "defaultTitle": "پیشکش",
+    "emailPlaceholder": "ای میل ایڈریس",
+    "subscribe": "سبسکرائب کریں",
+    "subscribing": "سبسکرائب ہو رہا ہے…",
+    "subscribed": "آپ سبسکرائب ہو گئے ہیں۔"
   }
 }

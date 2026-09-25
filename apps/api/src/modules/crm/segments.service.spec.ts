@@ -23,6 +23,7 @@ describe('SegmentsService', () => {
   afterEach(async () => {
     await prisma.segment.deleteMany({ where: { name: { contains: 'segment-test' } } });
     await prisma.contact.deleteMany({ where: { name: { contains: 'segment-test' } } });
+    await prisma.tag.deleteMany({ where: { name: { contains: 'segment-test' } } });
   });
 
   it('resolves "repeat buyers in Lahore" — the doc\'s own worked example', async () => {
@@ -47,15 +48,37 @@ describe('SegmentsService', () => {
 
   it('resolves a lastOrderDaysAgo condition against a real date, not a string', async () => {
     const marker = tag();
+    // Scoped by a tag unique to this test, not just the date condition — the
+    // shared test DB has plenty of other contacts with a recent lastOrderAt
+    // an unscoped filter would also match (the same class of flake already
+    // fixed once in campaigns.service.spec.ts).
     const recent = await prisma.contact.create({
-      data: { name: `${marker}-recent`, orderCount: 1, lastOrderAt: new Date() },
+      data: {
+        name: `${marker}-recent`,
+        orderCount: 1,
+        lastOrderAt: new Date(),
+        tags: { create: [{ tag: { connectOrCreate: { where: { name: marker }, create: { name: marker } } } }] },
+      },
     });
     await prisma.contact.create({
-      data: { name: `${marker}-stale`, orderCount: 1, lastOrderAt: new Date(Date.now() - 90 * 24 * 60 * 60_000) },
+      data: {
+        name: `${marker}-stale`,
+        orderCount: 1,
+        lastOrderAt: new Date(Date.now() - 90 * 24 * 60 * 60_000),
+        tags: { create: [{ tag: { connectOrCreate: { where: { name: marker }, create: { name: marker } } } }] },
+      },
     });
 
     const segment = await service.createSegment(
-      { name: tag(), filter: { all: [{ field: 'lastOrderDaysAgo', operator: 'lt', value: 30 }] } },
+      {
+        name: tag(),
+        filter: {
+          all: [
+            { field: 'tag', operator: 'eq', value: marker },
+            { field: 'lastOrderDaysAgo', operator: 'lt', value: 30 },
+          ],
+        },
+      },
       null,
     );
     const members = await service.resolveMembers(segment.id);

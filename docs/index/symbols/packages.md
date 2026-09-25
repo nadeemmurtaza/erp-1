@@ -124,6 +124,7 @@ Every top-level export in `packages`, with the line to open.
 | `index.ts` | `*` | re-export |  | from `./entities` |
 | `index.ts` | `*` | re-export |  | from `./human-code` |
 | `index.ts` | `*` | re-export |  | from `./fabric-estimate` |
+| `index.ts` | `*` | re-export |  | from `./onsite-messaging` |
 | `index.ts` | `*` | re-export |  | from `./permissions` |
 | `index.ts` | `*` | re-export |  | from `./phone` |
 | `index.ts` | `*` | re-export |  | from `./pricing` |
@@ -140,6 +141,11 @@ Every top-level export in `packages`, with the line to open.
 | `index.ts` | `*` | re-export |  | from `./measurements/types` |
 | `index.ts` | `*` | re-export |  | from `./measurements/schema` |
 | `index.ts` | `*` | re-export |  | from `./measurements/defaults` |
+| `onsite-messaging.ts` | `ONSITE_MESSAGE_KINDS` | const | :9 | On-site messaging kinds and popup triggers (WO-8.6), mirroring `OnsiteMessageKind`/`OnsitePopupTrig… |
+| `onsite-messaging.ts` | `OnsiteMessageKind` | type | :16 |  |
+| `onsite-messaging.ts` | `ONSITE_POPUP_TRIGGERS` | const | :18 |  |
+| `onsite-messaging.ts` | `OnsitePopupTrigger` | type | :20 |  |
+| `onsite-messaging.ts` | `ActiveOnsiteMessage` | interface | :23 | What the public `/onsite-messages/active` endpoint hands the storefront runtime. |
 | `permissions.ts` | `PermissionSensitivity` | type | :36 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PermissionDefinition` | interface | :38 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PERMISSION_CATALOG` | const | :45 |  |
@@ -147,11 +153,11 @@ Every top-level export in `packages`, with the line to open.
 | `permissions.ts` | `PERMISSION_KEYS` | const | :382 |  |
 | `permissions.ts` | `PermissionGroup` | interface | :392 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
 | `permissions.ts` | `PERMISSION_GROUPS` | const | :399 |  |
-| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :539 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
-| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :660 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
-| `permissions.ts` | `PERMISSION_EFFECTS` | const | :665 |  |
-| `permissions.ts` | `PermissionEffect` | type | :666 |  |
-| `permissions.ts` | `PermissionOverride` | interface | :669 | One entry in a user's permission-override set (@see UserPermission). |
+| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :545 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
+| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :666 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
+| `permissions.ts` | `PERMISSION_EFFECTS` | const | :671 |  |
+| `permissions.ts` | `PermissionEffect` | type | :672 |  |
+| `permissions.ts` | `PermissionOverride` | interface | :675 | One entry in a user's permission-override set (@see UserPermission). |
 | `phone.ts` | `NormalizedPhone` | interface | :21 |  |
 | `phone.ts` | `normalizePhone` | function | :29 |  |
 | `phone.ts` | `isValidPhone` | function | :64 |  |

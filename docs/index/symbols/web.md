@@ -124,7 +124,13 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `CampaignsAdminPage` | default | :139 |  |
+| `page.tsx` | `CampaignsAdminPage` | default | :142 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/campaigns/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `CampaignDetailPage` | default | :35 | WO-8 verification — the drill-down `/admin/campaigns/:id` (routes.ts) always pointed at, never buil… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/categories`
 
@@ -136,7 +142,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `CollectionsAdminPage` | default | :140 |  |
+| `page.tsx` | `CollectionsAdminPage` | default | :141 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/contacts`
 
@@ -149,7 +155,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `ContentAdminPage` | default | :284 |  |
+| `page.tsx` | `ContentAdminPage` | default | :285 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/customers/[id]`
 
@@ -416,6 +422,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `PolicyQuarantinePage` | default | :18 | R9's quarantine (WO-23.3c/e) — a fact that applied but whose own `scopeLevel` disagreed with the `B… |
 
+### `apps/web/src/app/(admin)/admin/(app)/onsite-messages`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `OnsiteMessagesAdminPage` | default | :255 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/options`
 
 | File | Symbol | Kind | Line | Doc |
@@ -542,13 +554,13 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `SearchAdminPage` | default | :22 | WO-8.3 — synonym editing and the zero-result report ("the single most useful merchandising report t… |
+| `page.tsx` | `SearchAdminPage` | default | :23 | WO-8.3 — synonym editing and the zero-result report ("the single most useful merchandising report t… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/segments`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `SegmentsAdminPage` | default | :119 | WO-8.4 — Segment shipped in the CRM schema with no evaluator, service or UI until now. |
+| `page.tsx` | `SegmentsAdminPage` | default | :120 | WO-8.4 — Segment shipped in the CRM schema with no evaluator, service or UI until now. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/seo`
 
@@ -675,8 +687,8 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `error.tsx` | `StorefrontError` | default | :21 | Storefront error boundary. |
-| `layout.tsx` | `generateMetadata` | function | :45 | Deliberately no generateStaticParams. |
-| `layout.tsx` | `LocaleLayout` | default | :132 |  |
+| `layout.tsx` | `generateMetadata` | function | :46 | Deliberately no generateStaticParams. |
+| `layout.tsx` | `LocaleLayout` | default | :133 |  |
 | `loading.tsx` | `Loading` | default | :1 |  |
 | `not-found.tsx` | `StorefrontNotFound` | default | :12 | Storefront 404. |
 | `page.tsx` | `revalidate` | const | :12 |  |
@@ -989,8 +1001,8 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `status-badge.tsx` | `statusLabel` | function | :58 | `READY_TO_SHIP` -> `Ready to ship`. |
-| `status-badge.tsx` | `StatusBadge` | function | :62 |  |
+| `status-badge.tsx` | `statusLabel` | function | :64 | `READY_TO_SHIP` -> `Ready to ship`. |
+| `status-badge.tsx` | `StatusBadge` | function | :68 |  |
 | `toast-container.tsx` | `ToastContainer` | function | :11 |  |
 | `wizard.tsx` | `WizardStep` | interface | :6 |  |
 | `wizard.tsx` | `Wizard` | function | :36 | A form split into small, single-purpose steps instead of one long page. |
@@ -1026,6 +1038,7 @@ Every top-level export in `web`, with the line to open.
 | `locale-switcher.tsx` | `LocaleSwitcher` | function | :20 | Switches language while staying on the same page — a customer reading a product in English lands on… |
 | `logo.tsx` | `Logo` | function | :24 |  |
 | `mobile-nav.tsx` | `MobileNav` | function | :17 |  |
+| `onsite-messages.tsx` | `OnsiteMessages` | function | :37 | WO-8.6 — the storefront half of on-site messaging. |
 | `price.tsx` | `Price` | function | :25 | Renders a price. |
 | `product-card.tsx` | `ProductCard` | function | :22 |  |
 | `product-gallery.tsx` | `ProductGallery` | function | :21 |  |
@@ -1182,6 +1195,8 @@ Every top-level export in `web`, with the line to open.
 | `customer-client.ts` | `createReturnRequest` | function | :154 |  |
 | `customer-client.ts` | `customerFetch` | function | :194 | Authenticated fetch for a signed-in customer's own data — addresses, measurement profiles, order hi… |
 | `download-csv.ts` | `downloadCsv` | function | :17 | Pull a CSV from an admin endpoint and hand it to the browser. |
+| `onsite-messages-client.ts` | `fetchActiveOnsiteMessages` | function | :13 | WO-8.6. |
+| `onsite-messages-client.ts` | `subscribeToNewsletter` | function | :21 |  |
 | `wishlist.ts` | `toggleWishlist` | function | :65 |  |
 | `wishlist.ts` | `WishlistState` | interface | :79 |  |
 | `wishlist.ts` | `useWishlist` | function | :86 |  |

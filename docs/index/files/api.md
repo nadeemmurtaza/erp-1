@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 623 tracked files in `apps/api`, by directory.
+All 628 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -701,8 +701,8 @@ All 623 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 90 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 169 |  |
+| `module-packs.ts` | module | 91 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 171 |  |
 
 ### `apps/api/src/modules/accounting` (15)
 
@@ -893,7 +893,7 @@ All 623 tracked files in `apps/api`, by directory.
 | `rfm-scoring.cron.ts` | scheduled job | 47 |  |
 | `rto-contact.listener.ts` | event subscriber | 33 |  |
 | `segments.controller.ts` | controller | 48 |  |
-| `segments.service.spec.ts` | unit test | 82 |  |
+| `segments.service.spec.ts` | unit test | 105 |  |
 | `segments.service.ts` | service | 69 |  |
 
 ### `apps/api/src/modules/crm/dto` (2)
@@ -1073,6 +1073,21 @@ All 623 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `measurements.dto.ts` | dto | 236 |  |
+
+### `apps/api/src/modules/onsitemessages` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `onsite-messages.controller.ts` | controller | 95 |  |
+| `onsite-messages.module.ts` | nest module | 11 |  |
+| `onsite-messages.service.spec.ts` | unit test | 138 |  |
+| `onsite-messages.service.ts` | service | 205 |  |
+
+### `apps/api/src/modules/onsitemessages/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `onsite-message.dto.ts` | dto | 155 |  |
 
 ### `apps/api/src/modules/orders` (10)
 

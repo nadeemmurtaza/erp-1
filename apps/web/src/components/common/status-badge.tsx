@@ -43,6 +43,9 @@ const TONES: Record<string, BadgeTone> = {
   WON: 'success',
   APPROVED: 'success',
   POSTED: 'success',
+  SENT: 'success',
+  OPENED: 'success',
+  CLICKED: 'success',
   // Waiting on someone
   PENDING: 'warning',
   AWAITING_APPROVAL: 'warning',
@@ -52,6 +55,9 @@ const TONES: Record<string, BadgeTone> = {
   DRAFT: 'neutral',
   RECEIVED: 'neutral',
   NEW: 'neutral',
+  // A deliberate skip, not a failure — CampaignRecipientStatus (WO-8.4)
+  SKIPPED_OPT_OUT: 'neutral',
+  SKIPPED_NO_CONTACT: 'neutral',
 };
 
 /** `READY_TO_SHIP` -> `Ready to ship`. */

@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 301 tracked files in `apps/web`, by directory.
+All 305 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -25,8 +25,8 @@ All 301 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `en.json` | json | 446 |  |
-| `ur.json` | json | 446 |  |
+| `en.json` | json | 455 |  |
+| `ur.json` | json | 455 |  |
 
 ### `apps/web/public` (1)
 
@@ -174,7 +174,13 @@ All 301 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 235 |  |
+| `page.tsx` | page | 246 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/campaigns/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 123 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/categories` (1)
 
@@ -186,7 +192,7 @@ All 301 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 208 |  |
+| `page.tsx` | page | 201 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/contacts` (2)
 
@@ -199,7 +205,7 @@ All 301 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 535 |  |
+| `page.tsx` | page | 523 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/customers/[id]` (1)
 
@@ -466,6 +472,12 @@ All 301 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 131 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/onsite-messages` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 435 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/options` (1)
 
 | File | Kind | Lines | Purpose |
@@ -592,13 +604,13 @@ All 301 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 140 |  |
+| `page.tsx` | page | 133 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/segments` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 176 |  |
+| `page.tsx` | page | 169 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/seo` (1)
 
@@ -725,7 +737,7 @@ All 301 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `error.tsx` | error | 62 |  |
-| `layout.tsx` | layout | 192 |  |
+| `layout.tsx` | layout | 194 |  |
 | `loading.tsx` | loading | 66 |  |
 | `not-found.tsx` | not-found | 37 |  |
 | `page.tsx` | page | 262 |  |
@@ -991,7 +1003,7 @@ All 301 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `status-badge.tsx` | component | 65 |  |
+| `status-badge.tsx` | component | 71 |  |
 | `toast-container.tsx` | component | 60 |  |
 | `wizard.tsx` | component | 146 |  |
 
@@ -1001,7 +1013,7 @@ All 301 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `dashboard-nav.tsx` | component | 68 |  |
 
-### `apps/web/src/components/storefront` (32)
+### `apps/web/src/components/storefront` (33)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1024,6 +1036,7 @@ All 301 tracked files in `apps/web`, by directory.
 | `locale-switcher.tsx` | component | 75 |  |
 | `logo.tsx` | component | 126 | The "yaseen" wordmark, traced from the brand's source artwork into a single vector path. |
 | `mobile-nav.tsx` | component | 190 |  |
+| `onsite-messages.tsx` | component | 209 |  |
 | `price.tsx` | component | 39 |  |
 | `product-card.tsx` | component | 239 |  |
 | `product-gallery.tsx` | component | 137 |  |
@@ -1076,7 +1089,7 @@ All 301 tracked files in `apps/web`, by directory.
 | `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 24 | Permission keys, re-exported from the shared catalogue. |
 | `routes.ts` | constants | 171 | Every internal path the app links to, in one place. |
-| `storage.ts` | constants | 52 | Browser storage keys. |
+| `storage.ts` | constants | 54 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)
 
@@ -1094,7 +1107,7 @@ All 301 tracked files in `apps/web`, by directory.
 | `request.ts` | module | 24 |  |
 | `routing.ts` | module | 18 |  |
 
-### `apps/web/src/lib` (8)
+### `apps/web/src/lib` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1105,6 +1118,7 @@ All 301 tracked files in `apps/web`, by directory.
 | `cart-client.ts` | utility | 99 |  |
 | `customer-client.ts` | utility | 217 |  |
 | `download-csv.ts` | utility | 36 |  |
+| `onsite-messages-client.ts` | utility | 24 |  |
 | `wishlist.ts` | utility | 96 |  |
 
 ### `apps/web/src/providers` (2)

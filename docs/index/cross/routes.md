@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **495** endpoints across **84** controllers, with the access rule that actually guards each one.
+All **505** endpoints across **86** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 57** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 59** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -67,6 +67,8 @@ never authorization.
 | GET | `/measurements/garment-types` | `MeasurementsController.listGarmentTypes` |
 | GET | `/measurements/garment-types/:idOrKey` | `MeasurementsController.getGarmentType` |
 | GET | `/meta` | `MetaController.get` |
+| GET | `/onsite-messages/active` | `OnsiteMessagesController.active` |
+| POST | `/onsite-messages/newsletter` | `OnsiteMessagesController.subscribe` |
 | POST | `/orders` | `OrdersController.place` |
 | POST | `/orders/:number/track` | `OrdersController.track` |
 | POST | `/payments/:paymentId/receipt` | `PaymentsController.uploadReceipt` |
@@ -505,6 +507,21 @@ never authorization.
 | DELETE | `/measurements/profiles/:id` | signed-in | `MeasurementsController.deleteProfile` |  |
 | GET | `/measurements/profiles/:id` | signed-in | `MeasurementsController.getProfile` |  |
 | PATCH | `/measurements/profiles/:id` | signed-in | `MeasurementsController.updateProfile` |  |
+
+### [`onsitemessages`](../modules/onsitemessages.md) (10)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/onsite-messages` | `onsitemessages.view` `onsitemessages.manage` | `OnsiteMessagesAdminController.list` |  |
+| POST | `/admin/onsite-messages` | `onsitemessages.manage` | `OnsiteMessagesAdminController.create` |  |
+| DELETE | `/admin/onsite-messages/:id` | `onsitemessages.manage` | `OnsiteMessagesAdminController.remove` |  |
+| GET | `/admin/onsite-messages/:id` | `onsitemessages.view` `onsitemessages.manage` | `OnsiteMessagesAdminController.get` |  |
+| PATCH | `/admin/onsite-messages/:id` | `onsitemessages.manage` | `OnsiteMessagesAdminController.update` |  |
+| GET | `/admin/onsite-messages/newsletter-subscribers` | `onsitemessages.view` `onsitemessages.manage` | `OnsiteMessagesAdminController.subscribers` |  |
+| PATCH | `/admin/onsite-messages/newsletter-subscribers/:id/opt-out` | `onsitemessages.manage` | `OnsiteMessagesAdminController.optOutSubscriber` |  |
+| GET | `/admin/onsite-messages/newsletter-subscribers/export` | `onsitemessages.view` `onsitemessages.manage` | `OnsiteMessagesAdminController.exportSubscribers` | Every still-subscribed newsletter capture, for an email tool import |
+| GET | `/onsite-messages/active` | **PUBLIC** | `OnsiteMessagesController.active` |  |
+| POST | `/onsite-messages/newsletter` | **PUBLIC** | `OnsiteMessagesController.subscribe` |  |
 
 ### [`orders`](../modules/orders.md) (7)
 

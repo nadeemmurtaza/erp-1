@@ -4,7 +4,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import { DataTable, Dialog, Loading, PageHeader } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
+import { ToastStack } from '@/components/admin/toast-stack';
 import { useToast } from '@/hooks/use-toast';
+import { useRouter } from '@/i18n/navigation';
+import { ROUTES } from '@/constants/routes';
 
 interface Segment {
   id: string;
@@ -138,6 +141,7 @@ function NewCampaignDialog({
 
 export default function CampaignsAdminPage() {
   const { toasts, add: addToast, remove: removeToast } = useToast();
+  const router = useRouter();
   const [campaigns, setCampaigns] = useState<Campaign[] | null>(null);
   const [segments, setSegments] = useState<Segment[]>([]);
   const [creating, setCreating] = useState(false);
@@ -183,15 +187,7 @@ export default function CampaignsAdminPage() {
 
   return (
     <>
-      {toasts.length > 0 && (
-        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-          {toasts.map((t) => (
-            <button key={t.id} type="button" className="w-full cursor-pointer rounded-md border border-neutral-200 bg-white p-4 text-start text-sm shadow-md" onClick={() => removeToast(t.id)}>
-              {t.message}
-            </button>
-          ))}
-        </div>
-      )}
+      <ToastStack toasts={toasts} onDismiss={removeToast} />
 
       <PageHeader
         title="Campaigns"
@@ -207,6 +203,7 @@ export default function CampaignsAdminPage() {
         rows={campaigns}
         rowKey={(c) => c.id}
         emptyLabel="No campaigns yet"
+        onRowClick={(c) => router.push(ROUTES.admin.campaign(c.id))}
         columns={[
           { header: 'Name', cell: (c) => c.name },
           { header: 'Channel', cell: (c) => c.channel, muted: true },
@@ -216,11 +213,25 @@ export default function CampaignsAdminPage() {
             header: '',
             cell: (c) =>
               c.status === 'DRAFT' ? (
-                <button type="button" className="btn-text" onClick={() => void sendNow(c.id)}>
+                <button
+                  type="button"
+                  className="btn-text"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    void sendNow(c.id);
+                  }}
+                >
                   Send now
                 </button>
               ) : c.status === 'SCHEDULED' ? (
-                <button type="button" className="btn-text text-red-600" onClick={() => void cancel(c.id)}>
+                <button
+                  type="button"
+                  className="btn-text text-red-600"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    void cancel(c.id);
+                  }}
+                >
                   Cancel
                 </button>
               ) : null,

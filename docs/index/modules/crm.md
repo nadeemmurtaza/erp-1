@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 17 files
 
 Source: `apps/api/src/modules/crm/`
 
-## Files (17 · 1,995 lines)
+## Files (17 · 2,018 lines)
 
 All paths relative to `apps/api/src/modules/crm`.
 
@@ -30,7 +30,7 @@ All paths relative to `apps/api/src/modules/crm`.
 | `rfm-scoring.cron.ts` | scheduled job | 47 | 1 | WO-8.4 — nightly RFM (recency/frequency/monetary) scoring, quintile-ranked (1-5) among contacts with at least one order. |
 | `rto-contact.listener.ts` | event subscriber | 33 | 1 | WO-6.7 — "Increment an RTO counter on the customer's Contact record." Same rollup idiom as the CRM's own order.placed s… |
 | `segments.controller.ts` | controller | 48 | 1 |  |
-| `segments.service.spec.ts` | unit test | 82 | — |  |
+| `segments.service.spec.ts` | unit test | 105 | — |  |
 | `segments.service.ts` | service | 69 | 1 |  |
 
 

@@ -6,6 +6,7 @@ export * from './enums';
 export * from './entities';
 export * from './human-code';
 export * from './fabric-estimate';
+export * from './onsite-messaging';
 export * from './permissions';
 export * from './phone';
 export * from './pricing';

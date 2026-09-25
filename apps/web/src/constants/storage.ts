@@ -48,4 +48,6 @@ export const STORAGE_KEYS = {
    */
   guestOrder: (number: string) => `${NS}.order.${number}`,
   guestBooking: (number: string) => `${NS}.stitching.${number}`,
+  /** WO-8.6 — dismissed on-site message ids, so a closed banner or popup stays closed. */
+  onsiteMessagesDismissed: `${NS}.onsite_messages.dismissed`,
 } as const;

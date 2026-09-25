@@ -22,7 +22,7 @@ the *catalogue*, not any particular deployment's grants.
 | `Roles granted at seed` = none | `ROLE_PERMISSION_SEED` gives it to no role, so no live user holds it unless an admin grants it by hand — the `seedPermissions()` vs `seedRoles()` trap CLAUDE.md names |
 | `UI call sites` = — | nothing in the admin UI gates on it; if a screen needs it, the screen is missing |
 
-- Permissions enforcing **no route**: **4** — `stitching.jobs.manage_own`, `stitching.jobs.manage_all`, `onsitemessages.view`, `onsitemessages.manage`
+- Permissions enforcing **no route**: **2** — `stitching.jobs.manage_own`, `stitching.jobs.manage_all`
 - Permissions **no seeded role grants**: **0**
 - Keys required by a route but **not in the catalogue**: **0**
 
@@ -150,8 +150,8 @@ the *catalogue*, not any particular deployment's grants.
 | `search.manage` | Edit search synonyms | low | 4 | 1 | STAFF, ADMIN |
 | `campaigns.view` | View campaigns and their send/open/click stats | low | 2 | 1 | STAFF, ADMIN |
 | `campaigns.manage` | Create, schedule and send campaigns to a customer segment | high | 6 | 1 | ADMIN |
-| `onsitemessages.view` | View on-site announcement bars, popups and newsletter capture | low | **0 — enforces nothing** | 1 | STAFF, ADMIN |
-| `onsitemessages.manage` | Create and schedule on-site announcement bars, popups and newsletter capture | low | **0 — enforces nothing** | 1 | STAFF, ADMIN |
+| `onsitemessages.view` | View on-site announcement bars, popups and newsletter capture | low | 4 | 1 | STAFF, ADMIN |
+| `onsitemessages.manage` | Create and schedule on-site announcement bars, popups and newsletter capture | low | 8 | 1 | STAFF, ADMIN |
 
 
 ## Role → permission, as seeded

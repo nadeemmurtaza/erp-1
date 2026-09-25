@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-301 files · 47,322 lines
+305 files · 48,119 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -26,18 +26,18 @@ through `@newax/shared`'s `BRAND`.
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
 | `apps/web` | 8 | 387 | file, script, json, module |
-| `apps/web/messages` | 2 | 892 | json |
+| `apps/web/messages` | 2 | 910 | json |
 | `apps/web/public` | 1 | 0 | asset |
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 76 | module |
-| `apps/web/src/app` | 165 | 30,092 | page, loading, layout, error |
-| `apps/web/src/components` | 75 | 12,396 | component, loading |
+| `apps/web/src/app` | 167 | 30,630 | page, loading, layout, error |
+| `apps/web/src/components` | 76 | 12,611 | component, loading |
 | `apps/web/src/config` | 3 | 106 | config |
-| `apps/web/src/constants` | 5 | 300 | constants |
+| `apps/web/src/constants` | 5 | 302 | constants |
 | `apps/web/src/hooks` | 3 | 72 | hook |
 | `apps/web/src/i18n` | 3 | 53 | module |
-| `apps/web/src/lib` | 8 | 875 | utility |
+| `apps/web/src/lib` | 9 | 899 | utility |
 | `apps/web/src/providers` | 2 | 82 | react |
 | `apps/web/src/types` | 5 | 1,570 | types |
 | `apps/web/src/utils` | 5 | 306 | utility |
@@ -73,7 +73,7 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` | 571 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 556 | page |  |
 | `apps/web/src/components/admin/image-manager.tsx` | 543 | component |  |
-| `apps/web/src/app/(admin)/admin/(app)/content/page.tsx` | 535 | page |  |
+| `apps/web/src/app/(admin)/admin/(app)/content/page.tsx` | 523 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/page.tsx` | 523 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/garments/[id]/page.tsx` | 504 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/finance/expenses/page.tsx` | 470 | page |  |

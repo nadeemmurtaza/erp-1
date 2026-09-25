@@ -3,7 +3,7 @@
 
 # Screens
 
-All **188** routable files across the web app, the till and the mobile app.
+All **190** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (114)
+### admin (116)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -53,6 +53,7 @@ _none_
 | `/admin/br/[branchId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/br/[branchId]/page.tsx` |
 | `/admin/brands` | page | client | `apps/web/src/app/(admin)/admin/(app)/brands/page.tsx` |
 | `/admin/campaigns` | page | client | `apps/web/src/app/(admin)/admin/(app)/campaigns/page.tsx` |
+| `/admin/campaigns/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/campaigns/[id]/page.tsx` |
 | `/admin/categories` | page | client | `apps/web/src/app/(admin)/admin/(app)/categories/page.tsx` |
 | `/admin/collections` | page | client | `apps/web/src/app/(admin)/admin/(app)/collections/page.tsx` |
 | `/admin/contacts` | loading | server | `apps/web/src/app/(admin)/admin/(app)/contacts/loading.tsx` |
@@ -104,6 +105,7 @@ _none_
 | `/admin/o/[orgId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/page.tsx` |
 | `/admin/o/[orgId]/access` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/access/page.tsx` |
 | `/admin/o/[orgId]/policy-quarantine` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/policy-quarantine/page.tsx` |
+| `/admin/onsite-messages` | page | client | `apps/web/src/app/(admin)/admin/(app)/onsite-messages/page.tsx` |
 | `/admin/options` | page | client | `apps/web/src/app/(admin)/admin/(app)/options/page.tsx` |
 | `/admin/orders` | loading | server | `apps/web/src/app/(admin)/admin/(app)/orders/loading.tsx` |
 | `/admin/orders` | page | client | `apps/web/src/app/(admin)/admin/(app)/orders/page.tsx` |

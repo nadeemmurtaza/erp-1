@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import { DataTable, Loading, PageHeader, Tabs } from '@/components/ui';
+import { ToastStack } from '@/components/admin/toast-stack';
 import { useToast } from '@/hooks/use-toast';
 
 interface Synonym {
@@ -70,15 +71,7 @@ export default function SearchAdminPage() {
 
   return (
     <>
-      {toasts.length > 0 && (
-        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-          {toasts.map((t) => (
-            <button key={t.id} type="button" className="w-full cursor-pointer rounded-md border border-neutral-200 bg-white p-4 text-start text-sm shadow-md" onClick={() => removeToast(t.id)}>
-              {t.message}
-            </button>
-          ))}
-        </div>
-      )}
+      <ToastStack toasts={toasts} onDismiss={removeToast} />
 
       <PageHeader title="Search" description="Synonyms and the zero-result report — WO-8.3." />
 

@@ -15,6 +15,7 @@ import { IdentityVerificationModule } from './identity-verification/identity-ver
 import { InventoryModule } from './inventory/inventory.module';
 import { MarketingModule } from './marketing/marketing.module';
 import { MeasurementsModule } from './measurements/measurements.module';
+import { OnsiteMessagesModule } from './onsitemessages/onsite-messages.module';
 import { OrdersModule } from './orders/orders.module';
 import { OrganizationModule } from './organization/organization.module';
 import { PartiesModule } from './parties/parties.module';
@@ -70,6 +71,7 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'content', module: ContentModule },
   { name: 'collections', module: CollectionsModule },
   { name: 'search', module: SearchModule },
+  { name: 'onsitemessages', module: OnsiteMessagesModule },
   { name: 'measurements', module: MeasurementsModule },
   { name: 'cart', module: CartModule },
   { name: 'stitching', module: StitchingModule },

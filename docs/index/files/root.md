@@ -106,7 +106,7 @@ All 88 tracked files in `repository root files`, by directory.
 | `package.json` | json | 51 |  |
 | `prisma.config.ts` | module | 10 |  |
 | `tsconfig.build.json` | json | 5 |  |
-| `tsconfig.json` | json | 12 |  |
+| `tsconfig.json` | json | 22 |  |
 
 ### `apps/platform/prisma/schema` (2)
 

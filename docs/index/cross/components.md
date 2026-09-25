@@ -3,7 +3,7 @@
 
 # Components
 
-All **79** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **80** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 137 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 140 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 4 |  |
 
 ### `apps/pos/src/components` (2)
@@ -62,7 +62,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `scope-chips.tsx` | `ScopeChip` `ScopeChips` | client | 2 |  |
 | `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 36 |  |
 | `stage-badge.tsx` | `StageBadge` | server | 3 |  |
-| `toast-stack.tsx` | `ToastStack` | client | 6 |  |
+| `toast-stack.tsx` | `ToastStack` | client | 12 |  |
 
 ### `apps/web/src/components/admin/bom` (2)
 
@@ -81,7 +81,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 24 |  |
+| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 25 |  |
 | `toast-container.tsx` | `ToastContainer` | client | 0 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | client | 4 |  |
 
@@ -91,7 +91,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `dashboard-nav.tsx` | `DashboardNav` | client | 1 |  |
 
-### `apps/web/src/components/storefront` (32)
+### `apps/web/src/components/storefront` (33)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
@@ -114,6 +114,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `locale-switcher.tsx` | `LocaleSwitcher` | client | 1 |  |
 | `logo.tsx` | `Logo` | server | 2 | The "yaseen" wordmark, traced from the brand's source artwork into a single vector path. |
 | `mobile-nav.tsx` | `MobileNav` | client | 1 |  |
+| `onsite-messages.tsx` | `OnsiteMessages` | client | 1 |  |
 | `price.tsx` | `Price` | server | 3 |  |
 | `product-card.tsx` | `ProductCard` | client | 5 |  |
 | `product-gallery.tsx` | `ProductGallery` | client | 1 |  |
@@ -132,7 +133,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `badge.tsx` | `BadgeTone` `Badge` | server | 29 |  |
+| `badge.tsx` | `BadgeTone` `Badge` | server | 30 |  |
 | `button.tsx` | `ButtonProps` `Button` | server | 2 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 1 |  |
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 1 |  |

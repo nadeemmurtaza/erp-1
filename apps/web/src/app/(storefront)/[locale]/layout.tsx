@@ -10,6 +10,7 @@ import { AnalyticsBeacon } from '@/components/storefront/analytics-beacon';
 import { Footer } from '@/components/storefront/footer';
 import { Header } from '@/components/storefront/header';
 import { JsonLd } from '@/components/storefront/json-ld';
+import { OnsiteMessages } from '@/components/storefront/onsite-messages';
 import { SmoothScroller } from '@/components/storefront/smooth-scroller';
 import { StorefrontProviders } from '@/providers/storefront-providers';
 import { businessProfile } from '@/config/business-profile';
@@ -178,6 +179,7 @@ export default async function LocaleLayout({
             >
               {t('skipToContent')}
             </a>
+            <OnsiteMessages locale={locale} />
             <Header />
             <main id="main" className="flex-1">
               {children}

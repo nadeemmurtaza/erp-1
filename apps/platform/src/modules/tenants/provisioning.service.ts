@@ -1,5 +1,5 @@
 import { ConflictException, Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { encryptSecret, decryptSecret } from '@newax/shared';
+import { encryptSecret, decryptSecret } from '@newax/shared/secret-crypto';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { PlatformTenant } from '../../core/prisma/client';

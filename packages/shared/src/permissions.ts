@@ -470,6 +470,12 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     permissions: ['production.manage', 'production.view_chain'],
   },
   {
+    key: 'fulfilment',
+    label: 'Fulfilment',
+    description: 'Shipments, manifests, RTO and returns — after an order is placed, before it is closed.',
+    permissions: ['fulfilment.view', 'fulfilment.manage'],
+  },
+  {
     key: 'marketing',
     label: 'Marketing',
     description:

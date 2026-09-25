@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import { CONTENT_BLOCK_TYPES, type ContentBlockType } from '@newax/shared';
 import { DataTable, Dialog, Loading, PageHeader, Tabs } from '@/components/ui';
+import { ToastStack } from '@/components/admin/toast-stack';
 import { useToast } from '@/hooks/use-toast';
 
 interface Translation {
@@ -392,20 +393,7 @@ export default function ContentAdminPage() {
 
   return (
     <>
-      {toasts.length > 0 && (
-        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-          {toasts.map((t) => (
-            <button
-              key={t.id}
-              type="button"
-              className="w-full cursor-pointer rounded-md border border-neutral-200 bg-white p-4 text-start text-sm shadow-md"
-              onClick={() => removeToast(t.id)}
-            >
-              {t.message}
-            </button>
-          ))}
-        </div>
-      )}
+      <ToastStack toasts={toasts} onDismiss={removeToast} />
 
       <PageHeader title="Content" description="Pages, blog posts, banners and menus — WO-8.1." />
 

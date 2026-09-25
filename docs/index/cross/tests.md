@@ -3,7 +3,7 @@
 
 # Tests
 
-**153** spec files, **1,429** cases. What is already pinned down — and what is not.
+**154** spec files, **1,437** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -52,7 +52,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (136)
+## Unit and integration (137)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -126,6 +126,7 @@ regression or an N+1.
 | `apps/api/src/modules/marketing/campaigns.service.spec.ts` | marketing | 4 | CampaignsService |
 | `apps/api/src/modules/marketing/marketing-automation.cron.spec.ts` | marketing | 19 | MarketingAutomationCron · sendAbandonedCartReminders · sendAbandonedCartFirstTouch · sendAbandonedC… |
 | `apps/api/src/modules/measurements/garment-fields-seed.spec.ts` | measurements | 1 | seeded measurement fields satisfy MeasurementFieldDto |
+| `apps/api/src/modules/onsitemessages/onsite-messages.service.spec.ts` | onsitemessages | 8 | OnsiteMessagesService |
 | `apps/api/src/modules/orders/backorder.listener.spec.ts` | orders | 4 | BackorderListener |
 | `apps/api/src/modules/orders/order-replication.listener.spec.ts` | orders | 3 | OrderReplicationListener — WO-20.4 · onModuleInit · onOrderPlaced |
 | `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 6 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ |

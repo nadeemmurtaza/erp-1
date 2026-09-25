@@ -7,7 +7,11 @@
  * data decision it gets its own, smaller vocabulary rather than being
  * folded into a catalog that belongs to a different database entirely.
  *
- * Matches doc 39's own permission names (WO-39.8).
+ * Matches doc 39's own permission names (WO-39.8), plus WO-51.5's
+ * `platform.trials.extend` — deliberately narrower than
+ * `platform.tenants.manage` so a sales/support role can push a trial's
+ * `trialExpiresAt` forward without also being able to suspend, reactivate
+ * or deprovision a paying tenant.
  */
 export const PLATFORM_PERMISSIONS = [
   'platform.tenants.manage',
@@ -15,6 +19,7 @@ export const PLATFORM_PERMISSIONS = [
   'platform.support.grant_access',
   'platform.support.approve_dedicated_access',
   'platform.billing.manage',
+  'platform.trials.extend',
 ] as const;
 
 export type PlatformPermission = (typeof PLATFORM_PERMISSIONS)[number];

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Verifying your email</title>
+<style>
+  :root { color-scheme: light dark; --fg: #17181c; --bg: #ffffff; --muted: #5b6068; --accent: #2f5fe0; --danger: #b3261e; --ok: #1c7a3d; }
+  @media (prefers-color-scheme: dark) { :root { --fg: #f2f3f5; --bg: #121317; --muted: #a2a7b0; --accent: #7ea1ff; --danger: #ff8f87; --ok: #6fd897; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 420px; margin: 0 auto; padding: 64px 16px; text-align: center; }
+  h1 { font-size: 20px; margin: 0 0 10px; }
+  p { color: var(--muted); margin: 0; }
+  .ok { color: var(--ok); }
+  .error { color: var(--danger); }
+  code { background: color-mix(in srgb, var(--muted) 15%, transparent); padding: 2px 6px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<main>
+  <h1 id="title">Verifying your email…</h1>
+  <p id="body">One moment.</p>
+</main>
+
+<script>
+  const apiBase = window.location.pathname.replace(/\/ui\/[^/]*$/, '/');
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('token');
+  const title = document.getElementById('title');
+  const body = document.getElementById('body');
+
+  async function run() {
+    if (!token) {
+      title.textContent = 'Missing verification token';
+      title.className = 'error';
+      body.textContent = 'This link is incomplete — please use the link from your email.';
+      return;
+    }
+    try {
+      const response = await fetch(apiBase + 'signup/verify?token=' + encodeURIComponent(token), { method: 'POST' });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'This link is invalid or has expired.');
+      title.textContent = 'Your trial is ready';
+      title.className = 'ok';
+      body.innerHTML = 'Your sandbox at <code>' + data.slug + '</code> has been created and is ready to use.';
+    } catch (error) {
+      title.textContent = 'We could not verify this link';
+      title.className = 'error';
+      body.textContent = Array.isArray(error.message) ? error.message.join(' ') : (error.message || 'Please try signing up again.');
+    }
+  }
+  run();
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 
 # Every tracked file
 
-All **1,791** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,855** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
@@ -15,9 +15,9 @@ Split by area so you load one, not all of them.
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 76 | 7,168 | [files/packages.md](../files/packages.md) |
-| docs/* | 392 | 60,599 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 57 | 29,592 | [files/infra.md](../files/infra.md) |
-| repository root files | 88 | 11,043 | [files/root.md](../files/root.md) |
+| docs/* | 392 | 60,739 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 57 | 29,609 | [files/infra.md](../files/infra.md) |
+| repository root files | 152 | 15,308 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -29,15 +29,15 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 417 |
-| unit test | 176 |
+| unit test | 187 |
 | page | 162 |
-| module | 132 |
-| service | 119 |
+| module | 135 |
+| service | 132 |
 | component | 110 |
-| dto | 87 |
-| controller | 86 |
-| migration | 70 |
-| nest module | 61 |
+| controller | 96 |
+| dto | 94 |
+| migration | 73 |
+| nest module | 70 |
 | prisma schema | 40 |
 | script | 39 |
 | json | 29 |
@@ -45,8 +45,8 @@ name a new file: the convention is what makes it findable.
 | react | 29 |
 | asset | 26 |
 | utility | 22 |
+| scheduled job | 19 |
 | e2e test | 18 |
-| scheduled job | 14 |
 | file | 13 |
 | yaml | 12 |
 | config | 11 |
@@ -62,6 +62,7 @@ name a new file: the convention is what makes it findable.
 | example | 3 |
 | guard | 3 |
 | driver | 3 |
+| html | 3 |
 | error | 3 |
 | sh | 3 |
 | timer | 3 |

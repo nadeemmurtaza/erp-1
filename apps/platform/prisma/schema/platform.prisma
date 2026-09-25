@@ -6,6 +6,10 @@
 
 enum TenantStatus {
   PROVISIONING
+  /// WO-51.1 — a tenant provisioned through the identical ProvisioningService
+  /// path, on the identical infrastructure, with `trialExpiresAt` set and no
+  /// PlatformSubscription charge until it converts. See doc 51 §1.
+  TRIAL
   ACTIVE
   SUSPENDED
   DEPROVISIONED
@@ -24,6 +28,12 @@ model PlatformTenant {
   id              String       @id @default(cuid())
   slug            String       @unique
   customDomain    String?      @unique
+  /// WO-39.3 — a custom domain is routable only once this is set; a
+  /// present `customDomain` with a null `customDomainVerifiedAt` is a
+  /// claimed-but-unproven domain and HostnameResolverService never routes
+  /// to it, closing the domain-hijack gap an unverified custom domain
+  /// would otherwise open.
+  customDomainVerifiedAt DateTime?
   legalName       String
   status          TenantStatus @default(PROVISIONING)
   planId          String
@@ -33,14 +43,57 @@ model PlatformTenant {
   suspendedAt     DateTime?
   suspendedReason String?
   deprovisionedAt DateTime?
+  /// WO-51.1 — set only for a TRIAL tenant; null for every other status.
+  /// The expiry cron transitions TRIAL -> SUSPENDED once this passes.
+  trialExpiresAt  DateTime?
+  /// The tenant's own billing/signup contact — doc 39's own "audience is a
+  /// capability, not an address" lens resolved concretely: every
+  /// tenant-facing notification (quota alert, export-ready, trial expiry,
+  /// invoice) sends here, read from this column, never a literal address
+  /// in code. Null only for a tenant provisioned by hosting-ops directly
+  /// (WO-39.2's own ops-initiated path, which predates a self-service
+  /// contact) — ops must backfill it before any tenant-audience
+  /// notification can reach that tenant; the notification services log and
+  /// skip rather than guess an address.
+  billingContactEmail String?
+  /// WO-51.2 — set once the self-service signup's email-verification link
+  /// is followed; the signup flow itself never provisions before this is
+  /// set (see SignupVerification below). Null for any tenant provisioned
+  /// through the ops-authenticated `POST /tenants` path, where an ops
+  /// principal already vouches for the request instead.
+  signupEmailVerifiedAt DateTime?
+  /// WO-39.7 — set when the tenant enters DEPROVISIONED: the retention
+  /// window's own deadline, after which TenantRetentionCron is eligible to
+  /// call the deployment provisioner's destructive `deprovision()` and
+  /// actually drop the isolated database. Null for any tenant not yet
+  /// DEPROVISIONED.
+  retentionExpiresAt DateTime?
+  /// WO-39.7 — set once the isolated database has actually been dropped
+  /// (the retention window closed and teardown ran). Distinct from
+  /// `deprovisionedAt` (the status transition) — a DEPROVISIONED tenant
+  /// with `dataDeletedAt: null` still has a live, recoverable database.
+  dataDeletedAt   DateTime?
 
   plan               PlatformPlan          @relation(fields: [planId], references: [id])
   subscriptions      PlatformSubscription[]
   usageRecords       PlatformUsageRecord[]
   supportAccessGrants SupportAccessGrant[]
   deploymentCredential TenantDeploymentCredential?
+  resourceQuotaAlerts ResourceQuotaAlert[]
+  dataExports         TenantDataExport[]
+  invoices            PlatformInvoice[]
+  customQuotes        PlatformCustomQuote[]
+  trialExtensions     TrialExtension[]
 
   @@index([status])
+  @@index([status, trialExpiresAt])
+  @@index([status, retentionExpiresAt])
+}
+
+enum PricingModel {
+  PER_SEAT
+  FLAT_MONTHLY
+  ONE_TIME_LICENSE
 }
 
 model PlatformPlan {
@@ -50,9 +103,26 @@ model PlatformPlan {
   monthlyPriceMinor    Int
   includedResourceTier ResourceTier
   isActive             Boolean      @default(true)
+  /// doc 50 §1 — a pricing model is a shape, not a bigger integer: three
+  /// real commercial shapes, each meaningful only for its own fields below.
+  pricingModel         PricingModel @default(FLAT_MONTHLY)
+  /// PER_SEAT only — the per-user monthly rate; the actual charge is
+  /// `perSeatPriceMinor x countBillableSeats()` at invoicing time (doc 50 §2).
+  perSeatPriceMinor    Int?
+  /// ONE_TIME_LICENSE only — the capital price; a tenant on this model has
+  /// no recurring PlatformSubscription charge after its one invoice.
+  oneTimeLicenseMinor  Int?
+  /// ONE_TIME_LICENSE only — "OFFLINE" (doc 48's desktop node, sold once,
+  /// never touches this control plane again) or "ONLINE" (still hosted and
+  /// provisioned through doc 39's control plane, billed once). Validated
+  /// at the DTO layer against these two literals rather than promoted to
+  /// its own enum, matching doc 50 §1's own schema exactly.
+  licenseDeploymentMode String?
 
   tenants       PlatformTenant[]
   subscriptions PlatformSubscription[]
+  invoices      PlatformInvoice[]
+  customQuotes  PlatformCustomQuote[]
 }
 
 enum SubscriptionStatus {
@@ -102,6 +172,13 @@ model SupportAccessGrant {
   expiresAt        DateTime
   revokedAt        DateTime?
   accessedAt       DateTime[]
+  /// WO-39.5 — set by SupportAccessExpiryCron once `expiresAt` has passed.
+  /// Display-only: it makes an expired grant visibly inert on a list
+  /// screen without a live recompute, but access control NEVER trusts it —
+  /// `SupportAccessService.recordAccess()` and every other enforcement
+  /// point re-derives liveness from `expiresAt`/`revokedAt` directly, so a
+  /// cron that hasn't run yet can never leave a truly-expired grant usable.
+  markedInertAt    DateTime?
 
   tenant PlatformTenant @relation(fields: [tenantId], references: [id])
 
@@ -144,4 +221,257 @@ model PlatformOpsClient {
   revokedAt     DateTime?
 
   @@index([status])
+}
+
+// ---------------------------------------------------------------------------
+// WO-39.6 — resource quotas + alerting (application layer only; which
+// orchestrator actually enforces a quota is named out of scope by doc 39
+// itself). A quota is a limit for one (resourceTier, metric) pair, read
+// against the SAME PlatformUsageRecord rows doc 39 WO-39.1 already defined
+// for billing — never a second, competing usage table.
+// ---------------------------------------------------------------------------
+
+model ResourceTierQuota {
+  id               String       @id @default(cuid())
+  resourceTier     ResourceTier
+  /// Matches PlatformUsageRecord.metric's own vocabulary ("orders.count",
+  /// "storage.bytes", ...) — the same metering a tenant's deployment
+  /// already reports for billing, read a second time for a different
+  /// purpose (a quota check, never a duplicate ingestion path).
+  metric           String
+  limitValue       Float
+  /// The "before a hard cap" percentage doc 39 §4 requires — an alert
+  /// fires once observed usage crosses this fraction of `limitValue`,
+  /// never only at 100%.
+  warnThresholdPct Int          @default(80)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  @@unique([resourceTier, metric])
+}
+
+/// One row per (tenant, metric, window) that crossed its tier's quota
+/// threshold — the record ResourceQuotaAlertCron writes and the tenant's
+/// own billing contact / hosting-ops digest is generated from. The unique
+/// constraint is this table's own "second copy of the write" answer: a
+/// redelivered/rerun check for a window already alerted is a no-op, never a
+/// second ping.
+model ResourceQuotaAlert {
+  id             String    @id @default(cuid())
+  tenantId       String
+  metric         String
+  windowStart    DateTime
+  observedValue  Float
+  limitValue     Float
+  thresholdPct   Int
+  createdAt      DateTime  @default(now())
+  acknowledgedAt DateTime?
+
+  tenant PlatformTenant @relation(fields: [tenantId], references: [id])
+
+  @@unique([tenantId, metric, windowStart])
+  @@index([tenantId, createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// WO-39.7 — data export + deprovisioning. Doc 39 §4's "data portability"
+// commitment made concrete: any tenant can be exported on demand, and every
+// deprovision fires one automatically, before the retention window (below)
+// makes actual teardown eligible.
+// ---------------------------------------------------------------------------
+
+enum TenantExportStatus {
+  PENDING
+  RUNNING
+  COMPLETE
+  FAILED
+}
+
+enum TenantExportTrigger {
+  /// Requested on demand — doc 39 §4's "any tenant may request a full
+  /// export of their own database at any time." Issued today through the
+  /// ops-authenticated endpoint on a tenant's behalf (see TenantExportService's
+  /// own doc comment for why: this control plane has no tenant-login
+  /// principal yet, only PlatformOpsClient).
+  MANUAL
+  /// Fired automatically the moment a tenant is marked DEPROVISIONED — the
+  /// "undo fan-out" doc 39 names: cancellation never silently means data is
+  /// already gone.
+  DEPROVISION
+}
+
+model TenantDataExport {
+  id             String              @id @default(cuid())
+  tenantId       String
+  status         TenantExportStatus  @default(PENDING)
+  triggeredBy    TenantExportTrigger @default(MANUAL)
+  requestedAt    DateTime            @default(now())
+  startedAt      DateTime?
+  completedAt    DateTime?
+  failedAt       DateTime?
+  failureReason  String?
+  /// Where TenantExportStorage actually put the archive — an opaque key
+  /// for that storage implementation (a local filesystem path today; an
+  /// object-storage key for a future S3-backed implementation, a class
+  /// swap behind the same extension point DeploymentProvisioner already
+  /// uses). Never a public URL.
+  storageKey     String?
+  sizeBytes      BigInt?
+  /// The downloadable artifact's own expiry — independent of and always
+  /// <= the tenant's `retentionExpiresAt`; an export doesn't extend how
+  /// long the source database itself survives.
+  expiresAt      DateTime?
+
+  tenant PlatformTenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId, requestedAt])
+}
+
+// ---------------------------------------------------------------------------
+// WO-50.1 / WO-50.3 / WO-50.4 — billing: an issued invoice per tenant per
+// billing period, a credit note for a wrongly-computed one, and the
+// custom-quote/discount-approval flow. `PlatformInvoice` is this control
+// plane's own version-stamp answer (doc 50's own "the version stamp" lens):
+// every price used to compute `amountMinor` is snapshotted onto the row at
+// issue time, so a later PlatformPlan price edit never reprices a past
+// invoice.
+// ---------------------------------------------------------------------------
+
+enum InvoiceStatus {
+  ISSUED
+  CREDITED
+}
+
+model PlatformInvoice {
+  id                  String        @id @default(cuid())
+  tenantId            String
+  subscriptionId      String?
+  planId              String
+  /// Snapshotted from PlatformPlan.pricingModel at issue time — restated
+  /// on the row so a later plan edit can never change how a past invoice
+  /// reads, exactly like every other snapshot field below.
+  pricingModel        PricingModel
+  periodStart         DateTime
+  periodEnd           DateTime
+  /// PER_SEAT only — the exact countBillableSeats() result this invoice
+  /// was computed from ("click the number": the count this line sums back
+  /// to, retrievable independent of whatever the tenant's live seat count
+  /// is by the time anyone looks again).
+  seatCount           Int?
+  /// PER_SEAT only — PlatformPlan.perSeatPriceMinor AT issue time.
+  seatPriceMinorSnapshot Int?
+  /// FLAT_MONTHLY only — PlatformPlan.monthlyPriceMinor AT issue time.
+  flatPriceMinorSnapshot Int?
+  /// ONE_TIME_LICENSE only — PlatformPlan.oneTimeLicenseMinor AT issue time.
+  oneTimePriceMinorSnapshot Int?
+  /// The actual charge — always traceable to exactly one of the three
+  /// snapshot fields above via `pricingModel`.
+  amountMinor         Int
+  status              InvoiceStatus @default(ISSUED)
+  issuedAt            DateTime      @default(now())
+  /// When the seat count / amount was actually computed — may differ
+  /// slightly from `issuedAt` under retry, but never from a stale read.
+  computedAt           DateTime
+
+  tenant      PlatformTenant          @relation(fields: [tenantId], references: [id])
+  plan        PlatformPlan            @relation(fields: [planId], references: [id])
+  creditNotes PlatformInvoiceCreditNote[]
+
+  /// Doc 50's own "second copy of the write": a billing run retried for an
+  /// already-billed period issues no second invoice for the same tenant.
+  @@unique([tenantId, periodStart, periodEnd])
+  @@index([tenantId, issuedAt])
+}
+
+/// A billing dispute is resolved here, against the specific invoice — never
+/// an edited invoice line (doc 50's own "the reversal document" lens).
+model PlatformInvoiceCreditNote {
+  id                  String   @id @default(cuid())
+  invoiceId           String
+  amountMinor         Int
+  reason              String
+  issuedAt            DateTime @default(now())
+  issuedByOpsClientId String?
+
+  invoice PlatformInvoice @relation(fields: [invoiceId], references: [id])
+
+  @@index([invoiceId])
+}
+
+enum QuoteStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+/// WO-50.4 — a custom quote's discount is checked against
+/// PLATFORM_QUOTE_DISCOUNT_APPROVAL_THRESHOLD_PCT at request time; above it
+/// the quote is PENDING until an ops principal OTHER than the requester
+/// approves it (the "toxic pair" doc 50 names: the same person cannot
+/// request and approve their own discount).
+model PlatformCustomQuote {
+  id                     String      @id @default(cuid())
+  tenantId               String
+  planId                 String
+  listPriceMinor         Int
+  quotedPriceMinor       Int
+  discountPct            Float
+  requiresApproval       Boolean
+  status                 QuoteStatus @default(PENDING)
+  requestedByOpsClientId String
+  approvedByOpsClientId  String?
+  approvedAt             DateTime?
+  rejectedAt             DateTime?
+  rejectionReason        String?
+  createdAt              DateTime    @default(now())
+
+  tenant PlatformTenant @relation(fields: [tenantId], references: [id])
+  plan   PlatformPlan   @relation(fields: [planId], references: [id])
+
+  @@index([tenantId])
+  @@index([status])
+}
+
+// ---------------------------------------------------------------------------
+// WO-51.2 / WO-51.5 — self-service signup's pending email verification, and
+// the audit trail behind "a report naming every trial extended more than
+// once" (doc 51's own stated soft-policy signal for `platform.trials.extend`).
+// ---------------------------------------------------------------------------
+
+/// A signup request is held here, unprovisioned, until its email link is
+/// followed — doc 51 §3: the public form is a thin request, never a direct
+/// call into ProvisioningService. Consumed exactly once; a second click on
+/// the same link is a no-op (`consumedAt` already set), never a second
+/// trial (doc 39's own slug-idempotency is the second, independent layer
+/// that also prevents this).
+model SignupVerification {
+  id          String    @id @default(cuid())
+  email       String
+  slug        String
+  legalName   String
+  planKey     String
+  tokenHash   String    @unique
+  createdAt   DateTime  @default(now())
+  expiresAt   DateTime
+  consumedAt  DateTime?
+  ipAddress   String?
+
+  @@index([email, createdAt])
+}
+
+/// WO-51.5's own audit trail: `platform.trials.extend` lets an ops
+/// principal push `trialExpiresAt` forward; every extension is recorded
+/// here so "extended more than once" is a query, not a memory.
+model TrialExtension {
+  id                     String   @id @default(cuid())
+  tenantId               String
+  previousExpiresAt      DateTime
+  newExpiresAt           DateTime
+  reason                 String
+  extendedByOpsClientId  String
+  createdAt              DateTime @default(now())
+
+  tenant PlatformTenant @relation(fields: [tenantId], references: [id])
+
+  @@index([tenantId, createdAt])
 }

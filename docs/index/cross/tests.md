@@ -3,7 +3,7 @@
 
 # Tests
 
-**194** spec files, **1,803** cases. What is already pinned down — and what is not.
+**205** spec files, **1,877** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -55,7 +55,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (176)
+## Unit and integration (187)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -208,9 +208,20 @@ regression or an N+1.
 | `apps/mobile/src/i18n/__tests__/messages.spec.ts` | mobile | 3 | the message catalogue |
 | `apps/platform/src/core/security/ops-auth.guard.spec.ts` | root | 6 | OpsAuthGuard |
 | `apps/platform/src/core/security/ops-key.spec.ts` | root | 4 | ops-key |
+| `apps/platform/src/modules/billing/billing.service.spec.ts` | root | 9 | BillingService · issueInvoiceForPeriod · runBillingForPeriod · issueCreditNote · previewInvoice |
+| `apps/platform/src/modules/billing/custom-quote.service.spec.ts` | root | 6 | CustomQuoteService · requestQuote · approve |
+| `apps/platform/src/modules/billing/plans.service.spec.ts` | root | 5 | PlansService |
+| `apps/platform/src/modules/billing/seat-counter.service.spec.ts` | root | 3 | SeatCounterService |
+| `apps/platform/src/modules/resource-quotas/resource-quotas.service.spec.ts` | root | 4 | ResourceQuotasService · upsertQuota |
+| `apps/platform/src/modules/routing/hostname-resolver.service.spec.ts` | root | 8 | HostnameResolverService |
+| `apps/platform/src/modules/support-access/support-access.service.spec.ts` | root | 14 | SupportAccessService · issue · approve · recordAccess · markExpiredInert · findByTicketReference |
+| `apps/platform/src/modules/tenant-data/tenant-export.service.spec.ts` | root | 4 | TenantExportService |
+| `apps/platform/src/modules/tenant-data/tenant-retention.service.spec.ts` | root | 4 | TenantRetentionService |
 | `apps/platform/src/modules/tenants/postgres-database.provisioner.spec.ts` | root | 6 | PostgresDatabaseProvisioner |
-| `apps/platform/src/modules/tenants/provisioning.service.spec.ts` | root | 7 | ProvisioningService |
+| `apps/platform/src/modules/tenants/provisioning.service.spec.ts` | root | 9 | ProvisioningService · deprovisionTenant |
 | `apps/platform/src/modules/tenants/tenants.service.spec.ts` | root | 3 | TenantsService |
+| `apps/platform/src/modules/trials/signup.service.spec.ts` | root | 7 | SignupService · requestSignup · verifyAndProvision |
+| `apps/platform/src/modules/trials/trials.service.spec.ts` | root | 8 | TrialsService · extend · convert · expireToSuspended · listExtendedMoreThanOnce |
 | `apps/web/src/components/admin/analytics/resolve-path.spec.ts` | web | 13 | resolvePath · interpolateHref |
 | `packages/pos-core/src/basket.spec.ts` | packages | 9 | basket |
 | `packages/pos-core/src/outbox.spec.ts` | packages | 6 | outbox state machine |

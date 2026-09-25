@@ -63,8 +63,8 @@ _none_
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
 | `Discount` | 27 | :25 |  |
-| `OrderDiscount` | 10 | :93 | Which discounts an order actually received, so it can explain itself. |
-| `PromoCode` | 11 | :69 |  |
+| `OrderDiscount` | 10 | :95 | Which discounts an order actually received, so it can explain itself. |
+| `PromoCode` | 12 | :69 |  |
 
 
 Enums: `DiscountScope` (5) · `DiscountType` (5)

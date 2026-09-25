@@ -23,7 +23,7 @@ Every top-level export in `web`, with the line to open.
 | `not-found.tsx` | `RootNotFound` | default | :23 |  |
 | `robots.ts` | `robots` | default | :9 | `/admin` is unprefixed (see middleware.ts); every account/cart/checkout path lives under a locale p… |
 | `sitemap.ts` | `dynamic` | const | :12 | Renders per-request rather than being prerendered at `next build` time — same reasoning as [locale]… |
-| `sitemap.ts` | `sitemap` | default | :59 |  |
+| `sitemap.ts` | `sitemap` | default | :60 |  |
 
 ### `apps/web/src/app/(admin)/admin`
 
@@ -132,6 +132,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `loading.tsx` | `Loading` | default | :3 |  |
 | `page.tsx` | `AdminContactsPage` | default | :57 | Customers. |
+
+### `apps/web/src/app/(admin)/admin/(app)/content`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `ContentAdminPage` | default | :284 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/customers/[id]`
 
@@ -645,8 +651,8 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `error.tsx` | `StorefrontError` | default | :21 | Storefront error boundary. |
-| `layout.tsx` | `generateMetadata` | function | :44 | Deliberately no generateStaticParams. |
-| `layout.tsx` | `LocaleLayout` | default | :131 |  |
+| `layout.tsx` | `generateMetadata` | function | :45 | Deliberately no generateStaticParams. |
+| `layout.tsx` | `LocaleLayout` | default | :132 |  |
 | `loading.tsx` | `Loading` | default | :1 |  |
 | `not-found.tsx` | `StorefrontNotFound` | default | :12 | Storefront 404. |
 | `page.tsx` | `revalidate` | const | :12 |  |
@@ -747,6 +753,22 @@ Every top-level export in `web`, with the line to open.
 | `page.tsx` | `generateMetadata` | function | :14 | The shop's own story. |
 | `page.tsx` | `StoryPage` | default | :35 |  |
 
+### `apps/web/src/app/(storefront)/[locale]/blog`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `revalidate` | const | :8 |  |
+| `page.tsx` | `generateMetadata` | function | :10 |  |
+| `page.tsx` | `BlogIndexPage` | default | :23 | WO-8.1 — the blog index. |
+
+### `apps/web/src/app/(storefront)/[locale]/blog/[slug]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `revalidate` | const | :11 |  |
+| `page.tsx` | `generateMetadata` | function | :26 |  |
+| `page.tsx` | `BlogPostPage` | default | :41 | WO-8.1 — a published blog post, with Article JSON-LD for Rich Results. |
+
 ### `apps/web/src/app/(storefront)/[locale]/cart`
 
 | File | Symbol | Kind | Line | Doc |
@@ -772,6 +794,14 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `LoginPage` | default | :12 |  |
+
+### `apps/web/src/app/(storefront)/[locale]/pages/[slug]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `revalidate` | const | :9 |  |
+| `page.tsx` | `generateMetadata` | function | :24 |  |
+| `page.tsx` | `CmsPage` | default | :38 | WO-8.1 — a CMS-published landing page, no deploy required. |
 
 ### `apps/web/src/app/(storefront)/[locale]/privacy`
 
@@ -887,8 +917,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :53 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :76 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :116 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :664 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :679 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :704 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :719 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
@@ -946,6 +976,7 @@ Every top-level export in `web`, with the line to open.
 | `analytics-beacon.tsx` | `AnalyticsBeacon` | function | :15 | Fires one page_view per storefront route change. |
 | `animated-section.tsx` | `AnimatedSection` | function | :44 |  |
 | `auth-page.tsx` | `AuthPage` | function | :21 | The frame every sign-in-shaped page shares. |
+| `block-renderer.tsx` | `BlockRenderer` | function | :11 | Renders a Page/BlogPost body (WO-8.1). |
 | `bottom-nav.tsx` | `BottomNav` | function | :25 | Floating pill bottom-tab-bar, mobile-only (hidden at md: and above, where the restyled top header c… |
 | `cart-badge.tsx` | `CartBadge` | function | :7 |  |
 | `cart-provider.tsx` | `CartProvider` | function | :45 | Holds the cart for the whole storefront. |
@@ -954,7 +985,7 @@ Every top-level export in `web`, with the line to open.
 | `customer-session.tsx` | `CustomerSessionProvider` | function | :17 |  |
 | `customer-session.tsx` | `useCustomerSession` | function | :33 |  |
 | `filter-panel.tsx` | `FilterPanel` | function | :21 | Filters are held in the URL rather than component state, so a filtered listing is shareable, surviv… |
-| `footer.tsx` | `Footer` | function | :6 |  |
+| `footer.tsx` | `Footer` | function | :24 |  |
 | `grid-toggle-wrapper.tsx` | `GridToggleWrapper` | function | :10 |  |
 | `grid-toggle.tsx` | `GridToggle` | function | :16 |  |
 | `header.tsx` | `Header` | function | :38 |  |
@@ -1083,12 +1114,17 @@ Every top-level export in `web`, with the line to open.
 | `api-client.ts` | `API_URL` | const | :23 |  |
 | `api-client.ts` | `request` | function | :25 |  |
 | `api-client.ts` | `requestWithRefresh` | function | :29 |  |
-| `api.ts` | `apiFetch` | function | :32 | Storefront fetch. |
-| `api.ts` | `getProducts` | function | :39 | --- Storefront endpoints --------------------------------------------------- |
-| `api.ts` | `getProduct` | function | :45 |  |
-| `api.ts` | `getCategories` | function | :49 |  |
-| `api.ts` | `getFacets` | function | :53 |  |
-| `api.ts` | `getStitchingServices` | function | :57 |  |
+| `api.ts` | `apiFetch` | function | :36 | Storefront fetch. |
+| `api.ts` | `getProducts` | function | :43 | --- Storefront endpoints --------------------------------------------------- |
+| `api.ts` | `getProduct` | function | :49 |  |
+| `api.ts` | `getCategories` | function | :53 |  |
+| `api.ts` | `getFacets` | function | :57 |  |
+| `api.ts` | `getStitchingServices` | function | :61 |  |
+| `api.ts` | `getBanners` | function | :73 | Active banners for one placement — see BANNER_PLACEMENTS in @newax/shared. |
+| `api.ts` | `getPage` | function | :77 |  |
+| `api.ts` | `getPosts` | function | :81 |  |
+| `api.ts` | `getPost` | function | :89 |  |
+| `api.ts` | `getMenu` | function | :94 | A named footer menu slot — see MENU_KEYS in @newax/shared. |
 | `cart-client.ts` | `getCustomerToken` | function | :19 |  |
 | `cart-client.ts` | `fetchCart` | function | :46 |  |
 | `cart-client.ts` | `AddToCartInput` | interface | :50 |  |
@@ -1246,6 +1282,10 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `InterBranchInvoice` | interface | :1177 |  |
 | `api.ts` | `StockTransfer` | interface | :1186 |  |
 | `api.ts` | `StockTransferListResult` | interface | :1202 |  |
+| `api.ts` | `CmsBanner` | interface | :1209 | --- Content (WO-8.1) ------------------------------------------------------- |
+| `api.ts` | `CmsPage` | interface | :1217 |  |
+| `api.ts` | `CmsPost` | interface | :1224 |  |
+| `api.ts` | `CmsMenuLink` | interface | :1240 |  |
 | `cart.ts` | `CartStitching` | interface | :5 | Shapes returned by the cart endpoints. |
 | `cart.ts` | `CartLine` | interface | :18 |  |
 | `cart.ts` | `Cart` | interface | :37 |  |

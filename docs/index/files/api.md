@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 585 tracked files in `apps/api`, by directory.
+All 596 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -16,11 +16,11 @@ All 585 tracked files in `apps/api`, by directory.
 | `eslint.config.mjs` | script | 36 | Nest resolves constructor parameter types at runtime through decorator |
 | `jest.config.js` | script | 26 | @type {import('jest').Config} |
 | `nest-cli.json` | json | 18 |  |
-| `package.json` | json | 76 |  |
+| `package.json` | json | 78 |  |
 | `prisma.config.ts` | module | 19 | A Prisma config file switches OFF Prisma's automatic .env loading, so we do |
 | `report.20260921.035047.1334.0.001.json` | json | 548 |  |
 | `tsconfig.build.json` | json | 5 |  |
-| `tsconfig.json` | json | 17 |  |
+| `tsconfig.json` | json | 25 |  |
 | `tsconfig.seed.json` | json | 10 |  |
 
 ### `apps/api/prisma` (3)
@@ -31,34 +31,38 @@ All 585 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3068 |  |
 
-### `apps/api/prisma/schema` (28)
+### `apps/api/prisma/schema` (32)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.prisma` | prisma schema | 222 | The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a |
 | `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
-| `cart.prisma` | prisma schema | 73 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
-| `catalog.prisma` | prisma schema | 491 | Catalog: categories, products, variants, images. |
-| `core.prisma` | prisma schema | 460 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
-| `crm.prisma` | prisma schema | 243 | CRM: one customer record, whatever door the customer came in through. |
+| `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
+| `catalog.prisma` | prisma schema | 575 | Catalog: categories, products, variants, images. |
+| `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
+| `core.prisma` | prisma schema | 464 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `crm.prisma` | prisma schema | 267 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
 | `giftcards.prisma` | prisma schema | 92 | Phase 5 WO-5.4/5.5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
 | `identity-verification.prisma` | prisma schema | 40 | / Tracks a User's identity verification against nID (Newax's external |
 | `inventory.prisma` | prisma schema | 236 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
 | `invoicing.prisma` | prisma schema | 88 | Trading-partner invoices and quotes (WO-18.3's remaining "forth" |
+| `marketing.prisma` | prisma schema | 87 | Campaigns and broadcasts. WO-8.4, |
 | `measurements.prisma` | prisma schema | 107 | Measurements: garment types, their measurement fields, and saved customer |
-| `orders.prisma` | prisma schema | 301 | Orders and shipments. |
+| `onsite-messaging.prisma` | prisma schema | 72 | On-site messaging. WO-8.6, |
+| `orders.prisma` | prisma schema | 311 | Orders and shipments. |
 | `organization.prisma` | prisma schema | 182 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
 | `parties.prisma` | prisma schema | 52 | Parties: the permanent counterparty profile. One canonical record per |
 | `payments.prisma` | prisma schema | 48 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
 | `payroll.prisma` | prisma schema | 229 | Payroll: compensation rates, leave balances and pay runs |
 | `pos.prisma` | prisma schema | 136 | The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's |
 | `production.prisma` | prisma schema | 96 | Production: bills of materials and work orders for variants made in-house |
-| `promotions.prisma` | prisma schema | 111 | Phase 5 WO-5.1/5.2/5.3 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
+| `promotions.prisma` | prisma schema | 113 | Phase 5 WO-5.1/5.2/5.3 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
 | `purchasing.prisma` | prisma schema | 248 |  |
 | `replication.prisma` | prisma schema | 185 | The replication engine (RETAIL-ERP.md Part 6, WO-20.1: "log, cursors, |
 | `schema.prisma` | prisma schema | 20 | Datasource and generator only. Models live in one file per module — |
+| `search.prisma` | prisma schema | 40 | Search. WO-8.3, |
 | `stitching.prisma` | prisma schema | 202 | Stitching: the style options a customer picks, standalone stitching orders |
 | `tax.prisma` | prisma schema | 38 | Tax: rate/class definitions and the pricing-mode setting. Universal |
 | `trading-partners.prisma` | prisma schema | 95 | The trading-partner network (18-trading-partner-network.md, WO-18) — lets |
@@ -448,6 +452,12 @@ All 585 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 390 |  |
 
+### `apps/api/prisma/schema/migrations/20260925010000_add_content_collections_search_marketing_onsite` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 485 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -654,7 +664,7 @@ All 585 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 48 |  |
-| `settings.defaults.ts` | module | 282 |  |
+| `settings.defaults.ts` | module | 305 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 85 |  |
 
@@ -683,8 +693,8 @@ All 585 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 87 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 163 |  |
+| `module-packs.ts` | module | 88 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 165 |  |
 
 ### `apps/api/src/modules/accounting` (15)
 
@@ -829,6 +839,22 @@ All 585 tracked files in `apps/api`, by directory.
 | `product-query.dto.ts` | dto | 88 |  |
 | `product.dto.ts` | dto | 319 |  |
 | `redirect.dto.ts` | dto | 23 |  |
+
+### `apps/api/src/modules/content` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `content-sanitizer.ts` | module | 82 |  |
+| `content.controller.ts` | controller | 182 |  |
+| `content.module.ts` | nest module | 11 |  |
+| `content.service.spec.ts` | unit test | 140 |  |
+| `content.service.ts` | service | 405 |  |
+
+### `apps/api/src/modules/content/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `content.dto.ts` | dto | 398 |  |
 
 ### `apps/api/src/modules/crm` (5)
 

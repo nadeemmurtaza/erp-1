@@ -43,6 +43,18 @@ _none_
 _none_
 
 
+## Tables it owns (`marketing.prisma`)
+
+| Model | Fields | Line | Purpose |
+|---|---|---|---|
+| `Campaign` | 14 | :38 |  |
+| `CampaignRecipient` | 10 | :59 |  |
+| `PhoneOptOut` | 2 | :83 | The phone-number equivalent of User.marketingEmailOptOut's unsubscribe link. |
+
+
+Enums: `CampaignChannel` (3) · `CampaignRecipientStatus` (7) · `CampaignStatus` (5)
+
+Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 
 ## Scheduled work

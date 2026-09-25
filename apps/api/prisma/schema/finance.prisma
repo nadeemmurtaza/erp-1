@@ -73,7 +73,7 @@ model Expense {
   /// whichever tier pays them" — defaults to BRAND, same reasoning as
   /// PurchaseOrder.scopeLevel. No locationId: an expense names a tier, not
   /// a place stock sits.
-  scopeLevel ScopeLevel @default(BRAND)
+  scopeLevel   ScopeLevel @default(BRAND)
   /// This node's own identifier (AppConfigService.nodeId) when recorded —
   /// a bare string, never a Node row FK. Null for an expense recorded
   /// before this column existed.
@@ -105,28 +105,28 @@ model OrderEconomics {
   /// itemsSubtotal + stitchingSubtotal - itemDiscountTotal - orderDiscount.
   /// Zeroed on RETURNED — see shippingCostEstimated's own note on why revenue
   /// and cogs, and only those two, zero on a return.
-  revenue        Int
-  shippingIncome Int
-  codFeeIncome   Int
+  revenue               Int
+  shippingIncome        Int
+  codFeeIncome          Int
   /// Σ OrderItem.unitCost × quantity. Zeroed on RETURNED, same as revenue —
   /// reversing one without the other drives margin negative on every return.
-  cogs           Int
+  cogs                  Int
   /// Σ Shipment.cost across the order's shipments (nullable per shipment).
-  shippingCost   Int
+  shippingCost          Int
   /// True when shippingCost fell back to 0 for lack of real Shipment.cost
   /// data (no shipment row yet, or one exists with cost still null) — a
   /// figure this table lied about would be worse than one it flags.
-  shippingCostEstimated Boolean @default(false)
+  shippingCostEstimated Boolean  @default(false)
   /// round(grandTotal × FinanceGatewayFeeBps[provider] / 10000). 0 for a COD
   /// order under the default settings — not a special case in code, just
   /// what the default bps table says for "cod".
-  gatewayFee     Int
+  gatewayFee            Int
   /// Flat per-order cost from the FinancePackagingCostPerOrder setting.
-  packagingCost  Int
+  packagingCost         Int
   /// revenue + shippingIncome + codFeeIncome - cogs - shippingCost -
   /// gatewayFee - packagingCost.
-  contribution   Int
-  computedAt     DateTime @default(now())
+  contribution          Int
+  computedAt            DateTime @default(now())
 
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }

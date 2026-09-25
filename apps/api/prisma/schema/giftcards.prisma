@@ -28,17 +28,17 @@ model GiftCard {
 
   purchasedByUserId String?
   /// Who it was bought for.
-  recipientName  String?
-  recipientEmail String?
-  recipientPhone String?
-  message        String?
+  recipientName     String?
+  recipientEmail    String?
+  recipientPhone    String?
+  message           String?
   /// Order that bought it, when it was sold rather than issued by staff.
-  sourceOrderId  String?
+  sourceOrderId     String?
 
   expiresAt DateTime?
-  issuedAt  DateTime @default(now())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  issuedAt  DateTime  @default(now())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   purchasedBy  User?                 @relation("GiftCardPurchaser", fields: [purchasedByUserId], references: [id], onDelete: SetNull)
   sourceOrder  Order?                @relation("GiftCardSourceOrder", fields: [sourceOrderId], references: [id], onDelete: SetNull)

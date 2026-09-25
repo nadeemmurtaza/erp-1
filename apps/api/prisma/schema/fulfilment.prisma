@@ -72,20 +72,20 @@ model ShippingMethodTranslation {
 }
 
 model ShippingRate {
-  id       String           @id @default(cuid())
-  zoneId   String
-  methodId String
-  type     ShippingRateType @default(FLAT)
+  id            String           @id @default(cuid())
+  zoneId        String
+  methodId      String
+  type          ShippingRateType @default(FLAT)
   /// Paisa. For BY_WEIGHT/BY_ITEM this is per unit above `includedUnits`.
-  fee      Int
-  baseFee  Int  @default(0)
-  includedUnits Int @default(0)
+  fee           Int
+  baseFee       Int              @default(0)
+  includedUnits Int              @default(0)
   /// Order subtotal above which this rate is free. Null = never free.
-  freeAbove Int?
+  freeAbove     Int?
   /// Band bounds, for tiered rates. Null = unbounded.
-  minValue Int?
-  maxValue Int?
-  isActive Boolean @default(true)
+  minValue      Int?
+  maxValue      Int?
+  isActive      Boolean          @default(true)
 
   zone   ShippingZone   @relation(fields: [zoneId], references: [id], onDelete: Cascade)
   method ShippingMethod @relation(fields: [methodId], references: [id], onDelete: Cascade)
@@ -229,15 +229,15 @@ model ReturnRequest {
   /// Customer-uploaded photos, via StorageDriver.
   photoUrls    String[]          @default([])
 
-  requestedAt DateTime  @default(now())
-  approvedAt  DateTime?
-  receivedAt  DateTime?
-  inspectedAt DateTime?
-  refundedAt  DateTime?
+  requestedAt  DateTime  @default(now())
+  approvedAt   DateTime?
+  receivedAt   DateTime?
+  inspectedAt  DateTime?
+  refundedAt   DateTime?
   refundAmount Int?
 
-  order Order              @relation(fields: [orderId], references: [id])
-  user  User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+  order Order               @relation(fields: [orderId], references: [id])
+  user  User?               @relation(fields: [userId], references: [id], onDelete: SetNull)
   items ReturnRequestItem[]
 
   @@index([status, requestedAt])
@@ -245,7 +245,7 @@ model ReturnRequest {
 }
 
 model ReturnRequestItem {
-  id          String  @id @default(cuid())
+  id          String   @id @default(cuid())
   returnId    String
   orderItemId String
   reasonId    String

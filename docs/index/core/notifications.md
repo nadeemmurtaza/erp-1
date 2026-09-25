@@ -87,6 +87,7 @@ _none_
 
 ## Reaches out to
 
+- package `@newax/shared/secret-crypto`
 - package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`

@@ -13,6 +13,7 @@ import { JsonLd } from '@/components/storefront/json-ld';
 import { SmoothScroller } from '@/components/storefront/smooth-scroller';
 import { StorefrontProviders } from '@/providers/storefront-providers';
 import { businessProfile } from '@/config/business-profile';
+import { getMenu } from '@/lib/api';
 import { routing } from '@/i18n/routing';
 import { SITE_URL } from '@/config/site';
 import { BRAND, intlTag } from '@newax/shared';
@@ -150,6 +151,15 @@ export default async function LocaleLayout({
 
   const t = await getTranslations({ locale, namespace: 'site' });
 
+  // WO-8.1 — the two CMS-editable footer columns (content.prisma's MenuItem
+  // doc comment explains why only these two, not the whole nav). Empty by
+  // default (no rows yet), so a fresh store's footer renders exactly as it
+  // did before this existed.
+  const [footerHelpMenu, footerAboutMenu] = await Promise.all([
+    getMenu('footer_help', locale).catch(() => []),
+    getMenu('footer_about', locale).catch(() => []),
+  ]);
+
   return (
     <html lang={locale} dir={directionFor(locale as Locale)}>
       <body
@@ -172,7 +182,7 @@ export default async function LocaleLayout({
             <main id="main" className="flex-1">
               {children}
             </main>
-            <Footer />
+            <Footer footerHelpMenu={footerHelpMenu} footerAboutMenu={footerAboutMenu} />
           </StorefrontProviders>
         </SmoothScroller>
       </body>

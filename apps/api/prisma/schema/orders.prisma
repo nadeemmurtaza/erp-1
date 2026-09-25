@@ -44,6 +44,14 @@ model Order {
   guestEmail String?
   guestPhone String?
 
+  /// WO-8.5 — which cart this order was placed from, set once at
+  /// checkout(place()) and never rewritten. Purely for the recovered-revenue
+  /// report: an order whose sourceCart had a reminder/incentive/first-touch
+  /// send before placedAt is revenue marketing recovered. SetNull, not
+  /// Cascade — a cart row can outlive or be pruned independently of an order
+  /// that already has its own full snapshot of everything it needs.
+  sourceCartId String?
+
   /// Address snapshots, not foreign keys — the address book is editable.
   shippingAddress Json
   billingAddress  Json?
@@ -78,25 +86,26 @@ model Order {
   /// every DELIVERED order past the threshold on every run.
   reviewRequestSentAt DateTime?
 
-  user           User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
-  contact        Contact?           @relation(fields: [contactId], references: [id], onDelete: SetNull)
-  items          OrderItem[]
-  payments       Payment[]
-  shipments      Shipment[]
-  statusEvents   OrderStatusEvent[]
-  convertedLeads Lead[]             @relation("LeadConvertedOrder")
+  user                    User?                    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  contact                 Contact?                 @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  sourceCart              Cart?                    @relation(fields: [sourceCartId], references: [id], onDelete: SetNull)
+  items                   OrderItem[]
+  payments                Payment[]
+  shipments               Shipment[]
+  statusEvents            OrderStatusEvent[]
+  convertedLeads          Lead[]                   @relation("LeadConvertedOrder")
   /// finance.prisma's OrderEconomics (WO-B.3) — null until DELIVERED.
-  economics      OrderEconomics?
+  economics               OrderEconomics?
   /// fulfilment.prisma's ReturnRequest (WO-6.6) — independent of
   /// Order.status; see ReturnRequest's own doc comment for why a return
   /// does not by itself move the order out of DELIVERED.
-  returnRequests ReturnRequest[]
+  returnRequests          ReturnRequest[]
   /// promotions.prisma's snapshot of every discount this order received (WO-5.3).
-  orderDiscounts OrderDiscount[]
+  orderDiscounts          OrderDiscount[]
   /// giftcards.prisma — gift-card/store-credit tender applied to this order, and any gift card this order purchased (WO-5.4/5.5).
-  giftCardTransactions   GiftCardTransaction[]
+  giftCardTransactions    GiftCardTransaction[]
   storeCreditTransactions StoreCreditTransaction[]
-  giftCardsSold          GiftCard[]               @relation("GiftCardSourceOrder")
+  giftCardsSold           GiftCard[]               @relation("GiftCardSourceOrder")
 
   @@index([status, placedAt])
   @@index([userId])
@@ -104,6 +113,7 @@ model Order {
   @@index([guestPhone])
   @@index([channel])
   @@index([shiftId])
+  @@index([sourceCartId])
 }
 
 enum OrderItemFulfillmentStatus {
@@ -182,10 +192,10 @@ model OrderItem {
 
   createdAt DateTime @default(now())
 
-  order            Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product          Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
-  variant          ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
-  stitchingService Product?        @relation("OrderItemStitchingService", fields: [stitchingServiceId], references: [id], onDelete: SetNull)
+  order              Order               @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product            Product?            @relation(fields: [productId], references: [id], onDelete: SetNull)
+  variant            ProductVariant?     @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  stitchingService   Product?            @relation("OrderItemStitchingService", fields: [stitchingServiceId], references: [id], onDelete: SetNull)
   /// fulfilment.prisma (WO-6.4/6.6) — both core, same as economics above.
   shipmentItems      ShipmentItem[]
   returnRequestItems ReturnRequestItem[]

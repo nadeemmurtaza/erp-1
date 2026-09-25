@@ -76,15 +76,15 @@ All paths relative to `apps/api/src/modules/crm`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Contact` | 29 | :16 |  |
-| `ContactTag` | 4 | :220 |  |
-| `FollowUpTask` | 13 | :191 |  |
-| `InboundEmail` | 17 | :146 | A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-inbox) — a customer's… |
-| `InboundEmailReply` | 7 | :178 | A staff reply sent from the Support Inbox, over the SAME connected mailbox the original message arrived at (n… |
-| `Interaction` | 11 | :120 |  |
-| `Lead` | 21 | :79 | An enquiry that is not yet an order: a stitching quote request, a WhatsApp message logged by staff, a contact… |
-| `Segment` | 8 | :232 | A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — stored as a filter definition and ex… |
-| `Tag` | 5 | :211 |  |
+| `Contact` | 35 | :16 |  |
+| `ContactTag` | 4 | :240 |  |
+| `FollowUpTask` | 13 | :211 |  |
+| `InboundEmail` | 17 | :166 | A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-inbox) — a customer's… |
+| `InboundEmailReply` | 7 | :198 | A staff reply sent from the Support Inbox, over the SAME connected mailbox the original message arrived at (n… |
+| `Interaction` | 11 | :140 |  |
+| `Lead` | 21 | :99 | An enquiry that is not yet an order: a stitching quote request, a WhatsApp message logged by staff, a contact… |
+| `Segment` | 10 | :252 | A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — stored as a filter definition and ex… |
+| `Tag` | 5 | :231 |  |
 
 
 Enums: `ContactStatus` (5) · `InteractionKind` (7) · `LeadStatus` (5)

@@ -2,8 +2,33 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { Logo } from './logo';
 import { ROUTES } from '@/constants/routes';
+import type { CmsMenuLink } from '@/types/api';
 
-export function Footer() {
+/** A CMS-driven link renders as an external <a> when its URL isn't a local path. */
+function FooterCmsLink({ item }: { item: CmsMenuLink }) {
+  const className = 'text-sm text-neutral-200 hover:text-white transition-colors block';
+  if (item.url.startsWith('/')) {
+    return (
+      <Link className={className} href={item.url}>
+        {item.label}
+      </Link>
+    );
+  }
+  return (
+    <a className={className} href={item.url} target="_blank" rel="noopener noreferrer">
+      {item.label}
+    </a>
+  );
+}
+
+export function Footer({
+  footerHelpMenu = [],
+  footerAboutMenu = [],
+}: {
+  /** WO-8.1 — CMS-editable, additive to the four columns below. Empty by default. */
+  footerHelpMenu?: CmsMenuLink[];
+  footerAboutMenu?: CmsMenuLink[];
+}) {
   const t = useTranslations('footer');
   const tSite = useTranslations('site');
 
@@ -44,6 +69,11 @@ export function Footer() {
                   {t('sizeGuide')}
                 </Link>
               </li>
+              {footerHelpMenu.map((item) => (
+                <li key={item.id}>
+                  <FooterCmsLink item={item} />
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -60,6 +90,11 @@ export function Footer() {
                   {t('stitchingService')}
                 </Link>
               </li>
+              {footerAboutMenu.map((item) => (
+                <li key={item.id}>
+                  <FooterCmsLink item={item} />
+                </li>
+              ))}
             </ul>
           </div>
 

@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1549,
-    "lines": 239114,
-    "routes": 439,
-    "controllers": 75,
-    "models": 168,
-    "enums": 69,
-    "migrations": 64,
+    "files": 1568,
+    "lines": 242699,
+    "routes": 463,
+    "controllers": 77,
+    "models": 187,
+    "enums": 76,
+    "migrations": 65,
     "events": 44,
-    "permissions": 50,
-    "screens": 179,
+    "permissions": 60,
+    "screens": 183,
     "crons": 11,
-    "specs": 146,
+    "specs": 147,
     "designLaws": 0
   },
   "designLaws": [],
@@ -27,14 +27,14 @@
     },
     "infra": {
       "files": 56,
-      "lines": 28234,
-      "bytes": 1107896,
+      "lines": 28333,
+      "bytes": 1111139,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 585,
-      "lines": 82054,
-      "bytes": 3008584,
+      "files": 596,
+      "lines": 84311,
+      "bytes": 3083432,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,9 +50,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 291,
-      "lines": 45341,
-      "bytes": 1652653,
+      "files": 296,
+      "lines": 46362,
+      "bytes": 1690667,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -62,9 +62,9 @@
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 64,
-      "lines": 5695,
-      "bytes": 192602,
+      "files": 67,
+      "lines": 5903,
+      "bytes": 199437,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -212,6 +212,22 @@
       ],
       "routes": 43,
       "page": "docs/index/modules/catalog.md"
+    },
+    {
+      "name": "content",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/content/content-sanitizer.ts",
+        "apps/api/src/modules/content/content.controller.ts",
+        "apps/api/src/modules/content/content.module.ts",
+        "apps/api/src/modules/content/content.service.spec.ts",
+        "apps/api/src/modules/content/content.service.ts",
+        "apps/api/src/modules/content/dto/content.dto.ts"
+      ],
+      "routes": 24,
+      "page": "docs/index/modules/content.md"
     },
     {
       "name": "crm",
@@ -2456,6 +2472,300 @@
       "public": false,
       "authOnly": false,
       "summary": "Set the stock level of one variant"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/content/banners",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "listBanners",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 89,
+      "access": "content.view | content.manage",
+      "permissions": [
+        "content.view",
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/content/banners",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "createBanner",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 95,
+      "access": "content.manage",
+      "permissions": [
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/content/banners/:id",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "deleteBanner",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 107,
+      "access": "content.manage",
+      "permissions": [
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/content/banners/:id",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "updateBanner",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 101,
+      "access": "content.manage",
+      "permissions": [
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/content/menu-items",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "listMenuItems",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 113,
+      "access": "content.view | content.manage",
+      "permissions": [
+        "content.view",
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/content/menu-items",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "createMenuItem",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 119,
+      "access": "content.manage",
+      "permissions": [
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/content/menu-items/:id",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "deleteMenuItem",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 131,
+      "access": "content.manage",
+      "permissions": [
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/content/menu-items/:id",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "updateMenuItem",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 125,
+      "access": "content.manage",
+      "permissions": [
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/content/pages",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "listPages",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 29,
+      "access": "content.view | content.manage",
+      "permissions": [
+        "content.view",
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/content/pages",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "createPage",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 41,
+      "access": "content.manage",
+      "permissions": [
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/content/pages/:id",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "deletePage",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 53,
+      "access": "content.manage",
+      "permissions": [
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/content/pages/:id",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "getPage",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 35,
+      "access": "content.view | content.manage",
+      "permissions": [
+        "content.view",
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/content/pages/:id",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "updatePage",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 47,
+      "access": "content.manage",
+      "permissions": [
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/content/posts",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "listPosts",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 59,
+      "access": "content.view | content.manage",
+      "permissions": [
+        "content.view",
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/content/posts",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "createPost",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 71,
+      "access": "content.manage",
+      "permissions": [
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/content/posts/:id",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "deletePost",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 83,
+      "access": "content.manage",
+      "permissions": [
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/content/posts/:id",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "getPost",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 65,
+      "access": "content.view | content.manage",
+      "permissions": [
+        "content.view",
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/content/posts/:id",
+      "module": "content",
+      "controller": "ContentAdminController",
+      "handler": "updatePost",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 77,
+      "access": "content.manage",
+      "permissions": [
+        "content.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
     },
     {
       "method": "POST",
@@ -6970,6 +7280,90 @@
       "summary": "Stitching services, optionally for one garment type"
     },
     {
+      "method": "GET",
+      "path": "/content/banners",
+      "module": "content",
+      "controller": "ContentController",
+      "handler": "listBanners",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 173,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/content/menu/:menuKey",
+      "module": "content",
+      "controller": "ContentController",
+      "handler": "getMenu",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 178,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/content/pages",
+      "module": "content",
+      "controller": "ContentController",
+      "handler": "listPageSlugs",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 145,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Indexable page slugs — sitemap.ts's own read, not a general listing."
+    },
+    {
+      "method": "GET",
+      "path": "/content/pages/:slug",
+      "module": "content",
+      "controller": "ContentController",
+      "handler": "getPage",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 150,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/content/posts",
+      "module": "content",
+      "controller": "ContentController",
+      "handler": "listPosts",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 155,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/content/posts/:slug",
+      "module": "content",
+      "controller": "ContentController",
+      "handler": "getPost",
+      "file": "apps/api/src/modules/content/content.controller.ts",
+      "line": 168,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
       "method": "POST",
       "path": "/crm/enquiries",
       "module": "crm",
@@ -8896,6 +9290,161 @@
         "ADMIN"
       ],
       "inSeed": true
+    },
+    {
+      "key": "content.view",
+      "label": "View pages, blog posts, banners and menus",
+      "category": "Marketing",
+      "sensitivity": "low",
+      "routes": [
+        "GET /admin/content/banners",
+        "GET /admin/content/menu-items",
+        "GET /admin/content/pages",
+        "GET /admin/content/pages/:id",
+        "GET /admin/content/posts",
+        "GET /admin/content/posts/:id"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "content.manage",
+      "label": "Publish pages and posts, and edit banners and menus",
+      "category": "Marketing",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/content/banners",
+        "POST /admin/content/banners",
+        "DELETE /admin/content/banners/:id",
+        "PATCH /admin/content/banners/:id",
+        "GET /admin/content/menu-items",
+        "POST /admin/content/menu-items",
+        "DELETE /admin/content/menu-items/:id",
+        "PATCH /admin/content/menu-items/:id",
+        "GET /admin/content/pages",
+        "POST /admin/content/pages",
+        "DELETE /admin/content/pages/:id",
+        "GET /admin/content/pages/:id",
+        "PATCH /admin/content/pages/:id",
+        "GET /admin/content/posts",
+        "POST /admin/content/posts",
+        "DELETE /admin/content/posts/:id",
+        "GET /admin/content/posts/:id",
+        "PATCH /admin/content/posts/:id"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "collections.view",
+      "label": "View collections and their membership",
+      "category": "Marketing",
+      "sensitivity": "low",
+      "routes": [],
+      "uiSites": 1,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "collections.manage",
+      "label": "Create and curate collections",
+      "category": "Marketing",
+      "sensitivity": "medium",
+      "routes": [],
+      "uiSites": 1,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "search.view",
+      "label": "View the zero-result search report",
+      "category": "Marketing",
+      "sensitivity": "low",
+      "routes": [],
+      "uiSites": 1,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "search.manage",
+      "label": "Edit search synonyms",
+      "category": "Marketing",
+      "sensitivity": "low",
+      "routes": [],
+      "uiSites": 1,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "campaigns.view",
+      "label": "View campaigns and their send/open/click stats",
+      "category": "Marketing",
+      "sensitivity": "low",
+      "routes": [],
+      "uiSites": 1,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "campaigns.manage",
+      "label": "Create, schedule and send campaigns to a customer segment",
+      "category": "Marketing",
+      "sensitivity": "high",
+      "routes": [],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "onsitemessages.view",
+      "label": "View on-site announcement bars, popups and newsletter capture",
+      "category": "Marketing",
+      "sensitivity": "low",
+      "routes": [],
+      "uiSites": 1,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "onsitemessages.manage",
+      "label": "Create and schedule on-site announcement bars, popups and newsletter capture",
+      "category": "Marketing",
+      "sensitivity": "low",
+      "routes": [],
+      "uiSites": 1,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     }
   ],
   "events": [
@@ -9507,7 +10056,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 170,
+      "line": 174,
       "doc": "",
       "fields": [
         {
@@ -9698,7 +10247,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 448,
+      "line": 452,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -9759,7 +10308,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 260,
+      "line": 264,
       "doc": "",
       "fields": [
         {
@@ -9830,6 +10379,154 @@
         "@@index([entity, entityId])",
         "@@index([actorId])",
         "@@index([createdAt])"
+      ]
+    },
+    {
+      "name": "Banner",
+      "file": "apps/api/prisma/schema/content.prisma",
+      "line": 96,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "placementKey",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "imageUrl",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "linkUrl",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startsAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "endsAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "translations",
+          "type": "BannerTranslation[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([placementKey, isActive, order])"
+      ]
+    },
+    {
+      "name": "BannerTranslation",
+      "file": "apps/api/prisma/schema/content.prisma",
+      "line": 118,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "bannerId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "headline",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "subtext",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "altText",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "banner",
+          "type": "Banner",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([bannerId, locale])"
       ]
     },
     {
@@ -9949,6 +10646,190 @@
       "indexes": [
         "@@unique([billOfMaterialId, componentVariantId])",
         "@@index([componentVariantId])"
+      ]
+    },
+    {
+      "name": "BlogPost",
+      "file": "apps/api/prisma/schema/content.prisma",
+      "line": 56,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "slug",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "ContentStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "publishedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "authorId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "category",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tags",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "heroImageUrl",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "noindex",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "author",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "translations",
+          "type": "BlogPostTranslation[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([status, publishedAt])",
+        "@@index([category])"
+      ]
+    },
+    {
+      "name": "BlogPostTranslation",
+      "file": "apps/api/prisma/schema/content.prisma",
+      "line": 78,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "blogPostId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "title",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "body",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "excerpt",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "metaTitle",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "metaDescription",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "ogImageUrl",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "blogPost",
+          "type": "BlogPost",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([blogPostId, locale])"
       ]
     },
     {
@@ -10608,6 +11489,197 @@
       ]
     },
     {
+      "name": "Campaign",
+      "file": "apps/api/prisma/schema/marketing.prisma",
+      "line": 38,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "channel",
+          "type": "CampaignChannel",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "segmentId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "content",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "CampaignStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "scheduledAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sentAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "segment",
+          "type": "Segment",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "createdBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "recipients",
+          "type": "CampaignRecipient[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([status, scheduledAt])"
+      ]
+    },
+    {
+      "name": "CampaignRecipient",
+      "file": "apps/api/prisma/schema/marketing.prisma",
+      "line": 59,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "campaignId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "contactId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "CampaignRecipientStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sentAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "openedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "clickedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "failureReason",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "campaign",
+          "type": "Campaign",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "contact",
+          "type": "Contact",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([campaignId, contactId])",
+        "@@index([campaignId, status])"
+      ]
+    },
+    {
       "name": "Cart",
       "file": "apps/api/prisma/schema/cart.prisma",
       "line": 5,
@@ -10670,8 +11742,43 @@
           "relation": false
         },
         {
+          "name": "firstTouchSentAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "incentivePromoCodeId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "guestPhone",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "guestMarketingConsentAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "user",
           "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "incentivePromoCode",
+          "type": "PromoCode?",
           "id": false,
           "unique": false,
           "relation": true
@@ -10682,17 +11789,25 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "convertedOrders",
+          "type": "Order[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
         "@@index([userId])",
-        "@@index([expiresAt])"
+        "@@index([expiresAt])",
+        "@@index([guestPhone])"
       ]
     },
     {
       "name": "CartItem",
       "file": "apps/api/prisma/schema/cart.prisma",
-      "line": 29,
+      "line": 58,
       "doc": "",
       "fields": [
         {
@@ -10836,7 +11951,7 @@
     {
       "name": "CartItemStitchingOption",
       "file": "apps/api/prisma/schema/cart.prisma",
-      "line": 64,
+      "line": 93,
       "doc": "",
       "fields": [
         {
@@ -11096,6 +12211,201 @@
       ]
     },
     {
+      "name": "Collection",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 524,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "slug",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "rule",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sortStrategy",
+          "type": "CollectionSortStrategy",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "imageUrl",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "translations",
+          "type": "CollectionTranslation[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "products",
+          "type": "CollectionProduct[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([isActive])"
+      ]
+    },
+    {
+      "name": "CollectionProduct",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 564,
+      "doc": "Manual membership and manual sort order.",
+      "fields": [
+        {
+          "name": "collectionId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "productId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "collection",
+          "type": "Collection",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "product",
+          "type": "Product",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@id([collectionId, productId])",
+        "@@index([productId])"
+      ]
+    },
+    {
+      "name": "CollectionTranslation",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 547,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "collectionId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "description",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "metaTitle",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "metaDescription",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "collection",
+          "type": "Collection",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([collectionId, locale])"
+      ]
+    },
+    {
       "name": "CompensationRate",
       "file": "apps/api/prisma/schema/payroll.prisma",
       "line": 21,
@@ -11323,6 +12633,41 @@
           "relation": false
         },
         {
+          "name": "marketingOptOut",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rfmRecencyScore",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rfmFrequencyScore",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rfmMonetaryScore",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rfmComputedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "createdAt",
           "type": "DateTime",
           "id": false,
@@ -11391,19 +12736,27 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "campaignReceipts",
+          "type": "CampaignRecipient[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
         "@@index([status])",
         "@@index([ownerId])",
         "@@index([lastOrderAt])",
-        "@@index([lifetimeValue])"
+        "@@index([lifetimeValue])",
+        "@@index([rfmRecencyScore, rfmFrequencyScore, rfmMonetaryScore])"
       ]
     },
     {
       "name": "ContactTag",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 220,
+      "line": 240,
       "doc": "",
       "fields": [
         {
@@ -11442,7 +12795,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 428,
+      "line": 432,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -11716,7 +13069,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 215,
+      "line": 219,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -11902,7 +13255,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 156,
+      "line": 160,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -12364,7 +13717,7 @@
     {
       "name": "FollowUpTask",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 191,
+      "line": 211,
       "doc": "",
       "fields": [
         {
@@ -13184,7 +14537,7 @@
     {
       "name": "InboundEmail",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 146,
+      "line": 166,
       "doc": "A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-inbox) — a customer's reply to an order or support email.",
       "fields": [
         {
@@ -13316,7 +14669,7 @@
     {
       "name": "InboundEmailReply",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 178,
+      "line": 198,
       "doc": "A staff reply sent from the Support Inbox, over the SAME connected mailbox the original message arrived at (not resolved by purpose — a reply has to leave from the mailbox the customer is already tal…",
       "fields": [
         {
@@ -13376,7 +14729,7 @@
     {
       "name": "Interaction",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 120,
+      "line": 140,
       "doc": "",
       "fields": [
         {
@@ -14009,7 +15362,7 @@
     {
       "name": "Lead",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 79,
+      "line": 99,
       "doc": "An enquiry that is not yet an order: a stitching quote request, a WhatsApp message logged by staff, a contact-form submission.",
       "fields": [
         {
@@ -14867,6 +16220,193 @@
       ]
     },
     {
+      "name": "MenuItem",
+      "file": "apps/api/prisma/schema/content.prisma",
+      "line": 138,
+      "doc": "A tree per named slot (`menuKey`: \"footer_help\", \"footer_about\", …) — see MENU_KEYS in packages/shared/src/content-blocks.ts.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "menuKey",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "parentId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "url",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "parent",
+          "type": "MenuItem?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "children",
+          "type": "MenuItem[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "translations",
+          "type": "MenuItemTranslation[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([menuKey, parentId, order])"
+      ]
+    },
+    {
+      "name": "MenuItemTranslation",
+      "file": "apps/api/prisma/schema/content.prisma",
+      "line": 156,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "menuItemId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "menuItem",
+          "type": "MenuItem",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([menuItemId, locale])"
+      ]
+    },
+    {
+      "name": "NewsletterSubscriber",
+      "file": "apps/api/prisma/schema/onsite-messaging.prisma",
+      "line": 62,
+      "doc": "A distinct, lightweight capture list — not folded into Contact.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "email",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "source",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "subscribedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "optedOutAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([optedOutAt])"
+      ]
+    },
+    {
       "name": "Node",
       "file": "apps/api/prisma/schema/organization.prisma",
       "line": 143,
@@ -15031,9 +16571,178 @@
       ]
     },
     {
+      "name": "OnsiteMessage",
+      "file": "apps/api/prisma/schema/onsite-messaging.prisma",
+      "line": 21,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "kind",
+          "type": "OnsiteMessageKind",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "pagePattern",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "segmentId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "trigger",
+          "type": "OnsitePopupTrigger",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "delaySeconds",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "linkUrl",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startsAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "endsAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "segment",
+          "type": "Segment?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "translations",
+          "type": "OnsiteMessageTranslation[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([kind, isActive])"
+      ]
+    },
+    {
+      "name": "OnsiteMessageTranslation",
+      "file": "apps/api/prisma/schema/onsite-messaging.prisma",
+      "line": 43,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "onsiteMessageId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "headline",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "body",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "ctaLabel",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "onsiteMessage",
+          "type": "OnsiteMessage",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([onsiteMessageId, locale])"
+      ]
+    },
+    {
       "name": "OptionTemplate",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 422,
+      "line": 435,
       "doc": "Store-level, reusable option axis — \"Size: XS/S/M/L/XL/XXL\" typed once under Catalogue -> Options & attributes instead of on every product.",
       "fields": [
         {
@@ -15093,7 +16802,7 @@
     {
       "name": "OptionTemplateTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 435,
+      "line": 448,
       "doc": "",
       "fields": [
         {
@@ -15139,7 +16848,7 @@
     {
       "name": "OptionTemplateValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 446,
+      "line": 459,
       "doc": "",
       "fields": [
         {
@@ -15207,7 +16916,7 @@
     {
       "name": "OptionTemplateValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 461,
+      "line": 474,
       "doc": "",
       "fields": [
         {
@@ -15349,6 +17058,13 @@
         },
         {
           "name": "guestPhone",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sourceCartId",
           "type": "String?",
           "id": false,
           "unique": false,
@@ -15516,6 +17232,13 @@
           "relation": true
         },
         {
+          "name": "sourceCart",
+          "type": "Cart?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
           "name": "items",
           "type": "OrderItem[]",
           "id": false,
@@ -15599,13 +17322,14 @@
         "@@index([contactId])",
         "@@index([guestPhone])",
         "@@index([channel])",
-        "@@index([shiftId])"
+        "@@index([shiftId])",
+        "@@index([sourceCartId])"
       ]
     },
     {
       "name": "OrderDiscount",
       "file": "apps/api/prisma/schema/promotions.prisma",
-      "line": 93,
+      "line": 95,
       "doc": "Which discounts an order actually received, so it can explain itself.",
       "fields": [
         {
@@ -15779,7 +17503,7 @@
     {
       "name": "OrderItem",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 120,
+      "line": 130,
       "doc": "",
       "fields": [
         {
@@ -16050,7 +17774,7 @@
     {
       "name": "OrderNumberCounter",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 297,
+      "line": 307,
       "doc": "Backing store for sequential per-year order numbers (YSN-2026-0001).",
       "fields": [
         {
@@ -16073,7 +17797,7 @@
     {
       "name": "OrderStatusEvent",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 204,
+      "line": 214,
       "doc": "",
       "fields": [
         {
@@ -16198,7 +17922,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 401,
+      "line": 405,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -16268,6 +17992,155 @@
       "indexes": [
         "@@index([status, availableAt])",
         "@@index([name])"
+      ]
+    },
+    {
+      "name": "Page",
+      "file": "apps/api/prisma/schema/content.prisma",
+      "line": 19,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "slug",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "template",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "ContentStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "publishedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "noindex",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "translations",
+          "type": "PageTranslation[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([status])",
+        "@@index([publishedAt])"
+      ]
+    },
+    {
+      "name": "PageTranslation",
+      "file": "apps/api/prisma/schema/content.prisma",
+      "line": 40,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "pageId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "title",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "body",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "metaTitle",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "metaDescription",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "ogImageUrl",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "page",
+          "type": "Page",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([pageId, locale])"
       ]
     },
     {
@@ -16436,7 +18309,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 139,
+      "line": 143,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -16977,7 +18850,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 281,
+      "line": 285,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -17032,6 +18905,29 @@
         {
           "name": "roleGrants",
           "type": "RoleGrant[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "name": "PhoneOptOut",
+      "file": "apps/api/prisma/schema/marketing.prisma",
+      "line": 83,
+      "doc": "The phone-number equivalent of User.marketingEmailOptOut's unsubscribe link.",
+      "fields": [
+        {
+          "name": "phoneE164",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "optedOutAt",
+          "type": "DateTime",
           "id": false,
           "unique": false,
           "relation": false
@@ -18007,6 +19903,13 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "collectionMemberships",
+          "type": "CollectionProduct[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -18019,7 +19922,7 @@
     {
       "name": "ProductGarmentType",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 323,
+      "line": 336,
       "doc": "Which garments a given unstitched fabric can be made into.",
       "fields": [
         {
@@ -18051,7 +19954,7 @@
     {
       "name": "ProductImage",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 289,
+      "line": 302,
       "doc": "",
       "fields": [
         {
@@ -18139,7 +20042,7 @@
     {
       "name": "ProductImageTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 311,
+      "line": 324,
       "doc": "Alt text per locale.",
       "fields": [
         {
@@ -18185,7 +20088,7 @@
     {
       "name": "ProductOption",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 344,
+      "line": 357,
       "doc": "A dynamic option axis a product varies along: \"Size\", \"Colour\", \"Storage\".",
       "fields": [
         {
@@ -18260,7 +20163,7 @@
     {
       "name": "ProductOptionTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 361,
+      "line": 374,
       "doc": "",
       "fields": [
         {
@@ -18306,7 +20209,7 @@
     {
       "name": "ProductOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 373,
+      "line": 386,
       "doc": "A specific value on an option axis: \"M\", \"Ferozi\", \"128GB\".",
       "fields": [
         {
@@ -18381,7 +20284,7 @@
     {
       "name": "ProductOptionValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 391,
+      "line": 404,
       "doc": "",
       "fields": [
         {
@@ -18427,7 +20330,7 @@
     {
       "name": "ProductTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 171,
+      "line": 173,
       "doc": "",
       "fields": [
         {
@@ -18494,6 +20397,13 @@
           "relation": false
         },
         {
+          "name": "searchVector",
+          "type": "Unsupported(\"tsvector\")?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "product",
           "type": "Product",
           "id": false,
@@ -18509,7 +20419,7 @@
     {
       "name": "ProductVariant",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 190,
+      "line": 203,
       "doc": "",
       "fields": [
         {
@@ -18836,7 +20746,7 @@
     {
       "name": "ProductVariantOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 405,
+      "line": 418,
       "doc": "The join that DEFINES a variant: one row per option axis per variant.",
       "fields": [
         {
@@ -18962,6 +20872,13 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "carts",
+          "type": "Cart[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -19487,7 +21404,7 @@
     {
       "name": "Redirect",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 475,
+      "line": 488,
       "doc": "A storefront path that now 301s somewhere else — created automatically when a live product/category slug changes, or entered by hand (including a CSV import when migrating an old site).",
       "fields": [
         {
@@ -19547,7 +21464,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 118,
+      "line": 122,
       "doc": "",
       "fields": [
         {
@@ -20332,7 +22249,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 347,
+      "line": 351,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -20390,7 +22307,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 361,
+      "line": 365,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -20444,7 +22361,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 297,
+      "line": 301,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -20489,9 +22406,110 @@
       ]
     },
     {
+      "name": "SearchQueryLog",
+      "file": "apps/api/prisma/schema/search.prisma",
+      "line": 29,
+      "doc": "No FK to User: most rows are anonymous storefront visitors, and a search log at this volume must never be constrained by, or block on, account lifecycle — same reasoning that kept Order.guestPhone a…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "term",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resultCount",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([resultCount, createdAt])",
+        "@@index([term])"
+      ]
+    },
+    {
+      "name": "SearchSynonym",
+      "file": "apps/api/prisma/schema/search.prisma",
+      "line": 11,
+      "doc": "Search.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "term",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "synonym",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@unique([locale, term, synonym])",
+        "@@index([locale, term])"
+      ]
+    },
+    {
       "name": "Segment",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 232,
+      "line": 252,
       "doc": "A saved contact filter — \"repeat buyers in Lahore\", \"bridal enquiries\" — stored as a filter definition and exportable to CSV for WhatsApp broadcasts.",
       "fields": [
         {
@@ -20549,6 +22567,20 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "campaigns",
+          "type": "Campaign[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "onsiteMessages",
+          "type": "OnsiteMessage[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": []
@@ -20556,7 +22588,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 193,
+      "line": 197,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -20593,7 +22625,7 @@
     {
       "name": "Shipment",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 228,
+      "line": 238,
       "doc": "",
       "fields": [
         {
@@ -22005,7 +24037,7 @@
     {
       "name": "StockAdjustment",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 271,
+      "line": 284,
       "doc": "One entry per change to ProductVariant.stock, so \"why is stock 4\" has an answer without an audit table bolted on after the fact.",
       "fields": [
         {
@@ -23290,7 +25322,7 @@
     {
       "name": "Tag",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 211,
+      "line": 231,
       "doc": "",
       "fields": [
         {
@@ -24147,6 +26179,20 @@
           "relation": false
         },
         {
+          "name": "blogPosts",
+          "type": "BlogPost[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "campaignsCreated",
+          "type": "Campaign[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "storeCreditBalance",
           "type": "Int",
           "id": false,
@@ -24176,7 +26222,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 318,
+      "line": 322,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -24237,7 +26283,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 376,
+      "line": 380,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -24639,6 +26685,42 @@
       ]
     },
     {
+      "name": "CampaignChannel",
+      "file": "apps/api/prisma/schema/marketing.prisma",
+      "line": 9,
+      "values": [
+        "EMAIL",
+        "SMS",
+        "WHATSAPP"
+      ]
+    },
+    {
+      "name": "CampaignRecipientStatus",
+      "file": "apps/api/prisma/schema/marketing.prisma",
+      "line": 23,
+      "values": [
+        "PENDING",
+        "SENT",
+        "SKIPPED_OPT_OUT",
+        "SKIPPED_NO_CONTACT",
+        "FAILED",
+        "OPENED",
+        "CLICKED"
+      ]
+    },
+    {
+      "name": "CampaignStatus",
+      "file": "apps/api/prisma/schema/marketing.prisma",
+      "line": 15,
+      "values": [
+        "DRAFT",
+        "SCHEDULED",
+        "SENDING",
+        "SENT",
+        "CANCELLED"
+      ]
+    },
+    {
       "name": "CashMovementType",
       "file": "apps/api/prisma/schema/pos.prisma",
       "line": 87,
@@ -24648,6 +26730,19 @@
         "CASH_OUT",
         "DROP",
         "PAID_OUT"
+      ]
+    },
+    {
+      "name": "CollectionSortStrategy",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 513,
+      "values": [
+        "MANUAL",
+        "BEST_SELLING",
+        "NEWEST",
+        "PRICE_ASC",
+        "PRICE_DESC",
+        "MARGIN"
       ]
     },
     {
@@ -24673,9 +26768,19 @@
       ]
     },
     {
+      "name": "ContentStatus",
+      "file": "apps/api/prisma/schema/content.prisma",
+      "line": 13,
+      "values": [
+        "DRAFT",
+        "PUBLISHED",
+        "ARCHIVED"
+      ]
+    },
+    {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 416,
+      "line": 420,
       "values": [
         "IOS",
         "ANDROID",
@@ -24709,7 +26814,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 204,
+      "line": 208,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -24764,7 +26869,7 @@
     {
       "name": "InteractionKind",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 110,
+      "line": 130,
       "values": [
         "CALL",
         "WHATSAPP",
@@ -24797,7 +26902,7 @@
     {
       "name": "LeadStatus",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 69,
+      "line": 89,
       "values": [
         "NEW",
         "CONTACTED",
@@ -24876,6 +26981,27 @@
       ]
     },
     {
+      "name": "OnsiteMessageKind",
+      "file": "apps/api/prisma/schema/onsite-messaging.prisma",
+      "line": 8,
+      "values": [
+        "ANNOUNCEMENT_BAR",
+        "POPUP",
+        "NEWSLETTER_CAPTURE",
+        "COOKIE_CONSENT"
+      ]
+    },
+    {
+      "name": "OnsitePopupTrigger",
+      "file": "apps/api/prisma/schema/onsite-messaging.prisma",
+      "line": 15,
+      "values": [
+        "IMMEDIATE",
+        "TIMED",
+        "EXIT_INTENT"
+      ]
+    },
+    {
       "name": "OpsClientStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
       "line": 126,
@@ -24887,7 +27013,7 @@
     {
       "name": "OptionDisplay",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 332,
+      "line": 345,
       "values": [
         "BUTTON",
         "DROPDOWN",
@@ -24907,7 +27033,7 @@
     {
       "name": "OrderItemFulfillmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 109,
+      "line": 119,
       "values": [
         "READY",
         "AWAITING_STOCK",
@@ -24932,7 +27058,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 390,
+      "line": 394,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -24987,7 +27113,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 309,
+      "line": 313,
       "values": [
         "GRANT",
         "REVOKE"
@@ -25167,7 +27293,7 @@
     {
       "name": "ShipmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 219,
+      "line": 229,
       "values": [
         "PENDING",
         "DISPATCHED",
@@ -26539,6 +28665,46 @@
         "ShippingZone",
         "ShippingZoneTranslation"
       ]
+    },
+    {
+      "folder": "20260925010000_add_content_collections_search_marketing_onsite",
+      "file": "apps/api/prisma/schema/migrations/20260925010000_add_content_collections_search_marketing_onsite/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_content_collections_search_marketing_onsite",
+      "statements": 82,
+      "kinds": [
+        "CREATE TYPE",
+        "ALTER TABLE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "UPDATE"
+      ],
+      "tables": [
+        "Banner",
+        "BannerTranslation",
+        "BlogPost",
+        "BlogPostTranslation",
+        "Campaign",
+        "CampaignRecipient",
+        "Cart",
+        "Collection",
+        "CollectionProduct",
+        "CollectionTranslation",
+        "Contact",
+        "MenuItem",
+        "MenuItemTranslation",
+        "NewsletterSubscriber",
+        "OnsiteMessage",
+        "OnsiteMessageTranslation",
+        "Order",
+        "Page",
+        "PageTranslation",
+        "PhoneOptOut",
+        "ProductTranslation",
+        "SearchQueryLog",
+        "SearchSynonym"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -26928,6 +29094,24 @@
     },
     {
       "app": "web",
+      "kind": "page",
+      "url": "/[locale]/blog",
+      "file": "apps/web/src/app/(storefront)/[locale]/blog/page.tsx",
+      "client": false,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/[locale]/blog/[slug]",
+      "file": "apps/web/src/app/(storefront)/[locale]/blog/[slug]/page.tsx",
+      "client": false,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
       "kind": "loading",
       "url": "/[locale]/cart",
       "file": "apps/web/src/app/(storefront)/[locale]/cart/loading.tsx",
@@ -27004,6 +29188,15 @@
       "url": "/[locale]/orders/[number]",
       "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/page.tsx",
       "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/[locale]/pages/[slug]",
+      "file": "apps/web/src/app/(storefront)/[locale]/pages/[slug]/page.tsx",
+      "client": false,
       "surface": "storefront",
       "doc": ""
     },
@@ -27354,6 +29547,15 @@
       "kind": "page",
       "url": "/admin/contacts",
       "file": "apps/web/src/app/(admin)/admin/(app)/contacts/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/content",
+      "file": "apps/web/src/app/(admin)/admin/(app)/content/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -29259,6 +31461,18 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/content/content.service.spec.ts",
+      "module": "content",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "ContentService",
+        "pages",
+        "banners",
+        "menu items"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/crm/email-inbox/email-inbox.service.spec.ts",
       "module": "crm",
       "kind": "unit test",
@@ -30581,7 +32795,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5170,
+      "bytes": 5212,
       "doc": "",
       "symbols": []
     },
@@ -30590,7 +32804,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 147,
-      "bytes": 7202,
+      "bytes": 7286,
       "doc": "",
       "symbols": []
     },
@@ -30599,7 +32813,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 119,
-      "bytes": 5327,
+      "bytes": 5411,
       "doc": "",
       "symbols": []
     },
@@ -30850,8 +33064,8 @@
       "path": "apps/api/package.json",
       "area": "api",
       "kind": "json",
-      "lines": 76,
-      "bytes": 2392,
+      "lines": 78,
+      "bytes": 2461,
       "doc": "",
       "symbols": []
     },
@@ -30902,7 +33116,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 228,
-      "bytes": 8832,
+      "bytes": 8880,
       "doc": "BOM: which raw materials go into a finished product, how much of each, and",
       "symbols": []
     },
@@ -30910,8 +33124,8 @@
       "path": "apps/api/prisma/schema/cart.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 73,
-      "bytes": 3056,
+      "lines": 102,
+      "bytes": 4833,
       "doc": "Cart. Guest carts are keyed by an opaque token held in a cookie and merged",
       "symbols": []
     },
@@ -30919,17 +33133,26 @@
       "path": "apps/api/prisma/schema/catalog.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 491,
-      "bytes": 17715,
+      "lines": 575,
+      "bytes": 21083,
       "doc": "Catalog: categories, products, variants, images.",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/content.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 166,
+      "bytes": 5654,
+      "doc": "Content: pages, blog posts, banners, menus. WO-8.1,",
       "symbols": []
     },
     {
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 460,
-      "bytes": 17561,
+      "lines": 464,
+      "bytes": 17862,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -30937,8 +33160,8 @@
       "path": "apps/api/prisma/schema/crm.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 243,
-      "bytes": 8484,
+      "lines": 267,
+      "bytes": 9721,
       "doc": "CRM: one customer record, whatever door the customer came in through.",
       "symbols": []
     },
@@ -30947,7 +33170,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 133,
-      "bytes": 5626,
+      "bytes": 5692,
       "doc": "Finance: operational expenses and per-order economics (RETAIL-ERP.md",
       "symbols": []
     },
@@ -30956,7 +33179,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 276,
-      "bytes": 8249,
+      "bytes": 8340,
       "doc": "Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping",
       "symbols": []
     },
@@ -30965,7 +33188,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 92,
-      "bytes": 3476,
+      "bytes": 3494,
       "doc": "Phase 5 WO-5.4/5.5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md).",
       "symbols": []
     },
@@ -30994,6 +33217,15 @@
       "lines": 88,
       "bytes": 2706,
       "doc": "Trading-partner invoices and quotes (WO-18.3's remaining \"forth\"",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/marketing.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 87,
+      "bytes": 2726,
+      "doc": "Campaigns and broadcasts. WO-8.4,",
       "symbols": []
     },
     {
@@ -31573,6 +33805,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260925010000_add_content_collections_search_marketing_onsite/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 485,
+      "bytes": 17509,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -31582,11 +33823,20 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/onsite-messaging.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 72,
+      "bytes": 2286,
+      "doc": "On-site messaging. WO-8.6,",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/orders.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 301,
-      "bytes": 12358,
+      "lines": 311,
+      "bytes": 13108,
       "doc": "Orders and shipments.",
       "symbols": []
     },
@@ -31622,7 +33872,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 229,
-      "bytes": 8393,
+      "bytes": 8399,
       "doc": "Payroll: compensation rates, leave balances and pay runs",
       "symbols": []
     },
@@ -31648,8 +33898,8 @@
       "path": "apps/api/prisma/schema/promotions.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 111,
-      "bytes": 3603,
+      "lines": 113,
+      "bytes": 3820,
       "doc": "Phase 5 WO-5.1/5.2/5.3 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md).",
       "symbols": []
     },
@@ -31658,7 +33908,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 248,
-      "bytes": 9927,
+      "bytes": 9929,
       "doc": "",
       "symbols": []
     },
@@ -31678,6 +33928,15 @@
       "lines": 20,
       "bytes": 713,
       "doc": "Datasource and generator only. Models live in one file per module —",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/search.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 40,
+      "bytes": 1447,
+      "doc": "Search. WO-8.3,",
       "symbols": []
     },
     {
@@ -33020,7 +35279,7 @@
       "area": "api",
       "kind": "service",
       "lines": 389,
-      "bytes": 13506,
+      "bytes": 13520,
       "doc": "",
       "symbols": [
         {
@@ -33924,8 +36183,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 282,
-      "bytes": 12966,
+      "lines": 305,
+      "bytes": 14612,
       "doc": "",
       "symbols": [
         {
@@ -33961,12 +36220,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 166
+          "line": 183
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 168
+          "line": 185
         }
       ]
     },
@@ -35821,6 +38080,155 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/content/content-sanitizer.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 82,
+      "bytes": 3586,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "sanitizeRichText",
+          "kind": "function",
+          "line": 39
+        },
+        {
+          "name": "validateAndSanitizeBlocks",
+          "kind": "function",
+          "line": 57
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/content/content.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 182,
+      "bytes": 5216,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ContentAdminController",
+          "kind": "class",
+          "line": 24
+        },
+        {
+          "name": "ContentController",
+          "kind": "class",
+          "line": 140
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/content/content.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 11,
+      "bytes": 339,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ContentModule",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/content/content.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 140,
+      "bytes": 4978,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/content/content.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 405,
+      "bytes": 13056,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ContentService",
+          "kind": "class",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/content/dto/content.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 398,
+      "bytes": 7674,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PageTranslationDto",
+          "kind": "class",
+          "line": 22
+        },
+        {
+          "name": "CreatePageDto",
+          "kind": "class",
+          "line": 55
+        },
+        {
+          "name": "UpdatePageDto",
+          "kind": "class",
+          "line": 84
+        },
+        {
+          "name": "BlogPostTranslationDto",
+          "kind": "class",
+          "line": 110
+        },
+        {
+          "name": "CreateBlogPostDto",
+          "kind": "class",
+          "line": 149
+        },
+        {
+          "name": "UpdateBlogPostDto",
+          "kind": "class",
+          "line": 190
+        },
+        {
+          "name": "BannerTranslationDto",
+          "kind": "class",
+          "line": 228
+        },
+        {
+          "name": "CreateBannerDto",
+          "kind": "class",
+          "line": 252
+        },
+        {
+          "name": "UpdateBannerDto",
+          "kind": "class",
+          "line": 293
+        },
+        {
+          "name": "MenuItemTranslationDto",
+          "kind": "class",
+          "line": 333
+        },
+        {
+          "name": "CreateMenuItemDto",
+          "kind": "class",
+          "line": 345
+        },
+        {
+          "name": "UpdateMenuItemDto",
+          "kind": "class",
+          "line": 376
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/crm/crm.controller.ts",
       "area": "api",
       "kind": "controller",
@@ -37346,8 +39754,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 87,
-      "bytes": 2780,
+      "lines": 88,
+      "bytes": 2799,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -37366,24 +39774,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 163,
-      "bytes": 8229,
+      "lines": 165,
+      "bytes": 8333,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 34
+          "line": 35
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 65
+          "line": 66
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 139
+          "line": 141
         }
       ]
     },
@@ -39995,7 +42403,7 @@
       "area": "api",
       "kind": "unit test",
       "lines": 385,
-      "bytes": 15613,
+      "bytes": 15627,
       "doc": "",
       "symbols": []
     },
@@ -40004,7 +42412,7 @@
       "area": "api",
       "kind": "service",
       "lines": 299,
-      "bytes": 11005,
+      "bytes": 11019,
       "doc": "",
       "symbols": [
         {
@@ -40474,8 +42882,8 @@
       "path": "apps/api/tsconfig.json",
       "area": "api",
       "kind": "json",
-      "lines": 17,
-      "bytes": 475,
+      "lines": 25,
+      "bytes": 1091,
       "doc": "",
       "symbols": []
     },
@@ -43044,6 +45452,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/content/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 535,
+      "bytes": 20209,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ContentAdminPage",
+          "kind": "default",
+          "line": 284
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/customers/[id]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -44689,6 +47112,56 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(storefront)/[locale]/blog/[slug]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 71,
+      "bytes": 2640,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "revalidate",
+          "kind": "const",
+          "line": 11
+        },
+        {
+          "name": "generateMetadata",
+          "kind": "function",
+          "line": 26
+        },
+        {
+          "name": "BlogPostPage",
+          "kind": "default",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(storefront)/[locale]/blog/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 62,
+      "bytes": 2180,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "revalidate",
+          "kind": "const",
+          "line": 8
+        },
+        {
+          "name": "generateMetadata",
+          "kind": "function",
+          "line": 10
+        },
+        {
+          "name": "BlogIndexPage",
+          "kind": "default",
+          "line": 23
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(storefront)/[locale]/cart/loading.tsx",
       "area": "web",
       "kind": "loading",
@@ -44782,19 +47255,19 @@
       "path": "apps/web/src/app/(storefront)/[locale]/layout.tsx",
       "area": "web",
       "kind": "layout",
-      "lines": 182,
-      "bytes": 6468,
+      "lines": 192,
+      "bytes": 7007,
       "doc": "",
       "symbols": [
         {
           "name": "generateMetadata",
           "kind": "function",
-          "line": 44
+          "line": 45
         },
         {
           "name": "LocaleLayout",
           "kind": "default",
-          "line": 131
+          "line": 132
         }
       ]
     },
@@ -44847,8 +47320,8 @@
       "path": "apps/web/src/app/(storefront)/[locale]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 239,
-      "bytes": 9997,
+      "lines": 262,
+      "bytes": 11243,
       "doc": "",
       "symbols": [
         {
@@ -44865,6 +47338,31 @@
           "name": "HomePage",
           "kind": "default",
           "line": 32
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(storefront)/[locale]/pages/[slug]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 54,
+      "bytes": 1807,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "revalidate",
+          "kind": "const",
+          "line": 9
+        },
+        {
+          "name": "generateMetadata",
+          "kind": "function",
+          "line": 24
+        },
+        {
+          "name": "CmsPage",
+          "kind": "default",
+          "line": 38
         }
       ]
     },
@@ -45205,8 +47703,8 @@
       "path": "apps/web/src/app/sitemap.ts",
       "area": "web",
       "kind": "module",
-      "lines": 75,
-      "bytes": 2245,
+      "lines": 89,
+      "bytes": 2891,
       "doc": "Renders per-request rather than being prerendered at `next build` time —",
       "symbols": [
         {
@@ -45217,7 +47715,7 @@
         {
           "name": "sitemap",
           "kind": "default",
-          "line": 59
+          "line": 60
         }
       ]
     },
@@ -45450,8 +47948,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 694,
-      "bytes": 18028,
+      "lines": 734,
+      "bytes": 19209,
       "doc": "",
       "symbols": [
         {
@@ -45482,12 +47980,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 664
+          "line": 704
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 679
+          "line": 719
         }
       ]
     },
@@ -45787,6 +48285,21 @@
       ]
     },
     {
+      "path": "apps/web/src/components/storefront/block-renderer.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 91,
+      "bytes": 3834,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BlockRenderer",
+          "kind": "function",
+          "line": 11
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/storefront/bottom-nav.tsx",
       "area": "web",
       "kind": "component",
@@ -45890,14 +48403,14 @@
       "path": "apps/web/src/components/storefront/footer.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 110,
-      "bytes": 4919,
+      "lines": 145,
+      "bytes": 6029,
       "doc": "",
       "symbols": [
         {
           "name": "Footer",
           "kind": "function",
-          "line": 6
+          "line": 24
         }
       ]
     },
@@ -46653,8 +49166,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 156,
-      "bytes": 6270,
+      "lines": 170,
+      "bytes": 6800,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -46850,39 +49363,64 @@
       "path": "apps/web/src/lib/api.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 65,
-      "bytes": 2100,
+      "lines": 97,
+      "bytes": 3282,
       "doc": "",
       "symbols": [
         {
           "name": "apiFetch",
           "kind": "function",
-          "line": 32
+          "line": 36
         },
         {
           "name": "getProducts",
           "kind": "function",
-          "line": 39
+          "line": 43
         },
         {
           "name": "getProduct",
           "kind": "function",
-          "line": 45
+          "line": 49
         },
         {
           "name": "getCategories",
           "kind": "function",
-          "line": 49
+          "line": 53
         },
         {
           "name": "getFacets",
           "kind": "function",
-          "line": 53
+          "line": 57
         },
         {
           "name": "getStitchingServices",
           "kind": "function",
-          "line": 57
+          "line": 61
+        },
+        {
+          "name": "getBanners",
+          "kind": "function",
+          "line": 73
+        },
+        {
+          "name": "getPage",
+          "kind": "function",
+          "line": 77
+        },
+        {
+          "name": "getPosts",
+          "kind": "function",
+          "line": 81
+        },
+        {
+          "name": "getPost",
+          "kind": "function",
+          "line": 89
+        },
+        {
+          "name": "getMenu",
+          "kind": "function",
+          "line": 94
         }
       ]
     },
@@ -47115,8 +49653,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1206,
-      "bytes": 31065,
+      "lines": 1246,
+      "bytes": 31975,
       "doc": "",
       "symbols": [
         {
@@ -47708,6 +50246,26 @@
           "name": "StockTransferListResult",
           "kind": "interface",
           "line": 1202
+        },
+        {
+          "name": "CmsBanner",
+          "kind": "interface",
+          "line": 1209
+        },
+        {
+          "name": "CmsPage",
+          "kind": "interface",
+          "line": 1217
+        },
+        {
+          "name": "CmsPost",
+          "kind": "interface",
+          "line": 1224
+        },
+        {
+          "name": "CmsMenuLink",
+          "kind": "interface",
+          "line": 1240
         }
       ]
     },
@@ -52098,8 +54656,8 @@
       "path": "packages/shared/package.json",
       "area": "packages",
       "kind": "json",
-      "lines": 37,
-      "bytes": 778,
+      "lines": 41,
+      "bytes": 897,
       "doc": "",
       "symbols": []
     },
@@ -52120,6 +54678,26 @@
           "name": "Brand",
           "kind": "type",
           "line": 333
+        }
+      ]
+    },
+    {
+      "path": "packages/shared/src/collection-rules.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 16,
+      "bytes": 609,
+      "doc": "The rule shape `Collection.rule` (catalog.prisma, WO-8.2) holds when a collection is rule-based rather than manually curated.",
+      "symbols": [
+        {
+          "name": "CollectionRuleCondition",
+          "kind": "interface",
+          "line": 7
+        },
+        {
+          "name": "CollectionRule",
+          "kind": "interface",
+          "line": 13
         }
       ]
     },
@@ -52220,6 +54798,51 @@
           "name": "formatMoney",
           "kind": "function",
           "line": 137
+        }
+      ]
+    },
+    {
+      "path": "packages/shared/src/content-blocks.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 48,
+      "bytes": 1893,
+      "doc": "The block-based body shared by `Page` and `BlogPost` (WO-8.1).",
+      "symbols": [
+        {
+          "name": "ContentBlock",
+          "kind": "type",
+          "line": 10
+        },
+        {
+          "name": "CONTENT_BLOCK_TYPES",
+          "kind": "const",
+          "line": 18
+        },
+        {
+          "name": "ContentBlockType",
+          "kind": "type",
+          "line": 27
+        },
+        {
+          "name": "BANNER_PLACEMENTS",
+          "kind": "const",
+          "line": 36
+        },
+        {
+          "name": "BannerPlacementKey",
+          "kind": "type",
+          "line": 38
+        },
+        {
+          "name": "MENU_KEYS",
+          "kind": "const",
+          "line": 45
+        },
+        {
+          "name": "MenuKey",
+          "kind": "type",
+          "line": 47
         }
       ]
     },
@@ -52794,8 +55417,8 @@
       "path": "packages/shared/src/index.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 23,
-      "bytes": 665,
+      "lines": 36,
+      "bytes": 1530,
       "doc": "",
       "symbols": []
     },
@@ -52901,8 +55524,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 577,
-      "bytes": 17624,
+      "lines": 673,
+      "bytes": 19925,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -52923,47 +55546,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 320
+          "line": 380
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 322
+          "line": 382
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 332
+          "line": 392
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 339
+          "line": 399
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 462
+          "line": 539
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 564
+          "line": 660
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 569
+          "line": 665
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 570
+          "line": 666
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 573
+          "line": 669
         }
       ]
     },
@@ -53156,6 +55779,26 @@
           "name": "decryptSecret",
           "kind": "function",
           "line": 50
+        }
+      ]
+    },
+    {
+      "path": "packages/shared/src/segment-filter.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 31,
+      "bytes": 1048,
+      "doc": "The filter shape `Segment.filter` (crm.prisma) holds.",
+      "symbols": [
+        {
+          "name": "SegmentFilterCondition",
+          "kind": "interface",
+          "line": 13
+        },
+        {
+          "name": "SegmentFilter",
+          "kind": "interface",
+          "line": 28
         }
       ]
     },
@@ -53389,8 +56032,8 @@
       "path": "pnpm-lock.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 17711,
-      "bytes": 652209,
+      "lines": 17810,
+      "bytes": 655242,
       "doc": "",
       "symbols": []
     },

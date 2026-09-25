@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { LOCALES } from '@newax/shared';
-import { getProducts } from '@/lib/api';
+import { apiFetch, getProducts } from '@/lib/api';
 import { alternateLanguages } from '@/config/seo';
 
 // Renders per-request rather than being prerendered at `next build` time —
@@ -23,6 +23,7 @@ const STATIC_PATHS = [
   '/privacy',
   '/terms',
   '/returns',
+  '/blog',
 ];
 
 /** One entry per locale for a path, each carrying the full hreflang set. */
@@ -68,6 +69,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entries.push(
       ...entriesFor(`/product/${slug}`, { changeFrequency: 'daily', priority: 0.8 }),
     );
+  }
+
+  // WO-8.1 — CMS pages and posts, indexable ones only (noindex/DRAFT excluded
+  // server-side by ContentService.listIndexable{Page,Post}Slugs).
+  const [pages, { data: posts }] = await Promise.all([
+    apiFetch<{ slug: string }[]>('/content/pages'),
+    apiFetch<{ data: { slug: string }[]; total: number }>('/content/posts?pageSize=200'),
+  ]);
+  for (const page of pages) {
+    entries.push(...entriesFor(`/pages/${page.slug}`, { changeFrequency: 'monthly', priority: 0.5 }));
+  }
+  for (const post of posts) {
+    entries.push(...entriesFor(`/blog/${post.slug}`, { changeFrequency: 'monthly', priority: 0.5 }));
   }
 
   return entries;

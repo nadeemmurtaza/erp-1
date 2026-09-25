@@ -50,9 +50,9 @@ _none_
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Cart` | 10 | :5 | Cart. |
-| `CartItem` | 19 | :29 |  |
-| `CartItemStitchingOption` | 4 | :64 |  |
+| `Cart` | 16 | :5 | Cart. |
+| `CartItem` | 19 | :58 |  |
+| `CartItemStitchingOption` | 4 | :93 |  |
 
 
 Full field lists: [cross/data-model.md](../cross/data-model.md).

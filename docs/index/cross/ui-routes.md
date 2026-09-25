@@ -3,7 +3,7 @@
 
 # Screens
 
-All **179** routable files across the web app, the till and the mobile app.
+All **183** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (109)
+### admin (110)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -55,6 +55,7 @@ _none_
 | `/admin/categories` | page | client | `apps/web/src/app/(admin)/admin/(app)/categories/page.tsx` |
 | `/admin/contacts` | loading | server | `apps/web/src/app/(admin)/admin/(app)/contacts/loading.tsx` |
 | `/admin/contacts` | page | client | `apps/web/src/app/(admin)/admin/(app)/contacts/page.tsx` |
+| `/admin/content` | page | client | `apps/web/src/app/(admin)/admin/(app)/content/page.tsx` |
 | `/admin/customers/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/customers/[id]/page.tsx` |
 | `/admin/customers/gift-cards` | page | client | `apps/web/src/app/(admin)/admin/(app)/customers/gift-cards/page.tsx` |
 | `/admin/customers/gift-cards/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/customers/gift-cards/[id]/page.tsx` |
@@ -180,7 +181,7 @@ _none_
 | `/terminal` | page | client | `apps/pos/src/app/terminal/page.tsx` |
 | `/till` | page | client | `apps/pos/src/app/till/page.tsx` |
 
-### storefront (39)
+### storefront (42)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -197,6 +198,8 @@ _none_
 | `/[locale]/account/returns` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/page.tsx` |
 | `/[locale]/account/returns/[id]` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/[id]/page.tsx` |
 | `/[locale]/account/returns/new` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/new/page.tsx` |
+| `/[locale]/blog` | page | server | `apps/web/src/app/(storefront)/[locale]/blog/page.tsx` |
+| `/[locale]/blog/[slug]` | page | server | `apps/web/src/app/(storefront)/[locale]/blog/[slug]/page.tsx` |
 | `/[locale]/cart` | loading | server | `apps/web/src/app/(storefront)/[locale]/cart/loading.tsx` |
 | `/[locale]/cart` | page | client | `apps/web/src/app/(storefront)/[locale]/cart/page.tsx` |
 | `/[locale]/checkout` | loading | server | `apps/web/src/app/(storefront)/[locale]/checkout/loading.tsx` |
@@ -206,6 +209,7 @@ _none_
 | `/[locale]/login` | page | client | `apps/web/src/app/(storefront)/[locale]/login/page.tsx` |
 | `/[locale]/orders` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/page.tsx` |
 | `/[locale]/orders/[number]` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/page.tsx` |
+| `/[locale]/pages/[slug]` | page | server | `apps/web/src/app/(storefront)/[locale]/pages/[slug]/page.tsx` |
 | `/[locale]/privacy` | page | server | `apps/web/src/app/(storefront)/[locale]/privacy/page.tsx` |
 | `/[locale]/product/[slug]` | loading | server | `apps/web/src/app/(storefront)/[locale]/product/[slug]/loading.tsx` |
 | `/[locale]/product/[slug]` | page | server | `apps/web/src/app/(storefront)/[locale]/product/[slug]/page.tsx` |

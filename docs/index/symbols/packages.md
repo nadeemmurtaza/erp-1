@@ -46,6 +46,8 @@ Every top-level export in `packages`, with the line to open.
 |---|---|---|---|---|
 | `brand.ts` | `BRAND` | const | :321 | --------------------------------------------------------------------------- |
 | `brand.ts` | `Brand` | type | :333 |  |
+| `collection-rules.ts` | `CollectionRuleCondition` | interface | :7 | The rule shape `Collection.rule` (catalog.prisma, WO-8.2) holds when a collection is rule-based rat… |
+| `collection-rules.ts` | `CollectionRule` | interface | :13 |  |
 | `constants.ts` | `LOCALES` | const | :3 | Locales the storefront ships in. |
 | `constants.ts` | `Locale` | type | :4 | Locales the storefront ships in. |
 | `constants.ts` | `DEFAULT_LOCALE` | const | :6 | Locales the storefront ships in. |
@@ -64,6 +66,13 @@ Every top-level export in `packages`, with the line to open.
 | `constants.ts` | `formatDateShort` | function | :109 | A chart axis tick — "7 Sept". |
 | `constants.ts` | `formatNumber` | function | :132 | A plain count, grouped for the locale — 6017 -> "6,017". |
 | `constants.ts` | `formatMoney` | function | :137 | Formats integer paisa as a display string, e.g. |
+| `content-blocks.ts` | `ContentBlock` | type | :10 | The block-based body shared by `Page` and `BlogPost` (WO-8.1). |
+| `content-blocks.ts` | `CONTENT_BLOCK_TYPES` | const | :18 |  |
+| `content-blocks.ts` | `ContentBlockType` | type | :27 |  |
+| `content-blocks.ts` | `BANNER_PLACEMENTS` | const | :36 | Fixed, code-known banner slots. |
+| `content-blocks.ts` | `BannerPlacementKey` | type | :38 | Fixed, code-known banner slots. |
+| `content-blocks.ts` | `MENU_KEYS` | const | :45 | Fixed, code-known menu slots for the two CMS-editable footer columns. |
+| `content-blocks.ts` | `MenuKey` | type | :47 | Fixed, code-known menu slots for the two CMS-editable footer columns. |
 | `discounts.ts` | `DiscountType` | type | :11 | The discount rules engine. |
 | `discounts.ts` | `DiscountScope` | type | :12 |  |
 | `discounts.ts` | `DiscountRule` | interface | :21 | A `Discount` row's shape, as `evaluateDiscounts` needs it — no id-only fields (createdAt, usageCoun… |
@@ -107,7 +116,9 @@ Every top-level export in `packages`, with the line to open.
 | `http-client.ts` | `request` | function | :116 | One request. |
 | `http-client.ts` | `requestWithRefresh` | function | :158 | Wraps `request` with a 401 retry. |
 | `human-code.ts` | `generateHumanCode` | function | :30 | A cryptographically random, human-readable code — never sequential. |
+| `index.ts` | `*` | re-export |  | from `./collection-rules` |
 | `index.ts` | `*` | re-export |  | from `./constants` |
+| `index.ts` | `*` | re-export |  | from `./content-blocks` |
 | `index.ts` | `*` | re-export |  | from `./discounts` |
 | `index.ts` | `*` | re-export |  | from `./enums` |
 | `index.ts` | `*` | re-export |  | from `./entities` |
@@ -116,7 +127,7 @@ Every top-level export in `packages`, with the line to open.
 | `index.ts` | `*` | re-export |  | from `./permissions` |
 | `index.ts` | `*` | re-export |  | from `./phone` |
 | `index.ts` | `*` | re-export |  | from `./pricing` |
-| `index.ts` | `*` | re-export |  | from `./secret-crypto` |
+| `index.ts` | `*` | re-export |  | from `./segment-filter` |
 | `index.ts` | `*` | re-export |  | from `./slug` |
 | `index.ts` | `*` | re-export |  | from `./sku` |
 | `index.ts` | `*` | re-export |  | from `./variant-matrix` |
@@ -132,15 +143,15 @@ Every top-level export in `packages`, with the line to open.
 | `permissions.ts` | `PermissionSensitivity` | type | :36 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PermissionDefinition` | interface | :38 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PERMISSION_CATALOG` | const | :45 |  |
-| `permissions.ts` | `PermissionKey` | type | :320 |  |
-| `permissions.ts` | `PERMISSION_KEYS` | const | :322 |  |
-| `permissions.ts` | `PermissionGroup` | interface | :332 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
-| `permissions.ts` | `PERMISSION_GROUPS` | const | :339 |  |
-| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :462 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
-| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :564 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
-| `permissions.ts` | `PERMISSION_EFFECTS` | const | :569 |  |
-| `permissions.ts` | `PermissionEffect` | type | :570 |  |
-| `permissions.ts` | `PermissionOverride` | interface | :573 | One entry in a user's permission-override set (@see UserPermission). |
+| `permissions.ts` | `PermissionKey` | type | :380 |  |
+| `permissions.ts` | `PERMISSION_KEYS` | const | :382 |  |
+| `permissions.ts` | `PermissionGroup` | interface | :392 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
+| `permissions.ts` | `PERMISSION_GROUPS` | const | :399 |  |
+| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :539 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
+| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :660 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
+| `permissions.ts` | `PERMISSION_EFFECTS` | const | :665 |  |
+| `permissions.ts` | `PermissionEffect` | type | :666 |  |
+| `permissions.ts` | `PermissionOverride` | interface | :669 | One entry in a user's permission-override set (@see UserPermission). |
 | `phone.ts` | `NormalizedPhone` | interface | :21 |  |
 | `phone.ts` | `normalizePhone` | function | :29 |  |
 | `phone.ts` | `isValidPhone` | function | :64 |  |
@@ -168,6 +179,8 @@ Every top-level export in `packages`, with the line to open.
 | `pricing.ts` | `weightedAverageCost` | function | :264 |  |
 | `secret-crypto.ts` | `encryptSecret` | function | :40 |  |
 | `secret-crypto.ts` | `decryptSecret` | function | :50 |  |
+| `segment-filter.ts` | `SegmentFilterCondition` | interface | :13 | The filter shape `Segment.filter` (crm.prisma) holds. |
+| `segment-filter.ts` | `SegmentFilter` | interface | :28 |  |
 | `sku.ts` | `SkuTemplateInput` | interface | :11 | SKU generation (WO-3.3, docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md). |
 | `sku.ts` | `generateSku` | function | :59 | Renders a SKU from the template, appending a zero-padded `{SEQ}` only when the un-numbered version… |
 | `slug.ts` | `slugify` | function | :6 | URL slugs. |

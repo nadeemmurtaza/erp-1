@@ -1203,3 +1203,43 @@ export interface StockTransferListResult {
   data: StockTransfer[];
   meta: { page: number; pageSize: number; total: number };
 }
+
+// --- Content (WO-8.1) -------------------------------------------------------
+
+export interface CmsBanner {
+  id: string;
+  placementKey: string;
+  imageUrl: string;
+  linkUrl: string | null;
+  translation?: { headline: string | null; subtext: string | null; altText: string | null };
+}
+
+export interface CmsPage {
+  id: string;
+  slug: string;
+  template: string;
+  translation?: { title: string; body: unknown[]; metaTitle: string | null; metaDescription: string | null };
+}
+
+export interface CmsPost {
+  id: string;
+  slug: string;
+  category: string | null;
+  tags: string[];
+  heroImageUrl: string | null;
+  publishedAt: string | null;
+  translation?: {
+    title: string;
+    body: unknown[];
+    excerpt: string | null;
+    metaTitle: string | null;
+    metaDescription: string | null;
+  };
+}
+
+export interface CmsMenuLink {
+  id: string;
+  parentId: string | null;
+  url: string;
+  label: string;
+}

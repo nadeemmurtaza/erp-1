@@ -112,7 +112,7 @@ model Product {
 
   /// SEO section, WO-3.7. `false` (default) means indexable — most products
   /// never need to touch this.
-  noindex Boolean @default(false)
+  noindex           Boolean @default(false)
   /// Rare override for a canonical URL other than this product's own page
   /// (e.g. a duplicate listing that should point elsewhere). Null (the
   /// common case) means "canonical to self", computed at render time.
@@ -146,21 +146,23 @@ model Product {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
-  category            Category?            @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  brand               Brand?               @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  category              Category?            @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  brand                 Brand?               @relation(fields: [brandId], references: [id], onDelete: SetNull)
   /// fulfilment.prisma (WO-6.1) — both core, same idiom as category/brand above.
-  shippingClass        ShippingClass?       @relation(fields: [shippingClassId], references: [id], onDelete: SetNull)
-  translations        ProductTranslation[]
-  variants            ProductVariant[]
-  options             ProductOption[]
-  images              ProductImage[]
+  shippingClass         ShippingClass?       @relation(fields: [shippingClassId], references: [id], onDelete: SetNull)
+  translations          ProductTranslation[]
+  variants              ProductVariant[]
+  options               ProductOption[]
+  images                ProductImage[]
   /// UNSTITCHED only: the garments this fabric may be stitched into.
-  garmentTypes        ProductGarmentType[]
-  cartItems           CartItem[]
-  orderItems          OrderItem[]
+  garmentTypes          ProductGarmentType[]
+  cartItems             CartItem[]
+  orderItems            OrderItem[]
   /// Carts/orders where this product was chosen as the stitching service.
-  cartItemsAsService  CartItem[]           @relation("CartItemStitchingService")
-  orderItemsAsService OrderItem[]          @relation("OrderItemStitchingService")
+  cartItemsAsService    CartItem[]           @relation("CartItemStitchingService")
+  orderItemsAsService   OrderItem[]          @relation("OrderItemStitchingService")
+  /// collections.prisma section below (WO-8.2).
+  collectionMemberships CollectionProduct[]
 
   @@index([status, kind])
   @@index([categoryId])
@@ -180,6 +182,17 @@ model ProductTranslation {
   /// The term the SEO checklist scores this locale's copy against — never
   /// shown to a customer. WO-3.7, 03-variants-sku-seo.md.
   focusKeyword     String?
+
+  /// WO-8.3 (08-content-marketing-search.md). Precomputed by
+  /// SearchService.reindexProduct() on every write to this row or to the
+  /// product/category/brand/tags it's derived from — a `VariantSalesStat`-
+  /// style cache, not a live-computed column. `Unsupported`: Prisma has no
+  /// tsvector type, so every read and write of it goes through raw SQL in
+  /// SearchService, never the generated client. Locale-aware: 'english' text
+  /// search config for `en`, 'simple' for `ur` — Postgres ships no Urdu
+  /// stemmer, and 'simple' (token match, no stemming) is the honest choice
+  /// over silently running Urdu text through the English one.
+  searchVector Unsupported("tsvector")?
 
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
@@ -233,11 +246,11 @@ model ProductVariant {
 
   /// bom.prisma's RawMaterial (WO-C.1) — set only when this variant IS a raw
   /// material, not one built from them.
-  rawMaterial RawMaterial?
+  rawMaterial  RawMaterial?
   /// bom.prisma's BomRecipe (WO-C.2) — set only when this variant IS BUILT
   /// FROM raw materials. A variant is at most one of rawMaterial/bomRecipe,
   /// enforced in recipe.service.ts (no nesting in v1).
-  bomRecipe   BomRecipe?
+  bomRecipe    BomRecipe?
   /// Every BomProductionRun that has credited this variant's stock (WO-C.3).
   producedRuns BomProductionRun[] @relation("BomProducedVariant")
 
@@ -451,7 +464,7 @@ model OptionTemplateValue {
   swatchUrl  String?
   order      Int     @default(0)
 
-  template     OptionTemplate                    @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  template     OptionTemplate                   @relation(fields: [templateId], references: [id], onDelete: Cascade)
   translations OptionTemplateValueTranslation[]
 
   @@unique([templateId, key])
@@ -473,12 +486,12 @@ model OptionTemplateValueTranslation {
 /// when a live product/category slug changes, or entered by hand (including
 /// a CSV import when migrating an old site). WO-3.9, 03-variants-sku-seo.md.
 model Redirect {
-  id        String   @id @default(cuid())
+  id          String   @id @default(cuid())
   /// Path only, no host, no locale prefix: "/product/old-slug". The locale
   /// segment is stripped before lookup and reapplied to `toPath` on 301,
   /// since a slug is shared across locales (Product.slug is not per-locale).
-  fromPath  String   @unique
-  toPath    String
+  fromPath    String   @unique
+  toPath      String
   /// 301 permanent or 302 temporary.
   statusCode  Int      @default(301)
   /// True when created automatically by a slug change.
@@ -487,4 +500,75 @@ model Redirect {
   createdAt   DateTime @default(now())
 
   @@index([isAutomatic])
+}
+
+// Collections and merchandising. WO-8.2,
+// docs/implementation/content-marketing-search/08-content-marketing-search.md.
+//
+// Separate from the Category tree deliberately (the doc's own words): a
+// Category is where a product structurally lives; a Collection is a curated
+// or rule-based merchandising surface — a lookbook, a seasonal drop, a
+// "complete the look" set — that cuts across categories.
+
+enum CollectionSortStrategy {
+  MANUAL
+  BEST_SELLING
+  NEWEST
+  PRICE_ASC
+  PRICE_DESC
+  /// Sort by margin (basePrice - ProductVariant.costPrice). Needs Phase 1's
+  /// cost data, which is exactly why most platforms cannot offer this.
+  MARGIN
+}
+
+model Collection {
+  id           String                 @id @default(cuid())
+  slug         String                 @unique
+  /// Null: manual/curated membership only (CollectionProduct rows). Non-null:
+  /// evaluated at read time by CollectionsService.resolveRuleProducts() —
+  /// shape is `CollectionRule` in packages/shared/src/collection-rules.ts.
+  /// Nightly materialisation for a very large catalogue is named and
+  /// sequenced as its own follow-on in the Phase 8 status note, not built
+  /// here — read-time evaluation is the honest, correct choice at this
+  /// catalogue's size today.
+  rule         Json?
+  sortStrategy CollectionSortStrategy @default(MANUAL)
+  imageUrl     String?
+  isActive     Boolean                @default(true)
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+
+  translations CollectionTranslation[]
+  products     CollectionProduct[]
+
+  @@index([isActive])
+}
+
+model CollectionTranslation {
+  id              String  @id @default(cuid())
+  collectionId    String
+  locale          String
+  name            String
+  description     String?
+  metaTitle       String?
+  metaDescription String?
+
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  @@unique([collectionId, locale])
+}
+
+/// Manual membership and manual sort order. Unused for a rule-based
+/// collection — resolveRuleProducts() computes membership from
+/// Collection.rule at read time instead of reading this table.
+model CollectionProduct {
+  collectionId String
+  productId    String
+  order        Int    @default(0)
+
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  product    Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@id([collectionId, productId])
+  @@index([productId])
 }

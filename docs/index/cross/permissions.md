@@ -3,7 +3,7 @@
 
 # Permissions
 
-All **50** permissions in `PERMISSION_CATALOG`, mapped to the routes that enforce them, the UI that checks them, and the seed that grants them.
+All **60** permissions in `PERMISSION_CATALOG`, mapped to the routes that enforce them, the UI that checks them, and the seed that grants them.
 
 
 Catalogue: `packages/shared/src/permissions.ts` ·
@@ -22,7 +22,7 @@ the *catalogue*, not any particular deployment's grants.
 | `Roles granted at seed` = none | `ROLE_PERMISSION_SEED` gives it to no role, so no live user holds it unless an admin grants it by hand — the `seedPermissions()` vs `seedRoles()` trap CLAUDE.md names |
 | `UI call sites` = — | nothing in the admin UI gates on it; if a screen needs it, the screen is missing |
 
-- Permissions enforcing **no route**: **2** — `stitching.jobs.manage_own`, `stitching.jobs.manage_all`
+- Permissions enforcing **no route**: **10** — `stitching.jobs.manage_own`, `stitching.jobs.manage_all`, `collections.view`, `collections.manage`, `search.view`, `search.manage`, `campaigns.view`, `campaigns.manage`, `onsitemessages.view`, `onsitemessages.manage`
 - Permissions **no seeded role grants**: **0**
 - Keys required by a route but **not in the catalogue**: **0**
 
@@ -142,6 +142,16 @@ the *catalogue*, not any particular deployment's grants.
 | `promotions.manage` | Create and edit discounts and promo codes | medium | 8 | — | STAFF, ADMIN |
 | `giftcards.view` | View gift cards, their ledgers and store credit balances | medium | 3 | 2 | STAFF, ADMIN |
 | `giftcards.manage` | Issue, cancel and adjust gift cards and store credit — real money | high | 3 | — | ADMIN |
+| `content.view` | View pages, blog posts, banners and menus | low | 6 | 1 | STAFF, ADMIN |
+| `content.manage` | Publish pages and posts, and edit banners and menus | medium | 18 | 1 | STAFF, ADMIN |
+| `collections.view` | View collections and their membership | low | **0 — enforces nothing** | 1 | STAFF, ADMIN |
+| `collections.manage` | Create and curate collections | medium | **0 — enforces nothing** | 1 | STAFF, ADMIN |
+| `search.view` | View the zero-result search report | low | **0 — enforces nothing** | 1 | STAFF, ADMIN |
+| `search.manage` | Edit search synonyms | low | **0 — enforces nothing** | 1 | STAFF, ADMIN |
+| `campaigns.view` | View campaigns and their send/open/click stats | low | **0 — enforces nothing** | 1 | STAFF, ADMIN |
+| `campaigns.manage` | Create, schedule and send campaigns to a customer segment | high | **0 — enforces nothing** | 1 | ADMIN |
+| `onsitemessages.view` | View on-site announcement bars, popups and newsletter capture | low | **0 — enforces nothing** | 1 | STAFF, ADMIN |
+| `onsitemessages.manage` | Create and schedule on-site announcement bars, popups and newsletter capture | low | **0 — enforces nothing** | 1 | STAFF, ADMIN |
 
 
 ## Role → permission, as seeded
@@ -156,8 +166,8 @@ their own `UserPermission` GRANT/REVOKE overrides applied on top
 |---|---|---|
 | `CUSTOMER` | 1 | `account.change_own_password` |
 | `TAILOR` | 5 | `account.change_own_password` `payroll.view_own` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_own` |
-| `STAFF` | 33 | `account.change_own_password` `payroll.view_own` `analytics.view` `reports.view` `organization.view` `crm.manage` `orders.manage` `payments.approve` `pos.operate` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.produce` `promotions.view` `promotions.manage` `giftcards.view` |
-| `ADMIN` | 49 | `account.change_own_password` `payroll.view_own` `payroll.view` `payroll.manage` `analytics.view` `reports.view` `organization.view` `organization.manage` `accounting.view` `crm.manage` `orders.manage` `payments.approve` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.view_cost` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.manage` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.manage` `bom.produce` `settings.manage` `roles.manage_permissions` `audit.view` `users.manage` `tax.manage` `marketing.manage` `accounting.manage_periods` `pos.manage` `pos.operate` `promotions.view` `promotions.manage` `giftcards.view` `giftcards.manage` |
+| `STAFF` | 42 | `account.change_own_password` `payroll.view_own` `analytics.view` `reports.view` `organization.view` `crm.manage` `orders.manage` `payments.approve` `pos.operate` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.produce` `promotions.view` `promotions.manage` `giftcards.view` `content.view` `content.manage` `collections.view` `collections.manage` `search.view` `search.manage` `campaigns.view` `onsitemessages.view` `onsitemessages.manage` |
+| `ADMIN` | 59 | `account.change_own_password` `payroll.view_own` `payroll.view` `payroll.manage` `analytics.view` `reports.view` `organization.view` `organization.manage` `accounting.view` `crm.manage` `orders.manage` `payments.approve` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.view_cost` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.manage` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.manage` `bom.produce` `settings.manage` `roles.manage_permissions` `audit.view` `users.manage` `tax.manage` `marketing.manage` `accounting.manage_periods` `pos.manage` `pos.operate` `promotions.view` `promotions.manage` `giftcards.view` `giftcards.manage` `content.view` `content.manage` `collections.view` `collections.manage` `search.view` `search.manage` `campaigns.view` `campaigns.manage` `onsitemessages.view` `onsitemessages.manage` |
 
 
 ## Admin nav → permission

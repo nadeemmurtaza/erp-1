@@ -54,7 +54,7 @@ against a real database.
 
 Indexes: `@@index([isActive, startsAt, endsAt])`
 
-### `OrderDiscount`  <sub>`apps/api/prisma/schema/promotions.prisma:93`</sub>
+### `OrderDiscount`  <sub>`apps/api/prisma/schema/promotions.prisma:95`</sub>
 
 > Which discounts an order actually received, so it can explain itself.
 
@@ -88,6 +88,7 @@ Indexes: `@@index([orderId])`
 | `batchId` | `String?` | optional |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `discount` | `Discount` | relation | @relation(fields: [discountId], references: [id], onDelete: Cascade) |
+| `carts` | `Cart[]` |  |  |
 
 Indexes: `@@index([discountId])` · `@@index([batchId])`
 

@@ -3,7 +3,7 @@
 
 # Files — packages
 
-All 64 tracked files in `packages/*`, by directory.
+All 67 tracked files in `packages/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -46,15 +46,17 @@ All 64 tracked files in `packages/*`, by directory.
 |---|---|---|---|
 | `eslint.config.mjs` | script | 4 |  |
 | `jest.config.js` | script | 13 | @type {import('jest').Config} |
-| `package.json` | json | 37 |  |
+| `package.json` | json | 41 |  |
 | `tsconfig.json` | json | 17 |  |
 
-### `packages/shared/src` (28)
+### `packages/shared/src` (31)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `brand.ts` | module | 334 | THE BRAND FILE. |
+| `collection-rules.ts` | module | 16 | The rule shape `Collection.rule` (catalog.prisma, WO-8.2) holds when a collection is rule-based rather than manually cu… |
 | `constants.ts` | module | 146 |  |
+| `content-blocks.ts` | module | 48 | The block-based body shared by `Page` and `BlogPost` (WO-8.1). |
 | `discounts.spec.ts` | unit test | 215 |  |
 | `discounts.ts` | module | 322 | The discount rules engine. |
 | `enums.ts` | module | 104 | Enum values mirrored from the Prisma schema. |
@@ -62,15 +64,16 @@ All 64 tracked files in `packages/*`, by directory.
 | `fabric-estimate.ts` | module | 95 | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
 | `http-client.ts` | module | 200 | The one HTTP layer for a signed-in browser client. |
 | `human-code.ts` | module | 37 | No O/0, no I/1/l — the ambiguous-character exclusion both PromoCode's bulk generation and GiftCard's own code need (05-… |
-| `index.ts` | module | 23 |  |
+| `index.ts` | module | 36 |  |
 | `permissions.spec.ts` | unit test | 68 |  |
-| `permissions.ts` | module | 577 | The permission catalog for PBAC (Permission-Based Access Control). |
+| `permissions.ts` | module | 673 | The permission catalog for PBAC (Permission-Based Access Control). |
 | `phone.spec.ts` | unit test | 65 |  |
 | `phone.ts` | module | 82 |  |
 | `pricing.spec.ts` | unit test | 307 |  |
 | `pricing.ts` | module | 275 | Order maths. |
 | `secret-crypto.spec.ts` | unit test | 36 |  |
 | `secret-crypto.ts` | module | 65 |  |
+| `segment-filter.ts` | module | 31 | The filter shape `Segment.filter` (crm.prisma) holds. |
 | `sku.spec.ts` | unit test | 52 |  |
 | `sku.ts` | module | 80 | SKU generation (WO-3.3, docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md). |
 | `slug.ts` | module | 44 | URL slugs. |

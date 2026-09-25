@@ -3,7 +3,7 @@
 
 # Data model
 
-All **168** Prisma models and **69** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **187** Prisma models and **76** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -28,7 +28,8 @@ against a real database.
 | [`accounting.prisma`](../data/accounting.md) | 6 | 3 | [`accounting`](../modules/accounting.md) | Account, FiscalPeriod, FiscalYear, JournalEntry, JournalEntryNumberCounter, JournalLine |
 | [`bom.prisma`](../data/bom.md) | 5 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomProductionLine, BomProductionRun, BomRecipe, RawMaterial |
 | [`cart.prisma`](../data/cart.md) | 3 | 0 | [`cart`](../modules/cart.md) | Cart, CartItem, CartItemStitchingOption |
-| [`catalog.prisma`](../data/catalog.md) | 21 | 3 | [`catalog`](../modules/catalog.md) | Brand, BrandTranslation, Category, CategoryTranslation, OptionTemplate, OptionTemplateTranslation, OptionTemplateValue, OptionTem… |
+| [`catalog.prisma`](../data/catalog.md) | 24 | 4 | [`catalog`](../modules/catalog.md) | Brand, BrandTranslation, Category, CategoryTranslation, Collection, CollectionProduct, CollectionTranslation, OptionTemplate, Opt… |
+| [`content.prisma`](../data/content.md) | 8 | 1 | [`content`](../modules/content.md) | Banner, BannerTranslation, BlogPost, BlogPostTranslation, MenuItem, MenuItemTranslation, Page, PageTranslation |
 | [`core.prisma`](../data/core.md) | 17 | 6 | foundational | Address, AnalyticsEvent, AuditLog, DeviceToken, EmailAccount, EmailVerificationToken, OutboxEvent, PasswordResetToken, Permission… |
 | [`crm.prisma`](../data/crm.md) | 9 | 3 | [`crm`](../modules/crm.md) | Contact, ContactTag, FollowUpTask, InboundEmail, InboundEmailReply, Interaction, Lead, Segment, Tag |
 | [`finance.prisma`](../data/finance.md) | 3 | 1 | [`finance`](../modules/finance.md) | Expense, ExpenseCategory, OrderEconomics |
@@ -37,7 +38,9 @@ against a real database.
 | [`identity-verification.prisma`](../data/identity-verification.md) | 1 | 1 | [`identity-verification`](../modules/identity-verification.md) | IdentityVerification |
 | [`inventory.prisma`](../data/inventory.md) | 7 | 4 | [`inventory`](../modules/inventory.md) | Location, StockCount, StockCountLine, StockMovement, StockVariance, VariantLocationStock, VariantSalesStat |
 | [`invoicing.prisma`](../data/invoicing.md) | 4 | 2 | core platform | Invoice, InvoiceLine, Quote, QuoteLine |
+| [`marketing.prisma`](../data/marketing.md) | 3 | 3 | [`marketing`](../modules/marketing.md) | Campaign, CampaignRecipient, PhoneOptOut |
 | [`measurements.prisma`](../data/measurements.md) | 4 | 1 | [`measurements`](../modules/measurements.md) | GarmentSizeChart, GarmentType, MeasurementField, MeasurementProfile |
+| [`onsite-messaging.prisma`](../data/onsite-messaging.md) | 3 | 2 | core platform | NewsletterSubscriber, OnsiteMessage, OnsiteMessageTranslation |
 | [`orders.prisma`](../data/orders.md) | 5 | 4 | [`orders`](../modules/orders.md) | Order, OrderItem, OrderNumberCounter, OrderStatusEvent, Shipment |
 | [`organization.prisma`](../data/organization.md) | 5 | 3 | [`organization`](../modules/organization.md) | AdminScope, BrandPolicy, Node, Organization, RetailBrand |
 | [`parties.prisma`](../data/parties.md) | 2 | 1 | [`parties`](../modules/parties.md) | Party, PartyRoleAssignment |
@@ -49,6 +52,7 @@ against a real database.
 | [`promotions.prisma`](../data/promotions.md) | 3 | 2 | [`promotions`](../modules/promotions.md) | Discount, OrderDiscount, PromoCode |
 | [`purchasing.prisma`](../data/purchasing.md) | 7 | 2 | [`purchasing`](../modules/purchasing.md) | GoodsReceipt, GoodsReceiptItem, PurchaseOrder, PurchaseOrderItem, Supplier, SupplierBill, SupplierProduct |
 | [`replication.prisma`](../data/replication.md) | 5 | 4 | core platform | PolicyQuarantine, ReplicationCursor, ReplicationQuarantine, ReplicationRecord, ReplicationSequenceCounter |
+| [`search.prisma`](../data/search.md) | 2 | 0 | core platform | SearchQueryLog, SearchSynonym |
 | [`stitching.prisma`](../data/stitching.md) | 8 | 3 | [`stitching`](../modules/stitching.md) | StitchingJob, StitchingJobEvent, StitchingJobNumberCounter, StitchingOption, StitchingOptionGroup, StitchingOrder, StitchingOrder… |
 | [`tax.prisma`](../data/tax.md) | 2 | 0 | [`tax`](../modules/tax.md) | TaxClass, TaxRate |
 | [`trading-partners.prisma`](../data/trading-partners.md) | 2 | 2 | core platform | Offer, TradingPartner |
@@ -64,8 +68,12 @@ against a real database.
 | [`AdminScope`](../data/organization.md#adminscope) | `organization` | 9 | 3 | id | What a user's admin access is scoped to (R10) — never a role check (House Rule 9 forbids… |
 | [`AnalyticsEvent`](../data/core.md#analyticsevent) | `core` | 7 | 0 | id | Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started. |
 | [`AuditLog`](../data/core.md#auditlog) | `core` | 9 | 1 | id |  |
+| [`Banner`](../data/content.md#banner) | `content` | 11 | 0 | id |  |
+| [`BannerTranslation`](../data/content.md#bannertranslation) | `content` | 7 | 1 | id |  |
 | [`BillOfMaterial`](../data/production.md#billofmaterial) | `production` | 8 | 1 | id | One recipe per produced variant: how many of each component variant it takes to make one… |
 | [`BillOfMaterialLine`](../data/production.md#billofmaterialline) | `production` | 6 | 2 | id |  |
+| [`BlogPost`](../data/content.md#blogpost) | `content` | 13 | 1 | id |  |
+| [`BlogPostTranslation`](../data/content.md#blogposttranslation) | `content` | 10 | 1 | id |  |
 | [`BomComponent`](../data/bom.md#bomcomponent) | `bom` | 10 | 2 | id |  |
 | [`BomProductionLine`](../data/bom.md#bomproductionline) | `bom` | 9 | 2 | id | One raw-material line consumed by a production run — the same SNAPSHOT discipline as the… |
 | [`BomProductionRun`](../data/bom.md#bomproductionrun) | `bom` | 21 | 3 | id | One production run: the recipe was run N times, consuming raw stock and crediting finishe… |
@@ -73,14 +81,19 @@ against a real database.
 | [`Brand`](../data/catalog.md#brand) | `catalog` | 9 | 0 | id | A label a product is sold under. |
 | [`BrandPolicy`](../data/organization.md#brandpolicy) | `organization` | 8 | 1 | id | Per-brand policy switches (R9) — what R9 calls `brand.allow_branch_product_creation` and… |
 | [`BrandTranslation`](../data/catalog.md#brandtranslation) | `catalog` | 6 | 1 | id | House Rule 6: a customer-facing name is a translation row, not a column. |
-| [`Cart`](../data/cart.md#cart) | `cart` | 10 | 1 | id | Cart. |
+| [`Campaign`](../data/marketing.md#campaign) | `marketing` | 14 | 2 | id |  |
+| [`CampaignRecipient`](../data/marketing.md#campaignrecipient) | `marketing` | 10 | 2 | id |  |
+| [`Cart`](../data/cart.md#cart) | `cart` | 16 | 2 | id | Cart. |
 | [`CartItem`](../data/cart.md#cartitem) | `cart` | 19 | 4 | id |  |
 | [`CartItemStitchingOption`](../data/cart.md#cartitemstitchingoption) | `cart` | 4 | 2 | — |  |
 | [`CashMovement`](../data/pos.md#cashmovement) | `pos` | 8 | 1 | id | One physical cash movement at the drawer during a shift — always a positive `amountMinor`… |
 | [`Category`](../data/catalog.md#category) | `catalog` | 13 | 2 | id |  |
 | [`CategoryTranslation`](../data/catalog.md#categorytranslation) | `catalog` | 6 | 1 | id |  |
+| [`Collection`](../data/catalog.md#collection) | `catalog` | 10 | 0 | id |  |
+| [`CollectionProduct`](../data/catalog.md#collectionproduct) | `catalog` | 5 | 2 | — | Manual membership and manual sort order. |
+| [`CollectionTranslation`](../data/catalog.md#collectiontranslation) | `catalog` | 8 | 1 | id |  |
 | [`CompensationRate`](../data/payroll.md#compensationrate) | `payroll` | 11 | 2 | id | One row per rate change, never updated in place — effectiveFrom is what lets a pay-run bu… |
-| [`Contact`](../data/crm.md#contact) | `crm` | 29 | 2 | id |  |
+| [`Contact`](../data/crm.md#contact) | `crm` | 35 | 2 | id |  |
 | [`ContactTag`](../data/crm.md#contacttag) | `crm` | 4 | 2 | — |  |
 | [`DeviceToken`](../data/core.md#devicetoken) | `core` | 9 | 1 | id | A push notification target: one installation of the mobile app. |
 | [`Discount`](../data/promotions.md#discount) | `promotions` | 27 | 0 | id |  |
@@ -118,13 +131,18 @@ against a real database.
 | [`ManifestNumberCounter`](../data/fulfilment.md#manifestnumbercounter) | `fulfilment` | 2 | 0 | year |  |
 | [`MeasurementField`](../data/measurements.md#measurementfield) | `measurements` | 14 | 1 | id |  |
 | [`MeasurementProfile`](../data/measurements.md#measurementprofile) | `measurements` | 10 | 1 | id | A saved set of measurements: "Ammi – kameez", "Self – shalwar". |
+| [`MenuItem`](../data/content.md#menuitem) | `content` | 11 | 2 | id | A tree per named slot (`menuKey`: "footer_help", "footer_about", …) — see MENU_KEYS in pa… |
+| [`MenuItemTranslation`](../data/content.md#menuitemtranslation) | `content` | 5 | 1 | id |  |
+| [`NewsletterSubscriber`](../data/onsite-messaging.md#newslettersubscriber) | `onsite-messaging` | 6 | 0 | id | A distinct, lightweight capture list — not folded into Contact. |
 | [`Node`](../data/organization.md#node) | `organization` | 13 | 1 | id | A child node this deployment knows about — a brand's branches, or an organization's brand… |
 | [`Offer`](../data/trading-partners.md#offer) | `trading-partners` | 7 | 0 | id | A marketing push to the retail end of the chain (WO-18.3's third "forth" document, alongs… |
+| [`OnsiteMessage`](../data/onsite-messaging.md#onsitemessage) | `onsite-messaging` | 14 | 1 | id |  |
+| [`OnsiteMessageTranslation`](../data/onsite-messaging.md#onsitemessagetranslation) | `onsite-messaging` | 7 | 1 | id |  |
 | [`OptionTemplate`](../data/catalog.md#optiontemplate) | `catalog` | 7 | 0 | id | Store-level, reusable option axis — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue ->… |
 | [`OptionTemplateTranslation`](../data/catalog.md#optiontemplatetranslation) | `catalog` | 5 | 1 | id |  |
 | [`OptionTemplateValue`](../data/catalog.md#optiontemplatevalue) | `catalog` | 8 | 1 | id |  |
 | [`OptionTemplateValueTranslation`](../data/catalog.md#optiontemplatevaluetranslation) | `catalog` | 5 | 1 | id |  |
-| [`Order`](../data/orders.md#order) | `orders` | 48 | 4 | id |  |
+| [`Order`](../data/orders.md#order) | `orders` | 50 | 5 | id |  |
 | [`OrderDiscount`](../data/promotions.md#orderdiscount) | `promotions` | 10 | 2 | id | Which discounts an order actually received, so it can explain itself. |
 | [`OrderEconomics`](../data/finance.md#ordereconomics) | `finance` | 12 | 1 | orderId | One row per order, written when it reaches DELIVERED and recomputed if it is later RETURN… |
 | [`OrderItem`](../data/orders.md#orderitem) | `orders` | 37 | 4 | id |  |
@@ -132,6 +150,8 @@ against a real database.
 | [`OrderStatusEvent`](../data/orders.md#orderstatusevent) | `orders` | 9 | 2 | id |  |
 | [`Organization`](../data/organization.md#organization) | `organization` | 6 | 0 | id | The top tier — the owner's group, run by a super admin from one dashboard (Part 1). |
 | [`OutboxEvent`](../data/core.md#outboxevent) | `core` | 9 | 0 | id | Transactional outbox. |
+| [`Page`](../data/content.md#page) | `content` | 9 | 0 | id |  |
+| [`PageTranslation`](../data/content.md#pagetranslation) | `content` | 9 | 1 | id |  |
 | [`Party`](../data/parties.md#party) | `parties` | 16 | 0 | id |  |
 | [`PartyRoleAssignment`](../data/parties.md#partyroleassignment) | `parties` | 4 | 1 | id |  |
 | [`PasswordResetToken`](../data/core.md#passwordresettoken) | `core` | 7 | 1 | id | A one-time token mailed to reset a forgotten password. |
@@ -141,6 +161,7 @@ against a real database.
 | [`PayRunLine`](../data/payroll.md#payrunline) | `payroll` | 13 | 3 | id | One line per employee per run. |
 | [`PayRunNumberCounter`](../data/payroll.md#payrunnumbercounter) | `payroll` | 2 | 0 | year | The eighth document-number counter (document-prefix.ts), same INSERT ... |
 | [`Permission`](../data/core.md#permission) | `core` | 8 | 0 | id | A single grantable capability, e.g. |
+| [`PhoneOptOut`](../data/marketing.md#phoneoptout) | `marketing` | 2 | 0 | phoneE164 | The phone-number equivalent of User.marketingEmailOptOut's unsubscribe link. |
 | [`PlatformOpsClient`](../data/platform.md#platformopsclient) | `platform` | 8 | 0 | id | A key-hash principal for internal hosting-ops tooling calling this control plane — the sa… |
 | [`PlatformPlan`](../data/platform.md#platformplan) | `platform` | 8 | 0 | id |  |
 | [`PlatformSubscription`](../data/platform.md#platformsubscription) | `platform` | 8 | 2 | id |  |
@@ -150,7 +171,7 @@ against a real database.
 | [`PosReceipt`](../data/pos.md#posreceipt) | `pos` | 5 | 0 | id | One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService… |
 | [`PosShift`](../data/pos.md#posshift) | `pos` | 11 | 1 | id | One cashier's stretch at one terminal, opened with a cash float and closed with a physica… |
 | [`PosTerminal`](../data/pos.md#posterminal) | `pos` | 10 | 0 | id | A physical till. |
-| [`Product`](../data/catalog.md#product) | `catalog` | 36 | 5 | id |  |
+| [`Product`](../data/catalog.md#product) | `catalog` | 37 | 5 | id |  |
 | [`ProductGarmentType`](../data/catalog.md#productgarmenttype) | `catalog` | 3 | 1 | — | Which garments a given unstitched fabric can be made into. |
 | [`ProductImage`](../data/catalog.md#productimage) | `catalog` | 11 | 2 | id |  |
 | [`ProductImageTranslation`](../data/catalog.md#productimagetranslation) | `catalog` | 5 | 1 | id | Alt text per locale. |
@@ -158,10 +179,10 @@ against a real database.
 | [`ProductOptionTranslation`](../data/catalog.md#productoptiontranslation) | `catalog` | 5 | 1 | id |  |
 | [`ProductOptionValue`](../data/catalog.md#productoptionvalue) | `catalog` | 9 | 1 | id | A specific value on an option axis: "M", "Ferozi", "128GB". |
 | [`ProductOptionValueTranslation`](../data/catalog.md#productoptionvaluetranslation) | `catalog` | 5 | 1 | id |  |
-| [`ProductTranslation`](../data/catalog.md#producttranslation) | `catalog` | 10 | 1 | id |  |
+| [`ProductTranslation`](../data/catalog.md#producttranslation) | `catalog` | 11 | 1 | id |  |
 | [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 45 | 5 | id |  |
 | [`ProductVariantOptionValue`](../data/catalog.md#productvariantoptionvalue) | `catalog` | 5 | 2 | — | The join that DEFINES a variant: one row per option axis per variant. |
-| [`PromoCode`](../data/promotions.md#promocode) | `promotions` | 11 | 1 | id |  |
+| [`PromoCode`](../data/promotions.md#promocode) | `promotions` | 12 | 1 | id |  |
 | [`PurchaseOrder`](../data/purchasing.md#purchaseorder) | `purchasing` | 25 | 2 | id |  |
 | [`PurchaseOrderItem`](../data/purchasing.md#purchaseorderitem) | `purchasing` | 11 | 2 | id |  |
 | [`Quote`](../data/invoicing.md#quote) | `invoicing` | 9 | 0 | id |  |
@@ -182,7 +203,9 @@ against a real database.
 | [`Role`](../data/core.md#role) | `core` | 7 | 0 | id | A named, reusable bundle of permissions a super admin defines — "roles are data, not code… |
 | [`RoleGrant`](../data/core.md#rolegrant) | `core` | 6 | 2 | id | Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermis… |
 | [`RolePermission`](../data/core.md#rolepermission) | `core` | 5 | 1 | id | Which roles currently hold a given permission. |
-| [`Segment`](../data/crm.md#segment) | `crm` | 8 | 1 | id | A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — stored as a filt… |
+| [`SearchQueryLog`](../data/search.md#searchquerylog) | `search` | 6 | 0 | id | No FK to User: most rows are anonymous storefront visitors, and a search log at this volu… |
+| [`SearchSynonym`](../data/search.md#searchsynonym) | `search` | 5 | 0 | id | Search. |
+| [`Segment`](../data/crm.md#segment) | `crm` | 10 | 1 | id | A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — stored as a filt… |
 | [`Setting`](../data/core.md#setting) | `core` | 4 | 0 | key | Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fe… |
 | [`Shipment`](../data/orders.md#shipment) | `orders` | 26 | 3 | id |  |
 | [`ShipmentEvent`](../data/fulfilment.md#shipmentevent) | `fulfilment` | 7 | 1 | id | The tracking timeline — one row per status change, courier's raw string kept in `meta` fo… |
@@ -220,7 +243,7 @@ against a real database.
 | [`TenantDeploymentCredential`](../data/platform.md#tenantdeploymentcredential) | `platform` | 6 | 1 | id | The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GC… |
 | [`TradingPartner`](../data/trading-partners.md#tradingpartner) | `trading-partners` | 15 | 0 | id | The business on the other end of a document exchange. |
 | [`TransferNumberCounter`](../data/transfers.md#transfernumbercounter) | `transfers` | 2 | 0 | year | Same shape as OrderNumberCounter (orders.prisma) — an `INSERT ... |
-| [`User`](../data/core.md#user) | `core` | 63 | 22 | id |  |
+| [`User`](../data/core.md#user) | `core` | 65 | 22 | id |  |
 | [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | A per-user adjustment layered on top of their role's grants: GRANT adds a permission thei… |
 | [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | Which `Role` rows a user holds. |
 | [`VariantLocationStock`](../data/inventory.md#variantlocationstock) | `inventory` | 6 | 2 | — | Stock, per variant, per location. |
@@ -236,9 +259,14 @@ against a real database.
 | [`AccountType`](../data/accounting.md#accounttype) | `accounting` | `ASSET` `LIABILITY` `EQUITY` `INCOME` `EXPENSE` |
 | [`AdminScopeLevel`](../data/organization.md#adminscopelevel) | `organization` | `ORG` `BRAND` `BRANCH` |
 | [`BomStatus`](../data/bom.md#bomstatus) | `bom` | `DRAFT` `ACTIVE` `ARCHIVED` |
+| [`CampaignChannel`](../data/marketing.md#campaignchannel) | `marketing` | `EMAIL` `SMS` `WHATSAPP` |
+| [`CampaignRecipientStatus`](../data/marketing.md#campaignrecipientstatus) | `marketing` | `PENDING` `SENT` `SKIPPED_OPT_OUT` `SKIPPED_NO_CONTACT` `FAILED` `OPENED` `CLICKED` |
+| [`CampaignStatus`](../data/marketing.md#campaignstatus) | `marketing` | `DRAFT` `SCHEDULED` `SENDING` `SENT` `CANCELLED` |
 | [`CashMovementType`](../data/pos.md#cashmovementtype) | `pos` | `OPENING_FLOAT` `CASH_IN` `CASH_OUT` `DROP` `PAID_OUT` |
+| [`CollectionSortStrategy`](../data/catalog.md#collectionsortstrategy) | `catalog` | `MANUAL` `BEST_SELLING` `NEWEST` `PRICE_ASC` `PRICE_DESC` `MARGIN` |
 | [`CompensationBasis`](../data/payroll.md#compensationbasis) | `payroll` | `MONTHLY` `HOURLY` `COMMISSION` |
 | [`ContactStatus`](../data/crm.md#contactstatus) | `crm` | `LEAD` `ACTIVE` `REPEAT` `DORMANT` `BLOCKED` |
+| [`ContentStatus`](../data/content.md#contentstatus) | `content` | `DRAFT` `PUBLISHED` `ARCHIVED` |
 | [`DevicePlatform`](../data/core.md#deviceplatform) | `core` | `IOS` `ANDROID` `WEB` |
 | [`DiscountScope`](../data/promotions.md#discountscope) | `promotions` | `ORDER` `PRODUCT` `CATEGORY` `COLLECTION` `SHIPPING` |
 | [`DiscountType`](../data/promotions.md#discounttype) | `promotions` | `PERCENTAGE` `FIXED_AMOUNT` `FREE_SHIPPING` `BUY_X_GET_Y` `TIERED` |
@@ -258,6 +286,8 @@ against a real database.
 | [`MeasurementUnit`](../data/measurements.md#measurementunit) | `measurements` | `INCH` `CM` |
 | [`NodeRole`](../data/organization.md#noderole) | `organization` | `BRANCH` `BRAND` |
 | [`NodeStatus`](../data/organization.md#nodestatus) | `organization` | `ACTIVE` `SUSPENDED` |
+| [`OnsiteMessageKind`](../data/onsite-messaging.md#onsitemessagekind) | `onsite-messaging` | `ANNOUNCEMENT_BAR` `POPUP` `NEWSLETTER_CAPTURE` `COOKIE_CONSENT` |
+| [`OnsitePopupTrigger`](../data/onsite-messaging.md#onsitepopuptrigger) | `onsite-messaging` | `IMMEDIATE` `TIMED` `EXIT_INTENT` |
 | [`OpsClientStatus`](../data/platform.md#opsclientstatus) | `platform` | `ACTIVE` `REVOKED` |
 | [`OptionDisplay`](../data/catalog.md#optiondisplay) | `catalog` | `BUTTON` `DROPDOWN` `SWATCH` `TEXT` |
 | [`OrderChannel`](../data/orders.md#orderchannel) | `orders` | `WEB` `POS` |

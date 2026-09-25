@@ -3,7 +3,7 @@
 
 # Components
 
-All **78** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **79** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 132 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 133 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 4 |  |
 
 ### `apps/pos/src/components` (2)
@@ -91,13 +91,14 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `dashboard-nav.tsx` | `DashboardNav` | client | 1 |  |
 
-### `apps/web/src/components/storefront` (31)
+### `apps/web/src/components/storefront` (32)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `analytics-beacon.tsx` | `AnalyticsBeacon` | client | 1 |  |
 | `animated-section.tsx` | `AnimatedSection` | client | 3 |  |
 | `auth-page.tsx` | `AuthPage` | server | 4 |  |
+| `block-renderer.tsx` | `BlockRenderer` | server | 2 |  |
 | `bottom-nav.tsx` | `BottomNav` | client | 1 |  |
 | `cart-badge.tsx` | `CartBadge` | client | 1 |  |
 | `cart-provider.tsx` | `CartProvider` `useCart` | client | 7 |  |
@@ -108,13 +109,13 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `grid-toggle-wrapper.tsx` | `GridToggleWrapper` | client | 1 |  |
 | `grid-toggle.tsx` | `GridToggle` | client | 1 |  |
 | `header.tsx` | `Header` | client | 2 |  |
-| `json-ld.tsx` | `JsonLd` | server | 2 | Renders one JSON-LD `<script>` tag. |
+| `json-ld.tsx` | `JsonLd` | server | 3 | Renders one JSON-LD `<script>` tag. |
 | `legal-page.tsx` | `LegalPage` | server | 3 |  |
 | `locale-switcher.tsx` | `LocaleSwitcher` | client | 1 |  |
 | `logo.tsx` | `Logo` | server | 2 | The "yaseen" wordmark, traced from the brand's source artwork into a single vector path. |
 | `mobile-nav.tsx` | `MobileNav` | client | 1 |  |
 | `price.tsx` | `Price` | server | 3 |  |
-| `product-card.tsx` | `ProductCard` | client | 3 |  |
+| `product-card.tsx` | `ProductCard` | client | 4 |  |
 | `product-gallery.tsx` | `ProductGallery` | client | 1 |  |
 | `product-purchase.tsx` | `FabricNeedRow` `ProductPurchase` | client | 1 |  |
 | `products-grid.tsx` | `ProductsGrid` | client | 1 |  |

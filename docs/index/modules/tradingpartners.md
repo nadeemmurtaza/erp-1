@@ -101,6 +101,7 @@ _none_
 - core `prisma`
 - core `security`
 - core `settings`
+- package `@newax/shared/secret-crypto`
 - package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`

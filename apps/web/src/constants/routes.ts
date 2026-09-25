@@ -54,6 +54,13 @@ export const ROUTES = {
     returns: '/returns',
     terms: '/terms',
     privacy: '/privacy',
+
+    // CMS-driven (WO-8.1).
+    blog: '/blog',
+    blogPost: (slug: string) => `/blog/${slug}`,
+    page: (slug: string) => `/pages/${slug}`,
+    collections: '/collections',
+    collection: (slug: string) => `/collections/${slug}`,
   },
 
   admin: {
@@ -124,6 +131,13 @@ export const ROUTES = {
     leads: '/admin/leads',
     inbox: '/admin/inbox',
     marketing: '/admin/marketing',
+    content: '/admin/content',
+    collections: '/admin/collections',
+    collection: (id: string) => `/admin/collections/${id}`,
+    search: '/admin/search',
+    campaigns: '/admin/campaigns',
+    campaign: (id: string) => `/admin/campaigns/${id}`,
+    onsiteMessages: '/admin/onsite-messages',
     insights: '/admin/insights',
     orderInsights: '/admin/orders/insights',
     reports: '/admin/reports',

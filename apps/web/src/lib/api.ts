@@ -1,6 +1,10 @@
 import type {
   CatalogFacets,
   CategoryNode,
+  CmsBanner,
+  CmsMenuLink,
+  CmsPage,
+  CmsPost,
   PaginatedResponse,
   ProductListQuery,
   StorefrontProduct,
@@ -61,4 +65,32 @@ export function getStitchingServices(
   return apiFetch(
     `/catalog/stitching-services${toSearchParams({ garmentType, locale })}`,
   );
+}
+
+// --- Content (WO-8.1) -------------------------------------------------------
+
+/** Active banners for one placement — see BANNER_PLACEMENTS in @newax/shared. */
+export function getBanners(placement: string, locale: string): Promise<CmsBanner[]> {
+  return apiFetch(`/content/banners${toSearchParams({ placement, locale })}`);
+}
+
+export function getPage(slug: string, locale: string): Promise<CmsPage> {
+  return apiFetch(`/content/pages/${encodeURIComponent(slug)}${toSearchParams({ locale })}`);
+}
+
+export function getPosts(
+  locale: string,
+  page = 1,
+  pageSize = 12,
+): Promise<{ data: CmsPost[]; total: number }> {
+  return apiFetch(`/content/posts${toSearchParams({ locale, page, pageSize })}`);
+}
+
+export function getPost(slug: string, locale: string): Promise<CmsPost> {
+  return apiFetch(`/content/posts/${encodeURIComponent(slug)}${toSearchParams({ locale })}`);
+}
+
+/** A named footer menu slot — see MENU_KEYS in @newax/shared. */
+export function getMenu(menuKey: string, locale: string): Promise<CmsMenuLink[]> {
+  return apiFetch(`/content/menu/${encodeURIComponent(menuKey)}${toSearchParams({ locale })}`);
 }

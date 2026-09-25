@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 585 | 82,054 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 596 | 84,311 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `docs` | 392 | 59,591 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 291 | 45,341 | Next.js — admin console and customer storefront in one app |
-| `(root)` | 42 | 27,255 | workspace manifests, docker compose/stack files, env templates |
+| `apps/web` | 296 | 46,362 | Next.js — admin console and customer storefront in one app |
+| `(root)` | 42 | 27,354 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 21 | 8,574 | repository checks and generators (lint gates, this index) |
+| `packages/shared` | 50 | 5,321 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 42 | 5,292 | Expo — customer mobile app |
-| `packages/shared` | 47 | 5,113 | brand, money, permissions, measurements, entities |
 | `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
 | `apps/platform` | 40 | 1,605 |  |
 | `.claude` | 22 | 1,017 |  |
@@ -64,14 +64,15 @@ Each is independent: no module imports another except through a named
 | [`analytics`](modules/analytics.md) | core | MODULES allowlist | 19 | — |
 | [`bom`](modules/bom.md) | core | MODULES allowlist | 20 | 5 |
 | [`cart`](modules/cart.md) | core | MODULES allowlist | 6 | 3 |
-| [`catalog`](modules/catalog.md) | core | MODULES allowlist | 43 | 21 |
+| [`catalog`](modules/catalog.md) | core | MODULES allowlist | 43 | 24 |
+| [`content`](modules/content.md) | core | MODULES allowlist | 24 | 8 |
 | [`crm`](modules/crm.md) | core | MODULES allowlist | 19 | 9 |
 | [`finance`](modules/finance.md) | core | MODULES allowlist | 14 | 3 |
 | [`fulfilment`](modules/fulfilment.md) | core | MODULES allowlist | 39 | 16 |
 | [`giftcards`](modules/giftcards.md) | core | MODULES allowlist | 7 | 3 |
 | [`identity-verification`](modules/identity-verification.md) | core | MODULES allowlist | 4 | 1 |
 | [`inventory`](modules/inventory.md) | core | MODULES allowlist | 16 | 7 |
-| [`marketing`](modules/marketing.md) | core | MODULES allowlist | 2 | — |
+| [`marketing`](modules/marketing.md) | core | MODULES allowlist | 2 | 3 |
 | [`measurements`](modules/measurements.md) | apparel | MODULES allowlist | 12 | 4 |
 | [`orders`](modules/orders.md) | core | MODULES allowlist | 7 | 5 |
 | [`organization`](modules/organization.md) | core | MODULES allowlist | 15 | 5 |

@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **439** endpoints across **75** controllers, with the access rule that actually guards each one.
+All **463** endpoints across **77** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 45** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 51** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -47,6 +47,12 @@ never authorization.
 | GET | `/catalog/products/:slug` | `CatalogController.product` |
 | GET | `/catalog/redirects/lookup` | `RedirectLookupController.lookup` |
 | GET | `/catalog/stitching-services` | `CatalogController.stitchingServices` |
+| GET | `/content/banners` | `ContentController.listBanners` |
+| GET | `/content/menu/:menuKey` | `ContentController.getMenu` |
+| GET | `/content/pages` | `ContentController.listPageSlugs` |
+| GET | `/content/pages/:slug` | `ContentController.getPage` |
+| GET | `/content/posts` | `ContentController.listPosts` |
+| GET | `/content/posts/:slug` | `ContentController.getPost` |
 | POST | `/crm/enquiries` | `CrmPublicController.createEnquiry` |
 | POST | `/email/unsubscribe` | `UnsubscribeController.unsubscribe` |
 | GET | `/files/*path` | `FilesController.serve` |
@@ -214,6 +220,35 @@ never authorization.
 | GET | `/catalog/products/:slug` | **PUBLIC** | `CatalogController.product` | One product by slug |
 | GET | `/catalog/redirects/lookup` | **PUBLIC** | `RedirectLookupController.lookup` | Whether a path now redirects somewhere else |
 | GET | `/catalog/stitching-services` | **PUBLIC** | `CatalogController.stitchingServices` | Stitching services, optionally for one garment type |
+
+### [`content`](../modules/content.md) (24)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/content/banners` | `content.view` `content.manage` | `ContentAdminController.listBanners` |  |
+| POST | `/admin/content/banners` | `content.manage` | `ContentAdminController.createBanner` |  |
+| DELETE | `/admin/content/banners/:id` | `content.manage` | `ContentAdminController.deleteBanner` |  |
+| PATCH | `/admin/content/banners/:id` | `content.manage` | `ContentAdminController.updateBanner` |  |
+| GET | `/admin/content/menu-items` | `content.view` `content.manage` | `ContentAdminController.listMenuItems` |  |
+| POST | `/admin/content/menu-items` | `content.manage` | `ContentAdminController.createMenuItem` |  |
+| DELETE | `/admin/content/menu-items/:id` | `content.manage` | `ContentAdminController.deleteMenuItem` |  |
+| PATCH | `/admin/content/menu-items/:id` | `content.manage` | `ContentAdminController.updateMenuItem` |  |
+| GET | `/admin/content/pages` | `content.view` `content.manage` | `ContentAdminController.listPages` |  |
+| POST | `/admin/content/pages` | `content.manage` | `ContentAdminController.createPage` |  |
+| DELETE | `/admin/content/pages/:id` | `content.manage` | `ContentAdminController.deletePage` |  |
+| GET | `/admin/content/pages/:id` | `content.view` `content.manage` | `ContentAdminController.getPage` |  |
+| PATCH | `/admin/content/pages/:id` | `content.manage` | `ContentAdminController.updatePage` |  |
+| GET | `/admin/content/posts` | `content.view` `content.manage` | `ContentAdminController.listPosts` |  |
+| POST | `/admin/content/posts` | `content.manage` | `ContentAdminController.createPost` |  |
+| DELETE | `/admin/content/posts/:id` | `content.manage` | `ContentAdminController.deletePost` |  |
+| GET | `/admin/content/posts/:id` | `content.view` `content.manage` | `ContentAdminController.getPost` |  |
+| PATCH | `/admin/content/posts/:id` | `content.manage` | `ContentAdminController.updatePost` |  |
+| GET | `/content/banners` | **PUBLIC** | `ContentController.listBanners` |  |
+| GET | `/content/menu/:menuKey` | **PUBLIC** | `ContentController.getMenu` |  |
+| GET | `/content/pages` | **PUBLIC** | `ContentController.listPageSlugs` | Indexable page slugs — sitemap.ts's own read, not a general listing. |
+| GET | `/content/pages/:slug` | **PUBLIC** | `ContentController.getPage` |  |
+| GET | `/content/posts` | **PUBLIC** | `ContentController.listPosts` |  |
+| GET | `/content/posts/:slug` | **PUBLIC** | `ContentController.getPost` |  |
 
 ### [`core/auth`](../core/auth.md) (15)
 

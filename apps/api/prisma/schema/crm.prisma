@@ -44,26 +44,46 @@ model Contact {
   /// What tells the shop which customers to require advance payment from.
   rtoCount      Int       @default(0)
 
+  /// WO-8.4. The one opt-out Campaign sends check, regardless of channel —
+  /// deliberately separate from User.marketingEmailOptOut (email-only, and
+  /// only for account holders) because a Contact is CRM's record and a
+  /// campaign audience is a Segment of Contacts, not Users. Defaults to
+  /// opted IN, same as the existing marketingEmailOptOut default — a lead
+  /// captured at POS or WhatsApp has given no signal either way yet.
+  marketingOptOut Boolean @default(false)
+
+  /// RFM scoring (WO-8.4), quintile-ranked (1-5) among contacts with at
+  /// least one order — RfmScoringCron (crm module) recomputes all three
+  /// nightly via a single NTILE(5) query. Null until the cron has run once
+  /// for a contact with no orders yet.
+  rfmRecencyScore   Int?
+  rfmFrequencyScore Int?
+  rfmMonetaryScore  Int?
+  rfmComputedAt     DateTime?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  owner         User?          @relation("ContactOwner", fields: [ownerId], references: [id], onDelete: SetNull)
-  user          User?          @relation("ContactUser", fields: [userId], references: [id], onDelete: SetNull)
-  orders        Order[]
+  owner            User?               @relation("ContactOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  user             User?               @relation("ContactUser", fields: [userId], references: [id], onDelete: SetNull)
+  orders           Order[]
   // No `stitchingOrders` relation field here on purpose (B7, MULTI-SECTOR.md)
   // — see the matching note on OrderItem in orders.prisma. StitchingOrder
   // (apparel) keeps a plain `contactId` scalar instead of a Prisma relation.
   // This field was unused in application code, so nothing else changes.
-  leads         Lead[]
-  interactions  Interaction[]
-  followUps     FollowUpTask[]
-  tags          ContactTag[]
-  inboundEmails InboundEmail[]
+  leads            Lead[]
+  interactions     Interaction[]
+  followUps        FollowUpTask[]
+  tags             ContactTag[]
+  inboundEmails    InboundEmail[]
+  /// marketing.prisma (WO-8.4).
+  campaignReceipts CampaignRecipient[]
 
   @@index([status])
   @@index([ownerId])
   @@index([lastOrderAt])
   @@index([lifetimeValue])
+  @@index([rfmRecencyScore, rfmFrequencyScore, rfmMonetaryScore])
 }
 
 enum LeadStatus {
@@ -238,5 +258,9 @@ model Segment {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  createdBy User? @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdBy      User?           @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  /// marketing.prisma (WO-8.4) — a campaign's audience.
+  campaigns      Campaign[]
+  /// onsite-messaging.prisma (WO-8.6) — optional segment targeting.
+  onsiteMessages OnsiteMessage[]
 }

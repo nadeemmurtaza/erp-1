@@ -1,7 +1,7 @@
 import { BadRequestException, ForbiddenException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { hashApiKey } from '../../core/security/api-token';
-import { encryptSecret } from '@newax/shared';
+import { encryptSecret } from '@newax/shared/secret-crypto';
 import { TradingPartnersService } from './trading-partners.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { AppConfigService } from '../../core/config/app-config.service';

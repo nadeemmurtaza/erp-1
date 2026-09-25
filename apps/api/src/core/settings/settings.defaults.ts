@@ -136,14 +136,31 @@ export const SettingKey = {
    * customer without them clicking a button first.
    */
   MarketingAutomationEnabled: 'marketing.automation_enabled',
+  /** WO-8.5's own first stage of the doc's 1h/24h/72h sequence — a soft nudge, no incentive. */
+  MarketingAbandonedCartFirstTouchHours: 'marketing.abandoned_cart_first_touch_hours',
   /** Cart idle time before the first abandoned-cart email. Logged-in users only — see MarketingAutomationCron. */
   MarketingAbandonedCartReminderHours: 'marketing.abandoned_cart_reminder_hours',
   /** Idle time AFTER the reminder before the incentive follow-up, if the cart is still not converted. */
   MarketingAbandonedCartIncentiveHours: 'marketing.abandoned_cart_incentive_hours',
+  /** Basis points off the recovery PromoCode minted for the incentive stage (WO-8.5). 1000 = 10%. */
+  MarketingAbandonedCartDiscountBps: 'marketing.abandoned_cart_discount_bps',
+  /** Cap on that discount, in paisa. Null = uncapped. */
+  MarketingAbandonedCartDiscountMaxOff: 'marketing.abandoned_cart_discount_max_off',
+  /** How long the minted code stays redeemable. */
+  MarketingAbandonedCartDiscountValidDays: 'marketing.abandoned_cart_discount_valid_days',
+  /**
+   * Internal bookkeeping: the id of the system Discount MarketingAutomationCron
+   * lazily creates once and reuses. Deliberately not exposed in
+   * UpdateMarketingSettingsDto — an owner edits the discount itself (rate, cap)
+   * from Marketing → Discounts, this is just how the cron finds it again.
+   */
+  MarketingAbandonedCartDiscountId: 'marketing.abandoned_cart_discount_id',
   /** Days after DELIVERED before the review-request email. */
   MarketingReviewRequestDays: 'marketing.review_request_days',
   /** Days after DELIVERED before a Product.isConsumable purchase gets a reorder nudge. One global cadence, not per-product. */
   MarketingReplenishmentReminderDays: 'marketing.replenishment_reminder_days',
+  /** WO-8.4 — CampaignDispatchCron's own throttle, so a large segment cannot blow through a provider's per-minute rate limit in one tick. */
+  MarketingCampaignSendRatePerMinute: 'marketing.campaign_send_rate_per_minute',
   /** Category.slug every RawMaterial's underlying Product is filed under (WO-C.1). Seeded at boot by seedRawMaterialCategory(); resolved at runtime, never hardcoded. */
   BomRawMaterialCategorySlug: 'bom.raw_material_category_slug',
   /** Basis points of expected wastage assumed on a recipe with no line-level override (WO-C.2). 0 until a recipe says otherwise. */
@@ -268,10 +285,16 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.PayrollAccrualRunHour]: 4,
 
   [SettingKey.MarketingAutomationEnabled]: false,
+  [SettingKey.MarketingAbandonedCartFirstTouchHours]: 1,
   [SettingKey.MarketingAbandonedCartReminderHours]: 24,
   [SettingKey.MarketingAbandonedCartIncentiveHours]: 72,
+  [SettingKey.MarketingAbandonedCartDiscountBps]: 1000,
+  [SettingKey.MarketingAbandonedCartDiscountMaxOff]: null as number | null,
+  [SettingKey.MarketingAbandonedCartDiscountValidDays]: 7,
+  [SettingKey.MarketingAbandonedCartDiscountId]: null as string | null,
   [SettingKey.MarketingReviewRequestDays]: 7,
   [SettingKey.MarketingReplenishmentReminderDays]: 30,
+  [SettingKey.MarketingCampaignSendRatePerMinute]: 60,
 
   [SettingKey.BomRawMaterialCategorySlug]: 'raw-materials',
   [SettingKey.BomDefaultWastageBps]: 0,

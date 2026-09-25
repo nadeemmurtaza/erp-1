@@ -50,64 +50,68 @@ model User {
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
 
-  addresses               Address[]
-  refreshTokens           RefreshToken[]
-  passwordResetTokens     PasswordResetToken[]
-  emailVerificationTokens EmailVerificationToken[]
-  carts                   Cart[]
-  orders                  Order[]
-  orderStatusEvents       OrderStatusEvent[]
-  auditLogs               AuditLog[]
-  contact                 Contact?                 @relation("ContactUser")
-  identityVerification    IdentityVerification?
-  ownedContacts           Contact[]                @relation("ContactOwner")
-  ownedLeads              Lead[]                   @relation("LeadOwner")
-  interactions            Interaction[]
-  inboundEmailReplies     InboundEmailReply[]
-  assignedFollowUps       FollowUpTask[]           @relation("FollowUpAssignee")
-  approvedPayments        Payment[]                @relation("PaymentApprover")
-  segments                Segment[]
-  devices                 DeviceToken[]
-  stockAdjustments        StockAdjustment[]
-  stockMovements          StockMovement[]          @relation("StockMovementActor")
-  permissionOverrides     UserPermission[]
+  addresses                 Address[]
+  refreshTokens             RefreshToken[]
+  passwordResetTokens       PasswordResetToken[]
+  emailVerificationTokens   EmailVerificationToken[]
+  carts                     Cart[]
+  orders                    Order[]
+  orderStatusEvents         OrderStatusEvent[]
+  auditLogs                 AuditLog[]
+  contact                   Contact?                 @relation("ContactUser")
+  identityVerification      IdentityVerification?
+  ownedContacts             Contact[]                @relation("ContactOwner")
+  ownedLeads                Lead[]                   @relation("LeadOwner")
+  interactions              Interaction[]
+  inboundEmailReplies       InboundEmailReply[]
+  assignedFollowUps         FollowUpTask[]           @relation("FollowUpAssignee")
+  approvedPayments          Payment[]                @relation("PaymentApprover")
+  segments                  Segment[]
+  devices                   DeviceToken[]
+  stockAdjustments          StockAdjustment[]
+  stockMovements            StockMovement[]          @relation("StockMovementActor")
+  permissionOverrides       UserPermission[]
   /// What this user's admin access is scoped to (RETAIL-ERP.md R10, WO-18.3)
   /// — empty for every deployment today. Model lives in organization.prisma
   /// (a togglable module), not here: this back-relation is the only mention
   /// of it core.prisma needs.
-  adminScopes             AdminScope[]
+  adminScopes               AdminScope[]
   /// Which named `Role` rows this user holds — plural, unioned (roles.ts).
-  roleAssignments         UserRoleAssignment[]
-  purchaseOrdersCreated   PurchaseOrder[]          @relation("PurchaseOrderCreator")
-  goodsReceiptsReceived   GoodsReceipt[]           @relation("GoodsReceiptReceiver")
-  stockCountsCreated      StockCount[]             @relation("StockCountCreator")
-  stockCountsAssigned     StockCount[]             @relation("StockCountAssignee")
-  workOrdersCreated       WorkOrder[]              @relation("WorkOrderCreator")
-  expensesCreated         Expense[]                @relation("ExpenseCreator")
-  bomRecipesCreated       BomRecipe[]              @relation("BomRecipeCreator")
-  bomProductionRuns       BomProductionRun[]       @relation("BomProductionOperator")
-  policyQuarantinesResolved PolicyQuarantine[]     @relation("PolicyQuarantineResolver")
+  roleAssignments           UserRoleAssignment[]
+  purchaseOrdersCreated     PurchaseOrder[]          @relation("PurchaseOrderCreator")
+  goodsReceiptsReceived     GoodsReceipt[]           @relation("GoodsReceiptReceiver")
+  stockCountsCreated        StockCount[]             @relation("StockCountCreator")
+  stockCountsAssigned       StockCount[]             @relation("StockCountAssignee")
+  workOrdersCreated         WorkOrder[]              @relation("WorkOrderCreator")
+  expensesCreated           Expense[]                @relation("ExpenseCreator")
+  bomRecipesCreated         BomRecipe[]              @relation("BomRecipeCreator")
+  bomProductionRuns         BomProductionRun[]       @relation("BomProductionOperator")
+  policyQuarantinesResolved PolicyQuarantine[]       @relation("PolicyQuarantineResolver")
   /// Payroll (docs/implementation/payroll/19-payroll.md) — one User is both the
   /// payee (compensationRates, leaveBalances, ...) and, for an ADMIN,
   /// possibly the actor who set a rate or decided a leave request; the two
   /// relation names below keep those two roles distinct on the same model.
   compensationRates         CompensationRate[]
-  compensationRatesCreated  CompensationRate[]     @relation("CompensationRateCreator")
+  compensationRatesCreated  CompensationRate[]       @relation("CompensationRateCreator")
   leaveBalances             LeaveBalance[]
-  leaveRequests             LeaveRequest[]         @relation("LeaveRequestUser")
-  leaveRequestsDecided      LeaveRequest[]         @relation("LeaveRequestDecider")
-  payRunsApproved           PayRun[]               @relation("PayRunApprover")
-  payRunsCreated            PayRun[]               @relation("PayRunCreator")
+  leaveRequests             LeaveRequest[]           @relation("LeaveRequestUser")
+  leaveRequestsDecided      LeaveRequest[]           @relation("LeaveRequestDecider")
+  payRunsApproved           PayRun[]                 @relation("PayRunApprover")
+  payRunsCreated            PayRun[]                 @relation("PayRunCreator")
   payRunLines               PayRunLine[]
   payRunAdjustments         PayRunAdjustment[]
-  payRunAdjustmentsCreated  PayRunAdjustment[]      @relation("PayRunAdjustmentCreator")
+  payRunAdjustmentsCreated  PayRunAdjustment[]       @relation("PayRunAdjustmentCreator")
   /// fulfilment.prisma (WO-6.4/6.6) — both core, same idiom as auditLogs above.
   manifestsCreated          Manifest[]
   returnRequests            ReturnRequest[]
+  /// content.prisma (WO-8.1) — a staff account authoring a blog post.
+  blogPosts                 BlogPost[]
+  /// marketing.prisma (WO-8.4) — a staff account authoring a campaign.
+  campaignsCreated          Campaign[]
   /// giftcards.prisma (WO-5.5). SUM(StoreCreditTransaction.delta) — a cache,
   /// never written outside StoreCreditService's own conditional update; the
   /// ledger is the source of truth (see StoreCreditTransaction's own note).
-  storeCreditBalance        Int                     @default(0)
+  storeCreditBalance        Int                      @default(0)
   storeCreditTransactions   StoreCreditTransaction[]
   giftCardsPurchased        GiftCard[]               @relation("GiftCardPurchaser")
 

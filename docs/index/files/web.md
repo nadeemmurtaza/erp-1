@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 338 tracked files in `apps/web`, by directory.
+All 345 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -116,6 +116,12 @@ All 338 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 26 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/analytics/suspicious-traffic` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 103 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]` (1)
 
@@ -407,6 +413,24 @@ All 338 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 140 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 173 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 137 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/inventory/variances/by-shift` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 103 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/wishlisted` (1)
 
 | File | Kind | Lines | Purpose |
@@ -588,6 +612,24 @@ All 338 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 422 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/requisitions` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 92 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/requisitions/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 187 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/requisitions/new` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 240 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/reviews` (1)
 
@@ -998,7 +1040,7 @@ All 338 tracked files in `apps/web`, by directory.
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 543 |  |
-| `nav-registry.ts` | component | 775 |  |
+| `nav-registry.ts` | component | 805 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1434 |  |
@@ -1161,7 +1203,7 @@ All 338 tracked files in `apps/web`, by directory.
 | `downloads.ts` | constants | 21 |  |
 | `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 24 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 190 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 201 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 61 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)

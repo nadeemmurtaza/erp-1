@@ -1,0 +1,59 @@
+// Approvals: one generic, subject-agnostic approval chain, referenced by a
+// (subjectType, subjectId) pair rather than a bespoke chain per feature —
+// doc 63's own shape (docs/implementation/hr-people-org/63-multi-tier-approval-hierarchies.md).
+// Built here scoped to what WO-152 (purchase requisitions) actually needs;
+// ApprovalSubjectType is deliberately a plain enum, extended by adding a
+// value, not a plugin registry — no second consumer exists yet to justify
+// that abstraction (no speculative functionality, CLAUDE.md).
+
+enum ApprovalSubjectType {
+  PURCHASE_REQUISITION
+}
+
+enum ApprovalChainStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ApprovalStepStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SKIPPED
+}
+
+model ApprovalChain {
+  id          String              @id @default(cuid())
+  subjectType ApprovalSubjectType
+  subjectId   String
+  currentStep Int                 @default(1)
+  status      ApprovalChainStatus @default(PENDING)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  steps ApprovalStep[]
+
+  @@unique([subjectType, subjectId])
+  @@index([subjectType, status])
+}
+
+model ApprovalStep {
+  id             String             @id @default(cuid())
+  chainId        String
+  stepOrder      Int
+  /// Never both null — resolved to a specific approver at decide() time,
+  /// either directly (approverUserId) or by whoever holds the role.
+  approverRoleId String?
+  approverUserId String?
+  status         ApprovalStepStatus @default(PENDING)
+  decidedAt      DateTime?
+  decidedById    String?
+  comment        String?
+
+  chain     ApprovalChain @relation(fields: [chainId], references: [id], onDelete: Cascade)
+  decidedBy User?         @relation("ApprovalStepDecider", fields: [decidedById], references: [id], onDelete: SetNull)
+
+  @@unique([chainId, stepOrder])
+  @@index([approverUserId, status])
+}

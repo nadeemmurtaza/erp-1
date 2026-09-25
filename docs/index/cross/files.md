@@ -3,19 +3,19 @@
 
 # Every tracked file
 
-All **1,737** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,760** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 708 | 98,131 | [files/api.md](../files/api.md) |
-| apps/web | 338 | 51,608 | [files/web.md](../files/web.md) |
+| apps/api | 724 | 100,225 | [files/api.md](../files/api.md) |
+| apps/web | 345 | 52,684 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 74 | 6,957 | [files/packages.md](../files/packages.md) |
-| docs/* | 392 | 60,169 | [files/docs.md](../files/docs.md) |
+| packages/* | 74 | 6,985 | [files/packages.md](../files/packages.md) |
+| docs/* | 392 | 60,222 | [files/docs.md](../files/docs.md) |
 | scripts, CI, deployment and container configuration | 57 | 29,121 | [files/infra.md](../files/infra.md) |
 | repository root files | 88 | 11,043 | [files/root.md](../files/root.md) |
 
@@ -29,17 +29,17 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 417 |
-| unit test | 162 |
-| page | 152 |
+| unit test | 166 |
+| page | 159 |
 | module | 128 |
-| service | 110 |
+| service | 114 |
 | component | 108 |
-| dto | 84 |
-| controller | 80 |
-| migration | 68 |
-| nest module | 59 |
+| dto | 85 |
+| controller | 83 |
+| migration | 69 |
+| nest module | 60 |
+| prisma schema | 40 |
 | script | 39 |
-| prisma schema | 39 |
 | json | 29 |
 | event subscriber | 29 |
 | react | 29 |
@@ -51,7 +51,7 @@ name a new file: the convention is what makes it findable.
 | yaml | 12 |
 | config | 11 |
 | loading | 11 |
-| registry | 7 |
+| registry | 8 |
 | constants | 7 |
 | layout | 6 |
 | hook | 5 |

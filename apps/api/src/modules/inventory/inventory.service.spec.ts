@@ -264,6 +264,63 @@ describe('InventoryService — postUnconditional (R5 oversell)', () => {
       inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: -5, reason: 'SALE' }),
     ).rejects.toBeInstanceOf(InsufficientStockError);
   });
+
+  // 156-single-employee-branch-loss-prevention.md §1 — a variance opened
+  // while a shift is open at that location is attributed to it, in the SAME
+  // transaction, so a branch's own variance history is queryable by shift.
+  describe('shift attribution (156-single-employee-branch-loss-prevention.md)', () => {
+    let terminalId: string;
+    let userId: string;
+
+    beforeAll(async () => {
+      const user = await prisma.user.findFirstOrThrow({ select: { id: true } });
+      userId = user.id;
+      const terminal = await prisma.posTerminal.create({
+        data: { code: `SHIFT-TEST-${Date.now()}`, label: 'Test till', locationId: defaultLocationId },
+      });
+      terminalId = terminal.id;
+    });
+
+    afterAll(async () => {
+      await prisma.posShift.deleteMany({ where: { terminalId } });
+      await prisma.posTerminal.delete({ where: { id: terminalId } });
+    });
+
+    it('attributes the variance to the OPEN shift at that location', async () => {
+      const shift = await prisma.posShift.create({
+        data: { terminalId, openedByUserId: userId, openingCashMinor: 0, status: 'OPEN' },
+      });
+      const variant = await freshVariant();
+      await inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: 2, reason: 'ADJUSTMENT' });
+
+      const movement = await inventory.postUnconditional({
+        variantId: variant.id,
+        locationId: defaultLocationId,
+        delta: -5,
+        reason: 'POS_SALE',
+      });
+
+      const variance = await prisma.stockVariance.findUniqueOrThrow({ where: { stockMovementId: movement.id } });
+      expect(variance.posShiftId).toBe(shift.id);
+
+      await prisma.posShift.update({ where: { id: shift.id }, data: { status: 'CLOSED', closedAt: new Date() } });
+    });
+
+    it('leaves posShiftId null when no shift is open at that location', async () => {
+      const variant = await freshVariant();
+      await inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: 2, reason: 'ADJUSTMENT' });
+
+      const movement = await inventory.postUnconditional({
+        variantId: variant.id,
+        locationId: defaultLocationId,
+        delta: -5,
+        reason: 'POS_SALE',
+      });
+
+      const variance = await prisma.stockVariance.findUniqueOrThrow({ where: { stockMovementId: movement.id } });
+      expect(variance.posShiftId).toBeNull();
+    });
+  });
 });
 
 describe('InventoryService — reorder point and replenishment events', () => {

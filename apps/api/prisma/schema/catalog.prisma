@@ -146,10 +146,10 @@ model Product {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
-  category              Category?            @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  brand                 Brand?               @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  category              Category?             @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  brand                 Brand?                @relation(fields: [brandId], references: [id], onDelete: SetNull)
   /// fulfilment.prisma (WO-6.1) — both core, same idiom as category/brand above.
-  shippingClass         ShippingClass?       @relation(fields: [shippingClassId], references: [id], onDelete: SetNull)
+  shippingClass         ShippingClass?        @relation(fields: [shippingClassId], references: [id], onDelete: SetNull)
   translations          ProductTranslation[]
   variants              ProductVariant[]
   options               ProductOption[]
@@ -159,8 +159,8 @@ model Product {
   cartItems             CartItem[]
   orderItems            OrderItem[]
   /// Carts/orders where this product was chosen as the stitching service.
-  cartItemsAsService    CartItem[]           @relation("CartItemStitchingService")
-  orderItemsAsService   OrderItem[]          @relation("OrderItemStitchingService")
+  cartItemsAsService    CartItem[]            @relation("CartItemStitchingService")
+  orderItemsAsService   OrderItem[]           @relation("OrderItemStitchingService")
   /// collections.prisma section below (WO-8.2).
   collectionMemberships CollectionProduct[]
   /// Phase 7 WO-7.5 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
@@ -290,6 +290,8 @@ model ProductVariant {
   purchaseOrderItems  PurchaseOrderItem[]
   goodsReceiptItems   GoodsReceiptItem[]
   stockCountLines     StockCountLine[]
+  requisitionLines    RequisitionLine[]
+  spotCheckLines      SpotCheckLine[]
   billOfMaterial      BillOfMaterial?
   bomComponentOf      BillOfMaterialLine[]        @relation("BomComponent")
   workOrders          WorkOrder[]
@@ -297,8 +299,8 @@ model ProductVariant {
   wishlistItems       WishlistItem[]
   backInStockRequests BackInStockRequest[]
   /// Phase 9 (09-ai-layer.md) — inventory.prisma's own cache/advisory rows.
-  forecast              VariantForecast?
-  markdownSuggestions   MarkdownSuggestion[]
+  forecast            VariantForecast?
+  markdownSuggestions MarkdownSuggestion[]
 
   @@index([productId])
   @@index([stock])
@@ -624,16 +626,16 @@ enum AiSuggestionStatus {
 /// Approving a suggestion is what writes the real ProductTranslation/
 /// ProductImageTranslation column — see ProductAiService.approve().
 model ProductAiSuggestion {
-  id             String             @id @default(cuid())
-  productId      String
-  imageId        String?
-  kind           AiSuggestionKind
-  locale         String
-  suggestedText  String
-  status         AiSuggestionStatus @default(PENDING)
-  createdAt      DateTime           @default(now())
-  reviewedAt     DateTime?
-  reviewedById   String?
+  id            String             @id @default(cuid())
+  productId     String
+  imageId       String?
+  kind          AiSuggestionKind
+  locale        String
+  suggestedText String
+  status        AiSuggestionStatus @default(PENDING)
+  createdAt     DateTime           @default(now())
+  reviewedAt    DateTime?
+  reviewedById  String?
 
   product Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
   image   ProductImage? @relation(fields: [imageId], references: [id], onDelete: Cascade)
@@ -675,12 +677,12 @@ enum ProductCrossSellKind {
 }
 
 model ProductCrossSell {
-  id              String               @id @default(cuid())
-  productId       String
+  id               String               @id @default(cuid())
+  productId        String
   relatedProductId String
-  kind            ProductCrossSellKind
-  order           Int                  @default(0)
-  createdAt       DateTime             @default(now())
+  kind             ProductCrossSellKind
+  order            Int                  @default(0)
+  createdAt        DateTime             @default(now())
 
   product        Product @relation("CrossSellSource", fields: [productId], references: [id], onDelete: Cascade)
   relatedProduct Product @relation("CrossSellTarget", fields: [relatedProductId], references: [id], onDelete: Cascade)

@@ -3,7 +3,7 @@
 
 # Migrations
 
-**67** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**68** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -26,25 +26,7 @@ CI's own seed step.
 This section compares the two sides. It is a statement of fact, not a gate:
 nothing here fails a build.
 
-> [!WARNING]
-> The schema declares **1 table(s)**, **1 column(s)** and **0 enum(s)** that no committed migration creates.
-> A database built from `migrations/` alone will be missing them.
-
-### Models with no migration (1)
-
-| Model | Table | Declared at |
-|---|---|---|
-| `CityCodRiskStat` | `CityCodRiskStat` | `apps/api/prisma/schema/orders.prisma:326` |
-
-
-### Columns with no migration (1)
-
-| Table | Column | Type | Declared at |
-|---|---|---|---|
-| `Order` | `codRiskReasonEn` | `String?` | `apps/api/prisma/schema/orders.prisma:35` |
-
-
-
+**In step.** Every model, column and enum the schema declares is built by a migration.
 
 
 ## Every migration
@@ -118,6 +100,7 @@ nothing here fails a build.
 | 2026-09-24 | `add_fulfilment_shipping_returns` | 67 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE, INSERT | Contact, Manifest, ManifestNumberCounter, Product, ReturnReasonCode, ReturnReasonTranslation, ReturnRequest,… |
 | 2026-09-25 | `add_content_collections_search_marketing_onsite` | 82 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, UPDATE | Banner, BannerTranslation, BlogPost, BlogPostTranslation, Campaign, CampaignRecipient, Cart, Collection, Coll… |
 | 2026-09-25 | `add_ai_layer` | 43 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX | AiUsageLog, MarkdownSuggestion, Order, ProductAiSuggestion, ProductCrossSell, ProductReviewSummary, ProductSi… |
+| 2026-09-25 | `add_cod_risk_reason_and_city_stats` | 3 | ALTER TABLE, CREATE TABLE | CityCodRiskStat, Order |
 
 
 ---

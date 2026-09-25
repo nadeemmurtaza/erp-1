@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 681 tracked files in `apps/api`, by directory.
+All 682 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -474,6 +474,12 @@ All 681 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `migration.sql` | migration | 242 |  |
+
+### `apps/api/prisma/schema/migrations/20260925150000_add_cod_risk_reason_and_city_stats` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 21 |  |
 
 ### `apps/api/src` (2)
 

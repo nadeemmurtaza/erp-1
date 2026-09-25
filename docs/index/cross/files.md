@@ -3,14 +3,14 @@
 
 # Every tracked file
 
-All **1,687** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,688** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 681 | 94,050 | [files/api.md](../files/api.md) |
+| apps/api | 682 | 94,071 | [files/api.md](../files/api.md) |
 | apps/web | 316 | 50,323 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
@@ -36,7 +36,7 @@ name a new file: the convention is what makes it findable.
 | dto | 82 |
 | component | 82 |
 | controller | 79 |
-| migration | 67 |
+| migration | 68 |
 | nest module | 57 |
 | prisma schema | 39 |
 | script | 38 |

@@ -3,7 +3,7 @@
 
 # Tests
 
-**158** spec files, **1,481** cases. What is already pinned down — and what is not.
+**166** spec files, **1,639** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -29,7 +29,7 @@ such exemption.
 - [`tracking`](../modules/tracking.md)
 - [`wishlist`](../modules/wishlist.md)
 
-## End-to-end (18)
+## End-to-end (19)
 
 Real HTTP against a real Postgres. These are the ones that catch a permission
 regression or an N+1.
@@ -37,6 +37,7 @@ regression or an N+1.
 | Spec | Cases | Covers |
 |---|---|---|
 | `apps/api/test/accounting.e2e-spec.ts` | 15 | Accounting ledger invariants (integration) · WO-19.5 — closing a period redirects a fact dated inside it to the next OP… |
+| `apps/api/test/api-keys.e2e-spec.ts` | 21 | Personal API keys (e2e) · an admin key · what can never go into a key · a storefront key · oversight (users.manage) and… |
 | `apps/api/test/auth.e2e-spec.ts` | 11 | Account security (e2e) · registration and email verification · change password · forgot / reset password |
 | `apps/api/test/cart.e2e-spec.ts` | 28 | Cart (e2e) · guest cart · stitching add-on · inline measurements · pricing without a service product · custom design te… |
 | `apps/api/test/catalog.e2e-spec.ts` | 26 | Catalog (e2e) · health · authentication · storefront · admin access control · creating a product · measurement profiles… |
@@ -56,12 +57,16 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (140)
+## Unit and integration (147)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
 | `apps/api/src/core/ai/ai.service.spec.ts` | core/ai | 16 | AiService · isAvailable · no provider configured · complete · embed · underBudget · monthToDateSpen… |
+| `apps/api/src/core/auth/api-keys/api-key-access.spec.ts` | core/auth | 16 | decideApiKeyAccess — an ADMIN key · decideApiKeyAccess — a STOREFRONT key · readRouteRequirements —… |
+| `apps/api/src/core/auth/api-keys/api-key-auth.service.spec.ts` | core/auth | 20 | ApiKeyAuthService.authenticate · a key never exceeds its owner · refusals — each a 401 that says wh… |
+| `apps/api/src/core/auth/api-keys/api-keys.service.spec.ts` | core/auth | 36 | ApiKeysService · create · refuses what a key may never carry · listMine — what each key can do righ… |
 | `apps/api/src/core/auth/auth.service.spec.ts` | core/auth | 2 | parseDuration |
+| `apps/api/src/core/auth/guards.spec.ts` | core/auth | 19 | JwtAuthGuard · a session JWT — the path is unchanged · a personal API key · PermissionsGuard · a se… |
 | `apps/api/src/core/auth/ownership.guard.spec.ts` | core/auth | 5 | assertCanManage |
 | `apps/api/src/core/auth/permissions.service.spec.ts` | core/auth | 6 | PermissionsResolverService.resolveForUser |
 | `apps/api/src/core/auth/roles.service.spec.ts` | core/auth | 18 | RolesService · create · update / delete — the locked-permission orphan guard · assertLockedKeysStil… |
@@ -70,7 +75,7 @@ regression or an N+1.
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 20 | validateEnv |
 | `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |
 | `apps/api/src/core/notifications/email.channel.spec.ts` | core/notifications | 2 | isDeliverable |
-| `apps/api/src/core/notifications/email/templates.spec.ts` | core/notifications | 27 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment re… |
+| `apps/api/src/core/notifications/email/templates.spec.ts` | core/notifications | 29 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment re… |
 | `apps/api/src/core/prisma/enums.spec.ts` | core/prisma | 0 | shared enums stay in sync with the Prisma schema |
 | `apps/api/src/core/replication/node-credential.service.spec.ts` | core/replication | 5 | NodeCredentialService — WO-20.2 |
 | `apps/api/src/core/replication/policy-quarantine.service.spec.ts` | core/replication | 4 | PolicyQuarantineService — WO-23.3c/e, RETAIL-ERP.md R9, ADR-023 · resolve |
@@ -169,10 +174,12 @@ regression or an N+1.
 | `apps/api/src/modules/tradingpartners/trading-partner-portal.controller.spec.ts` | tradingpartners | 6 | TradingPartnerPortalController · accept |
 | `apps/api/src/modules/tradingpartners/trading-partners.service.spec.ts` | tradingpartners | 32 | TradingPartnersService · create · findOne / update / remove — the not-found guard · rotateInboundKe… |
 | `apps/api/src/modules/transfers/transfers.service.spec.ts` | transfers | 25 | TransfersService · dispatch/receive/cancel (WO-22.1) · brand-policy gating (WO-22.2) · settlement m… |
-| `apps/api/src/modules/users/users-admin.service.spec.ts` | users | 3 | UsersAdminService.create — role selection at creation time |
+| `apps/api/src/modules/users/users-admin.service.spec.ts` | users | 7 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivatio… |
 | `apps/api/test/backfill-product-options.spec.ts` | api | 4 | backfillProductOptions |
+| `apps/api/test/customer-scope-routes.spec.ts` | api | 5 | storefront API key scopes, route by route · storefront API key scopes, swept across every controller |
 | `apps/api/test/email-channel.behavior.spec.ts` | api | 33 | env.validation — email cross-field check · isDeliverable · EmailChannel — interface contract · Emai… |
 | `apps/api/test/publish-gate.spec.ts` | api | 8 | checkPublishGate |
+| `apps/api/test/session-only-routes.spec.ts` | api | 1 | credential routes are refused to every API key |
 | `apps/mobile/src/api/__tests__/client.spec.ts` | mobile | 4 | toQuery |
 | `apps/mobile/src/components/__tests__/measurement-form.spec.ts` | mobile | 7 | reading measurements off the form |
 | `apps/mobile/src/i18n/__tests__/messages.spec.ts` | mobile | 3 | the message catalogue |
@@ -185,6 +192,7 @@ regression or an N+1.
 | `packages/pos-core/src/outbox.spec.ts` | packages | 6 | outbox state machine |
 | `packages/pos-core/src/receipt.spec.ts` | packages | 2 | toReceipt |
 | `packages/pos-core/src/tender.spec.ts` | packages | 3 | computeTender |
+| `packages/shared/src/api-keys.spec.ts` | packages | 34 | NON_DELEGATABLE_PERMISSIONS · effectiveApiKeyPermissions — a key never exceeds its owner · refuseAp… |
 | `packages/shared/src/discounts.spec.ts` | packages | 18 | isDiscountEligible · evaluateDiscounts — PERCENTAGE, ORDER scope · evaluateDiscounts — PRODUCT scop… |
 | `packages/shared/src/entities/address.spec.ts` | packages | 3 | getFormattedAddress · getAddressCityProvince |
 | `packages/shared/src/entities/order.spec.ts` | packages | 8 | getOrderStatusLabel · getOrderCustomerName · getOrderDisplayTotal · getOrderItemCount |

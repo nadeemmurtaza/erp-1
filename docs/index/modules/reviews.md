@@ -11,14 +11,14 @@ Pack **core** · enabled by the `MODULES` allowlist · 5 files
 
 Source: `apps/api/src/modules/reviews/`
 
-## Files (5 · 274 lines)
+## Files (5 · 276 lines)
 
 All paths relative to `apps/api/src/modules/reviews/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `review.dto.ts` | dto | 67 | 3 |  |
-| `reviews-public.controller.ts` | controller | 44 | 1 |  |
+| `reviews-public.controller.ts` | controller | 46 | 1 |  |
 | `reviews.controller.ts` | controller | 26 | 1 | Staff moderation — every review starts PENDING and is spam-prone by design (WO-7.5). |
 | `reviews.module.ts` | nest module | 12 | 1 |  |
 | `reviews.service.ts` | service | 125 | 1 |  |
@@ -31,9 +31,9 @@ All paths relative to `apps/api/src/modules/reviews/dto`.
 | GET | `/admin/reviews` | `reviews.moderate` | `ReviewsController.list` :16 | List reviews for moderation |
 | PATCH | `/admin/reviews/:id` | `reviews.moderate` | `ReviewsController.moderate` :22 | Publish, reject, or reply to a review |
 | GET | `/products/:productId/reviews` | **PUBLIC** | `ReviewsPublicController.listForProduct` :17 | A product's published reviews |
-| POST | `/reviews` | signed-in | `ReviewsPublicController.create` :32 | Submit a review — goes to PENDING, moderated before it shows |
-| POST | `/reviews/:id/helpful` | **PUBLIC** | `ReviewsPublicController.markHelpful` :40 | Mark a review helpful |
-| GET | `/reviews/mine` | signed-in | `ReviewsPublicController.mine` :24 | My own reviews, any status |
+| POST | `/reviews` | signed-in | `ReviewsPublicController.create` :34 | Submit a review — goes to PENDING, moderated before it shows |
+| POST | `/reviews/:id/helpful` | **PUBLIC** | `ReviewsPublicController.markHelpful` :42 | Mark a review helpful |
+| GET | `/reviews/mine` | signed-in | `ReviewsPublicController.mine` :25 | My own reviews, any status |
 
 
 ## Domain events

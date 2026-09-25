@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**418** markdown documents. These explain **why**; this index only says **where**.
+**419** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -81,9 +81,10 @@ _no second-level headings_
 
 - Performance engineering  <sub>:13</sub>
 
-### `.claude/rules/security.md`  <sub>20 lines</sub>
+### `.claude/rules/security.md`  <sub>46 lines</sub>
 
 - Security engineering  <sub>:12</sub>
+- Personal API keys  <sub>:24</sub>
 
 ### `.claude/rules/services.md`  <sub>31 lines</sub>
 
@@ -1865,6 +1866,18 @@ _no second-level headings_
 - Acceptance  <sub>:223</sub>
 - Out of scope  <sub>:236</sub>
 
+### `docs/implementation/access-control-identity/163-personal-api-keys.md`  <sub>625 lines</sub>
+
+- 1. The three decisions this feature is built on  <sub>:20</sub>
+- 2. Architecture  <sub>:50</sub>
+- 3. The non-delegatable list  <sub>:178</sub>
+- 4. The customer scope catalogue  <sub>:230</sub>
+- 5. Lifecycle  <sub>:296</sub>
+- 6. Surfaces  <sub>:349</sub>
+- 7. Implementation plan  <sub>:371</sub>
+- 8. Verification  <sub>:584</sub>
+- 9. Deferred: service accounts  <sub>:607</sub>
+
 ### `docs/implementation/access-control-identity/18-identity-verification.md`  <sub>149 lines</sub>
 
 - What this is  <sub>:19</sub>
@@ -2683,7 +2696,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>2,556 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>2,632 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2720,6 +2733,7 @@ _no second-level headings_
 - ADR-030 — `docs/implementation/`, `docs/erp-lenses/` and `docs/design/` reorganized into domain subfolders, filenames unchanged  <sub>:2182</sub>
 - ADR-031 — WO-7 (Phase 7: customer portal, reviews, wishlist, returns, loyalty, mobile parity) built against a missing Phase 6 — tracking/invoice/returns scope narrowed, loyalty math, self-referral guard limits, WO-7.9 mobile parity  <sub>:2255</sub>
 - ADR-031 §9 — WO-7.3's returns module retired in favour of Phase 6's WO-6.6, discovered at merge time  <sub>:2420</sub>
+- ADR-037 — Personal API keys: a user-bound token capped live by its owner, an explicit non-delegatable list, and no service account yet  <sub>:2559</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3077,15 +3091,15 @@ _no second-level headings_
 - Acceptance  <sub>:226</sub>
 - Out of scope  <sub>:241</sub>
 
-### `docs/implementation/integrations-connectivity/34-partner-developer-api-access.md`  <sub>235 lines</sub>
+### `docs/implementation/integrations-connectivity/34-partner-developer-api-access.md`  <sub>246 lines</sub>
 
-- 1. An API key is a principal with a scope, never a `User` in disguise  <sub>:13</sub>
-- 2. Scoped read/write, never a bypass of tenant or branch isolation  <sub>:73</sub>
-- 3. Rate limiting protects the platform; scoping protects the data  <sub>:82</sub>
-- Scope lenses  <sub>:91</sub>
-- Work orders  <sub>:194</sub>
-- Acceptance  <sub>:212</sub>
-- Out of scope  <sub>:225</sub>
+- 1. An API key is a principal with a scope, never a `User` in disguise  <sub>:24</sub>
+- 2. Scoped read/write, never a bypass of tenant or branch isolation  <sub>:84</sub>
+- 3. Rate limiting protects the platform; scoping protects the data  <sub>:93</sub>
+- Scope lenses  <sub>:102</sub>
+- Work orders  <sub>:205</sub>
+- Acceptance  <sub>:223</sub>
+- Out of scope  <sub>:236</sub>
 
 ### `docs/implementation/integrations-connectivity/36-universal-connectivity-integration-framework.md`  <sub>264 lines</sub>
 
@@ -3306,15 +3320,15 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>499 lines</sub>
+### `docs/implementation/README.md`  <sub>500 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:369</sub>
-- The two module groups  <sub>:398</sub>
-- How a work order runs  <sub>:435</sub>
-- Known gaps not yet owned by a phase  <sub>:453</sub>
-- When a brief is wrong  <sub>:480</sub>
-- Scope, honestly  <sub>:493</sub>
+- Dependency order  <sub>:370</sub>
+- The two module groups  <sub>:399</sub>
+- How a work order runs  <sub>:436</sub>
+- Known gaps not yet owned by a phase  <sub>:454</sub>
+- When a brief is wrong  <sub>:481</sub>
+- Scope, honestly  <sub>:494</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
 

@@ -3,7 +3,7 @@
 
 # Files — packages
 
-All 68 tracked files in `packages/*`, by directory.
+All 70 tracked files in `packages/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -49,10 +49,12 @@ All 68 tracked files in `packages/*`, by directory.
 | `package.json` | json | 41 |  |
 | `tsconfig.json` | json | 17 |  |
 
-### `packages/shared/src` (32)
+### `packages/shared/src` (34)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `api-keys.spec.ts` | unit test | 231 |  |
+| `api-keys.ts` | module | 314 | Personal API keys — what a key may carry, and the pure rules deciding what it may do on a given request. |
 | `brand.ts` | module | 334 | THE BRAND FILE. |
 | `collection-rules.ts` | module | 16 | The rule shape `Collection.rule` (catalog.prisma, WO-8.2) holds when a collection is rule-based rather than manually cu… |
 | `constants.ts` | module | 146 |  |
@@ -64,7 +66,7 @@ All 68 tracked files in `packages/*`, by directory.
 | `fabric-estimate.ts` | module | 95 | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
 | `http-client.ts` | module | 200 | The one HTTP layer for a signed-in browser client. |
 | `human-code.ts` | module | 37 | No O/0, no I/1/l — the ambiguous-character exclusion both PromoCode's bulk generation and GiftCard's own code need (05-… |
-| `index.ts` | module | 37 |  |
+| `index.ts` | module | 38 |  |
 | `onsite-messaging.ts` | module | 33 | On-site messaging kinds and popup triggers (WO-8.6), mirroring `OnsiteMessageKind`/`OnsitePopupTrigger` in apps/api/pri… |
 | `permissions.spec.ts` | unit test | 68 |  |
 | `permissions.ts` | module | 727 | The permission catalog for PBAC (Permission-Based Access Control). |

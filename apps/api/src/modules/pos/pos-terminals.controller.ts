@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { RequirePermission } from '../../core/auth/decorators';
+import { RequirePermission, SessionOnly } from '../../core/auth/decorators';
 import { PosTerminalsService } from './pos-terminals.service';
 import { RegisterPosTerminalDto, UpdatePosTerminalDto } from './dto/pos-terminal.dto';
 
@@ -40,7 +40,9 @@ export class PosTerminalsController {
     return this.terminals.suspend(id);
   }
 
+  // Mints a credential that would outlive any API key (163-personal-api-keys.md §2).
   @Post(':id/rotate-device-key')
+  @SessionOnly()
   @ApiOperation({ summary: 'Issue a fresh device credential for this terminal — shown once, never retrievable again' })
   async rotateDeviceKey(@Param('id') id: string) {
     return this.terminals.rotateDeviceKey(id);

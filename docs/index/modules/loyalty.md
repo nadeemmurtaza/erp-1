@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 6 files
 
 Source: `apps/api/src/modules/loyalty/`
 
-## Files (6 · 476 lines)
+## Files (6 · 487 lines)
 
 All paths relative to `apps/api/src/modules/loyalty/dto`.
 
@@ -18,7 +18,7 @@ All paths relative to `apps/api/src/modules/loyalty/dto`.
 | `loyalty.dto.ts` | dto | 52 | 4 |  |
 | `loyalty-admin.controller.ts` | controller | 46 | 1 |  |
 | `loyalty-order.listener.ts` | event subscriber | 45 | 1 | WO-7.7: points earned on DELIVERED, reversed on DELIVERED -> RETURNED (the only transition out of DELIVERED — see order… |
-| `loyalty.controller.ts` | controller | 63 | 1 | WO-7.7 — the customer's own points, tiers and referrals. |
+| `loyalty.controller.ts` | controller | 74 | 1 | WO-7.7 — the customer's own points, tiers and referrals. |
 | `loyalty.module.ts` | nest module | 15 | 1 |  |
 | `loyalty.service.ts` | service | 255 | 1 | WO-7.7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 
@@ -31,13 +31,13 @@ All paths relative to `apps/api/src/modules/loyalty/dto`.
 | POST | `/admin/loyalty/customers/:userId/adjust` | `loyalty.manage` | `LoyaltyAdminController.adjust` :27 | Manually adjust a customer's points |
 | POST | `/admin/loyalty/tiers` | `loyalty.manage` | `LoyaltyAdminController.createTier` :35 | Create a loyalty tier |
 | PATCH | `/admin/loyalty/tiers/:id` | `loyalty.manage` | `LoyaltyAdminController.updateTier` :42 | Edit a loyalty tier |
-| GET | `/loyalty` | signed-in | `LoyaltyController.balance` :24 | My points balance, tier and trailing 12-month spend |
-| GET | `/loyalty/ledger` | signed-in | `LoyaltyController.ledger` :31 | My points history |
-| POST | `/loyalty/redeem` | signed-in | `LoyaltyController.redeem` :38 | Convert points to store credit |
-| GET | `/loyalty/referral-code` | signed-in | `LoyaltyController.myReferralCode` :45 | My own referral code (generated on first request) |
-| POST | `/loyalty/referral/apply` | signed-in | `LoyaltyController.applyReferralCode` :59 | Apply a friend's referral code to my account |
-| GET | `/loyalty/referrals` | signed-in | `LoyaltyController.myReferrals` :52 | Customers I have referred |
-| GET | `/loyalty/tiers` | **PUBLIC** | `LoyaltyController.tiers` :17 | Loyalty tiers and their benefits |
+| GET | `/loyalty` | signed-in | `LoyaltyController.balance` :32 | My points balance, tier and trailing 12-month spend |
+| GET | `/loyalty/ledger` | signed-in | `LoyaltyController.ledger` :40 | My points history |
+| POST | `/loyalty/redeem` | signed-in | `LoyaltyController.redeem` :47 | Convert points to store credit |
+| GET | `/loyalty/referral-code` | signed-in | `LoyaltyController.myReferralCode` :55 | My own referral code (generated on first request) |
+| POST | `/loyalty/referral/apply` | signed-in | `LoyaltyController.applyReferralCode` :70 | Apply a friend's referral code to my account |
+| GET | `/loyalty/referrals` | signed-in | `LoyaltyController.myReferrals` :63 | Customers I have referred |
+| GET | `/loyalty/tiers` | **PUBLIC** | `LoyaltyController.tiers` :24 | Loyalty tiers and their benefits |
 
 
 ## Domain events
@@ -109,7 +109,7 @@ _No spec files in this unit._
 | `ApplyReferralCodeDto` | class | `loyalty.dto.ts:47` |  |
 | `LoyaltyAdminController` | class | `loyalty-admin.controller.ts:10` |  |
 | `LoyaltyOrderListener` | class | `loyalty-order.listener.ts:16` | WO-7.7: points earned on DELIVERED, reversed on DELIVERED -> RETURNED (the only transition out of DELIVERED —… |
-| `LoyaltyController` | class | `loyalty.controller.ts:11` | WO-7.7 — the customer's own points, tiers and referrals. |
+| `LoyaltyController` | class | `loyalty.controller.ts:18` | WO-7.7 — the customer's own points, tiers and referrals. |
 | `LoyaltyModule` | class | `loyalty.module.ts:14` |  |
 | `LoyaltyService` | class | `loyalty.service.ts:23` | WO-7.7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 

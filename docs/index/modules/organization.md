@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 12 files
 
 Source: `apps/api/src/modules/organization/`
 
-## Files (12 · 1,382 lines)
+## Files (12 · 1,384 lines)
 
 All paths relative to `apps/api/src/modules/organization/dto`.
 
@@ -25,7 +25,7 @@ All paths relative to `apps/api/src/modules/organization/dto`.
 | `policy-quarantine.dto.ts` | dto | 11 | 1 | WO-23.3c/e — the reviewer's own note. |
 | `nodes.service.spec.ts` | unit test | 131 | — |  |
 | `nodes.service.ts` | service | 108 | 1 | The registry of child nodes this deployment is authoritative for — a brand's branches, or an organization's brands (RET… |
-| `organization.controller.ts` | controller | 157 | 1 | The three-level admin shell (R19, WO-18.5) plus who holds a seat in it (R10, WO-18.6). |
+| `organization.controller.ts` | controller | 159 | 1 | The three-level admin shell (R19, WO-18.5) plus who holds a seat in it (R10, WO-18.6). |
 | `organization.module.ts` | nest module | 23 | 1 |  |
 | `organization.service.spec.ts` | unit test | 504 | — |  |
 | `organization.service.ts` | service | 347 | 5 |  |
@@ -35,21 +35,21 @@ All paths relative to `apps/api/src/modules/organization/dto`.
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/organization/admin-scopes` | `organization.manage` | `OrganizationController.adminScopes` :138 | Every AdminScope grant — who is a super admin, who runs which brand, who manages which br… |
-| POST | `/organization/admin-scopes` | `organization.manage` | `OrganizationController.grantScope` :145 | Make a user a super admin, a brand admin, or a branch admin |
-| DELETE | `/organization/admin-scopes/:id` | `organization.manage` | `OrganizationController.revokeScope` :152 | Revoke an AdminScope grant |
+| GET | `/organization/admin-scopes` | `organization.manage` | `OrganizationController.adminScopes` :140 | Every AdminScope grant — who is a super admin, who runs which brand, who manages which br… |
+| POST | `/organization/admin-scopes` | `organization.manage` | `OrganizationController.grantScope` :147 | Make a user a super admin, a brand admin, or a branch admin |
+| DELETE | `/organization/admin-scopes/:id` | `organization.manage` | `OrganizationController.revokeScope` :154 | Revoke an AdminScope grant |
 | GET | `/organization/brands` | `organization.view` | `OrganizationController.brands` :49 | Retail brands visible to the caller |
-| GET | `/organization/brands/:brandId/policy` | `organization.view` | `OrganizationController.brandPolicy` :103 | A brand's own policy switches for its branches (RETAIL-ERP.md R9/R13) — null when never c… |
-| PATCH | `/organization/brands/:brandId/policy` | `organization.manage` | `OrganizationController.setBrandPolicy` :110 | Set a brand policy switch — allowBranchProductCreation, allowBranchLocalPurchasing, allow… |
+| GET | `/organization/brands/:brandId/policy` | `organization.view` | `OrganizationController.brandPolicy` :105 | A brand's own policy switches for its branches (RETAIL-ERP.md R9/R13) — null when never c… |
+| PATCH | `/organization/brands/:brandId/policy` | `organization.manage` | `OrganizationController.setBrandPolicy` :112 | Set a brand policy switch — allowBranchProductCreation, allowBranchLocalPurchasing, allow… |
 | GET | `/organization/me/scope` | `organization.view` | `OrganizationController.myScope` :43 | The caller's resolved scope — where to land, and what chips to draw |
 | GET | `/organization/nodes` | `organization.view` | `OrganizationController.nodes` :55 | This deployment's registered child nodes, visible to the caller |
 | POST | `/organization/nodes` | `organization.manage` | `OrganizationController.registerNode` :62 | Register a child node — or re-activate and update one that already exists |
 | PATCH | `/organization/nodes/:nodeId/brand` | `organization.manage` | `OrganizationController.setNodeBrand` :69 | Set which brand a registered node belongs to (WO-23.3c/e) — governs its BrandPolicy check… |
-| POST | `/organization/nodes/:nodeId/rotate-inbound-key` | `organization.manage` | `OrganizationController.rotateNodeInboundKey` :76 | Issue a fresh replication credential for a child node — shown once, never retrievable aga… |
-| GET | `/organization/policy-quarantine` | `organization.view` | `OrganizationController.listPolicyQuarantine` :120 | R9's quarantine — facts that applied but violate the BrandPolicy switch meant to govern t… |
-| POST | `/organization/policy-quarantine/:id/resolve` | `organization.manage` | `OrganizationController.resolvePolicyQuarantine` :127 | Mark a quarantined policy exception reviewed |
-| PATCH | `/organization/policy/inter-brand-transfers` | `organization.manage` | `OrganizationController.setInterBrandTransfersPolicy` :94 | Turn inter-brand transfers on or off for this organization (RETAIL-ERP.md R9, WO-22.2) |
-| POST | `/organization/replication/resync` | `organization.manage` | `OrganizationController.resyncFromParent` :86 |  |
+| POST | `/organization/nodes/:nodeId/rotate-inbound-key` | `organization.manage` | `OrganizationController.rotateNodeInboundKey` :78 | Issue a fresh replication credential for a child node — shown once, never retrievable aga… |
+| GET | `/organization/policy-quarantine` | `organization.view` | `OrganizationController.listPolicyQuarantine` :122 | R9's quarantine — facts that applied but violate the BrandPolicy switch meant to govern t… |
+| POST | `/organization/policy-quarantine/:id/resolve` | `organization.manage` | `OrganizationController.resolvePolicyQuarantine` :129 | Mark a quarantined policy exception reviewed |
+| PATCH | `/organization/policy/inter-brand-transfers` | `organization.manage` | `OrganizationController.setInterBrandTransfersPolicy` :96 | Turn inter-brand transfers on or off for this organization (RETAIL-ERP.md R9, WO-22.2) |
+| POST | `/organization/replication/resync` | `organization.manage` | `OrganizationController.resyncFromParent` :88 |  |
 
 
 ## Domain events

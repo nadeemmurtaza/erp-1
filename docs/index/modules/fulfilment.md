@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 17 files
 
 Source: `apps/api/src/modules/fulfilment/`
 
-## Files (17 · 2,783 lines)
+## Files (17 · 2,788 lines)
 
 All paths relative to `apps/api/src/modules/fulfilment`.
 
@@ -28,7 +28,7 @@ All paths relative to `apps/api/src/modules/fulfilment`.
 | `fulfilment.spec.ts` | unit test | 125 | — |  |
 | `manual.provider.ts` | module | 49 | 1 | "Type a tracking number" — what every shop on this platform does today. |
 | `return-notification.subscriber.ts` | event subscriber | 69 | 1 |  |
-| `returns.controller.ts` | controller | 155 | 2 | WO-6.8's `/admin/sales/returns` + `/[id]` — the inspection sheet. |
+| `returns.controller.ts` | controller | 160 | 2 | WO-6.8's `/admin/sales/returns` + `/[id]` — the inspection sheet. |
 | `returns.service.ts` | service | 382 | 1 | WO-6.6 — request -> approve/reject -> receive -> inspect -> resolve. |
 | `returns.spec.ts` | unit test | 178 | — |  |
 | `shipping-migration.spec.ts` | unit test | 90 | — |  |
@@ -73,11 +73,11 @@ All paths relative to `apps/api/src/modules/fulfilment`.
 | GET | `/admin/settings/shipping/zones` | `fulfilment.view` `fulfilment.manage` | `ShippingAdminController.listZones` :31 |  |
 | POST | `/admin/settings/shipping/zones` | `fulfilment.manage` | `ShippingAdminController.createZone` :36 |  |
 | PATCH | `/admin/settings/shipping/zones/:id` | `fulfilment.manage` | `ShippingAdminController.updateZone` :41 |  |
-| POST | `/returns` | signed-in | `ReturnsController.create` :128 |  |
-| GET | `/returns/:id` | signed-in | `ReturnsController.get` :122 |  |
-| POST | `/returns/:id/photos` | signed-in | `ReturnsController.uploadPhoto` :137 |  |
-| GET | `/returns/mine` | signed-in | `ReturnsController.mine` :116 | The signed-in customer's own return requests |
-| GET | `/returns/reasons` | signed-in | `ReturnsController.listReasons` :109 |  |
+| POST | `/returns` | signed-in | `ReturnsController.create` :132 |  |
+| GET | `/returns/:id` | signed-in | `ReturnsController.get` :125 |  |
+| POST | `/returns/:id/photos` | signed-in | `ReturnsController.uploadPhoto` :142 |  |
+| GET | `/returns/mine` | signed-in | `ReturnsController.mine` :118 | The signed-in customer's own return requests |
+| GET | `/returns/reasons` | signed-in | `ReturnsController.listReasons` :110 |  |
 | GET | `/shipping/quote` | **PUBLIC** | `ShippingController.quote` :106 |  |
 
 

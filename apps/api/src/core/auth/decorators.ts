@@ -1,9 +1,11 @@
 import { SetMetadata, createParamDecorator, type ExecutionContext } from '@nestjs/common';
-import type { PermissionKey } from '@newax/shared';
+import type { CustomerScopeKey, PermissionKey } from '@newax/shared';
 import {
   AUTHENTICATED_ONLY_KEY,
+  CUSTOMER_SCOPES_KEY,
   IS_PUBLIC_KEY,
   PERMISSIONS_KEY,
+  SESSION_ONLY_KEY,
   type AuthenticatedUser,
 } from './auth.constants';
 
@@ -40,6 +42,31 @@ export const RequirePermission = (...keys: PermissionKey[]): MethodDecorator & C
  */
 export const AuthenticatedOnly = (): MethodDecorator & ClassDecorator =>
   SetMetadata(AUTHENTICATED_ONLY_KEY, true);
+
+/**
+ * Refuses the route to every personal API key, whatever permission or scope
+ * it carries — only a signed-in session may call it.
+ *
+ * Every route that issues, rotates or installs a credential, or changes an
+ * account's sign-in identity, carries this, including where the permission
+ * gating it is otherwise fine to delegate (`purchasing.manage` gates minting
+ * a trading-partner key): a key must never mint something that outlives it.
+ * See 163-personal-api-keys.md §2 and `session-only-routes.spec.ts`.
+ */
+export const SessionOnly = (): MethodDecorator & ClassDecorator => SetMetadata(SESSION_ONLY_KEY, true);
+
+/**
+ * Lets a storefront API key reach this customer self-service route when it
+ * carries any one of the named scopes (`CUSTOMER_SCOPE_CATALOG`). Changes
+ * nothing for a signed-in session, and nothing about whose rows the handler
+ * reads — it still scopes to `user.id`, the key's owner.
+ *
+ * A customer route without it is unreachable by every storefront key. That
+ * is the default on purpose: a new route is closed to keys until someone
+ * decides an integration should reach it.
+ */
+export const CustomerScope = (...scopes: CustomerScopeKey[]): MethodDecorator & ClassDecorator =>
+  SetMetadata(CUSTOMER_SCOPES_KEY, scopes);
 
 /** Injects the authenticated user, or undefined on a @Public route. */
 export const CurrentUser = createParamDecorator(

@@ -6,6 +6,7 @@ import { AppModule } from '../src/app.module';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
 import { PrismaService } from '../src/core/prisma/prisma.service';
 import { OutboxDispatcher } from '../src/core/events/outbox.dispatcher';
+import { drainOutboxSince } from './support/outbox';
 import { setVariantStock } from './support/stock';
 
 /**
@@ -26,6 +27,7 @@ describe('Customer portal (e2e)', () => {
   let customerToken: string;
   let customerId: string;
   let readyVariantId: string;
+  let suiteStartedAt: Date;
 
   const createdOrderIds: string[] = [];
   const createdVariantIds: string[] = [];
@@ -39,6 +41,7 @@ describe('Customer portal (e2e)', () => {
   };
 
   beforeAll(async () => {
+    suiteStartedAt = new Date();
     const moduleRef = await Test.createTestingModule({ imports: [AppModule] }).compile();
     app = moduleRef.createNestApplication();
     app.use(cookieParser());
@@ -85,9 +88,18 @@ describe('Customer portal (e2e)', () => {
 
   const api = () => request(app.getHttpServer());
 
+  // The loyalty and back-in-stock assertions below read what an outbox
+  // listener wrote; one processBatch() raced the app's own timer and
+  // intermittently read nothing. See drainOutboxSince() for why it is scoped.
+  const drainOutbox = () => drainOutboxSince(prisma, outbox, suiteStartedAt);
+
   async function placeAndDeliverOrder(): Promise<{ id: string; number: string }> {
     const agent = request.agent(app.getHttpServer());
     agent.set('Authorization', `Bearer ${customerToken}`);
+    // The seeded customer's cart is shared with other suites; a line one of
+    // them left behind would turn this into a two-line order, and the review
+    // test below could then match the other line.
+    await agent.delete('/api/v1/cart').expect(200);
     await agent.post('/api/v1/cart/items').send({ variantId: readyVariantId, quantity: 1 }).expect(201);
     const placed = await agent.post('/api/v1/orders').send({ shippingAddress: KARACHI, paymentMethod: 'cod' }).expect(201);
     createdOrderIds.push(placed.body.id);
@@ -100,7 +112,7 @@ describe('Customer portal (e2e)', () => {
         .expect(201);
     }
     // The loyalty listener runs off the outbox, not inline with the request.
-    await outbox.processBatch();
+    await drainOutbox();
     return { id: placed.body.id, number: placed.body.number };
   }
 
@@ -152,7 +164,7 @@ describe('Customer portal (e2e)', () => {
         .set('Authorization', `Bearer ${adminToken}`)
         .send({ status: 'RETURNED' })
         .expect(201);
-      await outbox.processBatch();
+      await drainOutbox();
 
       const reversed = await prisma.loyaltyTransaction.findUnique({
         where: { orderId_type: { orderId: order.id, type: 'REVERSED' } },
@@ -231,7 +243,7 @@ describe('Customer portal (e2e)', () => {
         .send({ delta: 5, reason: 'restock' })
         .expect(201);
       // BackInStockListener runs off the outbox, not inline with the request.
-      await outbox.processBatch();
+      await drainOutbox();
 
       const requestedAfter = await prisma.backInStockRequest.findUnique({
         where: { userId_variantId: { userId: customerId, variantId: variant.id } },

@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 669 tracked files in `apps/api`, by directory.
+All 684 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -40,7 +40,7 @@ All 669 tracked files in `apps/api`, by directory.
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
 | `catalog.prisma` | prisma schema | 691 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
-| `core.prisma` | prisma schema | 526 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `core.prisma` | prisma schema | 612 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
@@ -475,6 +475,12 @@ All 669 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 242 |  |
 
+### `apps/api/prisma/schema/migrations/20260925120000_add_personal_api_keys` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 120 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -509,20 +515,21 @@ All 669 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `audit.module.ts` | nest module | 10 |  |
-| `audit.service.ts` | service | 49 |  |
+| `audit.service.ts` | service | 69 |  |
 
-### `apps/api/src/core/auth` (19)
+### `apps/api/src/core/auth` (20)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `auth.constants.ts` | module | 62 |  |
-| `auth.controller.ts` | controller | 197 |  |
-| `auth.module.ts` | nest module | 19 |  |
+| `auth.constants.ts` | module | 99 |  |
+| `auth.controller.ts` | controller | 202 |  |
+| `auth.module.ts` | nest module | 28 |  |
 | `auth.service.spec.ts` | unit test | 24 |  |
 | `auth.service.ts` | service | 429 |  |
-| `bearer-token.ts` | module | 16 |  |
-| `decorators.ts` | module | 53 |  |
-| `guards.ts` | module | 102 |  |
+| `bearer-token.ts` | module | 31 |  |
+| `decorators.ts` | module | 80 |  |
+| `guards.spec.ts` | unit test | 212 |  |
+| `guards.ts` | module | 167 |  |
 | `jwt.strategy.ts` | auth strategy | 44 |  |
 | `ownership.guard.spec.ts` | unit test | 49 |  |
 | `ownership.guard.ts` | guard | 24 |  |
@@ -534,6 +541,25 @@ All 669 tracked files in `apps/api`, by directory.
 | `roles.service.ts` | service | 301 |  |
 | `scope.guard.spec.ts` | unit test | 151 |  |
 | `scope.guard.ts` | guard | 129 |  |
+
+### `apps/api/src/core/auth/api-keys` (8)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `api-key-access.spec.ts` | unit test | 159 |  |
+| `api-key-access.ts` | module | 93 |  |
+| `api-key-auth.service.spec.ts` | unit test | 270 |  |
+| `api-key-auth.service.ts` | service | 192 |  |
+| `api-keys-admin.controller.ts` | controller | 41 |  |
+| `api-keys.controller.ts` | controller | 67 |  |
+| `api-keys.service.spec.ts` | unit test | 505 |  |
+| `api-keys.service.ts` | service | 693 |  |
+
+### `apps/api/src/core/auth/api-keys/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `api-key.dto.ts` | dto | 114 |  |
 
 ### `apps/api/src/core/auth/dto` (2)
 
@@ -590,7 +616,7 @@ All 669 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 473 | The catalogue of domain events. |
+| `domain-events.ts` | module | 489 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
@@ -636,12 +662,12 @@ All 669 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `catalog.ts` | module | 355 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which catego… |
-| `copy.ts` | module | 570 |  |
+| `catalog.ts` | module | 364 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which catego… |
+| `copy.ts` | module | 602 |  |
 | `email-templates.admin.controller.ts` | controller | 59 |  |
 | `html.ts` | module | 414 |  |
-| `templates.spec.ts` | unit test | 365 |  |
-| `templates.ts` | module | 1039 |  |
+| `templates.spec.ts` | unit test | 380 |  |
+| `templates.ts` | module | 1091 |  |
 
 ### `apps/api/src/core/notifications/email-accounts` (3)
 
@@ -769,7 +795,7 @@ All 669 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `addresses.controller.ts` | controller | 46 |  |
+| `addresses.controller.ts` | controller | 50 |  |
 | `addresses.module.ts` | nest module | 10 |  |
 | `addresses.service.ts` | service | 86 |  |
 
@@ -988,7 +1014,7 @@ All 669 tracked files in `apps/api`, by directory.
 | `fulfilment.service.ts` | service | 470 |  |
 | `fulfilment.spec.ts` | unit test | 125 |  |
 | `return-notification.subscriber.ts` | event subscriber | 69 |  |
-| `returns.controller.ts` | controller | 155 |  |
+| `returns.controller.ts` | controller | 160 |  |
 | `returns.service.ts` | service | 382 |  |
 | `returns.spec.ts` | unit test | 178 |  |
 | `shipping-migration.spec.ts` | unit test | 90 |  |
@@ -1017,7 +1043,7 @@ All 669 tracked files in `apps/api`, by directory.
 | `giftcards.controller.ts` | controller | 67 |  |
 | `giftcards.module.ts` | nest module | 15 |  |
 | `giftcards.service.ts` | service | 202 |  |
-| `store-credit-account.controller.ts` | controller | 26 |  |
+| `store-credit-account.controller.ts` | controller | 27 |  |
 | `store-credit-reconcile.cron.ts` | scheduled job | 26 |  |
 | `store-credit.service.ts` | service | 162 |  |
 
@@ -1082,7 +1108,7 @@ All 669 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `loyalty-admin.controller.ts` | controller | 46 |  |
 | `loyalty-order.listener.ts` | event subscriber | 45 |  |
-| `loyalty.controller.ts` | controller | 63 |  |
+| `loyalty.controller.ts` | controller | 74 |  |
 | `loyalty.module.ts` | nest module | 15 |  |
 | `loyalty.service.ts` | service | 255 |  |
 
@@ -1119,7 +1145,7 @@ All 669 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `garment-fields-seed.spec.ts` | unit test | 64 |  |
 | `measurements-admin.service.ts` | service | 283 |  |
-| `measurements.controller.ts` | controller | 137 |  |
+| `measurements.controller.ts` | controller | 142 |  |
 | `measurements.module.ts` | nest module | 16 |  |
 | `measurements.service.ts` | service | 204 |  |
 
@@ -1167,7 +1193,7 @@ All 669 tracked files in `apps/api`, by directory.
 | `order-replication.listener.spec.ts` | unit test | 54 |  |
 | `order-replication.listener.ts` | event subscriber | 53 |  |
 | `orders-pos.service.spec.ts` | unit test | 244 |  |
-| `orders.controller.ts` | controller | 134 |  |
+| `orders.controller.ts` | controller | 136 |  |
 | `orders.module.ts` | nest module | 46 |  |
 | `orders.service.ts` | service | 1184 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 |  |
@@ -1184,7 +1210,7 @@ All 669 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `nodes.service.spec.ts` | unit test | 131 |  |
 | `nodes.service.ts` | service | 108 |  |
-| `organization.controller.ts` | controller | 157 |  |
+| `organization.controller.ts` | controller | 159 |  |
 | `organization.module.ts` | nest module | 23 |  |
 | `organization.service.spec.ts` | unit test | 504 |  |
 | `organization.service.ts` | service | 347 |  |
@@ -1279,7 +1305,7 @@ All 669 tracked files in `apps/api`, by directory.
 | `pos-shifts.controller.ts` | controller | 55 |  |
 | `pos-shifts.service.spec.ts` | unit test | 177 |  |
 | `pos-shifts.service.ts` | service | 139 |  |
-| `pos-terminals.controller.ts` | controller | 49 |  |
+| `pos-terminals.controller.ts` | controller | 51 |  |
 | `pos-terminals.service.spec.ts` | unit test | 145 |  |
 | `pos-terminals.service.ts` | service | 116 |  |
 | `pos.module.ts` | nest module | 44 |  |
@@ -1375,7 +1401,7 @@ All 669 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `reviews-public.controller.ts` | controller | 44 |  |
+| `reviews-public.controller.ts` | controller | 46 |  |
 | `reviews.controller.ts` | controller | 26 |  |
 | `reviews.module.ts` | nest module | 12 |  |
 | `reviews.service.ts` | service | 125 |  |
@@ -1482,7 +1508,7 @@ All 669 tracked files in `apps/api`, by directory.
 | `supplier-digest.listener.ts` | event subscriber | 35 |  |
 | `trading-partner-portal.controller.spec.ts` | unit test | 63 |  |
 | `trading-partner-portal.controller.ts` | controller | 46 |  |
-| `trading-partners.controller.ts` | controller | 62 |  |
+| `trading-partners.controller.ts` | controller | 71 |  |
 | `trading-partners.module.ts` | nest module | 53 |  |
 | `trading-partners.service.spec.ts` | unit test | 385 |  |
 | `trading-partners.service.ts` | service | 299 |  |
@@ -1516,11 +1542,11 @@ All 669 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `notification.subscriber.ts` | event subscriber | 43 |  |
-| `security-notification.subscriber.ts` | event subscriber | 115 |  |
-| `users-admin.controller.ts` | controller | 83 |  |
+| `security-notification.subscriber.ts` | event subscriber | 152 |  |
+| `users-admin.controller.ts` | controller | 87 |  |
 | `users-admin.module.ts` | nest module | 12 |  |
-| `users-admin.service.spec.ts` | unit test | 88 |  |
-| `users-admin.service.ts` | service | 340 |  |
+| `users-admin.service.spec.ts` | unit test | 157 |  |
+| `users-admin.service.ts` | service | 353 |  |
 
 ### `apps/api/src/modules/users/dto` (1)
 
@@ -1534,7 +1560,7 @@ All 669 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `back-in-stock.listener.ts` | event subscriber | 76 |  |
 | `wishlist-admin.controller.ts` | controller | 19 |  |
-| `wishlist.controller.ts` | controller | 58 |  |
+| `wishlist.controller.ts` | controller | 70 |  |
 | `wishlist.module.ts` | nest module | 13 |  |
 | `wishlist.service.ts` | service | 179 |  |
 
@@ -1544,17 +1570,19 @@ All 669 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `wishlist.dto.ts` | dto | 30 |  |
 
-### `apps/api/test` (22)
+### `apps/api/test` (25)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.e2e-spec.ts` | e2e test | 462 | The general ledger's invariants (RETAIL-ERP.md R15, WO-19.1), proven against a real database rather than a mocked Prism… |
+| `api-keys.e2e-spec.ts` | e2e test | 356 |  |
 | `auth.e2e-spec.ts` | e2e test | 198 |  |
 | `backfill-product-options.spec.ts` | unit test | 114 |  |
 | `cart.e2e-spec.ts` | e2e test | 800 |  |
 | `catalog.e2e-spec.ts` | e2e test | 411 |  |
 | `crm.e2e-spec.ts` | e2e test | 489 |  |
-| `customer-portal.e2e-spec.ts` | e2e test | 243 |  |
+| `customer-portal.e2e-spec.ts` | e2e test | 255 |  |
+| `customer-scope-routes.spec.ts` | unit test | 230 |  |
 | `devices.e2e-spec.ts` | e2e test | 150 |  |
 | `email-accounts-admin.e2e-spec.ts` | e2e test | 342 |  |
 | `email-channel.behavior.spec.ts` | unit test | 580 | Behavior tests for the email notification channel. |
@@ -1568,13 +1596,15 @@ All 669 tracked files in `apps/api`, by directory.
 | `promotions-checkout.e2e-spec.ts` | e2e test | 327 |  |
 | `publish-gate.spec.ts` | unit test | 69 |  |
 | `reports.e2e-spec.ts` | e2e test | 189 |  |
+| `session-only-routes.spec.ts` | unit test | 65 |  |
 | `setup-env.ts` | module | 11 | Same ordering rule as src/core/config/load-env.ts: the environment must be |
 | `stitching.e2e-spec.ts` | e2e test | 590 |  |
 
-### `apps/api/test/support` (1)
+### `apps/api/test/support` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `outbox.ts` | module | 38 |  |
 | `stock.ts` | module | 43 |  |
 
 

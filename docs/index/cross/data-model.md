@@ -3,7 +3,7 @@
 
 # Data model
 
-All **203** Prisma models and **88** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **204** Prisma models and **90** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -30,7 +30,7 @@ against a real database.
 | [`cart.prisma`](../data/cart.md) | 3 | 0 | [`cart`](../modules/cart.md) | Cart, CartItem, CartItemStitchingOption |
 | [`catalog.prisma`](../data/catalog.md) | 27 | 7 | [`catalog`](../modules/catalog.md) | Brand, BrandTranslation, Category, CategoryTranslation, Collection, CollectionProduct, CollectionTranslation, OptionTemplate, Opt… |
 | [`content.prisma`](../data/content.md) | 8 | 1 | [`content`](../modules/content.md) | Banner, BannerTranslation, BlogPost, BlogPostTranslation, MenuItem, MenuItemTranslation, Page, PageTranslation |
-| [`core.prisma`](../data/core.md) | 18 | 8 | foundational | Address, AiUsageLog, AnalyticsEvent, AuditLog, DeviceToken, EmailAccount, EmailVerificationToken, OutboxEvent, PasswordResetToken… |
+| [`core.prisma`](../data/core.md) | 19 | 10 | foundational | Address, AiUsageLog, AnalyticsEvent, ApiKey, AuditLog, DeviceToken, EmailAccount, EmailVerificationToken, OutboxEvent, PasswordRe… |
 | [`crm.prisma`](../data/crm.md) | 9 | 3 | [`crm`](../modules/crm.md) | Contact, ContactTag, FollowUpTask, InboundEmail, InboundEmailReply, Interaction, Lead, Segment, Tag |
 | [`finance.prisma`](../data/finance.md) | 3 | 1 | [`finance`](../modules/finance.md) | Expense, ExpenseCategory, OrderEconomics |
 | [`fulfilment.prisma`](../data/fulfilment.md) | 16 | 4 | [`fulfilment`](../modules/fulfilment.md) | Manifest, ManifestNumberCounter, ReturnReasonCode, ReturnReasonTranslation, ReturnRequest, ReturnRequestItem, ReturnRequestNumber… |
@@ -73,6 +73,7 @@ against a real database.
 | [`AdminScope`](../data/organization.md#adminscope) | `organization` | 9 | 3 | id | What a user's admin access is scoped to (R10) — never a role check (House Rule 9 forbids… |
 | [`AiUsageLog`](../data/core.md#aiusagelog) | `core` | 11 | 0 | id |  |
 | [`AnalyticsEvent`](../data/core.md#analyticsevent) | `core` | 7 | 0 | id | Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started. |
+| [`ApiKey`](../data/core.md#apikey) | `core` | 18 | 2 | id | A personal API key: a credential that acts as `user`, never as anyone more powerful. |
 | [`AuditLog`](../data/core.md#auditlog) | `core` | 9 | 1 | id |  |
 | [`BackInStockRequest`](../data/wishlist.md#backinstockrequest) | `wishlist` | 6 | 2 | id | One row per customer waiting on one variant. |
 | [`Banner`](../data/content.md#banner) | `content` | 11 | 0 | id |  |
@@ -260,7 +261,7 @@ against a real database.
 | [`TenantDeploymentCredential`](../data/platform.md#tenantdeploymentcredential) | `platform` | 6 | 1 | id | The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GC… |
 | [`TradingPartner`](../data/trading-partners.md#tradingpartner) | `trading-partners` | 15 | 0 | id | The business on the other end of a document exchange. |
 | [`TransferNumberCounter`](../data/transfers.md#transfernumbercounter) | `transfers` | 2 | 0 | year | Same shape as OrderNumberCounter (orders.prisma) — an `INSERT ... |
-| [`User`](../data/core.md#user) | `core` | 74 | 24 | id |  |
+| [`User`](../data/core.md#user) | `core` | 76 | 26 | id |  |
 | [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | A per-user adjustment layered on top of their role's grants: GRANT adds a permission thei… |
 | [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | Which `Role` rows a user holds. |
 | [`VariantForecast`](../data/inventory.md#variantforecast) | `inventory` | 7 | 1 | variantId | WO-9.3 (09-ai-layer.md). |
@@ -283,6 +284,8 @@ against a real database.
 | [`AiFeature`](../data/core.md#aifeature) | `core` | `ALT_TEXT` `SEO_COPY` `SIZE_RECOMMENDATION` `DEMAND_FORECAST` `COD_RISK` `SEMANTIC_SEARCH` `VISUAL_SEARCH` `RECOMMENDATIONS` `WHATSAPP_ASSISTANT` `MA… |
 | [`AiSuggestionKind`](../data/catalog.md#aisuggestionkind) | `catalog` | `ALT_TEXT` `META_TITLE` `META_DESCRIPTION` `DESCRIPTION` `CARE_INSTRUCTIONS` |
 | [`AiSuggestionStatus`](../data/catalog.md#aisuggestionstatus) | `catalog` | `PENDING` `APPROVED` `REJECTED` |
+| [`ApiKeyRevocationReason`](../data/core.md#apikeyrevocationreason) | `core` | `OWNER` `ADMINISTRATOR` `OWNER_DEACTIVATED` |
+| [`ApiKeySurface`](../data/core.md#apikeysurface) | `core` | `ADMIN` `STOREFRONT` |
 | [`BomStatus`](../data/bom.md#bomstatus) | `bom` | `DRAFT` `ACTIVE` `ARCHIVED` |
 | [`CampaignChannel`](../data/marketing.md#campaignchannel) | `marketing` | `EMAIL` `SMS` `WHATSAPP` |
 | [`CampaignRecipientStatus`](../data/marketing.md#campaignrecipientstatus) | `marketing` | `PENDING` `SENT` `SKIPPED_OPT_OUT` `SKIPPED_NO_CONTACT` `FAILED` `OPENED` `CLICKED` |

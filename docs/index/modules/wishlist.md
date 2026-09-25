@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 6 files
 
 Source: `apps/api/src/modules/wishlist/`
 
-## Files (6 · 375 lines)
+## Files (6 · 387 lines)
 
 All paths relative to `apps/api/src/modules/wishlist`.
 
@@ -18,7 +18,7 @@ All paths relative to `apps/api/src/modules/wishlist`.
 | `back-in-stock.listener.ts` | event subscriber | 76 | 1 | WO-7.6's back-in-stock alert. |
 | `wishlist.dto.ts` | dto | 30 | 3 |  |
 | `wishlist-admin.controller.ts` | controller | 19 | 1 | Staff value from WO-7.6: what is wanted and out of stock, feeding Phase 1's reorder suggestions. |
-| `wishlist.controller.ts` | controller | 58 | 1 | WO-7.6 — replaces the browser-only localStorage wishlist. |
+| `wishlist.controller.ts` | controller | 70 | 1 | WO-7.6 — replaces the browser-only localStorage wishlist. |
 | `wishlist.module.ts` | nest module | 13 | 1 |  |
 | `wishlist.service.ts` | service | 179 | 2 |  |
 
@@ -28,13 +28,13 @@ All paths relative to `apps/api/src/modules/wishlist`.
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/wishlist/out-of-stock-report` | `analytics.view` | `WishlistAdminController.report` :15 | Wishlisted products that are currently out of stock, most-wanted first |
-| GET | `/back-in-stock` | signed-in | `WishlistController.myAlerts` :41 | My back-in-stock alerts |
-| POST | `/back-in-stock` | signed-in | `WishlistController.requestAlert` :47 | Ask to be notified when a variant is back in stock |
-| DELETE | `/back-in-stock/:variantId` | signed-in | `WishlistController.cancelAlert` :53 | Cancel a back-in-stock alert |
-| GET | `/wishlist` | signed-in | `WishlistController.list` :16 | My saved items |
-| POST | `/wishlist` | signed-in | `WishlistController.add` :22 | Save an item |
-| DELETE | `/wishlist/:id` | signed-in | `WishlistController.remove` :28 | Remove a saved item |
-| POST | `/wishlist/migrate` | signed-in | `WishlistController.migrate` :35 | Migrate a localStorage wishlist on first sign-in |
+| GET | `/back-in-stock` | signed-in | `WishlistController.myAlerts` :51 | My back-in-stock alerts |
+| POST | `/back-in-stock` | signed-in | `WishlistController.requestAlert` :58 | Ask to be notified when a variant is back in stock |
+| DELETE | `/back-in-stock/:variantId` | signed-in | `WishlistController.cancelAlert` :65 | Cancel a back-in-stock alert |
+| GET | `/wishlist` | signed-in | `WishlistController.list` :23 | My saved items |
+| POST | `/wishlist` | signed-in | `WishlistController.add` :30 | Save an item |
+| DELETE | `/wishlist/:id` | signed-in | `WishlistController.remove` :37 | Remove a saved item |
+| POST | `/wishlist/migrate` | signed-in | `WishlistController.migrate` :44 | Migrate a localStorage wishlist on first sign-in |
 
 
 ## Domain events
@@ -99,7 +99,7 @@ _No spec files in this unit._
 | `MigrateWishlistDto` | class | `wishlist.dto.ts:16` | WO-7.6's own migration step: whatever the browser's localStorage held before sign-in. |
 | `BackInStockRequestDto` | class | `wishlist.dto.ts:25` |  |
 | `WishlistAdminController` | class | `wishlist-admin.controller.ts:10` | Staff value from WO-7.6: what is wanted and out of stock, feeding Phase 1's reorder suggestions. |
-| `WishlistController` | class | `wishlist.controller.ts:11` | WO-7.6 — replaces the browser-only localStorage wishlist. |
+| `WishlistController` | class | `wishlist.controller.ts:17` | WO-7.6 — replaces the browser-only localStorage wishlist. |
 | `WishlistModule` | class | `wishlist.module.ts:12` |  |
 | `WishlistItemView` | interface | `wishlist.service.ts:5` |  |
 | `WishlistService` | class | `wishlist.service.ts:52` |  |

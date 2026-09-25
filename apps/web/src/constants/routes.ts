@@ -45,6 +45,8 @@ export const ROUTES = {
     accountCredit: '/account/credit',
     accountLoyalty: '/account/loyalty',
     accountNotifications: '/account/notifications',
+    /** Personal API keys for the customer's own data (163-personal-api-keys.md). */
+    accountApiKeys: '/account/api-keys',
     orders: '/orders',
     order: (number: string) => `/orders/${number}`,
     orderInvoice: (number: string) => `/orders/${number}/invoice`,
@@ -72,6 +74,8 @@ export const ROUTES = {
   admin: {
     dashboard: '/admin',
     account: '/admin/account',
+    /** Your own personal API keys (163-personal-api-keys.md). */
+    accountApiKeys: '/admin/account/api-keys',
     login: '/admin/login',
 
     products: '/admin/products',
@@ -152,6 +156,8 @@ export const ROUTES = {
     settings: '/admin/settings',
     users: '/admin/users',
     user: (id: string) => `/admin/users/${id}`,
+    /** Every account's API keys — read and revoke only, `users.manage`. */
+    usersApiKeys: '/admin/users/api-keys',
     emailTemplates: '/admin/email-templates',
     emailAccounts: '/admin/email-accounts',
     /** `new` is a real id here: the editor route handles creating and editing. */

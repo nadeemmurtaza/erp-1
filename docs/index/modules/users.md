@@ -9,7 +9,7 @@ Pack **core** · always on · 7 files
 
 Source: `apps/api/src/modules/users/`
 
-## Files (7 · 803 lines)
+## Files (7 · 926 lines)
 
 All paths relative to `apps/api/src/modules/users/dto`.
 
@@ -17,11 +17,11 @@ All paths relative to `apps/api/src/modules/users/dto`.
 |---|---|---|---|---|
 | `user.dto.ts` | dto | 122 | 7 | The roles this screen can create/assign — never CUSTOMER, which is self-serve only. |
 | `notification.subscriber.ts` | event subscriber | 43 | 1 | Welcomes a new account. |
-| `security-notification.subscriber.ts` | event subscriber | 115 | 1 | Account-security mail: a changed password, a reset link, a verification link. |
-| `users-admin.controller.ts` | controller | 83 | 1 |  |
+| `security-notification.subscriber.ts` | event subscriber | 152 | 1 | Account-security mail: a changed password, a reset link, a verification link. |
+| `users-admin.controller.ts` | controller | 87 | 1 |  |
 | `users-admin.module.ts` | nest module | 12 | 1 |  |
-| `users-admin.service.spec.ts` | unit test | 88 | — |  |
-| `users-admin.service.ts` | service | 340 | 1 |  |
+| `users-admin.service.spec.ts` | unit test | 157 | — |  |
+| `users-admin.service.ts` | service | 353 | 1 |  |
 
 
 ## HTTP routes (8)
@@ -29,13 +29,13 @@ All paths relative to `apps/api/src/modules/users/dto`.
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/users` | `users.manage` | `UsersAdminController.list` :16 | Back-office users (STAFF/TAILOR/ADMIN) |
-| POST | `/admin/users` | `users.manage` | `UsersAdminController.create` :28 | Create a back-office user |
+| POST | `/admin/users` | `users.manage` | `UsersAdminController.create` :31 | Create a back-office user |
 | GET | `/admin/users/:id` | `users.manage` | `UsersAdminController.get` :22 | A user, their role defaults, overrides and effective permissions |
-| PATCH | `/admin/users/:id` | `users.manage` | `UsersAdminController.update` :34 | Edit a user — name, contact info, role, active status |
-| PUT | `/admin/users/:id/permissions` | `users.manage` | `UsersAdminController.updatePermissions` :44 | Replace a user's permission overrides on top of their role |
-| POST | `/admin/users/:id/reset-password` | `users.manage` | `UsersAdminController.resetPassword` :75 | Set a user's password directly and sign them out everywhere |
-| DELETE | `/admin/users/:id/roles/:roleId` | `users.manage` | `UsersAdminController.unassignRole` :64 | Remove a Role from this user |
-| POST | `/admin/users/:id/roles/:roleId` | `users.manage` | `UsersAdminController.assignRole` :54 | Assign a custom Role to this user (owner's request — a user may hold several) |
+| PATCH | `/admin/users/:id` | `users.manage` | `UsersAdminController.update` :37 | Edit a user — name, contact info, role, active status |
+| PUT | `/admin/users/:id/permissions` | `users.manage` | `UsersAdminController.updatePermissions` :47 | Replace a user's permission overrides on top of their role |
+| POST | `/admin/users/:id/reset-password` | `users.manage` | `UsersAdminController.resetPassword` :79 | Set a user's password directly and sign them out everywhere |
+| DELETE | `/admin/users/:id/roles/:roleId` | `users.manage` | `UsersAdminController.unassignRole` :67 | Remove a Role from this user |
+| POST | `/admin/users/:id/roles/:roleId` | `users.manage` | `UsersAdminController.assignRole` :57 | Assign a custom Role to this user (owner's request — a user may hold several) |
 
 
 ## Domain events
@@ -50,9 +50,10 @@ _none_
 | Event | Name | Handler |
 |---|---|---|
 | `UserRegistered` | `user.registered` | `notification.subscriber.ts:21` → `onRegistered()` |
-| `PasswordChanged` | `user.password_changed` | `security-notification.subscriber.ts:33` → `onPasswordChanged()` |
-| `PasswordResetRequested` | `user.password_reset_requested` | `security-notification.subscriber.ts:55` → `onPasswordResetRequested()` |
-| `EmailVerificationRequested` | `user.email_verification_requested` | `security-notification.subscriber.ts:78` → `onEmailVerificationRequested()` |
+| `PasswordChanged` | `user.password_changed` | `security-notification.subscriber.ts:35` → `onPasswordChanged()` |
+| `PasswordResetRequested` | `user.password_reset_requested` | `security-notification.subscriber.ts:57` → `onPasswordResetRequested()` |
+| `EmailVerificationRequested` | `user.email_verification_requested` | `security-notification.subscriber.ts:80` → `onEmailVerificationRequested()` |
+| `ApiKeyIssued` | `user.api_key_issued` | `security-notification.subscriber.ts:113` → `onApiKeyIssued()` |
 
 
 
@@ -86,7 +87,7 @@ check there before adding another.
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `users-admin.service.spec.ts` | 3 | UsersAdminService.create — role selection at creation time |
+| `users-admin.service.spec.ts` | 7 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivation ends every persona… |
 
 
 ## Every export in this unit
@@ -101,10 +102,10 @@ check there before adding another.
 | `PermissionOverrideDto` | class | `user.dto.ts:105` |  |
 | `UpdateUserPermissionsDto` | class | `user.dto.ts:115` |  |
 | `WelcomeNotificationSubscriber` | class | `notification.subscriber.ts:18` | Welcomes a new account. |
-| `SecurityNotificationSubscriber` | class | `security-notification.subscriber.ts:25` | Account-security mail: a changed password, a reset link, a verification link. |
+| `SecurityNotificationSubscriber` | class | `security-notification.subscriber.ts:27` | Account-security mail: a changed password, a reset link, a verification link. |
 | `UsersAdminController` | class | `users-admin.controller.ts:11` |  |
 | `UsersAdminModule` | class | `users-admin.module.ts:11` |  |
-| `UsersAdminService` | class | `users-admin.service.ts:24` |  |
+| `UsersAdminService` | class | `users-admin.service.ts:25` |  |
 
 
 ---

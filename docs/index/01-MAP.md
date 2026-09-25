@@ -32,16 +32,16 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 669 | 92,474 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 392 | 59,940 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 316 | 50,169 | Next.js — admin console and customer storefront in one app |
+| `apps/api` | 684 | 96,207 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 393 | 60,653 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 320 | 51,668 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 27,374 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 21 | 8,579 | repository checks and generators (lint gates, this index) |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
-| `packages/shared` | 51 | 5,409 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 53 | 5,955 | brand, money, permissions, measurements, entities |
 | `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
 | `apps/platform` | 40 | 1,615 |  |
-| `.claude` | 22 | 1,017 |  |
+| `.claude` | 22 | 1,043 |  |
 | `packages/pos-core` | 13 | 481 | basket, tender, receipt and outbox maths, UI-free |
 | `deploy` | 12 | 401 | systemd units, backup and alert scripts, mail configuration |
 | `.github` | 3 | 335 | CI and deployment workflows |
@@ -109,7 +109,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 |---|---|---|
 | [`ai`](core/ai.md) | 6 | Extension point: AI providers (Phase 9, 09-ai-layer.md, House Rule 8 — same idiom as PaymentProvider and Stor… |
 | [`audit`](core/audit.md) | 2 |  |
-| [`auth`](core/auth.md) | 21 |  |
+| [`auth`](core/auth.md) | 31 |  |
 | [`checkout`](core/checkout.md) | 1 |  |
 | [`common`](core/common.md) | 6 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a cont… |
 | [`config`](core/config.md) | 6 |  |

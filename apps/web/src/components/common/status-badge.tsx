@@ -58,6 +58,10 @@ const TONES: Record<string, BadgeTone> = {
   // A deliberate skip, not a failure — CampaignRecipientStatus (WO-8.4)
   SKIPPED_OPT_OUT: 'neutral',
   SKIPPED_NO_CONTACT: 'neutral',
+  // Personal API keys (163-personal-api-keys.md): revoked is final; expired
+  // can still be renewed by rotating it.
+  REVOKED: 'danger',
+  EXPIRED: 'neutral',
 };
 
 /** `READY_TO_SHIP` -> `Ready to ship`. */

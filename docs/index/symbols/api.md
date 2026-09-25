@@ -47,6 +47,7 @@ root, Prisma tooling, and the e2e suite.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
+| `outbox.ts` | `drainOutboxSince` | function | :20 | Delivers the outbox until no event created since `since` is still pending or mid-delivery. |
 | `stock.ts` | `setVariantStock` | function | :12 | B6 (17-inventory-locations.md): ProductVariant.stock is now a denormalized aggregate over VariantLo… |
 | `stock.ts` | `incrementVariantStock` | function | :28 |  |
 

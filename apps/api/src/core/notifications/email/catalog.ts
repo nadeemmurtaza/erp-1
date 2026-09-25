@@ -189,6 +189,15 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     sampleData: {},
   },
   {
+    key: 'user.api_key_issued',
+    label: 'API Key Issued Notice',
+    category: 'Account',
+    trigger: 'automatic',
+    triggerDescription:
+      'Sent to the key’s owner whenever a personal API key’s secret is issued — created from POST /api-keys or rotated from POST /api-keys/:id/rotate (user.api_key_issued).',
+    sampleData: { surface: 'STOREFRONT', lastFour: 'x7Qa', reason: 'CREATED' },
+  },
+  {
     key: 'user.email_verification',
     label: 'Email Verification',
     category: 'Account',

@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-669 files · 92,474 lines
+684 files · 96,207 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -29,12 +29,12 @@ Structure: `src/core/` is the shared platform every deployment runs;
 |---|---|---|---|
 | `apps/api` | 10 | 842 | file, script, json, module |
 | `apps/api/prisma` | 3 | 3,163 | module |
-| `apps/api/prisma/schema` | 104 | 11,778 | prisma schema, migration, toml |
+| `apps/api/prisma/schema` | 105 | 11,984 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 131 | nest module, module |
-| `apps/api/src/core` | 124 | 13,376 | module, nest module, unit test, service |
-| `apps/api/src/modules` | 403 | 56,247 | nest module, unit test, service, module |
-| `apps/api/test` | 22 | 6,894 | e2e test, unit test, module |
-| `apps/api/test/support` | 1 | 43 | module |
+| `apps/api/src/core` | 134 | 16,024 | module, nest module, unit test, service |
+| `apps/api/src/modules` | 403 | 56,425 | nest module, unit test, service, module |
+| `apps/api/test` | 25 | 7,557 | e2e test, unit test, module |
+| `apps/api/test/support` | 2 | 81 | module |
 
 
 ## Entry points
@@ -53,18 +53,18 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | `apps/api/prisma/seed.ts` | 3,068 | module |  |
 | `apps/api/src/modules/analytics/analytics.service.ts` | 2,018 | service |  |
 | `apps/api/src/modules/orders/orders.service.ts` | 1,184 | service |  |
+| `apps/api/src/core/notifications/email/templates.ts` | 1,091 | module |  |
 | `apps/api/prisma/schema/migrations/20260816133646_init/migration.sql` | 1,076 | migration |  |
-| `apps/api/src/core/notifications/email/templates.ts` | 1,039 | module |  |
 | `apps/api/test/orders.e2e-spec.ts` | 950 | e2e test |  |
 | `apps/api/src/modules/transfers/transfers.service.spec.ts` | 818 | unit test |  |
 | `apps/api/test/cart.e2e-spec.ts` | 800 | e2e test |  |
 | `apps/api/src/modules/catalog/product-admin.service.ts` | 739 | service |  |
 | `apps/api/src/modules/cart/cart.service.ts` | 704 | service |  |
+| `apps/api/src/core/auth/api-keys/api-keys.service.ts` | 693 | service |  |
 | `apps/api/prisma/schema/catalog.prisma` | 691 | prisma schema | Catalog: categories, products, variants, images. |
 | `apps/api/src/modules/finance/finance.service.ts` | 675 | service |  |
 | `apps/api/src/modules/purchasing/purchasing.service.ts` | 657 | service |  |
 | `apps/api/src/modules/reports/reports.service.ts` | 651 | service |  |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | 643 | unit test |  |
 
 
 ---

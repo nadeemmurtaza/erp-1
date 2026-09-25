@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
-import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
+import { CurrentUser, RequirePermission, SessionOnly } from '../../core/auth/decorators';
 import { CreateUserDto, ResetPasswordDto, UpdateUserDto, UpdateUserPermissionsDto } from './dto/user.dto';
 import { UsersAdminService } from './users-admin.service';
 
@@ -23,7 +23,10 @@ export class UsersAdminController {
     return this.users.get(id);
   }
 
+  // Issues a password. users.manage is already never in an API key; the
+  // marker states the rule where the credential is minted (163 §2).
   @Post()
+  @SessionOnly()
   @ApiOperation({ summary: 'Create a back-office user' })
   create(@CurrentUser() actor: AuthenticatedUser, @Body() dto: CreateUserDto) {
     return this.users.create(actor.id, dto);
@@ -70,6 +73,7 @@ export class UsersAdminController {
   }
 
   @Post(':id/reset-password')
+  @SessionOnly()
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: "Set a user's password directly and sign them out everywhere" })
   resetPassword(

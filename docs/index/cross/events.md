@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **45** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **46** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -46,6 +46,7 @@ order" is a new file, not an edit to checkout.
 | `user.password_changed` | `PasswordChanged` | core/`auth` | `users` |
 | `user.password_reset_requested` | `PasswordResetRequested` | core/`auth` | `users` |
 | `user.email_verification_requested` | `EmailVerificationRequested` | core/`auth` | `users` |
+| `user.api_key_issued` | `ApiKeyIssued` | core/`auth` | `users` |
 | `catalog.product_low_stock` | `ProductLowStock` | `inventory` | `inventory` |
 | `catalog.product_reorder_point_reached` | `ProductReorderPointReached` | `inventory` | `production`, `purchasing` |
 | `catalog.product_published` | `ProductPublished` | `catalog` | `catalog`, `tradingpartners` |
@@ -312,7 +313,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPasswordChanged()` | `apps/api/src/modules/users/security-notification.subscriber.ts:33` | `users` |
+| `onPasswordChanged()` | `apps/api/src/modules/users/security-notification.subscriber.ts:35` | `users` |
 
 ### `user.password_reset_requested`
 
@@ -328,7 +329,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPasswordResetRequested()` | `apps/api/src/modules/users/security-notification.subscriber.ts:55` | `users` |
+| `onPasswordResetRequested()` | `apps/api/src/modules/users/security-notification.subscriber.ts:57` | `users` |
 
 ### `user.email_verification_requested`
 
@@ -344,7 +345,25 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onEmailVerificationRequested()` | `apps/api/src/modules/users/security-notification.subscriber.ts:78` | `users` |
+| `onEmailVerificationRequested()` | `apps/api/src/modules/users/security-notification.subscriber.ts:80` | `users` |
+
+### `user.api_key_issued`
+
+> ApiKeysService issued a personal API key's secret — at create or at rotate (163-personal-api-keys.md).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/core/auth/api-keys/api-keys.service.ts:255` | core/`auth` |
+| `apps/api/src/core/auth/api-keys/api-keys.service.ts:386` | core/`auth` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onApiKeyIssued()` | `apps/api/src/modules/users/security-notification.subscriber.ts:113` | `users` |
 
 ### `catalog.product_low_stock`
 

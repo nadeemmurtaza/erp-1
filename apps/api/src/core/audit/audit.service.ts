@@ -27,16 +27,7 @@ export class AuditService {
 
   async record(entry: AuditEntry): Promise<void> {
     try {
-      await this.prisma.auditLog.create({
-        data: {
-          actorId: entry.actorId ?? null,
-          action: entry.action,
-          entity: entry.entity,
-          entityId: entry.entityId ?? null,
-          data: (entry.data ?? undefined) as Prisma.InputJsonValue | undefined,
-          ip: entry.ip ?? null,
-        },
-      });
+      await this.prisma.auditLog.create({ data: toRow(entry) });
     } catch (error) {
       this.logger.error(
         `failed to write audit entry ${entry.action}: ${
@@ -45,4 +36,33 @@ export class AuditService {
       );
     }
   }
+
+  /**
+   * Evidence-class audit (canonical ruling 9): written with the caller's own
+   * transaction client, so the entry commits or rolls back with the act it
+   * records — and a failed write fails that act rather than being logged and
+   * forgotten, the opposite of `record()` above. For a change to what someone
+   * may do, or to money; the class is chosen by calling this method, so it is
+   * named where the call is made.
+   *
+   * Honest limit: `AuditLog` is not yet immutable at the database (ruling 1's
+   * prerequisite migration), so this trail is transactional, not
+   * tamper-evident.
+   */
+  async recordEvidence(tx: Prisma.TransactionClient, entries: AuditEntry | readonly AuditEntry[]): Promise<void> {
+    const rows = (Array.isArray(entries) ? entries : [entries]) as readonly AuditEntry[];
+    if (rows.length === 0) return;
+    await tx.auditLog.createMany({ data: rows.map(toRow) });
+  }
+}
+
+function toRow(entry: AuditEntry): Prisma.AuditLogCreateManyInput {
+  return {
+    actorId: entry.actorId ?? null,
+    action: entry.action,
+    entity: entry.entity,
+    entityId: entry.entityId ?? null,
+    data: (entry.data ?? undefined) as Prisma.InputJsonValue | undefined,
+    ip: entry.ip ?? null,
+  };
 }

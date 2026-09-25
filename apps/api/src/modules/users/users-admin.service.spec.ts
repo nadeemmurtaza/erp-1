@@ -1,6 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuditService } from '../../core/audit/audit.service';
+import { ApiKeysService } from '../../core/auth/api-keys/api-keys.service';
 import { PermissionsResolverService } from '../../core/auth/permissions.service';
 import { RolesService } from '../../core/auth/roles.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
@@ -52,6 +53,7 @@ describe('UsersAdminService.create — role selection at creation time', () => {
         },
         { provide: RolesService, useValue: roles },
         { provide: AuditService, useValue: audit },
+        { provide: ApiKeysService, useValue: { revokeAllForUserInTransaction: jest.fn() } },
       ],
     }).compile();
 
@@ -83,5 +85,72 @@ describe('UsersAdminService.create — role selection at creation time', () => {
     await expect(service.create('actor1', { ...baseDto, roleIds: ['missing'] })).rejects.toBeInstanceOf(
       NotFoundException,
     );
+  });
+});
+
+describe('UsersAdminService.update — deactivation ends every personal API key (canonical ruling 6)', () => {
+  let service: UsersAdminService;
+  let prisma: any;
+  let tx: any;
+  let apiKeys: any;
+  let audit: any;
+
+  const target = { id: 'u2', role: 'STAFF', isActive: true };
+
+  beforeEach(async () => {
+    tx = {
+      user: { update: jest.fn().mockResolvedValue({ ...target }) },
+      refreshToken: { updateMany: jest.fn().mockResolvedValue({ count: 1 }) },
+    };
+    prisma = {
+      user: { findUnique: jest.fn().mockResolvedValue(target), findFirst: jest.fn().mockResolvedValue(null) },
+      $transaction: jest.fn(async (work: (client: unknown) => unknown) => work(tx)),
+    };
+    apiKeys = { revokeAllForUserInTransaction: jest.fn().mockResolvedValue(3) };
+    audit = { record: jest.fn().mockResolvedValue(undefined) };
+
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        UsersAdminService,
+        { provide: PrismaService, useValue: prisma },
+        { provide: PermissionsResolverService, useValue: { resolveForUser: jest.fn() } },
+        { provide: RolesService, useValue: {} },
+        { provide: AuditService, useValue: audit },
+        { provide: ApiKeysService, useValue: apiKeys },
+      ],
+    }).compile();
+
+    service = module.get<UsersAdminService>(UsersAdminService);
+  });
+
+  it("revokes the deactivated user's API keys inside the same transaction that sets isActive = false", async () => {
+    await service.update('admin1', 'u2', { isActive: false });
+
+    expect(apiKeys.revokeAllForUserInTransaction).toHaveBeenCalledWith(tx, 'u2', 'admin1');
+    expect(tx.user.update).toHaveBeenCalledWith(expect.objectContaining({ data: { isActive: false } }));
+    expect(audit.record).toHaveBeenCalledWith(
+      expect.objectContaining({ action: 'user.updated', data: expect.objectContaining({ apiKeysRevoked: 3 }) }),
+    );
+  });
+
+  it('does not revoke API keys on a role change — they shrink with the live permissions instead', async () => {
+    await service.update('admin1', 'u2', { role: 'TAILOR' });
+
+    expect(tx.refreshToken.updateMany).toHaveBeenCalled();
+    expect(apiKeys.revokeAllForUserInTransaction).not.toHaveBeenCalled();
+  });
+
+  it('touches neither sessions nor keys on a plain profile edit', async () => {
+    await service.update('admin1', 'u2', { firstName: 'Sana' });
+
+    expect(tx.refreshToken.updateMany).not.toHaveBeenCalled();
+    expect(apiKeys.revokeAllForUserInTransaction).not.toHaveBeenCalled();
+  });
+
+  it('fails the whole deactivation if revoking the keys fails — authority goes together or not at all', async () => {
+    apiKeys.revokeAllForUserInTransaction.mockRejectedValueOnce(new Error('audit write failed'));
+
+    await expect(service.update('admin1', 'u2', { isActive: false })).rejects.toThrow('audit write failed');
+    expect(audit.record).not.toHaveBeenCalled();
   });
 });

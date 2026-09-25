@@ -3,7 +3,7 @@
 
 # packages/* — code shared across every surface
 
-68 files · 5,991 lines
+70 files · 6,537 lines
 
 
 Code shared across surfaces. `@newax/shared` is where House Rule 1 is enforced:
@@ -23,7 +23,7 @@ file may hard-code one.
 | `packages/pos-core` | 4 | 69 | script, json |
 | `packages/pos-core/src` | 9 | 412 | unit test, module |
 | `packages/shared` | 4 | 75 | script, json |
-| `packages/shared/src` | 47 | 5,334 | module, unit test |
+| `packages/shared/src` | 49 | 5,880 | unit test, module |
 
 
 ## Entry points
@@ -46,8 +46,10 @@ file may hard-code one.
 | `packages/shared/src/measurements/defaults.ts` | 448 | module |  |
 | `packages/shared/src/brand.ts` | 334 | module | THE BRAND FILE. |
 | `packages/shared/src/discounts.ts` | 322 | module | The discount rules engine. |
+| `packages/shared/src/api-keys.ts` | 314 | module | Personal API keys — what a key may carry, and the pure rules deciding what it may do on a… |
 | `packages/shared/src/pricing.spec.ts` | 307 | unit test |  |
 | `packages/shared/src/pricing.ts` | 275 | module | Order maths. |
+| `packages/shared/src/api-keys.spec.ts` | 231 | unit test |  |
 | `packages/shared/src/discounts.spec.ts` | 215 | unit test |  |
 | `packages/shared/src/http-client.ts` | 200 | module | The one HTTP layer for a signed-in browser client. |
 | `packages/shared/src/measurements/schema.spec.ts` | 166 | unit test |  |
@@ -55,8 +57,6 @@ file may hard-code one.
 | `packages/shared/src/entities/product.spec.ts` | 145 | unit test |  |
 | `packages/shared/src/entities/person.spec.ts` | 124 | unit test |  |
 | `packages/shared/src/entities/product.ts` | 119 | module |  |
-| `packages/shared/src/enums.ts` | 104 | module | Enum values mirrored from the Prisma schema. |
-| `packages/shared/src/entities/person.ts` | 99 | module |  |
 
 
 ---

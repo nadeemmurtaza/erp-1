@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
+import { CurrentUser, RequirePermission, SessionOnly } from '../../core/auth/decorators';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import type { ScopedActor } from '../../core/auth/scope.guard';
 import { OrganizationService } from './organization.service';
@@ -70,8 +70,10 @@ export class OrganizationController {
     return this.nodesService.setRetailBrand(nodeId, dto.retailBrandId);
   }
 
+  // Mints a replication credential that would outlive any API key (163-personal-api-keys.md §2).
   @Post('nodes/:nodeId/rotate-inbound-key')
   @RequirePermission('organization.manage')
+  @SessionOnly()
   @ApiOperation({ summary: 'Issue a fresh replication credential for a child node — shown once, never retrievable again' })
   async rotateNodeInboundKey(@Param('nodeId') nodeId: string) {
     return this.nodesService.rotateInboundKey(nodeId);

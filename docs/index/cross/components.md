@@ -3,7 +3,7 @@
 
 # Components
 
-All **81** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **82** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 158 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 161 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 4 |  |
 
 ### `apps/pos/src/components` (2)
@@ -60,7 +60,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `role-wizard.tsx` | `RoleWizard` | client | 1 |  |
 | `sales-chart.tsx` | `SalesChart` | client | 1 |  |
 | `scope-chips.tsx` | `ScopeChip` `ScopeChips` | client | 2 |  |
-| `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 40 |  |
+| `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 41 |  |
 | `stage-badge.tsx` | `StageBadge` | server | 3 |  |
 | `toast-stack.tsx` | `ToastStack` | client | 15 |  |
 
@@ -77,11 +77,12 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `discount-form.tsx` | `DiscountType` `DiscountScope` `DiscountFormValues` `EMPTY_DISCOUNT` `DiscountForm` | client | 2 |  |
 
-### `apps/web/src/components/common` (3)
+### `apps/web/src/components/common` (4)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 26 |  |
+| `secret-once.tsx` | `SecretOnce` | client | 2 |  |
+| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 29 |  |
 | `toast-container.tsx` | `ToastContainer` | client | 0 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | client | 4 |  |
 
@@ -134,7 +135,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `badge.tsx` | `BadgeTone` `Badge` | server | 31 |  |
+| `badge.tsx` | `BadgeTone` `Badge` | server | 34 |  |
 | `button.tsx` | `ButtonProps` `Button` | server | 2 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 1 |  |
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 1 |  |

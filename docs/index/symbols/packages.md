@@ -44,6 +44,32 @@ Every top-level export in `packages`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
+| `api-keys.ts` | `API_KEY_SURFACES` | const | :30 | Which request surface a key acts on. |
+| `api-keys.ts` | `ApiKeySurface` | type | :31 | Which request surface a key acts on. |
+| `api-keys.ts` | `API_KEY_PREFIXES` | const | :41 | The first characters of every raw key, by surface — so a leaked key says which surface it opens, an… |
+| `api-keys.ts` | `apiKeySurfaceOf` | function | :51 | Which surface a raw bearer credential claims to be, read off its prefix — or null for anything else… |
+| `api-keys.ts` | `API_KEY_LIFETIME_OPTIONS_DAYS` | const | :64 | How long a key lives, in days. |
+| `api-keys.ts` | `API_KEY_DEFAULT_LIFETIME_DAYS` | const | :65 | How long a key lives, in days. |
+| `api-keys.ts` | `API_KEY_MAX_LIFETIME_DAYS` | const | :66 | How long a key lives, in days. |
+| `api-keys.ts` | `API_KEY_MAX_ACTIVE_PER_SURFACE` | const | :74 | Live keys one person may hold on one surface. |
+| `api-keys.ts` | `API_KEY_NAME_MAX_LENGTH` | const | :76 | Live keys one person may hold on one surface. |
+| `api-keys.ts` | `NonDelegatablePermission` | interface | :80 | ─── The admin surface: what can never be delegated ──────────────────────── |
+| `api-keys.ts` | `NON_DELEGATABLE_PERMISSIONS` | const | :109 | Permissions that can never be put in an API key, by anyone, whatever else they hold. |
+| `api-keys.ts` | `isDelegatablePermission` | function | :143 |  |
+| `api-keys.ts` | `nonDelegatableReason` | function | :148 | The recorded reason `key` can never be in an API key, or null when it can. |
+| `api-keys.ts` | `effectiveApiKeyPermissions` | function | :163 | What an ADMIN key may actually do on this request: its stored permission keys, kept only where its… |
+| `api-keys.ts` | `ApiKeyPermissionRefusal` | type | :177 |  |
+| `api-keys.ts` | `refuseApiKeyPermissions` | function | :184 | Why each requested permission may not go into a key right now — empty when every one may. |
+| `api-keys.ts` | `delegatablePermissionsOf` | function | :202 | What this person could put in an admin key right now — the picker's options, in catalogue order. |
+| `api-keys.ts` | `CUSTOMER_SCOPE_RESOURCES` | const | :217 | The resources a storefront key can reach — each one a customer's own rows behind a self-service rou… |
+| `api-keys.ts` | `CustomerScopeResource` | type | :228 |  |
+| `api-keys.ts` | `CustomerScopeAccess` | type | :229 |  |
+| `api-keys.ts` | `CustomerScopeDefinition` | interface | :231 |  |
+| `api-keys.ts` | `CUSTOMER_SCOPE_CATALOG` | const | :255 | The storefront's scope vocabulary. |
+| `api-keys.ts` | `CustomerScopeKey` | type | :284 |  |
+| `api-keys.ts` | `CUSTOMER_SCOPE_KEYS` | const | :286 |  |
+| `api-keys.ts` | `expandCustomerScopes` | function | :299 | A storefront key's stored scopes as the guard reads them: unknown strings dropped (a scope retired… |
+| `api-keys.ts` | `unknownCustomerScopes` | function | :311 | Requested scopes the catalogue does not know — refused at create and edit. |
 | `brand.ts` | `BRAND` | const | :321 | --------------------------------------------------------------------------- |
 | `brand.ts` | `Brand` | type | :333 |  |
 | `collection-rules.ts` | `CollectionRuleCondition` | interface | :7 | The rule shape `Collection.rule` (catalog.prisma, WO-8.2) holds when a collection is rule-based rat… |
@@ -116,6 +142,7 @@ Every top-level export in `packages`, with the line to open.
 | `http-client.ts` | `request` | function | :116 | One request. |
 | `http-client.ts` | `requestWithRefresh` | function | :158 | Wraps `request` with a 401 retry. |
 | `human-code.ts` | `generateHumanCode` | function | :30 | A cryptographically random, human-readable code — never sequential. |
+| `index.ts` | `*` | re-export |  | from `./api-keys` |
 | `index.ts` | `*` | re-export |  | from `./collection-rules` |
 | `index.ts` | `*` | re-export |  | from `./constants` |
 | `index.ts` | `*` | re-export |  | from `./content-blocks` |

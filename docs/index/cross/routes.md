@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **544** endpoints across **95** controllers, with the access rule that actually guards each one.
+All **551** endpoints across **97** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -285,14 +285,21 @@ never authorization.
 | GET | `/content/posts` | **PUBLIC** | `ContentController.listPosts` |  |
 | GET | `/content/posts/:slug` | **PUBLIC** | `ContentController.getPost` |  |
 
-### [`core/auth`](../core/auth.md) (15)
+### [`core/auth`](../core/auth.md) (22)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/api-keys` | `users.manage` | `ApiKeysAdminController.list` | Every API key on this deployment, by staff and customers — metadata only |
+| POST | `/admin/api-keys/:id/revoke` | `users.manage` | `ApiKeysAdminController.revoke` | Revoke anyone's API key — final; its next request is refused |
 | GET | `/admin/roles` | `roles.manage_permissions` | `RolesController.list` | Every custom role, its permissions, and how many users hold it |
 | POST | `/admin/roles` | `roles.manage_permissions` | `RolesController.create` | Create a role. Duplicate names are refused; a duplicate permission set is only… |
 | DELETE | `/admin/roles/:id` | `roles.manage_permissions` | `RolesController.delete` | Delete a role — refused if it would leave a critical permission held by nobody |
 | PATCH | `/admin/roles/:id` | `roles.manage_permissions` | `RolesController.update` | Edit a role's name, description, or permission set |
+| GET | `/api-keys` | signed-in | `ApiKeysController.list` | Your own API keys for one surface, each with what it can do right now |
+| POST | `/api-keys` | signed-in | `ApiKeysController.create` | Create a key carrying some of your own access — its secret is shown in this res… |
+| PATCH | `/api-keys/:id` | signed-in | `ApiKeysController.update` | Rename a key, or replace its scopes — re-checked against what you hold now |
+| POST | `/api-keys/:id/revoke` | signed-in | `ApiKeysController.revoke` | Revoke a key — final; its next request is refused |
+| POST | `/api-keys/:id/rotate` | signed-in | `ApiKeysController.rotate` | Issue a new secret and expiry for a key — same scopes; the old secret stops wor… |
 | POST | `/auth/change-password` | `account.change_own_password` | `AuthController.changePassword` | Change your password and sign out other devices |
 | POST | `/auth/forgot-password` | **PUBLIC** | `AuthController.forgotPassword` | Request a password reset link by email |
 | POST | `/auth/login` | **PUBLIC** | `AuthController.login` | Sign in with an email or phone number |

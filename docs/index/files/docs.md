@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 392 tracked files in `docs/*`, by directory.
+All 393 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -563,15 +563,15 @@ All 392 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 2556 |  |
+| `DECISIONS.md` | doc | 2632 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 499 |  |
+| `README.md` | doc | 500 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 
-### `docs/implementation/access-control-identity` (6)
+### `docs/implementation/access-control-identity` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -579,6 +579,7 @@ All 392 tracked files in `docs/*`, by directory.
 | `126-pluggable-cryptography.md` | doc | 137 |  |
 | `16-pbac-row-scoping.md` | doc | 184 |  |
 | `161-sso-identity-federation.md` | doc | 245 |  |
+| `163-personal-api-keys.md` | doc | 625 |  |
 | `18-identity-verification.md` | doc | 149 |  |
 | `21-access-over-the-org-tree.md` | doc | 228 |  |
 
@@ -767,7 +768,7 @@ All 392 tracked files in `docs/*`, by directory.
 | `162-file-based-connector-integration.md` | doc | 271 |  |
 | `18-trading-partner-network.md` | doc | 87 |  |
 | `33-sms-whatsapp-channels.md` | doc | 249 |  |
-| `34-partner-developer-api-access.md` | doc | 235 |  |
+| `34-partner-developer-api-access.md` | doc | 246 |  |
 | `36-universal-connectivity-integration-framework.md` | doc | 264 |  |
 
 ### `docs/implementation/inventory-purchasing` (5)

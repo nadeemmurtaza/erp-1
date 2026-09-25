@@ -594,6 +594,27 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/users',
     permissions: ['users.manage'],
     group: 'settings',
+    children: [
+      {
+        // Oversight of every account's keys — read and revoke only
+        // (163-personal-api-keys.md §5). Under Team & Access because the
+        // same permission already governs the accounts those keys act as.
+        key: 'users-api-keys',
+        label: 'API keys',
+        href: '/admin/users/api-keys',
+        permissions: ['users.manage'],
+        group: 'settings',
+      },
+    ],
+  },
+  {
+    // Personal, so no permission: any staff member may give a script or an
+    // agent a slice of what they hold. The page explains when they hold
+    // nothing that may be delegated.
+    key: 'account-api-keys',
+    label: 'My API keys',
+    href: '/admin/account/api-keys',
+    group: 'settings',
   },
   {
     key: 'settings',

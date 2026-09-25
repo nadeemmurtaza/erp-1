@@ -22,7 +22,7 @@ import {
   readCookie,
   type AuthenticatedUser,
 } from './auth.constants';
-import { AuthenticatedOnly, CurrentUser, Public, RequirePermission } from './decorators';
+import { AuthenticatedOnly, CurrentUser, CustomerScope, Public, RequirePermission, SessionOnly } from './decorators';
 import {
   ChangePasswordDto,
   ForgotPasswordDto,
@@ -113,6 +113,7 @@ export class AuthController {
   }
 
   @AuthenticatedOnly()
+  @CustomerScope('profile:read')
   @Get('me')
   @ApiOperation({ summary: 'The signed-in user' })
   async me(@CurrentUser() user: AuthenticatedUser) {
@@ -130,7 +131,10 @@ export class AuthController {
     });
   }
 
+  // The email and phone are the sign-in and password-reset identity:
+  // changing either through a key would be account takeover.
   @AuthenticatedOnly()
+  @SessionOnly()
   @Patch('me')
   @ApiOperation({ summary: 'Update your own profile fields' })
   updateProfile(@CurrentUser() user: AuthenticatedUser, @Body() dto: UpdateProfileDto) {
@@ -141,6 +145,7 @@ export class AuthController {
   @Post('change-password')
   @HttpCode(HttpStatus.NO_CONTENT)
   @RequirePermission('account.change_own_password')
+  @SessionOnly()
   @ApiOperation({ summary: 'Change your password and sign out other devices' })
   async changePassword(
     @CurrentUser() user: AuthenticatedUser,

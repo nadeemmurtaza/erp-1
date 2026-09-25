@@ -1,4 +1,5 @@
 import type {
+  ApiKeySurface,
   Locale,
   PermissionKey,
   ProductKind,
@@ -1272,4 +1273,56 @@ export interface CmsMenuLink {
   parentId: string | null;
   url: string;
   label: string;
+}
+
+// --- Personal API keys (docs/implementation/access-control-identity/163-personal-api-keys.md) ---
+// Mirrors apps/api's ApiKeysService views. Never carries a secret, except
+// `IssuedApiKey.secret` — in the one response that created or rotated it.
+
+export type ApiKeyStatus = 'ACTIVE' | 'EXPIRED' | 'REVOKED';
+export type ApiKeyRevocationReason = 'OWNER' | 'ADMINISTRATOR' | 'OWNER_DEACTIVATED';
+
+interface ApiKeyBase {
+  id: string;
+  name: string;
+  surface: ApiKeySurface;
+  /** `nxa_`/`nxs_` — shown with `lastFour` so a list can tell keys apart. */
+  prefix: string;
+  lastFour: string;
+  permissionKeys: string[];
+  customerScopes: string[];
+  status: ApiKeyStatus;
+  createdAt: string;
+  lastUsedAt: string | null;
+  expiresAt: string;
+  rotatedAt: string | null;
+  revokedAt: string | null;
+  revokedReason: ApiKeyRevocationReason | null;
+}
+
+/** One of your own keys, with what it can do right now. */
+export interface ApiKeyView extends ApiKeyBase {
+  /** Usable on the next request: an admin key's permissions its owner still holds, a store key's scopes. */
+  effectiveScopes: string[];
+  /** Admin keys only: carried, but paused because the owner no longer holds them. */
+  pausedScopes: string[];
+}
+
+export interface IssuedApiKey {
+  key: ApiKeyView;
+  /** Shown once. The server keeps only its hash. */
+  secret: string;
+}
+
+/** A key on the `users.manage` oversight list — its owner, never its secret. */
+export interface ApiKeyOversightView extends ApiKeyBase {
+  owner: {
+    id: string;
+    email: string | null;
+    phone: string | null;
+    firstName: string | null;
+    lastName: string | null;
+    role: string;
+    isActive: boolean;
+  };
 }

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { formatMoney } from '@newax/shared';
+import { formatMoney, toMajor, toMinor } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { DataTable, type DataTableColumn, Loading, MetricStrip, PageHeader } from '@/components/ui';
 import { ToastStack } from '@/components/admin/toast-stack';
@@ -46,7 +46,7 @@ export default function AiAdminPage() {
         adminFetch<AiSuggestion[]>('/admin/catalog/ai-suggestions'),
       ]);
       setStatus(nextStatus);
-      setBudgetInput(nextStatus.monthlyBudgetPaisa === null ? '' : String(nextStatus.monthlyBudgetPaisa / 100));
+      setBudgetInput(nextStatus.monthlyBudgetPaisa === null ? '' : String(toMajor(nextStatus.monthlyBudgetPaisa)));
       setRateInput(String(nextStatus.usdToPkrRate));
       setQueue(nextQueue);
     } catch (cause) {
@@ -66,7 +66,7 @@ export default function AiAdminPage() {
       const next = await adminFetch<AiStatus>('/admin/settings/ai', {
         method: 'PUT',
         body: {
-          monthlyBudgetPaisa: budgetInput.trim() === '' ? null : Math.round(Number(budgetInput) * 100),
+          monthlyBudgetPaisa: budgetInput.trim() === '' ? null : toMinor(Number(budgetInput)),
           usdToPkrRate: Number(rateInput),
         },
       });

@@ -3,13 +3,13 @@
 
 # Module: `catalog`
 
-Pack **core** · enabled by the `MODULES` allowlist · 29 files
+Pack **core** · enabled by the `MODULES` allowlist · 30 files
 
 
 
 Source: `apps/api/src/modules/catalog/`
 
-## Files (29 · 5,140 lines)
+## Files (30 · 5,251 lines)
 
 All paths relative to `apps/api/src/modules/catalog`.
 
@@ -19,7 +19,7 @@ All paths relative to `apps/api/src/modules/catalog`.
 | `ai-suggestions.service.spec.ts` | unit test | 314 | — |  |
 | `ai-suggestions.service.ts` | service | 352 | 1 | WO-9.1 (09-ai-layer.md) — alt text and SEO copy as human-confirmed drafts. |
 | `brand-admin.service.ts` | service | 170 | 1 | The managed list of brands. |
-| `catalog-admin.controller.ts` | controller | 284 | 1 |  |
+| `catalog-admin.controller.ts` | controller | 285 | 1 |  |
 | `catalog-options-admin.controller.ts` | controller | 105 | 1 | WO-3.1 (03-variants-sku-seo.md) — the store-level option library and each product's own option axes. |
 | `catalog.controller.ts` | controller | 51 | 1 |  |
 | `catalog.module.ts` | nest module | 55 | 1 |  |
@@ -34,7 +34,8 @@ All paths relative to `apps/api/src/modules/catalog`.
 | `option-template-admin.service.ts` | service | 125 | 1 | WO-3.1's store-level option library (03-variants-sku-seo.md) — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue -> Op… |
 | `product-admin.service.spec.ts` | unit test | 109 | — |  |
 | `product-admin.service.ts` | service | 739 | 4 | Product and service management for the dashboard. |
-| `product-import.service.ts` | service | 476 | 3 |  |
+| `product-import.service.spec.ts` | unit test | 77 | — |  |
+| `product-import.service.ts` | service | 509 | 3 |  |
 | `product-option-admin.service.ts` | service | 248 | 1 | A product's own option axes (WO-3.1, 03-variants-sku-seo.md) — the part of the variant matrix builder that lets a bouti… |
 | `product-replication.listener.spec.ts` | unit test | 120 | — |  |
 | `product-replication.listener.ts` | event subscriber | 77 | 1 | WO-20.3's first real POLICY entity — "product" and "price" are both named in R2's own examples. |
@@ -188,12 +189,13 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (3)
+## Tests (4)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `ai-suggestions.service.spec.ts` | 16 | AiSuggestionsService · generateForProduct · generateBulk · listQueue · approve · reject · approveBulk |
 | `product-admin.service.spec.ts` | 13 | assertKindRules · assertUniqueSkus |
+| `product-import.service.spec.ts` | 3 | ProductImportService — dry run |
 | `product-replication.listener.spec.ts` | 7 | ProductReplicationListener — WO-20.3 · onModuleInit · onProductPublished · onProductPriceChanged · applyIncoming (via t… |
 
 
@@ -235,9 +237,9 @@ check there before adding another.
 | `assertKindRules` | function | `product-admin.service.ts:620` | The rules that distinguish the three product kinds. |
 | `assertUniqueSkus` | function | `product-admin.service.ts:666` | Catches the two ways a hand-typed variant list contradicts itself before either reaches the database: the sam… |
 | `toAdminView` | function | `product-admin.service.ts:725` | Admin view: both locales side by side, plus stock roll-ups for the table. |
-| `ImportRowResult` | interface | `product-import.service.ts:17` |  |
-| `ImportSummary` | interface | `product-import.service.ts:24` |  |
-| `ProductImportService` | class | `product-import.service.ts:70` | Bulk load of an existing catalogue from a spreadsheet. |
+| `ImportRowResult` | interface | `product-import.service.ts:18` |  |
+| `ImportSummary` | interface | `product-import.service.ts:25` |  |
+| `ProductImportService` | class | `product-import.service.ts:71` | Bulk load of an existing catalogue from a spreadsheet. |
 | `ProductOptionAdminService` | class | `product-option-admin.service.ts:19` | A product's own option axes (WO-3.1, 03-variants-sku-seo.md) — the part of the variant matrix builder that le… |
 | `ProductReplicationListener` | class | `product-replication.listener.ts:35` | WO-20.3's first real POLICY entity — "product" and "price" are both named in R2's own examples. |
 | `PublishGateImage` | interface | `publish-gate.ts:11` | WO-3.7's publish gate (03-variants-sku-seo.md) — a pure function so it can be dry-run against every product f… |

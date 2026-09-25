@@ -125,6 +125,13 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'overview',
     module: 'analytics',
   },
+  {
+    key: 'my-actions',
+    label: 'My actions',
+    href: '/admin/my-actions',
+    permissions: ['analytics.view'],
+    group: 'overview',
+  },
 
   // Group: Customers
   {

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import { downloadCsv } from '@/lib/download-csv';
 import { formatMoney } from '@newax/shared';
-import { MetricStrip, type MetricItem } from '@/components/ui';
+import { DataTable, MetricStrip, type MetricItem } from '@/components/ui';
 import { GaugeChart } from '@/components/admin/gauge-chart';
 
 interface GlAccountLine {
@@ -168,30 +168,17 @@ export default function FinancePnlPage() {
 }
 
 function AccountBreakdown({ rows }: { rows: GlAccountLine[] }) {
-  if (rows.length === 0) {
-    return <p className="p-4 text-sm text-neutral-900/60">No postings in this range.</p>;
-  }
   return (
-    <div className="p-4">
-      <table className="table-flat w-full text-sm">
-        <thead>
-          <tr className="text-left text-xs uppercase tracking-wide text-neutral-900/60">
-            <th className="pb-2">Code</th>
-            <th className="pb-2">Account</th>
-            <th className="pb-2 text-end">Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row.accountId}>
-              <td className="py-1.5 text-neutral-900/60">{row.code}</td>
-              <td className="py-1.5">{row.name}</td>
-              <td className="py-1.5 text-end tabular-nums">{formatMoney(row.amountMinor)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <DataTable
+      rows={rows}
+      rowKey={(row) => row.accountId}
+      emptyLabel="No postings in this range."
+      columns={[
+        { header: 'Code', muted: true, cell: (row) => row.code },
+        { header: 'Account', cell: (row) => row.name },
+        { header: 'Amount', align: 'end', numeric: true, cell: (row) => formatMoney(row.amountMinor) },
+      ]}
+    />
   );
 }
 

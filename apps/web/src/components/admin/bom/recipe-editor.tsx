@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { fromBaseUnits, toBaseUnits, UNIT_LABELS, type RawMaterialUnit } from '@newax/shared';
+import { fromBaseUnits, toBaseUnits, toMajor, toMinor, UNIT_LABELS, type RawMaterialUnit } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -91,8 +91,8 @@ export function RecipeEditor({ recipeId, initialVariantId }: { recipeId?: string
         setSku(recipe.sku);
         setOutputQuantity(String(recipe.outputQuantity));
         setWastagePercent(String(recipe.wastageBps / 100));
-        setLabourCostRupees((recipe.labourCost / 100).toString());
-        setOverheadCostRupees((recipe.overheadCost / 100).toString());
+        setLabourCostRupees(toMajor(recipe.labourCost).toString());
+        setOverheadCostRupees(toMajor(recipe.overheadCost).toString());
         setNotes(recipe.notes ?? '');
         setRows(
           recipe.components.length > 0
@@ -148,8 +148,8 @@ export function RecipeEditor({ recipeId, initialVariantId }: { recipeId?: string
       variantId: variantId || undefined,
       outputQuantity: Math.max(1, Math.round(Number(outputQuantity) || 1)),
       wastageBps: Math.round((Number(wastagePercent) || 0) * 100),
-      labourCost: Math.round((Number(labourCostRupees) || 0) * 100),
-      overheadCost: Math.round((Number(overheadCostRupees) || 0) * 100),
+      labourCost: toMinor(Number(labourCostRupees) || 0),
+      overheadCost: toMinor(Number(overheadCostRupees) || 0),
       notes: notes.trim() || undefined,
       components,
     };

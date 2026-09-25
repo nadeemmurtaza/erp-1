@@ -392,6 +392,27 @@ export interface ImportSummary {
   results: ImportRowResult[];
 }
 
+/**
+ * The generic shape `ContactImportService`/`ExpenseImportService` share
+ * (admin-platform/72-fragmented-tool-consolidation-import.md) — `key` names
+ * whatever the row is identified by (a phone/email, a description), unlike
+ * `ProductImportService`'s SKU-specific `ImportRowResult` above.
+ */
+export interface CsvImportRowResult {
+  row: number;
+  key: string;
+  action: 'created' | 'updated' | 'skipped';
+  message?: string;
+}
+
+export interface CsvImportSummary {
+  total: number;
+  created: number;
+  updated: number;
+  skipped: number;
+  results: CsvImportRowResult[];
+}
+
 export interface AuthUser {
   id: string;
   email: string | null;
@@ -1316,6 +1337,24 @@ export interface DashboardCardsResponse {
     { value: number; previous: number | null; unit: 'paisa' | 'count' | 'bps' | 'days'; label?: string }
   >;
   series: Record<string, Array<{ t: string; v: number }>>;
+}
+
+/** `GET /admin/action-hub` (admin-platform/44-manager-action-hub.md D2). */
+export interface ActionItem {
+  id: string;
+  kind: string;
+  subjectEmployeeName: string;
+  summary: string;
+  /** ISO string, or null when there is no real deadline. */
+  dueBy: string | null;
+  href: string;
+  permission: string;
+}
+
+export interface ActionHubResponse {
+  items: ActionItem[];
+  /** `kind`s whose source threw — the UI renders these as "temporarily unavailable", not a blank hub. */
+  unavailableKinds: string[];
 }
 
 export interface CmsMenuLink {

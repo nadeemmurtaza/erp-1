@@ -10,6 +10,7 @@ import { ROUTES } from '@/constants/routes';
 import { DASHBOARD_GROUPS, cardsFor, type DashboardCard } from '@/components/admin/dashboard/card-registry';
 import { CardGroup } from '@/components/admin/dashboard/card-group';
 import { NeedsAttentionStrip } from '@/components/admin/dashboard/needs-attention-strip';
+import { ActionHubWidget } from '@/components/admin/dashboard/action-hub-widget';
 import { ComparisonPanel } from '@/components/admin/dashboard/comparison-panel';
 import { useDashboardMetrics } from '@/components/admin/dashboard/use-dashboard-metrics';
 
@@ -54,6 +55,7 @@ export default function AdminDashboardPage() {
       />
 
       <NeedsAttentionStrip />
+      <ActionHubWidget />
 
       <div className="mb-4 flex justify-end">
         <RangePicker

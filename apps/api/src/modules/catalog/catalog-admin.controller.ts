@@ -274,10 +274,11 @@ export class CatalogAdminController {
   import(
     @CurrentUser() user: AuthenticatedUser,
     @UploadedFile() file: UploadedImage | undefined,
+    @Query('dryRun') dryRun?: string,
   ) {
     if (!file) {
       throw new BadRequestException('Choose a CSV file to upload.');
     }
-    return this.importer.import(user.id, file.buffer);
+    return this.importer.import(user.id, file.buffer, { dryRun: dryRun === 'true' });
   }
 }

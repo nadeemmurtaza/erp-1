@@ -2,6 +2,17 @@
 
 **Read `00-HOUSE-RULES.md` first.** Depends on WO-1.1 (declared group order).
 
+> **Status (2026-09-25): Complete.** The shared primitives and `DataTable`
+> were already built and adopted across the admin app; this session closed
+> the last two measured gaps — the four remaining bare `<table>` usages
+> (`users/[id]`, `finance`, `fulfilment/returns/[id]`, `stitching/jobs/[id]`)
+> migrated to `DataTable`, and five stray `/100`↔`*100` money conversions
+> (`recipe-editor.tsx`, `ai/page.tsx`, `payroll/compensation` and
+> `payroll/runs/[id]`, `garments/[id]`) switched to `toMajor()`/`toMinor()`.
+> See `DECISIONS.md` for the full account, including the money-conversion
+> instances left as named, pre-existing debt outside this phase's own
+> measured inventory.
+
 ## Why
 
 There are 22 admin pages and **no shared UI components at all**. Every page
